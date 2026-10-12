@@ -201,10 +201,8 @@ function linkDependencies(sourceRoot, workspace) {
         pending.push({ absolute, relative });
     }
   }
-  for (const {
-    relative: relativePath,
-  } of dependencyDirectories.sort((left, right) =>
-    left.relative.localeCompare(right.relative)
+  for (const { relative: relativePath } of dependencyDirectories.sort(
+    (left, right) => left.relative.localeCompare(right.relative)
   )) {
     const target = path.join(workspace, relativePath);
     mkdirSync(target, { recursive: true, mode: 0o700 });
@@ -392,7 +390,7 @@ async function main() {
   );
   const requestedRoot = launcherArguments[0]?.startsWith('--')
     ? process.cwd()
-    : launcherArguments.shift() ?? process.cwd();
+    : (launcherArguments.shift() ?? process.cwd());
   let playwrightCache;
   for (let index = 0; index < launcherArguments.length; index += 1) {
     if (launcherArguments[index] === '--playwright-cache') {
@@ -424,7 +422,9 @@ async function main() {
   if (targetCommand.length === 0)
     throw new Error('Pass a candidate test command after --.');
   const sourceRoot = realpathSync(requestedRoot);
-  const runDirectory = mkdtempSync(path.join(tmpdir(), 'trusted-validation-run-'));
+  const runDirectory = mkdtempSync(
+    path.join(tmpdir(), 'trusted-validation-run-')
+  );
   const workspace = path.join(runDirectory, 'workspace');
   mkdirSync(workspace, { mode: 0o700 });
   try {

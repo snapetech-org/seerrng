@@ -1,6 +1,7 @@
 // Copyright (c) snapetech and SeerrNG contributors.
 import assert from 'node:assert/strict';
 import { execFileSync, spawnSync } from 'node:child_process';
+import { once } from 'node:events';
 import {
   existsSync,
   mkdirSync,
@@ -10,7 +11,6 @@ import {
   symlinkSync,
   writeFileSync,
 } from 'node:fs';
-import { once } from 'node:events';
 import { createServer } from 'node:net';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
@@ -74,7 +74,10 @@ test(
     });
     mkdirSync(path.join(source, 'nested/config'), { recursive: true });
     writeFileSync(hostFile, 'host canary stays unchanged');
-    writeFileSync(path.join(browserCache, 'browser-canary.txt'), 'read-only browser');
+    writeFileSync(
+      path.join(browserCache, 'browser-canary.txt'),
+      'read-only browser'
+    );
     writeFileSync(path.join(source, '.gitignore'), 'node_modules/\n');
     writeFileSync(path.join(source, '.env'), 'PRIVATE_ENV_CANARY=hidden\n');
     writeFileSync(path.join(source, 'config.json'), '{"private":true}\n');

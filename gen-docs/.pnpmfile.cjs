@@ -4,11 +4,17 @@ const docusaurusUtilsVersions = new Set(['3.10.1', '3.10.2']);
 const docusaurusCoreVersions = new Set(['3.10.1', '3.10.2']);
 
 function readPackage(pkg) {
-  if (pkg.name === '@docusaurus/core' && docusaurusCoreVersions.has(pkg.version)) {
+  if (
+    pkg.name === '@docusaurus/core' &&
+    docusaurusCoreVersions.has(pkg.version)
+  ) {
     delete pkg.dependencies?.['update-notifier'];
   }
 
-  if (pkg.name === '@docusaurus/utils' && docusaurusUtilsVersions.has(pkg.version)) {
+  if (
+    pkg.name === '@docusaurus/utils' &&
+    docusaurusUtilsVersions.has(pkg.version)
+  ) {
     const dependencies = pkg.dependencies ?? {};
     delete dependencies.globby;
     delete dependencies.micromatch;

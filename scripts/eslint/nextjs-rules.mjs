@@ -1,4 +1,7 @@
-import { findVariable, getStringIfConstant } from '@eslint-community/eslint-utils';
+import {
+  findVariable,
+  getStringIfConstant,
+} from '@eslint-community/eslint-utils';
 
 const absoluteUrlPattern = /^(?:[a-z][\d+.a-z-]*:|\/\/)/iu;
 const globalPrefixes = new Set(['window', 'globalThis', 'document', 'self']);
@@ -8,7 +11,8 @@ const ruleUrl =
 function isMemberExpressionWithName(expression, name) {
   if (expression.type !== 'MemberExpression') return false;
   return expression.computed
-    ? expression.property.type === 'Literal' && expression.property.value === name
+    ? expression.property.type === 'Literal' &&
+        expression.property.value === name
     : expression.property.type === 'Identifier' &&
         expression.property.name === name;
 }
@@ -32,8 +36,10 @@ function isGlobalReference(sourceCode, identifier) {
   const variable = globalScope?.set.get(identifier.name);
   return Boolean(
     variable &&
-      variable.defs.length === 0 &&
-      variable.references.some(({ identifier: reference }) => reference === identifier)
+    variable.defs.length === 0 &&
+    variable.references.some(
+      ({ identifier: reference }) => reference === identifier
+    )
   );
 }
 

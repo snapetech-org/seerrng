@@ -27,7 +27,11 @@ const createFixture = async () => {
   await fs.writeFile(path.join(root, 'dist', 'index.js'), 'fixture\n');
   await fs.writeFile(path.join(root, 'bin', 'prepare.mjs'), 'fixture\n');
   await fs.writeFile(
-    path.join(root, 'patches', 'eslint-plugin-no-relative-import-paths@1.6.1.patch'),
+    path.join(
+      root,
+      'patches',
+      'eslint-plugin-no-relative-import-paths@1.6.1.patch'
+    ),
     'fixture patch\n'
   );
   await fs.writeFile(path.join(root, 'public', 'asset.txt'), 'public\n');

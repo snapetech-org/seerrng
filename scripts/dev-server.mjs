@@ -1,8 +1,8 @@
+import chokidar from 'chokidar';
 import { spawn } from 'node:child_process';
 import { relative, resolve, sep } from 'node:path';
 import process from 'node:process';
 import { pathToFileURL } from 'node:url';
-import chokidar from 'chokidar';
 
 const repositoryRoot = resolve(import.meta.dirname, '..');
 const fileExtensions = new Set(['.ts', '.json', '.yml']);
@@ -15,9 +15,7 @@ export function isServerRestartPath(path, root = repositoryRoot) {
   const relativePath = normalizeRelativePath(path, root);
   if (relativePath === 'seerr-api.yml') return true;
   if (!relativePath.startsWith('server/')) return false;
-  return fileExtensions.has(
-    relativePath.slice(relativePath.lastIndexOf('.'))
-  );
+  return fileExtensions.has(relativePath.slice(relativePath.lastIndexOf('.')));
 }
 
 function stopChild(child, signal = 'SIGTERM') {
@@ -80,7 +78,10 @@ export async function runDevServer() {
   }
 
   const watcher = chokidar.watch(
-    [resolve(repositoryRoot, 'server'), resolve(repositoryRoot, 'seerr-api.yml')],
+    [
+      resolve(repositoryRoot, 'server'),
+      resolve(repositoryRoot, 'seerr-api.yml'),
+    ],
     {
       ignoreInitial: true,
       ignored(path, stats) {
@@ -113,9 +114,7 @@ export async function runDevServer() {
     restartTimer = setTimeout(() => {
       restartQueue = restartQueue.then(async () => {
         if (shuttingDown) return;
-        console.log(
-          `[dev] ${normalizeRelativePath(path)} changed; restarting`
-        );
+        console.log(`[dev] ${normalizeRelativePath(path)} changed; restarting`);
         if (child) await stopChild(child);
         startServer();
       });

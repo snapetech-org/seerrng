@@ -948,10 +948,7 @@ if (executedDirectly) {
   try {
     options = parseOptions(process.argv.slice(2));
     selectedMode = validateOptions(options);
-    if (
-      options.flags.has('--inside-sandbox') &&
-      !hasTrustedOuterSandbox()
-    )
+    if (options.flags.has('--inside-sandbox') && !hasTrustedOuterSandbox())
       throw new Error(
         '--inside-sandbox requires the trusted outer sandbox marker'
       );
