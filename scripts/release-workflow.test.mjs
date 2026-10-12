@@ -343,8 +343,11 @@ test('multi-architecture publishers perform the real build once and verify the i
   const release = readWorkflow('release.yml');
 
   assert.equal(ci.jobs.build, undefined);
-  assert.equal(ci.jobs.publish.if, "github.ref == 'refs/heads/main'");
-  assert.equal(ci.jobs.publish.needs, undefined);
+  assert.equal(
+    ci.jobs.publish.if,
+    "github.ref == 'refs/heads/main' && needs.engine-reconcile.result == 'success'"
+  );
+  assert.equal(ci.jobs.publish.needs, 'engine-reconcile');
   assert.equal(ci.on.workflow_dispatch.inputs.deploy_main.default, true);
   assert.equal(ci.on.workflow_dispatch.inputs.deploy_main.type, 'boolean');
   assert.equal(
@@ -354,6 +357,8 @@ test('multi-architecture publishers perform the real build once and verify the i
   assert.deepEqual(ci.jobs['deploy-main'].needs, [
     'publish',
     'preflight-deploy',
+    'engine-reconcile',
+    'scan-main-image',
   ]);
   assert.equal(
     ci.jobs['preflight-deploy'].outputs.ready,
@@ -375,7 +380,7 @@ test('multi-architecture publishers perform the real build once and verify the i
   );
   assert.equal(
     ci.jobs['deploy-main'].if,
-    "github.ref == 'refs/heads/main' && needs.preflight-deploy.outputs.ready == 'true' && (github.event_name != 'workflow_dispatch' || inputs.deploy_main)"
+    "github.ref == 'refs/heads/main' && needs.engine-reconcile.result == 'success' && needs.scan-main-image.result == 'success' && needs.publish.result == 'success' && needs.preflight-deploy.outputs.ready == 'true' && (github.event_name != 'workflow_dispatch' || inputs.deploy_main)"
   );
   assert.match(
     ci.jobs.publish.steps.find(
@@ -389,7 +394,14 @@ test('multi-architecture publishers perform the real build once and verify the i
     ).run,
     /verify-container-manifest\.sh --require-provenance/u
   );
-  assert.equal(ci.jobs['scan-main-image'].needs, 'publish');
+  assert.equal(
+    ci.jobs['scan-main-image'].if,
+    "github.ref == 'refs/heads/main' && needs.engine-reconcile.result == 'success' && needs.publish.result == 'success'"
+  );
+  assert.deepEqual(ci.jobs['scan-main-image'].needs, [
+    'publish',
+    'engine-reconcile',
+  ]);
   assert.deepEqual(ci.jobs['scan-main-image'].strategy.matrix.include, [
     { platform: 'linux/amd64', suffix: 'amd64' },
     { platform: 'linux/arm64', suffix: 'arm64' },
