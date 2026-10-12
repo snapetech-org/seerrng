@@ -1,6 +1,6 @@
+import { Linter } from 'eslint';
 import assert from 'node:assert/strict';
 import test from 'node:test';
-import { Linter } from 'eslint';
 import formatjs from './formatjs-no-offset.mjs';
 
 const linter = new Linter();
@@ -17,7 +17,9 @@ const config = [
 ];
 
 const lint = (source) =>
-  linter.verify(source, config).map(({ ruleId, message }) => ({ ruleId, message }));
+  linter
+    .verify(source, config)
+    .map(({ ruleId, message }) => ({ ruleId, message }));
 
 test('the local FormatJS rule allows plural messages without offsets', () => {
   assert.deepEqual(

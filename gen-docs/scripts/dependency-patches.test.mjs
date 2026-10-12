@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict';
-import { mkdtemp, mkdir, rm, writeFile } from 'node:fs/promises';
+import { mkdir, mkdtemp, rm, writeFile } from 'node:fs/promises';
 import { createRequire } from 'node:module';
 import os from 'node:os';
 import path from 'node:path';
@@ -20,7 +20,10 @@ test('patched Docusaurus Globby preserves directory expansion and ignore options
     await mkdir(path.join(root, 'docs', 'nested'), { recursive: true });
     await mkdir(path.join(root, 'docs', 'private'), { recursive: true });
     await writeFile(path.join(root, 'docs', 'guide.md'), 'guide');
-    await writeFile(path.join(root, 'docs', 'nested', 'reference.mdx'), 'reference');
+    await writeFile(
+      path.join(root, 'docs', 'nested', 'reference.mdx'),
+      'reference'
+    );
     await writeFile(path.join(root, 'docs', 'private', 'secret.md'), 'secret');
     await writeFile(path.join(root, 'docs', 'notes.txt'), 'notes');
 
@@ -42,11 +45,11 @@ test('patched Docusaurus Globby preserves directory expansion and ignore options
 test('patched proxy middleware matches glob paths and strips query strings', () => {
   assert.equal(
     match('/api/**', 'https://example.test/api/users/42?include=profile'),
-    true,
+    true
   );
   assert.equal(match('/api/*', 'https://example.test/api/users/42'), false);
   assert.equal(
     match('/api/**', 'https://example.test/private/users/42?include=profile'),
-    false,
+    false
   );
 });

@@ -1,6 +1,6 @@
 import { readFileSync, writeFileSync } from 'node:fs';
-import { createInterface } from 'node:readline/promises';
 import process from 'node:process';
+import { createInterface } from 'node:readline/promises';
 import { pathToFileURL } from 'node:url';
 
 export const commitTypes = Object.freeze([
@@ -50,7 +50,10 @@ async function ask(terminal, prompt, defaultValue = '') {
 async function promptForCommitMessage(path) {
   if (!process.stdin.isTTY || !process.stdout.isTTY) return;
 
-  const terminal = createInterface({ input: process.stdin, output: process.stdout });
+  const terminal = createInterface({
+    input: process.stdin,
+    output: process.stdout,
+  });
   try {
     console.log(`Conventional Commit types: ${commitTypes.join(', ')}`);
     const type = await ask(terminal, 'Type', 'feat');
@@ -63,7 +66,14 @@ async function promptForCommitMessage(path) {
     const issues = await ask(terminal, 'Issue references (optional)');
     writeFileSync(
       path,
-      formatCommitMessage({ type, scope, subject, body, breakingChange, issues }),
+      formatCommitMessage({
+        type,
+        scope,
+        subject,
+        body,
+        breakingChange,
+        issues,
+      }),
       'utf8'
     );
   } finally {
@@ -73,7 +83,8 @@ async function promptForCommitMessage(path) {
 
 async function main(args) {
   const [messagePath, source] = args;
-  if (!messagePath) throw new Error('Git did not provide a commit message file');
+  if (!messagePath)
+    throw new Error('Git did not provide a commit message file');
   if (source && source !== 'template') return;
 
   const originalMessage = readFileSync(messagePath, 'utf8');

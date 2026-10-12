@@ -1,7 +1,5 @@
 import js from '@eslint/js';
 import prettier from 'eslint-config-prettier';
-import formatjs from './scripts/eslint/formatjs-no-offset.mjs';
-import nextjsRules from './scripts/eslint/nextjs-rules.mjs';
 import jsxA11y from 'eslint-plugin-jsx-a11y';
 import noRelativeImportPaths from 'eslint-plugin-no-relative-import-paths';
 import reactPlugin from 'eslint-plugin-react';
@@ -9,6 +7,8 @@ import reactHooks from 'eslint-plugin-react-hooks';
 import { defineConfig, type Config } from 'eslint/config';
 import globals from 'globals';
 import tseslint from 'typescript-eslint';
+import formatjs from './scripts/eslint/formatjs-no-offset.mjs';
+import nextjsRules from './scripts/eslint/nextjs-rules.mjs';
 
 type Plugin = NonNullable<Config['plugins']>[string];
 
