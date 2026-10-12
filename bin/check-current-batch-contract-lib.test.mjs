@@ -135,6 +135,11 @@ test('upstream public commands preserve build-time translation and visual guards
     'the actual source passes all current contracts'
   );
   const cases = [
+    [
+      'validate:development',
+      'node bin/run-local-validation.mjs',
+      'the complete validation command must retain the repository engine entry point',
+    ],
     ['build', 'pnpm build:compile', 'upstream build-all entry point'],
     ['build:all', 'run-p build:next', 'compile both client and server'],
     ['build:next', 'echo skipped', 'upstream Next compiler'],

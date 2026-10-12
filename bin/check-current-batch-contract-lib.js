@@ -2725,11 +2725,6 @@ const validateCurrentBatchContract = (files) => {
     '.app-search-input {',
     'global search must consume the shared blue control surface'
   );
-  requireText(
-    'package.json',
-    '"validate:development": "node bin/run-local-validation.mjs"',
-    'the complete validation command must retain the repository engine entry point'
-  );
   // Keep visual and translation checks on the ordinary build without forcing
   // full staged validation into every build, development session or commit.
   let publicScripts = {};
@@ -2745,6 +2740,11 @@ const validateCurrentBatchContract = (files) => {
     )
       errors.push(`package.json: ${reason}`);
   };
+  requirePublicCommand(
+    'validate:development',
+    'node bin/run-local-validation.mjs --package-entry',
+    'the complete validation command must retain the repository engine entry point'
+  );
   requirePublicCommand(
     'build',
     'pnpm build:all',
@@ -2807,6 +2807,16 @@ const validateCurrentBatchContract = (files) => {
     'bin/run-tooling-tests.mjs',
     'scripts/dev-server.test.mjs',
     'the tooling suite must cover the local development watcher'
+  );
+  requireText(
+    'bin/check-current-batch-contract.js',
+    "'scripts/dev-server.mjs',",
+    'the current-batch check must include the development watcher as a contract input'
+  );
+  requireText(
+    'bin/check-current-batch-contract.js',
+    "'bin/run-tooling-tests.mjs',",
+    'the current-batch check must include the tooling suite as a contract input'
   );
   for (const check of [
     'check-current-batch-contract.js',
