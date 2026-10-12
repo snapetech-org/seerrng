@@ -1,6 +1,6 @@
+import { Linter } from 'eslint';
 import assert from 'node:assert/strict';
 import test from 'node:test';
-import { Linter } from 'eslint';
 import nextjsRules from './nextjs-rules.mjs';
 
 const linter = new Linter();

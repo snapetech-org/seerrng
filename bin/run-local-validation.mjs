@@ -100,18 +100,26 @@ function hostedGithubInput(root) {
     readFileSync(process.env.GITHUB_EVENT_PATH, 'utf8')
   );
   const eventName = process.env.GITHUB_EVENT_NAME;
-  if (!['pull_request', 'push'].includes(eventName))
+  if (!['pull_request', 'push', 'workflow_dispatch'].includes(eventName))
     throw new Error(
-      'Hosted CI orchestration supports pull_request and push only'
+      'Hosted CI orchestration supports pull_request, push, and workflow_dispatch only'
     );
   const executionSha = git(root, ['rev-parse', 'HEAD']).trim();
   if (executionSha !== process.env.GITHUB_SHA)
     throw new Error('Checked GitHub execution SHA does not match GITHUB_SHA');
   const pullRequest = payload.pull_request;
   const headSha =
-    eventName === 'pull_request' ? pullRequest?.head?.sha : payload.after;
+    eventName === 'pull_request'
+      ? pullRequest?.head?.sha
+      : eventName === 'push'
+        ? payload.after
+        : process.env.GITHUB_SHA;
   const baseSha =
-    eventName === 'pull_request' ? pullRequest?.base?.sha : payload.before;
+    eventName === 'pull_request'
+      ? pullRequest?.base?.sha
+      : eventName === 'push'
+        ? payload.before
+        : git(root, ['rev-parse', '--verify', `${executionSha}^1`]).trim();
   if (!/^[a-f0-9]{40}$/.test(headSha ?? ''))
     throw new Error('Exact GitHub head SHA is missing');
   if (!/^[a-f0-9]{40}$/.test(baseSha ?? ''))
@@ -1553,6 +1561,7 @@ failures, partial output closure and zero active tests fail closed.\n`);
       preflight(root, { testsOnly: has('--tests-only') });
       const plan = createPlan(root, {
         testsOnly: has('--tests-only'),
+        allowExternalDependencies: has('--tests-only'),
         canonicalTypescript: !has('--tests-only'),
       });
       if (has('--plan')) {
@@ -1585,6 +1594,7 @@ failures, partial output closure and zero active tests fail closed.\n`);
         process.on('SIGTERM', interrupt);
         if (has('--tests-only')) {
           const totals = await executePlan(plan, {
+            sandbox: true,
             signal: controller.signal,
             onProgress: (summary) => process.stderr.write(`${summary}\n`),
           });

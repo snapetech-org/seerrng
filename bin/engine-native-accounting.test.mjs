@@ -416,10 +416,10 @@ test('Node TAP counts parent tests and their children as separate test rows', (t
   const childEnvironment = { ...process.env };
   delete childEnvironment.NODE_TEST_CONTEXT;
   const child = spawnSync(
-      process.execPath,
-      ['--test', '--test-reporter=tap', fixtureFile],
-      { encoding: 'utf8', env: childEnvironment }
-    );
+    process.execPath,
+    ['--test', '--test-reporter=tap', fixtureFile],
+    { encoding: 'utf8', env: childEnvironment }
+  );
   assert.equal(child.error, undefined, child.error?.message);
   assert.equal(child.signal, null);
   assert.equal(child.status, 1, child.stderr);

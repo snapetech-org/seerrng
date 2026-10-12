@@ -90,7 +90,11 @@ test('README documents the disabled Mode 3 entry points and security boundary', 
     readme,
     /before reading active configuration paths or\s+opening\s+sockets/
   );
-  assert.match(readme, /not an OS sandbox/);
+  assert.match(readme, /disposable source copy inside Linux bubblewrap/);
+  assert.match(
+    readme,
+    /common service sockets, `\/opt`, `\/srv`, and the network namespace are\s+isolated/
+  );
   assert.doesNotMatch(readme, /pnpm validate:development .*--distributed-/);
   assert.doesNotMatch(
     readme,

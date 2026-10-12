@@ -81,6 +81,53 @@ test('the existing CI workflow invokes the engine plan and reconciler around nat
   );
 });
 
+test('image publishing and deployment require reconciled validation and a clean image scan', () => {
+  const jobs = ci.workflow.jobs;
+  assert.deepEqual(needs(jobs.publish), new Set(['engine-reconcile']));
+  assert.match(jobs.publish.if, /needs\.engine-reconcile\.result == 'success'/);
+  assert.deepEqual(
+    needs(jobs['scan-main-image']),
+    new Set(['publish', 'engine-reconcile'])
+  );
+  assert.deepEqual(
+    needs(jobs['deploy-main']),
+    new Set([
+      'publish',
+      'preflight-deploy',
+      'engine-reconcile',
+      'scan-main-image',
+    ])
+  );
+  for (const dependency of ['publish', 'engine-reconcile', 'scan-main-image'])
+    assert.match(
+      jobs['deploy-main'].if,
+      new RegExp(`needs\\.${dependency}\\.result == 'success'`)
+    );
+});
+
+test('manual main runs execute the full validation plan before any privileged job', () => {
+  const jobs = ci.workflow.jobs;
+  for (const id of [
+    'engine-plan',
+    'jellyfin-plugin',
+    'release-notes',
+    'i18n',
+    'test',
+    'unit-test',
+    'engine-reconcile',
+  ])
+    assert.match(jobs[id].if, /workflow_dispatch/);
+  assert.match(jobs['engine-plan'].if, /github\.ref == 'refs\/heads\/main'/);
+  assert.match(jobs.publish.if, /github\.ref == 'refs\/heads\/main'/);
+  const releaseNotes = stepNamed(
+    jobs['release-notes'],
+    'Validate release-note fragment or explicit opt-out'
+  );
+  assert.match(releaseNotes.run, /GITHUB_EVENT_NAME.*workflow_dispatch/);
+  assert.match(releaseNotes.run, /git rev-parse --verify.*HEAD_SHA/);
+  assert.match(releaseNotes.run, /git diff --quiet.*release-notes/);
+});
+
 test('GitHub fans every independent validation job out from the engine plan', () => {
   const jobs = ci.workflow.jobs;
   for (const id of [...nativeJobs, ...Object.keys(reusableJobs)])

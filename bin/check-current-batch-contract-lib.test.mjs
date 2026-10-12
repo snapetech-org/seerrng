@@ -184,7 +184,11 @@ test('upstream public commands preserve build-time translation and visual guards
       'echo skipped',
       'translation command must retain its actual validator',
     ],
-    ['dev', 'echo skipped', 'public development must retain the local server watcher'],
+    [
+      'dev',
+      'echo skipped',
+      'public development must retain the local server watcher',
+    ],
     ['prebuild', undefined, 'translation and current-batch checks'],
     ['current-batch:check', false, 'fail closed on shared visual checks'],
   ];

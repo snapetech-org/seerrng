@@ -34,6 +34,11 @@ import {
   isExplicitlySkippedDistributedNativeCaseLedger,
 } from '../tools/validation-engine/runtime/distributed-native-case-ledger.mjs';
 // eslint-disable-next-line no-relative-import-paths/no-relative-import-paths -- Native Node tooling cannot resolve the application's TS aliases.
+import {
+  createBubblewrapCommand,
+  createDisposableTestWorkspace,
+} from '../tools/validation-engine/runtime/isolated-process.mjs';
+// eslint-disable-next-line no-relative-import-paths/no-relative-import-paths -- Native Node tooling cannot resolve the application's TS aliases.
 import { createIsolatedTestEnvironment } from '../tools/validation-engine/runtime/test-environment.mjs';
 
 const roots = ['server', 'src', 'bin', 'scripts', 'deploy', 'packaging'];
@@ -527,6 +532,7 @@ export function createPlan(
   root,
   {
     testsOnly = false,
+    allowExternalDependencies = false,
     platform = process.platform,
     ts,
     canonicalTypescript = false,
@@ -538,6 +544,8 @@ export function createPlan(
     platform,
     ts: ts || loadTypeScript(root),
   });
+  if (typeof allowExternalDependencies !== 'boolean')
+    throw new Error('External dependency access must be explicit');
   if (typeof canonicalTypescript !== 'boolean')
     throw new Error('Explicit canonical TypeScript binding is required');
   if (canonicalTypescript) {
@@ -562,9 +570,13 @@ export function createPlan(
   const steps = [];
   const add = (name, args, kind = 'check') =>
     steps.push({ name, command: process.execPath, args, kind });
+  if (dependencyReference && allowExternalDependencies)
+    throw new Error('Dependency references cannot be combined');
   const dependencyRoot = dependencyReference
     ? validateDependencyReference(root, dependencyReference)
-    : undefined;
+    : allowExternalDependencies && existsSync(join(root, 'node_modules'))
+      ? realpathSync(join(root, 'node_modules'))
+      : undefined;
   const required = (file) => requireFile(root, file, dependencyRoot);
   if (!testsOnly) {
     for (const [name, file] of [
@@ -685,13 +697,22 @@ export function vitestConfigSource(
   root,
   files,
   workers = detectWorkerCapacity({ sourceRoot: root }).configuredWorkers,
-  cacheDirectory
+  cacheDirectory,
+  guestRoot
 ) {
-  const binding = new URL(
-    '../tools/validation-engine/runtime/vitest-binding.mjs',
-    import.meta.url
-  ).href;
-  return `import original from ${JSON.stringify(pathToFileURL(config).href)};
+  const guestPath = (file) =>
+    guestRoot
+      ? join(guestRoot, relative(root, file).split(sep).join('/'))
+      : file;
+  const binding = guestRoot
+    ? pathToFileURL(
+        join(guestRoot, 'tools/validation-engine/runtime/vitest-binding.mjs')
+      ).href
+    : new URL(
+        '../tools/validation-engine/runtime/vitest-binding.mjs',
+        import.meta.url
+      ).href;
+  return `import original from ${JSON.stringify(pathToFileURL(guestPath(config)).href)};
 import { engineVitestProjects, isEngineVitestProjects } from ${JSON.stringify(binding)};
 export default async (environment) => {
  const base = await (typeof original === 'function' ? original(environment) : original);
@@ -701,7 +722,7 @@ export default async (environment) => {
  // Vite concatenates inherited arrays. Root includes would broaden both
  // child projects and execute some files twice instead of partitioning them.
  delete test.include; delete test.exclude; delete test.projects;
- return {...base, root: ${JSON.stringify(root)}, ${cacheDirectory ? `cacheDir: ${JSON.stringify(cacheDirectory)},` : ''} test: {...test, maxWorkers: ${JSON.stringify(workers)}, projects: engineVitestProjects({ files: ${JSON.stringify(files)}, exclude: base.test?.exclude ?? ['node_modules/**', 'dist/**'], workers: ${JSON.stringify(workers)} }), passWithNoTests: false}};
+ return {...base, root: ${JSON.stringify(guestRoot ?? root)}, ${cacheDirectory ? `cacheDir: ${JSON.stringify(guestRoot ? cacheDirectory : guestPath(cacheDirectory))},` : ''} test: {...test, maxWorkers: ${JSON.stringify(workers)}, projects: engineVitestProjects({ files: ${JSON.stringify(files)}, exclude: base.test?.exclude ?? ['node_modules/**', 'dist/**'], workers: ${JSON.stringify(workers)} }), passWithNoTests: false}};
 };
 `;
 }
@@ -1149,8 +1170,11 @@ export async function executePlan(
     collectFailures = false,
     caseLedgerObserver,
     onProgress,
+    sandbox = false,
   } = {}
 ) {
+  if (typeof sandbox !== 'boolean')
+    throw new Error('Local test process isolation must be explicit');
   if (typeof collectFailures !== 'boolean')
     throw new Error('Internal failure collection must be explicit');
   if (
@@ -1165,6 +1189,8 @@ export async function executePlan(
     throw new Error('Invalid sealed native worker budget');
   const directory = mkdtempSync(join(tmpdir(), prefix));
   const env = isolatedEnvironment(directory, inherited);
+  const sandboxWorkspace = sandbox ? join(directory, 'workspace') : plan.root;
+  let isolatedWorkspace = null;
   const totals = new Map();
   const failures = [];
   const caseCoverage = new Map();
@@ -1184,6 +1210,11 @@ export async function executePlan(
     );
   };
   try {
+    if (sandbox)
+      isolatedWorkspace = createDisposableTestWorkspace(
+        plan.root,
+        sandboxWorkspace
+      );
     for (const original of plan.steps) {
       if (signal?.aborted) throw new Error('Validation interrupted');
       const step = { ...original, args: [...original.args] };
@@ -1195,11 +1226,16 @@ export async function executePlan(
         writeFileSync(
           config,
           vitestConfigSource(
-            step.config,
-            plan.root,
+            sandbox
+              ? join(sandboxWorkspace, relative(plan.root, step.config))
+              : step.config,
+            sandboxWorkspace,
             step.files,
             workers,
-            join(directory, 'vitest-cache')
+            sandbox
+              ? '/run-data/vitest-cache'
+              : join(directory, 'vitest-cache'),
+            sandbox ? '/mnt/workspace' : undefined
           ),
           { flag: 'wx' }
         );
@@ -1219,13 +1255,34 @@ export async function executePlan(
       heartbeat.unref();
       let executionResult;
       try {
-        executionResult = await executor(step, {
-          root: plan.root,
-          env,
-          stdout,
-          stderr,
-          signal,
-        });
+        const wrapped = sandbox
+          ? createBubblewrapCommand(
+              {
+                command: step.command,
+                args: step.args,
+                cwd: sandboxWorkspace,
+              },
+              {
+                root: sandboxWorkspace,
+                sourceRoots: [plan.root],
+                runDirectory: directory,
+                dependencies: isolatedWorkspace.dependencies,
+                environment: env,
+              }
+            )
+          : null;
+        executionResult = await executor(
+          wrapped
+            ? { ...step, command: wrapped.command, args: wrapped.args }
+            : step,
+          {
+            root: sandboxWorkspace,
+            env: wrapped?.env ?? env,
+            stdout,
+            stderr,
+            signal,
+          }
+        );
       } finally {
         clearInterval(heartbeat);
       }
@@ -1304,9 +1361,12 @@ export async function executePlan(
               'Vitest native failure/count closure is incomplete'
             );
           const actual = new Set(
-            (result.testResults || []).map((entry) =>
-              slash(relative(plan.root, resolve(plan.root, entry.name)))
-            )
+            (result.testResults || []).map((entry) => {
+              const reported = entry.name.startsWith('/mnt/workspace/')
+                ? resolve(plan.root, entry.name.slice('/mnt/workspace/'.length))
+                : entry.name;
+              return slash(relative(plan.root, resolve(plan.root, reported)));
+            })
           );
           if (
             result.testResults?.length !== step.files.length ||
@@ -1389,11 +1449,11 @@ export function printPlan(
   output.write(
     `Local ${plan.testsOnly ? 'test' : 'validation'} gate: ${plan.root}\n`
   );
+  output.write('Environment: NODE_ENV=test; no dependency installation.\n');
   output.write(
-    'Isolation: fresh temporary CONFIG_DIRECTORY, NODE_ENV=test; no dependency installation.\n'
-  );
-  output.write(
-    'Existing HTTP/HTTPS test guards reject external requests; this is not an OS network sandbox.\n'
+    plan.testsOnly
+      ? 'Execution: disposable source copy, read-only dependencies, bubblewrap filesystem and loopback-only network namespaces (Linux required).\n'
+      : 'Execution: staged native validation with separately verified network and source boundaries.\n'
   );
   for (const owner of ['vitest', 'node-ts', 'node-js', 'tooling']) {
     const owned = plan.inventory.filter((entry) => entry.owner === owner);

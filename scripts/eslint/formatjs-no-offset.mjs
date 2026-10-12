@@ -1,13 +1,6 @@
-import {
-  isPluralElement,
-  parse,
-} from '@formatjs/icu-messageformat-parser';
+import { isPluralElement, parse } from '@formatjs/icu-messageformat-parser';
 
-const formatFunctionNames = new Set([
-  '$formatMessage',
-  'formatMessage',
-  '$t',
-]);
+const formatFunctionNames = new Set(['$formatMessage', 'formatMessage', '$t']);
 const componentNames = new Set(['FormattedMessage']);
 const transparentTypescriptExpressions = new Set([
   'TSAsExpression',
@@ -97,9 +90,7 @@ function messagesForCall(node, settings) {
   if (name === 'defineMessages') {
     if (settings.excludeMessageDeclCalls) return [];
     const messageDictionary =
-      getStaticString(descriptor) !== undefined
-        ? values
-        : descriptor;
+      getStaticString(descriptor) !== undefined ? values : descriptor;
     const messages = unwrapObjectExpression(messageDictionary);
     if (!messages) return [];
     return messages.properties.flatMap((property) => {
@@ -111,7 +102,9 @@ function messagesForCall(node, settings) {
     });
   }
 
-  const additionalFunctionNames = Array.isArray(settings.additionalFunctionNames)
+  const additionalFunctionNames = Array.isArray(
+    settings.additionalFunctionNames
+  )
     ? settings.additionalFunctionNames
     : [];
   const isMessageDeclaration = name === 'defineMessage';
@@ -129,7 +122,9 @@ function messagesForCall(node, settings) {
 }
 
 function messagesForJsx(node, settings) {
-  const additionalComponentNames = Array.isArray(settings.additionalComponentNames)
+  const additionalComponentNames = Array.isArray(
+    settings.additionalComponentNames
+  )
     ? settings.additionalComponentNames
     : [];
   if (
@@ -151,13 +146,15 @@ function messagesForJsx(node, settings) {
       attribute.value.type === 'JSXExpressionContainer'
         ? attribute.value.expression
         : attribute.value;
-    return [{
-      node: attribute.value,
-      value:
-        expression.type === 'JSXEmptyExpression'
-          ? undefined
-          : getStaticString(expression),
-    }];
+    return [
+      {
+        node: attribute.value,
+        value:
+          expression.type === 'JSXEmptyExpression'
+            ? undefined
+            : getStaticString(expression),
+      },
+    ];
   }
   return [];
 }

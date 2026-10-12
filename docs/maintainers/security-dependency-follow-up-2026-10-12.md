@@ -99,3 +99,24 @@ The root lockfile resolution also reported existing peer warnings for ESLint
 10 with `eslint-plugin-jsx-a11y` and `eslint-plugin-react`, and React 19 with
 `react-popper` and `react-use-clipboard`. They are outside these dependency
 replacements and must be checked against the exact validation candidate.
+
+## Follow-up status — October 12, 2026
+
+The earlier dismissal snapshot is superseded by the current alert details. Direct
+GitHub alert records report Dependabot #285 (`braces`), #286
+(`http-cache-semantics`), and #287 (`braces`) as fixed, with no dismissal reason
+or timestamp. The open-alert endpoint returns zero Dependabot, Code Scanning,
+and secret-scanning alerts. The paginated `state=dismissed` list still returns
+#285 even though its individual record says `fixed`; treat that filtered list
+entry as stale rather than as a current dismissed risk. The fixed-state list
+returns 305 alerts; with #285's direct fixed record, the 306 known alerts are
+fixed and none is open.
+
+Frozen root and docs installs and lockfile audits completed on the disposable
+`kspls0` guest using Node 24.20.0 and pnpm 10.24.0; both audits reported zero
+vulnerabilities. Focused process-isolation checks now pass 3/3 on the integrated
+candidate, including a regression that proves nested `.env` files are excluded
+from the disposable source snapshot. The complete GitHub-hosted Mode 2 gate for
+the final integrated candidate, its build and browser suites, and release checks
+remain pending. At this status check, issue #199 and PRs #202/#203 are still
+open; no release or issue state change has been made.

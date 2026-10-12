@@ -15,7 +15,7 @@ test('Docusaurus update checks are removed from both installed core graphs', () 
 
     assert.equal(
       hooks.readPackage(manifest).dependencies['update-notifier'],
-      undefined,
+      undefined
     );
     assert.equal(manifest.dependencies.webpack, '^5.0.0');
   }

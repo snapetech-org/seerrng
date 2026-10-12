@@ -68,12 +68,18 @@ pnpm validate:development
 - `--tests-only` executes the local repository-test plan through its native
   runners. It does not claim CodeQL, production-build, Cypress, Playwright,
   hosted-job, or pull-request metadata coverage.
-- Test subprocesses receive an allowlisted environment and private temporary
-  home/config/cache paths. Common HTTP clients block non-loopback traffic and
-  fetch redirects fail closed, but this is not an OS sandbox: test code running
-  as the invoking OS user can still access that user's files and open raw
-  sockets. Run untrusted source only in a disposable guest with credentials and
-  provider data absent.
+- Test subprocesses run from a disposable source copy inside Linux bubblewrap.
+  The workspace and scratch outputs are the only writable host mounts; installed
+  dependencies are mounted read-only, and dependency roots must be real
+  directories within the candidate checkout; escaping symlinks fail closed.
+  The invoking user's home, temporary
+  files, common service sockets, `/opt`, `/srv`, and the network namespace are
+  isolated, with loopback available for tests that start local servers. The
+  system root remains read-only for runtime tools; keep sensitive data out of
+  other host paths and use a disposable guest for highly untrusted source. The
+  child environment is allowlisted and receives private config/cache paths.
+  This mode fails before starting tests when bubblewrap or the required Linux
+  namespaces are unavailable; use hosted GitHub validation on other platforms.
 - With no mode flag, the engine admits the complete local staged gate. It runs
   only when the required source, dependency, toolchain, fixture, network, and
   browser-isolation boundaries can be proved. Otherwise it stops incomplete and
