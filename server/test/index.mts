@@ -8,6 +8,8 @@ import { join, resolve } from 'node:path';
 import { run } from 'node:test';
 import * as reporters from 'node:test/reporters';
 import { fileURLToPath } from 'node:url';
+// eslint-disable-next-line no-relative-import-paths/no-relative-import-paths -- Native test runner bootstrap cannot resolve application aliases.
+import { setIsolatedTestEnvironment } from '../../tools/validation-engine/runtime/test-environment.mjs';
 
 const resolveImport = (specifier: string) =>
   fileURLToPath(import.meta.resolve(specifier));
@@ -52,6 +54,7 @@ program
 
 const positionals: string[] = program.args;
 const isFullSuite = positionals.length === 0;
+const runningInCi = process.env.CI !== undefined;
 const opts = program.opts<{
   testNamePattern: string[];
   testReporter: string[];
@@ -83,7 +86,9 @@ process.env.NODE_ENV = 'test';
 const testConfigDirectory = mkdtempSync(
   join(tmpdir(), 'seerrng-node-test-config-')
 );
-process.env.CONFIG_DIRECTORY = testConfigDirectory;
+setIsolatedTestEnvironment(testConfigDirectory, process.env, {
+  includeCi: runningInCi,
+});
 process.on('exit', () => {
   rmSync(testConfigDirectory, { force: true, recursive: true });
 });
@@ -118,7 +123,7 @@ const stream = run({
 // A failed assertion or test file sets the final exit status but does not stop
 // the remaining files. Preserve a complete, human-readable local report for a
 // full-suite run so every failure from the pass can be reviewed together.
-if (isFullSuite && process.env.CI === undefined) {
+if (isFullSuite && !runningInCi) {
   const reportDirectory = join(BASE_DIR, 'artifacts', 'test-results');
   const reportTimestamp = new Date().toISOString().replace(/[:.]/g, '-');
   const reportPath = join(reportDirectory, `unit-tests-${reportTimestamp}.log`);
@@ -135,7 +140,7 @@ stream.on('test:fail', () => {
 });
 
 // In CI, write a JUnit report to a file for use by GitHub
-if (process.env.CI) {
+if (runningInCi) {
   const reportStream = createWriteStream(join(BASE_DIR, 'report.xml'));
   stream.compose(reporters.junit).pipe(reportStream);
 }

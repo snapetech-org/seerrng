@@ -100,7 +100,11 @@ test('per-file bootstrap uses fresh config, blocks inherited providers, and clea
     await import(${JSON.stringify(setupUrl)} + '?second');
     console.log(JSON.stringify({ a, b: process.env.CONFIG_DIRECTORY, db: process.env.DB_HOST ?? null,
       external: process.env.SEERR_EXTERNAL_CONFIG ?? null, network: process.env.ALLOW_NETWORK,
-      fail: process.env.SEERR_TEST_FAIL_ON_NETWORK, nodeEnv: process.env.NODE_ENV }));
+      fail: process.env.SEERR_TEST_FAIL_ON_NETWORK, nodeEnv: process.env.NODE_ENV,
+      githubToken: process.env.GITHUB_TOKEN ?? null, proxy: process.env.HTTPS_PROXY ?? null,
+      nodeOptions: process.env.NODE_OPTIONS ?? null, home: process.env.HOME,
+      ci: process.env.CI ?? null, vitest: process.env.VITEST ?? null,
+      pool: process.env.VITEST_POOL_ID ?? null, worker: process.env.VITEST_WORKER_ID ?? null }));
   `,
     ],
     {
@@ -112,6 +116,14 @@ test('per-file bootstrap uses fresh config, blocks inherited providers, and clea
         SEERR_EXTERNAL_CONFIG: 'live',
         CONFIG_DIRECTORY: resolve('.'),
         ALLOW_NETWORK: 'true',
+        GITHUB_TOKEN: 'synthetic-token',
+        HTTPS_PROXY: 'http://proxy.example.test',
+        NODE_OPTIONS: '--trace-warnings',
+        HOME: '/live-home',
+        CI: 'true',
+        VITEST: 'true',
+        VITEST_POOL_ID: '2',
+        VITEST_WORKER_ID: '3',
       },
     }
   );
@@ -122,6 +134,14 @@ test('per-file bootstrap uses fresh config, blocks inherited providers, and clea
   assert.equal(proof.network, 'false');
   assert.equal(proof.fail, 'true');
   assert.equal(proof.nodeEnv, 'test');
+  assert.equal(proof.githubToken, null);
+  assert.equal(proof.proxy, null);
+  assert.equal(proof.nodeOptions, null);
+  assert.equal(proof.home, proof.b);
+  assert.equal(proof.ci, 'true');
+  assert.equal(proof.vitest, 'true');
+  assert.equal(proof.pool, '2');
+  assert.equal(proof.worker, '3');
   assert.equal(existsSync(proof.a), false);
   assert.equal(existsSync(proof.b), false);
   assert.equal(existsSync(resolve('.')), true);

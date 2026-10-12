@@ -730,7 +730,7 @@ test('argument chunks retain every filename without shell composition or exceedi
   assert.throws(() => chunkArguments(['x'.repeat(600)], 500), /budget/);
 });
 
-test('isolation removes inherited live configuration and escape flags without mutating the parent', () => {
+test('isolation allowlists child environment and owns credential directories', () => {
   const inherited = {
     NODE_ENV: 'production',
     CONFIG_DIRECTORY: '/live',
@@ -742,20 +742,52 @@ test('isolation removes inherited live configuration and escape flags without mu
     TS_NODE_PROJECT: '/wrong',
     VITEST: 'true',
     CI: 'true',
+    GITHUB_TOKEN: 'github-secret',
+    GH_TOKEN: 'gh-secret',
+    AWS_SECRET_ACCESS_KEY: 'aws-secret',
+    NPM_TOKEN: 'npm-secret',
+    SSH_AUTH_SOCK: '/run/user/1000/ssh-agent.sock',
+    GIT_CONFIG_GLOBAL: '/secret/gitconfig',
+    HTTPS_PROXY: 'http://proxy.example.test:8080',
+    CUSTOM_SECRET: 'secret',
+    HOME: '/home/maintainer',
+    USERPROFILE: 'C:\\Users\\maintainer',
     ALLOW_NETWORK: 'true',
     SEERR_TEST_FAIL_ON_NETWORK: 'false',
+    LC_ALL: 'en_CA.UTF-8',
     PATH: '/tools',
+    path: '/lower-priority-path',
   };
   const isolated = isolatedEnvironment('/owned', inherited);
   assert.equal(isolated.NODE_ENV, 'test');
   assert.equal(isolated.CONFIG_DIRECTORY, '/owned');
   assert.equal(isolated.ALLOW_NETWORK, 'false');
   assert.equal(isolated.SEERR_TEST_FAIL_ON_NETWORK, 'true');
+  assert.equal(isolated.HOME, '/owned');
+  assert.equal(isolated.USERPROFILE, '/owned');
+  assert.equal(isolated.TMPDIR, '/owned');
+  assert.equal(isolated.TMP, '/owned');
+  assert.equal(isolated.TEMP, '/owned');
+  assert.equal(isolated.XDG_CONFIG_HOME, join('/owned', 'xdg-config'));
+  assert.equal(isolated.XDG_CACHE_HOME, join('/owned', 'xdg-cache'));
+  assert.equal(isolated.APPDATA, join('/owned', 'AppData', 'Roaming'));
+  assert.equal(isolated.LOCALAPPDATA, join('/owned', 'AppData', 'Local'));
   assert.equal(isolated.DB_HOST, undefined);
+  assert.equal(isolated.GITHUB_TOKEN, undefined);
+  assert.equal(isolated.GH_TOKEN, undefined);
+  assert.equal(isolated.AWS_SECRET_ACCESS_KEY, undefined);
+  assert.equal(isolated.NPM_TOKEN, undefined);
+  assert.equal(isolated.SSH_AUTH_SOCK, undefined);
+  assert.equal(isolated.GIT_CONFIG_GLOBAL, undefined);
+  assert.equal(isolated.HTTPS_PROXY, undefined);
+  assert.equal(isolated.LC_ALL, 'en_CA.UTF-8');
   assert.equal(isolated.NODE_OPTIONS, undefined);
   assert.equal(isolated.CI, undefined);
+  assert.equal(isolated.CUSTOM_SECRET, undefined);
   assert.equal(isolated.PATH, '/tools');
   assert.equal(inherited.CONFIG_DIRECTORY, '/live');
+  assert.equal(inherited.GITHUB_TOKEN, 'github-secret');
+  assert.equal(inherited.HOME, '/home/maintainer');
 });
 
 test('execution enforces positive active summaries and removes only its owned temporary directory on success or failure', async () => {
@@ -912,8 +944,15 @@ test('native subprocess failures propagate their actual exit status and zero-sum
 test('live validation progress summarizes completed cases and the active step', () => {
   const totals = new Map([['vitest', { total: 10, active: 8 }]]);
   assert.equal(
-    formatValidationProgress('sample', 3, 1, totals, { name: 'Long test step' }, 65_000),
-    '[validation] sample: 1/3 steps complete; completed test cases 8/10; running Long test step (1m05s)',
+    formatValidationProgress(
+      'sample',
+      3,
+      1,
+      totals,
+      { name: 'Long test step' },
+      65_000
+    ),
+    '[validation] sample: 1/3 steps complete; completed test cases 8/10; running Long test step (1m05s)'
   );
 });
 
@@ -921,7 +960,9 @@ test('executePlan emits progress before and after each step', async () => {
   const progress = [];
   const plan = {
     root,
-    steps: [{ name: 'fixture', command: process.execPath, args: [], kind: 'node-js' }],
+    steps: [
+      { name: 'fixture', command: process.execPath, args: [], kind: 'node-js' },
+    ],
   };
   await executePlan(plan, {
     executor: async () => '# tests 2\n# pass 2\n# fail 0\n',
@@ -930,10 +971,13 @@ test('executePlan emits progress before and after each step', async () => {
     onProgress: (summary) => progress.push(summary),
   });
   assert.equal(progress.length, 2);
-  assert.match(progress[0], /^\[validation\] SeerrNG: 0\/1 steps complete; completed test cases 0\/0; running fixture \(\d+m\d{2}s\)$/u);
+  assert.match(
+    progress[0],
+    /^\[validation\] SeerrNG: 0\/1 steps complete; completed test cases 0\/0; running fixture \(\d+m\d{2}s\)$/u
+  );
   assert.equal(
     progress[1],
-    '[validation] SeerrNG: 1/1 steps complete; completed test cases 2/2',
+    '[validation] SeerrNG: 1/1 steps complete; completed test cases 2/2'
   );
 });
 

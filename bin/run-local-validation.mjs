@@ -272,6 +272,7 @@ function writeHostedAdmissionOutputs(decision) {
 }
 
 const flagOptions = new Set([
+  '--package-entry',
   '--help',
   '-h',
   '--plan',
@@ -335,6 +336,21 @@ const repeatedValueOptions = new Set([
   '--evidence',
   '--dependency',
 ]);
+
+const disabledDistributedNetworkModes = new Set([
+  '--distributed-configure-node',
+  '--distributed-controller-service',
+  '--distributed-contained-run',
+  '--distributed-run',
+  '--distributed-node',
+  '--distributed-dependency-report',
+]);
+const disabledDistributedServiceModes = new Set([
+  '--distributed-controller-service',
+  '--distributed-node',
+]);
+const disabledDistributedModeMessage =
+  'Mode 3 network operations are disabled until enrollment uses authenticated, encrypted per-node credentials.';
 
 const optionContracts = {
   'local-full': {
@@ -658,6 +674,7 @@ function parseOptions(args) {
 }
 
 function validateOptions(options) {
+  const packageEntry = options.flags.delete('--package-entry');
   const helpAliases = ['--help', '-h'].filter((option) =>
     options.flags.has(option)
   );
@@ -699,6 +716,10 @@ function validateOptions(options) {
     '--distributed-dependency-plan',
     '--distributed-dependency-report',
   ].filter((option) => options.flags.has(option));
+  if (packageEntry && distributedModes.length)
+    throw new Error(
+      'Mode 3 is dormant and unavailable through pnpm validate:development'
+    );
   if (distributedModes.length > 1)
     throw new Error('Choose exactly one distributed mode');
   if (hostedModes.length && distributedModes.length)
@@ -1035,16 +1056,16 @@ if (!executedDirectly) {
        node bin/run-local-validation.mjs --github-receipt --unit ID [--case ID] --plan-file FILE --expected-plan-sha256 SHA --receipt-dir DIR --job-status STATUS [--evidence FILE ...] [--json]
        node bin/run-local-validation.mjs --github-reconcile --plan-file FILE --receipt-dir DIR [--json]
        node bin/run-local-validation.mjs --distributed-configure-controller --config-file ABSOLUTE_FILE --profile GITHUB_USER --controller-name NAME --listen-address IP --listen-port PORT --thread-rule RULE --minimum-thread-count COUNT --active-config-marker ABSOLUTE_FILE --state-root ABSOLUTE_DIR --log-root ABSOLUTE_DIR [--allow-existing-config-update]
-       node bin/run-local-validation.mjs --distributed-configure-node --config-file ABSOLUTE_FILE --node-id ## --node-name NAME --listen-address IP --listen-port PORT --controller-address IP --controller-port PORT --active-config-marker ABSOLUTE_FILE --state-root ABSOLUTE_DIR --log-root ABSOLUTE_DIR [--allow-existing-config-update] [--overwrite-node]
-       node bin/run-local-validation.mjs --distributed-controller-service --active-config-marker ABSOLUTE_FILE --state-root ABSOLUTE_DIR --log-root ABSOLUTE_DIR
-       node bin/run-local-validation.mjs --distributed-run --active-config-marker ABSOLUTE_FILE --state-root ABSOLUTE_DIR --log-root ABSOLUTE_DIR --application ENTRY_ID [--json]
-       node bin/run-local-validation.mjs --distributed-node --active-config-marker ABSOLUTE_FILE --state-root ABSOLUTE_DIR --log-root ABSOLUTE_DIR --app ID=ABSOLUTE_ROOT
+       node bin/run-local-validation.mjs --distributed-configure-node --config-file ABSOLUTE_FILE --node-id ## --node-name NAME --listen-address IP --listen-port PORT --controller-address IP --controller-port PORT --active-config-marker ABSOLUTE_FILE --state-root ABSOLUTE_DIR --log-root ABSOLUTE_DIR [--allow-existing-config-update] [--overwrite-node] (disabled)
+       node bin/run-local-validation.mjs --distributed-controller-service --active-config-marker ABSOLUTE_FILE --state-root ABSOLUTE_DIR --log-root ABSOLUTE_DIR (disabled)
+       node bin/run-local-validation.mjs --distributed-run --active-config-marker ABSOLUTE_FILE --state-root ABSOLUTE_DIR --log-root ABSOLUTE_DIR --application ENTRY_ID [--json] (disabled)
+       node bin/run-local-validation.mjs --distributed-node --active-config-marker ABSOLUTE_FILE --state-root ABSOLUTE_DIR --log-root ABSOLUTE_DIR --app ID=ABSOLUTE_ROOT (disabled)
        node bin/run-local-validation.mjs --distributed-node-thread-policy --active-config-marker ABSOLUTE_FILE [--node-id ## --thread-rule RULE --minimum-thread-count COUNT] [--json]
        node bin/run-local-validation.mjs --distributed-applications --active-config-marker ABSOLUTE_FILE --json
        node bin/run-local-validation.mjs --distributed-app-add --active-config-marker ABSOLUTE_FILE --application-id 'PRODUCT VERSION' --application-name NAME --dependency-profile ABSOLUTE_FILE [--json]
        node bin/run-local-validation.mjs --distributed-app-delete --active-config-marker ABSOLUTE_FILE --application ENTRY_ID [--json]
        node bin/run-local-validation.mjs --distributed-dependency-plan --active-config-marker ABSOLUTE_FILE (--application ENTRY_ID ... | --all-applications) [--dependency-name NAME] --json
-       node bin/run-local-validation.mjs --distributed-dependency-report --active-config-marker ABSOLUTE_FILE --application ENTRY_ID ... [--dependency NAME=ACTUAL_VERSION ...] --json
+       node bin/run-local-validation.mjs --distributed-dependency-report --active-config-marker ABSOLUTE_FILE --application ENTRY_ID ... [--dependency NAME=ACTUAL_VERSION ...] --json (disabled)
 
 Runs the existing engine's staged native PR-parity gate: repository checks,
 CodeQL, production builds, browser tests and applicable supplemental checks.
@@ -1065,27 +1086,25 @@ CodeQL, production builds, browser tests and applicable supplemental checks.
 --distributed-configure-controller
               Create or explicitly update the Linux controller configuration.
 --distributed-configure-node
-              Register one Linux node with the selected private-LAN controller.
-              A controller conflict exits with status 20 without activating the node.
+              Disabled while Mode 3 enrollment lacks authenticated credentials.
 --distributed-controller-service
-              Serve private-LAN node enrollment from the exact active configuration.
+              Disabled; exits successfully without opening a listener.
 --distributed-run
-              Run one fresh engine-owned contained four-stage Mode 3 lifecycle.
-              The application entry is singular; thread and worker overrides are forbidden.
+              Disabled while the Mode 3 protocol is being redesigned.
 --distributed-node
-              Serve explicitly bound applications from the exact active node configuration.
+              Disabled; exits successfully without opening a listener.
 --distributed-node-thread-policy
               List enrolled nodes or assign one node's controller-owned thread policy.
 --distributed-applications
-              List controller-supported application entries; nodes fetch the list in memory.
+              List controller-supported applications from the local configuration.
 --distributed-app-add
               Add one controller app entry from its repository-owned dependency profile.
 --distributed-app-delete
               Delete one numbered controller app entry.
 --distributed-dependency-plan
-              Union and deduplicate selected app requirements without installing anything.
+              Plan selected application dependencies from the local configuration.
 --distributed-dependency-report
-              Persist actual node availability and compare it with selected requirements.
+              Disabled until enrollment uses authenticated per-node credentials.
 --app         Register an explicit distributed application as ID=ABSOLUTE_ROOT;
               repeatable for the node service.
 --json        Machine-readable local plan, distributed result, hosted plan, or hosted result.
@@ -1093,9 +1112,22 @@ CodeQL, production builds, browser tests and applicable supplemental checks.
 
 Does not install dependencies, synchronize source, apply live migrations, or edit GitHub workflows.
 Native, Vitest-only, tooling and CI commands retain their existing behavior.
+Mode 3 network operations are disabled until enrollment uses authenticated,
+encrypted per-node credentials. Focused regression tests may still exercise
+the implementation with disposable roots and loopback services.
 Builds and fixture migrations use an owned disposable source/configuration copy.
 Missing native tools, unproven isolation and pending GitHub checks are incomplete;
 failures, partial output closure and zero active tests fail closed.\n`);
+} else if (
+  disabledDistributedNetworkModes.has(selectedMode.distributedOption ?? '')
+) {
+  const message = `${disabledDistributedModeMessage}\n`;
+  if (disabledDistributedServiceModes.has(selectedMode.distributedOption)) {
+    process.stdout.write(`${message}No listener was started.\n`);
+  } else {
+    process.stderr.write(message);
+    process.exitCode = 1;
+  }
 } else {
   const controller = new AbortController();
   const interrupt = () => controller.abort();
@@ -1259,7 +1291,8 @@ failures, partial output closure and zero active tests fail closed.\n`);
       }
     } else if (distributedMode === '--distributed-applications') {
       const active = resolveActiveLinuxConfig(
-        requiredValue('--active-config-marker')
+        requiredValue('--active-config-marker'),
+        { expectedRole: 'controller' }
       );
       const listing = await supportedApplicationsForActiveConfig(
         active,
@@ -1308,7 +1341,8 @@ failures, partial output closure and zero active tests fail closed.\n`);
         );
     } else if (distributedMode === '--distributed-dependency-plan') {
       const active = resolveActiveLinuxConfig(
-        requiredValue('--active-config-marker')
+        requiredValue('--active-config-marker'),
+        { expectedRole: 'controller' }
       );
       const listing = await supportedApplicationsForActiveConfig(
         active,

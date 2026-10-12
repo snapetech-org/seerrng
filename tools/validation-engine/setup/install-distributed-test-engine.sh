@@ -30,6 +30,8 @@ ASSUME_YES=0
 PLAN_ONLY=0
 TEST_ROOT_ACTIVE=0
 NODE_AUTOMATIC_DEFERRED_MESSAGE='automatic node startup is deferred; verified application provisioning is required before an explicit --app ID=ABSOLUTE_ROOT binding can be started'
+CONTROLLER_AUTOMATIC_DISABLED_MESSAGE='automatic controller startup is disabled while Mode 3 enrollment lacks authenticated, encrypted per-node credentials'
+MODE3_NETWORK_DISABLED_MESSAGE='Mode 3 network operations are disabled until enrollment uses authenticated, encrypted per-node credentials'
 
 INSTALLED_RUNNER=""
 INSTALLED_SETUP=""
@@ -105,7 +107,7 @@ Actions:
 Options:
   --engine-source-root PATH  Source tree containing bin/ and
                              tools/validation-engine/runtime/
-  --startup MODE             manual, or automatic for a controller
+  --startup MODE             manual only; automatic controller startup is disabled
   --configure-now VALUE      yes or no after an install (default: ask, yes)
   --service-user USER        Linux account used by an automatic service
   --yes                      Approve the displayed install/configure plan
@@ -132,11 +134,10 @@ Default production paths:
 
 The controller configuration is named
 test-suite-multi-computer-<GitHub username>.cfg. A node configuration is named
-test-suite-multi-computer-node-##.cfg. Configure Node asks for the controller IP
-and port; no temporary or bootstrap key is used. The accepted controller returns
-the cluster key as part of the runner-owned registration result. If the selected
-Node number is occupied, Configure Node displays a preserve-or-overwrite choice;
-no installer launch option is required and --yes never selects overwrite.
+test-suite-multi-computer-node-##.cfg. Node registration and controller/node
+listeners are disabled because the current prototype uses unauthenticated HTTP
+and returns a shared cluster key. The installed CLI refuses to open these
+network paths.
 
 After a successful configure operation, the runner atomically writes the exact
 active configuration path to <state directory>/active-config. Controller and
@@ -152,10 +153,9 @@ Each supported application owns one repository profile named
 application name and absolute profile path; nodes fetch selected requirements
 from the controller rather than keeping copied application profiles.
 
-Automatic controller startup is available through systemd. Automatic node
-startup is deferred until verified application provisioning can supply explicit
---app ID=ABSOLUTE_ROOT bindings. A manually started node always requires those
-bindings on its foreground command.
+Automatic controller startup and node startup are disabled while Mode 3 remains
+dormant. Older controller services must be stopped before replacing their
+executable.
 EOF
 }
 
@@ -642,15 +642,14 @@ service_mode_for_role() {
 }
 
 print_manual_node_start_command() {
-  print_section 'MANUAL NODE START'
-  printf '  Verified application provisioning is required before this node can serve tests.\n'
-  printf '  Replace ID=ABSOLUTE_ROOT with each explicit application binding, then run:\n\n'
-  printf '  %s --distributed-node --active-config-marker %s --state-root %s --log-root %s --app ID=ABSOLUTE_ROOT\n' \
-    "$COMMAND_PATH" "$ACTIVE_CONFIG_MARKER" "$STATE_DIR" "$LOG_DIR"
+  print_section 'MODE 3 DISABLED'
+  printf '  Node listeners remain disabled until authenticated enrollment is implemented.\n'
 }
 
 write_service_unit() {
   local role="$1" unit_path service_mode user_line content
+  [[ "$role" != 'controller' ]] \
+    || fail "$CONTROLLER_AUTOMATIC_DISABLED_MESSAGE"
   [[ "$role" != 'node' ]] \
     || fail "$NODE_AUTOMATIC_DEFERRED_MESSAGE"
   unit_path="$SYSTEMD_DIR/$(service_name_for_role "$role")"
@@ -690,24 +689,19 @@ install_runner_role() {
   if [[ -z "$startup" ]]; then
     print_section 'STARTUP'
     if [[ "$role" == 'node' ]]; then
-      printf '  Automatic node startup is deferred until verified application provisioning\n'
-      printf '  can supply an explicit --app ID=ABSOLUTE_ROOT binding.\n'
-      printf '  The current installer sets up the node for manual foreground startup.\n'
+      printf '  Node startup is disabled while Mode 3 enrollment remains dormant.\n'
       startup='manual'
     else
-      printf '  %s1%s  Start automatically at boot with systemd\n' "$ORANGE" "$RESET"
-      printf '  %s2%s  Start manually\n\n' "$ORANGE" "$RESET"
-      read_menu_choice '  Selection [1-2, default 2]: '
-      case "$REPLY" in
-        1) startup='automatic' ;;
-        ''|2) startup='manual' ;;
-        *) fail 'startup selection must be 1 or 2' ;;
-      esac
+      printf '  Automatic controller startup is disabled while Mode 3 remains dormant.\n'
+      startup='manual'
     fi
   fi
 
   if [[ "$role" == 'node' && "$startup" == 'automatic' ]]; then
     fail "$NODE_AUTOMATIC_DEFERRED_MESSAGE; select manual startup"
+  fi
+  if [[ "$role" == 'controller' && "$startup" == 'automatic' ]]; then
+    fail "$CONTROLLER_AUTOMATIC_DISABLED_MESSAGE; select manual startup"
   fi
 
   if [[ "$startup" == 'automatic' ]]; then
@@ -1338,21 +1332,6 @@ install_test_dependencies() {
   install_planned_dependencies
 }
 
-maybe_enable_service() {
-  local role="$1" startup unit
-  [[ -f "$STARTUP_FILE" ]] || return 0
-  startup="$(<"$STARTUP_FILE")"
-  [[ "$startup" == 'automatic' ]] || return 0
-  [[ "$role" != 'node' ]] \
-    || fail "$NODE_AUTOMATIC_DEFERRED_MESSAGE"
-  unit="$(service_name_for_role "$role")"
-  if (( TEST_ROOT_ACTIVE == 1 )); then
-    printf '  Test root: service activation skipped for %s.\n' "$unit"
-    return 0
-  fi
-  "$SYSTEMCTL_BIN" enable --now "$unit"
-}
-
 run_or_plan() {
   local -a command=("$@")
   if (( PLAN_ONLY == 1 )); then
@@ -1446,8 +1425,7 @@ configure_controller() {
     --log-root "$LOG_DIR" \
     "${existing_option[@]}"
 
-  (( PLAN_ONLY == 1 )) || maybe_enable_service 'controller'
-  printf '\n%s[CONFIGURED]%s Controller configuration completed.\n' "$GREEN" "$RESET"
+  printf '\n%s[CONFIGURED]%s Controller configuration saved; Mode 3 networking remains disabled.\n' "$GREEN" "$RESET"
 }
 
 configure_node() {
@@ -1455,6 +1433,7 @@ configure_node() {
   local config_file first_status retry_status startup
   local existing_option=()
   local -a command=()
+  fail "$MODE3_NETWORK_DISABLED_MESSAGE"
   require_installed_role 'node'
   if [[ -f "$STARTUP_FILE" ]]; then
     startup="$(<"$STARTUP_FILE")"
@@ -1498,8 +1477,6 @@ configure_node() {
   info 'Node:' "$node_id - $node_name"
   info 'Node endpoint:' "$listen_address:$listen_port"
   info 'Controller:' "$controller_address:$controller_port"
-  printf '  No key is required to request registration. The controller validates the\n'
-  printf '  node number and returns the shared cluster key only after acceptance.\n'
 
   if (( PLAN_ONLY == 0 )); then
     confirm_plan 'Register and configure this node?' || {
@@ -1551,7 +1528,6 @@ configure_node() {
     fi
   fi
 
-  (( PLAN_ONLY == 1 )) || maybe_enable_service 'node'
   printf '\n%s[CONFIGURED]%s Node registration and configuration completed.\n' "$GREEN" "$RESET"
   print_manual_node_start_command
 }

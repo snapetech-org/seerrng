@@ -16,10 +16,12 @@ that plan.
 - **Mode 2 — GitHub-hosted orchestration:** active. The internal `--github-*`
   bindings plan, distribute, and reconcile the repository's native GitHub jobs.
 - **Mode 3 — distributed developer fleet:** code and regression coverage are
-  present, but production operation is dormant. Do not install, start, or connect
-  Mode 3 to package scripts, hooks, workflows, or application runtime without
-  explicit maintainer authorization. Its focused tests may use disposable roots
-  and loopback services without activating a production cluster.
+  present, but production operation is dormant. The package entry rejects all
+  distributed-mode flags, and network-facing or test-execution modes are also
+  disabled in the direct Node entry. Focused tests may use disposable roots and
+  loopback services without activating a production cluster. Do not install,
+  start, or connect Mode 3 to hooks, workflows, or application runtime without
+  explicit maintainer authorization.
 
 Mode 3 is not currently an accepted finalization path. Its implementation and
 documentation must be reconciled with the deferred design decisions identified
@@ -45,6 +47,12 @@ pnpm validate:development
 - `--tests-only` executes the local repository-test plan through its native
   runners. It does not claim CodeQL, production-build, Cypress, Playwright,
   hosted-job, or pull-request metadata coverage.
+- Test subprocesses receive an allowlisted environment and private temporary
+  home/config/cache paths. Common HTTP clients block non-loopback traffic and
+  fetch redirects fail closed, but this is not an OS sandbox: test code running
+  as the invoking OS user can still access that user's files and open raw
+  sockets. Run untrusted source only in a disposable guest with credentials and
+  provider data absent.
 - With no mode flag, the engine admits the complete local staged gate. It runs
   only when the required source, dependency, toolchain, fixture, network, and
   browser-isolation boundaries can be proved. Otherwise it stops incomplete and
@@ -86,26 +94,21 @@ Mode 3 active or authorize running the tests against live configuration.
 The `--github-*` modes shown by `--help` are internal GitHub Actions bindings,
 not manual replacements for the local commands.
 
-### Dormant Mode 3 reference command
+### Mode 3 security boundary
 
-The current dormant implementation exposes this explicit command for focused
-Mode 3 development only; it is not a normal developer command or an accepted
-pre-PR gate:
+The CLI disables Mode 3 enrollment, listeners, dependency reporting, and
+distributed test execution before reading active configuration paths or opening
+sockets. Listener invocations exit successfully without binding, so an older
+installer-owned service does not enter a restart loop. Other disabled
+operations fail with an explicit message. Controller-local configuration
+listings and dependency plans remain available, but `pnpm validate:development`
+rejects all distributed modes. The enrollment transport itself defaults to
+disabled; its explicit loopback override exists only for focused tests.
 
-```text
-pnpm validate:development --distributed-run --active-config-marker ABSOLUTE_FILE --state-root ABSOLUTE_DIR --log-root ABSOLUTE_DIR --application ENTRY_ID [--json]
-```
-
-The current command attempts to own candidate freezing, host preparation,
-Docker containment, staged execution, reconciliation, timing persistence,
-cleanup proof, and the success-last marker. It requires an exact clean branch
-published through authenticated Git, existing marker/state/log paths, the
-machine-owned host profile described below, and at least one configured remote
-node already serving the exact candidate. Dependency injection and callback
-seams in focused tests are not alternate launchers or authorities. No external
-host-side launcher or wrapper may rediscover tests, choose substitute commands,
-alter planned dependencies, reinterpret results, or decide that an incomplete
-run passed.
+Do not start a previously installed Mode 3 service from an older checkout. Stop
+and disable such a service before replacing its executable. Mode 3 can return
+only after it has authenticated and encrypted enrollment with per-node
+credentials and its deferred design decisions below have been reconciled.
 
 ## Distributed developer-fleet mode (dormant)
 
@@ -143,12 +146,12 @@ local pre-PR gate.
 ### Linux setup and configuration
 
 `tools/validation-engine/setup/install-distributed-test-engine.sh` is the
-menu-driven Linux setup program. It installs or configures a controller or
-node, manages supported applications, and plans application dependencies. An
-installation offers to continue directly into configuration. Controller
-automatic startup uses a managed systemd service; node automatic startup stays
-disabled until explicit application-root provisioning is complete, so the
-current node service is started manually with its bound application root.
+menu-driven Linux setup program retained for focused tests and local
+configuration work. It cannot enable Mode 3 networking: automatic controller
+startup is rejected, and CLI listener commands return without binding. An
+older controller service must be stopped and disabled before replacing its
+executable. Node startup remains disabled pending authenticated enrollment and
+explicit application-root provisioning.
 
 Human-edited Mode 3 fleet configuration uses readable `.cfg` text:
 
@@ -161,12 +164,12 @@ Human-edited Mode 3 fleet configuration uses readable `.cfg` text:
 - Each node has one `test-suite-multi-computer-node-##.cfg`. It records the
   controller address, that node's descriptive name, address, detected CPU and
   available threads, selected applications, and verified dependency versions.
-- The current dormant implementation stores a shared cluster key as the final
-  setting in each enrolled configuration. First contact intentionally trusts the
-  private LAN: the operator supplies the controller address and selected node
-  number, and the controller returns the same cluster key only after accepting
-  the enrollment. Reusing an occupied node number requires an explicit overwrite
-  choice. The key is provisional and must be removed before Mode 3 activation.
+- The dormant prototype stores one shared cluster key in enrolled
+  configurations and formerly returned it over unauthenticated HTTP after a
+  private-LAN source check. That source check did not authenticate a node. The
+  transport now defaults disabled and is restricted to explicit loopback-only
+  regression tests until a reviewed design uses authenticated, encrypted
+  enrollment and per-node credentials.
 - One node means one logical computer at one IP address. A physical computer
   running multiple virtual machines exposes each VM as a separate node with
   its own address. The controller rejects assigning one address to two node

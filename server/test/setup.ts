@@ -1,74 +1,12 @@
 import { getSettings } from '@server/lib/settings';
 import logger from '@server/logger';
-import http from 'node:http';
-import https from 'node:https';
 import { after, before } from 'node:test';
+import { installTestNetworkGuard } from './network-guard.mjs';
 
-// supertest serves the app over a real loopback socket, so only external hosts
-// are refused by the test network guard.
-const LOOPBACK = new Set(['localhost', '127.0.0.1', '::1']);
-const blocked = new Set<string>();
-
-function stripPort(host: string): string {
-  const bracketed = host.match(/^\[(.+)\]/);
-  if (bracketed) {
-    return bracketed[1];
-  }
-
-  const parts = host.split(':');
-  return parts.length === 2 ? parts[0] : host;
-}
-
-function hostnameOf(args: unknown[]): string {
-  const [first, second] = args;
-  let fromUrl: string | undefined;
-
-  if (typeof first === 'string' || first instanceof URL) {
-    try {
-      fromUrl = new URL(String(first)).hostname;
-    } catch {
-      fromUrl = undefined;
-    }
-  }
-
-  const options = (fromUrl !== undefined ? second : first) as
-    { hostname?: string; host?: string } | undefined;
-  const fromOptions =
-    typeof options === 'object' && options !== null
-      ? (options.hostname ??
-        (options.host ? stripPort(options.host) : undefined))
-      : undefined;
-
-  return stripPort(fromOptions ?? fromUrl ?? 'localhost');
-}
-
-function blockOutboundRequests(
-  mod: typeof http | typeof https,
-  scheme: string
-) {
-  for (const name of ['request', 'get'] as const) {
-    const original = mod[name] as (...args: unknown[]) => unknown;
-
-    mod[name] = ((...args: unknown[]) => {
-      const hostname = hostnameOf(args);
-
-      if (!LOOPBACK.has(hostname)) {
-        const target = `${scheme}//${hostname}`;
-        blocked.add(target);
-        throw new Error(
-          `Blocked outbound request to ${target}. Stub the API client this test uses, or set ALLOW_NETWORK=true.`
-        );
-      }
-
-      return original(...args);
-    }) as typeof mod.request;
-  }
-}
-
-if (process.env.ALLOW_NETWORK != 'true') {
-  blockOutboundRequests(http, 'http:');
-  blockOutboundRequests(https, 'https:');
-}
+// This blocks common HTTP client paths while preserving loopback requests used
+// by tests. It is not an OS sandbox; raw sockets, subprocesses, and filesystem
+// access remain available to test code.
+const blocked = installTestNetworkGuard();
 
 Reflect.set(
   globalThis,

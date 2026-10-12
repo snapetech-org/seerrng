@@ -23,6 +23,8 @@ export function parseToolingWorkers(args) {
 const portableTests = [
   'bin/engine-browser-readiness.test.mjs',
   'bin/engine-cpu-capacity.test.mjs',
+  'bin/engine-test-environment.test.mjs',
+  'bin/engine-test-network-guard.test.mjs',
   'bin/engine-vitest-binding.test.mjs',
   'bin/engine-codeql-stage.test.mjs',
   'bin/engine-build-browser-stage.test.mjs',

@@ -5,13 +5,19 @@ import vm from 'node:vm';
 import ts from 'typescript';
 
 const source = readFileSync(new URL('./setup.ts', import.meta.url), 'utf8');
+const guardSource = readFileSync(
+  new URL('./network-guard.mjs', import.meta.url),
+  'utf8'
+);
 
-// Execute the actual setup module with in-memory transports and hooks. No
-// application initialization, real sockets or provider access is needed.
+// Execute the actual setup and network guard modules with in-memory transports
+// and hooks. No application initialization, real sockets or provider access is
+// needed.
 function guardFixture({
   env = {},
   file = '/app/unrelated.test.ts',
   code = source,
+  guardCode = guardSource,
 } = {}) {
   const after = [];
   const forwarded = [];
@@ -29,11 +35,29 @@ function guardFixture({
       ),
     ])
   );
+  const guardExports = {};
+  const guardCompiled = ts.transpileModule(guardCode, {
+    compilerOptions: {
+      module: ts.ModuleKind.CommonJS,
+      target: ts.ScriptTarget.ES2022,
+      esModuleInterop: true,
+    },
+  }).outputText;
+  vm.runInNewContext(guardCompiled, {
+    exports: guardExports,
+    require: (name) => {
+      if (name === 'node:http') return transports.http;
+      if (name === 'node:https') return transports.https;
+      throw new Error(`Unexpected guard import: ${name}`);
+    },
+    URL,
+    Request,
+    fetch: async () => new Response(),
+  });
   const dependencies = {
     '@server/lib/settings': { getSettings: () => ({}) },
     '@server/logger': { silent: false },
-    'node:http': transports.http,
-    'node:https': transports.https,
+    './network-guard.mjs': guardExports,
     'node:test': {
       before: () => {},
       after: (callback) => after.push(callback),
@@ -130,12 +154,12 @@ describe('strict test network guard', () => {
   });
 
   it('detects losing the swallowed-attempt recording contract', () => {
-    const mutated = source.replace(
+    const mutated = guardSource.replace(
       'blocked.add(target);',
       '/* regression: attempt not recorded */'
     );
-    assert.notEqual(mutated, source);
-    const fixture = guardFixture({ code: mutated });
+    assert.notEqual(mutated, guardSource);
+    const fixture = guardFixture({ guardCode: mutated });
     assert.throws(
       () => fixture.transports.http.get('http://plex.local/fixture'),
       /Blocked outbound request/

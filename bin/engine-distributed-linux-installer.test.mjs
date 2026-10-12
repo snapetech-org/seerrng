@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict';
-import { spawn, spawnSync } from 'node:child_process';
+import { spawnSync } from 'node:child_process';
 import {
   chmod,
   copyFile,
@@ -174,18 +174,6 @@ async function createFakeEngineSource(root) {
   return sourceRoot;
 }
 
-function nodeConfigurationInput() {
-  return [
-    '01',
-    "John's Laptop - VM1",
-    '192.168.10.51',
-    '62021',
-    '192.168.10.50',
-    '62021',
-    '',
-  ].join('\n');
-}
-
 async function installAt(root, sourceRoot, role, startup = 'manual') {
   return runBashScript(installer, [
     '--install-root',
@@ -202,16 +190,6 @@ async function installAt(root, sourceRoot, role, startup = 'manual') {
   ]);
 }
 
-function manualNodeCommand(root) {
-  const command = path.join(root, 'usr/local/bin/seerrng-test-engine');
-  const stateRoot = path.join(root, 'var/lib/seerrng-test-engine');
-  const logRoot = path.join(root, 'var/log/seerrng-test-engine');
-  return `${command} --distributed-node --active-config-marker ${path.join(
-    stateRoot,
-    'active-config'
-  )} --state-root ${stateRoot} --log-root ${logRoot} --app ID=ABSOLUTE_ROOT`;
-}
-
 async function reserveLoopbackPort() {
   const server = net.createServer();
   await new Promise((resolve, reject) => {
@@ -226,61 +204,6 @@ async function reserveLoopbackPort() {
     server.close((error) => (error ? reject(error) : resolve()))
   );
   return port;
-}
-
-async function startControllerAndStop(executable, arguments_) {
-  const child = spawn(executable, arguments_, {
-    cwd: repositoryRoot,
-    env: process.env,
-    stdio: ['ignore', 'pipe', 'pipe'],
-    windowsHide: true,
-  });
-  let stdout = '';
-  let stderr = '';
-  let listening = false;
-
-  return await new Promise((resolve, reject) => {
-    const timeout = setTimeout(() => {
-      child.kill('SIGTERM');
-      reject(
-        new Error(
-          `controller service did not listen before timeout\n${stdout}\n${stderr}`
-        )
-      );
-    }, 10_000);
-
-    child.stdout.setEncoding('utf8');
-    child.stderr.setEncoding('utf8');
-    child.stdout.on('data', (chunk) => {
-      stdout += chunk;
-      if (
-        !listening &&
-        stdout.includes('controller enrollment service is listening on')
-      ) {
-        listening = true;
-        child.kill('SIGTERM');
-      }
-    });
-    child.stderr.on('data', (chunk) => {
-      stderr += chunk;
-    });
-    child.once('error', (error) => {
-      clearTimeout(timeout);
-      reject(error);
-    });
-    child.once('close', (code, signal) => {
-      clearTimeout(timeout);
-      if (!listening) {
-        reject(
-          new Error(
-            `controller service exited before listening (${code ?? signal})\n${stdout}\n${stderr}`
-          )
-        );
-        return;
-      }
-      resolve({ code, signal, stderr, stdout });
-    });
-  });
 }
 
 test('Linux installer has valid Bash syntax and the approved public contract', async () => {
@@ -395,7 +318,7 @@ test('installer validation matches the Linux config value boundaries', async (t)
 });
 
 test(
-  'real disposable install preserves module paths and loads help, controller config, and controller service',
+  'real disposable install preserves module paths and controller listener stays disabled',
   { skip: process.platform !== 'linux' },
   async (t) => {
     const root = await mkdtemp(path.join(os.tmpdir(), 'seerrng-installer-'));
@@ -405,14 +328,13 @@ test(
       root,
       repositoryRoot,
       'controller',
-      'automatic'
+      'manual'
     );
     assert.equal(
       installResult.status,
       0,
       `${installResult.stdout}\n${installResult.stderr}`
     );
-    assert.match(installResult.stdout, /systemd was not invoked/i);
 
     const appDirectory = path.join(root, 'usr/local/lib/seerrng-test-engine');
     const installedRunner = path.join(
@@ -575,7 +497,7 @@ test(
     assert.match(dependencyPlanResult.stdout, /node:\s+24\.21\.0/);
     assert.match(dependencyPlanResult.stdout, /pnpm:\s+10\.24\.0/);
 
-    const serviceResult = await startControllerAndStop(command, [
+    const serviceResult = runExecutable(command, [
       '--distributed-controller-service',
       '--active-config-marker',
       activeConfigMarker,
@@ -584,29 +506,56 @@ test(
       '--log-root',
       logDirectory,
     ]);
+    assert.equal(serviceResult.status, 0, serviceResult.stderr);
     assert.match(
       serviceResult.stdout,
-      /controller enrollment service is listening on 127\.0\.0\.1:/
+      /Mode 3 network operations are disabled/
     );
-    assert.equal(serviceResult.code, 0, serviceResult.stderr);
-    assert.equal(serviceResult.signal, null);
+    assert.match(serviceResult.stdout, /No listener was started/);
 
     const role = await readFile(
       path.join(stateDirectory, 'installed-role'),
       'utf8'
     );
-    const unit = await readFile(
+    assert.equal(role, 'controller\n');
+    await assert.rejects(
+      readFile(
+        path.join(
+          root,
+          'etc/systemd/system/seerrng-test-engine-controller.service'
+        ),
+        'utf8'
+      ),
+      { code: 'ENOENT' }
+    );
+  }
+);
+
+test(
+  'automatic controller startup is rejected before installation or service writes',
+  { skip: process.platform !== 'linux' },
+  async (t) => {
+    const root = await mkdtemp(path.join(os.tmpdir(), 'seerrng-installer-'));
+    t.after(() => rm(root, { force: true, recursive: true }));
+    const sourceRoot = await createFakeEngineSource(root);
+
+    const result = await installAt(root, sourceRoot, 'controller', 'automatic');
+    assert.notEqual(result.status, 0);
+    assert.match(
+      result.stderr,
+      /automatic controller startup is disabled.*select manual startup/
+    );
+
+    for (const unwrittenPath of [
+      path.join(root, 'usr/local/lib/seerrng-test-engine'),
+      path.join(root, 'usr/local/bin/seerrng-test-engine'),
       path.join(
         root,
         'etc/systemd/system/seerrng-test-engine-controller.service'
       ),
-      'utf8'
-    );
-    assert.equal(role, 'controller\n');
-    assert.match(unit, /--distributed-controller-service/);
-    assert.match(unit, /--active-config-marker/);
-    assert.equal(unit.match(/^ExecStart=/gm)?.length, 1);
-    assert.match(unit, /Restart=on-failure/);
+    ]) {
+      await assert.rejects(readFile(unwrittenPath, 'utf8'), { code: 'ENOENT' });
+    }
   }
 );
 
@@ -636,7 +585,7 @@ test(
 );
 
 test(
-  'manual node install writes no unit and prints the exact explicit application command',
+  'manual node install cannot print an active service command',
   { skip: process.platform !== 'linux' },
   async (t) => {
     const root = await mkdtemp(path.join(os.tmpdir(), 'seerrng-installer-'));
@@ -645,7 +594,11 @@ test(
 
     const result = await installAt(root, sourceRoot, 'node', 'manual');
     assert.equal(result.status, 0, `${result.stdout}\n${result.stderr}`);
-    assert.ok(result.stdout.includes(manualNodeCommand(root)));
+    assert.match(result.stdout, /Node listeners remain disabled/);
+    assert.doesNotMatch(
+      result.stdout,
+      /--distributed-node --active-config-marker/
+    );
     assert.match(result.stdout, /Configuration remains incomplete/);
     await assert.rejects(
       readFile(
@@ -680,118 +633,41 @@ test(
 );
 
 test(
-  'Configure Node sends addressing and identity but no thread assignment or key',
+  'Configure Node fails before requesting credentials or contacting a controller',
   { skip: process.platform !== 'linux' },
   async (t) => {
     const root = await mkdtemp(path.join(os.tmpdir(), 'seerrng-installer-'));
     t.after(() => rm(root, { force: true, recursive: true }));
     const sourceRoot = await createFakeEngineSource(root);
-    const installResult = await installAt(root, sourceRoot, 'node');
+    const installResult = await installAt(root, sourceRoot, 'node', 'manual');
     assert.equal(installResult.status, 0, installResult.stderr);
 
     const configureResult = runBashScript(
       installer,
       ['--install-root', root, '--action', 'configure-node', '--yes'],
-      { input: nodeConfigurationInput() }
+      { input: '' }
     );
-    assert.equal(
-      configureResult.status,
-      0,
-      `${configureResult.stdout}\n${configureResult.stderr}`
+    assert.notEqual(configureResult.status, 0);
+    assert.match(
+      configureResult.stderr,
+      /Mode 3 network operations are disabled/
     );
+    assert.doesNotMatch(configureResult.stdout, /Node number \(01-99\)/);
 
     const installedCommand = path.join(
       root,
       'usr/local/bin/seerrng-test-engine'
     );
-    const arguments_ = await readFile(`${installedCommand}.arguments`, 'utf8');
-    assert.match(arguments_, /--distributed-configure-node/);
-    assert.match(arguments_, /--node-id\n01/);
-    assert.match(arguments_, /--controller-address\n192\.168\.10\.50/);
-    assert.match(arguments_, /test-suite-multi-computer-node-01\.cfg/);
-    assert.doesNotMatch(arguments_, /thread-rule|minimum-thread|secret|key/i);
-    assert.ok(configureResult.stdout.includes(manualNodeCommand(root)));
-  }
-);
-
-test(
-  'occupied Node number is preserved when the installer choice defaults to preserve',
-  { skip: process.platform !== 'linux' },
-  async (t) => {
-    const root = await mkdtemp(path.join(os.tmpdir(), 'seerrng-installer-'));
-    t.after(() => rm(root, { force: true, recursive: true }));
-    const sourceRoot = await createFakeEngineSource(root);
-    const installResult = await installAt(root, sourceRoot, 'node');
-    assert.equal(installResult.status, 0, installResult.stderr);
-    const log = path.join(root, 'occupied-decline.arguments');
-
-    const configureResult = runBashScript(
-      installer,
-      ['--install-root', root, '--action', 'configure-node', '--yes'],
-      {
-        env: {
-          ...process.env,
-          SEERRNG_FAKE_RUNNER_LOG: log,
-          SEERRNG_FAKE_RUNNER_STATUS: '20',
-        },
-        input: nodeConfigurationInput(),
-      }
+    await assert.rejects(readFile(`${installedCommand}.arguments`, 'utf8'), {
+      code: 'ENOENT',
+    });
+    await assert.rejects(
+      readFile(
+        path.join(root, 'var/lib/seerrng-test-engine/active-config'),
+        'utf8'
+      ),
+      { code: 'ENOENT' }
     );
-
-    assert.equal(configureResult.status, 20);
-    assert.match(
-      configureResult.stderr,
-      /Node 01 is already occupied by another address\./
-    );
-    assert.match(configureResult.stdout, /Preserve the existing Node 01/);
-    assert.match(
-      configureResult.stdout,
-      /Overwrite Node 01 with this computer/
-    );
-    assert.match(configureResult.stderr, /registration was preserved/);
-    const arguments_ = await readFile(log, 'utf8');
-    assert.equal(arguments_.match(/^--- invocation ---$/gm)?.length, 1);
-    assert.doesNotMatch(arguments_, /--overwrite-node/);
-  }
-);
-
-test(
-  'installer overwrite selection retries once with both internal engine flags',
-  { skip: process.platform !== 'linux' },
-  async (t) => {
-    const root = await mkdtemp(path.join(os.tmpdir(), 'seerrng-installer-'));
-    t.after(() => rm(root, { force: true, recursive: true }));
-    const sourceRoot = await createFakeEngineSource(root);
-    const installResult = await installAt(root, sourceRoot, 'node');
-    assert.equal(installResult.status, 0, installResult.stderr);
-    const log = path.join(root, 'occupied-overwrite.arguments');
-
-    const configureResult = runBashScript(
-      installer,
-      ['--install-root', root, '--action', 'configure-node', '--yes'],
-      {
-        env: {
-          ...process.env,
-          SEERRNG_FAKE_RUNNER_LOG: log,
-          SEERRNG_FAKE_RUNNER_CONFLICT_ONCE: '1',
-        },
-        input: `${nodeConfigurationInput()}2\n`,
-      }
-    );
-
-    assert.equal(
-      configureResult.status,
-      0,
-      `${configureResult.stdout}\n${configureResult.stderr}`
-    );
-    const invocations = (await readFile(log, 'utf8'))
-      .split('--- invocation ---\n')
-      .filter(Boolean);
-    assert.equal(invocations.length, 2);
-    assert.doesNotMatch(invocations[0], /--overwrite-node/);
-    assert.doesNotMatch(invocations[0], /--allow-existing-config-update/);
-    assert.match(invocations[1], /--allow-existing-config-update/);
-    assert.match(invocations[1], /--overwrite-node/);
   }
 );
 
@@ -805,41 +681,6 @@ test('overwrite is not exposed as an installer launch option', () => {
   assert.notEqual(result.status, 0);
   assert.match(result.stderr, /unknown option: --overwrite-node/);
 });
-
-test(
-  'non-conflict runner failures propagate without an overwrite retry',
-  { skip: process.platform !== 'linux' },
-  async (t) => {
-    const root = await mkdtemp(path.join(os.tmpdir(), 'seerrng-installer-'));
-    t.after(() => rm(root, { force: true, recursive: true }));
-    const sourceRoot = await createFakeEngineSource(root);
-    const installResult = await installAt(root, sourceRoot, 'node');
-    assert.equal(installResult.status, 0, installResult.stderr);
-    const log = path.join(root, 'other-error.arguments');
-
-    const configureResult = runBashScript(
-      installer,
-      ['--install-root', root, '--action', 'configure-node', '--yes'],
-      {
-        env: {
-          ...process.env,
-          SEERRNG_FAKE_RUNNER_LOG: log,
-          SEERRNG_FAKE_RUNNER_STATUS: '37',
-        },
-        input: nodeConfigurationInput(),
-      }
-    );
-
-    assert.equal(configureResult.status, 37);
-    assert.match(configureResult.stderr, /fake runner failure 37/);
-    assert.doesNotMatch(
-      `${configureResult.stdout}\n${configureResult.stderr}`,
-      /NODE NUMBER CONFLICT|--overwrite-node/
-    );
-    const arguments_ = await readFile(log, 'utf8');
-    assert.equal(arguments_.match(/^--- invocation ---$/gm)?.length, 1);
-  }
-);
 
 test(
   'Configure Controller owns profile naming and thread policy inputs',

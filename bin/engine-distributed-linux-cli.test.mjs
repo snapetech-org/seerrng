@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict';
-import { spawn, spawnSync } from 'node:child_process';
+import { spawnSync } from 'node:child_process';
 import {
   existsSync,
   mkdirSync,
@@ -8,7 +8,6 @@ import {
   rmSync,
   writeFileSync,
 } from 'node:fs';
-import { createServer } from 'node:net';
 import { tmpdir } from 'node:os';
 import { join, resolve } from 'node:path';
 import test from 'node:test';
@@ -17,13 +16,7 @@ import { fileURLToPath } from 'node:url';
 import {
   persistControllerConfigFile,
   readControllerConfigFile,
-  readNodeConfigFile,
 } from '../tools/validation-engine/runtime/distributed-linux-config.mjs';
-// eslint-disable-next-line no-relative-import-paths/no-relative-import-paths -- These focused tests run in native Node without application aliases.
-import {
-  activateAcceptedLinuxNodeEnrollment,
-  createPendingLinuxNode,
-} from '../tools/validation-engine/runtime/distributed-linux-management.mjs';
 import { dispatchDistributedLinuxPublicRun } from './run-local-validation.mjs';
 
 const cli = fileURLToPath(
@@ -44,83 +37,20 @@ function fixture() {
   const configRoot = join(root, 'config');
   const stateRoot = join(root, 'state');
   const logRoot = join(root, 'log');
-  const secondNodeRoot = join(root, 'second-node');
-  for (const directory of [configRoot, stateRoot, logRoot, secondNodeRoot])
+  for (const directory of [configRoot, stateRoot, logRoot])
     mkdirSync(directory);
   return {
     root,
     configRoot,
     stateRoot,
     logRoot,
-    secondNodeRoot,
     cleanup() {
       rmSync(root, { recursive: true, force: true });
     },
   };
 }
 
-async function unusedLoopbackPort() {
-  const server = createServer();
-  await new Promise((resolveListen, rejectListen) => {
-    server.once('error', rejectListen);
-    server.listen(0, '127.0.0.1', resolveListen);
-  });
-  const address = server.address();
-  assert.ok(address && typeof address !== 'string');
-  await new Promise((resolveClose, rejectClose) =>
-    server.close((error) => (error ? rejectClose(error) : resolveClose()))
-  );
-  return address.port;
-}
-
-function waitForReady(child, pattern) {
-  return new Promise((resolveReady, rejectReady) => {
-    let stdout = '';
-    let stderr = '';
-    const timer = setTimeout(() => {
-      cleanup();
-      rejectReady(
-        new Error(`Timed out waiting for service readiness: ${stdout}${stderr}`)
-      );
-    }, 10_000);
-    const cleanup = () => {
-      clearTimeout(timer);
-      child.stdout.off('data', onStdout);
-      child.stderr.off('data', onStderr);
-      child.off('exit', onExit);
-    };
-    const onStdout = (chunk) => {
-      stdout += chunk;
-      if (pattern.test(stdout)) {
-        cleanup();
-        resolveReady({ stdout, stderr });
-      }
-    };
-    const onStderr = (chunk) => {
-      stderr += chunk;
-    };
-    const onExit = (code, signal) => {
-      cleanup();
-      rejectReady(
-        new Error(
-          `Service exited before readiness (${code ?? signal}): ${stdout}${stderr}`
-        )
-      );
-    };
-    child.stdout.on('data', onStdout);
-    child.stderr.on('data', onStderr);
-    child.once('exit', onExit);
-  });
-}
-
-function waitForExit(child) {
-  return new Promise((resolveExit, rejectExit) => {
-    child.once('error', rejectExit);
-    child.once('exit', (code, signal) => resolveExit({ code, signal }));
-  });
-}
-
-test('help documents the Linux controller and node lifecycle', () => {
+test('help marks Mode 3 network operations as disabled', () => {
   const result = runCli(['--help']);
   assert.equal(result.status, 0, result.stderr);
   assert.match(result.stdout, /--distributed-configure-controller/);
@@ -134,42 +64,57 @@ test('help documents the Linux controller and node lifecycle', () => {
   assert.match(result.stdout, /--distributed-app-delete/);
   assert.match(result.stdout, /--distributed-dependency-plan/);
   assert.match(result.stdout, /--distributed-dependency-report/);
+  assert.doesNotMatch(
+    result.stdout,
+    /--distributed-applications .*\(disabled\)|--distributed-dependency-plan .*\(disabled\)/
+  );
   assert.match(result.stdout, /--app ID=ABSOLUTE_ROOT/);
-  assert.match(result.stdout, /conflict exits with status 20/);
-  assert.match(result.stdout, /thread and worker overrides are forbidden/);
+  assert.match(result.stdout, /Mode 3 network operations are disabled/);
+  assert.match(
+    result.stdout,
+    /--distributed-controller-service[\s\S]*disabled/
+  );
   assert.doesNotMatch(result.stdout, /--distributed-contained-run/);
 });
 
-test('README public pnpm launch matches the CLI contract without a separator argument', () => {
+test('README documents the disabled Mode 3 entry points and security boundary', () => {
   const readme = readFileSync(
     resolve(repositoryRoot, 'tools/validation-engine/README.md'),
     'utf8'
   );
-  const documentedCommand = readme
-    .split(/\r?\n/)
-    .find((line) =>
-      line.startsWith('pnpm validate:development --distributed-run')
-    );
-  assert.ok(
-    documentedCommand,
-    'README must document the public Mode 3 command'
+  assert.match(
+    readme,
+    /The CLI disables Mode 3 enrollment, listeners, dependency reporting, and\s+distributed test execution/
   );
-  assert.doesNotMatch(readme, /pnpm validate:development -- --distributed-run/);
-
+  assert.match(
+    readme,
+    /before reading active configuration paths or\s+opening\s+sockets/
+  );
+  assert.match(readme, /not an OS sandbox/);
+  assert.doesNotMatch(readme, /pnpm validate:development .*--distributed-/);
+  assert.doesNotMatch(
+    readme,
+    /node bin\/run-local-validation\.mjs --distributed-/
+  );
   const result = runCli(['--help']);
   assert.equal(result.status, 0, result.stderr);
-  assert.ok(
-    result.stdout.includes(
-      documentedCommand.replace(
-        'pnpm validate:development',
-        'node bin/run-local-validation.mjs'
-      )
-    ),
-    'README public Mode 3 command must match CLI help'
-  );
+  assert.match(result.stdout, /Mode 3 network operations are disabled/);
 });
 
-test('internal contained mode stays hidden and fails closed at its same-entrypoint boundary', (t) => {
+test('package validation entry rejects distributed operations before path validation', () => {
+  const result = runCli([
+    '--package-entry',
+    '--distributed-controller-service',
+  ]);
+  assert.equal(result.status, 1);
+  assert.match(
+    result.stderr,
+    /Mode 3 is dormant and unavailable through pnpm validate:development/
+  );
+  assert.doesNotMatch(result.stderr, /requires --active-config-marker/);
+});
+
+test('internal contained mode stays hidden and is disabled at its entrypoint', (t) => {
   const paths = fixture();
   t.after(paths.cleanup);
   const missingRequest = join(
@@ -182,10 +127,7 @@ test('internal contained mode stays hidden and fails closed at its same-entrypoi
     missingRequest,
   ]);
   assert.equal(result.status, 1);
-  assert.match(
-    result.stderr,
-    process.platform === 'linux' ? /fixed internal request/ : /requires Linux/
-  );
+  assert.match(result.stderr, /Mode 3 network operations are disabled/);
 
   const override = runCli([
     '--distributed-contained-run',
@@ -258,10 +200,7 @@ test('distributed production mode requires one application and rejects override 
     '01',
   ]);
   assert.equal(relativeState.status, 1);
-  assert.match(
-    relativeState.stderr,
-    /State root must be an absolute canonical directory/
-  );
+  assert.match(relativeState.stderr, /Mode 3 network operations are disabled/);
 });
 
 test('distributed public dispatch derives and seals the minimal run request', async (t) => {
@@ -555,357 +494,199 @@ test(
   }
 );
 
-test('node service requires explicit application bindings and never infers a repository', (t) => {
+test('Mode 3 network CLI modes fail closed before path access or socket creation', (t) => {
   const paths = fixture();
   t.after(paths.cleanup);
-  const result = runCli([
-    '--distributed-node',
-    '--active-config-marker',
-    join(paths.stateRoot, 'active-node'),
-    '--state-root',
-    paths.stateRoot,
-    '--log-root',
-    paths.logRoot,
-  ]);
-  assert.equal(result.status, 1);
-  assert.match(result.stderr, /Distributed node service mode requires --app/);
-});
-
-test('node service accepts repeatable explicit application bindings', (t) => {
-  const paths = fixture();
-  t.after(paths.cleanup);
-  const result = runCli([
-    '--distributed-node',
-    '--active-config-marker',
-    join(paths.stateRoot, 'missing-active-node'),
-    '--state-root',
-    paths.stateRoot,
-    '--log-root',
-    paths.logRoot,
-    '--app',
-    `seerrng=${paths.root}`,
-    '--app',
-    `another=${paths.secondNodeRoot}`,
-  ]);
-  assert.equal(result.status, 1);
-  assert.doesNotMatch(result.stderr, /exactly one --app/);
-  assert.match(
-    result.stderr,
-    process.platform === 'linux' ? /ENOENT|no such file/i : /requires Linux/
-  );
-});
-
-test(
-  'Linux node service starts from its active marker and closes cleanly on SIGTERM',
-  {
-    skip:
-      process.platform !== 'linux' ||
-      !process.env.SEERRNG_MODE3_CLEAN_APPLICATION_ROOT,
-  },
-  async (t) => {
-    const paths = fixture();
-    t.after(paths.cleanup);
-    const port = await unusedLoopbackPort();
-    const nodePath = join(
-      paths.configRoot,
-      'test-suite-multi-computer-node-01.cfg'
-    );
-    const nodeMarker = join(paths.stateRoot, 'active-node-01');
-    const pending = createPendingLinuxNode({
-      configPath: nodePath,
-      controller: { ipAddress: '127.0.0.2', port: 62021 },
-      node: {
-        nodeNumber: '01',
-        computerName: 'Focused CLI node',
-        ipAddress: '127.0.0.1',
-        port,
-      },
-    });
-    activateAcceptedLinuxNodeEnrollment({
-      configPath: nodePath,
-      activeConfigMarkerPath: nodeMarker,
-      pendingConfig: pending,
-      response: {
-        status: 'accepted',
-        disposition: 'created',
-        nodeNumber: '01',
-        sharedAuthenticationKey: 'a'.repeat(64),
-      },
-    });
-
-    const service = spawn(
-      process.execPath,
-      [
-        cli,
+  const marker = join(paths.stateRoot, 'missing-active-config');
+  const configPath = join(paths.configRoot, 'must-not-be-created.cfg');
+  const modes = [
+    {
+      name: 'node enrollment',
+      args: [
+        '--distributed-configure-node',
+        '--config-file',
+        configPath,
+        '--node-id',
+        '01',
+        '--node-name',
+        'Synthetic node',
+        '--listen-address',
+        '127.0.0.1',
+        '--listen-port',
+        '62021',
+        '--controller-address',
+        '127.0.0.1',
+        '--controller-port',
+        '62022',
+        '--active-config-marker',
+        marker,
+        '--state-root',
+        paths.stateRoot,
+        '--log-root',
+        paths.logRoot,
+      ],
+      status: 1,
+    },
+    {
+      name: 'controller listener',
+      args: [
+        '--distributed-controller-service',
+        '--active-config-marker',
+        marker,
+        '--state-root',
+        paths.stateRoot,
+        '--log-root',
+        paths.logRoot,
+      ],
+      status: 0,
+      noListener: true,
+    },
+    {
+      name: 'contained run',
+      args: [
+        '--distributed-contained-run',
+        '--request-file',
+        join(paths.stateRoot, 'missing-request.json'),
+      ],
+      status: 1,
+    },
+    {
+      name: 'distributed run',
+      args: [
+        '--distributed-run',
+        '--active-config-marker',
+        marker,
+        '--state-root',
+        paths.stateRoot,
+        '--log-root',
+        paths.logRoot,
+        '--application',
+        '01',
+      ],
+      status: 1,
+    },
+    {
+      name: 'node listener',
+      args: [
         '--distributed-node',
         '--active-config-marker',
-        nodeMarker,
+        marker,
         '--state-root',
         paths.stateRoot,
         '--log-root',
         paths.logRoot,
         '--app',
-        `seerrng=${process.env.SEERRNG_MODE3_CLEAN_APPLICATION_ROOT}`,
+        `seerrng=${paths.root}`,
       ],
-      { stdio: ['ignore', 'pipe', 'pipe'] }
-    );
-    t.after(() => {
-      if (service.exitCode === null) service.kill('SIGTERM');
-    });
-    const ready = await waitForReady(service, /node-01 is listening/);
-    assert.doesNotMatch(`${ready.stdout}${ready.stderr}`, /a{64}/);
-
-    const stoppedPromise = waitForExit(service);
-    service.kill('SIGTERM');
-    const stopped = await stoppedPromise;
-    assert.equal(stopped.signal, null);
-    assert.equal(stopped.code, 0);
-  }
-);
-
-test(
-  'Linux CLI configures, serves, enrolls, reports conflict, and explicitly overwrites a node',
-  { skip: process.platform !== 'linux' },
-  async (t) => {
-    const paths = fixture();
-    t.after(paths.cleanup);
-    const port = await unusedLoopbackPort();
-    const controllerPath = join(
-      paths.configRoot,
-      'test-suite-multi-computer-CliTester.cfg'
-    );
-    const controllerMarker = join(paths.stateRoot, 'active-controller');
-    const controllerArgs = [
-      '--distributed-configure-controller',
-      '--config-file',
-      controllerPath,
-      '--profile',
-      'CliTester',
-      '--controller-name',
-      'Test controller',
-      '--listen-address',
-      '127.0.0.1',
-      '--listen-port',
-      String(port),
-      '--thread-rule',
-      '2n',
-      '--minimum-thread-count',
-      '1',
-      '--active-config-marker',
-      controllerMarker,
-      '--state-root',
-      paths.stateRoot,
-      '--log-root',
-      paths.logRoot,
-    ];
-
-    const configured = runCli(controllerArgs);
-    assert.equal(configured.status, 0, configured.stderr);
-    assert.match(configured.stdout, /controller .* configured and active/i);
-    assert.doesNotMatch(
-      `${configured.stdout}${configured.stderr}`,
-      /[a-f0-9]{64}/
-    );
-    const originalController = readControllerConfigFile(controllerPath);
-
-    const refusedUpdate = runCli(controllerArgs);
-    assert.equal(refusedUpdate.status, 1);
-    assert.match(refusedUpdate.stderr, /allowExistingUpdate is required/);
-    assert.equal(
-      readControllerConfigFile(controllerPath).sharedAuthenticationKey,
-      originalController.sharedAuthenticationKey
-    );
-
-    const updated = runCli([
-      ...controllerArgs,
-      '--allow-existing-config-update',
-    ]);
-    assert.equal(updated.status, 0, updated.stderr);
-    assert.equal(
-      readControllerConfigFile(controllerPath).sharedAuthenticationKey,
-      originalController.sharedAuthenticationKey
-    );
-
-    const service = spawn(
-      process.execPath,
-      [
-        cli,
-        '--distributed-controller-service',
+      status: 0,
+      noListener: true,
+    },
+    {
+      name: 'dependency reporting',
+      args: [
+        '--distributed-dependency-report',
         '--active-config-marker',
-        controllerMarker,
-        '--state-root',
-        paths.stateRoot,
-        '--log-root',
-        paths.logRoot,
+        marker,
+        '--application',
+        '01',
+        '--dependency',
+        'node=24.15.0',
+        '--json',
       ],
-      { stdio: ['ignore', 'pipe', 'pipe'] }
+      status: 1,
+    },
+  ];
+
+  for (const mode of modes) {
+    const result = runCli(mode.args);
+    assert.equal(result.status, mode.status, `${mode.name}: ${result.stderr}`);
+    assert.match(
+      `${result.stdout}${result.stderr}`,
+      /Mode 3 network operations are disabled/
     );
-    t.after(() => {
-      if (service.exitCode === null) service.kill('SIGTERM');
-    });
-    const ready = await waitForReady(
-      service,
-      /enrollment service is listening/
-    );
-    assert.doesNotMatch(`${ready.stdout}${ready.stderr}`, /[a-f0-9]{64}/);
-
-    const nodePath = join(
-      paths.configRoot,
-      'test-suite-multi-computer-node-01.cfg'
-    );
-    const nodeMarker = join(paths.stateRoot, 'active-node-01');
-    const nodeArgs = [
-      '--distributed-configure-node',
-      '--config-file',
-      nodePath,
-      '--node-id',
-      '01',
-      '--node-name',
-      'First test node',
-      '--listen-address',
-      '127.0.0.2',
-      '--listen-port',
-      String(port),
-      '--controller-address',
-      '127.0.0.1',
-      '--controller-port',
-      String(port),
-      '--active-config-marker',
-      nodeMarker,
-      '--state-root',
-      paths.stateRoot,
-      '--log-root',
-      paths.logRoot,
-    ];
-    const enrolled = runCli(nodeArgs);
-    assert.equal(enrolled.status, 0, enrolled.stderr);
-    assert.match(enrolled.stdout, /node 01 is enrolled and active/i);
-    assert.doesNotMatch(`${enrolled.stdout}${enrolled.stderr}`, /[a-f0-9]{64}/);
-    assert.equal(
-      readNodeConfigFile(nodePath).sharedAuthenticationKey,
-      originalController.sharedAuthenticationKey
-    );
-
-    const listedPolicies = runCli([
-      '--distributed-node-thread-policy',
-      '--active-config-marker',
-      controllerMarker,
-      '--json',
-    ]);
-    assert.equal(listedPolicies.status, 0, listedPolicies.stderr);
-    assert.deepEqual(JSON.parse(listedPolicies.stdout).nodes[0], {
-      ...readControllerConfigFile(controllerPath).nodes[0],
-    });
-    const assignedPolicy = runCli([
-      '--distributed-node-thread-policy',
-      '--active-config-marker',
-      controllerMarker,
-      '--node-id',
-      '01',
-      '--thread-rule',
-      'n-2',
-      '--minimum-thread-count',
-      '2',
-      '--json',
-    ]);
-    assert.equal(assignedPolicy.status, 0, assignedPolicy.stderr);
-    assert.equal(JSON.parse(assignedPolicy.stdout).node.threads, 'n-2');
-    assert.equal(
-      readControllerConfigFile(controllerPath).nodes[0].minimumThreadCount,
-      2
-    );
-
-    const beforeRejectedUpdate = readFileSync(nodePath);
-    const beforeRejectedMarker = readFileSync(nodeMarker);
-    const rejectedUpdate = runCli([
-      ...nodeArgs.map((argument) =>
-        argument === 'First test node'
-          ? 'Rejected replacement node'
-          : argument === '127.0.0.2'
-            ? '127.0.0.4'
-            : argument
-      ),
-      '--allow-existing-config-update',
-    ]);
-    assert.equal(rejectedUpdate.status, 20, rejectedUpdate.stderr);
-    assert.deepEqual(readFileSync(nodePath), beforeRejectedUpdate);
-    assert.deepEqual(readFileSync(nodeMarker), beforeRejectedMarker);
-
-    const conflictingNodePath = join(
-      paths.secondNodeRoot,
-      'test-suite-multi-computer-node-01.cfg'
-    );
-    const conflictingNodeMarker = join(paths.stateRoot, 'active-conflict');
-    const conflictingNodeArgs = [
-      '--distributed-configure-node',
-      '--config-file',
-      conflictingNodePath,
-      '--node-id',
-      '01',
-      '--node-name',
-      'Replacement test node',
-      '--listen-address',
-      '127.0.0.3',
-      '--listen-port',
-      String(port),
-      '--controller-address',
-      '127.0.0.1',
-      '--controller-port',
-      String(port),
-      '--active-config-marker',
-      conflictingNodeMarker,
-      '--state-root',
-      paths.stateRoot,
-      '--log-root',
-      paths.logRoot,
-    ];
-    const conflict = runCli(conflictingNodeArgs);
-    assert.equal(conflict.status, 20, conflict.stderr);
-    assert.match(conflict.stderr, /Node 01 is already assigned/);
-    assert.match(conflict.stderr, /--overwrite-node/);
-    assert.doesNotMatch(`${conflict.stdout}${conflict.stderr}`, /[a-f0-9]{64}/);
-    assert.equal(existsSync(conflictingNodeMarker), false);
-    assert.equal(existsSync(conflictingNodePath), false);
-
-    const overwritten = runCli([
-      ...conflictingNodeArgs,
-      '--allow-existing-config-update',
-      '--overwrite-node',
-    ]);
-    assert.equal(overwritten.status, 0, overwritten.stderr);
-    assert.equal(
-      readNodeConfigFile(conflictingNodePath).sharedAuthenticationKey,
-      originalController.sharedAuthenticationKey
-    );
-    assert.equal(existsSync(conflictingNodeMarker), true);
-    const finalController = readControllerConfigFile(controllerPath);
-    assert.equal(finalController.nodes.length, 1);
-    assert.equal(finalController.nodes[0].nodeNumber, '01');
-    assert.equal(finalController.nodes[0].ipAddress, '127.0.0.3');
-    assert.equal(finalController.nodes[0].threads, null);
-    assert.equal(finalController.nodes[0].minimumThreadCount, null);
-
-    const beforeUnavailableUpdate = readFileSync(nodePath);
-    const beforeUnavailableMarker = readFileSync(nodeMarker);
-
-    const stoppedPromise = waitForExit(service);
-    service.kill('SIGTERM');
-    const stopped = await stoppedPromise;
-    assert.equal(stopped.signal, null);
-    assert.equal(stopped.code, 0);
-
-    const unavailableUpdate = runCli([
-      ...nodeArgs.map((argument) =>
-        argument === 'First test node' ? 'Unavailable update node' : argument
-      ),
-      '--allow-existing-config-update',
-    ]);
-    assert.equal(unavailableUpdate.status, 1);
-    assert.match(unavailableUpdate.stderr, /ECONNREFUSED|connect/i);
-    assert.deepEqual(readFileSync(nodePath), beforeUnavailableUpdate);
-    assert.deepEqual(readFileSync(nodeMarker), beforeUnavailableMarker);
+    if (mode.noListener) assert.match(result.stdout, /No listener was started/);
   }
-);
+
+  assert.equal(existsSync(configPath), false);
+  assert.equal(existsSync(marker), false);
+});
+
+test('controller-local application listing and dependency planning stay offline', (t) => {
+  const paths = fixture();
+  t.after(paths.cleanup);
+  const controllerPath = join(
+    paths.configRoot,
+    'test-suite-multi-computer-CliTester.cfg'
+  );
+  const marker = join(paths.stateRoot, 'active-controller');
+  const sharedKey = 'a'.repeat(64);
+  persistControllerConfigFile(controllerPath, {
+    global: {
+      githubUsername: 'CliTester',
+      computerName: 'Focused controller',
+      ipAddress: '127.0.0.1',
+      port: 62021,
+      cpuName: 'Focused controller CPU',
+      availableThreads: 12,
+      threads: '2n',
+      minimumThreadCount: 1,
+    },
+    nodes: [],
+    supportedApplications: [
+      {
+        entryId: '01',
+        applicationId: 'SeerrNG 3.17.0',
+        name: 'SeerrNG',
+        profilePath: join(
+          paths.configRoot,
+          'seerrng-test-suite-dependancies.cfg'
+        ),
+      },
+    ],
+    applicationRequirements: [
+      {
+        applicationId: 'SeerrNG 3.17.0',
+        dependencies: [
+          { name: 'node', version: '24.21.0' },
+          { name: 'pnpm', version: '10.24.0' },
+        ],
+      },
+    ],
+    nodeDependencyAvailability: [],
+    sharedAuthenticationKey: sharedKey,
+  });
+  writeFileSync(marker, `${controllerPath}\n`, { mode: 0o600 });
+
+  const listing = runCli([
+    '--distributed-applications',
+    '--active-config-marker',
+    marker,
+    '--json',
+  ]);
+  assert.equal(listing.status, 0, listing.stderr);
+  assert.equal(JSON.parse(listing.stdout).applications[0].entryId, '01');
+  assert.doesNotMatch(listing.stdout, new RegExp(sharedKey));
+
+  const plan = runCli([
+    '--distributed-dependency-plan',
+    '--active-config-marker',
+    marker,
+    '--application',
+    '01',
+    '--json',
+  ]);
+  assert.equal(plan.status, 0, plan.stderr);
+  const dependencyPlan = JSON.parse(plan.stdout);
+  assert.equal(dependencyPlan.selectedApplications.length, 1);
+  assert.deepEqual(
+    dependencyPlan.dependencies.map(({ name, version }) => ({ name, version })),
+    [
+      { name: 'node', version: '24.21.0' },
+      { name: 'pnpm', version: '10.24.0' },
+    ]
+  );
+  assert.doesNotMatch(plan.stdout, new RegExp(sharedKey));
+});
 
 test(
   'new configuration modes fail closed outside Linux before touching files',

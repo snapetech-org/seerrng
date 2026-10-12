@@ -1,36 +1,44 @@
 import { lstatSync, mkdtempSync, realpathSync, rmSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { basename, dirname, join } from 'node:path';
+// eslint-disable-next-line no-relative-import-paths/no-relative-import-paths -- The Vitest bootstrap runs before TypeScript aliases are loaded.
+import { setIsolatedTestEnvironment } from '../../tools/validation-engine/runtime/test-environment.mjs';
 
 // Must execute BEFORE the original setup imports datasource/settings. Vitest
 // isolates JS modules, but environment paths otherwise survive worker reuse.
 const prefix = 'seerrng-engine-config-';
-const directory = mkdtempSync(join(tmpdir(), prefix));
-for (const key of Object.keys(process.env)) {
-  if (/^(?:DB_|DATABASE_)/.test(key) || key === 'SEERR_EXTERNAL_CONFIG')
-    delete process.env[key];
-}
-process.env.NODE_ENV = 'test';
-process.env.CONFIG_DIRECTORY = directory;
-process.env.ALLOW_NETWORK = 'false';
-process.env.SEERR_TEST_FAIL_ON_NETWORK = 'true';
+const directoryParent = tmpdir();
+const directory = mkdtempSync(join(directoryParent, prefix));
+setIsolatedTestEnvironment(directory, process.env, {
+  includeCi: true,
+  includeVitest: true,
+});
 
 // A single worker-exit hook keeps config alive until all teardown hooks and
 // owned subprocesses finish. Never recursively remove an inherited directory.
 const owner = Symbol.for('seerrng.engine.owned-test-configs');
 if (!process[owner]) {
-  process[owner] = new Set();
+  process[owner] = new Map();
   process.once('exit', () => {
-    for (const path of process[owner]) {
-      const stat = lstatSync(path);
+    const entries = [...process[owner]].sort(
+      ([left], [right]) => right.length - left.length
+    );
+    for (const [path, parent] of entries) {
+      let stat;
+      try {
+        stat = lstatSync(path);
+      } catch (error) {
+        if (error.code === 'ENOENT') continue;
+        throw error;
+      }
       if (
         stat.isDirectory() &&
         !stat.isSymbolicLink() &&
         basename(path).startsWith(prefix) &&
-        realpathSync(dirname(path)) === realpathSync(tmpdir())
+        realpathSync(dirname(path)) === realpathSync(parent)
       )
         rmSync(path, { recursive: true });
     }
   });
 }
-process[owner].add(directory);
+process[owner].set(directory, directoryParent);
