@@ -70,16 +70,39 @@ pnpm validate:development
   hosted-job, or pull-request metadata coverage.
 - Test subprocesses run from a disposable source copy inside Linux bubblewrap.
   The workspace and scratch outputs are the only writable host mounts; installed
-  dependencies are mounted read-only, and dependency roots must be real
-  directories within the candidate checkout; escaping symlinks fail closed.
-  The invoking user's home, temporary
-  files, common service sockets, `/opt`, `/srv`, and the network namespace are
-  isolated, with loopback available for tests that start local servers. The
-  system root remains read-only for runtime tools; keep sensitive data out of
-  other host paths and use a disposable guest for highly untrusted source. The
-  child environment is allowlisted and receives private config/cache paths.
+  dependencies remain read-only while preserving package resolution. Dependency
+  roots must be real directories within the candidate checkout; escaping
+  symlinks fail closed. The invoking user's home,
+  temporary files, common service sockets, `/opt`, `/srv`, and the network namespace are
+  isolated, with loopback available for tests that start local
+  servers. The system root remains read-only for runtime tools; keep sensitive
+  data out of other host paths and use a disposable guest for highly untrusted
+  source. The child environment is allowlisted and receives private
+  config/cache paths.
   This mode fails before starting tests when bubblewrap or the required Linux
   namespaces are unavailable; use hosted GitHub validation on other platforms.
+- The in-repository CLI imports repository-owned JavaScript before it can start
+  that subprocess boundary. For an unreviewed candidate, first copy
+  `tools/validation-engine/trusted-test-launcher.mjs` from a reviewed revision
+  to a location outside the checkout, then invoke that trusted copy with the
+  candidate path, for example:
+
+  ```sh
+  install -D -m 700 tools/validation-engine/trusted-test-launcher.mjs \
+    "$HOME/.local/lib/seerrng/trusted-test-launcher.mjs"
+  TMPDIR=/dev/shm node "$HOME/.local/lib/seerrng/trusted-test-launcher.mjs" \
+    /path/to/candidate
+  ```
+
+  The external launcher snapshots tracked and non-ignored candidate files,
+  excludes local configuration and credential files, and enters bubblewrap
+  before loading candidate JavaScript. Its dependency roots are mounted
+  read-only at their original workspace paths, and it fails closed when Linux
+  bubblewrap isolation is unavailable. Its internal
+  `--inside-sandbox` mode requires a token bound to a marker file mounted by the
+  trusted launcher. A candidate-owned validator can still misreport its own
+  test results, so this boundary protects the host; it does not replace
+  reviewing the validator itself.
 - With no mode flag, the engine admits the complete local staged gate. It runs
   only when the required source, dependency, toolchain, fixture, network, and
   browser-isolation boundaries can be proved. Otherwise it stops incomplete and

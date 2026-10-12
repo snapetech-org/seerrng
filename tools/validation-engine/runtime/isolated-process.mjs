@@ -14,7 +14,7 @@ const SANDBOX_ROOT = '/mnt/workspace';
 const SANDBOX_SCRATCH = '/mnt/scratch';
 const SANDBOX_RUN = '/mnt/run-data';
 const SENSITIVE_SOURCE_PATH =
-  /^(?:\.env(?:$|\.(?!example$))|config(?:\.[^/]+)?(?:\/|$)|\.git(?:\/|$)|(?:.*\/)?(?:node_modules|\.ssh|\.aws|\.gnupg)(?:\/|$)|(?:.*\/)?(?:id_(?:rsa|ed25519)|credentials?(?:\.[^/]+)?|secrets?(?:\.[^/]+)?|\.git-credentials|\.npmrc|\.pypirc|\.netrc|[^/]+\.(?:pem|key))$)/i;
+  /^(?:(?:.*\/)?\.env(?:$|\.(?!example$)[^/]+)|config(?:\.[^/]+)?(?:\/|$)|\.git(?:\/|$)|(?:.*\/)?(?:node_modules|\.ssh|\.aws|\.gnupg)(?:\/|$)|(?:.*\/)?(?:id_(?:rsa|ed25519)|credentials?(?:\.[^/]+)?|secrets?(?:\.[^/]+)?|\.git-credentials|\.npmrc|\.pypirc|\.netrc|[^/]+\.(?:pem|key))$)/i;
 const SENSITIVE_DATA_EXTENSION =
   /\.(?:json|jsonc|ya?ml|toml|ini|cfg|conf|properties|txt|db|sqlite3?|pem|key)$/i;
 const SENSITIVE_DATA_NAME =
@@ -149,8 +149,13 @@ export function createDisposableTestWorkspace(sourceRoot, workspaceRoot) {
   const dependencies = [];
   for (const relativePath of ['node_modules', 'gen-docs/node_modules']) {
     const source = path.join(sourceRoot, relativePath);
-    if (!existsSync(source)) continue;
-    const sourceMetadata = lstatSync(source);
+    let sourceMetadata;
+    try {
+      sourceMetadata = lstatSync(source);
+    } catch (error) {
+      if (error.code === 'ENOENT') continue;
+      throw error;
+    }
     if (sourceMetadata.isSymbolicLink() || !sourceMetadata.isDirectory())
       throw new Error(
         `Installed dependency path must be a real directory, not a symbolic link: ${relativePath}`

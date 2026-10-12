@@ -73,6 +73,19 @@ import {
 } from '../tools/validation-engine/runtime/distributed-linux-node-runner.mjs';
 
 const hash = (value) => createHash('sha256').update(value).digest('hex');
+const trustedOuterSandboxTokenEnv = 'VALIDATION_OUTER_SANDBOX_TOKEN';
+const trustedOuterSandboxMarker = '/run/validation-engine-sandbox';
+
+function hasTrustedOuterSandbox() {
+  const token = process.env[trustedOuterSandboxTokenEnv];
+  if (!/^[a-f0-9]{64}$/u.test(token ?? '')) return false;
+  try {
+    return readFileSync(trustedOuterSandboxMarker, 'utf8') === token;
+  } catch {
+    return false;
+  }
+}
+
 const git = (root, parameters, encoding = 'utf8') =>
   execFileSync('git', ['-C', root, ...parameters], {
     ...(encoding === null ? {} : { encoding }),
@@ -286,6 +299,7 @@ const flagOptions = new Set([
   '--plan',
   '--json',
   '--tests-only',
+  '--inside-sandbox',
   '--github-plan',
   '--github-admit',
   '--github-materialize-test-lane',
@@ -368,7 +382,7 @@ const optionContracts = {
   },
   'local-tests-only': {
     label: 'Local tests-only mode',
-    allowed: new Set(['--tests-only']),
+    allowed: new Set(['--tests-only', '--inside-sandbox']),
     requiredValues: [],
   },
   'local-plan': {
@@ -934,6 +948,13 @@ if (executedDirectly) {
   try {
     options = parseOptions(process.argv.slice(2));
     selectedMode = validateOptions(options);
+    if (
+      options.flags.has('--inside-sandbox') &&
+      !hasTrustedOuterSandbox()
+    )
+      throw new Error(
+        '--inside-sandbox requires the trusted outer sandbox marker'
+      );
   } catch (error) {
     options = undefined;
     selectedMode = undefined;
@@ -1589,12 +1610,15 @@ failures, partial output closure and zero active tests fail closed.\n`);
             );
         }
       } else {
-        printPlan(plan, process.stdout, { details: false });
+        printPlan(plan, process.stdout, {
+          details: false,
+          callerSandboxed: has('--inside-sandbox'),
+        });
         process.on('SIGINT', interrupt);
         process.on('SIGTERM', interrupt);
         if (has('--tests-only')) {
           const totals = await executePlan(plan, {
-            sandbox: true,
+            sandbox: !has('--inside-sandbox'),
             signal: controller.signal,
             onProgress: (summary) => process.stderr.write(`${summary}\n`),
           });

@@ -62,6 +62,7 @@ const portableTests = [
   'bin/engine-distributed-linux-staged-bridge.test.mjs',
   'bin/engine-distributed-native-adapter.test.mjs',
   'bin/engine-isolated-process.test.mjs',
+  'bin/engine-trusted-test-launcher.test.mjs',
   'bin/engine-distributed-node-enrollment-transport.test.mjs',
   'bin/engine-distributed-node-transport.test.mjs',
   'bin/engine-distributed-repository-stage.test.mjs',
