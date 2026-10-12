@@ -16,10 +16,11 @@ that plan.
 - **Mode 2 — GitHub-hosted orchestration:** active. The internal `--github-*`
   bindings plan, distribute, and reconcile the repository's native GitHub jobs.
 - **Mode 3 — distributed developer fleet:** code and regression coverage are
-  present, but production operation is dormant. Do not install, start, or connect
-  Mode 3 to package scripts, hooks, workflows, or application runtime without
-  explicit maintainer authorization. Its focused tests may use disposable roots
-  and loopback services without activating a production cluster.
+  present, but production operation is dormant. The `validate:development`
+  package entry rejects distributed-mode flags. Its focused tests may use
+  disposable roots and loopback services without activating a production
+  cluster. Do not install, start, or connect Mode 3 to hooks, workflows, or
+  application runtime without explicit maintainer authorization.
 
 Mode 3 is not currently an accepted finalization path. Its implementation and
 documentation must be reconciled with the deferred design decisions identified
@@ -45,6 +46,11 @@ pnpm validate:development
 - `--tests-only` executes the local repository-test plan through its native
   runners. It does not claim CodeQL, production-build, Cypress, Playwright,
   hosted-job, or pull-request metadata coverage.
+- Test subprocesses receive an allowlisted environment and private temporary
+  home/config/cache paths. This limits inherited host state but does not prevent
+  code running as the invoking OS user from accessing that user's files. Run
+  untrusted source only in a disposable guest with credentials and provider
+  data absent.
 - With no mode flag, the engine admits the complete local staged gate. It runs
   only when the required source, dependency, toolchain, fixture, network, and
   browser-isolation boundaries can be proved. Otherwise it stops incomplete and
@@ -86,15 +92,18 @@ Mode 3 active or authorize running the tests against live configuration.
 The `--github-*` modes shown by `--help` are internal GitHub Actions bindings,
 not manual replacements for the local commands.
 
-### Dormant Mode 3 reference command
+### Dormant Mode 3 focused regression command
 
-The current dormant implementation exposes this explicit command for focused
-Mode 3 development only; it is not a normal developer command or an accepted
-pre-PR gate:
+The direct Node entry remains available for focused Mode 3 regression
+development only; it is not a normal developer command or an accepted pre-PR
+gate. The package-managed validation entry rejects distributed modes:
 
 ```text
-pnpm validate:development --distributed-run --active-config-marker ABSOLUTE_FILE --state-root ABSOLUTE_DIR --log-root ABSOLUTE_DIR --application ENTRY_ID [--json]
+node bin/run-local-validation.mjs --distributed-run --active-config-marker ABSOLUTE_FILE --state-root ABSOLUTE_DIR --log-root ABSOLUTE_DIR --application ENTRY_ID [--json]
 ```
+
+The dormant enrollment listener binds to loopback only. These focused tests and
+direct regression commands do not authorize a production cluster.
 
 The current command attempts to own candidate freezing, host preparation,
 Docker containment, staged execution, reconciliation, timing persistence,

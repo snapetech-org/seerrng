@@ -272,6 +272,7 @@ function writeHostedAdmissionOutputs(decision) {
 }
 
 const flagOptions = new Set([
+  '--package-entry',
   '--help',
   '-h',
   '--plan',
@@ -658,6 +659,7 @@ function parseOptions(args) {
 }
 
 function validateOptions(options) {
+  const packageEntry = options.flags.delete('--package-entry');
   const helpAliases = ['--help', '-h'].filter((option) =>
     options.flags.has(option)
   );
@@ -699,6 +701,10 @@ function validateOptions(options) {
     '--distributed-dependency-plan',
     '--distributed-dependency-report',
   ].filter((option) => options.flags.has(option));
+  if (packageEntry && distributedModes.length)
+    throw new Error(
+      'Mode 3 is dormant and unavailable through pnpm validate:development'
+    );
   if (distributedModes.length > 1)
     throw new Error('Choose exactly one distributed mode');
   if (hostedModes.length && distributedModes.length)

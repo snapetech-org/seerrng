@@ -17,7 +17,7 @@
     "build": "pnpm build:all",
     "build:compile": "run-p build:next:compile build:server:compile",
     "build:all": "run-p build:next build:server",
-    "validate:development": "node bin/run-local-validation.mjs",
+    "validate:development": "node bin/run-local-validation.mjs --package-entry",
     "bundle:check": "node scripts/check-bundle-size.mjs",
     "bundle:baseline": "node scripts/check-bundle-size.mjs --write-baseline",
     "lint": "pnpm lint:eslint && pnpm lint:next",

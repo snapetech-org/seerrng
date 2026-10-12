@@ -39,7 +39,7 @@ const candidate = /\.(?:test|spec)\.(?:[cm]?[jt]s|[jt]sx)$/;
 const prefix = 'seerrng-local-validation-';
 export const expectedPackageBindings = Object.freeze({
   test: 'vitest run',
-  'validate:development': 'node bin/run-local-validation.mjs',
+  'validate:development': 'node bin/run-local-validation.mjs --package-entry',
   prebuild: 'pnpm i18n:check && pnpm current-batch:check',
   build: 'pnpm build:all',
   'build:all': 'run-p build:next build:server',
@@ -661,14 +661,21 @@ export function createPlan(
 }
 
 export function isolatedEnvironment(directory, inherited = process.env) {
-  const env = { ...inherited };
-  for (const key of Object.keys(env)) {
-    if (
-      /^(?:DB_|DATABASE_|TS_NODE_|NODE_OPTIONS$|VITEST$|CONFIG_DIRECTORY$|CI$)/.test(
-        key
-      )
-    )
-      delete env[key];
+  const env = {};
+  const inheritedAllowlist = new Set([
+    'COMSPEC',
+    'LANG',
+    'LC_ALL',
+    'PATH',
+    'PATHEXT',
+    'SYSTEMROOT',
+    'TZ',
+    'WINDIR',
+  ]);
+  for (const [key, value] of Object.entries(inherited)) {
+    const name = key.toUpperCase();
+    if (!inheritedAllowlist.has(name) || typeof value !== 'string') continue;
+    if (key === name || !Object.hasOwn(env, name)) env[name] = value;
   }
   return {
     ...env,
@@ -677,6 +684,15 @@ export function isolatedEnvironment(directory, inherited = process.env) {
     ALLOW_NETWORK: 'false',
     SEERR_TEST_FAIL_ON_NETWORK: 'true',
     NEXT_TELEMETRY_DISABLED: '1',
+    HOME: directory,
+    USERPROFILE: directory,
+    TMP: directory,
+    TEMP: directory,
+    TMPDIR: directory,
+    XDG_CONFIG_HOME: join(directory, 'xdg-config'),
+    XDG_CACHE_HOME: join(directory, 'xdg-cache'),
+    APPDATA: join(directory, 'AppData', 'Roaming'),
+    LOCALAPPDATA: join(directory, 'AppData', 'Local'),
   };
 }
 
@@ -741,7 +757,14 @@ function formatElapsed(milliseconds) {
   return `${Math.floor(seconds / 60)}m${String(seconds % 60).padStart(2, '0')}s`;
 }
 
-export function formatValidationProgress(repository, totalSteps, completedSteps, totals, currentStep = null, elapsedMs = 0) {
+export function formatValidationProgress(
+  repository,
+  totalSteps,
+  completedSteps,
+  totals,
+  currentStep = null,
+  elapsedMs = 0
+) {
   const counts = [...totals.values()];
   const cases = counts.reduce((sum, count) => sum + count.active, 0);
   const totalCases = counts.reduce((sum, count) => sum + count.total, 0);
@@ -1179,14 +1202,16 @@ export async function executePlan(
   let preserveTemporary = false;
   const reportProgress = (currentStep = null, startedAt = 0) => {
     if (typeof onProgress !== 'function') return;
-    onProgress(formatValidationProgress(
-      'SeerrNG',
-      plan.steps.length,
-      completedSteps,
-      totals,
-      currentStep,
-      currentStep ? Date.now() - startedAt : 0,
-    ));
+    onProgress(
+      formatValidationProgress(
+        'SeerrNG',
+        plan.steps.length,
+        completedSteps,
+        totals,
+        currentStep,
+        currentStep ? Date.now() - startedAt : 0
+      )
+    );
   };
   try {
     for (const original of plan.steps) {
@@ -1217,7 +1242,10 @@ export async function executePlan(
       stdout.write(`\n[${step.name}]\n`);
       const stepStartedAt = Date.now();
       reportProgress(step, stepStartedAt);
-      const heartbeat = setInterval(() => reportProgress(step, stepStartedAt), 60_000);
+      const heartbeat = setInterval(
+        () => reportProgress(step, stepStartedAt),
+        60_000
+      );
       heartbeat.unref();
       let executionResult;
       try {

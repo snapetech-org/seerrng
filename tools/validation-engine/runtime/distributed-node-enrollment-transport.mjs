@@ -1,6 +1,9 @@
 // Copyright (c) snapetech and SeerrNG contributors.
-// First-contact enrollment is intentionally unauthenticated because this MVP
-// treats access to the operator's private LAN as its enrollment trust boundary.
+// First-contact enrollment is unauthenticated. Keep its listener on loopback
+// while Mode 3 is dormant and the enrollment protocol lacks per-node auth.
+// This listener remains loopback-only for regression tests. Do not expose it
+// through an operational entry point until enrollment has per-node
+// authentication and the deferred shared-key design has been replaced.
 import { createServer, request as httpRequest } from 'node:http';
 import { isIP } from 'node:net';
 
@@ -16,7 +19,7 @@ import {
 export const NODE_ENROLLMENT_ROUTE = '/engine/v1/nodes/enroll';
 export const SUPPORTED_APPLICATIONS_ROUTE = '/engine/v1/applications';
 export const NODE_ENROLLMENT_TRUST_BOUNDARY =
-  'trusted-private-lan-unauthenticated-first-contact';
+  'loopback-regression-test-only-unauthenticated-first-contact';
 export const DEFAULT_NODE_ENROLLMENT_BODY_BYTES = 16 * 1024;
 export const MAX_NODE_ENROLLMENT_BODY_BYTES = 64 * 1024;
 export const DEFAULT_NODE_ENROLLMENT_TIMEOUT_MS = 10_000;
@@ -79,6 +82,18 @@ export function isPrivateLanAddress(value) {
     );
   }
   return false;
+}
+
+function isLoopbackAddress(value) {
+  if (typeof value !== 'string') return false;
+  const address = value.toLowerCase().split('%', 1)[0];
+  if (isIP(address) === 4) return address.startsWith('127.');
+  return address === '::1';
+}
+
+function loopbackHostHeader(address, port) {
+  const host = isIP(address) === 6 ? `[${address}]` : address;
+  return `${host}:${port}`.toLowerCase();
 }
 
 function listenPort(value) {
@@ -310,12 +325,10 @@ export async function startNodeEnrollmentServer({
   if (typeof controllerConfigPath !== 'string' || !controllerConfigPath)
     throw new Error('Node enrollment requires a controller config path');
   const bindHost = ipAddress(host, 'Node enrollment bind host');
-  if (
-    bindHost !== '0.0.0.0' &&
-    bindHost !== '::' &&
-    !isPrivateLanAddress(bindHost)
-  )
-    throw new Error('Node enrollment bind host must be a private LAN address');
+  if (!isPrivateLanAddress(bindHost) || !isLoopbackAddress(bindHost))
+    throw new Error(
+      'Node enrollment listener is restricted to loopback while Mode 3 is dormant'
+    );
   const bindPort = listenPort(port);
   const requestLimit = bodyLimit(
     requestBodyLimitBytes,
@@ -323,9 +336,16 @@ export async function startNodeEnrollmentServer({
   );
   const timeoutMs = timeout(requestTimeoutMs);
   const sockets = new Set();
+  let expectedHostHeader;
 
   const server = createServer(async (request, response) => {
-    if (!isPrivateLanAddress(request.socket.remoteAddress)) {
+    if (
+      !isPrivateLanAddress(request.socket.remoteAddress) ||
+      !isLoopbackAddress(request.socket.remoteAddress) ||
+      request.headers.origin !== undefined ||
+      typeof request.headers.host !== 'string' ||
+      request.headers.host.toLowerCase() !== expectedHostHeader
+    ) {
       request.resume();
       sendError(response, 403, 'forbidden');
       return;
@@ -414,6 +434,7 @@ export async function startNodeEnrollmentServer({
     server.close();
     throw new Error('Node enrollment server address is unavailable');
   }
+  expectedHostHeader = loopbackHostHeader(address.address, address.port);
 
   let closePromise;
   return Object.freeze({

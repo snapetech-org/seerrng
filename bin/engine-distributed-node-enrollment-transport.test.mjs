@@ -162,10 +162,10 @@ async function withResponseServer(t, handler) {
   return port;
 }
 
-test('first contact explicitly uses the trusted private LAN boundary', () => {
+test('unauthenticated first contact is explicitly restricted to loopback regression tests', () => {
   assert.equal(
     NODE_ENROLLMENT_TRUST_BOUNDARY,
-    'trusted-private-lan-unauthenticated-first-contact'
+    'loopback-regression-test-only-unauthenticated-first-contact'
   );
   assert.equal(NODE_ENROLLMENT_ROUTE, '/engine/v1/nodes/enroll');
   assert.equal(SUPPORTED_APPLICATIONS_ROUTE, '/engine/v1/applications');
@@ -263,6 +263,36 @@ test('controller accepts a new node and returns the shared cluster key', async (
   assert.deepEqual(persisted.nodes, [
     controllerNode({ threads: null, minimumThreadCount: null }),
   ]);
+});
+
+test('controller rejects browser origins and host aliases', async (t) => {
+  const { configPath, enrollmentServer } = await startEnrollmentFixture(t);
+  const body = JSON.stringify(enrollmentRequest());
+  const browserOrigin = await rawHttpRequest({
+    port: enrollmentServer.port,
+    body,
+    headers: { origin: 'http://attacker.example' },
+  });
+  assert.equal(browserOrigin.statusCode, 403);
+
+  const hostAlias = await rawHttpRequest({
+    port: enrollmentServer.port,
+    body,
+    headers: { host: `attacker.example:${enrollmentServer.port}` },
+  });
+  assert.equal(hostAlias.statusCode, 403);
+  assert.deepEqual(readControllerConfigFile(configPath).nodes, []);
+});
+
+test('enrollment listener refuses every non-loopback bind address', async () => {
+  for (const host of ['10.1.2.3', '192.168.1.20', '0.0.0.0', '::'])
+    await assert.rejects(
+      startNodeEnrollmentServer({
+        controllerConfigPath: '/unread/controller.cfg',
+        host,
+      }),
+      /restricted to loopback/
+    );
 });
 
 test('occupied node number returns 409 and never exposes the shared key', async (t) => {
@@ -538,7 +568,7 @@ test('client stops on timeout and caller abort', async (t) => {
   });
 });
 
-test('enrollment trust boundary is limited to private LAN addresses', async () => {
+test('private address classification is retained while enrollment stays loopback-only', async () => {
   for (const address of [
     '10.1.2.3',
     '127.0.0.1',
@@ -569,6 +599,6 @@ test('enrollment trust boundary is limited to private LAN addresses', async () =
       controllerConfigPath: '/nonexistent/controller.cfg',
       host: '8.8.8.8',
     }),
-    /private LAN address/
+    /restricted to loopback/
   );
 });

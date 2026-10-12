@@ -140,7 +140,7 @@ test('help documents the Linux controller and node lifecycle', () => {
   assert.doesNotMatch(result.stdout, /--distributed-contained-run/);
 });
 
-test('README public pnpm launch matches the CLI contract without a separator argument', () => {
+test('README direct Node launch matches the CLI contract and stays outside pnpm validation', () => {
   const readme = readFileSync(
     resolve(repositoryRoot, 'tools/validation-engine/README.md'),
     'utf8'
@@ -148,25 +148,30 @@ test('README public pnpm launch matches the CLI contract without a separator arg
   const documentedCommand = readme
     .split(/\r?\n/)
     .find((line) =>
-      line.startsWith('pnpm validate:development --distributed-run')
+      line.startsWith('node bin/run-local-validation.mjs --distributed-run')
     );
   assert.ok(
     documentedCommand,
-    'README must document the public Mode 3 command'
+    'README must document the focused direct Node Mode 3 command'
   );
-  assert.doesNotMatch(readme, /pnpm validate:development -- --distributed-run/);
+  assert.doesNotMatch(readme, /pnpm validate:development .*--distributed-/);
 
   const result = runCli(['--help']);
   assert.equal(result.status, 0, result.stderr);
-  assert.ok(
-    result.stdout.includes(
-      documentedCommand.replace(
-        'pnpm validate:development',
-        'node bin/run-local-validation.mjs'
-      )
-    ),
-    'README public Mode 3 command must match CLI help'
+  assert.ok(result.stdout.includes(documentedCommand));
+});
+
+test('package validation entry rejects distributed operations before path validation', () => {
+  const result = runCli([
+    '--package-entry',
+    '--distributed-controller-service',
+  ]);
+  assert.equal(result.status, 1);
+  assert.match(
+    result.stderr,
+    /Mode 3 is dormant and unavailable through pnpm validate:development/
   );
+  assert.doesNotMatch(result.stderr, /requires --active-config-marker/);
 });
 
 test('internal contained mode stays hidden and fails closed at its same-entrypoint boundary', (t) => {
