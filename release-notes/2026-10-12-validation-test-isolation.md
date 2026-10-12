@@ -6,4 +6,4 @@ action: none
 breaking: false
 ---
 
-Local test-only validation copies candidate files into a disposable workspace and excludes nested `.env` files and common credential/config paths. It isolates test code from the host home, temporary files, service sockets, and external network; it rejects dependency roots outside the candidate and mounts installed dependencies read-only. Main image publication and deployment wait for successful hosted validation reconciliation and image scans.
+Local test-only validation excludes nested environment files and common credentials from disposable workspaces, isolates test code from host services and external networks, and keeps dependencies read-only. Main image publication and deployment wait for hosted validation and image scans.
