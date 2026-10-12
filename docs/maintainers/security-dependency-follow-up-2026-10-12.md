@@ -28,9 +28,12 @@ input-length limit and that untrusted callers should not supply glob patterns
 `http-cache-semantics` maintainer argues that `Set-Cookie` does not itself
 prohibit shared caching under [RFC 9111 §7.3](https://www.rfc-editor.org/rfc/rfc9111.html#section-7.3)
 and that `Cache-Control: private` controls cross-user reuse ([issue #56](https://github.com/kornelski/http-cache-semantics/issues/56)).
-GitHub still lists both advisories as high severity with no patched version as
-of this review. Removing the packages clears SeerrNG's dependency exposure
-without claiming the disputed exploit scenarios are independently confirmed.
+GitHub still lists both advisories as high severity and does not mark a patched
+version. [`http-cache-semantics` 4.3.0 was published on npm on October 4](https://www.npmjs.com/package/http-cache-semantics?activeTab=versions),
+but the advisory still does not identify it as a fix, and this review did not
+verify that it changes the disputed behavior. Removing the packages clears
+SeerrNG's dependency exposure without claiming the disputed exploit scenarios
+are independently confirmed.
 
 The docs lockfile audit also found `joi@17.13.7` through Docusaurus Utils
 Validation, from workspace override `joi: 17.13.7`. GitHub advisory

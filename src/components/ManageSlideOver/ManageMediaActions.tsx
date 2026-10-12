@@ -54,6 +54,12 @@ const messages = defineMessages('components.ManageMediaActions', {
   libraryLookupFailed:
     'Unable to verify all library services or identify this comic’s backend. Refresh its metadata or check service availability before deleting.',
   retryLibraries: 'Retry Library Check',
+  clearStaleAvailability: 'Clear Stale {quality} Availability',
+  clearStaleAvailabilityTitle: 'Clear Stale {quality} Availability?',
+  clearStaleAvailabilityExplanation:
+    'Reset SeerrNG’s {quality} availability status to Unknown. The latest check found no copy in any configured {service} library. This does not delete files, requests, or issues. A media-server scan may report availability again if a copy remains.',
+  clearStaleAvailabilitySuccess: 'Stale availability cleared.',
+  clearStaleAvailabilityFailed: 'Unable to clear stale availability.',
   blocklist: 'Blocklist',
   block: 'Blocklist Title',
   blockDescription:
@@ -110,6 +116,40 @@ const messages = defineMessages('components.ManageMediaActions', {
 });
 
 type Target = LibraryRemovalTarget & { key: string; service: string };
+type LibraryQuality = 'HD' | '4K';
+
+const hasStaleAvailabilityStatus = (status?: MediaStatus) =>
+  status === MediaStatus.AVAILABLE ||
+  status === MediaStatus.PARTIALLY_AVAILABLE;
+
+const canClearStaleAvailability = (
+  media: Media,
+  mediaType: MediaType,
+  quality: LibraryQuality,
+  plan?: LibraryRemovalPlan,
+  libraryError?: unknown
+) => {
+  if (
+    (mediaType !== MediaType.MOVIE && mediaType !== MediaType.TV) ||
+    !plan ||
+    libraryError ||
+    plan.verifiedServices < 1 ||
+    plan.targets.some((target) => target.quality === quality)
+  )
+    return false;
+
+  const statusKey = quality === '4K' ? 'status4k' : 'status';
+  const status = media[statusKey];
+  if (status === MediaStatus.BLOCKLISTED) return false;
+
+  return (
+    hasStaleAvailabilityStatus(status) ||
+    (mediaType === MediaType.TV &&
+      (media.seasons ?? []).some((season) =>
+        hasStaleAvailabilityStatus(season[statusKey])
+      ))
+  );
+};
 
 // A server or media ID of zero is valid; missing links must not fall back to
 // deleting a different/default library. The API remains the permission authority.
@@ -193,6 +233,7 @@ const ManageMediaActions = ({
   const [action, setAction] = useState<
     | 'delete'
     | 'remove'
+    | 'clearAvailability'
     | 'block'
     | 'unblock'
     | 'closeIssues'
@@ -201,6 +242,8 @@ const ManageMediaActions = ({
   >(null);
   const [issueIds, setIssueIds] = useState<number[]>([]);
   const [requestId, setRequestId] = useState<number | null>(null);
+  const [availabilityQuality, setAvailabilityQuality] =
+    useState<LibraryQuality | null>(null);
   const [confirmedLibrary, setConfirmedLibrary] =
     useState<LibraryRemovalPlan | null>(null);
   const [busy, setBusy] = useState(false);
@@ -270,6 +313,16 @@ const ManageMediaActions = ({
       (action === 'delete' && !request) ||
       (action === 'remove' &&
         (!isAdmin || !confirmedLibrary?.targets.length)) ||
+      (action === 'clearAvailability' &&
+        (!isAdmin ||
+          !availabilityQuality ||
+          !canClearStaleAvailability(
+            media,
+            mediaType,
+            availabilityQuality,
+            libraryPlan,
+            libraryError
+          ))) ||
       (action === 'block' && !canBlock) ||
       (action === 'unblock' && !canUnblock) ||
       ((action === 'closeIssues' || action === 'deleteIssues') &&
@@ -284,6 +337,15 @@ const ManageMediaActions = ({
         await axios.delete(`/api/v1/media/${media.id}/library`, {
           data: { token: confirmedLibrary.token },
         });
+      else if (
+        action === 'clearAvailability' &&
+        availabilityQuality &&
+        libraryPlan
+      )
+        await axios.post(
+          `/api/v1/media/${media.id}/library/clear-stale-availability`,
+          { token: libraryPlan.token, quality: availabilityQuality }
+        );
       else if (action === 'block' && blocklistId) {
         await addManageBlocklist(blocklistId, mediaType, title);
         await setBlocklisted(true);
@@ -298,11 +360,14 @@ const ManageMediaActions = ({
             ? requestActionMessages.deleteSuccess
             : action === 'remove'
               ? requestActionMessages.removeSuccess
-              : messages.updated
+              : action === 'clearAvailability'
+                ? messages.clearStaleAvailabilitySuccess
+                : messages.updated
         ),
         { appearance: 'success', autoDismiss: true }
       );
       setAction(null);
+      setAvailabilityQuality(null);
     } catch (error) {
       const detail = axios.isAxiosError(error)
         ? error.response?.data?.message
@@ -312,16 +377,20 @@ const ManageMediaActions = ({
           ? requestActionMessages.deleteFailed
           : action === 'remove'
             ? requestActionMessages.removeFailed
-            : messages.failed
+            : action === 'clearAvailability'
+              ? messages.clearStaleAvailabilityFailed
+              : messages.failed
       );
       addToast(detail ? `${message} ${detail}` : message, {
         appearance: 'error',
         autoDismiss: true,
       });
       setAction(null);
+      setAvailabilityQuality(null);
     } finally {
       onUpdate();
-      if (action === 'remove') void refreshLibrary();
+      if (action === 'remove' || action === 'clearAvailability')
+        void refreshLibrary();
       void mutate('/api/v1/issue/count');
       inFlight.current = false;
       setBusy(false);
@@ -387,6 +456,47 @@ const ManageMediaActions = ({
                 setAction('remove');
               }}
             />
+            {(['HD', '4K'] as const).map((quality) =>
+              canClearStaleAvailability(
+                media,
+                mediaType,
+                quality,
+                libraryPlan,
+                libraryError
+              ) ? (
+                <Button
+                  key={quality}
+                  buttonType="warning"
+                  buttonSize="standard"
+                  disabled={busy}
+                  title={intl.formatMessage(
+                    messages.clearStaleAvailabilityExplanation,
+                    {
+                      quality,
+                      service: mediaType === MediaType.TV ? 'Sonarr' : 'Radarr',
+                    }
+                  )}
+                  onClick={() => {
+                    if (
+                      !canClearStaleAvailability(
+                        media,
+                        mediaType,
+                        quality,
+                        libraryPlan,
+                        libraryError
+                      )
+                    )
+                      return;
+                    setAvailabilityQuality(quality);
+                    setAction('clearAvailability');
+                  }}
+                >
+                  {intl.formatMessage(messages.clearStaleAvailability, {
+                    quality,
+                  })}
+                </Button>
+              ) : null
+            )}
             {libraryError && (
               <Button
                 title={intl.formatMessage(messages.libraryLookupFailed)}
@@ -604,6 +714,60 @@ const ManageMediaActions = ({
                       : action === 'closeIssues'
                         ? messages.closeDescription
                         : messages.deleteDescription
+                )}
+              </p>
+            </div>
+          </Modal>
+        </Transition>
+      )}
+      {action === 'clearAvailability' && availabilityQuality && libraryPlan && (
+        <Transition show as="div">
+          <Modal
+            title={intl.formatMessage(messages.clearStaleAvailabilityTitle, {
+              quality: availabilityQuality,
+            })}
+            okText={intl.formatMessage(messages.clearStaleAvailability, {
+              quality: availabilityQuality,
+            })}
+            onOk={() => void confirm()}
+            cancelText={intl.formatMessage(messages.cancel)}
+            okButtonType="warning"
+            okButtonProps={{}}
+            cancelButtonType="success"
+            loading={busy}
+            okDisabled={
+              busy ||
+              !canClearStaleAvailability(
+                media,
+                mediaType,
+                availabilityQuality,
+                libraryPlan,
+                libraryError
+              )
+            }
+            backgroundClickable={!busy}
+            onCancel={
+              busy
+                ? undefined
+                : () => {
+                    setAction(null);
+                    setAvailabilityQuality(null);
+                  }
+            }
+            actionButtonSize="standard"
+            dialogClass="app-card-main request-modal-site-surface refreshed-detail-text request-action-dialog"
+          >
+            <div className="card-stack">
+              <p className="app-card-inset refreshed-inset-surface app-card-sub request-action-explanation">
+                {displayTitle}
+              </p>
+              <p className="app-card-inset refreshed-inset-surface app-card-sub request-action-explanation">
+                {intl.formatMessage(
+                  messages.clearStaleAvailabilityExplanation,
+                  {
+                    quality: availabilityQuality,
+                    service: mediaType === MediaType.TV ? 'Sonarr' : 'Radarr',
+                  }
                 )}
               </p>
             </div>

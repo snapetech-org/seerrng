@@ -635,6 +635,118 @@ mediaRoutes.get(
   }
 );
 
+mediaRoutes.post(
+  '/:id/library/clear-stale-availability',
+  isAuthenticated(Permission.ADMIN),
+  authorizedRouteAccess(Permission.ADMIN),
+  async (req, res, next) => {
+    const id = parseMediaRouteId(req.params.id);
+    const body = req.body;
+    if (
+      !id ||
+      !body ||
+      typeof body !== 'object' ||
+      Array.isArray(body) ||
+      typeof body.token !== 'string' ||
+      !/^[a-f0-9]{64}$/.test(body.token) ||
+      (body.quality !== 'HD' && body.quality !== '4K')
+    )
+      return next({
+        status: 400,
+        message: 'A current library confirmation and quality are required.',
+      });
+
+    const repository = getRepository(Media);
+    try {
+      const initial = await repository.findOne({
+        where: { id },
+        relations: { identifiers: true },
+      });
+      if (
+        !initial ||
+        (initial.mediaType !== MediaType.MOVIE &&
+          initial.mediaType !== MediaType.TV) ||
+        !areAllMediaTypeCategoriesEnabled(initial.mediaType)
+      )
+        return next({ status: 404, message: 'Media not found.' });
+
+      const quality = body.quality;
+      const is4k = quality === '4K';
+      const statusKey = is4k ? 'status4k' : 'status';
+      return await runAuthorizedUserSecurityMutation(
+        req.user!.id,
+        req.user!.id,
+        Permission.ADMIN,
+        () =>
+          runMediaEntityMutation(initial, async () =>
+            runWithServarrServiceCollectionMutationAdmission(
+              libraryServiceType(initial.mediaType, initial.comicServiceType),
+              async () => {
+                const media = await repository.findOneOrFail({
+                  where: { id },
+                  relations: { identifiers: true, seasons: true },
+                });
+                const resolved = await resolveLibraryRemoval(media);
+                if (
+                  body.token !== resolved.plan.token ||
+                  resolved.plan.verifiedServices === 0 ||
+                  resolved.plan.targets.some(
+                    (target) => target.quality === quality
+                  )
+                )
+                  return next({
+                    status: 409,
+                    message:
+                      'Library availability changed or could not be verified. Refresh and review the current status.',
+                  });
+
+                const staleStatuses = [
+                  MediaStatus.AVAILABLE,
+                  MediaStatus.PARTIALLY_AVAILABLE,
+                ];
+                let changed = false;
+                if (staleStatuses.includes(media[statusKey])) {
+                  media[statusKey] = MediaStatus.UNKNOWN;
+                  changed = true;
+                }
+                if (media.mediaType === MediaType.TV) {
+                  for (const season of media.seasons ?? []) {
+                    if (staleStatuses.includes(season[statusKey])) {
+                      season[statusKey] = MediaStatus.UNKNOWN;
+                      changed = true;
+                    }
+                  }
+                }
+                if (!changed)
+                  return next({
+                    status: 409,
+                    message:
+                      'This availability status is no longer stale. Refresh the media status and try again.',
+                  });
+
+                await repository.save(media);
+                return res.status(204).send();
+              }
+            )
+          )
+      );
+    } catch (error) {
+      if (error instanceof UserMutationActorUnauthorizedError)
+        return next({
+          status: 403,
+          message: 'You no longer have permission to modify media.',
+        });
+      if (error instanceof EntityNotFoundError)
+        return next({ status: 404, message: 'Media not found.' });
+      return next({
+        status: 502,
+        message:
+          'Unable to verify all configured library services. Availability was not changed.',
+      });
+    }
+  }
+);
+
 mediaRoutes.delete(
   '/:id/library',
   isAuthenticated(Permission.ADMIN),
