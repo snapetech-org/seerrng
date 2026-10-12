@@ -11,6 +11,25 @@ import { createDistributedLinuxHostAdapters } from '../tools/validation-engine/r
 
 const sha256 = (value) => createHash('sha256').update(value).digest('hex');
 
+test('concrete adapters refuse unsafe infrastructure startup before process launch', async () => {
+  const adapters = createDistributedLinuxHostAdapters({
+    dockerExecutable: '/nonexistent-audit-docker',
+  });
+  for (const args of [
+    ['create', 'fixture-image'],
+    ['run', 'fixture-image'],
+    ['start', 'fixture'],
+    ['exec', 'fixture', 'node'],
+    ['container', 'create', 'fixture-image'],
+    ['volume', 'create', 'fixture-volume'],
+  ]) {
+    await assert.rejects(
+      adapters.docker.run(args),
+      /repository processes share the infrastructure UID/
+    );
+  }
+});
+
 function fixture() {
   const root = mkdtempSync(join(tmpdir(), 'seerrng-host-adapters-'));
   const script = join(root, 'docker-fixture.mjs');

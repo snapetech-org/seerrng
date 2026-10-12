@@ -15,8 +15,8 @@ import {
 } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { delimiter, join } from 'node:path';
-import { pathToFileURL } from 'node:url';
 import { test } from 'node:test';
+import { pathToFileURL } from 'node:url';
 
 // eslint-disable-next-line no-relative-import-paths/no-relative-import-paths -- Node tooling tests exercise the engine module directly.
 import {
@@ -24,12 +24,24 @@ import {
   createMode1LocalRunnerOptions,
   MODE1_LOCAL_REQUEST_PATH_ENV,
   MODE1_LOCAL_REQUEST_SHA256_ENV,
+  readMode1LocalRequestBytes,
   verifyMode1LocalGitEvidence,
 } from '../tools/validation-engine/runtime/mode1-local-lifecycle.mjs';
 // eslint-disable-next-line no-relative-import-paths/no-relative-import-paths -- Node tooling tests exercise the engine module directly.
 import { appendJsonLineNoFollow } from '../tools/validation-engine/runtime/append-json-line.mjs';
 
 const hash = (value) => createHash('sha256').update(value).digest('hex');
+
+test('Mode 1 rejects shared-UID proof execution before reading supplied paths', () => {
+  assert.throws(
+    () =>
+      createMode1LocalRunnerOptions('/nonexistent-audit-source', {
+        [MODE1_LOCAL_REQUEST_PATH_ENV]: '/nonexistent-audit-request',
+        [MODE1_LOCAL_REQUEST_SHA256_ENV]: 'a'.repeat(64),
+      }),
+    /repository processes share the infrastructure UID/
+  );
+});
 
 function git(directory, ...args) {
   return execFileSync('git', ['-C', directory, ...args], {
@@ -273,14 +285,12 @@ test(
     symlinkSync(target, requestPath);
 
     assert.throws(
-      () =>
-        createMode1LocalRunnerOptions(root, {
-          ...process.env,
-          [MODE1_LOCAL_REQUEST_PATH_ENV]: requestPath,
-          [MODE1_LOCAL_REQUEST_SHA256_ENV]: '0'.repeat(64),
-        }),
+      () => readMode1LocalRequestBytes(requestPath),
       (error) => error.code === 'ELOOP'
     );
+    const ordinary = join(root, 'ordinary.json');
+    writeFileSync(ordinary, '{}\n');
+    assert.equal(readMode1LocalRequestBytes(ordinary).toString('utf8'), '{}\n');
   }
 );
 

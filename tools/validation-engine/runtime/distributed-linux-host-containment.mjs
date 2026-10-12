@@ -4,6 +4,10 @@ import { createHash } from 'node:crypto';
 import { isIP } from 'node:net';
 import { win32 } from 'node:path';
 import path from 'node:path/posix';
+import {
+  assertProofParentExecutionIsolation,
+  isConcreteDistributedLinuxHostAdapters,
+} from './distributed-linux-host-adapters.mjs';
 
 import {
   completeDistributedLinuxHostPreparation,
@@ -3440,6 +3444,13 @@ function verifyProofParentLedger(bytes, callbackLedger, manifest) {
     if (events.filter((value) => value.event === event).length !== 1)
       throw new Error(`Proof parent event count differs: ${event}`);
   const ready = events.find((value) => value.event === 'ready');
+  if (
+    events.some(
+      (value) =>
+        Object.hasOwn(value, 'token') || Object.hasOwn(value, 'restoredToken')
+    )
+  )
+    throw new Error('Proof parent ledger must not retain bearer tokens');
   const terminal = events.find((value) => value.event === 'terminal-network');
   const fixture = events.find((value) => value.event === 'fixture-created');
   const cleanup = events.find((value) => value.event === 'fixture-cleanup');
@@ -3462,10 +3473,12 @@ function verifyProofParentLedger(bytes, callbackLedger, manifest) {
     if (
       begin.length !== 1 ||
       end.length !== 1 ||
-      typeof begin[0].token !== 'string' ||
-      end[0].restoredToken !== begin[0].token ||
+      !HASH64.test(begin[0].tokenSha256 ?? '') ||
+      Object.hasOwn(begin[0], 'token') ||
+      Object.hasOwn(end[0], 'restoredToken') ||
+      end[0].restoredTokenSha256 !== begin[0].tokenSha256 ||
       end[0].guardFailure !== null ||
-      digest(Buffer.from(begin[0].token)) !== callbackLedger.tokenSha256[kind]
+      begin[0].tokenSha256 !== callbackLedger.tokenSha256[kind]
     )
       throw new Error(`Proof parent ${kind} lease reconciliation differs`);
   }
@@ -3711,6 +3724,10 @@ export async function executeDistributedLinuxHostContainment(
   adapterValue,
   { signal } = {}
 ) {
+  // Pure adapter simulations retain protocol coverage. The concrete outer-host
+  // implementation must stop before creating containers or writable volumes.
+  if (isConcreteDistributedLinuxHostAdapters(adapterValue))
+    assertProofParentExecutionIsolation();
   const plan = plainObject(planValue, 'distributed Linux host plan');
   if (plan.schema !== DISTRIBUTED_LINUX_HOST_PLAN_SCHEMA)
     throw new Error('Unsupported distributed Linux host plan schema');

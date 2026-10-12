@@ -27,6 +27,27 @@ Mode 3 is not currently an accepted finalization path. Its implementation and
 documentation must be reconciled with the deferred design decisions identified
 below before activation.
 
+### Proof-parent security restriction
+
+The shared-UID proof-parent helper is blocked for both local and distributed
+execution. It runs repository code as UID 0 alongside privileged control
+sockets and infrastructure logs. Dropping Linux capabilities does not prevent
+that code from accessing another process's sockets and files under the same UID.
+The concrete host adapter refuses infrastructure startup, the Python helper
+refuses execution before privileged operations, and the internal Mode 1 request
+entry rejects this topology before reading the requested files.
+
+Use complete GitHub-hosted Mode 2 validation while this restriction is in place.
+Mode 1 cannot use this proof-parent path to satisfy its required containment gate;
+a blocked run is incomplete. Plans and pure protocol regression fixtures remain
+available, and their results do not prove production containment. Restoring this
+helper requires separate OS identities for repository processes, inaccessible
+proof and Docker control sockets, and infrastructure evidence protected from
+repository writes. Environment flags and capability dropping alone are insufficient.
+
+Retained network-lease evidence contains only token digests. Raw bearer tokens
+are excluded and rejected during evidence reconciliation.
+
 ## Developer commands
 
 Run from the repository root:

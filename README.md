@@ -120,6 +120,7 @@ SeerrNG documentation is maintained in the [docs folder](https://github.com/snap
 - [Install SeerrNG](./docs/getting-started/index.mdx)
 - [Install on Unraid](./docs/getting-started/third-parties/unraid.mdx)
 - [Find books, authors, and series](./docs/using-seerr/books-and-series.md)
+- [Why SeerrNG maintains companion forks](./docs/using-seerr/dependency-forks.md)
 - [ChaptarrNG fork changes and capabilities](https://github.com/snapetech/chaptarrng/blob/main/docs/FORK_FEATURES.md)
 - [Discover and request comics](./docs/using-seerr/comics-backend.md)
 - [Discover and request magazines](./docs/using-seerr/magazines-backend.md)
@@ -257,7 +258,8 @@ systems and ROM acquisition.
 Radarr, Sonarr, Lidarr, LazyLibrarian, Mylar3, Issuarr, Kapowarr, and BackIssue are
 separate upstream or third-party integrations. They are not NG forks. The
 [companion services guide](./docs/using-seerr/companion-services.md) compares
-providers and explains when each NG fork is needed.
+providers, explains what each maintained NG fork provides, and links to the
+[upstream transition criteria](./docs/using-seerr/dependency-forks.md).
 
 ## Bookshelf and Hardcover
 

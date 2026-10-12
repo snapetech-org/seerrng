@@ -131,6 +131,48 @@ class FakeKernel:
 
 
 class ProofParentTests(unittest.TestCase):
+    def test_shared_uid_serve_is_rejected_before_any_privileged_operation(self) -> None:
+        with (
+            mock.patch.object(MODULE, "Kernel") as kernel,
+            mock.patch.object(MODULE.socket, "socket") as socket_factory,
+            mock.patch.object(MODULE.subprocess, "Popen") as spawn,
+            mock.patch.object(MODULE.Path, "read_bytes") as read_bytes,
+        ):
+            with self.assertRaisesRegex(RuntimeError, "infrastructure UID"):
+                MODULE.serve("/nonexistent-config", "a" * 64, "/nonexistent-request", "b" * 64)
+            kernel.assert_not_called()
+            socket_factory.assert_not_called()
+            spawn.assert_not_called()
+            read_bytes.assert_not_called()
+
+    def test_network_lease_bearer_tokens_never_enter_retained_evidence(self) -> None:
+        for kind in ("repository", "distributed"):
+            with self.subTest(kind=kind):
+                normalized = MODULE.normalize_config(config())
+                events = []
+                admission = MODULE.Admission(
+                    normalized, FakeKernel(normalized), events.append,
+                    namespace=lambda: "net:[audit]",
+                )
+                lease = admission.request({
+                    "op": f"{kind}-begin",
+                    "sourceSha256": normalized["sourceSha256"],
+                    "unitId": normalized["network"][f"{kind}UnitId"],
+                })
+                token = lease["token"]
+                restored = admission.request({
+                    "op": f"{kind}-end",
+                    "sourceSha256": normalized["sourceSha256"],
+                    "unitId": normalized["network"][f"{kind}UnitId"],
+                    "token": token,
+                })
+                self.assertEqual(restored["restoredToken"], token)
+                self.assertNotIn(token, json.dumps(events))
+                self.assertNotIn("token", events[0])
+                self.assertNotIn("restoredToken", events[1])
+                self.assertEqual(events[0]["tokenSha256"], digest(token.encode()))
+                self.assertEqual(events[1]["restoredTokenSha256"], digest(token.encode()))
+
     def verify_bridge(
         self, interfaces: dict[str, tuple[str, str]], routes: list[str]
     ) -> dict:

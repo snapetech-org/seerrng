@@ -4,6 +4,8 @@ import { readFileSync } from 'node:fs';
 import { dirname, join, win32 } from 'node:path';
 import { test } from 'node:test';
 import { fileURLToPath } from 'node:url';
+// eslint-disable-next-line no-relative-import-paths/no-relative-import-paths -- Native tooling tests exercise concrete admission without invoking Docker.
+import { createDistributedLinuxHostAdapters } from '../tools/validation-engine/runtime/distributed-linux-host-adapters.mjs';
 
 // eslint-disable-next-line no-relative-import-paths/no-relative-import-paths -- Native tooling tests exercise the engine module directly.
 import { createAdaptiveTimingProfile } from '../tools/validation-engine/runtime/distributed-adaptive-scheduler.mjs';
@@ -1056,20 +1058,20 @@ function proofParentLedgerBytes(fixture) {
     { event: 'fixture-created', fixtureId: 'fixture-id' },
     {
       transition: 'repository-begin',
-      token: repositoryToken,
+      tokenSha256: sha256(Buffer.from(repositoryToken)),
     },
     {
       transition: 'repository-end',
-      restoredToken: repositoryToken,
+      restoredTokenSha256: sha256(Buffer.from(repositoryToken)),
       guardFailure: null,
     },
     {
       transition: 'distributed-begin',
-      token: distributedToken,
+      tokenSha256: sha256(Buffer.from(distributedToken)),
     },
     {
       transition: 'distributed-end',
-      restoredToken: distributedToken,
+      restoredTokenSha256: sha256(Buffer.from(distributedToken)),
       guardFailure: null,
     },
     {
@@ -1108,6 +1110,7 @@ function outerHarness(
     mutateHelperUser = false,
     mutateOuterEvidence = null,
     mutateProductionArtifact = false,
+    retainRawProofToken = false,
     mutateTimingProfileArtifact = false,
     mutateVolume = false,
     mountSourceOverrides = {},
@@ -1380,8 +1383,23 @@ function outerHarness(
       });
     if (containerPath.endsWith('containment-callbacks.jsonl'))
       return callbackLedgerBytes();
-    if (containerPath.endsWith('proof-parent-events.jsonl'))
-      return proofParentLedgerBytes(fixture);
+    if (containerPath.endsWith('proof-parent-events.jsonl')) {
+      const bytes = proofParentLedgerBytes(fixture);
+      if (!retainRawProofToken) return bytes;
+      return Buffer.from(
+        bytes
+          .toString('utf8')
+          .split('\n')
+          .filter(Boolean)
+          .map((line) => {
+            const event = JSON.parse(line);
+            if (event.transition === 'repository-begin')
+              event.token = '1'.repeat(48);
+            return JSON.stringify(event);
+          })
+          .join('\n') + '\n'
+      );
+    }
     const productionRole = fixture.manifest.evidence.artifacts.find(
       (entry) => entry.containerPath === containerPath
     )?.role;
@@ -1664,6 +1682,33 @@ function outerHarness(
     files,
   };
 }
+
+test('concrete host lifecycle rejects shared-UID execution before creating any asset', async () => {
+  const concrete = createDistributedLinuxHostAdapters();
+  for (const adapters of [
+    concrete,
+    { ...concrete },
+    { ...concrete, docker: { ...concrete.docker } },
+  ])
+    await assert.rejects(
+      executeDistributedLinuxHostContainment(null, adapters),
+      /repository processes share the infrastructure UID/
+    );
+});
+
+test('outer reconciliation rejects retained raw bearer tokens despite matching digest evidence', async () => {
+  const fixture = manifestFixture();
+  const plan = createPlan(fixture, { uniqueToken: 'raw-proof-token' });
+  const harness = outerHarness(fixture, plan, { retainRawProofToken: true });
+  await assert.rejects(
+    executeDistributedLinuxHostContainment(plan, harness.adapters)
+  );
+  assert.ok(
+    !harness.writes.some((entry) =>
+      entry.endsWith(DISTRIBUTED_LINUX_HOST_FINAL_MARKER)
+    )
+  );
+});
 
 test('outer lifecycle reconciles evidence, stops assets, retains them, and writes its marker last', async () => {
   const fixture = manifestFixture();

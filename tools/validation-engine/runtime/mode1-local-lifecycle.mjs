@@ -13,6 +13,7 @@ import {
 import path from 'node:path';
 import { performance } from 'node:perf_hooks';
 import { appendJsonLineNoFollow } from './append-json-line.mjs';
+import { assertProofParentExecutionIsolation } from './distributed-linux-host-adapters.mjs';
 import {
   createDistributedLinuxProofSocketAdapter,
   createMode1LinuxHostContainmentCallbacks,
@@ -644,16 +645,26 @@ function runProbe(descriptor, signal) {
   });
 }
 
+/** Read request bytes without granting execution authority. */
+export function readMode1LocalRequestBytes(requestPath) {
+  return readOrdinaryFile(
+    exactPath(requestPath, 'Mode 1 request path'),
+    'Mode 1 request'
+  );
+}
+
 /** Load the run-owned proof callbacks inside the no-flag runner child. */
 export function createMode1LocalRunnerOptions(
   sourceRoot,
   inherited = process.env
 ) {
+  assertProofParentExecutionIsolation();
+
   const requestPath = exactPath(
     inherited[MODE1_LOCAL_REQUEST_PATH_ENV],
     'Mode 1 request path'
   );
-  const requestBytes = readOrdinaryFile(requestPath, 'Mode 1 request');
+  const requestBytes = readMode1LocalRequestBytes(requestPath);
   const requestSha256 = hash(requestBytes);
   if (
     exactDigest(

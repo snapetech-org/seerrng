@@ -19,6 +19,10 @@ recovery, plus Google Books, Library of Congress, Apify, caching, IDs, and
 future provider candidates, see [Bookshelf Metadata Sources and Migration
 Recovery](./bookshelf-metadata-sources.md).
 
+For how BookshelfNG differs from its Readarr-derived parent, which behavior is
+specific to its SeerrNG API, and the upstream features needed to replace the
+fork, see [Maintained dependency forks](./dependency-forks.md#bookshelfng).
+
 ## One BookshelfNG instance for both formats
 
 One BookshelfNG instance and database can manage ebooks and audiobooks on the

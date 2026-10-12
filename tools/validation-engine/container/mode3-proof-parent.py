@@ -30,6 +30,11 @@ if sys.platform != "win32":
 
 SCHEMA = "seerrng-distributed-linux-proof-parent/v1"
 SOCKET_LIMIT = 16_384
+SHARED_UID_EXECUTION_BLOCKER = (
+    "Proof-parent execution is blocked: repository processes share the "
+    "infrastructure UID and can access its control sockets. Use hosted Mode 2 "
+    "until native processes have a separate identity and inaccessible control sockets."
+)
 CONTAINED_REQUEST_SHA256_ENV = "SEERR_MODE3_CONTAINED_REQUEST_SHA256"
 MODE1_LOCAL_REQUEST_PATH_ENV = "SEERR_MODE1_LOCAL_REQUEST_PATH"
 MODE1_LOCAL_REQUEST_SHA256_ENV = "SEERR_MODE1_LOCAL_REQUEST_SHA256"
@@ -772,7 +777,10 @@ class Admission:
         result = {**self.observe(), "token": self.token, "unitId": unit_id}
         if mode == self.config["network"]["distributedMode"]:
             result["allowedEndpoints"] = self.config["network"]["distributedEndpoints"]
-        self.record({"transition": transition, **result})
+        # A lease is a bearer credential, not retained evidence. Record only
+        # its digest; the raw value belongs exclusively to the RPC response.
+        evidence = {key: value for key, value in result.items() if key != "token"}
+        self.record({"transition": transition, **evidence, "tokenSha256": sha256(self.token.encode())})
         return result
 
     def end(self, token: Any, unit_id: Any, transition: str) -> dict[str, Any]:
@@ -793,7 +801,8 @@ class Admission:
         if self.frozen != self.baseline_frozen:
             guard_error = guard_error or "Original network policy was not restored"
         result = {**self.observe(), "restoredToken": restored_token, "guardFailure": guard_error}
-        self.record({"transition": transition, **result})
+        evidence = {key: value for key, value in result.items() if key != "restoredToken"}
+        self.record({"transition": transition, **evidence, "restoredTokenSha256": sha256(restored_token.encode())})
         if guard_error:
             raise RuntimeError(guard_error)
         return result
@@ -977,12 +986,22 @@ def verify_contained_request(path_value: str, expected_sha: str) -> bytes:
     return raw
 
 
+def assert_execution_isolation() -> None:
+    raise RuntimeError(SHARED_UID_EXECUTION_BLOCKER)
+
+
 def serve(
     config_path: str,
     expected_sha: str,
     request_path_value: str,
     request_sha256: str,
 ) -> int:
+    # Dropping capabilities does not separate uid0 repository code from the
+    # proof parent or the privileged Docker socket in their shared state mount.
+    # Refuse this topology before reading paths, opening sockets, changing
+    # firewall rules, or starting either infrastructure or repository processes.
+    assert_execution_isolation()
+
     raw = Path(config_path).read_bytes()
     if sha256(raw) != exact_digest(expected_sha, "proof config hash"):
         raise ValueError("Read-only proof config changed")

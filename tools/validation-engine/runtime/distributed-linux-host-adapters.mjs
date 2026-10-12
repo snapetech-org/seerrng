@@ -14,6 +14,22 @@ const DEFAULT_TERMINATION_GRACE_MS = 2_000;
 const DEFAULT_TERMINATION_HARD_MS = 5_000;
 const MAX_ARGUMENTS = 4_096;
 const MAX_ARGUMENT_BYTES = 2 * 1_024 * 1_024;
+const concreteAdapters = new WeakSet();
+
+export const PROOF_PARENT_EXECUTION_BLOCKER =
+  'Proof-parent execution is blocked: repository processes share the infrastructure UID and can access its control sockets. Use hosted Mode 2 until native processes have a separate identity and inaccessible control sockets.';
+
+export function assertProofParentExecutionIsolation() {
+  throw new Error(PROOF_PARENT_EXECUTION_BLOCKER);
+}
+
+export function isConcreteDistributedLinuxHostAdapters(value) {
+  return (
+    concreteAdapters.has(value) ||
+    concreteAdapters.has(value?.docker) ||
+    concreteAdapters.has(value?.docker?.run)
+  );
+}
 
 function positiveInteger(value, label) {
   if (!Number.isSafeInteger(value) || value < 1)
@@ -128,6 +144,15 @@ function createCommandRunner({
     } = {}
   ) {
     const args = normalizeArguments(argumentValue, 'Docker arguments');
+    // Keep the prohibition on the concrete command closure too: copying or
+    // normalizing the adapter object must not restore infrastructure startup.
+    if (
+      ['create', 'run', 'start', 'exec'].includes(args[0]) ||
+      (args[0] === 'container' &&
+        ['create', 'run', 'start', 'exec'].includes(args[1])) ||
+      (args[0] === 'volume' && args[1] === 'create')
+    )
+      assertProofParentExecutionIsolation();
     const signal = normalizeSignal(signalValue);
     nonEmptyText(id, 'Docker command id');
     if (typeof cleanup !== 'boolean')
@@ -416,7 +441,7 @@ export function createDistributedLinuxHostAdapters({
     'Docker inspection timeout'
   );
   const run = createCommandRunner(options);
-  return Object.freeze({
+  const adapters = Object.freeze({
     docker: Object.freeze({
       run,
       inspectContainer: createInspector(
@@ -438,4 +463,8 @@ export function createDistributedLinuxHostAdapters({
       uniqueToken: () => randomBytes(16).toString('hex'),
     }),
   });
+  concreteAdapters.add(adapters);
+  concreteAdapters.add(adapters.docker);
+  concreteAdapters.add(adapters.docker.run);
+  return adapters;
 }

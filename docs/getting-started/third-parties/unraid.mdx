@@ -43,14 +43,17 @@ catalog does not show an optional fork, use its manual template and setup guide
 above. Complete the service's own setup before connecting it to SeerrNG.
 
 BookshelfNG, ChaptarrNG, ROMarrNG, and QuestarrNG are Snapetech NG forks that
-work independently and add SeerrNG integration APIs. ChaptarrNG is the
-maintained Chaptarr fork; we keep it so SeerrNG can depend on format-scoped
-book requests and durable tracking for author imports that complete
-asynchronously. Its Unraid profile and template live in the dedicated
+work independently and add SeerrNG integration APIs. Their standalone features,
+SeerrNG-specific behavior, and upstream replacement criteria are documented in
+the [maintained fork guide](/using-seerr/dependency-forks). ChaptarrNG is the
+maintained Chaptarr fork; SeerrNG uses its capability-discovered format routes,
+provider identity, and restricted service key. The upstream Chaptarr project
+also has pending author imports, so pending imports alone do not distinguish
+the NG integration. Its Unraid profile and template live in the dedicated
 [ChaptarrNG Unraid package repository](https://github.com/snapetech/chaptarrng-unraid).
-The public `v0.9.937` GHCR image is available. Pin
-`ghcr.io/snapetech/chaptarrng:0.9.937` for a reproducible install. The template
-is not listed in Community Apps yet; submit
+Use the current stable image or a versioned tag listed in the
+[ChaptarrNG release history](https://github.com/snapetech/chaptarrng/releases).
+The template is not listed in Community Apps yet; submit
 `https://github.com/snapetech/chaptarrng-unraid` there to make it searchable.
 Use the
 [SeerrNG issue tracker](https://github.com/snapetech/seerrng/issues) for
