@@ -14,6 +14,9 @@ runs as a standalone application; SeerrNG does not bundle, install, or launch
 them. They become dependencies only for the media categories and workflows an
 operator enables.
 
+For the broader reason SeerrNG itself remains a fork, how its changes may be
+upstreamed, and what could replace the fork, see [Why SeerrNG is a fork](../fork-rationale.md).
+
 ## Why maintain forks
 
 SeerrNG owns request discovery, approval, quotas, requester identity, and

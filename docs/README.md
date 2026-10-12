@@ -59,6 +59,7 @@ connects to.
 
 ## Integrate and contribute
 
+- [Why SeerrNG is a fork and how upstreaming could retire it](/fork-rationale/)
 - [REST API reference](/api/seerr-api/)
 - [Third-party client compatibility](/using-seerr/third-party-client-compatibility/)
 - [Contribution guidelines](https://github.com/snapetech/seerrng/blob/main/CONTRIBUTING.md)

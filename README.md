@@ -17,7 +17,7 @@
 
 SeerrNG is a self-hosted request and discovery app for personal media libraries. It extends the Seerr/Jellyseerr/Overseerr lineage beyond movies and TV into music, books, comics, magazines, emulation ROMs, and PC games while keeping the familiar request approval workflow for Plex, Jellyfin, Emby, and automation-service users.
 
-This fork is maintained by snapetech. Upstream Seerr remains the base project for inherited video, user, server, and deployment behavior; SeerrNG-specific work focuses on multi-format media requests, service routing, caching, and fork-owned packaging/docs. See [NOTICE.md](./NOTICE.md) for attribution rules.
+SeerrNG is maintained by snapetech as a separate fork so we can move quickly on cross-media workflows and test ambitious features while keeping Seerr as the base for inherited video, user, server, and deployment behavior. The fork gives us room to develop and validate ideas before proposing them upstream; it does not presume that upstream should adopt every feature or the entire product direction. See [why SeerrNG is a fork](./docs/fork-rationale.md) for the rationale, integration changes, and conditions that could let upstream equivalents replace the fork, and [NOTICE.md](./NOTICE.md) for attribution rules.
 
 ## Contents
 
@@ -34,6 +34,7 @@ This fork is maintained by snapetech. Upstream Seerr remains the base project fo
   - [Configure comics](./docs/using-seerr/comics-backend.md)
   - [Configure magazines](./docs/using-seerr/magazines-backend.md)
   - [Companion services and SeerrNG NG forks](./docs/using-seerr/companion-services.md)
+  - [Why SeerrNG is a fork and what could retire it](./docs/fork-rationale.md)
   - [Cross-platform setup assistant](./docs/using-seerr/setup-assistant.md)
   - [Indexer searches by media category](./docs/using-seerr/indexer-searches.md)
   - [Configure services](./docs/using-seerr/settings/services.md)
@@ -121,6 +122,7 @@ SeerrNG documentation is maintained in the [docs folder](https://github.com/snap
 - [Install on Unraid](./docs/getting-started/third-parties/unraid.mdx)
 - [Find books, authors, and series](./docs/using-seerr/books-and-series.md)
 - [Why SeerrNG maintains companion forks](./docs/using-seerr/dependency-forks.md)
+- [Why SeerrNG is a fork and what could retire it](./docs/fork-rationale.md)
 - [ChaptarrNG fork changes and capabilities](https://github.com/snapetech/chaptarrng/blob/main/docs/FORK_FEATURES.md)
 - [Discover and request comics](./docs/using-seerr/comics-backend.md)
 - [Discover and request magazines](./docs/using-seerr/magazines-backend.md)
