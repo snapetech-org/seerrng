@@ -2387,6 +2387,49 @@ describe('GET /request', () => {
     assert.ok(Array.isArray(res.body.results));
   });
 
+  it('sorts added requests by creation time and uses request IDs to break ties', async () => {
+    const laterCreated = await seedRequest(
+      MediaRequestStatus.PENDING,
+      new Date('2026-10-02T00:00:00.000Z'),
+      987660
+    );
+    const earlierCreated = await seedRequest(
+      MediaRequestStatus.PENDING,
+      new Date('2026-10-01T00:00:00.000Z'),
+      987661
+    );
+    const laterCreatedWithHigherId = await seedRequest(
+      MediaRequestStatus.PENDING,
+      new Date('2026-10-02T00:00:00.000Z'),
+      987662
+    );
+    const agent = await loginAs('admin@seerr.dev', 'test1234');
+
+    const getAddedRequestIds = async (sortDirection: 'asc' | 'desc') => {
+      const response = await agent.get('/request').query({
+        filter: 'pending',
+        mediaType: 'movie',
+        take: 10,
+        sort: 'added',
+        sortDirection,
+        skip: 0,
+      });
+      assert.strictEqual(response.status, 200);
+      return response.body.results.map((item: { id: number }) => item.id);
+    };
+
+    assert.deepStrictEqual(await getAddedRequestIds('desc'), [
+      laterCreatedWithHigherId.id,
+      laterCreated.id,
+      earlierCreated.id,
+    ]);
+    assert.deepStrictEqual(await getAddedRequestIds('asc'), [
+      earlierCreated.id,
+      laterCreated.id,
+      laterCreatedWithHigherId.id,
+    ]);
+  });
+
   it('accepts the recent requests slider query', async () => {
     const deletedRequest = await seedRequest(
       MediaRequestStatus.COMPLETED,
