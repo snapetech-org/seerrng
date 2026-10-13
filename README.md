@@ -125,7 +125,14 @@ and safe recovery for TV requests with missing TVDB identifiers
 failure categories that avoid storing raw provider messages
 ([#263](https://github.com/snapetech/seerrng/pull/263)), and visible failure
 guidance with an alternate TV listing search for season-number mismatches
-([#264](https://github.com/snapetech/seerrng/pull/264)).
+([#264](https://github.com/snapetech/seerrng/pull/264)). The review index also
+covers bounded Node test workers in hosted validation
+([#265](https://github.com/snapetech/seerrng/pull/265)) and a proposed manual
+TVDB season-mapping recovery path for selected Sonarr destinations
+([#276](https://github.com/snapetech-org/seerrng/pull/276)), informed by
+[Seerr PR #3495](https://github.com/seerr-team/seerr/pull/3495) and
+[Seerr PR #3496](https://github.com/seerr-team/seerr/pull/3496). These open
+proposals are not released features.
 
 Release notes are maintained in [`CHANGELOG.md`](./CHANGELOG.md). User-facing
 pull requests add a concise release-note fragment under
