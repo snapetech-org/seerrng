@@ -197,7 +197,10 @@ For Chaptarr specifically, that release gate includes the combined
 ChaptarrNG-plus-ported-BookshelfNG feature set, not just the SeerrNG API
 contract. The BookshelfNG consolidation and the later ChaptarrNG upstream
 retirement are separate transitions, each requiring its own populated-data and
-distribution proof.
+distribution proof. Active ChaptarrNG branches and open feature PRs count
+before release too; the combined matrix tracks the current backlog features,
+integrations, localization, proposed channel changes, and the individual
+retirement checks.
 
 Keep any fork that still supplies standalone functionality operators rely on,
 even if its SeerrNG contract has been upstreamed. Recheck parent branches before
