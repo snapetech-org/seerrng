@@ -83,6 +83,22 @@ describe('csrfTokenCookie', () => {
       .expect(204);
   });
 
+  it('lets the signed Slack callback reach its own request verification', async () => {
+    const app = express();
+    app.use(cookieParser());
+    app.use(csrfProtection());
+    app.use(csrfTokenCookie(false));
+    app.post('/api/v1/notifications/slack/actions', (_req, res) =>
+      res.sendStatus(204)
+    );
+
+    await request(app)
+      .post('/api/v1/notifications/slack/actions')
+      .type('form')
+      .send({ payload: '{}' })
+      .expect(204);
+  });
+
   it('secures both CSRF cookies behind a trusted HTTPS terminator', async () => {
     const response = await request(
       createTransportAwareApp({ trustProxy: true })

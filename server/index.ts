@@ -31,6 +31,7 @@ import SlackAgent from '@server/lib/notifications/agents/slack';
 import TelegramAgent from '@server/lib/notifications/agents/telegram';
 import WebhookAgent from '@server/lib/notifications/agents/webhook';
 import WebPushAgent from '@server/lib/notifications/agents/webpush';
+import { isSlackActionCallbackUrl } from '@server/lib/notifications/slackActions';
 import checkOverseerrMerge from '@server/lib/overseerrMerge';
 import requestDispatchManager from '@server/lib/requestDispatch';
 import { getSettings } from '@server/lib/settings';
@@ -349,6 +350,11 @@ Promise.resolve()
           extended: true,
           limit: API_BODY_LIMIT,
           parameterLimit: API_URLENCODED_PARAMETER_LIMIT,
+          verify: (req, _res, buffer) => {
+            if (isSlackActionCallbackUrl(req.method, req.url)) {
+              req.rawBody = Buffer.from(buffer);
+            }
+          },
         })
       );
       server.use(metricsMiddleware);

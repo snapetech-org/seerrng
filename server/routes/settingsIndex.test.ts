@@ -2166,7 +2166,81 @@ describe('Settings route input validation', () => {
     assert.deepStrictEqual(getSettings().notifications.agents.slack.options, {
       webhookUrl: 'https://example.com/slack',
       locale: 'en',
+      requestActionsEnabled: false,
+      workspaceId: '',
+      signingSecret: '',
+      requestManagerMappings: '',
     });
+  });
+
+  it('validates, redacts, and preserves Slack request action settings', async () => {
+    const settings = getSettings();
+    const original = structuredClone(settings.notifications.agents.slack);
+
+    try {
+      const configured = await request(app)
+        .post('/settings/notifications/slack')
+        .send({
+          enabled: false,
+          embedPoster: true,
+          types: 0,
+          options: {
+            webhookUrl: '',
+            locale: 'en',
+            requestActionsEnabled: true,
+            workspaceId: 'T123456',
+            signingSecret: 'slack-signing-secret-value-123456',
+            requestManagerMappings: 'U123456=1',
+          },
+        });
+      const getResponse = await request(app).get(
+        '/settings/notifications/slack'
+      );
+      const legacyClientSave = await request(app)
+        .post('/settings/notifications/slack')
+        .send({
+          enabled: false,
+          embedPoster: true,
+          types: 0,
+          options: { webhookUrl: '', locale: 'en' },
+        });
+      const nonManager = await request(app)
+        .post('/settings/notifications/slack')
+        .send({
+          enabled: false,
+          embedPoster: true,
+          types: 0,
+          options: {
+            webhookUrl: '',
+            locale: 'en',
+            requestActionsEnabled: true,
+            workspaceId: 'T123456',
+            signingSecret: 'slack-signing-secret-value-123456',
+            requestManagerMappings: 'U123456=2',
+          },
+        });
+
+      assert.strictEqual(configured.status, 200);
+      assert.strictEqual(getResponse.status, 200);
+      assert.strictEqual(getResponse.body.options.signingSecret, '[REDACTED]');
+      assert.notEqual(
+        JSON.stringify(getResponse.body),
+        JSON.stringify(settings.notifications.agents.slack)
+      );
+      assert.strictEqual(legacyClientSave.status, 200);
+      assert.strictEqual(
+        settings.notifications.agents.slack.options.requestActionsEnabled,
+        true
+      );
+      assert.strictEqual(
+        settings.notifications.agents.slack.options.signingSecret,
+        'slack-signing-secret-value-123456'
+      );
+      assert.strictEqual(nonManager.status, 400);
+      assert.match(nonManager.body.message, /request management permission/);
+    } finally {
+      settings.notifications.agents.slack = original;
+    }
   });
 
   it('restores notification settings when persistence fails', async () => {

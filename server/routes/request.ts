@@ -77,6 +77,12 @@ import {
   REQUEST_STATUS_SORT_FIELDS,
   parseRequestStatusSort,
 } from '@server/lib/requestStatusSort';
+import {
+  PendingRequestTransitionConflictError,
+  PendingRequestTransitionNotFoundError,
+  transitionPendingMediaRequest,
+  validateExternalServiceConfiguration,
+} from '@server/lib/requestTransition';
 import requestWorkCleanupManager, {
   RequestWorkCleanupError,
 } from '@server/lib/requestWorkCleanup';
@@ -87,7 +93,6 @@ import {
   UserMutationActorUnauthorizedError,
   acquireAuthorizedUserSecurityMutation,
   isUserCredentialVersionCurrent,
-  runAuthorizedUserSecurityMutation,
   runUserSecurityMutation,
   runUserSecurityMutationWithActor,
   runUserSecurityReadWithActor,
@@ -599,7 +604,7 @@ const formatEpisodeQueueSetting = (episodeCount: number): string =>
 
 const parseRequestStatusAction = (
   status: unknown
-): MediaRequestStatus | undefined => {
+): MediaRequestStatus.APPROVED | MediaRequestStatus.DECLINED | undefined => {
   switch (status) {
     case 'approve':
       return MediaRequestStatus.APPROVED;
@@ -1544,171 +1549,6 @@ const sanitizeBulkMediaRequestBody = (
       tags: sanitized.value.tags,
     },
   };
-};
-
-const validateExternalServiceConfiguration = (
-  requestType: MediaType,
-  serverId?: number | null,
-  bookFormat?: 'ebook' | 'audiobook' | 'both' | null,
-  is4k = false
-) => {
-  const settings = getExternalRuntimeConfig();
-
-  if (requestType === MediaType.MOVIE || requestType === MediaType.TV) {
-    if (serverId === undefined || serverId === null) {
-      return;
-    }
-    const selectedServer =
-      requestType === MediaType.MOVIE
-        ? settings.radarr.find(({ id }) => id === serverId)
-        : settings.sonarr.find(({ id }) => id === serverId);
-    if (!selectedServer) {
-      throw new ServiceConfigurationError(
-        `The selected ${
-          requestType === MediaType.MOVIE ? 'Radarr' : 'Sonarr'
-        } server no longer exists.`
-      );
-    }
-    if (selectedServer.is4k !== is4k) {
-      throw new ServiceConfigurationError(
-        `The selected ${
-          requestType === MediaType.MOVIE ? 'Radarr' : 'Sonarr'
-        } server does not match the requested quality tier.`
-      );
-    }
-    return;
-  }
-
-  if (requestType === MediaType.MUSIC) {
-    if (serverId === undefined || serverId === null) {
-      if (!settings.lidarr.some((lidarr) => lidarr.isDefault)) {
-        throw new ServiceConfigurationError(
-          'No default Lidarr server is configured for music requests.'
-        );
-      }
-
-      return;
-    }
-
-    if (!settings.lidarr.some((lidarr) => lidarr.id === serverId)) {
-      throw new ServiceConfigurationError(
-        'The selected Lidarr server no longer exists.'
-      );
-    }
-  }
-
-  if (requestType === MediaType.BOOK) {
-    const requestedFormat = bookFormat ?? 'ebook';
-
-    if (serverId === undefined || serverId === null) {
-      const hasDefaultEbook = settings.readarr.some(
-        (readarr) =>
-          readarr.isDefault && (readarr.serviceType ?? 'ebook') === 'ebook'
-      );
-      const hasDefaultAudiobook = settings.readarr.some(
-        (readarr) => readarr.isDefault && readarr.serviceType === 'audiobook'
-      );
-
-      if (requestedFormat === 'both') {
-        if (!hasDefaultEbook || !hasDefaultAudiobook) {
-          throw new ServiceConfigurationError(
-            'Both-format book requests require default ebook and audiobook Bookshelf services.'
-          );
-        }
-
-        return;
-      }
-
-      if (
-        (requestedFormat === 'ebook' && !hasDefaultEbook) ||
-        (requestedFormat === 'audiobook' && !hasDefaultAudiobook)
-      ) {
-        throw new ServiceConfigurationError(
-          `No default ${requestedFormat} Bookshelf server is configured for book requests.`
-        );
-      }
-
-      return;
-    }
-
-    const selectedReadarr = settings.readarr.find(
-      (readarr) => readarr.id === serverId
-    );
-
-    if (!selectedReadarr) {
-      throw new ServiceConfigurationError(
-        'The selected Bookshelf server no longer exists.'
-      );
-    }
-
-    if (requestedFormat === 'both') {
-      if ((selectedReadarr.serviceType ?? 'ebook') !== 'ebook') {
-        throw new ServiceConfigurationError(
-          'The selected Bookshelf server is configured for audiobook requests, not ebook requests.'
-        );
-      }
-      if (
-        !settings.readarr.some(
-          (readarr) => readarr.isDefault && readarr.serviceType === 'audiobook'
-        )
-      ) {
-        throw new ServiceConfigurationError(
-          'Both-format book requests require a default audiobook Bookshelf service.'
-        );
-      }
-      return;
-    }
-
-    const selectedReadarrServiceType = selectedReadarr.serviceType ?? 'ebook';
-
-    if (selectedReadarrServiceType !== requestedFormat) {
-      throw new ServiceConfigurationError(
-        `The selected Bookshelf server is configured for ${selectedReadarrServiceType} requests, not ${requestedFormat} requests.`
-      );
-    }
-  }
-
-  if (requestType === MediaType.COMIC) {
-    if (serverId === undefined || serverId === null) {
-      if (
-        !settings.mylar.some((mylar) => mylar.isDefault) &&
-        !settings.kapowarr.some((kapowarr) => kapowarr.isDefault) &&
-        !settings.backissue.some((backissue) => backissue.isDefault)
-      ) {
-        throw new ServiceConfigurationError(
-          'No default comic service is configured for comic requests.'
-        );
-      }
-      return;
-    }
-
-    if (
-      !settings.mylar.some((mylar) => mylar.id === serverId) &&
-      !settings.kapowarr.some((kapowarr) => kapowarr.id === serverId) &&
-      !settings.backissue.some((backissue) => backissue.id === serverId)
-    ) {
-      throw new ServiceConfigurationError(
-        'The selected comics server no longer exists.'
-      );
-    }
-  }
-
-  if (requestType === MediaType.MAGAZINE) {
-    if (serverId === undefined || serverId === null) {
-      if (!settings.lazylibrarian.some((service) => service.isDefault)) {
-        throw new ServiceConfigurationError(
-          'No default LazyLibrarian server is configured for magazine requests.'
-        );
-      }
-      return;
-    }
-
-    if (!settings.lazylibrarian.some((service) => service.id === serverId)) {
-      throw new ServiceConfigurationError(
-        'The selected LazyLibrarian server no longer exists.'
-      );
-    }
-  }
 };
 
 const inactiveMediaRequestStatuses = [
@@ -4930,8 +4770,6 @@ requestRoutes.post<{
   '/:requestId/:status',
   isAuthenticated(Permission.MANAGE_REQUESTS),
   async (req, res, next) => {
-    const requestRepository = getRepository(MediaRequest);
-
     try {
       const requestId = parseRequestParamId(req.params.requestId);
       if (!requestId) {
@@ -4942,64 +4780,35 @@ requestRoutes.post<{
         return next({ status: 404, message: 'Request not found.' });
       }
 
-      return await runAuthorizedUserSecurityMutation(
+      const request = await transitionPendingMediaRequest(
+        requestId,
         req.user!.id,
-        req.user!.id,
-        Permission.MANAGE_REQUESTS,
-        (actor) =>
-          runWithRequestAdmission(
-            [getRequestMutationAdmissionKey(requestId)],
-            async () => {
-              const request = await requestRepository.findOneOrFail({
-                where: { id: requestId },
-                relations: { requestedBy: true, modifiedBy: true },
-              });
-
-              if (request.status !== MediaRequestStatus.PENDING) {
-                return next({
-                  status: 409,
-                  message: 'Only pending requests can be approved or declined.',
-                });
-              }
-
-              if (newStatus === MediaRequestStatus.APPROVED) {
-                validateExternalServiceConfiguration(
-                  request.type,
-                  request.serverId,
-                  request.bookFormat,
-                  request.is4k
-                );
-              }
-
-              request.status = newStatus;
-              request.modifiedBy = actor;
-              await requestRepository.save(request);
-
-              return res
-                .status(200)
-                .json(filterEntityResponse(request, req.user));
-            }
-          ),
-        {
-          expectedCredentialVersion: getExpectedCredentialVersion(req),
-        }
+        newStatus,
+        getExpectedCredentialVersion(req)
       );
-    } catch (e) {
-      if (e instanceof UserMutationActorUnauthorizedError) {
+      return res.status(200).json(filterEntityResponse(request, req.user));
+    } catch (error) {
+      if (error instanceof UserMutationActorUnauthorizedError) {
         return next({
           status: 403,
           message: 'You do not have permission to update this request.',
         });
       }
-      if (e instanceof ServiceConfigurationError) {
-        return next({ status: 400, message: e.message });
+      if (error instanceof PendingRequestTransitionConflictError) {
+        return next({ status: error.status, message: error.message });
+      }
+      if (error instanceof PendingRequestTransitionNotFoundError) {
+        return next({ status: error.status, message: error.message });
+      }
+      if (error instanceof ServiceConfigurationError) {
+        return next({ status: 400, message: error.message });
       }
 
       logger.error('Error processing request update', {
         label: 'Media Request',
-        message: e.message,
+        message: error instanceof Error ? error.message : String(error),
       });
-      next({ status: 404, message: 'Request not found.' });
+      return next({ status: 404, message: 'Request not found.' });
     }
   }
 );

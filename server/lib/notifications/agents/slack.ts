@@ -5,6 +5,10 @@ import {
   getExternalNotificationAgent,
   getExternalRuntimeConfig,
 } from '@server/lib/externalRuntimeConfig';
+import {
+  createSlackRequestActionValue,
+  isValidSlackRequestActionSettings,
+} from '@server/lib/notifications/slackActions';
 import type { NotificationAgentSlack } from '@server/lib/settings';
 import { NotificationAgentKey } from '@server/lib/settings';
 import logger from '@server/logger';
@@ -43,6 +47,12 @@ interface Element {
   url?: string;
   value?: string;
   style?: 'primary' | 'danger';
+  confirm?: {
+    title: TextItem;
+    text: TextItem;
+    confirm: TextItem;
+    deny: TextItem;
+  };
 }
 
 interface EmbedBlock {
@@ -271,24 +281,93 @@ class SlackAgent
       });
     }
 
-    const url = getNotificationActionUrl(payload, applicationUrl);
-
-    if (url) {
-      blocks.push({
-        type: 'actions',
-        elements: [
+    const elements: Element[] = [];
+    if (
+      type === Notification.MEDIA_PENDING &&
+      payload.request &&
+      settings.options.requestActionsEnabled === true &&
+      isValidSlackRequestActionSettings(settings.options)
+    ) {
+      const { workspaceId, signingSecret } = settings.options;
+      const approveValue = createSlackRequestActionValue(
+        workspaceId!,
+        payload.request.id,
+        'approve',
+        signingSecret!
+      );
+      const declineValue = createSlackRequestActionValue(
+        workspaceId!,
+        payload.request.id,
+        'decline',
+        signingSecret!
+      );
+      if (approveValue && declineValue) {
+        elements.push(
           {
-            action_id: 'open-in-seerr',
+            action_id: 'seerrng-request-approve',
             type: 'button',
-            url,
+            value: approveValue,
+            style: 'primary',
             text: {
               type: 'plain_text',
-              text: intl.formatMessage(getNotificationActionLabel(payload), {
-                applicationTitle,
-              }),
+              text: intl.formatMessage(globalMessages.approve),
             },
           },
-        ],
+          {
+            action_id: 'seerrng-request-decline',
+            type: 'button',
+            value: declineValue,
+            style: 'danger',
+            confirm: {
+              title: {
+                type: 'plain_text',
+                text: intl.formatMessage(
+                  globalMessages.declineRequestConfirmTitle
+                ),
+              },
+              text: {
+                type: 'mrkdwn',
+                text: intl.formatMessage(
+                  globalMessages.declineRequestConfirmText
+                ),
+              },
+              confirm: {
+                type: 'plain_text',
+                text: intl.formatMessage(globalMessages.decline),
+              },
+              deny: {
+                type: 'plain_text',
+                text: intl.formatMessage(globalMessages.cancel),
+              },
+            },
+            text: {
+              type: 'plain_text',
+              text: intl.formatMessage(globalMessages.decline),
+            },
+          }
+        );
+      }
+    }
+
+    const url = getNotificationActionUrl(payload, applicationUrl);
+    if (url) {
+      elements.push({
+        action_id: 'open-in-seerr',
+        type: 'button',
+        url,
+        text: {
+          type: 'plain_text',
+          text: intl.formatMessage(getNotificationActionLabel(payload), {
+            applicationTitle,
+          }),
+        },
+      });
+    }
+
+    if (elements.length > 0) {
+      blocks.push({
+        type: 'actions',
+        elements,
       });
     }
 

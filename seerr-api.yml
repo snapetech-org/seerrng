@@ -5752,6 +5752,17 @@ components:
           properties:
             webhookUrl:
               type: string
+            locale:
+              type: string
+            requestActionsEnabled:
+              type: boolean
+            workspaceId:
+              type: string
+            signingSecret:
+              type: string
+              description: Stored signing secrets are redacted in responses.
+            requestManagerMappings:
+              type: string
     WebPushSettings:
       type: object
       properties:
@@ -19841,6 +19852,35 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/MediaRatings'
+  /notifications/slack/actions:
+    post:
+      summary: Apply an authorized Slack request action
+      description: Accepts signed Slack block-action callbacks for pending request approval or decline.
+      tags:
+        - notifications
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              required:
+                - payload
+              properties:
+                payload:
+                  type: string
+      responses:
+        '200':
+          description: Slack action acknowledged; request processing continues asynchronously.
+        '401':
+          description: Slack request signature is invalid or stale.
+        '404':
+          description: Slack request actions are not enabled.
+        '415':
+          description: Callback must use application/x-www-form-urlencoded.
+        '429':
+          description: Callback rate limit exceeded.
   /person/{personId}:
     get:
       summary: Get person details

@@ -1,3 +1,4 @@
+import { isSlackActionCallbackRequest } from '@server/lib/notifications/slackActions';
 import type { Request, RequestHandler } from 'express';
 import { isJellyfinBridgeAuthRequest } from './csrfProtection';
 
@@ -5,7 +6,7 @@ type SecureCookiePolicy = boolean | ((req: Request) => boolean);
 
 export const csrfTokenCookie = (secure: SecureCookiePolicy): RequestHandler =>
   function setCsrfTokenCookie(req, res, next) {
-    if (isJellyfinBridgeAuthRequest(req)) {
+    if (isJellyfinBridgeAuthRequest(req) || isSlackActionCallbackRequest(req)) {
       return next();
     }
 
