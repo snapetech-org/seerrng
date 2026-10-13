@@ -131,12 +131,13 @@ describe('GET /avatarproxy/remote', () => {
   it('never sends media-server authorization to public avatar providers', async () => {
     const authorizationHeaders: unknown[] = [];
     mockAvatarDependencies(async (proxy) => {
+      const headers = (
+        proxy as unknown as {
+          axios: { defaults: { headers: Record<string, unknown> } };
+        }
+      ).axios.defaults.headers;
       authorizationHeaders.push(
-        (
-          proxy as unknown as {
-            axios: { defaults: { headers: Record<string, unknown> } };
-          }
-        ).axios.defaults.headers['X-Emby-Authorization']
+        headers.Authorization ?? headers['X-Emby-Authorization']
       );
       return avatarResponse;
     });
@@ -329,21 +330,20 @@ describe('GET /avatarproxy/:jellyfinUserId', () => {
   it('rotates authenticated proxies when media-server credentials change', async () => {
     const settings = getSettings();
     const originalApiKey = settings.jellyfin.apiKey;
+    const originalMediaServerType = settings.main.mediaServerType;
     const authorizationHeaders: string[] = [];
     mockAvatarDependencies(async (proxy) => {
-      authorizationHeaders.push(
-        String(
-          (
-            proxy as unknown as {
-              axios: { defaults: { headers: Record<string, unknown> } };
-            }
-          ).axios.defaults.headers['X-Emby-Authorization']
-        )
-      );
+      const headers = (
+        proxy as unknown as {
+          axios: { defaults: { headers: Record<string, unknown> } };
+        }
+      ).axios.defaults.headers;
+      authorizationHeaders.push(String(headers.Authorization));
       return avatarResponse;
     });
 
     try {
+      settings.main.mediaServerType = MediaServerType.JELLYFIN;
       settings.jellyfin.apiKey = 'first-avatar-token';
       const firstSettingsKey = getAvatarImageProxySettingsKey();
       const first = await request(createApp()).get(
@@ -363,17 +363,53 @@ describe('GET /avatarproxy/:jellyfinUserId', () => {
       assert.match(authorizationHeaders[1], /second-avatar-token/);
     } finally {
       settings.jellyfin.apiKey = originalApiKey;
+      settings.main.mediaServerType = originalMediaServerType;
+    }
+  });
+
+  it('keeps Emby authorization on private avatar reads', async () => {
+    const settings = getSettings();
+    const originalApiKey = settings.jellyfin.apiKey;
+    const originalMediaServerType = settings.main.mediaServerType;
+    let headers: Record<string, unknown> | undefined;
+    mockAvatarDependencies(async (proxy) => {
+      headers = (
+        proxy as unknown as {
+          axios: { defaults: { headers: Record<string, unknown> } };
+        }
+      ).axios.defaults.headers;
+      return avatarResponse;
+    });
+
+    try {
+      settings.main.mediaServerType = MediaServerType.EMBY;
+      settings.jellyfin.apiKey = 'emby-avatar-token';
+      const response = await request(createApp()).get(
+        '/avatarproxy/0123456789abcdef0123456789abcdef'
+      );
+
+      assert.equal(response.status, 200);
+      assert.equal(headers?.Authorization, undefined);
+      assert.match(
+        String(headers?.['X-Emby-Authorization']),
+        /Token="emby-avatar-token"/
+      );
+    } finally {
+      settings.jellyfin.apiKey = originalApiKey;
+      settings.main.mediaServerType = originalMediaServerType;
     }
   });
 
   it('uses an unauthenticated proxy when a media-server avatar falls back', async () => {
     const calls: { authorization: unknown; path: string }[] = [];
     mockAvatarDependencies(async (proxy, path) => {
-      const authorization = (
+      const headers = (
         proxy as unknown as {
           axios: { defaults: { headers: Record<string, unknown> } };
         }
-      ).axios.defaults.headers['X-Emby-Authorization'];
+      ).axios.defaults.headers;
+      const authorization =
+        headers.Authorization ?? headers['X-Emby-Authorization'];
       calls.push({ authorization, path });
       if (authorization) {
         throw new Error('media-server avatar unavailable');
