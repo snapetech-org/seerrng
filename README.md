@@ -74,6 +74,12 @@ SeerrNG is maintained by snapetech as a separate fork so we can move quickly on 
   progress and retry timing, and resume after imports complete. Pending imports
   are cancelled only when no other active request still needs them; ChaptarrNG
   `0.9.941+` also supports a restricted SeerrNG service key.
+- The BookshelfNG-to-ChaptarrNG consolidation is still gated on BookshelfNG's
+  complete enhanced feature set, populated-data conversion, and each old
+  installation channel. The later ChaptarrNG-to-upstream gate also includes
+  every ChaptarrNG feature it maintains or is actively adding, including
+  unpublished work. See the [BookshelfNG consolidation report](https://github.com/snapetech/bookshelfng/blob/main/docs/maintainers/chaptarr-consolidation.md)
+  and [ChaptarrNG's itemized retirement matrix](https://github.com/snapetech/chaptarrng/blob/main/docs/FORK_FEATURES.md#itemized-active-and-unreleased-chaptarrng-blockers).
 - Optional read-only Audiobookshelf library scanning marks ISBN-matched items
   as available audiobooks without sending acquisition requests or changing
   Audiobookshelf data.
