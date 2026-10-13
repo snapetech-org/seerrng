@@ -636,6 +636,20 @@ export class JellyfinScanner
       await this.processJellyfinMovie(item);
     } else if (item.Type === 'Series') {
       await this.processJellyfinShow(item);
+    } else if (
+      this.isRecentOnly &&
+      (item.Type === 'Season' || item.Type === 'Episode')
+    ) {
+      if (!item.SeriesId) {
+        this.log(
+          'Recently added Jellyfin TV item has no parent series ID. Skipping.',
+          'debug',
+          { jellyfinItemId: item.Id, itemType: item.Type }
+        );
+        return;
+      }
+
+      await this.processJellyfinShow(item);
     } else if (item.Type === 'MusicAlbum') {
       await this.processJellyfinMusic(item);
     }

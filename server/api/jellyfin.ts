@@ -6,8 +6,8 @@ import availabilitySync from '@server/lib/availabilitySync';
 import { getSettings } from '@server/lib/settings';
 import logger from '@server/logger';
 import { ApiError } from '@server/types/error';
-import { getAppVersion } from '@server/utils/appVersion';
 import { normalizeJellyfinGuid } from '@server/utils/jellyfin';
+import { getMediaBrowserAuthorizationHeaders } from '@server/utils/mediaServerAuthorization';
 
 export interface JellyfinUserResponse {
   Name: string;
@@ -551,16 +551,6 @@ class JellyfinAPI extends ExternalAPI {
         ? deviceId
         : Buffer.from('BOT_seerr').toString('base64');
 
-    const version =
-      settings.main.mediaServerType === MediaServerType.EMBY
-        ? '1.0.0'
-        : getAppVersion();
-
-    let authHeaderVal = `MediaBrowser Client="Seerr", Device="Seerr", DeviceId="${safeDeviceId}", Version="${version}"`;
-    if (authToken) {
-      authHeaderVal += `, Token="${authToken}"`;
-    }
-
     super(
       jellyfinHost,
       {},
@@ -568,7 +558,11 @@ class JellyfinAPI extends ExternalAPI {
         allowPrivateAddresses,
         allowUnconfiguredBaseUrl: true,
         headers: {
-          Authorization: authHeaderVal,
+          ...getMediaBrowserAuthorizationHeaders({
+            mediaServerType: settings.main.mediaServerType,
+            deviceId: safeDeviceId,
+            token: authToken,
+          }),
           'Content-Type': 'application/json',
           Accept: 'application/json',
         },

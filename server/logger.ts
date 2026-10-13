@@ -140,6 +140,29 @@ const hformat = winston.format.printf(
   }
 );
 
+type ConsoleColorEnvironment = {
+  FORCE_COLOR?: string;
+  NO_COLOR?: string;
+  TERM?: string;
+};
+
+export const shouldColorizeConsoleLogs = (
+  env: ConsoleColorEnvironment,
+  stdoutIsTTY: boolean
+): boolean => {
+  const forceColor = env.FORCE_COLOR;
+  if (forceColor) {
+    return !['0', 'false'].includes(forceColor.trim().toLowerCase());
+  }
+  if (env.NO_COLOR) {
+    return false;
+  }
+  if (env.TERM?.toLowerCase() === 'dumb') {
+    return false;
+  }
+  return stdoutIsTTY;
+};
+
 const seerrFileTransport = new winston.transports.DailyRotateFile({
   filename: path.join(logDirectory, 'seerr-%DATE%.log'),
   auditFile: path.join(logDirectory, '.seerr-audit.json'),
@@ -204,7 +227,16 @@ const logger = winston.createLogger({
   transports: [
     new winston.transports.Console({
       format: winston.format.combine(
-        winston.format.colorize(),
+        ...(shouldColorizeConsoleLogs(
+          {
+            FORCE_COLOR: process.env.FORCE_COLOR,
+            NO_COLOR: process.env.NO_COLOR,
+            TERM: process.env.TERM,
+          },
+          Boolean(process.stdout.isTTY)
+        )
+          ? [winston.format.colorize()]
+          : []),
         winston.format.splat(),
         winston.format.timestamp(),
         hformat

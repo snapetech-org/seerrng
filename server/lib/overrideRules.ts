@@ -209,11 +209,12 @@ export const evaluateOverrideRules = async ({
         )?.id);
   const serviceField =
     mediaType === MediaType.MOVIE ? 'radarrServiceId' : 'sonarrServiceId';
-  const rules = resolvedServiceId
-    ? await getRepository(OverrideRule).find({
-        where: { [serviceField]: resolvedServiceId },
-      })
-    : [];
+  const rules =
+    resolvedServiceId != null
+      ? await getRepository(OverrideRule).find({
+          where: { [serviceField]: resolvedServiceId },
+        })
+      : [];
   const mediaKeywords: TmdbKeyword[] =
     'keywords' in tmdbMedia.keywords
       ? tmdbMedia.keywords.keywords
