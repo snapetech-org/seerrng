@@ -2094,6 +2094,7 @@ router.post(
 router.post(
   '/import-from-jellyfin',
   isAuthenticated(Permission.MANAGE_USERS),
+  authorizedRouteAccess(Permission.MANAGE_USERS),
   async (req, res, next) => {
     const parsedBody = parseOptionalUserBodyObject(req.body);
     if ('error' in parsedBody) {
