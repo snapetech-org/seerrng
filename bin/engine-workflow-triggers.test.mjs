@@ -155,6 +155,24 @@ test('GitHub fans every independent validation job out from the engine plan', ()
   assert.match(jobs.playwright.if, /outputs\.playwright == 'true'/);
 });
 
+test('unit-test shards use local runners only for Snapetech PRs and trusted main runs', () => {
+  const runner = ci.workflow.jobs['unit-test']['runs-on'];
+  assert.match(
+    runner,
+    /github\.event_name == 'pull_request' && github\.event\.pull_request\.user\.login == 'snapetech'/
+  );
+  assert.match(
+    runner,
+    /github\.event_name == 'push'[^)]*refs\/heads\/main/
+  );
+  assert.match(
+    runner,
+    /github\.event_name == 'workflow_dispatch'[^)]*refs\/heads\/main/
+  );
+  assert.match(runner, /\["self-hosted","Linux","X64","host","seerrng"\]/);
+  assert.match(runner, /\|\| 'ubuntu-latest'/);
+});
+
 test('native workflow bodies are reused without duplicate PR or push launches', () => {
   for (const [id, file] of Object.entries(reusableJobs)) {
     const name = file.replace(/\.yml$/, '');
