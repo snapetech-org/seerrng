@@ -924,6 +924,66 @@ describe('MediaRequestSubscriber service dispatch', () => {
     assert.equal(saved.seasons[0].status, MediaRequestStatus.COMPLETED);
   });
 
+  it('completes only active seasons when declined history is unavailable', async () => {
+    const settings = getSettings();
+    settings.sonarr = [];
+    const requestedBy = await getRequester();
+    const media = await getRepository(Media).save(
+      new Media({
+        mediaType: MediaType.TV,
+        tmdbId: 1714,
+        status: MediaStatus.PARTIALLY_AVAILABLE,
+        status4k: MediaStatus.UNKNOWN,
+        seasons: [
+          new Season({
+            seasonNumber: 1,
+            status: MediaStatus.PROCESSING,
+            status4k: MediaStatus.UNKNOWN,
+          }),
+          new Season({
+            seasonNumber: 2,
+            status: MediaStatus.AVAILABLE,
+            status4k: MediaStatus.UNKNOWN,
+          }),
+        ],
+      })
+    );
+    const request = await getRepository(MediaRequest).save(
+      new MediaRequest({
+        type: MediaType.TV,
+        status: MediaRequestStatus.APPROVED,
+        media,
+        requestedBy,
+        is4k: false,
+        serverId: 404,
+        seasons: [
+          new SeasonRequest({
+            seasonNumber: 1,
+            status: MediaRequestStatus.DECLINED,
+          }),
+          new SeasonRequest({
+            seasonNumber: 2,
+            status: MediaRequestStatus.APPROVED,
+          }),
+        ],
+      })
+    );
+
+    const delivered = await new MediaRequestSubscriber().sendToSonarr(request);
+
+    const saved = await getRepository(MediaRequest).findOneOrFail({
+      where: { id: request.id },
+      relations: { seasons: true },
+    });
+    const seasonStatuses = new Map(
+      saved.seasons.map((season) => [season.seasonNumber, season.status])
+    );
+    assert.equal(delivered, true);
+    assert.equal(saved.status, MediaRequestStatus.COMPLETED);
+    assert.equal(seasonStatuses.get(1), MediaRequestStatus.DECLINED);
+    assert.equal(seasonStatuses.get(2), MediaRequestStatus.COMPLETED);
+  });
+
   it('fails a TV request whose explicit Sonarr server was removed', async () => {
     const settings = getSettings();
     settings.sonarr = [];

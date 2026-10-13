@@ -34,6 +34,7 @@ import {
   getAvailableEpisodesBySeason,
   getDefaultUnavailableSeasonSelections,
   getRequestableTvSelections,
+  isActiveSeasonRequest,
   mergeEpisodeNumbersBySeason,
 } from '@app/utils/tvRequestSelection';
 import { hasLinkedWatchAheadAccount } from '@app/utils/watchAhead';
@@ -154,10 +155,14 @@ const TvRequestModal = ({
   const { addToast } = useToasts();
   const editingSeasonSelections: SeasonEpisodeSelection[] = (
     editRequest?.seasons ?? []
-  ).map((season) => ({
-    seasonNumber: season.seasonNumber,
-    ...(season.episodeNumbers ? { episodeNumbers: season.episodeNumbers } : {}),
-  }));
+  )
+    .filter(isActiveSeasonRequest)
+    .map((season) => ({
+      seasonNumber: season.seasonNumber,
+      ...(season.episodeNumbers
+        ? { episodeNumbers: season.episodeNumbers }
+        : {}),
+    }));
   const { data, error } = useSWR<TvDetails>(`/api/v1/tv/${tmdbId}`);
   const [requestOverrides, setRequestOverrides] =
     useState<RequestOverrides | null>(null);
@@ -323,7 +328,7 @@ const TvRequestModal = ({
   const currentlyRemaining =
     (quota?.tv.remaining ?? 0) -
     selectedSeasons.length +
-    (editRequest?.seasons ?? []).length;
+    (editRequest?.seasons.filter(isActiveSeasonRequest) ?? []).length;
 
   const updateRequest = async (alsoApproveRequest = false) => {
     if (!editRequest || requestDisabled) {
@@ -507,7 +512,10 @@ const TvRequestModal = ({
           request.status !== MediaRequestStatus.COMPLETED
       )
       .flatMap((request) => request.seasons)
-      .filter((season) => season.episodeNumbers != null)
+      .filter(
+        (season) =>
+          isActiveSeasonRequest(season) && season.episodeNumbers != null
+      )
       .forEach((season) => {
         requestedEpisodes[season.seasonNumber] = [
           ...new Set([
@@ -540,6 +548,7 @@ const TvRequestModal = ({
         return [
           ...requestedSeasons,
           ...request.seasons
+            .filter(isActiveSeasonRequest)
             .filter((season) => season.episodeNumbers == null)
             .map((sr) => sr.seasonNumber),
         ];
@@ -649,7 +658,8 @@ const TvRequestModal = ({
     !!quota?.tv.limit &&
     !requestOverrides?.ignoreQuota &&
     requestableSelections.length >
-      (quota.tv.remaining ?? 0) + (editRequest?.seasons.length ?? 0);
+      (quota.tv.remaining ?? 0) +
+        (editRequest?.seasons.filter(isActiveSeasonRequest).length ?? 0);
   const fullQuotaExceeded =
     !!quota?.tv.limit &&
     !requestOverrides?.ignoreQuota &&
@@ -1041,7 +1051,8 @@ const TvRequestModal = ({
                 onSelectionsChange={(nextSelections) => {
                   const allowedSelections =
                     (quota?.tv.remaining ?? 0) +
-                    (editRequest?.seasons.length ?? 0);
+                    (editRequest?.seasons.filter(isActiveSeasonRequest)
+                      .length ?? 0);
                   if (
                     !quota?.tv.limit ||
                     requestOverrides?.ignoreQuota ||

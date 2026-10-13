@@ -72,13 +72,11 @@ provider selection and direct-download workflows, must also be available or
 replaced. Then SeerrNG must pass its Bookshelf compatibility checks against
 that released version.
 
-**BookshelfNG-to-ChaptarrNG transition:** this consolidation is in progress,
-but it does not make the current ChaptarrNG release a drop-in replacement.
-There is no released populated-database converter or compatibility bridge for
-BookshelfNG images and packages. Keep existing BookshelfNG data and
-installations until the feature, migration, and channel gates in its
-[consolidation report](https://github.com/snapetech/bookshelfng/blob/main/docs/maintainers/chaptarr-consolidation.md)
-pass.
+BookshelfNG and ChaptarrNG are separate supported backends. Their compatible
+API routes do not make their databases interchangeable, and SeerrNG does not
+provide a migration between them. Keep the current application and database
+until the target project documents a supported migration path and matching
+release and package instructions.
 
 ### ChaptarrNG
 
@@ -104,16 +102,14 @@ in the reviewed source.
 
 **Replacement criteria:** a supported Chaptarr release must preserve the full
 ChaptarrNG product, not only the SeerrNG-facing API. That includes ChaptarrNG's
-existing maintained features and active changes—such as capability discovery,
-format/provider identity, paged library status, the restricted key, built-in
-Direct Download, full-backup encryption, security behavior, and release/package
-continuity—plus every BookshelfNG feature carried into the consolidated
-ChaptarrNG product. Chaptarr already has a pending-import subsystem;
-SeerrNG needs compatible exposed semantics, not a second queue implementation.
-The [combined ChaptarrNG retirement matrix](https://github.com/snapetech/chaptarrng/blob/main/docs/FORK_FEATURES.md#chaptarrng-retirement-blockers)
-tracks both sets. Every feature and post-fork source change must be retained
-or replaced with a verified equivalent, with tests, before ChaptarrNG can be
-retired into Chaptarr.
+maintained features such as capability discovery, format/provider identity,
+paged library status, the restricted key, built-in Direct Download,
+full-backup encryption, security behavior, and release/package continuity.
+Chaptarr already has a pending-import subsystem; SeerrNG needs compatible
+exposed semantics, not a second queue implementation. See the
+[ChaptarrNG feature and upstream guide](https://github.com/snapetech/chaptarrng/blob/main/docs/FORK_FEATURES.md#what-would-allow-replacement).
+Retiring ChaptarrNG into Chaptarr also requires a documented upgrade and data
+compatibility path for operators.
 SeerrNG must then pass its compatibility checks against that exact supported
 release.
 
@@ -193,11 +189,8 @@ required SeerrNG dependency only after:
 3. The exact release passes the SeerrNG consumer checks, and operators have a
    documented upgrade and data-compatibility path.
 
-For Chaptarr specifically, that release gate includes the combined
-ChaptarrNG-plus-ported-BookshelfNG feature set, not just the SeerrNG API
-contract. The BookshelfNG consolidation and the later ChaptarrNG upstream
-retirement are separate transitions, each requiring its own populated-data and
-distribution proof.
+If an operator chooses to move from BookshelfNG to ChaptarrNG, that is a
+separate migration and requires its own populated-data and distribution proof.
 
 Keep any fork that still supplies standalone functionality operators rely on,
 even if its SeerrNG contract has been upstreamed. Recheck parent branches before

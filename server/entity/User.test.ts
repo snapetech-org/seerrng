@@ -123,6 +123,30 @@ test('failed and declined requests do not consume retry quota', async () => {
     }
   }
 
+  const activeTvMedia = await mediaRepository.save(
+    new Media({
+      mediaType: MediaType.TV,
+      tmdbId: 993_000,
+      status: MediaStatus.PARTIALLY_AVAILABLE,
+      status4k: MediaStatus.UNKNOWN,
+    })
+  );
+  await requestRepository.save(
+    new MediaRequest({
+      type: MediaType.TV,
+      status: MediaRequestStatus.APPROVED,
+      media: activeTvMedia,
+      requestedBy: user,
+      is4k: false,
+      seasons: [
+        new SeasonRequest({
+          seasonNumber: 1,
+          status: MediaRequestStatus.DECLINED,
+        }),
+      ],
+    })
+  );
+
   const quota = await user.getQuota();
 
   assert.strictEqual(quota.movie.used, 1);

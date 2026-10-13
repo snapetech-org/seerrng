@@ -28,7 +28,9 @@ import {
   runWithRequestAdmission,
 } from '@server/entity/MediaRequest';
 import MediaRequestStatusEvent from '@server/entity/MediaRequestStatusEvent';
-import SeasonRequest from '@server/entity/SeasonRequest';
+import SeasonRequest, {
+  isActiveSeasonRequest,
+} from '@server/entity/SeasonRequest';
 import { User } from '@server/entity/User';
 import type {
   BulkMediaRequestBody,
@@ -126,6 +128,45 @@ const isSingleEpisodeWatchAheadSelection = (
   watchAheadEpisodeCount > 0 &&
   seasonRequests?.length === 1 &&
   seasonRequests[0].episodeNumbers?.length === 1;
+
+const hasSameSeasonEpisodeSelection = (
+  requested: MediaRequestBody['seasonRequests'],
+  existing: SeasonEpisodeSelection[]
+): boolean => {
+  if (!requested || requested.length !== existing.length) {
+    return false;
+  }
+
+  const existingBySeason = new Map(
+    existing.map((selection) => [selection.seasonNumber, selection])
+  );
+
+  return requested.every((selection) => {
+    const current = existingBySeason.get(selection.seasonNumber);
+    if (!current) {
+      return false;
+    }
+
+    const requestedEpisodes = selection.episodeNumbers;
+    const currentEpisodes = current.episodeNumbers;
+    if (!requestedEpisodes || !currentEpisodes) {
+      return requestedEpisodes == null && currentEpisodes == null;
+    }
+
+    const normalizedRequestedEpisodes = [...requestedEpisodes].sort(
+      (left, right) => left - right
+    );
+    const normalizedCurrentEpisodes = [...currentEpisodes].sort(
+      (left, right) => left - right
+    );
+    return (
+      normalizedRequestedEpisodes.length === normalizedCurrentEpisodes.length &&
+      normalizedRequestedEpisodes.every(
+        (episode, index) => episode === normalizedCurrentEpisodes[index]
+      )
+    );
+  });
+};
 const maxRequestProfileNameLength = 512;
 const maxBulkRequestItemTextLength = 512;
 const maxSeasonCount = 500;
@@ -3991,6 +4032,14 @@ requestRoutes.put<{ requestId: string }>(
               }
 
               const originalServerId = request.serverId;
+              const preservesCurrentEpisodeSelection =
+                hasSameSeasonEpisodeSelection(
+                  body.seasonRequests,
+                  request.seasons
+                ) &&
+                (body.watchAheadEpisodeCount === undefined ||
+                  body.watchAheadEpisodeCount ===
+                    request.watchAheadEpisodeCount);
 
               if (
                 (body.mediaType ?? request.type) === MediaType.TV &&
@@ -4003,7 +4052,8 @@ requestRoutes.put<{ requestId: string }>(
                   body.watchAheadEpisodeCount ??
                     request.watchAheadEpisodeCount ??
                     0
-                )
+                ) &&
+                !preservesCurrentEpisodeSelection
               ) {
                 return next({
                   status: 403,
@@ -4233,6 +4283,9 @@ requestRoutes.put<{ requestId: string }>(
                       .andWhere('existingRequest.id != :requestId', {
                         requestId: request.id,
                       })
+                      .andWhere('requestedSeason.status != :declinedStatus', {
+                        declinedStatus: MediaRequestStatus.DECLINED,
+                      })
                       .andWhere(
                         'existingRequest.status NOT IN (:...inactiveStatuses)',
                         {
@@ -4258,7 +4311,9 @@ requestRoutes.put<{ requestId: string }>(
                         existingEpisodes.set(season.seasonNumber, episodes);
                       });
                     const currentSeasonNumbers = new Set(
-                      request.seasons.map((season) => season.seasonNumber)
+                      request.seasons
+                        .filter(isActiveSeasonRequest)
+                        .map((season) => season.seasonNumber)
                     );
                     const availableSeasonNumbers = new Set(
                       media.seasons
@@ -4302,7 +4357,8 @@ requestRoutes.put<{ requestId: string }>(
                         body.watchAheadEpisodeCount ??
                           request.watchAheadEpisodeCount ??
                           0
-                      )
+                      ) &&
+                      !preservesCurrentEpisodeSelection
                     ) {
                       if (
                         filteredSelections.some(
@@ -4371,8 +4427,10 @@ requestRoutes.put<{ requestId: string }>(
 
                     if (filteredSelections.length === 0) {
                       return next({
-                        status: 202,
-                        message: 'No seasons available to request',
+                        status: isFailedRequestRepair ? 409 : 202,
+                        message: isFailedRequestRepair
+                          ? 'The failed request has no unrequested seasons or episodes to retry.'
+                          : 'No seasons available to request',
                       });
                     }
 
@@ -4389,7 +4447,7 @@ requestRoutes.put<{ requestId: string }>(
                     const existingAllowance =
                       changesRequestUser || !existingRequestCountsTowardQuota
                         ? 0
-                        : request.seasons.length;
+                        : request.seasons.filter(isActiveSeasonRequest).length;
                     if (
                       !request.ignoreQuota &&
                       quotas.tv.limit &&
@@ -4439,21 +4497,38 @@ requestRoutes.put<{ requestId: string }>(
                       }
                     }
 
+                    const selectionBySeason = new Map(
+                      filteredSelections.map((selection) => [
+                        selection.seasonNumber,
+                        selection,
+                      ])
+                    );
+                    const existingSeasonNumbers = new Set(
+                      request.seasons.map((season) => season.seasonNumber)
+                    );
                     const newSelections = filteredSelections.filter(
                       (selection) =>
-                        !currentSeasonNumbers.has(selection.seasonNumber)
+                        !existingSeasonNumbers.has(selection.seasonNumber)
                     );
-                    request.seasons = request.seasons.filter((season) =>
-                      filteredSelections.some(
-                        (selection) =>
-                          selection.seasonNumber === season.seasonNumber
-                      )
+                    request.seasons = request.seasons.filter(
+                      (season) =>
+                        selectionBySeason.has(season.seasonNumber) ||
+                        !isActiveSeasonRequest(season) ||
+                        season.status === MediaRequestStatus.COMPLETED
                     );
                     request.seasons.forEach((season) => {
-                      season.episodeNumbers = filteredSelections.find(
-                        (selection) =>
-                          selection.seasonNumber === season.seasonNumber
-                      )?.episodeNumbers;
+                      const selection = selectionBySeason.get(
+                        season.seasonNumber
+                      );
+                      if (selection) {
+                        season.episodeNumbers = selection.episodeNumbers;
+                        if (
+                          season.status === MediaRequestStatus.DECLINED ||
+                          season.status === MediaRequestStatus.FAILED
+                        ) {
+                          season.status = MediaRequestStatus.PENDING;
+                        }
+                      }
                     });
                     request.seasons.push(
                       ...newSelections.map(

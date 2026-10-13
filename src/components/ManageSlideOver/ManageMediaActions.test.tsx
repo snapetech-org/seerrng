@@ -244,7 +244,7 @@ it.each([
     targets: [
       {
         key: 'sonarr:1:9:HD',
-        serviceType: 'sonarr',
+        serviceType: 'sonarr' as const,
         serviceId: 1,
         externalId: 9,
         service: 'Sonarr',

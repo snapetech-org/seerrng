@@ -450,7 +450,7 @@ const ManageMediaActions = ({
               onClick={() => {
                 if (!libraryPlan || libraryError) return;
                 setConfirmedLibrary({
-                  token: libraryPlan.token,
+                  ...libraryPlan,
                   targets: libraryPlan.targets.map((copy) => ({ ...copy })),
                 });
                 setAction('remove');

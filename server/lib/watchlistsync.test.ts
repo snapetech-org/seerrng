@@ -9,6 +9,7 @@ import { getRepository } from '@server/datasource';
 import Media from '@server/entity/Media';
 import { MediaRequest } from '@server/entity/MediaRequest';
 import { PlexWatchlistSyncEntry } from '@server/entity/PlexWatchlistSyncEntry';
+import SeasonRequest from '@server/entity/SeasonRequest';
 import { User } from '@server/entity/User';
 import { UserSettings } from '@server/entity/UserSettings';
 import { Permission } from '@server/lib/permissions';
@@ -376,6 +377,59 @@ describe('Plex watchlist credential admission', () => {
       mediaType: MediaType.TV,
     });
     assert.deepEqual(entry.processedSeasonNumbers, [1, 2, 3]);
+  });
+
+  it('requests new seasons when a title already has an active auto-request', async () => {
+    const user = await configureAutoRequestUser('tv');
+    const item = {
+      ratingKey: '93006',
+      tmdbId: 93006,
+      tvdbId: 193006,
+      type: 'show' as const,
+      title: 'Series With A New Season',
+    };
+    const addedAt = new Date('2026-10-12T11:00:00.000Z');
+    const media = await getRepository(Media).save(
+      new Media({
+        tmdbId: item.tmdbId,
+        mediaType: MediaType.TV,
+        status: MediaStatus.PARTIALLY_AVAILABLE,
+      })
+    );
+    await getRepository(MediaRequest).save(
+      new MediaRequest({
+        media,
+        requestedBy: user,
+        type: MediaType.TV,
+        status: MediaRequestStatus.PENDING,
+        isAutoRequest: true,
+        createdAt: new Date(addedAt.getTime() + 30_000),
+        seasons: [new SeasonRequest({ seasonNumber: 1 })],
+      })
+    );
+    mock.method(PlexTvAPI.prototype, 'getWatchlist', async () => ({
+      offset: 0,
+      size: 20,
+      totalSize: 1,
+      items: [item],
+    }));
+    mock.method(PlexTvAPI.prototype, 'getWatchlistedAt', async () => addedAt);
+    mock.method(Media, 'getRelatedMedia', async () => []);
+    const requestedSeasonNumbers: number[][] = [];
+    mock.method(
+      MediaRequest,
+      'request',
+      async (body: Parameters<typeof MediaRequest.request>[0]) => {
+        requestedSeasonNumbers.push(
+          Array.isArray(body.seasons) ? body.seasons : []
+        );
+        return { id: 1 } as never;
+      }
+    );
+
+    await new WatchlistSync(async () => [1, 2]).syncWatchlist();
+
+    assert.deepEqual(requestedSeasonNumbers, [[2]]);
   });
 });
 

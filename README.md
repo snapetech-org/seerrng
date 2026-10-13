@@ -257,12 +257,10 @@ can each handle Book and Audiobook formats; one BookshelfNG instance can serve
 both. QuestarrNG handles PC game acquisition, while ROMarrNG handles emulation
 systems and ROM acquisition.
 
-BookshelfNG's proposed consolidation into ChaptarrNG is not released yet:
-there is no populated-library converter or old-channel bridge, so existing
-BookshelfNG installations should keep their current data and backup path. Any
-later retirement of ChaptarrNG into upstream Chaptarr must preserve both
-ChaptarrNG's maintained features and the BookshelfNG features carried over;
-see the [fork transition criteria](./docs/using-seerr/dependency-forks.md).
+BookshelfNG and ChaptarrNG are separate applications with separate data. Their
+compatible APIs do not make one an automatic upgrade target for the other; use
+a supported migration path from the target project before changing an existing
+installation. See the [fork transition criteria](./docs/using-seerr/dependency-forks.md).
 
 Radarr, Sonarr, Lidarr, LazyLibrarian, Mylar3, Issuarr, Kapowarr, and BackIssue are
 separate upstream or third-party integrations. They are not NG forks. The

@@ -402,6 +402,33 @@ describe('RadarrAPI addMovie availability searches', () => {
     assert.equal(payload.addOptions.searchForMovie, false);
   });
 
+  it('searches a recovered movie when the updated availability threshold is met', async () => {
+    const radarr = buildRadarr();
+    const conflict = Object.assign(
+      new Error('Request failed with status code 409'),
+      { response: { status: 409 } }
+    );
+    mock.method(RadarrAPI.prototype, 'getMovieByTmdbId', async () => {
+      throw conflict;
+    });
+    mock.method(radarr, 'getMovies', async () => [
+      createRadarrMovie({ monitored: false, isAvailable: false }),
+    ]);
+    mock.method(getAxios(radarr), 'put', async () => ({
+      data: createRadarrMovie({ monitored: true, isAvailable: true }),
+    }));
+    const search = mock.method(
+      RadarrAPI.prototype,
+      'searchMovie',
+      async () => {}
+    );
+
+    await radarr.addMovie(createRadarrMovieOptions());
+
+    assert.equal(search.mock.callCount(), 1);
+    assert.equal(search.mock.calls[0].arguments[0], 7);
+  });
+
   it('preserves conflict recovery searches when re-enabling an available movie', async () => {
     const radarr = buildRadarr();
     const conflict = Object.assign(

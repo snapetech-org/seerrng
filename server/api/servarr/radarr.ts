@@ -649,9 +649,20 @@ class RadarrAPI extends ServarrBase<{ movieId: number }> {
         },
       });
 
-      return requireRadarrMovie(
+      const updatedMovie = requireRadarrMovie(
         isRecord(response.data) ? { ...movie, ...response.data } : response.data
       );
+
+      if (
+        options.searchNow &&
+        updatedMovie.monitored &&
+        updatedMovie.isAvailable &&
+        !updatedMovie.hasFile
+      ) {
+        await this.searchMovie(updatedMovie.id);
+      }
+
+      return updatedMovie;
     }
 
     if (options.searchNow && movie.isAvailable && !movie.hasFile) {

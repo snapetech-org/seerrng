@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import { describe, it } from 'node:test';
 
-import { MediaType } from '@server/constants/media';
+import { MediaRequestStatus, MediaType } from '@server/constants/media';
 import Issue from '@server/entity/Issue';
 import Media from '@server/entity/Media';
 import { MediaRequest } from '@server/entity/MediaRequest';
@@ -117,6 +117,45 @@ describe('restrictMediaRequestsForUser', () => {
       is4k: false,
       bookFormat: 'audiobook',
       createdAt: new Date('2026-02-01T00:00:00Z'),
+    });
+  });
+
+  it('hides declined season history from foreign request summaries', () => {
+    const media = restrictMediaRequestsForUser(
+      new Media({
+        requests: [
+          new MediaRequest({
+            id: 3,
+            status: MediaRequestStatus.APPROVED,
+            type: MediaType.TV,
+            requestedBy: new User({ id: 20 }),
+            is4k: false,
+            createdAt: new Date('2026-03-01T00:00:00Z'),
+            seasons: [
+              new SeasonRequest({
+                id: 31,
+                seasonNumber: 1,
+                status: MediaRequestStatus.APPROVED,
+              }),
+              new SeasonRequest({
+                id: 32,
+                seasonNumber: 2,
+                status: MediaRequestStatus.DECLINED,
+              }),
+            ],
+          }),
+        ],
+      }),
+      new User({ id: 10, permissions: 0 })
+    );
+
+    assert.deepStrictEqual(media?.requests[0], {
+      status: MediaRequestStatus.APPROVED,
+      type: 'tv',
+      seasons: [{ seasonNumber: 1, episodeNumbers: undefined }],
+      is4k: false,
+      bookFormat: undefined,
+      createdAt: new Date('2026-03-01T00:00:00Z'),
     });
   });
 

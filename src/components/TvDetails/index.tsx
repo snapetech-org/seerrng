@@ -22,6 +22,7 @@ import { sortCrewPriority } from '@app/utils/creditHelpers';
 import defineMessages from '@app/utils/defineMessages';
 import { refreshIntervalHelper } from '@app/utils/refreshIntervalHelper';
 import { getSafeHref } from '@app/utils/safeUrl';
+import { isActiveSeasonRequest } from '@app/utils/tvRequestSelection';
 import {
   CogIcon,
   ExclamationTriangleIcon,
@@ -246,7 +247,9 @@ const TvDetails = ({
           request.status !== MediaRequestStatus.COMPLETED
       )
       .flatMap((request) =>
-        request.seasons.map((season) => season.seasonNumber)
+        request.seasons
+          .filter(isActiveSeasonRequest)
+          .map((season) => season.seasonNumber)
       );
     const availableSeasons = (data.mediaInfo?.seasons ?? [])
       .filter(

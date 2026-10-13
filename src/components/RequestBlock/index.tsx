@@ -12,6 +12,7 @@ import useRequestOverride from '@app/hooks/useRequestOverride';
 import { useUser } from '@app/hooks/useUser';
 import globalMessages from '@app/i18n/globalMessages';
 import defineMessages from '@app/utils/defineMessages';
+import { isActiveSeasonRequest } from '@app/utils/tvRequestSelection';
 import {
   CalendarIcon,
   CheckIcon,
@@ -77,6 +78,9 @@ const RequestBlock = ({
   const intl = useIntl();
   const [isUpdating, setIsUpdating] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
+  const activeSeasonRequests = (request.seasons ?? []).filter(
+    isActiveSeasonRequest
+  );
   const { profile, metadataProfile, rootFolder, server, languageProfile } =
     useRequestOverride(request);
   const updateRequest = async (type: 'approve' | 'decline'): Promise<void> => {
@@ -308,15 +312,15 @@ const RequestBlock = ({
             </Tooltip>
           </div>
         </div>
-        {request.type === 'tv' && (request.seasons ?? []).length > 0 && (
+        {request.type === 'tv' && activeSeasonRequests.length > 0 && (
           <div className="mt-2 flex flex-col text-sm">
             <div className="mb-1 font-medium">
               {intl.formatMessage(messages.seasons, {
-                seasonCount: request.seasons.length,
+                seasonCount: activeSeasonRequests.length,
               })}
             </div>
             <div>
-              {request.seasons.map((season) => (
+              {activeSeasonRequests.map((season) => (
                 <span
                   key={`season-${season.id}`}
                   className="mr-2 mb-1 inline-block"

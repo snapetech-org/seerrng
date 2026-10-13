@@ -85,10 +85,9 @@ BookshelfNG instances.
 
 Each BookshelfNG author can optionally set separate ebook and audiobook
 folders for future imports, upgrades, and renames. Existing files are not moved
-when an override changes. Authors can also set format-specific quality and
-metadata profile overrides; each format falls back to the author's shared
-profile when its override is unset. Use separate BookshelfNG instances only
-when you need isolated databases or different settings for the same author.
+when an override changes. Quality and metadata profiles remain shared between
+ebook and audiobook formats. Use separate BookshelfNG instances only when you
+need isolated databases or different settings for the same author.
 
 Use the [Bookshelf Backend](/using-seerr/bookshelf-backend) guide for the
 recommended Docker Compose deployment. Hardcover is the default for new

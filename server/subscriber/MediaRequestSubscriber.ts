@@ -42,7 +42,9 @@ import MediaRequestStatusEvent from '@server/entity/MediaRequestStatusEvent';
 import { MediaSearchMetadata } from '@server/entity/MediaSearchMetadata';
 import { RequestDispatchOutbox } from '@server/entity/RequestDispatchOutbox';
 import Season from '@server/entity/Season';
-import SeasonRequest from '@server/entity/SeasonRequest';
+import SeasonRequest, {
+  isActiveSeasonRequest,
+} from '@server/entity/SeasonRequest';
 import { hasAvailableBookFormat } from '@server/lib/bookAvailability';
 import {
   normalizeMusicBrainzId,
@@ -575,13 +577,16 @@ export class MediaRequestSubscriber implements EntitySubscriberInterface<MediaRe
       return false;
     }
 
+    const activeSeasonRequests = entity.seasons.filter(isActiveSeasonRequest);
+    if (activeSeasonRequests.length === 0) return false;
+
     const availableSeasonNumbers = new Set(
       media.seasons
         .filter((season) => season[statusKey] === MediaStatus.AVAILABLE)
         .map((season) => season.seasonNumber)
     );
 
-    return entity.seasons.every((season) =>
+    return activeSeasonRequests.every((season) =>
       availableSeasonNumbers.has(season.seasonNumber)
     );
   }
@@ -602,7 +607,7 @@ export class MediaRequestSubscriber implements EntitySubscriberInterface<MediaRe
 
     entity.status = MediaRequestStatus.COMPLETED;
     if (entity.type === MediaType.TV) {
-      entity.seasons.forEach((season) => {
+      entity.seasons.filter(isActiveSeasonRequest).forEach((season) => {
         season.status = MediaRequestStatus.COMPLETED;
       });
     }
@@ -1344,11 +1349,13 @@ export class MediaRequestSubscriber implements EntitySubscriberInterface<MediaRe
           rootFolderPath: rootFolder,
           title: series.name,
           tvdbid: tvdbId,
-          seasons: entity.seasons.map((season) => season.seasonNumber),
-          episodeSelections: entity.seasons.some(
-            (season) => season.episodeNumbers != null
-          )
-            ? entity.seasons.map((season) => ({
+          seasons: entity.seasons
+            .filter(isActiveSeasonRequest)
+            .map((season) => season.seasonNumber),
+          episodeSelections: entity.seasons
+            .filter(isActiveSeasonRequest)
+            .some((season) => season.episodeNumbers != null)
+            ? entity.seasons.filter(isActiveSeasonRequest).map((season) => ({
                 seasonNumber: season.seasonNumber,
                 ...(season.episodeNumbers
                   ? { episodeNumbers: season.episodeNumbers }
@@ -3001,8 +3008,10 @@ export class MediaRequestSubscriber implements EntitySubscriberInterface<MediaRe
       });
 
       for (const seasonRequest of entity.seasons) {
-        seasonRequest.status = MediaRequestStatus.DECLINED;
-        await seasonRequestRepository.save(seasonRequest);
+        if (seasonRequest.status !== MediaRequestStatus.COMPLETED) {
+          seasonRequest.status = MediaRequestStatus.DECLINED;
+          await seasonRequestRepository.save(seasonRequest);
+        }
 
         const season = actualSeasons.find(
           (s) => s.seasonNumber === seasonRequest.seasonNumber
@@ -3040,7 +3049,9 @@ export class MediaRequestSubscriber implements EntitySubscriberInterface<MediaRe
       media.mediaType === MediaType.TV &&
       entity.status === MediaRequestStatus.APPROVED
     ) {
-      for (const season of entity.seasons) {
+      for (const season of entity.seasons
+        .filter(isActiveSeasonRequest)
+        .filter((season) => season.status !== MediaRequestStatus.COMPLETED)) {
         season.status = MediaRequestStatus.APPROVED;
         await seasonRequestRepository.save(season);
       }
@@ -3161,7 +3172,7 @@ export class MediaRequestSubscriber implements EntitySubscriberInterface<MediaRe
     if (fullMedia.mediaType === MediaType.TV) {
       const statusKey = entity.is4k ? 'status4k' : 'status';
       const removedSeasonNumbers = new Set(
-        entity.seasons.map((s) => s.seasonNumber)
+        entity.seasons.filter(isActiveSeasonRequest).map((s) => s.seasonNumber)
       );
       const activeSeasonNumbers = new Set(
         fullMedia.requests
@@ -3171,7 +3182,11 @@ export class MediaRequestSubscriber implements EntitySubscriberInterface<MediaRe
               request.status !== MediaRequestStatus.COMPLETED &&
               request.status !== MediaRequestStatus.DECLINED
           )
-          .flatMap((request) => request.seasons.map((s) => s.seasonNumber))
+          .flatMap((request) =>
+            request.seasons
+              .filter(isActiveSeasonRequest)
+              .map((s) => s.seasonNumber)
+          )
       );
 
       const changedSeasons: Season[] = [];

@@ -6,4 +6,4 @@ action: none
 breaking: false
 ---
 
-BookshelfNG and ChaptarrNG are not drop-in replacements yet. Keep existing installations on their current data and update path until a supported BookshelfNG-to-ChaptarrNG converter and channel-specific upgrade are available.
+BookshelfNG and ChaptarrNG are separate applications with separate data. Keep an existing installation on its current data and update path until the target project documents a supported migration and upgrade path.

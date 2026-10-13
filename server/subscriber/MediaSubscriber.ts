@@ -6,7 +6,9 @@ import {
 import Media from '@server/entity/Media';
 import { MediaRequest } from '@server/entity/MediaRequest';
 import Season from '@server/entity/Season';
-import SeasonRequest from '@server/entity/SeasonRequest';
+import SeasonRequest, {
+  isActiveSeasonRequest,
+} from '@server/entity/SeasonRequest';
 import { isRequestedBookFormatAvailable } from '@server/lib/bookAvailability';
 import logger from '@server/logger';
 import type {
@@ -146,49 +148,57 @@ export class MediaSubscriber implements EntitySubscriberInterface<Media> {
             shouldComplete = this.isBookRequestSatisfied(event, request);
           } else if (event.mediaType === 'tv') {
             const seasonsToComplete: SeasonRequest[] = [];
-            const allSeasonResults = request.seasons.map((requestSeason) => {
-              const matchingSeason = event.seasons.find(
-                (mediaSeason) =>
-                  mediaSeason.seasonNumber === requestSeason.seasonNumber
-              );
-              const matchingOldSeason = databaseEvent.seasons.find(
-                (oldSeason) =>
-                  oldSeason.seasonNumber === requestSeason.seasonNumber
-              );
+            const activeSeasonRequests = request.seasons.filter(
+              isActiveSeasonRequest
+            );
+            const allSeasonResults = activeSeasonRequests.map(
+              (requestSeason) => {
+                const matchingSeason = event.seasons.find(
+                  (mediaSeason) =>
+                    mediaSeason.seasonNumber === requestSeason.seasonNumber
+                );
+                const matchingOldSeason = databaseEvent.seasons.find(
+                  (oldSeason) =>
+                    oldSeason.seasonNumber === requestSeason.seasonNumber
+                );
 
-              if (!matchingSeason) {
+                if (!matchingSeason) {
+                  return false;
+                }
+
+                const currentSeasonStatus =
+                  matchingSeason[request.is4k ? 'status4k' : 'status'];
+                const previousSeasonStatus =
+                  matchingOldSeason?.[request.is4k ? 'status4k' : 'status'];
+
+                const hasStatusChanged =
+                  currentSeasonStatus !== previousSeasonStatus;
+
+                const shouldUpdate =
+                  (hasStatusChanged ||
+                    requestSeason.status === MediaRequestStatus.COMPLETED) &&
+                  (currentSeasonStatus === MediaStatus.AVAILABLE ||
+                    currentSeasonStatus === MediaStatus.DELETED);
+
+                if (shouldUpdate) {
+                  requestSeason.status = MediaRequestStatus.COMPLETED;
+                  seasonsToComplete.push(requestSeason);
+
+                  return true;
+                }
+
                 return false;
               }
-
-              const currentSeasonStatus =
-                matchingSeason[request.is4k ? 'status4k' : 'status'];
-              const previousSeasonStatus =
-                matchingOldSeason?.[request.is4k ? 'status4k' : 'status'];
-
-              const hasStatusChanged =
-                currentSeasonStatus !== previousSeasonStatus;
-
-              const shouldUpdate =
-                (hasStatusChanged ||
-                  requestSeason.status === MediaRequestStatus.COMPLETED) &&
-                (currentSeasonStatus === MediaStatus.AVAILABLE ||
-                  currentSeasonStatus === MediaStatus.DELETED);
-
-              if (shouldUpdate) {
-                requestSeason.status = MediaRequestStatus.COMPLETED;
-                seasonsToComplete.push(requestSeason);
-
-                return true;
-              }
-
-              return false;
-            });
+            );
 
             if (seasonsToComplete.length > 0) {
               await seasonRequestRepository.save(seasonsToComplete);
             }
 
-            const allSeasonsReady = allSeasonResults.every((result) => result);
+            const allSeasonsReady =
+              request.seasons.length === 0 ||
+              (activeSeasonRequests.length > 0 &&
+                allSeasonResults.every((result) => result));
             shouldComplete = allSeasonsReady;
           }
 

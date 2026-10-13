@@ -260,10 +260,14 @@ export class WatchlistSync {
             .getMany()
         : [];
 
-    const autoRequestedTmdbIds = new Set(
+    // Movie auto-requests cover a title; TV requests are season-scoped below.
+    const autoRequestedMovieKeys = new Set(
       existingAutoRequests
         .filter(
-          (r) => r.media != null && r.media.status !== MediaStatus.DELETED
+          (r) =>
+            r.media != null &&
+            r.media.mediaType === MediaType.MOVIE &&
+            r.media.status !== MediaStatus.DELETED
         )
         .map((r) => `${r.media.mediaType}:${r.media.tmdbId}`)
     );
@@ -272,7 +276,7 @@ export class WatchlistSync {
       const itemMediaType = getMediaType(i);
 
       return (
-        !autoRequestedTmdbIds.has(`${itemMediaType}:${i.tmdbId}`) &&
+        !autoRequestedMovieKeys.has(`${itemMediaType}:${i.tmdbId}`) &&
         !mediaItems.find(
           (m) =>
             m.tmdbId === i.tmdbId &&

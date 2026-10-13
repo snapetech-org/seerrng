@@ -2018,6 +2018,144 @@ describe('PUT /request/:requestId (failed TV recovery)', () => {
       [1]
     );
   });
+
+  it('allows reassigning a failed series with its unchanged episode selection after partial requests are disabled', async (t) => {
+    const settings = getSettings();
+    const priorPartialRequestsEnabled = settings.main.partialRequestsEnabled;
+    settings.sonarr = [createSonarrSettings(5)];
+    settings.main.partialRequestsEnabled = false;
+    t.after(() => {
+      settings.sonarr = [];
+      settings.main.partialRequestsEnabled = priorPartialRequestsEnabled;
+    });
+    const requestedBy = await getRepository(User).findOneOrFail({
+      where: { id: 2 },
+    });
+    const media = await getRepository(Media).save(
+      new Media({
+        mediaType: MediaType.TV,
+        tmdbId: 1708,
+        status: MediaStatus.PENDING,
+        status4k: MediaStatus.UNKNOWN,
+        seasons: [
+          new Season({
+            seasonNumber: 1,
+            status: MediaStatus.PENDING,
+            status4k: MediaStatus.UNKNOWN,
+          }),
+        ],
+      })
+    );
+    const failed = await getRepository(MediaRequest).save(
+      new MediaRequest({
+        type: MediaType.TV,
+        status: MediaRequestStatus.FAILED,
+        media,
+        requestedBy,
+        is4k: false,
+        serverId: 99,
+        seasons: [
+          new SeasonRequest({
+            seasonNumber: 1,
+            status: MediaRequestStatus.FAILED,
+            episodeNumbers: [1, 2],
+          }),
+        ],
+      })
+    );
+
+    const admin = await loginAs('admin@seerr.dev', 'test1234');
+    const response = await admin.put(`/request/${failed.id}`).send({
+      mediaType: MediaType.TV,
+      serverId: 5,
+      seasons: [1],
+      seasonRequests: [{ seasonNumber: 1, episodeNumbers: [1, 2] }],
+    });
+
+    assert.strictEqual(response.status, 200);
+    assert.strictEqual(response.body.status, MediaRequestStatus.APPROVED);
+    const persisted = await getRepository(MediaRequest).findOneOrFail({
+      where: { id: failed.id },
+      relations: { seasons: true },
+    });
+    assert.deepStrictEqual(persisted.seasons[0].episodeNumbers, [1, 2]);
+  });
+
+  it('does not report a failed request as recovered when its seasons are already assigned', async (t) => {
+    const settings = getSettings();
+    const priorPartialRequestsEnabled = settings.main.partialRequestsEnabled;
+    settings.sonarr = [createSonarrSettings(5)];
+    settings.main.partialRequestsEnabled = true;
+    t.after(() => {
+      settings.sonarr = [];
+      settings.main.partialRequestsEnabled = priorPartialRequestsEnabled;
+    });
+    const requestedBy = await getRepository(User).findOneOrFail({
+      where: { id: 2 },
+    });
+    const media = await getRepository(Media).save(
+      new Media({
+        mediaType: MediaType.TV,
+        tmdbId: 1709,
+        status: MediaStatus.PENDING,
+        status4k: MediaStatus.UNKNOWN,
+        seasons: [
+          new Season({
+            seasonNumber: 1,
+            status: MediaStatus.PENDING,
+            status4k: MediaStatus.UNKNOWN,
+          }),
+        ],
+      })
+    );
+    await getRepository(MediaRequest).save(
+      new MediaRequest({
+        type: MediaType.TV,
+        status: MediaRequestStatus.PENDING,
+        media,
+        requestedBy,
+        is4k: false,
+        serverId: 5,
+        seasons: [
+          new SeasonRequest({
+            seasonNumber: 1,
+            status: MediaRequestStatus.PENDING,
+          }),
+        ],
+      })
+    );
+    const failed = await getRepository(MediaRequest).save(
+      new MediaRequest({
+        type: MediaType.TV,
+        status: MediaRequestStatus.FAILED,
+        media,
+        requestedBy,
+        is4k: false,
+        serverId: 99,
+        seasons: [
+          new SeasonRequest({
+            seasonNumber: 1,
+            status: MediaRequestStatus.FAILED,
+          }),
+        ],
+      })
+    );
+
+    const admin = await loginAs('admin@seerr.dev', 'test1234');
+    const response = await admin.put(`/request/${failed.id}`).send({
+      mediaType: MediaType.TV,
+      serverId: 5,
+      seasons: [1],
+      seasonRequests: [{ seasonNumber: 1 }],
+    });
+
+    assert.strictEqual(response.status, 409);
+    const persisted = await getRepository(MediaRequest).findOneOrFail({
+      where: { id: failed.id },
+    });
+    assert.strictEqual(persisted.status, MediaRequestStatus.FAILED);
+    assert.strictEqual(persisted.serverId, 99);
+  });
 });
 
 describe('GET /request', () => {
@@ -6414,6 +6552,54 @@ async function seedTvRequest(
 }
 
 describe('PUT /request/:requestId (tv)', () => {
+  it('reactivates a declined season selection without adding a duplicate', async () => {
+    const requestRepo = getRepository(MediaRequest);
+    const owner = await seedUser('demo@seerr.dev');
+    const mediaRequest = await seedTvRequest(owner, [1]);
+    mediaRequest.seasons[0].status = MediaRequestStatus.DECLINED;
+    await getRepository(SeasonRequest).save(mediaRequest.seasons[0]);
+
+    const agent = await loginAs('demo@seerr.dev', 'test1234');
+    const res = await agent.put(`/request/${mediaRequest.id}`).send({
+      mediaType: MediaType.TV,
+      seasons: [1],
+    });
+
+    assert.strictEqual(res.status, 200);
+
+    const saved = await requestRepo.findOneOrFail({
+      where: { id: mediaRequest.id },
+      relations: { seasons: true },
+    });
+    assert.strictEqual(saved.seasons.length, 1);
+    assert.strictEqual(saved.seasons[0].status, MediaRequestStatus.PENDING);
+  });
+
+  it('does not charge quota for retained declined season history', async () => {
+    const owner = await seedUser('demo@seerr.dev', { tvQuotaLimit: 1 });
+    const mediaRequest = await seedTvRequest(owner, [1]);
+    mediaRequest.seasons[0].status = MediaRequestStatus.DECLINED;
+    await getRepository(SeasonRequest).save(mediaRequest.seasons[0]);
+
+    const agent = await loginAs('demo@seerr.dev', 'test1234');
+    const res = await agent.put(`/request/${mediaRequest.id}`).send({
+      mediaType: MediaType.TV,
+      seasons: [2],
+    });
+
+    assert.strictEqual(res.status, 200);
+
+    const saved = await getRepository(MediaRequest).findOneOrFail({
+      where: { id: mediaRequest.id },
+      relations: { seasons: true },
+    });
+    const seasons = new Map(
+      saved.seasons.map((season) => [season.seasonNumber, season.status])
+    );
+    assert.strictEqual(seasons.get(1), MediaRequestStatus.DECLINED);
+    assert.strictEqual(seasons.get(2), MediaRequestStatus.PENDING);
+  });
+
   it('does not add a season held by another request', async () => {
     const requestRepo = getRepository(MediaRequest);
 
