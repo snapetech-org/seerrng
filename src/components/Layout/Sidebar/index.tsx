@@ -62,7 +62,7 @@ const Sidebar = ({
     device: 'mobile' | 'desktop'
   ) => {
     const selected = router.pathname.match(link.activeRegExp);
-    const iconClass = device === 'desktop' ? 'mr-3 h-6 w-6' : 'mr-3 h-6 w-6';
+    const iconClass = device === 'desktop' ? 'me-3 h-6 w-6' : 'me-3 h-6 w-6';
     const className =
       device === 'mobile'
         ? `flex items-center rounded-md px-2 py-2 text-base leading-6 font-medium text-white transition duration-150 ease-in-out focus:outline-none ${
@@ -99,7 +99,7 @@ const Sidebar = ({
           link.messagesKey === 'requests' &&
           pendingRequestsCount > 0 &&
           hasPermission(Permission.MANAGE_REQUESTS) && (
-            <div className="ml-auto flex">
+            <div className="ms-auto flex">
               <Badge
                 className={`rounded-md bg-gradient-to-br ${
                   selected
@@ -115,7 +115,7 @@ const Sidebar = ({
           link.messagesKey === 'issues' &&
           openIssuesCount > 0 &&
           hasPermission(Permission.MANAGE_ISSUES) && (
-            <div className="ml-auto flex">
+            <div className="ms-auto flex">
               <Badge
                 className={`rounded-md bg-gradient-to-br ${
                   selected
@@ -186,11 +186,11 @@ const Sidebar = ({
             <TransitionChild
               as="div"
               enter="transition-transform ease-in-out duration-300"
-              enterFrom="-translate-x-full"
+              enterFrom="ltr:-translate-x-full rtl:translate-x-full"
               enterTo="translate-x-0"
               leave="transition-transform ease-in-out duration-300"
               leaveFrom="translate-x-0"
-              leaveTo="-translate-x-full"
+              leaveTo="ltr:-translate-x-full rtl:translate-x-full"
             >
               <>
                 <div className="sidebar relative flex h-full w-full max-w-xs flex-1 flex-col">
@@ -214,7 +214,7 @@ const Sidebar = ({
                             src={versionedAsset('/logo_full.svg')}
                             alt="Logo"
                             fill
-                            className="object-contain object-left"
+                            className="object-contain object-left rtl:object-right"
                           />
                         </Link>
                       </span>
@@ -253,7 +253,7 @@ const Sidebar = ({
                       src={versionedAsset('/logo_full.svg')}
                       alt="Logo"
                       fill
-                      className="object-contain object-left"
+                      className="object-contain object-left rtl:object-right"
                       loading="eager"
                     />
                   </Link>

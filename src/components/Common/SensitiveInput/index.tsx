@@ -42,7 +42,7 @@ const SensitiveInput = memo(
           data-1pignore="true"
           data-lpignore="true"
           {...componentProps}
-          className={`rounded-l-only ${componentProps.className ?? ''}`}
+          className={`rounded-s-only ${componentProps.className ?? ''}`}
           type={
             props.type === 'textarea'
               ? undefined

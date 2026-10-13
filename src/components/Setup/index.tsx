@@ -264,7 +264,7 @@ const Setup = () => {
           ) ?? []
         }
       />
-      <div className="absolute top-4 right-4 z-50">
+      <div className="absolute end-4 top-4 z-50">
         <LanguagePicker />
       </div>
       <div className="relative z-40 px-4 sm:mx-auto sm:w-full sm:max-w-4xl">
@@ -316,7 +316,7 @@ const Setup = () => {
                 {intl.formatMessage(messages.subtitle)}
               </div>
               <div className="grid grid-cols-3">
-                <div className="flex flex-col divide-y divide-gray-600 rounded-l border border-gray-600 py-2">
+                <div className="flex flex-col divide-y divide-gray-600 rounded-s border border-gray-600 py-2">
                   <div className="mb-2 flex flex-1 items-center justify-center px-2 py-2">
                     <JellyfinLogo className="h-10" />
                   </div>
@@ -350,7 +350,7 @@ const Setup = () => {
                     </button>
                   </div>
                 </div>
-                <div className="flex flex-col divide-y divide-gray-600 rounded-r border border-gray-600 py-2">
+                <div className="flex flex-col divide-y divide-gray-600 rounded-e border border-gray-600 py-2">
                   <div className="mb-2 flex flex-1 items-center justify-center px-2 py-2">
                     <EmbyLogo className="h-9" />
                   </div>
@@ -435,7 +435,7 @@ const Setup = () => {
                 )}
                 <div className="actions">
                   <div className="flex justify-end">
-                    <span className="ml-3 inline-flex rounded-md shadow-sm">
+                    <span className="ms-3 inline-flex rounded-md shadow-sm">
                       <Button
                         buttonType="primary"
                         disabled={!mediaServerSettingsComplete}
@@ -458,7 +458,7 @@ const Setup = () => {
                 <SettingsServices />
                 <div className="actions">
                   <div className="flex justify-end">
-                    <span className="ml-3 inline-flex rounded-md shadow-sm">
+                    <span className="ms-3 inline-flex rounded-md shadow-sm">
                       <Button
                         buttonType="primary"
                         onClick={() => void finishSetup()}

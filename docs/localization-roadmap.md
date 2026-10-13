@@ -31,12 +31,14 @@ A targeted script scan of the Indonesian client catalog found no remaining Arabi
 
 ## Language metadata and RTL
 
-The document `lang` follows the successfully loaded catalog. Failed or superseded locale loads cannot roll back a newer selection, and the language picker reflects the requested locale while it loads and returns to the loaded locale if loading fails. The search input uses logical start padding.
+The document `lang` follows the successfully loaded catalog, and Arabic sets `dir="rtl"`. Failed or superseded locale loads cannot roll back a newer selection. Shared navigation, the setup flow, calendar controls, and common grouped inputs use logical direction-aware layout rules.
 
-Arabic remains selectable and its document language metadata is set correctly. The document direction stays LTR because the shared application still has physical left/right layout rules across many screens. Full-page RTL conversion and visual review at narrow and desktop widths remain open work; this change does not claim RTL layout acceptance.
+The Agent VM browser review on 2026-10-13 verified Arabic `/setup` and `/calendar` at 1280×900 and 390×844. Both pages rendered Arabic with `lang="ar"` and `dir="rtl"`; the calendar controls and empty state fit at both widths. The browser-native month input kept its English month name. The calendar fixture had no release data.
+
+Arabic remains selectable, but this review does not certify every feature page for RTL. The source still contains physical left/right layout rules outside the reviewed shared-shell, setup, calendar, and grouped-input paths. Those routes need an RTL audit before claiming app-wide visual acceptance.
 
 ## Follow-up
 
 1. Request fluent-speaker review for each target catalog, especially Arabic and Hindi.
-2. Convert shared and feature layouts to logical positioning, then verify common Arabic workflows at narrow and desktop widths before enabling global RTL direction.
+2. Convert remaining feature layouts to logical positioning and verify representative Arabic workflows at narrow and desktop widths before claiming app-wide RTL acceptance.
 3. Keep new UI strings in the existing FormatJS source catalog and check source-key and placeholder parity in CI.

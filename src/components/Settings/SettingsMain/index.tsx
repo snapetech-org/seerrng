@@ -351,7 +351,7 @@ const SettingsMain = () => {
                           <SensitiveInput
                             type="text"
                             id="apiKey"
-                            className="rounded-l-only"
+                            className="rounded-s-only"
                             value={data?.apiKey}
                             readOnly
                           />

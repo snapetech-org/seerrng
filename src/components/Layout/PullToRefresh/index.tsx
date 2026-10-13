@@ -162,7 +162,7 @@ export const PullToRefreshController = ({
 
   return (
     <div
-      className="absolute top-0 right-0 left-0 z-50 m-auto w-fit transition-all ease-out"
+      className="absolute inset-x-0 top-0 z-50 m-auto w-fit transition-all ease-out"
       id="refreshIcon"
       style={{
         top: passedInitialThreshold
