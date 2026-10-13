@@ -169,7 +169,10 @@ test('unit-test shards use local runners only for Snapetech PRs and trusted main
     runner,
     /github\.event_name == 'workflow_dispatch'[^)]*refs\/heads\/main/
   );
-  assert.match(runner, /\["self-hosted","Linux","X64","host","seerrng"\]/);
+  assert.match(
+    runner,
+    /\["self-hosted","Linux","X64","kspls0","host","seerrng"\]/
+  );
   assert.match(runner, /\|\| 'ubuntu-latest'/);
 });
 

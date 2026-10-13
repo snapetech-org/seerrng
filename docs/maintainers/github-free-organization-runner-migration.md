@@ -7,8 +7,7 @@ Status: planned. No repository transfers or organization changes have been made.
 The NG repositories remain public under the `snapetech` personal account. The
 repositories require approval for workflow runs from all external contributors.
 CI routes `snapetech`-authored pull requests and trusted `main` runs to the
-local runner pool where supported; other contributors' pull requests use
-GitHub-hosted runners.
+KSPLS0 runner; other contributors' pull requests use GitHub-hosted runners.
 
 This workflow condition is routing logic, not an enforced security boundary.
 A public pull request can propose workflow changes, so review `.github/workflows`
