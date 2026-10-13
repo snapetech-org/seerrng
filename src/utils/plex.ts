@@ -217,6 +217,10 @@ class PlexOAuth {
         if (!this.pin) {
           throw new Error('Unable to poll when pin is not initialized.');
         }
+        if (Date.now() >= deadline) {
+          reject(new Error('Plex PIN expired before login completed.'));
+          return;
+        }
 
         const response = await axios.get(
           `/api/v1/auth/plex/pin/${this.pin.id}?code=${encodeURIComponent(
@@ -224,6 +228,10 @@ class PlexOAuth {
           )}`
         );
         this.assertCurrentAttempt(attemptId);
+        if (Date.now() >= deadline) {
+          reject(new Error('Plex PIN expired before login completed.'));
+          return;
+        }
 
         const rawAuthToken: unknown = response.data?.authToken;
         const authToken = parsePlexPinAuthToken(rawAuthToken);
@@ -245,6 +253,14 @@ class PlexOAuth {
           setTimeout(executePoll, 1000, resolve, reject);
         }
       } catch (e) {
+        if (axios.isAxiosError(e) && e.response?.status === 404) {
+          if (Date.now() >= deadline) {
+            reject(new Error('Plex PIN expired before login completed.'));
+            return;
+          }
+          setTimeout(executePoll, 1000, resolve, reject);
+          return;
+        }
         reject(e);
       }
     };

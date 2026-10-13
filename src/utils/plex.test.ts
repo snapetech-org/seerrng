@@ -93,7 +93,7 @@ describe('Plex PIN response boundaries', () => {
 });
 
 describe('Plex login attempt ownership', () => {
-  it('keeps PIN polling while providing a completed popup return URL', async () => {
+  it('retries transient PIN 404s while providing a completed popup return URL', async () => {
     const popup = {
       closed: false,
       close() {
@@ -121,14 +121,23 @@ describe('Plex login attempt ownership', () => {
     axios.post = (async () => ({
       data: { code: 'abcd', id: 42 },
     })) as typeof axios.post;
-    axios.get = (async () => ({
-      data: { authToken: 'token' },
-    })) as typeof axios.get;
+    let pollAttempts = 0;
+    axios.get = (async () => {
+      pollAttempts += 1;
+      if (pollAttempts === 1) {
+        throw Object.assign(new Error('Not found'), {
+          isAxiosError: true,
+          response: { status: 404 },
+        });
+      }
+      return { data: { authToken: 'token' } };
+    }) as typeof axios.get;
 
     try {
       const oauth = new PlexOAuth();
       const attempt = oauth.preparePopup();
       assert.equal(await oauth.login('client-id', attempt), 'token');
+      assert.equal(pollAttempts, 2);
       assert.match(
         decodeURIComponent(popup.location.href),
         /forwardUrl=https:\/\/seerr\.example\/login\/plex\/loading\?complete=1/

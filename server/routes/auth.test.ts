@@ -1041,6 +1041,69 @@ describe('POST /auth/plex', () => {
   });
 });
 
+describe('GET /auth/plex/pin/:id', () => {
+  const setPlexLoginEnabled = () => {
+    const settings = getSettings();
+    const previousMediaServerType = settings.main.mediaServerType;
+    const previousMediaServerLogin = settings.main.mediaServerLogin;
+    settings.main.mediaServerType = MediaServerType.PLEX;
+    settings.main.mediaServerLogin = true;
+    return () => {
+      settings.main.mediaServerType = previousMediaServerType;
+      settings.main.mediaServerLogin = previousMediaServerLogin;
+    };
+  };
+
+  it('preserves a Plex 404 so the client can retry the PIN poll', async () => {
+    const restoreSettings = setPlexLoginEnabled();
+    const getMock = mock.method(axios, 'get', async () => {
+      throw Object.assign(new Error('Not found'), {
+        isAxiosError: true,
+        response: { status: 404 },
+      });
+    });
+
+    try {
+      const response = await request(app)
+        .get('/auth/plex/pin/42')
+        .query({ code: 'abcd' });
+
+      assert.strictEqual(response.status, 404);
+      assert.strictEqual(
+        response.body.message,
+        'Plex PIN is not available yet.'
+      );
+      assert.strictEqual(getMock.mock.callCount(), 1);
+    } finally {
+      getMock.mock.restore();
+      restoreSettings();
+    }
+  });
+
+  it('continues to report other Plex polling failures as gateway errors', async () => {
+    const restoreSettings = setPlexLoginEnabled();
+    const getMock = mock.method(axios, 'get', async () => {
+      throw Object.assign(new Error('Service unavailable'), {
+        isAxiosError: true,
+        response: { status: 503 },
+      });
+    });
+
+    try {
+      const response = await request(app)
+        .get('/auth/plex/pin/42')
+        .query({ code: 'abcd' });
+
+      assert.strictEqual(response.status, 502);
+      assert.strictEqual(response.body.message, 'Unable to contact Plex.');
+      assert.strictEqual(getMock.mock.callCount(), 1);
+    } finally {
+      getMock.mock.restore();
+      restoreSettings();
+    }
+  });
+});
+
 describe('POST /auth/jellyfin/bridge', () => {
   const jellyfinUserId = '0123456789abcdef0123456789abcdef';
 

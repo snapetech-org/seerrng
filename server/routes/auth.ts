@@ -617,6 +617,12 @@ authRoutes.get(
         ...getHttpErrorDetails(e),
         errorStack: e instanceof Error ? e.stack : undefined,
       });
+      if (axios.isAxiosError(e) && e.response?.status === 404) {
+        return next({
+          status: 404,
+          message: 'Plex PIN is not available yet.',
+        });
+      }
       return next({ status: 502, message: 'Unable to contact Plex.' });
     }
   }
