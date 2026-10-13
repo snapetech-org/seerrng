@@ -10,7 +10,7 @@ was open in review on this date. An open or draft pull request is not a released
 feature. Follow its pull request for review and validation status, and use the
 release notes to confirm what is available in a SeerrNG release.
 
-This page tracks the SeerrNG pull requests numbered #244–#261 from this review
+This page tracks the SeerrNG pull requests numbered #244–#262 from this review
 period, including this index and the fork-retirement matrix. It is not a
 complete list of all open SeerrNG pull requests, a full inventory of upstream
 issues, or a user guide. Source links identify the public Seerr issue or pull
@@ -37,6 +37,7 @@ implementation details and review evidence.
 | [#259](https://github.com/snapetech/seerrng/pull/259) | Use Jellyfin's current authorization format for server API, logout cleanup, and authenticated avatars while preserving Emby compatibility. | [Seerr PR #3502](https://github.com/seerr-team/seerr/pull/3502), [Seerr PR #3503](https://github.com/seerr-team/seerr/pull/3503), and [Jellyfin issue #15962](https://github.com/jellyfin/jellyfin/issues/15962). |
 | [#260](https://github.com/snapetech/seerrng/pull/260) | Add title search, media-type filters, and stable sorting to local-only watchlists while preserving existing ordering when Plex lists are combined. | [Seerr PR #3506](https://github.com/seerr-team/seerr/pull/3506), closed without merge. |
 | [#261](https://github.com/snapetech/seerrng/pull/261) | Add opt-in display-name and profile-photo refresh for selected linked Jellyfin and Emby users while preserving SeerrNG-owned account fields. | [Seerr PR #3514](https://github.com/seerr-team/seerr/pull/3514) and its related [issue #2764](https://github.com/seerr-team/seerr/issues/2764). |
+| [#262](https://github.com/snapetech/seerrng/pull/262) | Resolve missing TVDB IDs through verified TVDB or selected-Sonarr lookups; retain unresolved requests and check fallback season numbering before dispatch. | [Seerr issue #3488](https://github.com/seerr-team/seerr/issues/3488), [PR #3489](https://github.com/seerr-team/seerr/pull/3489), and [PR #3490](https://github.com/seerr-team/seerr/pull/3490). |
 
 For current supported behavior, start with the [documentation index](./README.md).
 For SeerrNG's upstream relationship and the evidence needed before the core
