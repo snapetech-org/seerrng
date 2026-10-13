@@ -1,4 +1,8 @@
-import { MediaRequestFailureReason, MediaType } from '@server/constants/media';
+import {
+  MediaRequestFailureReason,
+  MediaRequestStatus,
+  MediaType,
+} from '@server/constants/media';
 
 export type RequestFailureMessageKey =
   | 'requestFailureServiceUnavailable'
@@ -56,6 +60,16 @@ export const getRequestFailureInfo = (
 
   return failureInfoByReason[reason as MediaRequestFailureReason];
 };
+
+export const canManuallyMapTvdbSeasons = (
+  requestType: string | null | undefined,
+  requestStatus: number | null | undefined,
+  failureReason: string | null | undefined
+): boolean =>
+  requestType === MediaType.TV &&
+  requestStatus === MediaRequestStatus.FAILED &&
+  (failureReason === MediaRequestFailureReason.TVDB_ID_UNRESOLVED ||
+    failureReason === MediaRequestFailureReason.TVDB_SEASON_MISMATCH);
 
 export const getRequestFailureDescriptionId = (
   requestId: number | string,

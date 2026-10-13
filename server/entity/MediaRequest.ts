@@ -2861,6 +2861,9 @@ export class MediaRequest {
   @Column({ type: 'varchar', nullable: true })
   public failureReason?: MediaRequestFailureReason | null;
 
+  @Column({ type: 'integer', nullable: true })
+  public overrideTvdbId?: number | null;
+
   @ManyToOne(() => Media, (media) => media.requests, {
     eager: true,
     onDelete: 'CASCADE',
