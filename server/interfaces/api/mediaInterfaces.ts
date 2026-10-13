@@ -5,7 +5,12 @@ import type { PaginatedResponse } from './common';
 
 export type MediaListItem = Pick<
   Media,
-  'id' | 'mediaType' | 'status' | 'status4k' | 'tmdbId'
+  | 'id'
+  | 'mediaType'
+  | 'status'
+  | 'status4k'
+  | 'tmdbId'
+  | 'viewerRequestCoverage'
 > &
   Partial<Pick<Media, 'imdbId' | 'mbId' | 'mediaAddedAt' | 'tvdbId'>> &
   Partial<

@@ -21,6 +21,7 @@ import { sortCrewPriority } from '@app/utils/creditHelpers';
 import defineMessages from '@app/utils/defineMessages';
 import { refreshIntervalHelper } from '@app/utils/refreshIntervalHelper';
 import { getSafeHref } from '@app/utils/safeUrl';
+import { getViewerAvailabilityPresentation } from '@app/utils/viewerAvailabilityPresentation';
 import {
   CogIcon,
   ExclamationTriangleIcon,
@@ -314,6 +315,13 @@ const MovieDetails = ({ movie }: MovieDetailsProps) => {
   );
   const playbackActions = canPlayMedia
     ? (is4k: boolean) => {
+        const availability = getViewerAvailabilityPresentation(
+          is4k ? data.mediaInfo?.status4k : data.mediaInfo?.status,
+          settings.currentSettings.otherUsersAvailability,
+          data.mediaInfo?.viewerRequestCoverage?.[is4k ? 'fourK' : 'standard']
+        );
+        if (availability.hidePlayback) return null;
+
         const selectedCatalog = is4k ? playbackCatalog4k : playbackCatalog;
         const selectedItem = selectedCatalog?.rootItem;
 

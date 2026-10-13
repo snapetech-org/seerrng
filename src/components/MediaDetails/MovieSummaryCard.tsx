@@ -1,8 +1,10 @@
 import CachedImage from '@app/components/Common/CachedImage';
 import WatchedBadge from '@app/components/Common/WatchedBadge';
 import AvailabilityValue from '@app/components/MediaDetails/AvailabilityValue';
+import useSettings from '@app/hooks/useSettings';
 import defineMessages from '@app/utils/defineMessages';
 import { getTmdbPosterImageUrl } from '@app/utils/imageCache';
+import { getViewerAvailabilityPresentation } from '@app/utils/viewerAvailabilityPresentation';
 import { MediaStatus } from '@server/constants/media';
 import type { MovieDetails } from '@server/models/Movie';
 import type { WatchStatusResponse } from '@server/models/WatchStatus';
@@ -21,6 +23,9 @@ const messages = defineMessages('components.MovieSummaryCard', {
   hd: 'HD',
   ultraHd: '4K',
   notAvailable: 'Not Available',
+  availabilityHidden: 'Hidden',
+  sharedAvailability: 'Shared: {status}',
+  sharedFormat: '{quality} (shared)',
   minutes: '{minutes} minutes',
   ratings: 'Ratings',
   watched: 'Watched',
@@ -88,6 +93,7 @@ const MovieSummaryCard = ({
   supplementalWriters?: string[];
 }) => {
   const intl = useIntl();
+  const settings = useSettings();
   const unavailable = intl.formatMessage(messages.notAvailable);
   const directors = sortedCrew.filter((person) => person.job === 'Director');
   const screenplay = sortedCrew.find((person) =>
@@ -105,10 +111,37 @@ const MovieSummaryCard = ({
   const available = (status?: MediaStatus) =>
     status === MediaStatus.AVAILABLE ||
     status === MediaStatus.PARTIALLY_AVAILABLE;
+  const standardAvailability = getViewerAvailabilityPresentation(
+    data.mediaInfo?.status,
+    settings.currentSettings.otherUsersAvailability,
+    data.mediaInfo?.viewerRequestCoverage?.standard
+  );
+  const fourKAvailability = getViewerAvailabilityPresentation(
+    data.mediaInfo?.status4k,
+    settings.currentSettings.otherUsersAvailability,
+    data.mediaInfo?.viewerRequestCoverage?.fourK
+  );
+  const formatLabel = (quality: string, shared: boolean) =>
+    shared ? intl.formatMessage(messages.sharedFormat, { quality }) : quality;
   const formats = [
-    available(data.mediaInfo?.status) ? 'HD' : undefined,
-    available(data.mediaInfo?.status4k) ? '4K' : undefined,
+    available(data.mediaInfo?.status) && !standardAvailability.hidden
+      ? formatLabel('HD', standardAvailability.shared)
+      : undefined,
+    available(data.mediaInfo?.status4k) && !fourKAvailability.hidden
+      ? formatLabel('4K', fourKAvailability.shared)
+      : undefined,
   ].filter(Boolean);
+  const availabilityText = (
+    status: MediaStatus | undefined,
+    shared: boolean,
+    hidden: boolean
+  ) => {
+    if (hidden) return intl.formatMessage(messages.availabilityHidden);
+    const text = getAvailabilityText(status, unavailable);
+    return shared
+      ? intl.formatMessage(messages.sharedAvailability, { status: text })
+      : text;
+  };
   const mediaAndFormat =
     'Movie' + (formats.length ? ' · ' + formats.join(' + ') : '');
   const title =
@@ -299,8 +332,19 @@ const MovieSummaryCard = ({
                 {intl.formatMessage(messages.hd)}:
               </dt>
               <dd className="m-0 truncate">
-                <AvailabilityValue status={data.mediaInfo?.status}>
-                  {getAvailabilityText(data.mediaInfo?.status, unavailable)}
+                <AvailabilityValue
+                  tone={standardAvailability.shared ? 'shared' : undefined}
+                  status={
+                    standardAvailability.hidden
+                      ? undefined
+                      : data.mediaInfo?.status
+                  }
+                >
+                  {availabilityText(
+                    data.mediaInfo?.status,
+                    standardAvailability.shared,
+                    standardAvailability.hidden
+                  )}
                 </AvailabilityValue>
               </dd>
               {show4kAvailability && (
@@ -309,10 +353,18 @@ const MovieSummaryCard = ({
                     {intl.formatMessage(messages.ultraHd)}:
                   </dt>
                   <dd className="m-0 truncate">
-                    <AvailabilityValue status={data.mediaInfo?.status4k}>
-                      {getAvailabilityText(
+                    <AvailabilityValue
+                      tone={fourKAvailability.shared ? 'shared' : undefined}
+                      status={
+                        fourKAvailability.hidden
+                          ? undefined
+                          : data.mediaInfo?.status4k
+                      }
+                    >
+                      {availabilityText(
                         data.mediaInfo?.status4k,
-                        unavailable
+                        fourKAvailability.shared,
+                        fourKAvailability.hidden
                       )}
                     </AvailabilityValue>
                   </dd>

@@ -3,6 +3,7 @@ import { Permission, useUser } from '@app/hooks/useUser';
 import globalMessages from '@app/i18n/globalMessages';
 import defineMessages from '@app/utils/defineMessages';
 import type { MediaStatus } from '@server/constants/media';
+import type { ViewerRequestCoverage } from '@server/lib/viewerRequestCoverage';
 import type { MovieDetails } from '@server/models/Movie';
 import type { TvDetails } from '@server/models/Tv';
 import axios from 'axios';
@@ -22,6 +23,7 @@ export interface TmdbTitleCardProps {
   year?: string;
   status?: MediaStatus;
   status4k?: MediaStatus;
+  viewerRequestCoverage?: ViewerRequestCoverage;
   canExpand?: boolean;
   isAddedToWatchlist?: boolean;
   mutateParent?: () => void;
@@ -53,6 +55,7 @@ const TmdbTitleCard = ({
   year: fallbackYear,
   status: fallbackStatus,
   status4k: fallbackStatus4k,
+  viewerRequestCoverage: fallbackViewerRequestCoverage,
   canExpand,
   isAddedToWatchlist = false,
   mutateParent,
@@ -116,6 +119,7 @@ const TmdbTitleCard = ({
         year={fallbackYear}
         status={fallbackStatus}
         status4k={fallbackStatus4k}
+        viewerRequestCoverage={fallbackViewerRequestCoverage}
         mediaType={type}
         isAddedToWatchlist={isAddedToWatchlist}
         canExpand={canExpand}
@@ -182,6 +186,7 @@ const TmdbTitleCard = ({
       fallbackImage={getSupplementalPosterPath(title)}
       status={title.mediaInfo?.status}
       status4k={title.mediaInfo?.status4k}
+      viewerRequestCoverage={title.mediaInfo?.viewerRequestCoverage}
       summary={
         [
           title.overview,
@@ -215,6 +220,7 @@ const TmdbTitleCard = ({
       fallbackImage={getSupplementalPosterPath(title)}
       status={title.mediaInfo?.status}
       status4k={title.mediaInfo?.status4k}
+      viewerRequestCoverage={title.mediaInfo?.viewerRequestCoverage}
       summary={
         [
           title.overview,
