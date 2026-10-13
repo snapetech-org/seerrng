@@ -261,7 +261,9 @@ BookshelfNG's proposed consolidation into ChaptarrNG is not released yet:
 there is no populated-library converter or old-channel bridge, so existing
 BookshelfNG installations should keep their current data and backup path. Any
 later retirement of ChaptarrNG into upstream Chaptarr must preserve both
-ChaptarrNG's maintained features and the BookshelfNG features carried over;
+ChaptarrNG's maintained and actively added features, including unpublished
+work, and the BookshelfNG features carried over. That complete union blocks
+ChaptarrNG retirement as a whole, with each feature an individual blocker;
 see the [fork transition criteria](./docs/using-seerr/dependency-forks.md).
 
 Radarr, Sonarr, Lidarr, LazyLibrarian, Mylar3, Issuarr, Kapowarr, and BackIssue are

@@ -27,8 +27,12 @@ BookshelfNG's proposed consolidation into ChaptarrNG is not released yet. No
 populated-library converter or old-channel bridge is available, so keep the
 existing BookshelfNG database and installation until the
 [feature, migration, and distribution gates](https://github.com/snapetech/bookshelfng/blob/main/docs/maintainers/chaptarr-consolidation.md)
-pass. The eventual ChaptarrNG product is intended to retain both BookshelfNG's
-enhancements and ChaptarrNG's existing maintained features.
+pass. BookshelfNG's retirement gate is its capabilities validated in
+ChaptarrNG. The later ChaptarrNG-to-Chaptarr gate is separate: all BookshelfNG
+features carried over plus every ChaptarrNG maintained or actively added
+feature, including unpublished work, block retirement as a whole. Each feature
+remains an individual blocker until tested against the supported upstream
+release; see the [combined ChaptarrNG retirement matrix](https://github.com/snapetech/chaptarrng/blob/main/docs/FORK_FEATURES.md#chaptarrng-retirement-blockers).
 
 ## One BookshelfNG instance for both formats
 
