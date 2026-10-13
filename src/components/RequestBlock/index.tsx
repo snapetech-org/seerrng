@@ -8,10 +8,12 @@ import MediaTypeBadge, {
   getMediaTypeBadgeType,
 } from '@app/components/Common/MediaTypeBadge';
 import Tooltip from '@app/components/Common/Tooltip';
+import RequestFailureDetails from '@app/components/RequestFailureDetails';
 import useRequestOverride from '@app/hooks/useRequestOverride';
 import { useUser } from '@app/hooks/useUser';
 import globalMessages from '@app/i18n/globalMessages';
 import defineMessages from '@app/utils/defineMessages';
+import { getRequestFailureDescriptionId } from '@app/utils/requestFailure';
 import { isActiveSeasonRequest } from '@app/utils/tvRequestSelection';
 import {
   CalendarIcon,
@@ -63,12 +65,14 @@ export type RequestBlockMediaIdentity =
 
 type RequestBlockProps = {
   request: MediaRequest;
+  searchTitle?: string;
   onUpdate?: () => void;
   hideDeleteAction?: boolean;
 } & RequestBlockMediaIdentity;
 
 const RequestBlock = ({
   request,
+  searchTitle,
   mediaType,
   onUpdate,
   hideDeleteAction = false,
@@ -334,6 +338,18 @@ const RequestBlock = ({
               ))}
             </div>
           </div>
+        )}
+        {request.status === MediaRequestStatus.FAILED && (
+          <RequestFailureDetails
+            failureReason={request.failureReason}
+            requestId={request.id}
+            requestType={request.type}
+            searchTitle={searchTitle}
+            descriptionId={getRequestFailureDescriptionId(
+              request.id,
+              'request-block'
+            )}
+          />
         )}
         {(server ||
           profile ||

@@ -47,6 +47,13 @@ TVDB season data, and a season-numbering mismatch. The field contains no raw
 provider error text. Retrying or resubmitting clears the previous code; a new
 failure records the latest classification.
 
+When a failed request has a recorded reason, its card and request-management
+views show a plain-language explanation. If the selected TV listing uses
+different regular-season numbers than TVDB, retry is disabled because the same
+listing will fail the same check. Use **Find Another Listing** to search for a
+series with matching season numbers. Users with request-management permission
+can also edit the failed request to select another listing.
+
 For books, the Books and Audiobooks filters keep ebook and audiobook requests
 separate. A combined request can therefore be incomplete while one format is
 available and the other is still requested or missing. See

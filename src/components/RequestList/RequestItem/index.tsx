@@ -11,6 +11,7 @@ import MediaTypeBadge, {
 } from '@app/components/Common/MediaTypeBadge';
 import Tooltip from '@app/components/Common/Tooltip';
 import { canRetryRequest } from '@app/components/RequestCard/retryPermissions';
+import RequestFailureDetails from '@app/components/RequestFailureDetails';
 import StatusBadge from '@app/components/StatusBadge';
 import useDeepLinks from '@app/hooks/useDeepLinks';
 import useSettings from '@app/hooks/useSettings';
@@ -25,6 +26,10 @@ import {
 import defineMessages from '@app/utils/defineMessages';
 import { getTmdbPosterImageUrl } from '@app/utils/imageCache';
 import { refreshIntervalHelper } from '@app/utils/refreshIntervalHelper';
+import {
+  getRequestFailureDescriptionId,
+  getRequestFailureInfo,
+} from '@app/utils/requestFailure';
 import { isActiveSeasonRequest } from '@app/utils/tvRequestSelection';
 import { hasLinkedWatchAheadAccount } from '@app/utils/watchAhead';
 import {
@@ -34,7 +39,11 @@ import {
   TrashIcon,
   XMarkIcon,
 } from '@heroicons/react/24/solid';
-import { MediaRequestStatus, MediaStatus } from '@server/constants/media';
+import {
+  MediaRequestStatus,
+  MediaStatus,
+  MediaType,
+} from '@server/constants/media';
 import type { MediaRequest } from '@server/entity/MediaRequest';
 import type { NonFunctionProperties } from '@server/interfaces/api/common';
 import type { RequestResultsResponse } from '@server/interfaces/api/requestInterfaces';
@@ -636,6 +645,15 @@ const RequestItem = ({ request, revalidateList }: RequestItemProps) => {
   const activeSeasonRequests = (requestData?.seasons ?? request.seasons).filter(
     isActiveSeasonRequest
   );
+  const failureInfo = getRequestFailureInfo(requestData?.failureReason);
+  const retryUnavailable = failureInfo?.retryUnavailable ?? false;
+  const failureSearchTitle =
+    requestData?.type === MediaType.TV &&
+    title &&
+    'name' in title &&
+    typeof title.name === 'string'
+      ? title.name
+      : undefined;
   const canFailDownload = Boolean(
     requestData &&
     requestData.status === MediaRequestStatus.APPROVED &&
@@ -750,6 +768,10 @@ const RequestItem = ({ request, revalidateList }: RequestItemProps) => {
   };
 
   const retryRequest = async () => {
+    if (retryUnavailable) {
+      return;
+    }
+
     setRetrying(true);
 
     try {
@@ -1009,6 +1031,14 @@ const RequestItem = ({ request, revalidateList }: RequestItemProps) => {
                 <Badge
                   badgeType="danger"
                   href={getRequestDetailHref(requestData, true)}
+                  aria-describedby={
+                    failureInfo
+                      ? getRequestFailureDescriptionId(
+                          requestData.id,
+                          'request-list'
+                        )
+                      : undefined
+                  }
                 >
                   {intl.formatMessage(globalMessages.failed)}
                 </Badge>
@@ -1095,6 +1125,18 @@ const RequestItem = ({ request, revalidateList }: RequestItemProps) => {
                 />
               )}
             </div>
+            {requestData.status === MediaRequestStatus.FAILED && (
+              <RequestFailureDetails
+                failureReason={requestData.failureReason}
+                requestId={requestData.id}
+                requestType={requestData.type}
+                searchTitle={failureSearchTitle}
+                descriptionId={getRequestFailureDescriptionId(
+                  requestData.id,
+                  'request-list'
+                )}
+              />
+            )}
             <div className="card-field">
               {hasPermission(
                 [Permission.MANAGE_REQUESTS, Permission.REQUEST_VIEW],
@@ -1328,7 +1370,22 @@ const RequestItem = ({ request, revalidateList }: RequestItemProps) => {
               <Button
                 className="w-full"
                 buttonType="primary"
-                disabled={isRetrying}
+                disabled={isRetrying || retryUnavailable}
+                disabledReason={
+                  retryUnavailable
+                    ? intl.formatMessage(
+                        globalMessages.requestFailureRetryUnavailable
+                      )
+                    : undefined
+                }
+                aria-describedby={
+                  retryUnavailable
+                    ? getRequestFailureDescriptionId(
+                        requestData.id,
+                        'request-list'
+                      )
+                    : undefined
+                }
                 onClick={() => retryRequest()}
               >
                 <ArrowPathIcon

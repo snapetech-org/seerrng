@@ -15,6 +15,7 @@ interface BadgeProps {
   className?: string;
   shape?: 'pill' | 'standard';
   href?: string;
+  'aria-describedby'?: string;
   children: React.ReactNode;
 }
 
@@ -24,6 +25,7 @@ const Badge = (
     className,
     shape = 'pill',
     href,
+    'aria-describedby': ariaDescribedBy,
     children,
   }: BadgeProps,
   ref?: React.Ref<HTMLElement>
@@ -107,6 +109,7 @@ const Badge = (
         target="_blank"
         rel="noopener noreferrer"
         className={badgeStyle.join(' ')}
+        aria-describedby={ariaDescribedBy}
         ref={ref as React.Ref<HTMLAnchorElement>}
       >
         {children}
@@ -117,6 +120,7 @@ const Badge = (
       <Link
         href={safeHref}
         className={badgeStyle.join(' ')}
+        aria-describedby={ariaDescribedBy}
         ref={ref as React.Ref<HTMLAnchorElement>}
       >
         {children}
@@ -126,6 +130,7 @@ const Badge = (
     return (
       <span
         className={badgeStyle.join(' ')}
+        aria-describedby={ariaDescribedBy}
         ref={ref as React.Ref<HTMLSpanElement>}
       >
         {children}
