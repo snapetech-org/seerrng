@@ -25,9 +25,18 @@ fork, see [Maintained dependency forks](./dependency-forks.md#bookshelfng).
 
 BookshelfNG and ChaptarrNG are separate applications. Their compatible API
 routes do not merge their databases or make one an automatic upgrade target
-for the other. Keep the current application and database until the target
-project documents a supported migration path and matching release and package
-instructions.
+for the other. The proposed BookshelfNG-to-ChaptarrNG consolidation is not
+released: no populated-library converter or old-channel bridge is available.
+Keep the existing BookshelfNG database and installation until the
+[feature, migration, and distribution gates](https://github.com/snapetech/bookshelfng/blob/main/docs/maintainers/chaptarr-consolidation.md)
+pass and the target publishes matching release and package instructions.
+The later ChaptarrNG-to-Chaptarr retirement gate is separate: every
+BookshelfNG feature carried over and every ChaptarrNG maintained or actively
+added feature, including unpublished work, must be preserved and tested against
+the supported upstream release. That combined feature set blocks retirement
+as a whole, with each feature an individual blocker; see the
+[combined ChaptarrNG retirement matrix](https://github.com/snapetech/chaptarrng/blob/main/docs/FORK_FEATURES.md#chaptarrng-retirement-blockers)
+and [SeerrNG's fork transition criteria](./dependency-forks.md#when-a-fork-can-be-retired).
 
 ## One BookshelfNG instance for both formats
 
