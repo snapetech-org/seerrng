@@ -1,11 +1,8 @@
-import assert from 'node:assert/strict';
-import { describe, it } from 'node:test';
-
 import { JSDOM } from 'jsdom';
 import React, { act } from 'react';
 import { createRoot, type Root } from 'react-dom/client';
 import { renderToStaticMarkup } from 'react-dom/server';
-import { vi } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 
 describe('SeerrNG tooltip keyboard references', () => {
   it('opens from keyboard focus and describes the focused reference', async () => {
@@ -46,7 +43,8 @@ describe('SeerrNG tooltip keyboard references', () => {
       });
 
       const reference = host.querySelector('span');
-      assert.ok(reference);
+      expect(reference).not.toBeNull();
+      if (!reference) throw new Error('Tooltip reference was not rendered');
 
       await act(async () => {
         reference.focus();
@@ -54,12 +52,14 @@ describe('SeerrNG tooltip keyboard references', () => {
 
       const tooltip =
         document.body.querySelector<HTMLElement>('[role="tooltip"]');
-      assert.ok(
-        tooltip,
-        `Tooltip did not open for the focused reference: ${reference.outerHTML}; body: ${document.body.innerHTML}`
-      );
-      assert.equal(tooltip.textContent, 'Series');
-      assert.equal(reference.getAttribute('aria-describedby'), tooltip.id);
+      expect(tooltip).not.toBeNull();
+      if (!tooltip) {
+        throw new Error(
+          `Tooltip did not open for the focused reference: ${reference.outerHTML}; body: ${document.body.innerHTML}`
+        );
+      }
+      expect(tooltip.textContent).toBe('Series');
+      expect(reference.getAttribute('aria-describedby')).toBe(tooltip.id);
     } finally {
       await act(async () => root.unmount());
       document.body.innerHTML = '';
@@ -76,8 +76,8 @@ describe('SeerrNG tooltip keyboard references', () => {
       </Tooltip>
     );
 
-    assert.match(markup, /<span[^>]*tabindex="0"/);
-    assert.match(markup, /data-app-tooltip-owned="true"/);
+    expect(markup).toMatch(/<span[^>]*tabindex="0"/);
+    expect(markup).toMatch(/data-app-tooltip-owned="true"/);
   });
 
   it('attaches a tooltip to the single focusable child inside a layout wrapper', async () => {
@@ -90,8 +90,8 @@ describe('SeerrNG tooltip keyboard references', () => {
       </Tooltip>
     );
 
-    assert.match(markup, /<span><button[^>]*data-app-tooltip-owned="true"/);
-    assert.doesNotMatch(markup, /<span[^>]*tabindex="0"/);
+    expect(markup).toMatch(/<span><button[^>]*data-app-tooltip-owned="true"/);
+    expect(markup).not.toMatch(/<span[^>]*tabindex="0"/);
   });
 
   it('provides a keyboard target for disabled actions without enabling them', async () => {
@@ -104,11 +104,10 @@ describe('SeerrNG tooltip keyboard references', () => {
       </Tooltip>
     );
 
-    assert.match(
-      markup,
+    expect(markup).toMatch(
       /<span[^>]*role="group"[^>]*tabindex="0"[^>]*aria-label="Add Item"/
     );
-    assert.match(markup, /<button[^>]*disabled=""/);
+    expect(markup).toMatch(/<button[^>]*disabled=""/);
   });
 
   it('adds focus support to custom controls that lack a tab stop', async () => {
@@ -123,7 +122,7 @@ describe('SeerrNG tooltip keyboard references', () => {
       </Tooltip>
     );
 
-    assert.match(markup, /<div[^>]*role="button"[^>]*tabindex="0"/);
+    expect(markup).toMatch(/<div[^>]*role="button"[^>]*tabindex="0"/);
   });
 
   it('leaves empty tooltips and their children untouched', async () => {
@@ -134,6 +133,6 @@ describe('SeerrNG tooltip keyboard references', () => {
       </Tooltip>
     );
 
-    assert.equal(markup, '<span>Optional detail</span>');
+    expect(markup).toBe('<span>Optional detail</span>');
   });
 });
