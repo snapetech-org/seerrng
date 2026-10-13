@@ -5,7 +5,7 @@ import {
   MAX_DISCOVER_SLIDER_DATA_LENGTH,
   MAX_DISCOVER_SLIDER_TITLE_LENGTH,
   MAX_DISCOVER_SLIDERS,
-  MAX_TMDB_PUBLIC_LIST_ID_LENGTH,
+  MAX_TMDB_PUBLIC_LIST_ID,
 } from '@server/constants/discover';
 import dataSource, { getRepository } from '@server/datasource';
 import DiscoverSlider from '@server/entity/DiscoverSlider';
@@ -166,7 +166,7 @@ const parseCustomSlider = (
   } else if (slider.type === DiscoverSliderType.TMDB_LIST) {
     if (!isTmdbPublicListId(data.value)) {
       return {
-        error: `TMDB list ID must be a positive decimal ID of ${MAX_TMDB_PUBLIC_LIST_ID_LENGTH} digits or fewer.`,
+        error: `TMDB list ID must be a positive 32-bit integer no greater than ${MAX_TMDB_PUBLIC_LIST_ID}.`,
       };
     }
   } else if (

@@ -8,6 +8,7 @@ import {
   readDiscoverSliderScrollPosition,
   saveDiscoverSliderScrollPosition,
 } from '@app/utils/discoverScrollRestoration';
+import { getLocaleDirection } from '@app/utils/localeDirection';
 import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/24/outline';
 import {
   createContext,
@@ -46,6 +47,26 @@ enum Direction {
   LEFT,
 }
 
+const getLogicalScrollLeft = (
+  container: HTMLElement,
+  isRightToLeft: boolean
+): number => {
+  const maximum = Math.max(container.scrollWidth - container.clientWidth, 0);
+  const position = isRightToLeft ? -container.scrollLeft : container.scrollLeft;
+
+  return Math.min(Math.max(position, 0), maximum);
+};
+
+const setLogicalScrollLeft = (
+  container: HTMLElement,
+  position: number,
+  isRightToLeft: boolean
+): void => {
+  const maximum = Math.max(container.scrollWidth - container.clientWidth, 0);
+  const boundedPosition = Math.min(Math.max(position, 0), maximum);
+  container.scrollLeft = isRightToLeft ? -boundedPosition : boundedPosition;
+};
+
 const Slider = ({
   heading,
   notice,
@@ -60,6 +81,7 @@ const Slider = ({
   disableItemContentVisibility = false,
 }: SliderProps) => {
   const intl = useIntl();
+  const isRightToLeft = getLocaleDirection(intl.locale) === 'rtl';
   const containerRef = useRef<HTMLDivElement>(null);
   const debounceRef = useRef<number | undefined>(undefined);
   const scrollSaveTimeoutRef = useRef<number | undefined>(undefined);
@@ -93,7 +115,10 @@ const Slider = ({
     const scrollWidth = containerRef.current?.scrollWidth ?? 0;
     const clientWidth =
       containerRef.current?.getBoundingClientRect().width ?? 0;
-    const scrollPosition = containerRef.current?.scrollLeft ?? 0;
+    const container = containerRef.current;
+    const scrollPosition = container
+      ? getLogicalScrollLeft(container, isRightToLeft)
+      : 0;
 
     if (!items || items?.length === 0) {
       setScrollPosition({ isStart: true, isEnd: true });
@@ -109,7 +134,7 @@ const Slider = ({
     } else {
       setScrollPosition({ isStart: true, isEnd: false });
     }
-  }, [items, setScrollPosition]);
+  }, [isRightToLeft, items, setScrollPosition]);
 
   const debouncedScroll = useCallback(() => {
     window.clearTimeout(debounceRef.current);
@@ -150,10 +175,12 @@ const Slider = ({
       saveDiscoverSliderScrollPosition(
         historyEntryKeyRef.current,
         activeSliderKeyRef.current,
-        container?.scrollLeft ?? latestScrollPositionRef.current
+        container
+          ? getLogicalScrollLeft(container, isRightToLeft)
+          : latestScrollPositionRef.current
       );
     };
-  }, [restoreHorizontalScroll]);
+  }, [isRightToLeft, restoreHorizontalScroll]);
 
   useLayoutEffect(() => {
     if (activeSliderKeyRef.current !== sliderKey) {
@@ -162,7 +189,9 @@ const Slider = ({
         saveDiscoverSliderScrollPosition(
           historyEntryKeyRef.current,
           activeSliderKeyRef.current,
-          containerRef.current?.scrollLeft ?? latestScrollPositionRef.current
+          containerRef.current
+            ? getLogicalScrollLeft(containerRef.current, isRightToLeft)
+            : latestScrollPositionRef.current
         );
       }
 
@@ -190,23 +219,30 @@ const Slider = ({
       sliderKey
     );
     if (savedPosition !== undefined) {
-      container.scrollLeft = savedPosition;
+      setLogicalScrollLeft(container, savedPosition, isRightToLeft);
     }
 
-    latestScrollPositionRef.current = container.scrollLeft;
+    latestScrollPositionRef.current = getLogicalScrollLeft(
+      container,
+      isRightToLeft
+    );
     hasRestoredHorizontalScrollRef.current = true;
     handleScroll();
   }, [
     handleScroll,
     isActive,
     isLoading,
+    isRightToLeft,
     items,
     restoreHorizontalScroll,
     sliderKey,
   ]);
 
   const onScroll = () => {
-    const scrollPosition = containerRef.current?.scrollLeft ?? 0;
+    const container = containerRef.current;
+    const scrollPosition = container
+      ? getLogicalScrollLeft(container, isRightToLeft)
+      : 0;
     latestScrollPositionRef.current = scrollPosition;
 
     if (restoreHorizontalScroll && hasRestoredHorizontalScrollRef.current) {
@@ -226,39 +262,48 @@ const Slider = ({
   };
 
   const slide = (direction: Direction) => {
-    const clientWidth =
-      containerRef.current?.getBoundingClientRect().width ?? 0;
+    const container = containerRef.current;
+    const clientWidth = container?.getBoundingClientRect().width ?? 0;
     const cardWidth =
-      containerRef.current?.firstElementChild?.getBoundingClientRect().width ??
-      0;
-    const scrollPosition = containerRef.current?.scrollLeft ?? 0;
-    const scrollWidth = containerRef.current?.scrollWidth ?? 0;
+      container?.firstElementChild?.getBoundingClientRect().width ?? 0;
+    const scrollPosition = container
+      ? getLogicalScrollLeft(container, isRightToLeft)
+      : 0;
+    const scrollWidth = container?.scrollWidth ?? 0;
 
-    if (!containerRef.current || !clientWidth || !cardWidth) {
+    if (!container || !clientWidth || !cardWidth) {
       return;
     }
 
     const visibleItems = Math.floor(clientWidth / cardWidth);
     const scrollOffset = scrollPosition % cardWidth;
+    const movesTowardEnd = (direction === Direction.RIGHT) !== isRightToLeft;
 
-    if (direction === Direction.LEFT) {
+    if (!movesTowardEnd) {
       const newX = Math.max(
         scrollPosition - scrollOffset - visibleItems * cardWidth,
         0
       );
-      containerRef.current.scrollTo({ left: newX, behavior: 'smooth' });
+      container.scrollTo({
+        left: isRightToLeft ? -newX : newX,
+        behavior: 'smooth',
+      });
 
       if (newX === 0) {
         setScrollPosition({ isStart: true, isEnd: false });
       } else {
         setScrollPosition({ isStart: false, isEnd: false });
       }
-    } else if (direction === Direction.RIGHT) {
+    } else {
+      const maximum = Math.max(scrollWidth - clientWidth, 0);
       const newX = Math.min(
         scrollPosition - scrollOffset + visibleItems * cardWidth,
-        scrollWidth - clientWidth
+        maximum
       );
-      containerRef.current.scrollTo({ left: newX, behavior: 'smooth' });
+      container.scrollTo({
+        left: isRightToLeft ? -newX : newX,
+        behavior: 'smooth',
+      });
 
       if (newX >= scrollWidth - clientWidth) {
         setScrollPosition({ isStart: false, isEnd: true });
@@ -282,12 +327,16 @@ const Slider = ({
               buttonType="success"
               buttonSize="standard"
               onClick={() => slide(Direction.LEFT)}
-              disabled={scrollPos.isStart}
+              disabled={isRightToLeft ? scrollPos.isEnd : scrollPos.isStart}
               disabledReason={intl.formatMessage(
-                globalMessages.noPreviousItems
+                isRightToLeft
+                  ? globalMessages.noNextItems
+                  : globalMessages.noPreviousItems
               )}
               type="button"
-              aria-label={intl.formatMessage(globalMessages.previous)}
+              aria-label={intl.formatMessage(
+                isRightToLeft ? globalMessages.next : globalMessages.previous
+              )}
             >
               <ChevronLeftIcon />
             </Button>
@@ -295,10 +344,16 @@ const Slider = ({
               buttonType="success"
               buttonSize="standard"
               onClick={() => slide(Direction.RIGHT)}
-              disabled={scrollPos.isEnd}
-              disabledReason={intl.formatMessage(globalMessages.noNextItems)}
+              disabled={isRightToLeft ? scrollPos.isStart : scrollPos.isEnd}
+              disabledReason={intl.formatMessage(
+                isRightToLeft
+                  ? globalMessages.noPreviousItems
+                  : globalMessages.noNextItems
+              )}
               type="button"
-              aria-label={intl.formatMessage(globalMessages.next)}
+              aria-label={intl.formatMessage(
+                isRightToLeft ? globalMessages.previous : globalMessages.next
+              )}
             >
               <ChevronRightIcon />
             </Button>

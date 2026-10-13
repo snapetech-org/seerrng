@@ -11,7 +11,8 @@ Administrators can add a public TMDB list to Discover as a custom slider.
 4. Check the preview, then choose **Add Slider** and save the Discover layout.
 
 The list must be public. Private lists require an owner account and cannot be
-loaded by SeerrNG. List IDs must be positive decimal numbers of up to 12 digits.
+loaded by SeerrNG. TMDB v4 list IDs must be positive 32-bit integers from 1 to
+2,147,483,647.
 SeerrNG stores the list ID and slider title; it does not ask for or store a TMDB
 user token.
 

@@ -665,7 +665,7 @@ export const sanitizeTmdbListResponse = (
     !Number.isSafeInteger(value.item_count) ||
     (value.item_count as number) < 0 ||
     !Number.isSafeInteger(value.total_pages) ||
-    (value.total_pages as number) < 1 ||
+    (value.total_pages as number) < 0 ||
     !Array.isArray(value.results)
   ) {
     throw new Error('Invalid TMDB list response');

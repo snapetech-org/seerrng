@@ -35,10 +35,24 @@ const assertStoredPosition = (sliderKey: string, position: number) => {
 };
 
 describe('Discover slider Back navigation', () => {
+  let originalLocale: string | undefined;
+
   beforeEach(() => {
     cy.viewport(390, 844);
     cy.loginAsAdmin();
     cy.mockConfiguredMediaAvailability({});
+  });
+
+  afterEach(() => {
+    if (!originalLocale) return;
+
+    const localeToRestore = originalLocale;
+    originalLocale = undefined;
+    cy.intercept('POST', '/api/v1/settings/main').as('restoreLocale');
+    cy.visit('/settings/main');
+    cy.get('#locale').select(localeToRestore);
+    cy.get('form button[type="submit"]').first().click();
+    cy.wait('@restoreLocale').its('response.statusCode').should('eq', 200);
   });
 
   it('restores each home carousel to its own horizontal position', () => {
@@ -130,6 +144,95 @@ describe('Discover slider Back navigation', () => {
       .find('.slider-track')
       .should(($track) => {
         expect(($track[0] as HTMLDivElement).scrollLeft).to.eq(popularPosition);
+      });
+  });
+
+  it('restores a right-to-left carousel position after Back navigation', () => {
+    const trending = makeResults(993000, 'RTL Trending Scroll');
+    const target = trending[3];
+    const detailPath = `/movie/${target.id}`;
+    const details = {
+      ...target,
+      credits: { cast: [], crew: [] },
+      productionCompanies: [],
+      productionCountries: [],
+      spokenLanguages: [],
+      genres: [],
+      keywords: [],
+      relatedVideos: [],
+      externalIds: {},
+      releases: { results: [] },
+      contentRatings: { results: [] },
+      seasons: [],
+      createdBy: [],
+      episodeRunTime: [],
+      networks: [],
+      originalLanguage: 'en',
+      status: 'Released',
+    };
+
+    cy.intercept('POST', '/api/v1/settings/main').as('setArabicLocale');
+    cy.visit('/settings/main');
+    cy.get('#locale').then(($select) => {
+      originalLocale = String($select.val() ?? 'en');
+    });
+    cy.get('#locale').select('ar');
+    cy.get('form button[type="submit"]').first().click();
+    cy.wait('@setArabicLocale').its('response.statusCode').should('eq', 200);
+    cy.document().its('documentElement.dir').should('eq', 'rtl');
+
+    cy.intercept('GET', '/api/v1/discover/trending*', {
+      page: 1,
+      totalPages: 1,
+      totalResults: trending.length,
+      results: trending,
+    }).as('rtlTrending');
+    cy.intercept('GET', `/api/v1${detailPath}`, details).as('rtlDetails');
+    cy.intercept('GET', `**/_next/data/*${detailPath}.json*`, {
+      pageProps: { movie: details },
+      __N_SSP: true,
+    });
+
+    cy.visit('/');
+    cy.wait('@rtlTrending');
+
+    let scrollPositionBeforeNavigation = 0;
+    cy.contains('.slider-header', 'الأكثر شيوعاً')
+      .closest('[data-testid=media-slider]')
+      .find('.slider-track')
+      .then(($track) => {
+        const track = $track[0] as HTMLDivElement;
+        expect(getComputedStyle(track).direction).to.eq('rtl');
+        expect(track.scrollWidth).to.be.greaterThan(track.clientWidth);
+        track.scrollLeft = -260;
+        track.dispatchEvent(new Event('scroll', { bubbles: true }));
+      });
+    assertStoredPosition('trending', 260);
+
+    cy.contains('.slider-header', 'الأكثر شيوعاً')
+      .closest('[data-testid=media-slider]')
+      .find('[data-testid=title-card]')
+      .eq(3)
+      .scrollIntoView({ offset: { top: 120, left: 0 } })
+      .then(($card) => {
+        const slider = $card.closest('[data-testid=media-slider]')[0];
+        scrollPositionBeforeNavigation = (
+          slider.querySelector('.slider-track') as HTMLDivElement
+        ).scrollLeft;
+        cy.wrap($card).trigger('mouseover').click({ scrollBehavior: false });
+      });
+    cy.wait('@rtlDetails');
+    cy.location('pathname').should('eq', detailPath);
+
+    cy.go('back');
+    cy.location('pathname').should('eq', '/');
+    cy.contains('.slider-header', 'الأكثر شيوعاً')
+      .closest('[data-testid=media-slider]')
+      .find('.slider-track')
+      .should(($track) => {
+        expect(($track[0] as HTMLDivElement).scrollLeft).to.eq(
+          scrollPositionBeforeNavigation
+        );
       });
   });
 });

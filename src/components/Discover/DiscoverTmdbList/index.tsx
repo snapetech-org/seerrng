@@ -17,8 +17,7 @@ const messages = defineMessages('components.Discover.DiscoverTmdbList', {
   loadErrorDescription:
     'The list may be private, unavailable, or temporarily unreachable.',
   invalidListTitle: 'TMDB List ID Is Invalid',
-  invalidListDescription:
-    'Enter a positive decimal list ID of 12 digits or fewer.',
+  invalidListDescription: 'Enter a valid positive TMDB list ID.',
   retryDescription: 'Retry loading this TMDB list.',
 });
 

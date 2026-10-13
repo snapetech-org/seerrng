@@ -5,7 +5,7 @@ import {
   DiscoverSliderType,
   MAX_DISCOVER_KEYWORD_IDS,
   MAX_DISCOVER_SLIDERS,
-  MAX_TMDB_PUBLIC_LIST_ID_LENGTH,
+  MAX_TMDB_PUBLIC_LIST_ID,
 } from '@server/constants/discover';
 import { getRepository } from '@server/datasource';
 import DiscoverSlider from '@server/entity/DiscoverSlider';
@@ -249,7 +249,14 @@ describe('Discover settings route validation', () => {
 
   it('validates and preserves decimal TMDB public list IDs', async () => {
     const countBefore = await getRepository(DiscoverSlider).count();
-    const invalidIds = ['0', 'abc', '1234567890123', '1e3', '1/2'];
+    const invalidIds = [
+      '0',
+      'abc',
+      '2147483648',
+      '1234567890123',
+      '1e3',
+      '1/2',
+    ];
     const invalid = await Promise.all(
       invalidIds.map((data) =>
         request(app)
@@ -264,14 +271,14 @@ describe('Discover settings route validation', () => {
 
     for (const response of invalid) {
       assert.strictEqual(response.status, 400);
-      assert.match(response.body.message, /positive decimal ID/);
+      assert.match(response.body.message, /positive 32-bit integer/);
     }
     assert.strictEqual(
       await getRepository(DiscoverSlider).count(),
       countBefore
     );
 
-    const id = '9'.repeat(MAX_TMDB_PUBLIC_LIST_ID_LENGTH);
+    const id = String(MAX_TMDB_PUBLIC_LIST_ID);
     const accepted = await request(app)
       .post('/settings/discover/add')
       .send({

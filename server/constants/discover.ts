@@ -35,12 +35,16 @@ export const MAX_DISCOVER_SLIDERS = 100;
 export const MAX_DISCOVER_KEYWORD_IDS = 20;
 export const MAX_DISCOVER_SLIDER_TITLE_LENGTH = 100;
 export const MAX_DISCOVER_SLIDER_DATA_LENGTH = 500;
-export const MAX_TMDB_PUBLIC_LIST_ID_LENGTH = 12;
+export const MAX_TMDB_PUBLIC_LIST_ID = 2_147_483_647;
+export const MAX_TMDB_PUBLIC_LIST_ID_LENGTH = String(
+  MAX_TMDB_PUBLIC_LIST_ID
+).length;
 
 export const isTmdbPublicListId = (value: unknown): value is string =>
   typeof value === 'string' &&
   value.length <= MAX_TMDB_PUBLIC_LIST_ID_LENGTH &&
-  /^[1-9]\d*$/.test(value);
+  /^[1-9]\d*$/.test(value) &&
+  Number(value) <= MAX_TMDB_PUBLIC_LIST_ID;
 
 export const defaultSliders: Partial<DiscoverSlider>[] = [
   {

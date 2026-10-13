@@ -49,8 +49,7 @@ const messages = defineMessages('components.Discover.CreateSlider', {
   editfail: 'Failed to edit slider.',
   needresults: 'You need to have at least 1 result.',
   validationDatarequired: 'You must provide a data value.',
-  validationTmdbListId:
-    'Enter a positive decimal TMDB list ID of 12 digits or fewer',
+  validationTmdbListId: 'Enter a valid positive TMDB list ID.',
   validationTitlerequired: 'You must provide a title.',
   validationDataLength: 'Data must be {maxLength, number} characters or fewer.',
   validationTitleLength:

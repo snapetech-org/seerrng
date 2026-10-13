@@ -1,6 +1,7 @@
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { describe, it } from 'node:test';
+import postcss from 'postcss';
 
 import {
   DEFAULT_THEME_PALETTE_ID,
@@ -66,21 +67,56 @@ describe('themePalettes', () => {
 
   it('keeps overlay opacity at its shared owner and scopes black to SeerrNG', () => {
     const css = readFileSync('src/styles/globals.css', 'utf8');
-    const block = css.match(/\[data-theme-palette='seerr'\] \{([^}]+)\}/)?.[1];
-    assert.ok(block);
-    assert.doesNotMatch(block, /--color-|--theme-control-(text|border):/);
+    const root = postcss.parse(css);
+    const rulesFor = (selector: string): postcss.Rule[] => {
+      const rules: postcss.Rule[] = [];
+      root.walkRules((rule) => {
+        if (rule.selectors?.includes(selector)) rules.push(rule);
+      });
+      return rules;
+    };
+    const declarationsFor = (rule: postcss.Rule): Map<string, string> => {
+      const declarations = new Map<string, string>();
+      rule.walkDecls((declaration) => {
+        declarations.set(declaration.prop, declaration.value);
+      });
+      return declarations;
+    };
+    const seerrPaletteRule = rulesFor("[data-theme-palette='seerr']").find(
+      (rule) => declarationsFor(rule).has('--theme-page-spotlight-strength')
+    );
+    assert.ok(seerrPaletteRule);
+    const seerrPaletteDeclarations = declarationsFor(seerrPaletteRule);
+    assert.equal(
+      [...seerrPaletteDeclarations.keys()].some((property) =>
+        /^--color-|^--theme-control-(text|border)$/.test(property)
+      ),
+      false
+    );
     for (const [token, value] of Object.entries({
       'gradient-light': '0 0 0',
       'gradient-main': '40 68 120',
       'gradient-deep': '14 28 58',
       'gradient-black': '0 0 0',
     })) {
-      assert.ok(block.includes(`--theme-page-${token}: ${value};`));
+      assert.equal(
+        seerrPaletteDeclarations.get(`--theme-page-${token}`),
+        value
+      );
     }
-    assert.ok(block.includes('--theme-page-spotlight-strength: 0;'));
-    assert.ok(block.includes('--theme-page-gradient-main-stop: 50%;'));
+    assert.equal(
+      seerrPaletteDeclarations.get('--theme-page-spotlight-strength'),
+      '0'
+    );
+    assert.equal(
+      seerrPaletteDeclarations.get('--theme-page-gradient-main-stop'),
+      '50%'
+    );
     for (const token of ['light', 'main', 'deep', 'neutral', 'menu']) {
-      assert.ok(block.includes(`--theme-overlay-${token}: 0 0 0;`));
+      assert.equal(
+        seerrPaletteDeclarations.get(`--theme-overlay-${token}`),
+        '0 0 0'
+      );
     }
     for (const [selector, opacity] of [
       ['refreshed-card-surface', '0.38'],
@@ -89,32 +125,43 @@ describe('themePalettes', () => {
       ['settings-main-card', '0.38'],
       ['app-searchbar-scrolled', '0.9'],
     ]) {
-      const rules = css
-        .split(`.${selector} {`)
-        .slice(1)
-        .map((rule) => rule.split('}')[0]);
-      assert.ok(
-        rules.some((rule) => rule.includes(`/ ${opacity})`)),
-        selector
-      );
+      let hasExpectedOpacity = false;
+      root.walkRules((rule) => {
+        if (
+          !rule.selectors?.some((candidate) =>
+            candidate.includes(`.${selector}`)
+          )
+        ) {
+          return;
+        }
+        rule.walkDecls((declaration) => {
+          if (declaration.value.includes(`/ ${opacity})`)) {
+            hasExpectedOpacity = true;
+          }
+        });
+      });
+      assert.ok(hasExpectedOpacity, selector);
     }
-    const searchbar = css.match(/\.app-searchbar-scrolled \{([^}]+)\}/)?.[1];
-    assert.ok(searchbar);
-    assert.ok(
-      searchbar?.includes(
-        'background-color: rgb(var(--theme-searchbar-scrolled) / 0.9);'
-      )
+    const searchbarRules = rulesFor('.app-searchbar-scrolled');
+    assert.equal(searchbarRules.length, 1);
+    const searchbarDeclarations = declarationsFor(searchbarRules[0]);
+    assert.equal(
+      searchbarDeclarations.get('background-color'),
+      'rgb(var(--theme-searchbar-scrolled) / 0.9)'
     );
     // Avoid repainting the full-width fixed header with a backdrop blur while scrolling.
-    assert.doesNotMatch(searchbar ?? '', /(?:-webkit-)?backdrop-filter\s*:/);
-    const sidebar = css.match(
-      /\[data-theme-palette='seerr'\] \.sidebar \{([^}]+)\}/
-    )?.[1];
-    assert.ok(sidebar);
-    assert.ok(sidebar?.includes('radial-gradient('));
-    assert.ok(sidebar?.includes('linear-gradient('));
-    assert.ok(sidebar?.includes('rgb(var(--theme-page-gradient-main) / 0.8)'));
-    assert.ok(sidebar?.includes('backdrop-filter: blur(5px)'));
+    assert.equal(searchbarDeclarations.has('backdrop-filter'), false);
+    assert.equal(searchbarDeclarations.has('-webkit-backdrop-filter'), false);
+    const sidebarRules = rulesFor("[data-theme-palette='seerr'] .sidebar");
+    assert.equal(sidebarRules.length, 1);
+    const sidebarDeclarations = declarationsFor(sidebarRules[0]);
+    const sidebarBackground = sidebarDeclarations.get('background') ?? '';
+    assert.ok(sidebarBackground.includes('radial-gradient('));
+    assert.ok(sidebarBackground.includes('linear-gradient('));
+    assert.ok(
+      sidebarBackground.includes('rgb(var(--theme-page-gradient-main) / 0.8)')
+    );
+    assert.equal(sidebarDeclarations.get('backdrop-filter'), 'blur(5px)');
     for (const [token, value] of Object.entries({
       'indigo-500': '59 130 246',
       'indigo-600': '37 99 235',
@@ -123,7 +170,7 @@ describe('themePalettes', () => {
       'purple-600': '2 132 199',
       'purple-800': '7 89 133',
     })) {
-      assert.ok(sidebar.includes(`--color-${token}: ${value};`));
+      assert.equal(sidebarDeclarations.get(`--color-${token}`), value);
     }
   });
 
