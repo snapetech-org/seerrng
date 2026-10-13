@@ -4,7 +4,10 @@ import { createServer } from 'node:http';
 import { afterEach, describe, it, mock } from 'node:test';
 import { gzipSync } from 'node:zlib';
 
-import type { RadarrMovie } from '@server/api/servarr/radarr';
+import type {
+  RadarrMovie,
+  RadarrMovieOptions,
+} from '@server/api/servarr/radarr';
 import type { AxiosInstance } from 'axios';
 import axios from 'axios';
 
@@ -21,6 +24,44 @@ function buildRadarr(): RadarrAPI {
 
 function getAxios(radarr: RadarrAPI): AxiosInstance {
   return (radarr as unknown as { axios: AxiosInstance }).axios;
+}
+
+function createRadarrMovie(overrides: Partial<RadarrMovie> = {}): RadarrMovie {
+  return {
+    id: 7,
+    title: 'Test Movie',
+    isAvailable: false,
+    monitored: true,
+    tmdbId: 7,
+    imdbId: '',
+    titleSlug: 'test-movie',
+    folderName: 'Test Movie',
+    path: '/movies/Test Movie',
+    profileId: 1,
+    qualityProfileId: 1,
+    added: '2026-01-01T00:00:00Z',
+    hasFile: false,
+    tags: [],
+    ...overrides,
+  };
+}
+
+function createRadarrMovieOptions(
+  overrides: Partial<RadarrMovieOptions> = {}
+): RadarrMovieOptions {
+  return {
+    title: 'Test Movie',
+    qualityProfileId: 1,
+    minimumAvailability: 'Released',
+    tags: [],
+    profileId: 1,
+    year: 2026,
+    rootFolderPath: '/movies',
+    tmdbId: 7,
+    monitored: true,
+    searchNow: true,
+    ...overrides,
+  };
 }
 
 describe('Radarr response normalization', () => {
@@ -208,6 +249,181 @@ describe('Radarr movie search errors', () => {
       /Failed to execute Radarr movie search/
     );
     assert.strictEqual(runCommand.mock.callCount(), 2);
+  });
+});
+
+describe('RadarrAPI addMovie availability searches', () => {
+  afterEach(() => mock.restoreAll());
+
+  it('does not search an existing monitored movie before it is available', async () => {
+    const radarr = buildRadarr();
+    mock.method(RadarrAPI.prototype, 'getMovieByTmdbId', async () =>
+      createRadarrMovie()
+    );
+    const search = mock.method(
+      RadarrAPI.prototype,
+      'searchMovie',
+      async () => {}
+    );
+
+    await radarr.addMovie(createRadarrMovieOptions());
+
+    assert.equal(search.mock.callCount(), 0);
+  });
+
+  it('searches an existing monitored movie once it is available', async () => {
+    const radarr = buildRadarr();
+    mock.method(RadarrAPI.prototype, 'getMovieByTmdbId', async () =>
+      createRadarrMovie({ isAvailable: true })
+    );
+    const search = mock.method(
+      RadarrAPI.prototype,
+      'searchMovie',
+      async () => {}
+    );
+
+    await radarr.addMovie(createRadarrMovieOptions());
+
+    assert.equal(search.mock.callCount(), 1);
+    assert.equal(search.mock.calls[0].arguments[0], 7);
+  });
+
+  it('does not request a search when re-enabling an unavailable movie', async () => {
+    const radarr = buildRadarr();
+    mock.method(RadarrAPI.prototype, 'getMovieByTmdbId', async () =>
+      createRadarrMovie({ monitored: false })
+    );
+    const put = mock.method(getAxios(radarr), 'put', async () => ({
+      data: createRadarrMovie(),
+    }));
+    const search = mock.method(
+      RadarrAPI.prototype,
+      'searchMovie',
+      async () => {}
+    );
+
+    await radarr.addMovie(createRadarrMovieOptions());
+
+    const payload = put.mock.calls[0].arguments[1] as {
+      addOptions: { searchForMovie: boolean };
+    };
+    assert.equal(payload.addOptions.searchForMovie, false);
+    assert.equal(search.mock.callCount(), 0);
+  });
+
+  it('preserves searching when re-enabling an available movie', async () => {
+    const radarr = buildRadarr();
+    mock.method(RadarrAPI.prototype, 'getMovieByTmdbId', async () =>
+      createRadarrMovie({ monitored: false, isAvailable: true })
+    );
+    const put = mock.method(getAxios(radarr), 'put', async () => ({
+      data: createRadarrMovie({ isAvailable: true }),
+    }));
+    const search = mock.method(
+      RadarrAPI.prototype,
+      'searchMovie',
+      async () => {}
+    );
+
+    await radarr.addMovie(createRadarrMovieOptions());
+
+    const payload = put.mock.calls[0].arguments[1] as {
+      addOptions: { searchForMovie: boolean };
+    };
+    assert.equal(payload.addOptions.searchForMovie, true);
+    assert.equal(search.mock.callCount(), 1);
+  });
+
+  it('keeps conflict recovery from searching an unavailable monitored movie', async () => {
+    const radarr = buildRadarr();
+    const conflict = Object.assign(
+      new Error('Request failed with status code 409'),
+      { response: { status: 409 } }
+    );
+    mock.method(RadarrAPI.prototype, 'getMovieByTmdbId', async () => {
+      throw conflict;
+    });
+    mock.method(radarr, 'getMovies', async () => [createRadarrMovie()]);
+    const search = mock.method(
+      RadarrAPI.prototype,
+      'searchMovie',
+      async () => {}
+    );
+
+    await radarr.addMovie(createRadarrMovieOptions());
+
+    assert.equal(search.mock.callCount(), 0);
+  });
+
+  it('preserves conflict recovery searches for an available monitored movie', async () => {
+    const radarr = buildRadarr();
+    const conflict = Object.assign(
+      new Error('Request failed with status code 409'),
+      { response: { status: 409 } }
+    );
+    mock.method(RadarrAPI.prototype, 'getMovieByTmdbId', async () => {
+      throw conflict;
+    });
+    mock.method(radarr, 'getMovies', async () => [
+      createRadarrMovie({ isAvailable: true }),
+    ]);
+    const search = mock.method(
+      RadarrAPI.prototype,
+      'searchMovie',
+      async () => {}
+    );
+
+    await radarr.addMovie(createRadarrMovieOptions());
+
+    assert.equal(search.mock.callCount(), 1);
+  });
+
+  it('keeps conflict recovery from searching when re-enabling an unavailable movie', async () => {
+    const radarr = buildRadarr();
+    const conflict = Object.assign(
+      new Error('Request failed with status code 409'),
+      { response: { status: 409 } }
+    );
+    mock.method(RadarrAPI.prototype, 'getMovieByTmdbId', async () => {
+      throw conflict;
+    });
+    mock.method(radarr, 'getMovies', async () => [
+      createRadarrMovie({ monitored: false }),
+    ]);
+    const put = mock.method(getAxios(radarr), 'put', async () => ({
+      data: createRadarrMovie(),
+    }));
+
+    await radarr.addMovie(createRadarrMovieOptions());
+
+    const payload = put.mock.calls[0].arguments[1] as {
+      addOptions: { searchForMovie: boolean };
+    };
+    assert.equal(payload.addOptions.searchForMovie, false);
+  });
+
+  it('preserves conflict recovery searches when re-enabling an available movie', async () => {
+    const radarr = buildRadarr();
+    const conflict = Object.assign(
+      new Error('Request failed with status code 409'),
+      { response: { status: 409 } }
+    );
+    mock.method(RadarrAPI.prototype, 'getMovieByTmdbId', async () => {
+      throw conflict;
+    });
+    mock.method(radarr, 'getMovies', async () => [
+      createRadarrMovie({ monitored: false, isAvailable: true }),
+    ]);
+    const put = mock.method(getAxios(radarr), 'put', async () => ({
+      data: createRadarrMovie({ isAvailable: true }),
+    }));
+
+    await radarr.addMovie(createRadarrMovieOptions());
+
+    const payload = put.mock.calls[0].arguments[1] as {
+      addOptions: { searchForMovie: boolean };
+    };
+    assert.equal(payload.addOptions.searchForMovie, true);
   });
 });
 
