@@ -506,10 +506,32 @@ it('changing quality recomputes eligibility and submits the selected 4K destinat
   );
 });
 
-it('quota blocks an oversized default and refuses a later expansion beyond the remaining seasons', async () => {
+it('submits an oversized default season selection as an approval request', async () => {
   await fixture(
     async (doc) => {
-      expect(button(doc, 'modal-ok-button').disabled).toBe(true);
+      const submit = button(doc, 'modal-ok-button');
+      expect(submit.disabled).toBe(false);
+      expect(submit.textContent).toContain('Request approval');
+      await click(doc, 'modal-ok-button');
+      expect(axios.post).toHaveBeenCalledExactlyOnceWith(
+        '/api/v1/request',
+        expect.objectContaining({
+          seasons: [1, 2],
+          requestQuotaApproval: true,
+        })
+      );
+    },
+    {
+      configure: () => {
+        fixtureState.quota = { tv: { limit: 1, remaining: 1 } };
+      },
+    }
+  );
+});
+
+it('refuses expanding a within-quota season selection beyond the remaining quota', async () => {
+  await fixture(
+    async (doc) => {
       await click(doc, 'tree-season');
       expect(button(doc, 'modal-ok-button').disabled).toBe(false);
       await click(doc, 'tree-both');
@@ -517,7 +539,10 @@ it('quota blocks an oversized default and refuses a later expansion beyond the r
       await click(doc, 'modal-ok-button');
       expect(axios.post).toHaveBeenCalledExactlyOnceWith(
         '/api/v1/request',
-        expect.objectContaining({ seasons: [2] })
+        expect.objectContaining({
+          seasons: [2],
+          requestQuotaApproval: undefined,
+        })
       );
     },
     {
