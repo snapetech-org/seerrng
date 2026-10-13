@@ -510,7 +510,7 @@ jobs:
 
       - name: Clean attempt-scoped engine workspace
         if: always()
-        shell: bash
+        shell: sh
         run: |
           rm -rf -- "$RUNNER_TEMP/seerrng-engine-${GITHUB_REPOSITORY_ID}-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}-${GITHUB_JOB}-${SEERRNG_ENGINE_CASE_ID:-${SEERRNG_ENGINE_CASE:-single}}"
 
@@ -668,7 +668,7 @@ jobs:
 
       - name: Clean attempt-scoped engine workspace
         if: always()
-        shell: bash
+        shell: sh
         run: |
           rm -rf -- "$RUNNER_TEMP/seerrng-engine-${GITHUB_REPOSITORY_ID}-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}-${GITHUB_JOB}-${SEERRNG_ENGINE_CASE_ID:-${SEERRNG_ENGINE_CASE:-single}}"
 
