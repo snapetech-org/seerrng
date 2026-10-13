@@ -26,6 +26,7 @@ import { getTmdbPosterImageUrl } from '@app/utils/imageCache';
 import {
   getAvailableEpisodesBySeason,
   getRequestableTvSelections,
+  isActiveSeasonRequest,
   mergeEpisodeNumbersBySeason,
 } from '@app/utils/tvRequestSelection';
 import { Transition } from '@headlessui/react';
@@ -103,6 +104,7 @@ const requestableSelections = (
         requests.some((request) =>
           request.seasons.some(
             (requested) =>
+              isActiveSeasonRequest(requested) &&
               requested.seasonNumber === season.seasonNumber &&
               requested.episodeNumbers == null
           )
@@ -112,7 +114,7 @@ const requestableSelections = (
     .map((season) => season.seasonNumber);
   const pendingEpisodes: Record<number, number[]> = {};
   requests
-    .flatMap((request) => request.seasons)
+    .flatMap((request) => request.seasons.filter(isActiveSeasonRequest))
     .forEach((season) => {
       if (season.episodeNumbers) {
         pendingEpisodes[season.seasonNumber] = [

@@ -19,7 +19,9 @@ import MediaRequest, {
   hasMediaRequestPermission,
   runWithRequestAdmission,
 } from '@server/entity/MediaRequest';
-import SeasonRequest from '@server/entity/SeasonRequest';
+import SeasonRequest, {
+  isActiveSeasonRequest,
+} from '@server/entity/SeasonRequest';
 import type { SeasonEpisodeSelection } from '@server/interfaces/api/seasonInterfaces';
 import { getExternalRuntimeConfig } from '@server/lib/externalRuntimeConfig';
 import { runWithCurrentServarrService } from '@server/lib/serviceAdmission';
@@ -264,6 +266,7 @@ export const getCoveredEpisodeKeys = (
     }
 
     for (const season of request.seasons ?? []) {
+      if (!isActiveSeasonRequest(season)) continue;
       if (season.episodeNumbers == null) {
         for (const episode of episodes) {
           if (episode.seasonNumber === season.seasonNumber) {
@@ -743,6 +746,7 @@ class EpisodeWatchAhead {
           'watchAheadParent.id',
           'seasons.id',
           'seasons.seasonNumber',
+          'seasons.status',
           'seasons.episodeNumbers',
         ])
         .where('media.id = :mediaId', { mediaId: current.media.id })

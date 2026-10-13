@@ -4472,9 +4472,7 @@
   }
 
   .app-searchbar-scrolled {
-    background-color: rgb(var(--theme-searchbar-scrolled) / 0.8);
-    backdrop-filter: blur(5px);
-    -webkit-backdrop-filter: blur(5px);
+    background-color: rgb(var(--theme-searchbar-scrolled) / 0.9);
   }
 
   .association-edge-similar .react-flow__edge-path {

@@ -1,6 +1,7 @@
 import type Media from '@server/entity/Media';
 import type { MediaRequest } from '@server/entity/MediaRequest';
 import type SeasonRequest from '@server/entity/SeasonRequest';
+import { isActiveSeasonRequest } from '@server/entity/SeasonRequest';
 import type { User } from '@server/entity/User';
 import type { DownloadingItem } from '@server/lib/downloadtracker';
 import { issueLiveDownloadToken } from '@server/lib/liveDownloadTokens';
@@ -15,7 +16,7 @@ const projectPublicMediaRequest = (request: MediaRequest): MediaRequest =>
     // routing, service, and filesystem details are deliberately omitted.
     status: request.status,
     type: request.type,
-    seasons: (request.seasons ?? []).map(
+    seasons: (request.seasons ?? []).filter(isActiveSeasonRequest).map(
       (season) =>
         ({
           seasonNumber: season.seasonNumber,

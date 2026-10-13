@@ -28,7 +28,9 @@ import {
   runWithRequestAdmission,
 } from '@server/entity/MediaRequest';
 import MediaRequestStatusEvent from '@server/entity/MediaRequestStatusEvent';
-import SeasonRequest from '@server/entity/SeasonRequest';
+import SeasonRequest, {
+  isActiveSeasonRequest,
+} from '@server/entity/SeasonRequest';
 import { User } from '@server/entity/User';
 import type {
   BulkMediaRequestBody,
@@ -4233,6 +4235,9 @@ requestRoutes.put<{ requestId: string }>(
                       .andWhere('existingRequest.id != :requestId', {
                         requestId: request.id,
                       })
+                      .andWhere('requestedSeason.status != :declinedStatus', {
+                        declinedStatus: MediaRequestStatus.DECLINED,
+                      })
                       .andWhere(
                         'existingRequest.status NOT IN (:...inactiveStatuses)',
                         {
@@ -4258,7 +4263,9 @@ requestRoutes.put<{ requestId: string }>(
                         existingEpisodes.set(season.seasonNumber, episodes);
                       });
                     const currentSeasonNumbers = new Set(
-                      request.seasons.map((season) => season.seasonNumber)
+                      request.seasons
+                        .filter(isActiveSeasonRequest)
+                        .map((season) => season.seasonNumber)
                     );
                     const availableSeasonNumbers = new Set(
                       media.seasons
@@ -4389,7 +4396,7 @@ requestRoutes.put<{ requestId: string }>(
                     const existingAllowance =
                       changesRequestUser || !existingRequestCountsTowardQuota
                         ? 0
-                        : request.seasons.length;
+                        : request.seasons.filter(isActiveSeasonRequest).length;
                     if (
                       !request.ignoreQuota &&
                       quotas.tv.limit &&
@@ -4439,21 +4446,38 @@ requestRoutes.put<{ requestId: string }>(
                       }
                     }
 
+                    const selectionBySeason = new Map(
+                      filteredSelections.map((selection) => [
+                        selection.seasonNumber,
+                        selection,
+                      ])
+                    );
+                    const existingSeasonNumbers = new Set(
+                      request.seasons.map((season) => season.seasonNumber)
+                    );
                     const newSelections = filteredSelections.filter(
                       (selection) =>
-                        !currentSeasonNumbers.has(selection.seasonNumber)
+                        !existingSeasonNumbers.has(selection.seasonNumber)
                     );
-                    request.seasons = request.seasons.filter((season) =>
-                      filteredSelections.some(
-                        (selection) =>
-                          selection.seasonNumber === season.seasonNumber
-                      )
+                    request.seasons = request.seasons.filter(
+                      (season) =>
+                        selectionBySeason.has(season.seasonNumber) ||
+                        !isActiveSeasonRequest(season) ||
+                        season.status === MediaRequestStatus.COMPLETED
                     );
                     request.seasons.forEach((season) => {
-                      season.episodeNumbers = filteredSelections.find(
-                        (selection) =>
-                          selection.seasonNumber === season.seasonNumber
-                      )?.episodeNumbers;
+                      const selection = selectionBySeason.get(
+                        season.seasonNumber
+                      );
+                      if (selection) {
+                        season.episodeNumbers = selection.episodeNumbers;
+                        if (
+                          season.status === MediaRequestStatus.DECLINED ||
+                          season.status === MediaRequestStatus.FAILED
+                        ) {
+                          season.status = MediaRequestStatus.PENDING;
+                        }
+                      }
                     });
                     request.seasons.push(
                       ...newSelections.map(

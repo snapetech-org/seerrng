@@ -91,8 +91,19 @@ describe('episode watch-ahead selection', () => {
       status: MediaRequestStatus.APPROVED,
       seasons: [{ seasonNumber: 1, episodeNumbers: [2] }],
     } as unknown as MediaRequest;
-    const declinedChild = {
+    const activeRequestWithDeclinedSelection = {
       id: 22,
+      status: MediaRequestStatus.APPROVED,
+      seasons: [
+        {
+          seasonNumber: 1,
+          episodeNumbers: [2],
+          status: MediaRequestStatus.DECLINED,
+        },
+      ],
+    } as unknown as MediaRequest;
+    const declinedChild = {
+      id: 23,
       status: MediaRequestStatus.DECLINED,
       watchAheadParentRequestId: 10,
       seasons: [{ seasonNumber: 1, episodeNumbers: [2] }],
@@ -105,6 +116,16 @@ describe('episode watch-ahead selection', () => {
     assert.deepEqual(
       [...getCoveredEpisodeKeys([activeChild], 10, episodes)],
       ['1:2']
+    );
+    assert.deepEqual(
+      [
+        ...getCoveredEpisodeKeys(
+          [activeRequestWithDeclinedSelection],
+          10,
+          episodes
+        ),
+      ],
+      []
     );
     assert.deepEqual(
       [...getCoveredEpisodeKeys([declinedChild], 10, episodes)],

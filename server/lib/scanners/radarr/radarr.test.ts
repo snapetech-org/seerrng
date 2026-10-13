@@ -138,6 +138,101 @@ describe('Radarr Scanner', () => {
       assert.strictEqual(updated.status, MediaStatus.UNKNOWN);
     });
 
+    it('declines an approved request for an unmonitored movie still listed by Radarr', async () => {
+      const mediaRepository = getRepository(Media);
+      const requestRepository = getRepository(MediaRequest);
+      const userRepository = getRepository(User);
+      const requestedBy = await userRepository.findOneOrFail({
+        where: { id: 1 },
+      });
+      const media = await mediaRepository.save(
+        new Media({
+          tmdbId: 556,
+          mediaType: MediaType.MOVIE,
+          status: MediaStatus.PROCESSING,
+        })
+      );
+      const request = await requestRepository.save(
+        new MediaRequest({
+          type: MediaType.MOVIE,
+          status: MediaRequestStatus.APPROVED,
+          media,
+          requestedBy,
+          is4k: false,
+        })
+      );
+
+      configureRadarr([{ syncEnabled: true }]);
+      getMoviesImpl = async () => [
+        fakeRadarrMovie({
+          tmdbId: 556,
+          monitored: false,
+          hasFile: false,
+        }),
+      ];
+
+      await runWithMockTimers(() => radarrScanner.run());
+
+      const updatedMedia = await mediaRepository.findOneOrFail({
+        where: { tmdbId: 556 },
+      });
+      const updatedRequest = await requestRepository.findOneOrFail({
+        where: { id: request.id },
+      });
+      assert.strictEqual(updatedMedia.status, MediaStatus.UNKNOWN);
+      assert.strictEqual(updatedRequest.status, MediaRequestStatus.DECLINED);
+    });
+
+    it('releases an approved request when a listed unmonitored movie is already UNKNOWN', async () => {
+      const mediaRepository = getRepository(Media);
+      const requestRepository = getRepository(MediaRequest);
+      const userRepository = getRepository(User);
+      const requestedBy = await userRepository.findOneOrFail({
+        where: { id: 1 },
+      });
+      const media = await mediaRepository.save(
+        new Media({
+          tmdbId: 557,
+          mediaType: MediaType.MOVIE,
+          status: MediaStatus.UNKNOWN,
+          serviceId: 10,
+          externalServiceId: 654,
+        })
+      );
+      const request = await requestRepository.save(
+        new MediaRequest({
+          type: MediaType.MOVIE,
+          status: MediaRequestStatus.APPROVED,
+          media,
+          requestedBy,
+          is4k: false,
+        })
+      );
+
+      configureRadarr([{ syncEnabled: true }]);
+      getMoviesImpl = async () => [
+        fakeRadarrMovie({
+          tmdbId: 557,
+          id: 99,
+          monitored: false,
+          hasFile: false,
+        }),
+      ];
+
+      await runWithMockTimers(() => radarrScanner.run());
+
+      const updatedMedia = await mediaRepository.findOneOrFail({
+        where: { tmdbId: 557 },
+      });
+      const updatedRequest = await requestRepository.findOneOrFail({
+        where: { id: request.id },
+      });
+      assert.strictEqual(updatedMedia.status, MediaStatus.UNKNOWN);
+      assert.strictEqual(updatedMedia.serviceId, 10);
+      assert.strictEqual(updatedMedia.externalServiceId, 654);
+      assert.strictEqual(updatedRequest.status, MediaRequestStatus.DECLINED);
+    });
+
     it('does not create new media entry when movie is unmonitored and has no file', async () => {
       const mediaRepository = getRepository(Media);
       configureRadarr([{ syncEnabled: true }]);
@@ -240,6 +335,45 @@ describe('Radarr Scanner', () => {
         where: { tmdbId: 554 },
       });
       assert.strictEqual(updated.status, MediaStatus.AVAILABLE);
+    });
+
+    it('keeps a movie processing and its service identity when another server still monitors it', async () => {
+      const mediaRepository = getRepository(Media);
+      await mediaRepository.save(
+        new Media({
+          tmdbId: 555,
+          mediaType: MediaType.MOVIE,
+          status: MediaStatus.PROCESSING,
+          serviceId: 0,
+          externalServiceId: 100,
+        })
+      );
+
+      configureRadarr([
+        { syncEnabled: true, id: 0, hostname: 'server-a' },
+        { syncEnabled: true, id: 1, hostname: 'server-b' },
+      ]);
+      let serverIndex = 0;
+      getMoviesImpl = async () => {
+        const currentServerIndex = serverIndex++;
+        return [
+          fakeRadarrMovie({
+            tmdbId: 555,
+            id: 100 + currentServerIndex,
+            monitored: currentServerIndex === 0,
+            hasFile: false,
+          }),
+        ];
+      };
+
+      await runWithMockTimers(() => radarrScanner.run());
+
+      const updated = await mediaRepository.findOneOrFail({
+        where: { tmdbId: 555 },
+      });
+      assert.strictEqual(updated.status, MediaStatus.PROCESSING);
+      assert.strictEqual(updated.serviceId, 0);
+      assert.strictEqual(updated.externalServiceId, 100);
     });
   });
 

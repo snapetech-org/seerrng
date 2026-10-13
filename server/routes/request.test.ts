@@ -6414,6 +6414,54 @@ async function seedTvRequest(
 }
 
 describe('PUT /request/:requestId (tv)', () => {
+  it('reactivates a declined season selection without adding a duplicate', async () => {
+    const requestRepo = getRepository(MediaRequest);
+    const owner = await seedUser('demo@seerr.dev');
+    const mediaRequest = await seedTvRequest(owner, [1]);
+    mediaRequest.seasons[0].status = MediaRequestStatus.DECLINED;
+    await getRepository(SeasonRequest).save(mediaRequest.seasons[0]);
+
+    const agent = await loginAs('demo@seerr.dev', 'test1234');
+    const res = await agent.put(`/request/${mediaRequest.id}`).send({
+      mediaType: MediaType.TV,
+      seasons: [1],
+    });
+
+    assert.strictEqual(res.status, 200);
+
+    const saved = await requestRepo.findOneOrFail({
+      where: { id: mediaRequest.id },
+      relations: { seasons: true },
+    });
+    assert.strictEqual(saved.seasons.length, 1);
+    assert.strictEqual(saved.seasons[0].status, MediaRequestStatus.PENDING);
+  });
+
+  it('does not charge quota for retained declined season history', async () => {
+    const owner = await seedUser('demo@seerr.dev', { tvQuotaLimit: 1 });
+    const mediaRequest = await seedTvRequest(owner, [1]);
+    mediaRequest.seasons[0].status = MediaRequestStatus.DECLINED;
+    await getRepository(SeasonRequest).save(mediaRequest.seasons[0]);
+
+    const agent = await loginAs('demo@seerr.dev', 'test1234');
+    const res = await agent.put(`/request/${mediaRequest.id}`).send({
+      mediaType: MediaType.TV,
+      seasons: [2],
+    });
+
+    assert.strictEqual(res.status, 200);
+
+    const saved = await getRepository(MediaRequest).findOneOrFail({
+      where: { id: mediaRequest.id },
+      relations: { seasons: true },
+    });
+    const seasons = new Map(
+      saved.seasons.map((season) => [season.seasonNumber, season.status])
+    );
+    assert.strictEqual(seasons.get(1), MediaRequestStatus.DECLINED);
+    assert.strictEqual(seasons.get(2), MediaRequestStatus.PENDING);
+  });
+
   it('does not add a season held by another request', async () => {
     const requestRepo = getRepository(MediaRequest);
 

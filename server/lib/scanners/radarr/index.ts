@@ -149,6 +149,35 @@ class RadarrScanner
         this.didScan4k = false;
       }
 
+      if (this.didScanStandard) {
+        await this.resolveDeferredMovieStatusResets(false, (callback) =>
+          runWithServarrServiceSnapshots(
+            'radarr',
+            this.servers.filter(
+              (server) => !this.enable4kMovie || !server.is4k
+            ),
+            callback,
+            {
+              requireExactAuthoritySet: true,
+              includeCurrent: (server) => !this.enable4kMovie || !server.is4k,
+            }
+          )
+        );
+      }
+      if (this.didScan4k) {
+        await this.resolveDeferredMovieStatusResets(true, (callback) =>
+          runWithServarrServiceSnapshots(
+            'radarr',
+            this.servers.filter((server) => this.enable4kMovie && server.is4k),
+            callback,
+            {
+              requireExactAuthoritySet: true,
+              includeCurrent: (server) => this.enable4kMovie && server.is4k,
+            }
+          )
+        );
+      }
+
       await this.cleanupOrphanedMovies();
       this.log('Radarr scan complete', 'info');
     } catch (e) {
@@ -178,6 +207,8 @@ class RadarrScanner
         title: radarrMovie.title,
         processing: !radarrMovie.hasFile && radarrMovie.monitored,
         hasFile: radarrMovie.hasFile,
+        deferStatusReset: true,
+        preserveInactiveServiceIdentity: true,
         mutationGuard: (callback) =>
           runWithServarrServiceSnapshot('radarr', this.currentServer, callback),
       });
@@ -203,6 +234,7 @@ class RadarrScanner
       });
     } catch (e) {
       if (e instanceof ServarrServiceAuthorityChangedError) throw e;
+      this.markMovieScanFailed(radarrMovie.tmdbId, server4k);
       this.log('Failed to process Radarr media', 'error', {
         errorMessage: e.message,
         title: radarrMovie.title,

@@ -18,7 +18,7 @@ type MediaCleanupBatchOptions = {
 };
 
 export const forEachMediaCleanupBatch = async (
-  where: FindOptionsWhere<Media>,
+  where: FindOptionsWhere<Media> | FindOptionsWhere<Media>[],
   callback: (media: Media) => Promise<void>,
   options: MediaCleanupBatchOptions = {}
 ): Promise<void> => {
@@ -38,16 +38,22 @@ export const forEachMediaCleanupBatch = async (
 
   const loadBatch: MediaCleanupBatchLoader =
     options.loadBatch ??
-    ((afterId, upperId, limit) =>
-      mediaRepository.find({
-        where: {
-          ...where,
-          id: And(MoreThan(afterId), LessThanOrEqual(upperId)),
-        },
+    ((afterId, upperId, limit) => {
+      const idWindow = And(MoreThan(afterId), LessThanOrEqual(upperId));
+      const whereWithIdWindow = (candidate: FindOptionsWhere<Media>) => ({
+        ...candidate,
+        id: idWindow,
+      });
+
+      return mediaRepository.find({
+        where: Array.isArray(where)
+          ? where.map(whereWithIdWindow)
+          : whereWithIdWindow(where),
         relations: options.relations,
         order: { id: 'ASC' },
         take: limit,
-      }));
+      });
+    });
   let afterId = 0;
 
   while (afterId < maxId) {

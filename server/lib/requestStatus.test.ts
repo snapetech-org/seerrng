@@ -503,6 +503,43 @@ test('series progress only includes requested seasons', () => {
   mock.restoreAll();
 });
 
+test('declined season selections do not satisfy a TV request or cover downloads', () => {
+  mock.method(downloadTracker, 'getSeriesProgress', () => [
+    download({
+      mediaType: MediaType.TV,
+      episode: {
+        seasonNumber: 1,
+        episodeNumber: 1,
+        absoluteEpisodeNumber: 1,
+        id: 1,
+      },
+    }),
+  ]);
+
+  const status = getRequestStatus(
+    request({
+      type: MediaType.TV,
+      media: {
+        ...request().media,
+        mediaType: MediaType.TV,
+        status: MediaStatus.AVAILABLE,
+        seasons: [
+          {
+            seasonNumber: 1,
+            status: MediaStatus.AVAILABLE,
+            status4k: MediaStatus.UNKNOWN,
+          },
+        ],
+      },
+      seasons: [{ seasonNumber: 1, status: MediaRequestStatus.DECLINED }],
+    })
+  );
+
+  assert.equal(status.stage, RequestStatusStage.SEARCHING);
+  assert.equal(status.downloadCount, 0);
+  mock.restoreAll();
+});
+
 test('movie, series, music, ebook, audiobook, and mixed book requests share the same projection', () => {
   const movie = request({
     status: MediaRequestStatus.COMPLETED,
