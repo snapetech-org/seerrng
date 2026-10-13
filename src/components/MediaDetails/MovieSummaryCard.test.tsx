@@ -1,5 +1,8 @@
+import { SettingsContext } from '@app/context/SettingsContext';
+import { OtherUserAvailabilityMode } from '@server/constants/availability';
 import { MediaStatus } from '@server/constants/media';
 import type Media from '@server/entity/Media';
+import type { PublicSettingsResponse } from '@server/interfaces/api/settingsInterfaces';
 import type { MovieDetails } from '@server/models/Movie';
 import React from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
@@ -15,44 +18,60 @@ vi.mock('next/link', () => ({
   ),
 }));
 beforeEach(() => vi.stubGlobal('React', React));
-const render = (collection: boolean) =>
+const render = (
+  collection: boolean,
+  otherUsersAvailability = OtherUserAvailabilityMode.SHOW,
+  viewerHasRequestedCopy?: boolean
+) =>
   renderToStaticMarkup(
     <IntlProvider locale="en">
-      <MovieSummaryCard
-        data={{
-          id: 1,
-          title: 'Fixture movie',
-          releaseDate: '2020-01-01',
-          runtime: 100,
-          genres: [{ id: 1, name: 'Comedy' }],
-          productionCompanies: [
-            { id: 2, name: 'Fixture studio' },
-          ] as MovieDetails['productionCompanies'],
-          mediaInfo: {
-            status: MediaStatus.AVAILABLE,
-            status4k: MediaStatus.UNKNOWN,
-          } as Media,
+      <SettingsContext.Provider
+        value={{
+          currentSettings: {
+            otherUsersAvailability,
+          } as PublicSettingsResponse,
         }}
-        sortedCrew={
-          [
-            {
-              id: 3,
-              creditId: 'director',
-              name: 'Fixture director',
-              job: 'Director',
-            },
-            {
-              id: 4,
-              creditId: 'writer',
-              name: 'Fixture writer',
-              job: 'Screenplay',
-            },
-          ] as MovieDetails['credits']['crew']
-        }
-        show4kAvailability={true}
-        href={collection ? '/movie/1' : undefined}
-        ratings={collection ? <span>Four source ratings</span> : undefined}
-      />
+      >
+        <MovieSummaryCard
+          data={{
+            id: 1,
+            title: 'Fixture movie',
+            releaseDate: '2020-01-01',
+            runtime: 100,
+            genres: [{ id: 1, name: 'Comedy' }],
+            productionCompanies: [
+              { id: 2, name: 'Fixture studio' },
+            ] as MovieDetails['productionCompanies'],
+            mediaInfo: {
+              status: MediaStatus.AVAILABLE,
+              status4k: MediaStatus.UNKNOWN,
+              viewerRequestCoverage:
+                viewerHasRequestedCopy === undefined
+                  ? undefined
+                  : { standard: viewerHasRequestedCopy, fourK: false },
+            } as Media,
+          }}
+          sortedCrew={
+            [
+              {
+                id: 3,
+                creditId: 'director',
+                name: 'Fixture director',
+                job: 'Director',
+              },
+              {
+                id: 4,
+                creditId: 'writer',
+                name: 'Fixture writer',
+                job: 'Screenplay',
+              },
+            ] as MovieDetails['credits']['crew']
+          }
+          show4kAvailability={true}
+          href={collection ? '/movie/1' : undefined}
+          ratings={collection ? <span>Four source ratings</span> : undefined}
+        />
+      </SettingsContext.Provider>
     </IntlProvider>
   );
 it('uses the full movie summary fields and linked title/poster for collection members', () => {
@@ -89,4 +108,20 @@ it('preserves the movie-page heading and inset without adding a duplicate rating
   expect(html).toContain('<h1');
   expect(html).toContain('refreshed-inset-surface');
   expect(html).not.toContain('movie-summary-ratings-row');
+});
+
+it('labels another requester’s available copy in distinguish mode', () => {
+  const html = render(false, OtherUserAvailabilityMode.DISTINGUISH, false);
+
+  expect(html).toContain('Shared: Available');
+  expect(html).toContain('HD (shared)');
+  expect(html).toContain('detail-availability-shared');
+});
+
+it('hides another requester’s quality and status text in hide mode', () => {
+  const html = render(false, OtherUserAvailabilityMode.HIDE, false);
+
+  expect(html).toContain('Hidden');
+  expect(html).not.toContain('HD (shared)');
+  expect(html).not.toContain('Shared: Available');
 });

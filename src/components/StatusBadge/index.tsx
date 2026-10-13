@@ -16,6 +16,7 @@ import {
   normalizeOpenLibraryWorkId,
 } from '@app/utils/apiPath';
 import defineMessages from '@app/utils/defineMessages';
+import { getViewerAvailabilityPresentation } from '@app/utils/viewerAvailabilityPresentation';
 import { MediaStatus } from '@server/constants/media';
 import { MediaServerType } from '@server/constants/server';
 import type { DownloadingItem } from '@server/lib/downloadtracker';
@@ -25,6 +26,7 @@ import { useIntl } from 'react-intl';
 const messages = defineMessages('components.StatusBadge', {
   status: '{status}',
   status4k: '4K {status}',
+  sharedAvailability: 'Shared: {status}',
   playonplex: 'Play on {mediaServerName}',
   openinarr: 'Open in {arr}',
   managemedia: 'Manage {mediaType}',
@@ -53,6 +55,7 @@ interface StatusBadgeProps {
   canFailDownload?: boolean;
   showQuality?: boolean;
   leadingIcon?: ReactNode;
+  viewerHasRequestedCopy?: boolean;
 }
 
 const StatusBadge = ({
@@ -74,6 +77,7 @@ const StatusBadge = ({
   canFailDownload = false,
   showQuality = true,
   leadingIcon,
+  viewerHasRequestedCopy,
 }: StatusBadgeProps) => {
   const intl = useIntl();
   const { hasPermission } = useUser();
@@ -82,12 +86,26 @@ const StatusBadge = ({
     downloadItem[0],
     hasPermission(Permission.ADMIN)
   );
+  const availability = getViewerAvailabilityPresentation(
+    status,
+    settings.currentSettings.otherUsersAvailability,
+    viewerHasRequestedCopy,
+    inProgress
+  );
   const formatStatusLabel = (statusText: string) =>
     showQuality
       ? intl.formatMessage(is4k ? messages.status4k : messages.status, {
           status: statusText,
         })
       : statusText;
+  const formatAvailabilityLabel = (statusText: string) => {
+    const formattedStatus = formatStatusLabel(statusText);
+    return availability.shared
+      ? intl.formatMessage(messages.sharedAvailability, {
+          status: formattedStatus,
+        })
+      : formattedStatus;
+  };
 
   let mediaLink: string | undefined;
   let mediaLinkDescription: string | undefined;
@@ -99,6 +117,7 @@ const StatusBadge = ({
   if (
     mediaType &&
     plexUrl &&
+    !availability.hidePlayback &&
     hasPermission(
       is4k
         ? [
@@ -285,6 +304,15 @@ const StatusBadge = ({
       }
     : undefined;
 
+  if (
+    availability.hidden &&
+    !inProgress &&
+    (status === MediaStatus.AVAILABLE ||
+      status === MediaStatus.PARTIALLY_AVAILABLE)
+  ) {
+    return null;
+  }
+
   const badgeDownloadProgress = (
     <div
       className={`absolute top-0 left-0 z-10 flex h-full ${
@@ -315,7 +343,7 @@ const StatusBadge = ({
           tooltipConfig={downloadTooltipConfig}
         >
           <Badge
-            badgeType="success"
+            badgeType={availability.shared ? 'shared' : 'success'}
             href={statusBadgeLink}
             className={`${className ?? ''} ${
               inProgress &&
@@ -330,7 +358,7 @@ const StatusBadge = ({
             >
               {leadingIcon}
               <span>
-                {formatStatusLabel(
+                {formatAvailabilityLabel(
                   inProgress
                     ? intl.formatMessage(globalMessages.processing)
                     : intl.formatMessage(globalMessages.available)
@@ -375,7 +403,7 @@ const StatusBadge = ({
           tooltipConfig={downloadTooltipConfig}
         >
           <Badge
-            badgeType="success"
+            badgeType={availability.shared ? 'shared' : 'success'}
             href={statusBadgeLink}
             className={`${className ?? ''} ${
               inProgress &&
@@ -390,7 +418,7 @@ const StatusBadge = ({
             >
               {leadingIcon}
               <span>
-                {formatStatusLabel(
+                {formatAvailabilityLabel(
                   inProgress
                     ? intl.formatMessage(globalMessages.processing)
                     : intl.formatMessage(globalMessages.partiallyavailable)

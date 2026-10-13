@@ -12,9 +12,14 @@ import ReadarrAPI from '@server/api/servarr/readarr';
 import SonarrAPI from '@server/api/servarr/sonarr';
 import TautulliAPI from '@server/api/tautulli';
 import TheMovieDb from '@server/api/themoviedb';
-import { MediaStatus, MediaType } from '@server/constants/media';
+import {
+  MediaRequestStatus,
+  MediaStatus,
+  MediaType,
+} from '@server/constants/media';
 import { getRepository } from '@server/datasource';
 import Media from '@server/entity/Media';
+import { MediaRequest } from '@server/entity/MediaRequest';
 import Season from '@server/entity/Season';
 import { User } from '@server/entity/User';
 import { Permission } from '@server/lib/permissions';
@@ -554,6 +559,19 @@ describe('GET /media', () => {
         jellyfinMediaId: 'private-jellyfin-id',
       })
     );
+    const requester = await getRepository(User).findOneByOrFail({
+      email: 'admin@seerr.dev',
+    });
+    await getRepository(MediaRequest).save(
+      new MediaRequest({
+        type: MediaType.MOVIE,
+        status: MediaRequestStatus.COMPLETED,
+        media,
+        requestedBy: requester,
+        modifiedBy: requester,
+        is4k: false,
+      })
+    );
 
     try {
       const agent = await loginAs('friend@seerr.dev', 'test1234');
@@ -573,7 +591,12 @@ describe('GET /media', () => {
         'status',
         'status4k',
         'tmdbId',
+        'viewerRequestCoverage',
       ]);
+      assert.deepStrictEqual(item.viewerRequestCoverage, {
+        standard: false,
+        fourK: false,
+      });
 
       const denied = await agent.get('/media?filter=pending&sort=modified');
       assert.strictEqual(denied.status, 403);

@@ -1,3 +1,4 @@
+import { OtherUserAvailabilityMode } from '@server/constants/availability';
 import {
   DEFAULT_ENABLED_MEDIA_CATEGORIES,
   type EnabledMediaCategories,
@@ -484,6 +485,7 @@ export interface MainSettings {
   hideAvailable: boolean;
   hideBlocklisted: boolean;
   hideRequested: boolean;
+  otherUsersAvailability: OtherUserAvailabilityMode;
   localLogin: boolean;
   mediaServerLogin: boolean;
   oidcLogin: boolean;
@@ -548,6 +550,7 @@ interface FullPublicSettings extends PublicSettings {
   hideAvailable: boolean;
   hideBlocklisted: boolean;
   hideRequested: boolean;
+  otherUsersAvailability: OtherUserAvailabilityMode;
   localLogin: boolean;
   mediaServerLogin: boolean;
   movie4kEnabled: boolean;
@@ -872,6 +875,7 @@ class Settings {
         hideAvailable: false,
         hideBlocklisted: false,
         hideRequested: false,
+        otherUsersAvailability: OtherUserAvailabilityMode.SHOW,
         localLogin: true,
         mediaServerLogin: true,
         oidcLogin: false,
@@ -1600,6 +1604,7 @@ class Settings {
       hideAvailable: this.data.main.hideAvailable,
       hideBlocklisted: this.data.main.hideBlocklisted,
       hideRequested: this.data.main.hideRequested,
+      otherUsersAvailability: this.data.main.otherUsersAvailability,
       localLogin: this.data.main.localLogin,
       mediaServerLogin: this.data.main.mediaServerLogin,
       jellyfinExternalHost: this.data.jellyfin.externalHostname,
@@ -1871,6 +1876,7 @@ class Settings {
         hideAvailable: false,
         hideBlocklisted: false,
         hideRequested: false,
+        otherUsersAvailability: OtherUserAvailabilityMode.SHOW,
         localLogin: true,
         mediaServerLogin: true,
         oidcLogin: false,

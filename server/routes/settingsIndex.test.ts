@@ -7,6 +7,7 @@ import JellyfinAPI from '@server/api/jellyfin';
 import PlexAPI from '@server/api/plexapi';
 import PlexTvAPI, { MAX_PLEX_SHARED_USERS } from '@server/api/plextv';
 import TautulliAPI from '@server/api/tautulli';
+import { OtherUserAvailabilityMode } from '@server/constants/availability';
 import { MediaServerType } from '@server/constants/server';
 import { getRepository } from '@server/datasource';
 import { ScheduledJobLease } from '@server/entity/ScheduledJobLease';
@@ -490,6 +491,34 @@ describe('Settings route input validation', () => {
       );
     } finally {
       settings.main.personMovieBulkRequestsEnabled = original;
+    }
+  });
+
+  it('persists only supported shared-availability display modes', async () => {
+    const settings = getSettings();
+    const original = settings.main.otherUsersAvailability;
+
+    try {
+      const response = await request(app).post('/settings/main').send({
+        otherUsersAvailability: OtherUserAvailabilityMode.DISTINGUISH,
+      });
+      const invalidResponse = await request(app)
+        .post('/settings/main')
+        .send({ otherUsersAvailability: 'private' });
+
+      assert.strictEqual(response.status, 200);
+      assert.strictEqual(
+        response.body.otherUsersAvailability,
+        OtherUserAvailabilityMode.DISTINGUISH
+      );
+      assert.strictEqual(
+        settings.main.otherUsersAvailability,
+        OtherUserAvailabilityMode.DISTINGUISH
+      );
+      assert.strictEqual(invalidResponse.status, 400);
+      assert.match(invalidResponse.body.message, /otherUsersAvailability/);
+    } finally {
+      settings.main.otherUsersAvailability = original;
     }
   });
 
