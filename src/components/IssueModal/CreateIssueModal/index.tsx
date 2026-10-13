@@ -5,7 +5,10 @@ import {
   type CompactSelectOption,
 } from '@app/components/Discover/FilterPanel/CompactFilterSelect';
 import IssueMediaSummary from '@app/components/IssueDetails/IssueMediaSummary';
-import { getAvailableIssueQualities } from '@app/components/IssueDetails/issueMediaFormat';
+import {
+  getReportableIssueQualities,
+  getReportableIssueSeasons,
+} from '@app/components/IssueDetails/issueMediaFormat';
 import SeriesEpisodeSelector from '@app/components/IssueModal/CreateIssueModal/SeriesEpisodeSelector';
 import {
   getIssueOptionsForMediaType,
@@ -20,7 +23,6 @@ import { getIssueListHref } from '@app/utils/issueNavigation';
 import { PaperAirplaneIcon, XMarkIcon } from '@heroicons/react/24/outline';
 import { ArrowRightCircleIcon } from '@heroicons/react/24/solid';
 import { IssueType, MAX_ISSUE_MESSAGE_LENGTH } from '@server/constants/issue';
-import { MediaStatus } from '@server/constants/media';
 import type Issue from '@server/entity/Issue';
 import type { SeasonEpisodeSelection } from '@server/interfaces/api/seasonInterfaces';
 import type { BookDetails } from '@server/models/Book';
@@ -170,26 +172,19 @@ const CreateIssueModal = ({
       value: option.value,
       label: intl.formatMessage(option.name),
     }));
-  const availableQualities = getAvailableIssueQualities(data?.mediaInfo);
-  const hasAvailableVideoQuality = availableQualities.length > 0;
-  const initialIs4k = availableQualities[0] === '4k';
+  const reportableQualities = getReportableIssueQualities(data?.mediaInfo);
+  const hasReportableVideoQuality = reportableQualities.length > 0;
+  const initialIs4k = reportableQualities[0] === '4k';
   const qualityOptions = (['hd', '4k'] as const).map((quality) => ({
     value: quality,
-    disabled: !availableQualities.includes(quality),
+    disabled: !reportableQualities.includes(quality),
     label: intl.formatMessage(
       quality === '4k' ? messages.ultraHd : messages.hd
     ),
   }));
-  const isAvailableStatus = (status?: MediaStatus) =>
-    status === MediaStatus.AVAILABLE ||
-    status === MediaStatus.PARTIALLY_AVAILABLE;
-  const getAvailableSeasons = (is4k: boolean) =>
-    (data?.mediaInfo?.seasons ?? [])
-      .filter((season) =>
-        isAvailableStatus(is4k ? season.status4k : season.status)
-      )
-      .map((season) => season.seasonNumber);
-  const initialAvailableSeasons = getAvailableSeasons(initialIs4k);
+  const getReportableSeasons = (is4k: boolean) =>
+    getReportableIssueSeasons(data?.mediaInfo?.seasons, is4k);
+  const initialReportableSeasons = getReportableSeasons(initialIs4k);
 
   const CreateIssueModalSchema = Yup.object().shape({
     issueType: Yup.number()
@@ -229,7 +224,7 @@ const CreateIssueModal = ({
         issueSubtype: issueSubtypeOptions.length ? 'other' : '',
         message: '',
         is4k: initialIs4k,
-        activeSeason: initialAvailableSeasons[0] ?? -1,
+        activeSeason: initialReportableSeasons[0] ?? -1,
         problemEpisodeSelections: [] as SeasonEpisodeSelection[],
       }}
       validationSchema={CreateIssueModalSchema}
@@ -344,7 +339,7 @@ const CreateIssueModal = ({
                     ? [
                         {
                           label: 'Quality',
-                          value: hasAvailableVideoQuality
+                          value: hasReportableVideoQuality
                             ? values.is4k
                               ? intl.formatMessage(messages.ultraHd)
                               : intl.formatMessage(messages.hd)
@@ -364,7 +359,7 @@ const CreateIssueModal = ({
                         onChange={(quality) => {
                           const nextIs4k = quality === '4k';
                           if (nextIs4k === values.is4k) return;
-                          const seasons = getAvailableSeasons(nextIs4k);
+                          const seasons = getReportableSeasons(nextIs4k);
                           void setFieldValue('is4k', nextIs4k);
                           void setFieldValue('activeSeason', seasons[0] ?? -1);
                           void setFieldValue('problemEpisodeSelections', []);
@@ -392,7 +387,7 @@ const CreateIssueModal = ({
                   <SeriesEpisodeSelector
                     tvId={data.id}
                     seasons={data.seasons.filter((season) =>
-                      getAvailableSeasons(values.is4k).includes(
+                      getReportableSeasons(values.is4k).includes(
                         season.seasonNumber
                       )
                     )}
@@ -461,7 +456,7 @@ const CreateIssueModal = ({
                 disabled={
                   isSubmitting ||
                   ((mediaType === 'movie' || mediaType === 'tv') &&
-                    !hasAvailableVideoQuality)
+                    !hasReportableVideoQuality)
                 }
               >
                 <span className="inline-flex items-center gap-1.5 [&_svg]:!m-0">

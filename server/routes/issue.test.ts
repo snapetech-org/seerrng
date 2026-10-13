@@ -465,6 +465,34 @@ describe('Issue route validation', () => {
     assert.match(res.body.message, /Issue body must be an object/);
   });
 
+  it('allows issue reports while the requested movie quality is processing', async () => {
+    const media = await getRepository(Media).save(
+      new Media({
+        tmdbId: 20002,
+        mediaType: MediaType.MOVIE,
+        status: MediaStatus.PROCESSING,
+        status4k: MediaStatus.PROCESSING,
+      })
+    );
+    const agent = await login();
+    const res = await agent.post('/issue').send({
+      issueType: IssueType.VIDEO,
+      mediaId: media.id,
+      message: 'The request is still being processed.',
+      is4k: true,
+    });
+
+    assert.strictEqual(res.status, 200);
+    assert.strictEqual(res.body.is4k, true);
+
+    const issue = await getRepository(Issue).findOneOrFail({
+      where: { id: res.body.id },
+      relations: { media: true },
+    });
+    assert.strictEqual(issue.media.id, media.id);
+    assert.strictEqual(issue.media.status4k, MediaStatus.PROCESSING);
+  });
+
   it('rejects invalid issue types before persistence', async () => {
     const agent = await login();
     const res = await agent.post('/issue').send({
