@@ -1,4 +1,4 @@
-import { deepStrictEqual, strictEqual } from 'node:assert';
+import { deepStrictEqual, doesNotThrow, strictEqual } from 'node:assert';
 import { describe, it } from 'node:test';
 import {
   DISCOVER_SCROLL_HISTORY_KEY,
@@ -200,6 +200,70 @@ describe('history entry persistence', () => {
       strictEqual(
         readDiscoverSliderScrollPosition('discover-entry', 'x'.repeat(129)),
         undefined
+      );
+    } finally {
+      if (originalWindow)
+        Object.defineProperty(globalThis, 'window', originalWindow);
+      else Reflect.deleteProperty(globalThis, 'window');
+    }
+  });
+
+  it('keeps navigation usable when session storage rejects access', () => {
+    const originalWindow = Object.getOwnPropertyDescriptor(
+      globalThis,
+      'window'
+    );
+    const browser = {
+      history: { state: { key: 'discover-entry' } },
+      sessionStorage: {
+        getItem: () => {
+          throw new Error('Storage is unavailable');
+        },
+        setItem: () => {
+          throw new Error('Storage is unavailable');
+        },
+      },
+    };
+    Object.defineProperty(globalThis, 'window', {
+      configurable: true,
+      value: browser,
+    });
+    try {
+      strictEqual(
+        readDiscoverSliderScrollPosition('discover-entry', 'trending'),
+        undefined
+      );
+      doesNotThrow(() =>
+        saveDiscoverSliderScrollPosition('discover-entry', 'trending', 320)
+      );
+    } finally {
+      if (originalWindow)
+        Object.defineProperty(globalThis, 'window', originalWindow);
+      else Reflect.deleteProperty(globalThis, 'window');
+    }
+  });
+
+  it('ignores session storage write failures', () => {
+    const originalWindow = Object.getOwnPropertyDescriptor(
+      globalThis,
+      'window'
+    );
+    const browser = {
+      history: { state: { key: 'discover-entry' } },
+      sessionStorage: {
+        getItem: () => null,
+        setItem: () => {
+          throw new Error('Storage is full');
+        },
+      },
+    };
+    Object.defineProperty(globalThis, 'window', {
+      configurable: true,
+      value: browser,
+    });
+    try {
+      doesNotThrow(() =>
+        saveDiscoverSliderScrollPosition('discover-entry', 'trending', 320)
       );
     } finally {
       if (originalWindow)
