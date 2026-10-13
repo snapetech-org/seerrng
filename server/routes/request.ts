@@ -20,6 +20,7 @@ import {
   DuplicateMediaRequestError,
   MediaRequest,
   NoSeasonsAvailableError,
+  QuotaExceptionAlreadyPendingError,
   QuotaRestrictedError,
   RequestPermissionError,
   ServiceConfigurationError,
@@ -1041,6 +1042,31 @@ const sanitizeMediaRequestBody = (
     };
   }
 
+  if (
+    bodyObject.requestQuotaApproval !== undefined &&
+    typeof bodyObject.requestQuotaApproval !== 'boolean'
+  ) {
+    return {
+      error: {
+        status: 400,
+        message: 'requestQuotaApproval must be a boolean.',
+      },
+    };
+  }
+  if (
+    bodyObject.requestQuotaApproval === true &&
+    (!options.requireCreateIdentity ||
+      (mediaType !== MediaType.MOVIE && mediaType !== MediaType.TV))
+  ) {
+    return {
+      error: {
+        status: 400,
+        message:
+          'requestQuotaApproval is only valid for new movie or TV requests.',
+      },
+    };
+  }
+
   if (bodyObject.watchAheadEpisodeCount !== undefined) {
     if (
       !Number.isSafeInteger(bodyObject.watchAheadEpisodeCount) ||
@@ -1420,6 +1446,8 @@ const sanitizeMediaRequestBody = (
     seasonRequests: seasonRequests.value,
     watchAheadEpisodeCount: bodyObject.watchAheadEpisodeCount as
       number | undefined,
+    requestQuotaApproval: bodyObject.requestQuotaApproval as
+      boolean | undefined,
   } as MediaRequestBody;
 
   return {
@@ -2647,6 +2675,7 @@ requestRoutes.post<never, MediaRequest, MediaRequestBody>(
 
       const request = await MediaRequest.request(body.value, req.user, {
         expectedCredentialVersion: getExpectedCredentialVersion(req),
+        requestQuotaApproval: body.value.requestQuotaApproval === true,
       });
 
       return res.status(201).json(filterEntityResponse(request, req.user));
@@ -2666,6 +2695,8 @@ requestRoutes.post<never, MediaRequest, MediaRequestBody>(
         case RequestPermissionError:
         case QuotaRestrictedError:
           return next({ status: 403, message: error.message });
+        case QuotaExceptionAlreadyPendingError:
+          return next({ status: 409, message: error.message });
         case DuplicateMediaRequestError:
           return next({ status: 409, message: error.message });
         case ServiceConfigurationError:
@@ -4573,7 +4604,6 @@ requestRoutes.put<{ requestId: string }>(
                     request.watchAheadLastEpisode = null;
                     request.watchAheadLastReconciledAt = null;
                   }
-
                   if (isFailedRequestRepair) {
                     if (
                       body.serverId === undefined ||
@@ -4590,6 +4620,9 @@ requestRoutes.put<{ requestId: string }>(
                     request.modifiedBy = actor;
                   }
 
+                  if (changesRequestUser) {
+                    request.quotaException = false;
+                  }
                   request.requestedBy = requestUser;
                   await requestRepository.save(request);
                   return res
@@ -5027,6 +5060,9 @@ requestRoutes.post<{
                   request.bookFormat,
                   request.is4k
                 );
+                if (request.quotaException) {
+                  request.ignoreQuota = true;
+                }
               }
 
               request.status = newStatus;

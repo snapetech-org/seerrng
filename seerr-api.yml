@@ -5209,6 +5209,11 @@ components:
           type: boolean
           example: false
           description: If true, this request will not count against the user's quota. Requires MANAGE_REQUESTS permission.
+        quotaException:
+          type: boolean
+          example: false
+          readOnly: true
+          description: True when a movie or TV request was submitted over quota for administrator approval. An approved exception is excluded from future quota usage.
       required:
         - id
         - status
@@ -17123,7 +17128,9 @@ paths:
       description: |
         Creates a new request with the provided media ID and type. The `REQUEST` permission is required.
 
-        If the user has the `ADMIN` or `AUTO_APPROVE` permissions, their request will be auomatically approved.
+        If the user has an applicable auto-approval permission, their request will normally be approved automatically. A request that exceeds their movie or TV quota and sets `requestQuotaApproval` remains pending for administrator review instead.
+
+        The requester may set `requestQuotaApproval: true` for their own movie or TV request when it exceeds their quota. Only one quota exception per media type can await review for a user. Pending exceptions count against quota until an administrator approves them; approved exceptions are excluded from future quota usage. Bulk, automated, and on-behalf requests cannot use this path.
       tags:
         - request
       requestBody:
@@ -17202,6 +17209,10 @@ paths:
                   type: boolean
                   example: false
                   description: If true, this request will not count against the user's quota. Requires MANAGE_REQUESTS permission.
+                requestQuotaApproval:
+                  type: boolean
+                  example: true
+                  description: Explicitly ask an administrator to review an over-quota movie or TV request. Only valid when creating a request for the signed-in user.
               required:
                 - mediaType
                 - mediaId
@@ -17212,6 +17223,10 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/MediaRequest'
+        '403':
+          description: Request permission denied or quota exceeded without an approval request
+        '409':
+          description: Another quota exception for this media type is already awaiting review
   /request/bulk:
     post:
       summary: Create bulk media requests

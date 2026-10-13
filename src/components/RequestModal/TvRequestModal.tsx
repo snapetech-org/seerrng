@@ -89,6 +89,9 @@ const messages = defineMessages('components.RequestModal', {
   autoapproval: 'Automatic Approval',
   requesterror: 'Something went wrong while submitting the request.',
   pendingapproval: 'Your request is pending approval.',
+  quotaApprovalSubmitted:
+    'Your over-quota request for <strong>{title}</strong> is waiting for administrator approval.',
+  requestQuotaApproval: 'Request approval',
   mediaAndFormat: 'Media & Format',
   releaseDate: 'Release Date',
   runtime: 'Runtime',
@@ -442,6 +445,7 @@ const TvRequestModal = ({
         mediaType: 'tv',
         is4k: effectiveIs4k,
         ignoreQuota: requestOverrides?.ignoreQuota,
+        requestQuotaApproval: requestQuotaApproval || undefined,
         seasons: usesEpisodeSelection
           ? requestableSelections
               .map((selection) => selection.seasonNumber)
@@ -468,10 +472,15 @@ const TvRequestModal = ({
         }
         addToast(
           <span>
-            {intl.formatMessage(messages.requestSuccess, {
-              title: data?.name,
-              strong: (msg: React.ReactNode) => <strong>{msg}</strong>,
-            })}
+            {intl.formatMessage(
+              response.data.quotaException
+                ? messages.quotaApprovalSubmitted
+                : messages.requestSuccess,
+              {
+                title: data?.name,
+                strong: (msg: React.ReactNode) => <strong>{msg}</strong>,
+              }
+            )}
           </span>,
           { appearance: 'success', autoDismiss: true }
         );
@@ -664,10 +673,17 @@ const TvRequestModal = ({
     !!quota?.tv.limit &&
     !requestOverrides?.ignoreQuota &&
     unrequestedSeasons.length > (quota.tv.remaining ?? 0);
+  const requestQuotaApproval = Boolean(
+    !editRequest &&
+    !requestOverrides?.user &&
+    !hasPermission(Permission.MANAGE_REQUESTS) &&
+    (partialQuotaExceeded || (!usesEpisodeSelection && fullQuotaExceeded))
+  );
   const requestDisabledReason =
     usesEpisodeSelection && !requestTreeReady && selectedSeasons.length > 0
       ? intl.formatMessage(messages.episodesLoading)
-      : partialQuotaExceeded || (!usesEpisodeSelection && fullQuotaExceeded)
+      : !requestQuotaApproval &&
+          (partialQuotaExceeded || (!usesEpisodeSelection && fullQuotaExceeded))
         ? intl.formatMessage(messages.requestQuotaExceeded)
         : requestableSelections.length === 0
           ? usesEpisodeSelection &&
@@ -786,7 +802,9 @@ const TvRequestModal = ({
         : hasPermission(Permission.MANAGE_REQUESTS)
           ? intl.formatMessage(messages.approve)
           : intl.formatMessage(messages.edit)
-    : intl.formatMessage(globalMessages.request);
+    : requestQuotaApproval
+      ? intl.formatMessage(messages.requestQuotaApproval)
+      : intl.formatMessage(globalMessages.request);
   const requestDisabled = editRequest
     ? isFailedManagerRepair
       ? selectedSeasons.length === 0
@@ -794,8 +812,8 @@ const TvRequestModal = ({
     : (usesEpisodeSelection && !requestTreeReady) ||
       selectedDestinationCovered ||
       requestableSelections.length === 0 ||
-      partialQuotaExceeded ||
-      (!usesEpisodeSelection && fullQuotaExceeded);
+      (!requestQuotaApproval &&
+        (partialQuotaExceeded || (!usesEpisodeSelection && fullQuotaExceeded)));
   const closeAction = tvdbId ? () => setSearchModal({ show: true }) : onCancel;
   const submitAction = () =>
     editRequest
