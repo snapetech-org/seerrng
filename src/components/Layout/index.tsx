@@ -241,12 +241,12 @@ const Layout = ({ children }: LayoutProps) => {
         />
       </div>
 
-      <div className="relative mb-16 flex w-0 min-w-0 flex-1 flex-col lg:ml-64">
+      <div className="relative mb-16 flex w-0 min-w-0 flex-1 flex-col lg:ms-64">
         <PullToRefresh />
         <div
-          className={`searchbar fixed top-0 right-0 left-0 z-10 flex flex-shrink-0 transition duration-300 ${
+          className={`searchbar fixed inset-x-0 top-0 z-10 flex flex-shrink-0 transition duration-300 ${
             isScrolled ? 'app-searchbar-scrolled' : 'bg-transparent'
-          } lg:left-64`}
+          } lg:start-64`}
         >
           <div className="flex flex-1 items-center justify-between px-4 md:pr-4 md:pl-4">
             <button
