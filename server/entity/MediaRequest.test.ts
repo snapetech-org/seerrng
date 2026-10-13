@@ -2,24 +2,28 @@ import assert from 'node:assert/strict';
 import { afterEach, beforeEach, describe, it, mock } from 'node:test';
 
 import ExternalAPI from '@server/api/externalapi';
+import PlexAPI, { type PlexMetadata } from '@server/api/plexapi';
 import SportarrAPI from '@server/api/servarr/sportarr';
 import {
   MediaRequestStatus,
   MediaStatus,
   MediaType,
 } from '@server/constants/media';
+import { MediaServerType } from '@server/constants/server';
 import { getRepository } from '@server/datasource';
 import Media from '@server/entity/Media';
 import {
   DuplicateMediaRequestError,
   MediaRequest,
   QuotaRestrictedError,
+  RequestPermissionError,
 } from '@server/entity/MediaRequest';
 import { MediaSearchMetadata } from '@server/entity/MediaSearchMetadata';
 import SeasonRequest from '@server/entity/SeasonRequest';
 import { User } from '@server/entity/User';
 import { Permission } from '@server/lib/permissions';
 import { getSettings } from '@server/lib/settings';
+import { TvSeasonWatchGateError } from '@server/lib/tvSeasonWatchGate';
 import { setupTestDb } from '@server/test/db';
 
 // get is a prototype method unlike getMovie, and replaces the cache lookup too
@@ -38,7 +42,10 @@ const externalApiGetMock = mock.method(
     return {
       id: tmdbId,
       external_ids: {},
-      seasons: [1, 2, 3].map((season_number) => ({ season_number })),
+      seasons: [1, 2, 3].map((season_number) => ({
+        season_number,
+        episode_count: 2,
+      })),
       // Skips getMovie's localized fallback call
       videos: { results: [{ type: 'Trailer', key: 'trailer' }] },
     };
@@ -312,6 +319,201 @@ describe('MediaRequest.request', () => {
       1
     );
     assert.strictEqual(await seasonRequestRepository.count(), 3);
+  });
+
+  it('requires every episode of the preceding season before admitting a later season', async () => {
+    const settings = getSettings();
+    const previousGateSetting = settings.main.tvSeasonWatchGateEnabled;
+    const previousMediaServerType = settings.main.mediaServerType;
+    settings.main.tvSeasonWatchGateEnabled = true;
+    settings.main.mediaServerType = MediaServerType.PLEX;
+
+    const requester = await createRequester('season-gate-unwatched@seerr.dev');
+    requester.plexId = 12345;
+    requester.plexToken = 'test-plex-token';
+    await getRepository(User).save(requester);
+    await getRepository(Media).save(
+      new Media({
+        mediaType: MediaType.TV,
+        tmdbId: 77701,
+        status: MediaStatus.UNKNOWN,
+        status4k: MediaStatus.UNKNOWN,
+        ratingKey: 'series-root',
+      })
+    );
+    const watchStatus = mock.method(
+      PlexAPI.prototype,
+      'getAllLeavesMetadata',
+      async () =>
+        [
+          { parentIndex: 1, index: 1, viewCount: 1 },
+          { parentIndex: 1, index: 2, viewCount: 0 },
+        ] as unknown as PlexMetadata[]
+    );
+
+    try {
+      await assert.rejects(
+        () =>
+          MediaRequest.request(
+            {
+              mediaId: 77701,
+              mediaType: MediaType.TV,
+              seasons: [2],
+              is4k: false,
+            },
+            requester
+          ),
+        (error: unknown) =>
+          error instanceof TvSeasonWatchGateError &&
+          error.status === 403 &&
+          /watch every episode of Season 1 before requesting Season 2/i.test(
+            error.message
+          )
+      );
+      assert.strictEqual(await getRepository(MediaRequest).count(), 0);
+    } finally {
+      watchStatus.mock.restore();
+      settings.main.tvSeasonWatchGateEnabled = previousGateSetting;
+      settings.main.mediaServerType = previousMediaServerType;
+    }
+  });
+
+  it('admits a later season once every preceding-season episode is watched', async () => {
+    const settings = getSettings();
+    const previousGateSetting = settings.main.tvSeasonWatchGateEnabled;
+    const previousMediaServerType = settings.main.mediaServerType;
+    settings.main.tvSeasonWatchGateEnabled = true;
+    settings.main.mediaServerType = MediaServerType.PLEX;
+
+    const requester = await createRequester('season-gate-watched@seerr.dev');
+    requester.plexId = 12346;
+    requester.plexToken = 'test-plex-token';
+    await getRepository(User).save(requester);
+    await getRepository(Media).save(
+      new Media({
+        mediaType: MediaType.TV,
+        tmdbId: 77702,
+        status: MediaStatus.UNKNOWN,
+        status4k: MediaStatus.UNKNOWN,
+        ratingKey: 'series-root',
+      })
+    );
+    const watchStatus = mock.method(
+      PlexAPI.prototype,
+      'getAllLeavesMetadata',
+      async () =>
+        [
+          { parentIndex: 1, index: 1, viewCount: 1 },
+          { parentIndex: 1, index: 2, viewCount: 1 },
+        ] as unknown as PlexMetadata[]
+    );
+
+    try {
+      const created = await MediaRequest.request(
+        {
+          mediaId: 77702,
+          mediaType: MediaType.TV,
+          seasons: [2],
+          is4k: false,
+        },
+        requester
+      );
+
+      assert.deepStrictEqual(
+        created.seasons.map(({ seasonNumber }) => seasonNumber),
+        [2]
+      );
+    } finally {
+      watchStatus.mock.restore();
+      settings.main.tvSeasonWatchGateEnabled = previousGateSetting;
+      settings.main.mediaServerType = previousMediaServerType;
+    }
+  });
+
+  it('stages a full-series request to eligible seasons when partial requests are disabled', async () => {
+    const settings = getSettings();
+    const previousGateSetting = settings.main.tvSeasonWatchGateEnabled;
+    const previousMediaServerType = settings.main.mediaServerType;
+    const previousPartialRequestsSetting = settings.main.partialRequestsEnabled;
+    settings.main.tvSeasonWatchGateEnabled = true;
+    settings.main.mediaServerType = MediaServerType.PLEX;
+    settings.main.partialRequestsEnabled = false;
+
+    const requester = await createRequester('season-gate-staging@seerr.dev');
+    requester.plexId = 12347;
+    requester.plexToken = 'test-plex-token';
+    await getRepository(User).save(requester);
+    await getRepository(Media).save(
+      new Media({
+        mediaType: MediaType.TV,
+        tmdbId: 77703,
+        status: MediaStatus.UNKNOWN,
+        status4k: MediaStatus.UNKNOWN,
+        ratingKey: 'series-root',
+      })
+    );
+    const watchStatus = mock.method(
+      PlexAPI.prototype,
+      'getAllLeavesMetadata',
+      async () =>
+        [
+          { parentIndex: 1, index: 1, viewCount: 1 },
+        ] as unknown as PlexMetadata[]
+    );
+
+    try {
+      const created = await MediaRequest.request(
+        {
+          mediaId: 77703,
+          mediaType: MediaType.TV,
+          seasons: 'all',
+          is4k: false,
+        },
+        requester
+      );
+
+      assert.deepStrictEqual(
+        created.seasons.map(({ seasonNumber }) => seasonNumber),
+        [1]
+      );
+    } finally {
+      watchStatus.mock.restore();
+      settings.main.tvSeasonWatchGateEnabled = previousGateSetting;
+      settings.main.mediaServerType = previousMediaServerType;
+      settings.main.partialRequestsEnabled = previousPartialRequestsSetting;
+    }
+  });
+
+  it('keeps client-selected partial seasons disabled when watch-gate staging is enabled', async () => {
+    const settings = getSettings();
+    const previousGateSetting = settings.main.tvSeasonWatchGateEnabled;
+    const previousPartialRequestsSetting = settings.main.partialRequestsEnabled;
+    settings.main.tvSeasonWatchGateEnabled = true;
+    settings.main.partialRequestsEnabled = false;
+
+    try {
+      const requester = await createRequester(
+        'season-gate-partial-bypass@seerr.dev'
+      );
+
+      await assert.rejects(
+        () =>
+          MediaRequest.request(
+            {
+              mediaId: 77704,
+              mediaType: MediaType.TV,
+              seasons: [1],
+              is4k: false,
+            },
+            requester
+          ),
+        RequestPermissionError
+      );
+      assert.strictEqual(await getRepository(MediaRequest).count(), 0);
+    } finally {
+      settings.main.tvSeasonWatchGateEnabled = previousGateSetting;
+      settings.main.partialRequestsEnabled = previousPartialRequestsSetting;
+    }
   });
 
   it('creates one media row for concurrent 4k and non-4k requests', async () => {

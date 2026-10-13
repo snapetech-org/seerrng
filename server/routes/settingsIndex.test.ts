@@ -493,6 +493,31 @@ describe('Settings route input validation', () => {
     }
   });
 
+  it('persists and validates the TV season watch gate setting', async () => {
+    const settings = getSettings();
+    const original = settings.main.tvSeasonWatchGateEnabled;
+
+    try {
+      const response = await request(app)
+        .post('/settings/main')
+        .send({ tvSeasonWatchGateEnabled: true });
+      const invalidResponse = await request(app)
+        .post('/settings/main')
+        .send({ tvSeasonWatchGateEnabled: 'true' });
+
+      assert.strictEqual(response.status, 200);
+      assert.strictEqual(response.body.tvSeasonWatchGateEnabled, true);
+      assert.strictEqual(settings.main.tvSeasonWatchGateEnabled, true);
+      assert.strictEqual(invalidResponse.status, 400);
+      assert.match(
+        invalidResponse.body.message,
+        /tvSeasonWatchGateEnabled must be a boolean/
+      );
+    } finally {
+      settings.main.tvSeasonWatchGateEnabled = original;
+    }
+  });
+
   it('saves category availability flags independently and validates their shape', async () => {
     const settings = getSettings();
     const original = { ...settings.main.enabledMediaCategories };

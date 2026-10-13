@@ -82,6 +82,10 @@ import { runWithCurrentServarrService } from '@server/lib/serviceAdmission';
 import { getSettings } from '@server/lib/settings';
 import { isSportarrLeagueExternalId } from '@server/lib/sportarrIdentity';
 import {
+  TvSeasonWatchGateError,
+  enforceTvSeasonWatchGate,
+} from '@server/lib/tvSeasonWatchGate';
+import {
   UserMutationActorUnauthorizedError,
   acquireAuthorizedUserSecurityMutation,
   isUserCredentialVersionCurrent,
@@ -2613,6 +2617,10 @@ requestRoutes.post<never, MediaRequest, MediaRequestBody>(
         return next({ status: 500, message: 'Unable to submit request.' });
       }
 
+      if (error instanceof TvSeasonWatchGateError) {
+        return next({ status: error.status, message: error.message });
+      }
+
       switch (error.constructor) {
         case UserMutationActorUnauthorizedError:
         case RequestPermissionError:
@@ -3930,7 +3938,12 @@ requestRoutes.put<{ requestId: string }>(
       const body = sanitizedBody.value;
       const initialRequest = await requestRepository.findOne({
         where: { id: requestId },
-        select: { id: true, status: true },
+        relations: { requestedBy: true },
+        select: {
+          id: true,
+          status: true,
+          requestedBy: { id: true },
+        },
       });
       if (!initialRequest) {
         return next({ status: 404, message: 'Request not found.' });
@@ -3944,7 +3957,10 @@ requestRoutes.put<{ requestId: string }>(
 
       return await runUserSecurityMutationWithActor(
         req.user!.id,
-        body.userId ?? req.user!.id,
+        [
+          initialRequest.requestedBy.id,
+          body.userId ?? initialRequest.requestedBy.id,
+        ],
         [Permission.MANAGE_USERS, Permission.MANAGE_REQUESTS],
         (actor) =>
           runWithRequestAdmission(
@@ -4260,6 +4276,8 @@ requestRoutes.put<{ requestId: string }>(
                       }
                     );
 
+                    let tmdbShow:
+                      Awaited<ReturnType<TheMovieDb['getTvShow']>> | undefined;
                     if (
                       !getSettings().main.partialRequestsEnabled &&
                       !isSingleEpisodeWatchAheadSelection(
@@ -4281,9 +4299,6 @@ requestRoutes.put<{ requestId: string }>(
                         });
                       }
 
-                      let tmdbShow: Awaited<
-                        ReturnType<TheMovieDb['getTvShow']>
-                      >;
                       try {
                         tmdbShow = await new TheMovieDb().getTvShow({
                           tvId: request.media.tmdbId,
@@ -4339,6 +4354,70 @@ requestRoutes.put<{ requestId: string }>(
                         status: 202,
                         message: 'No seasons available to request',
                       });
+                    }
+
+                    const newSeasonSelections = filteredSelections.filter(
+                      ({ seasonNumber }) =>
+                        !currentSeasonNumbers.has(seasonNumber)
+                    );
+                    const seasonWatchGateSelections = changesRequestUser
+                      ? filteredSelections
+                      : newSeasonSelections;
+
+                    if (
+                      getSettings().main.tvSeasonWatchGateEnabled &&
+                      seasonWatchGateSelections.some(
+                        ({ seasonNumber }) => seasonNumber > 1
+                      ) &&
+                      !actor.hasPermission(
+                        [Permission.MANAGE_REQUESTS, Permission.ADMIN],
+                        { type: 'or' }
+                      )
+                    ) {
+                      try {
+                        tmdbShow ??= await new TheMovieDb().getTvShow({
+                          tvId: request.media.tmdbId,
+                        });
+                      } catch {
+                        throw new TvSeasonWatchGateError(
+                          503,
+                          'Unable to verify TV season metadata. Try again later.'
+                        );
+                      }
+                      if (!tmdbShow) {
+                        throw new TvSeasonWatchGateError(
+                          503,
+                          'Unable to verify TV season metadata. Try again later.'
+                        );
+                      }
+                      const requestUserWithPlaybackCredentials =
+                        await userRepository
+                          .createQueryBuilder('user')
+                          .addSelect([
+                            'user.plexToken',
+                            'user.jellyfinAuthToken',
+                            'user.jellyfinDeviceId',
+                          ])
+                          .where('user.id = :requestUserId', {
+                            requestUserId: requestUser.id,
+                          })
+                          .getOne();
+                      if (!requestUserWithPlaybackCredentials) {
+                        throw new TvSeasonWatchGateError(
+                          403,
+                          'The request owner is no longer available.'
+                        );
+                      }
+                      await enforceTvSeasonWatchGate(
+                        actor,
+                        requestUserWithPlaybackCredentials,
+                        request.media,
+                        tmdbShow.seasons.map((season) => ({
+                          seasonNumber: season.season_number,
+                          episodeCount: season.episode_count,
+                        })),
+                        seasonWatchGateSelections
+                      );
                     }
 
                     const quotas = await requestUser.getQuota();
@@ -4404,10 +4483,6 @@ requestRoutes.put<{ requestId: string }>(
                       }
                     }
 
-                    const newSelections = filteredSelections.filter(
-                      (selection) =>
-                        !currentSeasonNumbers.has(selection.seasonNumber)
-                    );
                     request.seasons = request.seasons.filter((season) =>
                       filteredSelections.some(
                         (selection) =>
@@ -4421,7 +4496,7 @@ requestRoutes.put<{ requestId: string }>(
                       )?.episodeNumbers;
                     });
                     request.seasons.push(
-                      ...newSelections.map(
+                      ...newSeasonSelections.map(
                         (selection) =>
                           new SeasonRequest({
                             seasonNumber: selection.seasonNumber,
@@ -4475,6 +4550,9 @@ requestRoutes.put<{ requestId: string }>(
           status: 403,
           message: 'You do not have permission to modify this request.',
         });
+      }
+      if (e instanceof TvSeasonWatchGateError) {
+        return next({ status: e.status, message: e.message });
       }
       if (e instanceof ServiceConfigurationError) {
         return next({ status: 400, message: e.message });

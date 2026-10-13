@@ -81,6 +81,9 @@ const messages = defineMessages('components.Settings.SettingsMain', {
   validationApplicationUrl: 'You must provide a valid URL',
   validationApplicationUrlTrailingSlash: 'URL must not end in a trailing slash',
   partialRequestsEnabled: 'Allow Partial Series Requests',
+  tvSeasonWatchGateEnabled: 'Require the Previous Season to Be Watched',
+  tvSeasonWatchGateEnabledTip:
+    'When enabled, users must watch every episode of the previous regular season before requesting a later season. Specials are excluded. Requests need playback progress from the user’s linked Plex, Jellyfin, or Emby account. Administrators and request managers can override this rule.',
   personMovieBulkRequestsEnabled:
     'Allow Requesting All Movies From a Person Page',
   personMovieBulkRequestsEnabledTip:
@@ -122,7 +125,7 @@ const messages = defineMessages('components.Settings.SettingsMain', {
   downloadPathMappingsTip:
     'Enter a JSON array. Each mapping has serviceType, optional serviceId, remoteRoot, and localRoot. Use narrow library roots; SeerrNG only offers files that resolve inside a mapped root.',
   downloadPathMappingsExample:
-    '[\n  {\n    "serviceType": "radarr",\n    "serviceId": 1,\n    "remoteRoot": "/movies",\n    "localRoot": "/mnt/media/movies"\n  }\n]',
+    '[\n  \'{\'\n    "serviceType": "radarr",\n    "serviceId": 1,\n    "remoteRoot": "/movies",\n    "localRoot": "/mnt/media/movies"\n  \'}\'\n]',
   downloadPathMappingsJsonError:
     'Enter a JSON array with at most 100 path mappings.',
   validationDownloadPathMappingsJson:
@@ -240,6 +243,7 @@ const SettingsMain = () => {
           blocklistedTags: data?.blocklistedTags,
           blocklistedTagsLimit: data?.blocklistedTagsLimit || 50,
           partialRequestsEnabled: data?.partialRequestsEnabled,
+          tvSeasonWatchGateEnabled: data?.tvSeasonWatchGateEnabled ?? false,
           personMovieBulkRequestsEnabled:
             data?.personMovieBulkRequestsEnabled ?? false,
           enableSpecialEpisodes: data?.enableSpecialEpisodes,
@@ -277,6 +281,7 @@ const SettingsMain = () => {
               blocklistedTags: values.blocklistedTags,
               blocklistedTagsLimit: values.blocklistedTagsLimit,
               partialRequestsEnabled: values.partialRequestsEnabled,
+              tvSeasonWatchGateEnabled: values.tvSeasonWatchGateEnabled,
               personMovieBulkRequestsEnabled:
                 values.personMovieBulkRequestsEnabled,
               enableSpecialEpisodes: values.enableSpecialEpisodes,
@@ -645,6 +650,28 @@ const SettingsMain = () => {
                       />
                     </div>
                   </div>
+                  <SettingsFormRow
+                    htmlFor="tvSeasonWatchGateEnabled"
+                    label={intl.formatMessage(
+                      messages.tvSeasonWatchGateEnabled
+                    )}
+                    description={intl.formatMessage(
+                      messages.tvSeasonWatchGateEnabledTip
+                    )}
+                    labelClassName="checkbox-label"
+                  >
+                    <SettingsField
+                      type="checkbox"
+                      id="tvSeasonWatchGateEnabled"
+                      name="tvSeasonWatchGateEnabled"
+                      onChange={() => {
+                        setFieldValue(
+                          'tvSeasonWatchGateEnabled',
+                          !values.tvSeasonWatchGateEnabled
+                        );
+                      }}
+                    />
+                  </SettingsFormRow>
                   <SettingsFormRow
                     htmlFor="personMovieBulkRequestsEnabled"
                     label={intl.formatMessage(

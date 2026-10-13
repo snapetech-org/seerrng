@@ -2293,6 +2293,67 @@ describe('GET /request', () => {
 });
 
 describe('POST /request', () => {
+  it('returns the watch gate 403 when the requester has no linked playback account', async (t) => {
+    const settings = getSettings();
+    const previousGateSetting = settings.main.tvSeasonWatchGateEnabled;
+    const previousMediaServerType = settings.main.mediaServerType;
+    const previousSonarrSettings = settings.sonarr;
+    settings.main.tvSeasonWatchGateEnabled = true;
+    settings.main.mediaServerType = MediaServerType.PLEX;
+    configureSonarr([{}]);
+    t.after(() => {
+      settings.main.tvSeasonWatchGateEnabled = previousGateSetting;
+      settings.main.mediaServerType = previousMediaServerType;
+      settings.sonarr = previousSonarrSettings;
+    });
+    const previousTmdbMethod = Object.getOwnPropertyDescriptor(
+      TheMovieDb.prototype,
+      'getTvShow'
+    );
+    Object.defineProperty(TheMovieDb.prototype, 'getTvShow', {
+      configurable: true,
+      get: () => async () =>
+        ({
+          ...fakeTmdbShow(987_638),
+          seasons: [1, 2].map((season_number) => ({
+            season_number,
+            episode_count: 2,
+          })),
+        }) as TmdbTvDetails,
+      set: () => undefined,
+    });
+    t.after(() => {
+      if (previousTmdbMethod) {
+        Object.defineProperty(
+          TheMovieDb.prototype,
+          'getTvShow',
+          previousTmdbMethod
+        );
+      } else {
+        Reflect.deleteProperty(TheMovieDb.prototype, 'getTvShow');
+      }
+    });
+
+    const friend = await getRepository(User).findOneOrFail({
+      where: { email: 'friend@seerr.dev' },
+    });
+    friend.plexId = null;
+    friend.plexToken = null;
+    await getRepository(User).save(friend);
+    const agent = await loginAs('friend@seerr.dev', 'test1234');
+
+    const response = await agent.post('/request').send({
+      mediaType: MediaType.TV,
+      mediaId: 987_638,
+      seasons: [2],
+      is4k: false,
+    });
+
+    assert.strictEqual(response.status, 403, response.body.message);
+    assert.match(response.body.message, /link your Plex/i);
+    assert.strictEqual(await getRepository(MediaRequest).count(), 0);
+  });
+
   it('rejects an available selected movie quality while allowing the missing quality', async (t) => {
     const settings = getSettings();
     settings.radarr = [
@@ -5586,6 +5647,92 @@ describe('PUT /request/:requestId', () => {
     assert.match(
       response.body.message,
       /partial series requests are disabled/i
+    );
+  });
+
+  it('returns the watch gate 403 when the request owner has no linked playback account', async (t) => {
+    const settings = getSettings();
+    const previousGateSetting = settings.main.tvSeasonWatchGateEnabled;
+    const previousMediaServerType = settings.main.mediaServerType;
+    settings.main.tvSeasonWatchGateEnabled = true;
+    settings.main.mediaServerType = MediaServerType.PLEX;
+    t.after(() => {
+      settings.main.tvSeasonWatchGateEnabled = previousGateSetting;
+      settings.main.mediaServerType = previousMediaServerType;
+    });
+    const previousTmdbMethod = Object.getOwnPropertyDescriptor(
+      TheMovieDb.prototype,
+      'getTvShow'
+    );
+    Object.defineProperty(TheMovieDb.prototype, 'getTvShow', {
+      configurable: true,
+      get: () => async () =>
+        ({
+          ...fakeTmdbShow(8115),
+          seasons: [1, 2].map((season_number) => ({
+            season_number,
+            episode_count: 2,
+          })),
+        }) as TmdbTvDetails,
+      set: () => undefined,
+    });
+    t.after(() => {
+      if (previousTmdbMethod) {
+        Object.defineProperty(
+          TheMovieDb.prototype,
+          'getTvShow',
+          previousTmdbMethod
+        );
+      } else {
+        Reflect.deleteProperty(TheMovieDb.prototype, 'getTvShow');
+      }
+    });
+
+    const friend = await getRepository(User).findOneOrFail({
+      where: { email: 'friend@seerr.dev' },
+    });
+    friend.plexId = null;
+    friend.plexToken = null;
+    await getRepository(User).save(friend);
+    const media = await getRepository(Media).save(
+      new Media({
+        mediaType: MediaType.TV,
+        tmdbId: 8115,
+        status: MediaStatus.PENDING,
+        status4k: MediaStatus.UNKNOWN,
+        ratingKey: 'series-root',
+      })
+    );
+    const mediaRequest = await getRepository(MediaRequest).save(
+      new MediaRequest({
+        type: MediaType.TV,
+        media,
+        requestedBy: friend,
+        status: MediaRequestStatus.PENDING,
+        is4k: false,
+        seasons: [
+          new SeasonRequest({
+            seasonNumber: 1,
+            status: MediaRequestStatus.PENDING,
+          }),
+        ],
+      })
+    );
+    const agent = await loginAs('friend@seerr.dev', 'test1234');
+
+    const response = await agent
+      .put(`/request/${mediaRequest.id}`)
+      .send({ mediaType: MediaType.TV, seasons: [1, 2] });
+
+    assert.strictEqual(response.status, 403, response.body.message);
+    assert.match(response.body.message, /link your Plex/i);
+    const saved = await getRepository(MediaRequest).findOneOrFail({
+      where: { id: mediaRequest.id },
+      relations: { seasons: true },
+    });
+    assert.deepStrictEqual(
+      saved.seasons.map(({ seasonNumber }) => seasonNumber),
+      [1]
     );
   });
 

@@ -13,6 +13,10 @@ const fixtureState = vi.hoisted(() => ({
   quota: { tv: { limit: 0, remaining: 10 } },
   catalog: undefined as unknown,
   partialRequestsEnabled: true,
+  tvSeasonWatchGateEnabled: false,
+  watchStatus: undefined as unknown,
+  watchStatusLoading: false,
+  watchStatusError: undefined as unknown,
   requestPermission: false,
   linkedPlexAccount: false,
   sonarrServers: [] as unknown[],
@@ -24,21 +28,34 @@ vi.mock('axios', () => ({
   default: { post: vi.fn(), put: vi.fn(), delete: vi.fn() },
 }));
 vi.mock('swr', () => ({
-  default: (key: string | null) => ({
-    data: key?.startsWith('/api/v1/tv/')
-      ? fixtureState.data
-      : key?.endsWith('/quota')
-        ? fixtureState.quota
-        : key === '/api/v1/service/sonarr'
-          ? fixtureState.sonarrServers
-          : undefined,
-  }),
+  default: (key: string | [string, string | undefined] | null) => {
+    const url = Array.isArray(key) ? key[0] : key;
+    if (url?.startsWith('/api/v1/playback/watched/')) {
+      return {
+        data: fixtureState.watchStatus,
+        error: fixtureState.watchStatusError,
+        isLoading: fixtureState.watchStatusLoading,
+        isValidating: fixtureState.watchStatusLoading,
+        mutate: vi.fn(),
+      };
+    }
+    return {
+      data: url?.startsWith('/api/v1/tv/')
+        ? fixtureState.data
+        : url?.endsWith('/quota')
+          ? fixtureState.quota
+          : url === '/api/v1/service/sonarr'
+            ? fixtureState.sonarrServers
+            : undefined,
+    };
+  },
   mutate: fixtureState.mutate,
 }));
 vi.mock('@app/hooks/useSettings', () => ({
   default: () => ({
     currentSettings: {
       partialRequestsEnabled: fixtureState.partialRequestsEnabled,
+      tvSeasonWatchGateEnabled: fixtureState.tvSeasonWatchGateEnabled,
       enableSpecialEpisodes: false,
       mediaServerType: 1,
     },
@@ -326,6 +343,10 @@ async function fixture(
   fixtureState.quota = { tv: { limit: 0, remaining: 10 } };
   fixtureState.catalog = undefined;
   fixtureState.partialRequestsEnabled = true;
+  fixtureState.tvSeasonWatchGateEnabled = false;
+  fixtureState.watchStatus = undefined;
+  fixtureState.watchStatusLoading = false;
+  fixtureState.watchStatusError = undefined;
   fixtureState.requestPermission = false;
   fixtureState.linkedPlexAccount = false;
   fixtureState.sonarrServers = [];
@@ -417,6 +438,129 @@ it('individual season selection preserves the existing whole-season request shap
       })
     );
   });
+});
+
+it('blocks later-season requests until linked playback confirms every previous-season episode', async () => {
+  await fixture(
+    async (doc) => {
+      expect(doc.body.textContent).toContain(
+        'Watch every episode of Season 1 before requesting Season 2.'
+      );
+      expect(button(doc, 'modal-ok-button').disabled).toBe(true);
+      await click(doc, 'modal-ok-button');
+      expect(axios.post).not.toHaveBeenCalled();
+    },
+    {
+      configure: () => {
+        fixtureState.tvSeasonWatchGateEnabled = true;
+        fixtureState.linkedPlexAccount = true;
+        fixtureState.watchStatus = {
+          seasons: [
+            {
+              seasonNumber: 1,
+              episodes: [
+                { seasonNumber: 1, episodeNumber: 1, watched: true },
+                { seasonNumber: 1, episodeNumber: 2, watched: true },
+              ],
+            },
+          ],
+        };
+      },
+    }
+  );
+});
+
+it('allows later-season requests when the previous season is fully watched', async () => {
+  await fixture(
+    async (doc) => {
+      expect(button(doc, 'modal-ok-button').disabled).toBe(false);
+      await click(doc, 'modal-ok-button');
+      expect(axios.post).toHaveBeenCalledExactlyOnceWith(
+        '/api/v1/request',
+        expect.objectContaining({ seasons: [1, 2] })
+      );
+    },
+    {
+      configure: () => {
+        fixtureState.tvSeasonWatchGateEnabled = true;
+        fixtureState.linkedPlexAccount = true;
+        fixtureState.watchStatus = {
+          seasons: [
+            {
+              seasonNumber: 1,
+              episodes: [
+                { seasonNumber: 1, episodeNumber: 1, watched: true },
+                { seasonNumber: 1, episodeNumber: 2, watched: true },
+                { seasonNumber: 1, episodeNumber: 3, watched: true },
+              ],
+            },
+          ],
+        };
+      },
+    }
+  );
+});
+
+it('explains that a linked playback account is required for later seasons', async () => {
+  await fixture(
+    async (doc) => {
+      expect(doc.body.textContent).toContain(
+        'Link your Plex, Jellyfin, or Emby account'
+      );
+      expect(
+        doc.querySelector('a[href="/profile/settings/linked-accounts"]')
+      ).not.toBeNull();
+      expect(button(doc, 'modal-ok-button').disabled).toBe(true);
+    },
+    {
+      configure: () => {
+        fixtureState.tvSeasonWatchGateEnabled = true;
+      },
+    }
+  );
+});
+
+it('explains when the previous season is missing from the linked media server library', async () => {
+  await fixture(
+    async (doc) => {
+      expect(doc.body.textContent).toContain(
+        'Add this series to your linked Plex, Jellyfin, or Emby library and sync it before requesting a later season.'
+      );
+      expect(button(doc, 'modal-ok-button').disabled).toBe(true);
+    },
+    {
+      configure: () => {
+        fixtureState.tvSeasonWatchGateEnabled = true;
+        fixtureState.linkedPlexAccount = true;
+        fixtureState.watchStatus = { seasons: [] };
+      },
+    }
+  );
+});
+
+it('sends full-series intent for server-side staging when partial requests are disabled', async () => {
+  await fixture(
+    async (doc) => {
+      expect(button(doc, 'modal-ok-button').disabled).toBe(false);
+      expect(doc.body.textContent).toContain(
+        'Only seasons that pass this playback check will be included in the request.'
+      );
+      await click(doc, 'modal-ok-button');
+      expect(axios.post).toHaveBeenCalledExactlyOnceWith(
+        '/api/v1/request',
+        expect.objectContaining({
+          seasons: 'all',
+          seasonRequests: undefined,
+        })
+      );
+    },
+    {
+      configure: () => {
+        fixtureState.partialRequestsEnabled = false;
+        fixtureState.tvSeasonWatchGateEnabled = true;
+      },
+    }
+  );
 });
 
 it('episode selection submits episode numbers and strips already-available episodes', async () => {

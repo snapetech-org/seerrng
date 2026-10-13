@@ -59,6 +59,7 @@ import {
   type ServarrServiceType,
 } from '@server/lib/serviceAdmission';
 import {
+  getSettings,
   type BackIssueSettings,
   type KapowarrSettings,
   type MylarSettings,
@@ -67,6 +68,10 @@ import {
   type SonarrSettings,
 } from '@server/lib/settings';
 import { isSportarrLeagueExternalId } from '@server/lib/sportarrIdentity';
+import {
+  enforceTvSeasonWatchGate,
+  filterTvSeasonSelectionsByWatchGate,
+} from '@server/lib/tvSeasonWatchGate';
 import {
   isUserCredentialVersionCurrent,
   runUserSecurityMutation,
@@ -489,6 +494,32 @@ export class MediaRequest {
 
     if (!requestUser) {
       throw new Error('User missing from request context.');
+    }
+
+    if (
+      getSettings().main.tvSeasonWatchGateEnabled &&
+      requestBody.mediaType === MediaType.TV &&
+      !user.hasPermission([Permission.MANAGE_REQUESTS, Permission.ADMIN], {
+        type: 'or',
+      })
+    ) {
+      // Playback credentials are excluded from normal User reads. This request
+      // already holds the actor and target security locks, so load only the
+      // linked account fields needed for the server-side watch check.
+      const requestUserWithPlaybackCredentials = await userRepository
+        .createQueryBuilder('user')
+        .addSelect([
+          'user.plexToken',
+          'user.jellyfinAuthToken',
+          'user.jellyfinDeviceId',
+        ])
+        .where('user.id = :requestUserId', { requestUserId: requestUser.id })
+        .getOne();
+
+      if (!requestUserWithPlaybackCredentials) {
+        throw new RequestPermissionError('Request user no longer exists.');
+      }
+      requestUser = requestUserWithPlaybackCredentials;
     }
 
     const watchAheadEpisodeCount = requestBody.watchAheadEpisodeCount ?? 0;
@@ -2611,6 +2642,12 @@ export class MediaRequest {
         .seasonRequests?.length
         ? requestBody.seasonRequests
         : requestedSeasons.map((seasonNumber) => ({ seasonNumber }));
+      const isServerStagedFullSeriesRequest =
+        !settings.main.partialRequestsEnabled &&
+        settings.main.tvSeasonWatchGateEnabled &&
+        requestBody.seasons === 'all' &&
+        !requestBody.seasonRequests?.length &&
+        watchAheadEpisodeCount === 0;
       if (!settings.main.enableSpecialEpisodes) {
         requestedSeasonSelections = requestedSeasonSelections.filter(
           (selection) => selection.seasonNumber > 0
@@ -2655,6 +2692,18 @@ export class MediaRequest {
           )
         : undefined;
       if (promotablePendingRequest) {
+        if (getSettings().main.tvSeasonWatchGateEnabled) {
+          await enforceTvSeasonWatchGate(
+            user,
+            requestUser,
+            media,
+            tmdbMediaShow.seasons.map((season) => ({
+              seasonNumber: season.season_number,
+              episodeCount: season.episode_count,
+            })),
+            requestedSeasonSelections
+          );
+        }
         return promotePendingRequest(promotablePendingRequest, user);
       }
 
@@ -2730,6 +2779,30 @@ export class MediaRequest {
         throw new NoSeasonsAvailableError('No seasons available to request');
       }
 
+      if (getSettings().main.tvSeasonWatchGateEnabled) {
+        const watchGateCatalog = tmdbMediaShow.seasons.map((season) => ({
+          seasonNumber: season.season_number,
+          episodeCount: season.episode_count,
+        }));
+        if (isServerStagedFullSeriesRequest) {
+          finalSeasonSelections = await filterTvSeasonSelectionsByWatchGate(
+            user,
+            requestUser,
+            media,
+            watchGateCatalog,
+            finalSeasonSelections
+          );
+        } else {
+          await enforceTvSeasonWatchGate(
+            user,
+            requestUser,
+            media,
+            watchGateCatalog,
+            finalSeasonSelections
+          );
+        }
+      }
+
       if (!settings.main.partialRequestsEnabled) {
         const hasSingleQueuedEpisode =
           watchAheadEpisodeCount > 0 &&
@@ -2746,7 +2819,7 @@ export class MediaRequest {
           );
         }
 
-        if (!hasSingleQueuedEpisode) {
+        if (!hasSingleQueuedEpisode && !isServerStagedFullSeriesRequest) {
           const allEligibleSeasonSelections = tmdbMediaShow.seasons
             .filter(
               (season) =>

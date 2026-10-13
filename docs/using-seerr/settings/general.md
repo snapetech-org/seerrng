@@ -94,3 +94,9 @@ This setting is **disabled** by default.
 When enabled, users will be able to submit requests for specific seasons of TV series. If disabled, users will only be able to submit requests for all unavailable seasons.
 
 This setting is **enabled** by default.
+
+## Require the Previous Season to Be Watched
+
+When enabled, users must watch every episode of the immediately previous regular season before requesting a later season. Special episodes and seasons with no episodes do not count toward this rule. The setting is **disabled** by default.
+
+SeerrNG checks the requester's linked Plex, Jellyfin, or Emby playback history. The series must be present in that media server's library so SeerrNG can match its episodes. If playback history cannot be verified, later seasons stay blocked until it can be checked. When partial series requests are disabled, the request modal includes only seasons that pass the rule, so users can request the first eligible season and continue after watching it. Administrators and users with **Manage Requests** permission can override the rule.
