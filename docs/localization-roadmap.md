@@ -36,3 +36,7 @@ The World Bank's 2025 report estimates Mandarin Chinese, Hindi, and Spanish at 1
 ## Translation boundaries and acceptance
 
 Translate interface labels, help, empty states, validation, notifications, and errors. Keep media titles, user names, filenames and paths, commands, API identifiers, protocol values, and other user-supplied content unchanged. Use the selected UI language for date, time, number, and plural formatting. Every locale must fall back to English for a missing key; CI should check placeholder parity and report missing strings. Arabic ships only after the app sets `lang` and `dir`, uses logical layout properties, and verifies the core workflows in RTL at narrow and desktop widths.
+
+## Implemented in this PR
+
+The existing language selector continues to use the current locale catalogs, and the application now keeps the document lang and dir attributes in sync with that selection. Right-to-left metadata is enabled for Arabic and Hebrew. Catalog coverage and page-level RTL layout review remain separate follow-up work; this change does not claim the entire interface has been visually validated in RTL.
