@@ -1790,7 +1790,11 @@ test('badge roles follow structural poster and filter placement', () => {
   ]) {
     const source = component(path);
     assert.doesNotMatch(source, /tailwind-merge|\btwMerge\b/, path);
-    assert.match(source, /<span className=\{badgeClassName\}/, path);
+    const badgeElementPattern =
+      path === 'Common/BookFormatBadge/index.tsx'
+        ? /<span\s+\{\.\.\.props\}\s+ref=\{ref\}\s+className=\{badgeClassName\}/
+        : /<span className=\{badgeClassName\}/;
+    assert.match(source, badgeElementPattern, path);
     assert.doesNotMatch(source, /tabIndex=|role="button"|<a\b/, path);
   }
   assert.match(rule('.poster-control:not(button):not(a)'), /cursor: default/);
