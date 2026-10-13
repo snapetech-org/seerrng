@@ -209,7 +209,11 @@ const CoreApp = ({ Component, pageProps, router }: AppProps) => {
       }}
     >
       <LanguageContext.Provider
-        value={{ locale: activeLocale, requestedLocale: currentLocale, setLocale }}
+        value={{
+          locale: activeLocale,
+          requestedLocale: currentLocale,
+          setLocale,
+        }}
       >
         <IntlProvider
           locale={activeLocale}
