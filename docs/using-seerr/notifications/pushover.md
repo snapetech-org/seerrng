@@ -25,3 +25,11 @@ For more details on registering applications or the API token, please see the [P
 Set this to the user key for your Pushover account. Alternatively, you can set this to a group key to deliver notifications to multiple users.
 
 For more details, please see the [Pushover API documentation](https://pushover.net/api#identifiers).
+
+### Notification Sound
+
+Choose a sound available to your Pushover account. **Device Default** leaves sound selection to Pushover.
+
+### Embed Poster (optional)
+
+When enabled, Seerr attaches the notification image to the Pushover message when an image is available.
