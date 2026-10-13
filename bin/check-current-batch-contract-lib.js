@@ -4297,6 +4297,17 @@ const validateCurrentBatchContract = (files) => {
       'Movie and Series must keep acquisition search and request in their own opposing shared row'
     );
   }
+  requireText(
+    seriesLayout,
+    'const selectedPlaybackAction = selectedPlaybackIsShared\n    ? undefined\n    : playbackActions?.(',
+    'shared selected seasons must not expose media-server playback actions'
+  );
+  requireCount(
+    seriesLayout,
+    '{selectedPlaybackAction != null && (',
+    2,
+    'media-server playback and device actions must both be suppressed for shared selections'
+  );
   requireOrder(
     seriesLayout,
     [
@@ -4305,7 +4316,9 @@ const validateCurrentBatchContract = (files) => {
       'data-card-part="actions"',
       '<MediaQualitySelect',
       'label={intl.formatMessage(messages.quality)}',
-      '{playbackActions?.(',
+      '{selectedPlaybackAction != null && (',
+      '{selectedPlaybackAction}',
+      '{selectedPlaybackAction != null && (',
       '<PlayOnDeviceButton',
       'data-card-part="saved-item-action"',
       'data-card-part="collection-action"',
