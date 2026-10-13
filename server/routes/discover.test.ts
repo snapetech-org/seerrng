@@ -234,6 +234,158 @@ describe('media category availability guards', () => {
   });
 });
 
+describe('GET /discover/list/:listId', () => {
+  const movie = {
+    id: 42,
+    media_type: 'movie' as const,
+    title: 'A movie',
+    original_title: 'A movie',
+    release_date: '2024-01-01',
+    adult: false,
+    video: false,
+    popularity: 12,
+    vote_count: 3,
+    vote_average: 8,
+    genre_ids: [],
+    overview: '',
+    original_language: 'en',
+  };
+  const series = {
+    id: 42,
+    media_type: 'tv' as const,
+    name: 'A series',
+    original_name: 'A series',
+    origin_country: ['US'],
+    first_air_date: '2024-01-01',
+    popularity: 12,
+    vote_count: 3,
+    vote_average: 8,
+    genre_ids: [],
+    overview: '',
+    original_language: 'en',
+  };
+
+  it('keeps mixed movie and series identities and the provider list count', async () => {
+    const calls: { listId: string; page?: number; language?: string }[] = [];
+    mock.method(
+      TheMovieDb.prototype,
+      'getTmdbList',
+      async (params: { listId: string; page?: number; language?: string }) => {
+        calls.push(params);
+        return {
+          page: 2,
+          total_pages: 4,
+          item_count: 76,
+          name: 'My public list',
+          description: 'A selection of titles',
+          results: [movie, series],
+        };
+      }
+    );
+
+    const agent = await login();
+    const res = await agent
+      .get('/discover/list/12345')
+      .query({ page: 2, language: 'fr' });
+
+    assert.strictEqual(res.status, 200);
+    assert.deepStrictEqual(calls, [
+      { listId: '12345', page: 2, language: 'fr' },
+    ]);
+    assert.strictEqual(res.body.totalResults, 76);
+    assert.deepStrictEqual(res.body.list, {
+      name: 'My public list',
+      description: 'A selection of titles',
+    });
+    assert.deepStrictEqual(
+      res.body.results.map((result: { id: number; mediaType: string }) => [
+        result.id,
+        result.mediaType,
+      ]),
+      [
+        [42, 'movie'],
+        [42, 'tv'],
+      ]
+    );
+  });
+
+  it('rejects malformed list IDs before provider lookup', async () => {
+    let calls = 0;
+    mock.method(TheMovieDb.prototype, 'getTmdbList', async () => {
+      calls += 1;
+      throw new Error('TMDB should not be called for malformed list IDs');
+    });
+
+    const agent = await login();
+    const res = await agent.get('/discover/list/1234567890123');
+
+    assert.strictEqual(res.status, 404);
+    assert.strictEqual(calls, 0);
+  });
+
+  it('applies enabled media categories without changing TMDB list totals', async () => {
+    const settings = getSettings();
+    const previousCategories = { ...settings.main.enabledMediaCategories };
+    settings.main.enabledMediaCategories = {
+      ...previousCategories,
+      movie: false,
+    };
+    mock.method(TheMovieDb.prototype, 'getTmdbList', async () => ({
+      page: 1,
+      total_pages: 1,
+      item_count: 2,
+      name: 'My public list',
+      description: '',
+      results: [movie, series],
+    }));
+
+    try {
+      const agent = await login();
+      const res = await agent.get('/discover/list/12345');
+
+      assert.strictEqual(res.status, 200);
+      assert.strictEqual(res.body.totalResults, 2);
+      assert.deepStrictEqual(
+        res.body.results.map(
+          (result: { mediaType: string }) => result.mediaType
+        ),
+        ['tv']
+      );
+    } finally {
+      settings.main.enabledMediaCategories = previousCategories;
+    }
+  });
+
+  it('rejects malformed list language values before provider lookup', async () => {
+    let calls = 0;
+    mock.method(TheMovieDb.prototype, 'getTmdbList', async () => {
+      calls += 1;
+      throw new Error('TMDB should not be called for malformed language');
+    });
+
+    const agent = await login();
+    const res = await agent
+      .get('/discover/list/12345')
+      .query({ language: ['en', 'fr'] });
+
+    assert.strictEqual(res.status, 400);
+    assert.match(res.body.message, /Language must be a string/);
+    assert.strictEqual(calls, 0);
+  });
+
+  it('returns the same not-found result for a private upstream list', async () => {
+    mock.method(TheMovieDb.prototype, 'getTmdbList', async () => {
+      throw new Error('TMDB denied access', { cause: { status: 403 } });
+    });
+
+    const agent = await login();
+    const res = await agent.get('/discover/list/98765');
+
+    assert.strictEqual(res.status, 404);
+    assert.match(res.body.message, /not found or is not public/);
+  });
+});
+
 describe('Sportarr discovery and event routes', () => {
   const configureSportarr = () => {
     getSettings().sportarr = [

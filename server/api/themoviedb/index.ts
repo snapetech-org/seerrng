@@ -1,5 +1,6 @@
 import ExternalAPI from '@server/api/externalapi';
 import type { TvShowProvider } from '@server/api/provider';
+import { isTmdbPublicListId } from '@server/constants/discover';
 import type { CacheStore } from '@server/lib/cache';
 import cacheManager from '@server/lib/cache';
 import { getSettings } from '@server/lib/settings';
@@ -15,7 +16,9 @@ import type {
   TmdbKeyword,
   TmdbKeywordSearchResponse,
   TmdbLanguage,
+  TmdbListResponse,
   TmdbMovieDetails,
+  TmdbMovieResult,
   TmdbNetwork,
   TmdbPersonCombinedCredits,
   TmdbPersonDetails,
@@ -26,6 +29,7 @@ import type {
   TmdbSearchTvResponse,
   TmdbSeasonWithEpisodes,
   TmdbTvDetails,
+  TmdbTvResult,
   TmdbTvScanDetails,
   TmdbUpcomingMoviesResponse,
   TmdbWatchProviderDetails,
@@ -650,6 +654,59 @@ export const sanitizeTmdbPagedResponse = <T>(
         : 0,
     ...(dates ? { dates } : {}),
   } as T;
+};
+
+export const sanitizeTmdbListResponse = (
+  value: unknown,
+  fallbackPage = 1
+): TmdbListResponse => {
+  if (
+    !isRecord(value) ||
+    !Number.isSafeInteger(value.item_count) ||
+    (value.item_count as number) < 0 ||
+    !Number.isSafeInteger(value.total_pages) ||
+    (value.total_pages as number) < 1 ||
+    !Array.isArray(value.results)
+  ) {
+    throw new Error('Invalid TMDB list response');
+  }
+
+  const results: TmdbListResponse['results'] = [];
+  for (const item of value.results.slice(0, MAX_TMDB_PAGE_RESULTS)) {
+    if (!isRecord(item)) continue;
+    const normalized = sanitizeTmdbSearchResult(item);
+    if (!normalized) continue;
+
+    if (item.media_type === 'movie' && typeof normalized.title === 'string') {
+      results.push({
+        ...normalized,
+        media_type: 'movie',
+      } as unknown as TmdbMovieResult);
+    } else if (
+      item.media_type === 'tv' &&
+      typeof normalized.name === 'string'
+    ) {
+      results.push({
+        ...normalized,
+        media_type: 'tv',
+      } as unknown as TmdbTvResult);
+    }
+  }
+
+  return {
+    page:
+      Number.isSafeInteger(value.page) && (value.page as number) > 0
+        ? (value.page as number)
+        : fallbackPage,
+    total_pages: Math.min(value.total_pages as number, 500),
+    item_count: value.item_count as number,
+    name: boundedTmdbString(value.name, 1000),
+    description: boundedTmdbString(
+      value.description,
+      MAX_TMDB_DETAIL_TEXT_LENGTH
+    ),
+    results,
+  };
 };
 
 export const sanitizeTmdbGenres = (value: unknown): TmdbGenre[] => {
@@ -1635,6 +1692,32 @@ class TheMovieDb extends ExternalAPI implements TvShowProvider {
       });
     }
   };
+
+  public async getTmdbList({
+    listId,
+    page = 1,
+    language = this.locale,
+  }: {
+    listId: string;
+    page?: number;
+    language?: string;
+  }): Promise<TmdbListResponse> {
+    if (!isTmdbPublicListId(listId)) {
+      throw new Error('TMDB list ID must be a positive decimal ID');
+    }
+
+    try {
+      const data = await this.get<unknown>(`/list/${listId}`, {
+        baseURL: 'https://api.themoviedb.org/4',
+        params: { page, language },
+      });
+      return sanitizeTmdbListResponse(data, page);
+    } catch (e) {
+      throw new Error(`[TMDB] Failed to fetch list ${listId}: ${e.message}`, {
+        cause: e,
+      });
+    }
+  }
 
   public getMovieTrending = async ({
     page = 1,

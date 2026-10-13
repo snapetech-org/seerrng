@@ -17,6 +17,8 @@ import {
   MAX_DISCOVER_KEYWORD_IDS,
   MAX_DISCOVER_SLIDER_DATA_LENGTH,
   MAX_DISCOVER_SLIDER_TITLE_LENGTH,
+  MAX_TMDB_PUBLIC_LIST_ID_LENGTH,
+  isTmdbPublicListId,
 } from '@server/constants/discover';
 import type DiscoverSlider from '@server/entity/DiscoverSlider';
 import type { GenreSliderItem } from '@server/interfaces/api/discoverInterfaces';
@@ -37,6 +39,7 @@ const messages = defineMessages('components.Discover.CreateSlider', {
   providetmdbsearch: 'Provide a search query',
   providetmdbstudio: 'Provide TMDB Studio ID',
   providetmdbnetwork: 'Provide TMDB Network ID',
+  providetmdbpubliclist: 'Provide a public TMDB list ID',
   providebooksubject: 'Provide an Open Library subject',
   providemusicgenre: 'Provide a MusicBrainz tag',
   providemusicchart: 'Select a ListenBrainz chart',
@@ -46,6 +49,8 @@ const messages = defineMessages('components.Discover.CreateSlider', {
   editfail: 'Failed to edit slider.',
   needresults: 'You need to have at least 1 result.',
   validationDatarequired: 'You must provide a data value.',
+  validationTmdbListId:
+    'Enter a positive decimal TMDB list ID of 12 digits or fewer',
   validationTitlerequired: 'You must provide a title.',
   validationDataLength: 'Data must be {maxLength, number} characters or fewer.',
   validationTitleLength:
@@ -88,6 +93,7 @@ type CreateOption = {
   title: string;
   dataUrl: string;
   params?: string;
+  linkUrl?: string;
   titlePlaceholderText: string;
   dataPlaceholderText?: string;
 };
@@ -95,7 +101,9 @@ type CreateOption = {
 const CreateSlider = ({ onCreate, slider }: CreateSliderProps) => {
   const intl = useIntl();
   const { addToast } = useToasts();
-  const [resultCount, setResultCount] = useState(0);
+  const [previewResult, setPreviewResult] = useState<
+    { key: string; count: number } | undefined
+  >();
   const [defaultDataValue, setDefaultDataValue] = useState<
     { label: string; value: number }[] | null
   >(null);
@@ -204,15 +212,25 @@ const CreateSlider = ({ onCreate, slider }: CreateSliderProps) => {
           maxLength: MAX_DISCOVER_SLIDER_DATA_LENGTH,
         })
       )
-      .required(intl.formatMessage(messages.validationDatarequired)),
+      .required(intl.formatMessage(messages.validationDatarequired))
+      .test(
+        'tmdb-list-id',
+        intl.formatMessage(messages.validationTmdbListId),
+        function (value) {
+          if (
+            Number(this.parent?.sliderType) !== DiscoverSliderType.TMDB_LIST ||
+            !value
+          ) {
+            return true;
+          }
+          return isTmdbPublicListId(value);
+        }
+      ),
   });
 
-  const updateResultCount = useCallback(
-    (count: number) => {
-      setResultCount(count);
-    },
-    [setResultCount]
-  );
+  const updateResultCount = useCallback((count: number, key?: string) => {
+    setPreviewResult({ key: key ?? '', count });
+  }, []);
 
   const loadKeywordOptions = async (inputValue: string) => {
     const results = await axios.get<TmdbKeywordSearchResponse>(
@@ -363,6 +381,14 @@ const CreateSlider = ({ onCreate, slider }: CreateSliderProps) => {
       dataPlaceholderText: intl.formatMessage(messages.providetmdbsearch),
     },
     {
+      type: DiscoverSliderType.TMDB_LIST,
+      title: intl.formatMessage(sliderTitles.tmdbList),
+      dataUrl: '/api/v1/discover/list/$value',
+      linkUrl: '/discover/list/$value',
+      titlePlaceholderText: intl.formatMessage(messages.slidernameplaceholder),
+      dataPlaceholderText: intl.formatMessage(messages.providetmdbpubliclist),
+    },
+    {
       type: DiscoverSliderType.TMDB_MOVIE_STREAMING_SERVICES,
       title: intl.formatMessage(sliderTitles.tmdbmoviestreamingservices),
       dataUrl: '/api/v1/discover/movies',
@@ -470,6 +496,9 @@ const CreateSlider = ({ onCreate, slider }: CreateSliderProps) => {
         const activeOption = options.find(
           (option) => option.type === Number(values.sliderType)
         );
+        const previewKey = `${values.sliderType}:${values.data ?? ''}`;
+        const activeResultCount =
+          previewResult?.key === previewKey ? previewResult.count : 0;
 
         let dataInput: React.ReactNode;
 
@@ -550,6 +579,19 @@ const CreateSlider = ({ onCreate, slider }: CreateSliderProps) => {
                 onChange={(value) => {
                   setFieldValue('data', value?.value.toString());
                 }}
+              />
+            );
+            break;
+          case DiscoverSliderType.TMDB_LIST:
+            dataInput = (
+              <Field
+                type="text"
+                name="data"
+                id="data"
+                inputMode="numeric"
+                maxLength={MAX_TMDB_PUBLIC_LIST_ID_LENGTH}
+                aria-label={intl.formatMessage(messages.providetmdbpubliclist)}
+                placeholder={intl.formatMessage(messages.providetmdbpubliclist)}
               />
             );
             break;
@@ -656,7 +698,7 @@ const CreateSlider = ({ onCreate, slider }: CreateSliderProps) => {
                   <div className="error">{errors.data}</div>
                 )}
               <div className="flex-1" />
-              {resultCount === 0 ? (
+              {activeResultCount === 0 ? (
                 <Tooltip content={intl.formatMessage(messages.needresults)}>
                   <div>
                     <Button buttonType="primary" buttonSize="sm" disabled>
@@ -682,7 +724,8 @@ const CreateSlider = ({ onCreate, slider }: CreateSliderProps) => {
             {activeOption && values.title && values.data && (
               <div className="relative py-4">
                 <MediaSlider
-                  sliderKey={`preview-${values.title}`}
+                  key={`${values.title}-${previewKey}`}
+                  sliderKey={`preview-${values.title}-${previewKey}`}
                   title={values.title}
                   url={activeOption?.dataUrl.replace(
                     '$value',
@@ -710,7 +753,15 @@ const CreateSlider = ({ onCreate, slider }: CreateSliderProps) => {
                   randomizeOrder={activeOption.params?.includes(
                     'sortBy=ranked'
                   )}
+                  linkUrl={activeOption.linkUrl?.replace(
+                    '$value',
+                    encodeURIExtraParams(values.data)
+                  )}
                   onNewTitles={updateResultCount}
+                  onNewTitlesKey={previewKey}
+                  onNewTitlesUsesTotalResults={
+                    activeOption.type === DiscoverSliderType.TMDB_LIST
+                  }
                 />
               </div>
             )}

@@ -121,6 +121,7 @@ SeerrNG documentation is maintained in the [docs folder](https://github.com/snap
 - [Install SeerrNG](./docs/getting-started/index.mdx)
 - [Install on Unraid](./docs/getting-started/third-parties/unraid.mdx)
 - [Find books, authors, and series](./docs/using-seerr/books-and-series.md)
+- [Create custom Discover sliders](./docs/using-seerr/custom-discover-sliders.md)
 - [Why SeerrNG maintains companion forks](./docs/using-seerr/dependency-forks.md)
 - [Why SeerrNG is a fork and what could retire it](./docs/fork-rationale.md)
 - [ChaptarrNG fork changes and capabilities](https://github.com/snapetech/chaptarrng/blob/main/docs/FORK_FEATURES.md)
