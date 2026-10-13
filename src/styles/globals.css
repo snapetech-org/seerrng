@@ -1016,6 +1016,10 @@
     outline: none;
   }
 
+  .discover-page-content[data-discover-editor-open='true'] {
+    padding-block-end: calc(7rem + env(safe-area-inset-bottom));
+  }
+
   .page-layout .page-title-row {
     margin-block: 0;
     padding-block: var(--page-layout-title-padding-before)
@@ -8286,6 +8290,10 @@
 
   .app-action-row[data-action-placement='distributed'] {
     --action-row-justify: space-between;
+  }
+
+  .app-action-row[data-action-wrap='nowrap'] {
+    flex-wrap: nowrap;
   }
 
   .app-modal-actions,

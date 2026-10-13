@@ -1,12 +1,14 @@
 import {
   DiscoverSliderType,
   MAX_DISCOVER_KEYWORD_IDS,
+  MAX_DISCOVER_NETWORK_DATA_LENGTH,
   MAX_DISCOVER_SLIDER_DATA_LENGTH,
   MAX_DISCOVER_SLIDER_TITLE_LENGTH,
   MAX_DISCOVER_SLIDERS,
 } from '@server/constants/discover';
 import dataSource, { getRepository } from '@server/datasource';
 import DiscoverSlider from '@server/entity/DiscoverSlider';
+import { parseDiscoverNetworkList } from '@server/lib/discoverNetworks';
 import { runDiscoverSliderMutation } from '@server/lib/discoverSliderMutation';
 import { Permission } from '@server/lib/permissions';
 import logger from '@server/logger';
@@ -78,7 +80,11 @@ const parseCustomSlider = (
 
   const data = parseBoundedString(slider.data, {
     fieldName: 'Slider data',
-    maxLength: MAX_DISCOVER_SLIDER_DATA_LENGTH,
+    maxLength:
+      slider.type === DiscoverSliderType.NETWORKS
+        ? MAX_DISCOVER_NETWORK_DATA_LENGTH
+        : MAX_DISCOVER_SLIDER_DATA_LENGTH,
+    required: slider.type !== DiscoverSliderType.NETWORKS,
   });
 
   if ('error' in data) {
@@ -90,7 +96,13 @@ const parseCustomSlider = (
   }
 
   let normalizedData = data.value;
-  if (
+  if (slider.type === DiscoverSliderType.NETWORKS) {
+    const networks = parseDiscoverNetworkList(data.value);
+    if ('error' in networks) {
+      return networks;
+    }
+    normalizedData = networks.value;
+  } else if (
     slider.type === DiscoverSliderType.TMDB_MOVIE_KEYWORD ||
     slider.type === DiscoverSliderType.TMDB_TV_KEYWORD
   ) {
@@ -381,6 +393,13 @@ discoverSettingRoutes.put(
           current.title = parsedSlider.value.title;
           current.data = parsedSlider.value.data;
           current.type = parsedSlider.value.type;
+        } else if (current.type === DiscoverSliderType.NETWORKS) {
+          if (parsedSlider.value.type !== DiscoverSliderType.NETWORKS) {
+            throw new SliderValidationError(
+              'Built-in Networks data must use the Networks slider type.'
+            );
+          }
+          current.data = parsedSlider.value.data;
         }
 
         return sliderRepository.save(current);
@@ -388,6 +407,9 @@ discoverSettingRoutes.put(
 
       return res.status(200).json(existingSlider);
     } catch (e) {
+      if (e instanceof SliderValidationError) {
+        return res.status(400).json({ message: e.message });
+      }
       logger.error('Something went wrong updating a slider.', {
         label: 'API',
         errorMessage: e.message,

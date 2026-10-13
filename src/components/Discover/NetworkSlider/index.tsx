@@ -1,10 +1,13 @@
 import CompanyCard from '@app/components/CompanyCard';
 import Slider from '@app/components/Slider';
 import defineMessages from '@app/utils/defineMessages';
+import type { DiscoverNetworkData } from '@server/constants/discover';
+import { readDiscoverNetworkList } from '@server/lib/discoverNetworks';
 import { useIntl } from 'react-intl';
 
 const messages = defineMessages('components.Discover.NetworkSlider', {
   networks: 'Networks',
+  empty: 'No Networks Selected',
 });
 
 interface Network {
@@ -159,8 +162,26 @@ export const tvNetworks: Network[] = [
   },
 ];
 
-const NetworkSlider = () => {
+export const defaultDiscoverNetworks: DiscoverNetworkData[] = tvNetworks.map(
+  (network) => {
+    const imagePath = new URL(network.image).pathname;
+    const logoBasePath = '/t/p/original';
+
+    return {
+      id: Number(network.url.slice(network.url.lastIndexOf('/') + 1)),
+      name: network.name,
+      logoPath: imagePath.startsWith(`${logoBasePath}/`)
+        ? imagePath.slice(logoBasePath.length)
+        : '',
+      logoTone: network.logoTone,
+    };
+  }
+);
+
+const NetworkSlider = ({ data }: { data?: string }) => {
   const intl = useIntl();
+  const { networks } = readDiscoverNetworkList(data, defaultDiscoverNetworks);
+
   return (
     <div>
       <Slider
@@ -174,18 +195,18 @@ const NetworkSlider = () => {
         compact
         sliderKey="networks"
         isLoading={false}
-        isEmpty={false}
-        items={tvNetworks.map((network, index) => (
+        isEmpty={networks.length === 0}
+        items={networks.map((network) => (
           <CompanyCard
-            key={`network-${index}`}
+            key={`network-${network.id}`}
             name={network.name}
-            image={network.image}
-            url={network.url}
+            image={`https://image.tmdb.org/t/p/original${network.logoPath}`}
+            url={`/discover/tv/network/${network.id}`}
             logoTone={network.logoTone}
           />
         ))}
         placeholder={<CompanyCardPlaceholder />}
-        emptyMessage=""
+        emptyMessage={intl.formatMessage(messages.empty)}
       />
     </div>
   );
