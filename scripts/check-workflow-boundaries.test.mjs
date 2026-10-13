@@ -325,8 +325,8 @@ test('unit-test pull requests stay on hosted runners', () => {
   );
   const runner = ciWorkflow.jobs['unit-test']?.['runs-on'];
 
-  assert.equal(
-    runner,
-    "${{ ((github.event_name == 'push' && github.ref == 'refs/heads/main') || (github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main')) && fromJSON('[\"self-hosted\",\"Linux\",\"X64\",\"host\",\"seerrng\"]') || 'ubuntu-latest' }}"
-  );
+  assert.deepEqual(runner, {
+    group: "${{ ((github.event_name == 'push' && github.ref == 'refs/heads/main') || (github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main')) && 'trusted-main' || '' }}",
+    labels: "${{ ((github.event_name == 'push' && github.ref == 'refs/heads/main') || (github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main')) && fromJSON('[\"self-hosted\",\"Linux\",\"X64\",\"host\"]') || fromJSON('[\"ubuntu-latest\"]') }}",
+  });
 });
