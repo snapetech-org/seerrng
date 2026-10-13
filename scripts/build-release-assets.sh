@@ -85,7 +85,7 @@ time_phase 'Build application' pnpm build
 # especially slow under Git Bash on Windows runners.
 rm -rf -- .next/cache .next/dev
 time_phase 'Copy built runtime files' cp -R .next dist public "$stage"/
-time_phase 'Copy runtime metadata' cp package.json pnpm-lock.yaml pnpm-workspace.yaml next.config.ts seerr-api.yml LICENSE "$stage"/
+time_phase 'Copy runtime metadata' cp package.json pnpm-lock.yaml pnpm-workspace.yaml next.config.mjs seerr-api.yml LICENSE "$stage"/
 mkdir -p "$stage/bin"
 cp bin/prepare.mjs "$stage/bin/"
 # pnpm-workspace.yaml pins checked-in patches that are required when the
