@@ -15,7 +15,7 @@ const messages = defineMessages('components.Layout.LanguagePicker', {
 const LanguagePicker = () => {
   const intl = useIntl();
   const dropdownRef = useRef<HTMLDivElement>(null);
-  const { locale, setLocale } = useLocale();
+  const { locale, requestedLocale = locale, setLocale } = useLocale();
   const [isDropdownOpen, setDropdownOpen] = useState(false);
   useClickOutside(dropdownRef, () => setDropdownOpen(false));
 
@@ -63,7 +63,7 @@ const LanguagePicker = () => {
                 onBlur={(e) =>
                   setLocale && setLocale(e.target.value as AvailableLocale)
                 }
-                defaultValue={locale}
+                value={requestedLocale}
               >
                 {(
                   Object.keys(

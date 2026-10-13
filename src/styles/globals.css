@@ -7340,7 +7340,8 @@
   }
 
   .app-search-input {
-    @apply block w-full rounded-full border py-2 pl-10 text-white placeholder-gray-300 focus:placeholder-gray-300 focus:ring-0 focus:outline-none sm:text-base;
+    @apply block w-full rounded-full border py-2 text-white placeholder-gray-300 focus:placeholder-gray-300 focus:ring-0 focus:outline-none sm:text-base;
+    padding-inline-start: 2.5rem;
     border-color: rgb(var(--theme-control-border) / 0.75);
     background-color: rgb(var(--theme-control-surface) / 0.78);
   }

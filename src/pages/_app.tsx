@@ -174,7 +174,9 @@ const CoreApp = ({ Component, pageProps, router }: AppProps) => {
       })
       .catch(() => {
         // Keep the current catalog and document metadata together when a chunk fails.
-        setLocale(loadedLocale.current);
+        if (active) {
+          setLocale(loadedLocale.current);
+        }
       });
 
     return () => {
@@ -206,7 +208,9 @@ const CoreApp = ({ Component, pageProps, router }: AppProps) => {
         keepPreviousData: true,
       }}
     >
-      <LanguageContext.Provider value={{ locale: activeLocale, setLocale }}>
+      <LanguageContext.Provider
+        value={{ locale: activeLocale, requestedLocale: currentLocale, setLocale }}
+      >
         <IntlProvider
           locale={activeLocale}
           defaultLocale="en"
