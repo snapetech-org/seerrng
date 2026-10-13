@@ -4985,6 +4985,10 @@
     @apply mr-1 h-5 w-5 scale-100 transform-gpu rounded-full transition duration-300 group-hover:scale-105;
   }
 
+  .cached-image-avatar-fallback {
+    color: rgb(var(--color-indigo-500));
+  }
+
   .card-field {
     @apply flex items-center truncate py-0.5 text-sm sm:py-1;
   }

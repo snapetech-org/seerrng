@@ -34,6 +34,7 @@ SeerrNG is maintained by snapetech as a separate fork so we can move quickly on 
   - [Configure comics](./docs/using-seerr/comics-backend.md)
   - [Configure magazines](./docs/using-seerr/magazines-backend.md)
   - [Companion services and SeerrNG NG forks](./docs/using-seerr/companion-services.md)
+  - [Add and import users](./docs/using-seerr/users/adding-users.mdx)
   - [Why SeerrNG is a fork and what could retire it](./docs/fork-rationale.md)
   - [Cross-platform setup assistant](./docs/using-seerr/setup-assistant.md)
   - [Indexer searches by media category](./docs/using-seerr/indexer-searches.md)
@@ -59,6 +60,7 @@ SeerrNG is maintained by snapetech as a separate fork so we can move quickly on 
 
 - Requests and approvals for movies, shows, music, ebooks, audiobooks, comics, magazines, emulation ROMs, and PC games.
 - Media-server integration with Plex, Jellyfin, and Emby, including watch-state-aware My Library views scoped to each linked account.
+- Optional Jellyfin and Emby profile sync during user imports, refreshing linked provider names and avatars while preserving SeerrNG email addresses, local passwords, and permissions.
 - Automation service integration with Radarr, Sonarr, Lidarr, and Bookshelf/Readarr-compatible APIs.
 - Admin-configured Prowlarr connection, per-indexer diagnostics, category coverage, and format-aware manual search across movies, TV, music, books, comics, magazines, ROMs, and PC games, with title-prefilled search links from media details; approved requests still go through their configured acquisition providers.
 - Music discovery and metadata through MusicBrainz, ListenBrainz, Cover Art Archive, TheAudioDB, and archive-backed artwork sources.

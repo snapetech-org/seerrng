@@ -49,6 +49,7 @@ import useSWR from 'swr';
 import validator from 'validator';
 import * as Yup from 'yup';
 import JellyfinImportModal from './JellyfinImportModal';
+import userSelectionMessages from './userSelectionMessages';
 
 const messages = defineMessages('components.UserList', {
   users: 'Users',
@@ -67,8 +68,6 @@ const messages = defineMessages('components.UserList', {
   allTypes: 'All Types',
   allRoles: 'All Roles',
   userName: 'User Name',
-  selectAllUsers: 'Select all users',
-  selectUser: 'Select {user}',
   noUsers: 'No users match the selected filters.',
   bulkedit: 'Bulk Edit',
   owner: 'Owner',
@@ -615,9 +614,7 @@ const UserList = () => {
               setShowImportModal(false);
               revalidate();
             }}
-          >
-            {data.pageInfo.results}
-          </JellyfinImportModal>
+          />
         )}
       </Transition>
 
@@ -693,7 +690,9 @@ const UserList = () => {
                       <SelectionCircle
                         selected={isAllUsersSelected()}
                         partial={areSomeUsersSelected}
-                        label={intl.formatMessage(messages.selectAllUsers)}
+                        label={intl.formatMessage(
+                          userSelectionMessages.selectAllUsers
+                        )}
                         onClick={toggleAllUsers}
                       />
                     )}
@@ -733,9 +732,10 @@ const UserList = () => {
                         {isUserPermsEditable(user.id) && (
                           <SelectionCircle
                             selected={isUserSelected(user.id)}
-                            label={intl.formatMessage(messages.selectUser, {
-                              user: displayName,
-                            })}
+                            label={intl.formatMessage(
+                              userSelectionMessages.selectUser,
+                              { user: user.jellyfinUsername ?? user.username }
+                            )}
                             onClick={() => toggleUser(user.id)}
                           />
                         )}

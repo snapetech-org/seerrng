@@ -8,6 +8,7 @@ import PlexAPI from '@server/api/plexapi';
 import PlexTvAPI, { MAX_PLEX_SHARED_USERS } from '@server/api/plextv';
 import TautulliAPI from '@server/api/tautulli';
 import { MediaServerType } from '@server/constants/server';
+import { UserType } from '@server/constants/user';
 import { getRepository } from '@server/datasource';
 import { ScheduledJobLease } from '@server/entity/ScheduledJobLease';
 import { User } from '@server/entity/User';
@@ -260,6 +261,76 @@ describe('Settings route input validation', () => {
 
     assert.strictEqual(res.status, 400);
     assert.strictEqual(res.body.message, 'Jellyfin is not configured.');
+  });
+
+  it('returns canonical Jellyfin IDs and server-side import status', async () => {
+    const settings = getSettings();
+    const previousJellyfin = settings.jellyfin;
+    const providerId = '66666666-6666-6666-6666-666666666666';
+    const canonicalId = providerId.replaceAll('-', '');
+    const userRepository = getRepository(User);
+    const linkedUser = await userRepository.save(
+      new User({
+        email: 'linked-jellyfin-import@example.com',
+        jellyfinUserId: providerId,
+        jellyfinUsername: 'Linked Jellyfin User',
+        permissions: Permission.REQUEST,
+        userType: UserType.LOCAL,
+        avatar: `/avatarproxy/${canonicalId}`,
+      })
+    );
+    settings.jellyfin = {
+      ...settings.jellyfin,
+      ip: 'jellyfin.local',
+      apiKey: 'stored-key',
+    };
+    const getUsersMock = mock.method(
+      JellyfinAPI.prototype,
+      'getUsers',
+      async () =>
+        ({
+          users: [
+            {
+              Name: 'Linked Jellyfin User',
+              Id: providerId,
+            },
+            {
+              Name: 'New Jellyfin User',
+              Id: '77777777-7777-7777-7777-777777777777',
+            },
+            {
+              Name: 'Invalid ID',
+              Id: 'not-a-guid',
+            },
+          ],
+        }) as never
+    );
+
+    try {
+      const response = await request(app).get('/settings/jellyfin/users');
+
+      assert.strictEqual(response.status, 200);
+      assert.deepStrictEqual(response.body, [
+        {
+          username: 'Linked Jellyfin User',
+          id: canonicalId,
+          thumb: `/avatarproxy/${canonicalId}`,
+          email: 'Linked Jellyfin User',
+          isImported: true,
+        },
+        {
+          username: 'New Jellyfin User',
+          id: '77777777777777777777777777777777',
+          thumb: '/avatarproxy/77777777777777777777777777777777',
+          email: 'New Jellyfin User',
+          isImported: false,
+        },
+      ]);
+    } finally {
+      settings.jellyfin = previousJellyfin;
+      await userRepository.delete(linkedUser.id);
+      getUsersMock.mock.restore();
+    }
   });
 
   it('does not use Jellyfin credentials removed before admission', async () => {

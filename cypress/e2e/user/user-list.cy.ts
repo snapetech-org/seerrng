@@ -110,4 +110,89 @@ describe('User List', () => {
       expect(settings.sortDirection).to.equal('asc');
     });
   });
+
+  it('refreshes selected linked media-server users only after opting in', () => {
+    const importedUserId = '88888888888888888888888888888888';
+    const newUserId = '99999999999999999999999999999999';
+
+    cy.intercept('GET', '/api/v1/settings/public', (request) => {
+      request.continue((response) => {
+        // MediaServerType.JELLYFIN; keep this browser test isolated from the configured provider.
+        response.body.mediaServerType = 2;
+      });
+    });
+    cy.intercept('GET', '/api/v1/settings/jellyfin/users', {
+      statusCode: 200,
+      body: [
+        {
+          id: importedUserId,
+          username: 'Linked Jellyfin User',
+          thumb: '/user-icon-192x192.png',
+          email: 'linked@example.com',
+          isImported: true,
+        },
+        {
+          id: newUserId,
+          username: 'New Jellyfin User',
+          thumb: '/user-icon-192x192.png',
+          email: 'new@example.com',
+          isImported: false,
+        },
+      ],
+    }).as('jellyfinUsers');
+    cy.intercept('POST', '/api/v1/user/import-from-jellyfin', {
+      statusCode: 201,
+      body: { createdUsers: [], refreshedUsers: 1 },
+    }).as('jellyfinImport');
+
+    cy.visit('/users');
+    cy.contains('button', /Import (Jellyfin|Emby) Users/).click();
+    cy.wait('@jellyfinUsers');
+
+    cy.get('[data-testid=jellyfin-sync-existing]').should('not.be.checked');
+    cy.get(`[data-testid=jellyfin-import-user-${importedUserId}]`).should(
+      'not.exist'
+    );
+    cy.get(`[data-testid=jellyfin-import-user-${newUserId}]`).should('exist');
+    cy.get(
+      `[data-testid=jellyfin-import-user-${newUserId}] svg.cached-image-avatar-fallback`
+    )
+      .should('have.attr', 'width', '20')
+      .and('have.attr', 'height', '20');
+    cy.get(
+      `[data-testid=jellyfin-import-user-${newUserId}] svg.cached-image-avatar-fallback`
+    ).should(($icon) => {
+      expect(($icon[0] as SVGSVGElement).getBoundingClientRect()).to.include({
+        width: 20,
+        height: 20,
+      });
+    });
+
+    cy.get('[data-testid=jellyfin-sync-existing]').check();
+    cy.get(
+      `[data-testid=jellyfin-user-import-status-${importedUserId}]`
+    ).should('contain', 'Already Imported');
+    cy.get(
+      `[data-testid=jellyfin-import-user-${importedUserId}] svg.cached-image-avatar-fallback`
+    )
+      .should('have.attr', 'width', '20')
+      .and('have.attr', 'height', '20');
+    cy.get(
+      `[data-testid=jellyfin-import-user-${importedUserId}] svg.cached-image-avatar-fallback`
+    ).should(($icon) => {
+      expect(($icon[0] as SVGSVGElement).getBoundingClientRect()).to.include({
+        width: 20,
+        height: 20,
+      });
+    });
+    cy.get(`[data-testid=jellyfin-select-user-${importedUserId}]`).click();
+    cy.get('[data-testid=modal-ok-button]').click();
+
+    cy.wait('@jellyfinImport').then(({ request }) => {
+      expect(request.body).to.deep.equal({
+        jellyfinUserIds: [importedUserId],
+        syncExisting: true,
+      });
+    });
+  });
 });

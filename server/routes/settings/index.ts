@@ -83,6 +83,7 @@ import { mapWithConcurrency } from '@server/utils/concurrency';
 import { dnsCache } from '@server/utils/dnsCache';
 import { getHostname } from '@server/utils/getHostname';
 import { parseListenPort } from '@server/utils/httpServer';
+import { normalizeJellyfinGuid } from '@server/utils/jellyfin';
 import { parsePageParams } from '@server/utils/pagination';
 import { parsePositiveRouteId } from '@server/utils/routeId';
 import {
@@ -2099,12 +2100,28 @@ settingsRoutes.get('/jellyfin/users', async (req, res) =>
 
     jellyfinClient.setUserId(admin.jellyfinUserId ?? '');
     const resp = await jellyfinClient.getUsers();
-    const jellyfinUsers = resp.users.map((user) => ({
-      username: user.Name,
-      id: user.Id,
-      thumb: `/avatarproxy/${user.Id}`,
-      email: user.Name,
-    }));
+    const importedUserRows = await userRepository.find({
+      select: { jellyfinUserId: true },
+    });
+    const importedUserIds = new Set(
+      importedUserRows
+        .map((user) => normalizeJellyfinGuid(user.jellyfinUserId))
+        .filter((userId): userId is string => Boolean(userId))
+    );
+    const jellyfinUsers = resp.users.flatMap((user) => {
+      const id = normalizeJellyfinGuid(user.Id);
+      if (!id) return [];
+
+      return [
+        {
+          username: user.Name,
+          id,
+          thumb: `/avatarproxy/${id}`,
+          email: user.Name,
+          isImported: importedUserIds.has(id),
+        },
+      ];
+    });
 
     return res.status(200).json(jellyfinUsers);
   })

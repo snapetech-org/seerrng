@@ -7598,6 +7598,9 @@ paths:
                       type: string
                     email:
                       type: string
+                    isImported:
+                      type: boolean
+                      description: Whether this media server account is already linked to a SeerrNG user.
   /settings/jellyfin/sync:
     get:
       summary: Get status of full Jellyfin library sync
@@ -11879,7 +11882,9 @@ paths:
     post:
       summary: Import all users from Jellyfin
       description: |
-        Fetches and imports users from the Jellyfin server.
+        Fetches selected users from the configured Jellyfin or Emby server and imports any accounts not already linked.
+
+        When `syncExisting` is true, linked users are also refreshed. Only the provider username and avatar are updated; SeerrNG email, local credentials, and permissions are preserved. This opt-in mode returns created and refreshed counts. Requests that omit `syncExisting` keep the legacy array response.
 
         Requires the `MANAGE_USERS` permission.
       tags:
@@ -11895,15 +11900,31 @@ paths:
                   type: array
                   items:
                     type: string
+                syncExisting:
+                  type: boolean
+                  description: Refresh provider usernames and avatars for selected users already linked to SeerrNG.
       responses:
         '201':
-          description: A list of the newly created users
+          description: Newly created users, or created users and a refreshed count when syncExisting is true.
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/User'
+                oneOf:
+                  - type: array
+                    items:
+                      $ref: '#/components/schemas/User'
+                  - type: object
+                    required:
+                      - createdUsers
+                      - refreshedUsers
+                    properties:
+                      createdUsers:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/User'
+                      refreshedUsers:
+                        type: integer
+                        minimum: 0
   /user/registerPushSubscription:
     post:
       summary: Register a web push /user/registerPushSubscription
