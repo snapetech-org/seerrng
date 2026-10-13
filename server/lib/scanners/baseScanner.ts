@@ -204,14 +204,17 @@ class BaseScanner<T> {
 
                 if (
                   !media ||
-                  media[statusField] !== MediaStatus.PROCESSING ||
+                  (media[statusField] !== MediaStatus.PROCESSING &&
+                    media[statusField] !== MediaStatus.UNKNOWN) ||
                   this.processingMovieKeys.has(key)
                 ) {
                   return;
                 }
 
-                media[statusField] = MediaStatus.UNKNOWN;
-                await mediaRepository.save(media);
+                if (media[statusField] === MediaStatus.PROCESSING) {
+                  media[statusField] = MediaStatus.UNKNOWN;
+                  await mediaRepository.save(media);
+                }
                 await this.declineOrphanedRequests(
                   media,
                   is4k,
@@ -273,7 +276,8 @@ class BaseScanner<T> {
                 const changedSeasons = media.seasons.filter(
                   (season) =>
                     stale.has(season.seasonNumber) &&
-                    season[statusField] === MediaStatus.PROCESSING
+                    (season[statusField] === MediaStatus.PROCESSING ||
+                      season[statusField] === MediaStatus.UNKNOWN)
                 );
                 if (changedSeasons.length === 0) return;
 
@@ -431,7 +435,8 @@ class BaseScanner<T> {
                   if (
                     !processing &&
                     !hasFile &&
-                    previousStatus === MediaStatus.PROCESSING
+                    (previousStatus === MediaStatus.PROCESSING ||
+                      previousStatus === MediaStatus.UNKNOWN)
                   ) {
                     this.deferredMovieStatusResets.set(key, { tmdbId, is4k });
                   }
@@ -1511,7 +1516,8 @@ class BaseScanner<T> {
                     !season.is4kOverride &&
                     !season.processing &&
                     season.episodes === 0 &&
-                    existingSeason.status === MediaStatus.PROCESSING
+                    (existingSeason.status === MediaStatus.PROCESSING ||
+                      existingSeason.status === MediaStatus.UNKNOWN)
                   ) {
                     const key = this.movieStatusKey(tmdbId, false);
                     const candidate = this.deferredSeasonStatusResets.get(
@@ -1533,7 +1539,8 @@ class BaseScanner<T> {
                     season.is4kOverride &&
                     !season.processing &&
                     season.episodes4k === 0 &&
-                    existingSeason.status4k === MediaStatus.PROCESSING
+                    (existingSeason.status4k === MediaStatus.PROCESSING ||
+                      existingSeason.status4k === MediaStatus.UNKNOWN)
                   ) {
                     const key = this.movieStatusKey(tmdbId, true);
                     const candidate = this.deferredSeasonStatusResets.get(

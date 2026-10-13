@@ -183,6 +183,56 @@ describe('Radarr Scanner', () => {
       assert.strictEqual(updatedRequest.status, MediaRequestStatus.DECLINED);
     });
 
+    it('releases an approved request when a listed unmonitored movie is already UNKNOWN', async () => {
+      const mediaRepository = getRepository(Media);
+      const requestRepository = getRepository(MediaRequest);
+      const userRepository = getRepository(User);
+      const requestedBy = await userRepository.findOneOrFail({
+        where: { id: 1 },
+      });
+      const media = await mediaRepository.save(
+        new Media({
+          tmdbId: 557,
+          mediaType: MediaType.MOVIE,
+          status: MediaStatus.UNKNOWN,
+          serviceId: 10,
+          externalServiceId: 654,
+        })
+      );
+      const request = await requestRepository.save(
+        new MediaRequest({
+          type: MediaType.MOVIE,
+          status: MediaRequestStatus.APPROVED,
+          media,
+          requestedBy,
+          is4k: false,
+        })
+      );
+
+      configureRadarr([{ syncEnabled: true }]);
+      getMoviesImpl = async () => [
+        fakeRadarrMovie({
+          tmdbId: 557,
+          id: 99,
+          monitored: false,
+          hasFile: false,
+        }),
+      ];
+
+      await runWithMockTimers(() => radarrScanner.run());
+
+      const updatedMedia = await mediaRepository.findOneOrFail({
+        where: { tmdbId: 557 },
+      });
+      const updatedRequest = await requestRepository.findOneOrFail({
+        where: { id: request.id },
+      });
+      assert.strictEqual(updatedMedia.status, MediaStatus.UNKNOWN);
+      assert.strictEqual(updatedMedia.serviceId, 10);
+      assert.strictEqual(updatedMedia.externalServiceId, 654);
+      assert.strictEqual(updatedRequest.status, MediaRequestStatus.DECLINED);
+    });
+
     it('does not create new media entry when movie is unmonitored and has no file', async () => {
       const mediaRepository = getRepository(Media);
       configureRadarr([{ syncEnabled: true }]);
