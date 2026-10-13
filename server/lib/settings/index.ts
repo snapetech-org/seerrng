@@ -518,6 +518,7 @@ export interface MainSettings {
   blocklistedTagsLimit: number;
   mediaServerType: number;
   partialRequestsEnabled: boolean;
+  tvSeasonWatchGateEnabled: boolean;
   personMovieBulkRequestsEnabled: boolean;
   enableSpecialEpisodes: boolean;
   locale: string;
@@ -593,6 +594,7 @@ interface FullPublicSettings extends PublicSettings {
   jellyfinForgotPasswordUrl?: string;
   jellyfinServerName?: string;
   partialRequestsEnabled: boolean;
+  tvSeasonWatchGateEnabled: boolean;
   personMovieBulkRequestsEnabled: boolean;
   enableSpecialEpisodes: boolean;
   cacheImages: boolean;
@@ -913,6 +915,7 @@ class Settings {
         blocklistedTagsLimit: 50,
         mediaServerType: MediaServerType.NOT_CONFIGURED,
         partialRequestsEnabled: true,
+        tvSeasonWatchGateEnabled: false,
         personMovieBulkRequestsEnabled: false,
         enableSpecialEpisodes: false,
         locale: 'en',
@@ -1687,6 +1690,7 @@ class Settings {
       originalLanguage: this.data.main.originalLanguage,
       mediaServerType: this.main.mediaServerType,
       partialRequestsEnabled: this.data.main.partialRequestsEnabled,
+      tvSeasonWatchGateEnabled: this.data.main.tvSeasonWatchGateEnabled,
       personMovieBulkRequestsEnabled:
         this.data.main.personMovieBulkRequestsEnabled,
       enableSpecialEpisodes: this.data.main.enableSpecialEpisodes,
@@ -1930,6 +1934,7 @@ class Settings {
         blocklistedTagsLimit: 50,
         mediaServerType: MediaServerType.NOT_CONFIGURED,
         partialRequestsEnabled: true,
+        tvSeasonWatchGateEnabled: false,
         personMovieBulkRequestsEnabled: false,
         enableSpecialEpisodes: false,
         locale: 'en',

@@ -26,6 +26,7 @@ import usePlaybackCatalog from '@app/hooks/usePlaybackCatalog';
 import useSettings from '@app/hooks/useSettings';
 import useToasts from '@app/hooks/useToasts';
 import { useUser } from '@app/hooks/useUser';
+import useWatchStatus from '@app/hooks/useWatchStatus';
 import globalMessages from '@app/i18n/globalMessages';
 import { sortCrewPriority } from '@app/utils/creditHelpers';
 import defineMessages from '@app/utils/defineMessages';
@@ -47,6 +48,12 @@ import type { SeasonEpisodeSelection } from '@server/interfaces/api/seasonInterf
 import type { ServiceCommonServer } from '@server/interfaces/api/serviceInterfaces';
 import type { QuotaResponse } from '@server/interfaces/api/userInterfaces';
 import { Permission, hasAutoApprovePermission } from '@server/lib/permissions';
+import {
+  getIncompletePreviousSeasonRequirement,
+  getMissingPreviousSeasonHistoryRequirement,
+  getSeasonWatchGateRequirements,
+  getTvSeasonSelectionsAllowedByWatchGate,
+} from '@server/lib/tvSeasonWatchGatePolicy';
 import type { TvDetails } from '@server/models/Tv';
 import axios from 'axios';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
@@ -130,6 +137,22 @@ const messages = defineMessages('components.RequestModal', {
   watchAheadOff: 'Off',
   watchAheadEpisodeOption:
     '{count, plural, one {# episode} other {# episodes}}',
+  seasonWatchGateLoading:
+    'Checking linked playback history before requesting later seasons.',
+  seasonWatchGateIncomplete:
+    'Watch every episode of Season {requiredSeason} before requesting Season {requestedSeason}.',
+  seasonWatchGateLibraryRequired:
+    'Add this series to your linked Plex, Jellyfin, or Emby library and sync it before requesting a later season.',
+  seasonWatchGateUnknownSeason:
+    'Unable to verify this season against TV metadata. Try again later.',
+  seasonWatchGateStaged:
+    'Only seasons that pass this playback check will be included in the request. {reason}',
+  seasonWatchGateUnavailable:
+    'Unable to verify playback history right now. Try again.',
+  seasonWatchGateAccountRequired:
+    'Link your Plex, Jellyfin, or Emby account and add this series to its library before requesting a later season.',
+  seasonWatchGateLinkAccount: 'Link Playback Account',
+  retryWatchStatus: 'Retry Playback Check',
 });
 
 interface RequestModalProps extends React.HTMLAttributes<HTMLDivElement> {
@@ -413,11 +436,22 @@ const TvRequestModal = ({
       if (onComplete) {
         onComplete(MediaStatus.PENDING, effectiveIs4k);
       }
-    } catch {
-      addToast(<span>{intl.formatMessage(messages.errorediting)}</span>, {
-        appearance: 'error',
-        autoDismiss: true,
-      });
+    } catch (error) {
+      const serverMessage =
+        axios.isAxiosError(error) &&
+        (error.response?.status === 403 || error.response?.status === 503) &&
+        typeof error.response.data?.message === 'string'
+          ? error.response.data.message
+          : undefined;
+      addToast(
+        <span>
+          {serverMessage ?? intl.formatMessage(messages.errorediting)}
+        </span>,
+        {
+          appearance: 'error',
+          autoDismiss: true,
+        }
+      );
     } finally {
       if (onUpdating) {
         onUpdating(false);
@@ -460,13 +494,15 @@ const TvRequestModal = ({
           is4k: effectiveIs4k,
           ignoreQuota: requestOverrides?.ignoreQuota,
           requestQuotaApproval: requestQuotaApproval || undefined,
-          seasons: usesEpisodeSelection
-            ? requestableSelections
-                .map((selection) => selection.seasonNumber)
-                .sort((a, b) => a - b)
-            : getAllSeasons().filter(
-                (season) => !getAllRequestedSeasons().includes(season)
-              ),
+          seasons: stagesFullSeriesThroughWatchGate
+            ? 'all'
+            : usesEpisodeSelection
+              ? requestableSelections
+                  .map((selection) => selection.seasonNumber)
+                  .sort((a, b) => a - b)
+              : fullSeasonSelectionsToSubmit.map(
+                  (selection) => selection.seasonNumber
+                ),
           seasonRequests: usesEpisodeSelection
             ? requestableSelections
             : undefined,
@@ -508,8 +544,14 @@ const TvRequestModal = ({
         </span>,
         { appearance: 'success', autoDismiss: true }
       );
-    } catch {
-      addToast(intl.formatMessage(messages.requesterror), {
+    } catch (error) {
+      const serverMessage =
+        axios.isAxiosError(error) &&
+        (error.response?.status === 403 || error.response?.status === 503) &&
+        typeof error.response.data?.message === 'string'
+          ? error.response.data.message
+          : undefined;
+      addToast(serverMessage ?? intl.formatMessage(messages.requesterror), {
         appearance: 'error',
         autoDismiss: true,
       });
@@ -686,7 +728,140 @@ const TvRequestModal = ({
     getAllRequestedSeasons(),
     blockedEpisodesBySeason
   );
+  const seasonWatchGateCatalog = (data?.seasons ?? []).map((season) => ({
+    seasonNumber: season.seasonNumber,
+    episodeCount: season.episodeCount,
+  }));
+  const seasonWatchGateSelections = requestableSelections.filter(
+    (selection) =>
+      !editRequest?.seasons.some(
+        (season) => season.seasonNumber === selection.seasonNumber
+      )
+  );
+  const isSeasonWatchGateOwner = editRequest
+    ? editRequest.requestedBy.id === user?.id
+    : !requestOverrides?.user || requestOverrides.user.id === user?.id;
+  const canOverrideSeasonWatchGate = hasPermission(
+    [Permission.MANAGE_REQUESTS, Permission.ADMIN],
+    { type: 'or' }
+  );
+  const seasonWatchGateRequirements = getSeasonWatchGateRequirements(
+    seasonWatchGateCatalog,
+    seasonWatchGateSelections
+  );
+  const seasonWatchGateApplies =
+    settings.currentSettings.tvSeasonWatchGateEnabled &&
+    seasonWatchGateRequirements.length > 0 &&
+    isSeasonWatchGateOwner &&
+    !canOverrideSeasonWatchGate;
+  const hasSeasonWatchGateAccount = hasLinkedWatchAheadAccount(
+    user,
+    settings.currentSettings.mediaServerType
+  );
+  const seasonWatchGateCacheIdentity = [
+    user?.id ?? 'anonymous',
+    settings.currentSettings.mediaServerType,
+    user?.plexId ?? user?.jellyfinUsername ?? 'unlinked',
+    String(user?.updatedAt ?? ''),
+  ].join(':');
+  const seasonWatchStatusQuery = useWatchStatus(
+    'tv',
+    tmdbId,
+    seasonWatchGateApplies && Boolean(user?.id) && hasSeasonWatchGateAccount,
+    true,
+    seasonWatchGateCacheIdentity
+  );
+  const seasonWatchStatusVerified =
+    seasonWatchGateApplies &&
+    hasSeasonWatchGateAccount &&
+    !seasonWatchStatusQuery.error &&
+    !seasonWatchStatusQuery.isLoading &&
+    !seasonWatchStatusQuery.isValidating &&
+    Boolean(seasonWatchStatusQuery.data);
+  const seasonWatchEpisodes = (
+    seasonWatchStatusQuery.data?.seasons ?? []
+  ).flatMap((season) =>
+    season.episodes.map((episode) => ({
+      seasonNumber: episode.seasonNumber,
+      episodeNumber: episode.episodeNumber,
+      watched: episode.watched,
+    }))
+  );
+  const incompleteSeasonWatchRequirement = seasonWatchStatusVerified
+    ? getIncompletePreviousSeasonRequirement(
+        seasonWatchGateCatalog,
+        seasonWatchGateSelections,
+        seasonWatchEpisodes
+      )
+    : undefined;
+  const missingSeasonWatchLibraryRequirement = seasonWatchStatusVerified
+    ? getMissingPreviousSeasonHistoryRequirement(
+        seasonWatchGateCatalog,
+        seasonWatchGateSelections,
+        seasonWatchEpisodes
+      )
+    : undefined;
+  const gateAllowedSeasonSelections = seasonWatchGateApplies
+    ? getTvSeasonSelectionsAllowedByWatchGate(
+        seasonWatchGateCatalog,
+        seasonWatchGateSelections,
+        seasonWatchEpisodes,
+        seasonWatchStatusVerified
+      )
+    : requestableSelections;
+  const fullSeasonSelectionsToSubmit =
+    seasonWatchGateApplies &&
+    !editRequest &&
+    !settings.currentSettings.partialRequestsEnabled
+      ? gateAllowedSeasonSelections
+      : requestableSelections;
+  const stagesFullSeriesThroughWatchGate =
+    seasonWatchGateApplies &&
+    !editRequest &&
+    !settings.currentSettings.partialRequestsEnabled &&
+    !usesEpisodeSelection;
+  const seasonWatchGateFailure = seasonWatchGateApplies
+    ? !hasSeasonWatchGateAccount
+      ? 'account'
+      : seasonWatchStatusQuery.error
+        ? 'unavailable'
+        : seasonWatchStatusQuery.isLoading ||
+            seasonWatchStatusQuery.isValidating ||
+            !seasonWatchStatusQuery.data
+          ? 'loading'
+          : missingSeasonWatchLibraryRequirement
+            ? 'library'
+            : incompleteSeasonWatchRequirement
+              ? 'incomplete'
+              : undefined
+    : undefined;
+  const seasonWatchGateMessage = (() => {
+    switch (seasonWatchGateFailure) {
+      case 'account':
+        return intl.formatMessage(messages.seasonWatchGateAccountRequired);
+      case 'loading':
+        return intl.formatMessage(messages.seasonWatchGateLoading);
+      case 'unavailable':
+        return intl.formatMessage(messages.seasonWatchGateUnavailable);
+      case 'library':
+        return intl.formatMessage(messages.seasonWatchGateLibraryRequired);
+      case 'incomplete': {
+        return incompleteSeasonWatchRequirement?.requiredSeason === null
+          ? intl.formatMessage(messages.seasonWatchGateUnknownSeason)
+          : incompleteSeasonWatchRequirement
+            ? intl.formatMessage(messages.seasonWatchGateIncomplete, {
+                requiredSeason: incompleteSeasonWatchRequirement.requiredSeason,
+                requestedSeason:
+                  incompleteSeasonWatchRequirement.requestedSeason,
+              })
+            : undefined;
+      }
+      default:
+        return undefined;
+    }
+  })();
   const partialQuotaExceeded =
+    usesEpisodeSelection &&
     !!quota?.tv.limit &&
     !requestOverrides?.ignoreQuota &&
     requestableSelections.length >
@@ -695,30 +870,47 @@ const TvRequestModal = ({
   const fullQuotaExceeded =
     !!quota?.tv.limit &&
     !requestOverrides?.ignoreQuota &&
-    unrequestedSeasons.length > (quota.tv.remaining ?? 0);
+    fullSeasonSelectionsToSubmit.length > (quota.tv.remaining ?? 0);
   const requestQuotaApproval = Boolean(
     !editRequest &&
     !requestOverrides?.user &&
     !hasPermission(Permission.MANAGE_REQUESTS) &&
     (partialQuotaExceeded || (!usesEpisodeSelection && fullQuotaExceeded))
   );
+  const gateBlocksSubmission =
+    seasonWatchGateMessage &&
+    (usesEpisodeSelection || fullSeasonSelectionsToSubmit.length === 0)
+      ? seasonWatchGateMessage
+      : undefined;
+  const seasonWatchGateDisplayMessage =
+    seasonWatchGateMessage &&
+    !usesEpisodeSelection &&
+    fullSeasonSelectionsToSubmit.length > 0
+      ? intl.formatMessage(messages.seasonWatchGateStaged, {
+          reason: seasonWatchGateMessage,
+        })
+      : seasonWatchGateMessage;
+  const submissionSelectionCount = usesEpisodeSelection
+    ? requestableSelections.length
+    : fullSeasonSelectionsToSubmit.length;
   const requestDisabledReason =
     usesEpisodeSelection && !requestTreeReady && selectedSeasons.length > 0
       ? intl.formatMessage(messages.episodesLoading)
       : !requestQuotaApproval &&
           (partialQuotaExceeded || (!usesEpisodeSelection && fullQuotaExceeded))
         ? intl.formatMessage(messages.requestQuotaExceeded)
-        : requestableSelections.length === 0
-          ? usesEpisodeSelection &&
+        : submissionSelectionCount === 0
+          ? (gateBlocksSubmission ??
+            (usesEpisodeSelection &&
             seasonSelections.length === 0 &&
             unrequestedSeasons.length > 0
-            ? intl.formatMessage(messages.selectUnavailableItemsToRequest)
-            : intl.formatMessage(
-                unrequestedSeasons.length === 0
-                  ? messages.noUnavailableItems
-                  : messages.alreadyAvailable
-              )
-          : undefined;
+              ? intl.formatMessage(messages.selectUnavailableItemsToRequest)
+              : intl.formatMessage(
+                  unrequestedSeasons.length === 0
+                    ? messages.noUnavailableItems
+                    : messages.alreadyAvailable
+                )))
+          : gateBlocksSubmission;
 
   useEffect(() => {
     if (
@@ -829,14 +1021,18 @@ const TvRequestModal = ({
       ? intl.formatMessage(messages.requestQuotaApproval)
       : intl.formatMessage(globalMessages.request);
   const requestDisabled = editRequest
-    ? isFailedManagerRepair
-      ? selectedSeasons.length === 0
-      : usesEpisodeSelection && selectedSeasons.length > 0 && !requestTreeReady
+    ? (isFailedManagerRepair
+        ? selectedSeasons.length === 0
+        : usesEpisodeSelection &&
+          selectedSeasons.length > 0 &&
+          !requestTreeReady) || Boolean(gateBlocksSubmission)
     : (usesEpisodeSelection && !requestTreeReady) ||
       selectedDestinationCovered ||
-      requestableSelections.length === 0 ||
+      submissionSelectionCount === 0 ||
       (!requestQuotaApproval &&
-        (partialQuotaExceeded || (!usesEpisodeSelection && fullQuotaExceeded)));
+        (partialQuotaExceeded ||
+          (!usesEpisodeSelection && fullQuotaExceeded))) ||
+      Boolean(gateBlocksSubmission);
   const closeAction = tvdbId ? () => setSearchModal({ show: true }) : onCancel;
   const submitAction = () =>
     editRequest
@@ -937,7 +1133,7 @@ const TvRequestModal = ({
             quota={quota?.tv}
             remaining={
               !settings.currentSettings.partialRequestsEnabled &&
-              unrequestedSeasons.length > (quota?.tv.remaining ?? 0)
+              fullSeasonSelectionsToSubmit.length > (quota?.tv.remaining ?? 0)
                 ? 0
                 : currentlyRemaining
             }
@@ -948,8 +1144,8 @@ const TvRequestModal = ({
             }
             overLimit={
               !settings.currentSettings.partialRequestsEnabled &&
-              unrequestedSeasons.length > (quota?.tv.remaining ?? 0)
-                ? unrequestedSeasons.length
+              fullSeasonSelectionsToSubmit.length > (quota?.tv.remaining ?? 0)
+                ? fullSeasonSelectionsToSubmit.length
                 : undefined
             }
           />
@@ -1105,6 +1301,40 @@ const TvRequestModal = ({
                 }}
               />
             )}
+          {seasonWatchGateDisplayMessage && (
+            <div
+              className="page-error-message"
+              data-severity={
+                seasonWatchGateFailure === 'unavailable' ? 'error' : 'warning'
+              }
+              role={
+                seasonWatchGateFailure === 'unavailable' ? 'alert' : 'status'
+              }
+            >
+              <span>{seasonWatchGateDisplayMessage}</span>
+              {seasonWatchGateFailure === 'account' && (
+                <Button
+                  as="a"
+                  href="/profile/settings/linked-accounts"
+                  buttonType="ghost"
+                  buttonSize="sm"
+                >
+                  {intl.formatMessage(messages.seasonWatchGateLinkAccount)}
+                </Button>
+              )}
+              {seasonWatchGateFailure === 'unavailable' && (
+                <Button
+                  type="button"
+                  buttonType="ghost"
+                  buttonSize="sm"
+                  disabled={seasonWatchStatusQuery.isValidating}
+                  onClick={() => void seasonWatchStatusQuery.mutate()}
+                >
+                  {intl.formatMessage(messages.retryWatchStatus)}
+                </Button>
+              )}
+            </div>
+          )}
 
           <div className="request-selection-options">
             {!editRequest && (

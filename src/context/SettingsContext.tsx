@@ -38,6 +38,7 @@ const defaultSettings: PublicSettingsResponse = {
   originalLanguage: '',
   mediaServerType: MediaServerType.NOT_CONFIGURED,
   partialRequestsEnabled: true,
+  tvSeasonWatchGateEnabled: false,
   personMovieBulkRequestsEnabled: false,
   enableSpecialEpisodes: false,
   cacheImages: true,

@@ -56,6 +56,7 @@ export interface PublicSettingsResponse {
   originalLanguage: string;
   mediaServerType: number;
   partialRequestsEnabled: boolean;
+  tvSeasonWatchGateEnabled: boolean;
   personMovieBulkRequestsEnabled: boolean;
   enableSpecialEpisodes: boolean;
   cacheImages: boolean;
