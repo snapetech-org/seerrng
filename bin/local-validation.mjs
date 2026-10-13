@@ -1444,16 +1444,18 @@ export async function executePlan(
 export function printPlan(
   plan,
   output = process.stdout,
-  { details = true } = {}
+  { details = true, callerSandboxed = false } = {}
 ) {
   output.write(
     `Local ${plan.testsOnly ? 'test' : 'validation'} gate: ${plan.root}\n`
   );
   output.write('Environment: NODE_ENV=test; no dependency installation.\n');
   output.write(
-    plan.testsOnly
-      ? 'Execution: disposable source copy, read-only dependencies, bubblewrap filesystem and loopback-only network namespaces (Linux required).\n'
-      : 'Execution: staged native validation with separately verified network and source boundaries.\n'
+    plan.testsOnly && callerSandboxed
+      ? 'Execution: trusted outer Linux sandbox, disposable workspace, read-only dependencies, and loopback-only network.\n'
+      : plan.testsOnly
+        ? 'Execution: disposable source copy, read-only dependencies, bubblewrap filesystem and loopback-only network namespaces (Linux required).\n'
+        : 'Execution: staged native validation with separately verified network and source boundaries.\n'
   );
   for (const owner of ['vitest', 'node-ts', 'node-js', 'tooling']) {
     const owned = plan.inventory.filter((entry) => entry.owner === owner);

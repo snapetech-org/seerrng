@@ -11,7 +11,7 @@ import type { ImageVariant } from '@app/utils/loadedImages';
 import { UserIcon } from '@heroicons/react/24/solid';
 import type { ImageLoader, ImageProps } from 'next/image';
 import Image from 'next/image';
-import { memo, useEffect, useMemo, useState } from 'react';
+import { memo, useEffect, useMemo, useState, type SyntheticEvent } from 'react';
 
 const AVATAR_PRELOAD_RETRY_DELAYS_MS = [500, 1_000, 2_000, 4_000, 8_000];
 
@@ -177,11 +177,11 @@ const CachedImage = memo(
         decoding={decoding}
         loading={priority ? undefined : (loading ?? 'lazy')}
         priority={priority}
-        onLoad={(event) => {
+        onLoad={(event: SyntheticEvent<HTMLImageElement>) => {
           if (type !== 'avatar') progressiveImage.onLoad(event.currentTarget);
           onLoad?.(event);
         }}
-        onError={(event) => {
+        onError={(event: SyntheticEvent<HTMLImageElement>) => {
           if (type !== 'avatar') progressiveImage.onError(event.currentTarget);
           if (
             type !== 'avatar' &&

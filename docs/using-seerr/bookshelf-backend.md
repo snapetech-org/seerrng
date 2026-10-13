@@ -23,6 +23,13 @@ For how BookshelfNG differs from its Readarr-derived parent, which behavior is
 specific to its SeerrNG API, and the upstream features needed to replace the
 fork, see [Maintained dependency forks](./dependency-forks.md#bookshelfng).
 
+BookshelfNG's proposed consolidation into ChaptarrNG is not released yet. No
+populated-library converter or old-channel bridge is available, so keep the
+existing BookshelfNG database and installation until the
+[feature, migration, and distribution gates](https://github.com/snapetech/bookshelfng/blob/main/docs/maintainers/chaptarr-consolidation.md)
+pass. The eventual ChaptarrNG product is intended to retain both BookshelfNG's
+enhancements and ChaptarrNG's existing maintained features.
+
 ## One BookshelfNG instance for both formats
 
 One BookshelfNG instance and database can manage ebooks and audiobooks on the
@@ -50,10 +57,11 @@ merge it.
 
 Each BookshelfNG author can optionally set different ebook and audiobook
 folders in the author editor. These overrides apply to future imports,
-upgrades, and renames; existing files are not moved automatically. Quality and
-metadata profiles remain shared by both formats. Separate BookshelfNG instances are
-optional when you need isolated databases or different settings for the same
-author.
+upgrades, and renames; existing files are not moved automatically. Authors can
+also set format-specific quality and metadata profile overrides. Each format
+falls back to the author's shared profile when its override is unset. Separate
+BookshelfNG instances are optional when you need isolated databases or
+different settings for the same author.
 
 ### BookshelfNG interoperability
 
@@ -63,8 +71,9 @@ available, routes ebook and audiobook service requests through the matching
 `/readarr/{gr|hc}/{format}/api/v1` path, where `gr` and `hc` identify the
 provider-ID dialect. Older BookshelfNG versions keep using the standard
 Readarr API path. Both routes reach the same BookshelfNG database and library;
-the facade carries the configured format context and does not create separate
-profile storage.
+the facade carries the configured format context without creating separate
+authors, books, or databases. Format-specific profile overrides are applied
+when configured, with author-level profiles as the fallback.
 
 Newer BookshelfNG builds include separate ebook and audiobook file counts in
 each book's statistics. SeerrNG uses the count for the selected service type,
@@ -995,9 +1004,10 @@ Enable Automatic Search: your policy
 
 Use the same API key from **Bookshelf > Settings > General > Security** for
 both service entries. Authors can optionally set separate ebook and audiobook
-folders, while quality and metadata profiles remain shared. Select compatible
-defaults in each entry. The entries can use different endpoints if you
-deliberately operate isolated instances.
+folders and format-specific quality and metadata profile overrides. An unset
+override falls back to the author's shared profile. Select compatible defaults
+in each entry. The entries can use different endpoints if you deliberately
+operate isolated instances.
 
 ## Metadata Source
 

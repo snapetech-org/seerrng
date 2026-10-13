@@ -1001,6 +1001,56 @@ test('CLI help succeeds without discovery and malformed options fail before runn
     );
 });
 
+test('the internal outer-sandbox mode fails closed without its bound marker', async () => {
+  const command = {
+    name: 'untrusted internal mode',
+    command: process.execPath,
+    args: [
+      join(root, 'bin/run-local-validation.mjs'),
+      '--tests-only',
+      '--inside-sandbox',
+    ],
+  };
+  await assert.rejects(
+    runCommand(command, {
+      root,
+      env: {
+        ...process.env,
+        NODE_OPTIONS: '',
+        VALIDATION_OUTER_SANDBOX_TOKEN: '',
+      },
+      stdout: sink,
+      stderr: sink,
+    }),
+    (error) => error.exitCode === 1
+  );
+});
+
+test('the internal outer-sandbox mode requires its bound marker', async () => {
+  const command = {
+    name: 'internal outer-sandbox mode',
+    command: process.execPath,
+    args: [
+      join(root, 'bin/run-local-validation.mjs'),
+      '--tests-only',
+      '--inside-sandbox',
+    ],
+  };
+  await assert.rejects(
+    runCommand(command, {
+      root,
+      env: {
+        ...process.env,
+        NODE_OPTIONS: '',
+        VALIDATION_OUTER_SANDBOX_TOKEN: '0'.repeat(64),
+      },
+      stdout: sink,
+      stderr: sink,
+    }),
+    (error) => error.exitCode === 1
+  );
+});
+
 test('CLI modes reject mixed, foreign, repeated, and incomplete options before project access', () => {
   const cli = join(root, 'bin/run-local-validation.mjs');
   const invalid = [

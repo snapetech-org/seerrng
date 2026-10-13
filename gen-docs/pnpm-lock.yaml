@@ -59,7 +59,7 @@ overrides:
   ws: 8.21.0
   yaml: 2.8.3
 
-pnpmfileChecksum: sha256-ZXs0jl4x91ML0f3pqsIoYZJC8lmnYHMxBc2pDQOS8VA=
+pnpmfileChecksum: sha256-BLIhcy+fA/tOukgsKmJQFIL/J8TT+f9kuFZdV2aTs+0=
 
 patchedDependencies:
   '@docusaurus/core@3.10.1':

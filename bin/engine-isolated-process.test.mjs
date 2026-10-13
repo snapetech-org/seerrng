@@ -113,7 +113,7 @@ test('local validation rejects dependency roots linked outside the candidate', (
   );
 });
 
-test('local validation excludes nested environment files from the snapshot', (t) => {
+test('local validation excludes nested environment files and retains compiler manifests', (t) => {
   const parent = mkdtempSync(path.join(tmpdir(), 'seerrng-nested-env-'));
   t.after(() => rmSync(parent, { recursive: true, force: true }));
   const source = path.join(parent, 'candidate');
@@ -122,6 +122,15 @@ test('local validation excludes nested environment files from the snapshot', (t)
   writeFileSync(path.join(source, '.gitignore'), '');
   writeFileSync(path.join(source, '.env.example'), 'EXAMPLE=value\n');
   writeFileSync(path.join(source, 'server', '.env.local'), 'SECRET=private\n');
+  writeFileSync(path.join(source, 'tsconfig.json'), '{"compilerOptions":{}}\n');
+  writeFileSync(
+    path.join(source, 'server', 'tsconfig.json'),
+    '{"extends":"../tsconfig.json"}\n'
+  );
+  writeFileSync(
+    path.join(source, 'server', 'tsconfig.secrets.json'),
+    '{"token":"private"}\n'
+  );
   execFileSync('git', ['init', '--quiet', '--initial-branch=main'], {
     cwd: source,
   });
@@ -138,6 +147,15 @@ test('local validation excludes nested environment files from the snapshot', (t)
 
   assert.equal(existsSync(path.join(workspace, 'server', '.env.local')), false);
   assert.equal(existsSync(path.join(workspace, '.env.example')), true);
+  assert.equal(existsSync(path.join(workspace, 'tsconfig.json')), true);
+  assert.equal(
+    existsSync(path.join(workspace, 'server', 'tsconfig.json')),
+    true
+  );
+  assert.equal(
+    existsSync(path.join(workspace, 'server', 'tsconfig.secrets.json')),
+    false
+  );
 });
 
 test(
@@ -152,9 +170,14 @@ test(
     const source = path.join(parent, 'candidate');
     const dependency = path.join(source, 'node_modules');
     mkdirSync(source);
+    mkdirSync(path.join(source, 'nested'));
     mkdirSync(path.join(dependency, 'probe'), { recursive: true });
     writeFileSync(path.join(source, '.gitignore'), 'node_modules/\n');
     writeFileSync(path.join(source, '.env'), 'PRIVATE_ENV_CANARY=hidden\n');
+    writeFileSync(
+      path.join(source, 'nested/.env.local'),
+      'NESTED_ENV_CANARY=hidden\n'
+    );
     writeFileSync(path.join(source, 'config.json'), '{"private":true}\n');
     writeFileSync(
       path.join(source, 'credentials.json'),
@@ -201,6 +224,7 @@ test(
         assert.equal(process.cwd(), '/mnt/workspace');
         assert.throws(() => readFileSync(host.secretFile), { code: 'ENOENT' });
         assert.equal(existsSync('/mnt/workspace/.env'), false);
+        assert.equal(existsSync('/mnt/workspace/nested/.env.local'), false);
         assert.equal(existsSync('/mnt/workspace/config.json'), false);
         assert.equal(existsSync('/mnt/workspace/credentials.json'), false);
         assert.equal(existsSync('/mnt/workspace/auth.json'), false);
@@ -212,6 +236,9 @@ test(
         assert.equal(process.env.SECRET_CANARY, undefined);
         assert.doesNotMatch(readFileSync('/mnt/workspace/.git/config', 'utf8'), /credential/i);
         assert.equal(execFileSync('git', ['branch', '--show-current'], { encoding: 'utf8' }).trim(), 'main');
+      });
+      test('writes stay inside the disposable candidate copy', () => {
+        writeFileSync('/mnt/workspace/sandbox-write-canary.txt', 'sandbox only');
       });
       test('installed dependencies are readable but not writable', () => {
         const dependency = '/mnt/workspace/node_modules/probe/dependency.txt';
@@ -290,7 +317,11 @@ test(
         stderr: { write() {} },
       }
     );
-    assert.equal(result.get('node-js').total, 4);
-    assert.equal(result.get('node-js').active, 4);
+    assert.equal(result.get('node-js').total, 5);
+    assert.equal(result.get('node-js').active, 5);
+    assert.equal(
+      existsSync(path.join(source, 'sandbox-write-canary.txt')),
+      false
+    );
   }
 );
