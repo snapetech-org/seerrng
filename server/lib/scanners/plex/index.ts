@@ -68,6 +68,11 @@ const HAMA_AGENT = 'com.plexapp.agents.hama';
 export const PLEX_SCAN_PAGE_SIZE = 50;
 export const PLEX_SCAN_ITEM_CONCURRENCY = 10;
 
+type PlexMovieProcessingItem = Pick<
+  PlexLibraryItem,
+  'Media' | 'addedAt' | 'ratingKey' | 'title'
+>;
+
 export const getBoundedPlexScanTotal = (
   declaredTotal: unknown,
   start: number,
@@ -408,37 +413,46 @@ export class PlexScanner
 
   private async processPlexMovie(plexitem: PlexLibraryItem) {
     const mediaIds = await this.getMediaIds(plexitem);
-
-    const has4k = plexitem.Media.some(
-      (media) => media.videoResolution === '4k'
-    );
-
-    await this.processMovie(mediaIds.tmdbId, {
-      is4k: has4k && this.enable4kMovie,
-      mediaAddedAt: new Date(plexitem.addedAt * 1000),
-      ratingKey: plexitem.ratingKey,
-      title: plexitem.title,
-      mutationGuard: (callback) => this.withConfigurationSnapshot(callback),
-      outerMutationGuard: (callback) => this.withOwnerAuthority(callback),
-    });
+    await this.processPlexMovieVersions(plexitem, mediaIds.tmdbId);
   }
 
   private async processPlexMovieByTmdbId(
     plexitem: PlexMetadata,
     tmdbId: number
   ) {
-    const has4k = plexitem.Media.some(
-      (media) => media.videoResolution === '4k'
+    await this.processPlexMovieVersions(plexitem, tmdbId);
+  }
+
+  private async processPlexMovieVersions(
+    plexitem: PlexMovieProcessingItem,
+    tmdbId: number
+  ) {
+    const has4k =
+      this.enable4kMovie &&
+      plexitem.Media.some((media) => media.videoResolution === '4k');
+    const hasStandard = plexitem.Media.some(
+      (media) => media.videoResolution !== '4k'
     );
 
-    await this.processMovie(tmdbId, {
-      is4k: has4k && this.enable4kMovie,
-      mediaAddedAt: new Date(plexitem.addedAt * 1000),
-      ratingKey: plexitem.ratingKey,
-      title: plexitem.title,
-      mutationGuard: (callback) => this.withConfigurationSnapshot(callback),
-      outerMutationGuard: (callback) => this.withOwnerAuthority(callback),
-    });
+    const processVariant = (is4k: boolean) =>
+      this.processMovie(tmdbId, {
+        is4k,
+        mediaAddedAt: new Date(plexitem.addedAt * 1000),
+        ratingKey: plexitem.ratingKey,
+        title: plexitem.title,
+        mutationGuard: (callback) => this.withConfigurationSnapshot(callback),
+        outerMutationGuard: (callback) => this.withOwnerAuthority(callback),
+      });
+
+    // Keep the existing fallback: a 4K-only Plex item counts as standard when
+    // no 4K Radarr destination is configured.
+    if (hasStandard || !has4k) {
+      await processVariant(false);
+    }
+
+    if (has4k) {
+      await processVariant(true);
+    }
   }
 
   private async getTvShow({
