@@ -6,13 +6,21 @@ import type { SonarrSeries } from '@server/api/servarr/sonarr';
 import SonarrAPI from '@server/api/servarr/sonarr';
 import { ANIME_KEYWORD_ID } from '@server/api/themoviedb/constants';
 import type {
-  TmdbKeyword,
   TmdbTvDetails,
   TmdbTvScanDetails,
 } from '@server/api/themoviedb/interfaces';
-import { MediaStatus, MediaType } from '@server/constants/media';
-import { getRepository } from '@server/datasource';
+import {
+  MediaRequestStatus,
+  MediaStatus,
+  MediaType,
+} from '@server/constants/media';
+import dataSource, { getRepository } from '@server/datasource';
 import Media from '@server/entity/Media';
+import MediaRequest from '@server/entity/MediaRequest';
+import Season from '@server/entity/Season';
+import SeasonRequest, {
+  isActiveSeasonRequest,
+} from '@server/entity/SeasonRequest';
 import { getExternalRuntimeConfig } from '@server/lib/externalRuntimeConfig';
 import { runMediaEntityMutation } from '@server/lib/mediaMutation';
 import { upsertMediaSearchMetadata } from '@server/lib/mediaSearchMetadata';
@@ -31,6 +39,7 @@ import {
 import type { SonarrSettings } from '@server/lib/settings';
 import { getHttpErrorDetails } from '@server/utils/httpError';
 import { uniqWith } from 'lodash';
+import type { FindOptionsWhere } from 'typeorm';
 
 type SyncStatus = StatusBase & {
   currentServer: SonarrSettings;
@@ -229,15 +238,7 @@ class SonarrScanner
       const tmdbId = tvShow.id;
       resolvedTmdbId = tmdbId;
       (server4k ? this.scanned4kTmdbIds : this.scannedTmdbIds).add(tmdbId);
-      const metadataProvider = tvShow.keywords.results.some(
-        (keyword: TmdbKeyword) => keyword.id === ANIME_KEYWORD_ID
-      )
-        ? await getMetadataProvider('anime')
-        : await getMetadataProvider('tv');
-
-      if (!isTheMovieDbProvider(metadataProvider)) {
-        tvShow = await metadataProvider.getTvShow({ tvId: tmdbId });
-      }
+      tvShow = await this.applyMetadataProvider(tvShow);
       const settings = getExternalRuntimeConfig();
 
       const filteredSeasons = tvShow.seasons
@@ -321,6 +322,20 @@ class SonarrScanner
     }
   }
 
+  private async applyMetadataProvider(
+    tvShow: TmdbTvScanDetails | TmdbTvDetails
+  ): Promise<TmdbTvScanDetails | TmdbTvDetails> {
+    const metadataProvider = tvShow.keywords.results.some(
+      (keyword) => keyword.id === ANIME_KEYWORD_ID
+    )
+      ? await getMetadataProvider('anime')
+      : await getMetadataProvider('tv');
+
+    return isTheMovieDbProvider(metadataProvider)
+      ? tvShow
+      : metadataProvider.getTvShow({ tvId: tvShow.id });
+  }
+
   private async existsInAnyServer(
     tvdbId: number,
     is4k: boolean
@@ -354,122 +369,298 @@ class SonarrScanner
     return false;
   }
 
-  private async cleanupOrphanedShows(): Promise<void> {
-    const mediaRepository = getRepository(Media);
-
-    if (this.didScanStandard) {
-      await forEachMediaCleanupBatch(
-        { mediaType: MediaType.TV, status: MediaStatus.PROCESSING },
-        async (media) => {
-          if (
-            media.tvdbId &&
-            !this.scannedTvdbIds.has(media.tvdbId) &&
-            !this.scannedTmdbIds.has(media.tmdbId) &&
-            !(await this.existsInAnyServer(media.tvdbId, false))
-          ) {
-            const changed = await runMediaEntityMutation(media, () =>
-              runWithServarrServiceSnapshots(
-                'sonarr',
-                this.servers.filter(
-                  (server) => server.syncEnabled && !server.is4k
-                ),
-                async () => {
-                  const current = await mediaRepository.findOne({
-                    where: { id: media.id },
-                    relations: { seasons: true },
-                  });
-                  if (!current || current.status !== MediaStatus.PROCESSING) {
-                    return false;
-                  }
-                  current.status = MediaStatus.UNKNOWN;
-                  for (const season of current.seasons) {
-                    if (season.status === MediaStatus.PROCESSING) {
-                      season.status = MediaStatus.UNKNOWN;
-                    }
-                  }
-                  await mediaRepository.save(current);
-                  return true;
-                },
-                {
-                  requireExactAuthoritySet: true,
-                  includeCurrent: (server) =>
-                    server.syncEnabled && !server.is4k,
-                }
-              )
-            );
-            if (changed) {
-              await this.declineOrphanedRequests(media, false);
-              this.log(
-                `Show ${media.tmdbId} (tvdb: ${media.tvdbId}) not found in any Sonarr server. Status reset to UNKNOWN.`,
-                'info'
-              );
-            }
-          }
-        },
-        { relations: { seasons: true, requests: true } }
+  private async getMaterialSeasonNumbers(
+    tmdbId: number
+  ): Promise<Set<number> | undefined> {
+    try {
+      const tvShow = await this.applyMetadataProvider(
+        await this.tmdb.getTvShowForScan({ tvId: tmdbId })
       );
-    } else {
+      return new Set(
+        tvShow.seasons
+          .filter(
+            (season) => season.season_number !== 0 && season.episode_count > 0
+          )
+          .map((season) => season.season_number)
+      );
+    } catch (e) {
       this.log(
-        'Skipping orphaned show cleanup: no standard Sonarr servers were scanned.',
+        `Could not look up the seasons of orphaned show ${tmdbId}. Skipping cleanup for it.`,
+        'warn',
+        { errorMessage: e instanceof Error ? e.message : String(e) }
+      );
+      return;
+    }
+  }
+
+  private async settleOrphanedShow(
+    mediaSnapshot: Media,
+    is4k: boolean
+  ): Promise<boolean> {
+    const statusField = is4k ? 'status4k' : 'status';
+    const servers = this.servers.filter(
+      (server) =>
+        server.syncEnabled && (this.enable4kShow && server.is4k) === is4k
+    );
+
+    return runMediaEntityMutation(mediaSnapshot, () =>
+      runWithServarrServiceSnapshots(
+        'sonarr',
+        servers,
+        async () => {
+          if (
+            !mediaSnapshot.tvdbId ||
+            (await this.existsInAnyServer(mediaSnapshot.tvdbId, is4k))
+          ) {
+            return false;
+          }
+          const materialSeasonNumbers = await this.getMaterialSeasonNumbers(
+            mediaSnapshot.tmdbId
+          );
+          if (!materialSeasonNumbers) return false;
+
+          return dataSource.transaction(async (manager) => {
+            const mediaRepository = manager.getRepository(Media);
+            const seasonRepository = manager.getRepository(Season);
+            const seasonRequestRepository =
+              manager.getRepository(SeasonRequest);
+            const requestRepository = manager.getRepository(MediaRequest);
+            const media = await mediaRepository.findOne({
+              where: { id: mediaSnapshot.id, mediaType: MediaType.TV },
+              relations: { seasons: true, requests: { seasons: true } },
+            });
+
+            if (
+              !media ||
+              media.tmdbId !== mediaSnapshot.tmdbId ||
+              media.tvdbId !== mediaSnapshot.tvdbId
+            ) {
+              return false;
+            }
+
+            const approvedRequests = (media.requests ?? []).filter(
+              (request) =>
+                request.is4k === is4k &&
+                request.status === MediaRequestStatus.APPROVED
+            );
+            const processingSeasons = media.seasons.filter(
+              (season) => season[statusField] === MediaStatus.PROCESSING
+            );
+
+            if (
+              media[statusField] !== MediaStatus.PROCESSING &&
+              processingSeasons.length === 0 &&
+              approvedRequests.length === 0
+            ) {
+              return false;
+            }
+
+            const changedSeasons: Season[] = [];
+            for (const season of processingSeasons) {
+              season[statusField] = MediaStatus.UNKNOWN;
+              changedSeasons.push(season);
+            }
+
+            const seasonsByNumber = new Map(
+              media.seasons.map((season) => [season.seasonNumber, season])
+            );
+            const changedSeasonRequests: SeasonRequest[] = [];
+            const changedRequests: MediaRequest[] = [];
+            const settledSeasonNumbers = new Set(
+              processingSeasons
+                .filter((season) => season.seasonNumber !== 0)
+                .map((season) => season.seasonNumber)
+            );
+            const availableSeasonNumbers = new Set(
+              media.seasons
+                .filter(
+                  (season) => season[statusField] === MediaStatus.AVAILABLE
+                )
+                .map((season) => season.seasonNumber)
+            );
+
+            for (const request of approvedRequests) {
+              if ((request.seasons ?? []).length === 0) {
+                request.status =
+                  media[statusField] === MediaStatus.AVAILABLE
+                    ? MediaRequestStatus.COMPLETED
+                    : MediaRequestStatus.DECLINED;
+                changedRequests.push(request);
+                continue;
+              }
+
+              for (const requestedSeason of request.seasons ?? []) {
+                if (
+                  requestedSeason.status === MediaRequestStatus.DECLINED ||
+                  requestedSeason.status === MediaRequestStatus.COMPLETED ||
+                  requestedSeason.status === MediaRequestStatus.FAILED
+                ) {
+                  continue;
+                }
+
+                requestedSeason.status = availableSeasonNumbers.has(
+                  requestedSeason.seasonNumber
+                )
+                  ? MediaRequestStatus.COMPLETED
+                  : MediaRequestStatus.DECLINED;
+                if (requestedSeason.seasonNumber !== 0) {
+                  settledSeasonNumbers.add(requestedSeason.seasonNumber);
+                }
+                changedSeasonRequests.push(requestedSeason);
+              }
+
+              const hasOutstandingSelection = (request.seasons ?? []).some(
+                (season) =>
+                  isActiveSeasonRequest(season) &&
+                  season.status !== MediaRequestStatus.COMPLETED &&
+                  season.status !== MediaRequestStatus.FAILED
+              );
+              if (!hasOutstandingSelection) {
+                request.status = (request.seasons ?? []).some(
+                  (season) => season.status === MediaRequestStatus.COMPLETED
+                )
+                  ? MediaRequestStatus.COMPLETED
+                  : MediaRequestStatus.DECLINED;
+                changedRequests.push(request);
+              }
+            }
+
+            const rollupSeasonNumbers = new Set([
+              ...materialSeasonNumbers,
+              ...settledSeasonNumbers,
+              ...media.seasons
+                .filter(
+                  (season) =>
+                    season.seasonNumber !== 0 &&
+                    season[statusField] !== MediaStatus.UNKNOWN
+                )
+                .map((season) => season.seasonNumber),
+            ]);
+            const allMaterialSeasonsAvailable =
+              rollupSeasonNumbers.size > 0 &&
+              [...rollupSeasonNumbers].every(
+                (seasonNumber) =>
+                  seasonsByNumber.get(seasonNumber)?.[statusField] ===
+                  MediaStatus.AVAILABLE
+              );
+            const hasAvailableSeason = media.seasons.some(
+              (season) =>
+                season.seasonNumber !== 0 &&
+                (season[statusField] === MediaStatus.PARTIALLY_AVAILABLE ||
+                  season[statusField] === MediaStatus.AVAILABLE)
+            );
+            const hasProcessingSeason = media.seasons.some(
+              (season) =>
+                season.seasonNumber !== 0 &&
+                season[statusField] === MediaStatus.PROCESSING
+            );
+            const nextMediaStatus = allMaterialSeasonsAvailable
+              ? MediaStatus.AVAILABLE
+              : hasAvailableSeason
+                ? MediaStatus.PARTIALLY_AVAILABLE
+                : hasProcessingSeason
+                  ? MediaStatus.PROCESSING
+                  : media[statusField] === MediaStatus.DELETED
+                    ? MediaStatus.DELETED
+                    : MediaStatus.UNKNOWN;
+
+            if (changedSeasons.length > 0) {
+              await seasonRepository.save(changedSeasons);
+            }
+            if (changedSeasonRequests.length > 0) {
+              await seasonRequestRepository.save(changedSeasonRequests);
+            }
+            if (changedRequests.length > 0) {
+              await requestRepository.save(changedRequests);
+            }
+            if (media[statusField] !== nextMediaStatus) {
+              await mediaRepository.update(media.id, {
+                [statusField]: nextMediaStatus,
+              });
+            }
+
+            return (
+              changedSeasons.length > 0 ||
+              changedSeasonRequests.length > 0 ||
+              changedRequests.length > 0 ||
+              media[statusField] !== nextMediaStatus
+            );
+          });
+        },
+        {
+          requireExactAuthoritySet: true,
+          includeCurrent: (server) =>
+            server.syncEnabled && (this.enable4kShow && server.is4k) === is4k,
+        }
+      )
+    );
+  }
+
+  private async cleanupOrphanedShowsForQuality(
+    is4k: boolean,
+    didScan: boolean
+  ): Promise<void> {
+    const quality = is4k ? '4K ' : '';
+    if (!didScan) {
+      this.log(
+        `Skipping orphaned ${quality}show cleanup: no ${quality}Sonarr servers were scanned.`,
         'info'
       );
+      return;
+    }
+    if (this.hasShowScanFailures(is4k)) {
+      this.log(
+        `Skipping orphaned ${quality}show cleanup after an incomplete series lookup.`,
+        'warn'
+      );
+      return;
     }
 
-    if (this.didScan4k) {
-      await forEachMediaCleanupBatch(
-        { mediaType: MediaType.TV, status4k: MediaStatus.PROCESSING },
-        async (media) => {
-          if (
-            media.tvdbId &&
-            !this.scanned4kTvdbIds.has(media.tvdbId) &&
-            !this.scanned4kTmdbIds.has(media.tmdbId) &&
-            !(await this.existsInAnyServer(media.tvdbId, true))
-          ) {
-            const changed = await runMediaEntityMutation(media, () =>
-              runWithServarrServiceSnapshots(
-                'sonarr',
-                this.servers.filter(
-                  (server) => server.syncEnabled && server.is4k
-                ),
-                async () => {
-                  const current = await mediaRepository.findOne({
-                    where: { id: media.id },
-                    relations: { seasons: true },
-                  });
-                  if (!current || current.status4k !== MediaStatus.PROCESSING) {
-                    return false;
-                  }
-                  current.status4k = MediaStatus.UNKNOWN;
-                  for (const season of current.seasons) {
-                    if (season.status4k === MediaStatus.PROCESSING) {
-                      season.status4k = MediaStatus.UNKNOWN;
-                    }
-                  }
-                  await mediaRepository.save(current);
-                  return true;
-                },
-                {
-                  requireExactAuthoritySet: true,
-                  includeCurrent: (server) => server.syncEnabled && server.is4k,
-                }
-              )
-            );
-            if (changed) {
-              await this.declineOrphanedRequests(media, true);
-              this.log(
-                `Show ${media.tmdbId} (tvdb: ${media.tvdbId}) not found in any 4K Sonarr server. 4K status reset to UNKNOWN.`,
-                'info'
-              );
-            }
-          }
-        },
-        { relations: { seasons: true, requests: true } }
-      );
-    } else if (this.enable4kShow) {
-      this.log(
-        'Skipping orphaned 4K show cleanup: no 4K Sonarr servers were scanned.',
-        'info'
-      );
+    const statusField = is4k ? 'status4k' : 'status';
+    const where: FindOptionsWhere<Media>[] = [
+      { mediaType: MediaType.TV, [statusField]: MediaStatus.PROCESSING },
+      {
+        mediaType: MediaType.TV,
+        seasons: { [statusField]: MediaStatus.PROCESSING },
+      },
+      {
+        mediaType: MediaType.TV,
+        requests: { is4k, status: MediaRequestStatus.APPROVED },
+      },
+    ];
+    const visitedMedia = new Set<number>();
+    const scannedTvdbIds = is4k ? this.scanned4kTvdbIds : this.scannedTvdbIds;
+    const scannedTmdbIds = is4k ? this.scanned4kTmdbIds : this.scannedTmdbIds;
+
+    await forEachMediaCleanupBatch(
+      where,
+      async (media) => {
+        if (visitedMedia.has(media.id)) return;
+        visitedMedia.add(media.id);
+        if (
+          !media.tvdbId ||
+          scannedTvdbIds.has(media.tvdbId) ||
+          scannedTmdbIds.has(media.tmdbId)
+        ) {
+          return;
+        }
+
+        const changed = await this.settleOrphanedShow(media, is4k);
+        if (changed) {
+          this.log(
+            `Settled ${quality.toLowerCase()}orphaned Sonarr state for show ${media.tmdbId} (tvdb: ${media.tvdbId}).`,
+            'info'
+          );
+        }
+      },
+      { relations: { seasons: true, requests: { seasons: true } } }
+    );
+  }
+
+  private async cleanupOrphanedShows(): Promise<void> {
+    await this.cleanupOrphanedShowsForQuality(false, this.didScanStandard);
+    if (this.enable4kShow) {
+      await this.cleanupOrphanedShowsForQuality(true, this.didScan4k);
     }
   }
 }

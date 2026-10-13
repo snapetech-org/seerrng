@@ -142,6 +142,7 @@ class BaseScanner<T> {
   private processingSeasonKeys = new Set<string>();
   private failedShowKeys = new Set<string>();
   private failedShowTvdbKeys = new Set<string>();
+  private failedShowProfiles = new Set<boolean>();
 
   private movieStatusKey(tmdbId: number, is4k: boolean): string {
     return `${tmdbId}:${is4k ? '4k' : 'standard'}`;
@@ -164,10 +165,15 @@ class BaseScanner<T> {
     is4k: boolean,
     tmdbId?: number
   ): void {
+    this.failedShowProfiles.add(is4k);
     this.failedShowTvdbKeys.add(this.movieStatusKey(tvdbId, is4k));
     if (tmdbId !== undefined) {
       this.failedShowKeys.add(this.movieStatusKey(tmdbId, is4k));
     }
+  }
+
+  protected hasShowScanFailures(is4k: boolean): boolean {
+    return this.failedShowProfiles.has(is4k);
   }
 
   protected async resolveDeferredMovieStatusResets(
@@ -1959,6 +1965,7 @@ class BaseScanner<T> {
     this.processingSeasonKeys.clear();
     this.failedShowKeys.clear();
     this.failedShowTvdbKeys.clear();
+    this.failedShowProfiles.clear();
 
     this.log('Scan starting', 'info', { sessionId });
 
