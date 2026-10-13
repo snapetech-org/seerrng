@@ -87,7 +87,7 @@ describe('themePalettes', () => {
       ['refreshed-inset-surface', '0.42'],
       ['refreshed-artwork-scrim', '0.46'],
       ['settings-main-card', '0.38'],
-      ['app-searchbar-scrolled', '0.8'],
+      ['app-searchbar-scrolled', '0.9'],
     ]) {
       const rules = css
         .split(`.${selector} {`)
@@ -98,6 +98,15 @@ describe('themePalettes', () => {
         selector
       );
     }
+    const searchbar = css.match(/\.app-searchbar-scrolled \{([^}]+)\}/)?.[1];
+    assert.ok(searchbar);
+    assert.ok(
+      searchbar?.includes(
+        'background-color: rgb(var(--theme-searchbar-scrolled) / 0.9);'
+      )
+    );
+    // Avoid repainting the full-width fixed header with a backdrop blur while scrolling.
+    assert.doesNotMatch(searchbar ?? '', /(?:-webkit-)?backdrop-filter\s*:/);
     const sidebar = css.match(
       /\[data-theme-palette='seerr'\] \.sidebar \{([^}]+)\}/
     )?.[1];
