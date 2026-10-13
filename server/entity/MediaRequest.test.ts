@@ -13,6 +13,7 @@ import Media from '@server/entity/Media';
 import {
   DuplicateMediaRequestError,
   MediaRequest,
+  QuotaExceptionAlreadyPendingError,
   QuotaRestrictedError,
 } from '@server/entity/MediaRequest';
 import { MediaSearchMetadata } from '@server/entity/MediaSearchMetadata';
@@ -235,6 +236,77 @@ describe('MediaRequest.request', () => {
     assert.ok(rejected[0].reason instanceof QuotaRestrictedError);
     assert.strictEqual(await requestRepository.count(), 1);
     assert.strictEqual(externalApiGetMock.callCount(), 1);
+  });
+
+  it('serializes concurrent quota exception submissions to one pending request', async () => {
+    const requestRepository = getRepository(MediaRequest);
+    const requester = await seedRequester(1);
+    await MediaRequest.request(
+      { mediaId: 22220, mediaType: MediaType.MOVIE, is4k: false },
+      requester
+    );
+
+    const results = await Promise.allSettled(
+      [22221, 22222].map((mediaId) =>
+        MediaRequest.request(
+          { mediaId, mediaType: MediaType.MOVIE, is4k: false },
+          requester,
+          { requestQuotaApproval: true }
+        )
+      )
+    );
+
+    const fulfilled = results.filter(
+      (result): result is PromiseFulfilledResult<MediaRequest> =>
+        result.status === 'fulfilled'
+    );
+    const rejected = rejections(results);
+    assert.equal(fulfilled.length, 1);
+    assert.equal(rejected.length, 1);
+    assert.ok(rejected[0].reason instanceof QuotaExceptionAlreadyPendingError);
+    assert.equal(
+      await requestRepository.count({
+        where: {
+          requestedBy: { id: requester.id },
+          status: MediaRequestStatus.PENDING,
+          quotaException: true,
+        },
+      }),
+      1
+    );
+  });
+
+  it('keeps an auto-approved user over quota pending for administrator review', async () => {
+    const requester = await seedRequester(1);
+    requester.permissions = Permission.REQUEST | Permission.AUTO_APPROVE_MOVIE;
+    await getRepository(User).save(requester);
+
+    const firstRequest = await MediaRequest.request(
+      { mediaId: 22300, mediaType: MediaType.MOVIE, is4k: false },
+      requester
+    );
+    assert.equal(firstRequest.status, MediaRequestStatus.APPROVED);
+
+    const exceptionRequest = await MediaRequest.request(
+      { mediaId: 22301, mediaType: MediaType.MOVIE, is4k: false },
+      requester,
+      { requestQuotaApproval: true }
+    );
+
+    assert.equal(exceptionRequest.status, MediaRequestStatus.PENDING);
+    assert.equal(exceptionRequest.quotaException, true);
+    assert.equal(exceptionRequest.ignoreQuota, false);
+
+    await assert.rejects(
+      () =>
+        MediaRequest.request(
+          { mediaId: 22301, mediaType: MediaType.MOVIE, is4k: false },
+          requester,
+          { requestQuotaApproval: true }
+        ),
+      QuotaExceptionAlreadyPendingError
+    );
+    assert.equal(exceptionRequest.status, MediaRequestStatus.PENDING);
   });
 
   it('rejects a concurrent duplicate request for the same movie', async () => {

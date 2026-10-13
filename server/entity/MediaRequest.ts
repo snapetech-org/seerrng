@@ -100,6 +100,7 @@ import { User } from './User';
 
 export class RequestPermissionError extends Error {}
 export class QuotaRestrictedError extends Error {}
+export class QuotaExceptionAlreadyPendingError extends Error {}
 export class DuplicateMediaRequestError extends Error {}
 export class NoSeasonsAvailableError extends Error {}
 export class BlocklistedMediaError extends Error {}
@@ -131,6 +132,7 @@ type MediaRequestOptions = {
   expectedCredentialVersion?: number;
   expectedMediaServerUserAuthority?: MediaServerUserAuthoritySnapshot;
   isAutoRequest?: boolean;
+  requestQuotaApproval?: boolean;
 };
 
 type BookIdentifierCandidate = {
@@ -285,6 +287,8 @@ const findPromotablePendingRequest = (
   return requests.find((request) => {
     if (
       request.status !== MediaRequestStatus.PENDING ||
+      (request.quotaException &&
+        !actor.hasPermission(Permission.MANAGE_REQUESTS)) ||
       !destinations.every((destination) =>
         isDestinationCoveredByActiveRequest([request], destination)
       )
@@ -316,6 +320,9 @@ const promotePendingRequest = async (
     }
 
     currentRequest.status = MediaRequestStatus.APPROVED;
+    if (currentRequest.quotaException) {
+      currentRequest.ignoreQuota = true;
+    }
     currentRequest.modifiedBy = actor;
     return saveRequestWithFreshMedia(manager, currentRequest);
   });
@@ -491,6 +498,20 @@ export class MediaRequest {
       throw new Error('User missing from request context.');
     }
 
+    const canRequestQuotaApproval =
+      options.requestQuotaApproval === true &&
+      (requestBody.mediaType === MediaType.MOVIE ||
+        requestBody.mediaType === MediaType.TV) &&
+      requestBody.userId === undefined &&
+      requestUser.id === user.id &&
+      !requestUser.hasPermission(Permission.MANAGE_REQUESTS) &&
+      !options.isAutoRequest;
+    if (options.requestQuotaApproval && !canRequestQuotaApproval) {
+      throw new RequestPermissionError(
+        'Quota approval can only be requested for your own movie or TV request.'
+      );
+    }
+
     const watchAheadEpisodeCount = requestBody.watchAheadEpisodeCount ?? 0;
     if (
       !Number.isSafeInteger(watchAheadEpisodeCount) ||
@@ -648,6 +669,37 @@ export class MediaRequest {
     }
 
     const quotas = await requestUser.getQuota();
+    let quotaException = false;
+
+    const ensureNoPendingQuotaException = async (
+      mediaType: MediaType.MOVIE | MediaType.TV
+    ): Promise<void> => {
+      if (!quotaException) {
+        return;
+      }
+
+      const pendingException = await requestRepository
+        .createQueryBuilder('request')
+        .innerJoin('request.requestedBy', 'requestedBy')
+        .select('request.id')
+        .where('requestedBy.id = :userId', {
+          userId: requestUser.id,
+        })
+        .andWhere('request.type = :mediaType', { mediaType })
+        .andWhere('request.status = :status', {
+          status: MediaRequestStatus.PENDING,
+        })
+        .andWhere('request.quotaException = :quotaException', {
+          quotaException: true,
+        })
+        .getOne();
+
+      if (pendingException) {
+        throw new QuotaExceptionAlreadyPendingError(
+          `A ${mediaType === MediaType.MOVIE ? 'movie' : 'TV'} quota exception is already awaiting approval.`
+        );
+      }
+    };
 
     const canBypassQuota = requestUser.hasPermission(
       Permission.MANAGE_REQUESTS
@@ -686,12 +738,18 @@ export class MediaRequest {
         requestBody.mediaType === MediaType.MOVIE &&
         quotas.movie.restricted
       ) {
-        throw new QuotaRestrictedError('Movie Quota exceeded.');
+        if (!canRequestQuotaApproval) {
+          throw new QuotaRestrictedError('Movie Quota exceeded.');
+        }
+        quotaException = true;
       } else if (
         requestBody.mediaType === MediaType.TV &&
         quotas.tv.restricted
       ) {
-        throw new QuotaRestrictedError('Series Quota exceeded.');
+        if (!canRequestQuotaApproval) {
+          throw new QuotaRestrictedError('Series Quota exceeded.');
+        }
+        quotaException = true;
       } else if (
         requestBody.mediaType === MediaType.MUSIC &&
         quotas.music.restricted
@@ -718,6 +776,10 @@ export class MediaRequest {
       ) {
         throw new QuotaRestrictedError('TV and sports request quota exceeded.');
       }
+    }
+
+    if (requestBody.mediaType === MediaType.MOVIE) {
+      await ensureNoPendingQuotaException(MediaType.MOVIE);
     }
 
     // Canonical media admission must precede Servarr admission. Media mutation
@@ -2546,26 +2608,23 @@ export class MediaRequest {
     }
 
     if (requestBody.mediaType === MediaType.MOVIE) {
+      const autoApproved =
+        !quotaException &&
+        hasAutoApprovePermission(
+          requestUser.permissions,
+          'movie',
+          requestBody.is4k
+        );
       const request = new MediaRequest({
         type: MediaType.MOVIE,
         media,
         requestedBy: requestUser,
         // Approval follows the request owner, including when an administrator
         // submits on another user's behalf.
-        status: hasAutoApprovePermission(
-          requestUser.permissions,
-          'movie',
-          requestBody.is4k
-        )
+        status: autoApproved
           ? MediaRequestStatus.APPROVED
           : MediaRequestStatus.PENDING,
-        modifiedBy: hasAutoApprovePermission(
-          requestUser.permissions,
-          'movie',
-          requestBody.is4k
-        )
-          ? user
-          : undefined,
+        modifiedBy: autoApproved ? user : undefined,
         is4k: requestBody.is4k,
         serverId,
         profileId: profileId,
@@ -2587,6 +2646,7 @@ export class MediaRequest {
               ],
         isAutoRequest: options.isAutoRequest ?? false,
         ignoreQuota,
+        quotaException,
       });
 
       return dataSource.transaction(async (manager) => {
@@ -2783,18 +2843,25 @@ export class MediaRequest {
         quotas.tv.limit &&
         finalSeasonSelections.length > (quotas.tv.remaining ?? 0)
       ) {
-        throw new QuotaRestrictedError('Series Quota exceeded.');
+        if (!canRequestQuotaApproval) {
+          throw new QuotaRestrictedError('Series Quota exceeded.');
+        }
+        quotaException = true;
       }
+
+      await ensureNoPendingQuotaException(MediaType.TV);
 
       const persistTvRequest = (
         requestMedia: Media,
         selections: SeasonEpisodeSelection[]
       ): Promise<MediaRequest> => {
-        const autoApproved = hasAutoApprovePermission(
-          requestUser.permissions,
-          'tv',
-          requestBody.is4k
-        );
+        const autoApproved =
+          !quotaException &&
+          hasAutoApprovePermission(
+            requestUser.permissions,
+            'tv',
+            requestBody.is4k
+          );
         const request = new MediaRequest({
           type: MediaType.TV,
           media: requestMedia,
@@ -2837,6 +2904,7 @@ export class MediaRequest {
           ),
           isAutoRequest: options.isAutoRequest ?? false,
           ignoreQuota,
+          quotaException,
         });
 
         return dataSource.transaction(async (manager) => {
@@ -3064,6 +3132,9 @@ export class MediaRequest {
 
   @Column({ default: false })
   public ignoreQuota: boolean;
+
+  @Column({ default: false })
+  public quotaException: boolean;
 
   constructor(init?: Partial<MediaRequest>) {
     Object.assign(this, init);
