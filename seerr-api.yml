@@ -2076,6 +2076,12 @@ components:
         permissions:
           type: number
           example: 0
+        requestServices:
+          type: array
+          description: Additional Radarr or Sonarr request destinations granted to this user.
+          items:
+            type: string
+            pattern: '^(radarr|sonarr):[0-9]{1,10}$'
         avatar:
           type: string
           readOnly: true
@@ -2861,6 +2867,13 @@ components:
         activeDirectory:
           type: string
           example: '/movies'
+        requestButtonLabel:
+          type: string
+          maxLength: 40
+          description: Optional name shown to users granted this additional request destination.
+        requestButtonAnimeOnly:
+          type: boolean
+          description: Restrict this additional request destination to anime titles.
         is4k:
           type: boolean
           example: false
@@ -3115,6 +3128,13 @@ components:
         activeDirectory:
           type: string
           example: '/tv/'
+        requestButtonLabel:
+          type: string
+          maxLength: 40
+          description: Optional name shown to users granted this additional request destination.
+        requestButtonAnimeOnly:
+          type: boolean
+          description: Restrict this additional request destination to anime titles.
         activeLanguageProfileId:
           type: number
           example: 1
@@ -5242,6 +5262,41 @@ components:
         externalServiceSlug:
           type: string
           nullable: true
+        serviceStatuses:
+          type: array
+          readOnly: true
+          description: Availability tracked independently for each Radarr or Sonarr instance and quality.
+          items:
+            type: object
+            properties:
+              id:
+                type: integer
+              mediaId:
+                type: integer
+              serviceType:
+                type: string
+                enum: [radarr, sonarr]
+              serverId:
+                type: integer
+              format:
+                type: string
+                enum: [standard, 4k]
+              status:
+                type: integer
+                description: Instance availability status using the MediaStatus values.
+              externalServiceId:
+                type: integer
+                nullable: true
+              externalServiceSlug:
+                type: string
+                nullable: true
+              seasonStatuses:
+                type: object
+                additionalProperties:
+                  type: integer
+              updatedAt:
+                type: string
+                format: date-time
         audiobookServiceId:
           type: number
           nullable: true
@@ -13464,6 +13519,11 @@ paths:
                   permissions:
                     type: number
                     example: 2
+                  requestServices:
+                    type: array
+                    items:
+                      type: string
+                      pattern: '^(radarr|sonarr):[0-9]{1,10}$'
     post:
       summary: Update permission settings for a user
       description: Updates and returns permission settings for a specific user. Requires `MANAGE_USERS` permission if editing other users.
@@ -13484,6 +13544,12 @@ paths:
               properties:
                 permissions:
                   type: number
+                requestServices:
+                  type: array
+                  maxItems: 100
+                  items:
+                    type: string
+                    pattern: '^(radarr|sonarr):[0-9]{1,10}$'
               required:
                 - permissions
       responses:
@@ -13497,6 +13563,11 @@ paths:
                   permissions:
                     type: number
                     example: 2
+                  requestServices:
+                    type: array
+                    items:
+                      type: string
+                      pattern: '^(radarr|sonarr):[0-9]{1,10}$'
   /user/{userId}/watch_data:
     get:
       summary: Get watch data
@@ -17243,6 +17314,10 @@ paths:
                   example: false
                 serverId:
                   type: number
+                requestServiceServerId:
+                  type: integer
+                  minimum: 0
+                  description: Select a granted, labeled Radarr or Sonarr destination for a movie or TV request. Cannot be combined with serverId.
                 profileId:
                   type: number
                 rootFolder:

@@ -36,6 +36,8 @@ const messages = defineMessages('components.Settings.SonarrModal', {
   validationRootFolderRequired: 'You must select a root folder',
   validationProfileRequired: 'You must select a quality profile',
   validationLanguageProfileRequired: 'You must select a language profile',
+  validationRequestButtonLabel:
+    'Request button labels can be up to 40 characters',
   toastSonarrTestSuccess: 'Sonarr connection established successfully!',
   toastSonarrTestFailure: 'Failed to connect to Sonarr.',
   add: 'Add Server',
@@ -76,6 +78,12 @@ const messages = defineMessages('components.Settings.SonarrModal', {
   tagRequests: 'Tag Requests',
   tagRequestsInfo:
     "Automatically add an additional tag with the requester's user ID & display name",
+  requestButtonLabel: 'Request Button Label',
+  requestButtonLabelHelp:
+    'Give this Sonarr instance a short name so users can request it separately.',
+  requestButtonAnimeOnly: 'Anime Only',
+  requestButtonAnimeOnlyHelp:
+    'Only offer this instance for series identified as anime.',
   validationApplicationUrl: 'You must provide a valid URL',
   validationApplicationUrlTrailingSlash: 'URL must not end in a trailing slash',
   validationBaseUrlLeadingSlash: 'Base URL must have a leading slash',
@@ -142,6 +150,11 @@ const SonarrModal = ({ onClose, sonarr, onSave }: SonarrModalProps) => {
           intl.formatMessage(messages.validationLanguageProfileRequired)
         )
       : Yup.number(),
+    requestButtonLabel: Yup.string().max(
+      40,
+      intl.formatMessage(messages.validationRequestButtonLabel)
+    ),
+    requestButtonAnimeOnly: Yup.boolean(),
     externalUrl: Yup.string()
       .test(
         'valid-url',
@@ -260,6 +273,8 @@ const SonarrModal = ({ onClose, sonarr, onSave }: SonarrModalProps) => {
           syncEnabled: sonarr?.syncEnabled ?? false,
           enableSearch: !sonarr?.preventSearch,
           tagRequests: sonarr?.tagRequests ?? false,
+          requestButtonLabel: sonarr?.requestButtonLabel ?? '',
+          requestButtonAnimeOnly: sonarr?.requestButtonAnimeOnly ?? false,
           monitorNewItems: sonarr?.monitorNewItems ?? 'all',
         }}
         validationSchema={SonarrSettingsSchema}
@@ -304,6 +319,8 @@ const SonarrModal = ({ onClose, sonarr, onSave }: SonarrModalProps) => {
               syncEnabled: values.syncEnabled,
               preventSearch: !values.enableSearch,
               tagRequests: values.tagRequests,
+              requestButtonLabel: values.requestButtonLabel,
+              requestButtonAnimeOnly: values.requestButtonAnimeOnly,
               monitorNewItems: values.monitorNewItems,
             };
             if (!sonarr) {
@@ -1105,6 +1122,42 @@ const SonarrModal = ({ onClose, sonarr, onSave }: SonarrModalProps) => {
                   </div>
                   <span className="settings-form-row-description">
                     {intl.formatMessage(messages.tagRequestsInfo)}
+                  </span>
+                </div>
+                <div className="form-row">
+                  <label htmlFor="requestButtonLabel" className="text-label">
+                    {intl.formatMessage(messages.requestButtonLabel)}
+                  </label>
+                  <div className="form-input-area">
+                    <div className="form-input-field">
+                      <Field
+                        id="requestButtonLabel"
+                        name="requestButtonLabel"
+                        type="text"
+                        maxLength={40}
+                      />
+                    </div>
+                  </div>
+                  <span className="settings-form-row-description">
+                    {intl.formatMessage(messages.requestButtonLabelHelp)}
+                  </span>
+                </div>
+                <div className="form-row">
+                  <label
+                    htmlFor="requestButtonAnimeOnly"
+                    className="checkbox-label"
+                  >
+                    {intl.formatMessage(messages.requestButtonAnimeOnly)}
+                  </label>
+                  <div className="form-input-area">
+                    <SettingsField
+                      type="checkbox"
+                      id="requestButtonAnimeOnly"
+                      name="requestButtonAnimeOnly"
+                    />
+                  </div>
+                  <span className="settings-form-row-description">
+                    {intl.formatMessage(messages.requestButtonAnimeOnlyHelp)}
                   </span>
                 </div>
               </div>

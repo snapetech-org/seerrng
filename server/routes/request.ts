@@ -1221,6 +1221,43 @@ const sanitizeMediaRequestBody = (
     return serverId;
   }
 
+  const requestServiceServerId = parseOptionalRequestOptionId(
+    bodyObject.requestServiceServerId,
+    'requestServiceServerId',
+    true
+  );
+  if ('error' in requestServiceServerId) {
+    return requestServiceServerId;
+  }
+  if (requestServiceServerId.value !== undefined) {
+    if (mediaType !== MediaType.MOVIE && mediaType !== MediaType.TV) {
+      return {
+        error: {
+          status: 400,
+          message:
+            'requestServiceServerId is only valid for movie and series requests.',
+        },
+      };
+    }
+    if (serverId.value !== undefined) {
+      return {
+        error: {
+          status: 400,
+          message:
+            'Choose either a request destination or advanced server override.',
+        },
+      };
+    }
+    if (!options.requireCreateIdentity) {
+      return {
+        error: {
+          status: 400,
+          message: 'requestServiceServerId is only valid for new requests.',
+        },
+      };
+    }
+  }
+
   const profileId = parseOptionalRequestOptionId(
     bodyObject.profileId,
     'profileId',
@@ -1365,6 +1402,7 @@ const sanitizeMediaRequestBody = (
     ...body,
     is4k: bodyObject.is4k ?? false,
     serverId: serverId.value,
+    requestServiceServerId: requestServiceServerId.value,
     profileId: profileId.value,
     profileName: profileName.value,
     rootFolder: rootFolder.value,
@@ -2592,7 +2630,7 @@ requestRoutes.post<never, MediaRequest, MediaRequestBody>(
           req.user,
           req.user.id,
           body.value.is4k ?? false,
-          body.value.serverId
+          body.value.requestServiceServerId ?? body.value.serverId
         );
         if (eligibilityError) {
           return next({ status: 409, message: eligibilityError });

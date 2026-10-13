@@ -160,6 +160,101 @@ describe('POST /user/:id/settings/linked-accounts/jellyfin/quickconnect', () => 
   });
 });
 
+describe('user request destination permissions', () => {
+  it('saves and returns grants for configured service instances', async (t) => {
+    const settings = getSettings();
+    const previousRadarr = settings.radarr;
+    settings.radarr = [
+      {
+        id: 42,
+        name: 'Anime Radarr',
+        hostname: 'localhost',
+        port: 7878,
+        apiKey: 'test-key',
+        useSsl: false,
+        baseUrl: '',
+        activeProfileId: 1,
+        activeProfileName: 'HD',
+        activeDirectory: '/movies/anime',
+        minimumAvailability: 'released',
+        is4k: false,
+        isDefault: false,
+        syncEnabled: true,
+        preventSearch: false,
+        externalUrl: '',
+        tagRequests: false,
+        tags: [],
+        overrideRule: [],
+        requestButtonLabel: 'Anime',
+      },
+    ];
+    t.after(() => {
+      settings.radarr = previousRadarr;
+    });
+
+    const admin = await loginAs('admin@seerr.dev', 'test1234');
+    const friend = await getRepository(User).findOneByOrFail({
+      email: 'friend@seerr.dev',
+    });
+    const response = await request(app)
+      .post(`/user/${friend.id}/settings/permissions`)
+      .set('X-Forwarded-Proto', 'https')
+      .set('Cookie', admin.sessionCookie)
+      .send({
+        permissions: friend.permissions,
+        requestServices: ['radarr:42'],
+      });
+
+    assert.strictEqual(response.status, 200);
+    assert.deepStrictEqual(response.body.requestServices, ['radarr:42']);
+
+    const updatedUser = await getRepository(User).findOneByOrFail({
+      id: friend.id,
+    });
+    assert.deepStrictEqual(updatedUser.requestServices, ['radarr:42']);
+    const read = await request(app)
+      .get(`/user/${friend.id}/settings/permissions`)
+      .set('X-Forwarded-Proto', 'https')
+      .set('Cookie', admin.sessionCookie);
+    assert.strictEqual(read.status, 200);
+    assert.deepStrictEqual(read.body.requestServices, ['radarr:42']);
+
+    const friendSession = await loginAs('friend@seerr.dev', 'test1234');
+    const currentUser = await request(app)
+      .get('/auth/me')
+      .set('X-Forwarded-Proto', 'https')
+      .set('Cookie', friendSession.sessionCookie);
+    assert.strictEqual(currentUser.status, 200);
+    assert.deepStrictEqual(currentUser.body.requestServices, ['radarr:42']);
+  });
+
+  it('rejects unknown and duplicate service grants', async () => {
+    const admin = await loginAs('admin@seerr.dev', 'test1234');
+    const friend = await getRepository(User).findOneByOrFail({
+      email: 'friend@seerr.dev',
+    });
+    const unknown = await request(app)
+      .post(`/user/${friend.id}/settings/permissions`)
+      .set('X-Forwarded-Proto', 'https')
+      .set('Cookie', admin.sessionCookie)
+      .send({
+        permissions: friend.permissions,
+        requestServices: ['radarr:99'],
+      });
+    const duplicate = await request(app)
+      .post(`/user/${friend.id}/settings/permissions`)
+      .set('X-Forwarded-Proto', 'https')
+      .set('Cookie', admin.sessionCookie)
+      .send({
+        permissions: friend.permissions,
+        requestServices: ['radarr:99', 'radarr:99'],
+      });
+
+    assert.strictEqual(unknown.status, 400);
+    assert.strictEqual(duplicate.status, 400);
+  });
+});
+
 describe('POST /user/:id/settings/theme', () => {
   it('starts on SeerrNG and preserves a newly saved account theme through later logins', async () => {
     const { sessionCookie, userId } = await loginAs(

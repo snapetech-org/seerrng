@@ -34,6 +34,7 @@ import {
   getAuthAccountAdmissionResource,
   runAuthAccountAdmission,
 } from '@server/lib/authAccountAdmission';
+import { getExternalRuntimeConfig } from '@server/lib/externalRuntimeConfig';
 import { getJellyfinAuthAuthorityKey } from '@server/lib/mediaServerAuthority';
 import {
   MAX_PERMISSION_VALUE,
@@ -41,6 +42,10 @@ import {
   isValidPermissionValue,
 } from '@server/lib/permissions';
 import requestAdmissionCoordinator from '@server/lib/requestAdmission';
+import {
+  getRequestServiceKey,
+  parseRequestServiceKey,
+} from '@server/lib/requestServices';
 import { getSettings } from '@server/lib/settings';
 import {
   UserMutationActorUnauthorizedError,
@@ -2750,7 +2755,10 @@ userSettingsRoutes.post<{ id: string }, UserSettingsNotificationsResponse>(
   }
 );
 
-userSettingsRoutes.get<{ id: string }, { permissions?: number }>(
+userSettingsRoutes.get<
+  { id: string },
+  { permissions?: number; requestServices?: string[] }
+>(
   '/permissions',
   isAuthenticated(Permission.MANAGE_USERS),
   async (req, res, next) => {
@@ -2775,7 +2783,10 @@ userSettingsRoutes.get<{ id: string }, { permissions?: number }>(
             return next({ status: 404, message: 'User not found.' });
           }
 
-          return res.status(200).json({ permissions: user.permissions });
+          return res.status(200).json({
+            permissions: user.permissions,
+            requestServices: user.requestServices ?? [],
+          });
         }
       );
     } catch (e) {
@@ -2789,8 +2800,8 @@ userSettingsRoutes.get<{ id: string }, { permissions?: number }>(
 
 userSettingsRoutes.post<
   { id: string },
-  { permissions?: number },
-  { permissions: number }
+  { permissions?: number; requestServices?: string[] },
+  { permissions: number; requestServices?: string[] }
 >(
   '/permissions',
   isAuthenticated(Permission.MANAGE_USERS),
@@ -2801,6 +2812,16 @@ userSettingsRoutes.post<
       return next({ status: 400, message: parsedBody.error });
     }
     const body = parsedBody.value;
+    if (
+      Object.keys(body).some(
+        (key) => key !== 'permissions' && key !== 'requestServices'
+      )
+    ) {
+      return next({
+        status: 400,
+        message: 'Request body contains invalid fields.',
+      });
+    }
     const parsedPermissions = parseOptionalNonNegativeInteger(
       body.permissions,
       MAX_PERMISSION_VALUE
@@ -2811,6 +2832,37 @@ userSettingsRoutes.post<
       !isValidPermissionValue(parsedPermissions)
     ) {
       return next({ status: 400, message: 'permissions is invalid.' });
+    }
+
+    let parsedRequestServices: string[] | undefined;
+    if (body.requestServices !== undefined) {
+      if (
+        !Array.isArray(body.requestServices) ||
+        body.requestServices.length > 100
+      ) {
+        return next({ status: 400, message: 'requestServices is invalid.' });
+      }
+      const serviceSettings = getExternalRuntimeConfig();
+      const availableServiceKeys = new Set([
+        ...serviceSettings.radarr.map((service) =>
+          getRequestServiceKey('radarr', service.id)
+        ),
+        ...serviceSettings.sonarr.map((service) =>
+          getRequestServiceKey('sonarr', service.id)
+        ),
+      ]);
+      const parsedServices = body.requestServices.map(parseRequestServiceKey);
+      if (
+        parsedServices.some((service) => service === undefined) ||
+        body.requestServices.some(
+          (service) =>
+            typeof service !== 'string' || !availableServiceKeys.has(service)
+        ) ||
+        new Set(body.requestServices).size !== body.requestServices.length
+      ) {
+        return next({ status: 400, message: 'requestServices is invalid.' });
+      }
+      parsedRequestServices = (body.requestServices as string[]).slice().sort();
     }
 
     try {
@@ -2849,6 +2901,9 @@ userSettingsRoutes.post<
           };
           const result = await userRepository.update(criteria, {
             permissions: parsedPermissions,
+            ...(parsedRequestServices !== undefined && {
+              requestServices: parsedRequestServices,
+            }),
           });
           return result.affected === 1
             ? ('updated' as const)
@@ -2872,7 +2927,12 @@ userSettingsRoutes.post<
         });
       }
 
-      return res.status(200).json({ permissions: parsedPermissions });
+      return res.status(200).json({
+        permissions: parsedPermissions,
+        ...(parsedRequestServices !== undefined && {
+          requestServices: parsedRequestServices,
+        }),
+      });
     } catch (e) {
       if (e instanceof UserMutationActorUnauthorizedError) {
         return next({

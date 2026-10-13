@@ -2503,6 +2503,125 @@ describe('POST /request', () => {
     assert.notStrictEqual(updatedMedia.status4k, MediaStatus.UNKNOWN);
   });
 
+  it('allows a granted user to request from a labeled Radarr instance', async (t) => {
+    const settings = getSettings();
+    settings.radarr = [
+      createRadarrSettings(41),
+      {
+        ...createRadarrSettings(42, false),
+        requestButtonLabel: 'Anime',
+      },
+    ];
+    const friend = await getRepository(User).findOneByOrFail({
+      email: 'friend@seerr.dev',
+    });
+    const previousRequestServices = friend.requestServices;
+    friend.requestServices = ['radarr:42'];
+    await getRepository(User).save(friend);
+    t.after(async () => {
+      settings.radarr = [];
+      friend.requestServices = previousRequestServices;
+      await getRepository(User).save(friend);
+    });
+
+    const agent = await loginAs('friend@seerr.dev', 'test1234');
+    const response = await agent.post('/request').send({
+      mediaType: MediaType.MOVIE,
+      mediaId: 987_650,
+      requestServiceServerId: 42,
+    });
+
+    assert.strictEqual(response.status, 201);
+    assert.strictEqual(response.body.serverId, 42);
+  });
+
+  it('rejects ungranted, unlabeled, and conflicting request destinations', async () => {
+    const settings = getSettings();
+    settings.radarr = [
+      createRadarrSettings(41),
+      {
+        ...createRadarrSettings(42, false),
+        requestButtonLabel: 'Archive',
+      },
+      createRadarrSettings(43, false),
+    ];
+    const agent = await loginAs('friend@seerr.dev', 'test1234');
+
+    const ungranted = await agent.post('/request').send({
+      mediaType: MediaType.MOVIE,
+      mediaId: 987_651,
+      requestServiceServerId: 42,
+    });
+    const unlabeled = await agent.post('/request').send({
+      mediaType: MediaType.MOVIE,
+      mediaId: 987_652,
+      requestServiceServerId: 43,
+    });
+    const conflicting = await agent.post('/request').send({
+      mediaType: MediaType.MOVIE,
+      mediaId: 987_653,
+      serverId: 41,
+      requestServiceServerId: 42,
+    });
+    const wrongMediaType = await agent.post('/request').send({
+      mediaType: MediaType.BOOK,
+      mediaId: 'OL27448W',
+      requestServiceServerId: 42,
+    });
+
+    assert.strictEqual(ungranted.status, 403);
+    assert.match(
+      ungranted.body.message,
+      /access to the selected request destination/i
+    );
+    assert.strictEqual(unlabeled.status, 400);
+    assert.match(unlabeled.body.message, /no longer available/i);
+    assert.strictEqual(conflicting.status, 400);
+    assert.strictEqual(wrongMediaType.status, 400);
+  });
+
+  it('enforces anime-only destinations at request time', async (t) => {
+    const settings = getSettings();
+    settings.radarr = [
+      createRadarrSettings(41),
+      {
+        ...createRadarrSettings(42, false),
+        requestButtonLabel: 'Anime',
+        requestButtonAnimeOnly: true,
+      },
+    ];
+    const friend = await getRepository(User).findOneByOrFail({
+      email: 'friend@seerr.dev',
+    });
+    const previousRequestServices = friend.requestServices;
+    friend.requestServices = ['radarr:42'];
+    await getRepository(User).save(friend);
+    t.after(async () => {
+      settings.radarr = [];
+      friend.requestServices = previousRequestServices;
+      await getRepository(User).save(friend);
+    });
+
+    const agent = await loginAs('friend@seerr.dev', 'test1234');
+    const response = await agent.post('/request').send({
+      mediaType: MediaType.MOVIE,
+      mediaId: 987_654,
+      requestServiceServerId: 42,
+    });
+
+    assert.strictEqual(response.status, 403);
+    assert.match(response.body.message, /limited to anime titles/i);
+
+    const admin = await loginAs('admin@seerr.dev', 'test1234');
+    const advancedOverride = await admin.post('/request').send({
+      mediaType: MediaType.MOVIE,
+      mediaId: 987_655,
+      serverId: 42,
+    });
+    assert.strictEqual(advancedOverride.status, 403);
+    assert.match(advancedOverride.body.message, /limited to anime titles/i);
+  });
+
   it('uses an explicitly selected zero-valued screen service without a default', async (t) => {
     const settings = getSettings();
     const legacyStandardSettings = createRadarrSettings(0, false);

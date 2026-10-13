@@ -40,6 +40,7 @@ import Issue from './Issue';
 import MediaIdentifier from './MediaIdentifier';
 import { MediaRequest } from './MediaRequest';
 import { MediaSearchMetadata } from './MediaSearchMetadata';
+import MediaServiceStatus from './MediaServiceStatus';
 import Season from './Season';
 
 @Entity()
@@ -205,6 +206,9 @@ class Media {
     cascade: ['insert', 'remove'],
   })
   public requests: MediaRequest[];
+
+  @OneToMany(() => MediaServiceStatus, (status) => status.media)
+  public serviceStatuses?: MediaServiceStatus[];
 
   @OneToMany(() => Watchlist, (watchlist) => watchlist.media)
   public watchlists: null | Watchlist[];

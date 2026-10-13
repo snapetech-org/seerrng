@@ -34,6 +34,21 @@ Only select this option if you have separate non-4K and 4K servers. If you only 
 
 Enter a friendly name for the Radarr/Sonarr server.
 
+#### Request Destination Label (optional)
+
+Give a non-default instance a short label, such as **Anime** or **Kids**. Users
+who are granted access will see the label and server name in the movie or
+series request dialog. The default instance remains the normal destination and
+does not need a label.
+
+Select **Anime only** when the instance should accept anime titles only.
+SeerrNG checks the title's TMDB anime keyword before showing the destination
+and verifies it again when the request is submitted.
+
+Manage access for each user under **Users → Edit → Permissions → Request
+destinations**. This access is separate from advanced request permissions and
+does not grant permission to change profiles, folders, or tags.
+
 #### Hostname or IP Address
 
 If you have Seerr installed on the same network as Radarr/Sonarr, you can set this to the local IP address of your Radarr/Sonarr server. Otherwise, this should be set to a valid hostname (e.g., `radarr.myawesomeserver.com`).

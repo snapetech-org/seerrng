@@ -74,3 +74,15 @@ Users can configure their personal notification settings here. Please see [Notif
 ## Permissions
 
 Users cannot modify their own permissions. Users with the **Manage Users** permission can manage permissions of other users, except those of users with the **Admin** permission.
+
+### Request Destinations
+
+Under **Request destinations**, grant a user access to labeled, non-default
+Radarr or Sonarr instances. The user must still have the usual movie or series
+request permission. They can choose a granted destination in the request
+dialog; the default service remains available as before.
+
+These grants apply only to the selected service instance. They do not grant
+advanced request permissions or let the user choose profiles, root folders,
+language profiles, or tags. Anime-only destinations appear only for titles
+SeerrNG identifies as anime.

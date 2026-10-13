@@ -330,11 +330,18 @@ export interface DVRSettings {
   overrideRule: number[];
 }
 
-export interface RadarrSettings extends DVRSettings {
+export interface ServiceRequestButtonSettings {
+  requestButtonLabel?: string;
+  requestButtonAnimeOnly?: boolean;
+}
+
+export interface RadarrSettings
+  extends DVRSettings, ServiceRequestButtonSettings {
   minimumAvailability: string;
 }
 
-export interface SonarrSettings extends DVRSettings {
+export interface SonarrSettings
+  extends DVRSettings, ServiceRequestButtonSettings {
   seriesType: 'standard' | 'daily' | 'anime';
   animeSeriesType: 'standard' | 'daily' | 'anime';
   activeAnimeProfileId?: number;

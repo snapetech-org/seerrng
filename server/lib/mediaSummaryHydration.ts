@@ -3,6 +3,7 @@ import { getRepository } from '@server/datasource';
 import Issue from '@server/entity/Issue';
 import type Media from '@server/entity/Media';
 import { MediaRequest } from '@server/entity/MediaRequest';
+import MediaServiceStatus from '@server/entity/MediaServiceStatus';
 import type { User } from '@server/entity/User';
 import { Watchlist } from '@server/entity/Watchlist';
 import { restrictMediaRelationsForUser } from '@server/lib/mediaResponse';
@@ -44,29 +45,37 @@ export const hydrateMediaSummaryRelations = async (
     );
   }
 
-  const [activeRequests, userWatchlists, issues] = await Promise.all([
-    activeRequestQuery.getMany(),
-    user
-      ? getRepository(Watchlist)
-          .createQueryBuilder('watchlist')
-          .innerJoinAndSelect('watchlist.media', 'watchlistMedia')
-          .where('watchlistMedia.id IN (:...mediaIds)', { mediaIds })
-          .andWhere('watchlist.requestedBy = :userId', { userId: user.id })
-          .getMany()
-      : [],
-    options.includeIssues
-      ? getRepository(Issue)
-          .createQueryBuilder('issue')
-          .leftJoinAndSelect('issue.media', 'issueMedia')
-          .leftJoinAndSelect('issue.createdBy', 'issueCreatedBy')
-          .leftJoinAndSelect('issue.modifiedBy', 'issueModifiedBy')
-          .leftJoinAndSelect('issue.comments', 'issueComments')
-          .where('issueMedia.id IN (:...mediaIds)', { mediaIds })
-          .orderBy('issue.createdAt', 'DESC')
-          .addOrderBy('issue.id', 'DESC')
-          .getMany()
-      : [],
-  ]);
+  const [activeRequests, userWatchlists, issues, serviceStatuses] =
+    await Promise.all([
+      activeRequestQuery.getMany(),
+      user
+        ? getRepository(Watchlist)
+            .createQueryBuilder('watchlist')
+            .innerJoinAndSelect('watchlist.media', 'watchlistMedia')
+            .where('watchlistMedia.id IN (:...mediaIds)', { mediaIds })
+            .andWhere('watchlist.requestedBy = :userId', { userId: user.id })
+            .getMany()
+        : [],
+      options.includeIssues
+        ? getRepository(Issue)
+            .createQueryBuilder('issue')
+            .leftJoinAndSelect('issue.media', 'issueMedia')
+            .leftJoinAndSelect('issue.createdBy', 'issueCreatedBy')
+            .leftJoinAndSelect('issue.modifiedBy', 'issueModifiedBy')
+            .leftJoinAndSelect('issue.comments', 'issueComments')
+            .where('issueMedia.id IN (:...mediaIds)', { mediaIds })
+            .orderBy('issue.createdAt', 'DESC')
+            .addOrderBy('issue.id', 'DESC')
+            .getMany()
+        : [],
+      getRepository(MediaServiceStatus)
+        .createQueryBuilder('serviceStatus')
+        .where('serviceStatus.mediaId IN (:...mediaIds)', { mediaIds })
+        .orderBy('serviceStatus.serviceType', 'ASC')
+        .addOrderBy('serviceStatus.serverId', 'ASC')
+        .addOrderBy('serviceStatus.format', 'ASC')
+        .getMany(),
+    ]);
   const requestsByMediaId = new Map<number, MediaRequest[]>();
   for (const request of activeRequests) {
     const mediaId = request.media.id;
@@ -91,6 +100,13 @@ export const hydrateMediaSummaryRelations = async (
     mediaIssues.push(issue);
     issuesByMediaId.set(mediaId, mediaIssues);
   }
+  const statusesByMediaId = new Map<number, MediaServiceStatus[]>();
+  for (const status of serviceStatuses) {
+    const statuses = statusesByMediaId.get(status.mediaId) ?? [];
+    status.media = undefined as unknown as Media;
+    statuses.push(status);
+    statusesByMediaId.set(status.mediaId, statuses);
+  }
 
   for (const media of mediaItems) {
     media.requests = requestsByMediaId.get(media.id) ?? [];
@@ -98,6 +114,7 @@ export const hydrateMediaSummaryRelations = async (
     if (options.includeIssues) {
       media.issues = issuesByMediaId.get(media.id) ?? [];
     }
+    media.serviceStatuses = statusesByMediaId.get(media.id) ?? [];
     restrictMediaRelationsForUser(media, user);
   }
 

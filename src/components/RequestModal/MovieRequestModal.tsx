@@ -2,8 +2,10 @@ import CachedImage from '@app/components/Common/CachedImage';
 import Modal from '@app/components/Common/Modal';
 import MediaQualitySelect from '@app/components/MediaDetails/MediaQualitySelect';
 import AdvancedOptionsDisclosureButton from '@app/components/RequestModal/AdvancedOptionsDisclosureButton';
-import type { RequestOverrides } from '@app/components/RequestModal/AdvancedRequester';
-import AdvancedRequester from '@app/components/RequestModal/AdvancedRequester';
+import AdvancedRequester, {
+  RequestListboxControl,
+  type RequestOverrides,
+} from '@app/components/RequestModal/AdvancedRequester';
 import QuotaDisplay from '@app/components/RequestModal/QuotaDisplay';
 import RequestFooterStatus from '@app/components/RequestModal/RequestFooterStatus';
 import RequestMediaCard from '@app/components/RequestModal/RequestMediaCard';
@@ -22,11 +24,13 @@ import { sortCrewPriority } from '@app/utils/creditHelpers';
 import defineMessages from '@app/utils/defineMessages';
 import { getTmdbPosterImageUrl } from '@app/utils/imageCache';
 import { ArrowDownTrayIcon, XMarkIcon } from '@heroicons/react/24/outline';
+import { ANIME_KEYWORD_ID } from '@server/api/themoviedb/constants';
 import { MediaRequestStatus, MediaStatus } from '@server/constants/media';
 import type { MediaRequest } from '@server/entity/MediaRequest';
 import type { NonFunctionProperties } from '@server/interfaces/api/common';
 import type { ServiceCommonServer } from '@server/interfaces/api/serviceInterfaces';
 import type { QuotaResponse } from '@server/interfaces/api/userInterfaces';
+import type { UserRequestRootFolders } from '@server/interfaces/api/userSettingsInterfaces';
 import { Permission, hasAutoApprovePermission } from '@server/lib/permissions';
 import type { MovieDetails } from '@server/models/Movie';
 import axios from 'axios';
@@ -69,6 +73,8 @@ const messages = defineMessages('components.RequestModal', {
   notAvailable: 'Not Available',
   advancedOptions: 'Advanced Options',
   quality: 'Quality',
+  destination: 'Request destination',
+  defaultDestination: 'Default destination ({name})',
 });
 
 interface RequestModalProps extends React.HTMLAttributes<HTMLDivElement> {
@@ -93,6 +99,8 @@ const MovieRequestModal = ({
   const [isUpdating, setIsUpdating] = useState(false);
   const [selectedIs4k, setSelectedIs4k] = useState(is4k);
   const [qualityRevision, setQualityRevision] = useState(0);
+  const [requestServiceServerId, setRequestServiceServerId] =
+    useState<number>();
   const [requestOverrides, setRequestOverrides] =
     useState<RequestOverrides | null>(null);
   const { addToast } = useToasts();
@@ -127,6 +135,12 @@ const MovieRequestModal = ({
   const [requestedByPortal, setRequestedByPortal] =
     useState<HTMLDivElement | null>(null);
   const effectiveIs4k = requestOverrides?.is4k ?? selectedIs4k;
+  const canUseAdvancedOptions = hasPermission(
+    [Permission.REQUEST_ADVANCED, Permission.MANAGE_REQUESTS],
+    { type: 'or' }
+  );
+  const isAnimeTitle =
+    data?.keywords.some((keyword) => keyword.id === ANIME_KEYWORD_ID) ?? false;
   const isFailedManagerRepair =
     editRequest?.status === MediaRequestStatus.FAILED &&
     hasPermission(Permission.MANAGE_REQUESTS);
@@ -136,16 +150,49 @@ const MovieRequestModal = ({
   const fallbackService = radarrServers?.find(
     (server) => server.isDefault && server.is4k === effectiveIs4k
   );
+  const requestServiceOptions = canUseAdvancedOptions
+    ? []
+    : (radarrServers ?? []).filter(
+        (server) =>
+          !server.isDefault &&
+          server.is4k === effectiveIs4k &&
+          Boolean(server.requestButtonLabel?.trim()) &&
+          (!server.requestButtonAnimeOnly || isAnimeTitle) &&
+          user?.requestServices?.includes(`radarr:${server.id}`)
+      );
+  const selectedRequestServiceServerId = requestServiceOptions.some(
+    (server) => server.id === requestServiceServerId
+  )
+    ? requestServiceServerId
+    : !fallbackService
+      ? requestServiceOptions[0]?.id
+      : undefined;
+  const selectedRequestService = radarrServers?.find(
+    (server) => server.id === selectedRequestServiceServerId
+  );
+  const requestDestinationUserId = requestOverrides?.user?.id ?? user?.id;
+  const { data: requestRootFolders, error: requestRootFoldersError } =
+    useSWR<UserRequestRootFolders>(
+      requestDestinationUserId
+        ? `/api/v1/user/${requestDestinationUserId}/settings/request-root-folders`
+        : null
+    );
+  const destinationService =
+    selectedService ?? selectedRequestService ?? fallbackService;
   const selectedDestination = createRequestDestination(
     'radarr',
     effectiveIs4k ? '4k' : 'standard',
-    selectedService ?? fallbackService,
-    requestOverrides
+    destinationService,
+    requestOverrides,
+    destinationService
+      ? requestRootFolders?.[`radarr:${destinationService.id}`]
+      : undefined
   );
   const selectedDestinationAvailable =
     !editRequest &&
-    (isVideoQualityAvailable(data?.mediaInfo, 'movie', effectiveIs4k) ||
-      isRequestDestinationAvailable(data?.mediaInfo, selectedDestination));
+    (isRequestDestinationAvailable(data?.mediaInfo, selectedDestination) ||
+      (!selectedDestination &&
+        isVideoQualityAvailable(data?.mediaInfo, 'movie', effectiveIs4k)));
   const selectedDestinationRequested =
     !editRequest &&
     isRequestDestinationRequested(
@@ -169,6 +216,10 @@ const MovieRequestModal = ({
   const selectedDestinationCovered =
     selectedDestinationAvailable ||
     (selectedDestinationRequested && !selectedDestinationPromotable);
+  const requestDestinationSettingsLoading =
+    Boolean(requestDestinationUserId) &&
+    !requestRootFolders &&
+    !requestRootFoldersError;
 
   useEffect(() => {
     if (onUpdating) {
@@ -177,7 +228,7 @@ const MovieRequestModal = ({
   }, [isUpdating, onUpdating]);
 
   const sendRequest = useCallback(async () => {
-    if (selectedDestinationCovered) {
+    if (selectedDestinationCovered || requestDestinationSettingsLoading) {
       return;
     }
 
@@ -198,6 +249,9 @@ const MovieRequestModal = ({
         mediaId: data?.id,
         mediaType: 'movie',
         is4k: effectiveIs4k,
+        requestServiceServerId: canUseAdvancedOptions
+          ? undefined
+          : selectedRequestServiceServerId,
         ignoreQuota: requestOverrides?.ignoreQuota,
         ...overrideParams,
       });
@@ -239,6 +293,9 @@ const MovieRequestModal = ({
     }
   }, [
     requestOverrides,
+    selectedRequestServiceServerId,
+    requestDestinationSettingsLoading,
+    canUseAdvancedOptions,
     data?.id,
     data?.title,
     effectiveIs4k,
@@ -459,10 +516,6 @@ const MovieRequestModal = ({
     'movie',
     effectiveIs4k
   );
-  const canUseAdvancedOptions = hasPermission(
-    [Permission.REQUEST_ADVANCED, Permission.MANAGE_REQUESTS],
-    { type: 'or' }
-  );
   const notAvailable = intl.formatMessage(messages.notAvailable);
   const releaseDate = data?.releaseDate
     ? intl.formatDate(new Date(`${data.releaseDate}T00:00:00`), {
@@ -490,6 +543,7 @@ const MovieRequestModal = ({
       alignTop
       okDisabled={
         isUpdating ||
+        requestDestinationSettingsLoading ||
         selectedDestinationCovered ||
         (quota?.movie.restricted && !requestOverrides?.ignoreQuota)
       }
@@ -616,6 +670,9 @@ const MovieRequestModal = ({
                 </dt>
                 <dd className="m-0 truncate">
                   {selectedService?.name ??
+                    (selectedRequestService
+                      ? `${selectedRequestService.requestButtonLabel} (${selectedRequestService.name})`
+                      : undefined) ??
                     fallbackService?.name ??
                     notAvailable}
                 </dd>
@@ -634,7 +691,7 @@ const MovieRequestModal = ({
           </div>
         </div>
 
-        <div className="mt-2 flex items-center">
+        <div className="request-selection-options card-spacing-before">
           <MediaQualitySelect
             value={effectiveIs4k ? '4k' : 'hd'}
             options={[
@@ -643,6 +700,7 @@ const MovieRequestModal = ({
             ]}
             onChange={(quality) => {
               setSelectedIs4k(quality === '4k');
+              setRequestServiceServerId(undefined);
               setRequestOverrides(null);
               setQualityRevision((current) => current + 1);
             }}
@@ -650,6 +708,40 @@ const MovieRequestModal = ({
             autoSelectAvailable={false}
             purpose="request"
           />
+          {!canUseAdvancedOptions &&
+            requestServiceOptions.length > 0 &&
+            (fallbackService || requestServiceOptions.length > 1) && (
+              <RequestListboxControl
+                id="movie-request-destination"
+                label={intl.formatMessage(messages.destination)}
+                value={selectedRequestServiceServerId ?? -1}
+                options={[
+                  ...(fallbackService
+                    ? [
+                        {
+                          value: -1,
+                          label: intl.formatMessage(
+                            messages.defaultDestination,
+                            { name: fallbackService.name }
+                          ),
+                        },
+                      ]
+                    : []),
+                  ...requestServiceOptions.map((server) => ({
+                    value: server.id,
+                    label: `${server.requestButtonLabel} (${server.name})`,
+                  })),
+                ]}
+                onChange={(serverId) => {
+                  setRequestServiceServerId(
+                    serverId < 0 ? undefined : serverId
+                  );
+                  setRequestOverrides(null);
+                }}
+                disabled={isUpdating}
+                loadingLabel={intl.formatMessage(messages.destination)}
+              />
+            )}
         </div>
 
         {canUseAdvancedOptions && (
@@ -703,6 +795,7 @@ const MovieRequestModal = ({
             data-testid="modal-ok-button"
             disabled={
               isUpdating ||
+              requestDestinationSettingsLoading ||
               selectedDestinationCovered ||
               (quota?.movie.restricted && !requestOverrides?.ignoreQuota)
             }

@@ -13,6 +13,7 @@ import {
 import { getRepository } from '@server/datasource';
 import Media from '@server/entity/Media';
 import MediaRequest from '@server/entity/MediaRequest';
+import MediaServiceStatus from '@server/entity/MediaServiceStatus';
 import Season from '@server/entity/Season';
 import SeasonRequest from '@server/entity/SeasonRequest';
 import { User } from '@server/entity/User';
@@ -208,6 +209,44 @@ describe('Sonarr Scanner', () => {
     getLibrarySeriesByTvdbIdImpl = async () => [];
     getShowByTvdbIdImpl = async () => fakeTmdbShow(1);
     getTvShowImpl = async () => fakeTmdbShow(1);
+  });
+
+  describe('per-instance availability', () => {
+    it('records partial and per-season availability for the exact Sonarr instance', async () => {
+      const firstSeason = fakeTmdbShow(1052).seasons[0];
+      getShowByTvdbIdImpl = async () =>
+        fakeTmdbShow(1052, [
+          firstSeason,
+          {
+            ...firstSeason,
+            id: 2,
+            name: 'Season 2',
+            season_number: 2,
+            episode_count: 8,
+          },
+        ]);
+      getSeriesImpl = async () => [fakeSonarrSeries()];
+      configureSonarr([{ id: 42, name: 'Sonarr Archive', isDefault: false }]);
+
+      await runWithMockTimers(() => sonarrScanner.run());
+
+      const media = await getRepository(Media).findOneByOrFail({
+        tmdbId: 1052,
+        mediaType: MediaType.TV,
+      });
+      const status = await getRepository(MediaServiceStatus).findOneByOrFail({
+        mediaId: media.id,
+        serviceType: 'sonarr',
+        serverId: 42,
+        format: 'standard',
+      });
+
+      assert.strictEqual(status.status, MediaStatus.PARTIALLY_AVAILABLE);
+      assert.deepStrictEqual(status.seasonStatuses, {
+        1: MediaStatus.AVAILABLE,
+        2: MediaStatus.UNKNOWN,
+      });
+    });
   });
 
   describe('deferred season status reconciliation', () => {
