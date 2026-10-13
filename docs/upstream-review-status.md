@@ -10,7 +10,7 @@ was open in review on this date. An open or draft pull request is not a released
 feature. Follow its pull request for review and validation status, and use the
 release notes to confirm what is available in a SeerrNG release.
 
-This page tracks selected SeerrNG pull requests numbered #244–#277 from this review
+This page tracks selected SeerrNG pull requests numbered #244–#279 from this review
 period, including this index and the fork-retirement matrix. It is not a
 complete list of all open SeerrNG pull requests, a full inventory of upstream
 issues, or a user guide. Source links identify the public Seerr issue or pull
@@ -43,6 +43,7 @@ implementation details and review evidence.
 | [#265](https://github.com/snapetech/seerrng/pull/265) | Use bounded Node test workers in the repository's hosted validation workflow. | SeerrNG-specific validation-engine maintenance. |
 | [#276](https://github.com/snapetech-org/seerrng/pull/276) | Let users recover eligible TV requests by selecting a verified TVDB series and mapping requested seasons for the chosen Sonarr destination and quality. Extend Sonarr scanning to correlate a series with each matching SeerrNG media record. | [Seerr PR #3495](https://github.com/seerr-team/seerr/pull/3495) and [Seerr PR #3496](https://github.com/seerr-team/seerr/pull/3496). |
 | [#277](https://github.com/snapetech-org/seerrng/pull/277) | Continue Radarr/Sonarr acquisition when optional requester-tag lookup or creation fails, preserving configured and request-selected tags. | [Seerr PR #2681](https://github.com/seerr-team/seerr/pull/2681) and its linked [issue #2664](https://github.com/seerr-team/seerr/issues/2664). |
+| [#279](https://github.com/snapetech-org/seerrng/pull/279) | Add a per-account browser preference to hide or show subject tags across Movie and Series detail pages. | [Seerr issue #2651](https://github.com/seerr-team/seerr/issues/2651) and closed [Seerr PR #3071](https://github.com/seerr-team/seerr/pull/3071). |
 
 For current supported behavior, start with the [documentation index](./README.md).
 For SeerrNG's upstream relationship and the evidence needed before the core

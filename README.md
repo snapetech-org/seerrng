@@ -138,6 +138,13 @@ Radarr/Sonarr dispatch when optional requester-tag lookup or creation fails
 ([#277](https://github.com/snapetech-org/seerrng/pull/277)); its upstream
 source is linked in the review index. It is not a released feature.
 
+A further open proposal adds a browser-saved choice to hide or show subject
+tags on both Movie and Series detail pages
+([#279](https://github.com/snapetech-org/seerrng/pull/279)). Its public source
+context and the evidence an upstream replacement would need are linked from the
+review index and [fork-retirement matrix](./docs/fork-rationale.md). It is not
+a released feature.
+
 Release notes are maintained in [`CHANGELOG.md`](./CHANGELOG.md). User-facing
 pull requests add a concise release-note fragment under
 [`release-notes/`](./release-notes/README.md); the release workflow publishes
