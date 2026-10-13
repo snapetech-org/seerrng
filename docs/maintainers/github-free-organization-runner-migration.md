@@ -1,71 +1,42 @@
 # GitHub Free organization and runner-group migration plan
 
-Status: planned. No repository transfers or organization changes have been made.
+Status: partially complete as of 2026-10-13 23:50 UTC. The repository transfers and secure runner-group configuration are complete; runner membership and workflow cutover are not.
 
-## Current temporary policy
+## Verified live state
 
-The NG repositories remain public under the `snapetech` personal account. The
-repositories require approval for workflow runs from all external contributors.
-Every pull request uses GitHub-hosted runners; local runners are reserved for
-trusted `main` runs where supported.
+All eight target repositories are public and owned by `snapetech-org`: SeerrNG, SLSKR, SLSKDN, QuestarrNG, TorrentNG, ROMarrNG, ChaptarrNG, and BookshelfNG.
 
-This workflow condition is routing logic, not an enforced security boundary.
-A public pull request can propose workflow changes, so review `.github/workflows`
-before approving an external contributor's run. Repository-level runners on a
-public repository do not provide runner-group restrictions for a selected
-repository and workflow ref. GitHub warns that code from public forks can
-compromise a persistent self-hosted runner. Keep external pull-request runs on
-GitHub-hosted runners until organization-level runner groups are configured.
+The organization runner group `trusted-main` (id 3) is configured with:
 
-## Intended target
+- Visibility `selected`, public repository access enabled, and workflow restrictions enabled.
+- Exactly the eight repositories above.
+- Nine workflows pinned to `refs/heads/main`: `bookshelfng/build.yml`, `chaptarrng/build.yml`, `QuestarrNG/ci.yml`, `ROMarrNG/docker.yml`, `seerrng/ci.yml`, `slskdN/ci.yml`, `slskdN/ci-enhancements.yml`, `slskr/ci.yml`, and `TorrentNG/ci.yml`.
+- Zero attached runners at the last live check. The group is configured but not operational.
 
-Move the public repositories to a GitHub Free organization with a separate
-organization name. Keep the repositories public and use standard GitHub-hosted
-runner labels for pull-request validation. GitHub documents standard hosted
-runners as free and unlimited for public repositories; larger runners remain
-billable, so do not select them.
+The `Default` group still holds 18 registered runners. Their online status does not mean they are members of `trusted-main`; runner membership has not been changed. The migration PRs are open across all eight repositories, and the routing changes are not active on their default branches yet.
 
-Use organization runner groups for trusted local jobs. Limit each group to its
-selected repositories and to exact workflow refs on `refs/heads/main`; keep
-pull-request workflows on standard GitHub-hosted runners. GitHub Free
-organizations support self-hosted runner groups and workflow restrictions.
+TorrentNG's `backend-evidence.yml` is intentionally excluded from `trusted-main` because it runs live device and production-soak evidence. Keep that workflow on its existing runner arrangement.
 
-References:
+## Routing and security boundary
 
-- [GitHub Actions billing](https://docs.github.com/en/billing/concepts/product-billing/github-actions)
+Pull-request, tag, and non-main validation stays on standard GitHub-hosted runners. Only the exact workflows above may use the shared local pool, and only for trusted `main` pushes or manual runs against `main`. The organization runner-group restriction is the server-enforced control; workflow expressions alone do not protect a public self-hosted runner.
+
+The `TRUSTED_MAIN_RUNNERS_ENABLED` variable is currently unset in QuestarrNG and SLSKDN. Do not set it to `true` until `trusted-main` has an online runner with the labels those workflows require. SLSKDN also retains its `slskdn` label requirement.
+
+The shared pool is for trusted main validation. It will not run contributor pull-request code and therefore will not directly drain the GitHub-hosted pull-request queue. Keep PR validation on hosted runners as required by the public-repository security boundary.
+
+## Remaining work
+
+1. Complete and integrate the per-repository routing changes without canceling existing work.
+2. Attach only suitable, least-privilege NG runners to `trusted-main`; retain a separate runner for any excluded deployment or live-evidence workflow.
+3. Enable the QuestarrNG and SLSKDN route flags only after the group runner is online and its labels are verified.
+4. Run a trusted main workflow in each repository and confirm the selected runner group, labels, and job outcome. Verify pull-request workflows remain hosted.
+5. Keep Actions queue snapshots separate from runner utilization: queued hosted PR jobs and idle local runners represent different capacity pools.
+
+## References
+
+- [GitHub Actions limits](https://docs.github.com/en/actions/reference/limits)
 - [GitHub-hosted runner availability for public repositories](https://docs.github.com/en/actions/reference/runners/github-hosted-runners)
 - [Runner groups for self-hosted runners](https://docs.github.com/en/actions/how-tos/manage-runners/self-hosted-runners/manage-access)
 - [GitHub's self-hosted runner security guidance](https://docs.github.com/en/actions/reference/security/secure-use)
 - [Moving repositories to an organization](https://docs.github.com/en/account-and-profile/how-tos/account-management/moving-your-work-to-an-organization)
-
-## Migration checklist
-
-1. Confirm the target is a GitHub Free organization, the repositories will
-   remain public, standard hosted runners are selected, and the billing page
-   shows no paid runner configuration.
-2. Inventory each repository's default branch, rulesets, open pull requests,
-   releases and tags, Actions variables and secrets, environments and reviewers,
-   webhooks, package permissions, Pages settings, and repository dispatch
-   integrations. Record settings that need to be recreated after transfer.
-3. Transfer one repository as a pilot. Verify redirects, clone and push URLs,
-   branch protections, Actions permissions, secrets, environments, release
-   automation, and package access before continuing.
-4. Create shared runner groups by compatible host capability. Restrict each
-   group to selected repositories and exact workflow paths pinned to
-   `refs/heads/main`. Add the existing local runners to those groups after
-   registering them at organization scope.
-5. Keep pull-request jobs on `ubuntu-latest`, `windows-latest`, or
-   `macos-latest`. Allow the local group only for trusted main-branch push and
-   manual-main jobs. Leave any deployment or live-integration job pinned to the
-   machine that owns its target environment.
-6. Verify that external fork runs remain approval-gated and run on GitHub-hosted
-   machines after approval. Verify main jobs use the intended runner group and
-   that a pull-request workflow cannot select that group. Check the billing
-   dashboard after the pilot and after the remaining transfers.
-7. Continue with the other repositories only after the pilot checks pass. Keep
-   a rollback record of prior settings and restore the previous repository owner
-   if transfer or Actions configuration does not validate.
-
-The transfer should be done one repository at a time. Do not make the move a
-prerequisite for today's local testing; the approval gate and hosted routing are
-the temporary controls until the organization is ready.
