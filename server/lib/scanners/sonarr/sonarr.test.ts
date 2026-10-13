@@ -690,6 +690,81 @@ describe('Sonarr Scanner', () => {
       assert.strictEqual(updatedRequest.status, MediaRequestStatus.DECLINED);
     });
 
+    for (const is4k of [false, true]) {
+      it(`keeps an approved ${is4k ? '4K' : 'standard'} request when Sonarr carries the show under another TVDB ID`, async () => {
+        const mediaRepository = getRepository(Media);
+        const requestRepository = getRepository(MediaRequest);
+        const userRepository = getRepository(User);
+
+        const requestedBy = await userRepository.findOneOrFail({
+          where: { id: 1 },
+        });
+        const media = await mediaRepository.save(
+          new Media({
+            tmdbId: 2003,
+            tvdbId: 610,
+            mediaType: MediaType.TV,
+            status: is4k ? MediaStatus.UNKNOWN : MediaStatus.PROCESSING,
+            status4k: is4k ? MediaStatus.PROCESSING : MediaStatus.UNKNOWN,
+            seasons: [
+              new Season({
+                seasonNumber: 1,
+                status: is4k ? MediaStatus.UNKNOWN : MediaStatus.PROCESSING,
+                status4k: is4k ? MediaStatus.PROCESSING : MediaStatus.UNKNOWN,
+              }),
+            ],
+          })
+        );
+        const request = await requestRepository.save(
+          new MediaRequest({
+            type: MediaType.TV,
+            status: MediaRequestStatus.APPROVED,
+            media,
+            requestedBy,
+            is4k,
+            seasons: [],
+          })
+        );
+
+        configureSonarr([{ syncEnabled: true, is4k }]);
+        getSeriesImpl = async () => [
+          fakeSonarrSeries({
+            tvdbId: 611,
+            seasons: [
+              {
+                seasonNumber: 1,
+                monitored: true,
+                statistics: {
+                  episodeFileCount: 0,
+                  totalEpisodeCount: 10,
+                  episodeCount: 10,
+                  percentOfEpisodes: 0,
+                  sizeOnDisk: 0,
+                  previousAiring: undefined,
+                },
+              },
+            ],
+          }),
+        ];
+        getShowByTvdbIdImpl = async () => fakeTmdbShow(2003);
+
+        await runWithMockTimers(() => sonarrScanner.run());
+
+        const updatedMedia = await mediaRepository.findOneOrFail({
+          where: { tmdbId: 2003 },
+        });
+        const updatedRequest = await requestRepository.findOneOrFail({
+          where: { id: request.id },
+        });
+
+        assert.strictEqual(
+          is4k ? updatedMedia.status4k : updatedMedia.status,
+          MediaStatus.PROCESSING
+        );
+        assert.strictEqual(updatedRequest.status, MediaRequestStatus.APPROVED);
+      });
+    }
+
     it('does not decline the request when the show still exists in Sonarr', async () => {
       const mediaRepository = getRepository(Media);
       const requestRepository = getRepository(MediaRequest);
