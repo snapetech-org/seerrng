@@ -11,10 +11,10 @@ import { ThemeProvider } from '@app/context/ThemeContext';
 import { UserContext } from '@app/context/UserContext';
 import useSettings from '@app/hooks/useSettings';
 import '@app/styles/globals.css';
+import { getLocaleDirection } from '@app/utils/localeDirection';
 import { polyfillIntl } from '@app/utils/polyfillIntl';
 import '@fontsource-variable/inter';
 import type { AvailableLocale } from '@server/types/languages';
-import { getLocaleDirection } from '@app/utils/localeDirection';
 import axios from 'axios';
 import type { AppProps } from 'next/app';
 import dynamic from 'next/dynamic';
@@ -70,6 +70,8 @@ const loadLocaleData = (locale: AvailableLocale): Promise<any> => {
       return import('../i18n/locale/hr.json');
     case 'hu':
       return import('../i18n/locale/hu.json');
+    case 'id':
+      return import('../i18n/locale/id.json');
     case 'it':
       return import('../i18n/locale/it.json');
     case 'ja':

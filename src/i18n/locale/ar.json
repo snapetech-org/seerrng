@@ -1709,7 +1709,7 @@
   "components.UserList.importedPlexUsersNoPassword": "",
   "components.UserList.importedUsersNoPassword": "",
   "components.UserProfile.UserSettings.UserPasswordChange.localPasswordDescription": "",
-  "i18n.notificationLocale": "",
+  "i18n.notificationLocale": "لغة الإشعارات",
   "components.RequestCard.failedmodify": "",
   "components.RequestList.RequestItem.failedmodify": ""
 }

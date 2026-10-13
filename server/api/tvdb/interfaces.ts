@@ -200,6 +200,7 @@ const TMDB_TO_TVDB_MAPPING: Record<string, string> & {
   he: 'heb', // Hebrew
   hi: 'hin', // Hindi
   hr: 'hrv', // Croatian
+  id: 'ind', // Indonesian
   hu: 'hun', // Hungarian
   it: 'ita', // Italian
   ja: 'jpn', // Japanese
