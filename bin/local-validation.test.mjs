@@ -329,6 +329,11 @@ test('plan is read-only, partitions framework runs and preserves the original Vi
     assert.deepEqual(plan.steps.find(({ kind }) => kind === 'vitest').files, [
       'src/component.test.ts',
     ]);
+    assert.ok(
+      plan.steps
+        .find(({ kind }) => kind === 'node-js')
+        .args.includes('--test-isolation=process')
+    );
     assert.equal(
       plan.steps.find(({ kind }) => kind === 'tooling').args[0],
       join(f.directory, 'bin/run-tooling-tests.mjs')
@@ -843,6 +848,45 @@ test('execution enforces positive active summaries and removes only its owned te
   } finally {
     rmSync(unsafe, { recursive: true, force: true });
   }
+});
+
+test('execution passes its bounded worker budget to both native Node lanes', async () => {
+  const commands = [];
+  const plan = {
+    root,
+    steps: [
+      {
+        name: 'Native TypeScript',
+        command: process.execPath,
+        args: ['server/test/index.mts', '--test-reporter', 'tap'],
+        kind: 'node-ts',
+        files: ['server/native.test.ts'],
+      },
+      {
+        name: 'Node JavaScript',
+        command: process.execPath,
+        args: ['--test', '--test-concurrency=1', '--test-reporter=tap'],
+        kind: 'node-js',
+        files: ['server/native.test.mjs'],
+      },
+    ],
+  };
+  const executor = async (step) => {
+    commands.push(step.args);
+    return '# tests 2\n# pass 2\n# fail 0\n';
+  };
+
+  const totals = await executePlan(plan, {
+    executor,
+    workers: 4,
+    stdout: sink,
+    stderr: sink,
+  });
+
+  assert.equal(totals.get('node-ts').active, 2);
+  assert.equal(totals.get('node-js').active, 2);
+  assert.ok(commands[0].includes('--test-concurrency=4'));
+  assert.ok(commands[1].includes('--test-concurrency=4'));
 });
 
 test('zero-active execution requires complete explicit skipped case evidence', async () => {

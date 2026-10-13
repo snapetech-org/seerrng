@@ -358,8 +358,11 @@ after an earlier failure. A true data dependency still applies: browser
 validation cannot run without its own successful same-run build. Any required
 failure keeps the overall result failed.
 
-Independent test files use isolated forks and fresh temporary configuration.
-The known quiet Vitest owners run serially after the independent Vitest group.
+Independent native Node test files use process-isolated forks and the run's
+sealed worker budget. Each fork keeps its own application singletons and
+in-memory database while independent files run concurrently. Vitest uses the
+same bounded worker budget, with known quiet Vitest owners running serially
+after the independent Vitest group.
 The browser stage discovers Cypress and Playwright independently, then runs both
 native suites against one managed server and that stage's successful build.
 
@@ -422,6 +425,13 @@ runner identity, each applicable unit or matrix case:
    can never satisfy admission;
 5. preserves its sealed result, evidence manifest, and attempt-scoped ledger;
 6. uploads those artifacts for reconciliation.
+
+The plan and receipt directories under `RUNNER_TEMP` include the repository
+ID, run ID, run attempt, job ID, and case. This keeps persistent self-hosted
+runner scratch from colliding with another repository, an older run, or a
+parallel matrix job. Once the plan or receipt has been uploaded, the job removes
+its own local engine workspace; reconciliation consumes the uploaded
+current-attempt artifacts.
 
 A successful execution creates the ledger's single success entry. Failed,
 cancelled, or incomplete work leaves the ledger blank. A second admission for
