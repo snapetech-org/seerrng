@@ -8,16 +8,21 @@ import type {
   TmdbTvSeasonResult,
 } from '@server/api/themoviedb/interfaces';
 import {
+  TVDB_SOURCE_TYPE_TMDB_TV,
   convertTmdbLanguageToTvdbWithFallback,
   type TvdbBaseResponse,
   type TvdbEpisode,
   type TvdbLoginResponse,
+  type TvdbOfficialSeason,
+  type TvdbSearchByRemoteIdResult,
   type TvdbSeasonDetails,
+  type TvdbSeriesBaseRecord,
   type TvdbTvDetails,
   type TvdbVideoMetadataRecord,
 } from '@server/api/tvdb/interfaces';
 import cacheManager, { type AvailableCacheIds } from '@server/lib/cache';
 import logger from '@server/logger';
+import { redactSecrets } from '@server/utils/security';
 
 interface TvdbConfig {
   baseUrl: string;
@@ -40,6 +45,9 @@ const enum TvdbIdStatus {
 const MAX_TVDB_TOKEN_LENGTH = 8 * 1024;
 const MAX_TVDB_TOKEN_PAYLOAD_LENGTH = 4 * 1024;
 const TVDB_TOKEN_REFRESH_WINDOW_SECONDS = 604_800;
+const MAX_TVDB_REMOTE_ID_CANDIDATES = 25;
+const MAX_TVDB_SEASONS_FOR_REQUEST_CHECK = 500;
+const MAX_TVDB_EPISODES_FOR_REQUEST_CHECK = 50_000;
 export const MAX_TVDB_EPISODES_PER_SEASON = 2_500;
 export const MAX_TVDB_EPISODE_PAGES = 50;
 
@@ -201,6 +209,144 @@ class Tvdb extends ExternalAPI implements TvShowProvider {
     return response.data;
   }
 
+  /** Resolve only a TVDB series that confirms the exact TMDB TV remote ID. */
+  public async resolveTvdbId(tmdbId: number): Promise<number | undefined> {
+    if (!Number.isSafeInteger(tmdbId) || tmdbId <= 0) {
+      return undefined;
+    }
+
+    try {
+      await this.refreshToken();
+      const response = await this.get<
+        TvdbBaseResponse<TvdbSearchByRemoteIdResult[]>
+      >(
+        `/search/remoteid/${tmdbId}`,
+        { headers: { Authorization: `Bearer ${this.token}` } },
+        Tvdb.DEFAULT_CACHE_TTL
+      );
+      if (
+        !Array.isArray(response?.data) ||
+        response.data.length > MAX_TVDB_REMOTE_ID_CANDIDATES
+      ) {
+        return undefined;
+      }
+
+      const candidateIds = [
+        ...new Set(
+          response.data.flatMap((result) => {
+            const id = result?.series?.id;
+            return typeof id === 'number' && Number.isSafeInteger(id) && id > 0
+              ? [id]
+              : [];
+          })
+        ),
+      ];
+      if (
+        candidateIds.length === 0 ||
+        candidateIds.length > MAX_TVDB_REMOTE_ID_CANDIDATES
+      ) {
+        return undefined;
+      }
+
+      const verifiedIds: number[] = [];
+      for (const candidateId of candidateIds) {
+        const candidate = await this.fetchTvdbSeriesBaseRecord(candidateId);
+        if (
+          candidate?.id !== candidateId ||
+          !Array.isArray(candidate.remoteIds)
+        ) {
+          return undefined;
+        }
+
+        const confirmsRequestedSeries = candidate.remoteIds.some(
+          (remoteId) =>
+            remoteId?.type === TVDB_SOURCE_TYPE_TMDB_TV &&
+            String(remoteId.id) === String(tmdbId)
+        );
+        if (confirmsRequestedSeries) {
+          verifiedIds.push(candidateId);
+          if (verifiedIds.length > 1) {
+            return undefined;
+          }
+        }
+      }
+
+      return verifiedIds.length === 1 ? verifiedIds[0] : undefined;
+    } catch (error) {
+      logger.debug('TVDB remote-ID lookup did not resolve a unique series', {
+        label: 'TVDB',
+        tmdbId,
+        errorMessage:
+          error instanceof Error
+            ? redactSecrets(error.message)
+            : 'Unknown error',
+      });
+      return undefined;
+    }
+  }
+
+  /** Return confirmed official TVDB seasons, or null when the record is incomplete. */
+  public async getOfficialSeasons(
+    tvdbId: number
+  ): Promise<TvdbOfficialSeason[] | null> {
+    if (!Number.isSafeInteger(tvdbId) || tvdbId <= 0) {
+      return null;
+    }
+
+    await this.refreshToken();
+    const tvdbData = await this.fetchTvdbShowData(tvdbId);
+    if (
+      tvdbData?.id !== tvdbId ||
+      !Array.isArray(tvdbData.seasons) ||
+      !Array.isArray(tvdbData.episodes) ||
+      tvdbData.seasons.length > MAX_TVDB_SEASONS_FOR_REQUEST_CHECK ||
+      tvdbData.episodes.length > MAX_TVDB_EPISODES_FOR_REQUEST_CHECK
+    ) {
+      return null;
+    }
+
+    return tvdbData.seasons
+      .filter(
+        (season) =>
+          season?.type?.type === 'official' &&
+          Number.isSafeInteger(season.number) &&
+          season.number > 0
+      )
+      .sort((left, right) => left.number - right.number)
+      .map((season) => {
+        const seasonYear = Number(season.year);
+        if (
+          Number.isSafeInteger(seasonYear) &&
+          seasonYear > 0 &&
+          seasonYear < 10_000
+        ) {
+          return { seasonNumber: season.number, year: seasonYear };
+        }
+
+        let firstAiredYear: number | null = null;
+        for (const episode of tvdbData.episodes) {
+          if (episode?.seasonNumber !== season.number) {
+            continue;
+          }
+
+          const year = Number(episode.aired?.slice(0, 4));
+          if (
+            Number.isSafeInteger(year) &&
+            year > 0 &&
+            year < 10_000 &&
+            (firstAiredYear === null || year < firstAiredYear)
+          ) {
+            firstAiredYear = year;
+          }
+        }
+
+        return {
+          seasonNumber: season.number,
+          year: firstAiredYear,
+        };
+      });
+  }
+
   /** Resolve a TMDB ID through TVDB's remote-ID index without calling TMDB. */
   public async getVideoMetadataByTmdbId({
     mediaType,
@@ -213,6 +359,13 @@ class Tvdb extends ExternalAPI implements TvShowProvider {
       throw new Error('Invalid TMDB metadata ID');
     }
 
+    if (mediaType === 'tv') {
+      const tvdbId = await this.resolveTvdbId(tmdbId);
+      return tvdbId
+        ? this.getVideoMetadataById({ mediaType, id: tvdbId })
+        : undefined;
+    }
+
     await this.refreshToken();
     const response = await this.get<
       TvdbBaseResponse<TvdbVideoMetadataRecord[]>
@@ -221,13 +374,12 @@ class Tvdb extends ExternalAPI implements TvShowProvider {
       { headers: { Authorization: `Bearer ${this.token}` } },
       Tvdb.DEFAULT_CACHE_TTL
     );
-    const wantedType = mediaType === 'tv' ? 'series' : 'movie';
     const matches = Array.isArray(response.data)
       ? response.data.filter(
           (item) =>
             Number.isSafeInteger(item?.id) &&
             item.id > 0 &&
-            item.type?.toLocaleLowerCase() === wantedType
+            item.type?.toLocaleLowerCase() === 'movie'
         )
       : [];
 
@@ -392,7 +544,7 @@ class Tvdb extends ExternalAPI implements TvShowProvider {
       try {
         await this.refreshToken();
 
-        const validTvdbId = this.getTvdbIdFromTmdb(tmdbTvShow);
+        const validTvdbId = await this.getTvdbIdFromTmdb(tmdbTvShow);
 
         if (this.isValidTvdbId(validTvdbId)) {
           return this.enrichTmdbShowWithTvdbData(tmdbTvShow, validTvdbId);
@@ -421,7 +573,7 @@ class Tvdb extends ExternalAPI implements TvShowProvider {
       try {
         await this.refreshToken();
 
-        const tvdbId = this.getTvdbIdFromTmdb(tmdbTvShow);
+        const tvdbId = await this.getTvdbIdFromTmdb(tmdbTvShow);
 
         if (this.isValidTvdbId(tvdbId)) {
           return await this.enrichTmdbShowWithTvdbData(tmdbTvShow, tvdbId);
@@ -453,7 +605,7 @@ class Tvdb extends ExternalAPI implements TvShowProvider {
       try {
         await this.refreshToken();
 
-        const tvdbId = this.getTvdbIdFromTmdb(tmdbTvShow);
+        const tvdbId = await this.getTvdbIdFromTmdb(tmdbTvShow);
 
         if (!this.isValidTvdbId(tvdbId)) {
           return await this.tmdb.getTvSeason({ tvId, seasonNumber, language });
@@ -481,6 +633,11 @@ class Tvdb extends ExternalAPI implements TvShowProvider {
     tmdbTvShow: TmdbTvDetails,
     tvdbId: ValidTvdbId
   ): Promise<TmdbTvDetails> {
+    const resolvedShow = {
+      ...tmdbTvShow,
+      external_ids: { ...tmdbTvShow.external_ids, tvdb_id: tvdbId },
+    };
+
     try {
       await this.refreshToken();
 
@@ -488,16 +645,16 @@ class Tvdb extends ExternalAPI implements TvShowProvider {
       const seasons = this.processSeasons(tvdbData);
 
       if (!seasons.length) {
-        return tmdbTvShow;
+        return resolvedShow;
       }
 
-      return { ...tmdbTvShow, seasons };
+      return { ...resolvedShow, seasons };
     } catch (error) {
       logger.error('Failed to enrich TMDB show with TVDB data', {
         label: 'TVDB',
         errorMessage: error instanceof Error ? error.message : 'Unknown error',
       });
-      return tmdbTvShow;
+      return resolvedShow;
     }
   }
 
@@ -513,6 +670,22 @@ class Tvdb extends ExternalAPI implements TvShowProvider {
     );
 
     return resp.data;
+  }
+
+  private async fetchTvdbSeriesBaseRecord(
+    tvdbId: number
+  ): Promise<TvdbSeriesBaseRecord> {
+    const response = await this.get<TvdbBaseResponse<TvdbSeriesBaseRecord>>(
+      `/series/${tvdbId}/extended`,
+      {
+        headers: {
+          Authorization: `Bearer ${this.token}`,
+        },
+      },
+      Tvdb.DEFAULT_CACHE_TTL
+    );
+
+    return response.data;
   }
 
   private processSeasons(tvdbData: TvdbTvDetails): TmdbTvSeasonResult[] {
@@ -827,12 +1000,21 @@ class Tvdb extends ExternalAPI implements TvShowProvider {
     };
   }
 
-  private getTvdbIdFromTmdb(tmdbTvShow: TmdbTvDetails): TvdbId {
-    return tmdbTvShow?.external_ids?.tvdb_id ?? TvdbIdStatus.INVALID;
+  private async getTvdbIdFromTmdb(tmdbTvShow: TmdbTvDetails): Promise<TvdbId> {
+    const directId = tmdbTvShow?.external_ids?.tvdb_id;
+    if (
+      typeof directId === 'number' &&
+      Number.isSafeInteger(directId) &&
+      directId > 0
+    ) {
+      return directId;
+    }
+
+    return (await this.resolveTvdbId(tmdbTvShow?.id)) ?? TvdbIdStatus.INVALID;
   }
 
   private isValidTvdbId(tvdbId: TvdbId): tvdbId is ValidTvdbId {
-    return tvdbId !== TvdbIdStatus.INVALID;
+    return Number.isSafeInteger(tvdbId) && tvdbId > 0;
   }
 
   private handleError(context: string, error: Error): void {
