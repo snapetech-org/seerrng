@@ -204,6 +204,7 @@ export class MediaSubscriber implements EntitySubscriberInterface<Media> {
 
           if (shouldComplete) {
             request.status = MediaRequestStatus.COMPLETED;
+            request.failureReason = null;
             completedRequests.push(request);
           }
         }

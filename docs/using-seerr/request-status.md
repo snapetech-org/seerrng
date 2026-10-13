@@ -40,6 +40,13 @@ the request stays visible as failed with its media record intact. Correct the
 provider or metadata issue before retrying; retrying alone cannot reconcile a
 TMDB and TVDB season-numbering mismatch.
 
+Request API responses include a stable `failureReason` code when a movie or TV
+dispatch failure can be classified. The code distinguishes an unavailable
+selected service, a dispatch failure, an unresolved TVDB identity, unverified
+TVDB season data, and a season-numbering mismatch. The field contains no raw
+provider error text. Retrying or resubmitting clears the previous code; a new
+failure records the latest classification.
+
 For books, the Books and Audiobooks filters keep ebook and audiobook requests
 separate. A combined request can therefore be incomplete while one format is
 available and the other is still requested or missing. See

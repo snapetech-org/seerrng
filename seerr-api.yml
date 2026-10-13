@@ -5162,6 +5162,17 @@ components:
           example: 0
           description: Status of the request. 1 = PENDING APPROVAL, 2 = APPROVED, 3 = DECLINED
           readOnly: true
+        failureReason:
+          type: string
+          enum:
+            - service_unavailable
+            - dispatch_failed
+            - tvdb_id_unresolved
+            - tvdb_season_data_unverified
+            - tvdb_season_mismatch
+          nullable: true
+          description: Stable, non-sensitive classification for the most recent failed movie or TV dispatch. Cleared when the request is retried or resubmitted.
+          readOnly: true
         media:
           $ref: '#/components/schemas/MediaInfo'
         createdAt:

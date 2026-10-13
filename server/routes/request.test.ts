@@ -13,6 +13,7 @@ import type {
   TmdbTvDetails,
 } from '@server/api/themoviedb/interfaces';
 import {
+  MediaRequestFailureReason,
   MediaRequestStatus,
   MediaStatus,
   MediaType,
@@ -1816,7 +1817,10 @@ describe('PUT /request/:requestId (movie)', () => {
     });
     const requestRepo = getRepository(MediaRequest);
     const failed = await seedRequest(MediaRequestStatus.FAILED);
-    await requestRepo.update(failed.id, { serverId: 99 });
+    await requestRepo.update(failed.id, {
+      serverId: 99,
+      failureReason: MediaRequestFailureReason.DISPATCH_FAILED,
+    });
 
     const admin = await loginAs('admin@seerr.dev', 'test1234');
     const response = await admin.put(`/request/${failed.id}`).send({
@@ -1827,6 +1831,7 @@ describe('PUT /request/:requestId (movie)', () => {
     assert.strictEqual(response.status, 200);
     assert.strictEqual(response.body.status, MediaRequestStatus.APPROVED);
     assert.strictEqual(response.body.serverId, 3);
+    assert.strictEqual(response.body.failureReason, null);
     assert.strictEqual(response.body.modifiedBy.id, 1);
 
     const persisted = await requestRepo.findOneOrFail({
@@ -1834,6 +1839,7 @@ describe('PUT /request/:requestId (movie)', () => {
       relations: { modifiedBy: true },
     });
     assert.strictEqual(persisted.status, MediaRequestStatus.APPROVED);
+    assert.strictEqual(persisted.failureReason, null);
     assert.strictEqual(persisted.modifiedBy?.id, 1);
 
     const events = await getRepository(MediaRequestStatusEvent).find({
@@ -7184,12 +7190,16 @@ describe('DELETE /request/:requestId/status', () => {
 describe('POST /request/:requestId/retry', () => {
   it('allows the request owner to retry a failed request', async () => {
     const failed = await seedRequest(MediaRequestStatus.FAILED);
+    await getRepository(MediaRequest).update(failed.id, {
+      failureReason: MediaRequestFailureReason.TVDB_ID_UNRESOLVED,
+    });
     const owner = await loginAs('friend@seerr.dev', 'test1234');
 
     const res = await owner.post(`/request/${failed.id}/retry`);
 
     assert.strictEqual(res.status, 200);
     assert.strictEqual(res.body.status, MediaRequestStatus.APPROVED);
+    assert.strictEqual(res.body.failureReason, null);
     assert.strictEqual(res.body.modifiedBy.id, 2);
     const retryEvents = await getRepository(MediaRequestStatusEvent).find({
       where: { requestId: failed.id },

@@ -23,6 +23,7 @@ import { ANIME_KEYWORD_ID } from '@server/api/themoviedb/constants';
 import Tvdb from '@server/api/tvdb';
 import WikidataAPI from '@server/api/wikidata';
 import {
+  MediaRequestFailureReason,
   MediaRequestStatus,
   MediaStatus,
   MediaType,
@@ -454,6 +455,16 @@ const hydrateBookshelfLookupResults = async (
 const normalizeOpenLibraryAuthorId = (authorKey: string): string =>
   authorKey.replace(/^\/?authors\//i, '');
 
+class ClassifiedMediaRequestError extends Error {
+  constructor(
+    public readonly failureReason: MediaRequestFailureReason,
+    message: string
+  ) {
+    super(message);
+    this.name = 'ClassifiedMediaRequestError';
+  }
+}
+
 @EventSubscriber()
 export class MediaRequestSubscriber implements EntitySubscriberInterface<MediaRequest> {
   private getReadarrDispatchRetryDelay(
@@ -612,6 +623,7 @@ export class MediaRequestSubscriber implements EntitySubscriberInterface<MediaRe
     });
 
     entity.status = MediaRequestStatus.COMPLETED;
+    entity.failureReason = null;
     if (entity.type === MediaType.TV) {
       entity.seasons.forEach((season) => {
         season.status = MediaRequestStatus.COMPLETED;
@@ -627,6 +639,7 @@ export class MediaRequestSubscriber implements EntitySubscriberInterface<MediaRe
     serviceName: 'Radarr' | 'Sonarr'
   ): Promise<void> {
     entity.status = MediaRequestStatus.FAILED;
+    entity.failureReason = MediaRequestFailureReason.SERVICE_UNAVAILABLE;
     await getRepository(MediaRequest).save(entity);
 
     logger.warn(
@@ -1114,6 +1127,7 @@ export class MediaRequestSubscriber implements EntitySubscriberInterface<MediaRe
 
         if (media) {
           entity.status = MediaRequestStatus.FAILED;
+          entity.failureReason = MediaRequestFailureReason.DISPATCH_FAILED;
           await requestRepository.save(entity);
 
           logger.warn(
@@ -1237,7 +1251,10 @@ export class MediaRequestSubscriber implements EntitySubscriberInterface<MediaRe
         }
 
         if (!isPositiveSafeInteger(tvdbId)) {
-          throw new Error('Could not resolve a valid TVDB ID for this series');
+          throw new ClassifiedMediaRequestError(
+            MediaRequestFailureReason.TVDB_ID_UNRESOLVED,
+            'Could not resolve a valid TVDB ID for this series'
+          );
         }
 
         if (!hasDirectTvdbId) {
@@ -1245,7 +1262,10 @@ export class MediaRequestSubscriber implements EntitySubscriberInterface<MediaRe
             try {
               tvdb = await Tvdb.getInstance();
             } catch {
-              throw new Error('Could not verify official TVDB season data');
+              throw new ClassifiedMediaRequestError(
+                MediaRequestFailureReason.TVDB_SEASON_DATA_UNVERIFIED,
+                'Could not verify official TVDB season data'
+              );
             }
           }
 
@@ -1253,7 +1273,10 @@ export class MediaRequestSubscriber implements EntitySubscriberInterface<MediaRe
             .getOfficialSeasons(tvdbId)
             .catch(() => null);
           if (!officialSeasons) {
-            throw new Error('Could not verify official TVDB season data');
+            throw new ClassifiedMediaRequestError(
+              MediaRequestFailureReason.TVDB_SEASON_DATA_UNVERIFIED,
+              'Could not verify official TVDB season data'
+            );
           }
 
           const unmatchedSeasons = entity.seasons
@@ -1277,7 +1300,8 @@ export class MediaRequestSubscriber implements EntitySubscriberInterface<MediaRe
             });
 
           if (unmatchedSeasons.length > 0) {
-            throw new Error(
+            throw new ClassifiedMediaRequestError(
+              MediaRequestFailureReason.TVDB_SEASON_MISMATCH,
               `Requested seasons do not match TVDB season data: ${unmatchedSeasons.join(', ')}`
             );
           }
@@ -1498,6 +1522,10 @@ export class MediaRequestSubscriber implements EntitySubscriberInterface<MediaRe
 
         if (media) {
           entity.status = MediaRequestStatus.FAILED;
+          entity.failureReason =
+            e instanceof ClassifiedMediaRequestError
+              ? e.failureReason
+              : MediaRequestFailureReason.DISPATCH_FAILED;
           await requestRepository.save(entity);
 
           logger.warn(

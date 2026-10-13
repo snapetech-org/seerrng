@@ -6,6 +6,7 @@ import RadarrAPI from '@server/api/servarr/radarr';
 import SonarrAPI from '@server/api/servarr/sonarr';
 import SportarrAPI from '@server/api/servarr/sportarr';
 import TheMovieDb from '@server/api/themoviedb';
+import type { MediaRequestFailureReason } from '@server/constants/media';
 import {
   MediaRequestStatus,
   MediaStatus,
@@ -2855,6 +2856,10 @@ export class MediaRequest {
   @Column({ type: 'integer' })
   @Index()
   public status: MediaRequestStatus;
+
+  /** Last classified movie/TV dispatch failure; cleared when work resumes. */
+  @Column({ type: 'varchar', nullable: true })
+  public failureReason?: MediaRequestFailureReason | null;
 
   @ManyToOne(() => Media, (media) => media.requests, {
     eager: true,

@@ -20,6 +20,7 @@ import SportarrAPI from '@server/api/servarr/sportarr';
 import Tvdb from '@server/api/tvdb';
 import WikidataAPI from '@server/api/wikidata';
 import {
+  MediaRequestFailureReason,
   MediaRequestStatus,
   MediaStatus,
   MediaType,
@@ -837,6 +838,10 @@ describe('MediaRequestSubscriber service dispatch', () => {
     });
     assert.ok(savedMedia);
     assert.equal(savedRequest?.status, MediaRequestStatus.FAILED);
+    assert.equal(
+      savedRequest?.failureReason,
+      MediaRequestFailureReason.TVDB_ID_UNRESOLVED
+    );
     assert.equal(savedRequest?.seasons.length, 1);
     assert.equal(addSeries.mock.callCount(), 0);
     assert.equal(notification.mock.callCount(), 1);
@@ -867,9 +872,66 @@ describe('MediaRequestSubscriber service dispatch', () => {
     });
     assert.ok(savedMedia);
     assert.equal(savedRequest?.status, MediaRequestStatus.FAILED);
+    assert.equal(
+      savedRequest?.failureReason,
+      MediaRequestFailureReason.TVDB_SEASON_MISMATCH
+    );
     assert.equal(savedRequest?.seasons.length, 1);
     assert.equal(addSeries.mock.callCount(), 0);
     assert.equal(notification.mock.callCount(), 1);
+  });
+
+  it('classifies unavailable official TVDB season data without dispatching', async () => {
+    configureFallbackSonarr();
+    stubTvdbShow(87016, [{ season_number: 1, air_date: '2024-09-24' }]);
+    const tvdb = {
+      resolveTvdbId: async () => 184874,
+      getOfficialSeasons: async () => null,
+    };
+    mock.method(Tvdb, 'getInstance', async () => tvdb as unknown as Tvdb);
+    const addSeries = stubSonarrAddSeries();
+    const { request } = await createApprovedTvRequest(87016, [1]);
+
+    await new MediaRequestSubscriber().sendToSonarr(request);
+
+    const savedRequest = await getRepository(MediaRequest).findOneByOrFail({
+      id: request.id,
+    });
+    assert.equal(savedRequest.status, MediaRequestStatus.FAILED);
+    assert.equal(
+      savedRequest.failureReason,
+      MediaRequestFailureReason.TVDB_SEASON_DATA_UNVERIFIED
+    );
+    assert.equal(addSeries.mock.callCount(), 0);
+  });
+
+  it('stores a bounded dispatch category instead of provider error text', async () => {
+    configureFallbackSonarr();
+    stubTvdbShow(87017, [{ season_number: 1, air_date: '2024-09-24' }]);
+    const tvdb = {
+      resolveTvdbId: async () => undefined,
+      getOfficialSeasons: async () => null,
+    };
+    mock.method(Tvdb, 'getInstance', async () => tvdb as unknown as Tvdb);
+    mock.method(SonarrAPI.prototype, 'getSeriesByTmdbId', async () => {
+      throw new Error('provider said an internal detail');
+    });
+    const { request } = await createApprovedTvRequest(87017, [1]);
+
+    await new MediaRequestSubscriber().sendToSonarr(request);
+
+    const savedRequest = await getRepository(MediaRequest).findOneByOrFail({
+      id: request.id,
+    });
+    assert.equal(savedRequest.status, MediaRequestStatus.FAILED);
+    assert.equal(
+      savedRequest.failureReason,
+      MediaRequestFailureReason.DISPATCH_FAILED
+    );
+    assert.notEqual(
+      savedRequest.failureReason,
+      'provider said an internal detail'
+    );
   });
 
   it('passes exact multi-season episode selections to Sonarr', async () => {
@@ -1013,6 +1075,10 @@ describe('MediaRequestSubscriber service dispatch', () => {
     });
     assert.equal(delivered, true);
     assert.equal(saved.status, MediaRequestStatus.FAILED);
+    assert.equal(
+      saved.failureReason,
+      MediaRequestFailureReason.SERVICE_UNAVAILABLE
+    );
     assert.equal(notificationType, Notification.MEDIA_FAILED);
   });
 
