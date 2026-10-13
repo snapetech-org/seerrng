@@ -6,8 +6,6 @@ import RadarrAPI from '@server/api/servarr/radarr';
 import SonarrAPI from '@server/api/servarr/sonarr';
 import SportarrAPI from '@server/api/servarr/sportarr';
 import TheMovieDb from '@server/api/themoviedb';
-import { ANIME_KEYWORD_ID } from '@server/api/themoviedb/constants';
-import type { TmdbKeyword } from '@server/api/themoviedb/interfaces';
 import {
   MediaRequestStatus,
   MediaStatus,
@@ -41,6 +39,7 @@ import {
 import type { Notification } from '@server/lib/notifications';
 import notificationManager from '@server/lib/notifications';
 import {
+  evaluateOverrideRules,
   getOverrideRuleProfileId,
   getOverrideRuleTagIds,
   overrideRuleMatchesUser,
@@ -2201,7 +2200,6 @@ export class MediaRequest {
     }
 
     const useAdvancedOptions = canUseAdvancedRequestOptions(user);
-    const useOverrides = !user.hasPermission(Permission.MANAGE_REQUESTS);
     const defaultRadarr = requestBody.is4k
       ? settings.radarr.find((r) => r.is4k && r.isDefault)
       : settings.radarr.find((r) => !r.is4k && r.isDefault);
@@ -2342,104 +2340,53 @@ export class MediaRequest {
       }
     }
 
-    if (useOverrides) {
-      const overrideRuleRepository = getRepository(OverrideRule);
-      const defaultServiceId =
-        requestBody.mediaType === MediaType.MOVIE
-          ? defaultRadarr?.id
-          : defaultSonarr?.id;
-      const overrideRules =
-        defaultServiceId == null
-          ? []
-          : await overrideRuleRepository.find({
-              where:
-                requestBody.mediaType === MediaType.MOVIE
-                  ? { radarrServiceId: defaultServiceId }
-                  : { sonarrServiceId: defaultServiceId },
-            });
+    const overrideResult = selectedServer
+      ? await evaluateOverrideRules({
+          mediaType: requestBody.mediaType,
+          is4k: Boolean(requestBody.is4k),
+          tmdbMedia,
+          requestUser,
+          tags,
+          serviceId: selectedServer.id,
+        })
+      : undefined;
 
-      const appliedOverrideRules = overrideRules.filter((rule) => {
-        const hasAnimeKeyword =
-          'results' in tmdbMedia.keywords &&
-          tmdbMedia.keywords.results.some(
-            (keyword: TmdbKeyword) => keyword.id === ANIME_KEYWORD_ID
-          );
+    if (overrideResult) {
+      const requesterSelectedRootFolder =
+        useAdvancedOptions && requestBody.rootFolder !== undefined;
+      const requesterSelectedProfile =
+        useAdvancedOptions && requestBody.profileId !== undefined;
+      const requesterSelectedTags =
+        useAdvancedOptions && requestBody.tags !== undefined;
+      const addedRuleTags =
+        overrideResult.tags?.filter((tag) => !tags?.includes(tag)) ?? [];
 
-        // Skip override rules if the media is an anime TV show as anime TV
-        // is handled by default and override rules do not explicitly include
-        // the anime keyword
-        if (
-          requestBody.mediaType === MediaType.TV &&
-          hasAnimeKeyword &&
-          (!rule.keywords ||
-            !rule.keywords.split(',').map(Number).includes(ANIME_KEYWORD_ID))
-        ) {
-          return false;
-        }
+      if (overrideResult.rootFolder && !requesterSelectedRootFolder) {
+        rootFolder = overrideResult.rootFolder;
+      }
+      if (overrideResult.profileId !== null && !requesterSelectedProfile) {
+        profileId = overrideResult.profileId;
+      }
+      if (!requesterSelectedTags && overrideResult.tags !== null) {
+        tags = overrideResult.tags;
+      }
 
-        if (!overrideRuleMatchesUser(rule, requestUser.id)) {
-          return false;
-        }
-        if (
-          rule.genre &&
-          !rule.genre
-            .split(',')
-            .some((genreId) =>
-              tmdbMedia.genres
-                .map((genre) => genre.id)
-                .includes(Number(genreId))
-            )
-        ) {
-          return false;
-        }
-        if (
-          rule.language &&
-          !rule.language
-            .split('|')
-            .some((languageId) => languageId === tmdbMedia.original_language)
-        ) {
-          return false;
-        }
-        if (
-          rule.keywords &&
-          !rule.keywords.split(',').some((keywordId) => {
-            let keywordList: TmdbKeyword[] = [];
-
-            if ('keywords' in tmdbMedia.keywords) {
-              keywordList = tmdbMedia.keywords.keywords;
-            } else if ('results' in tmdbMedia.keywords) {
-              keywordList = tmdbMedia.keywords.results;
-            }
-
-            return keywordList
-              .map((keyword: TmdbKeyword) => keyword.id)
-              .includes(Number(keywordId));
-          })
-        ) {
-          return false;
-        }
-        return true;
-      });
-
-      const prioritizedRule =
-        selectMostSpecificOverrideRule(appliedOverrideRules);
-
-      if (prioritizedRule) {
-        if (prioritizedRule.rootFolder) {
-          rootFolder = prioritizedRule.rootFolder;
-        }
-        const overrideProfileId = getOverrideRuleProfileId(prioritizedRule);
-        if (overrideProfileId !== undefined) {
-          profileId = overrideProfileId;
-        }
-        const overrideTags = getOverrideRuleTagIds(prioritizedRule);
-        if (overrideTags.length > 0) {
-          tags = [...new Set([...(tags || []), ...overrideTags])];
-        }
-
+      if (
+        (overrideResult.rootFolder && !requesterSelectedRootFolder) ||
+        (overrideResult.profileId !== null && !requesterSelectedProfile) ||
+        (addedRuleTags.length > 0 && !requesterSelectedTags)
+      ) {
         logger.debug('Override rule applied.', {
           label: 'Override Rules',
-          overrides: prioritizedRule,
+          overrides: {
+            rootFolder: requesterSelectedRootFolder
+              ? null
+              : overrideResult.rootFolder,
+            profileId: requesterSelectedProfile
+              ? null
+              : overrideResult.profileId,
+            tags: requesterSelectedTags ? null : addedRuleTags,
+          },
         });
       }
     }

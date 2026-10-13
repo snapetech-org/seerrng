@@ -50,6 +50,7 @@ import type { RadarrSettings, SonarrSettings } from '@server/lib/settings';
 import { getSettings } from '@server/lib/settings';
 import { runUserSecurityMutation } from '@server/lib/userSecurityMutation';
 import { checkUser } from '@server/middleware/auth';
+import { MediaRequestSubscriber } from '@server/subscriber/MediaRequestSubscriber';
 import { setupTestDb } from '@server/test/db';
 import type { Express } from 'express';
 import express from 'express';
@@ -8468,6 +8469,213 @@ describe('POST /request (tv), override rules', () => {
 
     assert.strictEqual(res.status, 201);
     assert.strictEqual(res.body.rootFolder, null);
+  });
+});
+
+describe('POST /request, destination-scoped override rules', () => {
+  async function setDemoPermissions(permissions: number): Promise<User> {
+    const userRepo = getRepository(User);
+    const requester = await userRepo.findOneOrFail({
+      where: { email: 'demo@seerr.dev' },
+    });
+    requester.permissions = permissions;
+    return userRepo.save(requester);
+  }
+
+  it('uses the selected Radarr and Sonarr server rules', async () => {
+    configureRadarr([
+      { id: 10, isDefault: true, is4k: false },
+      { id: 0, is4k: false },
+    ]);
+    configureSonarr([
+      { id: 30, isDefault: true, is4k: false },
+      { id: 40, is4k: false },
+    ]);
+    const requester = await setDemoPermissions(
+      Permission.REQUEST | Permission.REQUEST_ADVANCED
+    );
+
+    await getRepository(OverrideRule).save([
+      new OverrideRule({
+        radarrServiceId: 10,
+        users: String(requester.id),
+        rootFolder: '/default/movies',
+      }),
+      new OverrideRule({
+        radarrServiceId: 0,
+        users: String(requester.id),
+        rootFolder: '/selected/movies',
+      }),
+      new OverrideRule({
+        sonarrServiceId: 30,
+        users: String(requester.id),
+        rootFolder: '/default/tv',
+      }),
+      new OverrideRule({
+        sonarrServiceId: 40,
+        users: String(requester.id),
+        rootFolder: '/selected/tv',
+      }),
+    ]);
+
+    const agent = await loginAs('demo@seerr.dev', 'test1234');
+    const movieResponse = await agent.post('/request').send({
+      mediaType: MediaType.MOVIE,
+      mediaId: 88020,
+      serverId: 0,
+    });
+    const tvResponse = await agent.post('/request').send({
+      mediaType: MediaType.TV,
+      mediaId: 88021,
+      seasons: [1],
+      serverId: 40,
+    });
+
+    assert.strictEqual(movieResponse.status, 201);
+    assert.strictEqual(movieResponse.body.rootFolder, '/selected/movies');
+    assert.strictEqual(tvResponse.status, 201);
+    assert.strictEqual(tvResponse.body.rootFolder, '/selected/tv');
+  });
+
+  it('preserves explicit advanced choices including profile zero and empty tags', async () => {
+    configureRadarr([
+      {
+        id: 5,
+        isDefault: true,
+        is4k: false,
+        activeProfileId: 1,
+        activeDirectory: '/default/movies',
+        tags: [9],
+      },
+    ]);
+    getSettings().sonarr = [];
+    const requester = await setDemoPermissions(
+      Permission.REQUEST | Permission.REQUEST_ADVANCED
+    );
+
+    await getRepository(OverrideRule).save(
+      new OverrideRule({
+        radarrServiceId: 5,
+        users: String(requester.id),
+        rootFolder: '/rule/movies',
+        profileId: 7,
+        tags: '2',
+      })
+    );
+
+    const agent = await loginAs('demo@seerr.dev', 'test1234');
+    const response = await agent.post('/request').send({
+      mediaType: MediaType.MOVIE,
+      mediaId: 88022,
+      serverId: 5,
+      rootFolder: '/chosen/movies',
+      profileId: 0,
+      tags: [],
+    });
+
+    assert.strictEqual(response.status, 201);
+    assert.strictEqual(response.body.rootFolder, '/chosen/movies');
+    assert.strictEqual(response.body.profileId, 0);
+    assert.deepStrictEqual(response.body.tags, []);
+  });
+
+  it('fills advanced request fields that were left unset', async () => {
+    configureRadarr([
+      {
+        id: 5,
+        isDefault: true,
+        is4k: false,
+        activeProfileId: 1,
+        activeDirectory: '/default/movies',
+        tags: [9],
+      },
+    ]);
+    getSettings().sonarr = [];
+    const requester = await setDemoPermissions(
+      Permission.REQUEST | Permission.REQUEST_ADVANCED
+    );
+
+    await getRepository(OverrideRule).save(
+      new OverrideRule({
+        radarrServiceId: 5,
+        users: String(requester.id),
+        rootFolder: '/rule/movies',
+        profileId: 7,
+        tags: '2',
+      })
+    );
+
+    const agent = await loginAs('demo@seerr.dev', 'test1234');
+    const response = await agent.post('/request').send({
+      mediaType: MediaType.MOVIE,
+      mediaId: 88023,
+      serverId: 5,
+      rootFolder: '/chosen/movies',
+    });
+
+    assert.strictEqual(response.status, 201);
+    assert.strictEqual(response.body.rootFolder, '/chosen/movies');
+    assert.strictEqual(response.body.profileId, 7);
+    assert.deepStrictEqual(response.body.tags, [9, 2]);
+  });
+
+  it('applies rules to manager requests and preserves their explicit fields', async () => {
+    configureRadarr([
+      {
+        id: 5,
+        isDefault: true,
+        is4k: false,
+        activeProfileId: 1,
+        activeDirectory: '/default/movies',
+        tags: [],
+      },
+    ]);
+    getSettings().sonarr = [];
+    const requester = await setDemoPermissions(
+      Permission.REQUEST | Permission.MANAGE_REQUESTS
+    );
+
+    await getRepository(OverrideRule).save(
+      new OverrideRule({
+        radarrServiceId: 5,
+        users: String(requester.id),
+        rootFolder: '/rule/movies',
+        profileId: 7,
+        tags: '2',
+      })
+    );
+    mock.method(
+      MediaRequestSubscriber.prototype,
+      'sendToRadarr',
+      async () => true
+    );
+
+    const agent = await loginAs('demo@seerr.dev', 'test1234');
+    const response = await agent.post('/request').send({
+      mediaType: MediaType.MOVIE,
+      mediaId: 88024,
+      serverId: 5,
+    });
+    const explicitResponse = await agent.post('/request').send({
+      mediaType: MediaType.MOVIE,
+      mediaId: 88025,
+      serverId: 5,
+      rootFolder: '/manager-choice/movies',
+      profileId: 0,
+      tags: [],
+    });
+
+    assert.strictEqual(response.status, 201);
+    assert.strictEqual(response.body.rootFolder, '/rule/movies');
+    assert.strictEqual(response.body.profileId, 7);
+    assert.deepStrictEqual(response.body.tags, [2]);
+    assert.strictEqual(explicitResponse.status, 201);
+    assert.strictEqual(
+      explicitResponse.body.rootFolder,
+      '/manager-choice/movies'
+    );
+    assert.strictEqual(explicitResponse.body.profileId, 0);
+    assert.deepStrictEqual(explicitResponse.body.tags, []);
   });
 });
 
