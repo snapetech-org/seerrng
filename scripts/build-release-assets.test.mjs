@@ -39,7 +39,7 @@ const createFixture = async () => {
     'package.json',
     'pnpm-lock.yaml',
     'pnpm-workspace.yaml',
-    'next.config.ts',
+    'next.config.mjs',
     'seerr-api.yml',
     'LICENSE',
   ]) {
@@ -56,7 +56,7 @@ const createFixture = async () => {
       'package.json',
       'pnpm-lock.yaml',
       'pnpm-workspace.yaml',
-      'next.config.ts',
+      'next.config.mjs',
       'seerr-api.yml',
       'LICENSE',
     ].map((file) => fs.chmod(path.join(root, file), 0o600)),
