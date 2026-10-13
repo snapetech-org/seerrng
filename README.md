@@ -35,9 +35,13 @@ SeerrNG is maintained by snapetech as a separate fork so we can move quickly on 
   - [Configure magazines](./docs/using-seerr/magazines-backend.md)
   - [Companion services and SeerrNG NG forks](./docs/using-seerr/companion-services.md)
   - [Why SeerrNG is a fork and what could retire it](./docs/fork-rationale.md)
+  - [Current SeerrNG changes in review](./docs/upstream-review-status.md)
   - [Cross-platform setup assistant](./docs/using-seerr/setup-assistant.md)
   - [Indexer searches by media category](./docs/using-seerr/indexer-searches.md)
   - [Configure services](./docs/using-seerr/settings/services.md)
+  - [Manage users and request preferences](./docs/using-seerr/users/editing-users.md)
+  - [Slack notifications](./docs/using-seerr/notifications/slack.md)
+  - [Telegram notifications](./docs/using-seerr/notifications/telegram.md)
 - [Screenshots](#screenshots)
 - [Install](#install)
   - [Docker](#docker)
@@ -108,6 +112,12 @@ Current focus:
 - Hardening request validation, notification settings, permission bounds, and service inputs.
 - Supporting ROM and PC game catalog, acquisition, status tracking, notifications, and download delivery through QuestarrNG and ROMarrNG. SeerrNG does not install, launch, or play games; general desktop applications remain outside the supported catalog.
 
+Upstream-informed changes are reviewed in separate, attributed pull requests.
+The [current review index](./docs/upstream-review-status.md) links each open
+SeerrNG proposal to its public source context. Open proposals are not released
+features; check the release notes and the relevant pull request for current
+availability.
+
 Release notes are maintained in [`CHANGELOG.md`](./CHANGELOG.md). User-facing
 pull requests add a concise release-note fragment under
 [`release-notes/`](./release-notes/README.md); the release workflow publishes
@@ -130,6 +140,7 @@ SeerrNG documentation is maintained in the [docs folder](https://github.com/snap
 - [Create custom Discover sliders](./docs/using-seerr/custom-discover-sliders.md)
 - [Why SeerrNG maintains companion forks](./docs/using-seerr/dependency-forks.md)
 - [Why SeerrNG is a fork and what could retire it](./docs/fork-rationale.md)
+- [Current SeerrNG changes in review](./docs/upstream-review-status.md)
 - [ChaptarrNG fork changes and capabilities](https://github.com/snapetech/chaptarrng/blob/main/docs/FORK_FEATURES.md)
 - [Discover and request comics](./docs/using-seerr/comics-backend.md)
 - [Discover and request magazines](./docs/using-seerr/magazines-backend.md)
@@ -140,6 +151,8 @@ SeerrNG documentation is maintained in the [docs folder](https://github.com/snap
 - [Configure media-server libraries, including Plex Music and Audiobooks](./docs/using-seerr/settings/mediaserver.mdx)
 - [Enable built-in HTTPS](./docs/using-seerr/advanced/built-in-tls.mdx)
 - [Configure notifications](./docs/using-seerr/notifications/index.mdx)
+- [Slack notification settings](./docs/using-seerr/notifications/slack.md)
+- [Telegram notification settings](./docs/using-seerr/notifications/telegram.md)
 - [Hide requested or available media](./docs/using-seerr/settings/general.md)
 - [Choose which media categories are available](./docs/using-seerr/settings/media-categories.md)
 - [Configure Bookshelf](./docs/using-seerr/bookshelf-backend.md)

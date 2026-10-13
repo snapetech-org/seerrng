@@ -36,6 +36,8 @@ connects to.
 - [Import a playlist as music requests](/using-seerr/playlist-requests/)
 - [Manage users and request preferences](/using-seerr/users/editing-users/)
 - [Configure notifications](/using-seerr/notifications/)
+- [Configure Slack notifications](/using-seerr/notifications/slack/)
+- [Configure Telegram notifications](/using-seerr/notifications/telegram/)
 - [Hide requested or available media](/using-seerr/settings/general)
 - [Plex watchlist auto-requests](/using-seerr/plex/watchlist-auto-request/)
 
@@ -60,6 +62,7 @@ connects to.
 ## Integrate and contribute
 
 - [Why SeerrNG is a fork and how upstreaming could retire it](/fork-rationale/)
+- [Current SeerrNG changes in review](/upstream-review-status/)
 - [REST API reference](/api/seerr-api/)
 - [Third-party client compatibility](/using-seerr/third-party-client-compatibility/)
 - [Contribution guidelines](https://github.com/snapetech/seerrng/blob/main/CONTRIBUTING.md)

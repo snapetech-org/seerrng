@@ -83,6 +83,11 @@ project decides what it wants to accept and on what terms.
 
 ## What Could Let SeerrNG Stop Being a Required Fork
 
+**Last reviewed: October 13, 2026.** This section defines the evidence a
+replacement must meet; it is not a claim that a particular upstream release
+already meets these requirements. See the [current SeerrNG review index](./upstream-review-status.md)
+for the dated list of open proposals and their public source context.
+
 The fork could stop being necessary when a supported upstream Seerr release,
 maintained extension, or equivalent adapter provides the behavior SeerrNG and
 its users rely on. The source of that behavior can be upstream code, a partial
@@ -108,11 +113,23 @@ Before retiring the fork, the replacement path would need to:
 6. Account for remaining fork-owned operational needs such as packaging,
    releases, setup instructions, and maintenance of any companion integrations.
 
-An upstream feature branch or an unmerged proposal would not be enough. The
-replacement must be released, maintained, secured, and usable by existing
-SeerrNG deployments. Retiring the SeerrNG core fork would also not require
-retiring every companion fork: each has its own standalone users and its own
-replacement criteria in the [dependency-fork guide](./using-seerr/dependency-forks.md).
+### Core fork retirement matrix
+
+| Gate | What a supported upstream replacement must provide | Evidence required before closing the gate |
+| --- | --- | --- |
+| Media scope | Every category and workflow SeerrNG users still rely on, either in the core product or through a supported extension or adapter. This includes movies, TV, music, ebooks and audiobooks, comics, magazines, emulation ROMs, and PC games where those remain in use. | A supported release or maintained extension can discover, request, approve, track, and expose the relevant category without a SeerrNG-only core patch. |
+| Request destinations and variants | The selected service, quality, season, book format, game platform, and other request-specific choices remain attached to the correct requester and media identity. | End-to-end compatibility checks confirm the same supported destinations and variants can be selected and dispatched, with equivalent per-user access and policy. |
+| Identity, availability, and lifecycle | Stable catalog and provider identities, accurate availability, request ownership and history, status changes, retries, cancellation, and recovery after provider or application restarts. | Representative requests remain correctly matched through scans, provider updates, retries, cancellations, and restarts, including cases with multiple services or formats. |
+| Permissions and security | Equivalent authorization, scoped integration credentials, validated external targets, safe file delivery and path handling, and security hardening at the same or stronger level. | Security review and regression coverage show that existing permission boundaries and data protections are preserved across the replacement path. |
+| Data and API transition | A supported way to preserve or intentionally transform requests, user preferences, permissions, provider links, and API integrations that operators still need. | A representative backup can be upgraded in a disposable environment; data integrity, client compatibility, rollback, and recovery are documented and verified. |
+| Release and operator support | A maintained release path with installation, configuration, backup, upgrade, rollback, troubleshooting, and support guidance for the deployment channels SeerrNG users rely on. | Operators can move from a supported SeerrNG release to a supported replacement release using documented steps and a tested recovery path. |
+| Companion services | Existing companion integrations remain usable through supported APIs or adapters. Retiring SeerrNG itself does not automatically retire BookshelfNG, ChaptarrNG, QuestarrNG, or ROMarrNG. | Each integration needed by users has a maintained compatibility path. Companion-fork retirement remains a separate decision with its own criteria in the [dependency-fork guide](./using-seerr/dependency-forks.md). |
+
+All applicable gates must pass for the exact supported replacement release.
+An upstream feature branch, an unmerged proposal, or a merged change that has
+not reached a supported release is not enough. The replacement can use upstream
+code, an extension, an adapter, or a compatible service; it does not need to
+reproduce SeerrNG's implementation or accept the entire product direction.
 
 ## Review Status
 
