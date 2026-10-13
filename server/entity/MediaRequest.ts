@@ -95,7 +95,7 @@ import {
   type EntityManager,
 } from 'typeorm';
 import Media from './Media';
-import SeasonRequest from './SeasonRequest';
+import SeasonRequest, { isActiveSeasonRequest } from './SeasonRequest';
 import { User } from './User';
 
 export class RequestPermissionError extends Error {}
@@ -2622,7 +2622,9 @@ export class MediaRequest {
         selection: SeasonEpisodeSelection
       ): boolean => {
         const matchingRows = (request.seasons ?? []).filter(
-          (season) => season.seasonNumber === selection.seasonNumber
+          (season) =>
+            isActiveSeasonRequest(season) &&
+            season.seasonNumber === selection.seasonNumber
         );
         if (!selection.episodeNumbers) {
           return matchingRows.some((season) => season.episodeNumbers == null);
@@ -2676,7 +2678,9 @@ export class MediaRequest {
                 (request.status === MediaRequestStatus.PENDING ||
                   request.status === MediaRequestStatus.APPROVED)
           )
-          .flatMap((request) => request.seasons ?? []);
+          .flatMap((request) =>
+            (request.seasons ?? []).filter(isActiveSeasonRequest)
+          );
         const fullyRequestedSeasons = new Set(
           activeRequestedSeasonRows
             .filter((season) => season.episodeNumbers == null)

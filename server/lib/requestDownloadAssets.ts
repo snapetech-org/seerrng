@@ -8,6 +8,7 @@ import SonarrAPI from '@server/api/servarr/sonarr';
 import { MediaType } from '@server/constants/media';
 import { MediaIdentifierProvider } from '@server/entity/MediaIdentifier';
 import type { MediaRequest } from '@server/entity/MediaRequest';
+import { isActiveSeasonRequest } from '@server/entity/SeasonRequest';
 import type {
   RequestDownloadAssetResponse,
   RequestDownloadAssetsResponse,
@@ -286,6 +287,13 @@ const getSonarrAssets = async (
   );
   if (!server) return;
 
+  const requestedSeasons = (request.seasons ?? []).filter(
+    isActiveSeasonRequest
+  );
+  if ((request.seasons?.length ?? 0) > 0 && requestedSeasons.length === 0) {
+    return;
+  }
+
   const api = new SonarrAPI({
     url: SonarrAPI.buildUrl(server, '/api/v3'),
     apiKey: server.apiKey,
@@ -294,7 +302,6 @@ const getSonarrAssets = async (
     api.getEpisodes(seriesId),
     api.getEpisodeFiles(seriesId),
   ]);
-  const requestedSeasons = request.seasons ?? [];
   const selectedFileIds = new Set(
     episodes
       .filter((episode) => {

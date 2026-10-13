@@ -49,4 +49,9 @@ class SeasonRequest {
   }
 }
 
+/** A declined selection is retained as history, but no longer blocks a retry. */
+export const isActiveSeasonRequest = (season: {
+  status?: MediaRequestStatus;
+}): boolean => season.status !== MediaRequestStatus.DECLINED;
+
 export default SeasonRequest;

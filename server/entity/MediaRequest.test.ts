@@ -16,6 +16,7 @@ import {
   QuotaRestrictedError,
 } from '@server/entity/MediaRequest';
 import { MediaSearchMetadata } from '@server/entity/MediaSearchMetadata';
+import Season from '@server/entity/Season';
 import SeasonRequest from '@server/entity/SeasonRequest';
 import { User } from '@server/entity/User';
 import { Permission } from '@server/lib/permissions';
@@ -312,6 +313,58 @@ describe('MediaRequest.request', () => {
       1
     );
     assert.strictEqual(await seasonRequestRepository.count(), 3);
+  });
+
+  it('allows a season to be requested again after its prior selection was declined', async () => {
+    const mediaRepository = getRepository(Media);
+    const requestRepository = getRepository(MediaRequest);
+    const requester = await seedRequester(5);
+    const media = await mediaRepository.save(
+      new Media({
+        tmdbId: 88777,
+        mediaType: MediaType.TV,
+        status: MediaStatus.UNKNOWN,
+        status4k: MediaStatus.UNKNOWN,
+        seasons: [
+          new Season({
+            seasonNumber: 1,
+            status: MediaStatus.UNKNOWN,
+            status4k: MediaStatus.UNKNOWN,
+          }),
+        ],
+      })
+    );
+    const previousRequest = await requestRepository.save(
+      new MediaRequest({
+        type: MediaType.TV,
+        status: MediaRequestStatus.APPROVED,
+        media,
+        requestedBy: requester,
+        is4k: false,
+        seasons: [
+          new SeasonRequest({
+            seasonNumber: 1,
+            status: MediaRequestStatus.DECLINED,
+          }),
+        ],
+      })
+    );
+
+    const retry = await MediaRequest.request(
+      {
+        mediaId: 88777,
+        mediaType: MediaType.TV,
+        seasons: [1],
+        is4k: false,
+      },
+      requester
+    );
+
+    assert.notStrictEqual(retry.id, previousRequest.id);
+    assert.deepStrictEqual(
+      retry.seasons.map((season) => season.seasonNumber),
+      [1]
+    );
   });
 
   it('creates one media row for concurrent 4k and non-4k requests', async () => {

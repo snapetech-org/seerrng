@@ -161,6 +161,33 @@ class SonarrScanner
         this.didScan4k = false;
       }
 
+      if (this.didScanStandard) {
+        await this.resolveDeferredSeasonStatusResets(false, (callback) =>
+          runWithServarrServiceSnapshots(
+            'sonarr',
+            this.servers.filter((server) => !this.enable4kShow || !server.is4k),
+            callback,
+            {
+              requireExactAuthoritySet: true,
+              includeCurrent: (server) => !this.enable4kShow || !server.is4k,
+            }
+          )
+        );
+      }
+      if (this.didScan4k) {
+        await this.resolveDeferredSeasonStatusResets(true, (callback) =>
+          runWithServarrServiceSnapshots(
+            'sonarr',
+            this.servers.filter((server) => this.enable4kShow && server.is4k),
+            callback,
+            {
+              requireExactAuthoritySet: true,
+              includeCurrent: (server) => this.enable4kShow && server.is4k,
+            }
+          )
+        );
+      }
+
       await this.cleanupOrphanedShows();
       this.log('Sonarr scan complete', 'info');
     } catch (e) {
@@ -175,6 +202,7 @@ class SonarrScanner
 
   private async processSonarrSeries(sonarrSeries: SonarrSeries) {
     const server4k = this.enable4kShow && this.currentServer.is4k;
+    let resolvedTmdbId: number | undefined;
     if (server4k) {
       this.scanned4kTvdbIds.add(sonarrSeries.tvdbId);
     } else {
@@ -199,6 +227,7 @@ class SonarrScanner
       }
 
       const tmdbId = tvShow.id;
+      resolvedTmdbId = tmdbId;
       (server4k ? this.scanned4kTmdbIds : this.scannedTmdbIds).add(tmdbId);
       const metadataProvider = tvShow.keywords.results.some(
         (keyword: TmdbKeyword) => keyword.id === ANIME_KEYWORD_ID
@@ -253,6 +282,8 @@ class SonarrScanner
         externalServiceSlug: sonarrSeries.titleSlug,
         title: sonarrSeries.title,
         is4k: server4k,
+        deferStatusReset: true,
+        preserveInactiveServiceIdentity: true,
         mutationGuard: (callback) =>
           runWithServarrServiceSnapshot('sonarr', this.currentServer, callback),
       });
@@ -282,6 +313,7 @@ class SonarrScanner
       });
     } catch (e) {
       if (e instanceof ServarrServiceAuthorityChangedError) throw e;
+      this.markShowScanFailed(sonarrSeries.tvdbId, server4k, resolvedTmdbId);
       this.log('Failed to process Sonarr media', 'error', {
         errorMessage: e.message,
         title: sonarrSeries.title,

@@ -11,6 +11,7 @@ import {
 } from '@server/entity/MediaRequest';
 import MediaRequestStatusEvent from '@server/entity/MediaRequestStatusEvent';
 import { RequestDispatchOutbox } from '@server/entity/RequestDispatchOutbox';
+import { isActiveSeasonRequest } from '@server/entity/SeasonRequest';
 import type {
   DownloadingItem,
   ServarrHistoryEvidence,
@@ -174,6 +175,7 @@ type RequestLike = {
   media: RequestMediaLike;
   seasons?: {
     seasonNumber: number;
+    status?: MediaRequestStatus;
   }[];
 };
 
@@ -352,12 +354,16 @@ const isRequestSatisfied = (request: RequestLike): boolean => {
   if (request.type === MediaType.TV && request.seasons?.length) {
     const seasonStatus = request.is4k ? 'status4k' : 'status';
     const seasons = request.media.seasons ?? [];
-    return request.seasons.every((requestedSeason) => {
-      const season = seasons.find(
-        (candidate) => candidate.seasonNumber === requestedSeason.seasonNumber
-      );
-      return !!season && isAvailableStatus(season[seasonStatus]);
-    });
+    const activeSeasonRequests = request.seasons.filter(isActiveSeasonRequest);
+    return (
+      activeSeasonRequests.length > 0 &&
+      activeSeasonRequests.every((requestedSeason) => {
+        const season = seasons.find(
+          (candidate) => candidate.seasonNumber === requestedSeason.seasonNumber
+        );
+        return !!season && isAvailableStatus(season[seasonStatus]);
+      })
+    );
   }
 
   return isAvailableStatus(mediaStatus);
@@ -515,7 +521,9 @@ const getDownloadItems = (request: RequestLike): DownloadingItem[] => {
     }
 
     const requestedSeasons = new Set(
-      request.seasons.map((season) => season.seasonNumber)
+      request.seasons
+        .filter(isActiveSeasonRequest)
+        .map((season) => season.seasonNumber)
     );
     return downloads.filter(
       (download) =>
