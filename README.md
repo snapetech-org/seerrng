@@ -264,17 +264,19 @@ can each handle Book and Audiobook formats; one BookshelfNG instance can serve
 both. QuestarrNG handles PC game acquisition, while ROMarrNG handles emulation
 systems and ROM acquisition.
 
-BookshelfNG's planned retirement in favor of ChaptarrNG is not released yet:
-there is no populated-library converter or old-channel bridge, so existing
+BookshelfNG retirement into ChaptarrNG is not released yet. The standard
+ChaptarrNG candidate passed preview, apply, and normal startup against one real
+populated migration-158 SQLite database; 81 media choices were test inputs,
+not reviewed classifications. Older schemas, PostgreSQL, full settings
+coverage, rollback, and old-channel bridges remain open, so existing
 BookshelfNG installations should keep their current data and backup path.
 ChaptarrNG remains the maintained destination. Its later retirement into
-upstream Chaptarr must preserve both ChaptarrNG's maintained and actively added
-features, including unpublished work, and the BookshelfNG features carried
-over. That complete union blocks ChaptarrNG retirement as a whole. Each
-feature, sub-feature, data path, and distribution channel remains an individual
-blocker; active ChaptarrNG branches and open feature PRs count before release.
-See the
-[combined feature snapshot](https://github.com/snapetech/chaptarrng/blob/main/docs/FORK_FEATURES.md#chaptarrng-retirement-blockers)
+upstream Chaptarr must preserve both all BookshelfNG features carried over and
+all ChaptarrNG features it maintains or actively develops, including
+unpublished work. That complete union blocks ChaptarrNG retirement as a whole.
+Each feature, sub-feature, data path, and distribution channel remains an
+individual blocker. See the [combined ChaptarrNG
+matrix](https://github.com/snapetech/chaptarrng/blob/main/docs/FORK_FEATURES.md#chaptarrng-retirement-blockers)
 and the [fork transition criteria](./docs/using-seerr/dependency-forks.md).
 
 Radarr, Sonarr, Lidarr, LazyLibrarian, Mylar3, Issuarr, Kapowarr, and BackIssue are
