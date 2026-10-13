@@ -115,9 +115,11 @@ describe('SeerrNG tooltip keyboard references', () => {
     const { default: Tooltip } = await import('./index');
     const markup = renderToStaticMarkup(
       <Tooltip content="Open details">
-        <div role="button" onClick={() => undefined}>
-          Open details
-        </div>
+        {React.createElement(
+          'div',
+          { role: 'button', onClick: () => undefined },
+          'Open details'
+        )}
       </Tooltip>
     );
 
