@@ -16,6 +16,10 @@ Simply [create a webhook](https://my.slack.com/services/new/incoming-webhook/) a
 Please refer to the [Slack API documentation](https://api.slack.com/messaging/webhooks) for more details on configuring these notifications.
 :::
 
+### Embed Poster (optional)
+
+When enabled, Seerr includes the notification image in the Slack message when an image is available.
+
 ### Notification Language
 
 Sets the language for notifications sent to this Slack channel.

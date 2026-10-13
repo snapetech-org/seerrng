@@ -14,6 +14,10 @@ The webhook notification agent enables you to send a custom JSON payload to any 
 
 The URL you would like to post notifications to. Your JSON will be sent as the body of the request.
 
+### Support URL Variables (experimental)
+
+Enable this setting to use the `{{variable}}` values in the General, Notify User, Media, Request, Issue, and Comment tables below in the Webhook URL. Seerr replaces each supported value and URL-encodes it before sending the request. The structured `{{media}}`, `{{request}}`, `{{issue}}`, `{{comment}}`, and `{{extra}}` variables are for JSON payload keys and are not supported in the URL.
+
 ### Authorization Header (optional)
 
 :::info
@@ -98,6 +102,11 @@ These following special variables are only included in media-related notificatio
 | Variable                    | Value                                                                                                          |
 | ----------------------------| -------------------------------------------------------------------------------------------------------------- |
 | `{{media_type}}`            | The media type (`movie` or `tv`)                                                                               |
+| `{{media_mbid}}`            | The media's normalized MusicBrainz ID, if available                                                            |
+| `{{media_externalid}}`      | The media's external identifier, such as its MusicBrainz, book, or service-specific ID                         |
+| `{{media_openlibraryid}}`   | The media's normalized Open Library work ID, if available                                                     |
+| `{{media_isbn}}`            | The media's ISBN, if available                                                                                 |
+| `{{media_url}}`             | The Seerr URL for the media, if available                                                                      |
 | `{{media_imdbid}}`          | The media's IMDb ID                                                                                            |
 | `{{media_tmdbid}}`          | The media's TMDB ID                                                                                            |
 | `{{media_tvdbid}}`          | The media's TheTVDB ID                                                                                         |
@@ -132,6 +141,8 @@ The following special variables are only included in issue-related notifications
 | Variable                                 | Value                                                                          |
 | ---------------------------------------- | ------------------------------------------------------------------------------ |
 | `{{issue_id}}`                           | The issue ID                                                                   |
+| `{{issue_type}}`                         | The issue type                                                                 |
+| `{{issue_status}}`                       | The issue's current status                                                      |
 | `{{reportedBy_username}}`                | The requesting user's username                                                 |
 | `{{reportedBy_email}}`                   | The requesting user's email address                                            |
 | `{{reportedBy_avatar}}`                  | The requesting user's avatar URL                                               |

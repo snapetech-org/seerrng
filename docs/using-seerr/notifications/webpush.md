@@ -18,6 +18,10 @@ Seerr's service worker is also used for browser runtime caching. That cache is r
 
 To set up web push notifications, simply enable the agent in **Settings → Notifications → Web Push**.
 
+### Embed Poster
+
+When enabled, browser push notifications include the notification image when one is available.
+
 You and your users have the option to enable web push notifications by going to your **User Profile → Edit Settings → Notifications → Web Push → Enable web push**. Here you can also customize the notifications you'd like to receive.
 
 :::info[Mobile Users]
