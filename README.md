@@ -116,7 +116,9 @@ Upstream-informed changes are reviewed in separate, attributed pull requests.
 The [current review index](./docs/upstream-review-status.md) links each open
 SeerrNG proposal to its public source context. Open proposals are not released
 features; check the release notes and the relevant pull request for current
-availability.
+availability. Recent drafts cover bounded season loading in request detail and
+status ([#258](https://github.com/snapetech/seerrng/pull/258)) and current
+Jellyfin authorization with Emby compatibility ([#259](https://github.com/snapetech/seerrng/pull/259)).
 
 Release notes are maintained in [`CHANGELOG.md`](./CHANGELOG.md). User-facing
 pull requests add a concise release-note fragment under
