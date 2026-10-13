@@ -1,6 +1,6 @@
 import axios from 'axios';
 import assert from 'node:assert/strict';
-import { afterEach, describe, it } from 'node:test';
+import { afterEach, describe, it, mock } from 'node:test';
 
 import {
   PLEX_OAUTH_HTTP_OPTIONS,
@@ -175,6 +175,59 @@ describe('Plex login attempt ownership', () => {
         /forwardUrl=https:\/\/seerr\.example\/login\/plex\/loading\?complete=1/
       );
     } finally {
+      axios.post = originalPost;
+      axios.get = originalGet;
+    }
+  });
+
+  it('rejects an authentication token returned after the PIN expires', async () => {
+    let now = 0;
+    const nowMock = mock.method(Date, 'now', () => now);
+    const popup = {
+      closed: false,
+      close() {
+        this.closed = true;
+      },
+      focus() {},
+      location: { href: '' },
+    };
+    Object.defineProperty(globalThis, 'window', {
+      configurable: true,
+      value: {
+        innerHeight: 800,
+        innerWidth: 1200,
+        location: { origin: 'https://seerr.example' },
+        navigator: { userAgent: 'Mozilla/5.0' },
+        open: () => popup,
+        screen: { height: 800, width: 1200 },
+        screenLeft: 0,
+        screenTop: 0,
+      },
+    });
+
+    const originalPost = axios.post;
+    const originalGet = axios.get;
+    axios.post = (async () => ({
+      data: {
+        code: 'abcd',
+        expiresAt: new Date(900_000).toISOString(),
+        id: 42,
+      },
+    })) as typeof axios.post;
+    axios.get = (async () => {
+      now = 900_000;
+      return { data: { authToken: 'late-token' } };
+    }) as typeof axios.get;
+
+    try {
+      const oauth = new PlexOAuth();
+      const attempt = oauth.preparePopup();
+      await assert.rejects(
+        oauth.login('client-id', attempt),
+        /Plex PIN expired before login completed/
+      );
+    } finally {
+      nowMock.mock.restore();
       axios.post = originalPost;
       axios.get = originalGet;
     }

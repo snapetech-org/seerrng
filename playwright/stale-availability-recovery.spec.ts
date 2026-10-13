@@ -1,6 +1,8 @@
 import { expect, test, type Page } from '@playwright/test';
 import { MediaStatus } from '../server/constants/media';
 
+test.use({ serviceWorkers: 'block' });
+
 const tvId = 909999;
 const mediaId = 987654;
 
@@ -152,6 +154,13 @@ for (const viewport of [
     await page.route(`**/api/v1/tv/${tvId}/ratingscombined*`, (route) =>
       route.fulfill({ json: {} })
     );
+    for (const relation of ['recommendations', 'similar']) {
+      await page.route(`**/api/v1/tv/${tvId}/${relation}*`, (route) =>
+        route.fulfill({
+          json: { page: 1, totalPages: 1, totalResults: 0, results: [] },
+        })
+      );
+    }
     await page.route('**/api/v1/service/sonarr*', (route) =>
       route.fulfill({
         json: [
@@ -205,8 +214,14 @@ for (const viewport of [
     await page.getByTestId('title-card').first().click();
     await expect(page.getByTestId('media-title')).toContainText(tv.name);
 
-    const hdRequest = page.getByTestId('format-request-control');
+    const hdRequest = page
+      .getByRole('button', { name: 'Request', exact: true })
+      .filter({ visible: true });
+    await expect(page.getByText('Available', { exact: true })).toBeVisible();
     await expect(hdRequest).toBeDisabled();
+    await expect(
+      page.getByText('Loading Series Details', { exact: true })
+    ).toBeHidden();
     await page.screenshot({
       path: testInfo.outputPath(
         `stale-availability-before-${viewport.name}.png`
@@ -239,7 +254,11 @@ for (const viewport of [
 
     await confirmation.getByTestId('modal-ok-button').click();
     await expect.poll(() => clearRequests).toBe(1);
-    await expect(page.getByTestId('format-request-control')).toBeEnabled();
+    await manageDialog
+      .getByRole('button', { name: 'Cancel', exact: true })
+      .click();
+    await expect(manageDialog).not.toBeVisible();
+    await expect(hdRequest).toBeEnabled();
     expect(libraryDeleteRequests).toBe(0);
     await page.screenshot({
       path: testInfo.outputPath(
