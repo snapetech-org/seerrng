@@ -5,4 +5,4 @@ area: localization
 action: none
 breaking: false
 ---
-The client and server message catalogs now have non-empty entries for all application-owned source messages in Spanish, Simplified and Traditional Chinese, Hindi, German, Japanese, French, Brazilian Portuguese, Arabic, Korean, Vietnamese, and Indonesian. The catalogs combine existing translations, machine translation, and unchanged product or technical terms. Wording and remaining source-language values still need fluent-speaker review.
+The SeerrNG client and server catalogs now cover 5,283 UI messages and 71 notification messages in Spanish, Simplified and Traditional Chinese, Hindi, German, Japanese, French, Brazilian Portuguese, Arabic, Korean, Vietnamese, and Indonesian. Existing translations and machine translation fill the catalogs; product and technical terms stay unchanged. Fluent-speaker review remains open.
