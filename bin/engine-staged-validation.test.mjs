@@ -768,6 +768,7 @@ test('hosted GitHub plan is deterministic and binds the distributed native DAG',
     'playwright/request-edit-without-media.spec.ts',
     'playwright/settings-search.spec.ts',
     'playwright/sportarr-port-field.spec.ts',
+    'playwright/stale-availability-recovery.spec.ts',
     'playwright/swipe-card-surface.spec.ts',
     'playwright/tmdb-rating-vote-count.spec.ts',
   ]);
