@@ -111,9 +111,9 @@ continuity—plus every BookshelfNG feature carried into the consolidated
 ChaptarrNG product. Chaptarr already has a pending-import subsystem;
 SeerrNG needs compatible exposed semantics, not a second queue implementation.
 The [combined ChaptarrNG retirement matrix](https://github.com/snapetech/chaptarrng/blob/main/docs/FORK_FEATURES.md#chaptarrng-retirement-blockers)
-tracks both sets. Every feature and post-fork source change must be retained
-or replaced with a verified equivalent, with tests, before ChaptarrNG can be
-retired into Chaptarr.
+tracks both sets. Every feature, sub-feature, post-fork source change, data
+path, and distribution channel must be retained or replaced with a verified
+equivalent, with tests, before ChaptarrNG can be retired into Chaptarr.
 SeerrNG must then pass its compatibility checks against that exact supported
 release.
 
