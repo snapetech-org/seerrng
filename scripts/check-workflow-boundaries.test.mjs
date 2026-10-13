@@ -325,19 +325,8 @@ test('unit-test pull requests stay on hosted runners', () => {
   );
   const runner = ciWorkflow.jobs['unit-test']?.['runs-on'];
 
-  assert.equal(typeof runner, 'string');
-  assert.doesNotMatch(
+  assert.equal(
     runner,
-    /github\.event_name\s*==\s*['"]pull_request['"]/u
+    "${{ ((github.event_name == 'push' && github.ref == 'refs/heads/main') || (github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main')) && fromJSON('[\"self-hosted\",\"Linux\",\"X64\",\"host\",\"seerrng\"]') || 'ubuntu-latest' }}"
   );
-  assert.match(
-    runner,
-    /github\.event_name == 'push' && github\.ref == 'refs\/heads\/main'/u
-  );
-  assert.match(
-    runner,
-    /github\.event_name == 'workflow_dispatch' && github\.ref == 'refs\/heads\/main'/u
-  );
-  assert.match(runner, /self-hosted/u);
-  assert.match(runner, /ubuntu-latest/u);
 });
