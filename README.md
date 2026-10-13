@@ -129,10 +129,9 @@ guidance with an alternate TV listing search for season-number mismatches
 covers bounded Node test workers in hosted validation
 ([#265](https://github.com/snapetech/seerrng/pull/265)) and a proposed manual
 TVDB season-mapping recovery path for selected Sonarr destinations
-([#276](https://github.com/snapetech-org/seerrng/pull/276)), informed by
-[Seerr PR #3495](https://github.com/seerr-team/seerr/pull/3495) and
-[Seerr PR #3496](https://github.com/seerr-team/seerr/pull/3496). These open
-proposals are not released features.
+([#276](https://github.com/snapetech-org/seerrng/pull/276)). Its upstream
+source, along with the sources for the other proposals, is linked in the
+review index. These open proposals are not released features.
 
 The current review period also includes an open proposal to continue
 Radarr/Sonarr dispatch when optional requester-tag lookup or creation fails
