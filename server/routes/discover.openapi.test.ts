@@ -115,3 +115,26 @@ describe('movie discovery outage fallback OpenAPI contract', () => {
     assert.strictEqual(searchProperties.stale, undefined);
   });
 });
+
+describe('public TMDB list OpenAPI contract', () => {
+  it('documents v4 item_count and mixed movie and series results', () => {
+    const listResponse =
+      api.paths['/discover/list/{listId}'].get.responses['200'].content[
+        'application/json'
+      ].schema.properties;
+
+    assert.deepStrictEqual(listResponse.totalResults, {
+      type: 'number',
+      description: 'TMDB v4 list item_count.',
+      example: 158,
+    });
+    assert.deepStrictEqual(
+      (listResponse.results as { items: { anyOf: { $ref: string }[] } }).items
+        .anyOf,
+      [
+        { $ref: '#/components/schemas/MovieResult' },
+        { $ref: '#/components/schemas/TvResult' },
+      ]
+    );
+  });
+});

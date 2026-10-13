@@ -28,6 +28,15 @@ export interface TmdbTvResult extends TmdbMediaResult {
   first_air_date: string;
 }
 
+export interface TmdbListResponse {
+  page: number;
+  total_pages: number;
+  item_count: number;
+  name: string;
+  description: string;
+  results: (TmdbMovieResult | TmdbTvResult)[];
+}
+
 export interface TmdbCollectionResult {
   id: number;
   media_type: 'collection';

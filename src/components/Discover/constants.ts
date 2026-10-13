@@ -93,6 +93,7 @@ export const sliderTitles = defineMessages('components.Discover', {
   openlibrarybooksubject: 'Open Library Book Subject',
   musicbrainzmusicgenre: 'MusicBrainz Music Genre',
   listenbrainzmusicchart: 'ListenBrainz Music Chart',
+  tmdbList: 'TMDB List',
 });
 
 export const QueryFilterOptions = z.object({

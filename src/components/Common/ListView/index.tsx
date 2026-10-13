@@ -175,7 +175,7 @@ const ListView = ({
             titleCard = (
               <TitleCard
                 titleWeight={posterTitleWeight}
-                key={title.id}
+                key={`${title.mediaType}:${title.id}`}
                 id={title.id}
                 isAddedToWatchlist={title.mediaInfo?.watchlists?.length ?? 0}
                 image={title.posterPath}
@@ -202,7 +202,7 @@ const ListView = ({
                 titleWeight={posterTitleWeight}
                 watchlistPreview={watchlistPreview}
                 watchlistPreviewDisabled={watchlistPreviewDisabled}
-                key={title.id}
+                key={`${title.mediaType}:${title.id}`}
                 id={title.id}
                 isAddedToWatchlist={title.mediaInfo?.watchlists?.length ?? 0}
                 image={title.posterPath}
