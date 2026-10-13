@@ -189,6 +189,15 @@ required SeerrNG dependency only after:
 3. The exact release passes the SeerrNG consumer checks, and operators have a
    documented upgrade and data-compatibility path.
 
+For Chaptarr specifically, that release gate includes the combined
+ChaptarrNG-plus-ported-BookshelfNG feature set, not just the SeerrNG API
+contract. The BookshelfNG consolidation and the later ChaptarrNG upstream
+retirement are separate transitions, each requiring its own populated-data and
+distribution proof. Active ChaptarrNG branches and open feature PRs count
+before release too; the combined matrix tracks the current backlog features,
+integrations, localization, proposed channel changes, and the individual
+retirement checks.
+
 If an operator chooses to move from BookshelfNG to ChaptarrNG, that is a
 separate migration and requires its own populated-data and distribution proof.
 

@@ -267,8 +267,9 @@ migration, release, and package path. Any later ChaptarrNG retirement into
 upstream Chaptarr must preserve the combined BookshelfNG features carried over
 and ChaptarrNG's maintained and actively added features, including unpublished
 work. That complete union blocks retirement as a whole, with each feature an
-individual blocker; see the [fork transition criteria](./docs/using-seerr/dependency-forks.md)
-and [ChaptarrNG retirement matrix](https://github.com/snapetech/chaptarrng/blob/main/docs/FORK_FEATURES.md#chaptarrng-retirement-blockers).
+individual blocker. Active ChaptarrNG branches and open feature PRs count
+before release; see the [combined feature snapshot](https://github.com/snapetech/chaptarrng/blob/main/docs/FORK_FEATURES.md#chaptarrng-retirement-blockers)
+and the [fork transition criteria](./docs/using-seerr/dependency-forks.md).
 
 Radarr, Sonarr, Lidarr, LazyLibrarian, Mylar3, Issuarr, Kapowarr, and BackIssue are
 separate upstream or third-party integrations. They are not NG forks. The
