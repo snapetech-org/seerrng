@@ -418,6 +418,7 @@ function discoveredFiles(root) {
       const file = slash(path.relative(root, absolute));
       if (['node_modules', '.git', 'dist', '.next'].includes(entry.name))
         continue;
+      if (file === 'cypress/runtime-config') continue;
       if (entry.isSymbolicLink())
         throw new Error(`Symlink in hosted test discovery scope: ${file}`);
       if (entry.isDirectory()) visit(absolute);

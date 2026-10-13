@@ -23,7 +23,7 @@ guide](./dependency-forks.md).
 | TV | [Sonarr](https://github.com/Sonarr/Sonarr) | Searches, imports, and tracks series and episode requests. |
 | Sports leagues | [Sportarr](https://github.com/Sportarr/Sportarr) | Searches sports leagues and requests them using the configured quality profile and library defaults. |
 | Music | [Lidarr](https://github.com/Lidarr/Lidarr) | Searches, imports, and tracks artist and album requests. |
-| Books and audiobooks | [BookshelfNG](https://github.com/snapetech/bookshelfng) or [ChaptarrNG](https://github.com/snapetech/chaptarrng) | Recommended SeerrNG-compatible book managers. Either can serve both formats from one instance; add one SeerrNG service entry for each format. Other Readarr-compatible services may work, but do not provide the NG-specific behavior listed below. |
+| Books and audiobooks | [ChaptarrNG](https://github.com/snapetech/chaptarrng) | Recommended maintained book manager for new installs. One instance serves both formats; add one SeerrNG service entry for each. Existing BookshelfNG connections remain supported while users migrate. |
 | Comics | [Issuarr](https://github.com/issuarr/issuarr) (recommended for new setups), [Mylar3](https://github.com/MylarComics/mylar3) (existing connections remain supported), [Kapowarr](https://github.com/Casvt/Kapowarr), or [BackIssue](https://backissue.app/) | Connect one or more supported comic services, then choose a default destination for requests. Add Issuarr or Mylar3 through the existing **Mylar3** service type; Kapowarr and BackIssue use their own search sources and download flows. |
 | Magazines | [LazyLibrarian](https://github.com/llninja/LazyLibrarian) | Searches and tracks magazine requests. |
 | PC games | [QuestarrNG](https://github.com/snapetech/QuestarrNG) | Provides the IGDB catalog and acquires PC game requests. |
@@ -51,7 +51,7 @@ Use these container images when adding the forks directly to Compose:
 
 | Fork | SeerrNG-specific behavior | Container image | Container port |
 | --- | --- | --- | --- |
-| [BookshelfNG](https://github.com/snapetech/bookshelfng) | Standalone Readarr-style manager with one database for ebook and audiobook formats; its SeerrNG API routes and availability counts are format-specific. [Upstream comparison](https://github.com/snapetech/bookshelfng/blob/main/docs/capabilities-and-compatibility.md) | `ghcr.io/snapetech/bookshelfng:hardcover` | `8787` |
+| [BookshelfNG](https://github.com/snapetech/bookshelfng) (legacy) | Existing installations remain connectable during the migration. Do not use for new deployments. | `ghcr.io/snapetech/bookshelfng:hardcover` | `8787` |
 | [ChaptarrNG](https://github.com/snapetech/chaptarrng) | Standalone Chaptarr manager with a built-in direct-download option; SeerrNG adds capability discovery, format-scoped API access, paged scans, and a restricted key. [Upstream comparison](https://github.com/snapetech/chaptarrng/blob/main/docs/FORK_FEATURES.md) | `ghcr.io/snapetech/chaptarrng:latest` | `8789` |
 | [QuestarrNG](https://github.com/snapetech/QuestarrNG) | Standalone PC-game manager; SeerrNG uses its IGDB catalog and request-scoped acquisition and file-delivery contract. [Upstream comparison](https://github.com/snapetech/QuestarrNG/blob/main/docs/FORK_CHANGES.md) | `ghcr.io/snapetech/questarrng:latest` | `5000` |
 | [ROMarrNG](https://github.com/snapetech/ROMarrNG) | Standalone ROM manager; SeerrNG uses its versioned request API, optional IGDB and DAT catalogs, and request-scoped file delivery. [Upstream comparison](https://github.com/snapetech/ROMarrNG/blob/main/docs/UPSTREAM-PARITY.md) | `ghcr.io/snapetech/romarrng:latest` | `6868` |
@@ -61,8 +61,8 @@ README for supported architectures, storage mounts, and upgrade guidance
 before deploying; the container port is the port SeerrNG uses inside a shared
 Compose network.
 
-For book requests, BookshelfNG and ChaptarrNG are alternatives; BookshelfNG is
-the recommended Hardcover-backed setup. PC game acquisition and its SeerrNG
+For new book requests, use ChaptarrNG. Keep a BookshelfNG connection only while
+its existing library is being migrated. PC game acquisition and its SeerrNG
 catalog use QuestarrNG. ROM acquisition uses ROMarrNG; its optional IGDB
 catalog does not replace QuestarrNG for PC game acquisition. Follow each fork's
 SeerrNG setup instructions and use the linked NG image so its integration

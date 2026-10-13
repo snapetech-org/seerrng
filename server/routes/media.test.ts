@@ -143,11 +143,41 @@ const getSeriesMock = mock.method(
   async () => []
 );
 const getTvShowMock = mock.fn(
-  async (options: Parameters<TheMovieDb['getTvShow']>[0]) => {
-    void options;
-    return { external_ids: { tvdb_id: 777 } } as Awaited<
-      ReturnType<TheMovieDb['getTvShow']>
-    >;
+  async ({ tvId }: Parameters<TheMovieDb['getTvShow']>[0]) => {
+    return {
+      id: tvId,
+      content_ratings: { results: [] },
+      created_by: [],
+      episode_run_time: [],
+      first_air_date: '',
+      genres: [],
+      homepage: '',
+      in_production: false,
+      languages: [],
+      last_air_date: '',
+      name: 'Test show',
+      networks: [],
+      number_of_episodes: 0,
+      number_of_seasons: 0,
+      origin_country: [],
+      original_language: 'en',
+      original_name: 'Test show',
+      overview: '',
+      popularity: 0,
+      production_companies: [],
+      production_countries: [],
+      spoken_languages: [],
+      seasons: [],
+      status: 'Ended',
+      type: 'Scripted',
+      vote_average: 0,
+      vote_count: 0,
+      aggregate_credits: { cast: [] },
+      credits: { crew: [] },
+      external_ids: { tvdb_id: 777 },
+      keywords: { results: [] },
+      videos: { results: [] },
+    } as Awaited<ReturnType<TheMovieDb['getTvShow']>>;
   }
 );
 const getMediaWatchStatsMock = mock.method(

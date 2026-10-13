@@ -118,6 +118,7 @@ const posixOnlyTests = [
   'deploy/bookshelf-hardcover-migration.test.mjs',
   'deploy/bookshelf-migration-lab.test.mjs',
   'deploy/install-bookshelf-backend.test.mjs',
+  'deploy/migrate-bookshelf-to-chaptarrng.test.mjs',
   'packaging/scripts/aur-scripts.test.mjs',
   'packaging/smoke/package-smoke.test.mjs',
   'scripts/build-release-assets.test.mjs',

@@ -28,7 +28,7 @@ const createTemporaryDirectory = async () => {
   return directory;
 };
 
-const runInstaller = (environment, ...arguments_) =>
+const runCommand = (environment, arguments_) =>
   new Promise((resolve) => {
     const child = spawn(scriptPath, arguments_, {
       env: { ...process.env, ...environment },
@@ -46,6 +46,9 @@ const runInstaller = (environment, ...arguments_) =>
       resolve({ code, signal, stderr, stdout })
     );
   });
+
+const runInstaller = (environment, ...arguments_) =>
+  runCommand(environment, ['--legacy-bookshelf', ...arguments_]);
 
 const baseEnvironment = (root) => ({
   BACKUP_DIR: path.join(root, 'backup'),
@@ -96,6 +99,34 @@ afterEach(async () => {
     )
   );
   temporaryDirectories.clear();
+});
+
+describe('BookshelfNG retirement handoff', () => {
+  it('rejects fresh BookshelfNG installs and points to the ChaptarrNG profile', async () => {
+    const root = await createTemporaryDirectory();
+    const result = await runCommand(baseEnvironment(root), []);
+
+    assert.equal(result.code, 2);
+    assert.match(result.stderr, /Fresh BookshelfNG installations have been retired/);
+    assert.match(result.stderr, /--profile books/);
+  });
+
+  it('automatically previews an existing BookshelfNG database with the normal ChaptarrNG image', async () => {
+    const root = await createTemporaryDirectory();
+    const environment = await createDeploymentEnvironment(root);
+    await writeFile(
+      path.join(environment.BOOKSHELF_EBOOKS_CONFIG_DIR, 'readarr.db'),
+      'fixture database'
+    );
+
+    const result = await runCommand(environment, []);
+
+    assert.equal(result.code, 0, result.stderr);
+    assert.match(result.stdout, /Preview completed without changing readarr\.db/);
+    await assert.rejects(readFile(path.join(environment.INSTALL_DIR, '.env')), {
+      code: 'ENOENT',
+    });
+  });
 });
 
 describe('Bookshelf backup restoration', () => {
@@ -211,7 +242,7 @@ describe('Bookshelf backup permissions', () => {
     });
   });
 
-  it('defaults fresh Hardcover deployments to compatibility metadata', async () => {
+  it('keeps the explicit legacy path configurable for existing deployments', async () => {
     const root = await createTemporaryDirectory();
     const environment = await createDeploymentEnvironment(root);
 

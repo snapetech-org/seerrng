@@ -231,7 +231,7 @@ test('tooling concurrency recognition preserves exact platform inventory and rej
       readFileSync(join(root, 'bin/run-tooling-tests.mjs'), 'utf8'),
       ts
     ).get('posixOnlyTests').length,
-    9
+    10
   );
   for (const changed of [
     legacy,

@@ -131,7 +131,7 @@ HARDCOVER_SOFTCOVER_AUDIOBOOK_API_KEY=...
 Generate inventory, match reports, and rebuild payloads without importing:
 
 ```bash
-deploy/install-bookshelf-backend.sh --migrate-to-hardcover
+deploy/install-bookshelf-backend.sh --legacy-bookshelf --migrate-to-hardcover
 ```
 
 Review these files in the generated `hardcover-migration` directory:
@@ -155,7 +155,7 @@ Apply matched/recovered books to prepared Hardcover targets:
 APPLY_HARDCOVER_REBUILD=true \
 HARDCOVER_EBOOK_API_KEY=... \
 HARDCOVER_AUDIOBOOK_API_KEY=... \
-deploy/install-bookshelf-backend.sh --migrate-to-hardcover
+deploy/install-bookshelf-backend.sh --legacy-bookshelf --migrate-to-hardcover
 ```
 
 The apply phase writes:
@@ -186,7 +186,7 @@ HARDCOVER_EBOOK_CONFIG_DIR=/path/to/hardcover-ebook-config \
 HARDCOVER_AUDIOBOOK_CONFIG_DIR=/path/to/hardcover-audiobook-config \
 HARDCOVER_EBOOK_API_KEY=... \
 HARDCOVER_AUDIOBOOK_API_KEY=... \
-deploy/install-bookshelf-backend.sh --migrate-to-hardcover
+deploy/install-bookshelf-backend.sh --legacy-bookshelf --migrate-to-hardcover
 ```
 
 The installer also accepts an explicit flag:
@@ -197,7 +197,7 @@ HARDCOVER_EBOOK_CONFIG_DIR=/path/to/hardcover-ebook-config \
 HARDCOVER_AUDIOBOOK_CONFIG_DIR=/path/to/hardcover-audiobook-config \
 HARDCOVER_EBOOK_API_KEY=... \
 HARDCOVER_AUDIOBOOK_API_KEY=... \
-deploy/install-bookshelf-backend.sh --migrate-to-hardcover --allow-local-db-import
+deploy/install-bookshelf-backend.sh --legacy-bookshelf --migrate-to-hardcover --allow-local-db-import
 ```
 
 `HARDCOVER_LOCAL_DB_IMPORT=true` requires `sqlite3` and direct access to the
@@ -295,16 +295,16 @@ node deploy/bookshelf-hardcover-migration.mjs --validate \
 
 ```bash
 # Generate inventory and reports without importing.
-deploy/install-bookshelf-backend.sh --migrate-to-hardcover
+deploy/install-bookshelf-backend.sh --legacy-bookshelf --migrate-to-hardcover
 
 # Apply native API-safe records.
 APPLY_HARDCOVER_REBUILD=true \
-deploy/install-bookshelf-backend.sh --migrate-to-hardcover
+deploy/install-bookshelf-backend.sh --legacy-bookshelf --migrate-to-hardcover
 
 # Apply native records and shadow local rows for remaining gaps.
 APPLY_HARDCOVER_REBUILD=true \
 HARDCOVER_LOCAL_DB_IMPORT=true \
-deploy/install-bookshelf-backend.sh --migrate-to-hardcover
+deploy/install-bookshelf-backend.sh --legacy-bookshelf --migrate-to-hardcover
 
 # Promote shadow rows later when native Hardcover entries exist.
 node deploy/bookshelf-hardcover-migration.mjs --reconcile-local \
@@ -391,7 +391,7 @@ restore from `BACKUP_DIR`:
 
 ```bash
 BACKUP_DIR=/opt/bookshelf-backend/backups/20260520-082024 \
-deploy/install-bookshelf-backend.sh --restore-backup
+deploy/install-bookshelf-backend.sh --legacy-bookshelf --restore-backup
 ```
 
 Keep the old Readarr/softcover data until ebook, audiobook, and both-format

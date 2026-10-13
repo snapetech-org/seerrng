@@ -33,11 +33,10 @@ coordinate the provider contract while retaining each app's existing API and
 standalone use. The goal is not to make a fork permanent: when an upstream
 release supplies the needed behavior, SeerrNG can add and verify an adapter.
 
-The two book managers are alternatives with different metadata and data-model
-choices. BookshelfNG retains its Readarr-compatible lineage and configurable
-metadata sources. ChaptarrNG follows Chaptarr's own metadata pipeline and adds
-a built-in direct-download option. Both can serve ebook and audiobook requests;
-choose based on library history, metadata preference, and standalone features.
+ChaptarrNG is the maintained book backend for new SeerrNG installs.
+BookshelfNG remains a legacy connection for existing libraries while its data
+and distribution channels are migrated. Both APIs remain readable by SeerrNG
+during that transition; new requests should target ChaptarrNG.
 
 ## Forks and current upstream boundaries
 
@@ -72,13 +71,18 @@ provider selection and direct-download workflows, must also be available or
 replaced. Then SeerrNG must pass its Bookshelf compatibility checks against
 that released version.
 
-**BookshelfNG-to-ChaptarrNG transition:** this consolidation is in progress,
-but it does not make the current ChaptarrNG release a drop-in replacement.
-There is no released populated-database converter or compatibility bridge for
-BookshelfNG images and packages. Keep existing BookshelfNG data and
-installations until the feature, migration, and channel gates in its
-[consolidation report](https://github.com/snapetech/bookshelfng/blob/main/docs/maintainers/chaptarr-consolidation.md)
-pass.
+**BookshelfNG-to-ChaptarrNG transition:** ChaptarrNG contains a candidate
+populated-database converter and preview/apply command in its standard
+executable. It passed preview, explicit apply, and normal startup against
+separate copies of one real populated migration-158 SQLite database. That
+single database does not establish general real-user compatibility: 81 media
+choices were test-only and not reviewed as correct classifications, and older
+schemas, PostgreSQL, full settings/client behavior, rollback, and all-channel
+validation remain open. The migration is not released. Keep independent
+backups and do not point production installations at the candidate until the
+gates in the [consolidation report](https://github.com/snapetech/bookshelfng/blob/main/docs/maintainers/chaptarr-consolidation.md)
+pass. The BookshelfNG in-app updater still uses the Readarr update service;
+channel-specific bridges are required.
 
 ### ChaptarrNG
 
@@ -89,8 +93,9 @@ product behavior and should not be described as exclusive to ChaptarrNG.
 
 **Standalone value:** ChaptarrNG keeps Chaptarr's audiobook and ebook manager
 and adds a built-in Direct Download indexer/client, authenticated encryption
-for full backups, fork-owned release images and deployment packages, and
-maintained security/configuration work. Chaptarr also has its own encrypted
+for full backups, fork-owned release images and an Unraid template, and
+maintained security/configuration work. General COPR, AUR, Chocolatey, Debian,
+and Windows native packages are not currently published. Chaptarr also has its own encrypted
 quick-start settings backup; the distinction here is full-backup encryption.
 See the [ChaptarrNG feature and upstream guide](https://github.com/snapetech/chaptarrng/blob/main/docs/FORK_FEATURES.md).
 

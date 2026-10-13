@@ -17,6 +17,10 @@ SKIP_PULL=false
 NO_STOP_READARR=false
 MIGRATE_TO_HARDCOVER=false
 RESTORE_BACKUP=false
+LEGACY_BOOKSHELF=false
+MIGRATE_TO_CHAPTARRNG=false
+MIGRATION_APPLY=false
+MIGRATION_CONFIRM_STOPPED=false
 SINGLE_INSTANCE=false
 SPLIT_INSTANCES=false
 ALLOW_INCOMPLETE_HARDCOVER_CUTOVER="${ALLOW_INCOMPLETE_HARDCOVER_CUTOVER:-false}"
@@ -83,9 +87,9 @@ usage() {
   cat <<EOF
 Usage: $0 [options]
 
-Deploy a Bookshelf backend for SeerrNG ebook and audiobook requests. Fresh
-installs use one combined BookshelfNG process; existing split databases keep
-the isolated layout unless you choose otherwise.
+This is a legacy BookshelfNG installer. New installs use ChaptarrNG. Existing
+BookshelfNG installs are routed to the ChaptarrNG migration preview unless you
+explicitly request legacy maintenance.
 
 Options:
   --dry-run          Print the actions that would be taken without changing files
@@ -110,6 +114,13 @@ Options:
                     Hardcover cannot import through the API.
   --restore-backup   Restore config directories from BACKUP_DIR tarballs and
                     stop the rendered compose stack if present.
+  --migrate-to-chaptarrng
+                    Preview migration with the standard ChaptarrNG image.
+  --apply            Apply migration; requires --migrate-to-chaptarrng and
+                    confirmation with --confirm-stopped.
+  --confirm-stopped  Confirm all BookshelfNG processes using the database are
+                    stopped before applying migration.
+  --legacy-bookshelf Explicitly use the retired BookshelfNG installer path.
   -h, --help         Show this help text.
 
 Common environment overrides:
@@ -199,6 +210,18 @@ while [ "$#" -gt 0 ]; do
       ;;
     --restore-backup)
       RESTORE_BACKUP=true
+      ;;
+    --migrate-to-chaptarrng)
+      MIGRATE_TO_CHAPTARRNG=true
+      ;;
+    --apply)
+      MIGRATION_APPLY=true
+      ;;
+    --confirm-stopped)
+      MIGRATION_CONFIRM_STOPPED=true
+      ;;
+    --legacy-bookshelf)
+      LEGACY_BOOKSHELF=true
       ;;
     -h | --help)
       usage
@@ -1675,6 +1698,38 @@ Optional validation commands, after replacing API keys:
 EOF
   fi
 }
+
+if [ "$RESTORE_BACKUP" != "true" ]; then
+  if ! has_existing_bookshelf_config; then
+    echo "Fresh BookshelfNG installations have been retired. Use the SeerrNG setup assistant with --profile books to install standard ChaptarrNG." >&2
+    exit 2
+  fi
+
+  if [ "$MIGRATION_APPLY" = "true" ] && [ "$MIGRATE_TO_CHAPTARRNG" != "true" ]; then
+    echo "--apply requires --migrate-to-chaptarrng." >&2
+    exit 2
+  fi
+  if [ "$MIGRATION_CONFIRM_STOPPED" = "true" ] && [ "$MIGRATION_APPLY" != "true" ]; then
+    echo "--confirm-stopped is only valid with --apply." >&2
+    exit 2
+  fi
+  if [ "$LEGACY_BOOKSHELF" = "true" ] && [ "$MIGRATE_TO_CHAPTARRNG" = "true" ]; then
+    echo "Choose the ChaptarrNG migration path or the legacy installer path, not both." >&2
+    exit 2
+  fi
+
+  if [ "$LEGACY_BOOKSHELF" != "true" ] || [ "$MIGRATE_TO_CHAPTARRNG" = "true" ]; then
+    migration_args=(--config-dir "$BOOKSHELF_EBOOKS_CONFIG_DIR")
+    if [ "$MIGRATION_APPLY" = "true" ]; then
+      [ "$MIGRATION_CONFIRM_STOPPED" = "true" ] || {
+        echo "--apply requires --confirm-stopped." >&2
+        exit 2
+      }
+      migration_args+=(--apply --confirm-stopped)
+    fi
+    exec "${SCRIPT_DIR}/migrate-bookshelf-to-chaptarrng.sh" "${migration_args[@]}"
+  fi
+fi
 
 select_instance_mode
 resolve_backend
