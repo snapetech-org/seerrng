@@ -12,7 +12,7 @@ import useToasts from '@app/hooks/useToasts';
 import globalMessages from '@app/i18n/globalMessages';
 import defineMessages from '@app/utils/defineMessages';
 import { ArrowDownOnSquareIcon } from '@heroicons/react/24/outline';
-import { MediaServerType } from '@server/constants/server';
+import { MediaServerType, ServerType } from '@server/constants/server';
 import type { MainSettings } from '@server/lib/settings';
 import axios from 'axios';
 import { Form, Formik } from 'formik';
@@ -89,11 +89,11 @@ const SettingsUsers = () => {
   const mediaServerFormatValues = {
     mediaServerName:
       settings.currentSettings.mediaServerType === MediaServerType.JELLYFIN
-        ? 'Jellyfin'
+        ? ServerType.JELLYFIN
         : settings.currentSettings.mediaServerType === MediaServerType.EMBY
-          ? 'Emby'
+          ? ServerType.EMBY
           : settings.currentSettings.mediaServerType === MediaServerType.PLEX
-            ? 'Plex'
+            ? ServerType.PLEX
             : undefined,
   };
 

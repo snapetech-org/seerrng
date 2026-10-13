@@ -1,7 +1,7 @@
 import EmbyIcon from '@app/assets/services/emby-icon-only.svg';
 import JellyfinIcon from '@app/assets/services/jellyfin-icon.svg';
 import PlexIcon from '@app/assets/services/plex.svg';
-import { MediaServerType } from '@server/constants/server';
+import { MediaServerType, ServerType } from '@server/constants/server';
 
 interface MediaServerIconProps {
   mediaServerType: MediaServerType;
@@ -13,11 +13,11 @@ export const getMediaServerName = (
 ): string | undefined => {
   switch (mediaServerType) {
     case MediaServerType.PLEX:
-      return 'Plex';
+      return ServerType.PLEX;
     case MediaServerType.JELLYFIN:
-      return 'Jellyfin';
+      return ServerType.JELLYFIN;
     case MediaServerType.EMBY:
-      return 'Emby';
+      return ServerType.EMBY;
     default:
       return undefined;
   }
