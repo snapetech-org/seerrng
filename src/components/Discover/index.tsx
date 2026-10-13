@@ -8,6 +8,7 @@ import { sliderTitles } from '@app/components/Discover/constants';
 import ReadMeABookHomeSection from '@app/components/Discover/ReadMeABookHomeSection';
 import discoveryMessages from '@app/components/DiscoveryIntegrations/messages';
 import MediaSlider from '@app/components/MediaSlider';
+import { DiscoverSliderScrollRestorationContext } from '@app/components/Slider';
 import { encodeURIExtraParams } from '@app/hooks/useDiscover';
 import useSettings from '@app/hooks/useSettings';
 import useToasts from '@app/hooks/useToasts';
@@ -235,7 +236,7 @@ const Discover = ({ initialSliders }: DiscoverProps) => {
     );
   }
 
-  return (
+  const discoverContent = (
     <div>
       <PageTitle title={intl.formatMessage(messages.discover)} />
       <Header>{intl.formatMessage(messages.discover)}</Header>
@@ -737,6 +738,11 @@ const Discover = ({ initialSliders }: DiscoverProps) => {
             );
           })}
     </div>
+  );
+  return (
+    <DiscoverSliderScrollRestorationContext.Provider value>
+      {discoverContent}
+    </DiscoverSliderScrollRestorationContext.Provider>
   );
 };
 

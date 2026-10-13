@@ -1,12 +1,15 @@
-import { deepStrictEqual, strictEqual } from 'node:assert';
+import { deepStrictEqual, doesNotThrow, strictEqual } from 'node:assert';
 import { describe, it } from 'node:test';
 import {
   DISCOVER_SCROLL_HISTORY_KEY,
+  getDiscoverHistoryEntryKey,
   getDiscoverScrollEntry,
   getScrollRestorationAction,
   isMediaDetailPath,
   readDiscoverScrollEntry,
+  readDiscoverSliderScrollPosition,
   saveDiscoverScrollEntry,
+  saveDiscoverSliderScrollPosition,
 } from './discoverScrollRestoration';
 
 describe('discover scroll restoration', () => {
@@ -142,6 +145,126 @@ describe('history entry persistence', () => {
         browser.history.state = { key: 'fresh-visit' };
         strictEqual(readDiscoverScrollEntry(path), undefined);
       }
+    } finally {
+      if (originalWindow)
+        Object.defineProperty(globalThis, 'window', originalWindow);
+      else Reflect.deleteProperty(globalThis, 'window');
+    }
+  });
+
+  it('keeps carousel positions independent by history entry and slider key', () => {
+    const values = new Map<string, string>();
+    const originalWindow = Object.getOwnPropertyDescriptor(
+      globalThis,
+      'window'
+    );
+    const browser = {
+      history: { state: { key: 'discover-entry' } },
+      sessionStorage: {
+        getItem: (key: string) => values.get(key) ?? null,
+        setItem: (key: string, value: string) => values.set(key, value),
+      },
+    };
+    Object.defineProperty(globalThis, 'window', {
+      configurable: true,
+      value: browser,
+    });
+    try {
+      strictEqual(getDiscoverHistoryEntryKey(), 'discover-entry');
+      saveDiscoverSliderScrollPosition('discover-entry', 'trending', 412.5);
+      saveDiscoverSliderScrollPosition('discover-entry', 'upcoming', 825);
+      saveDiscoverSliderScrollPosition('other-entry', 'trending', 180);
+
+      strictEqual(
+        readDiscoverSliderScrollPosition('discover-entry', 'trending'),
+        412.5
+      );
+      strictEqual(
+        readDiscoverSliderScrollPosition('discover-entry', 'upcoming'),
+        825
+      );
+      strictEqual(
+        readDiscoverSliderScrollPosition('other-entry', 'trending'),
+        180
+      );
+      strictEqual(
+        readDiscoverSliderScrollPosition('discover-entry', 'popular-movies'),
+        undefined
+      );
+
+      saveDiscoverSliderScrollPosition('discover-entry', 'trending', -1);
+      strictEqual(
+        readDiscoverSliderScrollPosition('discover-entry', 'trending'),
+        412.5
+      );
+      strictEqual(
+        readDiscoverSliderScrollPosition('discover-entry', 'x'.repeat(129)),
+        undefined
+      );
+    } finally {
+      if (originalWindow)
+        Object.defineProperty(globalThis, 'window', originalWindow);
+      else Reflect.deleteProperty(globalThis, 'window');
+    }
+  });
+
+  it('keeps navigation usable when session storage rejects access', () => {
+    const originalWindow = Object.getOwnPropertyDescriptor(
+      globalThis,
+      'window'
+    );
+    const browser = {
+      history: { state: { key: 'discover-entry' } },
+      sessionStorage: {
+        getItem: () => {
+          throw new Error('Storage is unavailable');
+        },
+        setItem: () => {
+          throw new Error('Storage is unavailable');
+        },
+      },
+    };
+    Object.defineProperty(globalThis, 'window', {
+      configurable: true,
+      value: browser,
+    });
+    try {
+      strictEqual(
+        readDiscoverSliderScrollPosition('discover-entry', 'trending'),
+        undefined
+      );
+      doesNotThrow(() =>
+        saveDiscoverSliderScrollPosition('discover-entry', 'trending', 320)
+      );
+    } finally {
+      if (originalWindow)
+        Object.defineProperty(globalThis, 'window', originalWindow);
+      else Reflect.deleteProperty(globalThis, 'window');
+    }
+  });
+
+  it('ignores session storage write failures', () => {
+    const originalWindow = Object.getOwnPropertyDescriptor(
+      globalThis,
+      'window'
+    );
+    const browser = {
+      history: { state: { key: 'discover-entry' } },
+      sessionStorage: {
+        getItem: () => null,
+        setItem: () => {
+          throw new Error('Storage is full');
+        },
+      },
+    };
+    Object.defineProperty(globalThis, 'window', {
+      configurable: true,
+      value: browser,
+    });
+    try {
+      doesNotThrow(() =>
+        saveDiscoverSliderScrollPosition('discover-entry', 'trending', 320)
+      );
     } finally {
       if (originalWindow)
         Object.defineProperty(globalThis, 'window', originalWindow);
