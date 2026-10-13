@@ -263,14 +263,15 @@ can each handle Book and Audiobook formats; one BookshelfNG instance can serve
 both. QuestarrNG handles PC game acquisition, while ROMarrNG handles emulation
 systems and ROM acquisition.
 
-BookshelfNG's proposed consolidation into ChaptarrNG is not released yet:
+BookshelfNG's planned retirement in favor of ChaptarrNG is not released yet:
 there is no populated-library converter or old-channel bridge, so existing
-BookshelfNG installations should keep their current data and backup path. Any
-later retirement of ChaptarrNG into upstream Chaptarr must preserve both
-ChaptarrNG's maintained and actively added features, including unpublished
-work, and the BookshelfNG features carried over. That complete union blocks
-ChaptarrNG retirement as a whole, with each feature an individual blocker.
-Active ChaptarrNG branches and open feature PRs count before release; see the
+BookshelfNG installations should keep their current data and backup path.
+ChaptarrNG remains the maintained destination. Its later retirement into
+upstream Chaptarr must preserve both ChaptarrNG's maintained and actively added
+features, including unpublished work, and the BookshelfNG features carried
+over. That complete union blocks ChaptarrNG retirement as a whole, with each
+feature an individual blocker. Active ChaptarrNG branches and open feature PRs
+count before release; see the
 [combined feature snapshot](https://github.com/snapetech/chaptarrng/blob/main/docs/FORK_FEATURES.md#chaptarrng-retirement-blockers)
 and the [fork transition criteria](./docs/using-seerr/dependency-forks.md).
 

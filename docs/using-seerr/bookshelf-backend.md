@@ -23,8 +23,8 @@ For how BookshelfNG differs from its Readarr-derived parent, which behavior is
 specific to its SeerrNG API, and the upstream features needed to replace the
 fork, see [Maintained dependency forks](./dependency-forks.md#bookshelfng).
 
-BookshelfNG's proposed consolidation into ChaptarrNG is not released yet. No
-populated-library converter or old-channel bridge is available, so keep the
+BookshelfNG's planned retirement in favor of ChaptarrNG is not released yet.
+No populated-library converter or old-channel bridge is available, so keep the
 existing BookshelfNG database and installation until the
 [feature, migration, and distribution gates](https://github.com/snapetech/bookshelfng/blob/main/docs/maintainers/chaptarr-consolidation.md)
 pass. BookshelfNG's retirement gate is its capabilities validated in
