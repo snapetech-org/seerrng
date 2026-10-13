@@ -1,12 +1,14 @@
 import ButtonWithLoader from '@app/components/Common/ButtonWithLoader';
 import {
-  clearOidcProviderSlug,
+  clearOidcLoginState,
   getOidcErrorMessage,
+  getOidcLoginRedirect,
   getOidcProviderSlug,
   initiateOidcLogin,
   processOidcCallback,
 } from '@app/utils/oidc';
 import { hasOidcCallbackParameters } from '@app/utils/oidcQuery';
+import { getLoginUrl, getSafeRedirect } from '@app/utils/urlValidationHelper';
 import type { PublicOidcProvider } from '@server/lib/settings';
 import { useRouter } from 'next/router';
 import { useCallback, useEffect, useRef, useState } from 'react';
@@ -33,7 +35,8 @@ export default function OidcLoginButton({
     try {
       await initiateOidcLogin(
         provider.slug,
-        new URL(window.location.pathname, window.location.origin).toString()
+        new URL(window.location.pathname, window.location.origin).toString(),
+        getSafeRedirect(query.redirect, window.location.hash)
       );
     } catch (e) {
       setLoading(false);
@@ -41,7 +44,7 @@ export default function OidcLoginButton({
         ?.response?.data?.error;
       onError?.(getOidcErrorMessage(errorCode, provider.name, intl));
     }
-  }, [provider, intl, onError]);
+  }, [provider, intl, onError, query.redirect]);
 
   useEffect(
     () => {
@@ -55,7 +58,8 @@ export default function OidcLoginButton({
       if (isCallback && callbackProvider === provider.slug) {
         let active = true;
         callbackProviderRef.current = callbackProvider;
-        clearOidcProviderSlug();
+        const redirectTo = getOidcLoginRedirect();
+        clearOidcLoginState();
         setLoading(true);
 
         void processOidcCallback(callbackProvider)
@@ -65,9 +69,11 @@ export default function OidcLoginButton({
             }
             callbackProviderRef.current = null;
             if (result.type === 'success') {
-              await router.push('/');
+              await router.replace(redirectTo);
             } else {
-              await router.replace('/login').catch(() => undefined);
+              await router
+                .replace(getLoginUrl(redirectTo))
+                .catch(() => undefined);
               if (active) {
                 setLoading(false);
                 onError?.(

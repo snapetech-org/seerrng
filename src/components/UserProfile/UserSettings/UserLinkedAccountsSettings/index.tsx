@@ -13,7 +13,7 @@ import { Permission, UserType, useUser } from '@app/hooks/useUser';
 import globalMessages from '@app/i18n/globalMessages';
 import defineMessages from '@app/utils/defineMessages';
 import {
-  clearOidcProviderSlug,
+  clearOidcLoginState,
   getOidcErrorMessage,
   getOidcProviderSlug,
   initiateOidcLogin,
@@ -110,7 +110,7 @@ const UserLinkedAccountsSettings = () => {
     )
       return;
     oidcCallbackProviderRef.current = providerSlug;
-    clearOidcProviderSlug();
+    clearOidcLoginState();
 
     // Strip the OIDC params from the URL immediately
     void router
