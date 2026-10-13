@@ -121,7 +121,9 @@ status ([#258](https://github.com/snapetech/seerrng/pull/258)), current
 Jellyfin authorization with Emby compatibility ([#259](https://github.com/snapetech/seerrng/pull/259)),
 selected Jellyfin and Emby account refresh ([#261](https://github.com/snapetech/seerrng/pull/261)),
 and safe recovery for TV requests with missing TVDB identifiers
-([#262](https://github.com/snapetech/seerrng/pull/262)).
+([#262](https://github.com/snapetech/seerrng/pull/262)), plus bounded request
+failure categories that avoid storing raw provider messages
+([#263](https://github.com/snapetech/seerrng/pull/263)).
 
 Release notes are maintained in [`CHANGELOG.md`](./CHANGELOG.md). User-facing
 pull requests add a concise release-note fragment under
