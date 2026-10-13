@@ -1943,6 +1943,9 @@ requestRoutes.get<
     let sortDirection: 'ASC' | 'DESC';
 
     switch (sort) {
+      case 'added':
+        sortFilter = 'request.createdAt';
+        break;
       case 'modified':
         sortFilter = 'request.updatedAt';
         break;
@@ -2067,8 +2070,12 @@ requestRoutes.get<
         break;
     }
 
-    const [requestRows, requestCount] = await query
-      .orderBy(sortFilter, sortDirection)
+    const orderedQuery = query.orderBy(sortFilter, sortDirection);
+    if (sortFilter !== 'request.id') {
+      orderedQuery.addOrderBy('request.id', sortDirection);
+    }
+
+    const [requestRows, requestCount] = await orderedQuery
       .take(pageSize)
       .skip(skip)
       .getManyAndCount();
