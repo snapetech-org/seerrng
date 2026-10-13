@@ -2171,6 +2171,7 @@
   "components.RequestModal.RequestTree.untitled": "Untitled",
   "components.RequestModal.SearchByNameModal.nomatches": "We were unable to find a match for this series.",
   "components.RequestModal.SearchByNameModal.notvdbiddescription": "We were unable to automatically match this series. Please select the correct match below.",
+  "components.RequestModal.SearchByNameModal.showmore": "Show More Results",
   "components.RequestModal.SeasonEpisodeSelector.availabilityLegend": "Bright green check: fully available. Dark green check: partially available. Red X: not available.",
   "components.RequestModal.SeasonEpisodeSelector.clearAllEpisodes": "Clear all episodes",
   "components.RequestModal.SeasonEpisodeSelector.clearAllSeasons": "Clear all seasons",
