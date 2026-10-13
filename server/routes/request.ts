@@ -3930,12 +3930,19 @@ requestRoutes.put<{ requestId: string }>(
       const body = sanitizedBody.value;
       const initialRequest = await requestRepository.findOne({
         where: { id: requestId },
-        select: { id: true, status: true },
+        select: { id: true, status: true, type: true },
       });
       if (!initialRequest) {
         return next({ status: 404, message: 'Request not found.' });
       }
-      if (initialRequest.status !== MediaRequestStatus.PENDING) {
+      const initialRequestCanBeRepaired =
+        initialRequest.status === MediaRequestStatus.FAILED &&
+        (initialRequest.type === MediaType.MOVIE ||
+          initialRequest.type === MediaType.TV);
+      if (
+        initialRequest.status !== MediaRequestStatus.PENDING &&
+        !initialRequestCanBeRepaired
+      ) {
         return next({
           status: 409,
           message: 'Only pending requests can be edited.',
@@ -3958,12 +3965,32 @@ requestRoutes.put<{ requestId: string }>(
                 return next({ status: 404, message: 'Request not found.' });
               }
 
-              if (request.status !== MediaRequestStatus.PENDING) {
+              const isFailedRequestRepair =
+                request.status === MediaRequestStatus.FAILED &&
+                (request.type === MediaType.MOVIE ||
+                  request.type === MediaType.TV);
+              if (
+                isFailedRequestRepair &&
+                !actor.hasPermission(Permission.MANAGE_REQUESTS)
+              ) {
+                return next({
+                  status: 403,
+                  message:
+                    'Only request managers can reassign failed movie or TV requests.',
+                });
+              }
+
+              if (
+                request.status !== MediaRequestStatus.PENDING &&
+                !isFailedRequestRepair
+              ) {
                 return next({
                   status: 409,
                   message: 'Only pending requests can be edited.',
                 });
               }
+
+              const originalServerId = request.serverId;
 
               if (
                 (body.mediaType ?? request.type) === MediaType.TV &&
@@ -4008,6 +4035,14 @@ requestRoutes.put<{ requestId: string }>(
               const changesRequestUser =
                 body.userId !== undefined &&
                 body.userId !== request.requestedBy.id;
+
+              if (isFailedRequestRepair && changesRequestUser) {
+                return next({
+                  status: 400,
+                  message:
+                    'Failed request recovery cannot change the request owner.',
+                });
+              }
 
               if (
                 changesRequestUser &&
@@ -4456,6 +4491,23 @@ requestRoutes.put<{ requestId: string }>(
                     request.watchAheadLastEpisode = null;
                     request.watchAheadLastReconciledAt = null;
                   }
+
+                  if (isFailedRequestRepair) {
+                    if (
+                      body.serverId === undefined ||
+                      body.serverId === originalServerId
+                    ) {
+                      return next({
+                        status: 409,
+                        message:
+                          'Choose a different configured server to resubmit this failed request.',
+                      });
+                    }
+
+                    request.status = MediaRequestStatus.APPROVED;
+                    request.modifiedBy = actor;
+                  }
+
                   request.requestedBy = requestUser;
                   await requestRepository.save(request);
                   return res
