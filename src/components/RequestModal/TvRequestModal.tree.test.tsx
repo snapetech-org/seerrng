@@ -332,11 +332,12 @@ async function fixture(
   fixtureState.ready = true;
   options.configure?.();
   vi.mocked(axios.post).mockResolvedValue({
+    status: 201,
     data: {
       media: { status: MediaStatus.PENDING, status4k: MediaStatus.PENDING },
     },
   });
-  vi.mocked(axios.put).mockResolvedValue({ data: {} });
+  vi.mocked(axios.put).mockResolvedValue({ status: 200, data: {} });
   vi.mocked(axios.delete).mockResolvedValue({ data: {} });
   const dom = new JSDOM('<div id="root"></div>');
   vi.stubGlobal('window', dom.window);
@@ -401,6 +402,24 @@ it('default whole-season selection reaches the actual Request handler and comple
     expect(complete).toHaveBeenCalledExactlyOnceWith(
       MediaStatus.PENDING,
       false
+    );
+  });
+});
+
+it('reports a 202 create response without treating it as a saved request', async () => {
+  await fixture(async (doc, complete) => {
+    vi.mocked(axios.post).mockResolvedValueOnce({
+      status: 202,
+      data: { message: 'No seasons available to request' },
+    });
+
+    await click(doc, 'modal-ok-button');
+
+    expect(complete).not.toHaveBeenCalled();
+    expect(fixtureState.mutate).not.toHaveBeenCalled();
+    expect(fixtureState.addToast).toHaveBeenCalledExactlyOnceWith(
+      'The selected seasons or episodes are already available or requested.',
+      { appearance: 'info', autoDismiss: true }
     );
   });
 });
@@ -584,6 +603,50 @@ it('clearing an edited request retains Cancel Request and its existing DELETE be
       },
       configure: () => {
         fixtureState.ready = false;
+      },
+    }
+  );
+});
+
+it('does not approve or report an edited request when the server returns 202', async () => {
+  const onUpdating = vi.fn();
+
+  await fixture(
+    async (doc, complete) => {
+      vi.mocked(axios.put).mockResolvedValueOnce({
+        status: 202,
+        data: { message: 'No seasons available to request' },
+      });
+
+      await click(doc, 'modal-ok-button');
+
+      expect(axios.put).toHaveBeenCalledExactlyOnceWith(
+        '/api/v1/request/88',
+        expect.objectContaining({ seasons: [1, 2] })
+      );
+      expect(axios.post).not.toHaveBeenCalled();
+      expect(fixtureState.mutate).toHaveBeenCalledExactlyOnceWith(
+        '/api/v1/request/count'
+      );
+      expect(fixtureState.addToast).toHaveBeenCalledExactlyOnceWith(
+        'The selected seasons or episodes are already available or requested.',
+        { appearance: 'info', autoDismiss: true }
+      );
+      expect(onUpdating.mock.calls).toEqual([[true], [false]]);
+      expect(complete).not.toHaveBeenCalled();
+    },
+    {
+      props: {
+        onUpdating,
+        editRequest: {
+          id: 88,
+          requestedBy: { id: 7, displayName: 'Fixture User' },
+          seasons: [{ seasonNumber: 1 }, { seasonNumber: 2 }],
+          media: { tvdbId: 456 },
+        } as ModalProps['editRequest'],
+      },
+      configure: () => {
+        fixtureState.requestPermission = true;
       },
     }
   );

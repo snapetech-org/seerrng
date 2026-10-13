@@ -333,6 +333,13 @@ const TvRequestModal = ({
     selectedSeasons.length +
     (editRequest?.seasons.filter(isActiveSeasonRequest) ?? []).length;
 
+  const showAlreadyAvailableToast = () => {
+    addToast(intl.formatMessage(messages.alreadyAvailable), {
+      appearance: 'info',
+      autoDismiss: true,
+    });
+  };
+
   const updateRequest = async (alsoApproveRequest = false) => {
     if (!editRequest || requestDisabled) {
       return;
@@ -349,7 +356,7 @@ const TvRequestModal = ({
 
     try {
       if (selectedSeasons.length > 0) {
-        await axios.put(`/api/v1/request/${editRequest.id}`, {
+        const response = await axios.put(`/api/v1/request/${editRequest.id}`, {
           mediaType: 'tv',
           serverId: requestOverrides?.server,
           profileId: requestOverrides?.profile,
@@ -364,6 +371,11 @@ const TvRequestModal = ({
             ? { watchAheadEpisodeCount }
             : {}),
         });
+
+        if (response.status === 202) {
+          showAlreadyAvailableToast();
+          return;
+        }
 
         if (alsoApproveRequest) {
           await axios.post(`/api/v1/request/${editRequest.id}/approve`);
@@ -439,52 +451,63 @@ const TvRequestModal = ({
           tags: requestOverrides.tags,
         };
       }
-      const response = await axios.post<MediaRequest>('/api/v1/request', {
-        mediaId: data?.id,
-        tvdbId: tvdbId ?? data?.externalIds.tvdbId,
-        mediaType: 'tv',
-        is4k: effectiveIs4k,
-        ignoreQuota: requestOverrides?.ignoreQuota,
-        requestQuotaApproval: requestQuotaApproval || undefined,
-        seasons: usesEpisodeSelection
-          ? requestableSelections
-              .map((selection) => selection.seasonNumber)
-              .sort((a, b) => a - b)
-          : getAllSeasons().filter(
-              (season) => !getAllRequestedSeasons().includes(season)
-            ),
-        seasonRequests: usesEpisodeSelection
-          ? requestableSelections
-          : undefined,
-        ...(isWatchAheadRequestForCurrentUser
-          ? { watchAheadEpisodeCount }
-          : {}),
-        ...overrideParams,
-      });
+      const response = await axios.post<MediaRequest | { message: string }>(
+        '/api/v1/request',
+        {
+          mediaId: data?.id,
+          tvdbId: tvdbId ?? data?.externalIds.tvdbId,
+          mediaType: 'tv',
+          is4k: effectiveIs4k,
+          ignoreQuota: requestOverrides?.ignoreQuota,
+          requestQuotaApproval: requestQuotaApproval || undefined,
+          seasons: usesEpisodeSelection
+            ? requestableSelections
+                .map((selection) => selection.seasonNumber)
+                .sort((a, b) => a - b)
+            : getAllSeasons().filter(
+                (season) => !getAllRequestedSeasons().includes(season)
+              ),
+          seasonRequests: usesEpisodeSelection
+            ? requestableSelections
+            : undefined,
+          ...(isWatchAheadRequestForCurrentUser
+            ? { watchAheadEpisodeCount }
+            : {}),
+          ...overrideParams,
+        }
+      );
+
+      if (response.status === 202) {
+        showAlreadyAvailableToast();
+        return;
+      }
+
+      if (!response.data || !('media' in response.data)) {
+        throw new Error('TV request response did not contain a media request.');
+      }
+
       mutate('/api/v1/request?filter=all&take=10&sort=modified&skip=0');
 
-      if (response.data) {
-        if (onComplete) {
-          onComplete(
-            response.data.media[effectiveIs4k ? 'status4k' : 'status'],
-            effectiveIs4k
-          );
-        }
-        addToast(
-          <span>
-            {intl.formatMessage(
-              response.data.quotaException
-                ? messages.quotaApprovalSubmitted
-                : messages.requestSuccess,
-              {
-                title: data?.name,
-                strong: (msg: React.ReactNode) => <strong>{msg}</strong>,
-              }
-            )}
-          </span>,
-          { appearance: 'success', autoDismiss: true }
+      if (onComplete) {
+        onComplete(
+          response.data.media[effectiveIs4k ? 'status4k' : 'status'],
+          effectiveIs4k
         );
       }
+      addToast(
+        <span>
+          {intl.formatMessage(
+            response.data.quotaException
+              ? messages.quotaApprovalSubmitted
+              : messages.requestSuccess,
+            {
+              title: data?.name,
+              strong: (msg: React.ReactNode) => <strong>{msg}</strong>,
+            }
+          )}
+        </span>,
+        { appearance: 'success', autoDismiss: true }
+      );
     } catch {
       addToast(intl.formatMessage(messages.requesterror), {
         appearance: 'error',
