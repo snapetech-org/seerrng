@@ -22,7 +22,7 @@ import { useIntl } from 'react-intl';
 import useSWR from 'swr';
 
 const messages = defineMessages('library', {
-  title: 'My Library',
+  title: 'My Media',
   description:
     'Browse your media server and connected tracking account libraries, then update tracking status, progress, and ratings.',
   accounts: 'Manage connected accounts',

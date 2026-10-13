@@ -2,6 +2,10 @@ import Button from '@app/components/Common/Button';
 import LoadingSpinner from '@app/components/Common/LoadingSpinner';
 import Modal from '@app/components/Common/Modal';
 import PageTitle from '@app/components/Common/PageTitle';
+import DiscoveryModeTabs, {
+  safeSwipeReturnTo,
+  type SwipeContextMediaType,
+} from '@app/components/Discover/DiscoveryModeTabs';
 import SwipeCardView, {
   type SwipeCardData,
   type SwipeDirection,
@@ -16,6 +20,7 @@ import {
 } from '@heroicons/react/24/outline';
 import type { SwipeFavoriteSeed } from '@server/entity/SwipeProfile';
 import axios from 'axios';
+import { useRouter } from 'next/router';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useIntl } from 'react-intl';
 import useSWR from 'swr';
@@ -91,6 +96,9 @@ const TABS: { mediaType: SwipeMediaType; label: keyof typeof messages }[] = [
   { mediaType: 'book', label: 'books' },
 ];
 
+const isSwipeMediaType = (value: unknown): value is SwipeMediaType =>
+  value === 'movie' || value === 'tv' || value === 'book';
+
 const EXIT_MS = 320;
 const REFILL_BELOW = 4;
 
@@ -126,6 +134,7 @@ const errorMessage = (error: unknown) =>
     : undefined;
 
 const Swipe = () => {
+  const router = useRouter();
   const intl = useIntl();
   const { addToast } = useToasts();
   const [mediaType, setMediaType] = useState<SwipeMediaType>('movie');
@@ -138,6 +147,34 @@ const Swipe = () => {
   const [showPreferences, setShowPreferences] = useState(false);
   const [draftProfile, setDraftProfile] = useState<SwipeProfile>();
   const lastLoaded = useRef<string>(undefined);
+  const returnTo = safeSwipeReturnTo(router.query.returnTo);
+  const discoveryMediaType: SwipeContextMediaType = returnTo?.startsWith(
+    '/discover/audiobooks'
+  )
+    ? 'audiobook'
+    : mediaType;
+
+  useEffect(() => {
+    if (!router.isReady) return;
+    const nextMediaType = isSwipeMediaType(router.query.mediaType)
+      ? router.query.mediaType
+      : 'movie';
+    setMediaType((current) =>
+      current === nextMediaType ? current : nextMediaType
+    );
+  }, [router.isReady, router.query.mediaType]);
+
+  const selectMediaType = (nextMediaType: SwipeMediaType) => {
+    setMediaType(nextMediaType);
+    void router.replace(
+      {
+        pathname: '/swipe',
+        query: { ...router.query, mediaType: nextMediaType },
+      },
+      undefined,
+      { shallow: true, scroll: false }
+    );
+  };
 
   const { data: status, error: statusError } = useSWR<{
     aiRanking: boolean;
@@ -157,9 +194,10 @@ const Swipe = () => {
     error,
     isValidating,
     mutate: reloadDeck,
-  } = useSWR<DeckResponse>(`/api/v1/swipe/deck?mediaType=${mediaType}`, {
-    revalidateOnFocus: false,
-  });
+  } = useSWR<DeckResponse>(
+    router.isReady ? `/api/v1/swipe/deck?mediaType=${mediaType}` : null,
+    { revalidateOnFocus: false }
+  );
 
   // Replace the local stack when a new deck arrives; keep cards the user is
   // looking at and append the rest.
@@ -348,6 +386,11 @@ const Swipe = () => {
 
   return (
     <div className="page-layout">
+      <DiscoveryModeTabs
+        selected="swipe"
+        mediaType={discoveryMediaType}
+        returnTo={returnTo}
+      />
       <PageTitle title={intl.formatMessage(messages.title)} />
       <div className="page-title-row">
         <h1 className="page-title">{intl.formatMessage(messages.title)}</h1>
@@ -359,18 +402,19 @@ const Swipe = () => {
       </div>
       <p className="card-body-text">{intl.formatMessage(messages.intro)}</p>
       <div className="app-action-row" role="tablist">
-        {TABS.map((tab) => (
-          <Button
-            key={tab.mediaType}
-            role="tab"
-            aria-selected={mediaType === tab.mediaType}
-            buttonType={mediaType === tab.mediaType ? 'primary' : 'default'}
-            buttonSize="sm"
-            onClick={() => setMediaType(tab.mediaType)}
-          >
-            {intl.formatMessage(messages[tab.label])}
-          </Button>
-        ))}
+        {!returnTo &&
+          TABS.map((tab) => (
+            <Button
+              key={tab.mediaType}
+              role="tab"
+              aria-selected={mediaType === tab.mediaType}
+              buttonType={mediaType === tab.mediaType ? 'primary' : 'default'}
+              buttonSize="sm"
+              onClick={() => selectMediaType(tab.mediaType)}
+            >
+              {intl.formatMessage(messages[tab.label])}
+            </Button>
+          ))}
         <Button
           buttonType="default"
           buttonSize="sm"

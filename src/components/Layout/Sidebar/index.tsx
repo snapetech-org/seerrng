@@ -1,62 +1,22 @@
 import Badge from '@app/components/Common/Badge';
+import {
+  menuMessages,
+  navigationSections,
+  type NavigationLink,
+} from '@app/components/Layout/Sidebar/navigation';
 import VersionStatus from '@app/components/Layout/VersionStatus';
 import useClickOutside from '@app/hooks/useClickOutside';
 import useSettings from '@app/hooks/useSettings';
 import { Permission, useUser } from '@app/hooks/useUser';
-import defineMessages from '@app/utils/defineMessages';
 import { isOptionalCatalogPathEnabled } from '@app/utils/serviceAvailability';
 import versionedAsset from '@app/utils/versionedAsset';
 import { Transition, TransitionChild } from '@headlessui/react';
-import {
-  BookOpenIcon,
-  ClockIcon,
-  CogIcon,
-  CommandLineIcon,
-  ExclamationTriangleIcon,
-  EyeSlashIcon,
-  FilmIcon,
-  HeartIcon,
-  MagnifyingGlassIcon,
-  MusicalNoteIcon,
-  NewspaperIcon,
-  PuzzlePieceIcon,
-  SparklesIcon,
-  SpeakerWaveIcon,
-  Square3Stack3DIcon,
-  TrophyIcon,
-  TvIcon,
-  UsersIcon,
-  XMarkIcon,
-} from '@heroicons/react/24/outline';
+import { XMarkIcon } from '@heroicons/react/24/outline';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { Fragment, useEffect, useRef } from 'react';
+import { cloneElement, Fragment, useEffect, useRef } from 'react';
 import { useIntl } from 'react-intl';
-
-export const menuMessages = defineMessages('components.Layout.Sidebar', {
-  discover: 'Discover',
-  calendar: 'Calendar',
-  downloads: 'Download Inbox',
-  library: 'My Library',
-  gamesLibrary: 'My Games',
-  swipe: 'Swipe',
-  indexerSearch: 'Indexer Search',
-  browsemovies: 'Movies',
-  browsemusic: 'Music',
-  browsebooks: 'Books',
-  browseaudiobooks: 'Audiobooks',
-  browsesoftware: 'Software',
-  browsecomics: 'Comics',
-  browsemagazines: 'Magazines',
-  browsesports: 'Sports',
-  browsetv: 'Series',
-  requests: 'Requests',
-  blocklist: 'Blocklist',
-  issues: 'Issues',
-  users: 'User List',
-  settings: 'Settings',
-});
 
 interface SidebarProps {
   open?: boolean;
@@ -66,164 +26,6 @@ interface SidebarProps {
   revalidateIssueCount: () => void;
   revalidateRequestsCount: () => void;
 }
-
-interface SidebarLinkProps {
-  href: string;
-  svgIcon: React.ReactNode;
-  messagesKey: keyof typeof menuMessages;
-  activeRegExp: RegExp;
-  as?: string;
-  requiredPermission?: Permission | Permission[];
-  permissionType?: 'and' | 'or';
-  dataTestId?: string;
-}
-
-const SidebarLinks: SidebarLinkProps[] = [
-  {
-    href: '/',
-    messagesKey: 'discover',
-    svgIcon: <SparklesIcon className="mr-3 h-6 w-6" />,
-    activeRegExp: /^\/(discover\/?)?$/,
-  },
-  {
-    href: '/library',
-    messagesKey: 'library',
-    svgIcon: <BookOpenIcon className="mr-3 h-6 w-6" />,
-    activeRegExp: /^\/library$/,
-  },
-  {
-    href: '/swipe',
-    messagesKey: 'swipe',
-    svgIcon: <HeartIcon className="mr-3 h-6 w-6" />,
-    activeRegExp: /^\/swipe$/,
-    requiredPermission: Permission.REQUEST,
-  },
-  {
-    href: '/games',
-    messagesKey: 'gamesLibrary',
-    svgIcon: <PuzzlePieceIcon className="mr-3 h-6 w-6" />,
-    activeRegExp: /^\/games(?:\/|$)/,
-  },
-  {
-    href: '/downloads',
-    messagesKey: 'downloads',
-    svgIcon: <ClockIcon className="mr-3 h-6 w-6" />,
-    activeRegExp: /^\/downloads$/,
-    requiredPermission: Permission.MANAGE_DOWNLOADS,
-  },
-  {
-    href: '/indexer-search',
-    messagesKey: 'indexerSearch',
-    svgIcon: <MagnifyingGlassIcon className="mr-3 h-6 w-6" />,
-    activeRegExp: /^\/indexer-search$/,
-    requiredPermission: Permission.MANAGE_REQUESTS,
-  },
-  {
-    href: '/calendar',
-    messagesKey: 'calendar',
-    svgIcon: <ClockIcon className="mr-3 h-6 w-6" />,
-    activeRegExp: /^\/calendar$/,
-  },
-  {
-    href: '/discover/movies',
-    messagesKey: 'browsemovies',
-    svgIcon: <FilmIcon className="mr-3 h-6 w-6" />,
-    activeRegExp: /^\/(?:discover\/movies(?:\/.*)?|movie\/)/,
-  },
-  {
-    href: '/discover/tv',
-    messagesKey: 'browsetv',
-    svgIcon: <TvIcon className="mr-3 h-6 w-6" />,
-    activeRegExp: /^\/(?:discover\/tv(?:\/.*)?|tv\/)/,
-  },
-  {
-    href: '/discover/music',
-    messagesKey: 'browsemusic',
-    svgIcon: <MusicalNoteIcon className="mr-3 h-6 w-6" />,
-    activeRegExp: /^\/(?:discover\/music(?:\/.*)?|music\/)/,
-  },
-  {
-    href: '/discover/books',
-    messagesKey: 'browsebooks',
-    svgIcon: <BookOpenIcon className="mr-3 h-6 w-6" />,
-    activeRegExp: /^\/(?:discover\/books(?:\/.*)?|book\/)/,
-  },
-  {
-    href: '/discover/audiobooks',
-    messagesKey: 'browseaudiobooks',
-    svgIcon: <SpeakerWaveIcon className="mr-3 h-6 w-6" />,
-    activeRegExp: /^\/discover\/audiobooks$/,
-  },
-  {
-    href: '/discover/comics',
-    messagesKey: 'browsecomics',
-    svgIcon: <Square3Stack3DIcon className="mr-3 h-6 w-6" />,
-    activeRegExp: /^\/(?:discover\/comics(?:\/.*)?|comic\/)/,
-  },
-  {
-    href: '/discover/magazines',
-    messagesKey: 'browsemagazines',
-    svgIcon: <NewspaperIcon className="mr-3 h-6 w-6" />,
-    activeRegExp: /^\/(?:discover\/magazines(?:\/.*)?|magazine\/)/,
-  },
-  {
-    href: '/discover/sports',
-    messagesKey: 'browsesports',
-    svgIcon: <TrophyIcon className="mr-3 h-6 w-6" />,
-    activeRegExp: /^\/(?:discover\/sports(?:\/.*)?|sportarr\/)/,
-  },
-  {
-    href: '/software',
-    messagesKey: 'browsesoftware',
-    svgIcon: <CommandLineIcon className="mr-3 h-6 w-6" />,
-    activeRegExp: /^\/software(?:\/|$)/,
-  },
-  {
-    href: '/requests',
-    messagesKey: 'requests',
-    svgIcon: <ClockIcon className="mr-3 h-6 w-6" />,
-    activeRegExp: /^\/requests\/?$/,
-  },
-  {
-    href: '/blocklist',
-    messagesKey: 'blocklist',
-    svgIcon: <EyeSlashIcon className="mr-3 h-6 w-6" />,
-    activeRegExp: /^\/blocklist/,
-    requiredPermission: [
-      Permission.MANAGE_BLOCKLIST,
-      Permission.VIEW_BLOCKLIST,
-    ],
-    permissionType: 'or',
-  },
-  {
-    href: '/issues',
-    messagesKey: 'issues',
-    svgIcon: <ExclamationTriangleIcon className="mr-3 h-6 w-6" />,
-    activeRegExp: /^\/issues/,
-    requiredPermission: [
-      Permission.MANAGE_ISSUES,
-      Permission.CREATE_ISSUES,
-      Permission.VIEW_ISSUES,
-    ],
-    permissionType: 'or',
-  },
-  {
-    href: '/users',
-    messagesKey: 'users',
-    svgIcon: <UsersIcon className="mr-3 h-6 w-6" />,
-    activeRegExp: /^\/users/,
-    requiredPermission: Permission.MANAGE_USERS,
-    dataTestId: 'sidebar-menu-users',
-  },
-  {
-    href: '/settings',
-    messagesKey: 'settings',
-    svgIcon: <CogIcon className="mr-3 h-6 w-6" />,
-    activeRegExp: /^\/settings/,
-    requiredPermission: Permission.ADMIN,
-    dataTestId: 'sidebar-menu-settings',
-  },
-];
 
 const Sidebar = ({
   open,
@@ -240,15 +42,113 @@ const Sidebar = ({
   const { currentSettings } = useSettings();
   useClickOutside(navRef, () => setClosed());
 
-  const visibleSidebarLinks = SidebarLinks.filter(
-    (link) =>
-      isOptionalCatalogPathEnabled(link.href, currentSettings) &&
-      (link.requiredPermission
-        ? hasPermission(link.requiredPermission, {
-            type: link.permissionType ?? 'and',
-          })
-        : true)
-  );
+  const visibleSidebarSections = navigationSections
+    .map((section) => ({
+      ...section,
+      links: section.links.filter(
+        (link) =>
+          isOptionalCatalogPathEnabled(link.href, currentSettings) &&
+          (link.requiredPermission
+            ? hasPermission(link.requiredPermission, {
+                type: link.permissionType ?? 'and',
+              })
+            : true)
+      ),
+    }))
+    .filter((section) => section.links.length > 0);
+
+  const renderNavigationLink = (
+    link: NavigationLink,
+    device: 'mobile' | 'desktop'
+  ) => {
+    const selected = router.pathname.match(link.activeRegExp);
+    const iconClass = device === 'desktop' ? 'mr-3 h-6 w-6' : 'mr-3 h-6 w-6';
+    const className =
+      device === 'mobile'
+        ? `flex items-center rounded-md px-2 py-2 text-base leading-6 font-medium text-white transition duration-150 ease-in-out focus:outline-none ${
+            selected
+              ? 'main-menu-link sidebar-link-selected'
+              : 'main-menu-link sidebar-link-idle'
+          }`
+        : `group flex items-center rounded-md px-2 py-2 text-lg leading-6 font-medium text-white transition duration-150 ease-in-out focus:outline-none ${
+            selected
+              ? 'main-menu-link sidebar-link-selected'
+              : 'main-menu-link sidebar-link-idle'
+          }`;
+
+    return (
+      <Link
+        key={`${device}-${link.id}`}
+        href={link.href}
+        prefetch={false}
+        onClick={device === 'mobile' ? setClosed : undefined}
+        className={className}
+        data-navigation-level={link.nested ? 'nested' : 'primary'}
+        data-testid={
+          device === 'mobile'
+            ? link.dataTestId
+              ? `${link.dataTestId}-mobile`
+              : undefined
+            : link.dataTestId
+        }
+        aria-current={selected ? 'page' : undefined}
+      >
+        {cloneElement(link.svgIcon, { className: iconClass })}
+        {intl.formatMessage(menuMessages[link.messagesKey])}
+        {device === 'desktop' &&
+          link.messagesKey === 'requests' &&
+          pendingRequestsCount > 0 &&
+          hasPermission(Permission.MANAGE_REQUESTS) && (
+            <div className="ml-auto flex">
+              <Badge
+                className={`rounded-md bg-gradient-to-br ${
+                  selected
+                    ? 'border-indigo-600 from-indigo-700 to-purple-700'
+                    : 'border-indigo-500 from-indigo-600 to-purple-600'
+                }`}
+              >
+                {pendingRequestsCount}
+              </Badge>
+            </div>
+          )}
+        {device === 'desktop' &&
+          link.messagesKey === 'issues' &&
+          openIssuesCount > 0 &&
+          hasPermission(Permission.MANAGE_ISSUES) && (
+            <div className="ml-auto flex">
+              <Badge
+                className={`rounded-md bg-gradient-to-br ${
+                  selected
+                    ? 'border-indigo-600 from-indigo-700 to-purple-700'
+                    : 'border-indigo-500 from-indigo-600 to-purple-600'
+                }`}
+              >
+                {openIssuesCount}
+              </Badge>
+            </div>
+          )}
+      </Link>
+    );
+  };
+
+  const renderNavigationSections = (device: 'mobile' | 'desktop') =>
+    visibleSidebarSections.map((section) => (
+      <div
+        key={`${device}-${section.id}`}
+        className="sidebar-navigation-section"
+        role="group"
+        aria-label={intl.formatMessage(menuMessages[section.ariaLabelKey])}
+      >
+        {section.headingKey && (
+          <h2 className="sidebar-navigation-heading">
+            {intl.formatMessage(menuMessages[section.headingKey])}
+          </h2>
+        )}
+        <div className="sidebar-navigation-items">
+          {section.links.map((link) => renderNavigationLink(link, device))}
+        </div>
+      </div>
+    ));
 
   useEffect(() => {
     if (openIssuesCount) {
@@ -319,36 +219,12 @@ const Sidebar = ({
                         </Link>
                       </span>
                     </div>
-                    <nav className="mt-10 flex-1 space-y-4 px-4">
-                      {visibleSidebarLinks.map((sidebarLink) => {
-                        return (
-                          <Link
-                            key={`mobile-${sidebarLink.messagesKey}`}
-                            href={sidebarLink.href}
-                            as={sidebarLink.as}
-                            prefetch={false}
-                            onClick={setClosed}
-                            onKeyDown={(e) => {
-                              if (e.key === 'Enter') {
-                                setClosed();
-                              }
-                            }}
-                            role="button"
-                            tabIndex={0}
-                            className={`flex items-center rounded-md px-2 py-2 text-base leading-6 font-medium text-white transition duration-150 ease-in-out focus:outline-none ${
-                              router.pathname.match(sidebarLink.activeRegExp)
-                                ? 'main-menu-link sidebar-link-selected'
-                                : 'main-menu-link sidebar-link-idle'
-                            } `}
-                            data-testid={`${sidebarLink.dataTestId}-mobile`}
-                          >
-                            {sidebarLink.svgIcon}
-                            {intl.formatMessage(
-                              menuMessages[sidebarLink.messagesKey]
-                            )}
-                          </Link>
-                        );
-                      })}
+                    <nav
+                      className="sidebar-navigation"
+                      data-navigation-device="mobile"
+                      aria-label="Primary"
+                    >
+                      {renderNavigationSections('mobile')}
                     </nav>
                     {hasPermission(Permission.ADMIN) && (
                       <div className="px-2">
@@ -383,58 +259,12 @@ const Sidebar = ({
                   </Link>
                 </span>
               </div>
-              <nav className="mt-8 flex-1 space-y-4 px-4">
-                {visibleSidebarLinks.map((sidebarLink) => {
-                  return (
-                    <Link
-                      key={`desktop-${sidebarLink.messagesKey}`}
-                      href={sidebarLink.href}
-                      as={sidebarLink.as}
-                      prefetch={false}
-                      className={`group flex items-center rounded-md px-2 py-2 text-lg leading-6 font-medium text-white transition duration-150 ease-in-out focus:outline-none ${
-                        router.pathname.match(sidebarLink.activeRegExp)
-                          ? 'main-menu-link sidebar-link-selected'
-                          : 'main-menu-link sidebar-link-idle'
-                      } `}
-                      data-testid={sidebarLink.dataTestId}
-                    >
-                      {sidebarLink.svgIcon}
-                      {intl.formatMessage(
-                        menuMessages[sidebarLink.messagesKey]
-                      )}
-                      {sidebarLink.messagesKey === 'requests' &&
-                        pendingRequestsCount > 0 &&
-                        hasPermission(Permission.MANAGE_REQUESTS) && (
-                          <div className="ml-auto flex">
-                            <Badge
-                              className={`rounded-md bg-gradient-to-br ${
-                                router.pathname.match(sidebarLink.activeRegExp)
-                                  ? 'border-indigo-600 from-indigo-700 to-purple-700'
-                                  : 'border-indigo-500 from-indigo-600 to-purple-600'
-                              }`}
-                            >
-                              {pendingRequestsCount}
-                            </Badge>
-                          </div>
-                        )}
-                      {sidebarLink.messagesKey === 'issues' &&
-                        openIssuesCount > 0 &&
-                        hasPermission(Permission.MANAGE_ISSUES) && (
-                          <div className="ml-auto flex">
-                            <Badge
-                              className={`rounded-md bg-gradient-to-br ${
-                                router.pathname.match(sidebarLink.activeRegExp)
-                                  ? 'border-indigo-600 from-indigo-700 to-purple-700'
-                                  : 'border-indigo-500 from-indigo-600 to-purple-600'
-                              }`}
-                            >
-                              {openIssuesCount}
-                            </Badge>
-                          </div>
-                        )}
-                    </Link>
-                  );
-                })}
+              <nav
+                className="sidebar-navigation"
+                data-navigation-device="desktop"
+                aria-label="Primary"
+              >
+                {renderNavigationSections('desktop')}
               </nav>
               {hasPermission(Permission.ADMIN) && (
                 <div className="px-2">
