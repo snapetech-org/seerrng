@@ -123,7 +123,9 @@ selected Jellyfin and Emby account refresh ([#261](https://github.com/snapetech/
 and safe recovery for TV requests with missing TVDB identifiers
 ([#262](https://github.com/snapetech/seerrng/pull/262)), plus bounded request
 failure categories that avoid storing raw provider messages
-([#263](https://github.com/snapetech/seerrng/pull/263)).
+([#263](https://github.com/snapetech/seerrng/pull/263)), and visible failure
+guidance with an alternate TV listing search for season-number mismatches
+([#264](https://github.com/snapetech/seerrng/pull/264)).
 
 Release notes are maintained in [`CHANGELOG.md`](./CHANGELOG.md). User-facing
 pull requests add a concise release-note fragment under
