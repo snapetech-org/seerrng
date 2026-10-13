@@ -200,10 +200,13 @@ retirement are separate transitions, each requiring its own populated-data and
 distribution proof. Active ChaptarrNG branches and open feature PRs count
 before release too; the combined matrix tracks the current backlog features,
 integrations, localization, proposed channel changes, and the individual
-retirement checks. Its current scope includes the 315-commit active ChaptarrNG
-branch, open localization PR #72, draft metadata-preference PR #73, and
-proposed YunoHost packaging removal PR #74. Each of those features or channel
-changes remains in the upstream retirement review even before merge.
+retirement checks. Its pinned feature snapshot `22078e0` includes 315 commits
+and 703 changed paths. Active work also includes localization PR #72
+(Indonesian and Traditional Chinese choices, AudioBookShelf root-mapping and
+audiobook-mode translations, and locale direction metadata), draft
+metadata-preference PR #73, and proposed YunoHost packaging removal PR #74.
+Each feature or channel change remains in the upstream retirement review even
+before merge.
 
 Keep any fork that still supplies standalone functionality operators rely on,
 even if its SeerrNG contract has been upstreamed. Recheck parent branches before
