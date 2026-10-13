@@ -12,6 +12,7 @@ import type {
   TmdbMovieDetails,
   TmdbTvDetails,
 } from '@server/api/themoviedb/interfaces';
+import Tvdb from '@server/api/tvdb';
 import {
   MediaRequestFailureReason,
   MediaRequestStatus,
@@ -26,6 +27,7 @@ import Media from '@server/entity/Media';
 import MediaIdentifier, {
   MediaIdentifierProvider,
 } from '@server/entity/MediaIdentifier';
+import MediaIdentifierSeasonMapping from '@server/entity/MediaIdentifierSeasonMapping';
 import {
   MAX_BOOK_REQUEST_IDENTIFIER_CANDIDATES,
   MediaRequest,
@@ -299,6 +301,52 @@ async function seedRequest(
   return requestRepo.findOneOrFail({
     where: { id: created.id },
     relations: { requestedBy: true, modifiedBy: true },
+  });
+}
+
+async function seedFailedTvRequest(seasonNumbers: number[]) {
+  const requestedBy = await getRepository(User).findOneOrFail({
+    where: { email: 'friend@seerr.dev' },
+  });
+  const media = await getRepository(Media).save(
+    new Media({
+      mediaType: MediaType.TV,
+      tmdbId: 987_650,
+      tvdbId: 123_450,
+      status: MediaStatus.PENDING,
+      status4k: MediaStatus.UNKNOWN,
+      seasons: seasonNumbers.map(
+        (seasonNumber) =>
+          new Season({
+            seasonNumber,
+            status: MediaStatus.PENDING,
+            status4k: MediaStatus.UNKNOWN,
+          })
+      ),
+    })
+  );
+  const request = await getRepository(MediaRequest).save(
+    new MediaRequest({
+      type: MediaType.TV,
+      status: MediaRequestStatus.FAILED,
+      failureReason: MediaRequestFailureReason.TVDB_SEASON_MISMATCH,
+      media,
+      requestedBy,
+      is4k: false,
+      serverId: 31,
+      seasons: seasonNumbers.map(
+        (seasonNumber) =>
+          new SeasonRequest({
+            seasonNumber,
+            status: MediaRequestStatus.APPROVED,
+          })
+      ),
+    })
+  );
+
+  return getRepository(MediaRequest).findOneOrFail({
+    where: { id: request.id },
+    relations: { requestedBy: true, media: true, seasons: true },
   });
 }
 
@@ -7213,6 +7261,146 @@ describe('POST /request/:requestId/retry', () => {
     assert.strictEqual(
       retryEvent.message,
       'The request was retried and is waiting to be dispatched.'
+    );
+  });
+
+  it('persists an explicitly verified TVDB season map with the retry', async () => {
+    configureSonarr([
+      createSonarrSettings(31),
+      createSonarrSettings(32, false),
+    ]);
+    mock.method(
+      Tvdb,
+      'getInstance',
+      async () =>
+        ({
+          getOfficialSeasons: async () => [
+            { seasonNumber: 2, year: 2020 },
+            { seasonNumber: 5, year: 2024 },
+          ],
+        }) as unknown as Tvdb
+    );
+    const failed = await seedFailedTvRequest([1, 2]);
+    const existingIdentifier = await getRepository(MediaIdentifier).save(
+      new MediaIdentifier({
+        media: failed.media,
+        provider: MediaIdentifierProvider.TVDB,
+        value: '184871',
+        canonical: false,
+      })
+    );
+    await getRepository(MediaIdentifierSeasonMapping).save(
+      new MediaIdentifierSeasonMapping({
+        mediaIdentifier: existingIdentifier,
+        sonarrServerId: 32,
+        is4k: false,
+        seasonNumber: 1,
+        externalSeasonNumber: 4,
+      })
+    );
+    const owner = await loginAs('friend@seerr.dev', 'test1234');
+
+    const res = await owner.post(`/request/${failed.id}/retry`).send({
+      tvdbId: 184_871,
+      seasonMappings: [
+        { seasonNumber: 1, externalSeasonNumber: 2 },
+        { seasonNumber: 2, externalSeasonNumber: 5 },
+      ],
+    });
+
+    assert.strictEqual(res.status, 200);
+    const savedRequest = await getRepository(MediaRequest).findOneByOrFail({
+      id: failed.id,
+    });
+    assert.strictEqual(savedRequest.status, MediaRequestStatus.APPROVED);
+    assert.strictEqual(savedRequest.failureReason, null);
+    assert.strictEqual(savedRequest.overrideTvdbId, 184_871);
+
+    const identifier = await getRepository(MediaIdentifier).findOneOrFail({
+      where: {
+        media: { id: failed.media.id },
+        provider: MediaIdentifierProvider.TVDB,
+        value: '184871',
+      },
+      relations: { seasonMappings: true },
+    });
+    assert.strictEqual(identifier.canonical, false);
+    assert.deepStrictEqual(
+      identifier.seasonMappings
+        .map(({ sonarrServerId, is4k, seasonNumber, externalSeasonNumber }) => [
+          sonarrServerId,
+          is4k,
+          seasonNumber,
+          externalSeasonNumber,
+        ])
+        .sort(
+          ([leftServer, , leftSeason], [rightServer, , rightSeason]) =>
+            Number(leftServer) - Number(rightServer) ||
+            Number(leftSeason) - Number(rightSeason)
+        ),
+      [
+        [31, false, 1, 2],
+        [31, false, 2, 5],
+        [32, false, 1, 4],
+      ]
+    );
+  });
+
+  it('rejects incomplete or unrequested source-season mappings', async () => {
+    configureSonarr([createSonarrSettings(31)]);
+    const failed = await seedFailedTvRequest([1, 2]);
+    const owner = await loginAs('friend@seerr.dev', 'test1234');
+
+    const incomplete = await owner.post(`/request/${failed.id}/retry`).send({
+      tvdbId: 184_871,
+      seasonMappings: [{ seasonNumber: 1, externalSeasonNumber: 2 }],
+    });
+    assert.strictEqual(incomplete.status, 400);
+
+    const unrequested = await owner.post(`/request/${failed.id}/retry`).send({
+      tvdbId: 184_871,
+      seasonMappings: [
+        { seasonNumber: 1, externalSeasonNumber: 2 },
+        { seasonNumber: 9, externalSeasonNumber: 5 },
+      ],
+    });
+    assert.strictEqual(unrequested.status, 400);
+    assert.strictEqual(
+      await getRepository(MediaIdentifier).countBy({
+        provider: MediaIdentifierProvider.TVDB,
+        value: '184871',
+      }),
+      0
+    );
+  });
+
+  it('rejects an external season that is absent from official TVDB data', async () => {
+    configureSonarr([createSonarrSettings(31)]);
+    mock.method(
+      Tvdb,
+      'getInstance',
+      async () =>
+        ({
+          getOfficialSeasons: async () => [{ seasonNumber: 2, year: 2020 }],
+        }) as unknown as Tvdb
+    );
+    const failed = await seedFailedTvRequest([1, 2]);
+    const owner = await loginAs('friend@seerr.dev', 'test1234');
+
+    const res = await owner.post(`/request/${failed.id}/retry`).send({
+      tvdbId: 184_871,
+      seasonMappings: [
+        { seasonNumber: 1, externalSeasonNumber: 2 },
+        { seasonNumber: 2, externalSeasonNumber: 5 },
+      ],
+    });
+
+    assert.strictEqual(res.status, 400);
+    assert.strictEqual(
+      await getRepository(MediaRequest)
+        .findOneByOrFail({ id: failed.id })
+        .then((savedRequest) => savedRequest.overrideTvdbId),
+      null
     );
   });
 

@@ -8,10 +8,12 @@ import {
   Index,
   JoinColumn,
   ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
   Unique,
 } from 'typeorm';
 import Media from './Media';
+import MediaIdentifierSeasonMapping from './MediaIdentifierSeasonMapping';
 
 export enum MediaIdentifierProvider {
   TMDB = 'tmdb',
@@ -66,6 +68,12 @@ class MediaIdentifier {
   })
   @Index('IDX_media_identifier_mediaId')
   public media: Media;
+
+  @OneToMany(
+    () => MediaIdentifierSeasonMapping,
+    (mapping) => mapping.mediaIdentifier
+  )
+  public seasonMappings: MediaIdentifierSeasonMapping[];
 
   @Column({ type: 'varchar' })
   public provider: MediaIdentifierProvider;

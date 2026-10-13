@@ -238,6 +238,7 @@ describe('TheTVDB verified TV series resolution', () => {
     );
 
     assert.deepEqual(await tvdb.getOfficialSeasons(184871), [
+      { seasonNumber: 0, year: 2020 },
       { seasonNumber: 15, year: 2024 },
     ]);
   });
@@ -255,5 +256,29 @@ describe('TheTVDB verified TV series resolution', () => {
     record = { id: 184871, seasons: [], episodes: [] };
     assert.deepEqual(await tvdb.getOfficialSeasons(184871), []);
     assert.equal(await tvdb.getOfficialSeasons(0), null);
+  });
+
+  it('keeps the official special season available for an explicit mapping', async () => {
+    const tvdb = createTvdb();
+    mock.method(
+      ExternalAPI.prototype as unknown as MockableTvdbRequest,
+      'get',
+      async () => ({
+        data: {
+          id: 184871,
+          seasons: [
+            { number: 0, type: { type: 'official' }, year: '2024' },
+            { number: 1, type: { type: 'official' }, year: '2024' },
+            { number: -1, type: { type: 'official' }, year: '2023' },
+          ],
+          episodes: [],
+        },
+      })
+    );
+
+    assert.deepEqual(await tvdb.getOfficialSeasons(184871), [
+      { seasonNumber: 0, year: 2024 },
+      { seasonNumber: 1, year: 2024 },
+    ]);
   });
 });

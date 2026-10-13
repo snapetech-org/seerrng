@@ -31,6 +31,7 @@ import Media from '@server/entity/Media';
 import MediaIdentifier, {
   MediaIdentifierProvider,
 } from '@server/entity/MediaIdentifier';
+import MediaIdentifierSeasonMapping from '@server/entity/MediaIdentifierSeasonMapping';
 import {
   MediaRequest,
   getRequestMutationAdmissionKey,
@@ -1035,6 +1036,120 @@ describe('MediaRequestSubscriber service dispatch', () => {
       { seasonNumber: 5, episodeNumbers: [7, 8] },
     ]);
     assert.strictEqual(receivedOptions?.searchNow, true);
+  });
+
+  it('dispatches manually mapped TVDB seasons and preserves season zero', async () => {
+    configureFallbackSonarr();
+    stubTvdbShow(87018, [
+      { season_number: 0, air_date: '2020-12-25' },
+      { season_number: 1, air_date: '2024-09-24' },
+    ]);
+    mock.method(
+      Tvdb,
+      'getInstance',
+      async () =>
+        ({
+          getOfficialSeasons: async () => [
+            { seasonNumber: 0, year: 2020 },
+            { seasonNumber: 2, year: 2024 },
+          ],
+        }) as unknown as Tvdb
+    );
+
+    const requestedBy = await getRequester();
+    const media = await getRepository(Media).save(
+      new Media({
+        mediaType: MediaType.TV,
+        tmdbId: 87018,
+        tvdbId: 184_880,
+        status: MediaStatus.PENDING,
+        status4k: MediaStatus.UNKNOWN,
+      })
+    );
+    const identifier = await getRepository(MediaIdentifier).save(
+      new MediaIdentifier({
+        media,
+        provider: MediaIdentifierProvider.TVDB,
+        value: '184881',
+        canonical: false,
+      })
+    );
+    await getRepository(MediaIdentifierSeasonMapping).save([
+      new MediaIdentifierSeasonMapping({
+        mediaIdentifier: identifier,
+        sonarrServerId: 31,
+        is4k: false,
+        seasonNumber: 0,
+        externalSeasonNumber: 0,
+      }),
+      new MediaIdentifierSeasonMapping({
+        mediaIdentifier: identifier,
+        sonarrServerId: 31,
+        is4k: false,
+        seasonNumber: 1,
+        externalSeasonNumber: 2,
+      }),
+      new MediaIdentifierSeasonMapping({
+        mediaIdentifier: identifier,
+        sonarrServerId: 32,
+        is4k: false,
+        seasonNumber: 1,
+        externalSeasonNumber: 4,
+      }),
+      new MediaIdentifierSeasonMapping({
+        mediaIdentifier: identifier,
+        sonarrServerId: 31,
+        is4k: true,
+        seasonNumber: 1,
+        externalSeasonNumber: 5,
+      }),
+    ]);
+
+    let receivedOptions: AddSeriesOptions | undefined;
+    mock.method(
+      SonarrAPI.prototype,
+      'addSeries',
+      async (options: AddSeriesOptions) => {
+        receivedOptions = options;
+        return {
+          id: 91,
+          title: 'Mapped Season Test',
+          titleSlug: 'mapped-season-test',
+        } as Awaited<ReturnType<SonarrAPI['addSeries']>>;
+      }
+    );
+    const request = await getRepository(MediaRequest).save(
+      new MediaRequest({
+        type: MediaType.TV,
+        status: MediaRequestStatus.APPROVED,
+        media,
+        requestedBy,
+        is4k: false,
+        serverId: 31,
+        overrideTvdbId: 184_881,
+        seasons: [
+          new SeasonRequest({
+            seasonNumber: 0,
+            episodeNumbers: [1],
+            status: MediaRequestStatus.APPROVED,
+          }),
+          new SeasonRequest({
+            seasonNumber: 1,
+            episodeNumbers: [3],
+            status: MediaRequestStatus.APPROVED,
+          }),
+        ],
+      })
+    );
+
+    await new MediaRequestSubscriber().sendToSonarr(request);
+
+    assert.strictEqual(receivedOptions?.tvdbid, 184_881);
+    assert.deepStrictEqual(receivedOptions?.seasons, [0, 2]);
+    assert.deepStrictEqual(receivedOptions?.episodeSelections, [
+      { seasonNumber: 0, episodeNumbers: [1] },
+      { seasonNumber: 2, episodeNumbers: [3] },
+    ]);
   });
 
   it('fails a movie request whose explicit Radarr server was removed', async () => {

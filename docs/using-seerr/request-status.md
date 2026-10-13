@@ -37,8 +37,16 @@ confirmed TMDB match or the selected Sonarr server's TMDB lookup. It checks
 requested regular seasons against official TVDB season data before dispatch.
 If the series cannot be identified or the season numbers cannot be confirmed,
 the request stays visible as failed with its media record intact. Correct the
-provider or metadata issue before retrying; retrying alone cannot reconcile a
-TMDB and TVDB season-numbering mismatch.
+provider or metadata issue before retrying. For an unresolved TVDB identity or
+season-numbering mismatch, choose **Map TV seasons** on the failed request to
+repair it directly. Select the intended Sonarr series, then map every requested
+TMDB season to one distinct official TVDB season. SeerrNG verifies your choices
+with TVDB and keeps the request's selected Sonarr server, quality, requested
+seasons, and permissions when it retries. No series or season mapping is
+selected automatically.
+Translations are kept separate for each Sonarr destination and quality, so a
+repair for one configured instance does not change how another instance maps
+the same TVDB series.
 
 Request API responses include a stable `failureReason` code when a movie or TV
 dispatch failure can be classified. The code distinguishes an unavailable
@@ -51,7 +59,8 @@ When a failed request has a recorded reason, its card and request-management
 views show a plain-language explanation. If the selected TV listing uses
 different regular-season numbers than TVDB, retry is disabled because the same
 listing will fail the same check. Use **Find Another Listing** to search for a
-series with matching season numbers. Users with request-management permission
+series with matching season numbers, or **Map TV seasons** when the current
+Sonarr series uses different numbers. Users with request-management permission
 can also edit the failed request to select another listing.
 
 For books, the Books and Audiobooks filters keep ebook and audiobook requests

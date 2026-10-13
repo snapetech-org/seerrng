@@ -5173,6 +5173,12 @@ components:
           nullable: true
           description: Stable, non-sensitive classification for the most recent failed movie or TV dispatch. Cleared when the request is retried or resubmitted.
           readOnly: true
+        overrideTvdbId:
+          type: integer
+          minimum: 1
+          nullable: true
+          description: TVDB series selected by the requester when manually resolving TV season numbering.
+          readOnly: true
         media:
           $ref: '#/components/schemas/MediaInfo'
         createdAt:
@@ -18984,7 +18990,9 @@ paths:
     post:
       summary: Retry failed or unavailable request
       description: |
-        Retries a failed or unavailable request by returning it to the normal dispatch/search flow. The request owner may retry their own request when they still have permission to request that media; users with `MANAGE_REQUESTS` or `ADMIN` may retry any request.
+        Retries a failed or unavailable request by returning it to the normal dispatch/search flow. For eligible failed TV requests, an optional body can record a TVDB series and an explicit mapping for every active requested season. The server verifies those season numbers against official TVDB data before saving the mapping and retrying. The request owner may retry their own request when they still have permission to request that media; users with `MANAGE_REQUESTS` or `ADMIN` may retry any request.
+
+        Season mappings are scoped to the request's selected Sonarr instance and quality tier, so another destination can retain a different season layout for the same TVDB series.
 
       tags:
         - request
@@ -18996,6 +19004,43 @@ paths:
           schema:
             type: string
             example: '1'
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              oneOf:
+                - type: object
+                  additionalProperties: false
+                  maxProperties: 0
+                - type: object
+                  additionalProperties: false
+                  required:
+                    - tvdbId
+                    - seasonMappings
+                  properties:
+                    tvdbId:
+                      type: integer
+                      minimum: 1
+                    seasonMappings:
+                      type: array
+                      minItems: 1
+                      maxItems: 500
+                      items:
+                        type: object
+                        additionalProperties: false
+                        required:
+                          - seasonNumber
+                          - externalSeasonNumber
+                        properties:
+                          seasonNumber:
+                            type: integer
+                            minimum: 0
+                            maximum: 10000
+                          externalSeasonNumber:
+                            type: integer
+                            minimum: 0
+                            maximum: 10000
       responses:
         '200':
           description: Retry triggered
@@ -19003,6 +19048,16 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/MediaRequest'
+        '400':
+          description: Invalid, incomplete, or unverified TV season mapping
+        '403':
+          description: Caller may not retry this request
+        '404':
+          description: Request not found
+        '409':
+          description: Request cannot be retried from its current state
+        '502':
+          description: Official TVDB season data could not be verified
   /request/{requestId}/status:
     delete:
       summary: Delete request status entry
@@ -20641,6 +20696,19 @@ paths:
           schema:
             type: number
             example: 0
+        - in: query
+          name: is4k
+          required: false
+          description: Select the Sonarr quality target used by the request.
+          schema:
+            type: boolean
+        - in: query
+          name: serverId
+          required: false
+          description: Select the request's configured Sonarr instance. When omitted, the default instance for the quality target is used.
+          schema:
+            type: integer
+            minimum: 0
       responses:
         '200':
           description: Request successful
@@ -20650,6 +20718,44 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/SonarrSeries'
+  /service/tvdb/seasons/{tvdbId}:
+    get:
+      summary: Get official TVDB seasons
+      description: Returns season numbers confirmed as official for a TVDB series.
+      tags:
+        - service
+      parameters:
+        - in: path
+          name: tvdbId
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+            example: 184871
+      responses:
+        '200':
+          description: Official TVDB seasons returned
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  additionalProperties: false
+                  required:
+                    - seasonNumber
+                    - year
+                  properties:
+                    seasonNumber:
+                      type: integer
+                      minimum: 0
+                    year:
+                      type: integer
+                      nullable: true
+        '404':
+          description: TVDB series was not found
+        '502':
+          description: Official TVDB season data could not be verified
   /regions:
     get:
       summary: Regions supported by TMDB

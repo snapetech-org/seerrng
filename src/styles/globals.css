@@ -3171,6 +3171,40 @@
     background-color: rgb(var(--theme-control-surface) / 0.58);
   }
 
+  .request-tvdb-mapping {
+    display: grid;
+    gap: var(--inset-card-padding);
+    color: rgb(var(--theme-control-text) / 0.88);
+  }
+
+  .request-tvdb-mapping__description {
+    margin: 0;
+    color: rgb(var(--theme-control-text) / 0.78);
+    font-size: var(--card-table-font-size);
+    line-height: var(--card-copy-line-height);
+  }
+
+  .request-tvdb-mapping__seasons {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--inset-card-padding);
+  }
+
+  .request-tvdb-mapping__seasons .request-listbox-control {
+    width: 100%;
+  }
+
+  .request-tvdb-mapping-action {
+    display: block;
+    width: 100%;
+  }
+
+  @media (max-width: 40rem) {
+    .request-tvdb-mapping__seasons {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+
   .request-form-control:hover,
   .request-listbox-control:hover {
     color: #fff;
