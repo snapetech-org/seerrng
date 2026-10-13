@@ -77,6 +77,31 @@ describe('scheduled job lifecycle', () => {
     }
   });
 
+  it('registers Plex Watchlist Sync with the configured minute interval', () => {
+    const settings = getSettings();
+    const previousMediaServerType = settings.main.mediaServerType;
+    const previousWatchlistSyncSchedule =
+      settings.jobs['plex-watchlist-sync'].schedule;
+
+    try {
+      settings.main.mediaServerType = MediaServerType.PLEX;
+      settings.jobs['plex-watchlist-sync'].schedule = '0 */3 * * * *';
+      startJobs();
+
+      const watchlistSyncJob = scheduledJobs.find(
+        (job) => job.id === 'plex-watchlist-sync'
+      );
+
+      assert.ok(watchlistSyncJob);
+      assert.equal(watchlistSyncJob.interval, 'minutes');
+      assert.equal(watchlistSyncJob.cronSchedule, '0 */3 * * * *');
+    } finally {
+      settings.main.mediaServerType = previousMediaServerType;
+      settings.jobs['plex-watchlist-sync'].schedule =
+        previousWatchlistSyncSchedule;
+    }
+  });
+
   it('does not register duplicate jobs when startup runs twice', () => {
     const job = schedule.scheduleJob(
       new Date(Date.now() + 60_000),
