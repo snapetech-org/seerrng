@@ -84,3 +84,37 @@ test('tag consumers choose shared tone metadata rather than local presentation u
     }
   }
 });
+
+test('movie and TV subject-tag visibility controls share a semantic heading row', () => {
+  const declarations = new Map();
+  postcss.parse(css).walkRules((rule) => {
+    if (!rule.selectors.includes('.subject-tag-heading-row')) return;
+    for (const node of rule.nodes ?? []) {
+      if (node.type === 'decl') declarations.set(node.prop, node.value);
+    }
+  });
+
+  assert.equal(declarations.get('display'), 'flex');
+  assert.equal(declarations.get('align-items'), 'center');
+  assert.equal(declarations.get('justify-content'), 'space-between');
+  assert.equal(declarations.get('gap'), 'var(--card-layout-spacing)');
+  assert.match(
+    readFileSync(
+      new URL(
+        '../components/MediaDetails/SubjectTagVisibilityPanel.tsx',
+        import.meta.url
+      ),
+      'utf8'
+    ),
+    /className="subject-tag-heading-row card-spacing-after"/
+  );
+  for (const file of [
+    'MovieDetails/MovieDetailsLayout.tsx',
+    'TvDetails/SeriesDetailsLayout.tsx',
+  ]) {
+    assert.match(
+      readFileSync(new URL(`../components/${file}`, import.meta.url), 'utf8'),
+      /SubjectTagVisibilityPanel/
+    );
+  }
+});

@@ -5,6 +5,7 @@ import MediaDetailArtwork from '@app/components/MediaDetails/MediaDetailArtwork'
 import MediaQualitySelect from '@app/components/MediaDetails/MediaQualitySelect';
 import MetadataAttribution from '@app/components/MediaDetails/MetadataAttribution';
 import MovieSummaryCard from '@app/components/MediaDetails/MovieSummaryCard';
+import SubjectTagVisibilityPanel from '@app/components/MediaDetails/SubjectTagVisibilityPanel';
 import VideoRatings from '@app/components/MediaDetails/VideoRatings';
 import { subjectTagClassName } from '@app/components/MediaDetails/subjectTagStyle';
 import MediaSlider from '@app/components/MediaSlider';
@@ -317,26 +318,29 @@ const MovieDetailsLayout = ({
           )}
           {showTags && (
             <section className="app-card-inset refreshed-inset-surface card-spacing-before rounded-lg border border-gray-700 p-3">
-              <h2 className="media-inset-heading mb-2">
-                {intl.formatMessage(messages.subjectTags)}
-              </h2>
-              {data.keywords.length === 0 ? (
-                <p className="refreshed-detail-text-muted text-xs">
-                  {intl.formatMessage(messages.noTags)}
-                </p>
-              ) : (
-                <div className="flex flex-wrap gap-1.5">
-                  {data.keywords.map((keyword, index) => (
-                    <Link
-                      key={keyword.id}
-                      href={`/discover/movies/keyword?keywords=${keyword.id}`}
-                      className={subjectTagClassName(index)}
-                    >
-                      {keyword.name}
-                    </Link>
-                  ))}
-                </div>
-              )}
+              <SubjectTagVisibilityPanel
+                contentId="movie-subject-tags-content"
+                hasTags={data.keywords.length > 0}
+                title={intl.formatMessage(messages.subjectTags)}
+              >
+                {data.keywords.length === 0 ? (
+                  <p className="refreshed-detail-text-muted text-xs">
+                    {intl.formatMessage(messages.noTags)}
+                  </p>
+                ) : (
+                  <div className="flex flex-wrap gap-1.5">
+                    {data.keywords.map((keyword, index) => (
+                      <Link
+                        key={keyword.id}
+                        href={`/discover/movies/keyword?keywords=${keyword.id}`}
+                        className={subjectTagClassName(index)}
+                      >
+                        {keyword.name}
+                      </Link>
+                    ))}
+                  </div>
+                )}
+              </SubjectTagVisibilityPanel>
             </section>
           )}
           {showDetails && (

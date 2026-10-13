@@ -18,6 +18,7 @@ import ReorderableDisclosureRow, {
   OrderedDisclosurePanels,
 } from '@app/components/MediaDetails/ReorderableDisclosureRow';
 import SeriesSeasonEpisodeBrowser from '@app/components/MediaDetails/SeriesSeasonEpisodeBrowser';
+import SubjectTagVisibilityPanel from '@app/components/MediaDetails/SubjectTagVisibilityPanel';
 import VideoRatings from '@app/components/MediaDetails/VideoRatings';
 import { subjectTagTone } from '@app/components/MediaDetails/subjectTagStyle';
 import MediaSlider from '@app/components/MediaSlider';
@@ -696,29 +697,32 @@ const SeriesDetailsLayout = ({
             <Fragment key="subjectTags">
               {showTags && (
                 <section className="app-card-inset refreshed-inset-surface card-spacing-before">
-                  <h2 className="media-inset-heading card-spacing-after">
-                    {intl.formatMessage(messages.subjectTags)}
-                  </h2>
-                  {data.keywords.length === 0 ? (
-                    <PageErrorMessage
-                      title={intl.formatMessage(messages.noTags)}
-                      severity="empty"
-                      retry={metadataRetry}
-                    />
-                  ) : (
-                    <div className="card-list" data-list-layout="tags">
-                      {data.keywords.map((keyword, index) => (
-                        <Link
-                          key={keyword.id}
-                          href={`/discover/tv/keyword?keywords=${keyword.id}`}
-                          className="compact-control subject-tag"
-                          data-tone={subjectTagTone(index)}
-                        >
-                          {keyword.name}
-                        </Link>
-                      ))}
-                    </div>
-                  )}
+                  <SubjectTagVisibilityPanel
+                    contentId="tv-subject-tags-content"
+                    hasTags={data.keywords.length > 0}
+                    title={intl.formatMessage(messages.subjectTags)}
+                  >
+                    {data.keywords.length === 0 ? (
+                      <PageErrorMessage
+                        title={intl.formatMessage(messages.noTags)}
+                        severity="empty"
+                        retry={metadataRetry}
+                      />
+                    ) : (
+                      <div className="card-list" data-list-layout="tags">
+                        {data.keywords.map((keyword, index) => (
+                          <Link
+                            key={keyword.id}
+                            href={`/discover/tv/keyword?keywords=${keyword.id}`}
+                            className="compact-control subject-tag"
+                            data-tone={subjectTagTone(index)}
+                          >
+                            {keyword.name}
+                          </Link>
+                        ))}
+                      </div>
+                    )}
+                  </SubjectTagVisibilityPanel>
                 </section>
               )}
             </Fragment>
