@@ -10,7 +10,7 @@ was open in review on this date. An open or draft pull request is not a released
 feature. Follow its pull request for review and validation status, and use the
 release notes to confirm what is available in a SeerrNG release.
 
-This page tracks the SeerrNG pull requests numbered #244–#259 from this review
+This page tracks the SeerrNG pull requests numbered #244–#260 from this review
 period, including this index and the fork-retirement matrix. It is not a
 complete list of all open SeerrNG pull requests, a full inventory of upstream
 issues, or a user guide. Source links identify the public Seerr issue or pull
@@ -35,6 +35,7 @@ implementation details and review evidence.
 | [#257](https://github.com/snapetech/seerrng/pull/257) | Publish a dated index of selected upstream work and evidence-based criteria for retiring the core fork. | SeerrNG-specific documentation; source context is linked throughout this index. |
 | [#258](https://github.com/snapetech/seerrng/pull/258) | Avoid multiplying library-season and requested-season rows in request detail and status queries. | [Seerr issue #3515](https://github.com/seerr-team/seerr/issues/3515). |
 | [#259](https://github.com/snapetech/seerrng/pull/259) | Use Jellyfin's current authorization format for server API, logout cleanup, and authenticated avatars while preserving Emby compatibility. | [Seerr PR #3502](https://github.com/seerr-team/seerr/pull/3502), [Seerr PR #3503](https://github.com/seerr-team/seerr/pull/3503), and [Jellyfin issue #15962](https://github.com/jellyfin/jellyfin/issues/15962). |
+| [#260](https://github.com/snapetech/seerrng/pull/260) | Add title search, media-type filters, and stable sorting to local-only watchlists while preserving existing ordering when Plex lists are combined. | [Seerr PR #3506](https://github.com/seerr-team/seerr/pull/3506), closed without merge. |
 
 For current supported behavior, start with the [documentation index](./README.md).
 For SeerrNG's upstream relationship and the evidence needed before the core
