@@ -10,11 +10,12 @@ was open in review on this date. An open or draft pull request is not a released
 feature. Follow its pull request for review and validation status, and use the
 release notes to confirm what is available in a SeerrNG release.
 
-This page tracks the SeerrNG pull requests numbered #244–#256 from this review
-period. It is not a complete list of all open SeerrNG pull requests, a full
-inventory of upstream issues, or a user guide. Source links identify the public
-Seerr issue or pull request that informed the work; each SeerrNG pull request
-contains the implementation details and review evidence.
+This page tracks the SeerrNG pull requests numbered #244–#258 from this review
+period, including this index and the fork-retirement matrix. It is not a
+complete list of all open SeerrNG pull requests, a full inventory of upstream
+issues, or a user guide. Source links identify the public Seerr issue or pull
+request that informed the work; each SeerrNG pull request contains the
+implementation details and review evidence.
 
 | SeerrNG change | Summary | Public source context |
 | --- | --- | --- |
@@ -31,6 +32,8 @@ contains the implementation details and review evidence.
 | [#254](https://github.com/snapetech/seerrng/pull/254) | Route movie and TV requests to labeled services with destination permissions and destination-aware availability. | [Seerr PR #3560](https://github.com/seerr-team/seerr/pull/3560). |
 | [#255](https://github.com/snapetech/seerrng/pull/255) | Add optional Slack approval and decline actions using mapped SeerrNG accounts and the normal permission-checked request transition. | [Seerr issue #3554](https://github.com/seerr-team/seerr/issues/3554). |
 | [#256](https://github.com/snapetech/seerrng/pull/256) | Document Telegram Thread/Topic ID and Embed Poster settings. | [Seerr PR #3550](https://github.com/seerr-team/seerr/pull/3550). |
+| [#257](https://github.com/snapetech/seerrng/pull/257) | Publish a dated index of selected upstream work and evidence-based criteria for retiring the core fork. | SeerrNG-specific documentation; source context is linked throughout this index. |
+| [#258](https://github.com/snapetech/seerrng/pull/258) | Avoid multiplying library-season and requested-season rows in request detail and status queries. | [Seerr issue #3515](https://github.com/seerr-team/seerr/issues/3515). |
 
 For current supported behavior, start with the [documentation index](./README.md).
 For SeerrNG's upstream relationship and the evidence needed before the core
