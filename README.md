@@ -134,6 +134,11 @@ TVDB season-mapping recovery path for selected Sonarr destinations
 [Seerr PR #3496](https://github.com/seerr-team/seerr/pull/3496). These open
 proposals are not released features.
 
+The current review period also includes an open proposal to continue
+Radarr/Sonarr dispatch when optional requester-tag lookup or creation fails
+([#277](https://github.com/snapetech-org/seerrng/pull/277)); its upstream
+source is linked in the review index. It is not a released feature.
+
 Release notes are maintained in [`CHANGELOG.md`](./CHANGELOG.md). User-facing
 pull requests add a concise release-note fragment under
 [`release-notes/`](./release-notes/README.md); the release workflow publishes
