@@ -2,7 +2,7 @@
 
 ## Existing support and verified gap
 
-SeerrNG already uses `react-intl`, separate frontend and server catalogs, a per-user Display Language control, and a Weblate translation workflow. The current frontend tree has 41 locale catalogs, including Arabic, Hindi, Japanese, Korean, Vietnamese, and Simplified and Traditional Chinese.
+SeerrNG already uses `react-intl`, separate frontend and server catalogs, a per-user Display Language control, and a Weblate translation workflow. The current frontend tree has 42 locale catalogs, including Arabic, Hindi, Japanese, Korean, Vietnamese, and Simplified and Traditional Chinese.
 
 On the latest `main`, the 43 `calendar.*` messages were absent from every non-English catalog. This PR adds those Calendar strings to `es`, `es-MX`, `de`, `zh-CN`, `zh-TW`, `ja`, `fr`, `pt-BR`, `ar`, `ko`, `hi`, and `vi`. It reuses the existing account language picker and does not create another setting or try to fill thousands of older, unrelated catalog gaps.
 
@@ -10,7 +10,7 @@ On the latest `main`, the 43 `calendar.*` messages were absent from every non-En
 
 1. Keep extracting new user-facing copy into the existing FormatJS source catalog; do not add a second i18n framework.
 2. Check new feature catalogs for missing keys and ICU placeholder parity before requesting translation review.
-3. Add explicit `lang` and `dir` behavior for RTL locales, then audit the Calendar, navigation, filters, dialogs, and account settings in Arabic and Hebrew.
+3. Review the Calendar, navigation, filters, dialogs, and account settings in Arabic and Hebrew with the existing `lang` and `dir` behavior; track full-page RTL layout separately.
 4. Check selected-locale date and number formatting and translated copy at narrow and desktop widths. Preserve English fallback for any not-yet-reviewed string.
 5. Continue the existing Weblate workflow for the long tail of supported locales.
 
@@ -40,3 +40,7 @@ Translate interface labels, help, empty states, validation, notifications, and e
 ## Implemented in this PR
 
 The existing language selector continues to use the current locale catalogs, and the application now keeps the document lang and dir attributes in sync with that selection. Right-to-left metadata is enabled for Arabic and Hebrew. Catalog coverage and page-level RTL layout review remain separate follow-up work; this change does not claim the entire interface has been visually validated in RTL.
+
+## Added in this continuation
+
+Indonesian is now selectable in the existing language picker and loads a partial catalog for 91 shared interface messages; all other untranslated UI messages use the English catalog. Empty shared-message values were filled in the existing Spanish, Latin American Spanish, Simplified Chinese, Hindi, Brazilian Portuguese, Arabic, Korean, Traditional Chinese, and Vietnamese catalogs so they no longer render as blank text. Missing keys continue to fall back to English. This does not claim full-catalog translation or complete RTL review.
