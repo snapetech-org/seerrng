@@ -1,8 +1,8 @@
 ---
-category: fixed
+category: added
 audience: users
 area: localization
 action: none
 breaking: false
 ---
-The interface now updates its document language and reading direction when the selected locale changes, including right-to-left direction for Arabic and Hebrew.
+Arabic UI translations are available in the language picker. The interface keeps a left-to-right layout until full right-to-left support is reviewed.
