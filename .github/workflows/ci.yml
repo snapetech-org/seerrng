@@ -75,7 +75,7 @@ jobs:
             --json
 
       - name: Publish immutable current-attempt validation plan
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: seerrng-engine-plan-${{ github.run_id }}-${{ github.run_attempt }}
           path: ${{ runner.temp }}/seerrng-engine-plan/hosted-plan.json
@@ -164,7 +164,7 @@ jobs:
 
       - name: Publish engine unit receipt
         if: always()
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: seerrng-engine-receipt-${{ github.run_id }}-${{ github.run_attempt }}-ci-jellyfin-plugin
           path: ${{ runner.temp }}/seerrng-engine-receipts
@@ -264,7 +264,7 @@ jobs:
 
       - name: Publish engine unit receipt
         if: always()
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: seerrng-engine-receipt-${{ github.run_id }}-${{ github.run_attempt }}-ci-release-notes
           path: ${{ runner.temp }}/seerrng-engine-receipts
@@ -360,7 +360,7 @@ jobs:
 
       - name: Publish engine unit receipt
         if: always()
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: seerrng-engine-receipt-${{ github.run_id }}-${{ github.run_attempt }}-ci-i18n
           path: ${{ runner.temp }}/seerrng-engine-receipts
@@ -477,7 +477,7 @@ jobs:
 
       - name: Publish engine unit receipt
         if: always()
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: seerrng-engine-receipt-${{ github.run_id }}-${{ github.run_attempt }}-ci-test
           path: ${{ runner.temp }}/seerrng-engine-receipts
@@ -629,7 +629,7 @@ jobs:
 
       - name: Publish engine unit receipt
         if: always()
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: seerrng-engine-receipt-${{ github.run_id }}-${{ github.run_attempt }}-ci-unit-test-${{ matrix.case_id }}
           path: ${{ runner.temp }}/seerrng-engine-receipts
@@ -749,7 +749,7 @@ jobs:
 
       - name: Publish engine unit receipt
         if: always()
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: seerrng-engine-receipt-${{ github.run_id }}-${{ github.run_attempt }}-ci-playwright
           path: ${{ runner.temp }}/seerrng-engine-receipts

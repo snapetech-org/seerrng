@@ -236,7 +236,7 @@ jobs:
           }
           bash .release-tooling/scripts/build-release-assets.sh "${TAG}" dist-release
 
-      - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7
         with:
           name: seerrng-${{ matrix.os }}-${{ matrix.arch }}
           path: dist-release/seerrng-*
@@ -330,7 +330,7 @@ jobs:
             'length == 1 and .[0].guid == $guid and .[0].versions[0].checksum == $checksum' \
             "$release_dir/seerrng-jellyfin-plugin-manifest.json" >/dev/null
 
-      - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7
         with:
           name: seerrng-jellyfin-plugin
           path: dist-release/seerrng-jellyfin-*
