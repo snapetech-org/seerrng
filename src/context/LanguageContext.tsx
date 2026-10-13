@@ -59,6 +59,10 @@ export const availableLanguages: AvailableLanguageObject = {
     code: 'hi',
     display: 'Hindi',
   },
+  id: {
+    code: 'id',
+    display: 'Bahasa Indonesia',
+  },
   hr: {
     code: 'hr',
     display: 'Hrvatski',
