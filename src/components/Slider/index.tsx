@@ -3,13 +3,29 @@ import PageErrorMessage from '@app/components/Common/PageErrorMessage';
 import TitleCard from '@app/components/TitleCard';
 import globalMessages from '@app/i18n/globalMessages';
 import defineMessages from '@app/utils/defineMessages';
+import {
+  getDiscoverHistoryEntryKey,
+  readDiscoverSliderScrollPosition,
+  saveDiscoverSliderScrollPosition,
+} from '@app/utils/discoverScrollRestoration';
 import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/24/outline';
-import { useCallback, useEffect, useRef, useState, type JSX } from 'react';
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState,
+  type JSX,
+} from 'react';
 import { useIntl } from 'react-intl';
 
 const messages = defineMessages('components.Slider', {
   emptyTitle: 'No Results',
 });
+
+export const DiscoverSliderScrollRestorationContext = createContext(false);
 
 interface SliderProps {
   heading: React.ReactNode;
@@ -46,6 +62,14 @@ const Slider = ({
   const intl = useIntl();
   const containerRef = useRef<HTMLDivElement>(null);
   const debounceRef = useRef<number | undefined>(undefined);
+  const scrollSaveTimeoutRef = useRef<number | undefined>(undefined);
+  const historyEntryKeyRef = useRef<string | undefined>(undefined);
+  const activeSliderKeyRef = useRef(sliderKey);
+  const hasRestoredHorizontalScrollRef = useRef(false);
+  const latestScrollPositionRef = useRef(0);
+  const restoreHorizontalScroll = useContext(
+    DiscoverSliderScrollRestorationContext
+  );
   const [scrollPos, setScrollPos] = useState({ isStart: true, isEnd: false });
   const scrollPosRef = useRef(scrollPos);
 
@@ -109,7 +133,95 @@ const Slider = ({
     handleScroll();
   }, [items, handleScroll]);
 
+  useLayoutEffect(() => {
+    if (!restoreHorizontalScroll) {
+      return;
+    }
+
+    const container = containerRef.current;
+    historyEntryKeyRef.current = getDiscoverHistoryEntryKey();
+
+    return () => {
+      window.clearTimeout(scrollSaveTimeoutRef.current);
+      if (!hasRestoredHorizontalScrollRef.current) {
+        return;
+      }
+
+      saveDiscoverSliderScrollPosition(
+        historyEntryKeyRef.current,
+        activeSliderKeyRef.current,
+        container?.scrollLeft ?? latestScrollPositionRef.current
+      );
+    };
+  }, [restoreHorizontalScroll]);
+
+  useLayoutEffect(() => {
+    if (activeSliderKeyRef.current !== sliderKey) {
+      window.clearTimeout(scrollSaveTimeoutRef.current);
+      if (hasRestoredHorizontalScrollRef.current) {
+        saveDiscoverSliderScrollPosition(
+          historyEntryKeyRef.current,
+          activeSliderKeyRef.current,
+          containerRef.current?.scrollLeft ?? latestScrollPositionRef.current
+        );
+      }
+
+      activeSliderKeyRef.current = sliderKey;
+      hasRestoredHorizontalScrollRef.current = false;
+    }
+
+    const container = containerRef.current;
+    if (
+      !restoreHorizontalScroll ||
+      !isActive ||
+      isLoading ||
+      hasRestoredHorizontalScrollRef.current ||
+      !container
+    ) {
+      return;
+    }
+
+    const historyEntryKey =
+      historyEntryKeyRef.current ?? getDiscoverHistoryEntryKey();
+    historyEntryKeyRef.current = historyEntryKey;
+
+    const savedPosition = readDiscoverSliderScrollPosition(
+      historyEntryKey,
+      sliderKey
+    );
+    if (savedPosition !== undefined) {
+      container.scrollLeft = savedPosition;
+    }
+
+    latestScrollPositionRef.current = container.scrollLeft;
+    hasRestoredHorizontalScrollRef.current = true;
+    handleScroll();
+  }, [
+    handleScroll,
+    isActive,
+    isLoading,
+    items,
+    restoreHorizontalScroll,
+    sliderKey,
+  ]);
+
   const onScroll = () => {
+    const scrollPosition = containerRef.current?.scrollLeft ?? 0;
+    latestScrollPositionRef.current = scrollPosition;
+
+    if (restoreHorizontalScroll && hasRestoredHorizontalScrollRef.current) {
+      window.clearTimeout(scrollSaveTimeoutRef.current);
+      const historyEntryKey = historyEntryKeyRef.current;
+      const activeSliderKey = activeSliderKeyRef.current;
+      scrollSaveTimeoutRef.current = window.setTimeout(() => {
+        saveDiscoverSliderScrollPosition(
+          historyEntryKey,
+          activeSliderKey,
+          latestScrollPositionRef.current
+        );
+      }, 100);
+    }
+
     debouncedScroll();
   };
 

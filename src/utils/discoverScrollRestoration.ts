@@ -90,10 +90,99 @@ export const getScrollRestorationAction = ({
 
 // Next.js replaces history.state during Back/Forward navigation, but retains key.
 const storageKey = (): string | undefined => {
+  const key = getDiscoverHistoryEntryKey();
+  return key ? `${DISCOVER_SCROLL_HISTORY_KEY}:${key}` : undefined;
+};
+
+export const getDiscoverHistoryEntryKey = (): string | undefined => {
+  if (typeof window === 'undefined') return undefined;
   const key = window.history.state?.key;
-  return typeof key === 'string'
-    ? `${DISCOVER_SCROLL_HISTORY_KEY}:${key}`
-    : undefined;
+  return typeof key === 'string' && key.length > 0 ? key : undefined;
+};
+
+const sliderPositionsStorageKey = (historyEntryKey: string): string =>
+  `${DISCOVER_SCROLL_HISTORY_KEY}:sliders:${historyEntryKey}`;
+
+const isSliderScrollPositionMap = (
+  value: unknown
+): value is Record<string, unknown> =>
+  !!value && typeof value === 'object' && !Array.isArray(value);
+
+export const readDiscoverSliderScrollPosition = (
+  historyEntryKey: string | undefined,
+  sliderKey: string
+): number | undefined => {
+  if (
+    typeof window === 'undefined' ||
+    !historyEntryKey ||
+    !sliderKey ||
+    sliderKey.length > 128
+  ) {
+    return undefined;
+  }
+
+  try {
+    const positions = JSON.parse(
+      window.sessionStorage.getItem(
+        sliderPositionsStorageKey(historyEntryKey)
+      ) ?? 'null'
+    );
+    if (
+      !isSliderScrollPositionMap(positions) ||
+      !Object.prototype.hasOwnProperty.call(positions, sliderKey)
+    ) {
+      return undefined;
+    }
+
+    const position = positions[sliderKey];
+    return typeof position === 'number' &&
+      Number.isFinite(position) &&
+      position >= 0
+      ? position
+      : undefined;
+  } catch {
+    return undefined;
+  }
+};
+
+export const saveDiscoverSliderScrollPosition = (
+  historyEntryKey: string | undefined,
+  sliderKey: string,
+  position: number
+): void => {
+  if (
+    typeof window === 'undefined' ||
+    !historyEntryKey ||
+    !sliderKey ||
+    sliderKey.length > 128 ||
+    !Number.isFinite(position) ||
+    position < 0
+  ) {
+    return;
+  }
+
+  try {
+    const key = sliderPositionsStorageKey(historyEntryKey);
+    const stored = JSON.parse(window.sessionStorage.getItem(key) ?? 'null');
+    const positions: Record<string, number> = Object.create(null);
+    if (isSliderScrollPositionMap(stored)) {
+      for (const [storedSliderKey, storedPosition] of Object.entries(stored)) {
+        if (
+          storedSliderKey.length <= 128 &&
+          typeof storedPosition === 'number' &&
+          Number.isFinite(storedPosition) &&
+          storedPosition >= 0
+        ) {
+          positions[storedSliderKey] = storedPosition;
+        }
+      }
+    }
+
+    positions[sliderKey] = position;
+    window.sessionStorage.setItem(key, JSON.stringify(positions));
+  } catch {
+    // Navigation must still work when session storage is unavailable.
+  }
 };
 
 export const readDiscoverScrollEntry = (

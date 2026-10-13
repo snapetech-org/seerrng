@@ -19,3 +19,7 @@ TMDB movies and series appear together in the order provided by the list. A
 slider links to a paginated page for browsing the full list. The page follows
 the enabled movie and series categories, and title cards show the library and
 request state available to the signed-in user.
+
+When you open a title from Discover and go back, each home slider returns to
+its previous horizontal position so you can continue browsing where you left
+off. This applies to default and custom sliders.
