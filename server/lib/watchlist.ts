@@ -3,6 +3,7 @@ import { MediaType } from '@server/constants/media';
 import { getRepository } from '@server/datasource';
 import { Watchlist } from '@server/entity/Watchlist';
 import type {
+  WatchlistFilters,
   WatchlistItem,
   WatchlistResponse,
 } from '@server/interfaces/api/discoverInterfaces';
@@ -12,6 +13,7 @@ import {
   normalizeOpenLibraryWorkId,
 } from '@server/lib/externalIds';
 import { normalizeMagazineTitle } from '@server/lib/magazineIdentity';
+import { escapeSqlLikePattern } from '@server/utils/sqlLike';
 import type { SelectQueryBuilder } from 'typeorm';
 
 const mapLocalWatchlistItem = (item: Watchlist): WatchlistItem => ({
@@ -58,6 +60,44 @@ const applyRenderableWatchlistFilter = (query: SelectQueryBuilder<Watchlist>) =>
       externalMediaTypes: [MediaType.BOOK, MediaType.COMIC, MediaType.MAGAZINE],
     }
   );
+
+const applyWatchlistFilters = (
+  query: SelectQueryBuilder<Watchlist>,
+  filters: WatchlistFilters
+) => {
+  if (filters.search) {
+    query.andWhere("LOWER(watchlist.title) LIKE :search ESCAPE '\\'", {
+      search: `%${escapeSqlLikePattern(filters.search).toLowerCase()}%`,
+    });
+  }
+
+  if (filters.mediaType) {
+    query.andWhere('watchlist.mediaType = :mediaType', {
+      mediaType: filters.mediaType,
+    });
+  }
+
+  switch (filters.sortBy) {
+    case 'added-desc':
+      query.orderBy('watchlist.createdAt', 'DESC');
+      query.addOrderBy('watchlist.id', 'DESC');
+      break;
+    case 'title-asc':
+      query.orderBy('LOWER(watchlist.title)', 'ASC');
+      query.addOrderBy('watchlist.id', 'ASC');
+      break;
+    case 'title-desc':
+      query.orderBy('LOWER(watchlist.title)', 'DESC');
+      query.addOrderBy('watchlist.id', 'DESC');
+      break;
+    default:
+      // Preserve the existing insertion order when the user has not selected
+      // a sort option.
+      query.orderBy('watchlist.id', 'ASC');
+  }
+
+  return query;
+};
 
 const getWatchlistDedupeKey = (item: WatchlistItem) => {
   if (
@@ -110,17 +150,20 @@ export const getCombinedWatchlist = async ({
   plexToken,
   page,
   itemsPerPage,
+  filters = {},
 }: {
   userId?: number;
   plexToken?: string | null;
   page: number;
   itemsPerPage: number;
+  filters?: WatchlistFilters;
 }): Promise<WatchlistResponse> => {
   if (!userId) {
     return {
       page: 1,
       totalPages: 1,
       totalResults: 0,
+      filtersSupported: false,
       results: [],
     };
   }
@@ -132,6 +175,12 @@ export const getCombinedWatchlist = async ({
       .createQueryBuilder('watchlist')
       .where('watchlist.requestedBy = :userId', { userId })
   );
+  const filtersSupported = !plexToken;
+  if (filtersSupported) {
+    applyWatchlistFilters(localQuery, filters);
+  } else {
+    localQuery.orderBy('watchlist.id', 'ASC');
+  }
   const localTotal = await localQuery.getCount();
   const localTake = Math.max(
     itemsPerPage - Math.max(offset - localTotal, 0),
@@ -139,11 +188,7 @@ export const getCombinedWatchlist = async ({
   );
   const localSkip = Math.min(offset, localTotal);
   const localResult = localTake
-    ? await localQuery
-        .orderBy('watchlist.id', 'ASC')
-        .skip(localSkip)
-        .take(localTake)
-        .getMany()
+    ? await localQuery.skip(localSkip).take(localTake).getMany()
     : [];
   const localItems = dedupeWatchlistItems(
     localResult.filter(isRenderableWatchlistItem).map(mapLocalWatchlistItem)
@@ -154,6 +199,7 @@ export const getCombinedWatchlist = async ({
       page,
       totalPages: Math.max(Math.ceil(localTotal / itemsPerPage), 1),
       totalResults: localTotal,
+      filtersSupported,
       results: localItems,
     };
   }
@@ -183,6 +229,7 @@ export const getCombinedWatchlist = async ({
     page,
     totalPages: Math.max(Math.ceil(totalResults / itemsPerPage), 1),
     totalResults,
+    filtersSupported,
     results,
   };
 };

@@ -2047,6 +2047,59 @@ components:
           readOnly: true
         requestedBy:
           $ref: '#/components/schemas/User'
+    WatchlistListItem:
+      type: object
+      required:
+        - id
+        - ratingKey
+        - mediaType
+        - title
+      properties:
+        id:
+          type: integer
+          example: 1
+        ratingKey:
+          type: string
+          example: '12345'
+        tmdbId:
+          type: number
+          example: 1
+        mbId:
+          type: string
+          description: MusicBrainz release group ID for music entries.
+        externalId:
+          type: string
+          description: Open Library work ID, ComicVine volume ID, or magazine title.
+        mediaType:
+          type: string
+          enum: [movie, tv, music, book, comic, magazine]
+        title:
+          type: string
+    WatchlistListResponse:
+      type: object
+      required:
+        - page
+        - totalPages
+        - totalResults
+        - filtersSupported
+        - results
+      properties:
+        page:
+          type: number
+          example: 1
+        totalPages:
+          type: number
+          example: 1
+        totalResults:
+          type: number
+          example: 6
+        filtersSupported:
+          type: boolean
+          description: False when Plex Watchlist items are combined with local entries.
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/WatchlistListItem'
     User:
       type: object
       properties:
@@ -12639,34 +12692,31 @@ paths:
             type: number
             example: 1
             default: 1
+        - in: query
+          name: search
+          description: Case-insensitive title search for a local-only watchlist.
+          schema:
+            type: string
+            maxLength: 100
+        - in: query
+          name: mediaType
+          description: Restrict a local-only watchlist to one media type.
+          schema:
+            type: string
+            enum: [movie, tv, music, book, comic, magazine]
+        - in: query
+          name: sortBy
+          description: Sort a local-only watchlist by recent addition or title.
+          schema:
+            type: string
+            enum: [added-desc, title-asc, title-desc]
       responses:
         '200':
           description: Watchlist data returned
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  page:
-                    type: number
-                  totalPages:
-                    type: number
-                  totalResults:
-                    type: number
-                  results:
-                    type: array
-                    items:
-                      type: object
-                      properties:
-                        tmdbId:
-                          type: number
-                          example: 1
-                        ratingKey:
-                          type: string
-                        type:
-                          type: string
-                        title:
-                          type: string
+                $ref: '#/components/schemas/WatchlistListResponse'
   /user/{userId}/settings/main:
     get:
       summary: Get general settings for a user
@@ -15222,34 +15272,31 @@ paths:
             type: number
             example: 1
             default: 1
+        - in: query
+          name: search
+          description: Case-insensitive title search for a local-only watchlist.
+          schema:
+            type: string
+            maxLength: 100
+        - in: query
+          name: mediaType
+          description: Restrict a local-only watchlist to one media type.
+          schema:
+            type: string
+            enum: [movie, tv, music, book, comic, magazine]
+        - in: query
+          name: sortBy
+          description: Sort a local-only watchlist by recent addition or title.
+          schema:
+            type: string
+            enum: [added-desc, title-asc, title-desc]
       responses:
         '200':
           description: Watchlist data returned
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  page:
-                    type: number
-                  totalPages:
-                    type: number
-                  totalResults:
-                    type: number
-                  results:
-                    type: array
-                    items:
-                      type: object
-                      properties:
-                        tmdbId:
-                          type: number
-                          example: 1
-                        ratingKey:
-                          type: string
-                        type:
-                          type: string
-                        title:
-                          type: string
+                $ref: '#/components/schemas/WatchlistListResponse'
   /music/{musicId}:
     get:
       summary: Get music album details
