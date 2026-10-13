@@ -73,7 +73,12 @@ Space-separated list of boolean claims that are required to log in
 
 ### Allow New Users (`newUserLogin`)
 
-Create accounts for new users logging in with this provider
+Allow SeerrNG accounts to be created when someone signs in with this provider
+for the first time. The provider must return an email address and assert
+`email_verified: true`, and that address must not already belong to a SeerrNG
+account. SeerrNG does not automatically link a new OIDC identity to an existing
+account by matching email; link the provider from the existing account's
+**Linked Accounts** settings first. If you customize scopes, include `email`.
 
 ## Network Security
 
