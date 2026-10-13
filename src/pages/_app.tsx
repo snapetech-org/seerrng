@@ -14,6 +14,7 @@ import '@app/styles/globals.css';
 import { polyfillIntl } from '@app/utils/polyfillIntl';
 import '@fontsource-variable/inter';
 import type { AvailableLocale } from '@server/types/languages';
+import { getLocaleDirection } from '@app/utils/localeDirection';
 import axios from 'axios';
 import type { AppProps } from 'next/app';
 import dynamic from 'next/dynamic';
@@ -141,6 +142,12 @@ const CoreApp = ({ Component, pageProps, router }: AppProps) => {
   useEffect(() => {
     polyfillIntl();
   }, []);
+
+  useEffect(() => {
+    const root = document.documentElement;
+    root.lang = currentLocale;
+    root.dir = getLocaleDirection(currentLocale);
+  }, [currentLocale]);
 
   useEffect(() => {
     if (currentLocale === loadedLocale.current) {
