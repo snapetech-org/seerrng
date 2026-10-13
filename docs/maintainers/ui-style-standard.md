@@ -15,6 +15,7 @@ The rules describe asset roles, not particular pages, title strings, example med
 7. Preserve behavior, permissions, provider branding, asset aspect ratios and meaningful media-type differences during presentation changes. A layout refactor does not authorize an API, database, or permission change.
 8. Scope statements precisely. A page audit includes its rendered dependencies and active conditional branches, but does not establish that unaudited pages or all global CSS are clean. Deferred roles must remain explicit.
 9. Do not introduce Tailwind into page assets, including structural layout, responsive classes, generated strings, transition props or `@apply` at migrated owners. Existing legacy use is reported and repaired within the approved scope, not treated as proof that new utility styling is acceptable.
+10. Layouts and spacing follow the document's writing direction. Use flow-relative CSS properties such as `margin-inline`, `padding-inline`, `inset-inline`, `border-inline` and `text-align: start`; explicitly map physical safe-area variables and directional artwork/transitions when the platform has no logical equivalent. Do not add physical left/right utilities to an RTL-capable shared role.
 
 ## 2. Role map
 

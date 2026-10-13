@@ -82,112 +82,112 @@ const SidebarLinks: SidebarLinkProps[] = [
   {
     href: '/',
     messagesKey: 'discover',
-    svgIcon: <SparklesIcon className="mr-3 h-6 w-6" />,
+    svgIcon: <SparklesIcon className="app-sidebar-icon" />,
     activeRegExp: /^\/(discover\/?)?$/,
   },
   {
     href: '/library',
     messagesKey: 'library',
-    svgIcon: <BookOpenIcon className="mr-3 h-6 w-6" />,
+    svgIcon: <BookOpenIcon className="app-sidebar-icon" />,
     activeRegExp: /^\/library$/,
   },
   {
     href: '/swipe',
     messagesKey: 'swipe',
-    svgIcon: <HeartIcon className="mr-3 h-6 w-6" />,
+    svgIcon: <HeartIcon className="app-sidebar-icon" />,
     activeRegExp: /^\/swipe$/,
     requiredPermission: Permission.REQUEST,
   },
   {
     href: '/games',
     messagesKey: 'gamesLibrary',
-    svgIcon: <PuzzlePieceIcon className="mr-3 h-6 w-6" />,
+    svgIcon: <PuzzlePieceIcon className="app-sidebar-icon" />,
     activeRegExp: /^\/games(?:\/|$)/,
   },
   {
     href: '/downloads',
     messagesKey: 'downloads',
-    svgIcon: <ClockIcon className="mr-3 h-6 w-6" />,
+    svgIcon: <ClockIcon className="app-sidebar-icon" />,
     activeRegExp: /^\/downloads$/,
     requiredPermission: Permission.MANAGE_DOWNLOADS,
   },
   {
     href: '/indexer-search',
     messagesKey: 'indexerSearch',
-    svgIcon: <MagnifyingGlassIcon className="mr-3 h-6 w-6" />,
+    svgIcon: <MagnifyingGlassIcon className="app-sidebar-icon" />,
     activeRegExp: /^\/indexer-search$/,
     requiredPermission: Permission.MANAGE_REQUESTS,
   },
   {
     href: '/calendar',
     messagesKey: 'calendar',
-    svgIcon: <ClockIcon className="mr-3 h-6 w-6" />,
+    svgIcon: <ClockIcon className="app-sidebar-icon" />,
     activeRegExp: /^\/calendar$/,
   },
   {
     href: '/discover/movies',
     messagesKey: 'browsemovies',
-    svgIcon: <FilmIcon className="mr-3 h-6 w-6" />,
+    svgIcon: <FilmIcon className="app-sidebar-icon" />,
     activeRegExp: /^\/(?:discover\/movies(?:\/.*)?|movie\/)/,
   },
   {
     href: '/discover/tv',
     messagesKey: 'browsetv',
-    svgIcon: <TvIcon className="mr-3 h-6 w-6" />,
+    svgIcon: <TvIcon className="app-sidebar-icon" />,
     activeRegExp: /^\/(?:discover\/tv(?:\/.*)?|tv\/)/,
   },
   {
     href: '/discover/music',
     messagesKey: 'browsemusic',
-    svgIcon: <MusicalNoteIcon className="mr-3 h-6 w-6" />,
+    svgIcon: <MusicalNoteIcon className="app-sidebar-icon" />,
     activeRegExp: /^\/(?:discover\/music(?:\/.*)?|music\/)/,
   },
   {
     href: '/discover/books',
     messagesKey: 'browsebooks',
-    svgIcon: <BookOpenIcon className="mr-3 h-6 w-6" />,
+    svgIcon: <BookOpenIcon className="app-sidebar-icon" />,
     activeRegExp: /^\/(?:discover\/books(?:\/.*)?|book\/)/,
   },
   {
     href: '/discover/audiobooks',
     messagesKey: 'browseaudiobooks',
-    svgIcon: <SpeakerWaveIcon className="mr-3 h-6 w-6" />,
+    svgIcon: <SpeakerWaveIcon className="app-sidebar-icon" />,
     activeRegExp: /^\/discover\/audiobooks$/,
   },
   {
     href: '/discover/comics',
     messagesKey: 'browsecomics',
-    svgIcon: <Square3Stack3DIcon className="mr-3 h-6 w-6" />,
+    svgIcon: <Square3Stack3DIcon className="app-sidebar-icon" />,
     activeRegExp: /^\/(?:discover\/comics(?:\/.*)?|comic\/)/,
   },
   {
     href: '/discover/magazines',
     messagesKey: 'browsemagazines',
-    svgIcon: <NewspaperIcon className="mr-3 h-6 w-6" />,
+    svgIcon: <NewspaperIcon className="app-sidebar-icon" />,
     activeRegExp: /^\/(?:discover\/magazines(?:\/.*)?|magazine\/)/,
   },
   {
     href: '/discover/sports',
     messagesKey: 'browsesports',
-    svgIcon: <TrophyIcon className="mr-3 h-6 w-6" />,
+    svgIcon: <TrophyIcon className="app-sidebar-icon" />,
     activeRegExp: /^\/(?:discover\/sports(?:\/.*)?|sportarr\/)/,
   },
   {
     href: '/software',
     messagesKey: 'browsesoftware',
-    svgIcon: <CommandLineIcon className="mr-3 h-6 w-6" />,
+    svgIcon: <CommandLineIcon className="app-sidebar-icon" />,
     activeRegExp: /^\/software(?:\/|$)/,
   },
   {
     href: '/requests',
     messagesKey: 'requests',
-    svgIcon: <ClockIcon className="mr-3 h-6 w-6" />,
+    svgIcon: <ClockIcon className="app-sidebar-icon" />,
     activeRegExp: /^\/requests\/?$/,
   },
   {
     href: '/blocklist',
     messagesKey: 'blocklist',
-    svgIcon: <EyeSlashIcon className="mr-3 h-6 w-6" />,
+    svgIcon: <EyeSlashIcon className="app-sidebar-icon" />,
     activeRegExp: /^\/blocklist/,
     requiredPermission: [
       Permission.MANAGE_BLOCKLIST,
@@ -198,7 +198,7 @@ const SidebarLinks: SidebarLinkProps[] = [
   {
     href: '/issues',
     messagesKey: 'issues',
-    svgIcon: <ExclamationTriangleIcon className="mr-3 h-6 w-6" />,
+    svgIcon: <ExclamationTriangleIcon className="app-sidebar-icon" />,
     activeRegExp: /^\/issues/,
     requiredPermission: [
       Permission.MANAGE_ISSUES,
@@ -210,7 +210,7 @@ const SidebarLinks: SidebarLinkProps[] = [
   {
     href: '/users',
     messagesKey: 'users',
-    svgIcon: <UsersIcon className="mr-3 h-6 w-6" />,
+    svgIcon: <UsersIcon className="app-sidebar-icon" />,
     activeRegExp: /^\/users/,
     requiredPermission: Permission.MANAGE_USERS,
     dataTestId: 'sidebar-menu-users',
@@ -218,7 +218,7 @@ const SidebarLinks: SidebarLinkProps[] = [
   {
     href: '/settings',
     messagesKey: 'settings',
-    svgIcon: <CogIcon className="mr-3 h-6 w-6" />,
+    svgIcon: <CogIcon className="app-sidebar-icon" />,
     activeRegExp: /^\/settings/,
     requiredPermission: Permission.ADMIN,
     dataTestId: 'sidebar-menu-settings',
@@ -285,16 +285,16 @@ const Sidebar = ({
             </TransitionChild>
             <TransitionChild
               as="div"
-              enter="transition-transform ease-in-out duration-300"
-              enterFrom="-translate-x-full"
-              enterTo="translate-x-0"
-              leave="transition-transform ease-in-out duration-300"
-              leaveFrom="translate-x-0"
-              leaveTo="-translate-x-full"
+              enter="app-sidebar-slide-transition"
+              enterFrom="app-sidebar-slide-from"
+              enterTo="app-sidebar-slide-to"
+              leave="app-sidebar-slide-transition"
+              leaveFrom="app-sidebar-slide-to"
+              leaveTo="app-sidebar-slide-from"
             >
               <>
                 <div className="sidebar relative flex h-full w-full max-w-xs flex-1 flex-col">
-                  <div className="sidebar-close-button absolute end-0 -me-14 p-1">
+                  <div className="sidebar-close-button">
                     <button
                       className="flex h-12 w-12 items-center justify-center rounded-full focus:bg-gray-600 focus:outline-none"
                       aria-label="Close sidebar"
@@ -314,7 +314,7 @@ const Sidebar = ({
                             src={versionedAsset('/logo_full.svg')}
                             alt="Logo"
                             fill
-                            className="object-contain object-left"
+                            className="app-sidebar-logo"
                           />
                         </Link>
                       </span>
@@ -366,8 +366,8 @@ const Sidebar = ({
         </Transition>
       </div>
 
-      <div className="fixed start-0 top-0 bottom-0 z-30 hidden lg:flex lg:flex-shrink-0">
-        <div className="sidebar flex w-64 flex-col">
+      <div className="app-sidebar-dock">
+        <div className="sidebar flex flex-col">
           <div className="flex h-0 flex-1 flex-col">
             <div className="flex flex-1 flex-col overflow-y-auto pb-4">
               <div className="flex flex-shrink-0 items-center">
@@ -377,7 +377,7 @@ const Sidebar = ({
                       src={versionedAsset('/logo_full.svg')}
                       alt="Logo"
                       fill
-                      className="object-contain object-left"
+                      className="app-sidebar-logo"
                       loading="eager"
                     />
                   </Link>
@@ -405,7 +405,7 @@ const Sidebar = ({
                       {sidebarLink.messagesKey === 'requests' &&
                         pendingRequestsCount > 0 &&
                         hasPermission(Permission.MANAGE_REQUESTS) && (
-                          <div className="ml-auto flex">
+                          <div className="app-sidebar-link-badge-anchor">
                             <Badge
                               className={`rounded-md bg-gradient-to-br ${
                                 router.pathname.match(sidebarLink.activeRegExp)
@@ -420,7 +420,7 @@ const Sidebar = ({
                       {sidebarLink.messagesKey === 'issues' &&
                         openIssuesCount > 0 &&
                         hasPermission(Permission.MANAGE_ISSUES) && (
-                          <div className="ml-auto flex">
+                          <div className="app-sidebar-link-badge-anchor">
                             <Badge
                               className={`rounded-md bg-gradient-to-br ${
                                 router.pathname.match(sidebarLink.activeRegExp)

@@ -234,8 +234,8 @@ const MobileMenu = ({
       {
         href: '/users',
         content: intl.formatMessage(menuMessages.users),
-        svgIcon: <UsersIcon className="mr-3 h-6 w-6" />,
-        svgIconSelected: <FilledUsersIcon className="mr-3 h-6 w-6" />,
+        svgIcon: <UsersIcon className="h-6 w-6" />,
+        svgIconSelected: <FilledUsersIcon className="h-6 w-6" />,
         activeRegExp: /^\/users/,
         requiredPermission: Permission.MANAGE_USERS,
         dataTestId: 'sidebar-menu-users',
@@ -243,8 +243,8 @@ const MobileMenu = ({
       {
         href: '/settings',
         content: intl.formatMessage(menuMessages.settings),
-        svgIcon: <CogIcon className="mr-3 h-6 w-6" />,
-        svgIconSelected: <FilledCogIcon className="mr-3 h-6 w-6" />,
+        svgIcon: <CogIcon className="h-6 w-6" />,
+        svgIconSelected: <FilledCogIcon className="h-6 w-6" />,
         activeRegExp: /^\/settings/,
         requiredPermission: Permission.ADMIN,
         dataTestId: 'sidebar-menu-settings',
@@ -282,18 +282,18 @@ const MobileMenu = ({
   ]);
 
   return (
-    <div className="fixed right-0 bottom-0 left-0 z-50">
+    <div className="app-mobile-menu-dock">
       <Transition
         show={isOpen}
         as="div"
         ref={ref}
-        enter="transition duration-500"
-        enterFrom="opacity-0 translate-y-0"
-        enterTo="opacity-100 -translate-y-full"
-        leave="transition duration-500"
-        leaveFrom="opacity-100 -translate-y-full"
-        leaveTo="opacity-0 translate-y-0"
-        className="app-menu-gradient absolute top-0 right-0 left-0 flex w-full -translate-y-full flex-col space-y-6 border-t border-gray-600 px-6 py-6 font-semibold text-gray-100 backdrop-blur"
+        enter="app-mobile-menu-transition"
+        enterFrom="app-mobile-menu-closed"
+        enterTo="app-mobile-menu-open"
+        leave="app-mobile-menu-transition"
+        leaveFrom="app-mobile-menu-open"
+        leaveTo="app-mobile-menu-closed"
+        className="app-mobile-menu-panel app-menu-gradient flex-col space-y-6 border-t border-gray-600 px-6 py-6 font-semibold text-gray-100 backdrop-blur"
       >
         {filteredLinks.map((link) => {
           const isActive = router.pathname.match(link.activeRegExp);
@@ -317,11 +317,11 @@ const MobileMenu = ({
               {cloneElement(isActive ? link.svgIconSelected : link.svgIcon, {
                 className: 'h-5 w-5',
               })}
-              <span className="ml-2">{link.content}</span>
+              <span className="app-mobile-menu-label">{link.content}</span>
               {link.href === '/requests' &&
                 pendingRequestsCount > 0 &&
                 hasPermission(Permission.MANAGE_REQUESTS) && (
-                  <div className="ml-auto flex">
+                  <div className="app-sidebar-link-badge-anchor">
                     <Badge className="rounded-md border-indigo-500 bg-gradient-to-br from-indigo-600 to-purple-600">
                       {pendingRequestsCount}
                     </Badge>
@@ -330,7 +330,7 @@ const MobileMenu = ({
               {link.href === '/issues' &&
                 openIssuesCount > 0 &&
                 hasPermission(Permission.MANAGE_ISSUES) && (
-                  <div className="ml-auto flex">
+                  <div className="app-sidebar-link-badge-anchor">
                     <Badge className="rounded-md border-indigo-500 bg-gradient-to-br from-indigo-600 to-purple-600">
                       {openIssuesCount}
                     </Badge>

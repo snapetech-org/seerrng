@@ -498,12 +498,12 @@
   }
 
   .sidebar {
-    border-right: 1px solid rgb(var(--theme-sidebar-border));
+    border-inline-end: 1px solid rgb(var(--theme-sidebar-border));
     padding-top: env(safe-area-inset-top);
-    padding-left: env(safe-area-inset-left);
+    padding-inline-start: env(safe-area-inset-left);
     background:
       radial-gradient(
-        ellipse 34% 27% at 100% 0%,
+        ellipse 34% 27% at var(--app-sidebar-spotlight-inline-end-x) 0%,
         rgb(
             var(--theme-page-spotlight-center) /
               calc(0.98 * var(--theme-page-spotlight-strength))
@@ -524,6 +524,10 @@
           var(--theme-page-gradient-main-stop),
         rgb(var(--theme-page-gradient-light)) 100%
       );
+  }
+
+  :root[dir='rtl'] .sidebar {
+    padding-inline-start: env(safe-area-inset-right);
   }
 
   :root[data-theme-mode='light'] .sidebar {
@@ -3131,9 +3135,10 @@
   }
 
   .app-search-input {
-    @apply block w-full rounded-full border py-2 pl-10 text-white placeholder-gray-300 focus:placeholder-gray-300 focus:ring-0 focus:outline-none sm:text-base;
+    @apply block w-full rounded-full border py-2 text-white placeholder-gray-300 focus:placeholder-gray-300 focus:ring-0 focus:outline-none sm:text-base;
     border-color: rgb(var(--theme-control-border) / 0.75);
     background-color: rgb(var(--theme-control-surface) / 0.78);
+    padding-inline-start: 2.5rem;
   }
 
   .app-search-input:hover,

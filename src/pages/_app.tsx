@@ -13,6 +13,7 @@ import useSettings from '@app/hooks/useSettings';
 import '@app/styles/globals.css';
 import { getLocaleDirection } from '@app/utils/localeDirection';
 import { polyfillIntl } from '@app/utils/polyfillIntl';
+import { settleLocaleLoad } from '@app/utils/settleLocaleLoad.mjs';
 import '@fontsource-variable/inter';
 import type { AvailableLocale } from '@server/types/languages';
 import axios from 'axios';
@@ -161,21 +162,20 @@ const CoreApp = ({ Component, pageProps, router }: AppProps) => {
     }
 
     let active = true;
-    void loadLocaleData(currentLocale)
-      .then((localeMessages) => {
-        if (!active) {
-          return;
-        }
+    void settleLocaleLoad(loadLocaleData(currentLocale), {
+      isActive: () => active,
+      onSuccess: (localeMessages) => {
         loadedLocale.current = currentLocale;
         setMessages(localeMessages);
         setActiveLocale(currentLocale);
         document.documentElement.lang = currentLocale;
         document.documentElement.dir = getLocaleDirection(currentLocale);
-      })
-      .catch(() => {
+      },
+      onFailure: () => {
         // Keep the current catalog and document metadata together when a chunk fails.
         setLocale(loadedLocale.current);
-      });
+      },
+    });
 
     return () => {
       active = false;
@@ -206,7 +206,13 @@ const CoreApp = ({ Component, pageProps, router }: AppProps) => {
         keepPreviousData: true,
       }}
     >
-      <LanguageContext.Provider value={{ locale: activeLocale, setLocale }}>
+      <LanguageContext.Provider
+        value={{
+          locale: activeLocale,
+          requestedLocale: currentLocale,
+          setLocale,
+        }}
+      >
         <IntlProvider
           locale={activeLocale}
           defaultLocale="en"

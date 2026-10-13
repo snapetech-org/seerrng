@@ -38,6 +38,8 @@
     --color-purple-950: 59 7 100;
     --theme-sidebar-border: 55 65 81;
     --theme-sidebar-hover: 55 65 81;
+    --app-sidebar-width: 16rem;
+    --app-sidebar-spotlight-inline-end-x: 100%;
     --theme-page-bg: 17 24 39;
     --theme-page-glow-start: 31 41 55;
     --theme-page-glow-end: 17 24 39;
@@ -162,6 +164,10 @@
     --control-corner-radius: 0.375rem;
     --dropdown-menu-surface: #000;
     --dropdown-menu-border: rgb(var(--theme-control-border) / 0.75);
+  }
+
+  :root[dir='rtl'] {
+    --app-sidebar-spotlight-inline-end-x: 0%;
   }
 
   /* Blackout owns its canvas and readability colors. Other palettes and semantic
@@ -907,6 +913,125 @@
   .searchbar {
     padding-top: env(safe-area-inset-top);
     height: calc(4rem + env(safe-area-inset-top));
+    inset-inline: 0;
+  }
+
+  .app-sidebar-icon {
+    width: 1.5rem;
+    height: 1.5rem;
+    flex-shrink: 0;
+    margin-inline-end: 0.75rem;
+  }
+
+  .app-sidebar-link-badge-anchor {
+    display: flex;
+    margin-inline-start: auto;
+  }
+
+  .app-sidebar-slide-transition {
+    transition: transform 300ms ease-in-out;
+  }
+
+  .app-sidebar-slide-from {
+    transform: translateX(-100%);
+  }
+
+  :root[dir='rtl'] .app-sidebar-slide-from {
+    transform: translateX(100%);
+  }
+
+  .app-sidebar-slide-to {
+    transform: translateX(0);
+  }
+
+  .app-sidebar-logo {
+    object-fit: contain;
+    object-position: left center;
+  }
+
+  :root[dir='rtl'] .app-sidebar-logo {
+    object-position: right center;
+  }
+
+  .app-searchbar-leading-control {
+    margin-inline-end: 0.5rem;
+  }
+
+  :root[dir='rtl'] .app-back-navigation-icon {
+    transform: scaleX(-1);
+  }
+
+  .app-searchbar-side-actions {
+    position: relative;
+    z-index: 20;
+    display: flex;
+    flex-shrink: 0;
+    align-items: center;
+    gap: 0.5rem;
+    margin-inline-start: 0.5rem;
+  }
+
+  .app-mobile-menu-dock {
+    position: fixed;
+    inset-inline: 0;
+    inset-block-end: 0;
+    z-index: 50;
+  }
+
+  .app-mobile-menu-panel {
+    position: absolute;
+    inset-block-start: 0;
+    inset-inline: 0;
+    display: flex;
+    width: 100%;
+    transform: translateY(-100%);
+  }
+
+  .app-mobile-menu-transition {
+    transition:
+      opacity 500ms,
+      transform 500ms;
+  }
+
+  .app-mobile-menu-closed {
+    transform: translateY(0);
+    opacity: 0;
+  }
+
+  .app-mobile-menu-open {
+    transform: translateY(-100%);
+    opacity: 1;
+  }
+
+  .app-mobile-menu-label {
+    margin-inline-start: 0.5rem;
+  }
+
+  .app-sidebar-dock {
+    position: fixed;
+    inset-block: 0;
+    inset-inline-start: 0;
+    z-index: 30;
+    display: none;
+  }
+
+  .app-sidebar-dock > .sidebar {
+    width: var(--app-sidebar-width);
+  }
+
+  @media (min-width: 64rem) {
+    .app-sidebar-dock {
+      display: flex;
+      flex-shrink: 0;
+    }
+
+    .app-layout-main-content {
+      margin-inline-start: var(--app-sidebar-width);
+    }
+
+    .searchbar {
+      inset-inline-start: var(--app-sidebar-width);
+    }
   }
 
   /* One shared card-layout spacing owner for all established card families. */
@@ -1124,17 +1249,53 @@
     background-color: rgb(var(--theme-overlay-menu) / 0.95);
   }
 
+  .app-language-picker-menu,
+  .app-theme-picker-menu,
+  .app-user-menu-anchor {
+    position: absolute;
+    inset-inline-end: 0;
+    margin-block-start: 0.5rem;
+    transform-origin: top right;
+  }
+
+  .app-theme-picker-swatches {
+    display: flex;
+    flex-shrink: 0;
+    margin-inline-end: 0.5rem;
+  }
+
+  .app-theme-picker-swatches > [data-theme-swatch] + [data-theme-swatch] {
+    margin-inline-start: -0.25rem;
+  }
+
+  .app-theme-picker-selection-indicator {
+    width: 1rem;
+    height: 1rem;
+    flex-shrink: 0;
+    margin-inline-start: 0.5rem;
+    color: rgb(129 140 248);
+  }
+
+  :root[dir='rtl']
+    :is(
+      .app-language-picker-menu,
+      .app-theme-picker-menu,
+      .app-user-menu-anchor
+    ) {
+    transform-origin: top left;
+  }
+
   .app-mobile-menu-surface {
     background-color: rgb(var(--theme-overlay-menu) / 0.9);
   }
 
   .sidebar {
-    border-right: 1px solid rgb(var(--theme-sidebar-border));
+    border-inline-end: 1px solid rgb(var(--theme-sidebar-border));
     padding-top: env(safe-area-inset-top);
-    padding-left: env(safe-area-inset-left);
+    padding-inline-start: env(safe-area-inset-left);
     background:
       radial-gradient(
-        ellipse 34% 27% at 100% 0%,
+        ellipse 34% 27% at var(--app-sidebar-spotlight-inline-end-x) 0%,
         rgb(
             var(--theme-page-spotlight-center) /
               calc(0.98 * var(--theme-page-spotlight-strength))
@@ -1155,6 +1316,10 @@
           var(--theme-page-gradient-main-stop),
         rgb(var(--theme-page-gradient-light)) 100%
       );
+  }
+
+  :root[dir='rtl'] .sidebar {
+    padding-inline-start: env(safe-area-inset-right);
   }
 
   :root[data-theme-mode='light'] .sidebar {
@@ -4462,7 +4627,11 @@
   }
 
   .sidebar-close-button {
+    position: absolute;
     top: env(safe-area-inset-top);
+    inset-inline-end: 0;
+    margin-inline-end: -3.5rem;
+    padding: 0.25rem;
   }
 
   .server-type-button {
@@ -7285,9 +7454,32 @@
   }
 
   .app-search-input {
-    @apply block w-full rounded-full border py-2 pl-10 text-white placeholder-gray-300 focus:placeholder-gray-300 focus:ring-0 focus:outline-none sm:text-base;
+    @apply block w-full rounded-full border py-2 text-white placeholder-gray-300 focus:placeholder-gray-300 focus:ring-0 focus:outline-none sm:text-base;
     border-color: rgb(var(--theme-control-border) / 0.75);
     background-color: rgb(var(--theme-control-surface) / 0.78);
+    padding-inline-start: 2.5rem;
+  }
+
+  .app-search-input[data-has-value='true'] {
+    padding-inline-end: 1.75rem;
+  }
+
+  .app-search-input-icon {
+    position: absolute;
+    inset-block: 0;
+    inset-inline-start: 1rem;
+    display: flex;
+    align-items: center;
+    pointer-events: none;
+  }
+
+  .app-search-clear-control {
+    position: absolute;
+    inset-block: 0;
+    inset-inline-end: 0.5rem;
+    margin-block: auto;
+    width: 1.75rem;
+    height: 1.75rem;
   }
 
   .app-search-input:hover,

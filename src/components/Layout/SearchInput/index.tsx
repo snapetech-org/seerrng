@@ -33,12 +33,13 @@ const SearchInput = () => {
           Search
         </label>
         <div className="relative flex w-full items-center text-white focus-within:text-gray-200">
-          <div className="pointer-events-none absolute inset-y-0 start-4 flex items-center">
+          <div className="app-search-input-icon">
             <MagnifyingGlassIcon className="h-5 w-5" />
           </div>
           <input
             id="search_field"
-            className={`app-search-input ${hasSearchValue ? 'pe-7' : ''}`}
+            className="app-search-input"
+            data-has-value={hasSearchValue}
             placeholder={intl.formatMessage(messages.searchPlaceholder)}
             type="search"
             autoComplete="off"
@@ -50,7 +51,7 @@ const SearchInput = () => {
           />
           {hasSearchValue && (
             <button
-              className="absolute inset-y-0 end-2 m-auto h-7 w-7 border-none p-1 text-gray-400 transition outline-none hover:text-white focus:border-none focus:outline-none"
+              className="app-search-clear-control border-none p-1 text-gray-400 transition outline-none hover:text-white focus:border-none focus:outline-none"
               onClick={() => clear()}
               aria-label="Clear the search text"
             >

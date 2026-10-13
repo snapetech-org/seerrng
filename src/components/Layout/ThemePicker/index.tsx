@@ -54,7 +54,7 @@ const ThemePicker = () => {
       </Menu.Button>
       <Menu.Items
         transition
-        className="origin-top-end absolute end-0 z-50 mt-2 w-80 rounded-md shadow-lg transition duration-100 ease-out data-closed:scale-95 data-closed:opacity-0"
+        className="app-theme-picker-menu z-50 w-80 rounded-md shadow-lg transition duration-100 ease-out data-closed:scale-95 data-closed:opacity-0"
       >
         <div className="app-theme-picker-surface rounded-md p-3 ring-1 ring-gray-700 backdrop-blur">
           <Menu.Item
@@ -92,7 +92,7 @@ const ThemePicker = () => {
                   }`
                 }
               >
-                <span className="mr-2 flex shrink-0 -space-x-1">
+                <span className="app-theme-picker-swatches">
                   {themePalette.swatches.map((swatch) => (
                     <span
                       key={`${themePalette.id}-${swatch}`}
@@ -106,7 +106,7 @@ const ThemePicker = () => {
                   {themePalette.name}
                 </span>
                 {palette === themePalette.id && (
-                  <CheckIcon className="ml-2 h-4 w-4 shrink-0 text-indigo-400" />
+                  <CheckIcon className="app-theme-picker-selection-indicator" />
                 )}
               </Menu.Item>
             ))}

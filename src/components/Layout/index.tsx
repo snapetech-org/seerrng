@@ -237,16 +237,16 @@ const Layout = ({ children }: LayoutProps) => {
         />
       </div>
 
-      <div className="relative mb-16 flex w-0 min-w-0 flex-1 flex-col lg:ms-64">
+      <div className="app-layout-main-content relative mb-16 flex w-0 min-w-0 flex-1 flex-col">
         <PullToRefresh />
         <div
-          className={`searchbar fixed inset-x-0 top-0 z-10 flex flex-shrink-0 transition duration-300 ${
+          className={`searchbar fixed top-0 z-10 flex flex-shrink-0 transition duration-300 ${
             isScrolled ? 'app-searchbar-scrolled' : 'bg-transparent'
-          } lg:start-64`}
+          }`}
         >
-          <div className="flex flex-1 items-center justify-between px-4 md:pr-4 md:pl-4">
+          <div className="flex flex-1 items-center justify-between px-4">
             <button
-              className={`mr-2 hidden text-white sm:block ${
+              className={`app-searchbar-leading-control hidden text-white sm:block ${
                 isScrolled ? 'opacity-90' : 'opacity-70'
               } transition duration-300 focus:outline-none lg:hidden`}
               aria-label="Open sidebar"
@@ -256,18 +256,18 @@ const Layout = ({ children }: LayoutProps) => {
               <Bars3BottomLeftIcon className="h-7 w-7" />
             </button>
             <button
-              className={`mr-2 text-white ${
+              className={`app-searchbar-leading-control text-white ${
                 isScrolled ? 'opacity-90' : 'opacity-70'
               } pwa-only transition duration-300 hover:text-white focus:text-white focus:outline-none`}
               onClick={() => router.back()}
               aria-label="Go back to the previous page"
             >
-              <ArrowLeftIcon className="w-7" />
+              <ArrowLeftIcon className="app-back-navigation-icon w-7" />
             </button>
             <div className="min-w-0 flex-1">
               <SearchInput />
             </div>
-            <div className="relative z-20 ml-2 flex shrink-0 items-center gap-2">
+            <div className="app-searchbar-side-actions">
               <ThemePicker />
               <UserDropdown />
             </div>
