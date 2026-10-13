@@ -1,7 +1,15 @@
+import {
+  autoUpdate,
+  flip,
+  offset,
+  shift,
+  useFloating,
+  useInteractions,
+  useRole,
+} from '@floating-ui/react';
 import { useEffect, useId, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { useIntl } from 'react-intl';
-import { usePopperTooltip } from 'react-popper-tooltip';
 import { findHelpButton, getButtonHelp } from './buttonHelp';
 
 /** One listener layer covers shared/native actions and portal dialogs without
@@ -13,15 +21,17 @@ const ButtonHelp = () => {
     button: HTMLElement;
     text: string;
   } | null>(null);
-  const { setTriggerRef, setTooltipRef, getTooltipProps } = usePopperTooltip({
-    visible: !!active,
-    trigger: null,
+  const { refs, floatingStyles, context } = useFloating({
+    open: !!active,
+    whileElementsMounted: autoUpdate,
     placement: 'top',
-    offset: [0, 10],
+    middleware: [offset(10), flip({ padding: 8 }), shift({ padding: 8 })],
   });
+  const role = useRole(context, { role: 'tooltip' });
+  const { getFloatingProps } = useInteractions([role]);
   useEffect(() => {
-    setTriggerRef(active?.button ?? null);
-  }, [active?.button, setTriggerRef]);
+    refs.setReference(active?.button ?? null);
+  }, [active?.button, refs]);
   useEffect(() => {
     let button: HTMLElement | null = null;
     let dismissed: HTMLElement | null = null;
@@ -149,13 +159,15 @@ const ButtonHelp = () => {
   return active
     ? createPortal(
         <div
-          ref={setTooltipRef}
-          {...getTooltipProps({
+          ref={refs.setFloating}
+          style={floatingStyles}
+          {...getFloatingProps({
             className: 'app-tooltip',
             role: 'tooltip',
-            id,
-            'data-button-help-popup': '',
           })}
+          id={id}
+          role="tooltip"
+          data-button-help-popup=""
         >
           {active.text}
         </div>,

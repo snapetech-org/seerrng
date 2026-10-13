@@ -700,7 +700,11 @@ const CreateSlider = ({ onCreate, slider }: CreateSliderProps) => {
               <div className="flex-1" />
               {activeResultCount === 0 ? (
                 <Tooltip content={intl.formatMessage(messages.needresults)}>
-                  <div>
+                  <div
+                    role="group"
+                    aria-label={intl.formatMessage(messages.addSlider)}
+                    tabIndex={0}
+                  >
                     <Button buttonType="primary" buttonSize="sm" disabled>
                       {intl.formatMessage(messages.addSlider)}
                     </Button>

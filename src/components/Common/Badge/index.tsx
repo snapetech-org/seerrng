@@ -2,7 +2,7 @@ import { getSafeHref, isExternalHref } from '@app/utils/safeUrl';
 import Link from 'next/link';
 import React from 'react';
 
-interface BadgeProps {
+interface BadgeProps extends React.HTMLAttributes<HTMLElement> {
   badgeType?:
     | 'default'
     | 'primary'
@@ -25,6 +25,7 @@ const Badge = (
     shape = 'pill',
     href,
     children,
+    ...props
   }: BadgeProps,
   ref?: React.Ref<HTMLElement>
 ) => {
@@ -103,6 +104,7 @@ const Badge = (
   if (safeHref && isExternalHref(safeHref)) {
     return (
       <a
+        {...props}
         href={safeHref}
         target="_blank"
         rel="noopener noreferrer"
@@ -115,6 +117,7 @@ const Badge = (
   } else if (safeHref) {
     return (
       <Link
+        {...props}
         href={safeHref}
         className={badgeStyle.join(' ')}
         ref={ref as React.Ref<HTMLAnchorElement>}
@@ -125,6 +128,7 @@ const Badge = (
   } else {
     return (
       <span
+        {...props}
         className={badgeStyle.join(' ')}
         ref={ref as React.Ref<HTMLSpanElement>}
       >

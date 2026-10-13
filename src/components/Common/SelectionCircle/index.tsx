@@ -1,4 +1,10 @@
-import type { FocusEventHandler, KeyboardEvent, MouseEvent } from 'react';
+import {
+  forwardRef,
+  type ButtonHTMLAttributes,
+  type FocusEventHandler,
+  type KeyboardEvent,
+  type MouseEvent,
+} from 'react';
 
 export const selectFromRow = (
   event: MouseEvent<HTMLElement>,
@@ -31,7 +37,10 @@ export const selectFromRowKey = (
   onSelect();
 };
 
-interface SelectionCircleProps {
+interface SelectionCircleProps extends Omit<
+  ButtonHTMLAttributes<HTMLButtonElement>,
+  'onClick' | 'disabled' | 'id' | 'name'
+> {
   selected: boolean;
   partial?: boolean;
   disabled?: boolean;
@@ -79,35 +88,45 @@ export const SelectionCircleIndicator = ({
   </span>
 );
 
-const SelectionCircle = ({
-  selected,
-  partial = false,
-  disabled = false,
-  id,
-  name,
-  'data-testid': dataTestId,
-  label,
-  onBlur,
-  onClick,
-}: SelectionCircleProps) => (
-  <button
-    type="button"
-    id={id}
-    name={name}
-    data-testid={dataTestId}
-    disabled={disabled}
-    onClick={(event) => {
-      event.stopPropagation();
-      onClick();
-    }}
-    onBlur={onBlur}
-    aria-label={label}
-    aria-pressed={partial ? 'mixed' : selected}
-    data-partial={partial || undefined}
-    className="selection-circle"
-  >
-    <SelectionCircleGlyph />
-  </button>
+const SelectionCircle = forwardRef<HTMLButtonElement, SelectionCircleProps>(
+  (
+    {
+      selected,
+      partial = false,
+      disabled = false,
+      id,
+      name,
+      'data-testid': dataTestId,
+      label,
+      onBlur,
+      onClick,
+      ...buttonProps
+    },
+    ref
+  ) => (
+    <button
+      {...buttonProps}
+      ref={ref}
+      type="button"
+      id={id}
+      name={name}
+      data-testid={dataTestId}
+      disabled={disabled}
+      onClick={(event) => {
+        event.stopPropagation();
+        onClick();
+      }}
+      onBlur={onBlur}
+      aria-label={label}
+      aria-pressed={partial ? 'mixed' : selected}
+      data-partial={partial || undefined}
+      className="selection-circle"
+    >
+      <SelectionCircleGlyph />
+    </button>
+  )
 );
+
+SelectionCircle.displayName = 'SelectionCircle';
 
 export default SelectionCircle;

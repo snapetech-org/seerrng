@@ -7,14 +7,19 @@ import { afterEach, beforeEach, expect, it, vi } from 'vitest';
 import { findHelpButton, getButtonHelp } from './buttonHelp';
 import ButtonHelp from './index';
 
-const popper = vi.hoisted(() => ({
-  setTriggerRef: vi.fn(),
-  setTooltipRef: vi.fn(),
-}));
-vi.mock('react-popper-tooltip', () => ({
-  usePopperTooltip: () => ({
-    ...popper,
-    getTooltipProps: (props: object) => props,
+vi.mock('@floating-ui/react', () => ({
+  autoUpdate: vi.fn(),
+  flip: vi.fn(),
+  offset: vi.fn(),
+  shift: vi.fn(),
+  useFloating: () => ({
+    refs: { setReference: vi.fn(), setFloating: vi.fn() },
+    floatingStyles: {},
+    context: {},
+  }),
+  useRole: () => ({}),
+  useInteractions: () => ({
+    getFloatingProps: (props: object) => props,
   }),
 }));
 const intl = createIntl({ locale: 'en' });
