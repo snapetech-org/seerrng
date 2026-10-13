@@ -46,6 +46,8 @@ class SonarrScanner
   private sonarrApi: SonarrAPI;
   private scannedTvdbIds: Set<number> = new Set();
   private scanned4kTvdbIds: Set<number> = new Set();
+  private scannedTmdbIds: Set<number> = new Set();
+  private scanned4kTmdbIds: Set<number> = new Set();
   private didScanStandard = false;
   private didScan4k = false;
   private serverReturnedEmpty = false;
@@ -73,6 +75,8 @@ class SonarrScanner
     }
     this.scannedTvdbIds.clear();
     this.scanned4kTvdbIds.clear();
+    this.scannedTmdbIds.clear();
+    this.scanned4kTmdbIds.clear();
     this.didScanStandard = false;
     this.didScan4k = false;
     this.serverReturnedEmpty = false;
@@ -195,6 +199,7 @@ class SonarrScanner
       }
 
       const tmdbId = tvShow.id;
+      (server4k ? this.scanned4kTmdbIds : this.scannedTmdbIds).add(tmdbId);
       const metadataProvider = tvShow.keywords.results.some(
         (keyword: TmdbKeyword) => keyword.id === ANIME_KEYWORD_ID
       )
@@ -327,6 +332,7 @@ class SonarrScanner
           if (
             media.tvdbId &&
             !this.scannedTvdbIds.has(media.tvdbId) &&
+            !this.scannedTmdbIds.has(media.tmdbId) &&
             !(await this.existsInAnyServer(media.tvdbId, false))
           ) {
             const changed = await runMediaEntityMutation(media, () =>
@@ -384,6 +390,7 @@ class SonarrScanner
           if (
             media.tvdbId &&
             !this.scanned4kTvdbIds.has(media.tvdbId) &&
+            !this.scanned4kTmdbIds.has(media.tmdbId) &&
             !(await this.existsInAnyServer(media.tvdbId, true))
           ) {
             const changed = await runMediaEntityMutation(media, () =>
