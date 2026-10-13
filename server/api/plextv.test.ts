@@ -1,7 +1,9 @@
 import assert from 'node:assert/strict';
-import { describe, it } from 'node:test';
+import { afterEach, describe, it, mock } from 'node:test';
 
-import {
+import cacheManager from '@server/lib/cache';
+
+import PlexTvAPI, {
   MAX_PLEX_RESOURCE_CONNECTIONS,
   MAX_PLEX_RESOURCE_DEVICES,
   MAX_PLEX_SHARED_USERS,
@@ -12,9 +14,15 @@ import {
   normalizePlexWatchlistPage,
   parsePlexDevices,
   parsePlexSharedUsers,
+  parsePlexWatchlistedAt,
   plexUserHasServerAccess,
   preparePlexWatchlistRatingKeys,
 } from './plextv';
+
+afterEach(() => {
+  mock.restoreAll();
+  cacheManager.getCache('plexwatchlist').data.flushAll();
+});
 
 describe('PLEXTV_HTTP_OPTIONS', () => {
   it('bounds outbound Plex.tv requests', () => {
@@ -100,6 +108,24 @@ describe('Plex resource response normalization', () => {
 });
 
 describe('Plex watchlist input bounds', () => {
+  it('normalizes Plex watchlistedAt timestamps from seconds or milliseconds', () => {
+    const milliseconds = Date.parse('2026-10-12T12:30:00.000Z');
+    const seconds = milliseconds / 1000;
+
+    assert.equal(parsePlexWatchlistedAt(seconds)?.getTime(), milliseconds);
+    assert.equal(
+      parsePlexWatchlistedAt(String(seconds))?.getTime(),
+      milliseconds
+    );
+    assert.equal(parsePlexWatchlistedAt(milliseconds)?.getTime(), milliseconds);
+    assert.equal(parsePlexWatchlistedAt(undefined), null);
+    assert.equal(parsePlexWatchlistedAt(0), null);
+    assert.equal(parsePlexWatchlistedAt(-1), null);
+    assert.equal(parsePlexWatchlistedAt('not-a-timestamp'), null);
+    assert.equal(parsePlexWatchlistedAt('9007199254740992'), null);
+    assert.equal(parsePlexWatchlistedAt(9_000_000_000_000_000), null);
+  });
+
   it('normalizes invalid and oversized page controls', () => {
     assert.deepEqual(normalizePlexWatchlistPage(-1, 0), {
       offset: 0,
@@ -133,6 +159,84 @@ describe('Plex watchlist input bounds', () => {
       createPlexWatchlistPageCacheKey('account', 0, 20),
       createPlexWatchlistPageCacheKey('account', 20, 20)
     );
+  });
+
+  it('caches watchlist timestamps by Plex credential without exposing tokens in cache keys', async () => {
+    const response = {
+      data: {
+        MediaContainer: {
+          UserState: [{ watchlistedAt: 1_792_103_400 }],
+        },
+      },
+    };
+    const firstAccount = new PlexTvAPI('first-private-token');
+    const sameAccount = new PlexTvAPI('first-private-token');
+    const otherAccount = new PlexTvAPI('second-private-token');
+    type PlexRequestShape = {
+      request: (...args: unknown[]) => Promise<{ data: unknown }>;
+    };
+    const firstRequest = mock.method(
+      firstAccount as unknown as PlexRequestShape,
+      'request',
+      async () => response
+    );
+    const sameAccountRequest = mock.method(
+      sameAccount as unknown as PlexRequestShape,
+      'request',
+      async () => response
+    );
+    const otherAccountRequest = mock.method(
+      otherAccount as unknown as PlexRequestShape,
+      'request',
+      async () => ({
+        data: {
+          MediaContainer: {
+            UserState: { watchlistedAt: 1_792_103_400 },
+          },
+        },
+      })
+    );
+
+    const firstTimestamp = await firstAccount.getWatchlistedAt('93001');
+    const cachedTimestamp = await sameAccount.getWatchlistedAt('93001');
+    const otherAccountTimestamp = await otherAccount.getWatchlistedAt('93001');
+
+    assert.equal(firstTimestamp?.getTime(), 1_792_103_400_000);
+    assert.equal(cachedTimestamp?.getTime(), firstTimestamp?.getTime());
+    assert.equal(otherAccountTimestamp?.getTime(), firstTimestamp?.getTime());
+    assert.equal(firstRequest.mock.callCount(), 1);
+    assert.equal(sameAccountRequest.mock.callCount(), 0);
+    assert.equal(otherAccountRequest.mock.callCount(), 1);
+    assert.equal(
+      firstRequest.mock.calls[0].arguments[1],
+      '/library/metadata/93001/userState'
+    );
+    assert.equal(
+      (
+        firstRequest.mock.calls[0].arguments[3] as
+          { baseURL: string } | undefined
+      )?.baseURL,
+      'https://metadata.provider.plex.tv'
+    );
+    assert.ok(
+      ![...cacheManager.getCache('plexwatchlist').data.keys()].some((key) =>
+        key.includes('private-token')
+      )
+    );
+  });
+
+  it('rejects malformed rating keys before contacting Plex', async () => {
+    const plexTv = new PlexTvAPI('test-token');
+    const requestMock = mock.method(
+      plexTv as unknown as {
+        request: () => Promise<{ data: unknown }>;
+      },
+      'request',
+      async () => ({ data: {} })
+    );
+
+    assert.equal(await plexTv.getWatchlistedAt('../users'), null);
+    assert.equal(requestMock.mock.callCount(), 0);
   });
 });
 
