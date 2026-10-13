@@ -20,6 +20,14 @@ Add an application to your Gotify server, and set this field to the generated ap
 Please refer to the [Gotify API documentation](https://gotify.net/docs) for more details on configuring these notifications.
 :::
 
+### Priority
+
+Set the numeric priority that Seerr sends to Gotify with each notification. Use a value supported by your Gotify server.
+
+### Embed Poster (optional)
+
+When enabled, Seerr adds the notification image as Gotify's large image preview when an image is available.
+
 ### Notification Language
 
 Sets the language for notifications sent to this Gotify server.

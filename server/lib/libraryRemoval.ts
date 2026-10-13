@@ -317,7 +317,11 @@ export const resolveLibraryRemoval = async (
     }
   }
   return {
-    plan: { targets, token: libraryPlanToken(media.id, targets, settings) },
+    plan: {
+      targets,
+      token: libraryPlanToken(media.id, targets, settings),
+      verifiedServices: settings.length,
+    },
     remove: async (target) => {
       const remove = removers.get(target.key);
       if (!remove) throw new Error('Library target is no longer verified.');

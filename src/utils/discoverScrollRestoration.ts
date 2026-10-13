@@ -1,4 +1,5 @@
-export type RestorableDiscoverMediaType = 'movie' | 'tv' | 'book' | 'comic';
+export type RestorableDiscoverMediaType =
+  'movie' | 'tv' | 'movieOrTv' | 'book' | 'comic';
 
 export type DiscoverScrollEntry = {
   path: string;
@@ -15,6 +16,7 @@ const MAX_SHUFFLE_SEED_LENGTH = 128;
 const detailPathPatterns: Record<RestorableDiscoverMediaType, RegExp> = {
   movie: /^\/movie\/[^/?#]+(?:[/?#]|$)/,
   tv: /^\/tv\/[^/?#]+(?:[/?#]|$)/,
+  movieOrTv: /^\/(?:movie|tv)\/[^/?#]+(?:[/?#]|$)/,
   book: /^\/book\/[^/?#]+(?:[/?#]|$)/,
   comic: /^\/comic\/[^/?#]+(?:[/?#]|$)/,
 };

@@ -79,7 +79,9 @@ interface MediaSliderProps {
   sliderKey: string;
   hideWhenEmpty?: boolean;
   extraParams?: string;
-  onNewTitles?: (titleCount: number) => void;
+  onNewTitles?: (titleCount: number, resultKey?: string) => void;
+  onNewTitlesKey?: string;
+  onNewTitlesUsesTotalResults?: boolean;
   randomizeOrder?: boolean;
   prioritizeFirstRow?: boolean;
   posterTitleWeight?: 'regular';
@@ -104,6 +106,8 @@ const MediaSlider = ({
   sliderKey,
   hideWhenEmpty = false,
   onNewTitles,
+  onNewTitlesKey,
+  onNewTitlesUsesTotalResults = false,
   randomizeOrder = false,
   prioritizeFirstRow = false,
   posterTitleWeight,
@@ -418,13 +422,15 @@ const MediaSlider = ({
     snapshotKey,
   ]);
 
+  const reportedTitleCount = onNewTitlesUsesTotalResults
+    ? (data?.[0]?.totalResults ?? 0)
+    : renderableTitles.length;
+
   useEffect(() => {
     if (onNewTitles) {
-      // We aren't reporting all titles. We just want to know if there are any titles
-      // at all for our purposes.
-      onNewTitles(renderableTitles.length);
+      onNewTitles(reportedTitleCount, onNewTitlesKey);
     }
-  }, [onNewTitles, renderableTitles.length]);
+  }, [onNewTitles, onNewTitlesKey, reportedTitleCount]);
 
   const showMorePosters = useMemo(
     () =>
@@ -445,7 +451,7 @@ const MediaSlider = ({
           return (
             <TitleCard
               titleWeight={posterTitleWeight}
-              key={title.id}
+              key={getMediaResultKey(title)}
               id={title.id}
               isAddedToWatchlist={title.mediaInfo?.watchlists?.length ?? 0}
               image={title.posterPath}
@@ -470,7 +476,7 @@ const MediaSlider = ({
           return (
             <TitleCard
               titleWeight={posterTitleWeight}
-              key={title.id}
+              key={getMediaResultKey(title)}
               id={title.id}
               isAddedToWatchlist={title.mediaInfo?.watchlists?.length ?? 0}
               image={title.posterPath}
@@ -494,7 +500,7 @@ const MediaSlider = ({
         case 'person':
           return (
             <PersonCard
-              key={title.id}
+              key={getMediaResultKey(title)}
               personId={title.id}
               name={title.name}
               profilePath={title.profilePath}
@@ -504,7 +510,7 @@ const MediaSlider = ({
           return (
             <TitleCard
               titleWeight={posterTitleWeight}
-              key={title.id}
+              key={getMediaResultKey(title)}
               id={title.id}
               isAddedToWatchlist={title.mediaInfo?.watchlists?.length ?? 0}
               image={title.posterPath}
@@ -528,7 +534,7 @@ const MediaSlider = ({
           return (
             <TitleCard
               titleWeight={posterTitleWeight}
-              key={title.id}
+              key={getMediaResultKey(title)}
               id={title.id}
               image={title.posterPath}
               isAddedToWatchlist={title.mediaInfo?.watchlists?.length ?? 0}
@@ -545,7 +551,7 @@ const MediaSlider = ({
           return (
             <TitleCard
               titleWeight={posterTitleWeight}
-              key={title.id}
+              key={getMediaResultKey(title)}
               id={title.id}
               image={title.artistThumb ?? undefined}
               title={title.name}

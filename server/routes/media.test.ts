@@ -9,12 +9,20 @@ import MylarAPI from '@server/api/comics/mylar';
 import LidarrAPI from '@server/api/servarr/lidarr';
 import RadarrAPI from '@server/api/servarr/radarr';
 import ReadarrAPI from '@server/api/servarr/readarr';
-import SonarrAPI from '@server/api/servarr/sonarr';
+import SonarrAPI, { type SonarrSeries } from '@server/api/servarr/sonarr';
 import TautulliAPI from '@server/api/tautulli';
 import TheMovieDb from '@server/api/themoviedb';
-import { MediaStatus, MediaType } from '@server/constants/media';
+import {
+  MediaRequestStatus,
+  MediaStatus,
+  MediaType,
+} from '@server/constants/media';
 import { getRepository } from '@server/datasource';
 import Media from '@server/entity/Media';
+import {
+  DuplicateMediaRequestError,
+  MediaRequest,
+} from '@server/entity/MediaRequest';
 import Season from '@server/entity/Season';
 import { User } from '@server/entity/User';
 import { Permission } from '@server/lib/permissions';
@@ -129,6 +137,11 @@ const removeVolumeMock = mock.method(
 const removeSeriesMock = mock.fn(async (tvdbId: number) => {
   void tvdbId;
 });
+const getSeriesMock = mock.method(
+  SonarrAPI.prototype,
+  'getSeries',
+  async () => []
+);
 const getTvShowMock = mock.fn(
   async (options: Parameters<TheMovieDb['getTvShow']>[0]) => {
     void options;
@@ -257,6 +270,8 @@ beforeEach(() => {
   removeVolumeMock.mock.mockImplementation(async () => undefined);
   removeSeriesMock.mock.resetCalls();
   removeSeriesMock.mock.mockImplementation(async () => undefined);
+  getSeriesMock.mock.resetCalls();
+  getSeriesMock.mock.mockImplementation(async () => []);
   getTvShowMock.mock.resetCalls();
   getMediaWatchStatsMock.mock.resetCalls();
   getMediaWatchUsersMock.mock.resetCalls();
@@ -885,6 +900,128 @@ describe('DELETE /media/:id', () => {
 });
 
 describe('library deletion authorization', () => {
+  it('reproduces stale available series blocking requests when no library copy remains', async () => {
+    const tmdbId = 909999;
+    const media = await getRepository(Media).save(
+      new Media({
+        tmdbId,
+        tvdbId: 777,
+        mediaType: MediaType.TV,
+        status: MediaStatus.AVAILABLE,
+        status4k: MediaStatus.UNKNOWN,
+        ratingKey: 'stale-plex-key',
+        jellyfinMediaId: 'stale-jellyfin-id',
+        seasons: [
+          new Season({
+            seasonNumber: 1,
+            status: MediaStatus.AVAILABLE,
+            status4k: MediaStatus.UNKNOWN,
+          }),
+        ],
+      })
+    );
+    const requester = await getRepository(User).findOneByOrFail({
+      email: 'friend@seerr.dev',
+    });
+
+    await assert.rejects(
+      MediaRequest.request(
+        { mediaType: MediaType.TV, mediaId: tmdbId, seasons: [1] },
+        requester
+      ),
+      DuplicateMediaRequestError
+    );
+
+    const agent = await loginAs('admin@seerr.dev', 'test1234');
+    const plan = await agent.get(`/media/${media.id}/library`);
+    assert.strictEqual(plan.status, 200);
+    assert.deepStrictEqual(plan.body.targets, []);
+
+    const cleared = await agent
+      .post(`/media/${media.id}/library/clear-stale-availability`)
+      .send({ token: plan.body.token, quality: 'HD' });
+    assert.strictEqual(cleared.status, 204, cleared.body.message);
+
+    const updated = await getRepository(Media).findOneOrFail({
+      where: { id: media.id },
+      relations: { seasons: true },
+    });
+    assert.strictEqual(updated.status, MediaStatus.UNKNOWN);
+    assert.strictEqual(updated.seasons[0].status, MediaStatus.UNKNOWN);
+    assert.strictEqual(updated.ratingKey, 'stale-plex-key');
+    assert.strictEqual(updated.jellyfinMediaId, 'stale-jellyfin-id');
+
+    const created = await MediaRequest.request(
+      { mediaType: MediaType.TV, mediaId: tmdbId, seasons: [1] },
+      requester
+    );
+    assert.ok(created.id);
+    assert.strictEqual(created.status, MediaRequestStatus.PENDING);
+  });
+
+  it('does not clear availability when a fresh inventory finds a copy after the plan was issued', async () => {
+    const media = await getRepository(Media).save(
+      new Media({
+        tmdbId: 909998,
+        tvdbId: 777,
+        mediaType: MediaType.TV,
+        status: MediaStatus.AVAILABLE,
+        seasons: [
+          new Season({ seasonNumber: 1, status: MediaStatus.AVAILABLE }),
+        ],
+      })
+    );
+    const agent = await loginAs('admin@seerr.dev', 'test1234');
+    const plan = await agent.get(`/media/${media.id}/library`);
+    assert.deepStrictEqual(plan.body.targets, []);
+
+    getSeriesMock.mock.mockImplementation(async () => [
+      { id: 701, tvdbId: 777, titleSlug: 'anime' } as SonarrSeries,
+    ]);
+    const cleared = await agent
+      .post(`/media/${media.id}/library/clear-stale-availability`)
+      .send({ token: plan.body.token, quality: 'HD' });
+
+    assert.strictEqual(cleared.status, 409);
+    const unchanged = await getRepository(Media).findOneOrFail({
+      where: { id: media.id },
+      relations: { seasons: true },
+    });
+    assert.strictEqual(unchanged.status, MediaStatus.AVAILABLE);
+    assert.strictEqual(unchanged.seasons[0].status, MediaStatus.AVAILABLE);
+  });
+
+  it('does not clear availability when no configured library service was checked', async () => {
+    const settings = getSettings();
+    const originalSonarr = settings.sonarr;
+    settings.sonarr = [];
+    const media = await getRepository(Media).save(
+      new Media({
+        tmdbId: 909997,
+        tvdbId: 777,
+        mediaType: MediaType.TV,
+        status: MediaStatus.AVAILABLE,
+      })
+    );
+
+    try {
+      const agent = await loginAs('admin@seerr.dev', 'test1234');
+      const plan = await agent.get(`/media/${media.id}/library`);
+      assert.strictEqual(plan.body.verifiedServices, 0);
+      const cleared = await agent
+        .post(`/media/${media.id}/library/clear-stale-availability`)
+        .send({ token: plan.body.token, quality: 'HD' });
+
+      assert.strictEqual(cleared.status, 409);
+      const unchanged = await getRepository(Media).findOneOrFail({
+        where: { id: media.id },
+      });
+      assert.strictEqual(unchanged.status, MediaStatus.AVAILABLE);
+    } finally {
+      settings.sonarr = originalSonarr;
+    }
+  });
+
   it('hides library actions for administrator-disabled media categories', async () => {
     const settings = getSettings();
     const originalCategories = { ...settings.main.enabledMediaCategories };
@@ -957,9 +1094,13 @@ describe('library deletion authorization', () => {
       const deletion = await agent
         .delete('/media/not-a-number/library')
         .send({ token: 'a'.repeat(64) });
+      const clearStale = await agent
+        .post('/media/not-a-number/library/clear-stale-availability')
+        .send({ token: 'a'.repeat(64), quality: 'HD' });
 
       assert.strictEqual(plan.status, 403);
       assert.strictEqual(deletion.status, 403);
+      assert.strictEqual(clearStale.status, 403);
     } finally {
       friend.permissions = originalPermissions;
       await userRepository.save(friend);

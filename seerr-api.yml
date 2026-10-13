@@ -14533,6 +14533,80 @@ paths:
                         - $ref: '#/components/schemas/MovieResult'
                         - $ref: '#/components/schemas/TvResult'
                         - $ref: '#/components/schemas/PersonResult'
+  /discover/list/{listId}:
+    get:
+      summary: Browse a public TMDB list
+      description: Returns a paginated public TMDB list with mixed movie and series results.
+      tags:
+        - search
+      parameters:
+        - in: path
+          name: listId
+          required: true
+          schema:
+            type: string
+            pattern: '^[1-9][0-9]{0,11}$'
+            example: '8254132'
+        - in: query
+          name: page
+          schema:
+            type: number
+            minimum: 1
+            maximum: 500
+            default: 1
+        - in: query
+          name: language
+          schema:
+            type: string
+            example: en
+      responses:
+        '200':
+          description: Public list results.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - page
+                  - totalPages
+                  - totalResults
+                  - list
+                  - results
+                properties:
+                  page:
+                    type: number
+                    example: 1
+                  totalPages:
+                    type: number
+                    example: 8
+                  totalResults:
+                    type: number
+                    description: TMDB v4 list item_count.
+                    example: 158
+                  list:
+                    type: object
+                    required:
+                      - name
+                      - description
+                    properties:
+                      name:
+                        type: string
+                        example: Weekend watchlist
+                      description:
+                        type: string
+                        example: A collection of films and series.
+                  results:
+                    type: array
+                    items:
+                      anyOf:
+                        - $ref: '#/components/schemas/MovieResult'
+                        - $ref: '#/components/schemas/TvResult'
+        '400':
+          description: Invalid language query.
+        '404':
+          description: The list does not exist or is not public.
+        '502':
+          description: TMDB could not return the list.
   /discover/music:
     get:
       summary: Discover music

@@ -12,6 +12,14 @@ sidebar_position: 1
 If the [Application URL](/using-seerr/settings/general#application-title) setting is configured in **Settings → General**, Seerr will explicitly set the origin server hostname when connecting to the SMTP host.
 :::
 
+### Embed Poster (optional)
+
+When enabled, the email includes the notification image when one is available, such as the requested title's poster.
+
+### Use Public Seerr Logo Instead of Instance Logo (optional)
+
+When enabled, emails use the public Seerr logo hosted on GitHub instead of the logo at your configured Application URL. This lets email clients display a logo when your Seerr instance is not reachable from outside your network. It does not use your instance's custom logo.
+
 ### Require User Email
 
 When enabled, users will be required to provide a valid email address in their user settings. This is useful if you want to ensure all users can receive email notifications.
@@ -39,6 +47,10 @@ Set this to a supported port number for your SMTP host. `465` and `587` are comm
 In most cases, [Use Implicit TLS](https://tools.ietf.org/html/rfc8314) should be selected for port 465, and [Use STARTTLS](https://en.wikipedia.org/wiki/Opportunistic_TLS) if available for port 587. Please refer to your email provider's documentations for details on how to configure this setting.
 
 The default value for this setting is **Use STARTTLS if available**.
+
+### Allow Self-Signed Certificates (optional)
+
+Enabling this disables TLS certificate verification for the SMTP connection. It can allow self-signed, invalid, or otherwise untrusted certificates, so only enable it for an SMTP server you trust.
 
 ### SMTP Username & Password
 

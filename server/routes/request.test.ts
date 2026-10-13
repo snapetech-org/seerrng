@@ -1807,6 +1807,86 @@ describe('PUT /request/:requestId (movie)', () => {
     assert.strictEqual(partiallySaved.rootFolder, '/partial/movies');
   });
 
+  it('lets a request manager reassign and resubmit a failed movie request', async (t) => {
+    const settings = getSettings();
+    settings.radarr = [createRadarrSettings(3)];
+    t.after(() => {
+      settings.radarr = [];
+    });
+    const requestRepo = getRepository(MediaRequest);
+    const failed = await seedRequest(MediaRequestStatus.FAILED);
+    await requestRepo.update(failed.id, { serverId: 99 });
+
+    const admin = await loginAs('admin@seerr.dev', 'test1234');
+    const response = await admin.put(`/request/${failed.id}`).send({
+      mediaType: MediaType.MOVIE,
+      serverId: 3,
+    });
+
+    assert.strictEqual(response.status, 200);
+    assert.strictEqual(response.body.status, MediaRequestStatus.APPROVED);
+    assert.strictEqual(response.body.serverId, 3);
+    assert.strictEqual(response.body.modifiedBy.id, 1);
+
+    const persisted = await requestRepo.findOneOrFail({
+      where: { id: failed.id },
+      relations: { modifiedBy: true },
+    });
+    assert.strictEqual(persisted.status, MediaRequestStatus.APPROVED);
+    assert.strictEqual(persisted.modifiedBy?.id, 1);
+
+    const events = await getRepository(MediaRequestStatusEvent).find({
+      where: { requestId: failed.id },
+      order: { id: 'ASC' },
+    });
+    assert.strictEqual(events.at(-1)?.stage, RequestStatusStage.SEARCHING);
+  });
+
+  it('requires a changed server before resubmitting a failed request', async (t) => {
+    const settings = getSettings();
+    settings.radarr = [createRadarrSettings(3)];
+    t.after(() => {
+      settings.radarr = [];
+    });
+    const requestRepo = getRepository(MediaRequest);
+    const failed = await seedRequest(MediaRequestStatus.FAILED);
+    await requestRepo.update(failed.id, { serverId: 3 });
+
+    const admin = await loginAs('admin@seerr.dev', 'test1234');
+    const response = await admin.put(`/request/${failed.id}`).send({
+      mediaType: MediaType.MOVIE,
+      serverId: 3,
+      rootFolder: '/must-not-change',
+    });
+
+    assert.strictEqual(response.status, 409);
+    const persisted = await requestRepo.findOneByOrFail({ id: failed.id });
+    assert.strictEqual(persisted.status, MediaRequestStatus.FAILED);
+    assert.notStrictEqual(persisted.rootFolder, '/must-not-change');
+  });
+
+  it('does not let a requester reassign a failed movie request', async (t) => {
+    const settings = getSettings();
+    settings.radarr = [createRadarrSettings(3)];
+    t.after(() => {
+      settings.radarr = [];
+    });
+    const requestRepo = getRepository(MediaRequest);
+    const failed = await seedRequest(MediaRequestStatus.FAILED);
+    await requestRepo.update(failed.id, { serverId: 99 });
+
+    const owner = await loginAs('friend@seerr.dev', 'test1234');
+    const response = await owner.put(`/request/${failed.id}`).send({
+      mediaType: MediaType.MOVIE,
+      serverId: 3,
+    });
+
+    assert.strictEqual(response.status, 403);
+    const persisted = await requestRepo.findOneByOrFail({ id: failed.id });
+    assert.strictEqual(persisted.status, MediaRequestStatus.FAILED);
+    assert.strictEqual(persisted.serverId, 99);
+  });
+
   it('rejects request mutations after the session credential changes', async () => {
     const mediaRequest = await seedRequest();
     const userRepository = getRepository(User);
@@ -1867,6 +1947,76 @@ describe('PUT /request/:requestId (movie)', () => {
       id: mediaRequest.id,
     });
     assert.strictEqual(persisted.status, MediaRequestStatus.FAILED);
+  });
+});
+
+describe('PUT /request/:requestId (failed TV recovery)', () => {
+  it('lets a request manager reassign a failed series and keeps its season selection', async (t) => {
+    const settings = getSettings();
+    const priorPartialRequestsEnabled = settings.main.partialRequestsEnabled;
+    settings.sonarr = [createSonarrSettings(5)];
+    settings.main.partialRequestsEnabled = true;
+    t.after(() => {
+      settings.sonarr = [];
+      settings.main.partialRequestsEnabled = priorPartialRequestsEnabled;
+    });
+    const requestedBy = await getRepository(User).findOneOrFail({
+      where: { id: 2 },
+    });
+    const media = await getRepository(Media).save(
+      new Media({
+        mediaType: MediaType.TV,
+        tmdbId: 1707,
+        status: MediaStatus.PENDING,
+        status4k: MediaStatus.UNKNOWN,
+        seasons: [
+          new Season({
+            seasonNumber: 1,
+            status: MediaStatus.PENDING,
+            status4k: MediaStatus.UNKNOWN,
+          }),
+        ],
+      })
+    );
+    const failed = await getRepository(MediaRequest).save(
+      new MediaRequest({
+        type: MediaType.TV,
+        status: MediaRequestStatus.FAILED,
+        media,
+        requestedBy,
+        is4k: false,
+        serverId: 99,
+        seasons: [
+          new SeasonRequest({
+            seasonNumber: 1,
+            status: MediaRequestStatus.FAILED,
+          }),
+        ],
+      })
+    );
+
+    const admin = await loginAs('admin@seerr.dev', 'test1234');
+    const response = await admin.put(`/request/${failed.id}`).send({
+      mediaType: MediaType.TV,
+      serverId: 5,
+      seasons: [1],
+      seasonRequests: [{ seasonNumber: 1 }],
+    });
+
+    assert.strictEqual(response.status, 200);
+    assert.strictEqual(response.body.status, MediaRequestStatus.APPROVED);
+    assert.strictEqual(response.body.serverId, 5);
+
+    const persisted = await getRepository(MediaRequest).findOneOrFail({
+      where: { id: failed.id },
+      relations: { seasons: true, modifiedBy: true },
+    });
+    assert.strictEqual(persisted.status, MediaRequestStatus.APPROVED);
+    assert.strictEqual(persisted.modifiedBy?.id, 1);
+    assert.deepStrictEqual(
+      persisted.seasons.map((season) => season.seasonNumber),
+      [1]
+    );
   });
 });
 

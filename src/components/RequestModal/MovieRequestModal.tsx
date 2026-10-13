@@ -22,7 +22,7 @@ import { sortCrewPriority } from '@app/utils/creditHelpers';
 import defineMessages from '@app/utils/defineMessages';
 import { getTmdbPosterImageUrl } from '@app/utils/imageCache';
 import { ArrowDownTrayIcon, XMarkIcon } from '@heroicons/react/24/outline';
-import { MediaStatus } from '@server/constants/media';
+import { MediaRequestStatus, MediaStatus } from '@server/constants/media';
 import type { MediaRequest } from '@server/entity/MediaRequest';
 import type { NonFunctionProperties } from '@server/interfaces/api/common';
 import type { ServiceCommonServer } from '@server/interfaces/api/serviceInterfaces';
@@ -44,6 +44,12 @@ const messages = defineMessages('components.RequestModal', {
   cancel: 'Cancel Request',
   pendingMovieRequest: 'Pending Movie Request',
   pending4kMovieRequest: 'Pending 4K Movie Request',
+  failedMovieRequest: 'Failed Movie Request',
+  failed4kMovieRequest: 'Failed 4K Movie Request',
+  repairFailedDescription:
+    'Choose another server to resubmit this failed request.',
+  saveAndRetry: 'Save and Retry',
+  requestResubmitted: 'Request for <strong>{title}</strong> resubmitted.',
   requestfrom: "{username}'s request is pending approval.",
   errorediting: 'Something went wrong while editing the request.',
   requestedited: 'Request for <strong>{title}</strong> edited successfully!',
@@ -121,6 +127,9 @@ const MovieRequestModal = ({
   const [requestedByPortal, setRequestedByPortal] =
     useState<HTMLDivElement | null>(null);
   const effectiveIs4k = requestOverrides?.is4k ?? selectedIs4k;
+  const isFailedManagerRepair =
+    editRequest?.status === MediaRequestStatus.FAILED &&
+    hasPermission(Permission.MANAGE_REQUESTS);
   const selectedService = radarrServers?.find(
     (server) => server.id === requestOverrides?.server
   );
@@ -290,9 +299,11 @@ const MovieRequestModal = ({
       addToast(
         <span>
           {intl.formatMessage(
-            alsoApproveRequest
-              ? messages.requestApproved
-              : messages.requestedited,
+            isFailedManagerRepair
+              ? messages.requestResubmitted
+              : alsoApproveRequest
+                ? messages.requestApproved
+                : messages.requestedited,
             {
               title: data?.title,
               strong: (msg: React.ReactNode) => <strong>{msg}</strong>,
@@ -327,15 +338,23 @@ const MovieRequestModal = ({
         backgroundClickable
         onCancel={onCancel}
         title={intl.formatMessage(
-          is4k ? messages.pending4kMovieRequest : messages.pendingMovieRequest
+          isFailedManagerRepair
+            ? is4k
+              ? messages.failed4kMovieRequest
+              : messages.failedMovieRequest
+            : is4k
+              ? messages.pending4kMovieRequest
+              : messages.pendingMovieRequest
         )}
         subTitle={data?.title}
         onOk={() =>
-          hasPermission(Permission.MANAGE_REQUESTS)
-            ? updateRequest(true)
-            : hasPermission(Permission.REQUEST_ADVANCED)
-              ? updateRequest()
-              : cancelRequest()
+          isFailedManagerRepair
+            ? updateRequest()
+            : hasPermission(Permission.MANAGE_REQUESTS)
+              ? updateRequest(true)
+              : hasPermission(Permission.REQUEST_ADVANCED)
+                ? updateRequest()
+                : cancelRequest()
         }
         okDisabled={isUpdating}
         okButtonProps={{
@@ -347,20 +366,23 @@ const MovieRequestModal = ({
         }}
         secondaryButtonProps={{ buttonIcon: 'cancel' }}
         okText={
-          hasPermission(Permission.MANAGE_REQUESTS)
-            ? intl.formatMessage(messages.approve)
-            : hasPermission(Permission.REQUEST_ADVANCED)
-              ? intl.formatMessage(messages.edit)
-              : intl.formatMessage(messages.cancel)
+          isFailedManagerRepair
+            ? intl.formatMessage(messages.saveAndRetry)
+            : hasPermission(Permission.MANAGE_REQUESTS)
+              ? intl.formatMessage(messages.approve)
+              : hasPermission(Permission.REQUEST_ADVANCED)
+                ? intl.formatMessage(messages.edit)
+                : intl.formatMessage(messages.cancel)
         }
         okButtonType={
-          hasPermission(Permission.MANAGE_REQUESTS)
+          isFailedManagerRepair || hasPermission(Permission.MANAGE_REQUESTS)
             ? 'success'
             : hasPermission(Permission.REQUEST_ADVANCED)
               ? 'primary'
               : 'danger'
         }
         onSecondary={
+          !isFailedManagerRepair &&
           isOwner &&
           hasPermission(
             [Permission.REQUEST_ADVANCED, Permission.MANAGE_REQUESTS],
@@ -371,6 +393,7 @@ const MovieRequestModal = ({
         }
         secondaryDisabled={isUpdating}
         secondaryText={
+          !isFailedManagerRepair &&
           isOwner &&
           hasPermission(
             [Permission.REQUEST_ADVANCED, Permission.MANAGE_REQUESTS],
@@ -395,11 +418,13 @@ const MovieRequestModal = ({
           artworkType="tmdb"
         >
           <div className="app-card-inset refreshed-inset-surface rounded-lg border border-gray-700 p-3">
-            {isOwner
-              ? intl.formatMessage(messages.pendingapproval)
-              : intl.formatMessage(messages.requestfrom, {
-                  username: editRequest.requestedBy.displayName,
-                })}
+            {isFailedManagerRepair
+              ? intl.formatMessage(messages.repairFailedDescription)
+              : isOwner
+                ? intl.formatMessage(messages.pendingapproval)
+                : intl.formatMessage(messages.requestfrom, {
+                    username: editRequest.requestedBy.displayName,
+                  })}
           </div>
           {(hasPermission(Permission.REQUEST_ADVANCED) ||
             hasPermission(Permission.MANAGE_REQUESTS)) && (
@@ -415,6 +440,10 @@ const MovieRequestModal = ({
                 server: editRequest.serverId,
                 tags: editRequest.tags,
               }}
+              reassignMissingServer={isFailedManagerRepair}
+              requestedByPortal={
+                isFailedManagerRepair ? null : requestedByPortal
+              }
               onChange={(overrides) => {
                 setRequestOverrides(overrides);
               }}

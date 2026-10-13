@@ -95,14 +95,15 @@ pnpm validate:development
   ```
 
   The external launcher snapshots tracked and non-ignored candidate files,
-  excludes local configuration and credential files, and enters bubblewrap
-  before loading candidate JavaScript. Its dependency roots are mounted
-  read-only at their original workspace paths, and it fails closed when Linux
-  bubblewrap isolation is unavailable. Its internal
-  `--inside-sandbox` mode requires a token bound to a marker file mounted by the
-  trusted launcher. A candidate-owned validator can still misreport its own
-  test results, so this boundary protects the host; it does not replace
-  reviewing the validator itself.
+  excludes local configuration and credential files while retaining only the
+  exact checked-in TypeScript compiler manifests needed by the test runners,
+  and enters bubblewrap before loading candidate JavaScript. Its dependency
+  roots must be real directories inside the candidate checkout and are mounted
+  read-only at their original workspace paths. It fails closed when bubblewrap
+  isolation is unavailable. Its internal `--inside-sandbox` mode requires a
+  token bound to a marker file mounted by the trusted launcher. A candidate-owned
+  validator can still misreport its own test results, so this boundary protects
+  the host; it does not replace reviewing the validator itself.
 - With no mode flag, the engine admits the complete local staged gate. It runs
   only when the required source, dependency, toolchain, fixture, network, and
   browser-isolation boundaries can be proved. Otherwise it stops incomplete and

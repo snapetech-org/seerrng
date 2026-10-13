@@ -564,6 +564,80 @@ export class MediaRequestSubscriber implements EntitySubscriberInterface<MediaRe
     );
   }
 
+  private isRequestedMediaAvailable(
+    entity: MediaRequest,
+    media: Media
+  ): boolean {
+    const statusKey = entity.is4k ? 'status4k' : 'status';
+    if (media[statusKey] === MediaStatus.AVAILABLE) {
+      return true;
+    }
+
+    if (entity.type !== MediaType.TV || entity.seasons.length === 0) {
+      return false;
+    }
+
+    const availableSeasonNumbers = new Set(
+      media.seasons
+        .filter((season) => season[statusKey] === MediaStatus.AVAILABLE)
+        .map((season) => season.seasonNumber)
+    );
+
+    return entity.seasons.every((season) =>
+      availableSeasonNumbers.has(season.seasonNumber)
+    );
+  }
+
+  private async completeAvailableRequest(
+    entity: MediaRequest,
+    media: Media
+  ): Promise<boolean> {
+    if (!this.isRequestedMediaAvailable(entity, media)) {
+      return false;
+    }
+
+    logger.info('Requested media is already available, completing request', {
+      label: 'Media Request',
+      requestId: entity.id,
+      mediaId: entity.media.id,
+    });
+
+    entity.status = MediaRequestStatus.COMPLETED;
+    if (entity.type === MediaType.TV) {
+      entity.seasons.forEach((season) => {
+        season.status = MediaRequestStatus.COMPLETED;
+      });
+    }
+    await getRepository(MediaRequest).save(entity);
+    return true;
+  }
+
+  private async failRequestForMissingServer(
+    entity: MediaRequest,
+    media: Media,
+    serviceName: 'Radarr' | 'Sonarr'
+  ): Promise<void> {
+    entity.status = MediaRequestStatus.FAILED;
+    await getRepository(MediaRequest).save(entity);
+
+    logger.warn(
+      `Request points to a missing or incompatible ${serviceName} server; marking request as FAILED`,
+      {
+        label: 'Media Request',
+        requestId: entity.id,
+        mediaId: entity.media.id,
+        serverId: entity.serverId,
+        is4k: entity.is4k,
+      }
+    );
+
+    await MediaRequest.sendNotification(
+      entity,
+      media,
+      Notification.MEDIA_FAILED
+    );
+  }
+
   private async enqueueInsertedRequestNotifications(
     entity: MediaRequest,
     event: InsertEvent<MediaRequest>
@@ -809,30 +883,35 @@ export class MediaRequestSubscriber implements EntitySubscriberInterface<MediaRe
     ) {
       try {
         const mediaRepository = getRepository(Media);
-        const settings = getExternalRuntimeConfig();
-        if (settings.radarr.length === 0 && !settings.radarr[0]) {
-          logger.info(
-            'No Radarr server configured, skipping request processing',
-            {
-              label: 'Media Request',
-              requestId: entity.id,
-              mediaId: entity.media.id,
-            }
-          );
+        const media = await mediaRepository.findOne({
+          where: { id: entity.media.id },
+        });
+
+        if (!media) {
+          logger.error('Media data not found', {
+            label: 'Media Request',
+            requestId: entity.id,
+            mediaId: entity.media.id,
+          });
           return false;
         }
+
+        if (await this.completeAvailableRequest(entity, media)) {
+          return true;
+        }
+
+        const settings = getExternalRuntimeConfig();
 
         let radarrSettings = settings.radarr.find(
           (radarr) => radarr.isDefault && radarr.is4k === entity.is4k
         );
 
-        if (
-          entity.serverId !== null &&
-          entity.serverId >= 0 &&
-          radarrSettings?.id !== entity.serverId
-        ) {
+        const hasExplicitServer =
+          entity.serverId !== null && entity.serverId >= 0;
+        if (hasExplicitServer && radarrSettings?.id !== entity.serverId) {
           radarrSettings = settings.radarr.find(
-            (radarr) => radarr.id === entity.serverId
+            (radarr) =>
+              radarr.id === entity.serverId && radarr.is4k === entity.is4k
           );
           logger.info(
             `Request has an override server: ${radarrSettings?.name}`,
@@ -845,6 +924,11 @@ export class MediaRequestSubscriber implements EntitySubscriberInterface<MediaRe
         }
 
         if (!radarrSettings) {
+          if (hasExplicitServer) {
+            await this.failRequestForMissingServer(entity, media, 'Radarr');
+            return true;
+          }
+
           logger.warn(
             `There is no default ${
               entity.is4k ? '4K ' : ''
@@ -903,34 +987,6 @@ export class MediaRequestSubscriber implements EntitySubscriberInterface<MediaRe
           });
         }
 
-        const media = await mediaRepository.findOne({
-          where: { id: entity.media.id },
-        });
-
-        if (!media) {
-          logger.error('Media data not found', {
-            label: 'Media Request',
-            requestId: entity.id,
-            mediaId: entity.media.id,
-          });
-          return false;
-        }
-
-        if (
-          media[entity.is4k ? 'status4k' : 'status'] === MediaStatus.AVAILABLE
-        ) {
-          logger.warn('Media already exists, marking request as COMPLETED', {
-            label: 'Media Request',
-            requestId: entity.id,
-            mediaId: entity.media.id,
-          });
-
-          const requestRepository = getRepository(MediaRequest);
-          entity.status = MediaRequestStatus.COMPLETED;
-          await requestRepository.save(entity);
-          return true;
-        }
-
         const tmdb = new TheMovieDb();
         const radarr = new RadarrAPI({
           apiKey: radarrSettings.apiKey,
@@ -981,21 +1037,6 @@ export class MediaRequestSubscriber implements EntitySubscriberInterface<MediaRe
               radarrServer: radarrSettings.hostname + ':' + radarrSettings.port,
             });
           }
-        }
-
-        if (
-          media[entity.is4k ? 'status4k' : 'status'] === MediaStatus.AVAILABLE
-        ) {
-          logger.warn('Media already exists, marking request as COMPLETED', {
-            label: 'Media Request',
-            requestId: entity.id,
-            mediaId: entity.media.id,
-          });
-
-          const requestRepository = getRepository(MediaRequest);
-          entity.status = MediaRequestStatus.COMPLETED;
-          await requestRepository.save(entity);
-          return true;
         }
 
         const radarrMovieOptions: RadarrMovieOptions = {
@@ -1095,30 +1136,30 @@ export class MediaRequestSubscriber implements EntitySubscriberInterface<MediaRe
     ) {
       try {
         const mediaRepository = getRepository(Media);
-        const settings = getExternalRuntimeConfig();
-        if (settings.sonarr.length === 0 && !settings.sonarr[0]) {
-          logger.warn(
-            'No Sonarr server configured, skipping request processing',
-            {
-              label: 'Media Request',
-              requestId: entity.id,
-              mediaId: entity.media.id,
-            }
-          );
-          return false;
+        const media = await mediaRepository.findOne({
+          where: { id: entity.media.id },
+        });
+
+        if (!media) {
+          throw new Error('Media data not found');
         }
+
+        if (await this.completeAvailableRequest(entity, media)) {
+          return true;
+        }
+
+        const settings = getExternalRuntimeConfig();
 
         let sonarrSettings = settings.sonarr.find(
           (sonarr) => sonarr.isDefault && sonarr.is4k === entity.is4k
         );
 
-        if (
-          entity.serverId !== null &&
-          entity.serverId >= 0 &&
-          sonarrSettings?.id !== entity.serverId
-        ) {
+        const hasExplicitServer =
+          entity.serverId !== null && entity.serverId >= 0;
+        if (hasExplicitServer && sonarrSettings?.id !== entity.serverId) {
           sonarrSettings = settings.sonarr.find(
-            (sonarr) => sonarr.id === entity.serverId
+            (sonarr) =>
+              sonarr.id === entity.serverId && sonarr.is4k === entity.is4k
           );
           logger.info(
             `Request has an override server: ${sonarrSettings?.name}`,
@@ -1131,6 +1172,11 @@ export class MediaRequestSubscriber implements EntitySubscriberInterface<MediaRe
         }
 
         if (!sonarrSettings) {
+          if (hasExplicitServer) {
+            await this.failRequestForMissingServer(entity, media, 'Sonarr');
+            return true;
+          }
+
           logger.warn(
             `There is no default ${
               entity.is4k ? '4K ' : ''
@@ -1144,32 +1190,6 @@ export class MediaRequestSubscriber implements EntitySubscriberInterface<MediaRe
             }
           );
           return false;
-        }
-
-        const media = await mediaRepository.findOne({
-          where: { id: entity.media.id },
-        });
-
-        if (!media) {
-          throw new Error('Media data not found');
-        }
-
-        if (
-          media[entity.is4k ? 'status4k' : 'status'] === MediaStatus.AVAILABLE
-        ) {
-          logger.warn('Media already exists, marking request as COMPLETED', {
-            label: 'Media Request',
-            requestId: entity.id,
-            mediaId: entity.media.id,
-          });
-
-          const requestRepository = getRepository(MediaRequest);
-          entity.status = MediaRequestStatus.COMPLETED;
-          entity.seasons.filter(isActiveSeasonRequest).forEach((season) => {
-            season.status = MediaRequestStatus.COMPLETED;
-          });
-          await requestRepository.save(entity);
-          return true;
         }
 
         const tmdb = new TheMovieDb();

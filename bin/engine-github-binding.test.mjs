@@ -553,7 +553,10 @@ test('native environments, commands, permissions, and action pins are preserved'
   assert.equal(jobs.test.container.image, alpine);
   assert.equal(jobs['unit-test'].container.image, alpine);
   assert.equal(jobs.test['runs-on'], 'ubuntu-latest');
-  assert.equal(jobs['unit-test']['runs-on'], 'ubuntu-latest');
+  assert.equal(
+    jobs['unit-test']['runs-on'],
+    "${{ ((github.event_name == 'push' && github.ref == 'refs/heads/main') || (github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main')) && fromJSON('[\"self-hosted\",\"Linux\",\"X64\",\"host\",\"seerrng\"]') || 'ubuntu-latest' }}"
+  );
   assert.equal(jobs.codeql.permissions['security-events'], 'write');
 
   for (const fragment of [

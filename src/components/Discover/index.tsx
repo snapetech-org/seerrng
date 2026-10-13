@@ -94,6 +94,7 @@ const isDiscoverSliderEnabled = (
   switch (type) {
     case DiscoverSliderType.RECENTLY_ADDED:
     case DiscoverSliderType.TRENDING:
+    case DiscoverSliderType.TMDB_LIST:
       return (
         isConfiguredMediaCategoryEnabled('movie', availability) ||
         isConfiguredMediaCategoryEnabled('tv', availability)
@@ -353,6 +354,17 @@ const Discover = ({ initialSliders }: DiscoverProps) => {
                 url="/api/v1/discover/trending"
                 linkUrl="/discover/trending"
                 prioritizeFirstRow
+              />
+            );
+            break;
+          case DiscoverSliderType.TMDB_LIST:
+            sliderComponent = (
+              <MediaSlider
+                hideWhenEmpty
+                sliderKey={`custom-slider-${slider.id}`}
+                title={slider.title ?? ''}
+                url={`/api/v1/discover/list/${encodeURIExtraParams(slider.data ?? '')}`}
+                linkUrl={`/discover/list/${encodeURIExtraParams(slider.data ?? '')}`}
               />
             );
             break;

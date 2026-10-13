@@ -472,7 +472,8 @@ class RadarrAPI extends ServarrBase<{ movieId: number }> {
           rootFolderPath: options.rootFolderPath,
           monitored: options.monitored,
           addOptions: {
-            searchForMovie: options.searchNow,
+            searchForMovie:
+              options.searchNow && movie.isAvailable && !movie.hasFile,
           },
         });
 
@@ -495,7 +496,11 @@ class RadarrAPI extends ServarrBase<{ movieId: number }> {
             movie: updatedMovie,
           });
 
-          if (options.searchNow) {
+          if (
+            options.searchNow &&
+            updatedMovie.isAvailable &&
+            !updatedMovie.hasFile
+          ) {
             await this.searchMovie(updatedMovie.id);
           }
 
@@ -518,10 +523,10 @@ class RadarrAPI extends ServarrBase<{ movieId: number }> {
           hasFile: movie.hasFile,
         });
 
-        // If searchNow is requested and movie doesn't have a file, trigger search
-        if (options.searchNow && !movie.hasFile) {
+        // Respect Radarr's minimum-availability decision before searching.
+        if (options.searchNow && movie.isAvailable && !movie.hasFile) {
           logger.info(
-            'Triggering search for existing monitored movie without file',
+            'Triggering search for existing available movie without a file',
             {
               label: 'Radarr',
               movieId: movie.id,
@@ -639,7 +644,8 @@ class RadarrAPI extends ServarrBase<{ movieId: number }> {
         rootFolderPath: options.rootFolderPath,
         monitored: options.monitored,
         addOptions: {
-          searchForMovie: options.searchNow,
+          searchForMovie:
+            options.searchNow && movie.isAvailable && !movie.hasFile,
         },
       });
 
@@ -648,7 +654,7 @@ class RadarrAPI extends ServarrBase<{ movieId: number }> {
       );
     }
 
-    if (options.searchNow && !movie.hasFile) {
+    if (options.searchNow && movie.isAvailable && !movie.hasFile) {
       await this.searchMovie(movie.id);
     }
 

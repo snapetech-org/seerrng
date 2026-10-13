@@ -26,7 +26,11 @@ const state = vi.hoisted(() => ({
   permission: true,
   adminPermission: true,
   blocklistPermission: true,
-  libraryPlan: { token: 'test-token', targets: [] } as LibraryRemovalPlan,
+  libraryPlan: {
+    token: 'test-token',
+    targets: [],
+    verifiedServices: 0,
+  } as LibraryRemovalPlan,
   remove: vi.fn(),
   post: vi.fn(),
 }));
@@ -107,7 +111,7 @@ beforeEach(() => {
   state.permission = true;
   state.adminPermission = true;
   state.blocklistPermission = true;
-  state.libraryPlan = { token: 'test-token', targets: [] };
+  state.libraryPlan = { token: 'test-token', targets: [], verifiedServices: 0 };
   state.remove.mockReset();
   state.post.mockReset();
 });
@@ -200,6 +204,100 @@ it('disables actions without targets and never mutates during render', () => {
   expect(html).not.toContain('Clear Data');
   expect(html).not.toContain('Mark as Available');
   expect(state.remove).not.toHaveBeenCalled();
+});
+
+it('offers stale availability recovery when a fresh scan finds no series copy', () => {
+  state.libraryPlan = {
+    token: 'fresh-plan',
+    targets: [],
+    verifiedServices: 1,
+  } as LibraryRemovalPlan;
+
+  const html = render(
+    <ManageMediaActions
+      media={media({ status: MediaStatus.AVAILABLE })}
+      mediaType={MediaType.TV}
+      title="Series"
+      onUpdate={vi.fn()}
+    />
+  );
+
+  expect(html).toContain('Clear Stale HD Availability');
+  expect(html).toContain('Delete From Library');
+  const removeButton = html
+    .match(/<button[^>]*>[\s\S]*?<\/button>/g)
+    ?.find((button) => button.includes('Delete From Library'));
+  expect(removeButton).toContain('disabled=""');
+  expect(state.remove).not.toHaveBeenCalled();
+  expect(state.post).not.toHaveBeenCalled();
+});
+
+it.each([
+  {
+    name: 'no configured service was checked',
+    verifiedServices: 0,
+    targets: [],
+  },
+  {
+    name: 'the fresh plan still contains an HD copy',
+    verifiedServices: 1,
+    targets: [
+      {
+        key: 'sonarr:1:9:HD',
+        serviceType: 'sonarr' as const,
+        serviceId: 1,
+        externalId: 9,
+        service: 'Sonarr',
+        quality: 'HD',
+        url: 'http://sonarr.test/series/anime',
+      },
+    ],
+  },
+])('hides stale recovery when $name', ({ verifiedServices, targets }) => {
+  state.libraryPlan = {
+    token: 'fresh-plan',
+    verifiedServices,
+    targets,
+  };
+
+  const html = render(
+    <ManageMediaActions
+      media={media({ status: MediaStatus.AVAILABLE })}
+      mediaType={MediaType.TV}
+      title="Series"
+      onUpdate={vi.fn()}
+    />
+  );
+
+  expect(html).not.toContain('Clear Stale HD Availability');
+  expect(state.post).not.toHaveBeenCalled();
+});
+
+it.each([
+  MediaType.MUSIC,
+  MediaType.BOOK,
+  MediaType.COMIC,
+  MediaType.MAGAZINE,
+  MediaType.SPORTS,
+])('does not offer stale availability recovery for %s', (mediaType) => {
+  state.libraryPlan = {
+    token: 'fresh-plan',
+    targets: [],
+    verifiedServices: 1,
+  };
+
+  const html = render(
+    <ManageMediaActions
+      media={media({ status: MediaStatus.AVAILABLE })}
+      mediaType={mediaType}
+      title="Media"
+      onUpdate={vi.fn()}
+    />
+  );
+
+  expect(html).not.toContain('Clear Stale HD Availability');
+  expect(html).not.toContain('Clear Stale 4K Availability');
+  expect(state.post).not.toHaveBeenCalled();
 });
 
 it('groups actions in the requested order and names the configured service next to its removal button', () => {

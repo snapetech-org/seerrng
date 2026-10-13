@@ -315,3 +315,18 @@ test('CodeQL models the awaited image cache validation barrier', () => {
     ].sort(([left], [right]) => left.localeCompare(right))
   );
 });
+
+test('unit-test pull requests stay on hosted runners', () => {
+  const ciWorkflow = yaml.load(
+    fs.readFileSync(
+      path.join(rootDirectory, '.github', 'workflows', 'ci.yml'),
+      'utf8'
+    )
+  );
+  const runner = ciWorkflow.jobs['unit-test']?.['runs-on'];
+
+  assert.equal(
+    runner,
+    "${{ ((github.event_name == 'push' && github.ref == 'refs/heads/main') || (github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main')) && fromJSON('[\"self-hosted\",\"Linux\",\"X64\",\"host\",\"seerrng\"]') || 'ubuntu-latest' }}"
+  );
+});

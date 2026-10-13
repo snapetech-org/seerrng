@@ -202,6 +202,7 @@ interface AdvancedRequesterProps {
   panelOnly?: boolean;
   rootFolderTable?: boolean;
   allow4kServerSelection?: boolean;
+  reassignMissingServer?: boolean;
   requestedByPortal?: HTMLElement | null;
   onChange: (overrides: RequestOverrides) => void;
 }
@@ -225,6 +226,7 @@ const AdvancedRequester = ({
   panelOnly = false,
   rootFolderTable = false,
   allow4kServerSelection = false,
+  reassignMissingServer = false,
   requestedByPortal,
   onChange,
 }: AdvancedRequesterProps) => {
@@ -386,14 +388,28 @@ const AdvancedRequester = ({
       defaultServer = serviceServers[0];
     }
 
+    const canReplaceUnavailableServer =
+      reassignMissingServer &&
+      (selectedServer === null ||
+        !serviceServers.some((server) => server.id === selectedServer));
+
     if (
       defaultServer &&
       defaultServer.id !== selectedServer &&
-      (!defaultOverrides || defaultOverrides.server === null)
+      (!defaultOverrides ||
+        defaultOverrides.server === null ||
+        canReplaceUnavailableServer)
     ) {
       setSelectedServer(defaultServer.id);
     }
-  }, [data, bookServiceType, serviceServers, type]);
+  }, [
+    data,
+    bookServiceType,
+    reassignMissingServer,
+    selectedServer,
+    serviceServers,
+    type,
+  ]);
 
   useEffect(() => {
     const previousContext = folderSelectionContextRef.current;

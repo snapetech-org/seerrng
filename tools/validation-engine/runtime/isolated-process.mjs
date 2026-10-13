@@ -15,13 +15,26 @@ const SANDBOX_SCRATCH = '/mnt/scratch';
 const SANDBOX_RUN = '/mnt/run-data';
 const SENSITIVE_SOURCE_PATH =
   /^(?:(?:.*\/)?\.env(?:$|\.(?!example$)[^/]+)|config(?:\.[^/]+)?(?:\/|$)|\.git(?:\/|$)|(?:.*\/)?(?:node_modules|\.ssh|\.aws|\.gnupg)(?:\/|$)|(?:.*\/)?(?:id_(?:rsa|ed25519)|credentials?(?:\.[^/]+)?|secrets?(?:\.[^/]+)?|\.git-credentials|\.npmrc|\.pypirc|\.netrc|[^/]+\.(?:pem|key))$)/i;
+const SENSITIVE_ENV_PATH = /(?:^|[\\/])\.env(?:$|\.(?!example$))/i;
 const SENSITIVE_DATA_EXTENSION =
   /\.(?:json|jsonc|ya?ml|toml|ini|cfg|conf|properties|txt|db|sqlite3?|pem|key)$/i;
 const SENSITIVE_DATA_NAME =
   /(?:auth(?:entication)?|config|credentials?|passwords?|private|secrets?|settings?|tokens?)/i;
+const SAFE_TYPESCRIPT_CONFIGS = new Set([
+  'tsconfig.json',
+  'cypress/tsconfig.json',
+  'gen-docs/tsconfig.json',
+  'server/tsconfig.build.json',
+  'server/tsconfig.json',
+]);
 
 function isSensitiveSourcePath(relativePath) {
-  if (SENSITIVE_SOURCE_PATH.test(relativePath)) return true;
+  if (SAFE_TYPESCRIPT_CONFIGS.has(relativePath)) return false;
+  if (
+    SENSITIVE_SOURCE_PATH.test(relativePath) ||
+    SENSITIVE_ENV_PATH.test(relativePath)
+  )
+    return true;
   const basename = relativePath.split(/[\\/]/u).at(-1);
   return (
     SENSITIVE_DATA_EXTENSION.test(basename) &&

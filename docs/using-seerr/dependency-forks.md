@@ -6,7 +6,7 @@ sidebar_position: 7
 
 # Why SeerrNG maintains four optional forks
 
-**Reviewed:** 2026-10-12. Upstream state below is a point-in-time comparison; check
+**Reviewed:** 2026-10-13. Upstream state below is a point-in-time comparison; check
 the linked branches and each fork's feature guide when updating a dependency.
 
 BookshelfNG, ChaptarrNG, QuestarrNG, and ROMarrNG are optional services. Each
@@ -72,6 +72,14 @@ provider selection and direct-download workflows, must also be available or
 replaced. Then SeerrNG must pass its Bookshelf compatibility checks against
 that released version.
 
+**BookshelfNG-to-ChaptarrNG transition:** this consolidation is in progress,
+but it does not make the current ChaptarrNG release a drop-in replacement.
+There is no released populated-database converter or compatibility bridge for
+BookshelfNG images and packages. Keep existing BookshelfNG data and
+installations until the feature, migration, and channel gates in its
+[consolidation report](https://github.com/snapetech/bookshelfng/blob/main/docs/maintainers/chaptarr-consolidation.md)
+pass.
+
 ### ChaptarrNG
 
 **Lineage:** [Chaptarr/chaptarr](https://github.com/Chaptarr/chaptarr), an
@@ -94,14 +102,20 @@ search, request tracking, and asynchronous author preparation. The parent
 Chaptarr API has no matching SeerrNG capability contract or scoped service key
 in the reviewed source.
 
-**Replacement criteria:** a Chaptarr release would need a discoverable and
-stable SeerrNG contract for format routing, provider identity, paged library
-status, restricted credentials, and pending-import read/retry/cancel behavior
-with equivalent recovery and shared-request safety. Chaptarr already has a
-pending-import subsystem; SeerrNG needs compatible exposed semantics, not a
-second implementation of the queue. Preserve Direct Download and full-backup
-encryption in upstream or replace those standalone needs before retiring the
-fork.
+**Replacement criteria:** a supported Chaptarr release must preserve the full
+ChaptarrNG product, not only the SeerrNG-facing API. That includes ChaptarrNG's
+existing maintained features and active changes—such as capability discovery,
+format/provider identity, paged library status, the restricted key, built-in
+Direct Download, full-backup encryption, security behavior, and release/package
+continuity—plus every BookshelfNG feature carried into the consolidated
+ChaptarrNG product. Chaptarr already has a pending-import subsystem;
+SeerrNG needs compatible exposed semantics, not a second queue implementation.
+The [combined ChaptarrNG retirement matrix](https://github.com/snapetech/chaptarrng/blob/main/docs/FORK_FEATURES.md#chaptarrng-retirement-blockers)
+tracks both sets. Every feature, sub-feature, post-fork source change, data
+path, and distribution channel must be retained or replaced with a verified
+equivalent, with tests, before ChaptarrNG can be retired into Chaptarr.
+SeerrNG must then pass its compatibility checks against that exact supported
+release.
 
 ### QuestarrNG
 
@@ -178,6 +192,25 @@ required SeerrNG dependency only after:
    recovery, permissions, and safe file delivery required by current requests.
 3. The exact release passes the SeerrNG consumer checks, and operators have a
    documented upgrade and data-compatibility path.
+
+For Chaptarr specifically, that release gate includes the combined
+ChaptarrNG-plus-ported-BookshelfNG feature set, not just the SeerrNG API
+contract. The BookshelfNG consolidation and the later ChaptarrNG upstream
+retirement are separate transitions, each requiring its own populated-data and
+distribution proof. Active ChaptarrNG branches and open feature PRs count
+before release too; the combined matrix tracks the current backlog features,
+integrations, localization, proposed channel changes, and the individual
+retirement checks. The maintained backlog snapshot `24b340f` is 317 commits
+ahead and 1 behind ChaptarrNG `origin/main` at `02d38e1`, across 703 changed
+paths; `main` now includes merged CI PR #69. Open work includes maintainer
+guidance PR #71, localization PR #72 (Indonesian and Traditional Chinese
+choices, AudioBookShelf root-mapping and audiobook-mode translations, and
+locale direction metadata), draft metadata-preference PR #73, and proposed
+YunoHost packaging removal PR #74. PR #73's hosted Linux Core job passed, but
+Windows reported three path-sensitive rename test failures; the local
+integration fixtures are corrected and need a fresh hosted Windows run. Each
+feature or channel change remains in the upstream retirement review before
+merge or release.
 
 Keep any fork that still supplies standalone functionality operators rely on,
 even if its SeerrNG contract has been upstreamed. Recheck parent branches before
