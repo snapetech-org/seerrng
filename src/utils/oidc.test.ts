@@ -1,6 +1,10 @@
 import assert from 'node:assert/strict';
 import { describe, it } from 'node:test';
-import { OidcCallbackRequestState } from './oidc';
+import {
+  clearOidcLoginState,
+  getOidcLoginRedirect,
+  OidcCallbackRequestState,
+} from './oidc';
 import { hasOidcCallbackParameters } from './oidcQuery';
 import { parseOidcAuthorizationRedirect } from './oidcRedirect';
 
@@ -34,6 +38,45 @@ describe('hasOidcCallbackParameters', () => {
     assert.equal(hasOidcCallbackParameters({ error: 'access_denied' }), true);
     assert.equal(hasOidcCallbackParameters({ provider: 'authentik' }), false);
     assert.equal(hasOidcCallbackParameters({}), false);
+  });
+});
+
+describe('OIDC login redirect storage', () => {
+  it('validates the saved destination and clears it with the provider state', () => {
+    const originalWindow = Object.getOwnPropertyDescriptor(
+      globalThis,
+      'window'
+    );
+    const values = new Map<string, string>();
+    const storage = {
+      getItem: (key: string) => values.get(key) ?? null,
+      setItem: (key: string, value: string) => values.set(key, value),
+      removeItem: (key: string) => values.delete(key),
+    };
+
+    Object.defineProperty(globalThis, 'window', {
+      configurable: true,
+      value: { sessionStorage: storage },
+    });
+
+    try {
+      values.set('oidc-login-redirect', '/settings/services#prowlarr');
+      assert.equal(getOidcLoginRedirect(), '/settings/services#prowlarr');
+
+      values.set('oidc-login-redirect', '//example.com');
+      assert.equal(getOidcLoginRedirect(), '/');
+
+      values.set('oidc-provider', 'authentik');
+      clearOidcLoginState();
+      assert.equal(values.has('oidc-provider'), false);
+      assert.equal(values.has('oidc-login-redirect'), false);
+    } finally {
+      if (originalWindow) {
+        Object.defineProperty(globalThis, 'window', originalWindow);
+      } else {
+        Reflect.deleteProperty(globalThis, 'window');
+      }
+    }
   });
 });
 

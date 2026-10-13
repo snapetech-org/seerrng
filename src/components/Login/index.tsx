@@ -14,6 +14,7 @@ import TransportSecurityNotice from '@app/components/TransportSecurityNotice';
 import useSettings from '@app/hooks/useSettings';
 import { useUser } from '@app/hooks/useUser';
 import defineMessages from '@app/utils/defineMessages';
+import { getSafeRedirect } from '@app/utils/urlValidationHelper';
 import versionedAsset from '@app/utils/versionedAsset';
 import { Transition } from '@headlessui/react';
 import { XCircleIcon } from '@heroicons/react/24/solid';
@@ -168,13 +169,15 @@ const Login = ({
     };
   }, [authToken, revalidate]);
 
-  // Effect that is triggered whenever `useUser`'s user changes. If we get a new
-  // valid user, we redirect the user to the home page as the login was successful.
+  // Wait for the Pages Router query before choosing a destination. A login
+  // link may also leave its one-time token in the fragment until it is consumed.
   useEffect(() => {
-    if (user) {
-      router.push('/');
+    if (user && router.isReady) {
+      void router.replace(
+        getSafeRedirect(router.query.redirect, window.location.hash)
+      );
     }
-  }, [user, router]);
+  }, [user, router, router.isReady, router.query.redirect]);
 
   const { data: backdrops } = useSWR<LoginBackdrop[]>('/api/v1/backdrops', {
     fallbackData: initialBackdrops,

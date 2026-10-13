@@ -5,6 +5,7 @@ import {
   writeSessionStorageValue,
 } from '@app/utils/localStorage';
 import { parseOidcAuthorizationRedirect } from '@app/utils/oidcRedirect';
+import { getSafeRedirect } from '@app/utils/urlValidationHelper';
 import { ApiErrorCode } from '@server/constants/error';
 import axios, { isAxiosError } from 'axios';
 import type { IntlShape } from 'react-intl';
@@ -23,6 +24,7 @@ const messages = defineMessages('utils.oidc', {
 });
 
 const OIDC_PROVIDER_KEY = 'oidc-provider';
+const OIDC_REDIRECT_KEY = 'oidc-login-redirect';
 
 export class OidcCallbackRequestState<T> {
   private pending = new Map<string, Promise<T>>();
@@ -74,19 +76,24 @@ export function getOidcErrorMessage(
 /**
  * Initiates the OIDC login flow by fetching the authorization URL from the
  * server and redirecting the browser to the OIDC provider. Stores the provider
- * slug in sessionStorage so the callback page can identify which provider is
- * completing the flow.
+ * slug and validated return path in sessionStorage so the callback page can
+ * identify the provider and resume the original destination.
  */
 export async function initiateOidcLogin(
   providerSlug: string,
-  returnUrl: string
+  returnUrl: string,
+  redirectTo?: string
 ): Promise<void> {
   const res = await axios.get<{ redirectUrl: string }>(
     `/api/v1/auth/oidc/login/${encodeURIComponent(providerSlug)}`,
     { params: { returnUrl } }
   );
   const redirectUrl = parseOidcAuthorizationRedirect(res.data.redirectUrl);
-  if (!writeSessionStorageValue(OIDC_PROVIDER_KEY, providerSlug)) {
+  if (
+    !writeSessionStorageValue(OIDC_PROVIDER_KEY, providerSlug) ||
+    !writeSessionStorageValue(OIDC_REDIRECT_KEY, getSafeRedirect(redirectTo))
+  ) {
+    clearOidcLoginState();
     throw new Error('OIDC login requires browser session storage.');
   }
   window.location.href = redirectUrl;
@@ -99,11 +106,15 @@ export function getOidcProviderSlug(): string | null {
   return readSessionStorageValue(OIDC_PROVIDER_KEY) ?? null;
 }
 
-/**
- * Clears the provider slug stored by initiateOidcLogin.
- */
-export function clearOidcProviderSlug(): void {
+/** Returns the validated destination stored before the OIDC round-trip. */
+export function getOidcLoginRedirect(): string {
+  return getSafeRedirect(readSessionStorageValue(OIDC_REDIRECT_KEY));
+}
+
+/** Clears the temporary state stored by initiateOidcLogin. */
+export function clearOidcLoginState(): void {
   removeSessionStorageValue(OIDC_PROVIDER_KEY);
+  removeSessionStorageValue(OIDC_REDIRECT_KEY);
 }
 
 /**
