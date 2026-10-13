@@ -27,6 +27,8 @@ The catalogs include application labels, help, accessibility text, dialogs, empt
 
 Matching upstream values were reused where available. Machine translation and curated common terms filled the remaining entries; some source-language values remain where a model result was unsafe or the text is a product or technical term. Static checks found full source-key coverage and no placeholder, ICU argument/type, rich-text tag, URL, inline-code, HTTP/HTTPS/URL-token, or plural-marker mismatches. These checks verify catalog structure, not translation quality. A phrase-by-phrase native-speaker review has not been completed, so wording and remaining English values need fluent review.
 
+A targeted script scan of the Indonesian client catalog found no remaining Arabic, Devanagari, Japanese, or CJK text. This check does not replace a fluent-speaker review.
+
 ## Language metadata and RTL
 
 The document `lang` follows the successfully loaded catalog. Failed or superseded locale loads cannot roll back a newer selection, and the language picker reflects the requested locale while it loads and returns to the loaded locale if loading fails. The search input uses logical start padding.

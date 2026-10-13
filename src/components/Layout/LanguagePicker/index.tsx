@@ -43,7 +43,7 @@ const LanguagePicker = () => {
         leaveTo="opacity-0 scale-95"
       >
         <div
-          className="origin-top-end absolute end-0 mt-2 w-56 rounded-md shadow-lg"
+          className="origin-top-right absolute end-0 mt-2 w-56 rounded-md shadow-lg"
           ref={dropdownRef}
         >
           <div className="ring-opacity-5 rounded-md bg-gray-700 px-3 py-2 ring-1 ring-black">
