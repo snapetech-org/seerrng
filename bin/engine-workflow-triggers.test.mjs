@@ -159,7 +159,7 @@ test('unit-test shards use the shared org pool only on main pushes and manual ru
   const runner = ci.workflow.jobs['unit-test']['runs-on'];
   assert.equal(
     runner,
-    "${{ ((github.event_name == 'push' && github.ref == 'refs/heads/main') || (github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main')) && fromJSON('[\"self-hosted\",\"Linux\",\"X64\",\"host\"]') || 'ubuntu-latest' }}"
+    '${{ (((github.event_name == \'push\' && github.ref == \'refs/heads/main\') || (github.event_name == \'workflow_dispatch\' && github.ref == \'refs/heads/main\')) && vars.TRUSTED_MAIN_RUNNERS_ENABLED == \'true\') && fromJSON(\'{"group":"trusted-main","labels":["self-hosted","Linux","X64","host"]}\') || \'ubuntu-latest\' }}'
   );
 });
 
