@@ -275,7 +275,8 @@ upstream Chaptarr must preserve both all BookshelfNG features carried over and
 all ChaptarrNG features it maintains or actively develops, including
 unpublished work. That complete union blocks ChaptarrNG retirement as a whole.
 Each feature, sub-feature, data path, and distribution channel remains an
-individual blocker. See the [combined ChaptarrNG
+ individual blocker; active ChaptarrNG branches and open feature PRs count
+ before release. See the [combined ChaptarrNG
 matrix](https://github.com/snapetech/chaptarrng/blob/main/docs/FORK_FEATURES.md#chaptarrng-retirement-blockers)
 and the [fork transition criteria](./docs/using-seerr/dependency-forks.md).
 
