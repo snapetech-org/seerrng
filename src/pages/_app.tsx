@@ -139,17 +139,12 @@ const CoreApp = ({ Component, pageProps, router }: AppProps) => {
   let component: React.ReactNode;
   const [loadedMessages, setMessages] = useState<MessagesType>(emptyMessages);
   const [currentLocale, setLocale] = useState<AvailableLocale>('en');
+  const [activeLocale, setActiveLocale] = useState<AvailableLocale>('en');
   const loadedLocale = useRef<AvailableLocale>('en');
 
   useEffect(() => {
     polyfillIntl();
   }, []);
-
-  useEffect(() => {
-    const root = document.documentElement;
-    root.lang = currentLocale;
-    root.dir = getLocaleDirection(currentLocale);
-  }, [currentLocale]);
 
   useEffect(() => {
     if (currentLocale === loadedLocale.current) {
@@ -159,6 +154,9 @@ const CoreApp = ({ Component, pageProps, router }: AppProps) => {
     if (currentLocale === 'en') {
       loadedLocale.current = 'en';
       setMessages(emptyMessages);
+      setActiveLocale('en');
+      document.documentElement.lang = 'en';
+      document.documentElement.dir = getLocaleDirection('en');
       return;
     }
 
@@ -170,9 +168,13 @@ const CoreApp = ({ Component, pageProps, router }: AppProps) => {
         }
         loadedLocale.current = currentLocale;
         setMessages(localeMessages);
+        setActiveLocale(currentLocale);
+        document.documentElement.lang = currentLocale;
+        document.documentElement.dir = getLocaleDirection(currentLocale);
       })
       .catch(() => {
-        // Keep the last complete locale when a chunk fails to load.
+        // Keep the current catalog and document metadata together when a chunk fails.
+        setLocale(loadedLocale.current);
       });
 
     return () => {
@@ -204,11 +206,11 @@ const CoreApp = ({ Component, pageProps, router }: AppProps) => {
         keepPreviousData: true,
       }}
     >
-      <LanguageContext.Provider value={{ locale: currentLocale, setLocale }}>
+      <LanguageContext.Provider value={{ locale: activeLocale, setLocale }}>
         <IntlProvider
-          locale={currentLocale}
+          locale={activeLocale}
           defaultLocale="en"
-          messages={currentLocale === 'en' ? emptyMessages : loadedMessages}
+          messages={activeLocale === 'en' ? emptyMessages : loadedMessages}
         >
           <LoadingBar />
           <ThemeProvider>

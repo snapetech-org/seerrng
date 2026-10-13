@@ -2,7 +2,7 @@
 
 ## Existing support and verified gap
 
-SeerrNG already uses `react-intl`, separate frontend and server catalogs, a per-user Display Language control, and a Weblate translation workflow. The current frontend tree has 42 locale catalogs, including Arabic, Hindi, Japanese, Korean, Vietnamese, and Simplified and Traditional Chinese.
+SeerrNG already uses `react-intl`, separate frontend and server catalogs, a per-user Display Language control, and a Weblate translation workflow. The current frontend tree has 42 locale catalogs, including Arabic, Hindi, Japanese, Korean, Vietnamese, Indonesian, and Simplified and Traditional Chinese.
 
 On the latest `main`, the 43 `calendar.*` messages were absent from every non-English catalog. This PR adds those Calendar strings to `es`, `es-MX`, `de`, `zh-CN`, `zh-TW`, `ja`, `fr`, `pt-BR`, `ar`, `ko`, `hi`, and `vi`. It reuses the existing account language picker and does not create another setting or try to fill thousands of older, unrelated catalog gaps.
 
@@ -44,3 +44,7 @@ The existing language selector continues to use the current locale catalogs, and
 ## Added in this continuation
 
 Indonesian is now selectable in the existing language picker and loads a partial catalog for 91 shared interface messages; all other untranslated UI messages use the English catalog. Empty shared-message values were filled in the existing Spanish, Latin American Spanish, Simplified Chinese, Hindi, Brazilian Portuguese, Arabic, Korean, Traditional Chinese, and Vietnamese catalogs so they no longer render as blank text. Missing keys continue to fall back to English. This does not claim full-catalog translation or complete RTL review.
+
+## Added in this continuation
+
+The Indonesian server catalog now covers the existing email and web-push notification messages, with placeholder parity checked against English. Locale metadata now follows the last successfully loaded client catalog; a failed language chunk keeps the last complete language and direction. The desktop shell, search bar, sidebar, and common dropdown anchors use logical positioning for Arabic. Remaining app-wide RTL and catalog coverage stay tracked separately.

@@ -11,6 +11,7 @@ request workflows, download copies, user settings, and the services SeerrNG
 connects to.
 
 ## Start here
+- [Localization coverage and roadmap](/localization-roadmap): current supported locales, catalog coverage, and remaining translation work.
 
 - [Getting started](/getting-started/): choose an installation method and
   connect SeerrNG to your media server.
