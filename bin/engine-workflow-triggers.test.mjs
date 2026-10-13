@@ -155,11 +155,11 @@ test('GitHub fans every independent validation job out from the engine plan', ()
   assert.match(jobs.playwright.if, /outputs\.playwright == 'true'/);
 });
 
-test('unit-test shards use local runners only on main pushes and manual runs', () => {
+test('unit-test shards use the shared org pool only on main pushes and manual runs', () => {
   const runner = ci.workflow.jobs['unit-test']['runs-on'];
   assert.equal(
     runner,
-    "${{ ((github.event_name == 'push' && github.ref == 'refs/heads/main') || (github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main')) && fromJSON('[\"self-hosted\",\"Linux\",\"X64\",\"host\",\"seerrng\"]') || 'ubuntu-latest' }}"
+    "${{ ((github.event_name == 'push' && github.ref == 'refs/heads/main') || (github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main')) && fromJSON('[\"self-hosted\",\"Linux\",\"X64\",\"host\"]') || 'ubuntu-latest' }}"
   );
 });
 
