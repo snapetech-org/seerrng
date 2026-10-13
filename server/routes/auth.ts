@@ -86,6 +86,7 @@ const MAX_RESET_GUID_LENGTH = 64;
 const MAX_PORT = 65_535;
 const MAX_PLEX_PIN_ID = 2_147_483_647;
 const MAX_PLEX_PIN_CODE_LENGTH = 128;
+const MAX_PLEX_PIN_EXPIRY_LENGTH = 128;
 // Most self-hosted Jellyfin/Emby servers live on a LAN or Docker-internal
 // address, so the initial setup wizard accepts private hostnames by default
 // (matching upstream Seerr). Set SEERR_REQUIRE_PUBLIC_SETUP_HOSTS=true to
@@ -459,6 +460,13 @@ const parsePlexPinId = (value: unknown): number | undefined => {
     : undefined;
 };
 
+const parsePlexPinExpiry = (value: unknown): string | null =>
+  typeof value === 'string' &&
+  value.length > 0 &&
+  value.length <= MAX_PLEX_PIN_EXPIRY_LENGTH
+    ? value
+    : null;
+
 const plexPinPollRateLimit = rateLimit({
   windowMs: 15 * 60 * 1000,
   limit: 1_200,
@@ -553,7 +561,7 @@ authRoutes.post('/plex/pin', authRateLimit, async (req, res, next) => {
     return res.status(200).json({
       id,
       code,
-      expiresAt: typeof data.expiresAt === 'string' ? data.expiresAt : null,
+      expiresAt: parsePlexPinExpiry(data.expiresAt),
     });
   } catch (e) {
     logger.error('Unable to create Plex OAuth PIN', {
@@ -608,9 +616,18 @@ authRoutes.get(
           authToken.length <= MAX_AUTH_TOKEN_LENGTH
             ? authToken
             : null,
-        expiresAt: typeof data.expiresAt === 'string' ? data.expiresAt : null,
+        expiresAt: parsePlexPinExpiry(data.expiresAt),
       });
     } catch (e) {
+      if (axios.isAxiosError(e) && e.response?.status === 404) {
+        logger.debug('Plex OAuth PIN is not available yet', {
+          label: 'Auth',
+          route: 'plex/pin',
+          pinId,
+        });
+        return res.status(200).json({ authToken: null, expiresAt: null });
+      }
+
       logger.warn('Unable to poll Plex OAuth PIN', {
         label: 'Auth',
         pinId,

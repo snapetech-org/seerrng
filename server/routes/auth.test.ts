@@ -1041,6 +1041,55 @@ describe('POST /auth/plex', () => {
   });
 });
 
+describe('GET /auth/plex/pin/:id', () => {
+  it('keeps a transient Plex PIN 404 in the pending state', async () => {
+    const settings = getSettings();
+    settings.main.mediaServerType = MediaServerType.PLEX;
+    settings.main.mediaServerLogin = true;
+    const getMock = mock.method(axios, 'get', async () => {
+      throw Object.assign(new Error('PIN temporarily unavailable'), {
+        isAxiosError: true,
+        response: { status: 404 },
+      });
+    });
+
+    try {
+      const response = await request(app).get('/auth/plex/pin/42?code=abcd');
+
+      assert.strictEqual(response.status, 200);
+      assert.deepStrictEqual(response.body, {
+        authToken: null,
+        expiresAt: null,
+      });
+      assert.strictEqual(getMock.mock.callCount(), 1);
+    } finally {
+      getMock.mock.restore();
+    }
+  });
+
+  it('continues to report non-404 Plex PIN lookup failures', async () => {
+    const settings = getSettings();
+    settings.main.mediaServerType = MediaServerType.PLEX;
+    settings.main.mediaServerLogin = true;
+    const getMock = mock.method(axios, 'get', async () => {
+      throw Object.assign(new Error('Plex unavailable'), {
+        isAxiosError: true,
+        response: { status: 503 },
+      });
+    });
+
+    try {
+      const response = await request(app).get('/auth/plex/pin/42?code=abcd');
+
+      assert.strictEqual(response.status, 502);
+      assert.match(response.body.message, /unable to contact plex/i);
+      assert.strictEqual(getMock.mock.callCount(), 1);
+    } finally {
+      getMock.mock.restore();
+    }
+  });
+});
+
 describe('POST /auth/jellyfin/bridge', () => {
   const jellyfinUserId = '0123456789abcdef0123456789abcdef';
 
