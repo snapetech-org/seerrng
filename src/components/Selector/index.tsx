@@ -51,6 +51,11 @@ const messages = defineMessages('components.Selector', {
   ended: 'Ended',
   canceled: 'Canceled',
   pilot: 'Pilot',
+  selectAll: 'Select All',
+  clearAll: 'Clear All',
+  allProvidersSelected: 'All available providers are already selected.',
+  noProvidersAvailable: 'No providers are available in this region.',
+  noProvidersSelected: 'No providers are currently selected.',
 });
 
 type SingleVal = {
@@ -554,6 +559,39 @@ export const WatchProviderSelector = ({
 
   const initialProviders = orderedData.slice(0, 24);
   const otherProviders = orderedData.slice(24);
+  const allProvidersSelected =
+    orderedData.length > 0 &&
+    orderedData.every((provider) => activeProvider.includes(provider.id));
+
+  const selectAllProviders = () => {
+    const availableProviderIds = new Set(
+      orderedData.map((provider) => provider.id)
+    );
+
+    setActiveProvider((current) => {
+      const next: number[] = [];
+      const selectedProviderIds = new Set<number>();
+
+      for (const providerId of current) {
+        if (
+          availableProviderIds.has(providerId) &&
+          !selectedProviderIds.has(providerId)
+        ) {
+          next.push(providerId);
+          selectedProviderIds.add(providerId);
+        }
+      }
+
+      for (const provider of orderedData) {
+        if (!selectedProviderIds.has(provider.id)) {
+          next.push(provider.id);
+          selectedProviderIds.add(provider.id);
+        }
+      }
+
+      return next;
+    });
+  };
 
   return (
     <>
@@ -594,6 +632,34 @@ export const WatchProviderSelector = ({
         )
       ) : (
         <div className="provider-icons" data-provider-region="layout">
+          <div
+            className="app-action-row"
+            data-action-placement="leading"
+            data-provider-region="actions"
+          >
+            <Button
+              type="button"
+              buttonSize="sm"
+              disabled={orderedData.length === 0 || allProvidersSelected}
+              disabledReason={
+                orderedData.length === 0
+                  ? intl.formatMessage(messages.noProvidersAvailable)
+                  : intl.formatMessage(messages.allProvidersSelected)
+              }
+              onClick={selectAllProviders}
+            >
+              {intl.formatMessage(messages.selectAll)}
+            </Button>
+            <Button
+              type="button"
+              buttonSize="sm"
+              disabled={activeProvider.length === 0}
+              disabledReason={intl.formatMessage(messages.noProvidersSelected)}
+              onClick={() => setActiveProvider([])}
+            >
+              {intl.formatMessage(messages.clearAll)}
+            </Button>
+          </div>
           <div className="provider-icons">
             {initialProviders.map((provider) => {
               const isActive = activeProvider.includes(provider.id);

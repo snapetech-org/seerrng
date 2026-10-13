@@ -44,10 +44,12 @@ vi.mock('@app/components/Common/Button', () => ({
   default: (
     props: React.ButtonHTMLAttributes<HTMLButtonElement> & {
       buttonSize?: string;
+      disabledReason?: string;
     }
   ) => {
     const attributes = { ...props };
     delete attributes.buttonSize;
+    delete attributes.disabledReason;
     return <button {...attributes} />;
   },
 }));
@@ -76,7 +78,11 @@ afterEach(() => {
 });
 
 async function fixture(
-  run: (doc: Document, onChange: ReturnType<typeof vi.fn>) => Promise<void>
+  run: (doc: Document, onChange: ReturnType<typeof vi.fn>) => Promise<void>,
+  options: {
+    activeProviders?: number[];
+    providers?: WatchProviderDetails[];
+  } = {}
 ) {
   const dom = new JSDOM('<form><div id="root"></div></form>');
   vi.stubGlobal('window', dom.window);
@@ -84,12 +90,14 @@ async function fixture(
   vi.stubGlobal('React', React);
   vi.stubGlobal('IS_REACT_ACT_ENVIRONMENT', true);
   fixtureState.isLoading = false;
-  fixtureState.providers = Array.from({ length: 27 }, (_, id) => ({
-    id,
-    name: `Fixture Provider ${id}`,
-    logoPath: `/provider-${id}.png`,
-    displayPriority: id,
-  })).reverse();
+  fixtureState.providers =
+    options.providers ??
+    Array.from({ length: 27 }, (_, id) => ({
+      id,
+      name: `Fixture Provider ${id}`,
+      logoPath: `/provider-${id}.png`,
+      displayPriority: id,
+    })).reverse();
   const onChange = vi.fn();
   const root = createRoot(document.getElementById('root')!);
   try {
@@ -99,7 +107,7 @@ async function fixture(
           type="tv"
           region="US"
           regionLabel="Region"
-          activeProviders={[0, 26]}
+          activeProviders={options.activeProviders ?? [0, 26]}
           onChange={onChange}
         />
       )
@@ -169,6 +177,106 @@ it('expanded choices retain order, names and state without changing the filter',
     expect(tiles(doc)[0].getAttribute('aria-pressed')).toBe('true');
     expect(onChange).not.toHaveBeenCalled();
   });
+});
+
+it('selects all regional providers, including collapsed choices, and clears them', async () => {
+  await fixture(async (doc, onChange) => {
+    const selectAll = doc.querySelector<HTMLButtonElement>(
+      '[data-provider-region="actions"] button'
+    )!;
+    const clearAll = doc.querySelectorAll<HTMLButtonElement>(
+      '[data-provider-region="actions"] button'
+    )[1];
+    const submit = vi.fn((event: Event) => event.preventDefault());
+    doc.querySelector('form')!.addEventListener('submit', submit);
+
+    expect(selectAll.textContent).toBe('Select All');
+    expect(clearAll.textContent).toBe('Clear All');
+    expect(selectAll.type).toBe('button');
+    expect(clearAll.type).toBe('button');
+    expect(selectAll.disabled).toBe(false);
+    expect(clearAll.disabled).toBe(false);
+
+    await act(async () => selectAll.click());
+
+    expect(onChange).toHaveBeenCalledExactlyOnceWith('US', [
+      0,
+      26,
+      ...Array.from({ length: 25 }, (_, index) => index + 1),
+    ]);
+    expect(selectAll.disabled).toBe(true);
+    expect(clearAll.disabled).toBe(false);
+
+    await act(async () =>
+      doc
+        .querySelector<HTMLButtonElement>(
+          '[data-provider-region="expand-control"]'
+        )!
+        .click()
+    );
+    expect(tiles(doc)).toHaveLength(27);
+    expect(
+      tiles(doc).every(
+        (provider) => provider.getAttribute('aria-pressed') === 'true'
+      )
+    ).toBe(true);
+
+    onChange.mockClear();
+    await act(async () => clearAll.click());
+
+    expect(onChange).toHaveBeenCalledExactlyOnceWith('US', []);
+    expect(selectAll.disabled).toBe(false);
+    expect(clearAll.disabled).toBe(true);
+    expect(
+      tiles(doc).every(
+        (provider) => provider.getAttribute('aria-pressed') === 'false'
+      )
+    ).toBe(true);
+    expect(submit).not.toHaveBeenCalled();
+  });
+});
+
+it('uses provider identity rather than selected-array length when enabling select all', async () => {
+  await fixture(
+    async (doc, onChange) => {
+      const selectAll = doc.querySelector<HTMLButtonElement>(
+        '[data-provider-region="actions"] button'
+      )!;
+
+      expect(selectAll.disabled).toBe(false);
+      await act(async () => selectAll.click());
+
+      expect(onChange).toHaveBeenCalledExactlyOnceWith(
+        'US',
+        Array.from({ length: 27 }, (_, index) => index)
+      );
+      expect(selectAll.disabled).toBe(true);
+    },
+    {
+      activeProviders: [
+        ...Array.from({ length: 26 }, (_, index) => index),
+        999,
+      ],
+    }
+  );
+});
+
+it('disables selecting an empty provider list and lets stale selections be cleared', async () => {
+  await fixture(
+    async (doc, onChange) => {
+      const actions = doc.querySelectorAll<HTMLButtonElement>(
+        '[data-provider-region="actions"] button'
+      );
+      const [selectAll, clearAll] = actions;
+
+      expect(selectAll.disabled).toBe(true);
+      expect(clearAll.disabled).toBe(false);
+      await act(async () => clearAll.click());
+      expect(onChange).toHaveBeenCalledExactlyOnceWith('US', []);
+      expect(clearAll.disabled).toBe(true);
+    },
+    { activeProviders: [999], providers: [] }
+  );
 });
 
 it('each native activation toggles once and preserves region reset and selected-ID ordering', async () => {
