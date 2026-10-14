@@ -155,15 +155,17 @@ test('GitHub fans every independent validation job out from the engine plan', ()
   assert.match(jobs.playwright.if, /outputs\.playwright == 'true'/);
 });
 
-test('unit-test shards use the shared org pool only on main pushes and manual runs', () => {
+test('unit-test shards use kspls0 in the shared org pool only for main pushes and manual runs', () => {
   const runner = ci.workflow.jobs['unit-test']['runs-on'];
   const mainRunnerCondition =
     "((github.event_name == 'push' && github.ref == 'refs/heads/main') || " +
     "(github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main'))";
   const trustedRunnerJson =
-    '{"group":"trusted-main","labels":["self-hosted","Linux","X64","host"]}';
+    '{"group":"trusted-main","labels":["self-hosted","Linux","X64","host","kspls0"]}';
   const expectedRunner =
-    '$' + '{{ (' + mainRunnerCondition +
+    '$' +
+    '{{ (' +
+    mainRunnerCondition +
     " && vars.TRUSTED_MAIN_RUNNERS_ENABLED == 'true') && fromJSON('" +
     trustedRunnerJson +
     "') || 'ubuntu-latest' }}";
