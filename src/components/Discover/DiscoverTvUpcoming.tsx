@@ -43,6 +43,7 @@ const DiscoverTvUpcoming = () => {
         <Header>{intl.formatMessage(messages.upcomingtv)}</Header>
       </div>
       <ListView
+        enableDiscoverNavigation
         items={titles}
         isEmpty={isEmpty}
         isReachingEnd={isReachingEnd}
