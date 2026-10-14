@@ -1,37 +1,44 @@
-# GitHub Free organization and runner-group migration plan
+# GitHub Free organization and runner-group migration
 
-Status: partially complete as of 2026-10-13 23:50 UTC. The repository transfers and secure runner-group configuration are complete; runner membership and workflow cutover are not.
+Status: in progress. The live snapshot below was checked on 2026-10-14 UTC.
 
-## Verified live state
+## Scope
 
-All eight target repositories are public and owned by `snapetech-org`: SeerrNG, SLSKR, SLSKDN, QuestarrNG, TorrentNG, ROMarrNG, ChaptarrNG, and BookshelfNG.
+The eight public NG repositories are SeerrNG, SLSKR, SLSKDN, QuestarrNG, TorrentNG, ROMarrNG, ChaptarrNG, and BookshelfNG. PR and non-main validation stays on GitHub-hosted runners. Only trusted main validation can use the shared local pool after the repository opt-in is enabled.
 
-The organization runner group `trusted-main` (id 3) is configured with:
+## Live runner-group state
 
-- Visibility `selected`, public repository access enabled, and workflow restrictions enabled.
-- Exactly the eight repositories above.
-- Nine workflows pinned to `refs/heads/main`: `bookshelfng/build.yml`, `chaptarrng/build.yml`, `QuestarrNG/ci.yml`, `ROMarrNG/docker.yml`, `seerrng/ci.yml`, `slskdN/ci.yml`, `slskdN/ci-enhancements.yml`, `slskr/ci.yml`, and `TorrentNG/ci.yml`.
-- Zero attached runners at the last live check. The group is configured but not operational.
+The organization runner group trusted-main (id 3) currently has selected repository access, public repositories enabled, and workflow restrictions enabled. It is accessible to 14 repositories: the eight NG targets and the existing 0xBEEF, Lack, MilkRust, packer, PalWorldSelfHost, and slskNet.Runtime repositories. Preserve those six unrelated repositories and their existing workflow access.
 
-The `Default` group still holds 18 registered runners. Their online status does not mean they are members of `trusted-main`; runner membership has not been changed. The migration PRs are open across all eight repositories, and the routing changes are not active on their default branches yet.
+The current workflow allowlist has 21 main-ref paths. Nine are the intended NG validation workflows:
 
-TorrentNG's `backend-evidence.yml` is intentionally excluded from `trusted-main` because it runs live device and production-soak evidence. Keep that workflow on its existing runner arrangement.
+- BookshelfNG/build.yml
+- ChaptarrNG/build.yml
+- QuestarrNG/ci.yml
+- ROMarrNG/docker.yml
+- SeerrNG/ci.yml
+- SLSKDN/ci.yml and ci-enhancements.yml
+- SLSKR/ci.yml
+- TorrentNG/ci.yml
 
-## Routing and security boundary
+The allowlist still contains four other NG paths: SeerrNG/create-tag.yml, helm.yml, and release.yml, plus TorrentNG/release.yml. These paths should be removed after existing queued and in-progress Actions runs drain. TorrentNG/backend-evidence.yml is no longer allowlisted. Preserve the eight selected workflow paths belonging to the six unrelated repositories.
 
-Pull-request, tag, and non-main validation stays on standard GitHub-hosted runners. Only the exact workflows above may use the shared local pool, and only for trusted `main` pushes or manual runs against `main`. The organization runner-group restriction is the server-enforced control; workflow expressions alone do not protect a public self-hosted runner.
+Eight runners are attached to trusted-main and online. Runner 145 is busy; the other seven were idle at the snapshot. The repository variable TRUSTED_MAIN_RUNNERS_ENABLED is unset in all eight targets; SLSKDN has only its existing PREFER_SELF_HOSTED variable. The route PRs are still open, so their workflow updates are not active on the default branches.
 
-The `TRUSTED_MAIN_RUNNERS_ENABLED` variable is currently unset in QuestarrNG and SLSKDN. Do not set it to `true` until `trusted-main` has an online runner with the labels those workflows require. SLSKDN also retains its `slskdn` label requirement.
+## Runner selection
 
-The shared pool is for trusted main validation. It will not run contributor pull-request code and therefore will not directly drain the GitHub-hosted pull-request queue. Keep PR validation on hosted runners as required by the public-repository security boundary.
+Each validation job returns one string from runs-on: trusted-main for pushes or manual runs on main when TRUSTED_MAIN_RUNNERS_ENABLED is exactly true; ubuntu-latest for pull requests, tags, non-main manual runs, and the unset/false case. This selects the restricted runner group without relying on an empty group plus hosted labels. The group restriction is the server-side security boundary; expressions alone do not protect a public self-hosted runner.
 
-## Remaining work
+The shared local pool will not run contributor pull-request code and therefore will not directly drain the GitHub-hosted PR queue. Keep PR validation hosted.
 
-1. Complete and integrate the per-repository routing changes without canceling existing work.
-2. Attach only suitable, least-privilege NG runners to `trusted-main`; retain a separate runner for any excluded deployment or live-evidence workflow.
-3. Enable the QuestarrNG and SLSKDN route flags only after the group runner is online and its labels are verified.
-4. Run a trusted main workflow in each repository and confirm the selected runner group, labels, and job outcome. Verify pull-request workflows remain hosted.
-5. Keep Actions queue snapshots separate from runner utilization: queued hosted PR jobs and idle local runners represent different capacity pools.
+## Rollout
+
+1. Update all eight route PRs to use a supported string-valued group selector with hosted fallback, and exact-head validate and review each change.
+2. Wait for existing queued and in-progress Actions runs to drain before changing group membership or its workflow allowlist. Do not cancel current/head-valid work.
+3. Remove the four non-validation NG workflow paths listed above while preserving the six unrelated repositories and their allowlisted workflows.
+4. Verify the runner membership and labels against the main validation requirements; do not move release, deployment, or live-evidence runners into this group.
+5. After the route PRs merge and the group is ready, enable TRUSTED_MAIN_RUNNERS_ENABLED in each target repository and dispatch one trusted main validation run per project. Confirm runner selection and job results, then verify PR runs still use hosted runners.
+6. Revalidate every open PR at its exact current head, review its diff and checks, merge eligible PRs to main, and verify the post-merge result.
 
 ## References
 

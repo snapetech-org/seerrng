@@ -157,10 +157,13 @@ test('GitHub fans every independent validation job out from the engine plan', ()
 
 test('unit-test shards use the shared org pool only on main pushes and manual runs', () => {
   const runner = ci.workflow.jobs['unit-test']['runs-on'];
-  assert.equal(
-    runner,
-    '${{ (((github.event_name == \'push\' && github.ref == \'refs/heads/main\') || (github.event_name == \'workflow_dispatch\' && github.ref == \'refs/heads/main\')) && vars.TRUSTED_MAIN_RUNNERS_ENABLED == \'true\') && fromJSON(\'{"group":"trusted-main","labels":["self-hosted","Linux","X64","host"]}\') || \'ubuntu-latest\' }}'
-  );
+  const mainRunnerCondition =
+    "((github.event_name == 'push' && github.ref == 'refs/heads/main') || " +
+    "(github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main'))";
+  const expectedRunner =
+    '$' + '{{ (' + mainRunnerCondition +
+    " && vars.TRUSTED_MAIN_RUNNERS_ENABLED == 'true') && 'trusted-main' || 'ubuntu-latest' }}";
+  assert.equal(runner, expectedRunner);
 });
 
 test('native workflow bodies are reused without duplicate PR or push launches', () => {
