@@ -167,7 +167,7 @@ const getTvShowMock = mock.fn(
       production_companies: [],
       production_countries: [],
       spoken_languages: [],
-      seasons: [],
+      seasons: [{ season_number: 1, episode_count: 12 }],
       status: 'Ended',
       type: 'Scripted',
       vote_average: 0,
