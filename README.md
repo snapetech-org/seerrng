@@ -178,6 +178,15 @@ following its visible filtered order. The [review index](./docs/upstream-review-
 links Seerr issue #3015 and PR #3122; the [fork-retirement matrix](./docs/fork-rationale.md)
 records the replacement behavior and evidence. This proposal is not released.
 
+The open Sonarr proposal ([#288](https://github.com/snapetech-org/seerrng/pull/288))
+recovers anime requests when their configured quality profile is missing or
+cannot be checked, and shows the selected anime profile on the Services card.
+Its upstream context—Seerr issue #3159 and closed PR #3160—is linked in the
+[review index](./docs/upstream-review-status.md). The
+[fork-retirement matrix](./docs/fork-rationale.md) records the equivalent
+profile recovery and compatibility evidence a supported replacement would
+need. This proposal is not released.
+
 Release notes are maintained in [`CHANGELOG.md`](./CHANGELOG.md). User-facing
 pull requests add a concise release-note fragment under
 [`release-notes/`](./release-notes/README.md); the release workflow publishes
