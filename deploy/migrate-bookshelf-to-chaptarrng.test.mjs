@@ -105,6 +105,7 @@ it('requires a stopped service and an independent backup for apply', async () =>
   const backupNames = await readdir(backupDirectory);
   assert.equal(applied.code, 0, applied.stderr);
   assert.match(args, /-migrate-bookshelf/);
+  assert.match(args, /-confirm-bookshelf-service-stopped/);
   assert.match(applied.stdout, /Independent config backup:/);
   assert.equal(backupNames.length, 1);
   assert.match(backupNames[0], /^bookshelfng-config-.*\.tar\.gz$/);

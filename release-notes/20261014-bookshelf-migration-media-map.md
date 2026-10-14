@@ -2,7 +2,7 @@
 category: changed
 audience: operators
 area: bookshelf-migration
-action: Resolve any generated per-book media review and rerun preview before applying the migration.
+action: Stop BookshelfNG before applying the migration, then resolve any generated per-book media review and rerun preview.
 breaking: false
 ---
-The BookshelfNG migration helper now explains how to complete the per-book media map when the source database does not identify a record's format.
+The BookshelfNG migration helper now requires an explicit stopped-service confirmation before applying changes and explains how to complete the per-book media map when the source database does not identify a record's format.

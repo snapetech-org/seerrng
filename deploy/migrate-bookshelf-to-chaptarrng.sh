@@ -103,9 +103,9 @@ if [ "$APPLY" = "true" ]; then
   tar -C "$(dirname "$CONFIG_DIR")" -czf "$backup_path" "$(basename "$CONFIG_DIR")"
   chmod 600 "$backup_path"
   echo "Independent config backup: ${backup_path}"
-  migration_flag=-migrate-bookshelf
+  migration_flags=(-migrate-bookshelf -confirm-bookshelf-service-stopped)
 else
-  migration_flag=-preview-bookshelf-migration
+  migration_flags=(-preview-bookshelf-migration)
 fi
 
 owner="$(stat -c '%u:%g' "$CONFIG_DIR")"
@@ -115,7 +115,7 @@ if docker run --rm \
   --mount "type=bind,source=${CONFIG_DIR},target=/config" \
   --entrypoint dotnet \
   "$IMAGE" \
-  /app/Chaptarr.dll "$migration_flag" -data=/config; then
+  /app/Chaptarr.dll "${migration_flags[@]}" -data=/config; then
   :
 else
   migration_status=$?
