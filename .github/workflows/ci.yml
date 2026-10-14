@@ -905,7 +905,7 @@ jobs:
     name: Preflight deployment host
     timeout-minutes: 10
     if: github.ref == 'refs/heads/main'
-    runs-on: [self-hosted, seerrng, linux-build, kspls0]
+    runs-on: ${{ ((github.ref == 'refs/heads/main') && vars.TRUSTED_MAIN_RUNNERS_ENABLED == 'true') && fromJSON('{"group":"trusted-main","labels":["self-hosted","Linux","X64","host","kspls0","linux-build"]}') || 'ubuntu-latest' }}
     outputs:
       ready: ${{ steps.verify-storage.outputs.ready }}
     permissions:
@@ -1219,7 +1219,7 @@ jobs:
     concurrency:
       group: seerrng-live-deploy
       cancel-in-progress: false
-    runs-on: [self-hosted, seerrng, linux-build, kspls0]
+    runs-on: ${{ ((github.ref == 'refs/heads/main') && vars.TRUSTED_MAIN_RUNNERS_ENABLED == 'true') && fromJSON('{"group":"trusted-main","labels":["self-hosted","Linux","X64","host","kspls0","linux-build"]}') || 'ubuntu-latest' }}
     permissions:
       contents: read
       packages: read

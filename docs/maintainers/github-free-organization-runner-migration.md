@@ -22,7 +22,7 @@ Runner-route PRs are merged for BookshelfNG #129, ChaptarrNG #101, QuestarrNG #5
 
 ## Runner selection
 
-Use the structured `runs-on` group-and-label form (the group and every listed label must match). Do not use the group name as a runner label or use host labels without the restricted group. SeerrNG unit-test shards require `trusted-main` plus `self-hosted`, `Linux`, `X64`, `host`, and `kspls0`. They select that runner only for pushes or manual runs on `main` when `TRUSTED_MAIN_RUNNERS_ENABLED` is exactly `true`; pull requests and other refs use `ubuntu-latest`.
+Use the structured `runs-on` group-and-label form (the group and every listed label must match). Do not use the group name as a runner label or use host labels without the restricted group. SeerrNG unit-test shards require `trusted-main` plus `self-hosted`, `Linux`, `X64`, `host`, and `kspls0`. The deployment preflight and deployment jobs additionally require `linux-build`; all six runner labels exist on the online `kspls0` runner in `trusted-main`. These jobs use the pool only when `TRUSTED_MAIN_RUNNERS_ENABLED` is exactly `true`; otherwise they fall back to `ubuntu-latest`, where the deployment preflight safely skips when the server configuration path is absent.
 
 The organization workflow allowlist is the server-side trust boundary. Event expressions and labels are routing conditions, not substitutes for that restriction. Keep contributor pull-request code off the local pool. The pool is shared selectively and does not replace each repository's hosted PR validation.
 
