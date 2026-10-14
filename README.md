@@ -207,6 +207,14 @@ The current proposal does not include PR #3166's original-language and country
 post-filters or its bounded result-page backfill with estimated pagination;
 those remain a separately reviewed follow-up. These changes are not released.
 
+The open title-card ratings proposal ([#292](https://github.com/snapetech-org/seerrng/pull/292))
+extends SeerrNG's existing rating popover to touch users and waits for a
+sustained desktop hover before looking up Movie or Series provider ratings. The
+provider row remains within narrow viewports. Its public review entry links
+upstream [Seerr PR #3154](https://github.com/seerr-team/seerr/pull/3154) and
+[issue #1269](https://github.com/seerr-team/seerr/issues/1269). This proposal is
+not released.
+
 Release notes are maintained in [`CHANGELOG.md`](./CHANGELOG.md). User-facing
 pull requests add a concise release-note fragment under
 [`release-notes/`](./release-notes/README.md); the release workflow publishes
