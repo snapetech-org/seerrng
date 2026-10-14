@@ -1,9 +1,11 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 import { useLockBodyScroll } from '@app/hooks/useLockBodyScroll';
+import globalMessages from '@app/i18n/globalMessages';
 import { Transition, TransitionChild } from '@headlessui/react';
 import { XMarkIcon } from '@heroicons/react/24/outline';
 import { Fragment, useEffect, useRef, useState } from 'react';
 import ReactDOM from 'react-dom';
+import { useIntl } from 'react-intl';
 
 interface SlideOverProps {
   show?: boolean;
@@ -21,6 +23,7 @@ const SlideOver = ({
   children,
 }: SlideOverProps) => {
   const [isMounted, setIsMounted] = useState(false);
+  const intl = useIntl();
   const slideoverRef = useRef(null);
   useLockBodyScroll(show);
 
@@ -75,7 +78,9 @@ const SlideOver = ({
                       <h2 className="page-title">{title}</h2>
                       <div className="flex h-7 items-center">
                         <button
-                          aria-label="Close panel"
+                          aria-label={intl.formatMessage(
+                            globalMessages.closePanel
+                          )}
                           className="text-gray-200 transition duration-150 ease-in-out hover:text-white"
                           onClick={() => onClose()}
                         >

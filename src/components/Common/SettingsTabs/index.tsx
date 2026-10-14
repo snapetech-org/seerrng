@@ -1,8 +1,16 @@
 import { useUser } from '@app/hooks/useUser';
+import defineMessages from '@app/utils/defineMessages';
 import type { Permission } from '@server/lib/permissions';
 import { hasPermission } from '@server/lib/permissions';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
+import { useIntl } from 'react-intl';
+
+const messages = defineMessages('components.Common.SettingsTabs', {
+  selectTab: 'Select a tab',
+  selectedTab: 'Selected tab',
+  tabs: 'Tabs',
+});
 
 export interface SettingsRoute {
   text: string;
@@ -73,6 +81,7 @@ const SettingsTabs = ({
   tabType?: 'default' | 'button' | 'filter';
   settingsRoutes: SettingsRoute[];
 }) => {
+  const intl = useIntl();
   const router = useRouter();
   const { user: currentUser } = useUser();
   const visibleSettingsRoutes = settingsRoutes.filter(
@@ -99,7 +108,7 @@ const SettingsTabs = ({
     <>
       <div className={tabType === 'filter' ? 'hidden' : 'sm:hidden'}>
         <label htmlFor="tabs" className="sr-only">
-          Select a Tab
+          {intl.formatMessage(messages.selectTab)}
         </label>
         <select
           id="tabs"
@@ -110,7 +119,7 @@ const SettingsTabs = ({
             navigateMobile(e.target.value);
           }}
           defaultValue={activeMobileIndex >= 0 ? String(activeMobileIndex) : ''}
-          aria-label="Selected Tab"
+          aria-label={intl.formatMessage(messages.selectedTab)}
         >
           {visibleSettingsRoutes.map((route, index) => (
             <option value={String(index)} key={`mobile-settings-link-${index}`}>
@@ -133,7 +142,7 @@ const SettingsTabs = ({
                 ? 'flex w-full min-w-0 flex-wrap justify-between gap-[5px]'
                 : 'flex flex-wrap gap-[5px]'
             }
-            aria-label="Tabs"
+            aria-label={intl.formatMessage(messages.tabs)}
           >
             {visibleSettingsRoutes.map((route, index) => (
               <SettingsLink

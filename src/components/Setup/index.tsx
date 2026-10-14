@@ -271,7 +271,7 @@ const Setup = () => {
         <div className="relative mb-10 h-48 max-w-full sm:mx-auto sm:h-64 sm:max-w-md">
           <Image
             src={versionedAsset('/logo_stacked.svg')}
-            alt="Logo"
+            alt="Seerr"
             fill
             className="object-contain"
           />

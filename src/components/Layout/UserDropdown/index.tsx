@@ -27,6 +27,7 @@ const messages = defineMessages('components.Layout.UserDropdown', {
   settings: 'Settings',
   requests: 'Requests',
   signout: 'Sign Out',
+  userMenu: 'User menu',
 });
 
 const ForwardedLink = forwardRef<
@@ -94,7 +95,7 @@ const UserDropdown = () => {
         <MenuButton
           className="flex max-w-xs items-center rounded-full text-sm ring-1 ring-gray-700 hover:ring-gray-500 focus:ring-gray-500 focus:outline-none"
           data-testid="user-menu"
-          aria-label="User menu"
+          aria-label={intl.formatMessage(messages.userMenu)}
         >
           <CachedImage
             type="avatar"

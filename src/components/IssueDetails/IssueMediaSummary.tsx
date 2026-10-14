@@ -6,6 +6,7 @@ import {
   normalizeOpenLibraryWorkId,
 } from '@app/utils/apiPath';
 import { sortCrewPriority } from '@app/utils/creditHelpers';
+import defineMessages from '@app/utils/defineMessages';
 import { getTmdbPosterImageUrl } from '@app/utils/imageCache';
 import type { BookDetails } from '@server/models/Book';
 import type { ComicDetails } from '@server/models/Comic';
@@ -32,6 +33,28 @@ export type IssueSummaryDetail = {
 
 type LinkedValue = { label: string; href?: string };
 type SummaryRow = { label: string; values: LinkedValue[] };
+
+const messages = defineMessages('components.IssueDetails.IssueMediaSummary', {
+  notAvailable: 'Not available',
+  mediaAndFormat: 'Media & Format',
+  firstPublished: 'First Published',
+  latestIssue: 'Latest Issue',
+  releaseDate: 'Release Date',
+  pages: 'Pages',
+  issues: 'Issues',
+  runtime: 'Runtime',
+  genres: 'Genres',
+  studio: 'Studio',
+  artist: 'Artist',
+  albumType: 'Album Type',
+  trackCount: 'Track Count',
+  author: 'Author',
+  publisher: 'Publisher',
+  creator: 'Creator',
+  network: 'Network',
+  minutes: '{count, plural, one {# minute} other {# minutes}}',
+  issueCount: '{count, plural, one {# issue} other {# issues}}',
+});
 
 export const isIssueMusic = (media: IssueMediaDetails): media is MusicDetails =>
   (media as MusicDetails).mediaType === 'album';
@@ -93,7 +116,7 @@ const IssueMediaSummary = ({
   embedded = false,
 }: IssueMediaSummaryProps) => {
   const intl = useIntl();
-  const unavailable = 'Not available';
+  const unavailable = intl.formatMessage(messages.notAvailable);
   const isMovie = isIssueMovie(data);
   const isMusic = isIssueMusic(data);
   const isBook = isIssueBook(data);
@@ -125,23 +148,27 @@ const IssueMediaSummary = ({
         : unavailable
       : isMusic
         ? data.tracks.length > 0
-          ? `${intl.formatNumber(
-              Math.round(
+          ? intl.formatMessage(messages.minutes, {
+              count: Math.round(
                 data.tracks.reduce((total, track) => total + track.length, 0) /
                   60000
-              )
-            )} minutes`
+              ),
+            })
           : unavailable
         : isComic
           ? data.issueCount
-            ? `${intl.formatNumber(data.issueCount)} issues`
+            ? intl.formatMessage(messages.issueCount, {
+                count: data.issueCount,
+              })
             : unavailable
           : isMovie
             ? data.runtime
-              ? `${intl.formatNumber(data.runtime)} minutes`
+              ? intl.formatMessage(messages.minutes, { count: data.runtime })
               : unavailable
             : data.episodeRunTime[0]
-              ? `${intl.formatNumber(data.episodeRunTime[0])} minutes`
+              ? intl.formatMessage(messages.minutes, {
+                  count: data.episodeRunTime[0],
+                })
               : unavailable;
   const posterSrc =
     isMusic || isBook || isComic || isMagazine
@@ -161,7 +188,7 @@ const IssueMediaSummary = ({
           : posterSrc);
   const artworkType =
     isBook || isComic || isMagazine ? 'book' : isMusic ? 'music' : 'tmdb';
-  const mediaLabel = getIssueMediaAndFormatLabel(mediaType, is4k);
+  const mediaLabel = getIssueMediaAndFormatLabel(mediaType, is4k, intl);
   const secondaryRows: SummaryRow[] = isMovie
     ? [
         ...sortCrewPriority(data.credits.crew)
@@ -176,7 +203,7 @@ const IssueMediaSummary = ({
             ],
           })),
         {
-          label: 'Studio',
+          label: intl.formatMessage(messages.studio),
           values: [
             {
               label: data.productionCompanies[0]?.name ?? unavailable,
@@ -190,7 +217,7 @@ const IssueMediaSummary = ({
     : isMusic
       ? [
           {
-            label: 'Artist',
+            label: intl.formatMessage(messages.artist),
             values: [
               {
                 label: data.artist.name,
@@ -202,16 +229,19 @@ const IssueMediaSummary = ({
               },
             ],
           },
-          { label: 'Album Type', values: [{ label: data.type }] },
           {
-            label: 'Track Count',
+            label: intl.formatMessage(messages.albumType),
+            values: [{ label: data.type }],
+          },
+          {
+            label: intl.formatMessage(messages.trackCount),
             values: [{ label: intl.formatNumber(data.tracks.length) }],
           },
         ]
       : isBook
         ? [
             {
-              label: 'Author',
+              label: intl.formatMessage(messages.author),
               values: [
                 {
                   label: data.author ?? unavailable,
@@ -222,7 +252,7 @@ const IssueMediaSummary = ({
               ],
             },
             {
-              label: 'Publisher',
+              label: intl.formatMessage(messages.publisher),
               values: [{ label: data.publisher ?? unavailable }],
             },
           ]
@@ -231,13 +261,13 @@ const IssueMediaSummary = ({
           : isComic
             ? [
                 {
-                  label: 'Publisher',
+                  label: intl.formatMessage(messages.publisher),
                   values: [{ label: data.publisher ?? unavailable }],
                 },
               ]
             : [
                 {
-                  label: 'Creator',
+                  label: intl.formatMessage(messages.creator),
                   values:
                     data.createdBy.length > 0
                       ? data.createdBy.slice(0, 2).map((person) => ({
@@ -247,7 +277,7 @@ const IssueMediaSummary = ({
                       : [{ label: unavailable }],
                 },
                 {
-                  label: 'Network',
+                  label: intl.formatMessage(messages.network),
                   values:
                     data.networks.length > 0
                       ? data.networks.slice(0, 2).map((network) => ({
@@ -354,24 +384,33 @@ const IssueMediaSummary = ({
               <div className="detail-paired-column-span min-w-0">
                 <dl className="media-detail-rows detail-paired-columns grid min-w-0 content-start text-xs">
                   <dt className="card:col-start-1 card:row-start-1 font-medium text-gray-100">
-                    Media &amp; Format:
+                    {intl.formatMessage(messages.mediaAndFormat)}:
                   </dt>
                   <dd className="card:col-start-3 card:row-start-1 m-0 truncate">
                     {mediaLabel}
                   </dd>
                   <dt className="card:col-start-1 card:row-start-2 font-medium text-gray-100">
-                    {isBook
-                      ? 'First Published'
-                      : isMagazine
-                        ? 'Latest Issue'
-                        : 'Release Date'}
+                    {intl.formatMessage(
+                      isBook
+                        ? messages.firstPublished
+                        : isMagazine
+                          ? messages.latestIssue
+                          : messages.releaseDate
+                    )}
                     :
                   </dt>
                   <dd className="card:col-start-3 card:row-start-2 m-0 truncate">
                     {releaseDate || unavailable}
                   </dd>
                   <dt className="card:col-start-1 card:row-start-3 font-medium text-gray-100">
-                    {isBook ? 'Pages' : isMagazine ? 'Issues' : 'Runtime'}:
+                    {intl.formatMessage(
+                      isBook
+                        ? messages.pages
+                        : isMagazine
+                          ? messages.issues
+                          : messages.runtime
+                    )}
+                    :
                   </dt>
                   <dd className="card:col-start-3 card:row-start-3 m-0 truncate">
                     {runtime}
@@ -391,7 +430,7 @@ const IssueMediaSummary = ({
                   </div>
 
                   <dt className="card:col-start-1 card:row-start-4 font-medium text-gray-100">
-                    Genres:
+                    {intl.formatMessage(messages.genres)}:
                   </dt>
                   <dd className="card:col-span-3 card:col-start-3 card:row-start-4 m-0 line-clamp-2 min-w-0 break-words">
                     {genres.length > 0 ? linkedValues(genres) : unavailable}

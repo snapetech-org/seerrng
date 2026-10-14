@@ -40,6 +40,7 @@ const messages = defineMessages('components.Discover.ReadMeABookSearch', {
   empty: 'No audiobook requests yet.',
   disabled: 'ReadMeABook is not configured.',
   failed: 'The request could not be completed. Try again.',
+  downloadProcessingDetails: 'Download and processing details',
 });
 
 const ReadMeABookSearch = () => {
@@ -202,7 +203,9 @@ const ReadMeABookSearch = () => {
           {details[item.id]?.downloadHistory.length ||
           details[item.id]?.jobs.length ? (
             <details className="app-list-value">
-              <summary>Download and processing details</summary>
+              <summary>
+                {intl.formatMessage(messages.downloadProcessingDetails)}
+              </summary>
               <pre>{JSON.stringify(details[item.id], null, 2)}</pre>
             </details>
           ) : null}

@@ -8,6 +8,7 @@ import VersionStatus from '@app/components/Layout/VersionStatus';
 import useClickOutside from '@app/hooks/useClickOutside';
 import useSettings from '@app/hooks/useSettings';
 import { Permission, useUser } from '@app/hooks/useUser';
+import globalMessages from '@app/i18n/globalMessages';
 import { isOptionalCatalogPathEnabled } from '@app/utils/serviceAvailability';
 import versionedAsset from '@app/utils/versionedAsset';
 import { Transition, TransitionChild } from '@headlessui/react';
@@ -197,7 +198,9 @@ const Sidebar = ({
                   <div className="sidebar-close-button absolute end-0 -me-14 p-1">
                     <button
                       className="flex h-12 w-12 items-center justify-center rounded-full focus:bg-gray-600 focus:outline-none"
-                      aria-label="Close sidebar"
+                      aria-label={intl.formatMessage(
+                        globalMessages.closeSidebar
+                      )}
                       onClick={() => setClosed()}
                     >
                       <XMarkIcon className="h-6 w-6 text-white" />
@@ -212,7 +215,7 @@ const Sidebar = ({
                         <Link href="/" className="relative block h-24 w-64">
                           <Image
                             src={versionedAsset('/logo_full.svg')}
-                            alt="Logo"
+                            alt="Seerr"
                             fill
                             className="object-contain object-left rtl:object-right"
                           />
@@ -222,7 +225,9 @@ const Sidebar = ({
                     <nav
                       className="sidebar-navigation"
                       data-navigation-device="mobile"
-                      aria-label="Primary"
+                      aria-label={intl.formatMessage(
+                        globalMessages.primaryNavigation
+                      )}
                     >
                       {renderNavigationSections('mobile')}
                     </nav>
@@ -251,7 +256,7 @@ const Sidebar = ({
                   <Link href="/" className="relative block h-24">
                     <Image
                       src={versionedAsset('/logo_full.svg')}
-                      alt="Logo"
+                      alt="Seerr"
                       fill
                       className="object-contain object-left rtl:object-right"
                       loading="eager"
@@ -262,7 +267,9 @@ const Sidebar = ({
               <nav
                 className="sidebar-navigation"
                 data-navigation-device="desktop"
-                aria-label="Primary"
+                aria-label={intl.formatMessage(
+                  globalMessages.primaryNavigation
+                )}
               >
                 {renderNavigationSections('desktop')}
               </nav>

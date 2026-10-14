@@ -1,6 +1,7 @@
 import InfinityIcon from '@app/assets/infinity.svg';
 import { SmallLoadingSpinner } from '@app/components/Common/LoadingSpinner';
 import ProgressCircle from '@app/components/Common/ProgressCircle';
+import globalMessages from '@app/i18n/globalMessages';
 import defineMessages from '@app/utils/defineMessages';
 import type { QuotaResponse } from '@server/interfaces/api/userInterfaces';
 import { useIntl } from 'react-intl';
@@ -97,7 +98,9 @@ const MiniQuotaDisplay = ({ userId }: MiniQuotaDisplayProps) => {
                 ) : (
                   <>
                     <InfinityIcon className="w-7" />
-                    <span className="font-bold">Unlimited</span>
+                    <span className="font-bold">
+                      {intl.formatMessage(globalMessages.unlimited)}
+                    </span>
                   </>
                 )}
               </div>

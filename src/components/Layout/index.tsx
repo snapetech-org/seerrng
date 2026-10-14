@@ -12,6 +12,7 @@ import useRequestCount from '@app/components/Layout/useRequestCount';
 import useLocale from '@app/hooks/useLocale';
 import useSettings from '@app/hooks/useSettings';
 import { Permission, useUser } from '@app/hooks/useUser';
+import globalMessages from '@app/i18n/globalMessages';
 import {
   DISCOVER_MEDIA_TYPES,
   isConfiguredMediaCategoryEnabled,
@@ -22,6 +23,7 @@ import { ArrowLeftIcon, Bars3BottomLeftIcon } from '@heroicons/react/24/solid';
 import type { AvailableLocale } from '@server/types/languages';
 import { useRouter } from 'next/router';
 import { useEffect, useRef, useState } from 'react';
+import { useIntl } from 'react-intl';
 import useSWR from 'swr';
 
 type LayoutProps = {
@@ -36,6 +38,7 @@ const Layout = ({ children }: LayoutProps) => {
   const router = useRouter();
   const discoveryMediaType = discoveryMediaTypeForPath(router.pathname);
   const { currentSettings } = useSettings();
+  const intl = useIntl();
   const { setLocale } = useLocale();
   const [countsEnabled, setCountsEnabled] = useState(false);
   const { data: requestResponse, mutate: revalidateRequestsCount } =
@@ -253,7 +256,7 @@ const Layout = ({ children }: LayoutProps) => {
               className={`me-2 hidden text-white sm:block ${
                 isScrolled ? 'opacity-90' : 'opacity-70'
               } transition duration-300 focus:outline-none lg:hidden`}
-              aria-label="Open sidebar"
+              aria-label={intl.formatMessage(globalMessages.openSidebar)}
               onClick={() => setSidebarOpen(true)}
               data-testid="sidebar-toggle"
             >
@@ -264,7 +267,7 @@ const Layout = ({ children }: LayoutProps) => {
                 isScrolled ? 'opacity-90' : 'opacity-70'
               } pwa-only transition duration-300 hover:text-white focus:text-white focus:outline-none`}
               onClick={() => router.back()}
-              aria-label="Go back to the previous page"
+              aria-label={intl.formatMessage(globalMessages.backPreviousPage)}
             >
               <ArrowLeftIcon className="w-7 rtl:rotate-180" />
             </button>

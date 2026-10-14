@@ -818,7 +818,7 @@ const SettingsPlex = ({ isSetupSettings, onComplete }: SettingsPlexProps) => {
               <span>
                 {dataSync?.running
                   ? `${dataSync.progress} of ${dataSync.total}`
-                  : 'Not running'}
+                  : intl.formatMessage(messages.notrunning)}
               </span>
             </div>
           </div>

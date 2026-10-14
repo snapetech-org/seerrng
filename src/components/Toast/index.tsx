@@ -1,3 +1,4 @@
+import globalMessages from '@app/i18n/globalMessages';
 import {
   CheckCircleIcon,
   ExclamationCircleIcon,
@@ -5,6 +6,7 @@ import {
   InformationCircleIcon,
 } from '@heroicons/react/24/outline';
 import { XMarkIcon } from '@heroicons/react/24/solid';
+import { useIntl } from 'react-intl';
 
 export interface ToastProps {
   appearance?: 'success' | 'error' | 'info' | 'warning';
@@ -19,6 +21,7 @@ const Toast = ({
   onDismiss,
   transitionState,
 }: ToastProps) => {
+  const intl = useIntl();
   const isExiting =
     transitionState === 'exiting' || transitionState === 'exited';
 
@@ -50,7 +53,9 @@ const Toast = ({
               <div className="ml-4 flex flex-shrink-0">
                 <button
                   onClick={() => onDismiss()}
-                  aria-label="Dismiss this notification"
+                  aria-label={intl.formatMessage(
+                    globalMessages.dismissNotification
+                  )}
                   className="inline-flex text-gray-400 transition duration-150 ease-in-out focus:text-gray-500 focus:outline-none"
                 >
                   <XMarkIcon className="h-5 w-5" />

@@ -1,6 +1,7 @@
 import MusicRatings from '@app/components/MediaDetails/MusicRatings';
 import OpenLibraryRating from '@app/components/MediaDetails/OpenLibraryRating';
 import VideoRatings from '@app/components/MediaDetails/VideoRatings';
+import defineMessages from '@app/utils/defineMessages';
 import type { OpenLibraryWorkRatingResponse } from '@server/api/openlibrary';
 import type { RatingResponse } from '@server/api/ratings';
 import type { MusicRatingResponse } from '@server/models/Music';
@@ -12,7 +13,14 @@ import {
   type RefObject,
 } from 'react';
 import { createPortal } from 'react-dom';
+import { useIntl } from 'react-intl';
 import useSWR from 'swr';
+
+const messages = defineMessages('components.TitleCard.PosterRatingPopover', {
+  label: 'Ratings for {title}',
+  loading: 'Loading ratings…',
+  unavailable: 'No ratings available',
+});
 
 type RatedMediaType = 'movie' | 'tv' | 'album' | 'book';
 
@@ -37,6 +45,7 @@ export default function PosterRatingPopover({
   title: string;
   artist?: string;
 }) {
+  const intl = useIntl();
   const [position, setPosition] = useState<{
     top: number;
     left: number;
@@ -152,7 +161,7 @@ export default function PosterRatingPopover({
         }
       }
       role="status"
-      aria-label={'Ratings for ' + title}
+      aria-label={intl.formatMessage(messages.label, { title })}
     >
       <div className="poster-rating-values">
         {(mediaType === 'movie' || mediaType === 'tv') && (
@@ -182,7 +191,11 @@ export default function PosterRatingPopover({
           />
         )}
         {!hasRatings && (
-          <span>{loading ? 'Loading ratings…' : 'No ratings available'}</span>
+          <span>
+            {intl.formatMessage(
+              loading ? messages.loading : messages.unavailable
+            )}
+          </span>
         )}
       </div>
     </div>,

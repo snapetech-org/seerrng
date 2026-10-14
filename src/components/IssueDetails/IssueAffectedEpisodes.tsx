@@ -1,9 +1,29 @@
 import LoadingSpinner from '@app/components/Common/LoadingSpinner';
+import defineMessages from '@app/utils/defineMessages';
 import type Issue from '@server/entity/Issue';
 import type { SeasonEpisodeSelection } from '@server/interfaces/api/seasonInterfaces';
 import type { SeasonWithEpisodes } from '@server/models/Tv';
 import axios from 'axios';
+import { useIntl } from 'react-intl';
 import useSWR from 'swr';
+
+const messages = defineMessages(
+  'components.IssueDetails.IssueAffectedEpisodes',
+  {
+    heading: 'Affected Episodes',
+    season: 'Season',
+    episode: 'Episode',
+    title: 'Title',
+    seasonNumber: 'Season {seasonNumber}',
+    episodeNumber: 'Episode {episodeNumber}',
+    specials: 'Specials',
+    allSeasons: 'All Seasons',
+    all: 'All',
+    entireSeries: 'Entire Series',
+    loadError: 'Affected episodes could not be loaded',
+    noneSelected: 'None Selected',
+  }
+);
 
 interface IssueAffectedEpisodesProps {
   issue: Issue;
@@ -38,6 +58,7 @@ const isLegacyEntireSeriesIssue = (issue: Issue) =>
   !issue.problemEpisodes?.length;
 
 const IssueAffectedEpisodes = ({ issue, tvId }: IssueAffectedEpisodesProps) => {
+  const intl = useIntl();
   const selections = getSelections(issue);
   const seasonNumbers = selections.map((selection) => selection.seasonNumber);
   const { data, error } = useSWR<SeasonWithEpisodes[]>(
@@ -65,12 +86,9 @@ const IssueAffectedEpisodes = ({ issue, tvId }: IssueAffectedEpisodesProps) => {
             ) ?? [])
           : (season?.episodes ?? []);
         return episodes.map((episode) => ({
-          season:
-            selection.seasonNumber === 0
-              ? 'Specials'
-              : `Season ${selection.seasonNumber}`,
-          episode: `Episode ${episode.episodeNumber}`,
-          title: episode.name || `Episode ${episode.episodeNumber}`,
+          seasonNumber: selection.seasonNumber,
+          episodeNumber: episode.episodeNumber,
+          title: episode.name,
         }));
       })
     : [];
@@ -79,12 +97,12 @@ const IssueAffectedEpisodes = ({ issue, tvId }: IssueAffectedEpisodesProps) => {
   return (
     <section className="app-card-inset refreshed-inset-surface card-spacing-before rounded-lg border border-gray-700 p-3">
       <h4 className="mb-2 text-xs font-semibold text-gray-200">
-        Affected Episodes
+        {intl.formatMessage(messages.heading)}
       </h4>
       <div className="request-divider-dark grid grid-cols-[7rem_7rem_minmax(0,1fr)] gap-x-3 border-b px-1 pb-2 text-xs font-semibold text-gray-200">
-        <span>Season</span>
-        <span>Episode</span>
-        <span>Title</span>
+        <span>{intl.formatMessage(messages.season)}</span>
+        <span>{intl.formatMessage(messages.episode)}</span>
+        <span>{intl.formatMessage(messages.title)}</span>
       </div>
       {!data && !error && selections.length > 0 ? (
         <div className="flex h-16 items-center justify-center">
@@ -94,30 +112,49 @@ const IssueAffectedEpisodes = ({ issue, tvId }: IssueAffectedEpisodesProps) => {
         <div className="scrollable-card -mr-3 max-h-56 overflow-y-auto pr-3">
           {legacyEntireSeries ? (
             <div className="grid min-h-7 grid-cols-[7rem_7rem_minmax(0,1fr)] items-center gap-x-3 px-1 text-xs">
-              <span className="font-medium text-gray-200">All Seasons</span>
-              <span className="refreshed-detail-text">All</span>
-              <span className="refreshed-detail-text">Entire Series</span>
+              <span className="font-medium text-gray-200">
+                {intl.formatMessage(messages.allSeasons)}
+              </span>
+              <span className="refreshed-detail-text">
+                {intl.formatMessage(messages.all)}
+              </span>
+              <span className="refreshed-detail-text">
+                {intl.formatMessage(messages.entireSeries)}
+              </span>
             </div>
           ) : error ? (
             <div className="px-1 py-2 text-xs text-red-300">
-              Affected episodes could not be loaded
+              {intl.formatMessage(messages.loadError)}
             </div>
           ) : rows.length > 0 ? (
             rows.map((row, index) => (
               <div
-                key={`${row.season}-${row.episode}-${index}`}
+                key={`${row.seasonNumber}-${row.episodeNumber}-${index}`}
                 className="grid min-h-7 grid-cols-[7rem_7rem_minmax(0,1fr)] items-center gap-x-3 px-1 text-xs"
               >
-                <span className="font-medium text-gray-200">{row.season}</span>
-                <span className="refreshed-detail-text">{row.episode}</span>
+                <span className="font-medium text-gray-200">
+                  {row.seasonNumber === 0
+                    ? intl.formatMessage(messages.specials)
+                    : intl.formatMessage(messages.seasonNumber, {
+                        seasonNumber: row.seasonNumber,
+                      })}
+                </span>
+                <span className="refreshed-detail-text">
+                  {intl.formatMessage(messages.episodeNumber, {
+                    episodeNumber: row.episodeNumber,
+                  })}
+                </span>
                 <span className="refreshed-detail-text truncate">
-                  {row.title}
+                  {row.title ||
+                    intl.formatMessage(messages.episodeNumber, {
+                      episodeNumber: row.episodeNumber,
+                    })}
                 </span>
               </div>
             ))
           ) : (
             <div className="refreshed-detail-text-muted px-1 py-2 text-xs">
-              None Selected
+              {intl.formatMessage(messages.noneSelected)}
             </div>
           )}
         </div>

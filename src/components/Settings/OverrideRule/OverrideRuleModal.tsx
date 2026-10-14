@@ -43,6 +43,8 @@ const messages = defineMessages('components.Settings.OverrideRuleModal', {
   genres: 'Genres',
   languages: 'Languages',
   keywords: 'Keywords',
+  catalogGenrePlaceholder: 'Comma-separated album genres or book subjects',
+  catalogKeywordPlaceholder: 'Comma-separated album tags or book subjects',
   rootfolder: 'Root Folder',
   selectRootFolder: 'Select root folder',
   qualityprofile: 'Quality Profile',
@@ -439,7 +441,9 @@ const OverrideRuleModal = ({
                           type="text"
                           id="genre"
                           name="genre"
-                          placeholder="Comma-separated album genres or book subjects"
+                          placeholder={intl.formatMessage(
+                            messages.catalogGenrePlaceholder
+                          )}
                           disabled={!isValidated || isTesting}
                         />
                       ) : (
@@ -508,7 +512,9 @@ const OverrideRuleModal = ({
                           type="text"
                           id="keywords"
                           name="keywords"
-                          placeholder="Comma-separated album tags or book subjects"
+                          placeholder={intl.formatMessage(
+                            messages.catalogKeywordPlaceholder
+                          )}
                           disabled={!isValidated || isTesting}
                         />
                       ) : (

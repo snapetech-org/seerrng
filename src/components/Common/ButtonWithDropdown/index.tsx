@@ -1,8 +1,10 @@
 import Dropdown from '@app/components/Common/Dropdown';
+import globalMessages from '@app/i18n/globalMessages';
 import { withProperties } from '@app/utils/typeHelpers';
 import { Menu, MenuButton } from '@headlessui/react';
 import { ChevronDownIcon } from '@heroicons/react/24/solid';
 import type { AnchorHTMLAttributes, ButtonHTMLAttributes } from 'react';
+import { useIntl } from 'react-intl';
 
 type ButtonWithDropdownProps = {
   text: React.ReactNode;
@@ -25,6 +27,7 @@ const ButtonWithDropdown = ({
   disabledReason,
   ...props
 }: ButtonWithDropdownProps) => {
+  const intl = useIntl();
   const isSmall = buttonSize === 'sm';
   const buttonTypeClassNames = {
     primary: 'app-button-primary',
@@ -67,7 +70,7 @@ const ButtonWithDropdown = ({
             disabled={disabled}
             className={sharedClasses}
             data-dropdown-part="toggle"
-            aria-label="Expand"
+            aria-label={intl.formatMessage(globalMessages.expand)}
             data-disabled-reason={disabled ? disabledTitle : undefined}
           >
             {dropdownIcon ? dropdownIcon : <ChevronDownIcon />}

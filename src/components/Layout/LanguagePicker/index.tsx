@@ -1,6 +1,7 @@
 import { availableLanguages } from '@app/context/LanguageContext';
 import useClickOutside from '@app/hooks/useClickOutside';
 import useLocale from '@app/hooks/useLocale';
+import globalMessages from '@app/i18n/globalMessages';
 import defineMessages from '@app/utils/defineMessages';
 import { Transition } from '@headlessui/react';
 import { LanguageIcon } from '@heroicons/react/24/solid';
@@ -26,7 +27,7 @@ const LanguagePicker = () => {
           className={`rounded-full p-1 hover:bg-gray-600 hover:text-white focus:bg-gray-600 focus:text-white focus:ring-1 focus:ring-gray-500 focus:outline-none sm:p-2 ${
             isDropdownOpen ? 'bg-gray-600 text-white' : 'text-gray-400'
           }`}
-          aria-label="Language Picker"
+          aria-label={intl.formatMessage(globalMessages.languagePicker)}
           onClick={() => setDropdownOpen(true)}
         >
           <LanguageIcon className="h-6 w-6" />

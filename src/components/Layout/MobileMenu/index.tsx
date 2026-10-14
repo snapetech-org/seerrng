@@ -8,6 +8,7 @@ import {
 import useClickOutside from '@app/hooks/useClickOutside';
 import useSettings from '@app/hooks/useSettings';
 import { Permission, useUser } from '@app/hooks/useUser';
+import globalMessages from '@app/i18n/globalMessages';
 import { isOptionalCatalogPathEnabled } from '@app/utils/serviceAvailability';
 import { Transition } from '@headlessui/react';
 import { EllipsisHorizontalIcon, XMarkIcon } from '@heroicons/react/24/outline';
@@ -225,7 +226,11 @@ const MobileMenu = ({
                 isOpen ? 'sidebar-link-selected' : 'sidebar-link-idle'
               }`}
               onClick={() => toggle()}
-              aria-label={isOpen ? 'Close menu' : 'More navigation'}
+              aria-label={intl.formatMessage(
+                isOpen
+                  ? globalMessages.closeMenu
+                  : globalMessages.moreNavigation
+              )}
             >
               {isOpen ? (
                 <XMarkIcon className="h-6 w-6" />
