@@ -327,8 +327,12 @@ test('unit-test pull requests stay on hosted runners', () => {
   const mainRunnerCondition =
     "((github.event_name == 'push' && github.ref == 'refs/heads/main') || " +
     "(github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main'))";
+  const trustedRunnerJson =
+    '{"group":"trusted-main","labels":["self-hosted","Linux","X64","host"]}';
   const expectedRunner =
     '$' + '{{ (' + mainRunnerCondition +
-    " && vars.TRUSTED_MAIN_RUNNERS_ENABLED == 'true') && 'trusted-main' || 'ubuntu-latest' }}";
+    " && vars.TRUSTED_MAIN_RUNNERS_ENABLED == 'true') && fromJSON('" +
+    trustedRunnerJson +
+    "') || 'ubuntu-latest' }}";
   assert.equal(runner, expectedRunner);
 });
