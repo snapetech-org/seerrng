@@ -214,9 +214,10 @@ dependency updates also remain in scope. ChaptarrNG PR #100 carries the
 BookshelfNG migration, BookLore integration, native packaging, and guarded
 legacy-channel bridge candidates. Its migration-158 SQL test fixture was
 hidden by a generic ignore rule; the tracked fixture and a targeted ignore
-exception are now on the PR branch, the 12 focused importer tests pass locally,
-and fresh hosted checks are pending. BookshelfNG PRs #128 and #130 and SeerrNG
-PR #280 remain open, so none of the BookshelfNG package or backend changes is
+exception are now on the PR branch. The 12 focused importer tests pass locally,
+as does the full Release-mode ChaptarrNG Core suite (4,062 passed, 0 failed,
+3 skipped; 4,065 total); fresh hosted checks are pending. BookshelfNG PRs #128
+and #130 and SeerrNG PR #280 remain open, so none of the BookshelfNG package or backend changes is
 released. Each feature or channel change remains in the upstream retirement
 review before merge or release.
 
