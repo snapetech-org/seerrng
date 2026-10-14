@@ -75,7 +75,10 @@ import {
   runWithServarrServiceCollectionAdmission,
   type ServarrServiceType,
 } from '@server/lib/serviceAdmission';
-import { type ReadarrSettings } from '@server/lib/settings';
+import {
+  type ReadarrSettings,
+  type SonarrSettings,
+} from '@server/lib/settings';
 import { isSportarrLeagueExternalId } from '@server/lib/sportarrIdentity';
 import logger from '@server/logger';
 import { parseBookshelfBookId } from '@server/utils/bookshelfCatalog';
@@ -1129,6 +1132,46 @@ export class MediaRequestSubscriber implements EntitySubscriberInterface<MediaRe
     return true;
   }
 
+  private async resolveAnimeQualityProfile(
+    entity: MediaRequest,
+    sonarrSettings: SonarrSettings,
+    sonarr: SonarrAPI,
+    requestedProfileId: number
+  ): Promise<number> {
+    try {
+      const profiles = await sonarr.getProfiles({ forceRefresh: true });
+      if (profiles.some((profile) => profile.id === requestedProfileId)) {
+        return requestedProfileId;
+      }
+
+      logger.warn(
+        `Anime quality profile ${requestedProfileId} was not found on Sonarr server "${sonarrSettings.name}"; falling back to default profile ${sonarrSettings.activeProfileId}.`,
+        {
+          label: 'Media Request',
+          requestId: entity.id,
+          mediaId: entity.media.id,
+          sonarrServerId: sonarrSettings.id,
+          requestedProfileId,
+          fallbackProfileId: sonarrSettings.activeProfileId,
+        }
+      );
+    } catch {
+      logger.warn(
+        `Unable to verify anime quality profile ${requestedProfileId} on Sonarr server "${sonarrSettings.name}"; falling back to default profile ${sonarrSettings.activeProfileId}.`,
+        {
+          label: 'Media Request',
+          requestId: entity.id,
+          mediaId: entity.media.id,
+          sonarrServerId: sonarrSettings.id,
+          requestedProfileId,
+          fallbackProfileId: sonarrSettings.activeProfileId,
+        }
+      );
+    }
+
+    return sonarrSettings.activeProfileId;
+  }
+
   public async sendToSonarr(entity: MediaRequest): Promise<boolean> {
     if (
       entity.status === MediaRequestStatus.APPROVED &&
@@ -1224,10 +1267,10 @@ export class MediaRequestSubscriber implements EntitySubscriberInterface<MediaRe
           isAnime && sonarrSettings.activeAnimeDirectory
             ? sonarrSettings.activeAnimeDirectory
             : sonarrSettings.activeDirectory;
-        let qualityProfile =
-          isAnime && sonarrSettings.activeAnimeProfileId
-            ? sonarrSettings.activeAnimeProfileId
-            : sonarrSettings.activeProfileId;
+        let qualityProfile = isAnime
+          ? (sonarrSettings.activeAnimeProfileId ??
+            sonarrSettings.activeProfileId)
+          : sonarrSettings.activeProfileId;
         let languageProfile =
           isAnime && sonarrSettings.activeAnimeLanguageProfileId
             ? sonarrSettings.activeAnimeLanguageProfileId
@@ -1266,6 +1309,15 @@ export class MediaRequestSubscriber implements EntitySubscriberInterface<MediaRe
               requestId: entity.id,
               mediaId: entity.media.id,
             }
+          );
+        }
+
+        if (isAnime && sonarrSettings.activeAnimeProfileId !== undefined) {
+          qualityProfile = await this.resolveAnimeQualityProfile(
+            entity,
+            sonarrSettings,
+            sonarr,
+            qualityProfile
           );
         }
 

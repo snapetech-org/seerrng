@@ -14,6 +14,7 @@ import type { AddSeriesOptions } from '@server/api/servarr/sonarr';
 import SonarrAPI from '@server/api/servarr/sonarr';
 import type { SportarrLeague } from '@server/api/servarr/sportarr';
 import SportarrAPI from '@server/api/servarr/sportarr';
+import { ANIME_KEYWORD_ID } from '@server/api/themoviedb/constants';
 import WikidataAPI from '@server/api/wikidata';
 import {
   MediaRequestStatus,
@@ -41,7 +42,7 @@ import { runMediaEntityMutation } from '@server/lib/mediaMutation';
 import notificationManager, { Notification } from '@server/lib/notifications';
 import requestDispatchManager from '@server/lib/requestDispatch';
 import { runWithServarrServiceMutationAdmission } from '@server/lib/serviceAdmission';
-import { getSettings } from '@server/lib/settings';
+import { getSettings, type SonarrSettings } from '@server/lib/settings';
 import {
   MediaRequestSubscriber,
   READARR_FAILED_RETRY_DELAY_MS,
@@ -101,6 +102,93 @@ const waitForSavedMedia = async (
 
   return getRepository(Media).findOneByOrFail({ id: mediaId });
 };
+
+function mockAnimeTvShow(tmdbId: number, tvdbId: number) {
+  (
+    mock.method as (
+      object: object,
+      methodName: string,
+      implementation: (endpoint: string) => Promise<unknown>
+    ) => unknown
+  )(ExternalAPI.prototype, 'get', async () => ({
+    id: tmdbId,
+    name: `Anime ${tmdbId}`,
+    external_ids: { tvdb_id: tvdbId },
+    keywords: { results: [{ id: ANIME_KEYWORD_ID }] },
+  }));
+}
+
+function makeSonarrSettings(
+  id: number,
+  hostname: string,
+  activeProfileId: number,
+  activeAnimeProfileId: number,
+  isDefault: boolean
+): SonarrSettings {
+  return {
+    id,
+    name: `Sonarr ${id}`,
+    hostname,
+    port: 8989,
+    apiKey: `test-key-${id}`,
+    useSsl: false,
+    activeProfileId,
+    activeProfileName: `Profile ${activeProfileId}`,
+    activeAnimeProfileId,
+    activeAnimeProfileName: `Anime Profile ${activeAnimeProfileId}`,
+    activeLanguageProfileId: 1,
+    activeDirectory: '/tv',
+    tags: [],
+    is4k: false,
+    isDefault,
+    syncEnabled: true,
+    preventSearch: false,
+    tagRequests: false,
+    seriesType: 'standard',
+    animeSeriesType: 'anime',
+    enableSeasonFolders: true,
+    monitorNewItems: 'all',
+    overrideRule: [],
+  };
+}
+
+async function createApprovedTvRequest(
+  tmdbId: number,
+  tvdbId: number,
+  options: { profileId?: number; serverId?: number } = {}
+) {
+  const requestedBy = await getRequester();
+  const media = await getRepository(Media).save(
+    new Media({
+      mediaType: MediaType.TV,
+      tmdbId,
+      tvdbId,
+      status: MediaStatus.PENDING,
+      status4k: MediaStatus.UNKNOWN,
+    })
+  );
+  const request = new MediaRequest({
+    type: MediaType.TV,
+    status: MediaRequestStatus.APPROVED,
+    media,
+    requestedBy,
+    is4k: false,
+    seasons: [
+      new SeasonRequest({
+        seasonNumber: 1,
+        status: MediaRequestStatus.APPROVED,
+      }),
+    ],
+  });
+  if (options.profileId !== undefined) {
+    request.profileId = options.profileId;
+  }
+  if (options.serverId !== undefined) {
+    request.serverId = options.serverId;
+  }
+
+  return getRepository(MediaRequest).save(request);
+}
 
 let startedBookSearches = 0;
 
@@ -663,6 +751,115 @@ describe('MediaRequestSubscriber service dispatch', () => {
     assert.equal(savedMedia.externalServiceId, 88);
     assert.equal(savedMedia.externalServiceSlug, 'game-of-thrones');
     assert.equal(savedMedia.serviceId, 31);
+  });
+
+  it('falls back to the selected Sonarr service default for a missing anime profile', async () => {
+    const settings = getSettings();
+    settings.sonarr = [
+      makeSonarrSettings(31, 'primary-sonarr.local', 4, 5, true),
+      makeSonarrSettings(32, 'anime-sonarr.local', 7, 8, false),
+    ];
+    mockAnimeTvShow(7001, 17001);
+
+    let profileLookupUrl: string | undefined;
+    let addSeriesUrl: string | undefined;
+    let receivedOptions: AddSeriesOptions | undefined;
+    mock.method(
+      SonarrAPI.prototype,
+      'getProfiles',
+      async function (this: SonarrAPI, options?: { forceRefresh?: boolean }) {
+        profileLookupUrl = Reflect.get(this, 'baseUrl') as string;
+        assert.strictEqual(options?.forceRefresh, true);
+        return [{ id: 7, name: 'Anime Sonarr Default' }];
+      }
+    );
+    mock.method(
+      SonarrAPI.prototype,
+      'addSeries',
+      async function (this: SonarrAPI, options: AddSeriesOptions) {
+        addSeriesUrl = Reflect.get(this, 'baseUrl') as string;
+        receivedOptions = options;
+        return {
+          id: 88,
+          title: 'Anime 7001',
+          titleSlug: 'anime-7001',
+        } as Awaited<ReturnType<SonarrAPI['addSeries']>>;
+      }
+    );
+    mock.method(MediaRequest, 'sendNotification', async () => undefined);
+
+    const request = await createApprovedTvRequest(7001, 17001, {
+      profileId: 8,
+      serverId: 32,
+    });
+    await new MediaRequestSubscriber().sendToSonarr(request);
+
+    assert.strictEqual(receivedOptions?.profileId, 7);
+    assert.match(profileLookupUrl ?? '', /anime-sonarr\.local/);
+    assert.strictEqual(addSeriesUrl, profileLookupUrl);
+    const savedMedia = await getRepository(Media).findOneByOrFail({
+      id: request.media.id,
+    });
+    assert.strictEqual(savedMedia.serviceId, 32);
+  });
+
+  it('falls back to the standard profile when Sonarr profile verification is unavailable', async () => {
+    const settings = getSettings();
+    settings.sonarr = [makeSonarrSettings(33, 'sonarr.local', 7, 8, true)];
+    mockAnimeTvShow(7002, 17002);
+
+    let receivedOptions: AddSeriesOptions | undefined;
+    mock.method(SonarrAPI.prototype, 'getProfiles', async () => {
+      throw new Error('Sonarr is temporarily unavailable');
+    });
+    mock.method(
+      SonarrAPI.prototype,
+      'addSeries',
+      async (options: AddSeriesOptions) => {
+        receivedOptions = options;
+        return {
+          id: 89,
+          title: 'Anime 7002',
+          titleSlug: 'anime-7002',
+        } as Awaited<ReturnType<SonarrAPI['addSeries']>>;
+      }
+    );
+    mock.method(MediaRequest, 'sendNotification', async () => undefined);
+
+    const request = await createApprovedTvRequest(7002, 17002);
+    await new MediaRequestSubscriber().sendToSonarr(request);
+
+    assert.strictEqual(receivedOptions?.profileId, 7);
+  });
+
+  it('keeps a valid anime profile for approved series requests', async () => {
+    const settings = getSettings();
+    settings.sonarr = [makeSonarrSettings(34, 'sonarr.local', 7, 8, true)];
+    mockAnimeTvShow(7003, 17003);
+
+    let receivedOptions: AddSeriesOptions | undefined;
+    mock.method(SonarrAPI.prototype, 'getProfiles', async () => [
+      { id: 7, name: 'Default' },
+      { id: 8, name: 'Anime' },
+    ]);
+    mock.method(
+      SonarrAPI.prototype,
+      'addSeries',
+      async (options: AddSeriesOptions) => {
+        receivedOptions = options;
+        return {
+          id: 90,
+          title: 'Anime 7003',
+          titleSlug: 'anime-7003',
+        } as Awaited<ReturnType<SonarrAPI['addSeries']>>;
+      }
+    );
+    mock.method(MediaRequest, 'sendNotification', async () => undefined);
+
+    const request = await createApprovedTvRequest(7003, 17003);
+    await new MediaRequestSubscriber().sendToSonarr(request);
+
+    assert.strictEqual(receivedOptions?.profileId, 8);
   });
 
   it('passes exact multi-season episode selections to Sonarr', async () => {
