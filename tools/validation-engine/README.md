@@ -471,6 +471,12 @@ For every sharded lane, reconciliation also rejects missing, extra, or duplicate
 files and requires the successful case results to cover the canonical lane
 exactly once with active tests in aggregate.
 
+Pull-request CI cancels runs for superseded commits. Reconciliation still uses
+`always()` so failures produce a current-run result, and also checks
+`!cancelled()` so an obsolete canceled run does not keep the pull request's
+concurrency slot while waiting for a final job. The current commit still runs
+the complete fail-closed reconciliation.
+
 Path- or event-inapplicable jobs must be skipped exactly as planned. Pull-request
 title, template, and merge-conflict checks remain external GitHub metadata and
 are not represented as engine-executed native work. Standalone scheduled or

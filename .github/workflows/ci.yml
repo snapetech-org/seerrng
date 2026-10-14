@@ -895,6 +895,7 @@ jobs:
       - helm
     if: >-
       always() &&
+      !cancelled() &&
       (github.event_name == 'pull_request' ||
       ((github.event_name == 'push' || github.event_name == 'workflow_dispatch') &&
       github.ref == 'refs/heads/main'))
