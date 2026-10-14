@@ -761,9 +761,18 @@ jobs:
       actions: write
       contents: read
     steps:
+      - name: Create scoped workflow-dispatch token
+        uses: actions/create-github-app-token@bcd2ba49218906704ab6c1aa796996da409d3eb1 # v3.2.0
+        id: app-token
+        with:
+          app-id: ${{ vars.CHAPTARRNG_AUTOMATION_APP_ID }}
+          private-key: ${{ secrets.CHAPTARRNG_AUTOMATION_APP_PRIVATE_KEY }}
+          owner: snapetech-org
+          repositories: seerrng
+          permission-actions: write
       - name: Dispatch Chocolatey package workflow
         env:
-          GH_TOKEN: ${{ secrets.GH_WORKFLOW_TOKEN || secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
           REPO: ${{ github.repository }}
           TAG: ${{ inputs.tag || github.ref_name }}
         run: |
@@ -794,14 +803,24 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       actions: write
-      contents: write
+      contents: read
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
+      - name: Create scoped workflow-dispatch token
+        uses: actions/create-github-app-token@bcd2ba49218906704ab6c1aa796996da409d3eb1 # v3.2.0
+        id: app-token
+        with:
+          app-id: ${{ vars.CHAPTARRNG_AUTOMATION_APP_ID }}
+          private-key: ${{ secrets.CHAPTARRNG_AUTOMATION_APP_PRIVATE_KEY }}
+          owner: snapetech-org
+          repositories: seerrng
+          permission-actions: write
       - name: Dispatch package workflows
         env:
-          GH_TOKEN: ${{ secrets.GH_WORKFLOW_TOKEN || secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          APP_TOKEN: ${{ steps.app-token.outputs.token }}
           REPO: ${{ github.repository }}
           TAG: ${{ inputs.tag || github.ref_name }}
           REUSE_FROM_RUN_ID: ${{ inputs.reuse_from_run_id || '' }}
@@ -864,7 +883,7 @@ jobs:
             fi
 
             dispatch_started["$workflow"]="$(date -u +%Y-%m-%dT%H:%M:%SZ)"
-            if ! gh workflow run "$workflow" --repo "$REPO" --ref main -f "tag=$TAG"; then
+            if ! GH_TOKEN="$APP_TOKEN" gh workflow run "$workflow" --repo "$REPO" --ref main -f "tag=$TAG"; then
               exit 1
             fi
             echo "Dispatched $workflow for $TAG."
@@ -874,7 +893,7 @@ jobs:
           if [[ -z "$REUSE_FROM_RUN_ID" ]]; then
             for workflow in "${optional_workflows[@]}"; do
               dispatch_started["$workflow"]="$(date -u +%Y-%m-%dT%H:%M:%SZ)"
-              if ! gh workflow run "$workflow" --repo "$REPO" --ref main -f "tag=$TAG"; then
+              if ! GH_TOKEN="$APP_TOKEN" gh workflow run "$workflow" --repo "$REPO" --ref main -f "tag=$TAG"; then
                 echo "::warning::Optional package workflow $workflow could not be dispatched; continuing."
                 continue
               fi
@@ -931,7 +950,7 @@ jobs:
 
       - name: Verify release package assets
         env:
-          GH_TOKEN: ${{ secrets.GH_WORKFLOW_TOKEN || secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           REPO: ${{ github.repository }}
           TAG: ${{ inputs.tag || github.ref_name }}
         run: |
