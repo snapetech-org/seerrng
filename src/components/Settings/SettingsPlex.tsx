@@ -23,6 +23,7 @@ import {
   MagnifyingGlassIcon,
   XMarkIcon,
 } from '@heroicons/react/24/solid';
+import { ServerType } from '@server/constants/server';
 import {
   createSettingsLibraryUpdateBody,
   getSettingsLibraryApiPath,
@@ -284,7 +285,7 @@ const SettingsPlex = ({ isSetupSettings, onComplete }: SettingsPlexProps) => {
       addToast(
         e?.response?.data?.message === 'CONNECTION_ERROR'
           ? intl.formatMessage(messages.invalidurlerror, {
-              mediaServerName: 'Plex',
+              mediaServerName: ServerType.PLEX,
             })
           : intl.formatMessage(messages.toastPlexSyncFailure),
         {
