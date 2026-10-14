@@ -4,7 +4,7 @@
 
 SeerrNG keeps its FormatJS client catalog, server notification catalog, language picker, and English fallback. This follow-up populates the application-owned UI catalogs for Spanish (`es` and the existing `es-MX` variant), Simplified Chinese, Hindi, German, Japanese, French, Brazilian Portuguese, Arabic, Korean, Traditional Chinese, Vietnamese, and Indonesian.
 
-The checked catalogs contain 5,292 client messages and 71 server messages per locale. Every English source key has a non-empty target value in all 13 locale files, including the existing `es-MX` catalogs. Indonesian server email and web-push messages are included.
+The checked catalogs contain 5,506 client messages and 71 server messages per locale. Every English source key has a non-empty target value in all 13 locale files, including the existing `es-MX` catalogs. Indonesian server email and web-push messages are included.
 
 The locale order remains:
 
