@@ -78,3 +78,42 @@ describe('Discover provider and rating filters', () => {
     ).toBe(1);
   });
 });
+
+describe('Discover exclusion modes', () => {
+  it('preserves selected exclusion modes in URL state and counts each filter once', () => {
+    const filters = prepareFilterValues({
+      genre: '18',
+      excludeGenre: 'true',
+      studio: '5',
+      excludeStudio: 'true',
+      watchProviders: '8|9',
+      watchRegion: 'US',
+      watchProviderMode: 'exclude',
+      status: '3',
+      excludeStatus: 'true',
+    });
+
+    expect(filters).toMatchObject({
+      genre: '18',
+      excludeGenre: 'true',
+      studio: '5',
+      excludeStudio: 'true',
+      watchProviders: '8|9',
+      watchRegion: 'US',
+      watchProviderMode: 'exclude',
+      status: '3',
+      excludeStatus: 'true',
+    });
+    expect(countActiveFilters(filters)).toBe(4);
+  });
+
+  it('drops exclusion modes when their selected filters are absent', () => {
+    expect(
+      prepareFilterValues({
+        excludeGenre: 'true',
+        excludeStudio: 'true',
+        excludeStatus: 'true',
+      })
+    ).toEqual({});
+  });
+});

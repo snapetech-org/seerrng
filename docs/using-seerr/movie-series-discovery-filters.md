@@ -28,3 +28,29 @@ filter.
 
 Selections apply to the current discovery or contextual search URL; they do not
 change another user's settings.
+
+## Exclude genres
+
+Select a genre, then choose **Exclude Genres** to hide titles with that genre.
+Choose the button again to include the selected genre. Genre exclusions work
+for Movie and Series Discover, including title searches and local availability
+results whose stored metadata includes genres.
+
+## Exclude a movie studio
+
+Choose a studio on Movie Discover, then choose **Exclude Studio** to hide
+movies associated with that studio. Studio exclusions use TMDB's movie
+discovery filter and are not available for local availability results.
+
+## Exclude a series status
+
+Choose one status on Series Discover, then choose **Exclude Status** to hide
+series with that status. TMDB returns the other supported status categories, so
+ordinary Discover pagination remains provider-driven.
+
+## Local availability
+
+Local HD and 4K results use SeerrNG's stored availability records. Genre
+filters can use their stored genre metadata. Studio, streaming-service, and
+series-status selections are cleared when you switch to local availability;
+the notice above the filters explains which selections were removed.

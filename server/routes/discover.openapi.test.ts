@@ -126,12 +126,34 @@ describe('movie and TV Discover filter OpenAPI contract', () => {
   it('accepts fractional scores and provider exclusion for both catalogs', async () => {
     const app = createValidatedApp();
 
-    for (const path of ['/discover/movies', '/discover/tv']) {
-      const response = await request(app).get(`/api/v1${path}`).query({
-        voteAverageGte: 7.5,
-        watchProviders: '8|9',
-        watchProviderMode: 'exclude',
-      });
+    for (const { path, filters } of [
+      {
+        path: '/discover/movies',
+        filters: {
+          genre: '18',
+          excludeGenre: 'true',
+          studio: '5',
+          excludeStudio: 'true',
+        },
+      },
+      {
+        path: '/discover/tv',
+        filters: {
+          genre: '18',
+          excludeGenre: 'true',
+          status: '3',
+          excludeStatus: 'true',
+        },
+      },
+    ]) {
+      const response = await request(app)
+        .get(`/api/v1${path}`)
+        .query({
+          voteAverageGte: 7.5,
+          watchProviders: '8|9',
+          watchProviderMode: 'exclude',
+          ...filters,
+        });
 
       assert.strictEqual(
         response.status,

@@ -13815,10 +13815,22 @@ paths:
             type: string
             example: 18
         - in: query
+          name: excludeGenre
+          description: Set to true to exclude the selected genre from results.
+          schema:
+            type: string
+            enum: ['true']
+        - in: query
           name: studio
           schema:
             type: number
             example: 1
+        - in: query
+          name: excludeStudio
+          description: Set to true to exclude the selected movie studio from results.
+          schema:
+            type: string
+            enum: ['true']
         - in: query
           name: keywords
           schema:
@@ -14176,6 +14188,12 @@ paths:
             type: string
             example: 18
         - in: query
+          name: excludeGenre
+          description: Set to true to exclude the selected genre from results.
+          schema:
+            type: string
+            enum: ['true']
+        - in: query
           name: network
           schema:
             type: number
@@ -14264,6 +14282,12 @@ paths:
           schema:
             type: string
             example: 3|4
+        - in: query
+          name: excludeStatus
+          description: Set to true to exclude the selected TV status from results.
+          schema:
+            type: string
+            enum: ['true']
         - in: query
           name: certification
           schema:

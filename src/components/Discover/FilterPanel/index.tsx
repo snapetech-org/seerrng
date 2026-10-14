@@ -39,6 +39,9 @@ const messages = defineMessages('components.Discover.FilterPanel', {
   genres: 'Genres',
   language: 'Language',
   clearFilters: 'Clear Filters',
+  excludeSelectedFilter: 'Exclude {filter}',
+  localAvailabilityClearedFilters:
+    'Local availability cannot apply Studio, Streaming Services, or Series Status filters. Those selections were cleared.',
   keywordSearch: 'Keyword Search',
   searchMovies: 'Search Movies',
   searchSeries: 'Search Series',
@@ -81,6 +84,9 @@ const clearedFilters = {
   certificationGte: undefined,
   certificationLte: undefined,
   certificationMode: undefined,
+  excludeGenre: undefined,
+  excludeStudio: undefined,
+  excludeStatus: undefined,
   excludeKeywords: undefined,
   firstAirDateGte: undefined,
   firstAirDateLte: undefined,
@@ -103,6 +109,26 @@ const clearedFilters = {
   withRuntimeGte: undefined,
   withRuntimeLte: undefined,
 } as const;
+
+const FilterExclusionToggle = ({
+  label,
+  selected,
+  onClick,
+}: {
+  label: string;
+  selected: boolean;
+  onClick: () => void;
+}) => (
+  <button
+    type="button"
+    aria-label={label}
+    aria-pressed={selected}
+    className={getFilterToggleButtonClass(selected)}
+    onClick={onClick}
+  >
+    {label}
+  </button>
+);
 
 const getRangeValue = (options: RangeOption[], gte?: string, lte?: string) =>
   options.find((option) => option.gte === gte && option.lte === lte)?.value ??
@@ -128,6 +154,8 @@ const FilterPanel = ({
     `${type}-keyword-input`
   );
   const [isStreamingOpen, setIsStreamingOpen] = useState(false);
+  const [localAvailabilityClearedFilters, setLocalAvailabilityClearedFilters] =
+    useState(false);
   const { data: languages } = useSWR<Language[]>('/api/v1/languages');
   const { data: availableGenres } = useSWR<TmdbGenre[]>(
     `/api/v1/genres/${type}`
@@ -182,6 +210,7 @@ const FilterPanel = ({
   const clearAllFilters = () => {
     routedSearchRef.current = '';
     setSearchValue('');
+    setLocalAvailabilityClearedFilters(false);
     applyFilters({
       ...clearedFilters,
       [searchQueryKey]: undefined,
@@ -474,8 +503,40 @@ const FilterPanel = ({
           <AvailabilityQualityControl
             mediaType={type}
             value={currentFilters.availability}
-            onChange={(value) => updateFilter('availability', value)}
+            onChange={(value) => {
+              if (!value) {
+                setLocalAvailabilityClearedFilters(false);
+                updateFilter('availability', undefined);
+                return;
+              }
+
+              setLocalAvailabilityClearedFilters(
+                Boolean(
+                  currentFilters.studio ||
+                  currentFilters.status ||
+                  currentFilters.watchProviders
+                )
+              );
+              setIsStreamingOpen(false);
+              updateFilters({
+                availability: value,
+                studio: undefined,
+                excludeStudio: undefined,
+                status: undefined,
+                excludeStatus: undefined,
+                watchProviders: undefined,
+                watchProviderMode: undefined,
+                watchRegion: undefined,
+              });
+            }}
           />
+        </div>
+      )}
+      {localAvailabilityClearedFilters && currentFilters.availability && (
+        <div className="page-error-message" data-severity="info" role="status">
+          <span>
+            {intl.formatMessage(messages.localAvailabilityClearedFilters)}
+          </span>
         </div>
       )}
       <div
@@ -518,15 +579,36 @@ const FilterPanel = ({
             className="app-filter-search-input"
           />
         </form>
-        {type === 'tv' && (
+        {type === 'tv' && !currentFilters.availability && (
           <CompactSelect
             className="status-filter"
             label={intl.formatMessage(messages.status)}
             value={currentFilters.status?.split('|')[0] ?? ''}
             options={statusOptions}
-            onChange={(value) => updateFilter('status', value || undefined)}
+            onChange={(value) =>
+              updateFilters({
+                status: value || undefined,
+                excludeStatus: value ? currentFilters.excludeStatus : undefined,
+              })
+            }
           />
         )}
+        {type === 'tv' &&
+          currentFilters.status &&
+          !currentFilters.availability && (
+            <FilterExclusionToggle
+              label={intl.formatMessage(messages.excludeSelectedFilter, {
+                filter: intl.formatMessage(messages.status),
+              })}
+              selected={currentFilters.excludeStatus === 'true'}
+              onClick={() =>
+                updateFilter(
+                  'excludeStatus',
+                  currentFilters.excludeStatus === 'true' ? undefined : 'true'
+                )
+              }
+            />
+          )}
         <CompactSelect
           label={intl.formatMessage(messages.releaseDate)}
           value={yearValue}
@@ -552,9 +634,27 @@ const FilterPanel = ({
           value={selectedGenre}
           options={genreOptions}
           onChange={(value) =>
-            updateFilter('genre', value === 'any' ? undefined : value)
+            updateFilters({
+              genre: value === 'any' ? undefined : value,
+              excludeGenre:
+                value === 'any' ? undefined : currentFilters.excludeGenre,
+            })
           }
         />
+        {currentFilters.genre && (
+          <FilterExclusionToggle
+            label={intl.formatMessage(messages.excludeSelectedFilter, {
+              filter: intl.formatMessage(messages.genres),
+            })}
+            selected={currentFilters.excludeGenre === 'true'}
+            onClick={() =>
+              updateFilter(
+                'excludeGenre',
+                currentFilters.excludeGenre === 'true' ? undefined : 'true'
+              )
+            }
+          />
+        )}
         <CompactSelect
           label={intl.formatMessage(messages.certification)}
           value={currentCertification}
@@ -569,7 +669,7 @@ const FilterPanel = ({
             });
           }}
         />
-        {type === 'movie' && (
+        {type === 'movie' && !currentFilters.availability && (
           <div className="discover-filter-control">
             <span
               className={`discover-filter-control-label ${
@@ -584,11 +684,32 @@ const FilterPanel = ({
               compact
               defaultValue={currentFilters.studio}
               onChange={(value) => {
-                updateFilter('studio', value?.value.toString());
+                updateFilters({
+                  studio: value?.value.toString(),
+                  excludeStudio: value
+                    ? currentFilters.excludeStudio
+                    : undefined,
+                });
               }}
             />
           </div>
         )}
+        {type === 'movie' &&
+          currentFilters.studio &&
+          !currentFilters.availability && (
+            <FilterExclusionToggle
+              label={intl.formatMessage(messages.excludeSelectedFilter, {
+                filter: intl.formatMessage(messages.studio),
+              })}
+              selected={currentFilters.excludeStudio === 'true'}
+              onClick={() =>
+                updateFilter(
+                  'excludeStudio',
+                  currentFilters.excludeStudio === 'true' ? undefined : 'true'
+                )
+              }
+            />
+          )}
         {type === 'movie' && (
           <CompactSelect
             label={intl.formatMessage(messages.runtime)}
@@ -647,29 +768,31 @@ const FilterPanel = ({
             updateFilter('language', value === 'all' ? undefined : value);
           }}
         />
-        <button
-          type="button"
-          aria-expanded={isStreamingOpen}
-          onClick={() => setIsStreamingOpen((current) => !current)}
-          className={getFilterToggleButtonClass(
-            Boolean(currentFilters.watchProviders)
-          )}
-        >
-          <TvIcon aria-hidden="true" />
-          {intl.formatMessage(messages.streamingservices)}
-          {currentFilters.watchProviders && (
-            <span className="app-filter-count">
-              {currentFilters.watchProviders.split('|').length}
-            </span>
-          )}
-          <ChevronDownIcon
-            className="app-filter-select-chevron"
-            data-expanded={isStreamingOpen}
-            aria-hidden="true"
-          />
-        </button>
+        {!currentFilters.availability && (
+          <button
+            type="button"
+            aria-expanded={isStreamingOpen}
+            onClick={() => setIsStreamingOpen((current) => !current)}
+            className={getFilterToggleButtonClass(
+              Boolean(currentFilters.watchProviders)
+            )}
+          >
+            <TvIcon aria-hidden="true" />
+            {intl.formatMessage(messages.streamingservices)}
+            {currentFilters.watchProviders && (
+              <span className="app-filter-count">
+                {currentFilters.watchProviders.split('|').length}
+              </span>
+            )}
+            <ChevronDownIcon
+              className="app-filter-select-chevron"
+              data-expanded={isStreamingOpen}
+              aria-hidden="true"
+            />
+          </button>
+        )}
       </div>
-      {isStreamingOpen && (
+      {isStreamingOpen && !currentFilters.availability && (
         <section
           className="app-card-inset app-filter-panel scrollable-card"
           data-filter-layout="expanded"

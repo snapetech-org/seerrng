@@ -222,6 +222,48 @@ describe('TMDB response boundaries', () => {
     }
   });
 
+  it('uses TMDB native exclusion parameters for movie and TV discovery', async () => {
+    const tmdb = new TheMovieDb();
+    const calls: { path: string; params: Record<string, unknown> }[] = [];
+    Object.defineProperty(tmdb, 'get', {
+      configurable: true,
+      value: async (
+        path: string,
+        options: { params?: Record<string, unknown> }
+      ) => {
+        calls.push({ path, params: options.params ?? {} });
+        return { page: 1, results: [], total_pages: 1, total_results: 0 };
+      },
+    });
+
+    await tmdb.getDiscoverMovies({
+      genre: '18',
+      excludeGenre: true,
+      studio: '5',
+      excludeStudio: true,
+      withoutWatchProviders: '8|9',
+    });
+    await tmdb.getDiscoverTv({
+      genre: '18',
+      excludeGenre: true,
+      withoutWatchProviders: '8|9',
+    });
+
+    assert.strictEqual(calls[0].path, '/discover/movie');
+    assert.strictEqual(calls[0].params.with_genres, undefined);
+    assert.strictEqual(calls[0].params.without_genres, '18');
+    assert.strictEqual(calls[0].params.with_companies, undefined);
+    assert.strictEqual(calls[0].params.without_companies, '5');
+    assert.strictEqual(calls[0].params.with_watch_providers, undefined);
+    assert.strictEqual(calls[0].params.without_watch_providers, '8|9');
+
+    assert.strictEqual(calls[1].path, '/discover/tv');
+    assert.strictEqual(calls[1].params.with_genres, undefined);
+    assert.strictEqual(calls[1].params.without_genres, '18');
+    assert.strictEqual(calls[1].params.with_watch_providers, undefined);
+    assert.strictEqual(calls[1].params.without_watch_providers, '8|9');
+  });
+
   it('normalizes paginated envelopes and caps actual provider results', () => {
     const response = sanitizeTmdbPagedResponse<TmdbSearchMovieResponse>({
       page: -1,

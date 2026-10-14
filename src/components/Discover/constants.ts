@@ -123,6 +123,9 @@ export const QueryFilterOptions = z.object({
   country: z.string().optional(),
   network: z.string().optional(),
   genre: z.string().optional(),
+  excludeGenre: z.literal('true').optional(),
+  excludeStudio: z.literal('true').optional(),
+  excludeStatus: z.literal('true').optional(),
   language: z.string().optional(),
   withRuntimeGte: z.string().optional(),
   withRuntimeLte: z.string().optional(),
@@ -231,6 +234,18 @@ export const prepareFilterValues = (
     filterValues.genre = values.genre;
   }
 
+  if (values.genre && values.excludeGenre) {
+    filterValues.excludeGenre = values.excludeGenre;
+  }
+
+  if (values.studio && values.excludeStudio) {
+    filterValues.excludeStudio = values.excludeStudio;
+  }
+
+  if (values.status && values.excludeStatus) {
+    filterValues.excludeStatus = values.excludeStatus;
+  }
+
   if (values.status) {
     filterValues.status = values.status;
   }
@@ -334,6 +349,9 @@ export const countActiveFilters = (filterValues: FilterOptions): number => {
   }
 
   delete clonedFilters.certificationMode;
+  delete clonedFilters.excludeGenre;
+  delete clonedFilters.excludeStudio;
+  delete clonedFilters.excludeStatus;
   totalCount += Object.keys(clonedFilters).length;
 
   return totalCount;

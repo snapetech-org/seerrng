@@ -643,6 +643,39 @@ describe('GET /discover/movies', () => {
     assert.strictEqual(res.body.results[0].id, 456789);
     assert.strictEqual(res.body.results[0].title, 'Local HD Movie');
     assert.match(res.body.results[0].posterPath, /\/movie\/456789\/cover/);
+
+    const excluded = await agent.get(
+      '/discover/movies?availability=hd&genre=12&excludeGenre=true'
+    );
+    assert.strictEqual(excluded.status, 200);
+    assert.strictEqual(excluded.body.totalResults, 0);
+    assert.strictEqual(
+      (tmdbGet as { mock: { callCount: () => number } }).mock.callCount(),
+      0
+    );
+  });
+
+  it('rejects exclusions that local availability cannot evaluate', async () => {
+    const tmdbGet = mockPrivate(ExternalAPI.prototype, 'get', async () => {
+      throw new Error('TMDB must not be called for invalid exclusions');
+    });
+    const agent = await login();
+    const responses = [
+      await agent.get(
+        '/discover/movies?availability=hd&studio=5&excludeStudio=true'
+      ),
+      await agent.get('/discover/movies?availability=hd&studio=5'),
+      await agent.get(
+        '/discover/movies?availability=hd&watchProviders=8&watchProviderMode=exclude'
+      ),
+      await agent.get('/discover/movies?watchProviderMode=exclude'),
+      await agent.get('/discover/movies?status=3&excludeStatus=true'),
+    ];
+
+    assert.deepStrictEqual(
+      responses.map((response) => response.status),
+      [400, 400, 400, 400, 400]
+    );
     assert.strictEqual(
       (tmdbGet as { mock: { callCount: () => number } }).mock.callCount(),
       0
@@ -1331,6 +1364,48 @@ describe('GET /discover/movies', () => {
     );
   });
 
+  it('forwards genre and movie studio exclusions to TMDB discovery', async () => {
+    let requestEndpoint: unknown;
+    let requestParams: Record<string, unknown> | undefined;
+    mockPrivate(
+      ExternalAPI.prototype,
+      'get',
+      async (endpoint: unknown, options: unknown) => {
+        const requestOptions = options as {
+          params?: Record<string, unknown>;
+        };
+        requestEndpoint = endpoint;
+        requestParams = requestOptions.params;
+
+        return {
+          page: 1,
+          total_pages: 1,
+          total_results: 0,
+          results: [],
+        };
+      }
+    );
+
+    const agent = await login();
+    const res = await agent.get('/discover/movies').query({
+      genre: '18',
+      excludeGenre: 'true',
+      studio: '5',
+      excludeStudio: 'true',
+    });
+
+    assert.strictEqual(res.status, 200, JSON.stringify(res.body));
+    assert.strictEqual(requestEndpoint, '/discover/movie');
+    assert.strictEqual(requestParams?.with_genres, undefined);
+    assert.strictEqual(
+      requestParams?.without_genres,
+      '18',
+      JSON.stringify(requestParams)
+    );
+    assert.strictEqual(requestParams?.with_companies, undefined);
+    assert.strictEqual(requestParams?.without_companies, '5');
+  });
+
   it('rejects malformed or excessive keyword fan-out before provider lookup', async () => {
     const tmdbGet = mockPrivate(ExternalAPI.prototype, 'get', async () => {
       throw new Error('TMDB should not be called for invalid keyword filters');
@@ -1667,6 +1742,48 @@ describe('GET /discover/movies', () => {
 });
 
 describe('GET /discover/tv', () => {
+  it('complements the selected TMDB status when status exclusion is active', async () => {
+    mockPrivate(
+      ExternalAPI.prototype,
+      'get',
+      async (endpoint: unknown, options: unknown) => {
+        const requestOptions = options as {
+          params?: { with_status?: string };
+        };
+        assert.strictEqual(endpoint, '/discover/tv');
+        assert.strictEqual(requestOptions.params?.with_status, '0|1|2|4|5');
+
+        return {
+          page: 1,
+          total_pages: 1,
+          total_results: 0,
+          results: [],
+        };
+      }
+    );
+
+    const agent = await login();
+    const res = await agent.get('/discover/tv?status=3&excludeStatus=true');
+
+    assert.strictEqual(res.status, 200);
+  });
+
+  it('rejects TV status exclusion for local availability before provider lookup', async () => {
+    const tmdbGet = mockPrivate(ExternalAPI.prototype, 'get', async () => {
+      throw new Error('TMDB must not be called for local status exclusion');
+    });
+    const agent = await login();
+    const res = await agent.get(
+      '/discover/tv?availability=4k&status=3&excludeStatus=true'
+    );
+
+    assert.strictEqual(res.status, 400);
+    assert.strictEqual(
+      (tmdbGet as { mock: { callCount: () => number } }).mock.callCount(),
+      0
+    );
+  });
+
   it('rejects malformed series genre IDs before provider lookup', async () => {
     mockPrivate(ExternalAPI.prototype, 'get', async () => {
       throw new Error('TMDB should not be called for malformed genre IDs');
