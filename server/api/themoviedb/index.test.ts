@@ -19,6 +19,63 @@ import TheMovieDb, {
 import type { TmdbSearchMovieResponse } from '@server/api/themoviedb/interfaces';
 import { getSettings } from '@server/lib/settings';
 
+describe('TMDB discover filter mapping', () => {
+  it('maps fractional scores and provider exclusion to Movie and TV API parameters', async () => {
+    const tmdb = new TheMovieDb();
+    const calls: { path: string; params: Record<string, unknown> }[] = [];
+    Object.defineProperty(tmdb, 'get', {
+      configurable: true,
+      value: async (
+        path: string,
+        options: { params?: Record<string, unknown> }
+      ) => {
+        calls.push({ path, params: options.params ?? {} });
+        return { page: 1, results: [], total_pages: 1, total_results: 0 };
+      },
+    });
+
+    await tmdb.getDiscoverMovies({
+      voteAverageGte: '7.5',
+      watchProviders: '8|9',
+      watchRegion: 'CA',
+    });
+    await tmdb.getDiscoverTv({
+      voteAverageLte: '8.4',
+      withoutWatchProviders: '8|9',
+      watchRegion: 'CA',
+    });
+
+    assert.deepStrictEqual(
+      calls.map(({ path, params }) => ({
+        path,
+        minimum: params['vote_average.gte'],
+        maximum: params['vote_average.lte'],
+        include: params.with_watch_providers,
+        exclude: params.without_watch_providers,
+        region: params.watch_region,
+      })),
+      [
+        {
+          path: '/discover/movie',
+          minimum: '7.5',
+          maximum: undefined,
+          include: '8|9',
+          exclude: undefined,
+          region: 'CA',
+        },
+        {
+          path: '/discover/tv',
+          minimum: undefined,
+          maximum: '8.4',
+          include: undefined,
+          exclude: '8|9',
+          region: 'CA',
+        },
+      ]
+    );
+  });
+});
+
 describe('TMDB response boundaries', () => {
   it('sanitizes mixed TMDB list pages without using total_results', () => {
     const response = sanitizeTmdbListResponse({

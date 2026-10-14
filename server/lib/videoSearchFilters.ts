@@ -115,7 +115,13 @@ export function matchesVideoSearchFilters(
     const ids = Object.values(providers ?? {}).flatMap((value) =>
       Array.isArray(value) ? value.map((p) => p.provider_id) : []
     );
-    if (!matchesList(query.watchProviders, ids)) return false;
+    const matchesSelectedProvider = matchesList(query.watchProviders, ids);
+    if (
+      query.watchProviderMode === 'exclude'
+        ? matchesSelectedProvider
+        : !matchesSelectedProvider
+    )
+      return false;
   }
   if (query.certification || query.certificationGte || query.certificationLte) {
     const country = query.certificationCountry ?? 'US';

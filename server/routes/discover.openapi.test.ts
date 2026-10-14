@@ -42,6 +42,12 @@ const createValidatedApp = (): Express => {
   app.get('/api/v1/discover/books', (req, res) =>
     res.status(200).json({ accepted: true, query: req.query })
   );
+  app.get('/api/v1/discover/movies', (req, res) =>
+    res.status(200).json({ accepted: true, query: req.query })
+  );
+  app.get('/api/v1/discover/tv', (req, res) =>
+    res.status(200).json({ accepted: true, query: req.query })
+  );
   app.use(
     (
       error: { status?: number; message?: string },
@@ -113,6 +119,35 @@ describe('movie discovery outage fallback OpenAPI contract', () => {
         'True when saved results are served because TMDB is unavailable.',
     });
     assert.strictEqual(searchProperties.stale, undefined);
+  });
+});
+
+describe('movie and TV Discover filter OpenAPI contract', () => {
+  it('accepts fractional scores and provider exclusion for both catalogs', async () => {
+    const app = createValidatedApp();
+
+    for (const path of ['/discover/movies', '/discover/tv']) {
+      const response = await request(app).get(`/api/v1${path}`).query({
+        voteAverageGte: 7.5,
+        watchProviders: '8|9',
+        watchProviderMode: 'exclude',
+      });
+
+      assert.strictEqual(
+        response.status,
+        200,
+        `${path} rejected the supported filter query: ${response.body.message}`
+      );
+    }
+  });
+
+  it('rejects scores outside the TMDB 0–10 range', async () => {
+    const response = await request(createValidatedApp())
+      .get('/api/v1/discover/movies')
+      .query({ voteAverageLte: 10.1 });
+
+    assert.strictEqual(response.status, 400);
+    assert.match(response.body.message, /voteAverageLte/);
   });
 });
 

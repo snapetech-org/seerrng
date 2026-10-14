@@ -45,6 +45,7 @@ export const searchContextualFilterKeys = [
   'voteAverageGte',
   'voteAverageLte',
   'watchProviders',
+  'watchProviderMode',
   'watchRegion',
   'withRuntimeGte',
   'withRuntimeLte',

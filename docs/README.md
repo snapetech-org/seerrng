@@ -23,6 +23,7 @@ connects to.
 
 ## Use SeerrNG
 
+- [Filter movie and series discovery by rating or streaming service](/using-seerr/movie-series-discovery-filters/)
 - [Find books, authors, and series](/using-seerr/books-and-series/)
 - [Browse, request, and track sports leagues with Sportarr](/using-seerr/sportarr/)
 - [Follow requests and status history](/using-seerr/request-status/)

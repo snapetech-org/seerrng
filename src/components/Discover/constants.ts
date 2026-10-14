@@ -2,6 +2,21 @@ import defineMessages from '@app/utils/defineMessages';
 import type { ParsedUrlQuery } from 'querystring';
 import { z } from 'zod';
 
+const tmdbRatingQueryValue = z
+  .union([z.string(), z.number()])
+  .transform((value) => String(value).trim())
+  .refine((value) => {
+    const score = Number(value);
+
+    return (
+      value.length <= 16 &&
+      /^(?:\d+(?:\.\d*)?|\.\d+)$/.test(value) &&
+      Number.isFinite(score) &&
+      score >= 0 &&
+      score <= 10
+    );
+  });
+
 type AvailableColors =
   | 'black'
   | 'red'
@@ -111,11 +126,12 @@ export const QueryFilterOptions = z.object({
   language: z.string().optional(),
   withRuntimeGte: z.string().optional(),
   withRuntimeLte: z.string().optional(),
-  voteAverageGte: z.string().optional(),
-  voteAverageLte: z.string().optional(),
+  voteAverageGte: tmdbRatingQueryValue.optional().catch(undefined),
+  voteAverageLte: tmdbRatingQueryValue.optional().catch(undefined),
   voteCountGte: z.string().regex(/^\d+$/).optional(),
   watchRegion: z.string().optional(),
   watchProviders: z.string().optional(),
+  watchProviderMode: z.enum(['include', 'exclude']).optional().catch(undefined),
   status: z.string().optional(),
   certification: z.string().optional(),
   certificationGte: z.string().optional(),
@@ -245,6 +261,9 @@ export const prepareFilterValues = (
 
   if (values.watchProviders) {
     filterValues.watchProviders = values.watchProviders;
+    if (values.watchProviderMode) {
+      filterValues.watchProviderMode = values.watchProviderMode;
+    }
   }
 
   if (values.watchRegion) {
@@ -298,6 +317,7 @@ export const countActiveFilters = (filterValues: FilterOptions): number => {
     totalCount += 1;
     delete clonedFilters.watchProviders;
     delete clonedFilters.watchRegion;
+    delete clonedFilters.watchProviderMode;
   }
 
   if (

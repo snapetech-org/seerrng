@@ -13857,13 +13857,19 @@ paths:
             example: 120
         - in: query
           name: voteAverageGte
+          description: Minimum TMDB vote average from 0 to 10; fractional values are supported.
           schema:
             type: number
+            minimum: 0
+            maximum: 10
             example: 7
         - in: query
           name: voteAverageLte
+          description: Maximum TMDB vote average from 0 to 10; fractional values are supported.
           schema:
             type: number
+            minimum: 0
+            maximum: 10
             example: 10
         - in: query
           name: voteCountGte
@@ -13882,9 +13888,16 @@ paths:
             example: US
         - in: query
           name: watchProviders
+          description: Pipe-separated TMDB watch-provider IDs selected for the region.
           schema:
             type: string
             example: 8|9
+        - in: query
+          name: watchProviderMode
+          description: Include selected providers, or exclude titles available on them. Omitted means include.
+          schema:
+            type: string
+            enum: [include, exclude]
         - in: query
           name: certification
           schema:
@@ -14205,13 +14218,19 @@ paths:
             example: 120
         - in: query
           name: voteAverageGte
+          description: Minimum TMDB vote average from 0 to 10; fractional values are supported.
           schema:
             type: number
+            minimum: 0
+            maximum: 10
             example: 7
         - in: query
           name: voteAverageLte
+          description: Maximum TMDB vote average from 0 to 10; fractional values are supported.
           schema:
             type: number
+            minimum: 0
+            maximum: 10
             example: 10
         - in: query
           name: voteCountGte
@@ -14230,9 +14249,16 @@ paths:
             example: US
         - in: query
           name: watchProviders
+          description: Pipe-separated TMDB watch-provider IDs selected for the region.
           schema:
             type: string
             example: 8|9
+        - in: query
+          name: watchProviderMode
+          description: Include selected providers, or exclude titles available on them. Omitted means include.
+          schema:
+            type: string
+            enum: [include, exclude]
         - in: query
           name: status
           schema:
