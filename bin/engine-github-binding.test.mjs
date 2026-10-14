@@ -555,7 +555,7 @@ test('native environments, commands, permissions, and action pins are preserved'
   assert.equal(jobs.test['runs-on'], 'ubuntu-latest');
   assert.equal(
     jobs['unit-test']['runs-on'],
-    "${{ ((github.event_name == 'push' && github.ref == 'refs/heads/main') || (github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main')) && fromJSON('[\"self-hosted\",\"Linux\",\"X64\",\"host\",\"seerrng\"]') || 'ubuntu-latest' }}"
+    '${{ (((github.event_name == \'push\' && github.ref == \'refs/heads/main\') || (github.event_name == \'workflow_dispatch\' && github.ref == \'refs/heads/main\')) && vars.TRUSTED_MAIN_RUNNERS_ENABLED == \'true\') && fromJSON(\'{"group":"trusted-main","labels":["self-hosted","Linux","X64","host","kspls0"]}\') || \'ubuntu-latest\' }}'
   );
   assert.equal(jobs.codeql.permissions['security-events'], 'write');
 

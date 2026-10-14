@@ -145,9 +145,10 @@ const getSeriesMock = mock.method(
 const getTvShowMock = mock.fn(
   async (options: Parameters<TheMovieDb['getTvShow']>[0]) => {
     void options;
-    return { external_ids: { tvdb_id: 777 } } as Awaited<
-      ReturnType<TheMovieDb['getTvShow']>
-    >;
+    return {
+      external_ids: { tvdb_id: 777 },
+      keywords: { results: [] },
+    } as Awaited<ReturnType<TheMovieDb['getTvShow']>>;
   }
 );
 const getMediaWatchStatsMock = mock.method(
