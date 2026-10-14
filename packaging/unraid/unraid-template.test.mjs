@@ -41,11 +41,11 @@ test('Unraid template exposes the stable image and canonical raw URL', async () 
   assert.match(container.Icon, /^https:\/\/raw\.githubusercontent\.com\//u);
   assert.match(
     container.Support,
-    /^https:\/\/github\.com\/snapetech\/seerrng\/issues$/u
+    /^https:\/\/github\.com\/snapetech-org\/seerrng\/issues$/u
   );
   assert.match(
     container.Project,
-    /^https:\/\/github\.com\/snapetech\/seerrng$/u
+    /^https:\/\/github\.com\/snapetech-org\/seerrng$/u
   );
 
   const configs = asArray(container.Config);
