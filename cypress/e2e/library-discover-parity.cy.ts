@@ -797,7 +797,7 @@ describe('Books and Music discover parity', () => {
     cy.get('select[name=serviceType]').should('be.visible');
     assertDialogFieldDescription(
       'API Key',
-      'Find the key in Bookshelf or Readarr under Settings > General > Security > API Key'
+      'Find the key in ChaptarrNG under Settings > General > Security > API Key'
     );
     assertDialogFieldDescription(
       'URL Base',
