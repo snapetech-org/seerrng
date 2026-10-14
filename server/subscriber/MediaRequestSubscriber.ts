@@ -29,6 +29,7 @@ import {
 import { getRepository } from '@server/datasource';
 import { BookRequestSearch } from '@server/entity/BookRequestSearch';
 import Media from '@server/entity/Media';
+import MediaAvailabilitySubscription from '@server/entity/MediaAvailabilitySubscription';
 import MediaIdentifier, {
   MediaIdentifierProvider,
 } from '@server/entity/MediaIdentifier';
@@ -555,6 +556,79 @@ export class MediaRequestSubscriber implements EntitySubscriberInterface<MediaRe
       { kind: 'media-request', requestId: entity.id },
       event.queryRunner
     );
+
+    if (
+      type !== Notification.MEDIA_AVAILABLE ||
+      !entity.media?.id ||
+      ![MediaType.MOVIE, MediaType.TV].includes(entity.type)
+    ) {
+      return;
+    }
+
+    const subscriptionRepository = event.manager.getRepository(
+      MediaAvailabilitySubscription
+    );
+    const subscriptions = await subscriptionRepository.find({
+      where: { media: { id: entity.media.id } },
+      relations: { user: true },
+    });
+
+    for (const subscription of subscriptions) {
+      if (subscription.user.id === entity.requestedBy.id) {
+        continue;
+      }
+      await notificationManager.sendNotificationIntent(
+        Notification.MEDIA_AVAILABLE,
+        {
+          kind: 'media-availability-subscription',
+          mediaId: entity.media.id,
+          userId: subscription.user.id,
+        },
+        event.queryRunner
+      );
+    }
+
+    if (subscriptions.length > 0) {
+      await subscriptionRepository.remove(subscriptions);
+    }
+  }
+
+  private async removeIneligibleAvailabilitySubscriptions(
+    manager: EntityManager,
+    mediaId: number
+  ): Promise<void> {
+    const subscriptionRepository = manager.getRepository(
+      MediaAvailabilitySubscription
+    );
+    const subscriptions = await subscriptionRepository.find({
+      where: { media: { id: mediaId } },
+      relations: { user: true },
+    });
+    if (subscriptions.length === 0) {
+      return;
+    }
+
+    const activeRequests = await manager.getRepository(MediaRequest).find({
+      where: {
+        media: { id: mediaId },
+        status: In([MediaRequestStatus.PENDING, MediaRequestStatus.APPROVED]),
+      },
+      relations: { requestedBy: true },
+      select: { id: true, requestedBy: { id: true } },
+    });
+    const activeRequesterIds = new Set(
+      activeRequests.map((request) => request.requestedBy.id)
+    );
+    const ineligibleSubscriptions = subscriptions.filter(
+      (subscription) =>
+        ![...activeRequesterIds].some(
+          (requesterId) => requesterId !== subscription.user.id
+        )
+    );
+
+    if (ineligibleSubscriptions.length > 0) {
+      await subscriptionRepository.remove(ineligibleSubscriptions);
+    }
   }
 
   private isRequestMediaAvailable(entity: MediaRequest): boolean {
@@ -3213,6 +3287,17 @@ export class MediaRequestSubscriber implements EntitySubscriberInterface<MediaRe
       event.entity as MediaRequest,
       event
     );
+    const updatedRequest = event.entity as MediaRequest;
+    if (
+      updatedRequest.media?.id &&
+      (updatedRequest.status === MediaRequestStatus.DECLINED ||
+        updatedRequest.status === MediaRequestStatus.FAILED)
+    ) {
+      await this.removeIneligibleAvailabilitySubscriptions(
+        event.manager as EntityManager,
+        updatedRequest.media.id
+      );
+    }
     await this.enqueueRequestDispatch(event.entity as MediaRequest, event);
 
     if (
@@ -3261,6 +3346,13 @@ export class MediaRequestSubscriber implements EntitySubscriberInterface<MediaRe
       event.manager as EntityManager,
       event.entity as MediaRequest
     );
+    const removedRequest = event.entity as MediaRequest;
+    if (removedRequest.media?.id) {
+      await this.removeIneligibleAvailabilitySubscriptions(
+        event.manager as EntityManager,
+        removedRequest.media.id
+      );
+    }
     const requestId = Number.isSafeInteger(event.entityId)
       ? event.entityId
       : (event.entity as MediaRequest).id;

@@ -6,10 +6,18 @@ import { afterEach, before, beforeEach, describe, it, mock } from 'node:test';
 import JellyfinAPI from '@server/api/jellyfin';
 import PlexTvAPI from '@server/api/plextv';
 import TautulliAPI from '@server/api/tautulli';
+import {
+  MediaRequestStatus,
+  MediaStatus,
+  MediaType,
+} from '@server/constants/media';
 import { MediaServerType } from '@server/constants/server';
 import { UserType } from '@server/constants/user';
 import dataSource, { getRepository } from '@server/datasource';
 import { LinkedAccount } from '@server/entity/LinkedAccount';
+import Media from '@server/entity/Media';
+import MediaAvailabilitySubscription from '@server/entity/MediaAvailabilitySubscription';
+import { MediaRequest } from '@server/entity/MediaRequest';
 import { User } from '@server/entity/User';
 import { UserPushSubscription } from '@server/entity/UserPushSubscription';
 import { UserSettings } from '@server/entity/UserSettings';
@@ -121,6 +129,104 @@ async function loginAs(email: string, password: string) {
     settings.main.localLogin = priorLocalLogin;
   }
 }
+
+describe('User media availability subscriptions', () => {
+  it('lets another user follow an active request and cancel without changing it', async () => {
+    const userRepository = getRepository(User);
+    const follower = await userRepository.findOneByOrFail({
+      email: 'admin@seerr.dev',
+    });
+    const requester = await userRepository.findOneByOrFail({
+      email: 'friend@seerr.dev',
+    });
+    const media = await getRepository(Media).save(
+      new Media({
+        mediaType: MediaType.MOVIE,
+        tmdbId: 891234,
+        status: MediaStatus.PENDING,
+        status4k: MediaStatus.UNKNOWN,
+      })
+    );
+    await getRepository(MediaRequest).insert({
+      type: MediaType.MOVIE,
+      status: MediaRequestStatus.APPROVED,
+      media: { id: media.id },
+      requestedBy: { id: requester.id },
+      is4k: false,
+    });
+
+    const path = `/user/${follower.id}/availability-subscriptions/movie/${media.tmdbId}`;
+    const followerAgent = await loginAs('admin@seerr.dev', 'test1234');
+    const initial = await followerAgent.get(path);
+    assert.strictEqual(initial.status, 200);
+    assert.deepStrictEqual(initial.body, {
+      subscribed: false,
+      canSubscribe: true,
+    });
+
+    const subscribed = await followerAgent.post(path);
+    assert.strictEqual(subscribed.status, 200);
+    assert.deepStrictEqual(subscribed.body, {
+      subscribed: true,
+      canSubscribe: true,
+    });
+    assert.strictEqual(
+      await getRepository(MediaAvailabilitySubscription).countBy({
+        user: { id: follower.id },
+        media: { id: media.id },
+      }),
+      1
+    );
+
+    const repeated = await followerAgent.post(path);
+    assert.strictEqual(repeated.status, 200);
+    assert.strictEqual(repeated.body.subscribed, true);
+
+    const requesterAgent = await loginAs('friend@seerr.dev', 'test1234');
+    const denied = await requesterAgent.get(path);
+    assert.strictEqual(denied.status, 403);
+
+    const removed = await followerAgent.delete(path);
+    assert.strictEqual(removed.status, 204);
+    assert.strictEqual(
+      await getRepository(MediaAvailabilitySubscription).countBy({
+        user: { id: follower.id },
+        media: { id: media.id },
+      }),
+      0
+    );
+    const request = await getRepository(MediaRequest).findOneByOrFail({
+      media: { id: media.id },
+      requestedBy: { id: requester.id },
+    });
+    assert.strictEqual(request.status, MediaRequestStatus.APPROVED);
+  });
+
+  it('rejects subscriptions when no other user has an active request', async () => {
+    const follower = await getRepository(User).findOneByOrFail({ id: 1 });
+    const media = await getRepository(Media).save(
+      new Media({
+        mediaType: MediaType.TV,
+        tmdbId: 891235,
+        status: MediaStatus.PENDING,
+        status4k: MediaStatus.UNKNOWN,
+      })
+    );
+    const followerAgent = await loginAs('admin@seerr.dev', 'test1234');
+    const path = `/user/${follower.id}/availability-subscriptions/tv/${media.tmdbId}`;
+
+    const initial = await followerAgent.get(path);
+    assert.strictEqual(initial.status, 200);
+    assert.deepStrictEqual(initial.body, {
+      subscribed: false,
+      canSubscribe: false,
+    });
+
+    const rejected = await followerAgent.post(path);
+    assert.strictEqual(rejected.status, 409);
+    assert.match(rejected.body.message, /active request from another user/i);
+  });
+});
 
 describe('User route input validation', () => {
   let restoreFixtureDns = () => {};

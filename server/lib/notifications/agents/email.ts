@@ -51,6 +51,7 @@ const messages = defineMessages('notifications.agents.email', {
     'Your request for the following {mediaType} is now available:',
   availableRequest4k:
     'Your request for the following {mediaType} in 4K is now available:',
+  availabilitySubscription: 'A title you follow is now available:',
   declinedRequest: 'Your request for the following {mediaType} was declined:',
   declinedRequest4k:
     'Your request for the following {mediaType} in 4K was declined:',
@@ -134,7 +135,7 @@ class EmailAgent
       : undefined;
     const is4k = payload.request?.is4k;
 
-    if (payload.request) {
+    if (payload.request || payload.availabilitySubscription) {
       let body = '';
 
       switch (type) {
@@ -163,10 +164,12 @@ class EmailAgent
           );
           break;
         case Notification.MEDIA_AVAILABLE:
-          body = intl.formatMessage(
-            is4k ? messages.availableRequest4k : messages.availableRequest,
-            { mediaType }
-          );
+          body = payload.availabilitySubscription
+            ? intl.formatMessage(messages.availabilitySubscription)
+            : intl.formatMessage(
+                is4k ? messages.availableRequest4k : messages.availableRequest,
+                { mediaType }
+              );
           break;
         case Notification.MEDIA_DECLINED:
           body = intl.formatMessage(
@@ -203,7 +206,7 @@ class EmailAgent
           mediaExtra: payload.extra ?? [],
           imageUrl: embedPoster ? payload.image : undefined,
           timestamp: new Date().toTimeString(),
-          requestedBy: payload.request.requestedBy.displayName,
+          requestedBy: payload.request?.requestedBy.displayName,
           actionUrl: getNotificationActionUrl(payload, applicationUrl),
           actionLabel: intl.formatMessage(getNotificationActionLabel(payload), {
             applicationTitle,

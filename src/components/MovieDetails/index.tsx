@@ -1,5 +1,6 @@
 import Spinner from '@app/assets/spinner.svg';
 import AssociationBadge from '@app/components/Association/AssociationBadge';
+import AvailabilitySubscriptionButton from '@app/components/AvailabilitySubscriptionButton';
 import Button from '@app/components/Common/Button';
 import IndexerSearchLink from '@app/components/Common/IndexerSearchLink';
 import LoadingSpinner from '@app/components/Common/LoadingSpinner';
@@ -461,6 +462,7 @@ const MovieDetails = ({ movie }: MovieDetailsProps) => {
         mediaType="movie"
         tmdbId={data.id}
       />
+      <AvailabilitySubscriptionButton mediaType="movie" tmdbId={data.id} />
       {data.mediaInfo?.status !== MediaStatus.BLOCKLISTED &&
         user?.userType !== UserType.PLEX && (
           <Tooltip

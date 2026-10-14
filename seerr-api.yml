@@ -66,6 +66,18 @@ servers:
 
 components:
   schemas:
+    UserAvailabilitySubscriptionState:
+      type: object
+      required:
+        - subscribed
+        - canSubscribe
+      properties:
+        subscribed:
+          type: boolean
+          description: Whether the signed-in user follows this title's availability.
+        canSubscribe:
+          type: boolean
+          description: Whether another user has an active request that can be followed.
     SwipeCard:
       type: object
       properties:
@@ -11934,6 +11946,66 @@ paths:
       responses:
         '204':
           description: Successfully registered push subscription
+  /user/{userId}/availability-subscriptions/{mediaType}/{tmdbId}:
+    parameters:
+      - in: path
+        name: userId
+        required: true
+        schema:
+          type: integer
+          minimum: 1
+      - in: path
+        name: mediaType
+        required: true
+        schema:
+          type: string
+          enum: [movie, tv]
+      - in: path
+        name: tmdbId
+        required: true
+        schema:
+          type: integer
+          minimum: 1
+    get:
+      summary: Read the signed-in user's availability subscription state
+      description: Returns whether the current user follows an active movie or series request. Users can access only their own subscription state.
+      tags:
+        - users
+      responses:
+        '200':
+          description: Availability subscription state
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserAvailabilitySubscriptionState'
+        '403':
+          description: The path user is not the signed-in user
+    post:
+      summary: Follow another user's active movie or series request
+      description: Creates an idempotent, one-time subscription for the signed-in user. The request owner and request record are unchanged.
+      tags:
+        - users
+      responses:
+        '200':
+          description: Availability subscription state after the operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserAvailabilitySubscriptionState'
+        '403':
+          description: The path user is not the signed-in user
+        '409':
+          description: No active request from another user can be followed
+    delete:
+      summary: Stop following a title's availability
+      description: Removes the signed-in user's pending one-time subscription. The request record is unchanged.
+      tags:
+        - users
+      responses:
+        '204':
+          description: Subscription removed, if present
+        '403':
+          description: The path user is not the signed-in user
   /user/{userId}/pushSubscriptions:
     get:
       summary: Get all web push notification settings for a user
