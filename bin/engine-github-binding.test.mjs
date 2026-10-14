@@ -58,7 +58,10 @@ test('the immutable plan is an attempt-bound artifact consumed by every unit', (
   );
   assert.match(create.run, /--github-plan/);
   assert.match(create.run, /--plan-file/);
-  assert.match(publish.uses, /^actions\/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9/);
+  assert.match(
+    publish.uses,
+    /^actions\/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9/
+  );
   assert.match(publish.with.name, /github\.run_id/);
   assert.match(publish.with.name, /github\.run_attempt/);
   assert.equal(publish.with['retention-days'], 1);
@@ -626,7 +629,7 @@ test('native environments, commands, permissions, and action pins are preserved'
     'pnpm build',
     'pnpm bundle:check',
     'pnpm test:ci',
-    'mikepenz/action-junit-report@b7b80d7ac5b1da46d6aaff9fb57ad50d8453bcb3',
+    'mikepenz/action-junit-report@6ef3fdcfcd5f0b5d14df3e659ef19b8c6820f93d',
   ])
     assert.ok(ci.text.includes(fragment), fragment);
 
