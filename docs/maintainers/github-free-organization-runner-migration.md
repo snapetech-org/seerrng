@@ -1,71 +1,49 @@
-# GitHub Free organization and runner-group migration plan
+# GitHub Free organization and runner-group migration
 
-Status: planned. No repository transfers or organization changes have been made.
+Status: in progress. The live snapshot below was checked on 2026-10-14 UTC.
 
-## Current temporary policy
+## Scope
 
-The NG repositories remain public under the `snapetech` personal account. The
-repositories require approval for workflow runs from all external contributors.
-Every pull request uses GitHub-hosted runners; local runners are reserved for
-trusted `main` runs where supported.
+The eight public NG repositories are SeerrNG, SLSKR, SLSKDN, QuestarrNG, TorrentNG, ROMarrNG, ChaptarrNG, and BookshelfNG. PR and non-main validation stays on GitHub-hosted runners. Only trusted main validation can use the shared local pool after the repository opt-in is enabled.
 
-This workflow condition is routing logic, not an enforced security boundary.
-A public pull request can propose workflow changes, so review `.github/workflows`
-before approving an external contributor's run. Repository-level runners on a
-public repository do not provide runner-group restrictions for a selected
-repository and workflow ref. GitHub warns that code from public forks can
-compromise a persistent self-hosted runner. Keep external pull-request runs on
-GitHub-hosted runners until organization-level runner groups are configured.
+## Live runner-group state
 
-## Intended target
+The organization runner group trusted-main (id 3) currently has selected repository access, public repositories enabled, and workflow restrictions enabled. It is accessible to 14 repositories: the eight NG targets and the existing 0xBEEF, Lack, MilkRust, packer, PalWorldSelfHost, and slskNet.Runtime repositories. Preserve those six unrelated repositories and their existing workflow access.
 
-Move the public repositories to a GitHub Free organization with a separate
-organization name. Keep the repositories public and use standard GitHub-hosted
-runner labels for pull-request validation. GitHub documents standard hosted
-runners as free and unlimited for public repositories; larger runners remain
-billable, so do not select them.
+The current workflow allowlist has 21 main-ref paths. Nine are the intended NG validation workflows:
 
-Use organization runner groups for trusted local jobs. Limit each group to its
-selected repositories and to exact workflow refs on `refs/heads/main`; keep
-pull-request workflows on standard GitHub-hosted runners. GitHub Free
-organizations support self-hosted runner groups and workflow restrictions.
+- BookshelfNG/build.yml
+- ChaptarrNG/build.yml
+- QuestarrNG/ci.yml
+- ROMarrNG/docker.yml
+- SeerrNG/ci.yml
+- SLSKDN/ci.yml and ci-enhancements.yml
+- SLSKR/ci.yml
+- TorrentNG/ci.yml
 
-References:
+The allowlist still contains four other NG paths: SeerrNG/create-tag.yml, helm.yml, and release.yml, plus TorrentNG/release.yml. These paths should be removed after existing queued and in-progress Actions runs drain. TorrentNG/backend-evidence.yml is no longer allowlisted. Preserve the eight selected workflow paths belonging to the six unrelated repositories.
 
-- [GitHub Actions billing](https://docs.github.com/en/billing/concepts/product-billing/github-actions)
+Eight runners are attached to trusted-main and online. Runner 145 is busy; the other seven were idle at the snapshot. The repository variable TRUSTED_MAIN_RUNNERS_ENABLED is unset in all eight targets; SLSKDN has only its existing PREFER_SELF_HOSTED variable. The route PRs are still open, so their workflow updates are not active on the default branches.
+
+## Runner selection
+
+Each validation job returns one string from runs-on: trusted-main for pushes or manual runs on main when TRUSTED_MAIN_RUNNERS_ENABLED is exactly true; ubuntu-latest for pull requests, tags, non-main manual runs, and the unset/false case. This selects the restricted runner group without relying on an empty group plus hosted labels. The group restriction is the server-side security boundary; expressions alone do not protect a public self-hosted runner.
+
+The shared local pool will not run contributor pull-request code and therefore will not directly drain the GitHub-hosted PR queue. Keep PR validation hosted.
+
+## Rollout
+
+1. Update all eight route PRs to use a supported string-valued group selector with hosted fallback, and exact-head validate and review each change.
+2. Wait for existing queued and in-progress Actions runs to drain before changing group membership or its workflow allowlist. Do not cancel current/head-valid work.
+3. Remove the four non-validation NG workflow paths listed above while preserving the six unrelated repositories and their allowlisted workflows.
+4. Verify the runner membership and labels against the main validation requirements; do not move release, deployment, or live-evidence runners into this group.
+5. After the route PRs merge and the group is ready, enable TRUSTED_MAIN_RUNNERS_ENABLED in each target repository and dispatch one trusted main validation run per project. Confirm runner selection and job results, then verify PR runs still use hosted runners.
+6. Revalidate every open PR at its exact current head, review its diff and checks, merge eligible PRs to main, and verify the post-merge result.
+
+## References
+
+- [GitHub Actions limits](https://docs.github.com/en/actions/reference/limits)
 - [GitHub-hosted runner availability for public repositories](https://docs.github.com/en/actions/reference/runners/github-hosted-runners)
 - [Runner groups for self-hosted runners](https://docs.github.com/en/actions/how-tos/manage-runners/self-hosted-runners/manage-access)
 - [GitHub's self-hosted runner security guidance](https://docs.github.com/en/actions/reference/security/secure-use)
 - [Moving repositories to an organization](https://docs.github.com/en/account-and-profile/how-tos/account-management/moving-your-work-to-an-organization)
-
-## Migration checklist
-
-1. Confirm the target is a GitHub Free organization, the repositories will
-   remain public, standard hosted runners are selected, and the billing page
-   shows no paid runner configuration.
-2. Inventory each repository's default branch, rulesets, open pull requests,
-   releases and tags, Actions variables and secrets, environments and reviewers,
-   webhooks, package permissions, Pages settings, and repository dispatch
-   integrations. Record settings that need to be recreated after transfer.
-3. Transfer one repository as a pilot. Verify redirects, clone and push URLs,
-   branch protections, Actions permissions, secrets, environments, release
-   automation, and package access before continuing.
-4. Create shared runner groups by compatible host capability. Restrict each
-   group to selected repositories and exact workflow paths pinned to
-   `refs/heads/main`. Add the existing local runners to those groups after
-   registering them at organization scope.
-5. Keep pull-request jobs on `ubuntu-latest`, `windows-latest`, or
-   `macos-latest`. Allow the local group only for trusted main-branch push and
-   manual-main jobs. Leave any deployment or live-integration job pinned to the
-   machine that owns its target environment.
-6. Verify that external fork runs remain approval-gated and run on GitHub-hosted
-   machines after approval. Verify main jobs use the intended runner group and
-   that a pull-request workflow cannot select that group. Check the billing
-   dashboard after the pilot and after the remaining transfers.
-7. Continue with the other repositories only after the pilot checks pass. Keep
-   a rollback record of prior settings and restore the previous repository owner
-   if transfer or Actions configuration does not validate.
-
-The transfer should be done one repository at a time. Do not make the move a
-prerequisite for today's local testing; the approval gate and hosted routing are
-the temporary controls until the organization is ready.
