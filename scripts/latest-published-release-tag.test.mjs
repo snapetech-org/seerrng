@@ -47,7 +47,7 @@ test('selects the highest published stable version after an out-of-order release
     encoding: 'utf8',
     env: {
       ...process.env,
-      GITHUB_REPOSITORY: 'snapetech/seerrng',
+      GITHUB_REPOSITORY: 'snapetech-org/seerrng',
       PUBLISHED_TAGS: 'v3.42.1\nv3.45.3',
       PATH: `${fakeBin}:${process.env.PATH}`,
     },

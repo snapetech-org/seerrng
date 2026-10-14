@@ -4,7 +4,7 @@
 
 SeerrNG Helm chart for Kubernetes
 
-**Homepage:** <https://github.com/snapetech/seerrng>
+**Homepage:** <https://github.com/snapetech-org/seerrng>
 
 ## Maintainers
 
@@ -14,7 +14,7 @@ SeerrNG Helm chart for Kubernetes
 
 ## Source Code
 
-* <https://github.com/snapetech/seerrng/tree/main/charts/seerr-chart>
+* <https://github.com/snapetech-org/seerrng/tree/main/charts/seerr-chart>
 
 ## Requirements
 

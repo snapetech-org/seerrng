@@ -374,7 +374,7 @@ const NotificationsWebhook = () => {
             {values.supportVariables && (
               <div className="mt-2">
                 <Link
-                  href="https://github.com/snapetech/seerrng/blob/main/docs/using-seerr/notifications/webhook.md#template-variables"
+                  href="https://github.com/snapetech-org/seerrng/blob/main/docs/using-seerr/notifications/webhook.md#template-variables"
                   passHref
                   legacyBehavior
                 >
@@ -542,7 +542,7 @@ const NotificationsWebhook = () => {
                     <span>{intl.formatMessage(messages.resetPayload)}</span>
                   </Button>
                   <Link
-                    href="https://github.com/snapetech/seerrng/blob/main/docs/using-seerr/notifications/webhook.md#template-variables"
+                    href="https://github.com/snapetech-org/seerrng/blob/main/docs/using-seerr/notifications/webhook.md#template-variables"
                     passHref
                     legacyBehavior
                   >

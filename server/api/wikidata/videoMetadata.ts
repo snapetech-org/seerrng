@@ -109,7 +109,7 @@ class WikidataVideoMetadataAPI extends ExternalAPI {
       {
         timeout: 10_000,
         headers: {
-          'User-Agent': 'SeerrNG/3.x (+https://github.com/snapetech/seerrng)',
+          'User-Agent': 'SeerrNG/3.x (+https://github.com/snapetech-org/seerrng)',
           Accept: 'application/json',
         },
         nodeCache: cacheManager.getCache('wikidata').data,

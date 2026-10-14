@@ -34,7 +34,7 @@ do not require a second confirmation that the same work was reviewed.
 2. Add the remote `upstream`:
 
    ```bash
-   git remote add upstream https://github.com/snapetech/seerrng.git
+   git remote add upstream https://github.com/snapetech-org/seerrng.git
    ```
 
 3. Create a new branch:

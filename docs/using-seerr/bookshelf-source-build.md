@@ -72,13 +72,13 @@ npm install --global yarn@1.22.19
 
 ## Clone the source
 
-The maintained public fork is [snapetech/bookshelfng](https://github.com/snapetech/bookshelfng).
+The maintained public fork is [snapetech/bookshelfng](https://github.com/snapetech-org/bookshelfng).
 The supported source-build branch is `main`:
 
 ```bash
 mkdir -p ~/src
 cd ~/src
-git clone --branch main https://github.com/snapetech/bookshelfng.git
+git clone --branch main https://github.com/snapetech-org/bookshelfng.git
 cd bookshelfng
 ```
 

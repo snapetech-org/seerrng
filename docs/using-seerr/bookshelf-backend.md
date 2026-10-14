@@ -26,13 +26,13 @@ fork, see [Maintained dependency forks](./dependency-forks.md#bookshelfng).
 BookshelfNG's planned retirement in favor of ChaptarrNG is not released yet.
 No populated-library converter or old-channel bridge is available, so keep the
 existing BookshelfNG database and installation until the
-[feature, migration, and distribution gates](https://github.com/snapetech/bookshelfng/blob/main/docs/maintainers/chaptarr-consolidation.md)
+[feature, migration, and distribution gates](https://github.com/snapetech-org/bookshelfng/blob/main/docs/maintainers/chaptarr-consolidation.md)
 pass. BookshelfNG's retirement gate is its capabilities validated in
 ChaptarrNG. The later ChaptarrNG-to-Chaptarr gate is separate: all BookshelfNG
 features carried over plus every ChaptarrNG maintained or actively added
 feature, including unpublished work, block retirement as a whole. Each feature
 remains an individual blocker until tested against the supported upstream
-release; see the [combined ChaptarrNG retirement matrix](https://github.com/snapetech/chaptarrng/blob/main/docs/FORK_FEATURES.md#chaptarrng-retirement-blockers).
+release; see the [combined ChaptarrNG retirement matrix](https://github.com/snapetech-org/chaptarrng/blob/main/docs/FORK_FEATURES.md#chaptarrng-retirement-blockers).
 
 ## One BookshelfNG instance for both formats
 
@@ -96,14 +96,14 @@ run other commands, or delete authors or files. The global BookshelfNG API key
 remains supported for existing clients. Older BookshelfNG builds should
 continue to use the global API key.
 
-[ChaptarrNG](https://github.com/snapetech/chaptarrng) is Snapetech's maintained
+[ChaptarrNG](https://github.com/snapetech-org/chaptarrng) is Snapetech's maintained
 fork of [Chaptarr](https://github.com/Chaptarr/chaptarr), supported as a
 Readarr-compatible alternative. We maintain the fork because SeerrNG needs
 format-scoped requests and durable tracking when author metadata preparation
 delays a book add. ChaptarrNG remains a standalone app. SeerrNG sends the
 selected format explicitly, so one ChaptarrNG instance can serve ebooks and
 audiobooks without a provider-specific URL Base or API adapter. See the
-[ChaptarrNG fork feature guide](https://github.com/snapetech/chaptarrng/blob/main/docs/FORK_FEATURES.md)
+[ChaptarrNG fork feature guide](https://github.com/snapetech-org/chaptarrng/blob/main/docs/FORK_FEATURES.md)
 for its maintained changes, including Direct Download, backup protection,
 and package support.
 
@@ -202,7 +202,7 @@ cross-container Compose smoke test that runs SeerrNG's compiled API adapter
 against a locally built ChaptarrNG image, checks the format-scoped paged
 library, and verifies that administrative and unrelated command routes reject
 the SeerrNG credential. Run it with the instructions in
-[ChaptarrNG's SeerrNG integration guide](https://github.com/snapetech/chaptarrng/blob/main/docs/SEERRNG_INTEGRATION.md).
+[ChaptarrNG's SeerrNG integration guide](https://github.com/snapetech-org/chaptarrng/blob/main/docs/SEERRNG_INTEGRATION.md).
 Pin the ChaptarrNG image version in reproducible deployments because its
 Readarr-compatible surface can change between releases.
 
@@ -658,7 +658,7 @@ both entries can point to the same BookshelfNG instance.
 The public Snapetech fork is:
 
 ```text
-https://github.com/snapetech/bookshelfng
+https://github.com/snapetech-org/bookshelfng
 ```
 
 If Docker is not an option, follow the [BookshelfNG source-build
@@ -1282,7 +1282,7 @@ The standard BookshelfNG Docker image includes FFmpeg. The merge encodes AAC
 at 128 kbps by default; set `BOOKSHELF_M4B_AAC_BITRATE_KBPS` to a value from
 48 to 320 to change it. Original audio files are kept if conversion or M4B
 import fails, and copy-only imports keep the source tracks. See the
-[BookshelfNG merge guide](https://github.com/Snapetech/bookshelfng/blob/main/docs/audiobook-m4b-merging.md)
+[BookshelfNG merge guide](https://github.com/snapetech-org/bookshelfng/blob/main/docs/audiobook-m4b-merging.md)
 for track ordering and failure behavior.
 
 ## Requesting a specific edition

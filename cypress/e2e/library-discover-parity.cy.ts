@@ -790,7 +790,7 @@ describe('Books and Music discover parity', () => {
       .should(
         'have.attr',
         'href',
-        'https://github.com/snapetech/seerrng/blob/main/docs/using-seerr/bookshelf-hardcover-migration.md'
+        'https://github.com/snapetech-org/seerrng/blob/main/docs/using-seerr/bookshelf-hardcover-migration.md'
       )
       .and('have.attr', 'target', '_blank');
     cy.contains('label', 'Book Format').should('be.visible');
@@ -862,7 +862,7 @@ describe('Books and Music discover parity', () => {
       .should(
         'have.attr',
         'href',
-        'https://github.com/snapetech/seerrng/blob/main/docs/using-seerr/bookshelf-backend.md'
+        'https://github.com/snapetech-org/seerrng/blob/main/docs/using-seerr/bookshelf-backend.md'
       )
       .and('have.attr', 'target', '_blank')
       .and('have.attr', 'rel', 'noopener noreferrer');

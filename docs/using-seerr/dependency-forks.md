@@ -55,7 +55,7 @@ paths and profile overrides. It retains the broader Readarr-style library
 workflow while maintaining a native Hardcover provider, selectable runtime
 catalogs, direct-download support, and current package/release channels. Many
 automation basics are inherited from Bookshelf and Readarr; see its
-[capability comparison](https://github.com/snapetech/bookshelfng/blob/main/docs/capabilities-and-compatibility.md)
+[capability comparison](https://github.com/snapetech-org/bookshelfng/blob/main/docs/capabilities-and-compatibility.md)
 for the current shared-versus-maintained inventory.
 
 **With SeerrNG:** the `seerrng-bookshelf` capability contract advertises
@@ -77,7 +77,7 @@ but it does not make the current ChaptarrNG release a drop-in replacement.
 There is no released populated-database converter or compatibility bridge for
 BookshelfNG images and packages. Keep existing BookshelfNG data and
 installations until the feature, migration, and channel gates in its
-[consolidation report](https://github.com/snapetech/bookshelfng/blob/main/docs/maintainers/chaptarr-consolidation.md)
+[consolidation report](https://github.com/snapetech-org/bookshelfng/blob/main/docs/maintainers/chaptarr-consolidation.md)
 pass.
 
 ### ChaptarrNG
@@ -92,7 +92,7 @@ and adds a built-in Direct Download indexer/client, authenticated encryption
 for full backups, fork-owned release images and deployment packages, and
 maintained security/configuration work. Chaptarr also has its own encrypted
 quick-start settings backup; the distinction here is full-backup encryption.
-See the [ChaptarrNG feature and upstream guide](https://github.com/snapetech/chaptarrng/blob/main/docs/FORK_FEATURES.md).
+See the [ChaptarrNG feature and upstream guide](https://github.com/snapetech-org/chaptarrng/blob/main/docs/FORK_FEATURES.md).
 
 **With SeerrNG:** ChaptarrNG advertises format routes, provider IDs, paged
 library scans, pending-import operations, and its supported API dialect through
@@ -110,7 +110,7 @@ Direct Download, full-backup encryption, security behavior, and release/package
 continuity—plus every BookshelfNG feature carried into the consolidated
 ChaptarrNG product. Chaptarr already has a pending-import subsystem;
 SeerrNG needs compatible exposed semantics, not a second queue implementation.
-The [combined ChaptarrNG retirement matrix](https://github.com/snapetech/chaptarrng/blob/main/docs/FORK_FEATURES.md#chaptarrng-retirement-blockers)
+The [combined ChaptarrNG retirement matrix](https://github.com/snapetech-org/chaptarrng/blob/main/docs/FORK_FEATURES.md#chaptarrng-retirement-blockers)
 tracks both sets. Every feature, sub-feature, post-fork source change, data
 path, and distribution channel must be retained or replaced with a verified
 equivalent, with tests, before ChaptarrNG can be retired into Chaptarr.
@@ -124,7 +124,7 @@ game manager. At this review, the upstream `main` snapshot was
 [`fb650bab`](https://github.com/Doezer/Questarr/commit/fb650bab63cb2f7ce3c9004ab9028cfc3b210a01).
 This commit is the dated comparison point; later upstream and fork commits may
 change the overlap.
-The fork's own [change guide](https://github.com/snapetech/QuestarrNG/blob/main/docs/FORK_CHANGES.md)
+The fork's own [change guide](https://github.com/snapetech-org/QuestarrNG/blob/main/docs/FORK_CHANGES.md)
 tracks its release history and maintained features.
 
 **Standalone value:** QuestarrNG remains a full PC-game manager. Fork-maintained
@@ -162,7 +162,7 @@ without SeerrNG and publishes its own `romarrng` image, releases, and
 installation instructions. The public ROMarr line already provides a generic
 external-request intake and polling API, so its shared indexer, downloader,
 and library features are not all NG-only. ROMarrNG maintains the extensions
-and distribution it needs; its [upstream comparison](https://github.com/snapetech/ROMarrNG/blob/main/docs/UPSTREAM-PARITY.md)
+and distribution it needs; its [upstream comparison](https://github.com/snapetech-org/ROMarrNG/blob/main/docs/UPSTREAM-PARITY.md)
 records the current split.
 
 **With SeerrNG:** the versioned contract adds a provider-only credential,

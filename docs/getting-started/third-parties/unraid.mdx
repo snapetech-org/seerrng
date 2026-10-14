@@ -23,7 +23,7 @@ Search for **SeerrNG** in
 [Unraid Community Apps](https://ca.unraid.net/apps/seerrng-0wrq5ph1rtda55) and
 choose the entry published by snapetech. The similarly named upstream **Seerr**
 listing is a different application. See the
-[SeerrNG repository](https://github.com/snapetech/seerrng) for this fork's
+[SeerrNG repository](https://github.com/snapetech-org/seerrng) for this fork's
 code and documentation.
 
 The SeerrNG Community Apps listing installs SeerrNG only. Each optional service
@@ -33,10 +33,10 @@ Services.
 
 | Optional service | Purpose | Installation and setup | Manual template |
 | --- | --- | --- | --- |
-| BookshelfNG | Ebooks and audiobooks; one instance can handle both | [Install BookshelfNG](https://ca.unraid.net/apps/bookshelfng-1fdcqrv18pja7r) · [Setup guide](https://github.com/snapetech/bookshelfng-unraid#installation-and-setup) | [BookshelfNG XML](https://raw.githubusercontent.com/snapetech/bookshelfng-unraid/main/templates/bookshelfng.xml) |
-| ChaptarrNG | Readarr-compatible ebook and audiobook acquisition with SeerrNG pending-request support | [ChaptarrNG setup](https://github.com/snapetech/chaptarrng#unraid-community-applications) · `ghcr.io/snapetech/chaptarrng:0.9.937` · Not yet listed in Community Apps | [ChaptarrNG XML](https://raw.githubusercontent.com/snapetech/chaptarrng-unraid/main/templates/chaptarrng.xml) |
-| ROMarrNG | ROMs and console game acquisition | [ROMarrNG guide](https://github.com/snapetech/ROMarrNG#readme) | [ROMarrNG XML](https://raw.githubusercontent.com/snapetech/ROMarrNG/main/packaging/unraid/romarrng.xml) |
-| QuestarrNG | Games and IGDB catalog | [QuestarrNG guide](https://github.com/snapetech/QuestarrNG#unraid) | [QuestarrNG XML](https://raw.githubusercontent.com/snapetech/QuestarrNG/main/unraid/questarr.xml) |
+| BookshelfNG | Ebooks and audiobooks; one instance can handle both | [Install BookshelfNG](https://ca.unraid.net/apps/bookshelfng-1fdcqrv18pja7r) · [Setup guide](https://github.com/snapetech-org/bookshelfng-unraid#installation-and-setup) | [BookshelfNG XML](https://raw.githubusercontent.com/snapetech-org/bookshelfng-unraid/main/templates/bookshelfng.xml) |
+| ChaptarrNG | Readarr-compatible ebook and audiobook acquisition with SeerrNG pending-request support | [ChaptarrNG setup](https://github.com/snapetech-org/chaptarrng#unraid-community-applications) · `ghcr.io/snapetech/chaptarrng:0.9.937` · Not yet listed in Community Apps | [ChaptarrNG XML](https://raw.githubusercontent.com/snapetech-org/chaptarrng-unraid/main/templates/chaptarrng.xml) |
+| ROMarrNG | ROMs and console game acquisition | [ROMarrNG guide](https://github.com/snapetech-org/ROMarrNG#readme) | [ROMarrNG XML](https://raw.githubusercontent.com/snapetech-org/ROMarrNG/main/packaging/unraid/romarrng.xml) |
+| QuestarrNG | Games and IGDB catalog | [QuestarrNG guide](https://github.com/snapetech-org/QuestarrNG#unraid) | [QuestarrNG XML](https://raw.githubusercontent.com/snapetech-org/QuestarrNG/main/unraid/questarr.xml) |
 
 Search for the NG app name in Unraid **Apps** and select **Install**. If your
 catalog does not show an optional fork, use its manual template and setup guide
@@ -50,13 +50,13 @@ maintained Chaptarr fork; SeerrNG uses its capability-discovered format routes,
 provider identity, and restricted service key. The upstream Chaptarr project
 also has pending author imports, so pending imports alone do not distinguish
 the NG integration. Its Unraid profile and template live in the dedicated
-[ChaptarrNG Unraid package repository](https://github.com/snapetech/chaptarrng-unraid).
+[ChaptarrNG Unraid package repository](https://github.com/snapetech-org/chaptarrng-unraid).
 Use the current stable image or a versioned tag listed in the
-[ChaptarrNG release history](https://github.com/snapetech/chaptarrng/releases).
+[ChaptarrNG release history](https://github.com/snapetech-org/chaptarrng/releases).
 The template is not listed in Community Apps yet; submit
-`https://github.com/snapetech/chaptarrng-unraid` there to make it searchable.
+`https://github.com/snapetech-org/chaptarrng-unraid` there to make it searchable.
 Use the
-[SeerrNG issue tracker](https://github.com/snapetech/seerrng/issues) for
+[SeerrNG issue tracker](https://github.com/snapetech-org/seerrng/issues) for
 integration support. The upstream [Bookshelf](https://ca.unraid.net/apps/bookshelf-1d1gz3s0hj3af8)
 and [Questarr](https://ca.unraid.net/apps/questarr-0335hnh1oyuaqh) listings
 are different apps and do not replace the NG forks for SeerrNG's extended
@@ -80,14 +80,14 @@ the existing **Mylar3** service type.
 Issuarr, Mylar3, and Kapowarr are alternatives for comic acquisition; none is
 mandatory. On separate bridge networks, use the Unraid host address and each
 service's mapped web port when adding it in SeerrNG. For SeerrNG integration
-questions, use the [SeerrNG issue tracker](https://github.com/snapetech/seerrng/issues).
+questions, use the [SeerrNG issue tracker](https://github.com/snapetech-org/seerrng/issues).
 
 BackIssue is also supported for comic requests. It publishes a Docker image
 and an [Unraid template](https://backissue.app/getting-started); install it
 from its own project and connect it under **Settings > Services**.
 
 For one managed project containing SeerrNG and its companion services, use the
-[SeerrNG Unraid Compose stack](https://github.com/snapetech/seerrng/tree/main/packaging/unraid).
+[SeerrNG Unraid Compose stack](https://github.com/snapetech-org/seerrng/tree/main/packaging/unraid).
 That stack includes BookshelfNG for ebooks and audiobooks, optional upstream
 LazyLibrarian for magazines, optional upstream Mylar3 and Kapowarr for comics,
 and the ROMarrNG and QuestarrNG forks for software. These Compose profiles do
@@ -109,7 +109,7 @@ Bookshelf softcover database needs migration before changing to the Hardcover
 image; see the [Bookshelf migration guide](/using-seerr/bookshelf-hardcover-migration/).
 
 The template's raw XML is available at
-[`packaging/unraid/seerrng.xml`](https://raw.githubusercontent.com/snapetech/seerrng/main/packaging/unraid/seerrng.xml).
+[`packaging/unraid/seerrng.xml`](https://raw.githubusercontent.com/snapetech-org/seerrng/main/packaging/unraid/seerrng.xml).
 
 In case you still want to do it manually, please follow the instructions below.
 
@@ -156,7 +156,7 @@ keep its database and settings. The examples below use
   |---|---|
   | **Name** | `SeerrNG` |
   | **Repository** | `ghcr.io/snapetech/seerrng:latest` |
-  | **Icon URL** | `https://raw.githubusercontent.com/snapetech/seerrng/main/public/android-chrome-512x512.png` |
+  | **Icon URL** | `https://raw.githubusercontent.com/snapetech-org/seerrng/main/public/android-chrome-512x512.png` |
   | **WebUI** | `http://[IP]:[PORT:5055]` |
   | **Extra Parameters** | `--init --restart=unless-stopped` |
   | **Network Type** | `bridge` |
@@ -230,7 +230,7 @@ keep its database and settings. The examples below use
   |---|---|
   | **Name** | `SeerrNG` |
   | **Repository** | `ghcr.io/snapetech/seerrng:latest` |
-  | **Icon URL** | `https://raw.githubusercontent.com/snapetech/seerrng/main/public/android-chrome-512x512.png` |
+  | **Icon URL** | `https://raw.githubusercontent.com/snapetech-org/seerrng/main/public/android-chrome-512x512.png` |
   | **WebUI** | `http://[IP]:[PORT:5055]` |
   | **Extra Parameters** | `--init --restart=unless-stopped --user 99:100` |
   | **Network Type** | `bridge` |

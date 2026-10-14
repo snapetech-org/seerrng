@@ -51,7 +51,7 @@ class TvmazeAPI extends ExternalAPI {
       {
         timeout: 5_000,
         headers: {
-          'User-Agent': 'SeerrNG/3.x (+https://github.com/snapetech/seerrng)',
+          'User-Agent': 'SeerrNG/3.x (+https://github.com/snapetech-org/seerrng)',
           Accept: 'application/json',
         },
         nodeCache: cacheManager.getCache('tvmaze').data,

@@ -382,7 +382,7 @@ const BookshelfPathMigration = () => {
         <p>{intl.formatMessage(messages.safety)}</p>
         <p>{intl.formatMessage(messages.consolidation)}</p>
         <Link
-          href="https://github.com/snapetech/seerrng/blob/main/docs/using-seerr/bookshelf-media-path-migration.md"
+          href="https://github.com/snapetech-org/seerrng/blob/main/docs/using-seerr/bookshelf-media-path-migration.md"
           className="text-blue-400 hover:text-blue-300"
         >
           {intl.formatMessage(messages.documentation)}

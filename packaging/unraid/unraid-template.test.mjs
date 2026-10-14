@@ -9,7 +9,7 @@ const repositoryRoot = path.resolve(import.meta.dirname, '../..');
 const templatePath = path.join(repositoryRoot, 'packaging/unraid/seerrng.xml');
 const profilePath = path.join(repositoryRoot, 'ca_profile.xml');
 const templateUrl =
-  'https://raw.githubusercontent.com/snapetech/seerrng/main/packaging/unraid/seerrng.xml';
+  'https://raw.githubusercontent.com/snapetech-org/seerrng/main/packaging/unraid/seerrng.xml';
 
 const readXml = async (filePath) =>
   parseStringPromise(await fs.readFile(filePath, 'utf8'), {
@@ -80,8 +80,8 @@ test('Unraid repository profile has the required public metadata', async () => {
 
   assert.ok(profile.Profile.length > 20);
   assert.match(profile.Icon, /^https:\/\/raw\.githubusercontent\.com\//u);
-  assert.equal(profile.WebPage, 'https://github.com/snapetech/seerrng');
-  assert.equal(profile.Forum, 'https://github.com/snapetech/seerrng/issues');
+  assert.equal(profile.WebPage, 'https://github.com/snapetech-org/seerrng');
+  assert.equal(profile.Forum, 'https://github.com/snapetech-org/seerrng/issues');
   assert.equal(profile.Discord, 'https://discord.gg/5PyXBfvS6T');
   assert.equal(profile.DonateLink, 'https://ko-fi.com/snapetech');
   assert.ok(profile.DonateText);

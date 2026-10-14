@@ -528,4 +528,4 @@ reader destinations are Grimmory and BookOrbit. BookshelfNG can separately send
 imports to BookLore's BookDrop review queue, so a BookshelfNG acquisition can
 reach BookLore without SeerrNG talking to BookLore directly. See the
 [SeerrNG reader-app settings](../using-seerr/settings/services.md) and
-[BookshelfNG BookLore integration](https://github.com/snapetech/bookshelfng#documentation).
+[BookshelfNG BookLore integration](https://github.com/snapetech-org/bookshelfng#documentation).
