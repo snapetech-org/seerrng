@@ -6,4 +6,4 @@ action: none
 breaking: false
 ---
 
-The README and documentation now link open upstream-informed work, including music metadata provider controls and multi-device Web Push handling, and define the compatibility, provider, request-recovery, notification, security, data-transition, release, and support evidence required before SeerrNG can move to a supported upstream replacement.
+The README and review index now link users to current SeerrNG proposals, including Discover result navigation. The fork-retirement matrix records the navigation, provider, request, notification, security, data-transition, release, and support behavior a supported replacement must preserve.

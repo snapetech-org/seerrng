@@ -171,6 +171,13 @@ upstream replacement would need. SeerrNG already has account-scoped logout
 cleanup; this proposal covers the missing registration behavior. It is not a
 released feature.
 
+The open Discover proposal
+([#287](https://github.com/snapetech-org/seerrng/pull/287)) adds previous and
+next controls to Movie and Series details opened from a loaded result list,
+following its visible filtered order. The [review index](./docs/upstream-review-status.md)
+links Seerr issue #3015 and PR #3122; the [fork-retirement matrix](./docs/fork-rationale.md)
+records the replacement behavior and evidence. This proposal is not released.
+
 Release notes are maintained in [`CHANGELOG.md`](./CHANGELOG.md). User-facing
 pull requests add a concise release-note fragment under
 [`release-notes/`](./release-notes/README.md); the release workflow publishes
