@@ -153,6 +153,14 @@ index links its Seerr issue context, and the
 privacy, cancellation, and request-lifecycle behavior an upstream replacement
 would need. It is not a released feature.
 
+The open metadata proposal ([#283](https://github.com/snapetech-org/seerrng/pull/283))
+adds MusicBrainz and Cover Art Archive connectivity checks and configurable,
+bounded Cover Art Archive traffic limits. Its operator guide and API reference
+are part of that PR; the review index links the upstream Seerr PRs that informed
+the adaptation, and the [fork-retirement matrix](./docs/fork-rationale.md)
+records the provider status, rate, concurrency, cache, and redirect behavior a
+supported replacement would need. This proposal is not a released feature.
+
 Release notes are maintained in [`CHANGELOG.md`](./CHANGELOG.md). User-facing
 pull requests add a concise release-note fragment under
 [`release-notes/`](./release-notes/README.md); the release workflow publishes

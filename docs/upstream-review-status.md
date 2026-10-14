@@ -10,7 +10,7 @@ was open in review on this date. An open or draft pull request is not a released
 feature. Follow its pull request for review and validation status, and use the
 release notes to confirm what is available in a SeerrNG release.
 
-This page tracks selected SeerrNG pull requests numbered #244–#282 from this
+This page tracks selected SeerrNG pull requests numbered #244–#283 from this
 review period, including this index and the fork-retirement matrix. It is not a
 complete list of all open SeerrNG pull requests, a full inventory of upstream
 issues, or a user guide. Source links identify the public Seerr issue or pull
@@ -46,6 +46,7 @@ implementation details and review evidence.
 | [#279](https://github.com/snapetech-org/seerrng/pull/279) | Add a per-account browser preference to hide or show subject tags across Movie and Series detail pages. | [Seerr issue #2651](https://github.com/seerr-team/seerr/issues/2651) and closed [Seerr PR #3071](https://github.com/seerr-team/seerr/pull/3071). |
 | [#281](https://github.com/snapetech-org/seerrng/pull/281) | Add tenth-point TMDB rating thresholds and region-scoped streaming-service exclusion to Movie and Series Discover filters. | [Seerr PR #626](https://github.com/seerr-team/seerr/pull/626) and [issue #898](https://github.com/seerr-team/seerr/issues/898). |
 | [#282](https://github.com/snapetech-org/seerrng/pull/282) | Add private, self-scoped, one-time availability subscriptions for another user's active movie or series request, using the subscriber's own Media Available notification preferences. | [Seerr issue #3091](https://github.com/seerr-team/seerr/issues/3091), closed as a duplicate of [issue #375](https://github.com/seerr-team/seerr/issues/375). |
+| [#283](https://github.com/snapetech-org/seerrng/pull/283) | Add MusicBrainz and Cover Art Archive connectivity tests plus bounded, administrator-configurable Cover Art Archive concurrency and request-rate limits. | [Seerr PR #3110](https://github.com/seerr-team/seerr/pull/3110) and [Seerr PR #3116](https://github.com/seerr-team/seerr/pull/3116). |
 
 For current supported behavior, start with the [documentation index](./README.md).
 For SeerrNG's upstream relationship and the evidence needed before the core
