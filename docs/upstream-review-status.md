@@ -10,7 +10,7 @@ was open in review on this date. An open or draft pull request is not a released
 feature. Follow its pull request for review and validation status, and use the
 release notes to confirm what is available in a SeerrNG release.
 
-This page tracks selected SeerrNG pull requests numbered #244–#288 from this
+This page tracks selected SeerrNG pull requests numbered #244–#290 from this
 review period, including this index and the fork-retirement matrix. It is not a
 complete list of all open SeerrNG pull requests, a full inventory of upstream
 issues, or a user guide. Source links identify the public Seerr issue or pull
@@ -50,6 +50,7 @@ implementation details and review evidence.
 | [#284](https://github.com/snapetech-org/seerrng/pull/284) | Preserve Web Push subscriptions on sibling devices with the same user-agent and replace stale endpoints by matching subscription identity, including across user-agent changes. | [Seerr issue #2660](https://github.com/seerr-team/seerr/issues/2660) and merged [Seerr PR #3142](https://github.com/seerr-team/seerr/pull/3142); the registration fix is adapted here, while SeerrNG already had account-scoped logout cleanup. |
 | [#287](https://github.com/snapetech-org/seerrng/pull/287) | Add previous and next controls to Movie and Series details opened from a loaded Discover result list, following its visible filtered order. | [Seerr issue #3015](https://github.com/seerr-team/seerr/issues/3015) and [Seerr PR #3122](https://github.com/seerr-team/seerr/pull/3122). This SeerrNG proposal is open and unreleased. |
 | [#288](https://github.com/snapetech-org/seerrng/pull/288) | Recover anime requests when the configured Sonarr quality profile is missing or cannot be checked, and show the profile on the Services card. | [Seerr issue #3159](https://github.com/seerr-team/seerr/issues/3159) and closed, unmerged [Seerr PR #3160](https://github.com/seerr-team/seerr/pull/3160). This SeerrNG proposal is open and unreleased. |
+| [#290](https://github.com/snapetech-org/seerrng/pull/290) | Add a Sonarr setting that monitors future seasons only when a request includes the latest regular season; specials and older-only requests do not qualify, and automatic search remains separate. | [Seerr issue #3152](https://github.com/seerr-team/seerr/issues/3152) and open [Seerr PR #3157](https://github.com/seerr-team/seerr/pull/3157). This SeerrNG proposal is open and unreleased. |
 
 For current supported behavior, start with the [documentation index](./README.md).
 For SeerrNG's upstream relationship and the evidence needed before the core

@@ -6,4 +6,4 @@ action: none
 breaking: false
 ---
 
-The README, review index, and fork-retirement matrix now describe SeerrNG's proposed recovery for missing Sonarr anime profiles and the compatibility evidence a supported replacement would need. The review index links the proposal to its Seerr issue and closed pull request.
+The README, review index, and fork-retirement matrix now track separate Sonarr proposals for anime-profile recovery and latest-season monitoring, with public upstream context and compatibility evidence for a supported replacement.

@@ -187,6 +187,16 @@ Its upstream context—Seerr issue #3159 and closed PR #3160—is linked in the
 profile recovery and compatibility evidence a supported replacement would
 need. This proposal is not released.
 
+The open Sonarr proposal ([#290](https://github.com/snapetech-org/seerrng/pull/290))
+adds a **Latest Season Requested** monitoring mode. It enables future-season
+monitoring only when the request includes the latest regular season in the
+series metadata; specials, older-only requests, and unavailable season metadata
+do not enable it. Automatic search remains a separate setting. Its Seerr source
+context—issue #3152 and open PR #3157—is linked in the
+[review index](./docs/upstream-review-status.md), and the
+[fork-retirement matrix](./docs/fork-rationale.md) records the replacement
+behavior and compatibility evidence. This proposal is not released.
+
 Release notes are maintained in [`CHANGELOG.md`](./CHANGELOG.md). User-facing
 pull requests add a concise release-note fragment under
 [`release-notes/`](./release-notes/README.md); the release workflow publishes
