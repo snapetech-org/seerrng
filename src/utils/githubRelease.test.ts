@@ -16,7 +16,8 @@ describe('GitHub release response normalization', () => {
         tag_name: 'v1.0.0',
         created_at: null,
         published_at: '2026-07-17T00:00:00.000Z',
-        html_url: 'HTTPS://GITHUB.COM/snapetech-org/seerrng/releases/tag/v1.0.0',
+        html_url:
+          'HTTPS://GITHUB.COM/snapetech-org/seerrng/releases/tag/v1.0.0',
         body: 'x'.repeat(MAX_GITHUB_RELEASE_BODY_LENGTH + 1),
         assets: ['provider-only'],
       },

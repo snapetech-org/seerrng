@@ -81,7 +81,10 @@ test('Unraid repository profile has the required public metadata', async () => {
   assert.ok(profile.Profile.length > 20);
   assert.match(profile.Icon, /^https:\/\/raw\.githubusercontent\.com\//u);
   assert.equal(profile.WebPage, 'https://github.com/snapetech-org/seerrng');
-  assert.equal(profile.Forum, 'https://github.com/snapetech-org/seerrng/issues');
+  assert.equal(
+    profile.Forum,
+    'https://github.com/snapetech-org/seerrng/issues'
+  );
   assert.equal(profile.Discord, 'https://discord.gg/5PyXBfvS6T');
   assert.equal(profile.DonateLink, 'https://ko-fi.com/snapetech');
   assert.ok(profile.DonateText);

@@ -164,7 +164,9 @@ test('unit-test shards use the shared org pool only on main pushes and manual ru
   const trustedRunnerJson =
     '{"group":"trusted-main","labels":["self-hosted","Linux","X64","host"]}';
   const expectedRunner =
-    '$' + '{{ (' + mainRunnerCondition +
+    '$' +
+    '{{ (' +
+    mainRunnerCondition +
     " && vars.TRUSTED_MAIN_RUNNERS_ENABLED == 'true') && fromJSON('" +
     trustedRunnerJson +
     "') || 'ubuntu-latest' }}";
