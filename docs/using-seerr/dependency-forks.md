@@ -6,7 +6,7 @@ sidebar_position: 7
 
 # Why SeerrNG maintains four optional forks
 
-**Reviewed:** 2026-10-13. Upstream state below is a point-in-time comparison; check
+**Reviewed:** 2026-10-14. Upstream state below is a point-in-time comparison; check
 the linked branches and each fork's feature guide when updating a dependency.
 
 BookshelfNG, ChaptarrNG, QuestarrNG, and ROMarrNG are optional services. Each
@@ -205,17 +205,20 @@ retirement are separate transitions, each requiring its own populated-data and
 distribution proof. Active ChaptarrNG branches and open feature PRs count
 before release too; the combined matrix tracks the current backlog features,
 integrations, localization, proposed channel changes, and the individual
-retirement checks. The maintained backlog snapshot `24b340f` is 317 commits
-ahead and 1 behind ChaptarrNG `origin/main` at `02d38e1`, across 703 changed
-paths; `main` now includes merged CI PR #69. Open work includes maintainer
-guidance PR #71, localization PR #72 (Indonesian and Traditional Chinese
-choices, AudioBookShelf root-mapping and audiobook-mode translations, and
-locale direction metadata), draft metadata-preference PR #73, and proposed
-YunoHost packaging removal PR #74. PR #73's hosted Linux Core job passed, but
-Windows reported three path-sensitive rename test failures; the local
-integration fixtures are corrected and need a fresh hosted Windows run. Each
-feature or channel change remains in the upstream retirement review before
-merge or release.
+retirement checks. The earlier backlog snapshot `24b340f` is historical; PRs
+#69–#77 have since merged. At this review, ChaptarrNG `origin/main` is
+`4364742e`, 575 commits ahead and zero behind Chaptarr `upstream/develop` at
+`e67374f4`, across 1,100 changed paths (342 added and 758 modified). Open
+product and maintenance work includes PRs #78, #97, #100, and #101; all open
+dependency updates also remain in scope. ChaptarrNG PR #100 carries the
+BookshelfNG migration, BookLore integration, native packaging, and guarded
+legacy-channel bridge candidates. Its migration-158 SQL test fixture was
+hidden by a generic ignore rule; the tracked fixture and a targeted ignore
+exception are now on the PR branch, the 12 focused importer tests pass locally,
+and fresh hosted checks are pending. BookshelfNG PRs #128 and #130 and SeerrNG
+PR #280 remain open, so none of the BookshelfNG package or backend changes is
+released. Each feature or channel change remains in the upstream retirement
+review before merge or release.
 
 Keep any fork that still supplies standalone functionality operators rely on,
 even if its SeerrNG contract has been upstreamed. Recheck parent branches before
