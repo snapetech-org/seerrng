@@ -1007,13 +1007,14 @@ router.post<
             const transactionalRepo =
               transactionalEntityManager.getRepository(UserPushSubscription);
 
-            // Check for existing subscription by auth or endpoint within transaction
+            // An endpoint identifies the browser subscription record. Keep auth
+            // out of this lookup so a rotated endpoint reaches stale cleanup.
             const existingSubscription = await transactionalRepo.findOne({
               relations: { user: true },
-              where: [
-                { auth: body.auth, user: { id: req.user?.id } },
-                { endpoint: body.endpoint, user: { id: req.user?.id } },
-              ],
+              where: {
+                endpoint: body.endpoint,
+                user: { id: req.user?.id },
+              },
             });
 
             if (existingSubscription) {
@@ -1042,17 +1043,15 @@ router.post<
               return;
             }
 
-            // Clean up old subscriptions from the same device (userAgent) for this user
-            // iOS can silently refresh endpoints, leaving stale subscriptions in the database
-            // Only clean up if we're creating a new subscription (not updating an existing one)
-            if (body.userAgent) {
+            // Remove only a stale endpoint for this push subscription identity.
+            // User-agent strings are shared by distinct devices and can change
+            // across endpoint rotations, so auth is the reliable match here.
+            if (body.auth) {
               const staleSubscriptions = await transactionalRepo.find({
                 relations: { user: true },
                 where: {
-                  userAgent: body.userAgent,
+                  auth: body.auth,
                   user: { id: req.user?.id },
-                  // Only remove subscriptions with different endpoints (stale ones)
-                  // Keep subscriptions that might be from different browsers/tabs
                   endpoint: Not(body.endpoint),
                 },
               });
