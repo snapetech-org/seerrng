@@ -215,6 +215,14 @@ upstream [Seerr PR #3154](https://github.com/seerr-team/seerr/pull/3154) and
 [issue #1269](https://github.com/seerr-team/seerr/issues/1269). This proposal is
 not released.
 
+The open availability cleanup ([#293](https://github.com/snapetech-org/seerrng/pull/293))
+removes Plex, Jellyfin, and Sonarr season lookups whose results no longer feed
+SeerrNG's removal decisions. The existing orphaned-unknown-season rollup guard
+is already present in [commit `784faa9`](https://github.com/snapetech-org/seerrng/commit/784faa9f84542dc32fa06150d49761b46be76efe);
+the proposal adds direct regression coverage and removes leftover metadata
+work identified while reviewing [Seerr PR #3148](https://github.com/seerr-team/seerr/pull/3148).
+The cleanup is not released.
+
 Release notes are maintained in [`CHANGELOG.md`](./CHANGELOG.md). User-facing
 pull requests add a concise release-note fragment under
 [`release-notes/`](./release-notes/README.md); the release workflow publishes

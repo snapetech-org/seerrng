@@ -10,7 +10,7 @@ was open in review on this date. An open or draft pull request is not a released
 feature. Follow its pull request for review and validation status, and use the
 release notes to confirm what is available in a SeerrNG release.
 
-This page tracks selected SeerrNG pull requests numbered #244–#292 from this
+This page tracks selected SeerrNG pull requests numbered #244–#293 from this
 review period, including this index and the fork-retirement matrix. It is not a
 complete list of all open SeerrNG pull requests, a full inventory of upstream
 issues, or a user guide. Source links identify the public Seerr issue or pull
@@ -53,6 +53,7 @@ implementation details and review evidence.
 | [#290](https://github.com/snapetech-org/seerrng/pull/290) | Add a Sonarr setting that monitors future seasons only when a request includes the latest regular season; specials and older-only requests do not qualify, and automatic search remains separate. | [Seerr issue #3152](https://github.com/seerr-team/seerr/issues/3152) and open [Seerr PR #3157](https://github.com/seerr-team/seerr/pull/3157). This SeerrNG proposal is open and unreleased. |
 | [#291](https://github.com/snapetech-org/seerrng/pull/291) | Add Movie and Series genre exclusions, a Movie studio exclusion, and a Series status exclusion; provider exclusion and fractional ratings are already proposed in stacked [SeerrNG PR #281](https://github.com/snapetech-org/seerrng/pull/281). | Open [Seerr PR #3166](https://github.com/seerr-team/seerr/pull/3166) and related closed [issue #3090](https://github.com/seerr-team/seerr/issues/3090). SeerrNG PR #291 is open and unreleased; its scope excludes original-language/country post-filters and bounded result-page backfill with estimated pagination. |
 | [#292](https://github.com/snapetech-org/seerrng/pull/292) | Show Movie and Series ratings on touch cards and delay video-provider lookups until a desktop hover remains open; keep the existing provider presentation within narrow viewports. | Open [Seerr PR #3154](https://github.com/seerr-team/seerr/pull/3154) and linked [issue #1269](https://github.com/seerr-team/seerr/issues/1269). SeerrNG PR #292 is open and unreleased; SeerrNG already had a richer desktop rating popover. |
+| [#293](https://github.com/snapetech-org/seerrng/pull/293) | Remove unused Plex, Jellyfin, Sonarr, and TMDB season lookups from availability sync while preserving its live deletion path; directly test that the scanner rollup ignores orphaned `UNKNOWN` season rows. | Reviewed in context of [Seerr PR #3148](https://github.com/seerr-team/seerr/pull/3148). SeerrNG already has the active orphan-season rollup guard in [commit `784faa9`](https://github.com/snapetech-org/seerrng/commit/784faa9f84542dc32fa06150d49761b46be76efe); open PR #293 removes leftover metadata work and is unreleased. |
 
 For current supported behavior, start with the [documentation index](./README.md).
 For SeerrNG's upstream relationship and the evidence needed before the core
