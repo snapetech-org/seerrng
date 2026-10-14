@@ -197,6 +197,16 @@ context—issue #3152 and open PR #3157—is linked in the
 [fork-retirement matrix](./docs/fork-rationale.md) records the replacement
 behavior and compatibility evidence. This proposal is not released.
 
+The open Discover proposal ([#291](https://github.com/snapetech-org/seerrng/pull/291))
+adds genre exclusions to Movie and Series Discover, plus movie-studio and
+series-status exclusions. It builds on [#281](https://github.com/snapetech-org/seerrng/pull/281),
+which already proposes tenth-point ratings and region-aware streaming-service
+exclusion. The public review index links open Seerr [PR #3166](https://github.com/seerr-team/seerr/pull/3166)
+and its related closed [issue #3090](https://github.com/seerr-team/seerr/issues/3090).
+The current proposal does not include PR #3166's original-language and country
+post-filters or its bounded result-page backfill with estimated pagination;
+those remain a separately reviewed follow-up. These changes are not released.
+
 Release notes are maintained in [`CHANGELOG.md`](./CHANGELOG.md). User-facing
 pull requests add a concise release-note fragment under
 [`release-notes/`](./release-notes/README.md); the release workflow publishes

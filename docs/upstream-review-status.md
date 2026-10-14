@@ -10,7 +10,7 @@ was open in review on this date. An open or draft pull request is not a released
 feature. Follow its pull request for review and validation status, and use the
 release notes to confirm what is available in a SeerrNG release.
 
-This page tracks selected SeerrNG pull requests numbered #244–#290 from this
+This page tracks selected SeerrNG pull requests numbered #244–#291 from this
 review period, including this index and the fork-retirement matrix. It is not a
 complete list of all open SeerrNG pull requests, a full inventory of upstream
 issues, or a user guide. Source links identify the public Seerr issue or pull
@@ -51,6 +51,7 @@ implementation details and review evidence.
 | [#287](https://github.com/snapetech-org/seerrng/pull/287) | Add previous and next controls to Movie and Series details opened from a loaded Discover result list, following its visible filtered order. | [Seerr issue #3015](https://github.com/seerr-team/seerr/issues/3015) and [Seerr PR #3122](https://github.com/seerr-team/seerr/pull/3122). This SeerrNG proposal is open and unreleased. |
 | [#288](https://github.com/snapetech-org/seerrng/pull/288) | Recover anime requests when the configured Sonarr quality profile is missing or cannot be checked, and show the profile on the Services card. | [Seerr issue #3159](https://github.com/seerr-team/seerr/issues/3159) and closed, unmerged [Seerr PR #3160](https://github.com/seerr-team/seerr/pull/3160). This SeerrNG proposal is open and unreleased. |
 | [#290](https://github.com/snapetech-org/seerrng/pull/290) | Add a Sonarr setting that monitors future seasons only when a request includes the latest regular season; specials and older-only requests do not qualify, and automatic search remains separate. | [Seerr issue #3152](https://github.com/seerr-team/seerr/issues/3152) and open [Seerr PR #3157](https://github.com/seerr-team/seerr/pull/3157). This SeerrNG proposal is open and unreleased. |
+| [#291](https://github.com/snapetech-org/seerrng/pull/291) | Add Movie and Series genre exclusions, a Movie studio exclusion, and a Series status exclusion; provider exclusion and fractional ratings are already proposed in stacked [SeerrNG PR #281](https://github.com/snapetech-org/seerrng/pull/281). | Open [Seerr PR #3166](https://github.com/seerr-team/seerr/pull/3166) and related closed [issue #3090](https://github.com/seerr-team/seerr/issues/3090). SeerrNG PR #291 is open and unreleased; its scope excludes original-language/country post-filters and bounded result-page backfill with estimated pagination. |
 
 For current supported behavior, start with the [documentation index](./README.md).
 For SeerrNG's upstream relationship and the evidence needed before the core
