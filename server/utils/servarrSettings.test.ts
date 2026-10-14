@@ -9,6 +9,7 @@ import {
   parseMylarSettings,
   parseSonarrSettings,
   preserveServarrConnectionSecret,
+  resolveSonarrMonitorNewItems,
 } from './servarrSettings';
 
 describe('Servarr instance capacity', () => {
@@ -68,6 +69,33 @@ describe('preserveServarrConnectionSecret', () => {
 });
 
 describe('Servarr settings validation', () => {
+  it('accepts the latest-season Sonarr monitoring mode', () => {
+    const result = parseSonarrSettings({
+      ...baseSettings,
+      seriesType: 'standard',
+      animeSeriesType: 'anime',
+      animeTags: [],
+      enableSeasonFolders: true,
+      monitorNewItems: 'latest',
+    });
+
+    assert.ok('value' in result);
+    assert.equal(result.value.monitorNewItems, 'latest');
+  });
+
+  it('rejects unknown Sonarr monitoring modes', () => {
+    const result = parseSonarrSettings({
+      ...baseSettings,
+      seriesType: 'standard',
+      animeSeriesType: 'anime',
+      animeTags: [],
+      enableSeasonFolders: true,
+      monitorNewItems: 'requested',
+    });
+
+    assert.deepStrictEqual(result, { error: 'monitorNewItems is invalid.' });
+  });
+
   it('rejects malformed optional Sonarr profile IDs and booleans', () => {
     const result = parseSonarrSettings({
       ...baseSettings,
@@ -104,6 +132,40 @@ describe('Servarr settings validation', () => {
         activeMetadataProfileId: '1',
       }),
       { error: 'activeMetadataProfileId is invalid.' }
+    );
+  });
+});
+
+describe('resolveSonarrMonitorNewItems', () => {
+  it('preserves the existing All and None settings', () => {
+    assert.equal(resolveSonarrMonitorNewItems('all', [], []), 'all');
+    assert.equal(resolveSonarrMonitorNewItems('none', [8], [1, 8]), 'none');
+  });
+
+  it('enables future monitoring when the latest regular season is requested', () => {
+    assert.equal(
+      resolveSonarrMonitorNewItems('latest', [1, 4], [0, 1, 2, 4]),
+      'all'
+    );
+  });
+
+  it('does not enable future monitoring for older seasons or specials alone', () => {
+    assert.equal(
+      resolveSonarrMonitorNewItems('latest', [1, 2], [0, 1, 2, 4]),
+      'none'
+    );
+    assert.equal(
+      resolveSonarrMonitorNewItems('latest', [0], [0, 1, 2]),
+      'none'
+    );
+  });
+
+  it('fails closed when no regular season can be identified', () => {
+    assert.equal(resolveSonarrMonitorNewItems('latest', [0], [0]), 'none');
+    assert.equal(resolveSonarrMonitorNewItems('latest', [1], []), 'none');
+    assert.equal(
+      resolveSonarrMonitorNewItems('latest', [1.5], [0, 1.5]),
+      'none'
     );
   });
 });

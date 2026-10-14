@@ -62,6 +62,16 @@ You can verify whether or not you have a URL base configured in your Radarr/Sona
 
 Select the default settings you would like to use for all new requests. Note that all of these options are required, and that requests will fail if any of these are not configured!
 
+#### Monitor New Seasons (Sonarr)
+
+Choose how Sonarr should monitor future seasons when SeerrNG adds a series:
+
+- **All** monitors future seasons for every requested series.
+- **None** leaves future seasons unmonitored.
+- **Latest Season Requested** monitors future seasons only when the request includes the latest regular season listed by TMDB. Specials do not count as regular seasons, and requests for older seasons alone do not enable future-season monitoring.
+
+This setting controls monitoring only. Automatic searches are controlled separately by **Enable Automatic Search**. If SeerrNG cannot identify a regular season, it uses **None** for that request.
+
 #### External URL (optional)
 
 If the hostname or IP address you configured above is not accessible outside your network, you can set a different URL here. This "external" URL is used to add clickable links to your Radarr/Sonarr servers on media detail pages.

@@ -3137,6 +3137,16 @@ components:
         enableSeasonFolders:
           type: boolean
           example: false
+        monitorNewItems:
+          type: string
+          enum:
+            - all
+            - none
+            - latest
+          default: all
+          description: >-
+            Controls Sonarr future-season monitoring. The latest mode enables
+            monitoring only when the request includes the latest regular season.
         isDefault:
           type: boolean
           example: false
@@ -3160,6 +3170,7 @@ components:
         - activeDirectory
         - is4k
         - enableSeasonFolders
+        - monitorNewItems
         - isDefault
     SportarrSettings:
       type: object

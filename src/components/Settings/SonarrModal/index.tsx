@@ -85,8 +85,11 @@ const messages = defineMessages('components.Settings.SonarrModal', {
   notagoptions: 'No tags',
   selecttags: 'Select tags',
   monitorNewItems: 'Monitor New Seasons',
-  monitorNewItemsHelp:
-    'Whether Sonarr should monitor (All) or not (None) new seasons when a series is added.',
+  monitorNewItemsAll: 'All',
+  monitorNewItemsNone: 'None',
+  monitorNewItemsLatest: 'Latest Season Requested',
+  monitorNewItemsModeDescription:
+    'All monitors future seasons for every series; None disables them. Latest Season Requested enables them only when a request includes the latest regular season.',
   apiKeyHelp: 'Find it in Sonarr: Settings > General > Security > API Key',
   baseUrlHelp:
     'If you set a URL Base in Sonarr (Settings > General > Host), enter it here (e.g. /sonarr). Leave blank otherwise.',
@@ -1027,13 +1030,22 @@ const SonarrModal = ({ onClose, sonarr, onSave }: SonarrModalProps) => {
                         name="monitorNewItems"
                         disabled={!isValidated || isTesting}
                       >
-                        <option value="all">All</option>
-                        <option value="none">None</option>
+                        <option value="all">
+                          {intl.formatMessage(messages.monitorNewItemsAll)}
+                        </option>
+                        <option value="none">
+                          {intl.formatMessage(messages.monitorNewItemsNone)}
+                        </option>
+                        <option value="latest">
+                          {intl.formatMessage(messages.monitorNewItemsLatest)}
+                        </option>
                       </Field>
                     </div>
                   </div>
                   <span className="settings-form-row-description">
-                    {intl.formatMessage(messages.monitorNewItemsHelp)}
+                    {intl.formatMessage(
+                      messages.monitorNewItemsModeDescription
+                    )}
                   </span>
                   {errors.monitorNewItems && touched.monitorNewItems && (
                     <div className="error">{errors.monitorNewItems}</div>

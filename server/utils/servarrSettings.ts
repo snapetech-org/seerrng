@@ -423,7 +423,9 @@ export const parseSonarrSettings = (
   if ('error' in enableSeasonFolders) return enableSeasonFolders;
 
   const monitorNewItems =
-    settings.monitorNewItems === 'all' || settings.monitorNewItems === 'none'
+    settings.monitorNewItems === 'all' ||
+    settings.monitorNewItems === 'none' ||
+    settings.monitorNewItems === 'latest'
       ? settings.monitorNewItems
       : undefined;
 
@@ -446,6 +448,29 @@ export const parseSonarrSettings = (
       monitorNewItems,
     },
   };
+};
+
+export const resolveSonarrMonitorNewItems = (
+  setting: SonarrSettings['monitorNewItems'],
+  requestedSeasonNumbers: readonly number[],
+  availableSeasonNumbers: readonly number[]
+): 'all' | 'none' => {
+  if (setting !== 'latest') {
+    return setting;
+  }
+
+  const latestRegularSeasonNumber = availableSeasonNumbers.reduce(
+    (latest, seasonNumber) =>
+      Number.isSafeInteger(seasonNumber) && seasonNumber > latest
+        ? seasonNumber
+        : latest,
+    0
+  );
+
+  return latestRegularSeasonNumber > 0 &&
+    requestedSeasonNumbers.includes(latestRegularSeasonNumber)
+    ? 'all'
+    : 'none';
 };
 
 export const parseSportarrSettings = (

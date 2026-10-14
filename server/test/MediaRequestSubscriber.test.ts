@@ -683,12 +683,12 @@ describe('MediaRequestSubscriber service dispatch', () => {
         is4k: false,
         isDefault: true,
         syncEnabled: true,
-        preventSearch: false,
+        preventSearch: true,
         tagRequests: false,
         seriesType: 'standard',
         animeSeriesType: 'anime',
         enableSeasonFolders: true,
-        monitorNewItems: 'all',
+        monitorNewItems: 'latest',
         overrideRule: [],
       },
     ];
@@ -714,6 +714,7 @@ describe('MediaRequestSubscriber service dispatch', () => {
       name: 'Episode Selection Test',
       external_ids: { tvdb_id: 121362 },
       keywords: { results: [] },
+      seasons: [0, 1, 3, 4, 5].map((season_number) => ({ season_number })),
     }));
 
     let receivedOptions: AddSeriesOptions | undefined;
@@ -765,7 +766,8 @@ describe('MediaRequestSubscriber service dispatch', () => {
       { seasonNumber: 3 },
       { seasonNumber: 5, episodeNumbers: [7, 8] },
     ]);
-    assert.strictEqual(receivedOptions?.searchNow, true);
+    assert.strictEqual(receivedOptions?.monitorNewItems, 'all');
+    assert.strictEqual(receivedOptions?.searchNow, false);
   });
 
   it('fails a movie request whose explicit Radarr server was removed', async () => {
