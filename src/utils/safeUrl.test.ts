@@ -43,7 +43,7 @@ describe('safe browser URLs', () => {
     assert.strictEqual(getSafeMarkdownHref('/docs/release'), '/docs/release');
     assert.strictEqual(getSafeMarkdownHref('#changes'), '#changes');
     assert.strictEqual(
-      getSafeHttpsHref('HTTPS://GITHUB.COM/snapetech/seerrng'),
+      getSafeHttpsHref('HTTPS://GITHUB.COM/snapetech-org/seerrng'),
       'https://github.com/snapetech-org/seerrng'
     );
 
