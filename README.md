@@ -145,6 +145,14 @@ context and the evidence an upstream replacement would need are linked from the
 review index and [fork-retirement matrix](./docs/fork-rationale.md). It is not
 a released feature.
 
+Another open proposal lets household members follow an active movie or series
+request made by someone else and receive a private, one-time availability
+notice ([#282](https://github.com/snapetech-org/seerrng/pull/282)). The review
+index links its Seerr issue context, and the
+[fork-retirement matrix](./docs/fork-rationale.md) records the notification,
+privacy, cancellation, and request-lifecycle behavior an upstream replacement
+would need. It is not a released feature.
+
 Release notes are maintained in [`CHANGELOG.md`](./CHANGELOG.md). User-facing
 pull requests add a concise release-note fragment under
 [`release-notes/`](./release-notes/README.md); the release workflow publishes
