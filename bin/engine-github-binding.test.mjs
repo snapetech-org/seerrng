@@ -121,6 +121,61 @@ test('the immutable plan is an attempt-bound artifact consumed by every unit', (
   }
 });
 
+test('hosted plans and receipts use isolated run-attempt job workspaces', () => {
+  for (const name of [
+    'ci',
+    'codeql',
+    'cypress',
+    'test-docs',
+    'docs-link-check',
+    'lint-helm-charts',
+  ]) {
+    const { text, workflow } = readWorkflow(name);
+    assert.doesNotMatch(
+      text,
+      /\$RUNNER_TEMP\/seerrng-engine-(?:plan|receipts)(?:\/|"|\s)/,
+      `${name} must not reuse an unscoped engine workspace`
+    );
+    for (const line of text
+      .split('\n')
+      .filter((entry) => /--(?:plan-file|receipt-dir) /.test(entry))) {
+      for (const marker of [
+        '${GITHUB_REPOSITORY_ID}',
+        '${GITHUB_RUN_ID}',
+        '${GITHUB_RUN_ATTEMPT}',
+        '${GITHUB_JOB}',
+      ])
+        assert.ok(line.includes(marker), `${name}: ${line}`);
+    }
+    assert.match(
+      text,
+      /path: \$\{\{ runner\.temp \}\}\/seerrng-engine-\$\{\{ github\.repository_id \}\}-\$\{\{ github\.run_id \}\}-\$\{\{ github\.run_attempt \}\}-\$\{\{ github\.job \}\}-/,
+      `${name} plan artifacts must use the isolated workspace`
+    );
+    assert.match(
+      text,
+      /path: \$\{\{ runner\.temp \}\}\/seerrng-engine-\$\{\{ github\.repository_id \}\}-\$\{\{ github\.run_id \}\}-\$\{\{ github\.run_attempt \}\}-\$\{\{ github\.job \}\}-/,
+      `${name} receipt artifacts must use the isolated workspace`
+    );
+
+    for (const job of Object.values(workflow.jobs)) {
+      for (const [index, step] of (job.steps ?? []).entries()) {
+        if (
+          !/^Publish (?:immutable current-attempt validation plan|.*engine.*receipt)/.test(
+            step.name ?? ''
+          )
+        )
+          continue;
+        assert.equal(
+          job.steps[index + 1]?.name,
+          'Clean attempt-scoped engine workspace',
+          `${name}: ${step.name}`
+        );
+      }
+    }
+  }
+});
+
 test('hosted admission outputs expose execution only', () => {
   assert.match(validationCli, /\['execute', 'true'\]/);
   for (const forbidden of [

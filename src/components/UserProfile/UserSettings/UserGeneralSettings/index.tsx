@@ -20,6 +20,7 @@ import defineMessages from '@app/utils/defineMessages';
 import { ArrowDownOnSquareIcon } from '@heroicons/react/24/outline';
 import type { TmdbLanguage } from '@server/api/themoviedb/interfaces';
 import { ApiErrorCode } from '@server/constants/error';
+import { ServerType } from '@server/constants/server';
 import type { UserSettingsGeneralResponse } from '@server/interfaces/api/userSettingsInterfaces';
 import type { AvailableLocale } from '@server/types/languages';
 import axios from 'axios';
@@ -453,13 +454,13 @@ const UserGeneralSettings = () => {
                     ) : user?.userType === UserType.EMBY ? (
                       <Badge badgeType="success">
                         {intl.formatMessage(messages.mediaServerUser, {
-                          mediaServerName: 'Emby',
+                          mediaServerName: ServerType.EMBY,
                         })}
                       </Badge>
                     ) : user?.userType === UserType.JELLYFIN ? (
                       <Badge badgeType="default">
                         {intl.formatMessage(messages.mediaServerUser, {
-                          mediaServerName: 'Jellyfin',
+                          mediaServerName: ServerType.JELLYFIN,
                         })}
                       </Badge>
                     ) : null}

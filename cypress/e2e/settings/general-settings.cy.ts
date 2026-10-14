@@ -18,6 +18,34 @@ describe('General Settings', () => {
     cy.contains('h3', 'General Settings').should('be.visible');
   });
 
+  it('accepts a trailing slash for YouTube URLs and keeps the application URL strict', () => {
+    cy.intercept('POST', '/api/v1/settings/main', {
+      statusCode: 200,
+      body: {},
+    }).as('saveMainSettings');
+    cy.visit('/settings/main');
+
+    cy.get('#youtubeUrl').clear().type('https://youtube.example/watch/');
+    cy.get('#applicationUrl').clear().type('https://seerr.example/');
+    cy.get('[data-testid="settings-main-form"]').submit();
+
+    cy.get('#applicationUrl')
+      .closest('.form-row')
+      .find('.error')
+      .should('contain', 'URL must not end in a trailing slash');
+    cy.get('#youtubeUrl')
+      .closest('.form-row')
+      .find('.error')
+      .should('not.exist');
+
+    cy.get('#applicationUrl').clear().type('https://seerr.example');
+    cy.get('[data-testid="settings-main-form"]').submit();
+    cy.wait('@saveMainSettings').then(({ request }) => {
+      expect(request.body.youtubeUrl).to.eq('https://youtube.example/watch/');
+      expect(request.body.applicationUrl).to.eq('https://seerr.example');
+    });
+  });
+
   it('modifies setting that requires restart', () => {
     cy.intercept('POST', '/api/v1/settings/network').as('saveNetwork');
     cy.intercept('GET', '/api/v1/status?checkUpdateAvailable=false').as(
