@@ -7765,6 +7765,31 @@
     @apply inline-flex flex-nowrap items-center gap-[5px] whitespace-nowrap;
   }
 
+  .settings-provider-status-list {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    margin-top: 5px;
+  }
+
+  .settings-provider-status-row {
+    display: flex;
+    align-items: center;
+    font-size: 0.75rem;
+    line-height: 1rem;
+  }
+
+  .settings-provider-status-label {
+    flex: 0 0 9rem;
+    margin-inline-end: var(--button-content-gap);
+  }
+
+  .settings-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: var(--button-content-gap);
+  }
+
   .settings-warning-acknowledgement {
     @apply mb-0 inline-flex items-center;
   }

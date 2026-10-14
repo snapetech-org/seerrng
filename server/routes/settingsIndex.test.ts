@@ -3,7 +3,9 @@ import dns from 'node:dns/promises';
 import path from 'node:path';
 import { afterEach, before, beforeEach, describe, it, mock } from 'node:test';
 
+import CoverArtArchive from '@server/api/coverartarchive';
 import JellyfinAPI from '@server/api/jellyfin';
+import MusicBrainz from '@server/api/musicbrainz';
 import PlexAPI from '@server/api/plexapi';
 import PlexTvAPI, { MAX_PLEX_SHARED_USERS } from '@server/api/plextv';
 import TautulliAPI from '@server/api/tautulli';
@@ -1738,11 +1740,118 @@ describe('Settings route input validation', () => {
     const flagRes = await request(app)
       .post('/settings/metadatas/test')
       .send({ tmdb: 'true' });
+    const musicFlagRes = await request(app)
+      .post('/settings/metadatas/test')
+      .send({ coverartarchive: 'true' });
 
     assert.strictEqual(arrayRes.status, 400);
     assert.match(arrayRes.body.error, /Invalid metadata test settings/);
     assert.strictEqual(flagRes.status, 400);
     assert.match(flagRes.body.error, /Metadata test flags must be booleans/);
+    assert.strictEqual(musicFlagRes.status, 400);
+    assert.match(
+      musicFlagRes.body.error,
+      /Metadata test flags must be booleans/
+    );
+  });
+
+  it('persists bounded Cover Art Archive limits', async () => {
+    const settings = getSettings();
+    const originalSettings = structuredClone(settings.musicMetadataSettings);
+
+    try {
+      const invalid = await request(app)
+        .put('/settings/metadatas/music')
+        .send({ maxConcurrentRequests: 6, maxRequestsPerSecond: 10 });
+      assert.strictEqual(invalid.status, 400);
+
+      const saved = await request(app)
+        .put('/settings/metadatas/music')
+        .send({ maxConcurrentRequests: 2, maxRequestsPerSecond: 10 });
+      assert.strictEqual(saved.status, 200);
+      assert.deepStrictEqual(saved.body, {
+        success: true,
+        maxConcurrentRequests: 2,
+        maxRequestsPerSecond: 10,
+      });
+
+      const loaded = await request(app).get('/settings/metadatas/music');
+      assert.strictEqual(loaded.status, 200);
+      assert.deepStrictEqual(loaded.body, {
+        maxConcurrentRequests: 2,
+        maxRequestsPerSecond: 10,
+      });
+    } finally {
+      await settings.persistSection('musicMetadataSettings', originalSettings);
+    }
+  });
+
+  it('tests MusicBrainz and Cover Art Archive without testing other providers', async () => {
+    const musicBrainzTest = mock.method(
+      MusicBrainz.prototype,
+      'testConnection',
+      async () => undefined
+    );
+    const coverArtArchiveTest = mock.method(
+      CoverArtArchive.prototype,
+      'testConnection',
+      async () => undefined
+    );
+
+    const response = await request(app)
+      .post('/settings/metadatas/test')
+      .send({ musicbrainz: true, coverartarchive: true });
+
+    assert.strictEqual(response.status, 200);
+    assert.deepStrictEqual(response.body.tests, {
+      tmdb: 'not tested',
+      tvdb: 'not tested',
+      musicbrainz: 'ok',
+      coverartarchive: 'ok',
+    });
+    assert.strictEqual(musicBrainzTest.mock.callCount(), 1);
+    assert.strictEqual(coverArtArchiveTest.mock.callCount(), 1);
+  });
+
+  it('keeps music metadata settings and provider tests aligned with OpenAPI', async () => {
+    const validatedApp = createOpenApiValidatedApp();
+    const settings = getSettings();
+    const originalSettings = structuredClone(settings.musicMetadataSettings);
+    const musicBrainzTest = mock.method(
+      MusicBrainz.prototype,
+      'testConnection',
+      async () => undefined
+    );
+    const coverArtArchiveTest = mock.method(
+      CoverArtArchive.prototype,
+      'testConnection',
+      async () => undefined
+    );
+
+    try {
+      const current = await request(validatedApp).get(
+        '/api/v1/settings/metadatas/music'
+      );
+      assert.strictEqual(current.status, 200);
+      assert.deepStrictEqual(current.body, originalSettings.coverArtArchive);
+
+      const updated = await request(validatedApp)
+        .put('/api/v1/settings/metadatas/music')
+        .send({ maxConcurrentRequests: 3, maxRequestsPerSecond: 12 });
+      assert.strictEqual(updated.status, 200);
+      assert.strictEqual(updated.body.success, true);
+
+      const tested = await request(validatedApp)
+        .post('/api/v1/settings/metadatas/test')
+        .send({ musicbrainz: true, coverartarchive: true });
+      assert.strictEqual(tested.status, 200);
+      assert.strictEqual(tested.body.tests.musicbrainz, 'ok');
+      assert.strictEqual(tested.body.tests.coverartarchive, 'ok');
+      assert.strictEqual(musicBrainzTest.mock.callCount(), 1);
+      assert.strictEqual(coverArtArchiveTest.mock.callCount(), 1);
+    } finally {
+      await settings.persistSection('musicMetadataSettings', originalSettings);
+    }
   });
 
   it('rejects malformed log search values before reading logs', async () => {

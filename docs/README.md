@@ -41,6 +41,7 @@ connects to.
 
 ## Configure and operate
 
+- [Choose metadata providers and configure music request limits](/using-seerr/settings/metadata/)
 - [Configure media and automation services](/using-seerr/settings/services/)
 - [Choose available media categories](/using-seerr/settings/media-categories/)
 - [Configure media-server libraries](/using-seerr/settings/mediaserver)
