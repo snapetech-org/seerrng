@@ -330,7 +330,9 @@ test('unit-test pull requests stay on hosted runners', () => {
   const trustedRunnerJson =
     '{"group":"trusted-main","labels":["self-hosted","Linux","X64","host"]}';
   const expectedRunner =
-    '$' + '{{ (' + mainRunnerCondition +
+    '$' +
+    '{{ (' +
+    mainRunnerCondition +
     " && vars.TRUSTED_MAIN_RUNNERS_ENABLED == 'true') && fromJSON('" +
     trustedRunnerJson +
     "') || 'ubuntu-latest' }}";

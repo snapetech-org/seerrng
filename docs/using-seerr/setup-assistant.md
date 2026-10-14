@@ -19,14 +19,14 @@ repository. It uses Node.js built-ins and does not need an npm install.
 On Windows, open PowerShell and run:
 
 ```powershell
-Invoke-WebRequest https://raw.githubusercontent.com/snapetech/seerrng/main/scripts/setup-assistant.mjs -OutFile setup-assistant.mjs
+Invoke-WebRequest https://raw.githubusercontent.com/snapetech-org/seerrng/main/scripts/setup-assistant.mjs -OutFile setup-assistant.mjs
 node .\setup-assistant.mjs
 ```
 
 On macOS or Linux, run:
 
 ```sh
-curl --fail --location https://raw.githubusercontent.com/snapetech/seerrng/main/scripts/setup-assistant.mjs --output setup-assistant.mjs
+curl --fail --location https://raw.githubusercontent.com/snapetech-org/seerrng/main/scripts/setup-assistant.mjs --output setup-assistant.mjs
 node ./setup-assistant.mjs
 ```
 

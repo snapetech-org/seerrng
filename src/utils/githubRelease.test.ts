@@ -26,7 +26,7 @@ describe('GitHub release response normalization', () => {
       id: 1,
       name: 'v1.0.0',
       created_at: '2026-07-17T00:00:00.000Z',
-      html_url: 'https://github.com/snapetech/seerrng/releases/tag/v1.0.0',
+      html_url: 'https://github.com/snapetech-org/seerrng/releases/tag/v1.0.0',
       body: 'x'.repeat(MAX_GITHUB_RELEASE_BODY_LENGTH),
     });
   });
@@ -44,7 +44,7 @@ describe('GitHub release response normalization', () => {
         id: index + 2,
         name: `Release ${index}`,
         created_at: '2026-07-17T00:00:00.000Z',
-        html_url: `https://github.com/snapetech/seerrng/releases/tag/${index}`,
+        html_url: `https://github.com/snapetech-org/seerrng/releases/tag/${index}`,
         body: null,
       })),
     ]);

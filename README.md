@@ -3,8 +3,8 @@
 </p>
 
 <p align="center">
-  <img src="https://github.com/snapetech/seerrng/actions/workflows/ci.yml/badge.svg" alt="SeerrNG CI" />
-  <a href="https://github.com/snapetech/seerrng/blob/main/LICENSE"><img src="https://img.shields.io/github/license/snapetech/seerrng" alt="License" /></a>
+  <img src="https://github.com/snapetech-org/seerrng/actions/workflows/ci.yml/badge.svg" alt="SeerrNG CI" />
+  <a href="https://github.com/snapetech-org/seerrng/blob/main/LICENSE"><img src="https://img.shields.io/github/license/snapetech/seerrng" alt="License" /></a>
   <a href="https://discord.gg/5PyXBfvS6T"><img src="https://img.shields.io/badge/support-Discord-5865F2?logo=discord&logoColor=white" alt="Support on Discord" /></a>
 </p>
 
@@ -78,8 +78,8 @@ SeerrNG is maintained by snapetech as a separate fork so we can move quickly on 
   complete enhanced feature set, populated-data conversion, and each old
   installation channel. The later ChaptarrNG-to-upstream gate also includes
   every ChaptarrNG feature it maintains or is actively adding, including
-  unpublished work. See the [BookshelfNG consolidation report](https://github.com/snapetech/bookshelfng/blob/main/docs/maintainers/chaptarr-consolidation.md)
-  and [ChaptarrNG's itemized retirement matrix](https://github.com/snapetech/chaptarrng/blob/main/docs/FORK_FEATURES.md#itemized-active-and-unreleased-chaptarrng-blockers).
+  unpublished work. See the [BookshelfNG consolidation report](https://github.com/snapetech-org/bookshelfng/blob/main/docs/maintainers/chaptarr-consolidation.md)
+  and [ChaptarrNG's itemized retirement matrix](https://github.com/snapetech-org/chaptarrng/blob/main/docs/FORK_FEATURES.md#itemized-active-and-unreleased-chaptarrng-blockers).
 - Optional read-only Audiobookshelf library scanning marks ISBN-matched items
   as available audiobooks without sending acquisition requests or changing
   Audiobookshelf data.
@@ -122,7 +122,7 @@ SeerrNG fork, not the upstream Seerr repository.
 
 ## Documentation
 
-SeerrNG documentation is maintained in the [docs folder](https://github.com/snapetech/seerrng/tree/main/docs). The links below open the corresponding guides directly:
+SeerrNG documentation is maintained in the [docs folder](https://github.com/snapetech-org/seerrng/tree/main/docs). The links below open the corresponding guides directly:
 
 - [Install SeerrNG](./docs/getting-started/index.mdx)
 - [Install on Unraid](./docs/getting-started/third-parties/unraid.mdx)
@@ -130,7 +130,7 @@ SeerrNG documentation is maintained in the [docs folder](https://github.com/snap
 - [Create custom Discover sliders](./docs/using-seerr/custom-discover-sliders.md)
 - [Why SeerrNG maintains companion forks](./docs/using-seerr/dependency-forks.md)
 - [Why SeerrNG is a fork and what could retire it](./docs/fork-rationale.md)
-- [ChaptarrNG fork changes and capabilities](https://github.com/snapetech/chaptarrng/blob/main/docs/FORK_FEATURES.md)
+- [ChaptarrNG fork changes and capabilities](https://github.com/snapetech-org/chaptarrng/blob/main/docs/FORK_FEATURES.md)
 - [Discover and request comics](./docs/using-seerr/comics-backend.md)
 - [Discover and request magazines](./docs/using-seerr/magazines-backend.md)
 - [Track requests and status history](./docs/using-seerr/request-status.md)
@@ -207,7 +207,7 @@ macOS, or Linux, use the [cross-platform setup assistant](./docs/using-seerr/set
 
 ### Unraid
 
-Install SeerrNG from Community Applications with the [Unraid template](https://raw.githubusercontent.com/snapetech/seerrng/main/packaging/unraid/seerrng.xml). It uses the stable `latest` image, maps HTTP port `5055` and optional HTTPS port `5056`, and persists `/app/config`. The image runs as UID/GID `1000:1000`, so make the selected appdata directory writable by that user before the first start. Optional BookshelfNG, ChaptarrNG, ROMarrNG, and QuestarrNG templates live in each fork's own repository; the [Unraid guide](docs/getting-started/third-parties/unraid.mdx) links to their templates and to the existing Community Apps listings for LazyLibrarian, Mylar3, and Kapowarr, plus Issuarr's own Unraid guide. BackIssue has its own Docker image and Unraid template; see its [getting-started guide](https://backissue.app/getting-started).
+Install SeerrNG from Community Applications with the [Unraid template](https://raw.githubusercontent.com/snapetech-org/seerrng/main/packaging/unraid/seerrng.xml). It uses the stable `latest` image, maps HTTP port `5055` and optional HTTPS port `5056`, and persists `/app/config`. The image runs as UID/GID `1000:1000`, so make the selected appdata directory writable by that user before the first start. Optional BookshelfNG, ChaptarrNG, ROMarrNG, and QuestarrNG templates live in each fork's own repository; the [Unraid guide](docs/getting-started/third-parties/unraid.mdx) links to their templates and to the existing Community Apps listings for LazyLibrarian, Mylar3, and Kapowarr, plus Issuarr's own Unraid guide. BackIssue has its own Docker image and Unraid template; see its [getting-started guide](https://backissue.app/getting-started).
 
 ### Linux Packages
 
@@ -256,7 +256,7 @@ Media servers and acquisition tools run as separate optional services; they
 are not bundled into the SeerrNG container. Use only the providers for the
 categories you enable. For book and software workflows that depend on
 SeerrNG-specific API behavior, the maintained Snapetech NG forks are
-[ChaptarrNG](https://github.com/snapetech/chaptarrng),
+[ChaptarrNG](https://github.com/snapetech-org/chaptarrng),
 [QuestarrNG](https://github.com/snapetech/QuestarrNG), and
 [ROMarrNG](https://github.com/snapetech/ROMarrNG). ChaptarrNG handles both Book
 and Audiobook formats from one instance. Existing BookshelfNG instances remain
@@ -279,7 +279,7 @@ unpublished work. That complete union blocks ChaptarrNG retirement as a whole.
 Each feature, sub-feature, data path, and distribution channel remains an
  individual blocker; active ChaptarrNG branches and open feature PRs count
  before release. See the [combined ChaptarrNG
-matrix](https://github.com/snapetech/chaptarrng/blob/main/docs/FORK_FEATURES.md#chaptarrng-retirement-blockers)
+matrix](https://github.com/snapetech-org/chaptarrng/blob/main/docs/FORK_FEATURES.md#chaptarrng-retirement-blockers)
 and the [fork transition criteria](./docs/using-seerr/dependency-forks.md).
 
 Radarr, Sonarr, Lidarr, LazyLibrarian, Mylar3, Issuarr, Kapowarr, and BackIssue are
@@ -318,7 +318,7 @@ source database backup. It currently supports one migration-158 SQLite
 database; split ebook/audiobook databases are refused. After conversion, point
 the normal ChaptarrNG service at the same `/config` and media/download mounts.
 Review provider credentials held only in environment variables before startup.
-See the [migration guide](https://github.com/snapetech/chaptarrng/blob/main/docs/MIGRATE_FROM_BOOKSHELFNG.md)
+See the [migration guide](https://github.com/snapetech-org/chaptarrng/blob/main/docs/MIGRATE_FROM_BOOKSHELFNG.md)
 for the full contract and limits. ChaptarrNG currently supports Docker as its
 official runtime; general native Linux and Windows packages are not published.
 
@@ -731,8 +731,8 @@ SeerrNG is intended for lawful personal media management. The project does not p
 ## Support
 
 - Discord: https://discord.gg/5PyXBfvS6T
-- Issues: https://github.com/snapetech/seerrng/issues
-- Discussions: https://github.com/snapetech/seerrng/discussions
+- Issues: https://github.com/snapetech-org/seerrng/issues
+- Discussions: https://github.com/snapetech-org/seerrng/discussions
 
 Use upstream Seerr documentation when you need background on inherited deployment or video-library behavior, but report SeerrNG-specific music, book, cache, packaging, and branding issues in this repository.
 

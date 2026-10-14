@@ -34,11 +34,11 @@ reviewed. Older schemas, PostgreSQL, complete settings/client coverage,
 rollback restoration, populated-library SeerrNG behavior, and channel bridges
 remain open. The candidate is not released. Keep independent backups
 and follow the [feature, migration, and distribution
-gates](https://github.com/snapetech/bookshelfng/blob/main/docs/maintainers/chaptarr-consolidation.md)
+gates](https://github.com/snapetech-org/bookshelfng/blob/main/docs/maintainers/chaptarr-consolidation.md)
 before switching production data. The later ChaptarrNG-to-Chaptarr gate stays
 separate: BookshelfNG features carried over plus every maintained or actively
 added ChaptarrNG feature block retirement as a whole; see the [combined
-ChaptarrNG retirement matrix](https://github.com/snapetech/chaptarrng/blob/main/docs/FORK_FEATURES.md#chaptarrng-retirement-blockers).
+ChaptarrNG retirement matrix](https://github.com/snapetech-org/chaptarrng/blob/main/docs/FORK_FEATURES.md#chaptarrng-retirement-blockers).
 
 ## Existing BookshelfNG instance for both formats
 
@@ -97,14 +97,14 @@ run other commands, or delete authors or files. The global BookshelfNG API key
 remains supported for existing clients. Older BookshelfNG builds should
 continue to use the global API key.
 
-[ChaptarrNG](https://github.com/snapetech/chaptarrng) is Snapetech's maintained
+[ChaptarrNG](https://github.com/snapetech-org/chaptarrng) is Snapetech's maintained
 fork of [Chaptarr](https://github.com/Chaptarr/chaptarr), supported as a
 Readarr-compatible alternative. We maintain the fork because SeerrNG needs
 format-scoped requests and durable tracking when author metadata preparation
 delays a book add. ChaptarrNG remains a standalone app. SeerrNG sends the
 selected format explicitly, so one ChaptarrNG instance can serve ebooks and
 audiobooks without a provider-specific URL Base or API adapter. See the
-[ChaptarrNG fork feature guide](https://github.com/snapetech/chaptarrng/blob/main/docs/FORK_FEATURES.md)
+[ChaptarrNG fork feature guide](https://github.com/snapetech-org/chaptarrng/blob/main/docs/FORK_FEATURES.md)
 for its maintained changes, including Direct Download, backup protection,
 and package support.
 
@@ -203,7 +203,7 @@ cross-container Compose smoke test that runs SeerrNG's compiled API adapter
 against a locally built ChaptarrNG image, checks the format-scoped paged
 library, and verifies that administrative and unrelated command routes reject
 the SeerrNG credential. Run it with the instructions in
-[ChaptarrNG's SeerrNG integration guide](https://github.com/snapetech/chaptarrng/blob/main/docs/SEERRNG_INTEGRATION.md).
+[ChaptarrNG's SeerrNG integration guide](https://github.com/snapetech-org/chaptarrng/blob/main/docs/SEERRNG_INTEGRATION.md).
 Pin the ChaptarrNG image version in reproducible deployments because its
 Readarr-compatible surface can change between releases.
 
@@ -246,7 +246,7 @@ node scripts/setup-assistant.mjs --profile books --output ./my-books-stack
 ChaptarrNG is standalone. It does not require BookshelfNG, Hardcover,
 rreading-glasses, PostgreSQL, or BookLore. BookLore is an optional external
 notification destination. Follow the [ChaptarrNG service setup](#chaptarrng)
-and its [migration guide](https://github.com/snapetech/chaptarrng/blob/main/docs/MIGRATE_FROM_BOOKSHELFNG.md)
+and its [migration guide](https://github.com/snapetech-org/chaptarrng/blob/main/docs/MIGRATE_FROM_BOOKSHELFNG.md)
 when replacing an existing BookshelfNG instance.
 
 ### Existing BookshelfNG installations
@@ -439,7 +439,7 @@ both entries can point to the same BookshelfNG instance.
 The public Snapetech fork is:
 
 ```text
-https://github.com/snapetech/bookshelfng
+https://github.com/snapetech-org/bookshelfng
 ```
 
 If Docker is not an option, follow the [BookshelfNG source-build

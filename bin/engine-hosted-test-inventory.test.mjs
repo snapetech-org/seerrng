@@ -2,11 +2,9 @@ import assert from 'node:assert/strict';
 import { execFileSync } from 'node:child_process';
 import {
   existsSync,
-  lstatSync,
   mkdirSync,
   mkdtempSync,
   readFileSync,
-  readdirSync,
   rmSync,
   symlinkSync,
   unlinkSync,
@@ -50,7 +48,10 @@ function repositoryTestFiles(root, roots) {
     { cwd: root, encoding: 'utf8' }
   )
     .split(/\r?\n/)
-    .filter((file) => file && TEST_LIKE_FILE.test(file) && existsSync(path.join(root, file)))
+    .filter(
+      (file) =>
+        file && TEST_LIKE_FILE.test(file) && existsSync(path.join(root, file))
+    )
     .sort();
 }
 

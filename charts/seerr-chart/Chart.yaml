@@ -10,5 +10,5 @@ maintainers:
   - name: Snapetech
     url: https://github.com/snapetech
 sources:
-  - https://github.com/snapetech/seerrng/tree/main/charts/seerr-chart
-home: https://github.com/snapetech/seerrng
+  - https://github.com/snapetech-org/seerrng/tree/main/charts/seerr-chart
+home: https://github.com/snapetech-org/seerrng

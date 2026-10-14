@@ -1,6 +1,6 @@
 Format: https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
 Upstream-Name: seerrng
-Source: https://github.com/snapetech/seerrng
+Source: https://github.com/snapetech-org/seerrng
 
 Files: *
 Copyright:

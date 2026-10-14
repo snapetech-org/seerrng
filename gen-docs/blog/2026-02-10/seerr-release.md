@@ -3,7 +3,7 @@ title: "Seerr Release: Unifying Overseerr and Jellyseerr"
 description: "Overseerr and Jellyseerr are merging into a unified project: Seerr"
 slug: seerr-release
 authors: [seerr-team]
-image: https://raw.githubusercontent.com/snapetech/seerrng/refs/heads/main/gen-docs/static/img/logo_full.svg
+image: https://raw.githubusercontent.com/snapetech-org/seerrng/refs/heads/main/gen-docs/static/img/logo_full.svg
 hide_table_of_contents: false
 ---
 
@@ -11,7 +11,7 @@ We're excited to announce a major update: the Jellyseerr and Overseerr teams are
 
 For users, this means one shared codebase combining all existing Overseerr functionalities with the latest Jellyseerr features, along with Jellyfin and Emby support, allowing us to deliver updates more efficiently and keep the project moving forward.
 
-Please check how to migrate to Seerr in our [migration guide](https://github.com/snapetech/seerrng/blob/main/docs/migration-guide.mdx) and stay tuned for more updates on the project!
+Please check how to migrate to Seerr in our [migration guide](https://github.com/snapetech-org/seerrng/blob/main/docs/migration-guide.mdx) and stay tuned for more updates on the project!
 
 <!--truncate-->
 

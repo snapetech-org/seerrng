@@ -7,9 +7,9 @@
     <authors>SeerrNG contributors</authors>
     <owners>snapetech</owners>
     <copyright>Copyright 2026 SeerrNG contributors</copyright>
-    <licenseUrl>https://github.com/snapetech/seerrng/blob/main/LICENSE</licenseUrl>
-    <projectUrl>https://github.com/snapetech/seerrng</projectUrl>
-    <packageSourceUrl>https://github.com/snapetech/seerrng</packageSourceUrl>
+    <licenseUrl>https://github.com/snapetech-org/seerrng/blob/main/LICENSE</licenseUrl>
+    <projectUrl>https://github.com/snapetech-org/seerrng</projectUrl>
+    <packageSourceUrl>https://github.com/snapetech-org/seerrng</packageSourceUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <summary>Self-hosted media request and discovery manager.</summary>
     <description>SeerrNG helps users discover and request media from connected services. This package installs the Windows x64 release as the SeerrNG service and retains its configuration when the package is removed.</description>

@@ -37,18 +37,18 @@ describe('safe browser URLs', () => {
 
   it('allows only HTTPS or same-origin links in provider markdown', () => {
     assert.strictEqual(
-      getSafeMarkdownHref('https://github.com/snapetech/seerrng'),
-      'https://github.com/snapetech/seerrng'
+      getSafeMarkdownHref('https://github.com/snapetech-org/seerrng'),
+      'https://github.com/snapetech-org/seerrng'
     );
     assert.strictEqual(getSafeMarkdownHref('/docs/release'), '/docs/release');
     assert.strictEqual(getSafeMarkdownHref('#changes'), '#changes');
     assert.strictEqual(
       getSafeHttpsHref('HTTPS://GITHUB.COM/snapetech/seerrng'),
-      'https://github.com/snapetech/seerrng'
+      'https://github.com/snapetech-org/seerrng'
     );
 
     for (const href of [
-      'http://github.com/snapetech/seerrng',
+      'http://github.com/snapetech-org/seerrng',
       '//attacker.example/release',
       '/\\attacker.example/release',
       'javascript:alert(1)',

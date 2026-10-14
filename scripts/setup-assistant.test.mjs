@@ -204,7 +204,10 @@ test('setup guide uses Compose DNS names and keeps API keys out of generated con
   assert.match(guide, /temporary `admin` password in its container log/);
   assert.match(guide, /ChaptarrNG\): chaptarrng:8789 \(Book format\)/);
   assert.match(guide, /ChaptarrNG\): chaptarrng:8789 \(Audiobook format\)/);
-  assert.match(guide, /content files in `ebook-data`, `audiobook-data` named volumes/);
+  assert.match(
+    guide,
+    /content files in `ebook-data`, `audiobook-data` named volumes/
+  );
   assert.match(guide, /ChaptarrNG `\/ebooks`/);
   assert.doesNotMatch(guide, /api[_ -]?key\s*[:=]\s*\S+/i);
 });

@@ -4,13 +4,13 @@ pkgrel=2
 pkgdesc='Standalone media request and discovery service with optional external service integrations'
 arch=('x86_64')
 options=('!strip')
-url='https://github.com/snapetech/seerrng'
+url='https://github.com/snapetech-org/seerrng'
 license=('MIT')
 depends=('nodejs>=24.15.0')
 provides=('seerrng')
 conflicts=('seerrng')
 install=seerrng.install
-source=("https://github.com/snapetech/seerrng/releases/download/v${pkgver}/seerrng-v${pkgver}-linux-x64.tar.gz"
+source=("https://github.com/snapetech-org/seerrng/releases/download/v${pkgver}/seerrng-v${pkgver}-linux-x64.tar.gz"
         'seerrng.service'
         'seerrng.env'
         'seerrng.sysusers'

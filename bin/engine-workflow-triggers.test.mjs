@@ -164,7 +164,9 @@ test('unit-test shards use the shared org pool only on main pushes and manual ru
   const trustedRunnerJson =
     '{"group":"trusted-main","labels":["self-hosted","Linux","X64","host"]}';
   const expectedRunner =
-    '$' + '{{ (' + mainRunnerCondition +
+    '$' +
+    '{{ (' +
+    mainRunnerCondition +
     " && vars.TRUSTED_MAIN_RUNNERS_ENABLED == 'true') && fromJSON('" +
     trustedRunnerJson +
     "') || 'ubuntu-latest' }}";
@@ -199,8 +201,8 @@ test('native workflow bodies are reused without duplicate PR or push launches', 
 test('hosted orchestration retains the original pinned native actions and commands', () => {
   const required = {
     codeql: [
-      'github/codeql-action/init@2892aa5e19bbd11bc0cff5427e3b750a04d9e3c2',
-      'github/codeql-action/analyze@2892aa5e19bbd11bc0cff5427e3b750a04d9e3c2',
+      'github/codeql-action/init@24c54180a607b1449ed407dd24f251e4e9147c8d',
+      'github/codeql-action/analyze@24c54180a607b1449ed407dd24f251e4e9147c8d',
       'queries: +security-and-quality',
       'snapetech/seerrng-codeql-models@0.0.15',
     ],

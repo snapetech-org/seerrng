@@ -58,7 +58,10 @@ test('the immutable plan is an attempt-bound artifact consumed by every unit', (
   );
   assert.match(create.run, /--github-plan/);
   assert.match(create.run, /--plan-file/);
-  assert.match(publish.uses, /^actions\/upload-artifact@043fb46d/);
+  assert.match(
+    publish.uses,
+    /^actions\/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9/
+  );
   assert.match(publish.with.name, /github\.run_id/);
   assert.match(publish.with.name, /github\.run_attempt/);
   assert.equal(publish.with['retention-days'], 1);
@@ -610,7 +613,7 @@ test('native environments, commands, permissions, and action pins are preserved'
   assert.equal(jobs.test['runs-on'], 'ubuntu-latest');
   assert.equal(
     jobs['unit-test']['runs-on'],
-    "${{ ((github.event_name == 'push' && github.ref == 'refs/heads/main') || (github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main')) && fromJSON('[\"self-hosted\",\"Linux\",\"X64\",\"host\",\"seerrng\"]') || 'ubuntu-latest' }}"
+    '${{ (((github.event_name == \'push\' && github.ref == \'refs/heads/main\') || (github.event_name == \'workflow_dispatch\' && github.ref == \'refs/heads/main\')) && vars.TRUSTED_MAIN_RUNNERS_ENABLED == \'true\') && fromJSON(\'{"group":"trusted-main","labels":["self-hosted","Linux","X64","host"]}\') || \'ubuntu-latest\' }}'
   );
   assert.equal(jobs.codeql.permissions['security-events'], 'write');
 
@@ -626,16 +629,16 @@ test('native environments, commands, permissions, and action pins are preserved'
     'pnpm build',
     'pnpm bundle:check',
     'pnpm test:ci',
-    'mikepenz/action-junit-report@b7b80d7ac5b1da46d6aaff9fb57ad50d8453bcb3',
+    'mikepenz/action-junit-report@6ef3fdcfcd5f0b5d14df3e659ef19b8c6820f93d',
   ])
     assert.ok(ci.text.includes(fragment), fragment);
 
   const required = {
     codeql: [
       'language: [actions, javascript]',
-      'github/codeql-action/init@2892aa5e19bbd11bc0cff5427e3b750a04d9e3c2',
-      'github/codeql-action/autobuild@2892aa5e19bbd11bc0cff5427e3b750a04d9e3c2',
-      'github/codeql-action/analyze@2892aa5e19bbd11bc0cff5427e3b750a04d9e3c2',
+      'github/codeql-action/init@24c54180a607b1449ed407dd24f251e4e9147c8d',
+      'github/codeql-action/autobuild@24c54180a607b1449ed407dd24f251e4e9147c8d',
+      'github/codeql-action/analyze@24c54180a607b1449ed407dd24f251e4e9147c8d',
       'queries: +security-and-quality',
       'snapetech/seerrng-codeql-models@0.0.15',
     ],

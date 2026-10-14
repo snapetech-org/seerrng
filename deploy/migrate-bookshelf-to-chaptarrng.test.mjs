@@ -109,13 +109,19 @@ it('requires a stopped service and an independent backup for apply', async () =>
   assert.match(applied.stdout, /Independent config backup:/);
   assert.equal(backupNames.length, 1);
   assert.match(backupNames[0], /^bookshelfng-config-.*\.tar\.gz$/);
-  assert.equal((await stat(path.join(backupDirectory, backupNames[0]))).mode & 0o777, 0o600);
+  assert.equal(
+    (await stat(path.join(backupDirectory, backupNames[0]))).mode & 0o777,
+    0o600
+  );
 });
 
 it('explains the per-book mapping step when preview emits a media review', async () => {
   const root = await createRoot();
   const data = await fixture(root);
-  const result = await run({ ...data.environment, DOCKER_EXIT_WITH_REVIEW: '1' });
+  const result = await run({
+    ...data.environment,
+    DOCKER_EXIT_WITH_REVIEW: '1',
+  });
 
   assert.equal(result.code, 1);
   assert.match(result.stderr, /readarr\.db\.bookshelf-media-review\.json/);
@@ -133,12 +139,10 @@ it('refuses to silently ignore a separate audiobook database', async () => {
   const audio = path.join(root, 'audiobooks');
   await mkdir(audio);
   await writeFile(path.join(audio, 'readarr.db'), 'separate fixture');
-  const result = await run(
-    {
-      ...data.environment,
-      BOOKSHELF_AUDIOBOOKS_CONFIG_DIR: audio,
-    }
-  );
+  const result = await run({
+    ...data.environment,
+    BOOKSHELF_AUDIOBOOKS_CONFIG_DIR: audio,
+  });
 
   assert.equal(result.code, 2);
   assert.match(result.stderr, /will not merge split libraries/);

@@ -107,7 +107,10 @@ describe('BookshelfNG retirement handoff', () => {
     const result = await runCommand(baseEnvironment(root), []);
 
     assert.equal(result.code, 2);
-    assert.match(result.stderr, /Fresh BookshelfNG installations have been retired/);
+    assert.match(
+      result.stderr,
+      /Fresh BookshelfNG installations have been retired/
+    );
     assert.match(result.stderr, /--profile books/);
   });
 
@@ -122,7 +125,10 @@ describe('BookshelfNG retirement handoff', () => {
     const result = await runCommand(environment, []);
 
     assert.equal(result.code, 0, result.stderr);
-    assert.match(result.stdout, /Preview completed without changing readarr\.db/);
+    assert.match(
+      result.stdout,
+      /Preview completed without changing readarr\.db/
+    );
     await assert.rejects(readFile(path.join(environment.INSTALL_DIR, '.env')), {
       code: 'ENOENT',
     });
