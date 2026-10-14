@@ -266,7 +266,7 @@ Record names and states, never secret values.
 Example read-only queue check for one repository:
 
 ```bash
-repo=snapetech/seerrng
+repo=snapetech-org/seerrng
 for status in queued pending requested waiting in_progress; do
   printf '%s=' "$status"
   gh api "repos/$repo/actions/runs?status=$status&per_page=1" --jq .total_count
