@@ -161,6 +161,16 @@ the adaptation, and the [fork-retirement matrix](./docs/fork-rationale.md)
 records the provider status, rate, concurrency, cache, and redirect behavior a
 supported replacement would need. This proposal is not a released feature.
 
+The open Web Push proposal ([#284](https://github.com/snapetech-org/seerrng/pull/284))
+keeps subscriptions from devices with matching browser signatures and replaces
+stale endpoints by subscription identity. The
+[review index](./docs/upstream-review-status.md) links the upstream issue and
+merged fix, while the [fork-retirement matrix](./docs/fork-rationale.md)
+records the device-isolation, endpoint-rotation, and shared-browser evidence an
+upstream replacement would need. SeerrNG already has account-scoped logout
+cleanup; this proposal covers the missing registration behavior. It is not a
+released feature.
+
 Release notes are maintained in [`CHANGELOG.md`](./CHANGELOG.md). User-facing
 pull requests add a concise release-note fragment under
 [`release-notes/`](./release-notes/README.md); the release workflow publishes
