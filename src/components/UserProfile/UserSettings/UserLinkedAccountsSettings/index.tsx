@@ -21,7 +21,7 @@ import {
 } from '@app/utils/oidc';
 import PlexOAuth from '@app/utils/plex';
 import { TrashIcon } from '@heroicons/react/24/solid';
-import { MediaServerType } from '@server/constants/server';
+import { MediaServerType, ServerType } from '@server/constants/server';
 import type {
   UserSettingsLinkedAccount,
   UserSettingsLinkedAccountResponse,
@@ -53,9 +53,9 @@ const messages = defineMessages(
 const plexOAuth = new PlexOAuth();
 
 enum LinkedAccountType {
-  Plex = 'Plex',
-  Jellyfin = 'Jellyfin',
-  Emby = 'Emby',
+  Plex = ServerType.PLEX,
+  Jellyfin = ServerType.JELLYFIN,
+  Emby = ServerType.EMBY,
   OpenIdConnect = 'oidc',
 }
 
@@ -221,7 +221,7 @@ const UserLinkedAccountsSettings = () => {
 
   const linkable = [
     {
-      name: 'Plex',
+      name: ServerType.PLEX,
       action: () => {
         if (plexAttemptRef.current !== undefined) {
           return;
@@ -235,14 +235,14 @@ const UserLinkedAccountsSettings = () => {
         accounts.some((a) => a.type === LinkedAccountType.Plex),
     },
     {
-      name: 'Jellyfin',
+      name: ServerType.JELLYFIN,
       action: () => setShowJellyfinModal(true),
       hide:
         settings.currentSettings.mediaServerType !== MediaServerType.JELLYFIN ||
         accounts.some((a) => a.type === LinkedAccountType.Jellyfin),
     },
     {
-      name: 'Emby',
+      name: ServerType.EMBY,
       action: () => setShowJellyfinModal(true),
       hide:
         settings.currentSettings.mediaServerType !== MediaServerType.EMBY ||
@@ -355,7 +355,6 @@ const UserLinkedAccountsSettings = () => {
                 ) : acct.type === LinkedAccountType.Jellyfin ? (
                   <JellyfinLogo />
                 ) : acct.type === LinkedAccountType.OpenIdConnect ? (
-                  // eslint-disable-next-line @next/next/no-img-element
                   <img
                     src={acct.provider.logo || '/images/openid.svg'}
                     alt={acct.provider.name}

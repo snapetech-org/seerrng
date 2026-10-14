@@ -14,6 +14,7 @@ import { tmpdir } from 'node:os';
 import { dirname, join, resolve } from 'node:path';
 import test from 'node:test';
 import { fileURLToPath } from 'node:url';
+import { detectWorkerCapacity } from '../tools/validation-engine/runtime/cpu-capacity.mjs';
 import {
   chunkArguments,
   createPlan,
@@ -260,7 +261,7 @@ test('tooling concurrency recognition preserves exact platform inventory and rej
   );
 });
 
-test('execution forwards the sealed worker budget only to tooling without changing test selection or caller descriptors', async () => {
+test('execution forwards the sealed worker budget to native test lanes without changing test selection or caller descriptors', async () => {
   for (const workers of [undefined, 1, 24, 256]) {
     const steps = [
       {
@@ -284,13 +285,21 @@ test('execution forwards the sealed worker budget only to tooling without changi
     ];
     const before = structuredClone(steps),
       observed = [];
+    const inherited = {
+      ...process.env,
+      NODE_OPTIONS: '--test-concurrency=999',
+    };
+    const workerBudget =
+      workers ??
+      detectWorkerCapacity({ sourceRoot: root, environment: inherited })
+        .configuredWorkers;
     const totals = await executePlan(
       { root, steps },
       {
         workers,
         stdout: sink,
         stderr: sink,
-        inherited: { ...process.env, NODE_OPTIONS: '--test-concurrency=999' },
+        inherited,
         executor: async (step, { env }) => {
           assert.equal(env.NODE_OPTIONS, undefined);
           observed.push(step);
@@ -298,13 +307,15 @@ test('execution forwards the sealed worker budget only to tooling without changi
         },
       }
     );
-    assert.deepEqual(
-      observed[0].args,
-      workers === undefined
-        ? before[0].args
-        : [...before[0].args, `--workers=${workers}`]
-    );
-    assert.deepEqual(observed[1].args, before[1].args);
+    assert.deepEqual(observed[0].args, [
+      ...before[0].args,
+      `--workers=${workerBudget}`,
+    ]);
+    assert.deepEqual(observed[1].args, [
+      before[1].args[0],
+      `--test-concurrency=${workerBudget}`,
+      ...before[1].args.slice(2),
+    ]);
     assert.deepEqual(observed[2].args, before[2].args);
     assert.deepEqual(steps, before);
     assert.equal(totals.get('tooling').active, 1);
@@ -329,6 +340,11 @@ test('plan is read-only, partitions framework runs and preserves the original Vi
     assert.deepEqual(plan.steps.find(({ kind }) => kind === 'vitest').files, [
       'src/component.test.ts',
     ]);
+    assert.ok(
+      plan.steps
+        .find(({ kind }) => kind === 'node-js')
+        .args.includes('--test-isolation=process')
+    );
     assert.equal(
       plan.steps.find(({ kind }) => kind === 'tooling').args[0],
       join(f.directory, 'bin/run-tooling-tests.mjs')
@@ -843,6 +859,45 @@ test('execution enforces positive active summaries and removes only its owned te
   } finally {
     rmSync(unsafe, { recursive: true, force: true });
   }
+});
+
+test('execution passes its bounded worker budget to both native Node lanes', async () => {
+  const commands = [];
+  const plan = {
+    root,
+    steps: [
+      {
+        name: 'Native TypeScript',
+        command: process.execPath,
+        args: ['server/test/index.mts', '--test-reporter', 'tap'],
+        kind: 'node-ts',
+        files: ['server/native.test.ts'],
+      },
+      {
+        name: 'Node JavaScript',
+        command: process.execPath,
+        args: ['--test', '--test-concurrency=1', '--test-reporter=tap'],
+        kind: 'node-js',
+        files: ['server/native.test.mjs'],
+      },
+    ],
+  };
+  const executor = async (step) => {
+    commands.push(step.args);
+    return '# tests 2\n# pass 2\n# fail 0\n';
+  };
+
+  const totals = await executePlan(plan, {
+    executor,
+    workers: 4,
+    stdout: sink,
+    stderr: sink,
+  });
+
+  assert.equal(totals.get('node-ts').active, 2);
+  assert.equal(totals.get('node-js').active, 2);
+  assert.ok(commands[0].includes('--test-concurrency=4'));
+  assert.ok(commands[1].includes('--test-concurrency=4'));
 });
 
 test('zero-active execution requires complete explicit skipped case evidence', async () => {

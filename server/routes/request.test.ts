@@ -1010,6 +1010,92 @@ describe('GET /request/status', () => {
     );
   });
 
+  it('loads media and requested TV seasons without multiplying their rows', async () => {
+    const requestedBy = await getRepository(User).findOneByOrFail({ id: 2 });
+    const seasonNumbers = Array.from({ length: 40 }, (_, index) => index + 1);
+    const media = await getRepository(Media).save(
+      new Media({
+        mediaType: MediaType.TV,
+        tmdbId: 12349,
+        status: MediaStatus.PARTIALLY_AVAILABLE,
+        status4k: MediaStatus.UNKNOWN,
+        seasons: seasonNumbers.map(
+          (seasonNumber) =>
+            new Season({
+              seasonNumber,
+              status: MediaStatus.UNKNOWN,
+              status4k: MediaStatus.UNKNOWN,
+            })
+        ),
+      })
+    );
+    const mediaRequest = await getRepository(MediaRequest).save(
+      new MediaRequest({
+        type: MediaType.TV,
+        status: MediaRequestStatus.APPROVED,
+        media,
+        requestedBy,
+        is4k: false,
+        seasons: seasonNumbers.map(
+          (seasonNumber) =>
+            new SeasonRequest({
+              seasonNumber,
+              status: MediaRequestStatus.APPROVED,
+            })
+        ),
+      })
+    );
+    const agent = await loginAs('friend@seerr.dev', 'test1234');
+    const capturedQueries: string[] = [];
+    const priorLogging = dataSource.options.logging;
+    const priorLogQuery = dataSource.logger.logQuery;
+    Reflect.set(dataSource.options, 'logging', ['query']);
+    dataSource.logger.logQuery = (query) => {
+      capturedQueries.push(query);
+    };
+
+    try {
+      const listResponse = await agent.get('/request/status');
+
+      assert.strictEqual(listResponse.status, 200);
+      assert.strictEqual(listResponse.body.results.length, 1);
+      assert.strictEqual(
+        listResponse.body.results[0].request.media.seasons.length,
+        40
+      );
+      assert.strictEqual(
+        listResponse.body.results[0].request.seasons.length,
+        40
+      );
+
+      const response = await agent.get(`/request/status/${mediaRequest.id}`);
+
+      assert.strictEqual(response.status, 200);
+      assert.strictEqual(response.body.request.media.seasons.length, 40);
+      assert.strictEqual(response.body.request.seasons.length, 40);
+
+      const hasTable = (query: string, table: string) =>
+        new RegExp(`(?:FROM|JOIN)\\s+"${table}"\\s`, 'i').test(query);
+      const fanOutQueries = capturedQueries.filter(
+        (query) =>
+          hasTable(query, 'season') && hasTable(query, 'season_request')
+      );
+
+      assert.ok(capturedQueries.some((query) => hasTable(query, 'season')));
+      assert.ok(
+        capturedQueries.some((query) => hasTable(query, 'season_request'))
+      );
+      assert.strictEqual(
+        fanOutQueries.length,
+        0,
+        'one SQL statement must not join both season collections'
+      );
+    } finally {
+      Reflect.set(dataSource.options, 'logging', priorLogging);
+      dataSource.logger.logQuery = priorLogQuery;
+    }
+  });
+
   it('does not leak another user’s status history to an ordinary viewer', async () => {
     await seedRequest();
     const admin = await getRepository(User).findOneOrFail({

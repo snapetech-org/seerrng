@@ -60,7 +60,7 @@ jobs:
           persist-credentials: false
 
       - name: Set up Node.js
-        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
           node-version-file: 'package.json'
           package-manager-cache: false
@@ -68,19 +68,25 @@ jobs:
       - name: Create current-run hosted validation plan
         id: plan
         run: |
-          mkdir -p "$RUNNER_TEMP/seerrng-engine-plan"
+          mkdir -p "$RUNNER_TEMP/seerrng-engine-${GITHUB_REPOSITORY_ID}-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}-${GITHUB_JOB}-${SEERRNG_ENGINE_CASE_ID:-${SEERRNG_ENGINE_CASE:-single}}/plan"
           node bin/run-local-validation.mjs \
             --github-plan \
-            --plan-file "$RUNNER_TEMP/seerrng-engine-plan/hosted-plan.json" \
+            --plan-file "$RUNNER_TEMP/seerrng-engine-${GITHUB_REPOSITORY_ID}-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}-${GITHUB_JOB}-${SEERRNG_ENGINE_CASE_ID:-${SEERRNG_ENGINE_CASE:-single}}/plan/hosted-plan.json" \
             --json
 
       - name: Publish immutable current-attempt validation plan
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: seerrng-engine-plan-${{ github.run_id }}-${{ github.run_attempt }}
-          path: ${{ runner.temp }}/seerrng-engine-plan/hosted-plan.json
+          path: ${{ runner.temp }}/seerrng-engine-${{ github.repository_id }}-${{ github.run_id }}-${{ github.run_attempt }}-${{ github.job }}-single/plan/hosted-plan.json
           if-no-files-found: error
           retention-days: 1
+
+      - name: Clean attempt-scoped engine workspace
+        if: always()
+        shell: bash
+        run: |
+          rm -rf -- "$RUNNER_TEMP/seerrng-engine-${GITHUB_REPOSITORY_ID}-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}-${GITHUB_JOB}-${SEERRNG_ENGINE_CASE_ID:-${SEERRNG_ENGINE_CASE:-single}}"
 
   jellyfin-plugin:
     name: Build Jellyfin bridge plugin
@@ -109,7 +115,7 @@ jobs:
           persist-credentials: false
 
       - name: Set up Node.js for engine binding
-        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
           node-version-file: 'package.json'
           package-manager-cache: false
@@ -118,7 +124,7 @@ jobs:
         uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
         with:
           name: seerrng-engine-plan-${{ github.run_id }}-${{ github.run_attempt }}
-          path: ${{ runner.temp }}/seerrng-engine-plan
+          path: ${{ runner.temp }}/seerrng-engine-${{ github.repository_id }}-${{ github.run_id }}-${{ github.run_attempt }}-${{ github.job }}-${{ matrix.case_id || 'single' }}/plan
 
       - name: Set up .NET SDK
         uses: actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68 # v6.0.0
@@ -131,9 +137,9 @@ jobs:
           node bin/run-local-validation.mjs
           --github-admit
           --unit "$SEERRNG_ENGINE_UNIT_ID"
-          --plan-file "$RUNNER_TEMP/seerrng-engine-plan/hosted-plan.json"
+          --plan-file "$RUNNER_TEMP/seerrng-engine-${GITHUB_REPOSITORY_ID}-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}-${GITHUB_JOB}-${SEERRNG_ENGINE_CASE_ID:-${SEERRNG_ENGINE_CASE:-single}}/plan/hosted-plan.json"
           --expected-plan-sha256 "$SEERRNG_ENGINE_PLAN_SHA256"
-          --receipt-dir "$RUNNER_TEMP/seerrng-engine-receipts"
+          --receipt-dir "$RUNNER_TEMP/seerrng-engine-${GITHUB_REPOSITORY_ID}-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}-${GITHUB_JOB}-${SEERRNG_ENGINE_CASE_ID:-${SEERRNG_ENGINE_CASE:-single}}/receipts"
           --json
 
       - name: Build plugin
@@ -156,20 +162,26 @@ jobs:
           node bin/run-local-validation.mjs
           --github-receipt
           --unit "$SEERRNG_ENGINE_UNIT_ID"
-          --plan-file "$RUNNER_TEMP/seerrng-engine-plan/hosted-plan.json"
+          --plan-file "$RUNNER_TEMP/seerrng-engine-${GITHUB_REPOSITORY_ID}-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}-${GITHUB_JOB}-${SEERRNG_ENGINE_CASE_ID:-${SEERRNG_ENGINE_CASE:-single}}/plan/hosted-plan.json"
           --expected-plan-sha256 "$SEERRNG_ENGINE_PLAN_SHA256"
-          --receipt-dir "$RUNNER_TEMP/seerrng-engine-receipts"
+          --receipt-dir "$RUNNER_TEMP/seerrng-engine-${GITHUB_REPOSITORY_ID}-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}-${GITHUB_JOB}-${SEERRNG_ENGINE_CASE_ID:-${SEERRNG_ENGINE_CASE:-single}}/receipts"
           --job-status "${{ job.status }}"
           --json
 
       - name: Publish engine unit receipt
         if: always()
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: seerrng-engine-receipt-${{ github.run_id }}-${{ github.run_attempt }}-ci-jellyfin-plugin
-          path: ${{ runner.temp }}/seerrng-engine-receipts
+          path: ${{ runner.temp }}/seerrng-engine-${{ github.repository_id }}-${{ github.run_id }}-${{ github.run_attempt }}-${{ github.job }}-${{ matrix.case_id || 'single' }}/receipts
           if-no-files-found: error
           retention-days: 1
+
+      - name: Clean attempt-scoped engine workspace
+        if: always()
+        shell: bash
+        run: |
+          rm -rf -- "$RUNNER_TEMP/seerrng-engine-${GITHUB_REPOSITORY_ID}-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}-${GITHUB_JOB}-${SEERRNG_ENGINE_CASE_ID:-${SEERRNG_ENGINE_CASE:-single}}"
 
   release-notes:
     name: Release-note contract
@@ -197,7 +209,7 @@ jobs:
           persist-credentials: false
 
       - name: Set up Node.js
-        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
           node-version-file: 'package.json'
           package-manager-cache: false
@@ -206,7 +218,7 @@ jobs:
         uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
         with:
           name: seerrng-engine-plan-${{ github.run_id }}-${{ github.run_attempt }}
-          path: ${{ runner.temp }}/seerrng-engine-plan
+          path: ${{ runner.temp }}/seerrng-engine-${{ github.repository_id }}-${{ github.run_id }}-${{ github.run_attempt }}-${{ github.job }}-${{ matrix.case_id || 'single' }}/plan
 
       - name: Admit engine unit
         id: engine-admission
@@ -214,9 +226,9 @@ jobs:
           node bin/run-local-validation.mjs
           --github-admit
           --unit "$SEERRNG_ENGINE_UNIT_ID"
-          --plan-file "$RUNNER_TEMP/seerrng-engine-plan/hosted-plan.json"
+          --plan-file "$RUNNER_TEMP/seerrng-engine-${GITHUB_REPOSITORY_ID}-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}-${GITHUB_JOB}-${SEERRNG_ENGINE_CASE_ID:-${SEERRNG_ENGINE_CASE:-single}}/plan/hosted-plan.json"
           --expected-plan-sha256 "$SEERRNG_ENGINE_PLAN_SHA256"
-          --receipt-dir "$RUNNER_TEMP/seerrng-engine-receipts"
+          --receipt-dir "$RUNNER_TEMP/seerrng-engine-${GITHUB_REPOSITORY_ID}-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}-${GITHUB_JOB}-${SEERRNG_ENGINE_CASE_ID:-${SEERRNG_ENGINE_CASE:-single}}/receipts"
           --json
 
       - name: Validate release-note fragment or explicit opt-out
@@ -256,20 +268,26 @@ jobs:
           node bin/run-local-validation.mjs
           --github-receipt
           --unit "$SEERRNG_ENGINE_UNIT_ID"
-          --plan-file "$RUNNER_TEMP/seerrng-engine-plan/hosted-plan.json"
+          --plan-file "$RUNNER_TEMP/seerrng-engine-${GITHUB_REPOSITORY_ID}-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}-${GITHUB_JOB}-${SEERRNG_ENGINE_CASE_ID:-${SEERRNG_ENGINE_CASE:-single}}/plan/hosted-plan.json"
           --expected-plan-sha256 "$SEERRNG_ENGINE_PLAN_SHA256"
-          --receipt-dir "$RUNNER_TEMP/seerrng-engine-receipts"
+          --receipt-dir "$RUNNER_TEMP/seerrng-engine-${GITHUB_REPOSITORY_ID}-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}-${GITHUB_JOB}-${SEERRNG_ENGINE_CASE_ID:-${SEERRNG_ENGINE_CASE:-single}}/receipts"
           --job-status "${{ job.status }}"
           --json
 
       - name: Publish engine unit receipt
         if: always()
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: seerrng-engine-receipt-${{ github.run_id }}-${{ github.run_attempt }}-ci-release-notes
-          path: ${{ runner.temp }}/seerrng-engine-receipts
+          path: ${{ runner.temp }}/seerrng-engine-${{ github.repository_id }}-${{ github.run_id }}-${{ github.run_attempt }}-${{ github.job }}-${{ matrix.case_id || 'single' }}/receipts
           if-no-files-found: error
           retention-days: 1
+
+      - name: Clean attempt-scoped engine workspace
+        if: always()
+        shell: bash
+        run: |
+          rm -rf -- "$RUNNER_TEMP/seerrng-engine-${GITHUB_REPOSITORY_ID}-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}-${GITHUB_JOB}-${SEERRNG_ENGINE_CASE_ID:-${SEERRNG_ENGINE_CASE:-single}}"
 
   i18n:
     name: i18n Check
@@ -297,7 +315,7 @@ jobs:
           persist-credentials: false
 
       - name: Set up Node.js
-        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
           node-version-file: 'package.json'
 
@@ -305,7 +323,7 @@ jobs:
         uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
         with:
           name: seerrng-engine-plan-${{ github.run_id }}-${{ github.run_attempt }}
-          path: ${{ runner.temp }}/seerrng-engine-plan
+          path: ${{ runner.temp }}/seerrng-engine-${{ github.repository_id }}-${{ github.run_id }}-${{ github.run_attempt }}-${{ github.job }}-${{ matrix.case_id || 'single' }}/plan
 
       - name: Pnpm Setup
         uses: pnpm/action-setup@0977fd99725f1db4007ccb2928dbb4e90d06cc86 # v6.0.10
@@ -333,9 +351,9 @@ jobs:
           node bin/run-local-validation.mjs
           --github-admit
           --unit "$SEERRNG_ENGINE_UNIT_ID"
-          --plan-file "$RUNNER_TEMP/seerrng-engine-plan/hosted-plan.json"
+          --plan-file "$RUNNER_TEMP/seerrng-engine-${GITHUB_REPOSITORY_ID}-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}-${GITHUB_JOB}-${SEERRNG_ENGINE_CASE_ID:-${SEERRNG_ENGINE_CASE:-single}}/plan/hosted-plan.json"
           --expected-plan-sha256 "$SEERRNG_ENGINE_PLAN_SHA256"
-          --receipt-dir "$RUNNER_TEMP/seerrng-engine-receipts"
+          --receipt-dir "$RUNNER_TEMP/seerrng-engine-${GITHUB_REPOSITORY_ID}-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}-${GITHUB_JOB}-${SEERRNG_ENGINE_CASE_ID:-${SEERRNG_ENGINE_CASE:-single}}/receipts"
           --json
 
       - name: i18n Check
@@ -352,20 +370,26 @@ jobs:
           node bin/run-local-validation.mjs
           --github-receipt
           --unit "$SEERRNG_ENGINE_UNIT_ID"
-          --plan-file "$RUNNER_TEMP/seerrng-engine-plan/hosted-plan.json"
+          --plan-file "$RUNNER_TEMP/seerrng-engine-${GITHUB_REPOSITORY_ID}-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}-${GITHUB_JOB}-${SEERRNG_ENGINE_CASE_ID:-${SEERRNG_ENGINE_CASE:-single}}/plan/hosted-plan.json"
           --expected-plan-sha256 "$SEERRNG_ENGINE_PLAN_SHA256"
-          --receipt-dir "$RUNNER_TEMP/seerrng-engine-receipts"
+          --receipt-dir "$RUNNER_TEMP/seerrng-engine-${GITHUB_REPOSITORY_ID}-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}-${GITHUB_JOB}-${SEERRNG_ENGINE_CASE_ID:-${SEERRNG_ENGINE_CASE:-single}}/receipts"
           --job-status "${{ job.status }}"
           --json
 
       - name: Publish engine unit receipt
         if: always()
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: seerrng-engine-receipt-${{ github.run_id }}-${{ github.run_attempt }}-ci-i18n
-          path: ${{ runner.temp }}/seerrng-engine-receipts
+          path: ${{ runner.temp }}/seerrng-engine-${{ github.repository_id }}-${{ github.run_id }}-${{ github.run_attempt }}-${{ github.job }}-${{ matrix.case_id || 'single' }}/receipts
           if-no-files-found: error
           retention-days: 1
+
+      - name: Clean attempt-scoped engine workspace
+        if: always()
+        shell: bash
+        run: |
+          rm -rf -- "$RUNNER_TEMP/seerrng-engine-${GITHUB_REPOSITORY_ID}-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}-${GITHUB_JOB}-${SEERRNG_ENGINE_CASE_ID:-${SEERRNG_ENGINE_CASE:-single}}"
 
   test:
     name: Lint & Test Build
@@ -403,7 +427,7 @@ jobs:
         uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
         with:
           name: seerrng-engine-plan-${{ github.run_id }}-${{ github.run_attempt }}
-          path: ${{ runner.temp }}/seerrng-engine-plan
+          path: ${{ runner.temp }}/seerrng-engine-${{ github.repository_id }}-${{ github.run_id }}-${{ github.run_attempt }}-${{ github.job }}-${{ matrix.case_id || 'single' }}/plan
 
       - name: Install native build tools
         run: apk add --no-cache python3 py3-setuptools make g++ gcc libc6-compat
@@ -435,9 +459,9 @@ jobs:
           node bin/run-local-validation.mjs
           --github-admit
           --unit "$SEERRNG_ENGINE_UNIT_ID"
-          --plan-file "$RUNNER_TEMP/seerrng-engine-plan/hosted-plan.json"
+          --plan-file "$RUNNER_TEMP/seerrng-engine-${GITHUB_REPOSITORY_ID}-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}-${GITHUB_JOB}-${SEERRNG_ENGINE_CASE_ID:-${SEERRNG_ENGINE_CASE:-single}}/plan/hosted-plan.json"
           --expected-plan-sha256 "$SEERRNG_ENGINE_PLAN_SHA256"
-          --receipt-dir "$RUNNER_TEMP/seerrng-engine-receipts"
+          --receipt-dir "$RUNNER_TEMP/seerrng-engine-${GITHUB_REPOSITORY_ID}-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}-${GITHUB_JOB}-${SEERRNG_ENGINE_CASE_ID:-${SEERRNG_ENGINE_CASE:-single}}/receipts"
           --json
 
       - name: Lint
@@ -469,20 +493,26 @@ jobs:
           node bin/run-local-validation.mjs
           --github-receipt
           --unit "$SEERRNG_ENGINE_UNIT_ID"
-          --plan-file "$RUNNER_TEMP/seerrng-engine-plan/hosted-plan.json"
+          --plan-file "$RUNNER_TEMP/seerrng-engine-${GITHUB_REPOSITORY_ID}-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}-${GITHUB_JOB}-${SEERRNG_ENGINE_CASE_ID:-${SEERRNG_ENGINE_CASE:-single}}/plan/hosted-plan.json"
           --expected-plan-sha256 "$SEERRNG_ENGINE_PLAN_SHA256"
-          --receipt-dir "$RUNNER_TEMP/seerrng-engine-receipts"
+          --receipt-dir "$RUNNER_TEMP/seerrng-engine-${GITHUB_REPOSITORY_ID}-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}-${GITHUB_JOB}-${SEERRNG_ENGINE_CASE_ID:-${SEERRNG_ENGINE_CASE:-single}}/receipts"
           --job-status "${{ job.status }}"
           --json
 
       - name: Publish engine unit receipt
         if: always()
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: seerrng-engine-receipt-${{ github.run_id }}-${{ github.run_attempt }}-ci-test
-          path: ${{ runner.temp }}/seerrng-engine-receipts
+          path: ${{ runner.temp }}/seerrng-engine-${{ github.repository_id }}-${{ github.run_id }}-${{ github.run_attempt }}-${{ github.job }}-${{ matrix.case_id || 'single' }}/receipts
           if-no-files-found: error
           retention-days: 1
+
+      - name: Clean attempt-scoped engine workspace
+        if: always()
+        shell: sh
+        run: |
+          rm -rf -- "$RUNNER_TEMP/seerrng-engine-${GITHUB_REPOSITORY_ID}-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}-${GITHUB_JOB}-${SEERRNG_ENGINE_CASE_ID:-${SEERRNG_ENGINE_CASE:-single}}"
 
   unit-test:
     name: Unit Tests (${{ matrix.case_id }})
@@ -526,7 +556,7 @@ jobs:
         uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
         with:
           name: seerrng-engine-plan-${{ github.run_id }}-${{ github.run_attempt }}
-          path: ${{ runner.temp }}/seerrng-engine-plan
+          path: ${{ runner.temp }}/seerrng-engine-${{ github.repository_id }}-${{ github.run_id }}-${{ github.run_attempt }}-${{ github.job }}-${{ matrix.case_id || 'single' }}/plan
 
       - name: Install native build tools
         run: apk add --no-cache python3 py3-setuptools make g++ gcc libc6-compat
@@ -560,9 +590,9 @@ jobs:
           --github-admit
           --unit "$SEERRNG_ENGINE_UNIT_ID"
           --case "$SEERRNG_ENGINE_CASE_ID"
-          --plan-file "$RUNNER_TEMP/seerrng-engine-plan/hosted-plan.json"
+          --plan-file "$RUNNER_TEMP/seerrng-engine-${GITHUB_REPOSITORY_ID}-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}-${GITHUB_JOB}-${SEERRNG_ENGINE_CASE_ID:-${SEERRNG_ENGINE_CASE:-single}}/plan/hosted-plan.json"
           --expected-plan-sha256 "$SEERRNG_ENGINE_PLAN_SHA256"
-          --receipt-dir "$RUNNER_TEMP/seerrng-engine-receipts"
+          --receipt-dir "$RUNNER_TEMP/seerrng-engine-${GITHUB_REPOSITORY_ID}-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}-${GITHUB_JOB}-${SEERRNG_ENGINE_CASE_ID:-${SEERRNG_ENGINE_CASE:-single}}/receipts"
           --json
 
       - name: Materialize planned Vitest shard
@@ -573,9 +603,9 @@ jobs:
           --unit "$SEERRNG_ENGINE_UNIT_ID"
           --case "$SEERRNG_ENGINE_CASE_ID"
           --lane vitest
-          --plan-file "$RUNNER_TEMP/seerrng-engine-plan/hosted-plan.json"
+          --plan-file "$RUNNER_TEMP/seerrng-engine-${GITHUB_REPOSITORY_ID}-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}-${GITHUB_JOB}-${SEERRNG_ENGINE_CASE_ID:-${SEERRNG_ENGINE_CASE:-single}}/plan/hosted-plan.json"
           --expected-plan-sha256 "$SEERRNG_ENGINE_PLAN_SHA256"
-          --receipt-dir "$RUNNER_TEMP/seerrng-engine-receipts"
+          --receipt-dir "$RUNNER_TEMP/seerrng-engine-${GITHUB_REPOSITORY_ID}-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}-${GITHUB_JOB}-${SEERRNG_ENGINE_CASE_ID:-${SEERRNG_ENGINE_CASE:-single}}/receipts"
           --output-file "$RUNNER_TEMP/seerrng-engine-vitest.config.mts"
           --json
 
@@ -597,14 +627,14 @@ jobs:
           --unit "$SEERRNG_ENGINE_UNIT_ID"
           --case "$SEERRNG_ENGINE_CASE_ID"
           --lane node-test-mjs
-          --plan-file "$RUNNER_TEMP/seerrng-engine-plan/hosted-plan.json"
+          --plan-file "$RUNNER_TEMP/seerrng-engine-${GITHUB_REPOSITORY_ID}-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}-${GITHUB_JOB}-${SEERRNG_ENGINE_CASE_ID:-${SEERRNG_ENGINE_CASE:-single}}/plan/hosted-plan.json"
           --expected-plan-sha256 "$SEERRNG_ENGINE_PLAN_SHA256"
-          --receipt-dir "$RUNNER_TEMP/seerrng-engine-receipts"
+          --receipt-dir "$RUNNER_TEMP/seerrng-engine-${GITHUB_REPOSITORY_ID}-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}-${GITHUB_JOB}-${SEERRNG_ENGINE_CASE_ID:-${SEERRNG_ENGINE_CASE:-single}}/receipts"
           --report-file "$RUNNER_TEMP/seerrng-engine-node-tests.json"
           --json
 
       - name: Publish test report
-        uses: mikepenz/action-junit-report@b7b80d7ac5b1da46d6aaff9fb57ad50d8453bcb3 # v6.6.0
+        uses: mikepenz/action-junit-report@6ef3fdcfcd5f0b5d14df3e659ef19b8c6820f93d # v6.6.1
         if: >-
           (success() || failure()) &&
           steps.engine-admission.outputs.execute == 'true'
@@ -619,9 +649,9 @@ jobs:
           --github-receipt
           --unit "$SEERRNG_ENGINE_UNIT_ID"
           --case "$SEERRNG_ENGINE_CASE_ID"
-          --plan-file "$RUNNER_TEMP/seerrng-engine-plan/hosted-plan.json"
+          --plan-file "$RUNNER_TEMP/seerrng-engine-${GITHUB_REPOSITORY_ID}-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}-${GITHUB_JOB}-${SEERRNG_ENGINE_CASE_ID:-${SEERRNG_ENGINE_CASE:-single}}/plan/hosted-plan.json"
           --expected-plan-sha256 "$SEERRNG_ENGINE_PLAN_SHA256"
-          --receipt-dir "$RUNNER_TEMP/seerrng-engine-receipts"
+          --receipt-dir "$RUNNER_TEMP/seerrng-engine-${GITHUB_REPOSITORY_ID}-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}-${GITHUB_JOB}-${SEERRNG_ENGINE_CASE_ID:-${SEERRNG_ENGINE_CASE:-single}}/receipts"
           --job-status "${{ job.status }}"
           --evidence report.xml
           --evidence "$RUNNER_TEMP/seerrng-engine-node-tests.json"
@@ -629,12 +659,18 @@ jobs:
 
       - name: Publish engine unit receipt
         if: always()
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: seerrng-engine-receipt-${{ github.run_id }}-${{ github.run_attempt }}-ci-unit-test-${{ matrix.case_id }}
-          path: ${{ runner.temp }}/seerrng-engine-receipts
+          path: ${{ runner.temp }}/seerrng-engine-${{ github.repository_id }}-${{ github.run_id }}-${{ github.run_attempt }}-${{ github.job }}-${{ matrix.case_id || 'single' }}/receipts
           if-no-files-found: error
           retention-days: 1
+
+      - name: Clean attempt-scoped engine workspace
+        if: always()
+        shell: sh
+        run: |
+          rm -rf -- "$RUNNER_TEMP/seerrng-engine-${GITHUB_REPOSITORY_ID}-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}-${GITHUB_JOB}-${SEERRNG_ENGINE_CASE_ID:-${SEERRNG_ENGINE_CASE:-single}}"
 
   codeql:
     name: CodeQL
@@ -683,7 +719,7 @@ jobs:
           persist-credentials: false
 
       - name: Set up Node.js
-        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
           node-version-file: package.json
           package-manager-cache: false
@@ -695,7 +731,7 @@ jobs:
         uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
         with:
           name: seerrng-engine-plan-${{ github.run_id }}-${{ github.run_attempt }}
-          path: ${{ runner.temp }}/seerrng-engine-plan
+          path: ${{ runner.temp }}/seerrng-engine-${{ github.repository_id }}-${{ github.run_id }}-${{ github.run_attempt }}-${{ github.job }}-${{ matrix.case_id || 'single' }}/plan
 
       - name: Install dependencies
         env:
@@ -719,9 +755,9 @@ jobs:
           node bin/run-local-validation.mjs
           --github-admit
           --unit "$SEERRNG_ENGINE_UNIT_ID"
-          --plan-file "$RUNNER_TEMP/seerrng-engine-plan/hosted-plan.json"
+          --plan-file "$RUNNER_TEMP/seerrng-engine-${GITHUB_REPOSITORY_ID}-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}-${GITHUB_JOB}-${SEERRNG_ENGINE_CASE_ID:-${SEERRNG_ENGINE_CASE:-single}}/plan/hosted-plan.json"
           --expected-plan-sha256 "$SEERRNG_ENGINE_PLAN_SHA256"
-          --receipt-dir "$RUNNER_TEMP/seerrng-engine-receipts"
+          --receipt-dir "$RUNNER_TEMP/seerrng-engine-${GITHUB_REPOSITORY_ID}-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}-${GITHUB_JOB}-${SEERRNG_ENGINE_CASE_ID:-${SEERRNG_ENGINE_CASE:-single}}/receipts"
           --json
 
       - name: Build Playwright application once on Ubuntu
@@ -740,21 +776,27 @@ jobs:
           node bin/run-local-validation.mjs
           --github-receipt
           --unit "$SEERRNG_ENGINE_UNIT_ID"
-          --plan-file "$RUNNER_TEMP/seerrng-engine-plan/hosted-plan.json"
+          --plan-file "$RUNNER_TEMP/seerrng-engine-${GITHUB_REPOSITORY_ID}-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}-${GITHUB_JOB}-${SEERRNG_ENGINE_CASE_ID:-${SEERRNG_ENGINE_CASE:-single}}/plan/hosted-plan.json"
           --expected-plan-sha256 "$SEERRNG_ENGINE_PLAN_SHA256"
-          --receipt-dir "$RUNNER_TEMP/seerrng-engine-receipts"
+          --receipt-dir "$RUNNER_TEMP/seerrng-engine-${GITHUB_REPOSITORY_ID}-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}-${GITHUB_JOB}-${SEERRNG_ENGINE_CASE_ID:-${SEERRNG_ENGINE_CASE:-single}}/receipts"
           --job-status "${{ job.status }}"
           --evidence "$PLAYWRIGHT_JSON_OUTPUT_FILE"
           --json
 
       - name: Publish engine unit receipt
         if: always()
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: seerrng-engine-receipt-${{ github.run_id }}-${{ github.run_attempt }}-ci-playwright
-          path: ${{ runner.temp }}/seerrng-engine-receipts
+          path: ${{ runner.temp }}/seerrng-engine-${{ github.repository_id }}-${{ github.run_id }}-${{ github.run_attempt }}-${{ github.job }}-${{ matrix.case_id || 'single' }}/receipts
           if-no-files-found: error
           retention-days: 1
+
+      - name: Clean attempt-scoped engine workspace
+        if: always()
+        shell: bash
+        run: |
+          rm -rf -- "$RUNNER_TEMP/seerrng-engine-${GITHUB_REPOSITORY_ID}-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}-${GITHUB_JOB}-${SEERRNG_ENGINE_CASE_ID:-${SEERRNG_ENGINE_CASE:-single}}"
 
   cypress:
     name: Cypress Tests (${{ matrix.case_id }})
@@ -853,6 +895,7 @@ jobs:
       - helm
     if: >-
       always() &&
+      !cancelled() &&
       (github.event_name == 'pull_request' ||
       ((github.event_name == 'push' || github.event_name == 'workflow_dispatch') &&
       github.ref == 'refs/heads/main'))
@@ -872,7 +915,7 @@ jobs:
           persist-credentials: false
 
       - name: Set up Node.js
-        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
           node-version-file: 'package.json'
           package-manager-cache: false
@@ -881,13 +924,13 @@ jobs:
         uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
         with:
           name: seerrng-engine-plan-${{ github.run_id }}-${{ github.run_attempt }}
-          path: ${{ runner.temp }}/seerrng-engine-plan
+          path: ${{ runner.temp }}/seerrng-engine-${{ github.repository_id }}-${{ github.run_id }}-${{ github.run_attempt }}-${{ github.job }}-${{ matrix.case_id || 'single' }}/plan
 
       - name: Download current-attempt engine receipts
         uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
         with:
           pattern: seerrng-engine-receipt-${{ github.run_id }}-${{ github.run_attempt }}-*
-          path: ${{ runner.temp }}/seerrng-engine-receipts
+          path: ${{ runner.temp }}/seerrng-engine-${{ github.repository_id }}-${{ github.run_id }}-${{ github.run_attempt }}-${{ github.job }}-${{ matrix.case_id || 'single' }}/receipts
           merge-multiple: true
 
       - name: Reconcile current-run hosted validation results
@@ -897,9 +940,15 @@ jobs:
         run: >-
           node bin/run-local-validation.mjs
           --github-reconcile
-          --plan-file "$RUNNER_TEMP/seerrng-engine-plan/hosted-plan.json"
-          --receipt-dir "$RUNNER_TEMP/seerrng-engine-receipts"
+          --plan-file "$RUNNER_TEMP/seerrng-engine-${GITHUB_REPOSITORY_ID}-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}-${GITHUB_JOB}-${SEERRNG_ENGINE_CASE_ID:-${SEERRNG_ENGINE_CASE:-single}}/plan/hosted-plan.json"
+          --receipt-dir "$RUNNER_TEMP/seerrng-engine-${GITHUB_REPOSITORY_ID}-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}-${GITHUB_JOB}-${SEERRNG_ENGINE_CASE_ID:-${SEERRNG_ENGINE_CASE:-single}}/receipts"
           --json
+
+      - name: Clean attempt-scoped engine workspace
+        if: always()
+        shell: bash
+        run: |
+          rm -rf -- "$RUNNER_TEMP/seerrng-engine-${GITHUB_REPOSITORY_ID}-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}-${GITHUB_JOB}-${SEERRNG_ENGINE_CASE_ID:-${SEERRNG_ENGINE_CASE:-single}}"
 
   preflight-deploy:
     name: Preflight deployment host
@@ -1200,7 +1249,7 @@ jobs:
 
       - name: Upload SARIF to code scanning
         if: always()
-        uses: github/codeql-action/upload-sarif@2892aa5e19bbd11bc0cff5427e3b750a04d9e3c2 # v4.38.2
+        uses: github/codeql-action/upload-sarif@24c54180a607b1449ed407dd24f251e4e9147c8d # v4.38.3
         with:
           sarif_file: trivy-main-${{ matrix.suffix }}.sarif
           category: trivy-main-${{ matrix.suffix }}

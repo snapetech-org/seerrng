@@ -75,6 +75,7 @@ test('the existing CI workflow invokes the engine plan and reconciler around nat
     new Set(['engine-plan', ...nativeJobs, ...Object.keys(reusableJobs)])
   );
   assert.match(jobs['engine-reconcile'].if, /always\(\)/);
+  assert.match(jobs['engine-reconcile'].if, /!cancelled\(\)/);
   assert.equal(
     reconcile.env.SEERRNG_ENGINE_EXPECTED_PLAN_SHA256,
     '${{ needs.engine-plan.outputs.planSha256 }}'
