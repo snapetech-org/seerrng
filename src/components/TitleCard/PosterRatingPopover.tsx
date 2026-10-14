@@ -44,6 +44,21 @@ export default function PosterRatingPopover({
     maxWidth: number;
   }>();
   const popoverRef = useRef<HTMLDivElement>(null);
+  const isVideo = mediaType === 'movie' || mediaType === 'tv';
+  const ratingIdentity = `${mediaType}:${String(id)}`;
+  const [readyRatingIdentity, setReadyRatingIdentity] = useState<string>();
+  const videoRatingsReady = readyRatingIdentity === ratingIdentity;
+
+  useEffect(() => {
+    if (!isVideo) return;
+
+    const timeout = window.setTimeout(() => {
+      setReadyRatingIdentity(ratingIdentity);
+    }, 300);
+
+    return () => window.clearTimeout(timeout);
+  }, [isVideo, ratingIdentity]);
+
   const updatePosition = useCallback(() => {
     const card = anchorRef.current;
     if (!card) return;
@@ -98,11 +113,15 @@ export default function PosterRatingPopover({
 
   const { data: movieRatings, isValidating: movieLoading } =
     useSWR<RatingResponse>(
-      mediaType === 'movie' ? '/api/v1/movie/' + id + '/ratingscombined' : null,
+      mediaType === 'movie' && videoRatingsReady
+        ? '/api/v1/movie/' + id + '/ratingscombined'
+        : null,
       { revalidateOnFocus: false }
     );
   const { data: tvRatings, isValidating: tvLoading } = useSWR<RatingResponse>(
-    mediaType === 'tv' ? '/api/v1/tv/' + id + '/ratingscombined' : null,
+    mediaType === 'tv' && videoRatingsReady
+      ? '/api/v1/tv/' + id + '/ratingscombined'
+      : null,
     { revalidateOnFocus: false }
   );
   const { data: musicRatings, isValidating: musicLoading } =
@@ -122,15 +141,14 @@ export default function PosterRatingPopover({
     );
 
   if (typeof document === 'undefined') return null;
-  const isVideo = mediaType === 'movie' || mediaType === 'tv';
   const albumRatings =
     musicRatings?.ratings ??
     (musicRatings?.rating ? [musicRatings.rating] : []);
   const bookAverage = hasBookRating ? bookRatingAverage : bookRating?.average;
   const bookCount = hasBookRating ? bookRatingCount : bookRating?.count;
   const loading =
-    (mediaType === 'movie' && movieLoading) ||
-    (mediaType === 'tv' && tvLoading) ||
+    (mediaType === 'movie' && (movieLoading || !videoRatingsReady)) ||
+    (mediaType === 'tv' && (tvLoading || !videoRatingsReady)) ||
     (mediaType === 'album' && musicLoading) ||
     (mediaType === 'book' && bookLoading);
   const hasRatings =

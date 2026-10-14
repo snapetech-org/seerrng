@@ -2279,8 +2279,8 @@ const validateCurrentBatchContract = (files) => {
   );
   requireCssRule(
     '.poster-rating-values',
-    ['display: flex;', 'flex-wrap: nowrap;'],
-    'poster hover ratings must remain on one horizontal line'
+    ['display: flex;', 'flex-wrap: wrap;', 'max-width: 100%;'],
+    'poster rating values must wrap within the constrained popover width'
   );
   requireText(
     'src/components/TitleCard/PosterRatingPopover.tsx',

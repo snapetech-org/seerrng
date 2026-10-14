@@ -6655,10 +6655,11 @@
 
   .poster-rating-values {
     display: flex;
-    flex-wrap: nowrap;
+    flex-wrap: wrap;
     align-items: center;
     justify-content: center;
     gap: 0.25rem 0.75rem;
+    max-width: 100%;
   }
 
   .media-rating-row {
