@@ -1,7 +1,7 @@
 ---
 category: changed
 audience: operators
-area: ci
+area: validation
 action: none
 breaking: false
 ---
