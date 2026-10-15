@@ -23,6 +23,7 @@ import {
   MagnifyingGlassIcon,
   XMarkIcon,
 } from '@heroicons/react/24/solid';
+import { ServerType } from '@server/constants/server';
 import {
   createSettingsLibraryUpdateBody,
   getSettingsLibraryApiPath,
@@ -284,7 +285,7 @@ const SettingsPlex = ({ isSetupSettings, onComplete }: SettingsPlexProps) => {
       addToast(
         e?.response?.data?.message === 'CONNECTION_ERROR'
           ? intl.formatMessage(messages.invalidurlerror, {
-              mediaServerName: 'Plex',
+              mediaServerName: ServerType.PLEX,
             })
           : intl.formatMessage(messages.toastPlexSyncFailure),
         {
@@ -534,7 +535,7 @@ const SettingsPlex = ({ isSetupSettings, onComplete }: SettingsPlexProps) => {
                       name="preset"
                       value={values.selectedPreset}
                       disabled={!availableServers || isRefreshingPresets}
-                      className="rounded-l-only"
+                      className="rounded-s-only"
                       onChange={async (e) => {
                         const targPreset =
                           availablePresets[Number(e.target.value)];
@@ -606,7 +607,7 @@ const SettingsPlex = ({ isSetupSettings, onComplete }: SettingsPlexProps) => {
                 </label>
                 <div className="form-input-area">
                   <div className="form-input-field">
-                    <span className="inline-flex cursor-default items-center rounded-l-md border border-r-0 border-gray-500 bg-gray-800 px-3 text-gray-100 sm:text-sm">
+                    <span className="inline-flex cursor-default items-center rounded-s-md border border-e-0 border-gray-500 bg-gray-800 px-3 text-gray-100 sm:text-sm">
                       {values.useSsl ? 'https://' : 'http://'}
                     </span>
                     <Field
@@ -614,7 +615,8 @@ const SettingsPlex = ({ isSetupSettings, onComplete }: SettingsPlexProps) => {
                       inputMode="url"
                       id="hostname"
                       name="hostname"
-                      className="rounded-r-only"
+                      dir="ltr"
+                      className="rounded-e-only"
                     />
                   </div>
                   {errors.hostname &&
@@ -672,7 +674,7 @@ const SettingsPlex = ({ isSetupSettings, onComplete }: SettingsPlexProps) => {
                       </a>
                     ),
                   })}
-                  <SettingsBadge badgeType="advanced" className="ml-2" />
+                  <SettingsBadge badgeType="advanced" className="ms-2" />
                 </label>
                 <div className="form-input-area">
                   <div className="form-input-field">
@@ -696,7 +698,7 @@ const SettingsPlex = ({ isSetupSettings, onComplete }: SettingsPlexProps) => {
               </div>
               <div className="actions">
                 <div className="flex justify-end">
-                  <span className="ml-3 inline-flex rounded-md shadow-sm">
+                  <span className="ms-3 inline-flex rounded-md shadow-sm">
                     <Button
                       buttonType="primary"
                       type="submit"
@@ -816,7 +818,7 @@ const SettingsPlex = ({ isSetupSettings, onComplete }: SettingsPlexProps) => {
               <span>
                 {dataSync?.running
                   ? `${dataSync.progress} of ${dataSync.total}`
-                  : 'Not running'}
+                  : intl.formatMessage(messages.notrunning)}
               </span>
             </div>
           </div>
@@ -824,7 +826,7 @@ const SettingsPlex = ({ isSetupSettings, onComplete }: SettingsPlexProps) => {
             {dataSync?.running && (
               <>
                 {dataSync.currentLibrary && (
-                  <div className="mr-0 mb-2 flex items-center sm:mr-2 sm:mb-0">
+                  <div className="me-0 mb-2 flex items-center sm:me-2 sm:mb-0">
                     <Badge>
                       {intl.formatMessage(messages.currentlibrary, {
                         name: dataSync.currentLibrary.name,
@@ -848,7 +850,7 @@ const SettingsPlex = ({ isSetupSettings, onComplete }: SettingsPlexProps) => {
                 </div>
               </>
             )}
-            <div className="flex-1 text-right">
+            <div className="flex-1 text-end">
               {!dataSync?.running ? (
                 <Button
                   buttonType="warning"
@@ -937,7 +939,7 @@ const SettingsPlex = ({ isSetupSettings, onComplete }: SettingsPlexProps) => {
                     </label>
                     <div className="form-input-area">
                       <div className="form-input-field">
-                        <span className="inline-flex cursor-default items-center rounded-l-md border border-r-0 border-gray-500 bg-gray-800 px-3 text-gray-100 sm:text-sm">
+                        <span className="inline-flex cursor-default items-center rounded-s-md border border-e-0 border-gray-500 bg-gray-800 px-3 text-gray-100 sm:text-sm">
                           {values.tautulliUseSsl ? 'https://' : 'http://'}
                         </span>
                         <Field
@@ -945,7 +947,8 @@ const SettingsPlex = ({ isSetupSettings, onComplete }: SettingsPlexProps) => {
                           inputMode="url"
                           id="tautulliHostname"
                           name="tautulliHostname"
-                          className="rounded-r-only"
+                          dir="ltr"
+                          className="rounded-e-only"
                         />
                       </div>
                       {errors.tautulliHostname &&
@@ -1071,7 +1074,7 @@ const SettingsPlex = ({ isSetupSettings, onComplete }: SettingsPlexProps) => {
                   </div>
                   <div className="actions">
                     <div className="flex justify-end">
-                      <span className="ml-3 inline-flex rounded-md shadow-sm">
+                      <span className="ms-3 inline-flex rounded-md shadow-sm">
                         <Button
                           buttonType="primary"
                           type="submit"

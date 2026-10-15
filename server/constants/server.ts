@@ -6,6 +6,7 @@ export enum MediaServerType {
 }
 
 export enum ServerType {
+  PLEX = 'Plex',
   JELLYFIN = 'Jellyfin',
   EMBY = 'Emby',
 }

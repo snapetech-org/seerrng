@@ -11,6 +11,7 @@ import { ThemeProvider } from '@app/context/ThemeContext';
 import { UserContext } from '@app/context/UserContext';
 import useSettings from '@app/hooks/useSettings';
 import '@app/styles/globals.css';
+import { getLocaleDirection } from '@app/utils/localeDirection';
 import { polyfillIntl } from '@app/utils/polyfillIntl';
 import '@fontsource-variable/inter';
 import type { AvailableLocale } from '@server/types/languages';
@@ -69,6 +70,8 @@ const loadLocaleData = (locale: AvailableLocale): Promise<any> => {
       return import('../i18n/locale/hr.json');
     case 'hu':
       return import('../i18n/locale/hu.json');
+    case 'id':
+      return import('../i18n/locale/id.json');
     case 'it':
       return import('../i18n/locale/it.json');
     case 'ja':
@@ -136,6 +139,7 @@ const CoreApp = ({ Component, pageProps, router }: AppProps) => {
   let component: React.ReactNode;
   const [loadedMessages, setMessages] = useState<MessagesType>(emptyMessages);
   const [currentLocale, setLocale] = useState<AvailableLocale>('en');
+  const [activeLocale, setActiveLocale] = useState<AvailableLocale>('en');
   const loadedLocale = useRef<AvailableLocale>('en');
 
   useEffect(() => {
@@ -150,6 +154,9 @@ const CoreApp = ({ Component, pageProps, router }: AppProps) => {
     if (currentLocale === 'en') {
       loadedLocale.current = 'en';
       setMessages(emptyMessages);
+      setActiveLocale('en');
+      document.documentElement.lang = 'en';
+      document.documentElement.dir = getLocaleDirection('en');
       return;
     }
 
@@ -161,9 +168,15 @@ const CoreApp = ({ Component, pageProps, router }: AppProps) => {
         }
         loadedLocale.current = currentLocale;
         setMessages(localeMessages);
+        setActiveLocale(currentLocale);
+        document.documentElement.lang = currentLocale;
+        document.documentElement.dir = getLocaleDirection(currentLocale);
       })
       .catch(() => {
-        // Keep the last complete locale when a chunk fails to load.
+        // Keep the current catalog and document metadata together when a chunk fails.
+        if (active) {
+          setLocale(loadedLocale.current);
+        }
       });
 
     return () => {
@@ -195,11 +208,17 @@ const CoreApp = ({ Component, pageProps, router }: AppProps) => {
         keepPreviousData: true,
       }}
     >
-      <LanguageContext.Provider value={{ locale: currentLocale, setLocale }}>
+      <LanguageContext.Provider
+        value={{
+          locale: activeLocale,
+          requestedLocale: currentLocale,
+          setLocale,
+        }}
+      >
         <IntlProvider
-          locale={currentLocale}
+          locale={activeLocale}
           defaultLocale="en"
-          messages={currentLocale === 'en' ? emptyMessages : loadedMessages}
+          messages={activeLocale === 'en' ? emptyMessages : loadedMessages}
         >
           <LoadingBar />
           <ThemeProvider>

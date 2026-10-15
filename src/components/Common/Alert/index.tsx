@@ -45,7 +45,7 @@ const Alert = memo(
           <div className={`flex-shrink-0 ${design.titleColor}`}>
             {design.svg}
           </div>
-          <div className="ml-3">
+          <div className="ms-3">
             {title && (
               <div className={`text-sm font-medium ${design.titleColor}`}>
                 {title}

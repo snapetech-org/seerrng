@@ -3,12 +3,13 @@ import PageTitle from '@app/components/Common/PageTitle';
 import IdentityMappingControls from '@app/components/DiscoveryIntegrations/IdentityMappingControls';
 import discoveryMessages from '@app/components/DiscoveryIntegrations/messages';
 import TmdbTitleCard from '@app/components/TitleCard/TmdbTitleCard';
+import globalMessages from '@app/i18n/globalMessages';
 import { getDiscoveryFeedFailure } from '@app/utils/discoveryFeedError';
 import type { DiscoveryFeedPage } from '@server/lib/discoveryIntegrations/feeds';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage, useIntl } from 'react-intl';
 import useSWR from 'swr';
 
 const feeds = [
@@ -24,18 +25,19 @@ const feeds = [
   'mdblist/list',
 ] as const;
 const labels = [
-  'Trakt watchlist',
-  'Trakt history',
-  'Trakt movie recommendations',
-  'Trakt series recommendations',
-  'AniList trending anime',
-  'AniList popular anime',
-  'AniList top anime',
-  'AniList next season',
-  'Your AniList library',
-  'MDBList public list',
+  discoveryMessages['providers.traktWatchlist'],
+  discoveryMessages['providers.traktHistory'],
+  discoveryMessages['providers.traktMovieRecommendations'],
+  discoveryMessages['providers.traktSeriesRecommendations'],
+  discoveryMessages['providers.anilistTrending'],
+  discoveryMessages['providers.anilistPopular'],
+  discoveryMessages['providers.anilistTop'],
+  discoveryMessages['providers.anilistNextSeason'],
+  discoveryMessages['providers.anilistLibrary'],
+  discoveryMessages['providers.mdblistPublicList'],
 ];
 export default function ProviderDiscoverPage() {
+  const intl = useIntl();
   const [feed, setFeed] = useState<string>('anilist/trending');
   const [page, setPage] = useState(1);
   const [draftList, setDraftList] = useState('');
@@ -85,7 +87,9 @@ export default function ProviderDiscoverPage() {
   );
   return (
     <div className="text-gray-100">
-      <PageTitle title="Provider Discovery" />
+      <PageTitle
+        title={intl.formatMessage(discoveryMessages['providers.title'])}
+      />
       <h1 className="heading">
         <FormattedMessage {...discoveryMessages['providers.title']} />
       </h1>
@@ -112,7 +116,7 @@ export default function ProviderDiscoverPage() {
       >
         {feeds.map((value, index) => (
           <option key={value} value={value}>
-            {labels[index]}
+            {intl.formatMessage(labels[index])}
           </option>
         ))}
       </select>
@@ -284,7 +288,7 @@ export default function ProviderDiscoverPage() {
       </div>
       {data && (
         <nav
-          aria-label="Discovery feed pages"
+          aria-label={intl.formatMessage(globalMessages.discoveryFeedPages)}
           className="my-6 flex items-center justify-between gap-4"
         >
           <Button

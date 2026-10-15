@@ -8,6 +8,7 @@ import {
 import useClickOutside from '@app/hooks/useClickOutside';
 import useSettings from '@app/hooks/useSettings';
 import { Permission, useUser } from '@app/hooks/useUser';
+import globalMessages from '@app/i18n/globalMessages';
 import { isOptionalCatalogPathEnabled } from '@app/utils/serviceAvailability';
 import { Transition } from '@headlessui/react';
 import { EllipsisHorizontalIcon, XMarkIcon } from '@heroicons/react/24/outline';
@@ -97,7 +98,7 @@ const MobileMenu = ({
   ]);
 
   return (
-    <div className="fixed right-0 bottom-0 left-0 z-50">
+    <div className="fixed inset-x-0 bottom-0 z-50">
       <Transition
         show={isOpen}
         as="div"
@@ -108,7 +109,7 @@ const MobileMenu = ({
         leave="transition duration-500"
         leaveFrom="opacity-100 -translate-y-full"
         leaveTo="opacity-0 translate-y-0"
-        className="app-menu-gradient mobile-menu-navigation absolute top-0 right-0 left-0 flex w-full -translate-y-full flex-col border-t border-gray-600 px-6 py-6 font-semibold text-gray-100 backdrop-blur"
+        className="app-menu-gradient mobile-menu-navigation absolute inset-x-0 top-0 flex w-full -translate-y-full flex-col border-t border-gray-600 px-6 py-6 font-semibold text-gray-100 backdrop-blur"
       >
         {filteredSections.map((section) => (
           <div
@@ -142,13 +143,13 @@ const MobileMenu = ({
                       isActive ? link.svgIconSelected : link.svgIcon,
                       { className: 'h-5 w-5' }
                     )}
-                    <span className="ml-2">
+                    <span className="ms-2">
                       {intl.formatMessage(menuMessages[link.messagesKey])}
                     </span>
                     {link.href === '/requests' &&
                       pendingRequestsCount > 0 &&
                       hasPermission(Permission.MANAGE_REQUESTS) && (
-                        <div className="ml-auto flex">
+                        <div className="ms-auto flex">
                           <Badge className="rounded-md border-indigo-500 bg-gradient-to-br from-indigo-600 to-purple-600">
                             {pendingRequestsCount}
                           </Badge>
@@ -157,7 +158,7 @@ const MobileMenu = ({
                     {link.href === '/issues' &&
                       openIssuesCount > 0 &&
                       hasPermission(Permission.MANAGE_ISSUES) && (
-                        <div className="ml-auto flex">
+                        <div className="ms-auto flex">
                           <Badge className="rounded-md border-indigo-500 bg-gradient-to-br from-indigo-600 to-purple-600">
                             {openIssuesCount}
                           </Badge>
@@ -200,7 +201,7 @@ const MobileMenu = ({
                   {link.href === '/requests' &&
                     pendingRequestsCount > 0 &&
                     hasPermission(Permission.MANAGE_REQUESTS) && (
-                      <div className="absolute bottom-3 left-3">
+                      <div className="absolute start-3 bottom-3">
                         <Badge
                           className={`bg-gradient-to-br ${
                             router.pathname.match(link.activeRegExp)
@@ -225,7 +226,11 @@ const MobileMenu = ({
                 isOpen ? 'sidebar-link-selected' : 'sidebar-link-idle'
               }`}
               onClick={() => toggle()}
-              aria-label={isOpen ? 'Close menu' : 'More navigation'}
+              aria-label={intl.formatMessage(
+                isOpen
+                  ? globalMessages.closeMenu
+                  : globalMessages.moreNavigation
+              )}
             >
               {isOpen ? (
                 <XMarkIcon className="h-6 w-6" />

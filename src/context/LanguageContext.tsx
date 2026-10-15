@@ -59,6 +59,10 @@ export const availableLanguages: AvailableLanguageObject = {
     code: 'hi',
     display: 'Hindi',
   },
+  id: {
+    code: 'id',
+    display: 'Bahasa Indonesia',
+  },
   hr: {
     code: 'hr',
     display: 'Hrvatski',
@@ -159,6 +163,7 @@ export const availableLanguages: AvailableLanguageObject = {
 
 export interface LanguageContextProps {
   locale: AvailableLocale;
+  requestedLocale?: AvailableLocale;
   children: (locale: string) => React.ReactNode;
   setLocale?: React.Dispatch<React.SetStateAction<AvailableLocale>>;
 }

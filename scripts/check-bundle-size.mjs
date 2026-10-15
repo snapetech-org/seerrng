@@ -37,10 +37,23 @@ if (assets.length === 0) {
   process.exit(1);
 }
 
-const sizes = assets.map((filePath) => ({
-  filePath,
-  bytes: fs.statSync(filePath).size,
-}));
+// Translation catalogs are loaded on demand, one language per visitor, so they
+// are reported separately instead of counting toward the shared-code budget.
+const MIN_CATALOG_CHUNK_BYTES = 64 * 1024;
+const MIN_CATALOG_MESSAGE_KEYS = 1000;
+const isLocaleCatalogChunk = (filePath, bytes) =>
+  bytes >= MIN_CATALOG_CHUNK_BYTES &&
+  (fs.readFileSync(filePath, 'utf8').match(/"components\.[A-Za-z]/g) ?? [])
+    .length >= MIN_CATALOG_MESSAGE_KEYS;
+
+const allSizes = assets.map((filePath) => {
+  const bytes = fs.statSync(filePath).size;
+  return { filePath, bytes, catalog: isLocaleCatalogChunk(filePath, bytes) };
+});
+const sizes = allSizes.filter((asset) => !asset.catalog);
+const catalogBytes = allSizes
+  .filter((asset) => asset.catalog)
+  .reduce((total, asset) => total + asset.bytes, 0);
 const totalBytes = sizes.reduce((total, asset) => total + asset.bytes, 0);
 const oversized = sizes.filter((asset) => asset.bytes > maxChunkBytes);
 
@@ -77,7 +90,7 @@ if (process.argv.includes('--write-baseline')) {
 
 const largest = [...sizes].sort((a, b) => b.bytes - a.bytes).slice(0, 5);
 console.log(
-  `Checked ${assets.length} JavaScript chunks (${(totalBytes / 1024 / 1024).toFixed(2)} MB total).`
+  `Checked ${sizes.length} JavaScript chunks (${(totalBytes / 1024 / 1024).toFixed(2)} MB total); ${allSizes.length - sizes.length} on-demand translation chunks (${(catalogBytes / 1024 / 1024).toFixed(2)} MB) are reported separately.`
 );
 for (const asset of largest) {
   console.log(

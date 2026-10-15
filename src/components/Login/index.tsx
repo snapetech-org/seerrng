@@ -14,10 +14,11 @@ import TransportSecurityNotice from '@app/components/TransportSecurityNotice';
 import useSettings from '@app/hooks/useSettings';
 import { useUser } from '@app/hooks/useUser';
 import defineMessages from '@app/utils/defineMessages';
+import { getSafeReturnPath } from '@app/utils/loginReturn';
 import versionedAsset from '@app/utils/versionedAsset';
 import { Transition } from '@headlessui/react';
 import { XCircleIcon } from '@heroicons/react/24/solid';
-import { MediaServerType } from '@server/constants/server';
+import { MediaServerType, ServerType } from '@server/constants/server';
 import axios from 'axios';
 import { useRouter } from 'next/dist/client/router';
 import Image from 'next/image';
@@ -172,7 +173,12 @@ const Login = ({
   // valid user, we redirect the user to the home page as the login was successful.
   useEffect(() => {
     if (user) {
-      router.push('/');
+      const returnTo = getSafeReturnPath(
+        Array.isArray(router.query.returnTo)
+          ? router.query.returnTo[0]
+          : router.query.returnTo
+      );
+      router.push(returnTo ?? '/');
     }
   }, [user, router]);
 
@@ -186,11 +192,11 @@ const Login = ({
 
   const mediaServerName =
     settings.currentSettings.mediaServerType === MediaServerType.PLEX
-      ? 'Plex'
+      ? ServerType.PLEX
       : settings.currentSettings.mediaServerType === MediaServerType.JELLYFIN
-        ? 'Jellyfin'
+        ? ServerType.JELLYFIN
         : settings.currentSettings.mediaServerType === MediaServerType.EMBY
-          ? 'Emby'
+          ? ServerType.EMBY
           : undefined;
 
   const MediaServerLogo =
@@ -231,7 +237,6 @@ const Login = ({
             className="min-w-0 flex-grow"
             onClick={() => setMediaServerLogin(false)}
           >
-            {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src={versionedAsset('/os_icon.svg')}
               alt={settings.currentSettings.applicationTitle}
@@ -288,7 +293,7 @@ const Login = ({
         <div className="relative h-48 w-full max-w-full drop-shadow-[0_2px_8px_rgba(15,23,42,0.65)]">
           <Image
             src={versionedAsset('/logo_stacked.svg')}
-            alt="Logo"
+            alt="Seerr"
             fill
             priority
             fetchPriority="high"

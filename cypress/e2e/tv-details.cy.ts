@@ -191,7 +191,7 @@ describe('TV Details', () => {
       'true'
     );
 
-    cy.get('[data-tree-part="episodes"][aria-label="Season 04 Episodes"]')
+    cy.get('[data-tree-part="episodes"][aria-label="Season 04 episodes"]')
       .should('be.visible')
       .contains('[data-tree-part="name"]', 'Chapter Nine')
       .scrollIntoView()

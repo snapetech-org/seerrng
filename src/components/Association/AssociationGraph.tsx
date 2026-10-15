@@ -1,8 +1,11 @@
 import CachedImage from '@app/components/Common/CachedImage';
 import type {
   AssociationEdgeType,
+  AssociationReasonKey,
   AssociationGraph as GraphData,
 } from '@app/hooks/useAssociations';
+import globalMessages from '@app/i18n/globalMessages';
+import defineMessages from '@app/utils/defineMessages';
 import {
   Background,
   Controls,
@@ -16,13 +19,23 @@ import {
 import '@xyflow/react/dist/style.css';
 import { useRouter } from 'next/router';
 import { useMemo, useState } from 'react';
+import { useIntl } from 'react-intl';
+import { formatAssociationReason } from './associationReason';
 import { nodeHref, nodeImage, nodeImageType, nodeTitle } from './helpers';
 
-const EDGE_LABEL: Record<AssociationEdgeType, string> = {
+const messages = defineMessages('components.Association.AssociationGraph', {
+  openDetails: 'Open details',
   similar: 'Similar',
   recommended: 'Recommended',
-  'shared-person': 'Shared person',
-  'shared-genre': 'Weak connection',
+  sharedPerson: 'Shared person',
+  weakConnection: 'Weak connection',
+});
+
+const EDGE_LABEL: Record<AssociationEdgeType, keyof typeof messages> = {
+  similar: 'similar',
+  recommended: 'recommended',
+  'shared-person': 'sharedPerson',
+  'shared-genre': 'weakConnection',
 };
 
 const EDGE_CLASS: Record<
@@ -79,49 +92,78 @@ interface GraphNodeData {
   isRoot?: boolean;
   mediaType?: string;
   reason?: string;
+  reasonKey?: AssociationReasonKey;
+  reasonValues?: Record<string, string>;
   weight?: number;
   imageType?: 'tmdb' | 'music' | 'book';
   [key: string]: unknown;
 }
 
-const GraphNode = ({ data }: { data: GraphNodeData }) => (
-  <div
-    data-testid="association-graph-node"
-    className={`flex w-40 flex-col items-center gap-1 rounded-lg border p-2 text-center shadow-lg transition ${
-      data.isRoot
-        ? 'border-indigo-300 bg-indigo-900/80 text-white'
-        : (MEDIA_TONE[data.mediaType ?? ''] ??
-          'border-gray-600 bg-gray-800 text-white')
-    }`}
-  >
-    <Handle type="target" position={Position.Top} className="!bg-gray-500" />
-    {data.image && (
-      <div className="relative h-20 w-14 overflow-hidden rounded bg-gray-800">
-        <CachedImage
-          type={data.imageType ?? 'tmdb'}
-          src={data.image}
-          alt=""
-          fill
-          style={{ objectFit: 'cover' }}
-        />
-      </div>
-    )}
-    <span className="line-clamp-2 text-xs font-semibold text-white">
-      {data.label}
-    </span>
-    {!data.isRoot && data.mediaType && (
-      <span className="rounded-full bg-black/20 px-2 py-0.5 text-[10px] font-semibold tracking-wider text-current uppercase">
-        {data.mediaType === 'album' ? 'music' : data.mediaType}
+const GraphNode = ({ data }: { data: GraphNodeData }) => {
+  const intl = useIntl();
+  const mediaTypeLabel = (() => {
+    switch (data.mediaType) {
+      case 'movie':
+        return globalMessages.movie;
+      case 'tv':
+        return globalMessages.tvshow;
+      case 'album':
+        return globalMessages.album;
+      case 'artist':
+        return globalMessages.artist;
+      case 'book':
+        return globalMessages.book;
+      case 'person':
+        return globalMessages.person;
+      default:
+        return undefined;
+    }
+  })();
+
+  return (
+    <div
+      data-testid="association-graph-node"
+      className={`flex w-40 flex-col items-center gap-1 rounded-lg border p-2 text-center shadow-lg transition ${
+        data.isRoot
+          ? 'border-indigo-300 bg-indigo-900/80 text-white'
+          : (MEDIA_TONE[data.mediaType ?? ''] ??
+            'border-gray-600 bg-gray-800 text-white')
+      }`}
+    >
+      <Handle type="target" position={Position.Top} className="!bg-gray-500" />
+      {data.image && (
+        <div className="relative h-20 w-14 overflow-hidden rounded bg-gray-800">
+          <CachedImage
+            type={data.imageType ?? 'tmdb'}
+            src={data.image}
+            alt=""
+            fill
+            style={{ objectFit: 'cover' }}
+          />
+        </div>
+      )}
+      <span className="line-clamp-2 text-xs font-semibold text-white">
+        {data.label}
       </span>
-    )}
-    <Handle type="source" position={Position.Bottom} className="!bg-gray-500" />
-  </div>
-);
+      {!data.isRoot && data.mediaType && (
+        <span className="rounded-full bg-black/20 px-2 py-0.5 text-[10px] font-semibold tracking-wider text-current uppercase">
+          {mediaTypeLabel ? intl.formatMessage(mediaTypeLabel) : data.mediaType}
+        </span>
+      )}
+      <Handle
+        type="source"
+        position={Position.Bottom}
+        className="!bg-gray-500"
+      />
+    </div>
+  );
+};
 
 const nodeTypes = { assoc: GraphNode };
 
 const AssociationGraph = ({ graph }: { graph: GraphData }) => {
   const router = useRouter();
+  const intl = useIntl();
   const [flow, setFlow] = useState<ReactFlowInstance | null>(null);
   const [selected, setSelected] = useState<GraphNodeData | null>(null);
 
@@ -183,6 +225,8 @@ const AssociationGraph = ({ graph }: { graph: GraphData }) => {
           href: nodeHref(edge.node),
           mediaType: edge.node.mediaType,
           reason: edge.reason,
+          reasonKey: edge.reasonKey,
+          reasonValues: edge.reasonValues,
           weight: edge.weight,
         },
       });
@@ -209,7 +253,7 @@ const AssociationGraph = ({ graph }: { graph: GraphData }) => {
             <span
               className={`${EDGE_CLASS[type as AssociationEdgeType].swatch} h-2.5 w-2.5 rounded-full`}
             />
-            {label}
+            {intl.formatMessage(messages[label])}
           </span>
         ))}
       </div>
@@ -258,8 +302,10 @@ const AssociationGraph = ({ graph }: { graph: GraphData }) => {
               <div className="line-clamp-2 font-semibold text-white">
                 {selected.label}
               </div>
-              {selected.reason && (
-                <div className="mt-1 text-gray-300">{selected.reason}</div>
+              {(selected.reasonKey || selected.reason) && (
+                <div className="mt-1 text-gray-300">
+                  {formatAssociationReason(intl, selected)}
+                </div>
               )}
               {selected.href && (
                 <button
@@ -271,7 +317,7 @@ const AssociationGraph = ({ graph }: { graph: GraphData }) => {
                     }
                   }}
                 >
-                  Open details
+                  {intl.formatMessage(messages.openDetails)}
                 </button>
               )}
             </div>

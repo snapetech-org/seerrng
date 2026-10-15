@@ -1949,7 +1949,7 @@ requestRoutes.get<
         sortFilter = 'request.updatedAt';
         break;
       default:
-        sortFilter = 'request.id';
+        sortFilter = 'request.createdAt';
     }
 
     switch (sortDirectionParam) {
@@ -2071,6 +2071,7 @@ requestRoutes.get<
 
     const [requestRows, requestCount] = await query
       .orderBy(sortFilter, sortDirection)
+      .addOrderBy('request.id', sortDirection)
       .take(pageSize)
       .skip(skip)
       .getManyAndCount();
@@ -3432,18 +3433,40 @@ requestRoutes.get<
       return next({ status: 404, message: 'Request not found.' });
     }
 
-    const request = await getRepository(MediaRequest).findOne({
+    const requestRepository = getRepository(MediaRequest);
+    const request = await requestRepository.findOne({
       where: { id: requestId },
       relations: {
-        media: { identifiers: true, seasons: true },
+        media: true,
         modifiedBy: true,
         requestedBy: true,
-        seasons: true,
       },
+      loadEagerRelations: false,
     });
     if (!request) {
       return next({ status: 404, message: 'Request not found.' });
     }
+
+    const [identifiers, mediaSeasons, requestedSeasons] = await Promise.all([
+      getRepository(Media)
+        .createQueryBuilder()
+        .relation(Media, 'identifiers')
+        .of(request.media.id)
+        .loadMany<MediaIdentifier>(),
+      getRepository(Media)
+        .createQueryBuilder()
+        .relation(Media, 'seasons')
+        .of(request.media.id)
+        .loadMany(),
+      requestRepository
+        .createQueryBuilder()
+        .relation(MediaRequest, 'seasons')
+        .of(request.id)
+        .loadMany<SeasonRequest>(),
+    ]);
+    request.media.identifiers = identifiers;
+    request.media.seasons = mediaSeasons;
+    request.seasons = requestedSeasons;
 
     return await runUserSecurityReadWithActor(
       req.user!.id,

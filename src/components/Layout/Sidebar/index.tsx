@@ -8,6 +8,7 @@ import VersionStatus from '@app/components/Layout/VersionStatus';
 import useClickOutside from '@app/hooks/useClickOutside';
 import useSettings from '@app/hooks/useSettings';
 import { Permission, useUser } from '@app/hooks/useUser';
+import globalMessages from '@app/i18n/globalMessages';
 import { isOptionalCatalogPathEnabled } from '@app/utils/serviceAvailability';
 import versionedAsset from '@app/utils/versionedAsset';
 import { Transition, TransitionChild } from '@headlessui/react';
@@ -62,7 +63,7 @@ const Sidebar = ({
     device: 'mobile' | 'desktop'
   ) => {
     const selected = router.pathname.match(link.activeRegExp);
-    const iconClass = device === 'desktop' ? 'mr-3 h-6 w-6' : 'mr-3 h-6 w-6';
+    const iconClass = device === 'desktop' ? 'me-3 h-6 w-6' : 'me-3 h-6 w-6';
     const className =
       device === 'mobile'
         ? `flex items-center rounded-md px-2 py-2 text-base leading-6 font-medium text-white transition duration-150 ease-in-out focus:outline-none ${
@@ -99,7 +100,7 @@ const Sidebar = ({
           link.messagesKey === 'requests' &&
           pendingRequestsCount > 0 &&
           hasPermission(Permission.MANAGE_REQUESTS) && (
-            <div className="ml-auto flex">
+            <div className="ms-auto flex">
               <Badge
                 className={`rounded-md bg-gradient-to-br ${
                   selected
@@ -115,7 +116,7 @@ const Sidebar = ({
           link.messagesKey === 'issues' &&
           openIssuesCount > 0 &&
           hasPermission(Permission.MANAGE_ISSUES) && (
-            <div className="ml-auto flex">
+            <div className="ms-auto flex">
               <Badge
                 className={`rounded-md bg-gradient-to-br ${
                   selected
@@ -186,18 +187,20 @@ const Sidebar = ({
             <TransitionChild
               as="div"
               enter="transition-transform ease-in-out duration-300"
-              enterFrom="-translate-x-full"
+              enterFrom="ltr:-translate-x-full rtl:translate-x-full"
               enterTo="translate-x-0"
               leave="transition-transform ease-in-out duration-300"
               leaveFrom="translate-x-0"
-              leaveTo="-translate-x-full"
+              leaveTo="ltr:-translate-x-full rtl:translate-x-full"
             >
               <>
                 <div className="sidebar relative flex h-full w-full max-w-xs flex-1 flex-col">
-                  <div className="sidebar-close-button absolute right-0 -mr-14 p-1">
+                  <div className="sidebar-close-button absolute end-0 -me-14 p-1">
                     <button
                       className="flex h-12 w-12 items-center justify-center rounded-full focus:bg-gray-600 focus:outline-none"
-                      aria-label="Close sidebar"
+                      aria-label={intl.formatMessage(
+                        globalMessages.closeSidebar
+                      )}
                       onClick={() => setClosed()}
                     >
                       <XMarkIcon className="h-6 w-6 text-white" />
@@ -212,9 +215,9 @@ const Sidebar = ({
                         <Link href="/" className="relative block h-24 w-64">
                           <Image
                             src={versionedAsset('/logo_full.svg')}
-                            alt="Logo"
+                            alt="Seerr"
                             fill
-                            className="object-contain object-left"
+                            className="object-contain object-left rtl:object-right"
                           />
                         </Link>
                       </span>
@@ -222,7 +225,9 @@ const Sidebar = ({
                     <nav
                       className="sidebar-navigation"
                       data-navigation-device="mobile"
-                      aria-label="Primary"
+                      aria-label={intl.formatMessage(
+                        globalMessages.primaryNavigation
+                      )}
                     >
                       {renderNavigationSections('mobile')}
                     </nav>
@@ -242,7 +247,7 @@ const Sidebar = ({
         </Transition>
       </div>
 
-      <div className="fixed top-0 bottom-0 left-0 z-30 hidden lg:flex lg:flex-shrink-0">
+      <div className="fixed start-0 top-0 bottom-0 z-30 hidden lg:flex lg:flex-shrink-0">
         <div className="sidebar flex w-64 flex-col">
           <div className="flex h-0 flex-1 flex-col">
             <div className="flex flex-1 flex-col overflow-y-auto pb-4">
@@ -251,9 +256,9 @@ const Sidebar = ({
                   <Link href="/" className="relative block h-24">
                     <Image
                       src={versionedAsset('/logo_full.svg')}
-                      alt="Logo"
+                      alt="Seerr"
                       fill
-                      className="object-contain object-left"
+                      className="object-contain object-left rtl:object-right"
                       loading="eager"
                     />
                   </Link>
@@ -262,7 +267,9 @@ const Sidebar = ({
               <nav
                 className="sidebar-navigation"
                 data-navigation-device="desktop"
-                aria-label="Primary"
+                aria-label={intl.formatMessage(
+                  globalMessages.primaryNavigation
+                )}
               >
                 {renderNavigationSections('desktop')}
               </nav>

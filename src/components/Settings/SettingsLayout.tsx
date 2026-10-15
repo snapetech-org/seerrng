@@ -11,7 +11,7 @@ import globalMessages from '@app/i18n/globalMessages';
 import defineMessages from '@app/utils/defineMessages';
 import { Transition } from '@headlessui/react';
 import { MagnifyingGlassIcon } from '@heroicons/react/24/solid';
-import { MediaServerType } from '@server/constants/server';
+import { MediaServerType, ServerType } from '@server/constants/server';
 import { useRouter } from 'next/router';
 import type { ReactNode } from 'react';
 import {
@@ -504,9 +504,9 @@ const SettingsLayout = ({ children }: SettingsLayoutProps) => {
     return intl.formatMessage(messages.menuJellyfinSettings, {
       mediaServerName:
         settings.currentSettings.mediaServerType === MediaServerType.JELLYFIN
-          ? 'Jellyfin'
+          ? ServerType.JELLYFIN
           : settings.currentSettings.mediaServerType === MediaServerType.EMBY
-            ? 'Emby'
+            ? ServerType.EMBY
             : undefined,
     });
   }
