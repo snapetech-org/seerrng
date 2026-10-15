@@ -16,9 +16,9 @@ the contributor's accepted visual/interaction contract.
 3. Save recoverable refs/source and produce a three-way changed-file inventory.
    Do not overwrite a dirty checkout, discard contributor commits, or include
    live config/databases/secrets. Work in an isolated integration branch/worktree.
-4. Read `AGENTS.md`, both UI documents, `CONTRIBUTING.md`, the PR's acceptance and
-   verification record, and applicable task instructions completely. Inventory
-   current gate/test coverage and known unresolved work before resolving conflicts.
+4. Read both UI documents, `CONTRIBUTING.md`, the PR's acceptance and verification
+   record, and applicable task instructions completely. Inventory current
+   gate/test coverage and known unresolved work before resolving conflicts.
 5. Start the evidence record from
    [Interface Integration Checkpoint](interface-integration-checkpoint.md).
    The first review batch is not the complete PR scope: preserve Request-page

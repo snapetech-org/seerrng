@@ -41,10 +41,8 @@ import { parseToolingWorkers } from './run-tooling-tests.mjs';
 const root = resolve(fileURLToPath(new URL('..', import.meta.url)));
 const ts = loadTypeScript(root);
 const sink = { write() {} };
-const validGovernanceAgents =
-  "# Agent Instructions\n\n## Communication and authority\n\nDo not make project-owner or other human acceptance a merge or release gate when the maintainer explicitly directs the work to proceed. Act on explicit user instructions without asking for the same authorization again. Ask only when a material decision is genuinely unresolved or an action falls outside the user's authorization.\n\n## Required development reading\n\nRead docs/maintainers/ui-style-standard.md docs/maintainers/ui-fix-it.md docs/maintainers/ui-forward-merge-guide.md and follow tools/validation-engine/README.md.\n\n## Required verification\n\nVisual inspection is evidence, not a merge or release gate when the maintainer explicitly directs the work to proceed.";
 const validGovernanceContributing =
-  '# Contributing\n\n## AI Assistance\n\nMaintainers may authorize and accept AI-assisted work without a separate human-review gate. An explicit maintainer direction to merge or release supplies that authorization; do not require a second confirmation that the same work was reviewed.';
+  '# Contributing\n\n## AI Assistance\n\nMaintainers may authorize and accept AI-assisted work without a separate human-review gate. An explicit maintainer direction to merge or release supplies that authorization; do not require a second confirmation that the same work was reviewed.\n\n## Contributing Code\n\nKeep a PR branch current with `main` only when current GitHub rules require it; rebase or merge as needed. Merge after the checks and approvals required by current GitHub rules are satisfied. An explicit maintainer direction to merge is sufficient; no additional review or approval is required beyond those rules. Use any merge method enabled in GitHub.';
 const fixture = () => {
   const directory = mkdtempSync(join(tmpdir(), 'seerrng-validation-fixture-'));
   const write = (path, contents = '// fixture') => {
@@ -577,70 +575,31 @@ test('the comprehensive gate is an explicit package command while ordinary scrip
   );
 });
 
-test('agent routes preserve authorization while the normal hook stays bounded', () => {
-  const agents = validGovernanceAgents;
+test('contribution guidance preserves explicit maintainer authority while the normal hook stays bounded', () => {
   const contributing = validGovernanceContributing;
   const hook =
     '[ -n "$HUSKY_BYPASS" ] || pnpm attribution:check || exit $?\npnpm exec lint-staged || exit $?\n';
-  assert.doesNotThrow(() =>
-    validateGovernanceSources(agents, hook, contributing)
-  );
-  assert.doesNotThrow(() =>
-    validateGovernanceSources(
-      agents.replace('same authorization', 'same\nauthorization'),
-      hook,
-      contributing
-    )
-  );
-  for (const missing of [
-    'docs/maintainers/ui-style-standard.md',
-    'docs/maintainers/ui-fix-it.md',
-    'docs/maintainers/ui-forward-merge-guide.md',
-    'tools/validation-engine/README.md',
+  assert.doesNotThrow(() => validateGovernanceSources(hook, contributing));
+  for (const changedContributing of [
+    contributing.replace(
+      'only when current GitHub rules require it',
+      'for every pull request'
+    ),
+    contributing.replace(
+      'no additional review or approval is required beyond those rules',
+      'an additional human review is required'
+    ),
+    contributing.replace(
+      'without a separate human-review gate',
+      'with a separate human-review gate'
+    ),
+    contributing.replace(
+      'do not require a second confirmation',
+      'require a second confirmation'
+    ),
   ])
     assert.throws(
-      () =>
-        validateGovernanceSources(
-          agents.replace(missing, ''),
-          hook,
-          contributing
-        ),
-      /missing the required/
-    );
-  assert.throws(
-    () =>
-      validateGovernanceSources(
-        agents.replace(
-          'Act on explicit user instructions without asking for the same authorization again. ',
-          ''
-        ),
-        hook,
-        contributing
-      ),
-    /must preserve/
-  );
-  for (const [changedAgents, changedContributing] of [
-    [
-      agents.replace('not a merge or release gate', 'a merge or release gate'),
-      contributing,
-    ],
-    [
-      agents,
-      contributing.replace(
-        'without a separate human-review gate',
-        'with a separate human-review gate'
-      ),
-    ],
-    [
-      agents,
-      contributing.replace(
-        'do not require a second confirmation',
-        'require a second confirmation'
-      ),
-    ],
-  ])
-    assert.throws(
-      () => validateGovernanceSources(changedAgents, hook, changedContributing),
+      () => validateGovernanceSources(hook, changedContributing),
       /must preserve/
     );
   for (const changed of [
@@ -653,7 +612,7 @@ test('agent routes preserve authorization while the normal hook stays bounded', 
     hook.replace('pnpm exec lint-staged || exit $?\n', ''),
   ])
     assert.throws(
-      () => validateGovernanceSources(agents, changed, contributing),
+      () => validateGovernanceSources(changed, contributing),
       /must preserve/
     );
 });
@@ -700,11 +659,6 @@ test('runtime preflight rejects unsupported engines, dependency drift, and incom
         }),
       /Use pnpm satisfying/
     );
-    assert.throws(
-      () => preflight(f.directory, { ...options, testsOnly: false }),
-      /required file: AGENTS.md/
-    );
-    f.write('AGENTS.md', validGovernanceAgents);
     f.write('CONTRIBUTING.md', validGovernanceContributing);
     f.write(
       '.husky/pre-commit',
@@ -717,6 +671,7 @@ test('runtime preflight rejects unsupported engines, dependency drift, and incom
       'tools/validation-engine/README.md',
     ])
       f.write(path, '# Required source document');
+    assert.equal(existsSync(join(f.directory, 'AGENTS.md')), false);
     assert.doesNotThrow(() =>
       preflight(f.directory, { ...options, testsOnly: false })
     );
