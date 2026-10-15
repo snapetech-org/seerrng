@@ -2360,6 +2360,12 @@ components:
         hideAvailable:
           type: boolean
           example: false
+        otherUsersAvailability:
+          type: string
+          enum: [show, distinguish, hide]
+          default: show
+          description: Controls how movie and TV availability tied to another user's approved or completed request is presented.
+          example: show
         hideRequested:
           type: boolean
           example: false
@@ -3802,6 +3808,12 @@ components:
               type: boolean
             game:
               type: boolean
+        otherUsersAvailability:
+          type: string
+          enum: [show, distinguish, hide]
+          default: show
+          description: Controls how availability tied to another user's approved or completed movie or TV request is presented to the current viewer.
+          example: show
     MovieResult:
       type: object
       required:
@@ -5210,6 +5222,12 @@ components:
           nullable: true
           description: Stable, non-sensitive classification for the most recent failed movie or TV dispatch. Cleared when the request is retried or resubmitted.
           readOnly: true
+        overrideTvdbId:
+          type: integer
+          minimum: 1
+          nullable: true
+          description: TVDB series selected by the requester when manually resolving TV season numbering.
+          readOnly: true
         media:
           $ref: '#/components/schemas/MediaInfo'
         createdAt:
@@ -5259,6 +5277,11 @@ components:
           type: boolean
           example: false
           description: If true, this request will not count against the user's quota. Requires MANAGE_REQUESTS permission.
+        quotaException:
+          type: boolean
+          example: false
+          readOnly: true
+          description: True when a movie or TV request was submitted over quota for administrator approval. An approved exception is excluded from future quota usage.
       required:
         - id
         - status
@@ -5305,6 +5328,37 @@ components:
           type: number
           example: 0
           description: Availability of the media. 1 = `UNKNOWN`, 2 = `PENDING`, 3 = `PROCESSING`, 4 = `PARTIALLY_AVAILABLE`, 5 = `AVAILABLE`, 6 = `DELETED`
+        status4k:
+          type: number
+          example: 0
+          description: Availability of the 4K media copy. Uses the same values as `status`.
+        viewerRequestCoverage:
+          type: object
+          readOnly: true
+          description: Whether the authenticated viewer has an approved or completed request for the movie or TV copy; contains no requester identity and does not represent media-server authorization.
+          required:
+            - standard
+            - fourK
+          properties:
+            standard:
+              type: boolean
+            fourK:
+              type: boolean
+            seasons:
+              type: array
+              items:
+                type: object
+                required:
+                  - seasonNumber
+                  - standard
+                  - fourK
+                properties:
+                  seasonNumber:
+                    type: number
+                  standard:
+                    type: boolean
+                  fourK:
+                    type: boolean
         requests:
           type: array
           readOnly: true
@@ -5425,6 +5479,10 @@ components:
         - $ref: '#/components/schemas/RadarrSettings'
         - type: object
           properties:
+            musicQuality:
+              type: string
+              enum: [mp3, flac]
+              nullable: true
             activeMetadataProfileId:
               type: number
               example: 1
@@ -17394,7 +17452,9 @@ paths:
       description: |
         Creates a new request with the provided media ID and type. The `REQUEST` permission is required.
 
-        If the user has the `ADMIN` or `AUTO_APPROVE` permissions, their request will be auomatically approved.
+        If the user has an applicable auto-approval permission, their request will normally be approved automatically. A request that exceeds their movie or TV quota and sets `requestQuotaApproval` remains pending for administrator review instead.
+
+        The requester may set `requestQuotaApproval: true` for their own movie or TV request when it exceeds their quota. Only one quota exception per media type can await review for a user. Pending exceptions count against quota until an administrator approves them; approved exceptions are excluded from future quota usage. Bulk, automated, and on-behalf requests cannot use this path.
       tags:
         - request
       requestBody:
@@ -17475,6 +17535,10 @@ paths:
                   type: boolean
                   example: false
                   description: If true, this request will not count against the user's quota. Requires MANAGE_REQUESTS permission.
+                requestQuotaApproval:
+                  type: boolean
+                  example: true
+                  description: Explicitly ask an administrator to review an over-quota movie or TV request. Only valid when creating a request for the signed-in user.
               required:
                 - mediaType
                 - mediaId
@@ -17485,6 +17549,10 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/MediaRequest'
+        '403':
+          description: Request permission denied or quota exceeded without an approval request
+        '409':
+          description: Another quota exception for this media type is already awaiting review
   /request/bulk:
     post:
       summary: Create bulk media requests
@@ -19168,7 +19236,9 @@ paths:
     post:
       summary: Retry failed or unavailable request
       description: |
-        Retries a failed or unavailable request by returning it to the normal dispatch/search flow. The request owner may retry their own request when they still have permission to request that media; users with `MANAGE_REQUESTS` or `ADMIN` may retry any request.
+        Retries a failed or unavailable request by returning it to the normal dispatch/search flow. For eligible failed TV requests, an optional body can record a TVDB series and an explicit mapping for every active requested season. The server verifies those season numbers against official TVDB data before saving the mapping and retrying. The request owner may retry their own request when they still have permission to request that media; users with `MANAGE_REQUESTS` or `ADMIN` may retry any request.
+
+        Season mappings are scoped to the request's selected Sonarr instance and quality tier, so another destination can retain a different season layout for the same TVDB series.
 
       tags:
         - request
@@ -19180,6 +19250,43 @@ paths:
           schema:
             type: string
             example: '1'
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              oneOf:
+                - type: object
+                  additionalProperties: false
+                  maxProperties: 0
+                - type: object
+                  additionalProperties: false
+                  required:
+                    - tvdbId
+                    - seasonMappings
+                  properties:
+                    tvdbId:
+                      type: integer
+                      minimum: 1
+                    seasonMappings:
+                      type: array
+                      minItems: 1
+                      maxItems: 500
+                      items:
+                        type: object
+                        additionalProperties: false
+                        required:
+                          - seasonNumber
+                          - externalSeasonNumber
+                        properties:
+                          seasonNumber:
+                            type: integer
+                            minimum: 0
+                            maximum: 10000
+                          externalSeasonNumber:
+                            type: integer
+                            minimum: 0
+                            maximum: 10000
       responses:
         '200':
           description: Retry triggered
@@ -19187,6 +19294,16 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/MediaRequest'
+        '400':
+          description: Invalid, incomplete, or unverified TV season mapping
+        '403':
+          description: Caller may not retry this request
+        '404':
+          description: Request not found
+        '409':
+          description: Request cannot be retried from its current state
+        '502':
+          description: Official TVDB season data could not be verified
   /request/{requestId}/status:
     delete:
       summary: Delete request status entry
@@ -20854,6 +20971,19 @@ paths:
           schema:
             type: number
             example: 0
+        - in: query
+          name: is4k
+          required: false
+          description: Select the Sonarr quality target used by the request.
+          schema:
+            type: boolean
+        - in: query
+          name: serverId
+          required: false
+          description: Select the request's configured Sonarr instance. When omitted, the default instance for the quality target is used.
+          schema:
+            type: integer
+            minimum: 0
       responses:
         '200':
           description: Request successful
@@ -20863,6 +20993,44 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/SonarrSeries'
+  /service/tvdb/seasons/{tvdbId}:
+    get:
+      summary: Get official TVDB seasons
+      description: Returns season numbers confirmed as official for a TVDB series.
+      tags:
+        - service
+      parameters:
+        - in: path
+          name: tvdbId
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+            example: 184871
+      responses:
+        '200':
+          description: Official TVDB seasons returned
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  additionalProperties: false
+                  required:
+                    - seasonNumber
+                    - year
+                  properties:
+                    seasonNumber:
+                      type: integer
+                      minimum: 0
+                    year:
+                      type: integer
+                      nullable: true
+        '404':
+          description: TVDB series was not found
+        '502':
+          description: Official TVDB season data could not be verified
   /regions:
     get:
       summary: Regions supported by TMDB

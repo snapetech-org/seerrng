@@ -11,6 +11,7 @@ import MediaTypeBadge, {
 } from '@app/components/Common/MediaTypeBadge';
 import Tooltip from '@app/components/Common/Tooltip';
 import { canRetryRequest } from '@app/components/RequestCard/retryPermissions';
+import RequestFailureDetails from '@app/components/RequestFailureDetails';
 import StatusBadge from '@app/components/StatusBadge';
 import useDeepLinks from '@app/hooks/useDeepLinks';
 import useSettings from '@app/hooks/useSettings';
@@ -25,6 +26,11 @@ import {
 import defineMessages from '@app/utils/defineMessages';
 import { getTmdbPosterImageUrl } from '@app/utils/imageCache';
 import { refreshIntervalHelper } from '@app/utils/refreshIntervalHelper';
+import {
+  canManuallyMapTvdbSeasons,
+  getRequestFailureDescriptionId,
+  getRequestFailureInfo,
+} from '@app/utils/requestFailure';
 import { isActiveSeasonRequest } from '@app/utils/tvRequestSelection';
 import { hasLinkedWatchAheadAccount } from '@app/utils/watchAhead';
 import {
@@ -34,7 +40,11 @@ import {
   TrashIcon,
   XMarkIcon,
 } from '@heroicons/react/24/solid';
-import { MediaRequestStatus, MediaStatus } from '@server/constants/media';
+import {
+  MediaRequestStatus,
+  MediaStatus,
+  MediaType,
+} from '@server/constants/media';
 import type { MediaRequest } from '@server/entity/MediaRequest';
 import type { NonFunctionProperties } from '@server/interfaces/api/common';
 import type { RequestResultsResponse } from '@server/interfaces/api/requestInterfaces';
@@ -57,11 +67,16 @@ import useSWR, { mutate } from 'swr';
 const RequestModal = dynamic(() => import('@app/components/RequestModal'), {
   ssr: false,
 });
+const TvSeasonMappingModal = dynamic(
+  () => import('@app/components/RequestCard/TvSeasonMappingModal'),
+  { ssr: false }
+);
 
 const messages = defineMessages('components.RequestList.RequestItem', {
   seasons: '{seasonCount, plural, one {Season} other {Seasons}}',
   failedretry: 'Something went wrong while retrying the request.',
   failedmodify: 'Something went wrong while modifying the request.',
+  mapTvSeasons: 'Map TV seasons',
   requested: 'Requested',
   requesteddate: 'Requested',
   modified: 'Modified',
@@ -83,6 +98,7 @@ const messages = defineMessages('components.RequestList.RequestItem', {
   audiobook: 'Audiobook',
   both: 'Both',
   partialBookService: 'Partial Bookshelf link',
+  overQuota: 'Over quota',
   watchAheadTitle: 'Episode Queue',
   watchAheadDescription:
     'This optional queue is Off by default for every TV request. If you turn it on, SeerrNG follows your linked Plex, Jellyfin, or Emby playback and keeps up to {count} upcoming episodes requested in Sonarr after approval. On a new request, choose one starting episode; enabling the queue on an existing request preserves its current selections. Episodes use the parent approval and do not count against your request quota. Turning it off stops future additions but does not cancel episodes already requested.',
@@ -587,6 +603,7 @@ const RequestItem = ({ request, revalidateList }: RequestItemProps) => {
   const { user, hasPermission } = useUser();
   const { currentSettings } = useSettings();
   const [showEditModal, setShowEditModal] = useState(false);
+  const [showSeasonMappingModal, setShowSeasonMappingModal] = useState(false);
   const [watchAheadEpisodeCount, setWatchAheadEpisodeCount] = useState(
     request.watchAheadEpisodeCount ?? 0
   );
@@ -636,6 +653,26 @@ const RequestItem = ({ request, revalidateList }: RequestItemProps) => {
   const activeSeasonRequests = (requestData?.seasons ?? request.seasons).filter(
     isActiveSeasonRequest
   );
+  const failureInfo = getRequestFailureInfo(requestData?.failureReason);
+  const retryUnavailable = failureInfo?.retryUnavailable ?? false;
+  const canRetry = Boolean(
+    requestData &&
+    user &&
+    canRetryRequest({
+      requestType: requestData.type,
+      is4k: requestData.is4k,
+      requestedById: requestData.requestedBy.id,
+      userId: user.id,
+      permissions: user.permissions,
+    })
+  );
+  const failureSearchTitle =
+    requestData?.type === MediaType.TV &&
+    title &&
+    'name' in title &&
+    typeof title.name === 'string'
+      ? title.name
+      : undefined;
   const canFailDownload = Boolean(
     requestData &&
     requestData.status === MediaRequestStatus.APPROVED &&
@@ -750,6 +787,10 @@ const RequestItem = ({ request, revalidateList }: RequestItemProps) => {
   };
 
   const retryRequest = async () => {
+    if (retryUnavailable) {
+      return;
+    }
+
     setRetrying(true);
 
     try {
@@ -854,6 +895,18 @@ const RequestItem = ({ request, revalidateList }: RequestItemProps) => {
           setShowEditModal(false);
         }}
       />
+      {showSeasonMappingModal && requestData && (
+        <TvSeasonMappingModal
+          request={requestData}
+          onCancel={() => setShowSeasonMappingModal(false)}
+          onComplete={async () => {
+            await revalidate();
+            revalidateList();
+            mutate('/api/v1/request/count');
+            setShowSeasonMappingModal(false);
+          }}
+        />
+      )}
       <div className="relative flex w-full flex-col justify-between overflow-hidden rounded-xl bg-gray-800 py-2 text-gray-400 shadow-md ring-1 ring-gray-700 xl:h-28 xl:flex-row">
         {!isMusic(title) &&
           !isBook(title) &&
@@ -941,6 +994,12 @@ const RequestItem = ({ request, revalidateList }: RequestItemProps) => {
                               : title.firstAirDate
                   )?.slice(0, 4)}
                 </span>
+                {requestData.status === MediaRequestStatus.PENDING &&
+                  requestData.quotaException && (
+                    <Badge badgeType="warning">
+                      {intl.formatMessage(messages.overQuota)}
+                    </Badge>
+                  )}
               </div>
               <Link
                 href={getRequestDetailHref(requestData)}
@@ -1009,6 +1068,14 @@ const RequestItem = ({ request, revalidateList }: RequestItemProps) => {
                 <Badge
                   badgeType="danger"
                   href={getRequestDetailHref(requestData, true)}
+                  aria-describedby={
+                    failureInfo
+                      ? getRequestFailureDescriptionId(
+                          requestData.id,
+                          'request-list'
+                        )
+                      : undefined
+                  }
                 >
                   {intl.formatMessage(globalMessages.failed)}
                 </Badge>
@@ -1095,6 +1162,18 @@ const RequestItem = ({ request, revalidateList }: RequestItemProps) => {
                 />
               )}
             </div>
+            {requestData.status === MediaRequestStatus.FAILED && (
+              <RequestFailureDetails
+                failureReason={requestData.failureReason}
+                requestId={requestData.id}
+                requestType={requestData.type}
+                searchTitle={failureSearchTitle}
+                descriptionId={getRequestFailureDescriptionId(
+                  requestData.id,
+                  'request-list'
+                )}
+              />
+            )}
             <div className="card-field">
               {hasPermission(
                 [Permission.MANAGE_REQUESTS, Permission.REQUEST_VIEW],
@@ -1323,23 +1402,53 @@ const RequestItem = ({ request, revalidateList }: RequestItemProps) => {
                 </Button>
               </div>
             )}
-          {requestData.status === MediaRequestStatus.FAILED &&
-            hasPermission(Permission.MANAGE_REQUESTS) && (
+          {requestData.status === MediaRequestStatus.FAILED && canRetry && (
+            <Button
+              className="request-tvdb-mapping-action"
+              buttonType="primary"
+              disabled={isRetrying || retryUnavailable}
+              disabledReason={
+                retryUnavailable
+                  ? intl.formatMessage(
+                      globalMessages.requestFailureRetryUnavailable
+                    )
+                  : undefined
+              }
+              aria-describedby={
+                retryUnavailable
+                  ? getRequestFailureDescriptionId(
+                      requestData.id,
+                      'request-list'
+                    )
+                  : undefined
+              }
+              onClick={() => retryRequest()}
+            >
+              <ArrowPathIcon
+                className={isRetrying ? 'animate-spin' : ''}
+                style={{ animationDirection: 'reverse' }}
+              />
+              <span>
+                {intl.formatMessage(
+                  isRetrying ? globalMessages.retrying : globalMessages.retry
+                )}
+              </span>
+            </Button>
+          )}
+          {canRetry &&
+            hasPermission(Permission.MANAGE_REQUESTS) &&
+            canManuallyMapTvdbSeasons(
+              requestData.type,
+              requestData.status,
+              requestData.failureReason
+            ) && (
               <Button
-                className="w-full"
+                className="request-tvdb-mapping-action"
                 buttonType="primary"
                 disabled={isRetrying}
-                onClick={() => retryRequest()}
+                onClick={() => setShowSeasonMappingModal(true)}
               >
-                <ArrowPathIcon
-                  className={isRetrying ? 'animate-spin' : ''}
-                  style={{ animationDirection: 'reverse' }}
-                />
-                <span>
-                  {intl.formatMessage(
-                    isRetrying ? globalMessages.retrying : globalMessages.retry
-                  )}
-                </span>
+                {intl.formatMessage(messages.mapTvSeasons)}
               </Button>
             )}
           {requestData.status !== MediaRequestStatus.PENDING &&

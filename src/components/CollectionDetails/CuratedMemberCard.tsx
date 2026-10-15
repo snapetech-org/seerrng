@@ -1,10 +1,12 @@
 import CachedImage from '@app/components/Common/CachedImage';
 import SelectionCircle from '@app/components/Common/SelectionCircle';
 import AvailabilityValue from '@app/components/MediaDetails/AvailabilityValue';
+import useSettings from '@app/hooks/useSettings';
 import { memberHasQuality } from '@app/utils/curatedCollectionSelection';
 import defineMessages from '@app/utils/defineMessages';
 import { getTmdbPosterImageUrl } from '@app/utils/imageCache';
 import { musicCollectionTypeLabel } from '@app/utils/musicCollectionFilters';
+import { getViewerAvailabilityPresentation } from '@app/utils/viewerAvailabilityPresentation';
 import { MediaStatus } from '@server/constants/media';
 import type { CuratedCollectionMember } from '@server/models/CuratedCollection';
 import type { MusicDetails } from '@server/models/Music';
@@ -28,6 +30,9 @@ const messages = defineMessages('components.CuratedMemberCard', {
   music: 'Music · Album',
   unavailable: 'Not Available',
   available: 'Available',
+  availabilityHidden: 'Hidden',
+  sharedAvailability: 'Shared: {status}',
+  sharedFormat: '{quality} (shared)',
   minutes: '{minutes} minutes',
 });
 
@@ -47,6 +52,7 @@ export default function CuratedMemberCard({
   selectionLabel?: string;
 }) {
   const intl = useIntl();
+  const settings = useSettings();
   const card = useRef<HTMLElement>(null);
   const [visible, setVisible] = useState(false);
   useEffect(() => {
@@ -83,6 +89,20 @@ export default function CuratedMemberCard({
   const unavailable = intl.formatMessage(messages.unavailable);
   const href = `/${kind === 'music' ? 'music' : 'tv'}/${part.id}`;
   const qualities = kind === 'music' ? ['MP3', 'FLAC'] : ['HD', '4K'];
+  const qualityAvailability = qualities.map((quality, index) => {
+    const is4k = index === 1;
+    const available = memberHasQuality(part, kind, is4k);
+    const status = available ? MediaStatus.AVAILABLE : MediaStatus.UNKNOWN;
+    const presentation = getViewerAvailabilityPresentation(
+      status,
+      settings.currentSettings.otherUsersAvailability,
+      kind === 'tv'
+        ? part.mediaInfo?.viewerRequestCoverage?.[is4k ? 'fourK' : 'standard']
+        : undefined
+    );
+
+    return { quality, status, available, presentation };
+  });
   const title =
     part.title + (part.releaseDate ? ` (${part.releaseDate.slice(0, 4)})` : '');
   const rows = [
@@ -142,9 +162,15 @@ export default function CuratedMemberCard({
                 {intl.formatMessage(
                   kind === 'music' ? messages.music : messages.series
                 )}
-                {qualities
-                  .filter((_, index) =>
-                    memberHasQuality(part, kind, index === 1)
+                {qualityAvailability
+                  .filter(
+                    ({ available, presentation }) =>
+                      available && !presentation.hidden
+                  )
+                  .map(({ quality, presentation }) =>
+                    presentation.shared
+                      ? intl.formatMessage(messages.sharedFormat, { quality })
+                      : quality
                   )
                   .map((quality) => ` · ${quality}`)}
               </dd>
@@ -189,25 +215,29 @@ export default function CuratedMemberCard({
             </dl>
           </div>
           <dl className="media-detail-rows media-detail-column-divider grid min-w-0 grid-cols-[max-content_minmax(0,1fr)] content-start gap-x-3 text-xs">
-            {qualities.map((quality, index) => {
-              const available = memberHasQuality(part, kind, index === 1);
-              return (
+            {qualityAvailability.map(
+              ({ quality, status, available, presentation }) => (
                 <Fragment key={quality}>
                   <dt className="font-medium text-gray-100">{quality}:</dt>
                   <dd className="m-0 truncate">
                     <AvailabilityValue
-                      status={
-                        available ? MediaStatus.AVAILABLE : MediaStatus.UNKNOWN
-                      }
+                      tone={presentation.shared ? 'shared' : undefined}
+                      status={presentation.hidden ? undefined : status}
                     >
-                      {available
-                        ? intl.formatMessage(messages.available)
-                        : unavailable}
+                      {presentation.hidden
+                        ? intl.formatMessage(messages.availabilityHidden)
+                        : presentation.shared
+                          ? intl.formatMessage(messages.sharedAvailability, {
+                              status: intl.formatMessage(messages.available),
+                            })
+                          : available
+                            ? intl.formatMessage(messages.available)
+                            : unavailable}
                     </AvailabilityValue>
                   </dd>
                 </Fragment>
-              );
-            })}
+              )
+            )}
           </dl>
           {ratings && (
             <div className="movie-summary-ratings-row">

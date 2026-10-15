@@ -1,4 +1,8 @@
-import { MediaRequestStatus, MediaType } from '@server/constants/media';
+import {
+  MediaRequestFailureReason,
+  MediaRequestStatus,
+  MediaType,
+} from '@server/constants/media';
 import type { MediaRequest } from '@server/entity/MediaRequest';
 import { JSDOM } from 'jsdom';
 import React, { act } from 'react';
@@ -48,21 +52,26 @@ vi.mock('@app/components/Common/Button', async () => {
       children,
       onClick,
       disabled,
+      as,
+      href,
       buttonType,
       'aria-label': ariaLabel,
     }: {
       children: React.ReactNode;
       onClick?: React.MouseEventHandler<HTMLButtonElement>;
       disabled?: boolean;
+      as?: string;
+      href?: string;
       buttonType?: string;
       'aria-label'?: string;
     }) =>
       ReactModule.createElement(
-        'button',
+        as === 'a' ? 'a' : 'button',
         {
-          type: 'button',
+          type: as === 'a' ? undefined : 'button',
+          href,
           onClick,
-          disabled,
+          disabled: as === 'a' ? undefined : disabled,
           'aria-label': ariaLabel,
           'data-button-type': buttonType,
         },
@@ -238,4 +247,73 @@ it('shows active TV season selections without declined history', async () => {
   const seasonSummary = host.querySelector('div.mt-2.flex.flex-col.text-sm');
   expect(seasonSummary?.textContent).toContain('1');
   expect(seasonSummary?.textContent).not.toContain('2');
+});
+
+it('explains a TV season mismatch and offers another listing in management', async () => {
+  const request = {
+    id: 32,
+    type: MediaType.TV,
+    status: MediaRequestStatus.FAILED,
+    failureReason: MediaRequestFailureReason.TVDB_SEASON_MISMATCH,
+    requestedBy: { id: 7, displayName: 'Test User', avatar: '' },
+    is4k: false,
+    createdAt: new Date('2026-10-04T12:00:00.000Z'),
+    seasons: [],
+    media: undefined,
+  } as unknown as MediaRequest;
+
+  await act(async () =>
+    root.render(
+      <IntlProvider locale="en">
+        <RequestBlock
+          request={request}
+          mediaType={MediaType.TV}
+          tmdbId={1234}
+          searchTitle="The Office"
+        />
+      </IntlProvider>
+    )
+  );
+
+  expect(host.textContent).toContain(
+    "This listing's regular-season numbers do not match TVDB."
+  );
+  expect(host.textContent).toContain('Find Another Listing');
+  expect(
+    host.querySelector('a[href="/search?query=The%20Office&type=tv"]')
+  ).not.toBeNull();
+  expect(
+    host.querySelector('#request-failure-reason-request-block-32')
+  ).not.toBeNull();
+});
+
+it('does not show unknown provider failure text in management', async () => {
+  const request = {
+    id: 33,
+    type: MediaType.TV,
+    status: MediaRequestStatus.FAILED,
+    failureReason: 'provider response included a private endpoint',
+    requestedBy: { id: 7, displayName: 'Test User', avatar: '' },
+    is4k: false,
+    createdAt: new Date('2026-10-04T12:00:00.000Z'),
+    seasons: [],
+    media: undefined,
+  } as unknown as MediaRequest;
+
+  await act(async () =>
+    root.render(
+      <IntlProvider locale="en">
+        <RequestBlock
+          request={request}
+          mediaType={MediaType.TV}
+          tmdbId={1234}
+        />
+      </IntlProvider>
+    )
+  );
+
+  expect(host.textContent).not.toContain(
+    'provider response included a private endpoint'
+  );
+  expect(host.textContent).not.toContain('Find Another Listing');
 });

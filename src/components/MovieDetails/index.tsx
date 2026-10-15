@@ -8,6 +8,7 @@ import MediaServerPlayButton from '@app/components/Common/MediaServerPlayButton'
 import PageTitle from '@app/components/Common/PageTitle';
 import PlayOnDeviceButton from '@app/components/Common/PlayOnDeviceButton';
 import Tooltip from '@app/components/Common/Tooltip';
+import { canReportMovieIssue } from '@app/components/IssueDetails/issueMediaFormat';
 import LiveTvButton from '@app/components/LiveTv/LiveTvButton';
 import MovieDetailsLayout from '@app/components/MovieDetails/MovieDetailsLayout';
 import RequestButton from '@app/components/RequestButton';
@@ -22,6 +23,7 @@ import { sortCrewPriority } from '@app/utils/creditHelpers';
 import defineMessages from '@app/utils/defineMessages';
 import { refreshIntervalHelper } from '@app/utils/refreshIntervalHelper';
 import { getSafeHref } from '@app/utils/safeUrl';
+import { getViewerAvailabilityPresentation } from '@app/utils/viewerAvailabilityPresentation';
 import {
   CogIcon,
   ExclamationTriangleIcon,
@@ -294,13 +296,15 @@ const MovieDetails = ({ movie }: MovieDetailsProps) => {
     [Permission.CREATE_ISSUES, Permission.MANAGE_ISSUES],
     { type: 'or' }
   );
-  const isReportIssueAvailable =
-    data.mediaInfo?.status === MediaStatus.AVAILABLE ||
-    (settings.currentSettings.movie4kEnabled &&
-      hasPermission([Permission.REQUEST_4K, Permission.REQUEST_4K_MOVIE], {
-        type: 'or',
-      }) &&
-      data.mediaInfo?.status4k === MediaStatus.AVAILABLE);
+  const canReport4kIssue =
+    settings.currentSettings.movie4kEnabled &&
+    hasPermission([Permission.REQUEST_4K, Permission.REQUEST_4K_MOVIE], {
+      type: 'or',
+    });
+  const isReportIssueAvailable = canReportMovieIssue(
+    data.mediaInfo,
+    canReport4kIssue
+  );
   const canUseManage = hasPermission(Permission.MANAGE_REQUESTS);
   const isManageAvailable = Boolean(
     data.mediaInfo &&
@@ -315,6 +319,13 @@ const MovieDetails = ({ movie }: MovieDetailsProps) => {
   );
   const playbackActions = canPlayMedia
     ? (is4k: boolean) => {
+        const availability = getViewerAvailabilityPresentation(
+          is4k ? data.mediaInfo?.status4k : data.mediaInfo?.status,
+          settings.currentSettings.otherUsersAvailability,
+          data.mediaInfo?.viewerRequestCoverage?.[is4k ? 'fourK' : 'standard']
+        );
+        if (availability.hidePlayback) return null;
+
         const selectedCatalog = is4k ? playbackCatalog4k : playbackCatalog;
         const selectedItem = selectedCatalog?.rootItem;
 

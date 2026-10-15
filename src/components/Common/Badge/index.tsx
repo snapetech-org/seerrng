@@ -11,10 +11,12 @@ interface BadgeProps {
     | 'success'
     | 'dark'
     | 'light'
-    | 'association';
+    | 'association'
+    | 'shared';
   className?: string;
   shape?: 'pill' | 'standard';
   href?: string;
+  'aria-describedby'?: string;
   children: React.ReactNode;
 }
 
@@ -24,6 +26,7 @@ const Badge = (
     className,
     shape = 'pill',
     href,
+    'aria-describedby': ariaDescribedBy,
     children,
   }: BadgeProps,
   ref?: React.Ref<HTMLElement>
@@ -85,6 +88,9 @@ const Badge = (
         badgeStyle.push('hover:bg-cyan-900/55 active:bg-cyan-900/70');
       }
       break;
+    case 'shared':
+      badgeStyle.push('app-badge-shared-availability');
+      break;
     default:
       badgeStyle.push(
         'bg-indigo-500/35 border border-indigo-500 !text-indigo-100'
@@ -107,6 +113,7 @@ const Badge = (
         target="_blank"
         rel="noopener noreferrer"
         className={badgeStyle.join(' ')}
+        aria-describedby={ariaDescribedBy}
         ref={ref as React.Ref<HTMLAnchorElement>}
       >
         {children}
@@ -117,6 +124,7 @@ const Badge = (
       <Link
         href={safeHref}
         className={badgeStyle.join(' ')}
+        aria-describedby={ariaDescribedBy}
         ref={ref as React.Ref<HTMLAnchorElement>}
       >
         {children}
@@ -126,6 +134,7 @@ const Badge = (
     return (
       <span
         className={badgeStyle.join(' ')}
+        aria-describedby={ariaDescribedBy}
         ref={ref as React.Ref<HTMLSpanElement>}
       >
         {children}

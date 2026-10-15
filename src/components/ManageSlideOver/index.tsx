@@ -231,6 +231,9 @@ const ManageSlideOver = ({
                               : MediaType.TV
                           }
                           tmdbId={data.id}
+                          searchTitle={
+                            mediaType === 'tv' ? data.name : undefined
+                          }
                           onUpdate={() => revalidate()}
                         />
                       </li>

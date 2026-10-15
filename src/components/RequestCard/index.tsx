@@ -11,6 +11,7 @@ import MediaTypeBadge, {
 import StatusBadgeMini from '@app/components/Common/StatusBadgeMini';
 import Tooltip from '@app/components/Common/Tooltip';
 import { canRetryRequest } from '@app/components/RequestCard/retryPermissions';
+import RequestFailureDetails from '@app/components/RequestFailureDetails';
 import StatusBadge from '@app/components/StatusBadge';
 import useDeepLinks from '@app/hooks/useDeepLinks';
 import useToasts from '@app/hooks/useToasts';
@@ -24,6 +25,11 @@ import {
 import defineMessages from '@app/utils/defineMessages';
 import { getTmdbPosterImageUrl } from '@app/utils/imageCache';
 import { refreshIntervalHelper } from '@app/utils/refreshIntervalHelper';
+import {
+  canManuallyMapTvdbSeasons,
+  getRequestFailureDescriptionId,
+  getRequestFailureInfo,
+} from '@app/utils/requestFailure';
 import { withProperties } from '@app/utils/typeHelpers';
 import {
   CheckIcon as AvailableStatusIcon,
@@ -37,7 +43,11 @@ import {
   TrashIcon,
   XMarkIcon,
 } from '@heroicons/react/24/solid';
-import { MediaRequestStatus, MediaStatus } from '@server/constants/media';
+import {
+  MediaRequestStatus,
+  MediaStatus,
+  MediaType,
+} from '@server/constants/media';
 import type { MediaRequest } from '@server/entity/MediaRequest';
 import type { NonFunctionProperties } from '@server/interfaces/api/common';
 import type { BookDetails } from '@server/models/Book';
@@ -57,11 +67,16 @@ import useSWR, { mutate } from 'swr';
 const RequestModal = dynamic(() => import('@app/components/RequestModal'), {
   ssr: false,
 });
+const TvSeasonMappingModal = dynamic(
+  () => import('@app/components/RequestCard/TvSeasonMappingModal'),
+  { ssr: false }
+);
 
 const messages = defineMessages('components.RequestCard', {
   failedretry: 'Something went wrong while retrying the request.',
   retry: 'Retry',
   retryRequest: 'Retry this request',
+  mapTvSeasons: 'Map TV seasons',
   failedmodify: 'Something went wrong while modifying the request.',
   mediaerror: '{mediaType} Not Found',
   tmdbid: 'TMDB ID',
@@ -392,6 +407,17 @@ const RequestCardError = ({ requestData }: RequestCardErrorProps) => {
                     />
                   )}
                 </div>
+                {requestData.status === MediaRequestStatus.FAILED && (
+                  <RequestFailureDetails
+                    failureReason={requestData.failureReason}
+                    requestId={requestData.id}
+                    requestType={requestData.type}
+                    descriptionId={getRequestFailureDescriptionId(
+                      requestData.id,
+                      'request-card'
+                    )}
+                  />
+                )}
               </>
             )}
             <div className="flex flex-1 items-end space-x-2">
@@ -453,6 +479,7 @@ const RequestCard = ({
     'approve' | 'decline' | null
   >(null);
   const [showEditModal, setShowEditModal] = useState(false);
+  const [showSeasonMappingModal, setShowSeasonMappingModal] = useState(false);
   const bookId =
     request.type === 'book' ? getNormalizedBookId(request) : undefined;
   const musicId =
@@ -514,6 +541,15 @@ const RequestCard = ({
       userId: user.id,
       permissions: user.permissions,
     });
+  const failureInfo = getRequestFailureInfo(requestData?.failureReason);
+  const retryUnavailable = failureInfo?.retryUnavailable ?? false;
+  const failureSearchTitle =
+    requestData?.type === MediaType.TV &&
+    title &&
+    'name' in title &&
+    typeof title.name === 'string'
+      ? title.name
+      : undefined;
   const canFailDownload = Boolean(
     requestData &&
     requestData.status === MediaRequestStatus.APPROVED &&
@@ -550,6 +586,10 @@ const RequestCard = ({
   };
 
   const retryRequest = async () => {
+    if (retryUnavailable) {
+      return;
+    }
+
     setRetrying(true);
 
     try {
@@ -668,6 +708,17 @@ const RequestCard = ({
           onComplete={() => {
             revalidate();
             setShowEditModal(false);
+          }}
+        />
+      )}
+      {showSeasonMappingModal && requestData && (
+        <TvSeasonMappingModal
+          request={requestData}
+          onCancel={() => setShowSeasonMappingModal(false)}
+          onComplete={async () => {
+            await revalidate();
+            mutate('/api/v1/request/count');
+            setShowSeasonMappingModal(false);
           }}
         />
       )}
@@ -822,6 +873,14 @@ const RequestCard = ({
                 <Link
                   className="request-status-control request-status-control-link request-status-control-danger"
                   href={getRequestDetailHref(requestData, true)}
+                  aria-describedby={
+                    failureInfo
+                      ? getRequestFailureDescriptionId(
+                          requestData.id,
+                          'request-card'
+                        )
+                      : undefined
+                  }
                 >
                   <FailedStatusIcon
                     className="request-status-control-icon"
@@ -958,21 +1017,64 @@ const RequestCard = ({
                   buttonStyle
                 />
               ))}
-            {requestData.status === MediaRequestStatus.FAILED && canRetry && (
-              <Tooltip content={intl.formatMessage(messages.retryRequest)}>
-                <Button
-                  buttonType="warning"
-                  buttonSize="sm"
-                  disabled={isRetrying}
-                  buttonIcon="retry"
-                  aria-busy={isRetrying}
-                  onClick={() => retryRequest()}
-                >
-                  {intl.formatMessage(messages.retry)}
-                </Button>
-              </Tooltip>
-            )}
           </div>
+          {requestData.status === MediaRequestStatus.FAILED && (
+            <RequestFailureDetails
+              failureReason={requestData.failureReason}
+              requestId={requestData.id}
+              requestType={requestData.type}
+              searchTitle={failureSearchTitle}
+              descriptionId={getRequestFailureDescriptionId(
+                requestData.id,
+                'request-card'
+              )}
+            />
+          )}
+          {requestData.status === MediaRequestStatus.FAILED && canRetry && (
+            <Tooltip content={intl.formatMessage(messages.retryRequest)}>
+              <Button
+                buttonType="warning"
+                buttonSize="sm"
+                disabled={isRetrying || retryUnavailable}
+                disabledReason={
+                  retryUnavailable
+                    ? intl.formatMessage(
+                        globalMessages.requestFailureRetryUnavailable
+                      )
+                    : undefined
+                }
+                buttonIcon="retry"
+                aria-busy={isRetrying}
+                aria-describedby={
+                  retryUnavailable
+                    ? getRequestFailureDescriptionId(
+                        requestData.id,
+                        'request-card'
+                      )
+                    : undefined
+                }
+                onClick={() => retryRequest()}
+              >
+                {intl.formatMessage(messages.retry)}
+              </Button>
+            </Tooltip>
+          )}
+          {canRetry &&
+            hasPermission(Permission.MANAGE_REQUESTS) &&
+            canManuallyMapTvdbSeasons(
+              requestData.type,
+              requestData.status,
+              requestData.failureReason
+            ) && (
+              <Button
+                buttonType="primary"
+                buttonSize="sm"
+                disabled={isRetrying}
+                onClick={() => setShowSeasonMappingModal(true)}
+              >
+                {intl.formatMessage(messages.mapTvSeasons)}
+              </Button>
+            )}
           <div className="flex flex-1 items-end space-x-2">
             {showApprovalActions &&
               requestData.status === MediaRequestStatus.PENDING &&

@@ -14,10 +14,15 @@ import SonarrAPI from '@server/api/servarr/sonarr';
 import type { TmdbTvScanDetails } from '@server/api/themoviedb/interfaces';
 import { MediaStatus, MediaType } from '@server/constants/media';
 import { MediaServerType } from '@server/constants/server';
-import { getRepository } from '@server/datasource';
+import dataSource, { getRepository } from '@server/datasource';
 import Media from '@server/entity/Media';
+import MediaIdentifier, {
+  MediaIdentifierProvider,
+} from '@server/entity/MediaIdentifier';
+import MediaIdentifierSeasonMapping from '@server/entity/MediaIdentifierSeasonMapping';
 import Season from '@server/entity/Season';
 import { User } from '@server/entity/User';
+import { findTvdbSeasonMappings } from '@server/lib/seasonNumberMapping';
 import type { RadarrSettings, SonarrSettings } from '@server/lib/settings';
 import { getSettings } from '@server/lib/settings';
 import { runUserSecurityMutation } from '@server/lib/userSecurityMutation';
@@ -1084,6 +1089,60 @@ describe('AvailabilitySync', () => {
       assert.strictEqual(s1?.status, MediaStatus.AVAILABLE);
       assert.strictEqual(s3?.status, MediaStatus.AVAILABLE);
       assert.strictEqual(updated.status, MediaStatus.AVAILABLE);
+    });
+  });
+
+  describe('Sonarr season-map scope', () => {
+    it('loads only the selected server and quality mapping', async () => {
+      const media = await getRepository(Media).save(
+        new Media({
+          tmdbId: 2100,
+          tvdbId: 73255,
+          mediaType: MediaType.TV,
+        })
+      );
+      const identifier = await getRepository(MediaIdentifier).save(
+        new MediaIdentifier({
+          media,
+          provider: MediaIdentifierProvider.TVDB,
+          value: '184881',
+          canonical: false,
+        })
+      );
+      await getRepository(MediaIdentifierSeasonMapping).save([
+        new MediaIdentifierSeasonMapping({
+          mediaIdentifier: identifier,
+          sonarrServerId: 32,
+          is4k: false,
+          seasonNumber: 1,
+          externalSeasonNumber: 4,
+        }),
+        new MediaIdentifierSeasonMapping({
+          mediaIdentifier: identifier,
+          sonarrServerId: 31,
+          is4k: true,
+          seasonNumber: 1,
+          externalSeasonNumber: 5,
+        }),
+        new MediaIdentifierSeasonMapping({
+          mediaIdentifier: identifier,
+          sonarrServerId: 31,
+          is4k: false,
+          seasonNumber: 1,
+          externalSeasonNumber: 2,
+        }),
+      ]);
+
+      assert.deepStrictEqual(
+        await findTvdbSeasonMappings(
+          dataSource.manager,
+          media.id,
+          184_881,
+          31,
+          false
+        ),
+        [{ seasonNumber: 1, externalSeasonNumber: 2 }]
+      );
     });
   });
 

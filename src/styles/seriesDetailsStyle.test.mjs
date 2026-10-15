@@ -368,16 +368,20 @@ test('media-server disclosure controls one mounted table-and-action workspace', 
   assert.match(workspace, /<div className="app-action-row">/);
   assert.match(
     workspace,
-    /playbackActions\?\.\(\s*effectivePlaybackItemIds,\s*effectiveSelectedQuality === '4k'/
+    /\{selectedPlaybackAction != null && \(\s*<div className="app-action-row">\s*\{selectedPlaybackAction\}\s*<\/div>\s*\)\}/
+  );
+  assert.match(
+    layout,
+    /const selectedPlaybackAction = selectedPlaybackIsShared\s*\? undefined\s*:\s*playbackActions\?\.\(\s*effectivePlaybackItemIds,\s*effectiveSelectedQuality === '4k'/
   );
   assert.match(
     workspace,
-    /<PlayOnDeviceButton[\s\S]*?itemIds=\{effectivePlaybackItemIds\}/
+    /\{selectedPlaybackAction != null && \(\s*<div className="app-action-row">\s*<PlayOnDeviceButton[\s\S]*?itemIds=\{effectivePlaybackItemIds\}[\s\S]*?<\/div>\s*\)\}/
   );
   // Playback rows share the left-aligned column and standard gap.
   assert.match(
     workspace,
-    /playbackActions\?\.\([\s\S]*?\)\}\s*<\/div>\s*\{playbackActions && \(\s*<div className="app-action-row">\s*<PlayOnDeviceButton/
+    /\{selectedPlaybackAction != null && \([\s\S]*?\{selectedPlaybackAction\}[\s\S]*?\{selectedPlaybackAction != null && \(\s*<div className="app-action-row">\s*<PlayOnDeviceButton/
   );
   assert.match(layout, /pinned=\{pins\.mediaServer\}/);
   assert.match(layout, /togglePinned\('mediaServer'\)/);

@@ -15,6 +15,20 @@ const globalMessages = defineMessages('i18n', {
   reportIssue: 'Report Issue',
   request4k: 'Request in 4K',
   failed: 'Failed',
+  requestFailureDetails: 'Failure Details',
+  requestFailureServiceUnavailable:
+    'No service is available for this request. Check the selected destination and try again.',
+  requestFailureDispatchFailed:
+    'The selected service could not start this request. Check its connection and try again.',
+  requestFailureTvdbIdUnresolved:
+    'A TVDB match could not be confirmed for this series. Try again after its TVDB listing is available.',
+  requestFailureTvdbSeasonDataUnverified:
+    'The requested seasons could not be checked against TVDB. Try again when its season data is available.',
+  requestFailureTvdbSeasonMismatch:
+    "This listing's regular-season numbers do not match TVDB.",
+  requestFailureRetryUnavailable:
+    'Retrying with the same listing will produce the same season mismatch.',
+  requestFailureFindAnotherListing: 'Find Another Listing',
   pending: 'Pending',
   declined: 'Declined',
   approved: 'Approved',

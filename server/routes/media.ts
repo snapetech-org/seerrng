@@ -41,6 +41,7 @@ import {
   UserMutationActorUnauthorizedError,
   runAuthorizedUserSecurityMutation,
 } from '@server/lib/userSecurityMutation';
+import { attachViewerRequestCoverage } from '@server/lib/viewerRequestCoverage';
 import logger from '@server/logger';
 import { isAuthenticated } from '@server/middleware/auth';
 import {
@@ -130,6 +131,9 @@ const projectMediaListItem = (media: Media): MediaListItem => ({
     : {}),
   ...(media.searchMetadata?.releaseDate
     ? { releaseDate: media.searchMetadata.releaseDate }
+    : {}),
+  ...(media.viewerRequestCoverage
+    ? { viewerRequestCoverage: media.viewerRequestCoverage }
     : {}),
 });
 
@@ -401,6 +405,7 @@ mediaRoutes.get(
         take: pageSize,
         skip,
       });
+      await attachViewerRequestCoverage(media, req.user);
       return res.status(200).json({
         pageInfo: {
           pages: Math.ceil(mediaCount / pageSize),
