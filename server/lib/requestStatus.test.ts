@@ -8,7 +8,11 @@ import assert from 'node:assert/strict';
 import test, { mock } from 'node:test';
 import type { DownloadingItem } from './downloadtracker';
 import downloadTracker from './downloadtracker';
-import { RequestStatusStage, getRequestStatus } from './requestStatus';
+import {
+  RequestStatusStage,
+  getRequestStatus,
+  getRequestStatusMessageKey,
+} from './requestStatus';
 
 const date = new Date('2026-01-01T00:00:00.000Z');
 
@@ -51,6 +55,23 @@ const download = (
   title: 'Example',
   downloadId: 'download-1',
   ...overrides,
+});
+
+test('built-in request status explanations expose locale keys and preserve dynamic provider text', () => {
+  const pending = getRequestStatus(
+    request({ status: MediaRequestStatus.PENDING })
+  );
+  assert.equal(pending.messageKey, 'waitingForApproval');
+  assert.equal(
+    getRequestStatusMessageKey(
+      'Radarr reported: custom queue status from the configured server.'
+    ),
+    undefined
+  );
+  assert.equal(
+    getRequestStatusMessageKey('The media is being added to your library.'),
+    'addingToLibrary'
+  );
 });
 
 test('request lifecycle uses authoritative queue progress and never invents a percentage', () => {
