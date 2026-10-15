@@ -57,3 +57,38 @@ test('scopes season maps by TV identity, Sonarr service, and quality', async () 
     await dataSource.destroy();
   }
 });
+
+test('can run up and down repeatedly and leaves no season map objects', async () => {
+  const dataSource = await new DataSource({
+    type: 'better-sqlite3',
+    database: ':memory:',
+  }).initialize();
+  const queryRunner = dataSource.createQueryRunner();
+  const migration = new AddTvSeasonNumberMappings1791150000000();
+
+  try {
+    await queryRunner.query(
+      `CREATE TABLE "media_request" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL)`
+    );
+    await queryRunner.query(
+      `CREATE TABLE "media_identifier" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL)`
+    );
+
+    await migration.up(queryRunner);
+    await migration.up(queryRunner);
+    await migration.down(queryRunner);
+    await migration.down(queryRunner);
+
+    assert.equal(
+      await queryRunner.hasTable('media_identifier_season_mapping'),
+      false
+    );
+    assert.equal(
+      await queryRunner.hasColumn('media_request', 'overrideTvdbId'),
+      false
+    );
+  } finally {
+    await queryRunner.release();
+    await dataSource.destroy();
+  }
+});

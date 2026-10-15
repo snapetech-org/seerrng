@@ -124,6 +124,7 @@ import {
 } from '@server/utils/validation';
 import { Router, type Request } from 'express';
 import { pipeline } from 'node:stream/promises';
+import { EntityNotFoundError } from 'typeorm';
 
 const requestRoutes = Router();
 export const REQUEST_SERVICE_PROFILE_CONCURRENCY = 10;
@@ -4740,6 +4741,14 @@ requestRoutes.post<{
             }
 
             if (manualSeasonMapping) {
+              if (!actor.hasPermission(Permission.MANAGE_REQUESTS)) {
+                return next({
+                  status: 403,
+                  message:
+                    'You do not have permission to map seasons for this request.',
+                });
+              }
+
               if (
                 request.type !== MediaType.TV ||
                 request.status !== MediaRequestStatus.FAILED ||
@@ -4907,7 +4916,7 @@ requestRoutes.post<{
       message: e.message,
     });
     next(
-      manualSeasonMapping
+      manualSeasonMapping && !(e instanceof EntityNotFoundError)
         ? {
             status: 500,
             message: 'Unable to save the TV season mapping.',

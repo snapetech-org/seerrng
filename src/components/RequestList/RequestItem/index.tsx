@@ -1429,6 +1429,7 @@ const RequestItem = ({ request, revalidateList }: RequestItemProps) => {
             </Button>
           )}
           {canRetry &&
+            hasPermission(Permission.MANAGE_REQUESTS) &&
             canManuallyMapTvdbSeasons(
               requestData.type,
               requestData.status,

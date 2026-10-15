@@ -1060,6 +1060,7 @@ const RequestCard = ({
             </Tooltip>
           )}
           {canRetry &&
+            hasPermission(Permission.MANAGE_REQUESTS) &&
             canManuallyMapTvdbSeasons(
               requestData.type,
               requestData.status,

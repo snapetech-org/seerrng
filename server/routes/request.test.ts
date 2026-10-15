@@ -7401,6 +7401,67 @@ describe('POST /request/:requestId/retry', () => {
     );
   });
 
+  it('does not let a non-manager bind a TVDB series to the request', async () => {
+    configureSonarr([createSonarrSettings(31)]);
+    const failed = await seedFailedTvRequest([1]);
+    const owner = await loginAs('friend@seerr.dev', 'test1234');
+
+    const res = await owner.post(`/request/${failed.id}/retry`).send({
+      tvdbId: 184_871,
+      seasonMappings: [{ seasonNumber: 1, externalSeasonNumber: 1 }],
+    });
+
+    assert.strictEqual(res.status, 403);
+    const saved = await getRepository(MediaRequest).findOneByOrFail({
+      id: failed.id,
+    });
+    assert.strictEqual(saved.status, MediaRequestStatus.FAILED);
+    assert.strictEqual(saved.overrideTvdbId, null);
+  });
+
+  it('rejects a season map for a request that is not a failed TVDB resolution', async () => {
+    configureSonarr([createSonarrSettings(31)]);
+    const pending = await seedRequest(MediaRequestStatus.PENDING);
+    const admin = await loginAs('admin@seerr.dev', 'test1234');
+
+    const res = await admin.post(`/request/${pending.id}/retry`).send({
+      tvdbId: 184_871,
+      seasonMappings: [{ seasonNumber: 1, externalSeasonNumber: 1 }],
+    });
+
+    assert.ok([400, 409].includes(res.status));
+    const saved = await getRepository(MediaRequest).findOneByOrFail({
+      id: pending.id,
+    });
+    assert.strictEqual(saved.status, MediaRequestStatus.PENDING);
+  });
+
+  it('rejects duplicate and extra season map fields', async () => {
+    configureSonarr([createSonarrSettings(31)]);
+    const failed = await seedFailedTvRequest([1, 2]);
+    const admin = await loginAs('admin@seerr.dev', 'test1234');
+
+    const duplicate = await admin.post(`/request/${failed.id}/retry`).send({
+      tvdbId: 184_871,
+      seasonMappings: [
+        { seasonNumber: 1, externalSeasonNumber: 1 },
+        { seasonNumber: 1, externalSeasonNumber: 2 },
+      ],
+    });
+    const extra = await admin.post(`/request/${failed.id}/retry`).send({
+      tvdbId: 184_871,
+      unexpected: true,
+      seasonMappings: [{ seasonNumber: 1, externalSeasonNumber: 1 }],
+    });
+
+    assert.strictEqual(duplicate.status, 400);
+    assert.strictEqual(extra.status, 400);
+    const saved = await getRepository(MediaRequest).findOneByOrFail({
+      id: failed.id,
+    });
+    assert.strictEqual(saved.status, MediaRequestStatus.FAILED);
+  });
+
   it('persists an explicitly verified TVDB season map with the retry', async () => {
     configureSonarr([
       createSonarrSettings(31),
@@ -7435,7 +7496,7 @@ describe('POST /request/:requestId/retry', () => {
         externalSeasonNumber: 4,
       })
     );
-    const owner = await loginAs('friend@seerr.dev', 'test1234');
+    const owner = await loginAs('admin@seerr.dev', 'test1234');
 
     const res = await owner.post(`/request/${failed.id}/retry`).send({
       tvdbId: 184_871,
@@ -7486,7 +7547,7 @@ describe('POST /request/:requestId/retry', () => {
   it('rejects incomplete or unrequested source-season mappings', async () => {
     configureSonarr([createSonarrSettings(31)]);
     const failed = await seedFailedTvRequest([1, 2]);
-    const owner = await loginAs('friend@seerr.dev', 'test1234');
+    const owner = await loginAs('admin@seerr.dev', 'test1234');
 
     const incomplete = await owner.post(`/request/${failed.id}/retry`).send({
       tvdbId: 184_871,
@@ -7522,7 +7583,7 @@ describe('POST /request/:requestId/retry', () => {
         }) as unknown as Tvdb
     );
     const failed = await seedFailedTvRequest([1, 2]);
-    const owner = await loginAs('friend@seerr.dev', 'test1234');
+    const owner = await loginAs('admin@seerr.dev', 'test1234');
 
     const res = await owner.post(`/request/${failed.id}/retry`).send({
       tvdbId: 184_871,
