@@ -292,7 +292,7 @@ const LazyLibrarianModal = ({
                     name="hostname"
                     type="text"
                     inputMode="url"
-                    className="rounded-r-only"
+                    className="rounded-e-only"
                     onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                       setIsValidated(false);
                       setFieldValue('hostname', event.target.value);

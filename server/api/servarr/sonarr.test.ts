@@ -308,6 +308,63 @@ describe('SonarrAPI getSeriesByTvdbId', () => {
   });
 });
 
+describe('SonarrAPI getSeriesByTmdbId', () => {
+  afterEach(() => mock.restoreAll());
+
+  it('uses a bounded TMDB lookup and returns the matching series', async () => {
+    const sonarr = buildSonarr();
+    const get = mock.method(getAxios(sonarr), 'get', async () => ({
+      data: [
+        { id: 9, tvdbId: 184871, tmdbId: 87012, title: 'Bake Off' },
+        { id: 10, tvdbId: 200001, tmdbId: 87013, title: 'Other show' },
+      ],
+    }));
+
+    const result = await sonarr.getSeriesByTmdbId(87012);
+
+    assert.equal(result?.tvdbId, 184871);
+    assert.equal(result?.tmdbId, 87012);
+    assert.equal(
+      get.mock.calls[0].arguments[0],
+      'http://localhost:8989/api/v3/series/lookup'
+    );
+    assert.deepEqual(
+      (get.mock.calls[0].arguments[1] as { params?: unknown }).params,
+      { term: 'tmdb:87012' }
+    );
+  });
+
+  it('rejects malformed, empty, failed, and ambiguous lookups', async () => {
+    const malformedSonarr = buildSonarr();
+    const malformedGet = mock.method(
+      getAxios(malformedSonarr),
+      'get',
+      async () => ({ data: [] })
+    );
+    assert.equal(await malformedSonarr.getSeriesByTmdbId(0), null);
+    assert.equal(malformedGet.mock.callCount(), 0);
+
+    const emptySonarr = buildSonarr();
+    mock.method(getAxios(emptySonarr), 'get', async () => ({ data: [] }));
+    assert.equal(await emptySonarr.getSeriesByTmdbId(87012), null);
+
+    const failedSonarr = buildSonarr();
+    mock.method(getAxios(failedSonarr), 'get', async () => {
+      throw new Error('Sonarr unavailable');
+    });
+    assert.equal(await failedSonarr.getSeriesByTmdbId(87012), null);
+
+    const ambiguousSonarr = buildSonarr();
+    mock.method(getAxios(ambiguousSonarr), 'get', async () => ({
+      data: [
+        { tvdbId: 184871, title: 'First candidate' },
+        { tvdbId: 200001, title: 'Second candidate' },
+      ],
+    }));
+    assert.equal(await ambiguousSonarr.getSeriesByTmdbId(87012), null);
+  });
+});
+
 const series = (overrides: Partial<SonarrSeries> = {}): SonarrSeries => ({
   id: 42,
   title: 'Test Series',

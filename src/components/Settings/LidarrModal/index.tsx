@@ -411,7 +411,7 @@ const LidarrModal = ({ onClose, lidarr, onSave }: LidarrModalProps) => {
                           setIsValidated(false);
                           setFieldValue('hostname', e.target.value);
                         }}
-                        className="rounded-r-only"
+                        className="rounded-e-only"
                       />
                     </div>
                     {errors.hostname &&

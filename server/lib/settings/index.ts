@@ -442,6 +442,25 @@ export interface MetadataSettings {
   anime: MetadataProviderType;
 }
 
+export interface CoverArtArchiveSettings {
+  maxConcurrentRequests: number;
+  maxRequestsPerSecond: number;
+}
+
+export interface MusicMetadataSettings {
+  coverArtArchive: CoverArtArchiveSettings;
+}
+
+export const MAX_COVER_ART_ARCHIVE_CONCURRENT_REQUESTS = 5;
+export const MAX_COVER_ART_ARCHIVE_REQUESTS_PER_SECOND = 50;
+
+export const DEFAULT_MUSIC_METADATA_SETTINGS: MusicMetadataSettings = {
+  coverArtArchive: {
+    maxConcurrentRequests: MAX_COVER_ART_ARCHIVE_CONCURRENT_REQUESTS,
+    maxRequestsPerSecond: MAX_COVER_ART_ARCHIVE_REQUESTS_PER_SECOND,
+  },
+};
+
 export type DownloadPathService =
   'radarr' | 'sonarr' | 'readarr' | 'lazylibrarian' | 'kapowarr' | 'backissue';
 
@@ -829,6 +848,7 @@ export interface AllSettings {
   jobs: Record<JobId, JobSettings>;
   network: NetworkSettings;
   metadataSettings: MetadataSettings;
+  musicMetadataSettings: MusicMetadataSettings;
   migrations: string[];
 }
 
@@ -930,6 +950,7 @@ class Settings {
         tv: MetadataProviderType.TMDB,
         anime: MetadataProviderType.TMDB,
       },
+      musicMetadataSettings: structuredClone(DEFAULT_MUSIC_METADATA_SETTINGS),
       radarr: [],
       sonarr: [],
       sportarr: [],
@@ -1364,6 +1385,17 @@ class Settings {
   set metadataSettings(data: MetadataSettings) {
     this.data.metadataSettings = mergeSettings(
       this.data.metadataSettings,
+      data
+    );
+  }
+
+  get musicMetadataSettings(): MusicMetadataSettings {
+    return this.data.musicMetadataSettings;
+  }
+
+  set musicMetadataSettings(data: MusicMetadataSettings) {
+    this.data.musicMetadataSettings = mergeSettings(
+      this.data.musicMetadataSettings,
       data
     );
   }
@@ -1927,6 +1959,7 @@ class Settings {
         tv: MetadataProviderType.TMDB,
         anime: MetadataProviderType.TMDB,
       },
+      musicMetadataSettings: structuredClone(DEFAULT_MUSIC_METADATA_SETTINGS),
       radarr: [],
       sonarr: [],
       sportarr: [],

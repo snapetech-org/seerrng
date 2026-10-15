@@ -201,14 +201,15 @@ function JellyfinSetup({
                 </label>
                 <div className="mt-1 mb-2 sm:col-span-2 sm:mt-0 sm:mb-0">
                   <div className="flex rounded-md shadow-sm">
-                    <span className="inline-flex cursor-default items-center rounded-l-md border border-r-0 border-gray-500 bg-gray-800 px-3 text-gray-100 sm:text-sm">
+                    <span className="inline-flex cursor-default items-center rounded-s-md border border-e-0 border-gray-500 bg-gray-800 px-3 text-gray-100 sm:text-sm">
                       {values.useSsl ? 'https://' : 'http://'}
                     </span>
                     <Field
                       id="hostname"
                       name="hostname"
                       type="text"
-                      className="rounded-r-only flex-1"
+                      dir="ltr"
+                      className="rounded-e-only flex-1"
                       placeholder={intl.formatMessage(
                         messages.hostname,
                         mediaServerFormatValues

@@ -9,10 +9,15 @@ export type IntlInstance = ReturnType<typeof createIntl>;
 
 const cache = createIntlCache();
 const intls = new Map<string, IntlInstance>();
+const localeCatalogNames: Partial<Record<AvailableLocale, string>> = {
+  'zh-CN': 'zh-Hans',
+  'zh-TW': 'zh-Hant',
+};
 
 export function initI18n(): void {
   for (const locale of availableLocales) {
-    const filePath = path.join(__dirname, `locale/${locale}.json`);
+    const catalogName = localeCatalogNames[locale] || locale;
+    const filePath = path.join(__dirname, `locale/${catalogName}.json`);
 
     if (!fs.existsSync(filePath)) continue;
 

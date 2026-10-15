@@ -8,11 +8,20 @@ import CoverArtArchive, {
 import { getRepository } from '@server/datasource';
 import MetadataAlbum from '@server/entity/MetadataAlbum';
 import { MAX_MUSICBRAINZ_BATCH_IDS } from '@server/lib/externalIds';
+import {
+  DEFAULT_MUSIC_METADATA_SETTINGS,
+  type CoverArtArchiveSettings,
+} from '@server/lib/settings';
 import { resetTestDb, seedTestDb } from '@server/utils/seedTestDb';
-import axios from 'axios';
+import {
+  configureCoverArtArchiveLimits,
+  coverArtArchiveHttpClient,
+  CoverArtArchiveRequestGate,
+} from './requestLimiter';
 
 type CoverArtArchiveInternal = {
   fetchReleaseGroupMetadata: (albumId: string) => Promise<unknown>;
+  testConnection: () => Promise<void>;
 };
 
 const redirectError = (status: number, location: string) =>
@@ -43,6 +52,9 @@ describe('CoverArtArchive metadata persistence', () => {
 
   afterEach(() => {
     mock.restoreAll();
+    configureCoverArtArchiveLimits(
+      DEFAULT_MUSIC_METADATA_SETTINGS.coverArtArchive
+    );
   });
 
   it('does not return fetched artwork before its cache row is persisted', async () => {
@@ -134,6 +146,30 @@ describe('CoverArtArchive metadata persistence', () => {
 
     assert.deepStrictEqual(result.images, []);
     assert.strictEqual(get.mock.callCount(), 0);
+  });
+
+  it('checks Cover Art Archive without reading or writing cached album data', async () => {
+    const probeId = '00000000-0000-0000-0000-000000000000';
+    const fetch = mockFetchReleaseGroupMetadata(async (albumId) => {
+      assert.strictEqual(albumId, probeId);
+      return { images: [], release: `/release/${albumId}` };
+    });
+
+    await new CoverArtArchive().testConnection();
+
+    assert.strictEqual(fetch.mock.callCount(), 1);
+    assert.strictEqual(
+      await getRepository(MetadataAlbum).findOneBy({ mbAlbumId: probeId }),
+      null
+    );
+  });
+
+  it('treats the synthetic probe ID 404 as a reachable provider response', async () => {
+    mockFetchReleaseGroupMetadata(async () => {
+      throw redirectError(404, '');
+    });
+
+    await assert.doesNotReject(new CoverArtArchive().testConnection());
   });
 
   it('bounds and structurally validates upstream image collections', async () => {
@@ -242,6 +278,53 @@ describe('CoverArtArchive metadata persistence', () => {
   });
 });
 
+describe('Cover Art Archive request limits', () => {
+  afterEach(() => {
+    configureCoverArtArchiveLimits(
+      DEFAULT_MUSIC_METADATA_SETTINGS.coverArtArchive
+    );
+  });
+
+  it('applies the configured shared requests-per-second limit', () => {
+    const settings: CoverArtArchiveSettings = {
+      maxConcurrentRequests: 2,
+      maxRequestsPerSecond: 7,
+    };
+
+    configureCoverArtArchiveLimits(settings);
+
+    assert.strictEqual(coverArtArchiveHttpClient.getMaxRPS(), 7);
+  });
+
+  it('enforces the configured concurrency cap with a shared FIFO gate', async () => {
+    const gate = new CoverArtArchiveRequestGate();
+    gate.configure(1);
+
+    let active = 0;
+    let peak = 0;
+    let releaseRequests: (() => void) | undefined;
+    const held = new Promise<void>((resolve) => {
+      releaseRequests = resolve;
+    });
+    const run = () =>
+      gate.run(async () => {
+        active += 1;
+        peak = Math.max(peak, active);
+        await held;
+        active -= 1;
+      });
+
+    const requests = [run(), run(), run()];
+    await new Promise<void>((resolve) => setImmediate(resolve));
+    assert.strictEqual(active, 1);
+    assert.strictEqual(peak, 1);
+
+    releaseRequests?.();
+    await Promise.all(requests);
+    assert.strictEqual(peak, 1);
+  });
+});
+
 describe('CoverArtArchive redirect chain resolution', () => {
   beforeEach(() => {
     mock.method(dns, 'lookup', async () => [
@@ -256,7 +339,7 @@ describe('CoverArtArchive redirect chain resolution', () => {
     const cdnUrl = 'https://dn710405.ca.archive.org/0/items/mbid-x/index.json';
     const calls: { url: string; options: Record<string, unknown> }[] = [];
     mock.method(
-      axios,
+      coverArtArchiveHttpClient,
       'get',
       async (url: string, options: Record<string, unknown>) => {
         calls.push({ url, options });
@@ -297,7 +380,7 @@ describe('CoverArtArchive redirect chain resolution', () => {
 
   it('refuses to follow a redirect outside Cover Art Archive/Internet Archive', async () => {
     const albumId = 'f5093c06-23e3-404f-aeaa-40f72885ee3a';
-    mock.method(axios, 'get', async () => {
+    mock.method(coverArtArchiveHttpClient, 'get', async () => {
       throw redirectError(302, 'https://evil.example/steal-me.json');
     });
 
@@ -312,7 +395,7 @@ describe('CoverArtArchive redirect chain resolution', () => {
   it('gives up after too many redirects', async () => {
     const albumId = 'f5093c06-23e3-404f-aeaa-40f72885ee3a';
     let hop = 0;
-    mock.method(axios, 'get', async () => {
+    mock.method(coverArtArchiveHttpClient, 'get', async () => {
       hop += 1;
       throw redirectError(
         302,

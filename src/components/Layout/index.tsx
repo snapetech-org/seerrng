@@ -12,6 +12,7 @@ import useRequestCount from '@app/components/Layout/useRequestCount';
 import useLocale from '@app/hooks/useLocale';
 import useSettings from '@app/hooks/useSettings';
 import { Permission, useUser } from '@app/hooks/useUser';
+import globalMessages from '@app/i18n/globalMessages';
 import {
   DISCOVER_MEDIA_TYPES,
   isConfiguredMediaCategoryEnabled,
@@ -22,6 +23,7 @@ import { ArrowLeftIcon, Bars3BottomLeftIcon } from '@heroicons/react/24/solid';
 import type { AvailableLocale } from '@server/types/languages';
 import { useRouter } from 'next/router';
 import { useEffect, useRef, useState } from 'react';
+import { useIntl } from 'react-intl';
 import useSWR from 'swr';
 
 type LayoutProps = {
@@ -36,6 +38,7 @@ const Layout = ({ children }: LayoutProps) => {
   const router = useRouter();
   const discoveryMediaType = discoveryMediaTypeForPath(router.pathname);
   const { currentSettings } = useSettings();
+  const intl = useIntl();
   const { setLocale } = useLocale();
   const [countsEnabled, setCountsEnabled] = useState(false);
   const { data: requestResponse, mutate: revalidateRequestsCount } =
@@ -241,37 +244,37 @@ const Layout = ({ children }: LayoutProps) => {
         />
       </div>
 
-      <div className="relative mb-16 flex w-0 min-w-0 flex-1 flex-col lg:ml-64">
+      <div className="relative mb-16 flex w-0 min-w-0 flex-1 flex-col lg:ms-64">
         <PullToRefresh />
         <div
-          className={`searchbar fixed top-0 right-0 left-0 z-10 flex flex-shrink-0 transition duration-300 ${
+          className={`searchbar fixed inset-x-0 top-0 z-10 flex flex-shrink-0 transition duration-300 ${
             isScrolled ? 'app-searchbar-scrolled' : 'bg-transparent'
-          } lg:left-64`}
+          } lg:start-64`}
         >
-          <div className="flex flex-1 items-center justify-between px-4 md:pr-4 md:pl-4">
+          <div className="flex flex-1 items-center justify-between px-4">
             <button
-              className={`mr-2 hidden text-white sm:block ${
+              className={`me-2 hidden text-white sm:block ${
                 isScrolled ? 'opacity-90' : 'opacity-70'
               } transition duration-300 focus:outline-none lg:hidden`}
-              aria-label="Open sidebar"
+              aria-label={intl.formatMessage(globalMessages.openSidebar)}
               onClick={() => setSidebarOpen(true)}
               data-testid="sidebar-toggle"
             >
               <Bars3BottomLeftIcon className="h-7 w-7" />
             </button>
             <button
-              className={`mr-2 text-white ${
+              className={`me-2 text-white ${
                 isScrolled ? 'opacity-90' : 'opacity-70'
               } pwa-only transition duration-300 hover:text-white focus:text-white focus:outline-none`}
               onClick={() => router.back()}
-              aria-label="Go back to the previous page"
+              aria-label={intl.formatMessage(globalMessages.backPreviousPage)}
             >
-              <ArrowLeftIcon className="w-7" />
+              <ArrowLeftIcon className="w-7 rtl:rotate-180" />
             </button>
             <div className="min-w-0 flex-1">
               <SearchInput />
             </div>
-            <div className="relative z-20 ml-2 flex shrink-0 items-center gap-2">
+            <div className="relative z-20 ms-2 flex shrink-0 items-center gap-2">
               <ThemePicker />
               <UserDropdown />
             </div>

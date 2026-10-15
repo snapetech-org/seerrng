@@ -6,6 +6,8 @@ import SelectionCircle, {
   SelectionCircleIndicator,
 } from '@app/components/Common/SelectionCircle';
 import Tooltip from '@app/components/Common/Tooltip';
+import globalMessages from '@app/i18n/globalMessages';
+import defineMessages from '@app/utils/defineMessages';
 import {
   CheckCircleIcon,
   ChevronDownIcon,
@@ -20,6 +22,78 @@ import { CheckIcon } from '@heroicons/react/24/solid';
 import type { WatchStatusResponse } from '@server/models/WatchStatus';
 import { useId, useState, type ReactNode } from 'react';
 import { useIntl } from 'react-intl';
+
+const messages = defineMessages('components.MediaDetails.SeasonEpisodeTree', {
+  available: 'available',
+  requestable: 'requestable',
+  select: 'Select',
+  deselect: 'Deselect',
+  noSeasonEpisodesAvailable:
+    'No episodes in this season are available for selection.',
+  selectSeasonEpisodes:
+    'Select every {selectionDescription} episode in {seasonName}.',
+  deselectSeasonEpisodes:
+    'Deselect every {selectionDescription} episode in {seasonName}.',
+  seasonSelectionLabel:
+    '{action} {selectionDescription} episodes in {seasonName}',
+  selectionCount: '{selectedCount} of {episodeCount} episodes selected',
+  hideSeasonEpisodes: 'Hide the episodes in {seasonName}. {countDescription}.',
+  showSeasonEpisodes: 'Show the episodes in {seasonName}. {countDescription}.',
+  expandSeason: 'Expand {seasonName}',
+  collapseSeason: 'Collapse {seasonName}',
+  episodeListLabel: '{seasonName} episodes',
+  selectEpisode: 'Select {episodeName}.',
+  deselectEpisode: 'Deselect {episodeName}.',
+  episodeSelectionLabel: '{action} episode {episodeNumber}: {episodeName}',
+  episodeUnavailableForRequest:
+    'This episode is already available or requested and cannot be selected.',
+  episodeUnavailableForPlayback:
+    'This episode is not available in the library and cannot be selected.',
+  releaseDateUnavailable: 'The release date is not available for this episode.',
+  releaseDateTooltip: 'Release date: {date}.',
+  releaseDateLabel: 'Release date: {date}',
+  availableInLibrary: 'Available in the library.',
+  unavailableInLibrary: 'Not available in the library.',
+  watchStatusUnavailable: 'Watch status is not available for this episode.',
+  episodeWatched: 'This episode has been watched.',
+  episodeNotWatched: 'This episode has not been watched.',
+  watchStatusNotAvailable: 'Watch Status Not Available',
+  watched: 'Watched',
+  unwatched: 'Unwatched',
+  noEpisodesAvailable: 'No episodes are available for selection.',
+  selectEveryEpisode:
+    'Select every {selectionDescription} episode across all seasons, including collapsed seasons.',
+  deselectEveryEpisode:
+    'Deselect every {selectionDescription} episode across all seasons, including collapsed seasons.',
+  selectAllEpisodes: 'Select all {selectionDescription} episodes',
+  deselectAllEpisodes: 'Deselect all {selectionDescription} episodes',
+  episodeNumberTooltip: 'The episode number within this season.',
+  episodeTitleTooltip:
+    'The episode title. Hover a shortened title to read it in full.',
+  releaseDateColumnTooltip:
+    "The episode's original release date, including the abbreviated day of the week. A dash means the date is not available.",
+  availabilityTooltip:
+    'Episode availability in the media library: a green check means available; a red cross means unavailable.',
+  watchStatusTooltip:
+    'Watch status on {mediaServer}: a check means watched, a short dash means unwatched, and a question mark means the status is unknown.',
+  mediaServer: 'media server',
+  episodeNumber: 'Episode Number',
+  title: 'Title',
+  releaseDate: 'Release Date',
+  availability: 'Availability',
+  mediaServerWatchStatus: 'Media Server Watch Status',
+  chooseStartingEpisode: 'Choose one starting episode',
+  seasonsAndEpisodes: 'Seasons and episodes',
+  showEverySeason: 'Show the episodes for every season.',
+  hideEverySeason:
+    'Hide the episodes for every season without changing the selection.',
+  clearSelection:
+    'Deselect every episode without changing the expanded seasons.',
+  expandAll: 'Expand All',
+  collapseAll: 'Collapse All',
+  clearSelectionAction: 'Clear Selection',
+  selected: 'Selected:',
+});
 
 export interface TreeEpisode {
   id: number;
@@ -144,8 +218,9 @@ const SeasonEpisodeTree = ({
           : [...selectedIds, episode.id]
     );
   };
-  const selectionDescription =
-    selectionPurpose === 'request' ? 'requestable' : 'available';
+  const selectionDescription = intl.formatMessage(
+    selectionPurpose === 'request' ? messages.requestable : messages.available
+  );
   const formatReleaseDate = (releaseDate?: string) => {
     if (!releaseDate) return '—';
     // Metadata dates are calendar dates, not local-time instants. Keep the day
@@ -171,8 +246,13 @@ const SeasonEpisodeTree = ({
         <Tooltip
           content={
             state.disabled
-              ? 'No episodes in this season are available for selection.'
-              : `${state.selected ? 'Deselect' : 'Select'} every ${selectionDescription} episode in ${season.name}.`
+              ? intl.formatMessage(messages.noSeasonEpisodesAvailable)
+              : intl.formatMessage(
+                  state.selected
+                    ? messages.deselectSeasonEpisodes
+                    : messages.selectSeasonEpisodes,
+                  { selectionDescription, seasonName: season.name }
+                )
           }
         >
           <span data-tree-part="selection">
@@ -180,7 +260,13 @@ const SeasonEpisodeTree = ({
               selected={state.selected}
               partial={state.partial}
               disabled={disabled || state.disabled}
-              label={`${state.selected ? 'Deselect' : 'Select'} ${selectionDescription} episodes in ${season.name}`}
+              label={intl.formatMessage(messages.seasonSelectionLabel, {
+                action: intl.formatMessage(
+                  state.selected ? messages.deselect : messages.select
+                ),
+                selectionDescription,
+                seasonName: season.name,
+              })}
               onClick={() =>
                 onSelectionChange(toggleSeasonSelection(season, selectedIds))
               }
@@ -189,7 +275,10 @@ const SeasonEpisodeTree = ({
         </Tooltip>
       );
     const episodeCount = season.episodeCount ?? season.episodes.length;
-    const countDescription = `${state.count} of ${episodeCount} episodes selected`;
+    const countDescription = intl.formatMessage(messages.selectionCount, {
+      selectedCount: state.count,
+      episodeCount,
+    });
     const expanderIcon =
       layout === 6 ? null : open ? (
         <ChevronDownIcon aria-hidden />
@@ -201,11 +290,17 @@ const SeasonEpisodeTree = ({
         {selection}
         <Button
           data-tree-part="disclosure"
-          aria-label={`${open ? 'Collapse' : 'Expand'} ${season.name}`}
+          aria-label={intl.formatMessage(
+            open ? messages.collapseSeason : messages.expandSeason,
+            { seasonName: season.name }
+          )}
           aria-description={countDescription}
           aria-expanded={open}
           aria-controls={panelId(season)}
-          title={`${open ? 'Hide' : 'Show'} the episodes in ${season.name}. ${countDescription}.`}
+          title={intl.formatMessage(
+            open ? messages.hideSeasonEpisodes : messages.showSeasonEpisodes,
+            { seasonName: season.name, countDescription }
+          )}
           onClick={() => toggleExpanded(season)}
         >
           {expanderIcon}
@@ -239,17 +334,32 @@ const SeasonEpisodeTree = ({
       <Tooltip
         content={
           isTreeEpisodeSelectable(episode)
-            ? `${selectedIds.includes(episode.id) ? 'Deselect' : 'Select'} ${episode.name}.`
-            : selectionPurpose === 'request'
-              ? 'This episode is already available or requested and cannot be selected.'
-              : 'This episode is not available in the library and cannot be selected.'
+            ? intl.formatMessage(
+                selectedIds.includes(episode.id)
+                  ? messages.deselectEpisode
+                  : messages.selectEpisode,
+                { episodeName: episode.name }
+              )
+            : intl.formatMessage(
+                selectionPurpose === 'request'
+                  ? messages.episodeUnavailableForRequest
+                  : messages.episodeUnavailableForPlayback
+              )
         }
       >
         <button
           type="button"
           data-tree-part="episode-selection"
           disabled={disabled || !isTreeEpisodeSelectable(episode)}
-          aria-label={`${selectedIds.includes(episode.id) ? 'Deselect' : 'Select'} Episode ${episode.episodeNumber}: ${episode.name}`}
+          aria-label={intl.formatMessage(messages.episodeSelectionLabel, {
+            action: intl.formatMessage(
+              selectedIds.includes(episode.id)
+                ? messages.deselect
+                : messages.select
+            ),
+            episodeNumber: episode.episodeNumber,
+            episodeName: episode.name,
+          })}
           aria-pressed={
             selectedIds.includes(episode.id) && isTreeEpisodeSelectable(episode)
           }
@@ -275,8 +385,10 @@ const SeasonEpisodeTree = ({
       <Tooltip
         content={
           formatReleaseDate(episode.releaseDate) === '—'
-            ? 'The release date is not available for this episode.'
-            : `Release date: ${formatReleaseDate(episode.releaseDate)}.`
+            ? intl.formatMessage(messages.releaseDateUnavailable)
+            : intl.formatMessage(messages.releaseDateTooltip, {
+                date: formatReleaseDate(episode.releaseDate),
+              })
         }
       >
         <time
@@ -286,23 +398,29 @@ const SeasonEpisodeTree = ({
               ? undefined
               : episode.releaseDate
           }
-          aria-label={`Release Date: ${formatReleaseDate(episode.releaseDate)}`}
+          aria-label={intl.formatMessage(messages.releaseDateLabel, {
+            date: formatReleaseDate(episode.releaseDate),
+          })}
         >
           {formatReleaseDate(episode.releaseDate)}
         </time>
       </Tooltip>
       <Tooltip
-        content={
+        content={intl.formatMessage(
           episode.available
-            ? 'Available in the library.'
-            : 'Not available in the library.'
-        }
+            ? messages.availableInLibrary
+            : messages.unavailableInLibrary
+        )}
       >
         <span
           className="media-availability-cell"
           data-tree-part="availability"
           data-availability={episode.available ? 'full' : 'missing'}
-          aria-label={episode.available ? 'Available' : 'Not Available'}
+          aria-label={intl.formatMessage(
+            episode.available
+              ? globalMessages.available
+              : globalMessages.notavailable
+          )}
         >
           {episode.available ? (
             <CheckCircleIcon className="card-table-icon" aria-hidden />
@@ -312,24 +430,24 @@ const SeasonEpisodeTree = ({
         </span>
       </Tooltip>
       <Tooltip
-        content={
+        content={intl.formatMessage(
           episode.watched === undefined
-            ? 'Watch status is not available for this episode.'
+            ? messages.watchStatusUnavailable
             : episode.watched
-              ? 'This episode has been watched.'
-              : 'This episode has not been watched.'
-        }
+              ? messages.episodeWatched
+              : messages.episodeNotWatched
+        )}
       >
         <span
           className="watched-status-cell"
           data-tree-part="watched"
-          aria-label={
+          aria-label={intl.formatMessage(
             episode.watched === undefined
-              ? 'Watch Status Not Available'
+              ? messages.watchStatusNotAvailable
               : episode.watched
-                ? 'Watched'
-                : 'Unwatched'
-          }
+                ? messages.watched
+                : messages.unwatched
+          )}
         >
           {episode.watched === undefined ? (
             '?'
@@ -351,8 +469,13 @@ const SeasonEpisodeTree = ({
         <Tooltip
           content={
             availableIds.size === 0
-              ? 'No episodes are available for selection.'
-              : `${allSelected ? 'Deselect' : 'Select'} every ${selectionDescription} episode across all seasons, including collapsed seasons.`
+              ? intl.formatMessage(messages.noEpisodesAvailable)
+              : intl.formatMessage(
+                  allSelected
+                    ? messages.deselectEveryEpisode
+                    : messages.selectEveryEpisode,
+                  { selectionDescription }
+                )
           }
         >
           <span data-tree-part="select-all">
@@ -360,38 +483,55 @@ const SeasonEpisodeTree = ({
               selected={allSelected}
               partial={selectedCount > 0 && !allSelected}
               disabled={disabled || availableIds.size === 0}
-              label={`${allSelected ? 'Deselect' : 'Select'} all ${selectionDescription} episodes`}
+              label={intl.formatMessage(
+                allSelected
+                  ? messages.deselectAllEpisodes
+                  : messages.selectAllEpisodes,
+                { selectionDescription }
+              )}
               onClick={toggleAll}
             />
           </span>
         </Tooltip>
       )}
-      <Tooltip content="The episode number within this season.">
+      <Tooltip content={intl.formatMessage(messages.episodeNumberTooltip)}>
         <span
           className="card-table-heading"
           data-tree-part="number-heading"
-          aria-label="Episode Number"
+          aria-label={intl.formatMessage(messages.episodeNumber)}
         >
           #
         </span>
       </Tooltip>
-      <Tooltip content="The episode title. Hover a shortened title to read it in full.">
-        <span className="card-table-heading">Title</span>
+      <Tooltip content={intl.formatMessage(messages.episodeTitleTooltip)}>
+        <span className="card-table-heading">
+          {intl.formatMessage(messages.title)}
+        </span>
       </Tooltip>
-      <Tooltip content="The episode's original release date, including the abbreviated day of the week. A dash means the date is not available.">
-        <span className="card-table-heading">Release Date</span>
+      <Tooltip content={intl.formatMessage(messages.releaseDateColumnTooltip)}>
+        <span className="card-table-heading">
+          {intl.formatMessage(messages.releaseDate)}
+        </span>
       </Tooltip>
-      <Tooltip content="Episode availability in the media library: a green check means available; a red cross means unavailable.">
-        <span className="media-availability-cell" aria-label="Availability">
+      <Tooltip content={intl.formatMessage(messages.availabilityTooltip)}>
+        <span
+          className="media-availability-cell"
+          aria-label={intl.formatMessage(messages.availability)}
+        >
           <ServerStackIcon className="card-table-icon" aria-hidden />
         </span>
       </Tooltip>
       <Tooltip
-        content={`Watch status on ${(mediaServerType !== undefined ? getMediaServerName(mediaServerType) : undefined) ?? 'the media server'}: a check means watched, a short dash means unwatched, and a question mark means the status is unknown.`}
+        content={intl.formatMessage(messages.watchStatusTooltip, {
+          mediaServer:
+            (mediaServerType !== undefined
+              ? getMediaServerName(mediaServerType)
+              : undefined) ?? intl.formatMessage(messages.mediaServer),
+        })}
       >
         <span
           className="watched-status-cell"
-          aria-label="Media Server Watch Status"
+          aria-label={intl.formatMessage(messages.mediaServerWatchStatus)}
         >
           {mediaServerType !== undefined ? (
             <MediaServerIcon
@@ -411,7 +551,9 @@ const SeasonEpisodeTree = ({
       id={panelId(season)}
       data-tree-part="episodes"
       hidden={!isExpanded(season)}
-      aria-label={`${season.name} Episodes`}
+      aria-label={intl.formatMessage(messages.episodeListLabel, {
+        seasonName: season.name,
+      })}
     >
       {season.episodes.map((episode) => (
         <li
@@ -436,11 +578,11 @@ const SeasonEpisodeTree = ({
       className="selection-tree card-layout"
       data-tree-layout={layouts[layout]}
       data-selection-mode={selectionMode}
-      aria-label={
+      aria-label={intl.formatMessage(
         selectionMode === 'single-episode'
-          ? 'Choose one starting episode'
-          : 'Seasons And Episodes'
-      }
+          ? messages.chooseStartingEpisode
+          : messages.seasonsAndEpisodes
+      )}
     >
       <div
         className="app-card-inset card-layout refreshed-inset-surface"
@@ -451,34 +593,36 @@ const SeasonEpisodeTree = ({
           <div className="app-action-row" data-tree-part="actions">
             <Button
               buttonType="prowlarr"
-              title="Show the episodes for every season."
+              title={intl.formatMessage(messages.showEverySeason)}
               onClick={() =>
                 setExpanded(seasons.map((season) => season.seasonNumber))
               }
             >
               <PlusIcon className="app-action-icon" aria-hidden="true" />
-              Expand All
+              {intl.formatMessage(messages.expandAll)}
             </Button>
             <Button
               buttonType="prowlarr"
-              title="Hide the episodes for every season without changing the selection."
+              title={intl.formatMessage(messages.hideEverySeason)}
               onClick={() => setExpanded([])}
             >
               <MinusIcon className="app-action-icon" aria-hidden="true" />
-              Collapse All
+              {intl.formatMessage(messages.collapseAll)}
             </Button>
             <Button
               buttonType="prowlarr"
               disabled={disabled || selectedCount === 0}
-              title="Deselect every episode without changing the expanded seasons."
+              title={intl.formatMessage(messages.clearSelection)}
               onClick={() => onSelectionChange([])}
             >
               <NoSymbolIcon className="app-action-icon" aria-hidden="true" />
-              Clear Selection
+              {intl.formatMessage(messages.clearSelectionAction)}
             </Button>
           </div>
           <dl className="card-table" data-tree-part="selection-summary">
-            <dt className="card-table-heading">Selected:</dt>
+            <dt className="card-table-heading">
+              {intl.formatMessage(messages.selected)}
+            </dt>
             <dd className="card-table-value" data-tree-part="selected-total">
               {formatTreeNumber(selectedCount)}
             </dd>

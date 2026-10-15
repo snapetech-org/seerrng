@@ -114,7 +114,7 @@ it('uses the actual shared tree to change whole-season selection into episode-nu
   try {
     expect(ui.ready).toHaveBeenLastCalledWith(true);
     await ui.click('Expand Season 01');
-    await ui.click('Deselect Episode 1: First');
+    await ui.click('Deselect episode 1: First');
     expect(ui.changed).toHaveBeenLastCalledWith([
       { seasonNumber: 1, episodeNumbers: [2] },
     ]);
@@ -136,9 +136,9 @@ it('keeps unavailable episodes requestable, disables blocked episodes and leaves
   try {
     await ui.click('Expand Season 01');
     expect(ui.changed).not.toHaveBeenCalled();
-    expect(ui.button('Select Episode 2: Second').disabled).toBe(true);
-    expect(ui.button('Select Episode 1: First').disabled).toBe(false);
-    await ui.click('Select Episode 1: First');
+    expect(ui.button('Select episode 2: Second').disabled).toBe(true);
+    expect(ui.button('Select episode 1: First').disabled).toBe(false);
+    await ui.click('Select episode 1: First');
     expect(ui.changed).toHaveBeenLastCalledWith([{ seasonNumber: 1 }]);
     expect(
       document.querySelector('[aria-label="Not Available"]')
@@ -174,9 +174,9 @@ it('limits Episode Queue selection to one requestable starting episode', async (
     ).toBe(false);
     await ui.click('Expand Season 01');
     expect(
-      ui.button('Deselect Episode 1: First').getAttribute('aria-pressed')
+      ui.button('Deselect episode 1: First').getAttribute('aria-pressed')
     ).toBe('true');
-    await ui.click('Select Episode 2: Second');
+    await ui.click('Select episode 2: Second');
     expect(ui.changed).toHaveBeenLastCalledWith([
       { seasonNumber: 1, episodeNumbers: [2] },
     ]);
@@ -220,7 +220,7 @@ it('does not edit or drop selections with incomplete/loading metadata and report
     expect(ui.ready).toHaveBeenLastCalledWith(true);
     await ui.click('Expand Season 01');
     expect(
-      ui.button('Deselect Episode 1: First').getAttribute('aria-pressed')
+      ui.button('Deselect episode 1: First').getAttribute('aria-pressed')
     ).toBe('true');
   } finally {
     await ui.close();
@@ -235,9 +235,9 @@ it('retries metadata GETs only, preserves cached selected rows on failure and re
   try {
     expect(ui.ready).toHaveBeenLastCalledWith(false);
     await ui.click('Expand Season 01');
-    expect(ui.button('Deselect Episode 1: First').disabled).toBe(true);
+    expect(ui.button('Deselect episode 1: First').disabled).toBe(true);
     expect(
-      ui.button('Deselect Episode 1: First').getAttribute('aria-pressed')
+      ui.button('Deselect episode 1: First').getAttribute('aria-pressed')
     ).toBe('true');
     await ui.click('Retry');
     expect(swr.mutate).toHaveBeenCalledOnce();
@@ -253,7 +253,7 @@ it('retries metadata GETs only, preserves cached selected rows on failure and re
     swr.error = undefined;
     await ui.render();
     expect(ui.ready).toHaveBeenLastCalledWith(true);
-    expect(ui.button('Deselect Episode 1: First').disabled).toBe(false);
+    expect(ui.button('Deselect episode 1: First').disabled).toBe(false);
   } finally {
     await ui.close();
   }

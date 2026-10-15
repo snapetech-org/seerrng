@@ -474,6 +474,38 @@ class MusicBrainz extends ExternalAPI {
     );
   }
 
+  /** Verify the live search endpoint without trusting or populating cached data. */
+  public async testConnection(): Promise<void> {
+    try {
+      const response = await this.get<{
+        artists?: { id?: string; name?: string }[];
+      }>(
+        '/artist',
+        {
+          params: {
+            query: 'artist:Radiohead',
+            fmt: 'json',
+            limit: 1,
+          },
+          timeout: 8000,
+        },
+        0
+      );
+      const artist = response?.artists?.[0];
+      if (
+        !artist ||
+        !artist.id ||
+        !isValidMusicBrainzResourceId(artist.id) ||
+        typeof artist.name !== 'string' ||
+        !artist.name.trim()
+      ) {
+        throw new Error('MusicBrainz returned no valid artist result.');
+      }
+    } catch (error) {
+      throw new Error('MusicBrainz connection test failed.', { cause: error });
+    }
+  }
+
   public async searchAlbum(options: {
     query: string;
     limit?: number;

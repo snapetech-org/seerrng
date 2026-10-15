@@ -245,7 +245,7 @@ test('English defaults render without bundling the catalogue into the app entry'
   assert.match(app, /const emptyMessages: MessagesType = \{\}/);
   assert.match(
     app,
-    /messages=\{currentLocale === 'en' \? emptyMessages : loadedMessages\}/
+    /messages=\{activeLocale === 'en' \? emptyMessages : loadedMessages\}/
   );
 
   const descriptors = read('../../utils/defineMessages.ts');

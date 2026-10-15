@@ -293,7 +293,7 @@ const Login = ({
         <div className="relative h-48 w-full max-w-full drop-shadow-[0_2px_8px_rgba(15,23,42,0.65)]">
           <Image
             src={versionedAsset('/logo_stacked.svg')}
-            alt="Logo"
+            alt="Seerr"
             fill
             priority
             fetchPriority="high"

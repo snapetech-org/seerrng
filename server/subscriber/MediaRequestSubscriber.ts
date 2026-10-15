@@ -20,6 +20,7 @@ import SonarrAPI from '@server/api/servarr/sonarr';
 import SportarrAPI from '@server/api/servarr/sportarr';
 import TheMovieDb from '@server/api/themoviedb';
 import { ANIME_KEYWORD_ID } from '@server/api/themoviedb/constants';
+import Tvdb from '@server/api/tvdb';
 import WikidataAPI from '@server/api/wikidata';
 import {
   MediaRequestStatus,
@@ -284,6 +285,14 @@ const hasSameRequestDispatchServiceSelection = (
 
 const sleep = (delayMs: number): Promise<void> =>
   new Promise((resolve) => setTimeout(resolve, delayMs));
+
+const isPositiveSafeInteger = (value: unknown): value is number =>
+  typeof value === 'number' && Number.isSafeInteger(value) && value > 0;
+
+const getSeasonYear = (date?: string): number | undefined => {
+  const year = /^([0-9]{4})(?:-|$)/.exec(date ?? '')?.[1];
+  return year ? Number(year) : undefined;
+};
 
 const isTransientExternalError = (error: unknown): boolean => {
   let current: unknown = error;
@@ -1198,13 +1207,80 @@ export class MediaRequestSubscriber implements EntitySubscriberInterface<MediaRe
           url: SonarrAPI.buildUrl(sonarrSettings, '/api/v3'),
         });
         const series = await tmdb.getTvShow({ tvId: media.tmdbId });
-        const tvdbId = series.external_ids.tvdb_id ?? media.tvdbId;
+        const tmdbTvdbId = series.external_ids?.tvdb_id;
+        const hasDirectTvdbId = isPositiveSafeInteger(tmdbTvdbId);
+        let tvdbId = hasDirectTvdbId
+          ? tmdbTvdbId
+          : isPositiveSafeInteger(media.tvdbId)
+            ? media.tvdbId
+            : undefined;
+
+        let tvdb: Tvdb | undefined;
+        if (!hasDirectTvdbId) {
+          try {
+            tvdb = await Tvdb.getInstance();
+          } catch {
+            logger.debug('Could not initialize TVDB for series resolution', {
+              label: 'Media Request',
+              requestId: entity.id,
+              mediaId: media.id,
+            });
+          }
+        }
+
+        if (!tvdbId && tvdb) {
+          tvdbId = await tvdb.resolveTvdbId(media.tmdbId);
+        }
 
         if (!tvdbId) {
-          const requestRepository = getRepository(MediaRequest);
-          await mediaRepository.remove(media);
-          await requestRepository.remove(entity);
-          throw new Error('TVDB ID not found');
+          tvdbId = (await sonarr.getSeriesByTmdbId(media.tmdbId))?.tvdbId;
+        }
+
+        if (!isPositiveSafeInteger(tvdbId)) {
+          throw new Error('Could not resolve a valid TVDB ID for this series');
+        }
+
+        if (!hasDirectTvdbId) {
+          if (!tvdb) {
+            try {
+              tvdb = await Tvdb.getInstance();
+            } catch {
+              throw new Error('Could not verify official TVDB season data');
+            }
+          }
+
+          const officialSeasons = await tvdb
+            .getOfficialSeasons(tvdbId)
+            .catch(() => null);
+          if (!officialSeasons) {
+            throw new Error('Could not verify official TVDB season data');
+          }
+
+          const unmatchedSeasons = entity.seasons
+            .filter(isActiveSeasonRequest)
+            .map((season) => season.seasonNumber)
+            .filter((seasonNumber) => seasonNumber > 0)
+            .filter((seasonNumber) => {
+              const tmdbSeason = series.seasons.find(
+                (season) => season.season_number === seasonNumber
+              );
+              const candidates = officialSeasons.filter(
+                (season) => season.seasonNumber === seasonNumber
+              );
+              if (!tmdbSeason || candidates.length !== 1) {
+                return true;
+              }
+
+              const tmdbYear = getSeasonYear(tmdbSeason.air_date);
+              const tvdbYear = candidates[0].year ?? undefined;
+              return !!tmdbYear && !!tvdbYear && tmdbYear !== tvdbYear;
+            });
+
+          if (unmatchedSeasons.length > 0) {
+            throw new Error(
+              `Requested seasons do not match TVDB season data: ${unmatchedSeasons.join(', ')}`
+            );
+          }
         }
 
         const isAnime = series.keywords.results.some(

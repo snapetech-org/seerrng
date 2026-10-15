@@ -30,6 +30,35 @@ interface TvDetailsStatus {
   keepUpdated: boolean;
 }
 
+export interface TvdbRemoteId {
+  id: string;
+  type: number;
+  sourceName?: string;
+}
+
+// TVDB also uses source types 10, 15, and 28 for TMDB movies, people, and
+// collections. Only type 12 identifies a TMDB television series.
+export const TVDB_SOURCE_TYPE_TMDB_TV = 12;
+
+export interface TvdbSearchByRemoteIdResult {
+  series?: TvdbSeriesBaseRecord;
+  movie?: { id: number };
+  people?: { id: number };
+  episode?: { id: number };
+  company?: { id: number };
+}
+
+export interface TvdbSeriesBaseRecord {
+  id: number;
+  name?: string;
+  remoteIds?: TvdbRemoteId[];
+}
+
+export interface TvdbOfficialSeason {
+  seasonNumber: number;
+  year: number | null;
+}
+
 export interface TvdbTvDetails {
   id: number;
   name: string;
@@ -49,6 +78,7 @@ export interface TvdbTvDetails {
   isOrderRandomized: boolean;
   lastUpdated: Date;
   averageRuntime: number;
+  remoteIds?: TvdbRemoteId[];
   seasons: TvdbSeasonDetails[];
   episodes: TvdbEpisode[];
 }
@@ -200,6 +230,7 @@ const TMDB_TO_TVDB_MAPPING: Record<string, string> & {
   he: 'heb', // Hebrew
   hi: 'hin', // Hindi
   hr: 'hrv', // Croatian
+  id: 'ind', // Indonesian
   hu: 'hun', // Hungarian
   it: 'ita', // Italian
   ja: 'jpn', // Japanese
