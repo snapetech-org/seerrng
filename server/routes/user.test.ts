@@ -1048,6 +1048,81 @@ describe('User route input validation', () => {
     );
   });
 
+  it('preserves sibling push subscriptions that share a user agent', async () => {
+    const agent = await loginAs('admin@seerr.dev', 'test1234');
+    const firstEndpoint = 'https://example.com/shared-agent-device-one';
+    const secondEndpoint = 'https://example.com/shared-agent-device-two';
+
+    const first = await agent.post('/user/registerPushSubscription').send({
+      endpoint: firstEndpoint,
+      auth: 'shared-agent-auth-one',
+      p256dh: 'shared-agent-key-one',
+      userAgent: 'same-device-model-and-browser-version',
+    });
+    const second = await agent.post('/user/registerPushSubscription').send({
+      endpoint: secondEndpoint,
+      auth: 'shared-agent-auth-two',
+      p256dh: 'shared-agent-key-two',
+      userAgent: 'same-device-model-and-browser-version',
+    });
+
+    assert.deepStrictEqual([first.status, second.status], [204, 204]);
+    assert.strictEqual(
+      await getRepository(UserPushSubscription).count({
+        where: { user: { id: 1 } },
+      }),
+      2
+    );
+    assert.strictEqual(
+      await getRepository(UserPushSubscription).existsBy({
+        endpoint: firstEndpoint,
+        user: { id: 1 },
+      }),
+      true
+    );
+    assert.strictEqual(
+      await getRepository(UserPushSubscription).existsBy({
+        endpoint: secondEndpoint,
+        user: { id: 1 },
+      }),
+      true
+    );
+  });
+
+  it('replaces a stale endpoint by auth when the user agent changes', async () => {
+    const agent = await loginAs('admin@seerr.dev', 'test1234');
+    const staleEndpoint = 'https://example.com/rotated-push-stale-endpoint';
+    const currentEndpoint = 'https://example.com/rotated-push-current-endpoint';
+
+    const stale = await agent.post('/user/registerPushSubscription').send({
+      endpoint: staleEndpoint,
+      auth: 'rotated-push-auth',
+      p256dh: 'rotated-push-old-key',
+      userAgent: 'old-browser-version',
+    });
+    const current = await agent.post('/user/registerPushSubscription').send({
+      endpoint: currentEndpoint,
+      auth: 'rotated-push-auth',
+      p256dh: 'rotated-push-current-key',
+      userAgent: 'new-browser-version',
+    });
+
+    assert.deepStrictEqual([stale.status, current.status], [204, 204]);
+    assert.strictEqual(
+      await getRepository(UserPushSubscription).existsBy({
+        endpoint: staleEndpoint,
+        user: { id: 1 },
+      }),
+      false
+    );
+    const storedSubscription = await getRepository(
+      UserPushSubscription
+    ).findOneByOrFail({ endpoint: currentEndpoint, user: { id: 1 } });
+    assert.strictEqual(storedSubscription.auth, 'rotated-push-auth');
+    assert.strictEqual(storedSubscription.p256dh, 'rotated-push-current-key');
+    assert.strictEqual(storedSubscription.userAgent, 'new-browser-version');
+  });
+
   it('rejects push registration when credentials rotate before admission', async () => {
     const agent = await loginAs('admin@seerr.dev', 'test1234');
     const userRepository = getRepository(User);

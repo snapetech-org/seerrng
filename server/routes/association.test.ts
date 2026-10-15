@@ -533,6 +533,10 @@ describe('GET /association/:mediaType/:id', () => {
     assert.ok(crossEdge, 'expected a shared-person edge to the composer');
     assert.strictEqual(crossEdge.node.mediaType, 'artist');
     assert.match(crossEdge.reason, /scored this/);
+    assert.strictEqual(crossEdge.reasonKey, 'personScoredThis');
+    assert.deepStrictEqual(crossEdge.reasonValues, {
+      personName: 'Famous Composer',
+    });
   });
 
   it('returns same-medium and composer edges for a tv series', async () => {
@@ -678,11 +682,23 @@ describe('GET /association/:mediaType/:id', () => {
     assert.strictEqual(res.status, 200);
     assert.ok(
       res.body.edges.some(
-        (e: { reason: string; node: { title?: string } }) =>
+        (e: {
+          reason: string;
+          reasonKey?: string;
+          reasonValues?: Record<string, string>;
+          node: { title?: string };
+        }) =>
           e.node.title === 'Scored Movie' &&
           e.reason === 'Album Artist scored this'
       )
     );
+    const scoredMovie = res.body.edges.find(
+      (edge: { node: { title?: string } }) => edge.node.title === 'Scored Movie'
+    );
+    assert.strictEqual(scoredMovie.reasonKey, 'personScoredThis');
+    assert.deepStrictEqual(scoredMovie.reasonValues, {
+      personName: 'Album Artist',
+    });
   });
 
   it('returns same-author book associations', async () => {

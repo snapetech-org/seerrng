@@ -10,10 +10,14 @@ import type {
   ReadarrBookOptions,
 } from '@server/api/servarr/readarr';
 import ReadarrAPI from '@server/api/servarr/readarr';
-import type { AddSeriesOptions } from '@server/api/servarr/sonarr';
+import type {
+  AddSeriesOptions,
+  SonarrSeries,
+} from '@server/api/servarr/sonarr';
 import SonarrAPI from '@server/api/servarr/sonarr';
 import type { SportarrLeague } from '@server/api/servarr/sportarr';
 import SportarrAPI from '@server/api/servarr/sportarr';
+import Tvdb from '@server/api/tvdb';
 import WikidataAPI from '@server/api/wikidata';
 import {
   MediaRequestStatus,
@@ -101,6 +105,100 @@ const waitForSavedMedia = async (
 
   return getRepository(Media).findOneByOrFail({ id: mediaId });
 };
+
+function configureFallbackSonarr() {
+  getSettings().sonarr = [
+    {
+      id: 31,
+      name: 'Sonarr',
+      hostname: 'sonarr.local',
+      port: 8989,
+      apiKey: 'test-key',
+      useSsl: false,
+      activeProfileId: 6,
+      activeProfileName: 'HD',
+      activeLanguageProfileId: 1,
+      activeDirectory: '/tv',
+      tags: [],
+      is4k: false,
+      isDefault: true,
+      syncEnabled: true,
+      preventSearch: false,
+      tagRequests: false,
+      seriesType: 'standard',
+      animeSeriesType: 'anime',
+      enableSeasonFolders: true,
+      monitorNewItems: 'all',
+      overrideRule: [],
+    },
+  ];
+}
+
+async function createApprovedTvRequest(
+  tmdbId: number,
+  seasonNumbers: number[]
+) {
+  const requestedBy = await getRequester();
+  const media = await getRepository(Media).save(
+    new Media({
+      mediaType: MediaType.TV,
+      tmdbId,
+      status: MediaStatus.PENDING,
+      status4k: MediaStatus.UNKNOWN,
+    })
+  );
+  const request = await getRepository(MediaRequest).save(
+    new MediaRequest({
+      type: MediaType.TV,
+      status: MediaRequestStatus.APPROVED,
+      media,
+      requestedBy,
+      is4k: false,
+      seasons: seasonNumbers.map(
+        (seasonNumber) =>
+          new SeasonRequest({
+            seasonNumber,
+            status: MediaRequestStatus.APPROVED,
+          })
+      ),
+    })
+  );
+
+  return { media, request };
+}
+
+function stubTvdbShow(
+  tmdbId: number,
+  seasons: { season_number: number; air_date: string }[],
+  tvdbId?: number
+) {
+  (
+    mock.method as (
+      object: object,
+      methodName: string,
+      implementation: () => Promise<unknown>
+    ) => unknown
+  )(ExternalAPI.prototype, 'get', async () => ({
+    id: tmdbId,
+    name: 'Test Show',
+    external_ids: tvdbId ? { tvdb_id: tvdbId } : {},
+    keywords: { results: [] },
+    seasons,
+  }));
+}
+
+function stubSonarrAddSeries() {
+  return mock.method(
+    SonarrAPI.prototype,
+    'addSeries',
+    async () =>
+      ({
+        id: 88,
+        title: 'Test Show',
+        titleSlug: 'test-show',
+      }) as SonarrSeries
+  );
+}
 
 let startedBookSearches = 0;
 
@@ -663,6 +761,115 @@ describe('MediaRequestSubscriber service dispatch', () => {
     assert.equal(savedMedia.externalServiceId, 88);
     assert.equal(savedMedia.externalServiceSlug, 'game-of-thrones');
     assert.equal(savedMedia.serviceId, 31);
+  });
+
+  it('resolves missing TVDB IDs and ignores specials during season verification', async () => {
+    configureFallbackSonarr();
+    stubTvdbShow(87012, [
+      { season_number: 0, air_date: '2020-12-25' },
+      { season_number: 1, air_date: '2024-09-24' },
+    ]);
+    const tvdb = {
+      resolveTvdbId: async () => 184871,
+      getOfficialSeasons: async () => [{ seasonNumber: 1, year: 2024 }],
+    };
+    mock.method(Tvdb, 'getInstance', async () => tvdb as unknown as Tvdb);
+    const addSeries = stubSonarrAddSeries();
+    const { request } = await createApprovedTvRequest(87012, [0, 1]);
+
+    await new MediaRequestSubscriber().sendToSonarr(request);
+
+    assert.equal(addSeries.mock.callCount(), 1);
+    const sentOptions = addSeries.mock.calls[0]?.arguments[0];
+    assert.ok(sentOptions);
+    assert.equal(sentOptions.tvdbid, 184871);
+    assert.deepEqual(sentOptions.seasons, [0, 1]);
+  });
+
+  it('falls back to the selected Sonarr server TMDB lookup', async () => {
+    configureFallbackSonarr();
+    stubTvdbShow(87013, [{ season_number: 1, air_date: '2024-09-24' }]);
+    const tvdb = {
+      resolveTvdbId: async () => undefined,
+      getOfficialSeasons: async () => [{ seasonNumber: 1, year: 2024 }],
+    };
+    mock.method(Tvdb, 'getInstance', async () => tvdb as unknown as Tvdb);
+    const lookup = mock.method(
+      SonarrAPI.prototype,
+      'getSeriesByTmdbId',
+      async () => ({ tvdbId: 184872 }) as SonarrSeries
+    );
+    const addSeries = stubSonarrAddSeries();
+    const { request } = await createApprovedTvRequest(87013, [1]);
+
+    await new MediaRequestSubscriber().sendToSonarr(request);
+
+    assert.equal(lookup.mock.callCount(), 1);
+    assert.equal(lookup.mock.calls[0].arguments[0], 87013);
+    const sentOptions = addSeries.mock.calls[0]?.arguments[0];
+    assert.ok(sentOptions);
+    assert.equal(sentOptions.tvdbid, 184872);
+  });
+
+  it('keeps unresolved TV requests and media available for retry', async () => {
+    configureFallbackSonarr();
+    stubTvdbShow(87014, [{ season_number: 1, air_date: '2024-09-24' }]);
+    const tvdb = {
+      resolveTvdbId: async () => undefined,
+      getOfficialSeasons: async () => null,
+    };
+    mock.method(Tvdb, 'getInstance', async () => tvdb as unknown as Tvdb);
+    mock.method(SonarrAPI.prototype, 'getSeriesByTmdbId', async () => null);
+    const addSeries = stubSonarrAddSeries();
+    const notification = mock.method(
+      MediaRequest,
+      'sendNotification',
+      async () => undefined
+    );
+    const { media, request } = await createApprovedTvRequest(87014, [1]);
+
+    await new MediaRequestSubscriber().sendToSonarr(request);
+
+    const savedMedia = await getRepository(Media).findOneBy({ id: media.id });
+    const savedRequest = await getRepository(MediaRequest).findOne({
+      where: { id: request.id },
+      relations: { seasons: true },
+    });
+    assert.ok(savedMedia);
+    assert.equal(savedRequest?.status, MediaRequestStatus.FAILED);
+    assert.equal(savedRequest?.seasons.length, 1);
+    assert.equal(addSeries.mock.callCount(), 0);
+    assert.equal(notification.mock.callCount(), 1);
+  });
+
+  it('fails safely when fallback identity has a different season numbering', async () => {
+    configureFallbackSonarr();
+    stubTvdbShow(87015, [{ season_number: 8, air_date: '2024-09-24' }]);
+    const tvdb = {
+      resolveTvdbId: async () => 184873,
+      getOfficialSeasons: async () => [{ seasonNumber: 15, year: 2024 }],
+    };
+    mock.method(Tvdb, 'getInstance', async () => tvdb as unknown as Tvdb);
+    const addSeries = stubSonarrAddSeries();
+    const notification = mock.method(
+      MediaRequest,
+      'sendNotification',
+      async () => undefined
+    );
+    const { media, request } = await createApprovedTvRequest(87015, [8]);
+
+    await new MediaRequestSubscriber().sendToSonarr(request);
+
+    const savedMedia = await getRepository(Media).findOneBy({ id: media.id });
+    const savedRequest = await getRepository(MediaRequest).findOne({
+      where: { id: request.id },
+      relations: { seasons: true },
+    });
+    assert.ok(savedMedia);
+    assert.equal(savedRequest?.status, MediaRequestStatus.FAILED);
+    assert.equal(savedRequest?.seasons.length, 1);
+    assert.equal(addSeries.mock.callCount(), 0);
+    assert.equal(notification.mock.callCount(), 1);
   });
 
   it('passes exact multi-season episode selections to Sonarr', async () => {

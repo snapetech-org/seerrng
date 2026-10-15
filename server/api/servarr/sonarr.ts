@@ -107,6 +107,7 @@ export const sanitizeSonarrSeries = (
     cleanTitle: text(value.cleanTitle),
     imdbId: text(value.imdbId),
     titleSlug: text(value.titleSlug),
+    ...(integer(value.tmdbId) > 0 ? { tmdbId: integer(value.tmdbId) } : {}),
     certification: text(value.certification),
     genres: textArray(value.genres),
     tags: integerArray(value.tags),
@@ -271,6 +272,7 @@ export interface SonarrSeries {
   cleanTitle: string;
   imdbId: string;
   titleSlug: string;
+  tmdbId?: number;
   certification: string;
   genres: string[];
   tags: number[];
@@ -598,6 +600,52 @@ class SonarrAPI extends ServarrBase<{
         title,
       });
       throw new Error('No series found', { cause: e });
+    }
+  }
+
+  public async getSeriesByTmdbId(id: number): Promise<SonarrSeries | null> {
+    if (!Number.isSafeInteger(id) || id <= 0) {
+      return null;
+    }
+
+    try {
+      const response = await this.request<unknown>(
+        'GET',
+        '/series/lookup',
+        undefined,
+        { params: { term: `tmdb:${id}` } }
+      );
+      const results = sanitizeServarrRecordArray<Record<string, unknown>>(
+        response.data,
+        MAX_SERVARR_LOOKUP_RESULTS
+      );
+
+      const matches = results
+        .map(sanitizeSonarrSeries)
+        .filter(
+          (series): series is SonarrSeries =>
+            !!series && (!series.tmdbId || series.tmdbId === id)
+        );
+      const exactMatches = matches.filter((series) => series.tmdbId === id);
+      if (exactMatches.length === 1) {
+        return exactMatches[0];
+      }
+
+      if (exactMatches.length > 1) {
+        return null;
+      }
+
+      return matches.length === 1 ? matches[0] : null;
+    } catch (error) {
+      logger.debug('Sonarr could not resolve a series by TMDB ID', {
+        label: 'Sonarr API',
+        tmdbId: id,
+        errorMessage:
+          error instanceof Error
+            ? redactSecrets(error.message)
+            : 'Unknown error',
+      });
+      return null;
     }
   }
 

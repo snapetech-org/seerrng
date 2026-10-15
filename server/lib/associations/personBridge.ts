@@ -32,26 +32,52 @@ type ScreenCredit = {
 const getScreenCreditReason = (
   artistName: string,
   credit: ScreenCredit
-): string => {
+): {
+  reason: string;
+  reasonKey: NonNullable<AssociationEdge['reasonKey']>;
+  reasonValues: Record<string, string>;
+} => {
+  const reasonValues = { personName: artistName };
+
   if (credit.department === SOUND_DEPARTMENT) {
     const job = credit.job?.toLowerCase() ?? '';
 
     if (job.includes('composer') || job.includes('music')) {
-      return `${artistName} scored this`;
+      return {
+        reason: `${artistName} scored this`,
+        reasonKey: 'personScoredThis',
+        reasonValues,
+      };
     }
 
-    return `${artistName} worked on the sound`;
+    return {
+      reason: `${artistName} worked on the sound`,
+      reasonKey: 'personWorkedOnSound',
+      reasonValues,
+    };
   }
 
   if (credit.character) {
-    return `${artistName} appears in this`;
+    return {
+      reason: `${artistName} appears in this`,
+      reasonKey: 'personAppearsInThis',
+      reasonValues,
+    };
   }
 
   if (credit.job) {
-    return `${artistName} worked on this`;
+    return {
+      reason: `${artistName} worked on this`,
+      reasonKey: 'personWorkedOnThis',
+      reasonValues,
+    };
   }
 
-  return `${artistName} is connected to this`;
+  return {
+    reason: `${artistName} is connected to this`,
+    reasonKey: 'personConnectedToThis',
+    reasonValues,
+  };
 };
 
 /**
@@ -138,6 +164,10 @@ export const screenToMusic = async (
       reason: person.isComposer
         ? `${person.name} scored this`
         : `${person.name} also makes music`,
+      reasonKey: person.isComposer
+        ? 'personScoredThis'
+        : 'personAlsoMakesMusic',
+      reasonValues: { personName: person.name },
       node,
     });
   }
@@ -247,10 +277,11 @@ export const musicToScreen = async (
       );
     }
 
+    const reason = getScreenCreditReason(artistName, credit);
     edges.push({
       weight: 0.55,
       type: 'shared-person',
-      reason: getScreenCreditReason(artistName, credit),
+      ...reason,
       node,
     });
   }

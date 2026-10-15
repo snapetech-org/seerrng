@@ -3,7 +3,7 @@ import ButtonWithLoader from '@app/components/Common/ButtonWithLoader';
 import usePlexLogin from '@app/hooks/usePlexLogin';
 import defineMessages from '@app/utils/defineMessages';
 import { Fragment } from 'react';
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage, useIntl } from 'react-intl';
 
 const messages = defineMessages('components.Login', {
   loginwithapp: 'Login with {appName}',
@@ -23,6 +23,7 @@ const PlexLoginButton = ({
   large,
 }: PlexLoginButtonProps) => {
   const { loading, login } = usePlexLogin({ onAuthToken, onError });
+  const intl = useIntl();
 
   return (
     <ButtonWithLoader
@@ -30,7 +31,9 @@ const PlexLoginButton = ({
       onClick={login}
       loading={loading || isProcessing}
       data-testid="plex-login-button"
-      aria-label="Login with Plex"
+      aria-label={intl.formatMessage(messages.loginwithapp, {
+        appName: 'Plex',
+      })}
     >
       {large ? (
         <FormattedMessage

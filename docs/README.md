@@ -11,6 +11,7 @@ request workflows, download copies, user settings, and the services SeerrNG
 connects to.
 
 ## Start here
+- [Localization coverage and roadmap](/localization-roadmap): current supported locales, catalog coverage, and remaining translation work.
 
 - [Getting started](/getting-started/): choose an installation method and
   connect SeerrNG to your media server.
@@ -36,11 +37,14 @@ connects to.
 - [Import a playlist as music requests](/using-seerr/playlist-requests/)
 - [Manage users and request preferences](/using-seerr/users/editing-users/)
 - [Configure notifications](/using-seerr/notifications/)
+- [Configure Slack notifications](/using-seerr/notifications/slack/)
+- [Configure Telegram notifications](/using-seerr/notifications/telegram/)
 - [Hide requested or available media](/using-seerr/settings/general)
 - [Plex watchlist auto-requests](/using-seerr/plex/watchlist-auto-request/)
 
 ## Configure and operate
 
+- [Choose metadata providers and configure music request limits](/using-seerr/settings/metadata/)
 - [Configure media and automation services](/using-seerr/settings/services/)
 - [Choose available media categories](/using-seerr/settings/media-categories/)
 - [Configure media-server libraries](/using-seerr/settings/mediaserver)
@@ -60,6 +64,7 @@ connects to.
 ## Integrate and contribute
 
 - [Why SeerrNG is a fork and how upstreaming could retire it](/fork-rationale/)
+- [Current SeerrNG changes in review](/upstream-review-status/)
 - [REST API reference](/api/seerr-api/)
 - [Third-party client compatibility](/using-seerr/third-party-client-compatibility/)
 - [Contribution guidelines](https://github.com/snapetech/seerrng/blob/main/CONTRIBUTING.md)

@@ -1,6 +1,13 @@
+import defineMessages from '@app/utils/defineMessages';
 import { EyeIcon, EyeSlashIcon } from '@heroicons/react/24/solid';
 import { Field } from 'formik';
 import { memo, useCallback, useMemo, useState } from 'react';
+import { useIntl } from 'react-intl';
+
+const messages = defineMessages('components.Common.SensitiveInput', {
+  showSensitiveValue: 'Show sensitive value',
+  hideSensitiveValue: 'Hide sensitive value',
+});
 
 interface CustomInputProps extends React.ComponentProps<'input'> {
   as?: 'input';
@@ -14,6 +21,7 @@ type SensitiveInputProps = CustomInputProps | CustomFieldProps;
 
 const SensitiveInput = memo(
   ({ as = 'input', ...props }: SensitiveInputProps) => {
+    const intl = useIntl();
     const [isHidden, setHidden] = useState(true);
     const Component = as === 'input' ? 'input' : Field;
     const componentProps = useMemo(
@@ -42,7 +50,7 @@ const SensitiveInput = memo(
           data-1pignore="true"
           data-lpignore="true"
           {...componentProps}
-          className={`rounded-l-only ${componentProps.className ?? ''}`}
+          className={`rounded-s-only ${componentProps.className ?? ''}`}
           type={
             props.type === 'textarea'
               ? undefined
@@ -62,9 +70,9 @@ const SensitiveInput = memo(
           onClick={handleToggleVisibility}
           type="button"
           className="input-action"
-          aria-label={
-            isHidden ? 'Show sensitive value' : 'Hide sensitive value'
-          }
+          aria-label={intl.formatMessage(
+            isHidden ? messages.showSensitiveValue : messages.hideSensitiveValue
+          )}
         >
           {isHidden ? <EyeSlashIcon /> : <EyeIcon />}
         </button>

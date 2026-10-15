@@ -54,7 +54,7 @@ const ThemePicker = () => {
       </Menu.Button>
       <Menu.Items
         transition
-        className="absolute right-0 z-50 mt-2 w-80 origin-top-right rounded-md shadow-lg transition duration-100 ease-out data-closed:scale-95 data-closed:opacity-0"
+        className="absolute end-0 z-50 mt-2 w-80 rounded-md shadow-lg transition duration-100 ease-out data-closed:scale-95 data-closed:opacity-0"
       >
         <div className="app-theme-picker-surface rounded-md p-3 ring-1 ring-gray-700 backdrop-blur">
           <Menu.Item
@@ -83,7 +83,7 @@ const ThemePicker = () => {
                 disabled={!user || saving}
                 aria-busy={saving}
                 className={({ active }) =>
-                  `flex min-w-0 items-center rounded border px-2 py-2 text-left text-sm font-medium transition ${
+                  `flex min-w-0 items-center rounded border px-2 py-2 text-start text-sm font-medium transition ${
                     palette === themePalette.id
                       ? 'border-indigo-500 bg-indigo-600/20 text-gray-100'
                       : active
@@ -92,7 +92,7 @@ const ThemePicker = () => {
                   }`
                 }
               >
-                <span className="mr-2 flex shrink-0 -space-x-1">
+                <span className="me-2 flex shrink-0 -space-x-1">
                   {themePalette.swatches.map((swatch) => (
                     <span
                       key={`${themePalette.id}-${swatch}`}
@@ -106,7 +106,7 @@ const ThemePicker = () => {
                   {themePalette.name}
                 </span>
                 {palette === themePalette.id && (
-                  <CheckIcon className="ml-2 h-4 w-4 shrink-0 text-indigo-400" />
+                  <CheckIcon className="ms-2 h-4 w-4 shrink-0 text-indigo-400" />
                 )}
               </Menu.Item>
             ))}

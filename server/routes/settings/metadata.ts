@@ -1,9 +1,15 @@
+import CoverArtArchive from '@server/api/coverartarchive';
+import MusicBrainz from '@server/api/musicbrainz';
 import TheMovieDb from '@server/api/themoviedb';
 import Tvdb from '@server/api/tvdb';
 import { Permission } from '@server/lib/permissions';
 import {
+  DEFAULT_MUSIC_METADATA_SETTINGS,
   getSettings,
+  MAX_COVER_ART_ARCHIVE_CONCURRENT_REQUESTS,
+  MAX_COVER_ART_ARCHIVE_REQUESTS_PER_SECOND,
   MetadataProviderType,
+  type CoverArtArchiveSettings,
   type MetadataSettings,
 } from '@server/lib/settings';
 import logger from '@server/logger';
@@ -41,7 +47,16 @@ const parseMetadataSettings = (
 
 const parseMetadataTestBody = (
   value: unknown
-): { value: { tmdb?: boolean; tvdb?: boolean } } | { error: string } => {
+):
+  | {
+      value: {
+        tmdb?: boolean;
+        tvdb?: boolean;
+        musicbrainz?: boolean;
+        coverartarchive?: boolean;
+      };
+    }
+  | { error: string } => {
   if (value === undefined || value === null) {
     return { value: {} };
   }
@@ -50,16 +65,61 @@ const parseMetadataTestBody = (
     return { error: 'Invalid metadata test settings.' };
   }
 
-  const body = value as { tmdb?: unknown; tvdb?: unknown };
+  const body = value as {
+    tmdb?: unknown;
+    tvdb?: unknown;
+    musicbrainz?: unknown;
+    coverartarchive?: unknown;
+  };
 
   if (
     (body.tmdb !== undefined && typeof body.tmdb !== 'boolean') ||
-    (body.tvdb !== undefined && typeof body.tvdb !== 'boolean')
+    (body.tvdb !== undefined && typeof body.tvdb !== 'boolean') ||
+    (body.musicbrainz !== undefined && typeof body.musicbrainz !== 'boolean') ||
+    (body.coverartarchive !== undefined &&
+      typeof body.coverartarchive !== 'boolean')
   ) {
     return { error: 'Metadata test flags must be booleans.' };
   }
 
-  return { value: { tmdb: body.tmdb, tvdb: body.tvdb } };
+  return {
+    value: {
+      tmdb: body.tmdb,
+      tvdb: body.tvdb,
+      musicbrainz: body.musicbrainz,
+      coverartarchive: body.coverartarchive,
+    },
+  };
+};
+
+const parseCoverArtArchiveSettings = (
+  value: unknown
+): { value: CoverArtArchiveSettings } | { error: string } => {
+  if (!value || typeof value !== 'object' || Array.isArray(value)) {
+    return { error: 'Invalid Cover Art Archive settings.' };
+  }
+
+  const body = value as Partial<CoverArtArchiveSettings>;
+  if (
+    !Number.isSafeInteger(body.maxConcurrentRequests) ||
+    body.maxConcurrentRequests! < 1 ||
+    body.maxConcurrentRequests! > MAX_COVER_ART_ARCHIVE_CONCURRENT_REQUESTS ||
+    !Number.isSafeInteger(body.maxRequestsPerSecond) ||
+    body.maxRequestsPerSecond! < 1 ||
+    body.maxRequestsPerSecond! > MAX_COVER_ART_ARCHIVE_REQUESTS_PER_SECOND
+  ) {
+    return {
+      error:
+        'Cover Art Archive limits must be whole numbers within the supported ranges.',
+    };
+  }
+
+  return {
+    value: {
+      maxConcurrentRequests: body.maxConcurrentRequests!,
+      maxRequestsPerSecond: body.maxRequestsPerSecond!,
+    },
+  };
 };
 
 metadataRoutes.get('/', (_req, res) => {
@@ -69,6 +129,37 @@ metadataRoutes.get('/', (_req, res) => {
     anime: settings.metadataSettings.anime,
   });
 });
+
+metadataRoutes.get('/music', (_req, res) => {
+  const settings = getSettings().musicMetadataSettings;
+  res
+    .status(200)
+    .json(
+      settings?.coverArtArchive ??
+        DEFAULT_MUSIC_METADATA_SETTINGS.coverArtArchive
+    );
+});
+
+metadataRoutes.put(
+  '/music',
+  authorizedMutation(Permission.ADMIN, async (req, res) => {
+    const parsedBody = parseCoverArtArchiveSettings(req.body);
+
+    if ('error' in parsedBody) {
+      return res.status(400).json({ success: false, error: parsedBody.error });
+    }
+
+    await getSettings().persistSection('musicMetadataSettings', (current) => ({
+      ...current,
+      coverArtArchive: parsedBody.value,
+    }));
+
+    return res.status(200).json({
+      success: true,
+      ...parsedBody.value,
+    });
+  })
+);
 
 metadataRoutes.put(
   '/',
@@ -153,6 +244,8 @@ metadataRoutes.post(
   authorizedMutation(Permission.ADMIN, async (req, res) => {
     let tvdbTest = -1;
     let tmdbTest = -1;
+    let musicbrainzTest = -1;
+    let coverartarchiveTest = -1;
 
     try {
       const parsedBody = parseMetadataTestBody(req.body);
@@ -193,7 +286,38 @@ metadataRoutes.post(
         });
       }
 
-      const success = !(tvdbTest === 0 || tmdbTest === 0);
+      try {
+        if (body.musicbrainz === true) {
+          musicbrainzTest = 0;
+          await new MusicBrainz().testConnection();
+          musicbrainzTest = 1;
+        }
+      } catch (e) {
+        logger.error('Failed to test music metadata provider', {
+          label: 'MusicBrainz',
+          message: e instanceof Error ? e.message : 'Unknown error',
+        });
+      }
+
+      try {
+        if (body.coverartarchive === true) {
+          coverartarchiveTest = 0;
+          await new CoverArtArchive().testConnection();
+          coverartarchiveTest = 1;
+        }
+      } catch (e) {
+        logger.error('Failed to test music metadata provider', {
+          label: 'CoverArtArchive',
+          message: e instanceof Error ? e.message : 'Unknown error',
+        });
+      }
+
+      const success = ![
+        tvdbTest,
+        tmdbTest,
+        musicbrainzTest,
+        coverartarchiveTest,
+      ].includes(0);
       const statusCode = success ? 200 : 500;
 
       return res.status(statusCode).json({
@@ -201,6 +325,8 @@ metadataRoutes.post(
         tests: {
           tmdb: getTestResultString(tmdbTest),
           tvdb: getTestResultString(tvdbTest),
+          musicbrainz: getTestResultString(musicbrainzTest),
+          coverartarchive: getTestResultString(coverartarchiveTest),
         },
       });
     } catch (e) {
@@ -213,6 +339,8 @@ metadataRoutes.post(
         tests: {
           tmdb: getTestResultString(tmdbTest),
           tvdb: getTestResultString(tvdbTest),
+          musicbrainz: getTestResultString(musicbrainzTest),
+          coverartarchive: getTestResultString(coverartarchiveTest),
         },
         error: 'Unable to test metadata providers.',
       });

@@ -118,7 +118,7 @@ const TransportSecurityNotice = ({
 
   const setupControls =
     data.setupRequired && data.environmentOverrides.length === 0 ? (
-      <div className="mt-4 rounded border border-gray-500 p-4 text-left">
+      <div className="mt-4 rounded border border-gray-500 p-4 text-start">
         <h4 className="mb-2 font-semibold">
           {intl.formatMessage(messages.firstRunTitle)}
         </h4>
@@ -191,6 +191,7 @@ const TransportSecurityNotice = ({
                 <span>{intl.formatMessage(messages.httpsPort)}</span>
                 <input
                   type="number"
+                  dir="ltr"
                   min="1"
                   max="65535"
                   value={setupHttpsPort}
@@ -202,6 +203,7 @@ const TransportSecurityNotice = ({
                   <span>{intl.formatMessage(messages.tlsHosts)}</span>
                   <input
                     type="text"
+                    dir="ltr"
                     value={setupHosts}
                     onChange={(event) => setSetupHosts(event.target.value)}
                   />
@@ -213,6 +215,7 @@ const TransportSecurityNotice = ({
                     <span>{intl.formatMessage(messages.certificateFile)}</span>
                     <input
                       type="text"
+                      dir="ltr"
                       value={setupCertificateFile}
                       onChange={(event) =>
                         setSetupCertificateFile(event.target.value)
@@ -223,6 +226,7 @@ const TransportSecurityNotice = ({
                     <span>{intl.formatMessage(messages.keyFile)}</span>
                     <input
                       type="text"
+                      dir="ltr"
                       value={setupKeyFile}
                       onChange={(event) => setSetupKeyFile(event.target.value)}
                     />
@@ -231,6 +235,7 @@ const TransportSecurityNotice = ({
                     <span>{intl.formatMessage(messages.caFile)}</span>
                     <input
                       type="text"
+                      dir="ltr"
                       value={setupCaFile}
                       onChange={(event) => setSetupCaFile(event.target.value)}
                     />

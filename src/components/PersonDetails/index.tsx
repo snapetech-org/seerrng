@@ -244,7 +244,7 @@ const PersonDetails = () => {
           setCurrentMediaType(e.target.value as MediaType);
         }}
         value={currentMediaType}
-        className="rounded-r-only"
+        className="rounded-e-only"
       >
         <option value="all">{intl.formatMessage(globalMessages.all)}</option>
         <option value="movie">
