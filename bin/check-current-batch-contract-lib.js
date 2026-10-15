@@ -4303,6 +4303,17 @@ const validateCurrentBatchContract = (files) => {
       'Movie and Series must keep acquisition search and request in their own opposing shared row'
     );
   }
+  requireText(
+    seriesLayout,
+    'const selectedPlaybackAction = selectedPlaybackIsShared\n    ? undefined\n    : playbackActions?.(',
+    'shared selected seasons must not expose media-server playback actions'
+  );
+  requireCount(
+    seriesLayout,
+    '{selectedPlaybackAction != null && (',
+    2,
+    'media-server playback and device actions must both be suppressed for shared selections'
+  );
   requireOrder(
     seriesLayout,
     [
@@ -4311,7 +4322,9 @@ const validateCurrentBatchContract = (files) => {
       'data-card-part="actions"',
       '<MediaQualitySelect',
       'label={intl.formatMessage(messages.quality)}',
-      '{playbackActions?.(',
+      '{selectedPlaybackAction != null && (',
+      '{selectedPlaybackAction}',
+      '{selectedPlaybackAction != null && (',
       '<PlayOnDeviceButton',
       'data-card-part="saved-item-action"',
       'data-card-part="collection-action"',
@@ -5767,8 +5780,13 @@ const validateCurrentBatchContract = (files) => {
   }
   requireText(
     'src/components/IssueModal/CreateIssueModal/index.tsx',
-    'getAvailableIssueQualities(data?.mediaInfo)',
-    'issue quality choices must reflect current HD/4K availability'
+    'getReportableIssueQualities(data?.mediaInfo)',
+    'issue quality choices must include copies that are available or processing'
+  );
+  requireText(
+    'src/components/IssueDetails/issueMediaFormat.ts',
+    'status === MediaStatus.PROCESSING',
+    'processing HD/4K copies must remain eligible for issue reports'
   );
   const issueSummary = 'src/components/IssueDetails/IssueMediaSummary.tsx';
   requireText(
@@ -7219,8 +7237,8 @@ const validateCurrentBatchContract = (files) => {
     ],
     [
       'src/components/IssueDetails/issueMediaFormat.test.ts',
-      'issue quality choices include only qualities currently available',
-      'must test available HD and 4K issue targets',
+      'issue quality choices include available and processing qualities',
+      'must test reportable HD and 4K issue targets, including in-flight copies',
     ],
     [
       'src/components/IssueList/IssueItem/issueAffectedSummary.test.ts',

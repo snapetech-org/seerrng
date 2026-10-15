@@ -123,4 +123,44 @@ describe('Media.getMedia', () => {
       [2]
     );
   });
+
+  it('hydrates only the current viewer’s movie request coverage', async () => {
+    const [viewer, otherUser] = await Promise.all([
+      getRepository(User).findOneByOrFail({ email: 'admin@seerr.dev' }),
+      getRepository(User).findOneByOrFail({ email: 'friend@seerr.dev' }),
+    ]);
+    const media = await getRepository(Media).save(
+      new Media({ tmdbId: 99125, mediaType: MediaType.MOVIE })
+    );
+    await getRepository(MediaRequest).save([
+      new MediaRequest({
+        type: MediaType.MOVIE,
+        status: MediaRequestStatus.COMPLETED,
+        media,
+        requestedBy: viewer,
+        modifiedBy: viewer,
+        is4k: false,
+      }),
+      new MediaRequest({
+        type: MediaType.MOVIE,
+        status: MediaRequestStatus.COMPLETED,
+        media,
+        requestedBy: otherUser,
+        modifiedBy: otherUser,
+        is4k: true,
+      }),
+    ]);
+
+    const result = await Media.getMedia(99125, MediaType.MOVIE, viewer);
+
+    assert.ok(result);
+    assert.deepStrictEqual(result.viewerRequestCoverage, {
+      standard: true,
+      fourK: false,
+    });
+    assert.equal(
+      'requesterId' in (result.viewerRequestCoverage as object),
+      false
+    );
+  });
 });

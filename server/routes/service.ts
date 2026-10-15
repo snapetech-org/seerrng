@@ -5,6 +5,7 @@ import ReadarrAPI from '@server/api/servarr/readarr';
 import type { SonarrSeries } from '@server/api/servarr/sonarr';
 import SonarrAPI from '@server/api/servarr/sonarr';
 import TheMovieDb from '@server/api/themoviedb';
+import Tvdb from '@server/api/tvdb';
 import { getRepository } from '@server/datasource';
 import { User } from '@server/entity/User';
 import type {
@@ -14,6 +15,7 @@ import type {
   ServiceCommonServerWithDetails,
 } from '@server/interfaces/api/serviceInterfaces';
 import { getExternalRuntimeConfig } from '@server/lib/externalRuntimeConfig';
+import { getMusicQualityFromLabels } from '@server/lib/musicQuality';
 import { Permission } from '@server/lib/permissions';
 import { runWithCurrentServarrService } from '@server/lib/serviceAdmission';
 import {
@@ -47,6 +49,15 @@ export const SONARR_LOOKUP_RATE_LIMIT = {
 } as const;
 const sonarrLookupRateLimit = rateLimit({
   ...SONARR_LOOKUP_RATE_LIMIT,
+  skip: () =>
+    process.env.NODE_ENV === 'test' || process.env.E2E_TESTS === 'true',
+  standardHeaders: true,
+  legacyHeaders: false,
+  keyGenerator: (req) => `user:${req.user?.id ?? 'anonymous'}`,
+});
+const tvdbSeasonRateLimit = rateLimit({
+  windowMs: 60 * 1000,
+  limit: 30,
   skip: () =>
     process.env.NODE_ENV === 'test' || process.env.E2E_TESTS === 'true',
   standardHeaders: true,
@@ -133,6 +144,7 @@ const filterServiceServer = (
   return {
     id: server.id,
     name: server.name,
+    musicQuality: server.musicQuality,
     is4k: server.is4k,
     isAlt: server.isAlt,
     isDefault: server.isDefault,
@@ -352,6 +364,10 @@ serviceRoutes.get('/lidarr', async (req, res, next) => {
             {
               id: lidarr.id,
               name: lidarr.name,
+              musicQuality: getMusicQualityFromLabels(
+                lidarr.activeProfileName,
+                lidarr.name
+              ),
               is4k: lidarr.is4k,
               isDefault: lidarr.isDefault,
               activeDirectory: lidarr.activeDirectory,
@@ -702,6 +718,25 @@ serviceRoutes.get<{ tmdbId: string }>(
       return next({ status: 404, message: 'Series not found.' });
     }
 
+    const is4kQuery: unknown = req.query.is4k;
+    if (
+      is4kQuery !== undefined &&
+      is4kQuery !== true &&
+      is4kQuery !== false &&
+      is4kQuery !== 'true' &&
+      is4kQuery !== 'false'
+    ) {
+      return next({ status: 400, message: 'is4k must be true or false.' });
+    }
+    const is4k = is4kQuery === true || is4kQuery === 'true';
+    const requestedServerId =
+      req.query.serverId === undefined
+        ? undefined
+        : parseNonNegativeRouteId(req.query.serverId, maxServiceRouteId);
+    if (req.query.serverId !== undefined && requestedServerId === undefined) {
+      return next({ status: 400, message: 'serverId must be a valid ID.' });
+    }
+
     try {
       return await runUserSecurityMutation(req.user!.id, async () => {
         const actor = await getRepository(User).findOneBy({ id: req.user!.id });
@@ -720,10 +755,20 @@ serviceRoutes.get<{ tmdbId: string }>(
           tvId: tmdbId,
           language: 'en',
         });
-        const sonarrId = getExternalRuntimeConfig().sonarr[0]?.id;
-        if (sonarrId === undefined) {
+        const sonarrServers = getExternalRuntimeConfig().sonarr.filter(
+          (server) =>
+            server.is4k === is4k &&
+            (requestedServerId === undefined || server.id === requestedServerId)
+        );
+        const sonarrServer =
+          requestedServerId === undefined
+            ? sonarrServers.find((server) => server.isDefault)
+            : sonarrServers[0];
+        if (!sonarrServer) {
           logger.error('No sonarr server has been setup', {
             label: 'Media Request',
+            is4k,
+            requestedServerId,
           });
           return next({
             status: 404,
@@ -732,11 +777,11 @@ serviceRoutes.get<{ tmdbId: string }>(
         }
         const response = await runWithCurrentServarrService(
           'sonarr',
-          sonarrId,
-          async (sonarrSettings) =>
+          sonarrServer.id,
+          async (currentSettings) =>
             new SonarrAPI({
-              apiKey: sonarrSettings.apiKey,
-              url: SonarrAPI.buildUrl(sonarrSettings, '/api/v3'),
+              apiKey: currentSettings.apiKey,
+              url: SonarrAPI.buildUrl(currentSettings, '/api/v3'),
             }).getSeriesByTitle(tv.name)
         );
         if (!response) {
@@ -760,6 +805,41 @@ serviceRoutes.get<{ tmdbId: string }>(
       return next({
         status: 500,
         message: 'Something went wrong trying to fetch series information',
+      });
+    }
+  }
+);
+
+serviceRoutes.get<{ tvdbId: string }>(
+  '/tvdb/seasons/:tvdbId',
+  tvdbSeasonRateLimit,
+  async (req, res, next) => {
+    const tvdbId = parsePositiveServiceRouteId(req.params.tvdbId);
+    if (!tvdbId) {
+      return next({ status: 404, message: 'Series not found.' });
+    }
+
+    try {
+      const seasons = await (
+        await Tvdb.getInstance()
+      ).getOfficialSeasons(tvdbId);
+      if (!seasons) {
+        return next({
+          status: 502,
+          message: 'Unable to verify official TVDB season data.',
+        });
+      }
+
+      return res.status(200).json(seasons);
+    } catch (e) {
+      logger.warn('Failed to fetch official TVDB season data', {
+        label: 'Media Request',
+        tvdbId,
+        errorMessage: e instanceof Error ? e.message : String(e),
+      });
+      return next({
+        status: 502,
+        message: 'Unable to verify official TVDB season data.',
       });
     }
   }

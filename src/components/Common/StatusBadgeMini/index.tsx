@@ -1,7 +1,9 @@
 import Spinner from '@app/assets/spinner.svg';
 import Tooltip from '@app/components/Common/Tooltip';
+import useSettings from '@app/hooks/useSettings';
 import globalMessages from '@app/i18n/globalMessages';
 import defineMessages from '@app/utils/defineMessages';
+import { getViewerAvailabilityPresentation } from '@app/utils/viewerAvailabilityPresentation';
 import { CheckCircleIcon } from '@heroicons/react/20/solid';
 import { CheckCircleIcon as AvailabilityIcon } from '@heroicons/react/24/outline';
 import {
@@ -18,6 +20,8 @@ import { useIntl } from 'react-intl';
 const messages = defineMessages('components.Common.StatusBadgeMini', {
   pendingApproval: '{quality}: Pending approval',
   approvedProcessing: '{quality}: Approved and processing',
+  sharedAvailability: '{status} · Shared availability',
+  shared: 'Shared',
 });
 
 export type StatusBadgeQuality = 'HD' | '4K' | 'MP3' | 'FLAC';
@@ -30,6 +34,7 @@ interface StatusBadgeMiniProps {
   shrink?: boolean;
   // Request cards use the standard action-button geometry.
   buttonStyle?: boolean;
+  viewerHasRequestedCopy?: boolean;
 }
 
 const StatusBadgeMini = memo(
@@ -39,8 +44,18 @@ const StatusBadgeMini = memo(
     inProgress = false,
     shrink = false,
     buttonStyle = false,
+    viewerHasRequestedCopy,
   }: StatusBadgeMiniProps) => {
     const intl = useIntl();
+    const settings = useSettings();
+    const availability = getViewerAvailabilityPresentation(
+      status,
+      settings.currentSettings.otherUsersAvailability,
+      viewerHasRequestedCopy,
+      inProgress
+    );
+    if (availability.hidden) return null;
+
     const badgeStyle = [
       `shadow-md ${shrink ? 'poster-control poster-control-icon' : 'w-5 rounded-full p-0.5'}`,
     ];
@@ -56,7 +71,9 @@ const StatusBadgeMini = memo(
         break;
       case MediaStatus.AVAILABLE:
         badgeStyle.push(
-          'bg-green-500/35 border-green-400 ring-green-400 text-green-100'
+          availability.shared
+            ? 'poster-control-shared-availability'
+            : 'bg-green-500/35 border-green-400 ring-green-400 text-green-100'
         );
         indicatorIcon = <CheckCircleIcon />;
         break;
@@ -72,7 +89,9 @@ const StatusBadgeMini = memo(
         break;
       case MediaStatus.PARTIALLY_AVAILABLE:
         badgeStyle.push(
-          'bg-green-500/35 border-green-400 ring-green-400 text-green-100'
+          availability.shared
+            ? 'poster-control-shared-availability'
+            : 'bg-green-500/35 border-green-400 ring-green-400 text-green-100'
         );
         indicatorIcon = <MinusSmallIcon />;
         break;
@@ -110,7 +129,16 @@ const StatusBadgeMini = memo(
           return undefined;
       }
     })();
-    const label = [quality, statusLabel].filter(Boolean).join(' ');
+    const label = [
+      quality,
+      availability.shared && statusLabel
+        ? intl.formatMessage(messages.sharedAvailability, {
+            status: statusLabel,
+          })
+        : statusLabel,
+    ]
+      .filter(Boolean)
+      .join(' ');
     const tooltipLabel =
       quality && !inProgress && status === MediaStatus.PENDING
         ? intl.formatMessage(messages.pendingApproval, { quality })
@@ -119,14 +147,16 @@ const StatusBadgeMini = memo(
           : label;
 
     if (shrink && quality) {
-      const tone = inProgress
-        ? 'poster-control-processing'
-        : status === MediaStatus.AVAILABLE ||
-            status === MediaStatus.PARTIALLY_AVAILABLE
-          ? 'poster-control-available'
-          : status === MediaStatus.PENDING
-            ? 'poster-control-pending'
-            : 'poster-control-processing';
+      const tone = availability.shared
+        ? 'poster-control-shared-availability'
+        : inProgress
+          ? 'poster-control-processing'
+          : status === MediaStatus.AVAILABLE ||
+              status === MediaStatus.PARTIALLY_AVAILABLE
+            ? 'poster-control-available'
+            : status === MediaStatus.PENDING
+              ? 'poster-control-pending'
+              : 'poster-control-processing';
       const buttonTone =
         !inProgress && status === MediaStatus.AVAILABLE
           ? 'app-button-success'
@@ -148,11 +178,17 @@ const StatusBadgeMini = memo(
             <>
               <span>{quality}</span>
               <AvailabilityIcon aria-hidden />
+              {availability.shared && (
+                <span>{intl.formatMessage(messages.shared)}</span>
+              )}
             </>
           ) : (
             <>
               <span>{indicatorIcon}</span>
               <span>{quality}</span>
+              {availability.shared && (
+                <span>{intl.formatMessage(messages.shared)}</span>
+              )}
             </>
           )}
         </div>

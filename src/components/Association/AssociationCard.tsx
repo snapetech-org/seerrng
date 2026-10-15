@@ -11,6 +11,7 @@ const AssociationCard = ({ node }: { node: AssociationNode }) => {
           image={node.posterPath}
           status={node.mediaInfo?.status}
           status4k={node.mediaInfo?.status4k}
+          viewerRequestCoverage={node.mediaInfo?.viewerRequestCoverage}
           summary={node.overview}
           title={node.title}
           year={node.releaseDate}
@@ -27,6 +28,7 @@ const AssociationCard = ({ node }: { node: AssociationNode }) => {
           image={node.posterPath}
           status={node.mediaInfo?.status}
           status4k={node.mediaInfo?.status4k}
+          viewerRequestCoverage={node.mediaInfo?.viewerRequestCoverage}
           summary={node.overview}
           title={node.name}
           year={node.firstAirDate}

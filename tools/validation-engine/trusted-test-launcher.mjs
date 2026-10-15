@@ -147,7 +147,6 @@ function createSyntheticGitRepository(workspace, runDirectory) {
 }
 
 function linkDependencies(sourceRoot, workspace) {
-  const dependencies = [];
   const dependencyDirectories = [];
   const pending = [{ absolute: sourceRoot, relative: '' }];
   const skipped = new Set([
