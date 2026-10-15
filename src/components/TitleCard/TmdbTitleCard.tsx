@@ -25,6 +25,8 @@ export interface TmdbTitleCardProps {
   canExpand?: boolean;
   isAddedToWatchlist?: boolean;
   mutateParent?: () => void;
+  discoverNavigationContextId?: string;
+  onOpen?: () => void;
 }
 
 const messages = defineMessages('components.TitleCard', {
@@ -56,6 +58,8 @@ const TmdbTitleCard = ({
   canExpand,
   isAddedToWatchlist = false,
   mutateParent,
+  discoverNavigationContextId,
+  onOpen,
 }: TmdbTitleCardProps) => {
   const intl = useIntl();
   const { hasPermission } = useUser();
@@ -120,6 +124,8 @@ const TmdbTitleCard = ({
         isAddedToWatchlist={isAddedToWatchlist}
         canExpand={canExpand}
         mutateParent={mutateParent}
+        discoverNavigationContextId={discoverNavigationContextId}
+        onOpen={onOpen}
       />
     </div>
   );
@@ -203,6 +209,8 @@ const TmdbTitleCard = ({
       inProgress4k={(title.mediaInfo?.downloadStatus4k ?? []).length > 0}
       canExpand={canExpand}
       mutateParent={mutateParent}
+      discoverNavigationContextId={discoverNavigationContextId}
+      onOpen={onOpen}
     />
   ) : (
     <TitleCard
@@ -236,6 +244,8 @@ const TmdbTitleCard = ({
       inProgress4k={(title.mediaInfo?.downloadStatus4k ?? []).length > 0}
       canExpand={canExpand}
       mutateParent={mutateParent}
+      discoverNavigationContextId={discoverNavigationContextId}
+      onOpen={onOpen}
     />
   );
 };

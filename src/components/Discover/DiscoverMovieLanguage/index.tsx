@@ -67,6 +67,7 @@ const DiscoverMovieLanguage = () => {
         <Header>{title}</Header>
       </div>
       <ListView
+        enableDiscoverNavigation
         items={titles}
         isEmpty={isEmpty}
         isLoading={

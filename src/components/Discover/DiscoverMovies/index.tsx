@@ -113,6 +113,7 @@ const DiscoverMovies = ({
         <MediaDiscoveryControls type="movie" currentFilters={preparedFilters} />
       </div>
       <ListView
+        enableDiscoverNavigation
         items={discover.titles}
         isEmpty={discover.isEmpty}
         isLoading={

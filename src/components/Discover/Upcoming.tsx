@@ -43,6 +43,7 @@ const UpcomingMovies = () => {
         <Header>{intl.formatMessage(messages.upcomingmovies)}</Header>
       </div>
       <ListView
+        enableDiscoverNavigation
         items={titles}
         isEmpty={isEmpty}
         isLoading={

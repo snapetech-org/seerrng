@@ -7,6 +7,7 @@ import MediaServerPlayButton from '@app/components/Common/MediaServerPlayButton'
 import PageTitle from '@app/components/Common/PageTitle';
 import PlayOnDeviceButton from '@app/components/Common/PlayOnDeviceButton';
 import Tooltip from '@app/components/Common/Tooltip';
+import DiscoverDetailNavigation from '@app/components/Discover/DiscoverDetailNavigation';
 import LiveTvButton from '@app/components/LiveTv/LiveTvButton';
 import MovieDetailsLayout from '@app/components/MovieDetails/MovieDetailsLayout';
 import RequestButton from '@app/components/RequestButton';
@@ -19,6 +20,7 @@ import globalMessages from '@app/i18n/globalMessages';
 import ErrorPage from '@app/pages/_error';
 import { sortCrewPriority } from '@app/utils/creditHelpers';
 import defineMessages from '@app/utils/defineMessages';
+import { isDiscoverNavigationContextId } from '@app/utils/discoverNavigation';
 import { refreshIntervalHelper } from '@app/utils/refreshIntervalHelper';
 import { getSafeHref } from '@app/utils/safeUrl';
 import {
@@ -132,6 +134,9 @@ const MovieDetails = ({ movie }: MovieDetailsProps) => {
         pathname: router.pathname,
         query: {
           movieId: router.query.movieId,
+          ...(isDiscoverNavigationContextId(router.query.discoverContext)
+            ? { discoverContext: router.query.discoverContext }
+            : {}),
           ...(router.query.issues === '1' ? { issues: '1' } : {}),
         },
       });
@@ -421,6 +426,7 @@ const MovieDetails = ({ movie }: MovieDetailsProps) => {
 
   const primaryActions = (
     <>
+      <DiscoverDetailNavigation id={Number(movieId)} mediaType="movie" />
       {safeTrailerUrl && (
         <Button
           as="a"
@@ -516,7 +522,12 @@ const MovieDetails = ({ movie }: MovieDetailsProps) => {
             setShowManager(false);
             void router.replace({
               pathname: router.pathname,
-              query: { movieId: router.query.movieId },
+              query: {
+                movieId: router.query.movieId,
+                ...(isDiscoverNavigationContextId(router.query.discoverContext)
+                  ? { discoverContext: router.query.discoverContext }
+                  : {}),
+              },
             });
           }}
           revalidate={() => revalidate()}

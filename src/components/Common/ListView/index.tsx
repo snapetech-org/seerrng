@@ -6,6 +6,7 @@ import TitleCard from '@app/components/TitleCard';
 import LibraryTitleCard from '@app/components/TitleCard/LibraryTitleCard';
 import TmdbTitleCard from '@app/components/TitleCard/TmdbTitleCard';
 import useCardTextVisibility from '@app/hooks/useCardTextVisibility';
+import useDiscoverNavigationContextId from '@app/hooks/useDiscoverNavigationContextId';
 import useSettings from '@app/hooks/useSettings';
 import { Permission, useUser } from '@app/hooks/useUser';
 import useVerticalScroll from '@app/hooks/useVerticalScroll';
@@ -14,6 +15,10 @@ import useWarmImageCache, {
 } from '@app/hooks/useWarmImageCache';
 import globalMessages from '@app/i18n/globalMessages';
 import defineMessages from '@app/utils/defineMessages';
+import {
+  storeDiscoverNavigationContext,
+  type DiscoverNavigationItem,
+} from '@app/utils/discoverNavigation';
 import {
   canRequestMissingBookFormat,
   isBookInProgress,
@@ -33,7 +38,8 @@ import type {
   TvResult,
 } from '@server/models/Search';
 import type { SportarrResult } from '@server/models/Sportarr';
-import { useMemo } from 'react';
+import { useRouter } from 'next/router';
+import { useCallback, useMemo } from 'react';
 import { useIntl } from 'react-intl';
 import { twMerge } from 'tailwind-merge';
 
@@ -64,6 +70,7 @@ type ListViewProps = {
   watchlistPreviewDisabled?: boolean;
   emptyMessage?: React.ReactNode;
   emptyClassName?: string;
+  enableDiscoverNavigation?: boolean;
 };
 
 const messages = defineMessages('components.ListView', {
@@ -85,12 +92,18 @@ const ListView = ({
   watchlistPreviewDisabled = false,
   emptyMessage,
   emptyClassName,
+  enableDiscoverNavigation = false,
 }: ListViewProps) => {
   const intl = useIntl();
   const { visibility } = useCardTextVisibility();
   const { hasPermission } = useUser();
   const { currentSettings } = useSettings();
   const canManageBlocklist = hasPermission(Permission.MANAGE_BLOCKLIST);
+  const router = useRouter();
+  const discoverNavigationContextId = useDiscoverNavigationContextId(
+    enableDiscoverNavigation && router.isReady,
+    router.isReady ? router.asPath : undefined
+  );
 
   const visibleItems = useMemo(
     () =>
@@ -109,6 +122,43 @@ const ListView = ({
           ).mediaInfo?.status !== MediaStatus.BLOCKLISTED
       ),
     [items, canManageBlocklist, currentSettings.hideBlocklisted]
+  );
+
+  const discoverNavigationItems = useMemo(() => {
+    if (!enableDiscoverNavigation) {
+      return [];
+    }
+
+    const plexNavigationItems = (plexItems ?? []).flatMap((title) =>
+      title.tmdbId && (title.mediaType === 'movie' || title.mediaType === 'tv')
+        ? [{ id: title.tmdbId, mediaType: title.mediaType }]
+        : []
+    );
+    const listNavigationItems = (visibleItems ?? []).flatMap((title) =>
+      (title.mediaType === 'movie' || title.mediaType === 'tv') &&
+      Number.isSafeInteger(title.id) &&
+      title.id > 0
+        ? [{ id: title.id, mediaType: title.mediaType }]
+        : []
+    );
+
+    return [...plexNavigationItems, ...listNavigationItems];
+  }, [enableDiscoverNavigation, plexItems, visibleItems]);
+
+  const createTitleOpenHandler = useCallback(
+    (currentItem: DiscoverNavigationItem) => {
+      if (!discoverNavigationContextId) {
+        return undefined;
+      }
+
+      return () =>
+        storeDiscoverNavigationContext(
+          discoverNavigationContextId,
+          discoverNavigationItems,
+          currentItem
+        );
+    },
+    [discoverNavigationContextId, discoverNavigationItems]
   );
 
   useWarmImageCache(visibleItems ?? [], {
@@ -156,6 +206,19 @@ const ListView = ({
               isAddedToWatchlist={true}
               canExpand
               mutateParent={mutateParent}
+              discoverNavigationContextId={
+                title.mediaType === 'movie' || title.mediaType === 'tv'
+                  ? discoverNavigationContextId
+                  : undefined
+              }
+              onOpen={
+                title.mediaType === 'movie' || title.mediaType === 'tv'
+                  ? createTitleOpenHandler({
+                      id: title.tmdbId,
+                      mediaType: title.mediaType,
+                    })
+                  : undefined
+              }
             />
           ) : null;
 
@@ -163,7 +226,12 @@ const ListView = ({
           ? [<li key={`${title.ratingKey}-${index}`}>{card}</li>]
           : [];
       }),
-    [mutateParent, plexItems]
+    [
+      createTitleOpenHandler,
+      discoverNavigationContextId,
+      mutateParent,
+      plexItems,
+    ]
   );
   const itemCards = useMemo(
     () =>
@@ -193,6 +261,11 @@ const ListView = ({
                 }
                 canExpand
                 showText={visibility.movie === 'always'}
+                discoverNavigationContextId={discoverNavigationContextId}
+                onOpen={createTitleOpenHandler({
+                  id: title.id,
+                  mediaType: title.mediaType,
+                })}
               />
             );
             break;
@@ -220,6 +293,11 @@ const ListView = ({
                 }
                 canExpand
                 showText={visibility.tv === 'always'}
+                discoverNavigationContextId={discoverNavigationContextId}
+                onOpen={createTitleOpenHandler({
+                  id: title.id,
+                  mediaType: title.mediaType,
+                })}
               />
             );
             break;
@@ -397,6 +475,8 @@ const ListView = ({
       posterTitleWeight,
       watchlistPreview,
       watchlistPreviewDisabled,
+      discoverNavigationContextId,
+      createTitleOpenHandler,
     ]
   );
   const hasRenderableItems =
