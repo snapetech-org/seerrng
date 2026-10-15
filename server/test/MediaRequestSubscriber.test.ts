@@ -174,7 +174,10 @@ describe('MediaRequestSubscriber service dispatch', () => {
     mock.method(
       notificationManager,
       'sendNotificationIntent',
-      async (type, intent) => {
+      async (
+        type: Notification,
+        intent: Parameters<typeof notificationManager.sendNotificationIntent>[1]
+      ) => {
         queued.push({ type, intent });
       }
     );

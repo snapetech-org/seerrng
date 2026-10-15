@@ -30,10 +30,14 @@ describe('Email availability subscription notifications', () => {
     previousApplicationUrl = getSettings().main.applicationUrl;
     getSettings().main.applicationUrl = 'https://seerr.example';
     let sentMessage: Parameters<PreparedEmail['send']>[0] | undefined;
-    mock.method(PreparedEmail.prototype, 'send', async (message) => {
-      sentMessage = message;
-      return true;
-    });
+    mock.method(
+      PreparedEmail.prototype,
+      'send',
+      async (message: Parameters<PreparedEmail['send']>[0]) => {
+        sentMessage = message;
+        return true;
+      }
+    );
 
     const emailSettings: NotificationAgentEmail = {
       enabled: true,
