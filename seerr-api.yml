@@ -8298,7 +8298,7 @@ paths:
                   $ref: '#/components/schemas/SonarrSettings'
     post:
       summary: Create Sonarr instance
-      description: Creates a new Sonarr instance from the request body.
+      description: Creates a new Sonarr instance from the request body. When an anime quality profile is selected, SeerrNG verifies that profile against Sonarr before saving when the server is reachable.
       tags:
         - settings
       requestBody:
@@ -8314,6 +8314,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/SonarrSettings'
+        '422':
+          description: The selected anime quality profile does not exist on the Sonarr server.
   /settings/sonarr/test:
     post:
       summary: Test Sonarr configuration
@@ -8341,7 +8343,7 @@ paths:
   /settings/sonarr/{sonarrId}:
     put:
       summary: Update Sonarr instance
-      description: Updates an existing Sonarr instance with the provided values.
+      description: Updates an existing Sonarr instance with the provided values. When an anime quality profile is selected, SeerrNG verifies that profile against Sonarr before saving when the server is reachable.
       tags:
         - settings
       parameters:
@@ -8364,6 +8366,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/SonarrSettings'
+        '422':
+          description: The selected anime quality profile does not exist on the Sonarr server.
     delete:
       summary: Delete Sonarr instance
       description: Deletes an existing Sonarr instance based on the sonarrId parameter.
