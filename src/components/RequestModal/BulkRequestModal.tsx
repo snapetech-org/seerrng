@@ -1139,7 +1139,7 @@ const BulkRequestModal = ({
                       <span aria-hidden="true" />
                     )}
                     <span className="media-inset-poster-column-heading text-left">
-                      Book
+                      {intl.formatMessage(globalMessages.book)}
                     </span>
                   </div>
                   <div className="scrollable-card -mr-3 max-h-[228px] space-y-0.5 overflow-y-auto pt-1 pr-3">

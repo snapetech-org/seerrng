@@ -983,7 +983,8 @@ const TvRequestModal = ({
                       {intl.formatMessage(messages.mediaAndFormat)}:
                     </dt>
                     <dd className="card-table-value">
-                      Series · {effectiveIs4k ? '4K' : 'HD'}
+                      {intl.formatMessage(globalMessages.tvshow)} ·{' '}
+                      {effectiveIs4k ? '4K' : 'HD'}
                     </dd>
                     <dt className="card-table-heading">
                       {intl.formatMessage(messages.releaseDate)}:

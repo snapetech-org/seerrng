@@ -834,9 +834,7 @@ const SettingsJobs = () => {
               </Table.TD>
             </tr>
             <tr>
-              <Table.TD>
-                {intl.formatMessage(messages.usersavatars)} (avatar)
-              </Table.TD>
+              <Table.TD>{intl.formatMessage(messages.usersavatars)}</Table.TD>
               <Table.TD>
                 {intl.formatNumber(
                   cacheData?.imageCache.avatar.imageCount ?? 0
