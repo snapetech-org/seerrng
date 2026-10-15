@@ -1,7 +1,7 @@
 import type { MigrationInterface, QueryRunner } from 'typeorm';
 
-export class CreateMediaServiceStatuses1791930000000 implements MigrationInterface {
-  name = 'CreateMediaServiceStatuses1791930000000';
+export class CreateMediaServiceStatuses1791940000000 implements MigrationInterface {
+  name = 'CreateMediaServiceStatuses1791940000000';
 
   public async up(queryRunner: QueryRunner): Promise<void> {
     if (await queryRunner.hasTable('media_service_status')) return;

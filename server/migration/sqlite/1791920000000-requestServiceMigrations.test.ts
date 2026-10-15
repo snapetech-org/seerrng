@@ -2,7 +2,7 @@ import assert from 'node:assert/strict';
 import test from 'node:test';
 import { DataSource } from 'typeorm';
 import { AddUserRequestServices1791920000000 } from './1791920000000-AddUserRequestServices';
-import { CreateMediaServiceStatuses1791930000000 } from './1791930000000-CreateMediaServiceStatuses';
+import { CreateMediaServiceStatuses1791940000000 } from './1791940000000-CreateMediaServiceStatuses';
 
 test('request service migrations are rerunnable and reversible', async () => {
   const dataSource = await new DataSource({
@@ -23,7 +23,7 @@ test('request service migrations are rerunnable and reversible', async () => {
     );
 
     const addUser = new AddUserRequestServices1791920000000();
-    const create = new CreateMediaServiceStatuses1791930000000();
+    const create = new CreateMediaServiceStatuses1791940000000();
 
     await addUser.up(queryRunner);
     await addUser.up(queryRunner);
