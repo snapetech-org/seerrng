@@ -444,7 +444,7 @@ const SettingsMetadata = () => {
           {intl.formatMessage(messages.metadataSettings)}
         </p>
         <div className="settings-group-content">
-          <div className="app-card-inset settings-group-card card-spacing-before">
+          <div className="app-card-inset refreshed-inset-surface card-spacing-before rounded-lg border border-gray-700 p-3">
             <h4 className="settings-group-heading">
               {intl.formatMessage(messages.providerStatus)}
             </h4>
