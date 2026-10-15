@@ -1,6 +1,6 @@
 image:
   registry: ghcr.io
-  repository: snapetech/seerrng
+  repository: snapetech-org/seerrng
   pullPolicy: IfNotPresent
   # -- Overrides the image tag whose default is the chart appVersion.
   tag: ''

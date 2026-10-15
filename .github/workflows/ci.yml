@@ -22,7 +22,7 @@ permissions:
 
 env:
   DOCKER_HUB: snapetech/seerrng
-  GHCR_IMAGE: ghcr.io/snapetech/seerrng
+  GHCR_IMAGE: ghcr.io/snapetech-org/seerrng
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.event_name == 'pull_request' && github.event.pull_request.number || github.run_id }}

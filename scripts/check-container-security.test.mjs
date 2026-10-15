@@ -300,7 +300,7 @@ esac
     LOG_LEVEL: 'info',
     SEERRNG_CONFIG_DIR: '/srv/seerr-config',
     SEERRNG_CONTAINER_NAME: 'seerr-host',
-    SEERRNG_IMAGE_REF: `ghcr.io/snapetech/seerrng@sha256:${'a'.repeat(64)}`,
+    SEERRNG_IMAGE_REF: `ghcr.io/snapetech-org/seerrng@sha256:${'a'.repeat(64)}`,
     SEERRNG_PORT: '5055',
   };
 

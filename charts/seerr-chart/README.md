@@ -62,7 +62,7 @@ If `replicaCount` value was used - remove it. Helm update should work fine after
 | hostUsers | bool | `true` | docs: https://kubernetes.io/docs/concepts/workloads/pods/user-namespaces/ |
 | image.pullPolicy | string | `"IfNotPresent"` |  |
 | image.registry | string | `"ghcr.io"` |  |
-| image.repository | string | `"snapetech/seerrng"` |  |
+| image.repository | string | `"snapetech-org/seerrng"` |  |
 | image.sha | string | `""` |  |
 | image.tag | string | `""` | Overrides the image tag whose default is the chart appVersion. |
 | imagePullSecrets | list | `[]` |  |

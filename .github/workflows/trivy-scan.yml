@@ -20,7 +20,7 @@ concurrency:
   cancel-in-progress: true
 
 env:
-  GHCR_IMAGE: ghcr.io/snapetech/seerrng
+  GHCR_IMAGE: ghcr.io/snapetech-org/seerrng
 
 jobs:
   trivy:

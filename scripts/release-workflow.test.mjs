@@ -123,7 +123,7 @@ test('release assets build while image verification runs, then package channels 
 });
 
 test('container workflows use the canonical lowercase GitHub Container Registry path', () => {
-  const expectedImage = 'ghcr.io/snapetech/seerrng';
+  const expectedImage = 'ghcr.io/snapetech-org/seerrng';
   for (const name of [
     'ci.yml',
     'helm.yml',
