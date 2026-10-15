@@ -123,47 +123,22 @@ function normalizedMarkdownSection(source, heading) {
     .trim();
 }
 
-export function validateGovernanceSources(agents, hook, contributing) {
-  for (const route of [
-    'docs/maintainers/ui-style-standard.md',
-    'docs/maintainers/ui-fix-it.md',
-    'docs/maintainers/ui-forward-merge-guide.md',
-    'tools/validation-engine/README.md',
-  ]) {
-    if (!agents.includes(route))
-      throw new Error(
-        `AGENTS.md is missing the required development route: ${route}`
-      );
-  }
-  const authority = normalizedMarkdownSection(
-    agents,
-    'Communication and authority'
-  );
-  const verification = normalizedMarkdownSection(
-    agents,
-    'Required verification'
+export function validateGovernanceSources(hook, contributing) {
+  const contributionRules = normalizedMarkdownSection(
+    contributing,
+    'Contributing Code'
   );
   const aiAssistance = normalizedMarkdownSection(contributing, 'AI Assistance');
   for (const [name, source, rule] of [
     [
-      'AGENTS.md Communication and authority',
-      authority,
-      'Do not make project-owner or other human acceptance a merge or release gate when the maintainer explicitly directs the work to proceed.',
+      'CONTRIBUTING.md Contributing Code',
+      contributionRules,
+      'Keep a PR branch current with `main` only when current GitHub rules require it; rebase or merge as needed.',
     ],
     [
-      'AGENTS.md Communication and authority',
-      authority,
-      'Act on explicit user instructions without asking for the same authorization again.',
-    ],
-    [
-      'AGENTS.md Communication and authority',
-      authority,
-      "Ask only when a material decision is genuinely unresolved or an action falls outside the user's authorization.",
-    ],
-    [
-      'AGENTS.md Required verification',
-      verification,
-      'Visual inspection is evidence, not a merge or release gate when the maintainer explicitly directs the work to proceed.',
+      'CONTRIBUTING.md Contributing Code',
+      contributionRules,
+      'Merge after the checks and approvals required by current GitHub rules are satisfied. An explicit maintainer direction to merge is sufficient; no additional review or approval is required beyond those rules. Use any merge method enabled in GitHub.',
     ],
     [
       'CONTRIBUTING.md AI Assistance',
@@ -258,7 +233,6 @@ export function preflight(
   }
   if (!testsOnly) {
     for (const file of [
-      'AGENTS.md',
       'CONTRIBUTING.md',
       '.husky/pre-commit',
       'docs/maintainers/ui-style-standard.md',
@@ -268,7 +242,6 @@ export function preflight(
     ])
       requireFile(root, file);
     validateGovernanceSources(
-      readFileSync(join(root, 'AGENTS.md'), 'utf8'),
       readFileSync(join(root, '.husky/pre-commit'), 'utf8'),
       readFileSync(join(root, 'CONTRIBUTING.md'), 'utf8')
     );

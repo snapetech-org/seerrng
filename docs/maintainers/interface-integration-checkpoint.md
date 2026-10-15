@@ -1,15 +1,15 @@
 # Interface Integration Checkpoint
 
 This is the living evidence appendix for the forward-merge guide, not a release
-approval or a complete site-audit claim. Read `AGENTS.md`, UI Style Standard and
-UI Fix-It first. Preserve earlier accepted work while reviewing small batches.
+approval or a complete site-audit claim. Read the UI Style Standard and UI Fix-It
+first. Preserve earlier accepted work while reviewing small batches.
 Never infer visual inspection or live-provider evidence from test success or a
 journal's implementation note. Historical statements below that a human or visual
 review was pending record the evidence state at that checkpoint; they do not create
 a second approval gate after the maintainer explicitly directs merge or release.
 This appendix is chronological evidence. Only the latest dated entry describes
 current status; no older imperative, command binding, or pending gate controls
-current work. Normative procedure lives in `AGENTS.md`, the UI guides, and
+current work. Normative procedure lives in the UI guides, `CONTRIBUTING.md`, and
 `tools/validation-engine/README.md`.
 
 ## Current maintainer direction — October 6, 2026
