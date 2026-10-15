@@ -74,6 +74,12 @@ SeerrNG is maintained by snapetech as a separate fork so we can move quickly on 
   progress and retry timing, and resume after imports complete. Pending imports
   are cancelled only when no other active request still needs them; ChaptarrNG
   `0.9.941+` also supports a restricted SeerrNG service key.
+- The BookshelfNG-to-ChaptarrNG consolidation is still gated on BookshelfNG's
+  complete enhanced feature set, populated-data conversion, and each old
+  installation channel. The later ChaptarrNG-to-upstream gate also includes
+  every ChaptarrNG feature it maintains or is actively adding, including
+  unpublished work. See the [BookshelfNG consolidation report](https://github.com/snapetech/bookshelfng/blob/main/docs/maintainers/chaptarr-consolidation.md)
+  and [ChaptarrNG's itemized retirement matrix](https://github.com/snapetech/chaptarrng/blob/main/docs/FORK_FEATURES.md#itemized-active-and-unreleased-chaptarrng-blockers).
 - Optional read-only Audiobookshelf library scanning marks ISBN-matched items
   as available audiobooks without sending acquisition requests or changing
   Audiobookshelf data.
@@ -121,6 +127,7 @@ SeerrNG documentation is maintained in the [docs folder](https://github.com/snap
 - [Install SeerrNG](./docs/getting-started/index.mdx)
 - [Install on Unraid](./docs/getting-started/third-parties/unraid.mdx)
 - [Find books, authors, and series](./docs/using-seerr/books-and-series.md)
+- [Create custom Discover sliders](./docs/using-seerr/custom-discover-sliders.md)
 - [Why SeerrNG maintains companion forks](./docs/using-seerr/dependency-forks.md)
 - [Why SeerrNG is a fork and what could retire it](./docs/fork-rationale.md)
 - [ChaptarrNG fork changes and capabilities](https://github.com/snapetech/chaptarrng/blob/main/docs/FORK_FEATURES.md)
@@ -256,6 +263,19 @@ SeerrNG-specific API behavior, the recommended Snapetech NG forks are
 can each handle Book and Audiobook formats; one BookshelfNG instance can serve
 both. QuestarrNG handles PC game acquisition, while ROMarrNG handles emulation
 systems and ROM acquisition.
+
+BookshelfNG's planned retirement in favor of ChaptarrNG is not released yet:
+there is no populated-library converter or old-channel bridge, so existing
+BookshelfNG installations should keep their current data and backup path.
+ChaptarrNG remains the maintained destination. Its later retirement into
+upstream Chaptarr must preserve both ChaptarrNG's maintained and actively added
+features, including unpublished work, and the BookshelfNG features carried
+over. That complete union blocks ChaptarrNG retirement as a whole. Each
+feature, sub-feature, data path, and distribution channel remains an individual
+blocker; active ChaptarrNG branches and open feature PRs count before release.
+See the
+[combined feature snapshot](https://github.com/snapetech/chaptarrng/blob/main/docs/FORK_FEATURES.md#chaptarrng-retirement-blockers)
+and the [fork transition criteria](./docs/using-seerr/dependency-forks.md).
 
 Radarr, Sonarr, Lidarr, LazyLibrarian, Mylar3, Issuarr, Kapowarr, and BackIssue are
 separate upstream or third-party integrations. They are not NG forks. The
@@ -521,6 +541,9 @@ Common runtime variables:
 | --- | --- |
 | `PORT` | HTTP port. Defaults to `5055`. |
 | `LOG_LEVEL` | Server log level. |
+| `NO_COLOR` | Set to a non-empty value to disable ANSI colors in console logs, unless `FORCE_COLOR` is non-empty. |
+| `FORCE_COLOR` | A non-empty value overrides terminal detection and `NO_COLOR`; `0` or `false` disables console colors, and any other value enables them. |
+| `TERM` | The terminal type; `dumb` disables console colors unless `FORCE_COLOR` is non-empty. |
 | `CONFIG_DIRECTORY` | Alternate config directory for non-container installs. |
 | `TMDB_API_KEY` | Optional TMDB v3 API key override. SeerrNG uses its bundled application key when this is unset. |
 | `TMDB_READ_ACCESS_TOKEN` | Optional TMDB v4 bearer-token override. When set, it takes precedence over `TMDB_API_KEY`. |

@@ -10,6 +10,7 @@ import TheMovieDb, {
   sanitizeTmdbCertifications,
   sanitizeTmdbCombinedCredits,
   sanitizeTmdbGenres,
+  sanitizeTmdbListResponse,
   sanitizeTmdbMovieDetails,
   sanitizeTmdbPagedResponse,
   sanitizeTmdbPersonDetails,
@@ -19,6 +20,113 @@ import type { TmdbSearchMovieResponse } from '@server/api/themoviedb/interfaces'
 import { getSettings } from '@server/lib/settings';
 
 describe('TMDB response boundaries', () => {
+  it('sanitizes mixed TMDB list pages without using total_results', () => {
+    const response = sanitizeTmdbListResponse({
+      page: 2,
+      total_pages: 7,
+      item_count: 127,
+      total_results: 1,
+      name: 'Public picks',
+      description: 'Movies and series',
+      providerOnly: 'discarded',
+      results: [
+        { id: 42, media_type: 'movie', title: 'Movie', providerOnly: true },
+        { id: 42, media_type: 'tv', name: 'Series', providerOnly: true },
+        { id: 4, media_type: 'person', name: 'Ignored result' },
+        { id: -1, media_type: 'movie', title: 'Invalid ID' },
+      ],
+    });
+
+    assert.strictEqual(response.page, 2);
+    assert.strictEqual(response.total_pages, 7);
+    assert.strictEqual(response.item_count, 127);
+    assert.strictEqual(response.name, 'Public picks');
+    assert.deepStrictEqual(
+      response.results.map(({ id, media_type }) => [id, media_type]),
+      [
+        [42, 'movie'],
+        [42, 'tv'],
+      ]
+    );
+    assert.ok(!('providerOnly' in response.results[0]));
+  });
+
+  it('rejects list envelopes without item_count instead of trusting total_results', () => {
+    assert.throws(
+      () =>
+        sanitizeTmdbListResponse({
+          page: 1,
+          total_pages: 1,
+          total_results: 12,
+          results: [],
+        }),
+      /Invalid TMDB list response/
+    );
+  });
+
+  it('rejects list envelopes without a results array', () => {
+    assert.throws(
+      () =>
+        sanitizeTmdbListResponse({
+          page: 1,
+          total_pages: 1,
+          item_count: 12,
+        }),
+      /Invalid TMDB list response/
+    );
+  });
+
+  it('requests v4 public lists with a validated ID and the selected page', async () => {
+    const tmdb = new TheMovieDb();
+    const calls: { path: string; config: Record<string, unknown> }[] = [];
+    Object.defineProperty(tmdb, 'get', {
+      configurable: true,
+      value: async (path: string, config: Record<string, unknown>) => {
+        calls.push({ path, config });
+        return {
+          page: 2,
+          total_pages: 3,
+          item_count: 51,
+          name: 'My list',
+          description: '',
+          results: [],
+        };
+      },
+    });
+
+    const response = await tmdb.getTmdbList({
+      listId: '123456789012',
+      page: 2,
+      language: 'fr',
+    });
+
+    assert.strictEqual(response.item_count, 51);
+    assert.deepStrictEqual(calls, [
+      {
+        path: '/list/123456789012',
+        config: {
+          baseURL: 'https://api.themoviedb.org/4',
+          params: { page: 2, language: 'fr' },
+        },
+      },
+    ]);
+  });
+
+  it('rejects unsafe TMDB list IDs before making an upstream request', async () => {
+    const tmdb = new TheMovieDb();
+    let called = false;
+    Object.defineProperty(tmdb, 'get', {
+      configurable: true,
+      value: async () => {
+        called = true;
+        return {};
+      },
+    });
+
+    await assert.rejects(tmdb.getTmdbList({ listId: '1/../../2' }));
+    assert.strictEqual(called, false);
+  });
+
   it('uses the global adult-content setting for searches and movie discovery', async () => {
     const settings = getSettings();
     const originalIncludeAdult = settings.main.includeAdult;

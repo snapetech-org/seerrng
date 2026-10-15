@@ -97,6 +97,7 @@ Steps:
 ### Contributing Code
 
 - If you are taking on an existing bug or feature ticket, please comment on the [issue](/../../issues) to avoid multiple people working on the same thing.
+- Before starting a substantial new feature or broad refactor, outline the problem and scope in an [issue](/../../issues) or [Discussion](/../../discussions), then wait for a maintainer to confirm the direction. An existing issue alone is not approval for a large implementation. If a maintainer has already explicitly directed the work, that direction is sufficient.
 - Pull requests with titles not following [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/) will **not** be merged. PR titles are automatically checked for compliance.
 - Please make meaningful commits, or squash them prior to opening a pull request.
   - Do not squash commits once people have begun reviewing your changes.

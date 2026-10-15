@@ -29,7 +29,10 @@ import type {
   TmdbPersonResult,
   TmdbTvResult,
 } from '@server/api/themoviedb/interfaces';
-import { MAX_DISCOVER_KEYWORD_IDS } from '@server/constants/discover';
+import {
+  MAX_DISCOVER_KEYWORD_IDS,
+  isTmdbPublicListId,
+} from '@server/constants/discover';
 import { MediaStatus, MediaType } from '@server/constants/media';
 import {
   MUSIC_PRIMARY_TYPES,
@@ -122,7 +125,7 @@ import {
   settlePromisesWithin,
 } from '@server/utils/concurrency';
 import { filterEntityResponse } from '@server/utils/entityResponse';
-import { getHttpErrorDetails } from '@server/utils/httpError';
+import { getHttpErrorDetails, hasHttpStatus } from '@server/utils/httpError';
 import {
   buildMusicAlbumSearchQuery,
   parseMusicSearchFilters,
@@ -2697,6 +2700,90 @@ discoverRoutes.get('/trending', async (req, res, next) => {
     });
   }
 });
+
+discoverRoutes.get<{ listId: string }>(
+  '/list/:listId',
+  async (req, res, next) => {
+    if (!isTmdbPublicListId(req.params.listId)) {
+      return res.status(404).json({
+        status: 404,
+        message: 'TMDB list was not found or is not public.',
+      });
+    }
+
+    const parsedLanguage = parseDiscoverLanguage(
+      req.query.language,
+      req.locale
+    );
+    if ('error' in parsedLanguage) {
+      return res
+        .status(400)
+        .json({ status: 400, message: parsedLanguage.error });
+    }
+
+    const page = parsePositiveInt(req.query.page, 1, 500);
+    const tmdb = createTmdbWithRegionLanguage(req.user);
+
+    try {
+      const list = await tmdb.getTmdbList({
+        listId: req.params.listId,
+        page,
+        language: parsedLanguage.value,
+      });
+      const results = list.results.filter((item) =>
+        item.media_type === 'movie'
+          ? isMediaCategoryEnabled('movie')
+          : isMediaCategoryEnabled('tv')
+      );
+      const relatedMedia = await Media.getRelatedMedia(
+        req.user,
+        results.map((item) => ({
+          tmdbId: item.id,
+          mediaType:
+            item.media_type === 'movie' ? MediaType.MOVIE : MediaType.TV,
+        })),
+        { includeActiveRequest: true }
+      );
+
+      return res.status(200).json({
+        page: list.page,
+        totalPages: list.total_pages,
+        totalResults: list.item_count,
+        list: {
+          name: list.name,
+          description: list.description,
+        },
+        results: results.map((item) => {
+          const type =
+            item.media_type === 'movie' ? MediaType.MOVIE : MediaType.TV;
+          const media = relatedMedia.find(
+            (entry) => entry.tmdbId === item.id && entry.mediaType === type
+          );
+          return item.media_type === 'movie'
+            ? mapMovieResult(item, media)
+            : mapTvResult(item, media);
+        }),
+      });
+    } catch (error) {
+      if ([401, 403, 404].some((status) => hasHttpStatus(error, status))) {
+        return res.status(404).json({
+          status: 404,
+          message: 'TMDB list was not found or is not public.',
+        });
+      }
+
+      logger.debug('Something went wrong retrieving a TMDB list', {
+        label: 'API',
+        ...getErrorLogFields(error),
+      });
+      return next({
+        status: 502,
+        message: 'Unable to retrieve TMDB list.',
+        cause: error,
+      });
+    }
+  }
+);
 
 discoverRoutes.get<{ keywordId: string }>(
   '/keyword/:keywordId/movies',

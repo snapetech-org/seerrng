@@ -14,11 +14,11 @@ import TransportSecurityNotice from '@app/components/TransportSecurityNotice';
 import useSettings from '@app/hooks/useSettings';
 import { useUser } from '@app/hooks/useUser';
 import defineMessages from '@app/utils/defineMessages';
-import { getSafeRedirect } from '@app/utils/urlValidationHelper';
+import { getSafeReturnPath } from '@app/utils/loginReturn';
 import versionedAsset from '@app/utils/versionedAsset';
 import { Transition } from '@headlessui/react';
 import { XCircleIcon } from '@heroicons/react/24/solid';
-import { MediaServerType } from '@server/constants/server';
+import { MediaServerType, ServerType } from '@server/constants/server';
 import axios from 'axios';
 import { useRouter } from 'next/dist/client/router';
 import Image from 'next/image';
@@ -169,15 +169,24 @@ const Login = ({
     };
   }, [authToken, revalidate]);
 
-  // Wait for the Pages Router query before choosing a destination. A login
-  // link may also leave its one-time token in the fragment until it is consumed.
+  // Effect that is triggered whenever `useUser`'s user changes. If we get a new
+  // valid user, we redirect the user to the home page as the login was successful.
   useEffect(() => {
-    if (user && router.isReady) {
-      void router.replace(
-        getSafeRedirect(router.query.redirect, window.location.hash)
+    if (user) {
+      const requested = getSafeReturnPath(
+        Array.isArray(router.query.returnTo)
+          ? router.query.returnTo[0]
+          : router.query.returnTo
       );
+      // The browser carries a fragment through the sign-in redirect; restore it
+      // only when the saved destination does not already have one.
+      const withFragment =
+        requested && !requested.includes('#')
+          ? getSafeReturnPath(`${requested}${window.location.hash}`)
+          : undefined;
+      router.push(withFragment ?? requested ?? '/');
     }
-  }, [user, router, router.isReady, router.query.redirect]);
+  }, [user, router]);
 
   const { data: backdrops } = useSWR<LoginBackdrop[]>('/api/v1/backdrops', {
     fallbackData: initialBackdrops,
@@ -189,11 +198,11 @@ const Login = ({
 
   const mediaServerName =
     settings.currentSettings.mediaServerType === MediaServerType.PLEX
-      ? 'Plex'
+      ? ServerType.PLEX
       : settings.currentSettings.mediaServerType === MediaServerType.JELLYFIN
-        ? 'Jellyfin'
+        ? ServerType.JELLYFIN
         : settings.currentSettings.mediaServerType === MediaServerType.EMBY
-          ? 'Emby'
+          ? ServerType.EMBY
           : undefined;
 
   const MediaServerLogo =
@@ -234,7 +243,6 @@ const Login = ({
             className="min-w-0 flex-grow"
             onClick={() => setMediaServerLogin(false)}
           >
-            {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src={versionedAsset('/os_icon.svg')}
               alt={settings.currentSettings.applicationTitle}

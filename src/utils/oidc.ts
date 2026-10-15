@@ -4,8 +4,8 @@ import {
   removeSessionStorageValue,
   writeSessionStorageValue,
 } from '@app/utils/localStorage';
+import { getSafeReturnPath } from '@app/utils/loginReturn';
 import { parseOidcAuthorizationRedirect } from '@app/utils/oidcRedirect';
-import { getSafeRedirect } from '@app/utils/urlValidationHelper';
 import { ApiErrorCode } from '@server/constants/error';
 import axios, { isAxiosError } from 'axios';
 import type { IntlShape } from 'react-intl';
@@ -91,7 +91,10 @@ export async function initiateOidcLogin(
   const redirectUrl = parseOidcAuthorizationRedirect(res.data.redirectUrl);
   if (
     !writeSessionStorageValue(OIDC_PROVIDER_KEY, providerSlug) ||
-    !writeSessionStorageValue(OIDC_REDIRECT_KEY, getSafeRedirect(redirectTo))
+    !writeSessionStorageValue(
+      OIDC_REDIRECT_KEY,
+      getSafeReturnPath(redirectTo) ?? '/'
+    )
   ) {
     clearOidcLoginState();
     throw new Error('OIDC login requires browser session storage.');
@@ -108,7 +111,7 @@ export function getOidcProviderSlug(): string | null {
 
 /** Returns the validated destination stored before the OIDC round-trip. */
 export function getOidcLoginRedirect(): string {
-  return getSafeRedirect(readSessionStorageValue(OIDC_REDIRECT_KEY));
+  return getSafeReturnPath(readSessionStorageValue(OIDC_REDIRECT_KEY)) ?? '/';
 }
 
 /** Clears the temporary state stored by initiateOidcLogin. */

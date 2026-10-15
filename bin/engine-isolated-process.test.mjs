@@ -113,6 +113,51 @@ test('local validation rejects dependency roots linked outside the candidate', (
   );
 });
 
+test('local validation excludes nested environment files and retains compiler manifests', (t) => {
+  const parent = mkdtempSync(path.join(tmpdir(), 'seerrng-nested-env-'));
+  t.after(() => rmSync(parent, { recursive: true, force: true }));
+  const source = path.join(parent, 'candidate');
+  const workspace = path.join(parent, 'workspace');
+  mkdirSync(path.join(source, 'server'), { recursive: true });
+  writeFileSync(path.join(source, '.gitignore'), '');
+  writeFileSync(path.join(source, '.env.example'), 'EXAMPLE=value\n');
+  writeFileSync(path.join(source, 'server', '.env.local'), 'SECRET=private\n');
+  writeFileSync(path.join(source, 'tsconfig.json'), '{"compilerOptions":{}}\n');
+  writeFileSync(
+    path.join(source, 'server', 'tsconfig.json'),
+    '{"extends":"../tsconfig.json"}\n'
+  );
+  writeFileSync(
+    path.join(source, 'server', 'tsconfig.secrets.json'),
+    '{"token":"private"}\n'
+  );
+  execFileSync('git', ['init', '--quiet', '--initial-branch=main'], {
+    cwd: source,
+  });
+  execFileSync('git', ['config', 'user.name', 'Fixture'], { cwd: source });
+  execFileSync('git', ['config', 'user.email', 'fixture@example.invalid'], {
+    cwd: source,
+  });
+  execFileSync('git', ['add', '--all'], { cwd: source });
+  execFileSync('git', ['commit', '--quiet', '-m', 'Fixture'], {
+    cwd: source,
+  });
+
+  createDisposableTestWorkspace(source, workspace);
+
+  assert.equal(existsSync(path.join(workspace, 'server', '.env.local')), false);
+  assert.equal(existsSync(path.join(workspace, '.env.example')), true);
+  assert.equal(existsSync(path.join(workspace, 'tsconfig.json')), true);
+  assert.equal(
+    existsSync(path.join(workspace, 'server', 'tsconfig.json')),
+    true
+  );
+  assert.equal(
+    existsSync(path.join(workspace, 'server', 'tsconfig.secrets.json')),
+    false
+  );
+});
+
 test(
   'local validation confines test processes to disposable files, dependencies, services and network',
   {

@@ -207,3 +207,35 @@ it('opens the book edit modal from the external detail identity without a media 
     editRequest: request,
   });
 });
+
+it('shows active TV season selections without declined history', async () => {
+  const request = {
+    id: 31,
+    type: MediaType.TV,
+    status: MediaRequestStatus.APPROVED,
+    requestedBy: { id: 7, displayName: 'Test User', avatar: '' },
+    is4k: false,
+    createdAt: new Date('2026-10-04T12:00:00.000Z'),
+    seasons: [
+      { id: 1, seasonNumber: 1, status: MediaRequestStatus.COMPLETED },
+      { id: 2, seasonNumber: 2, status: MediaRequestStatus.DECLINED },
+    ],
+    media: undefined,
+  } as unknown as MediaRequest;
+
+  await act(async () =>
+    root.render(
+      <IntlProvider locale="en">
+        <RequestBlock
+          request={request}
+          mediaType={MediaType.TV}
+          tmdbId={1234}
+        />
+      </IntlProvider>
+    )
+  );
+
+  const seasonSummary = host.querySelector('div.mt-2.flex.flex-col.text-sm');
+  expect(seasonSummary?.textContent).toContain('1');
+  expect(seasonSummary?.textContent).not.toContain('2');
+});

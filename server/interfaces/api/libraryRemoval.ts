@@ -19,4 +19,5 @@ export interface LibraryCopy {
 export interface LibraryRemovalPlan {
   targets: LibraryCopy[];
   token: string;
+  verifiedServices: number;
 }

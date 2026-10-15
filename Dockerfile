@@ -40,6 +40,9 @@ RUN if [ -d node_modules/.pnpm ]; then \
   \) -exec rm -rf {} + || true; \
   fi
 
+# Remove dependency source maps before copying production modules into the final image.
+RUN find node_modules/.pnpm -type f -name '*.map' -delete
+
 FROM --platform=$BUILDPLATFORM mirror.gcr.io/library/node:24.21.0-alpine3.23@sha256:9ec4a2e289874ed0d722e1772ec2de45d2801541db8612f3638b26f128c69ac2 AS build-base
 ARG SOURCE_DATE_EPOCH
 ARG BUILDPLATFORM
@@ -91,7 +94,7 @@ USER node:node
 
 WORKDIR /app
 
-COPY --chown=node:node package.json next.config.ts seerr-api.yml ./
+COPY --chown=node:node package.json next.config.mjs seerr-api.yml ./
 COPY --chown=node:node public ./public
 COPY --chown=node:node scripts/export-external-config.mjs ./scripts/export-external-config.mjs
 COPY --chown=node:node scripts/healthcheck.mjs ./scripts/healthcheck.mjs

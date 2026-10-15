@@ -6,6 +6,7 @@ import {
   PLEX_OAUTH_HTTP_OPTIONS,
   default as PlexOAuth,
   getBoundedPlexPinDeadline,
+  getPlexPinPollDeadline,
   getPlexPopupReturnUrl,
   parsePlexPin,
   parsePlexPinAuthToken,
@@ -67,6 +68,34 @@ describe('Plex PIN response boundaries', () => {
     );
   });
 
+  it('keeps polling within both the PIN and poll response expirations', () => {
+    const hardDeadline = Date.parse('2026-07-16T12:15:00.000Z');
+    assert.strictEqual(
+      getPlexPinPollDeadline(
+        '2026-07-16T12:10:00.000Z',
+        '2026-07-16T12:05:00.000Z',
+        hardDeadline
+      ),
+      Date.parse('2026-07-16T12:05:00.000Z')
+    );
+    assert.strictEqual(
+      getPlexPinPollDeadline(
+        undefined,
+        '2026-07-16T12:05:00.000Z',
+        hardDeadline
+      ),
+      Date.parse('2026-07-16T12:05:00.000Z')
+    );
+    assert.strictEqual(
+      getPlexPinPollDeadline(
+        '2026-07-16T12:10:00.000Z',
+        undefined,
+        hardDeadline
+      ),
+      Date.parse('2026-07-16T12:10:00.000Z')
+    );
+  });
+
   it('accepts only bounded string authentication tokens', () => {
     assert.strictEqual(parsePlexPinAuthToken('token'), 'token');
     assert.strictEqual(parsePlexPinAuthToken(''), undefined);
@@ -79,6 +108,14 @@ describe('Plex PIN response boundaries', () => {
       id: 42,
       code: 'abcd',
     });
+    assert.deepStrictEqual(
+      parsePlexPin({
+        id: 42,
+        code: 'abcd',
+        expiresAt: '2026-07-16T12:05:00.000Z',
+      }),
+      { id: 42, code: 'abcd', expiresAt: '2026-07-16T12:05:00.000Z' }
+    );
     for (const value of [
       null,
       { id: 0, code: 'abcd' },
@@ -89,6 +126,10 @@ describe('Plex PIN response boundaries', () => {
     ]) {
       assert.strictEqual(parsePlexPin(value), undefined);
     }
+    assert.deepStrictEqual(
+      parsePlexPin({ id: 42, code: 'abcd', expiresAt: 'x'.repeat(129) }),
+      { id: 42, code: 'abcd' }
+    );
   });
 });
 

@@ -962,6 +962,17 @@ if (executedDirectly) {
 const has = (option) => options?.flags.has(option) ?? false;
 const value = (option) => options?.values.get(option);
 const repeated = (option) => options?.repeated.get(option) ?? [];
+
+function hasTrustedOuterSandboxMarker() {
+  const token = process.env.VALIDATION_OUTER_SANDBOX_TOKEN;
+  if (typeof token !== 'string' || !/^[a-f0-9]{64}$/u.test(token)) return false;
+  try {
+    return readFileSync('/run/validation-engine-sandbox', 'utf8') === token;
+  } catch {
+    return false;
+  }
+}
+
 const pathValueOptions = new Set([
   '--active-config-marker',
   '--config-file',
@@ -1072,6 +1083,11 @@ if (!executedDirectly) {
   // Importing exposes focused command helpers without executing the CLI.
 } else if (!options) {
   // The parse error above is the complete fail-closed result.
+} else if (has('--inside-sandbox') && !hasTrustedOuterSandboxMarker()) {
+  process.stderr.write(
+    'The internal --inside-sandbox mode requires the trusted outer sandbox launcher.\n'
+  );
+  process.exitCode = 1;
 } else if (selectedMode.name === 'help') {
   process.stdout
     .write(`Usage: node bin/run-local-validation.mjs [--tests-only] [--plan [--json]]

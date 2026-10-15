@@ -178,6 +178,8 @@ const DiscoverSliderEdit = ({
         return intl.formatMessage(sliderTitles.musicbrainzmusicgenre);
       case DiscoverSliderType.LISTENBRAINZ_MUSIC_CHART:
         return intl.formatMessage(sliderTitles.listenbrainzmusicchart);
+      case DiscoverSliderType.TMDB_LIST:
+        return intl.formatMessage(sliderTitles.tmdbList);
       default:
         return 'Unknown Slider';
     }

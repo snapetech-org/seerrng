@@ -1,4 +1,5 @@
 import ButtonWithLoader from '@app/components/Common/ButtonWithLoader';
+import { buildLoginPath, getSafeReturnPath } from '@app/utils/loginReturn';
 import {
   clearOidcLoginState,
   getOidcErrorMessage,
@@ -8,11 +9,13 @@ import {
   processOidcCallback,
 } from '@app/utils/oidc';
 import { hasOidcCallbackParameters } from '@app/utils/oidcQuery';
-import { getLoginUrl, getSafeRedirect } from '@app/utils/urlValidationHelper';
 import type { PublicOidcProvider } from '@server/lib/settings';
 import { useRouter } from 'next/router';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useIntl } from 'react-intl';
+
+const getQueryValue = (value: string | string[] | undefined) =>
+  Array.isArray(value) ? value[0] : value;
 
 type OidcLoginButtonProps = {
   provider: PublicOidcProvider;
@@ -36,7 +39,9 @@ export default function OidcLoginButton({
       await initiateOidcLogin(
         provider.slug,
         new URL(window.location.pathname, window.location.origin).toString(),
-        getSafeRedirect(query.redirect, window.location.hash)
+        getSafeReturnPath(
+          `${getQueryValue(query.returnTo) ?? ''}${window.location.hash}`
+        ) ?? undefined
       );
     } catch (e) {
       setLoading(false);
@@ -44,7 +49,7 @@ export default function OidcLoginButton({
         ?.response?.data?.error;
       onError?.(getOidcErrorMessage(errorCode, provider.name, intl));
     }
-  }, [provider, intl, onError, query.redirect]);
+  }, [provider, intl, onError, query.returnTo]);
 
   useEffect(
     () => {
@@ -72,7 +77,7 @@ export default function OidcLoginButton({
               await router.replace(redirectTo);
             } else {
               await router
-                .replace(getLoginUrl(redirectTo))
+                .replace(buildLoginPath(redirectTo))
                 .catch(() => undefined);
               if (active) {
                 setLoading(false);
@@ -105,7 +110,7 @@ export default function OidcLoginButton({
       onClick={() => void redirectToLogin()}
       className="min-w-0 flex-grow"
     >
-      {/* eslint-disable-next-line @next/next/no-img-element */}
+      {/* oxlint-disable-next-line nextjs/no-img-element */}
       <img
         src={provider.logo || '/images/openid.svg'}
         alt={provider.name}

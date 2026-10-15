@@ -26,13 +26,21 @@ If this value is configured, users will be able to click a link to start a chat 
 
 The bot username should end with `_bot`, and the `@` prefix should be omitted.
 
-### Bot Authentication Token
+### Bot Authorization Token
 
-At the end of the bot creation process, [@BotFather](https://telegram.me/botfather) will provide an authentication token.
+At the end of the bot creation process, [@BotFather](https://telegram.me/botfather) will provide an authorization token.
 
 ### Chat ID
 
 To obtain your chat ID, simply create a new group chat, add [@get_id_bot](https://telegram.me/get_id_bot), and issue the `/my_id` command.
+
+### Thread/Topic ID (optional)
+
+If your Telegram group has topics enabled, enter the topic's numeric ID to route system notifications there. Leave this blank to send notifications to the chat without targeting a topic.
+
+### Embed Poster (optional)
+
+When enabled, Telegram notifications include an available media poster as a photo. If no poster is available, the notification is sent as a text message.
 
 ### Send Silently (optional)
 

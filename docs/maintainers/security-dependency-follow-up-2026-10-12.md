@@ -28,9 +28,12 @@ input-length limit and that untrusted callers should not supply glob patterns
 `http-cache-semantics` maintainer argues that `Set-Cookie` does not itself
 prohibit shared caching under [RFC 9111 §7.3](https://www.rfc-editor.org/rfc/rfc9111.html#section-7.3)
 and that `Cache-Control: private` controls cross-user reuse ([issue #56](https://github.com/kornelski/http-cache-semantics/issues/56)).
-GitHub still lists both advisories as high severity with no patched version as
-of this review. Removing the packages clears SeerrNG's dependency exposure
-without claiming the disputed exploit scenarios are independently confirmed.
+GitHub still lists both advisories as high severity and does not mark a patched
+version. [`http-cache-semantics` 4.3.0 was published on npm on October 4](https://www.npmjs.com/package/http-cache-semantics?activeTab=versions),
+but the advisory still does not identify it as a fix, and this review did not
+verify that it changes the disputed behavior. Removing the packages clears
+SeerrNG's dependency exposure without claiming the disputed exploit scenarios
+are independently confirmed.
 
 The docs lockfile audit also found `joi@17.13.7` through Docusaurus Utils
 Validation, from workspace override `joi: 17.13.7`. GitHub advisory
@@ -96,3 +99,24 @@ The root lockfile resolution also reported existing peer warnings for ESLint
 10 with `eslint-plugin-jsx-a11y` and `eslint-plugin-react`, and React 19 with
 `react-popper` and `react-use-clipboard`. They are outside these dependency
 replacements and must be checked against the exact validation candidate.
+
+## Follow-up status — October 12, 2026
+
+The earlier dismissal snapshot is superseded by the current alert details. Direct
+GitHub alert records report Dependabot #285 (`braces`), #286
+(`http-cache-semantics`), and #287 (`braces`) as fixed, with no dismissal reason
+or timestamp. The open-alert endpoint returns zero Dependabot, Code Scanning,
+and secret-scanning alerts. The paginated `state=dismissed` list still returns
+#285 even though its individual record says `fixed`; treat that filtered list
+entry as stale rather than as a current dismissed risk. The fixed-state list
+returns 305 alerts; with #285's direct fixed record, the 306 known alerts are
+fixed and none is open.
+
+Frozen root and docs installs and lockfile audits completed on the disposable
+`kspls0` guest using Node 24.20.0 and pnpm 10.24.0; both audits reported zero
+vulnerabilities. Focused process-isolation checks now pass 3/3 on the integrated
+candidate, including a regression that proves nested `.env` files are excluded
+from the disposable source snapshot. The complete GitHub-hosted Mode 2 gate for
+the final integrated candidate, its build and browser suites, and release checks
+remain pending. At this status check, issue #199 and PRs #202/#203 are still
+open; no release or issue state change has been made.

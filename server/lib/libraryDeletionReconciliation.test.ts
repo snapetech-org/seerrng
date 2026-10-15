@@ -15,6 +15,7 @@ import Media from '@server/entity/Media';
 import { MediaRequest } from '@server/entity/MediaRequest';
 import { RequestDispatchOutbox } from '@server/entity/RequestDispatchOutbox';
 import Season from '@server/entity/Season';
+import SeasonRequest from '@server/entity/SeasonRequest';
 import { User } from '@server/entity/User';
 import { Watchlist } from '@server/entity/Watchlist';
 import { setupTestDb } from '@server/test/db';
@@ -205,6 +206,70 @@ describe('Confirmed library deletion', () => {
     assert.equal(await getRepository(Watchlist).count(), 1);
     assert.equal(await getRepository(MediaRequest).count(), 0);
     assert.equal(await getRepository(Issue).count(), 0);
+  });
+  it('clears an approved request with a processing season after confirmed removal', async () => {
+    const target = await fixture({
+      mediaType: MediaType.TV,
+      tvdbId: 101,
+      status: MediaStatus.PARTIALLY_AVAILABLE,
+    });
+    const user = await getRepository(User).findOneByOrFail({ id: 1 });
+    const request = await getRepository(MediaRequest).findOneByOrFail({
+      media: { id: target.id },
+    });
+    await dataSource
+      .createQueryBuilder()
+      .update(MediaRequest)
+      .set({ status: MediaRequestStatus.APPROVED })
+      .where('id = :id', { id: request.id })
+      .callListeners(false)
+      .execute();
+    await getRepository(SeasonRequest).save(
+      new SeasonRequest({
+        request,
+        seasonNumber: 1,
+        status: MediaRequestStatus.APPROVED,
+      })
+    );
+    await getRepository(Season).save(
+      new Season({
+        media: Promise.resolve(target),
+        seasonNumber: 1,
+        status: MediaStatus.PROCESSING,
+        status4k: MediaStatus.UNKNOWN,
+      })
+    );
+    await getRepository(Watchlist).save(
+      new Watchlist({
+        media: target,
+        mediaType: MediaType.TV,
+        tmdbId: target.tmdbId,
+        requestedBy: user,
+      })
+    );
+    const snapshot = await getRepository(Media).findOneByOrFail({
+      id: target.id,
+    });
+
+    assert.equal(
+      await applyConfirmedVideoDeletion(snapshot, ['absent', 'absent']),
+      'retained'
+    );
+
+    const retained = await getRepository(Media).findOneByOrFail({
+      id: target.id,
+    });
+    const season = await getRepository(Season).findOneByOrFail({
+      media: { id: target.id },
+      seasonNumber: 1,
+    });
+    assert.equal(retained.status, MediaStatus.DELETED);
+    assert.equal(retained.externalServiceId, null);
+    assert.equal(season.status, MediaStatus.DELETED);
+    assert.equal(season.status4k, MediaStatus.UNKNOWN);
+    assert.equal(await getRepository(MediaRequest).count(), 0);
+    assert.equal(await getRepository(SeasonRequest).count(), 0);
+    assert.equal(await getRepository(Watchlist).count(), 1);
   });
   it('never treats an unreachable quality as deletion or makes partial changes', async () => {
     const target = await fixture();

@@ -33,11 +33,12 @@ import {
 } from '@server/entity/MediaRequest';
 import { MediaSearchMetadata } from '@server/entity/MediaSearchMetadata';
 import { RequestDispatchOutbox } from '@server/entity/RequestDispatchOutbox';
+import Season from '@server/entity/Season';
 import SeasonRequest from '@server/entity/SeasonRequest';
 import { User } from '@server/entity/User';
 import { getExternalRuntimeConfig } from '@server/lib/externalRuntimeConfig';
 import { runMediaEntityMutation } from '@server/lib/mediaMutation';
-import notificationManager from '@server/lib/notifications';
+import notificationManager, { Notification } from '@server/lib/notifications';
 import requestDispatchManager from '@server/lib/requestDispatch';
 import { runWithServarrServiceMutationAdmission } from '@server/lib/serviceAdmission';
 import { getSettings } from '@server/lib/settings';
@@ -765,6 +766,253 @@ describe('MediaRequestSubscriber service dispatch', () => {
       { seasonNumber: 5, episodeNumbers: [7, 8] },
     ]);
     assert.strictEqual(receivedOptions?.searchNow, true);
+  });
+
+  it('fails a movie request whose explicit Radarr server was removed', async () => {
+    const settings = getSettings();
+    settings.radarr = [];
+    const requestedBy = await getRequester();
+    const media = await getRepository(Media).save(
+      new Media({
+        mediaType: MediaType.MOVIE,
+        tmdbId: 1701,
+        status: MediaStatus.PENDING,
+        status4k: MediaStatus.UNKNOWN,
+      })
+    );
+    const request = await getRepository(MediaRequest).save(
+      new MediaRequest({
+        type: MediaType.MOVIE,
+        status: MediaRequestStatus.APPROVED,
+        media,
+        requestedBy,
+        is4k: false,
+        serverId: 404,
+      })
+    );
+    let notificationType: Notification | undefined;
+    mock.method(
+      MediaRequest,
+      'sendNotification',
+      async (_request: MediaRequest, _media: Media, type: Notification) => {
+        notificationType = type;
+      }
+    );
+
+    const delivered = await new MediaRequestSubscriber().sendToRadarr(request);
+
+    const saved = await getRepository(MediaRequest).findOneByOrFail({
+      id: request.id,
+    });
+    assert.equal(delivered, true);
+    assert.equal(saved.status, MediaRequestStatus.FAILED);
+    assert.equal(notificationType, Notification.MEDIA_FAILED);
+  });
+
+  it('keeps an unassigned movie request queued when no Radarr default exists', async () => {
+    const settings = getSettings();
+    settings.radarr = [];
+    const requestedBy = await getRequester();
+    const media = await getRepository(Media).save(
+      new Media({
+        mediaType: MediaType.MOVIE,
+        tmdbId: 1702,
+        status: MediaStatus.PENDING,
+        status4k: MediaStatus.UNKNOWN,
+      })
+    );
+    const request = await getRepository(MediaRequest).save(
+      new MediaRequest({
+        type: MediaType.MOVIE,
+        status: MediaRequestStatus.APPROVED,
+        media,
+        requestedBy,
+        is4k: false,
+      })
+    );
+
+    const delivered = await new MediaRequestSubscriber().sendToRadarr(request);
+
+    const saved = await getRepository(MediaRequest).findOneByOrFail({
+      id: request.id,
+    });
+    assert.equal(delivered, false);
+    assert.equal(saved.status, MediaRequestStatus.APPROVED);
+  });
+
+  it('completes a movie request when its selected quality is available', async () => {
+    const settings = getSettings();
+    settings.radarr = [];
+    const requestedBy = await getRequester();
+    const media = await getRepository(Media).save(
+      new Media({
+        mediaType: MediaType.MOVIE,
+        tmdbId: 1703,
+        status: MediaStatus.AVAILABLE,
+        status4k: MediaStatus.UNKNOWN,
+      })
+    );
+    const request = await getRepository(MediaRequest).save(
+      new MediaRequest({
+        type: MediaType.MOVIE,
+        status: MediaRequestStatus.APPROVED,
+        media,
+        requestedBy,
+        is4k: false,
+        serverId: 404,
+      })
+    );
+
+    const delivered = await new MediaRequestSubscriber().sendToRadarr(request);
+
+    const saved = await getRepository(MediaRequest).findOneByOrFail({
+      id: request.id,
+    });
+    assert.equal(delivered, true);
+    assert.equal(saved.status, MediaRequestStatus.COMPLETED);
+  });
+
+  it('completes a TV request when every requested season is available', async () => {
+    const settings = getSettings();
+    settings.sonarr = [];
+    const requestedBy = await getRequester();
+    const media = await getRepository(Media).save(
+      new Media({
+        mediaType: MediaType.TV,
+        tmdbId: 1704,
+        status: MediaStatus.PARTIALLY_AVAILABLE,
+        status4k: MediaStatus.UNKNOWN,
+        seasons: [
+          new Season({
+            seasonNumber: 1,
+            status: MediaStatus.AVAILABLE,
+            status4k: MediaStatus.UNKNOWN,
+          }),
+          new Season({
+            seasonNumber: 2,
+            status: MediaStatus.PROCESSING,
+            status4k: MediaStatus.UNKNOWN,
+          }),
+        ],
+      })
+    );
+    const request = await getRepository(MediaRequest).save(
+      new MediaRequest({
+        type: MediaType.TV,
+        status: MediaRequestStatus.APPROVED,
+        media,
+        requestedBy,
+        is4k: false,
+        serverId: 404,
+        seasons: [
+          new SeasonRequest({
+            seasonNumber: 1,
+            status: MediaRequestStatus.APPROVED,
+          }),
+        ],
+      })
+    );
+
+    const delivered = await new MediaRequestSubscriber().sendToSonarr(request);
+
+    const saved = await getRepository(MediaRequest).findOneOrFail({
+      where: { id: request.id },
+      relations: { seasons: true },
+    });
+    assert.equal(delivered, true);
+    assert.equal(saved.status, MediaRequestStatus.COMPLETED);
+    assert.equal(saved.seasons[0].status, MediaRequestStatus.COMPLETED);
+  });
+
+  it('fails a TV request whose explicit Sonarr server was removed', async () => {
+    const settings = getSettings();
+    settings.sonarr = [];
+    const requestedBy = await getRequester();
+    const media = await getRepository(Media).save(
+      new Media({
+        mediaType: MediaType.TV,
+        tmdbId: 1705,
+        status: MediaStatus.PROCESSING,
+        status4k: MediaStatus.UNKNOWN,
+        seasons: [
+          new Season({
+            seasonNumber: 1,
+            status: MediaStatus.PROCESSING,
+            status4k: MediaStatus.UNKNOWN,
+          }),
+        ],
+      })
+    );
+    const request = await getRepository(MediaRequest).save(
+      new MediaRequest({
+        type: MediaType.TV,
+        status: MediaRequestStatus.APPROVED,
+        media,
+        requestedBy,
+        is4k: false,
+        serverId: 404,
+        seasons: [
+          new SeasonRequest({
+            seasonNumber: 1,
+            status: MediaRequestStatus.APPROVED,
+          }),
+        ],
+      })
+    );
+    let notificationType: Notification | undefined;
+    mock.method(
+      MediaRequest,
+      'sendNotification',
+      async (_request: MediaRequest, _media: Media, type: Notification) => {
+        notificationType = type;
+      }
+    );
+
+    const delivered = await new MediaRequestSubscriber().sendToSonarr(request);
+
+    const saved = await getRepository(MediaRequest).findOneByOrFail({
+      id: request.id,
+    });
+    assert.equal(delivered, true);
+    assert.equal(saved.status, MediaRequestStatus.FAILED);
+    assert.equal(notificationType, Notification.MEDIA_FAILED);
+  });
+
+  it('keeps an unassigned TV request queued when no Sonarr default exists', async () => {
+    const settings = getSettings();
+    settings.sonarr = [];
+    const requestedBy = await getRequester();
+    const media = await getRepository(Media).save(
+      new Media({
+        mediaType: MediaType.TV,
+        tmdbId: 1706,
+        status: MediaStatus.PENDING,
+        status4k: MediaStatus.UNKNOWN,
+      })
+    );
+    const request = await getRepository(MediaRequest).save(
+      new MediaRequest({
+        type: MediaType.TV,
+        status: MediaRequestStatus.APPROVED,
+        media,
+        requestedBy,
+        is4k: false,
+        seasons: [
+          new SeasonRequest({
+            seasonNumber: 1,
+            status: MediaRequestStatus.APPROVED,
+          }),
+        ],
+      })
+    );
+
+    const delivered = await new MediaRequestSubscriber().sendToSonarr(request);
+
+    const saved = await getRepository(MediaRequest).findOneByOrFail({
+      id: request.id,
+    });
+    assert.equal(delivered, false);
+    assert.equal(saved.status, MediaRequestStatus.APPROVED);
   });
 
   it('sends approved music requests to Lidarr and keeps them active until files are confirmed', async () => {

@@ -2,6 +2,7 @@ import type { NextRequest } from 'next/server';
 import { NextResponse } from 'next/server';
 import { isAuthenticationError } from './utils/auth';
 import { getInternalApiBaseUrl } from './utils/internalApi';
+import { buildLoginPath } from './utils/loginReturn';
 import {
   isLoginPath,
   isPathPrefix,
@@ -9,7 +10,6 @@ import {
   isResetPasswordPath,
   isSetupPath,
 } from './utils/routeAccess';
-import { getLoginUrl, getSafeRedirect } from './utils/urlValidationHelper';
 
 export const INTERNAL_API_FETCH_TIMEOUT_MS = 5_000;
 
@@ -84,25 +84,15 @@ export async function proxy(req: NextRequest) {
       (isSetupPath(pathname) || isLoginPath(pathname)) &&
       !isPlexLoginCompletion
     ) {
-      const destination = isLoginPath(pathname)
-        ? getSafeRedirect(req.nextUrl.searchParams.get('redirect'))
-        : '/';
-      return NextResponse.redirect(new URL(destination, req.url));
+      return NextResponse.redirect(new URL('/', req.url));
     }
   } else if (
     !isLoginPath(pathname) &&
     !isSetupPath(pathname) &&
     !isResetPasswordPath(pathname)
   ) {
-    // Fragments are not included in HTTP requests, but the browser carries
-    // them through redirects when the Location header has no fragment. Keep
-    // the request path and query in a validated same-site login destination;
-    // the login page can then add the inherited fragment if needed.
     return NextResponse.redirect(
-      new URL(
-        getLoginUrl(`${req.nextUrl.pathname}${req.nextUrl.search}`),
-        req.url
-      )
+      new URL(buildLoginPath(pathname, req.nextUrl.search), req.url)
     );
   }
 

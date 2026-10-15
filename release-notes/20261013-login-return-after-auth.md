@@ -6,4 +6,4 @@ action: none
 breaking: false
 ---
 
-After signing in, SeerrNG now returns you to the page you asked for, including its filters and section link. Signing out opens a clean login page.
+After signing in with OpenID Connect, SeerrNG now returns you to the page you asked for, including its section link, and signing out opens a clean login page.

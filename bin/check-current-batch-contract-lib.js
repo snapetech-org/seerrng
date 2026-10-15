@@ -1371,35 +1371,41 @@ const validateCurrentBatchContract = (files) => {
     '### Main-menu cleanup',
     'must retain the main-menu cleanup task'
   );
-  for (const navigationFile of [
+  const navigationModel = 'src/components/Layout/Sidebar/navigation.tsx';
+  requireCount(
+    navigationModel,
+    "href: '/discover/audiobooks'",
+    1,
+    'primary navigation must contain exactly one Audiobooks entry'
+  );
+  requireCount(
+    navigationModel,
+    "href: '/requests'",
+    1,
+    'primary navigation must retain exactly one main Requests entry'
+  );
+  rejectText(
+    navigationModel,
+    "href: '/requests/status'",
+    'primary navigation must not contain the removed Request Status entry'
+  );
+  for (const navigationConsumer of [
     'src/components/Layout/Sidebar/index.tsx',
     'src/components/Layout/MobileMenu/index.tsx',
   ]) {
-    requireCount(
-      navigationFile,
-      "href: '/discover/audiobooks'",
-      1,
-      'primary navigation must contain exactly one Audiobooks entry'
-    );
-    requireCount(
-      navigationFile,
-      "href: '/requests'",
-      1,
-      'primary navigation must retain exactly one main Requests entry'
-    );
-    rejectText(
-      navigationFile,
-      "href: '/requests/status'",
-      'primary navigation must not contain the removed Request Status entry'
+    requireText(
+      navigationConsumer,
+      "from '@app/components/Layout/Sidebar/navigation'",
+      'desktop and mobile menus must render the same shared navigation model'
     );
   }
   requireText(
-    'src/components/Layout/Sidebar/index.tsx',
+    navigationModel,
     "users: 'User List',",
     'the shared desktop and mobile main-menu label must read User List'
   );
   rejectText(
-    'src/components/Layout/Sidebar/index.tsx',
+    navigationModel,
     "users: 'Users',",
     'the main-menu label must not revert to Users'
   );

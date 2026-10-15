@@ -12,11 +12,11 @@ import MediaIdentifier, {
   MediaIdentifierProvider,
 } from '@server/entity/MediaIdentifier';
 import { User } from '@server/entity/User';
-import { getSettings } from '@server/lib/settings';
+import { getSettings, type RadarrSettings } from '@server/lib/settings';
 import { runUserSecurityMutation } from '@server/lib/userSecurityMutation';
 import { setupTestDb } from '@server/test/db';
 import assert from 'node:assert/strict';
-import { afterEach, describe, it, mock } from 'node:test';
+import { afterEach, beforeEach, describe, it, mock } from 'node:test';
 import {
   PLEX_SCAN_ITEM_CONCURRENCY,
   PLEX_SCAN_PAGE_SIZE,
@@ -209,6 +209,135 @@ describe('Plex scanner configuration authority', () => {
       await getRepository(Media).findOne({ where: { tmdbId: 993 } }),
       null
     );
+  });
+});
+
+describe('Plex movie version scanning', () => {
+  const movieLibrary = {
+    id: 'movies',
+    name: 'Movies',
+    enabled: true,
+    type: 'movie' as const,
+  };
+
+  beforeEach(() => {
+    const settings = getSettings();
+    settings.main = {
+      ...settings.main,
+      mediaServerType: MediaServerType.PLEX,
+    };
+    settings.radarr = [];
+    settings.sonarr = [];
+    settings.plex = {
+      ...settings.plex,
+      ip: 'plex.local',
+      port: 32400,
+      useSsl: false,
+      libraries: [movieLibrary],
+    };
+    mock.method(PlexAPI.prototype, 'getLibraries', async () => []);
+  });
+
+  it('marks both versions available when Plex groups standard and 4K together', async () => {
+    const settings = getSettings();
+    settings.radarr = [{ is4k: true } as RadarrSettings];
+    const mediaRepository = getRepository(Media);
+    const media = await mediaRepository.save(
+      new Media({
+        tmdbId: 6200,
+        mediaType: MediaType.MOVIE,
+        status: MediaStatus.PROCESSING,
+        status4k: MediaStatus.PROCESSING,
+      })
+    );
+    mock.method(PlexAPI.prototype, 'getLibraryContents', async () => ({
+      totalSize: 1,
+      items: [
+        {
+          ratingKey: 'plex-movie-key',
+          title: 'Grouped Movie',
+          guid: 'tmdb://6200',
+          Guid: [{ id: 'tmdb://6200' }],
+          addedAt: 1_700_000_000,
+          updatedAt: 1_700_000_000,
+          type: 'movie',
+          Media: [{ videoResolution: '1080' }, { videoResolution: '4k' }],
+        } as PlexLibraryItem,
+      ],
+    }));
+
+    await new PlexScanner().run();
+
+    const updated = await mediaRepository.findOneByOrFail({ id: media.id });
+    assert.equal(updated.status, MediaStatus.AVAILABLE);
+    assert.equal(updated.status4k, MediaStatus.AVAILABLE);
+  });
+
+  it('treats a 4K-only item as standard when 4K Radarr is not configured', async () => {
+    const mediaRepository = getRepository(Media);
+    const media = await mediaRepository.save(
+      new Media({
+        tmdbId: 6201,
+        mediaType: MediaType.MOVIE,
+        status: MediaStatus.PROCESSING,
+        status4k: MediaStatus.UNKNOWN,
+      })
+    );
+    mock.method(PlexAPI.prototype, 'getLibraryContents', async () => ({
+      totalSize: 1,
+      items: [
+        {
+          ratingKey: 'plex-movie-4k-key',
+          title: '4K Only Movie',
+          guid: 'tmdb://6201',
+          Guid: [{ id: 'tmdb://6201' }],
+          addedAt: 1_700_000_000,
+          updatedAt: 1_700_000_000,
+          type: 'movie',
+          Media: [{ videoResolution: '4k' }],
+        } as PlexLibraryItem,
+      ],
+    }));
+
+    await new PlexScanner().run();
+
+    const updated = await mediaRepository.findOneByOrFail({ id: media.id });
+    assert.equal(updated.status, MediaStatus.AVAILABLE);
+    assert.equal(updated.status4k, MediaStatus.UNKNOWN);
+  });
+
+  it('keeps a 4K-only item in the 4K state when 4K Radarr is configured', async () => {
+    getSettings().radarr = [{ is4k: true } as RadarrSettings];
+    const mediaRepository = getRepository(Media);
+    const media = await mediaRepository.save(
+      new Media({
+        tmdbId: 6202,
+        mediaType: MediaType.MOVIE,
+        status: MediaStatus.PROCESSING,
+        status4k: MediaStatus.PROCESSING,
+      })
+    );
+    mock.method(PlexAPI.prototype, 'getLibraryContents', async () => ({
+      totalSize: 1,
+      items: [
+        {
+          ratingKey: 'plex-movie-4k-configured-key',
+          title: 'Configured 4K Only Movie',
+          guid: 'tmdb://6202',
+          Guid: [{ id: 'tmdb://6202' }],
+          addedAt: 1_700_000_000,
+          updatedAt: 1_700_000_000,
+          type: 'movie',
+          Media: [{ videoResolution: '4k' }],
+        } as PlexLibraryItem,
+      ],
+    }));
+
+    await new PlexScanner().run();
+
+    const updated = await mediaRepository.findOneByOrFail({ id: media.id });
+    assert.equal(updated.status, MediaStatus.PROCESSING);
+    assert.equal(updated.status4k, MediaStatus.AVAILABLE);
   });
 });
 

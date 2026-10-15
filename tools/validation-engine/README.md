@@ -95,14 +95,15 @@ pnpm validate:development
   ```
 
   The external launcher snapshots tracked and non-ignored candidate files,
-  excludes local configuration and credential files, and enters bubblewrap
-  before loading candidate JavaScript. Its dependency roots are mounted
-  read-only at their original workspace paths, and it fails closed when Linux
-  bubblewrap isolation is unavailable. Its internal
-  `--inside-sandbox` mode requires a token bound to a marker file mounted by the
-  trusted launcher. A candidate-owned validator can still misreport its own
-  test results, so this boundary protects the host; it does not replace
-  reviewing the validator itself.
+  excludes local configuration and credential files while retaining only the
+  exact checked-in TypeScript compiler manifests needed by the test runners,
+  and enters bubblewrap before loading candidate JavaScript. Its dependency
+  roots must be real directories inside the candidate checkout and are mounted
+  read-only at their original workspace paths. It fails closed when bubblewrap
+  isolation is unavailable. Its internal `--inside-sandbox` mode requires a
+  token bound to a marker file mounted by the trusted launcher. A candidate-owned
+  validator can still misreport its own test results, so this boundary protects
+  the host; it does not replace reviewing the validator itself.
 - With no mode flag, the engine admits the complete local staged gate. It runs
   only when the required source, dependency, toolchain, fixture, network, and
   browser-isolation boundaries can be proved. Otherwise it stops incomplete and
@@ -357,8 +358,11 @@ after an earlier failure. A true data dependency still applies: browser
 validation cannot run without its own successful same-run build. Any required
 failure keeps the overall result failed.
 
-Independent test files use isolated forks and fresh temporary configuration.
-The known quiet Vitest owners run serially after the independent Vitest group.
+Independent native Node test files use process-isolated forks and the run's
+sealed worker budget. Each fork keeps its own application singletons and
+in-memory database while independent files run concurrently. Vitest uses the
+same bounded worker budget, with known quiet Vitest owners running serially
+after the independent Vitest group.
 The browser stage discovers Cypress and Playwright independently, then runs both
 native suites against one managed server and that stage's successful build.
 
@@ -422,6 +426,13 @@ runner identity, each applicable unit or matrix case:
 5. preserves its sealed result, evidence manifest, and attempt-scoped ledger;
 6. uploads those artifacts for reconciliation.
 
+The plan and receipt directories under `RUNNER_TEMP` include the repository
+ID, run ID, run attempt, job ID, and case. This keeps persistent self-hosted
+runner scratch from colliding with another repository, an older run, or a
+parallel matrix job. Once the plan or receipt has been uploaded, the job removes
+its own local engine workspace; reconciliation consumes the uploaded
+current-attempt artifacts.
+
 A successful execution creates the ledger's single success entry. Failed,
 cancelled, or incomplete work leaves the ledger blank. A second admission for
 the same unit/case fails closed instead of accepting the earlier result.
@@ -459,6 +470,12 @@ evidence for action-managed tool setup that is not itself safely reusable.
 For every sharded lane, reconciliation also rejects missing, extra, or duplicate
 files and requires the successful case results to cover the canonical lane
 exactly once with active tests in aggregate.
+
+Pull-request CI cancels runs for superseded commits. Reconciliation still uses
+`always()` so failures produce a current-run result, and also checks
+`!cancelled()` so an obsolete canceled run does not keep the pull request's
+concurrency slot while waiting for a final job. The current commit still runs
+the complete fail-closed reconciliation.
 
 Path- or event-inapplicable jobs must be skipped exactly as planned. Pull-request
 title, template, and merge-conflict checks remain external GitHub metadata and

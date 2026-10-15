@@ -34,6 +34,7 @@ import {
   getAvailableEpisodesBySeason,
   getDefaultUnavailableSeasonSelections,
   getRequestableTvSelections,
+  isActiveSeasonRequest,
   mergeEpisodeNumbersBySeason,
 } from '@app/utils/tvRequestSelection';
 import { hasLinkedWatchAheadAccount } from '@app/utils/watchAhead';
@@ -58,6 +59,13 @@ const messages = defineMessages('components.RequestModal', {
   requestseries4ktitle: 'Request Series in 4K',
   edit: 'Edit Request',
   approve: 'Approve Request',
+  failedrequest: 'Failed Request',
+  failed4krequest: 'Failed 4K Request',
+  repairFailedDescription:
+    'Choose another server to resubmit this failed request.',
+  repairPreservesSelections:
+    'The original season and episode selections will be kept.',
+  saveAndRetry: 'Save and Retry',
   cancel: 'Cancel Request',
   pendingrequest: 'Pending Request',
   pending4krequest: 'Pending 4K Request',
@@ -76,6 +84,7 @@ const messages = defineMessages('components.RequestModal', {
   errorediting: 'Something went wrong while editing the request.',
   requestedited: 'Request for <strong>{title}</strong> edited successfully!',
   requestApproved: 'Request for <strong>{title}</strong> approved!',
+  requestResubmitted: 'Request for <strong>{title}</strong> resubmitted.',
   requestcancelled: 'Request for <strong>{title}</strong> canceled.',
   autoapproval: 'Automatic Approval',
   requesterror: 'Something went wrong while submitting the request.',
@@ -146,10 +155,14 @@ const TvRequestModal = ({
   const { addToast } = useToasts();
   const editingSeasonSelections: SeasonEpisodeSelection[] = (
     editRequest?.seasons ?? []
-  ).map((season) => ({
-    seasonNumber: season.seasonNumber,
-    ...(season.episodeNumbers ? { episodeNumbers: season.episodeNumbers } : {}),
-  }));
+  )
+    .filter(isActiveSeasonRequest)
+    .map((season) => ({
+      seasonNumber: season.seasonNumber,
+      ...(season.episodeNumbers
+        ? { episodeNumbers: season.episodeNumbers }
+        : {}),
+    }));
   const { data, error } = useSWR<TvDetails>(`/api/v1/tv/${tmdbId}`);
   const [requestOverrides, setRequestOverrides] =
     useState<RequestOverrides | null>(null);
@@ -176,6 +189,9 @@ const TvRequestModal = ({
   const [requestedByPortal, setRequestedByPortal] =
     useState<HTMLDivElement | null>(null);
   const effectiveIs4k = requestOverrides?.is4k ?? selectedIs4k;
+  const isFailedManagerRepair =
+    editRequest?.status === MediaRequestStatus.FAILED &&
+    hasPermission(Permission.MANAGE_REQUESTS);
   const { data: playbackCatalog } = usePlaybackCatalog(
     data?.mediaInfo?.id,
     effectiveIs4k
@@ -312,10 +328,21 @@ const TvRequestModal = ({
   const currentlyRemaining =
     (quota?.tv.remaining ?? 0) -
     selectedSeasons.length +
-    (editRequest?.seasons ?? []).length;
+    (editRequest?.seasons.filter(isActiveSeasonRequest) ?? []).length;
+
+  const showAlreadyAvailableToast = () => {
+    addToast(intl.formatMessage(messages.alreadyAvailable), {
+      appearance: 'info',
+      autoDismiss: true,
+    });
+  };
 
   const updateRequest = async (alsoApproveRequest = false) => {
     if (!editRequest || requestDisabled) {
+      return;
+    }
+
+    if (isFailedManagerRepair && selectedSeasons.length === 0) {
       return;
     }
 
@@ -326,7 +353,7 @@ const TvRequestModal = ({
 
     try {
       if (selectedSeasons.length > 0) {
-        await axios.put(`/api/v1/request/${editRequest.id}`, {
+        const response = await axios.put(`/api/v1/request/${editRequest.id}`, {
           mediaType: 'tv',
           serverId: requestOverrides?.server,
           profileId: requestOverrides?.profile,
@@ -342,6 +369,11 @@ const TvRequestModal = ({
             : {}),
         });
 
+        if (response.status === 202) {
+          showAlreadyAvailableToast();
+          return;
+        }
+
         if (alsoApproveRequest) {
           await axios.post(`/api/v1/request/${editRequest.id}/approve`);
         }
@@ -355,9 +387,11 @@ const TvRequestModal = ({
         <span>
           {selectedSeasons.length > 0
             ? intl.formatMessage(
-                alsoApproveRequest
-                  ? messages.requestApproved
-                  : messages.requestedited,
+                isFailedManagerRepair
+                  ? messages.requestResubmitted
+                  : alsoApproveRequest
+                    ? messages.requestApproved
+                    : messages.requestedited,
                 {
                   title: data?.name,
                   strong: (msg: React.ReactNode) => <strong>{msg}</strong>,
@@ -414,46 +448,57 @@ const TvRequestModal = ({
           tags: requestOverrides.tags,
         };
       }
-      const response = await axios.post<MediaRequest>('/api/v1/request', {
-        mediaId: data?.id,
-        tvdbId: tvdbId ?? data?.externalIds.tvdbId,
-        mediaType: 'tv',
-        is4k: effectiveIs4k,
-        ignoreQuota: requestOverrides?.ignoreQuota,
-        seasons: usesEpisodeSelection
-          ? requestableSelections
-              .map((selection) => selection.seasonNumber)
-              .sort((a, b) => a - b)
-          : getAllSeasons().filter(
-              (season) => !getAllRequestedSeasons().includes(season)
-            ),
-        seasonRequests: usesEpisodeSelection
-          ? requestableSelections
-          : undefined,
-        ...(isWatchAheadRequestForCurrentUser
-          ? { watchAheadEpisodeCount }
-          : {}),
-        ...overrideParams,
-      });
+      const response = await axios.post<MediaRequest | { message: string }>(
+        '/api/v1/request',
+        {
+          mediaId: data?.id,
+          tvdbId: tvdbId ?? data?.externalIds.tvdbId,
+          mediaType: 'tv',
+          is4k: effectiveIs4k,
+          ignoreQuota: requestOverrides?.ignoreQuota,
+          seasons: usesEpisodeSelection
+            ? requestableSelections
+                .map((selection) => selection.seasonNumber)
+                .sort((a, b) => a - b)
+            : getAllSeasons().filter(
+                (season) => !getAllRequestedSeasons().includes(season)
+              ),
+          seasonRequests: usesEpisodeSelection
+            ? requestableSelections
+            : undefined,
+          ...(isWatchAheadRequestForCurrentUser
+            ? { watchAheadEpisodeCount }
+            : {}),
+          ...overrideParams,
+        }
+      );
+
+      if (response.status === 202) {
+        showAlreadyAvailableToast();
+        return;
+      }
+
+      if (!response.data || !('media' in response.data)) {
+        throw new Error('TV request response did not contain a media request.');
+      }
+
       mutate('/api/v1/request?filter=all&take=10&sort=modified&skip=0');
 
-      if (response.data) {
-        if (onComplete) {
-          onComplete(
-            response.data.media[effectiveIs4k ? 'status4k' : 'status'],
-            effectiveIs4k
-          );
-        }
-        addToast(
-          <span>
-            {intl.formatMessage(messages.requestSuccess, {
-              title: data?.name,
-              strong: (msg: React.ReactNode) => <strong>{msg}</strong>,
-            })}
-          </span>,
-          { appearance: 'success', autoDismiss: true }
+      if (onComplete) {
+        onComplete(
+          response.data.media[effectiveIs4k ? 'status4k' : 'status'],
+          effectiveIs4k
         );
       }
+      addToast(
+        <span>
+          {intl.formatMessage(messages.requestSuccess, {
+            title: data?.name,
+            strong: (msg: React.ReactNode) => <strong>{msg}</strong>,
+          })}
+        </span>,
+        { appearance: 'success', autoDismiss: true }
+      );
     } catch {
       addToast(intl.formatMessage(messages.requesterror), {
         appearance: 'error',
@@ -490,7 +535,10 @@ const TvRequestModal = ({
           request.status !== MediaRequestStatus.COMPLETED
       )
       .flatMap((request) => request.seasons)
-      .filter((season) => season.episodeNumbers != null)
+      .filter(
+        (season) =>
+          isActiveSeasonRequest(season) && season.episodeNumbers != null
+      )
       .forEach((season) => {
         requestedEpisodes[season.seasonNumber] = [
           ...new Set([
@@ -523,6 +571,7 @@ const TvRequestModal = ({
         return [
           ...requestedSeasons,
           ...request.seasons
+            .filter(isActiveSeasonRequest)
             .filter((season) => season.episodeNumbers == null)
             .map((sr) => sr.seasonNumber),
         ];
@@ -632,7 +681,8 @@ const TvRequestModal = ({
     !!quota?.tv.limit &&
     !requestOverrides?.ignoreQuota &&
     requestableSelections.length >
-      (quota.tv.remaining ?? 0) + (editRequest?.seasons.length ?? 0);
+      (quota.tv.remaining ?? 0) +
+        (editRequest?.seasons.filter(isActiveSeasonRequest).length ?? 0);
   const fullQuotaExceeded =
     !!quota?.tv.limit &&
     !requestOverrides?.ignoreQuota &&
@@ -752,14 +802,18 @@ const TvRequestModal = ({
         season.seasonNumber !== 0)
   );
   const requestButtonLabel = editRequest
-    ? selectedSeasons.length === 0
-      ? intl.formatMessage(messages.cancel)
-      : hasPermission(Permission.MANAGE_REQUESTS)
-        ? intl.formatMessage(messages.approve)
-        : intl.formatMessage(messages.edit)
+    ? isFailedManagerRepair
+      ? intl.formatMessage(messages.saveAndRetry)
+      : selectedSeasons.length === 0
+        ? intl.formatMessage(messages.cancel)
+        : hasPermission(Permission.MANAGE_REQUESTS)
+          ? intl.formatMessage(messages.approve)
+          : intl.formatMessage(messages.edit)
     : intl.formatMessage(globalMessages.request);
   const requestDisabled = editRequest
-    ? usesEpisodeSelection && selectedSeasons.length > 0 && !requestTreeReady
+    ? isFailedManagerRepair
+      ? selectedSeasons.length === 0
+      : usesEpisodeSelection && selectedSeasons.length > 0 && !requestTreeReady
     : (usesEpisodeSelection && !requestTreeReady) ||
       selectedDestinationCovered ||
       requestableSelections.length === 0 ||
@@ -768,9 +822,11 @@ const TvRequestModal = ({
   const closeAction = tvdbId ? () => setSearchModal({ show: true }) : onCancel;
   const submitAction = () =>
     editRequest
-      ? hasPermission(Permission.MANAGE_REQUESTS)
-        ? updateRequest(true)
-        : updateRequest()
+      ? isFailedManagerRepair
+        ? updateRequest(false)
+        : hasPermission(Permission.MANAGE_REQUESTS)
+          ? updateRequest(true)
+          : updateRequest()
       : sendRequest();
 
   return data && !error && !data.externalIds.tvdbId && searchModal.show ? (
@@ -798,9 +854,13 @@ const TvRequestModal = ({
       alignTop
       title={intl.formatMessage(
         editRequest
-          ? is4k
-            ? messages.pending4krequest
-            : messages.pendingrequest
+          ? isFailedManagerRepair
+            ? is4k
+              ? messages.failed4krequest
+              : messages.failedrequest
+            : is4k
+              ? messages.pending4krequest
+              : messages.pendingrequest
           : effectiveIs4k
             ? messages.requestseries4ktitle
             : messages.requestseriestitle
@@ -813,12 +873,14 @@ const TvRequestModal = ({
       okDisabled={requestDisabled}
       okButtonType={
         editRequest
-          ? settings.currentSettings.partialRequestsEnabled &&
-            selectedSeasons.length === 0
-            ? 'danger'
-            : hasPermission(Permission.MANAGE_REQUESTS)
-              ? 'success'
-              : 'primary'
+          ? isFailedManagerRepair
+            ? 'success'
+            : settings.currentSettings.partialRequestsEnabled &&
+                selectedSeasons.length === 0
+              ? 'danger'
+              : hasPermission(Permission.MANAGE_REQUESTS)
+                ? 'success'
+                : 'primary'
           : 'primary'
       }
       cancelText={
@@ -842,11 +904,13 @@ const TvRequestModal = ({
       >
         {editRequest && (
           <div className="app-card-inset refreshed-inset-surface card-spacing-after">
-            {isOwner
-              ? intl.formatMessage(messages.pendingapproval)
-              : intl.formatMessage(messages.requestfrom, {
-                  username: editRequest.requestedBy.displayName,
-                })}
+            {isFailedManagerRepair
+              ? intl.formatMessage(messages.repairFailedDescription)
+              : isOwner
+                ? intl.formatMessage(messages.pendingapproval)
+                : intl.formatMessage(messages.requestfrom, {
+                    username: editRequest.requestedBy.displayName,
+                  })}
           </div>
         )}
         {(quota?.tv.limit ?? 0) > 0 && (
@@ -985,36 +1049,44 @@ const TvRequestModal = ({
         </div>
 
         <div className="request-selection-layout">
-          {usesEpisodeSelection && data && (
-            <RequestSeasonEpisodeTree
-              key={requestSelectionKey}
-              tvId={data.id}
-              seasons={visibleSeasons}
-              selections={requestableSelections}
-              disabledSeasons={getAllRequestedSeasons()}
-              disabledEpisodes={blockedEpisodesBySeason}
-              availableEpisodesBySeason={availableEpisodesBySeason}
-              selectionMode={
-                watchAheadEpisodeCount > 0 && !editRequest
-                  ? 'single-episode'
-                  : 'multiple'
-              }
-              onReadyChange={setRequestTreeReady}
-              onSelectionsChange={(nextSelections) => {
-                const allowedSelections =
-                  (quota?.tv.remaining ?? 0) +
-                  (editRequest?.seasons.length ?? 0);
-                if (
-                  !quota?.tv.limit ||
-                  requestOverrides?.ignoreQuota ||
-                  nextSelections.length <= seasonSelections.length ||
-                  nextSelections.length <= allowedSelections
-                ) {
-                  setSeasonSelections(nextSelections);
-                }
-              }}
-            />
+          {isFailedManagerRepair && selectedSeasons.length > 0 && (
+            <p className="app-card-inset refreshed-inset-surface card-body-text">
+              {intl.formatMessage(messages.repairPreservesSelections)}
+            </p>
           )}
+          {usesEpisodeSelection &&
+            data &&
+            (!isFailedManagerRepair || selectedSeasons.length === 0) && (
+              <RequestSeasonEpisodeTree
+                key={requestSelectionKey}
+                tvId={data.id}
+                seasons={visibleSeasons}
+                selections={requestableSelections}
+                disabledSeasons={getAllRequestedSeasons()}
+                disabledEpisodes={blockedEpisodesBySeason}
+                availableEpisodesBySeason={availableEpisodesBySeason}
+                selectionMode={
+                  watchAheadEpisodeCount > 0 && !editRequest
+                    ? 'single-episode'
+                    : 'multiple'
+                }
+                onReadyChange={setRequestTreeReady}
+                onSelectionsChange={(nextSelections) => {
+                  const allowedSelections =
+                    (quota?.tv.remaining ?? 0) +
+                    (editRequest?.seasons.filter(isActiveSeasonRequest)
+                      .length ?? 0);
+                  if (
+                    !quota?.tv.limit ||
+                    requestOverrides?.ignoreQuota ||
+                    nextSelections.length <= seasonSelections.length ||
+                    nextSelections.length <= allowedSelections
+                  ) {
+                    setSeasonSelections(nextSelections);
+                  }
+                }}
+              />
+            )}
 
           <div className="request-selection-options">
             {!editRequest && (
@@ -1119,6 +1191,7 @@ const TvRequestModal = ({
             quota={quota}
             requestUser={editRequest?.requestedBy}
             requestId={editRequest?.id}
+            reassignMissingServer={isFailedManagerRepair}
             defaultOverrides={
               editRequest
                 ? {
@@ -1133,7 +1206,7 @@ const TvRequestModal = ({
             expanded={advancedOptionsOpen}
             panelOnly
             rootFolderTable
-            requestedByPortal={requestedByPortal}
+            requestedByPortal={isFailedManagerRepair ? null : requestedByPortal}
             onChange={(overrides) => setRequestOverrides(overrides)}
           />
         )}

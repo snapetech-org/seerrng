@@ -25,8 +25,9 @@ The rules describe asset roles, not particular pages, title strings, example med
 5. Browsing and shelf posters: `poster-layout`, `data-media-type`, and `data-poster-region`; presentation: the existing poster frame, `poster-control`, and content typography owners.
 6. Ordinary actions: the shared Button component and `app-button` plus its standard size and semantic palette. Poster actions: `poster-control`. Filter/disclosure controls: their shared segmented/filter families, not copied ordinary-button geometry.
 7. Dropdowns: the existing global dropdown, compact select, provider container and provider icon roles. Overlapping screens: `page-overlay` and `page-overlay-card`.
-8. Messages and recovery: `page-error-message` and the shared Retry action. Selection: `selection-circle`; hierarchical selection: `selection-tree` together with table/card roles.
-9. Software catalog ownership uses the catalog library badge with the shared compact badge geometry. Play-time estimates use the dedicated readable text role within the existing card-table layout.
+8. Primary navigation: `sidebar-navigation`, `sidebar-navigation-section`, `sidebar-navigation-heading`, `sidebar-navigation-items`, and `main-menu-link`. Desktop, the mobile drawer, and the mobile bottom menu consume one ordered route model; route availability and permission checks stay attached to each link. Section headings and nested items express grouping without changing a route's access rules.
+9. Messages and recovery: `page-error-message` and the shared Retry action. Selection: `selection-circle`; hierarchical selection: `selection-tree` together with table/card roles.
+10. Software catalog ownership uses the catalog library badge with the shared compact badge geometry. Play-time estimates use the dedicated readable text role within the existing card-table layout.
 
 This map identifies owners, not a whitelist of every valid class. Follow the existing family for the asset and verify its cascade before proposing another family.
 
@@ -76,6 +77,7 @@ This map identifies owners, not a whitelist of every valid class. Follow the exi
 7. Preserve native provider logos and their meaningful aspect ratios. Shared button height does not require stretching a wordmark into a square. Product names and branding must remain accurate; do not leave obsolete branding as a general style-class name.
 8. Keep decorative card framing separate from body paint. Preserve the shared masked frame treatment rather than filling the entire body as a blue border box. Focus/selected feedback must not thicken inward and change actual control geometry.
 9. Shared palette recipes and their deliberately spelled `metalic-*` and `gradiant-*` variants belong to the stylesheet, with complete explicit role-class strings selected by components. Do not silently rename these existing families or construct partial palette class names dynamically. Visual Lab consumes production owners or an explicitly opt-in experimental family; generated references remain traceable to their source and must not become a second competing implementation.
+10. The fixed search/header surface uses its theme token when scrolled and stays free of backdrop blur so scrolling does not repaint a full-width filtered layer.
 
 ## 6. Buttons, filters and dropdowns
 

@@ -19,6 +19,9 @@ describe('discover scroll restoration', () => {
   it('recognizes only the corresponding media detail route', () => {
     strictEqual(isMediaDetailPath('/movie/123', 'movie'), true);
     strictEqual(isMediaDetailPath('/tv/123', 'movie'), false);
+    strictEqual(isMediaDetailPath('/movie/123', 'movieOrTv'), true);
+    strictEqual(isMediaDetailPath('/tv/123?from=list', 'movieOrTv'), true);
+    strictEqual(isMediaDetailPath('/book/OL123W', 'movieOrTv'), false);
     strictEqual(isMediaDetailPath('/book/OL123W?from=list', 'book'), true);
     strictEqual(isMediaDetailPath('/discover/books', 'book'), false);
     strictEqual(isMediaDetailPath('/comic/4050', 'comic'), true);

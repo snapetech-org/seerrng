@@ -1216,7 +1216,7 @@ const parseMainSettingsBody = (
     if ('error' in parsed) {
       return parsed;
     }
-    if (parsed.value?.endsWith('/')) {
+    if (key === 'applicationUrl' && parsed.value?.endsWith('/')) {
       return { error: `${fieldName} must not end with a slash.` };
     }
     value[key] = parsed.value ?? '';

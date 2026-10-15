@@ -232,6 +232,9 @@ const messages = defineMessages('components.Requests', {
   declineTooltip: 'Decline this pending request.',
   edit: 'Edit',
   editTooltip: 'Edit this pending request.',
+  changeServer: 'Change Server',
+  changeServerTooltip:
+    'Choose another server and resubmit this failed request.',
   modifyFailed: 'Unable to update this request.',
   watchAheadLabel: 'Episode Queue',
   watchAheadDescription:
@@ -1413,6 +1416,11 @@ const RequestStatusCard = ({
     isAdminView &&
     hasPermission(Permission.MANAGE_REQUESTS) &&
     item.request.status === MediaRequestStatus.PENDING;
+  const canRepairFailed =
+    isAdminView &&
+    hasPermission(Permission.MANAGE_REQUESTS) &&
+    item.request.status === MediaRequestStatus.FAILED &&
+    (item.request.type === 'movie' || item.request.type === 'tv');
   const canManageWatchAhead =
     item.request.type === 'tv' &&
     !item.request.watchAheadParentRequestId &&
@@ -1593,6 +1601,20 @@ const RequestStatusCard = ({
             </Button>
           </Tooltip>
         </>
+      )}
+      {canRepairFailed && (
+        <Tooltip content={intl.formatMessage(messages.changeServerTooltip)}>
+          <Button
+            type="button"
+            buttonType="warning"
+            buttonSize="sm"
+            disabled={isModifying}
+            onClick={() => setShowEditModal(true)}
+          >
+            <PencilIcon className="app-action-icon" aria-hidden="true" />
+            {intl.formatMessage(messages.changeServer)}
+          </Button>
+        </Tooltip>
       )}
       <Tooltip content={intl.formatMessage(messages.retryTooltip)}>
         <Button

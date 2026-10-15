@@ -11,12 +11,14 @@ import {
 } from '@server/entity/MediaRequest';
 import MediaRequestStatusEvent from '@server/entity/MediaRequestStatusEvent';
 import { RequestDispatchOutbox } from '@server/entity/RequestDispatchOutbox';
+import { isActiveSeasonRequest } from '@server/entity/SeasonRequest';
 import type {
   DownloadingItem,
   ServarrHistoryEvidence,
 } from '@server/lib/downloadtracker';
 import downloadTracker from '@server/lib/downloadtracker';
 import { getExternalRuntimeConfig } from '@server/lib/externalRuntimeConfig';
+import { hydrateMediaRequestRelations } from '@server/lib/mediaRequestHydration';
 import {
   getRequestedMusicSearchTime,
   reconcileRequestedMusicAvailability,
@@ -174,6 +176,7 @@ type RequestLike = {
   media: RequestMediaLike;
   seasons?: {
     seasonNumber: number;
+    status?: MediaRequestStatus;
   }[];
 };
 
@@ -352,12 +355,16 @@ const isRequestSatisfied = (request: RequestLike): boolean => {
   if (request.type === MediaType.TV && request.seasons?.length) {
     const seasonStatus = request.is4k ? 'status4k' : 'status';
     const seasons = request.media.seasons ?? [];
-    return request.seasons.every((requestedSeason) => {
-      const season = seasons.find(
-        (candidate) => candidate.seasonNumber === requestedSeason.seasonNumber
-      );
-      return !!season && isAvailableStatus(season[seasonStatus]);
-    });
+    const activeSeasonRequests = request.seasons.filter(isActiveSeasonRequest);
+    return (
+      activeSeasonRequests.length > 0 &&
+      activeSeasonRequests.every((requestedSeason) => {
+        const season = seasons.find(
+          (candidate) => candidate.seasonNumber === requestedSeason.seasonNumber
+        );
+        return !!season && isAvailableStatus(season[seasonStatus]);
+      })
+    );
   }
 
   return isAvailableStatus(mediaStatus);
@@ -515,7 +522,9 @@ const getDownloadItems = (request: RequestLike): DownloadingItem[] => {
     }
 
     const requestedSeasons = new Set(
-      request.seasons.map((season) => season.seasonNumber)
+      request.seasons
+        .filter(isActiveSeasonRequest)
+        .map((season) => season.seasonNumber)
     );
     return downloads.filter(
       (download) =>
@@ -1259,10 +1268,12 @@ const loadRequest = async (
     {
       where: { id: requestId },
       relations: {
-        media: true,
+        media: { seasons: true },
         seasons: true,
         requestedBy: true,
       },
+      relationLoadStrategy: 'query',
+      loadEagerRelations: false,
     }
   );
 
@@ -1834,11 +1845,8 @@ export const getRequestStatusPage = async (options: {
   const query = requestRepository
     .createQueryBuilder('request')
     .leftJoinAndSelect('request.media', 'media')
-    .leftJoinAndSelect('media.seasons', 'mediaSeasons')
-    .leftJoinAndSelect('media.identifiers', 'identifiers')
     .leftJoinAndSelect('request.requestedBy', 'requestedBy')
-    .leftJoinAndSelect('request.modifiedBy', 'modifiedBy')
-    .leftJoinAndSelect('request.seasons', 'seasons');
+    .leftJoinAndSelect('request.modifiedBy', 'modifiedBy');
 
   if (options.requestId) {
     query.andWhere('request.id = :requestId', {
@@ -1907,6 +1915,10 @@ export const getRequestStatusPage = async (options: {
       .skip(skip)
       .getManyAndCount();
   }
+
+  requests = await hydrateMediaRequestRelations(requests, {
+    includeMediaIdentifiers: true,
+  });
 
   const requestIds = requests.map((request) => request.id);
   const [latestEvents, pendingRequestIds, bookSearchStates] = await Promise.all(

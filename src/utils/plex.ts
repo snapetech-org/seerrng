@@ -7,6 +7,7 @@ export const PLEX_OAUTH_HTTP_OPTIONS = {
 const MAX_PLEX_AUTH_TOKEN_LENGTH = 4096;
 const MAX_PLEX_PIN_ID = 2_147_483_647;
 const MAX_PLEX_PIN_CODE_LENGTH = 128;
+const MAX_PLEX_PIN_EXPIRY_LENGTH = 128;
 
 export const getPlexPopupReturnUrl = (origin: string): string => {
   const returnUrl = new URL('/login/plex/loading', origin);
@@ -27,6 +28,23 @@ export const getBoundedPlexPinDeadline = (
     ? Math.min(parsedDeadline, hardDeadline)
     : hardDeadline;
 };
+
+export const getPlexPinPollDeadline = (
+  pollExpiresAt: unknown,
+  pinExpiresAt: unknown,
+  hardDeadline: number
+): number =>
+  Math.min(
+    getBoundedPlexPinDeadline(pollExpiresAt, hardDeadline),
+    getBoundedPlexPinDeadline(pinExpiresAt, hardDeadline)
+  );
+
+const parsePlexPinExpiry = (value: unknown): string | undefined =>
+  typeof value === 'string' &&
+  value.length > 0 &&
+  value.length <= MAX_PLEX_PIN_EXPIRY_LENGTH
+    ? value
+    : undefined;
 
 export const parsePlexPinAuthToken = (value: unknown): string | undefined =>
   typeof value === 'string' &&
@@ -52,6 +70,7 @@ interface PlexHeaders extends Record<string, string> {
 export interface PlexPin {
   id: number;
   code: string;
+  expiresAt?: string;
 }
 
 export const parsePlexPin = (value: unknown): PlexPin | undefined => {
@@ -60,14 +79,23 @@ export const parsePlexPin = (value: unknown): PlexPin | undefined => {
   }
 
   const candidate = value as Partial<PlexPin>;
-  return Number.isSafeInteger(candidate.id) &&
-    (candidate.id ?? 0) > 0 &&
-    (candidate.id ?? 0) <= MAX_PLEX_PIN_ID &&
-    typeof candidate.code === 'string' &&
-    candidate.code.length > 0 &&
-    candidate.code.length <= MAX_PLEX_PIN_CODE_LENGTH
-    ? { id: candidate.id as number, code: candidate.code }
-    : undefined;
+  if (
+    !Number.isSafeInteger(candidate.id) ||
+    (candidate.id ?? 0) <= 0 ||
+    (candidate.id ?? 0) > MAX_PLEX_PIN_ID ||
+    typeof candidate.code !== 'string' ||
+    candidate.code.length === 0 ||
+    candidate.code.length > MAX_PLEX_PIN_CODE_LENGTH
+  ) {
+    return undefined;
+  }
+
+  const expiresAt = parsePlexPinExpiry(candidate.expiresAt);
+  return {
+    id: candidate.id as number,
+    code: candidate.code,
+    ...(expiresAt ? { expiresAt } : {}),
+  };
 };
 
 class PlexOAuth {
@@ -234,8 +262,9 @@ class PlexOAuth {
           if (rawAuthToken) {
             throw new Error('Plex returned an invalid authentication token.');
           }
-          const expiresAt = getBoundedPlexPinDeadline(
+          const expiresAt = getPlexPinPollDeadline(
             response.data?.expiresAt,
+            this.pin.expiresAt,
             deadline
           );
           if (Date.now() >= expiresAt) {

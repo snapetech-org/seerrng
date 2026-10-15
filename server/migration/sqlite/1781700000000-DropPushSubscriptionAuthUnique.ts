@@ -4,7 +4,9 @@ export class DropPushSubscriptionAuthUnique1781700000000 implements MigrationInt
   name = 'DropPushSubscriptionAuthUnique1781700000000';
 
   public async up(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.query(`DROP INDEX "IDX_03f7958328e311761b0de675fb"`);
+    await queryRunner.query(
+      `DROP INDEX IF EXISTS "IDX_03f7958328e311761b0de675fb"`
+    );
     await queryRunner.query(
       `ALTER TABLE "user_push_subscription" RENAME TO "temporary_user_push_subscription"`
     );
@@ -21,7 +23,9 @@ export class DropPushSubscriptionAuthUnique1781700000000 implements MigrationInt
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.query(`DROP INDEX "IDX_03f7958328e311761b0de675fb"`);
+    await queryRunner.query(
+      `DROP INDEX IF EXISTS "IDX_03f7958328e311761b0de675fb"`
+    );
     await queryRunner.query(
       `ALTER TABLE "user_push_subscription" RENAME TO "temporary_user_push_subscription"`
     );

@@ -29,10 +29,10 @@ describe('Login Page', () => {
     cy.location('hash').should('eq', '#prowlarr');
   });
 
-  it('returns an already signed-in user to a safe login destination', () => {
+  it('returns an already signed-in user to the saved destination', () => {
     cy.loginAsAdmin();
     cy.visit(
-      '/login?redirect=%2Fsettings%2Fservices%3FsettingsSearchTarget%3Dprowlarr%23prowlarr'
+      '/login?returnTo=%2Fsettings%2Fservices%3FsettingsSearchTarget%3Dprowlarr%23prowlarr'
     );
 
     cy.location('pathname').should('eq', '/settings/services');

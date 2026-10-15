@@ -581,6 +581,10 @@ export class User {
         requestTypes: [MediaType.TV, MediaType.SPORTS],
         sportsType: MediaType.SPORTS,
       })
+      .andWhere(
+        '(season.id IS NULL OR season.status != :declinedSeasonStatus)',
+        { declinedSeasonStatus: MediaRequestStatus.DECLINED }
+      )
       .andWhere('requestedBy.id = :userId', {
         userId: this.id,
       })

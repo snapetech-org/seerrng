@@ -831,6 +831,13 @@ test('hosted GitHub applicability matches native event, branch and path filters'
     'ci-playwright',
   ]);
 
+  const nextConfigChange = hostedInput({
+    changedFiles: ['next.config.mjs'],
+  });
+  const nextConfigSuites = applicableIds(nextConfigChange);
+  assert(nextConfigSuites.includes('ci-playwright'));
+  assert(nextConfigSuites.includes('cypress-run'));
+
   const cypressOnly = hostedInput({
     changedFiles: ['cypress/e2e/login.cy.ts'],
   });

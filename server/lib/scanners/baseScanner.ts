@@ -13,6 +13,9 @@ import MediaRequest, {
   runWithRequestAdmission,
 } from '@server/entity/MediaRequest';
 import Season from '@server/entity/Season';
+import SeasonRequest, {
+  isActiveSeasonRequest,
+} from '@server/entity/SeasonRequest';
 import type { AudioPlaybackFormat } from '@server/lib/audioPlaybackFormat';
 import {
   normalizeExternalBookId,
@@ -22,6 +25,7 @@ import { getSettings } from '@server/lib/settings';
 import logger from '@server/logger';
 import AsyncLock from '@server/utils/asyncLock';
 import { randomUUID } from 'crypto';
+import type { Repository } from 'typeorm';
 
 // Default scan rates (can be overidden)
 const BUNDLE_SIZE = 20;
@@ -83,6 +87,8 @@ export interface ProcessOptions {
   title?: string;
   processing?: boolean;
   hasFile?: boolean;
+  deferStatusReset?: boolean;
+  preserveInactiveServiceIdentity?: boolean;
   secondaryIdentifiers?: {
     provider: MediaIdentifierProvider;
     value: string;
@@ -118,6 +124,249 @@ class BaseScanner<T> {
   protected running = false;
   readonly asyncLock = new AsyncLock();
   readonly tmdb = new TheMovieDb();
+  private deferredMovieStatusResets = new Map<
+    string,
+    { tmdbId: number; is4k: boolean }
+  >();
+  private processingMovieKeys = new Set<string>();
+  private failedMovieKeys = new Set<string>();
+  private deferredSeasonStatusResets = new Map<
+    string,
+    {
+      tmdbId: number;
+      tvdbIds: Set<number>;
+      is4k: boolean;
+      seasonNumbers: Set<number>;
+    }
+  >();
+  private processingSeasonKeys = new Set<string>();
+  private failedShowKeys = new Set<string>();
+  private failedShowTvdbKeys = new Set<string>();
+  private failedShowProfiles = new Set<boolean>();
+
+  private movieStatusKey(tmdbId: number, is4k: boolean): string {
+    return `${tmdbId}:${is4k ? '4k' : 'standard'}`;
+  }
+
+  private seasonStatusKey(
+    tmdbId: number,
+    is4k: boolean,
+    seasonNumber: number
+  ): string {
+    return `${this.movieStatusKey(tmdbId, is4k)}:${seasonNumber}`;
+  }
+
+  protected markMovieScanFailed(tmdbId: number, is4k: boolean): void {
+    this.failedMovieKeys.add(this.movieStatusKey(tmdbId, is4k));
+  }
+
+  protected markShowScanFailed(
+    tvdbId: number,
+    is4k: boolean,
+    tmdbId?: number
+  ): void {
+    this.failedShowProfiles.add(is4k);
+    this.failedShowTvdbKeys.add(this.movieStatusKey(tvdbId, is4k));
+    if (tmdbId !== undefined) {
+      this.failedShowKeys.add(this.movieStatusKey(tmdbId, is4k));
+    }
+  }
+
+  protected hasShowScanFailures(is4k: boolean): boolean {
+    return this.failedShowProfiles.has(is4k);
+  }
+
+  protected async resolveDeferredMovieStatusResets(
+    is4k: boolean,
+    mutationGuard: <Result>(callback: () => Promise<Result>) => Promise<Result>
+  ): Promise<void> {
+    const statusField = is4k ? 'status4k' : 'status';
+
+    for (const candidate of this.deferredMovieStatusResets.values()) {
+      const key = this.movieStatusKey(candidate.tmdbId, is4k);
+      if (
+        candidate.is4k !== is4k ||
+        this.processingMovieKeys.has(key) ||
+        this.failedMovieKeys.has(key)
+      ) {
+        continue;
+      }
+
+      await runWithRequestAdmission(
+        [`request-media:${MediaType.MOVIE}:${candidate.tmdbId}`],
+        () =>
+          this.asyncLock.dispatch(candidate.tmdbId, () =>
+            mutationGuard(() =>
+              dataSource.transaction(async (manager) => {
+                const mediaRepository = manager.getRepository(Media);
+                const requestRepository = manager.getRepository(MediaRequest);
+                const media = await mediaRepository.findOne({
+                  where: {
+                    tmdbId: candidate.tmdbId,
+                    mediaType: MediaType.MOVIE,
+                  },
+                  relations: { requests: true },
+                });
+
+                if (
+                  !media ||
+                  (media[statusField] !== MediaStatus.PROCESSING &&
+                    media[statusField] !== MediaStatus.UNKNOWN) ||
+                  this.processingMovieKeys.has(key)
+                ) {
+                  return;
+                }
+
+                if (media[statusField] === MediaStatus.PROCESSING) {
+                  media[statusField] = MediaStatus.UNKNOWN;
+                  await mediaRepository.save(media);
+                }
+                await this.declineOrphanedRequests(
+                  media,
+                  is4k,
+                  requestRepository
+                );
+              })
+            )
+          )
+      );
+    }
+  }
+
+  protected async resolveDeferredSeasonStatusResets(
+    is4k: boolean,
+    mutationGuard: <Result>(callback: () => Promise<Result>) => Promise<Result>
+  ): Promise<void> {
+    const statusField = is4k ? 'status4k' : 'status';
+
+    for (const candidate of this.deferredSeasonStatusResets.values()) {
+      if (candidate.is4k !== is4k) continue;
+      if (
+        this.failedShowKeys.has(this.movieStatusKey(candidate.tmdbId, is4k)) ||
+        [...candidate.tvdbIds].some((tvdbId) =>
+          this.failedShowTvdbKeys.has(this.movieStatusKey(tvdbId, is4k))
+        )
+      ) {
+        continue;
+      }
+
+      const staleSeasonNumbers = [...candidate.seasonNumbers].filter(
+        (seasonNumber) =>
+          !this.processingSeasonKeys.has(
+            this.seasonStatusKey(candidate.tmdbId, is4k, seasonNumber)
+          )
+      );
+      if (staleSeasonNumbers.length === 0) continue;
+
+      await runWithRequestAdmission(
+        [`request-media:${MediaType.TV}:${candidate.tmdbId}`],
+        () =>
+          this.asyncLock.dispatch(candidate.tmdbId, () =>
+            mutationGuard(() =>
+              dataSource.transaction(async (manager) => {
+                const mediaRepository = manager.getRepository(Media);
+                const seasonRepository = manager.getRepository(Season);
+                const seasonRequestRepository =
+                  manager.getRepository(SeasonRequest);
+                const requestRepository = manager.getRepository(MediaRequest);
+                const media = await mediaRepository.findOne({
+                  where: {
+                    tmdbId: candidate.tmdbId,
+                    mediaType: MediaType.TV,
+                  },
+                  relations: { seasons: true, requests: { seasons: true } },
+                });
+                if (!media) return;
+
+                const stale = new Set(staleSeasonNumbers);
+                const changedSeasons = media.seasons.filter(
+                  (season) =>
+                    stale.has(season.seasonNumber) &&
+                    (season[statusField] === MediaStatus.PROCESSING ||
+                      season[statusField] === MediaStatus.UNKNOWN)
+                );
+                if (changedSeasons.length === 0) return;
+
+                for (const season of changedSeasons) {
+                  season[statusField] = MediaStatus.UNKNOWN;
+                }
+
+                const remainingKnownSeason = media.seasons.some(
+                  (season) =>
+                    season[statusField] === MediaStatus.PROCESSING ||
+                    season[statusField] === MediaStatus.PARTIALLY_AVAILABLE ||
+                    season[statusField] === MediaStatus.AVAILABLE
+                );
+                const resetAggregate =
+                  media[statusField] === MediaStatus.PROCESSING &&
+                  !remainingKnownSeason;
+
+                const affectedNumbers = new Set(
+                  changedSeasons.map((season) => season.seasonNumber)
+                );
+                const changedRequests: MediaRequest[] = [];
+                const changedRequestSeasons: SeasonRequest[] = [];
+
+                for (const request of media.requests ?? []) {
+                  if (
+                    request.is4k !== is4k ||
+                    request.status !== MediaRequestStatus.APPROVED
+                  ) {
+                    continue;
+                  }
+
+                  let requestSelectionChanged = false;
+                  for (const requestedSeason of request.seasons ?? []) {
+                    if (
+                      affectedNumbers.has(requestedSeason.seasonNumber) &&
+                      requestedSeason.status !== MediaRequestStatus.DECLINED &&
+                      requestedSeason.status !== MediaRequestStatus.COMPLETED &&
+                      requestedSeason.status !== MediaRequestStatus.FAILED
+                    ) {
+                      requestedSeason.status = MediaRequestStatus.DECLINED;
+                      changedRequestSeasons.push(requestedSeason);
+                      requestSelectionChanged = true;
+                    }
+                  }
+
+                  if (!requestSelectionChanged) continue;
+
+                  const hasActiveSelection = (request.seasons ?? []).some(
+                    (season) =>
+                      isActiveSeasonRequest(season) &&
+                      season.status !== MediaRequestStatus.COMPLETED &&
+                      season.status !== MediaRequestStatus.FAILED
+                  );
+                  const hasCompletedSelection = (request.seasons ?? []).some(
+                    (season) => season.status === MediaRequestStatus.COMPLETED
+                  );
+
+                  if (!hasActiveSelection) {
+                    request.status = hasCompletedSelection
+                      ? MediaRequestStatus.COMPLETED
+                      : MediaRequestStatus.DECLINED;
+                    changedRequests.push(request);
+                  }
+                }
+
+                await seasonRepository.save(changedSeasons);
+                if (resetAggregate) {
+                  await mediaRepository.update(media.id, {
+                    [statusField]: MediaStatus.UNKNOWN,
+                  });
+                }
+                if (changedRequestSeasons.length > 0) {
+                  await seasonRequestRepository.save(changedRequestSeasons);
+                }
+                if (changedRequests.length > 0) {
+                  await requestRepository.save(changedRequests);
+                }
+              })
+            )
+          )
+      );
+    }
+  }
 
   private runProcessMutation<Result>(
     guard: ProcessOptions['mutationGuard'],
@@ -165,6 +414,8 @@ class BaseScanner<T> {
       processing = false,
       title = 'Unknown Title',
       hasFile = true,
+      deferStatusReset = false,
+      preserveInactiveServiceIdentity = false,
       mutationGuard,
       outerMutationGuard,
     }: ProcessOptions = {}
@@ -181,21 +432,32 @@ class BaseScanner<T> {
 
               if (existing) {
                 let changedExisting = false;
+                const statusField = is4k ? 'status4k' : 'status';
+                const previousStatus = existing[statusField];
 
-                if (
-                  existing[is4k ? 'status4k' : 'status'] !==
-                  MediaStatus.AVAILABLE
-                ) {
-                  const statusField = is4k ? 'status4k' : 'status';
-                  const previousStatus = existing[statusField];
+                if (deferStatusReset) {
+                  const key = this.movieStatusKey(tmdbId, is4k);
+                  if (processing) this.processingMovieKeys.add(key);
+                  if (
+                    !processing &&
+                    !hasFile &&
+                    (previousStatus === MediaStatus.PROCESSING ||
+                      previousStatus === MediaStatus.UNKNOWN)
+                  ) {
+                    this.deferredMovieStatusResets.set(key, { tmdbId, is4k });
+                  }
+                }
 
+                if (previousStatus !== MediaStatus.AVAILABLE) {
                   existing[statusField] =
                     !processing && hasFile
                       ? MediaStatus.AVAILABLE
                       : !processing &&
                           !hasFile &&
                           previousStatus === MediaStatus.PROCESSING
-                        ? MediaStatus.UNKNOWN
+                        ? deferStatusReset
+                          ? MediaStatus.PROCESSING
+                          : MediaStatus.UNKNOWN
                         : processing
                           ? previousStatus === MediaStatus.DELETED
                             ? MediaStatus.DELETED
@@ -242,8 +504,12 @@ class BaseScanner<T> {
                   changedExisting = true;
                 }
 
+                const mayUpdateServiceIdentity =
+                  !preserveInactiveServiceIdentity || processing || hasFile;
+
                 if (
                   serviceId !== undefined &&
+                  mayUpdateServiceIdentity &&
                   existing[is4k ? 'serviceId4k' : 'serviceId'] !== serviceId
                 ) {
                   existing[is4k ? 'serviceId4k' : 'serviceId'] = serviceId;
@@ -252,6 +518,7 @@ class BaseScanner<T> {
 
                 if (
                   externalServiceId !== undefined &&
+                  mayUpdateServiceIdentity &&
                   existing[
                     is4k ? 'externalServiceId4k' : 'externalServiceId'
                   ] !== externalServiceId
@@ -263,6 +530,7 @@ class BaseScanner<T> {
 
                 if (
                   externalServiceSlug !== undefined &&
+                  mayUpdateServiceIdentity &&
                   existing[
                     is4k ? 'externalServiceSlug4k' : 'externalServiceSlug'
                   ] !== externalServiceSlug
@@ -306,20 +574,28 @@ class BaseScanner<T> {
                       ? MediaStatus.PROCESSING
                       : MediaStatus.UNKNOWN;
                 newMedia.mediaType = MediaType.MOVIE;
-                newMedia.serviceId = !is4k ? serviceId : undefined;
-                newMedia.serviceId4k = is4k ? serviceId : undefined;
-                newMedia.externalServiceId = !is4k
-                  ? externalServiceId
-                  : undefined;
-                newMedia.externalServiceId4k = is4k
-                  ? externalServiceId
-                  : undefined;
-                newMedia.externalServiceSlug = !is4k
-                  ? externalServiceSlug
-                  : undefined;
-                newMedia.externalServiceSlug4k = is4k
-                  ? externalServiceSlug
-                  : undefined;
+                const mayUpdateServiceIdentity =
+                  !preserveInactiveServiceIdentity || processing || hasFile;
+                newMedia.serviceId =
+                  !is4k && mayUpdateServiceIdentity ? serviceId : undefined;
+                newMedia.serviceId4k =
+                  is4k && mayUpdateServiceIdentity ? serviceId : undefined;
+                newMedia.externalServiceId =
+                  !is4k && mayUpdateServiceIdentity
+                    ? externalServiceId
+                    : undefined;
+                newMedia.externalServiceId4k =
+                  is4k && mayUpdateServiceIdentity
+                    ? externalServiceId
+                    : undefined;
+                newMedia.externalServiceSlug =
+                  !is4k && mayUpdateServiceIdentity
+                    ? externalServiceSlug
+                    : undefined;
+                newMedia.externalServiceSlug4k =
+                  is4k && mayUpdateServiceIdentity
+                    ? externalServiceSlug
+                    : undefined;
 
                 if (mediaAddedAt) {
                   newMedia.mediaAddedAt = mediaAddedAt;
@@ -1159,6 +1435,8 @@ class BaseScanner<T> {
       externalServiceSlug,
       is4k = false,
       title = 'Unknown Title',
+      deferStatusReset = false,
+      preserveInactiveServiceIdentity = false,
       mutationGuard,
       outerMutationGuard,
     }: ProcessOptions = {}
@@ -1229,6 +1507,64 @@ class BaseScanner<T> {
                 // Here we update seasons if they already exist.
                 // If the season is already marked as available, we
                 // force it to stay available (to avoid competing scanners)
+                if (deferStatusReset) {
+                  if (season.is4kOverride && season.processing) {
+                    this.processingSeasonKeys.add(
+                      this.seasonStatusKey(tmdbId, true, season.seasonNumber)
+                    );
+                  } else if (!season.is4kOverride && season.processing) {
+                    this.processingSeasonKeys.add(
+                      this.seasonStatusKey(tmdbId, false, season.seasonNumber)
+                    );
+                  }
+
+                  if (
+                    !season.is4kOverride &&
+                    !season.processing &&
+                    season.episodes === 0 &&
+                    (existingSeason.status === MediaStatus.PROCESSING ||
+                      existingSeason.status === MediaStatus.UNKNOWN)
+                  ) {
+                    const key = this.movieStatusKey(tmdbId, false);
+                    const candidate = this.deferredSeasonStatusResets.get(
+                      key
+                    ) ?? {
+                      tmdbId,
+                      tvdbIds: new Set<number>(),
+                      is4k: false,
+                      seasonNumbers: new Set<number>(),
+                    };
+                    if (tvdbId !== undefined) {
+                      candidate.tvdbIds.add(tvdbId);
+                    }
+                    candidate.seasonNumbers.add(season.seasonNumber);
+                    this.deferredSeasonStatusResets.set(key, candidate);
+                  }
+
+                  if (
+                    season.is4kOverride &&
+                    !season.processing &&
+                    season.episodes4k === 0 &&
+                    (existingSeason.status4k === MediaStatus.PROCESSING ||
+                      existingSeason.status4k === MediaStatus.UNKNOWN)
+                  ) {
+                    const key = this.movieStatusKey(tmdbId, true);
+                    const candidate = this.deferredSeasonStatusResets.get(
+                      key
+                    ) ?? {
+                      tmdbId,
+                      tvdbIds: new Set<number>(),
+                      is4k: true,
+                      seasonNumbers: new Set<number>(),
+                    };
+                    if (tvdbId !== undefined) {
+                      candidate.tvdbIds.add(tvdbId);
+                    }
+                    candidate.seasonNumbers.add(season.seasonNumber);
+                    this.deferredSeasonStatusResets.set(key, candidate);
+                  }
+                }
+
                 existingSeason.status =
                   (season.totalEpisodes === season.episodes &&
                     season.episodes > 0) ||
@@ -1244,7 +1580,9 @@ class BaseScanner<T> {
                             !season.processing &&
                             season.episodes === 0 &&
                             existingSeason.status === MediaStatus.PROCESSING
-                          ? MediaStatus.UNKNOWN
+                          ? deferStatusReset
+                            ? MediaStatus.PROCESSING
+                            : MediaStatus.UNKNOWN
                           : existingSeason.status;
 
                 // Same thing here, except we only do updates if 4k is enabled
@@ -1264,7 +1602,9 @@ class BaseScanner<T> {
                             !season.processing &&
                             season.episodes4k === 0 &&
                             existingSeason.status4k === MediaStatus.PROCESSING
-                          ? MediaStatus.UNKNOWN
+                          ? deferStatusReset
+                            ? MediaStatus.PROCESSING
+                            : MediaStatus.UNKNOWN
                           : existingSeason.status4k;
               } else {
                 newSeasons.push(
@@ -1293,6 +1633,16 @@ class BaseScanner<T> {
                 );
               }
             }
+
+            const hasQualityActivity = seasons.some((season) =>
+              is4k
+                ? season.is4kOverride &&
+                  (season.processing || season.episodes4k > 0)
+                : !season.is4kOverride &&
+                  (season.processing || season.episodes > 0)
+            );
+            const mayUpdateServiceIdentity =
+              !preserveInactiveServiceIdentity || hasQualityActivity;
 
             if (media) {
               media.seasons = [...media.seasons, ...newSeasons];
@@ -1342,16 +1692,19 @@ class BaseScanner<T> {
                 media.mediaAddedAt = mediaAddedAt;
               }
 
-              if (serviceId !== undefined) {
+              if (serviceId !== undefined && mayUpdateServiceIdentity) {
                 media[is4k ? 'serviceId4k' : 'serviceId'] = serviceId;
               }
 
-              if (externalServiceId !== undefined) {
+              if (externalServiceId !== undefined && mayUpdateServiceIdentity) {
                 media[is4k ? 'externalServiceId4k' : 'externalServiceId'] =
                   externalServiceId;
               }
 
-              if (externalServiceSlug !== undefined) {
+              if (
+                externalServiceSlug !== undefined &&
+                mayUpdateServiceIdentity
+              ) {
                 media[is4k ? 'externalServiceSlug4k' : 'externalServiceSlug'] =
                   externalServiceSlug;
               }
@@ -1467,12 +1820,26 @@ class BaseScanner<T> {
                 tmdbId,
                 tvdbId,
                 mediaAddedAt,
-                serviceId: !is4k ? serviceId : undefined,
-                serviceId4k: is4k ? serviceId : undefined,
-                externalServiceId: !is4k ? externalServiceId : undefined,
-                externalServiceId4k: is4k ? externalServiceId : undefined,
-                externalServiceSlug: !is4k ? externalServiceSlug : undefined,
-                externalServiceSlug4k: is4k ? externalServiceSlug : undefined,
+                serviceId:
+                  !is4k && mayUpdateServiceIdentity ? serviceId : undefined,
+                serviceId4k:
+                  is4k && mayUpdateServiceIdentity ? serviceId : undefined,
+                externalServiceId:
+                  !is4k && mayUpdateServiceIdentity
+                    ? externalServiceId
+                    : undefined,
+                externalServiceId4k:
+                  is4k && mayUpdateServiceIdentity
+                    ? externalServiceId
+                    : undefined,
+                externalServiceSlug:
+                  !is4k && mayUpdateServiceIdentity
+                    ? externalServiceSlug
+                    : undefined,
+                externalServiceSlug4k:
+                  is4k && mayUpdateServiceIdentity
+                    ? externalServiceSlug
+                    : undefined,
                 ratingKey: newSeasons.some(
                   (sn) =>
                     sn.status === MediaStatus.PARTIALLY_AVAILABLE ||
@@ -1552,16 +1919,14 @@ class BaseScanner<T> {
    */
   protected async declineOrphanedRequests(
     media: Media,
-    is4k: boolean
+    is4k: boolean,
+    requestRepository: Repository<MediaRequest> = getRepository(MediaRequest)
   ): Promise<void> {
     if (media.requests === undefined) {
       throw new Error(
         `declineOrphanedRequests called for media ${media.id} without the 'requests' relation loaded`
       );
     }
-
-    const requestRepository = getRepository(MediaRequest);
-
     const orphanedRequests = (media.requests ?? []).filter(
       (request) =>
         request.is4k === is4k && request.status === MediaRequestStatus.APPROVED
@@ -1600,6 +1965,14 @@ class BaseScanner<T> {
     const settings = getSettings();
     const sessionId = randomUUID();
     this.sessionId = sessionId;
+    this.deferredMovieStatusResets.clear();
+    this.processingMovieKeys.clear();
+    this.failedMovieKeys.clear();
+    this.deferredSeasonStatusResets.clear();
+    this.processingSeasonKeys.clear();
+    this.failedShowKeys.clear();
+    this.failedShowTvdbKeys.clear();
+    this.failedShowProfiles.clear();
 
     this.log('Scan starting', 'info', { sessionId });
 

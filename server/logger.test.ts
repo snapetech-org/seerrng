@@ -1,6 +1,79 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
-import { redactLogInfo, redactLogString } from './logger';
+import {
+  redactLogInfo,
+  redactLogString,
+  shouldColorizeConsoleLogs,
+} from './logger';
+
+test('console log colors follow force, no-color, and terminal settings', () => {
+  const cases = [
+    {
+      name: 'plain output when stdout is not a TTY',
+      env: {},
+      tty: false,
+      expected: false,
+    },
+    {
+      name: 'color output on a TTY by default',
+      env: {},
+      tty: true,
+      expected: true,
+    },
+    {
+      name: 'a non-empty NO_COLOR disables color',
+      env: { NO_COLOR: '1' },
+      tty: true,
+      expected: false,
+    },
+    {
+      name: 'an empty NO_COLOR leaves TTY detection in control',
+      env: { NO_COLOR: '' },
+      tty: true,
+      expected: true,
+    },
+    {
+      name: 'FORCE_COLOR enables color without a TTY',
+      env: { FORCE_COLOR: '1' },
+      tty: false,
+      expected: true,
+    },
+    {
+      name: 'FORCE_COLOR overrides NO_COLOR',
+      env: { FORCE_COLOR: '1', NO_COLOR: '1' },
+      tty: false,
+      expected: true,
+    },
+    {
+      name: 'FORCE_COLOR zero disables color on a TTY',
+      env: { FORCE_COLOR: '0' },
+      tty: true,
+      expected: false,
+    },
+    {
+      name: 'FORCE_COLOR false disables color on a TTY',
+      env: { FORCE_COLOR: 'false' },
+      tty: true,
+      expected: false,
+    },
+    {
+      name: 'TERM dumb disables default color on a TTY',
+      env: { TERM: 'dumb' },
+      tty: true,
+      expected: false,
+    },
+    {
+      name: 'FORCE_COLOR overrides TERM dumb',
+      env: { FORCE_COLOR: 'true', TERM: 'dumb' },
+      tty: true,
+      expected: true,
+    },
+  ];
+
+  for (const { name, env, tty, expected } of cases) {
+    assert.strictEqual(shouldColorizeConsoleLogs(env, tty), expected, name);
+  }
+});
 
 test('logger redacts structured secrets without dropping Winston symbols', () => {
   const levelSymbol = Symbol.for('level');

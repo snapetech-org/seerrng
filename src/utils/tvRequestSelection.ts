@@ -1,3 +1,4 @@
+import { MediaRequestStatus } from '@server/constants/media';
 import type { SeasonEpisodeSelection } from '@server/interfaces/api/seasonInterfaces';
 import type { PlaybackCatalogResponse } from '@server/models/Playback';
 
@@ -5,6 +6,10 @@ interface SeasonRequestItem {
   seasonNumber: number;
   episodeCount: number;
 }
+
+export const isActiveSeasonRequest = (season: {
+  status?: MediaRequestStatus;
+}): boolean => season.status !== MediaRequestStatus.DECLINED;
 
 export const getAvailableEpisodesBySeason = (
   catalog?: PlaybackCatalogResponse

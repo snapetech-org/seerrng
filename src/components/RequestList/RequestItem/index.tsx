@@ -25,6 +25,7 @@ import {
 import defineMessages from '@app/utils/defineMessages';
 import { getTmdbPosterImageUrl } from '@app/utils/imageCache';
 import { refreshIntervalHelper } from '@app/utils/refreshIntervalHelper';
+import { isActiveSeasonRequest } from '@app/utils/tvRequestSelection';
 import { hasLinkedWatchAheadAccount } from '@app/utils/watchAhead';
 import {
   ArrowPathIcon,
@@ -632,6 +633,9 @@ const RequestItem = ({ request, revalidateList }: RequestItemProps) => {
       15000
     ),
   });
+  const activeSeasonRequests = (requestData?.seasons ?? request.seasons).filter(
+    isActiveSeasonRequest
+  );
   const canFailDownload = Boolean(
     requestData &&
     requestData.status === MediaRequestStatus.APPROVED &&
@@ -970,15 +974,15 @@ const RequestItem = ({ request, revalidateList }: RequestItemProps) => {
               {!isMovie(title) &&
                 !isMusic(title) &&
                 !isBook(title) &&
-                request.seasons.length > 0 && (
+                activeSeasonRequests.length > 0 && (
                   <div className="card-field">
                     <span className="card-field-name">
                       {intl.formatMessage(messages.seasons, {
-                        seasonCount: request.seasons.length,
+                        seasonCount: activeSeasonRequests.length,
                       })}
                     </span>
                     <div className="hide-scrollbar flex flex-nowrap overflow-x-scroll">
-                      {request.seasons.map((season) => (
+                      {activeSeasonRequests.map((season) => (
                         <span key={`season-${season.id}`} className="mr-2">
                           <Badge>
                             {season.seasonNumber === 0

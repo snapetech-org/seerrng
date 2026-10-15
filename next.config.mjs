@@ -1,4 +1,3 @@
-import type { NextConfig } from 'next';
 import { createRequire } from 'node:module';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -10,7 +9,8 @@ const THIRTY_DAYS = 30 * ONE_DAY;
 const ONE_DAY_STATIC_CACHE = `public, max-age=${ONE_DAY}, stale-while-revalidate=${THIRTY_DAYS}, stale-if-error=${ONE_DAY}`;
 const THIRTY_DAY_STATIC_CACHE = `public, max-age=${THIRTY_DAYS}, stale-while-revalidate=${THIRTY_DAYS}, stale-if-error=${ONE_DAY}`;
 
-const nextConfig: NextConfig = {
+/** @type {import('next').NextConfig} */
+const nextConfig = {
   ...(process.env.NODE_ENV === 'development' &&
   (process.env.WATCHPACK_POLLING === 'true' ||
     process.env.SEERR_DEV_WEBPACK === 'true')
@@ -116,6 +116,9 @@ const nextConfig: NextConfig = {
   },
 };
 
+/** @param {import('next').NextConfig} config */
+const identityConfig = (config) => config;
+
 // Keep the analyzer development-only. Production images and release assets
 // install only `dependencies` but still load this config at runtime.
 const withBundleAnalyzer =
@@ -123,6 +126,6 @@ const withBundleAnalyzer =
     ? createRequire(import.meta.url)('@next/bundle-analyzer')({
         enabled: true,
       })
-    : (config: NextConfig) => config;
+    : identityConfig;
 
 export default withBundleAnalyzer(nextConfig);

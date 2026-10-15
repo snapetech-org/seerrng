@@ -38,6 +38,15 @@
     --color-purple-950: 59 7 100;
     --theme-sidebar-border: 55 65 81;
     --theme-sidebar-hover: 55 65 81;
+    --sidebar-navigation-group-gap: calc(2 * var(--card-spacing));
+    --sidebar-navigation-item-gap: var(--button-content-gap);
+    --sidebar-navigation-inline-inset: 1rem;
+    --sidebar-navigation-nested-indent: calc(
+      1.5rem + var(--button-content-gap)
+    );
+    --sidebar-navigation-mobile-offset: 2.5rem;
+    --sidebar-navigation-desktop-offset: 2rem;
+    --sidebar-navigation-heading-line-height: var(--card-copy-line-height);
     --theme-page-bg: 17 24 39;
     --theme-page-glow-start: 31 41 55;
     --theme-page-glow-end: 17 24 39;
@@ -1155,6 +1164,54 @@
           var(--theme-page-gradient-main-stop),
         rgb(var(--theme-page-gradient-light)) 100%
       );
+  }
+
+  .sidebar-navigation {
+    display: flex;
+    min-width: 0;
+    flex: 1;
+    flex-direction: column;
+    gap: var(--sidebar-navigation-group-gap);
+    padding-inline: var(--sidebar-navigation-inline-inset);
+  }
+
+  .sidebar-navigation[data-navigation-device='mobile'] {
+    margin-block-start: var(--sidebar-navigation-mobile-offset);
+  }
+
+  .sidebar-navigation[data-navigation-device='desktop'] {
+    margin-block-start: var(--sidebar-navigation-desktop-offset);
+  }
+
+  .sidebar-navigation-section {
+    display: grid;
+    min-width: 0;
+    gap: var(--sidebar-navigation-item-gap);
+  }
+
+  .sidebar-navigation-items {
+    display: grid;
+    min-width: 0;
+    gap: var(--sidebar-navigation-item-gap);
+  }
+
+  .sidebar-navigation-heading {
+    margin: 0;
+    padding-inline: var(--button-padding-x);
+    color: rgb(var(--color-gray-300));
+    font-size: var(--text-sm);
+    font-weight: 600;
+    line-height: var(--sidebar-navigation-heading-line-height);
+  }
+
+  .sidebar-navigation-items > [data-navigation-level='nested'] {
+    padding-inline-start: var(--sidebar-navigation-nested-indent);
+  }
+
+  .mobile-menu-navigation {
+    gap: var(--sidebar-navigation-group-gap);
+    max-height: calc(100dvh - 5rem - env(safe-area-inset-bottom));
+    overflow-y: auto;
   }
 
   :root[data-theme-mode='light'] .sidebar {
@@ -4415,9 +4472,7 @@
   }
 
   .app-searchbar-scrolled {
-    background-color: rgb(var(--theme-searchbar-scrolled) / 0.8);
-    backdrop-filter: blur(5px);
-    -webkit-backdrop-filter: blur(5px);
+    background-color: rgb(var(--theme-searchbar-scrolled) / 0.9);
   }
 
   .association-edge-similar .react-flow__edge-path {

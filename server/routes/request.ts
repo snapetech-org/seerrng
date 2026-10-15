@@ -28,7 +28,9 @@ import {
   runWithRequestAdmission,
 } from '@server/entity/MediaRequest';
 import MediaRequestStatusEvent from '@server/entity/MediaRequestStatusEvent';
-import SeasonRequest from '@server/entity/SeasonRequest';
+import SeasonRequest, {
+  isActiveSeasonRequest,
+} from '@server/entity/SeasonRequest';
 import { User } from '@server/entity/User';
 import type {
   BulkMediaRequestBody,
@@ -1947,7 +1949,7 @@ requestRoutes.get<
         sortFilter = 'request.updatedAt';
         break;
       default:
-        sortFilter = 'request.id';
+        sortFilter = 'request.createdAt';
     }
 
     switch (sortDirectionParam) {
@@ -2069,6 +2071,7 @@ requestRoutes.get<
 
     const [requestRows, requestCount] = await query
       .orderBy(sortFilter, sortDirection)
+      .addOrderBy('request.id', sortDirection)
       .take(pageSize)
       .skip(skip)
       .getManyAndCount();
@@ -3430,18 +3433,40 @@ requestRoutes.get<
       return next({ status: 404, message: 'Request not found.' });
     }
 
-    const request = await getRepository(MediaRequest).findOne({
+    const requestRepository = getRepository(MediaRequest);
+    const request = await requestRepository.findOne({
       where: { id: requestId },
       relations: {
-        media: { identifiers: true, seasons: true },
+        media: true,
         modifiedBy: true,
         requestedBy: true,
-        seasons: true,
       },
+      loadEagerRelations: false,
     });
     if (!request) {
       return next({ status: 404, message: 'Request not found.' });
     }
+
+    const [identifiers, mediaSeasons, requestedSeasons] = await Promise.all([
+      getRepository(Media)
+        .createQueryBuilder()
+        .relation(Media, 'identifiers')
+        .of(request.media.id)
+        .loadMany<MediaIdentifier>(),
+      getRepository(Media)
+        .createQueryBuilder()
+        .relation(Media, 'seasons')
+        .of(request.media.id)
+        .loadMany(),
+      requestRepository
+        .createQueryBuilder()
+        .relation(MediaRequest, 'seasons')
+        .of(request.id)
+        .loadMany<SeasonRequest>(),
+    ]);
+    request.media.identifiers = identifiers;
+    request.media.seasons = mediaSeasons;
+    request.seasons = requestedSeasons;
 
     return await runUserSecurityReadWithActor(
       req.user!.id,
@@ -3930,12 +3955,19 @@ requestRoutes.put<{ requestId: string }>(
       const body = sanitizedBody.value;
       const initialRequest = await requestRepository.findOne({
         where: { id: requestId },
-        select: { id: true, status: true },
+        select: { id: true, status: true, type: true },
       });
       if (!initialRequest) {
         return next({ status: 404, message: 'Request not found.' });
       }
-      if (initialRequest.status !== MediaRequestStatus.PENDING) {
+      const initialRequestCanBeRepaired =
+        initialRequest.status === MediaRequestStatus.FAILED &&
+        (initialRequest.type === MediaType.MOVIE ||
+          initialRequest.type === MediaType.TV);
+      if (
+        initialRequest.status !== MediaRequestStatus.PENDING &&
+        !initialRequestCanBeRepaired
+      ) {
         return next({
           status: 409,
           message: 'Only pending requests can be edited.',
@@ -3958,12 +3990,32 @@ requestRoutes.put<{ requestId: string }>(
                 return next({ status: 404, message: 'Request not found.' });
               }
 
-              if (request.status !== MediaRequestStatus.PENDING) {
+              const isFailedRequestRepair =
+                request.status === MediaRequestStatus.FAILED &&
+                (request.type === MediaType.MOVIE ||
+                  request.type === MediaType.TV);
+              if (
+                isFailedRequestRepair &&
+                !actor.hasPermission(Permission.MANAGE_REQUESTS)
+              ) {
+                return next({
+                  status: 403,
+                  message:
+                    'Only request managers can reassign failed movie or TV requests.',
+                });
+              }
+
+              if (
+                request.status !== MediaRequestStatus.PENDING &&
+                !isFailedRequestRepair
+              ) {
                 return next({
                   status: 409,
                   message: 'Only pending requests can be edited.',
                 });
               }
+
+              const originalServerId = request.serverId;
 
               if (
                 (body.mediaType ?? request.type) === MediaType.TV &&
@@ -4008,6 +4060,14 @@ requestRoutes.put<{ requestId: string }>(
               const changesRequestUser =
                 body.userId !== undefined &&
                 body.userId !== request.requestedBy.id;
+
+              if (isFailedRequestRepair && changesRequestUser) {
+                return next({
+                  status: 400,
+                  message:
+                    'Failed request recovery cannot change the request owner.',
+                });
+              }
 
               if (
                 changesRequestUser &&
@@ -4198,6 +4258,9 @@ requestRoutes.put<{ requestId: string }>(
                       .andWhere('existingRequest.id != :requestId', {
                         requestId: request.id,
                       })
+                      .andWhere('requestedSeason.status != :declinedStatus', {
+                        declinedStatus: MediaRequestStatus.DECLINED,
+                      })
                       .andWhere(
                         'existingRequest.status NOT IN (:...inactiveStatuses)',
                         {
@@ -4223,7 +4286,9 @@ requestRoutes.put<{ requestId: string }>(
                         existingEpisodes.set(season.seasonNumber, episodes);
                       });
                     const currentSeasonNumbers = new Set(
-                      request.seasons.map((season) => season.seasonNumber)
+                      request.seasons
+                        .filter(isActiveSeasonRequest)
+                        .map((season) => season.seasonNumber)
                     );
                     const availableSeasonNumbers = new Set(
                       media.seasons
@@ -4354,7 +4419,7 @@ requestRoutes.put<{ requestId: string }>(
                     const existingAllowance =
                       changesRequestUser || !existingRequestCountsTowardQuota
                         ? 0
-                        : request.seasons.length;
+                        : request.seasons.filter(isActiveSeasonRequest).length;
                     if (
                       !request.ignoreQuota &&
                       quotas.tv.limit &&
@@ -4404,21 +4469,38 @@ requestRoutes.put<{ requestId: string }>(
                       }
                     }
 
+                    const selectionBySeason = new Map(
+                      filteredSelections.map((selection) => [
+                        selection.seasonNumber,
+                        selection,
+                      ])
+                    );
+                    const existingSeasonNumbers = new Set(
+                      request.seasons.map((season) => season.seasonNumber)
+                    );
                     const newSelections = filteredSelections.filter(
                       (selection) =>
-                        !currentSeasonNumbers.has(selection.seasonNumber)
+                        !existingSeasonNumbers.has(selection.seasonNumber)
                     );
-                    request.seasons = request.seasons.filter((season) =>
-                      filteredSelections.some(
-                        (selection) =>
-                          selection.seasonNumber === season.seasonNumber
-                      )
+                    request.seasons = request.seasons.filter(
+                      (season) =>
+                        selectionBySeason.has(season.seasonNumber) ||
+                        !isActiveSeasonRequest(season) ||
+                        season.status === MediaRequestStatus.COMPLETED
                     );
                     request.seasons.forEach((season) => {
-                      season.episodeNumbers = filteredSelections.find(
-                        (selection) =>
-                          selection.seasonNumber === season.seasonNumber
-                      )?.episodeNumbers;
+                      const selection = selectionBySeason.get(
+                        season.seasonNumber
+                      );
+                      if (selection) {
+                        season.episodeNumbers = selection.episodeNumbers;
+                        if (
+                          season.status === MediaRequestStatus.DECLINED ||
+                          season.status === MediaRequestStatus.FAILED
+                        ) {
+                          season.status = MediaRequestStatus.PENDING;
+                        }
+                      }
                     });
                     request.seasons.push(
                       ...newSelections.map(
@@ -4456,6 +4538,23 @@ requestRoutes.put<{ requestId: string }>(
                     request.watchAheadLastEpisode = null;
                     request.watchAheadLastReconciledAt = null;
                   }
+
+                  if (isFailedRequestRepair) {
+                    if (
+                      body.serverId === undefined ||
+                      body.serverId === originalServerId
+                    ) {
+                      return next({
+                        status: 409,
+                        message:
+                          'Choose a different configured server to resubmit this failed request.',
+                      });
+                    }
+
+                    request.status = MediaRequestStatus.APPROVED;
+                    request.modifiedBy = actor;
+                  }
+
                   request.requestedBy = requestUser;
                   await requestRepository.save(request);
                   return res

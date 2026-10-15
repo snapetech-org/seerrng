@@ -259,7 +259,7 @@ const CertificationSelector: React.FC<CertificationSelectorProps> = ({
         onChange={handleCountryChange}
         placeholder={intl.formatMessage(messages.selectCountry)}
         isClearable
-        noOptionsMessage={({ inputValue }) =>
+        noOptionsMessage={({ inputValue }: { inputValue: string }) =>
           inputValue === ''
             ? intl.formatMessage(messages.starttyping)
             : intl.formatMessage(messages.noOptions)
