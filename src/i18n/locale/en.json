@@ -3549,7 +3549,6 @@
   "components.Settings.SettingsMain.validationApplicationUrlTrailingSlash": "URL must not end in a trailing slash",
   "components.Settings.SettingsMain.validationDownloadPathMappingsJson": "Enter a JSON array with at most 100 path mappings.",
   "components.Settings.SettingsMain.validationUrl": "You must provide a valid URL",
-  "components.Settings.SettingsMain.validationUrlTrailingSlash": "URL must not end in a trailing slash",
   "components.Settings.SettingsMain.versionCheck": "Version Check",
   "components.Settings.SettingsMain.versionCheckTip": "Automatically check for new versions on GitHub.",
   "components.Settings.SettingsMain.youtubeApiKey": "YouTube Data API Key",

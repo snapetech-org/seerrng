@@ -493,6 +493,29 @@ describe('Settings route input validation', () => {
     }
   });
 
+  it('keeps a trailing slash on the YouTube URL prefix', async () => {
+    const settings = getSettings();
+    const original = settings.main.youtubeUrl;
+
+    try {
+      const response = await request(app)
+        .post('/settings/main')
+        .send({ youtubeUrl: 'https://yt.example.com/watch/' });
+
+      assert.strictEqual(response.status, 200);
+      assert.strictEqual(
+        response.body.youtubeUrl,
+        'https://yt.example.com/watch/'
+      );
+      assert.strictEqual(
+        settings.main.youtubeUrl,
+        'https://yt.example.com/watch/'
+      );
+    } finally {
+      settings.main.youtubeUrl = original;
+    }
+  });
+
   it('saves category availability flags independently and validates their shape', async () => {
     const settings = getSettings();
     const original = { ...settings.main.enabledMediaCategories };
@@ -542,7 +565,7 @@ describe('Settings route input validation', () => {
       .send({ applicationUrl: 'https://user:secret@seerr.example.com' });
     const trailingUrlRes = await request(app)
       .post('/settings/main')
-      .send({ youtubeUrl: 'https://youtube.com/' });
+      .send({ applicationUrl: 'https://seerr.example.com/' });
     const boolRes = await request(app)
       .post('/settings/main')
       .send({ localLogin: 'true' });
@@ -586,7 +609,7 @@ describe('Settings route input validation', () => {
     assert.strictEqual(trailingUrlRes.status, 400);
     assert.match(
       trailingUrlRes.body.message,
-      /youtubeUrl must not end with a slash/
+      /applicationUrl must not end with a slash/
     );
     assert.strictEqual(boolRes.status, 400);
     assert.match(boolRes.body.message, /localLogin must be a boolean/);
