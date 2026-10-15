@@ -6,7 +6,7 @@ the contributor's accepted visual/interaction contract.
 
 ## Inputs and checkpoint
 
-1. Fetch the authorized contributor branch and `snapetech/seerrng` main through
+1. Fetch the authorized contributor branch and `snapetech-org/seerrng` main through
    authenticated Git. Resolve both to full commit IDs. Verify remotes, branch
    ownership, a clean integration checkout, and the actual common ancestor.
    Record the IDs before editing. Do not infer provenance from `package.json`.

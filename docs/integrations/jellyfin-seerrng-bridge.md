@@ -12,7 +12,7 @@ Jellyfin.
    Jellyfin account from **Profile → Settings → Linked Accounts**.
 2. Set Jellyfin as SeerrNG's active media server, enable media-server sign-in,
    then turn on **Enable SeerrNG sign-in from Jellyfin** in **Settings → Jellyfin**.
-3. Install the [SeerrNG Jellyfin Bridge plugin](https://github.com/snapetech/seerrng/tree/main/integrations/jellyfin-plugin)
+3. Install the [SeerrNG Jellyfin Bridge plugin](https://github.com/snapetech-org/seerrng/tree/main/integrations/jellyfin-plugin)
    and enter the SeerrNG URL in its Jellyfin settings page. Include a reverse
    proxy path prefix when SeerrNG is served below a subpath. Set the same
    public URL as SeerrNG's application URL so the post-login redirect keeps

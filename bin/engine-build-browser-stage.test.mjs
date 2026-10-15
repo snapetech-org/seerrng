@@ -18,7 +18,7 @@ import {
 } from '../tools/validation-engine/runtime/build-browser-stage.mjs';
 
 const candidate = {
-  repository: 'snapetech/seerrng',
+  repository: 'snapetech-org/seerrng',
   commit: 'a'.repeat(40),
   tree: 'b'.repeat(40),
   lockSha256: 'c'.repeat(64),

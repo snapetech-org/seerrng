@@ -21,7 +21,7 @@ fork divergence numbers are current.
 | Remote | Role | Current URL |
 | --- | --- | --- |
 | `upstream` | Product fork source for inherited upstream changes; remote default branch is `develop` | Inspect with `git remote get-url upstream` |
-| `origin` | Public SeerrNG GitHub fork | `https://github.com/snapetech/seerrng.git` |
+| `origin` | Public SeerrNG GitHub fork | `https://github.com/snapetech-org/seerrng.git` |
 | `gitlab` | Internal GitLab remote / CI mirror | `git@gitlab.home:keith/seerrng.git` |
 
 There are no Git submodules in this checkout. Confidence: high.

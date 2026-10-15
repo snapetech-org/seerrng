@@ -95,8 +95,8 @@ const SettingsAbout = () => {
                   <a
                     href={
                       data.version.startsWith('main-')
-                        ? `https://github.com/snapetech/seerrng/compare/${status.commitTag}...main`
-                        : 'https://github.com/snapetech/seerrng/releases'
+                        ? `https://github.com/snapetech-org/seerrng/compare/${status.commitTag}...main`
+                        : 'https://github.com/snapetech-org/seerrng/releases'
                     }
                     target="_blank"
                     rel="noopener noreferrer"
@@ -112,8 +112,8 @@ const SettingsAbout = () => {
                   <a
                     href={
                       data.version.startsWith('main-')
-                        ? 'https://github.com/snapetech/seerrng/commits/main'
-                        : 'https://github.com/snapetech/seerrng/releases'
+                        ? 'https://github.com/snapetech-org/seerrng/commits/main'
+                        : 'https://github.com/snapetech-org/seerrng/releases'
                     }
                     target="_blank"
                     rel="noopener noreferrer"
@@ -131,8 +131,8 @@ const SettingsAbout = () => {
               <a
                 href={
                   data.version.startsWith('main-')
-                    ? 'https://github.com/snapetech/seerrng/commits/main'
-                    : 'https://github.com/snapetech/seerrng/releases'
+                    ? 'https://github.com/snapetech-org/seerrng/commits/main'
+                    : 'https://github.com/snapetech-org/seerrng/releases'
                 }
                 target="_blank"
                 rel="noopener noreferrer"
@@ -200,22 +200,22 @@ const SettingsAbout = () => {
         <List title={intl.formatMessage(messages.gettingsupport)}>
           <List.Item title={intl.formatMessage(messages.documentation)}>
             <a
-              href="https://github.com/snapetech/seerrng/tree/main/docs"
+              href="https://github.com/snapetech-org/seerrng/tree/main/docs"
               target="_blank"
               rel="noreferrer"
               className="text-indigo-500 transition duration-300 hover:underline"
             >
-              https://github.com/snapetech/seerrng/tree/main/docs
+              https://github.com/snapetech-org/seerrng/tree/main/docs
             </a>
           </List.Item>
           <List.Item title={intl.formatMessage(messages.githubdiscussions)}>
             <a
-              href="https://github.com/snapetech/seerrng/discussions"
+              href="https://github.com/snapetech-org/seerrng/discussions"
               target="_blank"
               rel="noreferrer"
               className="text-indigo-500 transition duration-300 hover:underline"
             >
-              https://github.com/snapetech/seerrng/discussions
+              https://github.com/snapetech-org/seerrng/discussions
             </a>
           </List.Item>
           <List.Item title="Discord">
