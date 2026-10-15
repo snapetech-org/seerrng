@@ -2247,50 +2247,51 @@ router.post(
             });
 
             if (linkedUser) {
-              if (syncExisting) {
-                await runWithImportAuthority([linkedUser.id], async (actor) => {
-                  const activeUser = await userRepository.findOneBy({
-                    id: linkedUser.id,
-                  });
-                  if (
-                    !activeUser ||
-                    normalizeJellyfinGuid(activeUser.jellyfinUserId) !==
-                      jellyfinUserId
-                  ) {
-                    return;
-                  }
-
-                  const isOtherProtectedAdministrator =
-                    activeUser.hasPermission(Permission.ADMIN) &&
-                    actor.id !== 1 &&
-                    actor.id !== activeUser.id;
-                  const mayModifyExistingUser =
-                    actor.id === 1 ||
-                    actor.id === activeUser.id ||
-                    canMakePermissionsChange(activeUser.permissions, actor);
-                  if (isOtherProtectedAdministrator || !mayModifyExistingUser) {
-                    return;
-                  }
-
-                  await checkAvatarChanged(activeUser);
-                  const avatar = activeUser.avatarVersion
-                    ? `/avatarproxy/${jellyfinUserId}?v=${encodeURIComponent(activeUser.avatarVersion)}`
-                    : `/avatarproxy/${jellyfinUserId}`;
-                  const updates: Partial<
-                    Pick<User, 'jellyfinUsername' | 'avatar'>
-                  > = {};
-                  if (activeUser.jellyfinUsername !== jellyfinUser.Name) {
-                    updates.jellyfinUsername = jellyfinUser.Name;
-                  }
-                  if (activeUser.avatar !== avatar) {
-                    updates.avatar = avatar;
-                  }
-                  if (Object.keys(updates).length > 0) {
-                    await userRepository.update(activeUser.id, updates);
-                  }
-                  refreshedUsers += 1;
+              await runWithImportAuthority([linkedUser.id], async (actor) => {
+                if (!syncExisting) {
+                  return;
+                }
+                const activeUser = await userRepository.findOneBy({
+                  id: linkedUser.id,
                 });
-              }
+                if (
+                  !activeUser ||
+                  normalizeJellyfinGuid(activeUser.jellyfinUserId) !==
+                    jellyfinUserId
+                ) {
+                  return;
+                }
+
+                const isOtherProtectedAdministrator =
+                  activeUser.hasPermission(Permission.ADMIN) &&
+                  actor.id !== 1 &&
+                  actor.id !== activeUser.id;
+                const mayModifyExistingUser =
+                  actor.id === 1 ||
+                  actor.id === activeUser.id ||
+                  canMakePermissionsChange(activeUser.permissions, actor);
+                if (isOtherProtectedAdministrator || !mayModifyExistingUser) {
+                  return;
+                }
+
+                await checkAvatarChanged(activeUser);
+                const avatar = activeUser.avatarVersion
+                  ? `/avatarproxy/${jellyfinUserId}?v=${encodeURIComponent(activeUser.avatarVersion)}`
+                  : `/avatarproxy/${jellyfinUserId}`;
+                const updates: Partial<
+                  Pick<User, 'jellyfinUsername' | 'avatar'>
+                > = {};
+                if (activeUser.jellyfinUsername !== jellyfinUser.Name) {
+                  updates.jellyfinUsername = jellyfinUser.Name;
+                }
+                if (activeUser.avatar !== avatar) {
+                  updates.avatar = avatar;
+                }
+                if (Object.keys(updates).length > 0) {
+                  await userRepository.update(activeUser.id, updates);
+                }
+                refreshedUsers += 1;
+              });
             } else {
               const existingEmailUser = await userRepository.findOne({
                 select: { id: true },
