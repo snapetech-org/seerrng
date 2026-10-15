@@ -140,6 +140,7 @@ const messages = defineMessages('components.Settings', {
   audiobook: 'Audiobook',
   address: 'Address',
   activeProfile: 'Active Profile',
+  activeAnimeProfile: 'Active Anime Profile',
   addradarr: 'Add Radarr Server',
   addsonarr: 'Add Sonarr Server',
   addSportarr: 'Connect Sportarr Server',
@@ -191,6 +192,7 @@ interface ServerInstanceProps {
   isSSL?: boolean;
   externalUrl?: string;
   profileName?: string;
+  animeProfileName?: string;
   isSonarr?: boolean;
   isSportarr?: boolean;
   isLidarr?: boolean;
@@ -247,6 +249,7 @@ const ServerInstance = ({
   isMagazines = false,
   serviceFormat,
   externalUrl,
+  animeProfileName,
   onEdit,
   onDelete,
 }: ServerInstanceProps) => {
@@ -347,6 +350,12 @@ const ServerInstance = ({
               <>
                 <dt>{intl.formatMessage(messages.activeProfile)}</dt>
                 <dd>{profileName}</dd>
+              </>
+            )}
+            {animeProfileName !== undefined && (
+              <>
+                <dt>{intl.formatMessage(messages.activeAnimeProfile)}</dt>
+                <dd>{animeProfileName}</dd>
               </>
             )}
           </dl>
@@ -958,6 +967,7 @@ const SettingsServices = () => {
                   hostname={sonarr.hostname}
                   port={sonarr.port}
                   profileName={sonarr.activeProfileName}
+                  animeProfileName={sonarr.activeAnimeProfileName}
                   isSSL={sonarr.useSsl}
                   isSonarr
                   isDefault={sonarr.isDefault}

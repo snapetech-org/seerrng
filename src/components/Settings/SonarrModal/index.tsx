@@ -38,6 +38,9 @@ const messages = defineMessages('components.Settings.SonarrModal', {
   validationLanguageProfileRequired: 'You must select a language profile',
   toastSonarrTestSuccess: 'Sonarr connection established successfully!',
   toastSonarrTestFailure: 'Failed to connect to Sonarr.',
+  toastSonarrSaveFailure: 'Failed to save Sonarr settings.',
+  toastAnimeProfileMissing:
+    'The selected anime quality profile does not exist on this Sonarr server.',
   add: 'Add Server',
   defaultserver: 'Default Server',
   default4kserver: 'Default 4K Server',
@@ -269,12 +272,25 @@ const SonarrModal = ({ onClose, sonarr, onSave }: SonarrModalProps) => {
         validationSchema={SonarrSettingsSchema}
         onSubmit={async (values) => {
           try {
-            const profileName = testResponse.profiles.find(
-              (profile) => profile.id === Number(values.activeProfileId)
-            )?.name;
-            const animeProfileName = testResponse.profiles.find(
-              (profile) => profile.id === Number(values.activeAnimeProfileId)
-            )?.name;
+            const selectedProfileId = Number(values.activeProfileId);
+            const selectedAnimeProfileId = values.activeAnimeProfileId
+              ? Number(values.activeAnimeProfileId)
+              : undefined;
+            const profileName =
+              testResponse.profiles.find(
+                (profile) => profile.id === selectedProfileId
+              )?.name ??
+              (sonarr?.activeProfileId === selectedProfileId
+                ? sonarr.activeProfileName
+                : undefined);
+            const animeProfileName =
+              testResponse.profiles.find(
+                (profile) => profile.id === selectedAnimeProfileId
+              )?.name ??
+              (selectedAnimeProfileId !== undefined &&
+              sonarr?.activeAnimeProfileId === selectedAnimeProfileId
+                ? sonarr.activeAnimeProfileName
+                : undefined);
 
             const submission = {
               name: values.name,
@@ -283,7 +299,7 @@ const SonarrModal = ({ onClose, sonarr, onSave }: SonarrModalProps) => {
               apiKey: values.apiKey,
               useSsl: values.ssl,
               baseUrl: values.baseUrl,
-              activeProfileId: Number(values.activeProfileId),
+              activeProfileId: selectedProfileId,
               activeLanguageProfileId: values.activeLanguageProfileId
                 ? Number(values.activeLanguageProfileId)
                 : undefined,
@@ -291,9 +307,7 @@ const SonarrModal = ({ onClose, sonarr, onSave }: SonarrModalProps) => {
               activeDirectory: values.rootFolder,
               seriesType: values.seriesType,
               animeSeriesType: values.animeSeriesType,
-              activeAnimeProfileId: values.activeAnimeProfileId
-                ? Number(values.activeAnimeProfileId)
-                : undefined,
+              activeAnimeProfileId: selectedAnimeProfileId,
               activeAnimeLanguageProfileId: values.activeAnimeLanguageProfileId
                 ? Number(values.activeAnimeLanguageProfileId)
                 : undefined,
@@ -320,8 +334,21 @@ const SonarrModal = ({ onClose, sonarr, onSave }: SonarrModalProps) => {
             }
 
             onSave();
-          } catch {
-            // set error here
+          } catch (error) {
+            const profileIsMissing =
+              axios.isAxiosError<{ message?: unknown }>(error) &&
+              error.response?.status === 422;
+            addToast(
+              intl.formatMessage(
+                profileIsMissing
+                  ? messages.toastAnimeProfileMissing
+                  : messages.toastSonarrSaveFailure
+              ),
+              {
+                appearance: 'error',
+                autoDismiss: true,
+              }
+            );
           }
         }}
       >
@@ -373,7 +400,12 @@ const SonarrModal = ({ onClose, sonarr, onSave }: SonarrModalProps) => {
                 isTesting ||
                 isSubmitting
               }
-              okDisabled={!isValidated || isSubmitting || isTesting || !isValid}
+              okDisabled={
+                (!sonarr && !isValidated) ||
+                isSubmitting ||
+                isTesting ||
+                !isValid
+              }
               onOk={() => handleSubmit()}
               title={
                 !sonarr
