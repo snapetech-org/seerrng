@@ -5,6 +5,7 @@ import ExternalAPI from '@server/api/externalapi';
 import OpenLibraryAPI from '@server/api/openlibrary';
 import type { LidarrAlbumOptions } from '@server/api/servarr/lidarr';
 import LidarrAPI from '@server/api/servarr/lidarr';
+import type RadarrAPI from '@server/api/servarr/radarr';
 import type {
   ReadarrBookLookupResult,
   ReadarrBookOptions,
@@ -17,6 +18,7 @@ import type {
 import SonarrAPI from '@server/api/servarr/sonarr';
 import type { SportarrLeague } from '@server/api/servarr/sportarr';
 import SportarrAPI from '@server/api/servarr/sportarr';
+import { ANIME_KEYWORD_ID } from '@server/api/themoviedb/constants';
 import Tvdb from '@server/api/tvdb';
 import WikidataAPI from '@server/api/wikidata';
 import {
@@ -31,6 +33,7 @@ import Media from '@server/entity/Media';
 import MediaIdentifier, {
   MediaIdentifierProvider,
 } from '@server/entity/MediaIdentifier';
+import MediaIdentifierSeasonMapping from '@server/entity/MediaIdentifierSeasonMapping';
 import {
   MediaRequest,
   getRequestMutationAdmissionKey,
@@ -46,7 +49,7 @@ import { runMediaEntityMutation } from '@server/lib/mediaMutation';
 import notificationManager, { Notification } from '@server/lib/notifications';
 import requestDispatchManager from '@server/lib/requestDispatch';
 import { runWithServarrServiceMutationAdmission } from '@server/lib/serviceAdmission';
-import { getSettings } from '@server/lib/settings';
+import { getSettings, type SonarrSettings } from '@server/lib/settings';
 import {
   MediaRequestSubscriber,
   READARR_FAILED_RETRY_DELAY_MS,
@@ -135,37 +138,94 @@ function configureFallbackSonarr() {
   ];
 }
 
+function mockAnimeTvShow(tmdbId: number, tvdbId: number) {
+  (
+    mock.method as (
+      object: object,
+      methodName: string,
+      implementation: (endpoint: string) => Promise<unknown>
+    ) => unknown
+  )(ExternalAPI.prototype, 'get', async () => ({
+    id: tmdbId,
+    name: `Anime ${tmdbId}`,
+    external_ids: { tvdb_id: tvdbId },
+    keywords: { results: [{ id: ANIME_KEYWORD_ID }] },
+  }));
+}
+
+function makeSonarrSettings(
+  id: number,
+  hostname: string,
+  activeProfileId: number,
+  activeAnimeProfileId: number,
+  isDefault: boolean
+): SonarrSettings {
+  return {
+    id,
+    name: `Sonarr ${id}`,
+    hostname,
+    port: 8989,
+    apiKey: `test-key-${id}`,
+    useSsl: false,
+    activeProfileId,
+    activeProfileName: `Profile ${activeProfileId}`,
+    activeAnimeProfileId,
+    activeAnimeProfileName: `Anime Profile ${activeAnimeProfileId}`,
+    activeLanguageProfileId: 1,
+    activeDirectory: '/tv',
+    tags: [],
+    is4k: false,
+    isDefault,
+    syncEnabled: true,
+    preventSearch: false,
+    tagRequests: false,
+    seriesType: 'standard',
+    animeSeriesType: 'anime',
+    enableSeasonFolders: true,
+    monitorNewItems: 'all',
+    overrideRule: [],
+  };
+}
+
 async function createApprovedTvRequest(
   tmdbId: number,
-  seasonNumbers: number[]
+  seasonNumbers: number[],
+  tvdbId?: number,
+  options: { profileId?: number; serverId?: number } = {}
 ) {
   const requestedBy = await getRequester();
   const media = await getRepository(Media).save(
     new Media({
       mediaType: MediaType.TV,
       tmdbId,
+      tvdbId,
       status: MediaStatus.PENDING,
       status4k: MediaStatus.UNKNOWN,
     })
   );
-  const request = await getRepository(MediaRequest).save(
-    new MediaRequest({
-      type: MediaType.TV,
-      status: MediaRequestStatus.APPROVED,
-      media,
-      requestedBy,
-      is4k: false,
-      seasons: seasonNumbers.map(
-        (seasonNumber) =>
-          new SeasonRequest({
-            seasonNumber,
-            status: MediaRequestStatus.APPROVED,
-          })
-      ),
-    })
-  );
+  const request = new MediaRequest({
+    type: MediaType.TV,
+    status: MediaRequestStatus.APPROVED,
+    media,
+    requestedBy,
+    is4k: false,
+    seasons: seasonNumbers.map(
+      (seasonNumber) =>
+        new SeasonRequest({
+          seasonNumber,
+          status: MediaRequestStatus.APPROVED,
+        })
+    ),
+  });
+  if (options.profileId !== undefined) {
+    request.profileId = options.profileId;
+  }
+  if (options.serverId !== undefined) {
+    request.serverId = options.serverId;
+  }
+  const savedRequest = await getRepository(MediaRequest).save(request);
 
-  return { media, request };
+  return { media, request: savedRequest };
 }
 
 function stubTvdbShow(
@@ -244,6 +304,115 @@ describe('MediaRequestSubscriber service dispatch', () => {
       clampReadarrProviderRetryDelay(Number.MAX_SAFE_INTEGER),
       3_600_000
     );
+  });
+
+  it('continues Radarr dispatch when requester tag lookup fails', async () => {
+    const settings = getSettings();
+    settings.radarr = [
+      {
+        id: 30,
+        name: 'Radarr',
+        hostname: 'radarr.local',
+        port: 7878,
+        apiKey: 'test-key',
+        useSsl: false,
+        activeProfileId: 5,
+        activeProfileName: 'HD',
+        activeDirectory: '/movies',
+        minimumAvailability: 'released',
+        tags: [12],
+        is4k: false,
+        isDefault: true,
+        syncEnabled: true,
+        preventSearch: false,
+        tagRequests: true,
+        overrideRule: [],
+      },
+    ];
+
+    const requestedBy = await getRequester();
+    const media = await getRepository(Media).save(
+      new Media({
+        mediaType: MediaType.MOVIE,
+        tmdbId: 550,
+        status: MediaStatus.PENDING,
+        status4k: MediaStatus.UNKNOWN,
+      })
+    );
+    (
+      mock.method as (
+        object: object,
+        methodName: string,
+        implementation: () => Promise<unknown>
+      ) => unknown
+    )(ExternalAPI.prototype, 'get', async () => ({
+      id: 550,
+      title: 'Fight Club',
+      release_date: '1999-10-15',
+    }));
+    let movieOptions: Parameters<RadarrAPI['addMovie']>[0] | undefined;
+    const originalCreate = axios.create;
+    mock.method(
+      axios,
+      'create',
+      (config: { params?: { api_key?: string } }) => {
+        if (config?.params?.api_key) {
+          return originalCreate.call(axios, config);
+        }
+
+        return {
+          interceptors: { request: { use: () => undefined } },
+          get: async (endpoint: string) => {
+            if (endpoint.endsWith('/tag')) {
+              throw new Error('Temporary tag service outage');
+            }
+            if (endpoint.endsWith('/movie/lookup')) {
+              return {
+                data: [
+                  {
+                    title: 'Fight Club',
+                    tmdbId: 550,
+                    year: 1999,
+                    hasFile: false,
+                    monitored: false,
+                    tags: [],
+                  },
+                ],
+              };
+            }
+
+            throw new Error(`Unexpected GET ${endpoint}`);
+          },
+          post: async (
+            endpoint: string,
+            payload: Parameters<RadarrAPI['addMovie']>[0]
+          ) => {
+            assert.ok(endpoint.endsWith('/movie'));
+            movieOptions = payload;
+            return {
+              data: {
+                id: 77,
+                title: 'Fight Club',
+                titleSlug: 'fight-club-1999',
+              },
+            };
+          },
+        };
+      }
+    );
+
+    const request = await createApprovedRequest(media, requestedBy);
+    await getRepository(MediaRequest).save(request);
+
+    const delivered = await new MediaRequestSubscriber().sendToRadarr(request);
+
+    assert.equal(delivered, true);
+    assert.deepEqual(movieOptions?.tags, [12]);
+    const savedMedia = await getRepository(Media).findOneByOrFail({
+      id: media.id,
+    });
+    assert.equal(savedMedia.externalServiceId, 77);
+    assert.equal(savedMedia.serviceId, 30);
   });
 
   it('recovers a committed Sportarr add when its POST response is lost', async () => {
@@ -613,7 +782,7 @@ describe('MediaRequestSubscriber service dispatch', () => {
     assert.equal(savedMedia.serviceId, 30);
   });
 
-  it('sends approved series requests to Sonarr with seasons and service routing', async () => {
+  it('continues Sonarr dispatch when requester tag lookup fails', async () => {
     const settings = getSettings();
     settings.sonarr = [
       {
@@ -632,7 +801,7 @@ describe('MediaRequestSubscriber service dispatch', () => {
         isDefault: true,
         syncEnabled: true,
         preventSearch: false,
-        tagRequests: false,
+        tagRequests: true,
         seriesType: 'daily',
         animeSeriesType: 'anime',
         enableSeasonFolders: true,
@@ -680,6 +849,10 @@ describe('MediaRequestSubscriber service dispatch', () => {
         return {
           interceptors: { request: { use: () => undefined } },
           get: async (endpoint: string) => {
+            if (endpoint.endsWith('/tag')) {
+              throw new Error('Temporary tag service outage');
+            }
+
             if (endpoint.endsWith('/series/lookup')) {
               return {
                 data: [
@@ -934,6 +1107,119 @@ describe('MediaRequestSubscriber service dispatch', () => {
     );
   });
 
+  it('falls back to the selected Sonarr service default for a missing anime profile', async () => {
+    const settings = getSettings();
+    settings.sonarr = [
+      makeSonarrSettings(31, 'primary-sonarr.local', 4, 5, true),
+      makeSonarrSettings(32, 'anime-sonarr.local', 7, 8, false),
+    ];
+    mockAnimeTvShow(7001, 17001);
+
+    let profileLookupUrl: string | undefined;
+    let addSeriesUrl: string | undefined;
+    let receivedOptions: AddSeriesOptions | undefined;
+    mock.method(
+      SonarrAPI.prototype,
+      'getProfiles',
+      async function (this: SonarrAPI, options?: { forceRefresh?: boolean }) {
+        profileLookupUrl = Reflect.get(this, 'baseUrl') as string;
+        assert.strictEqual(options?.forceRefresh, true);
+        return [{ id: 7, name: 'Anime Sonarr Default' }];
+      }
+    );
+    mock.method(
+      SonarrAPI.prototype,
+      'addSeries',
+      async function (this: SonarrAPI, options: AddSeriesOptions) {
+        addSeriesUrl = Reflect.get(this, 'baseUrl') as string;
+        receivedOptions = options;
+        return {
+          id: 88,
+          title: 'Anime 7001',
+          titleSlug: 'anime-7001',
+        } as Awaited<ReturnType<SonarrAPI['addSeries']>>;
+      }
+    );
+    mock.method(MediaRequest, 'sendNotification', async () => undefined);
+
+    const { request } = await createApprovedTvRequest(7001, [1], 17001, {
+      profileId: 8,
+      serverId: 32,
+    });
+    await new MediaRequestSubscriber().sendToSonarr(request);
+
+    assert.strictEqual(receivedOptions?.profileId, 7);
+    assert.match(profileLookupUrl ?? '', /anime-sonarr\.local/);
+    assert.strictEqual(addSeriesUrl, profileLookupUrl);
+    const savedMedia = await getRepository(Media).findOneByOrFail({
+      id: request.media.id,
+    });
+    assert.strictEqual(savedMedia.serviceId, 32);
+  });
+
+  it('falls back to the standard profile when Sonarr profile verification is unavailable', async () => {
+    const settings = getSettings();
+    settings.sonarr = [makeSonarrSettings(33, 'sonarr.local', 7, 8, true)];
+    mockAnimeTvShow(7002, 17002);
+
+    let receivedOptions: AddSeriesOptions | undefined;
+    mock.method(SonarrAPI.prototype, 'getProfiles', async () => {
+      throw new Error('Sonarr is temporarily unavailable');
+    });
+    mock.method(
+      SonarrAPI.prototype,
+      'addSeries',
+      async (options: AddSeriesOptions) => {
+        receivedOptions = options;
+        return {
+          id: 89,
+          title: 'Anime 7002',
+          titleSlug: 'anime-7002',
+        } as Awaited<ReturnType<SonarrAPI['addSeries']>>;
+      }
+    );
+    mock.method(MediaRequest, 'sendNotification', async () => undefined);
+
+    const { request } = await createApprovedTvRequest(7002, [1], 17002, {
+      profileId: 8,
+    });
+    await new MediaRequestSubscriber().sendToSonarr(request);
+
+    assert.strictEqual(receivedOptions?.profileId, 7);
+  });
+
+  it('keeps a valid anime profile for approved series requests', async () => {
+    const settings = getSettings();
+    settings.sonarr = [makeSonarrSettings(34, 'sonarr.local', 7, 8, true)];
+    mockAnimeTvShow(7003, 17003);
+
+    let receivedOptions: AddSeriesOptions | undefined;
+    mock.method(SonarrAPI.prototype, 'getProfiles', async () => [
+      { id: 7, name: 'Default' },
+      { id: 8, name: 'Anime' },
+    ]);
+    mock.method(
+      SonarrAPI.prototype,
+      'addSeries',
+      async (options: AddSeriesOptions) => {
+        receivedOptions = options;
+        return {
+          id: 90,
+          title: 'Anime 7003',
+          titleSlug: 'anime-7003',
+        } as Awaited<ReturnType<SonarrAPI['addSeries']>>;
+      }
+    );
+    mock.method(MediaRequest, 'sendNotification', async () => undefined);
+
+    const { request } = await createApprovedTvRequest(7003, [1], 17003, {
+      profileId: 8,
+    });
+    await new MediaRequestSubscriber().sendToSonarr(request);
+
+    assert.strictEqual(receivedOptions?.profileId, 8);
+  });
+
   it('passes exact multi-season episode selections to Sonarr', async () => {
     const settings = getSettings();
     settings.sonarr = [
@@ -1037,6 +1323,120 @@ describe('MediaRequestSubscriber service dispatch', () => {
     ]);
     assert.strictEqual(receivedOptions?.monitorNewItems, 'all');
     assert.strictEqual(receivedOptions?.searchNow, false);
+  });
+
+  it('dispatches manually mapped TVDB seasons and preserves season zero', async () => {
+    configureFallbackSonarr();
+    stubTvdbShow(87018, [
+      { season_number: 0, air_date: '2020-12-25' },
+      { season_number: 1, air_date: '2024-09-24' },
+    ]);
+    mock.method(
+      Tvdb,
+      'getInstance',
+      async () =>
+        ({
+          getOfficialSeasons: async () => [
+            { seasonNumber: 0, year: 2020 },
+            { seasonNumber: 2, year: 2024 },
+          ],
+        }) as unknown as Tvdb
+    );
+
+    const requestedBy = await getRequester();
+    const media = await getRepository(Media).save(
+      new Media({
+        mediaType: MediaType.TV,
+        tmdbId: 87018,
+        tvdbId: 184_880,
+        status: MediaStatus.PENDING,
+        status4k: MediaStatus.UNKNOWN,
+      })
+    );
+    const identifier = await getRepository(MediaIdentifier).save(
+      new MediaIdentifier({
+        media,
+        provider: MediaIdentifierProvider.TVDB,
+        value: '184881',
+        canonical: false,
+      })
+    );
+    await getRepository(MediaIdentifierSeasonMapping).save([
+      new MediaIdentifierSeasonMapping({
+        mediaIdentifier: identifier,
+        sonarrServerId: 31,
+        is4k: false,
+        seasonNumber: 0,
+        externalSeasonNumber: 0,
+      }),
+      new MediaIdentifierSeasonMapping({
+        mediaIdentifier: identifier,
+        sonarrServerId: 31,
+        is4k: false,
+        seasonNumber: 1,
+        externalSeasonNumber: 2,
+      }),
+      new MediaIdentifierSeasonMapping({
+        mediaIdentifier: identifier,
+        sonarrServerId: 32,
+        is4k: false,
+        seasonNumber: 1,
+        externalSeasonNumber: 4,
+      }),
+      new MediaIdentifierSeasonMapping({
+        mediaIdentifier: identifier,
+        sonarrServerId: 31,
+        is4k: true,
+        seasonNumber: 1,
+        externalSeasonNumber: 5,
+      }),
+    ]);
+
+    let receivedOptions: AddSeriesOptions | undefined;
+    mock.method(
+      SonarrAPI.prototype,
+      'addSeries',
+      async (options: AddSeriesOptions) => {
+        receivedOptions = options;
+        return {
+          id: 91,
+          title: 'Mapped Season Test',
+          titleSlug: 'mapped-season-test',
+        } as Awaited<ReturnType<SonarrAPI['addSeries']>>;
+      }
+    );
+    const request = await getRepository(MediaRequest).save(
+      new MediaRequest({
+        type: MediaType.TV,
+        status: MediaRequestStatus.APPROVED,
+        media,
+        requestedBy,
+        is4k: false,
+        serverId: 31,
+        overrideTvdbId: 184_881,
+        seasons: [
+          new SeasonRequest({
+            seasonNumber: 0,
+            episodeNumbers: [1],
+            status: MediaRequestStatus.APPROVED,
+          }),
+          new SeasonRequest({
+            seasonNumber: 1,
+            episodeNumbers: [3],
+            status: MediaRequestStatus.APPROVED,
+          }),
+        ],
+      })
+    );
+
+    await new MediaRequestSubscriber().sendToSonarr(request);
+
+    assert.strictEqual(receivedOptions?.tvdbid, 184_881);
+    assert.deepStrictEqual(receivedOptions?.seasons, [0, 2]);
+    assert.deepStrictEqual(receivedOptions?.episodeSelections, [
+      { seasonNumber: 0, episodeNumbers: [1] },
+      { seasonNumber: 2, episodeNumbers: [3] },
+    ]);
   });
 
   it('fails a movie request whose explicit Radarr server was removed', async () => {

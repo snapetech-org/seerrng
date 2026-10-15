@@ -525,19 +525,46 @@ it('changing quality recomputes eligibility and submits the selected 4K destinat
   );
 });
 
-it('quota blocks an oversized default and refuses a later expansion beyond the remaining seasons', async () => {
+it('submits an oversized TV request for quota approval', async () => {
   await fixture(
     async (doc) => {
-      expect(button(doc, 'modal-ok-button').disabled).toBe(true);
-      await click(doc, 'tree-season');
+      vi.mocked(axios.post).mockResolvedValueOnce({
+        status: 201,
+        data: {
+          media: {
+            status: MediaStatus.PENDING,
+            status4k: MediaStatus.PENDING,
+          },
+          quotaException: true,
+        },
+      });
+
       expect(button(doc, 'modal-ok-button').disabled).toBe(false);
-      await click(doc, 'tree-both');
-      expect(selections(doc)).toEqual([{ seasonNumber: 2 }]);
+      expect(button(doc, 'modal-ok-button').textContent).toContain(
+        'Request approval'
+      );
+      expect(selections(doc)).toEqual([
+        { seasonNumber: 1 },
+        { seasonNumber: 2 },
+      ]);
       await click(doc, 'modal-ok-button');
       expect(axios.post).toHaveBeenCalledExactlyOnceWith(
         '/api/v1/request',
-        expect.objectContaining({ seasons: [2] })
+        expect.objectContaining({
+          seasons: [1, 2],
+          requestQuotaApproval: true,
+        })
       );
+      expect(fixtureState.addToast).toHaveBeenCalledTimes(1);
+      const toastMessage = fixtureState.addToast.mock.calls[0]?.[0] as
+        React.ReactElement<{ children: string }> | undefined;
+      expect(toastMessage?.props.children).toContain(
+        'waiting for administrator approval.'
+      );
+      expect(fixtureState.addToast.mock.calls[0]?.[1]).toEqual({
+        appearance: 'success',
+        autoDismiss: true,
+      });
     },
     {
       configure: () => {

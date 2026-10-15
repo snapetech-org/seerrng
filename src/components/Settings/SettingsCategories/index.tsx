@@ -143,6 +143,7 @@ const SettingsCategories = () => {
                     label={intl.formatMessage(messages[label])}
                     description={intl.formatMessage(messages[description])}
                     labelClassName="checkbox-label"
+                    className="settings-form-row-compact-description"
                   >
                     <SettingsField
                       type="checkbox"

@@ -7,6 +7,7 @@ import RadarrAPI from '@server/api/servarr/radarr';
 import ReadarrAPI from '@server/api/servarr/readarr';
 import SonarrAPI, { type SonarrSeries } from '@server/api/servarr/sonarr';
 import TheMovieDb from '@server/api/themoviedb';
+import Tvdb from '@server/api/tvdb';
 import {
   MediaRequestStatus,
   MediaStatus,
@@ -389,6 +390,76 @@ describe('Sonarr lookup response filtering', () => {
         overview: 'Overview',
         remotePoster: 'https://artworks.thetvdb.com/example.jpg',
       },
+    ]);
+  });
+
+  it('uses the request-selected Sonarr instance for season repair lookup', async (t) => {
+    const settings = getSettings();
+    settings.sonarr = [
+      makeSonarr({ id: 4, hostname: 'default.local', isDefault: true }),
+      makeSonarr({ id: 7, hostname: 'selected.local', isDefault: false }),
+    ];
+    const originalGetTvShow = Object.getOwnPropertyDescriptor(
+      TheMovieDb.prototype,
+      'getTvShow'
+    );
+    Object.defineProperty(TheMovieDb.prototype, 'getTvShow', {
+      configurable: true,
+      get: () => async () => ({ name: 'Selected Series' }) as never,
+      set: () => undefined,
+    });
+    let selectedBaseUrl: string | undefined;
+    const seriesLookup = mock.method(
+      SonarrAPI.prototype,
+      'getSeriesByTitle',
+      async function (this: SonarrAPI) {
+        selectedBaseUrl = Reflect.get(this, 'baseUrl') as string | undefined;
+        return [];
+      }
+    );
+    t.after(() => {
+      settings.sonarr = [];
+      seriesLookup.mock.restore();
+      if (originalGetTvShow) {
+        Object.defineProperty(
+          TheMovieDb.prototype,
+          'getTvShow',
+          originalGetTvShow
+        );
+      } else {
+        delete (TheMovieDb.prototype as Partial<TheMovieDb>).getTvShow;
+      }
+    });
+
+    const response = await request(createOpenApiApp())
+      .get('/api/v1/service/sonarr/lookup/123')
+      .query({ is4k: false, serverId: 7 });
+
+    assert.strictEqual(response.status, 200, JSON.stringify(response.body));
+    assert.match(selectedBaseUrl ?? '', /selected\.local/);
+  });
+
+  it('returns official TVDB seasons including season zero through the API contract', async () => {
+    mock.method(
+      Tvdb,
+      'getInstance',
+      async () =>
+        ({
+          getOfficialSeasons: async () => [
+            { seasonNumber: 0, year: null },
+            { seasonNumber: 2, year: 2024 },
+          ],
+        }) as unknown as Tvdb
+    );
+
+    const response = await request(createOpenApiApp()).get(
+      '/api/v1/service/tvdb/seasons/184871'
+    );
+
+    assert.strictEqual(response.status, 200, JSON.stringify(response.body));
+    assert.deepStrictEqual(response.body, [
+      { seasonNumber: 0, year: null },
+      { seasonNumber: 2, year: 2024 },
     ]);
   });
 });
@@ -989,6 +1060,48 @@ describe('Sonarr settings routes', () => {
     assert.strictEqual(getSettings().sonarr[0].name, 'Updated Sonarr');
   });
 
+  it('rejects missing anime profiles when creating and updating a service', async () => {
+    let forcedRefreshes = 0;
+    mock.method(
+      SonarrAPI.prototype,
+      'getProfiles',
+      async (options?: { forceRefresh?: boolean }) => {
+        if (options?.forceRefresh) forcedRefreshes += 1;
+        return [{ id: 7, name: 'Current Profile' }];
+      }
+    );
+
+    const createResponse = await request(app)
+      .post('/settings/sonarr')
+      .send(makeSonarr({ activeAnimeProfileId: 8 }));
+
+    getSettings().sonarr = [makeSonarr({ id: 4, activeAnimeProfileId: 7 })];
+    const updateResponse = await request(app)
+      .put('/settings/sonarr/4')
+      .send(makeSonarr({ activeAnimeProfileId: 8 }));
+
+    assert.strictEqual(createResponse.status, 422);
+    assert.match(createResponse.body.message, /anime quality profile/i);
+    assert.strictEqual(updateResponse.status, 422);
+    assert.match(updateResponse.body.message, /anime quality profile/i);
+    assert.strictEqual(forcedRefreshes, 2);
+    assert.strictEqual(getSettings().sonarr.length, 1);
+    assert.strictEqual(getSettings().sonarr[0].activeAnimeProfileId, 7);
+  });
+
+  it('allows Sonarr settings to be saved when anime profile verification is unavailable', async () => {
+    mock.method(SonarrAPI.prototype, 'getProfiles', async () => {
+      throw new Error('Sonarr is unavailable');
+    });
+
+    const res = await request(app)
+      .post('/settings/sonarr')
+      .send(makeSonarr({ activeAnimeProfileId: 8 }));
+
+    assert.strictEqual(res.status, 201);
+    assert.strictEqual(getSettings().sonarr[0].activeAnimeProfileId, 8);
+  });
+
   it('tests a Sonarr connection before the add form is complete', async () => {
     mock.method(SonarrAPI.prototype, 'getSystemStatus', async () => ({
       appName: 'Sonarr',
@@ -1202,6 +1315,32 @@ describe('Lidarr settings routes', () => {
       {
         id: 4,
         name: 'Music Backend',
+        is4k: false,
+        isDefault: true,
+      },
+    ]);
+  });
+
+  it('shares the derived music format without exposing the Lidarr profile', async () => {
+    getSettings().lidarr = [
+      makeLidarr({
+        id: 4,
+        name: 'Lidarr',
+        activeProfileName: 'Lossless Preferred',
+        activeDirectory: '/music',
+      }),
+    ];
+
+    const res = await request(createApp(Permission.REQUEST)).get(
+      '/service/lidarr'
+    );
+
+    assert.strictEqual(res.status, 200);
+    assert.deepStrictEqual(res.body, [
+      {
+        id: 4,
+        name: 'Lidarr',
+        musicQuality: 'flac',
         is4k: false,
         isDefault: true,
       },

@@ -131,6 +131,19 @@ it('updates the issue quality when switching available versions without submitti
   expect(state.post).not.toHaveBeenCalled();
 });
 
+it('keeps the issue quality selectable while the requested copy is processing', async () => {
+  state.status = MediaStatus.PROCESSING;
+  await render();
+
+  expect(quality('hd').disabled).toBe(false);
+  expect(quality('4k').disabled).toBe(true);
+  expect(
+    host.querySelector<HTMLButtonElement>('[data-testid="modal-ok-button"]')
+      ?.disabled
+  ).toBe(false);
+  expect(state.post).not.toHaveBeenCalled();
+});
+
 it('keeps reporting disabled when neither quality is available', async () => {
   state.status = MediaStatus.UNKNOWN;
   await render();

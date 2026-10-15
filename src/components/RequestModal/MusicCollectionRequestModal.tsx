@@ -33,6 +33,10 @@ import {
   musicCollectionFilterOptions,
   type MusicCollectionFilters,
 } from '@app/utils/musicCollectionFilters';
+import {
+  getMusicServiceQuality,
+  isMusicServiceForQuality,
+} from '@app/utils/musicService';
 import { Transition } from '@headlessui/react';
 import { ArrowDownTrayIcon, XMarkIcon } from '@heroicons/react/24/outline';
 import { MediaStatus } from '@server/constants/media';
@@ -120,7 +124,7 @@ export default function MusicCollectionRequestModal({
     ServiceCommonServer[]
   >('/api/v1/service/lidarr');
   const initialService = services?.find((service) =>
-    service.name.toLowerCase().includes(selectedFormat)
+    isMusicServiceForQuality(service, selectedFormat)
   );
   const service =
     services?.find((service) => service.id === requestOverrides?.server) ??
@@ -161,7 +165,7 @@ export default function MusicCollectionRequestModal({
     const target = createRequestDestination(
       'lidarr',
       'music',
-      services?.find((item) => item.name.toLowerCase().includes(format)),
+      services?.find((item) => isMusicServiceForQuality(item, format)),
       undefined
     );
     if (isRequestDestinationAvailable(part.mediaInfo, target))
@@ -173,11 +177,11 @@ export default function MusicCollectionRequestModal({
   const ready = (part: CuratedCollectionMember) =>
     !!destination &&
     !(
-      service?.name.toLowerCase().includes('mp3') &&
+      getMusicServiceQuality(service) === 'mp3' &&
       memberHasQuality(part, 'music', false)
     ) &&
     !(
-      service?.name.toLowerCase().includes('flac') &&
+      getMusicServiceQuality(service) === 'flac' &&
       memberHasQuality(part, 'music', true)
     ) &&
     part.mediaInfo?.status !== MediaStatus.BLOCKLISTED &&
@@ -482,9 +486,9 @@ export default function MusicCollectionRequestModal({
           <div className="mt-2 flex items-center">
             <MediaQualitySelect
               value={
-                service?.name.toLowerCase().includes('flac')
+                getMusicServiceQuality(service) === 'flac'
                   ? 'flac'
-                  : service?.name.toLowerCase().includes('mp3')
+                  : getMusicServiceQuality(service) === 'mp3'
                     ? 'mp3'
                     : selectedFormat
               }
@@ -495,7 +499,7 @@ export default function MusicCollectionRequestModal({
                   disabled:
                     !!services &&
                     !services.some((item) =>
-                      item.name.toLowerCase().includes('mp3')
+                      isMusicServiceForQuality(item, 'mp3')
                     ),
                 },
                 {
@@ -504,7 +508,7 @@ export default function MusicCollectionRequestModal({
                   disabled:
                     !!services &&
                     !services.some((item) =>
-                      item.name.toLowerCase().includes('flac')
+                      isMusicServiceForQuality(item, 'flac')
                     ),
                 },
               ]}

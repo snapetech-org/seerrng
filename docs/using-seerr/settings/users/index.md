@@ -36,6 +36,13 @@ Unless an override is configured, users are granted these global request limits.
 
 Note that users with the **Manage Users** permission are exempt from request limits, since that permission also grants the ability to submit requests on behalf of other users.
 
+When a user reaches a movie or series limit, they can ask an administrator to
+approve one of their own requests from the request dialog. The pending request
+continues to count against the limit, and a user can have only one quota
+exception awaiting review per media type. If approved, that request no longer
+counts against future quota usage. Bulk and automated requests continue to obey
+the limit without creating approval requests.
+
 ## Default Permissions
 
 Select the permissions you would like assigned to new users to have by default upon account creation.

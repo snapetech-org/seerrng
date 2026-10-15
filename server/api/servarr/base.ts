@@ -515,12 +515,14 @@ class ServarrBase<QueueItemAppendT> extends ExternalAPI {
     }
   }
 
-  public async getProfiles(): Promise<QualityProfile[]> {
+  public async getProfiles(
+    options: { forceRefresh?: boolean } = {}
+  ): Promise<QualityProfile[]> {
     try {
       const data = await this.getRolling<QualityProfile[]>(
         `/qualityProfile`,
         this.getRequestConfig(),
-        3600
+        options.forceRefresh ? 0 : 3600
       );
 
       return sanitizeServarrProfiles(data);

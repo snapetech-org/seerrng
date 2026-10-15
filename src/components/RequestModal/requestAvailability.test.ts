@@ -263,6 +263,37 @@ test('auto approval lets the actor fulfill another user matching pending request
   );
 });
 
+test('auto approval cannot promote a quota exception that needs administrator review', () => {
+  const selectedMovieTarget = {
+    ...selectedMusicTarget,
+    serviceType: 'radarr' as const,
+    format: 'standard' as const,
+  };
+  const pending = {
+    id: 95,
+    status: MediaRequestStatus.PENDING,
+    type: 'movie',
+    quotaException: true,
+    requestedBy: { id: 7 },
+    serviceTargets: [selectedMovieTarget],
+  };
+
+  assert.equal(
+    canPromotePendingDestinationRequests([pending], [selectedMovieTarget], {
+      canManageRequests: false,
+      hasAutoApprove: true,
+    }),
+    false
+  );
+  assert.equal(
+    canPromotePendingDestinationRequests([pending], [selectedMovieTarget], {
+      canManageRequests: true,
+      hasAutoApprove: true,
+    }),
+    true
+  );
+});
+
 test('approved requests and different pending requests cannot be promoted together', () => {
   const secondTarget = { ...selectedMusicTarget, serverId: 3 };
   const requests = [

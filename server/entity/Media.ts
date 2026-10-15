@@ -23,6 +23,10 @@ import { normalizeMusicBrainzId } from '@server/lib/externalIds';
 import { restrictMediaRelationsForUser } from '@server/lib/mediaResponse';
 import { hydrateMediaSummaryRelations } from '@server/lib/mediaSummaryHydration';
 import { getSettings } from '@server/lib/settings';
+import {
+  attachViewerRequestCoverage,
+  type ViewerRequestCoverage,
+} from '@server/lib/viewerRequestCoverage';
 import logger from '@server/logger';
 import { DbAwareColumn, resolveDbType } from '@server/utils/DbColumnHelper';
 import { getHostname } from '@server/utils/getHostname';
@@ -55,6 +59,8 @@ import Season from './Season';
 })
 class Media {
   public hasActiveRequest?: boolean;
+
+  public viewerRequestCoverage?: ViewerRequestCoverage;
 
   public static async getRelatedMedia(
     user: User | undefined,
@@ -109,6 +115,8 @@ class Media {
               (i) => i.tmdbId === m.tmdbId && i.mediaType === m.mediaType
             )
           );
+
+      await attachViewerRequestCoverage(relatedMedia, user);
 
       if (
         includeActiveRequest &&

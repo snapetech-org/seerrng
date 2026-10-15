@@ -29,6 +29,7 @@ The rules describe asset roles, not particular pages, title strings, example med
 9. Messages and recovery: `page-error-message` and the shared Retry action. Selection: `selection-circle`; hierarchical selection: `selection-tree` together with table/card roles.
 10. Software catalog ownership uses the catalog library badge with the shared compact badge geometry. Play-time estimates use the dedicated readable text role within the existing card-table layout.
 11. Cached avatar fallbacks use the caller's avatar dimensions and the shared `cached-image-avatar-fallback` icon color role. Keep their glyph inside that box; percentage padding resolves against the surrounding layout and can expand the avatar beyond its requested size.
+12. Settings form rows use the shared `settings-form-row` and `settings-form-row-description` owners. Rows that pair a stronger label with a compact subordinate description use `settings-form-row-compact-description`; its row gap and typography belong to the shared stylesheet, not page utilities.
 
 This map identifies owners, not a whitelist of every valid class. Follow the existing family for the asset and verify its cascade before proposing another family.
 

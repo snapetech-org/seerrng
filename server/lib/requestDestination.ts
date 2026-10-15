@@ -42,6 +42,7 @@ export interface StoredRequestDestination {
   languageProfileId?: number | null;
   rootFolder?: string | null;
   bookFormat?: 'ebook' | 'audiobook' | 'both' | null;
+  quotaException?: boolean;
   serviceTargets?: RequestDestination[] | null;
   requestedBy?: { id: number } | null;
 }
