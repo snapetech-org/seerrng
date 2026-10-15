@@ -80,23 +80,24 @@ describe('Auto Request Settings', () => {
           '/api/v1/user?take=100'
         )
         .then(({ body }) => {
-          const user =
-            body.results.find(
-              (result) => result.email === USER_EMAIL && result.id !== 1
-            ) ??
-            body.results.find(
-              (result) => result.email === ADMIN_EMAIL && result.id !== 1
-            );
+          const user = body.results.find(
+            (result) =>
+              result.email === USER_EMAIL &&
+              result.email !== ADMIN_EMAIL &&
+              Number.isSafeInteger(Number(result.id)) &&
+              Number(result.id) > 1
+          );
 
           if (!user) {
             throw new Error(
-              `Could not find the seeded Plex user ${USER_EMAIL} or ${ADMIN_EMAIL}`
+              `No editable Plex user found for ${USER_EMAIL}; refusing to edit ${ADMIN_EMAIL}.`
             );
           }
+          const userId = Number(user.id);
 
           return cy
             .request<{ permissions: number }>(
-              `/api/v1/user/${user.id}/settings/permissions`
+              `/api/v1/user/${userId}/settings/permissions`
             )
             .then(({ body: permissionData }) => {
               return cy
@@ -107,9 +108,9 @@ describe('Auto Request Settings', () => {
                   watchlistSyncBooks?: boolean | null;
                   watchlistSyncComics?: boolean | null;
                   watchlistSyncMagazines?: boolean | null;
-                }>(`/api/v1/user/${user.id}/settings/main`)
+                }>(`/api/v1/user/${userId}/settings/main`)
                 .then(({ body: settings }) => {
-                  fixtureUserId = user.id;
+                  fixtureUserId = userId;
                   originalPermissions = permissionData.permissions;
                   originalUserSettings = {
                     watchlistSyncMovies: settings.watchlistSyncMovies,
@@ -119,17 +120,17 @@ describe('Auto Request Settings', () => {
                     watchlistSyncComics: settings.watchlistSyncComics,
                     watchlistSyncMagazines: settings.watchlistSyncMagazines,
                   };
-                  cy.intercept('GET', `/api/v1/user/${user.id}`).as(
+                  cy.intercept('GET', `/api/v1/user/${userId}`).as(
                     'fixtureUser'
                   );
                   cy.intercept(
                     'GET',
-                    `/api/v1/user/${user.id}/settings/permissions`
+                    `/api/v1/user/${userId}/settings/permissions`
                   ).as('fixturePermissions');
 
                   return cy.request(
                     'POST',
-                    `/api/v1/user/${user.id}/settings/permissions`,
+                    `/api/v1/user/${userId}/settings/permissions`,
                     { permissions: BASIC_REQUEST_PERMISSION }
                   );
                 });
@@ -137,14 +138,11 @@ describe('Auto Request Settings', () => {
             .its('status')
             .should('eq', 200)
             .then(() => {
-              visitUserEditPage(USER_EMAIL);
-              cy.location('pathname').should(
-                'eq',
-                `/users/${user.id}/settings`
-              );
+              cy.visit(`/users/${userId}/settings`);
+              cy.location('pathname').should('eq', `/users/${userId}/settings`);
               cy.wait('@fixtureUser')
                 .its('response.body.id')
-                .should('eq', user.id);
+                .should('eq', userId);
             });
         });
     });
