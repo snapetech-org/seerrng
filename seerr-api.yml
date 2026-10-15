@@ -5413,6 +5413,10 @@ components:
         - $ref: '#/components/schemas/RadarrSettings'
         - type: object
           properties:
+            musicQuality:
+              type: string
+              enum: [mp3, flac]
+              nullable: true
             activeMetadataProfileId:
               type: number
               example: 1

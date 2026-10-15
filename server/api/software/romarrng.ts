@@ -44,6 +44,7 @@ export interface RomarrLibraryLookup {
 }
 
 export class ROMarrNGAPI extends ExternalAPI {
+  private static readonly DAT_CATALOG_PLATFORM_TIMEOUT_MS = 120_000;
   private handshakePromise?: Promise<RomarrHandshake>;
 
   static buildUrl(
@@ -198,7 +199,11 @@ export class ROMarrNGAPI extends ExternalAPI {
 
   public getDatCatalogPlatforms(): Promise<SoftwareDatCatalogPlatformsResponse> {
     return this.getIntegrationBase().then((base) =>
-      this.get(`${base}/catalog/dat/platforms`, {}, 600)
+      this.get(
+        `${base}/catalog/dat/platforms`,
+        { timeout: ROMarrNGAPI.DAT_CATALOG_PLATFORM_TIMEOUT_MS },
+        600
+      )
     );
   }
 

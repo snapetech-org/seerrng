@@ -1208,6 +1208,32 @@ describe('Lidarr settings routes', () => {
     ]);
   });
 
+  it('shares the derived music format without exposing the Lidarr profile', async () => {
+    getSettings().lidarr = [
+      makeLidarr({
+        id: 4,
+        name: 'Lidarr',
+        activeProfileName: 'Lossless Preferred',
+        activeDirectory: '/music',
+      }),
+    ];
+
+    const res = await request(createApp(Permission.REQUEST)).get(
+      '/service/lidarr'
+    );
+
+    assert.strictEqual(res.status, 200);
+    assert.deepStrictEqual(res.body, [
+      {
+        id: 4,
+        name: 'Lidarr',
+        musicQuality: 'flac',
+        is4k: false,
+        isDefault: true,
+      },
+    ]);
+  });
+
   it('tests a Lidarr connection before the add form is complete', async () => {
     mock.method(LidarrAPI.prototype, 'getSystemStatus', async () => ({
       appName: 'Lidarr',

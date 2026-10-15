@@ -215,7 +215,11 @@ const isSupportedHandshake = (
 
 const providerFailureMessage = (
   provider: 'romarr' | 'questarr',
-  phase: 'integration handshake' | 'platform list',
+  phase:
+    | 'integration handshake'
+    | 'platform list'
+    | 'catalog platform list'
+    | 'DAT catalog platform list',
   error: unknown
 ): string => {
   const service = provider === 'romarr' ? 'ROMarrNG' : 'QuestarrNG';
@@ -473,8 +477,10 @@ softwareAcquisitionRoutes.post(
         .json({ error: 'Provider hostname and API key are required.' });
     }
 
-    let phase: 'integration handshake' | 'platform list' =
-      'integration handshake';
+    let phase:
+      | 'integration handshake'
+      | 'catalog platform list'
+      | 'DAT catalog platform list' = 'integration handshake';
     try {
       if (provider === 'romarr') {
         const api = new ROMarrNGAPI(parsed.value);
@@ -484,11 +490,16 @@ softwareAcquisitionRoutes.post(
             error: 'ROMarrNG returned an unsupported integration contract.',
           });
         }
-        phase = 'platform list';
-        const platforms = await api.getPlatforms(true);
-        const datCatalog = handshake.capabilities?.datCatalog
-          ? await api.getDatCatalogPlatforms()
-          : undefined;
+        if (handshake.capabilities?.catalog) {
+          phase = 'catalog platform list';
+          await api.getCatalogPlatforms();
+        }
+        let datCatalog:
+          Awaited<ReturnType<typeof api.getDatCatalogPlatforms>> | undefined;
+        if (handshake.capabilities?.datCatalog) {
+          phase = 'DAT catalog platform list';
+          datCatalog = await api.getDatCatalogPlatforms();
+        }
         return res.status(200).json({
           success: true,
           service: 'ROMarrNG',
@@ -500,7 +511,6 @@ softwareAcquisitionRoutes.post(
           ...(handshake.capabilities
             ? { capabilities: handshake.capabilities }
             : {}),
-          platformCount: platforms.length,
           ...(datCatalog
             ? {
                 datCatalogPlatformCount: datCatalog.results.length,

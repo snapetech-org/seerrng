@@ -7845,6 +7845,18 @@
     text-align: left;
   }
 
+  .settings-form-row-compact-description {
+    row-gap: 0;
+  }
+
+  .settings-form-row-compact-description > label {
+    @apply text-sm leading-5 font-semibold;
+  }
+
+  .settings-form-row-compact-description .settings-form-row-description {
+    @apply mt-[5px] text-xs leading-4;
+  }
+
   .settings-form-label-line {
     @apply inline-flex flex-wrap items-center gap-[5px];
   }

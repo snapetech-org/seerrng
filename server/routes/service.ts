@@ -14,6 +14,7 @@ import type {
   ServiceCommonServerWithDetails,
 } from '@server/interfaces/api/serviceInterfaces';
 import { getExternalRuntimeConfig } from '@server/lib/externalRuntimeConfig';
+import { getMusicQualityFromLabels } from '@server/lib/musicQuality';
 import { Permission } from '@server/lib/permissions';
 import { runWithCurrentServarrService } from '@server/lib/serviceAdmission';
 import {
@@ -133,6 +134,7 @@ const filterServiceServer = (
   return {
     id: server.id,
     name: server.name,
+    musicQuality: server.musicQuality,
     is4k: server.is4k,
     isAlt: server.isAlt,
     isDefault: server.isDefault,
@@ -352,6 +354,10 @@ serviceRoutes.get('/lidarr', async (req, res, next) => {
             {
               id: lidarr.id,
               name: lidarr.name,
+              musicQuality: getMusicQualityFromLabels(
+                lidarr.activeProfileName,
+                lidarr.name
+              ),
               is4k: lidarr.is4k,
               isDefault: lidarr.isDefault,
               activeDirectory: lidarr.activeDirectory,
