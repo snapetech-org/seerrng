@@ -7333,6 +7333,26 @@ describe('POST /request/:requestId/retry', () => {
     );
   });
 
+  it('rejects retrying a request whose season numbering does not match', async () => {
+    const failed = await seedRequest(MediaRequestStatus.FAILED);
+    await getRepository(MediaRequest).update(failed.id, {
+      failureReason: MediaRequestFailureReason.TVDB_SEASON_MISMATCH,
+    });
+    const admin = await loginAs('admin@seerr.dev', 'test1234');
+
+    const res = await admin.post(`/request/${failed.id}/retry`);
+
+    assert.strictEqual(res.status, 409);
+    const persisted = await getRepository(MediaRequest).findOneByOrFail({
+      id: failed.id,
+    });
+    assert.strictEqual(persisted.status, MediaRequestStatus.FAILED);
+    assert.strictEqual(
+      persisted.failureReason,
+      MediaRequestFailureReason.TVDB_SEASON_MISMATCH
+    );
+  });
+
   it('requeues an unavailable approved request for another search', async () => {
     const pending = await seedRequest(MediaRequestStatus.APPROVED);
     await recordRequestStatusOverride(

@@ -5,6 +5,7 @@ import SonarrAPI from '@server/api/servarr/sonarr';
 import SportarrAPI from '@server/api/servarr/sportarr';
 import TheMovieDb from '@server/api/themoviedb';
 import {
+  MediaRequestFailureReason,
   MediaRequestStatus,
   MediaStatus,
   MediaType,
@@ -4633,6 +4634,17 @@ requestRoutes.post<{
                 status: 409,
                 message:
                   'This request cannot be retried from its current state.',
+              });
+            }
+
+            if (
+              request.failureReason ===
+              MediaRequestFailureReason.TVDB_SEASON_MISMATCH
+            ) {
+              return next({
+                status: 409,
+                message:
+                  'This request cannot be retried until a listing with matching season numbers is selected.',
               });
             }
 
