@@ -321,7 +321,10 @@ const ArtistDetails = () => {
                     <li key={`release-${album.id}`}>
                       <TitleCard
                         id={album.id}
-                        title={album.title ?? intl.formatMessage(messages.unknownalbum)}
+                        title={
+                          album.title ??
+                          intl.formatMessage(messages.unknownalbum)
+                        }
                         year={album['first-release-date']}
                         image={album.posterPath ?? undefined}
                         mediaType="album"
