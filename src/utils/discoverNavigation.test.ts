@@ -201,3 +201,90 @@ describe('Discover detail navigation context', () => {
     );
   });
 });
+
+describe('Discover detail navigation bounds', () => {
+  it('keeps a window around the clicked item when a list exceeds the stored limit', () => {
+    const storage = new MemoryStorage();
+    const contextId = 'discover_context_10';
+    const longList: DiscoverNavigationItem[] = Array.from(
+      { length: 6000 },
+      (_, index) => ({ id: index + 1, mediaType: 'movie' as const })
+    );
+    const clicked = longList[5500];
+
+    assert.equal(
+      storeDiscoverNavigationContext(
+        contextId,
+        longList,
+        clicked,
+        storage as unknown as Storage
+      ),
+      true
+    );
+    assert.deepEqual(
+      getDiscoverNavigationState(
+        contextId,
+        clicked,
+        storage as unknown as Storage
+      ),
+      { previous: longList[5499], next: longList[5501] }
+    );
+    const stored = JSON.parse(
+      storage.getItem(`seerrng:discover-navigation:${contextId}`) ?? '{}'
+    ) as { items: DiscoverNavigationItem[] };
+    assert.equal(stored.items.length, 5000);
+  });
+
+  it('ignores duplicate entries', () => {
+    const storage = new MemoryStorage();
+    const contextId = 'discover_context_11';
+    const duplicated: DiscoverNavigationItem[] = [
+      { id: 1, mediaType: 'movie' },
+      { id: 1, mediaType: 'movie' },
+      { id: 2, mediaType: 'movie' },
+    ];
+
+    assert.equal(
+      storeDiscoverNavigationContext(
+        contextId,
+        duplicated,
+        duplicated[0],
+        storage as unknown as Storage
+      ),
+      true
+    );
+    assert.deepEqual(
+      getDiscoverNavigationState(
+        contextId,
+        duplicated[0],
+        storage as unknown as Storage
+      ),
+      { next: { id: 2, mediaType: 'movie' } }
+    );
+  });
+
+  it('evicts the oldest contexts beyond the stored context limit', () => {
+    const storage = new MemoryStorage();
+    for (let index = 0; index < 20; index += 1) {
+      assert.equal(
+        storeDiscoverNavigationContext(
+          `discover_context_${String(index).padStart(2, '0')}`,
+          items,
+          items[0],
+          storage as unknown as Storage
+        ),
+        true
+      );
+    }
+
+    assert.ok(storage.length <= 12);
+    assert.notEqual(
+      getDiscoverNavigationState(
+        'discover_context_19',
+        items[0],
+        storage as unknown as Storage
+      ),
+      undefined
+    );
+  });
+});

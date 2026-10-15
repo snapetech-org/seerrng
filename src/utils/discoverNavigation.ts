@@ -201,17 +201,29 @@ export const storeDiscoverNavigationContext = (
     normalizedItems.push({ id: item.id, mediaType: item.mediaType });
   }
 
-  if (
-    normalizedItems.length === 0 ||
-    normalizedItems.length > MAX_CONTEXT_ITEMS ||
-    !normalizedItems.some((item) => sameItem(item, currentItem))
-  ) {
+  const currentIndex = normalizedItems.findIndex((item) =>
+    sameItem(item, currentItem)
+  );
+  if (normalizedItems.length === 0 || currentIndex === -1) {
     return false;
   }
 
+  // Long infinite-scroll lists keep a window around the opened item.
+  const windowStart =
+    normalizedItems.length > MAX_CONTEXT_ITEMS
+      ? Math.min(
+          Math.max(0, currentIndex - Math.floor(MAX_CONTEXT_ITEMS / 2)),
+          normalizedItems.length - MAX_CONTEXT_ITEMS
+        )
+      : 0;
+  const storedItems = normalizedItems.slice(
+    windowStart,
+    windowStart + MAX_CONTEXT_ITEMS
+  );
+
   const stored = writeStoredRecord(storage, getStorageKey(contextId), {
     version: 1,
-    items: normalizedItems,
+    items: storedItems,
     lastUsedAt: Date.now(),
   });
 
