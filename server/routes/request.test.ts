@@ -2336,6 +2336,37 @@ describe('GET /request', () => {
     assert.ok(Array.isArray(res.body.results));
   });
 
+  it('orders the request list by creation time rather than id', async () => {
+    const newer = await seedRequest(
+      MediaRequestStatus.PENDING,
+      new Date('2025-06-01T00:00:00.000Z'),
+      710001
+    );
+    const older = await seedRequest(
+      MediaRequestStatus.PENDING,
+      new Date('2025-01-01T00:00:00.000Z'),
+      710002
+    );
+    assert.ok(older.id > newer.id);
+
+    const agent = await loginAs('admin@seerr.dev', 'test1234');
+    const res = await agent.get('/request').query({
+      filter: 'pending',
+      mediaType: 'all',
+      take: 50,
+      sort: 'added',
+      sortDirection: 'desc',
+      skip: 0,
+    });
+
+    assert.strictEqual(res.status, 200);
+    const ids: number[] = res.body.results.map(
+      (item: { id: number }) => item.id
+    );
+    assert.ok(ids.indexOf(newer.id) !== -1 && ids.indexOf(older.id) !== -1);
+    assert.ok(ids.indexOf(newer.id) < ids.indexOf(older.id));
+  });
+
   it('accepts the recent requests slider query', async () => {
     const deletedRequest = await seedRequest(
       MediaRequestStatus.COMPLETED,

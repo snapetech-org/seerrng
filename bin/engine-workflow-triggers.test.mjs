@@ -106,6 +106,21 @@ test('image publishing and deployment require reconciled validation and a clean 
     );
 });
 
+test('Seerr deployment jobs target the restricted kspls0 runner with available labels', () => {
+  const jobs = ci.workflow.jobs;
+  const expectedRunner =
+    '{"group":"trusted-main","labels":["self-hosted","Linux","X64","host","kspls0","linux-build"]}';
+
+  for (const jobId of ['preflight-deploy', 'deploy-main']) {
+    assert.match(
+      jobs[jobId]['runs-on'],
+      /TRUSTED_MAIN_RUNNERS_ENABLED == 'true'/
+    );
+    assert.ok(jobs[jobId]['runs-on'].includes(expectedRunner));
+    assert.doesNotMatch(jobs[jobId]['runs-on'], /"seerrng"/);
+  }
+});
+
 test('manual main runs execute the full validation plan before any privileged job', () => {
   const jobs = ci.workflow.jobs;
   for (const id of [
@@ -156,15 +171,17 @@ test('GitHub fans every independent validation job out from the engine plan', ()
   assert.match(jobs.playwright.if, /outputs\.playwright == 'true'/);
 });
 
-test('unit-test shards use the shared org pool only on main pushes and manual runs', () => {
+test('unit-test shards use kspls0 in the shared org pool only for main pushes and manual runs', () => {
   const runner = ci.workflow.jobs['unit-test']['runs-on'];
   const mainRunnerCondition =
     "((github.event_name == 'push' && github.ref == 'refs/heads/main') || " +
     "(github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main'))";
   const trustedRunnerJson =
-    '{"group":"trusted-main","labels":["self-hosted","Linux","X64","host"]}';
+    '{"group":"trusted-main","labels":["self-hosted","Linux","X64","host","kspls0"]}';
   const expectedRunner =
-    '$' + '{{ (' + mainRunnerCondition +
+    '$' +
+    '{{ (' +
+    mainRunnerCondition +
     " && vars.TRUSTED_MAIN_RUNNERS_ENABLED == 'true') && fromJSON('" +
     trustedRunnerJson +
     "') || 'ubuntu-latest' }}";
@@ -199,8 +216,8 @@ test('native workflow bodies are reused without duplicate PR or push launches', 
 test('hosted orchestration retains the original pinned native actions and commands', () => {
   const required = {
     codeql: [
-      'github/codeql-action/init@2892aa5e19bbd11bc0cff5427e3b750a04d9e3c2',
-      'github/codeql-action/analyze@2892aa5e19bbd11bc0cff5427e3b750a04d9e3c2',
+      'github/codeql-action/init@24c54180a607b1449ed407dd24f251e4e9147c8d',
+      'github/codeql-action/analyze@24c54180a607b1449ed407dd24f251e4e9147c8d',
       'queries: +security-and-quality',
       'snapetech/seerrng-codeql-models@0.0.15',
     ],
