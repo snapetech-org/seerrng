@@ -427,10 +427,10 @@ feature covers movies, series, and books.
 
 ## Phase 7: ReadMeABook and per-user book integration
 
-Status: merged in [PR #171](https://github.com/snapetech/seerrng/pull/171) as
+Status: merged in [PR #171](https://github.com/snapetech-org/seerrng/pull/171) as
 `800745e107b2d044045484e74d0f0686239a3e05` and included in the published
-`v3.54.0` release. The later current-main candidate for [PR #180](https://github.com/snapetech/seerrng/pull/180), which retained this integration, passed its hosted validation run
-[`37858283340`](https://github.com/snapetech/seerrng/actions/runs/37858283340).
+`v3.54.0` release. The later current-main candidate for [PR #180](https://github.com/snapetech-org/seerrng/pull/180), which retained this integration, passed its hosted validation run
+[`37858283340`](https://github.com/snapetech-org/seerrng/actions/runs/37858283340).
 An earlier macOS ARM64 tooling failure remains a historical failed receipt;
 the later hosted candidate passed. No live ReadMeABook or Hardcover service
 round-trip, desktop/narrow visual review, or physical Swipe interaction review

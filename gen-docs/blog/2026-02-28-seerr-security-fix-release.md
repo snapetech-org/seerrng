@@ -3,7 +3,7 @@ title: "Seerr v3.1.0: Critical Security Release"
 description: "Seerr v3.1.0 addresses three CVEs, including a high-priority vulnerability affecting Plex-configured instances. Upgrade immediately."
 slug: seerr-3-1-0-security-release
 authors: [seerr-team]
-image: https://raw.githubusercontent.com/snapetech/seerrng/refs/heads/main/gen-docs/static/img/logo_full.svg
+image: https://raw.githubusercontent.com/snapetech-org/seerrng/refs/heads/main/gen-docs/static/img/logo_full.svg
 hide_table_of_contents: false
 ---
 
@@ -69,4 +69,4 @@ Many thanks to those making their first contribution to Seerr in this release:
 
 Now that the post-merger feature freeze has ended, the team is resuming active feature development. Stay tuned to our blog for upcoming releases and in-depth looks at what we're building next.
 
-In the meantime, please upgrade to **v3.1.0** right away, especially if you are using a Plex Media Server configuration. See our [migration guide](https://github.com/snapetech/seerrng/blob/main/docs/migration-guide.mdx) if you need help upgrading from Overseerr/Jellyseerr.
+In the meantime, please upgrade to **v3.1.0** right away, especially if you are using a Plex Media Server configuration. See our [migration guide](https://github.com/snapetech-org/seerrng/blob/main/docs/migration-guide.mdx) if you need help upgrading from Overseerr/Jellyseerr.

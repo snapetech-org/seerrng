@@ -1237,7 +1237,7 @@ Jellyfin/Sonarr APIs, not a live service.
 
 #### IMDb watchlist WAF report and latest-main sync — October 8, 2026
 
-Issue [#179](https://github.com/snapetech/seerrng/issues/179) followed #174:
+Issue [#179](https://github.com/snapetech-org/seerrng/issues/179) followed #174:
 the reporter's migrated public profile URL is accepted, but server-side sync
 receives an AWS WAF HTTP 202 browser challenge and reports that the public page
 was unavailable. The same URL is viewable in the reporter's browser, which does
@@ -1282,7 +1282,7 @@ ReadMeABook Phase 7 was merged in PR #171 as
 `800745e107b2d044045484e74d0f0686239a3e05` and shipped in the published
 `v3.54.0` release. PR #180's later current-main candidate retained these changes
 and passed hosted validation in run
-[`37858283340`](https://github.com/snapetech/seerrng/actions/runs/37858283340).
+[`37858283340`](https://github.com/snapetech-org/seerrng/actions/runs/37858283340).
 The earlier local macOS ARM64 tooling failure remains a historical failed
 receipt; the later hosted candidate passed. No live ReadMeABook or Hardcover
 round-trip, desktop/narrow visual review, or physical Swipe interaction review

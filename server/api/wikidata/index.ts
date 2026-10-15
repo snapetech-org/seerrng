@@ -66,7 +66,8 @@ class WikidataAPI extends ExternalAPI {
       {},
       {
         headers: {
-          'User-Agent': 'SeerrNG/0.1.0 (https://github.com/snapetech/seerrng)',
+          'User-Agent':
+            'SeerrNG/0.1.0 (https://github.com/snapetech-org/seerrng)',
           Accept: 'application/sparql-results+json',
         },
         nodeCache: cacheManager.getCache('wikidata').data,

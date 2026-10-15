@@ -48,8 +48,8 @@ Preview the rendered release text with `pnpm release-notes:preview` if useful.
 <!--- Go over all the following points, and put an `x` in all the boxes that apply. -->
 <!--- If you're unsure about any of these, don't hesitate to ask. We're here to help! -->
 
-- [ ] I have read and followed the contribution [guidelines](https://github.com/snapetech/seerrng/blob/main/CONTRIBUTING.md).
-- [ ] Disclosed any use of AI (see our [policy](https://github.com/snapetech/seerrng/blob/main/CONTRIBUTING.md#ai-assistance-notice))
+- [ ] I have read and followed the contribution [guidelines](https://github.com/snapetech-org/seerrng/blob/main/CONTRIBUTING.md).
+- [ ] Disclosed any use of AI (see our [policy](https://github.com/snapetech-org/seerrng/blob/main/CONTRIBUTING.md#ai-assistance-notice))
 - [ ] I have updated the documentation accordingly.
 - [ ] All new and existing tests passed.
 - [ ] Successful build `pnpm build`

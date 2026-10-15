@@ -32,7 +32,7 @@ const validationScript = workflow.jobs.publish.steps.find(
 
 const expectedHeadOid = 'a'.repeat(40);
 const headBranch = 'renovate/workflow-boundary-fixture';
-const headRepository = 'snapetech/seerrng';
+const headRepository = 'snapetech-org/seerrng';
 
 const validManifest = () => ({
   expectedHeadOid,

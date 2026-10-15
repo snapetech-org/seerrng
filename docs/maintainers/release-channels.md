@@ -52,7 +52,7 @@ this when a post-tag publishing step fails; it checks out the requested tag,
 reuses its changelog and image version, and does not move the tag:
 
 ```bash
-gh workflow run release.yml --repo snapetech/seerrng --ref main -f tag=v3.12.8
+gh workflow run release.yml --repo snapetech-org/seerrng --ref main -f tag=v3.12.8
 ```
 
 The tag must already point to a commit contained in `main`. After dispatching,
@@ -74,7 +74,7 @@ database, settings, and logs under `%ProgramData%\SeerrNG\config`; package
 removal preserves this directory. The release workflow submits each stable
 package to Chocolatey Community Repository moderation and requires the
 `CHOCOLATEY_API_KEY` repository secret. This is a required release gate; set
-the secret with `gh secret set CHOCOLATEY_API_KEY --repo snapetech/seerrng`.
+the secret with `gh secret set CHOCOLATEY_API_KEY --repo snapetech-org/seerrng`.
 Use the **Publish Chocolatey** workflow to submit or retry a stable tag created
 from a commit that includes `packaging/chocolatey` and its Windows release
 archive.
@@ -88,7 +88,7 @@ pulls and starts a new image.
 
 The authoritative live deployment path is GitHub Actions:
 
-1. Push the desired commit to `snapetech/seerrng` `main`.
+1. Push the desired commit to `snapetech-org/seerrng` `main`.
 2. Wait for `.github/workflows/ci.yml` (`SeerrNG CI`) to build and push
    `ghcr.io/snapetech/seerrng:main`.
 3. Wait for the `Deploy main to seerr.home` job to pass. That job pulls the
@@ -165,7 +165,7 @@ The current exported credential is also stored in OpenBao at
 Generate a `seerrng`-scoped credential with:
 
 ```bash
-/snap/bin/snapcraft export-login --snaps seerrng --acls package_upload,package_release --expires 2026-06-13T00:00:00Z - | gh secret set SNAPCRAFT_STORE_CREDENTIALS --repo snapetech/seerrng
+/snap/bin/snapcraft export-login --snaps seerrng --acls package_upload,package_release --expires 2026-06-13T00:00:00Z - | gh secret set SNAPCRAFT_STORE_CREDENTIALS --repo snapetech-org/seerrng
 ```
 
 Do not write exported Snapcraft credentials into tracked files.
