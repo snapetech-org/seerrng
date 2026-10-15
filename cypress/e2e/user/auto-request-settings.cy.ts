@@ -71,19 +71,26 @@ describe('Auto Request Settings', () => {
   });
 
   it('should see auto-request settings after being given permission', () => {
-    cy.env<{ USER_EMAIL: string }>(['USER_EMAIL']).then(({ USER_EMAIL }) => {
+    cy.env<{ ADMIN_EMAIL: string; USER_EMAIL: string }>([
+      'ADMIN_EMAIL',
+      'USER_EMAIL',
+    ]).then(({ ADMIN_EMAIL, USER_EMAIL }) => {
       return cy
         .request<{ results: { id: number; email: string }[] }>(
           '/api/v1/user?take=100'
         )
         .then(({ body }) => {
-          const user = body.results.find(
-            (result) => result.email === USER_EMAIL
-          );
+          const user =
+            body.results.find(
+              (result) => result.email === USER_EMAIL && result.id !== 1
+            ) ??
+            body.results.find(
+              (result) => result.email === ADMIN_EMAIL && result.id !== 1
+            );
 
           if (!user) {
             throw new Error(
-              `Could not find the seeded Plex user ${USER_EMAIL}`
+              `Could not find the seeded Plex user ${USER_EMAIL} or ${ADMIN_EMAIL}`
             );
           }
 

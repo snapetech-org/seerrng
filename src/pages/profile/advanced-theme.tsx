@@ -25,6 +25,7 @@ const messages = defineMessages('pages.profile.advancedTheme', {
   syntaxHelp:
     'Use #RGB or #RRGGBB for colors. Spotlight strength accepts 0 through 1, gradient stop accepts a percentage, and divider shadow accepts a listed value.',
   supportedTokens: 'Supported tokens',
+  dividerShadowValues: 'Divider shadow values:',
   presetMetadataHelp:
     'Keep "preset": "john-redesign" in this JSON to retain the built-in preset’s shared control styling.',
   save: 'Save overrides',
@@ -234,10 +235,10 @@ const AdvancedThemePage = () => {
               {intl.formatMessage(messages.presetMetadataHelp)}
             </p>
             <p className="mt-3 text-xs text-gray-400">
-              Divider shadow values: <code>none</code>,{' '}
-              <code>0 0 4px 0 rgb(255 255 255 / 0.8)</code>,{' '}
+              {intl.formatMessage(messages.dividerShadowValues)}{' '}
+              <code>none</code>, <code>0 0 4px 0 rgb(255 255 255 / 0.8)</code>,{' '}
               <code>0 0 4px 0 rgb(0 0 0 / 0.45)</code>,{' '}
-              <code>0 0 8px 0 rgb(255 255 255 / 0.35)</code>, or{' '}
+              <code>0 0 8px 0 rgb(255 255 255 / 0.35)</code>,{' '}
               <code>0 0 8px 0 rgb(0 0 0 / 0.65)</code>.
             </p>
           </details>
