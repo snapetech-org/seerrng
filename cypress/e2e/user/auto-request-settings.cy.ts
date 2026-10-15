@@ -7,49 +7,20 @@ const visitUserEditPage = (email: string): void => {
 };
 
 describe('Auto Request Settings', () => {
-  let fixtureUserId: number | null = null;
-  let originalPermissions: number | null = null;
-  let originalUserSettings: {
-    watchlistSyncMovies?: boolean | null;
-    watchlistSyncTv?: boolean | null;
-    watchlistSyncMusic?: boolean | null;
-    watchlistSyncBooks?: boolean | null;
-    watchlistSyncComics?: boolean | null;
-    watchlistSyncMagazines?: boolean | null;
-  } | null = null;
+  let temporaryUserId: number | null = null;
 
   beforeEach(() => {
     cy.loginAsAdmin();
   });
 
   afterEach(() => {
-    if (fixtureUserId === null || originalPermissions === null) return;
-    const userId = fixtureUserId;
-    const permissions = originalPermissions;
-    const userSettings = originalUserSettings;
-    fixtureUserId = null;
-    originalPermissions = null;
-    originalUserSettings = null;
+    if (temporaryUserId === null) return;
+    const userId = temporaryUserId;
+    temporaryUserId = null;
     return cy
-      .request('POST', `/api/v1/user/${userId}/settings/permissions`, {
-        permissions,
-      })
+      .request('DELETE', `/api/v1/user/${userId}`)
       .its('status')
-      .should('eq', 200)
-      .then(() => {
-        if (userSettings === null) return;
-        return cy
-          .request('POST', `/api/v1/user/${userId}/settings/main`, {
-            watchlistSyncMovies: userSettings.watchlistSyncMovies ?? null,
-            watchlistSyncTv: userSettings.watchlistSyncTv ?? null,
-            watchlistSyncMusic: userSettings.watchlistSyncMusic ?? null,
-            watchlistSyncBooks: userSettings.watchlistSyncBooks ?? null,
-            watchlistSyncComics: userSettings.watchlistSyncComics ?? null,
-            watchlistSyncMagazines: userSettings.watchlistSyncMagazines ?? null,
-          })
-          .its('status')
-          .should('eq', 200);
-      });
+      .should('eq', 200);
   });
 
   it('should not see watchlist sync settings on an account without permissions', () => {
@@ -71,74 +42,29 @@ describe('Auto Request Settings', () => {
   });
 
   it('should see auto-request settings after being given permission', () => {
-    cy.env<{ USER_EMAIL: string }>(['USER_EMAIL']).then(({ USER_EMAIL }) => {
+    const testEmail = `auto-request-settings-${Date.now()}-${Cypress._.random(1, 999999)}@seerr.dev`;
+
+    cy.request<{ id: number }>('POST', '/api/v1/user', {
+      email: testEmail,
+      password: 'test1234',
+      username: 'Auto Request Settings Test',
+    }).then(({ body: user }) => {
+      temporaryUserId = user.id;
+      cy.intercept('GET', `/api/v1/user/${user.id}`).as('fixtureUser');
+      cy.intercept('GET', `/api/v1/user/${user.id}/settings/permissions`).as(
+        'fixturePermissions'
+      );
+
       return cy
-        .request<{ results: { id: number; email: string }[] }>(
-          '/api/v1/user?take=100'
-        )
-        .then(({ body }) => {
-          const user = body.results.find(
-            (result) => result.email === USER_EMAIL
-          );
-
-          if (!user) {
-            throw new Error(
-              `Could not find the seeded Plex user ${USER_EMAIL}`
-            );
-          }
-
-          return cy
-            .request<{ permissions: number }>(
-              `/api/v1/user/${user.id}/settings/permissions`
-            )
-            .then(({ body: permissionData }) => {
-              return cy
-                .request<{
-                  watchlistSyncMovies?: boolean | null;
-                  watchlistSyncTv?: boolean | null;
-                  watchlistSyncMusic?: boolean | null;
-                  watchlistSyncBooks?: boolean | null;
-                  watchlistSyncComics?: boolean | null;
-                  watchlistSyncMagazines?: boolean | null;
-                }>(`/api/v1/user/${user.id}/settings/main`)
-                .then(({ body: settings }) => {
-                  fixtureUserId = user.id;
-                  originalPermissions = permissionData.permissions;
-                  originalUserSettings = {
-                    watchlistSyncMovies: settings.watchlistSyncMovies,
-                    watchlistSyncTv: settings.watchlistSyncTv,
-                    watchlistSyncMusic: settings.watchlistSyncMusic,
-                    watchlistSyncBooks: settings.watchlistSyncBooks,
-                    watchlistSyncComics: settings.watchlistSyncComics,
-                    watchlistSyncMagazines: settings.watchlistSyncMagazines,
-                  };
-                  cy.intercept('GET', `/api/v1/user/${user.id}`).as(
-                    'fixtureUser'
-                  );
-                  cy.intercept(
-                    'GET',
-                    `/api/v1/user/${user.id}/settings/permissions`
-                  ).as('fixturePermissions');
-
-                  return cy.request(
-                    'POST',
-                    `/api/v1/user/${user.id}/settings/permissions`,
-                    { permissions: BASIC_REQUEST_PERMISSION }
-                  );
-                });
-            })
-            .its('status')
-            .should('eq', 200)
-            .then(() => {
-              visitUserEditPage(USER_EMAIL);
-              cy.location('pathname').should(
-                'eq',
-                `/users/${user.id}/settings`
-              );
-              cy.wait('@fixtureUser')
-                .its('response.body.id')
-                .should('eq', user.id);
-            });
+        .request('POST', `/api/v1/user/${user.id}/settings/permissions`, {
+          permissions: BASIC_REQUEST_PERMISSION,
+        })
+        .its('status')
+        .should('eq', 200)
+        .then(() => {
+          visitUserEditPage(testEmail);
+          cy.location('pathname').should('eq', `/users/${user.id}/settings`);
+          cy.wait('@fixtureUser').its('response.body.id').should('eq', user.id);
         });
     });
 
