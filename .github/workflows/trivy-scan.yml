@@ -16,8 +16,8 @@ permissions:
   contents: read
 
 concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: true
+  group: ${{ github.workflow }}-${{ github.run_id }}-${{ github.run_attempt }}
+  cancel-in-progress: false
 
 env:
   GHCR_IMAGE: ghcr.io/snapetech/seerrng

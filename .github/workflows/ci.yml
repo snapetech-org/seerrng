@@ -25,8 +25,8 @@ env:
   GHCR_IMAGE: ghcr.io/snapetech/seerrng
 
 concurrency:
-  group: ${{ github.workflow }}-${{ github.event_name == 'pull_request' && github.event.pull_request.number || github.run_id }}
-  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+  group: ${{ github.workflow }}-${{ github.run_id }}-${{ github.run_attempt }}
+  cancel-in-progress: false
 
 jobs:
   engine-plan:
@@ -1014,7 +1014,7 @@ jobs:
       needs.engine-reconcile.result == 'success'
     concurrency:
       group: seerrng-main-image-publish
-      cancel-in-progress: true
+      cancel-in-progress: false
     runs-on:
       [self-hosted, seerrng, linux-build, linux-amd64, linux-arm64-cross]
     permissions:

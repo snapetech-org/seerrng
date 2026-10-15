@@ -25,8 +25,8 @@ permissions:
   contents: read
 
 concurrency:
-  group: helm-charts-${{ github.event.pull_request.number || github.ref }}
-  cancel-in-progress: true
+  group: helm-charts-${{ github.run_id }}-${{ github.run_attempt }}
+  cancel-in-progress: false
 
 jobs:
   lint-test:
