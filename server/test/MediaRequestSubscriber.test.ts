@@ -18,8 +18,8 @@ import type {
 import SonarrAPI from '@server/api/servarr/sonarr';
 import type { SportarrLeague } from '@server/api/servarr/sportarr';
 import SportarrAPI from '@server/api/servarr/sportarr';
-import Tvdb from '@server/api/tvdb';
 import { ANIME_KEYWORD_ID } from '@server/api/themoviedb/constants';
+import Tvdb from '@server/api/tvdb';
 import WikidataAPI from '@server/api/wikidata';
 import {
   MediaRequestFailureReason,
@@ -136,6 +136,8 @@ function configureFallbackSonarr() {
       overrideRule: [],
     },
   ];
+}
+
 function mockAnimeTvShow(tmdbId: number, tvdbId: number) {
   (
     mock.method as (
@@ -187,8 +189,8 @@ function makeSonarrSettings(
 
 async function createApprovedTvRequest(
   tmdbId: number,
-  seasonNumbers: number[]
-  tvdbId: number,
+  seasonNumbers: number[],
+  tvdbId?: number,
   options: { profileId?: number; serverId?: number } = {}
 ) {
   const requestedBy = await getRequester();
@@ -201,24 +203,29 @@ async function createApprovedTvRequest(
       status4k: MediaStatus.UNKNOWN,
     })
   );
-  const request = await getRepository(MediaRequest).save(
-    new MediaRequest({
-      type: MediaType.TV,
-      status: MediaRequestStatus.APPROVED,
-      media,
-      requestedBy,
-      is4k: false,
-      seasons: seasonNumbers.map(
-        (seasonNumber) =>
-          new SeasonRequest({
-            seasonNumber,
-            status: MediaRequestStatus.APPROVED,
-          })
-      ),
-    })
-  );
+  const request = new MediaRequest({
+    type: MediaType.TV,
+    status: MediaRequestStatus.APPROVED,
+    media,
+    requestedBy,
+    is4k: false,
+    seasons: seasonNumbers.map(
+      (seasonNumber) =>
+        new SeasonRequest({
+          seasonNumber,
+          status: MediaRequestStatus.APPROVED,
+        })
+    ),
+  });
+  if (options.profileId !== undefined) {
+    request.profileId = options.profileId;
+  }
+  if (options.serverId !== undefined) {
+    request.serverId = options.serverId;
+  }
+  const savedRequest = await getRepository(MediaRequest).save(request);
 
-  return { media, request };
+  return { media, request: savedRequest };
 }
 
 function stubTvdbShow(
@@ -252,27 +259,6 @@ function stubSonarrAddSeries() {
         titleSlug: 'test-show',
       }) as SonarrSeries
   );
-  const request = new MediaRequest({
-    type: MediaType.TV,
-    status: MediaRequestStatus.APPROVED,
-    media,
-    requestedBy,
-    is4k: false,
-    seasons: [
-      new SeasonRequest({
-        seasonNumber: 1,
-        status: MediaRequestStatus.APPROVED,
-      }),
-    ],
-  });
-  if (options.profileId !== undefined) {
-    request.profileId = options.profileId;
-  }
-  if (options.serverId !== undefined) {
-    request.serverId = options.serverId;
-  }
-
-  return getRepository(MediaRequest).save(request);
 }
 
 let startedBookSearches = 0;
@@ -1119,6 +1105,8 @@ describe('MediaRequestSubscriber service dispatch', () => {
       savedRequest.failureReason,
       'provider said an internal detail'
     );
+  });
+
   it('falls back to the selected Sonarr service default for a missing anime profile', async () => {
     const settings = getSettings();
     settings.sonarr = [
@@ -1154,7 +1142,7 @@ describe('MediaRequestSubscriber service dispatch', () => {
     );
     mock.method(MediaRequest, 'sendNotification', async () => undefined);
 
-    const request = await createApprovedTvRequest(7001, 17001, {
+    const { request } = await createApprovedTvRequest(7001, [1], 17001, {
       profileId: 8,
       serverId: 32,
     });
@@ -1192,7 +1180,9 @@ describe('MediaRequestSubscriber service dispatch', () => {
     );
     mock.method(MediaRequest, 'sendNotification', async () => undefined);
 
-    const request = await createApprovedTvRequest(7002, 17002);
+    const { request } = await createApprovedTvRequest(7002, [1], 17002, {
+      profileId: 8,
+    });
     await new MediaRequestSubscriber().sendToSonarr(request);
 
     assert.strictEqual(receivedOptions?.profileId, 7);
@@ -1222,7 +1212,9 @@ describe('MediaRequestSubscriber service dispatch', () => {
     );
     mock.method(MediaRequest, 'sendNotification', async () => undefined);
 
-    const request = await createApprovedTvRequest(7003, 17003);
+    const { request } = await createApprovedTvRequest(7003, [1], 17003, {
+      profileId: 8,
+    });
     await new MediaRequestSubscriber().sendToSonarr(request);
 
     assert.strictEqual(receivedOptions?.profileId, 8);
