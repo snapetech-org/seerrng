@@ -63,6 +63,7 @@
   "components.ArtistDetails.similarartists": "同様のアーティスト",
   "components.ArtistDetails.single": "シングル",
   "components.ArtistDetails.soundtrack": "サウンドトラック",
+  "components.ArtistDetails.unknownalbum": "不明なアルバム",
   "components.Association.AssociationDetailCard.author": "著者",
   "components.Association.AssociationDetailCard.country": "国",
   "components.Association.AssociationDetailCard.director": "監督",

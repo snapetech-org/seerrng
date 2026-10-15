@@ -63,6 +63,7 @@
   "components.ArtistDetails.similarartists": "Artistas similares",
   "components.ArtistDetails.single": "Single",
   "components.ArtistDetails.soundtrack": "Trilha sonora",
+  "components.ArtistDetails.unknownalbum": "Álbum desconhecido",
   "components.Association.AssociationDetailCard.author": "Autor",
   "components.Association.AssociationDetailCard.country": "País",
   "components.Association.AssociationDetailCard.director": "Diretor",

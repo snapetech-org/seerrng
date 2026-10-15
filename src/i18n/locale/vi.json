@@ -63,6 +63,7 @@
   "components.ArtistDetails.similarartists": "Nghệ sĩ tương tự",
   "components.ArtistDetails.single": "Đĩa đơn",
   "components.ArtistDetails.soundtrack": "Nhạc phim",
+  "components.ArtistDetails.unknownalbum": "Album không xác định",
   "components.Association.AssociationDetailCard.author": "Tác giả",
   "components.Association.AssociationDetailCard.country": "Quốc gia",
   "components.Association.AssociationDetailCard.director": "Đạo diễn",

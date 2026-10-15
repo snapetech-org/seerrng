@@ -63,6 +63,7 @@
   "components.ArtistDetails.similarartists": "类似艺术家",
   "components.ArtistDetails.single": "单曲",
   "components.ArtistDetails.soundtrack": "原声带",
+  "components.ArtistDetails.unknownalbum": "未知专辑",
   "components.Association.AssociationDetailCard.author": "作者",
   "components.Association.AssociationDetailCard.country": "国家",
   "components.Association.AssociationDetailCard.director": "导演",

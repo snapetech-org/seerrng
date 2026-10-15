@@ -63,6 +63,7 @@
   "components.ArtistDetails.similarartists": "Artistas similares",
   "components.ArtistDetails.single": "Sencillo",
   "components.ArtistDetails.soundtrack": "Banda sonora",
+  "components.ArtistDetails.unknownalbum": "Álbum desconocido",
   "components.Association.AssociationDetailCard.author": "Autor",
   "components.Association.AssociationDetailCard.country": "Música country",
   "components.Association.AssociationDetailCard.director": "Director",

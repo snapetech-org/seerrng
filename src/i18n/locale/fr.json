@@ -63,6 +63,7 @@
   "components.ArtistDetails.similarartists": "Artistes similaires",
   "components.ArtistDetails.single": "Single",
   "components.ArtistDetails.soundtrack": "Bande sonore",
+  "components.ArtistDetails.unknownalbum": "Album inconnu",
   "components.Association.AssociationDetailCard.author": "Auteur",
   "components.Association.AssociationDetailCard.country": "Pays",
   "components.Association.AssociationDetailCard.director": "Réalisateur",

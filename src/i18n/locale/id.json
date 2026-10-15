@@ -63,6 +63,7 @@
   "components.ArtistDetails.similarartists": "Artis Serupa",
   "components.ArtistDetails.single": "Singel",
   "components.ArtistDetails.soundtrack": "trek suara",
+  "components.ArtistDetails.unknownalbum": "Album tidak diketahui",
   "components.Association.AssociationDetailCard.author": "Penulis",
   "components.Association.AssociationDetailCard.country": "Musik country",
   "components.Association.AssociationDetailCard.director": "Sutradara",

@@ -32,6 +32,7 @@ const messages = defineMessages('components.ArtistDetails', {
   broadcast: 'Broadcast',
   demo: 'Demo',
   other: 'Other',
+  unknownalbum: 'Unknown Album',
   similarartists: 'Similar Artists',
   showall: 'Show All',
   showless: 'Show Less',
@@ -320,7 +321,7 @@ const ArtistDetails = () => {
                     <li key={`release-${album.id}`}>
                       <TitleCard
                         id={album.id}
-                        title={album.title ?? 'Unknown Album'}
+                        title={album.title ?? intl.formatMessage(messages.unknownalbum)}
                         year={album['first-release-date']}
                         image={album.posterPath ?? undefined}
                         mediaType="album"

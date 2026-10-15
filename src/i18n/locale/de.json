@@ -63,6 +63,7 @@
   "components.ArtistDetails.similarartists": "Ähnliche Künstler",
   "components.ArtistDetails.single": "Single",
   "components.ArtistDetails.soundtrack": "Soundtracks",
+  "components.ArtistDetails.unknownalbum": "Unbekanntes Album",
   "components.Association.AssociationDetailCard.author": "Autor",
   "components.Association.AssociationDetailCard.country": "Land",
   "components.Association.AssociationDetailCard.director": "Regisseur",

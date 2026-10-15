@@ -63,6 +63,7 @@
   "components.ArtistDetails.similarartists": "비슷한 아티스트",
   "components.ArtistDetails.single": "싱글",
   "components.ArtistDetails.soundtrack": "사운드 트랙",
+  "components.ArtistDetails.unknownalbum": "알 수 없는 앨범",
   "components.Association.AssociationDetailCard.author": "저자",
   "components.Association.AssociationDetailCard.country": "국가",
   "components.Association.AssociationDetailCard.director": "감독",
