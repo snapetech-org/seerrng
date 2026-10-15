@@ -194,7 +194,7 @@ describe('TVDB Integration', () => {
     );
 
     // Verify that episodes are displayed for Season 2
-    cy.get(`${SELECTORS.episodeList}[aria-label="Season 02 Episodes"]`)
+    cy.get(`${SELECTORS.episodeList}[aria-label="Season 02 episodes"]`)
       .should('be.visible')
       .within(() => {
         cy.contains('[data-tree-part="number"]', /^01$/).should('be.visible');
@@ -249,7 +249,7 @@ describe('TVDB Integration', () => {
       .click();
 
     // Verify specific episode exists
-    cy.get(`${SELECTORS.episodeList}[aria-label="Season 01 Episodes"]`)
+    cy.get(`${SELECTORS.episodeList}[aria-label="Season 01 episodes"]`)
       .should('be.visible')
       .contains('[data-tree-part="episode"]', 'Hang Men')
       .within(() => {
@@ -297,7 +297,7 @@ describe('TVDB Integration', () => {
 
     // select season 3 and verify it not visible
     cy.get(SELECTORS.season3).should('not.exist');
-    cy.get(`${SELECTORS.episodeList}[aria-label="Season 02 Episodes"]`).should(
+    cy.get(`${SELECTORS.episodeList}[aria-label="Season 02 episodes"]`).should(
       'be.visible'
     );
   });
