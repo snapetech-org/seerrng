@@ -73,6 +73,7 @@ interface StoredNotificationPayload {
   mediaUrl?: string;
   image?: string;
   message?: string;
+  availabilitySubscription?: boolean;
   extra?: { name: string; value: string }[];
   request?: StoredRequest;
   issue?: StoredIssue;
@@ -83,6 +84,11 @@ interface StoredNotificationPayload {
 
 export type NotificationOutboxIntent =
   | { kind: 'media-request'; requestId: number }
+  | {
+      kind: 'media-availability-subscription';
+      mediaId: number;
+      userId: number;
+    }
   | { kind: 'issue'; issueId: number; modifiedById?: number }
   | { kind: 'issue-comment'; commentId: number };
 
@@ -106,6 +112,13 @@ const parseStoredIntent = (value: unknown): NotificationOutboxIntent => {
     return {
       kind: intent.kind,
       requestId: ensurePositiveInteger(intent.requestId, 'request id'),
+    };
+  }
+  if (intent.kind === 'media-availability-subscription') {
+    return {
+      kind: intent.kind,
+      mediaId: ensurePositiveInteger(intent.mediaId, 'media id'),
+      userId: ensurePositiveInteger(intent.userId, 'user id'),
     };
   }
   if (intent.kind === 'issue') {
@@ -134,9 +147,11 @@ const validateIntentType = (
   const compatible =
     intent.kind === 'media-request'
       ? [2, 4, 8, 16, 64, 128, 4096].includes(type)
-      : intent.kind === 'issue'
-        ? [256, 1024, 2048].includes(type)
-        : type === 512;
+      : intent.kind === 'media-availability-subscription'
+        ? type === 8
+        : intent.kind === 'issue'
+          ? [256, 1024, 2048].includes(type)
+          : type === 512;
   if (!compatible) {
     throw new Error('Notification outbox intent type is incompatible.');
   }
@@ -185,6 +200,7 @@ const serializePayload = (payload: NotificationPayload): string => {
     mediaUrl: payload.mediaUrl,
     image: payload.image,
     message: payload.message,
+    availabilitySubscription: payload.availabilitySubscription,
     extra: payload.extra?.map(({ name, value }) => ({ name, value })),
     request: payload.request
       ? {
@@ -462,6 +478,7 @@ export const hydrateNotificationOutboxPayload = async (
     mediaUrl: stored.mediaUrl,
     image: stored.image,
     message: stored.message,
+    availabilitySubscription: stored.availabilitySubscription,
     extra: stored.extra,
     request: stored.request
       ? ({

@@ -4,12 +4,17 @@ import PlexTvAPI, {
   plexUserHasServerAccess,
 } from '@server/api/plextv';
 import TautulliAPI, { isTautulliNoDataError } from '@server/api/tautulli';
-import { MediaType } from '@server/constants/media';
+import {
+  MediaRequestStatus,
+  MediaStatus,
+  MediaType,
+} from '@server/constants/media';
 import { MediaServerType } from '@server/constants/server';
 import { UserType } from '@server/constants/user';
 import { USER_SETTINGS_LIMITS } from '@server/constants/userSettings';
 import dataSource, { getRepository } from '@server/datasource';
 import Media from '@server/entity/Media';
+import MediaAvailabilitySubscription from '@server/entity/MediaAvailabilitySubscription';
 import { MediaRequest } from '@server/entity/MediaRequest';
 import { User } from '@server/entity/User';
 import { UserPushSubscription } from '@server/entity/UserPushSubscription';
@@ -17,6 +22,7 @@ import { UserSettings } from '@server/entity/UserSettings';
 import type { WatchlistResponse } from '@server/interfaces/api/discoverInterfaces';
 import type {
   QuotaResponse,
+  UserAvailabilitySubscriptionResponse,
   UserBulkUpdateRequest,
   UserBulkUpdateSettings,
   UserRequestsResponse,
@@ -40,6 +46,7 @@ import {
   removeLocalAvatarFiles,
   storeLocalAvatar,
 } from '@server/lib/localAvatar';
+import { runMediaEntityMutation } from '@server/lib/mediaMutation';
 import { hydrateMediaRequestRelations } from '@server/lib/mediaRequestHydration';
 import {
   MediaServerUserAuthorityChangedError,
@@ -155,6 +162,7 @@ export const PUSH_SUBSCRIPTION_REGISTRATION_LIMIT = 30;
 const MAX_USER_AGENT_LENGTH = 512;
 const MAX_USER_ID_VALUE = 1_000_000_000;
 const MAX_WATCHLIST_PAGE = 500;
+const AVAILABILITY_SUBSCRIPTION_MEDIA_TYPES = [MediaType.MOVIE, MediaType.TV];
 const pushSubscriptionMutationLock = new AsyncLock();
 const pushSubscriptionRegistrationRateLimit = rateLimit({
   windowMs: 60 * 1000,
@@ -172,6 +180,65 @@ const localAvatarUploadRateLimit = rateLimit({
   keyGenerator: (req) =>
     req.user?.id ? `user:${req.user.id}` : getRateLimitKey(req),
 });
+const availabilitySubscriptionMutationRateLimit = rateLimit({
+  windowMs: 60 * 1000,
+  limit: 30,
+  standardHeaders: true,
+  legacyHeaders: false,
+  keyGenerator: (req) =>
+    req.user?.id ? `user:${req.user.id}` : getRateLimitKey(req),
+});
+
+const parseAvailabilitySubscriptionMediaType = (
+  value: unknown
+): MediaType.MOVIE | MediaType.TV | undefined =>
+  AVAILABILITY_SUBSCRIPTION_MEDIA_TYPES.includes(value as MediaType)
+    ? (value as MediaType.MOVIE | MediaType.TV)
+    : undefined;
+
+const getAvailabilitySubscriptionState = async (
+  userId: number,
+  mediaType: MediaType.MOVIE | MediaType.TV,
+  tmdbId: number
+): Promise<{
+  response: UserAvailabilitySubscriptionResponse;
+  mediaId?: number;
+}> => {
+  const media = await getRepository(Media).findOne({
+    where: { mediaType, tmdbId },
+    select: { id: true, status: true, status4k: true },
+  });
+
+  if (!media) {
+    return { response: { subscribed: false, canSubscribe: false } };
+  }
+
+  const [subscription, otherActiveRequest] = await Promise.all([
+    getRepository(MediaAvailabilitySubscription).findOneBy({
+      media: { id: media.id },
+      user: { id: userId },
+    }),
+    getRepository(MediaRequest).exists({
+      where: {
+        media: { id: media.id },
+        requestedBy: { id: Not(userId) },
+        status: In([MediaRequestStatus.PENDING, MediaRequestStatus.APPROVED]),
+      },
+    }),
+  ]);
+
+  const alreadyAvailable =
+    media.status === MediaStatus.AVAILABLE ||
+    media.status4k === MediaStatus.AVAILABLE;
+
+  return {
+    mediaId: media.id,
+    response: {
+      subscribed: Boolean(subscription),
+      canSubscribe: otherActiveRequest && !alreadyAvailable,
+    },
+  };
+};
 
 export const runPushSubscriptionMutation = <T>(
   userId: number,
@@ -1472,6 +1539,179 @@ router.get<{ jellyfinUserId: string }>(
 );
 
 router.use('/:id/settings', userSettingsRoutes);
+
+router.get<
+  { id: string; mediaType: string; tmdbId: string },
+  UserAvailabilitySubscriptionResponse
+>(
+  '/:id/availability-subscriptions/:mediaType/:tmdbId',
+  isAuthenticated(),
+  isOwnProfile(),
+  async (req, res, next) => {
+    const userId = parseUserRouteId(req.params.id);
+    const mediaType = parseAvailabilitySubscriptionMediaType(
+      req.params.mediaType
+    );
+    const tmdbId = parsePositiveRouteId(req.params.tmdbId, MAX_USER_ID_VALUE);
+    if (!userId || !mediaType || !tmdbId) {
+      return next({ status: 404, message: 'Media not found.' });
+    }
+
+    try {
+      const { response } = await getAvailabilitySubscriptionState(
+        userId,
+        mediaType,
+        tmdbId
+      );
+      return res.status(200).json(response);
+    } catch (error) {
+      logger.error('Failed to load media availability subscription state', {
+        label: 'Media Availability Subscription',
+        mediaType,
+        tmdbId,
+        errorMessage: error instanceof Error ? error.message : 'Unknown error',
+      });
+      return next({
+        status: 500,
+        message: 'Unable to load availability notification settings.',
+      });
+    }
+  }
+);
+
+router.post(
+  '/:id/availability-subscriptions/:mediaType/:tmdbId',
+  isAuthenticated(),
+  isOwnProfile(),
+  availabilitySubscriptionMutationRateLimit,
+  async (req, res, next) => {
+    const userId = parseUserRouteId(req.params.id);
+    const mediaType = parseAvailabilitySubscriptionMediaType(
+      req.params.mediaType
+    );
+    const tmdbId = parsePositiveRouteId(req.params.tmdbId, MAX_USER_ID_VALUE);
+    if (!userId || !mediaType || !tmdbId) {
+      return next({ status: 404, message: 'Media not found.' });
+    }
+
+    try {
+      const accepted = await runUserSecurityMutation(userId, async () => {
+        const media = await getRepository(Media).findOne({
+          where: { mediaType, tmdbId },
+          relations: { identifiers: true },
+        });
+        if (!media) {
+          return false;
+        }
+
+        return runMediaEntityMutation(media, async () => {
+          const state = await getAvailabilitySubscriptionState(
+            userId,
+            mediaType,
+            tmdbId
+          );
+          if (state.response.subscribed) {
+            return true;
+          }
+          if (!state.response.canSubscribe || !state.mediaId) {
+            return false;
+          }
+
+          try {
+            await getRepository(MediaAvailabilitySubscription).insert({
+              user: { id: userId },
+              media: { id: state.mediaId },
+            });
+          } catch (error) {
+            if (!isUniqueConstraintError(error)) {
+              throw error;
+            }
+          }
+
+          return true;
+        });
+      });
+
+      if (!accepted) {
+        return next({
+          status: 409,
+          message:
+            'This title no longer has an active request from another user.',
+        });
+      }
+
+      const { response } = await getAvailabilitySubscriptionState(
+        userId,
+        mediaType,
+        tmdbId
+      );
+      return res.status(200).json(response);
+    } catch (error) {
+      logger.error('Failed to subscribe to media availability notification', {
+        label: 'Media Availability Subscription',
+        userId,
+        mediaType,
+        tmdbId,
+        errorMessage: error instanceof Error ? error.message : 'Unknown error',
+      });
+      return next({
+        status: 500,
+        message: 'Unable to enable availability notifications.',
+      });
+    }
+  }
+);
+
+router.delete(
+  '/:id/availability-subscriptions/:mediaType/:tmdbId',
+  isAuthenticated(),
+  isOwnProfile(),
+  availabilitySubscriptionMutationRateLimit,
+  async (req, res, next) => {
+    const userId = parseUserRouteId(req.params.id);
+    const mediaType = parseAvailabilitySubscriptionMediaType(
+      req.params.mediaType
+    );
+    const tmdbId = parsePositiveRouteId(req.params.tmdbId, MAX_USER_ID_VALUE);
+    if (!userId || !mediaType || !tmdbId) {
+      return next({ status: 404, message: 'Media not found.' });
+    }
+
+    try {
+      await runUserSecurityMutation(userId, async () => {
+        const media = await getRepository(Media).findOne({
+          where: { mediaType, tmdbId },
+          relations: { identifiers: true },
+        });
+        if (media) {
+          await runMediaEntityMutation(media, async () => {
+            await getRepository(MediaAvailabilitySubscription).delete({
+              user: { id: userId },
+              media: { id: media.id },
+            });
+          });
+        }
+      });
+      return res.status(204).send();
+    } catch (error) {
+      logger.error(
+        'Failed to unsubscribe from media availability notification',
+        {
+          label: 'Media Availability Subscription',
+          userId,
+          mediaType,
+          tmdbId,
+          errorMessage:
+            error instanceof Error ? error.message : 'Unknown error',
+        }
+      );
+      return next({
+        status: 500,
+        message: 'Unable to disable availability notifications.',
+      });
+    }
+  }
+);
 
 router.get<{ id: string }, UserRequestsResponse>(
   '/:id/requests',

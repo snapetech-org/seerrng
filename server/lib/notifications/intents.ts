@@ -352,6 +352,49 @@ const hydrateMediaRequestIntent = async (
   return buildMediaRequestNotificationPayload(request, request.media, type);
 };
 
+const hydrateMediaAvailabilitySubscriptionIntent = async (
+  type: Notification,
+  mediaId: number,
+  userId: number
+): Promise<NotificationPayload | undefined> => {
+  if (type !== Notification.MEDIA_AVAILABLE) {
+    return undefined;
+  }
+
+  const [media, user] = await Promise.all([
+    getRepository(Media).findOne({
+      where: { id: mediaId },
+      relations: { identifiers: true, searchMetadata: true },
+    }),
+    getRepository(User).findOne({
+      where: { id: userId },
+      relations: { settings: true },
+    }),
+  ]);
+  if (
+    !media ||
+    !user ||
+    ![MediaType.MOVIE, MediaType.TV].includes(media.mediaType)
+  ) {
+    return undefined;
+  }
+
+  const { title, image } = await getMediaDetails(media);
+  const mediaType = media.mediaType === MediaType.MOVIE ? 'Movie' : 'Series';
+
+  return {
+    event: `${mediaType} Now Available`,
+    subject: title,
+    notifySystem: false,
+    notifyAdmin: false,
+    notifyUser: user,
+    media,
+    mediaUrl: `/${media.mediaType}/${media.tmdbId}`,
+    image,
+    availabilitySubscription: true,
+  };
+};
+
 const hydrateIssueIntent = async (
   type: Notification,
   issueId: number,
@@ -465,6 +508,12 @@ export const hydrateNotificationIntent = (
   switch (intent.kind) {
     case 'media-request':
       return hydrateMediaRequestIntent(type, intent.requestId);
+    case 'media-availability-subscription':
+      return hydrateMediaAvailabilitySubscriptionIntent(
+        type,
+        intent.mediaId,
+        intent.userId
+      );
     case 'issue':
       return hydrateIssueIntent(type, intent.issueId, intent.modifiedById);
     case 'issue-comment':

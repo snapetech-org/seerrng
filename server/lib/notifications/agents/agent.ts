@@ -25,6 +25,7 @@ export interface NotificationPayload {
   mediaUrl?: string;
   image?: string;
   message?: string;
+  availabilitySubscription?: boolean;
   extra?: { name: string; value: string }[];
   request?: MediaRequest;
   issue?: Issue;

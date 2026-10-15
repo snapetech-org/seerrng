@@ -17,6 +17,68 @@ describe('Movie Details', () => {
     );
   });
 
+  it('lets a signed-in user follow and unfollow availability at desktop and narrow widths', () => {
+    cy.loginAsAdmin();
+    let following = false;
+    const subscriptionPath =
+      '/api/v1/user/1/availability-subscriptions/movie/438148';
+    cy.intercept('GET', subscriptionPath, (request) => {
+      request.reply({
+        body: { subscribed: following, canSubscribe: true },
+      });
+    }).as('availabilitySubscriptionState');
+    cy.intercept('POST', subscriptionPath, (request) => {
+      following = true;
+      request.reply({
+        body: { subscribed: true, canSubscribe: true },
+      });
+    }).as('followAvailability');
+    cy.intercept('DELETE', subscriptionPath, (request) => {
+      following = false;
+      request.reply({ statusCode: 204 });
+    }).as('unfollowAvailability');
+    cy.viewport(1440, 900);
+    openTitleDetailsFromSearch({
+      id: 438148,
+      mediaType: 'movie',
+      title: 'Minions: The Rise of Gru',
+      date: '2022-06-29',
+    });
+
+    cy.wait('@availabilitySubscriptionState');
+    cy.get('button[aria-label="Notify Me When Available"]')
+      .should('be.visible')
+      .and('have.attr', 'aria-pressed', 'false')
+      .then(($button) => {
+        const bounds = $button[0].getBoundingClientRect();
+        expect(bounds.left).to.be.greaterThan(0);
+        expect(bounds.right).to.be.lessThan(1440);
+      });
+    cy.screenshot('media-availability-subscription-desktop');
+
+    cy.viewport(390, 844);
+    cy.get('button[aria-label="Notify Me When Available"]')
+      .should('be.visible')
+      .then(($button) => {
+        const bounds = $button[0].getBoundingClientRect();
+        expect(bounds.left).to.be.greaterThan(0);
+        expect(bounds.right).to.be.lessThan(390);
+      });
+    cy.screenshot('media-availability-subscription-narrow');
+
+    cy.get('button[aria-label="Notify Me When Available"]').click();
+    cy.wait('@followAvailability');
+    cy.get('button[aria-label="Stop Availability Notifications"]')
+      .should('be.visible')
+      .and('have.attr', 'aria-pressed', 'true');
+
+    cy.get('button[aria-label="Stop Availability Notifications"]').click();
+    cy.wait('@unfollowAvailability');
+    cy.get('button[aria-label="Notify Me When Available"]')
+      .should('be.visible')
+      .and('have.attr', 'aria-pressed', 'false');
+  });
+
   it('shows standard and 4K requests in one segmented control', () => {
     cy.loginAsAdmin();
     cy.intercept('GET', '/api/v1/settings/public', (request) => {

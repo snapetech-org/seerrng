@@ -1,5 +1,6 @@
 import Spinner from '@app/assets/spinner.svg';
 import AssociationBadge from '@app/components/Association/AssociationBadge';
+import AvailabilitySubscriptionButton from '@app/components/AvailabilitySubscriptionButton';
 import Button from '@app/components/Common/Button';
 import IndexerSearchLink from '@app/components/Common/IndexerSearchLink';
 import { PageStatus } from '@app/components/Common/LoadingSpinner';
@@ -547,6 +548,7 @@ const TvDetails = ({
         mediaType="tv"
         tmdbId={data.id}
       />
+      <AvailabilitySubscriptionButton mediaType="tv" tmdbId={data.id} />
       {data.mediaInfo?.status !== MediaStatus.BLOCKLISTED &&
         user?.userType !== UserType.PLEX && (
           <Tooltip

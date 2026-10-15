@@ -34,6 +34,7 @@ const messages = defineMessages('notifications.agents.webpush', {
   autoApproved:
     'Automatically approved a new {quality}{mediaType} request from {userName}.',
   available: 'Your {quality}{mediaType} request is now available!',
+  availabilitySubscription: 'A title you follow is now available!',
   declined: 'Your {quality}{mediaType} request was declined.',
   failed: 'Failed to process {quality}{mediaType} request.',
   pending:
@@ -159,10 +160,12 @@ class WebPushAgent
         });
         break;
       case Notification.MEDIA_AVAILABLE:
-        message = intl.formatMessage(messages.available, {
-          quality,
-          mediaType,
-        });
+        message = payload.availabilitySubscription
+          ? intl.formatMessage(messages.availabilitySubscription)
+          : intl.formatMessage(messages.available, {
+              quality,
+              mediaType,
+            });
         break;
       case Notification.SOFTWARE_AVAILABLE:
       case Notification.SOFTWARE_STATUS:

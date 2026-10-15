@@ -28,6 +28,7 @@ import {
 import dataSource, { getRepository } from '@server/datasource';
 import { BookRequestSearch } from '@server/entity/BookRequestSearch';
 import Media from '@server/entity/Media';
+import MediaAvailabilitySubscription from '@server/entity/MediaAvailabilitySubscription';
 import MediaIdentifier, {
   MediaIdentifierProvider,
 } from '@server/entity/MediaIdentifier';
@@ -243,6 +244,132 @@ describe('MediaRequestSubscriber service dispatch', () => {
     assert.strictEqual(
       clampReadarrProviderRetryDelay(Number.MAX_SAFE_INTEGER),
       3_600_000
+    );
+  });
+
+  it('queues one private availability intent per follower and consumes subscriptions', async () => {
+    const requester = await getRequester();
+    const follower = await getRepository(User).findOneOrFail({
+      where: { email: 'admin@seerr.dev' },
+    });
+    const media = await getRepository(Media).save(
+      new Media({
+        mediaType: MediaType.MOVIE,
+        tmdbId: 891236,
+        status: MediaStatus.PENDING,
+        status4k: MediaStatus.UNKNOWN,
+      })
+    );
+    const subscriptionRepository = getRepository(MediaAvailabilitySubscription);
+    await subscriptionRepository.save([
+      new MediaAvailabilitySubscription({ user: requester, media }),
+      new MediaAvailabilitySubscription({ user: follower, media }),
+    ]);
+
+    const queued: {
+      type: Notification;
+      intent: Parameters<typeof notificationManager.sendNotificationIntent>[1];
+    }[] = [];
+    mock.method(
+      notificationManager,
+      'sendNotificationIntent',
+      async (
+        type: Notification,
+        intent: Parameters<typeof notificationManager.sendNotificationIntent>[1]
+      ) => {
+        queued.push({ type, intent });
+      }
+    );
+
+    const request = await getRepository(MediaRequest).save(
+      new MediaRequest({
+        type: MediaType.MOVIE,
+        status: MediaRequestStatus.APPROVED,
+        media,
+        requestedBy: requester,
+        is4k: false,
+      })
+    );
+    const firstAvailable = await getRepository(Media).findOneByOrFail({
+      id: media.id,
+    });
+    firstAvailable.status = MediaStatus.AVAILABLE;
+    await getRepository(Media).save(firstAvailable);
+
+    const availableIntents = queued.filter(
+      ({ type }) => type === Notification.MEDIA_AVAILABLE
+    );
+    assert.deepStrictEqual(
+      availableIntents.map(({ intent }) => intent),
+      [
+        { kind: 'media-request', requestId: request.id },
+        {
+          kind: 'media-availability-subscription',
+          mediaId: media.id,
+          userId: follower.id,
+        },
+      ]
+    );
+    assert.strictEqual(
+      await subscriptionRepository.countBy({ media: { id: media.id } }),
+      0
+    );
+  });
+
+  it('keeps follows while another request is active and removes them when all requests end', async () => {
+    const requester = await getRequester();
+    const otherRequester = await getRepository(User).findOneOrFail({
+      where: { email: 'demo@seerr.dev' },
+    });
+    const follower = await getRepository(User).findOneOrFail({
+      where: { email: 'admin@seerr.dev' },
+    });
+    const media = await getRepository(Media).save(
+      new Media({
+        mediaType: MediaType.TV,
+        tmdbId: 891237,
+        status: MediaStatus.PENDING,
+        status4k: MediaStatus.UNKNOWN,
+      })
+    );
+    const requestRepository = getRepository(MediaRequest);
+    const firstRequest = await requestRepository.save(
+      new MediaRequest({
+        type: MediaType.TV,
+        status: MediaRequestStatus.PENDING,
+        media,
+        requestedBy: requester,
+        is4k: false,
+        seasons: [],
+      })
+    );
+    const secondRequest = await requestRepository.save(
+      new MediaRequest({
+        type: MediaType.TV,
+        status: MediaRequestStatus.PENDING,
+        media,
+        requestedBy: otherRequester,
+        is4k: false,
+        seasons: [],
+      })
+    );
+    const subscriptionRepository = getRepository(MediaAvailabilitySubscription);
+    await subscriptionRepository.save(
+      new MediaAvailabilitySubscription({ user: follower, media })
+    );
+
+    firstRequest.status = MediaRequestStatus.DECLINED;
+    await requestRepository.save(firstRequest);
+    assert.strictEqual(
+      await subscriptionRepository.countBy({ media: { id: media.id } }),
+      1
+    );
+
+    secondRequest.status = MediaRequestStatus.DECLINED;
+    await requestRepository.save(secondRequest);
+    assert.strictEqual(
+      await subscriptionRepository.countBy({ media: { id: media.id } }),
+      0
     );
   });
 
