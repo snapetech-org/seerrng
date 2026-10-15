@@ -1,9 +1,203 @@
 import assert from 'node:assert/strict';
+import { readdirSync, readFileSync } from 'node:fs';
 import { createRequire } from 'node:module';
+import path from 'node:path';
 import test from 'node:test';
+import { fileURLToPath } from 'node:url';
 
 const require = createRequire(import.meta.url);
 const { getLocaleDifferences } = require('./check-i18n-lib.js');
+const { extractCatalogue } = require('./extract-messages-lib.js');
+const { parse } = require('@formatjs/icu-messageformat-parser');
+
+const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
+const fullLocales = [
+  'ar',
+  'de',
+  'es',
+  'es_MX',
+  'fr',
+  'hi',
+  'id',
+  'ja',
+  'ko',
+  'pt_BR',
+  'vi',
+  'zh_Hans',
+  'zh_Hant',
+];
+const requestStatusMessageIds = [
+  'bookUnavailable',
+  'bookQueueFailed',
+  'bookCouldNotAccept',
+  'comicUnavailable',
+  'comicQueueFailed',
+  'comicCouldNotAccept',
+  'waitingForApproval',
+  'approvedWaitingDispatch',
+  'searching',
+  'downloading',
+  'importing',
+  'addingToLibrary',
+  'available',
+  'unavailable',
+  'downloadImportFailed',
+  'couldNotComplete',
+  'declined',
+  'cancelled',
+  'noReleaseFound',
+  'waitingForUsableRelease',
+  'preparingEbook',
+  'preparingAudiobook',
+  'waitingForBookshelf',
+  'preparingBookshelfSearch',
+  'requestRetried',
+  'approvedForProcessing',
+].map((key) => `components.RequestStatus.${key}`);
+
+const sourceFiles = (directory) =>
+  readdirSync(directory, { withFileTypes: true })
+    .flatMap((entry) => {
+      const filename = path.join(directory, entry.name);
+      if (entry.isDirectory()) return sourceFiles(filename);
+      return /\.tsx?$/.test(entry.name) &&
+        !/\.(test|spec|d)\.tsx?$/.test(entry.name)
+        ? [filename]
+        : [];
+    })
+    .sort();
+
+const collectMessageContract = (
+  nodes,
+  contract = { args: new Set(), tags: new Set() }
+) => {
+  for (const node of nodes) {
+    if (node.type === 1) contract.args.add(`${node.value}:argument`);
+    else if (node.type >= 2 && node.type <= 4)
+      contract.args.add(
+        `${node.value}:${['', '', 'number', 'date', 'time'][node.type]}`
+      );
+    else if (node.type === 5 || node.type === 6) {
+      const kind = node.type === 5 ? 'select' : node.pluralType;
+      contract.args.add(`${node.value}:${kind}`);
+      for (const option of Object.values(node.options))
+        collectMessageContract(option.value, contract);
+    } else if (node.type === 8) {
+      contract.tags.add(node.value);
+      collectMessageContract(node.children, contract);
+    }
+  }
+  const argumentTypes = new Map();
+  for (const argument of contract.args) {
+    const separator = argument.lastIndexOf(':');
+    const name = argument.slice(0, separator);
+    const type = argument.slice(separator + 1);
+    const types = argumentTypes.get(name) ?? new Set();
+    types.add(type);
+    argumentTypes.set(name, types);
+  }
+  return {
+    args: [...argumentTypes]
+      .flatMap(([name, types]) => {
+        const effectiveTypes = [...types].filter(
+          (type) => type !== 'argument' || types.size === 1
+        );
+        return effectiveTypes.map((type) => `${name}:${type}`);
+      })
+      .sort(),
+    tags: [...contract.tags].sort(),
+  };
+};
+
+const inlineCodeValues = (nodes, values = []) => {
+  for (const node of nodes) {
+    if (node.type === 8 && node.value === 'code') {
+      values.push(
+        node.children
+          .map((child) => {
+            if (child.type === 0) return child.value;
+            if (child.type === 1) return `{${child.value}}`;
+            if (child.type === 7) return '#';
+            return '';
+          })
+          .join('')
+      );
+    } else if (node.type === 5 || node.type === 6) {
+      for (const option of Object.values(node.options))
+        inlineCodeValues(option.value, values);
+    } else if (node.type === 8) inlineCodeValues(node.children, values);
+  }
+  return values.sort();
+};
+
+const urlTokens = (message) =>
+  (message.match(/https?:\/\/[^\s<>]+|\bhttps?\b/gi) ?? []).sort();
+
+const assertNewClientMessages = () => {
+  const extracted = JSON.parse(
+    extractCatalogue(sourceFiles(path.join(root, 'src')), root)
+  );
+  const localeDirectory = path.join(root, 'src/i18n/locale');
+  const sourcePath = path.join(localeDirectory, 'en.json');
+  const source = JSON.parse(readFileSync(sourcePath, 'utf8'));
+  assert.deepEqual(
+    source,
+    extracted,
+    'client English source is extracted from current messages'
+  );
+
+  const requiredKeys = [
+    ...requestStatusMessageIds,
+    'pages.profile.advancedTheme.dividerShadowValues',
+  ];
+  for (const key of requiredKeys)
+    assert.ok(Object.hasOwn(source, key), `${key} is in the current source`);
+
+  const parsedSource = new Map(
+    requiredKeys.map((id) => [id, parse(source[id])])
+  );
+  for (const locale of fullLocales) {
+    const filename = path.join(localeDirectory, `${locale}.json`);
+    const translated = JSON.parse(readFileSync(filename, 'utf8'));
+
+    for (const id of requiredKeys) {
+      const sourceMessage = source[id];
+      const translatedMessage = translated[id];
+      assert.equal(
+        typeof translatedMessage,
+        'string',
+        `${filename}:${id} is a string`
+      );
+      assert.ok(translatedMessage.trim(), `${filename}:${id} is non-empty`);
+      assert.notEqual(
+        translatedMessage,
+        sourceMessage,
+        `${filename}:${id} is translated instead of falling back to English`
+      );
+      let parsed;
+      try {
+        parsed = parse(translatedMessage);
+      } catch (error) {
+        assert.fail(`${filename}:${id} is not valid ICU: ${error.message}`);
+      }
+      assert.deepEqual(
+        collectMessageContract(parsed),
+        collectMessageContract(parsedSource.get(id)),
+        `${filename}:${id} preserves ICU arguments and rich text`
+      );
+      assert.deepEqual(
+        inlineCodeValues(parsed),
+        inlineCodeValues(parsedSource.get(id)),
+        `${filename}:${id} preserves inline code values`
+      );
+      assert.deepEqual(
+        urlTokens(translatedMessage),
+        urlTokens(sourceMessage),
+        `${filename}:${id} preserves URLs and protocol tokens`
+      );
+    }
+  }
+};
 
 test('reports stale English message overrides with both values', () => {
   assert.deepEqual(
@@ -32,4 +226,8 @@ test('reports added and removed message keys', () => {
       { key: 'removed', original: 'Old', extracted: undefined },
     ]
   );
+});
+
+test('new request-status and advanced-theme messages are translated in every locale', () => {
+  assertNewClientMessages();
 });
