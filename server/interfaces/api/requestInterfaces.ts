@@ -51,6 +51,7 @@ export type MediaRequestBody = {
   userId?: number;
   tags?: number[];
   ignoreQuota?: boolean;
+  requestQuotaApproval?: boolean;
 };
 
 export type BulkMediaRequestItem = {

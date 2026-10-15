@@ -71,6 +71,7 @@ import {
   recordRequestStatus,
   recordRequestStatusOverride,
 } from '@server/lib/requestStatus';
+import { externalSeasonNumberFor } from '@server/lib/seasonNumberMapping';
 import {
   ServarrServiceAuthorityChangedError,
   runWithServarrServiceAdmission,
@@ -1222,12 +1223,16 @@ export class MediaRequestSubscriber implements EntitySubscriberInterface<MediaRe
         });
         const series = await tmdb.getTvShow({ tvId: media.tmdbId });
         const tmdbTvdbId = series.external_ids?.tvdb_id;
-        const hasDirectTvdbId = isPositiveSafeInteger(tmdbTvdbId);
-        let tvdbId = hasDirectTvdbId
-          ? tmdbTvdbId
-          : isPositiveSafeInteger(media.tvdbId)
-            ? media.tvdbId
-            : undefined;
+        const hasTvdbOverride = isPositiveSafeInteger(entity.overrideTvdbId);
+        const hasDirectTvdbId =
+          hasTvdbOverride || isPositiveSafeInteger(tmdbTvdbId);
+        let tvdbId = hasTvdbOverride
+          ? entity.overrideTvdbId!
+          : isPositiveSafeInteger(tmdbTvdbId)
+            ? tmdbTvdbId
+            : isPositiveSafeInteger(media.tvdbId)
+              ? media.tvdbId
+              : undefined;
 
         let tvdb: Tvdb | undefined;
         if (!hasDirectTvdbId) {
@@ -1257,7 +1262,26 @@ export class MediaRequestSubscriber implements EntitySubscriberInterface<MediaRe
           );
         }
 
-        if (!hasDirectTvdbId) {
+        const tvdbIdentifier = await getRepository(MediaIdentifier).findOne({
+          where: {
+            media: { id: media.id },
+            provider: MediaIdentifierProvider.TVDB,
+            value: String(tvdbId),
+          },
+          relations: { seasonMappings: true },
+        });
+        const seasonNumberMappings =
+          tvdbIdentifier?.seasonMappings?.filter(
+            (mapping) =>
+              mapping.sonarrServerId === sonarrSettings.id &&
+              mapping.is4k === entity.is4k
+          ) ?? [];
+
+        if (
+          !hasDirectTvdbId ||
+          hasTvdbOverride ||
+          seasonNumberMappings.length > 0
+        ) {
           if (!tvdb) {
             try {
               tvdb = await Tvdb.getInstance();
@@ -1279,16 +1303,33 @@ export class MediaRequestSubscriber implements EntitySubscriberInterface<MediaRe
             );
           }
 
+          const explicitSeasonNumbers = new Set(
+            seasonNumberMappings.map((mapping) => mapping.seasonNumber)
+          );
+
           const unmatchedSeasons = entity.seasons
             .filter(isActiveSeasonRequest)
             .map((season) => season.seasonNumber)
-            .filter((seasonNumber) => seasonNumber > 0)
             .filter((seasonNumber) => {
+              const externalSeasonNumber = externalSeasonNumberFor(
+                seasonNumber,
+                seasonNumberMappings
+              );
+              if (explicitSeasonNumbers.has(seasonNumber)) {
+                return !officialSeasons.some(
+                  (officialSeason) =>
+                    officialSeason.seasonNumber === externalSeasonNumber
+                );
+              }
+              if (seasonNumber === 0) {
+                return false;
+              }
+
               const tmdbSeason = series.seasons.find(
                 (season) => season.season_number === seasonNumber
               );
               const candidates = officialSeasons.filter(
-                (season) => season.seasonNumber === seasonNumber
+                (season) => season.seasonNumber === externalSeasonNumber
               );
               if (!tmdbSeason || candidates.length !== 1) {
                 return true;
@@ -1448,12 +1489,17 @@ export class MediaRequestSubscriber implements EntitySubscriberInterface<MediaRe
           tvdbid: tvdbId,
           seasons: entity.seasons
             .filter(isActiveSeasonRequest)
-            .map((season) => season.seasonNumber),
+            .map((season) =>
+              externalSeasonNumberFor(season.seasonNumber, seasonNumberMappings)
+            ),
           episodeSelections: entity.seasons
             .filter(isActiveSeasonRequest)
             .some((season) => season.episodeNumbers != null)
             ? entity.seasons.filter(isActiveSeasonRequest).map((season) => ({
-                seasonNumber: season.seasonNumber,
+                seasonNumber: externalSeasonNumberFor(
+                  season.seasonNumber,
+                  seasonNumberMappings
+                ),
                 ...(season.episodeNumbers
                   ? { episodeNumbers: season.episodeNumbers }
                   : {}),

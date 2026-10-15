@@ -60,6 +60,9 @@ const messages = defineMessages('components.RequestModal', {
   requestApproved: 'Request for <strong>{title}</strong> approved!',
   requesterror: 'Something went wrong while submitting the request.',
   pendingapproval: 'Your request is pending approval.',
+  quotaApprovalSubmitted:
+    'Your over-quota request for <strong>{title}</strong> is waiting for administrator approval.',
+  requestQuotaApproval: 'Request approval',
   mediaAndFormat: 'Media & Format',
   releaseDate: 'Release Date',
   runtime: 'Runtime',
@@ -117,6 +120,12 @@ const MovieRequestModal = ({
         }))
       ? `/api/v1/user/${requestOverrides?.user?.id ?? user.id}/quota`
       : null
+  );
+  const requestQuotaApproval = Boolean(
+    !editRequest &&
+    !requestOverrides?.user &&
+    !hasPermission(Permission.MANAGE_REQUESTS) &&
+    quota?.movie.restricted
   );
   const { data: radarrServers } = useSWR<ServiceCommonServer[]>(
     '/api/v1/service/radarr',
@@ -253,6 +262,7 @@ const MovieRequestModal = ({
           ? undefined
           : selectedRequestServiceServerId,
         ignoreQuota: requestOverrides?.ignoreQuota,
+        requestQuotaApproval: requestQuotaApproval || undefined,
         ...overrideParams,
       });
       mutate('/api/v1/request?filter=all&take=10&sort=modified&skip=0');
@@ -267,10 +277,15 @@ const MovieRequestModal = ({
         }
         addToast(
           <span>
-            {intl.formatMessage(messages.requestSuccess, {
-              title: data?.title,
-              strong: (msg: React.ReactNode) => <strong>{msg}</strong>,
-            })}
+            {intl.formatMessage(
+              response.data.quotaException
+                ? messages.quotaApprovalSubmitted
+                : messages.requestSuccess,
+              {
+                title: data?.title,
+                strong: (msg: React.ReactNode) => <strong>{msg}</strong>,
+              }
+            )}
           </span>,
           { appearance: 'success', autoDismiss: true }
         );
@@ -296,6 +311,7 @@ const MovieRequestModal = ({
     selectedRequestServiceServerId,
     requestDestinationSettingsLoading,
     canUseAdvancedOptions,
+    requestQuotaApproval,
     data?.id,
     data?.title,
     effectiveIs4k,
@@ -529,9 +545,11 @@ const MovieRequestModal = ({
   const studio = data?.productionCompanies?.[0]?.name ?? notAvailable;
   const requestButtonLabel = isUpdating
     ? intl.formatMessage(globalMessages.requesting)
-    : intl.formatMessage(
-        effectiveIs4k ? globalMessages.request4k : globalMessages.request
-      );
+    : requestQuotaApproval
+      ? intl.formatMessage(messages.requestQuotaApproval)
+      : intl.formatMessage(
+          effectiveIs4k ? globalMessages.request4k : globalMessages.request
+        );
 
   return (
     <Modal
@@ -545,7 +563,9 @@ const MovieRequestModal = ({
         isUpdating ||
         requestDestinationSettingsLoading ||
         selectedDestinationCovered ||
-        (quota?.movie.restricted && !requestOverrides?.ignoreQuota)
+        (quota?.movie.restricted &&
+          !requestOverrides?.ignoreQuota &&
+          !requestQuotaApproval)
       }
       title={intl.formatMessage(
         effectiveIs4k
@@ -797,7 +817,9 @@ const MovieRequestModal = ({
               isUpdating ||
               requestDestinationSettingsLoading ||
               selectedDestinationCovered ||
-              (quota?.movie.restricted && !requestOverrides?.ignoreQuota)
+              (quota?.movie.restricted &&
+                !requestOverrides?.ignoreQuota &&
+                !requestQuotaApproval)
             }
             className="app-button app-button-success button-standard"
           >

@@ -310,7 +310,7 @@ class Tvdb extends ExternalAPI implements TvShowProvider {
         (season) =>
           season?.type?.type === 'official' &&
           Number.isSafeInteger(season.number) &&
-          season.number > 0
+          season.number >= 0
       )
       .sort((left, right) => left.number - right.number)
       .map((season) => {

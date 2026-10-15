@@ -26,6 +26,7 @@ import defineMessages from '@app/utils/defineMessages';
 import { getTmdbPosterImageUrl } from '@app/utils/imageCache';
 import { refreshIntervalHelper } from '@app/utils/refreshIntervalHelper';
 import {
+  canManuallyMapTvdbSeasons,
   getRequestFailureDescriptionId,
   getRequestFailureInfo,
 } from '@app/utils/requestFailure';
@@ -66,11 +67,16 @@ import useSWR, { mutate } from 'swr';
 const RequestModal = dynamic(() => import('@app/components/RequestModal'), {
   ssr: false,
 });
+const TvSeasonMappingModal = dynamic(
+  () => import('@app/components/RequestCard/TvSeasonMappingModal'),
+  { ssr: false }
+);
 
 const messages = defineMessages('components.RequestCard', {
   failedretry: 'Something went wrong while retrying the request.',
   retry: 'Retry',
   retryRequest: 'Retry this request',
+  mapTvSeasons: 'Map TV seasons',
   failedmodify: 'Something went wrong while modifying the request.',
   mediaerror: '{mediaType} Not Found',
   tmdbid: 'TMDB ID',
@@ -473,6 +479,7 @@ const RequestCard = ({
     'approve' | 'decline' | null
   >(null);
   const [showEditModal, setShowEditModal] = useState(false);
+  const [showSeasonMappingModal, setShowSeasonMappingModal] = useState(false);
   const bookId =
     request.type === 'book' ? getNormalizedBookId(request) : undefined;
   const musicId =
@@ -701,6 +708,17 @@ const RequestCard = ({
           onComplete={() => {
             revalidate();
             setShowEditModal(false);
+          }}
+        />
+      )}
+      {showSeasonMappingModal && requestData && (
+        <TvSeasonMappingModal
+          request={requestData}
+          onCancel={() => setShowSeasonMappingModal(false)}
+          onComplete={async () => {
+            await revalidate();
+            mutate('/api/v1/request/count');
+            setShowSeasonMappingModal(false);
           }}
         />
       )}
@@ -1041,6 +1059,22 @@ const RequestCard = ({
               </Button>
             </Tooltip>
           )}
+          {canRetry &&
+            hasPermission(Permission.MANAGE_REQUESTS) &&
+            canManuallyMapTvdbSeasons(
+              requestData.type,
+              requestData.status,
+              requestData.failureReason
+            ) && (
+              <Button
+                buttonType="primary"
+                buttonSize="sm"
+                disabled={isRetrying}
+                onClick={() => setShowSeasonMappingModal(true)}
+              >
+                {intl.formatMessage(messages.mapTvSeasons)}
+              </Button>
+            )}
           <div className="flex flex-1 items-end space-x-2">
             {showApprovalActions &&
               requestData.status === MediaRequestStatus.PENDING &&
