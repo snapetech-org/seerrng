@@ -148,6 +148,7 @@ const DiscoverTv = ({
       ) : (
         <ListView
           posterTitleWeight="regular"
+          enableDiscoverNavigation
           watchlistPreview={watchlistPreview}
           watchlistPreviewDisabled={watchlistPreviewDisabled}
           items={discover.titles}

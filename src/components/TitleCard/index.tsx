@@ -97,6 +97,8 @@ interface TitleCardProps {
   availableQualities?: ('MP3' | 'FLAC')[];
   qualityStatuses?: AlbumResult['qualityStatuses'];
   sportarrState?: SportarrLibraryState;
+  discoverNavigationContextId?: string;
+  onOpen?: () => void;
 }
 
 const messages = defineMessages('components.TitleCard', {
@@ -167,6 +169,8 @@ const TitleCard = ({
   availableQualities,
   qualityStatuses,
   sportarrState,
+  discoverNavigationContextId,
+  onOpen,
 }: TitleCardProps) => {
   const isTouch = useIsTouch();
   const router = useRouter();
@@ -626,6 +630,24 @@ const TitleCard = ({
                   : isSports
                     ? `/sportarr/${encodeApiPathSegment(canonicalId)}`
                     : `/artist/${encodeApiPathSegment(canonicalId)}`;
+  const detailHrefWithDiscoverContext =
+    typeof detailHref === 'string' &&
+    discoverNavigationContextId &&
+    (mediaType === 'movie' || mediaType === 'tv')
+      ? {
+          pathname: mediaType === 'movie' ? '/movie/[movieId]' : '/tv/[tvId]',
+          query: {
+            [mediaType === 'movie' ? 'movieId' : 'tvId']: String(id),
+            discoverContext: discoverNavigationContextId,
+          },
+        }
+      : detailHref;
+  const detailAsWithDiscoverContext =
+    typeof detailHref === 'string' &&
+    discoverNavigationContextId &&
+    (mediaType === 'movie' || mediaType === 'tv')
+      ? `${detailHref}?discoverContext=${encodeURIComponent(discoverNavigationContextId)}`
+      : undefined;
   const displayImage = getTmdbPosterImageUrl(artwork);
   const supplementalPoster = getTmdbPosterImageUrl(
     fallbackImage ?? posterFallbackDetails?.supplementalMetadata?.posterUrl
@@ -1215,8 +1237,10 @@ const TitleCard = ({
           >
             <div data-poster-region="overlay">
               <Link
-                href={detailHref}
+                href={detailHrefWithDiscoverContext}
+                as={detailAsWithDiscoverContext}
                 prefetch={false}
+                onClick={onOpen}
                 data-poster-region="detail-link"
                 data-poster-detail={showFullDetailOverlay ? 'full' : 'compact'}
                 data-poster-has-action={
@@ -1300,7 +1324,6 @@ const TitleCard = ({
         </div>
       </div>
       {showDetail &&
-        !isTouch &&
         (mediaType === 'movie' ||
           mediaType === 'tv' ||
           mediaType === 'album' ||

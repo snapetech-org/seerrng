@@ -79,6 +79,7 @@ const DiscoverTmdbList = () => {
         />
       ) : (
         <ListView
+          enableDiscoverNavigation
           items={discover.titles}
           isEmpty={discover.isEmpty}
           isLoading={
