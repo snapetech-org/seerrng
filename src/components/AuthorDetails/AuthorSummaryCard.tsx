@@ -1,6 +1,17 @@
 import CollectionOverview from '@app/components/CollectionDetails/CollectionOverview';
 import CachedImage from '@app/components/Common/CachedImage';
+import globalMessages from '@app/i18n/globalMessages';
+import defineMessages from '@app/utils/defineMessages';
 import type { AuthorDetails } from '@server/models/Book';
+import { useIntl } from 'react-intl';
+
+const messages = defineMessages('components.AuthorDetails.AuthorSummaryCard', {
+  bibliographyTitle: '{authorName} bibliography',
+  overview: 'Overview',
+  dates: 'Dates',
+  bibliographySize: 'Bibliography size',
+  selectionSize: 'Selection size',
+});
 
 export default function AuthorSummaryCard({
   author,
@@ -9,6 +20,7 @@ export default function AuthorSummaryCard({
   author: AuthorDetails;
   selectionSize?: { selected: number; visible: number };
 }) {
+  const intl = useIntl();
   return (
     <section className="app-card-sub detail-item-surface detail-summary-card collection-summary-header">
       <div className="collection-summary-poster">
@@ -22,31 +34,40 @@ export default function AuthorSummaryCard({
         />
       </div>
       <div className="collection-summary-details">
-        <h1 className="collection-summary-title">{author.name} Bibliography</h1>
+        <h1 className="collection-summary-title">
+          {intl.formatMessage(messages.bibliographyTitle, {
+            authorName: author.name,
+          })}
+        </h1>
         <dl className="collection-summary-table detail-card-heading-spacing">
-          <dt className="collection-summary-overview-label">Overview:</dt>
+          <dt className="collection-summary-overview-label">
+            {intl.formatMessage(messages.overview)}:
+          </dt>
           <dd className="collection-summary-overview-value bibliography-overview-clamp">
             <CollectionOverview text={author.biography || '—'} />
           </dd>
-          <dt className="collection-summary-genres-label">Dates:</dt>
+          <dt className="collection-summary-genres-label">
+            {intl.formatMessage(messages.dates)}:
+          </dt>
           <dd className="collection-summary-genres-value">
             {[author.birthDate, author.deathDate].filter(Boolean).join(' – ') ||
-              'Not Available'}
+              intl.formatMessage(globalMessages.notavailable)}
           </dd>
           <div className="collection-summary-size">
             <dt className="collection-summary-size-label">
-              Bibliography Size:
+              {intl.formatMessage(messages.bibliographySize)}:
             </dt>
             <dd className="collection-summary-size-value">
-              {author.pagination.totalItems}
+              {intl.formatNumber(author.pagination.totalItems)}
             </dd>
             {selectionSize && (
               <>
                 <dt className="collection-summary-selection-label">
-                  Selection Size:
+                  {intl.formatMessage(messages.selectionSize)}:
                 </dt>
                 <dd className="collection-summary-selection-value">
-                  {selectionSize.selected} / {selectionSize.visible}
+                  {intl.formatNumber(selectionSize.selected)} /{' '}
+                  {intl.formatNumber(selectionSize.visible)}
                 </dd>
               </>
             )}

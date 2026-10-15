@@ -1,10 +1,24 @@
 import CachedImage from '@app/components/Common/CachedImage';
 import SelectionCircle from '@app/components/Common/SelectionCircle';
 import AvailabilityValue from '@app/components/MediaDetails/AvailabilityValue';
+import globalMessages from '@app/i18n/globalMessages';
 import { encodeApiPathSegment } from '@app/utils/apiPath';
+import defineMessages from '@app/utils/defineMessages';
 import { MediaRequestStatus, MediaStatus } from '@server/constants/media';
 import type { BookResult } from '@server/models/Book';
 import Link from 'next/link';
+import { useIntl } from 'react-intl';
+
+const messages = defineMessages('components.AuthorDetails.AuthorWorkCard', {
+  selectForRequest: 'Select {workTitle} for this bibliography request',
+  mediaAndFormat: 'Media & Format',
+  firstPublished: 'First Published',
+  editions: 'Editions',
+  author: 'Author',
+  isbn: 'ISBN',
+  publisher: 'Publisher',
+  genres: 'Genres',
+});
 
 export const getBookFormatState = (
   work: BookResult,
@@ -39,6 +53,7 @@ export default function AuthorWorkCard({
   selected?: boolean;
   onToggle?: () => void;
 }) {
+  const intl = useIntl();
   const href = `/book/${encodeApiPathSegment(work.id)}`;
   const bookState = getBookFormatState(work, 'ebook');
   const audioState = getBookFormatState(work, 'audiobook');
@@ -52,11 +67,13 @@ export default function AuthorWorkCard({
             : MediaStatus.UNKNOWN
       }
     >
-      {state === 'available'
-        ? 'Available'
-        : state === 'requested'
-          ? 'Requested'
-          : 'Not Available'}
+      {intl.formatMessage(
+        state === 'available'
+          ? globalMessages.available
+          : state === 'requested'
+            ? globalMessages.requested
+            : globalMessages.notavailable
+      )}
     </AvailabilityValue>
   );
 
@@ -72,7 +89,9 @@ export default function AuthorWorkCard({
       {onToggle && (
         <div className="movie-summary-selection">
           <SelectionCircle
-            label={`Select ${work.title} for this collection request`}
+            label={intl.formatMessage(messages.selectForRequest, {
+              workTitle: work.title,
+            })}
             selected={!!selected}
             onClick={onToggle}
           />
@@ -104,48 +123,62 @@ export default function AuthorWorkCard({
           <div className="detail-paired-column-span min-w-0">
             <dl className="media-detail-rows detail-paired-columns grid min-w-0 content-start text-xs">
               <dt className="card:col-start-1 card:row-start-1 font-medium text-gray-100">
-                Media &amp; Format:
+                {intl.formatMessage(messages.mediaAndFormat)}:
               </dt>
               <dd className="card:col-start-3 card:row-start-1 m-0 truncate">
-                Book · Audiobook
+                {intl.formatMessage(globalMessages.ebookAndAudiobook)}
               </dd>
               <dt className="card:col-start-1 card:row-start-2 font-medium text-gray-100">
-                First Published:
+                {intl.formatMessage(messages.firstPublished)}:
               </dt>
               <dd className="card:col-start-3 card:row-start-2 m-0 truncate">
-                {work.firstPublishYear || 'Not Available'}
+                {work.firstPublishYear ||
+                  intl.formatMessage(globalMessages.notavailable)}
               </dd>
               <dt className="card:col-start-1 card:row-start-3 font-medium text-gray-100">
-                Editions:
+                {intl.formatMessage(messages.editions)}:
               </dt>
               <dd className="card:col-start-3 card:row-start-3 m-0 truncate">
-                {work.editionCount || 'Not Available'}
+                {work.editionCount ||
+                  intl.formatMessage(globalMessages.notavailable)}
               </dd>
               <div className="media-detail-rows media-detail-column-divider card:col-span-1 card:col-start-5 card:row-span-3 card:row-start-1 col-span-2 grid min-w-0 grid-cols-[max-content_minmax(0,1fr)] content-start gap-x-3">
-                <dt className="font-medium text-gray-100">Author:</dt>
+                <dt className="font-medium text-gray-100">
+                  {intl.formatMessage(messages.author)}:
+                </dt>
                 <dd className="m-0 truncate">{author}</dd>
-                <dt className="font-medium text-gray-100">ISBN:</dt>
+                <dt className="font-medium text-gray-100">
+                  {intl.formatMessage(messages.isbn)}:
+                </dt>
                 <dd className="m-0 truncate">
-                  {work.isbn13 || 'Not Available'}
+                  {work.isbn13 ||
+                    intl.formatMessage(globalMessages.notavailable)}
                 </dd>
-                <dt className="font-medium text-gray-100">Publisher:</dt>
+                <dt className="font-medium text-gray-100">
+                  {intl.formatMessage(messages.publisher)}:
+                </dt>
                 <dd className="m-0 truncate">
-                  {work.publisher || 'Not Available'}
+                  {work.publisher ||
+                    intl.formatMessage(globalMessages.notavailable)}
                 </dd>
               </div>
               <dt className="card:col-start-1 card:row-start-4 font-medium text-gray-100">
-                Genres:
+                {intl.formatMessage(messages.genres)}:
               </dt>
               <dd className="card:col-span-3 card:col-start-3 card:row-start-4 m-0 min-w-0">
-                Not Available
+                {intl.formatMessage(globalMessages.notavailable)}
               </dd>
             </dl>
           </div>
           <div className="media-detail-column-divider flex min-w-0 flex-col text-xs">
             <dl className="media-detail-rows grid min-w-0 grid-cols-[max-content_minmax(0,1fr)] content-start gap-x-3">
-              <dt className="font-medium text-gray-100">Book:</dt>
+              <dt className="font-medium text-gray-100">
+                {intl.formatMessage(globalMessages.book)}:
+              </dt>
               <dd className="m-0">{status(bookState)}</dd>
-              <dt className="font-medium text-gray-100">Audiobook:</dt>
+              <dt className="font-medium text-gray-100">
+                {intl.formatMessage(globalMessages.audiobook)}:
+              </dt>
               <dd className="m-0">{status(audioState)}</dd>
             </dl>
           </div>

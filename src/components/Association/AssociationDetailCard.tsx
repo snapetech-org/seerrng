@@ -3,10 +3,12 @@ import AvailabilityValue from '@app/components/MediaDetails/AvailabilityValue';
 import MovieSummaryCard from '@app/components/MediaDetails/MovieSummaryCard';
 import type { AssociationEdge } from '@app/hooks/useAssociations';
 import globalMessages from '@app/i18n/globalMessages';
+import defineMessages from '@app/utils/defineMessages';
 import { MediaStatus } from '@server/constants/media';
 import Link from 'next/link';
 import { Fragment } from 'react';
-import { useIntl } from 'react-intl';
+import { useIntl, type MessageDescriptor } from 'react-intl';
+import { formatAssociationReason } from './associationReason';
 import {
   nodeBackdrop,
   nodeHref,
@@ -16,20 +18,37 @@ import {
 } from './helpers';
 import useAssociationMovieDetails from './useAssociationMovieDetails';
 
-const getMediaLabel = (edge: AssociationEdge) => {
+const messages = defineMessages(
+  'components.Association.AssociationDetailCard',
+  {
+    mediaAndFormat: 'Media & Format',
+    releaseDate: 'Release Date',
+    author: 'Author',
+    publisher: 'Publisher',
+    isbn: 'ISBN',
+    type: 'Type',
+    country: 'Country',
+    director: 'Director',
+    writer: 'Writer',
+    language: 'Language',
+    knownFor: 'Known For',
+  }
+);
+
+const getMediaLabel = (edge: AssociationEdge): MessageDescriptor => {
   switch (edge.node.mediaType) {
     case 'movie':
-      return 'Movie';
+      return globalMessages.movie;
     case 'tv':
-      return 'Series';
+      return globalMessages.tvshow;
     case 'album':
-      return 'Album';
+      return globalMessages.album;
     case 'artist':
-      return 'Artist';
+      return globalMessages.artist;
     case 'book':
-      return 'Book';
+      return globalMessages.book;
     case 'person':
-      return 'Person';
+      return globalMessages.person;
   }
 };
 
@@ -94,8 +113,24 @@ const AssociationDetailCard = ({
     : mediaInfo?.status4k;
   const primaryQualityLabel = isAlbum ? 'MP3' : 'HD';
   const secondaryQualityLabel = isAlbum ? 'FLAC' : '4K';
-  const association = <span data-testid="association-type">{edge.reason}</span>;
+  const association = (
+    <span data-testid="association-type">
+      {formatAssociationReason(intl, edge)}
+    </span>
+  );
   const node = edge.node;
+  const fieldLabelMessages: Record<string, MessageDescriptor> = {
+    Author: messages.author,
+    Publisher: messages.publisher,
+    ISBN: messages.isbn,
+    Artist: globalMessages.artist,
+    Type: messages.type,
+    Country: messages.country,
+    Director: messages.director,
+    Writer: messages.writer,
+    Language: messages.language,
+    'Known For': messages.knownFor,
+  };
   const middleRows: [string, string | undefined][] =
     node.mediaType === 'book'
       ? [
@@ -231,20 +266,29 @@ const AssociationDetailCard = ({
 
           <div className="detail-card-heading-spacing detail-three-column-grid grid min-h-0 min-w-0 flex-1 items-stretch text-xs leading-4">
             <dl className="media-detail-rows card:pr-3 grid min-w-0 grid-cols-[max-content_minmax(0,1fr)] content-start gap-x-3">
-              <dt className="font-medium text-gray-100">Media &amp; Format:</dt>
-              <dd className="m-0 truncate">{getMediaLabel(edge)}</dd>
-              <dt className="font-medium text-gray-100">Release Date:</dt>
+              <dt className="font-medium text-gray-100">
+                {intl.formatMessage(messages.mediaAndFormat)}:
+              </dt>
               <dd className="m-0 truncate">
-                {getReleaseDate(edge) || 'Not Available'}
+                {intl.formatMessage(getMediaLabel(edge))}
+              </dd>
+              <dt className="font-medium text-gray-100">
+                {intl.formatMessage(messages.releaseDate)}:
+              </dt>
+              <dd className="m-0 truncate">
+                {getReleaseDate(edge) ||
+                  intl.formatMessage(globalMessages.notavailable)}
               </dd>
             </dl>
 
             <dl className="media-detail-rows media-detail-column-divider grid min-w-0 grid-cols-[max-content_minmax(0,1fr)] content-start gap-x-3">
               {middleRows.map(([label, value]) => (
                 <Fragment key={label}>
-                  <dt className="font-medium text-gray-100">{label}:</dt>
+                  <dt className="font-medium text-gray-100">
+                    {intl.formatMessage(fieldLabelMessages[label])}:
+                  </dt>
                   <dd className="m-0 truncate" title={value}>
-                    {value || 'Not Available'}
+                    {value || intl.formatMessage(globalMessages.notavailable)}
                   </dd>
                 </Fragment>
               ))}

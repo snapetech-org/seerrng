@@ -129,6 +129,9 @@ const messages = defineMessages('components.Settings.SettingsMain', {
   downloadPathMappings: 'Library Path Mappings',
   downloadPathMappingsTip:
     'Enter a JSON array. Each mapping has serviceType, optional serviceId, remoteRoot, and localRoot. Use narrow library roots; SeerrNG only offers files that resolve inside a mapped root.',
+  // Escape the JSON braces so ICU renders the sample literally.
+  downloadPathMappingsExample:
+    '[\n  \'{\'\n    "serviceType": "radarr",\n    "serviceId": 1,\n    "remoteRoot": "/movies",\n    "localRoot": "/mnt/media/movies"\n  \'}\'\n]',
   downloadPathMappingsJsonError:
     'Enter a JSON array with at most 100 path mappings.',
   validationDownloadPathMappingsJson:
@@ -350,7 +353,7 @@ const SettingsMain = () => {
                           <SensitiveInput
                             type="text"
                             id="apiKey"
-                            className="rounded-l-only"
+                            className="rounded-s-only"
                             value={data?.apiKey}
                             readOnly
                           />

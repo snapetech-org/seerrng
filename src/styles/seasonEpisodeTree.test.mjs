@@ -817,12 +817,32 @@ test('both retained methods expand, collapse and select without external writes'
   const icon = (props) => React.createElement('svg', props);
   const imports = (id) => {
     if (id === 'react') return React;
-    if (id === 'react-intl')
+    if (id === 'react-intl') {
+      const { createIntl } = require('react-intl');
+      const intl = createIntl({ locale: 'en', onError: () => undefined });
+      return { useIntl: () => intl };
+    }
+    if (id === '@app/utils/defineMessages')
       return {
-        useIntl: () => ({
-          formatDate: (date, options) =>
-            new Intl.DateTimeFormat('en-US', options).format(date),
-        }),
+        __esModule: true,
+        default: (scope, definitions) =>
+          Object.fromEntries(
+            Object.entries(definitions).map(([key, defaultMessage]) => [
+              key,
+              { id: `${scope}.${key}`, defaultMessage },
+            ])
+          ),
+      };
+    if (id === '@app/i18n/globalMessages')
+      return {
+        __esModule: true,
+        default: {
+          available: { id: 'global.available', defaultMessage: 'Available' },
+          notavailable: {
+            id: 'global.notavailable',
+            defaultMessage: 'Not Available',
+          },
+        },
       };
     if (id.endsWith('/Button')) return standardButton;
     if (id.endsWith('/SelectionCircle'))
@@ -940,7 +960,7 @@ test('both retained methods expand, collapse and select without external writes'
         await React.act(async () => button.click());
       };
       const firstPanel = () =>
-        container.querySelector('[aria-label="Season 1 Episodes"]');
+        container.querySelector('[aria-label="Season 1 episodes"]');
       const episodePanels = [
         ...container.querySelectorAll('[data-tree-part="episodes"]'),
       ];
@@ -966,7 +986,7 @@ test('both retained methods expand, collapse and select without external writes'
       await click(byLabel('Expand Season 1'));
       assert.equal(firstPanel().hidden, false);
       assert.equal(
-        container.querySelector('[aria-label="Season 2 Episodes"]').hidden,
+        container.querySelector('[aria-label="Season 2 episodes"]').hidden,
         true
       );
       assert.equal(
@@ -1021,7 +1041,7 @@ test('both retained methods expand, collapse and select without external writes'
       );
       assert.equal(
         container.querySelector('time').getAttribute('aria-label'),
-        'Release Date: Sun, Jul 23, 2023'
+        'Release date: Sun, Jul 23, 2023'
       );
       assert.equal([...container.querySelectorAll('time')][1].textContent, '—');
       assert.equal(
@@ -1341,7 +1361,7 @@ test('both retained methods expand, collapse and select without external writes'
       // jsdom does not emulate browser-native Enter/Space click synthesis; the
       // native button type, focusability and pressed state are checked instead.
       for (const part of ['selection', 'number', 'name', null]) {
-        const target = byLabel('Select Episode 1: Episode 1');
+        const target = byLabel('Select episode 1: Episode 1');
         const before = selectionChanges;
         await click(
           part ? target.querySelector(`[data-tree-part="${part}"]`) : target
@@ -1353,26 +1373,26 @@ test('both retained methods expand, collapse and select without external writes'
         );
         assert.deepEqual(selected, [10]);
         assert.equal(
-          byLabel('Deselect Episode 1: Episode 1').getAttribute('aria-pressed'),
+          byLabel('Deselect episode 1: Episode 1').getAttribute('aria-pressed'),
           'true'
         );
         assert.equal(
-          byLabel('Deselect Episode 1: Episode 1')
+          byLabel('Deselect episode 1: Episode 1')
             .closest('[data-tree-part="episode"]')
             .getAttribute('data-active'),
           'true'
         );
-        await click(byLabel('Deselect Episode 1: Episode 1'));
+        await click(byLabel('Deselect episode 1: Episode 1'));
         assert.equal(selectionChanges, before + 2);
         assert.deepEqual(selected, []);
         assert.equal(
-          byLabel('Select Episode 1: Episode 1')
+          byLabel('Select episode 1: Episode 1')
             .closest('[data-tree-part="episode"]')
             .getAttribute('data-active'),
           'false'
         );
       }
-      const nativeTarget = byLabel('Select Episode 1: Episode 1');
+      const nativeTarget = byLabel('Select episode 1: Episode 1');
       nativeTarget.focus();
       assert.equal(document.activeElement, nativeTarget);
       assert.equal(nativeTarget.tabIndex, 0);
@@ -1385,7 +1405,7 @@ test('both retained methods expand, collapse and select without external writes'
         );
       assert.equal(selectionChanges, metadataBefore);
       assert.deepEqual(selected, []);
-      await click(byLabel('Select Episode 1: Episode 1'));
+      await click(byLabel('Select episode 1: Episode 1'));
       assert.deepEqual(selected, [10]);
       assert.equal(
         container.querySelector(
@@ -1405,10 +1425,10 @@ test('both retained methods expand, collapse and select without external writes'
         ),
         'mixed'
       );
-      assert.equal(byLabel('Select Episode 2: Episode 2').disabled, true);
-      await click(byLabel('Select Episode 2: Episode 2'));
+      assert.equal(byLabel('Select episode 2: Episode 2').disabled, true);
+      await click(byLabel('Select episode 2: Episode 2'));
       assert.deepEqual(selected, [10]);
-      const unavailableTarget = byLabel('Select Episode 2: Episode 2');
+      const unavailableTarget = byLabel('Select episode 2: Episode 2');
       const unavailableBefore = selectionChanges;
       await click(unavailableTarget.querySelector('[data-tree-part="number"]'));
       await click(unavailableTarget.querySelector('[data-tree-part="name"]'));
@@ -1563,10 +1583,10 @@ test('both retained methods expand, collapse and select without external writes'
         allControl().getAttribute('aria-label'),
         'Select all requestable episodes'
       );
-      assert.equal(byLabel('Select Episode 1: Episode 1').disabled, true);
-      assert.equal(byLabel('Select Episode 2: Episode 2').disabled, false);
+      assert.equal(byLabel('Select episode 1: Episode 1').disabled, true);
+      assert.equal(byLabel('Select episode 2: Episode 2').disabled, false);
       const requestBefore = selectionChanges;
-      await click(byLabel('Select Episode 1: Episode 1'));
+      await click(byLabel('Select episode 1: Episode 1'));
       assert.equal(selectionChanges, requestBefore);
       assert.deepEqual(selected, [99]);
       await click(allControl());
@@ -1587,7 +1607,7 @@ test('both retained methods expand, collapse and select without external writes'
         'Bulk selection does not expand collapsed seasons.'
       );
       await click(byLabel('Expand Season 1'));
-      const requestTarget = byLabel('Deselect Episode 2: Episode 2');
+      const requestTarget = byLabel('Deselect episode 2: Episode 2');
       assert.equal(requestTarget.disabled, false);
       assert.equal(
         requestTarget
@@ -1610,7 +1630,7 @@ test('both retained methods expand, collapse and select without external writes'
         byText('Clear Selection'),
         byLabel('Deselect requestable episodes in Season 1'),
         byLabel('Deselect requestable episodes in Season 2'),
-        byLabel('Deselect Episode 2: Episode 2'),
+        byLabel('Deselect episode 2: Episode 2'),
       ]) {
         assert.ok(
           control.disabled,

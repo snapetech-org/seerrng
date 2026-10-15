@@ -28,6 +28,7 @@ const messages = defineMessages('components.Discover.DiscoverMagazines', {
     'Check the Google Books API key in Settings > Main and try again.',
   trackedCatalog: 'Tracked titles',
   publicCatalog: 'Public catalog',
+  magazineCatalogSource: 'Magazine catalog source',
   catalogHint:
     'Search magazines tracked by LazyLibrarian, or request another title by name.',
   publicCatalogHint:
@@ -125,7 +126,7 @@ const DiscoverMagazines = () => {
           <div
             className="app-filter-row"
             role="group"
-            aria-label="Magazine catalog source"
+            aria-label={intl.formatMessage(messages.magazineCatalogSource)}
           >
             {(
               [

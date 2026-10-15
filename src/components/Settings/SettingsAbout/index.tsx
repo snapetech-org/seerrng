@@ -36,6 +36,11 @@ const messages = defineMessages('components.Settings.SettingsAbout', {
     'You are running the <code>main</code> branch of SeerrNG, which is only recommended for those contributing to development or assisting with bleeding-edge testing.',
   legalUse:
     'SeerrNG is intended for lawful personal media management. The project does not condone piracy or copyright infringement. Users are responsible for complying with applicable laws, licenses, and service terms in their region.',
+  legalUseTitle: 'Legal Use',
+  metadataAttribution: 'Metadata attribution',
+  tmdbLogoLabel: 'The Movie Database (TMDB)',
+  tmdbAttributionCopy:
+    'This product uses TMDB and the TMDB APIs but is not endorsed, certified, or otherwise approved by TMDB. <ApiTermsLink>TMDB API terms</ApiTermsLink>.',
   versionCheckDisabled: 'Version Check Disabled',
 });
 
@@ -147,18 +152,18 @@ const SettingsAbout = () => {
           <List.Item title={intl.formatMessage(messages.totalrequests)}>
             {intl.formatNumber(data.totalRequests)}
           </List.Item>
-          <List.Item title="Legal Use">
+          <List.Item title={intl.formatMessage(messages.legalUseTitle)}>
             <span className="text-xs leading-4 text-gray-400">
               {intl.formatMessage(messages.legalUse)}
             </span>
           </List.Item>
-          <List.Item title="Metadata attribution">
+          <List.Item title={intl.formatMessage(messages.metadataAttribution)}>
             <div className="media-tmdb-attribution">
               <a
                 href="https://www.themoviedb.org/"
                 target="_blank"
                 rel="noreferrer"
-                aria-label="The Movie Database (TMDB)"
+                aria-label={intl.formatMessage(messages.tmdbLogoLabel)}
               >
                 <TmdbLogo
                   className="media-tmdb-attribution-logo"
@@ -166,17 +171,18 @@ const SettingsAbout = () => {
                 />
               </a>
               <p className="media-tmdb-attribution-copy">
-                This product uses TMDB and the TMDB APIs but is not endorsed,
-                certified, or otherwise approved by TMDB.{' '}
-                <a
-                  className="media-metadata-attribution-link"
-                  href="https://www.themoviedb.org/api-terms-of-use"
-                  target="_blank"
-                  rel="noreferrer"
-                >
-                  TMDB API terms
-                </a>
-                .
+                {intl.formatMessage(messages.tmdbAttributionCopy, {
+                  ApiTermsLink: (msg: React.ReactNode) => (
+                    <a
+                      className="media-metadata-attribution-link"
+                      href="https://www.themoviedb.org/api-terms-of-use"
+                      target="_blank"
+                      rel="noreferrer"
+                    >
+                      {msg}
+                    </a>
+                  ),
+                })}
               </p>
             </div>
           </List.Item>
@@ -185,7 +191,7 @@ const SettingsAbout = () => {
           </List.Item>
           <List.Item title={intl.formatMessage(messages.timezone)}>
             <span className="settings-plain-value">
-              {data.tz || 'Not available'}
+              {data.tz || intl.formatMessage(globalMessages.notavailable)}
             </span>
           </List.Item>
         </List>

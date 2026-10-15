@@ -239,7 +239,7 @@ const AudiobookshelfModal = ({
                     id="hostname"
                     name="hostname"
                     type="text"
-                    className="rounded-r-only"
+                    className="rounded-e-only"
                     onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                       setIsValidated(false);
                       setFieldValue('hostname', event.target.value);

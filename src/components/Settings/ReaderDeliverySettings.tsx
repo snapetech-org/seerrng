@@ -28,6 +28,8 @@ const messages = defineMessages('components.ReaderDeliverySettings', {
     'Enter the address readers can open in a browser. Include a reverse-proxy base path if you use one. You can paste a full OPDS or Grimmory Komga address.',
   addressPlaceholder: 'https://reader.example.com',
   catalogAddress: 'OPDS Catalog Address',
+  catalogAddressLabel: '{serviceName} OPDS catalog address',
+  copyServiceCatalogAddress: 'Copy {serviceName} OPDS catalog address',
   comicCatalogAddress: 'Komga Comic Reader Address',
   comicCatalogAddressDescription:
     'Use this address in a Komga-compatible comic app for page-by-page streaming. Enable Grimmory’s Komga API and use the same OPDS reader credentials.',
@@ -524,13 +526,19 @@ const ReaderDeliverySettings = () => {
                     value={catalogUrl}
                     readOnly
                     onFocus={(event) => event.currentTarget.select()}
-                    aria-label={serviceName + ' OPDS catalog address'}
+                    aria-label={intl.formatMessage(
+                      messages.catalogAddressLabel,
+                      { serviceName }
+                    )}
                   />
                   <Button
                     type="button"
                     buttonSize="sm"
                     disabled={!catalogUrl}
-                    aria-label={'Copy ' + serviceName + ' OPDS catalog address'}
+                    aria-label={intl.formatMessage(
+                      messages.copyServiceCatalogAddress,
+                      { serviceName }
+                    )}
                     onClick={() => void copyCatalogUrl(provider, catalogUrl)}
                   >
                     {intl.formatMessage(messages.copyCatalogAddress)}

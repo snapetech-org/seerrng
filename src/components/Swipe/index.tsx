@@ -82,6 +82,7 @@ const messages = defineMessages('components.Swipe', {
   seedScopeHelp:
     'Rated only uses items you rated in your linked Plex, Jellyfin, or Emby library for movies and series. Favorites uses the items selected below; choose Favorites to seed book suggestions from selected books.',
   favoriteItems: 'Choose up to 25 favorites',
+  favoriteCount: '{count} of 25 selected',
   noFavoriteItems:
     'No library items, requests, or past liked titles are available to choose yet.',
   audiobook: 'Request the audiobook',
@@ -607,7 +608,9 @@ const Swipe = () => {
             <label>{intl.formatMessage(messages.favoriteItems)}</label>
             <div className="form-input-area">
               <p className="settings-form-row-description">
-                {draftProfile.favoriteSeeds.length}/25 selected
+                {intl.formatMessage(messages.favoriteCount, {
+                  count: draftProfile.favoriteSeeds.length,
+                })}
               </p>
               {favoriteOptionsForType.length === 0 ? (
                 <p className="settings-form-row-description">

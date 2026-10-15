@@ -2718,18 +2718,43 @@ components:
           description: Changes when bridge sign-in is enabled or disabled, revoking sessions created before the change.
     MetadataSettings:
       type: object
+      required: [tv, anime]
       properties:
-        settings:
-          type: object
+        success:
+          type: boolean
+          description: Present on successful updates.
+        tv:
+          type: string
+          enum: [tvdb, tmdb]
+          example: 'tvdb'
+        anime:
+          type: string
+          enum: [tvdb, tmdb]
+          example: 'tvdb'
+    CoverArtArchiveSettings:
+      type: object
+      required: [maxConcurrentRequests, maxRequestsPerSecond]
+      properties:
+        maxConcurrentRequests:
+          type: integer
+          minimum: 1
+          maximum: 5
+          default: 5
+          description: Maximum number of Cover Art Archive network requests in flight across this SeerrNG process.
+        maxRequestsPerSecond:
+          type: integer
+          minimum: 1
+          maximum: 50
+          default: 50
+          description: Maximum Cover Art Archive network requests per second, counting each validated redirect hop.
+    CoverArtArchiveSettingsUpdateResponse:
+      allOf:
+        - $ref: '#/components/schemas/CoverArtArchiveSettings'
+        - type: object
+          required: [success]
           properties:
-            tv:
-              type: string
-              enum: [tvdb, tmdb]
-              example: 'tvdb'
-            anime:
-              type: string
-              enum: [tvdb, tmdb]
-              example: 'tvdb'
+            success:
+              type: boolean
     TautulliSettings:
       type: object
       properties:
@@ -7923,8 +7948,8 @@ paths:
                 $ref: '#/components/schemas/MetadataSettings'
   /settings/metadatas/test:
     post:
-      summary: Test Provider configuration
-      description: Tests if the TVDB configuration is valid. Returns a list of available languages on success.
+      summary: Test metadata provider connections
+      description: Tests only the providers enabled in the request. MusicBrainz and Cover Art Archive use read-only, uncached connectivity probes.
       tags:
         - settings
       requestBody:
@@ -7940,17 +7965,72 @@ paths:
                 tvdb:
                   type: boolean
                   example: true
+                musicbrainz:
+                  type: boolean
+                  example: true
+                coverartarchive:
+                  type: boolean
+                  example: true
       responses:
         '200':
-          description: Succesfully connected to TVDB
+          description: All requested providers responded successfully.
           content:
             application/json:
               schema:
                 type: object
                 properties:
-                  message:
-                    type: string
-                    example: 'Successfully connected to TVDB'
+                  success:
+                    type: boolean
+                  tests:
+                    type: object
+                    properties:
+                      tmdb:
+                        type: string
+                        enum: [not tested, failed, ok]
+                      tvdb:
+                        type: string
+                        enum: [not tested, failed, ok]
+                      musicbrainz:
+                        type: string
+                        enum: [not tested, failed, ok]
+                      coverartarchive:
+                        type: string
+                        enum: [not tested, failed, ok]
+        '500':
+          description: One or more requested providers failed.
+  /settings/metadatas/music:
+    get:
+      summary: Get music metadata provider settings
+      description: Retrieves Cover Art Archive request limits.
+      tags:
+        - settings
+      responses:
+        '200':
+          description: Current settings.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CoverArtArchiveSettings'
+    put:
+      summary: Update music metadata provider settings
+      description: Updates bounded Cover Art Archive concurrency and request-rate limits.
+      tags:
+        - settings
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CoverArtArchiveSettings'
+      responses:
+        '200':
+          description: Settings were successfully updated.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CoverArtArchiveSettingsUpdateResponse'
+        '400':
+          description: A limit is outside its supported range.
   /settings/tautulli:
     get:
       summary: Get Tautulli settings

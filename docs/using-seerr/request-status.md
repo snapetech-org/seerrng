@@ -32,6 +32,14 @@ approve, decline, or edit, depending on your permissions. Actions for deleting
 status entries or removing available media are permission-controlled and
 include a confirmation step.
 
+For TV requests, SeerrNG can resolve a missing TVDB identifier through TVDB's
+confirmed TMDB match or the selected Sonarr server's TMDB lookup. It checks
+requested regular seasons against official TVDB season data before dispatch.
+If the series cannot be identified or the season numbers cannot be confirmed,
+the request stays visible as failed with its media record intact. Correct the
+provider or metadata issue before retrying; retrying alone cannot reconcile a
+TMDB and TVDB season-numbering mismatch.
+
 For books, the Books and Audiobooks filters keep ebook and audiobook requests
 separate. A combined request can therefore be incomplete while one format is
 available and the other is still requested or missing. See

@@ -1,6 +1,7 @@
 import { availableLanguages } from '@app/context/LanguageContext';
 import useClickOutside from '@app/hooks/useClickOutside';
 import useLocale from '@app/hooks/useLocale';
+import globalMessages from '@app/i18n/globalMessages';
 import defineMessages from '@app/utils/defineMessages';
 import { Transition } from '@headlessui/react';
 import { LanguageIcon } from '@heroicons/react/24/solid';
@@ -15,7 +16,7 @@ const messages = defineMessages('components.Layout.LanguagePicker', {
 const LanguagePicker = () => {
   const intl = useIntl();
   const dropdownRef = useRef<HTMLDivElement>(null);
-  const { locale, setLocale } = useLocale();
+  const { locale, requestedLocale = locale, setLocale } = useLocale();
   const [isDropdownOpen, setDropdownOpen] = useState(false);
   useClickOutside(dropdownRef, () => setDropdownOpen(false));
 
@@ -26,7 +27,7 @@ const LanguagePicker = () => {
           className={`rounded-full p-1 hover:bg-gray-600 hover:text-white focus:bg-gray-600 focus:text-white focus:ring-1 focus:ring-gray-500 focus:outline-none sm:p-2 ${
             isDropdownOpen ? 'bg-gray-600 text-white' : 'text-gray-400'
           }`}
-          aria-label="Language Picker"
+          aria-label={intl.formatMessage(globalMessages.languagePicker)}
           onClick={() => setDropdownOpen(true)}
         >
           <LanguageIcon className="h-6 w-6" />
@@ -43,7 +44,7 @@ const LanguagePicker = () => {
         leaveTo="opacity-0 scale-95"
       >
         <div
-          className="absolute right-0 mt-2 w-56 origin-top-right rounded-md shadow-lg"
+          className="absolute end-0 mt-2 w-56 rounded-md shadow-lg"
           ref={dropdownRef}
         >
           <div className="ring-opacity-5 rounded-md bg-gray-700 px-3 py-2 ring-1 ring-black">
@@ -63,7 +64,7 @@ const LanguagePicker = () => {
                 onBlur={(e) =>
                   setLocale && setLocale(e.target.value as AvailableLocale)
                 }
-                defaultValue={locale}
+                value={requestedLocale}
               >
                 {(
                   Object.keys(
