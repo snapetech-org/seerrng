@@ -1,4 +1,7 @@
-import { MediaRequestStatus } from '@server/constants/media';
+import {
+  MediaRequestFailureReason,
+  MediaRequestStatus,
+} from '@server/constants/media';
 import dataSource, { getRepository } from '@server/datasource';
 import { MediaRequest } from '@server/entity/MediaRequest';
 import { RequestDispatchOutbox } from '@server/entity/RequestDispatchOutbox';
@@ -265,7 +268,10 @@ export class RequestDispatchManager {
           .getRepository(MediaRequest)
           .createQueryBuilder()
           .update(MediaRequest)
-          .set({ status: MediaRequestStatus.FAILED })
+          .set({
+            status: MediaRequestStatus.FAILED,
+            failureReason: MediaRequestFailureReason.DISPATCH_FAILED,
+          })
           .where('id = :requestId', { requestId: record.requestId })
           .andWhere('status = :approved', {
             approved: MediaRequestStatus.APPROVED,

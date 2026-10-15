@@ -68,3 +68,36 @@ test('adds and removes request failure reason without losing request rows', asyn
     await dataSource.destroy();
   }
 });
+
+test('can run up and down repeatedly', async () => {
+  const dataSource = await new DataSource({
+    type: 'better-sqlite3',
+    database: ':memory:',
+  }).initialize();
+  const queryRunner = dataSource.createQueryRunner();
+  const migration = new AddMediaRequestFailureReason1791140000000();
+
+  try {
+    await queryRunner.query(
+      'CREATE TABLE "media_request" ("id" integer PRIMARY KEY, "status" integer NOT NULL)'
+    );
+
+    await migration.up(queryRunner);
+    await migration.up(queryRunner);
+    await migration.down(queryRunner);
+    await migration.down(queryRunner);
+
+    const columns = await queryRunner.query(
+      'PRAGMA table_info("media_request")'
+    );
+    assert.equal(
+      columns.some(
+        (column: { name: string }) => column.name === 'failureReason'
+      ),
+      false
+    );
+  } finally {
+    await queryRunner.release();
+    await dataSource.destroy();
+  }
+});
