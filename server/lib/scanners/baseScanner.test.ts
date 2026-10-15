@@ -1,8 +1,10 @@
-import { MediaType } from '@server/constants/media';
+import { MediaStatus, MediaType } from '@server/constants/media';
 import dataSource, { getRepository } from '@server/datasource';
 import Media from '@server/entity/Media';
 import { MediaIdentifierProvider } from '@server/entity/MediaIdentifier';
 import { runWithRequestAdmission } from '@server/entity/MediaRequest';
+import Season from '@server/entity/Season';
+import type { ProcessableSeason } from '@server/lib/scanners/baseScanner';
 import BaseScanner from '@server/lib/scanners/baseScanner';
 import { setupTestDb } from '@server/test/db';
 import assert from 'node:assert/strict';
@@ -33,6 +35,10 @@ class TestScanner extends BaseScanner<never> {
     return this.processBook(MediaIdentifierProvider.ISBN, value, {
       processing: true,
     });
+  }
+
+  public scanShow(tmdbId: number, seasons: ProcessableSeason[]): Promise<void> {
+    return this.processShow(tmdbId, undefined, seasons);
   }
 }
 
@@ -113,5 +119,50 @@ describe('BaseScanner run admission', () => {
       await getRepository(Media).countBy({ mediaType: MediaType.BOOK }),
       0
     );
+  });
+
+  it('ignores orphaned unknown seasons when rolling up show availability', async () => {
+    const tmdbId = 987654321;
+    const mediaRepository = getRepository(Media);
+    await mediaRepository.save(
+      new Media({
+        tmdbId,
+        mediaType: MediaType.TV,
+        status: MediaStatus.PARTIALLY_AVAILABLE,
+        seasons: [
+          new Season({
+            seasonNumber: 1,
+            status: MediaStatus.UNKNOWN,
+            status4k: MediaStatus.UNKNOWN,
+          }),
+          new Season({
+            seasonNumber: 2,
+            status: MediaStatus.UNKNOWN,
+            status4k: MediaStatus.UNKNOWN,
+          }),
+        ],
+      })
+    );
+
+    const scanner = new TestScanner();
+    await scanner.scanShow(tmdbId, [
+      {
+        seasonNumber: 1,
+        totalEpisodes: 10,
+        episodes: 10,
+        episodes4k: 0,
+      },
+    ]);
+
+    const updated = await mediaRepository.findOneOrFail({
+      where: { tmdbId, mediaType: MediaType.TV },
+      relations: { seasons: true },
+    });
+    const orphanedSeason = updated.seasons.find(
+      (season) => season.seasonNumber === 2
+    );
+
+    assert.strictEqual(updated.status, MediaStatus.AVAILABLE);
+    assert.strictEqual(orphanedSeason?.status, MediaStatus.UNKNOWN);
   });
 });
