@@ -658,6 +658,7 @@ export function createPlan(
               ]
             : [
                 '--test',
+                '--test-isolation=process',
                 '--test-concurrency=1',
                 '--test-reporter=tap',
                 ...chunks[i],
@@ -1182,9 +1183,16 @@ export async function executePlan(
     typeof caseLedgerObserver !== 'function'
   )
     throw new Error('Native case-ledger observer must be a function');
+  const workerBudget =
+    workers ??
+    detectWorkerCapacity({
+      sourceRoot: plan.root,
+      environment: inherited,
+    }).configuredWorkers;
   if (
-    workers !== undefined &&
-    (!Number.isSafeInteger(workers) || workers < 1 || workers > 256)
+    !Number.isSafeInteger(workerBudget) ||
+    workerBudget < 1 ||
+    workerBudget > 256
   )
     throw new Error('Invalid sealed native worker budget');
   const directory = mkdtempSync(join(tmpdir(), prefix));
@@ -1218,8 +1226,25 @@ export async function executePlan(
     for (const original of plan.steps) {
       if (signal?.aborted) throw new Error('Validation interrupted');
       const step = { ...original, args: [...original.args] };
-      if (step.kind === 'tooling' && workers !== undefined)
-        step.args.push(`--workers=${workers}`);
+      if (step.kind === 'tooling') step.args.push(`--workers=${workerBudget}`);
+      if (step.kind === 'node-ts') {
+        const concurrencyArgument = step.args.findIndex((argument) =>
+          argument.startsWith('--test-concurrency=')
+        );
+        if (concurrencyArgument === -1)
+          step.args.push(`--test-concurrency=${workerBudget}`);
+        else
+          step.args[concurrencyArgument] = `--test-concurrency=${workerBudget}`;
+      }
+      if (step.kind === 'node-js') {
+        const concurrencyArgument = step.args.findIndex((argument) =>
+          argument.startsWith('--test-concurrency=')
+        );
+        if (concurrencyArgument === -1)
+          step.args.push(`--test-concurrency=${workerBudget}`);
+        else
+          step.args[concurrencyArgument] = `--test-concurrency=${workerBudget}`;
+      }
       const report = join(directory, 'vitest-report.json');
       if (step.kind === 'vitest') {
         const config = join(directory, 'vitest.config.mjs');
@@ -1231,7 +1256,7 @@ export async function executePlan(
               : step.config,
             sandboxWorkspace,
             step.files,
-            workers,
+            workerBudget,
             sandbox
               ? '/run-data/vitest-cache'
               : join(directory, 'vitest-cache'),

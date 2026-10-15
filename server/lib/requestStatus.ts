@@ -18,6 +18,7 @@ import type {
 } from '@server/lib/downloadtracker';
 import downloadTracker from '@server/lib/downloadtracker';
 import { getExternalRuntimeConfig } from '@server/lib/externalRuntimeConfig';
+import { hydrateMediaRequestRelations } from '@server/lib/mediaRequestHydration';
 import {
   getRequestedMusicSearchTime,
   reconcileRequestedMusicAvailability,
@@ -1267,10 +1268,12 @@ const loadRequest = async (
     {
       where: { id: requestId },
       relations: {
-        media: true,
+        media: { seasons: true },
         seasons: true,
         requestedBy: true,
       },
+      relationLoadStrategy: 'query',
+      loadEagerRelations: false,
     }
   );
 
@@ -1842,11 +1845,8 @@ export const getRequestStatusPage = async (options: {
   const query = requestRepository
     .createQueryBuilder('request')
     .leftJoinAndSelect('request.media', 'media')
-    .leftJoinAndSelect('media.seasons', 'mediaSeasons')
-    .leftJoinAndSelect('media.identifiers', 'identifiers')
     .leftJoinAndSelect('request.requestedBy', 'requestedBy')
-    .leftJoinAndSelect('request.modifiedBy', 'modifiedBy')
-    .leftJoinAndSelect('request.seasons', 'seasons');
+    .leftJoinAndSelect('request.modifiedBy', 'modifiedBy');
 
   if (options.requestId) {
     query.andWhere('request.id = :requestId', {
@@ -1915,6 +1915,10 @@ export const getRequestStatusPage = async (options: {
       .skip(skip)
       .getManyAndCount();
   }
+
+  requests = await hydrateMediaRequestRelations(requests, {
+    includeMediaIdentifiers: true,
+  });
 
   const requestIds = requests.map((request) => request.id);
   const [latestEvents, pendingRequestIds, bookSearchStates] = await Promise.all(

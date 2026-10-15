@@ -6,7 +6,7 @@ import useSettings from '@app/hooks/useSettings';
 import useToasts from '@app/hooks/useToasts';
 import globalMessages from '@app/i18n/globalMessages';
 import defineMessages from '@app/utils/defineMessages';
-import { MediaServerType } from '@server/constants/server';
+import { MediaServerType, ServerType } from '@server/constants/server';
 import axios from 'axios';
 import { useMemo, useState } from 'react';
 import { useIntl } from 'react-intl';
@@ -68,8 +68,8 @@ const JellyfinImportModal: React.FC<JellyfinImportProps> = ({
   const [selectedUsers, setSelectedUsers] = useState<string[]>([]);
   const mediaServerName =
     settings.currentSettings.mediaServerType === MediaServerType.EMBY
-      ? 'Emby'
-      : 'Jellyfin';
+      ? ServerType.EMBY
+      : ServerType.JELLYFIN;
   const { data, error } = useSWR<JellyfinImportUser[]>(
     '/api/v1/settings/jellyfin/users',
     { revalidateOnMount: true }

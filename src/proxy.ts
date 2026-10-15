@@ -2,6 +2,7 @@ import type { NextRequest } from 'next/server';
 import { NextResponse } from 'next/server';
 import { isAuthenticationError } from './utils/auth';
 import { getInternalApiBaseUrl } from './utils/internalApi';
+import { buildLoginPath } from './utils/loginReturn';
 import {
   isLoginPath,
   isPathPrefix,
@@ -90,7 +91,9 @@ export async function proxy(req: NextRequest) {
     !isSetupPath(pathname) &&
     !isResetPasswordPath(pathname)
   ) {
-    return NextResponse.redirect(new URL('/login', req.url));
+    return NextResponse.redirect(
+      new URL(buildLoginPath(pathname, req.nextUrl.search), req.url)
+    );
   }
 
   return NextResponse.next();
