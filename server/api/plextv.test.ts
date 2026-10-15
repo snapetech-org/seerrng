@@ -9,6 +9,7 @@ import {
   PLEXTV_HTTP_OPTIONS,
   PLEX_WATCHLIST_HYDRATION_CONCURRENCY,
   createPlexWatchlistPageCacheKey,
+  isCacheablePlexWatchlistPage,
   normalizePlexWatchlistPage,
   parsePlexDevices,
   parsePlexSharedUsers,
@@ -168,5 +169,32 @@ describe('plexUserHasServerAccess', () => {
       plexUserHasServerAccess({ ...sharedUser, Server: undefined }, 'target'),
       false
     );
+  });
+});
+
+describe('Plex watchlist page caching guard', () => {
+  it('accepts well-formed watchlist containers', () => {
+    assert.equal(
+      isCacheablePlexWatchlistPage({
+        MediaContainer: { totalSize: 2, Metadata: [{ ratingKey: '1' }] },
+      }),
+      true
+    );
+    assert.equal(isCacheablePlexWatchlistPage({ MediaContainer: {} }), true);
+  });
+
+  it('rejects bodies that would pin a bad page behind an ETag', () => {
+    for (const body of [
+      undefined,
+      null,
+      '<html>gateway error</html>',
+      [],
+      {},
+      { MediaContainer: 'oops' },
+      { MediaContainer: { Metadata: 'nope' } },
+      { MediaContainer: { totalSize: '3' } },
+    ]) {
+      assert.equal(isCacheablePlexWatchlistPage(body), false);
+    }
   });
 });

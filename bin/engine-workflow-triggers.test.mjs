@@ -106,6 +106,21 @@ test('image publishing and deployment require reconciled validation and a clean 
     );
 });
 
+test('Seerr deployment jobs target the restricted kspls0 runner with available labels', () => {
+  const jobs = ci.workflow.jobs;
+  const expectedRunner =
+    '{"group":"trusted-main","labels":["self-hosted","Linux","X64","host","kspls0","linux-build"]}';
+
+  for (const jobId of ['preflight-deploy', 'deploy-main']) {
+    assert.match(
+      jobs[jobId]['runs-on'],
+      /TRUSTED_MAIN_RUNNERS_ENABLED == 'true'/
+    );
+    assert.ok(jobs[jobId]['runs-on'].includes(expectedRunner));
+    assert.doesNotMatch(jobs[jobId]['runs-on'], /"seerrng"/);
+  }
+});
+
 test('manual main runs execute the full validation plan before any privileged job', () => {
   const jobs = ci.workflow.jobs;
   for (const id of [
@@ -156,13 +171,13 @@ test('GitHub fans every independent validation job out from the engine plan', ()
   assert.match(jobs.playwright.if, /outputs\.playwright == 'true'/);
 });
 
-test('unit-test shards use the shared org pool only on main pushes and manual runs', () => {
+test('unit-test shards use kspls0 in the shared org pool only for main pushes and manual runs', () => {
   const runner = ci.workflow.jobs['unit-test']['runs-on'];
   const mainRunnerCondition =
     "((github.event_name == 'push' && github.ref == 'refs/heads/main') || " +
     "(github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main'))";
   const trustedRunnerJson =
-    '{"group":"trusted-main","labels":["self-hosted","Linux","X64","host"]}';
+    '{"group":"trusted-main","labels":["self-hosted","Linux","X64","host","kspls0"]}';
   const expectedRunner =
     '$' +
     '{{ (' +
