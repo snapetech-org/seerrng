@@ -490,20 +490,22 @@ softwareAcquisitionRoutes.post(
             error: 'ROMarrNG returned an unsupported integration contract.',
           });
         }
+        let platformCount: number | undefined;
         if (handshake.capabilities?.catalog) {
           phase = 'catalog platform list';
-          await api.getCatalogPlatforms();
+          platformCount = (await api.getCatalogPlatforms(true)).length;
         }
         let datCatalog:
           Awaited<ReturnType<typeof api.getDatCatalogPlatforms>> | undefined;
         if (handshake.capabilities?.datCatalog) {
           phase = 'DAT catalog platform list';
-          datCatalog = await api.getDatCatalogPlatforms();
+          datCatalog = await api.getDatCatalogPlatforms(true);
         }
         return res.status(200).json({
           success: true,
           service: 'ROMarrNG',
           ...(handshake.version ? { version: handshake.version } : {}),
+          ...(platformCount !== undefined ? { platformCount } : {}),
           apiVersion: handshake.apiVersion,
           ...(handshake.requestContractVersion !== undefined
             ? { requestContractVersion: handshake.requestContractVersion }
