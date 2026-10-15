@@ -41,9 +41,14 @@ const common = {
     currentSettings: environment.settings,
   })),
   '@server/constants/media': {
-    MediaStatus: { AVAILABLE: 5, PARTIALLY_AVAILABLE: 4 },
+    MediaStatus: { AVAILABLE: 5, PARTIALLY_AVAILABLE: 4, PROCESSING: 2 },
     MediaType: { TV: 'tv' },
     MediaRequestStatus: {},
+  },
+  '@app/components/IssueDetails/issueMediaFormat': {
+    canReportSeriesIssue: (mediaInfo, canReport4k = false) =>
+      [2, 4, 5].includes(mediaInfo?.status) ||
+      (canReport4k && [2, 4, 5].includes(mediaInfo?.status4k)),
   },
   '@server/constants/server': {
     MediaServerType: { PLEX: 1, JELLYFIN: 2, EMBY: 3 },
