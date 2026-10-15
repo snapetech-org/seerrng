@@ -25,6 +25,13 @@ Movies** and/or **Auto-Request Series** permission. In their profile under
 **Auto-Request Series** toggle. SeerrNG periodically checks the Plex Watchlist
 and submits requests for eligible items that are not already available.
 
+After SeerrNG handles a Plex Watchlist entry, deleting its request or removing
+the downloaded media does not trigger another automatic request while the item
+stays on the list. Remove the item from Plex and add it again to start a new
+auto-request cycle. On the first sync after an upgrade, SeerrNG uses matching
+auto-request records that remain in request history to seed tracking and avoid
+a duplicate request.
+
 ## SeerrNG Watchlist: Music, Books, Comics, and Magazines
 
 Local SeerrNG watchlists are available for music albums, books, comics, and
