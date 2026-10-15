@@ -2,7 +2,11 @@ import type { NextRequest } from 'next/server';
 import { NextResponse } from 'next/server';
 import { isAuthenticationError } from './utils/auth';
 import { getInternalApiBaseUrl } from './utils/internalApi';
-import { buildLoginPath } from './utils/loginReturn';
+import {
+  buildLoginPath,
+  getSafeReturnPath,
+  LOGIN_RETURN_PARAM,
+} from './utils/loginReturn';
 import {
   isLoginPath,
   isPathPrefix,
@@ -84,7 +88,11 @@ export async function proxy(req: NextRequest) {
       (isSetupPath(pathname) || isLoginPath(pathname)) &&
       !isPlexLoginCompletion
     ) {
-      return NextResponse.redirect(new URL('/', req.url));
+      // An already signed-in visitor goes straight to the saved destination.
+      const destination = isLoginPath(pathname)
+        ? getSafeReturnPath(req.nextUrl.searchParams.get(LOGIN_RETURN_PARAM))
+        : undefined;
+      return NextResponse.redirect(new URL(destination ?? '/', req.url));
     }
   } else if (
     !isLoginPath(pathname) &&
