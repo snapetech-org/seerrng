@@ -14,6 +14,7 @@ import TransportSecurityNotice from '@app/components/TransportSecurityNotice';
 import useSettings from '@app/hooks/useSettings';
 import { useUser } from '@app/hooks/useUser';
 import defineMessages from '@app/utils/defineMessages';
+import { getSafeReturnPath } from '@app/utils/loginReturn';
 import versionedAsset from '@app/utils/versionedAsset';
 import { Transition } from '@headlessui/react';
 import { XCircleIcon } from '@heroicons/react/24/solid';
@@ -172,7 +173,12 @@ const Login = ({
   // valid user, we redirect the user to the home page as the login was successful.
   useEffect(() => {
     if (user) {
-      router.push('/');
+      const returnTo = getSafeReturnPath(
+        Array.isArray(router.query.returnTo)
+          ? router.query.returnTo[0]
+          : router.query.returnTo
+      );
+      router.push(returnTo ?? '/');
     }
   }, [user, router]);
 
@@ -231,7 +237,6 @@ const Login = ({
             className="min-w-0 flex-grow"
             onClick={() => setMediaServerLogin(false)}
           >
-            {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src={versionedAsset('/os_icon.svg')}
               alt={settings.currentSettings.applicationTitle}
