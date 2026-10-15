@@ -62,6 +62,15 @@ You can verify whether or not you have a URL base configured in your Radarr/Sona
 
 Select the default settings you would like to use for all new requests. Note that all of these options are required, and that requests will fail if any of these are not configured!
 
+Sonarr also supports a separate **Anime Quality Profile**. SeerrNG checks the
+selected profile when you save the service settings and rejects it if the
+connected Sonarr server confirms that the profile is missing. If Sonarr cannot
+be reached during the save, the settings are retained so you can repair the
+connection. When an approved anime request is sent, SeerrNG verifies the
+selected anime profile again and falls back to that same Sonarr service's
+default profile if the anime profile is missing or cannot be verified. The
+Services list shows the configured anime profile beneath the standard profile.
+
 #### External URL (optional)
 
 If the hostname or IP address you configured above is not accessible outside your network, you can set a different URL here. This "external" URL is used to add clickable links to your Radarr/Sonarr servers on media detail pages.

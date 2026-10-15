@@ -22,9 +22,57 @@ import {
   preserveServarrConnectionSecret,
   type ServarrConnectionSettings,
 } from '@server/utils/servarrSettings';
-import { Router } from 'express';
+import { Router, type Response } from 'express';
 
 const sonarrRoutes = Router();
+
+type AnimeProfileValidation = 'valid' | 'missing' | 'unavailable';
+
+const validateAnimeProfile = async (
+  settings: SonarrSettings
+): Promise<AnimeProfileValidation> => {
+  const profileId = settings.activeAnimeProfileId;
+  if (profileId === undefined) {
+    return 'valid';
+  }
+
+  try {
+    const sonarr = new SonarrAPI({
+      apiKey: settings.apiKey,
+      url: SonarrAPI.buildUrl(settings, '/api/v3'),
+    });
+    const profiles = await sonarr.getProfiles({ forceRefresh: true });
+    return profiles.some((profile) => profile.id === profileId)
+      ? 'valid'
+      : 'missing';
+  } catch {
+    // Keep connection settings editable while Sonarr is offline or being
+    // reconfigured. Request dispatch performs the same check before use.
+    logger.warn(
+      'Unable to verify the configured Sonarr anime quality profile; saving settings so the connection can be recovered.',
+      {
+        label: 'Sonarr',
+        serverId: settings.id,
+      }
+    );
+    return 'unavailable';
+  }
+};
+
+const respondIfAnimeProfileIsMissing = async (
+  settings: SonarrSettings,
+  res: Response
+): Promise<boolean> => {
+  if ((await validateAnimeProfile(settings)) !== 'missing') {
+    return false;
+  }
+
+  res.status(422).json({
+    message:
+      'The selected anime quality profile does not exist on the Sonarr server.',
+  });
+  return true;
+};
 
 sonarrRoutes.get('/', (_req, res) => {
   const settings = getSettings();
@@ -46,6 +94,14 @@ sonarrRoutes.post(
     return runWithServarrServiceCollectionMutationAdmission(
       'sonarr',
       async () => {
+        const animeProfileIsMissing = await respondIfAnimeProfileIsMissing(
+          parsedSonarr.value,
+          res
+        );
+        if (animeProfileIsMissing) {
+          return;
+        }
+
         const historicalServiceIdMaximum =
           await getHistoricalServarrServiceIdMaximum('sonarr');
         const sonarr = await settings.persistSection('sonarr', (current) => {
@@ -170,6 +226,15 @@ sonarrRoutes.put<{ id: string }>(
         if ('error' in admittedSonarr) {
           return res.status(400).json({ message: admittedSonarr.error });
         }
+
+        const animeProfileIsMissing = await respondIfAnimeProfileIsMissing(
+          admittedSonarr.value,
+          res
+        );
+        if (animeProfileIsMissing) {
+          return;
+        }
+
         if (currentSonarr.is4k !== admittedSonarr.value.is4k) {
           await assertServarrServiceCanChangeKind('sonarr', sonarrId);
         }
