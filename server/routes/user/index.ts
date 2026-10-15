@@ -180,6 +180,8 @@ const localAvatarUploadRateLimit = rateLimit({
   keyGenerator: (req) =>
     req.user?.id ? `user:${req.user.id}` : getRateLimitKey(req),
 });
+const MAX_AVAILABILITY_SUBSCRIPTIONS_PER_USER = 200;
+
 const availabilitySubscriptionMutationRateLimit = rateLimit({
   windowMs: 60 * 1000,
   limit: 30,
@@ -1595,6 +1597,7 @@ router.post(
     }
 
     try {
+      let limitReached = false;
       const accepted = await runUserSecurityMutation(userId, async () => {
         const media = await getRepository(Media).findOne({
           where: { mediaType, tmdbId },
@@ -1617,6 +1620,15 @@ router.post(
             return false;
           }
 
+          if (
+            (await getRepository(MediaAvailabilitySubscription).countBy({
+              user: { id: userId },
+            })) >= MAX_AVAILABILITY_SUBSCRIPTIONS_PER_USER
+          ) {
+            limitReached = true;
+            return false;
+          }
+
           try {
             await getRepository(MediaAvailabilitySubscription).insert({
               user: { id: userId },
@@ -1635,8 +1647,9 @@ router.post(
       if (!accepted) {
         return next({
           status: 409,
-          message:
-            'This title no longer has an active request from another user.',
+          message: limitReached
+            ? 'You have reached the maximum number of availability subscriptions.'
+            : 'This title no longer has an active request from another user.',
         });
       }
 
