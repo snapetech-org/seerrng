@@ -1069,9 +1069,14 @@ const QueryFilterOptions = z.object({
   voteCountGte: optionalTmdbQueryString(16),
   voteCountLte: optionalTmdbQueryString(16),
   network: optionalTmdbQueryString(),
-  watchProviders: optionalTmdbQueryString(),
+  watchProviders: optionalTmdbQueryString().refine(
+    (value) =>
+      value === undefined || /^\d{1,10}(?:[|,]\d{1,10}){0,49}$/.test(value)
+  ),
   watchProviderMode: z.enum(['include', 'exclude']).optional(),
-  watchRegion: optionalTmdbQueryString(16),
+  watchRegion: optionalTmdbQueryString(16).refine(
+    (value) => value === undefined || /^[A-Za-z]{2}$/.test(value)
+  ),
   status: optionalTmdbQueryString(32),
   certification: optionalTmdbQueryString(32),
   certificationGte: optionalTmdbQueryString(32),
@@ -1109,6 +1114,13 @@ const getVideoFilterCompatibilityError = (
   }
   if (query.watchProviderMode && !query.watchProviders) {
     return 'Choose a streaming service before setting its match mode.';
+  }
+  if (
+    query.watchProviderMode === 'exclude' &&
+    query.watchProviders &&
+    !query.watchRegion
+  ) {
+    return 'A watch region is required to exclude watch providers.';
   }
   if (query.excludeStatus) {
     if (mediaType !== 'tv') {

@@ -1934,6 +1934,35 @@ describe('GET /discover/tv', () => {
     assert.strictEqual(res.status, 200);
   });
 
+  it('rejects malformed provider IDs, malformed regions, and exclusion without a region', async () => {
+    const agent = await login();
+
+    const badProviders = await agent
+      .get('/discover/movies')
+      .query({ watchProviders: '8|abc', watchRegion: 'CA' });
+    const tooManyProviders = await agent.get('/discover/tv').query({
+      watchProviders: Array.from({ length: 51 }, (_, index) => index + 1).join(
+        '|'
+      ),
+      watchRegion: 'CA',
+    });
+    const badRegion = await agent
+      .get('/discover/movies')
+      .query({ watchProviders: '8', watchRegion: 'CANADA' });
+    const excludeWithoutRegion = await agent
+      .get('/discover/tv')
+      .query({ watchProviders: '8', watchProviderMode: 'exclude' });
+
+    for (const res of [
+      badProviders,
+      tooManyProviders,
+      badRegion,
+      excludeWithoutRegion,
+    ]) {
+      assert.strictEqual(res.status, 400);
+    }
+  });
+
   it('rejects malformed network IDs before provider lookup', async () => {
     mockPrivate(ExternalAPI.prototype, 'get', async () => {
       throw new Error('TMDB should not be called for malformed network IDs');
