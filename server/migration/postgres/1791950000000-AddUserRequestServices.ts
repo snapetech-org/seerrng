@@ -1,7 +1,7 @@
 import type { MigrationInterface, QueryRunner } from 'typeorm';
 
-export class AddUserRequestServices1791920000000 implements MigrationInterface {
-  name = 'AddUserRequestServices1791920000000';
+export class AddUserRequestServices1791950000000 implements MigrationInterface {
+  name = 'AddUserRequestServices1791950000000';
 
   public async up(queryRunner: QueryRunner): Promise<void> {
     if (await queryRunner.hasColumn('user', 'requestServices')) return;
