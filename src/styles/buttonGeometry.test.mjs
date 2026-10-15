@@ -168,6 +168,18 @@ test('poster availability and watched badges share a translucent poster surface'
     css,
     /\.poster-control\.poster-control-available\s*\{[^}]*background-color: hsl\([^)]*var\(--poster-control-background-opacity\)/s
   );
+  assert.match(
+    css,
+    /\.poster-control\.poster-control-shared-availability\s*\{[^}]*var\(--palette-purple\)/s
+  );
+  assert.match(
+    css,
+    /\.app-badge-shared-availability\s*\{[^}]*var\(--palette-purple\)/s
+  );
+  assert.match(
+    css,
+    /\.detail-availability-shared\s*\{[^}]*var\(--palette-purple-light\)/s
+  );
   assert.doesNotMatch(
     css.match(/\.watched-status-badge\s*\{([^}]+)\}/)?.[1] ?? '',
     /\bbg-black(?!\/35)\b/

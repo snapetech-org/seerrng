@@ -12,6 +12,10 @@ import {
 } from '@server/constants/media';
 import { getRepository } from '@server/datasource';
 import Media from '@server/entity/Media';
+import MediaIdentifier, {
+  MediaIdentifierProvider,
+} from '@server/entity/MediaIdentifier';
+import MediaIdentifierSeasonMapping from '@server/entity/MediaIdentifierSeasonMapping';
 import MediaRequest from '@server/entity/MediaRequest';
 import Season from '@server/entity/Season';
 import SeasonRequest from '@server/entity/SeasonRequest';
@@ -208,6 +212,118 @@ describe('Sonarr Scanner', () => {
     getLibrarySeriesByTvdbIdImpl = async () => [];
     getShowByTvdbIdImpl = async () => fakeTmdbShow(1);
     getTvShowImpl = async () => fakeTmdbShow(1);
+  });
+
+  it('uses the mapped TVDB alias for the right Media row while retaining canonical seasons', async () => {
+    const mediaRepository = getRepository(Media);
+    const mappedMedia = await mediaRepository.save(
+      new Media({
+        tmdbId: 3001,
+        tvdbId: 550,
+        mediaType: MediaType.TV,
+        status: MediaStatus.PROCESSING,
+        status4k: MediaStatus.UNKNOWN,
+        seasons: [
+          new Season({
+            seasonNumber: 1,
+            status: MediaStatus.PROCESSING,
+            status4k: MediaStatus.UNKNOWN,
+          }),
+        ],
+      })
+    );
+    const canonicalMedia = await mediaRepository.save(
+      new Media({
+        tmdbId: 3002,
+        tvdbId: 999,
+        mediaType: MediaType.TV,
+        status: MediaStatus.PROCESSING,
+        status4k: MediaStatus.UNKNOWN,
+        seasons: [
+          new Season({
+            seasonNumber: 1,
+            status: MediaStatus.PROCESSING,
+            status4k: MediaStatus.UNKNOWN,
+          }),
+        ],
+      })
+    );
+    const identifier = await getRepository(MediaIdentifier).save(
+      new MediaIdentifier({
+        media: mappedMedia,
+        provider: MediaIdentifierProvider.TVDB,
+        value: '999',
+        canonical: false,
+      })
+    );
+    await getRepository(MediaIdentifierSeasonMapping).save([
+      new MediaIdentifierSeasonMapping({
+        mediaIdentifier: identifier,
+        sonarrServerId: 1,
+        is4k: false,
+        seasonNumber: 1,
+        externalSeasonNumber: 3,
+      }),
+      new MediaIdentifierSeasonMapping({
+        mediaIdentifier: identifier,
+        sonarrServerId: 0,
+        is4k: true,
+        seasonNumber: 1,
+        externalSeasonNumber: 4,
+      }),
+      new MediaIdentifierSeasonMapping({
+        mediaIdentifier: identifier,
+        sonarrServerId: 0,
+        is4k: false,
+        seasonNumber: 1,
+        externalSeasonNumber: 2,
+      }),
+    ]);
+
+    configureSonarr([{ syncEnabled: true, id: 0 }]);
+    getSeriesImpl = async () => [
+      fakeSonarrSeries({
+        tvdbId: 999,
+        seasons: [
+          {
+            seasonNumber: 2,
+            monitored: true,
+            statistics: {
+              episodeFileCount: 10,
+              totalEpisodeCount: 10,
+              episodeCount: 10,
+              percentOfEpisodes: 100,
+              sizeOnDisk: 1,
+              previousAiring: undefined,
+            },
+          },
+        ],
+      }),
+    ];
+    getTvShowImpl = async ({ tvId }) =>
+      fakeTmdbShow(tvId, [
+        {
+          id: 1,
+          air_date: '2024-01-01',
+          episode_count: 10,
+          name: 'Season 1',
+          overview: '',
+          season_number: 1,
+        },
+      ]);
+
+    await runWithMockTimers(() => sonarrScanner.run());
+
+    const updatedMapped = await mediaRepository.findOneOrFail({
+      where: { id: mappedMedia.id },
+      relations: { seasons: true },
+    });
+    const updatedCanonical = await mediaRepository.findOneOrFail({
+      where: { id: canonicalMedia.id },
+      relations: { seasons: true },
+    });
+    assert.strictEqual(updatedMapped.seasons[0].status, MediaStatus.AVAILABLE);
+    assert.strictEqual(updatedCanonical.seasons[0].status, MediaStatus.UNKNOWN);
   });
 
   describe('deferred season status reconciliation', () => {

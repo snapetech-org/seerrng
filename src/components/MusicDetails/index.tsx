@@ -21,6 +21,7 @@ import {
   normalizeMusicBrainzId,
 } from '@app/utils/apiPath';
 import defineMessages from '@app/utils/defineMessages';
+import { isMusicServiceForQuality } from '@app/utils/musicService';
 import {
   ArrowDownTrayIcon,
   CogIcon,
@@ -201,7 +202,7 @@ const MusicDetails = () => {
       : undefined);
   const musicRequestOptions = (['mp3', 'flac'] as const).map((format) => {
     const service = musicServices?.find((candidate) =>
-      candidate.name.toLocaleLowerCase().includes(format)
+      isMusicServiceForQuality(candidate, format)
     );
     const available = data.availableServices?.some(
       (candidate) => candidate.serverId === service?.id

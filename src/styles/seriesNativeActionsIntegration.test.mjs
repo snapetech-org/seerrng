@@ -41,9 +41,14 @@ const common = {
     currentSettings: environment.settings,
   })),
   '@server/constants/media': {
-    MediaStatus: { AVAILABLE: 5, PARTIALLY_AVAILABLE: 4 },
+    MediaStatus: { AVAILABLE: 5, PARTIALLY_AVAILABLE: 4, PROCESSING: 2 },
     MediaType: { TV: 'tv' },
     MediaRequestStatus: {},
+  },
+  '@app/components/IssueDetails/issueMediaFormat': {
+    canReportSeriesIssue: (mediaInfo, canReport4k = false) =>
+      [2, 4, 5].includes(mediaInfo?.status) ||
+      (canReport4k && [2, 4, 5].includes(mediaInfo?.status4k)),
   },
   '@server/constants/server': {
     MediaServerType: { PLEX: 1, JELLYFIN: 2, EMBY: 3 },
@@ -54,7 +59,7 @@ const common = {
   ),
   '@app/components/Common/Tooltip': wrap(Children),
 };
-function compile(relative, dependencies) {
+function compileModule(relative, dependencies) {
   const source = fs.readFileSync(path.join(sourceRoot, relative), 'utf8');
   const javascript = ts.transpileModule(source, {
     compilerOptions: {
@@ -68,8 +73,25 @@ function compile(relative, dependencies) {
     compiledModule,
     compiledModule.exports
   );
-  return compiledModule.exports.default;
+  return compiledModule.exports;
 }
+const compile = (relative, dependencies) =>
+  compileModule(relative, dependencies).default;
+const viewerAvailabilityDependencies = compileModule(
+  'src/utils/viewerAvailabilityPresentation.ts',
+  {
+    '@server/constants/availability': {
+      OtherUserAvailabilityMode: {
+        SHOW: 'show',
+        DISTINGUISH: 'distinguish',
+        HIDE: 'hide',
+      },
+    },
+    '@server/constants/media': {
+      MediaStatus: { AVAILABLE: 5, PARTIALLY_AVAILABLE: 4 },
+    },
+  }
+);
 const layoutDependencies = {
   ...common,
   'next/link': wrap(Children),
@@ -92,8 +114,10 @@ const layoutDependencies = {
     preferenceKey: '7:tv',
   })),
   '@app/utils/playbackSelection': {
-    resolveCanonicalPlaybackSelection: () => [],
+    resolveCanonicalPlaybackSelection: (availableIds, selectedIds) =>
+      availableIds.filter((itemId) => selectedIds.includes(itemId)),
   },
+  '@app/utils/viewerAvailabilityPresentation': viewerAvailabilityDependencies,
   '@app/utils/imageCache': { getTmdbPosterImageUrl: () => undefined },
   '@app/utils/subjectTagStyle': { subjectTagTone: () => 'neutral' },
   '@app/components/MediaDetails/subjectTagStyle': {
@@ -127,10 +151,26 @@ const layoutDependencies = {
       )
   ),
   '@app/components/MediaDetails/SeriesSeasonEpisodeBrowser': wrap(
-    ({ selectedItemIds }) =>
-      React.createElement('div', {
-        'data-selection': JSON.stringify(selectedItemIds),
-      })
+    ({ selectedItemIds, onSelectionChange }) =>
+      React.createElement(
+        'div',
+        { 'data-selection': JSON.stringify(selectedItemIds) },
+        React.createElement(
+          'button',
+          {
+            type: 'button',
+            'data-select-episode': true,
+            onClick: () => onSelectionChange(['episode-1']),
+          },
+          'Select episode'
+        )
+      )
+  ),
+  '@app/components/Common/PlayOnDeviceButton': wrap(({ itemIds }) =>
+    React.createElement('button', {
+      type: 'button',
+      'data-play-on-device': JSON.stringify(itemIds),
+    })
   ),
 };
 const Layout = compile(
@@ -155,6 +195,12 @@ const indexDependencies = {
   '@app/components/TvDetails/SeriesDetailsLayout': wrap(Layout),
   '@app/components/MediaDetails/MediaServerWatchlistButton': wrap(
     nativeControl('saved')
+  ),
+  '@app/components/MediaDetails/MediaServerPlayButton': wrap(({ itemIds }) =>
+    React.createElement('button', {
+      type: 'button',
+      'data-media-server-play': JSON.stringify(itemIds),
+    })
   ),
   '@app/components/MediaDetails/MediaServerCollectionButton': wrap(
     nativeControl('collections')
@@ -373,5 +419,36 @@ test('Unavailable 4K presentation cannot forward a stale selected 4K value', asy
   await f.render();
   assert.equal(f.env.nativeProps.saved.is4k, false);
   assert.equal(f.env.nativeProps.collections.is4k, false);
+  await f.cleanup();
+});
+
+test('shared selected seasons suppress both media-server playback actions', async () => {
+  const f = await fixture();
+  f.env.settings = {
+    ...f.env.settings,
+    otherUsersAvailability: 'distinguish',
+  };
+  f.env.catalog = {
+    serverType: 1,
+    groups: [{ index: 1, items: [{ id: 'episode-1' }] }],
+  };
+  f.env.data = {
+    ...f.env.data,
+    mediaInfo: {
+      ...f.env.data.mediaInfo,
+      viewerRequestCoverage: {
+        standard: false,
+        seasons: [{ seasonNumber: 1, standard: false }],
+      },
+    },
+  };
+  await f.render();
+  const selectEpisode = f.container.querySelector('[data-select-episode]');
+  await act(async () => {
+    selectEpisode.click();
+    await tick();
+  });
+  assert.equal(f.container.querySelector('[data-media-server-play]'), null);
+  assert.equal(f.container.querySelector('[data-play-on-device]'), null);
   await f.cleanup();
 });

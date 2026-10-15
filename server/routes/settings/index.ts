@@ -5,6 +5,7 @@ import PlexTvAPI, {
   plexUserHasServerAccess,
 } from '@server/api/plextv';
 import TautulliAPI from '@server/api/tautulli';
+import { OtherUserAvailabilityMode } from '@server/constants/availability';
 import {
   MAX_BLOCKLISTED_TAG_IDS,
   MAX_BLOCKLISTED_TAG_PAGES,
@@ -1091,6 +1092,19 @@ const parseMainSettingsBody = (
       parsedCategories[key as MediaCategoryKey] = enabled;
     }
     value.enabledMediaCategories = parsedCategories;
+  }
+
+  if (body.otherUsersAvailability !== undefined) {
+    if (
+      !Object.values(OtherUserAvailabilityMode).includes(
+        body.otherUsersAvailability as OtherUserAvailabilityMode
+      )
+    ) {
+      return {
+        error: 'otherUsersAvailability must be show, distinguish, or hide.',
+      };
+    }
+    value.otherUsersAvailability = body.otherUsersAvailability;
   }
 
   for (const [key, fieldName] of [

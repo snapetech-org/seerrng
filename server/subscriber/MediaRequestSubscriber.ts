@@ -64,6 +64,7 @@ import notificationManager, { Notification } from '@server/lib/notifications';
 import requestDispatchManager, {
   type RequestDispatchOutcome,
 } from '@server/lib/requestDispatch';
+import { resolveRequesterTag } from '@server/lib/requesterTags';
 import {
   RequestStatusStage,
   hasRequestServiceLink,
@@ -71,6 +72,7 @@ import {
   recordRequestStatus,
   recordRequestStatusOverride,
 } from '@server/lib/requestStatus';
+import { externalSeasonNumberFor } from '@server/lib/seasonNumberMapping';
 import {
   ServarrServiceAuthorityChangedError,
   runWithServarrServiceAdmission,
@@ -1017,46 +1019,37 @@ export class MediaRequestSubscriber implements EntitySubscriberInterface<MediaRe
         const movie = await tmdb.getMovie({ movieId: entity.media.tmdbId });
 
         if (radarrSettings.tagRequests) {
-          const radarrTags = await radarr.getTags();
-          // old tags had space around the hyphen
-          let userTag = radarrTags.find((v) =>
-            v.label.startsWith(entity.requestedBy.id + ' - ')
+          const tagLabel = `${entity.requestedBy.id}-${sanitizeDisplayName(
+            entity.requestedBy.displayName
+          )}`;
+          const result = await resolveRequesterTag(
+            radarr,
+            tags,
+            entity.requestedBy.id,
+            tagLabel
           );
-          // new tags do not have spaces around the hyphen, since spaces are not allowed anymore
-          if (!userTag) {
-            userTag = radarrTags.find((v) =>
-              v.label.startsWith(entity.requestedBy.id + '-')
+          tags = result.tags;
+
+          if (result.failureStage) {
+            logger.warn(
+              'Unable to apply requester tag; continuing without it.',
+              {
+                label: 'Media Request',
+                requestId: entity.id,
+                mediaId: entity.media.id,
+                userId: entity.requestedBy.id,
+                serviceType: 'radarr',
+                serverId: radarrSettings.id,
+                tagOperation: result.failureStage,
+              }
             );
-          }
-          if (!userTag) {
-            logger.info(`Requester has no active tag. Creating new`, {
+          } else if (result.created) {
+            logger.info('Requester has no active tag. Created a new tag.', {
               label: 'Media Request',
               requestId: entity.id,
               mediaId: entity.media.id,
               userId: entity.requestedBy.id,
-              newTag:
-                entity.requestedBy.id +
-                '-' +
-                sanitizeDisplayName(entity.requestedBy.displayName),
-            });
-            userTag = await radarr.createTag({
-              label:
-                entity.requestedBy.id +
-                '-' +
-                sanitizeDisplayName(entity.requestedBy.displayName),
-            });
-          }
-          if (userTag.id) {
-            if (!tags?.find((v) => v === userTag?.id)) {
-              tags?.push(userTag.id);
-            }
-          } else {
-            logger.warn(`Requester has no tag and failed to add one`, {
-              label: 'Media Request',
-              requestId: entity.id,
-              mediaId: entity.media.id,
-              userId: entity.requestedBy.id,
-              radarrServer: radarrSettings.hostname + ':' + radarrSettings.port,
+              newTag: tagLabel,
             });
           }
         }
@@ -1222,12 +1215,16 @@ export class MediaRequestSubscriber implements EntitySubscriberInterface<MediaRe
         });
         const series = await tmdb.getTvShow({ tvId: media.tmdbId });
         const tmdbTvdbId = series.external_ids?.tvdb_id;
-        const hasDirectTvdbId = isPositiveSafeInteger(tmdbTvdbId);
-        let tvdbId = hasDirectTvdbId
-          ? tmdbTvdbId
-          : isPositiveSafeInteger(media.tvdbId)
-            ? media.tvdbId
-            : undefined;
+        const hasTvdbOverride = isPositiveSafeInteger(entity.overrideTvdbId);
+        const hasDirectTvdbId =
+          hasTvdbOverride || isPositiveSafeInteger(tmdbTvdbId);
+        let tvdbId = hasTvdbOverride
+          ? entity.overrideTvdbId!
+          : isPositiveSafeInteger(tmdbTvdbId)
+            ? tmdbTvdbId
+            : isPositiveSafeInteger(media.tvdbId)
+              ? media.tvdbId
+              : undefined;
 
         let tvdb: Tvdb | undefined;
         if (!hasDirectTvdbId) {
@@ -1257,7 +1254,26 @@ export class MediaRequestSubscriber implements EntitySubscriberInterface<MediaRe
           );
         }
 
-        if (!hasDirectTvdbId) {
+        const tvdbIdentifier = await getRepository(MediaIdentifier).findOne({
+          where: {
+            media: { id: media.id },
+            provider: MediaIdentifierProvider.TVDB,
+            value: String(tvdbId),
+          },
+          relations: { seasonMappings: true },
+        });
+        const seasonNumberMappings =
+          tvdbIdentifier?.seasonMappings?.filter(
+            (mapping) =>
+              mapping.sonarrServerId === sonarrSettings.id &&
+              mapping.is4k === entity.is4k
+          ) ?? [];
+
+        if (
+          !hasDirectTvdbId ||
+          hasTvdbOverride ||
+          seasonNumberMappings.length > 0
+        ) {
           if (!tvdb) {
             try {
               tvdb = await Tvdb.getInstance();
@@ -1279,16 +1295,33 @@ export class MediaRequestSubscriber implements EntitySubscriberInterface<MediaRe
             );
           }
 
+          const explicitSeasonNumbers = new Set(
+            seasonNumberMappings.map((mapping) => mapping.seasonNumber)
+          );
+
           const unmatchedSeasons = entity.seasons
             .filter(isActiveSeasonRequest)
             .map((season) => season.seasonNumber)
-            .filter((seasonNumber) => seasonNumber > 0)
             .filter((seasonNumber) => {
+              const externalSeasonNumber = externalSeasonNumberFor(
+                seasonNumber,
+                seasonNumberMappings
+              );
+              if (explicitSeasonNumbers.has(seasonNumber)) {
+                return !officialSeasons.some(
+                  (officialSeason) =>
+                    officialSeason.seasonNumber === externalSeasonNumber
+                );
+              }
+              if (seasonNumber === 0) {
+                return false;
+              }
+
               const tmdbSeason = series.seasons.find(
                 (season) => season.season_number === seasonNumber
               );
               const candidates = officialSeasons.filter(
-                (season) => season.seasonNumber === seasonNumber
+                (season) => season.seasonNumber === externalSeasonNumber
               );
               if (!tmdbSeason || candidates.length !== 1) {
                 return true;
@@ -1396,46 +1429,37 @@ export class MediaRequestSubscriber implements EntitySubscriberInterface<MediaRe
         }
 
         if (sonarrSettings.tagRequests) {
-          const sonarrTags = await sonarr.getTags();
-          // old tags had space around the hyphen
-          let userTag = sonarrTags.find((v) =>
-            v.label.startsWith(entity.requestedBy.id + ' - ')
+          const tagLabel = `${entity.requestedBy.id}-${sanitizeDisplayName(
+            entity.requestedBy.displayName
+          )}`;
+          const result = await resolveRequesterTag(
+            sonarr,
+            tags,
+            entity.requestedBy.id,
+            tagLabel
           );
-          // new tags do not have spaces around the hyphen, since spaces are not allowed anymore
-          if (!userTag) {
-            userTag = sonarrTags.find((v) =>
-              v.label.startsWith(entity.requestedBy.id + '-')
+          tags = result.tags;
+
+          if (result.failureStage) {
+            logger.warn(
+              'Unable to apply requester tag; continuing without it.',
+              {
+                label: 'Media Request',
+                requestId: entity.id,
+                mediaId: entity.media.id,
+                userId: entity.requestedBy.id,
+                serviceType: 'sonarr',
+                serverId: sonarrSettings.id,
+                tagOperation: result.failureStage,
+              }
             );
-          }
-          if (!userTag) {
-            logger.info(`Requester has no active tag. Creating new`, {
+          } else if (result.created) {
+            logger.info('Requester has no active tag. Created a new tag.', {
               label: 'Media Request',
               requestId: entity.id,
               mediaId: entity.media.id,
               userId: entity.requestedBy.id,
-              newTag:
-                entity.requestedBy.id +
-                '-' +
-                sanitizeDisplayName(entity.requestedBy.displayName),
-            });
-            userTag = await sonarr.createTag({
-              label:
-                entity.requestedBy.id +
-                '-' +
-                sanitizeDisplayName(entity.requestedBy.displayName),
-            });
-          }
-          if (userTag.id) {
-            if (!tags?.find((v) => v === userTag?.id)) {
-              tags?.push(userTag.id);
-            }
-          } else {
-            logger.warn(`Requester has no tag and failed to add one`, {
-              label: 'Media Request',
-              requestId: entity.id,
-              mediaId: entity.media.id,
-              userId: entity.requestedBy.id,
-              sonarrServer: sonarrSettings.hostname + ':' + sonarrSettings.port,
+              newTag: tagLabel,
             });
           }
         }
@@ -1448,12 +1472,17 @@ export class MediaRequestSubscriber implements EntitySubscriberInterface<MediaRe
           tvdbid: tvdbId,
           seasons: entity.seasons
             .filter(isActiveSeasonRequest)
-            .map((season) => season.seasonNumber),
+            .map((season) =>
+              externalSeasonNumberFor(season.seasonNumber, seasonNumberMappings)
+            ),
           episodeSelections: entity.seasons
             .filter(isActiveSeasonRequest)
             .some((season) => season.episodeNumbers != null)
             ? entity.seasons.filter(isActiveSeasonRequest).map((season) => ({
-                seasonNumber: season.seasonNumber,
+                seasonNumber: externalSeasonNumberFor(
+                  season.seasonNumber,
+                  seasonNumberMappings
+                ),
                 ...(season.episodeNumbers
                   ? { episodeNumbers: season.episodeNumbers }
                   : {}),

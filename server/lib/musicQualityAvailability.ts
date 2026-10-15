@@ -1,5 +1,6 @@
 import { MediaRequestStatus, MediaStatus } from '@server/constants/media';
 import type { MediaRequestServiceTarget } from '@server/entity/MediaRequest';
+import { getMusicQualityFromLabels } from '@server/lib/musicQuality';
 
 interface MusicAvailabilityMedia {
   status?: MediaStatus;
@@ -32,17 +33,12 @@ export interface MusicQualityStatus {
 const getMusicServiceQuality = (
   service: MusicAvailabilityService | undefined
 ): 'MP3' | 'FLAC' | undefined => {
-  const label = `${service?.activeProfileName ?? ''} ${service?.name ?? ''}`
-    .trim()
-    .toLocaleUpperCase();
-
-  if (label.includes('FLAC')) {
-    return 'FLAC';
-  }
-  if (label.includes('MP3')) {
-    return 'MP3';
-  }
-
+  const quality = getMusicQualityFromLabels(
+    service?.activeProfileName,
+    service?.name
+  );
+  if (quality === 'flac') return 'FLAC';
+  if (quality === 'mp3') return 'MP3';
   return undefined;
 };
 

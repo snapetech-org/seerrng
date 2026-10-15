@@ -30,6 +30,25 @@ describe('getTitleCardStatusBadges', () => {
     );
   });
 
+  it('keeps viewer ownership separate for HD and 4K', () => {
+    assert.deepEqual(
+      getTitleCardStatusBadges({
+        mediaType: 'movie',
+        status: MediaStatus.AVAILABLE,
+        status4k: MediaStatus.AVAILABLE,
+        viewerHasRequestedStandard: true,
+        viewerHasRequested4k: false,
+      }).map(({ quality, viewerHasRequestedCopy }) => ({
+        quality,
+        viewerHasRequestedCopy,
+      })),
+      [
+        { quality: 'HD', viewerHasRequestedCopy: true },
+        { quality: '4K', viewerHasRequestedCopy: false },
+      ]
+    );
+  });
+
   it('uses the same quality labels for series', () => {
     assert.deepEqual(
       getTitleCardStatusBadges({

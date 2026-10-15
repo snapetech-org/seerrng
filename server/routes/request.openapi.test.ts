@@ -24,6 +24,9 @@ describe('request status routes behind the OpenAPI validator', () => {
     app.put('/api/v1/request/:requestId/watch-ahead', (_req, res) =>
       res.status(200).json({})
     );
+    app.post('/api/v1/request/:requestId/retry', (_req, res) =>
+      res.status(200).json({})
+    );
     app.get('/api/v1/request/status', (_req, res) =>
       res.status(200).json({
         pageInfo: {
@@ -84,6 +87,39 @@ describe('request status routes behind the OpenAPI validator', () => {
     const response = await request(createValidatedApp())
       .put('/api/v1/request/31/watch-ahead')
       .send({ episodeCount: 6 });
+
+    assert.strictEqual(response.status, 400);
+  });
+
+  it('allows the explicit season-zero TVDB mapping retry body', async () => {
+    const response = await request(createValidatedApp())
+      .post('/api/v1/request/31/retry')
+      .send({
+        tvdbId: 184871,
+        seasonMappings: [
+          { seasonNumber: 0, externalSeasonNumber: 0 },
+          { seasonNumber: 1, externalSeasonNumber: 2 },
+        ],
+      });
+
+    assert.strictEqual(response.status, 200, JSON.stringify(response.body));
+  });
+
+  it('allows an empty optional request retry body', async () => {
+    const response = await request(createValidatedApp())
+      .post('/api/v1/request/31/retry')
+      .send({});
+
+    assert.strictEqual(response.status, 200, JSON.stringify(response.body));
+  });
+
+  it('rejects an incomplete season mapping at the API contract boundary', async () => {
+    const response = await request(createValidatedApp())
+      .post('/api/v1/request/31/retry')
+      .send({
+        tvdbId: 184871,
+        seasonMappings: [{ seasonNumber: 1 }],
+      });
 
     assert.strictEqual(response.status, 400);
   });
