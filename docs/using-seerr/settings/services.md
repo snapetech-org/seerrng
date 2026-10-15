@@ -74,6 +74,14 @@ Enable this setting if you would like to scan your Radarr/Sonarr server for exis
 
 Enable this setting to have Radarr/Sonarr to automatically search for media upon approval of a request.
 
+#### Requester Tags (optional)
+
+When enabled, SeerrNG adds a tag for the requester to each movie or series sent
+to Radarr or Sonarr. If a temporary tag lookup or creation error occurs, SeerrNG
+still sends the request with the server's configured tags and any tags selected
+for that request. The requester tag is skipped for that dispatch, and SeerrNG
+logs a warning.
+
 ### Bookshelf Settings
 
 SeerrNG uses Bookshelf for book requests through the Readarr-compatible API.

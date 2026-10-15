@@ -5,6 +5,7 @@ import ExternalAPI from '@server/api/externalapi';
 import OpenLibraryAPI from '@server/api/openlibrary';
 import type { LidarrAlbumOptions } from '@server/api/servarr/lidarr';
 import LidarrAPI from '@server/api/servarr/lidarr';
+import type RadarrAPI from '@server/api/servarr/radarr';
 import type {
   ReadarrBookLookupResult,
   ReadarrBookOptions,
@@ -244,6 +245,115 @@ describe('MediaRequestSubscriber service dispatch', () => {
       clampReadarrProviderRetryDelay(Number.MAX_SAFE_INTEGER),
       3_600_000
     );
+  });
+
+  it('continues Radarr dispatch when requester tag lookup fails', async () => {
+    const settings = getSettings();
+    settings.radarr = [
+      {
+        id: 30,
+        name: 'Radarr',
+        hostname: 'radarr.local',
+        port: 7878,
+        apiKey: 'test-key',
+        useSsl: false,
+        activeProfileId: 5,
+        activeProfileName: 'HD',
+        activeDirectory: '/movies',
+        minimumAvailability: 'released',
+        tags: [12],
+        is4k: false,
+        isDefault: true,
+        syncEnabled: true,
+        preventSearch: false,
+        tagRequests: true,
+        overrideRule: [],
+      },
+    ];
+
+    const requestedBy = await getRequester();
+    const media = await getRepository(Media).save(
+      new Media({
+        mediaType: MediaType.MOVIE,
+        tmdbId: 550,
+        status: MediaStatus.PENDING,
+        status4k: MediaStatus.UNKNOWN,
+      })
+    );
+    (
+      mock.method as (
+        object: object,
+        methodName: string,
+        implementation: () => Promise<unknown>
+      ) => unknown
+    )(ExternalAPI.prototype, 'get', async () => ({
+      id: 550,
+      title: 'Fight Club',
+      release_date: '1999-10-15',
+    }));
+    let movieOptions: Parameters<RadarrAPI['addMovie']>[0] | undefined;
+    const originalCreate = axios.create;
+    mock.method(
+      axios,
+      'create',
+      (config: { params?: { api_key?: string } }) => {
+        if (config?.params?.api_key) {
+          return originalCreate.call(axios, config);
+        }
+
+        return {
+          interceptors: { request: { use: () => undefined } },
+          get: async (endpoint: string) => {
+            if (endpoint.endsWith('/tag')) {
+              throw new Error('Temporary tag service outage');
+            }
+            if (endpoint.endsWith('/movie/lookup')) {
+              return {
+                data: [
+                  {
+                    title: 'Fight Club',
+                    tmdbId: 550,
+                    year: 1999,
+                    hasFile: false,
+                    monitored: false,
+                    tags: [],
+                  },
+                ],
+              };
+            }
+
+            throw new Error(`Unexpected GET ${endpoint}`);
+          },
+          post: async (
+            endpoint: string,
+            payload: Parameters<RadarrAPI['addMovie']>[0]
+          ) => {
+            assert.ok(endpoint.endsWith('/movie'));
+            movieOptions = payload;
+            return {
+              data: {
+                id: 77,
+                title: 'Fight Club',
+                titleSlug: 'fight-club-1999',
+              },
+            };
+          },
+        };
+      }
+    );
+
+    const request = await createApprovedRequest(media, requestedBy);
+    await getRepository(MediaRequest).save(request);
+
+    const delivered = await new MediaRequestSubscriber().sendToRadarr(request);
+
+    assert.equal(delivered, true);
+    assert.deepEqual(movieOptions?.tags, [12]);
+    const savedMedia = await getRepository(Media).findOneByOrFail({
+      id: media.id,
+    });
+    assert.equal(savedMedia.externalServiceId, 77);
+    assert.equal(savedMedia.serviceId, 30);
   });
 
   it('recovers a committed Sportarr add when its POST response is lost', async () => {
@@ -613,7 +723,7 @@ describe('MediaRequestSubscriber service dispatch', () => {
     assert.equal(savedMedia.serviceId, 30);
   });
 
-  it('sends approved series requests to Sonarr with seasons and service routing', async () => {
+  it('continues Sonarr dispatch when requester tag lookup fails', async () => {
     const settings = getSettings();
     settings.sonarr = [
       {
@@ -632,7 +742,7 @@ describe('MediaRequestSubscriber service dispatch', () => {
         isDefault: true,
         syncEnabled: true,
         preventSearch: false,
-        tagRequests: false,
+        tagRequests: true,
         seriesType: 'daily',
         animeSeriesType: 'anime',
         enableSeasonFolders: true,
@@ -680,6 +790,10 @@ describe('MediaRequestSubscriber service dispatch', () => {
         return {
           interceptors: { request: { use: () => undefined } },
           get: async (endpoint: string) => {
+            if (endpoint.endsWith('/tag')) {
+              throw new Error('Temporary tag service outage');
+            }
+
             if (endpoint.endsWith('/series/lookup')) {
               return {
                 data: [
