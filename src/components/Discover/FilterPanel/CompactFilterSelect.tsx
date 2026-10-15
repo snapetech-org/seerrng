@@ -185,6 +185,7 @@ type CompactRatingSelectProps = {
   options: RatingOption[];
   onChange: (value: string) => void;
   maxScore?: 5 | 10;
+  showScoreValue?: boolean;
   className?: string;
   defaultValue?: string;
 };
@@ -195,6 +196,7 @@ export const CompactRatingSelect = ({
   options,
   onChange,
   maxScore = 10,
+  showScoreValue = false,
   className = '',
   defaultValue,
 }: CompactRatingSelectProps) => {
@@ -214,12 +216,17 @@ export const CompactRatingSelect = ({
           {label}
         </span>
         <Listbox.Button
-          aria-label={label}
+          aria-label={showScoreValue ? `${label}: ${selected.label}` : label}
           className="app-control-shadow-exempt app-filter-select-trigger app-filter-select-trigger-rating"
           onClickCapture={(event) => closeOtherFilterMenus(event.currentTarget)}
         >
           {selectedHasScore ? (
-            <RatingStars score={selected.score ?? 0} maxScore={maxScore} />
+            <>
+              <RatingStars score={selected.score ?? 0} maxScore={maxScore} />
+              {showScoreValue && (
+                <span data-filter-region="value">{selected.label}</span>
+              )}
+            </>
           ) : (
             <span data-filter-region="value">{selected.label}</span>
           )}
@@ -257,10 +264,13 @@ export const CompactRatingSelect = ({
                         />
                       )}
                       {hasScore ? (
-                        <RatingStars
-                          score={option.score ?? 0}
-                          maxScore={maxScore}
-                        />
+                        <>
+                          <RatingStars
+                            score={option.score ?? 0}
+                            maxScore={maxScore}
+                          />
+                          {showScoreValue && <span>{option.label}</span>}
+                        </>
                       ) : (
                         <span>{option.label}</span>
                       )}

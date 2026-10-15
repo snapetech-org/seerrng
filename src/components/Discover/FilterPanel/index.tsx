@@ -9,6 +9,7 @@ import {
   type RangeOption,
   type RatingOption,
 } from '@app/components/Discover/FilterPanel/CompactFilterSelect';
+import { createTmdbRatingOptions } from '@app/components/Discover/FilterPanel/ratingOptions';
 import { tvNetworks } from '@app/components/Discover/NetworkSlider';
 import {
   DEFAULT_TMDB_RATING_MINIMUM_VOTES,
@@ -46,6 +47,9 @@ const messages = defineMessages('components.Discover.FilterPanel', {
   voteCount: '{count} votes',
   runtime: 'Runtime',
   streamingservices: 'Streaming Services',
+  providerMode: 'Match selected services',
+  includeSelectedProviders: 'Include selected services',
+  excludeSelectedProviders: 'Exclude selected services',
   region: 'Region',
   status: 'Status',
   returningSeries: 'Returning Series',
@@ -94,6 +98,7 @@ const clearedFilters = {
   voteCountGte: undefined,
   voteCountLte: undefined,
   watchProviders: undefined,
+  watchProviderMode: undefined,
   watchRegion: undefined,
   withRuntimeGte: undefined,
   withRuntimeLte: undefined,
@@ -365,14 +370,18 @@ const FilterPanel = ({
       gte: '240',
     },
   ];
-  const ratingOptions: RatingOption[] = [
-    { label: intl.formatMessage(messages.any), value: 'any' },
-    ...[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((score) => ({
-      label: `${score.toFixed(1)}+`,
-      value: `${score}-plus`,
-      gte: score.toString(),
-      score,
-    })),
+  const ratingOptions = createTmdbRatingOptions(
+    intl.formatMessage(messages.any)
+  );
+  const providerModeOptions: CompactSelectOption[] = [
+    {
+      label: intl.formatMessage(messages.includeSelectedProviders),
+      value: 'include',
+    },
+    {
+      label: intl.formatMessage(messages.excludeSelectedProviders),
+      value: 'exclude',
+    },
   ];
   const appendCurrentRange = (
     options: RangeOption[],
@@ -609,6 +618,7 @@ const FilterPanel = ({
           label={intl.formatMessage(messages.tmdbuserscore)}
           value={ratingValue}
           options={currentRatingOptions}
+          showScoreValue
           onChange={(value) =>
             updateRange(
               currentRatingOptions,
@@ -664,6 +674,19 @@ const FilterPanel = ({
           className="app-card-inset app-filter-panel scrollable-card"
           data-filter-layout="expanded"
         >
+          {currentFilters.watchProviders && (
+            <CompactSelect
+              label={intl.formatMessage(messages.providerMode)}
+              value={currentFilters.watchProviderMode ?? 'include'}
+              options={providerModeOptions}
+              onChange={(value) =>
+                updateFilter(
+                  'watchProviderMode',
+                  value === 'exclude' ? 'exclude' : undefined
+                )
+              }
+            />
+          )}
           <WatchProviderSelector
             type={type}
             regionLabel={intl.formatMessage(messages.region)}
@@ -677,11 +700,13 @@ const FilterPanel = ({
                 updateFilters({
                   watchRegion: region,
                   watchProviders: providers.join('|'),
+                  watchProviderMode: currentFilters.watchProviderMode,
                 });
               } else {
                 applyFilters({
                   watchRegion: undefined,
                   watchProviders: undefined,
+                  watchProviderMode: undefined,
                 });
               }
             }}

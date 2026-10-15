@@ -71,6 +71,29 @@ it('uses TV status, network and first-air-date constraints', () => {
   ).toBe(true);
   expect(matchesVideoSearchFilters(tv, { status: '0' })).toBe(false);
 });
+it('applies fractional ratings and provider exclusion to combined searches', () => {
+  expect(
+    matchesVideoSearchFilters(movie, {
+      voteAverageGte: '7.5',
+      watchProviders: '8',
+      watchProviderMode: 'exclude',
+    })
+  ).toBe(false);
+  expect(
+    matchesVideoSearchFilters(movie, {
+      voteAverageGte: '7.5',
+      watchProviders: '9',
+      watchProviderMode: 'exclude',
+    })
+  ).toBe(true);
+  expect(
+    matchesVideoSearchFilters(movie, {
+      voteAverageGte: '8.1',
+      watchProviders: '9',
+      watchProviderMode: 'exclude',
+    })
+  ).toBe(false);
+});
 it('fetches server metadata only for combined title searches, preserving result IDs', async () => {
   const getMovie = vi
     .fn()

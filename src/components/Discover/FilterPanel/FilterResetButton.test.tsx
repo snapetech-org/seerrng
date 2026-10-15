@@ -1,7 +1,7 @@
 import React from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
 import { beforeEach, expect, it, vi } from 'vitest';
-import { FilterResetButton } from './CompactFilterSelect';
+import { CompactRatingSelect, FilterResetButton } from './CompactFilterSelect';
 
 beforeEach(() => vi.stubGlobal('React', React));
 
@@ -27,4 +27,22 @@ it('looks available when there are filters to clear', () => {
   expect(html).toContain('app-filter-button-idle');
   expect(html).not.toContain('app-filter-reset-button-idle');
   expect(html).not.toContain('disabled=');
+});
+
+it('shows the selected rating threshold beside its stars', () => {
+  const html = renderToStaticMarkup(
+    <CompactRatingSelect
+      label="TMDB Rating"
+      value="7.5-plus"
+      showScoreValue
+      options={[
+        { label: 'Any', value: 'any' },
+        { label: '7.5+', value: '7.5-plus', gte: '7.5', score: 7.5 },
+      ]}
+      onChange={() => {}}
+    />
+  );
+
+  expect(html).toContain('aria-label="TMDB Rating: 7.5+"');
+  expect(html).toContain('data-filter-region="value">7.5+</span>');
 });

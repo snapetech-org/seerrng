@@ -1025,6 +1025,21 @@ const optionalTmdbDateString = z
   .trim()
   .refine(isValidIsoCalendarDate)
   .optional();
+const optionalTmdbRatingQueryString = z
+  .union([z.string(), z.number()])
+  .transform((value) => String(value).trim())
+  .refine((value) => {
+    const score = Number(value);
+
+    return (
+      value.length <= 16 &&
+      /^(?:\d+(?:\.\d*)?|\.\d+)$/.test(value) &&
+      Number.isFinite(score) &&
+      score >= 0 &&
+      score <= 10
+    );
+  })
+  .optional();
 
 const QueryFilterOptions = z.object({
   page: optionalTmdbQueryString(16),
@@ -1043,12 +1058,13 @@ const QueryFilterOptions = z.object({
   language: optionalTmdbQueryString(32),
   withRuntimeGte: optionalTmdbQueryString(16),
   withRuntimeLte: optionalTmdbQueryString(16),
-  voteAverageGte: optionalTmdbQueryString(16),
-  voteAverageLte: optionalTmdbQueryString(16),
+  voteAverageGte: optionalTmdbRatingQueryString,
+  voteAverageLte: optionalTmdbRatingQueryString,
   voteCountGte: optionalTmdbQueryString(16),
   voteCountLte: optionalTmdbQueryString(16),
   network: optionalTmdbQueryString(),
   watchProviders: optionalTmdbQueryString(),
+  watchProviderMode: z.enum(['include', 'exclude']).optional(),
   watchRegion: optionalTmdbQueryString(16),
   status: optionalTmdbQueryString(32),
   certification: optionalTmdbQueryString(32),
@@ -1753,7 +1769,14 @@ discoverRoutes.get('/movies', async (req, res, next) => {
             voteAverageLte: query.voteAverageLte,
             voteCountGte: query.voteCountGte,
             voteCountLte: query.voteCountLte,
-            watchProviders: query.watchProviders,
+            watchProviders:
+              query.watchProviderMode === 'exclude'
+                ? undefined
+                : query.watchProviders,
+            withoutWatchProviders:
+              query.watchProviderMode === 'exclude'
+                ? query.watchProviders
+                : undefined,
             watchRegion: query.watchRegion,
             certification: query.certification,
             certificationGte: query.certificationGte,
@@ -2214,7 +2237,14 @@ discoverRoutes.get('/tv', async (req, res, next) => {
           voteAverageLte: query.voteAverageLte,
           voteCountGte: query.voteCountGte,
           voteCountLte: query.voteCountLte,
-          watchProviders: query.watchProviders,
+          watchProviders:
+            query.watchProviderMode === 'exclude'
+              ? undefined
+              : query.watchProviders,
+          withoutWatchProviders:
+            query.watchProviderMode === 'exclude'
+              ? query.watchProviders
+              : undefined,
           watchRegion: query.watchRegion,
           withStatus: query.status,
           certification: query.certification,
