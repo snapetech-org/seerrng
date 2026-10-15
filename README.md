@@ -33,6 +33,7 @@ SeerrNG is maintained by snapetech as a separate fork so we can move quickly on 
   - [Move Bookshelf media paths](./docs/using-seerr/bookshelf-media-path-migration.md)
   - [Configure comics](./docs/using-seerr/comics-backend.md)
   - [Configure magazines](./docs/using-seerr/magazines-backend.md)
+  - [Movie and series Discover filters](./docs/using-seerr/movie-series-discovery-filters.md)
   - [Companion services and SeerrNG NG forks](./docs/using-seerr/companion-services.md)
   - [Add and import users](./docs/using-seerr/users/adding-users.mdx)
   - [Why SeerrNG is a fork and what could retire it](./docs/fork-rationale.md)
@@ -63,6 +64,7 @@ SeerrNG is maintained by snapetech as a separate fork so we can move quickly on 
 ## What SeerrNG Does
 
 - Requests and approvals for movies, shows, music, ebooks, audiobooks, comics, magazines, emulation ROMs, and PC games.
+- Movie and series Discover filters with 0.1-point TMDB rating thresholds and streaming-service availability filters by region.
 - Media-server integration with Plex, Jellyfin, and Emby, including watch-state-aware My Library views scoped to each linked account.
 - Optional Jellyfin and Emby profile sync during user imports, refreshing linked provider names and avatars while preserving SeerrNG email addresses, local passwords, and permissions.
 - Automation service integration with Radarr, Sonarr, Lidarr, and Bookshelf/Readarr-compatible APIs.

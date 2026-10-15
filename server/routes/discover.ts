@@ -94,7 +94,10 @@ import {
   isUserSessionCredentialVersionCurrent,
   runUserSecurityMutation,
 } from '@server/lib/userSecurityMutation';
-import { filterVideoSearchResults } from '@server/lib/videoSearchFilters';
+import {
+  filterVideoSearchResults,
+  matchesVideoListFilter,
+} from '@server/lib/videoSearchFilters';
 import { getCombinedWatchlist } from '@server/lib/watchlist';
 import logger from '@server/logger';
 import { mapOpenLibrarySearchDoc, type BookResult } from '@server/models/Book';
@@ -1025,6 +1028,21 @@ const optionalTmdbDateString = z
   .trim()
   .refine(isValidIsoCalendarDate)
   .optional();
+const optionalTmdbRatingQueryString = z
+  .union([z.string(), z.number()])
+  .transform((value) => String(value).trim())
+  .refine((value) => {
+    const score = Number(value);
+
+    return (
+      value.length <= 16 &&
+      /^(?:\d+(?:\.\d*)?|\.\d+)$/.test(value) &&
+      Number.isFinite(score) &&
+      score >= 0 &&
+      score <= 10
+    );
+  })
+  .optional();
 
 const QueryFilterOptions = z.object({
   page: optionalTmdbQueryString(16),
@@ -1040,15 +1058,19 @@ const QueryFilterOptions = z.object({
   genre: optionalTmdbQueryString(),
   keywords: optionalTmdbQueryString(),
   excludeKeywords: optionalTmdbQueryString(),
+  excludeGenre: z.literal('true').optional(),
+  excludeStudio: z.literal('true').optional(),
+  excludeStatus: z.literal('true').optional(),
   language: optionalTmdbQueryString(32),
   withRuntimeGte: optionalTmdbQueryString(16),
   withRuntimeLte: optionalTmdbQueryString(16),
-  voteAverageGte: optionalTmdbQueryString(16),
-  voteAverageLte: optionalTmdbQueryString(16),
+  voteAverageGte: optionalTmdbRatingQueryString,
+  voteAverageLte: optionalTmdbRatingQueryString,
   voteCountGte: optionalTmdbQueryString(16),
   voteCountLte: optionalTmdbQueryString(16),
   network: optionalTmdbQueryString(),
   watchProviders: optionalTmdbQueryString(),
+  watchProviderMode: z.enum(['include', 'exclude']).optional(),
   watchRegion: optionalTmdbQueryString(16),
   status: optionalTmdbQueryString(32),
   certification: optionalTmdbQueryString(32),
@@ -1060,6 +1082,60 @@ const QueryFilterOptions = z.object({
 });
 
 export type FilterOptions = z.infer<typeof QueryFilterOptions>;
+
+const getVideoFilterCompatibilityError = (
+  query: FilterOptions,
+  mediaType: 'movie' | 'tv'
+): string | undefined => {
+  if (query.excludeGenre && !query.genre) {
+    return 'Choose a genre before excluding it.';
+  }
+  if (query.excludeStudio) {
+    if (mediaType !== 'movie') {
+      return 'Studio exclusions are only available for movies.';
+    }
+    if (!query.studio) {
+      return 'Choose a studio before excluding it.';
+    }
+    if (query.availability) {
+      return 'Studio exclusions cannot be combined with local availability results.';
+    }
+  }
+  if (query.availability && query.studio) {
+    return 'Studio filters cannot be combined with local availability results.';
+  }
+  if (query.availability && query.watchProviders) {
+    return 'Streaming service filters cannot be combined with local availability results.';
+  }
+  if (query.watchProviderMode && !query.watchProviders) {
+    return 'Choose a streaming service before setting its match mode.';
+  }
+  if (query.excludeStatus) {
+    if (mediaType !== 'tv') {
+      return 'TV status exclusions are only available for series.';
+    }
+    if (!query.status || !/^[0-5]$/.test(query.status)) {
+      return 'Choose one TV status before excluding it.';
+    }
+    if (query.availability) {
+      return 'TV status exclusions cannot be combined with local availability results.';
+    }
+  }
+  if (query.availability && query.status) {
+    return 'TV status filters cannot be combined with local availability results.';
+  }
+  return undefined;
+};
+
+const TMDB_TV_STATUS_CODES = ['0', '1', '2', '3', '4', '5'] as const;
+
+const getTmdbTvStatusFilter = (
+  status: string | undefined,
+  excludeStatus: boolean
+): string | undefined =>
+  !status || !excludeStatus
+    ? status
+    : TMDB_TV_STATUS_CODES.filter((code) => code !== status).join('|');
 const MovieApiQuerySchema = QueryFilterOptions.omit({
   certificationMode: true,
 }).extend({
@@ -1076,14 +1152,6 @@ const AVAILABLE_MEDIA_STATUSES = [
   MediaStatus.PARTIALLY_AVAILABLE,
   MediaStatus.AVAILABLE,
 ];
-
-const splitNumericFilter = (value?: string): number[] =>
-  value
-    ? value
-        .split(/[|,]/)
-        .map(Number)
-        .filter((item) => Number.isSafeInteger(item))
-    : [];
 
 const LOCAL_MOVIE_GENRES = new Map([
   [28, 'Action'],
@@ -1224,7 +1292,7 @@ const getLiveAvailableMovieDiscoverResponse = async ({
 
   const requestedMovies =
     quality === '4k' ? availability.is4k : availability.hd;
-  const requestedGenreIds = splitNumericFilter(query.genre);
+  const excludeGenre = query.excludeGenre === 'true';
 
   const movies = [...requestedMovies.values()]
     .map(({ movie, server }) => {
@@ -1250,8 +1318,7 @@ const getLiveAvailableMovieDiscoverResponse = async ({
             [movie.title, movie.originalTitle, movie.overview],
             query.search
           )) &&
-        (!requestedGenreIds.length ||
-          requestedGenreIds.every((genreId) => genreIds.includes(genreId))) &&
+        matchesVideoListFilter(query.genre, genreIds, excludeGenre) &&
         (!query.primaryReleaseDateGte ||
           releaseDate >= query.primaryReleaseDateGte) &&
         (!query.primaryReleaseDateLte ||
@@ -1412,7 +1479,7 @@ const getLocalAvailableVideoDiscoverResponse = async ({
   const metadataByMediaId = new Map(
     metadata.map((item) => [item.mediaId, item])
   );
-  const requestedGenreIds = splitNumericFilter(query.genre);
+  const excludeGenre = query.excludeGenre === 'true';
 
   const localItems = mediaItems
     .map((media) => {
@@ -1445,8 +1512,7 @@ const getLocalAvailableVideoDiscoverResponse = async ({
             [title, metadata?.alternateTitle, metadata?.searchText],
             query.search
           )) &&
-        (!requestedGenreIds.length ||
-          requestedGenreIds.every((genreId) => genreIds.includes(genreId))) &&
+        matchesVideoListFilter(query.genre, genreIds, excludeGenre) &&
         (!query.primaryReleaseDateGte ||
           releaseDate >= query.primaryReleaseDateGte) &&
         (!query.primaryReleaseDateLte ||
@@ -1587,6 +1653,10 @@ discoverRoutes.get('/movies', async (req, res, next) => {
       });
     }
     const query = parsedQuery.data;
+    const filterError = getVideoFilterCompatibilityError(query, 'movie');
+    if (filterError) {
+      return res.status(400).json({ status: 400, message: filterError });
+    }
     const parsedKeywords = parseTmdbKeywordFilter(query.keywords, 'Keywords');
     const parsedExcludeKeywords = parseTmdbKeywordFilter(
       query.excludeKeywords,
@@ -1733,7 +1803,9 @@ discoverRoutes.get('/movies', async (req, res, next) => {
             language: req.locale ?? query.language,
             originalLanguage: query.language,
             genre: query.genre,
+            excludeGenre: query.excludeGenre === 'true',
             studio: query.studio,
+            excludeStudio: query.excludeStudio === 'true',
             country: query.country,
             primaryReleaseDateLte: query.primaryReleaseDateLte
               ? new Date(query.primaryReleaseDateLte)
@@ -1753,7 +1825,14 @@ discoverRoutes.get('/movies', async (req, res, next) => {
             voteAverageLte: query.voteAverageLte,
             voteCountGte: query.voteCountGte,
             voteCountLte: query.voteCountLte,
-            watchProviders: query.watchProviders,
+            watchProviders:
+              query.watchProviderMode === 'exclude'
+                ? undefined
+                : query.watchProviders,
+            withoutWatchProviders:
+              query.watchProviderMode === 'exclude'
+                ? query.watchProviders
+                : undefined,
             watchRegion: query.watchRegion,
             certification: query.certification,
             certificationGte: query.certificationGte,
@@ -2131,6 +2210,10 @@ discoverRoutes.get('/tv', async (req, res, next) => {
       });
     }
     const query = parsedQuery.data;
+    const filterError = getVideoFilterCompatibilityError(query, 'tv');
+    if (filterError) {
+      return res.status(400).json({ status: 400, message: filterError });
+    }
     const parsedKeywords = parseTmdbKeywordFilter(query.keywords, 'Keywords');
     const parsedExcludeKeywords = parseTmdbKeywordFilter(
       query.excludeKeywords,
@@ -2197,6 +2280,7 @@ discoverRoutes.get('/tv', async (req, res, next) => {
           sortBy: query.sortBy,
           language: req.locale ?? query.language,
           genre: query.genre,
+          excludeGenre: query.excludeGenre === 'true',
           network,
           country: query.country,
           firstAirDateLte: query.firstAirDateLte
@@ -2214,9 +2298,19 @@ discoverRoutes.get('/tv', async (req, res, next) => {
           voteAverageLte: query.voteAverageLte,
           voteCountGte: query.voteCountGte,
           voteCountLte: query.voteCountLte,
-          watchProviders: query.watchProviders,
+          watchProviders:
+            query.watchProviderMode === 'exclude'
+              ? undefined
+              : query.watchProviders,
+          withoutWatchProviders:
+            query.watchProviderMode === 'exclude'
+              ? query.watchProviders
+              : undefined,
           watchRegion: query.watchRegion,
-          withStatus: query.status,
+          withStatus: getTmdbTvStatusFilter(
+            query.status,
+            query.excludeStatus === 'true'
+          ),
           certification: query.certification,
           certificationGte: query.certificationGte,
           certificationLte: query.certificationLte,

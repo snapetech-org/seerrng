@@ -6,6 +6,7 @@ import type {
 import { expect, it, vi } from 'vitest';
 import {
   filterVideoSearchResults,
+  matchesVideoListFilter,
   matchesVideoSearchFilters,
 } from './videoSearchFilters';
 
@@ -71,6 +72,89 @@ it('uses TV status, network and first-air-date constraints', () => {
   ).toBe(true);
   expect(matchesVideoSearchFilters(tv, { status: '0' })).toBe(false);
 });
+it('applies fractional ratings and provider exclusion to combined searches', () => {
+  expect(
+    matchesVideoSearchFilters(movie, {
+      voteAverageGte: '7.5',
+      watchProviders: '8',
+      watchProviderMode: 'exclude',
+    })
+  ).toBe(false);
+  expect(
+    matchesVideoSearchFilters(movie, {
+      voteAverageGte: '7.5',
+      watchProviders: '9',
+      watchProviderMode: 'exclude',
+    })
+  ).toBe(true);
+  expect(
+    matchesVideoSearchFilters(movie, {
+      voteAverageGte: '8.1',
+      watchProviders: '9',
+      watchProviderMode: 'exclude',
+    })
+  ).toBe(false);
+});
+
+it('excludes matching video genres, studios, and TV statuses', () => {
+  expect(matchesVideoListFilter('18', [18], true)).toBe(false);
+  expect(matchesVideoListFilter('18', [35], true)).toBe(true);
+  expect(matchesVideoListFilter('18', [18])).toBe(true);
+
+  expect(
+    matchesVideoSearchFilters(movie, {
+      genre: '18',
+      excludeGenre: 'true',
+    })
+  ).toBe(false);
+  expect(
+    matchesVideoSearchFilters(movie, {
+      genre: '35',
+      excludeGenre: 'true',
+    })
+  ).toBe(true);
+  expect(
+    matchesVideoSearchFilters(movie, {
+      studio: '5',
+      excludeStudio: 'true',
+    })
+  ).toBe(false);
+  expect(
+    matchesVideoSearchFilters(movie, {
+      studio: '6',
+      excludeStudio: 'true',
+    })
+  ).toBe(true);
+
+  const endedSeries = {
+    name: 'Ended Example',
+    first_air_date: '2018-06-01',
+    status: 'Ended',
+  } as TmdbTvDetails;
+  const unknownStatus = {
+    ...endedSeries,
+    status: 'Continuing',
+  } as TmdbTvDetails;
+  expect(
+    matchesVideoSearchFilters(endedSeries, {
+      status: '3',
+      excludeStatus: 'true',
+    })
+  ).toBe(false);
+  expect(
+    matchesVideoSearchFilters(endedSeries, {
+      status: '2',
+      excludeStatus: 'true',
+    })
+  ).toBe(true);
+  expect(
+    matchesVideoSearchFilters(unknownStatus, {
+      status: '3',
+      excludeStatus: 'true',
+    })
+  ).toBe(true);
+});
+
 it('fetches server metadata only for combined title searches, preserving result IDs', async () => {
   const getMovie = vi
     .fn()

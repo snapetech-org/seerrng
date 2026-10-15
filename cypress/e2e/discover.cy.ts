@@ -98,6 +98,133 @@ describe('Discover', () => {
     }).should('be.visible');
   });
 
+  it('switches a selected genre between include and exclude modes', () => {
+    cy.viewport(1280, 900);
+    cy.intercept('GET', '/api/v1/genres/movie', {
+      body: [{ id: 28, name: 'Action' }],
+    });
+    cy.intercept('GET', '/api/v1/discover/movies*', {
+      page: 1,
+      totalPages: 1,
+      totalResults: 0,
+      results: [],
+    }).as('getMovieDiscover');
+
+    cy.visit('/discover/movies');
+    cy.wait('@getMovieDiscover');
+    cy.contains('button.detail-disclosure-button', 'Filters').click();
+    cy.get('button[aria-label="Genres"]').click();
+    cy.contains('[role=option]', 'Action').click();
+    cy.wait('@getMovieDiscover').then(({ request }) => {
+      expect(request.query.genre).to.eq('28');
+      expect(request.query.excludeGenre).to.equal(undefined);
+    });
+    cy.location('search').should('include', 'genre=28');
+
+    cy.get('button[aria-label="Exclude Genres"]')
+      .should('have.attr', 'aria-pressed', 'false')
+      .click();
+    cy.get('button[aria-label="Exclude Genres"]').should(
+      'have.attr',
+      'aria-pressed',
+      'true'
+    );
+    cy.wait('@getMovieDiscover').then(({ request }) => {
+      expect(request.query.genre).to.eq('28');
+      expect(request.query.excludeGenre).to.eq('true');
+    });
+    cy.location('search').should('include', 'excludeGenre=true');
+    cy.window().then((win) => {
+      expect(win.document.documentElement.scrollWidth).to.be.at.most(
+        win.innerWidth
+      );
+    });
+
+    cy.get('[aria-label="Quality Available"]').contains('button', 'HD').click();
+    cy.wait('@getMovieDiscover').then(({ request }) => {
+      expect(request.query.availability).to.eq('hd');
+      expect(request.query.genre).to.eq('28');
+      expect(request.query.excludeGenre).to.eq('true');
+    });
+    cy.location('search').should('include', 'availability=hd');
+    cy.location('search').should('include', 'excludeGenre=true');
+
+    cy.get('button[aria-label="Exclude Genres"]')
+      .should('have.attr', 'aria-pressed', 'true')
+      .click();
+    cy.get('button[aria-label="Exclude Genres"]').should(
+      'have.attr',
+      'aria-pressed',
+      'false'
+    );
+    cy.wait('@getMovieDiscover').then(({ request }) => {
+      expect(request.query.excludeGenre).to.equal(undefined);
+    });
+    cy.location('search').should('not.include', 'excludeGenre=');
+  });
+
+  it('clears an unsupported status exclusion when switching to local availability', () => {
+    cy.viewport(390, 844);
+    cy.intercept('GET', '/api/v1/genres/tv', {
+      body: [{ id: 18, name: 'Drama' }],
+    });
+    cy.intercept('GET', '/api/v1/discover/tv*', {
+      page: 1,
+      totalPages: 1,
+      totalResults: 0,
+      results: [],
+    }).as('getTvDiscover');
+
+    cy.visit('/discover/tv');
+    cy.wait('@getTvDiscover');
+    cy.contains('button.detail-disclosure-button', 'Filters').click();
+    cy.get('button[aria-label="Status"]').click();
+    cy.contains('[role=option]', 'Ended').click();
+    cy.wait('@getTvDiscover');
+    cy.get('button[aria-label="Exclude Status"]').click();
+    cy.wait('@getTvDiscover');
+    cy.get('button[aria-label="Exclude Status"]').should(
+      'have.attr',
+      'aria-pressed',
+      'true'
+    );
+    cy.get('button[aria-label="Exclude Status"]').then(($button) => {
+      const bounds = $button[0].getBoundingClientRect();
+      expect(bounds.left).to.be.at.least(0);
+      cy.window().then((win) => {
+        expect(bounds.right).to.be.at.most(win.innerWidth);
+      });
+    });
+
+    cy.get('[aria-label="Quality Available"]').contains('button', 'HD').click();
+    cy.wait('@getTvDiscover').then(({ request }) => {
+      expect(request.query.availability).to.eq('hd');
+      expect(request.query.status).to.equal(undefined);
+      expect(request.query.excludeStatus).to.equal(undefined);
+    });
+    cy.location('search').should('include', 'availability=hd');
+    cy.location('search').should('not.include', 'status=');
+    cy.location('search').should('not.include', 'excludeStatus=');
+    cy.get('button[aria-label="Status"]').should('not.exist');
+    cy.get('.page-error-message[role="status"][data-severity="info"]')
+      .should(
+        'have.text',
+        'Local availability cannot apply Studio, Streaming Services, or Series Status filters. Those selections were cleared.'
+      )
+      .then(($notice) => {
+        const bounds = $notice[0].getBoundingClientRect();
+        expect(bounds.left).to.be.at.least(0);
+        cy.window().then((win) => {
+          expect(bounds.right).to.be.at.most(win.innerWidth);
+        });
+      });
+    cy.window().then((win) => {
+      expect(win.document.documentElement.scrollWidth).to.be.at.most(
+        win.innerWidth
+      );
+    });
+  });
+
   it('loads upcoming movies', () => {
     const movie = {
       id: 99002,

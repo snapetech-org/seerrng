@@ -8,7 +8,9 @@ import { mapWithConcurrency } from '@server/utils/concurrency';
 type Filters = Record<string, string | undefined>;
 const detailKeys = [
   'genre',
+  'excludeGenre',
   'studio',
+  'excludeStudio',
   'country',
   'language',
   'primaryReleaseDateGte',
@@ -26,6 +28,7 @@ const detailKeys = [
   'network',
   'watchProviders',
   'status',
+  'excludeStatus',
   'certification',
   'certificationGte',
   'certificationLte',
@@ -45,6 +48,16 @@ const inRange = (value: number | undefined, min?: string, max?: string) =>
   (!min || (value !== undefined && value >= Number(min))) &&
   (!max || (value !== undefined && value <= Number(max)));
 
+export const matchesVideoListFilter = (
+  filter: string | undefined,
+  values: (string | number)[],
+  excluded = false
+): boolean => {
+  if (!filter) return true;
+  const matches = matchesList(filter, values);
+  return excluded ? !matches : matches;
+};
+
 export function matchesVideoSearchFilters(
   details: TmdbMovieDetails | TmdbTvDetails,
   query: Filters,
@@ -63,13 +76,15 @@ export function matchesVideoSearchFilters(
   if (
     (from && (!date || date < from)) ||
     (to && (!date || date > to)) ||
-    !matchesList(
+    !matchesVideoListFilter(
       query.genre,
-      (details.genres ?? []).map((g) => g.id)
+      (details.genres ?? []).map((g) => g.id),
+      query.excludeGenre === 'true'
     ) ||
-    !matchesList(
+    !matchesVideoListFilter(
       query.studio,
-      (details.production_companies ?? []).map((c) => c.id)
+      (details.production_companies ?? []).map((c) => c.id),
+      query.excludeStudio === 'true'
     ) ||
     !matchesList(query.country, countries) ||
     !matchesList(query.language, [details.original_language]) ||
@@ -103,11 +118,17 @@ export function matchesVideoSearchFilters(
       'Canceled',
       'Pilot',
     ];
-    if (
-      query.status &&
-      details.status !== (statuses[Number(query.status)] ?? query.status)
-    )
-      return false;
+    if (query.status || query.excludeStatus) {
+      const statusIndex = statuses.indexOf(details.status);
+      if (
+        !matchesVideoListFilter(
+          query.status,
+          [statusIndex],
+          query.excludeStatus === 'true'
+        )
+      )
+        return false;
+    }
   }
   if (query.watchProviders) {
     const providers =
@@ -115,7 +136,13 @@ export function matchesVideoSearchFilters(
     const ids = Object.values(providers ?? {}).flatMap((value) =>
       Array.isArray(value) ? value.map((p) => p.provider_id) : []
     );
-    if (!matchesList(query.watchProviders, ids)) return false;
+    const matchesSelectedProvider = matchesList(query.watchProviders, ids);
+    if (
+      query.watchProviderMode === 'exclude'
+        ? matchesSelectedProvider
+        : !matchesSelectedProvider
+    )
+      return false;
   }
   if (query.certification || query.certificationGte || query.certificationLte) {
     const country = query.certificationCountry ?? 'US';
