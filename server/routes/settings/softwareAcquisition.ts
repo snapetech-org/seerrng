@@ -490,10 +490,9 @@ softwareAcquisitionRoutes.post(
             error: 'ROMarrNG returned an unsupported integration contract.',
           });
         }
-        let platformCount: number | undefined;
         if (handshake.capabilities?.catalog) {
           phase = 'catalog platform list';
-          platformCount = (await api.getCatalogPlatforms(true)).length;
+          await api.getCatalogPlatforms(true);
         }
         let datCatalog:
           Awaited<ReturnType<typeof api.getDatCatalogPlatforms>> | undefined;
@@ -505,7 +504,6 @@ softwareAcquisitionRoutes.post(
           success: true,
           service: 'ROMarrNG',
           ...(handshake.version ? { version: handshake.version } : {}),
-          ...(platformCount !== undefined ? { platformCount } : {}),
           apiVersion: handshake.apiVersion,
           ...(handshake.requestContractVersion !== undefined
             ? { requestContractVersion: handshake.requestContractVersion }
