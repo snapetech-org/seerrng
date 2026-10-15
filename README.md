@@ -95,7 +95,7 @@ SeerrNG is maintained by snapetech as a separate fork so we can move quickly on 
 - Hardcover-first Bookshelf deployment and migration tooling for existing Readarr or softcover libraries.
 - Admin-only Bookshelf path moves with a conflict and disk-space preview, confirmation, API access, and a dry-run-first CLI. The mover works inside one BookshelfNG database; consolidate an old split deployment before using it.
 - Resumable, layered Readarr/softcover-to-Hardcover migration with strict matching, softcover metadata recovery, validation, cutover checks, and an opt-in deterministic local-record fallback for books Hardcover cannot import.
-- Watchlists, blocklists, request quotas, override rules, permissions, notifications, issue reporting, and request management.
+- Per-user cross-media watchlists; local-only lists support title search, media-type filters, and stable sorting, while combined Plex lists preserve Plex ordering. The request workflow also includes blocklists, quotas, override rules, permissions, notifications, issue reporting, and request management.
 - Authenticated **Download copy** links in Request Status for verified movie, TV, book, comic, magazine, ROM, and PC game files.
 - Request lifecycle tracking and availability notifications link users back to the matching Request Status item, where available files can be selected and saved.
 - Browser, service-worker, API, DNS, avatar, and image-proxy caching tuned for faster refreshes and tab restores.

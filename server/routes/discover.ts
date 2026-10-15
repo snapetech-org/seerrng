@@ -96,6 +96,7 @@ import {
 } from '@server/lib/userSecurityMutation';
 import { filterVideoSearchResults } from '@server/lib/videoSearchFilters';
 import { getCombinedWatchlist } from '@server/lib/watchlist';
+import { watchlistFiltersSchema } from '@server/lib/watchlistFilters';
 import logger from '@server/logger';
 import { mapOpenLibrarySearchDoc, type BookResult } from '@server/models/Book';
 import { mapComicVineVolumeResult } from '@server/models/Comic';
@@ -4677,10 +4678,14 @@ discoverRoutes.get('/magazines', async (req, res) => {
 
 discoverRoutes.get<Record<string, unknown>, WatchlistResponse>(
   '/watchlist',
-  async (req, res) => {
+  async (req, res, next) => {
     const userRepository = getRepository(User);
     const itemsPerPage = 20;
     const page = parsePositiveInt(req.query.page, 1, 500);
+    const filters = watchlistFiltersSchema.safeParse(req.query);
+    if (!filters.success) {
+      return next({ status: 400, message: 'Invalid watchlist filters.' });
+    }
 
     try {
       return await runUserSecurityMutation(req.user!.id, async () => {
@@ -4705,6 +4710,7 @@ discoverRoutes.get<Record<string, unknown>, WatchlistResponse>(
             plexToken: activeUser.plexToken,
             page,
             itemsPerPage,
+            filters: filters.data,
           })
         );
       });
@@ -4714,6 +4720,7 @@ discoverRoutes.get<Record<string, unknown>, WatchlistResponse>(
           page: 1,
           totalPages: 1,
           totalResults: 0,
+          filtersSupported: false,
           results: [],
         });
       }

@@ -6,13 +6,25 @@ sidebar_position: 1
 
 # Watchlist Auto Request
 
-SeerrNG can automatically request movies and series from a user's Plex
-Watchlist. Users can also keep local SeerrNG watchlists for music, books,
-comics, and magazines, and opt in to automatic requests for those formats.
+SeerrNG supports user-scoped watchlists for movies, series, music, books,
+comics, and magazines. Plex users can also combine Plex Watchlist movies and
+series with their SeerrNG entries. Automatic requests are available for Plex
+Watchlist movies and series, and for local music, books, comics, and magazines.
 
 Both administrator permissions and the matching toggle in the user's profile
 are required. Auto requests still follow request permissions, quotas,
 availability, and blocklist state.
+
+## Find Items in Your Watchlist
+
+When your SeerrNG watchlist is local-only, you can search titles, filter by
+media type, and sort by saved order, recently added, or title. The saved order
+keeps the list in the order items were added.
+
+When a Plex Watchlist is combined with SeerrNG entries, filtering and sorting
+are unavailable. SeerrNG keeps local entries in their saved order and preserves
+the order of items returned by Plex. This avoids presenting a filtered page as
+complete when Plex supplies its list in separate remote pages.
 
 ## Plex Watchlist: Movies and Series
 
@@ -25,12 +37,19 @@ Movies** and/or **Auto-Request Series** permission. In their profile under
 **Auto-Request Series** toggle. SeerrNG periodically checks the Plex Watchlist
 and submits requests for eligible items that are not already available.
 
-## SeerrNG Watchlist: Music, Books, Comics, and Magazines
+## Local SeerrNG Watchlist: Movies and Series
 
-Local SeerrNG watchlists are available for music albums, books, comics, and
-magazines. Add an item from its detail page or poster card. To submit a request
-automatically, the user needs **Auto-Request** plus the permission for that
-format, then enables its toggle in their profile under **General**:
+Local SeerrNG watchlists support movies and series for tracking. Add an item
+from its detail page or poster card. Adding a local movie or series does not
+start an automatic request; use the Plex Watchlist flow above for automatic
+movie and series requests.
+
+## Local SeerrNG Watchlist: Music, Books, Comics, and Magazines
+
+Add music albums, books, comics, or magazines from their detail page or poster
+card. To submit a request automatically, the user needs **Auto-Request** plus
+the permission for that format, then enables its toggle in their profile under
+**General**:
 
 - **Auto-Request Music**
 - **Auto-Request Books**

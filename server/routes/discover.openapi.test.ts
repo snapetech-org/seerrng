@@ -42,6 +42,12 @@ const createValidatedApp = (): Express => {
   app.get('/api/v1/discover/books', (req, res) =>
     res.status(200).json({ accepted: true, query: req.query })
   );
+  app.get('/api/v1/discover/watchlist', (req, res) =>
+    res.status(200).json({ accepted: true, query: req.query })
+  );
+  app.get('/api/v1/user/:userId/watchlist', (req, res) =>
+    res.status(200).json({ accepted: true, query: req.query })
+  );
   app.use(
     (
       error: { status?: number; message?: string },
@@ -136,5 +142,39 @@ describe('public TMDB list OpenAPI contract', () => {
         { $ref: '#/components/schemas/TvResult' },
       ]
     );
+  });
+});
+
+describe('Watchlist filter OpenAPI contract', () => {
+  it('admits supported filters on Discover and profile watchlist routes', async () => {
+    const app = createValidatedApp();
+    const paths = ['/api/v1/discover/watchlist', '/api/v1/user/7/watchlist'];
+
+    for (const route of paths) {
+      const response = await request(app).get(route).query({
+        search: 'Arrival',
+        mediaType: 'movie',
+        sortBy: 'title-asc',
+      });
+
+      assert.equal(response.status, 200, response.body.message);
+      assert.equal(response.body.query.mediaType, 'movie');
+      assert.equal(response.body.query.sortBy, 'title-asc');
+    }
+  });
+
+  it('rejects unsupported Watchlist media types and sort fields', async () => {
+    const app = createValidatedApp();
+
+    for (const query of [
+      { mediaType: 'sports' },
+      { sortBy: 'popularity.desc' },
+    ]) {
+      const response = await request(app)
+        .get('/api/v1/discover/watchlist')
+        .query(query);
+
+      assert.equal(response.status, 400);
+    }
   });
 });

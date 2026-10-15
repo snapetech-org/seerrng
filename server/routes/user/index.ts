@@ -61,6 +61,7 @@ import {
   runUserSecurityReadWithActor,
 } from '@server/lib/userSecurityMutation';
 import { getCombinedWatchlist } from '@server/lib/watchlist';
+import { watchlistFiltersSchema } from '@server/lib/watchlistFilters';
 import logger from '@server/logger';
 import { isAuthenticated } from '@server/middleware/auth';
 import { authorizedRouteAccess } from '@server/middleware/authorizedMutation';
@@ -2538,6 +2539,10 @@ router.get<{ id: string }, WatchlistResponse>(
 
     const itemsPerPage = 20;
     const page = parsePositiveInt(req.query.page, 1, MAX_WATCHLIST_PAGE);
+    const filters = watchlistFiltersSchema.safeParse(req.query);
+    if (!filters.success) {
+      return next({ status: 400, message: 'Invalid watchlist filters.' });
+    }
 
     try {
       return await runUserSecurityReadWithActor(
@@ -2556,6 +2561,7 @@ router.get<{ id: string }, WatchlistResponse>(
               plexToken: user.plexToken,
               page,
               itemsPerPage,
+              filters: filters.data,
             })
           );
         }

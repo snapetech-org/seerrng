@@ -5518,6 +5518,172 @@ describe('GET /discover/magazines', () => {
 });
 
 describe('GET /discover/watchlist', () => {
+  it('filters local items by title and media type and applies stable title sorting', async () => {
+    const userRepository = getRepository(User);
+    const admin = await userRepository.findOneOrFail({
+      where: { email: 'admin@seerr.dev' },
+    });
+    admin.plexToken = null;
+    await userRepository.save(admin);
+
+    await getRepository(Watchlist).save([
+      new Watchlist({
+        tmdbId: 9101,
+        mediaType: MediaType.MOVIE,
+        title: 'Alpha Movie',
+        requestedBy: admin,
+      }),
+      new Watchlist({
+        tmdbId: 9102,
+        mediaType: MediaType.MOVIE,
+        title: 'alpha 100%_ Match',
+        requestedBy: admin,
+      }),
+      new Watchlist({
+        tmdbId: 9103,
+        mediaType: MediaType.MOVIE,
+        title: '100xx Movie',
+        requestedBy: admin,
+      }),
+      new Watchlist({
+        tmdbId: 9104,
+        mediaType: MediaType.TV,
+        title: 'Alpha Series',
+        requestedBy: admin,
+      }),
+      new Watchlist({
+        externalId: 'OLwatchlistFilterW',
+        mediaType: MediaType.BOOK,
+        title: 'Alpha Book',
+        requestedBy: admin,
+      }),
+    ]);
+
+    const agent = await login();
+    const filtered = await agent.get('/discover/watchlist').query({
+      search: 'alpha',
+      mediaType: MediaType.MOVIE,
+      sortBy: 'title-asc',
+    });
+
+    assert.equal(filtered.status, 200);
+    assert.equal(filtered.body.filtersSupported, true);
+    assert.equal(filtered.body.totalResults, 2);
+    assert.deepEqual(
+      filtered.body.results.map((item: { title: string }) => item.title),
+      ['alpha 100%_ Match', 'Alpha Movie']
+    );
+
+    const escapedTitle = await agent
+      .get('/discover/watchlist')
+      .query({ search: '100%_' });
+
+    assert.equal(escapedTitle.status, 200);
+    assert.deepEqual(
+      escapedTitle.body.results.map((item: { title: string }) => item.title),
+      ['alpha 100%_ Match']
+    );
+  });
+
+  it('sorts recent additions first when selected and preserves saved order by default', async () => {
+    const userRepository = getRepository(User);
+    const admin = await userRepository.findOneOrFail({
+      where: { email: 'admin@seerr.dev' },
+    });
+    admin.plexToken = null;
+    await userRepository.save(admin);
+
+    await getRepository(Watchlist).save([
+      new Watchlist({
+        tmdbId: 9201,
+        mediaType: MediaType.MOVIE,
+        title: 'Added First',
+        createdAt: new Date('2020-01-01T00:00:00.000Z'),
+        requestedBy: admin,
+      }),
+      new Watchlist({
+        tmdbId: 9202,
+        mediaType: MediaType.MOVIE,
+        title: 'Added Second',
+        createdAt: new Date('2022-01-01T00:00:00.000Z'),
+        requestedBy: admin,
+      }),
+      new Watchlist({
+        tmdbId: 9203,
+        mediaType: MediaType.MOVIE,
+        title: 'Added Last',
+        createdAt: new Date('2024-01-01T00:00:00.000Z'),
+        requestedBy: admin,
+      }),
+    ]);
+
+    const agent = await login();
+    const recentlyAdded = await agent
+      .get('/discover/watchlist')
+      .query({ sortBy: 'added-desc' });
+    assert.deepEqual(
+      recentlyAdded.body.results.map((item: { title: string }) => item.title),
+      ['Added Last', 'Added Second', 'Added First']
+    );
+
+    const savedOrder = await agent.get('/discover/watchlist');
+    assert.deepEqual(
+      savedOrder.body.results.map((item: { title: string }) => item.title),
+      ['Added First', 'Added Second', 'Added Last']
+    );
+  });
+
+  it('keeps combined Plex watchlists unfiltered and reports filtering as unsupported', async () => {
+    mock.method(PlexTvAPI.prototype, 'getWatchlist', async () => ({
+      totalSize: 1,
+      items: [
+        {
+          ratingKey: 'plex-movie-key',
+          title: 'Plex Movie',
+          type: 'movie',
+          tmdbId: 123,
+        },
+      ],
+    }));
+
+    const userRepository = getRepository(User);
+    const admin = await userRepository.findOneOrFail({
+      where: { email: 'admin@seerr.dev' },
+    });
+    admin.plexToken = 'plex-token';
+    await userRepository.save(admin);
+    await getRepository(Watchlist).save(
+      new Watchlist({
+        externalId: 'OLwatchlistPlexW',
+        mediaType: MediaType.BOOK,
+        title: 'Local Book',
+        requestedBy: admin,
+      })
+    );
+
+    const agent = await login();
+    const response = await agent
+      .get('/discover/watchlist')
+      .query({ search: 'does not match', mediaType: MediaType.MOVIE });
+
+    assert.equal(response.status, 200);
+    assert.equal(response.body.filtersSupported, false);
+    assert.deepEqual(
+      response.body.results.map((item: { title: string }) => item.title),
+      ['Local Book', 'Plex Movie']
+    );
+  });
+
+  it('rejects malformed watchlist filters before reading watchlist data', async () => {
+    const agent = await login();
+    const response = await agent.get('/discover/watchlist').query({
+      mediaType: 'sports',
+    });
+
+    assert.equal(response.status, 400);
+    assert.equal(response.body.message, 'Invalid watchlist filters.');
+  });
+
   it('includes local book and music watchlist items for Plex users', async () => {
     mock.method(PlexTvAPI.prototype, 'getWatchlist', async () => ({
       totalSize: 1,
