@@ -233,6 +233,11 @@ export const transitionPendingMediaRequest = (
               request.bookFormat,
               request.is4k
             );
+            // Approving a requester's quota exception exempts it from
+            // future quota usage.
+            if (request.quotaException) {
+              request.ignoreQuota = true;
+            }
           }
 
           request.status = newStatus;

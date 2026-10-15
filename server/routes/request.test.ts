@@ -2567,6 +2567,163 @@ describe('GET /request', () => {
 });
 
 describe('POST /request', () => {
+  it('queues one over-quota movie for approval and exempts it only after approval', async () => {
+    const friend = await seedUser('friend@seerr.dev', { movieQuotaLimit: 1 });
+    await seedRequest(
+      MediaRequestStatus.COMPLETED,
+      undefined,
+      987_650,
+      'friend@seerr.dev'
+    );
+    const owner = await loginAs('friend@seerr.dev', 'test1234');
+
+    const blocked = await owner.post('/request').send({
+      mediaType: MediaType.MOVIE,
+      mediaId: 987_651,
+    });
+    assert.strictEqual(blocked.status, 403);
+    assert.match(blocked.body.message, /movie quota exceeded/i);
+
+    const submitted = await owner.post('/request').send({
+      mediaType: MediaType.MOVIE,
+      mediaId: 987_652,
+      requestQuotaApproval: true,
+    });
+    assert.strictEqual(submitted.status, 201);
+    assert.strictEqual(submitted.body.status, MediaRequestStatus.PENDING);
+    assert.strictEqual(submitted.body.quotaException, true);
+    assert.strictEqual(submitted.body.ignoreQuota, false);
+    assert.strictEqual((await friend.getQuota()).movie.used, 2);
+
+    const secondException = await owner.post('/request').send({
+      mediaType: MediaType.MOVIE,
+      mediaId: 987_653,
+      requestQuotaApproval: true,
+    });
+    assert.strictEqual(secondException.status, 409);
+    assert.match(secondException.body.message, /already awaiting approval/i);
+
+    const admin = await loginAs('admin@seerr.dev', 'test1234');
+    const pendingQueue = await admin.get('/request').query({
+      filter: 'pending',
+      mediaType: 'movie',
+      take: 10,
+      sort: 'added',
+      skip: 0,
+    });
+    assert.strictEqual(pendingQueue.status, 200);
+    assert.ok(
+      pendingQueue.body.results.some(
+        (item: { id: number; quotaException: boolean }) =>
+          item.id === submitted.body.id && item.quotaException
+      )
+    );
+
+    const approval = await admin.post(`/request/${submitted.body.id}/approve`);
+    assert.strictEqual(approval.status, 200);
+    assert.strictEqual(approval.body.ignoreQuota, true);
+
+    const saved = await getRepository(MediaRequest).findOneByOrFail({
+      id: submitted.body.id,
+    });
+    assert.strictEqual(saved.quotaException, true);
+    assert.strictEqual(saved.ignoreQuota, true);
+    assert.strictEqual((await friend.getQuota()).movie.used, 1);
+  });
+
+  it('does not let a non-manager approve a quota exception or invalidate the flag', async () => {
+    await seedUser('friend@seerr.dev', { movieQuotaLimit: 1 });
+    await seedRequest(
+      MediaRequestStatus.COMPLETED,
+      undefined,
+      987_660,
+      'friend@seerr.dev'
+    );
+    const owner = await loginAs('friend@seerr.dev', 'test1234');
+
+    const invalid = await owner.post('/request').send({
+      mediaType: MediaType.MOVIE,
+      mediaId: 987_661,
+      requestQuotaApproval: 'yes',
+    });
+    assert.strictEqual(invalid.status, 400);
+
+    const bypass = await owner.post('/request').send({
+      mediaType: MediaType.MOVIE,
+      mediaId: 987_662,
+      requestQuotaApproval: true,
+      ignoreQuota: true,
+    });
+    assert.strictEqual(bypass.status, 403);
+
+    const submitted = await owner.post('/request').send({
+      mediaType: MediaType.MOVIE,
+      mediaId: 987_662,
+      requestQuotaApproval: true,
+    });
+    assert.strictEqual(submitted.status, 201);
+    assert.strictEqual(submitted.body.status, MediaRequestStatus.PENDING);
+    assert.strictEqual(submitted.body.ignoreQuota, false);
+
+    const selfApproval = await owner.post(
+      `/request/${submitted.body.id}/approve`
+    );
+    assert.strictEqual(selfApproval.status, 403);
+
+    const saved = await getRepository(MediaRequest).findOneByOrFail({
+      id: submitted.body.id,
+    });
+    assert.strictEqual(saved.status, MediaRequestStatus.PENDING);
+    assert.strictEqual(saved.ignoreQuota, false);
+  });
+
+  it('allows a TV selection above the remaining season quota only through approval', async () => {
+    const friend = await seedUser('friend@seerr.dev', { tvQuotaLimit: 1 });
+    await seedTvRequest(friend, [1], { tmdbId: 987_654 });
+    Object.defineProperty(TheMovieDb.prototype, 'getTvShow', {
+      configurable: true,
+      get:
+        () =>
+        async ({ tvId }: { tvId: number }) =>
+          ({
+            ...fakeTmdbShow(tvId),
+            external_ids: { tvdb_id: tvId },
+            seasons: [{ season_number: 1, episode_count: 8 }],
+          }) as unknown as Awaited<ReturnType<TheMovieDb['getTvShow']>>,
+      set: () => undefined,
+    });
+    const owner = await loginAs('friend@seerr.dev', 'test1234');
+
+    const submitted = await owner.post('/request').send({
+      mediaType: MediaType.TV,
+      mediaId: 987_655,
+      seasons: [1],
+      requestQuotaApproval: true,
+    });
+
+    assert.strictEqual(submitted.status, 201);
+    assert.strictEqual(submitted.body.status, MediaRequestStatus.PENDING);
+    assert.strictEqual(submitted.body.quotaException, true);
+    assert.strictEqual(submitted.body.ignoreQuota, false);
+    assert.strictEqual(submitted.body.seasons.length, 1);
+    assert.strictEqual((await friend.getQuota()).tv.used, 2);
+
+    const secondException = await owner.post('/request').send({
+      mediaType: MediaType.TV,
+      mediaId: 987_656,
+      seasons: [1],
+      requestQuotaApproval: true,
+    });
+    assert.strictEqual(secondException.status, 409);
+    assert.match(secondException.body.message, /already awaiting approval/i);
+
+    const admin = await loginAs('admin@seerr.dev', 'test1234');
+    const approval = await admin.post(`/request/${submitted.body.id}/approve`);
+    assert.strictEqual(approval.status, 200);
+    assert.strictEqual(approval.body.ignoreQuota, true);
+    assert.strictEqual((await friend.getQuota()).tv.used, 1);
+  });
+
   it('rejects an available selected movie quality while allowing the missing quality', async (t) => {
     const settings = getSettings();
     settings.radarr = [
