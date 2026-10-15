@@ -1949,7 +1949,7 @@ requestRoutes.get<
         sortFilter = 'request.updatedAt';
         break;
       default:
-        sortFilter = 'request.id';
+        sortFilter = 'request.createdAt';
     }
 
     switch (sortDirectionParam) {
@@ -2071,6 +2071,7 @@ requestRoutes.get<
 
     const [requestRows, requestCount] = await query
       .orderBy(sortFilter, sortDirection)
+      .addOrderBy('request.id', sortDirection)
       .take(pageSize)
       .skip(skip)
       .getManyAndCount();
