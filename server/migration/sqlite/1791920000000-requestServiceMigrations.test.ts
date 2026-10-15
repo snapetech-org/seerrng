@@ -1,8 +1,8 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
 import { DataSource } from 'typeorm';
-import { AddUserRequestServices1791150000000 } from './1791150000000-AddUserRequestServices';
-import { CreateMediaServiceStatuses1791160000000 } from './1791160000000-CreateMediaServiceStatuses';
+import { AddUserRequestServices1791920000000 } from './1791920000000-AddUserRequestServices';
+import { CreateMediaServiceStatuses1791930000000 } from './1791930000000-CreateMediaServiceStatuses';
 
 test('request service migrations are rerunnable and reversible', async () => {
   const dataSource = await new DataSource({
@@ -22,8 +22,8 @@ test('request service migrations are rerunnable and reversible', async () => {
       `INSERT INTO "media" ("id", "mediaType", "status", "serviceId", "externalServiceId") VALUES (1, 'movie', 5, 2, 9)`
     );
 
-    const addUser = new AddUserRequestServices1791150000000();
-    const create = new CreateMediaServiceStatuses1791160000000();
+    const addUser = new AddUserRequestServices1791920000000();
+    const create = new CreateMediaServiceStatuses1791930000000();
 
     await addUser.up(queryRunner);
     await addUser.up(queryRunner);

@@ -1,13 +1,11 @@
 import type { MigrationInterface, QueryRunner } from 'typeorm';
 
-export class AddUserRequestServices1791150000000 implements MigrationInterface {
-  name = 'AddUserRequestServices1791150000000';
+export class AddUserRequestServices1791920000000 implements MigrationInterface {
+  name = 'AddUserRequestServices1791920000000';
 
   public async up(queryRunner: QueryRunner): Promise<void> {
     if (await queryRunner.hasColumn('user', 'requestServices')) return;
-    await queryRunner.query(
-      `ALTER TABLE "user" ADD COLUMN "requestServices" text`
-    );
+    await queryRunner.query(`ALTER TABLE "user" ADD "requestServices" text`);
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
