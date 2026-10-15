@@ -8,6 +8,7 @@ import {
 import { getRepository } from '@server/datasource';
 import Media from '@server/entity/Media';
 import MediaRequest from '@server/entity/MediaRequest';
+import MediaServiceStatus from '@server/entity/MediaServiceStatus';
 import { User } from '@server/entity/User';
 import requestDispatchManager from '@server/lib/requestDispatch';
 import { radarrScanner } from '@server/lib/scanners/radarr';
@@ -269,6 +270,35 @@ describe('Radarr Scanner', () => {
         where: { tmdbId: 551 },
       });
       assert.strictEqual(updated.status, MediaStatus.AVAILABLE);
+    });
+
+    it('tracks availability for the exact Radarr instance and quality', async () => {
+      const mediaRepository = getRepository(Media);
+      const media = await mediaRepository.save(
+        new Media({
+          tmdbId: 555,
+          mediaType: MediaType.MOVIE,
+          status: MediaStatus.UNKNOWN,
+        })
+      );
+      configureRadarr([
+        { id: 42, name: 'Radarr Anime', isDefault: false, is4k: false },
+      ]);
+      getMoviesImpl = async () => [
+        fakeRadarrMovie({ tmdbId: 555, hasFile: true }),
+      ];
+
+      await runWithMockTimers(() => radarrScanner.run());
+
+      const serviceStatus = await getRepository(
+        MediaServiceStatus
+      ).findOneByOrFail({
+        mediaId: media.id,
+        serviceType: 'radarr',
+        serverId: 42,
+        format: 'standard',
+      });
+      assert.strictEqual(serviceStatus.status, MediaStatus.AVAILABLE);
     });
 
     it('sets PROCESSING when movie is monitored but has no file', async () => {

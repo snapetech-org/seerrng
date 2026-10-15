@@ -12,6 +12,9 @@ import MediaIdentifier, {
 import MediaRequest, {
   runWithRequestAdmission,
 } from '@server/entity/MediaRequest';
+import MediaServiceStatus, {
+  type VideoRequestServiceType,
+} from '@server/entity/MediaServiceStatus';
 import Season from '@server/entity/Season';
 import SeasonRequest, {
   isActiveSeasonRequest,
@@ -21,6 +24,7 @@ import {
   normalizeExternalBookId,
   normalizeMusicBrainzId,
 } from '@server/lib/externalIds';
+import { upsertMediaServiceStatus } from '@server/lib/mediaServiceStatus';
 import { getSettings } from '@server/lib/settings';
 import logger from '@server/logger';
 import AsyncLock from '@server/utils/asyncLock';
@@ -82,6 +86,7 @@ export interface ProcessOptions {
   audioFormats?: AudioPlaybackFormat[];
   imdbId?: string;
   serviceId?: number;
+  requestServiceType?: VideoRequestServiceType;
   externalServiceId?: number;
   externalServiceSlug?: string;
   title?: string;
@@ -368,6 +373,76 @@ class BaseScanner<T> {
     }
   }
 
+  private async updateVideoServiceStatus(
+    options: Pick<
+      ProcessOptions,
+      | 'requestServiceType'
+      | 'serviceId'
+      | 'is4k'
+      | 'externalServiceId'
+      | 'externalServiceSlug'
+    >,
+    mediaId: number,
+    status: MediaStatus,
+    seasonStatuses?: Record<number, MediaStatus>
+  ): Promise<void> {
+    if (!options.requestServiceType || options.serviceId === undefined) {
+      return;
+    }
+
+    await upsertMediaServiceStatus(getRepository(MediaServiceStatus), {
+      mediaId,
+      serviceType: options.requestServiceType,
+      serverId: options.serviceId,
+      format: options.is4k ? '4k' : 'standard',
+      status,
+      externalServiceId: options.externalServiceId,
+      externalServiceSlug: options.externalServiceSlug,
+      seasonStatuses,
+    });
+  }
+
+  protected async markMissingVideoServiceStatusesUnknown({
+    serviceType,
+    serverId,
+    format,
+    mediaType,
+    tmdbIds,
+    tvdbIds = new Set<number>(),
+  }: {
+    serviceType: VideoRequestServiceType;
+    serverId: number;
+    format: 'standard' | '4k';
+    mediaType: MediaType.MOVIE | MediaType.TV;
+    tmdbIds: Set<number>;
+    tvdbIds?: Set<number>;
+  }): Promise<void> {
+    const statuses = await getRepository(MediaServiceStatus)
+      .createQueryBuilder('serviceStatus')
+      .innerJoinAndSelect('serviceStatus.media', 'media')
+      .where('serviceStatus.serviceType = :serviceType', { serviceType })
+      .andWhere('serviceStatus.serverId = :serverId', { serverId })
+      .andWhere('serviceStatus.format = :format', { format })
+      .andWhere('media.mediaType = :mediaType', { mediaType })
+      .getMany();
+    const missingStatuses = statuses.filter(
+      ({ media }) =>
+        !tmdbIds.has(media.tmdbId) &&
+        (media.tvdbId == null || !tvdbIds.has(media.tvdbId))
+    );
+    const repository = getRepository(MediaServiceStatus);
+    for (let offset = 0; offset < missingStatuses.length; offset += 100) {
+      const batch = missingStatuses.slice(offset, offset + 100);
+      for (const status of batch) {
+        status.status = MediaStatus.UNKNOWN;
+        status.externalServiceId = null;
+        status.externalServiceSlug = null;
+        status.seasonStatuses = null;
+      }
+      await repository.save(batch);
+    }
+  }
+
   private runProcessMutation<Result>(
     guard: ProcessOptions['mutationGuard'],
     callback: () => Promise<Result>
@@ -409,6 +484,7 @@ class BaseScanner<T> {
       jellyfinMediaId,
       imdbId,
       serviceId,
+      requestServiceType,
       externalServiceId,
       externalServiceSlug,
       processing = false,
@@ -552,6 +628,21 @@ class BaseScanner<T> {
                     `Title already exists and no changes detected for ${title}`
                   );
                 }
+                await this.updateVideoServiceStatus(
+                  {
+                    requestServiceType,
+                    serviceId,
+                    is4k,
+                    externalServiceId,
+                    externalServiceSlug,
+                  },
+                  existing.id,
+                  hasFile
+                    ? MediaStatus.AVAILABLE
+                    : processing
+                      ? MediaStatus.PROCESSING
+                      : MediaStatus.UNKNOWN
+                );
               } else {
                 if (!processing && !hasFile) {
                   return;
@@ -615,7 +706,22 @@ class BaseScanner<T> {
                     is4k && this.enable4kMovie ? jellyfinMediaId : undefined;
                 }
 
-                await mediaRepository.save(newMedia);
+                const savedMedia = await mediaRepository.save(newMedia);
+                await this.updateVideoServiceStatus(
+                  {
+                    requestServiceType,
+                    serviceId,
+                    is4k,
+                    externalServiceId,
+                    externalServiceSlug,
+                  },
+                  savedMedia.id,
+                  hasFile
+                    ? MediaStatus.AVAILABLE
+                    : processing
+                      ? MediaStatus.PROCESSING
+                      : MediaStatus.UNKNOWN
+                );
                 this.log(`Saved new media: ${title}`);
               }
             })
@@ -1431,6 +1537,7 @@ class BaseScanner<T> {
       ratingKey,
       jellyfinMediaId,
       serviceId,
+      requestServiceType,
       externalServiceId,
       externalServiceSlug,
       is4k = false,
@@ -1442,6 +1549,55 @@ class BaseScanner<T> {
     }: ProcessOptions = {}
   ): Promise<void> {
     const mediaRepository = getRepository(Media);
+    const serviceSeasonStatuses = requestServiceType
+      ? Object.fromEntries(
+          seasons
+            .filter((season) => season.seasonNumber !== 0)
+            .map((season) => {
+              const availableEpisodes = is4k
+                ? season.episodes4k
+                : season.episodes;
+              const status =
+                season.totalEpisodes > 0 &&
+                availableEpisodes >= season.totalEpisodes &&
+                availableEpisodes > 0
+                  ? MediaStatus.AVAILABLE
+                  : availableEpisodes > 0
+                    ? MediaStatus.PARTIALLY_AVAILABLE
+                    : season.processing
+                      ? MediaStatus.PROCESSING
+                      : MediaStatus.UNKNOWN;
+              return [season.seasonNumber, status] as const;
+            })
+        )
+      : undefined;
+    const scannableServiceSeasonStatuses = Object.values(
+      serviceSeasonStatuses ?? {}
+    );
+    const scannedServiceSeasons = seasons.filter(
+      (season) => season.seasonNumber !== 0 && season.totalEpisodes > 0
+    );
+    const serviceStatus =
+      scannedServiceSeasons.length > 0 &&
+      scannedServiceSeasons.every(
+        (season) =>
+          serviceSeasonStatuses?.[season.seasonNumber] === MediaStatus.AVAILABLE
+      )
+        ? MediaStatus.AVAILABLE
+        : scannableServiceSeasonStatuses.some(
+              (status) =>
+                status === MediaStatus.AVAILABLE ||
+                status === MediaStatus.PARTIALLY_AVAILABLE
+            )
+          ? MediaStatus.PARTIALLY_AVAILABLE
+          : scannableServiceSeasonStatuses.some(
+                (status) => status === MediaStatus.PROCESSING
+              )
+            ? MediaStatus.PROCESSING
+            : seasons.length === 0 ||
+                seasons.some((season) => season.processing)
+              ? MediaStatus.PROCESSING
+              : MediaStatus.UNKNOWN;
 
     await this.runProcessMutation(outerMutationGuard, () =>
       runWithRequestAdmission([`request-media:${MediaType.TV}:${tmdbId}`], () =>
@@ -1786,6 +1942,18 @@ class BaseScanner<T> {
                         ? MediaStatus.DELETED
                         : MediaStatus.UNKNOWN;
               await mediaRepository.save(media);
+              await this.updateVideoServiceStatus(
+                {
+                  requestServiceType,
+                  serviceId,
+                  is4k,
+                  externalServiceId,
+                  externalServiceSlug,
+                },
+                media.id,
+                serviceStatus,
+                serviceSeasonStatuses
+              );
               this.log(`Updating existing title: ${title}`);
             } else {
               // For new media, check actual newSeasons objects instead of scanner
@@ -1903,7 +2071,19 @@ class BaseScanner<T> {
                         ? MediaStatus.PROCESSING
                         : MediaStatus.UNKNOWN,
               });
-              await mediaRepository.save(newMedia);
+              const savedMedia = await mediaRepository.save(newMedia);
+              await this.updateVideoServiceStatus(
+                {
+                  requestServiceType,
+                  serviceId,
+                  is4k,
+                  externalServiceId,
+                  externalServiceSlug,
+                },
+                savedMedia.id,
+                serviceStatus,
+                serviceSeasonStatuses
+              );
               this.log(`Saved ${title}`);
             }
           })

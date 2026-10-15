@@ -36,6 +36,8 @@ const messages = defineMessages('components.Settings.RadarrModal', {
   validationProfileRequired: 'You must select a quality profile',
   validationMinimumAvailabilityRequired:
     'You must select a minimum availability',
+  validationRequestButtonLabel:
+    'Request button labels can be up to 40 characters',
   toastRadarrTestSuccess: 'Radarr connection established successfully!',
   toastRadarrTestFailure: 'Failed to connect to Radarr.',
   add: 'Add Server',
@@ -69,6 +71,12 @@ const messages = defineMessages('components.Settings.RadarrModal', {
   tagRequests: 'Tag Requests',
   tagRequestsInfo:
     "Automatically add an additional tag with the requester's user ID & display name",
+  requestButtonLabel: 'Request Button Label',
+  requestButtonLabelHelp:
+    'Give this Radarr instance a short name so users can request it separately.',
+  requestButtonAnimeOnly: 'Anime Only',
+  requestButtonAnimeOnlyHelp:
+    'Only offer this instance for titles identified as anime.',
   validationApplicationUrl: 'You must provide a valid URL',
   validationApplicationUrlTrailingSlash: 'URL must not end in a trailing slash',
   validationBaseUrlLeadingSlash: 'URL base must have a leading slash',
@@ -130,6 +138,11 @@ const RadarrModal = ({ onClose, radarr, onSave }: RadarrModalProps) => {
     minimumAvailability: Yup.string().required(
       intl.formatMessage(messages.validationMinimumAvailabilityRequired)
     ),
+    requestButtonLabel: Yup.string().max(
+      40,
+      intl.formatMessage(messages.validationRequestButtonLabel)
+    ),
+    requestButtonAnimeOnly: Yup.boolean(),
     externalUrl: Yup.string()
       .test(
         'valid-url',
@@ -241,6 +254,8 @@ const RadarrModal = ({ onClose, radarr, onSave }: RadarrModalProps) => {
           syncEnabled: radarr?.syncEnabled ?? false,
           enableSearch: !radarr?.preventSearch,
           tagRequests: radarr?.tagRequests ?? false,
+          requestButtonLabel: radarr?.requestButtonLabel ?? '',
+          requestButtonAnimeOnly: radarr?.requestButtonAnimeOnly ?? false,
         }}
         validationSchema={RadarrSettingsSchema}
         onSubmit={async (values) => {
@@ -267,6 +282,8 @@ const RadarrModal = ({ onClose, radarr, onSave }: RadarrModalProps) => {
               syncEnabled: values.syncEnabled,
               preventSearch: !values.enableSearch,
               tagRequests: values.tagRequests,
+              requestButtonLabel: values.requestButtonLabel,
+              requestButtonAnimeOnly: values.requestButtonAnimeOnly,
             };
             if (!radarr) {
               await axios.post('/api/v1/settings/radarr', submission);
@@ -768,6 +785,42 @@ const RadarrModal = ({ onClose, radarr, onSave }: RadarrModalProps) => {
                   </div>
                   <span className="settings-form-row-description">
                     {intl.formatMessage(messages.tagRequestsInfo)}
+                  </span>
+                </div>
+                <div className="form-row">
+                  <label htmlFor="requestButtonLabel" className="text-label">
+                    {intl.formatMessage(messages.requestButtonLabel)}
+                  </label>
+                  <div className="form-input-area">
+                    <div className="form-input-field">
+                      <Field
+                        id="requestButtonLabel"
+                        name="requestButtonLabel"
+                        type="text"
+                        maxLength={40}
+                      />
+                    </div>
+                  </div>
+                  <span className="settings-form-row-description">
+                    {intl.formatMessage(messages.requestButtonLabelHelp)}
+                  </span>
+                </div>
+                <div className="form-row">
+                  <label
+                    htmlFor="requestButtonAnimeOnly"
+                    className="checkbox-label"
+                  >
+                    {intl.formatMessage(messages.requestButtonAnimeOnly)}
+                  </label>
+                  <div className="form-input-area">
+                    <SettingsField
+                      type="checkbox"
+                      id="requestButtonAnimeOnly"
+                      name="requestButtonAnimeOnly"
+                    />
+                  </div>
+                  <span className="settings-form-row-description">
+                    {intl.formatMessage(messages.requestButtonAnimeOnlyHelp)}
                   </span>
                 </div>
               </div>

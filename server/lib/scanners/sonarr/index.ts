@@ -57,6 +57,8 @@ class SonarrScanner
   private scanned4kTvdbIds: Set<number> = new Set();
   private scannedTmdbIds: Set<number> = new Set();
   private scanned4kTmdbIds: Set<number> = new Set();
+  private currentServiceTvdbIds: Set<number> = new Set();
+  private currentServiceTmdbIds: Set<number> = new Set();
   private didScanStandard = false;
   private didScan4k = false;
   private serverReturnedEmpty = false;
@@ -102,6 +104,8 @@ class SonarrScanner
 
       for (const server of this.servers) {
         this.currentServer = server;
+        this.currentServiceTvdbIds.clear();
+        this.currentServiceTmdbIds.clear();
         if (server.syncEnabled) {
           this.log(
             `Beginning to process Sonarr server: ${server.name}`,
@@ -140,6 +144,22 @@ class SonarrScanner
           }
 
           await this.loop(this.processSonarrSeries.bind(this), { sessionId });
+
+          const hasCompleteMediaIdentity = this.items.every(
+            (series) => Number.isSafeInteger(series.tvdbId) && series.tvdbId > 0
+          );
+          if (this.items.length > 0 && hasCompleteMediaIdentity) {
+            await runWithServarrServiceSnapshot('sonarr', server, async () =>
+              this.markMissingVideoServiceStatusesUnknown({
+                serviceType: 'sonarr',
+                serverId: server.id,
+                format: server4k ? '4k' : 'standard',
+                mediaType: MediaType.TV,
+                tmdbIds: this.currentServiceTmdbIds,
+                tvdbIds: this.currentServiceTvdbIds,
+              })
+            );
+          }
         } else {
           this.log(`Sync not enabled. Skipping Sonarr server: ${server.name}`);
         }
@@ -210,6 +230,9 @@ class SonarrScanner
   }
 
   private async processSonarrSeries(sonarrSeries: SonarrSeries) {
+    if (Number.isSafeInteger(sonarrSeries.tvdbId) && sonarrSeries.tvdbId > 0) {
+      this.currentServiceTvdbIds.add(sonarrSeries.tvdbId);
+    }
     const server4k = this.enable4kShow && this.currentServer.is4k;
     let resolvedTmdbId: number | undefined;
     if (server4k) {
@@ -237,6 +260,9 @@ class SonarrScanner
 
       const tmdbId = tvShow.id;
       resolvedTmdbId = tmdbId;
+      if (Number.isSafeInteger(tmdbId) && tmdbId > 0) {
+        this.currentServiceTmdbIds.add(tmdbId);
+      }
       (server4k ? this.scanned4kTmdbIds : this.scannedTmdbIds).add(tmdbId);
       tvShow = await this.applyMetadataProvider(tvShow);
       const settings = getExternalRuntimeConfig();
@@ -279,6 +305,7 @@ class SonarrScanner
 
       await this.processShow(tmdbId, sonarrSeries.tvdbId, processableSeasons, {
         serviceId: this.currentServer.id,
+        requestServiceType: 'sonarr',
         externalServiceId: sonarrSeries.id,
         externalServiceSlug: sonarrSeries.titleSlug,
         title: sonarrSeries.title,

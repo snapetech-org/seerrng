@@ -6,6 +6,7 @@ import {
   createRequestDestination,
   isRequestDestinationAvailable,
   isRequestDestinationRequested,
+  isRequestDestinationSeasonAvailable,
   isVideoQualityAvailable,
 } from '@app/components/RequestModal/requestAvailability';
 import { MediaRequestStatus, MediaStatus } from '@server/constants/media';
@@ -33,6 +34,24 @@ test('available request qualities are independent and partial series remain requ
     true
   );
   assert.equal(isVideoQualityAvailable(undefined, 'movie'), false);
+});
+
+test('request destinations use the request owner’s saved service folder', () => {
+  const destination = createRequestDestination(
+    'radarr',
+    'standard',
+    {
+      id: 42,
+      name: 'Anime Radarr',
+      is4k: false,
+      isDefault: false,
+      activeDirectory: '/movies',
+    },
+    null,
+    '/users/keith/anime'
+  );
+
+  assert.equal(destination?.rootFolder, '/users/keith/anime');
 });
 
 const selectedMusicTarget = createRequestDestination(
@@ -299,6 +318,109 @@ test('approved requests and different pending requests cannot be promoted togeth
       [selectedMusicTarget],
       { canManageRequests: true, hasAutoApprove: true }
     ),
+    false
+  );
+});
+
+const radarrTarget = (serverId: number) => ({
+  serviceType: 'radarr' as const,
+  format: 'standard' as const,
+  serverId,
+  profileId: 1,
+  metadataProfileId: null,
+  languageProfileId: null,
+  rootFolder: '/movies',
+});
+
+test('instance availability does not fall back to another Radarr instance', () => {
+  const media = {
+    status: MediaStatus.AVAILABLE,
+    serviceId: 1,
+    serviceStatuses: [
+      {
+        serviceType: 'radarr' as const,
+        serverId: 1,
+        format: 'standard' as const,
+        status: MediaStatus.AVAILABLE,
+      },
+    ],
+  };
+
+  assert.equal(isRequestDestinationAvailable(media, radarrTarget(1)), true);
+  assert.equal(isRequestDestinationAvailable(media, radarrTarget(2)), false);
+  assert.equal(
+    isRequestDestinationAvailable(
+      {
+        status: MediaStatus.UNKNOWN,
+        serviceStatuses: [
+          {
+            serviceType: 'radarr',
+            serverId: 2,
+            format: 'standard',
+            status: MediaStatus.AVAILABLE,
+          },
+        ],
+      },
+      radarrTarget(2)
+    ),
+    true
+  );
+});
+
+test('TV season availability is quality and destination specific', () => {
+  const media = {
+    serviceId: 1,
+    seasons: [
+      {
+        seasonNumber: 1,
+        status: MediaStatus.AVAILABLE,
+        status4k: MediaStatus.UNKNOWN,
+      },
+      {
+        seasonNumber: 2,
+        status: MediaStatus.AVAILABLE,
+        status4k: MediaStatus.UNKNOWN,
+      },
+    ],
+    serviceStatuses: [
+      {
+        serviceType: 'sonarr' as const,
+        serverId: 2,
+        format: 'standard' as const,
+        status: MediaStatus.PARTIALLY_AVAILABLE,
+        seasonStatuses: {
+          1: MediaStatus.AVAILABLE,
+          2: MediaStatus.PARTIALLY_AVAILABLE,
+        },
+      },
+    ],
+  };
+  const selected = { ...radarrTarget(2), serviceType: 'sonarr' as const };
+
+  assert.equal(isRequestDestinationSeasonAvailable(media, selected, 1), true);
+  assert.equal(isRequestDestinationSeasonAvailable(media, selected, 2), false);
+  assert.equal(
+    isRequestDestinationSeasonAvailable(media, { ...selected, serverId: 3 }, 1),
+    false
+  );
+});
+
+test('legacy TV season status applies only to its recorded instance', () => {
+  const media = {
+    serviceId: 2,
+    seasons: [
+      {
+        seasonNumber: 1,
+        status: MediaStatus.AVAILABLE,
+        status4k: MediaStatus.UNKNOWN,
+      },
+    ],
+  };
+  const selected = { ...radarrTarget(2), serviceType: 'sonarr' as const };
+
+  assert.equal(isRequestDestinationSeasonAvailable(media, selected, 1), true);
+  assert.equal(
+    isRequestDestinationSeasonAvailable(media, { ...selected, serverId: 3 }, 1),
     false
   );
 });

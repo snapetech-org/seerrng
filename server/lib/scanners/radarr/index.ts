@@ -119,6 +119,21 @@ class RadarrScanner
           }
 
           await this.loop(this.processRadarrMovie.bind(this), { sessionId });
+
+          const hasCompleteMediaIdentity = this.items.every(
+            (movie) => Number.isSafeInteger(movie.tmdbId) && movie.tmdbId > 0
+          );
+          if (this.items.length > 0 && hasCompleteMediaIdentity) {
+            await runWithServarrServiceSnapshot('radarr', server, async () =>
+              this.markMissingVideoServiceStatusesUnknown({
+                serviceType: 'radarr',
+                serverId: server.id,
+                format: server4k ? '4k' : 'standard',
+                mediaType: MediaType.MOVIE,
+                tmdbIds: new Set(this.items.map(({ tmdbId }) => tmdbId)),
+              })
+            );
+          }
         } else {
           this.log(`Sync not enabled. Skipping Radarr server: ${server.name}`);
         }
@@ -202,6 +217,7 @@ class RadarrScanner
       await this.processMovie(radarrMovie.tmdbId, {
         is4k: server4k,
         serviceId: this.currentServer.id,
+        requestServiceType: 'radarr',
         externalServiceId: radarrMovie.id,
         externalServiceSlug: radarrMovie.titleSlug,
         title: radarrMovie.title,

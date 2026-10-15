@@ -86,6 +86,7 @@ export class User {
     'plexId',
     'jellyfinUserId',
     'settings',
+    'requestServices',
     'linkedAccounts',
   ];
 
@@ -186,6 +187,29 @@ export class User {
     transformer: permissionColumnTransformer,
   })
   public permissions = 0;
+
+  @Column({
+    type: 'text',
+    nullable: true,
+    transformer: {
+      from: (value: string | null): string[] => {
+        if (!value) return [];
+        try {
+          const parsed: unknown = JSON.parse(value);
+          return Array.isArray(parsed)
+            ? parsed.filter(
+                (entry): entry is string => typeof entry === 'string'
+              )
+            : [];
+        } catch {
+          return [];
+        }
+      },
+      to: (value: string[] | null | undefined): string | null =>
+        value?.length ? JSON.stringify([...new Set(value)].sort()) : null,
+    },
+  })
+  public requestServices: string[] = [];
 
   @Column()
   public avatar: string;

@@ -18,6 +18,7 @@ import {
   createRequestDestination,
   isRequestDestinationAvailable,
   isRequestDestinationRequested,
+  isRequestDestinationSeasonAvailable,
   isRequestForDestination,
   isVideoQualityAvailable,
 } from '@app/components/RequestModal/requestAvailability';
@@ -46,6 +47,7 @@ import type { NonFunctionProperties } from '@server/interfaces/api/common';
 import type { SeasonEpisodeSelection } from '@server/interfaces/api/seasonInterfaces';
 import type { ServiceCommonServer } from '@server/interfaces/api/serviceInterfaces';
 import type { QuotaResponse } from '@server/interfaces/api/userInterfaces';
+import type { UserRequestRootFolders } from '@server/interfaces/api/userSettingsInterfaces';
 import { Permission, hasAutoApprovePermission } from '@server/lib/permissions';
 import type { TvDetails } from '@server/models/Tv';
 import axios from 'axios';
@@ -102,6 +104,8 @@ const messages = defineMessages('components.RequestModal', {
   notAvailable: 'Not Available',
   advancedOptions: 'Advanced Options',
   quality: 'Quality',
+  destination: 'Request destination',
+  defaultDestination: 'Default destination ({name})',
   watchAheadLabel: 'Episode Queue',
   watchAheadDescription:
     'Off by default. Choose one starting episode. When linked playback reaches 90%, SeerrNG asks Sonarr to keep this many upcoming episodes requested. Sonarr controls download timing. Turning the queue off stops future additions; episodes already requested stay in place.',
@@ -152,6 +156,8 @@ const TvRequestModal = ({
   const { user, hasPermission } = useUser();
   const [selectedIs4k, setSelectedIs4k] = useState(is4k);
   const [qualityRevision, setQualityRevision] = useState(0);
+  const [requestServiceServerId, setRequestServiceServerId] =
+    useState<number>();
   const { addToast } = useToasts();
   const editingSeasonSelections: SeasonEpisodeSelection[] = (
     editRequest?.seasons ?? []
@@ -189,6 +195,12 @@ const TvRequestModal = ({
   const [requestedByPortal, setRequestedByPortal] =
     useState<HTMLDivElement | null>(null);
   const effectiveIs4k = requestOverrides?.is4k ?? selectedIs4k;
+  const canUseAdvancedOptions = hasPermission(
+    [Permission.REQUEST_ADVANCED, Permission.MANAGE_REQUESTS],
+    { type: 'or' }
+  );
+  const isAnime =
+    data?.keywords.some((keyword) => keyword.id === ANIME_KEYWORD_ID) ?? false;
   const isFailedManagerRepair =
     editRequest?.status === MediaRequestStatus.FAILED &&
     hasPermission(Permission.MANAGE_REQUESTS);
@@ -233,6 +245,35 @@ const TvRequestModal = ({
   const fallbackService = sonarrServers?.find(
     (server) => server.isDefault && server.is4k === effectiveIs4k
   );
+  const requestServiceOptions = canUseAdvancedOptions
+    ? []
+    : (sonarrServers ?? []).filter(
+        (server) =>
+          !server.isDefault &&
+          server.is4k === effectiveIs4k &&
+          Boolean(server.requestButtonLabel?.trim()) &&
+          (!server.requestButtonAnimeOnly || isAnime) &&
+          user?.requestServices?.includes(`sonarr:${server.id}`)
+      );
+  const selectedRequestServiceServerId = requestServiceOptions.some(
+    (server) => server.id === requestServiceServerId
+  )
+    ? requestServiceServerId
+    : !fallbackService
+      ? requestServiceOptions[0]?.id
+      : undefined;
+  const selectedRequestService = sonarrServers?.find(
+    (server) => server.id === selectedRequestServiceServerId
+  );
+  const watchAheadService =
+    selectedService ?? selectedRequestService ?? fallbackService;
+  const requestDestinationUserId = requestOverrides?.user?.id ?? user?.id;
+  const { data: requestRootFolders, error: requestRootFoldersError } =
+    useSWR<UserRequestRootFolders>(
+      requestDestinationUserId
+        ? `/api/v1/user/${requestDestinationUserId}/settings/request-root-folders`
+        : null
+    );
   const watchAheadTvdbId = editRequest
     ? editRequest.media.tvdbId
     : (tvdbId ?? data?.externalIds.tvdbId);
@@ -249,7 +290,7 @@ const TvRequestModal = ({
         : [Permission.REQUEST, Permission.REQUEST_TV],
       { type: 'or' }
     ) &&
-    Boolean(selectedService ?? fallbackService) &&
+    Boolean(watchAheadService) &&
     isWatchAheadRequestForCurrentUser &&
     !editRequest?.watchAheadParentRequestId;
   const watchAheadMediaServerName = getMediaServerName(
@@ -291,7 +332,7 @@ const TvRequestModal = ({
     ) {
       return intl.formatMessage(messages.watchAheadUnavailablePermission);
     }
-    if (!selectedService && !fallbackService) {
+    if (!watchAheadService) {
       return intl.formatMessage(messages.watchAheadUnavailableSonarr);
     }
     return undefined;
@@ -301,10 +342,13 @@ const TvRequestModal = ({
       createRequestDestination(
         'sonarr',
         effectiveIs4k ? '4k' : 'standard',
-        selectedService ?? fallbackService,
-        requestOverrides
+        watchAheadService,
+        requestOverrides,
+        watchAheadService
+          ? requestRootFolders?.[`sonarr:${watchAheadService.id}`]
+          : undefined
       ),
-    [effectiveIs4k, fallbackService, requestOverrides, selectedService]
+    [effectiveIs4k, requestOverrides, requestRootFolders, watchAheadService]
   );
   const requestSelectionKey = JSON.stringify([
     tmdbId,
@@ -315,10 +359,15 @@ const TvRequestModal = ({
     selectedDestination?.languageProfileId,
     selectedDestination?.rootFolder,
   ]);
+  const requestDestinationSettingsLoading =
+    Boolean(requestDestinationUserId) &&
+    !requestRootFolders &&
+    !requestRootFoldersError;
   const selectedDestinationAvailable =
     !editRequest &&
-    (isVideoQualityAvailable(data?.mediaInfo, 'tv', effectiveIs4k) ||
-      isRequestDestinationAvailable(data?.mediaInfo, selectedDestination));
+    (isRequestDestinationAvailable(data?.mediaInfo, selectedDestination) ||
+      (!selectedDestination &&
+        isVideoQualityAvailable(data?.mediaInfo, 'tv', effectiveIs4k)));
   const selectedDestinationRequested =
     !editRequest &&
     isRequestDestinationRequested(
@@ -455,6 +504,9 @@ const TvRequestModal = ({
           tvdbId: tvdbId ?? data?.externalIds.tvdbId,
           mediaType: 'tv',
           is4k: effectiveIs4k,
+          requestServiceServerId: canUseAdvancedOptions
+            ? undefined
+            : selectedRequestServiceServerId,
           ignoreQuota: requestOverrides?.ignoreQuota,
           seasons: usesEpisodeSelection
             ? requestableSelections
@@ -580,15 +632,14 @@ const TvRequestModal = ({
     const availableSeasons = (data?.mediaInfo?.seasons ?? [])
       .filter(
         (season) =>
-          season[effectiveIs4k ? 'status4k' : 'status'] ===
-            MediaStatus.AVAILABLE &&
-          (!selectedDestination ||
-            (effectiveIs4k
-              ? data?.mediaInfo?.serviceId4k
-              : data?.mediaInfo?.serviceId) == null ||
-            (effectiveIs4k
-              ? data?.mediaInfo?.serviceId4k
-              : data?.mediaInfo?.serviceId) === selectedDestination.serverId) &&
+          (selectedDestination
+            ? isRequestDestinationSeasonAvailable(
+                data?.mediaInfo,
+                selectedDestination,
+                season.seasonNumber
+              )
+            : season[effectiveIs4k ? 'status4k' : 'status'] ===
+              MediaStatus.AVAILABLE) &&
           !requestedSeasons.includes(season.seasonNumber)
       )
       .map((season) => season.seasonNumber);
@@ -624,15 +675,12 @@ const TvRequestModal = ({
     ];
   }, [
     availableEpisodesBySeason,
-    data?.mediaInfo?.requests,
-    data?.mediaInfo?.seasons,
+    data?.mediaInfo,
     data?.seasons,
     editRequest?.id,
     effectiveIs4k,
     getAllRequestedEpisodes,
     selectedDestination,
-    data?.mediaInfo?.serviceId,
-    data?.mediaInfo?.serviceId4k,
   ]);
 
   const unrequestedSeasons = getAllSeasons().filter(
@@ -747,10 +795,6 @@ const TvRequestModal = ({
   }, [editRequest, getAllRequestedSeasons]);
 
   const isOwner = editRequest && editRequest.requestedBy.id === user?.id;
-  const canUseAdvancedOptions = hasPermission(
-    [Permission.REQUEST_ADVANCED, Permission.MANAGE_REQUESTS],
-    { type: 'or' }
-  );
   const hasAutoApprove = hasAutoApprovePermission(
     requestOverrides?.user?.permissions ?? user?.permissions ?? 0,
     'tv',
@@ -769,8 +813,6 @@ const TvRequestModal = ({
   const selectedDestinationCovered =
     selectedDestinationAvailable ||
     (selectedDestinationRequested && !selectedDestinationPromotable);
-  const isAnime =
-    data?.keywords.some((keyword) => keyword.id === ANIME_KEYWORD_ID) ?? false;
   const notAvailable = intl.formatMessage(messages.notAvailable);
   const firstAirDate = data?.firstAirDate
     ? intl.formatDate(new Date(`${data.firstAirDate}T00:00:00`), {
@@ -815,6 +857,7 @@ const TvRequestModal = ({
       ? selectedSeasons.length === 0
       : usesEpisodeSelection && selectedSeasons.length > 0 && !requestTreeReady
     : (usesEpisodeSelection && !requestTreeReady) ||
+      requestDestinationSettingsLoading ||
       selectedDestinationCovered ||
       requestableSelections.length === 0 ||
       partialQuotaExceeded ||
@@ -1029,6 +1072,9 @@ const TvRequestModal = ({
                   </dt>
                   <dd className="card-table-value">
                     {selectedService?.name ??
+                      (selectedRequestService
+                        ? `${selectedRequestService.requestButtonLabel} (${selectedRequestService.name})`
+                        : undefined) ??
                       fallbackService?.name ??
                       notAvailable}
                   </dd>
@@ -1098,6 +1144,7 @@ const TvRequestModal = ({
                 ]}
                 onChange={(quality) => {
                   setSelectedIs4k(quality === '4k');
+                  setRequestServiceServerId(undefined);
                   setRequestOverrides(null);
                   setQualityRevision((current) => current + 1);
                 }}
@@ -1106,6 +1153,41 @@ const TvRequestModal = ({
                 purpose="request"
               />
             )}
+            {!editRequest &&
+              !canUseAdvancedOptions &&
+              requestServiceOptions.length > 0 &&
+              (fallbackService || requestServiceOptions.length > 1) && (
+                <RequestListboxControl
+                  id="tv-request-destination"
+                  label={intl.formatMessage(messages.destination)}
+                  value={selectedRequestServiceServerId ?? -1}
+                  options={[
+                    ...(fallbackService
+                      ? [
+                          {
+                            value: -1,
+                            label: intl.formatMessage(
+                              messages.defaultDestination,
+                              { name: fallbackService.name }
+                            ),
+                          },
+                        ]
+                      : []),
+                    ...requestServiceOptions.map((server) => ({
+                      value: server.id,
+                      label: `${server.requestButtonLabel} (${server.name})`,
+                    })),
+                  ]}
+                  onChange={(serverId) => {
+                    setRequestServiceServerId(
+                      serverId < 0 ? undefined : serverId
+                    );
+                    setRequestOverrides(null);
+                  }}
+                  disabled={Boolean(editRequest)}
+                  loadingLabel={intl.formatMessage(messages.destination)}
+                />
+              )}
             {watchAheadCardVisible && (
               <div className="app-card-inset refreshed-inset-surface detail-item-padded request-episode-queue">
                 <RequestListboxControl

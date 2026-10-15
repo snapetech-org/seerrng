@@ -30,6 +30,7 @@ export interface User {
   email: string;
   avatar: string;
   permissions: number;
+  requestServices?: string[];
   userType: number;
   createdAt: Date;
   updatedAt: Date;

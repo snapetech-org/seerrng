@@ -338,6 +338,42 @@ const parseDvrSettings = (
   };
 };
 
+const parseServiceRequestButtonSettings = (
+  body: unknown
+):
+  | {
+      value: Pick<
+        RadarrSettings | SonarrSettings,
+        'requestButtonLabel' | 'requestButtonAnimeOnly'
+      >;
+    }
+  | { error: string } => {
+  if (!body || typeof body !== 'object' || Array.isArray(body)) {
+    return { error: 'settings must be an object.' };
+  }
+
+  const settings = body as Partial<RadarrSettings | SonarrSettings>;
+  const requestButtonLabel = parseOptionalServiceString(
+    settings.requestButtonLabel,
+    'requestButtonLabel',
+    40
+  );
+  if ('error' in requestButtonLabel) return requestButtonLabel;
+
+  const requestButtonAnimeOnly = parseServiceBoolean(
+    settings.requestButtonAnimeOnly,
+    'requestButtonAnimeOnly'
+  );
+  if ('error' in requestButtonAnimeOnly) return requestButtonAnimeOnly;
+
+  return {
+    value: {
+      requestButtonLabel: requestButtonLabel.value?.trim() || undefined,
+      requestButtonAnimeOnly: requestButtonAnimeOnly.value,
+    },
+  };
+};
+
 export const parseRadarrSettings = (
   body: unknown,
   current?: RadarrSettings
@@ -345,6 +381,8 @@ export const parseRadarrSettings = (
   const parsed = parseDvrSettings(body, current);
   if ('error' in parsed) return parsed;
   const settings = body as Partial<RadarrSettings>;
+  const requestButton = parseServiceRequestButtonSettings(body);
+  if ('error' in requestButton) return requestButton;
 
   const minimumAvailability = parseRequiredServiceString(
     settings.minimumAvailability,
@@ -355,6 +393,7 @@ export const parseRadarrSettings = (
   return {
     value: {
       ...parsed.value,
+      ...requestButton.value,
       minimumAvailability: minimumAvailability.value,
     },
   };
@@ -367,6 +406,8 @@ export const parseSonarrSettings = (
   const parsed = parseDvrSettings(body, current);
   if ('error' in parsed) return parsed;
   const settings = body as Partial<SonarrSettings>;
+  const requestButton = parseServiceRequestButtonSettings(body);
+  if ('error' in requestButton) return requestButton;
 
   const seriesTypes = ['standard', 'daily', 'anime'] as const;
   const seriesType =
@@ -434,6 +475,7 @@ export const parseSonarrSettings = (
   return {
     value: {
       ...parsed.value,
+      ...requestButton.value,
       seriesType,
       animeSeriesType,
       activeAnimeProfileId: activeAnimeProfileId.value,

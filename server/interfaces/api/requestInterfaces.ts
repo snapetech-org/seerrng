@@ -36,6 +36,7 @@ export type MediaRequestBody = {
   watchAheadEpisodeCount?: number;
   is4k?: boolean;
   serverId?: number;
+  requestServiceServerId?: number;
   profileId?: number;
   profileName?: string;
   rootFolder?: string;

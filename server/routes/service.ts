@@ -137,6 +137,8 @@ const filterServiceServer = (
     isAlt: server.isAlt,
     isDefault: server.isDefault,
     serviceType: server.serviceType,
+    requestButtonLabel: server.requestButtonLabel,
+    requestButtonAnimeOnly: server.requestButtonAnimeOnly,
   };
 };
 
@@ -156,6 +158,8 @@ serviceRoutes.get('/radarr', async (req, res, next) => {
               activeDirectory: radarr.activeDirectory,
               activeProfileId: radarr.activeProfileId,
               activeTags: radarr.tags ?? [],
+              requestButtonLabel: radarr.requestButtonLabel,
+              requestButtonAnimeOnly: radarr.requestButtonAnimeOnly ?? false,
             },
             includeOperationalDetails
           )
@@ -249,6 +253,8 @@ serviceRoutes.get('/sonarr', async (req, res, next) => {
               activeLanguageProfileId: sonarr.activeLanguageProfileId,
               activeAnimeLanguageProfileId: sonarr.activeAnimeLanguageProfileId,
               activeTags: [],
+              requestButtonLabel: sonarr.requestButtonLabel,
+              requestButtonAnimeOnly: sonarr.requestButtonAnimeOnly ?? false,
             },
             includeOperationalDetails
           )

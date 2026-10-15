@@ -10,6 +10,7 @@ import globalMessages from '@app/i18n/globalMessages';
 import ErrorPage from '@app/pages/_error';
 import defineMessages from '@app/utils/defineMessages';
 import { ArrowDownOnSquareIcon } from '@heroicons/react/24/outline';
+import type { ServiceCommonServer } from '@server/interfaces/api/serviceInterfaces';
 import axios from 'axios';
 import { Form, Formik } from 'formik';
 import { useRouter } from 'next/router';
@@ -23,6 +24,10 @@ const messages = defineMessages(
     toastSettingsFailure: 'Something went wrong while saving settings.',
     permissions: 'Permissions',
     unauthorizedDescription: 'You cannot modify your own permissions.',
+    requestServices: 'Request destinations',
+    requestServicesDescription:
+      'Let this user choose additional Radarr or Sonarr instances when requesting media.',
+    requestServiceGrantDescription: 'Available when requesting {mediaType}.',
   }
 );
 
@@ -39,9 +44,35 @@ const UserPermissions = () => {
     data,
     error,
     mutate: revalidate,
-  } = useSWR<{ permissions?: number }>(
+  } = useSWR<{ permissions?: number; requestServices?: string[] }>(
     user ? `/api/v1/user/${user?.id}/settings/permissions` : null
   );
+  const { data: radarrServers } = useSWR<ServiceCommonServer[]>(
+    user ? '/api/v1/service/radarr' : null
+  );
+  const { data: sonarrServers } = useSWR<ServiceCommonServer[]>(
+    user ? '/api/v1/service/sonarr' : null
+  );
+  const requestServiceOptions = [
+    ...(radarrServers ?? [])
+      .filter((server) => server.requestButtonLabel && !server.isDefault)
+      .map((server) => ({
+        key: `radarr:${server.id}`,
+        label: `${server.requestButtonLabel} (${server.name})`,
+        mediaType: 'movies',
+      })),
+    ...(sonarrServers ?? [])
+      .filter((server) => server.requestButtonLabel && !server.isDefault)
+      .map((server) => ({
+        key: `sonarr:${server.id}`,
+        label: `${server.requestButtonLabel} (${server.name})`,
+        mediaType: 'series',
+      })),
+  ];
+  const configuredRequestServiceKeys = new Set([
+    ...(radarrServers ?? []).map((server) => `radarr:${server.id}`),
+    ...(sonarrServers ?? []).map((server) => `sonarr:${server.id}`),
+  ]);
 
   if (!data && !error) {
     return <LoadingSpinner />;
@@ -82,12 +113,20 @@ const UserPermissions = () => {
       <Formik
         initialValues={{
           currentPermissions: data?.permissions,
+          requestServices: data?.requestServices ?? [],
         }}
         enableReinitialize
         onSubmit={async (values) => {
           try {
             await axios.post(`/api/v1/user/${user?.id}/settings/permissions`, {
               permissions: values.currentPermissions ?? 0,
+              ...(radarrServers && sonarrServers
+                ? {
+                    requestServices: values.requestServices.filter((service) =>
+                      configuredRequestServiceKeys.has(service)
+                    ),
+                  }
+                : {}),
             });
 
             addToast(intl.formatMessage(messages.toastSettingsSuccess), {
@@ -117,6 +156,57 @@ const UserPermissions = () => {
                     setFieldValue('currentPermissions', newPermission)
                   }
                 />
+                {requestServiceOptions.length > 0 && (
+                  <div>
+                    <h4 className="heading">
+                      {intl.formatMessage(messages.requestServices)}
+                    </h4>
+                    <p className="settings-form-row-description">
+                      {intl.formatMessage(messages.requestServicesDescription)}
+                    </p>
+                    <div>
+                      {requestServiceOptions.map((service) => (
+                        <div className="form-row" key={service.key}>
+                          <label
+                            htmlFor={`request-service-${service.key}`}
+                            className="checkbox-label"
+                          >
+                            {service.label}
+                          </label>
+                          <div className="form-input-area">
+                            <input
+                              type="checkbox"
+                              id={`request-service-${service.key}`}
+                              checked={values.requestServices.includes(
+                                service.key
+                              )}
+                              onChange={(event) => {
+                                const nextServices = new Set(
+                                  values.requestServices
+                                );
+                                if (event.target.checked) {
+                                  nextServices.add(service.key);
+                                } else {
+                                  nextServices.delete(service.key);
+                                }
+                                setFieldValue(
+                                  'requestServices',
+                                  [...nextServices].sort()
+                                );
+                              }}
+                            />
+                          </div>
+                          <span className="settings-form-row-description">
+                            {intl.formatMessage(
+                              messages.requestServiceGrantDescription,
+                              { mediaType: service.mediaType }
+                            )}
+                          </span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
               </div>
               <div className="actions">
                 <div className="flex justify-end">

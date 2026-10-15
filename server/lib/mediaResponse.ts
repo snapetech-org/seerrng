@@ -169,6 +169,19 @@ export const restrictMediaOperationalFieldsForUser = (
     ] as const) {
       delete media[field];
     }
+    media.serviceStatuses = (media.serviceStatuses ?? []).map((status) => {
+      const projected = {
+        id: status.id,
+        mediaId: status.mediaId,
+        serviceType: status.serviceType,
+        serverId: status.serverId,
+        format: status.format,
+        status: status.status,
+        seasonStatuses: status.seasonStatuses,
+        updatedAt: status.updatedAt,
+      };
+      return projected as typeof status;
+    });
   }
 
   return media;

@@ -6,6 +6,8 @@ import RadarrAPI from '@server/api/servarr/radarr';
 import SonarrAPI from '@server/api/servarr/sonarr';
 import SportarrAPI from '@server/api/servarr/sportarr';
 import TheMovieDb from '@server/api/themoviedb';
+import { ANIME_KEYWORD_ID } from '@server/api/themoviedb/constants';
+import type { TmdbKeyword } from '@server/api/themoviedb/interfaces';
 import type { MediaRequestFailureReason } from '@server/constants/media';
 import {
   MediaRequestStatus,
@@ -54,6 +56,10 @@ import {
   isDestinationCoveredByActiveRequest,
   type RequestDestination,
 } from '@server/lib/requestDestination';
+import {
+  canRequestFromService,
+  type RequestServiceType,
+} from '@server/lib/requestServices';
 import {
   runWithServarrServiceAdmission,
   type ServarrServiceType,
@@ -2118,6 +2124,40 @@ export class MediaRequest {
         ? await tmdb.getMovie({ movieId: requestBody.mediaId as number })
         : await tmdb.getTvShow({ tvId: requestBody.mediaId as number });
 
+    const serviceRequestServerId = requestBody.requestServiceServerId;
+    if (serviceRequestServerId !== undefined) {
+      if (
+        requestBody.mediaType !== MediaType.MOVIE &&
+        requestBody.mediaType !== MediaType.TV
+      ) {
+        throw new ServiceConfigurationError(
+          'A request destination can only be selected for a movie or series.'
+        );
+      }
+
+      const serviceType: RequestServiceType =
+        requestBody.mediaType === MediaType.MOVIE ? 'radarr' : 'sonarr';
+      const selectedService =
+        serviceType === 'radarr'
+          ? settings.radarr.find(({ id }) => id === serviceRequestServerId)
+          : settings.sonarr.find(({ id }) => id === serviceRequestServerId);
+      if (!selectedService || !selectedService.requestButtonLabel?.trim()) {
+        throw new ServiceConfigurationError(
+          'The selected request destination is no longer available.'
+        );
+      }
+      if (!canRequestFromService(user, serviceType, serviceRequestServerId)) {
+        throw new RequestPermissionError(
+          'You do not have access to the selected request destination.'
+        );
+      }
+      if (Boolean(selectedService.is4k) !== Boolean(requestBody.is4k)) {
+        throw new ServiceConfigurationError(
+          'The selected request destination does not match the requested quality.'
+        );
+      }
+    }
+
     const tvdbId =
       requestBody.mediaType === MediaType.TV
         ? (requestBody.tvdbId ?? tmdbMedia.external_ids.tvdb_id)
@@ -2209,9 +2249,9 @@ export class MediaRequest {
       : settings.sonarr.find((s) => !s.is4k && s.isDefault);
     const defaultServer =
       requestBody.mediaType === MediaType.MOVIE ? defaultRadarr : defaultSonarr;
-    const requestedServerId = useAdvancedOptions
-      ? requestBody.serverId
-      : undefined;
+    const requestedServerId =
+      requestBody.requestServiceServerId ??
+      (useAdvancedOptions ? requestBody.serverId : undefined);
     const requestedServer =
       requestedServerId == null
         ? undefined
@@ -2236,6 +2276,28 @@ export class MediaRequest {
       );
     }
     const selectedServer = requestedServer ?? defaultServer;
+    if (
+      (requestBody.mediaType === MediaType.MOVIE ||
+        requestBody.mediaType === MediaType.TV) &&
+      selectedServer?.requestButtonAnimeOnly
+    ) {
+      const keywords = tmdbMedia.keywords;
+      const isAnime =
+        'results' in keywords
+          ? keywords.results.some(
+              (keyword: TmdbKeyword) => keyword.id === ANIME_KEYWORD_ID
+            )
+          : 'keywords' in keywords
+            ? keywords.keywords.some(
+                (keyword: TmdbKeyword) => keyword.id === ANIME_KEYWORD_ID
+              )
+            : false;
+      if (!isAnime) {
+        throw new RequestPermissionError(
+          'The selected request destination is limited to anime titles.'
+        );
+      }
+    }
     const serverId = selectedServer?.id;
     const selectedServiceType =
       requestBody.mediaType === MediaType.MOVIE ? 'radarr' : 'sonarr';

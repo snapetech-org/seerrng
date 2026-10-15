@@ -18,8 +18,31 @@ interface DestinationAvailabilityMedia {
   status4k?: MediaStatus;
   serviceId?: number | null;
   serviceId4k?: number | null;
+  serviceStatuses?: {
+    serviceType: 'radarr' | 'sonarr';
+    serverId: number;
+    format: 'standard' | '4k';
+    status: MediaStatus;
+    seasonStatuses?: Record<number, MediaStatus> | null;
+  }[];
+  seasons?: {
+    seasonNumber: number;
+    status: MediaStatus;
+    status4k: MediaStatus;
+  }[];
   requests?: StoredRequestDestination[];
 }
+
+const getServiceStatusForDestination = (
+  media: DestinationAvailabilityMedia | null | undefined,
+  selected: RequestDestination | null | undefined
+) =>
+  media?.serviceStatuses?.find(
+    (status) =>
+      status.serviceType === selected?.serviceType &&
+      status.serverId === selected?.serverId &&
+      status.format === selected?.format
+  );
 
 // Availability is quality-specific; a partial series must still allow its
 // missing episodes to be requested.
@@ -39,7 +62,8 @@ export const createRequestDestination = (
   serviceType: RequestDestination['serviceType'],
   format: RequestDestination['format'],
   service: ServiceCommonServer | null | undefined,
-  overrides: RequestOverrides | null | undefined
+  overrides: RequestOverrides | null | undefined,
+  defaultRootFolder?: string | null
 ): RequestDestination | null => {
   const serverId = overrides?.server ?? service?.id;
   if (serverId == null) {
@@ -55,7 +79,11 @@ export const createRequestDestination = (
       overrides?.metadataProfile ?? service?.activeMetadataProfileId ?? null,
     languageProfileId:
       overrides?.language ?? service?.activeLanguageProfileId ?? null,
-    rootFolder: overrides?.folder ?? service?.activeDirectory ?? null,
+    rootFolder:
+      overrides?.folder ??
+      defaultRootFolder ??
+      service?.activeDirectory ??
+      null,
   };
 };
 
@@ -71,21 +99,85 @@ export const isRequestDestinationAvailable = (
   if (isDestinationAvailableInTargets(media.requests, selected)) {
     return true;
   }
-  if (hasTrackedAvailableDestination(media.requests, selected)) {
-    return false;
+  const serviceStatus = getServiceStatusForDestination(media, selected);
+  if (serviceStatus) {
+    return serviceStatus.status === MediaStatus.AVAILABLE;
   }
-
   const status = selected.format === '4k' ? media.status4k : media.status;
+  const legacyServerId =
+    selected.format === '4k' ? media.serviceId4k : media.serviceId;
   if (status !== MediaStatus.AVAILABLE) {
     return false;
   }
-
-  const legacyServerId =
-    selected.format === '4k' ? media.serviceId4k : media.serviceId;
+  if (hasTrackedAvailableDestination(media.requests, selected)) {
+    return false;
+  }
+  if (
+    media.serviceStatuses?.some(
+      (candidate) => candidate.serviceType === selected.serviceType
+    )
+  ) {
+    return (
+      legacyServerId === selected.serverId ||
+      (selected.serverId != null &&
+        legacyAvailableServerIds.includes(selected.serverId))
+    );
+  }
   return (
     legacyServerId == null ||
     legacyServerId === selected.serverId ||
-    legacyAvailableServerIds.includes(selected.serverId as number)
+    (selected.serverId != null &&
+      legacyAvailableServerIds.includes(selected.serverId))
+  );
+};
+
+export const isRequestDestinationSeasonAvailable = (
+  media: DestinationAvailabilityMedia | null | undefined,
+  selected: RequestDestination | null | undefined,
+  seasonNumber: number,
+  legacyAvailableServerIds: number[] = []
+): boolean => {
+  if (!media || !selected) return false;
+
+  const serviceStatus = getServiceStatusForDestination(media, selected);
+  if (serviceStatus?.seasonStatuses) {
+    const status = serviceStatus.seasonStatuses[seasonNumber];
+    if (status !== undefined) {
+      return status === MediaStatus.AVAILABLE;
+    }
+  }
+
+  const season = media.seasons?.find(
+    (candidate) => candidate.seasonNumber === seasonNumber
+  );
+  if (!season) return false;
+
+  const status = selected.format === '4k' ? season.status4k : season.status;
+  if (status !== MediaStatus.AVAILABLE) return false;
+
+  const legacyServerId =
+    selected.format === '4k' ? media.serviceId4k : media.serviceId;
+  if (serviceStatus) {
+    return (
+      legacyServerId === selected.serverId && status === MediaStatus.AVAILABLE
+    );
+  }
+  if (
+    media.serviceStatuses?.some(
+      (candidate) => candidate.serviceType === selected.serviceType
+    )
+  ) {
+    return (
+      legacyServerId === selected.serverId ||
+      (selected.serverId != null &&
+        legacyAvailableServerIds.includes(selected.serverId))
+    );
+  }
+  return (
+    legacyServerId == null ||
+    legacyServerId === selected.serverId ||
+    (selected.serverId != null &&
+      legacyAvailableServerIds.includes(selected.serverId))
   );
 };
 

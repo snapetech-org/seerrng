@@ -14,6 +14,8 @@ const fixtureState = vi.hoisted(() => ({
   catalog: undefined as unknown,
   partialRequestsEnabled: true,
   requestPermission: false,
+  requestServices: [] as string[],
+  requestRootFolders: {} as Record<string, string>,
   linkedPlexAccount: false,
   sonarrServers: [] as unknown[],
   ready: true,
@@ -27,11 +29,13 @@ vi.mock('swr', () => ({
   default: (key: string | null) => ({
     data: key?.startsWith('/api/v1/tv/')
       ? fixtureState.data
-      : key?.endsWith('/quota')
-        ? fixtureState.quota
-        : key === '/api/v1/service/sonarr'
-          ? fixtureState.sonarrServers
-          : undefined,
+      : key?.endsWith('/settings/request-root-folders')
+        ? fixtureState.requestRootFolders
+        : key?.endsWith('/quota')
+          ? fixtureState.quota
+          : key === '/api/v1/service/sonarr'
+            ? fixtureState.sonarrServers
+            : undefined,
   }),
   mutate: fixtureState.mutate,
 }));
@@ -49,6 +53,7 @@ vi.mock('@app/hooks/useUser', () => ({
     user: {
       id: 7,
       permissions: 0,
+      requestServices: fixtureState.requestServices,
       ...(fixtureState.linkedPlexAccount ? { plexId: 101 } : {}),
     },
     hasPermission: () => fixtureState.requestPermission,
@@ -327,6 +332,8 @@ async function fixture(
   fixtureState.catalog = undefined;
   fixtureState.partialRequestsEnabled = true;
   fixtureState.requestPermission = false;
+  fixtureState.requestServices = [];
+  fixtureState.requestRootFolders = {};
   fixtureState.linkedPlexAccount = false;
   fixtureState.sonarrServers = [];
   fixtureState.ready = true;
@@ -422,6 +429,57 @@ it('reports a 202 create response without treating it as a saved request', async
       { appearance: 'info', autoDismiss: true }
     );
   });
+});
+
+it('selects a granted Sonarr destination and submits its exact instance id', async () => {
+  await fixture(
+    async (doc) => {
+      const destination = doc.querySelector<HTMLSelectElement>(
+        '[data-testid="tv-request-destination"]'
+      );
+      expect(destination).not.toBeNull();
+      expect(
+        Array.from(destination!.options).map((option) => option.textContent)
+      ).toEqual(['Default destination (Sonarr 1)', 'Archive (Sonarr 2)']);
+
+      await selectValue(doc, 'tv-request-destination', '2');
+      await click(doc, 'modal-ok-button');
+
+      expect(axios.post).toHaveBeenCalledExactlyOnceWith(
+        '/api/v1/request',
+        expect.objectContaining({
+          mediaId: 123,
+          mediaType: 'tv',
+          requestServiceServerId: 2,
+          seasons: [1, 2],
+        })
+      );
+    },
+    {
+      configure: () => {
+        fixtureState.requestServices = ['sonarr:2'];
+        fixtureState.sonarrServers = [
+          {
+            id: 1,
+            name: 'Sonarr 1',
+            is4k: false,
+            isDefault: true,
+            activeProfileId: 1,
+            activeDirectory: '/tv',
+          },
+          {
+            id: 2,
+            name: 'Sonarr 2',
+            is4k: false,
+            isDefault: false,
+            requestButtonLabel: 'Archive',
+            activeProfileId: 1,
+            activeDirectory: '/archive-tv',
+          },
+        ];
+      },
+    }
+  );
 });
 
 it('individual season selection preserves the existing whole-season request shape', async () => {
