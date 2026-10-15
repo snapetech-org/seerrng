@@ -1300,7 +1300,6 @@ const TitleCard = ({
         </div>
       </div>
       {showDetail &&
-        !isTouch &&
         (mediaType === 'movie' ||
           mediaType === 'tv' ||
           mediaType === 'album' ||
