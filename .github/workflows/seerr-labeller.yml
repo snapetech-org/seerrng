@@ -8,6 +8,10 @@ on:
   issues:
     types: [labeled, unlabeled, reopened]
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.event.issue.number || github.run_id }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request_target' }}
+
 permissions: {}
 
 jobs:

@@ -1,10 +1,10 @@
 # seerr-chart
 
-![Version: 1.0.108](https://img.shields.io/badge/Version-1.0.108-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: v3.58.0](https://img.shields.io/badge/AppVersion-v3.58.0-informational?style=flat-square)
+![Version: 1.0.109](https://img.shields.io/badge/Version-1.0.109-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: v3.58.0](https://img.shields.io/badge/AppVersion-v3.58.0-informational?style=flat-square)
 
 SeerrNG Helm chart for Kubernetes
 
-**Homepage:** <https://github.com/snapetech/seerrng>
+**Homepage:** <https://github.com/snapetech-org/seerrng>
 
 ## Maintainers
 
@@ -14,7 +14,7 @@ SeerrNG Helm chart for Kubernetes
 
 ## Source Code
 
-* <https://github.com/snapetech/seerrng/tree/main/charts/seerr-chart>
+* <https://github.com/snapetech-org/seerrng/tree/main/charts/seerr-chart>
 
 ## Requirements
 

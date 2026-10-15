@@ -19,14 +19,14 @@ repository. It uses Node.js built-ins and does not need an npm install.
 On Windows, open PowerShell and run:
 
 ```powershell
-Invoke-WebRequest https://raw.githubusercontent.com/snapetech/seerrng/main/scripts/setup-assistant.mjs -OutFile setup-assistant.mjs
+Invoke-WebRequest https://raw.githubusercontent.com/snapetech-org/seerrng/main/scripts/setup-assistant.mjs -OutFile setup-assistant.mjs
 node .\setup-assistant.mjs
 ```
 
 On macOS or Linux, run:
 
 ```sh
-curl --fail --location https://raw.githubusercontent.com/snapetech/seerrng/main/scripts/setup-assistant.mjs --output setup-assistant.mjs
+curl --fail --location https://raw.githubusercontent.com/snapetech-org/seerrng/main/scripts/setup-assistant.mjs --output setup-assistant.mjs
 node ./setup-assistant.mjs
 ```
 
@@ -171,26 +171,27 @@ you want to regenerate them.
 | Profile | Included apps |
 | --- | --- |
 | `movies-tv` | SeerrNG, Radarr, Sonarr, Prowlarr, qBittorrent |
-| `books` | SeerrNG, BookshelfNG, Prowlarr, qBittorrent |
-| `books-chaptarrng` | SeerrNG, ChaptarrNG, Prowlarr, qBittorrent |
+| `books` | SeerrNG, ChaptarrNG, Prowlarr, qBittorrent |
+| `books-chaptarrng` | Alias for `books` with SeerrNG, ChaptarrNG, Prowlarr, qBittorrent |
+| `books-bookshelfng` | SeerrNG, legacy BookshelfNG, Prowlarr, qBittorrent |
 | `music` | SeerrNG, Lidarr, Prowlarr, qBittorrent |
 | `comics` | SeerrNG, Mylar3 |
 | `magazines` | SeerrNG, LazyLibrarian, Prowlarr, qBittorrent |
 | `software` | SeerrNG, QuestarrNG, ROMarrNG, qBittorrent |
-| `media-library` | SeerrNG, Radarr, Sonarr, Lidarr, BookshelfNG, Prowlarr, qBittorrent |
-| `all-media` | SeerrNG, Radarr, Sonarr, Lidarr, BookshelfNG, Mylar3, LazyLibrarian, QuestarrNG, ROMarrNG, Prowlarr, qBittorrent |
+| `media-library` | SeerrNG, Radarr, Sonarr, Lidarr, ChaptarrNG, Prowlarr, qBittorrent |
+| `all-media` | SeerrNG, Radarr, Sonarr, Lidarr, ChaptarrNG, Mylar3, LazyLibrarian, QuestarrNG, ROMarrNG, Prowlarr, qBittorrent |
 
 These profiles are examples, not required SeerrNG dependencies. Choose a
-smaller profile when you want fewer containers. BookshelfNG and ChaptarrNG are
-alternatives for book automation; Issuarr, Mylar3, Kapowarr, and BackIssue are
-alternatives for comics. The `all-media` profile includes BookshelfNG and
+smaller profile when you want fewer containers. ChaptarrNG is the default book
+automation service. The `books-bookshelfng` profile remains for existing legacy
+installations during migration. Issuarr, Mylar3, Kapowarr, and BackIssue are
+alternatives for comics. The `all-media` profile includes ChaptarrNG and
 Mylar3; Issuarr can use the same SeerrNG connection, but the generated profile
 still writes a Mylar3 container definition. Add or remove providers with
-`--apps` for a different choice. For
-example, replace BookshelfNG with ChaptarrNG using
-`--profile books --apps -bookshelf,chaptarrng`, or add BackIssue as an
-alternative with `--profile comics --apps -mylar3,backissue`. Connect only the
-comic provider you want to use as the default destination. BackIssue currently
+`--apps` for a different choice. For example, select the legacy BookshelfNG
+service with `--profile books --apps -chaptarrng,bookshelf`, or add BackIssue
+as an alternative with `--profile comics --apps -mylar3,backissue`. Connect
+only the comic provider you want to use as the default destination. BackIssue currently
 publishes a linux/amd64 image; on ARM64 hosts, choose Mylar3, Issuarr, or
 Kapowarr unless you have enabled and verified x86 emulation.
 

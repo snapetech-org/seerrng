@@ -6,7 +6,7 @@ sidebar_position: 7
 
 # Why SeerrNG maintains four optional forks
 
-**Reviewed:** 2026-10-13. Upstream state below is a point-in-time comparison; check
+**Reviewed:** 2026-10-14. Upstream state below is a point-in-time comparison; check
 the linked branches and each fork's feature guide when updating a dependency.
 
 BookshelfNG, ChaptarrNG, QuestarrNG, and ROMarrNG are optional services. Each
@@ -33,11 +33,10 @@ coordinate the provider contract while retaining each app's existing API and
 standalone use. The goal is not to make a fork permanent: when an upstream
 release supplies the needed behavior, SeerrNG can add and verify an adapter.
 
-The two book managers are alternatives with different metadata and data-model
-choices. BookshelfNG retains its Readarr-compatible lineage and configurable
-metadata sources. ChaptarrNG follows Chaptarr's own metadata pipeline and adds
-a built-in direct-download option. Both can serve ebook and audiobook requests;
-choose based on library history, metadata preference, and standalone features.
+ChaptarrNG is the maintained book backend for new SeerrNG installs.
+BookshelfNG remains a legacy connection for existing libraries while its data
+and distribution channels are migrated. Both APIs remain readable by SeerrNG
+during that transition; new requests should target ChaptarrNG.
 
 ## Forks and current upstream boundaries
 
@@ -55,7 +54,7 @@ paths and profile overrides. It retains the broader Readarr-style library
 workflow while maintaining a native Hardcover provider, selectable runtime
 catalogs, direct-download support, and current package/release channels. Many
 automation basics are inherited from Bookshelf and Readarr; see its
-[capability comparison](https://github.com/snapetech/bookshelfng/blob/main/docs/capabilities-and-compatibility.md)
+[capability comparison](https://github.com/snapetech-org/bookshelfng/blob/main/docs/capabilities-and-compatibility.md)
 for the current shared-versus-maintained inventory.
 
 **With SeerrNG:** the `seerrng-bookshelf` capability contract advertises
@@ -72,13 +71,18 @@ provider selection and direct-download workflows, must also be available or
 replaced. Then SeerrNG must pass its Bookshelf compatibility checks against
 that released version.
 
-**BookshelfNG-to-ChaptarrNG transition:** this consolidation is in progress,
-but it does not make the current ChaptarrNG release a drop-in replacement.
-There is no released populated-database converter or compatibility bridge for
-BookshelfNG images and packages. Keep existing BookshelfNG data and
-installations until the feature, migration, and channel gates in its
-[consolidation report](https://github.com/snapetech/bookshelfng/blob/main/docs/maintainers/chaptarr-consolidation.md)
-pass.
+**BookshelfNG-to-ChaptarrNG transition:** ChaptarrNG contains a candidate
+populated-database converter and preview/apply command in its standard
+executable. It passed preview, explicit apply, and normal startup against
+separate copies of one real populated migration-158 SQLite database. That
+single database does not establish general real-user compatibility: 81 media
+choices were test-only and not reviewed as correct classifications, and older
+schemas, PostgreSQL, full settings/client behavior, rollback, and all-channel
+validation remain open. The migration is not released. Keep independent
+backups and do not point production installations at the candidate until the
+gates in the [consolidation report](https://github.com/snapetech-org/bookshelfng/blob/main/docs/maintainers/chaptarr-consolidation.md)
+pass. The BookshelfNG in-app updater still uses the Readarr update service;
+channel-specific bridges are required.
 
 ### ChaptarrNG
 
@@ -89,10 +93,11 @@ product behavior and should not be described as exclusive to ChaptarrNG.
 
 **Standalone value:** ChaptarrNG keeps Chaptarr's audiobook and ebook manager
 and adds a built-in Direct Download indexer/client, authenticated encryption
-for full backups, fork-owned release images and deployment packages, and
-maintained security/configuration work. Chaptarr also has its own encrypted
+for full backups, fork-owned release images and an Unraid template, and
+maintained security/configuration work. General COPR, AUR, Chocolatey, Debian,
+and Windows native packages are not currently published. Chaptarr also has its own encrypted
 quick-start settings backup; the distinction here is full-backup encryption.
-See the [ChaptarrNG feature and upstream guide](https://github.com/snapetech/chaptarrng/blob/main/docs/FORK_FEATURES.md).
+See the [ChaptarrNG feature and upstream guide](https://github.com/snapetech-org/chaptarrng/blob/main/docs/FORK_FEATURES.md).
 
 **With SeerrNG:** ChaptarrNG advertises format routes, provider IDs, paged
 library scans, pending-import operations, and its supported API dialect through
@@ -110,7 +115,7 @@ Direct Download, full-backup encryption, security behavior, and release/package
 continuity—plus every BookshelfNG feature carried into the consolidated
 ChaptarrNG product. Chaptarr already has a pending-import subsystem;
 SeerrNG needs compatible exposed semantics, not a second queue implementation.
-The [combined ChaptarrNG retirement matrix](https://github.com/snapetech/chaptarrng/blob/main/docs/FORK_FEATURES.md#chaptarrng-retirement-blockers)
+The [combined ChaptarrNG retirement matrix](https://github.com/snapetech-org/chaptarrng/blob/main/docs/FORK_FEATURES.md#chaptarrng-retirement-blockers)
 tracks both sets. Every feature, sub-feature, post-fork source change, data
 path, and distribution channel must be retained or replaced with a verified
 equivalent, with tests, before ChaptarrNG can be retired into Chaptarr.
@@ -200,17 +205,21 @@ retirement are separate transitions, each requiring its own populated-data and
 distribution proof. Active ChaptarrNG branches and open feature PRs count
 before release too; the combined matrix tracks the current backlog features,
 integrations, localization, proposed channel changes, and the individual
-retirement checks. The maintained backlog snapshot `24b340f` is 317 commits
-ahead and 1 behind ChaptarrNG `origin/main` at `02d38e1`, across 703 changed
-paths; `main` now includes merged CI PR #69. Open work includes maintainer
-guidance PR #71, localization PR #72 (Indonesian and Traditional Chinese
-choices, AudioBookShelf root-mapping and audiobook-mode translations, and
-locale direction metadata), draft metadata-preference PR #73, and proposed
-YunoHost packaging removal PR #74. PR #73's hosted Linux Core job passed, but
-Windows reported three path-sensitive rename test failures; the local
-integration fixtures are corrected and need a fresh hosted Windows run. Each
-feature or channel change remains in the upstream retirement review before
-merge or release.
+retirement checks. The earlier backlog snapshot `24b340f` is historical; PRs
+#69–#77 have since merged. At this review, ChaptarrNG `origin/main` is
+`4364742e`, 575 commits ahead and zero behind Chaptarr `upstream/develop` at
+`e67374f4`, across 1,100 changed paths (342 added and 758 modified). Open
+product and maintenance work includes PRs #78, #97, #100, and #101; all open
+dependency updates also remain in scope. ChaptarrNG PR #100 carries the
+BookshelfNG migration, BookLore integration, native packaging, and guarded
+legacy-channel bridge candidates. Its migration-158 SQL test fixture was
+hidden by a generic ignore rule; the tracked fixture and a targeted ignore
+exception are now on the PR branch. The 12 focused importer tests pass locally,
+as does the full Release-mode ChaptarrNG Core suite (4,062 passed, 0 failed,
+3 skipped; 4,065 total); fresh hosted checks are pending. BookshelfNG PRs #128
+and #130 and SeerrNG PR #280 remain open, so none of the BookshelfNG package or backend changes is
+released. Each feature or channel change remains in the upstream retirement
+review before merge or release.
 
 Keep any fork that still supplies standalone functionality operators rely on,
 even if its SeerrNG contract has been upstreamed. Recheck parent branches before

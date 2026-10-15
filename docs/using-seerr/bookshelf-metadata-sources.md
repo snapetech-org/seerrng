@@ -267,7 +267,7 @@ To enable it for a reviewed migration:
 ```bash
 APPLY_HARDCOVER_REBUILD=true \\
 HARDCOVER_LOCAL_DB_IMPORT=true \\
-deploy/install-bookshelf-backend.sh --migrate-to-hardcover
+deploy/install-bookshelf-backend.sh --legacy-bookshelf --migrate-to-hardcover
 ```
 
 Keep backups and run the normal migration validation before cutover. Later,

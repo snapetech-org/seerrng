@@ -1,18 +1,17 @@
 ---
 title: Bookshelf Backend
-description: Deploy Bookshelf for ebook and audiobook requests.
+description: Configure ChaptarrNG for new installs and maintain legacy BookshelfNG services.
 sidebar_position: 21
 ---
 
 # Bookshelf Backend
 
-SeerrNG sends book requests through the Readarr-compatible Bookshelf API and
-preserves the metadata provider's native book, edition, and author IDs.
-Hardcover remains the default for new deployments. Existing Goodreads/softcover
-and other compatible metadata sources remain supported; moving
-between providers is optional. Provider IDs are source-specific, so migrating a
-library to another provider requires rebuilding its metadata records rather
-than changing only the metadata URL or container image.
+This guide documents the legacy BookshelfNG backend for existing installations.
+New SeerrNG deployments should use ChaptarrNG, documented below. The
+Bookshelf-specific Hardcover and Goodreads guidance remains useful during
+migration: provider IDs are source-specific, so changing a legacy library's
+metadata source requires rebuilding its metadata records rather than changing
+only the URL or image.
 
 For the exact distinction between runtime metadata and migration-only
 recovery, plus Google Books, Library of Congress, Apify, caching, IDs, and
@@ -23,18 +22,25 @@ For how BookshelfNG differs from its Readarr-derived parent, which behavior is
 specific to its SeerrNG API, and the upstream features needed to replace the
 fork, see [Maintained dependency forks](./dependency-forks.md#bookshelfng).
 
-BookshelfNG's planned retirement in favor of ChaptarrNG is not released yet.
-No populated-library converter or old-channel bridge is available, so keep the
-existing BookshelfNG database and installation until the
-[feature, migration, and distribution gates](https://github.com/snapetech/bookshelfng/blob/main/docs/maintainers/chaptarr-consolidation.md)
-pass. BookshelfNG's retirement gate is its capabilities validated in
-ChaptarrNG. The later ChaptarrNG-to-Chaptarr gate is separate: all BookshelfNG
-features carried over plus every ChaptarrNG maintained or actively added
-feature, including unpublished work, block retirement as a whole. Each feature
-remains an individual blocker until tested against the supported upstream
-release; see the [combined ChaptarrNG retirement matrix](https://github.com/snapetech/chaptarrng/blob/main/docs/FORK_FEATURES.md#chaptarrng-retirement-blockers).
+ChaptarrNG is the maintained backend for new SeerrNG book-service entries.
+Existing BookshelfNG settings remain readable by SeerrNG during migration.
+ChaptarrNG's consolidation candidate includes a populated-database converter
+and preview/apply command in the normal executable. The standard Linux/amd64
+image passed preview, explicit apply, and normal startup on separate copies of
+one real populated migration-158 SQLite database. The retained backup matched
+all 39 source table definitions and every source row. The converter accepts
+only that schema; 81 books required media choices that were not semantically
+reviewed. Older schemas, PostgreSQL, complete settings/client coverage,
+rollback restoration, populated-library SeerrNG behavior, and channel bridges
+remain open. The candidate is not released. Keep independent backups
+and follow the [feature, migration, and distribution
+gates](https://github.com/snapetech-org/bookshelfng/blob/main/docs/maintainers/chaptarr-consolidation.md)
+before switching production data. The later ChaptarrNG-to-Chaptarr gate stays
+separate: BookshelfNG features carried over plus every maintained or actively
+added ChaptarrNG feature block retirement as a whole; see the [combined
+ChaptarrNG retirement matrix](https://github.com/snapetech-org/chaptarrng/blob/main/docs/FORK_FEATURES.md#chaptarrng-retirement-blockers).
 
-## One BookshelfNG instance for both formats
+## Existing BookshelfNG instance for both formats
 
 One BookshelfNG instance and database can manage ebooks and audiobooks on the
 same book record. SeerrNG keeps format routing separate, so add two **Bookshelf**
@@ -43,21 +49,16 @@ to **Audiobook**, and point both entries to the same BookshelfNG URL and API
 key. The entries let SeerrNG route each format; they are not separate
 BookshelfNG instances.
 
-For a new deployment, run `deploy/install-bookshelf-backend.sh` without an
-instance flag. It selects one combined BookshelfNG process by default. In
-SeerrNG's first-run **Configure Services** step, add a **Book** connection,
-then choose **Use this instance for Audiobooks** to create the second service
-entry with the same connection details. Select its root folder and profiles
-before saving. Use `--split-instances` only if you want isolated processes.
+This applies to existing legacy installations only. For new deployments, use
+the [ChaptarrNG service](#chaptarrng). In SeerrNG's **Configure Services**
+step, add a **Book** connection, then choose **Use this instance for
+Audiobooks** to create the second service entry with the same connection
+details. Select its root folder and profiles before saving.
 
-On upgrade, the installer keeps an existing split audiobook database and
-SeerrNG keeps the configured service entries. To combine later, migrate the
-separate audiobook library into the instance you will keep, verify its files
-and requests, and back up the old database. After the separate database is no
-longer at its configured path, run the installer with `--single-instance` and
-point both SeerrNG entries to that instance. The installer refuses to ignore
-an existing separate audiobook database; changing the two URLs alone does not
-merge it.
+The migration helper refuses split databases until a separate library merge
+has been completed and verified; changing the two SeerrNG URLs alone does not
+merge them. Running the legacy installer with existing data previews the
+BookshelfNG-to-ChaptarrNG migration by default.
 
 Each BookshelfNG author can optionally set different ebook and audiobook
 folders in the author editor. These overrides apply to future imports,
@@ -96,14 +97,14 @@ run other commands, or delete authors or files. The global BookshelfNG API key
 remains supported for existing clients. Older BookshelfNG builds should
 continue to use the global API key.
 
-[ChaptarrNG](https://github.com/snapetech/chaptarrng) is Snapetech's maintained
+[ChaptarrNG](https://github.com/snapetech-org/chaptarrng) is Snapetech's maintained
 fork of [Chaptarr](https://github.com/Chaptarr/chaptarr), supported as a
 Readarr-compatible alternative. We maintain the fork because SeerrNG needs
 format-scoped requests and durable tracking when author metadata preparation
 delays a book add. ChaptarrNG remains a standalone app. SeerrNG sends the
 selected format explicitly, so one ChaptarrNG instance can serve ebooks and
 audiobooks without a provider-specific URL Base or API adapter. See the
-[ChaptarrNG fork feature guide](https://github.com/snapetech/chaptarrng/blob/main/docs/FORK_FEATURES.md)
+[ChaptarrNG fork feature guide](https://github.com/snapetech-org/chaptarrng/blob/main/docs/FORK_FEATURES.md)
 for its maintained changes, including Direct Download, backup protection,
 and package support.
 
@@ -202,7 +203,7 @@ cross-container Compose smoke test that runs SeerrNG's compiled API adapter
 against a locally built ChaptarrNG image, checks the format-scoped paged
 library, and verifies that administrative and unrelated command routes reject
 the SeerrNG credential. Run it with the instructions in
-[ChaptarrNG's SeerrNG integration guide](https://github.com/snapetech/chaptarrng/blob/main/docs/SEERRNG_INTEGRATION.md).
+[ChaptarrNG's SeerrNG integration guide](https://github.com/snapetech-org/chaptarrng/blob/main/docs/SEERRNG_INTEGRATION.md).
 Pin the ChaptarrNG image version in reproducible deployments because its
 Readarr-compatible surface can change between releases.
 
@@ -230,300 +231,80 @@ ChaptarrNG metadata provider and retry the lookup from its UI.
 
 ## Deployment Policy
 
-### Readarr to Softcover to Hardcover Migration
+### New SeerrNG book deployments
 
-Make Hardcover the default Bookshelf backend for new installs while keeping
-other compatible metadata sources first-class options. Migration to Hardcover
-is optional; existing Goodreads/softcover users can keep their current backend
-and SeerrNG service configuration.
-
-Core policy:
-
-- New install with no existing Readarr or Bookshelf config: one BookshelfNG
-  instance can serve both formats. Add two SeerrNG service entries with the
-  same endpoint when both request formats are enabled.
-- Existing Readarr or softcover config: retain the configured backend unless
-  the operator explicitly chooses to migrate.
-- Matching: strict automatic migration only; fuzzy matches go to an optional
-  admin review report, not automatic cutover.
-- Softcover remains a supported Goodreads-compatible backend; Hardcover remains
-  the default for new deployments.
-
-### Installer and Compose
-
-- Change the default image from the stable
-  `ghcr.io/snapetech/bookshelfng:softcover` image to the stable
-  `ghcr.io/snapetech/bookshelfng:hardcover` image.
-- Add an installer backend mode:
-
-  ```env
-  BOOKSHELF_BACKEND=auto|hardcover|softcover
-  ```
-
-  The default mode should be `auto`.
-- In `auto` mode:
-  - if no existing config or database exists, create one combined Hardcover
-    BookshelfNG instance for ebooks and audiobooks;
-  - if an existing Readarr or softcover config/database exists, run the
-    migration flow.
-- For fresh Hardcover installs:
-  - use the stable `ghcr.io/snapetech/bookshelfng:hardcover` image, which is
-    updated only by a release from BookshelfNG's `main` branch;
-  - use the local rreading-glasses compatibility boundary by default;
-  - pass `HARDCOVER_AUTH` to rreading-glasses;
-  - enable the rreading-glasses and PostgreSQL Compose profile;
-  - keep native Hardcover available as an explicit opt-in.
-- Installer reruns rewrite the generated `.env` to match the resolved backend
-  mode. Existing `.env` files are kept as timestamped `.env.bak-*` files, and
-  the existing `RREADING_GLASSES_POSTGRES_PASSWORD` is preserved when present.
-- `BOOKSHELF_METADATA_MODE` controls the metadata path:
-  - `compatibility` (default for fresh Hardcover): local rreading-glasses and
-    its PostgreSQL cache;
-  - `native`: direct GraphQL from BookshelfNG, with no local proxy;
-  - `hosted`: disable native mode and use the hosted `METADATA_URL` without a
-    local proxy;
-  - compatibility mode activates the rreading-glasses and PostgreSQL Compose
-    profile, and points BookshelfNG at the local proxy.
-- Existing installs that have `BOOKSHELF_METADATA_URL` set to
-  `http://127.0.0.1:*` or already use the `rreading-glasses` Compose profile
-  are detected as `compatibility` on rerun. Set the mode explicitly to change
-  that behavior.
-- Use one BookshelfNG process and database for fresh ebook and audiobook
-  deployments. SeerrNG still uses two format-specific service entries that
-  point to that same instance. The optional `--split-instances` mode is for
-  operators who need separate settings or databases; it is not required for
-  either format.
-
-### Migration Flow
-
-Add a migration command to the installer:
+Use ChaptarrNG for every new SeerrNG ebook or audiobook deployment. One
+ChaptarrNG instance serves both formats; create one SeerrNG service entry for
+**Book** and one for **Audiobook**, both pointing to that instance. The standard
+image is `ghcr.io/snapetech/chaptarrng:latest`. The setup assistant can create
+the stack:
 
 ```bash
-deploy/install-bookshelf-backend.sh --migrate-to-hardcover
+node scripts/setup-assistant.mjs --profile books --output ./my-books-stack
 ```
 
-`BOOKSHELF_BACKEND=auto` should invoke this automatically when an existing
-Readarr or softcover config is detected.
+ChaptarrNG is standalone. It does not require BookshelfNG, Hardcover,
+rreading-glasses, PostgreSQL, or BookLore. BookLore is an optional external
+notification destination. Follow the [ChaptarrNG service setup](#chaptarrng)
+and its [migration guide](https://github.com/snapetech-org/chaptarrng/blob/main/docs/MIGRATE_FROM_BOOKSHELFNG.md)
+when replacing an existing BookshelfNG instance.
 
-Preflight:
+### Existing BookshelfNG installations
 
-- verify Docker, compose, image pull, config paths, database readability, and
-  free disk space;
-- require `sqlite3` when an existing `nzbdrone.db` is present, so migration does
-  not silently produce an empty inventory;
-- require enough backup destination space for the existing ebook, audiobook, and
-  rreading-glasses data paths with a default 2x margin. Override with
-  `MIN_BACKUP_FREE_MULTIPLIER` when needed;
-- detect existing `config.xml`, API key, port, `nzbdrone.db`, root folders,
-  quality profiles, metadata profiles, monitored books, editions, tags, and
-  service type;
-- write a timestamped backup before stopping or changing containers.
-- write `backup-manifest.json` with source paths, resolved backend mode, image,
-  metadata URL, and backup archive names.
+BookshelfNG is legacy-only while migration and feature/channel gates remain
+open. Keep a verified backup and continue running it until the ChaptarrNG
+conversion and each integration are checked. The SeerrNG installer refuses a
+fresh BookshelfNG install. When it finds an existing BookshelfNG data directory,
+it previews conversion to ChaptarrNG by default; it does not start or configure
+the new service for you.
 
-Inventory:
-
-- export every monitored book with title, author, ISBN-13, ISBN-10, ASIN,
-  foreign IDs, selected edition, root folder, quality profile, metadata profile,
-  tags, monitor/search flags, and service type.
-
-Matching:
-
-- query a temporary Hardcover Bookshelf instance using ISBN/ASIN first;
-- accept exact title plus exact author only when ISBN/ASIN is missing;
-- reject ambiguous, missing, or fuzzy-only matches;
-- write:
-  - `migration-report.json`;
-  - `matched-books.json`;
-  - `unmatched-books.json`;
-  - `ambiguous-books.json`;
-  - `rebuild-payload.json`;
-  - `rebuild-blocked.json`.
-
-The installer writes inventory and report files by default. If a temporary
-Hardcover target is already running, set `HARDCOVER_EBOOK_API_KEY` and
-`HARDCOVER_AUDIOBOOK_API_KEY` before migration to let the helper populate strict
-match reports. Override `HARDCOVER_EBOOK_BASE_URL` and
-`HARDCOVER_AUDIOBOOK_BASE_URL` when the temporary target is not on
-`127.0.0.1:8787` and `127.0.0.1:8788`. Hardcover API calls time out after
-15 seconds by default; override with `HARDCOVER_API_TIMEOUT_MS`.
-Validation lookup uses `Foundation Isaac Asimov` by default; override with
-`HARDCOVER_VALIDATION_TERM` when a deployment has a better smoke-test title.
-For rehearsals, limit matching volume with `HARDCOVER_MIGRATION_MAX_BOOKS`.
-When API keys are missing or lookup cannot produce a strict match,
-`unmatched-books.json` still includes the source title, author, root folder,
-profile IDs/names, monitored state, tag labels, and identifiers for manual
-review.
-
-Applying the generated rebuild payload is opt-in. Set
-`APPLY_HARDCOVER_REBUILD=true` only after reviewing `matched-books.json`,
-`unmatched-books.json`, `ambiguous-books.json`, `rebuild-payload.json`, and
-`rebuild-blocked.json`.
-
-BookshelfNG also searches Library of Congress and Gutendex alongside Hardcover
-by default. The standard deployment runs one BookshelfNG instance, which uses
-the same catalog selection for ebooks and audiobooks. The optional split
-deployment enables Library of Congress for the audiobook process by default to
-coordinate outbound request pacing across processes, and enables Gutendex in
-both processes. Google Books and Europeana are added when
-`GOOGLE_BOOKS_API_KEY` and `EUROPEANA_API_KEY` are configured. Internet Archive
-and NDL Search are opt-in. Europeana is limited to openly reusable text records
-from its cultural heritage collection. These runtime catalogs return
-source-qualified IDs that SeerrNG retains through search, details, and requests.
-Set `BOOKSHELF_EBOOKS_METADATA_SOURCES` and
-`BOOKSHELF_AUDIOBOOKS_METADATA_SOURCES` to override each service; the legacy
-`BOOKSHELF_METADATA_SOURCES` value applies to both when supplied to the
-installer. An empty per-service source list disables additional catalogs for
-that service; set both per-service values empty to disable them in both
-containers.
-The installer preserves these settings and credentials when rewriting its
-private `.env` file. A directly managed single BookshelfNG instance enables
-LOC by default unless `BOOKSHELF_METADATA_SOURCES` overrides it.
-
-Migration recovery separately queries Google Books and Library of Congress
-before creating an optional local shadow record. These lookups are cached in
-the migration directory and only promote a result into Hardcover when strict
-identity matching succeeds. An optional Apify Actor adapter supports runtime
-search and migration recovery for Goodreads-compatible scrapers. Configure
-`HARDCOVER_APIFY_GOODREADS_ACTOR` and `HARDCOVER_APIFY_TOKEN`, and adjust
-`HARDCOVER_APIFY_GOODREADS_INPUT_TEMPLATE` for the Actor's input schema. Actor
-availability and pricing depend on the selected Actor. Runtime responses are
-cached for one day; migration recovery makes at most two Actor runs per source
-item.
-Applied and failed adds are written to `applied-books.json` and
-`apply-failures.json`. After apply, the helper writes `validation-report.json`
-and marks `migration-report.json` as `validation_complete` or
-`validation_failed` based on provider detection, lookup readiness, and whether
-applied book IDs are visible in the target instance.
-
-When applying matched books, source profile IDs are not treated as portable. The
-helper carries source quality/metadata profile names into the rebuild payload,
-remaps those names to target Hardcover profile IDs, and refuses an add when the
-target profile or root folder is missing. Source tag IDs are also treated as
-non-portable; the helper carries tag labels, resolves existing target tags by
-label, and creates missing target tags before adding matched books.
-
-Container cutover is gated by `cutover-decision.json`. Even when
-`ALLOW_INCOMPLETE_HARDCOVER_CUTOVER=true` is set for development, the installer
-refuses to continue unless validation completed successfully and no apply
-failures or blocked rebuild items remain.
-
-After report generation, the installer prints a concise migration summary with
-match counts, apply counts, validation state, and cutover readiness. To reprint
-that summary later:
+Run an explicit preview against the same standard ChaptarrNG image that a new
+installation uses:
 
 ```bash
-node deploy/bookshelf-hardcover-migration.mjs --summary \
-  /opt/bookshelf-backend/backups/20260518-145258/hardcover-migration
+BOOKSHELF_EBOOKS_CONFIG_DIR=/path/to/bookshelf-config \
+  deploy/install-bookshelf-backend.sh --migrate-to-chaptarrng
 ```
 
-Rebuild:
+If a source book has no edition rows, or a monitored mixed-format book has no
+selected edition, preview stops and leaves the database unchanged. It writes
+`readarr.db.bookshelf-media-review.json` beside the database with the affected
+source IDs and why the format cannot be inferred. Set each `mediaType` to
+`audiobook`, `ebook`, or `both`, save the completed document as
+`readarr.db.bookshelf-media-map.json` in the same directory, and rerun preview.
+The helper prints this next step when it finds the review file. For books
+without editions, the choice selects the destination media record or records;
+for monitored mixed-format books, it selects which formats to monitor while
+preserving all editions and files. On Unix, the review file is owner-readable
+only because it contains library titles and author names.
 
-- create a clean Hardcover config/database using the existing API key and port
-  where possible;
-- recreate root folders, profiles, metadata profiles, indexers, and download
-  clients if they are exportable through the API or can be copied safely from
-  database config tables;
-- add matched books through the Hardcover Bookshelf API, preserving monitored
-  state, root folder, quality profile, metadata profile, tags, and search
-  policy.
+Review the per-table report. Stop every BookshelfNG process using that database,
+then apply only after confirming the data directory and a separate backup
+location:
 
-Cutover:
+```bash
+BOOKSHELF_EBOOKS_CONFIG_DIR=/path/to/bookshelf-config \
+BACKUP_DIR=/path/to/private-backups \
+  deploy/install-bookshelf-backend.sh --migrate-to-chaptarrng --apply --confirm-stopped
+```
 
-- start Hardcover ebook and audiobook containers on the original ports;
-- validate `/api/v1/config/development`, `/api/v1/book/lookup`, `/api/v1/book`,
-  quality profiles, root folders, and request add/remove smoke tests;
-- if validation passes, disable old softcover containers/configs but keep
-  backups;
-- if validation fails, restore the softcover backup and leave Seerr settings
-  unchanged.
+Apply writes an independent config archive and the converter keeps the original
+`readarr.db`. It supports one BookshelfNG migration-158 SQLite database;
+PostgreSQL, older schemas, and split ebook/audiobook databases are not accepted.
+The helper does not start ChaptarrNG or rewrite a Compose file. Point the regular
+ChaptarrNG service at the converted config directory and preserve media/download
+mounts, the saved port and URL base, and any environment-only credentials.
+Check the library and SeerrNG requests before removing the old deployment.
 
-### SeerrNG Integration
+The old BookshelfNG installer remains available only for explicit maintenance
+and recovery with `--legacy-bookshelf`. The metadata-source conversion to
+Hardcover is a separate legacy Bookshelf operation documented in the
+[Hardcover migration runbook](./bookshelf-hardcover-migration.md); it is not
+part of moving BookshelfNG into ChaptarrNG. Distribution-channel bridges are
+not published, so package, image, and installer transitions still need their
+own tested path.
 
-- Extend Bookshelf diagnostics to classify backend provider:
-  - `hardcover`;
-  - `softcover`;
-  - `unknown`.
-- Surface the provider in **Settings > Services** diagnostics.
-- Keep softcover hydration fallback for legacy users.
-- Treat Hardcover as the recommended backend in docs and install paths.
-- Keep Readarr-compatible API behavior in SeerrNG; do not require Seerr users
-  to know provider internals.
-- Add a warning when a Bookshelf service reports softcover/Goodreads metadata:
-  `Legacy metadata backend. Hardcover is recommended for new installs.`
-
-### Documentation Updates
-
-- Replace the current Bookshelf backend guide with:
-  - fresh Hardcover install path;
-  - existing Readarr/softcover migration path;
-  - softcover legacy fallback path;
-  - rollback instructions;
-  - matching policy and report interpretation.
-- Document that direct ID reuse is unsafe:
-  - `ForeignAuthorId`, `ForeignBookId`, and `ForeignEditionId` are
-    provider-specific;
-  - switching `METADATA_URL` alone is not migration.
-- Document unsupported v1 migration items:
-  - uncertain or fuzzy matches are not auto-applied;
-  - historical activity/queue data may not be preserved unless verified safe;
-  - Goodreads import lists are not guaranteed on Hardcover.
-
-### Test Plan
-
-Fresh install:
-
-- no existing config path creates Hardcover instances by default;
-- compatibility metadata is enabled by default and the rreading-glasses
-  profile provides the shared PostgreSQL cache;
-- explicit `BOOKSHELF_METADATA_MODE=native` disables the proxy and uses
-  BookshelfNG's direct Hardcover provider;
-- Seerr can add ebook, audiobook, and both-format requests.
-
-Legacy softcover install:
-
-- existing config triggers migration flow in `auto` mode;
-- backup is created before mutation;
-- matched books are recreated in Hardcover;
-- unmatched/ambiguous books are reported and not auto-migrated;
-- old softcover is disabled after successful validation.
-
-Rollback:
-
-- failed Hardcover validation restores original softcover config and ports;
-- Seerr service settings remain usable.
-
-Diagnostics:
-
-- reports Hardcover vs Softcover;
-- flags softcover as legacy;
-- confirms lookup/add readiness for Hardcover.
-
-Regression:
-
-- existing softcover users can still opt into `BOOKSHELF_BACKEND=softcover`;
-- existing Seerr book request tests continue passing;
-- zero-valued service/profile IDs remain covered.
-- migration helper pure logic is covered by
-  `node --test deploy/bookshelf-hardcover-migration.test.mjs`.
-- migration helper match, rebuild, apply, validation, and cutover readiness are
-  covered against a mocked Bookshelf-compatible API in the same test file.
-- live migration rehearsals can be run with
-  `deploy/bookshelf-migration-lab.sh`, which copies source configs into an
-  isolated lab, starts disposable Hardcover targets on ports `18787` and
-  `18788`, and only imports books when run in `apply` mode.
-
-### Assumptions
-
-- Hardcover is the default for new users.
-- Existing users get an automatic migration attempt, but only strict matches are
-  applied.
-- Fuzzy matches are report-only for v1 and can become an admin review UI later.
-- After successful migration, softcover is disabled but backups are retained.
-- The final user-facing service should continue to look like "Bookshelf" in
-  SeerrNG, with provider details available only in diagnostics and docs.
-
-## Why Bookshelf
+## Legacy Bookshelf metadata context
 
 The legacy `lscr.io/linuxserver/readarr` backend can be reachable and still
 return unusable `/api/v1/book/lookup` records. A bad lookup usually has a title
@@ -531,10 +312,12 @@ and a foreign book ID, but no author object and no editions. SeerrNG refuses to
 add those raw records because Bookshelf/Readarr can reject them or create broken
 library entries.
 
-Hardcover is the default path for new installs. Bookshelf with `softcover` and
-`rreading-glasses` is also supported for Goodreads-compatible metadata, and
-other Readarr-compatible provider endpoints can be configured through the same
-service API. Goodreads no longer issues new public developer API keys, so
+For legacy BookshelfNG installations that remain in service, Hardcover is the
+preferred metadata path. The old `softcover` backend with `rreading-glasses`
+remains available for Goodreads-compatible metadata, and other
+Readarr-compatible provider endpoints can be configured through the same
+service API. This legacy metadata choice does not change ChaptarrNG as the
+recommended backend for new SeerrNG deployments. Goodreads no longer issues new public developer API keys, so
 Goodreads support here is mediated by the configured Bookshelf-compatible
 provider rather than a direct SeerrNG Goodreads client.
 Goodreads' own developer notice says it no longer issues new public API keys;
@@ -545,18 +328,16 @@ by Bookshelf when Open Library has no author photo.
 
 ## Architecture
 
-BookshelfNG is the maintained Readarr-style application. One instance manages
-both ebook and audiobook files, downloads, imports, file organization, and the
-Readarr-compatible API that SeerrNG calls. When both request formats are
-enabled, SeerrNG has two service entries pointing to that same instance.
+BookshelfNG is the legacy Readarr-style application for existing deployments.
+One instance manages both ebook and audiobook files, downloads, imports, file
+organization, and the Readarr-compatible API that SeerrNG calls. When both
+request formats are enabled, SeerrNG has two service entries pointing to that
+same instance.
 
-The bundled installer defaults fresh deployments to one combined BookshelfNG
-process, configuration, and database. SeerrNG still uses separate **Book** and
-**Audiobook** service entries for request routing; both entries point to the
-same BookshelfNG URL and API key. Existing audiobook databases retain the
-split deployment on installer reruns, and the installer will not merge those
-databases. Use `--split-instances` for an intentional two-process deployment
-or `--single-instance` to request the combined layout explicitly.
+The bundled installer is legacy-only. Its default behavior with an existing
+BookshelfNG database is to preview the move into ChaptarrNG; it refuses a fresh
+BookshelfNG install. The old two-process deployment remains supported only in
+explicit legacy maintenance mode. ChaptarrNG is the target for new installs.
 
 A single instance uses one metadata catalog selection and one author-level
 profile set. Each author uses one default path and can optionally set separate
@@ -569,11 +350,11 @@ three deliberate deployment modes:
 
 | Mode | Bookshelf metadata path | rreading-glasses | Use it when |
 | --- | --- | --- | --- |
-| `compatibility` (default for fresh Hardcover) | BookshelfNG → local rreading-glasses → upstream | On, with PostgreSQL | A shared durable cache, centralized throttling, or a compatibility boundary |
+| `compatibility` (legacy Bookshelf installer default for Hardcover) | BookshelfNG → local rreading-glasses → upstream | On, with PostgreSQL | A shared durable cache, centralized throttling, or a compatibility boundary |
 | `native` (explicit opt-in) | BookshelfNG → Hardcover GraphQL | Off | The shortest direct Hardcover path |
 | `hosted` | BookshelfNG → `METADATA_URL` such as `https://hardcover.bookinfo.pro` | Off | Native credentials are unavailable or a hosted compatibility endpoint is preferred |
 
-Compatibility is the installer default because it keeps BookshelfNG decoupled
+Compatibility is the legacy installer default because it keeps BookshelfNG decoupled
 from Hardcover's GraphQL API and centralizes Hardcover authentication, caching,
 request coalescing, and upstream throttling. One proxy and PostgreSQL cache can
 serve a single combined BookshelfNG instance or several isolated instances.
@@ -658,7 +439,7 @@ both entries can point to the same BookshelfNG instance.
 The public Snapetech fork is:
 
 ```text
-https://github.com/snapetech/bookshelfng
+https://github.com/snapetech-org/bookshelfng
 ```
 
 If Docker is not an option, follow the [BookshelfNG source-build
@@ -750,103 +531,50 @@ For the validated deployment, the important in-container paths were:
 
 ## Installer Script
 
-The repository includes an installer helper. A fresh deployment starts one
-BookshelfNG process for both formats:
+For a new deployment, use the SeerrNG setup assistant to create the standard
+ChaptarrNG stack:
 
 ```bash
-deploy/install-bookshelf-backend.sh
+node scripts/setup-assistant.mjs --profile books --output ./my-books-stack
 ```
 
-For existing Readarr or softcover deployments, use the full migration runbook:
-
-```text
-docs/using-seerr/bookshelf-hardcover-migration.md
-```
-
-It does the following:
-
-- validates Docker, Docker Compose, the compose template, and the Bookshelf
-  image,
-- copies `deploy/compose.bookshelf.yml` into an install directory,
-- writes an `.env` file with a generated Postgres password,
-- backs up existing Bookshelf/Readarr config directories,
-- creates the combined Bookshelf config on port `8787` by default; pass
-  `--split-instances` to create separate ebook (`8787`) and audiobook (`8788`)
-  configs,
-- optionally stops an old Readarr container,
-- starts the selected Bookshelf deployment with Docker Compose; starts
-  rreading-glasses and Postgres only when
-  `BOOKSHELF_METADATA_MODE=compatibility`,
-- prints the Seerr settings and validation commands.
-
-When an audiobook database is found, the helper preserves the split layout on
-reruns. Use `--single-instance` only after separately migrating any data from
-that database; the installer refuses to silently leave it behind. The
-combined layout uses the same host, port, and API key in both SeerrNG format
-entries.
-
-Preview the install without changing files or containers:
+The legacy BookshelfNG installer is not a fresh-install path. With an existing
+BookshelfNG database it defaults to a non-mutating ChaptarrNG preview. To run it
+explicitly, set the source config path:
 
 ```bash
-sudo deploy/install-bookshelf-backend.sh --dry-run
+BOOKSHELF_EBOOKS_CONFIG_DIR=/path/to/bookshelf-config \
+  deploy/install-bookshelf-backend.sh --migrate-to-chaptarrng
 ```
 
-Validate an already-rendered install directory without starting containers:
+When preview finds records without an identifiable media type, it creates
+`readarr.db.bookshelf-media-review.json` beside `readarr.db` and exits without
+promoting a database. Fill each `mediaType` with `audiobook`, `ebook`, or
+`both`, save the completed document as `readarr.db.bookshelf-media-map.json`,
+and rerun preview before applying. The same standard ChaptarrNG image reads
+that map during preview, apply, and normal startup.
+
+After reviewing the report and stopping BookshelfNG, apply with an independent
+backup location:
 
 ```bash
-sudo deploy/install-bookshelf-backend.sh --validate-only
+BOOKSHELF_EBOOKS_CONFIG_DIR=/path/to/bookshelf-config \
+BACKUP_DIR=/path/to/private-backups \
+  deploy/install-bookshelf-backend.sh --migrate-to-chaptarrng --apply --confirm-stopped
 ```
 
-Validate the Bookshelf APIs after startup:
+The helper archives the config before applying and does not start ChaptarrNG or
+rewrite the deployment. Preserve the existing port and URL base, media/download
+mounts, and environment-only credentials when pointing the standard ChaptarrNG
+service at the converted config. Split databases and unsupported schemas are
+refused; keep the old deployment and backup until the target is verified.
 
-```bash
-sudo EBOOK_API_KEY=replace-me \
-  deploy/install-bookshelf-backend.sh --validate-api --skip-pull --no-stop-readarr
-```
+Use `--legacy-bookshelf` only to maintain or restore an existing BookshelfNG
+installation. The following manual BookshelfNG Compose, metadata, and rollback
+instructions are for those existing installs only. They do not apply to fresh
+SeerrNG deployments.
 
-In split-instance mode, also set `AUDIOBOOK_API_KEY`; the helper validates
-both processes separately.
-
-Run it on the Docker host:
-
-```bash
-sudo INSTALL_DIR=/opt/bookshelf-backend \
-  BOOKSHELF_EBOOKS_CONFIG_DIR=/mnt/datapool_lvm_media/readarr-config \
-  BOOKSHELF_AUDIOBOOKS_CONFIG_DIR=/mnt/datapool_lvm_media/bookshelf-audiobooks-config \
-  MEDIA_ROOT=/mnt/datapool_lvm_media \
-  DOWNLOAD_ROOT=/mnt/datapool_lvm_media/download \
-  PLEX_ROOT=/mnt/datapool_lvm_media/plex \
-  deploy/install-bookshelf-backend.sh
-```
-
-To stop an existing Readarr container during migration:
-
-```bash
-sudo STOP_OLD_READARR_CONTAINER=readarr-host deploy/install-bookshelf-backend.sh
-```
-
-To keep an existing Readarr container running while preparing the new stack:
-
-```bash
-sudo STOP_OLD_READARR_CONTAINER=readarr-host \
-  deploy/install-bookshelf-backend.sh --no-stop-readarr
-```
-
-To use the upstream image instead of the Snapetech fork:
-
-```bash
-sudo BOOKSHELF_IMAGE=ghcr.io/pennydreadful/bookshelf:softcover \
-  deploy/install-bookshelf-backend.sh
-```
-
-If the image is already present locally or the registry requires authentication,
-skip the pull step:
-
-```bash
-sudo deploy/install-bookshelf-backend.sh --skip-pull
-```
-
-## Manual Compose
+## Manual Compose for legacy BookshelfNG maintenance
 
 Use the included compose file if you prefer manual setup:
 
@@ -936,7 +664,7 @@ docker compose pull
 docker compose up -d
 ```
 
-For a fresh manual setup, make sure each Bookshelf config directory has a
+For a manually configured legacy BookshelfNG setup, each config directory needs a
 different port in `config.xml` before both containers run on host networking:
 
 ```xml
@@ -1153,7 +881,7 @@ If the migration fails:
 
    ```bash
    sudo BACKUP_DIR=/opt/bookshelf-backend/backups/20260518-145258 \
-     deploy/install-bookshelf-backend.sh --restore-backup
+     deploy/install-bookshelf-backend.sh --legacy-bookshelf --restore-backup
    ```
 
    The restore command stops the rendered compose stack if

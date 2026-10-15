@@ -784,20 +784,20 @@ describe('Books and Music discover parity', () => {
       'be.visible'
     );
     cy.contains(
-      'Bookshelf is the recommended book backend. Readarr-compatible servers, including Chaptarr, can also be used. For Chaptarr, set Book Format to match the configured root folder; Seerr sends that format explicitly on every request.'
+      'ChaptarrNG is the maintained book backend for new installs. Existing BookshelfNG and other Readarr-compatible servers remain supported during migration. Set Book Format to match the configured root folder; Seerr sends that format explicitly on every request.'
     ).should('be.visible');
     cy.contains('a', 'Bookshelf Hardcover migration guide')
       .should(
         'have.attr',
         'href',
-        'https://github.com/snapetech/seerrng/blob/main/docs/using-seerr/bookshelf-hardcover-migration.md'
+        'https://github.com/snapetech-org/seerrng/blob/main/docs/using-seerr/bookshelf-hardcover-migration.md'
       )
       .and('have.attr', 'target', '_blank');
     cy.contains('label', 'Book Format').should('be.visible');
     cy.get('select[name=serviceType]').should('be.visible');
     assertDialogFieldDescription(
       'API Key',
-      'Find the key in Bookshelf or Readarr under Settings > General > Security > API Key'
+      'Find the key in ChaptarrNG under Settings > General > Security > API Key'
     );
     assertDialogFieldDescription(
       'URL Base',
@@ -862,7 +862,7 @@ describe('Books and Music discover parity', () => {
       .should(
         'have.attr',
         'href',
-        'https://github.com/snapetech/seerrng/blob/main/docs/using-seerr/bookshelf-backend.md'
+        'https://github.com/snapetech-org/seerrng/blob/main/docs/using-seerr/bookshelf-backend.md'
       )
       .and('have.attr', 'target', '_blank')
       .and('have.attr', 'rel', 'noopener noreferrer');

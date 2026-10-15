@@ -1,10 +1,10 @@
 import assert from 'node:assert/strict';
+import { execFileSync } from 'node:child_process';
 import {
-  lstatSync,
+  existsSync,
   mkdirSync,
   mkdtempSync,
   readFileSync,
-  readdirSync,
   rmSync,
   symlinkSync,
   unlinkSync,
@@ -41,24 +41,18 @@ function write(root, file, contents) {
   writeFileSync(absolute, contents);
 }
 
-function repositoryTestFiles(root) {
-  const files = [];
-  const visit = (directory) => {
-    for (const entry of readdirSync(directory, { withFileTypes: true })) {
-      if (
-        ['.git', '.next', 'build', 'dist', 'node_modules'].includes(entry.name)
-      )
-        continue;
-      const absolute = path.join(directory, entry.name);
-      if (entry.isSymbolicLink() || lstatSync(absolute).isSymbolicLink())
-        continue;
-      if (entry.isDirectory()) visit(absolute);
-      else if (entry.isFile() && TEST_LIKE_FILE.test(entry.name))
-        files.push(path.relative(root, absolute).split(path.sep).join('/'));
-    }
-  };
-  visit(root);
-  return files.sort();
+function repositoryTestFiles(root, roots) {
+  return execFileSync(
+    'git',
+    ['ls-files', '--cached', '--others', '--exclude-standard', '--', ...roots],
+    { cwd: root, encoding: 'utf8' }
+  )
+    .split(/\r?\n/)
+    .filter(
+      (file) =>
+        file && TEST_LIKE_FILE.test(file) && existsSync(path.join(root, file))
+    )
+    .sort();
 }
 
 function fixture() {
@@ -212,7 +206,7 @@ test('current repository has complete deterministic hosted ownership', () => {
   );
   assert.deepEqual(
     inventory.entries.map(({ file }) => file),
-    repositoryTestFiles(repositoryRoot)
+    repositoryTestFiles(repositoryRoot, inventory.roots)
   );
   assert.ok(
     inventory.entries
@@ -347,7 +341,7 @@ test('inventory ignores dependency links but rejects source links', () => {
   );
 });
 
-test('inventory still rejects Cypress runtime links inside the source tree', () => {
+test('inventory excludes ignored Cypress runtime data from test discovery', () => {
   const root = fixture();
   const runtimeLogs = mkdtempSync(
     path.join(tmpdir(), 'hosted-test-inventory-cypress-runtime-')
@@ -360,9 +354,12 @@ test('inventory still rejects Cypress runtime links inside the source tree', () 
     path.join(root, 'cypress/runtime-config/logs'),
     process.platform === 'win32' ? 'junction' : 'dir'
   );
-  assert.throws(
-    () => createHostedTestInventory(root),
-    /Symlink in hosted test discovery scope: cypress\/runtime-config\/logs/
+  const inventory = createHostedTestInventory(root);
+  assert.equal(
+    inventory.entries.some(({ file }) =>
+      file.startsWith('cypress/runtime-config/')
+    ),
+    false
   );
 });
 

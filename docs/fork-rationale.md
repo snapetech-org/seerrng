@@ -23,7 +23,7 @@ and offer changes upstream when they fit. It is not a claim that Seerr should
 adopt every feature or follow SeerrNG's full product direction. Seerr remains
 the foundation for inherited movie and television requests, users, media-server
 behavior, and deployment patterns. We continue to preserve its attribution and
-the licenses of upstream and third-party work; see the [NOTICE.md policy](https://github.com/snapetech/seerrng/blob/main/NOTICE.md).
+the licenses of upstream and third-party work; see the [NOTICE.md policy](https://github.com/snapetech-org/seerrng/blob/main/NOTICE.md).
 
 ## What SeerrNG Carries
 
@@ -35,7 +35,7 @@ notifications, and status visible in one place.
 
 The maturity of each category varies. Some workflows are established; others
 continue to evolve as catalogs, metadata, providers, and real-world library
-behavior are tested. The [repository README](https://github.com/snapetech/seerrng#documentation)
+behavior are tested. The [repository README](https://github.com/snapetech-org/seerrng#documentation)
 and guides linked from this documentation describe current operator-facing behavior.
 
 ## Companion Services and SeerrNG-Specific Changes
@@ -77,8 +77,8 @@ their origins across several related projects. We are making the rationale and
 integration boundaries clearer now, and welcome conversations with Seerr or
 companion-project maintainers. Questions, design feedback, and concerns about
 compatibility, scope, security, attribution, or provenance are welcome through
-[SeerrNG Discussions](https://github.com/snapetech/seerrng/discussions) or
-[SeerrNG Issues](https://github.com/snapetech/seerrng/issues). Each upstream
+[SeerrNG Discussions](https://github.com/snapetech-org/seerrng/discussions) or
+[SeerrNG Issues](https://github.com/snapetech-org/seerrng/issues). Each upstream
 project decides what it wants to accept and on what terms.
 
 ## What Could Let SeerrNG Stop Being a Required Fork

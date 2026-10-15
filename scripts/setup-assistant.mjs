@@ -50,7 +50,7 @@ export const apps = {
     integrations: ['Lidarr: lidarr:8686'],
   },
   bookshelf: {
-    title: 'BookshelfNG',
+    title: 'BookshelfNG (legacy)',
     image: 'ghcr.io/snapetech/bookshelfng:hardcover',
     port: '8787',
     volumes: [
@@ -65,7 +65,7 @@ export const apps = {
   },
   chaptarrng: {
     title: 'ChaptarrNG',
-    image: 'ghcr.io/snapetech/chaptarrng:0.9.937',
+    image: 'ghcr.io/snapetech/chaptarrng:latest',
     port: '8789',
     volumes: [
       'chaptarrng-config:/config',
@@ -353,11 +353,15 @@ export const profiles = {
   },
   books: {
     title: 'Books and audiobooks',
-    apps: ['seerrng', 'bookshelf', 'prowlarr', 'qbittorrent'],
+    apps: ['seerrng', 'chaptarrng', 'prowlarr', 'qbittorrent'],
   },
   'books-chaptarrng': {
     title: 'Books and audiobooks with ChaptarrNG',
     apps: ['seerrng', 'chaptarrng', 'prowlarr', 'qbittorrent'],
+  },
+  'books-bookshelfng': {
+    title: 'Legacy BookshelfNG connection',
+    apps: ['seerrng', 'bookshelf', 'prowlarr', 'qbittorrent'],
   },
   music: {
     title: 'Music',
@@ -382,7 +386,7 @@ export const profiles = {
       'radarr',
       'sonarr',
       'lidarr',
-      'bookshelf',
+      'chaptarrng',
       'prowlarr',
       'qbittorrent',
     ],
@@ -394,7 +398,7 @@ export const profiles = {
       'radarr',
       'sonarr',
       'lidarr',
-      'bookshelf',
+      'chaptarrng',
       'mylar3',
       'lazylibrarian',
       'questarrng',
@@ -550,7 +554,7 @@ export const renderGuide = (selectedApps, profileTitle, sharedNetwork) => {
   }
   if (selectedApps.includes('chaptarrng')) {
     lines.push(
-      'ChaptarrNG is an alternative Bookshelf-compatible provider. If one instance handles both formats, add both SeerrNG connections above with the same address and API key. Choose one provider per format to avoid duplicate acquisitions.'
+      'ChaptarrNG is the maintained book provider for new SeerrNG deployments. One instance can handle both formats; add both SeerrNG connections above with the same address and API key.'
     );
   }
   if (selectedApps.includes('backissue')) {

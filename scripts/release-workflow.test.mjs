@@ -122,6 +122,50 @@ test('release assets build while image verification runs, then package channels 
   );
 });
 
+test('release package dispatch uses a repository-scoped GitHub App token', () => {
+  const release = readWorkflow('release.yml');
+  const appTokenAction =
+    'actions/create-github-app-token@bcd2ba49218906704ab6c1aa796996da409d3eb1';
+
+  for (const jobName of ['dispatch-chocolatey', 'dispatch-package-channels']) {
+    const job = release.jobs[jobName];
+    const tokenStep = job.steps.find(
+      (step) => step.name === 'Create scoped workflow-dispatch token'
+    );
+
+    assert.ok(tokenStep, `${jobName} must mint its own dispatch token`);
+    assert.equal(tokenStep.uses, appTokenAction);
+    assert.equal(tokenStep.with.owner, 'snapetech-org');
+    assert.equal(tokenStep.with.repositories, 'seerrng');
+    assert.equal(tokenStep.with['permission-actions'], 'write');
+    assert.equal(job.permissions.actions, 'write');
+  }
+
+  const chocolatey = release.jobs['dispatch-chocolatey'];
+  const chocolateyDispatch = chocolatey.steps.find(
+    (step) => step.name === 'Dispatch Chocolatey package workflow'
+  );
+  assert.equal(
+    chocolateyDispatch.env.GH_TOKEN,
+    '${{ steps.app-token.outputs.token }}'
+  );
+
+  const packageDispatch = release.jobs['dispatch-package-channels'];
+  const packageDispatchStep = packageDispatch.steps.find(
+    (step) => step.name === 'Dispatch package workflows'
+  );
+  assert.equal(packageDispatchStep.env.GH_TOKEN, '${{ secrets.GITHUB_TOKEN }}');
+  assert.equal(
+    packageDispatchStep.env.APP_TOKEN,
+    '${{ steps.app-token.outputs.token }}'
+  );
+  assert.match(
+    packageDispatchStep.run,
+    /GH_TOKEN="\$APP_TOKEN" gh workflow run/u
+  );
+  assert.doesNotMatch(JSON.stringify(release), /GH_WORKFLOW_TOKEN/u);
+});
+
 test('container workflows use the canonical lowercase GitHub Container Registry path', () => {
   const expectedImage = 'ghcr.io/snapetech/seerrng';
   for (const name of [

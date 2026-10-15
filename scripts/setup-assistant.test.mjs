@@ -166,8 +166,11 @@ test('profiles and optional app additions cover each supported media category', 
   assert.ok(profiles['movies-tv'].apps.includes('radarr'));
   assert.ok(profiles['movies-tv'].apps.includes('sonarr'));
   assert.ok(profiles.music.apps.includes('lidarr'));
-  assert.ok(profiles.books.apps.includes('bookshelf'));
+  assert.ok(profiles.books.apps.includes('chaptarrng'));
+  assert.ok(!profiles.books.apps.includes('bookshelf'));
   assert.ok(profiles['books-chaptarrng'].apps.includes('chaptarrng'));
+  assert.ok(profiles['books-bookshelfng'].apps.includes('bookshelf'));
+  assert.match(apps.chaptarrng.image, /chaptarrng:latest$/);
   assert.ok(profiles.comics.apps.includes('mylar3'));
   assert.ok(profiles.magazines.apps.includes('lazylibrarian'));
   assert.ok(profiles.software.apps.includes('questarrng'));
@@ -193,16 +196,19 @@ test('generated Compose uses persistent named volumes and configurable local web
 
 test('setup guide uses Compose DNS names and keeps API keys out of generated content', () => {
   const guide = renderGuide(profiles.books.apps, profiles.books.title);
-  assert.match(guide, /Books \(BookshelfNG\): bookshelf:8787/);
+  assert.match(guide, /Books \(ChaptarrNG\): chaptarrng:8789/);
   assert.match(guide, /use the service address below as its hostname/);
   assert.match(guide, /API key from that app’s settings/);
   assert.match(guide, /qBittorrent as the download client/);
   assert.match(guide, /peer traffic on TCP and UDP port 6881/);
   assert.match(guide, /temporary `admin` password in its container log/);
-  assert.match(guide, /BookshelfNG\): bookshelf:8787 \(Book format\)/);
-  assert.match(guide, /BookshelfNG\): bookshelf:8787 \(Audiobook format\)/);
-  assert.match(guide, /content files in `media-data` named volumes/);
-  assert.match(guide, /BookshelfNG `\/data`/);
+  assert.match(guide, /ChaptarrNG\): chaptarrng:8789 \(Book format\)/);
+  assert.match(guide, /ChaptarrNG\): chaptarrng:8789 \(Audiobook format\)/);
+  assert.match(
+    guide,
+    /content files in `ebook-data`, `audiobook-data` named volumes/
+  );
+  assert.match(guide, /ChaptarrNG `\/ebooks`/);
   assert.doesNotMatch(guide, /api[_ -]?key\s*[:=]\s*\S+/i);
 });
 
@@ -342,7 +348,7 @@ test('network discovery inspects only the named network and suggests app DNS por
     },
     {
       id: 'bookshelf',
-      title: 'BookshelfNG',
+      title: 'BookshelfNG (legacy)',
       hostname: 'bookshelf',
       port: '8787',
       state: 'running',

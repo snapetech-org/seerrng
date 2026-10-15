@@ -618,7 +618,7 @@ const SettingsServices = () => {
         </p>
         <Button
           as="a"
-          href="https://github.com/snapetech/seerrng/blob/main/docs/using-seerr/setup-assistant.md"
+          href="https://github.com/snapetech-org/seerrng/blob/main/docs/using-seerr/setup-assistant.md"
           target="_blank"
           rel="noopener noreferrer"
           buttonType="default"
@@ -1177,7 +1177,7 @@ const SettingsServices = () => {
                 {!hasSharedBookshelf && (
                   <a
                     className="text-primary-400 hover:underline"
-                    href="https://github.com/snapetech/seerrng/blob/main/docs/using-seerr/bookshelf-backend.md"
+                    href="https://github.com/snapetech-org/seerrng/blob/main/docs/using-seerr/bookshelf-backend.md"
                     target="_blank"
                     rel="noopener noreferrer"
                   >

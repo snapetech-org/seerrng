@@ -38,6 +38,28 @@ inferred: `v3.2.6` was never tagged and is intentionally absent.
 See the [release history audit](./release-history-audit.md) for the scope and
 method used to backfill the historical sections.
 
+## Workflow Dispatch Authentication
+
+The release workflow uses the organization-owned **SnapeTech Automation**
+GitHub App when it dispatches package workflows. Its installation is limited to
+`chaptarrng`, `bookshelfng`, and `seerrng`; its only repository permission is
+Actions read/write. The organization Actions variable
+`CHAPTARRNG_AUTOMATION_APP_ID` and private-key secret
+`CHAPTARRNG_AUTOMATION_APP_PRIVATE_KEY` are currently available only to
+`seerrng`. Release jobs mint an installation token for `seerrng` with Actions
+write permission only, then use the normal workflow token for reading and
+watching package runs. This keeps the short-lived dispatch token out of long
+release waits and avoids depending on a manually renewed personal access token.
+
+GitHub App private keys do not expire automatically. Keep the private key only
+in the selected Actions secret; never commit it or place it in a release
+artifact. To rotate it, generate a replacement key in the App's credentials
+settings, update the organization secret, verify that a scoped token can list
+SeerrNG workflows, then revoke the old key. Installation tokens are minted by
+the workflow as needed and expire after one hour. See GitHub's documentation on
+[managing private keys](https://docs.github.com/en/apps/creating-github-apps/authenticating-with-a-github-app/managing-private-keys-for-github-apps)
+and [generating installation tokens](https://docs.github.com/en/apps/creating-github-apps/authenticating-with-a-github-app/generating-an-installation-access-token-for-a-github-app).
+
 When reviewing a release, check all three surfaces:
 
 1. `CHANGELOG.md` contains a section for the new version.

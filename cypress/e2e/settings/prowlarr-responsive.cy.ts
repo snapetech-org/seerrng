@@ -181,7 +181,7 @@ describe('Prowlarr settings on a short mobile screen', () => {
       .should(
         'have.attr',
         'href',
-        'https://github.com/snapetech/seerrng/blob/main/docs/using-seerr/setup-assistant.md'
+        'https://github.com/snapetech-org/seerrng/blob/main/docs/using-seerr/setup-assistant.md'
       );
     cy.document().then((document) => {
       expect(document.documentElement.scrollWidth).to.be.at.most(

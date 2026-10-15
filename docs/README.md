@@ -67,5 +67,5 @@ connects to.
 - [Current SeerrNG changes in review](/upstream-review-status/)
 - [REST API reference](/api/seerr-api/)
 - [Third-party client compatibility](/using-seerr/third-party-client-compatibility/)
-- [Contribution guidelines](https://github.com/snapetech/seerrng/blob/main/CONTRIBUTING.md)
+- [Contribution guidelines](https://github.com/snapetech-org/seerrng/blob/main/CONTRIBUTING.md)
 - [Support on Discord](https://discord.gg/5PyXBfvS6T)

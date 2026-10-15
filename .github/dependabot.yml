@@ -9,6 +9,18 @@ updates:
     open-pull-requests-limit: 5
     labels:
       - "dependencies"
+    groups:
+      npm-minor-patch:
+        applies-to: version-updates
+        patterns:
+          - "*"
+        update-types:
+          - minor
+          - patch
+      npm-security-updates:
+        applies-to: security-updates
+        patterns:
+          - "*"
     commit-message:
       prefix: "release-note: none"
 
@@ -24,3 +36,14 @@ updates:
       release-note-none-codeql-action:
         patterns:
           - "github/codeql-action/*"
+      actions-minor-patch:
+        applies-to: version-updates
+        patterns:
+          - "*"
+        update-types:
+          - minor
+          - patch
+      actions-security-updates:
+        applies-to: security-updates
+        patterns:
+          - "*"

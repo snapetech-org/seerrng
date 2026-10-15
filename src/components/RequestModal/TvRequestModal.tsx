@@ -1168,7 +1168,7 @@ const TvRequestModal = ({
                 )}
                 <Button
                   as="a"
-                  href="https://github.com/snapetech/seerrng/blob/main/docs/using-seerr/jellyfin-watch-ahead.md"
+                  href="https://github.com/snapetech-org/seerrng/blob/main/docs/using-seerr/jellyfin-watch-ahead.md"
                   target="_blank"
                   rel="noreferrer"
                   buttonType="ghost"
