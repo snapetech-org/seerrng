@@ -137,7 +137,7 @@ describe('Auto Request Settings', () => {
             .its('status')
             .should('eq', 200)
             .then(() => {
-              visitUserEditPage(USER_EMAIL);
+              visitUserEditPage(user.email);
               cy.location('pathname').should(
                 'eq',
                 `/users/${user.id}/settings`
