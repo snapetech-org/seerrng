@@ -22,6 +22,13 @@ separate; pinning one category does not open the same section for another.
 Collections use the Movie category's pins, and Book Genres uses the Book
 category's Subject Tags pin.
 
+## Hide subject tags
+
+Movie and Series Subject Tags panels include a visibility button beside the
+heading. Use it to hide or show the keyword links when they reveal plot details.
+The choice applies to both Movie and Series pages and is saved in this browser
+for the current SeerrNG account. It does not sync to another browser or device.
+
 ## Choose what to play
 
 When playback controls are available, use the quality selector before
