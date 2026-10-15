@@ -189,7 +189,10 @@ export default function PosterRatingPopover({
             voteAverage={userScore}
             voteCount={voteCount}
             ratings={mediaType === 'movie' ? movieRatings : tvRatings}
-            loading={mediaType === 'movie' ? movieLoading : tvLoading}
+            loading={
+              !videoRatingsReady ||
+              (mediaType === 'movie' ? movieLoading : tvLoading)
+            }
           />
         )}
         {albumRatings.length > 0 && (
