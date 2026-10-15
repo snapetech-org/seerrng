@@ -7,7 +7,9 @@ import { useCallback } from 'react';
 import { useIntl } from 'react-intl';
 
 const messages = defineMessages('components.Layout.SearchInput', {
+  searchLabel: 'Search',
   searchPlaceholder: 'Search movies, series, music, books, and people',
+  clearSearchText: 'Clear the search text',
 });
 
 const SearchInput = () => {
@@ -30,15 +32,15 @@ const SearchInput = () => {
     <div className="flex min-w-0 flex-1 items-center">
       <div className="flex w-full max-w-2xl min-w-0">
         <label htmlFor="search_field" className="sr-only">
-          Search
+          {intl.formatMessage(messages.searchLabel)}
         </label>
         <div className="relative flex w-full items-center text-white focus-within:text-gray-200">
-          <div className="pointer-events-none absolute inset-y-0 left-4 flex items-center">
+          <div className="pointer-events-none absolute inset-y-0 start-4 flex items-center">
             <MagnifyingGlassIcon className="h-5 w-5" />
           </div>
           <input
             id="search_field"
-            className={`app-search-input ${hasSearchValue ? 'pr-7' : ''}`}
+            className={`app-search-input ${hasSearchValue ? 'pe-7' : ''}`}
             placeholder={intl.formatMessage(messages.searchPlaceholder)}
             type="search"
             autoComplete="off"
@@ -50,9 +52,9 @@ const SearchInput = () => {
           />
           {hasSearchValue && (
             <button
-              className="absolute inset-y-0 right-2 m-auto h-7 w-7 border-none p-1 text-gray-400 transition outline-none hover:text-white focus:border-none focus:outline-none"
+              className="absolute inset-y-0 end-2 m-auto h-7 w-7 border-none p-1 text-gray-400 transition outline-none hover:text-white focus:border-none focus:outline-none"
               onClick={() => clear()}
-              aria-label="Clear the search text"
+              aria-label={intl.formatMessage(messages.clearSearchText)}
             >
               <XCircleIcon className="h-5 w-5" />
             </button>

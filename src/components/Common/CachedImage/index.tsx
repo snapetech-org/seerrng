@@ -153,7 +153,9 @@ const CachedImage = memo(
       return (
         <UserIcon
           aria-label={typeof props.alt === 'string' ? props.alt : undefined}
-          className={`inline-flex p-[15%] text-indigo-500 ${props.className ?? ''}`}
+          className={`cached-image-avatar-fallback ${props.className ?? ''}`}
+          width={props.width}
+          height={props.height}
           role={props.alt ? 'img' : undefined}
         />
       );

@@ -9,6 +9,7 @@ import {
   normalizeMusicBrainzId,
   prepareMusicBrainzBatchIds,
 } from '@server/lib/externalIds';
+import { getSettings } from '@server/lib/settings';
 import logger from '@server/logger';
 import { mapWithConcurrency } from '@server/utils/concurrency';
 import {
@@ -19,6 +20,11 @@ import {
 import axios from 'axios';
 import { In } from 'typeorm';
 import type { CoverArtResponse } from './interfaces';
+import {
+  configureCoverArtArchiveLimits,
+  coverArtArchiveHttpClient,
+  coverArtArchiveRequestGate,
+} from './requestLimiter';
 import { formatCoverArtArchiveThumbnailUrl } from './urls';
 
 const MAX_COVER_ART_IMAGES = 100;
@@ -58,11 +64,10 @@ class CoverArtArchive extends ExternalAPI {
       {},
       {
         nodeCache: cacheManager.getCache('coverartarchive').data,
-        rateLimit: {
-          maxRequests: 20,
-          maxRPS: 50,
-        },
       }
+    );
+    configureCoverArtArchiveLimits(
+      getSettings().musicMetadataSettings?.coverArtArchive
     );
   }
 
@@ -160,13 +165,15 @@ class CoverArtArchive extends ExternalAPI {
       }
 
       try {
-        const response = await axios.get(stringifySafeHttpUrl(safeUrl), {
-          ...createSafeHttpRequestOptions(false, false, true),
-          maxRedirects: 0,
-          timeout: DEFAULT_EXTERNAL_API_TIMEOUT_MS,
-          maxContentLength: MAX_COVER_ART_METADATA_BYTES,
-          maxBodyLength: MAX_COVER_ART_METADATA_BYTES,
-        });
+        const response = await coverArtArchiveRequestGate.run(() =>
+          coverArtArchiveHttpClient.get(stringifySafeHttpUrl(safeUrl), {
+            ...createSafeHttpRequestOptions(false, false, true),
+            maxRedirects: 0,
+            timeout: DEFAULT_EXTERNAL_API_TIMEOUT_MS,
+            maxContentLength: MAX_COVER_ART_METADATA_BYTES,
+            maxBodyLength: MAX_COVER_ART_METADATA_BYTES,
+          })
+        );
         return response.data;
       } catch (error) {
         if (!axios.isAxiosError(error) || !error.response) {
@@ -189,6 +196,31 @@ class CoverArtArchive extends ExternalAPI {
     }
 
     throw new Error('Too many redirects resolving Cover Art Archive metadata');
+  }
+
+  /** Probe the public metadata endpoint without reading or writing the DB cache. */
+  public async testConnection(): Promise<void> {
+    const probeId = '00000000-0000-0000-0000-000000000000';
+
+    try {
+      const response = await this.fetchReleaseGroupMetadata(probeId);
+      if (
+        !isRecord(response) ||
+        (typeof response.release !== 'string' &&
+          !Array.isArray(response.images))
+      ) {
+        throw new Error('Invalid Cover Art Archive response.');
+      }
+    } catch (error) {
+      // The synthetic ID is expected not to exist. A provider 404 still proves
+      // that the HTTPS endpoint and its validated redirect chain are reachable.
+      if (axios.isAxiosError(error) && error.response?.status === 404) {
+        return;
+      }
+      throw new Error('Cover Art Archive connection test failed.', {
+        cause: error,
+      });
+    }
   }
 
   private async fetchCoverArt(id: string): Promise<CoverArtResponse> {

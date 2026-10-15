@@ -3,11 +3,14 @@ import dns from 'node:dns/promises';
 import path from 'node:path';
 import { afterEach, before, beforeEach, describe, it, mock } from 'node:test';
 
+import CoverArtArchive from '@server/api/coverartarchive';
 import JellyfinAPI from '@server/api/jellyfin';
+import MusicBrainz from '@server/api/musicbrainz';
 import PlexAPI from '@server/api/plexapi';
 import PlexTvAPI, { MAX_PLEX_SHARED_USERS } from '@server/api/plextv';
 import TautulliAPI from '@server/api/tautulli';
 import { MediaServerType } from '@server/constants/server';
+import { UserType } from '@server/constants/user';
 import { getRepository } from '@server/datasource';
 import { ScheduledJobLease } from '@server/entity/ScheduledJobLease';
 import { User } from '@server/entity/User';
@@ -260,6 +263,76 @@ describe('Settings route input validation', () => {
 
     assert.strictEqual(res.status, 400);
     assert.strictEqual(res.body.message, 'Jellyfin is not configured.');
+  });
+
+  it('returns canonical Jellyfin IDs and server-side import status', async () => {
+    const settings = getSettings();
+    const previousJellyfin = settings.jellyfin;
+    const providerId = '66666666-6666-6666-6666-666666666666';
+    const canonicalId = providerId.replaceAll('-', '');
+    const userRepository = getRepository(User);
+    const linkedUser = await userRepository.save(
+      new User({
+        email: 'linked-jellyfin-import@example.com',
+        jellyfinUserId: providerId,
+        jellyfinUsername: 'Linked Jellyfin User',
+        permissions: Permission.REQUEST,
+        userType: UserType.LOCAL,
+        avatar: `/avatarproxy/${canonicalId}`,
+      })
+    );
+    settings.jellyfin = {
+      ...settings.jellyfin,
+      ip: 'jellyfin.local',
+      apiKey: 'stored-key',
+    };
+    const getUsersMock = mock.method(
+      JellyfinAPI.prototype,
+      'getUsers',
+      async () =>
+        ({
+          users: [
+            {
+              Name: 'Linked Jellyfin User',
+              Id: providerId,
+            },
+            {
+              Name: 'New Jellyfin User',
+              Id: '77777777-7777-7777-7777-777777777777',
+            },
+            {
+              Name: 'Invalid ID',
+              Id: 'not-a-guid',
+            },
+          ],
+        }) as never
+    );
+
+    try {
+      const response = await request(app).get('/settings/jellyfin/users');
+
+      assert.strictEqual(response.status, 200);
+      assert.deepStrictEqual(response.body, [
+        {
+          username: 'Linked Jellyfin User',
+          id: canonicalId,
+          thumb: `/avatarproxy/${canonicalId}`,
+          email: 'Linked Jellyfin User',
+          isImported: true,
+        },
+        {
+          username: 'New Jellyfin User',
+          id: '77777777777777777777777777777777',
+          thumb: '/avatarproxy/77777777777777777777777777777777',
+          email: 'New Jellyfin User',
+          isImported: false,
+        },
+      ]);
+    } finally {
+      settings.jellyfin = previousJellyfin;
+      await userRepository.delete(linkedUser.id);
+      getUsersMock.mock.restore();
+    }
   });
 
   it('does not use Jellyfin credentials removed before admission', async () => {
@@ -540,9 +613,6 @@ describe('Settings route input validation', () => {
     const credentialUrlRes = await request(app)
       .post('/settings/main')
       .send({ applicationUrl: 'https://user:secret@seerr.example.com' });
-    const trailingUrlRes = await request(app)
-      .post('/settings/main')
-      .send({ youtubeUrl: 'https://youtube.com/' });
     const boolRes = await request(app)
       .post('/settings/main')
       .send({ localLogin: 'true' });
@@ -583,11 +653,6 @@ describe('Settings route input validation', () => {
       credentialUrlRes.body.message,
       /must not contain credentials, a query, or a fragment/
     );
-    assert.strictEqual(trailingUrlRes.status, 400);
-    assert.match(
-      trailingUrlRes.body.message,
-      /youtubeUrl must not end with a slash/
-    );
     assert.strictEqual(boolRes.status, 400);
     assert.match(boolRes.body.message, /localLogin must be a boolean/);
     assert.strictEqual(emptyTitleRes.status, 400);
@@ -617,6 +682,39 @@ describe('Settings route input validation', () => {
     assert.strictEqual(localeRes.status, 400);
     assert.match(localeRes.body.message, /locale must be a supported locale/);
     assert.strictEqual(saveMock.mock.callCount(), 0);
+  });
+
+  it('allows trailing slashes for YouTube URLs but not the application URL', async () => {
+    const settings = getSettings();
+    const originalUrls = {
+      applicationUrl: settings.main.applicationUrl,
+      youtubeUrl: settings.main.youtubeUrl,
+    };
+    const saveMock = mock.method(settings, 'save', async () => undefined);
+
+    try {
+      const youtubeUrlResponse = await request(app)
+        .post('/settings/main')
+        .send({ youtubeUrl: 'https://youtube.com/watch/' });
+      const applicationUrlResponse = await request(app)
+        .post('/settings/main')
+        .send({ applicationUrl: 'https://seerr.example/' });
+
+      assert.strictEqual(youtubeUrlResponse.status, 200);
+      assert.strictEqual(
+        settings.main.youtubeUrl,
+        'https://youtube.com/watch/'
+      );
+      assert.strictEqual(applicationUrlResponse.status, 400);
+      assert.match(
+        applicationUrlResponse.body.message,
+        /applicationUrl must not end with a slash/
+      );
+      assert.strictEqual(saveMock.mock.callCount(), 1);
+    } finally {
+      settings.main.applicationUrl = originalUrls.applicationUrl;
+      settings.main.youtubeUrl = originalUrls.youtubeUrl;
+    }
   });
 
   it('serializes OIDC enablement changes with admitted callbacks', async () => {
@@ -1738,11 +1836,118 @@ describe('Settings route input validation', () => {
     const flagRes = await request(app)
       .post('/settings/metadatas/test')
       .send({ tmdb: 'true' });
+    const musicFlagRes = await request(app)
+      .post('/settings/metadatas/test')
+      .send({ coverartarchive: 'true' });
 
     assert.strictEqual(arrayRes.status, 400);
     assert.match(arrayRes.body.error, /Invalid metadata test settings/);
     assert.strictEqual(flagRes.status, 400);
     assert.match(flagRes.body.error, /Metadata test flags must be booleans/);
+    assert.strictEqual(musicFlagRes.status, 400);
+    assert.match(
+      musicFlagRes.body.error,
+      /Metadata test flags must be booleans/
+    );
+  });
+
+  it('persists bounded Cover Art Archive limits', async () => {
+    const settings = getSettings();
+    const originalSettings = structuredClone(settings.musicMetadataSettings);
+
+    try {
+      const invalid = await request(app)
+        .put('/settings/metadatas/music')
+        .send({ maxConcurrentRequests: 6, maxRequestsPerSecond: 10 });
+      assert.strictEqual(invalid.status, 400);
+
+      const saved = await request(app)
+        .put('/settings/metadatas/music')
+        .send({ maxConcurrentRequests: 2, maxRequestsPerSecond: 10 });
+      assert.strictEqual(saved.status, 200);
+      assert.deepStrictEqual(saved.body, {
+        success: true,
+        maxConcurrentRequests: 2,
+        maxRequestsPerSecond: 10,
+      });
+
+      const loaded = await request(app).get('/settings/metadatas/music');
+      assert.strictEqual(loaded.status, 200);
+      assert.deepStrictEqual(loaded.body, {
+        maxConcurrentRequests: 2,
+        maxRequestsPerSecond: 10,
+      });
+    } finally {
+      await settings.persistSection('musicMetadataSettings', originalSettings);
+    }
+  });
+
+  it('tests MusicBrainz and Cover Art Archive without testing other providers', async () => {
+    const musicBrainzTest = mock.method(
+      MusicBrainz.prototype,
+      'testConnection',
+      async () => undefined
+    );
+    const coverArtArchiveTest = mock.method(
+      CoverArtArchive.prototype,
+      'testConnection',
+      async () => undefined
+    );
+
+    const response = await request(app)
+      .post('/settings/metadatas/test')
+      .send({ musicbrainz: true, coverartarchive: true });
+
+    assert.strictEqual(response.status, 200);
+    assert.deepStrictEqual(response.body.tests, {
+      tmdb: 'not tested',
+      tvdb: 'not tested',
+      musicbrainz: 'ok',
+      coverartarchive: 'ok',
+    });
+    assert.strictEqual(musicBrainzTest.mock.callCount(), 1);
+    assert.strictEqual(coverArtArchiveTest.mock.callCount(), 1);
+  });
+
+  it('keeps music metadata settings and provider tests aligned with OpenAPI', async () => {
+    const validatedApp = createOpenApiValidatedApp();
+    const settings = getSettings();
+    const originalSettings = structuredClone(settings.musicMetadataSettings);
+    const musicBrainzTest = mock.method(
+      MusicBrainz.prototype,
+      'testConnection',
+      async () => undefined
+    );
+    const coverArtArchiveTest = mock.method(
+      CoverArtArchive.prototype,
+      'testConnection',
+      async () => undefined
+    );
+
+    try {
+      const current = await request(validatedApp).get(
+        '/api/v1/settings/metadatas/music'
+      );
+      assert.strictEqual(current.status, 200);
+      assert.deepStrictEqual(current.body, originalSettings.coverArtArchive);
+
+      const updated = await request(validatedApp)
+        .put('/api/v1/settings/metadatas/music')
+        .send({ maxConcurrentRequests: 3, maxRequestsPerSecond: 12 });
+      assert.strictEqual(updated.status, 200);
+      assert.strictEqual(updated.body.success, true);
+
+      const tested = await request(validatedApp)
+        .post('/api/v1/settings/metadatas/test')
+        .send({ musicbrainz: true, coverartarchive: true });
+      assert.strictEqual(tested.status, 200);
+      assert.strictEqual(tested.body.tests.musicbrainz, 'ok');
+      assert.strictEqual(tested.body.tests.coverartarchive, 'ok');
+      assert.strictEqual(musicBrainzTest.mock.callCount(), 1);
+      assert.strictEqual(coverArtArchiveTest.mock.callCount(), 1);
+    } finally {
+      await settings.persistSection('musicMetadataSettings', originalSettings);
+    }
   });
 
   it('rejects malformed log search values before reading logs', async () => {
@@ -2166,7 +2371,81 @@ describe('Settings route input validation', () => {
     assert.deepStrictEqual(getSettings().notifications.agents.slack.options, {
       webhookUrl: 'https://example.com/slack',
       locale: 'en',
+      requestActionsEnabled: false,
+      workspaceId: '',
+      signingSecret: '',
+      requestManagerMappings: '',
     });
+  });
+
+  it('validates, redacts, and preserves Slack request action settings', async () => {
+    const settings = getSettings();
+    const original = structuredClone(settings.notifications.agents.slack);
+
+    try {
+      const configured = await request(app)
+        .post('/settings/notifications/slack')
+        .send({
+          enabled: false,
+          embedPoster: true,
+          types: 0,
+          options: {
+            webhookUrl: '',
+            locale: 'en',
+            requestActionsEnabled: true,
+            workspaceId: 'T123456',
+            signingSecret: 'slack-signing-secret-value-123456',
+            requestManagerMappings: 'U123456=1',
+          },
+        });
+      const getResponse = await request(app).get(
+        '/settings/notifications/slack'
+      );
+      const legacyClientSave = await request(app)
+        .post('/settings/notifications/slack')
+        .send({
+          enabled: false,
+          embedPoster: true,
+          types: 0,
+          options: { webhookUrl: '', locale: 'en' },
+        });
+      const nonManager = await request(app)
+        .post('/settings/notifications/slack')
+        .send({
+          enabled: false,
+          embedPoster: true,
+          types: 0,
+          options: {
+            webhookUrl: '',
+            locale: 'en',
+            requestActionsEnabled: true,
+            workspaceId: 'T123456',
+            signingSecret: 'slack-signing-secret-value-123456',
+            requestManagerMappings: 'U123456=2',
+          },
+        });
+
+      assert.strictEqual(configured.status, 200);
+      assert.strictEqual(getResponse.status, 200);
+      assert.strictEqual(getResponse.body.options.signingSecret, '[REDACTED]');
+      assert.notEqual(
+        JSON.stringify(getResponse.body),
+        JSON.stringify(settings.notifications.agents.slack)
+      );
+      assert.strictEqual(legacyClientSave.status, 200);
+      assert.strictEqual(
+        settings.notifications.agents.slack.options.requestActionsEnabled,
+        true
+      );
+      assert.strictEqual(
+        settings.notifications.agents.slack.options.signingSecret,
+        'slack-signing-secret-value-123456'
+      );
+      assert.strictEqual(nonManager.status, 400);
+      assert.match(nonManager.body.message, /request management permission/);
+    } finally {
+      settings.notifications.agents.slack = original;
+    }
   });
 
   it('restores notification settings when persistence fails', async () => {

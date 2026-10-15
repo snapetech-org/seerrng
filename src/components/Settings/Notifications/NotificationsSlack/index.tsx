@@ -24,6 +24,22 @@ const messages = defineMessages(
     webhookUrl: 'Webhook URL',
     webhookUrlTip:
       'Create an <WebhookLink>Incoming Webhook</WebhookLink> integration',
+    requestActionsEnabled: 'Enable request approval actions',
+    requestActionsEnabledTip:
+      'Add approve and decline buttons to pending request notifications. Also enable pending request notifications above.',
+    workspaceId: 'Slack workspace ID',
+    workspaceIdTip: 'The workspace ID that owns this Slack app.',
+    signingSecret: 'Slack signing secret',
+    signingSecretTip:
+      'Copy this from your Slack app Basic Information page. SeerrNG stores it as a secret.',
+    requestManagerMappings: 'Request manager mappings',
+    requestManagerMappingsTip:
+      'One per line: Slack user ID=SeerrNG user ID. Each mapped SeerrNG user must have request management permission.',
+    validationWorkspaceId: 'Enter a valid Slack workspace ID',
+    validationSigningSecret:
+      'Enter the Slack signing secret from your Slack app',
+    validationRequestManagerMappings:
+      'Add at least one Slack user to SeerrNG user mapping',
     slacksettingssaved: 'Slack notification settings saved successfully!',
     slacksettingsfailed: 'Slack notification settings failed to save.',
     toastSlackTestSending: 'Sending Slack test notification…',
@@ -59,6 +75,44 @@ const NotificationsSlack = () => {
         intl.formatMessage(messages.validationWebhookUrl),
         (value) => !value || isRedactedSecret(value) || isValidURL(value)
       ),
+    requestActionsEnabled: Yup.boolean(),
+    workspaceId: Yup.string().when('requestActionsEnabled', {
+      is: true,
+      then: (schema) =>
+        schema
+          .required(intl.formatMessage(messages.validationWorkspaceId))
+          .matches(
+            /^[A-Z0-9]{2,64}$/,
+            intl.formatMessage(messages.validationWorkspaceId)
+          ),
+    }),
+    signingSecret: Yup.string()
+      .when('requestActionsEnabled', {
+        is: true,
+        then: (schema) =>
+          schema.required(intl.formatMessage(messages.validationSigningSecret)),
+      })
+      .test(
+        'valid-signing-secret',
+        intl.formatMessage(messages.validationSigningSecret),
+        (value) =>
+          !value ||
+          isRedactedSecret(value) ||
+          (value.length >= 32 && value.length <= 256)
+      ),
+    requestManagerMappings: Yup.string().when('requestActionsEnabled', {
+      is: true,
+      then: (schema) =>
+        schema
+          .required(
+            intl.formatMessage(messages.validationRequestManagerMappings)
+          )
+          .test(
+            'non-empty-manager-mapping',
+            intl.formatMessage(messages.validationRequestManagerMappings),
+            (value) => Boolean(value?.trim())
+          ),
+    }),
   });
 
   if (!data && !error) {
@@ -73,6 +127,10 @@ const NotificationsSlack = () => {
         types: data.types,
         webhookUrl: data.options.webhookUrl,
         locale: data?.options.locale ?? 'en',
+        requestActionsEnabled: data.options.requestActionsEnabled ?? false,
+        workspaceId: data.options.workspaceId ?? '',
+        signingSecret: data.options.signingSecret ?? '',
+        requestManagerMappings: data.options.requestManagerMappings ?? '',
       }}
       validationSchema={NotificationsSlackSchema}
       onSubmit={async (values) => {
@@ -84,6 +142,10 @@ const NotificationsSlack = () => {
             options: {
               webhookUrl: values.webhookUrl,
               locale: values.locale,
+              requestActionsEnabled: values.requestActionsEnabled,
+              workspaceId: values.workspaceId,
+              signingSecret: values.signingSecret,
+              requestManagerMappings: values.requestManagerMappings,
             },
           });
           addToast(intl.formatMessage(messages.slacksettingssaved), {
@@ -130,6 +192,10 @@ const NotificationsSlack = () => {
               options: {
                 webhookUrl: values.webhookUrl,
                 locale: values.locale,
+                requestActionsEnabled: values.requestActionsEnabled,
+                workspaceId: values.workspaceId,
+                signingSecret: values.signingSecret,
+                requestManagerMappings: values.requestManagerMappings,
               },
             });
 
@@ -231,6 +297,97 @@ const NotificationsSlack = () => {
                 </div>
               </div>
             </div>
+            <div className="form-row">
+              <label htmlFor="requestActionsEnabled" className="checkbox-label">
+                {intl.formatMessage(messages.requestActionsEnabled)}
+              </label>
+              <div className="form-input-area">
+                <Field
+                  type="checkbox"
+                  id="requestActionsEnabled"
+                  name="requestActionsEnabled"
+                />
+              </div>
+              <span className="settings-form-row-description">
+                {intl.formatMessage(messages.requestActionsEnabledTip)}
+              </span>
+            </div>
+            {values.requestActionsEnabled && (
+              <>
+                <div className="form-row">
+                  <label htmlFor="workspaceId" className="text-label">
+                    {intl.formatMessage(messages.workspaceId)}
+                    <span className="label-required">*</span>
+                  </label>
+                  <div className="form-input-area">
+                    <div className="form-input-field">
+                      <Field id="workspaceId" name="workspaceId" type="text" />
+                    </div>
+                    {errors.workspaceId &&
+                      touched.workspaceId &&
+                      typeof errors.workspaceId === 'string' && (
+                        <div className="error">{errors.workspaceId}</div>
+                      )}
+                  </div>
+                  <span className="settings-form-row-description">
+                    {intl.formatMessage(messages.workspaceIdTip)}
+                  </span>
+                </div>
+                <div className="form-row">
+                  <label htmlFor="signingSecret" className="text-label">
+                    {intl.formatMessage(messages.signingSecret)}
+                    <span className="label-required">*</span>
+                  </label>
+                  <div className="form-input-area">
+                    <div className="form-input-field">
+                      <Field
+                        id="signingSecret"
+                        name="signingSecret"
+                        type="password"
+                        autoComplete="new-password"
+                      />
+                    </div>
+                    {errors.signingSecret &&
+                      touched.signingSecret &&
+                      typeof errors.signingSecret === 'string' && (
+                        <div className="error">{errors.signingSecret}</div>
+                      )}
+                  </div>
+                  <span className="settings-form-row-description">
+                    {intl.formatMessage(messages.signingSecretTip)}
+                  </span>
+                </div>
+                <div className="form-row">
+                  <label
+                    htmlFor="requestManagerMappings"
+                    className="text-label"
+                  >
+                    {intl.formatMessage(messages.requestManagerMappings)}
+                    <span className="label-required">*</span>
+                  </label>
+                  <div className="form-input-area">
+                    <div className="form-input-field">
+                      <Field
+                        as="textarea"
+                        id="requestManagerMappings"
+                        name="requestManagerMappings"
+                        rows={4}
+                      />
+                    </div>
+                    {errors.requestManagerMappings &&
+                      touched.requestManagerMappings &&
+                      typeof errors.requestManagerMappings === 'string' && (
+                        <div className="error">
+                          {errors.requestManagerMappings}
+                        </div>
+                      )}
+                  </div>
+                  <span className="settings-form-row-description">
+                    {intl.formatMessage(messages.requestManagerMappingsTip)}
+                  </span>
+                </div>
+              </>
+            )}
             <NotificationTypeSelector
               currentTypes={values.enabled ? values.types : 0}
               onUpdate={(newTypes) => {

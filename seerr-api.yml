@@ -2718,18 +2718,43 @@ components:
           description: Changes when bridge sign-in is enabled or disabled, revoking sessions created before the change.
     MetadataSettings:
       type: object
+      required: [tv, anime]
       properties:
-        settings:
-          type: object
+        success:
+          type: boolean
+          description: Present on successful updates.
+        tv:
+          type: string
+          enum: [tvdb, tmdb]
+          example: 'tvdb'
+        anime:
+          type: string
+          enum: [tvdb, tmdb]
+          example: 'tvdb'
+    CoverArtArchiveSettings:
+      type: object
+      required: [maxConcurrentRequests, maxRequestsPerSecond]
+      properties:
+        maxConcurrentRequests:
+          type: integer
+          minimum: 1
+          maximum: 5
+          default: 5
+          description: Maximum number of Cover Art Archive network requests in flight across this SeerrNG process.
+        maxRequestsPerSecond:
+          type: integer
+          minimum: 1
+          maximum: 50
+          default: 50
+          description: Maximum Cover Art Archive network requests per second, counting each validated redirect hop.
+    CoverArtArchiveSettingsUpdateResponse:
+      allOf:
+        - $ref: '#/components/schemas/CoverArtArchiveSettings'
+        - type: object
+          required: [success]
           properties:
-            tv:
-              type: string
-              enum: [tvdb, tmdb]
-              example: 'tvdb'
-            anime:
-              type: string
-              enum: [tvdb, tmdb]
-              example: 'tvdb'
+            success:
+              type: boolean
     TautulliSettings:
       type: object
       properties:
@@ -5765,6 +5790,17 @@ components:
           properties:
             webhookUrl:
               type: string
+            locale:
+              type: string
+            requestActionsEnabled:
+              type: boolean
+            workspaceId:
+              type: string
+            signingSecret:
+              type: string
+              description: Stored signing secrets are redacted in responses.
+            requestManagerMappings:
+              type: string
     WebPushSettings:
       type: object
       properties:
@@ -7611,6 +7647,9 @@ paths:
                       type: string
                     email:
                       type: string
+                    isImported:
+                      type: boolean
+                      description: Whether this media server account is already linked to a SeerrNG user.
   /settings/jellyfin/sync:
     get:
       summary: Get status of full Jellyfin library sync
@@ -7934,8 +7973,8 @@ paths:
                 $ref: '#/components/schemas/MetadataSettings'
   /settings/metadatas/test:
     post:
-      summary: Test Provider configuration
-      description: Tests if the TVDB configuration is valid. Returns a list of available languages on success.
+      summary: Test metadata provider connections
+      description: Tests only the providers enabled in the request. MusicBrainz and Cover Art Archive use read-only, uncached connectivity probes.
       tags:
         - settings
       requestBody:
@@ -7951,17 +7990,72 @@ paths:
                 tvdb:
                   type: boolean
                   example: true
+                musicbrainz:
+                  type: boolean
+                  example: true
+                coverartarchive:
+                  type: boolean
+                  example: true
       responses:
         '200':
-          description: Succesfully connected to TVDB
+          description: All requested providers responded successfully.
           content:
             application/json:
               schema:
                 type: object
                 properties:
-                  message:
-                    type: string
-                    example: 'Successfully connected to TVDB'
+                  success:
+                    type: boolean
+                  tests:
+                    type: object
+                    properties:
+                      tmdb:
+                        type: string
+                        enum: [not tested, failed, ok]
+                      tvdb:
+                        type: string
+                        enum: [not tested, failed, ok]
+                      musicbrainz:
+                        type: string
+                        enum: [not tested, failed, ok]
+                      coverartarchive:
+                        type: string
+                        enum: [not tested, failed, ok]
+        '500':
+          description: One or more requested providers failed.
+  /settings/metadatas/music:
+    get:
+      summary: Get music metadata provider settings
+      description: Retrieves Cover Art Archive request limits.
+      tags:
+        - settings
+      responses:
+        '200':
+          description: Current settings.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CoverArtArchiveSettings'
+    put:
+      summary: Update music metadata provider settings
+      description: Updates bounded Cover Art Archive concurrency and request-rate limits.
+      tags:
+        - settings
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CoverArtArchiveSettings'
+      responses:
+        '200':
+          description: Settings were successfully updated.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CoverArtArchiveSettingsUpdateResponse'
+        '400':
+          description: A limit is outside its supported range.
   /settings/tautulli:
     get:
       summary: Get Tautulli settings
@@ -11892,7 +11986,9 @@ paths:
     post:
       summary: Import all users from Jellyfin
       description: |
-        Fetches and imports users from the Jellyfin server.
+        Fetches selected users from the configured Jellyfin or Emby server and imports any accounts not already linked.
+
+        When `syncExisting` is true, linked users are also refreshed. Only the provider username and avatar are updated; SeerrNG email, local credentials, and permissions are preserved. This opt-in mode returns created and refreshed counts. Requests that omit `syncExisting` keep the legacy array response.
 
         Requires the `MANAGE_USERS` permission.
       tags:
@@ -11908,15 +12004,31 @@ paths:
                   type: array
                   items:
                     type: string
+                syncExisting:
+                  type: boolean
+                  description: Refresh provider usernames and avatars for selected users already linked to SeerrNG.
       responses:
         '201':
-          description: A list of the newly created users
+          description: Newly created users, or created users and a refreshed count when syncExisting is true.
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/User'
+                oneOf:
+                  - type: array
+                    items:
+                      $ref: '#/components/schemas/User'
+                  - type: object
+                    required:
+                      - createdUsers
+                      - refreshedUsers
+                    properties:
+                      createdUsers:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/User'
+                      refreshedUsers:
+                        type: integer
+                        minimum: 0
   /user/registerPushSubscription:
     post:
       summary: Register a web push /user/registerPushSubscription
@@ -19856,6 +19968,35 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/MediaRatings'
+  /notifications/slack/actions:
+    post:
+      summary: Apply an authorized Slack request action
+      description: Accepts signed Slack block-action callbacks for pending request approval or decline.
+      tags:
+        - notifications
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              required:
+                - payload
+              properties:
+                payload:
+                  type: string
+      responses:
+        '200':
+          description: Slack action acknowledged; request processing continues asynchronously.
+        '401':
+          description: Slack request signature is invalid or stale.
+        '404':
+          description: Slack request actions are not enabled.
+        '415':
+          description: Callback must use application/x-www-form-urlencoded.
+        '429':
+          description: Callback rate limit exceeded.
   /person/{personId}:
     get:
       summary: Get person details

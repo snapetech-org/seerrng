@@ -220,6 +220,8 @@ const buildForScreen = async (
         weight: scoreScreenResult(r) * 0.4,
         type: 'shared-genre',
         reason: `Shares ${rootGenres.get(sharedGenre)}`,
+        reasonKey: 'sharesGenre',
+        reasonValues: { genre: rootGenres.get(sharedGenre) ?? '' },
         node,
       });
     } else {
@@ -230,6 +232,8 @@ const buildForScreen = async (
           type === 'similar'
             ? 'Similar tone and audience'
             : 'Often recommended with this',
+        reasonKey:
+          type === 'similar' ? 'similarToneAudience' : 'oftenRecommended',
         node,
       });
     }
@@ -449,6 +453,7 @@ const buildArtistEdges = async (
       weight: clamp01(a.score / maxScore) * (isWeakTail ? 0.4 : 1),
       type: isWeakTail ? 'shared-genre' : 'similar',
       reason: isWeakTail ? 'Nearby listener overlap' : 'Similar artist',
+      reasonKey: isWeakTail ? 'nearbyListenerOverlap' : 'similarArtist',
       node,
     };
   });
@@ -575,6 +580,10 @@ const buildForBook = async (
       weight: scoreBookWork(node),
       type: 'shared-person' as const,
       reason: author?.name ? `Also by ${author.name}` : 'Same author',
+      reasonKey: author?.name
+        ? ('alsoByAuthor' as const)
+        : ('sameAuthor' as const),
+      ...(author?.name ? { reasonValues: { authorName: author.name } } : {}),
       node,
     };
   });

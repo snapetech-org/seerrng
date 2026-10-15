@@ -1,4 +1,5 @@
-import type { User } from '@server/entity/User';
+import { getRepository } from '@server/datasource';
+import { User } from '@server/entity/User';
 import { defineMessages, getIntl } from '@server/i18n';
 import { getExternalRuntimeConfig } from '@server/lib/externalRuntimeConfig';
 import { Notification } from '@server/lib/notifications';
@@ -17,6 +18,10 @@ import WebhookAgent, {
   parseWebhookPayloadTemplate,
 } from '@server/lib/notifications/agents/webhook';
 import WebPushAgent from '@server/lib/notifications/agents/webpush';
+import {
+  isValidSlackRequestActionSettings,
+  parseSlackApproverMappings,
+} from '@server/lib/notifications/slackActions';
 import { Permission } from '@server/lib/permissions';
 import {
   getSettings,
@@ -50,6 +55,7 @@ import {
 } from '@server/utils/validation';
 import type { RequestHandler } from 'express';
 import { Router } from 'express';
+import { In } from 'typeorm';
 
 const notificationRoutes = Router();
 const adminPost = (path: string, handler: RequestHandler) =>
@@ -99,7 +105,13 @@ const DISCORD_NOTIFICATION_SCHEMA = {
   booleanOptions: ['enableMentions', 'useUserLocale'],
 } as const satisfies WebhookUrlNotificationSchema;
 const SLACK_NOTIFICATION_SCHEMA = {
-  stringOptions: ['locale'],
+  stringOptions: [
+    'locale',
+    'workspaceId',
+    'signingSecret',
+    'requestManagerMappings',
+  ],
+  booleanOptions: ['requestActionsEnabled'],
 } as const satisfies WebhookUrlNotificationSchema;
 const GOTIFY_NOTIFICATION_SCHEMA = {
   stringOptions: ['token', 'locale'],
@@ -908,9 +920,15 @@ adminPost('/slack', async (req, res) => {
   if ('error' in parsedBody) {
     return res.status(parsedBody.error.status).json(parsedBody.error);
   }
-  const body = parsedBody.value;
+  const body = {
+    ...parsedBody.value,
+    options: {
+      ...settings.notifications.agents.slack.options,
+      ...parsedBody.value.options,
+    },
+  } as NotificationAgentSlack;
   const merged = preserveRedactedSecrets(
-    body as NotificationAgentSlack,
+    body,
     settings.notifications.agents.slack
   );
   const validationError = merged.enabled
@@ -922,6 +940,38 @@ adminPost('/slack', async (req, res) => {
 
   if (validationError) {
     return res.status(validationError.status).json(validationError);
+  }
+
+  if (!isValidSlackRequestActionSettings(merged.options)) {
+    return res.status(400).json({
+      status: 400,
+      message:
+        'Slack request actions require a workspace ID, signing secret, and at least one valid request manager mapping.',
+    });
+  }
+
+  if (merged.options.requestActionsEnabled) {
+    const mappings = parseSlackApproverMappings(
+      merged.options.requestManagerMappings
+    )!;
+    const managerIds = [
+      ...new Set(mappings.map(({ seerrUserId }) => seerrUserId)),
+    ];
+    const managers = await getRepository(User).findBy({ id: In(managerIds) });
+    const managerIdSet = new Set(managers.map(({ id }) => id));
+    if (
+      managers.length !== managerIds.length ||
+      managers.some(
+        (manager) => !manager.hasPermission(Permission.MANAGE_REQUESTS)
+      ) ||
+      managerIds.some((managerId) => !managerIdSet.has(managerId))
+    ) {
+      return res.status(400).json({
+        status: 400,
+        message:
+          'Every Slack request manager mapping must reference a SeerrNG user with request management permission.',
+      });
+    }
   }
 
   const slack = await persistNotificationAgent(

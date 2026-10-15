@@ -1,4 +1,5 @@
 import csurf from '@dr.pogodin/csurf';
+import { isSlackActionCallbackRequest } from '@server/lib/notifications/slackActions';
 import type { Request, RequestHandler } from 'express';
 
 const createCsrfProtection = (secure: boolean): RequestHandler =>
@@ -37,9 +38,9 @@ export const csrfProtection = (): RequestHandler => {
   const httpsProtection = createCsrfProtection(true);
 
   return (req, res, next) => {
-    // This credential exchange validates the configured Jellyfin origin and
-    // the current Jellyfin token in the auth route.
-    if (isJellyfinBridgeAuthRequest(req)) {
+    // Jellyfin bridge credentials and Slack request signatures are validated
+    // by their exact callback routes instead of a browser CSRF cookie.
+    if (isJellyfinBridgeAuthRequest(req) || isSlackActionCallbackRequest(req)) {
       return next();
     }
 

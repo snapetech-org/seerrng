@@ -3,6 +3,7 @@ import { describe, it } from 'node:test';
 
 import cookieParser from 'cookie-parser';
 import express from 'express';
+import rateLimit from 'express-rate-limit';
 import request from 'supertest';
 import csrfProtection, { requestUsesSecureTransport } from './csrfProtection';
 import csrfTokenCookie from './csrfTokenCookie';
@@ -80,6 +81,23 @@ describe('csrfTokenCookie', () => {
       .post('/api/v1/auth/jellyfin/bridge')
       .type('form')
       .send({ token: 'jellyfin-session-token' })
+      .expect(204);
+  });
+
+  it('lets the signed Slack callback reach its own request verification', async () => {
+    const app = express();
+    app.use(rateLimit({ windowMs: 60 * 1000, limit: 100 }));
+    app.use(cookieParser());
+    app.use(csrfProtection());
+    app.use(csrfTokenCookie(false));
+    app.post('/api/v1/notifications/slack/actions', (_req, res) =>
+      res.sendStatus(204)
+    );
+
+    await request(app)
+      .post('/api/v1/notifications/slack/actions')
+      .type('form')
+      .send({ payload: '{}' })
       .expect(204);
   });
 

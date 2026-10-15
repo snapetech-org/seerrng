@@ -5544,7 +5544,7 @@ const validateCurrentBatchContract = (files) => {
   for (const token of [
     '<span className="settings-plain-value truncate">',
     '<span className="settings-plain-value">{data.appDataPath}</span>',
-    "{data.tz || 'Not available'}",
+    '{data.tz || intl.formatMessage(globalMessages.notavailable)}',
   ]) {
     requireText(
       'src/components/Settings/SettingsAbout/index.tsx',

@@ -153,6 +153,64 @@ describe('TVDB Integration', () => {
     });
   });
 
+  it('tests music metadata providers and saves bounded Cover Art Archive limits', () => {
+    cy.intercept('POST', '/api/v1/settings/metadatas/test', (request) => {
+      expect(request.body).to.deep.equal({
+        musicbrainz: true,
+        coverartarchive: true,
+      });
+      request.reply({
+        statusCode: 200,
+        body: {
+          success: true,
+          tests: {
+            tmdb: 'not tested',
+            tvdb: 'not tested',
+            musicbrainz: 'ok',
+            coverartarchive: 'ok',
+          },
+        },
+      });
+    }).as('testMusicMetadata');
+
+    cy.get('#caa-max-concurrent-requests').clear().type('0');
+    cy.get('[data-testid="music-metadata-test-button"]')
+      .should('be.enabled')
+      .click();
+    cy.wait('@testMusicMetadata');
+    cy.get('[data-testid="musicbrainz-status"]').should(
+      'contain',
+      'Operational'
+    );
+    cy.get('[data-testid="coverartarchive-status"]').should(
+      'contain',
+      'Operational'
+    );
+
+    const musicSettingsSaveBodies: Record<string, unknown>[] = [];
+    cy.intercept('PUT', '/api/v1/settings/metadatas/music', (request) => {
+      musicSettingsSaveBodies.push(request.body);
+      expect(request.body).to.deep.equal({
+        maxConcurrentRequests: 2,
+        maxRequestsPerSecond: 10,
+      });
+      request.reply({
+        statusCode: 200,
+        body: {
+          success: true,
+          maxConcurrentRequests: 2,
+          maxRequestsPerSecond: 10,
+        },
+      });
+    }).as('saveMusicMetadataSettings');
+
+    cy.get('#caa-max-concurrent-requests').clear().type('2');
+    cy.get('#caa-max-requests-per-second').clear().type('10');
+    cy.get('[data-testid="settings-save-button"]').should('be.enabled').click();
+    cy.wait('@saveMusicMetadataSettings');
+    cy.then(() => expect(musicSettingsSaveBodies).to.have.length(1));
+  });
+
   it('should display "Tomorrow is Ours" show information with multiple seasons from TVDB', () => {
     // The browser loads metadata for every visible season together.
     cy.intercept('GET', '/api/v1/tv/72879/season/1', {
@@ -194,7 +252,7 @@ describe('TVDB Integration', () => {
     );
 
     // Verify that episodes are displayed for Season 2
-    cy.get(`${SELECTORS.episodeList}[aria-label="Season 02 Episodes"]`)
+    cy.get(`${SELECTORS.episodeList}[aria-label="Season 02 episodes"]`)
       .should('be.visible')
       .within(() => {
         cy.contains('[data-tree-part="number"]', /^01$/).should('be.visible');
@@ -249,7 +307,7 @@ describe('TVDB Integration', () => {
       .click();
 
     // Verify specific episode exists
-    cy.get(`${SELECTORS.episodeList}[aria-label="Season 01 Episodes"]`)
+    cy.get(`${SELECTORS.episodeList}[aria-label="Season 01 episodes"]`)
       .should('be.visible')
       .contains('[data-tree-part="episode"]', 'Hang Men')
       .within(() => {
@@ -297,7 +355,7 @@ describe('TVDB Integration', () => {
 
     // select season 3 and verify it not visible
     cy.get(SELECTORS.season3).should('not.exist');
-    cy.get(`${SELECTORS.episodeList}[aria-label="Season 02 Episodes"]`).should(
+    cy.get(`${SELECTORS.episodeList}[aria-label="Season 02 episodes"]`).should(
       'be.visible'
     );
   });

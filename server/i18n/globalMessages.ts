@@ -4,6 +4,12 @@ const globalMessages = defineMessages('notifications.common', {
   requestedBy: 'Requested By',
   requestStatus: 'Request Status',
   pendingApproval: 'Pending Approval',
+  approve: 'Approve',
+  decline: 'Decline',
+  cancel: 'Cancel',
+  declineRequestConfirmTitle: 'Decline this request?',
+  declineRequestConfirmText:
+    'This will decline the pending request and cannot be undone.',
   processing: 'Processing',
   available: 'Available',
   declined: 'Declined',

@@ -13,7 +13,7 @@ import defineMessages from '@app/utils/defineMessages';
 import { isValidURL } from '@app/utils/urlValidationHelper';
 import { ArrowDownOnSquareIcon } from '@heroicons/react/24/outline';
 import { ApiErrorCode } from '@server/constants/error';
-import { MediaServerType } from '@server/constants/server';
+import { MediaServerType, ServerType } from '@server/constants/server';
 import {
   createSettingsLibraryUpdateBody,
   getSettingsLibraryApiPath,
@@ -204,8 +204,8 @@ const SettingsJellyfin: React.FC<SettingsJellyfinProps> = ({
           intl.formatMessage(messages.jellyfinSyncFailedConnectionError, {
             mediaServerName:
               settings.currentSettings.mediaServerType === MediaServerType.EMBY
-                ? 'Emby'
-                : 'Jellyfin',
+                ? ServerType.EMBY
+                : ServerType.JELLYFIN,
           }),
           {
             autoDismiss: true,
@@ -285,8 +285,8 @@ const SettingsJellyfin: React.FC<SettingsJellyfinProps> = ({
         intl.formatMessage(messages.jellyfinLibraryUpdateFailure, {
           mediaServerName:
             settings.currentSettings.mediaServerType === MediaServerType.EMBY
-              ? 'Emby'
-              : 'Jellyfin',
+              ? ServerType.EMBY
+              : ServerType.JELLYFIN,
         }),
         {
           autoDismiss: true,
@@ -305,9 +305,9 @@ const SettingsJellyfin: React.FC<SettingsJellyfinProps> = ({
   const mediaServerFormatValues = {
     mediaServerName:
       settings.currentSettings.mediaServerType === MediaServerType.JELLYFIN
-        ? 'Jellyfin'
+        ? ServerType.JELLYFIN
         : settings.currentSettings.mediaServerType === MediaServerType.EMBY
-          ? 'Emby'
+          ? ServerType.EMBY
           : undefined,
   };
 
@@ -330,7 +330,7 @@ const SettingsJellyfin: React.FC<SettingsJellyfinProps> = ({
       <div className="app-card-sub section">
         <Button onClick={() => syncLibraries()} disabled={isSyncing}>
           <svg
-            className={`${isSyncing ? 'animate-spin' : ''} mr-1 h-5 w-5`}
+            className={`${isSyncing ? 'animate-spin' : ''} me-1 h-5 w-5`}
             fill="currentColor"
             viewBox="0 0 20 20"
             xmlns="http://www.w3.org/2000/svg"
@@ -385,7 +385,7 @@ const SettingsJellyfin: React.FC<SettingsJellyfinProps> = ({
               <span>
                 {dataSync?.running
                   ? `${dataSync.progress} of ${dataSync.total}`
-                  : 'Not running'}
+                  : intl.formatMessage(messages.notrunning)}
               </span>
             </div>
           </div>
@@ -393,7 +393,7 @@ const SettingsJellyfin: React.FC<SettingsJellyfinProps> = ({
             {dataSync?.running && (
               <>
                 {dataSync.currentLibrary && (
-                  <div className="mr-0 mb-2 flex items-center sm:mr-2 sm:mb-0">
+                  <div className="me-0 mb-2 flex items-center sm:me-2 sm:mb-0">
                     <Badge>
                       <FormattedMessage
                         {...messages.currentlibrary}
@@ -421,7 +421,7 @@ const SettingsJellyfin: React.FC<SettingsJellyfinProps> = ({
                 </div>
               </>
             )}
-            <div className="flex-1 text-right">
+            <div className="flex-1 text-end">
               {!dataSync?.running && (
                 <Button buttonType="warning" onClick={() => startScan()}>
                   <svg
@@ -456,7 +456,7 @@ const SettingsJellyfin: React.FC<SettingsJellyfinProps> = ({
       </div>
       {isSetupSettings && (
         <div className="text-sm text-gray-500">
-          <span className="mr-2">
+          <span className="me-2">
             <Badge>{intl.formatMessage(messages.tip)}</Badge>
           </span>
           {intl.formatMessage(messages.scanbackground)}
@@ -558,7 +558,7 @@ const SettingsJellyfin: React.FC<SettingsJellyfinProps> = ({
                     </label>
                     <div className="form-input-area">
                       <div className="form-input-field">
-                        <span className="inline-flex cursor-default items-center rounded-l-md border border-r-0 border-gray-500 bg-gray-800 px-3 text-gray-100 sm:text-sm">
+                        <span className="inline-flex cursor-default items-center rounded-s-md border border-e-0 border-gray-500 bg-gray-800 px-3 text-gray-100 sm:text-sm">
                           {values.useSsl ? 'https://' : 'http://'}
                         </span>
                         <Field
@@ -566,7 +566,8 @@ const SettingsJellyfin: React.FC<SettingsJellyfinProps> = ({
                           inputMode="url"
                           id="hostname"
                           name="hostname"
-                          className="rounded-r-only"
+                          dir="ltr"
+                          className="rounded-e-only"
                         />
                       </div>
                       {errors.hostname &&
@@ -704,7 +705,7 @@ const SettingsJellyfin: React.FC<SettingsJellyfinProps> = ({
                 className={`actions ${isSetupSettings ? 'mt-0 border-0' : ''}`}
               >
                 <div className="flex justify-end">
-                  <span className="ml-3 inline-flex rounded-md shadow-sm">
+                  <span className="ms-3 inline-flex rounded-md shadow-sm">
                     <Button
                       buttonType="primary"
                       type="submit"

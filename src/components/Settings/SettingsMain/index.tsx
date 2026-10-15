@@ -29,6 +29,15 @@ import { useIntl } from 'react-intl';
 import useSWR, { mutate } from 'swr';
 import * as Yup from 'yup';
 
+const downloadPathMappingsExample = `[
+  {
+    "serviceType": "radarr",
+    "serviceId": 1,
+    "remoteRoot": "/movies",
+    "localRoot": "/mnt/media/movies"
+  }
+]`;
+
 const messages = defineMessages('components.Settings.SettingsMain', {
   general: 'General',
   generalsettings: 'General Settings',
@@ -93,7 +102,6 @@ const messages = defineMessages('components.Settings.SettingsMain', {
   versionCheck: 'Version Check',
   versionCheckTip: 'Automatically check for new versions on GitHub.',
   validationUrl: 'You must provide a valid URL',
-  validationUrlTrailingSlash: 'URL must not end in a trailing slash',
   playlistIntegrations: 'Playlist Integrations',
   playlistIntegrationsDescription:
     'Configure the provider credentials used when users import playlists into SeerrNG.',
@@ -121,8 +129,9 @@ const messages = defineMessages('components.Settings.SettingsMain', {
   downloadPathMappings: 'Library Path Mappings',
   downloadPathMappingsTip:
     'Enter a JSON array. Each mapping has serviceType, optional serviceId, remoteRoot, and localRoot. Use narrow library roots; SeerrNG only offers files that resolve inside a mapped root.',
+  // Escape the JSON braces so ICU renders the sample literally.
   downloadPathMappingsExample:
-    '[\n  {\n    "serviceType": "radarr",\n    "serviceId": 1,\n    "remoteRoot": "/movies",\n    "localRoot": "/mnt/media/movies"\n  }\n]',
+    '[\n  \'{\'\n    "serviceType": "radarr",\n    "serviceId": 1,\n    "remoteRoot": "/movies",\n    "localRoot": "/mnt/media/movies"\n  \'}\'\n]',
   downloadPathMappingsJsonError:
     'Enter a JSON array with at most 100 path mappings.',
   validationDownloadPathMappingsJson:
@@ -175,13 +184,7 @@ const SettingsMain = () => {
         'Number must be less than or equal to 250.',
         (value) => (value ?? 0) <= 250
       ),
-    youtubeUrl: Yup.string()
-      .url(intl.formatMessage(messages.validationUrl))
-      .test(
-        'no-trailing-slash',
-        intl.formatMessage(messages.validationUrlTrailingSlash),
-        (value) => !value || !value.endsWith('/')
-      ),
+    youtubeUrl: Yup.string().url(intl.formatMessage(messages.validationUrl)),
     downloadPathMappingsJson: Yup.string().test(
       'download-path-mappings-json',
       intl.formatMessage(messages.validationDownloadPathMappingsJson),
@@ -350,7 +353,7 @@ const SettingsMain = () => {
                           <SensitiveInput
                             type="text"
                             id="apiKey"
-                            className="rounded-l-only"
+                            className="rounded-s-only"
                             value={data?.apiKey}
                             readOnly
                           />
@@ -898,9 +901,7 @@ const SettingsMain = () => {
                         name="downloadPathMappingsJson"
                         rows={8}
                         spellCheck={false}
-                        placeholder={intl.formatMessage(
-                          messages.downloadPathMappingsExample
-                        )}
+                        placeholder={downloadPathMappingsExample}
                         className="w-full font-mono text-xs"
                       />
                     </div>

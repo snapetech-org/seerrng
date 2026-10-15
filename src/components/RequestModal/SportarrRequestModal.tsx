@@ -44,6 +44,9 @@ const messages = defineMessages('components.RequestModal.Sportarr', {
   unmonitored:
     'This league already exists in Sportarr but is not monitored. Enable it in Sportarr before requesting it here.',
   quotaHint: 'TV seasons and sports leagues share your TV request quota.',
+  sportLabel: 'Sport',
+  countryLabel: 'Country',
+  yearLabel: 'Year',
 });
 
 interface SportarrRequestModalProps {
@@ -271,19 +274,19 @@ const SportarrRequestModal = ({
           <dl className="card-table">
             {data?.sport && (
               <>
-                <dt>Sport</dt>
+                <dt>{intl.formatMessage(messages.sportLabel)}</dt>
                 <dd>{data.sport}</dd>
               </>
             )}
             {data?.country && (
               <>
-                <dt>Country</dt>
+                <dt>{intl.formatMessage(messages.countryLabel)}</dt>
                 <dd>{data.country}</dd>
               </>
             )}
             {data?.year && (
               <>
-                <dt>Year</dt>
+                <dt>{intl.formatMessage(messages.yearLabel)}</dt>
                 <dd>{data.year}</dd>
               </>
             )}

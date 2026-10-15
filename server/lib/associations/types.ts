@@ -12,6 +12,21 @@ export type AssociationMediaType = 'movie' | 'tv' | 'album' | 'artist' | 'book';
 export type AssociationEdgeType =
   'similar' | 'recommended' | 'shared-person' | 'shared-genre';
 
+export type AssociationReasonKey =
+  | 'sharesGenre'
+  | 'similarToneAudience'
+  | 'oftenRecommended'
+  | 'nearbyListenerOverlap'
+  | 'similarArtist'
+  | 'alsoByAuthor'
+  | 'sameAuthor'
+  | 'personScoredThis'
+  | 'personWorkedOnSound'
+  | 'personAppearsInThis'
+  | 'personWorkedOnThis'
+  | 'personConnectedToThis'
+  | 'personAlsoMakesMusic';
+
 export type AssociationNode =
   | MovieResult
   | TvResult
@@ -26,6 +41,10 @@ export interface AssociationEdge {
   type: AssociationEdgeType;
   /** Human-readable explanation, e.g. "Trent Reznor scored both". */
   reason: string;
+  /** Stable translation key for app-generated reason text. */
+  reasonKey?: AssociationReasonKey;
+  /** Interpolation values for the translation key. */
+  reasonValues?: Record<string, string>;
   node: AssociationNode;
 }
 

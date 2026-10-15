@@ -29,6 +29,10 @@ const messages = defineMessages('components.Discover.DiscoverSliderEdit', {
   deletesuccess: 'Sucessfully deleted slider.',
   deletefail: 'Failed to delete slider.',
   remove: 'Remove',
+  moveSectionUp: 'Move this Discover section up',
+  moveSectionDown: 'Move this Discover section down',
+  cannotMoveSectionHigher: 'This section cannot be moved any higher.',
+  cannotMoveSectionLower: 'This section cannot be moved any lower.',
   enable: 'Toggle Visibility',
 });
 
@@ -307,8 +311,10 @@ const DiscoverSliderEdit = ({
           <div className="absolute top-4 right-14 flex px-2 md:relative md:top-0 md:right-0">
             <button
               data-testid="discover-slider-move-up"
-              aria-label="Move this Discover section up"
-              data-disabled-reason="This section cannot be moved any higher."
+              aria-label={intl.formatMessage(messages.moveSectionUp)}
+              data-disabled-reason={intl.formatMessage(
+                messages.cannotMoveSectionHigher
+              )}
               className={'hover:text-white disabled:text-gray-800'}
               onClick={() =>
                 onPositionUpdate(Number(slider.id), Position.Above, true)
@@ -319,8 +325,10 @@ const DiscoverSliderEdit = ({
             </button>
             <button
               data-testid="discover-slider-move-down"
-              aria-label="Move this Discover section down"
-              data-disabled-reason="This section cannot be moved any lower."
+              aria-label={intl.formatMessage(messages.moveSectionDown)}
+              data-disabled-reason={intl.formatMessage(
+                messages.cannotMoveSectionLower
+              )}
               className={'hover:text-white disabled:text-gray-800'}
               onClick={() =>
                 onPositionUpdate(Number(slider.id), Position.Below, true)

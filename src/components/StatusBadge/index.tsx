@@ -17,7 +17,7 @@ import {
 } from '@app/utils/apiPath';
 import defineMessages from '@app/utils/defineMessages';
 import { MediaStatus } from '@server/constants/media';
-import { MediaServerType } from '@server/constants/server';
+import { MediaServerType, ServerType } from '@server/constants/server';
 import type { DownloadingItem } from '@server/lib/downloadtracker';
 import type { ReactNode } from 'react';
 import { useIntl } from 'react-intl';
@@ -141,10 +141,10 @@ const StatusBadge = ({
     mediaLinkDescription = intl.formatMessage(messages.playonplex, {
       mediaServerName:
         settings.currentSettings.mediaServerType === MediaServerType.EMBY
-          ? 'Emby'
+          ? ServerType.EMBY
           : settings.currentSettings.mediaServerType === MediaServerType.PLEX
-            ? 'Plex'
-            : 'Jellyfin',
+            ? ServerType.PLEX
+            : ServerType.JELLYFIN,
     });
   } else if (hasPermission(Permission.MANAGE_REQUESTS)) {
     if (mediaType === 'music' && (mbId || externalId)) {

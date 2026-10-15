@@ -51,7 +51,10 @@ const messages = defineMessages('components.Settings.SonarrModal', {
   languageprofile: 'Language Profile',
   rootfolder: 'Root Folder',
   seriesType: 'Series Type',
+  standardSeriesType: 'Standard',
+  dailySeriesType: 'Daily',
   animeSeriesType: 'Anime Series Type',
+  anime: 'Anime',
   animequalityprofile: 'Anime Quality Profile',
   animelanguageprofile: 'Anime Language Profile',
   animerootfolder: 'Anime Root Folder',
@@ -87,6 +90,7 @@ const messages = defineMessages('components.Settings.SonarrModal', {
   monitorNewItems: 'Monitor New Seasons',
   monitorNewItemsHelp:
     'Whether Sonarr should monitor (All) or not (None) new seasons when a series is added.',
+  none: 'None',
   apiKeyHelp: 'Find it in Sonarr: Settings > General > Security > API Key',
   baseUrlHelp:
     'If you set a URL Base in Sonarr (Settings > General > Host), enter it here (e.g. /sonarr). Leave blank otherwise.',
@@ -459,7 +463,7 @@ const SonarrModal = ({ onClose, sonarr, onSave }: SonarrModalProps) => {
                           setIsValidated(false);
                           setFieldValue('hostname', e.target.value);
                         }}
-                        className="rounded-r-only"
+                        className="rounded-e-only"
                       />
                     </div>
                     {errors.hostname &&
@@ -575,8 +579,12 @@ const SonarrModal = ({ onClose, sonarr, onSave }: SonarrModalProps) => {
                         name="seriesType"
                         disabled={!isValidated || isTesting}
                       >
-                        <option value="standard">Standard</option>
-                        <option value="daily">Daily</option>
+                        <option value="standard">
+                          {intl.formatMessage(messages.standardSeriesType)}
+                        </option>
+                        <option value="daily">
+                          {intl.formatMessage(messages.dailySeriesType)}
+                        </option>
                       </Field>
                     </div>
                   </div>
@@ -795,8 +803,12 @@ const SonarrModal = ({ onClose, sonarr, onSave }: SonarrModalProps) => {
                         name="animeSeriesType"
                         disabled={!isValidated || isTesting}
                       >
-                        <option value="anime">Anime</option>
-                        <option value="standard">Standard</option>
+                        <option value="anime">
+                          {intl.formatMessage(messages.anime)}
+                        </option>
+                        <option value="standard">
+                          {intl.formatMessage(messages.standardSeriesType)}
+                        </option>
                       </Field>
                     </div>
                   </div>
@@ -1027,8 +1039,12 @@ const SonarrModal = ({ onClose, sonarr, onSave }: SonarrModalProps) => {
                         name="monitorNewItems"
                         disabled={!isValidated || isTesting}
                       >
-                        <option value="all">All</option>
-                        <option value="none">None</option>
+                        <option value="all">
+                          {intl.formatMessage(globalMessages.all)}
+                        </option>
+                        <option value="none">
+                          {intl.formatMessage(messages.none)}
+                        </option>
                       </Field>
                     </div>
                   </div>

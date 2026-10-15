@@ -36,7 +36,7 @@ import {
   PencilIcon,
   UserPlusIcon,
 } from '@heroicons/react/24/solid';
-import { MediaServerType } from '@server/constants/server';
+import { MediaServerType, ServerType } from '@server/constants/server';
 import type { PaginatedResponse } from '@server/interfaces/api/common';
 import { hasPermission } from '@server/lib/permissions';
 import axios from 'axios';
@@ -49,6 +49,7 @@ import useSWR from 'swr';
 import validator from 'validator';
 import * as Yup from 'yup';
 import JellyfinImportModal from './JellyfinImportModal';
+import userSelectionMessages from './userSelectionMessages';
 
 const messages = defineMessages('components.UserList', {
   users: 'Users',
@@ -67,8 +68,6 @@ const messages = defineMessages('components.UserList', {
   allTypes: 'All Types',
   allRoles: 'All Roles',
   userName: 'User Name',
-  selectAllUsers: 'Select all users',
-  selectUser: 'Select {user}',
   noUsers: 'No users match the selected filters.',
   bulkedit: 'Bulk Edit',
   owner: 'Owner',
@@ -331,23 +330,23 @@ const UserList = () => {
     settings.currentSettings.emailEnabled;
   const mediaServerName =
     settings.currentSettings.mediaServerType === MediaServerType.PLEX
-      ? 'Plex'
+      ? ServerType.PLEX
       : settings.currentSettings.mediaServerType === MediaServerType.EMBY
-        ? 'Emby'
-        : 'Jellyfin';
+        ? ServerType.EMBY
+        : ServerType.JELLYFIN;
   const typeOptions: CompactSelectOption[] = [
     { label: intl.formatMessage(messages.any), value: 'all' },
     { label: intl.formatMessage(messages.localuser), value: '2' },
     { label: intl.formatMessage(messages.plexuser), value: '1' },
     {
       label: intl.formatMessage(messages.mediaServerUser, {
-        mediaServerName: 'Jellyfin',
+        mediaServerName: ServerType.JELLYFIN,
       }),
       value: '3',
     },
     {
       label: intl.formatMessage(messages.mediaServerUser, {
-        mediaServerName: 'Emby',
+        mediaServerName: ServerType.EMBY,
       }),
       value: '4',
     },
@@ -615,9 +614,7 @@ const UserList = () => {
               setShowImportModal(false);
               revalidate();
             }}
-          >
-            {data.pageInfo.results}
-          </JellyfinImportModal>
+          />
         )}
       </Transition>
 
@@ -693,7 +690,9 @@ const UserList = () => {
                       <SelectionCircle
                         selected={isAllUsersSelected()}
                         partial={areSomeUsersSelected}
-                        label={intl.formatMessage(messages.selectAllUsers)}
+                        label={intl.formatMessage(
+                          userSelectionMessages.selectAllUsers
+                        )}
                         onClick={toggleAllUsers}
                       />
                     )}
@@ -733,9 +732,10 @@ const UserList = () => {
                         {isUserPermsEditable(user.id) && (
                           <SelectionCircle
                             selected={isUserSelected(user.id)}
-                            label={intl.formatMessage(messages.selectUser, {
-                              user: displayName,
-                            })}
+                            label={intl.formatMessage(
+                              userSelectionMessages.selectUser,
+                              { user: user.jellyfinUsername ?? user.username }
+                            )}
                             onClick={() => toggleUser(user.id)}
                           />
                         )}
@@ -803,13 +803,13 @@ const UserList = () => {
                         ) : user.userType === UserType.EMBY ? (
                           <Badge badgeType="success">
                             {intl.formatMessage(messages.mediaServerUser, {
-                              mediaServerName: 'Emby',
+                              mediaServerName: ServerType.EMBY,
                             })}
                           </Badge>
                         ) : user.userType === UserType.JELLYFIN ? (
                           <Badge badgeType="default">
                             {intl.formatMessage(messages.mediaServerUser, {
-                              mediaServerName: 'Jellyfin',
+                              mediaServerName: ServerType.JELLYFIN,
                             })}
                           </Badge>
                         ) : null}

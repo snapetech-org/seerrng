@@ -14,6 +14,7 @@ import { User } from '@server/entity/User';
 import { UserPushSubscription } from '@server/entity/UserPushSubscription';
 import { UserSettings } from '@server/entity/UserSettings';
 import PreparedEmail from '@server/lib/email';
+import ImageProxy from '@server/lib/imageproxy';
 import { MAX_PERMISSION_VALUE, Permission } from '@server/lib/permissions';
 import requestAdmissionCoordinator from '@server/lib/requestAdmission';
 import { getSettings } from '@server/lib/settings';
@@ -1045,6 +1046,81 @@ describe('User route input validation', () => {
       }),
       1
     );
+  });
+
+  it('preserves sibling push subscriptions that share a user agent', async () => {
+    const agent = await loginAs('admin@seerr.dev', 'test1234');
+    const firstEndpoint = 'https://example.com/shared-agent-device-one';
+    const secondEndpoint = 'https://example.com/shared-agent-device-two';
+
+    const first = await agent.post('/user/registerPushSubscription').send({
+      endpoint: firstEndpoint,
+      auth: 'shared-agent-auth-one',
+      p256dh: 'shared-agent-key-one',
+      userAgent: 'same-device-model-and-browser-version',
+    });
+    const second = await agent.post('/user/registerPushSubscription').send({
+      endpoint: secondEndpoint,
+      auth: 'shared-agent-auth-two',
+      p256dh: 'shared-agent-key-two',
+      userAgent: 'same-device-model-and-browser-version',
+    });
+
+    assert.deepStrictEqual([first.status, second.status], [204, 204]);
+    assert.strictEqual(
+      await getRepository(UserPushSubscription).count({
+        where: { user: { id: 1 } },
+      }),
+      2
+    );
+    assert.strictEqual(
+      await getRepository(UserPushSubscription).existsBy({
+        endpoint: firstEndpoint,
+        user: { id: 1 },
+      }),
+      true
+    );
+    assert.strictEqual(
+      await getRepository(UserPushSubscription).existsBy({
+        endpoint: secondEndpoint,
+        user: { id: 1 },
+      }),
+      true
+    );
+  });
+
+  it('replaces a stale endpoint by auth when the user agent changes', async () => {
+    const agent = await loginAs('admin@seerr.dev', 'test1234');
+    const staleEndpoint = 'https://example.com/rotated-push-stale-endpoint';
+    const currentEndpoint = 'https://example.com/rotated-push-current-endpoint';
+
+    const stale = await agent.post('/user/registerPushSubscription').send({
+      endpoint: staleEndpoint,
+      auth: 'rotated-push-auth',
+      p256dh: 'rotated-push-old-key',
+      userAgent: 'old-browser-version',
+    });
+    const current = await agent.post('/user/registerPushSubscription').send({
+      endpoint: currentEndpoint,
+      auth: 'rotated-push-auth',
+      p256dh: 'rotated-push-current-key',
+      userAgent: 'new-browser-version',
+    });
+
+    assert.deepStrictEqual([stale.status, current.status], [204, 204]);
+    assert.strictEqual(
+      await getRepository(UserPushSubscription).existsBy({
+        endpoint: staleEndpoint,
+        user: { id: 1 },
+      }),
+      false
+    );
+    const storedSubscription = await getRepository(
+      UserPushSubscription
+    ).findOneByOrFail({ endpoint: currentEndpoint, user: { id: 1 } });
+    assert.strictEqual(storedSubscription.auth, 'rotated-push-auth');
+    assert.strictEqual(storedSubscription.p256dh, 'rotated-push-current-key');
+    assert.strictEqual(storedSubscription.userAgent, 'new-browser-version');
   });
 
   it('rejects push registration when credentials rotate before admission', async () => {
@@ -2410,6 +2486,30 @@ describe('User route input validation', () => {
     }
   });
 
+  it('rejects Jellyfin import when another media server is configured', async () => {
+    const settings = getSettings();
+    const previousMediaServerType = settings.main.mediaServerType;
+    settings.main.mediaServerType = MediaServerType.PLEX;
+    const getUsersMock = mock.method(
+      JellyfinAPI.prototype,
+      'getUsers',
+      async () => ({ users: [] }) as never
+    );
+
+    try {
+      const agent = await loginAs('admin@seerr.dev', 'test1234');
+      const response = await agent
+        .post('/user/import-from-jellyfin')
+        .send({ jellyfinUserIds: [] });
+
+      assert.strictEqual(response.status, 409);
+      assert.strictEqual(getUsersMock.mock.callCount(), 0);
+    } finally {
+      settings.main.mediaServerType = previousMediaServerType;
+      getUsersMock.mock.restore();
+    }
+  });
+
   it('rejects malformed Jellyfin user IDs before provider calls', async () => {
     const agent = await loginAs('admin@seerr.dev', 'test1234');
     const res = await agent
@@ -2420,7 +2520,248 @@ describe('User route input validation', () => {
     assert.match(res.body.message, /jellyfinUserIds is invalid/i);
   });
 
+  it('rejects a malformed Jellyfin sync option before provider calls', async () => {
+    const getUsersMock = mock.method(
+      JellyfinAPI.prototype,
+      'getUsers',
+      async () => ({ users: [] }) as never
+    );
+    try {
+      const agent = await loginAs('admin@seerr.dev', 'test1234');
+      const response = await agent
+        .post('/user/import-from-jellyfin')
+        .send({ jellyfinUserIds: [], syncExisting: 'true' });
+
+      assert.strictEqual(response.status, 400);
+      assert.match(response.body.message, /syncExisting must be a boolean/i);
+      assert.strictEqual(getUsersMock.mock.callCount(), 0);
+    } finally {
+      getUsersMock.mock.restore();
+    }
+  });
+
+  it('keeps refreshing linked Jellyfin users opt-in and preserves the legacy response', async () => {
+    const settings = getSettings();
+    const previousMediaServerType = settings.main.mediaServerType;
+    const previousJellyfin = settings.jellyfin;
+    const providerId = '44444444-4444-4444-4444-444444444444';
+    const canonicalId = providerId.replaceAll('-', '');
+    const userRepository = getRepository(User);
+    const target = await userRepository.findOneByOrFail({
+      email: 'friend@seerr.dev',
+    });
+    const previousTarget = {
+      jellyfinUserId: target.jellyfinUserId,
+      jellyfinUsername: target.jellyfinUsername,
+    };
+    settings.main.mediaServerType = MediaServerType.JELLYFIN;
+    settings.jellyfin = {
+      ...settings.jellyfin,
+      ip: 'jellyfin.local',
+      apiKey: 'stored-import-key',
+    };
+    target.jellyfinUserId = canonicalId;
+    target.jellyfinUsername = 'Existing Provider Name';
+    await userRepository.save(target);
+
+    const getUsersMock = mock.method(
+      JellyfinAPI.prototype,
+      'getUsers',
+      async () =>
+        ({
+          users: [
+            {
+              Name: 'Updated Provider Name',
+              ServerId: 'server',
+              ServerName: 'Jellyfin',
+              Id: providerId,
+              Configuration: { GroupedFolders: [] },
+              Policy: { IsAdministrator: false },
+            },
+          ],
+        }) as never
+    );
+    const getImageMock = mock.method(
+      ImageProxy.prototype,
+      'getImage',
+      async () => ({ imageBuffer: Buffer.from('profile photo') }) as never
+    );
+    const clearCachedImageMock = mock.method(
+      ImageProxy.prototype,
+      'clearCachedImage',
+      async () => undefined
+    );
+
+    try {
+      const agent = await loginAs('admin@seerr.dev', 'test1234');
+      const response = await agent
+        .post('/user/import-from-jellyfin')
+        .send({ jellyfinUserIds: [providerId] });
+
+      assert.strictEqual(response.status, 201);
+      assert.deepStrictEqual(response.body, []);
+      assert.strictEqual(getUsersMock.mock.callCount(), 1);
+      assert.strictEqual(getImageMock.mock.callCount(), 0);
+      assert.strictEqual(clearCachedImageMock.mock.callCount(), 0);
+      const persisted = await userRepository.findOneByOrFail({
+        id: target.id,
+      });
+      assert.strictEqual(persisted.jellyfinUsername, 'Existing Provider Name');
+    } finally {
+      settings.main.mediaServerType = previousMediaServerType;
+      settings.jellyfin = previousJellyfin;
+      await userRepository.update(target.id, previousTarget);
+      getUsersMock.mock.restore();
+      getImageMock.mock.restore();
+      clearCachedImageMock.mock.restore();
+    }
+  });
+
+  it('refreshes only the provider name and avatar for an already-linked user', async () => {
+    const settings = getSettings();
+    const previousMediaServerType = settings.main.mediaServerType;
+    const previousJellyfin = settings.jellyfin;
+    const providerId = '55555555-5555-5555-5555-555555555555';
+    const canonicalId = providerId.replaceAll('-', '');
+    const userRepository = getRepository(User);
+    const target = await userRepository.findOneByOrFail({
+      email: 'friend@seerr.dev',
+    });
+    const previousTarget = {
+      jellyfinUserId: target.jellyfinUserId,
+      jellyfinUsername: target.jellyfinUsername,
+      username: target.username,
+      avatar: target.avatar,
+      avatarETag: target.avatarETag,
+      avatarVersion: target.avatarVersion,
+      permissions: target.permissions,
+      userType: target.userType,
+    };
+    const previousCredentials = await userRepository.findOneOrFail({
+      where: { id: target.id },
+      select: {
+        id: true,
+        password: true,
+        jellyfinAuthToken: true,
+        jellyfinDeviceId: true,
+      },
+    });
+    settings.main.mediaServerType = MediaServerType.EMBY;
+    settings.jellyfin = {
+      ...settings.jellyfin,
+      ip: 'jellyfin.local',
+      apiKey: 'stored-import-key',
+    };
+    target.jellyfinUserId = canonicalId;
+    target.jellyfinUsername = 'Old Provider Name';
+    target.username = 'Local Display Name';
+    target.avatar = 'https://example.com/local-profile.png';
+    target.avatarETag = 'old-avatar-etag';
+    target.avatarVersion = 'old-avatar-version';
+    target.jellyfinAuthToken = 'preserved-auth-token';
+    target.jellyfinDeviceId = 'preserved-device-id';
+    target.permissions = Permission.REQUEST_MUSIC;
+    target.userType = UserType.LOCAL;
+    await userRepository.save(target);
+
+    const getUsersMock = mock.method(
+      JellyfinAPI.prototype,
+      'getUsers',
+      async () =>
+        ({
+          users: [
+            {
+              Name: 'Fresh Provider Name',
+              ServerId: 'server',
+              ServerName: 'Jellyfin',
+              Id: providerId,
+              Configuration: { GroupedFolders: [] },
+              Policy: { IsAdministrator: false },
+            },
+          ],
+        }) as never
+    );
+    const getImageMock = mock.method(
+      ImageProxy.prototype,
+      'getImage',
+      async () => ({ imageBuffer: Buffer.from('fresh profile photo') }) as never
+    );
+    const clearCachedImageMock = mock.method(
+      ImageProxy.prototype,
+      'clearCachedImage',
+      async () => undefined
+    );
+
+    try {
+      const agent = await loginAs('admin@seerr.dev', 'test1234');
+      const response = await agent
+        .post('/user/import-from-jellyfin')
+        .send({ jellyfinUserIds: [providerId], syncExisting: true });
+
+      assert.strictEqual(response.status, 201);
+      assert.deepStrictEqual(response.body, {
+        createdUsers: [],
+        refreshedUsers: 1,
+      });
+      assert.strictEqual(getUsersMock.mock.callCount(), 1);
+      assert.strictEqual(getImageMock.mock.callCount(), 1);
+      assert.strictEqual(clearCachedImageMock.mock.callCount(), 1);
+      assert.match(
+        String(getImageMock.mock.calls[0].arguments[0]),
+        new RegExp(`/Users/${canonicalId}/Images/Primary\\?quality=90$`)
+      );
+
+      const refreshed = await userRepository.findOneByOrFail({ id: target.id });
+      assert.strictEqual(refreshed.jellyfinUserId, canonicalId);
+      assert.strictEqual(refreshed.jellyfinUsername, 'Fresh Provider Name');
+      assert.strictEqual(refreshed.username, 'Local Display Name');
+      assert.strictEqual(refreshed.email, 'friend@seerr.dev');
+      assert.strictEqual(refreshed.permissions, Permission.REQUEST_MUSIC);
+      assert.strictEqual(refreshed.userType, UserType.LOCAL);
+      const refreshedCredentials = await userRepository.findOneOrFail({
+        where: { id: target.id },
+        select: {
+          id: true,
+          password: true,
+          jellyfinAuthToken: true,
+          jellyfinDeviceId: true,
+        },
+      });
+      assert.strictEqual(
+        refreshedCredentials.password,
+        previousCredentials.password
+      );
+      assert.strictEqual(
+        refreshedCredentials.jellyfinAuthToken,
+        'preserved-auth-token'
+      );
+      assert.strictEqual(
+        refreshedCredentials.jellyfinDeviceId,
+        'preserved-device-id'
+      );
+      assert.match(
+        refreshed.avatar ?? '',
+        new RegExp(`^/avatarproxy/${canonicalId}\\?v=[a-f0-9]{64}$`)
+      );
+    } finally {
+      settings.main.mediaServerType = previousMediaServerType;
+      settings.jellyfin = previousJellyfin;
+      await userRepository.update(target.id, {
+        ...previousTarget,
+        password: previousCredentials.password,
+        jellyfinAuthToken: previousCredentials.jellyfinAuthToken,
+        jellyfinDeviceId: previousCredentials.jellyfinDeviceId,
+      });
+      getUsersMock.mock.restore();
+      getImageMock.mock.restore();
+      clearCachedImageMock.mock.restore();
+    }
+  });
+
   it('does not create a Jellyfin user missing from the provider response', async () => {
+    const settings = getSettings();
+    const previousMediaServerType = settings.main.mediaServerType;
+    settings.main.mediaServerType = MediaServerType.JELLYFIN;
     const requestedId = '11111111111111111111111111111111';
     const providerId = '22222222222222222222222222222222';
     const getUsersMock = mock.method(
@@ -2457,11 +2798,15 @@ describe('User route input validation', () => {
         0
       );
     } finally {
+      settings.main.mediaServerType = previousMediaServerType;
       getUsersMock.mock.restore();
     }
   });
 
   it('stores imported Jellyfin IDs in canonical form', async () => {
+    const settings = getSettings();
+    const previousMediaServerType = settings.main.mediaServerType;
+    settings.main.mediaServerType = MediaServerType.JELLYFIN;
     const providerId = '33333333-3333-3333-3333-333333333333';
     const canonicalId = providerId.replaceAll('-', '');
     const getUsersMock = mock.method(
@@ -2497,6 +2842,7 @@ describe('User route input validation', () => {
         1
       );
     } finally {
+      settings.main.mediaServerType = previousMediaServerType;
       getUsersMock.mock.restore();
     }
   });

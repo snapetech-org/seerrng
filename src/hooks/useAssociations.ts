@@ -1,3 +1,4 @@
+import type { AssociationReasonKey } from '@server/lib/associations/types';
 import type {
   AlbumResult,
   ArtistResult,
@@ -7,6 +8,8 @@ import type {
   TvResult,
 } from '@server/models/Search';
 import useSWR from 'swr';
+
+export type { AssociationReasonKey } from '@server/lib/associations/types';
 
 export type AssociationMediaType = 'movie' | 'tv' | 'album' | 'artist' | 'book';
 
@@ -25,6 +28,8 @@ export interface AssociationEdge {
   weight: number;
   type: AssociationEdgeType;
   reason: string;
+  reasonKey?: AssociationReasonKey;
+  reasonValues?: Record<string, string>;
   node: AssociationNode;
 }
 
