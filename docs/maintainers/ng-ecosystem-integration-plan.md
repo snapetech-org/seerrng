@@ -5,12 +5,11 @@ Build plan for connecting SeerrNG to the Snapetech projects it does not use yet
 projects it already integrates (BookshelfNG, ChaptarrNG, ROMarrNG, QuestarrNG).
 
 Written 2026-10-06. Endpoint facts were read from each project's source or docs
-on that date; re-check them before starting a phase. Confidence labels follow
-`AGENTS.md`.
+on that date; re-check them before starting a phase.
 
-Read `AGENTS.md`, `docs/maintainers/ui-style-standard.md`, and
-`docs/maintainers/ui-fix-it.md` before implementing any phase. This plan does
-not override their verification or UI rules.
+For interface work, read `docs/maintainers/ui-style-standard.md` and
+`docs/maintainers/ui-fix-it.md` before implementing a phase. This plan does not
+override their verification or UI rules.
 
 ## Ground rules
 
