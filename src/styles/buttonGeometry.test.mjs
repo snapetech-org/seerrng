@@ -1860,8 +1860,15 @@ test('Visual Lab Testing compares retained local trees inside the actual main de
   const details = component('TvDetails/index.tsx');
   const layout = component('TvDetails/SeriesDetailsLayout.tsx');
   assert.match(testing, /const pages = \[1, 6\] as const/);
-  assert.match(testing, /<PageTitle title="Series Testing Page"/);
-  assert.match(testing, /<h1 className="page-title">Series Testing Page<\/h1>/);
+  assert.match(testing, /pageTitle: 'Series Testing Page'/);
+  assert.match(
+    testing,
+    /<PageTitle title=\{intl\.formatMessage\(messages\.pageTitle\)\} \/>/
+  );
+  assert.match(
+    testing,
+    /<h1 className="page-title">\{intl\.formatMessage\(messages\.pageTitle\)\}<\/h1>/
+  );
   assert.match(testing, /@app\/components\/MediaDetails\/SeasonEpisodeTree/);
   assert.match(testing, /releaseDate: episode\.airDate \|\| undefined/);
   assert.match(testing, /data-list-width="two-thirds"/);
