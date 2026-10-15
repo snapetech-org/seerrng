@@ -316,7 +316,7 @@ test('CodeQL models the awaited image cache validation barrier', () => {
   );
 });
 
-test('unit-test pull requests stay on hosted runners', () => {
+test('unit-test pull requests stay hosted and main runs require kspls0', () => {
   const ciWorkflow = yaml.load(
     fs.readFileSync(
       path.join(rootDirectory, '.github', 'workflows', 'ci.yml'),
@@ -328,9 +328,11 @@ test('unit-test pull requests stay on hosted runners', () => {
     "((github.event_name == 'push' && github.ref == 'refs/heads/main') || " +
     "(github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main'))";
   const trustedRunnerJson =
-    '{"group":"trusted-main","labels":["self-hosted","Linux","X64","host"]}';
+    '{"group":"trusted-main","labels":["self-hosted","Linux","X64","host","kspls0"]}';
   const expectedRunner =
-    '$' + '{{ (' + mainRunnerCondition +
+    '$' +
+    '{{ (' +
+    mainRunnerCondition +
     " && vars.TRUSTED_MAIN_RUNNERS_ENABLED == 'true') && fromJSON('" +
     trustedRunnerJson +
     "') || 'ubuntu-latest' }}";

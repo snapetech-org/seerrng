@@ -306,6 +306,21 @@ export const normalizePlexWatchlistPage = (offset: number, size: number) => ({
       : 20,
 });
 
+/**
+ * A watchlist page is only worth caching when it has the expected container
+ * shape. Caching anything else would pin a bad body behind a valid ETag.
+ */
+export const isCacheablePlexWatchlistPage = (value: unknown): boolean => {
+  if (!isRecord(value) || !isRecord(value.MediaContainer)) {
+    return false;
+  }
+  const { Metadata, totalSize } = value.MediaContainer;
+  return (
+    (Metadata === undefined || Array.isArray(Metadata)) &&
+    (totalSize === undefined || typeof totalSize === 'number')
+  );
+};
+
 export const preparePlexWatchlistRatingKeys = (
   value: unknown,
   limit = MAX_PLEX_WATCHLIST_PAGE_SIZE
@@ -559,15 +574,22 @@ class PlexTvAPI extends ExternalAPI {
 
       // If we don't recieve HTTP 304, the watchlist has been updated and we need to update the cache.
       if (response.status >= 200 && response.status <= 299) {
-        cachedWatchlist = {
-          etag: response.headers.etag,
-          response: response.data,
-        };
+        if (isCacheablePlexWatchlistPage(response.data)) {
+          cachedWatchlist = {
+            etag: response.headers.etag,
+            response: response.data,
+          };
 
-        watchlistCache.data.set<PlexWatchlistCache>(
-          watchlistCacheKey,
-          cachedWatchlist
-        );
+          watchlistCache.data.set<PlexWatchlistCache>(
+            watchlistCacheKey,
+            cachedWatchlist
+          );
+        } else {
+          logger.warn(
+            'Ignoring malformed Plex watchlist response; not caching it',
+            { label: 'Plex.TV Metadata API', offset, size }
+          );
+        }
       }
 
       const ratingKeys = preparePlexWatchlistRatingKeys(

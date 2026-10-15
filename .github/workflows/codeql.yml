@@ -58,7 +58,7 @@ jobs:
 
       - name: Set up Node.js for engine binding
         if: inputs.plan_sha256 != ''
-        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
           node-version-file: 'package.json'
           package-manager-cache: false
@@ -68,7 +68,7 @@ jobs:
         uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
         with:
           name: seerrng-engine-plan-${{ github.run_id }}-${{ github.run_attempt }}
-          path: ${{ runner.temp }}/seerrng-engine-plan
+          path: ${{ runner.temp }}/seerrng-engine-${{ github.repository_id }}-${{ github.run_id }}-${{ github.run_attempt }}-${{ github.job }}-${{ matrix.language || 'single' }}/plan
 
       - name: Admit engine unit case
         id: engine-admission
@@ -78,16 +78,16 @@ jobs:
           --github-admit
           --unit "$SEERRNG_ENGINE_UNIT_ID"
           --case "$SEERRNG_ENGINE_CASE"
-          --plan-file "$RUNNER_TEMP/seerrng-engine-plan/hosted-plan.json"
+          --plan-file "$RUNNER_TEMP/seerrng-engine-${GITHUB_REPOSITORY_ID}-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}-${GITHUB_JOB}-${SEERRNG_ENGINE_CASE_ID:-${SEERRNG_ENGINE_CASE:-single}}/plan/hosted-plan.json"
           --expected-plan-sha256 "$SEERRNG_ENGINE_PLAN_SHA256"
-          --receipt-dir "$RUNNER_TEMP/seerrng-engine-receipts"
+          --receipt-dir "$RUNNER_TEMP/seerrng-engine-${GITHUB_REPOSITORY_ID}-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}-${GITHUB_JOB}-${SEERRNG_ENGINE_CASE_ID:-${SEERRNG_ENGINE_CASE:-single}}/receipts"
           --json
 
       - name: Initialize CodeQL
         if: >-
           inputs.plan_sha256 == '' ||
           steps.engine-admission.outputs.execute == 'true'
-        uses: github/codeql-action/init@2892aa5e19bbd11bc0cff5427e3b750a04d9e3c2 # v4.38.2
+        uses: github/codeql-action/init@24c54180a607b1449ed407dd24f251e4e9147c8d # v4.38.3
         with:
           languages: ${{ matrix.language }}
           queries: +security-and-quality
@@ -98,13 +98,13 @@ jobs:
         if: >-
           inputs.plan_sha256 == '' ||
           steps.engine-admission.outputs.execute == 'true'
-        uses: github/codeql-action/autobuild@2892aa5e19bbd11bc0cff5427e3b750a04d9e3c2 # v4.38.2
+        uses: github/codeql-action/autobuild@24c54180a607b1449ed407dd24f251e4e9147c8d # v4.38.3
 
       - name: Perform CodeQL Analysis
         if: >-
           inputs.plan_sha256 == '' ||
           steps.engine-admission.outputs.execute == 'true'
-        uses: github/codeql-action/analyze@2892aa5e19bbd11bc0cff5427e3b750a04d9e3c2 # v4.38.2
+        uses: github/codeql-action/analyze@24c54180a607b1449ed407dd24f251e4e9147c8d # v4.38.3
         with:
           category: '/language:${{ matrix.language }}'
 
@@ -118,17 +118,23 @@ jobs:
           --github-receipt
           --unit "$SEERRNG_ENGINE_UNIT_ID"
           --case "$SEERRNG_ENGINE_CASE"
-          --plan-file "$RUNNER_TEMP/seerrng-engine-plan/hosted-plan.json"
+          --plan-file "$RUNNER_TEMP/seerrng-engine-${GITHUB_REPOSITORY_ID}-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}-${GITHUB_JOB}-${SEERRNG_ENGINE_CASE_ID:-${SEERRNG_ENGINE_CASE:-single}}/plan/hosted-plan.json"
           --expected-plan-sha256 "$SEERRNG_ENGINE_PLAN_SHA256"
-          --receipt-dir "$RUNNER_TEMP/seerrng-engine-receipts"
+          --receipt-dir "$RUNNER_TEMP/seerrng-engine-${GITHUB_REPOSITORY_ID}-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}-${GITHUB_JOB}-${SEERRNG_ENGINE_CASE_ID:-${SEERRNG_ENGINE_CASE:-single}}/receipts"
           --job-status "${{ job.status }}"
           --json
 
       - name: Publish engine unit case receipt
         if: always() && inputs.plan_sha256 != ''
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: seerrng-engine-receipt-${{ github.run_id }}-${{ github.run_attempt }}-${{ inputs.unit_id }}-${{ matrix.language }}
-          path: ${{ runner.temp }}/seerrng-engine-receipts
+          path: ${{ runner.temp }}/seerrng-engine-${{ github.repository_id }}-${{ github.run_id }}-${{ github.run_attempt }}-${{ github.job }}-${{ matrix.language || 'single' }}/receipts
           if-no-files-found: error
           retention-days: 1
+
+      - name: Clean attempt-scoped engine workspace
+        if: always()
+        shell: bash
+        run: |
+          rm -rf -- "$RUNNER_TEMP/seerrng-engine-${GITHUB_REPOSITORY_ID}-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}-${GITHUB_JOB}-${SEERRNG_ENGINE_CASE_ID:-${SEERRNG_ENGINE_CASE:-single}}"
