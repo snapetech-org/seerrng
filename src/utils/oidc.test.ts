@@ -1,8 +1,8 @@
 import assert from 'node:assert/strict';
 import { describe, it } from 'node:test';
 import {
-  clearOidcLoginState,
-  getOidcLoginRedirect,
+  clearOidcReturnState,
+  getOidcReturnPath,
   OidcCallbackRequestState,
 } from './oidc';
 import { hasOidcCallbackParameters } from './oidcQuery';
@@ -41,7 +41,7 @@ describe('hasOidcCallbackParameters', () => {
   });
 });
 
-describe('OIDC login redirect storage', () => {
+describe('OIDC return path storage', () => {
   it('validates the saved destination and clears it with the provider state', () => {
     const originalWindow = Object.getOwnPropertyDescriptor(
       globalThis,
@@ -61,13 +61,13 @@ describe('OIDC login redirect storage', () => {
 
     try {
       values.set('oidc-login-redirect', '/settings/services#prowlarr');
-      assert.equal(getOidcLoginRedirect(), '/settings/services#prowlarr');
+      assert.equal(getOidcReturnPath(), '/settings/services#prowlarr');
 
       values.set('oidc-login-redirect', '//example.com');
-      assert.equal(getOidcLoginRedirect(), '/');
+      assert.equal(getOidcReturnPath(), '/');
 
       values.set('oidc-provider', 'authentik');
-      clearOidcLoginState();
+      clearOidcReturnState();
       assert.equal(values.has('oidc-provider'), false);
       assert.equal(values.has('oidc-login-redirect'), false);
     } finally {

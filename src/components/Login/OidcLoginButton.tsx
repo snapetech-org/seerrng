@@ -1,10 +1,10 @@
 import ButtonWithLoader from '@app/components/Common/ButtonWithLoader';
 import { buildLoginPath, getSafeReturnPath } from '@app/utils/loginReturn';
 import {
-  clearOidcLoginState,
+  clearOidcReturnState,
   getOidcErrorMessage,
-  getOidcLoginRedirect,
   getOidcProviderSlug,
+  getOidcReturnPath,
   initiateOidcLogin,
   processOidcCallback,
 } from '@app/utils/oidc';
@@ -63,8 +63,8 @@ export default function OidcLoginButton({
       if (isCallback && callbackProvider === provider.slug) {
         let active = true;
         callbackProviderRef.current = callbackProvider;
-        const redirectTo = getOidcLoginRedirect();
-        clearOidcLoginState();
+        const redirectTo = getOidcReturnPath();
+        clearOidcReturnState();
         setLoading(true);
 
         void processOidcCallback(callbackProvider)

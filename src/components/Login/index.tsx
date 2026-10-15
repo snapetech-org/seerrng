@@ -172,7 +172,7 @@ const Login = ({
   // Effect that is triggered whenever `useUser`'s user changes. If we get a new
   // valid user, we redirect the user to the home page as the login was successful.
   useEffect(() => {
-    if (user) {
+    if (user && router.isReady) {
       const requested = getSafeReturnPath(
         Array.isArray(router.query.returnTo)
           ? router.query.returnTo[0]

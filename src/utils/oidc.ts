@@ -96,7 +96,7 @@ export async function initiateOidcLogin(
       getSafeReturnPath(redirectTo) ?? '/'
     )
   ) {
-    clearOidcLoginState();
+    clearOidcReturnState();
     throw new Error('OIDC login requires browser session storage.');
   }
   window.location.href = redirectUrl;
@@ -110,12 +110,12 @@ export function getOidcProviderSlug(): string | null {
 }
 
 /** Returns the validated destination stored before the OIDC round-trip. */
-export function getOidcLoginRedirect(): string {
+export function getOidcReturnPath(): string {
   return getSafeReturnPath(readSessionStorageValue(OIDC_REDIRECT_KEY)) ?? '/';
 }
 
 /** Clears the temporary state stored by initiateOidcLogin. */
-export function clearOidcLoginState(): void {
+export function clearOidcReturnState(): void {
   removeSessionStorageValue(OIDC_PROVIDER_KEY);
   removeSessionStorageValue(OIDC_REDIRECT_KEY);
 }
