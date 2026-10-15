@@ -527,7 +527,7 @@ jobs:
       github.ref == 'refs/heads/main'))
     strategy:
       fail-fast: false
-      max-parallel: 4
+      max-parallel: ${{ (((github.event_name == 'push' && github.ref == 'refs/heads/main') || (github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main')) && vars.TRUSTED_MAIN_RUNNERS_ENABLED == 'true' && 1) || 4 }}
       matrix: ${{ fromJSON(needs.engine-plan.outputs.unitMatrix) }}
     # Pull-request tests stay hosted; trusted main validation is pinned to kspls0.
     runs-on: ${{ (((github.event_name == 'push' && github.ref == 'refs/heads/main') || (github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main')) && vars.TRUSTED_MAIN_RUNNERS_ENABLED == 'true') && fromJSON('{"group":"trusted-main","labels":["self-hosted","Linux","X64","host","kspls0"]}') || 'ubuntu-latest' }}
