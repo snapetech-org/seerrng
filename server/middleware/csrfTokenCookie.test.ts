@@ -3,6 +3,7 @@ import { describe, it } from 'node:test';
 
 import cookieParser from 'cookie-parser';
 import express from 'express';
+import rateLimit from 'express-rate-limit';
 import request from 'supertest';
 import csrfProtection, { requestUsesSecureTransport } from './csrfProtection';
 import csrfTokenCookie from './csrfTokenCookie';
@@ -85,6 +86,7 @@ describe('csrfTokenCookie', () => {
 
   it('lets the signed Slack callback reach its own request verification', async () => {
     const app = express();
+    app.use(rateLimit({ windowMs: 60 * 1000, limit: 100 }));
     app.use(cookieParser());
     app.use(csrfProtection());
     app.use(csrfTokenCookie(false));

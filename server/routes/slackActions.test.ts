@@ -23,6 +23,7 @@ import { waitForBackgroundTasks } from '@server/utils/backgroundTasks';
 import axios from 'axios';
 import type { Express } from 'express';
 import express from 'express';
+import rateLimit from 'express-rate-limit';
 import request from 'supertest';
 import slackActionRoutes from './slackActions';
 
@@ -110,6 +111,7 @@ before(() => {
       },
     })
   );
+  app.use(rateLimit({ windowMs: 60 * 1000, limit: 1000 }));
   app.use(csrfProtection());
   app.use('/api/v1/notifications', slackActionRoutes);
   app.use(
