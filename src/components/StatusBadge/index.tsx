@@ -267,23 +267,18 @@ const StatusBadge = ({
       tooltipContent
     );
 
-  const downloadTooltipClassName = inProgress
-    ? `scrollable-card ${
-        canFailDownload ? '' : 'hidden sm:block'
-      } max-h-96 w-96 max-w-[calc(100vw-2rem)] overflow-y-auto`
-    : undefined;
+  const downloadTooltipClassName = inProgress ? 'scrollable-card' : undefined;
   const downloadTooltipConfig = inProgress
     ? {
         interactive: true,
         delayHide: 100,
-        ...(canFailDownload && {
-          trigger: ['hover', 'click', 'focus'] as (
-            'hover' | 'click' | 'focus'
-          )[],
-          followCursor: false,
-        }),
+        trigger: (statusBadgeLink
+          ? ['hover', 'focus']
+          : ['hover', 'click', 'focus']) as ('hover' | 'click' | 'focus')[],
+        followCursor: false,
       }
     : undefined;
+  const statusBadgeOpensDownloadDetails = inProgress && !statusBadgeLink;
 
   const badgeDownloadProgress = (
     <div
@@ -317,7 +312,13 @@ const StatusBadge = ({
           <Badge
             badgeType="success"
             href={statusBadgeLink}
+            role={statusBadgeOpensDownloadDetails ? 'button' : undefined}
+            tabIndex={statusBadgeOpensDownloadDetails ? 0 : undefined}
             className={`${className ?? ''} ${
+              statusBadgeOpensDownloadDetails
+                ? 'request-status-control-link'
+                : ''
+            } ${
               inProgress &&
               'relative !bg-gray-700/35 !px-0 hover:!bg-gray-700/55'
             } overflow-hidden`}
@@ -377,7 +378,13 @@ const StatusBadge = ({
           <Badge
             badgeType="success"
             href={statusBadgeLink}
+            role={statusBadgeOpensDownloadDetails ? 'button' : undefined}
+            tabIndex={statusBadgeOpensDownloadDetails ? 0 : undefined}
             className={`${className ?? ''} ${
+              statusBadgeOpensDownloadDetails
+                ? 'request-status-control-link'
+                : ''
+            } ${
               inProgress &&
               'relative !bg-gray-700/35 !px-0 hover:!bg-gray-700/55'
             } overflow-hidden`}
@@ -437,7 +444,13 @@ const StatusBadge = ({
           <Badge
             badgeType="primary"
             href={statusBadgeLink}
+            role={statusBadgeOpensDownloadDetails ? 'button' : undefined}
+            tabIndex={statusBadgeOpensDownloadDetails ? 0 : undefined}
             className={`${className ?? ''} ${
+              statusBadgeOpensDownloadDetails
+                ? 'request-status-control-link'
+                : ''
+            } ${
               inProgress &&
               'relative !bg-gray-700/35 !px-0 hover:!bg-gray-700/55'
             } overflow-hidden`}
@@ -526,7 +539,13 @@ const StatusBadge = ({
           <Badge
             badgeType="danger"
             href={statusBadgeLink}
+            role={statusBadgeOpensDownloadDetails ? 'button' : undefined}
+            tabIndex={statusBadgeOpensDownloadDetails ? 0 : undefined}
             className={`${className ?? ''} ${
+              statusBadgeOpensDownloadDetails
+                ? 'request-status-control-link'
+                : ''
+            } ${
               inProgress &&
               'relative !bg-gray-700/35 !px-0 hover:!bg-gray-700/55'
             } overflow-hidden`}

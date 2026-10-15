@@ -27,6 +27,7 @@ it('Series filter pin buttons drive the real saved-state hook and disclosure com
   const dom = new JSDOM('<div id="root"></div>');
   vi.stubGlobal('window', dom.window);
   vi.stubGlobal('document', dom.window.document);
+  vi.stubGlobal('Element', dom.window.Element);
   vi.stubGlobal('React', React);
   vi.stubGlobal('IS_REACT_ACT_ENVIRONMENT', true);
   state.user.settings.detailDisclosurePins.tv = {

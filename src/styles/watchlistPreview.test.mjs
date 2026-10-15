@@ -505,13 +505,14 @@ test('Series Watchlist visual prototype is isolated from production actions and 
     ).length === 1,
     'disabled-preview clicks must not activate the parent frame'
   );
-  const tooltip = ancestor(
+  const tooltips = nodes(
     slot,
     (node) =>
       ts.isJsxElement(node) &&
       node.openingElement.tagName.getText() === 'Tooltip'
   );
-  assert.ok(tooltip);
+  assert.equal(tooltips.length, 1);
+  const tooltip = tooltips[0];
   assert.match(
     expression(tooltip.openingElement, 'content').getText(),
     /watchlistPreviewDisabled[\s\S]*watchlistPreviewRemove[\s\S]*watchlistPreviewAdd/

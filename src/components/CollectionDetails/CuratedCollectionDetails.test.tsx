@@ -265,6 +265,7 @@ it('opens the series collection requester with the selected series', async () =>
   const dom = new JSDOM('<html><body><div id="root"></div></body></html>');
   vi.stubGlobal('window', dom.window);
   vi.stubGlobal('document', dom.window.document);
+  vi.stubGlobal('Element', dom.window.Element);
   vi.stubGlobal('React', React);
   vi.stubGlobal('IS_REACT_ACT_ENVIRONMENT', true);
   const root = createRoot(document.getElementById('root')!);
@@ -303,6 +304,7 @@ it('keeps playback scoped to shown selections while Add Collection ignores the s
   const dom = new JSDOM('<html><body><div id="root"></div></body></html>');
   vi.stubGlobal('window', dom.window);
   vi.stubGlobal('document', dom.window.document);
+  vi.stubGlobal('Element', dom.window.Element);
   vi.stubGlobal('React', React);
   vi.stubGlobal('IS_REACT_ACT_ENVIRONMENT', true);
   const root = createRoot(document.getElementById('root')!);

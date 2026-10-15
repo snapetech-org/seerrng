@@ -328,18 +328,17 @@ const ManageSlideOver = ({
                                     </span>
                                     <span className="flex flex-row flex-wrap">
                                       {watchData.data.users.map((user) => (
-                                        <Link
-                                          href={
-                                            currentUser?.id === user.id
-                                              ? '/profile'
-                                              : `/users/${user.id}`
-                                          }
+                                        <Tooltip
                                           key={`watch-user-${user.id}`}
-                                          className="z-0 -mr-2 mb-1 shrink-0 hover:z-50"
+                                          content={user.displayName}
                                         >
-                                          <Tooltip
-                                            key={`watch-user-${user.id}`}
-                                            content={user.displayName}
+                                          <Link
+                                            href={
+                                              currentUser?.id === user.id
+                                                ? '/profile'
+                                                : `/users/${user.id}`
+                                            }
+                                            className="z-0 -mr-2 mb-1 shrink-0 hover:z-50"
                                           >
                                             <CachedImage
                                               type="avatar"
@@ -349,8 +348,8 @@ const ManageSlideOver = ({
                                               width={32}
                                               height={32}
                                             />
-                                          </Tooltip>
-                                        </Link>
+                                          </Link>
+                                        </Tooltip>
                                       ))}
                                     </span>
                                   </div>
@@ -433,18 +432,17 @@ const ManageSlideOver = ({
                                     </span>
                                     <span className="flex flex-row flex-wrap">
                                       {watchData.data4k.users.map((user) => (
-                                        <Link
-                                          href={
-                                            currentUser?.id === user.id
-                                              ? '/profile'
-                                              : `/users/${user.id}`
-                                          }
+                                        <Tooltip
                                           key={`watch-user-${user.id}`}
-                                          className="z-0 -mr-2 mb-1 shrink-0 hover:z-50"
+                                          content={user.displayName}
                                         >
-                                          <Tooltip
-                                            key={`watch-user-${user.id}`}
-                                            content={user.displayName}
+                                          <Link
+                                            href={
+                                              currentUser?.id === user.id
+                                                ? '/profile'
+                                                : `/users/${user.id}`
+                                            }
+                                            className="z-0 -mr-2 mb-1 shrink-0 hover:z-50"
                                           >
                                             <CachedImage
                                               type="avatar"
@@ -454,8 +452,8 @@ const ManageSlideOver = ({
                                               width={32}
                                               height={32}
                                             />
-                                          </Tooltip>
-                                        </Link>
+                                          </Link>
+                                        </Tooltip>
                                       ))}
                                     </span>
                                   </div>

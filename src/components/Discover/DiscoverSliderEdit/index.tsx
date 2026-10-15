@@ -340,14 +340,12 @@ const DiscoverSliderEdit = ({
           </div>
           <div className="absolute top-4 right-4 flex-1 text-right md:relative md:top-0 md:right-0">
             <Tooltip content={intl.formatMessage(messages.enable)}>
-              <div>
-                <SlideCheckbox
-                  onClick={() => {
-                    onEnable();
-                  }}
-                  checked={slider.enabled}
-                />
-              </div>
+              <SlideCheckbox
+                onClick={() => {
+                  onEnable();
+                }}
+                checked={slider.enabled}
+              />
             </Tooltip>
           </div>
         </div>
