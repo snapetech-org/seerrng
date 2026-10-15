@@ -1060,6 +1060,48 @@ describe('Sonarr settings routes', () => {
     assert.strictEqual(getSettings().sonarr[0].name, 'Updated Sonarr');
   });
 
+  it('rejects missing anime profiles when creating and updating a service', async () => {
+    let forcedRefreshes = 0;
+    mock.method(
+      SonarrAPI.prototype,
+      'getProfiles',
+      async (options?: { forceRefresh?: boolean }) => {
+        if (options?.forceRefresh) forcedRefreshes += 1;
+        return [{ id: 7, name: 'Current Profile' }];
+      }
+    );
+
+    const createResponse = await request(app)
+      .post('/settings/sonarr')
+      .send(makeSonarr({ activeAnimeProfileId: 8 }));
+
+    getSettings().sonarr = [makeSonarr({ id: 4, activeAnimeProfileId: 7 })];
+    const updateResponse = await request(app)
+      .put('/settings/sonarr/4')
+      .send(makeSonarr({ activeAnimeProfileId: 8 }));
+
+    assert.strictEqual(createResponse.status, 422);
+    assert.match(createResponse.body.message, /anime quality profile/i);
+    assert.strictEqual(updateResponse.status, 422);
+    assert.match(updateResponse.body.message, /anime quality profile/i);
+    assert.strictEqual(forcedRefreshes, 2);
+    assert.strictEqual(getSettings().sonarr.length, 1);
+    assert.strictEqual(getSettings().sonarr[0].activeAnimeProfileId, 7);
+  });
+
+  it('allows Sonarr settings to be saved when anime profile verification is unavailable', async () => {
+    mock.method(SonarrAPI.prototype, 'getProfiles', async () => {
+      throw new Error('Sonarr is unavailable');
+    });
+
+    const res = await request(app)
+      .post('/settings/sonarr')
+      .send(makeSonarr({ activeAnimeProfileId: 8 }));
+
+    assert.strictEqual(res.status, 201);
+    assert.strictEqual(getSettings().sonarr[0].activeAnimeProfileId, 8);
+  });
+
   it('tests a Sonarr connection before the add form is complete', async () => {
     mock.method(SonarrAPI.prototype, 'getSystemStatus', async () => ({
       appName: 'Sonarr',
