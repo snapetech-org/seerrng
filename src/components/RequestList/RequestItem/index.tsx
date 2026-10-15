@@ -92,6 +92,7 @@ const messages = defineMessages('components.RequestList.RequestItem', {
   audiobook: 'Audiobook',
   both: 'Both',
   partialBookService: 'Partial Bookshelf link',
+  overQuota: 'Over quota',
   watchAheadTitle: 'Episode Queue',
   watchAheadDescription:
     'This optional queue is Off by default for every TV request. If you turn it on, SeerrNG follows your linked Plex, Jellyfin, or Emby playback and keeps up to {count} upcoming episodes requested in Sonarr after approval. On a new request, choose one starting episode; enabling the queue on an existing request preserves its current selections. Episodes use the parent approval and do not count against your request quota. Turning it off stops future additions but does not cancel episodes already requested.',
@@ -963,6 +964,12 @@ const RequestItem = ({ request, revalidateList }: RequestItemProps) => {
                               : title.firstAirDate
                   )?.slice(0, 4)}
                 </span>
+                {requestData.status === MediaRequestStatus.PENDING &&
+                  requestData.quotaException && (
+                    <Badge badgeType="warning">
+                      {intl.formatMessage(messages.overQuota)}
+                    </Badge>
+                  )}
               </div>
               <Link
                 href={getRequestDetailHref(requestData)}
