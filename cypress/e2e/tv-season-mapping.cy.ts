@@ -41,7 +41,7 @@ const createFailedTvRequest = (
 
 describe('manual TV season mapping', () => {
   it('requires explicit official seasons before retrying and fits a narrow viewport', () => {
-    cy.loginAsUser();
+    cy.loginAsAdmin();
     cy.request('/api/v1/auth/me').then(({ body: currentUser }) => {
       const request = createFailedTvRequest(803, {
         id: currentUser.id,
