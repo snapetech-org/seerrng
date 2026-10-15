@@ -43,6 +43,10 @@ describe('Auto Request Settings', () => {
 
   it('should see auto-request settings after being given permission', () => {
     const testEmail = `auto-request-settings-${Date.now()}-${Cypress._.random(1, 999999)}@seerr.dev`;
+    let originalUserSettings: {
+      watchlistSyncMovies?: boolean | null;
+      watchlistSyncTv?: boolean | null;
+    } = {};
 
     cy.request<{ id: number }>('POST', '/api/v1/user', {
       email: testEmail,
@@ -56,15 +60,29 @@ describe('Auto Request Settings', () => {
       );
 
       return cy
-        .request('POST', `/api/v1/user/${user.id}/settings/permissions`, {
-          permissions: BASIC_REQUEST_PERMISSION,
-        })
-        .its('status')
-        .should('eq', 200)
-        .then(() => {
-          visitUserEditPage(testEmail);
-          cy.location('pathname').should('eq', `/users/${user.id}/settings`);
-          cy.wait('@fixtureUser').its('response.body.id').should('eq', user.id);
+        .request<{
+          watchlistSyncMovies?: boolean | null;
+          watchlistSyncTv?: boolean | null;
+        }>(`/api/v1/user/${user.id}/settings/main`)
+        .then(({ body: settings }) => {
+          originalUserSettings = settings;
+
+          return cy
+            .request('POST', `/api/v1/user/${user.id}/settings/permissions`, {
+              permissions: BASIC_REQUEST_PERMISSION,
+            })
+            .its('status')
+            .should('eq', 200)
+            .then(() => {
+              visitUserEditPage(testEmail);
+              cy.location('pathname').should(
+                'eq',
+                `/users/${user.id}/settings`
+              );
+              cy.wait('@fixtureUser')
+                .its('response.body.id')
+                .should('eq', user.id);
+            });
         });
     });
 
