@@ -32,7 +32,14 @@ export const getSafeReturnPath = (value: unknown): string | undefined => {
     return undefined;
   }
 
-  return `${parsed.pathname}${parsed.search}${parsed.hash}`;
+  const normalized = `${parsed.pathname}${parsed.search}${parsed.hash}`;
+  // Dot segments such as "/.//host" collapse to "//host" during parsing, so
+  // validate the value that is actually returned, not only the raw input.
+  if (!normalized.startsWith('/') || normalized.startsWith('//')) {
+    return undefined;
+  }
+
+  return normalized;
 };
 
 export const buildLoginPath = (pathname: string, search = ''): string => {

@@ -18,6 +18,10 @@ describe('getSafeReturnPath', () => {
       'https://evil.example/path',
       '//evil.example/path',
       '/\\evil.example',
+      '/.//evil.example',
+      '/a/..//evil.example',
+      '/%2e//evil.example',
+      '/%2E/%2e//evil.example',
       '/path\nwith-newline',
       `/${'a'.repeat(3000)}`,
     ]) {
