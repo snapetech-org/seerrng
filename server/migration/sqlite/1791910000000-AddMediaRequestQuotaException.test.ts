@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
 import { DataSource } from 'typeorm';
-import { AddMediaRequestQuotaException1791150000000 } from './1791150000000-AddMediaRequestQuotaException';
+import { AddMediaRequestQuotaException1791910000000 } from './1791910000000-AddMediaRequestQuotaException';
 
 test('adds a default-false quota exception marker to existing requests', async () => {
   const dataSource = await new DataSource({
@@ -9,7 +9,7 @@ test('adds a default-false quota exception marker to existing requests', async (
     database: ':memory:',
   }).initialize();
   const queryRunner = dataSource.createQueryRunner();
-  const migration = new AddMediaRequestQuotaException1791150000000();
+  const migration = new AddMediaRequestQuotaException1791910000000();
 
   try {
     await queryRunner.query(
@@ -59,7 +59,7 @@ test('can run up and down repeatedly', async () => {
     database: ':memory:',
   }).initialize();
   const queryRunner = dataSource.createQueryRunner();
-  const migration = new AddMediaRequestQuotaException1791150000000();
+  const migration = new AddMediaRequestQuotaException1791910000000();
 
   try {
     await queryRunner.query(
