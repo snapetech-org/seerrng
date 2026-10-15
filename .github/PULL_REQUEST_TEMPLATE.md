@@ -11,6 +11,14 @@
 
 - Fixes #XXXX
 
+## Merge
+
+Use `main` as the target. Open a pull request only when current GitHub rules require one; push directly
+when they allow it. Keep a pull request current with `main` only when those rules require it. Merge
+after the checks and approvals required by current rules are satisfied. An explicit maintainer's
+direction to merge is sufficient; no additional review or approval is required beyond those rules.
+Use any merge method enabled in GitHub.
+
 ## How Has This Been Tested?
 
 <!--- Please describe in detail how you tested your changes. -->
@@ -21,23 +29,19 @@
 
 ## Release Notes
 
-<!--
-  Add one validated fragment under release-notes/ for every user-facing
-  change. Select the internal-only option only when there is no user-visible
-  behavior, documentation, security, or operational change.
+For any user-facing change, add one structured fragment under `release-notes/` describing it. A
+single fragment may cover related user-facing changes in the same pull request.
 
-  A release note must say what changed, who is affected, which product area it
-  belongs to, and what action is required (or explicitly say `action: none`).
-  See `release-notes/README.md` for the complete schema and preview command.
+- [ ] I added a validated release-note fragment under `release-notes/` for this user-facing change.
+- [ ] This change is internal-only and needs no release-note fragment.
 
-  Select exactly one of the first two options. The confirmation boxes below
-  them may also be selected when they apply.
--->
+For internal-only work, select the second option or put `release-note: none` on its own line in
+the PR description. For direct pushes or merge checks that read commit messages, put the same
+marker on its own line in the commit message.
 
-- [ ] I added a release-note fragment under `release-notes/`.
-- [ ] This change is internal-only and does not need a user-facing release note.
 - [ ] The fragment includes audience, area, action, and breaking-change status.
-- [ ] I previewed the release text with `pnpm release-notes:preview`.
+
+Preview the rendered release text with `pnpm release-notes:preview` if useful.
 
 ## Checklist:
 
