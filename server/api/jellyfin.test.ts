@@ -1,6 +1,8 @@
 import assert from 'node:assert/strict';
 import { afterEach, describe, it, mock } from 'node:test';
 
+import { MediaServerType } from '@server/constants/server';
+import { getSettings } from '@server/lib/settings';
 import JellyfinAPI, {
   MAX_JELLYFIN_SEASONS,
   MAX_JELLYFIN_USERS,
@@ -23,6 +25,44 @@ class TestJellyfinAPI extends JellyfinAPI {
     return this.axios.defaults.lookup;
   }
 }
+
+describe('JellyfinAPI authorization headers', () => {
+  it('uses modern Jellyfin and compatible Emby authorization headers', () => {
+    const settings = getSettings();
+    const originalMediaServerType = settings.main.mediaServerType;
+
+    try {
+      settings.main.mediaServerType = MediaServerType.JELLYFIN;
+      const jellyfinApi = new TestJellyfinAPI(
+        'http://localhost:8096',
+        'jellyfin-token',
+        'jellyfin-device'
+      );
+      const jellyfinHeaders = jellyfinApi.getTransport().defaults.headers;
+      assert.match(String(jellyfinHeaders.Authorization), /^MediaBrowser /);
+      assert.match(
+        String(jellyfinHeaders.Authorization),
+        /Token="jellyfin-token"/
+      );
+      assert.equal(jellyfinHeaders['X-Emby-Authorization'], undefined);
+
+      settings.main.mediaServerType = MediaServerType.EMBY;
+      const embyApi = new TestJellyfinAPI(
+        'http://localhost:8096',
+        'emby-token',
+        'emby-device'
+      );
+      const embyHeaders = embyApi.getTransport().defaults.headers;
+      assert.equal(embyHeaders.Authorization, undefined);
+      assert.match(
+        String(embyHeaders['X-Emby-Authorization']),
+        /^MediaBrowser .*Token="emby-token"/
+      );
+    } finally {
+      settings.main.mediaServerType = originalMediaServerType;
+    }
+  });
+});
 
 describe('Jellyfin deletion-check evidence', () => {
   it('accepts only a well-formed successful empty item list as absence', async () => {

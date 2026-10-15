@@ -1969,3 +1969,36 @@ Security review of the new disposable validation workspace found that root `.env
 GitHub currently reports zero open Dependabot, Code Scanning, and secret-scanning alerts. Direct records show alerts #285 and #287 (`braces`) and #286 (`http-cache-semantics`) fixed; the advisories still list no upstream patched release, and the affected packages are absent from the lockfiles. A filtered dismissed-alert listing still returns #285 while its individual record reports fixed with no dismissal metadata; it is treated as a stale list result. The disposable `kspls0` root/docs installs and audits succeeded with Node 24.20.0 and pnpm 10.24.0, reporting zero vulnerabilities.
 
 The earlier `pnpm validate:development --tests-only` process was stopped after it had run against the earlier `a3c114fa` candidate and PR #202 advanced. It had reached Native TypeScript case 790 without a reported test failure, but it did not complete and is not a passing gate. Complete hosted Mode 2 validation of the final integrated commit, full format/i18n gates, build, Playwright, Cypress, and final visual review remain pending. The active GitHub work is issue #199 and PRs #202/#203; no release or issue state change has been made. At the last remote branch audit, all 27 confirmed stale remote refs had been archived and deleted, leaving only `main` and the two open PR branches. This evidence update is internal-only (`release-note: none`).
+
+## Navigation regrouping PR #253 forward integration — October 13, 2026
+
+PR #253 source head `8d57ee38ce3dd8924fbab8070485882cbead801b` was based on
+`e284420ee3683dd4ba3bfa2facc241c84cdba41e`. Current `main` is
+`868e156d7e40cd676a3c7ca908d0091fd94566e1`, which adds the merged request and
+scanner recovery work from PR #214. Recovery refs were retained for both the
+original PR head and current `main`. Integration used an isolated worktree at
+`/tmp/seerrng-nav-integration-20261013`.
+
+The three-way inventory found shared edits only in
+`src/styles/globals.css` and `docs/maintainers/ui-style-standard.md`. Both
+merged automatically; review confirmed the navigation owners were retained
+alongside current-main request/layout changes. The other main-side request,
+scanner, and entity changes were preserved. The style-standard navigation
+entry was also renumbered to keep its ordered list unique. Integration commit:
+`af5c75380`, `merge: integrate current main into navigation regrouping`.
+
+Before integration, exact head `8d57ee3` completed Mode 2 with a Cypress shard
+failure and a failed native-engine result. Cypress reported 19 of 20 tests
+passing in that shard; `user/auto-request-settings.cy.ts` could not click a
+disabled `#autorequest` checkbox. The spec is unchanged from current `main`.
+The full Cypress matrix passed on the current-main PR #214 run
+`38409023729`, so this failure's cause is not established. The merged candidate
+requires a fresh exact-head Mode 2 run; the earlier failure is not waived.
+
+The original candidate's focused Vitest (18), current-batch contract (41),
+ESLint, client typecheck, current-batch/style check, and release-note preview
+passed. Those focused results do not cover the integrated tree. No local visual
+inspection was performed and no host screenshots were taken. The fresh Mode 2
+plan, Cypress/Playwright, build and native receipt reconciliation remain
+required on the integrated head. The user-facing navigation note remains
+`release-notes/20261013-navigation-regrouping.md`.

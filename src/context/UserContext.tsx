@@ -1,6 +1,7 @@
 import type { User } from '@app/hooks/useUser';
 import { useUser } from '@app/hooks/useUser';
 import { isAuthenticationError } from '@app/utils/auth';
+import { buildLoginPath } from '@app/utils/loginReturn';
 import { isPublicAuthPath } from '@app/utils/routeAccess';
 import { useRouter } from 'next/dist/client/router';
 import { useEffect, useRef } from 'react';
@@ -40,7 +41,7 @@ export const UserContext = ({ initialUser, children }: UserContextProps) => {
       !routing.current
     ) {
       routing.current = true;
-      location.href = '/login';
+      location.href = buildLoginPath(location.pathname, location.search);
     }
   }, [router, loading, error]);
 

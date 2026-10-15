@@ -5,6 +5,7 @@ import IdentityMappingPackControls from '@app/components/DiscoveryIntegrations/I
 import TrackingControls from '@app/components/DiscoveryIntegrations/TrackingControls';
 import TmdbTitleCard from '@app/components/TitleCard/TmdbTitleCard';
 import defineMessages from '@app/utils/defineMessages';
+import { ServerType } from '@server/constants/server';
 import type { DiscoveryAccountProvider } from '@server/entity/DiscoveryAccount';
 import type {
   LibraryShelf,
@@ -22,7 +23,7 @@ import { useIntl } from 'react-intl';
 import useSWR from 'swr';
 
 const messages = defineMessages('library', {
-  title: 'My Library',
+  title: 'My Media',
   description:
     'Browse your media server and connected tracking account libraries, then update tracking status, progress, and ratings.',
   accounts: 'Manage connected accounts',
@@ -85,9 +86,9 @@ const messages = defineMessages('library', {
 });
 const names = { trakt: 'Trakt', anilist: 'AniList', simkl: 'Simkl' };
 const nativeNames: Record<NativeLibrarySource, string> = {
-  plex: 'Plex',
-  jellyfin: 'Jellyfin',
-  emby: 'Emby',
+  plex: ServerType.PLEX,
+  jellyfin: ServerType.JELLYFIN,
+  emby: ServerType.EMBY,
 };
 const isNativeSource = (
   source: PersonalLibrarySource

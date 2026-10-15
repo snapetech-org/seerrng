@@ -18,7 +18,10 @@ import { getRepository } from '@server/datasource';
 import Media from '@server/entity/Media';
 import Season from '@server/entity/Season';
 import { User } from '@server/entity/User';
-import { jellyfinFullScanner } from '@server/lib/scanners/jellyfin';
+import {
+  jellyfinFullScanner,
+  jellyfinRecentScanner,
+} from '@server/lib/scanners/jellyfin';
 import {
   getSettings,
   MetadataProviderType,
@@ -40,6 +43,10 @@ Object.defineProperty(animeList, 'sync', {
 let getLibraryContentsImpl: (
   id: string
 ) => Promise<JellyfinLibraryItem[]> = async () => [];
+let getRecentlyAddedImpl: (
+  id: string,
+  libraryType?: Library['type']
+) => Promise<JellyfinLibraryItem[]> = async () => [];
 let getItemDataImpl: (
   id: string
 ) => Promise<JellyfinLibraryItemExtended | undefined> = async () => undefined;
@@ -60,6 +67,15 @@ let getReleaseGroupImpl: (
 Object.defineProperty(JellyfinAPI.prototype, 'getLibraryContents', {
   get() {
     return async (id: string) => getLibraryContentsImpl(id);
+  },
+  set() {},
+  configurable: true,
+});
+
+Object.defineProperty(JellyfinAPI.prototype, 'getRecentlyAdded', {
+  get() {
+    return async (id: string, libraryType?: Library['type']) =>
+      getRecentlyAddedImpl(id, libraryType);
   },
   set() {},
   configurable: true,
@@ -140,14 +156,15 @@ Object.defineProperty(TheMovieDb.prototype, 'getTvShowForScan', {
   configurable: true,
 });
 
-// both are assigned in the constructor, so the prototype stubs miss the
-// instance jellyfinFullScanner built when it was first imported
-for (const method of ['getTvShow', 'getTvShowForScan'] as const) {
-  Object.defineProperty(jellyfinFullScanner.tmdb, method, {
-    value: async (args: { tvId: number; language?: string }) =>
-      getTvShowImpl(args),
-    configurable: true,
-  });
+// Both scanners construct their TMDB clients before the prototype stubs above.
+for (const scanner of [jellyfinFullScanner, jellyfinRecentScanner]) {
+  for (const method of ['getTvShow', 'getTvShowForScan'] as const) {
+    Object.defineProperty(scanner.tmdb, method, {
+      value: async (args: { tvId: number; language?: string }) =>
+        getTvShowImpl(args),
+      configurable: true,
+    });
+  }
 }
 
 setupTestDb();
@@ -222,6 +239,22 @@ function fakeJellyfinSeriesItem(id: string): JellyfinLibraryItem {
     Type: 'Series',
     HasSubtitles: false,
     LocationType: 'FileSystem',
+    MediaType: 'Video',
+  };
+}
+
+function fakeJellyfinRecentTvItem(
+  type: 'Season' | 'Episode',
+  id: string,
+  seriesId?: string
+): JellyfinLibraryItem {
+  return {
+    Name: type === 'Season' ? 'Season 1' : 'Episode 1',
+    Id: id,
+    Type: type,
+    HasSubtitles: false,
+    LocationType: 'FileSystem',
+    ...(seriesId ? { SeriesId: seriesId } : {}),
     MediaType: 'Video',
   };
 }
@@ -303,6 +336,7 @@ function configureJellyfinWithLibrary(
 describe('Jellyfin Scanner', () => {
   beforeEach(async () => {
     getLibraryContentsImpl = async () => [];
+    getRecentlyAddedImpl = async () => [];
     getItemDataImpl = async () => undefined;
     getSeasonsImpl = async () => [];
     getEpisodesImpl = async () => [];
@@ -351,6 +385,85 @@ describe('Jellyfin Scanner', () => {
     }
 
     assert.deepStrictEqual(requestedIds, [resolvedTmdbId]);
+  });
+
+  async function expectRecentlyAddedTvItemToUpdateItsSeries(
+    itemType: 'Season' | 'Episode',
+    tmdbId: number
+  ): Promise<void> {
+    const seriesId = `jf-recent-series-${tmdbId}`;
+    const seasonId = `jf-recent-season-${tmdbId}`;
+    const metadataLookups: string[] = [];
+
+    configureJellyfinWithLibrary();
+    getRecentlyAddedImpl = async (libraryId, libraryType) => {
+      assert.strictEqual(libraryId, 'test-library-id');
+      assert.strictEqual(libraryType, 'show');
+      return [
+        fakeJellyfinRecentTvItem(
+          itemType,
+          `jf-recent-item-${tmdbId}`,
+          seriesId
+        ),
+      ];
+    };
+    getItemDataImpl = async (id) => {
+      metadataLookups.push(id);
+      return id === seriesId
+        ? fakeJellyfinShowMetadata(seriesId, String(tmdbId))
+        : undefined;
+    };
+    getTvShowImpl = async ({ tvId }) =>
+      fakeTmdbShow(tvId, [
+        {
+          id: 1,
+          air_date: '2024-01-01',
+          episode_count: 2,
+          name: 'Season 1',
+          overview: '',
+          season_number: 1,
+        },
+      ]);
+    getSeasonsImpl = async (id) =>
+      id === seriesId ? [fakeJellyfinSeason(1, seasonId)] : [];
+    getEpisodesImpl = async (_seriesID, id) =>
+      id === seasonId ? fakeJellyfinEpisodes(2) : [];
+
+    await runWithMockTimers(() => jellyfinRecentScanner.run());
+
+    const media = await getRepository(Media).findOneOrFail({
+      where: { tmdbId, mediaType: MediaType.TV },
+    });
+    assert.strictEqual(media.status, MediaStatus.AVAILABLE);
+    assert.deepStrictEqual(metadataLookups, [seriesId]);
+  }
+
+  it('processes recently added seasons through their parent series', async () => {
+    await expectRecentlyAddedTvItemToUpdateItsSeries('Season', 800001);
+  });
+
+  it('processes recently added episodes through their parent series', async () => {
+    await expectRecentlyAddedTvItemToUpdateItsSeries('Episode', 800002);
+  });
+
+  it('skips recently added TV items that have no parent series ID', async () => {
+    configureJellyfinWithLibrary();
+    getRecentlyAddedImpl = async () => [
+      fakeJellyfinRecentTvItem('Episode', 'jf-recent-orphan-episode'),
+    ];
+    const metadataLookups: string[] = [];
+    getItemDataImpl = async (id) => {
+      metadataLookups.push(id);
+      return undefined;
+    };
+
+    await runWithMockTimers(() => jellyfinRecentScanner.run());
+
+    assert.deepStrictEqual(metadataLookups, []);
+    assert.strictEqual(
+      await getRepository(Media).findOneBy({ tmdbId: 800003 }),
+      null
+    );
   });
 
   it('marks Jellyfin music albums available using their release-group ID', async () => {

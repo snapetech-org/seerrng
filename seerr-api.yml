@@ -4366,6 +4366,8 @@ components:
         userId:
           type: number
           nullable: true
+          description: >-
+            Optional requester ID for all created requests. Omit this field to use the authenticated user. When supplied, requests are attributed to that account. Supplying it requires both `MANAGE_USERS` and `MANAGE_REQUESTS`; otherwise the API returns HTTP 403.
         tags:
           type: array
           items:
@@ -17283,6 +17285,8 @@ paths:
                 userId:
                   type: number
                   nullable: true
+                  description: >-
+                    Optional requester ID. Omit this field to use the authenticated user. When supplied, the request is attributed to that account. Supplying it requires both `MANAGE_USERS` and `MANAGE_REQUESTS`; otherwise the API returns HTTP 403.
                 ignoreQuota:
                   type: boolean
                   example: false

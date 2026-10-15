@@ -1,3 +1,6 @@
+import DiscoveryModeTabs, {
+  discoveryMediaTypeForPath,
+} from '@app/components/Discover/DiscoveryModeTabs';
 import MobileMenu from '@app/components/Layout/MobileMenu';
 import PullToRefresh from '@app/components/Layout/PullToRefresh';
 import SearchInput from '@app/components/Layout/SearchInput';
@@ -31,6 +34,7 @@ const Layout = ({ children }: LayoutProps) => {
   const isScrolledRef = useRef(false);
   const { hasPermission, user } = useUser();
   const router = useRouter();
+  const discoveryMediaType = discoveryMediaTypeForPath(router.pathname);
   const { currentSettings } = useSettings();
   const { setLocale } = useLocale();
   const [countsEnabled, setCountsEnabled] = useState(false);
@@ -278,6 +282,14 @@ const Layout = ({ children }: LayoutProps) => {
           <div className="mb-6">
             <div className="max-w-8xl mx-auto" data-page-layout-part="content">
               <UserWarnings />
+              {discoveryMediaType && (
+                <div className="app-filter-section-gap">
+                  <DiscoveryModeTabs
+                    selected="discover"
+                    mediaType={discoveryMediaType}
+                  />
+                </div>
+              )}
               {children}
             </div>
           </div>

@@ -19,6 +19,7 @@ import { getAppVersion } from '@server/utils/appVersion';
 import { trackBackgroundTask } from '@server/utils/backgroundTasks';
 import { createDeterministicKey } from '@server/utils/deterministicKey';
 import { getHostname } from '@server/utils/getHostname';
+import { getMediaBrowserAuthorizationHeaders } from '@server/utils/mediaServerAuthorization';
 import { parsePositiveRouteId } from '@server/utils/routeId';
 import { getRateLimitKey } from '@server/utils/security';
 import { parseOptionalBoundedString } from '@server/utils/validation';
@@ -130,11 +131,11 @@ async function initAvatarImageProxy(): Promise<ImageProxy> {
     return new ImageProxy('avatar', hostname, {
       allowPrivateAddresses: true,
       cacheKeyScope,
-      headers: {
-        'X-Emby-Authorization': `MediaBrowser Client="Seerr", Device="Seerr", DeviceId="${deviceId}", Version="${
-          mediaServerType === MediaServerType.EMBY ? '1.0.0' : getAppVersion()
-        }", Token="${authToken}"`,
-      },
+      headers: getMediaBrowserAuthorizationHeaders({
+        mediaServerType,
+        deviceId,
+        token: authToken,
+      }),
       requestValidator: () => {
         if (getAvatarImageProxySettingsKey() !== settingsKey) {
           throw new Error('Media-server avatar configuration changed.');

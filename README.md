@@ -541,6 +541,9 @@ Common runtime variables:
 | --- | --- |
 | `PORT` | HTTP port. Defaults to `5055`. |
 | `LOG_LEVEL` | Server log level. |
+| `NO_COLOR` | Set to a non-empty value to disable ANSI colors in console logs, unless `FORCE_COLOR` is non-empty. |
+| `FORCE_COLOR` | A non-empty value overrides terminal detection and `NO_COLOR`; `0` or `false` disables console colors, and any other value enables them. |
+| `TERM` | The terminal type; `dumb` disables console colors unless `FORCE_COLOR` is non-empty. |
 | `CONFIG_DIRECTORY` | Alternate config directory for non-container installs. |
 | `TMDB_API_KEY` | Optional TMDB v3 API key override. SeerrNG uses its bundled application key when this is unset. |
 | `TMDB_READ_ACCESS_TOKEN` | Optional TMDB v4 bearer-token override. When set, it takes precedence over `TMDB_API_KEY`. |

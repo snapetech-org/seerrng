@@ -36,7 +36,7 @@ import {
   PencilIcon,
   UserPlusIcon,
 } from '@heroicons/react/24/solid';
-import { MediaServerType } from '@server/constants/server';
+import { MediaServerType, ServerType } from '@server/constants/server';
 import type { PaginatedResponse } from '@server/interfaces/api/common';
 import { hasPermission } from '@server/lib/permissions';
 import axios from 'axios';
@@ -331,23 +331,23 @@ const UserList = () => {
     settings.currentSettings.emailEnabled;
   const mediaServerName =
     settings.currentSettings.mediaServerType === MediaServerType.PLEX
-      ? 'Plex'
+      ? ServerType.PLEX
       : settings.currentSettings.mediaServerType === MediaServerType.EMBY
-        ? 'Emby'
-        : 'Jellyfin';
+        ? ServerType.EMBY
+        : ServerType.JELLYFIN;
   const typeOptions: CompactSelectOption[] = [
     { label: intl.formatMessage(messages.any), value: 'all' },
     { label: intl.formatMessage(messages.localuser), value: '2' },
     { label: intl.formatMessage(messages.plexuser), value: '1' },
     {
       label: intl.formatMessage(messages.mediaServerUser, {
-        mediaServerName: 'Jellyfin',
+        mediaServerName: ServerType.JELLYFIN,
       }),
       value: '3',
     },
     {
       label: intl.formatMessage(messages.mediaServerUser, {
-        mediaServerName: 'Emby',
+        mediaServerName: ServerType.EMBY,
       }),
       value: '4',
     },
@@ -803,13 +803,13 @@ const UserList = () => {
                         ) : user.userType === UserType.EMBY ? (
                           <Badge badgeType="success">
                             {intl.formatMessage(messages.mediaServerUser, {
-                              mediaServerName: 'Emby',
+                              mediaServerName: ServerType.EMBY,
                             })}
                           </Badge>
                         ) : user.userType === UserType.JELLYFIN ? (
                           <Badge badgeType="default">
                             {intl.formatMessage(messages.mediaServerUser, {
-                              mediaServerName: 'Jellyfin',
+                              mediaServerName: ServerType.JELLYFIN,
                             })}
                           </Badge>
                         ) : null}

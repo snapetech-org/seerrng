@@ -1,60 +1,19 @@
 import Badge from '@app/components/Common/Badge';
-import { menuMessages } from '@app/components/Layout/Sidebar';
+import {
+  menuMessages,
+  navigationSections,
+  type NavigationLink,
+  type NavigationSection,
+} from '@app/components/Layout/Sidebar/navigation';
 import useClickOutside from '@app/hooks/useClickOutside';
 import useSettings from '@app/hooks/useSettings';
 import { Permission, useUser } from '@app/hooks/useUser';
 import { isOptionalCatalogPathEnabled } from '@app/utils/serviceAvailability';
 import { Transition } from '@headlessui/react';
-import {
-  BookOpenIcon,
-  ClockIcon,
-  CogIcon,
-  CommandLineIcon,
-  EllipsisHorizontalIcon,
-  ExclamationTriangleIcon,
-  EyeSlashIcon,
-  FilmIcon,
-  HeartIcon,
-  MusicalNoteIcon,
-  NewspaperIcon,
-  PuzzlePieceIcon,
-  SparklesIcon,
-  SpeakerWaveIcon,
-  Square3Stack3DIcon,
-  TrophyIcon,
-  TvIcon,
-  UsersIcon,
-} from '@heroicons/react/24/outline';
-import {
-  BookOpenIcon as FilledBookOpenIcon,
-  ClockIcon as FilledClockIcon,
-  CogIcon as FilledCogIcon,
-  CommandLineIcon as FilledCommandLineIcon,
-  ExclamationTriangleIcon as FilledExclamationTriangleIcon,
-  EyeSlashIcon as FilledEyeSlashIcon,
-  FilmIcon as FilledFilmIcon,
-  HeartIcon as FilledHeartIcon,
-  MusicalNoteIcon as FilledMusicalNoteIcon,
-  NewspaperIcon as FilledNewspaperIcon,
-  PuzzlePieceIcon as FilledPuzzlePieceIcon,
-  SparklesIcon as FilledSparklesIcon,
-  SpeakerWaveIcon as FilledSpeakerWaveIcon,
-  Square3Stack3DIcon as FilledSquare3Stack3DIcon,
-  TrophyIcon as FilledTrophyIcon,
-  TvIcon as FilledTvIcon,
-  UsersIcon as FilledUsersIcon,
-  XMarkIcon,
-} from '@heroicons/react/24/solid';
+import { EllipsisHorizontalIcon, XMarkIcon } from '@heroicons/react/24/outline';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import {
-  cloneElement,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-  type JSX,
-} from 'react';
+import { cloneElement, useEffect, useMemo, useRef, useState } from 'react';
 import { useIntl } from 'react-intl';
 
 interface MobileMenuProps {
@@ -62,18 +21,6 @@ interface MobileMenuProps {
   openIssuesCount: number;
   revalidateIssueCount: () => void;
   revalidateRequestsCount: () => void;
-}
-
-interface MenuLink {
-  href: string;
-  svgIcon: JSX.Element;
-  svgIconSelected: JSX.Element;
-  content: React.ReactNode;
-  activeRegExp: RegExp;
-  as?: string;
-  requiredPermission?: Permission | Permission[];
-  permissionType?: 'and' | 'or';
-  dataTestId?: string;
 }
 
 const MobileMenu = ({
@@ -112,158 +59,26 @@ const MobileMenu = ({
 
   const toggle = () => setIsOpen((open) => !open);
 
-  const menuLinks: MenuLink[] = useMemo(
-    () => [
-      {
-        href: '/',
-        content: intl.formatMessage(menuMessages.discover),
-        svgIcon: <SparklesIcon className="h-6 w-6" />,
-        svgIconSelected: <FilledSparklesIcon className="h-6 w-6" />,
-        activeRegExp: /^\/(discover\/?)?$/,
-      },
-      {
-        href: '/discover/movies',
-        content: intl.formatMessage(menuMessages.browsemovies),
-        svgIcon: <FilmIcon className="h-6 w-6" />,
-        svgIconSelected: <FilledFilmIcon className="h-6 w-6" />,
-        activeRegExp: /^\/(?:discover\/movies(?:\/.*)?|movie\/)/,
-      },
-      {
-        href: '/discover/tv',
-        content: intl.formatMessage(menuMessages.browsetv),
-        svgIcon: <TvIcon className="h-6 w-6" />,
-        svgIconSelected: <FilledTvIcon className="h-6 w-6" />,
-        activeRegExp: /^\/(?:discover\/tv(?:\/.*)?|tv\/)/,
-      },
-      {
-        href: '/discover/music',
-        content: intl.formatMessage(menuMessages.browsemusic),
-        svgIcon: <MusicalNoteIcon className="h-6 w-6" />,
-        svgIconSelected: <FilledMusicalNoteIcon className="h-6 w-6" />,
-        activeRegExp: /^\/(?:discover\/music(?:\/.*)?|music\/)/,
-      },
-      {
-        href: '/discover/books',
-        content: intl.formatMessage(menuMessages.browsebooks),
-        svgIcon: <BookOpenIcon className="h-6 w-6" />,
-        svgIconSelected: <FilledBookOpenIcon className="h-6 w-6" />,
-        activeRegExp: /^\/(?:discover\/books(?:\/.*)?|book\/)/,
-      },
-      {
-        href: '/discover/audiobooks',
-        content: intl.formatMessage(menuMessages.browseaudiobooks),
-        svgIcon: <SpeakerWaveIcon className="h-6 w-6" />,
-        svgIconSelected: <FilledSpeakerWaveIcon className="h-6 w-6" />,
-        activeRegExp: /^\/discover\/audiobooks$/,
-      },
-      {
-        href: '/discover/comics',
-        content: intl.formatMessage(menuMessages.browsecomics),
-        svgIcon: <Square3Stack3DIcon className="h-6 w-6" />,
-        svgIconSelected: <FilledSquare3Stack3DIcon className="h-6 w-6" />,
-        activeRegExp: /^\/(?:discover\/comics(?:\/.*)?|comic\/)/,
-      },
-      {
-        href: '/discover/magazines',
-        content: intl.formatMessage(menuMessages.browsemagazines),
-        svgIcon: <NewspaperIcon className="h-6 w-6" />,
-        svgIconSelected: <FilledNewspaperIcon className="h-6 w-6" />,
-        activeRegExp: /^\/(?:discover\/magazines(?:\/.*)?|magazine\/)/,
-      },
-      {
-        href: '/discover/sports',
-        content: intl.formatMessage(menuMessages.browsesports),
-        svgIcon: <TrophyIcon className="h-6 w-6" />,
-        svgIconSelected: <FilledTrophyIcon className="h-6 w-6" />,
-        activeRegExp: /^\/(?:discover\/sports(?:\/.*)?|sportarr\/)/,
-      },
-      {
-        href: '/software',
-        content: intl.formatMessage(menuMessages.browsesoftware),
-        svgIcon: <CommandLineIcon className="h-6 w-6" />,
-        svgIconSelected: <FilledCommandLineIcon className="h-6 w-6" />,
-        activeRegExp: /^\/software(?:\/|$)/,
-      },
-      {
-        href: '/swipe',
-        content: intl.formatMessage(menuMessages.swipe),
-        svgIcon: <HeartIcon className="h-6 w-6" />,
-        svgIconSelected: <FilledHeartIcon className="h-6 w-6" />,
-        activeRegExp: /^\/swipe$/,
-        requiredPermission: Permission.REQUEST,
-      },
-      {
-        href: '/games',
-        content: intl.formatMessage(menuMessages.gamesLibrary),
-        svgIcon: <PuzzlePieceIcon className="h-6 w-6" />,
-        svgIconSelected: <FilledPuzzlePieceIcon className="h-6 w-6" />,
-        activeRegExp: /^\/games(?:\/|$)/,
-      },
-      {
-        href: '/requests',
-        content: intl.formatMessage(menuMessages.requests),
-        svgIcon: <ClockIcon className="h-6 w-6" />,
-        svgIconSelected: <FilledClockIcon className="h-6 w-6" />,
-        activeRegExp: /^\/requests\/?$/,
-      },
-      {
-        href: '/blocklist',
-        content: intl.formatMessage(menuMessages.blocklist),
-        svgIcon: <EyeSlashIcon className="h-6 w-6" />,
-        svgIconSelected: <FilledEyeSlashIcon className="h-6 w-6" />,
-        activeRegExp: /^\/blocklist/,
-        requiredPermission: [
-          Permission.MANAGE_BLOCKLIST,
-          Permission.VIEW_BLOCKLIST,
-        ],
-        permissionType: 'or',
-      },
-      {
-        href: '/issues',
-        content: intl.formatMessage(menuMessages.issues),
-        svgIcon: <ExclamationTriangleIcon className="h-6 w-6" />,
-        svgIconSelected: <FilledExclamationTriangleIcon className="h-6 w-6" />,
-        activeRegExp: /^\/issues/,
-        requiredPermission: [
-          Permission.MANAGE_ISSUES,
-          Permission.CREATE_ISSUES,
-          Permission.VIEW_ISSUES,
-        ],
-        permissionType: 'or',
-      },
-      {
-        href: '/users',
-        content: intl.formatMessage(menuMessages.users),
-        svgIcon: <UsersIcon className="mr-3 h-6 w-6" />,
-        svgIconSelected: <FilledUsersIcon className="mr-3 h-6 w-6" />,
-        activeRegExp: /^\/users/,
-        requiredPermission: Permission.MANAGE_USERS,
-        dataTestId: 'sidebar-menu-users',
-      },
-      {
-        href: '/settings',
-        content: intl.formatMessage(menuMessages.settings),
-        svgIcon: <CogIcon className="mr-3 h-6 w-6" />,
-        svgIconSelected: <FilledCogIcon className="mr-3 h-6 w-6" />,
-        activeRegExp: /^\/settings/,
-        requiredPermission: Permission.ADMIN,
-        dataTestId: 'sidebar-menu-settings',
-      },
-    ],
-    [intl]
-  );
-
-  const filteredLinks = useMemo(
+  const filteredSections = useMemo<NavigationSection[]>(
     () =>
-      menuLinks.filter(
-        (link) =>
-          isOptionalCatalogPathEnabled(link.href, currentSettings) &&
-          (!link.requiredPermission ||
-            hasPermission(link.requiredPermission, {
-              type: link.permissionType ?? 'and',
-            }))
-      ),
-    [currentSettings, hasPermission, menuLinks]
+      navigationSections
+        .map((section) => ({
+          ...section,
+          links: section.links.filter(
+            (link) =>
+              isOptionalCatalogPathEnabled(link.href, currentSettings) &&
+              (!link.requiredPermission ||
+                hasPermission(link.requiredPermission, {
+                  type: link.permissionType ?? 'and',
+                }))
+          ),
+        }))
+        .filter((section) => section.links.length > 0),
+    [currentSettings, hasPermission]
+  );
+  const filteredLinks = useMemo(
+    () => filteredSections.flatMap((section) => section.links),
+    [filteredSections]
   );
 
   useEffect(() => {
@@ -293,52 +108,67 @@ const MobileMenu = ({
         leave="transition duration-500"
         leaveFrom="opacity-100 -translate-y-full"
         leaveTo="opacity-0 translate-y-0"
-        className="app-menu-gradient absolute top-0 right-0 left-0 flex w-full -translate-y-full flex-col space-y-6 border-t border-gray-600 px-6 py-6 font-semibold text-gray-100 backdrop-blur"
+        className="app-menu-gradient mobile-menu-navigation absolute top-0 right-0 left-0 flex w-full -translate-y-full flex-col border-t border-gray-600 px-6 py-6 font-semibold text-gray-100 backdrop-blur"
       >
-        {filteredLinks.map((link) => {
-          const isActive = router.pathname.match(link.activeRegExp);
-          return (
-            <Link
-              key={`mobile-menu-link-${link.href}`}
-              href={link.href}
-              prefetch={false}
-              className={`main-menu-link flex items-center px-2 py-2 ${
-                isActive ? 'sidebar-link-selected' : 'sidebar-link-idle'
-              }`}
-              onKeyDown={(e) => {
-                if (e.key === 'Enter') {
-                  setIsOpen(false);
-                }
-              }}
-              onClick={() => setIsOpen(false)}
-              role="button"
-              tabIndex={0}
-            >
-              {cloneElement(isActive ? link.svgIconSelected : link.svgIcon, {
-                className: 'h-5 w-5',
+        {filteredSections.map((section) => (
+          <div
+            key={`mobile-menu-section-${section.id}`}
+            className="sidebar-navigation-section"
+            role="group"
+            aria-label={intl.formatMessage(menuMessages[section.ariaLabelKey])}
+          >
+            {section.headingKey && (
+              <h2 className="sidebar-navigation-heading">
+                {intl.formatMessage(menuMessages[section.headingKey])}
+              </h2>
+            )}
+            <div className="sidebar-navigation-items">
+              {section.links.map((link: NavigationLink) => {
+                const isActive = router.pathname.match(link.activeRegExp);
+                return (
+                  <Link
+                    key={`mobile-menu-link-${link.id}`}
+                    href={link.href}
+                    prefetch={false}
+                    onClick={() => setIsOpen(false)}
+                    className={`main-menu-link flex items-center px-2 py-2 ${
+                      isActive ? 'sidebar-link-selected' : 'sidebar-link-idle'
+                    }`}
+                    data-navigation-level={link.nested ? 'nested' : 'primary'}
+                    data-testid={link.dataTestId && `${link.dataTestId}-more`}
+                    aria-current={isActive ? 'page' : undefined}
+                  >
+                    {cloneElement(
+                      isActive ? link.svgIconSelected : link.svgIcon,
+                      { className: 'h-5 w-5' }
+                    )}
+                    <span className="ml-2">
+                      {intl.formatMessage(menuMessages[link.messagesKey])}
+                    </span>
+                    {link.href === '/requests' &&
+                      pendingRequestsCount > 0 &&
+                      hasPermission(Permission.MANAGE_REQUESTS) && (
+                        <div className="ml-auto flex">
+                          <Badge className="rounded-md border-indigo-500 bg-gradient-to-br from-indigo-600 to-purple-600">
+                            {pendingRequestsCount}
+                          </Badge>
+                        </div>
+                      )}
+                    {link.href === '/issues' &&
+                      openIssuesCount > 0 &&
+                      hasPermission(Permission.MANAGE_ISSUES) && (
+                        <div className="ml-auto flex">
+                          <Badge className="rounded-md border-indigo-500 bg-gradient-to-br from-indigo-600 to-purple-600">
+                            {openIssuesCount}
+                          </Badge>
+                        </div>
+                      )}
+                  </Link>
+                );
               })}
-              <span className="ml-2">{link.content}</span>
-              {link.href === '/requests' &&
-                pendingRequestsCount > 0 &&
-                hasPermission(Permission.MANAGE_REQUESTS) && (
-                  <div className="ml-auto flex">
-                    <Badge className="rounded-md border-indigo-500 bg-gradient-to-br from-indigo-600 to-purple-600">
-                      {pendingRequestsCount}
-                    </Badge>
-                  </div>
-                )}
-              {link.href === '/issues' &&
-                openIssuesCount > 0 &&
-                hasPermission(Permission.MANAGE_ISSUES) && (
-                  <div className="ml-auto flex">
-                    <Badge className="rounded-md border-indigo-500 bg-gradient-to-br from-indigo-600 to-purple-600">
-                      {openIssuesCount}
-                    </Badge>
-                  </div>
-                )}
-            </Link>
-          );
-        })}
+            </div>
+          </div>
+        ))}
       </Transition>
       <div className="app-mobile-menu-surface padding-bottom-safe border-t border-gray-600 backdrop-blur">
         <div className="flex h-full items-center justify-between px-6 py-4 text-gray-100">
@@ -349,15 +179,17 @@ const MobileMenu = ({
                 router.pathname.match(link.activeRegExp) && !isOpen;
               return (
                 <Link
-                  key={`mobile-menu-link-${link.href}`}
+                  key={`mobile-menu-link-${link.id}`}
                   href={link.href}
                   prefetch={false}
-                  aria-label={
-                    typeof link.content === 'string' ? link.content : undefined
-                  }
+                  aria-label={intl.formatMessage(
+                    menuMessages[link.messagesKey]
+                  )}
                   className={`main-menu-link relative flex flex-col items-center space-y-1 p-2 ${
                     isActive ? 'sidebar-link-selected' : 'sidebar-link-idle'
                   }`}
+                  data-testid={link.dataTestId && `${link.dataTestId}-bottom`}
+                  aria-current={isActive ? 'page' : undefined}
                 >
                   {cloneElement(
                     isActive ? link.svgIconSelected : link.svgIcon,

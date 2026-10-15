@@ -42,7 +42,6 @@ import logger from '@server/logger';
 import { isAuthenticated } from '@server/middleware/auth';
 import { checkAvatarChanged } from '@server/routes/avatarproxy';
 import { ApiError } from '@server/types/error';
-import { getAppVersion } from '@server/utils/appVersion';
 import AsyncLock from '@server/utils/asyncLock';
 import { trackBackgroundTask } from '@server/utils/backgroundTasks';
 import {
@@ -53,6 +52,7 @@ import {
 import { getHostname } from '@server/utils/getHostname';
 import { getHttpErrorDetails } from '@server/utils/httpError';
 import { normalizeJellyfinGuid } from '@server/utils/jellyfin';
+import { getMediaBrowserAuthorizationHeaders } from '@server/utils/mediaServerAuthorization';
 import { oidcSafeFetch } from '@server/utils/oidcHttp';
 import { parseOidcIdentity } from '@server/utils/oidcIdentity';
 import { parsePlexAccountIdentity } from '@server/utils/plexAccount';
@@ -3035,13 +3035,11 @@ authRoutes.post('/logout', async (req, res, next) => {
                     params: {
                       Id: cleanup.userAuthority.jellyfinDeviceId,
                     },
-                    headers: {
-                      'X-Emby-Authorization': `MediaBrowser Client="Seerr", Device="Seerr", DeviceId="seerr", Version="${
-                        cleanup.serverType === MediaServerType.EMBY
-                          ? '1.0.0'
-                          : getAppVersion()
-                      }", Token="${cleanup.apiKey}"`,
-                    },
+                    headers: getMediaBrowserAuthorizationHeaders({
+                      mediaServerType: cleanup.serverType,
+                      deviceId: 'seerr',
+                      token: cleanup.apiKey,
+                    }),
                   })
                   .then(() => undefined)
               )

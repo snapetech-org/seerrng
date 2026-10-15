@@ -1999,14 +1999,19 @@ describe('POST /auth/logout', () => {
       releaseCleanup = resolve;
     });
     let deletedDeviceId: string | undefined;
+    let cleanupHeaders: Record<string, string> | undefined;
     const deleteMock = mock.method(
       axios,
       'delete',
       async (
         _url: string,
-        config?: { params?: { Id?: string } }
+        config?: {
+          params?: { Id?: string };
+          headers?: Record<string, string>;
+        }
       ): Promise<{ status: number }> => {
         deletedDeviceId = config?.params?.Id;
+        cleanupHeaders = config?.headers;
         cleanupStarted();
         await releaseCleanupPromise;
         return { status: 204 };
@@ -2042,6 +2047,11 @@ describe('POST /auth/logout', () => {
       assert.strictEqual(logoutResponse.status, 200);
       assert.strictEqual((await agent.get('/auth/me')).status, 403);
       assert.strictEqual(deletedDeviceId, 'logout-device-id');
+      assert.match(
+        cleanupHeaders?.Authorization ?? '',
+        /MediaBrowser .*Token="logout-cleanup-api-key"/
+      );
+      assert.strictEqual(cleanupHeaders?.['X-Emby-Authorization'], undefined);
     } finally {
       if (timeout) clearTimeout(timeout);
       releaseCleanup();
