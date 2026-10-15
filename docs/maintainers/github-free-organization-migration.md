@@ -2,58 +2,7 @@
 
 # GitHub Free Organization Migration Runbook
 
-## Current status and resume point
-
-**Status (2026-10-14 03:18 UTC):** the ownership transfer is complete for the eight NG application repositories. They now resolve under snapetech-org; the restricted trusted-main organization runner group is active. This work has not changed runner-group access, workflow restrictions, billing, or runner registration.
-
-The trusted-main group remains workflow-restricted across 14 selected repositories and 21 workflow refs. All 18 organization runners were online; 8 were busy in this snapshot. The eight-project Actions queue held **160 non-terminal runs** (145 queued, 5 pending, 10 in progress; zero requested or waiting). Queued and pending work is unknown until GitHub reports completion. Leave group access unchanged and do not cancel valid work while the queue is non-empty.
-
-| Repository | Queued | Pending | In progress |
-|---|---:|---:|---:|
-| SeerrNG | 25 | 3 | 2 |
-| SLSKDN | 28 | 2 | 5 |
-| SLSKR | 6 | 0 | 0 |
-| QuestarrNG | 15 | 0 | 1 |
-| TorrentNG | 1 | 0 | 0 |
-| ROMarrNG | 4 | 0 | 0 |
-| ChaptarrNG | 49 | 0 | 2 |
-| BookshelfNG | 17 | 0 | 0 |
-| **Total** | **145** | **5** | **10** |
-
-At 03:17 UTC, the eight repositories had 93 open pull requests, including 24 drafts. Refresh PR heads, bases, reviews, and required checks before every merge. Only the exact current head can count as validated; a queued or pending job has not passed.
-
-**Resume here:** finish canonical GitHub repository-owner references and runner-route fixes on pull requests, keep untrusted PRs and non-main refs on GitHub-hosted runners, and review/merge each PR only after its exact-head checks and diff review are complete. Verify post-merge main checks separately.
-
-## Current scope
-
-Eight NG application repositories are in the shared runner-pool work:
-
-- [SeerrNG](https://github.com/snapetech-org/seerrng)
-- [SLSKDN](https://github.com/snapetech-org/slskdN)
-- [SLSKR](https://github.com/snapetech-org/slskr)
-- [QuestarrNG](https://github.com/snapetech-org/QuestarrNG)
-- [TorrentNG](https://github.com/snapetech-org/TorrentNG)
-- [ROMarrNG](https://github.com/snapetech-org/ROMarrNG)
-- [ChaptarrNG](https://github.com/snapetech-org/chaptarrng)
-- [BookshelfNG](https://github.com/snapetech-org/bookshelfng)
-
-Related transferred repositories include [Homebrew SLSKDN](https://github.com/snapetech-org/homebrew-slskdn), [BookshelfNG Unraid](https://github.com/snapetech-org/bookshelfng-unraid), [ChaptarrNG Unraid](https://github.com/snapetech-org/chaptarrng-unraid), and [IPTV Tunerr](https://github.com/snapetech-org/iptvtunerr). These are not additional members of the eight-project runner-route PR inventory.
-
-Repository ownership and package ownership are separate. The verified SeerrNG GHCR/Docker Hub image coordinates and CodeQL model-pack name still use the snapetech namespace; keep those identifiers until the package APIs show they moved. Update GitHub repository links, repository identity fields, and workflow identities to the organization owner.
-
-## Active operating constraints
-
-1. Keep GitHub-hosted validation for pull requests, outside-contributor branches, and non-main refs. The trusted local pool is restricted to explicitly selected trusted workflows; approval of fork code does not make it safe for a persistent self-hosted runner.
-2. Do not alter the live runner-group allowlist or cancel queued work to improve the queue snapshot. Preserve valid in-flight Actions runs.
-3. Treat queued, pending, skipped, canceled, and still-running required checks as incomplete unless the repository current gate explicitly defines otherwise. Review diffs and decisions at the same SHA used by passing checks.
-4. Preserve repository-specific test engines, required coverage, workflow permissions, release restrictions, and registry/package names. Do not add spend or weaken security controls.
-5. Record exact heads, bases, check outcomes, merges, post-merge results, and unresolved blockers in the task ledger. Do not include credentials or runtime backups.
-
-## Historical pre-transfer plan (preserved; do not resume)
-
-The material below is the original pre-transfer plan and snapshot. It records the assumptions and checklists that applied before snapetech-org existed and before the repositories moved. Its instructions to create an organization or perform transfers are historical, not current actions.
-
-### Status and resume point
+## Status and resume point
 
 **Status:** Preflight documented; no organization has been created, no repository
 has been transferred, and no runner registration or Actions policy has been
@@ -70,7 +19,7 @@ secure a GitHub Free organization; verify the Free-plan runner controls without
 enabling a paid plan; then wait for a fresh zero-run snapshot before considering
 each repository transfer. Recheck the queue immediately before each transfer.
 
-### Scope
+## Scope
 
 This runbook covers the seven public application repositories in the shared
 `kspld0` / `kspls0` runner pool:
@@ -93,7 +42,7 @@ cannot also be the organization's login. **Organization login and display name
 are pending the owner's choice.** Existing organization memberships shown by
 the authenticated CLI did not include a Snapetech organization.
 
-### Hard constraints
+## Hard constraints
 
 1. Use GitHub Free only. Do not enable GitHub Team, larger runners, paid add-ons,
    or metered usage, and do not add a payment method. Stop if a security control
@@ -117,9 +66,9 @@ the authenticated CLI did not include a Snapetech organization.
    browser/Proton Pass UI for account credentials and redact values from the
    migration ledger.
 
-### Verified GitHub behavior and open questions
+## Verified GitHub behavior and open questions
 
-#### Cost and runner capacity
+### Cost and runner capacity
 
 The authenticated account billing page showed **GitHub Free at $0.00/month**.
 GitHub's current plan table lists Free for organizations with 2,000 Actions
@@ -143,7 +92,7 @@ Sources:
 - [Actions limits and job concurrency](https://docs.github.com/en/actions/reference/limits#job-concurrency-limits-for-github-hosted-runners)
 - [GitHub plans](https://docs.github.com/en/get-started/learning-about-github/githubs-plans)
 
-#### Runner-group plan support
+### Runner-group plan support
 
 GitHub's public documentation is inconsistent about organization runner groups
 on Free: the self-hosted runner access guide lists GitHub Free as eligible, but
@@ -166,7 +115,7 @@ Sources:
 - [Runner groups](https://docs.github.com/en/actions/concepts/runners/runner-groups)
 - [Secure use reference](https://docs.github.com/en/actions/security-for-github-actions/security-guides/security-hardening-for-github-actions)
 
-#### Repository-transfer effects
+### Repository-transfer effects
 
 GitHub documents that issues, pull requests, wiki, stars, watchers, Git history,
 webhooks, secrets, and deploy keys transfer with the repository. Package
@@ -184,7 +133,7 @@ checking for newly queued work immediately before each transfer.
 
 Source: [Transferring a repository](https://docs.github.com/en/repositories/creating-and-managing-repositories/transferring-a-repository)
 
-#### CLI feasibility
+### CLI feasibility
 
 GitHub documents organization creation through the account settings UI; the
 GitHub.com organization REST API has no create-organization endpoint, and the
@@ -201,7 +150,7 @@ Sources:
 - [GitHub CLI: `gh org`](https://cli.github.com/manual/gh_org)
 - [GitHub CLI: `gh repo`](https://cli.github.com/manual/gh_repo)
 
-### Required organization baseline
+## Required organization baseline
 
 Before moving any repository:
 
@@ -237,7 +186,7 @@ If a listed baseline cannot be enforced on GitHub Free, stop before adding
 local runners. Keep repository validation on hosted runners until the owner
 chooses a no-cost safe alternative.
 
-### Transfer preflight checklist
+## Transfer preflight checklist
 
 Complete this inventory for all seven repositories before the first transfer.
 Record names and states, never secret values.
@@ -266,7 +215,7 @@ Record names and states, never secret values.
 Example read-only queue check for one repository:
 
 ```bash
-repo=snapetech-org/seerrng
+repo=snapetech/seerrng
 for status in queued pending requested waiting in_progress; do
   printf '%s=' "$status"
   gh api "repos/$repo/actions/runs?status=$status&per_page=1" --jq .total_count
@@ -277,7 +226,7 @@ The status filter returns a total count without paging through old completed
 runs. Repeat for each repository. The documented snapshot is not a substitute
 for a fresh check.
 
-### Per-repository transfer procedure
+## Per-repository transfer procedure
 
 Proceed only after the owner selected the organization slug, the organization
 baseline passed review, and the repository has zero non-terminal Actions runs.
@@ -303,7 +252,7 @@ baseline passed review, and the repository has zero non-terminal Actions runs.
 Do not use force-pushes, disable workflows, rotate credentials speculatively,
 or delete the prior repository path during this migration.
 
-### Migration ledger
+## Migration ledger
 
 Update this table after each completed checkpoint. Keep tokens, secret values,
 and private runner configuration out of it.
@@ -312,7 +261,7 @@ and private runner configuration out of it.
 | --- | --- | ---: | --- | ---: | --- | --- |
 | 2026-10-13 06:57 | all seven | 176 non-terminal | not started | not checked | API status counts only | org slug pending; queue not drained |
 
-### Recovery notes
+## Recovery notes
 
 - If work crashes before a transfer, read this status section, recheck the
   organization plan/settings and all seven live queues, then continue at the
@@ -329,7 +278,7 @@ and private runner configuration out of it.
   runner registration unchanged until a no-cost safe design is available. Do
   not silently accept broader public-fork access.
 
-### Current audit record
+## Current audit record
 
 The authenticated GitHub CLI identified the current user as `snapetech`. The
 following non-terminal run counts were observed at the snapshot above:
