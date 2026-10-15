@@ -4,6 +4,10 @@ export class CreatePlexWatchlistSyncEntries1791849700000 implements MigrationInt
   name = 'CreatePlexWatchlistSyncEntries1791849700000';
 
   public async up(queryRunner: QueryRunner): Promise<void> {
+    if (await queryRunner.hasTable('plex_watchlist_sync_entry')) {
+      return;
+    }
+
     await queryRunner.query(`
       CREATE TABLE "plex_watchlist_sync_entry" (
         "id" integer PRIMARY KEY AUTOINCREMENT NOT NULL,
@@ -25,8 +29,8 @@ export class CreatePlexWatchlistSyncEntries1791849700000 implements MigrationInt
 
   public async down(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.query(
-      'DROP INDEX "IDX_plex_watchlist_sync_entry_user_source_media"'
+      'DROP INDEX IF EXISTS "IDX_plex_watchlist_sync_entry_user_source_media"'
     );
-    await queryRunner.query('DROP TABLE "plex_watchlist_sync_entry"');
+    await queryRunner.query('DROP TABLE IF EXISTS "plex_watchlist_sync_entry"');
   }
 }

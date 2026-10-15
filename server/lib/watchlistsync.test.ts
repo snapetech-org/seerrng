@@ -245,6 +245,97 @@ describe('Plex watchlist credential admission', () => {
     assert.equal(entry.watchlistedAt.getTime(), addedAt.getTime());
   });
 
+  it('records an entry for a live auto-request so a later deletion is not re-requested', async () => {
+    const user = await configureAutoRequestUser('movie');
+    const item = {
+      ratingKey: '93010',
+      tmdbId: 93010,
+      type: 'movie' as const,
+      title: 'Live Auto Request Movie',
+    };
+    const addedAt = new Date('2026-10-12T12:00:00.000Z');
+    const media = await getRepository(Media).save(
+      new Media({
+        tmdbId: item.tmdbId,
+        mediaType: MediaType.MOVIE,
+        status: MediaStatus.PENDING,
+      })
+    );
+    const autoRequest = await getRepository(MediaRequest).save(
+      new MediaRequest({
+        media,
+        requestedBy: user,
+        status: MediaRequestStatus.PENDING,
+        type: MediaType.MOVIE,
+        isAutoRequest: true,
+        createdAt: new Date(addedAt.getTime() + 30_000),
+      })
+    );
+    mock.method(PlexTvAPI.prototype, 'getWatchlist', async () => ({
+      offset: 0,
+      size: 20,
+      totalSize: 1,
+      items: [item],
+    }));
+    mock.method(PlexTvAPI.prototype, 'getWatchlistedAt', async () => addedAt);
+    mock.method(Media, 'getRelatedMedia', async () => []);
+    const requestMock = mock.method(
+      MediaRequest,
+      'request',
+      async () => ({ id: 1 }) as never
+    );
+
+    await watchlistSync.syncWatchlist();
+    await getRepository(MediaRequest).delete(autoRequest.id);
+    await getRepository(Media).update(media.id, {
+      status: MediaStatus.DELETED,
+    });
+    await watchlistSync.syncWatchlist();
+
+    assert.equal(requestMock.mock.callCount(), 0);
+    const entry = await getRepository(PlexWatchlistSyncEntry).findOneByOrFail({
+      requestedBy: { id: user.id },
+      sourcePlexId: user.plexId ?? 0,
+      tmdbId: item.tmdbId,
+      mediaType: MediaType.MOVIE,
+    });
+    assert.equal(entry.watchlistedAt.getTime(), addedAt.getTime());
+  });
+
+  it('skips an item without creating a request or entry when its add date is unavailable', async () => {
+    const user = await configureAutoRequestUser('movie');
+    const item = {
+      ratingKey: '93011',
+      tmdbId: 93011,
+      type: 'movie' as const,
+      title: 'Unknown Add Date Movie',
+    };
+    mock.method(PlexTvAPI.prototype, 'getWatchlist', async () => ({
+      offset: 0,
+      size: 20,
+      totalSize: 1,
+      items: [item],
+    }));
+    mock.method(PlexTvAPI.prototype, 'getWatchlistedAt', async () => null);
+    mock.method(Media, 'getRelatedMedia', async () => []);
+    const requestMock = mock.method(
+      MediaRequest,
+      'request',
+      async () => ({ id: 1 }) as never
+    );
+
+    await watchlistSync.syncWatchlist();
+
+    assert.equal(requestMock.mock.callCount(), 0);
+    assert.equal(
+      await getRepository(PlexWatchlistSyncEntry).countBy({
+        requestedBy: { id: user.id },
+        tmdbId: item.tmdbId,
+      }),
+      0
+    );
+  });
+
   it('keeps tracking separate when a Seerr user changes Plex accounts', async () => {
     const user = await configureAutoRequestUser('movie');
     const item = {

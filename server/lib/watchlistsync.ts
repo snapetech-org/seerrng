@@ -287,6 +287,21 @@ export class WatchlistSync {
       );
     });
 
+    // Items that already have a live automatic request are skipped above, so
+    // record them now. Otherwise deleting that request later would leave no
+    // history and the item would be requested again.
+    await this.seedLiveAutoRequestEntries(
+      user,
+      sourcePlexId,
+      plexTv,
+      watchlistItems.filter(
+        (item) =>
+          autoRequestedTmdbIds.has(`${getMediaType(item)}:${item.tmdbId}`) &&
+          canAutoRequestItem(user, item)
+      ),
+      existingAutoRequests
+    );
+
     if (unavailableItems.length === 0) {
       return;
     }
@@ -560,6 +575,84 @@ export class WatchlistSync {
     }
   }
 
+  private async seedLiveAutoRequestEntries(
+    user: User,
+    sourcePlexId: number,
+    plexTv: Pick<PlexTvAPI, 'getWatchlistedAt'>,
+    items: PlexWatchlistItem[],
+    autoRequests: MediaRequest[]
+  ): Promise<void> {
+    if (items.length === 0) {
+      return;
+    }
+
+    const repository = getRepository(PlexWatchlistSyncEntry);
+    if (
+      (await repository.count({
+        where: {
+          requestedBy: { id: user.id },
+          sourcePlexId: Not(sourcePlexId),
+        },
+      })) > 0
+    ) {
+      return;
+    }
+
+    const existing = await repository.find({
+      where: {
+        requestedBy: { id: user.id },
+        sourcePlexId,
+        tmdbId: In(items.map((item) => item.tmdbId)),
+      },
+    });
+    const tracked = new Set(
+      existing.map((entry) => `${entry.mediaType}:${entry.tmdbId}`)
+    );
+    const untracked = items.filter(
+      (item) => !tracked.has(`${getMediaType(item)}:${item.tmdbId}`)
+    );
+    if (untracked.length === 0) {
+      return;
+    }
+
+    const watchlistedAtValues = await mapWithConcurrency(
+      untracked,
+      PLEX_WATCHLIST_HYDRATION_CONCURRENCY,
+      (item) => plexTv.getWatchlistedAt(item.ratingKey)
+    );
+
+    for (const [index, item] of untracked.entries()) {
+      const watchlistedAt = watchlistedAtValues[index];
+      if (!watchlistedAt) {
+        continue;
+      }
+
+      const mediaType = getMediaType(item);
+      const seasonNumbers =
+        mediaType === MediaType.TV
+          ? mergeSeasonNumbers(
+              autoRequests
+                .filter(
+                  (request) =>
+                    request.media?.mediaType === mediaType &&
+                    request.media.tmdbId === item.tmdbId
+                )
+                .flatMap((request) =>
+                  (request.seasons ?? []).map((season) => season.seasonNumber)
+                )
+            )
+          : [];
+      await this.saveEntry(
+        user,
+        sourcePlexId,
+        item,
+        mediaType,
+        watchlistedAt,
+        seasonNumbers
+      );
+    }
+  }
+
   private async saveEntry(
     user: User,
     sourcePlexId: number,
@@ -592,7 +685,7 @@ export class WatchlistSync {
       entry.processedSeasonNumbers = mergeSeasonNumbers(processedSeasonNumbers);
       await repository.save(entry);
     } catch (error) {
-      logger.warn('Unable to save Plex watchlist sync state', {
+      logger.error('Unable to save Plex watchlist sync state', {
         label: 'Plex Watchlist Sync',
         userId: user.id,
         item: key,
