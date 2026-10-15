@@ -1216,8 +1216,6 @@ const parseMainSettingsBody = (
     if ('error' in parsed) {
       return parsed;
     }
-    // The YouTube URL is a prefix that has a video key appended, so a
-    // trailing slash is meaningful (for example a proxy's /watch/ route).
     if (key === 'applicationUrl' && parsed.value?.endsWith('/')) {
       return { error: `${fieldName} must not end with a slash.` };
     }

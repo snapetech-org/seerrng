@@ -18,7 +18,7 @@ import { getSafeReturnPath } from '@app/utils/loginReturn';
 import versionedAsset from '@app/utils/versionedAsset';
 import { Transition } from '@headlessui/react';
 import { XCircleIcon } from '@heroicons/react/24/solid';
-import { MediaServerType } from '@server/constants/server';
+import { MediaServerType, ServerType } from '@server/constants/server';
 import axios from 'axios';
 import { useRouter } from 'next/dist/client/router';
 import Image from 'next/image';
@@ -192,11 +192,11 @@ const Login = ({
 
   const mediaServerName =
     settings.currentSettings.mediaServerType === MediaServerType.PLEX
-      ? 'Plex'
+      ? ServerType.PLEX
       : settings.currentSettings.mediaServerType === MediaServerType.JELLYFIN
-        ? 'Jellyfin'
+        ? ServerType.JELLYFIN
         : settings.currentSettings.mediaServerType === MediaServerType.EMBY
-          ? 'Emby'
+          ? ServerType.EMBY
           : undefined;
 
   const MediaServerLogo =

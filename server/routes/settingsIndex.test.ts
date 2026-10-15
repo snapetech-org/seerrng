@@ -493,29 +493,6 @@ describe('Settings route input validation', () => {
     }
   });
 
-  it('keeps a trailing slash on the YouTube URL prefix', async () => {
-    const settings = getSettings();
-    const original = settings.main.youtubeUrl;
-
-    try {
-      const response = await request(app)
-        .post('/settings/main')
-        .send({ youtubeUrl: 'https://yt.example.com/watch/' });
-
-      assert.strictEqual(response.status, 200);
-      assert.strictEqual(
-        response.body.youtubeUrl,
-        'https://yt.example.com/watch/'
-      );
-      assert.strictEqual(
-        settings.main.youtubeUrl,
-        'https://yt.example.com/watch/'
-      );
-    } finally {
-      settings.main.youtubeUrl = original;
-    }
-  });
-
   it('saves category availability flags independently and validates their shape', async () => {
     const settings = getSettings();
     const original = { ...settings.main.enabledMediaCategories };
@@ -563,9 +540,6 @@ describe('Settings route input validation', () => {
     const credentialUrlRes = await request(app)
       .post('/settings/main')
       .send({ applicationUrl: 'https://user:secret@seerr.example.com' });
-    const trailingUrlRes = await request(app)
-      .post('/settings/main')
-      .send({ applicationUrl: 'https://seerr.example.com/' });
     const boolRes = await request(app)
       .post('/settings/main')
       .send({ localLogin: 'true' });
@@ -606,11 +580,6 @@ describe('Settings route input validation', () => {
       credentialUrlRes.body.message,
       /must not contain credentials, a query, or a fragment/
     );
-    assert.strictEqual(trailingUrlRes.status, 400);
-    assert.match(
-      trailingUrlRes.body.message,
-      /applicationUrl must not end with a slash/
-    );
     assert.strictEqual(boolRes.status, 400);
     assert.match(boolRes.body.message, /localLogin must be a boolean/);
     assert.strictEqual(emptyTitleRes.status, 400);
@@ -640,6 +609,39 @@ describe('Settings route input validation', () => {
     assert.strictEqual(localeRes.status, 400);
     assert.match(localeRes.body.message, /locale must be a supported locale/);
     assert.strictEqual(saveMock.mock.callCount(), 0);
+  });
+
+  it('allows trailing slashes for YouTube URLs but not the application URL', async () => {
+    const settings = getSettings();
+    const originalUrls = {
+      applicationUrl: settings.main.applicationUrl,
+      youtubeUrl: settings.main.youtubeUrl,
+    };
+    const saveMock = mock.method(settings, 'save', async () => undefined);
+
+    try {
+      const youtubeUrlResponse = await request(app)
+        .post('/settings/main')
+        .send({ youtubeUrl: 'https://youtube.com/watch/' });
+      const applicationUrlResponse = await request(app)
+        .post('/settings/main')
+        .send({ applicationUrl: 'https://seerr.example/' });
+
+      assert.strictEqual(youtubeUrlResponse.status, 200);
+      assert.strictEqual(
+        settings.main.youtubeUrl,
+        'https://youtube.com/watch/'
+      );
+      assert.strictEqual(applicationUrlResponse.status, 400);
+      assert.match(
+        applicationUrlResponse.body.message,
+        /applicationUrl must not end with a slash/
+      );
+      assert.strictEqual(saveMock.mock.callCount(), 1);
+    } finally {
+      settings.main.applicationUrl = originalUrls.applicationUrl;
+      settings.main.youtubeUrl = originalUrls.youtubeUrl;
+    }
   });
 
   it('serializes OIDC enablement changes with admitted callbacks', async () => {

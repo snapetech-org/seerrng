@@ -9,13 +9,11 @@ import { useState } from 'react';
 import { useIntl } from 'react-intl';
 import useSWR from 'swr';
 
-const INITIAL_MATCH_COUNT = 6;
-
 const messages = defineMessages('components.RequestModal.SearchByNameModal', {
   notvdbiddescription:
     'We were unable to automatically match this series. Please select the correct match below.',
   nomatches: 'We were unable to find a match for this series.',
-  showAllMatches: 'Show all {count} matches',
+  showmore: 'Show More Results',
 });
 
 interface SearchByNameModalProps {
@@ -40,11 +38,11 @@ const SearchByNameModal = ({
   backdrop,
 }: SearchByNameModalProps) => {
   const intl = useIntl();
+  const [expandedTmdbId, setExpandedTmdbId] = useState<number | null>(null);
+  const showAllResults = expandedTmdbId === tmdbId;
   const { data, error } = useSWR<SonarrSeries[]>(
     `/api/v1/service/sonarr/lookup/${tmdbId}`
   );
-
-  const [showAll, setShowAll] = useState(false);
 
   const handleClick = (tvdbId: number) => {
     setTvdbId(tvdbId);
@@ -84,7 +82,7 @@ const SearchByNameModal = ({
         type="info"
       />
       <div className="grid grid-cols-1 gap-4 pb-2 md:grid-cols-2">
-        {(showAll ? data : data?.slice(0, INITIAL_MATCH_COUNT))?.map((item) => (
+        {(showAllResults ? data : data?.slice(0, 6))?.map((item) => (
           <button
             key={item.tvdbId}
             className="focus:ring-opacity-70 container mx-auto flex h-40 scale-100 transform-gpu cursor-pointer flex-col items-center justify-center space-y-4 rounded-xl transition outline-none hover:scale-105 focus:ring focus:ring-indigo-500 focus:outline-none"
@@ -141,14 +139,14 @@ const SearchByNameModal = ({
           </button>
         ))}
       </div>
-      {!showAll && (data?.length ?? 0) > INITIAL_MATCH_COUNT && (
-        <div className="flex justify-center pb-2">
-          <Button buttonType="ghost" onClick={() => setShowAll(true)}>
-            {intl.formatMessage(messages.showAllMatches, {
-              count: data?.length ?? 0,
-            })}
-          </Button>
-        </div>
+      {!showAllResults && (data?.length ?? 0) > 6 && (
+        <Button
+          type="button"
+          buttonType="ghost"
+          onClick={() => setExpandedTmdbId(tmdbId)}
+        >
+          {intl.formatMessage(messages.showmore)}
+        </Button>
       )}
     </Modal>
   );
