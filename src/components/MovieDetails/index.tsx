@@ -7,6 +7,7 @@ import MediaServerPlayButton from '@app/components/Common/MediaServerPlayButton'
 import PageTitle from '@app/components/Common/PageTitle';
 import PlayOnDeviceButton from '@app/components/Common/PlayOnDeviceButton';
 import Tooltip from '@app/components/Common/Tooltip';
+import { canReportMovieIssue } from '@app/components/IssueDetails/issueMediaFormat';
 import LiveTvButton from '@app/components/LiveTv/LiveTvButton';
 import MovieDetailsLayout from '@app/components/MovieDetails/MovieDetailsLayout';
 import RequestButton from '@app/components/RequestButton';
@@ -294,13 +295,15 @@ const MovieDetails = ({ movie }: MovieDetailsProps) => {
     [Permission.CREATE_ISSUES, Permission.MANAGE_ISSUES],
     { type: 'or' }
   );
-  const isReportIssueAvailable =
-    data.mediaInfo?.status === MediaStatus.AVAILABLE ||
-    (settings.currentSettings.movie4kEnabled &&
-      hasPermission([Permission.REQUEST_4K, Permission.REQUEST_4K_MOVIE], {
-        type: 'or',
-      }) &&
-      data.mediaInfo?.status4k === MediaStatus.AVAILABLE);
+  const canReport4kIssue =
+    settings.currentSettings.movie4kEnabled &&
+    hasPermission([Permission.REQUEST_4K, Permission.REQUEST_4K_MOVIE], {
+      type: 'or',
+    });
+  const isReportIssueAvailable = canReportMovieIssue(
+    data.mediaInfo,
+    canReport4kIssue
+  );
   const canUseManage = hasPermission(Permission.MANAGE_REQUESTS);
   const isManageAvailable = Boolean(
     data.mediaInfo &&
