@@ -101,9 +101,12 @@ Steps:
 - Pull requests with titles not following [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/) will **not** be merged. PR titles are automatically checked for compliance.
 - Please make meaningful commits, or squash them prior to opening a pull request.
   - Do not squash commits once people have begun reviewing your changes.
-- User-facing features, fixes, security or operational changes, and user-facing documentation need a structured release-note fragment under [`release-notes/`](./release-notes/README.md). Internal-only work needs no fragment; either select the template option or put `release-note: none`
-on its own line in the PR description. Put the marker in a commit message when a direct-push or
-merge check reads commit messages.
+- For any user-facing change, add one validated structured fragment under
+  [`release-notes/`](./release-notes/README.md). A single fragment may cover related
+  user-facing changes in the same pull request. Internal-only work needs no
+  fragment; select the internal-only template option or put `release-note: none`
+  on its own line in the PR description. For direct pushes or merge checks that
+  read commit messages, put the same marker on its own line in the commit message.
 - Keep a PR branch current with `main` only when current GitHub rules require it; rebase or merge as needed.
 - Merge after the checks and approvals required by current GitHub rules are satisfied. An explicit maintainer direction to merge is sufficient; no additional review or approval is required beyond those rules. Use any merge method enabled in GitHub.
 - You can create a "draft" pull request early to get feedback on your work.
