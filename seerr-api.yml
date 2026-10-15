@@ -6478,6 +6478,8 @@ components:
           type: string
           example: '1234'
           nullable: true
+          description: |
+            Slider-specific configuration. For the built-in Networks slider, store a JSON array of up to 50 objects with a TMDB network `id`, `name`, safe TMDB `logoPath`, and optional `logoTone` (`color` or `white`) in display order. An empty string restores the default list; an empty JSON array displays no networks.
       required:
         - type
         - enabled
@@ -11200,7 +11202,7 @@ paths:
     put:
       summary: Update a single slider
       description: |
-        Updates a single slider and return the newly updated slider. Requires the `ADMIN` permission.
+        Updates a single slider and returns the newly updated slider. Requires the `ADMIN` permission. For the built-in Networks slider, only its validated network list data can be changed.
       tags:
         - settings
       parameters:

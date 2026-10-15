@@ -4,6 +4,8 @@ import { afterEach, before, describe, it, mock } from 'node:test';
 import {
   DiscoverSliderType,
   MAX_DISCOVER_KEYWORD_IDS,
+  MAX_DISCOVER_NETWORKS,
+  MAX_DISCOVER_SLIDER_DATA_LENGTH,
   MAX_DISCOVER_SLIDERS,
   MAX_TMDB_PUBLIC_LIST_ID_LENGTH,
 } from '@server/constants/discover';
@@ -326,6 +328,19 @@ describe('Discover settings route validation', () => {
     assert.strictEqual(normalized.body.data, 'CA,8|2');
   });
 
+  it('keeps the existing limit for other slider data', async () => {
+    const response = await request(app)
+      .post('/settings/discover/add')
+      .send({
+        ...customSliderPayload,
+        data: 'x'.repeat(MAX_DISCOVER_SLIDER_DATA_LENGTH + 1),
+        type: DiscoverSliderType.OPENLIBRARY_BOOK_SUBJECT,
+      });
+
+    assert.equal(response.status, 400);
+    assert.match(response.body.message, /500 characters or fewer/);
+  });
+
   it('rejects a new slider when the collection is full', async () => {
     const repository = getRepository(DiscoverSlider);
     const existingCount = await repository.count();
@@ -504,6 +519,180 @@ describe('Discover settings route validation', () => {
         type,
         isBuiltIn,
       }))
+    );
+  });
+});
+
+describe('built-in Networks slider configuration', () => {
+  const networkList = (count: number) =>
+    Array.from({ length: count }, (_, index) => ({
+      id: index + 1,
+      name: `Network ${index + 1}`,
+      logoPath: `/network-${index + 1}.png`,
+    }));
+
+  const getBuiltInNetworksSlider = async () => {
+    const repository = getRepository(DiscoverSlider);
+    await DiscoverSlider.bootstrapSliders(repository);
+    return repository.findOneByOrFail({
+      isBuiltIn: true,
+      type: DiscoverSliderType.NETWORKS,
+    });
+  };
+
+  it('stores ordered metadata for up to 50 networks on the built-in row', async () => {
+    const slider = await getBuiltInNetworksSlider();
+    const networks = networkList(MAX_DISCOVER_NETWORKS);
+
+    const response = await request(app)
+      .put(`/settings/discover/${slider.id}`)
+      .send({
+        ...customSliderPayload,
+        data: JSON.stringify(networks),
+        type: DiscoverSliderType.NETWORKS,
+      });
+
+    assert.equal(response.status, 200);
+    assert.deepStrictEqual(JSON.parse(response.body.data), networks);
+    const stored = await getRepository(DiscoverSlider).findOneByOrFail({
+      id: slider.id,
+    });
+    assert.deepStrictEqual(JSON.parse(stored.data!), networks);
+    assert.equal(stored.title, null);
+    assert.equal(stored.type, DiscoverSliderType.NETWORKS);
+    assert.equal(stored.isBuiltIn, true);
+  });
+
+  it('keeps defaults and an explicitly empty network list distinct', async () => {
+    const slider = await getBuiltInNetworksSlider();
+
+    const emptyList = await request(app)
+      .put(`/settings/discover/${slider.id}`)
+      .send({
+        ...customSliderPayload,
+        data: '[]',
+        type: DiscoverSliderType.NETWORKS,
+      });
+    assert.equal(emptyList.status, 200);
+    assert.equal(emptyList.body.data, '[]');
+
+    const defaults = await request(app)
+      .put(`/settings/discover/${slider.id}`)
+      .send({
+        ...customSliderPayload,
+        data: '',
+        type: DiscoverSliderType.NETWORKS,
+      });
+    assert.equal(defaults.status, 200);
+    assert.equal(defaults.body.data, '');
+  });
+
+  it('rejects malformed or unsafe lists without replacing saved data', async () => {
+    const slider = await getBuiltInNetworksSlider();
+    const repository = getRepository(DiscoverSlider);
+    const existingData = JSON.stringify(networkList(2));
+    await repository.update(slider.id, { data: existingData });
+
+    const invalidLists = [
+      JSON.stringify([networkList(1)[0], networkList(1)[0]]),
+      JSON.stringify([
+        { ...networkList(1)[0], logoPath: 'https://example.com/logo.png' },
+      ]),
+      JSON.stringify(networkList(MAX_DISCOVER_NETWORKS + 1)),
+      '{invalid-json',
+    ];
+
+    for (const data of invalidLists) {
+      const response = await request(app)
+        .put(`/settings/discover/${slider.id}`)
+        .send({
+          ...customSliderPayload,
+          data,
+          type: DiscoverSliderType.NETWORKS,
+        });
+
+      assert.equal(response.status, 400);
+      assert.equal(
+        (await repository.findOneByOrFail({ id: slider.id })).data,
+        existingData
+      );
+    }
+  });
+
+  it('rejects a mismatched type when updating the built-in Networks row', async () => {
+    const slider = await getBuiltInNetworksSlider();
+    const originalData = slider.data;
+    const response = await request(app)
+      .put(`/settings/discover/${slider.id}`)
+      .send({
+        ...customSliderPayload,
+        data: '123',
+        type: DiscoverSliderType.TMDB_NETWORK,
+      });
+
+    assert.equal(response.status, 400);
+    assert.match(response.body.message, /Networks slider type/);
+    assert.equal(
+      (await getRepository(DiscoverSlider).findOneByOrFail({ id: slider.id }))
+        .data,
+      originalData
+    );
+  });
+
+  it('does not partially save a slider batch with invalid network data', async () => {
+    const repository = getRepository(DiscoverSlider);
+    const ordinarySlider = await repository.save(
+      new DiscoverSlider({
+        data: 'old-subject',
+        enabled: false,
+        isBuiltIn: false,
+        order: 20,
+        title: 'Old Subject',
+        type: DiscoverSliderType.OPENLIBRARY_BOOK_SUBJECT,
+      })
+    );
+    const networksSlider = await repository.save(
+      new DiscoverSlider({
+        data: '[]',
+        enabled: false,
+        isBuiltIn: false,
+        order: 21,
+        title: 'Selected Networks',
+        type: DiscoverSliderType.NETWORKS,
+      })
+    );
+
+    const response = await request(app)
+      .post('/settings/discover')
+      .send([
+        {
+          id: ordinarySlider.id,
+          data: 'new-subject',
+          enabled: true,
+          title: 'New Subject',
+          type: DiscoverSliderType.OPENLIBRARY_BOOK_SUBJECT,
+        },
+        {
+          id: networksSlider.id,
+          data: '{invalid-json',
+          enabled: true,
+          title: 'Selected Networks',
+          type: DiscoverSliderType.NETWORKS,
+        },
+      ]);
+
+    assert.equal(response.status, 400);
+    assert.equal(
+      (await repository.findOneByOrFail({ id: ordinarySlider.id })).title,
+      'Old Subject'
+    );
+    assert.equal(
+      (await repository.findOneByOrFail({ id: ordinarySlider.id })).data,
+      'old-subject'
+    );
+    assert.equal(
+      (await repository.findOneByOrFail({ id: networksSlider.id })).data,
+      '[]'
     );
   });
 });

@@ -1,5 +1,12 @@
 import type DiscoverSlider from '@server/entity/DiscoverSlider';
 
+export interface DiscoverNetworkData {
+  id: number;
+  name: string;
+  logoPath: string;
+  logoTone?: 'color' | 'white';
+}
+
 export enum DiscoverSliderType {
   RECENTLY_ADDED = 1,
   RECENT_REQUESTS,
@@ -41,6 +48,11 @@ export const isTmdbPublicListId = (value: unknown): value is string =>
   typeof value === 'string' &&
   value.length <= MAX_TMDB_PUBLIC_LIST_ID_LENGTH &&
   /^[1-9]\d*$/.test(value);
+
+export const MAX_DISCOVER_NETWORKS = 50;
+export const MAX_DISCOVER_NETWORK_NAME_LENGTH = 100;
+export const MAX_DISCOVER_NETWORK_LOGO_PATH_LENGTH = 200;
+export const MAX_DISCOVER_NETWORK_DATA_LENGTH = 25_000;
 
 export const defaultSliders: Partial<DiscoverSlider>[] = [
   {

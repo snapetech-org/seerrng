@@ -236,7 +236,10 @@ const Discover = ({ initialSliders }: DiscoverProps) => {
   }
 
   return (
-    <div>
+    <div
+      className="discover-page-content"
+      data-discover-editor-open={isEditing ? 'true' : 'false'}
+    >
       <PageTitle title={intl.formatMessage(messages.discover)} />
       <Header>{intl.formatMessage(messages.discover)}</Header>
       <Link
@@ -452,7 +455,7 @@ const Discover = ({ initialSliders }: DiscoverProps) => {
             );
             break;
           case DiscoverSliderType.NETWORKS:
-            sliderComponent = <NetworkSlider />;
+            sliderComponent = <NetworkSlider data={slider.data} />;
             break;
           case DiscoverSliderType.TMDB_MOVIE_KEYWORD:
             sliderComponent = (
@@ -644,6 +647,15 @@ const Discover = ({ initialSliders }: DiscoverProps) => {
               onDelete={async () => {
                 const newSliders = sliders.filter(
                   (currentSlider) => currentSlider.id !== slider.id
+                );
+                await mutate(newSliders as DiscoverSlider[], false);
+                setSliders(newSliders);
+              }}
+              onUpdate={async (updatedSlider) => {
+                const newSliders = sliders.map((currentSlider) =>
+                  currentSlider.id === updatedSlider.id
+                    ? updatedSlider
+                    : currentSlider
                 );
                 await mutate(newSliders as DiscoverSlider[], false);
                 setSliders(newSliders);

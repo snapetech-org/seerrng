@@ -206,4 +206,84 @@ describe('Discover Customization', () => {
       'not.exist'
     );
   });
+
+  it('can customize the built-in Networks shelf and restore its defaults', () => {
+    cy.intercept('GET', '/api/v1/network/99998', {
+      id: 99998,
+      name: 'Network Without Logo',
+      logoPath: null,
+    });
+    cy.intercept('GET', '/api/v1/network/99999', {
+      id: 99999,
+      name: 'Test Network',
+      logoPath: '/test-network.png',
+    });
+    cy.intercept('PUT', '/api/v1/settings/discover/*').as('saveNetworkList');
+
+    cy.visit('/');
+    cy.get('[data-testid=discover-start-editing]').click();
+
+    cy.contains('[data-testid=discover-slider-title]', 'Networks')
+      .closest('[data-testid=discover-slider-edit-mode]')
+      .as('networksSlider');
+    cy.get('@networksSlider')
+      .find('[data-testid=discover-slider-edit-button]')
+      .click();
+
+    cy.get('[data-testid=discover-network-item]').then(($items) => {
+      expect($items.length).to.be.greaterThan(0);
+    });
+
+    cy.get('[data-testid=discover-network-id]').type('99998');
+    cy.get('[data-testid=discover-network-add]').should('be.visible');
+    cy.get('[data-testid=discover-network-id]').type('{enter}');
+    cy.contains('This network does not have a usable logo.').should(
+      'be.visible'
+    );
+    cy.contains(
+      '[data-testid=discover-network-item]',
+      'Network Without Logo'
+    ).should('not.exist');
+
+    cy.get('[data-testid=discover-network-id]').clear().type('99999{enter}');
+    cy.contains('[data-testid=discover-network-item]', 'Test Network').should(
+      'exist'
+    );
+    cy.contains('[data-testid=discover-network-item]', 'Test Network')
+      .find('[data-testid=discover-network-move-up]')
+      .click();
+
+    cy.get('[data-testid=discover-network-save]').click();
+    cy.wait('@saveNetworkList').then(({ request, response }) => {
+      expect(response?.statusCode).to.eq(200);
+      const networks = JSON.parse(request.body.data);
+      expect(networks[networks.length - 2]).to.deep.include({
+        id: 99999,
+        name: 'Test Network',
+        logoPath: '/test-network.png',
+      });
+    });
+
+    cy.reload();
+    cy.get('[data-testid=discover-start-editing]').click();
+    cy.contains('[data-testid=discover-slider-title]', 'Networks')
+      .closest('[data-testid=discover-slider-edit-mode]')
+      .as('networksSlider');
+    cy.get('@networksSlider')
+      .find('[data-testid=discover-slider-edit-button]')
+      .click();
+    cy.contains('[data-testid=discover-network-item]', 'Test Network').should(
+      'exist'
+    );
+
+    cy.get('[data-testid=discover-network-reset]').click();
+    cy.contains('[data-testid=discover-network-item]', 'Test Network').should(
+      'not.exist'
+    );
+    cy.get('[data-testid=discover-network-save]').click();
+    cy.wait('@saveNetworkList').then(({ request, response }) => {
+      expect(response?.statusCode).to.eq(200);
+      expect(request.body.data).to.eq('');
+    });
+  });
 });

@@ -4,6 +4,7 @@ import Tag from '@app/components/Common/Tag';
 import Tooltip from '@app/components/Common/Tooltip';
 import CompanyTag from '@app/components/CompanyTag';
 import CreateSlider from '@app/components/Discover/CreateSlider';
+import NetworkSliderEditor from '@app/components/Discover/NetworkSlider/Editor';
 import { sliderTitles } from '@app/components/Discover/constants';
 import GenreTag from '@app/components/GenreTag';
 import KeywordTag from '@app/components/KeywordTag';
@@ -46,6 +47,7 @@ type DiscoverSliderEditProps = {
   slider: Partial<DiscoverSlider>;
   onEnable: () => void;
   onDelete: () => void;
+  onUpdate: (updatedSlider: DiscoverSlider) => void;
   onPositionUpdate: (
     updatedItemId: number,
     position: keyof typeof Position,
@@ -61,6 +63,7 @@ const DiscoverSliderEdit = ({
   children,
   onEnable,
   onDelete,
+  onUpdate,
   onPositionUpdate,
   disableUpButton,
   disableDownButton,
@@ -270,12 +273,14 @@ const DiscoverSliderEdit = ({
           )}
         </div>
         <div className="flex items-center space-x-2">
-          {!slider.isBuiltIn && (
+          {(!slider.isBuiltIn ||
+            slider.type === DiscoverSliderType.NETWORKS) && (
             <>
               {!isEditing ? (
                 <Button
                   buttonType="warning"
                   buttonSize="sm"
+                  data-testid="discover-slider-edit-button"
                   onClick={() => {
                     setIsEditing(true);
                   }}
@@ -295,17 +300,19 @@ const DiscoverSliderEdit = ({
                   <span>{intl.formatMessage(globalMessages.cancel)}</span>
                 </Button>
               )}
-              <Button
-                data-testid="discover-slider-remove-button"
-                buttonType="danger"
-                buttonSize="sm"
-                onClick={() => {
-                  deleteSlider();
-                }}
-              >
-                <XMarkIcon />
-                <span>{intl.formatMessage(messages.remove)}</span>
-              </Button>
+              {!slider.isBuiltIn && (
+                <Button
+                  data-testid="discover-slider-remove-button"
+                  buttonType="danger"
+                  buttonSize="sm"
+                  onClick={() => {
+                    deleteSlider();
+                  }}
+                >
+                  <XMarkIcon />
+                  <span>{intl.formatMessage(messages.remove)}</span>
+                </Button>
+              )}
             </>
           )}
           <div className="absolute top-4 right-14 flex px-2 md:relative md:top-0 md:right-0">
@@ -354,13 +361,24 @@ const DiscoverSliderEdit = ({
       </div>
       {isEditing ? (
         <div className="p-4">
-          <CreateSlider
-            onCreate={() => {
-              onDelete();
-              setIsEditing(false);
-            }}
-            slider={slider}
-          />
+          {slider.type === DiscoverSliderType.NETWORKS ? (
+            <NetworkSliderEditor
+              sliderId={slider.id}
+              data={slider.data}
+              onSaved={(updatedSlider) => {
+                onUpdate(updatedSlider);
+                setIsEditing(false);
+              }}
+            />
+          ) : (
+            <CreateSlider
+              onCreate={() => {
+                onDelete();
+                setIsEditing(false);
+              }}
+              slider={slider}
+            />
+          )}
         </div>
       ) : (
         <div className={`-mt-6 p-4 ${!slider.enabled ? 'opacity-50' : ''}`}>
