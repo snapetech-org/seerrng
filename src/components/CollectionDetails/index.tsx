@@ -39,6 +39,7 @@ import {
 } from '@app/utils/imageCache';
 import { getMovieTrailerUrl } from '@app/utils/movieTrailer';
 import { refreshIntervalHelper } from '@app/utils/refreshIntervalHelper';
+import { getViewerAvailabilityPresentation } from '@app/utils/viewerAvailabilityPresentation';
 import {
   CheckCircleIcon,
   EyeSlashIcon,
@@ -157,6 +158,15 @@ const CollectionDetails = ({ collection }: CollectionDetailsProps) => {
     () => orderCollectionPartsOldestFirst(data?.parts ?? []),
     [data?.parts]
   );
+  const isPartQualityHidden = (
+    part: Collection['parts'][number],
+    is4k: boolean
+  ) =>
+    getViewerAvailabilityPresentation(
+      part.mediaInfo?.[is4k ? 'status4k' : 'status'],
+      settings.currentSettings.otherUsersAvailability,
+      part.mediaInfo?.viewerRequestCoverage?.[is4k ? 'fourK' : 'standard']
+    ).hidden;
   const {
     data: members,
     isLoading: membersLoading,
@@ -188,6 +198,16 @@ const CollectionDetails = ({ collection }: CollectionDetailsProps) => {
   const allSelectedPlaybackAvailable =
     selectedPlaybackParts.length > 0 &&
     playableSelectedParts.length === selectedPlaybackParts.length;
+  const selectedPlaybackIsShared = selectedPlaybackParts.some(
+    (part) =>
+      getViewerAvailabilityPresentation(
+        part.mediaInfo?.[playbackQuality === '4k' ? 'status4k' : 'status'],
+        settings.currentSettings.otherUsersAvailability,
+        part.mediaInfo?.viewerRequestCoverage?.[
+          playbackQuality === '4k' ? 'fourK' : 'standard'
+        ]
+      ).hidePlayback
+  );
   const playbackUnavailableReason = !playbackQuality
     ? intl.formatMessage(messages.chooseQuality)
     : playableSelectedParts.length === 0
@@ -395,31 +415,39 @@ const CollectionDetails = ({ collection }: CollectionDetailsProps) => {
                 {
                   label: 'HD',
                   value: 'hd',
-                  disabled: !orderedParts.some((part) =>
-                    collectionPartHasQuality(part, 'hd')
+                  disabled: !orderedParts.some(
+                    (part) =>
+                      collectionPartHasQuality(part, 'hd') &&
+                      !isPartQualityHidden(part, false)
                   ),
                 },
                 {
                   label: '4K',
                   value: '4k',
-                  disabled: !orderedParts.some((part) =>
-                    collectionPartHasQuality(part, '4k')
+                  disabled: !orderedParts.some(
+                    (part) =>
+                      collectionPartHasQuality(part, '4k') &&
+                      !isPartQualityHidden(part, true)
                   ),
                 },
               ]}
               onChange={setPlaybackQuality}
             />
-            <MediaServerPlayButton
-              collectionMediaIds={effectivePlaybackMediaIds}
-              defaultIs4k={playbackQuality === '4k'}
-              disabled={!allSelectedPlaybackAvailable}
-              disabledReason={playbackUnavailableReason}
-            />
-            <CollectionPlayOnDeviceButton
-              mediaIds={effectivePlaybackMediaIds}
-              is4k={playbackQuality === '4k'}
-              disabledReason={playbackUnavailableReason}
-            />
+            {!selectedPlaybackIsShared && (
+              <>
+                <MediaServerPlayButton
+                  collectionMediaIds={effectivePlaybackMediaIds}
+                  defaultIs4k={playbackQuality === '4k'}
+                  disabled={!allSelectedPlaybackAvailable}
+                  disabledReason={playbackUnavailableReason}
+                />
+                <CollectionPlayOnDeviceButton
+                  mediaIds={effectivePlaybackMediaIds}
+                  is4k={playbackQuality === '4k'}
+                  disabledReason={playbackUnavailableReason}
+                />
+              </>
+            )}
             <CollectionRatings
               ratings={averages}
               total={orderedParts.length}

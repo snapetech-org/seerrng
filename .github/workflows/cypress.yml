@@ -36,8 +36,8 @@ permissions:
   contents: read
 
 concurrency:
-  group: cypress-${{ github.event.pull_request.number || github.ref }}-${{ inputs.case_id || 'standalone' }}
-  cancel-in-progress: true
+  group: cypress-${{ github.run_id }}-${{ github.run_attempt }}-${{ inputs.case_id || 'standalone' }}
+  cancel-in-progress: false
 
 jobs:
   cypress-run:

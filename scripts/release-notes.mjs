@@ -179,7 +179,7 @@ export function isReleaseNoteShipped(file, head, cwd = process.cwd()) {
     latestTag = execFileSync(
       'git',
       ['describe', '--tags', '--abbrev=0', '--match', 'v3.*', head],
-      { cwd, encoding: 'utf8' }
+      { cwd, encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] }
     ).trim();
   } catch {
     return false;
@@ -202,7 +202,7 @@ export function isShippedReleaseNoteChanged(file, head, cwd = process.cwd()) {
     latestTag = execFileSync(
       'git',
       ['describe', '--tags', '--abbrev=0', '--match', 'v3.*', head],
-      { cwd, encoding: 'utf8' }
+      { cwd, encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] }
     ).trim();
   } catch {
     return false;
@@ -213,6 +213,7 @@ export function isShippedReleaseNoteChanged(file, head, cwd = process.cwd()) {
     shippedContent = execFileSync('git', ['show', `${latestTag}:${file}`], {
       cwd,
       encoding: 'utf8',
+      stdio: ['ignore', 'pipe', 'ignore'],
     });
   } catch {
     return false;
@@ -222,6 +223,7 @@ export function isShippedReleaseNoteChanged(file, head, cwd = process.cwd()) {
     const currentContent = execFileSync('git', ['show', `${head}:${file}`], {
       cwd,
       encoding: 'utf8',
+      stdio: ['ignore', 'pipe', 'ignore'],
     });
     return currentContent !== shippedContent;
   } catch {

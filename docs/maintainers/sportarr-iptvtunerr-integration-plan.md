@@ -147,6 +147,6 @@ still work independently.
 
 ## References
 
-- [Tunerr Sports Automation guide](https://github.com/snapetech/iptvtunerr/blob/main/docs/how-to/sports-automation.md)
+- [Tunerr Sports Automation guide](https://github.com/snapetech-org/iptvtunerr/blob/main/docs/how-to/sports-automation.md)
 - [Sportarr IPTV DVR guide](https://wiki.sportarr.net/features/iptv-dvr/)
 - [Sportarr native API](https://wiki.sportarr.net/api/)

@@ -7,6 +7,7 @@ export interface TitleCardStatusBadge {
   quality?: TitleCardQuality;
   status: MediaStatus;
   inProgress: boolean;
+  viewerHasRequestedCopy?: boolean;
 }
 
 export const getTitleCardStatusBadgeSlots = (
@@ -32,6 +33,8 @@ interface GetTitleCardStatusBadgesOptions {
   inProgress4k?: boolean;
   availableQualities?: ('MP3' | 'FLAC')[];
   qualityStatuses?: AlbumResult['qualityStatuses'];
+  viewerHasRequestedStandard?: boolean;
+  viewerHasRequested4k?: boolean;
 }
 
 const hasVisibleStatus = (
@@ -53,6 +56,8 @@ export const getTitleCardStatusBadges = ({
   inProgress4k = false,
   availableQualities,
   qualityStatuses,
+  viewerHasRequestedStandard,
+  viewerHasRequested4k,
 }: GetTitleCardStatusBadgesOptions): TitleCardStatusBadge[] => {
   if (
     mediaType === 'movie' ||
@@ -61,7 +66,16 @@ export const getTitleCardStatusBadges = ({
   ) {
     return [
       ...(hasVisibleStatus(status)
-        ? [{ quality: 'HD' as const, status, inProgress }]
+        ? [
+            {
+              quality: 'HD' as const,
+              status,
+              inProgress,
+              ...(viewerHasRequestedStandard !== undefined && {
+                viewerHasRequestedCopy: viewerHasRequestedStandard,
+              }),
+            },
+          ]
         : []),
       ...(hasVisibleStatus(status4k)
         ? [
@@ -69,6 +83,9 @@ export const getTitleCardStatusBadges = ({
               quality: '4K' as const,
               status: status4k,
               inProgress: inProgress4k,
+              ...(viewerHasRequested4k !== undefined && {
+                viewerHasRequestedCopy: viewerHasRequested4k,
+              }),
             },
           ]
         : []),

@@ -11,7 +11,8 @@ interface BadgeProps {
     | 'success'
     | 'dark'
     | 'light'
-    | 'association';
+    | 'association'
+    | 'shared';
   className?: string;
   shape?: 'pill' | 'standard';
   href?: string;
@@ -86,6 +87,9 @@ const Badge = (
       if (href) {
         badgeStyle.push('hover:bg-cyan-900/55 active:bg-cyan-900/70');
       }
+      break;
+    case 'shared':
+      badgeStyle.push('app-badge-shared-availability');
       break;
     default:
       badgeStyle.push(

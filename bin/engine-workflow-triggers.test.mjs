@@ -158,7 +158,10 @@ test('GitHub fans every independent validation job out from the engine plan', ()
   );
   assert.deepEqual(jobs['unit-test'].strategy, {
     'fail-fast': false,
-    'max-parallel': 4,
+    'max-parallel':
+      "${{ (((github.event_name == 'push' && github.ref == 'refs/heads/main') || " +
+      "(github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main')) && " +
+      "vars.TRUSTED_MAIN_RUNNERS_ENABLED == 'true' && 1) || 4 }}",
     matrix: '${{ fromJSON(needs.engine-plan.outputs.unitMatrix) }}',
   });
   assert.deepEqual(jobs.cypress.strategy, {

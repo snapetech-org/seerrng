@@ -4,7 +4,7 @@ Date: 2026-10-06; book-integration clarification updated 2026-10-08
 
 ## Method and limits
 
-- **Dependency inventory:** read from repo code (`server/api`, `server/lib`, `server/api/downloadClients`, `server/api/servarr`, `server/api/comics`, `server/api/software`), `docs/maintainers/upstreams.md`, `docs/maintainers/ng-ecosystem-integration-plan.md`, `docs/using-seerr/companion-services.md`, and an outbound-hostname count of `server/` and `src/`. Confidence: **high**.
+- **Dependency inventory:** read from repo code (`server/api`, `server/lib`, `server/api/downloadClients`, `server/api/servarr`, `server/api/comics`, `server/api/software`), integration documentation, and an outbound-hostname count of `server/` and `src/`. Confidence: **high**.
 - **Fork feature facts:** WebFetch summaries of each fork's GitHub README, produced by a small model. Confidence: **moderate**. Not checked against source or a running instance.
 - **Local Tunerr facts:** read from `~/Code/iptvtunerr/README.md`. Confidence: **high** for what the README claims.
 - **Alternatives:** WebSearch results, mostly aggregator pages (AlternativeTo, selfhostyourself, vendor blogs), plus a few official sites. Confidence: **low to moderate** per entry, noted inline.
@@ -528,4 +528,4 @@ reader destinations are Grimmory and BookOrbit. BookshelfNG can separately send
 imports to BookLore's BookDrop review queue, so a BookshelfNG acquisition can
 reach BookLore without SeerrNG talking to BookLore directly. See the
 [SeerrNG reader-app settings](../using-seerr/settings/services.md) and
-[BookshelfNG BookLore integration](https://github.com/snapetech/bookshelfng#documentation).
+[BookshelfNG BookLore integration](https://github.com/snapetech-org/bookshelfng#documentation).

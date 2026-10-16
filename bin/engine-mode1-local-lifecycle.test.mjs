@@ -78,11 +78,11 @@ test('Mode 1 rejects a repository-local Git URL rewrite before fetching', (t) =>
   writeFileSync(join(source, 'tracked.txt'), 'candidate source\n');
   git(source, 'add', 'tracked.txt');
   git(source, 'commit', '-m', 'candidate source');
-  const originUrl = 'https://github.com/snapetech/seerrng.git';
+  const originUrl = 'https://github.com/snapetech-org/seerrng.git';
   git(source, 'remote', 'add', 'origin', originUrl);
 
   const candidate = {
-    repository: 'snapetech/seerrng',
+    repository: 'snapetech-org/seerrng',
     branch: 'main',
     commit: git(source, 'rev-parse', 'HEAD'),
     tree: git(source, 'rev-parse', 'HEAD^{tree}'),
@@ -163,7 +163,7 @@ test(
     git(source, 'add', 'tracked.txt');
     git(source, 'commit', '-m', 'remote base');
     git(source, 'tag', 'v1');
-    const originUrl = 'https://github.com/snapetech/seerrng.git';
+    const originUrl = 'https://github.com/snapetech-org/seerrng.git';
     git(source, 'remote', 'add', 'origin', originUrl);
     git(source, 'push', remote, 'main', '--tags');
     const remoteBase = git(source, 'rev-parse', 'HEAD');
@@ -180,7 +180,7 @@ test(
     git(source, 'update-ref', 'refs/remotes/origin/stale-local-ref', 'HEAD');
 
     const candidate = {
-      repository: 'snapetech/seerrng',
+      repository: 'snapetech-org/seerrng',
       branch: 'main',
       commit: git(source, 'rev-parse', 'HEAD'),
       tree: git(source, 'rev-parse', 'HEAD^{tree}'),

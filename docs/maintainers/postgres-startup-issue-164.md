@@ -5,7 +5,7 @@
 - Base: `a9dd1b5a64cd9ccabe59da198b0524a7886bb708` (`origin/main`).
 - Issue fix commit: `0980bc5d1db052f566cd97b46b98a89149a34952`.
 - Supporting packaging-fixture test commit: `e87fef1e4374eadf0b3e15667eb57f44ccc5a6ff`.
-- Upstream issue: https://github.com/snapetech/seerrng/issues/164.
+- Upstream issue: https://github.com/snapetech-org/seerrng/issues/164.
 - Pre-audit recovery archive: `/tmp/seerrng-issue164-preaudit-20261006.tar`.
 
 ## Root cause and changes

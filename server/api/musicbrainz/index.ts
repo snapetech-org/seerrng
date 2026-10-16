@@ -462,7 +462,8 @@ class MusicBrainz extends ExternalAPI {
       {},
       {
         headers: {
-          'User-Agent': 'SeerrNG/0.1.0 (https://github.com/snapetech/seerrng)',
+          'User-Agent':
+            'SeerrNG/0.1.0 (https://github.com/snapetech-org/seerrng)',
           Accept: 'application/json',
         },
         nodeCache: cacheManager.getCache('musicbrainz').data,
@@ -853,7 +854,8 @@ class MusicBrainz extends ExternalAPI {
         ...WIKIPEDIA_EXTRACT_HTTP_OPTIONS,
         headers: {
           Accept: 'application/json',
-          'User-Agent': 'SeerrNG/0.1.0 (https://github.com/snapetech/seerrng)',
+          'User-Agent':
+            'SeerrNG/0.1.0 (https://github.com/snapetech-org/seerrng)',
         },
       });
 

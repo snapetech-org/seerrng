@@ -6,7 +6,7 @@ the contributor's accepted visual/interaction contract.
 
 ## Inputs and checkpoint
 
-1. Fetch the authorized contributor branch and `snapetech/seerrng` main through
+1. Fetch the authorized contributor branch and `snapetech-org/seerrng` main through
    authenticated Git. Resolve both to full commit IDs. Verify remotes, branch
    ownership, a clean integration checkout, and the actual common ancestor.
    Record the IDs before editing. Do not infer provenance from `package.json`.
@@ -16,9 +16,9 @@ the contributor's accepted visual/interaction contract.
 3. Save recoverable refs/source and produce a three-way changed-file inventory.
    Do not overwrite a dirty checkout, discard contributor commits, or include
    live config/databases/secrets. Work in an isolated integration branch/worktree.
-4. Read `AGENTS.md`, both UI documents, `CONTRIBUTING.md`, the PR's acceptance and
-   verification record, and applicable task instructions completely. Inventory
-   current gate/test coverage and known unresolved work before resolving conflicts.
+4. Read both UI documents, `CONTRIBUTING.md`, the PR's acceptance and verification
+   record, and applicable task instructions completely. Inventory current
+   gate/test coverage and known unresolved work before resolving conflicts.
 5. Start the evidence record from
    [Interface Integration Checkpoint](interface-integration-checkpoint.md).
    The first review batch is not the complete PR scope: preserve Request-page

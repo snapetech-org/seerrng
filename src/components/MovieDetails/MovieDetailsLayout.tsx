@@ -9,8 +9,10 @@ import VideoRatings from '@app/components/MediaDetails/VideoRatings';
 import { subjectTagClassName } from '@app/components/MediaDetails/subjectTagStyle';
 import MediaSlider from '@app/components/MediaSlider';
 import useDetailDisclosurePins from '@app/hooks/useDetailDisclosurePins';
+import useSettings from '@app/hooks/useSettings';
 import useWatchStatus from '@app/hooks/useWatchStatus';
 import defineMessages from '@app/utils/defineMessages';
+import { getViewerAvailabilityPresentation } from '@app/utils/viewerAvailabilityPresentation';
 import type { RatingResponse } from '@server/api/ratings';
 import { MediaStatus } from '@server/constants/media';
 import type { MovieDetails } from '@server/models/Movie';
@@ -95,6 +97,7 @@ const MovieDetailsLayout = ({
   playbackActions,
 }: MovieDetailsLayoutProps) => {
   const intl = useIntl();
+  const settings = useSettings();
   const { data: watchedStatus } = useWatchStatus(
     'movie',
     data.id,
@@ -181,11 +184,23 @@ const MovieDetailsLayout = ({
     )?.name ??
     unavailable;
 
+  const standardAvailability = getViewerAvailabilityPresentation(
+    data.mediaInfo?.status,
+    settings.currentSettings.otherUsersAvailability,
+    data.mediaInfo?.viewerRequestCoverage?.standard
+  );
+  const fourKAvailability = getViewerAvailabilityPresentation(
+    data.mediaInfo?.status4k,
+    settings.currentSettings.otherUsersAvailability,
+    data.mediaInfo?.viewerRequestCoverage?.fourK
+  );
   const availableFormats = [
-    availableStatuses.has(data.mediaInfo?.status as MediaStatus)
+    availableStatuses.has(data.mediaInfo?.status as MediaStatus) &&
+    !standardAvailability.hidden
       ? 'HD'
       : undefined,
-    availableStatuses.has(data.mediaInfo?.status4k as MediaStatus)
+    availableStatuses.has(data.mediaInfo?.status4k as MediaStatus) &&
+    !fourKAvailability.hidden
       ? '4K'
       : undefined,
   ].filter(Boolean);

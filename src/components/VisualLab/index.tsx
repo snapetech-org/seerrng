@@ -6,6 +6,23 @@ import { useIntl } from 'react-intl';
 
 const messages = defineMessages('components.VisualLab', {
   title: 'Visual Lab',
+  titleText: 'Title Text',
+  titleTextDescription:
+    'Compare title fills, palettes, gradients, and text treatments.',
+  borders: 'Borders',
+  bordersDescription:
+    'Experiment with card borders, bevels, and edge treatments.',
+  buttons: 'Buttons',
+  buttonsDescription:
+    'Compare button palettes, fills, borders, and interaction treatments.',
+  seriesTestingPage: 'Series Testing Page',
+  seriesTestingDescription:
+    'Compare season and episode selection layouts inside the series details card.',
+  paletteTreatmentFilter: 'Palette treatment filter',
+  allPalettes: 'All',
+  solidPalette: 'Solid',
+  gradientPalette: 'Gradient',
+  metallicPalette: 'Metallic',
 });
 
 const formatTreatmentLabel = (treatmentClass: string) =>
@@ -288,8 +305,47 @@ const titleTextDocument = `<!doctype html>
   </body>
 </html>`;
 
-const visualLabIndexDocument = `<!doctype html>
-<html lang="en" class="dark" data-theme-mode="dark" data-theme-palette="seerr">
+const escapeHtml = (value: string) =>
+  value
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+
+const withDocumentTitle = (document: string, title: string) =>
+  document.replace(
+    /<h1 class="page-title">[^<]*<\/h1>/,
+    `<h1 class="page-title">${escapeHtml(title)}</h1>`
+  );
+
+const withPaletteFilterControls = (
+  document: string,
+  labels: Record<string, string>
+) =>
+  document.replace(
+    paletteFilterControls,
+    `<nav class="visual-lab-palette-filters" aria-label="${escapeHtml(labels.paletteTreatmentFilter)}">
+    <button class="app-button button-md visual-lab-filter-button" type="button" data-palette-filter="all" aria-pressed="true">${escapeHtml(labels.allPalettes)}</button>
+    <button class="app-button button-md visual-lab-filter-button" type="button" data-palette-filter="solid" aria-pressed="false">${escapeHtml(labels.solidPalette)}</button>
+    <button class="app-button button-md visual-lab-filter-button" type="button" data-palette-filter="gradiant" aria-pressed="false">${escapeHtml(labels.gradientPalette)}</button>
+    <button class="app-button button-md visual-lab-filter-button" type="button" data-palette-filter="metalic" aria-pressed="false">${escapeHtml(labels.metallicPalette)}</button>
+  </nav>`
+  );
+
+const withDocumentLocale = (document: string, locale: string) => {
+  const language = locale.replace(/_/g, '-');
+  const direction = language.startsWith('ar') ? 'rtl' : 'ltr';
+  return document.replace(
+    '<html lang="en"',
+    `<html lang="${escapeHtml(language)}" dir="${direction}"`
+  );
+};
+
+const visualLabIndexDocument = (
+  labels: Record<string, string>
+) => `<!doctype html>
+<html lang="${escapeHtml(labels.locale)}" dir="${escapeHtml(labels.direction)}" class="dark" data-theme-mode="dark" data-theme-palette="seerr">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -299,23 +355,23 @@ const visualLabIndexDocument = `<!doctype html>
     <main class="app-shell relative min-h-screen p-4">
       <div class="app-backdrop pointer-events-none fixed inset-0 h-full w-full"></div>
       <section class="relative z-10 mx-auto w-full max-w-4xl space-y-8">
-        <h1 class="page-title">Visual Lab</h1>
+        <h1 class="page-title">${escapeHtml(labels.title)}</h1>
         <div class="grid gap-6 sm:grid-cols-2">
           <a class="settings-main-card app-card-main block" href="/visual-lab/title-text" target="_top">
-            <h2 class="card-title">Title Text</h2>
-            <p>Compare title fills, palettes, gradients, and text treatments.</p>
+            <h2 class="card-title">${escapeHtml(labels.titleText)}</h2>
+            <p>${escapeHtml(labels.titleTextDescription)}</p>
           </a>
           <a class="settings-main-card app-card-main block" href="/visual-lab/borders" target="_top">
-            <h2 class="card-title">Borders</h2>
-            <p>Experiment with card borders, bevels, and edge treatments.</p>
+            <h2 class="card-title">${escapeHtml(labels.borders)}</h2>
+            <p>${escapeHtml(labels.bordersDescription)}</p>
           </a>
           <a class="settings-main-card app-card-main block" href="/visual-lab/buttons" target="_top">
-            <h2 class="card-title">Buttons</h2>
-            <p>Compare button palettes, fills, borders, and interaction treatments.</p>
+            <h2 class="card-title">${escapeHtml(labels.buttons)}</h2>
+            <p>${escapeHtml(labels.buttonsDescription)}</p>
           </a>
           <a class="settings-main-card app-card-main" href="/visual-lab/testing" target="_top">
-            <h2 class="card-title">Series Testing Page</h2>
-            <p>Compare season and episode selection layouts inside the series details card.</p>
+            <h2 class="card-title">${escapeHtml(labels.seriesTestingPage)}</h2>
+            <p>${escapeHtml(labels.seriesTestingDescription)}</p>
           </a>
         </div>
       </section>
@@ -693,22 +749,48 @@ const VisualLab = ({ view = 'index' }: VisualLabProps) => {
   // alternate palette pages cannot accidentally omit the admin redirect.
   useRouteGuard(Permission.ADMIN);
   const intl = useIntl();
-  const document =
-    view === 'title-text'
-      ? titleTextDocument
-      : view === 'borders'
-        ? bordersDocument
-        : view === 'buttons'
-          ? buttonsDocument
-          : visualLabIndexDocument;
   const pageTitle =
     view === 'title-text'
-      ? 'Title Text'
+      ? intl.formatMessage(messages.titleText)
       : view === 'borders'
-        ? 'Borders'
+        ? intl.formatMessage(messages.borders)
         : view === 'buttons'
-          ? 'Buttons'
+          ? intl.formatMessage(messages.buttons)
           : intl.formatMessage(messages.title);
+  const labels = Object.fromEntries(
+    Object.entries(messages).map(([key, message]) => [
+      key,
+      intl.formatMessage(message),
+    ])
+  ) as Record<string, string>;
+  labels.locale = intl.locale.replace(/_/g, '-');
+  labels.direction = labels.locale.startsWith('ar') ? 'rtl' : 'ltr';
+  const document =
+    view === 'title-text'
+      ? withDocumentLocale(
+          withPaletteFilterControls(
+            withDocumentTitle(titleTextDocument, pageTitle),
+            labels
+          ),
+          intl.locale
+        )
+      : view === 'borders'
+        ? withDocumentLocale(
+            withPaletteFilterControls(
+              withDocumentTitle(bordersDocument, pageTitle),
+              labels
+            ),
+            intl.locale
+          )
+        : view === 'buttons'
+          ? withDocumentLocale(
+              withPaletteFilterControls(
+                withDocumentTitle(buttonsDocument, pageTitle),
+                labels
+              ),
+              intl.locale
+            )
+          : visualLabIndexDocument(labels);
 
   return (
     <>

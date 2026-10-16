@@ -62,6 +62,7 @@ const RecentlyAddedSlider = () => {
             year={item.releaseDate?.slice(0, 4)}
             status={item.status}
             status4k={item.status4k}
+            viewerRequestCoverage={item.viewerRequestCoverage}
           />
         )),
     [currentSettings, media?.results]

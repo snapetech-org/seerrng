@@ -27,8 +27,8 @@ permissions:
   contents: read
 
 concurrency:
-  group: codeql-${{ github.event.pull_request.number || github.ref }}
-  cancel-in-progress: true
+  group: codeql-${{ github.run_id }}-${{ github.run_attempt }}
+  cancel-in-progress: false
 
 jobs:
   analyze:

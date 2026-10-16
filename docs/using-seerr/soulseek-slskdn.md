@@ -7,7 +7,7 @@ sidebar_position: 9
 # Soulseek through slskdN
 
 Lidarr can already use slskdN as a download client for albums. Connecting
-[slskdN](https://github.com/snapetech/slskdn) to SeerrNG directly adds three
+[slskdN](https://github.com/snapetech-org/slskdN) to SeerrNG directly adds three
 things Lidarr cannot do:
 
 - **Single-track requests.** Playlist imports list tracks with no confident
