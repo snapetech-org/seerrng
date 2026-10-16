@@ -9,8 +9,8 @@ permissions:
   contents: read
 
 concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: true
+  group: ${{ github.workflow }}-${{ github.run_id }}-${{ github.run_attempt }}
+  cancel-in-progress: false
 
 jobs:
   determine-tag-version:
@@ -25,7 +25,6 @@ jobs:
       - name: Checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
-          ssh-key: ${{ secrets.COMMIT_KEY }}
           fetch-depth: 0
           persist-credentials: false
 
@@ -54,7 +53,8 @@ jobs:
     if: github.ref == 'refs/heads/main'
     runs-on: [self-hosted, Linux, X64, seerrng]
     permissions:
-      contents: read
+      actions: write
+      contents: write
     needs: determine-tag-version
     env:
       TAG_VERSION: ${{ needs.determine-tag-version.outputs.tag_version }}
@@ -67,9 +67,8 @@ jobs:
       - name: Checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
-          ssh-key: ${{ secrets.COMMIT_KEY }}
           fetch-depth: 0
-          persist-credentials: false
+          persist-credentials: true
 
       - name: Set up Node.js
         uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
@@ -133,3 +132,9 @@ jobs:
         run: |
           git tag -- "$TAG_VERSION"
           git push origin "refs/tags/$TAG_VERSION:refs/tags/$TAG_VERSION"
+
+      - name: Dispatch release workflow
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REPO: ${{ github.repository }}
+        run: gh workflow run release.yml --repo "$REPO" --ref main -f "tag=$TAG_VERSION"
