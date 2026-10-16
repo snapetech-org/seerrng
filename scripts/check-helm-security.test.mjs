@@ -84,7 +84,7 @@ test('chart defaults to the current application release', () => {
   const statefulSet = findDocument(documents, 'StatefulSet');
   assert.equal(
     statefulSet.spec.template.spec.containers[0].image,
-    `ghcr.io/snapetech/seerrng:${chart.appVersion}`
+    `ghcr.io/snapetech-org/seerrng:${chart.appVersion}`
   );
 });
 

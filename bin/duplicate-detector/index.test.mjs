@@ -12,7 +12,7 @@ const validIndex = () => ({
       number: 1,
       title: 'A bounded issue',
       state: 'open',
-      url: 'https://github.com/snapetech/seerrng/issues/1',
+      url: 'https://github.com/snapetech-org/seerrng/issues/1',
       body_preview: 'Details',
       labels: ['bug'],
     },

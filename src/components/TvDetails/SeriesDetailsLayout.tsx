@@ -29,6 +29,10 @@ import useWatchStatus from '@app/hooks/useWatchStatus';
 import defineMessages from '@app/utils/defineMessages';
 import { getTmdbPosterImageUrl } from '@app/utils/imageCache';
 import { resolveCanonicalPlaybackSelection } from '@app/utils/playbackSelection';
+import {
+  getViewerAvailabilityPresentation,
+  isViewerSeasonShared,
+} from '@app/utils/viewerAvailabilityPresentation';
 import type { RatingResponse } from '@server/api/ratings';
 import { MediaStatus } from '@server/constants/media';
 import { MediaServerType } from '@server/constants/server';
@@ -89,6 +93,9 @@ const messages = defineMessages('components.TvDetails.Layout', {
     'Add this series to an existing shared collection on your media server. Collection editing permission is required.',
   mediaServerTooltip:
     'Show or hide season and episode selection and the media server action area without changing your selection.',
+  availabilityHidden: 'Hidden',
+  sharedAvailability: 'Shared: {status}',
+  sharedFormat: '{quality} (shared)',
 });
 
 interface SeriesDetailsLayoutProps {
@@ -294,7 +301,39 @@ const SeriesDetailsLayout = ({
     availablePlaybackItemIds,
     selectedPlaybackItemIds
   );
+  const selectedPlaybackSeasonNumbers = new Set(
+    playbackCatalog?.groups
+      .filter((group) =>
+        group.items.some((item) => effectivePlaybackItemIds.includes(item.id))
+      )
+      .map((group) => group.index) ?? []
+  );
+  const selectedPlaybackIsShared = [...selectedPlaybackSeasonNumbers].some(
+    (seasonNumber) =>
+      isViewerSeasonShared(
+        data.mediaInfo?.viewerRequestCoverage,
+        currentSettings.otherUsersAvailability,
+        seasonNumber,
+        effectiveSelectedQuality === '4k' ? 'fourK' : 'standard'
+      )
+  );
+  const selectedPlaybackAction = selectedPlaybackIsShared
+    ? undefined
+    : playbackActions?.(
+        effectivePlaybackItemIds,
+        effectiveSelectedQuality === '4k'
+      );
   const unavailable = intl.formatMessage(messages.notAvailable);
+  const standardAvailability = getViewerAvailabilityPresentation(
+    data.mediaInfo?.status,
+    currentSettings.otherUsersAvailability,
+    data.mediaInfo?.viewerRequestCoverage?.standard
+  );
+  const fourKAvailability = getViewerAvailabilityPresentation(
+    data.mediaInfo?.status4k,
+    currentSettings.otherUsersAvailability,
+    data.mediaInfo?.viewerRequestCoverage?.fourK
+  );
   const creators = data.createdBy;
   const featuredCrew = [
     ...creators.map((person) => ({ ...person, job: 'Creator' })),
@@ -344,12 +383,16 @@ const SeriesDetailsLayout = ({
       (language) => language.iso_639_1 === data.originalLanguage
     )?.name ??
     unavailable;
+  const sharedFormat = (quality: string, shared: boolean) =>
+    shared ? intl.formatMessage(messages.sharedFormat, { quality }) : quality;
   const availableFormats = [
-    availableStatuses.has(data.mediaInfo?.status as MediaStatus)
-      ? 'HD'
+    availableStatuses.has(data.mediaInfo?.status as MediaStatus) &&
+    !standardAvailability.hidden
+      ? sharedFormat('HD', standardAvailability.shared)
       : undefined,
-    availableStatuses.has(data.mediaInfo?.status4k as MediaStatus)
-      ? '4K'
+    availableStatuses.has(data.mediaInfo?.status4k as MediaStatus) &&
+    !fourKAvailability.hidden
+      ? sharedFormat('4K', fourKAvailability.shared)
       : undefined,
   ].filter(Boolean);
   const mediaAndFormat = `Series${
@@ -525,11 +568,29 @@ const SeriesDetailsLayout = ({
                       {intl.formatMessage(messages.hd)}:
                     </dt>
                     <dd className="card-table-value">
-                      <AvailabilityValue status={data.mediaInfo?.status}>
-                        {getAvailabilityText(
-                          data.mediaInfo?.status,
-                          unavailable
-                        )}
+                      <AvailabilityValue
+                        tone={
+                          standardAvailability.shared ? 'shared' : undefined
+                        }
+                        status={
+                          standardAvailability.hidden
+                            ? undefined
+                            : data.mediaInfo?.status
+                        }
+                      >
+                        {standardAvailability.hidden
+                          ? intl.formatMessage(messages.availabilityHidden)
+                          : standardAvailability.shared
+                            ? intl.formatMessage(messages.sharedAvailability, {
+                                status: getAvailabilityText(
+                                  data.mediaInfo?.status,
+                                  unavailable
+                                ),
+                              })
+                            : getAvailabilityText(
+                                data.mediaInfo?.status,
+                                unavailable
+                              )}
                       </AvailabilityValue>
                     </dd>
                     {show4kAvailability && (
@@ -538,11 +599,32 @@ const SeriesDetailsLayout = ({
                           {intl.formatMessage(messages.ultraHd)}:
                         </dt>
                         <dd className="card-table-value">
-                          <AvailabilityValue status={data.mediaInfo?.status4k}>
-                            {getAvailabilityText(
-                              data.mediaInfo?.status4k,
-                              unavailable
-                            )}
+                          <AvailabilityValue
+                            tone={
+                              fourKAvailability.shared ? 'shared' : undefined
+                            }
+                            status={
+                              fourKAvailability.hidden
+                                ? undefined
+                                : data.mediaInfo?.status4k
+                            }
+                          >
+                            {fourKAvailability.hidden
+                              ? intl.formatMessage(messages.availabilityHidden)
+                              : fourKAvailability.shared
+                                ? intl.formatMessage(
+                                    messages.sharedAvailability,
+                                    {
+                                      status: getAvailabilityText(
+                                        data.mediaInfo?.status4k,
+                                        unavailable
+                                      ),
+                                    }
+                                  )
+                                : getAvailabilityText(
+                                    data.mediaInfo?.status4k,
+                                    unavailable
+                                  )}
                           </AvailabilityValue>
                         </dd>
                       </>
@@ -940,13 +1022,12 @@ const SeriesDetailsLayout = ({
                       onChange={setSelectedQuality}
                       label={intl.formatMessage(messages.quality)}
                     />
-                    <div className="app-action-row">
-                      {playbackActions?.(
-                        effectivePlaybackItemIds,
-                        effectiveSelectedQuality === '4k'
-                      )}
-                    </div>
-                    {playbackActions && (
+                    {selectedPlaybackAction != null && (
+                      <div className="app-action-row">
+                        {selectedPlaybackAction}
+                      </div>
+                    )}
+                    {selectedPlaybackAction != null && (
                       <div className="app-action-row">
                         <PlayOnDeviceButton
                           mediaId={data.mediaInfo?.id}

@@ -44,6 +44,10 @@ import {
   loadOffsetCatalog,
 } from '@app/utils/bulkCatalogPagination';
 import defineMessages from '@app/utils/defineMessages';
+import {
+  getMusicServiceQuality,
+  isMusicServiceForQuality,
+} from '@app/utils/musicService';
 import { Transition } from '@headlessui/react';
 import { ArrowDownTrayIcon, XMarkIcon } from '@heroicons/react/24/outline';
 import { MediaRequestStatus, MediaStatus } from '@server/constants/media';
@@ -459,7 +463,7 @@ const BulkRequestModal = ({
     mediaType === 'music' ? '/api/v1/service/lidarr' : null
   );
   const musicQualityService = musicServices?.find((server) =>
-    server.name.toLowerCase().includes(musicQuality)
+    isMusicServiceForQuality(server, musicQuality)
   );
   const selectedMusicService = musicServices?.find(
     (server) => server.id === requestOverrides?.server
@@ -1135,7 +1139,7 @@ const BulkRequestModal = ({
                       <span aria-hidden="true" />
                     )}
                     <span className="media-inset-poster-column-heading text-left">
-                      Book
+                      {intl.formatMessage(globalMessages.book)}
                     </span>
                   </div>
                   <div className="scrollable-card -mr-3 max-h-[228px] space-y-0.5 overflow-y-auto pt-1 pr-3">
@@ -1275,9 +1279,9 @@ const BulkRequestModal = ({
             <div className="mt-2 flex items-center">
               <MediaQualitySelect
                 value={
-                  selectedMusicService?.name.toLowerCase().includes('flac')
+                  getMusicServiceQuality(selectedMusicService) === 'flac'
                     ? 'flac'
-                    : selectedMusicService?.name.toLowerCase().includes('mp3')
+                    : getMusicServiceQuality(selectedMusicService) === 'mp3'
                       ? 'mp3'
                       : musicQuality
                 }
@@ -1288,7 +1292,7 @@ const BulkRequestModal = ({
                     disabled:
                       !!musicServices &&
                       !musicServices.some((service) =>
-                        service.name.toLowerCase().includes('mp3')
+                        isMusicServiceForQuality(service, 'mp3')
                       ),
                   },
                   {
@@ -1297,7 +1301,7 @@ const BulkRequestModal = ({
                     disabled:
                       !!musicServices &&
                       !musicServices.some((service) =>
-                        service.name.toLowerCase().includes('flac')
+                        isMusicServiceForQuality(service, 'flac')
                       ),
                   },
                 ]}

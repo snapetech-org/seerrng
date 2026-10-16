@@ -27,7 +27,7 @@ Foreseer Desktop is a third-party project, not a SeerrNG fork or bundled
 component. SeerrNG implements its public
 [protocol v1 contract](https://github.com/selmant/foreseerr-desktop/blob/main/protocol/protocol-v1.json).
 For a SeerrNG connection or playback handoff issue, use the
-[SeerrNG issue tracker](https://github.com/snapetech/seerrng/issues). Report
+[SeerrNG issue tracker](https://github.com/snapetech-org/seerrng/issues). Report
 desktop installation, runtime, or windowing issues to the
 [Foreseer Desktop maintainers](https://github.com/selmant/foreseerr-desktop/issues).
 
@@ -51,4 +51,4 @@ If native playback does not start, confirm that you are signed in to SeerrNG,
 the account is linked to the expected Jellyfin user, SeerrNG is served over
 HTTPS, and the desktop client is using the same SeerrNG address. Then use browser
 playback or report the SeerrNG integration problem in the
-[SeerrNG issue tracker](https://github.com/snapetech/seerrng/issues).
+[SeerrNG issue tracker](https://github.com/snapetech-org/seerrng/issues).

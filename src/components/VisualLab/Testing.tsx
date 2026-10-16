@@ -11,6 +11,7 @@ import useRouteGuard from '@app/hooks/useRouteGuard';
 import useSettings from '@app/hooks/useSettings';
 import { Permission, useUser } from '@app/hooks/useUser';
 import useWatchStatus from '@app/hooks/useWatchStatus';
+import defineMessages from '@app/utils/defineMessages';
 import type {
   SeasonWithEpisodes,
   TvDetails as TvDetailsType,
@@ -18,7 +19,31 @@ import type {
 import axios from 'axios';
 import Link from 'next/link';
 import { useMemo, useState, type SyntheticEvent } from 'react';
+import { useIntl } from 'react-intl';
 import useSWR from 'swr';
+
+const messages = defineMessages('components.VisualLab.Testing', {
+  pageTitle: 'Series Testing Page',
+  loadingDetails: 'Loading Series Details',
+  seasonEpisodeLayout: 'Season And Episode Layout',
+  showLayout: 'Show season and episode layout {number}.',
+  page: 'Page {number}',
+  episodesErrorTitle: 'Episodes Could Not Be Loaded',
+  episodesErrorDescription:
+    'Episode information could not be fetched, please try again.',
+  retryEpisodes: 'Fetch the seasons and episodes again.',
+  seriesErrorTitle: 'Series Details Could Not Be Loaded',
+  seriesErrorDescription:
+    'Series details could not be fetched, please try again.',
+  retrySeries: 'Fetch the series details again.',
+  specials: 'Specials',
+  season: 'Season {number}',
+  untitled: 'Untitled',
+});
+
+const visualLabMessages = defineMessages('components.VisualLab', {
+  title: 'Visual Lab',
+});
 
 const seriesId = 113962;
 const pages = [1, 6] as const;
@@ -41,6 +66,7 @@ const guardCardAction = (event: SyntheticEvent) => {
 };
 
 export default function Testing() {
+  const intl = useIntl();
   useRouteGuard(Permission.ADMIN);
   const { hasPermission } = useUser();
   const authorized = hasPermission(Permission.ADMIN);
@@ -111,8 +137,10 @@ export default function Testing() {
           seasonNumber: season.seasonNumber,
           name:
             season.seasonNumber === 0
-              ? 'Specials'
-              : `Season ${formatTreeNumber(season.seasonNumber)}`,
+              ? intl.formatMessage(messages.specials)
+              : intl.formatMessage(messages.season, {
+                  number: formatTreeNumber(season.seasonNumber),
+                }),
           episodes: (
             episodeData?.find(
               (item) => item.seasonNumber === season.seasonNumber
@@ -120,7 +148,7 @@ export default function Testing() {
           ).map((episode) => ({
             id: episode.id,
             episodeNumber: episode.episodeNumber,
-            name: episode.name || 'Untitled',
+            name: episode.name || intl.formatMessage(messages.untitled),
             releaseDate: episode.airDate || undefined,
             available: available.has(episode.episodeNumber),
             watched: watchedSeason?.episodes.find(
@@ -129,7 +157,7 @@ export default function Testing() {
           })),
         };
       }),
-    [seasons, catalog, watched, episodeData]
+    [seasons, catalog, watched, episodeData, intl]
   );
 
   if (!authorized) return null;
@@ -143,11 +171,11 @@ export default function Testing() {
     >
       {episodeError ? (
         <PageErrorMessage
-          title="Episodes Could Not Be Loaded"
-          description="Episode information could not be fetched, please try again."
+          title={intl.formatMessage(messages.episodesErrorTitle)}
+          description={intl.formatMessage(messages.episodesErrorDescription)}
           retry={{
             onClick: () => reloadEpisodes(),
-            tooltip: 'Fetch the seasons and episodes again.',
+            tooltip: intl.formatMessage(messages.retryEpisodes),
             busy: episodesLoading,
           }}
         />
@@ -165,42 +193,45 @@ export default function Testing() {
 
   return (
     <>
-      <PageTitle title="Series Testing Page" />
+      <PageTitle title={intl.formatMessage(messages.pageTitle)} />
       <div className="page-title-row">
-        <h1 className="page-title">Series Testing Page</h1>
+        <h1 className="page-title">{intl.formatMessage(messages.pageTitle)}</h1>
         <PageStatus
           active={
             isValidating || episodesLoading || catalogLoading || watchedLoading
           }
-          label="Loading Series Details"
+          label={intl.formatMessage(messages.loadingDetails)}
         />
       </div>
-      <nav className="app-filter-row" aria-label="Season And Episode Layout">
+      <nav
+        className="app-filter-row"
+        aria-label={intl.formatMessage(messages.seasonEpisodeLayout)}
+      >
         <Link
           href="/visual-lab"
           className="app-button app-button-default button-standard"
         >
-          Visual Lab
+          {intl.formatMessage(visualLabMessages.title)}
         </Link>
         {pages.map((number) => (
           <Button
             key={number}
             className={`app-filter-button ${page === number ? 'app-filter-button-active' : 'app-filter-button-idle'}`}
             aria-pressed={page === number}
-            title={`Show season and episode layout ${number}.`}
+            title={intl.formatMessage(messages.showLayout, { number })}
             onClick={() => setPage(number)}
           >
-            Page {number}
+            {intl.formatMessage(messages.page, { number })}
           </Button>
         ))}
       </nav>
       {error && !data && (
         <PageErrorMessage
-          title="Series Details Could Not Be Loaded"
-          description="Series details could not be fetched, please try again."
+          title={intl.formatMessage(messages.seriesErrorTitle)}
+          description={intl.formatMessage(messages.seriesErrorDescription)}
           retry={{
             onClick: () => mutate(),
-            tooltip: 'Fetch the series details again.',
+            tooltip: intl.formatMessage(messages.retrySeries),
             busy: isValidating,
           }}
         />

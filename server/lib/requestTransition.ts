@@ -233,6 +233,9 @@ export const transitionPendingMediaRequest = (
               request.bookFormat,
               request.is4k
             );
+            if (request.quotaException) {
+              request.ignoreQuota = true;
+            }
           }
 
           request.status = newStatus;

@@ -46,6 +46,7 @@ import {
 import { StarIcon as SolidStarIcon } from '@heroicons/react/24/solid';
 import { MediaStatus } from '@server/constants/media';
 import type { Watchlist } from '@server/entity/Watchlist';
+import type { ViewerRequestCoverage } from '@server/lib/viewerRequestCoverage';
 import type { AlbumResult, MediaType } from '@server/models/Search';
 import type { SportarrLibraryState } from '@server/models/Sportarr';
 import axios from 'axios';
@@ -99,6 +100,7 @@ interface TitleCardProps {
   sportarrState?: SportarrLibraryState;
   discoverNavigationContextId?: string;
   onOpen?: () => void;
+  viewerRequestCoverage?: ViewerRequestCoverage;
 }
 
 const messages = defineMessages('components.TitleCard', {
@@ -171,6 +173,7 @@ const TitleCard = ({
   sportarrState,
   discoverNavigationContextId,
   onOpen,
+  viewerRequestCoverage,
 }: TitleCardProps) => {
   const isTouch = useIsTouch();
   const router = useRouter();
@@ -208,6 +211,8 @@ const TitleCard = ({
     inProgress4k,
     availableQualities,
     qualityStatuses,
+    viewerHasRequestedStandard: viewerRequestCoverage?.standard,
+    viewerHasRequested4k: viewerRequestCoverage?.fourK,
   });
   const { primary: primaryStatusBadge, secondary: secondaryStatusBadge } =
     getTitleCardStatusBadgeSlots(statusBadges);
@@ -1087,6 +1092,9 @@ const TitleCard = ({
                       status={primaryStatusBadge.status}
                       quality={primaryStatusBadge.quality}
                       inProgress={primaryStatusBadge.inProgress}
+                      viewerHasRequestedCopy={
+                        primaryStatusBadge.viewerHasRequestedCopy
+                      }
                       shrink
                     />
                   )}
@@ -1139,6 +1147,9 @@ const TitleCard = ({
                       status={secondaryStatusBadge.status}
                       quality={secondaryStatusBadge.quality}
                       inProgress={secondaryStatusBadge.inProgress}
+                      viewerHasRequestedCopy={
+                        secondaryStatusBadge.viewerHasRequestedCopy
+                      }
                       shrink
                     />
                   )}

@@ -133,6 +133,7 @@ export const canPromotePendingDestinationRequests = (
   if (
     !firstMatch ||
     firstMatch.status !== MediaRequestStatus.PENDING ||
+    (firstMatch.quotaException && !actor.canManageRequests) ||
     matches.some((match) => match?.id !== firstMatch.id)
   ) {
     return false;

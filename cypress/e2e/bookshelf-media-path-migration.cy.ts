@@ -118,7 +118,7 @@ describe('Bookshelf media path migration', () => {
       .should('have.attr', 'href')
       .and(
         'eq',
-        'https://github.com/snapetech/seerrng/blob/main/docs/using-seerr/bookshelf-media-path-migration.md'
+        'https://github.com/snapetech-org/seerrng/blob/main/docs/using-seerr/bookshelf-media-path-migration.md'
       );
     cy.contains('span', 'Page 1 of 2').should('be.visible');
     cy.get('button[aria-label="Select Author 101"]').should('not.exist');

@@ -6,6 +6,7 @@ import { MediaRequest } from '@server/entity/MediaRequest';
 import type { User } from '@server/entity/User';
 import { Watchlist } from '@server/entity/Watchlist';
 import { restrictMediaRelationsForUser } from '@server/lib/mediaResponse';
+import { attachViewerRequestCoverage } from '@server/lib/viewerRequestCoverage';
 
 export const hydrateMediaSummaryRelations = async (
   mediaItems: Media[],
@@ -66,6 +67,7 @@ export const hydrateMediaSummaryRelations = async (
           .addOrderBy('issue.id', 'DESC')
           .getMany()
       : [],
+    attachViewerRequestCoverage(mediaItems, user),
   ]);
   const requestsByMediaId = new Map<number, MediaRequest[]>();
   for (const request of activeRequests) {

@@ -1,7 +1,8 @@
 import { MediaStatus } from '@server/constants/media';
 import type { ReactNode } from 'react';
 
-export type MediaAvailabilityTone = 'available' | 'processing' | 'unavailable';
+export type MediaAvailabilityTone =
+  'available' | 'processing' | 'shared' | 'unavailable';
 
 export const getMediaAvailabilityTone = (
   status: MediaStatus | undefined
@@ -21,6 +22,7 @@ export const getMediaAvailabilityTone = (
 const toneClasses: Record<MediaAvailabilityTone, string> = {
   available: 'text-emerald-300',
   processing: 'text-amber-300',
+  shared: 'detail-availability-shared',
   unavailable: 'text-red-300',
 };
 

@@ -124,8 +124,8 @@ deploy:seerr.home:
 
 .github_publication_defaults:
   variables:
-    GITHUB_MIRROR_URL: 'git@github.com:snapetech/seerrng.git'
-    GITHUB_REPOSITORY: 'snapetech/seerrng'
+    GITHUB_MIRROR_URL: 'git@github.com:snapetech-org/seerrng.git'
+    GITHUB_REPOSITORY: 'snapetech-org/seerrng'
 
 # Historical external-publication definitions remain for reference only.
 # GitHub Actions is the sole publisher for tags, releases, and public registries.

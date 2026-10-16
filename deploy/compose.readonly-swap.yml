@@ -1,6 +1,6 @@
 services:
   seerrng:
-    image: ghcr.io/snapetech/seerrng:${SEERRNG_TAG:-main}
+    image: ghcr.io/snapetech-org/seerrng:${SEERRNG_TAG:-main}
     container_name: ${SEERRNG_CONTAINER_NAME:-seerrng-readonly}
     restart: unless-stopped
     init: true

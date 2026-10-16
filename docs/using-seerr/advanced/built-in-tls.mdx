@@ -122,7 +122,7 @@ docker run -d \
   -p 5056:5056 \
   -v /path/to/appdata/config:/app/config \
   --restart unless-stopped \
-  ghcr.io/snapetech/seerrng:latest
+  ghcr.io/snapetech-org/seerrng:latest
 ```
 
 Open `https://seerr.home.arpa:5056` or
@@ -135,7 +135,7 @@ redirects to HTTPS.
 ```yaml
 services:
   seerr:
-    image: ghcr.io/snapetech/seerrng:latest
+    image: ghcr.io/snapetech-org/seerrng:latest
     init: true
     environment:
       PORT: 5055

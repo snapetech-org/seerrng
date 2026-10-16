@@ -25,8 +25,8 @@ permissions:
   contents: read
 
 concurrency:
-  group: test-docs-${{ github.event.pull_request.number || github.ref }}
-  cancel-in-progress: true
+  group: test-docs-${{ github.run_id }}-${{ github.run_attempt }}
+  cancel-in-progress: false
 
 jobs:
   test-build:

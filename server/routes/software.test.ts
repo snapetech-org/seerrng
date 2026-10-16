@@ -880,7 +880,7 @@ describe('software request routes', () => {
         assetStreaming: true,
       },
     }));
-    mock.method(ROMarrNGAPI.prototype, 'getPlatforms', async () => {
+    mock.method(ROMarrNGAPI.prototype, 'getCatalogPlatforms', async () => {
       throw Object.assign(new AxiosError('private provider body'), {
         code: 'ECONNREFUSED',
       });
@@ -898,7 +898,7 @@ describe('software request routes', () => {
 
     assert.strictEqual(response.status, 502);
     assert.match(response.body.error, /ROMarrNG refused the connection/);
-    assert.match(response.body.error, /platform list/);
+    assert.match(response.body.error, /catalog platform list/);
     assert.match(response.body.error, /hostname and port/);
     assert.doesNotMatch(
       response.body.error,
@@ -906,7 +906,7 @@ describe('software request routes', () => {
     );
   });
 
-  it('accepts ROMarrNG v2 while testing edited settings and reports the system count', async () => {
+  it('tests ROMarrNG through its integration endpoints without requesting the admin platform list', async () => {
     const app = createOpenApiValidatedSettingsApp();
     mock.method(ROMarrNGAPI.prototype, 'getHandshake', async () => ({
       service: 'romarr',
@@ -922,23 +922,16 @@ describe('software request routes', () => {
         datCatalog: true,
       },
     }));
-    let forceFresh: boolean | undefined;
-    mock.method(
-      ROMarrNGAPI.prototype,
-      'getPlatforms',
-      async (skipCache = false) => {
-        forceFresh = skipCache;
-        return [
-          {
-            slug: 'nes',
-            name: 'Nintendo Entertainment System',
-            media: 'rom',
-            extensions: ['.nes'],
-            max_size_mb: 512,
-          },
-        ];
-      }
-    );
+    let catalogPlatformsChecked = false;
+    let adminPlatformListRequested = false;
+    mock.method(ROMarrNGAPI.prototype, 'getCatalogPlatforms', async () => {
+      catalogPlatformsChecked = true;
+      return [{ id: 130, name: 'Nintendo Entertainment System' }];
+    });
+    mock.method(ROMarrNGAPI.prototype, 'getPlatforms', async () => {
+      adminPlatformListRequested = true;
+      throw new Error('The integration key cannot access this endpoint.');
+    });
     mock.method(ROMarrNGAPI.prototype, 'getDatCatalogPlatforms', async () => ({
       results: [],
       unmatchedDatNames: [],
@@ -955,11 +948,12 @@ describe('software request routes', () => {
       });
 
     assert.strictEqual(response.status, 200);
-    assert.strictEqual(forceFresh, true);
+    assert.strictEqual(catalogPlatformsChecked, true);
+    assert.strictEqual(adminPlatformListRequested, false);
     assert.strictEqual(response.body.apiVersion, 1);
     assert.strictEqual(response.body.requestContractVersion, 2);
     assert.strictEqual(response.body.capabilities.datCatalog, true);
-    assert.strictEqual(response.body.platformCount, 1);
+    assert.strictEqual('platformCount' in response.body, false);
     assert.strictEqual(response.body.datCatalogPlatformCount, 0);
   });
 

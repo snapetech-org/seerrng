@@ -59,14 +59,56 @@ export const getIssueMediaAndFormatLabel = (
   }
 };
 
-const isAvailableStatus = (status?: MediaStatus) =>
+export const isIssueReportableStatus = (
+  status?: MediaStatus,
+  includePartiallyAvailable = false
+) =>
   status === MediaStatus.AVAILABLE ||
-  status === MediaStatus.PARTIALLY_AVAILABLE;
+  status === MediaStatus.PROCESSING ||
+  (includePartiallyAvailable && status === MediaStatus.PARTIALLY_AVAILABLE);
 
-export const getAvailableIssueQualities = (mediaInfo?: {
+type IssueMediaStatus = {
   status?: MediaStatus;
   status4k?: MediaStatus;
-}): IssueQuality[] => [
-  ...(isAvailableStatus(mediaInfo?.status) ? (['hd'] as const) : []),
-  ...(isAvailableStatus(mediaInfo?.status4k) ? (['4k'] as const) : []),
+};
+
+export const canReportMovieIssue = (
+  mediaInfo?: IssueMediaStatus,
+  canReport4k = false
+): boolean =>
+  isIssueReportableStatus(mediaInfo?.status) ||
+  (canReport4k && isIssueReportableStatus(mediaInfo?.status4k));
+
+export const canReportSeriesIssue = (
+  mediaInfo?: IssueMediaStatus,
+  canReport4k = false
+): boolean =>
+  isIssueReportableStatus(mediaInfo?.status, true) ||
+  (canReport4k && isIssueReportableStatus(mediaInfo?.status4k, true));
+
+export const getReportableIssueQualities = (
+  mediaInfo?: IssueMediaStatus
+): IssueQuality[] => [
+  ...(isIssueReportableStatus(mediaInfo?.status, true)
+    ? (['hd'] as const)
+    : []),
+  ...(isIssueReportableStatus(mediaInfo?.status4k, true)
+    ? (['4k'] as const)
+    : []),
 ];
+
+export const getReportableIssueSeasons = (
+  seasons:
+    | {
+        seasonNumber: number;
+        status?: MediaStatus;
+        status4k?: MediaStatus;
+      }[]
+    | undefined,
+  is4k: boolean
+): number[] =>
+  (seasons ?? [])
+    .filter((season) =>
+      isIssueReportableStatus(is4k ? season.status4k : season.status, true)
+    )
+    .map((season) => season.seasonNumber);

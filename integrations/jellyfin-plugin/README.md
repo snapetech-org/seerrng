@@ -33,7 +33,7 @@ This plugin targets the Jellyfin 10.11 ABI on .NET 9 and builds against the
 current Jellyfin 10.11.11 SDK. Once a SeerrNG release includes the plugin
 archive, add this repository in Jellyfin's **Dashboard → Plugins → Repositories**:
 
-`https://github.com/snapetech/seerrng/releases/latest/download/seerrng-jellyfin-plugin-manifest.json`
+`https://github.com/snapetech-org/seerrng/releases/latest/download/seerrng-jellyfin-plugin-manifest.json`
 
 For a source build, run:
 

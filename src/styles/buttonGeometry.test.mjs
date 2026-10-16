@@ -168,6 +168,18 @@ test('poster availability and watched badges share a translucent poster surface'
     css,
     /\.poster-control\.poster-control-available\s*\{[^}]*background-color: hsl\([^)]*var\(--poster-control-background-opacity\)/s
   );
+  assert.match(
+    css,
+    /\.poster-control\.poster-control-shared-availability\s*\{[^}]*var\(--palette-purple\)/s
+  );
+  assert.match(
+    css,
+    /\.app-badge-shared-availability\s*\{[^}]*var\(--palette-purple\)/s
+  );
+  assert.match(
+    css,
+    /\.detail-availability-shared\s*\{[^}]*var\(--palette-purple-light\)/s
+  );
   assert.doesNotMatch(
     css.match(/\.watched-status-badge\s*\{([^}]+)\}/)?.[1] ?? '',
     /\bbg-black(?!\/35)\b/
@@ -1848,8 +1860,15 @@ test('Visual Lab Testing compares retained local trees inside the actual main de
   const details = component('TvDetails/index.tsx');
   const layout = component('TvDetails/SeriesDetailsLayout.tsx');
   assert.match(testing, /const pages = \[1, 6\] as const/);
-  assert.match(testing, /<PageTitle title="Series Testing Page"/);
-  assert.match(testing, /<h1 className="page-title">Series Testing Page<\/h1>/);
+  assert.match(testing, /pageTitle: 'Series Testing Page'/);
+  assert.match(
+    testing,
+    /<PageTitle title=\{intl\.formatMessage\(messages\.pageTitle\)\} \/>/
+  );
+  assert.match(
+    testing,
+    /<h1 className="page-title">\{intl\.formatMessage\(messages\.pageTitle\)\}<\/h1>/
+  );
   assert.match(testing, /@app\/components\/MediaDetails\/SeasonEpisodeTree/);
   assert.match(testing, /releaseDate: episode\.airDate \|\| undefined/);
   assert.match(testing, /data-list-width="two-thirds"/);
