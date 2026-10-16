@@ -6,7 +6,7 @@ sidebar_position: 8
 
 # Live TV and recordings
 
-When [IPTV Tunerr](https://github.com/snapetech/iptvtunerr) is connected,
+When [IPTV Tunerr](https://github.com/snapetech-org/iptvtunerr) is connected,
 movie and series pages show an **On Live TV** button whenever the title is in
 the Tunerr guide. It lists upcoming airings with their channel and time, and
 lets people request a recording of one airing or, for series, every airing.

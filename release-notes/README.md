@@ -1,6 +1,7 @@
 # Release-note fragments
 
-Add one Markdown fragment for every user-facing pull request. The release
+For any user-facing change, add one structured fragment under `release-notes/` describing it. A
+single fragment may cover related user-facing changes in the same pull request. Keep shipped fragments unchanged. The release
 workflow carries these fragments into `CHANGELOG.md`, GitHub Releases, and the
 Discord release announcement.
 
@@ -41,16 +42,10 @@ shipped history. Preview the exact notes that will be published with:
 pnpm release-notes:preview --base origin/main --head HEAD
 ```
 
-If a pull request is entirely internal and has no user-visible effect, select
-the internal-only release-note option in the pull request template or add
-`release-note: none` to the description. Do not use that opt-out to avoid
-describing a feature, bug fix, security change, operational behavior, or
-user-facing documentation change.
-
-For an internal-only commit pushed directly to `main` (including a merge whose
-new diff contains only internal work), add `release-note: none` to the commit
-message. Push validation uses the commit message when no pull-request body is
-available.
+For internal-only work, no fragment is needed. In a pull request, either select the internal-only
+option in the template or put `release-note: none` on its own line in the description. When a
+direct push or merge check reads commit messages, put the same marker on its own line in the
+commit message.
 
 Dependabot prefixes ordinary dependency-update titles with the same marker so
 push validation retains it after a merge. Grouped CodeQL-action updates use the

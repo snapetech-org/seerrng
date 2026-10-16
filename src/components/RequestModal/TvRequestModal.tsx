@@ -983,7 +983,8 @@ const TvRequestModal = ({
                       {intl.formatMessage(messages.mediaAndFormat)}:
                     </dt>
                     <dd className="card-table-value">
-                      Series · {effectiveIs4k ? '4K' : 'HD'}
+                      {intl.formatMessage(globalMessages.tvshow)} ·{' '}
+                      {effectiveIs4k ? '4K' : 'HD'}
                     </dd>
                     <dt className="card-table-heading">
                       {intl.formatMessage(messages.releaseDate)}:
@@ -1186,7 +1187,7 @@ const TvRequestModal = ({
                 )}
                 <Button
                   as="a"
-                  href="https://github.com/snapetech/seerrng/blob/main/docs/using-seerr/jellyfin-watch-ahead.md"
+                  href="https://github.com/snapetech-org/seerrng/blob/main/docs/using-seerr/jellyfin-watch-ahead.md"
                   target="_blank"
                   rel="noreferrer"
                   buttonType="ghost"

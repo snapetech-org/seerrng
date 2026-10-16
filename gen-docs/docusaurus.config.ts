@@ -42,7 +42,7 @@ const config: Config = {
           sidebarPath: './sidebars.ts',
           routeBasePath: '/',
           path: '../docs',
-          editUrl: 'https://github.com/snapetech/seerrng/edit/main/docs/',
+          editUrl: 'https://github.com/snapetech-org/seerrng/edit/main/docs/',
           docItemComponent: '@theme/ApiItem',
           async sidebarItemsGenerator({
             defaultSidebarItemsGenerator,
@@ -80,7 +80,7 @@ const config: Config = {
               groupPathsBy: 'tag',
             },
             downloadUrl:
-              'https://raw.githubusercontent.com/snapetech/seerrng/refs/heads/main/seerr-api.yml',
+              'https://raw.githubusercontent.com/snapetech-org/seerrng/refs/heads/main/seerr-api.yml',
             hideSendButton: true,
           } satisfies OpenApiPlugin.Options,
         },
@@ -131,7 +131,7 @@ const config: Config = {
           position: 'right',
         },
         {
-          href: 'https://github.com/snapetech/seerrng',
+          href: 'https://github.com/snapetech-org/seerrng',
           label: 'GitHub',
           position: 'right',
         },
@@ -162,7 +162,7 @@ const config: Config = {
             },
             {
               label: 'GitHub',
-              href: 'https://github.com/snapetech/seerrng',
+              href: 'https://github.com/snapetech-org/seerrng',
             },
           ],
         },
@@ -175,7 +175,7 @@ const config: Config = {
             },
             {
               label: 'GitHub Issues',
-              href: 'https://github.com/snapetech/seerrng/issues',
+              href: 'https://github.com/snapetech-org/seerrng/issues',
             },
           ],
         },

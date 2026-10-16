@@ -5,12 +5,11 @@ Build plan for connecting SeerrNG to the Snapetech projects it does not use yet
 projects it already integrates (BookshelfNG, ChaptarrNG, ROMarrNG, QuestarrNG).
 
 Written 2026-10-06. Endpoint facts were read from each project's source or docs
-on that date; re-check them before starting a phase. Confidence labels follow
-`AGENTS.md`.
+on that date; re-check them before starting a phase.
 
-Read `AGENTS.md`, `docs/maintainers/ui-style-standard.md`, and
-`docs/maintainers/ui-fix-it.md` before implementing any phase. This plan does
-not override their verification or UI rules.
+For interface work, read `docs/maintainers/ui-style-standard.md` and
+`docs/maintainers/ui-fix-it.md` before implementing a phase. This plan does not
+override their verification or UI rules.
 
 ## Ground rules
 
@@ -428,10 +427,10 @@ feature covers movies, series, and books.
 
 ## Phase 7: ReadMeABook and per-user book integration
 
-Status: merged in [PR #171](https://github.com/snapetech/seerrng/pull/171) as
+Status: merged in [PR #171](https://github.com/snapetech-org/seerrng/pull/171) as
 `800745e107b2d044045484e74d0f0686239a3e05` and included in the published
-`v3.54.0` release. The later current-main candidate for [PR #180](https://github.com/snapetech/seerrng/pull/180), which retained this integration, passed its hosted validation run
-[`37858283340`](https://github.com/snapetech/seerrng/actions/runs/37858283340).
+`v3.54.0` release. The later current-main candidate for [PR #180](https://github.com/snapetech-org/seerrng/pull/180), which retained this integration, passed its hosted validation run
+[`37858283340`](https://github.com/snapetech-org/seerrng/actions/runs/37858283340).
 An earlier macOS ARM64 tooling failure remains a historical failed receipt;
 the later hosted candidate passed. No live ReadMeABook or Hardcover service
 round-trip, desktop/narrow visual review, or physical Swipe interaction review

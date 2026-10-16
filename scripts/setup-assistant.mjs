@@ -11,7 +11,7 @@ import { pathToFileURL } from 'node:url';
 export const apps = {
   seerrng: {
     title: 'SeerrNG',
-    image: 'ghcr.io/snapetech/seerrng:latest',
+    image: 'ghcr.io/snapetech-org/seerrng:latest',
     port: '5055',
     volumes: ['seerrng-config:/app/config'],
     integrations: [],

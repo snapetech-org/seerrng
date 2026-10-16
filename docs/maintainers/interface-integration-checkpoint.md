@@ -1,15 +1,15 @@
 # Interface Integration Checkpoint
 
 This is the living evidence appendix for the forward-merge guide, not a release
-approval or a complete site-audit claim. Read `AGENTS.md`, UI Style Standard and
-UI Fix-It first. Preserve earlier accepted work while reviewing small batches.
+approval or a complete site-audit claim. Read the UI Style Standard and UI Fix-It
+first. Preserve earlier accepted work while reviewing small batches.
 Never infer visual inspection or live-provider evidence from test success or a
 journal's implementation note. Historical statements below that a human or visual
 review was pending record the evidence state at that checkpoint; they do not create
 a second approval gate after the maintainer explicitly directs merge or release.
 This appendix is chronological evidence. Only the latest dated entry describes
 current status; no older imperative, command binding, or pending gate controls
-current work. Normative procedure lives in `AGENTS.md`, the UI guides, and
+current work. Normative procedure lives in the UI guides, `CONTRIBUTING.md`, and
 `tools/validation-engine/README.md`.
 
 ## Current maintainer direction — October 6, 2026
@@ -1237,7 +1237,7 @@ Jellyfin/Sonarr APIs, not a live service.
 
 #### IMDb watchlist WAF report and latest-main sync — October 8, 2026
 
-Issue [#179](https://github.com/snapetech/seerrng/issues/179) followed #174:
+Issue [#179](https://github.com/snapetech-org/seerrng/issues/179) followed #174:
 the reporter's migrated public profile URL is accepted, but server-side sync
 receives an AWS WAF HTTP 202 browser challenge and reports that the public page
 was unavailable. The same URL is viewable in the reporter's browser, which does
@@ -1282,7 +1282,7 @@ ReadMeABook Phase 7 was merged in PR #171 as
 `800745e107b2d044045484e74d0f0686239a3e05` and shipped in the published
 `v3.54.0` release. PR #180's later current-main candidate retained these changes
 and passed hosted validation in run
-[`37858283340`](https://github.com/snapetech/seerrng/actions/runs/37858283340).
+[`37858283340`](https://github.com/snapetech-org/seerrng/actions/runs/37858283340).
 The earlier local macOS ARM64 tooling failure remains a historical failed
 receipt; the later hosted candidate passed. No live ReadMeABook or Hardcover
 round-trip, desktop/narrow visual review, or physical Swipe interaction review

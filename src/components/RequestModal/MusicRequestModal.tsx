@@ -541,7 +541,8 @@ const MusicRequestModal = ({
                     {intl.formatMessage(messages.mediaAndFormat)}:
                   </dt>
                   <dd className="card:col-start-3 card:row-start-1 m-0 truncate">
-                    Music · Album
+                    {intl.formatMessage(globalMessages.music)} ·{' '}
+                    {intl.formatMessage(globalMessages.album)}
                   </dd>
                   <dt className="card:col-start-1 card:row-start-2 font-medium text-gray-100">
                     {intl.formatMessage(messages.releaseDate)}:

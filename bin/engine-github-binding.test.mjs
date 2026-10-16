@@ -219,7 +219,12 @@ test('the weighted Unit and Cypress shard matrices consume the sealed plan outpu
   const unit = ci.workflow.jobs['unit-test'];
   const cypress = ci.workflow.jobs.cypress;
   assert.equal(unit.strategy['fail-fast'], false);
-  assert.equal(unit.strategy['max-parallel'], 4);
+  assert.equal(
+    unit.strategy['max-parallel'],
+    "${{ (((github.event_name == 'push' && github.ref == 'refs/heads/main') || " +
+      "(github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main')) && " +
+      "vars.TRUSTED_MAIN_RUNNERS_ENABLED == 'true' && 1) || 4 }}"
+  );
   assert.equal(
     unit.strategy.matrix,
     '${{ fromJSON(needs.engine-plan.outputs.unitMatrix) }}'

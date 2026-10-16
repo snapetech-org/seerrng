@@ -11,6 +11,10 @@ approval and searching through downloading, importing, and library
 availability. Expand **History** on a card to review its recorded status
 changes.
 
+Request explanations use the selected interface language. Custom details
+reported by connected services remain as supplied so their diagnostic wording
+is preserved.
+
 ## Find a request
 
 Use the summary filters to view all requests, completed requests, active work,

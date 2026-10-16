@@ -1,5 +1,8 @@
 blank_issues_enabled: false
 contact_links:
+  - name: Report a security vulnerability privately
+    url: https://github.com/snapetech-org/seerrng/security/advisories/new
+    about: Use GitHub's private reporting form. Do not post vulnerability details in a public issue.
   - name: 💬 Support via Discord
     url: https://discord.gg/5PyXBfvS6T
     about: Chat with other users and the SeerrNG dev team
