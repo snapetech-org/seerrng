@@ -254,6 +254,14 @@ test('trusted PR metadata workflows remain outside the untrusted execution DAG',
   assert.ok(ci.workflow.jobs['engine-reconcile']);
 });
 
+test('merge-conflict labeling preserves each workflow run', () => {
+  const { workflow } = readWorkflow('conflict_labeler');
+
+  assert.match(workflow.concurrency.group, /github\.run_id/);
+  assert.match(workflow.concurrency.group, /github\.run_attempt/);
+  assert.equal(workflow.concurrency['cancel-in-progress'], false);
+});
+
 test('production entrypoints keep distributed Mode 3 orchestration dormant', () => {
   const packageJson = JSON.parse(
     readFileSync(path.join(root, 'package.json'), 'utf8')
