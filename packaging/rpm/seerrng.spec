@@ -3,7 +3,7 @@ Version:        0.1.0
 Release:        1%{?dist}
 Summary:        Standalone media request and discovery service
 License:        MIT
-URL:            https://github.com/snapetech/seerrng
+URL:            https://github.com/snapetech-org/seerrng
 Source0:        seerrng-v%{version}-linux-x64.tar.gz
 Source1:        seerrng.service
 Source2:        seerrng.env

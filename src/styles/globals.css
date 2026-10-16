@@ -7176,6 +7176,28 @@
     color: hsl(119 52% 74%);
   }
 
+  .poster-control.poster-control-shared-availability {
+    border-color: color-mix(in srgb, var(--palette-purple) 90%, transparent);
+    background-color: hsl(
+      258 90% 10% / var(--poster-control-background-opacity)
+    );
+    color: var(--palette-purple-light);
+  }
+
+  .app-badge-shared-availability {
+    border: 1px solid color-mix(in srgb, var(--palette-purple) 90%, transparent);
+    background-color: color-mix(
+      in srgb,
+      var(--palette-purple-dark) 35%,
+      transparent
+    );
+    color: var(--palette-purple-light);
+  }
+
+  .detail-availability-shared {
+    color: var(--palette-purple-light);
+  }
+
   .poster-control.poster-control-pending,
   .poster-control.poster-control-watchlist {
     border-color: color-mix(in srgb, var(--palette-yellow) 90%, transparent);
@@ -7877,6 +7899,18 @@
     @apply col-span-full m-0 mt-[5px] w-full text-sm leading-5 font-normal;
     color: rgb(var(--theme-control-text) / 0.76);
     text-align: left;
+  }
+
+  .settings-form-row-compact-description {
+    row-gap: 0;
+  }
+
+  .settings-form-row-compact-description > label {
+    @apply text-sm leading-5 font-semibold;
+  }
+
+  .settings-form-row-compact-description .settings-form-row-description {
+    @apply mt-[5px] text-xs leading-4;
   }
 
   .settings-form-label-line {

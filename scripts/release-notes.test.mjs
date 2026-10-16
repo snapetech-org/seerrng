@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict';
-import { execFileSync } from 'node:child_process';
+import { execFileSync, spawnSync } from 'node:child_process';
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
@@ -233,12 +233,14 @@ test('release-note range discovery distinguishes additions from edits', () => {
       false
     );
 
-    const updatedPreview = execFileSync(
+    const updatedPreview = spawnSync(
       process.execPath,
       [previewScript, '--base', firstHead, '--head', secondHead],
       { cwd: repository, encoding: 'utf8' }
     );
-    assert.match(updatedPreview, /cached metadata/u);
+    assert.equal(updatedPreview.status, 0, updatedPreview.stderr);
+    assert.equal(updatedPreview.stderr, '');
+    assert.match(updatedPreview.stdout, /cached metadata/u);
 
     execFileSync(
       process.execPath,

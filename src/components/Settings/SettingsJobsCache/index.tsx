@@ -28,6 +28,7 @@ import { Fragment, useReducer, useState } from 'react';
 import type { MessageDescriptor } from 'react-intl';
 import { FormattedRelativeTime, useIntl } from 'react-intl';
 import useSWR from 'swr';
+import { getMinuteScheduleOptions, getScheduleMinutes } from './jobSchedule';
 
 const messages: { [messageName: string]: MessageDescriptor } = defineMessages(
   'components.Settings.SettingsJobsCache',
@@ -180,7 +181,10 @@ const jobModalReducer = (
         job: action.job,
         scheduleDays: 1,
         scheduleHours: 1,
-        scheduleMinutes: 5,
+        scheduleMinutes:
+          action.job?.interval === 'minutes'
+            ? getScheduleMinutes(action.job.cronSchedule)
+            : 5,
         scheduleSeconds: 30,
       };
 
@@ -445,7 +449,9 @@ const SettingsJobs = () => {
                         })
                       }
                     >
-                      {[3, 5, 10, 15, 20, 30, 60].map((v) => (
+                      {getMinuteScheduleOptions(
+                        jobModalState.scheduleMinutes
+                      ).map((v) => (
                         <option value={v} key={`jobScheduleMinutes-${v}`}>
                           {intl.formatMessage(
                             messages.editJobScheduleSelectorMinutes,
@@ -828,9 +834,7 @@ const SettingsJobs = () => {
               </Table.TD>
             </tr>
             <tr>
-              <Table.TD>
-                {intl.formatMessage(messages.usersavatars)} (avatar)
-              </Table.TD>
+              <Table.TD>{intl.formatMessage(messages.usersavatars)}</Table.TD>
               <Table.TD>
                 {intl.formatNumber(
                   cacheData?.imageCache.avatar.imageCount ?? 0

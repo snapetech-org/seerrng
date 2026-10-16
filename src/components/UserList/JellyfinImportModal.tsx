@@ -37,7 +37,7 @@ const messages = defineMessages('components.UserList', {
   importedfromJellyfin:
     '<strong>{userCount}</strong> {mediaServerName} {userCount, plural, one {user} other {users}} imported successfully!',
   importedAndRefreshed:
-    '{createdCount, plural, =0 {No new users imported} one {# new user imported} other {# new users imported}}. {refreshedCount, plural, =0 {No existing users refreshed} one {# existing user refreshed} other {# existing users refreshed}}.',
+    '{createdCount, plural, =0 {No new users imported} zero {No new users imported} one {# new user imported} two {# new users imported} few {# new users imported} many {# new users imported} other {# new users imported}}. {refreshedCount, plural, =0 {No existing users refreshed} zero {No existing users refreshed} one {# existing user refreshed} two {# existing users refreshed} few {# existing users refreshed} many {# existing users refreshed} other {# existing users refreshed}}.',
   importedUsersNoPassword:
     'Imported users do not have a {applicationTitle} password set. If you disable {mediaServerName} sign-in, they will need to set a password from their profile or via a password reset link.',
   user: 'User',

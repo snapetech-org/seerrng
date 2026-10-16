@@ -1,3 +1,4 @@
+import { OtherUserAvailabilityMode } from '@server/constants/availability';
 import { DEFAULT_ENABLED_MEDIA_CATEGORIES } from '@server/constants/mediaCategories';
 import { MediaServerType } from '@server/constants/server';
 import type { PublicSettingsResponse } from '@server/interfaces/api/settingsInterfaces';
@@ -17,6 +18,7 @@ const defaultSettings: PublicSettingsResponse = {
   hideAvailable: false,
   hideBlocklisted: false,
   hideRequested: false,
+  otherUsersAvailability: OtherUserAvailabilityMode.SHOW,
   localLogin: true,
   mediaServerLogin: true,
   movie4kEnabled: false,

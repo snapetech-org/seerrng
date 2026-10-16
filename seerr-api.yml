@@ -2354,6 +2354,12 @@ components:
         hideAvailable:
           type: boolean
           example: false
+        otherUsersAvailability:
+          type: string
+          enum: [show, distinguish, hide]
+          default: show
+          description: Controls how movie and TV availability tied to another user's approved or completed request is presented.
+          example: show
         hideRequested:
           type: boolean
           example: false
@@ -3810,6 +3816,12 @@ components:
               type: boolean
             game:
               type: boolean
+        otherUsersAvailability:
+          type: string
+          enum: [show, distinguish, hide]
+          default: show
+          description: Controls how availability tied to another user's approved or completed movie or TV request is presented to the current viewer.
+          example: show
     MovieResult:
       type: object
       required:
@@ -5359,6 +5371,37 @@ components:
           type: number
           example: 0
           description: Availability of the media. 1 = `UNKNOWN`, 2 = `PENDING`, 3 = `PROCESSING`, 4 = `PARTIALLY_AVAILABLE`, 5 = `AVAILABLE`, 6 = `DELETED`
+        status4k:
+          type: number
+          example: 0
+          description: Availability of the 4K media copy. Uses the same values as `status`.
+        viewerRequestCoverage:
+          type: object
+          readOnly: true
+          description: Whether the authenticated viewer has an approved or completed request for the movie or TV copy; contains no requester identity and does not represent media-server authorization.
+          required:
+            - standard
+            - fourK
+          properties:
+            standard:
+              type: boolean
+            fourK:
+              type: boolean
+            seasons:
+              type: array
+              items:
+                type: object
+                required:
+                  - seasonNumber
+                  - standard
+                  - fourK
+                properties:
+                  seasonNumber:
+                    type: number
+                  standard:
+                    type: boolean
+                  fourK:
+                    type: boolean
         requests:
           type: array
           readOnly: true
@@ -5479,6 +5522,10 @@ components:
         - $ref: '#/components/schemas/RadarrSettings'
         - type: object
           properties:
+            musicQuality:
+              type: string
+              enum: [mp3, flac]
+              nullable: true
             activeMetadataProfileId:
               type: number
               example: 1
@@ -8294,7 +8341,7 @@ paths:
                   $ref: '#/components/schemas/SonarrSettings'
     post:
       summary: Create Sonarr instance
-      description: Creates a new Sonarr instance from the request body.
+      description: Creates a new Sonarr instance from the request body. When an anime quality profile is selected, SeerrNG verifies that profile against Sonarr before saving when the server is reachable.
       tags:
         - settings
       requestBody:
@@ -8310,6 +8357,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/SonarrSettings'
+        '422':
+          description: The selected anime quality profile does not exist on the Sonarr server.
   /settings/sonarr/test:
     post:
       summary: Test Sonarr configuration
@@ -8337,7 +8386,7 @@ paths:
   /settings/sonarr/{sonarrId}:
     put:
       summary: Update Sonarr instance
-      description: Updates an existing Sonarr instance with the provided values.
+      description: Updates an existing Sonarr instance with the provided values. When an anime quality profile is selected, SeerrNG verifies that profile against Sonarr before saving when the server is reachable.
       tags:
         - settings
       parameters:
@@ -8360,6 +8409,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/SonarrSettings'
+        '422':
+          description: The selected anime quality profile does not exist on the Sonarr server.
     delete:
       summary: Delete Sonarr instance
       description: Deletes an existing Sonarr instance based on the sonarrId parameter.

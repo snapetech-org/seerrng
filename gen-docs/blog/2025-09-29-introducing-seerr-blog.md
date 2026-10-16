@@ -4,7 +4,7 @@ description: The official Seerr blog for release notes, technical updates, and c
 slug: welcome
 authors: [fallenbagel, gauthier-th]
 tags: [announcement, seerr, blog]
-image: https://raw.githubusercontent.com/snapetech/seerrng/refs/heads/main/gen-docs/static/img/logo_full.svg
+image: https://raw.githubusercontent.com/snapetech-org/seerrng/refs/heads/main/gen-docs/static/img/logo_full.svg
 hide_table_of_contents: false
 ---
 

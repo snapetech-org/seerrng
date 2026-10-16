@@ -3,12 +3,12 @@ kubeVersion: '>=1.23.0-0'
 name: seerr-chart
 description: SeerrNG Helm chart for Kubernetes
 type: application
-version: 1.0.108
-# renovate: image=ghcr.io/snapetech/seerrng
+version: 1.0.110
+# renovate: image=ghcr.io/snapetech-org/seerrng
 appVersion: 'v3.58.0'
 maintainers:
   - name: Snapetech
     url: https://github.com/snapetech
 sources:
-  - https://github.com/snapetech/seerrng/tree/main/charts/seerr-chart
-home: https://github.com/snapetech/seerrng
+  - https://github.com/snapetech-org/seerrng/tree/main/charts/seerr-chart
+home: https://github.com/snapetech-org/seerrng

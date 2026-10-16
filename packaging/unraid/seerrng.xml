@@ -1,25 +1,25 @@
 <?xml version="1.0"?>
 <Container version="2">
   <Name>SeerrNG</Name>
-  <Repository>ghcr.io/snapetech/seerrng:latest</Repository>
-  <Registry>https://ghcr.io/snapetech/seerrng</Registry>
+  <Repository>ghcr.io/snapetech-org/seerrng:latest</Repository>
+  <Registry>https://ghcr.io/snapetech-org/seerrng</Registry>
   <Network>bridge</Network>
   <Shell>bash</Shell>
   <Privileged>false</Privileged>
-  <Icon>https://raw.githubusercontent.com/snapetech/seerrng/main/public/android-chrome-512x512.png</Icon>
+  <Icon>https://raw.githubusercontent.com/snapetech-org/seerrng/main/public/android-chrome-512x512.png</Icon>
   <WebUI>http://[IP]:[PORT:5055]/</WebUI>
   <Overview>Self-hosted requests and discovery for movies, TV, music, books, comics, magazines, ROMs, and PC games, with optional integrations including BookshelfNG, Mylar3, Kapowarr, LazyLibrarian, ROMarrNG, and QuestarrNG.</Overview>
-  <Description>SeerrNG extends the Seerr request workflow to music, ebooks, audiobooks, comics, magazines, ROMs, and PC games. This Community Apps template installs SeerrNG itself. BookshelfNG, ROMarrNG, and QuestarrNG are optional standalone NG forks with their own repositories and Unraid templates; they also work without SeerrNG. LazyLibrarian, Mylar3, and Kapowarr are third-party apps with existing Community Apps listings, not Snapetech forks. Install only the optional services you use and configure their integrations in SeerrNG. See https://github.com/snapetech/seerrng/blob/main/docs/getting-started/third-parties/unraid.mdx for the companion template links. A one-project Compose alternative is available at https://github.com/snapetech/seerrng/tree/main/packaging/unraid. Comic requests target full volumes, with older issue searches handled by Mylar3 or Kapowarr. This template uses the latest stable GHCR image and persists the database, settings, logs, cache, and TLS material under /app/config. The image intentionally runs as the non-root node user with UID 1000 and GID 1000, so the mapped host directory must be writable by that UID and GID. Configure built-in HTTPS from Settings &gt; Network; the optional HTTPS listener is exposed on port 5056. Use a reverse proxy for public access rather than exposing the administration interface directly to the Internet.</Description>
-  <Support>https://github.com/snapetech/seerrng/issues</Support>
-  <Project>https://github.com/snapetech/seerrng</Project>
-  <TemplateURL>https://raw.githubusercontent.com/snapetech/seerrng/main/packaging/unraid/seerrng.xml</TemplateURL>
-  <ReadMe>https://github.com/snapetech/seerrng/blob/main/README.md</ReadMe>
+  <Description>SeerrNG extends the Seerr request workflow to music, ebooks, audiobooks, comics, magazines, ROMs, and PC games. This Community Apps template installs SeerrNG itself. BookshelfNG, ROMarrNG, and QuestarrNG are optional standalone NG forks with their own repositories and Unraid templates; they also work without SeerrNG. LazyLibrarian, Mylar3, and Kapowarr are third-party apps with existing Community Apps listings, not Snapetech forks. Install only the optional services you use and configure their integrations in SeerrNG. See https://github.com/snapetech-org/seerrng/blob/main/docs/getting-started/third-parties/unraid.mdx for the companion template links. A one-project Compose alternative is available at https://github.com/snapetech-org/seerrng/tree/main/packaging/unraid. Comic requests target full volumes, with older issue searches handled by Mylar3 or Kapowarr. This template uses the latest stable GHCR image and persists the database, settings, logs, cache, and TLS material under /app/config. The image intentionally runs as the non-root node user with UID 1000 and GID 1000, so the mapped host directory must be writable by that UID and GID. Configure built-in HTTPS from Settings &gt; Network; the optional HTTPS listener is exposed on port 5056. Use a reverse proxy for public access rather than exposing the administration interface directly to the Internet.</Description>
+  <Support>https://github.com/snapetech-org/seerrng/issues</Support>
+  <Project>https://github.com/snapetech-org/seerrng</Project>
+  <TemplateURL>https://raw.githubusercontent.com/snapetech-org/seerrng/main/packaging/unraid/seerrng.xml</TemplateURL>
+  <ReadMe>https://github.com/snapetech-org/seerrng/blob/main/README.md</ReadMe>
   <Category>MediaApp:Video Status:Stable</Category>
   <ExtraSearchTerms>seerrng seerr jellyseerr overseerr plex jellyfin emby requests movies tv music books ebooks audiobooks comics magazines radarr sonarr lidarr bookshelf bookshelfng readarr chaptarr chaptarrng mylar3 kapowarr lazylibrarian romarrng questarrng roms games</ExtraSearchTerms>
   <Changes>Updated supported media workflows and SeerrNG integration references.</Changes>
   <License>MIT License</License>
   <Requires>Requires Docker, network access for metadata and external service integrations, and a persistent host directory for /app/config. Set the host directory ownership to UID 1000 and GID 1000 before the first start because the image does not run as root.</Requires>
-  <Screenshot>https://raw.githubusercontent.com/snapetech/seerrng/main/public/readme-discover-covers.jpg</Screenshot>
+  <Screenshot>https://raw.githubusercontent.com/snapetech-org/seerrng/main/public/readme-discover-covers.jpg</Screenshot>
   <ExtraParams>--init --restart=unless-stopped</ExtraParams>
 
   <Config Name="Web UI Port" Target="5055" Default="5055" Mode="tcp" Description="HTTP port for the SeerrNG web interface." Type="Port" Display="always" Required="true" Mask="false">5055</Config>

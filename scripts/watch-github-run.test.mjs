@@ -12,7 +12,7 @@ test('retries a transient job-list error while the child run is active', async (
   const messages = [];
   let watchAttempts = 0;
 
-  await watchGitHubRun('snapetech/seerrng', 123, {
+  await watchGitHubRun('snapetech-org/seerrng', 123, {
     runGitHub: async (args) => {
       calls.push(args);
       if (args[0] === 'run') {
@@ -37,7 +37,7 @@ test('retries a transient job-list error while the child run is active', async (
     'watch',
     '123',
     '--repo',
-    'snapetech/seerrng',
+    'snapetech-org/seerrng',
     '--interval',
     '15',
     '--exit-status',
@@ -49,7 +49,7 @@ test('retries when both watch and run-status calls hit transient server errors',
   let watchAttempts = 0;
   let statusAttempts = 0;
 
-  await watchGitHubRun('snapetech/seerrng', 456, {
+  await watchGitHubRun('snapetech-org/seerrng', 456, {
     runGitHub: async (args) => {
       if (args[0] === 'run') {
         watchAttempts += 1;
@@ -75,7 +75,7 @@ test('retries when both watch and run-status calls hit transient server errors',
 
 test('preserves a failed child conclusion instead of retrying it as an API error', async () => {
   await assert.rejects(
-    watchGitHubRun('snapetech/seerrng', 789, {
+    watchGitHubRun('snapetech-org/seerrng', 789, {
       runGitHub: async (args) => {
         if (args[0] === 'run') {
           throw transientError(502);
@@ -91,7 +91,7 @@ test('preserves a failed child conclusion instead of retrying it as an API error
 
 test('rejects child failures returned by gh run watch', async () => {
   await assert.rejects(
-    watchGitHubRun('snapetech/seerrng', 321, {
+    watchGitHubRun('snapetech-org/seerrng', 321, {
       runGitHub: async (args) => {
         if (args[0] === 'run') {
           throw new Error('workflow failed');

@@ -3,6 +3,7 @@ import {
   isValidMusicBrainzResourceId,
   normalizeMusicBrainzId,
 } from '@server/lib/externalIds';
+import { getMusicQualityFromLabels } from '@server/lib/musicQuality';
 import { runWithServarrServiceSnapshot } from '@server/lib/serviceAdmission';
 import type { LidarrSettings } from '@server/lib/settings';
 
@@ -15,12 +16,8 @@ export interface MusicTrackAvailability {
 
 const getQuality = (
   service: Pick<LidarrSettings, 'activeProfileName' | 'name'>
-): MusicTrackQuality | undefined => {
-  const label = `${service.activeProfileName} ${service.name}`.toUpperCase();
-  if (label.includes('FLAC')) return 'flac';
-  if (label.includes('MP3')) return 'mp3';
-  return undefined;
-};
+): MusicTrackQuality | undefined =>
+  getMusicQualityFromLabels(service.activeProfileName, service.name);
 
 export type MusicTrackAvailabilityLoader = (
   mbId: string,

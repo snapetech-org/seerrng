@@ -878,7 +878,7 @@ const BookRequestModal = ({
                     {intl.formatMessage(messages.mediaAndFormat)}:
                   </dt>
                   <dd className="card:col-start-3 card:row-start-1 m-0 truncate">
-                    Book · {formatLabel}
+                    {intl.formatMessage(globalMessages.book)} · {formatLabel}
                   </dd>
                   <dt className="card:col-start-1 card:row-start-2 font-medium text-gray-100">
                     {intl.formatMessage(messages.firstPublished)}:

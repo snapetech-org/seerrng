@@ -23,11 +23,11 @@ guide](./dependency-forks.md).
 | TV | [Sonarr](https://github.com/Sonarr/Sonarr) | Searches, imports, and tracks series and episode requests. |
 | Sports leagues | [Sportarr](https://github.com/Sportarr/Sportarr) | Searches sports leagues and requests them using the configured quality profile and library defaults. |
 | Music | [Lidarr](https://github.com/Lidarr/Lidarr) | Searches, imports, and tracks artist and album requests. |
-| Books and audiobooks | [BookshelfNG](https://github.com/snapetech/bookshelfng) or [ChaptarrNG](https://github.com/snapetech/chaptarrng) | Recommended SeerrNG-compatible book managers. Either can serve both formats from one instance; add one SeerrNG service entry for each format. Other Readarr-compatible services may work, but do not provide the NG-specific behavior listed below. |
+| Books and audiobooks | [BookshelfNG](https://github.com/snapetech-org/bookshelfng) or [ChaptarrNG](https://github.com/snapetech-org/chaptarrng) | Recommended SeerrNG-compatible book managers. Either can serve both formats from one instance; add one SeerrNG service entry for each format. Other Readarr-compatible services may work, but do not provide the NG-specific behavior listed below. |
 | Comics | [Issuarr](https://github.com/issuarr/issuarr) (recommended for new setups), [Mylar3](https://github.com/MylarComics/mylar3) (existing connections remain supported), [Kapowarr](https://github.com/Casvt/Kapowarr), or [BackIssue](https://backissue.app/) | Connect one or more supported comic services, then choose a default destination for requests. Add Issuarr or Mylar3 through the existing **Mylar3** service type; Kapowarr and BackIssue use their own search sources and download flows. |
 | Magazines | [LazyLibrarian](https://github.com/llninja/LazyLibrarian) | Searches and tracks magazine requests. |
-| PC games | [QuestarrNG](https://github.com/snapetech/QuestarrNG) | Provides the IGDB catalog and acquires PC game requests. |
-| Emulation ROMs | [ROMarrNG](https://github.com/snapetech/ROMarrNG) | Provides supported systems and acquires ROM requests. Configure each available system as Retro or Modern in SeerrNG. |
+| PC games | [QuestarrNG](https://github.com/snapetech-org/QuestarrNG) | Provides the IGDB catalog and acquires PC game requests. |
+| Emulation ROMs | [ROMarrNG](https://github.com/snapetech-org/ROMarrNG) | Provides supported systems and acquires ROM requests. Configure each available system as Retro or Modern in SeerrNG. |
 
 Prowlarr is an optional indexer manager. It can provide configured indexers to
 compatible acquisition apps and power SeerrNG's manual indexer search. A
@@ -51,10 +51,10 @@ Use these container images when adding the forks directly to Compose:
 
 | Fork | SeerrNG-specific behavior | Container image | Container port |
 | --- | --- | --- | --- |
-| [BookshelfNG](https://github.com/snapetech/bookshelfng) | Standalone Readarr-style manager with one database for ebook and audiobook formats; its SeerrNG API routes and availability counts are format-specific. [Upstream comparison](https://github.com/snapetech/bookshelfng/blob/main/docs/capabilities-and-compatibility.md) | `ghcr.io/snapetech/bookshelfng:hardcover` | `8787` |
-| [ChaptarrNG](https://github.com/snapetech/chaptarrng) | Standalone Chaptarr manager with a built-in direct-download option; SeerrNG adds capability discovery, format-scoped API access, paged scans, and a restricted key. [Upstream comparison](https://github.com/snapetech/chaptarrng/blob/main/docs/FORK_FEATURES.md) | `ghcr.io/snapetech/chaptarrng:latest` | `8789` |
-| [QuestarrNG](https://github.com/snapetech/QuestarrNG) | Standalone PC-game manager; SeerrNG uses its IGDB catalog and request-scoped acquisition and file-delivery contract. [Upstream comparison](https://github.com/snapetech/QuestarrNG/blob/main/docs/FORK_CHANGES.md) | `ghcr.io/snapetech/questarrng:latest` | `5000` |
-| [ROMarrNG](https://github.com/snapetech/ROMarrNG) | Standalone ROM manager; SeerrNG uses its versioned request API, optional IGDB and DAT catalogs, and request-scoped file delivery. [Upstream comparison](https://github.com/snapetech/ROMarrNG/blob/main/docs/UPSTREAM-PARITY.md) | `ghcr.io/snapetech/romarrng:latest` | `6868` |
+| [BookshelfNG](https://github.com/snapetech-org/bookshelfng) | Standalone Readarr-style manager with one database for ebook and audiobook formats; its SeerrNG API routes and availability counts are format-specific. [Upstream comparison](https://github.com/snapetech-org/bookshelfng/blob/main/docs/capabilities-and-compatibility.md) | `ghcr.io/snapetech/bookshelfng:hardcover` | `8787` |
+| [ChaptarrNG](https://github.com/snapetech-org/chaptarrng) | Standalone Chaptarr manager with a built-in direct-download option; SeerrNG adds capability discovery, format-scoped API access, paged scans, and a restricted key. [Upstream comparison](https://github.com/snapetech-org/chaptarrng/blob/main/docs/FORK_FEATURES.md) | `ghcr.io/snapetech/chaptarrng:latest` | `8789` |
+| [QuestarrNG](https://github.com/snapetech-org/QuestarrNG) | Standalone PC-game manager; SeerrNG uses its IGDB catalog and request-scoped acquisition and file-delivery contract. [Upstream comparison](https://github.com/snapetech-org/QuestarrNG/blob/main/docs/FORK_CHANGES.md) | `ghcr.io/snapetech/questarrng:latest` | `5000` |
+| [ROMarrNG](https://github.com/snapetech-org/ROMarrNG) | Standalone ROM manager; SeerrNG uses its versioned request API, optional IGDB and DAT catalogs, and request-scoped file delivery. [Upstream comparison](https://github.com/snapetech-org/ROMarrNG/blob/main/docs/UPSTREAM-PARITY.md) | `ghcr.io/snapetech/romarrng:latest` | `6868` |
 
 The tags above follow the install commands in each fork's README. Check that
 README for supported architectures, storage mounts, and upgrade guidance

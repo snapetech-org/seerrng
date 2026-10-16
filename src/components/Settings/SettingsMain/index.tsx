@@ -20,6 +20,7 @@ import defineMessages from '@app/utils/defineMessages';
 import { isValidURL } from '@app/utils/urlValidationHelper';
 import { ArrowDownOnSquareIcon } from '@heroicons/react/24/outline';
 import { ArrowPathIcon } from '@heroicons/react/24/solid';
+import { OtherUserAvailabilityMode } from '@server/constants/availability';
 import type { UserSettingsGeneralResponse } from '@server/interfaces/api/userSettingsInterfaces';
 import type { MainSettings } from '@server/lib/settings';
 import type { AvailableLocale } from '@server/types/languages';
@@ -77,6 +78,12 @@ const messages = defineMessages('components.Settings.SettingsMain', {
   hideAvailable: 'Hide Available Media',
   hideAvailableTip:
     'Hide available media from the discover pages but not search results',
+  otherUsersAvailability: "Other Users' Availability",
+  otherUsersAvailabilityTip:
+    'Choose how movie and TV availability appears when the current viewer has no approved or completed request for that copy. This changes SeerrNG display only; media-server access is controlled by your media server.',
+  otherUsersAvailabilityShow: 'Show Availability for Everyone',
+  otherUsersAvailabilityDistinguish: 'Mark Shared Availability',
+  otherUsersAvailabilityHide: 'Hide Shared Availability',
   hideRequested: 'Hide Requested Media',
   hideRequestedTip:
     'Hide media that has been requested from the discover pages but not search results',
@@ -233,6 +240,8 @@ const SettingsMain = () => {
           applicationTitle: data?.applicationTitle,
           applicationUrl: data?.applicationUrl,
           hideAvailable: data?.hideAvailable,
+          otherUsersAvailability:
+            data?.otherUsersAvailability ?? OtherUserAvailabilityMode.SHOW,
           hideBlocklisted: data?.hideBlocklisted,
           locale: data?.locale ?? 'en',
           discoverRegion: data?.discoverRegion,
@@ -270,6 +279,7 @@ const SettingsMain = () => {
               applicationTitle: values.applicationTitle,
               applicationUrl: values.applicationUrl,
               hideAvailable: values.hideAvailable,
+              otherUsersAvailability: values.otherUsersAvailability,
               hideBlocklisted: values.hideBlocklisted,
               locale: values.locale,
               discoverRegion: values.discoverRegion,
@@ -604,6 +614,38 @@ const SettingsMain = () => {
                         setFieldValue('hideAvailable', !values.hideAvailable);
                       }}
                     />
+                  </SettingsFormRow>
+                  <SettingsFormRow
+                    htmlFor="otherUsersAvailability"
+                    label={intl.formatMessage(messages.otherUsersAvailability)}
+                    description={intl.formatMessage(
+                      messages.otherUsersAvailabilityTip
+                    )}
+                  >
+                    <div className="form-input-field">
+                      <Field
+                        as="select"
+                        id="otherUsersAvailability"
+                        name="otherUsersAvailability"
+                        data-testid="other-users-availability-setting"
+                      >
+                        <option value={OtherUserAvailabilityMode.SHOW}>
+                          {intl.formatMessage(
+                            messages.otherUsersAvailabilityShow
+                          )}
+                        </option>
+                        <option value={OtherUserAvailabilityMode.DISTINGUISH}>
+                          {intl.formatMessage(
+                            messages.otherUsersAvailabilityDistinguish
+                          )}
+                        </option>
+                        <option value={OtherUserAvailabilityMode.HIDE}>
+                          {intl.formatMessage(
+                            messages.otherUsersAvailabilityHide
+                          )}
+                        </option>
+                      </Field>
+                    </div>
                   </SettingsFormRow>
                   <SettingsFormRow
                     htmlFor="hideBlocklisted"

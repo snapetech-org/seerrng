@@ -29,8 +29,8 @@ layers.
 
 | Provider | Used for | What SeerrNG reads or sends |
 | --- | --- | --- |
-| [QuestarrNG](https://github.com/snapetech/QuestarrNG) | Default IGDB catalog source and PC game acquisition | Searches and popular titles, IGDB platform details, stable request identity and selected PC target, request progress, and imported files |
-| [ROMarrNG](https://github.com/snapetech/ROMarrNG) | Supported emulation systems and acquisition for ROM requests; optional IGDB or loaded DAT catalog source for emulation | Supported platform list and aliases, optional IGDB search and browse or DAT-backed browse, stable request identity and selected system, request progress, and imported files |
+| [QuestarrNG](https://github.com/snapetech-org/QuestarrNG) | Default IGDB catalog source and PC game acquisition | Searches and popular titles, IGDB platform details, stable request identity and selected PC target, request progress, and imported files |
+| [ROMarrNG](https://github.com/snapetech-org/ROMarrNG) | Supported emulation systems and acquisition for ROM requests; optional IGDB or loaded DAT catalog source for emulation | Supported platform list and aliases, optional IGDB search and browse or DAT-backed browse, stable request identity and selected system, request progress, and imported files |
 
 Both providers are separate **NG** forks maintained for SeerrNG integration.
 Their project documentation identifies the upstream project, describes the
@@ -359,8 +359,8 @@ alongside other media quotas.
   cannot find a request-linked download record.
 
 For provider API and release details, use the [QuestarrNG
-documentation](https://github.com/snapetech/QuestarrNG) and [ROMarrNG
-documentation](https://github.com/snapetech/ROMarrNG). General desktop apps are
+documentation](https://github.com/snapetech-org/QuestarrNG) and [ROMarrNG
+documentation](https://github.com/snapetech-org/ROMarrNG). General desktop apps are
 not part of the current software catalog.
 
 ## RomM library status

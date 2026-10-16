@@ -64,6 +64,7 @@ import notificationManager, { Notification } from '@server/lib/notifications';
 import requestDispatchManager, {
   type RequestDispatchOutcome,
 } from '@server/lib/requestDispatch';
+import { resolveRequesterTag } from '@server/lib/requesterTags';
 import {
   RequestStatusStage,
   hasRequestServiceLink,
@@ -78,7 +79,10 @@ import {
   runWithServarrServiceCollectionAdmission,
   type ServarrServiceType,
 } from '@server/lib/serviceAdmission';
-import { type ReadarrSettings } from '@server/lib/settings';
+import {
+  type ReadarrSettings,
+  type SonarrSettings,
+} from '@server/lib/settings';
 import { isSportarrLeagueExternalId } from '@server/lib/sportarrIdentity';
 import logger from '@server/logger';
 import { parseBookshelfBookId } from '@server/utils/bookshelfCatalog';
@@ -1018,46 +1022,37 @@ export class MediaRequestSubscriber implements EntitySubscriberInterface<MediaRe
         const movie = await tmdb.getMovie({ movieId: entity.media.tmdbId });
 
         if (radarrSettings.tagRequests) {
-          const radarrTags = await radarr.getTags();
-          // old tags had space around the hyphen
-          let userTag = radarrTags.find((v) =>
-            v.label.startsWith(entity.requestedBy.id + ' - ')
+          const tagLabel = `${entity.requestedBy.id}-${sanitizeDisplayName(
+            entity.requestedBy.displayName
+          )}`;
+          const result = await resolveRequesterTag(
+            radarr,
+            tags,
+            entity.requestedBy.id,
+            tagLabel
           );
-          // new tags do not have spaces around the hyphen, since spaces are not allowed anymore
-          if (!userTag) {
-            userTag = radarrTags.find((v) =>
-              v.label.startsWith(entity.requestedBy.id + '-')
+          tags = result.tags;
+
+          if (result.failureStage) {
+            logger.warn(
+              'Unable to apply requester tag; continuing without it.',
+              {
+                label: 'Media Request',
+                requestId: entity.id,
+                mediaId: entity.media.id,
+                userId: entity.requestedBy.id,
+                serviceType: 'radarr',
+                serverId: radarrSettings.id,
+                tagOperation: result.failureStage,
+              }
             );
-          }
-          if (!userTag) {
-            logger.info(`Requester has no active tag. Creating new`, {
+          } else if (result.created) {
+            logger.info('Requester has no active tag. Created a new tag.', {
               label: 'Media Request',
               requestId: entity.id,
               mediaId: entity.media.id,
               userId: entity.requestedBy.id,
-              newTag:
-                entity.requestedBy.id +
-                '-' +
-                sanitizeDisplayName(entity.requestedBy.displayName),
-            });
-            userTag = await radarr.createTag({
-              label:
-                entity.requestedBy.id +
-                '-' +
-                sanitizeDisplayName(entity.requestedBy.displayName),
-            });
-          }
-          if (userTag.id) {
-            if (!tags?.find((v) => v === userTag?.id)) {
-              tags?.push(userTag.id);
-            }
-          } else {
-            logger.warn(`Requester has no tag and failed to add one`, {
-              label: 'Media Request',
-              requestId: entity.id,
-              mediaId: entity.media.id,
-              userId: entity.requestedBy.id,
-              radarrServer: radarrSettings.hostname + ':' + radarrSettings.port,
+              newTag: tagLabel,
             });
           }
         }
@@ -1151,6 +1146,46 @@ export class MediaRequestSubscriber implements EntitySubscriberInterface<MediaRe
       }
     }
     return true;
+  }
+
+  private async resolveAnimeQualityProfile(
+    entity: MediaRequest,
+    sonarrSettings: SonarrSettings,
+    sonarr: SonarrAPI,
+    requestedProfileId: number
+  ): Promise<number> {
+    try {
+      const profiles = await sonarr.getProfiles({ forceRefresh: true });
+      if (profiles.some((profile) => profile.id === requestedProfileId)) {
+        return requestedProfileId;
+      }
+
+      logger.warn(
+        `Anime quality profile ${requestedProfileId} was not found on Sonarr server "${sonarrSettings.name}"; falling back to default profile ${sonarrSettings.activeProfileId}.`,
+        {
+          label: 'Media Request',
+          requestId: entity.id,
+          mediaId: entity.media.id,
+          sonarrServerId: sonarrSettings.id,
+          requestedProfileId,
+          fallbackProfileId: sonarrSettings.activeProfileId,
+        }
+      );
+    } catch {
+      logger.warn(
+        `Unable to verify anime quality profile ${requestedProfileId} on Sonarr server "${sonarrSettings.name}"; falling back to default profile ${sonarrSettings.activeProfileId}.`,
+        {
+          label: 'Media Request',
+          requestId: entity.id,
+          mediaId: entity.media.id,
+          sonarrServerId: sonarrSettings.id,
+          requestedProfileId,
+          fallbackProfileId: sonarrSettings.activeProfileId,
+        }
+      );
+    }
+
+    return sonarrSettings.activeProfileId;
   }
 
   public async sendToSonarr(entity: MediaRequest): Promise<boolean> {
@@ -1365,10 +1400,10 @@ export class MediaRequestSubscriber implements EntitySubscriberInterface<MediaRe
           isAnime && sonarrSettings.activeAnimeDirectory
             ? sonarrSettings.activeAnimeDirectory
             : sonarrSettings.activeDirectory;
-        let qualityProfile =
-          isAnime && sonarrSettings.activeAnimeProfileId
-            ? sonarrSettings.activeAnimeProfileId
-            : sonarrSettings.activeProfileId;
+        let qualityProfile = isAnime
+          ? (sonarrSettings.activeAnimeProfileId ??
+            sonarrSettings.activeProfileId)
+          : sonarrSettings.activeProfileId;
         let languageProfile =
           isAnime && sonarrSettings.activeAnimeLanguageProfileId
             ? sonarrSettings.activeAnimeLanguageProfileId
@@ -1410,6 +1445,15 @@ export class MediaRequestSubscriber implements EntitySubscriberInterface<MediaRe
           );
         }
 
+        if (isAnime && sonarrSettings.activeAnimeProfileId !== undefined) {
+          qualityProfile = await this.resolveAnimeQualityProfile(
+            entity,
+            sonarrSettings,
+            sonarr,
+            qualityProfile
+          );
+        }
+
         if (
           entity.languageProfileId !== null &&
           entity.languageProfileId !== undefined &&
@@ -1437,46 +1481,37 @@ export class MediaRequestSubscriber implements EntitySubscriberInterface<MediaRe
         }
 
         if (sonarrSettings.tagRequests) {
-          const sonarrTags = await sonarr.getTags();
-          // old tags had space around the hyphen
-          let userTag = sonarrTags.find((v) =>
-            v.label.startsWith(entity.requestedBy.id + ' - ')
+          const tagLabel = `${entity.requestedBy.id}-${sanitizeDisplayName(
+            entity.requestedBy.displayName
+          )}`;
+          const result = await resolveRequesterTag(
+            sonarr,
+            tags,
+            entity.requestedBy.id,
+            tagLabel
           );
-          // new tags do not have spaces around the hyphen, since spaces are not allowed anymore
-          if (!userTag) {
-            userTag = sonarrTags.find((v) =>
-              v.label.startsWith(entity.requestedBy.id + '-')
+          tags = result.tags;
+
+          if (result.failureStage) {
+            logger.warn(
+              'Unable to apply requester tag; continuing without it.',
+              {
+                label: 'Media Request',
+                requestId: entity.id,
+                mediaId: entity.media.id,
+                userId: entity.requestedBy.id,
+                serviceType: 'sonarr',
+                serverId: sonarrSettings.id,
+                tagOperation: result.failureStage,
+              }
             );
-          }
-          if (!userTag) {
-            logger.info(`Requester has no active tag. Creating new`, {
+          } else if (result.created) {
+            logger.info('Requester has no active tag. Created a new tag.', {
               label: 'Media Request',
               requestId: entity.id,
               mediaId: entity.media.id,
               userId: entity.requestedBy.id,
-              newTag:
-                entity.requestedBy.id +
-                '-' +
-                sanitizeDisplayName(entity.requestedBy.displayName),
-            });
-            userTag = await sonarr.createTag({
-              label:
-                entity.requestedBy.id +
-                '-' +
-                sanitizeDisplayName(entity.requestedBy.displayName),
-            });
-          }
-          if (userTag.id) {
-            if (!tags?.find((v) => v === userTag?.id)) {
-              tags?.push(userTag.id);
-            }
-          } else {
-            logger.warn(`Requester has no tag and failed to add one`, {
-              label: 'Media Request',
-              requestId: entity.id,
-              mediaId: entity.media.id,
-              userId: entity.requestedBy.id,
-              sonarrServer: sonarrSettings.hostname + ':' + sonarrSettings.port,
+              newTag: tagLabel,
             });
           }
         }

@@ -623,7 +623,8 @@ const MovieRequestModal = ({
                     {intl.formatMessage(messages.mediaAndFormat)}:
                   </dt>
                   <dd className="card:col-start-3 card:row-start-1 m-0 truncate">
-                    Movie · {effectiveIs4k ? '4K' : 'HD'}
+                    {intl.formatMessage(globalMessages.movie)} ·{' '}
+                    {effectiveIs4k ? '4K' : 'HD'}
                   </dd>
                   <dt className="card:col-start-1 card:row-start-2 font-medium text-gray-100">
                     {intl.formatMessage(messages.releaseDate)}:

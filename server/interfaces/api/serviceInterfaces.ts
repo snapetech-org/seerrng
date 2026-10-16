@@ -9,6 +9,7 @@ export interface ServiceCommonServer {
   isAlt?: boolean;
   isDefault: boolean;
   activeProfileId?: number;
+  musicQuality?: 'mp3' | 'flac';
   activeMetadataProfileId?: number;
   activeDirectory?: string;
   activeLanguageProfileId?: number;

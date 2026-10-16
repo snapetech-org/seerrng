@@ -22,6 +22,10 @@ import MediaFilterOption from '@app/components/Discover/MediaFilterOption';
 import { PinnedFilterSectionGroup } from '@app/components/Discover/PinnedFilterSection';
 import { RequestListboxControl } from '@app/components/RequestModal/AdvancedRequester';
 import SoftwareRequests from '@app/components/RequestStatus/SoftwareRequests';
+import {
+  formatRequestStatusMessage,
+  requestStatusMessages,
+} from '@app/components/RequestStatus/messages';
 import useDebouncedState from '@app/hooks/useDebouncedState';
 import useMediaFilterPin from '@app/hooks/useMediaFilterPin';
 import useRequestStatusScrollRestoration from '@app/hooks/useRequestStatusScrollRestoration';
@@ -1334,7 +1338,8 @@ const RequestStatusCard = ({
           downloadCount: 1,
           downloadId: null,
           service: 'Radarr-HD',
-          message: 'A usable release is downloading.',
+          message: intl.formatMessage(requestStatusMessages.downloading),
+          messageKey: 'downloading' as const,
           isTerminal: false,
           needsAttention: false,
           retryable: false,
@@ -1350,13 +1355,17 @@ const RequestStatusCard = ({
         estimatedCompletionTime: null,
         downloadCount: 0,
         downloadId: null,
-        message: 'Approved for processing.',
+        message: intl.formatMessage(
+          requestStatusMessages.approvedForProcessing
+        ),
+        messageKey: 'approvedForProcessing' as const,
         observedAt: new Date(),
         isTerminal: false,
         needsAttention: false,
         retryable: false,
       }
     : observedCurrent;
+  const currentMessage = formatRequestStatusMessage(intl, current);
   const history = detail?.history.results ?? [];
   const currentStage = statusStageValues.includes(current.stage)
     ? (current.stage as StatusStage)
@@ -2079,10 +2088,10 @@ const RequestStatusCard = ({
         ) : null}
 
         <div className="app-action-row request-status-action-row">
-          <Tooltip content={current.message}>
+          <Tooltip content={currentMessage}>
             <span
               className={`request-status-control ${requestStatusTone[currentStage] ?? requestStatusTone.cancelled}`}
-              aria-label={`${getStageLabel(intl, currentStage)}: ${current.message}`}
+              aria-label={`${getStageLabel(intl, currentStage)}: ${currentMessage}`}
               tabIndex={0}
             >
               <StageIcon className="request-status-control-icon" aria-hidden />
@@ -2152,8 +2161,9 @@ const RequestStatusCard = ({
                         {getStageLabel(intl, event.stage as StatusStage)}
                       </span>
                       <span className="refreshed-detail-text app-history-description">
-                        {event.message ??
-                          getStageLabel(intl, event.stage as StatusStage)}
+                        {event.message
+                          ? formatRequestStatusMessage(intl, event)
+                          : getStageLabel(intl, event.stage as StatusStage)}
                         {event.percent !== null && ` · ${event.percent}%`}
                       </span>
                     </li>

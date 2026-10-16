@@ -67,6 +67,34 @@ export const REQUEST_STATUS_TERMINAL_STAGES: readonly RequestStatusStage[] = [
   RequestStatusStage.CANCELLED,
 ];
 
+export type RequestStatusMessageKey =
+  | 'bookUnavailable'
+  | 'bookQueueFailed'
+  | 'bookCouldNotAccept'
+  | 'comicUnavailable'
+  | 'comicQueueFailed'
+  | 'comicCouldNotAccept'
+  | 'waitingForApproval'
+  | 'approvedWaitingDispatch'
+  | 'searching'
+  | 'downloading'
+  | 'importing'
+  | 'addingToLibrary'
+  | 'available'
+  | 'unavailable'
+  | 'downloadImportFailed'
+  | 'couldNotComplete'
+  | 'declined'
+  | 'cancelled'
+  | 'noReleaseFound'
+  | 'waitingForUsableRelease'
+  | 'preparingEbook'
+  | 'preparingAudiobook'
+  | 'waitingForBookshelf'
+  | 'preparingBookshelfSearch'
+  | 'requestRetried'
+  | 'approvedForProcessing';
+
 export interface RequestStatusSnapshot {
   stage: RequestStatusStage;
   attempt: number;
@@ -78,6 +106,7 @@ export interface RequestStatusSnapshot {
   downloadId: string | null;
   service: string | null;
   message: string;
+  messageKey?: RequestStatusMessageKey;
   observedAt: Date;
   isTerminal: boolean;
   needsAttention: boolean;
@@ -106,6 +135,7 @@ export interface RequestStatusHistoryItem {
   format: string | null;
   service: string | null;
   message: string | null;
+  messageKey?: RequestStatusMessageKey;
   percent: number | null;
   size: number | null;
   sizeLeft: number | null;
@@ -761,6 +791,79 @@ const getMessage = (
   }
 };
 
+const REQUEST_STATUS_MESSAGE_KEYS = new Map<string, RequestStatusMessageKey>([
+  [
+    'No usable edition is available from the connected book service. Check the requested edition and the service catalog or acquisition sources, then retry when they are ready.',
+    'bookUnavailable',
+  ],
+  [
+    'The connected book service reported a download or import failure. Check its queue or logs for the cause, fix it there, then retry here.',
+    'bookQueueFailed',
+  ],
+  [
+    'The connected book service could not accept this request. Check its connection and metadata provider settings, then retry.',
+    'bookCouldNotAccept',
+  ],
+  [
+    'No usable release is available from the connected comics service. Check the requested comic and the service catalog or acquisition sources, then retry when they are ready.',
+    'comicUnavailable',
+  ],
+  [
+    'The connected comics service reported a download or import failure. Check its queue or logs for the cause, fix it there, then retry here.',
+    'comicQueueFailed',
+  ],
+  [
+    'The connected comics service could not accept this request. Check its connection and ComicVine metadata settings, then retry.',
+    'comicCouldNotAccept',
+  ],
+  ['Your request is waiting for approval.', 'waitingForApproval'],
+  [
+    'Your request was approved and is waiting to be dispatched.',
+    'approvedWaitingDispatch',
+  ],
+  ['Searching for a usable release.', 'searching'],
+  ['A usable release is downloading.', 'downloading'],
+  ['The download is being imported.', 'importing'],
+  ['The media is being added to your library.', 'addingToLibrary'],
+  ['The requested media is available.', 'available'],
+  ['No usable release is currently available.', 'unavailable'],
+  ['The download or import failed.', 'downloadImportFailed'],
+  ['The request could not be completed.', 'couldNotComplete'],
+  ['This request was declined.', 'declined'],
+  ['This request was cancelled.', 'cancelled'],
+  ['No release found. Use an interactive search in Lidarr.', 'noReleaseFound'],
+  [
+    'Waiting for a usable release. No active download or import is currently reported.',
+    'waitingForUsableRelease',
+  ],
+  [
+    'ChaptarrNG is preparing the requested ebook while it imports the author.',
+    'preparingEbook',
+  ],
+  [
+    'ChaptarrNG is preparing the requested audiobook while it imports the author.',
+    'preparingAudiobook',
+  ],
+  [
+    'Waiting for Bookshelf to prepare the requested book.',
+    'waitingForBookshelf',
+  ],
+  [
+    'SeerrNG is preparing a Bookshelf search for this title. Availability will update after a library scan finds the book.',
+    'preparingBookshelfSearch',
+  ],
+  [
+    'The request was retried and is waiting to be dispatched.',
+    'requestRetried',
+  ],
+  ['Approved for processing.', 'approvedForProcessing'],
+]);
+
+export const getRequestStatusMessageKey = (
+  message: string | null | undefined
+): RequestStatusMessageKey | undefined =>
+  message ? REQUEST_STATUS_MESSAGE_KEYS.get(message) : undefined;
+
 const getStageFromRequest = (
   request: RequestLike,
   options: StatusOptions
@@ -1048,6 +1151,7 @@ export const getRequestStatus = (
     !hasGenericBookFailureMessage
       ? latestEvent.message
       : getMessage(stage, result.queueFailure, request.type));
+  const messageKey = getRequestStatusMessageKey(message);
 
   return {
     stage,
@@ -1060,6 +1164,7 @@ export const getRequestStatus = (
     downloadId: metrics.downloadId,
     service: getServiceName(request) ?? latestEvent?.service ?? null,
     message,
+    ...(messageKey ? { messageKey } : {}),
     observedAt: new Date(),
     isTerminal: (REQUEST_STATUS_TERMINAL_STAGES as readonly string[]).includes(
       stage
@@ -1163,25 +1268,30 @@ const getBookSearchSnapshot = async (
 
 const eventToHistoryItem = (
   event: MediaRequestStatusEvent
-): RequestStatusHistoryItem => ({
-  id: event.id,
-  requestId: event.requestId,
-  requestedById: event.requestedById,
-  mediaId: event.mediaId,
-  mediaType: event.mediaType,
-  stage: event.stage as RequestStatusStage,
-  attempt: event.attempt,
-  format: event.format ?? null,
-  service: event.service ?? null,
-  message: event.message ?? null,
-  percent: event.percent ?? null,
-  size: event.size ?? null,
-  sizeLeft: event.sizeLeft ?? null,
-  estimatedCompletionTime: event.estimatedCompletionTime ?? null,
-  downloadCount: event.downloadCount,
-  downloadId: event.downloadId ?? null,
-  createdAt: event.createdAt,
-});
+): RequestStatusHistoryItem => {
+  const message = event.message ?? null;
+  const messageKey = getRequestStatusMessageKey(message);
+  return {
+    id: event.id,
+    requestId: event.requestId,
+    requestedById: event.requestedById,
+    mediaId: event.mediaId,
+    mediaType: event.mediaType,
+    stage: event.stage as RequestStatusStage,
+    attempt: event.attempt,
+    format: event.format ?? null,
+    service: event.service ?? null,
+    message,
+    ...(messageKey ? { messageKey } : {}),
+    percent: event.percent ?? null,
+    size: event.size ?? null,
+    sizeLeft: event.sizeLeft ?? null,
+    estimatedCompletionTime: event.estimatedCompletionTime ?? null,
+    downloadCount: event.downloadCount,
+    downloadId: event.downloadId ?? null,
+    createdAt: event.createdAt,
+  };
+};
 
 const makeFingerprint = (status: RequestStatusSnapshot): string =>
   [
