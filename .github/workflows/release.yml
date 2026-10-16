@@ -42,7 +42,7 @@ concurrency:
 
 env:
   DOCKER_HUB: snapetech/seerrng
-  GHCR_IMAGE: ghcr.io/snapetech/seerrng
+  GHCR_IMAGE: ghcr.io/snapetech-org/seerrng
   RELEASE_TAG: ${{ inputs.tag || github.ref_name }}
 
 jobs:

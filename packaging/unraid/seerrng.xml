@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 <Container version="2">
   <Name>SeerrNG</Name>
-  <Repository>ghcr.io/snapetech/seerrng:latest</Repository>
-  <Registry>https://ghcr.io/snapetech/seerrng</Registry>
+  <Repository>ghcr.io/snapetech-org/seerrng:latest</Repository>
+  <Registry>https://ghcr.io/snapetech-org/seerrng</Registry>
   <Network>bridge</Network>
   <Shell>bash</Shell>
   <Privileged>false</Privileged>

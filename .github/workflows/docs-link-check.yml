@@ -28,8 +28,8 @@ permissions:
   contents: read
 
 concurrency:
-  group: docs-links-${{ github.event.pull_request.number || github.ref }}
-  cancel-in-progress: true
+  group: docs-links-${{ github.run_id }}-${{ github.run_attempt }}
+  cancel-in-progress: false
 
 jobs:
   link-check:

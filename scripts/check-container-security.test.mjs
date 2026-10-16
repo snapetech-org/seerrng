@@ -300,7 +300,7 @@ esac
     LOG_LEVEL: 'info',
     SEERRNG_CONFIG_DIR: '/srv/seerr-config',
     SEERRNG_CONTAINER_NAME: 'seerr-host',
-    SEERRNG_IMAGE_REF: `ghcr.io/snapetech/seerrng@sha256:${'a'.repeat(64)}`,
+    SEERRNG_IMAGE_REF: `ghcr.io/snapetech-org/seerrng@sha256:${'a'.repeat(64)}`,
     SEERRNG_PORT: '5055',
   };
 
@@ -420,14 +420,16 @@ test('rollback restarts the old container if cancellation lands before rename', 
   }
 });
 
-test('main CI runs cannot cancel a deployment during cutover', () => {
-  assert.equal(ciWorkflow.jobs.publish.concurrency['cancel-in-progress'], true);
+test('main CI runs cannot cancel publishers or deployments during cutover', () => {
+  assert.deepEqual(ciWorkflow.jobs.publish.concurrency, {
+    group: 'seerrng-main-image-publish',
+    'cancel-in-progress': false,
+  });
   assert.deepEqual(ciWorkflow.jobs['deploy-main'].concurrency, {
     group: 'seerrng-live-deploy',
     'cancel-in-progress': false,
   });
-  assert.equal(
-    ciWorkflow.concurrency['cancel-in-progress'],
-    "${{ github.event_name == 'pull_request' }}"
-  );
+  assert.equal(ciWorkflow.concurrency['cancel-in-progress'], false);
+  assert.match(ciWorkflow.concurrency.group, /github\.run_id/u);
+  assert.match(ciWorkflow.concurrency.group, /github\.run_attempt/u);
 });

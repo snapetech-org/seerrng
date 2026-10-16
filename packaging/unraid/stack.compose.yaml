@@ -4,7 +4,7 @@ name: seerrng
 # Set COMPOSE_PROFILES in stack.env before starting the project.
 services:
   seerrng:
-    image: ghcr.io/snapetech/seerrng:latest
+    image: ghcr.io/snapetech-org/seerrng:latest
     init: true
     restart: unless-stopped
     ports:
