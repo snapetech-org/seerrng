@@ -90,7 +90,7 @@ The authoritative live deployment path is GitHub Actions:
 
 1. Push the desired commit to `snapetech-org/seerrng` `main`.
 2. Wait for `.github/workflows/ci.yml` (`SeerrNG CI`) to build and push
-   `ghcr.io/snapetech/seerrng:main`.
+   `ghcr.io/snapetech-org/seerrng:main`.
 3. Wait for the `Deploy main to seerr.home` job to pass. That job pulls the
    fresh `:main` image on the host, replaces the running container, and verifies
    `/api/v1/status` locally on the host.

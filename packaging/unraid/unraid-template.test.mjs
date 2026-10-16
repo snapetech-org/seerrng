@@ -26,7 +26,7 @@ test('Unraid template exposes the stable image and canonical raw URL', async () 
 
   assert.equal(container.$.version, '2');
   assert.equal(container.Name, 'SeerrNG');
-  assert.equal(container.Repository, 'ghcr.io/snapetech/seerrng:latest');
+  assert.equal(container.Repository, 'ghcr.io/snapetech-org/seerrng:latest');
   assert.match(container.Description, /installs SeerrNG itself/u);
   assert.match(
     container.Description,
@@ -111,7 +111,7 @@ test('Unraid Compose project uses the SeerrNG fork images and companion profiles
   );
   const services = compose.services;
   assert.equal(compose.name, 'seerrng');
-  assert.equal(services.seerrng.image, 'ghcr.io/snapetech/seerrng:latest');
+  assert.equal(services.seerrng.image, 'ghcr.io/snapetech-org/seerrng:latest');
   assert.equal(services.seerrng.init, true);
   assert.equal(
     services['bookshelf-ebooks'].image,

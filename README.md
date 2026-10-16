@@ -297,7 +297,7 @@ docker run -d \
   -p 5055:5055 \
   -v /path/to/seerrng/config:/app/config \
   --restart unless-stopped \
-  ghcr.io/snapetech/seerrng:main
+  ghcr.io/snapetech-org/seerrng:main
 ```
 
 Open `http://localhost:5055` and complete setup.
@@ -307,7 +307,7 @@ Open `http://localhost:5055` and complete setup.
 ```yaml
 services:
   seerrng:
-    image: ghcr.io/snapetech/seerrng:main
+    image: ghcr.io/snapetech-org/seerrng:main
     container_name: seerrng
     environment:
       LOG_LEVEL: info

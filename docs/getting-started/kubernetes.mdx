@@ -16,11 +16,11 @@ To confirm that the chart you are using is authentic and unmodified, please refe
 
 ## Installation
 ```console
-helm install seerr oci://ghcr.io/snapetech/seerrng/seerr-chart
+helm install seerr oci://ghcr.io/snapetech-org/seerrng/seerr-chart
 ```
 Helm values can be found in the Seerr repository under [charts/seerr-chart/README.md](https://github.com/snapetech-org/seerrng/tree/main/charts/seerr-chart).
 
 Verify the signature with [cosign](https://docs.sigstore.dev/cosign/system_config/installation/) (replace [tag], with the TAG you want to verify) :
 ```console
-cosign verify ghcr.io/snapetech/seerrng/seerr-chart:[tag] --certificate-identity-regexp="https://github.com/(snapetech|snapetech-org)/seerrng/.github/workflows/helm.yml@refs/heads/main" --certificate-oidc-issuer=https://token.actions.githubusercontent.com
+cosign verify ghcr.io/snapetech-org/seerrng/seerr-chart:[tag] --certificate-identity-regexp="https://github.com/(snapetech|snapetech-org)/seerrng/.github/workflows/helm.yml@refs/heads/main" --certificate-oidc-issuer=https://token.actions.githubusercontent.com
 ```
