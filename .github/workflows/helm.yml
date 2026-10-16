@@ -17,8 +17,8 @@ env:
   GHCR_IMAGE: ghcr.io/snapetech-org/seerrng
 
 concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: true
+  group: ${{ github.workflow }}-${{ github.run_id }}-${{ github.run_attempt }}
+  cancel-in-progress: false
 
 jobs:
   package-helm-chart:
