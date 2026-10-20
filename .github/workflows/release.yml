@@ -65,6 +65,17 @@ jobs:
           ref: ${{ inputs.tag || github.ref_name }}
           persist-credentials: false
 
+      - name: Checkout current main alias policy
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: main
+          path: .alias-policy
+          persist-credentials: false
+
+      - name: Verify stable container alias policy
+        run: node scripts/check-container-alias-policy.mjs
+        working-directory: .alias-policy
+
       - name: Ensure tag is on main
         shell: bash
         run: |
@@ -380,13 +391,9 @@ jobs:
           images: |
             ${{ env.DOCKER_HUB }}
             ${{ env.GHCR_IMAGE }}
+          flavor: latest=false
           tags: |
             type=semver,pattern={{raw}},value=${{ env.VERSION }}
-            type=semver,pattern=v{{major}}.{{minor}},value=${{ env.VERSION }}
-            type=semver,pattern=v{{major}},value=${{ env.VERSION }}
-            type=raw,value=main
-            type=raw,value=master
-            type=raw,value=latest
           labels: |
             org.opencontainers.image.created=${{ steps.ts.outputs.TIMESTAMP }}
             org.opencontainers.image.revision=${{ steps.release.outputs.SHA }}
@@ -504,10 +511,6 @@ jobs:
           set -euo pipefail
           scripts/verify-container-manifest.sh --require-provenance "${DOCKER_HUB}:${VERSION}" linux/amd64 linux/arm64
           scripts/verify-container-manifest.sh --require-provenance "${GHCR_IMAGE}:${VERSION}" linux/amd64 linux/arm64
-          if [[ "$VERSION" != *-* ]]; then
-            scripts/verify-container-manifest.sh --require-provenance "${DOCKER_HUB}:latest" linux/amd64 linux/arm64
-            scripts/verify-container-manifest.sh --require-provenance "${GHCR_IMAGE}:latest" linux/amd64 linux/arm64
-          fi
 
   scan-release-image:
     name: Scan release image (${{ matrix.platform }})
@@ -787,6 +790,48 @@ jobs:
         run: gh release edit "${{ env.VERSION }}" --draft=false --repo "${{ github.repository }}"
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  promote-stable-container-aliases:
+    name: Promote stable container aliases
+    if: ${{ !contains(inputs.tag || github.ref_name, '-') }}
+    needs: [publish-release]
+    concurrency:
+      group: seerrng-stable-container-aliases
+      cancel-in-progress: false
+    timeout-minutes: 10
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    env:
+      VERSION: ${{ inputs.tag || github.ref_name }}
+    steps:
+      - name: Checkout current alias tooling
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: main
+          persist-credentials: false
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@f87e5991a6d7451dcb8d9637bfbc97413f497069 # v4
+        with:
+          driver-opts: network=host
+
+      - name: Log in to Docker Hub
+        uses: docker/login-action@dbcb813823bdd20940b903addbd779551569679f # v4.6.0
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Log in to GitHub Container Registry
+        uses: docker/login-action@dbcb813823bdd20940b903addbd779551569679f # v4.6.0
+        with:
+          registry: ghcr.io
+          username: ${{ github.repository_owner }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Promote and verify stable aliases
+        run: bash scripts/promote-container-aliases.sh "$VERSION" "$GHCR_IMAGE" "$DOCKER_HUB"
 
   dispatch-chocolatey:
     name: Dispatch Chocolatey after publication

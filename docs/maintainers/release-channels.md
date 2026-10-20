@@ -87,10 +87,16 @@ on the deployment host, and that container is replaced only when the deployment 
 pulls and starts a new image.
 
 Main CI builds, scans, and records commit-specific images in GHCR. It does not
-move the stable `:main` or `:latest` aliases. A validated stable release assigns
-the same release image to its version tags and to `:main` and `:latest` in both
-GHCR and Docker Hub. This keeps either stable alias on the latest stable release
-while allowing main-branch CI to check untagged commits.
+move stable aliases. After a stable GitHub release is published, the release
+workflow assigns its verified image to `:main`, `:master`, `:latest`, `:stable`,
+and the release's moving major and minor version tags in GHCR and Docker Hub.
+The workflow compares their multi-architecture manifest digests and fails if
+any tag differs. This keeps the four channel aliases on the latest published
+stable release while allowing main-branch CI to check untagged commits.
+
+To repair registry tags manually, run the **Promote stable container aliases**
+workflow from `main`. It selects the highest published stable release, checks
+the image provenance and source revision, then moves and verifies the aliases.
 
 Main CI no longer preflights or deploys to `seerr.home`, because those
 operations required direct access to the deployment host. Live deployment must
