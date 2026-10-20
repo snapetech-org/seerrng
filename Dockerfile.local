@@ -5,8 +5,12 @@ ENV PATH="$PNPM_HOME:$PATH"
 RUN apk add --no-cache python3 py3-setuptools make g++ gcc libc6-compat
 RUN corepack enable
 
-COPY . /app
+COPY --chown=node:node . /app
 WORKDIR /app
+
+RUN mkdir -p /app/node_modules /app/.next "$PNPM_HOME" && \
+  chown node:node /app/node_modules /app/.next "$PNPM_HOME"
+USER node:node
 
 RUN pnpm install
 
