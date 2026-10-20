@@ -171,7 +171,7 @@
     "@types/lodash": "4.17.25",
     "@types/node": "24.19.0",
     "@types/node-schedule": "2.1.8",
-    "@types/nodemailer": "^8.0.1",
+    "@types/nodemailer": "^8.0.2",
     "@types/react": "19.3.0",
     "@types/react-dom": "19.3.0",
     "@types/react-transition-group": "4.4.12",
