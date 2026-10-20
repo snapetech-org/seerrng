@@ -1,0 +1,84 @@
+---
+# yaml-language-server: $schema=https://json.schemastore.org/github-workflow.json
+name: Promote stable container aliases
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: seerrng-stable-container-aliases
+  cancel-in-progress: false
+
+env:
+  DOCKER_HUB: snapetech/seerrng
+  GHCR_IMAGE: ghcr.io/snapetech-org/seerrng
+
+jobs:
+  promote:
+    name: Promote latest published stable image
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - name: Checkout main and release tags
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@f87e5991a6d7451dcb8d9637bfbc97413f497069 # v4
+        with:
+          driver-opts: network=host
+
+      - name: Log in to Docker Hub
+        uses: docker/login-action@dbcb813823bdd20940b903addbd779551569679f # v4.6.0
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Log in to GitHub Container Registry
+        uses: docker/login-action@dbcb813823bdd20940b903addbd779551569679f # v4.6.0
+        with:
+          registry: ghcr.io
+          username: ${{ github.repository_owner }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Resolve latest published stable release
+        id: release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+        run: |
+          set -euo pipefail
+          tag="$(scripts/latest-published-release-tag.sh)"
+          printf 'tag=%s\n' "$tag" >> "$GITHUB_OUTPUT"
+
+      - name: Verify release image provenance and version
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          RELEASE_TAG: ${{ steps.release.outputs.tag }}
+        run: |
+          set -euo pipefail
+          scripts/ensure-release-tag-on-main.sh "$RELEASE_TAG"
+          scripts/verify-container-manifest.sh --require-provenance "${GHCR_IMAGE}:${RELEASE_TAG}" linux/amd64 linux/arm64
+          scripts/verify-container-manifest.sh --require-provenance "${DOCKER_HUB}:${RELEASE_TAG}" linux/amd64 linux/arm64
+          docker pull --platform linux/amd64 "${GHCR_IMAGE}:${RELEASE_TAG}"
+          expected_revision="$(git rev-parse "${RELEASE_TAG}^{commit}")"
+          actual_revision="$(docker image inspect --format '{{ index .Config.Labels "org.opencontainers.image.revision" }}' "${GHCR_IMAGE}:${RELEASE_TAG}")"
+          if [[ "$actual_revision" != "$expected_revision" ]]; then
+            echo "Release image revision ${actual_revision} does not match ${RELEASE_TAG} (${expected_revision})." >&2
+            exit 1
+          fi
+          docker image rm "${GHCR_IMAGE}:${RELEASE_TAG}"
+
+      - name: Promote and verify stable aliases
+        env:
+          VERSION: ${{ steps.release.outputs.tag }}
+        run: bash scripts/promote-container-aliases.sh "$VERSION" "$GHCR_IMAGE" "$DOCKER_HUB"

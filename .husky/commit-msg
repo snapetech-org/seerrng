@@ -1,1 +1,3 @@
+#!/bin/sh
+[ -n "$HUSKY_BYPASS" ] || node scripts/check-container-alias-policy.mjs
 [ -n "$HUSKY_BYPASS" ] || pnpm exec commitlint --edit "$1"

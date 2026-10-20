@@ -16,7 +16,7 @@ An alternative Docker image is available on Docker Hub for this project. You can
 
 Our Docker images are available with the following tags:
 
-- `latest`: Always points to the most recent stable release.
+- `stable`, `latest`, `main`, and `master`: All point to the same most recent stable release.
 - Version tags (e.g., `v0.1.0`): For specific stable versions.
 - Major version aliases (e.g., `v0`): Alias for the latest stable release in the respective major version series.
 - Minor version aliases (e.g., `v0.1`): Alias for the latest stable release in the respective minor version series.
@@ -24,10 +24,10 @@ Our Docker images are available with the following tags:
 
 :::warning Existing SeerrNG image references
 After the SeerrNG repository transfer, update manually configured images from
-`ghcr.io/yunohost-apps/seerrng` to `ghcr.io/snapetech-org/seerrng`. Keep the tag
-your deployment uses, pull the image again, and recreate the service. YunoHost
-package installations use SeerrNG release archives and do not use this container
-image path.
+`ghcr.io/yunohost-apps/seerrng` or `ghcr.io/snapetech/seerrng` to
+`ghcr.io/snapetech-org/seerrng`. Set the tag to `stable` or `latest`, pull the
+image again, and recreate the service. YunoHost package installations use
+SeerrNG release archives and do not use this container image path.
 :::
 
 :::info

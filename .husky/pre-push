@@ -1,0 +1,2 @@
+#!/bin/sh
+[ -n "$HUSKY_BYPASS" ] || node scripts/check-container-alias-policy.mjs

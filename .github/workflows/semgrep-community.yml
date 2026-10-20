@@ -29,23 +29,26 @@ jobs:
 
       - name: Scan with the current Semgrep CE image and p/default rules
         run: |
+          mkdir -p .semgrep-reports
           docker run --rm --user "$(id -u):$(id -g)" -e HOME=/tmp -e EIO_BACKEND=posix \
-            -v "$GITHUB_WORKSPACE:/src:ro" -w /src semgrep/semgrep:latest \
+            -v "$GITHUB_WORKSPACE:/src:ro" \
+            -v "$GITHUB_WORKSPACE/.semgrep-reports:/reports:rw" \
+            -w /src semgrep/semgrep:latest \
             semgrep scan --config p/default --metrics=off --jobs 2 \
-              --json-output semgrep.json --sarif-output semgrep.sarif .
+              --json-output /reports/semgrep.json --sarif-output /reports/semgrep.sarif .
 
       - name: Report finding count
-        if: always() && hashFiles('semgrep.json') != ''
+        if: always() && hashFiles('.semgrep-reports/semgrep.json') != ''
         run: |
-          jq -r '"Semgrep CE reported \(.results | length) finding(s). Download the semgrep-community-reports artifact to review JSON and SARIF details."' semgrep.json
+          jq -r '"Semgrep CE reported \(.results | length) finding(s). Download the semgrep-community-reports artifact to review JSON and SARIF details."' .semgrep-reports/semgrep.json
 
       - name: Upload scan reports for triage
-        if: always() && hashFiles('semgrep.json') != ''
+        if: always() && hashFiles('.semgrep-reports/semgrep.json') != ''
         uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: semgrep-community-reports
           path: |
-            semgrep.json
-            semgrep.sarif
+            .semgrep-reports/semgrep.json
+            .semgrep-reports/semgrep.sarif
           if-no-files-found: error
           retention-days: 14
