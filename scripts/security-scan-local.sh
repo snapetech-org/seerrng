@@ -3,6 +3,7 @@ set -euo pipefail
 
 repo_root="$(git rev-parse --show-toplevel)"
 cd "$repo_root"
+export EIO_BACKEND="${SEMGREP_EIO_BACKEND:-posix}"
 mode="all"
 staged=0
 ci_mode=0
@@ -46,10 +47,33 @@ if (( staged )) && [[ "$mode" == trivy ]]; then
   exit 2
 fi
 
-semgrep_patterns=(-g '*.py' -g '*.js' -g '*.jsx' -g '*.ts' -g '*.tsx' -g '*.mjs' -g '*.cjs' -g '*.go' -g '*.rs' -g '*.java' -g '*.kt' -g '*.kts' -g '*.cs' -g '*.c' -g '*.h' -g '*.cc' -g '*.cpp' -g '*.hpp' -g '*.php' -g '*.rb' -g '*.swift' -g '*.sh' -g '*.bash' -g '*.zsh' -g '*.ps1' -g '*.sql' -g '*.scala' -g '*.ex' -g '*.exs' -g '*.tf' -g 'Dockerfile*' -g 'docker-compose*.yml' -g 'docker-compose*.yaml' -g 'compose*.yml' -g 'compose*.yaml' -g '.github/workflows/*.yml' -g '.github/workflows/*.yaml' -g 'k8s/**/*.yml' -g 'k8s/**/*.yaml' -g 'helm/**/*.yml' -g 'helm/**/*.yaml' -g 'charts/**/*.yml' -g 'charts/**/*.yaml' -g 'deploy/**/*.yml' -g 'deploy/**/*.yaml' -g 'infra/**/*.yml' -g 'infra/**/*.yaml')
+semgrep_globs=('*.py' '*.js' '*.jsx' '*.ts' '*.tsx' '*.mjs' '*.cjs' '*.go' '*.rs' '*.java' '*.kt' '*.kts' '*.cs' '*.c' '*.h' '*.cc' '*.cpp' '*.hpp' '*.php' '*.rb' '*.swift' '*.sh' '*.bash' '*.zsh' '*.ps1' '*.sql' '*.scala' '*.ex' '*.exs' '*.tf' 'Dockerfile*' '*/Dockerfile*' 'docker-compose*.yml' '*/docker-compose*.yml' 'docker-compose*.yaml' '*/docker-compose*.yaml' 'compose*.yml' '*/compose*.yml' 'compose*.yaml' '*/compose*.yaml' '.github/workflows/*.yml' '.github/workflows/*.yaml' 'k8s/*.yml' 'k8s/**/*.yml' 'k8s/*.yaml' 'k8s/**/*.yaml' 'helm/*.yml' 'helm/**/*.yml' 'helm/*.yaml' 'helm/**/*.yaml' 'charts/*.yml' 'charts/**/*.yml' 'charts/*.yaml' 'charts/**/*.yaml' 'deploy/*.yml' 'deploy/**/*.yml' 'deploy/*.yaml' 'deploy/**/*.yaml' 'infra/*.yml' 'infra/**/*.yml' 'infra/*.yaml' 'infra/**/*.yaml')
+
+dependency_globs=('package.json' '*/package.json' 'package-lock.json' '*/package-lock.json' 'pnpm-lock.yaml' '*/pnpm-lock.yaml' 'yarn.lock' '*/yarn.lock' 'bun.lock*' '*/bun.lock*' 'Cargo.toml' '*/Cargo.toml' 'Cargo.lock' '*/Cargo.lock' 'go.mod' '*/go.mod' 'go.sum' '*/go.sum' 'pyproject.toml' '*/pyproject.toml' 'requirements*.txt' '*/requirements*.txt' 'uv.lock' '*/uv.lock' 'poetry.lock' '*/poetry.lock' 'Pipfile*' '*/Pipfile*' '*.csproj' '*.sln' 'pom.xml' '*/pom.xml' 'build.gradle' '*/build.gradle' 'build.gradle.kts' '*/build.gradle.kts' 'gradle.lockfile' '*/gradle.lockfile' 'Gemfile*' '*/Gemfile*' 'composer.json' '*/composer.json' 'composer.lock' '*/composer.lock' 'mix.lock' '*/mix.lock' 'pubspec.yaml' '*/pubspec.yaml')
+
+iac_globs=('Dockerfile' '*/Dockerfile' 'Dockerfile.*' '*/Dockerfile.*' 'docker-compose*.yml' '*/docker-compose*.yml' 'docker-compose*.yaml' '*/docker-compose*.yaml' 'compose*.yml' '*/compose*.yml' 'compose*.yaml' '*/compose*.yaml' '*.tf' '*.tfvars' 'Chart.yaml' '*/Chart.yaml' 'kustomization.yaml' '*/kustomization.yaml' '.github/workflows/*.yml' '.github/workflows/*.yaml' 'k8s/*.yml' 'k8s/**/*.yml' 'k8s/*.yaml' 'k8s/**/*.yaml' 'helm/*.yml' 'helm/**/*.yml' 'helm/*.yaml' 'helm/**/*.yaml' 'charts/*.yml' 'charts/**/*.yml' 'charts/*.yaml' 'charts/**/*.yaml' 'deploy/*.yml' 'deploy/**/*.yml' 'deploy/*.yaml' 'deploy/**/*.yaml' 'infra/*.yml' 'infra/**/*.yml' 'infra/*.yaml' 'infra/**/*.yaml')
+
+repository_has_file_matching() {
+  local file pattern
+  local patterns=("$@")
+  while IFS= read -r -d '' file; do
+    case "$file" in
+      docs/*|*/docs/*|.husky/*|*/.husky/*|.githooks/*|*/.githooks/*|scripts/security-scan-local.sh|*/scripts/security-scan-local.sh|scripts/update-security-tools.sh|*/scripts/update-security-tools.sh|scripts/install-security-hooks.sh|*/scripts/install-security-hooks.sh)
+        continue ;;
+    esac
+    for pattern in "${patterns[@]}"; do
+      # Intentional glob matching against the fixed patterns above.
+      # shellcheck disable=SC2053
+      if [[ "$file" == $pattern ]]; then
+        return 0
+      fi
+    done
+  done < <(git ls-files --cached --others --exclude-standard -z)
+  return 1
+}
 
 has_semgrep_input() {
-  rg --files --hidden "${semgrep_patterns[@]}" -g '!**/security-scan-local.sh' -g '!**/update-security-tools.sh' -g '!**/install-security-hooks.sh' -g '!**/.githooks/**' -g '!**/.husky/**' -g '!**/docs/**' >/dev/null 2>&1
+  repository_has_file_matching "${semgrep_globs[@]}"
 }
 
 semgrep_run() {
@@ -102,13 +126,13 @@ semgrep_run() {
   echo "Semgrep Community Edition: config=${SEMGREP_CONFIG:-p/default}, targets=${#targets[@]}"
   if [[ -n "${SEMGREP_BIN:-}" ]]; then
     [[ -x "$SEMGREP_BIN" ]] || { echo "SEMGREP_BIN is not executable: $SEMGREP_BIN" >&2; return 127; }
-    EIO_BACKEND=posix "$SEMGREP_BIN" "${args[@]}" "${targets[@]}"
+    "$SEMGREP_BIN" "${args[@]}" "${targets[@]}"
   elif command -v uvx >/dev/null 2>&1; then
     local uv_args=()
     [[ "${SEMGREP_OFFLINE:-0}" == 1 ]] && uv_args+=(--offline)
-    EIO_BACKEND=posix uvx "${uv_args[@]}" --from semgrep semgrep "${args[@]}" "${targets[@]}"
+    uvx "${uv_args[@]}" --from semgrep semgrep "${args[@]}" "${targets[@]}"
   elif command -v semgrep >/dev/null 2>&1; then
-    EIO_BACKEND=posix semgrep "${args[@]}" "${targets[@]}"
+    semgrep "${args[@]}" "${targets[@]}"
   elif command -v docker >/dev/null 2>&1; then
     local image="semgrep/semgrep:latest"
     local docker_args=("${args[@]}")
@@ -139,7 +163,7 @@ semgrep_run() {
       [[ "${SEMGREP_OFFLINE:-0}" == 0 ]] || { echo "Semgrep image is not cached for offline mode." >&2; return 127; }
       docker pull "$image"
     fi
-    docker run --rm --user "$(id -u):$(id -g)" -e HOME=/tmp -e EIO_BACKEND=posix \
+    docker run --rm --user "$(id -u):$(id -g)" -e HOME=/tmp -e "EIO_BACKEND=$EIO_BACKEND" \
       "${volume_args[@]}" "$image" semgrep "${docker_args[@]}" "${docker_targets[@]}"
   else
     echo "Semgrep is unavailable. Install uv, pipx, Semgrep, or Docker." >&2
@@ -148,17 +172,17 @@ semgrep_run() {
 }
 
 has_dependency_files() {
-  rg --files --hidden -g 'package.json' -g 'package-lock.json' -g 'pnpm-lock.yaml' -g 'yarn.lock' -g 'bun.lock*' -g 'Cargo.toml' -g 'Cargo.lock' -g 'go.mod' -g 'go.sum' -g 'pyproject.toml' -g 'requirements*.txt' -g 'uv.lock' -g 'poetry.lock' -g 'Pipfile*' -g '*.csproj' -g '*.sln' -g 'pom.xml' -g 'build.gradle' -g 'build.gradle.kts' -g 'gradle.lockfile' -g 'Gemfile*' -g 'composer.json' -g 'composer.lock' -g 'mix.lock' -g 'pubspec.yaml' >/dev/null 2>&1
+  repository_has_file_matching "${dependency_globs[@]}"
 }
 has_iac_files() {
-  rg --files --hidden -g 'Dockerfile' -g 'Dockerfile.*' -g 'docker-compose*.yml' -g 'docker-compose*.yaml' -g 'compose*.yml' -g 'compose*.yaml' -g '*.tf' -g '*.tfvars' -g 'Chart.yaml' -g 'kustomization.yaml' -g '.github/workflows/*.yml' -g '.github/workflows/*.yaml' -g 'k8s/**/*.yml' -g 'k8s/**/*.yaml' -g 'helm/**/*.yml' -g 'helm/**/*.yaml' -g 'charts/**/*.yml' -g 'charts/**/*.yaml' -g 'deploy/**/*.yml' -g 'deploy/**/*.yaml' -g 'infra/**/*.yml' -g 'infra/**/*.yaml' >/dev/null 2>&1
+  repository_has_file_matching "${iac_globs[@]}"
 }
 has_code_files() {
-  rg --files --hidden "${semgrep_patterns[@]}" -g '!**/security-scan-local.sh' -g '!**/update-security-tools.sh' -g '!**/install-security-hooks.sh' -g '!**/.githooks/**' -g '!**/.husky/**' -g '!**/docs/**' >/dev/null 2>&1
+  repository_has_file_matching "${semgrep_globs[@]}"
 }
 
 trivy_run() {
-  local scanners=()
+  local scanners=() dir
   local args=()
   if has_dependency_files; then scanners+=(vuln); fi
   if has_iac_files; then scanners+=(misconfig); fi
@@ -174,7 +198,11 @@ trivy_run() {
     scanner_list+=",${scanner}"
   done
   args+=(fs --scanners "$scanner_list" --timeout "${TRIVY_TIMEOUT:-20m}" --severity 'HIGH,CRITICAL' --ignore-unfixed --exit-code "${TRIVY_EXIT_CODE:-0}")
-  for dir in .git node_modules vendor target dist build coverage .venv; do args+=(--skip-dirs "$dir"); done
+  for dir in .git node_modules vendor target dist build coverage .venv .bookshelf-migration-lab; do args+=(--skip-dirs "$dir"); done
+  while IFS= read -r -d '' dir; do
+    dir="${dir#./}"
+    [[ "$dir" == node_modules ]] || args+=(--skip-dirs "$dir")
+  done < <(find . -type d \( -path './.git' -o -path './.bookshelf-migration-lab' \) -prune -o -type d \( -name node_modules -o -name dist -o -name build -o -name coverage -o -name target -o -name .venv \) -prune -print0)
   if (( ci_mode )); then args+=(--config= --ignorefile= --secret-config=); fi
   if [[ "${TRIVY_OFFLINE:-0}" == 1 ]]; then args+=(--skip-db-update --skip-java-db-update --skip-check-update); fi
 
@@ -200,4 +228,4 @@ trivy_run() {
 if [[ "$mode" != trivy ]]; then
   semgrep_run
 fi
-if [[ "$mode" != semgrep && ! $staged ]]; then trivy_run; fi
+if [[ "$mode" != semgrep ]] && (( ! staged )); then trivy_run; fi
