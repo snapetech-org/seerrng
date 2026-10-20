@@ -186,7 +186,7 @@
     "@vitest/coverage-v8": "^4.1.11",
     "@vitest/ui": "^4.1.11",
     "autoprefixer": "^10.6.0",
-    "baseline-browser-mapping": "^2.11.23",
+    "baseline-browser-mapping": "^2.11.28",
     "commander": "^15.0.0",
     "chokidar": "5.0.0",
     "copyfiles": "2.4.1",
