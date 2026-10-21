@@ -35,7 +35,8 @@ test('chart validation runs generated documentation and all charts directly', ()
   assert.match(lint.run, /ct lint --all --validate-maintainers=false/iu);
   assert.ok(Object.hasOwn(workflow.on, 'workflow_call'));
   assert.deepEqual(ciWorkflow.on.push.branches, ['main']);
-  assert.equal(Object.hasOwn(ciWorkflow.on, 'pull_request'), false);
+  assert.deepEqual(ciWorkflow.on.pull_request.branches, ['main']);
+  assert.equal(Object.hasOwn(ciWorkflow.on, 'pull_request_target'), false);
   assert.equal(
     ciWorkflow.jobs.helm.uses,
     './.github/workflows/lint-helm-charts.yml'

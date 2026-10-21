@@ -313,7 +313,7 @@ jobs:
       contents: read
     uses: ./.github/workflows/cypress.yml
     secrets:
-      CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
+      CYPRESS_RECORD_KEY: ${{ github.event_name == 'push' && secrets.CYPRESS_RECORD_KEY || '' }}
 
   test-docs:
     name: Build docs website

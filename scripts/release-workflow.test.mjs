@@ -425,7 +425,8 @@ test('multi-architecture publishers perform the real build once and verify the i
     'helm',
   ]);
   assert.equal(ci.on.workflow_dispatch, null);
-  assert.equal(Object.hasOwn(ci.on, 'pull_request'), false);
+  assert.deepEqual(ci.on.pull_request.branches, ['main']);
+  assert.equal(Object.hasOwn(ci.on, 'pull_request_target'), false);
   assert.equal(ci.jobs['preflight-deploy'], undefined);
   assert.equal(ci.jobs['deploy-main'], undefined);
   assert.match(
@@ -1115,17 +1116,24 @@ test('release asset checksums match the builder sidecar names', () => {
   assert.match(assetsText, /checksum_base="\$\{checksum_base%\.aab\}-aab"/u);
 });
 
-test('main CI validates release notes against the pushed commit', () => {
+test('CI validates release notes with push and pull-request event context', () => {
   const ci = readWorkflow('ci.yml');
   const validation = ci.jobs['release-notes'].steps.find(
     (step) => step.name === 'Validate release-note fragment or explicit opt-out'
   );
 
   assert.ok(validation);
-  assert.equal(validation.env.BASE_SHA, '${{ github.event.before }}');
+  assert.equal(
+    validation.env.BASE_SHA,
+    '${{ github.event.pull_request.base.sha || github.event.before }}'
+  );
+  assert.equal(
+    validation.env.HEAD_SHA,
+    '${{ github.event.pull_request.head.sha || github.sha }}'
+  );
   assert.equal(
     validation.env.PR_BODY,
-    "${{ github.event.head_commit.message || '' }}"
+    "${{ github.event.pull_request.body || github.event.head_commit.message || '' }}"
   );
   assert.doesNotMatch(validation.run, /\$\{\{/u);
   assert.match(validation.run, /--summary-file "\$GITHUB_STEP_SUMMARY"/u);
