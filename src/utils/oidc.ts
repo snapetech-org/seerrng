@@ -86,7 +86,7 @@ export async function initiateOidcLogin(
 ): Promise<void> {
   const res = await axios.get<{ redirectUrl: string }>(
     `/api/v1/auth/oidc/login/${encodeURIComponent(providerSlug)}`,
-    { params: { returnUrl } }
+    { params: { returnUrl, returnTo: getSafeReturnPath(redirectTo) ?? '/' } }
   );
   const redirectUrl = parseOidcAuthorizationRedirect(res.data.redirectUrl);
   if (

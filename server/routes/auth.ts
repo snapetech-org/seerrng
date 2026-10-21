@@ -2141,6 +2141,28 @@ const getOidcRedirectUrl = (req: Request) => {
   return resolved;
 };
 
+const getOidcReturnUrl = (req: Request): URL => {
+  const applicationUrl = getSettings().main.applicationUrl;
+  const baseUrl = new URL(applicationUrl);
+  const raw = typeof req.query.returnTo === 'string' ? req.query.returnTo : '/';
+  if (
+    raw.length > 2048 ||
+    !raw.startsWith('/') ||
+    raw.startsWith('//') ||
+    raw.includes('\\') ||
+    /[\u0000-\u001f\u007f]/.test(raw)
+  ) {
+    return new URL('/', baseUrl);
+  }
+
+  try {
+    const resolved = new URL(raw, baseUrl);
+    return resolved.origin === baseUrl.origin ? resolved : new URL('/', baseUrl);
+  } catch {
+    return new URL('/', baseUrl);
+  }
+};
+
 const OIDC_CORRELATION_COOKIE_PREFIX = 'oidc-correlation-';
 const OIDC_CORRELATION_COOKIE_PATH = '/api/v1/auth/oidc';
 const OIDC_STATE_PATTERN = /^[A-Za-z0-9_-]{16,256}$/;
@@ -2149,10 +2171,11 @@ export const MAX_ACTIVE_OIDC_CORRELATIONS = 8;
 
 interface OidcCorrelation {
   authorizationContext: string;
-  codeVerifier: string;
+  codeVerifier?: string;
   initiatingUserId: number | null;
   issuedAt: number;
   nonce: string;
+  returnUrl: string;
   redirectUri: string;
   state: string;
 }
@@ -2247,7 +2270,8 @@ const parseOidcCorrelation = (value: unknown): OidcCorrelation | undefined => {
       parsed !== null &&
       typeof (parsed as Partial<OidcCorrelation>).authorizationContext ===
         'string' &&
-      typeof (parsed as Partial<OidcCorrelation>).codeVerifier === 'string' &&
+      ((parsed as Partial<OidcCorrelation>).codeVerifier === undefined ||
+        typeof (parsed as Partial<OidcCorrelation>).codeVerifier === 'string') &&
       ((parsed as Partial<OidcCorrelation>).initiatingUserId === null ||
         (Number.isSafeInteger(
           (parsed as Partial<OidcCorrelation>).initiatingUserId
@@ -2256,6 +2280,7 @@ const parseOidcCorrelation = (value: unknown): OidcCorrelation | undefined => {
       Number.isSafeInteger((parsed as Partial<OidcCorrelation>).issuedAt) &&
       (parsed as Partial<OidcCorrelation>).issuedAt! > 0 &&
       typeof (parsed as Partial<OidcCorrelation>).nonce === 'string' &&
+      typeof (parsed as Partial<OidcCorrelation>).returnUrl === 'string' &&
       typeof (parsed as Partial<OidcCorrelation>).redirectUri === 'string' &&
       typeof (parsed as Partial<OidcCorrelation>).state === 'string'
     ) {
@@ -2304,8 +2329,8 @@ authRoutes.get('/oidc/login/:slug', authRateLimit, async (req, res, next) => {
     });
   }
 
-  const callbackUrl = getOidcRedirectUrl(req);
-  if (!callbackUrl) {
+  const returnUrl = getOidcRedirectUrl(req);
+  if (!returnUrl) {
     logger.error('OIDC login requires a configured application URL', {
       label: 'Auth',
       provider: provider.name,
@@ -2316,6 +2341,14 @@ authRoutes.get('/oidc/login/:slug', authRateLimit, async (req, res, next) => {
       error: ApiErrorCode.OidcAuthorizationFailed,
     });
   }
+
+  const appleIssuer = provider.issuerUrl.trim() === 'https://appleid.apple.com';
+  const callbackUrl = appleIssuer
+    ? new URL(
+        `/api/v1/auth/oidc/callback/${encodeURIComponent(provider.slug)}`,
+        returnUrl.origin
+      )
+    : returnUrl;
 
   let config: openIdClient.Configuration;
   try {
@@ -2347,16 +2380,24 @@ authRoutes.get('/oidc/login/:slug', authRateLimit, async (req, res, next) => {
   }
 
   // Use of PKCE is backwards compatible even if the AS doesn't support it.
-  const code_verifier = openIdClient.randomPKCECodeVerifier();
-  const code_challenge =
-    await openIdClient.calculatePKCECodeChallenge(code_verifier);
+  const code_verifier = appleIssuer
+    ? undefined
+    : openIdClient.randomPKCECodeVerifier();
+  const code_challenge = code_verifier
+    ? await openIdClient.calculatePKCECodeChallenge(code_verifier)
+    : undefined;
 
   const parameters: Record<string, string> = {
     redirect_uri: callbackUrl.toString(),
-    scope: provider.scopes ?? 'openid profile email',
-    code_challenge,
-    code_challenge_method: 'S256',
+    response_type: 'code',
+    scope: appleIssuer ? 'openid email' : provider.scopes ?? 'openid profile email',
   };
+  if (appleIssuer) {
+    parameters.response_mode = 'form_post';
+  } else if (code_challenge) {
+    parameters.code_challenge = code_challenge;
+    parameters.code_challenge_method = 'S256';
+  }
 
   // State prevents CSRF attacks
   const state = openIdClient.randomState();
@@ -2416,7 +2457,7 @@ authRoutes.get('/oidc/login/:slug', authRateLimit, async (req, res, next) => {
     correlationCookieName,
     JSON.stringify({
       authorizationContext: getOidcAuthorizationContext(provider),
-      codeVerifier: code_verifier,
+      ...(code_verifier ? { codeVerifier: code_verifier } : {}),
       // A flow started as a login must stay a login, and a flow started as an
       // account link must return under the same actor. Otherwise a session
       // change between these requests can attach the provider identity to a
@@ -2424,6 +2465,7 @@ authRoutes.get('/oidc/login/:slug', authRateLimit, async (req, res, next) => {
       initiatingUserId: req.user?.id ?? null,
       issuedAt: Date.now(),
       nonce,
+      returnUrl: getOidcReturnUrl(req).toString(),
       redirectUri: callbackUrl.toString(),
       state,
     } satisfies OidcCorrelation),
@@ -2432,7 +2474,7 @@ authRoutes.get('/oidc/login/:slug', authRateLimit, async (req, res, next) => {
       path: OIDC_CORRELATION_COOKIE_PATH,
       secure: callbackUrl.protocol === 'https:',
       signed: true,
-      sameSite: 'strict',
+      sameSite: appleIssuer ? 'none' : 'lax',
       maxAge: 10 * 60 * 1000,
     }
   );
@@ -2446,7 +2488,17 @@ authRoutes.post(
   '/oidc/callback/:slug',
   authRateLimit,
   async (
-    req: Request<{ slug: string }, never, { callbackUrl: string }>,
+    req: Request<
+      { slug: string },
+      never,
+      {
+        callbackUrl?: string;
+        state?: string;
+        code?: string;
+        error?: string;
+        error_description?: string;
+      }
+    >,
     res,
     next
   ) => {
@@ -2463,20 +2515,60 @@ authRoutes.post(
       });
     }
 
+    const appleIssuer = provider.issuerUrl.trim() === 'https://appleid.apple.com';
+    const appleFormPost = typeof req.body?.callbackUrl !== 'string';
     let redirectUrl: URL;
     let correlationCookieName: string | undefined;
+    let correlation: OidcCorrelation | undefined;
     try {
-      const parsedRedirectUrl = parseOidcCallbackUrl(req.body?.callbackUrl);
-      if (!parsedRedirectUrl) {
-        throw new Error('OIDC callback URL is invalid');
-      }
-      redirectUrl = parsedRedirectUrl;
-      const callbackState = redirectUrl.searchParams.get('state');
-      correlationCookieName = callbackState
-        ? getOidcCorrelationCookieName(callbackState)
-        : undefined;
-      if (!correlationCookieName) {
-        throw new Error('OIDC callback is missing a valid state parameter');
+      if (appleFormPost) {
+        if (!appleIssuer) {
+          throw new Error('OIDC form-post callback is only supported for Apple');
+        }
+        if (!req.is('application/x-www-form-urlencoded')) {
+          throw new Error('Apple OIDC callback must use form encoding');
+        }
+        if (
+          ['state', 'code', 'error', 'error_description'].some((key) =>
+            Array.isArray(req.body?.[key as keyof typeof req.body])
+          )
+        ) {
+          throw new Error('OIDC form-post callback has duplicate parameters');
+        }
+        const callbackState = req.body?.state;
+        correlationCookieName = callbackState
+          ? getOidcCorrelationCookieName(callbackState)
+          : undefined;
+        if (!correlationCookieName) {
+          throw new Error('OIDC callback is missing a valid state parameter');
+        }
+        correlation = parseOidcCorrelation(
+          req.signedCookies[correlationCookieName]
+        );
+        if (!correlation) {
+          throw new Error('OIDC callback is missing its correlation cookie');
+        }
+        redirectUrl = new URL(correlation.redirectUri);
+        for (const key of ['state', 'code', 'error', 'error_description']) {
+          const value = req.body?.[key as keyof typeof req.body];
+          if (typeof value === 'string') redirectUrl.searchParams.set(key, value);
+        }
+      } else {
+        const parsedRedirectUrl = parseOidcCallbackUrl(req.body?.callbackUrl);
+        if (!parsedRedirectUrl) {
+          throw new Error('OIDC callback URL is invalid');
+        }
+        redirectUrl = parsedRedirectUrl;
+        const callbackState = redirectUrl.searchParams.get('state');
+        correlationCookieName = callbackState
+          ? getOidcCorrelationCookieName(callbackState)
+          : undefined;
+        if (!correlationCookieName) {
+          throw new Error('OIDC callback is missing a valid state parameter');
+        }
+        correlation = parseOidcCorrelation(
+          req.signedCookies[correlationCookieName]
+        );
       }
     } catch (error) {
       logger.warn('Rejected invalid OIDC callback URL', {
@@ -2491,9 +2583,6 @@ authRoutes.post(
       });
     }
 
-    const correlation = parseOidcCorrelation(
-      req.signedCookies[correlationCookieName]
-    );
     if (!correlation) {
       logger.warn('Rejected OIDC callback without correlation cookie', {
         label: 'Auth',
@@ -2533,6 +2622,15 @@ authRoutes.post(
         status: 403,
         error: ApiErrorCode.Unauthorized,
       });
+    }
+
+    if (appleFormPost && redirectUrl.searchParams.has('error')) {
+      res.clearCookie(correlationCookieName, {
+        path: OIDC_CORRELATION_COOKIE_PATH,
+      });
+      const failureUrl = new URL(correlation.returnUrl);
+      failureUrl.searchParams.set('oidcFailed', 'true');
+      return res.redirect(303, failureUrl.toString());
     }
 
     res.clearCookie(correlationCookieName, {
@@ -2593,7 +2691,9 @@ authRoutes.post(
       openIdClient.TokenEndpointResponseHelpers;
     try {
       tokens = await openIdClient.authorizationCodeGrant(config, redirectUrl, {
-        pkceCodeVerifier: correlation.codeVerifier,
+        ...(correlation.codeVerifier
+          ? { pkceCodeVerifier: correlation.codeVerifier }
+          : {}),
         expectedState: correlation.state,
         expectedNonce: correlation.nonce,
       });
@@ -2648,6 +2748,13 @@ authRoutes.post(
           error: ApiErrorCode.OidcAuthorizationFailed,
         });
       }
+    }
+
+    const emailVerifiedClaim: unknown = fullUserInfo.email_verified;
+    if (emailVerifiedClaim === 'true') {
+      Object.assign(fullUserInfo, { email_verified: true });
+    } else if (emailVerifiedClaim === 'false') {
+      Object.assign(fullUserInfo, { email_verified: false });
     }
 
     // Provider discovery, token exchange, and userinfo can all be slow. Admit
@@ -2791,7 +2898,9 @@ authRoutes.post(
                   );
                 }
 
-                return res.sendStatus(204);
+                return appleFormPost
+                  ? res.redirect(303, correlation.returnUrl)
+                  : res.sendStatus(204);
               })
           );
         } catch (error) {
@@ -2947,7 +3056,9 @@ authRoutes.post(
       );
 
       // Success!
-      return res.sendStatus(204);
+      return appleFormPost
+        ? res.redirect(303, correlation.returnUrl)
+        : res.sendStatus(204);
     });
   }
 );

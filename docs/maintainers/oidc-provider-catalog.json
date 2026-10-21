@@ -1,0 +1,201 @@
+{
+  "version": 1,
+  "defaultProvider": "generic",
+  "providers": [
+    {
+      "id": "generic",
+      "name": "OpenID Connect",
+      "icon": "generic",
+      "issuerExample": "https://id.example.com/realms/example",
+      "scopes": [
+        "openid",
+        "profile",
+        "email"
+      ],
+      "setupUrl": "https://openid.net/developers/how-connect-works/",
+      "notes": "Use the issuer identifier from the provider discovery document. Register the exact HTTPS callback in the app-specific guide."
+    },
+    {
+      "id": "google",
+      "name": "Google",
+      "icon": "google",
+      "issuerExample": "https://accounts.google.com",
+      "scopes": [
+        "openid",
+        "profile",
+        "email"
+      ],
+      "setupUrl": "https://developers.google.com/identity/openid-connect/openid-connect",
+      "notes": "Create a Web application OAuth client. Add the exact callback URI as an authorized redirect URI. Google requires openid and profile and/or email."
+    },
+    {
+      "id": "microsoft-entra",
+      "name": "Microsoft Entra ID",
+      "icon": "microsoft",
+      "issuerExample": "https://login.microsoftonline.com/<tenant-id>/v2.0",
+      "scopes": [
+        "openid",
+        "profile",
+        "email"
+      ],
+      "setupUrl": "https://learn.microsoft.com/en-us/entra/identity-platform/v2-protocols-oidc",
+      "notes": "Register a Web application and use the intended tenant/account audience. Use the concrete tenant issuer so issuer validation matches the ID token. Register the exact callback URI."
+    },
+    {
+      "id": "okta",
+      "name": "Okta",
+      "icon": "okta",
+      "issuerExample": "https://<your-okta-domain>/oauth2/default",
+      "scopes": [
+        "openid",
+        "profile",
+        "email"
+      ],
+      "setupUrl": "https://developer.okta.com/docs/guides/implement-grant-type/-/main/",
+      "notes": "Create an OIDC Web Application integration with Authorization Code enabled. Use the issuer for the intended authorization server and register the exact sign-in redirect URI."
+    },
+    {
+      "id": "auth0",
+      "name": "Auth0",
+      "icon": "auth0",
+      "issuerExample": "https://<tenant>.<region>.auth0.com/",
+      "scopes": [
+        "openid",
+        "profile",
+        "email"
+      ],
+      "setupUrl": "https://auth0.com/docs/get-started/authentication-and-authorization-flow/authorization-code-flow",
+      "notes": "Use the tenant issuer/domain and add the exact callback to Allowed Callback URLs. Custom domains must match the configured issuer."
+    },
+    {
+      "id": "keycloak",
+      "name": "Keycloak",
+      "icon": "keycloak",
+      "issuerExample": "https://<host>/realms/<realm>",
+      "scopes": [
+        "openid",
+        "profile",
+        "email"
+      ],
+      "setupUrl": "https://www.keycloak.org/docs/latest/server_admin/",
+      "notes": "Create an OpenID Connect client and register the exact callback URI. Keep redirect URI patterns narrow."
+    },
+    {
+      "id": "authentik",
+      "name": "authentik",
+      "icon": "authentik",
+      "issuerExample": "https://<host>/application/o/<application-slug>/",
+      "scopes": [
+        "openid",
+        "profile",
+        "email"
+      ],
+      "setupUrl": "https://docs.goauthentik.io/add-secure-apps/providers/oauth2/create-oauth2-provider/",
+      "notes": "Create an OAuth2/OpenID Provider and set strict redirect URI matching. Ensure email and email_verified claims are available to the client."
+    },
+    {
+      "id": "zitadel",
+      "name": "ZITADEL",
+      "icon": "zitadel",
+      "issuerExample": "https://<instance>.zitadel.cloud",
+      "scopes": [
+        "openid",
+        "profile",
+        "email"
+      ],
+      "setupUrl": "https://zitadel.com/docs/guides/integrate/login/oidc/oauth-recommended-flows",
+      "notes": "Use Authorization Code with PKCE. Enable profile/email claims in the ID token or ensure the UserInfo endpoint returns them; exact redirect URI matching applies."
+    },
+    {
+      "id": "amazon-cognito",
+      "name": "Amazon Cognito",
+      "icon": "amazon-cognito",
+      "issuerExample": "https://issuer-cognito-idp.<region>.amazonaws.com/<user-pool-id>",
+      "scopes": [
+        "openid",
+        "profile",
+        "email"
+      ],
+      "setupUrl": "https://docs.aws.amazon.com/cognito/latest/developerguide/federation-endpoints.html",
+      "notes": "Use the user-pool issuer and configure the exact callback URL in the app client. This is the recommended updated issuer form; existing user pools can instead use https://cognito-idp.<region>.amazonaws.com/<user-pool-id>. Claim availability depends on pool attributes and scopes."
+    },
+    {
+      "id": "gitlab",
+      "name": "GitLab",
+      "icon": "gitlab",
+      "issuerExample": "https://gitlab.com",
+      "scopes": [
+        "openid",
+        "profile",
+        "email"
+      ],
+      "setupUrl": "https://docs.gitlab.com/integration/openid_connect_provider/",
+      "notes": "Create an OAuth application with the openid scope and register the exact callback. For self-managed GitLab, use the instance URL as issuer."
+    },
+    {
+      "id": "fusionauth",
+      "name": "FusionAuth",
+      "icon": "fusionauth",
+      "issuerExample": "https://<fusionauth-host>",
+      "scopes": [
+        "openid",
+        "profile",
+        "email"
+      ],
+      "setupUrl": "https://fusionauth.io/docs/lifecycle/authenticate-users/oauth/",
+      "notes": "Create or select a FusionAuth Application, configure OAuth/OIDC, and add the exact callback to Authorized redirect URLs. Use the issuer and discovery metadata published by the intended tenant; tenant-specific discovery must resolve to the same issuer."
+    },
+    {
+      "id": "onelogin",
+      "name": "OneLogin",
+      "icon": "onelogin",
+      "issuerExample": "https://<subdomain>.onelogin.com/oidc/2",
+      "scopes": [
+        "openid",
+        "profile",
+        "email"
+      ],
+      "setupUrl": "https://developers.onelogin.com/docs/openid-connect/connect-to-onelogin/",
+      "notes": "Create an OpenID Connect app/connector, assign it to the intended users, and register the exact callback. Use the tenant subdomain and discovery metadata for that OneLogin instance; check its metadata for supported scopes and claims."
+    },
+    {
+      "id": "pingone",
+      "name": "PingOne",
+      "icon": "pingone",
+      "issuerExample": "https://auth.pingone.<region>/<environment-id>",
+      "scopes": [
+        "openid",
+        "profile",
+        "email"
+      ],
+      "setupUrl": "https://docs.pingidentity.com/pingone/applications/p1_edit_application_oidc.html",
+      "notes": "Create an OIDC Web App, enable Authorization Code, add the exact callback, and allow the openid/profile/email scopes. Copy the issuer/discovery URL for the specific PingOne environment; do not use wildcard redirects."
+    },
+    {
+      "id": "jumpcloud",
+      "name": "JumpCloud",
+      "icon": "jumpcloud",
+      "issuerExample": "https://oauth.id.jumpcloud.com/",
+      "scopes": [
+        "openid",
+        "profile",
+        "email"
+      ],
+      "setupUrl": "https://jumpcloud.com/support/sso-with-oidc",
+      "notes": "Create a Custom OIDC App and register the exact HTTPS callback. Use the regional issuer shown by JumpCloud: US oauth.id.jumpcloud.com, EU oauth.id.eu.jumpcloud.com, or India oauth.id.in.jumpcloud.com."
+    },
+    {
+      "id": "apple-sign-in",
+      "name": "Sign in with Apple",
+      "icon": "apple",
+      "issuerExample": "https://appleid.apple.com",
+      "scopes": [
+        "openid",
+        "email"
+      ],
+      "setupUrl": "https://developer.apple.com/documentation/signinwithapple/configuring-your-environment-for-sign-in-with-apple",
+      "support": "supported-special",
+      "notes": "Supported by all nine native adapters as a provider-specific protocol path. Use only openid and email scopes, response_mode=form_post, the exact HTTPS callback, and a signed client-secret JWT in the token request body. PKCE and profile scope are omitted. email_verified may be a JSON boolean or the string true/false. Rotate the client-secret JWT before its maximum six-month expiry."
+    }
+  ]
+}

@@ -364,6 +364,14 @@ Promise.resolve()
       server.use(securityHeaders);
       server.use(compression());
       server.use(cookieParser(settings.sessionSecret));
+      server.use(
+        '/api/v1/auth/oidc/callback/:slug',
+        express.urlencoded({
+          extended: false,
+          limit: '16kb',
+          parameterLimit: 32,
+        })
+      );
       server.use(express.json({ limit: API_BODY_LIMIT }));
       server.use(
         express.urlencoded({

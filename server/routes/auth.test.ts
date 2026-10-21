@@ -2785,6 +2785,9 @@ describe('OpenID Connect', () => {
       'lookup',
       async (hostname: string, options: unknown) => {
         assert.deepStrictEqual(options, { all: true });
+        if (hostname === 'appleid.apple.com') {
+          return [{ address: '17.253.144.10', family: 4 }];
+        }
         if (hostname !== 'example.com') {
           throw new Error(`Unconfigured fixture DNS hostname: ${hostname}`);
         }
@@ -3012,6 +3015,85 @@ describe('OpenID Connect', () => {
         correlationCookie,
         /(?:^|;) Path=\/api\/v1\/auth\/oidc(?:;|$)/
       );
+      assert.match(correlationCookie, /SameSite=Lax/i);
+      assert.match(correlationCookie, /Secure/i);
+    });
+
+    it('builds the Apple form-post authorization request and cross-site state cookie', async function () {
+      const appleMetadata = {
+        issuer: 'https://appleid.apple.com',
+        authorization_endpoint: 'https://appleid.apple.com/auth/authorize',
+        token_endpoint: 'https://appleid.apple.com/auth/token',
+        jwks_uri: 'https://appleid.apple.com/auth/keys',
+        response_types_supported: ['code'],
+        response_modes_supported: ['query', 'fragment', 'form_post'],
+        subject_types_supported: ['pairwise'],
+        id_token_signing_alg_values_supported: ['RS256'],
+        scopes_supported: ['openid', 'email', 'name'],
+        token_endpoint_auth_methods_supported: ['client_secret_post'],
+        claims_supported: [
+          'aud', 'email', 'email_verified', 'exp', 'iat', 'iss', 'nonce', 'sub',
+        ],
+      };
+      fetchMock.route(
+        'https://appleid.apple.com/.well-known/openid-configuration',
+        appleMetadata
+      );
+      const settings = getSettings();
+      settings.oidc.providers[0] = {
+        ...settings.oidc.providers[0],
+        slug: 'apple-sign-in',
+        name: 'Apple',
+        issuerUrl: 'https://appleid.apple.com',
+        clientId: 'com.example.seerr',
+        clientSecret: 'test-signed-client-secret-jwt',
+      };
+
+      const response = await request(app)
+        .get('/auth/oidc/login/apple-sign-in')
+        .set('Accept', 'application/json');
+
+      assert.strictEqual(response.status, 200);
+      const authorizeUrl = new URL(response.body.redirectUrl);
+      assert.strictEqual(authorizeUrl.searchParams.get('scope'), 'openid email');
+      assert.strictEqual(authorizeUrl.searchParams.get('response_mode'), 'form_post');
+      assert.strictEqual(
+        authorizeUrl.searchParams.get('redirect_uri'),
+        'https://jellyseerr.example.com/api/v1/auth/oidc/callback/apple-sign-in'
+      );
+      assert.ok(authorizeUrl.searchParams.get('state'));
+      assert.ok(authorizeUrl.searchParams.get('nonce'));
+      assert.strictEqual(authorizeUrl.searchParams.has('code_challenge'), false);
+
+      const correlationCookie = response
+        .get('Set-Cookie')
+        ?.find((cookie) => cookie.startsWith('oidc-correlation-'));
+      assert.ok(correlationCookie);
+      assert.match(correlationCookie, /SameSite=None/i);
+      assert.match(correlationCookie, /Secure/i);
+    });
+
+    it('rejects non-form and duplicate Apple callback parameters', async function () {
+      const settings = getSettings();
+      settings.oidc.providers[0] = {
+        ...settings.oidc.providers[0],
+        slug: 'apple-sign-in',
+        name: 'Apple',
+        issuerUrl: 'https://appleid.apple.com',
+        clientId: 'com.example.seerr',
+        clientSecret: 'test-signed-client-secret-jwt',
+      };
+
+      const jsonResponse = await request(app)
+        .post('/auth/oidc/callback/apple-sign-in')
+        .send({ state: 'state', code: 'code' });
+      assert.strictEqual(jsonResponse.status, 400);
+
+      const duplicateResponse = await request(app)
+        .post('/auth/oidc/callback/apple-sign-in')
+        .type('form')
+        .send({ state: ['first', 'second'], code: 'code' });
+      assert.strictEqual(duplicateResponse.status, 400);
     });
 
     it('restricts redirect URIs to known callback pages', async function () {

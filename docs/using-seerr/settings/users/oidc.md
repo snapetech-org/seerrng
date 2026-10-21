@@ -51,6 +51,11 @@ Name of the provider which appears on the login screen.
 ### Logo (`logo`)
 
 The logo to display for the provider. Should be a URL or base64 encoded image.
+When left empty, recognized slugs (`google`, `microsoft-entra`, `okta`,
+`auth0`, `keycloak`, `authentik`, `zitadel`, `amazon-cognito`, `gitlab`,
+`fusionauth`, `onelogin`, `pingone`, `jumpcloud`, and `apple-sign-in`)
+use a bundled local brand mark. Other slugs use the generic OpenID mark. Each
+provider's login entry also links to its official setup guide.
 
 ### Issuer URL (`issuerUrl`)
 The base URL of the identity provider's OpenID Connect endpoint
@@ -79,6 +84,7 @@ for the first time. The provider must return an email address and assert
 account. SeerrNG does not automatically link a new OIDC identity to an existing
 account by matching email; link the provider from the existing account's
 **Linked Accounts** settings first. If you customize scopes, include `email`.
+The cross-project adapter contract is in the [OIDC implementation template](../../../maintainers/oidc-cross-project-template.md).
 
 ## Network Security
 
@@ -103,10 +109,33 @@ Most OpenID Connect providers follow the same basic setup pattern:
 3. **Add redirect URIs** pointing to your Seerr instance. At minimum, allow:
    - `https://<your-seerr-url>/login`
    - `https://<your-seerr-url>/profile/settings/linked-accounts`
+   For Sign in with Apple, use the provider-specific callback instead:
+   `https://<your-seerr-url>/api/v1/auth/oidc/callback/<provider-slug>`.
+   The slug is the configured provider `slug` (for example, `apple-sign-in`).
 4. **Copy the Client ID and Client Secret** from your provider and enter them in Seerr's provider configuration.
 5. **Set the Issuer URL** to the base URL of your provider's OpenID Connect discovery endpoint. Most providers publish a `/.well-known/openid-configuration` document — the Issuer URL is the part before that path.
 
 The default scopes (`openid profile email`) are sufficient for most providers. Only adjust scopes or required claims if your provider requires it.
+
+### Sign in with Apple
+
+Apple uses a special web flow supported by SeerrNG. Create a Services ID,
+enable Sign in with Apple for it, and register the exact callback URI shown
+above as a Return URL. Configure the issuer as exactly
+`https://appleid.apple.com`, and use the Services ID as the client ID. Apple
+requires `openid email` with `response_mode=form_post`; SeerrNG applies those
+protocol settings automatically for this issuer.
+
+Generate an Apple client-secret JWT using your Team ID, Services ID, Key ID,
+and Sign in with Apple private key. Store that signed JWT as `clientSecret`.
+Apple limits its lifetime to six months, so rotate the value before it expires.
+Do not add `profile` to Apple's scopes. Apple can return `email_verified` as a
+boolean or the string `"true"`; SeerrNG accepts only an affirmative value for
+new-user admission.
+
+See Apple's official guides for [environment setup](https://developer.apple.com/documentation/signinwithapple/configuring-your-environment-for-sign-in-with-apple),
+[web authorization](https://developer.apple.com/documentation/signinwithapple/incorporating-sign-in-with-apple-into-other-platforms),
+and [client-secret creation](https://developer.apple.com/documentation/accountorganizationaldatasharing/creating-a-client-secret).
 
 ## Provider Guides
 
