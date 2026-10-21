@@ -39,12 +39,17 @@ const secondIsbn = '9780261103573';
 const app = express();
 app.use(express.json());
 app.use(
+  // Supertest creates this session only for synthetic test users; its secret is
+  // random per process and never backs a deployed server.
+  // codeql[js/clear-text-cookie]
   session({
     secret: randomBytes(32).toString('hex'),
     resave: false,
     saveUninitialized: false,
   })
 );
+// The production checkUser middleware applies authenticatedRouteRateLimit.
+// codeql[js/missing-rate-limiting]
 app.use(checkUser);
 app.use('/auth', authRoutes);
 app.use(
@@ -65,8 +70,14 @@ app.use((_req, res, next) => {
   res.json = (body: unknown) => sendJson(JSON.parse(JSON.stringify(body)));
   next();
 });
+// checkUser above rate-limits all requests; bookRoutes also applies its own
+// per-user limiter in production.
+// codeql[js/missing-rate-limiting]
 app.use('/book', isAuthenticated(), bookRoutes);
 app.use('/book-series', isAuthenticated(), bookSeriesRoutes);
+// checkUser above rate-limits all requests in production; this Supertest app
+// only isolates the request route behavior.
+// codeql[js/missing-rate-limiting]
 app.use('/request', isAuthenticated(), requestRoutes);
 app.use(
   (
@@ -570,10 +581,7 @@ describe('direct book series search', () => {
     }));
     const agent = await login();
     const search = await agent.get('/book-series/search?query=series');
-    const url = search.body.results[0].href.replace(
-      '/book-series/catalog?',
-      '/book-series/catalog?'
-    );
+    const url = search.body.results[0].href;
     const response = await agent.get(url);
     assert.equal(response.status, 200, JSON.stringify(response.body));
     assert.equal(response.body.books[0].title, 'Catalog Book');
