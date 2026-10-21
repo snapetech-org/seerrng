@@ -9,6 +9,7 @@ on:
       - '.github/workflows/release-assets.yml'
       - '.github/workflows/release.yml'
   push:
+    branches: [main]
     paths:
       - 'ios/**'
       - 'scripts/build-ios-release.sh'
