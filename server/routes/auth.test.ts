@@ -1,4 +1,5 @@
 import assert from 'node:assert/strict';
+import { randomBytes } from 'node:crypto';
 import dns from 'node:dns/promises';
 import {
   after,
@@ -198,7 +199,7 @@ function createApp() {
   app.use(cookieParser('SECRET'));
   app.use(
     session({
-      secret: 'test-secret',
+      secret: randomBytes(32).toString('base64'),
       cookie: { secure: 'auto' },
       resave: false,
       saveUninitialized: false,

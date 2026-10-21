@@ -2764,9 +2764,9 @@ authRoutes.post(
 
     const emailVerifiedClaim: unknown = fullUserInfo.email_verified;
     if (emailVerifiedClaim === 'true') {
-      Object.assign(fullUserInfo, { email_verified: true });
+      fullUserInfo = { ...fullUserInfo, email_verified: true };
     } else if (emailVerifiedClaim === 'false') {
-      Object.assign(fullUserInfo, { email_verified: false });
+      fullUserInfo = { ...fullUserInfo, email_verified: false };
     }
 
     // Provider discovery, token exchange, and userinfo can all be slow. Admit
