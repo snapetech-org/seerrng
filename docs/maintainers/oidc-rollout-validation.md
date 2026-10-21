@@ -26,6 +26,31 @@ performed.
 | BookshelfNG | `dotnet build src/NzbDrone.Host/Readarr.Host.csproj --no-restore -p:ReadarrRootDir=<task-scratch>/dotnet/bookshelf/` | Passed with zero warnings and zero errors. The OIDC-filtered Core test selection contained no matching test cases. |
 | ChaptarrNG | OIDC-filtered tests in the clean rollout worktree | 27 tests passed with the repository's required .NET SDK and the locally available SixLabors license file. No license check was disabled. |
 
+## Operator documentation and navigation
+
+Each application has an operator guide that covers its configuration surface,
+exact callback, verified-email admission, local identity/session behavior,
+recovery, Apple flow, and troubleshooting. Root READMEs link directly to the
+app guide; maintained documentation indexes link to the same guide. All guides
+point to the shared provider catalog and cross-project implementation
+contract.
+
+| Application | Operator guide |
+| --- | --- |
+| SeerrNG | [OIDC sign-in](https://github.com/snapetech-org/seerrng/blob/main/docs/using-seerr/settings/users/oidc.md) |
+| slskR | [OIDC authentication](https://github.com/snapetech-org/slskr/blob/main/docs/oidc-authentication.md) |
+| slskdN | [OIDC authentication](https://github.com/snapetech-org/slskdN/blob/main/docs/oidc-authentication.md) |
+| TorrentNG | [OIDC authentication](https://github.com/snapetech-org/TorrentNG/blob/main/docs/OIDC_AUTHENTICATION.md) |
+| IPTV Tunerr | [Control Deck OIDC](https://github.com/snapetech/iptvtunerr/blob/main/docs/how-to/oidc-control-deck.md) |
+| ROMarrNG | [OIDC authentication](https://github.com/snapetech-org/ROMarrNG/blob/main/docs/oidc-authentication.md) |
+| QuestarrNG | [OIDC authentication](https://github.com/snapetech-org/QuestarrNG/blob/main/docs/oidc-authentication.md) |
+| BookshelfNG | [OIDC authentication](https://github.com/snapetech-org/bookshelfng/blob/main/docs/oidc-authentication.md) |
+| ChaptarrNG | [OIDC authentication](https://github.com/snapetech-org/chaptarrng/blob/main/docs/oidc-authentication.md) |
+
+The shared [provider catalog](./oidc-provider-catalog.md) is the human-readable
+index to all 15 provider entries and official setup pages; the JSON catalog
+remains the machine-readable source consumed by the applications.
+
 ## Interoperability and security boundaries
 
 - A cross-project parity check confirmed that all nine presentation maps

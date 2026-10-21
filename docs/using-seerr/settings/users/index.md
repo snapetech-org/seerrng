@@ -6,6 +6,11 @@ sidebar_position: 2
 
 # Users
 
+For external identity-provider sign-in, see [OpenID Connect setup, account
+linking, admission rules, and recovery](./oidc.md). SeerrNG supports multiple
+providers; ordinary provider callbacks return to the page where sign-in
+started, while Sign in with Apple uses its fixed callback URL.
+
 ## Enable Local Sign-In
 
 When enabled, users who have configured passwords will be allowed to sign in using their email address.

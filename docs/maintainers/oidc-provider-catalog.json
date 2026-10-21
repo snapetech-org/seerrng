@@ -39,7 +39,7 @@
         "email"
       ],
       "setupUrl": "https://learn.microsoft.com/en-us/entra/identity-platform/v2-protocols-oidc",
-      "notes": "Register a Web application and use the intended tenant/account audience. Use the concrete tenant issuer so issuer validation matches the ID token. Register the exact callback URI."
+      "notes": "Register a Web application and use the intended tenant/account audience. Use the concrete tenant issuer so issuer validation matches the ID token. Register the exact callback URI. Claim availability depends on tenant and app registration."
     },
     {
       "id": "okta",
@@ -130,7 +130,7 @@
         "email"
       ],
       "setupUrl": "https://docs.gitlab.com/integration/openid_connect_provider/",
-      "notes": "Create an OAuth application with the openid scope and register the exact callback. For self-managed GitLab, use the instance URL as issuer."
+      "notes": "Create an OAuth application with the openid scope and register the exact callback. For self-managed GitLab, use the instance URL as issuer. GitLab returns email and email_verified only when the app has the email scope and the user has a public email address."
     },
     {
       "id": "fusionauth",

@@ -76,6 +76,83 @@ external HTTPS URI, including any reverse-proxy base path, with the provider.
 The configured issuer remains authoritative even when the selected hint would
 normally use a different issuer.
 
+For operator-facing provider setup, use the readable
+[provider catalog](./oidc-provider-catalog.md). It lists every supported ID,
+issuer example, default scopes, official setup page, and known tenant or claim
+caveat. The adjacent JSON file is the machine-readable catalog used by the
+applications and their presentation tests. The app-specific links below remain
+authoritative for callback, configuration, admission, and session behavior.
+
+## Application operator map
+
+This is the quick routing reference, not a replacement for the linked app
+guide. Callback paths are relative to the app's public origin. If the app is
+mounted below a reverse-proxy base path, include that path exactly as the app
+guide describes. SeerrNG ordinary providers use the selected browser return
+page as the redirect URI; its Apple callback is fixed.
+
+| Application | Operator guide | Configuration surface | Provider callback path | Resulting app identity/session |
+| --- | --- | --- | --- | --- |
+| SeerrNG | [OIDC sign-in](https://github.com/snapetech-org/seerrng/blob/main/docs/using-seerr/settings/users/oidc.md) | `main.oidcLogin` and `oidc.providers` in `settings.json` | Ordinary: exact `/login` and `/profile/settings/linked-accounts` page URLs used to start sign-in; Apple: `/api/v1/auth/oidc/callback/<slug>` | Native Seerr user and session; explicit provider linking remains separate from email matching. |
+| slskR | [OIDC sign-in](https://github.com/snapetech-org/slskr/blob/main/docs/oidc-authentication.md) | Controller environment variables | `/api/v0/session/oidc/callback` | Existing controller administrator session; OIDC identity `(iss, sub)` is retained. |
+| slskdN | [OIDC sign-in](https://github.com/snapetech-org/slskdN/blob/main/docs/oidc-authentication.md) | `web.authentication.oidc` in `slskd.yml` or matching environment variables | `/signin-oidc` | Existing JWT session; exact allow-list admissions receive Administrator, explicit allow-any admissions receive ReadWrite. |
+| TorrentNG | [OIDC sign-in](https://github.com/snapetech-org/TorrentNG/blob/main/docs/OIDC_AUTHENTICATION.md) | `[auth.oidc]` in TOML or `TNG_OIDC_*` / legacy `RTNG_OIDC_*` variables | `/api/v1/auth/oidc/callback` | Existing WebUI session and operator permission. |
+| IPTV Tunerr | [Control Deck OIDC](https://github.com/snapetech/iptvtunerr/blob/main/docs/how-to/oidc-control-deck.md) | Control Deck `IPTV_TUNERR_WEBUI_OIDC_*` environment variables | `/auth/oidc/callback` | Existing Control Deck cookie session; tuner, stream, and media endpoints are separate. |
+| ROMarrNG | [OIDC sign-in](https://github.com/snapetech-org/ROMarrNG/blob/main/docs/oidc-authentication.md) | `ROMARR_OIDC_*` environment variables | `/auth/oidc/callback` | Existing signed operator session. |
+| QuestarrNG | [OIDC sign-in](https://github.com/snapetech-org/QuestarrNG/blob/main/docs/oidc-authentication.md) | `QUESTARR_OIDC_*` environment variables | `/api/auth/oidc/callback` | A distinct local user keyed from `(iss, sub)`; no email-based linking. |
+| BookshelfNG | [OIDC sign-in](https://github.com/snapetech-org/bookshelfng/blob/main/docs/oidc-authentication.md) | Security settings plus `BOOKSHELF_OIDC_*` server environment variables | `/signin-oidc` | Existing BookshelfNG authentication cookie and local authorization. |
+| ChaptarrNG | [OIDC sign-in](https://github.com/snapetech-org/chaptarrng/blob/main/docs/oidc-authentication.md) | Security settings; legacy `BOOKSHELF_OIDC_*` variables remain migration fallbacks | `/signin-oidc` | Existing Chaptarr authentication and local identity mapping. |
+
+## Operator rollout and lifecycle
+
+Use this sequence for a new deployment or provider change:
+
+1. Confirm the app's local recovery method works and that the public app URL is
+   configured correctly at the app and reverse proxy. OIDC depends on that
+   URL for callback generation and secure cookies.
+2. Create a confidential web client in the provider. Use the exact issuer from
+   its discovery metadata and register only the callback URI from the app's
+   guide. Avoid wildcard callback registrations.
+3. Store the client secret on the server. Protect configuration backups and
+   access to deployment secrets with the same care as other application
+   credentials. Never put secrets in a README, screenshot, ticket, or browser
+   configuration.
+4. Set an explicit email or domain admission policy before publishing the
+   button. If enabling an app's allow-any option, first restrict who can use
+   the provider client itself and verify the app-specific role it grants.
+5. Sign in using the public HTTPS URL with one admitted identity. Then test a
+   verified but unadmitted identity and confirm it is rejected. Confirm the
+   app's own role, linked-account, and logout behavior.
+6. Rotate client secrets in both the provider and application using the
+   deployment's secret-update process. For Apple, generate and install a new
+   signed client-secret JWT before its six-month maximum lifetime expires.
+7. To disable OIDC, use the app's documented toggle or remove its complete
+   provider configuration, then restart/redeploy only when that app's
+   configuration method requires it. Retain a working local/API-key recovery
+   path and verify it before making further auth changes.
+
+Do not assume configuration reload, identity linking, session revocation, or
+role assignment is identical across the nine apps. Those details belong to the
+app guide and the adapter tests. The provider may maintain its own SSO session;
+clearing an app session does not promise a provider-wide logout.
+
+## Troubleshooting guide
+
+| Symptom | Check |
+| --- | --- |
+| Provider rejects the redirect URI | Compare scheme, host, port, path, case, and trailing slash with the app's computed public callback. Include the reverse-proxy base path. SeerrNG ordinary login can start from two approved pages; Apple uses its fixed API callback. |
+| Discovery or issuer validation fails | Compare the configured issuer byte-for-byte with the discovery document's `issuer`. Use the provider tenant/region-specific URL. Do not add the discovery path to the issuer setting. |
+| Provider discovery or token exchange cannot connect | Check DNS, outbound firewall rules, CA trust, and provider availability. Internal IdPs require the app's explicit private-issuer opt-in. Do not enable private addresses or HTTP for a public deployment. |
+| Callback reports missing state, nonce, or correlation | Start a new login in the same browser and public hostname. Confirm proxy scheme/host forwarding and that cookies survive the redirect. A restart may invalidate pending transactions in apps that keep state in process memory. |
+| Sign-in returns to the app but admission fails | Confirm the provider returns a non-empty `sub`, email, and an affirmative verified-email claim; check scope/claim mapping and the app's exact address/domain allow-list. Empty admission remains deny-by-default. |
+| User can enter with unexpected privileges | Check the app-specific local role rule and the allow-any setting. Group claims do not grant admin access in this contract. Do not treat a branded login button as evidence of provider authorization. |
+| Apple form-post fails while other providers work | Confirm the exact Apple issuer, Services ID, fixed callback, `openid email` scopes, signed client-secret JWT, HTTPS public origin, and cross-site callback cookie behavior. Do not add `profile` or PKCE to Apple's flow. |
+
+When reporting a failure, provide the app/version, provider ID, redacted issuer
+host and callback path, the stable error code, and relevant timestamp. Never
+attach authorization codes, ID/access tokens, client secrets, signed Apple
+JWTs, raw claims, or full callback query strings.
+
 ## Shared sign-in contract
 
 Every app-level OIDC sign-in follows the same rules:

@@ -187,6 +187,8 @@ SeerrNG documentation is maintained in the [docs folder](https://github.com/snap
 - [Install SeerrNG](./docs/getting-started/index.mdx)
 - [Install on Unraid](./docs/getting-started/third-parties/unraid.mdx)
 - [Find books, authors, and series](./docs/using-seerr/books-and-series.md)
+- [Configure OIDC sign-in, account linking, and provider recovery](./docs/using-seerr/settings/users/oidc.md)
+- [Cross-project OIDC implementation contract](./docs/maintainers/oidc-cross-project-template.md) · [provider catalog and official setup links](./docs/maintainers/oidc-provider-catalog.md)
 - [Create custom Discover sliders](./docs/using-seerr/custom-discover-sliders.md)
 - [Filter movie and series Discover results](./docs/using-seerr/movie-series-discovery-filters.md)
 - [Configure Sonarr v5 and season orders](./docs/using-seerr/settings/services.md)
