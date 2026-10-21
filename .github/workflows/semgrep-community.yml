@@ -13,7 +13,7 @@ permissions:
   contents: read
 
 concurrency:
-  group: semgrep-ce-${{ github.workflow }}-${{ github.ref }}
+  group: semgrep-ce-${{ github.workflow }}-${{ github.run_id }}-${{ github.run_attempt }}
   cancel-in-progress: false
 
 jobs:

@@ -13,7 +13,7 @@ permissions:
   contents: read
 
 concurrency:
-  group: trivy-fs-${{ github.workflow }}-${{ github.ref }}
+  group: trivy-fs-${{ github.workflow }}-${{ github.run_id }}-${{ github.run_attempt }}
   cancel-in-progress: false
 
 jobs:
