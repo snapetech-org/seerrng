@@ -7,7 +7,7 @@ import {
 } from 'typeorm';
 import { User } from './User';
 
-@Index('IDX_linked_accounts_provider_sub', ['provider', 'sub'], {
+@Index('IDX_linked_accounts_issuer_sub', ['issuer', 'sub'], {
   unique: true,
 })
 @Entity('linked_accounts')
@@ -26,6 +26,10 @@ export class LinkedAccount {
   /** Slug of the OIDC provider. */
   @Column({ type: 'varchar', length: 255 })
   provider: string;
+
+  /** OIDC issuer that authenticated this subject; null only for legacy rows. */
+  @Column({ type: 'varchar', length: 2048, nullable: true })
+  issuer?: string | null;
 
   /** Unique ID from the OAuth provider */
   @Column({ type: 'varchar', length: 255 })

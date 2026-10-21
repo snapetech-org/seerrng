@@ -74,7 +74,7 @@ import rateLimit from 'express-rate-limit';
 import gravatarUrl from 'gravatar-url';
 import net from 'net';
 import * as openIdClient from 'openid-client';
-import { MoreThan } from 'typeorm';
+import { IsNull, MoreThan } from 'typeorm';
 import validator from 'validator';
 import { z } from 'zod';
 
@@ -2150,14 +2150,19 @@ const getOidcReturnUrl = (req: Request): URL => {
     !raw.startsWith('/') ||
     raw.startsWith('//') ||
     raw.includes('\\') ||
-    /[\u0000-\u001f\u007f]/.test(raw)
+    raw.split('').some((character) => {
+      const code = character.charCodeAt(0);
+      return code <= 0x1f || code === 0x7f;
+    })
   ) {
     return new URL('/', baseUrl);
   }
 
   try {
     const resolved = new URL(raw, baseUrl);
-    return resolved.origin === baseUrl.origin ? resolved : new URL('/', baseUrl);
+    return resolved.origin === baseUrl.origin
+      ? resolved
+      : new URL('/', baseUrl);
   } catch {
     return new URL('/', baseUrl);
   }
@@ -2271,7 +2276,8 @@ const parseOidcCorrelation = (value: unknown): OidcCorrelation | undefined => {
       typeof (parsed as Partial<OidcCorrelation>).authorizationContext ===
         'string' &&
       ((parsed as Partial<OidcCorrelation>).codeVerifier === undefined ||
-        typeof (parsed as Partial<OidcCorrelation>).codeVerifier === 'string') &&
+        typeof (parsed as Partial<OidcCorrelation>).codeVerifier ===
+          'string') &&
       ((parsed as Partial<OidcCorrelation>).initiatingUserId === null ||
         (Number.isSafeInteger(
           (parsed as Partial<OidcCorrelation>).initiatingUserId
@@ -2390,7 +2396,9 @@ authRoutes.get('/oidc/login/:slug', authRateLimit, async (req, res, next) => {
   const parameters: Record<string, string> = {
     redirect_uri: callbackUrl.toString(),
     response_type: 'code',
-    scope: appleIssuer ? 'openid email' : provider.scopes ?? 'openid profile email',
+    scope: appleIssuer
+      ? 'openid email'
+      : (provider.scopes ?? 'openid profile email'),
   };
   if (appleIssuer) {
     parameters.response_mode = 'form_post';
@@ -2515,7 +2523,8 @@ authRoutes.post(
       });
     }
 
-    const appleIssuer = provider.issuerUrl.trim() === 'https://appleid.apple.com';
+    const appleIssuer =
+      provider.issuerUrl.trim() === 'https://appleid.apple.com';
     const appleFormPost = typeof req.body?.callbackUrl !== 'string';
     let redirectUrl: URL;
     let correlationCookieName: string | undefined;
@@ -2523,7 +2532,9 @@ authRoutes.post(
     try {
       if (appleFormPost) {
         if (!appleIssuer) {
-          throw new Error('OIDC form-post callback is only supported for Apple');
+          throw new Error(
+            'OIDC form-post callback is only supported for Apple'
+          );
         }
         if (!req.is('application/x-www-form-urlencoded')) {
           throw new Error('Apple OIDC callback must use form encoding');
@@ -2551,7 +2562,8 @@ authRoutes.post(
         redirectUrl = new URL(correlation.redirectUri);
         for (const key of ['state', 'code', 'error', 'error_description']) {
           const value = req.body?.[key as keyof typeof req.body];
-          if (typeof value === 'string') redirectUrl.searchParams.set(key, value);
+          if (typeof value === 'string')
+            redirectUrl.searchParams.set(key, value);
         }
       } else {
         const parsedRedirectUrl = parseOidcCallbackUrl(req.body?.callbackUrl);
@@ -2778,6 +2790,20 @@ authRoutes.post(
         });
       }
 
+      // Account admission always requires the provider to assert email ownership,
+      // including for an identity that was linked before this callback began.
+      if (fullUserInfo.email_verified !== true) {
+        logger.info('Failed OIDC login attempt', {
+          cause: 'Provider did not assert a verified email address',
+          ip: req.ip,
+          provider: activeProvider.slug,
+        });
+        return next({
+          status: 403,
+          error: ApiErrorCode.Unauthorized,
+        });
+      }
+
       // Validate that user meets required claims
       const hasRequiredClaims = oidcProviderClaimsAllowed(
         activeProvider,
@@ -2818,7 +2844,7 @@ authRoutes.post(
 
       const oidcIdentityAdmissionResource = getAuthAccountAdmissionResource(
         'oidc',
-        `${provider.slug}\0${oidcIdentity.sub}`
+        `${provider.issuerUrl}\0${oidcIdentity.sub}`
       );
 
       // If there is already a user logged in, handle account linking
@@ -2866,7 +2892,7 @@ authRoutes.post(
                   await linkedAccountsRepository.findOne({
                     relations: { user: true },
                     where: {
-                      provider: provider.slug,
+                      issuer: provider.issuerUrl,
                       sub: oidcIdentity.sub,
                     },
                   });
@@ -2888,14 +2914,42 @@ authRoutes.post(
                 }
 
                 if (currentLinkedAccount == null) {
-                  await linkedAccountsRepository.save(
-                    new LinkedAccount({
-                      user: activeUser,
-                      provider: provider.slug,
-                      sub: oidcIdentity.sub,
-                      username: oidcIdentity.username ?? activeUser.displayName,
-                    })
-                  );
+                  const legacyLinkedAccount =
+                    await linkedAccountsRepository.findOne({
+                      relations: { user: true },
+                      where: {
+                        provider: provider.slug,
+                        issuer: IsNull(),
+                        sub: oidcIdentity.sub,
+                      },
+                    });
+                  if (
+                    legacyLinkedAccount &&
+                    legacyLinkedAccount.user.id !== activeUser.id
+                  ) {
+                    return next({
+                      status: 409,
+                      error: ApiErrorCode.OidcAccountAlreadyLinked,
+                    });
+                  }
+
+                  if (legacyLinkedAccount) {
+                    legacyLinkedAccount.issuer = provider.issuerUrl;
+                    legacyLinkedAccount.username =
+                      oidcIdentity.username ?? activeUser.displayName;
+                    await linkedAccountsRepository.save(legacyLinkedAccount);
+                  } else {
+                    await linkedAccountsRepository.save(
+                      new LinkedAccount({
+                        user: activeUser,
+                        provider: provider.slug,
+                        issuer: provider.issuerUrl,
+                        sub: oidcIdentity.sub,
+                        username:
+                          oidcIdentity.username ?? activeUser.displayName,
+                      })
+                    );
+                  }
                 }
 
                 return appleFormPost
@@ -2947,7 +3001,7 @@ authRoutes.post(
           const currentLinkedAccount = await linkedAccountsRepository.findOne({
             relations: { user: true },
             where: {
-              provider: provider.slug,
+              issuer: provider.issuerUrl,
               sub: oidcIdentity.sub,
             },
           });
@@ -3002,6 +3056,7 @@ authRoutes.post(
             new LinkedAccount({
               user: createdUser,
               provider: provider.slug,
+              issuer: provider.issuerUrl,
               sub: oidcIdentity.sub,
               username: oidcIdentity.username ?? normalizedEmail,
             }),

@@ -154,7 +154,8 @@ users and their app permissions using SeerrNG's normal user-management tools.
 ## Protocol and network behavior
 
 - Ordinary providers use Authorization Code with PKCE S256, one-time state,
-  nonce, and a short-lived signed `HttpOnly` correlation cookie.
+  nonce, and a short-lived signed `HttpOnly` correlation cookie. Each attempt
+  gets its own cookie; SeerrNG keeps at most eight pending browser attempts.
 - The callback checks the transaction and provider configuration before code
   exchange, validates the provider ID token, and restricts the final `returnTo`
   value to a local SeerrNG path.
@@ -189,6 +190,18 @@ value is accepted. See Apple's [environment setup](https://developer.apple.com/d
 and [client-secret creation](https://developer.apple.com/documentation/accountorganizationaldatasharing/creating-a-client-secret).
 
 ## Verify and recover
+
+### Upgrade from provider-slug identity links
+
+Older SeerrNG builds stored an OIDC link as provider slug plus subject and did
+not persist the issuer that authenticated it. The issuer-binding migration
+leaves those rows unbound and rejects them for sign-in rather than guessing an
+issuer from the provider's current settings. Before upgrading, make sure each
+OIDC-only user has a working local or media-server recovery path. After the
+upgrade, sign in through that path and explicitly link the current provider
+again from **Profile → Settings → Linked Accounts**. If an account has no other
+working sign-in, an administrator must restore local access before it can be
+linked again.
 
 1. Open `/login` and confirm the provider label, local mark, and help link are
    correct. Also confirm linked-account sign-in is available to an existing

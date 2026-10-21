@@ -35,7 +35,7 @@ const PROVIDER_BRANDS: Record<
   okta: {
     icon: 'okta',
     setupUrl:
-      'https://developer.okta.com/docs/guides/implement-grant-type/-/main/',
+      'https://developer.okta.com/docs/guides/implement-grant-type/authcodepkce/main/',
   },
   auth0: {
     icon: 'auth0',
@@ -222,13 +222,14 @@ export default function OidcLoginButton({
       </ButtonWithLoader>
       <a
         className="mt-1 block text-center text-xs text-gray-400 underline underline-offset-2"
+        aria-label={`${brand?.label ?? provider.name} identity provider setup guide (opens in a new tab)`}
         href={
           brand?.setupUrl ?? 'https://openid.net/developers/how-connect-works/'
         }
         target="_blank"
         rel="noopener noreferrer"
       >
-        Provider setup guide
+        Provider setup guide <span aria-hidden="true">↗</span>
       </a>
     </div>
   );

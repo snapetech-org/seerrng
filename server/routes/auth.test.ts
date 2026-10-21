@@ -2825,6 +2825,7 @@ describe('OpenID Connect', () => {
   const EXISTING_USER_CLAIMS = {
     sub: 'friend-oidc-sub',
     email: 'friend@seerr.dev',
+    email_verified: true,
   };
 
   function buildMockWellKnown(options?: { supportsPKCE?: boolean }) {
@@ -3032,7 +3033,14 @@ describe('OpenID Connect', () => {
         scopes_supported: ['openid', 'email', 'name'],
         token_endpoint_auth_methods_supported: ['client_secret_post'],
         claims_supported: [
-          'aud', 'email', 'email_verified', 'exp', 'iat', 'iss', 'nonce', 'sub',
+          'aud',
+          'email',
+          'email_verified',
+          'exp',
+          'iat',
+          'iss',
+          'nonce',
+          'sub',
         ],
       };
       fetchMock.route(
@@ -3055,15 +3063,24 @@ describe('OpenID Connect', () => {
 
       assert.strictEqual(response.status, 200);
       const authorizeUrl = new URL(response.body.redirectUrl);
-      assert.strictEqual(authorizeUrl.searchParams.get('scope'), 'openid email');
-      assert.strictEqual(authorizeUrl.searchParams.get('response_mode'), 'form_post');
+      assert.strictEqual(
+        authorizeUrl.searchParams.get('scope'),
+        'openid email'
+      );
+      assert.strictEqual(
+        authorizeUrl.searchParams.get('response_mode'),
+        'form_post'
+      );
       assert.strictEqual(
         authorizeUrl.searchParams.get('redirect_uri'),
         'https://jellyseerr.example.com/api/v1/auth/oidc/callback/apple-sign-in'
       );
       assert.ok(authorizeUrl.searchParams.get('state'));
       assert.ok(authorizeUrl.searchParams.get('nonce'));
-      assert.strictEqual(authorizeUrl.searchParams.has('code_challenge'), false);
+      assert.strictEqual(
+        authorizeUrl.searchParams.has('code_challenge'),
+        false
+      );
 
       const correlationCookie = response
         .get('Set-Cookie')
@@ -3149,6 +3166,100 @@ describe('OpenID Connect', () => {
       assert.strictEqual(response.body.error, ApiErrorCode.Unauthorized);
     });
 
+    it('does not match a linked subject after the provider issuer changes', async function () {
+      const user = await getRepository(User).findOneOrFail({
+        where: { email: 'friend@seerr.dev' },
+      });
+      await getRepository(LinkedAccount).save(
+        new LinkedAccount({
+          user,
+          provider: 'test',
+          issuer: 'https://previous-issuer.example',
+          sub: EXISTING_USER_CLAIMS.sub,
+          username: 'friend',
+        })
+      );
+      await setupFetchMock({
+        idTokenClaims: EXISTING_USER_CLAIMS,
+        userinfoResponse: EXISTING_USER_CLAIMS,
+      });
+
+      const response = await performOidcCallback();
+
+      assert.strictEqual(response.status, 403);
+      assert.strictEqual(
+        await getRepository(User).existsBy({ email: DEFAULT_CLAIMS.email }),
+        false
+      );
+    });
+
+    it('rejects an unverified email even when the OIDC identity is already linked', async function () {
+      const user = await getRepository(User).findOneOrFail({
+        where: { email: 'friend@seerr.dev' },
+      });
+      await getRepository(LinkedAccount).save(
+        new LinkedAccount({
+          user,
+          provider: 'test',
+          issuer: 'https://example.com',
+          sub: 'unverified-linked-subject',
+          username: 'friend',
+        })
+      );
+      await setupFetchMock({
+        idTokenClaims: {
+          sub: 'unverified-linked-subject',
+          email: 'friend@seerr.dev',
+          email_verified: false,
+        },
+        userinfoResponse: {
+          sub: 'unverified-linked-subject',
+          email: 'friend@seerr.dev',
+          email_verified: false,
+        },
+      });
+
+      const response = await performOidcCallback();
+
+      assert.strictEqual(response.status, 403);
+    });
+
+    it('binds a legacy link to the issuer only after authenticated relinking', async function () {
+      const user = await getRepository(User).findOneOrFail({
+        where: { email: 'friend@seerr.dev' },
+      });
+      const legacyLink = new LinkedAccount({
+        user,
+        provider: 'test',
+        issuer: null,
+        sub: 'legacy-relink-subject',
+        username: 'friend',
+      });
+      const savedLegacyLink =
+        await getRepository(LinkedAccount).save(legacyLink);
+      await setupFetchMock({
+        idTokenClaims: {
+          sub: 'legacy-relink-subject',
+          email: 'friend@seerr.dev',
+          email_verified: true,
+        },
+        userinfoResponse: {
+          sub: 'legacy-relink-subject',
+          email: 'friend@seerr.dev',
+          email_verified: true,
+        },
+      });
+      const agent = await authenticatedAgent('friend@seerr.dev', 'test1234');
+
+      const response = await performOidcCallback(agent);
+
+      assert.strictEqual(response.status, 204);
+      const updated = await getRepository(LinkedAccount).findOneByOrFail({
+        id: savedLegacyLink.id,
+      });
+      assert.strictEqual(updated.issuer, 'https://example.com');
+    });
+
     it('callback endpoint successfully authorizes existing user', async function () {
       // Link the seeded friend user to the OIDC provider
       const userRepo = getRepository(User);
@@ -3161,6 +3272,7 @@ describe('OpenID Connect', () => {
       const linkedAccount = new LinkedAccount({
         user,
         provider: 'test',
+        issuer: 'https://example.com',
         sub: EXISTING_USER_CLAIMS.sub,
         username: 'friend',
       });
@@ -3225,6 +3337,7 @@ describe('OpenID Connect', () => {
       const linkedAccount = new LinkedAccount({
         user,
         provider: 'test',
+        issuer: 'https://example.com',
         sub: EXISTING_USER_CLAIMS.sub,
         username: 'friend',
       });

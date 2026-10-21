@@ -51,7 +51,7 @@
         "profile",
         "email"
       ],
-      "setupUrl": "https://developer.okta.com/docs/guides/implement-grant-type/-/main/",
+      "setupUrl": "https://developer.okta.com/docs/guides/implement-grant-type/authcodepkce/main/",
       "notes": "Create an OIDC Web Application integration with Authorization Code enabled. Use the issuer for the intended authorization server and register the exact sign-in redirect URI."
     },
     {
