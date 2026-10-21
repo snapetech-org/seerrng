@@ -1,0 +1,1 @@
+Book Series search and catalog routes now wait until the client router is ready before rendering route-dependent results. This keeps the server-rendered markup and the first browser render aligned, including when search or catalog query parameters are present.

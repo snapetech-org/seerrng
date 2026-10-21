@@ -8,7 +8,7 @@ import defineMessages from '@app/utils/defineMessages';
 import type { BookSeriesPreview } from '@server/models/BookSeries';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useIntl } from 'react-intl';
 import useSWR from 'swr';
 
@@ -37,6 +37,10 @@ export default function BookSeriesPreview() {
   const router = useRouter();
   const { hasPermission } = useUser();
   const [showRequest, setShowRequest] = useState(false);
+  const [routeReady, setRouteReady] = useState(false);
+  useEffect(() => {
+    if (router.isReady) setRouteReady(true);
+  }, [router.isReady]);
   const { serverId, scope, providerId } = router.query;
   const params =
     typeof serverId === 'string' &&
@@ -45,7 +49,7 @@ export default function BookSeriesPreview() {
       ? new URLSearchParams({ serverId, scope, providerId }).toString()
       : undefined;
   const { data, error, mutate } = useSWR<BookSeriesPreview>(
-    router.isReady && params ? `/api/v1/book-series/catalog?${params}` : null,
+    routeReady && params ? `/api/v1/book-series/catalog?${params}` : null,
     {
       keepPreviousData: false,
       revalidateOnFocus: false,
@@ -72,7 +76,7 @@ export default function BookSeriesPreview() {
       }),
     [data]
   );
-  if (!router.isReady || (params && !data && !error)) return <LoadingSpinner />;
+  if (!routeReady || (params && !data && !error)) return <LoadingSpinner />;
   if (!data)
     return (
       <div className="mt-6 space-y-4">

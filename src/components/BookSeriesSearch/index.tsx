@@ -28,12 +28,15 @@ export default function BookSeriesSearch() {
     router.query.format === 'ebook' || router.query.format === 'audiobook'
       ? router.query.format
       : '';
-  const [input, setInput] = useState(query);
-  const [inputFormat, setInputFormat] = useState(format);
+  const [input, setInput] = useState('');
+  const [inputFormat, setInputFormat] = useState('');
+  const [routeReady, setRouteReady] = useState(false);
   useEffect(() => {
+    if (!router.isReady) return;
+    setRouteReady(true);
     setInput(query);
     setInputFormat(format);
-  }, [query, format]);
+  }, [format, query, router.isReady]);
   return (
     <>
       <PageTitle title={intl.formatMessage(messages.title)} />
@@ -99,7 +102,7 @@ export default function BookSeriesSearch() {
       >
         {intl.formatMessage(messages.media)}
       </Link>
-      {router.isReady && (
+      {routeReady && (
         <BookSeriesSearchResults query={query} format={format || undefined} />
       )}
     </>
