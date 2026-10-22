@@ -10,24 +10,70 @@ import MediaIdentifier, {
 } from '@server/entity/MediaIdentifier';
 import type { User } from '@server/entity/User';
 import {
+  isValidOpenLibraryResourceId,
   normalizeOpenLibraryEditionId,
   normalizeOpenLibraryWorkId,
 } from '@server/lib/externalIds';
 import { normalizeValidIsbn } from '@server/lib/isbn';
 import { hydrateMediaSummaryRelations } from '@server/lib/mediaSummaryHydration';
+import { parseBookshelfBookId } from '@server/utils/bookshelfCatalog';
 import { Brackets, In } from 'typeorm';
 
 type BookMediaLookupResult = {
   id: string;
+  provider?: 'openlibrary' | 'bookshelf';
   isbn13?: string;
   isbnCandidates?: { isbn: string }[];
 };
 
 const MAX_IDENTIFIER_LOOKUPS = 200;
+const MAX_ISBN_INPUT_LENGTH = 32;
 
 type IdentifierLookup = {
   provider: MediaIdentifierProvider;
   value: string;
+};
+
+const getBookResultIdentifier = (
+  book: BookMediaLookupResult
+): IdentifierLookup | undefined => {
+  const bookshelfId =
+    book.provider === 'openlibrary' ? undefined : parseBookshelfBookId(book.id);
+
+  if (book.provider === 'bookshelf') {
+    return bookshelfId
+      ? { provider: MediaIdentifierProvider.BOOKSHELF, value: book.id }
+      : undefined;
+  }
+
+  if (bookshelfId) {
+    return { provider: MediaIdentifierProvider.BOOKSHELF, value: book.id };
+  }
+
+  const workId = normalizeOpenLibraryWorkId(book.id);
+  return isValidOpenLibraryResourceId(workId)
+    ? { provider: MediaIdentifierProvider.OPENLIBRARY, value: workId }
+    : undefined;
+};
+
+const getBookResultIsbns = (book: BookMediaLookupResult): string[] => {
+  const candidates = [
+    ...(book.isbn13 ? [book.isbn13] : []),
+    ...(book.isbnCandidates ?? [])
+      .slice(0, MAX_IDENTIFIER_LOOKUPS)
+      .map((candidate) => candidate?.isbn),
+  ].filter(
+    (isbn): isbn is string =>
+      typeof isbn === 'string' && isbn.length <= MAX_ISBN_INPUT_LENGTH
+  );
+
+  return [
+    ...new Set(
+      candidates
+        .map((isbn) => normalizeValidIsbn(isbn))
+        .filter((isbn): isbn is string => !!isbn)
+    ),
+  ];
 };
 
 const uniqIdentifierLookups = (
@@ -246,43 +292,42 @@ export const findBookMediaForBookResults = async (
   user?: User
 ): Promise<Map<string, Media>> => {
   const lookups = books.flatMap((book) => {
-    const workId = normalizeOpenLibraryWorkId(book.id);
+    const identifier = getBookResultIdentifier(book);
+    if (!identifier) {
+      return [];
+    }
 
     return [
-      { provider: MediaIdentifierProvider.OPENLIBRARY, value: workId },
-      ...(book.isbn13
-        ? [{ provider: MediaIdentifierProvider.ISBN, value: book.isbn13 }]
-        : []),
-      ...(book.isbnCandidates ?? []).map((candidate) => ({
+      identifier,
+      ...getBookResultIsbns(book).map((isbn) => ({
         provider: MediaIdentifierProvider.ISBN,
-        value: candidate.isbn,
+        value: isbn,
       })),
     ];
   });
   const mediaByIdentifier = await findBookMediaByIdentifiers(lookups, user);
-  const mediaByWorkId = new Map<string, Media>();
+  const mediaByBookId = new Map<string, Media>();
 
   books.forEach((book) => {
-    const workId = normalizeOpenLibraryWorkId(book.id);
+    const identifier = getBookResultIdentifier(book);
+    if (!identifier) {
+      return;
+    }
+
     const media =
-      mediaByIdentifier.get(
-        `${MediaIdentifierProvider.OPENLIBRARY}:${workId}`
-      ) ??
-      [
-        ...(book.isbn13 ? [book.isbn13] : []),
-        ...(book.isbnCandidates ?? []).map((candidate) => candidate.isbn),
-      ]
+      mediaByIdentifier.get(`${identifier.provider}:${identifier.value}`) ??
+      getBookResultIsbns(book)
         .map((isbn) =>
           mediaByIdentifier.get(`${MediaIdentifierProvider.ISBN}:${isbn}`)
         )
         .find((matchedMedia): matchedMedia is Media => !!matchedMedia);
 
     if (media) {
-      mediaByWorkId.set(workId, media);
+      mediaByBookId.set(identifier.value, media);
     }
   });
 
-  return mediaByWorkId;
+  return mediaByBookId;
 };
 
 export const findBookMediaForWork = async (
