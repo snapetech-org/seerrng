@@ -197,7 +197,10 @@ const nonNegativeNumber = (value: unknown): number | null =>
     ? value
     : null;
 
-export const sanitizeProwlarrSearchResource = (rawValue: unknown) => {
+export const sanitizeProwlarrSearchResource = (
+  rawValue: unknown,
+  options: { includeIndexerDetails?: boolean; grabId?: string } = {}
+) => {
   const value = isRecord(rawValue) ? rawValue : {};
   const categories = flattenCategories(value.categories).slice(0, 16);
   const publishDate =
@@ -207,15 +210,19 @@ export const sanitizeProwlarrSearchResource = (rawValue: unknown) => {
       : null;
   return {
     title: cleanText(value.title, 512) ?? 'Untitled release',
-    indexer: cleanText(value.indexer, 160) ?? 'Unknown indexer',
-    indexerId: parsePositiveInteger(value.indexerId) ?? null,
+    ...(options.includeIndexerDetails
+      ? { indexer: cleanText(value.indexer, 160) ?? 'Indexer details' }
+      : {}),
     size: nonNegativeNumber(value.size),
     seeders: nonNegativeNumber(value.seeders),
     leechers: nonNegativeNumber(value.leechers),
     grabs: nonNegativeNumber(value.grabs),
     protocol: cleanText(value.protocol, 32)?.toLowerCase() ?? 'unknown',
     publishDate,
-    infoUrl: safeInfoUrl(value.infoUrl) ?? null,
+    infoUrl: options.includeIndexerDetails
+      ? (safeInfoUrl(value.infoUrl) ?? null)
+      : null,
+    grabId: options.grabId ?? null,
     categories,
   };
 };

@@ -18,8 +18,10 @@ import useDiscover from '@app/hooks/useDiscover';
 import useMediaFilterPin from '@app/hooks/useMediaFilterPin';
 import { setSearchActivity } from '@app/hooks/useSearchActivity';
 import useSettings from '@app/hooks/useSettings';
+import { Permission, useUser } from '@app/hooks/useUser';
 import defineMessages from '@app/utils/defineMessages';
 import {
+  getUserServiceAvailability,
   isAnySoftwareCategoryEnabled,
   isConfiguredMediaCategoryEnabled,
   isOptionalCatalogPathEnabled,
@@ -329,8 +331,19 @@ const Search = () => {
   const intl = useIntl();
   const router = useRouter();
   const { currentSettings } = useSettings();
+  const { user, hasPermission } = useUser();
+  const serviceAvailability = getUserServiceAvailability(
+    currentSettings,
+    user?.settings?.enabledMediaCategories,
+    hasPermission(Permission.ADMIN)
+  );
   const showBookSeries =
     currentSettings.booksEnabled &&
+    (isOptionalCatalogPathEnabled('/discover/books', serviceAvailability) ||
+      isOptionalCatalogPathEnabled(
+        '/discover/audiobooks',
+        serviceAvailability
+      )) &&
     ['all', 'book', 'audiobook'].includes(
       getSearchCategory(router.query.type, router.query.format).key
     );
@@ -344,37 +357,43 @@ const Search = () => {
   const visibleSearchCategories = searchCategories.filter((searchCategory) => {
     switch (searchCategory.key) {
       case 'movie':
-        return isConfiguredMediaCategoryEnabled('movie', currentSettings);
+        return isConfiguredMediaCategoryEnabled('movie', serviceAvailability);
       case 'tv':
-        return isConfiguredMediaCategoryEnabled('tv', currentSettings);
+        return isConfiguredMediaCategoryEnabled('tv', serviceAvailability);
       case 'book':
-        return isOptionalCatalogPathEnabled('/discover/books', currentSettings);
+        return isOptionalCatalogPathEnabled(
+          '/discover/books',
+          serviceAvailability
+        );
       case 'audiobook':
         return isOptionalCatalogPathEnabled(
           '/discover/audiobooks',
-          currentSettings
+          serviceAvailability
         );
       case 'author':
-        return isOptionalCatalogPathEnabled('/author/', currentSettings);
+        return isOptionalCatalogPathEnabled('/author/', serviceAvailability);
       case 'music':
-        return isOptionalCatalogPathEnabled('/discover/music', currentSettings);
+        return isOptionalCatalogPathEnabled(
+          '/discover/music',
+          serviceAvailability
+        );
       case 'comic':
         return isOptionalCatalogPathEnabled(
           '/discover/comics',
-          currentSettings
+          serviceAvailability
         );
       case 'magazine':
         return isOptionalCatalogPathEnabled(
           '/discover/magazines',
-          currentSettings
+          serviceAvailability
         );
       case 'sports':
         return isOptionalCatalogPathEnabled(
           '/discover/sports',
-          currentSettings
+          serviceAvailability
         );
       case 'software':
-        return isAnySoftwareCategoryEnabled(currentSettings);
+        return isAnySoftwareCategoryEnabled(serviceAvailability);
       default:
         return true;
     }

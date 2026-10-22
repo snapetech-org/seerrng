@@ -29,7 +29,6 @@ import {
   libraryServiceType,
   resolveLibraryRemoval,
 } from '@server/lib/libraryRemoval';
-import { areMediaCategoriesEnabled } from '@server/lib/mediaCategories';
 import { runMediaEntityMutation } from '@server/lib/mediaMutation';
 import { Permission } from '@server/lib/permissions';
 import {
@@ -37,6 +36,7 @@ import {
   runWithServarrServiceCollectionMutationAdmission,
 } from '@server/lib/serviceAdmission';
 import { getSettings } from '@server/lib/settings';
+import { isUserMediaCategoryEnabled } from '@server/lib/userMediaCategories';
 import {
   UserMutationActorUnauthorizedError,
   runAuthorizedUserSecurityMutation,
@@ -102,15 +102,34 @@ const mediaTypeCategories: Record<
   [MediaType.ADULT]: { categories: ['adult'] },
   [MediaType.SPORTS]: { categories: ['sports'] },
 };
-const isMediaTypeCategoryEnabled = (mediaType: MediaType): boolean => {
+const areUserMediaCategoriesEnabled = (
+  categories: readonly MediaCategoryKey[],
+  user: User | undefined,
+  mode: 'all' | 'any' = 'all'
+): boolean =>
+  mode === 'all'
+    ? categories.every((category) => isUserMediaCategoryEnabled(user, category))
+    : categories.some((category) => isUserMediaCategoryEnabled(user, category));
+
+const isMediaTypeCategoryEnabled = (
+  mediaType: MediaType,
+  user?: User
+): boolean => {
   const config = mediaTypeCategories[mediaType];
   return config
-    ? areMediaCategoriesEnabled(config.categories, config.mode ?? 'all')
+    ? areUserMediaCategoriesEnabled(
+        config.categories,
+        user,
+        config.mode ?? 'all'
+      )
     : true;
 };
-const areAllMediaTypeCategoriesEnabled = (mediaType: MediaType): boolean => {
+const areAllMediaTypeCategoriesEnabled = (
+  mediaType: MediaType,
+  user?: User
+): boolean => {
   const config = mediaTypeCategories[mediaType];
-  return config ? areMediaCategoriesEnabled(config.categories) : true;
+  return config ? areUserMediaCategoriesEnabled(config.categories, user) : true;
 };
 
 const projectMediaListItem = (media: Media): MediaListItem => ({
@@ -313,11 +332,15 @@ mediaRoutes.get(
       return next({ status: 400, message: parsedMediaTypes.error });
     }
     if (
-      parsedMediaTypes.value?.some((type) => !isMediaTypeCategoryEnabled(type))
+      parsedMediaTypes.value?.some(
+        (type) => !isMediaTypeCategoryEnabled(type, req.user)
+      )
     ) {
       return res.status(404).json({ status: 404, message: 'Not found.' });
     }
-    const enabledMediaTypes = mediaListTypes.filter(isMediaTypeCategoryEnabled);
+    const enabledMediaTypes = mediaListTypes.filter((type) =>
+      isMediaTypeCategoryEnabled(type, req.user)
+    );
     const filter = parsedFilter.value;
     const sort = parsedSort.value;
 
@@ -459,7 +482,10 @@ mediaRoutes.post<
       where: { id: mediaId },
       relations: { identifiers: true },
     });
-    if (!initialMedia || !isMediaTypeCategoryEnabled(initialMedia.mediaType)) {
+    if (
+      !initialMedia ||
+      !isMediaTypeCategoryEnabled(initialMedia.mediaType, req.user)
+    ) {
       return next({ status: 404, message: 'Media does not exist.' });
     }
 
@@ -569,7 +595,7 @@ mediaRoutes.delete(
         where: { id: mediaId },
         relations: { identifiers: true },
       });
-      if (!isMediaTypeCategoryEnabled(initialMedia.mediaType)) {
+      if (!isMediaTypeCategoryEnabled(initialMedia.mediaType, req.user)) {
         return next({ status: 404, message: 'Media not found' });
       }
       return await runAuthorizedUserSecurityMutation(
@@ -625,7 +651,7 @@ mediaRoutes.get(
         })
       : null;
     if (!media) return next({ status: 404, message: 'Media not found.' });
-    if (!isMediaTypeCategoryEnabled(media.mediaType))
+    if (!isMediaTypeCategoryEnabled(media.mediaType, req.user))
       return next({ status: 404, message: 'Media not found.' });
     try {
       return await runWithServarrServiceCollectionMutationAdmission(
@@ -672,7 +698,7 @@ mediaRoutes.post(
         !initial ||
         (initial.mediaType !== MediaType.MOVIE &&
           initial.mediaType !== MediaType.TV) ||
-        !areAllMediaTypeCategoriesEnabled(initial.mediaType)
+        !areAllMediaTypeCategoriesEnabled(initial.mediaType, req.user)
       )
         return next({ status: 404, message: 'Media not found.' });
 
@@ -773,7 +799,7 @@ mediaRoutes.delete(
         where: { id },
         relations: { identifiers: true },
       });
-      if (!areAllMediaTypeCategoriesEnabled(initial.mediaType))
+      if (!areAllMediaTypeCategoriesEnabled(initial.mediaType, req.user))
         return next({ status: 404, message: 'Media not found.' });
       return await runAuthorizedUserSecurityMutation(
         req.user!.id,
@@ -887,7 +913,7 @@ mediaRoutes.delete(
         where: { id: mediaId },
         relations: { identifiers: true },
       });
-      if (!isMediaTypeCategoryEnabled(initialMedia.mediaType)) {
+      if (!isMediaTypeCategoryEnabled(initialMedia.mediaType, req.user)) {
         return next({ status: 404, message: 'Media not found' });
       }
       return await runAuthorizedUserSecurityMutation(
@@ -927,8 +953,9 @@ mediaRoutes.delete(
             const bookFormat = parsedBookFormat.value ?? 'both';
             if (
               isBook &&
-              !areMediaCategoriesEnabled(
-                bookFormat === 'both' ? ['ebook', 'audiobook'] : [bookFormat]
+              !areUserMediaCategoriesEnabled(
+                bookFormat === 'both' ? ['ebook', 'audiobook'] : [bookFormat],
+                req.user
               )
             ) {
               return next({ status: 404, message: 'Media not found.' });
@@ -1398,7 +1425,7 @@ mediaRoutes.get<{ id: string }, MediaWatchDataResponse>(
     if (!media) {
       return next({ status: 404, message: 'Media does not exist.' });
     }
-    if (!isMediaTypeCategoryEnabled(media.mediaType)) {
+    if (!isMediaTypeCategoryEnabled(media.mediaType, req.user)) {
       return next({ status: 404, message: 'Media does not exist.' });
     }
 
@@ -1504,7 +1531,7 @@ mediaRoutes.get<{ id: string }>(
     const media = await getRepository(Media).findOne({
       where: { id: mediaId },
     });
-    if (!media || !isMediaTypeCategoryEnabled(media.mediaType)) {
+    if (!media || !isMediaTypeCategoryEnabled(media.mediaType, req.user)) {
       return next({ status: 404, message: 'Media does not exist.' });
     }
 

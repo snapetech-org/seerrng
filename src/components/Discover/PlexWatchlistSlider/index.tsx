@@ -3,9 +3,12 @@ import LibraryTitleCard from '@app/components/TitleCard/LibraryTitleCard';
 import TmdbTitleCard from '@app/components/TitleCard/TmdbTitleCard';
 import useDiscoverRowSnapshot from '@app/hooks/useDiscoverRowSnapshot';
 import useSettings from '@app/hooks/useSettings';
-import { useUser } from '@app/hooks/useUser';
+import { Permission, useUser } from '@app/hooks/useUser';
 import defineMessages from '@app/utils/defineMessages';
-import { isDiscoverWatchlistTypeEnabled } from '@app/utils/serviceAvailability';
+import {
+  getUserServiceAvailability,
+  isDiscoverWatchlistTypeEnabled,
+} from '@app/utils/serviceAvailability';
 import type { WatchlistItem } from '@server/interfaces/api/discoverInterfaces';
 import Link from 'next/link';
 import { useMemo } from 'react';
@@ -21,8 +24,13 @@ const messages = defineMessages('components.Discover.PlexWatchlistSlider', {
 
 const PlexWatchlistSlider = () => {
   const intl = useIntl();
-  const { user } = useUser();
+  const { user, hasPermission } = useUser();
   const { currentSettings } = useSettings();
+  const serviceAvailability = getUserServiceAvailability(
+    currentSettings,
+    user?.settings?.enabledMediaCategories,
+    hasPermission(Permission.ADMIN)
+  );
   const { ref, inView } = useInView({
     rootMargin: '450px 0px',
     triggerOnce: true,
@@ -48,7 +56,7 @@ const PlexWatchlistSlider = () => {
     () =>
       (watchlistItems?.results ?? [])
         .filter((item) =>
-          isDiscoverWatchlistTypeEnabled(item.mediaType, currentSettings)
+          isDiscoverWatchlistTypeEnabled(item.mediaType, serviceAvailability)
         )
         .flatMap((item) => {
           const card =
@@ -92,7 +100,7 @@ const PlexWatchlistSlider = () => {
               ]
             : [];
         }),
-    [currentSettings, watchlistItems?.results]
+    [serviceAvailability, watchlistItems?.results]
   );
   const isWatchlistEmpty = !!watchlistItems && watchlistCards.length === 0;
 

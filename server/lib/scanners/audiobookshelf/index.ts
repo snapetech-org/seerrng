@@ -31,7 +31,9 @@ class AudiobookshelfScanner
   private seenItemIds = new Set<string>();
 
   constructor() {
-    super('Audiobookshelf Scan', { bundleSize: 10 });
+    // processBook writes each ISBN match in its own SQLite transaction. Keep
+    // those transactions serialized on SQLite's single connection.
+    super('Audiobookshelf Scan', { bundleSize: 1 });
   }
 
   public status(): StatusBase {

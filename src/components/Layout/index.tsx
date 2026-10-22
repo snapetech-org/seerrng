@@ -16,6 +16,7 @@ import { Permission, useUser } from '@app/hooks/useUser';
 import globalMessages from '@app/i18n/globalMessages';
 import {
   DISCOVER_MEDIA_TYPES,
+  getUserServiceAvailability,
   isConfiguredMediaCategoryEnabled,
   isDiscoverMediaTypeEnabled,
   isOptionalCatalogPathEnabled,
@@ -23,7 +24,7 @@ import {
 import { ArrowLeftIcon, Bars3BottomLeftIcon } from '@heroicons/react/24/solid';
 import type { AvailableLocale } from '@server/types/languages';
 import { useRouter } from 'next/router';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { useIntl } from 'react-intl';
 import useSWR from 'swr';
 
@@ -39,6 +40,16 @@ const Layout = ({ children }: LayoutProps) => {
   const router = useRouter();
   const discoveryMediaType = discoveryMediaTypeForPath(router.pathname);
   const { currentSettings } = useSettings();
+  const isAdmin = hasPermission(Permission.ADMIN);
+  const serviceAvailability = useMemo(
+    () =>
+      getUserServiceAvailability(
+        currentSettings,
+        user?.settings?.enabledMediaCategories,
+        isAdmin
+      ),
+    [currentSettings, user?.settings?.enabledMediaCategories, isAdmin]
+  );
   const intl = useIntl();
   const { setLocale } = useLocale();
   const [countsEnabled, setCountsEnabled] = useState(false);
@@ -75,11 +86,11 @@ const Layout = ({ children }: LayoutProps) => {
         (DISCOVER_MEDIA_TYPES as readonly string[]).includes(requestedType) &&
         !isDiscoverMediaTypeEnabled(
           requestedType as (typeof DISCOVER_MEDIA_TYPES)[number],
-          currentSettings
+          serviceAvailability
         )
       ) {
         const fallbackType = DISCOVER_MEDIA_TYPES.find((type) =>
-          isDiscoverMediaTypeEnabled(type, currentSettings)
+          isDiscoverMediaTypeEnabled(type, serviceAvailability)
         );
         if (fallbackType) {
           void router.replace(
@@ -101,13 +112,13 @@ const Layout = ({ children }: LayoutProps) => {
       const format = router.query.format;
       const disabledFormat =
         (format === 'ebook' &&
-          !isConfiguredMediaCategoryEnabled('ebook', currentSettings)) ||
+          !isConfiguredMediaCategoryEnabled('ebook', serviceAvailability)) ||
         (format === 'audiobook' &&
-          !isConfiguredMediaCategoryEnabled('audiobook', currentSettings));
+          !isConfiguredMediaCategoryEnabled('audiobook', serviceAvailability));
       if (disabledFormat) {
         const availableFormat = isConfiguredMediaCategoryEnabled(
           format === 'ebook' ? 'audiobook' : 'ebook',
-          currentSettings
+          serviceAvailability
         )
           ? format === 'ebook'
             ? 'audiobook'
@@ -126,8 +137,8 @@ const Layout = ({ children }: LayoutProps) => {
 
     if (
       router.pathname === '/discover/audiobooks' &&
-      !isConfiguredMediaCategoryEnabled('audiobook', currentSettings) &&
-      isConfiguredMediaCategoryEnabled('ebook', currentSettings)
+      !isConfiguredMediaCategoryEnabled('audiobook', serviceAvailability) &&
+      isConfiguredMediaCategoryEnabled('ebook', serviceAvailability)
     ) {
       const target = new URL(router.asPath, window.location.origin);
       target.pathname = '/discover/books';
@@ -138,16 +149,16 @@ const Layout = ({ children }: LayoutProps) => {
 
     const audiobookOnlyBookAlias =
       router.pathname === '/discover/books' &&
-      !isDiscoverMediaTypeEnabled('book', currentSettings) &&
-      isDiscoverMediaTypeEnabled('audiobook', currentSettings);
+      !isDiscoverMediaTypeEnabled('book', serviceAvailability) &&
+      isDiscoverMediaTypeEnabled('audiobook', serviceAvailability);
 
     if (
-      !isOptionalCatalogPathEnabled(router.pathname, currentSettings) &&
+      !isOptionalCatalogPathEnabled(router.pathname, serviceAvailability) &&
       !audiobookOnlyBookAlias
     ) {
       void router.replace('/');
     }
-  }, [currentSettings, router]);
+  }, [currentSettings, router, serviceAvailability]);
 
   useEffect(() => {
     if ('requestIdleCallback' in window) {

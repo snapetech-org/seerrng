@@ -7,6 +7,11 @@ import {
 import { EPISODE_QUEUE_ACCESS_STATUS } from '@server/constants/episodeQueueAccess';
 import { ApiErrorCode } from '@server/constants/error';
 import { MediaType } from '@server/constants/media';
+import {
+  MEDIA_CATEGORY_KEYS,
+  type EnabledMediaCategories,
+  type MediaCategoryKey,
+} from '@server/constants/mediaCategories';
 import { MediaServerType } from '@server/constants/server';
 import { TV_SEASON_WATCH_GATE_STATUS } from '@server/constants/tvSeasonWatchGate';
 import { UserType } from '@server/constants/user';
@@ -54,12 +59,14 @@ import {
   Permission,
   isValidPermissionValue,
 } from '@server/lib/permissions';
+import { isIndexerDetailsVisible } from '@server/lib/prowlarrSearchControls';
 import requestAdmissionCoordinator from '@server/lib/requestAdmission';
 import {
   getRequestServiceKey,
   parseRequestServiceKey,
 } from '@server/lib/requestServices';
 import { getSettings } from '@server/lib/settings';
+import { getUserEnabledMediaCategories } from '@server/lib/userMediaCategories';
 import {
   UserMutationActorUnauthorizedError,
   isUserSessionCredentialVersionCurrent,
@@ -1258,6 +1265,46 @@ const parseGeneralSettingsBody = (
     value.preferredLanguages = preferredLanguages.value;
   }
 
+  if (hasOwn(bodyObject, 'enabledMediaCategories')) {
+    const categories = bodyObject.enabledMediaCategories;
+    if (categories === null) {
+      value.enabledMediaCategories = null;
+    } else if (
+      !categories ||
+      typeof categories !== 'object' ||
+      Array.isArray(categories)
+    ) {
+      return { error: 'enabledMediaCategories must be an object.' };
+    } else {
+      const parsedCategories: Partial<EnabledMediaCategories> = {};
+      for (const [key, enabled] of Object.entries(
+        categories as Record<string, unknown>
+      )) {
+        if (!(MEDIA_CATEGORY_KEYS as readonly string[]).includes(key)) {
+          return { error: `Unknown media category: ${key}.` };
+        }
+        if (typeof enabled !== 'boolean') {
+          return {
+            error: `enabledMediaCategories.${key} must be a boolean.`,
+          };
+        }
+        parsedCategories[key as MediaCategoryKey] = enabled;
+      }
+      value.enabledMediaCategories = parsedCategories;
+    }
+  }
+
+  if (hasOwn(bodyObject, 'showIndexerDetails')) {
+    const showIndexerDetails = bodyObject.showIndexerDetails;
+    if (
+      showIndexerDetails !== null &&
+      typeof showIndexerDetails !== 'boolean'
+    ) {
+      return { error: 'showIndexerDetails must be a boolean or null.' };
+    }
+    value.showIndexerDetails = showIndexerDetails ?? null;
+  }
+
   if (hasOwn(bodyObject, 'discordIds')) {
     const discordIds = parseOptionalDiscordIds(bodyObject.discordIds);
     if ('error' in discordIds) {
@@ -1672,6 +1719,18 @@ userSettingsRoutes.get<{ id: string }, UserSettingsGeneralResponse>(
             streamingRegion: user.settings?.streamingRegion,
             originalLanguage: user.settings?.originalLanguage,
             preferredLanguages: user.settings?.preferredLanguages,
+            enabledMediaCategories: getUserEnabledMediaCategories(user),
+            usesDefaultEnabledMediaCategories: !user.hasPermission(
+              Permission.ADMIN
+            )
+              ? !user.settings?.enabledMediaCategories
+              : false,
+            showIndexerDetails: isIndexerDetailsVisible(user),
+            defaultShowIndexerDetails:
+              getSettings().prowlarr.showIndexerDetails ?? false,
+            usesDefaultShowIndexerDetails: !user.hasPermission(Permission.ADMIN)
+              ? user.settings?.showIndexerDetails == null
+              : false,
             movieQuotaLimit: user.movieQuotaLimit,
             movieQuotaDays: user.movieQuotaDays,
             tvQuotaLimit: user.tvQuotaLimit,
@@ -1762,6 +1821,17 @@ userSettingsRoutes.post<
             });
           }
 
+          if (
+            hasOwn(body, 'showIndexerDetails') &&
+            !actor.hasPermission(Permission.MANAGE_USERS)
+          ) {
+            return next({
+              status: 403,
+              message:
+                'Only user managers can change indexer detail visibility.',
+            });
+          }
+
           const oldEmail = user.email;
           const nextEmail =
             user.userType !== UserType.PLEX && body.email
@@ -1824,6 +1894,29 @@ userSettingsRoutes.post<
             user.settings = new UserSettings({ user });
           }
 
+          if (hasOwn(body, 'enabledMediaCategories')) {
+            user.settings.enabledMediaCategories = user.hasPermission(
+              Permission.ADMIN
+            )
+              ? null
+              : body.enabledMediaCategories === null
+                ? null
+                : {
+                    ...user.settings.enabledMediaCategories,
+                    ...body.enabledMediaCategories,
+                  };
+          }
+
+          if (hasOwn(body, 'showIndexerDetails')) {
+            user.settings.showIndexerDetails = user.hasPermission(
+              Permission.ADMIN
+            )
+              ? null
+              : body.showIndexerDetails === null
+                ? null
+                : body.showIndexerDetails;
+          }
+
           for (const fieldName of [
             'discordIds',
             'locale',
@@ -1876,6 +1969,20 @@ userSettingsRoutes.post<
             streamingRegion: savedUser.settings?.streamingRegion,
             originalLanguage: savedUser.settings?.originalLanguage,
             preferredLanguages: savedUser.settings?.preferredLanguages,
+            enabledMediaCategories: getUserEnabledMediaCategories(savedUser),
+            usesDefaultEnabledMediaCategories: !savedUser.hasPermission(
+              Permission.ADMIN
+            )
+              ? !savedUser.settings?.enabledMediaCategories
+              : false,
+            showIndexerDetails: isIndexerDetailsVisible(savedUser),
+            defaultShowIndexerDetails:
+              getSettings().prowlarr.showIndexerDetails ?? false,
+            usesDefaultShowIndexerDetails: !savedUser.hasPermission(
+              Permission.ADMIN
+            )
+              ? savedUser.settings?.showIndexerDetails == null
+              : false,
             watchlistSyncMovies: savedUser.settings?.watchlistSyncMovies,
             watchlistSyncTv: savedUser.settings?.watchlistSyncTv,
             watchlistSyncMusic: savedUser.settings?.watchlistSyncMusic,

@@ -3,6 +3,7 @@ import { afterEach, beforeEach, describe, it } from 'node:test';
 
 import type TheMovieDb from '@server/api/themoviedb';
 import { MediaStatus, MediaType } from '@server/constants/media';
+import { DEFAULT_USER_ENABLED_MEDIA_CATEGORIES } from '@server/constants/mediaCategories';
 import { getRepository } from '@server/datasource';
 import Media from '@server/entity/Media';
 import SwipeDecision from '@server/entity/SwipeDecision';
@@ -14,7 +15,7 @@ import { clearSwipeDecks } from '@server/lib/swipe/deck';
 import { setupTestDb } from '@server/test/db';
 import express from 'express';
 import request from 'supertest';
-import swipeRoutes from './swipe';
+import swipeRoutes, { availableSwipeMediaTypes } from './swipe';
 
 const movie = (id: number, title: string) => ({
   id,
@@ -96,6 +97,21 @@ describe('Swipe routes', () => {
   afterEach(() => {
     getSettings().swipe = previous;
     setSwipeCatalogClients();
+  });
+
+  it('omits categories disabled by the user defaults', (t) => {
+    const settings = getSettings();
+    const originalDefaults = { ...settings.main.defaultEnabledMediaCategories };
+    t.after(() => {
+      settings.main.defaultEnabledMediaCategories = originalDefaults;
+    });
+    settings.main.defaultEnabledMediaCategories = {
+      ...DEFAULT_USER_ENABLED_MEDIA_CATEGORIES,
+      movie: false,
+    };
+
+    const user = new User({ permissions: Permission.REQUEST });
+    assert.equal(availableSwipeMediaTypes(user).includes('movie'), false);
   });
 
   const as = (user: User) => ({
@@ -246,6 +262,9 @@ describe('Swipe routes', () => {
     const settings = getSettings();
     const previousWhisparr = settings.whisparr;
     const previousCategories = { ...settings.main.enabledMediaCategories };
+    const previousDefaultCategories = {
+      ...settings.main.defaultEnabledMediaCategories,
+    };
     try {
       settings.whisparr = [
         {
@@ -263,6 +282,7 @@ describe('Swipe routes', () => {
         ...settings.main.enabledMediaCategories,
         adult: true,
       };
+      settings.main.defaultEnabledMediaCategories.adult = true;
       await getRepository(User).update(friend.id, {
         permissions: Permission.REQUEST_ADULT,
       });
@@ -310,6 +330,7 @@ describe('Swipe routes', () => {
     } finally {
       settings.whisparr = previousWhisparr;
       settings.main.enabledMediaCategories = previousCategories;
+      settings.main.defaultEnabledMediaCategories = previousDefaultCategories;
     }
   });
 
@@ -317,6 +338,9 @@ describe('Swipe routes', () => {
     const settings = getSettings();
     const previousWhisparr = settings.whisparr;
     const previousCategories = { ...settings.main.enabledMediaCategories };
+    const previousDefaultCategories = {
+      ...settings.main.defaultEnabledMediaCategories,
+    };
     try {
       settings.whisparr = [
         {
@@ -334,6 +358,7 @@ describe('Swipe routes', () => {
         ...settings.main.enabledMediaCategories,
         adult: true,
       };
+      settings.main.defaultEnabledMediaCategories.adult = true;
       await getRepository(User).update(friend.id, {
         permissions: Permission.REQUEST_ADULT,
       });
@@ -397,6 +422,7 @@ describe('Swipe routes', () => {
     } finally {
       settings.whisparr = previousWhisparr;
       settings.main.enabledMediaCategories = previousCategories;
+      settings.main.defaultEnabledMediaCategories = previousDefaultCategories;
     }
   });
 });

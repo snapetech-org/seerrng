@@ -11,6 +11,7 @@ import LazyLibrarianAPI, {
   type LazyLibrarianMagazine,
 } from '@server/api/lazylibrarian';
 import { MediaRequestStatus, MediaType } from '@server/constants/media';
+import type { EnabledMediaCategories } from '@server/constants/mediaCategories';
 import type Media from '@server/entity/Media';
 import { MediaIdentifierProvider } from '@server/entity/MediaIdentifier';
 import type { MediaRequest } from '@server/entity/MediaRequest';
@@ -350,16 +351,20 @@ const requestedTargets = (
 function makeConnections(options: {
   includeComic: boolean;
   includeMagazine: boolean;
+  enabledCategories?: Partial<EnabledMediaCategories>;
 }): IssueConnection[] {
   const settings = getSettings();
   const connections: IssueConnection[] = [];
-  if (options.includeComic && isMediaCategoryEnabled('comic')) {
+  const isEnabled = (category: 'comic' | 'magazine') =>
+    isMediaCategoryEnabled(category) &&
+    options.enabledCategories?.[category] !== false;
+  if (options.includeComic && isEnabled('comic')) {
     for (const server of settings.mylar)
       connections.push({ source: 'mylar', server, targets: new Map() });
     for (const server of settings.kapowarr)
       connections.push({ source: 'kapowarr', server, targets: new Map() });
   }
-  if (options.includeMagazine && isMediaCategoryEnabled('magazine')) {
+  if (options.includeMagazine && isEnabled('magazine')) {
     for (const server of settings.lazylibrarian)
       connections.push({ source: 'lazylibrarian', server, targets: new Map() });
   }
@@ -569,24 +574,28 @@ async function loadConnectionIssues(
 export async function getComicMagazineReleaseCalendar(
   query: CalendarQuery,
   requests: MediaRequest[],
-  isAdmin = false
+  isAdmin = false,
+  enabledCategories?: Partial<EnabledMediaCategories>
 ): Promise<IssueCalendarResult> {
   const includeComic = !query.mediaType || query.mediaType === 'comic';
   const includeMagazine = !query.mediaType || query.mediaType === 'magazine';
+  const isEnabled = (category: 'comic' | 'magazine') =>
+    isMediaCategoryEnabled(category) && enabledCategories?.[category] !== false;
   const result: IssueCalendarResult = {
     results: [],
     partialSources: [],
     truncated: false,
   };
   if (
-    (!includeComic || !isMediaCategoryEnabled('comic')) &&
-    (!includeMagazine || !isMediaCategoryEnabled('magazine'))
+    (!includeComic || !isEnabled('comic')) &&
+    (!includeMagazine || !isEnabled('magazine'))
   )
     return result;
 
   const connections = makeConnections({
     includeComic,
     includeMagazine,
+    enabledCategories,
   });
   if (connections.length > MAX_ISSUE_CALENDAR_SOURCES) {
     result.truncated = true;
@@ -599,10 +608,10 @@ export async function getComicMagazineReleaseCalendar(
         request.status !== MediaRequestStatus.DECLINED &&
         ((request.media?.mediaType === MediaType.COMIC &&
           includeComic &&
-          isMediaCategoryEnabled('comic')) ||
+          isEnabled('comic')) ||
           (request.media?.mediaType === MediaType.MAGAZINE &&
             includeMagazine &&
-            isMediaCategoryEnabled('magazine')))
+            isEnabled('magazine')))
     );
     if (issueRequests.length > MAX_ISSUE_CALENDAR_REQUESTS)
       result.truncated = true;

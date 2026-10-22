@@ -50,6 +50,23 @@ const messages = defineMessages('components.SettingsProwlarr', {
   addDetectedMatches: 'Add detected matches ({count})',
   selectedCategories: '{count} categories selected',
   categoryMappingEmpty: 'Select at least one category.',
+  indexerAssignmentTitle: 'Indexer assignments by medium',
+  indexerAssignmentDescription:
+    'Choose which enabled Prowlarr indexers are searched for each media category. An empty selection disables search for that category.',
+  selectedIndexers: '{count} indexers selected',
+  noIndexerInventory:
+    'Test the Prowlarr connection to load its indexers and assign them by category.',
+  indexerSearchLimits: 'Search limits',
+  indexerSearchLimitsDescription:
+    'Limit each user’s searches per minute overall and for each selected indexer.',
+  searchesPerUser: 'Maximum searches per user per minute',
+  searchesPerIndexer: 'Maximum searches per user per minute on {indexer}',
+  indexerAssignmentSelectLabel: '{category} indexers',
+  indexerNotSearchable: '(not searchable)',
+  showIndexerDetails: 'Allow indexer names and details in search results',
+  indexerNameHidden: 'Indexer names and detail links are hidden from users.',
+  indexerDetailsVisible: 'Users can open indexer details from search results.',
+  searchLimitInvalid: 'Enter a whole number from 1 to 60.',
   movie: 'Movies',
   tv: 'TV',
   music: 'Music',
@@ -90,6 +107,12 @@ interface ProwlarrCoverageResponse {
   enabledSearchableIndexers?: number;
   categories?: Record<MediaCategoryKey, number>;
   categoryCatalog?: { id: number; name: string; indexerCount: number }[];
+  indexers?: {
+    id: number;
+    name: string;
+    enabled: boolean;
+    supportsSearch: boolean;
+  }[];
   error?: string;
   diagnostics?: {
     id?: number;
@@ -172,6 +195,10 @@ const toForm = (settings: ProwlarrSettingsResponse): ProwlarrForm => ({
   apiKeyConfigured: settings.apiKeyConfigured,
   clearApiKey: false,
   categoryMappings: settings.categoryMappings,
+  indexerIdsByCategory: settings.indexerIdsByCategory ?? {},
+  searchLimitPerUserPerMinute: settings.searchLimitPerUserPerMinute ?? 12,
+  searchLimitByIndexer: settings.searchLimitByIndexer ?? {},
+  showIndexerDetails: settings.showIndexerDetails ?? false,
 });
 
 const getPayload = (form: ProwlarrForm) => ({
@@ -180,6 +207,10 @@ const getPayload = (form: ProwlarrForm) => ({
   useSsl: form.useSsl,
   baseUrl: form.baseUrl,
   categoryMappings: form.categoryMappings,
+  indexerIdsByCategory: form.indexerIdsByCategory,
+  searchLimitPerUserPerMinute: Number(form.searchLimitPerUserPerMinute ?? 12),
+  searchLimitByIndexer: form.searchLimitByIndexer ?? {},
+  showIndexerDetails: form.showIndexerDetails ?? false,
   clearApiKey: form.clearApiKey,
   ...(form.apiKey ? { apiKey: form.apiKey } : {}),
 });
@@ -217,6 +248,28 @@ const SettingsProwlarr = () => {
       };
     });
   }, [data, setupConnection]);
+
+  useEffect(() => {
+    const indexers = inventory?.indexers ?? savedCoverage?.indexers;
+    if (!indexers) return;
+    const defaults = indexers
+      .filter((indexer) => indexer.enabled && indexer.supportsSearch)
+      .map((indexer) => indexer.id);
+    setForm((current) => {
+      if (!current) return current;
+      const indexerIdsByCategory = {
+        ...current.indexerIdsByCategory,
+      };
+      let changed = false;
+      for (const category of categoryKeys) {
+        if (!Array.isArray(indexerIdsByCategory[category])) {
+          indexerIdsByCategory[category] = defaults;
+          changed = true;
+        }
+      }
+      return changed ? { ...current, indexerIdsByCategory } : current;
+    });
+  }, [inventory?.indexers, savedCoverage?.indexers]);
 
   const usingSavedConnection = Boolean(
     data &&
@@ -288,6 +341,26 @@ const SettingsProwlarr = () => {
     });
   };
 
+  const updateIndexerIds = (category: MediaCategoryKey, value: string[]) => {
+    if (!form) return;
+    updateForm({
+      indexerIdsByCategory: {
+        ...form.indexerIdsByCategory,
+        [category]: value.map(Number).filter(Number.isSafeInteger),
+      },
+    });
+  };
+
+  const updateIndexerLimit = (indexerId: number, value: number) => {
+    if (!form) return;
+    updateForm({
+      searchLimitByIndexer: {
+        ...form.searchLimitByIndexer,
+        [indexerId]: value,
+      },
+    });
+  };
+
   const testConnection = async () => {
     if (!form) return;
     setTesting(true);
@@ -355,9 +428,16 @@ const SettingsProwlarr = () => {
   if (!form) return null;
 
   const coverage = inventory ?? savedCoverage;
+  const availableIndexers =
+    inventory?.indexers ?? savedCoverage?.indexers ?? [];
   const canSaveCategories = categoryKeys.every(
     (category) => (form.categoryMappings[category] ?? []).length > 0
   );
+  const isValidSearchLimit = (value: number | undefined) =>
+    Number.isInteger(value) && value! >= 1 && value! <= 60;
+  const canSaveSearchLimits =
+    isValidSearchLimit(form.searchLimitPerUserPerMinute) &&
+    Object.values(form.searchLimitByIndexer ?? {}).every(isValidSearchLimit);
 
   return (
     <section
@@ -545,6 +625,170 @@ const SettingsProwlarr = () => {
         </div>
       </div>
 
+      <div className="mt-5 rounded-lg border border-gray-700 bg-gray-900/50 p-4">
+        <h4 className="font-semibold text-white">
+          {intl.formatMessage(messages.indexerAssignmentTitle)}
+        </h4>
+        <p className="mt-1 text-sm text-gray-300">
+          {intl.formatMessage(messages.indexerAssignmentDescription)}
+        </p>
+        {availableIndexers.length === 0 ? (
+          <p className="mt-3 text-sm text-gray-400">
+            {intl.formatMessage(messages.noIndexerInventory)}
+          </p>
+        ) : (
+          <div className="mt-3 grid grid-cols-1 gap-2 lg:grid-cols-2">
+            {categoryKeys.map((category) => {
+              const selectedIds =
+                form.indexerIdsByCategory?.[category] ??
+                availableIndexers
+                  .filter(
+                    (indexer) => indexer.enabled && indexer.supportsSearch
+                  )
+                  .map((indexer) => indexer.id);
+              return (
+                <details
+                  key={category}
+                  className="rounded border border-gray-700 px-3 py-2"
+                >
+                  <summary className="cursor-pointer text-sm font-medium text-gray-100">
+                    {intl.formatMessage(messages[categoryMessages[category]])}
+                    <span className="ml-2 text-xs text-gray-400">
+                      {intl.formatMessage(messages.selectedIndexers, {
+                        count: selectedIds.length,
+                      })}
+                    </span>
+                  </summary>
+                  <select
+                    aria-label={intl.formatMessage(
+                      messages.indexerAssignmentSelectLabel,
+                      {
+                        category: intl.formatMessage(
+                          messages[categoryMessages[category]]
+                        ),
+                      }
+                    )}
+                    multiple
+                    size={Math.min(6, Math.max(3, availableIndexers.length))}
+                    className="input input-lite mt-2 w-full"
+                    value={selectedIds.map(String)}
+                    onChange={(event) =>
+                      updateIndexerIds(
+                        category,
+                        Array.from(
+                          event.target.selectedOptions,
+                          (option) => option.value
+                        )
+                      )
+                    }
+                  >
+                    {availableIndexers.map((indexer) => (
+                      <option key={indexer.id} value={indexer.id}>
+                        {indexer.name}
+                        {!indexer.enabled || !indexer.supportsSearch
+                          ? ` ${intl.formatMessage(messages.indexerNotSearchable)}`
+                          : ''}
+                      </option>
+                    ))}
+                  </select>
+                </details>
+              );
+            })}
+          </div>
+        )}
+      </div>
+
+      <div className="mt-5 rounded-lg border border-gray-700 bg-gray-900/50 p-4">
+        <h4 className="font-semibold text-white">
+          {intl.formatMessage(messages.indexerSearchLimits)}
+        </h4>
+        <p className="mt-1 text-sm text-gray-300">
+          {intl.formatMessage(messages.indexerSearchLimitsDescription)}
+        </p>
+        <label className="mt-3 block max-w-sm text-sm text-gray-200">
+          {intl.formatMessage(messages.searchesPerUser)}
+          <input
+            className="input input-lite mt-1 w-full"
+            type="number"
+            min={1}
+            max={60}
+            step={1}
+            value={form.searchLimitPerUserPerMinute ?? 12}
+            aria-invalid={!canSaveSearchLimits}
+            onChange={(event) =>
+              updateForm({
+                searchLimitPerUserPerMinute: Number(event.target.value),
+              })
+            }
+          />
+        </label>
+        {availableIndexers.length > 0 && (
+          <div className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2">
+            {availableIndexers.map((indexer) => (
+              <label key={indexer.id} className="text-sm text-gray-200">
+                {indexer.name}
+                <span className="block text-xs text-gray-400">
+                  {intl.formatMessage(messages.searchesPerIndexer, {
+                    indexer: indexer.name,
+                  })}
+                </span>
+                <input
+                  className="input input-lite mt-1 w-full"
+                  type="number"
+                  min={1}
+                  max={60}
+                  step={1}
+                  value={
+                    form.searchLimitByIndexer?.[indexer.id] ??
+                    form.searchLimitPerUserPerMinute ??
+                    12
+                  }
+                  aria-label={intl.formatMessage(messages.searchesPerIndexer, {
+                    indexer: indexer.name,
+                  })}
+                  aria-invalid={
+                    !isValidSearchLimit(
+                      form.searchLimitByIndexer?.[indexer.id] ??
+                        form.searchLimitPerUserPerMinute
+                    )
+                  }
+                  onChange={(event) =>
+                    updateIndexerLimit(indexer.id, Number(event.target.value))
+                  }
+                />
+              </label>
+            ))}
+          </div>
+        )}
+        {!canSaveSearchLimits && (
+          <p className="mt-3 text-sm text-red-300" role="alert">
+            {intl.formatMessage(messages.searchLimitInvalid)}
+          </p>
+        )}
+      </div>
+
+      <div className="mt-5 rounded-lg border border-gray-700 bg-gray-900/50 p-4">
+        <div className="inline-flex items-center gap-2 text-sm text-gray-200">
+          <span>{intl.formatMessage(messages.showIndexerDetails)}</span>
+          <SelectionCircle
+            id="prowlarr-show-indexer-details"
+            name="showIndexerDetails"
+            label={intl.formatMessage(messages.showIndexerDetails)}
+            selected={form.showIndexerDetails ?? false}
+            onClick={() =>
+              updateForm({ showIndexerDetails: !form.showIndexerDetails })
+            }
+          />
+        </div>
+        <p className="mt-1 text-sm text-gray-400">
+          {intl.formatMessage(
+            form.showIndexerDetails
+              ? messages.indexerDetailsVisible
+              : messages.indexerNameHidden
+          )}
+        </p>
+      </div>
+
       <p className="mt-4 text-sm text-gray-300">
         {intl.formatMessage(messages.testHint)}
       </p>
@@ -706,7 +950,7 @@ const SettingsProwlarr = () => {
           type="button"
           className="rounded border border-gray-500 px-4 py-2 font-semibold text-gray-100 hover:bg-gray-700 disabled:cursor-not-allowed disabled:opacity-50"
           style={{ minHeight: 48 }}
-          disabled={saving || !canSaveCategories}
+          disabled={saving || !canSaveCategories || !canSaveSearchLimits}
           onClick={() => void saveSettings()}
         >
           {intl.formatMessage(saving ? messages.saving : messages.save)}

@@ -895,7 +895,15 @@ const SettingsMain = () => {
                 <div className="settings-group-content">
                   <SettingsFormRow
                     htmlFor="comicVineApiKey"
-                    label={intl.formatMessage(messages.comicVineApiKey)}
+                    label={
+                      <a
+                        href="https://comicvine.gamespot.com/api/"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        {intl.formatMessage(messages.comicVineApiKey)}
+                      </a>
+                    }
                     description={intl.formatMessage(
                       messages.comicVineApiKeyTip
                     )}
@@ -917,7 +925,15 @@ const SettingsMain = () => {
                   </SettingsFormRow>
                   <SettingsFormRow
                     htmlFor="metronToken"
-                    label={intl.formatMessage(messages.metronToken)}
+                    label={
+                      <a
+                        href="https://metron.cloud/accounts/tokens/"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        {intl.formatMessage(messages.metronToken)}
+                      </a>
+                    }
                     description={intl.formatMessage(messages.metronTokenTip)}
                   >
                     <div className="form-input-field">

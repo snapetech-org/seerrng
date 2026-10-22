@@ -35,6 +35,7 @@ import {
   normalizeOpenLibraryWorkId,
 } from '@app/utils/apiPath';
 import defineMessages from '@app/utils/defineMessages';
+import { getUserServiceAvailability } from '@app/utils/serviceAvailability';
 import {
   ArrowDownTrayIcon,
   CogIcon,
@@ -113,10 +114,15 @@ const BookDetails = () => {
   const { addToast } = useToasts();
   const { user, hasPermission } = useUser();
   const { currentSettings } = useSettings();
+  const serviceAvailability = getUserServiceAvailability(
+    currentSettings,
+    user?.settings?.enabledMediaCategories,
+    hasPermission(Permission.ADMIN)
+  );
   const ebookCategoryEnabled =
-    currentSettings.enabledMediaCategories?.ebook !== false;
+    serviceAvailability.enabledMediaCategories?.ebook !== false;
   const audiobookCategoryEnabled =
-    currentSettings.enabledMediaCategories?.audiobook !== false;
+    serviceAvailability.enabledMediaCategories?.audiobook !== false;
   const [showRequestModal, setShowRequestModal] = useState(false);
   const [showBulkRequestModal, setShowBulkRequestModal] = useState(false);
   const [editRequest, setEditRequest] =

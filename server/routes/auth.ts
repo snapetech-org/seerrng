@@ -55,6 +55,10 @@ import { normalizeJellyfinGuid } from '@server/utils/jellyfin';
 import { getMediaBrowserAuthorizationHeaders } from '@server/utils/mediaServerAuthorization';
 import { oidcSafeFetch } from '@server/utils/oidcHttp';
 import { parseOidcIdentity } from '@server/utils/oidcIdentity';
+import {
+  getOidcRolePermissions,
+  isOidcProvisioningAllowed,
+} from '@server/utils/oidcProvisioning';
 import { parsePlexAccountIdentity } from '@server/utils/plexAccount';
 import {
   getRateLimitKey,
@@ -3006,6 +3010,19 @@ authRoutes.post(
             },
           });
           if (currentLinkedAccount) {
+            const rolePermissions = getOidcRolePermissions(
+              currentProvider,
+              fullUserInfo,
+              currentSettings.main.defaultPermissions
+            );
+            if (
+              rolePermissions !== undefined &&
+              currentLinkedAccount.user.permissions !== rolePermissions
+            ) {
+              currentLinkedAccount.user.permissions = rolePermissions;
+              await userRepository.save(currentLinkedAccount.user);
+            }
+
             return { kind: 'user', user: currentLinkedAccount.user } as const;
           }
 
@@ -3017,6 +3034,16 @@ authRoutes.post(
           }
 
           const normalizedEmail = oidcIdentity.email;
+          if (
+            !isOidcProvisioningAllowed(
+              currentProvider,
+              normalizedEmail,
+              fullUserInfo
+            )
+          ) {
+            return { kind: 'provisioning-denied' } as const;
+          }
+
           // Only auto-provision an account when the provider asserts the email is
           // verified. Without this an attacker whose IdP allows unverified emails
           // could self-provision an account under an arbitrary address.
@@ -3048,7 +3075,12 @@ authRoutes.post(
               gravatarUrl(normalizedEmail, { default: 'mm', size: 200 }),
             username: oidcIdentity.username,
             email: normalizedEmail,
-            permissions: currentSettings.main.defaultPermissions,
+            permissions:
+              getOidcRolePermissions(
+                currentProvider,
+                fullUserInfo,
+                currentSettings.main.defaultPermissions
+              ) ?? currentSettings.main.defaultPermissions,
             plexToken: '',
             userType: UserType.LOCAL,
           });
@@ -3073,7 +3105,9 @@ authRoutes.post(
               ? 'User did not have an account, and was missing an associated email address.'
               : resolution.kind === 'disabled'
                 ? 'User did not have an account, and new user login was disabled.'
-                : 'OIDC provider authorization changed before account admission.',
+                : resolution.kind === 'provisioning-denied'
+                  ? 'User did not meet the configured provisioning allowlists.'
+                  : 'OIDC provider authorization changed before account admission.',
         });
         return next({
           status: resolution.kind === 'missing-email' ? 400 : 403,

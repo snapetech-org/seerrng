@@ -47,6 +47,19 @@ music services do not currently provide a language-based request choice.
 Requesters can still change the destination or book edition in the request
 dialog.
 
+### Media Categories and Indexer Details
+
+Under **General**, choose which media categories are available to this user.
+The user can change these choices in their own profile settings, and **Use
+administrator defaults** resets them to the settings configured for new users.
+Administrators always see categories that are enabled globally.
+
+Prowlarr indexer names and detail links are hidden unless the administrator
+allows them under **Settings > Prowlarr**. When that global option is enabled,
+you can hide indexer details for this user from the same **General** page.
+Only user managers can change that per-user setting. Turning the global option
+off hides details for everyone.
+
 ### Discover Region & Discover Language
 
 Users can override the [global filter settings](/using-seerr/settings/general#discover-region-discover-language--streaming-region) to suit their own preferences.

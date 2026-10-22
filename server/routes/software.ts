@@ -44,6 +44,7 @@ import {
   withdrawPendingSoftwareRequest,
   type PcGameVariant,
 } from '@server/lib/softwareRequests';
+import { isUserMediaCategoryEnabled } from '@server/lib/userMediaCategories';
 import logger from '@server/logger';
 import { isAuthenticated } from '@server/middleware/auth';
 import { getHttpErrorDetails } from '@server/utils/httpError';
@@ -132,15 +133,16 @@ const getStatusesForFilter = (
 };
 
 const isSoftwareCategoryEnabled = (
-  category: SoftwareRequestCategory
-): boolean => isMediaCategoryEnabled(category);
+  category: SoftwareRequestCategory,
+  user?: User
+): boolean => isUserMediaCategoryEnabled(user, category);
 
 const disabledCategoryResponse = (
   res: Parameters<Parameters<typeof softwareRoutes.get>[1]>[1],
   category: SoftwareRequestCategory
 ) =>
   res.status(403).json({
-    error: `${category === 'game' ? 'PC game' : `${category} emulation`} requests are disabled by the administrator.`,
+    error: `${category === 'game' ? 'PC game' : `${category} emulation`} requests are ${isMediaCategoryEnabled(category) ? 'unavailable for this user' : 'disabled by the administrator'}.`,
   });
 
 const isRecord = (value: unknown): value is Record<string, unknown> =>
@@ -989,7 +991,7 @@ softwareRoutes.get('/catalog/search', async (req, res) => {
       error: 'A valid category, search query, and limit are required.',
     });
   }
-  if (!isSoftwareCategoryEnabled(parsed.category)) {
+  if (!isSoftwareCategoryEnabled(parsed.category, req.user)) {
     return disabledCategoryResponse(res, parsed.category);
   }
 
@@ -1139,7 +1141,7 @@ softwareRoutes.get('/catalog/popular', async (req, res) => {
       .status(400)
       .json({ error: 'A valid category and limit are required.' });
   }
-  if (!isSoftwareCategoryEnabled(category)) {
+  if (!isSoftwareCategoryEnabled(category, req.user)) {
     return disabledCategoryResponse(res, category);
   }
   const filters = parseCatalogFilters(req.query, category);
@@ -1281,7 +1283,7 @@ softwareRoutes.get('/catalog/games/:id', async (req, res) => {
       .status(400)
       .json({ error: 'A valid title and category are required.' });
   }
-  if (!isSoftwareCategoryEnabled(category)) {
+  if (!isSoftwareCategoryEnabled(category, req.user)) {
     return disabledCategoryResponse(res, category);
   }
 
@@ -1455,7 +1457,7 @@ softwareRoutes.post('/', async (req, res) => {
       error: 'A valid software category and catalog title are required.',
     });
   }
-  if (!isSoftwareCategoryEnabled(category)) {
+  if (!isSoftwareCategoryEnabled(category, req.user)) {
     return disabledCategoryResponse(res, category);
   }
   if (!req.user?.hasPermission(Permission.REQUEST)) {

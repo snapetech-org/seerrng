@@ -39,3 +39,39 @@ it('clears the saved Prowlarr key when requested', () => {
   if (!('value' in parsed)) return;
   assert.equal(parsed.value.apiKey, '');
 });
+
+it('validates category indexer assignments, per-user search limits, and visibility', () => {
+  const parsed = parseProwlarrSettings(
+    {
+      indexerIdsByCategory: { movie: [4, 4, 8], adult: [] },
+      searchLimitPerUserPerMinute: 8,
+      searchLimitByIndexer: { 4: 3, 8: 5 },
+      showIndexerDetails: true,
+    },
+    existingSettings
+  );
+
+  assert.equal('error' in parsed, false);
+  if (!('value' in parsed)) return;
+  assert.deepEqual(parsed.value.indexerIdsByCategory, {
+    movie: [4, 8],
+    adult: [],
+  });
+  assert.equal(parsed.value.searchLimitPerUserPerMinute, 8);
+  assert.deepEqual(parsed.value.searchLimitByIndexer, { 4: 3, 8: 5 });
+  assert.equal(parsed.value.showIndexerDetails, true);
+});
+
+it('rejects out-of-range indexer search limits and malformed assignments', () => {
+  for (const value of [
+    { searchLimitPerUserPerMinute: 0 },
+    { searchLimitByIndexer: { 4: 61 } },
+    { indexerIdsByCategory: { movie: ['4'] } },
+    { showIndexerDetails: 'true' },
+  ]) {
+    assert.equal(
+      'error' in parseProwlarrSettings(value, existingSettings),
+      true
+    );
+  }
+});

@@ -26,7 +26,6 @@ import {
 import { getExternalRuntimeConfig } from '@server/lib/externalRuntimeConfig';
 import { normalizeMagazineTitle } from '@server/lib/magazineIdentity';
 import { findMagazineMediaByTitles } from '@server/lib/magazineMediaMatcher';
-import { isMediaCategoryEnabled } from '@server/lib/mediaCategories';
 import {
   getAvailableMusicQualities,
   getMusicQualityStatuses,
@@ -37,6 +36,7 @@ import {
 } from '@server/lib/search';
 import { runWithServarrServiceSnapshot } from '@server/lib/serviceAdmission';
 import { getSettings } from '@server/lib/settings';
+import { isUserMediaCategoryEnabled } from '@server/lib/userMediaCategories';
 import {
   filterVideoResultsByMaturityPolicy,
   getUserVideoMaturityPolicy,
@@ -446,9 +446,11 @@ searchRoutes.get('/', async (req, res, next) => {
   const audiobookServiceEnabled = settings.readarr.some((server) =>
     readarrServiceSupportsFormat(server, 'audiobook')
   );
-  const ebookEnabled = isMediaCategoryEnabled('ebook') && ebookServiceEnabled;
+  const ebookEnabled =
+    isUserMediaCategoryEnabled(req.user, 'ebook') && ebookServiceEnabled;
   const audiobookEnabled =
-    isMediaCategoryEnabled('audiobook') && audiobookServiceEnabled;
+    isUserMediaCategoryEnabled(req.user, 'audiobook') &&
+    audiobookServiceEnabled;
   const bookFormatEnabled = (format: BookFormat) =>
     format === 'ebook' ? ebookEnabled : audiobookEnabled;
   const booksEnabled = bookFormat
@@ -462,13 +464,15 @@ searchRoutes.get('/', async (req, res, next) => {
         ? 'audiobook'
         : undefined);
   const musicEnabled =
-    settings.lidarr.length > 0 && isMediaCategoryEnabled('music');
+    settings.lidarr.length > 0 && isUserMediaCategoryEnabled(req.user, 'music');
   const { comicVineApiKey, metronToken } = getSettings().main;
-  const comicsEnabled = !!comicVineApiKey && isMediaCategoryEnabled('comic');
+  const comicsEnabled =
+    !!comicVineApiKey && isUserMediaCategoryEnabled(req.user, 'comic');
   const magazinesEnabled =
-    settings.lazylibrarian.length > 0 && isMediaCategoryEnabled('magazine');
-  const moviesEnabled = isMediaCategoryEnabled('movie');
-  const seriesEnabled = isMediaCategoryEnabled('tv');
+    settings.lazylibrarian.length > 0 &&
+    isUserMediaCategoryEnabled(req.user, 'magazine');
+  const moviesEnabled = isUserMediaCategoryEnabled(req.user, 'movie');
+  const seriesEnabled = isUserMediaCategoryEnabled(req.user, 'tv');
 
   if (
     (typeFilter === 'movie' && !moviesEnabled) ||
@@ -541,9 +545,8 @@ searchRoutes.get('/', async (req, res, next) => {
       const musicOffset = (page - 1) * 20;
 
       const shouldSearchVideo =
-        !typeFilter ||
-        typeFilter === 'movie' ||
-        typeFilter === 'tv' ||
+        ((!typeFilter || typeFilter === 'movie' || typeFilter === 'tv') &&
+          (moviesEnabled || seriesEnabled)) ||
         typeFilter === 'person';
       const shouldSearchMusic =
         !typeFilter ||

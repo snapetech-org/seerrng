@@ -55,3 +55,14 @@ Select the permissions you would like assigned to new users to have by default u
 If [Enable New Jellyfin/Emby/Plex Sign-In](#enable-new-jellyfinembyplex-sign-in) is enabled, any user with access to your media server will be able to sign in to Seerr, and they will be granted the permissions you select here upon first sign-in.
 
 This setting only affects new users, and has no impact on existing users. In order to modify permissions for existing users, you will need to edit the users.
+
+## Default Media Categories
+
+Choose which media categories new users see by default. A user can adjust
+their own category choices from **Profile Settings > General**. Administrators
+can also edit a user's category choices from that user's settings page.
+Administrators retain access to every category that is enabled globally.
+
+These preferences control category browsing, search, and request entry points
+for each user. They do not enable a service that is disabled globally or not
+configured by an administrator.

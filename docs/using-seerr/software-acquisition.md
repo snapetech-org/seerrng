@@ -12,10 +12,13 @@ connected providers perform the acquisition and expose imported files back to
 SeerrNG for download.
 
 SeerrNG's **Indexer Search** page can query Prowlarr's configured PC-game and
-console categories for manual inspection by users with **Manage Requests**.
-The page does not grab or track results. Approved requests still go through
-QuestarrNG or ROMarrNG, which own acquisition and progress tracking. Those
-providers may also use Prowlarr-synced or direct Torznab/Newznab indexers. IGDB
+console categories for users with **Manage Requests**. Users can send a result
+to Prowlarr's configured download client with the explicit **Send to
+downloader** action; SeerrNG does not expose the underlying torrent, NZB, or
+download URL and does not create or track a request from that handoff. Approved
+requests still go through QuestarrNG or ROMarrNG, which own acquisition and
+progress tracking. Those providers may also use Prowlarr-synced or direct
+Torznab/Newznab indexers. IGDB
 remains the catalog for game discovery, served by the selected catalog provider.
 See [Indexer searches by media
 category](./indexer-searches.md) for the full routing map.

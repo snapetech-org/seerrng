@@ -10,6 +10,196 @@ and the following `v3.2.7` release includes the intervening changes. Commit-leve
 links in the generated history remain the technical source of truth for changes
 that are not called out here.
 
+## [3.72.0](https://github.com/snapetech-org/seerrng/compare/v3.71.4..v3.72.0) - 2026-10-22
+
+### User-facing changes
+
+#### Added
+
+- **Books:** Search book series by name from the Search page, with separate book and audiobook results from configured servers. Library results open series requests; Chaptarr catalog results offer read-only previews using its existing provider configuration.
+- **Authentication:** OIDC sign-in now shows provider logos and official setup guides for supported identity providers, helping administrators configure sign-in without changing access rules.
+- **Authentication:** Operators can limit first-time OIDC account creation to exact email domains and provider groups, and explicitly map verified provider claims to SeerrNG's normal or administrator permissions.
+- **Books:** Monitor Series can request ongoing ebook or audiobook monitoring through a compatible Chaptarr server. Chaptarr handles current and future catalog books and download timing. Requests can await approval, and managers can approve, retry or stop watches from Series Monitoring Requests. Request Selected Books remains available for individual selections.
+  - **Action required:** Upgrade Chaptarr to a version supporting series watches and configure its catalog provider and destination defaults.
+- **Bookshelf:** Open a linked library book's series in SeerrNG and request selected verified books or missing formats through your existing book services. Series information comes from the configured server without a new metadata token. Request managers can open supported Chaptarr series pages to manage monitoring. The page shows known library members; it does not automatically request future series releases.
+- **Bookshelf:** Request verified catalog-series books directly in SeerrNG, with normal selection, approvals and quotas. Audiobook series default to audiobook requests. Conflicting or unavailable identities remain visible for retry; no additional provider key is needed in SeerrNG.
+  - **Action required:** Upgrade Chaptarr for optional catalog edition identifiers when individual book lookup is unavailable.
+- **Books:** Book series now appear alongside title results in the top search bar and Books keyword search. Open Search Book Series from Books to search your library and supported catalogs, with the selected book format preserved.
+- **Integrations:** Administrators can choose the media categories each user sees, set defaults for new accounts, and let users personalize their category access. Administrators retain access to all globally enabled categories.
+- **Prowlarr:** Administrators can assign Prowlarr indexers and search limits by category, and control indexer detail visibility globally or for individual users. Search results also have a safe handoff to Prowlarr's configured download client without exposing direct torrent or NZB links.
+- **Books:** Book-series cards now preview up to twenty books in a cover carousel when the book server provides member metadata. Swipe, use the arrow buttons or keyboard to browse. Missing covers show a book icon; clicking a cover opens its series, and format links keep their destinations.
+
+#### Changed
+
+- **Authentication:** OIDC guidance now covers exact provider callbacks, account admission and linking, recovery, and troubleshooting so operators can configure sign-in safely.
+- **Books:** Book series pages now show Books in Series from your book server before alternative catalog matches, with monitoring and book request controls above the list. The page includes known books you have not downloaded and no longer labels the series as a library subset.
+- **Settings:** Comic metadata credential labels now link directly to the ComicVine API key page and Metron API token page.
+- **Ui:** The default SeerrNG theme now uses neutral slate surfaces with a restrained blue accent instead of black and purple, and page titles are a solid colour instead of a gradient. Light mode keeps the same readable palette, and other themes are unchanged.
+- **Discovery Integrations:** Trakt account linking now uses a browser authorization flow with PKCE and no client secret. New service icons also make supported media services easier to recognize.
+  - **Action required:** Set a public HTTPS Application URL and register its callback URL in your Trakt app before connecting accounts.
+- **Books:** Books and audiobooks now share one Books entry in desktop and mobile navigation. Choose All Books, Books or Audiobooks within that section; existing audiobook links still work.
+
+#### Fixed
+
+- **Settings:** Sportarr connections now save successfully when no external URL is configured.
+- **Settings:** Sportarr and Whisparr save failures now show safe validation details or an HTTP status, and Whisparr settings distinguish missing administrator access from server failures. Sportarr settings no longer persist Readarr-only connection fields.
+- **Navigation:** Unconfigured game discovery and patch catalogs no longer clutter navigation, while the personal games library remains available regardless of request-service configuration.
+- **Ui:** Buttons and controls now meet the 24px minimum target size, and poster association and blocklist icons appear on hover or focus instead of covering artwork. Sportarr, Adult, Magazine and Games pages no longer overflow sideways, print text over each other, or show unreadable text.
+- **Notifications:** Apprise notification settings now load, save, and test through the application API.
+- **Books:** Book Series search and monitoring requests now reach the application API.
+- **Bookshelf:** Book Series search and catalog pages now avoid client hydration errors. Query-dependent results appear after routing initializes, keeping server markup and the first browser render consistent.
+- **Books:** Click anywhere on a book-series search card to open the series. Books and Audiobooks links still open their respective formats, and keyboard navigation highlights the card.
+- **Requests:** When book edition options or narrator comparisons cannot be loaded, the request form now says so and offers a Retry button instead of showing nothing. You can still submit the request without choosing a version.
+- **Integrations:** Whisparr, Navidrome, and Jellystat settings now load and save through the application API, restoring access to these integrations.
+- **Books:** Audiobookshelf availability scans now serialize book-record writes so SQLite does not start overlapping transactions when a library contains multiple ISBN-matched audiobooks.
+- **Bookshelf:** Series pages now read ISBNs from the book server's native edition endpoint when book details omit editions. This lets more known series members resolve to verified request identities without adding a metadata token. Editions belonging to another book and incomplete responses cannot enable requests.
+- **Bookshelf:** Chaptarr series management links remain available when reopening a series page from cached metadata. Backend capability detection now runs before the cached catalog is used, preserving the correct provider-specific management link.
+- **Themes:** Changing themes now updates page backgrounds, sidebars, menus, and controls together instead of leaving fixed purple backgrounds behind. Light and dark modes retain the selected palette after reloading.
+- **Books:** Book Series searches now accept multi-word titles such as The Kingkiller Chronicle instead of failing with a query-encoding error.
+- **Bookshelf:** Catalog series previews and requests now work when the configured book server has ID zero, including the first server added to SeerrNG.
+- **Deployment:** The series trial deployment now builds the browser and server with matching version labels, preventing the update prompt from returning after every reload.
+  - **Action required:** Reload the browser once after the corrected deployment.
+- **Ui:** Settings forms now keep labels and inputs aligned at tablet widths, dropdown choices keep readable foreground and background colors, and the Request Book Advanced Options control stays legible on narrow cards.
+- **Images:** Pages no longer rate-limit their own image requests. Poster cache warming now shares one paced queue that backs off when asked, the warm limit is higher, and posters that fail briefly are retried before the placeholder is shown.
+- **Ui:** Checkboxes are now 24px and the selection circles in action rows have a 24px hit area, so they are easier to tap and meet the WCAG 2.2 minimum target size. The drawn circles and the surrounding layout are unchanged.
+- **Authentication:** **Breaking:** OIDC identities now bind to provider issuer and subject. Existing links have no issuer and remain unbound after upgrade; OIDC sign-in also requires the provider to assert `email_verified=true`.
+  - **Action required:** Verify provider verified-email claims, provide another sign-in method, and relink affected OIDC accounts after upgrading.
+- **Books:** Opening a Books keyword-search link keeps its search text and results while the input initializes, including when series search reports a temporary failure.
+- **Search:** Opening or refreshing a search-results link now retains its search text while the page loads.
+- **Profiles:** Profile pages now wait for the selected user ID before loading that user's watchlist.
+- **Profiles:** The profile watchlist page now waits for the account ID before loading saved items.
+- **Ui:** Phones now show two posters per row instead of one beside a blank half-screen. Games, long list titles, and narrow settings pages no longer scroll sideways, cast and crew posters no longer overlap, and light mode text, inputs and messages are readable. Touch screens get larger buttons.
+- **Books:** Book-series cover previews now use authenticated backend image requests. Chaptarr installations with the API artwork route show covers even when browser sign-in is required; unavailable artwork continues to show a book icon.
+- **Books:** Series search prioritizes catalog entries, while library subsets are clearly labeled. Conflicting edition ISBNs can be resolved when one work also agrees on its full title and author. Request previews show any books excluded because their identity could not be verified.
+- **Books:** Series search combines ebook and audiobook entries with the same catalog identity into one result with format links. Book keywords also search catalog subjects, so series names find their novels. Book searches allow more time for the catalog and show a useful message when it is unavailable.
+- **Discovery:** Swipe decisions and history now load, restore, and clear through the application API.
+- **Containers:** Unraid 7.3.x now detects stable SeerrNG container updates; release tags use Docker-compatible multi-platform manifests, with signed build provenance published separately.
+
+#### Security
+
+- **Dependencies:** Updated follow-redirects to 1.16.1, which fixes two high-severity advisories where a redirect could expose credential headers. SeerrNG itself is not known to be affected; this keeps the dependency tree free of known vulnerabilities.
+
+#### Removed
+
+- **Discovery:** **Breaking:** Discover no longer redirects `/discover/vibes`. Open Book Recommendations at `/discover/book-recommendations` instead.
+  - **Action required:** Update bookmarks and shared links to `/discover/book-recommendations`.
+
+### 🛡️ Security
+- *(discovery)* Migrate Trakt to PKCE and add service icons (#371) - ([4d09925](https://github.com/snapetech-org/seerrng/commit/4d099251291e6df783881a74d9f77a859534b663))
+- *(maintainers)* Record the 2026-10-20 branch and upstream triage - ([ea7e124](https://github.com/snapetech-org/seerrng/commit/ea7e124d2c5eb4661be5a0aa9511f5844da1e22b))
+
+### 🚀 Features
+- *(auth)* Map OIDC claims to user permissions - ([d76c33b](https://github.com/snapetech-org/seerrng/commit/d76c33bc89e900c3c99ac93918f5c03db3a324b7))
+- *(auth)* Harden OIDC provider sign-in (#367) - ([3c53547](https://github.com/snapetech-org/seerrng/commit/3c53547d64ccb004393e58f394693ce6aaf9d32c))
+- *(books)* Integrate backend-managed series - ([57c7a0d](https://github.com/snapetech-org/seerrng/commit/57c7a0d97c71599cd24098de54ab49dd942afc3f))
+- *(books)* Preview series members in cover carousels - ([ac60582](https://github.com/snapetech-org/seerrng/commit/ac6058281a688f924b4c63f56f4da01d80261c7d))
+- *(books)* Request backend-owned series monitoring - ([b66a626](https://github.com/snapetech-org/seerrng/commit/b66a6269436447e6a670dfcfa05bf1a868fc2da8))
+- *(books)* Surface series in book and global searches - ([3d462a9](https://github.com/snapetech-org/seerrng/commit/3d462a96e35efb89e60e3c7ed20998a40bef9f01))
+- *(books)* Request verified catalog series in SeerrNG - ([42aae21](https://github.com/snapetech-org/seerrng/commit/42aae21f465f2caaef64f0bd51e38c6c3d0d7dac))
+- *(books)* Search library series and preview backend catalogs - ([07265eb](https://github.com/snapetech-org/seerrng/commit/07265ebbfee4e64deca58bd0d63498ff85a96ebd))
+- *(books)* Browse backend series and request verified members - ([d01386e](https://github.com/snapetech-org/seerrng/commit/d01386ecb8618c5a19e5312b4738b3e849f1e430))
+- *(setup)* Add advanced setup bypass - ([40c9158](https://github.com/snapetech-org/seerrng/commit/40c915869cb52e6d480d106f3257c1dc42513493))
+- *(setup)* Add guided setup wizard - ([a5fe720](https://github.com/snapetech-org/seerrng/commit/a5fe720915b141138aeb0922db9d192915b70a86))
+- *(theme)* Neutral slate SeerrNG theme with a restrained blue accent - ([456e0dc](https://github.com/snapetech-org/seerrng/commit/456e0dc53ac0cbb590f671db290ef473af2e68fa))
+- Add per-user service and Prowlarr controls - ([51a1ad6](https://github.com/snapetech-org/seerrng/commit/51a1ad64eded629fbbe1eabf5bb2a70394565e0b))
+
+### 🐛 Bug Fixes
+- *(api)* Correct watchlist POST request schema in OpenAPI spec (#3425) - ([dbe62d9](https://github.com/snapetech-org/seerrng/commit/dbe62d9c1b6b0e01b98d3bc11c09f95951b10e78))
+- *(auth)* Bind OIDC identities to issuers (#370) - ([52b75f1](https://github.com/snapetech-org/seerrng/commit/52b75f1a820e8f1cf84f5d551ee191b56fbf0474))
+- *(auth)* Include optional labels in OIDC brand type - ([4902939](https://github.com/snapetech-org/seerrng/commit/4902939cffeabbfb68257bd21e53ec813f9248ca))
+- *(book-series)* Mount Book Series API routes - ([ca6a46b](https://github.com/snapetech-org/seerrng/commit/ca6a46b229258b556f780708e01bc7dd8416c82a))
+- *(books)* Avoid series route hydration mismatch (#360) - ([d1b39d5](https://github.com/snapetech-org/seerrng/commit/d1b39d533a51c888af6fb7f11d7d33dde8a44e15))
+- *(books)* Narrow series response before rendering - ([51a5fdc](https://github.com/snapetech-org/seerrng/commit/51a5fdcff2a25e6ad8dfdb26399caa48229a857e))
+- *(books)* Keep detail and bibliography flows stable - ([fa1bd22](https://github.com/snapetech-org/seerrng/commit/fa1bd226b312156f0575517e195c45d4dafbb62f))
+- *(books)* Fetch series covers through authenticated backend API - ([2535362](https://github.com/snapetech-org/seerrng/commit/25353622b31966d098ce79cd508a63a157151927))
+- *(books)* Lead series pages with backend book membership - ([48066f3](https://github.com/snapetech-org/seerrng/commit/48066f3fd03dc13e9b0cc202e9e420651c54321e))
+- *(books)* Make series result cards fully clickable - ([9d8bdda](https://github.com/snapetech-org/seerrng/commit/9d8bdda113fa971a06ae6b43152e9ef13be88de1))
+- *(books)* Group series formats and search catalog subjects - ([d06d368](https://github.com/snapetech-org/seerrng/commit/d06d3686e9966d51b38e4becdc48f4a1741fff56))
+- *(books)* Use exclusive ISBNs for corroborated series requests - ([ec5c274](https://github.com/snapetech-org/seerrng/commit/ec5c274141e44118338e39ba1c0bd49d47159050))
+- *(books)* Request catalog series with corroborated work identities - ([9775027](https://github.com/snapetech-org/seerrng/commit/9775027f91aa4b28d20dfbb350e41f5e18907b62))
+- *(books)* Preserve keyword URLs during input initialization - ([036a870](https://github.com/snapetech-org/seerrng/commit/036a870ada32327dac17f891a25dc1ead575169b))
+- *(books)* Encode spaces in series search queries - ([21f3b50](https://github.com/snapetech-org/seerrng/commit/21f3b5033fdc816a575d922c2eca9c0596a63234))
+- *(books)* Accept configured server zero in catalog previews - ([e01ae8d](https://github.com/snapetech-org/seerrng/commit/e01ae8d1c722f7c6453a4d81690a5949d6223fde))
+- *(books)* Retain management capabilities on cached series reads - ([5eafdc7](https://github.com/snapetech-org/seerrng/commit/5eafdc7a29d1acae1f374fe744c3d592a40c4ffe))
+- *(books)* Resolve native series members through edition ISBNs - ([23e52e3](https://github.com/snapetech-org/seerrng/commit/23e52e34dc7f73c697686ff37bb4fec052a724e8))
+- *(books)* Look up Bookshelf requests by provider ID before title or ISBN - ([910558a](https://github.com/snapetech-org/seerrng/commit/910558a34489f65dbada5412e35cc0c5610e8601))
+- *(ci)* Route trusted workflows through shared runner - ([fedaf94](https://github.com/snapetech-org/seerrng/commit/fedaf945105bfa582fb718c037d87e709fb0a5b4))
+- *(ci)* Restore main validation gate - ([7ccd037](https://github.com/snapetech-org/seerrng/commit/7ccd037bb331a607be5e2219bfe6e45bbe2a49ba))
+- *(discovery)* Redirect the old /discover/vibes URL to Book Recommendations - ([957b8f2](https://github.com/snapetech-org/seerrng/commit/957b8f25a4810329bfb4816d406abb4b7cebc24c))
+- *(editions)* Show an error and Retry when edition data fails to load - ([7ebd75e](https://github.com/snapetech-org/seerrng/commit/7ebd75e62b3834c592c0c71b71cd39f4f4061437))
+- *(nav)* Keep personal games library available - ([479870a](https://github.com/snapetech-org/seerrng/commit/479870ac80323e2140dce2893edd741241b0c6b9))
+- *(nav)* Hide unconfigured game integrations - ([b40d22e](https://github.com/snapetech-org/seerrng/commit/b40d22e903aa36583c9ee3698f00609f79332207))
+- *(navigation)* Preserve established book format terminology - ([b58e491](https://github.com/snapetech-org/seerrng/commit/b58e4916c79c20938e93626849ebcf316cbf1b1e))
+- *(navigation)* Group ebook and audiobook browsing under Books - ([41d7a72](https://github.com/snapetech-org/seerrng/commit/41d7a7257248db1a99715ed3588a03d9455ac0f1))
+- *(notifications)* Expose Apprise settings API - ([448a2f0](https://github.com/snapetech-org/seerrng/commit/448a2f010cc5b192527576fb0e925ca9295b3dea))
+- *(profile)* Guard watchlist page identity - ([0022a21](https://github.com/snapetech-org/seerrng/commit/0022a2196e7d7936dd781c774eb69ec1ee788722))
+- *(profile)* Wait for watchlist user identity - ([df0446b](https://github.com/snapetech-org/seerrng/commit/df0446ba68da853556db7573aeee843a356bf612))
+- *(release)* Validate Book Series hydration note (#361) - ([e0a8966](https://github.com/snapetech-org/seerrng/commit/e0a8966c89abec74804436aeb633ac9c95fcc5bb))
+- *(scanner)* Serialize Audiobookshelf scan writes - ([4b924ae](https://github.com/snapetech-org/seerrng/commit/4b924ae6620202966ac42af8a79bc7a0ff52e8d2))
+- *(search)* Wait for router readiness before restoring input - ([21d2f39](https://github.com/snapetech-org/seerrng/commit/21d2f39227a606e637b1428809c2452e10dec23d))
+- *(search)* Preserve restored query while input debounce settles - ([11ba383](https://github.com/snapetech-org/seerrng/commit/11ba383685a20afd1ace6624850fab3c9635f331))
+- *(security)* Patch vulnerable tooling and runtimes - ([e6d06af](https://github.com/snapetech-org/seerrng/commit/e6d06af56cfcd7f8b5c9846829895e24595b7ca9))
+- *(security)* Stop building regular expressions from interpolated strings - ([404c055](https://github.com/snapetech-org/seerrng/commit/404c055beaa29145b247101856276176a5497d00))
+- *(security)* Update follow-redirects and vite to patched versions - ([330dde9](https://github.com/snapetech-org/seerrng/commit/330dde9f73ebcc29956536feb2209d6ed28175b4))
+- *(settings)* Link comic metadata credential labels - ([a00d4b1](https://github.com/snapetech-org/seerrng/commit/a00d4b1ed2d4c856078d0ad519f6909570904893))
+- *(settings)* Diagnose Servarr connection failures - ([e821979](https://github.com/snapetech-org/seerrng/commit/e821979dd8d57759a6460e8bd4796c01a19e448b))
+- *(settings)* Omit blank Sportarr external URL - ([7ecd44a](https://github.com/snapetech-org/seerrng/commit/7ecd44ac8fa25aab7598c76740d8459487a2b973))
+- *(subscriber)* Save completed requests one at a time - ([1fbbe19](https://github.com/snapetech-org/seerrng/commit/1fbbe19e63f114884a8da65cb57a22b183a19561))
+- *(swipe)* Expose decisions history API - ([6e7e18a](https://github.com/snapetech-org/seerrng/commit/6e7e18ad37a79da8a75b8667ca68794cd38062fa))
+- *(test)* Use compatible YAML namespace import - ([c4f2772](https://github.com/snapetech-org/seerrng/commit/c4f2772ec2b84511924b7fe5c22f743ca0d198ac))
+- *(ui)* Keep book control on shared disclosure styles - ([b7e931f](https://github.com/snapetech-org/seerrng/commit/b7e931feafdf2d7fe64c1129a13060523e1c5da8))
+- *(ui)* Correct settings and book request controls - ([b021ae1](https://github.com/snapetech-org/seerrng/commit/b021ae18aaaf72cda7ec3eec2ca7937eb207b663))
+- *(ui)* Apply selected theme to full page and controls - ([d18126e](https://github.com/snapetech-org/seerrng/commit/d18126e5b350095d101cb3ebb61afaa2a5866891))
+- *(ui)* Make checkboxes and action-row selection circles 24px targets - ([ed6faf2](https://github.com/snapetech-org/seerrng/commit/ed6faf288294a1c91fd0bb2631b5dc4b7ff00f73))
+- *(ui)* Stop self-429s, meet 24px targets, fix media-page and light-mode defects - ([fa2ba78](https://github.com/snapetech-org/seerrng/commit/fa2ba78ed5d86c6c3b5c12cb468006e39e916240))
+- *(ui)* Fix phone grid, overflow, light-mode and touch layout defects - ([8345bac](https://github.com/snapetech-org/seerrng/commit/8345bac7d1957c3b459babba721f90e02a6c7aad))
+- Publish Unraid-compatible container manifests - ([d5cdb29](https://github.com/snapetech-org/seerrng/commit/d5cdb291fcd4b9bbbbc8577e1695096dec60ca7f))
+- Expose Whisparr integration API routes - ([19b1982](https://github.com/snapetech-org/seerrng/commit/19b1982e7b7cf31c3c1a5fc0a8790e5ec7fdf37d))
+
+### 📖 Documentation
+- *(auth)* Expand OIDC setup and operator runbook (#368) - ([44bd22b](https://github.com/snapetech-org/seerrng/commit/44bd22bc02aba92e2228561f9c7a7f850cbf2682))
+- *(books)* Record verified reload deployment correction - ([ff1076f](https://github.com/snapetech-org/seerrng/commit/ff1076fdc05e0315b68ce394e84b79e5b013746b))
+- *(books)* Record successful deployed catalog API checks - ([b3fee9a](https://github.com/snapetech-org/seerrng/commit/b3fee9a609d40850822290a08b9a5c28609961fc))
+- *(books)* Record live server-zero correction - ([980457d](https://github.com/snapetech-org/seerrng/commit/980457d3b76a6a95dcfbe8761735244ec6ab4c3a))
+- *(books)* Link superseding catalog request decision - ([fbc33b5](https://github.com/snapetech-org/seerrng/commit/fbc33b571b1fb93539b42269a83d59ba1514ce60))
+- *(books)* Record catalog request validation evidence - ([286ad47](https://github.com/snapetech-org/seerrng/commit/286ad47c60661e064fb40e354212e163294cc6c0))
+- *(books)* Record compatible Expanse replacements and playback acceptance - ([d80378a](https://github.com/snapetech-org/seerrng/commit/d80378a90a4c461e10aca557dacb492729182bfb))
+- *(books)* Record user-confirmed playback and seeking - ([d7afd7f](https://github.com/snapetech-org/seerrng/commit/d7afd7f87bdf501e82717cf93920f0ab290efed7))
+- *(books)* Record user series request and playback compatibility evidence - ([e730e5e](https://github.com/snapetech-org/seerrng/commit/e730e5e276c6130d7fe3cabc3e4d1061bbe73ce7))
+- *(books)* Record real two-book acquisition and series acceptance - ([348062b](https://github.com/snapetech-org/seerrng/commit/348062b8c974239d9337cd06863d84cc8ed210f9))
+- *(books)* Record full alias discovery audit and remaining identity gaps - ([5b935ee](https://github.com/snapetech-org/seerrng/commit/5b935ee36efc1a8529336315e1f2e3e8af17bfcc))
+- *(release)* Describe OIDC upgrade action - ([1433359](https://github.com/snapetech-org/seerrng/commit/143335987045c4984a6b82d9f284cb50d6ab42ba))
+- *(release)* Restore shipped discovery note wording - ([4d2ce0a](https://github.com/snapetech-org/seerrng/commit/4d2ce0a20c62790d00ab43216183921a6d52648a))
+- *(release)* Note OIDC provider setup guides - ([44cabe3](https://github.com/snapetech-org/seerrng/commit/44cabe32b55c9cb218457dd23f5d073c7d851c03))
+- *(release)* Record series deployment reload correction - ([09df06d](https://github.com/snapetech-org/seerrng/commit/09df06de3a05903b922dc4c1155cd9bea5dc491f))
+
+### 🚜 Refactor
+- *(discovery)* Rename Hardcover "Vibes" to Book Recommendations - ([13a55dc](https://github.com/snapetech-org/seerrng/commit/13a55dccbecbcbaaa4db0f8d175c109f9eb1255e))
+
+### 🧪 Testing
+- *(books)* Verify series against refreshed SQLite runtime - ([fae9c08](https://github.com/snapetech-org/seerrng/commit/fae9c08b10ec4eeb27eeb9669f4179c18cc61b46))
+- *(cypress)* Isolate Prowlarr UI from service worker - ([e6ea9ac](https://github.com/snapetech-org/seerrng/commit/e6ea9ac3e6bad102c67415bfd4c7dead0705fbaf))
+- *(nav)* Configure software routes in browser fixtures - ([e1ddbdf](https://github.com/snapetech-org/seerrng/commit/e1ddbdfd0dd80f42b748679b6019f634f60abb01))
+- *(profile)* Requery watchlist card after refresh - ([71b1bb1](https://github.com/snapetech-org/seerrng/commit/71b1bb1acab996c3deec07ddc5b2f1c3df3d38eb))
+- *(theme)* Align the contract gate and style tests with the slate theme - ([ecaee3d](https://github.com/snapetech-org/seerrng/commit/ecaee3d746e792be964b9dc6024b1d4691fb8c90))
+
+### ⚙️ Miscellaneous Tasks
+- *(books)* Preserve adapter error causes for current lint rules - ([7c9c9f8](https://github.com/snapetech-org/seerrng/commit/7c9c9f8e96b058ed78dea6baa9fd8d7b784d3b01))
+- *(ci)* Restrict iOS push builds to main (#364) - ([05cbc66](https://github.com/snapetech-org/seerrng/commit/05cbc669adcc085e208151e738dfa0a8fb6d5441))
+- *(i18n)* Include inline series search messages - ([6ce3bbd](https://github.com/snapetech-org/seerrng/commit/6ce3bbd0bc95039829c20d55823e8d5454792a52))
+- *(i18n)* Keep the EditionCompare keys in sorted order in en.json - ([aaae7c4](https://github.com/snapetech-org/seerrng/commit/aaae7c4662806b932cd40f48a1d11902041c14ce))
+- *(security)* Triage the remaining Semgrep findings - ([3e3b626](https://github.com/snapetech-org/seerrng/commit/3e3b626e58f000799fa82a4b2179d53eab38d873))
+- Retire obsolete security audit tooling - ([ffefc4c](https://github.com/snapetech-org/seerrng/commit/ffefc4c4ff963cd6c11b88ac65c80a5ea5c17475))
+- Remove obsolete security council gate - ([615a62a](https://github.com/snapetech-org/seerrng/commit/615a62a7977b21f9e208de5096e19966b58bd0e0))
+- Run SeerrNG CI on pull requests (#369) - ([6026289](https://github.com/snapetech-org/seerrng/commit/60262890d7227d940b20c75c768f18f596d49540))
+
+### ◀️ Revert
+- *(discovery)* Drop the /discover/vibes redirect - ([2bae695](https://github.com/snapetech-org/seerrng/commit/2bae695931409a5b059afca220d166ffcf31dfc6))
+
+
+## New Contributors ❤️
+* @Xyron77-afk made their first contribution
+
 ## [3.71.4](https://github.com/snapetech-org/seerrng/compare/v3.71.3..v3.71.4) - 2026-10-20
 
 ### User-facing changes

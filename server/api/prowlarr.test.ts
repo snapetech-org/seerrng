@@ -31,6 +31,7 @@ it('queries Prowlarr with repeated categories, a typed search, and a header API 
     assert.equal(url.searchParams.get('limit'), '50');
     assert.equal(url.searchParams.get('offset'), '50');
     assert.deepEqual(url.searchParams.getAll('categories'), ['2000', '2010']);
+    assert.deepEqual(url.searchParams.getAll('indexerIds'), ['5', '7']);
     assert.equal(request.headers['x-api-key'], 'test-prowlarr-key');
     assert.equal(url.searchParams.has('apikey'), false);
     response.writeHead(200, { 'Content-Type': 'application/json' });
@@ -42,9 +43,48 @@ it('queries Prowlarr with repeated categories, a typed search, and a header API 
     const api = new ProwlarrAPI(
       settings((server.address() as AddressInfo).port)
     );
-    const results = await api.search('Dune', [2000, 2010], 50, 50, 'movie');
+    const results = await api.search(
+      'Dune',
+      [2000, 2010],
+      50,
+      50,
+      'movie',
+      [5, 7]
+    );
     assert.equal(results.length, 1);
     assert.equal(results[0].title, 'Dune 2021');
+  } finally {
+    server.closeAllConnections();
+    await new Promise<void>((resolve) => server.close(() => resolve()));
+  }
+});
+
+it('sends only the Prowlarr release identity to the configured download client', async () => {
+  let received: unknown;
+  const server = createServer((request, response) => {
+    assert.equal(request.method, 'POST');
+    assert.equal(request.url, '/prowlarr/api/v1/search');
+    let body = '';
+    request.setEncoding('utf8');
+    request.on('data', (chunk) => (body += chunk));
+    request.on('end', () => {
+      received = JSON.parse(body);
+      response.writeHead(200, { 'Content-Type': 'application/json' });
+      response.end(body);
+    });
+  });
+  await new Promise<void>((resolve) => server.listen(0, '127.0.0.1', resolve));
+
+  try {
+    const api = new ProwlarrAPI(
+      settings((server.address() as AddressInfo).port)
+    );
+    const release = {
+      guid: 'https://tracker.example/release/5',
+      indexerId: 5,
+    };
+    assert.deepEqual(await api.grab(release), release);
+    assert.deepEqual(received, release);
   } finally {
     server.closeAllConnections();
     await new Promise<void>((resolve) => server.close(() => resolve()));
@@ -205,7 +245,7 @@ it('counts searchable indexers by selected standard category groups', () => {
   assert.equal(coverage.categories.tv, 0);
 });
 
-it('sanitizes release metadata and strips query secrets from info links', () => {
+it('hides indexer identity by default and only exposes a sanitized detail link when enabled', () => {
   const result = sanitizeProwlarrSearchResource({
     title: '  Example release  ',
     indexer: 'Example indexer',
@@ -223,17 +263,31 @@ it('sanitizes release metadata and strips query secrets from info links', () => 
 
   assert.deepEqual(result, {
     title: 'Example release',
-    indexer: 'Example indexer',
-    indexerId: 5,
     size: 1024,
     seeders: 12,
     leechers: null,
     grabs: 22,
     protocol: 'torrent',
     publishDate: '2026-09-28T12:00:00.000Z',
-    infoUrl: 'https://tracker.example/details.php?id=5&view=full',
+    infoUrl: null,
+    grabId: null,
     categories: [{ id: 7030, name: 'Books/Comics' }],
   });
+
+  const withDetails = sanitizeProwlarrSearchResource(
+    {
+      indexer: 'Example indexer',
+      infoUrl:
+        'https://tracker.example/details.php?id=5&apikey=private&view=full',
+    },
+    { includeIndexerDetails: true, grabId: 'opaque-handle' }
+  );
+  assert.equal(withDetails.indexer, 'Example indexer');
+  assert.equal(
+    withDetails.infoUrl,
+    'https://tracker.example/details.php?id=5&view=full'
+  );
+  assert.equal(withDetails.grabId, 'opaque-handle');
 
   const unsafeLink = sanitizeProwlarrSearchResource({
     title: 'Unsafe',

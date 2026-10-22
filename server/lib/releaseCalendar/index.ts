@@ -3,6 +3,10 @@ import RadarrAPI from '@server/api/servarr/radarr';
 import ReadarrAPI from '@server/api/servarr/readarr';
 import SonarrAPI from '@server/api/servarr/sonarr';
 import { MediaRequestStatus, MediaType } from '@server/constants/media';
+import type {
+  EnabledMediaCategories,
+  MediaCategoryKey,
+} from '@server/constants/mediaCategories';
 import { getRepository } from '@server/datasource';
 import { MediaIdentifierProvider } from '@server/entity/MediaIdentifier';
 import { MediaRequest } from '@server/entity/MediaRequest';
@@ -36,9 +40,17 @@ export async function getReleaseCalendar(
   query: CalendarQuery,
   userId: number,
   isAdmin: boolean,
-  options: { includeDateHistory?: boolean; includeSoftware?: boolean } = {}
+  options: {
+    includeDateHistory?: boolean;
+    includeSoftware?: boolean;
+    enabledMediaCategories?: Partial<EnabledMediaCategories>;
+  } = {}
 ) {
   const settings = getSettings();
+  const enabledMediaCategories = options.enabledMediaCategories;
+  const isCategoryEnabled = (category: MediaCategoryKey) =>
+    isMediaCategoryEnabled(category) &&
+    enabledMediaCategories?.[category] !== false;
   const loadedRequests =
     query.scope === 'mine'
       ? await getRepository(MediaRequest)
@@ -91,7 +103,7 @@ export async function getReleaseCalendar(
       }),
   ].filter(
     (item) =>
-      isMediaCategoryEnabled(item.category) &&
+      isCategoryEnabled(item.category) &&
       (!query.mediaType || item.mediaType === query.mediaType)
   );
   let sourceTruncated = loadedRequests.length > requests.length;
@@ -102,7 +114,11 @@ export async function getReleaseCalendar(
     options.includeSoftware !== false &&
     (!query.mediaType || query.mediaType === 'software')
   ) {
-    const software = await getSoftwareReleaseCalendar(query, userId);
+    const software = await getSoftwareReleaseCalendar(
+      query,
+      userId,
+      enabledMediaCategories
+    );
     softwareResults = software.results;
     sourceTruncated ||= software.truncated;
     partialSources.push(...software.partialSources);
@@ -115,7 +131,8 @@ export async function getReleaseCalendar(
     const issues = await getComicMagazineReleaseCalendar(
       query,
       requests,
-      isAdmin
+      isAdmin,
+      enabledMediaCategories
     );
     issueResults = issues.results;
     sourceTruncated ||= issues.truncated;

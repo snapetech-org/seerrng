@@ -30,3 +30,8 @@ export const DEFAULT_ENABLED_MEDIA_CATEGORIES: EnabledMediaCategories = {
   modern: true,
   game: true,
 };
+
+/** New and inheriting users start with the common catalog types enabled. */
+export const DEFAULT_USER_ENABLED_MEDIA_CATEGORIES: EnabledMediaCategories = {
+  ...DEFAULT_ENABLED_MEDIA_CATEGORIES,
+};

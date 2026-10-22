@@ -1,4 +1,5 @@
 import { isAuthenticationError } from '@app/utils/auth';
+import type { EnabledMediaCategories } from '@server/constants/mediaCategories';
 import { UserType } from '@server/constants/user';
 import type {
   CardTextVisibility,
@@ -45,6 +46,8 @@ export interface User {
 type NotificationAgentTypes = Record<NotificationAgentKey, number>;
 
 export interface UserSettings {
+  enabledMediaCategories?: Partial<EnabledMediaCategories>;
+  showIndexerDetails?: boolean;
   discoverRegion?: string;
   streamingRegion?: string;
   originalLanguage?: string;

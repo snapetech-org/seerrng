@@ -4,6 +4,7 @@ import {
   CalendarQueryError,
   parseCalendarQuery,
 } from '@server/lib/releaseCalendar/query';
+import { getUserEnabledMediaCategories } from '@server/lib/userMediaCategories';
 import {
   UserMutationActorUnauthorizedError,
   runUserSecurityReadWithActor,
@@ -22,7 +23,9 @@ router.get('/', async (req, res, next) => {
       isAdmin
     );
     res.set('Cache-Control', 'private, no-cache');
-    const result = await getReleaseCalendar(query, req.user!.id, isAdmin);
+    const result = await getReleaseCalendar(query, req.user!.id, isAdmin, {
+      enabledMediaCategories: getUserEnabledMediaCategories(req.user),
+    });
     await runUserSecurityReadWithActor(
       req.user!.id,
       req.user!.id,

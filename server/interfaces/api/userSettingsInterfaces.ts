@@ -1,4 +1,5 @@
 import type { BookHomeSectionPreference } from '@server/constants/bookHomeSections';
+import type { EnabledMediaCategories } from '@server/constants/mediaCategories';
 import type {
   MovieMaturityLimit,
   TvMaturityLimit,
@@ -142,6 +143,11 @@ export interface UserSettingsGeneralResponse {
   streamingRegion?: string;
   originalLanguage?: string;
   preferredLanguages?: UserPreferredLanguages;
+  enabledMediaCategories?: Partial<EnabledMediaCategories> | null;
+  usesDefaultEnabledMediaCategories?: boolean;
+  showIndexerDetails?: boolean | null;
+  usesDefaultShowIndexerDetails?: boolean;
+  defaultShowIndexerDetails?: boolean;
   movieQuotaLimit?: number;
   movieQuotaDays?: number;
   tvQuotaLimit?: number;

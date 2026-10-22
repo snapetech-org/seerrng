@@ -3390,6 +3390,88 @@ describe('OpenID Connect', () => {
       assert.notStrictEqual(createdLink, null);
     });
 
+    it('uses provider allowlists and mapped roles for new accounts', async function () {
+      const settings = getSettings();
+      const provider = settings.oidc.providers[0];
+      provider.allowedEmailDomains = ['example.com'];
+      provider.allowedGroups = ['seerr-users'];
+      provider.roleClaim = 'application_role';
+      provider.roleMappings = [
+        { value: 'seerr-admin', role: 'admin' },
+        { value: 'seerr-user', role: 'user' },
+      ];
+      const claims = {
+        ...DEFAULT_CLAIMS,
+        groups: ['other-group', 'seerr-users'],
+        application_role: 'seerr-admin',
+      };
+      await setupFetchMock({
+        idTokenClaims: claims,
+        userinfoResponse: claims,
+      });
+
+      const response = await performOidcCallback();
+      assert.strictEqual(response.status, 204);
+
+      const createdUser = await getRepository(User).findOneOrFail({
+        where: { email: DEFAULT_CLAIMS.email },
+      });
+      assert.strictEqual(createdUser.permissions, Permission.ADMIN);
+    });
+
+    it('rejects a new account outside the configured group allowlist', async function () {
+      const provider = getSettings().oidc.providers[0];
+      provider.allowedEmailDomains = ['example.com'];
+      provider.allowedGroups = ['seerr-users'];
+      await setupFetchMock({
+        idTokenClaims: { ...DEFAULT_CLAIMS, groups: ['other-group'] },
+        userinfoResponse: { ...DEFAULT_CLAIMS, groups: ['other-group'] },
+      });
+
+      const response = await performOidcCallback();
+      assert.strictEqual(response.status, 403);
+      assert.strictEqual(
+        await getRepository(User).existsBy({ email: DEFAULT_CLAIMS.email }),
+        false
+      );
+    });
+
+    it('applies configured role claims when an existing linked user signs in', async function () {
+      const settings = getSettings();
+      const provider = settings.oidc.providers[0];
+      provider.roleClaim = 'groups';
+      provider.roleMappings = [{ value: 'seerr-admins', role: 'admin' }];
+
+      const user = await getRepository(User).findOneOrFail({
+        where: { email: 'friend@seerr.dev' },
+      });
+      await getRepository(LinkedAccount).save(
+        new LinkedAccount({
+          user,
+          provider: 'test',
+          issuer: 'https://example.com',
+          sub: EXISTING_USER_CLAIMS.sub,
+          username: 'friend',
+        })
+      );
+
+      const claims = {
+        ...EXISTING_USER_CLAIMS,
+        groups: ['seerr-users', 'seerr-admins'],
+      };
+      await setupFetchMock({
+        idTokenClaims: claims,
+        userinfoResponse: claims,
+      });
+
+      const response = await performOidcCallback();
+      assert.strictEqual(response.status, 204);
+      const updatedUser = await getRepository(User).findOneOrFail({
+        where: { id: user.id },
+      });
+      assert.strictEqual(updatedUser.permissions, Permission.ADMIN);
+    });
+
     it('rejects new user when newUserLogin is disabled', async function () {
       const settings = getSettings();
       settings.oidc.providers[0].newUserLogin = false;

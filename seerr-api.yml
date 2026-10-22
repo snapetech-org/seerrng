@@ -2423,6 +2423,25 @@ components:
               nullable: true
               description: Null means any language; omit to inherit all.
               example: 'es'
+        enabledMediaCategories:
+          type: object
+          nullable: true
+          description: Per-user media category overrides. Null clears overrides and inherits administrator defaults.
+          additionalProperties:
+            type: boolean
+        usesDefaultEnabledMediaCategories:
+          type: boolean
+          readOnly: true
+        showIndexerDetails:
+          type: boolean
+          nullable: true
+          description: Per-user override for showing Prowlarr indexer identity and details. Null inherits the global setting.
+        usesDefaultShowIndexerDetails:
+          type: boolean
+          readOnly: true
+        defaultShowIndexerDetails:
+          type: boolean
+          readOnly: true
         movieQuotaLimit:
           type: number
           nullable: true
@@ -3827,8 +3846,6 @@ components:
       required:
         [
           title,
-          indexer,
-          indexerId,
           size,
           seeders,
           leechers,
@@ -3836,6 +3853,7 @@ components:
           protocol,
           publishDate,
           infoUrl,
+          grabId,
           categories,
         ]
       properties:
@@ -3843,9 +3861,6 @@ components:
           type: string
         indexer:
           type: string
-        indexerId:
-          type: integer
-          nullable: true
         size:
           type: number
           nullable: true
@@ -3867,6 +3882,10 @@ components:
         infoUrl:
           type: string
           format: uri
+          nullable: true
+        grabId:
+          type: string
+          format: uuid
           nullable: true
         categories:
           type: array
@@ -3925,6 +3944,8 @@ components:
           $ref: '#/components/schemas/ProwlarrCategoryIds'
         game:
           $ref: '#/components/schemas/ProwlarrCategoryIds'
+        sports:
+          $ref: '#/components/schemas/ProwlarrCategoryIds'
     ProwlarrIndexerCategorySummary:
       type: object
       required: [id, name, indexerCount]
@@ -3962,6 +3983,20 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/ProwlarrIndexerCategorySummary'
+        indexers:
+          type: array
+          items:
+            type: object
+            required: [id, name, enabled, supportsSearch]
+            properties:
+              id:
+                type: integer
+              name:
+                type: string
+              enabled:
+                type: boolean
+              supportsSearch:
+                type: boolean
         diagnostics:
           type: array
           description: Results of the explicit per-indexer connection test.
@@ -4011,6 +4046,8 @@ components:
               retro,
               modern,
               game,
+              adult,
+              sports,
             ]
         query:
           type: string
@@ -12706,7 +12743,7 @@ paths:
   /settings/prowlarr:
     get:
       summary: Get Prowlarr connection settings
-      description: Returns the Prowlarr connection and category mapping. The API key is always redacted.
+      description: Returns Prowlarr connection settings, category filters, indexer assignments, search limits, and detail visibility. The API key is always redacted.
       tags:
         - settings
       responses:
@@ -12732,9 +12769,30 @@ paths:
                     type: boolean
                   categoryMappings:
                     $ref: '#/components/schemas/ProwlarrCategoryMappings'
+                  indexerIdsByCategory:
+                    type: object
+                    additionalProperties:
+                      type: array
+                      maxItems: 100
+                      items:
+                        type: integer
+                        minimum: 1
+                        maximum: 1000000
+                  searchLimitPerUserPerMinute:
+                    type: integer
+                    minimum: 1
+                    maximum: 60
+                  searchLimitByIndexer:
+                    type: object
+                    additionalProperties:
+                      type: integer
+                      minimum: 1
+                      maximum: 60
+                  showIndexerDetails:
+                    type: boolean
     put:
       summary: Update Prowlarr connection settings
-      description: Saves the Prowlarr address, API key, and per-medium category filters. The API key remains server-side.
+      description: Saves the Prowlarr address, API key, per-medium category filters and indexer assignments, user search limits, and indexer details visibility. The API key remains server-side.
       tags:
         - settings
       requestBody:
@@ -12761,6 +12819,27 @@ paths:
                   type: boolean
                 categoryMappings:
                   $ref: '#/components/schemas/ProwlarrCategoryMappings'
+                indexerIdsByCategory:
+                  type: object
+                  additionalProperties:
+                    type: array
+                    maxItems: 100
+                    items:
+                      type: integer
+                      minimum: 1
+                      maximum: 1000000
+                searchLimitPerUserPerMinute:
+                  type: integer
+                  minimum: 1
+                  maximum: 60
+                searchLimitByIndexer:
+                  type: object
+                  additionalProperties:
+                    type: integer
+                    minimum: 1
+                    maximum: 60
+                showIndexerDetails:
+                  type: boolean
       responses:
         '200':
           description: Prowlarr settings updated
@@ -12846,7 +12925,7 @@ paths:
   /indexer-search/configuration:
     get:
       summary: Get direct indexer search availability
-      description: Returns whether Prowlarr is configured and the selected category IDs. Requires Manage Requests permission.
+      description: Returns whether Prowlarr is configured, the selected category IDs, and the current user's indexer-details visibility. Indexer names and assignments are not exposed. Requires Manage Requests permission.
       tags:
         - indexer search
       responses:
@@ -12856,9 +12935,11 @@ paths:
             application/json:
               schema:
                 type: object
-                required: [configured, categories]
+                required: [configured, categories, showIndexerDetails]
                 properties:
                   configured:
+                    type: boolean
+                  showIndexerDetails:
                     type: boolean
                   categories:
                     type: array
@@ -12888,7 +12969,7 @@ paths:
   /indexer-search/search:
     post:
       summary: Search Prowlarr indexers
-      description: Runs a bounded manual release search in Prowlarr for a SeerrNG medium. Results are informational and are not grabbed or imported.
+      description: Runs a bounded manual release search across the administrator-selected indexers for a SeerrNG medium. Results hide indexer identity by default and include an opaque server-side handle for Prowlarr's configured download client.
       tags:
         - indexer search
       requestBody:
@@ -12938,8 +13019,34 @@ paths:
           description: Prowlarr is not configured for this category
         '429':
           description: Search rate limit reached
+  /indexer-search/grab:
+    post:
+      summary: Send a Prowlarr result to its configured download client
+      description: Consumes a single-use, user-bound handle returned by a prior search. Prowlarr resolves the release from its own cache and chooses the configured download client. No torrent, NZB, or indexer URL is returned to the user.
+      tags:
+        - indexer search
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [grabId]
+              properties:
+                grabId:
+                  type: string
+                  format: uuid
+      responses:
+        '202':
+          description: Release accepted by Prowlarr
+        '400':
+          description: Invalid result handle
+        '404':
+          description: Result expired or is not available to this user
+        '429':
+          description: Search limit reached
         '502':
-          description: Prowlarr search failed
+          description: Prowlarr could not send the release to its download client
   /settings/initialize:
     post:
       summary: Initialize application

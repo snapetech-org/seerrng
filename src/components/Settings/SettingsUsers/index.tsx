@@ -2,6 +2,7 @@ import Alert from '@app/components/Common/Alert';
 import Button from '@app/components/Common/Button';
 import LabeledCheckbox from '@app/components/Common/LabeledCheckbox';
 import LoadingSpinner from '@app/components/Common/LoadingSpinner';
+import MediaCategoryPreferences from '@app/components/Common/MediaCategoryPreferences';
 import PageTitle from '@app/components/Common/PageTitle';
 import PermissionEdit from '@app/components/PermissionEdit';
 import QuotaSelector from '@app/components/QuotaSelector';
@@ -12,6 +13,7 @@ import useToasts from '@app/hooks/useToasts';
 import globalMessages from '@app/i18n/globalMessages';
 import defineMessages from '@app/utils/defineMessages';
 import { ArrowDownOnSquareIcon } from '@heroicons/react/24/outline';
+import { DEFAULT_USER_ENABLED_MEDIA_CATEGORIES } from '@server/constants/mediaCategories';
 import { MediaServerType, ServerType } from '@server/constants/server';
 import type { MainSettings } from '@server/lib/settings';
 import axios from 'axios';
@@ -48,6 +50,9 @@ const messages = defineMessages('components.Settings.SettingsUsers', {
   softwareRequestLimitLabel: 'Global Software Request Limit',
   defaultPermissions: 'Default Permissions',
   defaultPermissionsTip: 'Initial permissions assigned to new users',
+  defaultCategories: 'Default Media Categories',
+  defaultCategoriesTip:
+    'New users inherit these choices. They can customize their own categories later.',
   disabledMediaServerLoginWarning:
     'Some users may not have a {applicationTitle} password set. Disabling {mediaServerName} sign-in could lock them out. Affected users will need to set a password from their profile or via a password reset link.',
 });
@@ -135,6 +140,10 @@ const SettingsUsers = () => {
             softwareQuotaLimit: data?.defaultQuotas.software.quotaLimit ?? 0,
             softwareQuotaDays: data?.defaultQuotas.software.quotaDays ?? 7,
             defaultPermissions: data?.defaultPermissions ?? 0,
+            defaultEnabledMediaCategories: {
+              ...DEFAULT_USER_ENABLED_MEDIA_CATEGORIES,
+              ...data?.defaultEnabledMediaCategories,
+            },
           }}
           validationSchema={schema}
           enableReinitialize
@@ -179,6 +188,8 @@ const SettingsUsers = () => {
                   },
                 },
                 defaultPermissions: values.defaultPermissions,
+                defaultEnabledMediaCategories:
+                  values.defaultEnabledMediaCategories,
               });
               mutate('/api/v1/settings/public');
 
@@ -243,6 +254,27 @@ const SettingsUsers = () => {
                       defaultLimit={values.softwareQuotaLimit}
                     />
                   </div>
+                </div>
+                <div
+                  role="group"
+                  aria-labelledby="default-media-categories-label"
+                  className="form-group"
+                >
+                  <div className="form-row">
+                    <span
+                      id="default-media-categories-label"
+                      className="group-label"
+                    >
+                      {intl.formatMessage(messages.defaultCategories)}
+                    </span>
+                    <span className="settings-form-row-description">
+                      {intl.formatMessage(messages.defaultCategoriesTip)}
+                    </span>
+                  </div>
+                  <MediaCategoryPreferences
+                    fieldPrefix="defaultEnabledMediaCategories"
+                    testIdPrefix="default-user-category"
+                  />
                 </div>
                 <div
                   role="group"

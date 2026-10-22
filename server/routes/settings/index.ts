@@ -1103,6 +1103,33 @@ const parseMainSettingsBody = (
     value.enabledMediaCategories = parsedCategories;
   }
 
+  if (body.defaultEnabledMediaCategories !== undefined) {
+    const categories = body.defaultEnabledMediaCategories;
+    if (
+      !categories ||
+      typeof categories !== 'object' ||
+      Array.isArray(categories)
+    ) {
+      return { error: 'defaultEnabledMediaCategories must be an object.' };
+    }
+
+    const parsedCategories: Partial<EnabledMediaCategories> = {};
+    for (const [key, enabled] of Object.entries(
+      categories as Record<string, unknown>
+    )) {
+      if (!(MEDIA_CATEGORY_KEYS as readonly string[]).includes(key)) {
+        return { error: `Unknown default media category: ${key}.` };
+      }
+      if (typeof enabled !== 'boolean') {
+        return {
+          error: `defaultEnabledMediaCategories.${key} must be a boolean.`,
+        };
+      }
+      parsedCategories[key as MediaCategoryKey] = enabled;
+    }
+    value.defaultEnabledMediaCategories = parsedCategories;
+  }
+
   if (body.ageGate !== undefined) {
     const gate = body.ageGate;
     if (!gate || typeof gate !== 'object' || Array.isArray(gate)) {

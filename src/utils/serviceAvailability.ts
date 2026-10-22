@@ -1,4 +1,8 @@
-import type { MediaCategoryKey } from '@server/constants/mediaCategories';
+import type {
+  EnabledMediaCategories,
+  MediaCategoryKey,
+} from '@server/constants/mediaCategories';
+import { MEDIA_CATEGORY_KEYS } from '@server/constants/mediaCategories';
 
 export interface OptionalServiceAvailability {
   musicEnabled: boolean;
@@ -14,7 +18,28 @@ export interface OptionalServiceAvailability {
   romarrEnabled?: boolean;
   swipeEnabled?: boolean;
   enabledMediaCategories?: Partial<Record<MediaCategoryKey, boolean>>;
+  defaultEnabledMediaCategories?: Partial<EnabledMediaCategories>;
 }
+
+export const getUserServiceAvailability = <
+  T extends OptionalServiceAvailability,
+>(
+  availability: T,
+  userPreferences?: Partial<EnabledMediaCategories>,
+  isAdmin = false
+): T & { enabledMediaCategories: EnabledMediaCategories } => ({
+  ...availability,
+  enabledMediaCategories: Object.fromEntries(
+    MEDIA_CATEGORY_KEYS.map((category) => [
+      category,
+      availability.enabledMediaCategories?.[category] !== false &&
+        (isAdmin ||
+          (userPreferences?.[category] ??
+            availability.defaultEnabledMediaCategories?.[category] ??
+            true)),
+    ])
+  ) as EnabledMediaCategories,
+});
 
 export const DISCOVER_MEDIA_TYPES = [
   'movie',
@@ -221,6 +246,18 @@ export const isOptionalCatalogPathEnabled = (
       Boolean(availability.romarrEnabled) &&
       (isConfiguredMediaCategoryEnabled('retro', availability) ||
         isConfiguredMediaCategoryEnabled('modern', availability))
+    );
+  }
+
+  if (
+    path === '/game-library' ||
+    path.startsWith('/game-library/') ||
+    path === '/game-content' ||
+    path.startsWith('/game-content/')
+  ) {
+    return (
+      Boolean(availability.softwareEnabled) &&
+      isConfiguredMediaCategoryEnabled('game', availability)
     );
   }
 

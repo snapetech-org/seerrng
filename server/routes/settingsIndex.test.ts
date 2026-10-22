@@ -727,6 +727,49 @@ describe('Settings route input validation', () => {
     }
   });
 
+  it('saves and validates inherited media category defaults for new users', async () => {
+    const settings = getSettings();
+    const original = { ...settings.main.defaultEnabledMediaCategories };
+
+    try {
+      const response = await request(app)
+        .post('/settings/main')
+        .send({ defaultEnabledMediaCategories: { movie: false, comic: true } });
+      const invalidBoolean = await request(app)
+        .post('/settings/main')
+        .send({ defaultEnabledMediaCategories: { tv: 'false' } });
+      const unknownCategory = await request(app)
+        .post('/settings/main')
+        .send({ defaultEnabledMediaCategories: { applications: true } });
+
+      assert.strictEqual(response.status, 200);
+      assert.strictEqual(
+        response.body.defaultEnabledMediaCategories.movie,
+        false
+      );
+      assert.strictEqual(
+        response.body.defaultEnabledMediaCategories.comic,
+        true
+      );
+      assert.strictEqual(
+        settings.main.defaultEnabledMediaCategories.movie,
+        false
+      );
+      assert.strictEqual(invalidBoolean.status, 400);
+      assert.match(
+        invalidBoolean.body.message,
+        /defaultEnabledMediaCategories\.tv must be a boolean/
+      );
+      assert.strictEqual(unknownCategory.status, 400);
+      assert.match(
+        unknownCategory.body.message,
+        /Unknown default media category: applications/
+      );
+    } finally {
+      settings.main.defaultEnabledMediaCategories = original;
+    }
+  });
+
   it('rejects malformed main settings values before saving', async () => {
     const settings = getSettings();
     const saveMock = mock.method(settings, 'save', async () => undefined);

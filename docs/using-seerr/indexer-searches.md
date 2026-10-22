@@ -12,10 +12,14 @@ movies, TV, music, ebooks, audiobooks, comics, magazines, adult scenes, retro
 ROMs, modern ROMs, and PC games. Adult search appears only when the Adult
 category is enabled and Whisparr is configured.
 
-This is a manual search for inspecting available releases. SeerrNG does not
-grab a result, send it to a download client, or add it to a media library from
-this page. An approved request still goes to its configured media manager or
-software provider, which owns acquisition, import, and progress tracking.
+Search results are private by default: indexer names and details links appear
+only when the administrator allows them globally and the user's settings allow
+them. Search results never contain torrent, NZB, or download URLs. A user can
+send a result to Prowlarr's configured download client with **Send to
+downloader**. This is a manual handoff; it does not create a SeerrNG request or
+change request status. Approved requests still go to their configured media
+manager or software provider, which owns acquisition, import, and progress
+tracking.
 This configuration supports Prowlarr only; NZBHydra2 is not currently
 supported as a SeerrNG indexer-search provider.
 
@@ -53,6 +57,15 @@ supported as a SeerrNG indexer-search provider.
    categories whose advertised names clearly match a medium, then review and
    save the mappings. Ambiguous category names are left for you to map
    manually.
+5. Under **Indexer assignments**, select which enabled, searchable Prowlarr
+   indexers can serve each SeerrNG media category. Clear a category's selection
+   to disable manual searches for that category. Set the overall per-user
+   searches-per-minute limit and optional per-indexer limits under **Search
+   limits**.
+6. Use **Show indexer names and details to users** to allow indexer identity
+   globally. When enabled, you can hide indexer details for selected users from
+   their **General** settings. When disabled, details stay hidden even if a
+   user has a saved preference to show them.
 
 The **Retro ROMs**, **Modern ROMs**, and **PC games** filters start with
 generation-specific standard console categories and the broad PC category.
@@ -77,10 +90,14 @@ Prowlarr API key or address is wrong, so SeerrNG cannot read the indexer list.
 
 Users with **Manage Requests** open **Indexer Search** from the navigation,
 select a media category, enter at least two search characters, and choose
-**Search indexers**. Results show release title, source indexer, protocol,
-size, seeders and leechers when provided, publish date, and indexer categories.
-When Prowlarr supplies a safe HTTP or HTTPS details link, users can open it in a
-new tab. Sensitive query parameters are removed from that link.
+**Search indexers**. Results show release title, protocol, size, seeders and
+leechers when provided, publish date, and categories. If indexer details are
+allowed for that user, results also show the source name and a safe HTTP or
+HTTPS details link. Sensitive query parameters are removed from the link.
+Choose **Send to downloader** to hand the selected result back to Prowlarr;
+Prowlarr sends it to the download client configured for that indexer. The
+server keeps the release identifier private and never returns a direct download
+link to the browser.
 
 Movie, TV, music, and book searches use Prowlarr's corresponding format-aware
 search types; comics, magazines, ROMs, and PC games use category-filtered
@@ -89,14 +106,15 @@ open this page with the title and category filled in. Book details preserve the
 selected ebook or audiobook format. These shortcuts are available to users
 with **Manage Requests** permission.
 
-Searches are limited to 50 results per page and 12 searches per minute per
-client IP. **Load more results** requests another page. Search results are
-informational; SeerrNG does not expose download or magnet URLs from the search
-API.
+Searches are limited to 50 results per page. Administrators can set a
+per-user-per-minute limit and optional per-indexer limits. **Load more
+results** requests another page. A manual handoff does not create or update a
+SeerrNG request; it only sends the chosen result through Prowlarr.
 
 For Adult scenes, SeerrNG uses Prowlarr's standard XXX category (`6000`) for
-manual searches. These results are informational; approved Adult requests are
-sent to Whisparr. See [Adult media](./adult-media.md) for setup.
+manual searches. A user can manually send a result to Prowlarr's configured
+download client. Approved Adult requests remain Whisparr-managed and tracked.
+See [Adult media](./adult-media.md) for setup.
 
 ## Keep request acquisition separate
 
@@ -106,10 +124,10 @@ accept the relevant Prowlarr integration. After syncing, check the destination
 application's indexer and search settings. Some providers do not support
 Prowlarr or use direct-download sources instead.
 
-For a SeerrNG request, the configured media manager or software provider
-continues to perform its own search, grab, import, and tracking. Prowlarr's
-manual search page does not alter request state or hand a result to a
-download client.
+For an approved SeerrNG request, the configured media manager or software
+provider continues to perform its own search, grab, import, and tracking. A
+manual Prowlarr handoff is separate: it sends a user-selected result to the
+configured download client without creating or changing a SeerrNG request.
 
 See the setup guides for [books and audiobooks](./bookshelf-backend.md),
 [comics](./comics-backend.md), [magazines](./magazines-backend.md), and

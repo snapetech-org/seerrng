@@ -16,6 +16,7 @@ import { Permission, useUser } from '@app/hooks/useUser';
 import globalMessages from '@app/i18n/globalMessages';
 import defineMessages from '@app/utils/defineMessages';
 import {
+  getUserServiceAvailability,
   isConfiguredMediaCategoryEnabled,
   isOptionalCatalogPathEnabled,
 } from '@app/utils/serviceAvailability';
@@ -36,7 +37,7 @@ import type DiscoverSlider from '@server/entity/DiscoverSlider';
 import axios from 'axios';
 import dynamic from 'next/dynamic';
 import Link from 'next/link';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import useSWR from 'swr';
 
@@ -141,6 +142,15 @@ const Discover = ({ initialSliders }: DiscoverProps) => {
   const intl = useIntl();
   const { hasPermission, user } = useUser();
   const { currentSettings } = useSettings();
+  const serviceAvailability = useMemo(
+    () =>
+      getUserServiceAvailability(
+        currentSettings,
+        user?.settings?.enabledMediaCategories,
+        hasPermission(Permission.ADMIN)
+      ),
+    [currentSettings, user?.settings?.enabledMediaCategories, hasPermission]
+  );
   const { addToast } = useToasts();
   const {
     data: discoverData,
@@ -165,7 +175,7 @@ const Discover = ({ initialSliders }: DiscoverProps) => {
   const visibleSliders = (isEditing ? sliders : discoverData)?.filter(
     (slider) =>
       slider.type === undefined ||
-      isDiscoverSliderEnabled(slider.type, currentSettings)
+      isDiscoverSliderEnabled(slider.type, serviceAvailability)
   );
 
   // We need to sync the state here so that we can modify the changes locally without commiting

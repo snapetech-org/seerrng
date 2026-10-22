@@ -7,7 +7,10 @@ import useWarmImageCache, {
   MAIN_MEDIA_POSTER_CACHE_WARM_LIMIT,
 } from '@app/hooks/useWarmImageCache';
 import defineMessages from '@app/utils/defineMessages';
-import { isConfiguredMediaCategoryEnabled } from '@app/utils/serviceAvailability';
+import {
+  getUserServiceAvailability,
+  isConfiguredMediaCategoryEnabled,
+} from '@app/utils/serviceAvailability';
 import type { MediaResultsResponse } from '@server/interfaces/api/mediaInterfaces';
 import { useMemo } from 'react';
 import { useInView } from 'react-intersection-observer';
@@ -22,8 +25,13 @@ const messages = defineMessages('components.Discover.RecentlyAddedSlider', {
 
 const RecentlyAddedSlider = () => {
   const intl = useIntl();
-  const { hasPermission } = useUser();
+  const { hasPermission, user } = useUser();
   const { currentSettings } = useSettings();
+  const serviceAvailability = getUserServiceAvailability(
+    currentSettings,
+    user?.settings?.enabledMediaCategories,
+    hasPermission(Permission.ADMIN)
+  );
   const { ref, inView } = useInView({
     rootMargin: '450px 0px',
     triggerOnce: true,
@@ -46,7 +54,7 @@ const RecentlyAddedSlider = () => {
         .filter((item) =>
           isConfiguredMediaCategoryEnabled(
             item.mediaType === 'tv' ? 'tv' : 'movie',
-            currentSettings
+            serviceAvailability
           )
         )
         .map((item) => (
@@ -65,7 +73,7 @@ const RecentlyAddedSlider = () => {
             viewerRequestCoverage={item.viewerRequestCoverage}
           />
         )),
-    [currentSettings, media?.results]
+    [serviceAvailability, media?.results]
   );
 
   useWarmImageCache(media?.results, {

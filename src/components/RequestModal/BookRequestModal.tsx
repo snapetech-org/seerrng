@@ -31,6 +31,7 @@ import {
   normalizeOpenLibraryWorkId,
 } from '@app/utils/apiPath';
 import defineMessages from '@app/utils/defineMessages';
+import { getUserServiceAvailability } from '@app/utils/serviceAvailability';
 import { ArrowDownTrayIcon, XMarkIcon } from '@heroicons/react/24/outline';
 import {
   MediaRequestStatus,
@@ -144,6 +145,11 @@ const BookRequestModal = ({
   const { addToast } = useToasts();
   const { currentSettings } = useSettings();
   const { user, hasPermission } = useUser();
+  const serviceAvailability = getUserServiceAvailability(
+    currentSettings,
+    user?.settings?.enabledMediaCategories,
+    hasPermission(Permission.ADMIN)
+  );
   const [isUpdating, setIsUpdating] = useState(false);
   const [bookFormat, setBookFormat] = useState<'ebook' | 'audiobook'>(
     (editRequest?.bookFormat ?? initialBookFormat) === 'audiobook'
@@ -388,12 +394,12 @@ const BookRequestModal = ({
     readarrServiceSupportsFormat(service, 'audiobook')
   );
   const hasEnabledEbookCategory =
-    currentSettings.enabledMediaCategories?.ebook !== false ||
+    serviceAvailability.enabledMediaCategories?.ebook !== false ||
     (editRequest?.bookFormat !== undefined &&
       (editRequest.bookFormat === 'ebook' ||
         editRequest.bookFormat === 'both'));
   const hasEnabledAudiobookCategory =
-    currentSettings.enabledMediaCategories?.audiobook !== false ||
+    serviceAvailability.enabledMediaCategories?.audiobook !== false ||
     (editRequest?.bookFormat !== undefined &&
       (editRequest.bookFormat === 'audiobook' ||
         editRequest.bookFormat === 'both'));
@@ -1085,6 +1091,7 @@ const BookRequestModal = ({
             {canUseAdvancedOptions && (
               <AdvancedOptionsDisclosureButton
                 label={intl.formatMessage(messages.advancedOptions)}
+                controlVariant="book-request-advanced-options"
                 open={advancedOptionsOpen}
                 pinned={advancedOptionsPinned}
                 onToggle={toggleAdvancedOptions}

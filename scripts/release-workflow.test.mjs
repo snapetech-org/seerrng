@@ -407,6 +407,7 @@ test('multi-architecture publishers perform the real build once and verify the i
   const ci = readWorkflow('ci.yml');
   const preview = readWorkflow('preview.yml');
   const release = readWorkflow('release.yml');
+  const aliasPromotion = readWorkflow('promote-container-aliases.yml');
 
   assert.equal(ci.jobs.build, undefined);
   assert.equal(ci.jobs.publish.if, "github.ref == 'refs/heads/main'");
@@ -484,10 +485,10 @@ test('multi-architecture publishers perform the real build once and verify the i
     /org\.opencontainers\.image\.revision=\$\{\{ steps\.release\.outputs\.SHA \}\}/u,
     'release image metadata must identify the tagged source commit'
   );
-  assert.match(
+  assert.equal(
     metadata.with.annotations,
-    /org\.opencontainers\.image\.revision=\$\{\{ steps\.release\.outputs\.SHA \}\}/u,
-    'release image annotations must identify the tagged source commit'
+    undefined,
+    'release images use config labels because Docker v2 manifests do not carry OCI annotations'
   );
   const buildStep = release.jobs.publish.steps.find(
     (step) => step.name === 'Build & Push (multi-arch)'
@@ -498,20 +499,68 @@ test('multi-architecture publishers perform the real build once and verify the i
     'release image contents and metadata must use the same tagged source commit'
   );
   assert.match(
-    buildStep.env.IMAGE_ANNOTATIONS,
-    /steps\.meta\.outputs\.annotations/u,
-    'release image builds must receive OCI annotations from metadata'
-  );
-  assert.match(
     buildStep.run,
-    /--annotation/u,
-    'release image builds must publish the tagged source commit as an OCI annotation'
+    /--output type=registry,oci-mediatypes=false[\s\S]*--provenance=false/u,
+    'stable release images must use Docker v2 manifest lists for older Unraid update checks'
+  );
+  assert.doesNotMatch(
+    buildStep.run,
+    /--push/u,
+    'the registry exporter handles pushing the compatible multi-arch manifest'
   );
   assert.match(
     release.jobs.publish.steps.find(
-      (step) => step.name === 'Verify published architectures'
+      (step) =>
+        step.name ===
+        'Verify published architectures and Unraid-compatible manifests'
     ).run,
-    /verify-container-manifest\.sh --require-provenance/u
+    /--require-docker-list/u
+  );
+  assert.match(
+    release.jobs.publish.steps.find(
+      (step) =>
+        step.name ===
+        'Verify published architectures and Unraid-compatible manifests'
+    ).run,
+    /--require-compatible-manifest/u,
+    'existing published images can be reused while preserving their existing manifest format'
+  );
+  assert.equal(release.jobs.sign.permissions.attestations, 'write');
+  assert.ok(
+    release.jobs.sign.steps.some(
+      (step) =>
+        step.uses === 'actions/attest@1e69f48acb82d1966a394da916b4c1698aa569d6'
+    ),
+    'release provenance must be signed separately from the Docker v2 manifest list'
+  );
+  for (const stepName of [
+    'Attest GHCR release image provenance',
+    'Attest Docker Hub release image provenance',
+  ]) {
+    const attestation = release.jobs.sign.steps.find(
+      (step) => step.name === stepName
+    );
+    assert.equal(attestation.with['push-to-registry'], true);
+    assert.equal(
+      attestation.with['create-storage-record'],
+      false,
+      'publishing provenance must not create a separate organization artifact record'
+    );
+  }
+  assert.equal(release.jobs.verify.permissions.attestations, 'read');
+  assert.match(
+    release.jobs.verify.steps.find(
+      (step) => step.name === 'Verify GitHub build provenance attestations'
+    ).run,
+    /gh attestation verify[\s\S]*--signer-workflow/u
+  );
+  assert.match(
+    aliasPromotion.jobs.promote.steps.find(
+      (step) =>
+        step.name === 'Verify release manifest compatibility and version'
+    ).run,
+    /--require-compatible-manifest/u,
+    'stable alias promotion must continue accepting prior OCI releases and new Docker v2 releases'
   );
   const digestResolver = release.jobs.publish.steps.find(
     (step) => step.name === 'Resolve manifest digest'

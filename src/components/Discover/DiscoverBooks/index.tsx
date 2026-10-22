@@ -22,9 +22,13 @@ import useDiscoverScrollRestoration from '@app/hooks/useDiscoverScrollRestoratio
 import { useSearchActivityReporter } from '@app/hooks/useSearchActivity';
 import useSettings from '@app/hooks/useSettings';
 import { useBatchUpdateQueryParams } from '@app/hooks/useUpdateQueryParams';
+import { Permission, useUser } from '@app/hooks/useUser';
 import defineMessages from '@app/utils/defineMessages';
 import { parseQueryFromPath } from '@app/utils/routeQuery';
-import { isOptionalCatalogPathEnabled } from '@app/utils/serviceAvailability';
+import {
+  getUserServiceAvailability,
+  isOptionalCatalogPathEnabled,
+} from '@app/utils/serviceAvailability';
 import { BarsArrowDownIcon, BarsArrowUpIcon } from '@heroicons/react/24/solid';
 import type { BookResult } from '@server/models/Book';
 import Link from 'next/link';
@@ -71,6 +75,12 @@ const DiscoverBooks = ({
   const intl = useIntl();
   const router = useRouter();
   const { currentSettings } = useSettings();
+  const { user, hasPermission } = useUser();
+  const serviceAvailability = getUserServiceAvailability(
+    currentSettings,
+    user?.settings?.enabledMediaCategories,
+    hasPermission(Permission.ADMIN)
+  );
   const [currentPath, setCurrentPath] = useState<string>();
   useEffect(() => {
     const syncCurrentPath = () => {
@@ -109,11 +119,11 @@ const DiscoverBooks = ({
       : undefined;
   const ebookEnabled = isOptionalCatalogPathEnabled(
     '/discover/books',
-    currentSettings
+    serviceAvailability
   );
   const audiobookEnabled = isOptionalCatalogPathEnabled(
     '/discover/audiobooks',
-    currentSettings
+    serviceAvailability
   );
   const availableFormats: BookDiscoveryFormat[] = [
     ...(ebookEnabled && audiobookEnabled ? ['all' as const] : []),

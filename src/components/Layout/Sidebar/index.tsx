@@ -11,7 +11,10 @@ import useSettings from '@app/hooks/useSettings';
 import { Permission, useUser } from '@app/hooks/useUser';
 import globalMessages from '@app/i18n/globalMessages';
 import { isContentRestrictedUser } from '@app/utils/contentRestriction';
-import { isOptionalCatalogPathEnabled } from '@app/utils/serviceAvailability';
+import {
+  getUserServiceAvailability,
+  isOptionalCatalogPathEnabled,
+} from '@app/utils/serviceAvailability';
 import versionedAsset from '@app/utils/versionedAsset';
 import { Transition, TransitionChild } from '@headlessui/react';
 import { XMarkIcon } from '@heroicons/react/24/outline';
@@ -43,6 +46,11 @@ const Sidebar = ({
   const intl = useIntl();
   const { user, hasPermission } = useUser();
   const { currentSettings } = useSettings();
+  const serviceAvailability = getUserServiceAvailability(
+    currentSettings,
+    user?.settings?.enabledMediaCategories,
+    hasPermission(Permission.ADMIN)
+  );
   const contentRestricted = isContentRestrictedUser(
     user,
     currentSettings.ageGate?.defaultRestricted
@@ -55,7 +63,7 @@ const Sidebar = ({
       links: section.links.filter(
         (link) =>
           !(contentRestricted && link.id === 'adult') &&
-          isOptionalCatalogPathEnabled(link.href, currentSettings) &&
+          isOptionalCatalogPathEnabled(link.href, serviceAvailability) &&
           (link.requiredPermission
             ? hasPermission(link.requiredPermission, {
                 type: link.permissionType ?? 'and',

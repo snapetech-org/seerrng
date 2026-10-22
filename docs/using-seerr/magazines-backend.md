@@ -57,8 +57,9 @@ Magazine cards and details show the latest LazyLibrarian cover when one is
 available.
 
 SeerrNG's **Indexer Search** page can query Prowlarr's configured magazine
-categories for manual inspection by users with **Manage Requests**. The page
-does not grab or track results; LazyLibrarian still performs acquisition for
+categories for users with **Manage Requests**. Users can send a result to
+Prowlarr's configured download client, without exposing a direct download URL
+or creating a SeerrNG request. LazyLibrarian still performs acquisition for
 approved magazine requests. Prowlarr may also sync indexers to LazyLibrarian,
 but compatibility depends on its build. After syncing, confirm the providers
 appear in LazyLibrarian and run a search there. See [Indexer searches by media

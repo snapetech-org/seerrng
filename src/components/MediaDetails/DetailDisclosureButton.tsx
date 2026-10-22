@@ -35,6 +35,7 @@ export interface DetailDisclosureButtonProps {
   onPinClick?: () => void;
   controls?: string;
   title?: string;
+  controlVariant?: 'book-request-advanced-options';
   reorder?: {
     role: string;
     state?: 'ready' | 'dragging';
@@ -62,6 +63,7 @@ const DetailDisclosureButton = ({
   onPinClick,
   controls,
   title,
+  controlVariant,
   reorder,
 }: DetailDisclosureButtonProps) => {
   const intl = useIntl();
@@ -72,6 +74,7 @@ const DetailDisclosureButton = ({
   return (
     <span
       className="detail-disclosure-control"
+      data-control-variant={controlVariant}
       data-disclosure-role={reorder?.role}
       data-reorder-state={reorder?.state}
       data-reorder-insertion={reorder?.insertion}

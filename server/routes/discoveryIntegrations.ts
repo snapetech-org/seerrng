@@ -61,9 +61,9 @@ import {
   prepareTrackingAccount,
   publicTrackingAction,
 } from '@server/lib/discoveryIntegrations/tracking';
-import { isMediaCategoryEnabled } from '@server/lib/mediaCategories';
 import { Permission } from '@server/lib/permissions';
 import { getSettings } from '@server/lib/settings';
+import { isUserMediaCategoryEnabled } from '@server/lib/userMediaCategories';
 import { isAuthenticated } from '@server/middleware/auth';
 import {
   authorizedMutation,
@@ -364,7 +364,7 @@ router.put(
       throw new DiscoveryIntegrationError(400, 'Choose a valid catalog match.');
 
     await requireOwnedIdentity(req.user!.id, body.identity);
-    if (!isMediaCategoryEnabled(body.mediaType))
+    if (!isUserMediaCategoryEnabled(req.user, body.mediaType))
       throw new DiscoveryIntegrationError(
         403,
         'This media category is disabled.'

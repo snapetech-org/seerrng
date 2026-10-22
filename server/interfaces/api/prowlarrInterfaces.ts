@@ -2,8 +2,7 @@ import type { MediaCategoryKey } from '@server/constants/mediaCategories';
 
 export interface ProwlarrSearchResult {
   title: string;
-  indexer: string;
-  indexerId: number | null;
+  indexer?: string;
   size: number | null;
   seeders: number | null;
   leechers: number | null;
@@ -11,6 +10,7 @@ export interface ProwlarrSearchResult {
   protocol: string;
   publishDate: string | null;
   infoUrl: string | null;
+  grabId: string | null;
   categories: { id: number; name: string }[];
 }
 

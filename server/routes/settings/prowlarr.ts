@@ -1,5 +1,8 @@
 import ProwlarrAPI from '@server/api/prowlarr';
-import { MEDIA_CATEGORY_KEYS } from '@server/constants/mediaCategories';
+import {
+  MEDIA_CATEGORY_KEYS,
+  type MediaCategoryKey,
+} from '@server/constants/mediaCategories';
 import type { ProwlarrCategoryMappings } from '@server/constants/prowlarr';
 import { Permission } from '@server/lib/permissions';
 import { summarizeProwlarrCoverage } from '@server/lib/prowlarr';
@@ -55,6 +58,99 @@ const parseCategoryMappings = (
       if (!ids.includes(id)) ids.push(id);
     }
     result[category] = ids;
+  }
+  return { value: result };
+};
+
+const parseIndexerIdsByCategory = (
+  value: unknown,
+  current: ProwlarrSettings['indexerIdsByCategory']
+):
+  | {
+      value: ProwlarrSettings['indexerIdsByCategory'];
+    }
+  | { error: string } => {
+  if (value === undefined) return { value: current };
+  if (!isRecord(value))
+    return { error: 'Indexer assignments must be an object.' };
+
+  const knownCategories = new Set<string>(MEDIA_CATEGORY_KEYS);
+  if (Object.keys(value).some((category) => !knownCategories.has(category))) {
+    return { error: 'Indexer assignments contain an unsupported media type.' };
+  }
+
+  const result: Partial<Record<MediaCategoryKey, number[]>> = {
+    ...current,
+  };
+  for (const category of MEDIA_CATEGORY_KEYS) {
+    const rawIds = value[category];
+    if (rawIds === undefined) continue;
+    if (!Array.isArray(rawIds) || rawIds.length > 100) {
+      return { error: `${category} must have at most 100 indexer IDs.` };
+    }
+    const ids: number[] = [];
+    for (const id of rawIds) {
+      if (
+        typeof id !== 'number' ||
+        !Number.isSafeInteger(id) ||
+        id < 1 ||
+        id > 1_000_000
+      ) {
+        return { error: `${category} has an invalid indexer ID.` };
+      }
+      if (!ids.includes(id)) ids.push(id);
+    }
+    result[category] = ids;
+  }
+  return { value: result };
+};
+
+const parseSearchLimit = (
+  value: unknown,
+  current: number | undefined,
+  name: string
+): { value: number } | { error: string } => {
+  const limit = value ?? current ?? 12;
+  if (
+    typeof limit !== 'number' ||
+    !Number.isInteger(limit) ||
+    limit < 1 ||
+    limit > 60
+  ) {
+    return { error: `${name} must be an integer from 1 to 60.` };
+  }
+  return { value: limit };
+};
+
+const parseSearchLimitByIndexer = (
+  value: unknown,
+  current: Record<number, number> | undefined
+): { value: Record<number, number> } | { error: string } => {
+  if (value === undefined) return { value: current ?? {} };
+  if (!isRecord(value))
+    return { error: 'Indexer search limits must be an object.' };
+  const entries = Object.entries(value);
+  if (entries.length > 500) {
+    return { error: 'At most 500 indexer search limits may be configured.' };
+  }
+  const result: Record<number, number> = {};
+  for (const [rawId, rawLimit] of entries) {
+    const id = Number(rawId);
+    if (
+      !/^\d{1,7}$/.test(rawId) ||
+      !Number.isSafeInteger(id) ||
+      id < 1 ||
+      id > 1_000_000
+    ) {
+      return { error: 'Indexer search limits contain an invalid indexer ID.' };
+    }
+    const limit = parseSearchLimit(
+      rawLimit,
+      undefined,
+      `Indexer ${id} search limit`
+    );
+    if ('error' in limit) return limit;
+    result[id] = limit.value;
   }
   return { value: result };
 };
@@ -127,6 +223,32 @@ export const parseProwlarrSettings = (
   );
   if ('error' in categoryMappings) return categoryMappings;
 
+  const indexerIdsByCategory = parseIndexerIdsByCategory(
+    value.indexerIdsByCategory,
+    current.indexerIdsByCategory
+  );
+  if ('error' in indexerIdsByCategory) return indexerIdsByCategory;
+
+  const searchLimitPerUserPerMinute = parseSearchLimit(
+    value.searchLimitPerUserPerMinute,
+    current.searchLimitPerUserPerMinute,
+    'Per-user search limit'
+  );
+  if ('error' in searchLimitPerUserPerMinute)
+    return searchLimitPerUserPerMinute;
+
+  const searchLimitByIndexer = parseSearchLimitByIndexer(
+    value.searchLimitByIndexer,
+    current.searchLimitByIndexer
+  );
+  if ('error' in searchLimitByIndexer) return searchLimitByIndexer;
+
+  const showIndexerDetails =
+    value.showIndexerDetails ?? current.showIndexerDetails ?? false;
+  if (typeof showIndexerDetails !== 'boolean') {
+    return { error: 'Indexer details visibility must be a boolean.' };
+  }
+
   return {
     value: {
       hostname,
@@ -135,6 +257,10 @@ export const parseProwlarrSettings = (
       baseUrl,
       apiKey,
       categoryMappings: categoryMappings.value,
+      indexerIdsByCategory: indexerIdsByCategory.value,
+      searchLimitPerUserPerMinute: searchLimitPerUserPerMinute.value,
+      searchLimitByIndexer: searchLimitByIndexer.value,
+      showIndexerDetails,
     },
   };
 };
@@ -165,6 +291,21 @@ const inventoryView = (
       ? status.version
       : undefined,
   ...summarizeProwlarrCoverage(indexers, settings.categoryMappings),
+  indexers: (Array.isArray(indexers) ? indexers : [])
+    .filter(
+      (indexer) =>
+        Number.isSafeInteger(indexer.id) &&
+        Number(indexer.id) > 0 &&
+        typeof indexer.name === 'string' &&
+        indexer.name.trim()
+    )
+    .slice(0, 500)
+    .map((indexer) => ({
+      id: Number(indexer.id),
+      name: indexer.name!.trim().slice(0, 160),
+      enabled: indexer.enable === true,
+      supportsSearch: indexer.supportsSearch === true,
+    })),
 });
 
 const safeDate = (value: unknown): string | null => {

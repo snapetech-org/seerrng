@@ -57,7 +57,15 @@ Add one entry per provider, then enable OIDC:
         "clientId": "seerrng",
         "clientSecret": "replace-with-the-client-secret",
         "scopes": "openid profile email",
-        "newUserLogin": false
+        "newUserLogin": true,
+        "allowedEmailDomains": ["example.com"],
+        "groupClaim": "groups",
+        "allowedGroups": ["seerr-users", "seerr-admins"],
+        "roleClaim": "groups",
+        "roleMappings": [
+          { "value": "seerr-admins", "role": "admin" },
+          { "value": "seerr-users", "role": "user" }
+        ]
       }
     ]
   }
@@ -81,7 +89,25 @@ change validation.
 | `scopes` | Space-separated scopes; defaults to `openid profile email`. Keep `openid` and include `email` for verified-email admission. |
 | `requiredClaims` | Optional space-separated boolean claims that must be true before login is accepted. |
 | `newUserLogin` | Allows first-time account creation through this provider. Existing accounts are not linked by matching email. |
+| `allowedEmailDomains` | Optional exact email-domain allowlist for first-time account creation. Every configured admission allowlist must match. |
+| `groupClaim` / `allowedGroups` | Optional provider claim and allowed group values for first-time account creation. The claim defaults to `groups`; a string or array of strings is accepted. |
+| `roleClaim` / `roleMappings` | Optional claim values mapped to `user` (SeerrNG's normal default permissions) or `admin`. String and string-array claims are supported. |
 | `logo` | Optional provider mark configured by an administrator; the catalog ID remains presentation metadata. |
+
+`allowedEmailDomains` and `allowedGroups` are optional. If neither is set,
+`newUserLogin: true` retains the existing behavior for any verified email. If
+both are set, the email must match one exact domain and the provider claim must
+contain at least one listed group. Domain matching is case-insensitive and does
+not include subdomains unless each subdomain is listed explicitly. An empty or
+malformed allowlist denies new account creation.
+
+Role mappings are also optional. An exact matching `admin` value grants
+SeerrNG's administrator permission; `user` uses the configured
+`main.defaultPermissions`. Unmapped values receive normal user permissions.
+When mappings are configured, subsequent OIDC sign-ins apply the mapped role
+to that linked account. Linking a provider from an already signed-in account
+does not change permissions until its next OIDC sign-in. Keep the role claim
+and mapping values aligned with claims emitted by the configured issuer.
 
 ## Register exact callback URLs
 
@@ -148,8 +174,9 @@ existing user because their email strings match.
 
 Existing users should sign in locally, open **Profile → Settings → Linked
 Accounts**, and explicitly link the provider there. Users can unlink it from
-the same page. Provider groups do not assign SeerrNG permissions. Review new
-users and their app permissions using SeerrNG's normal user-management tools.
+the same page. Provider claims do not assign SeerrNG permissions unless the
+administrator configures `roleClaim` and `roleMappings`. Review role mappings
+and new users using SeerrNG's normal user-management tools.
 
 ## Protocol and network behavior
 

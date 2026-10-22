@@ -1,6 +1,8 @@
 import Badge from '@app/components/Common/Badge';
 import Button from '@app/components/Common/Button';
+import LabeledCheckbox from '@app/components/Common/LabeledCheckbox';
 import LoadingSpinner from '@app/components/Common/LoadingSpinner';
+import MediaCategoryPreferences from '@app/components/Common/MediaCategoryPreferences';
 import PageTitle from '@app/components/Common/PageTitle';
 import LanguageSelector from '@app/components/LanguageSelector';
 import QuotaSelector from '@app/components/QuotaSelector';
@@ -20,6 +22,7 @@ import defineMessages from '@app/utils/defineMessages';
 import { ArrowDownOnSquareIcon } from '@heroicons/react/24/outline';
 import type { TmdbLanguage } from '@server/api/themoviedb/interfaces';
 import { ApiErrorCode } from '@server/constants/error';
+import { DEFAULT_USER_ENABLED_MEDIA_CATEGORIES } from '@server/constants/mediaCategories';
 import { ServerType } from '@server/constants/server';
 import type { UserSettingsGeneralResponse } from '@server/interfaces/api/userSettingsInterfaces';
 import type { AvailableLocale } from '@server/types/languages';
@@ -110,6 +113,23 @@ const messages = defineMessages(
     cardTextVisibilityBook: 'Books',
     cardTextVisibilityHover: 'On hover',
     cardTextVisibilityAlways: 'Always',
+    mediaCategories: 'Media Categories',
+    mediaCategoriesDefault:
+      'Using administrator defaults. You can choose categories that are relevant to this account.',
+    mediaCategoriesCustom:
+      'Custom category choices are active for this account.',
+    mediaCategoriesAdmin:
+      'Administrators always have access to every globally available category.',
+    mediaCategoriesUseDefaults: 'Use administrator defaults',
+    indexerDetails: 'Show indexer details',
+    indexerDetailsTip:
+      'Show the Prowlarr indexer name and an optional details link with search results.',
+    indexerDetailsDefault: 'Using the administrator default setting.',
+    indexerDetailsCustom: 'A custom indexer details setting is active.',
+    indexerDetailsAdmin: 'Administrators use the global Prowlarr setting.',
+    indexerDetailsGloballyHidden:
+      'Indexer names and details are hidden by the administrator.',
+    indexerDetailsUseDefault: 'Use administrator default',
   }
 );
 
@@ -135,6 +155,7 @@ const UserGeneralSettings = () => {
   });
   const { user: currentUser, hasPermission: currentHasPermission } = useUser();
   const { currentSettings } = useSettings();
+  const isAdminTarget = hasPermission(Permission.ADMIN);
   const {
     data,
     error,
@@ -302,6 +323,16 @@ const UserGeneralSettings = () => {
           cardTextVisibilityAlbum: data?.cardTextVisibility?.album ?? 'always',
           cardTextVisibilityBook: data?.cardTextVisibility?.book ?? 'always',
           requestRootFolders: data?.requestRootFolders ?? {},
+          enabledMediaCategories: {
+            ...DEFAULT_USER_ENABLED_MEDIA_CATEGORIES,
+            ...(data?.enabledMediaCategories ?? {}),
+          },
+          usesDefaultEnabledMediaCategories:
+            data?.usesDefaultEnabledMediaCategories ?? true,
+          showIndexerDetails: data?.showIndexerDetails ?? false,
+          usesDefaultShowIndexerDetails:
+            data?.usesDefaultShowIndexerDetails ?? true,
+          defaultShowIndexerDetails: data?.defaultShowIndexerDetails ?? false,
         }}
         validationSchema={UserGeneralSettingsSchema}
         enableReinitialize
@@ -382,6 +413,17 @@ const UserGeneralSettings = () => {
                 book: values.cardTextVisibilityBook,
               },
               requestRootFolders: values.requestRootFolders,
+              enabledMediaCategories: values.usesDefaultEnabledMediaCategories
+                ? null
+                : values.enabledMediaCategories,
+              showIndexerDetails:
+                currentHasPermission(Permission.MANAGE_USERS) && !isAdminTarget
+                  ? values.defaultShowIndexerDetails
+                    ? values.usesDefaultShowIndexerDetails
+                      ? null
+                      : values.showIndexerDetails
+                    : undefined
+                  : undefined,
             });
 
             if (currentUser?.id === user?.id && setLocale) {
@@ -1230,6 +1272,124 @@ const UserGeneralSettings = () => {
                     ))}
                   </div>
                 </div>
+              </div>
+              <div
+                role="group"
+                aria-labelledby="media-categories-label"
+                className="form-group"
+              >
+                <div className="form-row">
+                  <span id="media-categories-label" className="group-label">
+                    {intl.formatMessage(messages.mediaCategories)}
+                  </span>
+                  <span className="settings-form-row-description">
+                    {intl.formatMessage(
+                      isAdminTarget
+                        ? messages.mediaCategoriesAdmin
+                        : data?.usesDefaultEnabledMediaCategories === false
+                          ? messages.mediaCategoriesCustom
+                          : messages.mediaCategoriesDefault
+                    )}
+                  </span>
+                </div>
+                <MediaCategoryPreferences
+                  fieldPrefix="enabledMediaCategories"
+                  disabled={isAdminTarget}
+                  testIdPrefix="user-category"
+                  onChange={() =>
+                    void setFieldValue(
+                      'usesDefaultEnabledMediaCategories',
+                      false
+                    )
+                  }
+                />
+                {!isAdminTarget && (
+                  <div className="form-row">
+                    <span />
+                    <button
+                      type="button"
+                      className="text-primary-400 hover:text-primary-300 focus-visible:outline-primary-400 text-left text-sm font-medium focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
+                      onClick={() => {
+                        void setFieldValue('enabledMediaCategories', {
+                          ...DEFAULT_USER_ENABLED_MEDIA_CATEGORIES,
+                          ...currentSettings.defaultEnabledMediaCategories,
+                        });
+                        void setFieldValue(
+                          'usesDefaultEnabledMediaCategories',
+                          true
+                        );
+                      }}
+                    >
+                      {intl.formatMessage(messages.mediaCategoriesUseDefaults)}
+                    </button>
+                  </div>
+                )}
+              </div>
+              <div
+                role="group"
+                aria-labelledby="indexer-details-label"
+                className="form-group"
+              >
+                <div className="form-row">
+                  <span id="indexer-details-label" className="group-label">
+                    {intl.formatMessage(messages.indexerDetails)}
+                  </span>
+                  <span className="settings-form-row-description">
+                    {intl.formatMessage(
+                      isAdminTarget
+                        ? messages.indexerDetailsAdmin
+                        : !data?.defaultShowIndexerDetails
+                          ? messages.indexerDetailsGloballyHidden
+                          : data?.usesDefaultShowIndexerDetails === false
+                            ? messages.indexerDetailsCustom
+                            : messages.indexerDetailsDefault
+                    )}
+                  </span>
+                </div>
+                {currentHasPermission(Permission.MANAGE_USERS) &&
+                  !isAdminTarget &&
+                  data?.defaultShowIndexerDetails && (
+                    <>
+                      <LabeledCheckbox
+                        id="showIndexerDetails"
+                        label={intl.formatMessage(messages.indexerDetails)}
+                        description={intl.formatMessage(
+                          messages.indexerDetailsTip
+                        )}
+                        onChange={() => {
+                          void setFieldValue(
+                            'showIndexerDetails',
+                            !values.showIndexerDetails
+                          );
+                          void setFieldValue(
+                            'usesDefaultShowIndexerDetails',
+                            false
+                          );
+                        }}
+                      />
+                      <div className="form-row">
+                        <span />
+                        <button
+                          type="button"
+                          className="text-primary-400 hover:text-primary-300 focus-visible:outline-primary-400 text-left text-sm font-medium focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
+                          onClick={() => {
+                            void setFieldValue(
+                              'showIndexerDetails',
+                              values.defaultShowIndexerDetails
+                            );
+                            void setFieldValue(
+                              'usesDefaultShowIndexerDetails',
+                              true
+                            );
+                          }}
+                        >
+                          {intl.formatMessage(
+                            messages.indexerDetailsUseDefault
+                          )}
+                        </button>
+                      </div>
+                    </>
+                  )}
               </div>
               <RequestRootFolderSettings
                 canEdit={currentHasPermission(

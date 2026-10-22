@@ -21,6 +21,7 @@ export interface ProwlarrIndexerResource {
 }
 
 export interface ProwlarrSearchResource {
+  guid?: string;
   title?: string;
   indexer?: string;
   indexerId?: number;
@@ -32,6 +33,12 @@ export interface ProwlarrSearchResource {
   publishDate?: string;
   infoUrl?: string;
   categories?: ProwlarrIndexerCategory[];
+  downloadClientId?: number | null;
+}
+
+export interface ProwlarrReleaseGrabRequest {
+  guid: string;
+  indexerId: number;
 }
 
 export interface ProwlarrIndexerStatusResource {
@@ -95,7 +102,8 @@ export class ProwlarrAPI extends ExternalAPI {
     categories: number[],
     limit: number,
     offset: number,
-    type: ProwlarrSearchType = 'search'
+    type: ProwlarrSearchType = 'search',
+    indexerIds?: number[]
   ): Promise<ProwlarrSearchResource[]> {
     const params = new URLSearchParams({
       query,
@@ -106,7 +114,19 @@ export class ProwlarrAPI extends ExternalAPI {
     for (const category of categories) {
       params.append('categories', String(category));
     }
+    for (const indexerId of indexerIds ?? []) {
+      params.append('indexerIds', String(indexerId));
+    }
     return this.get('/search', { params }, 0);
+  }
+
+  public grab(
+    release: ProwlarrReleaseGrabRequest
+  ): Promise<ProwlarrSearchResource> {
+    return this.post('/search', {
+      guid: release.guid,
+      indexerId: release.indexerId,
+    });
   }
 }
 

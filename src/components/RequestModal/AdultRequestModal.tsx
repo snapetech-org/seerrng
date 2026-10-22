@@ -7,6 +7,7 @@ import { Permission, useUser } from '@app/hooks/useUser';
 import globalMessages from '@app/i18n/globalMessages';
 import { encodeApiPathSegment } from '@app/utils/apiPath';
 import defineMessages from '@app/utils/defineMessages';
+import { getUserServiceAvailability } from '@app/utils/serviceAvailability';
 import { MediaRequestStatus, MediaStatus } from '@server/constants/media';
 import type { MediaRequest } from '@server/entity/MediaRequest';
 import type { NonFunctionProperties } from '@server/interfaces/api/common';
@@ -73,6 +74,11 @@ const AdultRequestModal = ({
   const { addToast } = useToasts();
   const { user, hasPermission } = useUser();
   const { currentSettings } = useSettings();
+  const serviceAvailability = getUserServiceAvailability(
+    currentSettings,
+    user?.settings?.enabledMediaCategories,
+    hasPermission(Permission.ADMIN)
+  );
   const { mutate: mutateCache } = useSWRConfig();
   const [isUpdating, setIsUpdating] = useState(false);
   const [selectedServerId, setSelectedServerId] = useState<number | undefined>(
@@ -112,8 +118,8 @@ const AdultRequestModal = ({
     { type: 'or' }
   );
   const categoryEnabled =
-    currentSettings.adultEnabled &&
-    currentSettings.enabledMediaCategories?.adult !== false;
+    serviceAvailability.adultEnabled &&
+    serviceAvailability.enabledMediaCategories?.adult !== false;
   const isQuotaRestricted = quota?.adult?.restricted ?? false;
   const detailsUnavailable = Boolean(detailsError);
   const quotaUnavailable = Boolean(quotaError);

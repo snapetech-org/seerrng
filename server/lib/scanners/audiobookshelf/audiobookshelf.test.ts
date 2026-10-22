@@ -147,6 +147,40 @@ describe('Audiobookshelf Scanner', () => {
     );
   });
 
+  it('processes consecutive Audiobookshelf items without overlapping SQLite transactions', async () => {
+    const first = await seedBook({ isbn: '9780306406157' });
+    const second = await seedBook({ isbn: '9780140328721' });
+    libraryPage = {
+      results: [
+        {
+          id: 'abs-item-1',
+          mediaType: 'book',
+          media: { metadata: { isbn: '9780306406157', title: 'First Book' } },
+        },
+        {
+          id: 'abs-item-2',
+          mediaType: 'book',
+          media: { metadata: { isbn: '9780140328721', title: 'Second Book' } },
+        },
+      ],
+      total: 2,
+      limit: 100,
+      page: 0,
+    };
+
+    await audiobookshelfScanner.run();
+
+    const updated = await getRepository(Media).find({
+      where: [{ id: first.id }, { id: second.id }],
+    });
+    assert.equal(updated.length, 2);
+    assert.ok(updated.every((media) => media.status === MediaStatus.AVAILABLE));
+    assert.deepEqual(
+      updated.map((media) => media.audiobookLibraryItemId).sort(),
+      ['abs-item-1', 'abs-item-2']
+    );
+  });
+
   it('preserves existing links when Audiobookshelf returns an incomplete scan', async () => {
     const media = await seedBook({
       itemId: 'abs-item-missing',

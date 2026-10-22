@@ -103,6 +103,7 @@ import {
   enforceTvSeasonWatchGate,
   isTvSeasonWatchGateEnabledForUser,
 } from '@server/lib/tvSeasonWatchGate';
+import { isUserMediaCategoryEnabled } from '@server/lib/userMediaCategories';
 import {
   UserMutationActorUnauthorizedError,
   acquireAuthorizedUserSecurityMutation,
@@ -448,7 +449,8 @@ const getRequestLogBody = (body: Partial<MediaRequestBody> | undefined) => ({
 
 const getDisabledCategoryForRequest = (
   mediaType: MediaType,
-  format?: MediaRequestBody['format']
+  format?: MediaRequestBody['format'],
+  user?: User
 ): MediaCategoryKey | undefined => {
   const categories: MediaCategoryKey[] =
     mediaType === MediaType.MOVIE
@@ -469,8 +471,15 @@ const getDisabledCategoryForRequest = (
                     ? ['ebook', 'audiobook']
                     : [format === 'audiobook' ? 'audiobook' : 'ebook'];
 
-  return categories.find((category) => !isMediaCategoryEnabled(category));
+  return categories.find(
+    (category) => !isUserMediaCategoryEnabled(user, category)
+  );
 };
+
+const getUnavailableCategoryMessage = (category: MediaCategoryKey): string =>
+  isMediaCategoryEnabled(category)
+    ? `${getMediaCategoryLabel(category)} requests are unavailable for this user.`
+    : `${getMediaCategoryLabel(category)} requests are disabled by the administrator.`;
 
 const getMediaCategoryLabel = (category: MediaCategoryKey): string => {
   const labels: Record<MediaCategoryKey, string> = {
@@ -2617,12 +2626,13 @@ requestRoutes.post<never, MediaRequest, MediaRequestBody>(
 
       const disabledCategory = getDisabledCategoryForRequest(
         body.value.mediaType,
-        body.value.format
+        body.value.format,
+        req.user
       );
       if (disabledCategory) {
         return next({
           status: 403,
-          message: `${getMediaCategoryLabel(disabledCategory)} requests are disabled by the administrator.`,
+          message: getUnavailableCategoryMessage(disabledCategory),
         });
       }
 
@@ -2712,11 +2722,15 @@ requestRoutes.post<
     });
   }
 
-  const disabledCategory = getDisabledCategoryForRequest(MediaType.MOVIE);
+  const disabledCategory = getDisabledCategoryForRequest(
+    MediaType.MOVIE,
+    undefined,
+    req.user
+  );
   if (disabledCategory) {
     return next({
       status: 403,
-      message: `${getMediaCategoryLabel(disabledCategory)} requests are disabled by the administrator.`,
+      message: getUnavailableCategoryMessage(disabledCategory),
     });
   }
 
@@ -2841,12 +2855,13 @@ requestRoutes.post<never, BulkMediaRequestResponse, BulkMediaRequestBody>(
 
       const disabledCategory = getDisabledCategoryForRequest(
         body.mediaType,
-        body.format
+        body.format,
+        req.user
       );
       if (disabledCategory) {
         return next({
           status: 403,
-          message: `${getMediaCategoryLabel(disabledCategory)} requests are disabled by the administrator.`,
+          message: getUnavailableCategoryMessage(disabledCategory),
         });
       }
 

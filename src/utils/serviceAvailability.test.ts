@@ -1,6 +1,7 @@
 import { strictEqual } from 'node:assert';
 import { describe, it } from 'node:test';
 import {
+  getUserServiceAvailability,
   isDiscoverMediaTypeEnabled,
   isDiscoverWatchlistTypeEnabled,
   isOptionalCatalogPathEnabled,
@@ -308,6 +309,42 @@ describe('isOptionalCatalogPathEnabled', () => {
     strictEqual(isDiscoverMediaTypeEnabled('music', availability), true);
     strictEqual(isDiscoverMediaTypeEnabled('book', availability), false);
     strictEqual(isDiscoverMediaTypeEnabled('audiobook', availability), true);
+  });
+});
+
+describe('getUserServiceAvailability', () => {
+  it('applies user choices over defaults while preserving global switches', () => {
+    const availability = {
+      musicEnabled: true,
+      booksEnabled: true,
+      comicsEnabled: true,
+      enabledMediaCategories: { movie: true, tv: false, music: true },
+      defaultEnabledMediaCategories: {
+        movie: false,
+        tv: true,
+        music: true,
+      },
+    };
+    const inherited = getUserServiceAvailability(availability);
+    strictEqual(inherited.enabledMediaCategories?.movie, false);
+    strictEqual(inherited.enabledMediaCategories?.tv, false);
+    strictEqual(inherited.enabledMediaCategories?.music, true);
+
+    const customized = getUserServiceAvailability(availability, {
+      movie: true,
+      music: false,
+    });
+    strictEqual(customized.enabledMediaCategories?.movie, true);
+    strictEqual(customized.enabledMediaCategories?.music, false);
+    strictEqual(customized.enabledMediaCategories?.tv, false);
+
+    const administrator = getUserServiceAvailability(
+      availability,
+      { movie: false },
+      true
+    );
+    strictEqual(administrator.enabledMediaCategories?.movie, true);
+    strictEqual(administrator.enabledMediaCategories?.tv, false);
   });
 });
 

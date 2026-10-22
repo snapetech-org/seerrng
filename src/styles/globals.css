@@ -4961,11 +4961,11 @@
   }
 
   .form-row {
-    @apply mt-6 max-w-6xl sm:mt-5 sm:grid sm:grid-cols-3 sm:items-start sm:gap-4;
+    @apply mt-6 max-w-6xl sm:mt-5 md:grid md:grid-cols-3 md:items-start md:gap-4;
   }
 
   .form-input-area {
-    @apply text-sm text-white sm:col-span-2;
+    @apply text-sm text-white md:col-span-2;
   }
 
   .form-input-field {
@@ -6675,6 +6675,21 @@
   .detail-disclosure-button {
     padding-inline: var(--button-padding-x);
     column-gap: var(--button-content-gap);
+  }
+
+  .detail-disclosure-control[data-control-variant='book-request-advanced-options'] {
+    flex: none;
+    min-width: 12rem;
+    height: 2rem;
+    min-height: 2rem;
+    max-height: 2rem;
+    font-size: 0.8125rem;
+    line-height: 1.75rem;
+  }
+
+  .detail-disclosure-control[data-control-variant='book-request-advanced-options']
+    .detail-disclosure-button {
+    white-space: nowrap;
   }
 
   @media (prefers-reduced-motion: reduce) {
@@ -8567,12 +8582,18 @@
   }
 
   .react-select-container .react-select__menu {
-    color: rgb(var(--theme-control-text));
-    background-color: rgb(var(--theme-control-surface) / 0.98);
+    color: rgb(var(--theme-control-text)) !important;
+    background-color: rgb(var(--theme-control-surface) / 0.98) !important;
   }
 
   .react-select-container-dark .react-select__menu {
-    background-color: rgb(var(--theme-control-surface) / 0.98);
+    background-color: rgb(var(--theme-control-surface) / 0.98) !important;
+  }
+
+  .react-select-container .react-select__option {
+    @apply relative pl-7;
+    color: rgb(var(--theme-control-text)) !important;
+    background-color: transparent !important;
   }
 
   .react-select-container .react-select__option--is-focused {
@@ -8585,10 +8606,6 @@
     @apply bg-indigo-600 text-white;
     background-color: rgb(var(--color-indigo-600)) !important;
     color: white !important;
-  }
-
-  .react-select-container .react-select__option {
-    @apply relative pl-7;
   }
 
   .react-select-container .react-select__option--is-selected::before {

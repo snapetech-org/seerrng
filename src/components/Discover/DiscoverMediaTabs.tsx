@@ -2,10 +2,12 @@ import MediaFilterOption from '@app/components/Discover/MediaFilterOption';
 import PinnedFilterSection from '@app/components/Discover/PinnedFilterSection';
 import useMediaFilterPin from '@app/hooks/useMediaFilterPin';
 import useSettings from '@app/hooks/useSettings';
+import { Permission, useUser } from '@app/hooks/useUser';
 import defineMessages from '@app/utils/defineMessages';
 import type { DiscoverMediaType as DiscoverMediaCategory } from '@app/utils/serviceAvailability';
 import {
   DISCOVER_MEDIA_TYPES,
+  getUserServiceAvailability,
   isDiscoverMediaTypeEnabled,
 } from '@app/utils/serviceAvailability';
 import {
@@ -74,8 +76,14 @@ const tabs = [
 const DiscoverMediaTabs = ({ selected, basePath }: DiscoverMediaTabsProps) => {
   const intl = useIntl();
   const { currentSettings } = useSettings();
+  const { user, hasPermission } = useUser();
+  const serviceAvailability = getUserServiceAvailability(
+    currentSettings,
+    user?.settings?.enabledMediaCategories,
+    hasPermission(Permission.ADMIN)
+  );
   const availableTypes = DISCOVER_MEDIA_TYPES.filter((type) =>
-    isDiscoverMediaTypeEnabled(type, currentSettings)
+    isDiscoverMediaTypeEnabled(type, serviceAvailability)
   );
   const router = useRouter();
   const pin = useMediaFilterPin<DiscoverMediaType>({

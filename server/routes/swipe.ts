@@ -12,7 +12,6 @@ import type {
 } from '@server/entity/SwipeProfile';
 import SwipeProfile from '@server/entity/SwipeProfile';
 import type { User } from '@server/entity/User';
-import { isMediaCategoryEnabled } from '@server/lib/mediaCategories';
 import { Permission } from '@server/lib/permissions';
 import { getSettings } from '@server/lib/settings';
 import {
@@ -29,6 +28,7 @@ import {
   undoLastSwipe,
 } from '@server/lib/swipe/deck';
 import { isAiRankingConfigured } from '@server/lib/swipe/ranking';
+import { isUserMediaCategoryEnabled } from '@server/lib/userMediaCategories';
 import logger from '@server/logger';
 import type { Response } from 'express';
 import { Router } from 'express';
@@ -70,24 +70,29 @@ const hasAdultSwipeAccess = (user?: User) =>
 export const availableSwipeMediaTypes = (user?: User): SwipeMediaType[] => {
   const available: SwipeMediaType[] = [];
   if (user?.hasPermission(Permission.REQUEST)) {
-    if (isMediaCategoryEnabled('movie')) available.push('movie');
-    if (isMediaCategoryEnabled('tv')) available.push('tv');
+    if (isUserMediaCategoryEnabled(user, 'movie')) available.push('movie');
+    if (isUserMediaCategoryEnabled(user, 'tv')) available.push('tv');
     if (
-      isMediaCategoryEnabled('ebook') ||
-      isMediaCategoryEnabled('audiobook')
+      isUserMediaCategoryEnabled(user, 'ebook') ||
+      isUserMediaCategoryEnabled(user, 'audiobook')
     ) {
       available.push('book');
     }
-    if (isMediaCategoryEnabled('audiobook')) available.push('audiobook');
-    if (isMediaCategoryEnabled('comic')) available.push('comic');
-    if (isMediaCategoryEnabled('magazine')) available.push('magazine');
-    if (isMediaCategoryEnabled('music')) available.push('music');
-    if (isMediaCategoryEnabled('sports')) available.push('sports');
-    if (isMediaCategoryEnabled('retro')) available.push('software-retro');
-    if (isMediaCategoryEnabled('modern')) available.push('software-modern');
-    if (isMediaCategoryEnabled('game')) available.push('software-game');
+    if (isUserMediaCategoryEnabled(user, 'audiobook'))
+      available.push('audiobook');
+    if (isUserMediaCategoryEnabled(user, 'comic')) available.push('comic');
+    if (isUserMediaCategoryEnabled(user, 'magazine'))
+      available.push('magazine');
+    if (isUserMediaCategoryEnabled(user, 'music')) available.push('music');
+    if (isUserMediaCategoryEnabled(user, 'sports')) available.push('sports');
+    if (isUserMediaCategoryEnabled(user, 'retro'))
+      available.push('software-retro');
+    if (isUserMediaCategoryEnabled(user, 'modern'))
+      available.push('software-modern');
+    if (isUserMediaCategoryEnabled(user, 'game'))
+      available.push('software-game');
   }
-  if (isMediaCategoryEnabled('adult') && hasAdultSwipeAccess(user)) {
+  if (isUserMediaCategoryEnabled(user, 'adult') && hasAdultSwipeAccess(user)) {
     available.push('adult');
   }
   return available;
@@ -296,8 +301,12 @@ swipeRoutes.get('/status', (_req, res) => {
     softwareCatalogProvider:
       getSettings().softwareAcquisition.emulationCatalogProvider,
     bookFormats: [
-      ...(isMediaCategoryEnabled('ebook') ? ['ebook' as const] : []),
-      ...(isMediaCategoryEnabled('audiobook') ? ['audiobook' as const] : []),
+      ...(isUserMediaCategoryEnabled(_req.user, 'ebook')
+        ? ['ebook' as const]
+        : []),
+      ...(isUserMediaCategoryEnabled(_req.user, 'audiobook')
+        ? ['audiobook' as const]
+        : []),
     ],
   });
 });

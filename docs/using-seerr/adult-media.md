@@ -78,8 +78,10 @@ its queue and library scan to show request progress and availability.
 
 SeerrNG's **Indexer Search** can also send a manual Adult search to Prowlarr
 using the configured **XXX** category (Newznab/Torznab category `6000`). This is
-for inspecting indexer results. It does not grab releases or submit them to a
-download client. Approved requests still go through Whisparr.
+for an explicit, manual search. If enabled for the user, **Send to downloader**
+hands the chosen result to Prowlarr's configured download client. It does not
+create an Adult request or change request status. Approved requests still go
+through Whisparr.
 
 ## Troubleshooting
 
@@ -100,7 +102,8 @@ download client. Approved requests still go through Whisparr.
 - Adult catalog and detail lookups come from the configured Whisparr scene API.
   SeerrNG does not connect directly to Stash or another scene manager. Scene
   artwork is loaded through an authenticated, size-bounded SeerrNG image route.
-- Whisparr controls acquisition, indexers, download clients, monitoring, and
-  import behavior. SeerrNG does not grab manual Prowlarr search results.
+- Whisparr controls approved-request acquisition, monitoring, and import
+  behavior. A manual Prowlarr handoff uses Prowlarr's configured downloader and
+  stays separate from Whisparr-managed requests.
 - The supported integration is Whisparr's scene-focused v3 API; Whisparr v2 is
   not supported.

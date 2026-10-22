@@ -1,3 +1,4 @@
+import type { EnabledMediaCategories } from '@server/constants/mediaCategories';
 import type {
   BookHomeSectionPreference,
   CardTextVisibility,
@@ -141,6 +142,12 @@ export class UserSettings {
 
   @Column({ type: 'simple-json', nullable: true })
   public preferredLanguages?: UserPreferredLanguages;
+
+  @Column({ type: 'simple-json', nullable: true })
+  public enabledMediaCategories?: Partial<EnabledMediaCategories> | null;
+
+  @Column({ type: 'boolean', nullable: true })
+  public showIndexerDetails?: boolean | null;
 
   @Column({ nullable: true })
   public pgpKey?: string;
@@ -289,6 +296,8 @@ export class UserSettings {
       streamingRegion: this.streamingRegion,
       originalLanguage: this.originalLanguage,
       preferredLanguages: this.preferredLanguages,
+      enabledMediaCategories: this.enabledMediaCategories,
+      showIndexerDetails: this.showIndexerDetails,
       discordIds: this.discordIds,
       notificationTypes: this.notificationTypes,
       watchlistSyncMovies: this.watchlistSyncMovies,

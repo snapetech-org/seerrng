@@ -13,6 +13,7 @@ import {
 import { getRepository } from '@server/datasource';
 import { User } from '@server/entity/User';
 import { Permission } from '@server/lib/permissions';
+import { clearProwlarrSearchControlsForTests } from '@server/lib/prowlarrSearchControls';
 import { getSettings, type WhisparrSettings } from '@server/lib/settings';
 import { isAuthenticated } from '@server/middleware/auth';
 import { setupTestDb } from '@server/test/db';
@@ -30,6 +31,9 @@ const getOriginalSettings = () => structuredClone(getSettings().prowlarr);
 let originalSettings = getOriginalSettings();
 let originalAdultCategoryEnabled = false;
 let originalWhisparrSettings: WhisparrSettings[] = [];
+let originalDefaultCategories = {
+  ...getSettings().main.defaultEnabledMediaCategories,
+};
 
 function createValidatedApp(permission = Permission.MANAGE_REQUESTS): Express {
   const app = express();
@@ -108,6 +112,10 @@ describe('Prowlarr manual search routes', () => {
     originalSettings = getOriginalSettings();
     originalAdultCategoryEnabled =
       getSettings().main.enabledMediaCategories.adult;
+    originalDefaultCategories = {
+      ...getSettings().main.defaultEnabledMediaCategories,
+    };
+    getSettings().main.defaultEnabledMediaCategories.adult = true;
     originalWhisparrSettings = structuredClone(getSettings().whisparr);
     getSettings().main.enabledMediaCategories.adult = true;
     getSettings().whisparr = [
@@ -145,11 +153,17 @@ describe('Prowlarr manual search routes', () => {
     getSettings().main.enabledMediaCategories.adult =
       originalAdultCategoryEnabled;
     getSettings().whisparr = originalWhisparrSettings;
+    getSettings().main.defaultEnabledMediaCategories =
+      originalDefaultCategories;
+    clearProwlarrSearchControlsForTests();
     mock.restoreAll();
   });
 
   it('returns sanitized search results through the OpenAPI contract', async () => {
     let received: unknown[] = [];
+    mock.method(ProwlarrAPI.prototype, 'getIndexers', async () => [
+      { id: 10, name: 'Example indexer', enable: true, supportsSearch: true },
+    ]);
     mock.method(
       ProwlarrAPI.prototype,
       'search',
@@ -158,13 +172,16 @@ describe('Prowlarr manual search routes', () => {
         categories: number[],
         limit: number,
         offset: number,
-        type: string
+        type: string,
+        indexerIds: number[]
       ) => {
-        received = [query, categories, limit, offset, type];
+        received = [query, categories, limit, offset, type, indexerIds];
         return [
           {
             title: 'Dune (2021) 1080p',
             indexer: 'Example indexer',
+            indexerId: 10,
+            guid: 'https://tracker.example/release/91',
             protocol: 'Torrent',
             infoUrl:
               'https://tracker.example/details.php?id=91&api_key=private',
@@ -181,6 +198,7 @@ describe('Prowlarr manual search routes', () => {
     );
     assert.equal(configuration.status, 200);
     assert.equal(configuration.body.configured, true);
+    assert.equal(configuration.body.showIndexerDetails, false);
     assert.deepEqual(
       configuration.body.categories.find(
         (item: { category: string }) => item.category === 'ebook'
@@ -199,18 +217,33 @@ describe('Prowlarr manual search routes', () => {
       50,
       0,
       PROWLARR_SEARCH_TYPE_BY_CATEGORY.ebook,
+      [10],
     ]);
-    assert.equal(
-      response.body.results[0].infoUrl,
-      'https://tracker.example/details.php?id=91'
-    );
+    assert.equal(response.body.results[0].infoUrl, null);
+    assert.equal('indexer' in response.body.results[0], false);
+    assert.equal('indexerId' in response.body.results[0], false);
+    assert.match(response.body.results[0].grabId, /^[0-9a-f-]{36}$/i);
     assert.equal('downloadUrl' in response.body.results[0], false);
     assert.equal('magnetUrl' in response.body.results[0], false);
     assert.equal(response.body.hasMore, false);
   });
 
+  it('does not search Prowlarr for a category disabled by the user template', async () => {
+    getSettings().main.defaultEnabledMediaCategories.movie = false;
+    const search = mock.method(ProwlarrAPI.prototype, 'search', async () => []);
+    const response = await request(createValidatedApp())
+      .post('/api/v1/indexer-search/search')
+      .send({ category: 'movie', query: 'Dune', offset: 0 });
+
+    assert.equal(response.status, 404);
+    assert.equal(search.mock.callCount(), 0);
+  });
+
   it('selects a format-aware Prowlarr search type for every media category', async () => {
     const received: string[] = [];
+    mock.method(ProwlarrAPI.prototype, 'getIndexers', async () => [
+      { id: 10, name: 'Example indexer', enable: true, supportsSearch: true },
+    ]);
     mock.method(
       ProwlarrAPI.prototype,
       'search',
@@ -246,6 +279,90 @@ describe('Prowlarr manual search routes', () => {
     );
   });
 
+  it('hands a result to Prowlarr without exposing its download URL', async () => {
+    mock.method(ProwlarrAPI.prototype, 'getIndexers', async () => [
+      { id: 10, name: 'Private indexer', enable: true, supportsSearch: true },
+    ]);
+    mock.method(ProwlarrAPI.prototype, 'search', async () => [
+      {
+        title: 'Dune release',
+        indexer: 'Private indexer',
+        indexerId: 10,
+        guid: 'https://tracker.example/release/92',
+        downloadUrl: 'https://tracker.example/download/private',
+      },
+    ]);
+    let grabbed: unknown;
+    mock.method(ProwlarrAPI.prototype, 'grab', async (release) => {
+      grabbed = release;
+      return release;
+    });
+
+    const app = createValidatedApp();
+    const search = await request(app)
+      .post('/api/v1/indexer-search/search')
+      .send({ category: 'movie', query: 'Dune' });
+    assert.equal(search.status, 200);
+    const result = search.body.results[0];
+    assert.equal('downloadUrl' in result, false);
+    assert.equal('indexer' in result, false);
+
+    const handoff = await request(app)
+      .post('/api/v1/indexer-search/grab')
+      .send({ grabId: result.grabId });
+    assert.equal(handoff.status, 202, JSON.stringify(handoff.body));
+    assert.deepEqual(grabbed, {
+      guid: 'https://tracker.example/release/92',
+      indexerId: 10,
+    });
+    assert.equal(
+      (
+        await request(app)
+          .post('/api/v1/indexer-search/grab')
+          .send({ grabId: result.grabId })
+      ).status,
+      404
+    );
+  });
+
+  it('rejects a handoff if its indexer was disabled after search', async () => {
+    let indexerEnabled = true;
+    mock.method(ProwlarrAPI.prototype, 'getIndexers', async () => [
+      {
+        id: 10,
+        name: 'Private indexer',
+        enable: indexerEnabled,
+        supportsSearch: true,
+      },
+    ]);
+    mock.method(ProwlarrAPI.prototype, 'search', async () => [
+      {
+        title: 'Dune release',
+        indexer: 'Private indexer',
+        indexerId: 10,
+        guid: 'https://tracker.example/release/93',
+      },
+    ]);
+    const grab = mock.method(
+      ProwlarrAPI.prototype,
+      'grab',
+      async (release) => release
+    );
+    const app = createValidatedApp();
+    const search = await request(app)
+      .post('/api/v1/indexer-search/search')
+      .send({ category: 'movie', query: 'Dune' });
+    assert.equal(search.status, 200, JSON.stringify(search.body));
+
+    indexerEnabled = false;
+    const handoff = await request(app)
+      .post('/api/v1/indexer-search/grab')
+      .send({ grabId: search.body.results[0].grabId });
+
+    assert.equal(handoff.status, 404);
+    assert.equal(grab.mock.callCount(), 0);
+  });
+
   it('rejects unsupported paging offsets before contacting Prowlarr', async () => {
     const search = mock.method(ProwlarrAPI.prototype, 'search', async () => []);
 
@@ -277,6 +394,9 @@ describe('Prowlarr manual search routes', () => {
   });
 
   it('hides upstream error details from manual search users', async () => {
+    mock.method(ProwlarrAPI.prototype, 'getIndexers', async () => [
+      { id: 10, name: 'Example indexer', enable: true, supportsSearch: true },
+    ]);
     mock.method(ProwlarrAPI.prototype, 'search', async () => {
       throw new Error('upstream failed with test-prowlarr-key');
     });
@@ -314,7 +434,7 @@ describe('Prowlarr manual search routes', () => {
     );
   });
 
-  it('omits private indexer names from coverage summaries', async () => {
+  it('shows indexer names only in admin inventory for assignment controls', async () => {
     mock.method(ProwlarrAPI.prototype, 'getSystemStatus', async () => ({
       version: '2.4.0',
     }));
@@ -335,9 +455,20 @@ describe('Prowlarr manual search routes', () => {
 
     assert.equal(response.status, 200, JSON.stringify(response.body));
     assert.equal(response.body.totalIndexers, 1);
-    assert.equal('indexers' in response.body, false);
+    assert.deepEqual(response.body.indexers, [
+      {
+        id: 1,
+        name: 'Private tracker name',
+        enabled: true,
+        supportsSearch: true,
+      },
+    ]);
+    const requester = await request(
+      createValidatedSettingsApp(Permission.MANAGE_REQUESTS)
+    ).get('/api/v1/settings/prowlarr/coverage');
+    assert.equal(requester.status, 403);
     assert.equal(
-      JSON.stringify(response.body).includes('Private tracker name'),
+      JSON.stringify(requester.body).includes('Private tracker name'),
       false
     );
   });

@@ -12,9 +12,9 @@ import DiscoverSlider from '@server/entity/DiscoverSlider';
 import { User } from '@server/entity/User';
 import type { StatusResponse } from '@server/interfaces/api/settingsInterfaces';
 import { isContentRestricted } from '@server/lib/contentRestriction';
-import { isMediaCategoryEnabled } from '@server/lib/mediaCategories';
 import { Permission } from '@server/lib/permissions';
 import { getSettings } from '@server/lib/settings';
+import { isUserMediaCategoryEnabled } from '@server/lib/userMediaCategories';
 import {
   UserMutationActorUnauthorizedError,
   runUserSecurityReadWithActor,
@@ -120,11 +120,15 @@ const categoryAvailabilityGuard =
     categories: readonly MediaCategoryKey[],
     mode: 'all' | 'any' = 'all'
   ): RequestHandler =>
-  (_req, res, next) => {
+  (req, res, next) => {
     const available =
       mode === 'all'
-        ? categories.every(isMediaCategoryEnabled)
-        : categories.some(isMediaCategoryEnabled);
+        ? categories.every((category) =>
+            isUserMediaCategoryEnabled(req.user, category)
+          )
+        : categories.some((category) =>
+            isUserMediaCategoryEnabled(req.user, category)
+          );
     if (!available) {
       return res.status(404).json({ status: 404, message: 'Not found.' });
     }
@@ -429,8 +433,18 @@ router.use('/continuation', isAuthenticated(), continuationRoutes);
 router.use('/editions', isAuthenticated(), editionRoutes);
 router.use('/follow', isAuthenticated(), followRoutes);
 router.use('/franchise', isAuthenticated(), franchiseRoutes);
-router.use('/game-content', isAuthenticated(), gameContentRoutes);
-router.use('/patches', isAuthenticated(), patchRoutes);
+router.use(
+  '/game-content',
+  isAuthenticated(),
+  categoryAvailabilityGuard(['game']),
+  gameContentRoutes
+);
+router.use(
+  '/patches',
+  isAuthenticated(),
+  categoryAvailabilityGuard(['retro', 'modern'], 'any'),
+  patchRoutes
+);
 router.use(
   '/book-recommendations',
   isAuthenticated(),
@@ -524,7 +538,12 @@ router.use(
 router.use('/search', isAuthenticated(), searchRoutes);
 router.use('/discover', isAuthenticated(), discoverRoutes);
 router.use('/request/lists', externalRequestListRoutes);
-router.use('/game-library', gameLibraryRoutes);
+router.use(
+  '/game-library',
+  isAuthenticated(),
+  categoryAvailabilityGuard(['game', 'retro', 'modern'], 'any'),
+  gameLibraryRoutes
+);
 router.use('/notifications', slackActionRoutes);
 router.use('/request', isAuthenticated(), requestRoutes);
 router.use('/request/software', softwareRoutes);

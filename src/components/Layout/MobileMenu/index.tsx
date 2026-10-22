@@ -9,7 +9,10 @@ import useClickOutside from '@app/hooks/useClickOutside';
 import useSettings from '@app/hooks/useSettings';
 import { Permission, useUser } from '@app/hooks/useUser';
 import globalMessages from '@app/i18n/globalMessages';
-import { isOptionalCatalogPathEnabled } from '@app/utils/serviceAvailability';
+import {
+  getUserServiceAvailability,
+  isOptionalCatalogPathEnabled,
+} from '@app/utils/serviceAvailability';
 import { Transition } from '@headlessui/react';
 import { EllipsisHorizontalIcon, XMarkIcon } from '@heroicons/react/24/outline';
 import Link from 'next/link';
@@ -36,7 +39,7 @@ const MobileMenu = ({
   );
   const intl = useIntl();
   const [isOpen, setIsOpen] = useState(false);
-  const { hasPermission } = useUser();
+  const { hasPermission, user } = useUser();
   const { currentSettings } = useSettings();
   const router = useRouter();
   useClickOutside(ref, () => {
@@ -67,7 +70,14 @@ const MobileMenu = ({
           ...section,
           links: section.links.filter(
             (link) =>
-              isOptionalCatalogPathEnabled(link.href, currentSettings) &&
+              isOptionalCatalogPathEnabled(
+                link.href,
+                getUserServiceAvailability(
+                  currentSettings,
+                  user?.settings?.enabledMediaCategories,
+                  hasPermission(Permission.ADMIN)
+                )
+              ) &&
               (!link.requiredPermission ||
                 hasPermission(link.requiredPermission, {
                   type: link.permissionType ?? 'and',
@@ -75,7 +85,7 @@ const MobileMenu = ({
           ),
         }))
         .filter((section) => section.links.length > 0),
-    [currentSettings, hasPermission]
+    [currentSettings, hasPermission, user?.settings?.enabledMediaCategories]
   );
   const filteredLinks = useMemo(
     () => filteredSections.flatMap((section) => section.links),

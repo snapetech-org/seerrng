@@ -3390,6 +3390,119 @@ describe('User route input validation', () => {
     assert.strictEqual(targetSettings.user.id, 2);
   });
 
+  it('inherits category defaults, saves per-user choices, and keeps admin access', async () => {
+    const settings = getSettings();
+    const originalDefaults = { ...settings.main.defaultEnabledMediaCategories };
+    const originalIndexerDetailsDefault = settings.prowlarr.showIndexerDetails;
+    const userRepository = getRepository(User);
+    const before = await userRepository.findOneByOrFail({ id: 2 });
+    const originalPermissions = before.permissions;
+    const originalUserCategories = before.settings?.enabledMediaCategories;
+    const originalUserIndexerDetails = before.settings?.showIndexerDetails;
+    const agent = await loginAs('admin@seerr.dev', 'test1234');
+
+    try {
+      settings.main.defaultEnabledMediaCategories = {
+        ...originalDefaults,
+        movie: false,
+        music: false,
+      };
+      settings.prowlarr.showIndexerDetails = true;
+
+      const inherited = await agent.get('/user/2/settings/main');
+      assert.strictEqual(inherited.status, 200);
+      assert.strictEqual(inherited.body.enabledMediaCategories.movie, false);
+      assert.strictEqual(
+        inherited.body.usesDefaultEnabledMediaCategories,
+        true
+      );
+      assert.strictEqual(inherited.body.showIndexerDetails, true);
+      assert.strictEqual(inherited.body.usesDefaultShowIndexerDetails, true);
+
+      const userAgent = await loginAs('friend@seerr.dev', 'test1234');
+      const userVisibilityChange = await userAgent
+        .post('/user/2/settings/main')
+        .send({ showIndexerDetails: false });
+      assert.strictEqual(userVisibilityChange.status, 403);
+
+      const saved = await agent.post('/user/2/settings/main').send({
+        enabledMediaCategories: { movie: true, tv: false },
+      });
+      assert.strictEqual(saved.status, 200);
+      assert.strictEqual(saved.body.enabledMediaCategories.movie, true);
+      assert.strictEqual(saved.body.enabledMediaCategories.tv, false);
+      assert.strictEqual(saved.body.enabledMediaCategories.music, false);
+      assert.strictEqual(saved.body.usesDefaultEnabledMediaCategories, false);
+
+      const customDetails = await agent.post('/user/2/settings/main').send({
+        showIndexerDetails: false,
+      });
+      assert.strictEqual(customDetails.status, 200);
+      assert.strictEqual(customDetails.body.showIndexerDetails, false);
+      assert.strictEqual(
+        customDetails.body.usesDefaultShowIndexerDetails,
+        false
+      );
+      const invalidDetails = await agent.post('/user/2/settings/main').send({
+        showIndexerDetails: 'false',
+      });
+      assert.strictEqual(invalidDetails.status, 400);
+      const resetDetails = await agent.post('/user/2/settings/main').send({
+        showIndexerDetails: null,
+      });
+      assert.strictEqual(resetDetails.status, 200);
+      assert.strictEqual(resetDetails.body.showIndexerDetails, true);
+      assert.strictEqual(resetDetails.body.usesDefaultShowIndexerDetails, true);
+
+      const invalid = await agent.post('/user/2/settings/main').send({
+        enabledMediaCategories: { movie: 'false' },
+      });
+      assert.strictEqual(invalid.status, 400);
+      const unknown = await agent.post('/user/2/settings/main').send({
+        enabledMediaCategories: { applications: true },
+      });
+      assert.strictEqual(unknown.status, 400);
+
+      const reset = await agent.post('/user/2/settings/main').send({
+        enabledMediaCategories: null,
+      });
+      assert.strictEqual(reset.status, 200);
+      assert.strictEqual(reset.body.enabledMediaCategories.movie, false);
+      assert.strictEqual(reset.body.usesDefaultEnabledMediaCategories, true);
+
+      const target = await userRepository.findOneByOrFail({ id: 2 });
+      target.permissions = Permission.ADMIN;
+      await userRepository.save(target);
+      const adminSave = await agent.post('/user/2/settings/main').send({
+        enabledMediaCategories: { movie: false },
+        showIndexerDetails: false,
+      });
+      assert.strictEqual(adminSave.status, 200);
+      assert.strictEqual(adminSave.body.enabledMediaCategories.movie, true);
+      assert.strictEqual(
+        adminSave.body.usesDefaultEnabledMediaCategories,
+        false
+      );
+      assert.strictEqual(adminSave.body.showIndexerDetails, true);
+      assert.strictEqual(adminSave.body.usesDefaultShowIndexerDetails, false);
+      const savedAdmin = await userRepository.findOneByOrFail({ id: 2 });
+      assert.strictEqual(savedAdmin.settings?.enabledMediaCategories, null);
+      assert.strictEqual(savedAdmin.settings?.showIndexerDetails, null);
+    } finally {
+      settings.main.defaultEnabledMediaCategories = originalDefaults;
+      settings.prowlarr.showIndexerDetails = originalIndexerDetailsDefault;
+      const target = await userRepository.findOneByOrFail({ id: 2 });
+      target.permissions = originalPermissions;
+      target.settings = new UserSettings({
+        ...target.settings,
+        user: target,
+        enabledMediaCategories: originalUserCategories,
+        showIndexerDetails: originalUserIndexerDetails,
+      });
+      await userRepository.save(target);
+    }
+  });
+
   it('preserves profile identity when blank name and email fields are omitted', async () => {
     const userRepository = getRepository(User);
     const before = await userRepository.findOneByOrFail({ id: 2 });

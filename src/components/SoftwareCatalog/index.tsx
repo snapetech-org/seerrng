@@ -14,6 +14,7 @@ import { Permission, useUser } from '@app/hooks/useUser';
 import globalMessages from '@app/i18n/globalMessages';
 import defineMessages from '@app/utils/defineMessages';
 import {
+  getUserServiceAvailability,
   isAnySoftwareCategoryEnabled,
   isConfiguredMediaCategoryEnabled,
 } from '@app/utils/serviceAvailability';
@@ -190,6 +191,11 @@ const SoftwareCatalog = ({
   const intl = useIntl();
   const { user, hasPermission } = useUser();
   const { currentSettings } = useSettings();
+  const serviceAvailability = getUserServiceAvailability(
+    currentSettings,
+    user?.settings?.enabledMediaCategories,
+    hasPermission(Permission.ADMIN)
+  );
   const canRequest = hasPermission(Permission.REQUEST);
   const canManageRequests = hasPermission(Permission.MANAGE_REQUESTS);
   const { data: quota } = useSWR<QuotaResponse>(
@@ -276,13 +282,13 @@ const SoftwareCatalog = ({
   }, [linkedGame?.game, linkedCatalogProvider, linkedGameId, router.isReady]);
 
   const visibleCategories = categories.filter((value) => {
-    if (!isAnySoftwareCategoryEnabled(currentSettings)) return false;
+    if (!isAnySoftwareCategoryEnabled(serviceAvailability)) return false;
     if (value === 'game') {
-      return isConfiguredMediaCategoryEnabled('game', currentSettings);
+      return isConfiguredMediaCategoryEnabled('game', serviceAvailability);
     }
     return (
-      currentSettings.romarrEnabled &&
-      isConfiguredMediaCategoryEnabled(value, currentSettings)
+      serviceAvailability.romarrEnabled &&
+      isConfiguredMediaCategoryEnabled(value, serviceAvailability)
     );
   });
   const selectedCategory = visibleCategories.includes(category)

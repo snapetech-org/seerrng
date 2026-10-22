@@ -1,6 +1,7 @@
 import QuestarrNGAPI from '@server/api/software/questarrng';
 import ROMarrNGAPI from '@server/api/software/romarrng';
 import type { SoftwareCatalogGame } from '@server/api/software/types';
+import type { EnabledMediaCategories } from '@server/constants/mediaCategories';
 import { getRepository } from '@server/datasource';
 import SoftwareRequest, {
   type SoftwareRequestCategory,
@@ -87,13 +88,18 @@ const catalogApi = (
 
 export async function getSoftwareReleaseCalendar(
   query: CalendarQuery,
-  userId: number
+  userId: number,
+  enabledCategories?: Partial<EnabledMediaCategories>
 ): Promise<{
   results: ReleaseCalendarItem[];
   partialSources: { source: string }[];
   truncated: boolean;
 }> {
-  const categories = SOFTWARE_CATEGORIES.filter(isMediaCategoryEnabled);
+  const categories = SOFTWARE_CATEGORIES.filter(
+    (category) =>
+      isMediaCategoryEnabled(category) &&
+      enabledCategories?.[category] !== false
+  );
   if (!categories.length)
     return { results: [], partialSources: [], truncated: false };
 

@@ -13,10 +13,13 @@ import {
   getPositiveQueryParamNumber,
   useBatchUpdateQueryParams,
 } from '@app/hooks/useUpdateQueryParams';
-import { useUser } from '@app/hooks/useUser';
+import { Permission, useUser } from '@app/hooks/useUser';
 import ErrorPage from '@app/pages/_error';
 import defineMessages from '@app/utils/defineMessages';
-import { isDiscoverWatchlistTypeEnabled } from '@app/utils/serviceAvailability';
+import {
+  getUserServiceAvailability,
+  isDiscoverWatchlistTypeEnabled,
+} from '@app/utils/serviceAvailability';
 import { MediaType } from '@server/constants/media';
 import {
   WATCHLIST_SORT_OPTIONS,
@@ -88,7 +91,7 @@ const DiscoverWatchlist = () => {
   const { user } = useUser({
     id: userId,
   });
-  const { user: currentUser } = useUser();
+  const { user: currentUser, hasPermission } = useUser();
   const isProfileWatchlist = router.pathname.startsWith('/profile');
   const isUserWatchlist =
     isProfileWatchlist || router.pathname.startsWith('/users/');
@@ -96,13 +99,18 @@ const DiscoverWatchlist = () => {
   const watchlistPath = targetUserId ? `user/${targetUserId}` : 'discover';
   const watchlistEnabled = !isUserWatchlist || targetUserId !== undefined;
   const { currentSettings } = useSettings();
+  const serviceAvailability = getUserServiceAvailability(
+    currentSettings,
+    currentUser?.settings?.enabledMediaCategories,
+    hasPermission(Permission.ADMIN)
+  );
   const updateQueryParams = useBatchUpdateQueryParams(router.query);
   const availableMediaTypes = useMemo(
     () =>
       mediaTypes.filter((mediaType) =>
-        isDiscoverWatchlistTypeEnabled(mediaType, currentSettings)
+        isDiscoverWatchlistTypeEnabled(mediaType, serviceAvailability)
       ),
-    [currentSettings]
+    [serviceAvailability]
   );
   const routeFilters = useMemo<WatchlistFilters>(() => {
     const search =
