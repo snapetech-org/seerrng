@@ -357,7 +357,11 @@ test('main release, image scan, CodeQL, and Semgrep use the shared pool on trust
     const runner = scanWorkflow.jobs[jobName]?.['runs-on'];
     assert.match(runner, /ng-shared-main-jit/u, workflowName);
     assert.match(runner, /github.event_name == 'push'/u, workflowName);
-    assert.match(runner, /github.event_name == 'workflow_dispatch'/u, workflowName);
+    assert.match(
+      runner,
+      /github.event_name == 'workflow_dispatch'/u,
+      workflowName
+    );
     assert.match(runner, /github.event_name == 'schedule'/u, workflowName);
     assert.match(runner, /github.ref == 'refs\/heads\/main'/u, workflowName);
     assert.match(runner, /\|\| 'ubuntu-latest'/u, workflowName);
