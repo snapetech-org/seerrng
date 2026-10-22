@@ -40,7 +40,9 @@ const stubTitleDetails = (
     status: 'Released',
   };
 
-  cy.intercept('GET', `/api/v1/${mediaType}/${result.id}`, details);
+  cy.intercept('GET', `/api/v1/${mediaType}/${result.id}`, details).as(
+    'fixtureTitleDetails'
+  );
   cy.intercept('GET', `/api/v1/${mediaType}/${result.id}/ratingscombined*`, {});
   const emptyResults = {
     page: 1,
@@ -715,6 +717,10 @@ describe('Discover', () => {
 
     cy.visit('/discover/watchlist');
     cy.wait('@getWatchlist');
+    cy.get('[data-testid=title-card]').first().scrollIntoView();
+    cy.wait('@fixtureTitleDetails')
+      .its('response.statusCode')
+      .should('eq', 200);
     cy.get('[data-testid=title-card]')
       .first()
       .trigger('mouseover')

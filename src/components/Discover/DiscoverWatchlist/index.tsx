@@ -99,10 +99,16 @@ const DiscoverWatchlist = () => {
   const watchlistPath = targetUserId ? `user/${targetUserId}` : 'discover';
   const watchlistEnabled = !isUserWatchlist || targetUserId !== undefined;
   const { currentSettings } = useSettings();
-  const serviceAvailability = getUserServiceAvailability(
-    currentSettings,
-    currentUser?.settings?.enabledMediaCategories,
-    hasPermission(Permission.ADMIN)
+  const enabledMediaCategories = currentUser?.settings?.enabledMediaCategories;
+  const isAdmin = hasPermission(Permission.ADMIN);
+  const serviceAvailability = useMemo(
+    () =>
+      getUserServiceAvailability(
+        currentSettings,
+        enabledMediaCategories,
+        isAdmin
+      ),
+    [currentSettings, enabledMediaCategories, isAdmin]
   );
   const updateQueryParams = useBatchUpdateQueryParams(router.query);
   const availableMediaTypes = useMemo(
