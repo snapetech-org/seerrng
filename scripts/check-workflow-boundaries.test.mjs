@@ -316,7 +316,7 @@ test('CodeQL models the awaited image cache validation barrier', () => {
   );
 });
 
-test('unit-test shards use the shared pool only for trusted main runs', () => {
+test('unit-test shards use GitHub-hosted Linux runners', () => {
   const ciWorkflow = yaml.load(
     fs.readFileSync(
       path.join(rootDirectory, '.github', 'workflows', 'ci.yml'),
@@ -324,29 +324,25 @@ test('unit-test shards use the shared pool only for trusted main runs', () => {
     )
   );
   const runner = ciWorkflow.jobs['unit-test']?.['runs-on'];
-  assert.match(runner, /ng-shared-main-jit/u);
-  assert.match(runner, /github.event_name == 'push'/u);
-  assert.match(runner, /github.event_name == 'workflow_dispatch'/u);
-  assert.match(runner, /github.ref == 'refs\/heads\/main'/u);
-  assert.match(runner, /\|\| 'ubuntu-latest'/u);
+  assert.equal(runner, 'ubuntu-latest');
   assert.equal(ciWorkflow.jobs['unit-test']?.strategy?.['max-parallel'], 4);
   assert.equal(ciWorkflow.jobs['preflight-deploy'], undefined);
   assert.equal(ciWorkflow.jobs['deploy-main'], undefined);
 });
 
-test('main release, image scan, CodeQL, and Semgrep use the shared pool on trusted runs', () => {
+test('main release and image publishing use hosted runners', () => {
   const workflowsDirectory = path.join(rootDirectory, '.github', 'workflows');
   const ciWorkflow = yaml.load(
     fs.readFileSync(path.join(workflowsDirectory, 'ci.yml'), 'utf8')
   );
   for (const jobName of ['release-notes', 'publish', 'scan-main-image']) {
     const runner = ciWorkflow.jobs[jobName]?.['runs-on'];
-    assert.match(runner, /ng-shared-main-jit/u, jobName);
-    assert.match(runner, /github.event_name == 'push'/u, jobName);
-    assert.match(runner, /github.event_name == 'workflow_dispatch'/u, jobName);
-    assert.match(runner, /github.ref == 'refs\/heads\/main'/u, jobName);
-    assert.match(runner, /\|\| 'ubuntu-latest'/u, jobName);
+    assert.equal(runner, 'ubuntu-latest', jobName);
   }
+});
+
+test('CodeQL and Semgrep use the isolated pool only for trusted main runs', () => {
+  const workflowsDirectory = path.join(rootDirectory, '.github', 'workflows');
   for (const [workflowName, jobName] of [
     ['codeql.yml', 'analyze'],
     ['semgrep-community.yml', 'semgrep'],
