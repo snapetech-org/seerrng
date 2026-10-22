@@ -6,4 +6,4 @@ action: none
 breaking: false
 ---
 
-ip-address is updated to 10.7.4 to address a security advisory affecting the previous version.
+The `ip-address` package is updated to 10.7.4 to address a security advisory affecting the previous version.
