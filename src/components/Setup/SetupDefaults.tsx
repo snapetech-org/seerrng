@@ -12,7 +12,7 @@ import {
   buildSetupDefaultsSettings,
   getSetupDefaultsSelection,
   type SetupDefaultsSelection,
-} from './setupDefaults';
+} from './setupDefaultsLogic';
 
 const messages = defineMessages('components.Setup', {
   defaultsTitle: 'Set defaults for new users',

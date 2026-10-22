@@ -3,7 +3,7 @@ import { describe, expect, it } from 'vitest';
 import {
   buildSetupDefaultsSettings,
   getSetupDefaultsSelection,
-} from './setupDefaults';
+} from './setupDefaultsLogic';
 
 const combinePermissions = (...permissions: Permission[]) =>
   Number(

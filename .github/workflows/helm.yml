@@ -23,7 +23,7 @@ concurrency:
 jobs:
   package-helm-chart:
     name: Package helm chart
-    runs-on: ${{ (github.event_name == 'push' || github.event_name == 'workflow_dispatch' || github.event_name == 'schedule') && github.ref == 'refs/heads/main' && fromJSON('{"group":"ng-shared-main-jit","labels":["self-hosted","linux","x64","ng-shared-main"]}') || 'ubuntu-latest' }}
+    runs-on: ${{ (github.event_name == 'push' || github.event_name == 'workflow_dispatch' || github.event_name == 'schedule') && github.ref == 'refs/heads/main' && fromJSON(format('{{"group":"ng-shared-main-jit","labels":["self-hosted","linux","x64","ng-shared-main-seerrng","ng-main-run-{0}"]}}', github.run_id)) || 'ubuntu-latest' }}
     timeout-minutes: 30
     permissions:
       contents: read
@@ -97,7 +97,7 @@ jobs:
 
   publish:
     name: Publish to ghcr.io
-    runs-on: ${{ (github.event_name == 'push' || github.event_name == 'workflow_dispatch' || github.event_name == 'schedule') && github.ref == 'refs/heads/main' && fromJSON('{"group":"ng-shared-main-jit","labels":["self-hosted","linux","x64","ng-shared-main"]}') || 'ubuntu-latest' }}
+    runs-on: ubuntu-latest
     timeout-minutes: 30
     permissions:
       packages: write
@@ -192,7 +192,7 @@ jobs:
   verify:
     name: Verify signatures for each chart tag
     needs: [publish]
-    runs-on: ${{ (github.event_name == 'push' || github.event_name == 'workflow_dispatch' || github.event_name == 'schedule') && github.ref == 'refs/heads/main' && fromJSON('{"group":"ng-shared-main-jit","labels":["self-hosted","linux","x64","ng-shared-main"]}') || 'ubuntu-latest' }}
+    runs-on: ${{ (github.event_name == 'push' || github.event_name == 'workflow_dispatch' || github.event_name == 'schedule') && github.ref == 'refs/heads/main' && fromJSON(format('{{"group":"ng-shared-main-jit","labels":["self-hosted","linux","x64","ng-shared-main-seerrng","ng-main-run-{0}"]}}', github.run_id)) || 'ubuntu-latest' }}
     timeout-minutes: 15
     permissions:
       contents: read

@@ -10,6 +10,83 @@ and the following `v3.2.7` release includes the intervening changes. Commit-leve
 links in the generated history remain the technical source of truth for changes
 that are not called out here.
 
+## [3.72.1](https://github.com/snapetech-org/seerrng/compare/v3.72.0..v3.72.1) - 2026-10-22
+
+### User-facing changes
+
+#### Added
+
+- **Books:** Search book series by name from the Search page, with separate book and audiobook results from configured servers. Library results open series requests; Chaptarr catalog results offer read-only previews using its existing provider configuration.
+- **Authentication:** OIDC sign-in now shows provider logos and official setup guides for supported identity providers, helping administrators configure sign-in without changing access rules.
+- **Authentication:** Operators can limit first-time OIDC account creation to exact email domains and provider groups, and explicitly map verified provider claims to SeerrNG's normal or administrator permissions.
+- **Books:** Monitor Series can request ongoing ebook or audiobook monitoring through a compatible Chaptarr server. Chaptarr handles current and future catalog books and download timing. Requests can await approval, and managers can approve, retry or stop watches from Series Monitoring Requests. Request Selected Books remains available for individual selections.
+  - **Action required:** Upgrade Chaptarr to a version supporting series watches and configure its catalog provider and destination defaults.
+- **Bookshelf:** Open a linked library book's series in SeerrNG and request selected verified books or missing formats through your existing book services. Series information comes from the configured server without a new metadata token. Request managers can open supported Chaptarr series pages to manage monitoring. The page shows known library members; it does not automatically request future series releases.
+- **Bookshelf:** Request verified catalog-series books directly in SeerrNG, with normal selection, approvals and quotas. Audiobook series default to audiobook requests. Conflicting or unavailable identities remain visible for retry; no additional provider key is needed in SeerrNG.
+  - **Action required:** Upgrade Chaptarr for optional catalog edition identifiers when individual book lookup is unavailable.
+- **Books:** Book series now appear alongside title results in the top search bar and Books keyword search. Open Search Book Series from Books to search your library and supported catalogs, with the selected book format preserved.
+- **Integrations:** Administrators can choose the media categories each user sees, set defaults for new accounts, and let users personalize their category access. Administrators retain access to all globally enabled categories.
+- **Prowlarr:** Administrators can assign Prowlarr indexers and search limits by category, and control indexer detail visibility globally or for individual users. Search results also have a safe handoff to Prowlarr's configured download client without exposing direct torrent or NZB links.
+- **Books:** Book-series cards now preview up to twenty books in a cover carousel when the book server provides member metadata. Swipe, use the arrow buttons or keyboard to browse. Missing covers show a book icon; clicking a cover opens its series, and format links keep their destinations.
+
+#### Changed
+
+- **Authentication:** OIDC guidance now covers exact provider callbacks, account admission and linking, recovery, and troubleshooting so operators can configure sign-in safely.
+- **Books:** Book series pages now show Books in Series from your book server before alternative catalog matches, with monitoring and book request controls above the list. The page includes known books you have not downloaded and no longer labels the series as a library subset.
+- **Settings:** Comic metadata credential labels now link directly to the ComicVine API key page and Metron API token page.
+- **Ui:** The default SeerrNG theme now uses neutral slate surfaces with a restrained blue accent instead of black and purple, and page titles are a solid colour instead of a gradient. Light mode keeps the same readable palette, and other themes are unchanged.
+- **Discovery Integrations:** Trakt account linking now uses a browser authorization flow with PKCE and no client secret. New service icons also make supported media services easier to recognize.
+  - **Action required:** Set a public HTTPS Application URL and register its callback URL in your Trakt app before connecting accounts.
+- **Books:** Books and audiobooks now share one Books entry in desktop and mobile navigation. Choose All Books, Books or Audiobooks within that section; existing audiobook links still work.
+
+#### Fixed
+
+- **Settings:** Sportarr connections now save successfully when no external URL is configured.
+- **Settings:** Sportarr and Whisparr save failures now show safe validation details or an HTTP status, and Whisparr settings distinguish missing administrator access from server failures. Sportarr settings no longer persist Readarr-only connection fields.
+- **Navigation:** Unconfigured game discovery and patch catalogs no longer clutter navigation, while the personal games library remains available regardless of request-service configuration.
+- **Ui:** Buttons and controls now meet the 24px minimum target size, and poster association and blocklist icons appear on hover or focus instead of covering artwork. Sportarr, Adult, Magazine and Games pages no longer overflow sideways, print text over each other, or show unreadable text.
+- **Notifications:** Apprise notification settings now load, save, and test through the application API.
+- **Books:** Book Series search and monitoring requests now reach the application API.
+- **Bookshelf:** Book Series search and catalog pages now avoid client hydration errors. Query-dependent results appear after routing initializes, keeping server markup and the first browser render consistent.
+- **Books:** Click anywhere on a book-series search card to open the series. Books and Audiobooks links still open their respective formats, and keyboard navigation highlights the card.
+- **Requests:** When book edition options or narrator comparisons cannot be loaded, the request form now says so and offers a Retry button instead of showing nothing. You can still submit the request without choosing a version.
+- **Integrations:** Whisparr, Navidrome, and Jellystat settings now load and save through the application API, restoring access to these integrations.
+- **Books:** Audiobookshelf availability scans now serialize book-record writes so SQLite does not start overlapping transactions when a library contains multiple ISBN-matched audiobooks.
+- **Bookshelf:** Series pages now read ISBNs from the book server's native edition endpoint when book details omit editions. This lets more known series members resolve to verified request identities without adding a metadata token. Editions belonging to another book and incomplete responses cannot enable requests.
+- **Bookshelf:** Chaptarr series management links remain available when reopening a series page from cached metadata. Backend capability detection now runs before the cached catalog is used, preserving the correct provider-specific management link.
+- **Themes:** Changing themes now updates page backgrounds, sidebars, menus, and controls together instead of leaving fixed purple backgrounds behind. Light and dark modes retain the selected palette after reloading.
+- **Books:** Book Series searches now accept multi-word titles such as The Kingkiller Chronicle instead of failing with a query-encoding error.
+- **Bookshelf:** Catalog series previews and requests now work when the configured book server has ID zero, including the first server added to SeerrNG.
+- **Deployment:** The series trial deployment now builds the browser and server with matching version labels, preventing the update prompt from returning after every reload.
+  - **Action required:** Reload the browser once after the corrected deployment.
+- **Ui:** Settings forms now keep labels and inputs aligned at tablet widths, dropdown choices keep readable foreground and background colors, and the Request Book Advanced Options control stays legible on narrow cards.
+- **Images:** Pages no longer rate-limit their own image requests. Poster cache warming now shares one paced queue that backs off when asked, the warm limit is higher, and posters that fail briefly are retried before the placeholder is shown.
+- **Ui:** Checkboxes are now 24px and the selection circles in action rows have a 24px hit area, so they are easier to tap and meet the WCAG 2.2 minimum target size. The drawn circles and the surrounding layout are unchanged.
+- **Authentication:** **Breaking:** OIDC identities now bind to provider issuer and subject. Existing links have no issuer and remain unbound after upgrade; OIDC sign-in also requires the provider to assert `email_verified=true`.
+  - **Action required:** Verify provider verified-email claims, provide another sign-in method, and relink affected OIDC accounts after upgrading.
+- **Books:** Opening a Books keyword-search link keeps its search text and results while the input initializes, including when series search reports a temporary failure.
+- **Search:** Opening or refreshing a search-results link now retains its search text while the page loads.
+- **Profiles:** Profile pages now wait for the selected user ID before loading that user's watchlist.
+- **Profiles:** The profile watchlist page now waits for the account ID before loading saved items.
+- **Ui:** Phones now show two posters per row instead of one beside a blank half-screen. Games, long list titles, and narrow settings pages no longer scroll sideways, cast and crew posters no longer overlap, and light mode text, inputs and messages are readable. Touch screens get larger buttons.
+- **Books:** Book-series cover previews now use authenticated backend image requests. Chaptarr installations with the API artwork route show covers even when browser sign-in is required; unavailable artwork continues to show a book icon.
+- **Books:** Series search prioritizes catalog entries, while library subsets are clearly labeled. Conflicting edition ISBNs can be resolved when one work also agrees on its full title and author. Request previews show any books excluded because their identity could not be verified.
+- **Books:** Series search combines ebook and audiobook entries with the same catalog identity into one result with format links. Book keywords also search catalog subjects, so series names find their novels. Book searches allow more time for the catalog and show a useful message when it is unavailable.
+- **Discovery:** Swipe decisions and history now load, restore, and clear through the application API.
+- **Containers:** Unraid 7.3.x now detects stable SeerrNG container updates; release tags use Docker-compatible multi-platform manifests, with signed build provenance published separately.
+
+#### Security
+
+- **Dependencies:** Updated follow-redirects to 1.16.1, which fixes two high-severity advisories where a redirect could expose credential headers. SeerrNG itself is not known to be affected; this keeps the dependency tree free of known vulnerabilities.
+
+#### Removed
+
+- **Discovery:** **Breaking:** Discover no longer redirects `/discover/vibes`. Open Book Recommendations at `/discover/book-recommendations` instead.
+  - **Action required:** Update bookmarks and shared links to `/discover/book-recommendations`.
+
+### 🐛 Bug Fixes
+- *(build)* Avoid cross-platform Setup filename collision - ([e2c45e4](https://github.com/snapetech-org/seerrng/commit/e2c45e4f2d9aaaf9baca1b68671e11262afd0104))
+
 ## [3.72.0](https://github.com/snapetech-org/seerrng/compare/v3.71.4..v3.72.0) - 2026-10-22
 
 ### User-facing changes

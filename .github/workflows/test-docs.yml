@@ -12,7 +12,7 @@ jobs:
   test-build:
     name: Build and test docs website
     # Keep public-fork documentation builds isolated from self-hosted runners.
-    runs-on: ${{ (github.event_name == 'push' || github.event_name == 'workflow_dispatch' || github.event_name == 'schedule') && github.ref == 'refs/heads/main' && fromJSON('{"group":"ng-shared-main-jit","labels":["self-hosted","linux","x64","ng-shared-main"]}') || (github.event_name == 'pull_request' && github.event.pull_request.head.repo.fork == true && fromJSON('{"group":"public-fork-jit","labels":["self-hosted","linux","x64","public-pr-seerrng"]}')) || 'ubuntu-latest' }}
+    runs-on: ${{ (github.event_name == 'push' || github.event_name == 'workflow_dispatch' || github.event_name == 'schedule') && github.ref == 'refs/heads/main' && fromJSON(format('{{"group":"ng-shared-main-jit","labels":["self-hosted","linux","x64","ng-shared-main-seerrng","ng-main-run-{0}"]}}', github.run_id)) || (github.event_name == 'pull_request' && github.event.pull_request.head.repo.fork == true && fromJSON('{"group":"public-fork-jit","labels":["self-hosted","linux","x64","public-pr-seerrng"]}')) || 'ubuntu-latest' }}
     timeout-minutes: 30
     permissions:
       contents: read
