@@ -1,6 +1,6 @@
 version: 2
-# Dependency-only bot PRs carry the internal-only marker into their merge
-# commit so push validation can enforce the release-note contract.
+# Dependency updates use a conventional release type; security upgrades include
+# a release-note fragment describing the operator impact.
 updates:
   - package-ecosystem: "npm"
     directory: "/"
@@ -12,7 +12,7 @@ updates:
     labels:
       - "dependencies"
     commit-message:
-      prefix: "release-note: none"
+      prefix: "fix(deps)"
 
   - package-ecosystem: "github-actions"
     directory: "/"
@@ -23,7 +23,7 @@ updates:
     labels:
       - "dependencies"
     commit-message:
-      prefix: "release-note: none"
+      prefix: "fix(deps)"
     groups:
       release-note-none-codeql-action:
         patterns:
