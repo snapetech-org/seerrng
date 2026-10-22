@@ -79,6 +79,101 @@ test(
         result.stdout,
         /Verified example:tag: linux\/amd64, linux\/arm64/
       );
+
+      const compatibleResult = spawnSync(
+        'bash',
+        [
+          verifier,
+          '--require-compatible-manifest',
+          'example:tag',
+          'linux/amd64',
+          'linux/arm64',
+        ],
+        {
+          env: {
+            ...process.env,
+            MANIFEST_FIXTURE: fixturePath,
+            PATH: `${temporaryDirectory}:${process.env.PATH}`,
+          },
+          encoding: 'utf8',
+        }
+      );
+      assert.equal(compatibleResult.status, 0, compatibleResult.stderr);
+    } finally {
+      rmSync(temporaryDirectory, { force: true, recursive: true });
+    }
+  }
+);
+
+test(
+  'requires Docker v2 manifests for Unraid-compatible stable releases',
+  { skip: requiresPosixBash },
+  () => {
+    const temporaryDirectory = mkdtempSync(
+      path.join(tmpdir(), 'seerrng-docker-manifest-test-')
+    );
+    try {
+      const dockerPath = path.join(temporaryDirectory, 'docker');
+      const fixturePath = path.join(temporaryDirectory, 'manifest.json');
+      const manifest = {
+        manifests: [
+          {
+            digest: 'sha256:' + 'a'.repeat(64),
+            mediaType: 'application/vnd.docker.distribution.manifest.v2+json',
+            platform: { architecture: 'amd64', os: 'linux' },
+          },
+          {
+            digest: 'sha256:' + 'b'.repeat(64),
+            mediaType: 'application/vnd.docker.distribution.manifest.v2+json',
+            platform: { architecture: 'arm64', os: 'linux' },
+          },
+        ],
+        mediaType: 'application/vnd.docker.distribution.manifest.list.v2+json',
+      };
+      writeFileSync(fixturePath, JSON.stringify(manifest));
+      writeFileSync(
+        dockerPath,
+        '#!/usr/bin/env bash\ncat "$MANIFEST_FIXTURE"\n',
+        { mode: 0o755 }
+      );
+
+      const runVerifier = () =>
+        spawnSync(
+          'bash',
+          [
+            verifier,
+            '--require-docker-list',
+            'example:tag',
+            'linux/amd64',
+            'linux/arm64',
+          ],
+          {
+            env: {
+              ...process.env,
+              MANIFEST_FIXTURE: fixturePath,
+              PATH: `${temporaryDirectory}:${process.env.PATH}`,
+            },
+            encoding: 'utf8',
+          }
+        );
+
+      const compatibleResult = runVerifier();
+      assert.equal(compatibleResult.status, 0, compatibleResult.stderr);
+
+      manifest.mediaType = 'application/vnd.oci.image.index.v1+json';
+      writeFileSync(fixturePath, JSON.stringify(manifest));
+      const ociIndexResult = runVerifier();
+      assert.notEqual(ociIndexResult.status, 0);
+      assert.match(ociIndexResult.stderr, /not a Docker v2 manifest list/u);
+
+      manifest.mediaType =
+        'application/vnd.docker.distribution.manifest.list.v2+json';
+      manifest.manifests[1].mediaType =
+        'application/vnd.oci.image.manifest.v1+json';
+      writeFileSync(fixturePath, JSON.stringify(manifest));
+      const ociChildResult = runVerifier();
+      assert.notEqual(ociChildResult.status, 0);
+      assert.match(ociChildResult.stderr, /non-Docker child manifest/u);
     } finally {
       rmSync(temporaryDirectory, { force: true, recursive: true });
     }

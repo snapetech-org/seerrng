@@ -63,15 +63,15 @@ jobs:
           tag="$(scripts/latest-published-release-tag.sh)"
           printf 'tag=%s\n' "$tag" >> "$GITHUB_OUTPUT"
 
-      - name: Verify release image provenance and version
+      - name: Verify release manifest compatibility and version
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           RELEASE_TAG: ${{ steps.release.outputs.tag }}
         run: |
           set -euo pipefail
           scripts/ensure-release-tag-on-main.sh "$RELEASE_TAG"
-          scripts/verify-container-manifest.sh --require-provenance "${GHCR_IMAGE}:${RELEASE_TAG}" linux/amd64 linux/arm64
-          scripts/verify-container-manifest.sh --require-provenance "${DOCKER_HUB}:${RELEASE_TAG}" linux/amd64 linux/arm64
+          scripts/verify-container-manifest.sh --require-compatible-manifest "${GHCR_IMAGE}:${RELEASE_TAG}" linux/amd64 linux/arm64
+          scripts/verify-container-manifest.sh --require-compatible-manifest "${DOCKER_HUB}:${RELEASE_TAG}" linux/amd64 linux/arm64
           docker pull --platform linux/amd64 "${GHCR_IMAGE}:${RELEASE_TAG}"
           expected_revision="$(git rev-parse "${RELEASE_TAG}^{commit}")"
           actual_revision="$(docker image inspect --format '{{ index .Config.Labels "org.opencontainers.image.revision" }}' "${GHCR_IMAGE}:${RELEASE_TAG}")"

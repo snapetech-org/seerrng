@@ -2,16 +2,8 @@
 category: fixed
 audience: users, operators
 area: authentication
-action: none
+action: Verify provider verified-email claims, provide another sign-in method, and relink affected OIDC accounts after upgrading.
 breaking: true
 ---
 
-OIDC linked accounts are now keyed by the authenticated issuer and subject,
-not only the provider slug and subject. Existing links do not have a recorded
-issuer and are intentionally left unbound by the database migration. Before
-upgrading, make sure OIDC-only users have another working recovery method; they
-must sign in through that method and explicitly link the provider again after
-the upgrade.
-
-OIDC sign-in now requires the provider to assert `email_verified=true` for both
-new and previously linked identities.
+OIDC identities now bind to provider issuer and subject. Existing links have no issuer and remain unbound after upgrade; OIDC sign-in also requires the provider to assert `email_verified=true`.
