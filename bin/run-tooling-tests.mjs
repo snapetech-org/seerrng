@@ -42,6 +42,7 @@ const portableTests = [
   'scripts/update-helm-release-metadata.test.mjs',
   'scripts/release-notes.test.mjs',
   'scripts/latest-published-release-tag.test.mjs',
+  'scripts/setup-gh-cli-action.test.mjs',
   'scripts/release-workflow.test.mjs',
   'scripts/watch-github-run.test.mjs',
   'scripts/wait-for-launchpad-ppa.test.mjs',

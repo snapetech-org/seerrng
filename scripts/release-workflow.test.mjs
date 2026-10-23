@@ -16,6 +16,46 @@ const require = createRequire(import.meta.url);
 const workflowDirectory = path.join(rootDirectory, '.github', 'workflows');
 const readWorkflow = (name) =>
   yaml.load(fs.readFileSync(path.join(workflowDirectory, name), 'utf8'));
+const ghCliSetupCommit = 'a7df518305b4850d22db9eec664e5bd1299e7f17';
+const ghCliSetupPath = './.github-actions/.github/actions/setup-gh-cli';
+
+test('every release job that calls GitHub CLI installs the pinned CLI first', () => {
+  const release = readWorkflow('release.yml');
+  const ghJobs = Object.entries(release.jobs).filter(([, job]) =>
+    (job.steps ?? []).some((step) =>
+      /\bgh\s+(?:api|attestation|release|workflow)\b|latest-published-release-tag\.sh/u.test(
+        step.run ?? ''
+      )
+    )
+  );
+
+  assert.ok(ghJobs.length > 0, 'release workflow should exercise GitHub CLI');
+  for (const [jobName, job] of ghJobs) {
+    const setupIndex = job.steps.findIndex(
+      (step) => step.uses === ghCliSetupPath
+    );
+    const checkoutIndex = job.steps.findIndex(
+      (step) =>
+        step.uses ===
+          'actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1' &&
+        step.with?.repository === 'snapetech-org/seerrng' &&
+        step.with?.ref === ghCliSetupCommit &&
+        step.with?.path === '.github-actions'
+    );
+    const commandIndex = job.steps.findIndex((step) =>
+      /\bgh\s+(?:api|attestation|release|workflow)\b|latest-published-release-tag\.sh/u.test(
+        step.run ?? ''
+      )
+    );
+
+    assert.ok(
+      checkoutIndex >= 0 &&
+        checkoutIndex < setupIndex &&
+        setupIndex < commandIndex,
+      `${jobName} must check out and install the pinned GitHub CLI before using it`
+    );
+  }
+});
 
 test('release assets build while image verification runs, then package channels wait for both', () => {
   const release = readWorkflow('release.yml');
@@ -147,10 +187,13 @@ test('release assets build while image verification runs, then package channels 
     launchpadDispatch.if,
     /needs\.publish-release\.result == 'success'/u
   );
-  assert.match(launchpadDispatch.steps[0].run, /release-ppa\.yml/u);
-  assert.match(launchpadDispatch.steps[0].run, /SKIP_LAUNCHPAD_DISPATCH/u);
+  const launchpadStep = launchpadDispatch.steps.find(
+    (step) => step.name === 'Dispatch Launchpad PPA'
+  );
+  assert.match(launchpadStep.run, /release-ppa\.yml/u);
+  assert.match(launchpadStep.run, /SKIP_LAUNCHPAD_DISPATCH/u);
   assert.match(
-    launchpadDispatch.steps[0].run,
+    launchpadStep.run,
     /could not be dispatched for the already-published release/u
   );
   assert.equal(
@@ -626,6 +669,31 @@ test('multi-architecture publishers perform the real build once and verify the i
     ).run,
     /needs\.publish\.outputs\.image_digest/u
   );
+});
+
+test('release validation installs Node before running its alias-policy check', () => {
+  const validation = readWorkflow('release.yml').jobs['validate-main-tag'];
+  const nodeSetupIndex = validation.steps.findIndex((step) =>
+    step.uses?.startsWith('actions/setup-node@')
+  );
+  const aliasPolicyIndex = validation.steps.findIndex(
+    (step) => step.name === 'Verify stable container alias policy'
+  );
+
+  assert.ok(nodeSetupIndex >= 0);
+  assert.equal(
+    validation.steps[nodeSetupIndex].uses,
+    'actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1'
+  );
+  assert.equal(
+    validation.steps[nodeSetupIndex].with['node-version-file'],
+    'package.json'
+  );
+  assert.equal(
+    validation.steps[nodeSetupIndex].with['package-manager-cache'],
+    false
+  );
+  assert.ok(nodeSetupIndex < aliasPolicyIndex);
 });
 
 test('release publishing admits only tag pushes and main-branch retries', () => {

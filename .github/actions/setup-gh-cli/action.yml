@@ -1,0 +1,35 @@
+name: Set up pinned GitHub CLI
+description: Install the verified GitHub CLI binary for private release runners.
+runs:
+  using: composite
+  steps:
+    - name: Install GitHub CLI
+      shell: bash
+      run: |
+        set -euo pipefail
+        if [[ "${RUNNER_OS:-}" != 'Linux' || "${RUNNER_ARCH:-}" != 'X64' ]]; then
+          echo 'The pinned GitHub CLI installer currently supports Linux x64 runners.' >&2
+          exit 1
+        fi
+
+        version='2.102.1'
+        archive_name="gh_${version}_linux_amd64.tar.gz"
+        install_root="${RUNNER_TEMP}/github-cli-${version}"
+        archive="${install_root}/${archive_name}"
+        mkdir -p "$install_root"
+        curl --fail --location --silent --show-error \
+          --retry 3 --retry-delay 2 --retry-connrefused \
+          "https://github.com/cli/cli/releases/download/v${version}/${archive_name}" \
+          --output "$archive"
+        expected_checksum='77b9e297e94c50336823d0f84de7ef1be60cba704601fa0d98f129f47a94987'
+        checksum_output="$(sha256sum "$archive")"
+        actual_checksum="${checksum_output%% *}"
+        if [[ "$actual_checksum" != "$expected_checksum" ]]; then
+          echo 'The downloaded GitHub CLI archive failed SHA-256 verification.' >&2
+          exit 1
+        fi
+        tar --extract --gzip --file "$archive" --directory "$install_root" --no-same-owner
+        bin_directory="${install_root}/gh_${version}_linux_amd64/bin"
+        test -x "${bin_directory}/gh"
+        printf '%s\n' "$bin_directory" >> "$GITHUB_PATH"
+        "${bin_directory}/gh" --version
