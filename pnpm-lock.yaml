@@ -66,7 +66,7 @@ importers:
     dependencies:
       '@anthropic-ai/sdk':
         specifier: 0.131.0
-        version: 0.131.0(zod@4.6.4)
+        version: 0.131.0(zod@4.6.6)
       '@dr.pogodin/csurf':
         specifier: ^1.17.1
         version: 1.17.1
@@ -296,8 +296,8 @@ importers:
         specifier: 1.7.1
         version: 1.7.1
       zod:
-        specifier: 4.6.4
-        version: 4.6.4
+        specifier: 4.6.6
+        version: 4.6.6
     devDependencies:
       '@commitlint/cli':
         specifier: 21.2.2
@@ -7421,8 +7421,8 @@ packages:
     peerDependencies:
       zod: ^3.25.0 || ^4.0.0
 
-  zod@4.6.4:
-    resolution: {integrity: sha512-AXSD6hvGdvRjajG/l1cC+d6IrhH+sjmPKtYeQdJIK8MFJl3LyClzS+o/YsVC+zQZPupAaeH5skwwm8YqYH7BqA==}
+  zod@4.6.6:
+    resolution: {integrity: sha512-4UmzQUF5fxvfcYHlbjBmejU+w+hbDnWFx4aS8kBx7nPBHcO2SqPbpAG8snbdg+Xse4pRefR98hgjFgIMCI/UhA==}
 
   zustand@4.5.7:
     resolution: {integrity: sha512-CHOUy7mu3lbD6o6LJLfllpjkzhHXSBlX8B9+qPddUsIfeF5S/UZ5q0kmCsnRqT1UHFQZchNFDDzMbQsuesHWlw==}
@@ -7446,12 +7446,12 @@ snapshots:
 
   '@alloc/quick-lru@5.3.0': {}
 
-  '@anthropic-ai/sdk@0.131.0(zod@4.6.4)':
+  '@anthropic-ai/sdk@0.131.0(zod@4.6.6)':
     dependencies:
       json-schema-to-ts: 3.1.1
       standardwebhooks: 1.1.1
     optionalDependencies:
-      zod: 4.6.4
+      zod: 4.6.6
 
   '@apidevtools/json-schema-ref-parser@14.2.1(@types/json-schema@7.0.15)':
     dependencies:
@@ -11199,8 +11199,8 @@ snapshots:
       '@babel/parser': 7.29.8
       eslint: 10.10.0(jiti@2.7.0)
       hermes-parser: 0.25.1
-      zod: 4.6.4
-      zod-validation-error: 4.0.2(zod@4.6.4)
+      zod: 4.6.6
+      zod-validation-error: 4.0.2(zod@4.6.6)
     transitivePeerDependencies:
       - supports-color
 
@@ -14970,11 +14970,11 @@ snapshots:
       toposort: 2.0.2
       type-fest: 2.19.0
 
-  zod-validation-error@4.0.2(zod@4.6.4):
+  zod-validation-error@4.0.2(zod@4.6.6):
     dependencies:
-      zod: 4.6.4
+      zod: 4.6.6
 
-  zod@4.6.4: {}
+  zod@4.6.6: {}
 
   zustand@4.5.7(@types/react@19.3.0)(react@19.3.0):
     dependencies:
