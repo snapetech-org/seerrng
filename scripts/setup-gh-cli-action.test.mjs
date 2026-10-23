@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
-import { fileURLToPath } from 'node:url';
 import test from 'node:test';
+import { fileURLToPath } from 'node:url';
 
 const actionPath = fileURLToPath(
   new URL('../.github/actions/setup-gh-cli/action.yml', import.meta.url)

@@ -341,9 +341,14 @@ test('unit-test shards use the shared pool only for trusted main runs', () => {
   );
   const runner = ciWorkflow.jobs['unit-test']?.['runs-on'];
   assert.match(runner, /ng-shared-main-jit/u);
-  assert.match(runner, /github.event_name == 'push'/u);
-  assert.match(runner, /github.event_name == 'workflow_dispatch'/u);
+  assert.match(runner, /contains\(fromJSON/u);
+  assert.match(runner, /"push"/u);
+  assert.match(runner, /"workflow_dispatch"/u);
   assert.match(runner, /github.ref == 'refs\/heads\/main'/u);
+  assert.match(
+    runner,
+    /github\.ref_type == 'tag'[\s\S]*startsWith\(github\.ref_name, 'v'\)/u
+  );
   assert.match(runner, /\|\| 'ubuntu-latest'/u);
   assert.equal(ciWorkflow.jobs['unit-test']?.strategy?.['max-parallel'], 4);
   assert.equal(ciWorkflow.jobs['preflight-deploy'], undefined);
@@ -358,9 +363,15 @@ test('main validation and image scanning use the shared pool on trusted runs', (
   for (const jobName of ['release-notes', 'scan-main-image']) {
     const runner = ciWorkflow.jobs[jobName]?.['runs-on'];
     assert.match(runner, /ng-shared-main-jit/u, jobName);
-    assert.match(runner, /github.event_name == 'push'/u, jobName);
-    assert.match(runner, /github.event_name == 'workflow_dispatch'/u, jobName);
+    assert.match(runner, /contains\(fromJSON/u, jobName);
+    assert.match(runner, /"push"/u, jobName);
+    assert.match(runner, /"workflow_dispatch"/u, jobName);
     assert.match(runner, /github.ref == 'refs\/heads\/main'/u, jobName);
+    assert.match(
+      runner,
+      /github\.ref_type == 'tag'[\s\S]*startsWith\(github\.ref_name, 'v'\)/u,
+      jobName
+    );
     assert.match(runner, /\|\| 'ubuntu-latest'/u, jobName);
   }
   for (const [workflowName, jobName] of [
@@ -372,13 +383,13 @@ test('main validation and image scanning use the shared pool on trusted runs', (
     );
     const runner = scanWorkflow.jobs[jobName]?.['runs-on'];
     assert.match(runner, /ng-shared-main-jit/u, workflowName);
-    assert.match(runner, /github.event_name == 'push'/u, workflowName);
+    assert.match(runner, /github\.event_name == 'push'/u, workflowName);
     assert.match(
       runner,
-      /github.event_name == 'workflow_dispatch'/u,
+      /github\.event_name == 'workflow_dispatch'/u,
       workflowName
     );
-    assert.match(runner, /github.event_name == 'schedule'/u, workflowName);
+    assert.match(runner, /github\.event_name == 'schedule'/u, workflowName);
     assert.match(runner, /github.ref == 'refs\/heads\/main'/u, workflowName);
     assert.match(runner, /\|\| 'ubuntu-latest'/u, workflowName);
   }
@@ -419,7 +430,7 @@ test('shared runner jobs use SeerrNG and exact-run labels', () => {
       if (!['release.yml', 'release-assets.yml'].includes(filename)) {
         assert.match(
           runner,
-          /github\.event_name == 'push'/u,
+          /github\.event_name == 'push'|"push"/u,
           `${filename}/${jobName}`
         );
       }

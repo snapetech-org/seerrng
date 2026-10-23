@@ -161,18 +161,22 @@ export function changedReleaseNoteFiles(base, head, cwd = process.cwd()) {
     { cwd, encoding: 'utf8' }
   );
 
-  return output
-    .split('\n')
-    .filter(Boolean)
-    .map((line) => {
-      const columns = line.split('\t');
-      const status = columns[0] ?? '';
-      const file = status.startsWith('R') ? columns[2] : columns[1];
-      return { status: status.charAt(0), file };
-    })
-    // Removing fragments that are already represented in the published
-    // changelog is archival cleanup, not an edit to an upcoming release note.
-    .filter(({ status, file }) => status !== 'D' && file && isReleaseNotePath(file));
+  return (
+    output
+      .split('\n')
+      .filter(Boolean)
+      .map((line) => {
+        const columns = line.split('\t');
+        const status = columns[0] ?? '';
+        const file = status.startsWith('R') ? columns[2] : columns[1];
+        return { status: status.charAt(0), file };
+      })
+      // Removing fragments that are already represented in the published
+      // changelog is archival cleanup, not an edit to an upcoming release note.
+      .filter(
+        ({ status, file }) => status !== 'D' && file && isReleaseNotePath(file)
+      )
+  );
 }
 
 export function isReleaseNoteShipped(file, head, cwd = process.cwd()) {

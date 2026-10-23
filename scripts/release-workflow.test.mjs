@@ -3,8 +3,8 @@ import fs from 'node:fs';
 import { createRequire } from 'node:module';
 import path from 'node:path';
 import test from 'node:test';
-import { runInNewContext } from 'node:vm';
 import { fileURLToPath } from 'node:url';
+import { runInNewContext } from 'node:vm';
 
 import * as yaml from 'js-yaml';
 import { splitDiscordReleaseBody } from './discord-release-notes.mjs';
@@ -1169,7 +1169,7 @@ test('trusted main release retries use the private runner pools', () => {
   const release = readWorkflow('release.yml');
   const assets = readWorkflow('release-assets.yml');
   const trustedReleaseRunnerPattern =
-    /github\.event_name == 'workflow_dispatch'[\s\S]*github\.ref == 'refs\/heads\/main'[\s\S]*ng-shared-main-jit[\s\S]*ng-shared-main-seerrng[\s\S]*github\.run_id[\s\S]*\|\| 'ubuntu-latest'/u;
+    /contains\(fromJSON\('[\s\S]*?'\), github\.event_name\)[\s\S]*github\.ref == 'refs\/heads\/main'[\s\S]*github\.ref_type == 'tag'[\s\S]*startsWith\(github\.ref_name, 'v'\)[\s\S]*ng-shared-main-jit[\s\S]*ng-shared-main-seerrng[\s\S]*github\.run_id[\s\S]*\|\| 'ubuntu-latest'/u;
   const releaseJobs = Object.values(release.jobs).filter(
     (job) => typeof job['runs-on'] === 'string'
   );
@@ -1260,13 +1260,22 @@ test('trusted main Linux releases use private runners and preserve platform boun
     runInNewContext(
       expression.slice(3, -2),
       {
-        github: { event_name: event, ref, run_attempt: attempt, run_id: 123 },
+        github: {
+          event_name: event,
+          ref,
+          ref_type: ref.startsWith('refs/tags/') ? 'tag' : 'branch',
+          ref_name: ref.replace(/^refs\/(?:heads|tags)\//u, ''),
+          run_attempt: attempt,
+          run_id: 123,
+        },
         matrix: { os, arch, runner: 'hosted-platform' },
         vars: {
           NG_HOSTED_FIRST: hostedFirst ? 'true' : 'false',
           NG_FORCE_JIT: forceJit ? 'true' : 'false',
         },
         fromJSON: JSON.parse,
+        contains: (values, value) => values.includes(value),
+        startsWith: (value, prefix) => value.startsWith(prefix),
         format: (template, id) =>
           template
             .replaceAll('{{', '{')
@@ -1288,7 +1297,10 @@ test('trusted main Linux releases use private runners and preserve platform boun
     'ng-shared-main-jit'
   );
   assert.equal(route({ os: 'macos' }).group, 'private-apple-builds');
-  assert.equal(route({ os: 'macos', attempt: 2 }).group, 'private-apple-builds');
+  assert.equal(
+    route({ os: 'macos', attempt: 2 }).group,
+    'private-apple-builds'
+  );
   assert.equal(route({ os: 'macos', hostedFirst: true }), 'hosted-platform');
   assert.equal(
     route({ os: 'macos', hostedFirst: true, forceJit: true }).group,
@@ -1296,7 +1308,14 @@ test('trusted main Linux releases use private runners and preserve platform boun
   );
   assert.equal(route({ arch: 'arm64' }), 'hosted-platform');
   assert.equal(route({ event: 'pull_request', attempt: 2 }), 'hosted-platform');
-  assert.equal(route({ ref: 'refs/tags/v1.0.0' }), 'hosted-platform');
+  assert.equal(
+    route({ event: 'push', ref: 'refs/tags/v1.0.0' }).group,
+    'ng-shared-main-jit'
+  );
+  assert.equal(
+    route({ event: 'push', ref: 'refs/tags/release-1.0.0' }),
+    'hosted-platform'
+  );
 });
 
 test('trusted main iOS validation uses the private Apple runner', () => {
@@ -1522,4 +1541,3 @@ test('git-cliff uses stable semantic-version tags as release boundaries', () => 
   assert.equal(matchesTag.test('mobile-v3.63.0-ci.36'), false);
   assert.equal(matchesTag.test('v3.63.0-rc.1'), false);
 });
-
