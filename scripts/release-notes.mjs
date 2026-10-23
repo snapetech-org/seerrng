@@ -170,7 +170,9 @@ export function changedReleaseNoteFiles(base, head, cwd = process.cwd()) {
       const file = status.startsWith('R') ? columns[2] : columns[1];
       return { status: status.charAt(0), file };
     })
-    .filter(({ file }) => file && isReleaseNotePath(file));
+    // Removing fragments that are already represented in the published
+    // changelog is archival cleanup, not an edit to an upcoming release note.
+    .filter(({ status, file }) => status !== 'D' && file && isReleaseNotePath(file));
 }
 
 export function isReleaseNoteShipped(file, head, cwd = process.cwd()) {

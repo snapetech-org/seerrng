@@ -54,7 +54,7 @@ jobs:
   resolve:
     name: Validate release tag
     if: github.event_name != 'workflow_dispatch' || github.ref == 'refs/heads/main'
-    runs-on: ubuntu-latest
+    runs-on: ${{ (github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main') && fromJSON(format('{{"group":"ng-shared-main-jit","labels":["self-hosted","linux","x64","ng-shared-main-seerrng","ng-main-run-{0}"]}}', github.run_id)) || 'ubuntu-latest' }}
     outputs:
       tag: ${{ steps.version.outputs.tag }}
     steps:
@@ -89,7 +89,7 @@ jobs:
   build:
     name: Build ${{ matrix.os }} ${{ matrix.arch }}
     needs: resolve
-    runs-on: ${{ matrix.runner }}
+    runs-on: ${{ matrix.os == 'linux' && matrix.arch == 'x64' && github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main' && fromJSON(format('{{"group":"ng-shared-main-jit","labels":["self-hosted","linux","x64","ng-shared-main-seerrng","ng-main-run-{0}"]}}', github.run_id)) || matrix.runner }}
     timeout-minutes: 45
     permissions:
       actions: read
@@ -263,7 +263,7 @@ jobs:
   build-android:
     name: Build Android APK
     needs: resolve
-    runs-on: ubuntu-latest
+    runs-on: ${{ (github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main') && fromJSON(format('{{"group":"ng-shared-main-jit","labels":["self-hosted","linux","x64","ng-shared-main-seerrng","ng-main-run-{0}"]}}', github.run_id)) || 'ubuntu-latest' }}
     timeout-minutes: 30
     permissions:
       actions: read
@@ -383,7 +383,7 @@ jobs:
   build-jellyfin-plugin:
     name: Build optional Jellyfin plugin
     needs: resolve
-    runs-on: ubuntu-latest
+    runs-on: ${{ (github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main') && fromJSON(format('{{"group":"ng-shared-main-jit","labels":["self-hosted","linux","x64","ng-shared-main-seerrng","ng-main-run-{0}"]}}', github.run_id)) || 'ubuntu-latest' }}
     permissions:
       actions: read
       contents: read
@@ -477,7 +477,7 @@ jobs:
   publish:
     name: Upload release assets
     needs: [resolve, build, build-android, build-ios, build-jellyfin-plugin]
-    runs-on: ubuntu-latest
+    runs-on: ${{ (github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main') && fromJSON(format('{{"group":"ng-shared-main-jit","labels":["self-hosted","linux","x64","ng-shared-main-seerrng","ng-main-run-{0}"]}}', github.run_id)) || 'ubuntu-latest' }}
     permissions:
       actions: read
       contents: write

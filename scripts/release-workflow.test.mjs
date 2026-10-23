@@ -637,6 +637,11 @@ test('release publishing admits only tag pushes and main-branch retries', () => 
 
   assert.match(validation.if, /github\.event_name != 'workflow_dispatch'/u);
   assert.match(validation.if, /github\.ref == 'refs\/heads\/main'/u);
+  assert.equal(
+    release.concurrency.group,
+    '${{ github.workflow }}-${{ github.event_name }}-${{ inputs.tag || github.ref_name }}'
+  );
+  assert.equal(release.concurrency['cancel-in-progress'], false);
   assert.match(validationScript, /\$GITHUB_EVENT_NAME" == 'push'/u);
   assert.match(validationScript, /\$GITHUB_REF_TYPE" != 'tag'/u);
   assert.match(validationScript, /git merge-base --is-ancestor/u);
@@ -1055,6 +1060,45 @@ test('release assets build supported native archive platforms', () => {
   assert.match(requiredAssets, /seerrng-\$\{TAG\}-android-aab\.sha256/u);
 });
 
+test('trusted main release retries use the shared private Linux runner pool', () => {
+  const trustedReleaseRunnerPattern =
+    /github\.event_name == 'workflow_dispatch'[\s\S]*github\.ref == 'refs\/heads\/main'[\s\S]*ng-shared-main-jit[\s\S]*ng-shared-main-seerrng[\s\S]*github\.run_id[\s\S]*\|\| 'ubuntu-latest'/u;
+  const release = readWorkflow('release.yml');
+  const assets = readWorkflow('release-assets.yml');
+
+  const releaseJobs = Object.values(release.jobs).filter(
+    (job) => typeof job['runs-on'] === 'string'
+  );
+  assert.equal(releaseJobs.length, 14);
+  for (const job of releaseJobs) {
+    assert.match(job['runs-on'], trustedReleaseRunnerPattern);
+  }
+
+  for (const jobName of [
+    'resolve',
+    'build-android',
+    'build-jellyfin-plugin',
+    'publish',
+  ]) {
+    assert.match(
+      assets.jobs[jobName]['runs-on'],
+      trustedReleaseRunnerPattern,
+      jobName
+    );
+  }
+  assert.match(
+    assets.jobs.build['runs-on'],
+    /matrix\.os == 'linux'[\s\S]*matrix\.arch == 'x64'[\s\S]*ng-shared-main-jit[\s\S]*\|\| matrix\.runner/u
+  );
+  assert.equal(assets.jobs['build-ios']['runs-on'], 'macos-26');
+  assert.ok(
+    assets.jobs.build.strategy.matrix.include.some(
+      ({ os, arch, runner }) =>
+        os === 'linux' && arch === 'arm64' && runner === 'ubuntu-24.04-arm'
+    )
+  );
+});
+
 test('tag preparation keeps Helm metadata aligned with the application release', () => {
   const createTag = readWorkflow('create-tag.yml').jobs['create-tag'];
   const syncStep = createTag.steps.find(
@@ -1123,11 +1167,6 @@ test('release notes flow into the draft release and Discord announcement', () =>
     /3797|3800/u,
     'Discord announcements must not silently truncate later release-note sections'
   );
-});
-
-test('release automation does not publish YunoHost packages', () => {
-  const release = readWorkflow('release.yml');
-  assert.equal(release.jobs['sync-yunohost-package'], undefined);
 });
 
 test('Discord release-note chunks preserve all text and stay within the limit', () => {

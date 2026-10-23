@@ -630,7 +630,7 @@ documentation/API commit.
 A fresh fetch advanced `origin/main` from
 `f32232a58972e70e7d7862ef3199e3a33b662c50` to
 `4665245f97a90d546a94eb25fdcd4c91104bfd7b`. Its sole change relative to the
-candidate base is the YunoHost manifest update. The seven candidate commits
+candidate base is the legacy packaging manifest update. The seven candidate commits
 were rebased onto that target without conflicts; recovery ref
 `recovery/all-dirty-before-main-4665245` preserves the original candidate tip.
 The source commits after rebase are:
@@ -763,7 +763,7 @@ The production server ran from the isolated build worktree
 service credentials or databases were used.
 
 After publication, `origin/main` advanced to
-`6d54a07bce12e222096a9ba5a34add8709bd39e8` for an internal YunoHost manifest
+`6d54a07bce12e222096a9ba5a34add8709bd39e8` for an internal legacy package manifest
 alignment. The Cypress repair is not yet integrated on that new main tip. Before
 finalizing a follow-up candidate, preserve its source checkpoint, forward
 integrate the latest main and any completed bundle repair, then rerun the exact

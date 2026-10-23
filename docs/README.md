@@ -20,7 +20,6 @@ connects to.
 - [Docker installation](/getting-started/docker/)
 - [Kubernetes installation](/getting-started/kubernetes/)
 - [Unraid installation](/getting-started/third-parties/unraid)
-- [Legacy YunoHost deployment](/getting-started/third-parties/yunohost)
 - [Cross-platform setup assistant](/using-seerr/setup-assistant)
 - [Troubleshooting](/troubleshooting/)
 

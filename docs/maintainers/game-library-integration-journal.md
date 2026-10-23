@@ -180,7 +180,7 @@ review was tracked separately from these automated results.
   the staged ESLint and formatting hook passed before the commit was created.
 - The branch was rebased without conflicts onto `origin/main`
   `4665245f97a90d546a94eb25fdcd4c91104bfd7b`; its only intervening change is
-  the YunoHost manifest. The source commit is now
+  the legacy packaging manifest. The source commit is now
   `a393ab927550b5069078e24b67db2ca66c44e0cc`.
 - The rebase plan selects 99 Vitest, 385 native TypeScript, 56 native
   JavaScript, and 32 tooling files with zero declared platform exclusions.

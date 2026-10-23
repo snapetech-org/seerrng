@@ -372,7 +372,7 @@ status was pending in this historical record.
   their own commits and release fragments.
 - The branch was rebased without conflicts onto `origin/main`
   `4665245f97a90d546a94eb25fdcd4c91104bfd7b`; its only intervening change is
-  the YunoHost manifest. The source commit is now
+  the legacy packaging manifest. The source commit is now
   `23e84d7aa462d6da6c5293fa8d84b2adfe11e282`.
 - Final integrated validation, production build, and disposable reader browser
   flow are pending; prior validation and screenshots do not cover that target.

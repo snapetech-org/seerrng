@@ -289,6 +289,16 @@ test('release-note range discovery distinguishes additions from edits', () => {
           .toString()
           .includes('release-note fragments are append-only')
     );
+
+    runGit('tag', 'v3.0.2', thirdHead);
+    runGit('rm', '--quiet', 'release-notes/books.md');
+    runGit('commit', '--quiet', '-m', 'chore: archive shipped release note');
+    const fourthHead = runGit('rev-parse', 'HEAD');
+    assert.deepEqual(
+      changedReleaseNoteFiles(thirdHead, fourthHead, repository),
+      [],
+      'archiving a fragment already represented by a published tag must not affect the next release'
+    );
   } finally {
     fs.rmSync(repository, { recursive: true, force: true });
   }

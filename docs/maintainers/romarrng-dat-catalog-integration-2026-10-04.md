@@ -9,7 +9,7 @@
 - Latest SeerrNG branch evidence update: `48000359b`.
 - ROMarrNG base: `503106f74070aa36ce6be62888382678e87aa933`.
 - ROMarrNG integration commit: `1495853becee3df54215a1fa06f82510c1314b4d`.
-- ROMarrNG release workflow: [v0.14.0](https://github.com/snapetech-org/ROMarrNG/releases/tag/v0.14.0), [run 37223240019](https://github.com/snapetech-org/ROMarrNG/actions/runs/37223240019) completed successfully. Its separate YunoHost sync workflow failed because its checkout path was outside the GitHub Actions workspace; this did not block the release.
+- ROMarrNG release workflow: [v0.14.0](https://github.com/snapetech-org/ROMarrNG/releases/tag/v0.14.0), [run 37223240019](https://github.com/snapetech-org/ROMarrNG/actions/runs/37223240019) completed successfully. Its separate external packaging sync failed because its checkout path was outside the GitHub Actions workspace; this did not block the release.
 
 ## Implemented contract and security review
 

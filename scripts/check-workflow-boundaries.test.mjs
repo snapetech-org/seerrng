@@ -416,11 +416,13 @@ test('shared runner jobs use SeerrNG and exact-run labels', () => {
         /github\.ref == 'refs\/heads\/main'/u,
         `${filename}/${jobName}`
       );
-      assert.match(
-        runner,
-        /github\.event_name == 'push'/u,
-        `${filename}/${jobName}`
-      );
+      if (!['release.yml', 'release-assets.yml'].includes(filename)) {
+        assert.match(
+          runner,
+          /github\.event_name == 'push'/u,
+          `${filename}/${jobName}`
+        );
+      }
     }
   }
   assert.ok(sharedRunnerCount > 0);
