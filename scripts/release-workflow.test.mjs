@@ -639,7 +639,7 @@ test('release publishing admits only tag pushes and main-branch retries', () => 
   assert.match(validation.if, /github\.ref == 'refs\/heads\/main'/u);
   assert.equal(
     release.concurrency.group,
-    '${{ github.workflow }}-${{ github.event_name }}-${{ inputs.tag || github.ref_name }}'
+    '${{ github.workflow }}-${{ github.event_name }}-${{ inputs.tag || github.ref_name }}-${{ github.run_id }}'
   );
   assert.equal(release.concurrency['cancel-in-progress'], false);
   assert.match(validationScript, /\$GITHUB_EVENT_NAME" == 'push'/u);
@@ -935,7 +935,9 @@ test('release assets build supported native archive platforms', () => {
   );
   const iosBuild = assets.jobs['build-ios'];
   assert.equal(iosBuild.needs, 'resolve');
-  assert.equal(iosBuild['runs-on'], 'macos-26');
+  assert.match(iosBuild['runs-on'], /private-apple-builds/u);
+  assert.match(iosBuild['runs-on'], /github\.event_name == 'workflow_dispatch'/u);
+  assert.match(iosBuild['runs-on'], /github\.ref == 'refs\/heads\/main'/u);
   const iosToolchainCheck = iosBuild.steps.find(
     (step) => step.name === 'Verify Xcode release toolchain'
   ).run;
@@ -1060,7 +1062,7 @@ test('release assets build supported native archive platforms', () => {
   assert.match(requiredAssets, /seerrng-\$\{TAG\}-android-aab\.sha256/u);
 });
 
-test('trusted main release retries use the shared private Linux runner pool', () => {
+test('trusted main release retries use the private runner pools', () => {
   const trustedReleaseRunnerPattern =
     /github\.event_name == 'workflow_dispatch'[\s\S]*github\.ref == 'refs\/heads\/main'[\s\S]*ng-shared-main-jit[\s\S]*ng-shared-main-seerrng[\s\S]*github\.run_id[\s\S]*\|\| 'ubuntu-latest'/u;
   const release = readWorkflow('release.yml');
@@ -1088,9 +1090,18 @@ test('trusted main release retries use the shared private Linux runner pool', ()
   }
   assert.match(
     assets.jobs.build['runs-on'],
-    /matrix\.os == 'linux'[\s\S]*matrix\.arch == 'x64'[\s\S]*ng-shared-main-jit[\s\S]*\|\| matrix\.runner/u
+    /matrix\.os == 'macos'[\s\S]*private-apple-builds[\s\S]*matrix\.os == 'linux'[\s\S]*matrix\.arch == 'x64'[\s\S]*ng-shared-main-jit[\s\S]*\|\| matrix\.runner/u
   );
-  assert.equal(assets.jobs['build-ios']['runs-on'], 'macos-26');
+  assert.match(
+    assets.jobs['build-ios']['runs-on'],
+    /github\.event_name == 'workflow_dispatch'[\s\S]*private-apple-builds[\s\S]*\|\| 'macos-26'/u
+  );
+  assert.equal(
+    assets.jobs.build.steps.find((step) =>
+      step.uses?.startsWith('actions/setup-node@')
+    ).with.architecture,
+    '${{ matrix.arch }}'
+  );
   assert.ok(
     assets.jobs.build.strategy.matrix.include.some(
       ({ os, arch, runner }) =>

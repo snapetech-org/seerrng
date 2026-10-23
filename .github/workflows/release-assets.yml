@@ -89,7 +89,7 @@ jobs:
   build:
     name: Build ${{ matrix.os }} ${{ matrix.arch }}
     needs: resolve
-    runs-on: ${{ matrix.os == 'linux' && matrix.arch == 'x64' && github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main' && fromJSON(format('{{"group":"ng-shared-main-jit","labels":["self-hosted","linux","x64","ng-shared-main-seerrng","ng-main-run-{0}"]}}', github.run_id)) || matrix.runner }}
+    runs-on: ${{ matrix.os == 'macos' && github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main' && fromJSON(format('{{"group":"private-apple-builds","labels":["self-hosted","macOS","ARM64","private-apple"]}}')) || (matrix.os == 'linux' && matrix.arch == 'x64' && github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main' && fromJSON(format('{{"group":"ng-shared-main-jit","labels":["self-hosted","linux","x64","ng-shared-main-seerrng","ng-main-run-{0}"]}}', github.run_id)) || matrix.runner) }}
     timeout-minutes: 45
     permissions:
       actions: read
@@ -146,6 +146,7 @@ jobs:
         if: inputs.reuse_from_run_id == '' || (matrix.os == 'windows' && matrix.arch == 'x64' && inputs.reuse_windows_x64_artifact != true) || (matrix.os == 'windows' && matrix.arch == 'arm64' && inputs.reuse_windows_arm64_artifact != true)
         with:
           node-version-file: 'package.json'
+          architecture: ${{ matrix.arch }}
           package-manager-cache: false
 
       - name: Checkout release tooling
@@ -305,7 +306,7 @@ jobs:
   build-ios:
     name: Build iOS Simulator release package
     needs: resolve
-    runs-on: macos-26
+    runs-on: ${{ (github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main') && fromJSON(format('{{"group":"private-apple-builds","labels":["self-hosted","macOS","ARM64","private-apple"]}}')) || 'macos-26' }}
     timeout-minutes: 60
     permissions:
       actions: read

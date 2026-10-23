@@ -42,8 +42,8 @@ permissions:
   contents: read
 
 concurrency:
-  # Keep a trusted main-branch retry from replacing a queued tag-push release.
-  group: ${{ github.workflow }}-${{ github.event_name }}-${{ inputs.tag || github.ref_name }}
+  # A stale queued retry must not hold the concurrency slot for the current main head.
+  group: ${{ github.workflow }}-${{ github.event_name }}-${{ inputs.tag || github.ref_name }}-${{ github.run_id }}
   cancel-in-progress: false
 
 env:
