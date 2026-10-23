@@ -104,7 +104,11 @@ test('release assets build while image verification runs, then package channels 
     IOS_APPSTORE_PROVISIONING_PROFILE_BASE64:
       '${{ secrets.IOS_APPSTORE_PROVISIONING_PROFILE_BASE64 }}',
   });
-  assert.deepEqual(packageDispatch.needs, ['verify', 'build-release-assets']);
+  assert.deepEqual(packageDispatch.needs, [
+    'validate-main-tag',
+    'verify',
+    'build-release-assets',
+  ]);
   assert.equal(packageDispatch['timeout-minutes'], 360);
   assert.match(dispatchScript, /--ref main/u);
   assert.match(dispatchScript, /release-chocolatey\.yml/u);
@@ -175,6 +179,7 @@ test('release assets build while image verification runs, then package channels 
     'package inventory must inspect draft releases through the GitHub CLI'
   );
   assert.deepEqual(publishRelease.needs, [
+    'validate-main-tag',
     'create-draft-release',
     'verify',
     'build-release-assets',
@@ -215,6 +220,37 @@ test('release assets build while image verification runs, then package channels 
     discordStep.run,
     /curl --fail --silent --show-error/u,
     'Discord delivery must fail the release when the webhook returns HTTP error'
+  );
+});
+
+test('manual release recovery cannot rebuild product outputs', () => {
+  const release = readWorkflow('release.yml');
+  const assets = readWorkflow('release-assets.yml');
+  for (const jobName of [
+    'changelog',
+    'create-draft-release',
+    'publish',
+    'scan-release-image',
+    'sign',
+    'verify',
+    'build-release-assets',
+    'dispatch-chocolatey',
+    'announce-discord',
+  ]) {
+    assert.match(
+      release.jobs[jobName].if,
+      /github\.event_name == 'push'/u,
+      `${jobName} must only run for the pushed-tag release`
+    );
+  }
+  assert.equal(assets.on.workflow_dispatch, undefined);
+  assert.match(
+    release.jobs['dispatch-package-channels'].if,
+    /inputs\.reuse_from_run_id != ''/u
+  );
+  assert.match(
+    release.jobs['publish-release'].if,
+    /inputs\.reuse_from_run_id != ''/u
   );
 });
 

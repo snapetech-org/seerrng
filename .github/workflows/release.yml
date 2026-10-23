@@ -104,8 +104,22 @@ jobs:
 
       - name: Ensure tag is on main
         shell: bash
+        env:
+          ANNOUNCE_SECURITY_CORRECTION: ${{ inputs.announce_security_correction }}
+          REUSE_FROM_RUN_ID: ${{ inputs.reuse_from_run_id }}
+          REUSE_PUBLISHED_IMAGE: ${{ inputs.reuse_published_image }}
         run: |
           set -euo pipefail
+          if [[ "$GITHUB_EVENT_NAME" == 'workflow_dispatch' && "$ANNOUNCE_SECURITY_CORRECTION" != true ]]; then
+            [[ -n "$REUSE_FROM_RUN_ID" ]] || {
+              echo 'Manual release recovery must reuse artifacts from a failed run for this exact tag.' >&2
+              exit 1
+            }
+            [[ "$REUSE_PUBLISHED_IMAGE" == true ]] || {
+              echo 'Manual release recovery must reuse the image already published for this exact tag.' >&2
+              exit 1
+            }
+          fi
           if [[ "$GITHUB_EVENT_NAME" == 'push' && "$GITHUB_REF_TYPE" != 'tag' ]]; then
             echo 'Release pushes must originate from a tag.' >&2
             exit 1
@@ -162,6 +176,34 @@ jobs:
           fi
 
           jobs="$(gh api "repos/$REPO/actions/runs/$REUSE_FROM_RUN_ID/jobs?per_page=100")"
+          jq -e '
+            ([.jobs[] | select(.conclusion == "failure") | .name] ==
+              ["Dispatch package channels"]) and
+            (([
+              "Validate main release tag",
+              "Generate changelog",
+              "Create draft release",
+              "Publish multi-arch manifests",
+              "Scan release image (linux/amd64)",
+              "Scan release image (linux/arm64)",
+              "Sign images and create SBOM attestations",
+              "Verify signatures and attestations",
+              "Build release assets / Validate release tag",
+              "Build release assets / Build linux x64",
+              "Build release assets / Build linux arm64",
+              "Build release assets / Build macos arm64",
+              "Build release assets / Build macos x64",
+              "Build release assets / Build windows x64",
+              "Build release assets / Build windows arm64",
+              "Build release assets / Build Android APK",
+              "Build release assets / Build iOS Simulator release package",
+              "Build release assets / Build optional Jellyfin plugin",
+              "Build release assets / Upload release assets"
+            ] - [.jobs[] | select(.conclusion == "success") | .name]) | length == 0)
+          ' <<<"$jobs" >/dev/null || {
+            echo 'Manual release recovery is only supported after the tagged release and all assets succeeded; use the original tag run to recover failed builds.' >&2
+            exit 1
+          }
           reuse_windows_arm64_artifact=false
           if jq -e '
             ([.jobs[] | select(.conclusion == "failure") | .name] ==
@@ -292,6 +334,7 @@ jobs:
 
   changelog:
     name: Generate changelog
+    if: github.event_name == 'push'
     needs: validate-main-tag
     timeout-minutes: 10
     runs-on: ${{ (vars.NG_HOSTED_FIRST != 'true' || vars.NG_FORCE_JIT == 'true' || github.run_attempt > 1) && (contains(fromJSON('["push","workflow_dispatch","schedule","release","repository_dispatch"]'), github.event_name) && (github.ref == 'refs/heads/main' || (github.ref_type == 'tag' && startsWith(github.ref_name, 'v')))) && fromJSON(format('{{"group":"ng-shared-main-jit","labels":["self-hosted","linux","x64","ng-shared-main-seerrng","ng-main-run-{0}"]}}', github.run_id)) || 'ubuntu-latest' }}
@@ -369,6 +412,7 @@ jobs:
 
   create-draft-release:
     name: Create draft release
+    if: github.event_name == 'push'
     timeout-minutes: 10
     runs-on: ${{ (vars.NG_HOSTED_FIRST != 'true' || vars.NG_FORCE_JIT == 'true' || github.run_attempt > 1) && (contains(fromJSON('["push","workflow_dispatch","schedule","release","repository_dispatch"]'), github.event_name) && (github.ref == 'refs/heads/main' || (github.ref_type == 'tag' && startsWith(github.ref_name, 'v')))) && fromJSON(format('{{"group":"ng-shared-main-jit","labels":["self-hosted","linux","x64","ng-shared-main-seerrng","ng-main-run-{0}"]}}', github.run_id)) || 'ubuntu-latest' }}
     permissions:
@@ -417,6 +461,7 @@ jobs:
 
   publish:
     name: Publish multi-arch manifests
+    if: github.event_name == 'push'
     needs: [validate-main-tag, create-draft-release]
     timeout-minutes: 90
     runs-on: ${{ (vars.NG_HOSTED_FIRST != 'true' || vars.NG_FORCE_JIT == 'true' || github.run_attempt > 1) && (contains(fromJSON('["push","workflow_dispatch","schedule","release","repository_dispatch"]'), github.event_name) && (github.ref == 'refs/heads/main' || (github.ref_type == 'tag' && startsWith(github.ref_name, 'v')))) && fromJSON(format('{{"group":"ng-shared-main-jit","labels":["self-hosted","linux","x64","ng-shared-main-seerrng","ng-main-run-{0}"]}}', github.run_id)) || 'ubuntu-latest' }}
@@ -588,6 +633,7 @@ jobs:
 
   scan-release-image:
     name: Scan release image (${{ matrix.platform }})
+    if: github.event_name == 'push'
     needs: publish
     runs-on: ${{ (vars.NG_HOSTED_FIRST != 'true' || vars.NG_FORCE_JIT == 'true' || github.run_attempt > 1) && (contains(fromJSON('["push","workflow_dispatch","schedule","release","repository_dispatch"]'), github.event_name) && (github.ref == 'refs/heads/main' || (github.ref_type == 'tag' && startsWith(github.ref_name, 'v')))) && fromJSON(format('{{"group":"ng-shared-main-jit","labels":["self-hosted","linux","x64","ng-shared-main-seerrng","ng-main-run-{0}"]}}', github.run_id)) || 'ubuntu-latest' }}
     timeout-minutes: 30
@@ -654,6 +700,7 @@ jobs:
 
   sign:
     name: Sign images and create SBOM attestations
+    if: github.event_name == 'push'
     needs: [publish, scan-release-image]
     timeout-minutes: 20
     runs-on: ${{ (vars.NG_HOSTED_FIRST != 'true' || vars.NG_FORCE_JIT == 'true' || github.run_attempt > 1) && (contains(fromJSON('["push","workflow_dispatch","schedule","release","repository_dispatch"]'), github.event_name) && (github.ref == 'refs/heads/main' || (github.ref_type == 'tag' && startsWith(github.ref_name, 'v')))) && fromJSON(format('{{"group":"ng-shared-main-jit","labels":["self-hosted","linux","x64","ng-shared-main-seerrng","ng-main-run-{0}"]}}', github.run_id)) || 'ubuntu-latest' }}
@@ -810,6 +857,7 @@ jobs:
 
   verify:
     name: Verify signatures and attestations
+    if: github.event_name == 'push'
     needs: [publish, sign]
     timeout-minutes: 15
     runs-on: ${{ (vars.NG_HOSTED_FIRST != 'true' || vars.NG_FORCE_JIT == 'true' || github.run_attempt > 1) && (contains(fromJSON('["push","workflow_dispatch","schedule","release","repository_dispatch"]'), github.event_name) && (github.ref == 'refs/heads/main' || (github.ref_type == 'tag' && startsWith(github.ref_name, 'v')))) && fromJSON(format('{{"group":"ng-shared-main-jit","labels":["self-hosted","linux","x64","ng-shared-main-seerrng","ng-main-run-{0}"]}}', github.run_id)) || 'ubuntu-latest' }}
@@ -909,8 +957,27 @@ jobs:
 
   publish-release:
     name: Publish release
+    if: >-
+      always() &&
+      needs.validate-main-tag.result == 'success' &&
+      needs.dispatch-package-channels.result == 'success' &&
+      (
+        (github.event_name == 'push' &&
+          needs.create-draft-release.result == 'success' &&
+          needs.verify.result == 'success' &&
+          needs.build-release-assets.result == 'success') ||
+        (github.event_name == 'workflow_dispatch' &&
+          inputs.reuse_from_run_id != '' &&
+          inputs.announce_security_correction != true)
+      )
     needs:
-      [create-draft-release, verify, build-release-assets, dispatch-package-channels]
+      [
+        validate-main-tag,
+        create-draft-release,
+        verify,
+        build-release-assets,
+        dispatch-package-channels
+      ]
     timeout-minutes: 10
     runs-on: ${{ (vars.NG_HOSTED_FIRST != 'true' || vars.NG_FORCE_JIT == 'true' || github.run_attempt > 1) && (contains(fromJSON('["push","workflow_dispatch","schedule","release","repository_dispatch"]'), github.event_name) && (github.ref == 'refs/heads/main' || (github.ref_type == 'tag' && startsWith(github.ref_name, 'v')))) && fromJSON(format('{{"group":"ng-shared-main-jit","labels":["self-hosted","linux","x64","ng-shared-main-seerrng","ng-main-run-{0}"]}}', github.run_id)) || 'ubuntu-latest' }}
     permissions:
@@ -938,7 +1005,7 @@ jobs:
 
   promote-stable-container-aliases:
     name: Promote stable container aliases
-    if: ${{ !contains(inputs.tag || github.ref_name, '-') }}
+    if: ${{ github.event_name == 'push' && !contains(inputs.tag || github.ref_name, '-') }}
     needs: [publish-release]
     concurrency:
       group: seerrng-stable-container-aliases
@@ -1005,6 +1072,7 @@ jobs:
 
   dispatch-chocolatey:
     name: Dispatch Chocolatey after publication
+    if: github.event_name == 'push'
     needs: [publish-release]
     timeout-minutes: 5
     runs-on: ${{ (vars.NG_HOSTED_FIRST != 'true' || vars.NG_FORCE_JIT == 'true' || github.run_attempt > 1) && (contains(fromJSON('["push","workflow_dispatch","schedule","release","repository_dispatch"]'), github.event_name) && (github.ref == 'refs/heads/main' || (github.ref_type == 'tag' && startsWith(github.ref_name, 'v')))) && fromJSON(format('{{"group":"ng-shared-main-jit","labels":["self-hosted","linux","x64","ng-shared-main-seerrng","ng-main-run-{0}"]}}', github.run_id)) || 'ubuntu-latest' }}
@@ -1040,6 +1108,7 @@ jobs:
 
   build-release-assets:
     name: Build release assets
+    if: github.event_name == 'push'
     needs: [validate-main-tag, create-draft-release]
     uses: ./.github/workflows/release-assets.yml
     with:
@@ -1063,7 +1132,18 @@ jobs:
 
   dispatch-package-channels:
     name: Dispatch package channels
-    needs: [verify, build-release-assets]
+    if: >-
+      always() &&
+      needs.validate-main-tag.result == 'success' &&
+      (
+        (github.event_name == 'push' &&
+          needs.verify.result == 'success' &&
+          needs.build-release-assets.result == 'success') ||
+        (github.event_name == 'workflow_dispatch' &&
+          inputs.reuse_from_run_id != '' &&
+          inputs.announce_security_correction != true)
+      )
+    needs: [validate-main-tag, verify, build-release-assets]
     timeout-minutes: 360
     runs-on: ${{ (vars.NG_HOSTED_FIRST != 'true' || vars.NG_FORCE_JIT == 'true' || github.run_attempt > 1) && (contains(fromJSON('["push","workflow_dispatch","schedule","release","repository_dispatch"]'), github.event_name) && (github.ref == 'refs/heads/main' || (github.ref_type == 'tag' && startsWith(github.ref_name, 'v')))) && fromJSON(format('{{"group":"ng-shared-main-jit","labels":["self-hosted","linux","x64","ng-shared-main-seerrng","ng-main-run-{0}"]}}', github.run_id)) || 'ubuntu-latest' }}
     permissions:
@@ -1285,6 +1365,7 @@ jobs:
 
   announce-discord:
     name: Announce release to Discord
+    if: github.event_name == 'push'
     needs:
       [changelog, publish, publish-release]
     timeout-minutes: 10
@@ -1369,7 +1450,17 @@ jobs:
 
   dispatch-launchpad-ppa:
     name: Dispatch Launchpad PPA after announcement
-    if: ${{ !cancelled() && !contains(inputs.tag || github.ref_name, '-') && needs.publish-release.result == 'success' }}
+    if: >-
+      always() &&
+      !cancelled() &&
+      !contains(inputs.tag || github.ref_name, '-') &&
+      needs.publish-release.result == 'success' &&
+      (
+        github.event_name == 'push' ||
+        (github.event_name == 'workflow_dispatch' &&
+          inputs.reuse_from_run_id != '' &&
+          inputs.announce_security_correction != true)
+      )
     needs: [publish-release, announce-discord]
     timeout-minutes: 5
     runs-on: ${{ (vars.NG_HOSTED_FIRST != 'true' || vars.NG_FORCE_JIT == 'true' || github.run_attempt > 1) && (contains(fromJSON('["push","workflow_dispatch","schedule","release","repository_dispatch"]'), github.event_name) && (github.ref == 'refs/heads/main' || (github.ref_type == 'tag' && startsWith(github.ref_name, 'v')))) && fromJSON(format('{{"group":"ng-shared-main-jit","labels":["self-hosted","linux","x64","ng-shared-main-seerrng","ng-main-run-{0}"]}}', github.run_id)) || 'ubuntu-latest' }}
