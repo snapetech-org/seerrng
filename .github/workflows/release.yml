@@ -27,6 +27,11 @@ on:
         required: false
         type: string
         default: '{}'
+      skip_launchpad_dispatch:
+        description: Skip starting another PPA run when one is already handling this tag
+        required: false
+        type: boolean
+        default: false
       reuse_published_image:
         description: Reuse the image only after its revision label matches this tag
         required: false
@@ -947,10 +952,10 @@ jobs:
             release-linux-packages.yml \
             release-flatpak.yml \
             release-aur.yml \
-            release-ppa.yml \
             release-copr.yml
           )
           # release-chocolatey.yml is dispatched after the public-release gate.
+          # Launchpad is dispatched after publication and the Discord announcement below.
           optional_workflows=(
             release-snap.yml
           )
@@ -1002,18 +1007,18 @@ jobs:
             pending_names+=("$workflow")
           done
 
-          if [[ -z "$REUSE_FROM_RUN_ID" ]]; then
-            for workflow in "${optional_workflows[@]}"; do
-              dispatch_started["$workflow"]="$(date -u +%Y-%m-%dT%H:%M:%SZ)"
-              if ! gh workflow run "$workflow" --repo "$REPO" --ref main -f "tag=$TAG"; then
-                echo "::warning::Optional package workflow $workflow could not be dispatched; continuing."
-                continue
-              fi
-              echo "Dispatched optional $workflow for $TAG."
-            done
-          else
-            echo 'Skipping optional Chocolatey and Snap workflows during release recovery; Chocolatey dispatch follows publication.'
-          fi
+          for workflow in "${optional_workflows[@]}"; do
+            if [[ "$workflow" == 'release-snap.yml' && ( -n "$REUSE_FROM_RUN_ID" || "$REUSE_PACKAGE_WORKFLOW_RUNS" != '{}' ) ]]; then
+              echo 'Skipping optional Snap workflow during release recovery.'
+              continue
+            fi
+            dispatch_started["$workflow"]="$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+            if ! gh workflow run "$workflow" --repo "$REPO" --ref main -f "tag=$TAG"; then
+              echo "::warning::Optional package workflow $workflow could not be dispatched; continuing."
+              continue
+            fi
+            echo "Dispatched optional $workflow for $TAG."
+          done
 
           for workflow in "${pending_names[@]}"; do
             run_id=""
@@ -1131,7 +1136,7 @@ jobs:
   announce-discord:
     name: Announce release to Discord
     needs:
-      [changelog, publish, publish-release, dispatch-package-channels]
+      [changelog, publish, publish-release]
     timeout-minutes: 10
     runs-on: ubuntu-latest
     permissions:
@@ -1211,6 +1216,34 @@ jobs:
               sleep 1
             fi
           done
+
+  dispatch-launchpad-ppa:
+    name: Dispatch Launchpad PPA after announcement
+    if: ${{ !cancelled() && !contains(inputs.tag || github.ref_name, '-') && needs.publish-release.result == 'success' }}
+    needs: [publish-release, announce-discord]
+    timeout-minutes: 5
+    runs-on: ubuntu-latest
+    permissions:
+      actions: write
+      contents: read
+    steps:
+      - name: Dispatch Launchpad PPA
+        env:
+          GH_TOKEN: ${{ secrets.GH_WORKFLOW_TOKEN || secrets.GITHUB_TOKEN }}
+          REPO: ${{ github.repository }}
+          TAG: ${{ inputs.tag || github.ref_name }}
+          SKIP_LAUNCHPAD_DISPATCH: ${{ inputs.skip_launchpad_dispatch || false }}
+        run: |
+          set -euo pipefail
+          if [[ "$SKIP_LAUNCHPAD_DISPATCH" == 'true' ]]; then
+            echo "Skipping Launchpad PPA dispatch for $TAG; an existing run is already handling it."
+            exit 0
+          fi
+          if ! gh workflow run release-ppa.yml --repo "$REPO" --ref main -f "tag=$TAG"; then
+            echo "::warning::Launchpad PPA could not be dispatched for the already-published release $TAG."
+            exit 0
+          fi
+          echo "Dispatched Launchpad PPA for $TAG after the announcement attempt."
 
 
   announce-security-correction:

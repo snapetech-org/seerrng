@@ -39,6 +39,8 @@ test('Android workflow builds, tests on an emulator, and creates a debug APK', (
   );
 
   assert.deepEqual(workflow.permissions, { contents: 'read' });
+  assert.equal(job['runs-on'], 'ubuntu-latest');
+  assert.equal(releaseJob['runs-on'], 'ubuntu-latest');
   assert.ok(workflow.on.pull_request.paths.includes('android/**'));
   assert.ok(Object.hasOwn(workflow.on, 'workflow_dispatch'));
   assert.doesNotMatch(JSON.stringify(job), /secrets\.ANDROID_KEYSTORE_/u);

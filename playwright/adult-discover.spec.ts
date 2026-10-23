@@ -58,6 +58,10 @@ const enableAdultForBrowser = async (page: Page) => {
           ...settings.enabledMediaCategories,
           adult: true,
         },
+        defaultEnabledMediaCategories: {
+          ...settings.defaultEnabledMediaCategories,
+          adult: true,
+        },
       },
     });
   });
@@ -524,6 +528,7 @@ test('Adult details let a standard requester request an archive scene on the def
 
   await page.goto('/discover/adult?serverId=4');
   await page.locator(`a[href^="/adult/${sceneId}"]`).click();
+  await expect(page).toHaveURL(new RegExp(`/adult/${sceneId}(?:\\?|$)`));
   await expect(
     page.getByRole('heading', { name: 'Night Garden' }).first()
   ).toBeVisible();

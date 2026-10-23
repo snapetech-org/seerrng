@@ -31,6 +31,10 @@ test('release assets build while image verification runs, then package channels 
     '{}'
   );
   assert.equal(
+    release.on.workflow_dispatch.inputs.skip_launchpad_dispatch.default,
+    false
+  );
+  assert.equal(
     packageDispatch.steps[0].uses,
     'actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1'
   );
@@ -70,6 +74,16 @@ test('release assets build while image verification runs, then package channels 
     dispatchScript,
     /optional_workflows=\([\s\S]*release-snap\.yml/u
   );
+  assert.doesNotMatch(
+    dispatchScript.match(/required_workflows=\(([\s\S]*?)\)/u)?.[1] ?? '',
+    /release-ppa\.yml/u,
+    'Launchpad publication must not gate the public release'
+  );
+  assert.doesNotMatch(
+    dispatchScript,
+    /release-ppa\.yml/u,
+    'Launchpad must not start until after the announcement attempt'
+  );
   assert.match(dispatchScript, /watch-github-run\.mjs/u);
   assert.match(dispatchScript, /REUSE_PACKAGE_WORKFLOW_RUNS/u);
   assert.match(
@@ -89,7 +103,12 @@ test('release assets build while image verification runs, then package channels 
   );
   assert.match(
     dispatchScript,
-    /Skipping optional Chocolatey and Snap workflows during release recovery/u
+    /Skipping optional Snap workflow during release recovery/u
+  );
+  assert.match(
+    dispatchScript,
+    /\$REUSE_PACKAGE_WORKFLOW_RUNS" != '\{\}'/u,
+    'package workflow reuse must not dispatch duplicate optional Snap builds'
   );
   assert.match(
     dispatchScript,
@@ -118,6 +137,22 @@ test('release assets build while image verification runs, then package channels 
     'build-release-assets',
     'dispatch-package-channels',
   ]);
+  const launchpadDispatch = release.jobs['dispatch-launchpad-ppa'];
+  assert.deepEqual(launchpadDispatch.needs, [
+    'publish-release',
+    'announce-discord',
+  ]);
+  assert.match(launchpadDispatch.if, /!cancelled\(\)/u);
+  assert.match(
+    launchpadDispatch.if,
+    /needs\.publish-release\.result == 'success'/u
+  );
+  assert.match(launchpadDispatch.steps[0].run, /release-ppa\.yml/u);
+  assert.match(launchpadDispatch.steps[0].run, /SKIP_LAUNCHPAD_DISPATCH/u);
+  assert.match(
+    launchpadDispatch.steps[0].run,
+    /could not be dispatched for the already-published release/u
+  );
   assert.equal(
     release.jobs['announce-discord'].needs.includes('publish-release'),
     true
@@ -1070,12 +1105,7 @@ test('release notes flow into the draft release and Discord announcement', () =>
     draft.steps.find((step) => step.name === 'Draft Release').env.RELEASE_BODY,
     '${{ needs.changelog.outputs.release_body }}'
   );
-  assert.deepEqual(discord.needs, [
-    'changelog',
-    'publish',
-    'publish-release',
-    'dispatch-package-channels',
-  ]);
+  assert.deepEqual(discord.needs, ['changelog', 'publish', 'publish-release']);
   assert.equal(
     discord.env.RELEASE_BODY,
     '${{ needs.changelog.outputs.release_body }}'

@@ -293,10 +293,14 @@ describe('Prowlarr manual search routes', () => {
       },
     ]);
     let grabbed: unknown;
-    mock.method(ProwlarrAPI.prototype, 'grab', async (release) => {
-      grabbed = release;
-      return release;
-    });
+    mock.method(
+      ProwlarrAPI.prototype,
+      'grab',
+      async (release: Parameters<ProwlarrAPI['grab']>[0]) => {
+        grabbed = release;
+        return release;
+      }
+    );
 
     const app = createValidatedApp();
     const search = await request(app)
@@ -346,7 +350,7 @@ describe('Prowlarr manual search routes', () => {
     const grab = mock.method(
       ProwlarrAPI.prototype,
       'grab',
-      async (release) => release
+      async (release: Parameters<ProwlarrAPI['grab']>[0]) => release
     );
     const app = createValidatedApp();
     const search = await request(app)

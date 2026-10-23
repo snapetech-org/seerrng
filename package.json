@@ -1,6 +1,6 @@
 {
   "name": "seerrng",
-  "version": "3.72.0",
+  "version": "3.72.2",
   "private": true,
   "packageManager": "pnpm@10.24.0",
   "scripts": {
@@ -85,7 +85,7 @@
     "country-flag-icons": "1.6.20",
     "cronstrue": "3.26.0",
     "dns-caching": "^0.2.9",
-    "dompurify": "3.4.16",
+    "dompurify": "3.4.17",
     "email-templates": "13.0.1",
     "express": "5.2.1",
     "express-openapi-validator": "5.6.2",
@@ -102,7 +102,7 @@
     "lodash": "4.18.1",
     "lru-cache": "11.2.1",
     "mime": "^4.1.0",
-    "next": "16.3.8",
+    "next": "16.4.1",
     "node-cache": "5.1.2",
     "node-schedule": "2.1.1",
     "nodemailer": "10.1.0",
