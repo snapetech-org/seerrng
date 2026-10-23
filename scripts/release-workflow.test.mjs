@@ -143,7 +143,10 @@ test('release assets build while image verification runs, then package channels 
     'announce-discord',
   ]);
   assert.match(launchpadDispatch.if, /!cancelled\(\)/u);
-  assert.match(launchpadDispatch.if, /needs\.publish-release\.result == 'success'/u);
+  assert.match(
+    launchpadDispatch.if,
+    /needs\.publish-release\.result == 'success'/u
+  );
   assert.match(launchpadDispatch.steps[0].run, /release-ppa\.yml/u);
   assert.match(launchpadDispatch.steps[0].run, /SKIP_LAUNCHPAD_DISPATCH/u);
   assert.match(
@@ -1102,11 +1105,7 @@ test('release notes flow into the draft release and Discord announcement', () =>
     draft.steps.find((step) => step.name === 'Draft Release').env.RELEASE_BODY,
     '${{ needs.changelog.outputs.release_body }}'
   );
-  assert.deepEqual(discord.needs, [
-    'changelog',
-    'publish',
-    'publish-release',
-  ]);
+  assert.deepEqual(discord.needs, ['changelog', 'publish', 'publish-release']);
   assert.equal(
     discord.env.RELEASE_BODY,
     '${{ needs.changelog.outputs.release_body }}'
