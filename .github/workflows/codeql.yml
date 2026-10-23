@@ -33,6 +33,13 @@ jobs:
         with:
           persist-credentials: false
 
+      - name: Set up Node.js for CodeQL
+        if: matrix.language == 'javascript'
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version-file: package.json
+          package-manager-cache: false
+
       - name: Initialize CodeQL
         uses: github/codeql-action/init@24c54180a607b1449ed407dd24f251e4e9147c8d # v4.38.3
         with:

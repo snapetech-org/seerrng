@@ -289,6 +289,14 @@ test('CodeQL models the awaited image cache validation barrier', () => {
   const modelPackReference = codeqlWorkflow.jobs.analyze.steps.find(
     (step) => step.name === 'Initialize CodeQL'
   ).with.packs;
+  const codeqlSteps = codeqlWorkflow.jobs.analyze.steps;
+  const nodeSetupIndex = codeqlSteps.findIndex(
+    (step) => step.name === 'Set up Node.js for CodeQL'
+  );
+  const codeqlInitIndex = codeqlSteps.findIndex(
+    (step) => step.name === 'Initialize CodeQL'
+  );
+  const nodeSetup = codeqlSteps[nodeSetupIndex];
   const imageCacheBarriers = securityModels.extensions
     .filter(({ addsTo }) => addsTo.extensible === 'barrierModel')
     .flatMap(({ data }) => data)
@@ -299,6 +307,14 @@ test('CodeQL models the awaited image cache validation barrier', () => {
       `snapetech/seerrng-codeql-models@${modelPack.version}`
     )
   );
+  assert.equal(nodeSetup.if, "matrix.language == 'javascript'");
+  assert.equal(
+    nodeSetup.uses,
+    'actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1'
+  );
+  assert.equal(nodeSetup.with['node-version-file'], 'package.json');
+  assert.equal(nodeSetup.with['package-manager-cache'], false);
+  assert.ok(nodeSetupIndex < codeqlInitIndex);
   assert.deepEqual(
     imageCacheBarriers.sort(([left], [right]) => left.localeCompare(right)),
     [
