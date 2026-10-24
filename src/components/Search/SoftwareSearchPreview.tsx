@@ -4,7 +4,8 @@ import { Permission, useUser } from '@app/hooks/useUser';
 import defineMessages from '@app/utils/defineMessages';
 import {
   getUserServiceAvailability,
-  isConfiguredMediaCategoryEnabled,
+  isSoftwareCategoryEnabled,
+  SOFTWARE_CATEGORIES,
 } from '@app/utils/serviceAvailability';
 import axios from 'axios';
 import Link from 'next/link';
@@ -37,11 +38,8 @@ const SoftwareSearchPreview = ({ query }: { query: string }) => {
     user?.settings?.enabledMediaCategories,
     hasPermission(Permission.ADMIN)
   );
-  const categories = (['retro', 'modern', 'game'] as const).filter(
-    (category) =>
-      currentSettings.softwareEnabled &&
-      (category === 'game' || currentSettings.romarrEnabled) &&
-      isConfiguredMediaCategoryEnabled(category, serviceAvailability)
+  const categories = SOFTWARE_CATEGORIES.filter((category) =>
+    isSoftwareCategoryEnabled(category, serviceAvailability)
   );
   const categoryKey = categories.join(',');
   const { data } = useSWR<PreviewItem[]>(

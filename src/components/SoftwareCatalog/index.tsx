@@ -15,8 +15,9 @@ import globalMessages from '@app/i18n/globalMessages';
 import defineMessages from '@app/utils/defineMessages';
 import {
   getUserServiceAvailability,
-  isAnySoftwareCategoryEnabled,
-  isConfiguredMediaCategoryEnabled,
+  isSoftwareCategoryEnabled,
+  SOFTWARE_CATEGORIES,
+  type SoftwareCategory,
 } from '@app/utils/serviceAvailability';
 import { Transition } from '@headlessui/react';
 import { MagnifyingGlassIcon } from '@heroicons/react/24/outline';
@@ -121,7 +122,7 @@ const messages = defineMessages('components.SoftwareCatalog', {
     'Add it to your private game library, then track progress and choose whether to share it with your household.',
 });
 
-type Category = 'retro' | 'modern' | 'game';
+type Category = SoftwareCategory;
 type PcVariant = {
   operatingSystem: PcOperatingSystem | '';
   architecture: PcArchitecture | '';
@@ -176,7 +177,7 @@ interface CatalogResponse {
   nextOffset?: number | null;
 }
 
-const categories: Category[] = ['retro', 'modern', 'game'];
+const categories = SOFTWARE_CATEGORIES;
 const operatingSystems: PcOperatingSystem[] = ['windows', 'linux', 'macos'];
 const architectures: PcArchitecture[] = ['x64', 'arm64', 'x86', 'universal'];
 
@@ -224,10 +225,15 @@ const SoftwareCatalog = ({
   const [gameLibraryFeedback, setGameLibraryFeedback] = useState('');
   const hydratedGameId = useRef<string | undefined>(undefined);
   const openedFromCatalog = useRef(false);
-  const linkedCategory =
-    typeof router.query.category === 'string' &&
-    categories.includes(router.query.category as Category)
+  const requestedCategory =
+    typeof router.query.category === 'string'
       ? (router.query.category as Category)
+      : undefined;
+  const linkedCategory =
+    requestedCategory &&
+    categories.includes(requestedCategory) &&
+    isSoftwareCategoryEnabled(requestedCategory, serviceAvailability)
+      ? requestedCategory
       : undefined;
   const linkedCatalogProvider =
     router.query.catalogProvider === 'dat' ? 'dat' : 'igdb';
@@ -251,18 +257,28 @@ const SoftwareCatalog = ({
 
   const linkedSearchQuery =
     typeof router.query.q === 'string' ? router.query.q : undefined;
+  const defaultSearchCategory =
+    categories.find((category) =>
+      isSoftwareCategoryEnabled(category, serviceAvailability)
+    ) ?? 'game';
   useEffect(() => {
     if (!router.isReady || externalQuery !== undefined || !linkedSearchQuery) {
       return;
     }
-    setCategory(linkedCategory ?? 'game');
+    setCategory(linkedCategory ?? defaultSearchCategory);
     setSearchInput(linkedSearchQuery);
     setSubmittedQuery(linkedSearchQuery);
-  }, [externalQuery, linkedCategory, linkedSearchQuery, router.isReady]);
+  }, [
+    defaultSearchCategory,
+    externalQuery,
+    linkedCategory,
+    linkedSearchQuery,
+    router.isReady,
+  ]);
 
   useEffect(() => {
     if (!router.isReady) return;
-    if (!linkedGameId) {
+    if (!linkedCategory || !linkedGameId) {
       openedFromCatalog.current = false;
       hydratedGameId.current = undefined;
       setSelectedGame(null);
@@ -279,17 +295,16 @@ const SoftwareCatalog = ({
       }
       setSelectedGame(linkedGame.game);
     }
-  }, [linkedGame?.game, linkedCatalogProvider, linkedGameId, router.isReady]);
+  }, [
+    linkedCategory,
+    linkedGame?.game,
+    linkedCatalogProvider,
+    linkedGameId,
+    router.isReady,
+  ]);
 
   const visibleCategories = categories.filter((value) => {
-    if (!isAnySoftwareCategoryEnabled(serviceAvailability)) return false;
-    if (value === 'game') {
-      return isConfiguredMediaCategoryEnabled('game', serviceAvailability);
-    }
-    return (
-      serviceAvailability.romarrEnabled &&
-      isConfiguredMediaCategoryEnabled(value, serviceAvailability)
-    );
+    return isSoftwareCategoryEnabled(value, serviceAvailability);
   });
   const selectedCategory = visibleCategories.includes(category)
     ? category

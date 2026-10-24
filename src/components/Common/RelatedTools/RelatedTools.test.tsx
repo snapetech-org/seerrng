@@ -3,13 +3,29 @@ import React, { act } from 'react';
 import { createRoot } from 'react-dom/client';
 import { IntlProvider } from 'react-intl';
 import { afterEach, beforeEach, expect, it, vi } from 'vitest';
-import RelatedTools from './index';
+import RelatedTools, { type RelatedToolId } from './index';
 
-const state = vi.hoisted(() => ({ canRequest: true }));
+const state = vi.hoisted(() => ({
+  canRequest: true,
+  settings: {
+    musicEnabled: false,
+    booksEnabled: false,
+    comicsEnabled: false,
+    softwareEnabled: false,
+    romarrEnabled: false,
+  },
+}));
 
 vi.mock('@app/hooks/useUser', () => ({
-  Permission: { REQUEST: 1 },
-  useUser: () => ({ hasPermission: () => state.canRequest }),
+  Permission: { REQUEST: 1, ADMIN: 2 },
+  useUser: () => ({
+    user: undefined,
+    hasPermission: (permission: number) => permission === 1 && state.canRequest,
+  }),
+}));
+
+vi.mock('@app/hooks/useSettings', () => ({
+  default: () => ({ currentSettings: state.settings }),
 }));
 
 vi.mock('next/link', () => ({
@@ -32,6 +48,14 @@ let dom: JSDOM;
 let root: ReturnType<typeof createRoot>;
 
 beforeEach(() => {
+  state.canRequest = true;
+  state.settings = {
+    musicEnabled: false,
+    booksEnabled: false,
+    comicsEnabled: false,
+    softwareEnabled: false,
+    romarrEnabled: false,
+  };
   dom = new JSDOM('<div id="root"></div>');
   Object.assign(globalThis, {
     window: dom.window,
@@ -46,11 +70,11 @@ afterEach(async () => {
   dom.window.close();
 });
 
-const render = () =>
+const render = (tools: RelatedToolId[] = ['share', 'following']) =>
   act(async () =>
     root.render(
       <IntlProvider locale="en">
-        <RelatedTools tools={['share', 'following']} />
+        <RelatedTools tools={tools} />
       </IntlProvider>
     )
   );
@@ -72,4 +96,24 @@ it('renders nothing for people who cannot request', async () => {
   await render();
   expect(dom.window.document.querySelector('nav')).toBeNull();
   state.canRequest = true;
+});
+
+it('shows ROMarr tools without requiring QuestarrNG', async () => {
+  state.settings.romarrEnabled = true;
+  await render(['gameFinder', 'patches']);
+
+  const links = [...dom.window.document.querySelectorAll('a')];
+  expect(links.map((link) => link.getAttribute('href'))).toEqual([
+    '/discover/patches',
+  ]);
+});
+
+it('keeps PC Game Finder tied to QuestarrNG', async () => {
+  state.settings.softwareEnabled = true;
+  await render(['gameFinder', 'patches']);
+
+  const links = [...dom.window.document.querySelectorAll('a')];
+  expect(links.map((link) => link.getAttribute('href'))).toEqual([
+    '/discover/games',
+  ]);
 });

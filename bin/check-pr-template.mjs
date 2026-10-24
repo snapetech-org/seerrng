@@ -64,7 +64,9 @@ const releaseNotesContent = releaseNotesMatch
 const releaseNoteOptions =
   releaseNotesContent.match(/- \[[ x]\][^\n]*/gi) || [];
 const hasReleaseNoteFragment =
-  /- \[x\][^\n]*I added a release-note fragment/iu.test(releaseNotesContent);
+  /- \[x\][^\n]*I added a (?:validated )?release-note fragment/iu.test(
+    releaseNotesContent
+  );
 const hasInternalOnlyOptOut =
   /- \[x\][^\n]*This change is internal-only/iu.test(releaseNotesContent);
 

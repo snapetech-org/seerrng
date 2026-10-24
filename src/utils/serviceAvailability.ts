@@ -21,6 +21,10 @@ export interface OptionalServiceAvailability {
   defaultEnabledMediaCategories?: Partial<EnabledMediaCategories>;
 }
 
+export const SOFTWARE_CATEGORIES = ['retro', 'modern', 'game'] as const;
+
+export type SoftwareCategory = (typeof SOFTWARE_CATEGORIES)[number];
+
 export const getUserServiceAvailability = <
   T extends OptionalServiceAvailability,
 >(
@@ -66,6 +70,18 @@ export const isConfiguredMediaCategoryEnabled = (
   category: MediaCategoryKey,
   availability: Pick<OptionalServiceAvailability, 'enabledMediaCategories'>
 ): boolean => availability.enabledMediaCategories?.[category] !== false;
+
+/** PC games use QuestarrNG; Retro and Modern emulation use ROMarrNG. */
+export const isSoftwareCategoryEnabled = (
+  category: SoftwareCategory,
+  availability: OptionalServiceAvailability
+): boolean =>
+  Boolean(
+    (category === 'game'
+      ? availability.softwareEnabled
+      : availability.romarrEnabled) &&
+    isConfiguredMediaCategoryEnabled(category, availability)
+  );
 
 export const isBookFormatEnabled = (
   format: 'ebook' | 'audiobook',
@@ -129,12 +145,8 @@ export const isDiscoverWatchlistTypeEnabled = (
 export const isAnySoftwareCategoryEnabled = (
   availability: OptionalServiceAvailability
 ): boolean =>
-  Boolean(
-    availability.softwareEnabled &&
-    (isConfiguredMediaCategoryEnabled('game', availability) ||
-      (availability.romarrEnabled !== false &&
-        (isConfiguredMediaCategoryEnabled('retro', availability) ||
-          isConfiguredMediaCategoryEnabled('modern', availability))))
+  SOFTWARE_CATEGORIES.some((category) =>
+    isSoftwareCategoryEnabled(category, availability)
   );
 
 export const isOptionalCatalogPathEnabled = (
@@ -234,18 +246,13 @@ export const isOptionalCatalogPathEnabled = (
   }
 
   if (path === '/discover/games' || path.startsWith('/discover/games/')) {
-    return (
-      Boolean(availability.softwareEnabled) &&
-      isConfiguredMediaCategoryEnabled('game', availability)
-    );
+    return isSoftwareCategoryEnabled('game', availability);
   }
 
   if (path === '/discover/patches' || path.startsWith('/discover/patches/')) {
     return (
-      Boolean(availability.softwareEnabled) &&
-      Boolean(availability.romarrEnabled) &&
-      (isConfiguredMediaCategoryEnabled('retro', availability) ||
-        isConfiguredMediaCategoryEnabled('modern', availability))
+      isSoftwareCategoryEnabled('retro', availability) ||
+      isSoftwareCategoryEnabled('modern', availability)
     );
   }
 
@@ -255,10 +262,7 @@ export const isOptionalCatalogPathEnabled = (
     path === '/game-content' ||
     path.startsWith('/game-content/')
   ) {
-    return (
-      Boolean(availability.softwareEnabled) &&
-      isConfiguredMediaCategoryEnabled('game', availability)
-    );
+    return isSoftwareCategoryEnabled('game', availability);
   }
 
   if (path === '/software') {

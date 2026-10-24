@@ -1,5 +1,10 @@
+import useSettings from '@app/hooks/useSettings';
 import { Permission, useUser } from '@app/hooks/useUser';
 import defineMessages from '@app/utils/defineMessages';
+import {
+  getUserServiceAvailability,
+  isOptionalCatalogPathEnabled,
+} from '@app/utils/serviceAvailability';
 import Link from 'next/link';
 import { useIntl } from 'react-intl';
 
@@ -58,8 +63,31 @@ export type RelatedToolId = keyof typeof TOOLS;
 /** A short, labelled row of links to the tools that extend the current page. */
 const RelatedTools = ({ tools }: { tools: RelatedToolId[] }) => {
   const intl = useIntl();
-  const { hasPermission } = useUser();
+  const { currentSettings } = useSettings();
+  const { user, hasPermission } = useUser();
+  const serviceAvailability = getUserServiceAvailability(
+    currentSettings,
+    user?.settings?.enabledMediaCategories,
+    hasPermission(Permission.ADMIN)
+  );
+  const visibleTools = tools.filter((id) => {
+    if (id === 'gameFinder') {
+      return isOptionalCatalogPathEnabled(
+        '/discover/games',
+        serviceAvailability
+      );
+    }
+    if (id === 'patches') {
+      return isOptionalCatalogPathEnabled(
+        '/discover/patches',
+        serviceAvailability
+      );
+    }
+    return true;
+  });
+
   if (!hasPermission(Permission.REQUEST)) return null;
+  if (!visibleTools.length) return null;
 
   return (
     <nav
@@ -67,7 +95,7 @@ const RelatedTools = ({ tools }: { tools: RelatedToolId[] }) => {
       className="related-tools"
     >
       <ul className="related-tools-list">
-        {tools.map((id) => {
+        {visibleTools.map((id) => {
           const tool = TOOLS[id];
           return (
             <li key={id}>

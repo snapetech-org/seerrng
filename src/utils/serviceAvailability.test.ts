@@ -2,9 +2,11 @@ import { strictEqual } from 'node:assert';
 import { describe, it } from 'node:test';
 import {
   getUserServiceAvailability,
+  isAnySoftwareCategoryEnabled,
   isDiscoverMediaTypeEnabled,
   isDiscoverWatchlistTypeEnabled,
   isOptionalCatalogPathEnabled,
+  isSoftwareCategoryEnabled,
 } from './serviceAvailability';
 
 describe('isOptionalCatalogPathEnabled', () => {
@@ -83,6 +85,50 @@ describe('isOptionalCatalogPathEnabled', () => {
     );
     strictEqual(
       isOptionalCatalogPathEnabled('/discover/patches', categoriesDisabled),
+      false
+    );
+  });
+
+  it('gates PC games and emulation catalogs against their own providers', () => {
+    const romarrOnly = {
+      musicEnabled: false,
+      booksEnabled: false,
+      comicsEnabled: false,
+      softwareEnabled: false,
+      romarrEnabled: true,
+      enabledMediaCategories: { game: true, retro: true, modern: false },
+    };
+
+    strictEqual(isSoftwareCategoryEnabled('retro', romarrOnly), true);
+    strictEqual(isSoftwareCategoryEnabled('modern', romarrOnly), false);
+    strictEqual(isSoftwareCategoryEnabled('game', romarrOnly), false);
+    strictEqual(isAnySoftwareCategoryEnabled(romarrOnly), true);
+    strictEqual(isOptionalCatalogPathEnabled('/software', romarrOnly), true);
+    strictEqual(
+      isOptionalCatalogPathEnabled('/discover/patches', romarrOnly),
+      true
+    );
+    strictEqual(
+      isOptionalCatalogPathEnabled('/discover/games', romarrOnly),
+      false
+    );
+
+    const questarrOnly = {
+      ...romarrOnly,
+      softwareEnabled: true,
+      romarrEnabled: false,
+      enabledMediaCategories: { game: true, retro: true, modern: true },
+    };
+
+    strictEqual(isSoftwareCategoryEnabled('game', questarrOnly), true);
+    strictEqual(isSoftwareCategoryEnabled('retro', questarrOnly), false);
+    strictEqual(isAnySoftwareCategoryEnabled(questarrOnly), true);
+    strictEqual(
+      isOptionalCatalogPathEnabled('/discover/games', questarrOnly),
+      true
+    );
+    strictEqual(
+      isOptionalCatalogPathEnabled('/discover/patches', questarrOnly),
       false
     );
   });

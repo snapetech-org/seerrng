@@ -65,6 +65,16 @@ test('release notes allow supporting confirmations alongside the fragment choice
   assert.equal(result.code, 0, result.output);
 });
 
+test('release notes accept the wording in the repository pull request template', () => {
+  const result = runValidator(
+    baseBody(`- [x] I added a validated release-note fragment under \`release-notes/\` for this user-facing change.
+- [ ] This change is internal-only and needs no release-note fragment.
+- [x] The fragment includes audience, area, action, and breaking-change status.`)
+  );
+
+  assert.equal(result.code, 0, result.output);
+});
+
 test('release notes still reject selecting both primary choices', () => {
   const result = runValidator(
     baseBody(`- [x] I added a release-note fragment under \`release-notes/\`.
