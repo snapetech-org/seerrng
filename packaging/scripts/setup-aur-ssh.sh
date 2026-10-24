@@ -63,6 +63,7 @@ Host aur.archlinux.org
   StrictHostKeyChecking yes
   BatchMode yes
   PasswordAuthentication no
+  ProxyCommand nc -X connect -x 10.0.2.100:3128 %h %p
   KbdInteractiveAuthentication no
 EOF
 
