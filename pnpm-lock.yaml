@@ -128,8 +128,8 @@ importers:
         specifier: 1.6.20
         version: 1.6.20
       cronstrue:
-        specifier: 3.26.0
-        version: 3.26.0
+        specifier: 3.32.0
+        version: 3.32.0
       dns-caching:
         specifier: ^0.2.9
         version: 0.2.9
@@ -3605,8 +3605,8 @@ packages:
     engines: {node: '>=12.0.0'}
     deprecated: v4 is no longer maintained, upgrade to v5
 
-  cronstrue@3.26.0:
-    resolution: {integrity: sha512-PEXTHEir/KllAWMsOQOsv3ZXjI6Y1PA1eVAEM/WhCaesAcCYHldra9pr2jkFH6r/ynbEOAPOGoWYz9NkjP0huA==}
+  cronstrue@3.32.0:
+    resolution: {integrity: sha512-OHTec7+5nosN4UsitwgBDQ0bofGZF3H4pLqgqa93NR3nExNlhtVHcO2JY3jRognrFH8Bl9oAooT0hyCjSyOU+Q==}
     hasBin: true
 
   cross-spawn@6.0.6:
@@ -10577,7 +10577,7 @@ snapshots:
     dependencies:
       luxon: 3.7.2
 
-  cronstrue@3.26.0: {}
+  cronstrue@3.32.0: {}
 
   cross-spawn@6.0.6:
     dependencies:
