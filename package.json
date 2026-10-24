@@ -131,7 +131,7 @@
     "tailwind-merge": "^3.7.0",
     "typeorm": "1.1.2",
     "ua-parser-js": "2.0.10",
-    "undici": "^8.11.2",
+    "undici": "^8.12.2",
     "validator": "^13.15.35",
     "web-push": "3.6.7",
     "wink-jaro-distance": "^2.0.0",
