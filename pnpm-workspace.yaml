@@ -1,4 +1,8 @@
 minimumReleaseAge: 10080
+minimumReleaseAgeExclude:
+  # Exact security-fixed releases, excepted while the seven-day age window elapses.
+  - body-parser@2.4.0
+  - multer@2.5.0
 
 onlyBuiltDependencies:
   - '@swc/core'
@@ -22,7 +26,7 @@ overrides:
   '@types/react-dom': 19.3.0
   axios: 1.20.0
   bn.js: 4.12.3
-  body-parser: 2.3.0
+  body-parser: 2.4.0
   brace-expansion: 5.0.12
   browserslist: 4.28.9
   dompurify: 3.4.17
@@ -40,9 +44,9 @@ overrides:
   mailparser: 3.9.8
   minimatch: 9.0.7
   moment: 2.31.0
-  multer: 2.4.0
+  multer: 2.5.0
   nanoid@3: 3.3.18
-  next: 16.4.1
+  next: 16.4.2
   nodemailer: 10.1.0
   picomatch: 2.3.2
   postcss: 8.5.28
@@ -58,7 +62,7 @@ overrides:
   tmp: 0.2.7
   ua-parser-js: 2.0.10
   underscore: 1.13.8
-  undici@>=6 <7: 6.28.1
+  undici@>=6 <7: 6.29.1
   uuid: 11.1.1
   ws: 8.21.0
   yaml: 1.10.3
