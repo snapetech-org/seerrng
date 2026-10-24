@@ -8,12 +8,12 @@ on:
         required: true
 
 permissions:
-  contents: write
+  contents: read
 
 jobs:
   publish-aur:
     if: github.ref == 'refs/heads/main'
-    runs-on: ubuntu-latest
+    runs-on: ${{ contains(fromJSON('["push","workflow_dispatch","schedule","release","repository_dispatch"]'), github.event_name) && (github.ref == 'refs/heads/main' || (github.ref_type == 'tag' && startsWith(github.ref_name, 'v'))) && fromJSON(format('{{"group":"ng-shared-main-jit","labels":["self-hosted","linux","x64","ng-shared-main-seerrng","ng-main-run-{0}","gha-{0}-publish-aur"]}}', github.run_id)) || 'ubuntu-latest' }}
     steps:
       - name: Resolve version
         id: version
@@ -94,7 +94,10 @@ jobs:
           tmp_key="$(mktemp)"
           trap 'rm -f "$tmp_key"' EXIT
           printf '%s\n' "$AUR_SSH_KEY" > "$tmp_key"
-          env -u AUR_SSH_KEY bash packaging/scripts/setup-aur-ssh.sh "$tmp_key"
+          git fetch --no-tags origin '+refs/heads/main:refs/remotes/origin/main'
+          git show origin/main:packaging/scripts/setup-aur-ssh.sh > "$RUNNER_TEMP/setup-aur-ssh.sh"
+          chmod 0700 "$RUNNER_TEMP/setup-aur-ssh.sh"
+          env -u AUR_SSH_KEY bash "$RUNNER_TEMP/setup-aur-ssh.sh" "$tmp_key"
           echo "configured=true" >> "$GITHUB_OUTPUT"
 
       - name: Push seerrng-bin
