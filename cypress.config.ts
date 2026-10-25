@@ -9,6 +9,7 @@ export default defineConfig({
   expose: {
     RUN_LIVE_AUTH_AUDIT: process.env.RUN_LIVE_AUTH_AUDIT === 'true',
     SEED_DATABASE: process.env.SEED_DATABASE === 'true',
+    VISUAL_REVIEW: process.env.VISUAL_REVIEW === 'true',
   },
   e2e: {
     baseUrl: 'http://localhost:5055',

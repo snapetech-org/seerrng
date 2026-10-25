@@ -21,3 +21,7 @@ export interface BlocklistResultsResponse extends PaginatedResponse {
     blocklistedTags: number;
   };
 }
+
+export interface BlocklistCountResponse {
+  count: number;
+}

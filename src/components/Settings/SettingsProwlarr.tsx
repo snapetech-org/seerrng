@@ -50,9 +50,9 @@ const messages = defineMessages('components.SettingsProwlarr', {
   addDetectedMatches: 'Add detected matches ({count})',
   selectedCategories: '{count} categories selected',
   categoryMappingEmpty: 'Select at least one category.',
-  indexerAssignmentTitle: 'Indexer assignments by medium',
+  indexerAssignmentTitle: 'Indexer Assignments by Media Type',
   indexerAssignmentDescription:
-    'Choose which enabled Prowlarr indexers are searched for each media category. An empty selection disables search for that category.',
+    'Choose which enabled Prowlarr indexers are searched for each media type. Use Ctrl-click on Windows/Linux or Command-click on macOS to select multiple indexers. An empty selection disables search for that type.',
   selectedIndexers: '{count} indexers selected',
   noIndexerInventory:
     'Test the Prowlarr connection to load its indexers and assign them by category.',
@@ -61,7 +61,7 @@ const messages = defineMessages('components.SettingsProwlarr', {
     'Limit each user’s searches per minute overall and for each selected indexer.',
   searchesPerUser: 'Maximum searches per user per minute',
   searchesPerIndexer: 'Maximum searches per user per minute on {indexer}',
-  indexerAssignmentSelectLabel: '{category} indexers',
+  indexerAssignmentSelectLabel: 'Indexers for {category}',
   indexerNotSearchable: '(not searchable)',
   showIndexerDetails: 'Allow indexer names and details in search results',
   indexerNameHidden: 'Indexer names and detail links are hidden from users.',

@@ -3448,12 +3448,16 @@
   .settings-page-content select {
     @apply px-2 py-0 text-xs leading-4;
     box-sizing: border-box;
-    height: var(--compact-control-height);
-    min-height: var(--compact-control-height);
-    max-height: var(--compact-control-height);
     border-color: rgb(var(--theme-control-border) / 0.75);
     background-color: rgb(var(--theme-control-surface) / 0.58) !important;
     color: rgb(var(--theme-control-text)) !important;
+  }
+
+  .settings-page-content input:not([type='checkbox']):not([type='radio']),
+  .settings-page-content select:not([multiple]) {
+    height: var(--compact-control-height);
+    min-height: var(--compact-control-height);
+    max-height: var(--compact-control-height);
   }
 
   .settings-page-content textarea {

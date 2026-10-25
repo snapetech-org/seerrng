@@ -6,6 +6,7 @@ import {
   type NavigationLink,
 } from '@app/components/Layout/Sidebar/navigation';
 import VersionStatus from '@app/components/Layout/VersionStatus';
+import useBlocklistNavigation from '@app/hooks/useBlocklistNavigation';
 import useClickOutside from '@app/hooks/useClickOutside';
 import useSettings from '@app/hooks/useSettings';
 import { Permission, useUser } from '@app/hooks/useUser';
@@ -45,6 +46,7 @@ const Sidebar = ({
   const router = useRouter();
   const intl = useIntl();
   const { user, hasPermission } = useUser();
+  const showBlocklistNavigation = useBlocklistNavigation();
   const { currentSettings } = useSettings();
   const serviceAvailability = getUserServiceAvailability(
     currentSettings,
@@ -63,6 +65,7 @@ const Sidebar = ({
       links: section.links.filter(
         (link) =>
           !(contentRestricted && link.id === 'adult') &&
+          (link.id !== 'blocklist' || showBlocklistNavigation) &&
           isOptionalCatalogPathEnabled(link.href, serviceAvailability) &&
           (link.requiredPermission
             ? hasPermission(link.requiredPermission, {

@@ -5,6 +5,7 @@ import {
   type NavigationLink,
   type NavigationSection,
 } from '@app/components/Layout/Sidebar/navigation';
+import useBlocklistNavigation from '@app/hooks/useBlocklistNavigation';
 import useClickOutside from '@app/hooks/useClickOutside';
 import useSettings from '@app/hooks/useSettings';
 import { Permission, useUser } from '@app/hooks/useUser';
@@ -40,6 +41,7 @@ const MobileMenu = ({
   const intl = useIntl();
   const [isOpen, setIsOpen] = useState(false);
   const { hasPermission, user } = useUser();
+  const showBlocklistNavigation = useBlocklistNavigation();
   const { currentSettings } = useSettings();
   const router = useRouter();
   useClickOutside(ref, () => {
@@ -78,6 +80,7 @@ const MobileMenu = ({
                   hasPermission(Permission.ADMIN)
                 )
               ) &&
+              (link.id !== 'blocklist' || showBlocklistNavigation) &&
               (!link.requiredPermission ||
                 hasPermission(link.requiredPermission, {
                   type: link.permissionType ?? 'and',
@@ -85,7 +88,12 @@ const MobileMenu = ({
           ),
         }))
         .filter((section) => section.links.length > 0),
-    [currentSettings, hasPermission, user?.settings?.enabledMediaCategories]
+    [
+      currentSettings,
+      hasPermission,
+      showBlocklistNavigation,
+      user?.settings?.enabledMediaCategories,
+    ]
   );
   const filteredLinks = useMemo(
     () => filteredSections.flatMap((section) => section.links),

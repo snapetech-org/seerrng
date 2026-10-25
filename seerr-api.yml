@@ -2105,6 +2105,13 @@ components:
           enum: [5, 10]
         edition:
           type: string
+    BlocklistCount:
+      type: object
+      required: [count]
+      properties:
+        count:
+          type: integer
+          minimum: 0
     Blocklist:
       type: object
       properties:
@@ -15247,6 +15254,19 @@ paths:
           description: Item succesfully blocklisted
         '412':
           description: Item has already been blocklisted
+  /blocklist/count:
+    get:
+      summary: Returns blocklist entry count
+      description: Returns the total number of entries in the blocklist without exposing entry details
+      tags:
+        - blocklist
+      responses:
+        '200':
+          description: Blocklist entry count returned
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BlocklistCount'
   /blocklist/{tmdbId}:
     get:
       summary: Get media from blocklist

@@ -5,7 +5,10 @@ import { Blocklist } from '@server/entity/Blocklist';
 import Media from '@server/entity/Media';
 import { MediaIdentifierProvider } from '@server/entity/MediaIdentifier';
 import { runWithRequestAdmission } from '@server/entity/MediaRequest';
-import type { BlocklistResultsResponse } from '@server/interfaces/api/blocklistInterfaces';
+import type {
+  BlocklistCountResponse,
+  BlocklistResultsResponse,
+} from '@server/interfaces/api/blocklistInterfaces';
 import {
   isValidExternalMediaId,
   normalizeExternalMediaId,
@@ -154,6 +157,32 @@ const getBlocklistAdmissionKey = (item: {
   }
   return `request-media:${item.mediaType}:${item.tmdbId}`;
 };
+
+blocklistRoutes.get(
+  '/count',
+  isAuthenticated([Permission.MANAGE_BLOCKLIST, Permission.VIEW_BLOCKLIST], {
+    type: 'or',
+  }),
+  authorizedRouteAccess([
+    Permission.MANAGE_BLOCKLIST,
+    Permission.VIEW_BLOCKLIST,
+  ]),
+  async (_req, res, next) => {
+    try {
+      const count = await getRepository(Blocklist).count();
+      return res.status(200).json({ count } as BlocklistCountResponse);
+    } catch (error) {
+      logger.error('Something went wrong while retrieving blocklist count', {
+        label: 'Blocklist',
+        errorMessage: error.message,
+      });
+      return next({
+        status: 500,
+        message: 'Unable to retrieve blocklist count.',
+      });
+    }
+  }
+);
 
 blocklistRoutes.get(
   '/',

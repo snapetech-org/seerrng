@@ -30,12 +30,18 @@ const coverage = {
   configured: true,
   success: true,
   version: '2.5.5.5823',
-  totalIndexers: 28,
-  enabledSearchableIndexers: 27,
+  totalIndexers: 6,
+  enabledSearchableIndexers: 6,
   categories: Object.fromEntries(
     Object.keys(categoryMappings).map((category) => [category, 1])
   ),
   categoryCatalog: [],
+  indexers: Array.from({ length: 6 }, (_, index) => ({
+    id: index + 1,
+    name: `Search indexer ${index + 1}`,
+    enabled: true,
+    supportsSearch: true,
+  })),
 };
 
 const prowlarrSettings = {
@@ -86,6 +92,7 @@ describe('Prowlarr settings on a short mobile screen', () => {
         request.alias = 'prowlarrSettings';
         request.reply({ body: prowlarrSettings });
       } else if (pathname === '/api/v1/settings/prowlarr/coverage') {
+        request.alias = 'prowlarrCoverage';
         request.reply({ body: coverage });
       } else if (pathname === '/api/v1/settings/software-acquisition') {
         request.reply({
@@ -129,6 +136,7 @@ describe('Prowlarr settings on a short mobile screen', () => {
         request.continue();
       }
     });
+    cy.intercept('GET', '/api/v1/blocklist/count', { body: { count: 0 } });
     cy.intercept('GET', '/api/v1/overrideRule', { body: [] });
     cy.intercept('GET', '/api/v1/request/software/catalog/systems', {
       body: { results: [] },
@@ -186,6 +194,77 @@ describe('Prowlarr settings on a short mobile screen', () => {
     cy.wait('@saveProwlarr').its('response.statusCode').should('eq', 200);
   });
 
+  it('shows usable multi-select lists for category filters and indexer assignments', () => {
+    cy.viewport(959, 374);
+    cy.visit('/settings/prowlarr');
+    cy.wait('@prowlarrSettings');
+    cy.wait('@prowlarrCoverage');
+
+    cy.contains('h4', 'Category filters')
+      .parent()
+      .find('details summary')
+      .first()
+      .click();
+    cy.get('select[multiple]')
+      .first()
+      .should(($select) => {
+        expect($select[0].size).to.be.greaterThan(1);
+        expect($select[0].clientHeight).to.be.greaterThan(60);
+      });
+
+    cy.contains('h4', 'Indexer Assignments by Media Type')
+      .parent()
+      .find('details summary')
+      .first()
+      .click();
+    cy.get('select[aria-label="Indexers for Movies"]')
+      .should(($select) => {
+        expect($select[0].size).to.equal(6);
+        expect($select[0].clientHeight).to.be.greaterThan(60);
+      })
+      .select(['1', '2'])
+      .should(($select) => {
+        expect(
+          Array.from($select[0].selectedOptions, (option) => option.value)
+        ).to.deep.equal(['1', '2']);
+      });
+
+    if (Cypress.expose('VISUAL_REVIEW')) {
+      cy.screenshot('prowlarr-indexer-assignments-959x374', {
+        capture: 'viewport',
+      });
+    }
+
+    cy.viewport(1280, 800);
+    cy.get('select[aria-label="Indexers for Movies"]').should(($select) => {
+      expect($select[0].clientHeight).to.be.greaterThan(60);
+    });
+    if (Cypress.expose('VISUAL_REVIEW')) {
+      cy.screenshot('prowlarr-indexer-assignments-1280x800', {
+        capture: 'viewport',
+      });
+    }
+
+    cy.viewport(390, 640);
+    cy.reload();
+    cy.wait('@prowlarrSettings');
+    cy.wait('@prowlarrCoverage');
+    cy.contains('h4', 'Indexer Assignments by Media Type')
+      .parent()
+      .find('details summary')
+      .first()
+      .click();
+    cy.get('select[aria-label="Indexers for Movies"]').should(($select) => {
+      expect($select[0].clientHeight).to.be.greaterThan(60);
+    });
+
+    if (Cypress.expose('VISUAL_REVIEW')) {
+      cy.screenshot('prowlarr-indexer-assignments-mobile', {
+        capture: 'viewport',
+      });
+    }
+  });
+
   it('shows setup assistance without horizontal overflow on a narrow screen', () => {
     cy.visit('/settings/services?serviceCategory=tools-other');
 
@@ -207,7 +286,9 @@ describe('Prowlarr settings on a short mobile screen', () => {
         document.documentElement.clientWidth + 1
       );
     });
-    cy.screenshot('setup-assistant-mobile', { capture: 'viewport' });
+    if (Cypress.expose('VISUAL_REVIEW')) {
+      cy.screenshot('setup-assistant-mobile', { capture: 'viewport' });
+    }
   });
 
   it('shows setup assistance at desktop width', () => {
@@ -232,7 +313,9 @@ describe('Prowlarr settings on a short mobile screen', () => {
         document.documentElement.clientWidth + 1
       );
     });
-    cy.screenshot('setup-assistant-desktop', { capture: 'viewport' });
+    if (Cypress.expose('VISUAL_REVIEW')) {
+      cy.screenshot('setup-assistant-desktop', { capture: 'viewport' });
+    }
   });
 
   it('imports a discovered address into the matching add form without importing credentials', () => {

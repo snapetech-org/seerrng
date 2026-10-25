@@ -14,6 +14,10 @@ import useSettings from '@app/hooks/useSettings';
 import '@app/styles/globals.css';
 import '@app/styles/crossMedia.css';
 import { getLocaleDirection } from '@app/utils/localeDirection';
+import {
+  BLOCKLIST_NAVIGATION_COUNT_KEY,
+  isBlocklistMutationRequest,
+} from '@app/utils/blocklistNavigation';
 import { polyfillIntl } from '@app/utils/polyfillIntl';
 import '@fontsource-variable/inter';
 import type { AvailableLocale } from '@server/types/languages';
@@ -24,7 +28,7 @@ import Head from 'next/head';
 import { useEffect, useRef, useState } from 'react';
 import { Toaster } from 'react-hot-toast';
 import { IntlProvider } from 'react-intl';
-import { SWRConfig } from 'swr';
+import { mutate, SWRConfig } from 'swr';
 
 const ServiceWorkerSetup = dynamic(
   () => import('@app/components/ServiceWorkerSetup'),
@@ -146,6 +150,20 @@ const CoreApp = ({ Component, pageProps, router }: AppProps) => {
 
   useEffect(() => {
     polyfillIntl();
+  }, []);
+
+  useEffect(() => {
+    const interceptorId = axios.interceptors.response.use((response) => {
+      if (
+        isBlocklistMutationRequest(response.config.method, response.config.url)
+      ) {
+        void mutate(BLOCKLIST_NAVIGATION_COUNT_KEY);
+      }
+
+      return response;
+    });
+
+    return () => axios.interceptors.response.eject(interceptorId);
   }, []);
 
   useEffect(() => {

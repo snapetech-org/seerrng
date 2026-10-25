@@ -33,6 +33,7 @@ function createApp() {
   app.use(express.json());
   app.use(
     session({
+      // nosemgrep: javascript.express.security.audit.express-session-hardcoded-secret.express-session-hardcoded-secret -- fixed test-only session key in the isolated test process
       secret: 'test-secret',
       cookie: { secure: 'auto' },
       resave: false,
@@ -108,15 +109,17 @@ describe('POST /blocklist', () => {
       ) => (void _next, res.status(err.status ?? 500).json(err))
     );
 
-    const [listResponse, detailResponse] = await Promise.all([
+    const [listResponse, detailResponse, countResponse] = await Promise.all([
       request(staleAuthorizationApp).get('/blocklist'),
       request(staleAuthorizationApp)
         .get(`/blocklist/${item.tmdbId}`)
         .query({ mediaType: MediaType.MOVIE }),
+      request(staleAuthorizationApp).get('/blocklist/count'),
     ]);
 
     assert.strictEqual(listResponse.status, 403);
     assert.strictEqual(detailResponse.status, 403);
+    assert.strictEqual(countResponse.status, 403);
     assert.doesNotMatch(JSON.stringify(listResponse.body), /Private blocklist/);
   });
 
@@ -629,6 +632,26 @@ describe('POST /blocklist', () => {
 
     assert.strictEqual(savedMedia.status, MediaStatus.BLOCKLISTED);
     assert.strictEqual((await savedMedia.blocklist).externalId, 'OL456W');
+  });
+});
+
+describe('GET /blocklist/count', () => {
+  it('returns only the number of entries to authorized blocklist viewers', async () => {
+    const countBefore = await getRepository(Blocklist).count();
+    await getRepository(Blocklist).save(
+      new Blocklist({
+        mediaType: MediaType.MOVIE,
+        tmdbId: 909091,
+        title: 'Count-only blocklist entry',
+      })
+    );
+
+    const agent = await loginAs('admin@seerr.dev', 'test1234');
+    const response = await agent.get('/blocklist/count');
+
+    assert.strictEqual(response.status, 200);
+    assert.deepStrictEqual(response.body, { count: countBefore + 1 });
+    assert.doesNotMatch(JSON.stringify(response.body), /Count-only blocklist/);
   });
 });
 

@@ -5,6 +5,7 @@ describe('primary navigation', () => {
 
   it('orders the requested groups and nests User List under Settings', () => {
     cy.viewport(1400, 900);
+    cy.intercept('GET', '/api/v1/blocklist/count', { body: { count: 1 } });
     cy.mockConfiguredMediaAvailability({ booksEnabled: true });
     cy.visit('/');
 
@@ -50,6 +51,47 @@ describe('primary navigation', () => {
     cy.get('[data-testid="sidebar-menu-users"]')
       .should('have.attr', 'data-navigation-level', 'nested')
       .and('be.visible');
+  });
+
+  it('hides Blocklist when empty and shows it once entries exist', () => {
+    let countRequests = 0;
+    cy.viewport(1400, 900);
+    cy.intercept('GET', '/api/v1/blocklist/count', (request) => {
+      request.reply({ body: { count: countRequests === 0 ? 0 : 1 } });
+      countRequests += 1;
+    }).as('blocklistNavigationCount');
+
+    cy.visit('/');
+    cy.wait('@blocklistNavigationCount');
+    cy.get('nav[data-navigation-device="desktop"] a[href="/blocklist"]').should(
+      'not.exist'
+    );
+
+    cy.reload();
+    cy.wait('@blocklistNavigationCount');
+    cy.get('nav[data-navigation-device="desktop"] a[href="/blocklist"]').should(
+      'be.visible'
+    );
+
+    cy.viewport(390, 844);
+    cy.reload();
+    cy.wait('@blocklistNavigationCount');
+    cy.get('button[aria-label="More navigation"]').click();
+    cy.get('.mobile-menu-navigation a[href="/blocklist"]').should('exist');
+
+    cy.viewport(768, 844);
+    cy.reload();
+    cy.wait('@blocklistNavigationCount');
+    cy.get('[data-testid="sidebar-toggle"]').click();
+    cy.get('nav[data-navigation-device="mobile"] a[href="/blocklist"]').should(
+      'exist'
+    );
+
+    if (Cypress.expose('VISUAL_REVIEW')) {
+      cy.screenshot('blocklist-navigation-drawer-visible-768x844', {
+        capture: 'viewport',
+      });
+    }
   });
 
   it('switches between a media discovery page and its Swipe deck', () => {
