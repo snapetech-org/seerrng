@@ -2,11 +2,8 @@ name: Semgrep Community Edition
 
 on:
   push:
-    branches:
-      - main
-  pull_request:
-  schedule:
-    - cron: "41 8 * * 1"
+    tags:
+      - '**'
   workflow_dispatch:
 
 permissions:

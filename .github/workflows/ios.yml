@@ -1,21 +1,9 @@
 name: iOS Client
 
 on:
-  pull_request:
-    paths:
-      - 'ios/**'
-      - 'scripts/build-ios-release.sh'
-      - '.github/workflows/ios.yml'
-      - '.github/workflows/release-assets.yml'
-      - '.github/workflows/release.yml'
   push:
-    branches: [main]
-    paths:
-      - 'ios/**'
-      - 'scripts/build-ios-release.sh'
-      - '.github/workflows/ios.yml'
-      - '.github/workflows/release-assets.yml'
-      - '.github/workflows/release.yml'
+    tags:
+      - '**'
   workflow_dispatch:
 
 permissions:

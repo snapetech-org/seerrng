@@ -2,11 +2,8 @@ name: Trivy filesystem scan
 
 on:
   push:
-    branches:
-      - main
-  pull_request:
-  schedule:
-    - cron: "13 9 * * 1"
+    tags:
+      - '**'
   workflow_dispatch:
 
 permissions:

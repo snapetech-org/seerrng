@@ -8,8 +8,6 @@ on:
       - SeerrNG Release
     types:
       - completed
-  schedule:
-    - cron: '50 7 * * 5'
   workflow_dispatch:
 
 permissions:

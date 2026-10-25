@@ -1,18 +1,9 @@
 name: Android APK
 
 on:
-  pull_request:
-    paths:
-      - 'android/**'
-      - 'scripts/build-android-release.sh'
-      - '.github/workflows/android.yml'
   push:
-    branches:
-      - main
-    paths:
-      - 'android/**'
-      - 'scripts/build-android-release.sh'
-      - '.github/workflows/android.yml'
+    tags:
+      - '**'
   workflow_dispatch:
 
 permissions:

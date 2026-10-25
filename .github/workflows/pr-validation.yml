@@ -3,21 +3,16 @@
 name: 'PR Validation'
 
 on:
-  pull_request_target:
-    types:
-      - opened
-      - reopened
-      - edited
-      - synchronize
-
+  workflow_dispatch: {}
 permissions: {}
 
 concurrency:
   group: ng-pr-validation-${{ github.workflow }}-${{ github.event_name }}-${{ github.event.pull_request.number || github.run_id }}-${{ github.event.action == 'edited' && 'metadata' || 'code' }}
-  cancel-in-progress: ${{ github.event_name == 'pull_request' || github.event_name == 'pull_request_target' }}
+  cancel-in-progress: false
 
 jobs:
   semantic-title:
+    if: github.event_name == 'pull_request_target'
     name: Validate PR Title
     timeout-minutes: 30
     runs-on: ubuntu-latest
@@ -111,7 +106,7 @@ jobs:
   template-check:
     name: Validate PR Template
     timeout-minutes: 30
-    if: github.event.action != 'synchronize' && github.actor != 'renovate[bot]'
+    if: github.event_name == 'pull_request_target' && github.event.action != 'synchronize' && github.actor != 'renovate[bot]'
     runs-on: ubuntu-latest
     permissions:
       contents: read

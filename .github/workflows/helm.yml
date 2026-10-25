@@ -4,12 +4,8 @@ name: Release Charts
 
 on:
   push:
-    branches:
-      - main
-    paths:
-      - 'charts/**'
-      - '.github/workflows/helm.yml'
-
+    tags:
+      - '**'
 permissions:
   contents: read
 

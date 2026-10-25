@@ -3,12 +3,7 @@
 name: Renovate Helm Hooks
 
 on:
-  pull_request:
-    branches:
-      - main
-    paths:
-      - 'charts/**'
-
+  workflow_dispatch: {}
 permissions: {}
 
 concurrency:

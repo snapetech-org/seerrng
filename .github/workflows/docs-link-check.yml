@@ -4,8 +4,6 @@ name: Check Docs Links
 
 on:
   workflow_call:
-  schedule:
-    - cron: '50 7 * * 5'
   workflow_dispatch:
 
 permissions:

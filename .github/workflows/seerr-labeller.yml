@@ -3,8 +3,6 @@
 name: 'SeerrNG Labeller'
 
 on:
-  pull_request_target:
-    types: [labeled, unlabeled, reopened]
   issues:
     types: [labeled, unlabeled, reopened]
 
@@ -20,7 +18,7 @@ jobs:
     timeout-minutes: 10
     concurrency:
       group: support-${{ github.event.issue.number }}
-      cancel-in-progress: true
+      cancel-in-progress: false
     permissions:
       issues: write
     env:
