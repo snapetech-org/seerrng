@@ -41,10 +41,17 @@ const SQLITE_DATABASE_PATH = process.env.CONFIG_DIRECTORY
   : 'config/db/db.sqlite3';
 
 export const enforceSqliteDatabasePermissions = (): void => {
-  if (process.env.NODE_ENV === 'test' || process.env.DB_TYPE === 'postgres') {
+  if (
+    process.env.NODE_ENV === 'test' ||
+    process.env.DB_TYPE === 'postgres' ||
+    dataSource.isInitialized
+  ) {
     return;
   }
 
+  // Closing another descriptor for an open SQLite file drops this process's
+  // POSIX locks. Harden files before initialization; SQLite inherits the main
+  // database's private mode when it creates its WAL and shared-memory files.
   secureSqliteDatabaseFiles(SQLITE_DATABASE_PATH);
 };
 

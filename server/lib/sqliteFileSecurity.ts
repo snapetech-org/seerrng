@@ -20,11 +20,17 @@ const lstatIfPresent = (filePath: string): fs.Stats | undefined => {
   }
 };
 
+// Call only before opening a SQLite connection in this process: closing any
+// descriptor for its files can release SQLite's POSIX advisory locks.
 export const secureSqliteDatabaseFiles = (databasePath: string): void => {
   const databaseDirectory = path.dirname(databasePath);
   assertNoSymlinkDirectoryComponents(databaseDirectory, {
     allowMissing: true,
     label: 'SQLite database directory',
+  });
+  fs.mkdirSync(databaseDirectory, {
+    recursive: true,
+    mode: PRIVATE_SQLITE_DIRECTORY_MODE,
   });
   const directoryStat = lstatIfPresent(databaseDirectory);
   if (directoryStat) {
@@ -43,6 +49,25 @@ export const secureSqliteDatabaseFiles = (databasePath: string): void => {
           errorMessage: (error as Error).message,
         }
       );
+    }
+  }
+
+  // Create an empty private database before SQLite opens it. Besides protecting
+  // first-run installs, this gives SQLite's sidecars a private mode to inherit
+  // without reopening database descriptors after SQLite acquires its locks.
+  if (!lstatIfPresent(databasePath)) {
+    try {
+      const descriptor = fs.openSync(
+        databasePath,
+        fs.constants.O_CREAT |
+          fs.constants.O_EXCL |
+          fs.constants.O_RDWR |
+          (fs.constants.O_NOFOLLOW ?? 0),
+        PRIVATE_SQLITE_FILE_MODE
+      );
+      fs.closeSync(descriptor);
+    } catch (error) {
+      if ((error as NodeJS.ErrnoException).code !== 'EEXIST') throw error;
     }
   }
 
