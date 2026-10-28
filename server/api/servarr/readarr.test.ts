@@ -959,6 +959,102 @@ describe('ReadarrAPI.addBook', () => {
 });
 
 describe('ReadarrAPI Chaptarr compatibility', () => {
+  it('preserves fallback provider identities across fresh API instances for both formats', async () => {
+    const paths: string[] = [];
+    const server = createServer((request, response) => {
+      const url = new URL(request.url ?? '/', 'http://localhost');
+      paths.push(url.pathname + url.search);
+      if (url.pathname === '/api/v1/system/status') {
+        writeJson(response, 200, {
+          appName: 'Chaptarr',
+          version: '0.9.965.0',
+          urlBase: '',
+        });
+      } else if (url.pathname === '/api/v1/system/capabilities') {
+        writeJson(response, 200, {
+          contract: 'chaptarrng-seerr-bookshelf',
+          contractVersion: 1,
+          providerIdDialect: 'hc',
+          features: {
+            formatScopedFacade: true,
+            providerScopedEditionIdentity: true,
+          },
+        });
+      } else if (/^\/readarr\/hc\//.test(url.pathname)) {
+        writeJson(response, 200, []);
+      } else if (
+        /^\/readarr\/gr\//.test(url.pathname) &&
+        ['Bret Easton Ellis', 'gr:90439420'].includes(
+          url.searchParams.get('term') ?? ''
+        )
+      ) {
+        writeJson(response, 200, [
+          {
+            title: 'The Shards',
+            foreignBookId: '90439420',
+            foreignEditionId: '60880820',
+            author: {
+              authorName: 'Bret Easton Ellis',
+              foreignAuthorId: '2751',
+            },
+            editions: [
+              {
+                foreignEditionId: '60880820',
+                title: 'The Shards',
+                monitored: true,
+              },
+            ],
+          },
+        ]);
+      } else {
+        writeJson(response, 404, {});
+      }
+    });
+    server.listen(0, '127.0.0.1');
+    await once(server, 'listening');
+    const address = server.address();
+    assert.ok(address && typeof address !== 'string');
+    try {
+      for (const mediaType of ['ebook', 'audiobook'] as const) {
+        const options: {
+          url: string;
+          apiKey: string;
+          mediaType: 'ebook' | 'audiobook';
+        } = {
+          url: `http://127.0.0.1:${address.port}/api/v1`,
+          apiKey: 'key',
+          mediaType,
+        };
+        const books: ReadarrBookLookupResult[] = await new ReadarrAPI(
+          options
+        ).lookupBook('Bret Easton Ellis');
+        const book = books[0];
+        assert.equal(book.foreignBookId, 'gr:90439420');
+        assert.equal(book.foreignEditionId, 'gr:60880820');
+        assert.equal(book.author?.foreignAuthorId, 'gr:2751');
+        assert.equal(book.editions?.[0].foreignEditionId, 'gr:60880820');
+        // Dispatch and details each create a new client with the HC default.
+        const restored = await new ReadarrAPI(
+          options
+        ).lookupBookByProviderIdentity(book.foreignBookId);
+        assert.equal(restored?.title, 'The Shards');
+        assert.equal(restored?.foreignBookId, 'gr:90439420');
+        assert.ok(
+          paths.some((path) => {
+            const url = new URL(path, 'http://localhost');
+            return (
+              url.pathname === `/readarr/gr/${mediaType}/api/v1/book/lookup` &&
+              url.searchParams.get('term') === 'gr:90439420'
+            );
+          })
+        );
+      }
+    } finally {
+      server.close();
+      await once(server, 'close');
+    }
+  });
+
   afterEach(() => {
     mock.restoreAll();
   });

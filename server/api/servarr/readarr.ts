@@ -2202,14 +2202,74 @@ class ReadarrAPI extends ServarrBase<ReadarrQueueItem> {
     }
   }
 
+  private qualifyChaptarrLookupResults(
+    results: ReadarrBookLookupResult[],
+    dialect: ChaptarrDialect
+  ): ReadarrBookLookupResult[] {
+    const qualify = (id: string) =>
+      /^\d+$/.test(id) ? `${dialect}:${id}` : id;
+    return results.map((book) => ({
+      ...book,
+      foreignBookId: qualify(book.foreignBookId),
+      ...(book.foreignEditionId
+        ? { foreignEditionId: qualify(book.foreignEditionId) }
+        : {}),
+      ...(book.author
+        ? {
+            author: {
+              ...book.author,
+              ...(book.author.foreignAuthorId
+                ? { foreignAuthorId: qualify(book.author.foreignAuthorId) }
+                : {}),
+            },
+          }
+        : {}),
+      ...(book.editions
+        ? {
+            editions: book.editions.map((edition) => ({
+              ...edition,
+              foreignEditionId: qualify(edition.foreignEditionId),
+            })),
+          }
+        : {}),
+    }));
+  }
+
   public async lookupBook(term: string): Promise<ReadarrBookLookupResult[]> {
     try {
+      await this.ensureProvider();
+      // A saved identity belongs to its original provider, even when a new
+      // API instance detects a different default provider.
+      const requestedDialect = term.match(/^(hc|gr):/i)?.[1].toLowerCase() as
+        ChaptarrDialect | undefined;
+      if (
+        this.isChaptarr() &&
+        this.mediaType &&
+        requestedDialect &&
+        this.chaptarrCapabilities?.features?.formatScopedFacade === true
+      ) {
+        this.chaptarrDialect = requestedDialect;
+        this.requestBaseUrl = ReadarrAPI.buildChaptarrFacadeUrl(
+          this.nativeApiUrl,
+          this.mediaType,
+          requestedDialect
+        );
+      }
+      // Chaptarr's facades accept provider-qualified identities; bare numeric
+      // terms can return an empty result even within the matching facade.
+      const lookupTerm =
+        this.isChaptarr() &&
+        this.requestBaseUrl &&
+        /^\d+$/.test(term) &&
+        !normalizeValidIsbn(term)
+          ? `${this.chaptarrDialect ?? 'hc'}:${term}`
+          : term;
       let scopedResults: ReadarrBookLookupResult[] = [];
 
       try {
         scopedResults = sanitizeServarrRecordArray<ReadarrBookLookupResult>(
           await this.get<ReadarrBookLookupResult[]>('/book/lookup', {
-            ...this.getRequestConfig({ term }),
+            ...this.getRequestConfig({ term: lookupTerm }),
           }),
           MAX_SERVARR_LOOKUP_RESULTS
         );
@@ -2230,6 +2290,13 @@ class ReadarrAPI extends ServarrBase<ReadarrQueueItem> {
         );
       }
 
+      if (this.isChaptarr() && this.requestBaseUrl) {
+        scopedResults = this.qualifyChaptarrLookupResults(
+          scopedResults,
+          this.chaptarrDialect ?? 'hc'
+        );
+      }
+
       if (
         !this.isChaptarr() ||
         !this.mediaType ||
@@ -2247,14 +2314,21 @@ class ReadarrAPI extends ServarrBase<ReadarrQueueItem> {
       );
 
       try {
-        const alternateResults =
+        const alternateResults = this.qualifyChaptarrLookupResults(
           sanitizeServarrRecordArray<ReadarrBookLookupResult>(
             await this.get<ReadarrBookLookupResult[]>('/book/lookup', {
-              ...this.getRequestConfig({ term }),
+              ...this.getRequestConfig({
+                term:
+                  /^\d+$/.test(term) && !normalizeValidIsbn(term)
+                    ? `${alternateDialect}:${term}`
+                    : term,
+              }),
               baseURL: alternateBaseUrl,
             }),
             MAX_SERVARR_LOOKUP_RESULTS
-          );
+          ),
+          alternateDialect
+        );
 
         if (alternateResults.some(ReadarrAPI.hasAddressableLookupIdentity)) {
           this.chaptarrDialect = alternateDialect;
