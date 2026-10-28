@@ -12,6 +12,14 @@ const profiles = {
     'utf8'
   ),
 };
+const requestListItem = readFileSync(
+  new URL('../components/RequestList/RequestItem/index.tsx', import.meta.url),
+  'utf8'
+);
+const blocklistCard = readFileSync(
+  new URL('../components/Blocklist/index.tsx', import.meta.url),
+  'utf8'
+);
 
 const cssToken = (css, name) => {
   const match = css.match(new RegExp(`--${name}:\\s*([^;]+);`));
@@ -60,6 +68,8 @@ test('both profiles style the current shared route-family contracts', () => {
     '.app-data-table',
     '.request-modal-site-surface',
     '.issue-summary-card',
+    "[data-interface-role='request-card']",
+    "[data-interface-role='blocklist-card']",
   ];
 
   for (const [name, css] of Object.entries(profiles)) {
@@ -68,5 +78,9 @@ test('both profiles style the current shared route-family contracts', () => {
     }
     assert.match(css, /data-detail-layout='tv'/);
     assert.match(css, /data-detail-layout='movie'/);
+    assert.ok(css.includes("[data-testid='media-details-poster']"));
   }
+
+  assert.match(requestListItem, /data-interface-role="request-card"/);
+  assert.match(blocklistCard, /data-interface-role="blocklist-card"/);
 });

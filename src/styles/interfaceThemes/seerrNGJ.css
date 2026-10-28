@@ -88,6 +88,32 @@
 }
 
 :is(:root[data-interface-theme='seerrNGJ'], [data-interface-theme='seerrNGJ'])
+  .searchbar.app-searchbar-scrolled {
+  border-bottom: 1px solid var(--interface-border);
+  background: linear-gradient(
+    90deg,
+    var(--interface-sidebar-top),
+    var(--interface-panel)
+  );
+  box-shadow: 0 8px 28px rgb(0 0 0 / 0.24);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+:is(:root[data-interface-theme='seerrNGJ'], [data-interface-theme='seerrNGJ'])
+  :is(.app-mobile-menu-surface, .mobile-menu-navigation) {
+  border-color: var(--interface-border);
+  background: linear-gradient(
+    165deg,
+    var(--interface-sidebar-top),
+    var(--interface-sidebar-bottom)
+  );
+  box-shadow: 0 12px 32px rgb(0 0 0 / 0.3);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+:is(:root[data-interface-theme='seerrNGJ'], [data-interface-theme='seerrNGJ'])
   .sidebar-navigation {
   gap: 1.25rem;
   margin-block-start: 1.5rem;
@@ -143,6 +169,11 @@
   background: var(--interface-sidebar-selected);
   color: #fff;
   box-shadow: inset 3px 0 #93c5fd;
+}
+
+:is(:root[data-interface-theme='seerrNGJ'], [data-interface-theme='seerrNGJ'])
+  :is(button, a, input, select, textarea):focus-visible {
+  outline-color: #60a5fa;
 }
 
 :is(:root[data-interface-theme='seerrNGJ'], [data-interface-theme='seerrNGJ'])
@@ -415,6 +446,25 @@
 
 :is(:root[data-interface-theme='seerrNGJ'], [data-interface-theme='seerrNGJ'])
   .media-detail-card
+  .detail-summary-card:has([data-testid='media-details-poster']) {
+  grid-template-columns: 5rem minmax(0, 1fr);
+  align-items: start;
+  gap: 1rem;
+  text-align: start;
+}
+
+:is(:root[data-interface-theme='seerrNGJ'], [data-interface-theme='seerrNGJ'])
+  .detail-summary-card
+  [data-testid='media-details-poster'] {
+  width: 5rem;
+  height: 7.5rem;
+  border: 2px solid #4d8fff;
+  border-radius: 0.75rem;
+  box-shadow: 0 8px 20px rgb(0 0 0 / 0.38);
+}
+
+:is(:root[data-interface-theme='seerrNGJ'], [data-interface-theme='seerrNGJ'])
+  .media-detail-card
   .app-detail-summary-grid {
   grid-template-columns: 5rem minmax(0, 1fr);
   align-items: start;
@@ -513,12 +563,29 @@
 }
 
 :is(:root[data-interface-theme='seerrNGJ'], [data-interface-theme='seerrNGJ'])
-  :is(.issue-summary-card, .request-card, .request-list-item, .blocklist-row) {
+  :is(
+    .issue-summary-card,
+    [data-interface-role='request-card'],
+    [data-interface-role='blocklist-card']
+  ) {
   border-radius: 1rem;
   box-shadow: 0 10px 24px rgb(0 0 0 / 0.2);
 }
 
 @media (min-width: 1024px) {
+  :is(:root[data-interface-theme='seerrNGJ'], [data-interface-theme='seerrNGJ'])
+    .detail-summary-card:has([data-testid='media-details-poster']) {
+    grid-template-columns: 8.5rem minmax(0, 1fr);
+    gap: 1.25rem;
+  }
+
+  :is(:root[data-interface-theme='seerrNGJ'], [data-interface-theme='seerrNGJ'])
+    .detail-summary-card
+    [data-testid='media-details-poster'] {
+    width: 8.5rem;
+    height: 12.75rem;
+  }
+
   :is(:root[data-interface-theme='seerrNGJ'], [data-interface-theme='seerrNGJ'])
     .media-detail-card
     .app-detail-summary-grid {

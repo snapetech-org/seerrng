@@ -840,7 +840,10 @@ const RequestItem = ({ request, revalidateList }: RequestItemProps) => {
           }}
         />
       )}
-      <div className="relative flex w-full flex-col justify-between overflow-hidden rounded-xl bg-gray-800 py-2 text-gray-400 shadow-md ring-1 ring-gray-700 xl:h-28 xl:flex-row">
+      <div
+        data-interface-role="request-card"
+        className="relative flex w-full flex-col justify-between overflow-hidden rounded-xl bg-gray-800 py-2 text-gray-400 shadow-md ring-1 ring-gray-700 xl:h-28 xl:flex-row"
+      >
         {!isMusic(title) &&
           !isBook(title) &&
           !isComic(title) &&
