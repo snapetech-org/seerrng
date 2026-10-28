@@ -69,7 +69,7 @@ const parseRequestedServiceId = (value: unknown): number | undefined | null => {
   if (value === undefined) return undefined;
   if (typeof value !== 'string' || !/^\d+$/.test(value)) return null;
   const id = Number(value);
-  return Number.isSafeInteger(id) && id > 0 && id <= MAX_SERVICE_ID ? id : null;
+  return Number.isSafeInteger(id) && id >= 0 && id <= MAX_SERVICE_ID ? id : null;
 };
 
 const getCoverPath = (scene: WhisparrSceneLookup, serverId: number) => {
@@ -83,10 +83,8 @@ const getCoverPath = (scene: WhisparrSceneLookup, serverId: number) => {
     scene.images.some((image) => Boolean(image.url || image.remoteUrl))
   );
   if (!hasImage) return undefined;
-  // The default Whisparr server has id 0, which the cover endpoint's
-  // parseRequestedServiceId rejects (it requires id > 0). Omit the param for
-  // non-positive ids so the endpoint falls back to the default server.
-  const query = serverId > 0 ? `?serverId=${serverId}` : '';
+  // Keep the source server explicit; zero is a valid Whisparr service ID.
+  const query = `?serverId=${serverId}`;
   return `/api/v1/adult/${scene.foreignId}/cover${query}`;
 };
 

@@ -157,7 +157,7 @@ describe('Adult discovery route', () => {
     );
   });
 
-  it('uses screenshot images for cover lookup and omits the default server ID', async () => {
+  it('uses screenshot images for cover lookup and preserves service ID zero', async () => {
     const services = [
       { ...configuredServices[0], id: 0, port: 9_000 },
       configuredServices[1],
@@ -175,7 +175,7 @@ describe('Adult discovery route', () => {
       (scene: { serviceId: number }) => scene.serviceId === 0
     );
     expect(defaultScene?.posterPath).toBe(
-      '/api/v1/adult/8a3c0000-0000-4000-8000-000000000000/cover'
+      '/api/v1/adult/8a3c0000-0000-4000-8000-000000000000/cover?serverId=0'
     );
     const namedServerScene = response.body.results.find(
       (scene: { serviceId: number }) => scene.serviceId === 4
