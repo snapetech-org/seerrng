@@ -294,6 +294,24 @@
   }
 }
 
+@media (min-width: 1024px) {
+  :is(
+      :root[data-interface-theme='seerrOrig'],
+      [data-interface-theme='seerrOrig']
+    )
+    [data-interface-role='main-content'] {
+    margin-inline-start: var(--interface-sidebar-width);
+  }
+
+  :is(
+      :root[data-interface-theme='seerrOrig'],
+      [data-interface-theme='seerrOrig']
+    )
+    .searchbar {
+    inset-inline-start: var(--interface-sidebar-width);
+  }
+}
+
 @media (min-width: 1280px) {
   :is(
       :root[data-interface-theme='seerrOrig'],

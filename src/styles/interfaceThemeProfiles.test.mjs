@@ -20,6 +20,10 @@ const blocklistCard = readFileSync(
   new URL('../components/Blocklist/index.tsx', import.meta.url),
   'utf8'
 );
+const appLayout = readFileSync(
+  new URL('../components/Layout/index.tsx', import.meta.url),
+  'utf8'
+);
 
 const cssToken = (css, name) => {
   const match = css.match(new RegExp(`--${name}:\\s*([^;]+);`));
@@ -68,6 +72,7 @@ test('both profiles style the current shared route-family contracts', () => {
     '.app-data-table',
     '.request-modal-site-surface',
     '.issue-summary-card',
+    "[data-interface-role='main-content']",
     "[data-interface-role='request-card']",
     "[data-interface-role='blocklist-card']",
   ];
@@ -83,4 +88,5 @@ test('both profiles style the current shared route-family contracts', () => {
 
   assert.match(requestListItem, /data-interface-role="request-card"/);
   assert.match(blocklistCard, /data-interface-role="blocklist-card"/);
+  assert.match(appLayout, /data-interface-role="main-content"/);
 });

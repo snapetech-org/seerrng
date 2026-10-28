@@ -574,6 +574,16 @@
 
 @media (min-width: 1024px) {
   :is(:root[data-interface-theme='seerrNGJ'], [data-interface-theme='seerrNGJ'])
+    [data-interface-role='main-content'] {
+    margin-inline-start: var(--interface-sidebar-width);
+  }
+
+  :is(:root[data-interface-theme='seerrNGJ'], [data-interface-theme='seerrNGJ'])
+    .searchbar {
+    inset-inline-start: var(--interface-sidebar-width);
+  }
+
+  :is(:root[data-interface-theme='seerrNGJ'], [data-interface-theme='seerrNGJ'])
     .detail-summary-card:has([data-testid='media-details-poster']) {
     grid-template-columns: 8.5rem minmax(0, 1fr);
     gap: 1.25rem;
