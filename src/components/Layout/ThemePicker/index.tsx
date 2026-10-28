@@ -14,6 +14,8 @@ import { useIntl } from 'react-intl';
 
 const messages = defineMessages('components.Layout.ThemePicker', {
   themePicker: 'Theme picker',
+  interfaceDesign: 'Interface design',
+  colorPalette: 'Colour palette',
   darkMode: 'Dark mode',
   lightMode: 'Light mode',
   toggle: 'Toggle',
@@ -22,7 +24,14 @@ const messages = defineMessages('components.Layout.ThemePicker', {
 
 const ThemePicker = () => {
   const intl = useIntl();
-  const { mode, palette, setPalette, toggleMode } = useTheme();
+  const {
+    mode,
+    palette,
+    interfaceTheme,
+    setPalette,
+    setInterfaceTheme,
+    toggleMode,
+  } = useTheme();
   const { user } = useUser();
   const { addToast } = useToasts();
   const [saving, setSaving] = useState(false);
@@ -33,6 +42,23 @@ const ThemePicker = () => {
     setSaving(true);
     try {
       await setPalette(nextPalette);
+    } catch {
+      addToast(intl.formatMessage(messages.saveError), {
+        appearance: 'error',
+        autoDismiss: true,
+      });
+    } finally {
+      saveActive.current = false;
+      setSaving(false);
+    }
+  };
+
+  const chooseInterfaceTheme = async (nextTheme: string) => {
+    if (!user || saveActive.current) return;
+    saveActive.current = true;
+    setSaving(true);
+    try {
+      await setInterfaceTheme(nextTheme);
     } catch {
       addToast(intl.formatMessage(messages.saveError), {
         appearance: 'error',
@@ -73,6 +99,49 @@ const ThemePicker = () => {
               {intl.formatMessage(messages.toggle)}
             </span>
           </Menu.Item>
+          <p className="px-1 pb-2 text-xs font-semibold tracking-wide text-gray-400 uppercase">
+            {intl.formatMessage(messages.interfaceDesign)}
+          </p>
+          <div className="mb-3 grid grid-cols-2 gap-2">
+            {[
+              { id: 'seerrOrig', name: 'SeerrOrig', detail: 'Classic Seerr' },
+              { id: 'seerrNGJ', name: 'SeerrNGJ', detail: "John's design" },
+            ].map((theme) => (
+              <Menu.Item
+                key={theme.id}
+                as="button"
+                type="button"
+                onClick={() => void chooseInterfaceTheme(theme.id)}
+                disabled={!user || saving}
+                aria-pressed={interfaceTheme === theme.id}
+                aria-busy={saving}
+                className={({ active }) =>
+                  `flex min-w-0 items-start rounded border px-2 py-2 text-start transition ${
+                    interfaceTheme === theme.id
+                      ? 'border-indigo-500 bg-indigo-600/20 text-gray-100'
+                      : active
+                        ? 'border-gray-500 bg-gray-700 text-gray-100'
+                        : 'border-gray-700 bg-gray-900/60 text-gray-200'
+                  }`
+                }
+              >
+                <span className="min-w-0 flex-1">
+                  <span className="block truncate text-sm font-semibold">
+                    {theme.name}
+                  </span>
+                  <span className="block truncate text-xs text-gray-400">
+                    {theme.detail}
+                  </span>
+                </span>
+                {interfaceTheme === theme.id && (
+                  <CheckIcon className="ms-2 mt-0.5 h-4 w-4 shrink-0 text-indigo-400" />
+                )}
+              </Menu.Item>
+            ))}
+          </div>
+          <p className="px-1 pb-2 text-xs font-semibold tracking-wide text-gray-400 uppercase">
+            {intl.formatMessage(messages.colorPalette)}
+          </p>
           <div className="scrollable-card grid max-h-96 grid-cols-2 gap-2 overflow-y-auto">
             {themePalettes.map((themePalette) => (
               <Menu.Item

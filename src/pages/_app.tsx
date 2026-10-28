@@ -13,6 +13,9 @@ import useSettings from '@app/hooks/useSettings';
 // organize-imports-ignore: CSS import order keeps role styles after Tailwind base styles.
 import '@app/styles/globals.css';
 import '@app/styles/crossMedia.css';
+import '@app/styles/interfaceThemes/shared.css';
+import '@app/styles/interfaceThemes/seerrOrig.css';
+import '@app/styles/interfaceThemes/seerrNGJ.css';
 import { getLocaleDirection } from '@app/utils/localeDirection';
 import {
   BLOCKLIST_NAVIGATION_COUNT_KEY,

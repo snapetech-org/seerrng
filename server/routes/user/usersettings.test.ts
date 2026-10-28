@@ -624,6 +624,56 @@ describe('POST /user/:id/settings/theme', () => {
   });
 });
 
+describe('POST /user/:id/settings/interface-theme', () => {
+  it('saves a complete interface profile on the account and restores it after login', async () => {
+    const { sessionCookie, userId } = await loginAs(
+      'demo@seerr.dev',
+      'test1234'
+    );
+    const response = await request(app)
+      .post(`/user/${userId}/settings/interface-theme`)
+      .set('X-Forwarded-Proto', 'https')
+      .set('Cookie', sessionCookie)
+      .send({ theme: 'seerrNGJ' });
+    assert.equal(response.status, 200, JSON.stringify(response.body));
+    assert.deepEqual(response.body, { interfaceTheme: 'seerrNGJ' });
+
+    const secondLogin = await loginAs('demo@seerr.dev', 'test1234');
+    const current = await request(app)
+      .get('/auth/me')
+      .set('X-Forwarded-Proto', 'https')
+      .set('Cookie', secondLogin.sessionCookie);
+    assert.equal(current.status, 200);
+    assert.equal(current.body.settings.interfaceTheme, 'seerrNGJ');
+  });
+
+  it('rejects unknown themes and prevents changing another account', async () => {
+    const { sessionCookie, userId } = await loginAs(
+      'demo@seerr.dev',
+      'test1234'
+    );
+    for (const body of [
+      {},
+      { theme: 'unknown' },
+      { theme: 'seerrOrig', extra: true },
+      { theme: 1 },
+    ]) {
+      const response = await request(app)
+        .post(`/user/${userId}/settings/interface-theme`)
+        .set('X-Forwarded-Proto', 'https')
+        .set('Cookie', sessionCookie)
+        .send(body);
+      assert.equal(response.status, 400);
+    }
+    const crossAccount = await request(app)
+      .post(`/user/${userId + 1}/settings/interface-theme`)
+      .set('X-Forwarded-Proto', 'https')
+      .set('Cookie', sessionCookie)
+      .send({ theme: 'seerrNGJ' });
+    assert.equal(crossAccount.status, 403);
+  });
+});
+
 describe('user maturity rating limits', () => {
   it('saves independent limits for a managed profile without adding them to auth payloads', async () => {
     const { sessionCookie } = await loginAs('admin@seerr.dev', 'test1234');

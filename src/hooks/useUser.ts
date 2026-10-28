@@ -75,6 +75,7 @@ export interface UserSettings {
   mediaFilterPins?: UserMediaFilterPins;
   advancedThemeOverrides?: AdvancedThemeOverrides | null;
   themePalette?: string;
+  interfaceTheme?: string;
 }
 
 interface UserHookResponse {

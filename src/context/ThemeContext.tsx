@@ -11,6 +11,11 @@ import {
   validateAdvancedThemeOverrides,
 } from '@server/utils/advancedThemeOverrides';
 import {
+  DEFAULT_INTERFACE_THEME_ID,
+  parseInterfaceTheme,
+  type InterfaceThemeId,
+} from '@server/utils/interfaceTheme';
+import {
   DEFAULT_THEME_PALETTE_ID,
   parseThemePalette,
 } from '@server/utils/themePreference';
@@ -880,9 +885,11 @@ const getThemeChromeTokens = (
 type ThemeContextValue = {
   mode: ThemeMode;
   palette: string;
+  interfaceTheme: InterfaceThemeId;
   advancedThemeOverrides: AdvancedThemeOverrides | null;
   setMode: (mode: ThemeMode) => void;
   setPalette: (palette: string) => Promise<void>;
+  setInterfaceTheme: (theme: string) => Promise<void>;
   toggleMode: () => void;
   saveAdvancedThemeOverrides: (
     overrides: AdvancedThemeOverrides | null
@@ -916,7 +923,8 @@ const advancedThemeTokens = [
 const applyAdvancedThemeOverrides = (
   root: HTMLElement,
   overrides: AdvancedThemeOverrides | null,
-  mode: ThemeMode
+  mode: ThemeMode,
+  applyPresetChrome = true
 ) => {
   const validation = validateAdvancedThemeOverrides(overrides);
   if ('error' in validation || !validation.value) return;
@@ -924,11 +932,13 @@ const applyAdvancedThemeOverrides = (
   const preset = getAdvancedThemePreset(validation.value.preset);
   if (preset) {
     root.dataset.themePreset = preset.id;
-    Object.entries(preset.chromeByMode[mode]).forEach(([token, value]) => {
-      if (value !== undefined) {
-        root.style.setProperty(token, getAdvancedThemeCssValue(token, value));
-      }
-    });
+    if (applyPresetChrome) {
+      Object.entries(preset.chromeByMode[mode]).forEach(([token, value]) => {
+        if (value !== undefined) {
+          root.style.setProperty(token, getAdvancedThemeCssValue(token, value));
+        }
+      });
+    }
   } else {
     delete root.dataset.themePreset;
   }
@@ -1060,28 +1070,75 @@ export const getThemeTokens = (mode: ThemeMode, palette: string) => {
 const applyTheme = (
   mode: ThemeMode,
   palette: string,
-  overrides: AdvancedThemeOverrides | null = null
+  overrides: AdvancedThemeOverrides | null = null,
+  interfaceTheme: InterfaceThemeId = DEFAULT_INTERFACE_THEME_ID
 ) => {
   if (typeof window === 'undefined') {
     return;
   }
 
   const themeTokens = getThemeTokens(mode, palette);
+  const originalAccents =
+    interfaceTheme === 'seerrOrig' && palette === DEFAULT_THEME_PALETTE_ID;
+  const accentBackgrounds = [
+    themeTokens.pageBg,
+    themeTokens.pageGlowStart,
+    themeTokens.pageGradientMain,
+  ];
+  const primaryScale = originalAccents
+    ? mode === 'light'
+      ? ensureReadableLightText(themeScales.indigo, accentBackgrounds, 1, 4)
+      : themeScales.indigo
+    : themeTokens.primaryScale;
+  const secondaryScale = originalAccents
+    ? mode === 'light'
+      ? ensureReadableLightText(themeScales.purple, accentBackgrounds, 1, 4)
+      : themeScales.purple
+    : themeTokens.secondaryScale;
 
   resetAdvancedThemeOverrides(document.documentElement);
   document.documentElement.dataset.themeMode = mode;
   document.documentElement.dataset.themePalette = themeTokens.activePaletteId;
+  document.documentElement.dataset.interfaceTheme = interfaceTheme;
   document.documentElement.classList.toggle('dark', mode === 'dark');
 
-  applyScale(document.documentElement, 'indigo', themeTokens.primaryScale);
-  applyScale(document.documentElement, 'purple', themeTokens.secondaryScale);
+  applyScale(document.documentElement, 'indigo', primaryScale);
+  applyScale(document.documentElement, 'purple', secondaryScale);
   applyScale(document.documentElement, 'gray', themeTokens.surfaceScale);
   applyThemeChrome(document.documentElement, themeTokens);
-  applyAdvancedThemeOverrides(document.documentElement, overrides, mode);
-  const presetSidebarStart = getAdvancedThemePreset(overrides?.preset)
-    ?.chromeByMode[mode]['--theme-sidebar-start'];
+  const johnPreset = getAdvancedThemePreset('john-redesign');
+  let effectiveOverrides = overrides;
+  let applyPresetChrome = true;
+  if (interfaceTheme === 'seerrNGJ' && johnPreset) {
+    const useJohnDefaultPalette = palette === DEFAULT_THEME_PALETTE_ID;
+    const hasExplicitJohnPreset = overrides?.preset === johnPreset.id;
+    if (useJohnDefaultPalette || hasExplicitJohnPreset) {
+      effectiveOverrides = {
+        ...johnPreset.overrides,
+        ...overrides,
+        preset: johnPreset.id,
+      };
+    } else {
+      effectiveOverrides = { ...overrides, preset: johnPreset.id };
+      applyPresetChrome = false;
+    }
+  } else if (interfaceTheme === 'seerrOrig' && overrides?.preset) {
+    effectiveOverrides = { ...overrides };
+    delete effectiveOverrides.preset;
+  }
+  applyAdvancedThemeOverrides(
+    document.documentElement,
+    effectiveOverrides,
+    mode,
+    applyPresetChrome
+  );
+  const presetSidebarStart = applyPresetChrome
+    ? getAdvancedThemePreset(effectiveOverrides?.preset)?.chromeByMode[mode][
+        '--theme-sidebar-start'
+      ]
+    : undefined;
   const sidebarStartOverride =
-    overrides?.['--theme-sidebar-start'] ?? presetSidebarStart;
+    effectiveOverrides?.['--theme-sidebar-start'] ?? presetSidebarStart;
   document
     .querySelector<HTMLMetaElement>('meta[name="theme-color"]')
     ?.setAttribute(
@@ -1104,6 +1161,9 @@ export const ThemeProvider = ({ children }: { children: ReactNode }) => {
   // browser preferences only after hydration to avoid replacing the SSR tree.
   const [mode, setModeState] = useState<ThemeMode>('dark');
   const [palette, setPaletteState] = useState(DEFAULT_THEME_PALETTE_ID);
+  const [interfaceTheme, setInterfaceThemeState] = useState<InterfaceThemeId>(
+    DEFAULT_INTERFACE_THEME_ID
+  );
   const [advancedThemeOverrides, setAdvancedThemeOverrides] =
     useState<AdvancedThemeOverrides | null>(null);
   const hasRestoredTheme = useRef(false);
@@ -1122,6 +1182,9 @@ export const ThemeProvider = ({ children }: { children: ReactNode }) => {
     const savedPalette =
       parseThemePalette(user?.settings?.themePalette) ??
       DEFAULT_THEME_PALETTE_ID;
+    const savedInterfaceTheme =
+      parseInterfaceTheme(user?.settings?.interfaceTheme) ??
+      DEFAULT_INTERFACE_THEME_ID;
     const restoredMode = hasRestoredTheme.current
       ? currentMode.current
       : getStoredMode();
@@ -1130,11 +1193,13 @@ export const ThemeProvider = ({ children }: { children: ReactNode }) => {
     hasRestoredTheme.current = true;
     setModeState(restoredMode);
     setPaletteState(savedPalette);
+    setInterfaceThemeState(savedInterfaceTheme);
     setAdvancedThemeOverrides(savedOverrides);
-    applyTheme(restoredMode, savedPalette, savedOverrides);
+    applyTheme(restoredMode, savedPalette, savedOverrides, savedInterfaceTheme);
   }, [
     user?.id,
     user?.settings?.themePalette,
+    user?.settings?.interfaceTheme,
     user?.settings?.advancedThemeOverrides,
   ]);
 
@@ -1143,15 +1208,15 @@ export const ThemeProvider = ({ children }: { children: ReactNode }) => {
       return;
     }
 
-    applyTheme(mode, palette, advancedThemeOverrides);
-  }, [mode, palette, advancedThemeOverrides]);
+    applyTheme(mode, palette, advancedThemeOverrides, interfaceTheme);
+  }, [mode, palette, advancedThemeOverrides, interfaceTheme]);
 
   const setMode = useCallback(
     (nextMode: ThemeMode) => {
       setModeState(nextMode);
-      applyTheme(nextMode, palette, advancedThemeOverrides);
+      applyTheme(nextMode, palette, advancedThemeOverrides, interfaceTheme);
     },
-    [palette, advancedThemeOverrides]
+    [palette, advancedThemeOverrides, interfaceTheme]
   );
 
   const setPalette = useCallback(
@@ -1174,6 +1239,12 @@ export const ThemeProvider = ({ children }: { children: ReactNode }) => {
         // A delayed response from a previous login must not affect another user.
         if (currentUserId.current !== userId) return;
         setPaletteState(selectedPalette);
+        applyTheme(
+          mode,
+          selectedPalette,
+          advancedThemeOverrides,
+          interfaceTheme
+        );
         await revalidate(
           (currentUser) =>
             currentUser?.id === userId
@@ -1184,6 +1255,7 @@ export const ThemeProvider = ({ children }: { children: ReactNode }) => {
                     notificationTypes:
                       currentUser.settings?.notificationTypes ?? {},
                     themePalette: selectedPalette,
+                    interfaceTheme,
                   },
                 }
               : currentUser,
@@ -1193,18 +1265,61 @@ export const ThemeProvider = ({ children }: { children: ReactNode }) => {
         themeSaveActive.current = false;
       }
     },
-    [revalidate, user?.id]
+    [advancedThemeOverrides, interfaceTheme, mode, revalidate, user?.id]
+  );
+
+  const setInterfaceTheme = useCallback(
+    async (nextTheme: string) => {
+      const userId = user?.id;
+      const selectedTheme = parseInterfaceTheme(nextTheme);
+      if (!userId || !selectedTheme || themeSaveActive.current) {
+        throw new Error(
+          'Sign in and choose a valid interface theme after the current save finishes.'
+        );
+      }
+      themeSaveActive.current = true;
+      try {
+        const { data } = await axios.post<{ interfaceTheme: string }>(
+          `/api/v1/user/${userId}/settings/interface-theme`,
+          { theme: selectedTheme }
+        );
+        if (data.interfaceTheme !== selectedTheme) {
+          throw new Error('Interface theme preference was not confirmed.');
+        }
+        if (currentUserId.current !== userId) return;
+        setInterfaceThemeState(selectedTheme);
+        applyTheme(mode, palette, advancedThemeOverrides, selectedTheme);
+        await revalidate(
+          (currentUser) =>
+            currentUser?.id === userId
+              ? {
+                  ...currentUser,
+                  settings: {
+                    ...currentUser.settings,
+                    notificationTypes:
+                      currentUser.settings?.notificationTypes ?? {},
+                    interfaceTheme: selectedTheme,
+                  },
+                }
+              : currentUser,
+          false
+        );
+      } finally {
+        themeSaveActive.current = false;
+      }
+    },
+    [advancedThemeOverrides, mode, palette, revalidate, user?.id]
   );
 
   const toggleMode = useCallback(() => {
     setModeState((currentMode) => {
       const nextMode = currentMode === 'dark' ? 'light' : 'dark';
 
-      applyTheme(nextMode, palette, advancedThemeOverrides);
+      applyTheme(nextMode, palette, advancedThemeOverrides, interfaceTheme);
 
       return nextMode;
     });
-  }, [palette, advancedThemeOverrides]);
+  }, [palette, advancedThemeOverrides, interfaceTheme]);
 
   const saveAdvancedThemeOverrides = useCallback(
     async (overrides: AdvancedThemeOverrides | null) => {
@@ -1224,7 +1339,7 @@ export const ThemeProvider = ({ children }: { children: ReactNode }) => {
       });
 
       setAdvancedThemeOverrides(data.advancedThemeOverrides);
-      applyTheme(mode, palette, data.advancedThemeOverrides);
+      applyTheme(mode, palette, data.advancedThemeOverrides, interfaceTheme);
       await revalidate(
         (currentUser) =>
           currentUser
@@ -1241,25 +1356,29 @@ export const ThemeProvider = ({ children }: { children: ReactNode }) => {
         false
       );
     },
-    [mode, palette, revalidate, user?.id]
+    [interfaceTheme, mode, palette, revalidate, user?.id]
   );
 
   const value = useMemo(
     () => ({
       mode,
       palette,
+      interfaceTheme,
       advancedThemeOverrides,
       setMode,
       setPalette,
+      setInterfaceTheme,
       toggleMode,
       saveAdvancedThemeOverrides,
     }),
     [
       mode,
       palette,
+      interfaceTheme,
       advancedThemeOverrides,
       setMode,
       setPalette,
+      setInterfaceTheme,
       toggleMode,
       saveAdvancedThemeOverrides,
     ]

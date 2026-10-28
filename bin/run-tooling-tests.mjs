@@ -19,6 +19,7 @@ export function parseToolingWorkers(args) {
 }
 
 const portableTests = [
+  'bin/interface-theme-postgres-migration.test.mjs',
   'bin/check-current-batch-contract-lib.test.mjs',
   'bin/check-i18n-lib.test.mjs',
   'bin/extract-messages-lib.test.mjs',

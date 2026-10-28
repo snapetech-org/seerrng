@@ -26,8 +26,8 @@ const messages = defineMessages('pages.profile.advancedTheme', {
     'Use #RGB or #RRGGBB for colors. Spotlight strength accepts 0 through 1, gradient stop accepts a percentage, and divider shadow accepts a listed value.',
   supportedTokens: 'Supported tokens',
   dividerShadowValues: 'Divider shadow values:',
-  presetMetadataHelp:
-    'Keep "preset": "john-redesign" in this JSON to retain the built-in preset’s shared control styling.',
+  interfaceProfileHelp:
+    'The built-in John control preset is applied in SeerrNGJ. Other token overrides apply to either interface.',
   save: 'Save overrides',
   reset: 'Reset to selected theme',
   saved: 'Your theme overrides were saved.',
@@ -232,7 +232,7 @@ const AdvancedThemePage = () => {
               )}
             </ul>
             <p className="mt-3 text-xs text-gray-400">
-              {intl.formatMessage(messages.presetMetadataHelp)}
+              {intl.formatMessage(messages.interfaceProfileHelp)}
             </p>
             <p className="mt-3 text-xs text-gray-400">
               {intl.formatMessage(messages.dividerShadowValues)}{' '}

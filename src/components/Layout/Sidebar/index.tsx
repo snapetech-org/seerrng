@@ -6,6 +6,7 @@ import {
   type NavigationLink,
 } from '@app/components/Layout/Sidebar/navigation';
 import VersionStatus from '@app/components/Layout/VersionStatus';
+import { useTheme } from '@app/context/ThemeContext';
 import useBlocklistNavigation from '@app/hooks/useBlocklistNavigation';
 import useClickOutside from '@app/hooks/useClickOutside';
 import useSettings from '@app/hooks/useSettings';
@@ -45,6 +46,7 @@ const Sidebar = ({
   const navRef = useRef<HTMLDivElement>(null);
   const router = useRouter();
   const intl = useIntl();
+  const { interfaceTheme } = useTheme();
   const { user, hasPermission } = useUser();
   const showBlocklistNavigation = useBlocklistNavigation();
   const { currentSettings } = useSettings();
@@ -76,6 +78,45 @@ const Sidebar = ({
     }))
     .filter((section) => section.links.length > 0);
 
+  const originalNavigationOrder = [
+    'discover-home',
+    'movies',
+    'series',
+    'requests',
+    'blocklist',
+    'issues',
+    'users',
+    'settings',
+  ];
+  const displayedSidebarSections =
+    interfaceTheme === 'seerrOrig'
+      ? [
+          {
+            id: 'original',
+            ariaLabelKey: 'discover' as const,
+            links: visibleSidebarSections
+              .flatMap((section) => section.links)
+              .map((link, sourceOrder) => ({ link, sourceOrder }))
+              .sort((left, right) => {
+                const leftOrder = originalNavigationOrder.indexOf(left.link.id);
+                const rightOrder = originalNavigationOrder.indexOf(
+                  right.link.id
+                );
+                const resolvedLeftOrder =
+                  leftOrder === -1
+                    ? originalNavigationOrder.length + left.sourceOrder
+                    : leftOrder;
+                const resolvedRightOrder =
+                  rightOrder === -1
+                    ? originalNavigationOrder.length + right.sourceOrder
+                    : rightOrder;
+                return resolvedLeftOrder - resolvedRightOrder;
+              })
+              .map(({ link }) => link),
+          },
+        ]
+      : visibleSidebarSections;
+
   const renderNavigationLink = (
     link: NavigationLink,
     device: 'mobile' | 'desktop'
@@ -102,6 +143,7 @@ const Sidebar = ({
         prefetch={false}
         onClick={device === 'mobile' ? setClosed : undefined}
         className={className}
+        data-navigation-link-id={link.id}
         data-navigation-level={link.nested ? 'nested' : 'primary'}
         data-testid={
           device === 'mobile'
@@ -152,12 +194,17 @@ const Sidebar = ({
   };
 
   const renderNavigationSections = (device: 'mobile' | 'desktop') =>
-    visibleSidebarSections.map((section) => (
+    displayedSidebarSections.map((section) => (
       <div
         key={`${device}-${section.id}`}
         className="sidebar-navigation-section"
-        role="group"
-        aria-label={intl.formatMessage(menuMessages[section.ariaLabelKey])}
+        data-navigation-section={section.id}
+        role={interfaceTheme === 'seerrOrig' ? undefined : 'group'}
+        aria-label={
+          interfaceTheme === 'seerrOrig'
+            ? undefined
+            : intl.formatMessage(menuMessages[section.ariaLabelKey])
+        }
       >
         {section.headingKey && (
           <h2 className="sidebar-navigation-heading">
