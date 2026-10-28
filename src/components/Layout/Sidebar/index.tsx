@@ -5,6 +5,7 @@ import {
   navigationSections,
   type NavigationLink,
 } from '@app/components/Layout/Sidebar/navigation';
+import { getNavigationSectionsForTheme } from '@app/components/Layout/Sidebar/navigationPresentation';
 import VersionStatus from '@app/components/Layout/VersionStatus';
 import { useTheme } from '@app/context/ThemeContext';
 import useBlocklistNavigation from '@app/hooks/useBlocklistNavigation';
@@ -78,44 +79,10 @@ const Sidebar = ({
     }))
     .filter((section) => section.links.length > 0);
 
-  const originalNavigationOrder = [
-    'discover-home',
-    'movies',
-    'series',
-    'requests',
-    'blocklist',
-    'issues',
-    'users',
-    'settings',
-  ];
-  const displayedSidebarSections =
-    interfaceTheme === 'seerrOrig'
-      ? [
-          {
-            id: 'original',
-            ariaLabelKey: 'discover' as const,
-            links: visibleSidebarSections
-              .flatMap((section) => section.links)
-              .map((link, sourceOrder) => ({ link, sourceOrder }))
-              .sort((left, right) => {
-                const leftOrder = originalNavigationOrder.indexOf(left.link.id);
-                const rightOrder = originalNavigationOrder.indexOf(
-                  right.link.id
-                );
-                const resolvedLeftOrder =
-                  leftOrder === -1
-                    ? originalNavigationOrder.length + left.sourceOrder
-                    : leftOrder;
-                const resolvedRightOrder =
-                  rightOrder === -1
-                    ? originalNavigationOrder.length + right.sourceOrder
-                    : rightOrder;
-                return resolvedLeftOrder - resolvedRightOrder;
-              })
-              .map(({ link }) => link),
-          },
-        ]
-      : visibleSidebarSections;
+  const displayedSidebarSections = getNavigationSectionsForTheme(
+    visibleSidebarSections,
+    interfaceTheme
+  );
 
   const renderNavigationLink = (
     link: NavigationLink,

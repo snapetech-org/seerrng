@@ -31,43 +31,52 @@ captured at matching viewports and states.
 - Expanded theme coverage to current video and cross-media detail roles,
   acquisition cards, issue/blocklist summaries, service settings, and data
   tables. The route components retain their existing behavior and contracts.
+- Extracted theme-specific navigation presentation into a tested helper:
+  SeerrOrig flattens and orders the original core links while retaining current
+  visibility filtering; SeerrNGJ keeps the grouped SeerrNG navigation.
 - Expanded the side-by-side static comparison harness with discovery, an
   audiobook detail, a request action, and service administration examples. It
   loads the same profile stylesheets used by the application.
 - Added the initial route-family feature map and this implementation record.
 
-## Not yet accepted
+## Verification status
 
 - CSS coverage now reaches the shared contracts used by the listed route
   families; render acceptance is still needed to catch route-specific markup,
   responsive, and state regressions.
 - Focused theme-provider tests, server/client type checks, translation checks,
-  and lint have passed. A SQLite migration execution test covers Orig defaults,
-  the explicit John migration, idempotency, and rollback. The latest full Node
-  suite did not return a final result in this workspace and must be rerun.
+  and lint have passed. The navigation presentation tests pass (2/2), client
+  typecheck passes, and the changed navigation files pass Prettier. A SQLite
+  migration execution test covers Orig defaults, the explicit John migration,
+  idempotency, and rollback.
+- The four-worker full Node run reported 3,754 passed, 5 skipped, and 2 failed
+  out of 3,761. The provider deadline assertion missed its 6-second bound by
+  51ms under suite load; it passes when isolated. The settings route test file
+  was killed during that run; it passes in isolation (93/93). A two-worker full
+  rerun was stopped before it produced a final summary, so a clean full-suite
+  result remains open.
 - PostgreSQL migration execution has not yet been performed. This workspace
-  has no PostgreSQL client/server or configured test URL; repository CI uses a
-  private, manually dispatched runner for database-backed checks.
+  has no PostgreSQL client/server, container runtime, or configured database
+  URL; repository CI uses a private, manually dispatched runner for
+  database-backed checks.
 - The full repository formatting check failed before formatting the changed
   sidebar file. All changed files now pass the focused Prettier check; the full
   repository check remains pending.
-- Browser rendering, keyboard/touch review, and matching viewport comparisons
-  have not yet been completed. UI acceptance is **unverified**.
-- No claim is made that the rebuilt preview has already passed screenshot
-  comparison with upstream v3.5.1.
+- The comparison page is a static fixture using the production profile
+  stylesheets. Live route screenshots, keyboard/touch review, and matching
+  viewport comparisons have not been completed; UI acceptance is
+  **unverified**.
 
 ## Next gates
 
-1. Finish the role/route audit for every page family in `feature-map.md` and
-   extend reusable theme owners wherever a route still relies on undocumented
-   utility-class geometry.
-2. Finish the full Node, Vitest, tooling, type, format, lint, and build checks;
-   record exact counts and any infrastructure blocker.
-3. Execute both migration paths from disposable SQLite and PostgreSQL databases.
-4. Render both designs from the running application, at equal desktop and phone
-   viewports. Compare Home, a video detail page, one cross-media detail page, a
-   request flow, and an admin page, including loading, empty, and populated
-   states where applicable.
-5. Update the comparison page and this record from verified screenshots. Keep
-   every implementation slice committed and pushed to the draft PR; do not
+1. Complete a clean full Node suite run with a concurrency setting that fits
+   the available memory; retain the exact pass, skip, and fail counts.
+2. Execute the PostgreSQL migration path against a disposable PostgreSQL
+   database.
+3. Render both themes in the running app at matching desktop and phone
+   viewports. Review Home, video and cross-media detail, request flow, and admin
+   routes with loading, empty, and populated states.
+4. Finish the route-level interaction and responsive review recorded in
+   `feature-map.md`, then update the mockup and status from verified renders.
+5. Keep each implementation slice committed and pushed to the draft PR; do not
    merge it.
