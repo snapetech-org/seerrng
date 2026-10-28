@@ -83,6 +83,7 @@ import gameContentRoutes from './gameContent';
 import gameLibraryRoutes from './gameLibrary';
 import { imageCacheWarmRateLimit, warmImageCache } from './imageproxy';
 import indexerSearchRoutes from './indexerSearch';
+import interfaceThemeRoutes from './interfaceThemes';
 import issueRoutes from './issue';
 import issueCommentRoutes from './issueComment';
 import liveRoutes from './live';
@@ -253,6 +254,8 @@ export const getReleaseUpdateStatus = (
   return stableVersions.some((version) => semver.gt(version, installedVersion));
 };
 
+// Public CSS-only themes load on sign-in/setup routes before session checks.
+router.use('/interface-themes', interfaceThemeRoutes);
 router.use(checkUser);
 router.use(contentRestrictionMiddleware);
 router.use(apiResponseCache);

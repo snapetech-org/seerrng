@@ -1,0 +1,52 @@
+/* Replace my-theme in every selector after choosing your permanent package ID. */
+:root[data-interface-theme='my-theme'] {
+  --interface-sidebar-width: 17rem;
+  --interface-page-gutter: 1.25rem;
+  --interface-grid-gap: 1rem;
+  --interface-card-radius: 0.25rem;
+  --interface-control-radius: 0.25rem;
+  --interface-page: #10151d;
+  --interface-panel: #1b2430;
+  --interface-panel-raised: #253243;
+  --interface-border: #42536a;
+  --interface-text: #f6f8fb;
+  --interface-muted: #aab5c4;
+  --interface-accent-a: #17a398;
+  --interface-accent-b: #7b61ff;
+  --poster-width: 158px;
+  --poster-aspect-ratio: 2 / 3;
+}
+
+[data-interface-theme='my-theme'] body {
+  background: var(--interface-page);
+  color: var(--interface-text);
+}
+
+[data-interface-theme='my-theme'] .sidebar {
+  width: var(--interface-sidebar-width);
+  border-inline-end: 1px solid var(--interface-border);
+  background: linear-gradient(180deg, #202b38, #10151d);
+}
+
+[data-interface-theme='my-theme'] .settings-page-content {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--interface-grid-gap);
+}
+
+[data-interface-theme='my-theme'] .app-card-main {
+  border: 1px solid var(--interface-border);
+  border-radius: var(--interface-card-radius);
+  background: var(--interface-panel);
+}
+
+@media (max-width: 640px) {
+  :root[data-interface-theme='my-theme'] {
+    --interface-page-gutter: 0.75rem;
+    --poster-width: calc((100vw - 2rem - 2 * var(--card-spacing)) / 2);
+  }
+
+  [data-interface-theme='my-theme'] .settings-page-content {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}

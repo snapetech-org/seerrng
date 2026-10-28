@@ -7,6 +7,9 @@ import { styleContract } from './cssContract.mjs';
 
 const read = (file) => readFileSync(new URL(file, import.meta.url), 'utf8');
 const css = read('./globals.css');
+const sharedCss = read('./interfaceThemes/shared.css');
+const origThemeCss = read('../../themes/seerrOrig/theme.css');
+const ngjThemeCss = read('../../themes/seerrNGJ/theme.css');
 
 const elements = (source) => {
   const tree = ts.createSourceFile(
@@ -105,14 +108,18 @@ const verifyNativeRequestRows = (source, stylesheet) => {
     );
 };
 
-test('summary posters retain their size while the heading gap consumes card spacing', () => {
+test('summary posters retain their size while heading gaps follow each theme', () => {
   assert.match(css, /\.detail-card-poster\s*\{\s*width: 4rem;\s*height: 6rem;/);
   assert.match(
     css,
     /\.detail-card-poster\s*\{\s*width: 5rem;\s*height: 7\.5rem;/
   );
-  assert.match(css, /--detail-heading-gap: var\(--card-spacing\);/);
-  assert.doesNotMatch(css, /--detail-heading-gap:\s*\d/);
+  assert.match(
+    sharedCss,
+    /--detail-heading-gap: var\(--card-spacing\);/
+  );
+  assert.match(origThemeCss, /--interface-section-gap: 1\.5rem;/);
+  assert.match(ngjThemeCss, /--interface-section-gap: 0\.75rem;/);
   assert.match(
     css,
     /\.detail-card-heading-spacing\s*\{\s*margin-top: var\(--detail-heading-gap\)/
@@ -128,9 +135,13 @@ test('summary posters retain their size while the heading gap consumes card spac
   );
 });
 
-test('detail rows have a consistent baseline but allow content-driven expansion', () => {
-  assert.match(css, /--detail-row-height: 1rem;/);
-  assert.match(css, /--detail-row-gap: 2px;/);
+test('detail row geometry follows each theme and allows content-driven expansion', () => {
+  assert.match(sharedCss, /--detail-row-height: var\(--interface-detail-row-height\);/);
+  assert.match(sharedCss, /--detail-row-gap: var\(--interface-detail-row-gap\);/);
+  assert.match(origThemeCss, /--interface-detail-row-height: 1rem;/);
+  assert.match(ngjThemeCss, /--interface-detail-row-height: 1\.125rem;/);
+  assert.match(origThemeCss, /--interface-detail-row-gap: 0\.25rem;/);
+  assert.match(ngjThemeCss, /--interface-detail-row-gap: 0\.5rem;/);
   assert.match(
     css,
     /grid-auto-rows: minmax\(var\(--detail-row-height\), auto\)/
@@ -422,11 +433,11 @@ test('series Overview verification rejects mismatched order, detached panels and
 });
 
 test('heading gap check rejects a restored independent optical spacing value', () => {
-  const broken = css.replace(
+  const broken = sharedCss.replace(
     '--detail-heading-gap: var(--card-spacing);',
     '--detail-heading-gap: 14px;'
   );
-  assert.notEqual(broken, css);
+  assert.notEqual(broken, sharedCss);
   assert.throws(
     () =>
       assert.match(

@@ -274,7 +274,10 @@ test('outline branch guides terminate at the final episode elbow', () => {
   const cssPath =
     process.env.SEASON_TREE_CSS ??
     path.resolve(path.dirname(filename), '../../styles/globals.css');
-  const css = fs.readFileSync(cssPath, 'utf8');
+  const css = `${fs.readFileSync(cssPath, 'utf8')}\n${fs.readFileSync(
+    path.resolve(path.dirname(cssPath), 'interfaceThemes/shared.css'),
+    'utf8'
+  )}`;
   const rules = [...css.matchAll(/([^{}]+)\{([^{}]*)\}/g)].map((match) => ({
     selector: match[1],
     body: match[2],
@@ -598,7 +601,10 @@ test('outline branch guides terminate at the final episode elbow', () => {
     outlineGeometry.body,
     /--selection-tree-episode-number-column:\s*calc\(2ch\s*\+\s*var\(--card-spacing\)\)/
   );
-  assert.match(css, /--card-layout-spacing:\s*8px/);
+  assert.match(
+    css,
+    /--card-layout-spacing:\s*var\(--interface-section-gap\)/
+  );
   const numberAlignment = rules.find(
     (rule) =>
       rule.selector.includes("data-tree-layout='outline'") &&
@@ -611,7 +617,10 @@ test('outline branch guides terminate at the final episode elbow', () => {
     /padding-inline-start:\s*var\(--button-content-gap\)/
   );
   assert.ok(source.includes('data-tree-part="number-heading"'));
-  assert.match(css, /--button-content-gap:\s*0\.25rem/);
+  assert.match(
+    css,
+    /--button-content-gap:\s*var\(--interface-button-content-gap\)/
+  );
   const outlineConnector = rules.find(
     (rule) =>
       rule.selector.includes("data-tree-layout='outline'") &&

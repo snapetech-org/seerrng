@@ -1,0 +1,12 @@
+{
+  "formatVersion": 1,
+  "themeApiVersion": 1,
+  "id": "seerrNGJ",
+  "name": "SeerrNGJ",
+  "description": "John's blue and silver design with grouped, data-rich layouts.",
+  "version": "1.0.0",
+  "author": "SeerrNG",
+  "license": "MIT",
+  "navigation": "grouped",
+  "activeNavigationIcon": "filled"
+}

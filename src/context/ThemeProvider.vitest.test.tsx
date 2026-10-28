@@ -30,10 +30,14 @@ const render = () =>
       <Probe />
     </ThemeProvider>
   );
-const account = (id: number, palette?: string): User =>
+const account = (id: number, palette?: string, interfaceTheme?: string): User =>
   ({
     id,
-    settings: { notificationTypes: {}, themePalette: palette },
+    settings: {
+      notificationTypes: {},
+      themePalette: palette,
+      interfaceTheme,
+    },
   }) as User;
 
 beforeEach(() => {
@@ -78,7 +82,31 @@ test('new installs use SeerrNG and keep its palette selected in light mode', asy
   expect(theme.palette).toBe('seerr');
   expect(document.documentElement.dataset.themePalette).toBe('seerr');
   expect(document.documentElement.dataset.themeMode).toBe('light');
+  expect(theme.interfaceTheme).toBe('seerrOrig');
+  expect(document.documentElement.dataset.interfaceTheme).toBe('seerrOrig');
+  expect(
+    document.documentElement.style.getPropertyValue('--color-indigo-600')
+  ).toBe('79 70 229');
   expect(fixture.post).not.toHaveBeenCalled();
+});
+
+test('an account can change and restore the complete interface profile', async () => {
+  fixture.user = account(1, 'seerr', 'seerrOrig');
+  await act(async () => render());
+  fixture.post.mockResolvedValue({ data: { interfaceTheme: 'seerrNGJ' } });
+  await act(async () => theme.setInterfaceTheme('seerrNGJ'));
+  expect(fixture.post).toHaveBeenCalledWith(
+    '/api/v1/user/1/settings/interface-theme',
+    { theme: 'seerrNGJ' }
+  );
+  expect(theme.interfaceTheme).toBe('seerrNGJ');
+  expect(fixture.user?.settings?.interfaceTheme).toBe('seerrNGJ');
+  expect(document.documentElement.dataset.interfaceTheme).toBe('seerrNGJ');
+  expect(document.documentElement.dataset.themePreset).toBe('john-redesign');
+  fixture.user = account(2, 'aurora', 'seerrOrig');
+  await act(async () => render());
+  expect(theme.interfaceTheme).toBe('seerrOrig');
+  expect(document.documentElement.dataset.interfaceTheme).toBe('seerrOrig');
 });
 
 test('later logins restore the account choice instead of resetting it or sharing another user choice', async () => {

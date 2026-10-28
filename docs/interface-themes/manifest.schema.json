@@ -1,0 +1,58 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "SeerrNG interface theme manifest v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "formatVersion",
+    "themeApiVersion",
+    "id",
+    "name",
+    "description",
+    "version",
+    "author",
+    "license",
+    "navigation",
+    "activeNavigationIcon"
+  ],
+  "properties": {
+    "formatVersion": { "const": 1 },
+    "themeApiVersion": { "const": 1 },
+    "id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 48,
+      "pattern": "^(?:seerrOrig|seerrNGJ|[a-z0-9]+(?:-[a-z0-9]+)*)$"
+    },
+    "name": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 64,
+      "pattern": "^(?=.*\\S)[^\\u0000-\\u001f\\u007f]+$"
+    },
+    "description": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 180,
+      "pattern": "^(?=.*\\S)[^\\u0000-\\u001f\\u007f]+$"
+    },
+    "version": {
+      "type": "string",
+      "pattern": "^(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)(?:-[0-9A-Za-z.-]+)?(?:\\+[0-9A-Za-z.-]+)?$"
+    },
+    "author": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 80,
+      "pattern": "^(?=.*\\S)[^\\u0000-\\u001f\\u007f]+$"
+    },
+    "license": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 48,
+      "pattern": "^(?=.*\\S)[^\\u0000-\\u001f\\u007f]+$"
+    },
+    "navigation": { "enum": ["flat", "grouped"] },
+    "activeNavigationIcon": { "enum": ["outline", "filled"] }
+  }
+}

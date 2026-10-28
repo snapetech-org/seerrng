@@ -1,0 +1,21 @@
+name: SeerrNG public-fork validation
+on:
+  pull_request:
+    branches: [main]
+    types: [opened, synchronize, reopened, ready_for_review]
+permissions:
+  contents: read
+concurrency:
+  group: public-fork-pr-${{ github.event.pull_request.number }}
+  cancel-in-progress: false
+jobs:
+  validate:
+    name: Run disposable fork validation
+    if: >-
+      github.event.pull_request.head.repo.fork == true &&
+      github.event.pull_request.head.repo.full_name != github.event.pull_request.base.repo.full_name &&
+      github.event.pull_request.base.repo.full_name == 'snapetech-org/seerrng' &&
+      github.event.pull_request.base.ref == 'main'
+    permissions:
+      contents: read
+    uses: snapetech-org/seerrng/.github/workflows/fork-safe-validation.yml@d16fbeb3111e5550b3d38821d15e903df6c1f915

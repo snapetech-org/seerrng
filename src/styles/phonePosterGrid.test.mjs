@@ -5,6 +5,14 @@ import postcss from 'postcss';
 
 const css = readFileSync(new URL('./globals.css', import.meta.url), 'utf8');
 const root = postcss.parse(css);
+const interfaceThemes = Object.fromEntries(
+  ['seerrOrig', 'seerrNGJ'].map((id) => [
+    id,
+    postcss.parse(
+      readFileSync(new URL(`../../themes/${id}/theme.css`, import.meta.url), 'utf8')
+    ),
+  ])
+);
 
 const rootDefinitions = new Set();
 root.walkRules((rule) => {
@@ -21,18 +29,18 @@ const mediaRules = (predicate) => {
   return found;
 };
 
-test('narrow phones share one row between two posters instead of one per row', () => {
-  const [entry] = mediaRules((params) => /max-width:\s*389px/.test(params));
-  assert.ok(entry, 'a sub-390px poster width override exists');
-  const width = entry.rule.nodes.find(
-    (node) => node.type === 'decl' && node.prop === '--poster-width'
-  );
-  assert.ok(width, 'the override sets --poster-width');
-  assert.match(
-    width.value,
-    /100vw/,
-    'poster width follows the viewport so two fit in one row'
-  );
+test('each theme owns its two-up narrow-phone poster width', () => {
+  for (const [id, stylesheet] of Object.entries(interfaceThemes)) {
+    const media = [];
+    stylesheet.walkAtRules('media', (rule) => media.push(rule));
+    const narrow = media.find((rule) => /max-width:\s*389px/.test(rule.params));
+    assert.ok(narrow, `${id} supplies a sub-390px poster width override`);
+    let width;
+    narrow.walkDecls('--poster-width', (decl) => (width = decl));
+    assert.ok(width, `${id} overrides --poster-width`);
+    assert.match(width.value, /100vw/, `${id} fits two posters per row`);
+    assert.match(width.parent.selector, new RegExp(`data-interface-theme=['\"]${id}['\"]`));
+  }
 });
 
 test('custom properties used by root-level overrides are defined at :root', () => {

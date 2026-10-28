@@ -40,15 +40,6 @@
     --theme-sidebar-end: 19 25 40;
     --theme-sidebar-border: 55 65 81;
     --theme-sidebar-hover: 55 65 81;
-    --sidebar-navigation-group-gap: calc(2 * var(--card-spacing));
-    --sidebar-navigation-item-gap: var(--button-content-gap);
-    --sidebar-navigation-inline-inset: 1rem;
-    --sidebar-navigation-nested-indent: calc(
-      1.5rem + var(--button-content-gap)
-    );
-    --sidebar-navigation-mobile-offset: 2.5rem;
-    --sidebar-navigation-desktop-offset: 2rem;
-    --sidebar-navigation-heading-line-height: var(--card-copy-line-height);
     --theme-page-bg: 17 24 39;
     --theme-page-glow-start: 31 41 55;
     --theme-page-glow-end: 17 24 39;
@@ -77,40 +68,13 @@
     --theme-artwork-gradient-deep: 17 24 39;
     --theme-artwork-gradient-black: 0 0 0;
     --theme-artwork-text: 219 234 254;
-    --compact-control-height: 1.25rem;
-    --filter-control-height: var(--action-control-height);
-    --filter-control-content-height: calc(var(--filter-control-height) - 2px);
-    --profile-menu-row-height: 1.25rem;
-    --card-layout-spacing: 8px;
-    --poster-width: 169.2px;
-    --poster-aspect-ratio: 2 / 3;
-    --card-spacing: var(--card-layout-spacing);
-    --main-card-padding: 8px;
-    --inset-card-padding: 8px;
-    --detail-row-height: 1rem;
     /* Shared selection greens: none/dark, partial, complete/bright.
        Reuse the established circle palette for selection indicators. */
     --selection-color-dark: 6 95 70;
     --selection-color-partial: 5 150 105;
     --selection-color-bright: 52 211 153;
     --selection-color-fill: 16 185 129;
-    --card-table-font-size: 0.75rem;
-    --card-table-heading-weight: 600;
-    --card-table-value-weight: 400;
-    --card-title-font-size: 1.125rem;
-    --page-heading-font-size: 1.5rem;
-    --card-subheading-font-size: 0.875rem;
-    --card-body-font-size: 0.875rem;
-    --card-compact-title-font-size: 0.875rem;
-    --card-compact-subheading-font-size: 0.75rem;
-    --card-compact-line-height: 16px;
-    --card-compact-height: 70px;
-    --card-compact-padding-block: 1px;
-    --card-copy-line-height: 1.25rem;
     /* Preserve the existing tagline and synopsis spacing when centralizing. */
-    --card-subheading-spacing-before: 0.25rem;
-    --card-body-spacing-before: 1rem;
-    --detail-divider-width: 2px;
     /* Shared application palette. Each family has light, normal, and dark
        anchors so titles, borders, buttons, and future user themes use the
        same named colors everywhere. */
@@ -151,11 +115,6 @@
     --palette-pink: #e3008e;
     --palette-pink-dark: #8f005a;
     /* Content-sized outer columns; caps only protect narrow/long-text cards. */
-    --detail-first-column-limit: 40%;
-    --detail-first-value-limit: 30%;
-    --detail-last-column-limit: 35%;
-    --detail-row-gap: 2px;
-    --detail-heading-gap: var(--card-spacing);
     /* Keep action sizing independent so the former 1.875rem height can return
        without changing any page's button variant or typography. */
     /* 24px is the WCAG 2.2 minimum target size (2.5.8). The glyph box (icons,
@@ -165,17 +124,7 @@
     --action-control-content-height: 0.875rem;
     --poster-control-height: 1.5rem;
     --poster-control-content-height: 0.875rem;
-    --button-padding-x: 5px;
-    --action-control-padding-x: var(--button-padding-x);
     /* One visual space between every button icon and its label. */
-    --button-content-gap: 0.25rem;
-    --compact-button-padding-x: var(--button-padding-x);
-    --poster-control-padding-x: var(--button-padding-x);
-    --poster-control-gap: 0.125rem;
-    --dropdown-item-padding-x: var(--button-padding-x);
-    --control-corner-radius: 0.375rem;
-    --dropdown-menu-surface: #000;
-    --dropdown-menu-border: rgb(var(--theme-control-border) / 0.75);
   }
 
   /* Touch screens need a larger hit area than a mouse; coarse pointers get
@@ -4511,15 +4460,6 @@
 
   ul.cards-vertical.poster-grid {
     grid-template-columns: repeat(auto-fill, var(--poster-width));
-  }
-
-  /* Phones narrower than two fixed posters plus gutters and gap (about 390px)
-     would otherwise show one poster per row beside a blank half-screen. Share
-     the row between two posters until the fixed width fits twice. */
-  @media (max-width: 389px) {
-    :root:root {
-      --poster-width: calc((100vw - 2rem - 2 * var(--card-spacing)) / 2);
-    }
   }
 
   ul.cards-horizontal > li {

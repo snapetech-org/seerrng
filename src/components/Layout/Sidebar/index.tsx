@@ -5,7 +5,9 @@ import {
   navigationSections,
   type NavigationLink,
 } from '@app/components/Layout/Sidebar/navigation';
+import { getNavigationSectionsForTheme } from '@app/components/Layout/Sidebar/navigationPresentation';
 import VersionStatus from '@app/components/Layout/VersionStatus';
+import { useTheme } from '@app/context/ThemeContext';
 import useBlocklistNavigation from '@app/hooks/useBlocklistNavigation';
 import useClickOutside from '@app/hooks/useClickOutside';
 import useSettings from '@app/hooks/useSettings';
@@ -45,6 +47,7 @@ const Sidebar = ({
   const navRef = useRef<HTMLDivElement>(null);
   const router = useRouter();
   const intl = useIntl();
+  const { interfaceThemeDefinition } = useTheme();
   const { user, hasPermission } = useUser();
   const showBlocklistNavigation = useBlocklistNavigation();
   const { currentSettings } = useSettings();
@@ -76,11 +79,20 @@ const Sidebar = ({
     }))
     .filter((section) => section.links.length > 0);
 
+  const displayedSidebarSections = getNavigationSectionsForTheme(
+    visibleSidebarSections,
+    interfaceThemeDefinition.navigation
+  );
+
   const renderNavigationLink = (
     link: NavigationLink,
     device: 'mobile' | 'desktop'
   ) => {
     const selected = router.pathname.match(link.activeRegExp);
+    const navigationIcon =
+      interfaceThemeDefinition.activeNavigationIcon === 'filled' && selected
+        ? link.svgIconSelected
+        : link.svgIcon;
     const iconClass = device === 'desktop' ? 'me-3 h-6 w-6' : 'me-3 h-6 w-6';
     const className =
       device === 'mobile'
@@ -102,6 +114,7 @@ const Sidebar = ({
         prefetch={false}
         onClick={device === 'mobile' ? setClosed : undefined}
         className={className}
+        data-navigation-link-id={link.id}
         data-navigation-level={link.nested ? 'nested' : 'primary'}
         data-testid={
           device === 'mobile'
@@ -112,7 +125,7 @@ const Sidebar = ({
         }
         aria-current={selected ? 'page' : undefined}
       >
-        {cloneElement(link.svgIcon, { className: iconClass })}
+        {cloneElement(navigationIcon, { className: iconClass })}
         {intl.formatMessage(menuMessages[link.messagesKey])}
         {link.messagesKey === 'following' && <FollowUnreadCount />}
         {device === 'desktop' &&
@@ -152,12 +165,19 @@ const Sidebar = ({
   };
 
   const renderNavigationSections = (device: 'mobile' | 'desktop') =>
-    visibleSidebarSections.map((section) => (
+    displayedSidebarSections.map((section) => (
       <div
         key={`${device}-${section.id}`}
         className="sidebar-navigation-section"
-        role="group"
-        aria-label={intl.formatMessage(menuMessages[section.ariaLabelKey])}
+        data-navigation-section={section.id}
+        role={
+          interfaceThemeDefinition.navigation === 'flat' ? undefined : 'group'
+        }
+        aria-label={
+          interfaceThemeDefinition.navigation === 'flat'
+            ? undefined
+            : intl.formatMessage(menuMessages[section.ariaLabelKey])
+        }
       >
         {section.headingKey && (
           <h2 className="sidebar-navigation-heading">

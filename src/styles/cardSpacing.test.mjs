@@ -4,33 +4,57 @@ import test from 'node:test';
 import postcss from 'postcss';
 
 const css = readFileSync(new URL('./globals.css', import.meta.url), 'utf8');
-const verifySharedSpacing = (stylesheet) => {
+const sharedCss = readFileSync(
+  new URL('./interfaceThemes/shared.css', import.meta.url),
+  'utf8'
+);
+const themes = {
+  seerrOrig: readFileSync(
+    new URL('../../themes/seerrOrig/theme.css', import.meta.url),
+    'utf8'
+  ),
+  seerrNGJ: readFileSync(
+    new URL('../../themes/seerrNGJ/theme.css', import.meta.url),
+    'utf8'
+  ),
+};
+const rootVariables = (stylesheet) => {
   const variables = new Map();
   postcss.parse(stylesheet).walkRules((rule) => {
-    if (!rule.selectors.includes(':root')) return;
+    if (!rule.selectors.some((selector) => selector.includes(':root'))) return;
     for (const node of rule.nodes ?? []) {
       if (node.type === 'decl') variables.set(node.prop, node.value);
     }
   });
+  return variables;
+};
+const verifyThemeSpacing = (stylesheet, sectionGap, mainPadding, insetPadding) => {
+  const variables = rootVariables(stylesheet);
+  assert.equal(
+    variables.get('--interface-section-gap'),
+    sectionGap,
+    'the theme package owns its card and section spacing'
+  );
+  assert.equal(variables.get('--interface-main-card-padding'), mainPadding);
+  assert.equal(variables.get('--interface-inset-card-padding'), insetPadding);
+};
+
+const verifySharedSpacingAliases = (stylesheet) => {
+  const variables = rootVariables(stylesheet);
   assert.equal(
     variables.get('--card-layout-spacing'),
-    '8px',
-    'card layout retains the shared eight-pixel gap'
-  );
-  assert.equal(
-    variables.get('--card-spacing'),
-    'var(--card-layout-spacing)',
-    'card spacing consumes the layout owner'
+    'var(--interface-section-gap)',
+    'the shared card spacing role resolves to the selected package'
   );
   assert.equal(
     variables.get('--main-card-padding'),
-    '8px',
-    'main padding remains independently owned'
+    'var(--interface-main-card-padding)',
+    'main card padding resolves to the selected package'
   );
   assert.equal(
     variables.get('--inset-card-padding'),
-    '8px',
-    'inset padding remains independently owned'
+    'var(--interface-inset-card-padding)',
+    'inset card padding resolves to the selected package'
   );
 };
 
@@ -65,8 +89,10 @@ test('primary action rows fill their width while disclosure rows remain left ali
     );
   }
 });
-test('main and inset padding have independent eight-pixel settings', () => {
-  verifySharedSpacing(css);
+test('built-in themes own distinct main, inset, and section spacing', () => {
+  verifyThemeSpacing(themes.seerrOrig, '1.5rem', '1.5rem', '1rem');
+  verifyThemeSpacing(themes.seerrNGJ, '0.75rem', '1.125rem', '0.75rem');
+  verifySharedSpacingAliases(sharedCss);
   assert.match(
     css,
     /\.refreshed-card-surface,[^{]+\{\s*padding: var\(--main-card-padding\) !important/
@@ -81,22 +107,22 @@ test('main and inset padding have independent eight-pixel settings', () => {
   );
 });
 
-test('shared spacing rejects a changed gap and a copied spacing owner', () => {
+test('shared spacing rejects a changed alias and a copied spacing owner', () => {
   for (const [before, after, diagnostic] of [
     [
-      '--card-layout-spacing: 8px;',
+      '--card-layout-spacing: var(--interface-section-gap);',
       '--card-layout-spacing: 12px;',
-      /card layout retains the shared eight-pixel gap/,
+      /the shared card spacing role resolves to the selected package/,
     ],
     [
-      '--card-spacing: var(--card-layout-spacing);',
-      '--card-spacing: 8px;',
-      /card spacing consumes the layout owner/,
+      '--main-card-padding: var(--interface-main-card-padding);',
+      '--main-card-padding: 8px;',
+      /main card padding resolves to the selected package/,
     ],
   ]) {
-    const broken = css.replace(before, after);
-    assert.notEqual(broken, css);
-    assert.throws(() => verifySharedSpacing(broken), diagnostic);
+    const broken = sharedCss.replace(before, after);
+    assert.notEqual(broken, sharedCss);
+    assert.throws(() => verifySharedSpacingAliases(broken), diagnostic);
   }
 });
 test('compound settings cards do not double their inset padding', () => {

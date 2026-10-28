@@ -15,6 +15,7 @@ import { NotificationAgentKey } from '@server/lib/settings';
 import { DbAwareColumn } from '@server/utils/DbColumnHelper';
 import type { AdvancedThemeOverrides } from '@server/utils/advancedThemeOverrides';
 import type { DetailDisclosureOrder } from '@server/utils/detailDisclosureOrder';
+import { DEFAULT_INTERFACE_THEME_ID } from '@server/utils/interfaceTheme';
 import {
   Column,
   Entity,
@@ -261,6 +262,10 @@ export class UserSettings {
   @Column({ default: 'seerr' })
   public themePalette: string = 'seerr';
 
+  /** User-selected layout and visual system, independent of accent palette. */
+  @Column({ default: DEFAULT_INTERFACE_THEME_ID })
+  public interfaceTheme: string = DEFAULT_INTERFACE_THEME_ID;
+
   @Column({ type: 'simple-json', nullable: true })
   public requestRootFolders?: UserRequestRootFolders;
 
@@ -320,6 +325,7 @@ export class UserSettings {
       discoverBookSections: this.discoverBookSections,
       advancedThemeOverrides: this.advancedThemeOverrides,
       themePalette: this.themePalette,
+      interfaceTheme: this.interfaceTheme,
     };
   }
 

@@ -256,7 +256,10 @@ const Layout = ({ children }: LayoutProps) => {
         />
       </div>
 
-      <div className="relative mb-16 flex w-0 min-w-0 flex-1 flex-col lg:ms-64">
+      <div
+        data-interface-role="main-content"
+        className="relative mb-16 flex w-0 min-w-0 flex-1 flex-col lg:ms-64"
+      >
         <PullToRefresh />
         <div
           className={`searchbar fixed inset-x-0 top-0 z-10 flex flex-shrink-0 transition duration-300 ${

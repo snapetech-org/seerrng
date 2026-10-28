@@ -1,0 +1,12 @@
+{
+  "formatVersion": 1,
+  "themeApiVersion": 1,
+  "id": "seerrOrig",
+  "name": "SeerrOrig",
+  "description": "The original Seerr visual language with its classic compact layout.",
+  "version": "1.0.0",
+  "author": "SeerrNG",
+  "license": "MIT",
+  "navigation": "flat",
+  "activeNavigationIcon": "outline"
+}

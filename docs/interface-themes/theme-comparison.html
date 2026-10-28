@@ -1,0 +1,2166 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>SeerrOrig and SeerrNGJ interface comparison</title>
+    <style data-profile-stylesheet="shared.css">
+/* Shared safety and interaction rules for every selectable interface system. */
+:where(:root[data-interface-theme], [data-interface-theme]) {
+  --interface-sidebar-width: 16rem;
+  --interface-page-gutter: 1rem;
+  --interface-grid-gap: 1rem;
+  --interface-card-radius: 0.5rem;
+  --interface-poster-radius: 0.375rem;
+  --interface-control-radius: 0.375rem;
+  --interface-main-card-padding: 1rem;
+  --interface-inset-card-padding: 0.75rem;
+  --interface-section-gap: 1.25rem;
+  --interface-detail-row-gap: 0.375rem;
+  --interface-page: #111827;
+  --interface-panel: #1f2937;
+  --interface-panel-raised: #374151;
+  --interface-border: #374151;
+  --interface-muted: #9ca3af;
+  --interface-text: #f9fafb;
+  --interface-link: #c7d2fe;
+  --interface-accent-a: #4f46e5;
+  --interface-accent-b: #9333ea;
+  --interface-sidebar-top: #1f2937;
+  --interface-sidebar-bottom: #131928;
+  --interface-sidebar-selected: linear-gradient(135deg, #4f46e5, #9333ea);
+  --interface-nav-group-gap: calc(2 * var(--interface-section-gap));
+  --interface-nav-item-gap: 0.25rem;
+  --interface-nav-inline-inset: 1rem;
+  --interface-nav-nested-indent: 1.75rem;
+  --interface-nav-mobile-offset: 2.5rem;
+  --interface-nav-desktop-offset: 2rem;
+  --interface-nav-heading-line-height: 1.25rem;
+  --interface-compact-control-height: 1.25rem;
+  --interface-profile-menu-row-height: 1.25rem;
+  --interface-detail-row-height: 1rem;
+  --interface-card-table-font-size: 0.75rem;
+  --interface-card-table-heading-weight: 600;
+  --interface-card-table-value-weight: 400;
+  --interface-card-title-font-size: 1.125rem;
+  --interface-page-heading-font-size: 1.5rem;
+  --interface-card-subheading-font-size: 0.875rem;
+  --interface-card-body-font-size: 0.875rem;
+  --interface-card-compact-title-font-size: 0.875rem;
+  --interface-card-compact-subheading-font-size: 0.75rem;
+  --interface-card-compact-line-height: 16px;
+  --interface-card-compact-height: 70px;
+  --interface-card-compact-padding-block: 1px;
+  --interface-card-copy-line-height: 1.25rem;
+  --interface-card-subheading-spacing-before: 0.25rem;
+  --interface-card-body-spacing-before: 1rem;
+  --interface-detail-divider-width: 2px;
+  --interface-detail-first-column-limit: 40%;
+  --interface-detail-first-value-limit: 30%;
+  --interface-detail-last-column-limit: 35%;
+  --interface-button-padding-x: 5px;
+  --interface-button-content-gap: 0.25rem;
+  --interface-poster-control-gap: 0.125rem;
+  --interface-dropdown-menu-surface: #000;
+  --interface-dropdown-menu-border: rgb(var(--theme-control-border) / 0.75);
+  --interface-table-header: var(--interface-panel-raised);
+  --interface-table-hover: color-mix(
+    in srgb,
+    var(--interface-accent-a) 11%,
+    transparent
+  );
+  --interface-motion-duration: 180ms;
+}
+
+:is(:root[data-interface-theme], [data-interface-theme])
+  :is(button, a, input, select, textarea):focus-visible {
+  outline-offset: 2px;
+}
+
+/* Shared component names resolve through the selected package's token set. */
+:is(:root[data-interface-theme], [data-interface-theme]) {
+  --sidebar-navigation-group-gap: var(--interface-nav-group-gap);
+  --sidebar-navigation-item-gap: var(--interface-nav-item-gap);
+  --sidebar-navigation-inline-inset: var(--interface-nav-inline-inset);
+  --sidebar-navigation-nested-indent: var(--interface-nav-nested-indent);
+  --sidebar-navigation-mobile-offset: var(--interface-nav-mobile-offset);
+  --sidebar-navigation-desktop-offset: var(--interface-nav-desktop-offset);
+  --sidebar-navigation-heading-line-height: var(--interface-nav-heading-line-height);
+  --compact-control-height: var(--interface-compact-control-height);
+  --filter-control-height: var(--action-control-height);
+  --filter-control-content-height: calc(var(--filter-control-height) - 2px);
+  --profile-menu-row-height: var(--interface-profile-menu-row-height);
+  --card-spacing: var(--card-layout-spacing);
+  --control-corner-radius: var(--interface-control-radius);
+  --main-card-padding: var(--interface-main-card-padding);
+  --inset-card-padding: var(--interface-inset-card-padding);
+  --card-layout-spacing: var(--interface-section-gap);
+  --detail-row-height: var(--interface-detail-row-height);
+  --card-table-font-size: var(--interface-card-table-font-size);
+  --card-table-heading-weight: var(--interface-card-table-heading-weight);
+  --card-table-value-weight: var(--interface-card-table-value-weight);
+  --card-title-font-size: var(--interface-card-title-font-size);
+  --page-heading-font-size: var(--interface-page-heading-font-size);
+  --card-subheading-font-size: var(--interface-card-subheading-font-size);
+  --card-body-font-size: var(--interface-card-body-font-size);
+  --card-compact-title-font-size: var(--interface-card-compact-title-font-size);
+  --card-compact-subheading-font-size: var(--interface-card-compact-subheading-font-size);
+  --card-compact-line-height: var(--interface-card-compact-line-height);
+  --card-compact-height: var(--interface-card-compact-height);
+  --card-compact-padding-block: var(--interface-card-compact-padding-block);
+  --card-copy-line-height: var(--interface-card-copy-line-height);
+  --card-subheading-spacing-before: var(--interface-card-subheading-spacing-before);
+  --card-body-spacing-before: var(--interface-card-body-spacing-before);
+  --detail-divider-width: var(--interface-detail-divider-width);
+  --detail-first-column-limit: var(--interface-detail-first-column-limit);
+  --detail-first-value-limit: var(--interface-detail-first-value-limit);
+  --detail-last-column-limit: var(--interface-detail-last-column-limit);
+  --detail-row-gap: var(--interface-detail-row-gap);
+  --detail-heading-gap: var(--card-spacing);
+  --button-padding-x: var(--interface-button-padding-x);
+  --action-control-padding-x: var(--button-padding-x);
+  --button-content-gap: var(--interface-button-content-gap);
+  --compact-button-padding-x: var(--button-padding-x);
+  --poster-control-padding-x: var(--button-padding-x);
+  --poster-control-gap: var(--interface-poster-control-gap);
+  --dropdown-item-padding-x: var(--button-padding-x);
+  --dropdown-menu-surface: var(--interface-dropdown-menu-surface);
+  --dropdown-menu-border: var(--interface-dropdown-menu-border);
+}
+
+:is(:root[data-interface-theme], [data-interface-theme])
+  :is(
+    .media-detail-card,
+    .settings-group-card,
+    .settings-library-card,
+    .request-modal-site-surface,
+    .app-card-main,
+    .app-card-sub,
+    .app-card-inset
+  ) {
+  color: var(--interface-text);
+}
+
+:is(:root[data-interface-theme], [data-interface-theme]) .app-data-table {
+  border-color: var(--interface-border);
+  color: var(--interface-text);
+}
+
+:is(:root[data-interface-theme], [data-interface-theme]) .app-data-table-head {
+  background: var(--interface-table-header);
+  color: var(--interface-text);
+}
+
+:is(:root[data-interface-theme], [data-interface-theme]) .app-data-table-row {
+  border-color: var(--interface-border);
+}
+
+:is(:root[data-interface-theme], [data-interface-theme])
+  .app-data-table-row:hover {
+  background: var(--interface-table-hover);
+}
+
+:is(:root[data-interface-theme], [data-interface-theme])
+  :is(.settings-form-row, .settings-group-content) {
+  gap: var(--interface-detail-row-gap);
+}
+
+:is(:root[data-interface-theme], [data-interface-theme]) .page-layout,
+:is(:root[data-interface-theme], [data-interface-theme]) .app-shell,
+:is(:root[data-interface-theme], [data-interface-theme]) .sidebar,
+:is(:root[data-interface-theme], [data-interface-theme]) .poster-layout,
+:is(:root[data-interface-theme], [data-interface-theme]) .app-card-main,
+:is(:root[data-interface-theme], [data-interface-theme]) .app-card-sub,
+:is(:root[data-interface-theme], [data-interface-theme]) .app-card-inset {
+  transition-duration: var(--interface-motion-duration);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :is(:root[data-interface-theme], [data-interface-theme]) {
+    --interface-motion-duration: 0ms;
+  }
+}
+</style>
+    <style data-profile-stylesheet="seerrOrig.css">
+/*
+ * SeerrOrig: the Seerr v3.5.1 visual language, adapted to current route,
+ * permission, and component contracts. Reference: Seerr tag v3.5.1,
+ * 564bfb08b54caa374bddaf820abfd226e5e69151.
+ */
+/* This package owns the narrow-phone poster density as well as the desktop
+   size. Shared poster components consume these values without choosing them. */
+@media (max-width: 389px) {
+  :is(:root[data-interface-theme='seerrOrig'], [data-interface-theme='seerrOrig']) {
+    --poster-width: calc((100vw - 2rem - 2 * var(--card-spacing)) / 2);
+  }
+}
+
+:is(
+  :root[data-interface-theme='seerrOrig'],
+  [data-interface-theme='seerrOrig']
+) {
+  --interface-sidebar-width: 16rem;
+  --interface-page-gutter: 1.5rem;
+  --interface-grid-gap: 1.5rem;
+  --interface-card-radius: 0.375rem;
+  --interface-poster-radius: 0.375rem;
+  --interface-control-radius: 0.25rem;
+  --interface-main-card-padding: 1.5rem;
+  --interface-inset-card-padding: 1rem;
+  --interface-section-gap: 1.5rem;
+  --interface-detail-row-gap: 0.25rem;
+  --interface-table-header: #374151;
+  --interface-table-hover: rgb(79 70 229 / 0.08);
+  --interface-motion-duration: 180ms;
+  --interface-page: #111827;
+  --interface-panel: #1f2937;
+  --interface-panel-raised: #1f2937;
+  --interface-border: #374151;
+  --interface-muted: #9ca3af;
+  --interface-text: #f9fafb;
+  --interface-link: #c7d2fe;
+  --interface-accent-a: #4f46e5;
+  --interface-accent-b: #9333ea;
+  --interface-sidebar-top: #1f2937;
+  --interface-sidebar-bottom: #131928;
+  --interface-sidebar-selected: linear-gradient(135deg, #4f46e5, #9333ea);
+  --interface-nav-group-gap: calc(2 * var(--interface-section-gap));
+  --interface-nav-item-gap: 0.25rem;
+  --interface-nav-inline-inset: 1rem;
+  --interface-nav-nested-indent: 1.75rem;
+  --interface-nav-mobile-offset: 2.5rem;
+  --interface-nav-desktop-offset: 2rem;
+  --interface-nav-heading-line-height: 1.25rem;
+  --interface-compact-control-height: 1.25rem;
+  --interface-profile-menu-row-height: 1.25rem;
+  --interface-detail-row-height: 1rem;
+  --interface-card-table-font-size: 0.75rem;
+  --interface-card-table-heading-weight: 600;
+  --interface-card-table-value-weight: 400;
+  --interface-card-title-font-size: 1.125rem;
+  --interface-page-heading-font-size: 1.5rem;
+  --interface-card-subheading-font-size: 0.875rem;
+  --interface-card-body-font-size: 0.875rem;
+  --interface-card-compact-title-font-size: 0.875rem;
+  --interface-card-compact-subheading-font-size: 0.75rem;
+  --interface-card-compact-line-height: 16px;
+  --interface-card-compact-height: 70px;
+  --interface-card-compact-padding-block: 1px;
+  --interface-card-copy-line-height: 1.25rem;
+  --interface-card-subheading-spacing-before: 0.25rem;
+  --interface-card-body-spacing-before: 1rem;
+  --interface-detail-divider-width: 2px;
+  --interface-detail-first-column-limit: 40%;
+  --interface-detail-first-value-limit: 30%;
+  --interface-detail-last-column-limit: 35%;
+  --interface-button-padding-x: 5px;
+  --interface-button-content-gap: 0.25rem;
+  --interface-poster-control-gap: 0.125rem;
+  --interface-dropdown-menu-surface: var(--interface-panel);
+  --interface-dropdown-menu-border: var(--interface-border);
+  --poster-width: 150px;
+  --poster-aspect-ratio: 2 / 3;
+  --app-card-frame-width: 1px;
+  --app-card-frame-background: #374151;
+  color-scheme: dark;
+}
+
+:is(:root[data-interface-theme='seerrOrig'], [data-interface-theme='seerrOrig'])
+  body {
+  background: var(--interface-page);
+  color: var(--interface-text);
+}
+
+:is(
+  :root[data-interface-theme='seerrOrig'][data-theme-mode='light'],
+  [data-interface-theme='seerrOrig'][data-theme-mode='light']
+) {
+  --interface-page: #f3f4f6;
+  --interface-panel: #fff;
+  --interface-panel-raised: #e5e7eb;
+  --interface-border: #d1d5db;
+  --interface-muted: #4b5563;
+  --interface-text: #111827;
+  --interface-table-header: #e5e7eb;
+  --interface-table-hover: rgb(79 70 229 / 0.07);
+  --app-card-frame-background: #d1d5db;
+  color-scheme: light;
+}
+
+:is(:root[data-interface-theme='seerrOrig'], [data-interface-theme='seerrOrig'])
+  .sidebar {
+  width: var(--interface-sidebar-width);
+  border-inline-end: 1px solid var(--interface-border);
+  background: linear-gradient(
+    180deg,
+    var(--interface-sidebar-top) 0%,
+    var(--interface-sidebar-bottom) 100%
+  );
+}
+
+:is(:root[data-interface-theme='seerrOrig'], [data-interface-theme='seerrOrig'])
+  .searchbar.app-searchbar-scrolled {
+  border-bottom: 1px solid var(--interface-border);
+  background: var(--interface-panel);
+  box-shadow: none;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+
+:is(:root[data-interface-theme='seerrOrig'], [data-interface-theme='seerrOrig'])
+  :is(.app-mobile-menu-surface, .mobile-menu-navigation) {
+  border-color: var(--interface-border);
+  background: var(--interface-sidebar-top);
+  box-shadow: none;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+
+/* Render the original menu order in the DOM while retaining current
+   permission filtering. */
+:is(:root[data-interface-theme='seerrOrig'], [data-interface-theme='seerrOrig'])
+  .sidebar-navigation {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 1rem;
+  margin-block-start: 2rem;
+  padding-inline: 1rem;
+}
+
+:is(:root[data-interface-theme='seerrOrig'], [data-interface-theme='seerrOrig'])
+  .sidebar-navigation-section,
+:is(:root[data-interface-theme='seerrOrig'], [data-interface-theme='seerrOrig'])
+  .sidebar-navigation-items {
+  display: contents;
+}
+
+:is(:root[data-interface-theme='seerrOrig'], [data-interface-theme='seerrOrig'])
+  .sidebar-navigation-heading {
+  display: none;
+}
+
+:is(:root[data-interface-theme='seerrOrig'], [data-interface-theme='seerrOrig'])
+  .main-menu-link {
+  min-height: 2.5rem;
+  border-radius: 0.375rem;
+  padding-inline: 0.5rem;
+  color: #f9fafb;
+  font-size: 1.125rem;
+  font-weight: 500;
+}
+
+:is(:root[data-interface-theme='seerrOrig'], [data-interface-theme='seerrOrig'])
+  .main-menu-link:hover,
+:is(:root[data-interface-theme='seerrOrig'], [data-interface-theme='seerrOrig'])
+  .sidebar-link-idle:focus-visible {
+  background-color: #374151;
+}
+
+:is(:root[data-interface-theme='seerrOrig'], [data-interface-theme='seerrOrig'])
+  .sidebar-link-selected,
+:is(:root[data-interface-theme='seerrOrig'], [data-interface-theme='seerrOrig'])
+  .sidebar-link-selected:hover {
+  background: var(--interface-sidebar-selected);
+  color: #fff;
+}
+
+:is(:root[data-interface-theme='seerrOrig'], [data-interface-theme='seerrOrig'])
+  :is(button, a, input, select, textarea):focus-visible {
+  outline-color: #a5b4fc;
+}
+
+:is(:root[data-interface-theme='seerrOrig'], [data-interface-theme='seerrOrig'])
+  .page-layout {
+  --page-layout-margin-inline: var(--interface-page-gutter);
+}
+
+:is(:root[data-interface-theme='seerrOrig'], [data-interface-theme='seerrOrig'])
+  .slider-header {
+  padding-block: 1.5rem 1rem;
+}
+
+:is(:root[data-interface-theme='seerrOrig'], [data-interface-theme='seerrOrig'])
+  .slider-title {
+  color: var(--interface-muted);
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+:is(:root[data-interface-theme='seerrOrig'], [data-interface-theme='seerrOrig'])
+  ul.cards-vertical,
+:is(:root[data-interface-theme='seerrOrig'], [data-interface-theme='seerrOrig'])
+  ul.cards-horizontal {
+  gap: var(--interface-grid-gap);
+}
+
+:is(:root[data-interface-theme='seerrOrig'], [data-interface-theme='seerrOrig'])
+  ul.cards-vertical {
+  grid-template-columns: repeat(auto-fill, minmax(var(--poster-width), 1fr));
+  justify-content: start;
+}
+
+/* Orig keeps controls and catalog shelves in the classic, roomier flow. */
+:is(:root[data-interface-theme='seerrOrig'], [data-interface-theme='seerrOrig'])
+  .app-pinned-filter-group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--interface-section-gap);
+}
+
+:is(:root[data-interface-theme='seerrOrig'], [data-interface-theme='seerrOrig'])
+  .app-pinned-filter-section {
+  border-bottom: 1px solid var(--interface-border);
+  padding-block-end: var(--interface-section-gap);
+}
+
+:is(:root[data-interface-theme='seerrOrig'], [data-interface-theme='seerrOrig'])
+  .app-pinned-filter-panel {
+  margin-block-start: 0.75rem;
+  padding-inline: 0.75rem;
+}
+
+:is(:root[data-interface-theme='seerrOrig'], [data-interface-theme='seerrOrig'])
+  .app-pinned-filter-panel
+  .app-filter-row {
+  align-items: stretch;
+  gap: 0.75rem;
+}
+
+:is(:root[data-interface-theme='seerrOrig'], [data-interface-theme='seerrOrig'])
+  ul.cards-vertical {
+  grid-template-columns: repeat(auto-fill, minmax(var(--poster-width), 1fr));
+  gap: var(--interface-grid-gap);
+}
+
+:is(:root[data-interface-theme='seerrOrig'], [data-interface-theme='seerrOrig'])
+  .poster-layout {
+  width: 100%;
+}
+
+:is(:root[data-interface-theme='seerrOrig'], [data-interface-theme='seerrOrig'])
+  .preview-filters {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 0.75rem;
+  margin-block: 1.25rem 1.75rem;
+}
+
+:is(:root[data-interface-theme='seerrOrig'], [data-interface-theme='seerrOrig'])
+  .preview-filter {
+  min-height: 2.75rem;
+  border-radius: var(--interface-control-radius);
+  padding: 0.7rem 0.9rem;
+}
+
+:is(:root[data-interface-theme='seerrOrig'], [data-interface-theme='seerrOrig'])
+  .preview-route-grid {
+  grid-template-columns: minmax(0, 1fr);
+  gap: 2rem;
+}
+
+:is(:root[data-interface-theme='seerrOrig'], [data-interface-theme='seerrOrig'])
+  .preview-detail-card {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 1.25rem;
+  padding: 1.5rem;
+}
+
+:is(:root[data-interface-theme='seerrOrig'], [data-interface-theme='seerrOrig'])
+  .preview-detail-card
+  .detail-summary-card {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  justify-items: center;
+  gap: 1rem;
+  text-align: center;
+}
+
+:is(:root[data-interface-theme='seerrOrig'], [data-interface-theme='seerrOrig'])
+  .preview-detail-poster {
+  width: 11rem;
+  height: 16.5rem;
+  min-height: 0;
+  border-radius: 0.25rem;
+}
+
+:is(:root[data-interface-theme='seerrOrig'], [data-interface-theme='seerrOrig'])
+  .preview-detail-copy
+  dl {
+  grid-template-columns: max-content minmax(0, 1fr);
+  text-align: start;
+}
+
+:is(:root[data-interface-theme='seerrOrig'], [data-interface-theme='seerrOrig'])
+  .preview-request-row {
+  border: 0;
+  border-top: 1px solid var(--interface-border);
+  border-radius: 0;
+  padding: 1rem 0 0;
+  background: transparent;
+}
+
+:is(:root[data-interface-theme='seerrOrig'], [data-interface-theme='seerrOrig'])
+  .preview-admin {
+  border-radius: var(--interface-control-radius);
+  box-shadow: none;
+}
+
+@media (min-width: 640px) {
+  :is(
+      :root[data-interface-theme='seerrOrig'],
+      [data-interface-theme='seerrOrig']
+    )
+    .preview-filters {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1280px) {
+  :is(
+      :root[data-interface-theme='seerrOrig'],
+      [data-interface-theme='seerrOrig']
+    )
+    .preview-detail-card
+    .detail-summary-card {
+    grid-template-columns: minmax(11rem, 0.35fr) minmax(0, 1fr);
+    justify-items: stretch;
+    align-items: end;
+    text-align: start;
+  }
+
+  :is(
+      :root[data-interface-theme='seerrOrig'],
+      [data-interface-theme='seerrOrig']
+    )
+    .preview-detail-poster {
+    width: 11rem;
+    height: 16.5rem;
+  }
+}
+
+:is(:root[data-interface-theme='seerrOrig'], [data-interface-theme='seerrOrig'])
+  ul.cards-vertical
+  .poster-layout {
+  width: 100%;
+  flex: 1 1 auto;
+}
+
+:is(:root[data-interface-theme='seerrOrig'], [data-interface-theme='seerrOrig'])
+  .app-card-poster {
+  --app-card-frame-width: 1px;
+  border-color: var(--interface-border);
+  border-radius: var(--interface-poster-radius);
+  background: var(--interface-panel);
+  box-shadow: 0 1px 3px rgb(0 0 0 / 0.2);
+}
+
+:is(:root[data-interface-theme='seerrOrig'], [data-interface-theme='seerrOrig'])
+  .app-card-poster-active {
+  transform: translateZ(0) scale(1.025);
+  filter: none;
+  box-shadow: 0 12px 24px rgb(0 0 0 / 0.42);
+}
+
+:is(:root[data-interface-theme='seerrOrig'], [data-interface-theme='seerrOrig'])
+  .poster-layout
+  [data-poster-region='overlay'] {
+  background: linear-gradient(
+    180deg,
+    transparent 38%,
+    rgb(17 24 39 / 0.9) 100%
+  );
+}
+
+:is(:root[data-interface-theme='seerrOrig'], [data-interface-theme='seerrOrig'])
+  .poster-layout
+  [data-poster-region='title'] {
+  color: #fff;
+  font-size: 1.125rem;
+  font-weight: 700;
+}
+
+:is(:root[data-interface-theme='seerrOrig'], [data-interface-theme='seerrOrig'])
+  .poster-control {
+  border-radius: 999px;
+  box-shadow: 0 2px 7px rgb(0 0 0 / 0.35);
+}
+
+:is(:root[data-interface-theme='seerrOrig'], [data-interface-theme='seerrOrig'])
+  :is(.app-card-main, .app-card-sub, .app-card-inset),
+:is(:root[data-interface-theme='seerrOrig'], [data-interface-theme='seerrOrig'])
+  .manage-media-card-sections
+  > div {
+  --app-card-frame-width: 1px;
+  border-radius: var(--interface-card-radius);
+  background: var(--interface-panel);
+}
+
+:is(:root[data-interface-theme='seerrOrig'], [data-interface-theme='seerrOrig'])
+  .app-card-main::after,
+:is(:root[data-interface-theme='seerrOrig'], [data-interface-theme='seerrOrig'])
+  .app-card-sub::after,
+:is(:root[data-interface-theme='seerrOrig'], [data-interface-theme='seerrOrig'])
+  .app-card-inset::after {
+  background: var(--interface-border);
+}
+
+:is(:root[data-interface-theme='seerrOrig'], [data-interface-theme='seerrOrig'])
+  .page-overlay-card {
+  border-radius: 0.5rem;
+  background: var(--interface-panel);
+}
+
+:is(:root[data-interface-theme='seerrOrig'], [data-interface-theme='seerrOrig'])
+  .media-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 1rem;
+}
+
+:is(:root[data-interface-theme='seerrOrig'], [data-interface-theme='seerrOrig'])
+  .media-poster {
+  width: 8rem;
+  overflow: hidden;
+  border-radius: 0.25rem;
+  box-shadow: 0 4px 16px rgb(0 0 0 / 0.45);
+}
+
+:is(:root[data-interface-theme='seerrOrig'], [data-interface-theme='seerrOrig'])
+  .media-title {
+  margin-top: 1rem;
+  color: var(--interface-text);
+  text-align: center;
+}
+
+:is(:root[data-interface-theme='seerrOrig'], [data-interface-theme='seerrOrig'])
+  .media-overview {
+  display: flex;
+  flex-direction: column;
+  padding-block: 2rem 1rem;
+}
+
+:is(:root[data-interface-theme='seerrOrig'], [data-interface-theme='seerrOrig'])
+  .media-facts {
+  border: 1px solid var(--interface-border);
+  border-radius: 0.5rem;
+  background: var(--interface-page);
+  box-shadow: 0 1px 3px rgb(0 0 0 / 0.2);
+}
+
+@media (min-width: 640px) {
+  :is(
+    :root[data-interface-theme='seerrOrig'],
+    [data-interface-theme='seerrOrig']
+  ) {
+    --poster-width: 150px;
+  }
+}
+
+:is(:root[data-interface-theme='seerrOrig'], [data-interface-theme='seerrOrig'])
+  .preview-media-tabs {
+  justify-content: flex-start;
+  gap: 0.75rem;
+  margin-block: 1.25rem 1.5rem;
+}
+
+:is(:root[data-interface-theme='seerrOrig'], [data-interface-theme='seerrOrig'])
+  .preview-media-tabs
+  button {
+  min-height: 2.5rem;
+  border-radius: var(--interface-control-radius);
+  padding-inline: 1rem;
+}
+
+:is(:root[data-interface-theme='seerrOrig'], [data-interface-theme='seerrOrig'])
+  nav[data-testid='discover-media-tabs'] {
+  justify-content: flex-start;
+  gap: 0.75rem;
+}
+
+:is(:root[data-interface-theme='seerrOrig'], [data-interface-theme='seerrOrig'])
+  .settings-page-content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--interface-section-gap);
+}
+
+:is(:root[data-interface-theme='seerrOrig'], [data-interface-theme='seerrOrig'])
+  .settings-page-content
+  > :is(.section, .settings-group-card, .settings-library-card) {
+  margin-block: 0;
+}
+
+@media (min-width: 1024px) {
+  :is(
+      :root[data-interface-theme='seerrOrig'],
+      [data-interface-theme='seerrOrig']
+    )
+    [data-interface-role='main-content'] {
+    margin-inline-start: var(--interface-sidebar-width);
+  }
+
+  :is(
+      :root[data-interface-theme='seerrOrig'],
+      [data-interface-theme='seerrOrig']
+    )
+    .searchbar {
+    inset-inline-start: var(--interface-sidebar-width);
+  }
+}
+
+@media (min-width: 1280px) {
+  :is(
+      :root[data-interface-theme='seerrOrig'],
+      [data-interface-theme='seerrOrig']
+    )
+    .media-header {
+    flex-direction: row;
+    align-items: flex-end;
+  }
+
+  :is(
+      :root[data-interface-theme='seerrOrig'],
+      [data-interface-theme='seerrOrig']
+    )
+    .media-poster {
+    width: 13rem;
+  }
+
+  :is(
+      :root[data-interface-theme='seerrOrig'],
+      [data-interface-theme='seerrOrig']
+    )
+    .media-title {
+    margin-top: 0;
+    text-align: start;
+  }
+
+  :is(
+      :root[data-interface-theme='seerrOrig'],
+      [data-interface-theme='seerrOrig']
+    )
+    .media-overview {
+    flex-direction: row;
+  }
+}
+
+/* Current SeerrNG route contracts expressed through the compact SeerrOrig
+   rhythm: flat panels, restrained metadata, and classic centered-to-row detail. */
+:is(:root[data-interface-theme='seerrOrig'], [data-interface-theme='seerrOrig'])
+  main.page-layout {
+  --page-layout-margin-inline: var(--interface-page-gutter);
+}
+
+:is(:root[data-interface-theme='seerrOrig'], [data-interface-theme='seerrOrig'])
+  :is(
+    .media-detail-card,
+    .settings-group-card,
+    .settings-library-card,
+    .request-modal-site-surface
+  ) {
+  border-color: var(--interface-border);
+  border-radius: var(--interface-card-radius);
+  background: var(--interface-panel);
+  box-shadow: 0 1px 3px rgb(0 0 0 / 0.2);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+
+:is(:root[data-interface-theme='seerrOrig'], [data-interface-theme='seerrOrig'])
+  :is(
+    .media-detail-card,
+    .settings-group-card,
+    .settings-library-card,
+    .request-modal-site-surface,
+    .app-card-main,
+    .app-card-sub,
+    .app-card-inset
+  ) {
+  --app-card-frame-width: 1px;
+  --app-card-frame-background: var(--interface-border);
+}
+
+:is(:root[data-interface-theme='seerrOrig'], [data-interface-theme='seerrOrig'])
+  :is(.app-card-main, .app-card-sub, .app-card-inset) {
+  border-radius: var(--interface-card-radius);
+  background: var(--interface-panel);
+  box-shadow: 0 1px 3px rgb(0 0 0 / 0.18);
+}
+
+:is(:root[data-interface-theme='seerrOrig'], [data-interface-theme='seerrOrig'])
+  .main-menu-link
+  > svg {
+  width: 1.25rem;
+  height: 1.25rem;
+  color: #d1d5db;
+}
+
+:is(:root[data-interface-theme='seerrOrig'], [data-interface-theme='seerrOrig'])
+  :is(
+    .settings-page-content input:not([type='checkbox']):not([type='radio']),
+    .settings-page-content select,
+    .settings-page-content textarea
+  ) {
+  border-color: var(--interface-border);
+  border-radius: 0.375rem;
+  background-color: var(--interface-page);
+  box-shadow: none;
+}
+
+:is(:root[data-interface-theme='seerrOrig'], [data-interface-theme='seerrOrig'])
+  .media-detail-card
+  .detail-summary-card {
+  border-radius: var(--interface-card-radius);
+  background: var(--interface-panel);
+  box-shadow: none;
+}
+
+:is(:root[data-interface-theme='seerrOrig'], [data-interface-theme='seerrOrig'])
+  .media-detail-card
+  .detail-summary-card:has([data-testid='media-details-poster']) {
+  grid-template-columns: minmax(0, 1fr);
+  justify-items: center;
+  gap: 1rem;
+  text-align: center;
+}
+
+:is(:root[data-interface-theme='seerrOrig'], [data-interface-theme='seerrOrig'])
+  .detail-summary-card
+  [data-testid='media-details-poster'] {
+  width: 8rem;
+  height: 12rem;
+  border-radius: 0.25rem;
+  box-shadow: 0 4px 16px rgb(0 0 0 / 0.35);
+}
+
+:is(:root[data-interface-theme='seerrOrig'], [data-interface-theme='seerrOrig'])
+  .media-detail-card
+  .app-detail-summary-grid {
+  grid-template-columns: minmax(0, 1fr);
+  justify-items: center;
+  gap: 1rem;
+  text-align: center;
+}
+
+:is(:root[data-interface-theme='seerrOrig'], [data-interface-theme='seerrOrig'])
+  .app-detail-summary-grid
+  > :nth-child(2) {
+  min-width: 0;
+  width: 100%;
+  text-align: center;
+}
+
+:is(:root[data-interface-theme='seerrOrig'], [data-interface-theme='seerrOrig'])
+  :is(.detail-card-poster, .app-detail-poster-frame) {
+  width: 8rem;
+  height: 12rem;
+  border-radius: 0.25rem;
+  box-shadow: 0 4px 16px rgb(0 0 0 / 0.35);
+}
+
+:is(:root[data-interface-theme='seerrOrig'], [data-interface-theme='seerrOrig'])
+  :is(.detail-summary-title, .card-title) {
+  color: var(--interface-text);
+}
+
+:is(:root[data-interface-theme='seerrOrig'], [data-interface-theme='seerrOrig'])
+  :is(.media-detail-rows, .card-table, .collection-summary-table) {
+  row-gap: var(--interface-detail-row-gap);
+  line-height: 1.35;
+}
+
+:is(:root[data-interface-theme='seerrOrig'], [data-interface-theme='seerrOrig'])
+  :is(.media-detail-column-divider, .detail-column-divider) {
+  border-color: var(--interface-border);
+}
+
+:is(:root[data-interface-theme='seerrOrig'], [data-interface-theme='seerrOrig'])
+  .settings-page-content
+  > :is(.section, .settings-group-card, .settings-library-card) {
+  border-radius: 0.375rem;
+  box-shadow: none;
+}
+
+:is(:root[data-interface-theme='seerrOrig'], [data-interface-theme='seerrOrig'])
+  .settings-group-heading {
+  color: var(--interface-muted);
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+:is(:root[data-interface-theme='seerrOrig'], [data-interface-theme='seerrOrig'])
+  .app-data-table {
+  border-collapse: collapse;
+  border-radius: 0.375rem;
+  box-shadow: none;
+}
+
+:is(:root[data-interface-theme='seerrOrig'], [data-interface-theme='seerrOrig'])
+  .app-data-table-row:nth-child(even) {
+  background: rgb(255 255 255 / 0.025);
+}
+
+:is(:root[data-interface-theme='seerrOrig'], [data-interface-theme='seerrOrig'])
+  .app-data-table-heading {
+  font-size: 0.75rem;
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+:is(:root[data-interface-theme='seerrOrig'], [data-interface-theme='seerrOrig'])
+  :is(
+    .issue-summary-card,
+    [data-interface-role='request-card'],
+    [data-interface-role='blocklist-card']
+  ) {
+  border-radius: 0.375rem;
+  box-shadow: none;
+}
+
+@media (min-width: 1024px) {
+  :is(
+      :root[data-interface-theme='seerrOrig'],
+      [data-interface-theme='seerrOrig']
+    )
+    .media-detail-card
+    .detail-summary-card:has([data-testid='media-details-poster']) {
+    grid-template-columns: minmax(12rem, 0.34fr) minmax(0, 1fr);
+    align-items: end;
+    justify-items: stretch;
+    gap: 1.5rem;
+    text-align: start;
+  }
+
+  :is(
+      :root[data-interface-theme='seerrOrig'],
+      [data-interface-theme='seerrOrig']
+    )
+    .detail-summary-card:has([data-testid='media-details-poster'])
+    > :not([data-testid='media-details-poster']) {
+    text-align: start;
+  }
+
+  :is(
+      :root[data-interface-theme='seerrOrig'],
+      [data-interface-theme='seerrOrig']
+    )
+    .detail-summary-card
+    [data-testid='media-details-poster'] {
+    width: 12rem;
+    height: 18rem;
+  }
+
+  :is(
+      :root[data-interface-theme='seerrOrig'],
+      [data-interface-theme='seerrOrig']
+    )
+    .media-detail-card
+    .app-detail-summary-grid {
+    grid-template-columns: minmax(12rem, 0.34fr) minmax(0, 1fr);
+    align-items: end;
+    justify-items: stretch;
+    gap: 1.5rem;
+    text-align: start;
+  }
+
+  :is(
+      :root[data-interface-theme='seerrOrig'],
+      [data-interface-theme='seerrOrig']
+    )
+    .app-detail-summary-grid
+    > :nth-child(2) {
+    text-align: start;
+  }
+
+  :is(
+      :root[data-interface-theme='seerrOrig'],
+      [data-interface-theme='seerrOrig']
+    )
+    :is(.detail-card-poster, .app-detail-poster-frame) {
+    width: 12rem;
+    height: 18rem;
+  }
+
+  :is(
+      :root[data-interface-theme='seerrOrig'],
+      [data-interface-theme='seerrOrig']
+    )
+    [data-detail-layout='tv'],
+  :is(
+      :root[data-interface-theme='seerrOrig'],
+      [data-interface-theme='seerrOrig']
+    )
+    [data-detail-layout='movie'] {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas: 'actions' 'information';
+  }
+}
+</style>
+    <style data-profile-stylesheet="seerrNGJ.css">
+/* SeerrNGJ: John’s blue/silver visual system and grouped, data-rich layouts. */
+/* Each package owns its narrow-phone poster density as well as desktop size. */
+@media (max-width: 389px) {
+  :is(:root[data-interface-theme='seerrNGJ'], [data-interface-theme='seerrNGJ']) {
+    --poster-width: calc((100vw - 2rem - 2 * var(--card-spacing)) / 2);
+  }
+}
+
+:is(:root[data-interface-theme='seerrNGJ'], [data-interface-theme='seerrNGJ']) {
+  --interface-sidebar-width: 18rem;
+  --interface-page-gutter: 1rem;
+  --interface-grid-gap: 0.75rem;
+  --interface-card-radius: 1rem;
+  --interface-poster-radius: 0.875rem;
+  --interface-control-radius: 0.75rem;
+  --interface-main-card-padding: 1.125rem;
+  --interface-inset-card-padding: 0.75rem;
+  --interface-section-gap: 0.75rem;
+  --interface-detail-row-gap: 0.5rem;
+  --interface-table-header: #0d2542;
+  --interface-table-hover: rgb(59 130 246 / 0.13);
+  --interface-motion-duration: 220ms;
+  --interface-page: #030712;
+  --interface-panel: #071321;
+  --interface-panel-raised: #0a1928;
+  --interface-border: #315579;
+  --interface-muted: #9ca3af;
+  --interface-text: #f8fafc;
+  --interface-link: #bfdbfe;
+  --interface-accent-a: #0051d4;
+  --interface-accent-b: #8b5cf6;
+  --interface-sidebar-top: #0d2542;
+  --interface-sidebar-bottom: #05101d;
+  --interface-sidebar-selected: linear-gradient(120deg, #0051d4, #17375b);
+  --interface-nav-group-gap: 1rem;
+  --interface-nav-item-gap: 0.375rem;
+  --interface-nav-inline-inset: 0.75rem;
+  --interface-nav-nested-indent: 2rem;
+  --interface-nav-mobile-offset: 2.25rem;
+  --interface-nav-desktop-offset: 1.5rem;
+  --interface-nav-heading-line-height: 1.5rem;
+  --interface-compact-control-height: 1.5rem;
+  --interface-profile-menu-row-height: 1.5rem;
+  --interface-detail-row-height: 1.125rem;
+  --interface-card-table-font-size: 0.75rem;
+  --interface-card-table-heading-weight: 600;
+  --interface-card-table-value-weight: 400;
+  --interface-card-title-font-size: 1.125rem;
+  --interface-page-heading-font-size: 1.5rem;
+  --interface-card-subheading-font-size: 0.875rem;
+  --interface-card-body-font-size: 0.875rem;
+  --interface-card-compact-title-font-size: 1rem;
+  --interface-card-compact-subheading-font-size: 0.8125rem;
+  --interface-card-compact-line-height: 1.25rem;
+  --interface-card-compact-height: 84px;
+  --interface-card-compact-padding-block: 0.25rem;
+  --interface-card-copy-line-height: 1.25rem;
+  --interface-card-subheading-spacing-before: 0.25rem;
+  --interface-card-body-spacing-before: 1rem;
+  --interface-detail-divider-width: 2px;
+  --interface-detail-first-column-limit: 40%;
+  --interface-detail-first-value-limit: 30%;
+  --interface-detail-last-column-limit: 35%;
+  --interface-button-padding-x: 8px;
+  --interface-button-content-gap: 0.375rem;
+  --interface-poster-control-gap: 0.25rem;
+  --interface-dropdown-menu-surface: var(--interface-panel);
+  --interface-dropdown-menu-border: var(--interface-border);
+  --poster-width: 169.2px;
+  --poster-aspect-ratio: 2 / 3;
+  --app-card-frame-width: 2px;
+  --app-card-frame-background: linear-gradient(
+    140deg,
+    #4d8fff,
+    #315579 55%,
+    #6d28d9
+  );
+  color-scheme: dark;
+}
+
+:is(:root[data-interface-theme='seerrNGJ'], [data-interface-theme='seerrNGJ'])
+  body {
+  background:
+    radial-gradient(
+      ellipse at 45% -20%,
+      rgb(37 99 235 / 0.16),
+      transparent 48%
+    ),
+    var(--interface-page);
+  color: var(--interface-text);
+}
+
+:is(
+  :root[data-interface-theme='seerrNGJ'][data-theme-mode='light'],
+  [data-interface-theme='seerrNGJ'][data-theme-mode='light']
+) {
+  --interface-page: #eff6ff;
+  --interface-panel: #fff;
+  --interface-panel-raised: #dbeafe;
+  --interface-border: #93c5fd;
+  --interface-muted: #475569;
+  --interface-text: #0f172a;
+  --interface-link: #1e3a8a;
+  --interface-sidebar-top: #eff6ff;
+  --interface-sidebar-bottom: #dbeafe;
+  --interface-sidebar-selected: linear-gradient(120deg, #2563eb, #bfdbfe);
+  --interface-table-header: #dbeafe;
+  --interface-table-hover: rgb(37 99 235 / 0.09);
+  --app-card-frame-background: linear-gradient(
+    140deg,
+    #2563eb,
+    #93c5fd 55%,
+    #8b5cf6
+  );
+  color-scheme: light;
+}
+
+:is(:root[data-interface-theme='seerrNGJ'], [data-interface-theme='seerrNGJ'])
+  .sidebar {
+  width: var(--interface-sidebar-width);
+  border-inline-end: 1px solid var(--interface-border);
+  background: linear-gradient(
+    165deg,
+    var(--interface-sidebar-top),
+    var(--interface-sidebar-bottom) 84%
+  );
+  box-shadow: 10px 0 28px rgb(0 0 0 / 0.2);
+}
+
+:is(:root[data-interface-theme='seerrNGJ'], [data-interface-theme='seerrNGJ'])
+  .searchbar.app-searchbar-scrolled {
+  border-bottom: 1px solid var(--interface-border);
+  background: linear-gradient(
+    90deg,
+    var(--interface-sidebar-top),
+    var(--interface-panel)
+  );
+  box-shadow: 0 8px 28px rgb(0 0 0 / 0.24);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+:is(:root[data-interface-theme='seerrNGJ'], [data-interface-theme='seerrNGJ'])
+  :is(.app-mobile-menu-surface, .mobile-menu-navigation) {
+  border-color: var(--interface-border);
+  background: linear-gradient(
+    165deg,
+    var(--interface-sidebar-top),
+    var(--interface-sidebar-bottom)
+  );
+  box-shadow: 0 12px 32px rgb(0 0 0 / 0.3);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+:is(:root[data-interface-theme='seerrNGJ'], [data-interface-theme='seerrNGJ'])
+  .sidebar-navigation {
+  gap: 1.25rem;
+  margin-block-start: 1.5rem;
+  padding-inline: 0.875rem;
+}
+
+:is(:root[data-interface-theme='seerrNGJ'], [data-interface-theme='seerrNGJ'])
+  .sidebar-navigation-section {
+  gap: 0.5rem;
+}
+
+:is(:root[data-interface-theme='seerrNGJ'], [data-interface-theme='seerrNGJ'])
+  .sidebar-navigation-items {
+  gap: 0.25rem;
+}
+
+:is(:root[data-interface-theme='seerrNGJ'], [data-interface-theme='seerrNGJ'])
+  .sidebar-navigation-heading {
+  padding-inline: 0.625rem;
+  color: #93c5fd;
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  line-height: 1rem;
+  text-transform: uppercase;
+}
+
+:is(:root[data-interface-theme='seerrNGJ'], [data-interface-theme='seerrNGJ'])
+  .main-menu-link {
+  min-height: 2.375rem;
+  border: 1px solid transparent;
+  border-radius: 0.5rem;
+  padding-inline: 0.625rem;
+  color: #dbeafe;
+  font-size: 0.9375rem;
+  font-weight: 600;
+}
+
+:is(:root[data-interface-theme='seerrNGJ'], [data-interface-theme='seerrNGJ'])
+  .sidebar-link-idle:hover,
+:is(:root[data-interface-theme='seerrNGJ'], [data-interface-theme='seerrNGJ'])
+  .sidebar-link-idle:focus-visible {
+  border-color: rgb(96 165 250 / 0.3);
+  background: rgb(23 55 91 / 0.75);
+  color: #fff;
+}
+
+:is(:root[data-interface-theme='seerrNGJ'], [data-interface-theme='seerrNGJ'])
+  .sidebar-link-selected,
+:is(:root[data-interface-theme='seerrNGJ'], [data-interface-theme='seerrNGJ'])
+  .sidebar-link-selected:hover {
+  border-color: #3b82f6;
+  background: var(--interface-sidebar-selected);
+  color: #fff;
+  box-shadow: inset 3px 0 #93c5fd;
+}
+
+:is(:root[data-interface-theme='seerrNGJ'], [data-interface-theme='seerrNGJ'])
+  :is(button, a, input, select, textarea):focus-visible {
+  outline-color: #60a5fa;
+}
+
+:is(:root[data-interface-theme='seerrNGJ'], [data-interface-theme='seerrNGJ'])
+  .sidebar-navigation-items
+  > [data-navigation-level='nested'] {
+  margin-inline-start: 0.625rem;
+  border-inline-start: 1px solid #315579;
+  border-radius: 0 0.375rem 0.375rem 0;
+}
+
+:is(:root[data-interface-theme='seerrNGJ'], [data-interface-theme='seerrNGJ'])
+  .page-layout {
+  --page-layout-margin-inline: var(--interface-page-gutter);
+}
+
+:is(:root[data-interface-theme='seerrNGJ'], [data-interface-theme='seerrNGJ'])
+  .page-title,
+:is(:root[data-interface-theme='seerrNGJ'], [data-interface-theme='seerrNGJ'])
+  .slider-title {
+  color: #f8fafc;
+  text-shadow: 0 2px 18px rgb(37 99 235 / 0.18);
+}
+
+:is(:root[data-interface-theme='seerrNGJ'], [data-interface-theme='seerrNGJ'])
+  .slider-header {
+  padding-block: 1.25rem 0.75rem;
+}
+
+:is(:root[data-interface-theme='seerrNGJ'], [data-interface-theme='seerrNGJ'])
+  ul.cards-vertical,
+:is(:root[data-interface-theme='seerrNGJ'], [data-interface-theme='seerrNGJ'])
+  ul.cards-horizontal {
+  gap: var(--interface-grid-gap);
+}
+
+:is(:root[data-interface-theme='seerrNGJ'], [data-interface-theme='seerrNGJ'])
+  .app-pinned-filter-group {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-items: start;
+  gap: 0.75rem;
+}
+
+:is(:root[data-interface-theme='seerrNGJ'], [data-interface-theme='seerrNGJ'])
+  .preview-media-tabs {
+  gap: 0.375rem;
+  margin-block: 0.75rem 1rem;
+  border-bottom: 1px solid var(--interface-border);
+  padding-block-end: 0.5rem;
+}
+
+:is(:root[data-interface-theme='seerrNGJ'], [data-interface-theme='seerrNGJ'])
+  .preview-media-tabs
+  button {
+  min-height: 2.125rem;
+  border-radius: 0.75rem;
+  padding-inline: 0.75rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+:is(:root[data-interface-theme='seerrNGJ'], [data-interface-theme='seerrNGJ'])
+  nav[data-testid='discover-media-tabs'] {
+  justify-content: flex-end;
+  gap: 0.375rem;
+  border: 1px solid var(--interface-border);
+  border-radius: 1rem;
+  padding: 0.25rem;
+  background: var(--interface-panel);
+}
+
+:is(:root[data-interface-theme='seerrNGJ'], [data-interface-theme='seerrNGJ'])
+  .settings-page-content:has(
+    > .section,
+    > .settings-group-card,
+    > .settings-library-card
+  ) {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-items: start;
+  gap: 0.75rem;
+}
+
+:is(:root[data-interface-theme='seerrNGJ'], [data-interface-theme='seerrNGJ'])
+  .settings-page-content
+  > :is(.mb-6, .app-list-items) {
+  grid-column: 1 / -1;
+}
+
+:is(:root[data-interface-theme='seerrNGJ'], [data-interface-theme='seerrNGJ'])
+  .settings-page-content
+  > :is(.section, .settings-group-card, .settings-library-card) {
+  margin-block: 0;
+}
+
+:is(:root[data-interface-theme='seerrNGJ'], [data-interface-theme='seerrNGJ'])
+  .app-pinned-filter-section {
+  min-width: 0;
+  border: 1px solid var(--interface-border);
+  border-radius: 0.75rem;
+  padding: 0.75rem;
+  background: var(--interface-panel);
+  box-shadow: inset 0 1px rgb(255 255 255 / 0.035);
+}
+
+:is(:root[data-interface-theme='seerrNGJ'], [data-interface-theme='seerrNGJ'])
+  .app-pinned-filter-panel {
+  margin-block-start: 0.75rem;
+  border-top: 1px solid var(--interface-border);
+  padding-block-start: 0.75rem;
+}
+
+:is(:root[data-interface-theme='seerrNGJ'], [data-interface-theme='seerrNGJ'])
+  .app-pinned-filter-panel
+  .app-filter-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.375rem;
+}
+
+:is(:root[data-interface-theme='seerrNGJ'], [data-interface-theme='seerrNGJ'])
+  ul.cards-vertical {
+  grid-template-columns: repeat(auto-fill, minmax(var(--poster-width), 1fr));
+  gap: var(--interface-grid-gap);
+}
+
+:is(:root[data-interface-theme='seerrNGJ'], [data-interface-theme='seerrNGJ'])
+  .poster-layout {
+  width: 100%;
+}
+
+:is(:root[data-interface-theme='seerrNGJ'], [data-interface-theme='seerrNGJ'])
+  .preview-filters {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.5rem;
+  margin-block: 0.75rem 1rem;
+}
+
+:is(:root[data-interface-theme='seerrNGJ'], [data-interface-theme='seerrNGJ'])
+  .preview-filter {
+  min-height: 2.25rem;
+  border: 1px solid var(--interface-border);
+  border-radius: 0.75rem;
+  padding: 0.5rem 0.625rem;
+  background: linear-gradient(
+    130deg,
+    var(--interface-panel-raised),
+    var(--interface-panel)
+  );
+}
+
+:is(:root[data-interface-theme='seerrNGJ'], [data-interface-theme='seerrNGJ'])
+  .preview-route-grid {
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+  align-items: start;
+  gap: 0.75rem;
+}
+
+:is(:root[data-interface-theme='seerrNGJ'], [data-interface-theme='seerrNGJ'])
+  .preview-detail-card {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  align-content: start;
+  gap: 0.75rem;
+  padding: 0.75rem;
+}
+
+:is(:root[data-interface-theme='seerrNGJ'], [data-interface-theme='seerrNGJ'])
+  .preview-detail-card
+  .detail-summary-card {
+  display: grid;
+  grid-template-columns: 4rem minmax(0, 1fr);
+  align-items: start;
+  justify-items: stretch;
+  gap: 0.625rem;
+  text-align: start;
+}
+
+:is(:root[data-interface-theme='seerrNGJ'], [data-interface-theme='seerrNGJ'])
+  .preview-detail-poster {
+  width: 4rem;
+  height: 6rem;
+  min-height: 0;
+  border: 2px solid #4d8fff;
+  border-radius: 0.75rem;
+}
+
+:is(:root[data-interface-theme='seerrNGJ'], [data-interface-theme='seerrNGJ'])
+  .preview-detail-copy
+  dl {
+  grid-template-columns: minmax(0, 1fr);
+  gap: 0.25rem;
+  font-size: 0.625rem;
+}
+
+:is(:root[data-interface-theme='seerrNGJ'], [data-interface-theme='seerrNGJ'])
+  .preview-detail-copy
+  dt {
+  color: #93c5fd;
+  font-size: 0.5625rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+:is(:root[data-interface-theme='seerrNGJ'], [data-interface-theme='seerrNGJ'])
+  .preview-detail-copy
+  dd {
+  margin-block-end: 0.25rem;
+}
+
+:is(:root[data-interface-theme='seerrNGJ'], [data-interface-theme='seerrNGJ'])
+  .preview-request-row {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: center;
+  border: 1px solid var(--interface-border);
+  border-radius: 0.75rem;
+  padding: 0.75rem;
+  background: var(--interface-panel-raised);
+}
+
+:is(:root[data-interface-theme='seerrNGJ'], [data-interface-theme='seerrNGJ'])
+  .preview-admin {
+  border-radius: 1rem;
+  box-shadow: 0 10px 26px rgb(0 0 0 / 0.3);
+}
+
+:is(:root[data-interface-theme='seerrNGJ'], [data-interface-theme='seerrNGJ'])
+  .preview-admin
+  .settings-group-content {
+  gap: 0.625rem;
+}
+
+@media (max-width: 639px) {
+  :is(:root[data-interface-theme='seerrNGJ'], [data-interface-theme='seerrNGJ'])
+    .app-pinned-filter-group {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  :is(:root[data-interface-theme='seerrNGJ'], [data-interface-theme='seerrNGJ'])
+    .preview-route-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+@container theme-preview (max-width: 639px) {
+  :is(:root[data-interface-theme='seerrNGJ'], [data-interface-theme='seerrNGJ'])
+    .app-pinned-filter-group,
+  :is(:root[data-interface-theme='seerrNGJ'], [data-interface-theme='seerrNGJ'])
+    .preview-route-grid,
+  :is(:root[data-interface-theme='seerrNGJ'], [data-interface-theme='seerrNGJ'])
+    .settings-page-content {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+:is(:root[data-interface-theme='seerrNGJ'], [data-interface-theme='seerrNGJ'])
+  .app-card-poster {
+  --app-card-frame-width: 2px;
+  border-color: var(--interface-border);
+  border-radius: var(--interface-poster-radius);
+  background:
+    linear-gradient(var(--interface-panel), var(--interface-panel)) padding-box,
+    linear-gradient(145deg, #4d8fff, #315579 55%, #8b5cf6) border-box;
+  box-shadow: 0 5px 18px rgb(0 0 0 / 0.25);
+}
+
+:is(:root[data-interface-theme='seerrNGJ'], [data-interface-theme='seerrNGJ'])
+  .app-card-poster-active {
+  transform: translateZ(0) scale(1.045);
+  filter: brightness(1.08);
+  box-shadow:
+    0 14px 32px rgb(0 0 0 / 0.5),
+    0 0 0 1px #60a5fa;
+}
+
+:is(:root[data-interface-theme='seerrNGJ'], [data-interface-theme='seerrNGJ'])
+  .poster-layout
+  [data-poster-region='overlay'] {
+  background: linear-gradient(
+    180deg,
+    rgb(8 35 73 / 0.06) 15%,
+    rgb(3 16 34 / 0.96) 100%
+  );
+}
+
+:is(:root[data-interface-theme='seerrNGJ'], [data-interface-theme='seerrNGJ'])
+  .poster-layout
+  [data-poster-region='title'] {
+  color: #f8fafc;
+  font-size: 1rem;
+  font-weight: 650;
+  letter-spacing: 0.01em;
+}
+
+:is(:root[data-interface-theme='seerrNGJ'], [data-interface-theme='seerrNGJ'])
+  .poster-control {
+  border-radius: 0.5rem;
+  box-shadow: 0 2px 10px rgb(0 0 0 / 0.42);
+}
+
+:is(:root[data-interface-theme='seerrNGJ'], [data-interface-theme='seerrNGJ'])
+  :is(.app-card-main, .app-card-sub, .app-card-inset),
+:is(:root[data-interface-theme='seerrNGJ'], [data-interface-theme='seerrNGJ'])
+  .manage-media-card-sections
+  > div {
+  --app-card-frame-width: 2px;
+  border-radius: var(--interface-card-radius);
+  background: linear-gradient(
+    145deg,
+    rgb(10 25 40 / 0.96),
+    rgb(7 19 33 / 0.96)
+  );
+  box-shadow: 0 8px 24px rgb(0 0 0 / 0.2);
+}
+
+:is(:root[data-interface-theme='seerrNGJ'], [data-interface-theme='seerrNGJ'])
+  .app-card-main::after,
+:is(:root[data-interface-theme='seerrNGJ'], [data-interface-theme='seerrNGJ'])
+  .app-card-sub::after,
+:is(:root[data-interface-theme='seerrNGJ'], [data-interface-theme='seerrNGJ'])
+  .app-card-inset::after {
+  background: linear-gradient(140deg, #4d8fff, #315579 55%, #6d28d9);
+}
+
+:is(:root[data-interface-theme='seerrNGJ'], [data-interface-theme='seerrNGJ'])
+  .page-overlay-card {
+  border: 1px solid #315579;
+  border-radius: 0.875rem;
+  background: var(--interface-panel);
+  box-shadow:
+    0 18px 60px rgb(0 0 0 / 0.55),
+    0 0 24px rgb(37 99 235 / 0.12);
+}
+
+:is(:root[data-interface-theme='seerrNGJ'], [data-interface-theme='seerrNGJ'])
+  .media-header {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: end;
+  gap: 1.25rem;
+  padding-top: 1.5rem;
+}
+
+:is(:root[data-interface-theme='seerrNGJ'], [data-interface-theme='seerrNGJ'])
+  .media-poster {
+  width: 11rem;
+  overflow: hidden;
+  border: 2px solid #315579;
+  border-radius: 0.875rem;
+  box-shadow:
+    0 10px 30px rgb(0 0 0 / 0.45),
+    0 0 18px rgb(37 99 235 / 0.12);
+}
+
+:is(:root[data-interface-theme='seerrNGJ'], [data-interface-theme='seerrNGJ'])
+  .media-title {
+  margin-top: 0;
+  color: #f8fafc;
+  text-align: start;
+}
+
+:is(:root[data-interface-theme='seerrNGJ'], [data-interface-theme='seerrNGJ'])
+  .media-overview {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(17rem, 22rem);
+  gap: 1.5rem;
+  padding-block: 1.5rem;
+}
+
+:is(:root[data-interface-theme='seerrNGJ'], [data-interface-theme='seerrNGJ'])
+  .media-facts {
+  align-self: start;
+  border: 1px solid #315579;
+  border-radius: 0.875rem;
+  background: var(--interface-panel);
+  box-shadow: 0 8px 24px rgb(0 0 0 / 0.3);
+}
+
+@media (max-width: 639px) {
+  :is(:root[data-interface-theme='seerrNGJ'], [data-interface-theme='seerrNGJ'])
+    .media-header {
+    grid-template-columns: minmax(0, 1fr);
+    justify-items: center;
+  }
+
+  :is(:root[data-interface-theme='seerrNGJ'], [data-interface-theme='seerrNGJ'])
+    .media-title {
+    text-align: center;
+  }
+
+  :is(:root[data-interface-theme='seerrNGJ'], [data-interface-theme='seerrNGJ'])
+    .media-overview {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+/* Current SeerrNG route contracts expressed through John's framed workspace
+   rhythm: stronger hierarchy, metadata rails, and grouped admin surfaces. */
+:is(:root[data-interface-theme='seerrNGJ'], [data-interface-theme='seerrNGJ'])
+  main.page-layout {
+  --page-layout-margin-inline: var(--interface-page-gutter);
+}
+
+:is(:root[data-interface-theme='seerrNGJ'], [data-interface-theme='seerrNGJ'])
+  :is(
+    .media-detail-card,
+    .settings-group-card,
+    .settings-library-card,
+    .request-modal-site-surface
+  ) {
+  border-color: var(--interface-border);
+  border-radius: var(--interface-card-radius);
+  background: linear-gradient(
+    145deg,
+    var(--interface-panel-raised),
+    var(--interface-panel)
+  );
+  box-shadow: 0 12px 30px rgb(0 0 0 / 0.28);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+:is(:root[data-interface-theme='seerrNGJ'], [data-interface-theme='seerrNGJ'])
+  :is(
+    .media-detail-card,
+    .settings-group-card,
+    .settings-library-card,
+    .request-modal-site-surface,
+    .app-card-main,
+    .app-card-sub,
+    .app-card-inset
+  ) {
+  --app-card-frame-width: 2px;
+  --app-card-frame-background: linear-gradient(
+    140deg,
+    #4d8fff,
+    #315579 55%,
+    #6d28d9
+  );
+}
+
+:is(:root[data-interface-theme='seerrNGJ'], [data-interface-theme='seerrNGJ'])
+  :is(.app-card-main, .app-card-sub, .app-card-inset) {
+  border-radius: var(--interface-card-radius);
+  background: linear-gradient(
+    145deg,
+    var(--interface-panel-raised),
+    var(--interface-panel)
+  );
+  box-shadow: 0 8px 24px rgb(0 0 0 / 0.2);
+}
+
+:is(:root[data-interface-theme='seerrNGJ'], [data-interface-theme='seerrNGJ'])
+  .main-menu-link
+  > svg {
+  width: 1.125rem;
+  height: 1.125rem;
+  margin-inline-end: 0.625rem;
+  border: 1px solid rgb(147 197 253 / 0.45);
+  border-radius: 0.375rem;
+  padding: 0.125rem;
+  color: #93c5fd;
+  background: rgb(37 99 235 / 0.12);
+}
+
+:is(:root[data-interface-theme='seerrNGJ'], [data-interface-theme='seerrNGJ'])
+  :is(
+    .settings-page-content input:not([type='checkbox']):not([type='radio']),
+    .settings-page-content select,
+    .settings-page-content textarea
+  ) {
+  border-color: #315579;
+  border-radius: 0.625rem;
+  background-color: var(--interface-page);
+  box-shadow: inset 0 1px rgb(255 255 255 / 0.035);
+}
+
+:is(:root[data-interface-theme='seerrNGJ'], [data-interface-theme='seerrNGJ'])
+  .media-detail-card
+  .detail-summary-card {
+  border: 1px solid var(--interface-border);
+  border-radius: 1rem;
+  background: linear-gradient(
+    120deg,
+    var(--interface-sidebar-top),
+    var(--interface-panel)
+  );
+  box-shadow: inset 0 1px rgb(255 255 255 / 0.04);
+}
+
+:is(:root[data-interface-theme='seerrNGJ'], [data-interface-theme='seerrNGJ'])
+  .media-detail-card
+  .detail-summary-card:has([data-testid='media-details-poster']) {
+  grid-template-columns: 5rem minmax(0, 1fr);
+  align-items: start;
+  gap: 1rem;
+  text-align: start;
+}
+
+:is(:root[data-interface-theme='seerrNGJ'], [data-interface-theme='seerrNGJ'])
+  .detail-summary-card
+  [data-testid='media-details-poster'] {
+  width: 5rem;
+  height: 7.5rem;
+  border: 2px solid #4d8fff;
+  border-radius: 0.75rem;
+  box-shadow: 0 8px 20px rgb(0 0 0 / 0.38);
+}
+
+:is(:root[data-interface-theme='seerrNGJ'], [data-interface-theme='seerrNGJ'])
+  .media-detail-card
+  .app-detail-summary-grid {
+  grid-template-columns: 5rem minmax(0, 1fr);
+  align-items: start;
+  gap: 1rem;
+  text-align: start;
+}
+
+:is(:root[data-interface-theme='seerrNGJ'], [data-interface-theme='seerrNGJ'])
+  .app-detail-summary-grid
+  > :nth-child(2) {
+  min-width: 0;
+  text-align: start;
+}
+
+:is(:root[data-interface-theme='seerrNGJ'], [data-interface-theme='seerrNGJ'])
+  :is(.detail-card-poster, .app-detail-poster-frame) {
+  width: 5rem;
+  height: 7.5rem;
+  border: 2px solid #4d8fff;
+  border-radius: 0.75rem;
+  box-shadow: 0 8px 20px rgb(0 0 0 / 0.38);
+}
+
+:is(:root[data-interface-theme='seerrNGJ'], [data-interface-theme='seerrNGJ'])
+  :is(.detail-summary-title, .card-title) {
+  color: #f8fafc;
+  letter-spacing: 0.01em;
+}
+
+:is(:root[data-interface-theme='seerrNGJ'], [data-interface-theme='seerrNGJ'])
+  :is(.media-detail-rows, .card-table, .collection-summary-table) {
+  row-gap: var(--interface-detail-row-gap);
+  line-height: 1.45;
+}
+
+:is(:root[data-interface-theme='seerrNGJ'], [data-interface-theme='seerrNGJ'])
+  :is(
+    .card-table-heading,
+    .media-detail-rows dt,
+    .collection-summary-table dt
+  ) {
+  color: #93c5fd;
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+:is(:root[data-interface-theme='seerrNGJ'], [data-interface-theme='seerrNGJ'])
+  :is(.media-detail-column-divider, .detail-column-divider) {
+  border-color: #315579;
+}
+
+:is(:root[data-interface-theme='seerrNGJ'], [data-interface-theme='seerrNGJ'])
+  .settings-page-content
+  > :is(.section, .settings-group-card, .settings-library-card) {
+  border-radius: 1rem;
+  box-shadow: 0 10px 26px rgb(0 0 0 / 0.22);
+}
+
+:is(:root[data-interface-theme='seerrNGJ'], [data-interface-theme='seerrNGJ'])
+  .settings-group-heading {
+  color: #bfdbfe;
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+:is(:root[data-interface-theme='seerrNGJ'], [data-interface-theme='seerrNGJ'])
+  .settings-group-content {
+  border-top: 1px solid rgb(49 85 121 / 0.72);
+  padding-top: 1rem;
+}
+
+:is(:root[data-interface-theme='seerrNGJ'], [data-interface-theme='seerrNGJ'])
+  .app-data-table {
+  border: 1px solid var(--interface-border);
+  border-collapse: separate;
+  border-radius: 0.875rem;
+  border-spacing: 0;
+  overflow: hidden;
+  box-shadow: 0 10px 28px rgb(0 0 0 / 0.22);
+}
+
+:is(:root[data-interface-theme='seerrNGJ'], [data-interface-theme='seerrNGJ'])
+  .app-data-table-row:nth-child(even) {
+  background: rgb(59 130 246 / 0.045);
+}
+
+:is(:root[data-interface-theme='seerrNGJ'], [data-interface-theme='seerrNGJ'])
+  .app-data-table-heading {
+  font-size: 0.6875rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+:is(:root[data-interface-theme='seerrNGJ'], [data-interface-theme='seerrNGJ'])
+  :is(
+    .issue-summary-card,
+    [data-interface-role='request-card'],
+    [data-interface-role='blocklist-card']
+  ) {
+  border-radius: 1rem;
+  box-shadow: 0 10px 24px rgb(0 0 0 / 0.2);
+}
+
+@media (min-width: 1024px) {
+  :is(:root[data-interface-theme='seerrNGJ'], [data-interface-theme='seerrNGJ'])
+    [data-interface-role='main-content'] {
+    margin-inline-start: var(--interface-sidebar-width);
+  }
+
+  :is(:root[data-interface-theme='seerrNGJ'], [data-interface-theme='seerrNGJ'])
+    .searchbar {
+    inset-inline-start: var(--interface-sidebar-width);
+  }
+
+  :is(:root[data-interface-theme='seerrNGJ'], [data-interface-theme='seerrNGJ'])
+    .detail-summary-card:has([data-testid='media-details-poster']) {
+    grid-template-columns: 8.5rem minmax(0, 1fr);
+    gap: 1.25rem;
+  }
+
+  :is(:root[data-interface-theme='seerrNGJ'], [data-interface-theme='seerrNGJ'])
+    .detail-summary-card
+    [data-testid='media-details-poster'] {
+    width: 8.5rem;
+    height: 12.75rem;
+  }
+
+  :is(:root[data-interface-theme='seerrNGJ'], [data-interface-theme='seerrNGJ'])
+    .media-detail-card
+    .app-detail-summary-grid {
+    grid-template-columns: 8.5rem minmax(0, 1fr);
+    align-items: start;
+    gap: 1.25rem;
+  }
+
+  :is(:root[data-interface-theme='seerrNGJ'], [data-interface-theme='seerrNGJ'])
+    :is(.detail-card-poster, .app-detail-poster-frame) {
+    width: 8.5rem;
+    height: 12.75rem;
+  }
+
+  :is(:root[data-interface-theme='seerrNGJ'], [data-interface-theme='seerrNGJ'])
+    [data-detail-layout='tv'],
+  :is(:root[data-interface-theme='seerrNGJ'], [data-interface-theme='seerrNGJ'])
+    [data-detail-layout='movie'] {
+    grid-template-columns: minmax(0, 1fr) minmax(18rem, 23rem);
+    grid-template-areas: 'information actions';
+  }
+}
+</style>
+    <style>
+      * { box-sizing: border-box; }
+      body { margin: 0; padding: 24px; background: #090d16; color: #f8fafc; font: 14px/1.45 Inter, ui-sans-serif, system-ui, sans-serif; }
+      .comparison-heading { max-width: 1500px; margin: 0 auto 20px; }
+      .comparison-heading h1 { margin: 0; font-size: 24px; }
+      .comparison-heading p { margin: 6px 0 0; color: #9ca3af; }
+      .comparison-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; max-width: 1500px; margin: 0 auto; }
+      .theme-preview { position: relative; min-width: 0; min-height: 950px; overflow: hidden; border: 1px solid #394150; background: var(--interface-page); container-name: theme-preview; container-type: inline-size; }
+      .preview-topbar { position: absolute; z-index: 2; inset: 0 0 auto; display: flex; height: 56px; align-items: center; gap: 12px; padding: 0 16px; border-bottom: 1px solid var(--interface-border); background: var(--interface-panel-raised); color: var(--interface-text); }
+      .preview-brand { margin-right: auto; font-size: 15px; font-weight: 800; letter-spacing: .02em; }
+      .preview-search { width: min(230px, 45%); overflow: hidden; border: 1px solid var(--interface-border); padding: 8px 11px; color: var(--interface-muted); text-overflow: ellipsis; white-space: nowrap; }
+      .preview-sidebar { position: absolute; inset: 56px auto 0 0; width: var(--interface-sidebar-width); padding: 12px 10px; overflow: hidden; }
+      .preview-logo { height: 54px; padding: 8px 14px; color: var(--interface-text); font-size: 20px; font-weight: 800; letter-spacing: -.04em; }
+      .sidebar-navigation { display: flex; flex-direction: column; gap: 18px; margin: 12px 0 0; padding: 0 6px; }
+      .sidebar-navigation-section { display: grid; gap: 8px; }
+      .sidebar-navigation-items { display: grid; gap: 4px; }
+      .sidebar-navigation-heading { margin: 0; padding: 0 8px; color: var(--interface-muted); font-size: 10px; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; }
+      .main-menu-link { display: flex; min-height: 36px; align-items: center; gap: 9px; padding: 7px 9px; color: var(--interface-text); font-weight: 600; text-decoration: none; }
+      .main-menu-link svg { width: 18px; height: 18px; flex: 0 0 auto; }
+      .preview-content { min-height: 950px; margin-left: var(--interface-sidebar-width); padding: 78px 18px 32px; color: var(--interface-text); }
+      .preview-page-header { margin-bottom: 14px; }
+      .page-title { margin: 0; color: var(--interface-text); font-size: 26px; line-height: 1.15; }
+      .preview-intro { max-width: 560px; margin: 8px 0 0; color: var(--interface-muted); }
+      .preview-media-tabs { display: flex; flex-wrap: wrap; gap: 7px; margin-block: 14px; }
+      .preview-media-tabs button, .preview-control-button { border: 1px solid var(--interface-border); padding: 7px 9px; color: var(--interface-text); background: var(--interface-panel); font: inherit; }
+      .preview-media-tabs button[aria-current="page"] { background: var(--interface-accent-a); color: #fff; }
+      .preview-control-heading { margin: 0; color: var(--interface-text); font-size: 12px; font-weight: 800; }
+      .preview-control-buttons { display: flex; flex-wrap: wrap; gap: 6px; }
+      .preview-control-button { font-size: 11px; }
+      .preview-control-button[aria-pressed="true"] { border-color: var(--interface-accent-a); color: #fff; background: var(--interface-accent-a); }
+      .preview-shelf { margin-top: 18px; }
+      .slider-header { display: flex; align-items: center; justify-content: space-between; margin: 0; padding: 14px 0 12px; }
+      .slider-title { margin: 0; color: var(--interface-text); font-size: 18px; font-weight: 750; }
+      .preview-count { color: var(--interface-muted); font-size: 11px; }
+      ul.cards-vertical { display: grid; grid-template-columns: repeat(auto-fit, minmax(var(--poster-width), 1fr)); justify-content: start; gap: var(--interface-grid-gap); margin: 0; padding: 0; list-style: none; }
+      .poster-layout { display: block; width: 100%; max-width: 100%; }
+      .app-card-poster { position: relative; overflow: hidden; aspect-ratio: 2 / 3; }
+      .poster-art { position: absolute; inset: 0; background: linear-gradient(145deg, #315579, #111827 46%, #8b5cf6); }
+      .poster-art.poster-two { background: linear-gradient(145deg, #2563eb, #101827 55%, #f97316); }
+      .poster-art.poster-three { background: linear-gradient(145deg, #4f46e5, #1f2937 62%, #22c55e); }
+      .poster-wash { position: absolute; inset: 35% 0 0; background: linear-gradient(transparent, rgb(0 0 0 / .9)); }
+      .poster-top { position: absolute; inset: 8px 7px auto; display: flex; align-items: flex-start; justify-content: space-between; gap: 4px; }
+      .poster-tag { border: 1px solid rgb(255 255 255 / .25); padding: 3px 5px; color: #fff; background: rgb(17 24 39 / .86); font-size: 8px; font-weight: 800; letter-spacing: .05em; text-transform: uppercase; }
+      .poster-status { padding: 3px 5px; color: #fff; background: #227a27; font-size: 8px; font-weight: 700; }
+      .poster-copy { position: absolute; inset: auto 8px 9px; color: #fff; }
+      .poster-year { color: #d1d5db; font-size: 9px; }
+      .poster-title { margin: 3px 0 0; color: #fff; font-size: 12px; line-height: 1.18; }
+      .poster-action { position: absolute; right: 7px; bottom: 7px; display: grid; width: 25px; height: 25px; place-items: center; border: 1px solid rgb(255 255 255 / .4); color: #fff; background: rgb(0 0 0 / .7); }
+      .preview-bottom { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: 10px; margin-top: 18px; padding: 12px; border: 1px solid var(--interface-border); background: var(--interface-panel); }
+      .preview-bottom strong { display: block; color: var(--interface-text); }
+      .preview-bottom span { display: block; margin-top: 3px; color: var(--interface-muted); font-size: 11px; }
+      .request-button { border: 0; padding: 9px 11px; color: #fff; background: linear-gradient(135deg, var(--interface-accent-a), var(--interface-accent-b)); font-weight: 800; white-space: nowrap; }
+      .preview-route-grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: 18px; margin-top: 24px; }
+      .preview-route-heading { margin: 0 0 9px; color: var(--interface-muted); font-size: 10px; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; }
+      .preview-detail-card { display: grid; gap: 12px; padding: 12px; border: 1px solid var(--interface-border); background: var(--interface-panel); }
+      .preview-detail-card .detail-summary-card { display: grid; gap: 10px; padding: 10px; }
+      .preview-detail-poster { min-height: 100px; background: linear-gradient(145deg, #996b45, #382c3a 58%, #101827); }
+      .preview-detail-copy h4 { margin: 0 0 8px; color: var(--interface-text); font-size: 15px; }
+      .preview-detail-copy dl { display: grid; grid-template-columns: max-content minmax(0, 1fr); gap: 4px 8px; margin: 0; font-size: 10px; }
+      .preview-detail-copy dd { margin: 0; color: var(--interface-text); }
+      .preview-request-row { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 9px; padding: 9px; border: 1px solid var(--interface-border); background: var(--interface-panel-raised); }
+      .preview-request-row small { display: block; margin-top: 3px; color: var(--interface-muted); }
+      .preview-admin { padding: 11px; }
+      .preview-admin .settings-group-heading { margin: 0; }
+      .preview-admin .settings-group-content { display: grid; gap: 9px; }
+      .preview-setting-row { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 10px; align-items: center; }
+      .preview-setting-row input { width: 100%; min-width: 0; padding: 7px 8px; border: 1px solid var(--interface-border); color: var(--interface-text); background: var(--interface-page); }
+      .preview-admin .app-data-table { width: 100%; margin-top: 8px; border-collapse: collapse; font-size: 10px; }
+      .preview-admin th, .preview-admin td { padding: 7px; border-bottom: 1px solid var(--interface-border); text-align: start; }
+      .preview-admin th { background: var(--interface-table-header); }
+      .comparison-caption { max-width: 1500px; margin: 10px auto 0; color: #9ca3af; font-size: 12px; }
+      @media (max-width: 1080px) {
+        body { padding: 14px; }
+        .comparison-grid { grid-template-columns: minmax(0, 1fr); }
+        .theme-preview, .preview-content { min-height: 980px; }
+      }
+    </style>
+  </head>
+  <body>
+    <header class="comparison-heading">
+      <h1>One feature set, two different interfaces</h1>
+      <p>Both panels use the production profile stylesheets and the same sample titles, filters, requests, and service data. Layout rules—not alternate sample content—create the differences.</p>
+    </header>
+    <main class="comparison-grid">
+      <section class="theme-preview" data-interface-theme="seerrOrig" aria-label="SeerrOrig preview">
+        <header class="preview-topbar searchbar app-searchbar-scrolled">
+          <span class="preview-brand">SEERR</span>
+          <span class="preview-search">Search movies, series, books…</span>
+          <span aria-hidden="true">◐</span><span aria-hidden="true">●</span>
+        </header>
+        <aside class="preview-sidebar sidebar">
+          <div class="preview-logo">SEERR</div>
+          <nav class="sidebar-navigation" aria-label="Primary">
+            <div class="sidebar-navigation-section"><div class="sidebar-navigation-items">
+              <a class="main-menu-link sidebar-link-selected" data-navigation-link-id="discover-home" href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m12 3 1.6 6.4L20 11l-6.4 1.6L12 19l-1.6-6.4L4 11l6.4-1.6L12 3Z"/></svg>Discover</a>
+              <a class="main-menu-link" data-navigation-link-id="movies" href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M7 4v4m5-4v4m5-4v4M7 16v4m5-4v4m5-4v4"/></svg>Movies</a>
+              <a class="main-menu-link" data-navigation-link-id="series" href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="3" y="4" width="18" height="14" rx="2"/><path d="m10 9 5 3-5 3zM8 22h8m-4-4v4"/></svg>Series</a>
+              <a class="main-menu-link" data-navigation-link-id="requests" href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>Requests</a>
+              <a class="main-menu-link" data-navigation-link-id="blocklist" href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="m6 6 12 12"/></svg>Blocklist</a>
+              <a class="main-menu-link" data-navigation-link-id="issues" href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M5 21V4m0 0h12l-2 4 2 4H5"/></svg>Issues</a>
+              <a class="main-menu-link" data-navigation-link-id="users" href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="9" cy="8" r="4"/><path d="M2 21v-2a7 7 0 0 1 14 0v2m3-13a4 4 0 0 1 0 8m3 5v-2a7 7 0 0 0-2-4"/></svg>Users</a>
+              <a class="main-menu-link" data-navigation-link-id="settings" href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="m19.4 15 .1.1 1.4 1.1-1.4 2.4-1.7-.7a8 8 0 0 1-1.7 1l-.3 1.8h-2.8l-.3-1.8a8 8 0 0 1-1.7-1l-1.7.7-1.4-2.4 1.4-1.1a8 8 0 0 1 0-2l-1.4-1.1 1.4-2.4 1.7.7a8 8 0 0 1 1.7-1l.3-1.8h2.8l.3 1.8a8 8 0 0 1 1.7 1l1.7-.7 1.4 2.4-1.4 1.1a8 8 0 0 1 0 2Z"/></svg>Settings</a>
+              <a class="main-menu-link" data-navigation-link-id="books" href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M4 4.5A2.5 2.5 0 0 1 6.5 2H20v18H6.5A2.5 2.5 0 0 1 4 17.5zM4 17.5A2.5 2.5 0 0 1 6.5 15H20M8 6h8"/></svg>Books</a>
+              <a class="main-menu-link" data-navigation-link-id="music" href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>Music</a>
+            </div></div>
+          </nav>
+        </aside>
+        <main class="preview-content page-layout" data-interface-role="main-content">
+          <header class="preview-page-header">
+            <h2 class="page-title">Discover</h2>
+            <p class="preview-intro">A classic catalog page: media choice first, filters and sort below it, then 150px posters in a quiet grid.</p>
+          </header>
+          <nav class="preview-media-tabs" data-testid="discover-media-tabs" aria-label="Media type">
+            <button aria-current="page">Movies</button><button>Series</button><button>Books</button><button>Music</button>
+          </nav>
+          <div class="app-pinned-filter-group">
+            <section class="pinned-filter-section app-pinned-filter-section" aria-label="Filters">
+              <div class="media-detail-disclosure-row"><h3 class="preview-control-heading">Filters</h3></div>
+              <div class="app-pinned-filter-panel"><div class="app-filter-row">
+                <button class="preview-control-button">Genre · Any</button><button class="preview-control-button">Year · Any</button><button class="preview-control-button">Availability · All</button>
+              </div></div>
+            </section>
+            <section class="pinned-filter-section app-pinned-filter-section" aria-label="Sort by">
+              <div class="media-detail-disclosure-row"><h3 class="preview-control-heading">Sort by</h3></div>
+              <div class="app-pinned-filter-panel"><div class="app-filter-row">
+                <button class="preview-control-button" aria-pressed="true">Popularity ↓</button><button class="preview-control-button">Release date</button><button class="preview-control-button">Rating</button>
+              </div></div>
+            </section>
+          </div>
+          <section class="preview-shelf" aria-label="Popular movies">
+            <header class="slider-header"><h3 class="slider-title">Popular Movies</h3><span class="preview-count">24 titles</span></header>
+            <ul class="cards-vertical poster-grid">
+              <li><article class="poster-layout" data-media-type="movie"><div class="app-card-poster"><div class="poster-art"></div><div class="poster-wash" data-poster-region="overlay"></div><div class="poster-top"><span class="poster-control poster-tag">Movie</span><span class="poster-control poster-status">Available</span></div><div class="poster-copy" data-poster-region="copy"><div class="poster-year">2025 · ★ 8.4</div><h4 class="card-title poster-title" data-poster-region="title">The Glass Horizon</h4></div><span class="poster-control poster-action">☆</span></div></article></li>
+              <li><article class="poster-layout" data-media-type="movie"><div class="app-card-poster"><div class="poster-art poster-two"></div><div class="poster-wash" data-poster-region="overlay"></div><div class="poster-top"><span class="poster-control poster-tag">Movie</span><span class="poster-control poster-status">Requested</span></div><div class="poster-copy" data-poster-region="copy"><div class="poster-year">2024 · 4K</div><h4 class="card-title poster-title" data-poster-region="title">Signal in the Deep</h4></div><span class="poster-control poster-action">＋</span></div></article></li>
+              <li><article class="poster-layout" data-media-type="book"><div class="app-card-poster"><div class="poster-art poster-three"></div><div class="poster-wash" data-poster-region="overlay"></div><div class="poster-top"><span class="poster-control poster-tag">Book</span><span class="poster-control poster-status">Tracked</span></div><div class="poster-copy" data-poster-region="copy"><div class="poster-year">2023 · Series 2</div><h4 class="card-title poster-title" data-poster-region="title">A Map of Quiet Stars</h4></div><span class="poster-control poster-action">☆</span></div></article></li>
+            </ul>
+          </section>
+          <div class="preview-bottom app-card-main" data-interface-role="request-action">
+            <div><strong>Request another format</strong><span>One clear action row with minimal status decoration.</span></div>
+            <button class="request-button">Request</button>
+          </div>
+          <div class="preview-route-grid" data-interface-role="theme-preview-route-grid">
+            <section aria-label="Audiobook detail">
+              <h3 class="preview-route-heading">Audiobook detail</h3>
+              <article class="media-detail-card app-card-main preview-detail-card">
+                <div class="detail-summary-card app-detail-summary-grid">
+                  <div class="detail-card-poster preview-detail-poster" data-testid="media-details-poster" aria-hidden="true"></div>
+                  <div class="preview-detail-copy"><h4 class="detail-summary-title">The Orchard of Glass</h4><dl class="media-detail-rows"><dt>Format</dt><dd>Audiobook</dd><dt>Narrator</dt><dd>Mara Ellis</dd><dt>Series</dt><dd>Northline · Book 2</dd></dl></div>
+                </div>
+                <div class="preview-request-row"><div><strong>Edition availability</strong><small>Audio · Library monitored</small></div><button class="request-button">Request edition</button></div>
+              </article>
+            </section>
+            <section aria-label="Service administration">
+              <h3 class="preview-route-heading">Service administration</h3>
+              <div class="settings-page-content">
+                <section class="settings-group-card app-card-sub preview-admin">
+                  <h3 class="settings-group-heading">Library service</h3>
+                  <div class="settings-group-content"><p class="preview-intro">Connected provider · checked 2 minutes ago</p>
+                    <label class="preview-setting-row"><span>Root folder</span><input value="/media/books" readonly /></label>
+                    <table class="app-data-table"><thead class="app-data-table-head"><tr><th>Title</th><th>Status</th><th>Requested</th></tr></thead><tbody><tr class="app-data-table-row"><td>The Orchard of Glass</td><td>Queued</td><td>Today</td></tr><tr class="app-data-table-row"><td>Quiet Engines</td><td>Available</td><td>Yesterday</td></tr></tbody></table>
+                  </div>
+                </section>
+                <section class="settings-group-card app-card-sub preview-admin">
+                  <h3 class="settings-group-heading">Catalog sync</h3>
+                  <div class="settings-group-content"><p class="preview-intro">Connected provider · checked 2 minutes ago</p>
+                    <label class="preview-setting-row"><span>Root folder</span><input value="/media/books" readonly /></label>
+                    <table class="app-data-table"><thead class="app-data-table-head"><tr><th>Title</th><th>Status</th><th>Requested</th></tr></thead><tbody><tr class="app-data-table-row"><td>The Orchard of Glass</td><td>Queued</td><td>Today</td></tr><tr class="app-data-table-row"><td>Quiet Engines</td><td>Available</td><td>Yesterday</td></tr></tbody></table>
+                  </div>
+                </section>
+              </div>
+            </section>
+          </div>
+        </main>
+      </section>
+      <section class="theme-preview" data-interface-theme="seerrNGJ" aria-label="SeerrNGJ preview">
+        <header class="preview-topbar searchbar app-searchbar-scrolled">
+          <span class="preview-brand">SEERR <small>NGJ</small></span>
+          <span class="preview-search">Search movies, series, books…</span>
+          <span aria-hidden="true">◐</span><span aria-hidden="true">●</span>
+        </header>
+        <aside class="preview-sidebar sidebar">
+          <div class="preview-logo">SEERR <small>NGJ</small></div>
+          <nav class="sidebar-navigation" aria-label="Primary">
+            <div class="sidebar-navigation-section"><h3 class="sidebar-navigation-heading">Discover</h3><div class="sidebar-navigation-items">
+              <a class="main-menu-link sidebar-link-selected" data-navigation-link-id="discover-home" href="#"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="m12 2.5 2.45 6.45 6.8 2.4-6.8 2.4L12 20.5l-2.45-6.75-6.8-2.4 6.8-2.4L12 2.5Z"/></svg>Discover</a>
+              <a class="main-menu-link" data-navigation-link-id="movies" href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M7 4v4m5-4v4m5-4v4M7 16v4m5-4v4m5-4v4"/></svg>Movies</a>
+              <a class="main-menu-link" data-navigation-link-id="series" href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="3" y="4" width="18" height="14" rx="2"/><path d="m10 9 5 3-5 3z"/></svg>Series</a>
+            </div></div>
+            <div class="sidebar-navigation-section"><h3 class="sidebar-navigation-heading">Library</h3><div class="sidebar-navigation-items">
+              <a class="main-menu-link" data-navigation-link-id="books" href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M4 4.5A2.5 2.5 0 0 1 6.5 2H20v18H6.5A2.5 2.5 0 0 1 4 17.5zM4 17.5A2.5 2.5 0 0 1 6.5 15H20"/></svg>Books</a>
+              <a class="main-menu-link" data-navigation-link-id="music" href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>Music</a>
+            </div></div>
+            <div class="sidebar-navigation-section"><h3 class="sidebar-navigation-heading">Requests</h3><div class="sidebar-navigation-items">
+              <a class="main-menu-link" data-navigation-link-id="requests" href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>Requests</a>
+              <a class="main-menu-link" data-navigation-link-id="issues" href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M5 21V4m0 0h12l-2 4 2 4H5"/></svg>Issues</a>
+              <a class="main-menu-link" data-navigation-link-id="blocklist" href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="m6 6 12 12"/></svg>Blocklist</a>
+            </div></div>
+            <div class="sidebar-navigation-section"><h3 class="sidebar-navigation-heading">System</h3><div class="sidebar-navigation-items">
+              <a class="main-menu-link" data-navigation-link-id="users" href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="9" cy="8" r="4"/><path d="M2 21v-2a7 7 0 0 1 14 0v2"/></svg>Users</a>
+              <a class="main-menu-link" data-navigation-link-id="settings" href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="m19.4 15 .1.1 1.4 1.1-1.4 2.4-1.7-.7a8 8 0 0 1-1.7 1l-.3 1.8h-2.8l-.3-1.8a8 8 0 0 1-1.7-1l-1.7.7-1.4-2.4 1.4-1.1a8 8 0 0 1 0-2l-1.4-1.1 1.4-2.4 1.7.7a8 8 0 0 1 1.7-1l.3-1.8h2.8l.3 1.8a8 8 0 0 1 1.7 1l1.7-.7 1.4 2.4-1.4 1.1a8 8 0 0 1 0 2Z"/></svg>Settings</a>
+            </div></div>
+          </nav>
+        </aside>
+        <main class="preview-content page-layout" data-interface-role="main-content">
+          <header class="preview-page-header">
+            <h2 class="page-title">Discover <span class="preview-count">· 24 results</span></h2>
+            <p class="preview-intro">A grouped workspace: filter and sort panels sit side by side, wider 169.2px framed posters carry more state, and service details share a dense data rail.</p>
+          </header>
+          <nav class="preview-media-tabs" data-testid="discover-media-tabs" aria-label="Media type">
+            <button aria-current="page">Movies</button><button>Series</button><button>Books</button><button>Music</button>
+          </nav>
+          <div class="app-pinned-filter-group">
+            <section class="pinned-filter-section app-pinned-filter-section" aria-label="Filters">
+              <div class="media-detail-disclosure-row"><h3 class="preview-control-heading">Catalog filters</h3></div>
+              <div class="app-pinned-filter-panel"><div class="app-filter-row">
+                <button class="preview-control-button">Genre · Any</button><button class="preview-control-button">Year · Any</button><button class="preview-control-button">Availability · All</button>
+              </div></div>
+            </section>
+            <section class="pinned-filter-section app-pinned-filter-section" aria-label="Sort by">
+              <div class="media-detail-disclosure-row"><h3 class="preview-control-heading">Sort and order</h3></div>
+              <div class="app-pinned-filter-panel"><div class="app-filter-row">
+                <button class="preview-control-button" aria-pressed="true">Popularity ↓</button><button class="preview-control-button">Release date</button><button class="preview-control-button">Rating</button>
+              </div></div>
+            </section>
+          </div>
+          <section class="preview-shelf" aria-label="Popular movies">
+            <header class="slider-header"><h3 class="slider-title">Popular Movies</h3><span class="preview-count">24 titles</span></header>
+            <ul class="cards-vertical poster-grid">
+              <li><article class="poster-layout" data-media-type="movie"><div class="app-card-poster"><div class="poster-art"></div><div class="poster-wash" data-poster-region="overlay"></div><div class="poster-top"><span class="poster-control poster-tag">Movie</span><span class="poster-control poster-status">Available</span></div><div class="poster-copy" data-poster-region="copy"><div class="poster-year">2025 · ★ 8.4</div><h4 class="card-title poster-title" data-poster-region="title">The Glass Horizon</h4></div><span class="poster-control poster-action">☆</span></div></article></li>
+              <li><article class="poster-layout" data-media-type="movie"><div class="app-card-poster"><div class="poster-art poster-two"></div><div class="poster-wash" data-poster-region="overlay"></div><div class="poster-top"><span class="poster-control poster-tag">Movie</span><span class="poster-control poster-status">Requested</span></div><div class="poster-copy" data-poster-region="copy"><div class="poster-year">2024 · 4K</div><h4 class="card-title poster-title" data-poster-region="title">Signal in the Deep</h4></div><span class="poster-control poster-action">＋</span></div></article></li>
+              <li><article class="poster-layout" data-media-type="book"><div class="app-card-poster"><div class="poster-art poster-three"></div><div class="poster-wash" data-poster-region="overlay"></div><div class="poster-top"><span class="poster-control poster-tag">Ebook</span><span class="poster-control poster-status">Tracked</span></div><div class="poster-copy" data-poster-region="copy"><div class="poster-year">2023 · Series 2</div><h4 class="card-title poster-title" data-poster-region="title">A Map of Quiet Stars</h4></div><span class="poster-control poster-action">☆</span></div></article></li>
+            </ul>
+          </section>
+          <div class="preview-bottom app-card-main" data-interface-role="request-action">
+            <div><strong>Request another format</strong><span>Category-aware badges, format, and availability context travel with each action.</span></div>
+            <button class="request-button">＋ Request 4K</button>
+          </div>
+          <div class="preview-route-grid" data-interface-role="theme-preview-route-grid">
+            <section aria-label="Audiobook detail">
+              <h3 class="preview-route-heading">Audiobook detail · metadata rail</h3>
+              <article class="media-detail-card app-card-main preview-detail-card">
+                <div class="detail-summary-card app-detail-summary-grid">
+                  <div class="detail-card-poster preview-detail-poster" data-testid="media-details-poster" aria-hidden="true"></div>
+                  <div class="preview-detail-copy"><h4 class="detail-summary-title">The Orchard of Glass</h4><dl class="media-detail-rows"><dt>Format</dt><dd>Audiobook</dd><dt>Narrator</dt><dd>Mara Ellis</dd><dt>Series</dt><dd>Northline · Book 2</dd></dl></div>
+                </div>
+                <div class="preview-request-row"><div><strong>Edition availability</strong><small>Audio · Library monitored</small></div><button class="request-button">Request edition</button></div>
+              </article>
+            </section>
+            <section aria-label="Service administration">
+              <h3 class="preview-route-heading">Service panel · queue table</h3>
+              <div class="settings-page-content">
+                <section class="settings-group-card app-card-sub preview-admin">
+                  <h3 class="settings-group-heading">Library service</h3>
+                  <div class="settings-group-content"><p class="preview-intro">Connected provider · checked 2 minutes ago</p>
+                    <label class="preview-setting-row"><span>Root folder</span><input value="/media/books" readonly /></label>
+                    <table class="app-data-table"><thead class="app-data-table-head"><tr><th>Title</th><th>Status</th><th>Requested</th></tr></thead><tbody><tr class="app-data-table-row"><td>The Orchard of Glass</td><td>Queued</td><td>Today</td></tr><tr class="app-data-table-row"><td>Quiet Engines</td><td>Available</td><td>Yesterday</td></tr></tbody></table>
+                  </div>
+                </section>
+                <section class="settings-group-card app-card-sub preview-admin">
+                  <h3 class="settings-group-heading">Catalog sync</h3>
+                  <div class="settings-group-content"><p class="preview-intro">Connected provider · checked 2 minutes ago</p>
+                    <label class="preview-setting-row"><span>Root folder</span><input value="/media/books" readonly /></label>
+                    <table class="app-data-table"><thead class="app-data-table-head"><tr><th>Title</th><th>Status</th><th>Requested</th></tr></thead><tbody><tr class="app-data-table-row"><td>The Orchard of Glass</td><td>Queued</td><td>Today</td></tr><tr class="app-data-table-row"><td>Quiet Engines</td><td>Available</td><td>Yesterday</td></tr></tbody></table>
+                  </div>
+                </section>
+              </div>
+            </section>
+          </div>
+        </main>
+      </section>
+    </main>
+    <p class="comparison-caption">The panels share the same catalog controls, titles, statuses, and service data. Each uses its production profile stylesheet, so the structure, spacing, navigation, cards, and detail/admin layouts change with the selected theme.</p>
+  </body>
+</html>

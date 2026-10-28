@@ -1,0 +1,175 @@
+/* Shared safety and interaction rules for every selectable interface system. */
+:where(:root[data-interface-theme], [data-interface-theme]) {
+  --interface-sidebar-width: 16rem;
+  --interface-page-gutter: 1rem;
+  --interface-grid-gap: 1rem;
+  --interface-card-radius: 0.5rem;
+  --interface-poster-radius: 0.375rem;
+  --interface-control-radius: 0.375rem;
+  --interface-main-card-padding: 1rem;
+  --interface-inset-card-padding: 0.75rem;
+  --interface-section-gap: 1.25rem;
+  --interface-detail-row-gap: 0.375rem;
+  --interface-page: #111827;
+  --interface-panel: #1f2937;
+  --interface-panel-raised: #374151;
+  --interface-border: #374151;
+  --interface-muted: #9ca3af;
+  --interface-text: #f9fafb;
+  --interface-link: #c7d2fe;
+  --interface-accent-a: #4f46e5;
+  --interface-accent-b: #9333ea;
+  --interface-sidebar-top: #1f2937;
+  --interface-sidebar-bottom: #131928;
+  --interface-sidebar-selected: linear-gradient(135deg, #4f46e5, #9333ea);
+  --interface-nav-group-gap: calc(2 * var(--interface-section-gap));
+  --interface-nav-item-gap: 0.25rem;
+  --interface-nav-inline-inset: 1rem;
+  --interface-nav-nested-indent: 1.75rem;
+  --interface-nav-mobile-offset: 2.5rem;
+  --interface-nav-desktop-offset: 2rem;
+  --interface-nav-heading-line-height: 1.25rem;
+  --interface-compact-control-height: 1.25rem;
+  --interface-profile-menu-row-height: 1.25rem;
+  --interface-detail-row-height: 1rem;
+  --interface-card-table-font-size: 0.75rem;
+  --interface-card-table-heading-weight: 600;
+  --interface-card-table-value-weight: 400;
+  --interface-card-title-font-size: 1.125rem;
+  --interface-page-heading-font-size: 1.5rem;
+  --interface-card-subheading-font-size: 0.875rem;
+  --interface-card-body-font-size: 0.875rem;
+  --interface-card-compact-title-font-size: 0.875rem;
+  --interface-card-compact-subheading-font-size: 0.75rem;
+  --interface-card-compact-line-height: 16px;
+  --interface-card-compact-height: 70px;
+  --interface-card-compact-padding-block: 1px;
+  --interface-card-copy-line-height: 1.25rem;
+  --interface-card-subheading-spacing-before: 0.25rem;
+  --interface-card-body-spacing-before: 1rem;
+  --interface-detail-divider-width: 2px;
+  --interface-detail-first-column-limit: 40%;
+  --interface-detail-first-value-limit: 30%;
+  --interface-detail-last-column-limit: 35%;
+  --interface-button-padding-x: 5px;
+  --interface-button-content-gap: 0.25rem;
+  --interface-poster-control-gap: 0.125rem;
+  --interface-dropdown-menu-surface: #000;
+  --interface-dropdown-menu-border: rgb(var(--theme-control-border) / 0.75);
+  --interface-table-header: var(--interface-panel-raised);
+  --interface-table-hover: color-mix(
+    in srgb,
+    var(--interface-accent-a) 11%,
+    transparent
+  );
+  --interface-motion-duration: 180ms;
+}
+
+:is(:root[data-interface-theme], [data-interface-theme])
+  :is(button, a, input, select, textarea):focus-visible {
+  outline-offset: 2px;
+}
+
+/* Shared component names resolve through the selected package's token set. */
+:is(:root[data-interface-theme], [data-interface-theme]) {
+  --sidebar-navigation-group-gap: var(--interface-nav-group-gap);
+  --sidebar-navigation-item-gap: var(--interface-nav-item-gap);
+  --sidebar-navigation-inline-inset: var(--interface-nav-inline-inset);
+  --sidebar-navigation-nested-indent: var(--interface-nav-nested-indent);
+  --sidebar-navigation-mobile-offset: var(--interface-nav-mobile-offset);
+  --sidebar-navigation-desktop-offset: var(--interface-nav-desktop-offset);
+  --sidebar-navigation-heading-line-height: var(--interface-nav-heading-line-height);
+  --compact-control-height: var(--interface-compact-control-height);
+  --filter-control-height: var(--action-control-height);
+  --filter-control-content-height: calc(var(--filter-control-height) - 2px);
+  --profile-menu-row-height: var(--interface-profile-menu-row-height);
+  --card-spacing: var(--card-layout-spacing);
+  --control-corner-radius: var(--interface-control-radius);
+  --main-card-padding: var(--interface-main-card-padding);
+  --inset-card-padding: var(--interface-inset-card-padding);
+  --card-layout-spacing: var(--interface-section-gap);
+  --detail-row-height: var(--interface-detail-row-height);
+  --card-table-font-size: var(--interface-card-table-font-size);
+  --card-table-heading-weight: var(--interface-card-table-heading-weight);
+  --card-table-value-weight: var(--interface-card-table-value-weight);
+  --card-title-font-size: var(--interface-card-title-font-size);
+  --page-heading-font-size: var(--interface-page-heading-font-size);
+  --card-subheading-font-size: var(--interface-card-subheading-font-size);
+  --card-body-font-size: var(--interface-card-body-font-size);
+  --card-compact-title-font-size: var(--interface-card-compact-title-font-size);
+  --card-compact-subheading-font-size: var(--interface-card-compact-subheading-font-size);
+  --card-compact-line-height: var(--interface-card-compact-line-height);
+  --card-compact-height: var(--interface-card-compact-height);
+  --card-compact-padding-block: var(--interface-card-compact-padding-block);
+  --card-copy-line-height: var(--interface-card-copy-line-height);
+  --card-subheading-spacing-before: var(--interface-card-subheading-spacing-before);
+  --card-body-spacing-before: var(--interface-card-body-spacing-before);
+  --detail-divider-width: var(--interface-detail-divider-width);
+  --detail-first-column-limit: var(--interface-detail-first-column-limit);
+  --detail-first-value-limit: var(--interface-detail-first-value-limit);
+  --detail-last-column-limit: var(--interface-detail-last-column-limit);
+  --detail-row-gap: var(--interface-detail-row-gap);
+  --detail-heading-gap: var(--card-spacing);
+  --button-padding-x: var(--interface-button-padding-x);
+  --action-control-padding-x: var(--button-padding-x);
+  --button-content-gap: var(--interface-button-content-gap);
+  --compact-button-padding-x: var(--button-padding-x);
+  --poster-control-padding-x: var(--button-padding-x);
+  --poster-control-gap: var(--interface-poster-control-gap);
+  --dropdown-item-padding-x: var(--button-padding-x);
+  --dropdown-menu-surface: var(--interface-dropdown-menu-surface);
+  --dropdown-menu-border: var(--interface-dropdown-menu-border);
+}
+
+:is(:root[data-interface-theme], [data-interface-theme])
+  :is(
+    .media-detail-card,
+    .settings-group-card,
+    .settings-library-card,
+    .request-modal-site-surface,
+    .app-card-main,
+    .app-card-sub,
+    .app-card-inset
+  ) {
+  color: var(--interface-text);
+}
+
+:is(:root[data-interface-theme], [data-interface-theme]) .app-data-table {
+  border-color: var(--interface-border);
+  color: var(--interface-text);
+}
+
+:is(:root[data-interface-theme], [data-interface-theme]) .app-data-table-head {
+  background: var(--interface-table-header);
+  color: var(--interface-text);
+}
+
+:is(:root[data-interface-theme], [data-interface-theme]) .app-data-table-row {
+  border-color: var(--interface-border);
+}
+
+:is(:root[data-interface-theme], [data-interface-theme])
+  .app-data-table-row:hover {
+  background: var(--interface-table-hover);
+}
+
+:is(:root[data-interface-theme], [data-interface-theme])
+  :is(.settings-form-row, .settings-group-content) {
+  gap: var(--interface-detail-row-gap);
+}
+
+:is(:root[data-interface-theme], [data-interface-theme]) .page-layout,
+:is(:root[data-interface-theme], [data-interface-theme]) .app-shell,
+:is(:root[data-interface-theme], [data-interface-theme]) .sidebar,
+:is(:root[data-interface-theme], [data-interface-theme]) .poster-layout,
+:is(:root[data-interface-theme], [data-interface-theme]) .app-card-main,
+:is(:root[data-interface-theme], [data-interface-theme]) .app-card-sub,
+:is(:root[data-interface-theme], [data-interface-theme]) .app-card-inset {
+  transition-duration: var(--interface-motion-duration);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :is(:root[data-interface-theme], [data-interface-theme]) {
+    --interface-motion-duration: 0ms;
+  }
+}

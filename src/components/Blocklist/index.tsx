@@ -812,6 +812,7 @@ const BlocklistedItem = ({ item, revalidateList }: BlocklistedItemProps) => {
   return (
     <article
       ref={ref}
+      data-interface-role="blocklist-card"
       className="app-card-main refreshed-card-surface relative overflow-hidden rounded-xl border border-gray-700 p-3 shadow-lg shadow-gray-950/20"
     >
       {backdropSrc && (

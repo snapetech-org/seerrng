@@ -3,10 +3,51 @@ import { readFileSync } from 'node:fs';
 import { describe, it } from 'node:test';
 
 import {
+  DEFAULT_INTERFACE_THEME_ID,
+  INTERFACE_THEME_IDS,
+  parseInterfaceTheme,
+} from '@server/utils/interfaceTheme';
+import {
   DEFAULT_THEME_PALETTE_ID,
   getThemeTokens,
   themePalettes,
 } from './ThemeContext';
+
+describe('interface theme contract', () => {
+  it('defaults to SeerrOrig and validates built-in or custom theme IDs', () => {
+    assert.equal(DEFAULT_INTERFACE_THEME_ID, 'seerrOrig');
+    assert.deepEqual(INTERFACE_THEME_IDS, ['seerrOrig', 'seerrNGJ']);
+    assert.equal(parseInterfaceTheme('seerrOrig'), 'seerrOrig');
+    assert.equal(parseInterfaceTheme('seerrNGJ'), 'seerrNGJ');
+    assert.equal(parseInterfaceTheme('seerrngj'), 'seerrngj');
+    assert.equal(parseInterfaceTheme('community-dark'), 'community-dark');
+    assert.equal(parseInterfaceTheme('../outside'), null);
+    assert.equal(parseInterfaceTheme('MixedCase'), null);
+    assert.equal(parseInterfaceTheme({ theme: 'seerrOrig' }), null);
+  });
+
+  it('ships two separately scoped, materially different interface sheets', () => {
+    const orig = readFileSync(
+      'themes/seerrOrig/theme.css',
+      'utf8'
+    );
+    const john = readFileSync(
+      'themes/seerrNGJ/theme.css',
+      'utf8'
+    );
+    assert.notEqual(orig, john);
+    for (const sheet of [orig, john]) {
+      assert.match(sheet, /data-interface-theme/);
+      assert.match(sheet, /\.sidebar/);
+      assert.match(sheet, /\.poster-layout/);
+      assert.match(sheet, /\.media-header/);
+    }
+    assert.match(orig, /--poster-width: 150px/);
+    assert.match(john, /--poster-width: 169\.2px/);
+    assert.match(orig, /display: contents/);
+    assert.match(john, /\.sidebar-navigation-heading/);
+  });
+});
 
 const getRelativeLuminance = (rgb: string): number => {
   const [red, green, blue] = rgb

@@ -6,8 +6,8 @@ import { styleContract } from '../../styles/cssContract.mjs';
 
 const read = (path) => readFileSync(new URL(path, import.meta.url), 'utf8');
 
-// Shared spacing is configured once, then consumed by card and action roles.
-// Check that ownership chain rather than requiring a copied literal per role.
+// Each package supplies spacing; shared card/action roles resolve the package
+// tokens rather than carrying a second set of global defaults.
 const assertSharedManageSpacing = (css) => {
   const contract = styleContract(css);
   const declaration = (selector, property, expected) => {
@@ -17,10 +17,26 @@ const assertSharedManageSpacing = (css) => {
       `${selector} ${property}`
     );
   };
-  declaration(':root', '--card-layout-spacing', '8px');
-  declaration(':root', '--card-spacing', 'var(--card-layout-spacing)');
-  declaration(':root', '--main-card-padding', '8px');
-  declaration(':root', '--inset-card-padding', '8px');
+  declaration(
+    ':is(:root[data-interface-theme], [data-interface-theme])',
+    '--card-layout-spacing',
+    'var(--interface-section-gap)'
+  );
+  declaration(
+    ':is(:root[data-interface-theme], [data-interface-theme])',
+    '--card-spacing',
+    'var(--card-layout-spacing)'
+  );
+  declaration(
+    ':is(:root[data-interface-theme], [data-interface-theme])',
+    '--main-card-padding',
+    'var(--interface-main-card-padding)'
+  );
+  declaration(
+    ':is(:root[data-interface-theme], [data-interface-theme])',
+    '--inset-card-padding',
+    'var(--interface-inset-card-padding)'
+  );
   for (const selector of [
     '.card-layout',
     '.app-card-main',
@@ -290,19 +306,28 @@ for (const file of [
     assert.match(source, /<IssueMediaSummary/);
   });
 }
-test('global Manage spacing separates 8px padding from gaps and the issue action is not clipped', () => {
-  const css = read('../../styles/globals.css');
+test('theme-owned Manage spacing is shared by cards and the issue action is not clipped', () => {
+  const css = `${read('../../styles/globals.css')}\n${read('../../styles/interfaceThemes/shared.css')}`;
   assertSharedManageSpacing(css);
   assert.match(css, /\.issue-action-value\s*\{[^}]*overflow: visible/s);
 });
 
 test('shared Manage spacing check rejects changed tokens and disconnected gap or margin roles', () => {
-  const css = read('../../styles/globals.css');
+  const css = `${read('../../styles/globals.css')}\n${read('../../styles/interfaceThemes/shared.css')}`;
   for (const [before, after] of [
-    ['--card-layout-spacing: 8px;', '--card-layout-spacing: 12px;'],
+    [
+      '--card-layout-spacing: var(--interface-section-gap);',
+      '--card-layout-spacing: 12px;',
+    ],
     ['--card-spacing: var(--card-layout-spacing);', '--card-spacing: 12px;'],
-    ['--main-card-padding: 8px;', '--main-card-padding: 12px;'],
-    ['--inset-card-padding: 8px;', '--inset-card-padding: 12px;'],
+    [
+      '--main-card-padding: var(--interface-main-card-padding);',
+      '--main-card-padding: 12px;',
+    ],
+    [
+      '--inset-card-padding: var(--interface-inset-card-padding);',
+      '--inset-card-padding: 12px;',
+    ],
     ['gap: var(--card-spacing);', 'gap: 12px;'],
     ['margin-block-start: var(--card-spacing);', 'margin-block-start: 12px;'],
     ['margin-top: var(--card-spacing);', 'margin-top: 12px;'],

@@ -88,6 +88,8 @@ import {
 } from '@server/utils/detailDisclosureOrder';
 import { normalizeDiscordSnowflake } from '@server/utils/discord';
 import { getHostname } from '@server/utils/getHostname';
+import { parseInterfaceTheme } from '@server/utils/interfaceTheme';
+import { isInstalledInterfaceTheme } from '@server/utils/interfaceThemeRegistry';
 import { normalizeJellyfinGuid } from '@server/utils/jellyfin';
 import { parsePlexAccountIdentity } from '@server/utils/plexAccount';
 import {
@@ -664,6 +666,48 @@ userSettingsRoutes.post<{ id: string; scope: string }>(
       next({
         status: error instanceof UserMutationActorUnauthorizedError ? 403 : 500,
         message: 'Could not save media filter pin.',
+      });
+    }
+  }
+);
+
+userSettingsRoutes.post<{ id: string }>(
+  '/interface-theme',
+  isOwnProfile(),
+  async (req, res, next) => {
+    const theme =
+      req.body && !Array.isArray(req.body) && Object.keys(req.body).length === 1
+        ? parseInterfaceTheme(req.body.theme)
+        : null;
+    if (!theme || !isInstalledInterfaceTheme(theme))
+      return next({ status: 400, message: 'Invalid interface theme.' });
+    const userId = parseUserSettingsRouteId(req.params.id);
+    if (!userId) return next({ status: 404, message: 'User not found.' });
+    try {
+      return await runUserSecurityMutationWithActor(
+        req.user!.id,
+        userId,
+        Permission.MANAGE_USERS,
+        async () => {
+          const repository = getRepository(User);
+          const user = await repository.findOne({ where: { id: userId } });
+          if (!user) return next({ status: 404, message: 'User not found.' });
+          if (!user.settings) user.settings = new UserSettings({ user });
+          user.settings.interfaceTheme = theme;
+          await repository.save(user);
+          return res.status(200).json({ interfaceTheme: theme });
+        },
+        {
+          expectedCredentialVersion:
+            req.session?.userId === req.user!.id
+              ? (req.session.credentialVersion ?? 0)
+              : undefined,
+        }
+      );
+    } catch (error) {
+      return next({
+        status: error instanceof UserMutationActorUnauthorizedError ? 403 : 500,
+        message: 'Could not save interface theme.',
       });
     }
   }

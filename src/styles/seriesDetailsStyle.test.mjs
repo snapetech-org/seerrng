@@ -7,10 +7,24 @@ import { auditTailwindClassExpressions } from './tailwindClassVerifier.mjs';
 const source = (path) =>
   readFileSync(new URL(`../components/${path}`, import.meta.url), 'utf8');
 const css = readFileSync(new URL('./globals.css', import.meta.url), 'utf8');
+const sharedCss = readFileSync(
+  new URL('./interfaceThemes/shared.css', import.meta.url),
+  'utf8'
+);
+const origThemeCss = readFileSync(
+  new URL('../../themes/seerrOrig/theme.css', import.meta.url),
+  'utf8'
+);
+const ngjThemeCss = readFileSync(
+  new URL('../../themes/seerrNGJ/theme.css', import.meta.url),
+  'utf8'
+);
 
 test('details heading-to-table spacing reuses the card gap without enlarging inset padding', () => {
-  assert.match(css, /--detail-heading-gap:\s*var\(--card-spacing\)/);
-  assert.doesNotMatch(css, /--detail-heading-gap:\s*\d/);
+  assert.match(sharedCss, /--detail-heading-gap:\s*var\(--card-spacing\)/);
+  assert.doesNotMatch(sharedCss, /--detail-heading-gap:\s*\d/);
+  assert.match(origThemeCss, /--interface-section-gap: 1\.5rem;/);
+  assert.match(ngjThemeCss, /--interface-section-gap: 0\.75rem;/);
   assert.match(
     css,
     /\.detail-card-heading-spacing\s*\{\s*margin-top:\s*var\(--detail-heading-gap\)/
@@ -134,10 +148,14 @@ const verifyPlaybackMenuOwners = (stylesheet) => {
     'var(--dropdown-menu-surface)',
     'menu surface consumes the shared background owner'
   );
-  assert.equal(
-    owned(':root', '--dropdown-menu-surface'),
-    '#000',
-    'shared menu surface remains opaque black'
+  const menuSurfaceOwners = [];
+  root.walkDecls('--dropdown-menu-surface', (declaration) =>
+    menuSurfaceOwners.push(declaration.value)
+  );
+  assert.deepEqual(
+    menuSurfaceOwners,
+    ['var(--interface-dropdown-menu-surface)'],
+    'shared menu surface resolves to the selected package'
   );
   root.walkDecls('background-color', (decl) => {
     if (decl.parent.type !== 'rule') return;
@@ -150,40 +168,43 @@ const verifyPlaybackMenuOwners = (stylesheet) => {
   assert.equal(owned('.app-action-row', 'gap'), 'var(--card-spacing)');
 };
 
-test('open playback menus share an opaque surface and escape the parent frame layer', () => {
-  verifyPlaybackMenuOwners(css);
+test('playback menus inherit the selected surface and escape the parent frame layer', () => {
+  verifyPlaybackMenuOwners(`${css}\n${sharedCss}`);
+  assert.match(origThemeCss, /--interface-dropdown-menu-surface: var\(--interface-panel\);/);
+  assert.match(ngjThemeCss, /--interface-dropdown-menu-surface: var\(--interface-panel\);/);
 });
 
 test('menu owner check rejects later clipping/transparency, trapped layers and duplicate gaps', () => {
+  const ownerCss = `${css}\n${sharedCss}`;
   for (const [broken, diagnostic] of [
     [
-      `${css}\n.media-detail-card:has(.playback-dropdown-trigger[data-open]) { overflow: hidden; }`,
+      `${ownerCss}\n.media-detail-card:has(.playback-dropdown-trigger[data-open]) { overflow: hidden; }`,
       /overflow has one owner/,
     ],
     [
-      `${css}\n.app-dropdown-menu { background-color: transparent; }`,
+      `${ownerCss}\n.app-dropdown-menu { background-color: transparent; }`,
       /\.app-dropdown-menu background-color has one owner/,
     ],
     [
-      css.replace(
-        '--dropdown-menu-surface: #000',
+      ownerCss.replace(
+        '--dropdown-menu-surface: var(--interface-dropdown-menu-surface)',
         '--dropdown-menu-surface: transparent'
       ),
-      /shared menu surface remains opaque black/,
+      /shared menu surface resolves to the selected package/,
     ],
     [
-      css.replace(
+      ownerCss.replace(
         /z-index: 60;(\s*\}\s*\.detail-three-column-grid)/,
         'z-index: 40;$1'
       ),
       /open content escapes its parent frame layer/,
     ],
     [
-      `${css}\n.app-action-row, .fixture-other-role { gap: 8px; }`,
+      `${ownerCss}\n.app-action-row, .fixture-other-role { gap: 8px; }`,
       /\.app-action-row gap has one owner/,
     ],
   ]) {
-    assert.notEqual(broken, css, 'negative fixture changes the stylesheet');
+    assert.notEqual(broken, ownerCss, 'negative fixture changes the stylesheet');
     assert.throws(() => verifyPlaybackMenuOwners(broken), diagnostic);
   }
 });
