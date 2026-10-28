@@ -7,7 +7,9 @@ import { EnforceScreenBlocklistUniqueness1782700000000 } from './1782700000000-E
 import { EnforceCanonicalBookIdentifierUniqueness1782800000000 } from './1782800000000-EnforceCanonicalBookIdentifierUniqueness';
 import { EnforceMusicMediaUniqueness1782900000000 } from './1782900000000-EnforceMusicMediaUniqueness';
 
-const postgresUrl = process.env.SEERR_TEST_POSTGRES_URL;
+const postgresUrl =
+  process.env.SEERR_MIGRATION_TEST_POSTGRES_URL ??
+  process.env.SEERR_TEST_POSTGRES_URL;
 const postgresTest = postgresUrl ? test : test.skip;
 
 const createMigrationTables = async (queryRunner: QueryRunner) => {
