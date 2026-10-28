@@ -74,6 +74,9 @@ test('interface profiles own visibly different layout and geometry tokens', () =
     );
   }
 
+  assert.equal(cssToken(profiles.seerrOrig, 'poster-width'), '150px');
+  assert.equal(cssToken(profiles.seerrNGJ, 'poster-width'), '169.2px');
+
   assert.match(profiles.seerrOrig, /grid-template-columns: minmax\(0, 1fr\);/);
   assert.match(
     profiles.seerrNGJ,
@@ -97,11 +100,11 @@ test('interface profiles own visibly different layout and geometry tokens', () =
   );
   assert.match(
     profiles.seerrOrig,
-    /grid-template-columns: repeat\(auto-fill, minmax\(12rem, 1fr\)\);/
+    /grid-template-columns: repeat\(auto-fill, minmax\(var\(--poster-width\), 1fr\)\);/
   );
   assert.match(
     profiles.seerrNGJ,
-    /grid-template-columns: repeat\(auto-fill, minmax\(7\.5rem, 1fr\)\);/
+    /grid-template-columns: repeat\(auto-fill, minmax\(var\(--poster-width\), 1fr\)\);/
   );
   assert.match(
     profiles.seerrOrig,
@@ -187,6 +190,9 @@ test('standalone comparison embeds production CSS and computes distinct layouts'
       return getComputedStyle(element);
     };
     return {
+      posterWidth: getComputedStyle(panel)
+        .getPropertyValue('--poster-width')
+        .trim(),
       filters: style('.app-pinned-filter-group'),
       posters: style('.cards-vertical'),
       route: style('.preview-route-grid'),
@@ -201,17 +207,19 @@ test('standalone comparison embeds production CSS and computes distinct layouts'
   const original = theme('seerrOrig');
   const john = theme('seerrNGJ');
 
+  assert.equal(original.posterWidth, '150px');
+  assert.equal(john.posterWidth, '169.2px');
   assert.equal(original.filters.display, 'flex');
   assert.equal(original.filters.flexDirection, 'column');
   assert.equal(john.filters.display, 'grid');
   assert.equal(john.filters.gridTemplateColumns, 'repeat(2, minmax(0, 1fr))');
   assert.equal(
     original.posters.gridTemplateColumns,
-    'repeat(auto-fill, minmax(12rem, 1fr))'
+    'repeat(auto-fill, minmax(var(--poster-width), 1fr))'
   );
   assert.equal(
     john.posters.gridTemplateColumns,
-    'repeat(auto-fill, minmax(7.5rem, 1fr))'
+    'repeat(auto-fill, minmax(var(--poster-width), 1fr))'
   );
   assert.equal(original.route.gridTemplateColumns, 'minmax(0, 1fr)');
   assert.equal(

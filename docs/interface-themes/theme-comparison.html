@@ -128,7 +128,7 @@
   --interface-sidebar-top: #1f2937;
   --interface-sidebar-bottom: #131928;
   --interface-sidebar-selected: linear-gradient(135deg, #4f46e5, #9333ea);
-  --poster-width: 192px;
+  --poster-width: 150px;
   --poster-aspect-ratio: 2 / 3;
   --app-card-frame-width: 1px;
   --app-card-frame-background: #374151;
@@ -267,7 +267,7 @@
 
 :is(:root[data-interface-theme='seerrOrig'], [data-interface-theme='seerrOrig'])
   ul.cards-vertical {
-  grid-template-columns: repeat(auto-fill, minmax(12rem, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(var(--poster-width), 1fr));
   justify-content: start;
 }
 
@@ -300,7 +300,7 @@
 
 :is(:root[data-interface-theme='seerrOrig'], [data-interface-theme='seerrOrig'])
   ul.cards-vertical {
-  grid-template-columns: repeat(auto-fill, minmax(12rem, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(var(--poster-width), 1fr));
   gap: var(--interface-grid-gap);
 }
 
@@ -529,7 +529,7 @@
     :root[data-interface-theme='seerrOrig'],
     [data-interface-theme='seerrOrig']
   ) {
-    --poster-width: 192px;
+    --poster-width: 150px;
   }
 }
 
@@ -903,7 +903,7 @@
   --interface-sidebar-top: #0d2542;
   --interface-sidebar-bottom: #05101d;
   --interface-sidebar-selected: linear-gradient(120deg, #0051d4, #17375b);
-  --poster-width: 128px;
+  --poster-width: 169.2px;
   --poster-aspect-ratio: 2 / 3;
   --app-card-frame-width: 2px;
   --app-card-frame-background: linear-gradient(
@@ -1174,7 +1174,7 @@
 
 :is(:root[data-interface-theme='seerrNGJ'], [data-interface-theme='seerrNGJ'])
   ul.cards-vertical {
-  grid-template-columns: repeat(auto-fill, minmax(7.5rem, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(var(--poster-width), 1fr));
   gap: var(--interface-grid-gap);
 }
 
@@ -1831,7 +1831,7 @@
         <main class="preview-content page-layout" data-interface-role="main-content">
           <header class="preview-page-header">
             <h2 class="page-title">Discover</h2>
-            <p class="preview-intro">A classic catalog page: media choice first, filters and sort below it, then larger posters in a quiet grid.</p>
+            <p class="preview-intro">A classic catalog page: media choice first, filters and sort below it, then 150px posters in a quiet grid.</p>
           </header>
           <nav class="preview-media-tabs" data-testid="discover-media-tabs" aria-label="Media type">
             <button aria-current="page">Movies</button><button>Series</button><button>Books</button><button>Music</button>
@@ -1927,7 +1927,7 @@
         <main class="preview-content page-layout" data-interface-role="main-content">
           <header class="preview-page-header">
             <h2 class="page-title">Discover <span class="preview-count">· 24 results</span></h2>
-            <p class="preview-intro">A grouped workspace: filter and sort panels sit side by side, compact posters carry more state, and service details share a dense data rail.</p>
+            <p class="preview-intro">A grouped workspace: filter and sort panels sit side by side, wider 169.2px framed posters carry more state, and service details share a dense data rail.</p>
           </header>
           <nav class="preview-media-tabs" data-testid="discover-media-tabs" aria-label="Media type">
             <button aria-current="page">Movies</button><button>Series</button><button>Books</button><button>Music</button>

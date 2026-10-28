@@ -32,7 +32,7 @@
   --interface-sidebar-top: #1f2937;
   --interface-sidebar-bottom: #131928;
   --interface-sidebar-selected: linear-gradient(135deg, #4f46e5, #9333ea);
-  --poster-width: 192px;
+  --poster-width: 150px;
   --poster-aspect-ratio: 2 / 3;
   --app-card-frame-width: 1px;
   --app-card-frame-background: #374151;
@@ -171,7 +171,7 @@
 
 :is(:root[data-interface-theme='seerrOrig'], [data-interface-theme='seerrOrig'])
   ul.cards-vertical {
-  grid-template-columns: repeat(auto-fill, minmax(12rem, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(var(--poster-width), 1fr));
   justify-content: start;
 }
 
@@ -204,7 +204,7 @@
 
 :is(:root[data-interface-theme='seerrOrig'], [data-interface-theme='seerrOrig'])
   ul.cards-vertical {
-  grid-template-columns: repeat(auto-fill, minmax(12rem, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(var(--poster-width), 1fr));
   gap: var(--interface-grid-gap);
 }
 
@@ -433,7 +433,7 @@
     :root[data-interface-theme='seerrOrig'],
     [data-interface-theme='seerrOrig']
   ) {
-    --poster-width: 192px;
+    --poster-width: 150px;
   }
 }
 

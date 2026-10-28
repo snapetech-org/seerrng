@@ -66,6 +66,16 @@ captured at matching viewports and states.
   stylesheets. Live route screenshots, keyboard/touch review, and matching
   viewport comparisons have not been completed; UI acceptance is
   **unverified**.
+- A theme audit caught and corrected the poster-size inversion: SeerrOrig now
+  uses the upstream 150px catalog track and SeerrNGJ uses the SeerrNG 169.2px
+  track. Both profile grids read their width from the profile token, and the
+  comparison page has been regenerated from those production stylesheets.
+  `node --test src/styles/interfaceThemeProfiles.test.mjs` passes 3/3, including
+  checks that the embedded CSS matches source and that the two computed layouts
+  differ. Changed-file Prettier and `git diff --check` also pass.
+- A serial full Node-suite rerun did not produce a final TAP summary after its
+  execution session was lost during the `User persistence` tests. It is not a
+  clean suite result; the existing full-suite gate remains open.
 
 ## Next gates
 

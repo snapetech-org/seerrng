@@ -16,7 +16,7 @@ request semantics.
 | --- | --- | --- |
 | Primary nav | One flat list in upstream order: Discover, Movies, Series, Requests, Blocklist, Issues, Users, Settings; current extra routes follow the core links | Grouped headings and nested acquisition/discovery links, matching the current SeerrNG navigation model |
 | Surfaces and color | Slate-gray page and sidebar, gray-800 cards, compact borders, indigo-to-purple selected nav, original Seerr gradients | Deep navy background, blue/silver chrome, blue selected nav, colored media/status controls, layered borders and restrained glow |
-| Discovery cards | 150px-wide classic poster cards, tighter corners, understated frame and bottom title gradient | Wider poster cards, rounded framed surface, blue/silver edge, stronger hover elevation and data-dense badges |
+| Discovery cards | 150px-wide classic poster cards, tighter corners, understated frame and bottom title gradient | 169.2px poster cards, rounded framed surface, blue/silver edge, stronger hover elevation and data-dense badges |
 | Detail pages | Centered poster/title at narrow widths; poster and title align horizontally at wide widths; facts in a compact slate card | Left-anchored hero, framed poster, blue contrast, overview paired with a right facts rail at wide widths |
 | Custom media | Preserve current media types and controls while using the compact Orig poster and card roles | Preserve current data-rich poster badges and use the NGJ frame, category accents, and detail arrangement |
 | Interaction | Keep current SeerrNG actions and accessibility contracts; apply original visual geometry and ordering where the upstream component still has the same concept | Keep the current grouped workflows and John-specific visual order, controls, and shapes |

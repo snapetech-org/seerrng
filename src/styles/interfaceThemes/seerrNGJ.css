@@ -25,7 +25,7 @@
   --interface-sidebar-top: #0d2542;
   --interface-sidebar-bottom: #05101d;
   --interface-sidebar-selected: linear-gradient(120deg, #0051d4, #17375b);
-  --poster-width: 128px;
+  --poster-width: 169.2px;
   --poster-aspect-ratio: 2 / 3;
   --app-card-frame-width: 2px;
   --app-card-frame-background: linear-gradient(
@@ -296,7 +296,7 @@
 
 :is(:root[data-interface-theme='seerrNGJ'], [data-interface-theme='seerrNGJ'])
   ul.cards-vertical {
-  grid-template-columns: repeat(auto-fill, minmax(7.5rem, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(var(--poster-width), 1fr));
   gap: var(--interface-grid-gap);
 }
 
