@@ -5,18 +5,12 @@ the same commit as each implementation slice. A source change is not visual
 acceptance: rendered review stays unverified until the application has been
 captured at matching viewports and states.
 
-## Recovered source and baseline
+## Implementation basis
 
 - Rebuild base: `snapetech-org/seerrng` `main`, commit
   `4f5541aa5d83cb95e2cbd214ebda72d025d5daf6`.
 - Exact original UI reference: Seerr `v3.5.1`, commit
   `564bfb08b54caa374bddaf820abfd226e5e69151`.
-- The former implementation commit IDs and named output files were absent from
-  the fresh checkout, its Git refs, and the persistent file catalog. The
-  conversation screenshot confirms the old output panel listed
-  `theme-comparison.html`, `implementation-status.md`, `feature-map.md`,
-  `seerrOrig.css`, `seerrNGJ.css`, and `shared.css`; it does not expose their
-  source contents. The names and design intent are being reconstructed here.
 - Engine/backend decision: keep the SeerrNG engine, APIs, provider integrations,
   database, and current dependency contracts. Upstream v3.5.1 is the visual and
   interaction reference for SeerrOrig, not a backend rollback target.
@@ -32,23 +26,25 @@ captured at matching viewports and states.
   controls. `_document` starts on SeerrOrig before hydration; the authenticated
   account profile is restored as soon as user settings load.
 - Added three independently owned stylesheets in
-  `src/styles/interfaceThemes/`. They already establish different navigation,
-  poster size and shape, detail-page arrangement, card surfaces, and colors.
-- Rebuilt a side-by-side static comparison harness in `theme-comparison.html`
-  using the actual profile stylesheets and current semantic component roles.
+  `src/styles/interfaceThemes/`. Each has its own navigation, poster, detail,
+  card, form, table, and surface rules.
+- Expanded theme coverage to current video and cross-media detail roles,
+  acquisition cards, issue/blocklist summaries, service settings, and data
+  tables. The route components retain their existing behavior and contracts.
+- Expanded the side-by-side static comparison harness with discovery, an
+  audiobook detail, a request action, and service administration examples. It
+  loads the same profile stylesheets used by the application.
 - Added the initial route-family feature map and this implementation record.
 
 ## Not yet accepted
 
-- The sheets currently cover the shared shell, browsing posters, and video
-  detail composition. They do not yet prove full route-family coverage for the
-  cross-media catalogs, request and admin screens, user profiles, or less common
-  settings panels.
+- CSS coverage now reaches the shared contracts used by the listed route
+  families; render acceptance is still needed to catch route-specific markup,
+  responsive, and state regressions.
 - Focused theme-provider tests, server/client type checks, translation checks,
-  and lint have passed. The full Node suite is running at the CI-configured
-  four-worker limit; its result is still pending. A SQLite migration execution
-  test now covers Orig defaults, the explicit John migration, idempotency, and
-  rollback.
+  and lint have passed. A SQLite migration execution test covers Orig defaults,
+  the explicit John migration, idempotency, and rollback. The latest full Node
+  suite did not return a final result in this workspace and must be rerun.
 - PostgreSQL migration execution has not yet been performed. This workspace
   has no PostgreSQL client/server or configured test URL; repository CI uses a
   private, manually dispatched runner for database-backed checks.
@@ -62,8 +58,8 @@ captured at matching viewports and states.
 
 ## Next gates
 
-1. Complete a role/route audit for every page family in `feature-map.md`; extend
-   reusable theme owners where a route is still relying on undocumented
+1. Finish the role/route audit for every page family in `feature-map.md` and
+   extend reusable theme owners wherever a route still relies on undocumented
    utility-class geometry.
 2. Finish the full Node, Vitest, tooling, type, format, lint, and build checks;
    record exact counts and any infrastructure blocker.

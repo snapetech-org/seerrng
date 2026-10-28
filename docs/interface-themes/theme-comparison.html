@@ -51,12 +51,30 @@
       .preview-bottom strong { display: block; color: var(--interface-text); }
       .preview-bottom span { display: block; margin-top: 3px; color: var(--interface-muted); font-size: 12px; }
       .request-button { border: 0; border-radius: 5px; padding: 9px 12px; color: #fff; background: linear-gradient(135deg, var(--interface-accent-a), var(--interface-accent-b)); font-weight: 700; white-space: nowrap; }
+      .preview-route-grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: 14px; margin-top: 28px; }
+      .preview-route-heading { margin: 0 0 10px; color: var(--interface-muted); font-size: 11px; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; }
+      .preview-detail-card { display: grid; gap: 12px; padding: 12px; border: 1px solid var(--interface-border); background: var(--interface-panel); }
+      .preview-detail-card .detail-summary-card { display: grid; grid-template-columns: 72px minmax(0, 1fr); align-items: start; gap: 12px; padding: 12px; }
+      .preview-detail-poster { min-height: 108px; background: linear-gradient(145deg, #996b45, #382c3a 58%, #101827); }
+      .preview-detail-copy h4 { margin: 0 0 8px; font-size: 17px; }
+      .preview-detail-copy dl { display: grid; grid-template-columns: max-content minmax(0, 1fr); gap: 4px 10px; margin: 0; font-size: 11px; }
+      .preview-detail-copy dd { margin: 0; color: var(--interface-text); }
+      .preview-request-row { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px; padding: 10px; border: 1px solid var(--interface-border); border-radius: var(--interface-card-radius); background: var(--interface-panel-raised); }
+      .preview-request-row small { display: block; margin-top: 3px; color: var(--interface-muted); }
+      .preview-admin { padding: 12px; }
+      .preview-admin .settings-group-heading { margin: 0; }
+      .preview-admin .settings-group-content { display: grid; gap: 10px; }
+      .preview-setting-row { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 12px; align-items: center; }
+      .preview-setting-row input { width: 100%; min-width: 0; padding: 7px 9px; border: 1px solid var(--interface-border); color: var(--interface-text); }
+      .preview-admin .app-data-table { width: 100%; margin-top: 12px; border-collapse: collapse; font-size: 11px; }
+      .preview-admin th, .preview-admin td { padding: 8px; text-align: start; border-bottom: 1px solid var(--interface-border); }
+      .preview-admin th { background: var(--interface-table-header); }
       .comparison-caption { margin: 10px 4px 0; color: #9ca3af; font-size: 12px; }
       @media (max-width: 900px) {
         body { padding: 14px; }
         .comparison-grid { grid-template-columns: minmax(520px, 1fr); }
-        .theme-preview { min-height: 690px; }
-        .preview-content { min-height: 690px; }
+        .theme-preview { min-height: 1050px; }
+        .preview-content { min-height: 1050px; }
       }
     </style>
   </head>
@@ -96,6 +114,24 @@
             <li><article class="poster-layout" data-media-type="book"><div class="app-card-poster" data-poster-region="frame"><div class="poster-art poster-three"></div><div class="poster-wash" data-poster-region="overlay"></div><div class="poster-top"><span class="poster-control poster-control-type-book poster-tag">Book</span><span class="poster-control poster-control-available poster-status">Tracked</span></div><div class="poster-copy" data-poster-region="copy"><div class="poster-year">2023</div><h4 class="card-title poster-title" data-poster-region="title">A Map of Quiet Stars</h4></div><span class="poster-control poster-action">☆</span></div></article></li>
           </ul>
           <div class="preview-bottom app-card-main"><div><strong>Request another format</strong><span>Keep the same compact action row across the current media catalogs.</span></div><button class="request-button">Request</button></div>
+          <div class="preview-route-grid">
+            <section aria-label="Cross-media detail example">
+              <h3 class="preview-route-heading">Cross-media detail · audiobook edition</h3>
+              <article class="media-detail-card app-card-main preview-detail-card">
+                <div class="detail-summary-card app-detail-summary-grid">
+                  <div class="detail-card-poster preview-detail-poster" aria-hidden="true"></div>
+                  <div class="preview-detail-copy"><h4 class="detail-summary-title">The Orchard of Glass</h4><dl class="media-detail-rows"><dt>Format</dt><dd>Audiobook</dd><dt>Narrator</dt><dd>Mara Ellis</dd><dt>Series</dt><dd>Northline · Book 2</dd></dl></div>
+                </div>
+                <div class="preview-request-row"><div><strong>Edition availability</strong><small>Audio · Library monitored</small></div><button class="request-button">Request edition</button></div>
+              </article>
+            </section>
+            <section aria-label="Request and admin example">
+              <h3 class="preview-route-heading">Acquisition queue · service administration</h3>
+              <div class="settings-page-content">
+                <section class="settings-group-card app-card-sub preview-admin"><h3 class="settings-group-heading">Library service</h3><div class="settings-group-content"><p class="preview-intro">Connected provider · last check 2 minutes ago</p><label class="preview-setting-row"><span>Root folder</span><input value="/media/books" readonly /></label><table class="app-data-table"><thead class="app-data-table-head"><tr><th>Title</th><th>Status</th><th>Requested</th></tr></thead><tbody><tr class="app-data-table-row"><td>The Orchard of Glass</td><td>Queued</td><td>Today</td></tr><tr class="app-data-table-row"><td>Quiet Engines</td><td>Available</td><td>Yesterday</td></tr></tbody></table></div></section>
+              </div>
+            </section>
+          </div>
         </section>
       </section>
       <section class="theme-preview" data-interface-theme="seerrNGJ" aria-label="SeerrNGJ preview">
@@ -121,6 +157,24 @@
             <li><article class="poster-layout" data-media-type="book"><div class="app-card-poster" data-poster-region="frame"><div class="poster-art poster-three"></div><div class="poster-wash" data-poster-region="overlay"></div><div class="poster-top"><span class="poster-control poster-control-type-book poster-tag">Ebook</span><span class="poster-control poster-control-available poster-status">Tracked</span></div><div class="poster-copy" data-poster-region="copy"><div class="poster-year">2023 · Series 2</div><h4 class="card-title poster-title" data-poster-region="title">A Map of Quiet Stars</h4></div><span class="poster-control poster-action">☆</span></div></article></li>
           </ul>
           <div class="preview-bottom app-card-main"><div><strong>Request another format</strong><span>Category-aware badges and additional availability context live beside the poster actions.</span></div><button class="request-button">＋ Request 4K</button></div>
+          <div class="preview-route-grid">
+            <section aria-label="Cross-media detail example">
+              <h3 class="preview-route-heading">Cross-media detail · audiobook edition</h3>
+              <article class="media-detail-card app-card-main preview-detail-card">
+                <div class="detail-summary-card app-detail-summary-grid">
+                  <div class="detail-card-poster preview-detail-poster" aria-hidden="true"></div>
+                  <div class="preview-detail-copy"><h4 class="detail-summary-title">The Orchard of Glass</h4><dl class="media-detail-rows"><dt>Format</dt><dd>Audiobook</dd><dt>Narrator</dt><dd>Mara Ellis</dd><dt>Series</dt><dd>Northline · Book 2</dd></dl></div>
+                </div>
+                <div class="preview-request-row"><div><strong>Edition availability</strong><small>Audio · Library monitored</small></div><button class="request-button">Request edition</button></div>
+              </article>
+            </section>
+            <section aria-label="Request and admin example">
+              <h3 class="preview-route-heading">Acquisition queue · service administration</h3>
+              <div class="settings-page-content">
+                <section class="settings-group-card app-card-sub preview-admin"><h3 class="settings-group-heading">Library service</h3><div class="settings-group-content"><p class="preview-intro">Connected provider · last check 2 minutes ago</p><label class="preview-setting-row"><span>Root folder</span><input value="/media/books" readonly /></label><table class="app-data-table"><thead class="app-data-table-head"><tr><th>Title</th><th>Status</th><th>Requested</th></tr></thead><tbody><tr class="app-data-table-row"><td>The Orchard of Glass</td><td>Queued</td><td>Today</td></tr><tr class="app-data-table-row"><td>Quiet Engines</td><td>Available</td><td>Yesterday</td></tr></tbody></table></div></section>
+              </div>
+            </section>
+          </div>
         </section>
       </section>
     </main>

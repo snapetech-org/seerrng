@@ -5,12 +5,69 @@
   --interface-grid-gap: 1rem;
   --interface-card-radius: 0.5rem;
   --interface-poster-radius: 0.375rem;
+  --interface-control-radius: 0.375rem;
+  --interface-main-card-padding: 1rem;
+  --interface-inset-card-padding: 0.75rem;
+  --interface-section-gap: 1.25rem;
+  --interface-detail-row-gap: 0.375rem;
+  --interface-table-header: var(--interface-panel-raised);
+  --interface-table-hover: color-mix(
+    in srgb,
+    var(--interface-accent-a) 11%,
+    transparent
+  );
   --interface-motion-duration: 180ms;
 }
 
 :is(:root[data-interface-theme], [data-interface-theme])
   :is(button, a, input, select, textarea):focus-visible {
   outline-offset: 2px;
+}
+
+/* Common roles are shared; each named interface supplies different tokens
+   and its own layout rules in the profile stylesheet. */
+:is(:root[data-interface-theme], [data-interface-theme]) {
+  --control-corner-radius: var(--interface-control-radius);
+  --main-card-padding: var(--interface-main-card-padding);
+  --inset-card-padding: var(--interface-inset-card-padding);
+  --card-layout-spacing: var(--interface-section-gap);
+}
+
+:is(:root[data-interface-theme], [data-interface-theme])
+  :is(
+    .media-detail-card,
+    .settings-group-card,
+    .settings-library-card,
+    .request-modal-site-surface,
+    .app-card-main,
+    .app-card-sub,
+    .app-card-inset
+  ) {
+  color: var(--interface-text);
+}
+
+:is(:root[data-interface-theme], [data-interface-theme]) .app-data-table {
+  border-color: var(--interface-border);
+  color: var(--interface-text);
+}
+
+:is(:root[data-interface-theme], [data-interface-theme]) .app-data-table-head {
+  background: var(--interface-table-header);
+  color: var(--interface-text);
+}
+
+:is(:root[data-interface-theme], [data-interface-theme]) .app-data-table-row {
+  border-color: var(--interface-border);
+}
+
+:is(:root[data-interface-theme], [data-interface-theme])
+  .app-data-table-row:hover {
+  background: var(--interface-table-hover);
+}
+
+:is(:root[data-interface-theme], [data-interface-theme])
+  :is(.settings-form-row, .settings-group-content) {
+  gap: var(--interface-detail-row-gap);
 }
 
 :is(:root[data-interface-theme], [data-interface-theme]) .page-layout,
