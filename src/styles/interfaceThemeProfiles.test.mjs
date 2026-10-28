@@ -1,7 +1,12 @@
+import { JSDOM } from 'jsdom';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { test } from 'node:test';
 
+const sharedStyles = readFileSync(
+  new URL('./interfaceThemes/shared.css', import.meta.url),
+  'utf8'
+);
 const profiles = {
   seerrOrig: readFileSync(
     new URL('./interfaceThemes/seerrOrig.css', import.meta.url),
@@ -41,6 +46,14 @@ const cssToken = (css, name) => {
   const match = css.match(new RegExp(`--${name}:\\s*([^;]+);`));
   assert.ok(match, `expected CSS token --${name}`);
   return match[1].trim();
+};
+
+const embeddedStylesheet = (name) => {
+  const match = comparison.match(
+    new RegExp(`<style data-profile-stylesheet="${name}">([\\s\\S]*?)</style>`)
+  );
+  assert.ok(match, `preview is missing embedded ${name}`);
+  return match[1].slice(1);
 };
 
 test('interface profiles own visibly different layout and geometry tokens', () => {
@@ -156,4 +169,61 @@ test('both profiles style the current shared route-family contracts', () => {
   assert.match(requestListItem, /data-interface-role="request-card"/);
   assert.match(blocklistCard, /data-interface-role="blocklist-card"/);
   assert.match(appLayout, /data-interface-role="main-content"/);
+});
+
+test('standalone comparison embeds production CSS and computes distinct layouts', () => {
+  assert.equal(embeddedStylesheet('shared.css'), sharedStyles);
+  assert.equal(embeddedStylesheet('seerrOrig.css'), profiles.seerrOrig);
+  assert.equal(embeddedStylesheet('seerrNGJ.css'), profiles.seerrNGJ);
+
+  const dom = new JSDOM(comparison, { pretendToBeVisual: true });
+  const { document, getComputedStyle } = dom.window;
+  const theme = (name) => {
+    const panel = document.querySelector(`[data-interface-theme="${name}"]`);
+    assert.ok(panel, `preview is missing ${name}`);
+    const style = (selector) => {
+      const element = panel.querySelector(selector);
+      assert.ok(element, `${name} is missing ${selector}`);
+      return getComputedStyle(element);
+    };
+    return {
+      filters: style('.app-pinned-filter-group'),
+      posters: style('.cards-vertical'),
+      route: style('.preview-route-grid'),
+      admin: style('.settings-page-content'),
+      mediaTabs: style('.preview-media-tabs'),
+      activeIcon: panel.querySelector(
+        '[data-navigation-link-id="discover-home"] svg'
+      ),
+    };
+  };
+
+  const original = theme('seerrOrig');
+  const john = theme('seerrNGJ');
+
+  assert.equal(original.filters.display, 'flex');
+  assert.equal(original.filters.flexDirection, 'column');
+  assert.equal(john.filters.display, 'grid');
+  assert.equal(john.filters.gridTemplateColumns, 'repeat(2, minmax(0, 1fr))');
+  assert.equal(
+    original.posters.gridTemplateColumns,
+    'repeat(auto-fill, minmax(12rem, 1fr))'
+  );
+  assert.equal(
+    john.posters.gridTemplateColumns,
+    'repeat(auto-fill, minmax(7.5rem, 1fr))'
+  );
+  assert.equal(original.route.gridTemplateColumns, 'minmax(0, 1fr)');
+  assert.equal(
+    john.route.gridTemplateColumns,
+    'minmax(0, 1.1fr) minmax(0, 0.9fr)'
+  );
+  assert.equal(original.admin.display, 'flex');
+  assert.equal(john.admin.display, 'grid');
+  assert.equal(original.mediaTabs.justifyContent, 'flex-start');
+  assert.equal(john.mediaTabs.justifyContent, 'flex-end');
+  assert.equal(original.activeIcon?.getAttribute('fill'), 'none');
+  assert.equal(john.activeIcon?.getAttribute('fill'), 'currentColor');
+
+  dom.window.close();
 });

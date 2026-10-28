@@ -23,6 +23,7 @@
     "lint:eslint": "eslint \"./server/**/*.{ts,tsx}\" \"./src/**/*.{ts,tsx}\" --cache",
     "lint:next": "oxlint --config .oxlintrc.next.json server src",
     "release-notes:preview": "node scripts/preview-release-notes.mjs",
+    "interface-theme:preview": "node scripts/update-interface-theme-comparison.mjs",
     "backissue:service": "node scripts/backissue-service.mjs",
     "seerr:migrate": "node deploy/seerrng-migrate.mjs",
     "bookshelf:move": "node scripts/bookshelf-media-move.mjs",
