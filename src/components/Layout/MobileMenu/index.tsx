@@ -5,6 +5,8 @@ import {
   type NavigationLink,
   type NavigationSection,
 } from '@app/components/Layout/Sidebar/navigation';
+import { getNavigationSectionsForTheme } from '@app/components/Layout/Sidebar/navigationPresentation';
+import { useTheme } from '@app/context/ThemeContext';
 import useBlocklistNavigation from '@app/hooks/useBlocklistNavigation';
 import useClickOutside from '@app/hooks/useClickOutside';
 import useSettings from '@app/hooks/useSettings';
@@ -39,6 +41,7 @@ const MobileMenu = ({
     undefined
   );
   const intl = useIntl();
+  const { interfaceTheme } = useTheme();
   const [isOpen, setIsOpen] = useState(false);
   const { hasPermission, user } = useUser();
   const showBlocklistNavigation = useBlocklistNavigation();
@@ -95,9 +98,13 @@ const MobileMenu = ({
       user?.settings?.enabledMediaCategories,
     ]
   );
+  const displayedSections = useMemo(
+    () => getNavigationSectionsForTheme(filteredSections, interfaceTheme),
+    [filteredSections, interfaceTheme]
+  );
   const filteredLinks = useMemo(
-    () => filteredSections.flatMap((section) => section.links),
-    [filteredSections]
+    () => displayedSections.flatMap((section) => section.links),
+    [displayedSections]
   );
 
   useEffect(() => {
@@ -129,12 +136,16 @@ const MobileMenu = ({
         leaveTo="opacity-0 translate-y-0"
         className="app-menu-gradient mobile-menu-navigation absolute inset-x-0 top-0 flex w-full -translate-y-full flex-col border-t border-gray-600 px-6 py-6 font-semibold text-gray-100 backdrop-blur"
       >
-        {filteredSections.map((section) => (
+        {displayedSections.map((section) => (
           <div
             key={`mobile-menu-section-${section.id}`}
             className="sidebar-navigation-section"
-            role="group"
-            aria-label={intl.formatMessage(menuMessages[section.ariaLabelKey])}
+            role={interfaceTheme === 'seerrOrig' ? undefined : 'group'}
+            aria-label={
+              interfaceTheme === 'seerrOrig'
+                ? undefined
+                : intl.formatMessage(menuMessages[section.ariaLabelKey])
+            }
           >
             {section.headingKey && (
               <h2 className="sidebar-navigation-heading">
@@ -154,11 +165,14 @@ const MobileMenu = ({
                       isActive ? 'sidebar-link-selected' : 'sidebar-link-idle'
                     }`}
                     data-navigation-level={link.nested ? 'nested' : 'primary'}
+                    data-navigation-link-id={link.id}
                     data-testid={link.dataTestId && `${link.dataTestId}-more`}
                     aria-current={isActive ? 'page' : undefined}
                   >
                     {cloneElement(
-                      isActive ? link.svgIconSelected : link.svgIcon,
+                      interfaceTheme === 'seerrNGJ' && isActive
+                        ? link.svgIconSelected
+                        : link.svgIcon,
                       { className: 'h-5 w-5' }
                     )}
                     <span className="ms-2">
@@ -207,11 +221,14 @@ const MobileMenu = ({
                   className={`main-menu-link relative flex flex-col items-center space-y-1 p-2 ${
                     isActive ? 'sidebar-link-selected' : 'sidebar-link-idle'
                   }`}
+                  data-navigation-link-id={link.id}
                   data-testid={link.dataTestId && `${link.dataTestId}-bottom`}
                   aria-current={isActive ? 'page' : undefined}
                 >
                   {cloneElement(
-                    isActive ? link.svgIconSelected : link.svgIcon,
+                    interfaceTheme === 'seerrNGJ' && isActive
+                      ? link.svgIconSelected
+                      : link.svgIcon,
                     {
                       className: 'h-6 w-6',
                     }

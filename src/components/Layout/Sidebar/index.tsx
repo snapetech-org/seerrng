@@ -89,6 +89,10 @@ const Sidebar = ({
     device: 'mobile' | 'desktop'
   ) => {
     const selected = router.pathname.match(link.activeRegExp);
+    const navigationIcon =
+      interfaceTheme === 'seerrNGJ' && selected
+        ? link.svgIconSelected
+        : link.svgIcon;
     const iconClass = device === 'desktop' ? 'me-3 h-6 w-6' : 'me-3 h-6 w-6';
     const className =
       device === 'mobile'
@@ -121,7 +125,7 @@ const Sidebar = ({
         }
         aria-current={selected ? 'page' : undefined}
       >
-        {cloneElement(link.svgIcon, { className: iconClass })}
+        {cloneElement(navigationIcon, { className: iconClass })}
         {intl.formatMessage(menuMessages[link.messagesKey])}
         {link.messagesKey === 'following' && <FollowUnreadCount />}
         {device === 'desktop' &&
