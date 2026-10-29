@@ -17,6 +17,11 @@ import '@app/styles/crossMedia.css';
 import '@app/styles/interfaceThemes/shared.css';
 import { getLocaleDirection } from '@app/utils/localeDirection';
 import {
+  getFormatRegionFromLocale,
+  getRegionalFormatLocale,
+} from '@app/utils/formatLocale';
+import { setLocaleHintCookie } from '@app/utils/localeHint';
+import {
   BLOCKLIST_NAVIGATION_COUNT_KEY,
   isBlocklistMutationRequest,
 } from '@app/utils/blocklistNavigation';
@@ -68,6 +73,7 @@ const CoreApp = ({ Component, pageProps, router }: AppProps) => {
   const [loadedMessages, setMessages] = useState<MessagesType>(emptyMessages);
   const [currentLocale, setLocale] = useState<AvailableLocale>('en');
   const [activeLocale, setActiveLocale] = useState<AvailableLocale>('en');
+  const [formatRegion, setFormatRegion] = useState<string | null>(null);
   const loadedLocale = useRef<AvailableLocale>('en');
 
   useEffect(() => {
@@ -80,7 +86,13 @@ const CoreApp = ({ Component, pageProps, router }: AppProps) => {
       isPathPrefix(router.pathname, '/setup') ||
       isPathPrefix(router.pathname, '/resetpassword')
     ) {
-      setLocale(resolveAcceptLanguage(navigator.languages.join(',')));
+      const browserLanguages = navigator.languages.length
+        ? navigator.languages
+        : [navigator.language];
+      const browserLocale = resolveAcceptLanguage(browserLanguages.join(','));
+      setLocale(browserLocale);
+      setLocaleHintCookie(browserLocale);
+      setFormatRegion(getFormatRegionFromLocale(browserLanguages[0] ?? ''));
     }
   }, [router.pathname]);
 
@@ -164,11 +176,13 @@ const CoreApp = ({ Component, pageProps, router }: AppProps) => {
         value={{
           locale: activeLocale,
           requestedLocale: currentLocale,
+          formatRegion,
           setLocale,
+          setFormatRegion,
         }}
       >
         <IntlProvider
-          locale={activeLocale}
+          locale={getRegionalFormatLocale(activeLocale, formatRegion)}
           defaultLocale="en"
           messages={activeLocale === 'en' ? emptyMessages : loadedMessages}
         >

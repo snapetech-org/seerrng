@@ -1,0 +1,1 @@
+Localization preferences now separate interface language from regional formatting. Users can choose a date, time, number, and unit region while keeping the same translated interface, or follow the display-language default. Server-rendered document language and direction use a validated browser locale hint when available.

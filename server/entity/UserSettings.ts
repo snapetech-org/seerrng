@@ -133,6 +133,9 @@ export class UserSettings {
   public locale?: string;
 
   @Column({ nullable: true })
+  public formatRegion?: string | null;
+
+  @Column({ nullable: true })
   public discoverRegion?: string;
 
   @Column({ nullable: true })
@@ -297,6 +300,7 @@ export class UserSettings {
     return {
       id: this.id,
       locale: this.locale,
+      formatRegion: this.formatRegion,
       discoverRegion: this.discoverRegion,
       streamingRegion: this.streamingRegion,
       originalLanguage: this.originalLanguage,

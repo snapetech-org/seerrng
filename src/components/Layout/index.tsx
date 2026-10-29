@@ -14,6 +14,7 @@ import useLocale from '@app/hooks/useLocale';
 import useSettings from '@app/hooks/useSettings';
 import { Permission, useUser } from '@app/hooks/useUser';
 import globalMessages from '@app/i18n/globalMessages';
+import { setLocaleHintCookie } from '@app/utils/localeHint';
 import {
   DISCOVER_MEDIA_TYPES,
   getUserServiceAvailability,
@@ -51,7 +52,7 @@ const Layout = ({ children }: LayoutProps) => {
     [currentSettings, user?.settings?.enabledMediaCategories, isAdmin]
   );
   const intl = useIntl();
-  const { setLocale } = useLocale();
+  const { setLocale, setFormatRegion } = useLocale();
   const [countsEnabled, setCountsEnabled] = useState(false);
   const { data: requestResponse, mutate: revalidateRequestsCount } =
     useRequestCount(countsEnabled);
@@ -66,13 +67,14 @@ const Layout = ({ children }: LayoutProps) => {
 
   useEffect(() => {
     if (setLocale && user) {
-      setLocale(
-        (user?.settings?.locale
-          ? user.settings.locale
-          : currentSettings.locale) as AvailableLocale
-      );
+      const preferredLocale = (
+        user.settings?.locale || currentSettings.locale
+      ) as AvailableLocale;
+      setLocale(preferredLocale);
+      setLocaleHintCookie(preferredLocale);
+      setFormatRegion?.(user.settings?.formatRegion ?? null);
     }
-  }, [setLocale, currentSettings.locale, user]);
+  }, [setLocale, setFormatRegion, currentSettings.locale, user]);
 
   useEffect(() => {
     if (!currentSettings.initialized) return;

@@ -19,12 +19,15 @@ export const availableLanguages = Object.fromEntries(
 export interface LanguageContextProps {
   locale: AvailableLocale;
   requestedLocale?: AvailableLocale;
+  formatRegion?: string | null;
   children: (locale: string) => React.ReactNode;
   setLocale?: React.Dispatch<React.SetStateAction<AvailableLocale>>;
+  setFormatRegion?: React.Dispatch<React.SetStateAction<string | null>>;
 }
 
 export const LanguageContext = React.createContext<
   Omit<LanguageContextProps, 'children'>
 >({
   locale: 'en',
+  formatRegion: null,
 });

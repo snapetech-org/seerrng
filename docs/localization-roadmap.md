@@ -52,9 +52,19 @@ codes. Missing entries then fall back to English.
 The client derives document direction from the registry after a locale is
 loaded. Arabic and Hebrew are RTL. The shared `BidiText` component isolates
 external mixed-direction text such as media titles without altering stored
-values. Byte sizes use locale-aware `Intl.NumberFormat` units based on the
-interface language. A separate user-selected regional format preference and
-server-rendered per-user `lang`/`dir` remain follow-up work.
+values. A per-user regional format preference overrides the territory while
+preserving the interface language; it drives React Intl date/number formatting
+and byte units without changing the translation catalog. The settings form
+uses the supported ISO region list and can return to the display-language default.
+
+The server-rendered document now chooses `lang`/`dir` from a validated
+locale-hint cookie, falling back to `Accept-Language`. The cookie is a
+presentation hint, not authentication state. The Next page renderer does not
+load the authenticated user session, and app translations are still loaded
+client-side, so this does not guarantee the user's saved locale on a first
+request or render translated text on the server. Full authenticated SSR locale
+hydration remains open. App-wide RTL layout and notification rendering also
+need rendered review; the direction attribute alone is not RTL acceptance.
 
 This does not certify app-wide RTL layout. Physical left/right rules remain in
 feature components, emails, and themes. Review navigation, setup, discovery,

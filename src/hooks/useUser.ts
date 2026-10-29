@@ -53,6 +53,7 @@ export interface UserSettings {
   originalLanguage?: string;
   preferredLanguages?: UserPreferredLanguages;
   locale?: string;
+  formatRegion?: string | null;
   notificationTypes: Partial<NotificationAgentTypes>;
   watchlistSyncMovies?: boolean;
   watchlistSyncTv?: boolean;

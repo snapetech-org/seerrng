@@ -6,6 +6,7 @@ export const USER_SETTINGS_LIMITS = {
   discordId: 64,
   discordIdsMax: 10,
   locale: 35,
+  formatRegion: 2,
   region: 16,
   language: 16,
   pgpKey: 64 * 1024,

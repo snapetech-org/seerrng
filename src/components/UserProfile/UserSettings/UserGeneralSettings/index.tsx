@@ -19,9 +19,11 @@ import { Permission, UserType, useUser } from '@app/hooks/useUser';
 import globalMessages from '@app/i18n/globalMessages';
 import ErrorPage from '@app/pages/_error';
 import defineMessages from '@app/utils/defineMessages';
+import { setLocaleHintCookie } from '@app/utils/localeHint';
 import { ArrowDownOnSquareIcon } from '@heroicons/react/24/outline';
 import type { TmdbLanguage } from '@server/api/themoviedb/interfaces';
 import { ApiErrorCode } from '@server/constants/error';
+import { formatRegionCodes } from '@server/constants/formatRegions';
 import { DEFAULT_USER_ENABLED_MEDIA_CATEGORIES } from '@server/constants/mediaCategories';
 import { ServerType } from '@server/constants/server';
 import type { UserSettingsGeneralResponse } from '@server/interfaces/api/userSettingsInterfaces';
@@ -75,6 +77,10 @@ const messages = defineMessages(
     enableOverride: 'Override Global Limit',
     applanguage: 'Display Language',
     languageDefault: 'Default ({language})',
+    formatRegion: 'Regional Format',
+    formatRegionDefault: 'Use Display Language',
+    formatRegionTip:
+      'Sets date, time, number, and unit formats independently from the display language.',
     translationStatusNotice:
       'This catalog is still under review, so some interface text may appear in English.',
     preferredLanguageAll: 'Preferred Language for All Media',
@@ -138,7 +144,7 @@ const messages = defineMessages(
 const UserGeneralSettings = () => {
   const intl = useIntl();
   const { addToast } = useToasts();
-  const { locale, setLocale } = useLocale();
+  const { locale, setLocale, setFormatRegion } = useLocale();
   const [movieQuotaEnabled, setMovieQuotaEnabled] = useState(false);
   const [tvQuotaEnabled, setTvQuotaEnabled] = useState(false);
   const [musicQuotaEnabled, setMusicQuotaEnabled] = useState(false);
@@ -166,6 +172,22 @@ const UserGeneralSettings = () => {
     user ? `/api/v1/user/${user?.id}/settings/main` : null
   );
   const { data: languages } = useSWR<TmdbLanguage[]>('/api/v1/languages');
+  const formatRegionOptions = useMemo(
+    () =>
+      formatRegionCodes
+        .map((code) => ({
+          code,
+          name:
+            intl.formatDisplayName(code, {
+              type: 'region',
+              fallback: 'none',
+            }) || code,
+        }))
+        .sort((left, right) =>
+          left.name.localeCompare(right.name, intl.locale)
+        ),
+    [intl]
+  );
   const preferredLanguageOptions = useMemo(
     () =>
       (languages ?? [])
@@ -292,6 +314,7 @@ const UserGeneralSettings = () => {
           displayName: data?.username !== user?.email ? data?.username : '',
           email: data?.email?.includes('@') ? data.email : '',
           locale: data?.locale,
+          formatRegion: data?.formatRegion ?? '',
           preferredLanguageAll: data?.preferredLanguages?.all ?? '',
           preferredLanguageMovie: preferredLanguageFieldValue('movie'),
           preferredLanguageTv: preferredLanguageFieldValue('tv'),
@@ -344,6 +367,7 @@ const UserGeneralSettings = () => {
               username: values.displayName?.trim() || undefined,
               email: values.email || undefined,
               locale: values.locale,
+              formatRegion: values.formatRegion || null,
               preferredLanguages: {
                 all: values.preferredLanguageAll || null,
                 movie:
@@ -428,12 +452,13 @@ const UserGeneralSettings = () => {
                   : undefined,
             });
 
-            if (currentUser?.id === user?.id && setLocale) {
-              setLocale(
-                (values.locale
-                  ? values.locale
-                  : currentSettings.locale) as AvailableLocale
-              );
+            if (currentUser?.id === user?.id) {
+              const nextLocale = (
+                values.locale || currentSettings.locale
+              ) as AvailableLocale;
+              setLocale?.(nextLocale);
+              setLocaleHintCookie(nextLocale);
+              setFormatRegion?.(values.formatRegion || null);
             }
 
             addToast(intl.formatMessage(messages.toastSettingsSuccess), {
@@ -610,6 +635,28 @@ const UserGeneralSettings = () => {
                       {intl.formatMessage(messages.translationStatusNotice)}
                     </span>
                   )}
+                </div>
+              </div>
+              <div className="form-row">
+                <label htmlFor="formatRegion" className="text-label">
+                  {intl.formatMessage(messages.formatRegion)}
+                </label>
+                <div className="form-input-area">
+                  <div className="form-input-field">
+                    <Field as="select" id="formatRegion" name="formatRegion">
+                      <option value="">
+                        {intl.formatMessage(messages.formatRegionDefault)}
+                      </option>
+                      {formatRegionOptions.map(({ code, name }) => (
+                        <option key={code} value={code}>
+                          {name} ({code})
+                        </option>
+                      ))}
+                    </Field>
+                  </div>
+                  <span className="label-tip">
+                    {intl.formatMessage(messages.formatRegionTip)}
+                  </span>
                 </div>
               </div>
               <div className="form-row">
