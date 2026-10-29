@@ -1,4 +1,5 @@
 import InlineBookSeriesResults from '@app/components/BookSeriesSearch/InlineResults';
+import ReadMeABookSearch from '@app/components/Discover/DiscoverBooks/ReadMeABookSearch';
 import IndexerSearch from '@app/components/IndexerSearch';
 import BookFormatBadge from '@app/components/Common/BookFormatBadge';
 import Button from '@app/components/Common/Button';
@@ -913,6 +914,9 @@ const Search = () => {
       )}
       {router.isReady && showBookSeries && (
         <InlineBookSeriesResults query={query} format={preferredBookFormat} />
+      )}
+      {category.key === 'audiobook' && (
+        <ReadMeABookSearch searchQuery={query} />
       )}
       {category.key === 'releases' ? (
         <IndexerSearch embedded />

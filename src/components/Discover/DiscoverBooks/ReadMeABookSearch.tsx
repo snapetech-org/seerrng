@@ -3,7 +3,7 @@ import LoadingSpinner from '@app/components/Common/LoadingSpinner';
 import defineMessages from '@app/utils/defineMessages';
 import type ReadMeABookRequest from '@server/entity/ReadMeABookRequest';
 import axios from 'axios';
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useIntl } from 'react-intl';
 import useSWR from 'swr';
 
@@ -43,10 +43,17 @@ const messages = defineMessages('components.Discover.ReadMeABookSearch', {
   downloadProcessingDetails: 'Download and processing details',
 });
 
-const ReadMeABookSearch = () => {
+const ReadMeABookSearch = ({
+  searchQuery,
+}: {
+  searchQuery?: string;
+}) => {
   const intl = useIntl();
-  const [query, setQuery] = useState('');
-  const [submittedQuery, setSubmittedQuery] = useState('');
+  const [query, setQuery] = useState(searchQuery ?? '');
+  const [submittedQuery, setSubmittedQuery] = useState(
+    searchQuery?.trim().slice(0, 160) ?? ''
+  );
+  const routedQuery = useRef<string | undefined>(undefined);
   const [busyAsin, setBusyAsin] = useState<string>();
   const [busyRequestId, setBusyRequestId] = useState<number>();
   const [notice, setNotice] = useState<string>();
@@ -54,6 +61,16 @@ const ReadMeABookSearch = () => {
   const { data: status } = useSWR<{ enabled: boolean }>(
     '/api/v1/readmeabook/status'
   );
+
+  useEffect(() => {
+    if (searchQuery === undefined) return;
+    const nextQuery = searchQuery.trim().slice(0, 160);
+    if (nextQuery !== routedQuery.current) {
+      routedQuery.current = nextQuery;
+      setQuery(nextQuery);
+      setSubmittedQuery(nextQuery);
+    }
+  }, [searchQuery]);
   const { data: results, isLoading: isSearching } = useSWR<Audiobook[]>(
     status?.enabled && submittedQuery
       ? `/api/v1/readmeabook/search?query=${encodeURIComponent(submittedQuery)}`
