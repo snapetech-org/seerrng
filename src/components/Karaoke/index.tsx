@@ -119,6 +119,9 @@ const messages = defineMessages('components.Karaoke', {
   playerLyrics: 'Current song lyrics',
   lyricWaiting: 'Lyrics are waiting to begin.',
   noLyrics: 'Timed lyrics are not available for this song. Use the Karaoke Mugen display.',
+  openStageView: 'Open stage view',
+  closeStageView: 'Close stage view',
+  stageComingUp: 'Coming up',
   previous: 'Previous song',
   stopAfter: 'Stop after this song',
   mute: 'Mute',
@@ -364,14 +367,27 @@ const KaraokePlayerPanel = ({
   player,
   lyrics,
   intl,
+  canControl,
+  controlsBusy,
+  playerUrl,
+  onControl,
 }: {
   item: KaraokeQueueItemResponse;
   player: KaraokePlayerStatusResponse;
   lyrics: KaraokeLyricLineResponse[];
   intl: ReturnType<typeof useIntl>;
+  canControl: boolean;
+  controlsBusy: boolean;
+  playerUrl?: string;
+  onControl: (command: 'play' | 'pause' | 'skip') => void;
 }) => {
   const [now, setNow] = useState(0);
   const [clock, setClock] = useState({ positionSeconds: 0, capturedAt: 0 });
+  const [stageOpen, setStageOpen] = useState(false);
+  const stageRef = useRef<HTMLDivElement>(null);
+  const openStageButtonRef = useRef<HTMLButtonElement>(null);
+  const closeStageButtonRef = useRef<HTMLButtonElement>(null);
+  const wasStageOpenRef = useRef(false);
   const activeLineRef = useRef<HTMLLIElement>(null);
 
   useEffect(() => {
@@ -387,24 +403,57 @@ const KaraokePlayerPanel = ({
     return () => window.clearInterval(timer);
   }, [player.playing]);
 
+  useEffect(() => {
+    const handleFullscreenChange = () => {
+      if (document.fullscreenElement !== stageRef.current) {
+        setStageOpen(false);
+      }
+    };
+    document.addEventListener('fullscreenchange', handleFullscreenChange);
+    return () =>
+      document.removeEventListener('fullscreenchange', handleFullscreenChange);
+  }, []);
+
+  useEffect(() => {
+    if (stageOpen) {
+      closeStageButtonRef.current?.focus();
+    } else if (wasStageOpenRef.current) {
+      openStageButtonRef.current?.focus();
+    }
+    wasStageOpenRef.current = stageOpen;
+  }, [stageOpen]);
+
+  useEffect(() => {
+    if (!stageOpen) return;
+    const handleEscape = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') setStageOpen(false);
+    };
+    window.addEventListener('keydown', handleEscape);
+    return () => window.removeEventListener('keydown', handleEscape);
+  }, [stageOpen]);
+
   const positionSeconds = player.playing
-    ? clock.positionSeconds +
-      Math.max(0, now - clock.capturedAt) / 1000
-    : (player.timeSeconds ?? clock.positionSeconds);
+    ? clock.positionSeconds + Math.max(0, now - clock.capturedAt) / 1000
+    : player.timeSeconds ?? clock.positionSeconds;
   const activeLineIndex = lyrics.findIndex(
     (line) =>
       positionSeconds >= line.startSeconds &&
       positionSeconds < line.endSeconds
   );
+  const upcomingLineIndex = lyrics.findIndex(
+    (line) => line.startSeconds > positionSeconds
+  );
+  const stageLineIndex =
+    activeLineIndex >= 0 ? activeLineIndex : upcomingLineIndex;
 
   useEffect(() => {
-    if (activeLineIndex >= 0) {
+    if (activeLineIndex >= 0 && !stageOpen) {
       activeLineRef.current?.scrollIntoView({
         block: 'center',
         behavior: 'smooth',
       });
     }
-  }, [activeLineIndex]);
+  }, [activeLineIndex, stageOpen]);
 
   const playerMessage =
     player.status === 'play'
@@ -417,55 +466,232 @@ const KaraokePlayerPanel = ({
   const duration = formatDuration(item.durationSeconds, intl);
   const currentTime = formatDuration(positionSeconds, intl);
 
+  const openStage = () => {
+    setStageOpen(true);
+    const stage = stageRef.current;
+    if (document.fullscreenEnabled && stage?.requestFullscreen) {
+      void stage.requestFullscreen().catch(() => undefined);
+    }
+  };
+
+  const closeStage = () => {
+    setStageOpen(false);
+    if (document.fullscreenElement === stageRef.current) {
+      void document.exitFullscreen().catch(() => undefined);
+    }
+  };
+
   return (
-    <div className="app-filter-section-gap">
-      <p role="status">{intl.formatMessage(playerMessage)}</p>
-      {duration && currentTime && item.durationSeconds !== undefined && (
-        <div>
-          <label htmlFor="karaoke-progress">
-            {intl.formatMessage(messages.playerProgress)}
-          </label>
-          <progress
-            id="karaoke-progress"
-            value={Math.min(positionSeconds, item.durationSeconds)}
-            max={item.durationSeconds}
-            className="block w-full"
-          />
-          <p>
-            {currentTime} / {duration}
-          </p>
-        </div>
-      )}
-      {lyrics.length > 0 ? (
-        <>
-          <p role="status" aria-live="polite" aria-atomic="true">
-            {activeLineIndex >= 0
-              ? lyrics[activeLineIndex].text
-              : intl.formatMessage(messages.lyricWaiting)}
-          </p>
-          <ol
-            tabIndex={0}
-            aria-label={intl.formatMessage(messages.playerLyrics)}
-            className="max-h-72 space-y-2 overflow-y-auto rounded-lg border border-white/10 p-4"
-          >
-            {lyrics.map((line, index) => (
-              <li
-                key={line.startSeconds + ':' + index}
-                ref={index === activeLineIndex ? activeLineRef : undefined}
-                aria-current={index === activeLineIndex ? 'time' : undefined}
-                className={
-                  index === activeLineIndex
-                    ? 'rounded bg-white/10 p-2 font-semibold'
-                    : 'p-2 opacity-70'
-                }
+    <div
+      ref={stageRef}
+      className={
+        stageOpen
+          ? 'fixed inset-0 z-50 overflow-y-auto bg-black text-white'
+          : 'app-filter-section-gap'
+      }
+    >
+      {stageOpen ? (
+        <section
+          aria-label={intl.formatMessage(messages.playerLyrics)}
+          className="flex min-h-full flex-col justify-between gap-8 p-5 md:p-10 xl:p-14"
+        >
+          <header className="space-y-3">
+            <div className="flex items-start justify-between gap-4">
+              <div>
+                <p className="text-sm uppercase tracking-wider opacity-70">
+                  {intl.formatMessage(messages.currentSong)}
+                </p>
+                <h2 className="text-2xl font-bold md:text-4xl">{item.title}</h2>
+                {item.artists.length > 0 && (
+                  <p className="text-lg opacity-80 md:text-2xl">
+                    {item.artists.join(', ')}
+                  </p>
+                )}
+              </div>
+              <Button
+                ref={closeStageButtonRef}
+                buttonType="default"
+                buttonSize="sm"
+                onClick={closeStage}
               >
-                {line.text}
-              </li>
-            ))}
-          </ol>
-        </>
+                {intl.formatMessage(messages.closeStageView)}
+              </Button>
+            </div>
+            {duration && currentTime && item.durationSeconds !== undefined && (
+              <div>
+                <label htmlFor="karaoke-progress">
+                  {intl.formatMessage(messages.playerProgress)}
+                </label>
+                <progress
+                  id="karaoke-progress"
+                  value={Math.min(positionSeconds, item.durationSeconds)}
+                  max={item.durationSeconds}
+                  className="block w-full"
+                />
+                <p>
+                  {currentTime} / {duration}
+                </p>
+              </div>
+            )}
+          </header>
+
+          <div className="flex flex-1 flex-col items-center justify-center gap-7 py-8">
+            {lyrics.length > 0 ? (
+              <>
+                {stageLineIndex > 0 && (
+                  <p
+                    aria-hidden="true"
+                    className="max-w-6xl text-center text-xl opacity-45 md:text-3xl"
+                  >
+                    {lyrics[stageLineIndex - 1].text}
+                  </p>
+                )}
+                <div className="max-w-6xl text-center">
+                  {activeLineIndex < 0 && stageLineIndex >= 0 && (
+                    <p className="mb-3 text-sm uppercase tracking-wider opacity-70">
+                      {intl.formatMessage(messages.stageComingUp)}
+                    </p>
+                  )}
+                  <p
+                    role="status"
+                    aria-live="polite"
+                    aria-atomic="true"
+                    className="text-4xl font-semibold leading-tight md:text-6xl xl:text-8xl"
+                  >
+                    {stageLineIndex >= 0
+                      ? lyrics[stageLineIndex].text
+                      : intl.formatMessage(messages.lyricWaiting)}
+                  </p>
+                </div>
+                {stageLineIndex >= 0 &&
+                  stageLineIndex < lyrics.length - 1 && (
+                    <p
+                      aria-hidden="true"
+                      className="max-w-6xl text-center text-xl opacity-45 md:text-3xl"
+                    >
+                      {lyrics[stageLineIndex + 1].text}
+                    </p>
+                  )}
+              </>
+            ) : (
+              <p role="note" className="max-w-4xl text-center text-2xl md:text-4xl">
+                {intl.formatMessage(messages.noLyrics)}
+              </p>
+            )}
+          </div>
+
+          <div className="flex flex-col items-center gap-4">
+            <div className="flex flex-wrap justify-center gap-3">
+              {playerUrl && (
+                <Button
+                  as="a"
+                  href={playerUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  buttonType="default"
+                  buttonSize="sm"
+                >
+                  {intl.formatMessage(messages.player)}
+                </Button>
+              )}
+              {canControl && (
+                <>
+                  <Button
+                    buttonType="playback"
+                    buttonSize="sm"
+                    disabled={controlsBusy || player.isOperating}
+                    onClick={() => onControl('play')}
+                  >
+                    <PlayIcon aria-hidden="true" />
+                    {intl.formatMessage(messages.play)}
+                  </Button>
+                  <Button
+                    buttonType="playback"
+                    buttonSize="sm"
+                    disabled={controlsBusy || player.isOperating}
+                    onClick={() => onControl('pause')}
+                  >
+                    <PauseIcon aria-hidden="true" />
+                    {intl.formatMessage(messages.pause)}
+                  </Button>
+                  <Button
+                    buttonType="playback"
+                    buttonSize="sm"
+                    disabled={controlsBusy || player.isOperating}
+                    onClick={() => onControl('skip')}
+                  >
+                    <ForwardIcon aria-hidden="true" />
+                    {intl.formatMessage(messages.skip)}
+                  </Button>
+                </>
+              )}
+            </div>
+            <p role="status" className="text-center text-sm opacity-70">
+              {intl.formatMessage(playerMessage)}
+            </p>
+          </div>
+        </section>
       ) : (
-        <p role="note">{intl.formatMessage(messages.noLyrics)}</p>
+        <>
+          <div className="flex items-center justify-between gap-3">
+            <p role="status">{intl.formatMessage(playerMessage)}</p>
+            <Button
+              ref={openStageButtonRef}
+              buttonType="default"
+              buttonSize="sm"
+              onClick={openStage}
+            >
+              {intl.formatMessage(messages.openStageView)}
+            </Button>
+          </div>
+          {duration && currentTime && item.durationSeconds !== undefined && (
+            <div>
+              <label htmlFor="karaoke-progress">
+                {intl.formatMessage(messages.playerProgress)}
+              </label>
+              <progress
+                id="karaoke-progress"
+                value={Math.min(positionSeconds, item.durationSeconds)}
+                max={item.durationSeconds}
+                className="block w-full"
+              />
+              <p>
+                {currentTime} / {duration}
+              </p>
+            </div>
+          )}
+          {lyrics.length > 0 ? (
+            <>
+              <p role="status" aria-live="polite" aria-atomic="true">
+                {activeLineIndex >= 0
+                  ? lyrics[activeLineIndex].text
+                  : intl.formatMessage(messages.lyricWaiting)}
+              </p>
+              <ol
+                tabIndex={0}
+                aria-label={intl.formatMessage(messages.playerLyrics)}
+                className="max-h-72 space-y-2 overflow-y-auto rounded-lg border border-white/10 p-4"
+              >
+                {lyrics.map((line, index) => (
+                  <li
+                    key={line.startSeconds + ':' + index}
+                    ref={index === activeLineIndex ? activeLineRef : undefined}
+                    aria-current={index === activeLineIndex ? 'time' : undefined}
+                    className={
+                      index === activeLineIndex
+                        ? 'rounded bg-white/10 p-2 font-semibold'
+                        : 'p-2 opacity-70'
+                    }
+                  >
+                    {line.text}
+                  </li>
+                ))}
+              </ol>
+            </>
+          ) : (
+            <p role="note">{intl.formatMessage(messages.noLyrics)}</p>
+          )}
+        </>
       )}
     </div>
   );
@@ -841,6 +1067,10 @@ const Karaoke = () => {
                           player={session.player}
                           lyrics={session.lyrics}
                           intl={intl}
+                          canControl={canHost}
+                          controlsBusy={controlBusy}
+                          playerUrl={status.playerUrl}
+                          onControl={(command) => void sendControl(command)}
                         />
                       )}
                     </div>
