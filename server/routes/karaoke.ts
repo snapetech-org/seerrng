@@ -1,6 +1,7 @@
 import {
   karaokeMugenProvider,
   type KaraokePlayerCommand,
+  type KaraokeSearchOrder,
 } from '@server/lib/karaokeMugen';
 import { Permission } from '@server/lib/permissions';
 import logger from '@server/logger';
@@ -14,6 +15,13 @@ router.use((_req, res, next) => {
 
 const MAX_QUERY_LENGTH = 120;
 const MAX_RESULTS = 50;
+const MAX_SEARCH_OFFSET = 100000;
+const SEARCH_ORDERS = new Set<KaraokeSearchOrder>([
+  'requested',
+  'recent',
+  'played',
+  'history',
+]);
 const SONG_ID =
   /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 const HOST_CONTROLS = new Set<KaraokePlayerCommand>([
@@ -71,6 +79,22 @@ const PROVIDER_ERROR_RESPONSES: Record<string, { status: number; message: string
     status: 409,
     message: 'That karaoke request has already been reviewed.',
   },
+  KARAOKE_REQUEST_NOT_OWNED: {
+    status: 403,
+    message: 'You can only cancel your own karaoke request.',
+  },
+  KARAOKE_QUEUE_BOUNDARY: {
+    status: 409,
+    message: 'That song is already at the edge of the playback queue.',
+  },
+  KARAOKE_QUEUE_ITEM_NOT_FOUND: {
+    status: 404,
+    message: 'That song is no longer in the upcoming queue.',
+  },
+  PL_DELETE_UPVOTED: {
+    status: 409,
+    message: 'This request cannot be cancelled after other singers have voted for it.',
+  },
   PL_VIEW_CONTENT_ERROR: {
     status: 404,
     message: 'That karaoke request no longer exists.',
@@ -119,18 +143,45 @@ router.get('/search', async (req, res) => {
     });
   }
 
+  const rawFrom = req.query.from === undefined ? '0' : String(req.query.from);
+  const from = Number(rawFrom);
+  if (
+    !Number.isSafeInteger(from) ||
+    from < 0 ||
+    from > MAX_SEARCH_OFFSET
+  ) {
+    return res.status(400).json({
+      status: 400,
+      message: 'The search offset must be between 0 and 100000.',
+    });
+  }
+
+  const rawOrder =
+    typeof req.query.order === 'string' ? req.query.order : 'requested';
+  if (!SEARCH_ORDERS.has(rawOrder as KaraokeSearchOrder)) {
+    return res.status(400).json({
+      status: 400,
+      message: 'Choose a supported karaoke search order.',
+    });
+  }
+
   try {
-    const songs = await karaokeMugenProvider.search(query, limit);
-    return res.status(200).json({ results: songs });
+    const result = await karaokeMugenProvider.search(
+      query,
+      from,
+      limit,
+      rawOrder as KaraokeSearchOrder
+    );
+    return res.status(200).json(result);
   } catch (error) {
     reportProviderFailure('search', error);
     return providerError(res, error);
   }
 });
 
-router.get('/session', async (_req, res) => {
+router.get('/session', async (req, res) => {
   try {
-    const session = await karaokeMugenProvider.session();
+    const session = await karaokeMugenProvider.session(req.user!.id);
     return res.status(200).json({ session: session ?? null });
   } catch (error) {
     reportProviderFailure('session', error);
@@ -166,6 +217,62 @@ router.post('/request', async (req, res) => {
     return res.status(201).json({ accepted: true, ...result });
   } catch (error) {
     reportProviderFailure('request', error);
+    return providerError(res, error);
+  }
+});
+
+router.post('/cancel', async (req, res) => {
+  const playlistContentId = req.body?.playlistContentId;
+  if (
+    typeof playlistContentId !== 'number' ||
+    !Number.isSafeInteger(playlistContentId) ||
+    playlistContentId < 1
+  ) {
+    return res.status(400).json({
+      status: 400,
+      message: 'Select a valid karaoke request to cancel.',
+    });
+  }
+
+  try {
+    await karaokeMugenProvider.cancelRequest(playlistContentId, req.user!.id);
+    return res.status(200).json({ accepted: true });
+  } catch (error) {
+    reportProviderFailure('cancel', error);
+    return providerError(res, error);
+  }
+});
+
+router.post('/reorder', async (req, res) => {
+  const canHost =
+    req.user?.hasPermission(Permission.MANAGE_REQUESTS) ||
+    req.user?.hasPermission(Permission.ADMIN);
+  if (!canHost) {
+    return res.status(403).json({
+      status: 403,
+      message: 'Host permission is required to reorder the karaoke queue.',
+    });
+  }
+
+  const playlistContentId = req.body?.playlistContentId;
+  const direction = req.body?.direction;
+  if (
+    typeof playlistContentId !== 'number' ||
+    !Number.isSafeInteger(playlistContentId) ||
+    playlistContentId < 1 ||
+    (direction !== 'up' && direction !== 'down')
+  ) {
+    return res.status(400).json({
+      status: 400,
+      message: 'Select a valid upcoming song and move direction.',
+    });
+  }
+
+  try {
+    await karaokeMugenProvider.reorderQueuedSong(playlistContentId, direction);
+    return res.status(200).json({ accepted: true });
+  } catch (error) {
+    reportProviderFailure('reorder', error);
     return providerError(res, error);
   }
 });

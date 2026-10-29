@@ -28,10 +28,10 @@ Karaoke Mugen's public interface must be **Open**, **AllowGuestLogin** and **All
 ## Use karaoke
 
 1. Open **Karaoke** under **Music**.
-2. Search by song title or singer.
+2. Search by song title or singer. Sort results by request popularity, recently added, most played, or recent play history, then page through large result sets.
 3. Check the language, song type, warning badge, and media status.
 4. Request a result to add it to the shared public queue. If host review is enabled, the request waits for a host decision; Mugen reports its queue position when available.
-5. Users with **Manage Requests** can accept or reject pending requests, play, pause, skip, or go back to the previous song. **More playback controls** includes stop-after-current, seek, volume, mute, and show/hide lyrics commands. Approved songs appear under **Up next**. Open the configured player URL to display karaoke video and lyrics on a separate screen.
+5. Users can cancel their own pending requests. Users with **Manage Requests** can accept or reject requests, reorder approved songs under **Up next**, and play, pause, skip, or go back to the previous song. **More playback controls** includes stop-after-current, seek, volume, mute, and show/hide lyrics commands. Open the configured player URL to display karaoke video and lyrics on a separate screen.
 
 A song marked **Remote** is present in Karaoke Mugen's catalogue but not stored locally. Whether it can stream depends on that Mugen repository and its configuration. **Downloading** means it is not yet ready on that instance.
 

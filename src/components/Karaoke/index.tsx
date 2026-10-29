@@ -9,6 +9,8 @@ import type {
   KaraokeLyricLineResponse,
   KaraokePlayerStatusResponse,
   KaraokeQueueItemResponse,
+  KaraokeSearchOrder,
+  KaraokeSearchResponse,
   KaraokeSessionResponse,
   KaraokeSongResponse,
 } from '@server/interfaces/api/karaokeInterfaces';
@@ -31,10 +33,6 @@ interface KaraokeStatus {
 
 interface KaraokeSessionEnvelope {
   session: KaraokeSessionResponse | null;
-}
-
-interface KaraokeSearchEnvelope {
-  results: KaraokeSongResponse[];
 }
 
 type KaraokePlayerCommand =
@@ -64,6 +62,15 @@ const messages = defineMessages('components.Karaoke', {
   searchFailed: 'The karaoke songbook could not be searched.',
   noResults: 'No karaoke songs matched this search.',
   resultsHeading: 'Songbook results',
+  orderLabel: 'Sort songs',
+  orderRequested: 'Most requested',
+  orderRecent: 'Recently added',
+  orderPlayed: 'Most played',
+  orderHistory: 'Recently played',
+  previousPage: 'Previous page',
+  nextPage: 'Next page',
+  pageStatus: 'Showing {start}–{end} of {total} songs',
+  pageStatusUnknown: 'Showing {start}–{end} songs',
   request: 'Request song',
   requesting: 'Sending request…',
   requestSuccess: 'Song request sent for host review.',
@@ -88,6 +95,14 @@ const messages = defineMessages('components.Karaoke', {
   requestAccepted: 'Request accepted and added to the playback queue.',
   requestRejected: 'Request rejected.',
   reviewFailed: 'The karaoke request could not be reviewed.',
+  cancelRequest: 'Cancel my request',
+  cancelling: 'Cancelling…',
+  requestCancelled: 'Your karaoke request was cancelled.',
+  cancelFailed: 'The karaoke request could not be cancelled.',
+  moveUp: 'Move up',
+  moveDown: 'Move down',
+  queueReordered: 'The playback queue was reordered.',
+  reorderFailed: 'The playback queue could not be reordered.',
   upcomingHeading: 'Up next',
   emptyUpcoming: 'No approved songs are queued to play.',
   hostControls: 'Host controls',
@@ -130,7 +145,7 @@ const fetchSession = async (url: string) =>
   (await axios.get<KaraokeSessionEnvelope>(url)).data;
 
 const fetchResults = async (url: string) =>
-  (await axios.get<KaraokeSearchEnvelope>(url)).data;
+  (await axios.get<KaraokeSearchResponse>(url)).data;
 
 const responseMessage = (error: unknown): string | undefined => {
   if (!axios.isAxiosError<{ message?: unknown }>(error)) return undefined;
@@ -241,7 +256,14 @@ const QueueItem = ({
   moderating = false,
   moderationBusy = false,
   moderatingDecision,
+  canCancel = false,
+  cancelling = false,
+  canMoveUp = false,
+  canMoveDown = false,
+  queueBusy = false,
   onModerate,
+  onCancel,
+  onMove,
 }: {
   item: KaraokeQueueItemResponse;
   intl: ReturnType<typeof useIntl>;
@@ -249,7 +271,14 @@ const QueueItem = ({
   moderating?: boolean;
   moderationBusy?: boolean;
   moderatingDecision?: 'accept' | 'reject';
+  canCancel?: boolean;
+  cancelling?: boolean;
+  canMoveUp?: boolean;
+  canMoveDown?: boolean;
+  queueBusy?: boolean;
   onModerate?: (playlistContentId: number, decision: 'accept' | 'reject') => void;
+  onCancel?: (playlistContentId: number) => void;
+  onMove?: (playlistContentId: number, direction: 'up' | 'down') => void;
 }) => (
   <li>
     <article>
@@ -281,6 +310,49 @@ const QueueItem = ({
                 ? intl.formatMessage(messages.rejecting)
                 : intl.formatMessage(messages.reject)}
             </Button>
+          </div>
+        )}
+      {canCancel &&
+        item.canCancel &&
+        item.playlistContentId !== undefined &&
+        onCancel && (
+          <div className="mt-2">
+            <Button
+              buttonType="default"
+              buttonSize="sm"
+              disabled={queueBusy}
+              onClick={() => onCancel(item.playlistContentId!)}
+            >
+              {cancelling
+                ? intl.formatMessage(messages.cancelling)
+                : intl.formatMessage(messages.cancelRequest)}
+            </Button>
+          </div>
+        )}
+      {(canMoveUp || canMoveDown) &&
+        item.playlistContentId !== undefined &&
+        onMove && (
+          <div className="mt-2 flex gap-2">
+            {canMoveUp && (
+              <Button
+                buttonType="default"
+                buttonSize="sm"
+                disabled={queueBusy}
+                onClick={() => onMove(item.playlistContentId!, 'up')}
+              >
+                {intl.formatMessage(messages.moveUp)}
+              </Button>
+            )}
+            {canMoveDown && (
+              <Button
+                buttonType="default"
+                buttonSize="sm"
+                disabled={queueBusy}
+                onClick={() => onMove(item.playlistContentId!, 'down')}
+              >
+                {intl.formatMessage(messages.moveDown)}
+              </Button>
+            )}
           </div>
         )}
     </article>
@@ -409,16 +481,21 @@ const Karaoke = () => {
   );
   const [query, setQuery] = useState('');
   const [searchQuery, setSearchQuery] = useState('');
+  const [searchOrder, setSearchOrder] =
+    useState<KaraokeSearchOrder>('requested');
+  const [searchPage, setSearchPage] = useState(0);
   const [requestingId, setRequestingId] = useState<string>();
   const [moderatingRequest, setModeratingRequest] = useState<{
     playlistContentId: number;
     decision: 'accept' | 'reject';
   }>();
+  const [cancellingId, setCancellingId] = useState<number>();
+  const [reorderingId, setReorderingId] = useState<number>();
   const [controlBusy, setControlBusy] = useState(false);
   const [volume, setVolume] = useState(100);
   const [notice, setNotice] = useState<string>();
   const [operationFailed, setOperationFailed] = useState<
-    'request' | 'control' | 'review' | undefined
+    'request' | 'control' | 'review' | 'cancel' | 'reorder' | undefined
   >();
 
   const { data: status, error: statusError } = useSWR<KaraokeStatus>(
@@ -431,14 +508,22 @@ const Karaoke = () => {
     return () => window.clearTimeout(timer);
   }, [query]);
 
+  useEffect(() => {
+    setSearchPage(0);
+  }, [searchQuery, searchOrder]);
+
   const searchKey =
     status?.configured && searchQuery.length >= 2
       ? '/api/v1/karaoke/search?query=' +
         encodeURIComponent(searchQuery) +
-        '&limit=25'
+        '&limit=25' +
+        '&from=' +
+        String(searchPage * 25) +
+        '&order=' +
+        searchOrder
       : null;
   const { data: searchResult, error: searchError } =
-    useSWR<KaraokeSearchEnvelope>(searchKey, fetchResults);
+    useSWR<KaraokeSearchResponse>(searchKey, fetchResults);
 
   const sessionKey = status?.configured ? '/api/v1/karaoke/session' : null;
   const {
@@ -457,6 +542,7 @@ const Karaoke = () => {
 
   const submitSearch = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    setSearchPage(0);
     setSearchQuery(query.trim());
   };
 
@@ -508,6 +594,52 @@ const Karaoke = () => {
       }
     } finally {
       setControlBusy(false);
+    }
+  };
+
+  const cancelRequest = async (playlistContentId: number) => {
+    setCancellingId(playlistContentId);
+    setNotice(undefined);
+    setOperationFailed(undefined);
+    try {
+      await axios.post('/api/v1/karaoke/cancel', { playlistContentId });
+      setNotice(intl.formatMessage(messages.requestCancelled));
+      void refreshSession();
+    } catch (error) {
+      const message = responseMessage(error);
+      if (message) {
+        setNotice(message);
+      } else {
+        setOperationFailed('cancel');
+      }
+    } finally {
+      setCancellingId(undefined);
+    }
+  };
+
+  const moveQueuedSong = async (
+    playlistContentId: number,
+    direction: 'up' | 'down'
+  ) => {
+    setReorderingId(playlistContentId);
+    setNotice(undefined);
+    setOperationFailed(undefined);
+    try {
+      await axios.post('/api/v1/karaoke/reorder', {
+        playlistContentId,
+        direction,
+      });
+      setNotice(intl.formatMessage(messages.queueReordered));
+      void refreshSession();
+    } catch (error) {
+      const message = responseMessage(error);
+      if (message) {
+        setNotice(message);
+      } else {
+        setOperationFailed('reorder');
+      }
+    } finally {
+      setReorderingId(undefined);
     }
   };
 
@@ -585,6 +717,30 @@ const Karaoke = () => {
                   placeholder={intl.formatMessage(messages.searchPlaceholder)}
                   className="app-filter-search-input"
                 />
+                <label htmlFor="karaoke-order">
+                  {intl.formatMessage(messages.orderLabel)}
+                </label>
+                <select
+                  id="karaoke-order"
+                  value={searchOrder}
+                  onChange={(event) =>
+                    setSearchOrder(event.target.value as KaraokeSearchOrder)
+                  }
+                  className="app-filter-search-input"
+                >
+                  <option value="requested">
+                    {intl.formatMessage(messages.orderRequested)}
+                  </option>
+                  <option value="recent">
+                    {intl.formatMessage(messages.orderRecent)}
+                  </option>
+                  <option value="played">
+                    {intl.formatMessage(messages.orderPlayed)}
+                  </option>
+                  <option value="history">
+                    {intl.formatMessage(messages.orderHistory)}
+                  </option>
+                </select>
                 <Button
                   buttonType="primary"
                   buttonSize="sm"
@@ -608,21 +764,53 @@ const Karaoke = () => {
                 <p>{intl.formatMessage(messages.noResults)}</p>
               )}
               {searchResult && searchResult.results.length > 0 && (
-                <ul
-                  className="app-filter-section-gap"
-                  aria-label={intl.formatMessage(messages.resultsHeading)}
-                >
-                  {searchResult.results.map((song) => (
-                    <SongRow
-                      key={song.id}
-                      song={song}
-                      canRequest={canRequest}
-                      requesting={requestingId === song.id}
-                      onRequest={() => void requestSong(song.id)}
-                      intl={intl}
-                    />
-                  ))}
-                </ul>
+                <>
+                  <p>
+                    {searchResult.total !== undefined
+                      ? intl.formatMessage(messages.pageStatus, {
+                          start: searchPage * 25 + 1,
+                          end: searchPage * 25 + searchResult.results.length,
+                          total: searchResult.total,
+                        })
+                      : intl.formatMessage(messages.pageStatusUnknown, {
+                          start: searchPage * 25 + 1,
+                          end: searchPage * 25 + searchResult.results.length,
+                        })}
+                  </p>
+                  <ul
+                    className="app-filter-section-gap"
+                    aria-label={intl.formatMessage(messages.resultsHeading)}
+                  >
+                    {searchResult.results.map((song) => (
+                      <SongRow
+                        key={song.id}
+                        song={song}
+                        canRequest={canRequest}
+                        requesting={requestingId === song.id}
+                        onRequest={() => void requestSong(song.id)}
+                        intl={intl}
+                      />
+                    ))}
+                  </ul>
+                  <div className="flex gap-2">
+                    <Button
+                      buttonType="default"
+                      buttonSize="sm"
+                      disabled={searchPage === 0}
+                      onClick={() => setSearchPage((page) => Math.max(0, page - 1))}
+                    >
+                      {intl.formatMessage(messages.previousPage)}
+                    </Button>
+                    <Button
+                      buttonType="default"
+                      buttonSize="sm"
+                      disabled={!searchResult.hasMore}
+                      onClick={() => setSearchPage((page) => page + 1)}
+                    >
+                      {intl.formatMessage(messages.nextPage)}
+                    </Button>
+                  </div>
+                </>
               )}
             </section>
 
@@ -679,6 +867,16 @@ const Karaoke = () => {
                               ? moderatingRequest.decision
                               : undefined
                           }
+                          canCancel
+                          cancelling={cancellingId === item.playlistContentId}
+                          queueBusy={
+                            cancellingId !== undefined ||
+                            reorderingId !== undefined ||
+                            moderatingRequest !== undefined
+                          }
+                          onCancel={(playlistContentId) =>
+                            void cancelRequest(playlistContentId)
+                          }
                           onModerate={(playlistContentId, decision) =>
                             void moderateRequest(playlistContentId, decision)
                           }
@@ -691,11 +889,23 @@ const Karaoke = () => {
                     <p>{intl.formatMessage(messages.emptyUpcoming)}</p>
                   ) : (
                     <ol>
-                      {session.upcoming.map((item) => (
+                      {session.upcoming.map((item, index) => (
                         <QueueItem
                           key={item.playlistContentId ?? item.id}
                           item={item}
                           intl={intl}
+                          canMoveUp={canHost && index > 0}
+                          canMoveDown={
+                            canHost && index < session.upcoming.length - 1
+                          }
+                          queueBusy={
+                            cancellingId !== undefined ||
+                            reorderingId !== undefined ||
+                            moderatingRequest !== undefined
+                          }
+                          onMove={(playlistContentId, direction) =>
+                            void moveQueuedSong(playlistContentId, direction)
+                          }
                         />
                       ))}
                     </ol>
@@ -863,7 +1073,11 @@ const Karaoke = () => {
                 ? messages.requestFailed
                 : operationFailed === 'review'
                   ? messages.reviewFailed
-                  : messages.controlFailed
+                  : operationFailed === 'cancel'
+                    ? messages.cancelFailed
+                    : operationFailed === 'reorder'
+                      ? messages.reorderFailed
+                      : messages.controlFailed
             )}
             type="warning"
           />

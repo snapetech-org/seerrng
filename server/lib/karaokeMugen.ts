@@ -17,16 +17,27 @@ export interface KaraokeSong {
   hasWarnings: boolean;
 }
 
+export type KaraokeSearchOrder = 'requested' | 'recent' | 'played' | 'history';
+
+export interface KaraokeSearchResult {
+  results: KaraokeSong[];
+  from: number;
+  total?: number;
+  hasMore: boolean;
+}
+
 export interface KaraokeQueueItem {
   id: string;
   playlistContentId?: number;
   title: string;
   artists: string[];
   requester?: string;
+  requesterLogin?: string;
   position?: number;
   durationSeconds?: number;
   playing: boolean;
   needsReview: boolean;
+  canCancel?: boolean;
 }
 
 export interface KaraokeLyricLine {
@@ -80,6 +91,18 @@ const idText = (value: unknown): string | undefined =>
   typeof value === 'number' && Number.isFinite(value)
     ? String(value)
     : text(value);
+
+const stableGuestIdentity = (requesterId: number) => {
+  const suffix = createHash('sha256')
+    .update(String(requesterId))
+    .digest('hex')
+    .slice(0, 16);
+  return {
+    suffix,
+    guestName: 'SeerrNG guest ' + suffix,
+    guestLogin: 'seerrng_guest_' + suffix,
+  };
+};
 
 const getConfig = () => {
   const baseUrl = process.env.SEERRNG_KARAOKE_MUGEN_URL?.trim();
@@ -323,11 +346,14 @@ const queueItemFromProvider = (value: JsonRecord): KaraokeQueueItem | undefined 
     title,
     artists: stringArray(nested.singers),
     requester: text(value.nickname) ?? text(value.requester),
+    requesterLogin: text(value.username) ?? text(value.requester_username),
     position: typeof value.pos === 'number' ? value.pos : undefined,
     durationSeconds:
       typeof nested.duration === 'number' && Number.isFinite(nested.duration)
         ? nested.duration
-        : undefined,
+        : typeof value.duration === 'number' && Number.isFinite(value.duration)
+          ? value.duration
+          : undefined,
     playing: value.flag_playing === true,
     needsReview: value.flag_accepted !== true && value.flag_refused !== true,
   };
@@ -452,20 +478,76 @@ export class KaraokeMugenProvider {
     }
   }
 
-  async search(query: string, limit: number): Promise<KaraokeSong[]> {
+  private async getGuestToken(
+    socket: KaraokeMugenSocket,
+    requesterId: number
+  ): Promise<string> {
+    const { guestName, guestLogin } = stableGuestIdentity(requesterId);
+    let guest: unknown;
+    try {
+      guest = await socket.call('login', { username: guestLogin, password: '' });
+    } catch (error) {
+      if (!(error instanceof Error) || error.message !== 'LOG_ERROR') throw error;
+    }
+
+    if (!isRecord(guest) || !text(guest.token)) {
+      try {
+        guest = await socket.call('loginGuest', { name: guestName });
+      } catch (error) {
+        if (!(error instanceof Error) || error.message !== 'USER_ALREADY_EXISTS') {
+          throw error;
+        }
+        guest = await socket.call('login', { username: guestLogin, password: '' });
+      }
+    }
+
+    const guestToken = isRecord(guest) ? text(guest.token) : undefined;
+    const actualGuestLogin = isRecord(guest) ? text(guest.username) : undefined;
+    if (!guestToken) throw new Error('Karaoke Mugen guest access is unavailable.');
+    if (actualGuestLogin !== guestLogin) {
+      throw new Error('KARAOKE_MUGEN_CUSTOM_TEMPORARY_GUESTS_REQUIRED');
+    }
+    return guestToken;
+  }
+
+  async search(
+    query: string,
+    from: number,
+    limit: number,
+    order: KaraokeSearchOrder
+  ): Promise<KaraokeSearchResult> {
     return this.withAdmin(async (socket, token) => {
       const result = await socket.call(
         'getKaras',
-        { filter: query, from: 0, size: limit, blacklist: true },
+        {
+          filter: query,
+          from,
+          size: limit,
+          order,
+          direction: 'desc',
+          blacklist: true,
+        },
         token
       );
-      return unwrapArray(result, 'content')
+      const results = unwrapArray(result, 'content')
         .map(songFromProvider)
         .filter((item): item is KaraokeSong => !!item);
+      const infos = isRecord(result) && isRecord(result.infos) ? result.infos : undefined;
+      const total =
+        infos && typeof infos.total === 'number' && Number.isFinite(infos.total)
+          ? Math.max(0, infos.total)
+          : undefined;
+      return {
+        results,
+        from,
+        ...(total !== undefined ? { total } : {}),
+        hasMore:
+          total !== undefined ? from + results.length < total : results.length === limit,
+      };
     });
   }
 
-  async session(): Promise<KaraokeSession | undefined> {
+  async session(requesterId: number): Promise<KaraokeSession | undefined> {
     return this.withAdmin(async (socket, token) => {
       const [playlistResult, playerStatusResult] = await Promise.all([
         socket.call('getPlaylists', {}, token),
@@ -483,17 +565,24 @@ export class KaraokeMugenProvider {
         'getPlaylistContents',
         {
           plaid: requestPlaylistId,
-          filter: null,
           from: 0,
           size: 50,
           incomingSongs: true,
         },
         token
       );
+      const guestLogin = stableGuestIdentity(requesterId).guestLogin;
       const waiting = unwrapArray(requestResult, 'contents')
         .map(queueItemFromProvider)
         .filter((item): item is KaraokeQueueItem => !!item)
-        .filter((item) => item.needsReview);
+        .filter((item) => item.needsReview)
+        .map((item) => {
+          const { requesterLogin, ...queueItem } = item;
+          return {
+            ...queueItem,
+            ...(requesterLogin === guestLogin ? { canCancel: true } : {}),
+          };
+        });
 
       let current: KaraokeQueueItem | undefined;
       let upcoming: KaraokeQueueItem[] = [];
@@ -503,9 +592,8 @@ export class KaraokeMugenProvider {
           'getPlaylistContents',
           {
             plaid: currentId,
-            filter: null,
-            from: -1,
-            size: 50,
+            from: 0,
+            size: 500,
             incomingSongs: false,
           },
           token
@@ -518,10 +606,21 @@ export class KaraokeMugenProvider {
           current = currentItems[currentIndex];
           upcoming = currentItems
             .slice(currentIndex + 1)
-            .filter((item) => !item.playing);
+            .filter((item) => !item.playing)
+            .slice(0, 50);
         } else {
-          upcoming = currentItems.filter((item) => !item.playing);
+          upcoming = currentItems
+            .filter((item) => !item.playing)
+            .slice(0, 50);
         }
+        if (current) {
+          const { requesterLogin: _requesterLogin, ...currentItem } = current;
+          current = currentItem;
+        }
+        upcoming = upcoming.map((item) => {
+          const { requesterLogin: _requesterLogin, ...queueItem } = item;
+          return queueItem;
+        });
       }
 
       const playerRecord = isRecord(playerStatusResult) ? playerStatusResult : undefined;
@@ -530,8 +629,9 @@ export class KaraokeMugenProvider {
           ? queueItemFromProvider(playerRecord.currentSong)
           : undefined;
       if (!current && statusSong) {
+        const { requesterLogin: _requesterLogin, ...safeStatusSong } = statusSong;
         current = {
-          ...statusSong,
+          ...safeStatusSong,
           playing: true,
           needsReview: false,
         };
@@ -565,38 +665,8 @@ export class KaraokeMugenProvider {
     requesterId: number
   ): Promise<{ position?: number }> {
     return this.withAdmin(async (socket, adminToken) => {
-      const suffix = createHash('sha256')
-        .update(String(requesterId))
-        .digest('hex')
-        .slice(0, 16);
-      const guestName = 'SeerrNG guest ' + suffix;
-      const guestLogin = 'seerrng_guest_' + suffix;
-
-      let guest: unknown;
-      try {
-        guest = await socket.call('login', { username: guestLogin, password: '' });
-      } catch (error) {
-        if (!(error instanceof Error) || error.message !== 'LOG_ERROR') throw error;
-      }
-
-      if (!isRecord(guest) || !text(guest.token)) {
-        try {
-          guest = await socket.call('loginGuest', { name: guestName });
-        } catch (error) {
-          if (!(error instanceof Error) || error.message !== 'USER_ALREADY_EXISTS') {
-            throw error;
-          }
-          guest = await socket.call('login', { username: guestLogin, password: '' });
-        }
-      }
-
-      const guestToken = isRecord(guest) ? text(guest.token) : undefined;
-      const actualGuestLogin = isRecord(guest) ? text(guest.username) : undefined;
-      if (!guestToken) throw new Error('Karaoke Mugen guest access is unavailable.');
-      if (actualGuestLogin !== guestLogin) {
-        throw new Error('KARAOKE_MUGEN_CUSTOM_TEMPORARY_GUESTS_REQUIRED');
-      }
-
+      const { suffix, guestLogin } = stableGuestIdentity(requesterId);
+      const guestToken = await this.getGuestToken(socket, requesterId);
       const nickname =
         Array.from(requester).slice(0, 28).join('') + ' · ' + suffix;
       await socket.call('editUser', { login: guestLogin, nickname }, adminToken);
@@ -612,6 +682,101 @@ export class KaraokeMugenProvider {
       return {
         ...(added && typeof added.pos === 'number' ? { position: added.pos } : {}),
       };
+    });
+  }
+
+  async cancelRequest(
+    playlistContentId: number,
+    requesterId: number
+  ): Promise<void> {
+    return this.withAdmin(async (socket) => {
+      const { guestLogin } = stableGuestIdentity(requesterId);
+      const guestToken = await this.getGuestToken(socket, requesterId);
+      const [playlistItem, playlistResult] = await Promise.all([
+        socket.call('getPLC', { plc_id: playlistContentId }, guestToken),
+        socket.call('getPlaylists', {}, guestToken),
+      ]);
+      const publicPlaylist = unwrapArray(playlistResult, 'playlists').find(
+        (playlist) => playlist.flag_public === true
+      );
+      if (
+        !isRecord(playlistItem) ||
+        !publicPlaylist ||
+        idText(playlistItem.plaid) !== idText(publicPlaylist.plaid)
+      ) {
+        throw new Error('KARAOKE_REQUEST_NOT_FOUND');
+      }
+      if (text(playlistItem.username) !== guestLogin) {
+        throw new Error('KARAOKE_REQUEST_NOT_OWNED');
+      }
+      if (playlistItem.flag_accepted === true || playlistItem.flag_refused === true) {
+        throw new Error('KARAOKE_REQUEST_ALREADY_REVIEWED');
+      }
+      await socket.call(
+        'deleteKaraFromPlaylist',
+        { plc_ids: [playlistContentId] },
+        guestToken
+      );
+    });
+  }
+
+  async reorderQueuedSong(
+    playlistContentId: number,
+    direction: 'up' | 'down'
+  ): Promise<void> {
+    return this.withAdmin(async (socket, token) => {
+      const playlists = unwrapArray(
+        await socket.call('getPlaylists', {}, token),
+        'playlists'
+      );
+      const currentPlaylist = playlists.find(
+        (playlist) => playlist.flag_current === true
+      );
+      const currentPlaylistId = currentPlaylist
+        ? idText(currentPlaylist.plaid)
+        : undefined;
+      if (!currentPlaylistId) throw new Error('KARAOKE_QUEUE_ITEM_NOT_FOUND');
+
+      const result = await socket.call(
+        'getPlaylistContents',
+        {
+          plaid: currentPlaylistId,
+          from: 0,
+          size: 500,
+          incomingSongs: false,
+        },
+        token
+      );
+      const items = unwrapArray(result, 'contents')
+        .map(queueItemFromProvider)
+        .filter((item): item is KaraokeQueueItem => !!item);
+      const currentIndex = items.findIndex((item) => item.playing);
+      const upcoming =
+        currentIndex >= 0
+          ? items.slice(currentIndex + 1).filter((item) => !item.playing)
+          : items.filter((item) => !item.playing);
+      const targetIndex = upcoming.findIndex(
+        (item) => item.playlistContentId === playlistContentId
+      );
+      if (targetIndex < 0) throw new Error('KARAOKE_QUEUE_ITEM_NOT_FOUND');
+
+      const neighborIndex = direction === 'up' ? targetIndex - 1 : targetIndex + 1;
+      if (neighborIndex < 0 || neighborIndex >= upcoming.length) {
+        throw new Error('KARAOKE_QUEUE_BOUNDARY');
+      }
+      const position = upcoming[neighborIndex].position;
+      if (
+        typeof position !== 'number' ||
+        !Number.isSafeInteger(position) ||
+        position < 1
+      ) {
+        throw new Error('KARAOKE_QUEUE_ITEM_NOT_FOUND');
+      }
+      await socket.call(
+        'editPLC',
+        { plc_ids: [playlistContentId], pos: position },
+        token
+      );
     });
   }
 

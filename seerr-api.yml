@@ -127,6 +127,9 @@ components:
           type: boolean
         needsReview:
           type: boolean
+        canCancel:
+          type: boolean
+          description: True when the signed-in user owns this pending request.
     KaraokeLyricLine:
       type: object
       required: [startSeconds, endSeconds, text]
@@ -18260,6 +18263,12 @@ paths:
                     type: array
                     items:
                       $ref: '#/components/schemas/SportarrResult'
+                  from:
+                    type: integer
+                  total:
+                    type: integer
+                  hasMore:
+                    type: boolean
         '400':
           description: Invalid search query
         '503':
@@ -18604,6 +18613,19 @@ paths:
             minimum: 1
             maximum: 50
             default: 25
+        - in: query
+          name: from
+          schema:
+            type: integer
+            minimum: 0
+            maximum: 100000
+            default: 0
+        - in: query
+          name: order
+          schema:
+            type: string
+            enum: [requested, recent, played, history]
+            default: requested
       responses:
         '200':
           description: Matching karaoke songs
@@ -18611,7 +18633,7 @@ paths:
             application/json:
               schema:
                 type: object
-                required: [results]
+                required: [results, from, hasMore]
                 properties:
                   results:
                     type: array
@@ -18641,6 +18663,14 @@ paths:
                           enum: [ready, downloading, remote, unknown]
                         hasWarnings:
                           type: boolean
+                  from:
+                    type: integer
+                    minimum: 0
+                  total:
+                    type: integer
+                    minimum: 0
+                  hasMore:
+                    type: boolean
         '400':
           description: Invalid search query or result limit
         '401':
@@ -18731,6 +18761,87 @@ paths:
           description: Karaoke Mugen request quota reached
         '503':
           description: Karaoke Mugen is unavailable or guest requests are disabled
+  /karaoke/cancel:
+    post:
+      summary: Cancel the signed-in user's pending karaoke request
+      tags:
+        - karaoke
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [playlistContentId]
+              properties:
+                playlistContentId:
+                  type: integer
+                  minimum: 1
+      responses:
+        '200':
+          description: Karaoke request cancelled
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [accepted]
+                properties:
+                  accepted:
+                    type: boolean
+        '400':
+          description: Invalid playlist content ID
+        '401':
+          description: Authentication required
+        '403':
+          description: Request is not owned by the signed-in user
+        '404':
+          description: Request no longer exists in the public queue
+        '409':
+          description: Request was reviewed or cannot be cancelled
+        '503':
+          description: Karaoke Mugen is unavailable
+  /karaoke/reorder:
+    post:
+      summary: Move an upcoming song earlier or later in the playback queue
+      tags:
+        - karaoke
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [playlistContentId, direction]
+              properties:
+                playlistContentId:
+                  type: integer
+                  minimum: 1
+                direction:
+                  type: string
+                  enum: [up, down]
+      responses:
+        '200':
+          description: Queue position updated
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [accepted]
+                properties:
+                  accepted:
+                    type: boolean
+        '400':
+          description: Invalid playlist content ID or direction
+        '401':
+          description: Authentication required
+        '403':
+          description: Host permission required
+        '404':
+          description: Song is no longer in the upcoming queue
+        '409':
+          description: Song is already at the requested queue boundary
+        '503':
+          description: Karaoke Mugen is unavailable
   /karaoke/moderate:
     post:
       summary: Accept or reject a pending karaoke request

@@ -11,6 +11,15 @@ export interface KaraokeSongResponse {
   hasWarnings: boolean;
 }
 
+export type KaraokeSearchOrder = 'requested' | 'recent' | 'played' | 'history';
+
+export interface KaraokeSearchResponse {
+  results: KaraokeSongResponse[];
+  from: number;
+  total?: number;
+  hasMore: boolean;
+}
+
 export interface KaraokeQueueItemResponse {
   id: string;
   playlistContentId?: number;
@@ -21,6 +30,7 @@ export interface KaraokeQueueItemResponse {
   durationSeconds?: number;
   playing: boolean;
   needsReview: boolean;
+  canCancel?: boolean;
 }
 
 export interface KaraokeLyricLineResponse {
