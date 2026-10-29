@@ -18,8 +18,26 @@ export interface KaraokeQueueItemResponse {
   artists: string[];
   requester?: string;
   position?: number;
+  durationSeconds?: number;
   playing: boolean;
   needsReview: boolean;
+}
+
+export interface KaraokeLyricLineResponse {
+  startSeconds: number;
+  endSeconds: number;
+  text: string;
+}
+
+export interface KaraokePlayerStatusResponse {
+  status: 'play' | 'pause' | 'stop' | 'unknown';
+  playing: boolean;
+  timeSeconds?: number;
+  volume?: number;
+  muted?: boolean;
+  subtitlesVisible?: boolean;
+  isOperating?: boolean;
+  stoppingAfterCurrent?: boolean;
 }
 
 export interface KaraokeSessionResponse {
@@ -27,4 +45,6 @@ export interface KaraokeSessionResponse {
   waiting: KaraokeQueueItemResponse[];
   upcoming: KaraokeQueueItemResponse[];
   current?: KaraokeQueueItemResponse;
+  player?: KaraokePlayerStatusResponse;
+  lyrics: KaraokeLyricLineResponse[];
 }

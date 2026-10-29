@@ -121,9 +121,44 @@ components:
           type: string
         position:
           type: integer
+        durationSeconds:
+          type: number
         playing:
           type: boolean
         needsReview:
+          type: boolean
+    KaraokeLyricLine:
+      type: object
+      required: [startSeconds, endSeconds, text]
+      properties:
+        startSeconds:
+          type: number
+        endSeconds:
+          type: number
+        text:
+          type: string
+    KaraokePlayerStatus:
+      type: object
+      required: [status, playing]
+      properties:
+        status:
+          type: string
+          enum: [play, pause, stop, unknown]
+        playing:
+          type: boolean
+        timeSeconds:
+          type: number
+        volume:
+          type: number
+          minimum: 0
+          maximum: 100
+        muted:
+          type: boolean
+        subtitlesVisible:
+          type: boolean
+        isOperating:
+          type: boolean
+        stoppingAfterCurrent:
           type: boolean
     UserAvailabilitySubscriptionState:
       type: object
@@ -18614,7 +18649,7 @@ paths:
           description: Karaoke Mugen is unavailable
   /karaoke/session:
     get:
-      summary: Get the current karaoke session and public queue
+      summary: Get the current karaoke session, player state, and timed lyrics
       tags:
         - karaoke
       responses:
@@ -18629,7 +18664,7 @@ paths:
                   session:
                     type: object
                     nullable: true
-                    required: [name, waiting, upcoming]
+                    required: [name, waiting, upcoming, lyrics]
                     properties:
                       name:
                         type: string
@@ -18645,6 +18680,12 @@ paths:
                           $ref: '#/components/schemas/KaraokeQueueItem'
                       current:
                         $ref: '#/components/schemas/KaraokeQueueItem'
+                      player:
+                        $ref: '#/components/schemas/KaraokePlayerStatus'
+                      lyrics:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/KaraokeLyricLine'
         '401':
           description: Authentication required
         '503':
@@ -18747,7 +18788,10 @@ paths:
               properties:
                 command:
                   type: string
-                  enum: [play, pause, skip]
+                  enum: [play, pause, skip, prev, stopAfter, mute, unmute, showSubs, hideSubs, seek, setVolume]
+                options:
+                  type: number
+                  description: Required for seek (delta seconds from -30 to 30, excluding 0) and setVolume (0 to 100).
       responses:
         '200':
           description: Player command accepted
@@ -18760,7 +18804,7 @@ paths:
                   accepted:
                     type: boolean
         '400':
-          description: Unsupported command
+          description: Unsupported command or invalid numeric command option
         '401':
           description: Authentication required
         '403':

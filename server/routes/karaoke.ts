@@ -1,4 +1,7 @@
-import { karaokeMugenProvider } from '@server/lib/karaokeMugen';
+import {
+  karaokeMugenProvider,
+  type KaraokePlayerCommand,
+} from '@server/lib/karaokeMugen';
 import { Permission } from '@server/lib/permissions';
 import logger from '@server/logger';
 import { Router } from 'express';
@@ -13,7 +16,19 @@ const MAX_QUERY_LENGTH = 120;
 const MAX_RESULTS = 50;
 const SONG_ID =
   /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
-const HOST_CONTROLS = new Set(['play', 'pause', 'skip']);
+const HOST_CONTROLS = new Set<KaraokePlayerCommand>([
+  'play',
+  'pause',
+  'skip',
+  'prev',
+  'stopAfter',
+  'mute',
+  'unmute',
+  'showSubs',
+  'hideSubs',
+  'seek',
+  'setVolume',
+]);
 
 const reportProviderFailure = (operation: string, error: unknown) => {
   logger.warn('Karaoke Mugen request failed', {
@@ -203,16 +218,59 @@ router.post('/control', async (req, res) => {
     });
   }
 
-  const command = typeof req.body?.command === 'string' ? req.body.command : '';
-  if (!HOST_CONTROLS.has(command)) {
+  const rawCommand =
+    typeof req.body?.command === 'string' ? req.body.command : '';
+  if (!HOST_CONTROLS.has(rawCommand as KaraokePlayerCommand)) {
     return res.status(400).json({
       status: 400,
-      message: 'Choose play, pause, or skip.',
+      message: 'Choose a supported karaoke player command.',
+    });
+  }
+
+  const command = rawCommand as KaraokePlayerCommand;
+  const options = req.body?.options;
+  if (
+    command === 'seek' &&
+    (typeof options !== 'number' ||
+      !Number.isFinite(options) ||
+      options < -30 ||
+      options > 30 ||
+      options === 0)
+  ) {
+    return res.status(400).json({
+      status: 400,
+      message: 'Seek must be between 1 and 30 seconds in either direction.',
+    });
+  }
+  if (
+    command === 'setVolume' &&
+    (typeof options !== 'number' ||
+      !Number.isFinite(options) ||
+      options < 0 ||
+      options > 100)
+  ) {
+    return res.status(400).json({
+      status: 400,
+      message: 'Volume must be between 0 and 100.',
+    });
+  }
+  if (
+    command !== 'seek' &&
+    command !== 'setVolume' &&
+    options !== undefined &&
+    options !== null
+  ) {
+    return res.status(400).json({
+      status: 400,
+      message: 'This player command does not accept a numeric option.',
     });
   }
 
   try {
-    await karaokeMugenProvider.control(command as 'play' | 'pause' | 'skip');
+    await karaokeMugenProvider.control(
+      command,
+      typeof options === 'number' ? options : undefined
+    );
     return res.status(200).json({ accepted: true });
   } catch (error) {
     reportProviderFailure('control', error);

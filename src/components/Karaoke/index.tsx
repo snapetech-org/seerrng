@@ -6,6 +6,8 @@ import { Permission, useUser } from '@app/hooks/useUser';
 import defineMessages from '@app/utils/defineMessages';
 import type {
   KaraokeAvailability,
+  KaraokeLyricLineResponse,
+  KaraokePlayerStatusResponse,
   KaraokeQueueItemResponse,
   KaraokeSessionResponse,
   KaraokeSongResponse,
@@ -17,7 +19,7 @@ import {
   PlayIcon,
 } from '@heroicons/react/24/outline';
 import axios from 'axios';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import type { FormEvent } from 'react';
 import { useIntl } from 'react-intl';
 import useSWR from 'swr';
@@ -35,6 +37,19 @@ interface KaraokeSearchEnvelope {
   results: KaraokeSongResponse[];
 }
 
+type KaraokePlayerCommand =
+  | 'play'
+  | 'pause'
+  | 'skip'
+  | 'prev'
+  | 'stopAfter'
+  | 'mute'
+  | 'unmute'
+  | 'showSubs'
+  | 'hideSubs'
+  | 'seek'
+  | 'setVolume';
+
 const messages = defineMessages('components.Karaoke', {
   title: 'Karaoke',
   intro: 'Search the connected karaoke songbook and request songs for the shared session.',
@@ -50,7 +65,7 @@ const messages = defineMessages('components.Karaoke', {
   noResults: 'No karaoke songs matched this search.',
   resultsHeading: 'Songbook results',
   request: 'Request song',
-  requesting: 'Adding…',
+  requesting: 'Sending request…',
   requestSuccess: 'Song request sent for host review.',
   requestPosition: 'Song request sent for host review at queue position {position}.',
   requestFailed: 'The song request could not be added to the shared queue.',
@@ -81,6 +96,26 @@ const messages = defineMessages('components.Karaoke', {
   skip: 'Skip',
   controlFailed: 'The player command could not be sent.',
   player: 'Open karaoke display',
+  playerPlaying: 'Playing',
+  playerPaused: 'Paused',
+  playerStopped: 'Stopped',
+  playerUnknown: 'Player status unavailable',
+  playerProgress: 'Song progress',
+  playerLyrics: 'Current song lyrics',
+  lyricWaiting: 'Lyrics are waiting to begin.',
+  noLyrics: 'Timed lyrics are not available for this song. Use the Karaoke Mugen display.',
+  previous: 'Previous song',
+  stopAfter: 'Stop after this song',
+  mute: 'Mute',
+  unmute: 'Unmute',
+  showLyrics: 'Show lyrics on display',
+  hideLyrics: 'Hide lyrics on display',
+  seekBack: 'Back 10 seconds',
+  seekForward: 'Forward 10 seconds',
+  advancedControls: 'More playback controls',
+  volume: 'Player volume',
+  applyVolume: 'Set volume',
+  controlling: 'Sending command…',
   language: 'Language',
   songType: 'Type',
   duration: 'Duration',
@@ -252,6 +287,118 @@ const QueueItem = ({
   </li>
 );
 
+const KaraokePlayerPanel = ({
+  item,
+  player,
+  lyrics,
+  intl,
+}: {
+  item: KaraokeQueueItemResponse;
+  player: KaraokePlayerStatusResponse;
+  lyrics: KaraokeLyricLineResponse[];
+  intl: ReturnType<typeof useIntl>;
+}) => {
+  const [now, setNow] = useState(0);
+  const [clock, setClock] = useState({ positionSeconds: 0, capturedAt: 0 });
+  const activeLineRef = useRef<HTMLLIElement>(null);
+
+  useEffect(() => {
+    setClock({
+      positionSeconds: player.timeSeconds ?? 0,
+      capturedAt: Date.now(),
+    });
+  }, [item.id, player.timeSeconds]);
+
+  useEffect(() => {
+    if (!player.playing) return;
+    const timer = window.setInterval(() => setNow(Date.now()), 250);
+    return () => window.clearInterval(timer);
+  }, [player.playing]);
+
+  const positionSeconds = player.playing
+    ? clock.positionSeconds +
+      Math.max(0, now - clock.capturedAt) / 1000
+    : (player.timeSeconds ?? clock.positionSeconds);
+  const activeLineIndex = lyrics.findIndex(
+    (line) =>
+      positionSeconds >= line.startSeconds &&
+      positionSeconds < line.endSeconds
+  );
+
+  useEffect(() => {
+    if (activeLineIndex >= 0) {
+      activeLineRef.current?.scrollIntoView({
+        block: 'center',
+        behavior: 'smooth',
+      });
+    }
+  }, [activeLineIndex]);
+
+  const playerMessage =
+    player.status === 'play'
+      ? messages.playerPlaying
+      : player.status === 'pause'
+        ? messages.playerPaused
+        : player.status === 'stop'
+          ? messages.playerStopped
+          : messages.playerUnknown;
+  const duration = formatDuration(item.durationSeconds, intl);
+  const currentTime = formatDuration(positionSeconds, intl);
+
+  return (
+    <div className="app-filter-section-gap">
+      <p role="status">{intl.formatMessage(playerMessage)}</p>
+      {duration && currentTime && item.durationSeconds !== undefined && (
+        <div>
+          <label htmlFor="karaoke-progress">
+            {intl.formatMessage(messages.playerProgress)}
+          </label>
+          <progress
+            id="karaoke-progress"
+            value={Math.min(positionSeconds, item.durationSeconds)}
+            max={item.durationSeconds}
+            className="block w-full"
+          />
+          <p>
+            {currentTime} / {duration}
+          </p>
+        </div>
+      )}
+      {lyrics.length > 0 ? (
+        <>
+          <p role="status" aria-live="polite" aria-atomic="true">
+            {activeLineIndex >= 0
+              ? lyrics[activeLineIndex].text
+              : intl.formatMessage(messages.lyricWaiting)}
+          </p>
+          <ol
+            tabIndex={0}
+            aria-label={intl.formatMessage(messages.playerLyrics)}
+            className="max-h-72 space-y-2 overflow-y-auto rounded-lg border border-white/10 p-4"
+          >
+            {lyrics.map((line, index) => (
+              <li
+                key={line.startSeconds + ':' + index}
+                ref={index === activeLineIndex ? activeLineRef : undefined}
+                aria-current={index === activeLineIndex ? 'time' : undefined}
+                className={
+                  index === activeLineIndex
+                    ? 'rounded bg-white/10 p-2 font-semibold'
+                    : 'p-2 opacity-70'
+                }
+              >
+                {line.text}
+              </li>
+            ))}
+          </ol>
+        </>
+      ) : (
+        <p role="note">{intl.formatMessage(messages.noLyrics)}</p>
+      )}
+    </div>
+  );
+};
+
 const Karaoke = () => {
   const intl = useIntl();
   const { hasPermission } = useUser();
@@ -267,6 +414,8 @@ const Karaoke = () => {
     playlistContentId: number;
     decision: 'accept' | 'reject';
   }>();
+  const [controlBusy, setControlBusy] = useState(false);
+  const [volume, setVolume] = useState(100);
   const [notice, setNotice] = useState<string>();
   const [operationFailed, setOperationFailed] = useState<
     'request' | 'control' | 'review' | undefined
@@ -297,9 +446,14 @@ const Karaoke = () => {
     error: sessionError,
     mutate: refreshSession,
   } = useSWR<KaraokeSessionEnvelope>(sessionKey, fetchSession, {
-    refreshInterval: 10000,
+    refreshInterval: 5000,
     revalidateOnFocus: true,
   });
+
+  useEffect(() => {
+    const currentVolume = sessionResult?.session?.player?.volume;
+    if (currentVolume !== undefined) setVolume(currentVolume);
+  }, [sessionResult?.session?.player?.volume]);
 
   const submitSearch = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -335,11 +489,15 @@ const Karaoke = () => {
     }
   };
 
-  const sendControl = async (command: 'play' | 'pause' | 'skip') => {
+  const sendControl = async (
+    command: KaraokePlayerCommand,
+    options?: number
+  ) => {
+    setControlBusy(true);
     setNotice(undefined);
     setOperationFailed(undefined);
     try {
-      await axios.post('/api/v1/karaoke/control', { command });
+      await axios.post('/api/v1/karaoke/control', { command, options });
       void refreshSession();
     } catch (error) {
       const message = responseMessage(error);
@@ -348,6 +506,8 @@ const Karaoke = () => {
       } else {
         setOperationFailed('control');
       }
+    } finally {
+      setControlBusy(false);
     }
   };
 
@@ -487,6 +647,14 @@ const Karaoke = () => {
                     <div>
                       <h3>{intl.formatMessage(messages.currentSong)}</h3>
                       <QueueItem item={session.current} intl={intl} />
+                      {session.player && (
+                        <KaraokePlayerPanel
+                          item={session.current}
+                          player={session.player}
+                          lyrics={session.lyrics}
+                          intl={intl}
+                        />
+                      )}
                     </div>
                   )}
                   <h3>{intl.formatMessage(messages.waitingHeading)}</h3>
@@ -537,30 +705,132 @@ const Karaoke = () => {
               {canHost && (
                 <div>
                   <h3>{intl.formatMessage(messages.hostControls)}</h3>
-                  <Button
-                    buttonType="playback"
-                    buttonSize="sm"
-                    onClick={() => void sendControl('play')}
-                  >
-                    <PlayIcon aria-hidden="true" />
-                    {intl.formatMessage(messages.play)}
-                  </Button>
-                  <Button
-                    buttonType="playback"
-                    buttonSize="sm"
-                    onClick={() => void sendControl('pause')}
-                  >
-                    <PauseIcon aria-hidden="true" />
-                    {intl.formatMessage(messages.pause)}
-                  </Button>
-                  <Button
-                    buttonType="playback"
-                    buttonSize="sm"
-                    onClick={() => void sendControl('skip')}
-                  >
-                    <ForwardIcon aria-hidden="true" />
-                    {intl.formatMessage(messages.skip)}
-                  </Button>
+                  {controlBusy && (
+                    <p role="status">{intl.formatMessage(messages.controlling)}</p>
+                  )}
+                  <div className="flex flex-wrap gap-2">
+                    <Button
+                      buttonType="playback"
+                      buttonSize="sm"
+                      disabled={controlBusy || session?.player?.isOperating}
+                      onClick={() => void sendControl('play')}
+                    >
+                      <PlayIcon aria-hidden="true" />
+                      {intl.formatMessage(messages.play)}
+                    </Button>
+                    <Button
+                      buttonType="playback"
+                      buttonSize="sm"
+                      disabled={controlBusy || session?.player?.isOperating}
+                      onClick={() => void sendControl('pause')}
+                    >
+                      <PauseIcon aria-hidden="true" />
+                      {intl.formatMessage(messages.pause)}
+                    </Button>
+                    <Button
+                      buttonType="playback"
+                      buttonSize="sm"
+                      disabled={controlBusy || session?.player?.isOperating}
+                      onClick={() => void sendControl('skip')}
+                    >
+                      <ForwardIcon aria-hidden="true" />
+                      {intl.formatMessage(messages.skip)}
+                    </Button>
+                  </div>
+                  <details className="mt-3">
+                    <summary className="cursor-pointer">
+                      {intl.formatMessage(messages.advancedControls)}
+                    </summary>
+                    <div className="mt-3 flex flex-wrap gap-2">
+                      <Button
+                        buttonType="default"
+                        buttonSize="sm"
+                        disabled={controlBusy || session?.player?.isOperating}
+                        onClick={() => void sendControl('prev')}
+                      >
+                        {intl.formatMessage(messages.previous)}
+                      </Button>
+                      <Button
+                        buttonType="default"
+                        buttonSize="sm"
+                        disabled={controlBusy || session?.player?.isOperating}
+                        onClick={() => void sendControl('stopAfter')}
+                      >
+                        {intl.formatMessage(messages.stopAfter)}
+                      </Button>
+                      <Button
+                        buttonType="default"
+                        buttonSize="sm"
+                        disabled={controlBusy || session?.player?.isOperating}
+                        onClick={() => void sendControl('showSubs')}
+                      >
+                        {intl.formatMessage(messages.showLyrics)}
+                      </Button>
+                      <Button
+                        buttonType="default"
+                        buttonSize="sm"
+                        disabled={controlBusy || session?.player?.isOperating}
+                        onClick={() => void sendControl('hideSubs')}
+                      >
+                        {intl.formatMessage(messages.hideLyrics)}
+                      </Button>
+                      <Button
+                        buttonType="default"
+                        buttonSize="sm"
+                        disabled={controlBusy || session?.player?.isOperating}
+                        onClick={() => void sendControl('mute')}
+                      >
+                        {intl.formatMessage(messages.mute)}
+                      </Button>
+                      <Button
+                        buttonType="default"
+                        buttonSize="sm"
+                        disabled={controlBusy || session?.player?.isOperating}
+                        onClick={() => void sendControl('unmute')}
+                      >
+                        {intl.formatMessage(messages.unmute)}
+                      </Button>
+                      <Button
+                        buttonType="default"
+                        buttonSize="sm"
+                        disabled={controlBusy || session?.player?.isOperating}
+                        onClick={() => void sendControl('seek', -10)}
+                      >
+                        {intl.formatMessage(messages.seekBack)}
+                      </Button>
+                      <Button
+                        buttonType="default"
+                        buttonSize="sm"
+                        disabled={controlBusy || session?.player?.isOperating}
+                        onClick={() => void sendControl('seek', 10)}
+                      >
+                        {intl.formatMessage(messages.seekForward)}
+                      </Button>
+                    </div>
+                    <div className="mt-3 flex items-center gap-3">
+                      <label htmlFor="karaoke-volume">
+                        {intl.formatMessage(messages.volume)}: {volume}
+                      </label>
+                      <input
+                        id="karaoke-volume"
+                        type="range"
+                        min="0"
+                        max="100"
+                        step="1"
+                        value={volume}
+                        onChange={(event) => setVolume(Number(event.target.value))}
+                        disabled={controlBusy || session?.player?.isOperating}
+                      />
+                      <Button
+                        buttonType="default"
+                        buttonSize="sm"
+                        disabled={controlBusy || session?.player?.isOperating}
+                        onClick={() => void sendControl('setVolume', volume)}
+                      >
+                        {intl.formatMessage(messages.applyVolume)}
+                      </Button>
+                    </div>
+                  </details>
                 </div>
               )}
               {status.playerUrl && (

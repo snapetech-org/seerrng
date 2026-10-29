@@ -24,8 +24,26 @@ export interface KaraokeQueueItem {
   artists: string[];
   requester?: string;
   position?: number;
+  durationSeconds?: number;
   playing: boolean;
   needsReview: boolean;
+}
+
+export interface KaraokeLyricLine {
+  startSeconds: number;
+  endSeconds: number;
+  text: string;
+}
+
+export interface KaraokePlayerState {
+  status: 'play' | 'pause' | 'stop' | 'unknown';
+  playing: boolean;
+  timeSeconds?: number;
+  volume?: number;
+  muted?: boolean;
+  subtitlesVisible?: boolean;
+  isOperating?: boolean;
+  stoppingAfterCurrent?: boolean;
 }
 
 export interface KaraokeSession {
@@ -33,7 +51,22 @@ export interface KaraokeSession {
   waiting: KaraokeQueueItem[];
   upcoming: KaraokeQueueItem[];
   current?: KaraokeQueueItem;
+  player?: KaraokePlayerState;
+  lyrics: KaraokeLyricLine[];
 }
+
+export type KaraokePlayerCommand =
+  | 'play'
+  | 'pause'
+  | 'skip'
+  | 'prev'
+  | 'stopAfter'
+  | 'mute'
+  | 'unmute'
+  | 'showSubs'
+  | 'hideSubs'
+  | 'seek'
+  | 'setVolume';
 
 type JsonRecord = Record<string, unknown>;
 
@@ -278,8 +311,8 @@ const queueItemFromProvider = (value: JsonRecord): KaraokeQueueItem | undefined 
     playlistContentIdValue > 0
       ? playlistContentIdValue
       : undefined;
-  const id = idText(playlistContentId) ?? idText(value.kid);
   const nested = isRecord(value.kara) ? value.kara : value;
+  const id = idText(nested.kid) ?? idText(value.kid) ?? idText(playlistContentId);
   const title =
     localizedTitle(nested.titles) || text(nested.title) || text(value.mediafile);
   if (!id || !title) return undefined;
@@ -291,8 +324,66 @@ const queueItemFromProvider = (value: JsonRecord): KaraokeQueueItem | undefined 
     artists: stringArray(nested.singers),
     requester: text(value.nickname) ?? text(value.requester),
     position: typeof value.pos === 'number' ? value.pos : undefined,
+    durationSeconds:
+      typeof nested.duration === 'number' && Number.isFinite(nested.duration)
+        ? nested.duration
+        : undefined,
     playing: value.flag_playing === true,
     needsReview: value.flag_accepted !== true && value.flag_refused !== true,
+  };
+};
+
+const lyricLinesFromProvider = (value: unknown): KaraokeLyricLine[] => {
+  if (!Array.isArray(value)) return [];
+  return value
+    .filter(isRecord)
+    .map((line) => ({
+      startSeconds: line.start,
+      endSeconds: line.end,
+      text: text(line.text),
+    }))
+    .filter(
+      (line): line is KaraokeLyricLine =>
+        typeof line.startSeconds === 'number' &&
+        Number.isFinite(line.startSeconds) &&
+        typeof line.endSeconds === 'number' &&
+        Number.isFinite(line.endSeconds) &&
+        line.startSeconds >= 0 &&
+        line.endSeconds >= line.startSeconds &&
+        typeof line.text === 'string'
+    );
+};
+
+const playerStateFromProvider = (value: unknown): KaraokePlayerState | undefined => {
+  if (!isRecord(value)) return undefined;
+  const rawStatus = text(value.playerStatus);
+  const status =
+    rawStatus === 'play' || rawStatus === 'pause' || rawStatus === 'stop'
+      ? rawStatus
+      : 'unknown';
+  const timeSeconds =
+    typeof value.timeposition === 'number' && Number.isFinite(value.timeposition)
+      ? Math.max(0, value.timeposition)
+      : undefined;
+  const volume =
+    typeof value.volume === 'number' && Number.isFinite(value.volume)
+      ? Math.max(0, Math.min(100, value.volume))
+      : undefined;
+  return {
+    status,
+    playing: value.playing === true || status === 'play',
+    ...(timeSeconds !== undefined ? { timeSeconds } : {}),
+    ...(volume !== undefined ? { volume } : {}),
+    ...(typeof value.mute === 'boolean' ? { muted: value.mute } : {}),
+    ...(typeof value.showSubs === 'boolean'
+      ? { subtitlesVisible: value.showSubs }
+      : {}),
+    ...(typeof value.isOperating === 'boolean'
+      ? { isOperating: value.isOperating }
+      : {}),
+    ...(typeof value.stopping === 'boolean'
+      ? { stoppingAfterCurrent: value.stopping }
+      : {}),
   };
 };
 
@@ -303,6 +394,34 @@ const unwrapArray = (value: unknown, property: string): JsonRecord[] => {
 };
 
 export class KaraokeMugenProvider {
+  private readonly lyricsCache = new Map<
+    string,
+    { expiresAt: number; lines: KaraokeLyricLine[] }
+  >();
+
+  private async getLyrics(
+    socket: KaraokeMugenSocket,
+    token: string,
+    songId: string
+  ): Promise<KaraokeLyricLine[]> {
+    const cached = this.lyricsCache.get(songId);
+    if (cached && cached.expiresAt > Date.now()) return cached.lines;
+
+    const lines = lyricLinesFromProvider(
+      await socket.call('getKaraLyrics', { kid: songId }, token)
+    );
+    this.lyricsCache.delete(songId);
+    this.lyricsCache.set(songId, {
+      expiresAt: Date.now() + 5 * 60 * 1000,
+      lines,
+    });
+    if (this.lyricsCache.size > 20) {
+      const firstKey = this.lyricsCache.keys().next().value;
+      if (firstKey) this.lyricsCache.delete(firstKey);
+    }
+    return lines;
+  }
+
   static status(): KaraokeMugenStatus {
     const configured = !!(
       process.env.SEERRNG_KARAOKE_MUGEN_URL?.trim() &&
@@ -348,7 +467,11 @@ export class KaraokeMugenProvider {
 
   async session(): Promise<KaraokeSession | undefined> {
     return this.withAdmin(async (socket, token) => {
-      const playlists = unwrapArray(await socket.call('getPlaylists', {}, token), 'playlists');
+      const [playlistResult, playerStatusResult] = await Promise.all([
+        socket.call('getPlaylists', {}, token),
+        socket.call('getPlayerStatus', {}, token),
+      ]);
+      const playlists = unwrapArray(playlistResult, 'playlists');
       const publicPlaylist = playlists.find((playlist) => playlist.flag_public === true);
       if (!publicPlaylist) return undefined;
 
@@ -401,10 +524,36 @@ export class KaraokeMugenProvider {
         }
       }
 
+      const playerRecord = isRecord(playerStatusResult) ? playerStatusResult : undefined;
+      const statusSong =
+        playerRecord && isRecord(playerRecord.currentSong)
+          ? queueItemFromProvider(playerRecord.currentSong)
+          : undefined;
+      if (!current && statusSong) {
+        current = {
+          ...statusSong,
+          playing: true,
+          needsReview: false,
+        };
+      }
+      const player = playerStateFromProvider(playerStatusResult);
+      let lyrics: KaraokeLyricLine[] = [];
+      if (current?.id) {
+        try {
+          lyrics = await this.getLyrics(socket, token, current.id);
+        } catch (error) {
+          if (!(error instanceof Error) || error.message !== 'LYRICS_VIEW_ERROR') {
+            throw error;
+          }
+        }
+      }
+
       return {
         name: text(publicPlaylist.name) ?? 'Karaoke session',
         waiting,
         upcoming,
+        lyrics,
+        ...(player ? { player } : {}),
         ...(current ? { current } : {}),
       };
     });
@@ -501,9 +650,16 @@ export class KaraokeMugenProvider {
     });
   }
 
-  async control(command: 'play' | 'pause' | 'skip'): Promise<void> {
+  async control(
+    command: KaraokePlayerCommand,
+    options?: number
+  ): Promise<void> {
     await this.withAdmin(async (socket, token) => {
-      await socket.call('sendPlayerCommand', { command, options: null }, token);
+      await socket.call(
+        'sendPlayerCommand',
+        { command, options: options ?? null },
+        token
+      );
     });
   }
 }
