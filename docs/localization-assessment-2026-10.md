@@ -157,3 +157,39 @@ owner's runner directive requires private ephemeral JIT runners and forbids
 hosted fallback. Do not dispatch GitHub-hosted CI or report a workflow as passed
 without an actual run under that policy. Machine or AI-assisted translation
 remains draft unless a human reviewer records review.
+
+## Comparison with the supplied PlezyNG localization snapshot
+
+The supplied PlezyNG audit snapshot contains 37 selectable locale catalogs and
+4,265 English message IDs. Running its read-only checker reported a pass with
+18,972 explicitly allowlisted English fallback uses, valid placeholders, and
+current source fingerprints. That is a strong freshness and fallback-accounting
+workflow, but the fallback count means its pass is not a claim of complete
+translation or fluent review.
+
+PlezyNG's catalog metadata records regional parents for `es-419`, `fr-CA`,
+`pt-BR`, and `pt-PT`, RTL locales (`ar`, `fa`, and `he`), and
+non-translatable terms. Its checker validates placeholder sets, plural
+structure, and bidi embeddings, and reports same-as-English values. It does not
+record native-speaker approval or prove rendered RTL quality.
+
+SeerrNG has a larger source surface in this snapshot: 38 selectable locales,
+6,837 client messages, and 79 server notification messages. Its client catalog
+coverage is much less even: 12 locales have 5,634 of 6,837 values (82.4%),
+`es-MX` has 5,519 (80.7%), and the other 24 selectable non-English locales
+range from 0 to 21.8%. Twelve selectable non-English server catalogs are empty.
+These are structural counts, not fluency ratings.
+
+The implementation commits in this PR add a registry, regional client/server
+fallback, FormatJS argument/type and rich-text checks, locale-specific plural
+category reporting, protected URL/code checks, a visible draft notice, and
+per-message SHA-256 snapshots for both English source catalogs. The snapshot
+gate is wired into `i18n:check`; it has not been run in the repository
+environment. Current non-English catalogs remain marked `unreviewed`, and
+the source snapshot does not record per-message linguistic approval.
+
+**Assessment:** SeerrNG has broader catalog scope, while the supplied PlezyNG
+snapshot has the more mature localization QA and fallback-accounting workflow.
+SeerrNG's coverage is materially less consistent. It benefits from the changes
+in this PR, but neither structural check passes nor locale count should be
+read as evidence of translation fluency or app-wide RTL acceptance.
