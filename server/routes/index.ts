@@ -189,6 +189,15 @@ const externalMetadataRateLimit = rateLimit({
     process.env.NODE_ENV === 'test' || process.env.E2E_TESTS === 'true',
   keyGenerator: (req) => `user:${req.user!.id}`,
 });
+const karaokeRateLimit = rateLimit({
+  windowMs: 60 * 1000,
+  limit: 60,
+  standardHeaders: true,
+  legacyHeaders: false,
+  skip: () =>
+    process.env.NODE_ENV === 'test' || process.env.E2E_TESTS === 'true',
+  keyGenerator: (req) => `user:${req.user!.id}`,
+});
 
 const parsePushoverToken = (value: unknown) =>
   parseBoundedString(value, {
@@ -563,6 +572,7 @@ router.use(
   '/karaoke',
   isAuthenticated(),
   categoryAvailabilityGuard(['music']),
+  karaokeRateLimit,
   karaokeRoutes
 );
 router.use('/playback', isAuthenticated(), playbackRoutes);

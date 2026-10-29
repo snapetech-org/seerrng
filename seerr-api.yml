@@ -70,6 +70,8 @@ tags:
     description: Cross-medium related media graph endpoints.
   - name: playlist
     description: Endpoints for importing Spotify and YouTube playlists as music requests.
+  - name: karaoke
+    description: Search and request songs through a connected Karaoke Mugen instance and control its player.
   - name: game library
     description: Personal game progress, optional household sharing, and Steam library import.
   - name: native desktop
@@ -100,6 +102,24 @@ components:
           type: string
         message:
           type: string
+    KaraokeQueueItem:
+      type: object
+      required: [id, title, artists, playing]
+      properties:
+        id:
+          type: string
+        title:
+          type: string
+        artists:
+          type: array
+          items:
+            type: string
+        requester:
+          type: string
+        position:
+          type: integer
+        playing:
+          type: boolean
     UserAvailabilitySubscriptionState:
       type: object
       required:
@@ -18503,6 +18523,197 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/WatchlistListResponse'
+  /karaoke/status:
+    get:
+      summary: Get Karaoke Mugen connection status
+      tags:
+        - karaoke
+      responses:
+        '200':
+          description: Karaoke connection status
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [configured]
+                properties:
+                  configured:
+                    type: boolean
+                  playerUrl:
+                    type: string
+                    format: uri
+        '401':
+          description: Authentication required
+  /karaoke/search:
+    get:
+      summary: Search the Karaoke Mugen songbook
+      tags:
+        - karaoke
+      parameters:
+        - in: query
+          name: query
+          required: true
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 120
+        - in: query
+          name: limit
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 50
+            default: 25
+      responses:
+        '200':
+          description: Matching karaoke songs
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [results]
+                properties:
+                  results:
+                    type: array
+                    items:
+                      type: object
+                      required: [id, title, artists, categories, availability, hasWarnings]
+                      properties:
+                        id:
+                          type: string
+                          format: uuid
+                        title:
+                          type: string
+                        artists:
+                          type: array
+                          items:
+                            type: string
+                        language:
+                          type: string
+                        categories:
+                          type: array
+                          items:
+                            type: string
+                        durationSeconds:
+                          type: number
+                        availability:
+                          type: string
+                          enum: [ready, downloading, remote, unknown]
+                        hasWarnings:
+                          type: boolean
+        '400':
+          description: Invalid search query or result limit
+        '401':
+          description: Authentication required
+        '503':
+          description: Karaoke Mugen is unavailable
+  /karaoke/session:
+    get:
+      summary: Get the current karaoke session and public queue
+      tags:
+        - karaoke
+      responses:
+        '200':
+          description: Current session, or null when no public queue is configured
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [session]
+                properties:
+                  session:
+                    type: object
+                    nullable: true
+                    required: [name, waiting]
+                    properties:
+                      name:
+                        type: string
+                      waiting:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/KaraokeQueueItem'
+                      current:
+                        $ref: '#/components/schemas/KaraokeQueueItem'
+        '401':
+          description: Authentication required
+        '503':
+          description: Karaoke Mugen is unavailable
+  /karaoke/request:
+    post:
+      summary: Add a karaoke song to the public session queue
+      tags:
+        - karaoke
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [songId]
+              properties:
+                songId:
+                  type: string
+                  format: uuid
+      responses:
+        '201':
+          description: Song accepted into the public queue
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [accepted]
+                properties:
+                  accepted:
+                    type: boolean
+                  position:
+                    type: integer
+        '400':
+          description: Invalid karaoke song ID
+        '401':
+          description: Authentication required
+        '403':
+          description: Music request permission required or song unavailable
+        '409':
+          description: Session rules reject a duplicate request
+        '429':
+          description: Karaoke Mugen request quota reached
+        '503':
+          description: Karaoke Mugen is unavailable or guest requests are disabled
+  /karaoke/control:
+    post:
+      summary: Control Karaoke Mugen playback
+      tags:
+        - karaoke
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [command]
+              properties:
+                command:
+                  type: string
+                  enum: [play, pause, skip]
+      responses:
+        '200':
+          description: Player command accepted
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [accepted]
+                properties:
+                  accepted:
+                    type: boolean
+        '400':
+          description: Unsupported command
+        '401':
+          description: Authentication required
+        '403':
+          description: Host permission required
+        '503':
+          description: Karaoke Mugen is unavailable
   /music/{musicId}:
     get:
       summary: Get music album details

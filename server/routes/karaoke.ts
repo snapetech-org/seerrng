@@ -4,6 +4,11 @@ import logger from '@server/logger';
 import { Router } from 'express';
 
 const router = Router();
+router.use((_req, res, next) => {
+  res.setHeader('Cache-Control', 'private, no-store');
+  next();
+});
+
 const MAX_QUERY_LENGTH = 120;
 const MAX_RESULTS = 50;
 const SONG_ID =
@@ -18,11 +23,48 @@ const reportProviderFailure = (operation: string, error: unknown) => {
   });
 };
 
-const providerError = (res: import('express').Response) =>
-  res.status(503).json({
+const PROVIDER_ERROR_RESPONSES: Record<string, { status: number; message: string }> = {
+  PLAYLIST_MODE_ADD_SONG_ERROR_QUOTA_REACHED: {
+    status: 429,
+    message: 'Your karaoke session request limit has been reached.',
+  },
+  PLAYLIST_MODE_ADD_SONG_ERROR_ALREADY_ADDED: {
+    status: 409,
+    message: 'That song is already in the karaoke session.',
+  },
+  PLAYLIST_MODE_ADD_SONG_ERROR_BLACKLISTED: {
+    status: 403,
+    message: 'That song cannot be requested in this karaoke session.',
+  },
+  PLAYLIST_MODE_ADD_SONG_ERROR_NO_DUPLICATE_SERIES_SINGERS: {
+    status: 409,
+    message: 'This session does not allow another song from that singer or series yet.',
+  },
+  GUESTS_NOT_ALLOWED: {
     status: 503,
-    message: 'The connected karaoke service is unavailable. Try again shortly.',
+    message: 'Karaoke Mugen is not configured to accept guest requests.',
+  },
+  KARAOKE_MUGEN_CUSTOM_TEMPORARY_GUESTS_REQUIRED: {
+    status: 503,
+    message: 'Enable AllowCustomTemporaryGuests in Karaoke Mugen to apply singer quotas consistently.',
+  },
+  NO_MORE_GUESTS_AVAILABLE: {
+    status: 503,
+    message: 'Karaoke Mugen has no temporary guest accounts available.',
+  },
+};
+
+const providerError = (res: import('express').Response, error?: unknown) => {
+  const code = error instanceof Error ? error.message : '';
+  const known = PROVIDER_ERROR_RESPONSES[code];
+  const status = known?.status ?? 503;
+  return res.status(status).json({
+    status,
+    message:
+      known?.message ??
+      'The connected karaoke service is unavailable. Try again shortly.',
   });
+};
 
 router.get('/status', (_req, res) => {
   return res.status(200).json(karaokeMugenProvider.status());
@@ -51,7 +93,7 @@ router.get('/search', async (req, res) => {
     return res.status(200).json({ results: songs });
   } catch (error) {
     reportProviderFailure('search', error);
-    return providerError(res);
+    return providerError(res, error);
   }
 });
 
@@ -61,7 +103,7 @@ router.get('/session', async (_req, res) => {
     return res.status(200).json({ session: session ?? null });
   } catch (error) {
     reportProviderFailure('session', error);
-    return providerError(res);
+    return providerError(res, error);
   }
 });
 
@@ -85,11 +127,15 @@ router.post('/request', async (req, res) => {
     .slice(0, 48);
 
   try {
-    const result = await karaokeMugenProvider.requestSong(songId, requester);
+    const result = await karaokeMugenProvider.requestSong(
+      songId,
+      requester,
+      req.user!.id
+    );
     return res.status(201).json({ accepted: true, ...result });
   } catch (error) {
     reportProviderFailure('request', error);
-    return providerError(res);
+    return providerError(res, error);
   }
 });
 
@@ -117,7 +163,7 @@ router.post('/control', async (req, res) => {
     return res.status(200).json({ accepted: true });
   } catch (error) {
     reportProviderFailure('control', error);
-    return providerError(res);
+    return providerError(res, error);
   }
 });
 

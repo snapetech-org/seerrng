@@ -1,3 +1,5 @@
+import { createHash } from 'node:crypto';
+import { deburr } from 'lodash';
 import { WebSocket } from 'undici';
 
 export interface KaraokeMugenStatus {
@@ -163,9 +165,16 @@ class KaraokeMugenSocket {
       const values = JSON.parse(match[2]) as unknown;
       const value = Array.isArray(values) ? values[0] : values;
       if (isRecord(value) && value.err === true) {
+        const errorData = isRecord(value.data) ? value.data : undefined;
+        const errorMessage =
+          errorData && isRecord(errorData.message)
+            ? errorData.message
+            : isRecord(value.message)
+              ? value.message
+              : undefined;
         const message =
-          isRecord(value.message) && typeof value.message.code === 'string'
-            ? value.message.code
+          errorMessage && typeof errorMessage.code === 'string'
+            ? errorMessage.code
             : 'The Karaoke Mugen request failed.';
         pending.reject(new Error(message));
         return;
@@ -256,7 +265,7 @@ const songFromProvider = (value: JsonRecord): KaraokeSong | undefined => {
 };
 
 const queueItemFromProvider = (value: JsonRecord): KaraokeQueueItem | undefined => {
-  const id = idText(value.kid) ?? idText(value.playlistcontent_id);
+  const id = idText(value.playlistcontent_id) ?? idText(value.kid);
   const nested = isRecord(value.kara) ? value.kara : value;
   const title =
     localizedTitle(nested.titles) || text(nested.title) || text(value.mediafile);
@@ -375,23 +384,62 @@ export class KaraokeMugenProvider {
     });
   }
 
-  async requestSong(songId: string, requester: string): Promise<{ position?: number }> {
+  async requestSong(
+    songId: string,
+    requester: string,
+    requesterId: number
+  ): Promise<{ position?: number }> {
     return this.withAdmin(async (socket) => {
-      const guest = await socket.call('loginGuest', { name: requester });
-      const guestToken = isRecord(guest) ? text(guest.token) : undefined;
-      if (!guestToken) throw new Error('Karaoke Mugen guest access is unavailable.');
+      const suffix = createHash('sha256')
+        .update(String(requesterId))
+        .digest('hex')
+        .slice(0, 12);
+      const guestName = `SeerrNG ${requester.slice(0, 24)} ${suffix}`;
+      const guestLogin = deburr(
+        guestName
+          .toLowerCase()
+          .replaceAll(' ', '_')
+          .replaceAll('!', '')
+          .replaceAll("'", '')
+          .replaceAll('/', '_')
+          .replaceAll('<', '')
+          .replaceAll('?', '_')
+          .replaceAll('"', '')
+      );
 
-      const playlists = unwrapArray(await socket.call('getPlaylists', {}, guestToken), 'playlists');
-      const publicPlaylist = playlists.find((playlist) => playlist.flag_public === true);
-      const playlistId = publicPlaylist ? idText(publicPlaylist.plaid) : undefined;
-      if (!playlistId) throw new Error('No public karaoke request queue is available.');
+      let guest: unknown;
+      try {
+        guest = await socket.call('login', { username: guestLogin, password: '' });
+      } catch (error) {
+        if (!(error instanceof Error) || error.message !== 'LOG_ERROR') throw error;
+      }
+
+      if (!isRecord(guest) || !text(guest.token)) {
+        try {
+          guest = await socket.call('loginGuest', { name: guestName });
+        } catch (error) {
+          if (!(error instanceof Error) || error.message !== 'USER_ALREADY_EXISTS') {
+            throw error;
+          }
+          guest = await socket.call('login', { username: guestLogin, password: '' });
+        }
+      }
+
+      const guestToken = isRecord(guest) ? text(guest.token) : undefined;
+      const actualGuestLogin = isRecord(guest) ? text(guest.username) : undefined;
+      if (!guestToken) throw new Error('Karaoke Mugen guest access is unavailable.');
+      if (actualGuestLogin !== guestLogin) {
+        throw new Error('KARAOKE_MUGEN_CUSTOM_TEMPORARY_GUESTS_REQUIRED');
+      }
 
       const result = await socket.call(
-        'addKaraToPlaylist',
-        { plaid: playlistId, requester, kids: [songId] },
+        'addKaraToPublicPlaylist',
+        { kids: [songId] },
         guestToken
       );
-      const added = isRecord(result) && isRecord(result.plc) ? result.plc : undefined;
+      const resultData = isRecord(result) && isRecord(result.data) ? result.data : result;
+      const added =
+        isRecord(resultData) && isRecord(resultData.plc) ? resultData.plc : undefined;
       return {
         ...(added && typeof added.pos === 'number' ? { position: added.pos } : {}),
       };

@@ -17,13 +17,13 @@ Set these variables on the SeerrNG server and restart it:
 | Variable | Purpose |
 | --- | --- |
 | **SEERRNG_KARAOKE_MUGEN_URL** | Server-side URL for the Karaoke Mugen Socket.IO endpoint, for example **http://karaoke-mugen:8000**. |
-| **SEERRNG_KARAOKE_MUGEN_USERNAME** | Karaoke Mugen account used for catalogue and session reads. |
+| **SEERRNG_KARAOKE_MUGEN_USERNAME** | Karaoke Mugen operator account used for catalogue, session, and host-control access. |
 | **SEERRNG_KARAOKE_MUGEN_PASSWORD** | Password for that account. It is never returned to the browser. |
 | **SEERRNG_KARAOKE_MUGEN_PLAYER_URL** | Optional URL your browser can open to show the Karaoke Mugen player. This may differ from the server-side URL. |
 
 Keep the server URL reachable only from SeerrNG and trusted services. Use HTTPS when the connection crosses an untrusted network. Leave the integration unconfigured to hide provider actions.
 
-Karaoke Mugen must allow guest sign-in and have a public playlist for requests. Its own session settings control quotas, moderation, collections, and rotation. SeerrNG creates a named guest request for each song so Karaoke Mugen can apply those settings.
+Karaoke Mugen's public interface must be **Open**, **AllowGuestLogin** and **AllowCustomTemporaryGuests** must be enabled, and a public request playlist must exist. SeerrNG creates a stable temporary guest identity per SeerrNG user, based on their display name and a short unique suffix, and reuses it for later requests. That lets Karaoke Mugen apply quotas and other per-singer rules consistently. Requests use its guest-facing public-queue API, so moderation, blacklist, duplicate rules, and rotation remain in force.
 
 ## Use karaoke
 
@@ -31,7 +31,7 @@ Karaoke Mugen must allow guest sign-in and have a public playlist for requests. 
 2. Search by song title or singer.
 3. Check the language, song type, warning badge, and media status.
 4. Request a result to place it in the shared public queue. The Mugen server handles its normal session order and reports the queued position when available.
-5. Hosts with **Manage Requests** can play, pause, or skip from SeerrNG. Open the configured player URL to display lyrics on the karaoke screen.
+5. Users with **Manage Requests** can play, pause, or skip from SeerrNG. Open the configured player URL to display lyrics on the karaoke screen.
 
 A song marked **Remote** is present in Karaoke Mugen's catalogue but not stored locally. Whether it can stream depends on that Mugen repository and its configuration. **Downloading** means it is not yet ready on that instance.
 

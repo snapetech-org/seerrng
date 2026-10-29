@@ -72,7 +72,6 @@ const messages = defineMessages('components.Karaoke', {
   skip: 'Skip',
   controlFailed: 'The player command could not be sent.',
   player: 'Open karaoke display',
-  artist: 'Singer',
   language: 'Language',
   songType: 'Type',
   duration: 'Duration',
@@ -88,6 +87,12 @@ const fetchSession = async (url: string) =>
 
 const fetchResults = async (url: string) =>
   (await axios.get<KaraokeSearchEnvelope>(url)).data;
+
+const responseMessage = (error: unknown): string | undefined => {
+  if (!axios.isAxiosError<{ message?: unknown }>(error)) return undefined;
+  const message = error.response?.data?.message;
+  return typeof message === 'string' ? message : undefined;
+};
 
 const availabilityMessage = (
   availability: KaraokeAvailability,
@@ -185,13 +190,7 @@ const SongRow = ({
   );
 };
 
-const QueueItem = ({
-  item,
-  intl,
-}: {
-  item: KaraokeQueueItemResponse;
-  intl: ReturnType<typeof useIntl>;
-}) => (
+const QueueItem = ({ item }: { item: KaraokeQueueItemResponse }) => (
   <li>
     <article>
       <h3>{item.title}</h3>
@@ -213,7 +212,9 @@ const Karaoke = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [requestingId, setRequestingId] = useState<string>();
   const [notice, setNotice] = useState<string>();
-  const [operationFailed, setOperationFailed] = useState(false);
+  const [operationFailed, setOperationFailed] = useState<
+    'request' | 'control' | undefined
+  >();
 
   const { data: status, error: statusError } = useSWR<KaraokeStatus>(
     '/api/v1/karaoke/status',
@@ -252,7 +253,7 @@ const Karaoke = () => {
   const requestSong = async (songId: string) => {
     setRequestingId(songId);
     setNotice(undefined);
-    setOperationFailed(false);
+    setOperationFailed(undefined);
     try {
       const response = await axios.post<{ position?: number }>(
         '/api/v1/karaoke/request',
@@ -265,9 +266,14 @@ const Karaoke = () => {
               position: response.data.position,
             })
       );
-      await refreshSession();
-    } catch {
-      setOperationFailed(true);
+      void refreshSession();
+    } catch (error) {
+      const message = responseMessage(error);
+      if (message) {
+        setNotice(message);
+      } else {
+        setOperationFailed('request');
+      }
     } finally {
       setRequestingId(undefined);
     }
@@ -275,12 +281,17 @@ const Karaoke = () => {
 
   const sendControl = async (command: 'play' | 'pause' | 'skip') => {
     setNotice(undefined);
-    setOperationFailed(false);
+    setOperationFailed(undefined);
     try {
       await axios.post('/api/v1/karaoke/control', { command });
-      await refreshSession();
-    } catch {
-      setOperationFailed(true);
+      void refreshSession();
+    } catch (error) {
+      const message = responseMessage(error);
+      if (message) {
+        setNotice(message);
+      } else {
+        setOperationFailed('control');
+      }
     }
   };
 
@@ -331,7 +342,6 @@ const Karaoke = () => {
                 <Button
                   buttonType="primary"
                   buttonSize="sm"
-                  buttonIcon="browse"
                   type="submit"
                 >
                   <MagnifyingGlassIcon aria-hidden="true" />
@@ -390,7 +400,7 @@ const Karaoke = () => {
                   {session.current && (
                     <div>
                       <h3>{intl.formatMessage(messages.currentSong)}</h3>
-                      <QueueItem item={session.current} intl={intl} />
+                      <QueueItem item={session.current} />
                     </div>
                   )}
                   <h3>{intl.formatMessage(messages.waitingHeading)}</h3>
@@ -399,7 +409,7 @@ const Karaoke = () => {
                   ) : (
                     <ol>
                       {session.waiting.map((item) => (
-                        <QueueItem key={item.id} item={item} intl={intl} />
+                        <QueueItem key={item.id} item={item} />
                       ))}
                     </ol>
                   )}
@@ -460,7 +470,7 @@ const Karaoke = () => {
         {operationFailed && (
           <Alert
             title={intl.formatMessage(
-              requestingId ? messages.requestFailed : messages.controlFailed
+              operationFailed === 'request' ? messages.requestFailed : messages.controlFailed
             )}
             type="warning"
           />
