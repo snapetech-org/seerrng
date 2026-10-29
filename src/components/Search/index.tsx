@@ -817,7 +817,9 @@ const Search = () => {
           { value: 'all', message: messages.all },
           { value: 'library', message: messages.libraryScope },
           { value: 'requests', message: messages.requestsScope },
-          { value: 'releases', message: messages.releasesScope },
+          ...(hasPermission(Permission.MANAGE_REQUESTS)
+            ? [{ value: 'releases' as const, message: messages.releasesScope }]
+            : []),
         ] as const).map((option) => (
           <button
             key={option.value}
