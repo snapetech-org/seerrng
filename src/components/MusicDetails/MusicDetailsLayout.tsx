@@ -13,6 +13,7 @@ import useDetailDisclosurePins from '@app/hooks/useDetailDisclosurePins';
 import usePlaybackCatalog from '@app/hooks/usePlaybackCatalog';
 import { encodeApiPathSegment } from '@app/utils/apiPath';
 import defineMessages from '@app/utils/defineMessages';
+import { formatDurationMinutes } from '@app/utils/numberHelpers';
 import { resolveCanonicalPlaybackSelection } from '@app/utils/playbackSelection';
 import type { MusicDetails, MusicRatingResponse } from '@server/models/Music';
 import Link from 'next/link';
@@ -284,9 +285,7 @@ const MusicDetailsLayout = ({
                     </dt>
                     <dd className="card:col-start-3 card:row-start-3 m-0 truncate">
                       {runtimeMinutes > 0
-                        ? intl.formatMessage(messages.minutes, {
-                            minutes: runtimeMinutes,
-                          })
+                        ? formatDurationMinutes(runtimeMinutes, intl.locale)
                         : unavailable}
                     </dd>
                     <div className="media-detail-rows media-detail-column-divider card:col-span-1 card:col-start-5 card:row-span-3 card:row-start-1 col-span-2 grid min-w-0 grid-cols-[max-content_minmax(0,1fr)] content-start gap-x-3">

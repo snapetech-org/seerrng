@@ -1,9 +1,9 @@
+import BidiText from '@app/components/Common/BidiText';
 import BookFormatBadge, {
   getBookFormatMessage,
   getRequestedBookFormat,
   type RequestedBookFormat,
 } from '@app/components/Common/BookFormatBadge';
-import BidiText from '@app/components/Common/BidiText';
 import Button from '@app/components/Common/Button';
 import CachedImage from '@app/components/Common/CachedImage';
 import { PageStatus } from '@app/components/Common/LoadingSpinner';
@@ -40,7 +40,10 @@ import {
 import { sortCrewPriority } from '@app/utils/creditHelpers';
 import defineMessages from '@app/utils/defineMessages';
 import { getTmdbPosterImageUrl } from '@app/utils/imageCache';
-import { formatBytes as formatLocalizedBytes } from '@app/utils/numberHelpers';
+import {
+  formatDurationMinutes,
+  formatBytes as formatLocalizedBytes,
+} from '@app/utils/numberHelpers';
 import { Transition } from '@headlessui/react';
 import {
   ArrowDownTrayIcon,
@@ -852,16 +855,14 @@ const getRuntime = (
   if (item.request.type === 'movie') {
     const minutes = (details as MovieDetails).runtime;
     return minutes && Number.isFinite(minutes)
-      ? intl.formatMessage(messages.minutes, { count: minutes })
+      ? formatDurationMinutes(minutes, intl.locale)
       : notAvailable;
   }
   if (item.request.type === 'tv') {
     const minutes = (details as TvDetails).episodeRunTime.find(
       (runtime) => runtime > 0 && Number.isFinite(runtime)
     );
-    return minutes
-      ? intl.formatMessage(messages.minutes, { count: minutes })
-      : notAvailable;
+    return minutes ? formatDurationMinutes(minutes, intl.locale) : notAvailable;
   }
   if (item.request.type === 'music') {
     const milliseconds = (details as MusicDetails).tracks.reduce(
@@ -869,9 +870,7 @@ const getRuntime = (
       0
     );
     return milliseconds > 0
-      ? intl.formatMessage(messages.minutes, {
-          count: Math.round(milliseconds / 60000),
-        })
+      ? formatDurationMinutes(Math.round(milliseconds / 60000), intl.locale)
       : notAvailable;
   }
 

@@ -10,9 +10,9 @@ are inactive and do not count as supported choices.
 
 Run `pnpm i18n:check` to verify the extracted English source, generated locale
 artifacts, and all selectable client and server catalogs. The catalog report
-shows direct translations, English-identical values, missing values, parent
-inheritance, plural warnings, and each locale's review status. It does not
-equate structural coverage with translation quality.
+shows direct translations, inherited values, reviewed/draft/unreviewed counts,
+approved English fallback, unaccounted gaps, plural warnings, and locale review
+status. It does not equate structural coverage with translation quality.
 
 ## Coverage and review status
 
@@ -22,18 +22,30 @@ selectable non-English catalogs ranged from 0 to 21.8%. Server coverage was
 also partial, with 12 empty non-English catalogs. These counts describe
 catalog contents only.
 
+After this implementation pass, the extracted source has 6,847 client and 89
+server messages. The current checker reports 13,681 catalog issues and 519
+plural-category warnings across the selectable locales. The normal check keeps
+these visible without blocking the existing partial-catalog build; strict
+coverage, plural, structure, and review modes are separate gates.
+
 All non-English registry entries remain marked `unreviewed` until human
-linguistic review is recorded. The Settings language picker warns that a
-selected catalog may still show English text. The English fallback manifest
-contains only explicit temporary exceptions, with an owner, reason, expiry,
-and source hash. Do not copy English strings into translation files to make
-coverage appear complete.
+linguistic review is recorded. `config/i18n/catalog-provenance.json` supplies
+an explicit legacy-unreviewed default and sparse per-message, per-locale
+overrides. Overrides bind both source and translated text hashes, so either
+edit invalidates the record. No existing entry is marked reviewed or machine
+draft. The Settings language picker warns that a selected catalog may still
+show English text. The English fallback manifest contains only explicit
+temporary exceptions, with an owner, reason, expiry, source hash, and catalog
+domain. Do not copy English strings into translation files to make coverage
+appear complete.
 
 Use the strict audit when a reviewed translation batch is ready:
 
-- `pnpm i18n:catalogs:strict` rejects missing or English-identical values,
-  malformed ICU, argument/tag/token mismatches, unregistered catalogs, and
-  incomplete plural categories.
+- `pnpm i18n:catalogs:strict` rejects unaccounted missing or English-identical
+  values, malformed ICU, argument/tag/token mismatches, unregistered catalogs,
+  and incomplete plural categories.
+- `pnpm i18n:catalogs:review` is the human-review gate. It stays red until
+  every translated value has a current message-level review record.
 - `pnpm i18n:registry` regenerates the server locale types and lazy client
   loader from the registry. `pnpm i18n:registry:check` checks that generated
   files are current.
@@ -61,12 +73,19 @@ the default follows the display language.
 
 The server-rendered document now chooses `lang`/`dir` from a validated
 locale-hint cookie, falling back to `Accept-Language`. The cookie is a
-presentation hint, not authentication state. The Next page renderer does not
+presentation hint, not authentication state. A blank per-user display-language
+setting follows `navigator.languages`; its region is used for formatting until
+the user chooses an explicit regional override. The inferred values are not
+written back as explicit preferences. The Next page renderer does not
 load the authenticated user session, and app translations are still loaded
 client-side, so this does not guarantee the user's saved locale on a first
 request or render translated text on the server. Full authenticated SSR locale
 hydration remains open. App-wide RTL layout and notification rendering also
 need rendered review; the direction attribute alone is not RTL acceptance.
+
+Runtime durations, playtime, byte quantities, numeric metrics, and selected
+natural-language lists now use shared Intl/CLDR formatting. Canonical API,
+storage, and provider values remain unchanged.
 
 Shared CSS and production component utilities now use logical inline alignment,
 spacing, borders, and menu anchoring across the touched flows. Physical

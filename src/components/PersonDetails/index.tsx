@@ -13,6 +13,7 @@ import { Permission, useUser } from '@app/hooks/useUser';
 import globalMessages from '@app/i18n/globalMessages';
 import ErrorPage from '@app/pages/_error';
 import defineMessages from '@app/utils/defineMessages';
+import { formatLocalizedList } from '@app/utils/numberHelpers';
 import { CircleStackIcon } from '@heroicons/react/24/solid';
 import type { PersonCombinedCreditsResponse } from '@server/interfaces/api/personInterfaces';
 import type { PersonMovieBulkRequestResponse } from '@server/interfaces/api/requestInterfaces';
@@ -80,11 +81,14 @@ const PersonDetails = () => {
 
     const reduced = Object.values(grouped).map((objs) => ({
       ...objs[0],
-      character: objs.map((pos) => pos.character).join(', '),
+      character: formatLocalizedList(
+        objs.map((pos) => pos.character),
+        intl.locale
+      ),
     }));
 
     return reduced;
-  }, [combinedCredits, currentMediaType]);
+  }, [combinedCredits, currentMediaType, intl.locale]);
 
   const sortedCrew = useMemo(() => {
     const filtered = (combinedCredits?.crew ?? []).filter(
@@ -95,11 +99,14 @@ const PersonDetails = () => {
 
     const reduced = Object.values(grouped).map((objs) => ({
       ...objs[0],
-      job: objs.map((pos) => pos.job).join(', '),
+      job: formatLocalizedList(
+        objs.map((pos) => pos.job),
+        intl.locale
+      ),
     }));
 
     return reduced;
-  }, [combinedCredits, currentMediaType]);
+  }, [combinedCredits, currentMediaType, intl.locale]);
 
   const movieIds = useMemo(() => {
     const movies = [

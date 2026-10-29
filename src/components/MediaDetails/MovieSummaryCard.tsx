@@ -4,6 +4,7 @@ import AvailabilityValue from '@app/components/MediaDetails/AvailabilityValue';
 import useSettings from '@app/hooks/useSettings';
 import defineMessages from '@app/utils/defineMessages';
 import { getTmdbPosterImageUrl } from '@app/utils/imageCache';
+import { formatDurationMinutes } from '@app/utils/numberHelpers';
 import { getViewerAvailabilityPresentation } from '@app/utils/viewerAvailabilityPresentation';
 import { MediaStatus } from '@server/constants/media';
 import type { MovieDetails } from '@server/models/Movie';
@@ -220,9 +221,7 @@ const MovieSummaryCard = ({
               </dt>
               <dd className="card:col-start-3 card:row-start-3 m-0 truncate">
                 {data.runtime
-                  ? intl.formatMessage(messages.minutes, {
-                      minutes: data.runtime,
-                    })
+                  ? formatDurationMinutes(data.runtime, intl.locale)
                   : unavailable}
               </dd>
               <div className="media-detail-rows media-detail-column-divider card:col-span-1 card:col-start-5 card:row-span-3 card:row-start-1 col-span-2 grid min-w-0 grid-cols-[max-content_minmax(0,1fr)] content-start gap-x-3">

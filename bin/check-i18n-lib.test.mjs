@@ -4,6 +4,13 @@ import { createRequire } from 'node:module';
 import path from 'node:path';
 import test from 'node:test';
 import { fileURLToPath } from 'node:url';
+import {
+  classifyCatalogEntry,
+  getFallbackEntry,
+  hasUnreviewedTranslations,
+  isValidProvenanceEntry,
+  matchesProvenanceFingerprints,
+} from './check-i18n-catalogs-lib.mjs';
 
 const require = createRequire(import.meta.url);
 const { getLocaleDifferences } = require('./check-i18n-lib.js');
@@ -222,6 +229,112 @@ test('reports stale English message overrides with both values', () => {
         extracted: 'Report an Issue',
       },
     ]
+  );
+});
+
+test('fallback authorization is scoped to both catalog domain and message id', () => {
+  const fallbacks = new Map([
+    ['client:shared.message', { domain: 'client', id: 'shared.message' }],
+  ]);
+
+  assert.ok(getFallbackEntry(fallbacks, 'client', 'shared.message'));
+  assert.equal(
+    getFallbackEntry(fallbacks, 'server', 'shared.message'),
+    undefined
+  );
+});
+
+test('parent translations and approved English fallbacks satisfy coverage', () => {
+  assert.deepEqual(
+    classifyCatalogEntry({
+      hasValue: false,
+      sourceValue: 'Search',
+      hasParentTranslation: true,
+    }),
+    { kind: 'inherited', coverageGap: false }
+  );
+  assert.deepEqual(
+    classifyCatalogEntry({
+      hasValue: false,
+      sourceValue: 'Search',
+      hasFallback: true,
+    }),
+    { kind: 'intentionallyEnglish', coverageGap: false }
+  );
+});
+
+test('unlisted English and empty values remain explicit coverage gaps', () => {
+  assert.equal(
+    classifyCatalogEntry({
+      hasValue: true,
+      value: 'Search',
+      sourceValue: 'Search',
+    }).coverageGap,
+    true
+  );
+  assert.equal(
+    classifyCatalogEntry({
+      hasValue: true,
+      value: '   ',
+      sourceValue: 'Search',
+      hasFallback: true,
+    }).kind,
+    'empty'
+  );
+  assert.equal(
+    classifyCatalogEntry({
+      hasValue: true,
+      value: 'Plex',
+      sourceValue: 'Plex',
+      reviewStatus: 'reviewed',
+    }).coverageGap,
+    false
+  );
+});
+
+test('draft translations still require human review', () => {
+  const state = classifyCatalogEntry({
+    hasValue: true,
+    value: 'Rechercher',
+    sourceValue: 'Search',
+    reviewStatus: 'draft',
+  });
+
+  assert.equal(state.reviewStatus, 'draft');
+  assert.equal(hasUnreviewedTranslations({ unreviewed: 0, draft: 1 }), true);
+  assert.equal(hasUnreviewedTranslations({ unreviewed: 0, draft: 0 }), false);
+});
+
+test('catalog review provenance must match a source and target fingerprint', () => {
+  const valid = {
+    domain: 'client',
+    locale: 'fr',
+    id: 'common.search',
+    sourceHash: 'a'.repeat(64),
+    targetHash: 'b'.repeat(64),
+    status: 'reviewed',
+    provenance: 'human-review',
+    reviewer: 'reviewer@example.test',
+    reviewedAt: '2026-10-29',
+  };
+
+  assert.equal(isValidProvenanceEntry(valid), true);
+  assert.equal(
+    isValidProvenanceEntry({ ...valid, targetHash: 'changed' }),
+    false
+  );
+  assert.equal(isValidProvenanceEntry({ ...valid, reviewer: '  ' }), false);
+  assert.equal(
+    isValidProvenanceEntry({ ...valid, reviewedAt: '2026-02-30' }),
+    false
+  );
+  assert.equal(
+    matchesProvenanceFingerprints(valid, 'a'.repeat(64), 'b'.repeat(64)),
+    true
+  );
+  assert.equal(
+    matchesProvenanceFingerprints(valid, 'c'.repeat(64), 'b'.repeat(64)),
+    false
   );
 });
 

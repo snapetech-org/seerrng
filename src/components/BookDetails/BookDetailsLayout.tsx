@@ -13,6 +13,7 @@ import usePlaybackCatalog from '@app/hooks/usePlaybackCatalog';
 import { encodeApiPathSegment } from '@app/utils/apiPath';
 import { normalizeBookOverviewMarkdown } from '@app/utils/bookMarkdown';
 import defineMessages from '@app/utils/defineMessages';
+import { formatLocalizedList } from '@app/utils/numberHelpers';
 import { resolveCanonicalPlaybackSelection } from '@app/utils/playbackSelection';
 import { getSafeMarkdownHref } from '@app/utils/safeUrl';
 import type { BookDetails, BookRatingResponse } from '@server/models/Book';
@@ -244,7 +245,10 @@ const BookDetailsLayout = ({
                       </dt>
                       <dd className="m-0 truncate">
                         {selectedPlaybackFormat === 'audiobook' ? (
-                          data.narrators?.join(', ') || unavailable
+                          formatLocalizedList(
+                            data.narrators ?? [],
+                            intl.locale
+                          ) || unavailable
                         ) : data.author ? (
                           authorId ? (
                             <Link

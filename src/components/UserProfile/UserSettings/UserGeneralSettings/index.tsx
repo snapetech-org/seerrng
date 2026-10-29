@@ -18,6 +18,8 @@ import { getPositiveQueryParamNumber } from '@app/hooks/useUpdateQueryParams';
 import { Permission, UserType, useUser } from '@app/hooks/useUser';
 import globalMessages from '@app/i18n/globalMessages';
 import ErrorPage from '@app/pages/_error';
+import type { BrowserLocalePreference } from '@app/utils/browserLocale';
+import { getBrowserLocalePreference } from '@app/utils/browserLocale';
 import defineMessages from '@app/utils/defineMessages';
 import { setLocaleHintCookie } from '@app/utils/localeHint';
 import { ArrowDownOnSquareIcon } from '@heroicons/react/24/outline';
@@ -77,6 +79,7 @@ const messages = defineMessages(
     enableOverride: 'Override Global Limit',
     applanguage: 'Display Language',
     languageDefault: 'Default ({language})',
+    languageBrowserDefault: 'Use Browser Language ({language})',
     metadataLanguage: 'Metadata Language',
     metadataLanguageDefault: 'Use Display Language',
     metadataLanguageTip:
@@ -149,6 +152,8 @@ const UserGeneralSettings = () => {
   const intl = useIntl();
   const { addToast } = useToasts();
   const { locale, setLocale, setFormatRegion } = useLocale();
+  const [browserPreference, setBrowserPreference] =
+    useState<BrowserLocalePreference>();
   const [movieQuotaEnabled, setMovieQuotaEnabled] = useState(false);
   const [tvQuotaEnabled, setTvQuotaEnabled] = useState(false);
   const [musicQuotaEnabled, setMusicQuotaEnabled] = useState(false);
@@ -168,6 +173,9 @@ const UserGeneralSettings = () => {
   const { user: currentUser, hasPermission: currentHasPermission } = useUser();
   const { currentSettings } = useSettings();
   const isAdminTarget = hasPermission(Permission.ADMIN);
+  useEffect(() => {
+    setBrowserPreference(getBrowserLocalePreference());
+  }, []);
   const {
     data,
     error,
@@ -460,10 +468,16 @@ const UserGeneralSettings = () => {
 
             if (currentUser?.id === user?.id) {
               const nextLocale = (values.locale ||
+                browserPreference?.locale ||
                 currentSettings.locale) as AvailableLocale;
               setLocale?.(nextLocale);
               setLocaleHintCookie(nextLocale);
-              setFormatRegion?.(values.formatRegion || null);
+              setFormatRegion?.(
+                values.formatRegion ||
+                  (!values.locale
+                    ? (browserPreference?.formatRegion ?? null)
+                    : null)
+              );
             }
 
             addToast(intl.formatMessage(messages.toastSettingsSuccess), {
@@ -614,10 +628,11 @@ const UserGeneralSettings = () => {
                   <div className="form-input-field">
                     <Field as="select" id="locale" name="locale">
                       <option value="" lang={locale}>
-                        {intl.formatMessage(messages.languageDefault, {
+                        {intl.formatMessage(messages.languageBrowserDefault, {
                           language:
                             availableLanguages[
-                              currentSettings.locale as keyof typeof availableLanguages
+                              (browserPreference?.locale ??
+                                currentSettings.locale) as keyof typeof availableLanguages
                             ]?.display ?? availableLanguages.en.display,
                         })}
                       </option>
@@ -636,7 +651,9 @@ const UserGeneralSettings = () => {
                       ))}
                     </Field>
                   </div>
-                  {(values.locale || currentSettings.locale) !== 'en' && (
+                  {(values.locale ||
+                    browserPreference?.locale ||
+                    currentSettings.locale) !== 'en' && (
                     <span className="label-tip">
                       {intl.formatMessage(messages.translationStatusNotice)}
                     </span>

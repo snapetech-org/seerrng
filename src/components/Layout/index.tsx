@@ -14,6 +14,7 @@ import useLocale from '@app/hooks/useLocale';
 import useSettings from '@app/hooks/useSettings';
 import { Permission, useUser } from '@app/hooks/useUser';
 import globalMessages from '@app/i18n/globalMessages';
+import { getBrowserLocalePreference } from '@app/utils/browserLocale';
 import { setLocaleHintCookie } from '@app/utils/localeHint';
 import {
   DISCOVER_MEDIA_TYPES,
@@ -67,12 +68,17 @@ const Layout = ({ children }: LayoutProps) => {
 
   useEffect(() => {
     if (setLocale && user) {
-      const preferredLocale = (
-        user.settings?.locale || currentSettings.locale
-      ) as AvailableLocale;
+      const browserPreference = getBrowserLocalePreference();
+      const hasSavedLocale = Boolean(user.settings?.locale);
+      const preferredLocale = (user.settings?.locale ||
+        browserPreference.locale ||
+        currentSettings.locale) as AvailableLocale;
       setLocale(preferredLocale);
       setLocaleHintCookie(preferredLocale);
-      setFormatRegion?.(user.settings?.formatRegion ?? null);
+      setFormatRegion?.(
+        user.settings?.formatRegion ??
+          (!hasSavedLocale ? browserPreference.formatRegion : null)
+      );
     }
   }, [setLocale, setFormatRegion, currentSettings.locale, user]);
 

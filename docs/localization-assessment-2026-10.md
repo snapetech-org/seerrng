@@ -215,3 +215,37 @@ email-template rendering checks. `i18n:check` exits successfully but reports
 unreviewed. The OpenAPI file parses as 3.0.2 with 479 paths and 271 schemas
 after removing a duplicated trailing document fragment. Rendered desktop/mobile
 baseline comparison and accessibility review remain unverified.
+
+## Implementation continuation (2026-10-29)
+
+The current extracted source contains 6,847 client messages and 89 server
+messages. The catalog checker now scopes English fallback keys by domain and
+message, distinguishes direct translations from regional inheritance and
+approved English fallback, and reports reviewed, draft, unreviewed, and
+unaccounted counts separately. Per-message/per-locale provenance overrides
+bind English and translated text hashes; unrecorded legacy entries default to
+`unreviewed`. No translation has been marked human-reviewed or machine-draft.
+The new `i18n:catalogs:review` command is an explicit linguistic-review gate.
+
+An empty display-language preference now follows the browser's preferred
+language list and uses its region for formatting without persisting inferred
+preferences. Runtime durations and playtime, byte quantities, numeric metrics,
+selected natural-language lists, and request-history dates now use shared
+Intl/CLDR formatting. Canonical API and stored values are unchanged.
+
+Validation on this continuation passed the production Next build, server and
+client TypeScript checks, focused ESLint and Prettier checks, 14 Vitest tests,
+and 7 localization-tooling Node tests. The locale registry check passes. The
+catalog report still exits successfully in normal mode while showing 13,681
+catalog issues and 519 plural-category warnings; these are existing coverage,
+extra-key, contract, and plural debts, not language-quality approval. The
+environment provides pnpm 11.25.0 while the repository requires pnpm 10, so
+the equivalent installed local binaries were used for these checks.
+
+A Playwright test now covers browser-default Arabic and RTL settings at desktop
+and phone widths, with screenshots saved by the test when run. It could not be
+executed here because the Playwright Chromium binary is absent and the browser
+download returned a corrupt empty archive. Rendered RTL baseline comparison,
+screen-reader and keyboard review, and human translation review therefore
+remain open. No hosted CI was dispatched; the repository requires private
+ephemeral JIT runners.

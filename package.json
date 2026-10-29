@@ -65,7 +65,8 @@
     "i18n:registry": "node bin/generate-i18n-registry.js --write",
     "i18n:registry:check": "node bin/generate-i18n-registry.js --check",
     "i18n:catalogs": "node bin/check-i18n-catalogs.mjs",
-    "i18n:catalogs:strict": "node bin/check-i18n-catalogs.mjs --strict --strict-coverage --strict-plurals"
+    "i18n:catalogs:strict": "node bin/check-i18n-catalogs.mjs --strict --strict-coverage --strict-plurals",
+    "i18n:catalogs:review": "node bin/check-i18n-catalogs.mjs --strict-review"
   },
   "repository": {
     "type": "git",

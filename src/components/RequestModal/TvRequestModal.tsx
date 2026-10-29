@@ -34,6 +34,10 @@ import { sortCrewPriority } from '@app/utils/creditHelpers';
 import defineMessages from '@app/utils/defineMessages';
 import { getTmdbPosterImageUrl } from '@app/utils/imageCache';
 import {
+  formatDurationMinutes,
+  formatLocalizedList,
+} from '@app/utils/numberHelpers';
+import {
   getAvailableEpisodesBySeason,
   getDefaultUnavailableSeasonSelections,
   getRequestableTvSelections,
@@ -1323,7 +1327,7 @@ const TvRequestModal = ({
                     </dt>
                     <dd className="card-table-value">
                       {runtime
-                        ? `${intl.formatNumber(runtime)} minutes`
+                        ? formatDurationMinutes(runtime, intl.locale)
                         : notAvailable}
                     </dd>
                     <div className="card-table media-detail-column-divider">
@@ -1350,10 +1354,10 @@ const TvRequestModal = ({
                       data-lines="2"
                     >
                       {data?.genres?.length
-                        ? data.genres
-                            .slice(0, 3)
-                            .map((genre) => genre.name)
-                            .join(', ')
+                        ? formatLocalizedList(
+                            data.genres.slice(0, 3).map((genre) => genre.name),
+                            intl.locale
+                          )
                         : notAvailable}
                     </dd>
                   </dl>

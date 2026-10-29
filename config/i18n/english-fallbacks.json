@@ -3,6 +3,30 @@
   "entries": [
     {
       "domain": "client",
+      "id": "components.GameLibrary.formattedCombinedPlaytime",
+      "sourceHash": "c19e41349f684fbcca15bcd8414959c8decbc794d69c721b9e4c7480412cb26b",
+      "owner": "localization-maintainers",
+      "reason": "Locale-aware duration text is used until each selected locale provides a reviewed translation.",
+      "expiresOn": "2027-10-29"
+    },
+    {
+      "domain": "client",
+      "id": "components.GameLibrary.formattedPlaytime",
+      "sourceHash": "d6d3ba3b82e41522ee03a4673d882a6841d10a0f624a7fa8987967ef8d8ab0cc",
+      "owner": "localization-maintainers",
+      "reason": "Locale-aware duration text is used until each selected locale provides a reviewed translation.",
+      "expiresOn": "2027-10-29"
+    },
+    {
+      "domain": "client",
+      "id": "components.UserProfile.UserSettings.UserGeneralSettings.languageBrowserDefault",
+      "sourceHash": "8ad01fea965329309d7356dd4f95919ed20aceac2b621cc41d42b5f2981b45b4",
+      "owner": "localization-maintainers",
+      "reason": "The browser-default option is new and remains visible in English until a locale-specific translation is reviewed.",
+      "expiresOn": "2027-10-29"
+    },
+    {
+      "domain": "client",
       "id": "components.UserProfile.UserSettings.UserGeneralSettings.metadataLanguage",
       "sourceHash": "97d5504a944ee9321cdf872df22e3a418b8c2cf9fa80d1e27dbb9022882ee9a1",
       "owner": "localization-maintainers",

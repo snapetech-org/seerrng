@@ -2,9 +2,17 @@
 /* eslint-disable no-console */
 import { createHash } from 'node:crypto';
 import fs from 'node:fs';
-import path from 'node:path';
 import { createRequire } from 'node:module';
+import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import {
+  classifyCatalogEntry,
+  getFallbackEntry,
+  getProvenanceKey,
+  hasUnreviewedTranslations,
+  isValidProvenanceEntry,
+  matchesProvenanceFingerprints,
+} from './check-i18n-catalogs-lib.mjs';
 
 const require = createRequire(import.meta.url);
 const { parse } = require('@formatjs/icu-messageformat-parser');
@@ -13,9 +21,7 @@ const config = JSON.parse(
   fs.readFileSync(path.join(root, 'config/i18n/locales.json'), 'utf8')
 );
 const sourceSnapshotPath = path.join(root, 'config/i18n/source-snapshot.json');
-const sourceSnapshot = JSON.parse(
-  fs.readFileSync(sourceSnapshotPath, 'utf8')
-);
+const sourceSnapshot = JSON.parse(fs.readFileSync(sourceSnapshotPath, 'utf8'));
 if (
   sourceSnapshot.schemaVersion !== 1 ||
   sourceSnapshot.algorithm !== 'sha256' ||
@@ -32,10 +38,15 @@ const fallbackPath = path.join(root, 'config/i18n/english-fallbacks.json');
 const fallbackManifest = fs.existsSync(fallbackPath)
   ? JSON.parse(fs.readFileSync(fallbackPath, 'utf8'))
   : { schemaVersion: 1, entries: [] };
+const provenancePath = path.join(root, 'config/i18n/catalog-provenance.json');
+const provenanceManifest = fs.existsSync(provenancePath)
+  ? JSON.parse(fs.readFileSync(provenancePath, 'utf8'))
+  : { schemaVersion: 1, entries: [] };
 const flags = new Set(process.argv.slice(2));
 const strict = flags.has('--strict');
 const strictCoverage = flags.has('--strict-coverage');
 const strictPlurals = flags.has('--strict-plurals');
+const strictReview = flags.has('--strict-review');
 const jsonOutput = flags.has('--json');
 const problems = [];
 const pluralWarnings = [];
@@ -53,7 +64,7 @@ const readCatalog = (domain, locale) => {
   try {
     value = JSON.parse(fs.readFileSync(fullPath, 'utf8'));
   } catch (error) {
-    throw new Error(fullPath + ': ' + error.message);
+    throw new Error(fullPath + ': ' + error.message, { cause: error });
   }
   if (!value || typeof value !== 'object' || Array.isArray(value)) {
     throw new Error(fullPath + ': expected a JSON object');
@@ -66,12 +77,15 @@ const addProblem = (domain, locale, id, kind, detail) => {
   problems.push({ domain, locale, id, kind, detail });
 };
 
-const collectContract = (nodes, contract = {
-  args: new Set(),
-  tags: new Set(),
-  code: [],
-  plurals: [],
-}) => {
+const collectContract = (
+  nodes,
+  contract = {
+    args: new Set(),
+    tags: new Set(),
+    code: [],
+    plurals: [],
+  }
+) => {
   for (const node of nodes) {
     if (node.type === 1) contract.args.add(node.value + ':argument');
     else if (node.type >= 2 && node.type <= 4) {
@@ -139,13 +153,72 @@ const urlTokens = (message) =>
 const hashSource = (message) =>
   createHash('sha256').update(message, 'utf8').digest('hex');
 
+const provenanceEntries = new Map();
+if (
+  provenanceManifest.schemaVersion !== 1 ||
+  provenanceManifest.defaultStatus !== 'unreviewed' ||
+  provenanceManifest.defaultProvenance !== 'legacy-catalog' ||
+  !Array.isArray(provenanceManifest.entries)
+) {
+  throw new Error('Invalid config/i18n/catalog-provenance.json schema.');
+}
+for (const entry of provenanceManifest.entries) {
+  const key =
+    entry &&
+    typeof entry.domain === 'string' &&
+    typeof entry.locale === 'string' &&
+    typeof entry.id === 'string'
+      ? getProvenanceKey(entry.domain, entry.locale, entry.id)
+      : '';
+  if (!isValidProvenanceEntry(entry) || !key || provenanceEntries.has(key)) {
+    throw new Error('Invalid or duplicate catalog provenance entry.');
+  }
+  const locale = config.locales.find((item) => item.tag === entry.locale);
+  if (!locale || entry.locale === config.baseLocale) {
+    throw new Error(
+      'Provenance entry uses an unknown or source locale: ' + key
+    );
+  }
+  const sourceLocale = config.locales.find(
+    (item) => item.tag === config.baseLocale
+  );
+  if (!sourceLocale)
+    throw new Error('Base locale is missing from the registry.');
+  const sourceMessage = readCatalog(entry.domain, sourceLocale)[entry.id];
+  const targetMessage = readCatalog(entry.domain, locale)[entry.id];
+  if (
+    typeof sourceMessage !== 'string' ||
+    typeof targetMessage !== 'string' ||
+    !targetMessage.trim() ||
+    !matchesProvenanceFingerprints(
+      entry,
+      hashSource(sourceMessage),
+      hashSource(targetMessage)
+    )
+  ) {
+    addProblem(
+      entry.domain,
+      entry.locale,
+      entry.id,
+      'stale-provenance',
+      'Source or target text changed; re-review this message before restoring its provenance.'
+    );
+    continue;
+  }
+  provenanceEntries.set(key, entry);
+}
+
 const fallbackEntries = new Map();
-if (fallbackManifest.schemaVersion !== 1 || !Array.isArray(fallbackManifest.entries)) {
+if (
+  fallbackManifest.schemaVersion !== 1 ||
+  !Array.isArray(fallbackManifest.entries)
+) {
   throw new Error('Invalid config/i18n/english-fallbacks.json schema.');
 }
 for (const entry of fallbackManifest.entries) {
   if (
     !entry ||
+    !['client', 'server'].includes(entry.domain) ||
     typeof entry.id !== 'string' ||
     typeof entry.sourceHash !== 'string' ||
     typeof entry.owner !== 'string' ||
@@ -155,7 +228,7 @@ for (const entry of fallbackManifest.entries) {
     typeof entry.expiresOn !== 'string' ||
     !/^\d{4}-\d{2}-\d{2}$/.test(entry.expiresOn) ||
     !/^[a-f0-9]{64}$/i.test(entry.sourceHash) ||
-    fallbackEntries.has(entry.id)
+    fallbackEntries.has(`${entry.domain}:${entry.id}`)
   ) {
     throw new Error('Invalid or duplicate English fallback entry.');
   }
@@ -163,14 +236,15 @@ for (const entry of fallbackManifest.entries) {
   if (!Number.isFinite(expiry) || expiry < Date.now()) {
     throw new Error('Expired English fallback: ' + entry.id);
   }
-  fallbackEntries.set(entry.id, entry);
+  fallbackEntries.set(`${entry.domain}:${entry.id}`, entry);
 }
 
 for (const domain of ['client', 'server']) {
   const sourceLocale = config.locales.find(
     (locale) => locale.tag === config.baseLocale
   );
-  if (!sourceLocale) throw new Error('Base locale is missing from the registry.');
+  if (!sourceLocale)
+    throw new Error('Base locale is missing from the registry.');
   const source = readCatalog(domain, sourceLocale);
   const sourceEntries = Object.entries(source);
   const sourceIds = new Set(sourceEntries.map(([id]) => id));
@@ -217,19 +291,24 @@ for (const domain of ['client', 'server']) {
     try {
       sourceContracts.set(id, collectContract(parse(message)));
     } catch (error) {
-      addProblem(domain, config.baseLocale, id, 'invalid-source-icu', error.message);
+      addProblem(
+        domain,
+        config.baseLocale,
+        id,
+        'invalid-source-icu',
+        error.message
+      );
     }
   }
 
   for (const entry of fallbackManifest.entries) {
-    if (entry.domain && entry.domain !== domain) continue;
+    if (entry.domain !== domain) continue;
     if (!sourceIds.has(entry.id)) {
       addProblem(
         domain,
         config.baseLocale,
         entry.id,
         'stale-fallback',
-    'stale-source',
         'Fallback key is not in the English source catalog.'
       );
       continue;
@@ -244,6 +323,28 @@ for (const domain of ['client', 'server']) {
       );
     }
   }
+
+  const findParentTranslation = (locale, id, sourceMessage) => {
+    let parentTag = locale.fallback;
+    const visited = new Set();
+    while (parentTag && parentTag !== config.baseLocale) {
+      if (visited.has(parentTag)) break;
+      visited.add(parentTag);
+      const parent = config.locales.find((item) => item.tag === parentTag);
+      if (!parent) break;
+      const parentCatalog = readCatalog(domain, parent);
+      const message = parentCatalog[id];
+      if (
+        typeof message === 'string' &&
+        message.trim() &&
+        message !== sourceMessage
+      ) {
+        return { locale: parent, message };
+      }
+      parentTag = parent.fallback;
+    }
+    return undefined;
+  };
 
   const directory =
     domain === 'client' ? 'src/i18n/locale' : 'server/i18n/locale';
@@ -271,18 +372,21 @@ for (const domain of ['client', 'server']) {
   for (const locale of config.locales) {
     const translated = readCatalog(domain, locale);
     const translatedIds = Object.keys(translated);
-    const translatedIdSet = new Set(translatedIds);
     const report = {
       domain,
       locale: locale.tag,
       reviewStatus: locale.reviewStatus,
       total: sourceIds.size,
       translatedDirect: 0,
+      reviewed: 0,
+      draft: 0,
+      unreviewed: 0,
       identicalToEnglish: 0,
       intentionallyEnglish: 0,
       missing: 0,
       empty: 0,
       inheritedFromParent: 0,
+      coverageGaps: 0,
       extra: 0,
       invalidIcu: 0,
       contractMismatch: 0,
@@ -306,34 +410,50 @@ for (const domain of ['client', 'server']) {
     for (const [id, sourceMessage] of sourceEntries) {
       const hasValue = Object.prototype.hasOwnProperty.call(translated, id);
       const targetMessage = translated[id];
-      const fallbackEntry = fallbackEntries.get(id);
-      if (!hasValue) {
+      const fallbackEntry = getFallbackEntry(fallbackEntries, domain, id);
+      const isSelectableTranslation = locale.tag !== config.baseLocale;
+      const parentTranslation =
+        isSelectableTranslation && !hasValue
+          ? findParentTranslation(locale, id, sourceMessage)
+          : undefined;
+      const provenance = provenanceEntries.get(
+        getProvenanceKey(domain, locale.tag, id)
+      );
+      const state = classifyCatalogEntry({
+        hasValue,
+        value: targetMessage,
+        sourceValue: sourceMessage,
+        hasParentTranslation: Boolean(parentTranslation),
+        hasFallback: isSelectableTranslation && Boolean(fallbackEntry),
+        reviewStatus: provenance?.status,
+      });
+
+      if (state.kind === 'missing') {
         report.missing++;
-        let parentTag = locale.fallback;
-        while (parentTag && parentTag !== config.baseLocale) {
-          const parent = config.locales.find((item) => item.tag === parentTag);
-          if (!parent) break;
-          const parentCatalog = readCatalog(domain, parent);
-          if (
-            typeof parentCatalog[id] === 'string' &&
-            parentCatalog[id].trim() &&
-            parentCatalog[id] !== sourceMessage
-          ) {
-            report.inheritedFromParent++;
-            break;
-          }
-          parentTag = parent.fallback;
-        }
-        if (locale.tag !== config.baseLocale && fallbackEntry) {
-          report.intentionallyEnglish++;
-        }
+        report.coverageGaps++;
         continue;
       }
-      if (typeof targetMessage !== 'string' || !targetMessage.trim()) {
+      if (state.kind === 'inherited') {
+        report.missing++;
+        report.inheritedFromParent++;
+        const parentProvenance = provenanceEntries.get(
+          getProvenanceKey(domain, parentTranslation.locale.tag, id)
+        );
+        const reviewStatus = parentProvenance?.status || 'unreviewed';
+        report[reviewStatus]++;
+        continue;
+      }
+      if (state.kind === 'intentionallyEnglish') {
+        report[
+          isSelectableTranslation
+            ? 'intentionallyEnglish'
+            : 'identicalToEnglish'
+        ]++;
+        continue;
+      }
+      if (state.kind === 'empty') {
         report.empty++;
-        if (locale.tag !== config.baseLocale && fallbackEntry) {
-          report.intentionallyEnglish++;
-        }
+        if (isSelectableTranslation) report.coverageGaps++;
         addProblem(
           domain,
           locale.tag,
@@ -343,13 +463,15 @@ for (const domain of ['client', 'server']) {
         );
         continue;
       }
-      if (targetMessage === sourceMessage) {
+      if (state.kind === 'identicalToEnglish') {
         report.identicalToEnglish++;
-        if (locale.tag !== config.baseLocale && fallbackEntry) {
-          report.intentionallyEnglish++;
+        if (isSelectableTranslation) {
+          report[state.reviewStatus]++;
+          if (state.coverageGap) report.coverageGaps++;
         }
       } else {
         report.translatedDirect++;
+        if (isSelectableTranslation) report[state.reviewStatus]++;
       }
 
       let targetContract;
@@ -362,9 +484,9 @@ for (const domain of ['client', 'server']) {
       }
       const sourceContract = sourceContracts.get(id);
       if (
-        sourceContract &&
-        JSON.stringify(targetContract.args) !==
-          JSON.stringify(sourceContract.args) ||
+        (sourceContract &&
+          JSON.stringify(targetContract.args) !==
+            JSON.stringify(sourceContract.args)) ||
         JSON.stringify(targetContract.tags) !==
           JSON.stringify(sourceContract.tags)
       ) {
@@ -378,9 +500,9 @@ for (const domain of ['client', 'server']) {
         );
       }
       if (
-        sourceContract &&
-        JSON.stringify(targetContract.code) !==
-          JSON.stringify(sourceContract.code) ||
+        (sourceContract &&
+          JSON.stringify(targetContract.code) !==
+            JSON.stringify(sourceContract.code)) ||
         JSON.stringify(urlTokens(targetMessage)) !==
           JSON.stringify(urlTokens(sourceMessage))
       ) {
@@ -398,7 +520,9 @@ for (const domain of ['client', 'server']) {
           const required = new Intl.PluralRules(locale.tag, {
             type: plural.type,
           }).resolvedOptions().pluralCategories;
-          const present = plural.options.filter((option) => !option.startsWith('='));
+          const present = plural.options.filter(
+            (option) => !option.startsWith('=')
+          );
           const missingCategories = required.filter(
             (category) => !present.includes(category)
           );
@@ -424,6 +548,7 @@ const hasStructuralProblems = problems.some((problem) =>
     'invalid-source',
     'invalid-source-icu',
     'stale-fallback',
+    'stale-provenance',
     'orphan-catalog',
     'extra-key',
     'empty-value',
@@ -433,17 +558,31 @@ const hasStructuralProblems = problems.some((problem) =>
   ].includes(problem.kind)
 );
 const hasCoverageGaps = reports.some(
-  (report) =>
-    report.locale !== config.baseLocale &&
-    (report.translatedDirect < report.total ||
-      report.missing > 0 ||
-      report.empty > 0 ||
-      report.identicalToEnglish > 0)
+  (report) => report.locale !== config.baseLocale && report.coverageGaps > 0
 );
 const hasPluralGaps = pluralWarnings.length > 0;
+const hasReviewGaps = reports.some(
+  (report) =>
+    report.locale !== config.baseLocale && hasUnreviewedTranslations(report)
+);
 
 if (jsonOutput) {
-  console.log(JSON.stringify({ reports, problems, pluralWarnings }, null, 2));
+  console.log(
+    JSON.stringify(
+      {
+        reports,
+        problems,
+        pluralWarnings,
+        provenance: {
+          defaultStatus: provenanceManifest.defaultStatus,
+          defaultProvenance: provenanceManifest.defaultProvenance,
+          explicitOverrides: provenanceEntries.size,
+        },
+      },
+      null,
+      2
+    )
+  );
 } else {
   for (const report of reports) {
     const percent = report.total
@@ -462,10 +601,20 @@ if (jsonOutput) {
         '%); ' +
         report.missing +
         ' missing, ' +
+        report.inheritedFromParent +
+        ' inherited, ' +
         report.identicalToEnglish +
         ' English-identical, ' +
-        report.inheritedFromParent +
-        ' parent-inherited, ' +
+        report.intentionallyEnglish +
+        ' approved English fallback, ' +
+        report.reviewed +
+        ' reviewed, ' +
+        report.draft +
+        ' draft, ' +
+        report.unreviewed +
+        ' unreviewed, ' +
+        report.coverageGaps +
+        ' unaccounted, ' +
         report.pluralWarnings +
         ' plural warnings; ' +
         report.reviewStatus
@@ -498,21 +647,24 @@ if (jsonOutput) {
     console.log('Plural categories needing review: ' + pluralWarnings.length);
   }
   console.log(
-    'Translation equality is structural coverage only; every non-English ' +
-      'registry entry remains subject to its review status.'
+    'Catalog coverage and translation review are tracked separately. ' +
+      'Provenance is per message and locale; unrecorded entries remain unreviewed.'
   );
 }
 
 const hasStaleMetadata = problems.some(
   (problem) =>
-    problem.kind === 'stale-source' || problem.kind === 'stale-fallback'
+    problem.kind === 'stale-source' ||
+    problem.kind === 'stale-fallback' ||
+    problem.kind === 'stale-provenance'
 );
 
 if (
   hasStaleMetadata ||
   (strict && hasStructuralProblems) ||
   (strictCoverage && hasCoverageGaps) ||
-  (strictPlurals && hasPluralGaps)
+  (strictPlurals && hasPluralGaps) ||
+  (strictReview && hasReviewGaps)
 ) {
   process.exitCode = 1;
 }

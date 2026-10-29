@@ -37,6 +37,7 @@ import {
 } from '@app/utils/apiPath';
 import defineMessages from '@app/utils/defineMessages';
 import { getTmdbPosterImageUrl } from '@app/utils/imageCache';
+import { formatDurationMinutes } from '@app/utils/numberHelpers';
 import {
   ArchiveBoxXMarkIcon,
   BarsArrowDownIcon,
@@ -189,12 +190,20 @@ const getYear = (title: BlocklistTitle): string | undefined => {
   return value?.slice(0, 4);
 };
 
-const getRuntime = (title: BlocklistTitle, unavailable: string): string => {
+const getRuntime = (
+  title: BlocklistTitle,
+  unavailable: string,
+  intl: ReturnType<typeof useIntl>
+): string => {
   if (isBook(title)) {
-    return title.numberOfPages?.toLocaleString() ?? unavailable;
+    return title.numberOfPages != null
+      ? intl.formatNumber(title.numberOfPages)
+      : unavailable;
   }
   if (isComic(title) || isMagazine(title)) {
-    return title.issueCount?.toLocaleString() ?? unavailable;
+    return title.issueCount != null
+      ? intl.formatNumber(title.issueCount)
+      : unavailable;
   }
   const minutes = isMovie(title)
     ? title.runtime
@@ -203,7 +212,7 @@ const getRuntime = (title: BlocklistTitle, unavailable: string): string => {
           title.tracks.reduce((total, track) => total + track.length, 0) / 60000
         )
       : title.episodeRunTime[0];
-  return minutes ? `${minutes.toLocaleString()} minutes` : unavailable;
+  return minutes ? formatDurationMinutes(minutes, intl.locale) : unavailable;
 };
 
 const getGenres = (title: BlocklistTitle): GenreLink[] => {
@@ -278,7 +287,14 @@ const getSecondaryDetails = (
       },
       {
         label: intl.formatMessage(messages.issueCount),
-        values: [{ name: title.issueCount?.toLocaleString() ?? unavailable }],
+        values: [
+          {
+            name:
+              title.issueCount != null
+                ? intl.formatNumber(title.issueCount)
+                : unavailable,
+          },
+        ],
       },
     ];
   }
@@ -290,7 +306,14 @@ const getSecondaryDetails = (
       },
       {
         label: intl.formatMessage(messages.issueCount),
-        values: [{ name: title.issueCount?.toLocaleString() ?? unavailable }],
+        values: [
+          {
+            name:
+              title.issueCount != null
+                ? intl.formatNumber(title.issueCount)
+                : unavailable,
+          },
+        ],
       },
     ];
   }
@@ -313,7 +336,7 @@ const getSecondaryDetails = (
       },
       {
         label: intl.formatMessage(messages.trackCount),
-        values: [{ name: title.tracks.length.toLocaleString() }],
+        values: [{ name: intl.formatNumber(title.tracks.length) }],
       },
     ];
   }
@@ -904,7 +927,7 @@ const BlocklistedItem = ({ item, revalidateList }: BlocklistedItemProps) => {
                   :
                 </dt>
                 <dd className="card:col-start-3 card:row-start-3 m-0 truncate">
-                  {title ? getRuntime(title, unavailable) : unavailable}
+                  {title ? getRuntime(title, unavailable, intl) : unavailable}
                 </dd>
                 <div className="media-detail-rows media-detail-column-divider card:col-span-1 card:col-start-5 card:row-span-3 card:row-start-1 col-span-2 grid min-w-0 grid-cols-[max-content_minmax(0,1fr)] content-start gap-x-3">
                   {secondaryDetails.map((detail) => (

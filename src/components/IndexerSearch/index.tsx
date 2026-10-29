@@ -6,6 +6,7 @@ import PageTitle from '@app/components/Common/PageTitle';
 import useSettings from '@app/hooks/useSettings';
 import { Permission, useUser } from '@app/hooks/useUser';
 import defineMessages from '@app/utils/defineMessages';
+import { formatLocalizedList } from '@app/utils/numberHelpers';
 import { getSafeHref } from '@app/utils/safeUrl';
 import {
   getUserServiceAvailability,
@@ -181,16 +182,20 @@ const ResultCard = ({
         />
         <Metric
           label={intl.formatMessage(messages.seeders)}
-          value={result.seeders?.toLocaleString() ?? '—'}
+          value={
+            result.seeders != null ? intl.formatNumber(result.seeders) : '—'
+          }
         />
         <Metric
           label={intl.formatMessage(messages.leechers)}
-          value={result.leechers?.toLocaleString() ?? '—'}
+          value={
+            result.leechers != null ? intl.formatNumber(result.leechers) : '—'
+          }
         />
         {result.grabs !== null && (
           <Metric
             label={intl.formatMessage(messages.grabs)}
-            value={result.grabs.toLocaleString()}
+            value={intl.formatNumber(result.grabs)}
           />
         )}
         <Metric
@@ -201,7 +206,10 @@ const ResultCard = ({
       {result.categories.length > 0 && (
         <p className="mt-3 text-xs text-gray-400">
           {intl.formatMessage(messages.categories)}:{' '}
-          {result.categories.map((category) => category.name).join(', ')}
+          {formatLocalizedList(
+            result.categories.map((category) => category.name),
+            intl.locale
+          )}
         </p>
       )}
       {grabState === 'sent' && (

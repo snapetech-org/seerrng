@@ -10,6 +10,7 @@ import {
 } from '@app/components/Discover/FilterPanel/CompactFilterSelect';
 import { Permission, useUser } from '@app/hooks/useUser';
 import defineMessages from '@app/utils/defineMessages';
+import { formatDurationParts } from '@app/utils/numberHelpers';
 import { MagnifyingGlassIcon } from '@heroicons/react/24/outline';
 import axios from 'axios';
 import { useRouter } from 'next/router';
@@ -64,6 +65,8 @@ const messages = defineMessages('components.GameLibrary', {
   combinedPlaytimeHoursMinutes:
     '{hours}h {minutes}m combined household playtime',
   combinedPlaytimeMinutes: '{minutes}m combined household playtime',
+  formattedPlaytime: '{duration} played',
+  formattedCombinedPlaytime: '{duration} combined household playtime',
   requestStatus: 'Request: {status}',
   openCatalog: 'Open in catalog',
   requestGame: 'Request this game',
@@ -409,36 +412,13 @@ const GameLibrary = () => {
   const formatPlaytime = (minutes: number, combined = false) => {
     const hours = Math.floor(minutes / 60);
     const remainingMinutes = minutes % 60;
-    if (combined && hours > 0 && remainingMinutes > 0) {
-      return intl.formatMessage(messages.combinedPlaytimeHoursMinutes, {
-        hours: hours.toLocaleString(intl.locale),
-        minutes: remainingMinutes.toLocaleString(intl.locale),
-      });
-    }
-    if (combined && hours > 0) {
-      return intl.formatMessage(messages.combinedPlaytime, {
-        hours: hours.toLocaleString(intl.locale),
-      });
-    }
-    if (combined) {
-      return intl.formatMessage(messages.combinedPlaytimeMinutes, {
-        minutes: remainingMinutes.toLocaleString(intl.locale),
-      });
-    }
-    if (hours > 0 && remainingMinutes > 0) {
-      return intl.formatMessage(messages.playtimeHoursMinutes, {
-        hours: hours.toLocaleString(intl.locale),
-        minutes: remainingMinutes.toLocaleString(intl.locale),
-      });
-    }
-    if (hours > 0) {
-      return intl.formatMessage(messages.playtimeHours, {
-        hours: hours.toLocaleString(intl.locale),
-      });
-    }
-    return intl.formatMessage(messages.playtimeMinutes, {
-      minutes: remainingMinutes.toLocaleString(intl.locale),
-    });
+    const duration = formatDurationParts(hours, remainingMinutes, intl.locale);
+    return intl.formatMessage(
+      combined
+        ? messages.formattedCombinedPlaytime
+        : messages.formattedPlaytime,
+      { duration }
+    );
   };
 
   const formatRequestStatus = (status: string) => {

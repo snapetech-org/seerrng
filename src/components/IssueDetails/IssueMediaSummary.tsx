@@ -8,6 +8,7 @@ import {
 import { sortCrewPriority } from '@app/utils/creditHelpers';
 import defineMessages from '@app/utils/defineMessages';
 import { getTmdbPosterImageUrl } from '@app/utils/imageCache';
+import { formatDurationMinutes } from '@app/utils/numberHelpers';
 import type { BookDetails } from '@server/models/Book';
 import type { ComicDetails } from '@server/models/Comic';
 import type { MagazineDetails } from '@server/models/Magazine';
@@ -148,12 +149,13 @@ const IssueMediaSummary = ({
         : unavailable
       : isMusic
         ? data.tracks.length > 0
-          ? intl.formatMessage(messages.minutes, {
-              count: Math.round(
+          ? formatDurationMinutes(
+              Math.round(
                 data.tracks.reduce((total, track) => total + track.length, 0) /
                   60000
               ),
-            })
+              intl.locale
+            )
           : unavailable
         : isComic
           ? data.issueCount
@@ -163,12 +165,10 @@ const IssueMediaSummary = ({
             : unavailable
           : isMovie
             ? data.runtime
-              ? intl.formatMessage(messages.minutes, { count: data.runtime })
+              ? formatDurationMinutes(data.runtime, intl.locale)
               : unavailable
             : data.episodeRunTime[0]
-              ? intl.formatMessage(messages.minutes, {
-                  count: data.episodeRunTime[0],
-                })
+              ? formatDurationMinutes(data.episodeRunTime[0], intl.locale)
               : unavailable;
   const posterSrc =
     isMusic || isBook || isComic || isMagazine
