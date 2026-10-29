@@ -1,8 +1,8 @@
 import { JSDOM } from 'jsdom';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
-import postcss from 'postcss';
 import { test } from 'node:test';
+import postcss from 'postcss';
 
 const sharedStyles = readFileSync(
   new URL('./interfaceThemes/shared.css', import.meta.url),

@@ -9,6 +9,7 @@ import http from 'node:http';
 import os from 'node:os';
 import path from 'node:path';
 import { describe, it } from 'node:test';
+import { getLoopbackHttpResponse } from '../test/loopbackHttpRequest';
 import { startLoopbackHttpServer } from './httpServer';
 import {
   buildHttpsRedirectLocation,
@@ -154,18 +155,18 @@ describe('TLS configuration parsing', () => {
       assert.ok(publicAddress && typeof publicAddress !== 'string');
 
       process.env[INTERNAL_API_PORT_ENV] = String(internalApi.port);
-      const internalResponse = await fetch(
+      const internalResponse = await getLoopbackHttpResponse(
         `${getInternalApiBaseUrl()}/api/v1/movie/1`
       );
-      assert.equal(internalResponse.status, 200);
-      assert.deepEqual(await internalResponse.json(), { id: 1 });
+      assert.equal(internalResponse.statusCode, 200);
+      assert.deepEqual(JSON.parse(internalResponse.body), { id: 1 });
 
-      const publicResponse = await fetch(
+      const publicResponse = await getLoopbackHttpResponse(
         `http://127.0.0.1:${publicAddress.port}/api/v1/movie/1`
       );
-      assert.equal(publicResponse.status, 426);
+      assert.equal(publicResponse.statusCode, 426);
       assert.equal(
-        publicResponse.headers.get('location'),
+        publicResponse.headers.location,
         'https://127.0.0.1:5056/api/v1/movie/1'
       );
     } finally {

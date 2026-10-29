@@ -27,14 +27,8 @@ describe('interface theme contract', () => {
   });
 
   it('ships two separately scoped, materially different interface sheets', () => {
-    const orig = readFileSync(
-      'themes/seerrOrig/theme.css',
-      'utf8'
-    );
-    const john = readFileSync(
-      'themes/seerrNGJ/theme.css',
-      'utf8'
-    );
+    const orig = readFileSync('themes/seerrOrig/theme.css', 'utf8');
+    const john = readFileSync('themes/seerrNGJ/theme.css', 'utf8');
     assert.notEqual(orig, john);
     for (const sheet of [orig, john]) {
       assert.match(sheet, /data-interface-theme/);

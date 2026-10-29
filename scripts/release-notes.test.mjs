@@ -17,6 +17,25 @@ import {
   readReleaseNotes,
 } from './release-notes.mjs';
 
+const repositoryRoot = path.dirname(
+  path.dirname(fileURLToPath(import.meta.url))
+);
+const releaseTagList = spawnSync('git', ['tag', '--list', 'v3.*'], {
+  cwd: repositoryRoot,
+  encoding: 'utf8',
+}).stdout;
+const hasFetchedReleaseTags = Boolean(releaseTagList?.trim());
+const releaseTagTest = (name, fn) =>
+  test(
+    name,
+    {
+      skip: hasFetchedReleaseTags
+        ? false
+        : 'No SeerrNG release tags are fetched in this checkout',
+    },
+    fn
+  );
+
 const validContent = `---
 category: fixed
 audience: users, operators
@@ -366,7 +385,7 @@ test('changelog assembly prepends a release without replacing prior history', ()
   }
 });
 
-test('checked-in changelog covers every SeerrNG tag', () => {
+releaseTagTest('checked-in changelog covers every SeerrNG tag', () => {
   const scriptPath = path.join(
     path.dirname(fileURLToPath(import.meta.url)),
     'check-changelog-tags.mjs'

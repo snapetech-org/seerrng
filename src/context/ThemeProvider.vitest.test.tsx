@@ -1,4 +1,5 @@
 import type { User } from '@app/hooks/useUser';
+import { BUILT_IN_INTERFACE_THEME_MANIFESTS } from '@app/utils/interfaceThemeCatalog';
 import { THEME_PALETTE_IDS } from '@server/utils/themePreference';
 import { JSDOM } from 'jsdom';
 import { act } from 'react';
@@ -8,17 +9,21 @@ import { ThemeProvider, themePalettes, useTheme } from './ThemeContext';
 
 const fixture = vi.hoisted(() => ({
   user: undefined as User | undefined,
+  get: vi.fn(),
   post: vi.fn(),
   revalidate: vi.fn(),
 }));
 vi.mock('@app/hooks/useUser', () => ({
   useUser: () => ({ user: fixture.user, revalidate: fixture.revalidate }),
 }));
-vi.mock('axios', () => ({ default: { post: fixture.post } }));
+vi.mock('axios', () => ({
+  default: { get: fixture.get, post: fixture.post },
+}));
 
 let root: Root;
 let dom: JSDOM;
 let container: HTMLDivElement;
+let stylesheetObserver: MutationObserver;
 let theme: ReturnType<typeof useTheme>;
 const Probe = () => {
   theme = useTheme();
@@ -49,6 +54,10 @@ beforeEach(() => {
   vi.stubGlobal('localStorage', dom.window.localStorage);
   vi.stubGlobal('IS_REACT_ACT_ENVIRONMENT', true);
   fixture.user = undefined;
+  fixture.get.mockReset();
+  fixture.get.mockResolvedValue({
+    data: { themes: BUILT_IN_INTERFACE_THEME_MANIFESTS },
+  });
   fixture.post.mockReset();
   fixture.revalidate.mockReset();
   fixture.revalidate.mockImplementation(async (callback) => {
@@ -58,10 +67,24 @@ beforeEach(() => {
   localStorage.clear();
   container = document.createElement('div');
   document.body.append(container);
+  stylesheetObserver = new dom.window.MutationObserver((records) => {
+    for (const node of records.flatMap((record) =>
+      Array.from(record.addedNodes)
+    )) {
+      if (
+        node instanceof dom.window.HTMLLinkElement &&
+        node.hasAttribute('data-interface-theme-stylesheet')
+      ) {
+        node.dispatchEvent(new dom.window.Event('load'));
+      }
+    }
+  });
+  stylesheetObserver.observe(document.head, { childList: true });
   root = createRoot(container);
 });
 afterEach(async () => {
   await act(async () => root.unmount());
+  stylesheetObserver.disconnect();
   container.remove();
   dom.window.close();
   vi.unstubAllGlobals();
