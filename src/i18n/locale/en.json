@@ -3482,6 +3482,7 @@
   "components.Search.noTitleResults": "No individual title results found.",
   "components.Search.publisher": "Publisher",
   "components.Search.rating": "Rating",
+  "components.Search.identifySong": "Identify a Song",
   "components.Search.releases": "Releases",
   "components.Search.relevance": "Best Match",
   "components.Search.retrySearch": "Try again",

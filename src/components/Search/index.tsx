@@ -81,6 +81,7 @@ const messages = defineMessages('components.Search', {
   sports: 'Sports',
   software: 'Software',
   releases: 'Releases',
+  identifySong: 'Identify a Song',
   filter: 'Filters',
   mediaFilters: 'Media Filters',
   sortBy: 'Sort By',
@@ -914,6 +915,18 @@ const Search = () => {
       )}
       {router.isReady && showBookSeries && (
         <InlineBookSeriesResults query={query} format={preferredBookFormat} />
+      )}
+      {category.key === 'music' && query && (
+        <div className="app-action-row">
+          <Button
+            as="a"
+            href={`/identify?source=${encodeURIComponent(query)}`}
+            buttonType="default"
+            buttonSize="sm"
+          >
+            {intl.formatMessage(messages.identifySong)}
+          </Button>
+        </div>
       )}
       {category.key === 'audiobook' && (
         <ReadMeABookSearch searchQuery={query} />
