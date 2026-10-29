@@ -86,6 +86,7 @@ import indexerSearchRoutes from './indexerSearch';
 import interfaceThemeRoutes from './interfaceThemes';
 import issueRoutes from './issue';
 import issueCommentRoutes from './issueComment';
+import karaokeRoutes from './karaoke';
 import liveRoutes from './live';
 import liveTvRoutes from './liveTv';
 import magazineRoutes from './magazine';
@@ -558,6 +559,12 @@ router.use(
 );
 router.use('/integrations/discovery', discoveryIntegrationRoutes);
 router.use('/playlist', isAuthenticated(), playlistRoutes);
+router.use(
+  '/karaoke',
+  isAuthenticated(),
+  categoryAvailabilityGuard(['music']),
+  karaokeRoutes
+);
 router.use('/playback', isAuthenticated(), playbackRoutes);
 router.use('/desktop', desktopRoutes);
 router.use('/watchlist', isAuthenticated(), watchlistRoutes);
