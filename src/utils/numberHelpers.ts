@@ -1,11 +1,54 @@
-export const formatBytes = (bytes: number, decimals = 2): string => {
-  if (bytes === 0) return '0 Bytes';
+const byteUnits: Intl.NumberFormatOptions['unit'][] = [
+  'byte',
+  'kilobyte',
+  'megabyte',
+  'gigabyte',
+  'terabyte',
+  'petabyte',
+];
 
-  const k = 1024;
-  const dm = decimals < 0 ? 0 : decimals;
-  const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
+const byteFormatters = new Map<string, Intl.NumberFormat>();
 
-  const i = Math.floor(Math.log(bytes) / Math.log(k));
+export const formatBytes = (
+  bytes: number,
+  decimals = 2,
+  locale = 'en'
+): string => {
+  const safeBytes = Number.isFinite(bytes) ? bytes : 0;
+  const precision = Number.isFinite(decimals)
+    ? Math.max(0, Math.min(20, Math.floor(decimals)))
+    : 2;
+  const absoluteBytes = Math.abs(safeBytes);
+  const unitIndex =
+    absoluteBytes > 0
+      ? Math.min(
+          Math.floor(Math.log(absoluteBytes) / Math.log(1024)),
+          byteUnits.length - 1
+        )
+      : 0;
+  const unit = byteUnits[unitIndex];
+  const scaledBytes = safeBytes / 1024 ** unitIndex;
+  const key = `${locale}:${unit}:${precision}`;
+  let formatter = byteFormatters.get(key);
 
-  return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
+  if (!formatter) {
+    try {
+      formatter = new Intl.NumberFormat(locale, {
+        style: 'unit',
+        unit,
+        unitDisplay: 'short',
+        maximumFractionDigits: precision,
+      });
+    } catch {
+      formatter = new Intl.NumberFormat('en', {
+        style: 'unit',
+        unit,
+        unitDisplay: 'short',
+        maximumFractionDigits: precision,
+      });
+    }
+    byteFormatters.set(key, formatter);
+  }
+
+  return formatter.format(scaledBytes);
 };

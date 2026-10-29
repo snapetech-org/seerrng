@@ -14,7 +14,7 @@ class MyDocument extends Document {
 
   render(): JSX.Element {
     return (
-      <Html lang="en" data-interface-theme="seerrOrig">
+      <Html lang="en" dir="ltr" data-interface-theme="seerrOrig">
         <Head>
           <link
             id="interface-theme-stylesheet"

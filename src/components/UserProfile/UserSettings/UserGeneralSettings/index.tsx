@@ -75,6 +75,8 @@ const messages = defineMessages(
     enableOverride: 'Override Global Limit',
     applanguage: 'Display Language',
     languageDefault: 'Default ({language})',
+    translationStatusNotice:
+      'This catalog is still under review, so some interface text may appear in English.',
     preferredLanguageAll: 'Preferred Language for All Media',
     preferredLanguageMovie: 'Movie Language Override',
     preferredLanguageTv: 'Series Language Override',
@@ -584,7 +586,8 @@ const UserGeneralSettings = () => {
                       <option value="" lang={locale}>
                         {intl.formatMessage(messages.languageDefault, {
                           language:
-                            availableLanguages[currentSettings.locale].display,
+                            availableLanguages[currentSettings.locale]?.display ??
+                            availableLanguages.en.display,
                         })}
                       </option>
                       {(
@@ -597,11 +600,16 @@ const UserGeneralSettings = () => {
                           value={availableLanguages[key].code}
                           lang={availableLanguages[key].code}
                         >
-                          {availableLanguages[key].display}
+                          {availableLanguages[key].display} ({key})
                         </option>
                       ))}
                     </Field>
                   </div>
+                  {(values.locale || currentSettings.locale) !== 'en' && (
+                    <span className="label-tip">
+                      {intl.formatMessage(messages.translationStatusNotice)}
+                    </span>
+                  )}
                 </div>
               </div>
               <div className="form-row">

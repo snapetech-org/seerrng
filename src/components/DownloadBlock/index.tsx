@@ -140,7 +140,7 @@ const DownloadBlock = ({
                   : live.state === 'stalled'
                     ? intl.formatMessage(messages.liveStalled)
                     : intl.formatMessage(messages.liveRate, {
-                        rate: formatBytes(live.downloadRate, 1),
+                        rate: formatBytes(live.downloadRate, 1, intl.locale),
                       })}
                 {live.seeds !== null &&
                   ` · ${intl.formatMessage(messages.liveSeeds, {

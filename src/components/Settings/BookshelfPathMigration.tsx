@@ -2,6 +2,7 @@ import Button from '@app/components/Common/Button';
 import PageTitle from '@app/components/Common/PageTitle';
 import SettingsField from '@app/components/Settings/SettingsField';
 import defineMessages from '@app/utils/defineMessages';
+import { formatBytes } from '@app/utils/numberHelpers';
 import type {
   ReadarrMediaMoveBatchPreview,
   ReadarrMediaMoveCommand,
@@ -119,18 +120,6 @@ const normalizePath = (value: string): string => {
 };
 
 const AUTHORS_PER_PAGE = 100;
-
-const formatBytes = (value: number): string => {
-  if (!Number.isFinite(value) || value <= 0) return '0 B';
-  const units = ['B', 'KB', 'MB', 'GB', 'TB'];
-  let size = value;
-  let unit = 0;
-  while (size >= 1024 && unit < units.length - 1) {
-    size /= 1024;
-    unit += 1;
-  }
-  return `${size.toFixed(unit === 0 ? 0 : 1)} ${units[unit]}`;
-};
 
 const responseMessage = (error: unknown, fallback: string): string =>
   axios.isAxiosError<{ message?: string }>(error) &&
@@ -718,13 +707,13 @@ const BookshelfPathMigration = () => {
                 )}
                 <span>
                   {intl.formatMessage(messages.requiredCopy, {
-                    size: formatBytes(preview.requiredCopyBytes),
+                    size: formatBytes(preview.requiredCopyBytes, 2, intl.locale),
                   })}
                 </span>
                 {preview.availableSpace !== undefined ? (
                   <span>
                     {intl.formatMessage(messages.availableSpace, {
-                      size: formatBytes(preview.availableSpace),
+                      size: formatBytes(preview.availableSpace, 2, intl.locale),
                     })}
                   </span>
                 ) : (

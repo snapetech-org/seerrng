@@ -1,165 +1,20 @@
-import { type AvailableLocale } from '@server/types/languages';
 import React from 'react';
+import {
+  localeRegistry,
+  type AvailableLocale,
+} from '@server/types/languages';
 
 type AvailableLanguageObject = Record<
-  string,
+  AvailableLocale,
   { code: AvailableLocale; display: string }
 >;
 
-export const availableLanguages: AvailableLanguageObject = {
-  bg: {
-    code: 'bg',
-    display: 'Bulgarian',
-  },
-  ca: {
-    code: 'ca',
-    display: 'Català',
-  },
-  cs: {
-    code: 'cs',
-    display: 'Čeština',
-  },
-  da: {
-    code: 'da',
-    display: 'Dansk',
-  },
-  de: {
-    code: 'de',
-    display: 'Deutsch',
-  },
-  en: {
-    code: 'en',
-    display: 'English',
-  },
-  es: {
-    code: 'es',
-    display: 'Español',
-  },
-  'es-MX': {
-    code: 'es-MX',
-    display: 'Español (Latinoamérica)',
-  },
-  et: {
-    code: 'et',
-    display: 'Eesti',
-  },
-  fi: {
-    code: 'fi',
-    display: 'Finnish',
-  },
-  fr: {
-    code: 'fr',
-    display: 'Français',
-  },
-  he: {
-    code: 'he',
-    display: 'Hebrew',
-  },
-  hi: {
-    code: 'hi',
-    display: 'Hindi',
-  },
-  id: {
-    code: 'id',
-    display: 'Bahasa Indonesia',
-  },
-  hr: {
-    code: 'hr',
-    display: 'Hrvatski',
-  },
-  it: {
-    code: 'it',
-    display: 'Italiano',
-  },
-  lb: {
-    code: 'lb',
-    display: 'Lëtzebuergesch',
-  },
-  lt: {
-    code: 'lt',
-    display: 'Lietuvių',
-  },
-  hu: {
-    code: 'hu',
-    display: 'Magyar',
-  },
-  nl: {
-    code: 'nl',
-    display: 'Nederlands',
-  },
-  'nb-NO': {
-    code: 'nb-NO',
-    display: 'Norsk Bokmål',
-  },
-  pl: {
-    code: 'pl',
-    display: 'Polski',
-  },
-  'pt-BR': {
-    code: 'pt-BR',
-    display: 'Português (Brasil)',
-  },
-  'pt-PT': {
-    code: 'pt-PT',
-    display: 'Português (Portugal)',
-  },
-  sq: {
-    code: 'sq',
-    display: 'Shqip',
-  },
-  sv: {
-    code: 'sv',
-    display: 'Svenska',
-  },
-  el: {
-    code: 'el',
-    display: 'Ελληνικά',
-  },
-  ro: {
-    code: 'ro',
-    display: 'Romanian',
-  },
-  ru: {
-    code: 'ru',
-    display: 'pусский',
-  },
-  sr: {
-    code: 'sr',
-    display: 'српски језик',
-  },
-  tr: {
-    code: 'tr',
-    display: 'Türkçe',
-  },
-  ar: {
-    code: 'ar',
-    display: 'العربية',
-  },
-  ja: {
-    code: 'ja',
-    display: '日本語',
-  },
-  ko: {
-    code: 'ko',
-    display: '한국어',
-  },
-  uk: {
-    code: 'uk',
-    display: 'українська мова',
-  },
-  vi: {
-    code: 'vi',
-    display: 'Tiếng Việt',
-  },
-  'zh-TW': {
-    code: 'zh-TW',
-    display: '繁體中文',
-  },
-  'zh-CN': {
-    code: 'zh-CN',
-    display: '简体中文',
-  },
-};
+export const availableLanguages = Object.fromEntries(
+  localeRegistry.map(({ tag, nativeName }) => [
+    tag,
+    { code: tag, display: nativeName },
+  ])
+) as AvailableLanguageObject;
 
 export interface LanguageContextProps {
   locale: AvailableLocale;

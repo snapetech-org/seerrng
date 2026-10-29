@@ -1,5 +1,4 @@
-export const getLocaleDirection = (locale: string): 'ltr' | 'rtl' => {
-  const language = locale.toLowerCase().split(/[-_]/, 1)[0];
+import { getLocaleMetadata } from '@server/types/languages';
 
-  return language === 'ar' || language === 'he' ? 'rtl' : 'ltr';
-};
+export const getLocaleDirection = (locale: string): 'ltr' | 'rtl' =>
+  getLocaleMetadata(locale).direction;

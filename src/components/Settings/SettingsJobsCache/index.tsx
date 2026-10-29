@@ -642,8 +642,8 @@ const SettingsJobs = () => {
                 <Table.TD>{intl.formatNumber(cache.stats.hits)}</Table.TD>
                 <Table.TD>{intl.formatNumber(cache.stats.misses)}</Table.TD>
                 <Table.TD>{intl.formatNumber(cache.stats.keys)}</Table.TD>
-                <Table.TD>{formatBytes(cache.stats.ksize)}</Table.TD>
-                <Table.TD>{formatBytes(cache.stats.vsize)}</Table.TD>
+                <Table.TD>{formatBytes(cache.stats.ksize, 2, intl.locale)}</Table.TD>
+                <Table.TD>{formatBytes(cache.stats.vsize, 2, intl.locale)}</Table.TD>
                 <Table.TD alignText="right">
                   <Button buttonType="danger" onClick={() => flushCache(cache)}>
                     <TrashIcon />
@@ -813,7 +813,7 @@ const SettingsJobs = () => {
                 {intl.formatNumber(cacheData?.imageCache.tmdb.imageCount ?? 0)}
               </Table.TD>
               <Table.TD>
-                {formatBytes(cacheData?.imageCache.tmdb.size ?? 0)}
+                {formatBytes(cacheData?.imageCache.tmdb.size ?? 0, 2, intl.locale)}
               </Table.TD>
             </tr>
             <tr>
@@ -824,7 +824,7 @@ const SettingsJobs = () => {
                 )}
               </Table.TD>
               <Table.TD>
-                {formatBytes(cacheData?.imageCache.avatar.size ?? 0)}
+                {formatBytes(cacheData?.imageCache.avatar.size ?? 0, 2, intl.locale)}
               </Table.TD>
             </tr>
           </Table.TBody>

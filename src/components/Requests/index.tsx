@@ -3,6 +3,7 @@ import BookFormatBadge, {
   getRequestedBookFormat,
   type RequestedBookFormat,
 } from '@app/components/Common/BookFormatBadge';
+import BidiText from '@app/components/Common/BidiText';
 import Button from '@app/components/Common/Button';
 import CachedImage from '@app/components/Common/CachedImage';
 import { PageStatus } from '@app/components/Common/LoadingSpinner';
@@ -39,6 +40,7 @@ import {
 import { sortCrewPriority } from '@app/utils/creditHelpers';
 import defineMessages from '@app/utils/defineMessages';
 import { getTmdbPosterImageUrl } from '@app/utils/imageCache';
+import { formatBytes as formatLocalizedBytes } from '@app/utils/numberHelpers';
 import { Transition } from '@headlessui/react';
 import {
   ArrowDownTrayIcon,
@@ -1187,15 +1189,8 @@ const formatBytes = (
   if (value === null || !Number.isFinite(value) || value < 0) {
     return intl.formatMessage(messages.notAvailable);
   }
-  if (value < 1024) return `${Math.round(value)} B`;
-  const units = ['KB', 'MB', 'GB', 'TB'];
-  let size = value;
-  let unit = -1;
-  do {
-    size /= 1024;
-    unit += 1;
-  } while (size >= 1024 && unit < units.length - 1);
-  return `${size.toFixed(size >= 10 ? 0 : 1)} ${units[unit]}`;
+
+  return formatLocalizedBytes(value, value < 1024 ? 0 : 1, intl.locale);
 };
 
 const getStageLabel = (intl: ReturnType<typeof useIntl>, stage: StatusStage) =>
@@ -1730,11 +1725,11 @@ const RequestStatusCard = ({
                 href={detailHref}
                 className="detail-summary-title app-detail-title-link"
               >
-                {displayTitle}
+                <BidiText>{displayTitle}</BidiText>
               </Link>
             ) : (
               <h3 className="detail-summary-title app-detail-title">
-                {displayTitle}
+                <BidiText>{displayTitle}</BidiText>
               </h3>
             )}
 

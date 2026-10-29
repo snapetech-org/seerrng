@@ -1143,7 +1143,7 @@ const AdvancedRequester = ({
                       value: folder.path ?? '',
                       label: intl.formatMessage(messages.folder, {
                         path: folder.path,
-                        space: formatBytes(folder.freeSpace ?? 0),
+                        space: formatBytes(folder.freeSpace ?? 0, 2, intl.locale),
                       }),
                     }))}
                     onChange={selectRequestFolder}
@@ -1278,7 +1278,7 @@ const AdvancedRequester = ({
                             {folder.path}
                           </span>
                           <span className="card-table-value refreshed-detail-text">
-                            {formatBytes(folder.freeSpace ?? 0)}
+                            {formatBytes(folder.freeSpace ?? 0, 2, intl.locale)}
                           </span>
                         </button>
                       );

@@ -10,6 +10,7 @@ import { SetupConnectionsProvider } from '@app/context/SetupConnectionsContext';
 import { ThemeProvider } from '@app/context/ThemeContext';
 import { UserContext } from '@app/context/UserContext';
 import useSettings from '@app/hooks/useSettings';
+import { loadLocaleMessages } from '@app/i18n/locale/loadLocaleMessages.generated';
 // organize-imports-ignore: CSS import order keeps role styles after Tailwind base styles.
 import '@app/styles/globals.css';
 import '@app/styles/crossMedia.css';
@@ -21,7 +22,7 @@ import {
 } from '@app/utils/blocklistNavigation';
 import { polyfillIntl } from '@app/utils/polyfillIntl';
 import '@fontsource-variable/inter';
-import type { AvailableLocale } from '@server/types/languages';
+import { resolveAcceptLanguage, type AvailableLocale } from '@server/types/languages';
 import axios from 'axios';
 import type { AppProps } from 'next/app';
 import dynamic from 'next/dynamic';
@@ -42,87 +43,7 @@ const StatusChecker = dynamic(() => import('@app/components/StatusChecker'), {
 const isPathPrefix = (pathname: string, prefix: string): boolean =>
   pathname === prefix || pathname.startsWith(`${prefix}/`);
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const loadLocaleData = (locale: AvailableLocale): Promise<any> => {
-  switch (locale) {
-    case 'ar':
-      return import('../i18n/locale/ar.json');
-    case 'bg':
-      return import('../i18n/locale/bg.json');
-    case 'ca':
-      return import('../i18n/locale/ca.json');
-    case 'cs':
-      return import('../i18n/locale/cs.json');
-    case 'da':
-      return import('../i18n/locale/da.json');
-    case 'de':
-      return import('../i18n/locale/de.json');
-    case 'el':
-      return import('../i18n/locale/el.json');
-    case 'es':
-      return import('../i18n/locale/es.json');
-    case 'es-MX':
-      return import('../i18n/locale/es_MX.json');
-    case 'et':
-      return import('../i18n/locale/et.json');
-    case 'fi':
-      return import('../i18n/locale/fi.json');
-    case 'fr':
-      return import('../i18n/locale/fr.json');
-    case 'he':
-      return import('../i18n/locale/he.json');
-    case 'hi':
-      return import('../i18n/locale/hi.json');
-    case 'hr':
-      return import('../i18n/locale/hr.json');
-    case 'hu':
-      return import('../i18n/locale/hu.json');
-    case 'id':
-      return import('../i18n/locale/id.json');
-    case 'it':
-      return import('../i18n/locale/it.json');
-    case 'ja':
-      return import('../i18n/locale/ja.json');
-    case 'ko':
-      return import('../i18n/locale/ko.json');
-    case 'lb':
-      return import('../i18n/locale/lb.json');
-    case 'lt':
-      return import('../i18n/locale/lt.json');
-    case 'nb-NO':
-      return import('../i18n/locale/nb_NO.json');
-    case 'nl':
-      return import('../i18n/locale/nl.json');
-    case 'pl':
-      return import('../i18n/locale/pl.json');
-    case 'pt-BR':
-      return import('../i18n/locale/pt_BR.json');
-    case 'pt-PT':
-      return import('../i18n/locale/pt_PT.json');
-    case 'ro':
-      return import('../i18n/locale/ro.json');
-    case 'ru':
-      return import('../i18n/locale/ru.json');
-    case 'sq':
-      return import('../i18n/locale/sq.json');
-    case 'sr':
-      return import('../i18n/locale/sr.json');
-    case 'sv':
-      return import('../i18n/locale/sv.json');
-    case 'tr':
-      return import('../i18n/locale/tr.json');
-    case 'uk':
-      return import('../i18n/locale/uk.json');
-    case 'vi':
-      return import('../i18n/locale/vi.json');
-    case 'zh-CN':
-      return import('../i18n/locale/zh_Hans.json');
-    case 'zh-TW':
-      return import('../i18n/locale/zh_Hant.json');
-    default:
-      return import('../i18n/locale/en.json');
-  }
-};
+const loadLocaleData = loadLocaleMessages;
 
 type MessagesType = Record<string, string>;
 // English defaults live on each message descriptor; avoid bundling the full
@@ -152,6 +73,16 @@ const CoreApp = ({ Component, pageProps, router }: AppProps) => {
   useEffect(() => {
     polyfillIntl();
   }, []);
+
+  useEffect(() => {
+    if (
+      isPathPrefix(router.pathname, '/login') ||
+      isPathPrefix(router.pathname, '/setup') ||
+      isPathPrefix(router.pathname, '/resetpassword')
+    ) {
+      setLocale(resolveAcceptLanguage(navigator.languages.join(',')));
+    }
+  }, [router.pathname]);
 
   useEffect(() => {
     const interceptorId = axios.interceptors.response.use((response) => {

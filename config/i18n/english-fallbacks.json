@@ -1,0 +1,13 @@
+{
+  "schemaVersion": 1,
+  "entries": [
+    {
+      "domain": "client",
+      "id": "components.UserProfile.UserSettings.UserGeneralSettings.translationStatusNotice",
+      "sourceHash": "4f0a63926511ee6399a1f38c51a5ecdec809802140f9034d720b847a75e4a42e",
+      "owner": "localization-maintainers",
+      "reason": "The review notice must remain readable in English while each locale catalog is awaiting human review.",
+      "expiresOn": "2027-10-29"
+    }
+  ]
+}

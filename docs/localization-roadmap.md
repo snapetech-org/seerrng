@@ -1,44 +1,79 @@
 # UI localization roadmap
 
-## Catalog completion
+## Locale inventory
 
-SeerrNG keeps its FormatJS client catalog, server notification catalog, language picker, and English fallback. This follow-up populates the application-owned UI catalogs for Spanish (`es` and the existing `es-MX` variant), Simplified Chinese, Hindi, German, Japanese, French, Brazilian Portuguese, Arabic, Korean, Traditional Chinese, Vietnamese, and Indonesian.
+The locale registry at `config/i18n/locales.json` is the source of truth for
+canonical tags, native language names, direction, catalog filenames, selection,
+and deliberate fallback relationships. It currently exposes 38 locales
+including English. Four client catalog files (`eu`, `kab`, `sk`, and `sl`)
+are inactive and do not count as supported choices.
 
-The checked catalogs contain 5,506 client messages and 71 server messages per locale. Every English source key has a non-empty target value in all 13 locale files, including the existing `es-MX` catalogs. Indonesian server email and web-push messages are included.
+Run `pnpm i18n:check` to verify the extracted English source, generated locale
+artifacts, and all selectable client and server catalogs. The catalog report
+shows direct translations, English-identical values, missing values, parent
+inheritance, plural warnings, and each locale's review status. It does not
+equate structural coverage with translation quality.
 
-The locale order remains:
+## Coverage and review status
 
-1. Spanish (`es`; `es-MX` where already supported)
-2. Simplified Chinese (`zh-CN`)
-3. Hindi (`hi`)
-4. German (`de`)
-5. Japanese (`ja`)
-6. French (`fr`)
-7. Brazilian Portuguese (`pt-BR`)
-8. Arabic (`ar`)
-9. Korean (`ko`)
-10. Traditional Chinese (`zh-TW`)
-11. Vietnamese (`vi`)
-12. Indonesian (`id`)
+At the assessment snapshot (2026-10-28), 12 non-English client catalogs had
+5,634 of 6,837 messages (82.4%) and `es-MX` had 5,519 (80.7%). The other 24
+selectable non-English catalogs ranged from 0 to 21.8%. Server coverage was
+also partial, with 12 empty non-English catalogs. These counts describe
+catalog contents only.
 
-## Translation scope and review
+All non-English registry entries remain marked `unreviewed` until human
+linguistic review is recorded. The Settings language picker warns that a
+selected catalog may still show English text. The English fallback manifest
+contains only explicit temporary exceptions, with an owner, reason, expiry,
+and source hash. Do not copy English strings into translation files to make
+coverage appear complete.
 
-The catalogs include application labels, help, accessibility text, dialogs, empty/error/success states, workflow labels, and server notification copy. User-supplied titles, names and paths, sample data, product names, commands, and protocol/API identifiers remain unchanged. English remains the fallback for future missing messages.
+Use the strict audit when a reviewed translation batch is ready:
 
-Matching upstream values were reused where available. Machine translation and curated common terms filled the remaining entries; some source-language values remain where a model result was unsafe or the text is a product or technical term. Static checks found full source-key coverage and no placeholder, ICU argument/type, rich-text tag, URL, inline-code, HTTP/HTTPS/URL-token, or plural-marker mismatches. These checks verify catalog structure, not translation quality.
+- `pnpm i18n:catalogs:strict` rejects missing or English-identical values,
+  malformed ICU, argument/tag/token mismatches, unregistered catalogs, and
+  incomplete plural categories.
+- `pnpm i18n:registry` regenerates the server locale types and lazy client
+  loader from the registry. `pnpm i18n:registry:check` checks that generated
+  files are current.
 
-A targeted script scan of the Indonesian client catalog found no remaining Arabic, Devanagari, Japanese, or CJK text. This check does not replace a fluent-speaker review.
+Regional catalog aliases are explicit: `es-MX` falls back to `es`;
+`zh-CN` and `zh-TW` map to Simplified and Traditional Chinese filenames;
+`nb-NO` and Portuguese regional tags keep their canonical API and stored
+codes. Missing entries then fall back to English.
 
-## Language metadata and RTL
+## Direction, bidi, and formatting
 
-The document `lang` follows the successfully loaded catalog, and Arabic sets `dir="rtl"`. Failed or superseded locale loads cannot roll back a newer selection. Shared navigation, the setup flow, calendar controls, and common grouped inputs use logical direction-aware layout rules.
+The client derives document direction from the registry after a locale is
+loaded. Arabic and Hebrew are RTL. The shared `BidiText` component isolates
+external mixed-direction text such as media titles without altering stored
+values. Byte sizes use locale-aware `Intl.NumberFormat` units based on the
+interface language. A separate user-selected regional format preference and
+server-rendered per-user `lang`/`dir` remain follow-up work.
 
-The Agent VM browser review on 2026-10-13 verified Arabic `/setup` and `/calendar` at 1280×900 and 390×844. Both pages rendered Arabic with `lang="ar"` and `dir="rtl"`; the calendar controls and empty state fit at both widths. The browser-native month input kept its English month name. The calendar fixture had no release data.
+This does not certify app-wide RTL layout. Physical left/right rules remain in
+feature components, emails, and themes. Review navigation, setup, discovery,
+media detail, requests, user settings, services, calendars, tables, dialogs,
+portals, and notifications at narrow and desktop widths before claiming full
+RTL acceptance. Mirror directional affordances only; preserve media timelines
+and numeric control semantics.
 
-Arabic remains selectable, but this review does not certify every feature page for RTL. The source still contains physical left/right layout rules outside the reviewed shared-shell, setup, calendar, and grouped-input paths. Those routes need an RTL audit before claiming app-wide visual acceptance.
+The browser review recorded on 2026-10-13 verified Arabic setup and calendar
+pages at 1280×900 and 390×844. That is historical, limited route coverage; it
+does not establish current app-wide RTL acceptance.
 
-## Follow-up
+## Translation and release gates
 
-1. Request fluent-speaker review for each target catalog, especially Arabic and Hindi.
-2. Convert remaining feature layouts to logical positioning and verify representative Arabic workflows at narrow and desktop widths before claiming app-wide RTL acceptance.
-3. Keep new UI strings in the existing FormatJS source catalog and check source-key and placeholder parity in CI.
+Machine-generated or AI-assisted text remains draft. Preserve upstream source
+and licenses, keep a terminology glossary for media and requests, and request
+fluent-speaker review for each locale. Check plural categories with the locale's
+CLDR rules; Arabic cardinal plurals need zero, one, two, few, many, and other
+where those categories apply.
+
+Structural checks do not certify meaning, tone, accessibility, or fit. Review
+accessible names, announcements, keyboard/focus order, screen-reader reading
+order, text expansion, CJK, mobile widths, 200% text, and both interface themes
+before describing a locale or RTL support as complete. The assessment and
+baseline are recorded in
+[`docs/localization-assessment-2026-10.md`](localization-assessment-2026-10.md).
