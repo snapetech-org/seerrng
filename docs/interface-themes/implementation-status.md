@@ -35,7 +35,7 @@ Updated 2026-10-29 against the local verification worktree for draft PR #416. Th
 
 ## Remaining release gates
 
-1. **Live PostgreSQL migrations:** execution remains unverified. The five PostgreSQL tests were skipped because no test URL/service is configured. PostgreSQL binaries are present, but this container blocks switching to the unprivileged UID required to start the server. The SQLite migration suite and PostgreSQL SQL contract tests pass; they do not replace a live PostgreSQL run.
+1. **Live PostgreSQL migrations:** execution remains unverified. Node and Vitest each skipped five PostgreSQL-gated cases; tooling skipped four database-dependent cases. No test URL/service is configured. PostgreSQL binaries are present, but this container blocks switching to the unprivileged UID required to start the server. The SQLite migration suite and PostgreSQL SQL contract tests pass; they do not replace a live PostgreSQL run.
 2. **Rendered acceptance:** source-backed comparison tests prove the two package styles resolve differently, but live route review at desktop/mobile sizes, including keyboard, touch, loading, empty, and populated states, has not been completed.
 3. **Repository CI:** the public-fork workflow produces no jobs for this same-repository branch. The project CI workflow is manual and requires a private JIT runner; no CI result exists for this candidate.
 
