@@ -61,6 +61,7 @@
     "cypress:build": "pnpm build && pnpm cypress:prepare",
     "cypress:start": "node bin/run-cypress-start.mjs",
     "test:playwright": "pnpm cypress:prepare && playwright test",
+    "i18n:snapshot": "node bin/update-i18n-source-snapshot.mjs",
     "i18n:registry": "node bin/generate-i18n-registry.js --write",
     "i18n:registry:check": "node bin/generate-i18n-registry.js --check",
     "i18n:catalogs": "node bin/check-i18n-catalogs.mjs",

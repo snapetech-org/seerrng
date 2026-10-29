@@ -12,6 +12,22 @@ const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const config = JSON.parse(
   fs.readFileSync(path.join(root, 'config/i18n/locales.json'), 'utf8')
 );
+const sourceSnapshotPath = path.join(root, 'config/i18n/source-snapshot.json');
+const sourceSnapshot = JSON.parse(
+  fs.readFileSync(sourceSnapshotPath, 'utf8')
+);
+if (
+  sourceSnapshot.schemaVersion !== 1 ||
+  sourceSnapshot.algorithm !== 'sha256' ||
+  !sourceSnapshot.client ||
+  typeof sourceSnapshot.client !== 'object' ||
+  Array.isArray(sourceSnapshot.client) ||
+  !sourceSnapshot.server ||
+  typeof sourceSnapshot.server !== 'object' ||
+  Array.isArray(sourceSnapshot.server)
+) {
+  throw new Error('Invalid config/i18n/source-snapshot.json schema.');
+}
 const fallbackPath = path.join(root, 'config/i18n/english-fallbacks.json');
 const fallbackManifest = fs.existsSync(fallbackPath)
   ? JSON.parse(fs.readFileSync(fallbackPath, 'utf8'))
@@ -159,6 +175,33 @@ for (const domain of ['client', 'server']) {
   const sourceEntries = Object.entries(source);
   const sourceIds = new Set(sourceEntries.map(([id]) => id));
   const sourceContracts = new Map();
+  const storedHashes = sourceSnapshot[domain];
+
+  for (const [id, message] of sourceEntries) {
+    if (
+      typeof message === 'string' &&
+      storedHashes[id] !== hashSource(message)
+    ) {
+      addProblem(
+        domain,
+        config.baseLocale,
+        id,
+        'stale-source',
+        'English source changed; review translations and run pnpm i18n:snapshot.'
+      );
+    }
+  }
+  for (const id of Object.keys(storedHashes)) {
+    if (!sourceIds.has(id)) {
+      addProblem(
+        domain,
+        config.baseLocale,
+        id,
+        'stale-source',
+        'Message was removed from English source; refresh the source snapshot.'
+      );
+    }
+  }
 
   for (const [id, message] of sourceEntries) {
     if (typeof message !== 'string' || !message.trim()) {
@@ -186,6 +229,7 @@ for (const domain of ['client', 'server']) {
         config.baseLocale,
         entry.id,
         'stale-fallback',
+    'stale-source',
         'Fallback key is not in the English source catalog.'
       );
       continue;
@@ -454,11 +498,18 @@ if (jsonOutput) {
     console.log('Plural categories needing review: ' + pluralWarnings.length);
   }
   console.log(
-    'Translation equality is structural coverage only; every non-English registry entry remains subject to its review status.'
+    'Translation equality is structural coverage only; every non-English ' +
+      'registry entry remains subject to its review status.'
   );
 }
 
+const hasStaleMetadata = problems.some(
+  (problem) =>
+    problem.kind === 'stale-source' || problem.kind === 'stale-fallback'
+);
+
 if (
+  hasStaleMetadata ||
   (strict && hasStructuralProblems) ||
   (strictCoverage && hasCoverageGaps) ||
   (strictPlurals && hasPluralGaps)

@@ -37,6 +37,10 @@ Use the strict audit when a reviewed translation batch is ready:
 - `pnpm i18n:registry` regenerates the server locale types and lazy client
   loader from the registry. `pnpm i18n:registry:check` checks that generated
   files are current.
+- English client and server messages have per-message SHA-256 source
+  fingerprints. `pnpm i18n:check` fails when the snapshot is stale; after an
+  intentional English source update, run `pnpm i18n:snapshot`. This refreshes
+  fingerprints only and does not mark translations as reviewed.
 
 Regional catalog aliases are explicit: `es-MX` falls back to `es`;
 `zh-CN` and `zh-TW` map to Simplified and Traditional Chinese filenames;
