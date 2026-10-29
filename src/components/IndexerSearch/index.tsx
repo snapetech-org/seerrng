@@ -218,7 +218,7 @@ const ResultCard = ({
   );
 };
 
-const IndexerSearch = () => {
+const IndexerSearch = ({ embedded = false }: { embedded?: boolean }) => {
   const intl = useIntl();
   const router = useRouter();
   const { currentSettings } = useSettings();
@@ -339,11 +339,13 @@ const IndexerSearch = () => {
 
   return (
     <>
-      <PageTitle title={intl.formatMessage(messages.title)} />
-      <main className="mb-10">
-        <Header subtext={intl.formatMessage(messages.intro)}>
-          {intl.formatMessage(messages.title)}
-        </Header>
+      {!embedded && <PageTitle title={intl.formatMessage(messages.title)} />}
+      <div className={embedded ? '' : 'mb-10'}>
+        {!embedded && (
+          <Header subtext={intl.formatMessage(messages.intro)}>
+            {intl.formatMessage(messages.title)}
+          </Header>
+        )}
 
         {!canManageRequests ? (
           <Alert type="error">
@@ -487,7 +489,7 @@ const IndexerSearch = () => {
             )}
           </>
         )}
-      </main>
+      </div>
     </>
   );
 };

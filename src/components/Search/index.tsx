@@ -1,4 +1,5 @@
 import InlineBookSeriesResults from '@app/components/BookSeriesSearch/InlineResults';
+import IndexerSearch from '@app/components/IndexerSearch';
 import BookFormatBadge from '@app/components/Common/BookFormatBadge';
 import Button from '@app/components/Common/Button';
 import CardTextVisibilityToggle from '@app/components/Common/CardTextVisibilityToggle';
@@ -78,6 +79,7 @@ const messages = defineMessages('components.Search', {
   magazines: 'Magazines',
   sports: 'Sports',
   software: 'Software',
+  releases: 'Releases',
   filter: 'Filters',
   mediaFilters: 'Media Filters',
   sortBy: 'Sort By',
@@ -125,6 +127,7 @@ const searchCategories = [
   { key: 'sports', type: 'sports', message: messages.sports },
   { key: 'software', type: 'software', message: messages.software },
   { key: 'author', type: 'author', message: messages.authors },
+  { key: 'releases', type: 'releases', message: messages.releases },
 ] as const;
 
 type SearchCategory = (typeof searchCategories)[number];
@@ -189,6 +192,7 @@ const sortFieldsByCategory: Record<
   magazine: ['date', 'title'],
   sports: ['date', 'title'],
   software: [],
+  releases: [],
 };
 
 const getSearchCategory = (
@@ -220,6 +224,7 @@ const matchesCategory = (result: SearchResult, category: SearchCategory) => {
   }
 
   if (category.type === 'software') return false;
+  if (category.type === 'releases') return false;
 
   return result.mediaType === category.type;
 };
@@ -394,6 +399,8 @@ const Search = () => {
         );
       case 'software':
         return isAnySoftwareCategoryEnabled(serviceAvailability);
+      case 'releases':
+        return hasPermission(Permission.MANAGE_REQUESTS);
       default:
         return true;
     }
@@ -814,7 +821,7 @@ const Search = () => {
           })}
         </div>
       </PinnedFilterSection>
-      {category.key !== 'software' && (
+      {category.key !== 'software' && category.key !== 'releases' && (
         <PinnedFilterSection
           mediaType={filterMediaType}
           section="filters"
@@ -845,7 +852,7 @@ const Search = () => {
           </div>
         </PinnedFilterSection>
       )}
-      {category.key !== 'software' && (
+      {category.key !== 'software' && category.key !== 'releases' && (
         <PinnedFilterSection
           mediaType={filterMediaType}
           section="sortBy"
@@ -907,7 +914,9 @@ const Search = () => {
       {router.isReady && showBookSeries && (
         <InlineBookSeriesResults query={query} format={preferredBookFormat} />
       )}
-      {category.key === 'software' ? (
+      {category.key === 'releases' ? (
+        <IndexerSearch embedded />
+      ) : category.key === 'software' ? (
         <SoftwareCatalog externalQuery={query} embedded />
       ) : error && stableTitles.length === 0 ? (
         searchError

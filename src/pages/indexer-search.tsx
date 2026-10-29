@@ -1,6 +1,21 @@
-import IndexerSearch from '@app/components/IndexerSearch';
-import type { NextPage } from 'next';
+import type { GetServerSideProps } from 'next';
 
-const IndexerSearchPage: NextPage = () => <IndexerSearch />;
+export const getServerSideProps: GetServerSideProps = async ({ query }) => ({
+  redirect: {
+    destination: {
+      pathname: '/search',
+      query: {
+        type: 'releases',
+        ...(typeof query.query === 'string' ? { query: query.query } : {}),
+        ...(typeof query.category === 'string'
+          ? { category: query.category }
+          : {}),
+      },
+    },
+    permanent: false,
+  },
+});
 
-export default IndexerSearchPage;
+export default function IndexerSearchPage() {
+  return null;
+}
