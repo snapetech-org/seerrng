@@ -1626,6 +1626,34 @@ test('compact Request geometry checker accepts the shared owner and rejects regr
   );
 });
 
+test('compact-control heights are owned by the selected interface theme', () => {
+  const cases = [
+    {
+      file: 'themes/seerrOrig/theme.css',
+      value: '--interface-compact-control-height: 1.25rem;',
+      replacement: '--interface-compact-control-height: 1rem;',
+      reason: 'SeerrOrig must own its 20-pixel compact-control height',
+    },
+    {
+      file: 'themes/seerrNGJ/theme.css',
+      value: '--interface-compact-control-height: 1.5rem;',
+      replacement: '--interface-compact-control-height: 1.25rem;',
+      reason: 'SeerrNGJ must own its 24-pixel compact-control height',
+    },
+  ];
+
+  for (const { file, value, replacement, reason } of cases) {
+    const source = repositoryFilesWith()[file];
+    assert.ok(source.includes(value), `${file} has its package-owned value`);
+    assert.ok(
+      validateCurrentBatchContract(
+        repositoryFilesWith({ [file]: source.replace(value, replacement) })
+      ).some((error) => error.includes(reason)),
+      `${file} rejects a missing theme-specific control height`
+    );
+  }
+});
+
 test('request dropdown portal stacking accepts native CSS and rejects lower or lost owners', () => {
   const cssFile = 'src/styles/globals.css';
   const source = repositoryFilesWith()[cssFile];

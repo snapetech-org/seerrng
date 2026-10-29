@@ -1,92 +1,42 @@
-# SeerrOrig / SeerrNGJ Rebuild Status
+# SeerrOrig / SeerrNGJ Theme Package Readiness
 
-This is the working status record for the two-interface rebuild. Update it in
-the same commit as each implementation slice. A source change is not visual
-acceptance: rendered review stays unverified until the application has been
-captured at matching viewports and states.
+Updated 2026-10-29 against the local verification worktree for draft PR #416. The package implementation and all available local automated gates have been rechecked. This record separates those results from checks that require external infrastructure or live visual acceptance.
 
-## Implementation basis
+## Product and engine decision
 
-- Rebuild base: `snapetech-org/seerrng` `main`, commit
-  `4f5541aa5d83cb95e2cbd214ebda72d025d5daf6`.
-- Exact original UI reference: Seerr `v3.5.1`, commit
-  `564bfb08b54caa374bddaf820abfd226e5e69151`.
-- Engine/backend decision: keep the SeerrNG engine, APIs, provider integrations,
-  database, and current dependency contracts. Upstream v3.5.1 is the visual and
-  interaction reference for SeerrOrig, not a backend rollback target.
+- Keep the SeerrNG engine, backend, APIs, provider integrations, database, permission checks, migrations, and dependency contracts.
+- Use Seerr `v3.5.1` (`564bfb08b54caa374bddaf820abfd226e5e69151`) as the visual and interaction reference for SeerrOrig only; do not roll the backend back to upstream Seerr.
+- SeerrOrig restores the flatter upstream navigation, compact catalog cards, denser slate surfaces, and original detail-page flow. SeerrNGJ retains John's grouped navigation, larger cards, blue/silver surfaces, framed cards, and split detail layouts. Both themes use the same feature components and route/API semantics.
 
-## Rebuilt in this slice
+## Theme package architecture
 
-- Added the account-level `interfaceTheme` preference with the stable values
-  `seerrOrig` and `seerrNGJ`; the default is `seerrOrig`.
-- Added an own-profile API write route and SQLite/PostgreSQL migrations.
-  Accounts with the explicit legacy `john-redesign` preset migrate to NGJ;
-  other accounts use the new Orig default.
-- Added a theme selector separate from the existing palette and advanced-color
-  controls. `_document` starts on SeerrOrig before hydration; the authenticated
-  account profile is restored as soon as user settings load.
-- Added three independently owned stylesheets in
-  `src/styles/interfaceThemes/`. Each has its own navigation, poster, detail,
-  card, form, table, and surface rules.
-- Expanded theme coverage to current video and cross-media detail roles,
-  acquisition cards, issue/blocklist summaries, service settings, and data
-  tables. The route components retain their existing behavior and contracts.
-- Extracted theme-specific navigation presentation into a tested helper:
-  SeerrOrig flattens and orders the original core links while retaining current
-  visibility filtering; SeerrNGJ keeps the grouped SeerrNG navigation.
-- Expanded the side-by-side static comparison harness with discovery, an
-  audiobook detail, a request action, and service administration examples. It
-  loads the same profile stylesheets used by the application.
-- Added the initial route-family feature map and this implementation record.
+- `src/styles/globals.css` owns resets, Tailwind foundations, palette infrastructure, shared interaction behavior, and structural component styles. Built-in theme tokens for geometry, spacing, poster sizing, compact cards, detail rows, controls, and menu surfaces live in the selected theme package.
+- `src/styles/interfaceThemes/shared.css` maps semantic component roles to theme tokens. `themes/seerrOrig/` and `themes/seerrNGJ/` each ship a manifest and complete scoped stylesheet with their own colors, layout, navigation, discovery, card, detail, settings, table, and responsive rules.
+- The theme provider activates only the selected stylesheet from the same-origin API after load and account preference resolution. `_document` starts with SeerrOrig before hydration. Theme selection remains independent of the palette and advanced-color controls.
+- The comparison fixture embeds production shared CSS and both package stylesheets. JSDOM tests confirm source parity and distinct poster, filter, detail, settings, navigation, and token values. The fixture is not a live application render.
 
-## Verification status
+## Custom theme authoring and safety
 
-- CSS coverage now reaches the shared contracts used by the listed route
-  families; render acceptance is still needed to catch route-specific markup,
-  responsive, and state regressions.
-- Focused theme-provider tests, server/client type checks, translation checks,
-  and lint have passed. The navigation presentation tests pass (2/2), client
-  typecheck passes, and the changed navigation files pass Prettier. A SQLite
-  migration execution test covers Orig defaults, the explicit John migration,
-  idempotency, and rollback.
-- The four-worker full Node run reported 3,754 passed, 5 skipped, and 2 failed
-  out of 3,761. The provider deadline assertion missed its 6-second bound by
-  51ms under suite load; it passes when isolated. The settings route test file
-  was killed during that run; it passes in isolation (93/93). A two-worker full
-  rerun was stopped before it produced a final summary, so a clean full-suite
-  result remains open.
-- PostgreSQL migration execution has not yet been performed. This workspace
-  has no PostgreSQL client/server, container runtime, or configured database
-  URL; repository CI uses a private, manually dispatched runner for
-  database-backed checks.
-- The full repository formatting check failed before formatting the changed
-  sidebar file. All changed files now pass the focused Prettier check; the full
-  repository check remains pending.
-- The comparison page is a static fixture using the production profile
-  stylesheets. Live route screenshots, keyboard/touch review, and matching
-  viewport comparisons have not been completed; UI acceptance is
-  **unverified**.
-- A theme audit caught and corrected the poster-size inversion: SeerrOrig now
-  uses the upstream 150px catalog track and SeerrNGJ uses the SeerrNG 169.2px
-  track. Both profile grids read their width from the profile token, and the
-  comparison page has been regenerated from those production stylesheets.
-  `node --test src/styles/interfaceThemeProfiles.test.mjs` passes 3/3, including
-  checks that the embedded CSS matches source and that the two computed layouts
-  differ. Changed-file Prettier and `git diff --check` also pass.
-- A serial full Node-suite rerun did not produce a final TAP summary after its
-  execution session was lost during the `User persistence` tests. It is not a
-  clean suite result; the existing full-suite gate remains open.
+- A package is a directory containing `manifest.json` and `theme.css`; `.seerrtheme` distributions are JSON data and are never extracted as archives.
+- `docs/interface-themes/authoring.md`, `manifest.schema.json`, and `template/` document the API version, scoping, layout tokens, packaging workflow, and checksums.
+- The `interface-theme` CLI supports validate, pack, install, explicit replace, and uninstall. Installs are staged before activation; built-ins cannot be overwritten or removed.
+- Validation covers manifest versions and fields, CSS syntax and scope, escaped/comment-split resource functions, at-rules and keyframe namespaces, and package/file/count/nesting limits. Installed CSS is revalidated before serving. The stylesheet endpoint uses `nosniff` and `Cross-Origin-Resource-Policy: same-origin`.
+- API v1 packages are CSS-only: no JavaScript, HTML, fonts, images, or external resources. CSS can still hide existing controls, which the authoring guide documents.
 
-## Next gates
+## Local verification completed
 
-1. Complete a clean full Node suite run with a concurrency setting that fits
-   the available memory; retain the exact pass, skip, and fail counts.
-2. Execute the PostgreSQL migration path against a disposable PostgreSQL
-   database.
-3. Render both themes in the running app at matching desktop and phone
-   viewports. Review Home, video and cross-media detail, request flow, and admin
-   routes with loading, empty, and populated states.
-4. Finish the route-level interaction and responsive review recorded in
-   `feature-map.md`, then update the mockup and status from verified renders.
-5. Keep each implementation slice committed and pushed to the draft PR; do not
-   merge it.
+- Full Node suite: **3,760 passed, 5 skipped, 0 failed** (3,765 total) with `corepack pnpm@10.24.0 test:node --test-concurrency 4`. The skips are the live PostgreSQL request-status and migration execution tests.
+- Full Vitest/CI suite: **632 files passed, 2 skipped; 4,475 tests passed, 5 skipped, 0 failed**. The skipped tests require PostgreSQL.
+- Tooling suite: **307 passed, 12 skipped, 0 failed**. Local-only skips are PostgreSQL, Helm (not installed), and git release tags (not fetched); CI provisions these dependencies.
+- TypeScript server/client checks, ESLint, Oxlint, repository Prettier check, `git diff --check`, bundle-size check, and current-batch contract check passed. Lint reported warnings only.
+- UI shared-style check inspected **486/486 components**; focused UI geometry/style tests passed **73/73**.
+- Next.js production build generated all **140 static pages**. The bundle check inspected **303 chunks (7.08 MB)**. The server build emitted both theme packages under `dist/interface-themes/`.
+- Workflow boundary tests passed **11/11**. Focused theme package, provider, security, and route tests are included in the full suites.
+
+## Remaining release gates
+
+1. **Live PostgreSQL migrations:** execution remains unverified. Node and Vitest each skipped five PostgreSQL-gated cases; tooling skipped four database-dependent cases. No test URL/service is configured. PostgreSQL binaries are present, but this container blocks switching to the unprivileged UID required to start the server. The SQLite migration suite and PostgreSQL SQL contract tests pass; they do not replace a live PostgreSQL run.
+2. **Rendered acceptance:** source-backed comparison tests prove the two package styles resolve differently, but live route review at desktop/mobile sizes, including keyboard, touch, loading, empty, and populated states, has not been completed.
+3. **Repository CI:** the public-fork workflow produces no jobs for this same-repository branch. The project CI workflow is manual and requires a private JIT runner; no CI result exists for this candidate.
+
+The implementation and local automated gates are complete. The change is **not fully release-ready** until live PostgreSQL execution, rendered acceptance, and the project CI run are completed. PR #416 remains draft and unmerged.

@@ -131,7 +131,8 @@ and again before serving their stylesheets. The installer accepts one JSON
   unknown format/API versions are rejected. The install catalog accepts at most
   16 custom themes and 4 MiB of custom theme CSS total.
 - Only installed packages are listed or served. The selected package's CSS is
-  fetched from the same-origin API; unselected theme packages are not loaded.
+  fetched from the same-origin API with `nosniff` and same-origin resource
+  policy headers; unselected theme packages are not loaded.
 
 Install themes only from authors you trust. Scoped CSS cannot access account
 data through an application API, but a theme can still change or hide interface
