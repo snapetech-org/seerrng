@@ -108,7 +108,6 @@ class KaraokeMugenSocket {
     this.socket = new WebSocket(toSocketUrl(url));
     this.ready = new Promise((resolve, reject) => {
       const timer = setTimeout(() => reject(new Error('Karaoke Mugen connection timed out.')), 10000);
-      this.socket.addEventListener('open', () => this.socket.send('40'));
       this.socket.addEventListener('error', () => {
         clearTimeout(timer);
         reject(new Error('Unable to connect to Karaoke Mugen.'));

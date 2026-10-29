@@ -64,6 +64,7 @@ export const menuMessages = defineMessages('components.Layout.Sidebar', {
   indexerSearch: 'Indexer Search',
   browsemovies: 'Movies',
   browsemusic: 'Music',
+  karaoke: 'Karaoke',
   browsebooks: 'Books',
   browseaudiobooks: 'Audiobooks',
   browsesoftware: 'Software',
@@ -163,6 +164,15 @@ export const navigationSections: NavigationSection[] = [
         svgIcon: <MusicalNoteIcon aria-hidden="true" />,
         svgIconSelected: <FilledMusicalNoteIcon aria-hidden="true" />,
         activeRegExp: /^\/(?:discover\/music(?:\/.*)?|music\/)/,
+      },
+      {
+        id: 'karaoke',
+        href: '/karaoke',
+        messagesKey: 'karaoke',
+        svgIcon: <MusicalNoteIcon aria-hidden="true" />,
+        svgIconSelected: <FilledMusicalNoteIcon aria-hidden="true" />,
+        activeRegExp: /^\/karaoke(?:\/|$)/,
+        nested: true,
       },
       {
         id: 'software',
