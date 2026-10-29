@@ -827,12 +827,27 @@ const Search = () => {
             className={getFilterToggleButtonClass(scope === option.value)}
             aria-pressed={scope === option.value}
             onClick={() => {
+              const indexerCategory = ({
+                movie: 'movie',
+                tv: 'tv',
+                book: 'ebook',
+                audiobook: 'audiobook',
+                music: 'music',
+                comic: 'comic',
+                magazine: 'magazine',
+                software: 'game',
+              } as Partial<Record<SearchCategory['key'], string>>)[
+                category.key
+              ];
               void router.replace(
                 {
                   pathname: router.pathname,
                   query: {
                     query: query || undefined,
                     ...(option.value !== 'all' ? { scope: option.value } : {}),
+                    ...(option.value === 'releases' && indexerCategory
+                      ? { category: indexerCategory }
+                      : {}),
                   },
                 },
                 undefined,
