@@ -384,7 +384,7 @@ searchRoutes.get('/', async (req, res, next) => {
   if ('error' in parsedLanguage) {
     return res.status(400).json({ status: 400, message: parsedLanguage.error });
   }
-  const language = parsedLanguage.value ?? req.locale;
+  const language = parsedLanguage.value ?? req.metadataLocale;
 
   const parsedType = req.query.type
     ? parseOptionalAllowedString(req.query.type, {

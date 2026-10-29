@@ -654,7 +654,7 @@ const MusicRequestModal = ({
         )}
 
         <div className="flex flex-wrap items-center justify-end gap-2 pt-2">
-          <div className="mr-auto flex items-center gap-2">
+          <div className="me-auto flex items-center gap-2">
             {canUseAdvancedOptions && (
               <button
                 type="button"

@@ -16,6 +16,9 @@ import { normalizeStashDbId } from '@server/lib/stashdbIdentity';
 import { createSafeHttpRequestOptions } from '@server/utils/security';
 import type { Notification } from '..';
 
+export type SoftwareRequestStatus =
+  'available' | 'pending' | 'approved' | 'declined' | 'failed';
+
 export interface NotificationPayload {
   event?: string;
   subject: string;
@@ -33,7 +36,68 @@ export interface NotificationPayload {
   comment?: IssueComment;
   pendingRequestsCount?: number;
   isAdmin?: boolean;
+  softwareRequestStatus?: SoftwareRequestStatus;
 }
+
+export const getNotificationContent = (
+  payload: NotificationPayload,
+  intl: IntlInstance
+): { event?: string; message?: string } => {
+  if (!payload.softwareRequestStatus) {
+    return { event: payload.event, message: payload.message };
+  }
+
+  const messages = {
+    available: [
+      globalMessages.softwareRequestAvailable,
+      globalMessages.softwareAvailableMessage,
+    ],
+    pending: [
+      globalMessages.softwareRequestPending,
+      globalMessages.softwarePendingMessage,
+    ],
+    approved: [
+      globalMessages.softwareRequestApproved,
+      globalMessages.softwareApprovedMessage,
+    ],
+    declined: [
+      globalMessages.softwareRequestDeclined,
+      globalMessages.softwareDeclinedMessage,
+    ],
+    failed: [
+      globalMessages.softwareRequestFailed,
+      globalMessages.softwareFailedMessage,
+    ],
+  } satisfies Record<
+    SoftwareRequestStatus,
+    [
+      (typeof globalMessages)[keyof typeof globalMessages],
+      (typeof globalMessages)[keyof typeof globalMessages],
+    ]
+  >;
+  const [event, message] = messages[payload.softwareRequestStatus];
+
+  return {
+    event: intl.formatMessage(event),
+    message: intl.formatMessage(message),
+  };
+};
+
+export const getNotificationExtras = (
+  payload: NotificationPayload,
+  intl: IntlInstance
+): { name: string; value: string }[] => {
+  if (payload.softwareRequestStatus && payload.notifyUser) {
+    return [
+      {
+        name: intl.formatMessage(globalMessages.requestedBy),
+        value: payload.notifyUser.displayName,
+      },
+    ];
+  }
+
+  return payload.extra ?? [];
+};
 
 export const NOTIFICATION_HTTP_OPTIONS = {
   ...createSafeHttpRequestOptions(

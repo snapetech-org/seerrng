@@ -364,7 +364,7 @@ const RequestCardError = ({ requestData }: RequestCardErrorProps) => {
                   </div>
                 )}
                 <div className="mt-2 flex items-center text-sm sm:mt-1">
-                  <span className="mr-2 hidden font-bold sm:block">
+                  <span className="me-2 hidden font-bold sm:block">
                     {intl.formatMessage(globalMessages.status)}
                   </span>
                   {requestData.status === MediaRequestStatus.DECLINED ||
@@ -745,7 +745,7 @@ const RequestCard = ({
             </div>
           )}
         <div
-          className={`relative z-10 flex min-w-0 flex-1 flex-col pr-4 ${
+          className={`relative z-10 flex min-w-0 flex-1 flex-col pe-4 ${
             !isMusic(title) &&
             !isBook(title) &&
             !isComic(title) &&

@@ -91,6 +91,7 @@ const getUserStateRevision = async (user: User): Promise<string> => {
     userUpdatedAt: user.updatedAt,
     permissions: user.permissions,
     locale: user.settings?.locale,
+    metadataLocale: user.settings?.metadataLocale,
     streamingRegion: user.settings?.streamingRegion,
     originalLanguage: user.settings?.originalLanguage,
     requestState,

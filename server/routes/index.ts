@@ -784,7 +784,7 @@ router.get('/genres/movie', isAuthenticated(), async (req, res, next) => {
   if ('error' in parsedLanguage) {
     return res.status(400).json({ status: 400, message: parsedLanguage.error });
   }
-  const language = parsedLanguage.value ?? req.locale;
+  const language = parsedLanguage.value ?? req.metadataLocale;
 
   try {
     const genres = await tmdb.getMovieGenres({
@@ -810,7 +810,7 @@ router.get('/genres/tv', isAuthenticated(), async (req, res, next) => {
   if ('error' in parsedLanguage) {
     return res.status(400).json({ status: 400, message: parsedLanguage.error });
   }
-  const language = parsedLanguage.value ?? req.locale;
+  const language = parsedLanguage.value ?? req.metadataLocale;
 
   try {
     const genres = await tmdb.getTvGenres({

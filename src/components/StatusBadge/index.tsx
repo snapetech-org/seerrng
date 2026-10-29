@@ -310,7 +310,7 @@ const StatusBadge = ({
 
   const badgeDownloadProgress = (
     <div
-      className={`absolute top-0 left-0 z-10 flex h-full ${
+      className={`absolute start-0 top-0 z-10 flex h-full ${
         status === MediaStatus.DELETED
           ? 'bg-red-600/35'
           : status === MediaStatus.PROCESSING
@@ -375,20 +375,20 @@ const StatusBadge = ({
                         item.downloadId &&
                         item.downloadId === downloadItem[0].downloadId
                     ) ? (
-                      <span className="ml-1">
+                      <span className="ms-1">
                         {intl.formatMessage(messages.seasonnumber, {
                           seasonNumber: downloadItem[0].episode.seasonNumber,
                         })}
                       </span>
                     ) : (
-                      <span className="ml-1">
+                      <span className="ms-1">
                         {intl.formatMessage(messages.seasonepisodenumber, {
                           seasonNumber: downloadItem[0].episode.seasonNumber,
                           episodeNumber: downloadItem[0].episode.episodeNumber,
                         })}
                       </span>
                     ))}
-                  <Spinner className="ml-1 h-3 w-3" />
+                  <Spinner className="ms-1 h-3 w-3" />
                 </>
               )}
             </div>
@@ -441,20 +441,20 @@ const StatusBadge = ({
                         item.downloadId &&
                         item.downloadId === downloadItem[0].downloadId
                     ) ? (
-                      <span className="ml-1">
+                      <span className="ms-1">
                         {intl.formatMessage(messages.seasonnumber, {
                           seasonNumber: downloadItem[0].episode.seasonNumber,
                         })}
                       </span>
                     ) : (
-                      <span className="ml-1">
+                      <span className="ms-1">
                         {intl.formatMessage(messages.seasonepisodenumber, {
                           seasonNumber: downloadItem[0].episode.seasonNumber,
                           episodeNumber: downloadItem[0].episode.episodeNumber,
                         })}
                       </span>
                     ))}
-                  <Spinner className="ml-1 h-3 w-3" />
+                  <Spinner className="ms-1 h-3 w-3" />
                 </>
               )}
             </div>
@@ -507,20 +507,20 @@ const StatusBadge = ({
                         item.downloadId &&
                         item.downloadId === downloadItem[0].downloadId
                     ) ? (
-                      <span className="ml-1">
+                      <span className="ms-1">
                         {intl.formatMessage(messages.seasonnumber, {
                           seasonNumber: downloadItem[0].episode.seasonNumber,
                         })}
                       </span>
                     ) : (
-                      <span className="ml-1">
+                      <span className="ms-1">
                         {intl.formatMessage(messages.seasonepisodenumber, {
                           seasonNumber: downloadItem[0].episode.seasonNumber,
                           episodeNumber: downloadItem[0].episode.episodeNumber,
                         })}
                       </span>
                     ))}
-                  <Spinner className="ml-1 h-3 w-3" />
+                  <Spinner className="ms-1 h-3 w-3" />
                 </>
               )}
             </div>
@@ -602,20 +602,20 @@ const StatusBadge = ({
                         item.downloadId &&
                         item.downloadId === downloadItem[0].downloadId
                     ) ? (
-                      <span className="ml-1">
+                      <span className="ms-1">
                         {intl.formatMessage(messages.seasonnumber, {
                           seasonNumber: downloadItem[0].episode.seasonNumber,
                         })}
                       </span>
                     ) : (
-                      <span className="ml-1">
+                      <span className="ms-1">
                         {intl.formatMessage(messages.seasonepisodenumber, {
                           seasonNumber: downloadItem[0].episode.seasonNumber,
                           episodeNumber: downloadItem[0].episode.episodeNumber,
                         })}
                       </span>
                     ))}
-                  <Spinner className="ml-1 h-3 w-3" />
+                  <Spinner className="ms-1 h-3 w-3" />
                 </>
               )}
             </div>

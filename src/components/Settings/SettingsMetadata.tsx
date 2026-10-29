@@ -518,7 +518,7 @@ const SettingsMetadata = () => {
                         htmlFor="tv-metadata-provider"
                         className="checkbox-label"
                       >
-                        <span className="mr-2">
+                        <span className="me-2">
                           {intl.formatMessage(messages.seriesMetadataProvider)}
                         </span>
                       </label>
@@ -541,7 +541,7 @@ const SettingsMetadata = () => {
                         htmlFor="anime-metadata-provider"
                         className="checkbox-label"
                       >
-                        <span className="mr-2">
+                        <span className="me-2">
                           {intl.formatMessage(messages.animeMetadataProvider)}
                         </span>
                       </label>
@@ -561,7 +561,7 @@ const SettingsMetadata = () => {
 
                     <div className="actions settings-metadata-actions">
                       <div className="flex justify-end">
-                        <span className="ml-3 inline-flex rounded-md shadow-sm">
+                        <span className="ms-3 inline-flex rounded-md shadow-sm">
                           <Button
                             data-testid="metadata-test-button"
                             buttonType="warning"
@@ -629,7 +629,7 @@ const SettingsMetadata = () => {
                           </Button>
                         </span>
 
-                        <span className="ml-3 inline-flex rounded-md shadow-sm">
+                        <span className="ms-3 inline-flex rounded-md shadow-sm">
                           <Button
                             data-testid="metadata-save-button"
                             buttonType="primary"

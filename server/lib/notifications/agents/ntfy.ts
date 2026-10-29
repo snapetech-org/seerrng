@@ -21,6 +21,8 @@ import {
   BaseAgent,
   CONFIGURABLE_NOTIFICATION_HTTP_OPTIONS,
   getNotificationActionUrl,
+  getNotificationContent,
+  getNotificationExtras,
   truncateNotificationUtf8,
 } from './agent';
 
@@ -48,6 +50,8 @@ class NtfyAgent
   public buildPayload(type: Notification, payload: NotificationPayload) {
     const settings = this.getSettings();
     const intl = getIntl(settings.options.locale as AvailableLocale);
+    const content = getNotificationContent(payload, intl);
+    const extras = getNotificationExtras(payload, intl);
     const { applicationUrl } = getExternalRuntimeConfig().main;
     const embedPoster = settings.embedPoster;
 
@@ -59,12 +63,12 @@ class NtfyAgent
     const priority = settings.options.priority ?? 3;
 
     const title = truncateNotificationUtf8(
-      payload.event ? `${payload.event} - ${payload.subject}` : payload.subject,
+      content.event ? `${content.event} - ${payload.subject}` : payload.subject,
       NTFY_TITLE_BYTE_LIMIT
     );
     let message =
-      payload.message && !payload.comment
-        ? escapeNtfyMarkdownText(payload.message)
+      content.message && !payload.comment
+        ? escapeNtfyMarkdownText(content.message)
         : '';
 
     if (payload.request) {
@@ -111,7 +115,7 @@ class NtfyAgent
       }`;
     }
 
-    for (const extra of payload.extra ?? []) {
+    for (const extra of extras) {
       message += `\n\n**${escapeNtfyMarkdownText(
         extra.name
       )}**\n${escapeNtfyMarkdownText(extra.value)}`;

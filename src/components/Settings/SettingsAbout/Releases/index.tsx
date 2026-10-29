@@ -74,7 +74,7 @@ const Release = ({ currentVersion, release, isLatest }: ReleaseProps) => {
       </Transition>
       <div className="flex w-full flex-grow items-center justify-center space-x-2 truncate sm:justify-start">
         <span className="truncate text-lg font-bold">
-          <span className="mr-2 text-xs font-normal whitespace-nowrap">
+          <span className="me-2 text-xs font-normal whitespace-nowrap">
             <FormattedRelativeTime
               value={Math.floor(
                 (new Date(release.created_at).getTime() - Date.now()) / 1000

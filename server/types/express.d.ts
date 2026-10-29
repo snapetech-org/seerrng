@@ -14,6 +14,7 @@ declare global {
     export interface Request {
       user?: User;
       locale?: string;
+      metadataLocale?: string;
       rawBody?: Buffer;
     }
   }

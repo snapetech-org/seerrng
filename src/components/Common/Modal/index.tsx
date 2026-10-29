@@ -152,7 +152,7 @@ const Modal = React.forwardRef<HTMLDivElement, ModalProps>(
                 className={
                   backdropFull
                     ? 'pointer-events-none absolute inset-0 z-0 overflow-hidden'
-                    : 'absolute top-0 right-0 left-0 z-0 h-64 max-h-full w-full'
+                    : 'absolute start-0 end-0 top-0 z-0 h-64 max-h-full w-full'
                 }
               >
                 <CachedImage
@@ -175,7 +175,7 @@ const Modal = React.forwardRef<HTMLDivElement, ModalProps>(
             )}
             <div className="relative min-w-0 pt-0.5 sm:flex sm:items-center">
               <div
-                className={`mt-3 min-w-0 truncate text-center text-white sm:mt-0 sm:text-left`}
+                className={`mt-3 min-w-0 truncate text-center text-white sm:mt-0 sm:text-start`}
               >
                 {(title || subTitle) && (
                   <div className="flex flex-col space-y-1">

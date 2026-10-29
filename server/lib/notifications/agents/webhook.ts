@@ -112,6 +112,7 @@ const KeyMap: Record<string, string | KeyMapFunction> = {
   event: 'event',
   subject: 'subject',
   message: 'message',
+  software_request_status: 'softwareRequestStatus',
   image: 'image',
   notifyuser_username: 'notifyUser.displayName',
   notifyuser_email: 'notifyUser.email',

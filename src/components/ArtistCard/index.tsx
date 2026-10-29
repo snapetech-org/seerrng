@@ -45,7 +45,7 @@ const ArtistCard = ({
       >
         <div data-poster-region="content">
           <div className="flex h-full w-full flex-col items-center p-2">
-            <div className="absolute top-2 left-2 z-10">
+            <div className="absolute start-2 top-2 z-10">
               <MediaTypeBadge mediaType="artist" variant="card" />
             </div>
             <div className="relative mt-2 mb-4 flex h-1/2 w-full justify-center">
@@ -87,7 +87,7 @@ const ArtistCard = ({
               </div>
             )}
             <div
-              className={`absolute right-0 bottom-0 left-0 h-12 rounded-b-xl bg-gradient-to-t ${
+              className={`absolute start-0 end-0 bottom-0 h-12 rounded-b-xl bg-gradient-to-t ${
                 isHovered ? 'from-gray-800' : 'from-gray-900'
               }`}
             />

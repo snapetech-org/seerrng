@@ -26,11 +26,40 @@ describe('password setup email rendering', () => {
         {
           applicationTitle: 'SeerrNG',
           applicationUrl: settings.main.applicationUrl,
+          locale: 'ar',
+          direction: 'rtl',
+          greeting: undefined,
+          instructions:
+            'Use the link below to choose a password for your SeerrNG account.',
+          actionLabel: 'Set Password',
+          expiresNotice: 'The above link will expire in 24 hours.',
+          ignoreNotice:
+            'If you did not initiate this request, you may safely disregard this message.',
           resetPasswordLink: 'https://seerr.example/resetpassword/example',
           recipientEmail: 'new-user@example.com',
           recipientName: undefined,
         }
       )
     );
+
+    const html = await email.render(
+      join(__dirname, '../../templates/email/resetpassword/html'),
+      {
+        applicationTitle: 'SeerrNG',
+        applicationUrl: settings.main.applicationUrl,
+        locale: 'ar',
+        direction: 'rtl',
+        greeting: 'Hi, \u2068ليلى אבג\u2069!',
+        instructions: 'Choose a password.',
+        actionLabel: 'Set Password',
+        expiresNotice: 'The link expires in 24 hours.',
+        ignoreNotice: 'You can ignore this email.',
+        resetPasswordLink: 'https://seerr.example/resetpassword/example',
+        recipientEmail: 'new-user@example.com',
+        recipientName: 'ليلى אבג',
+      }
+    );
+    assert.match(html, /<html lang="ar" dir="rtl">/);
+    assert.match(html, /Choose a password/);
   });
 });

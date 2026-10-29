@@ -40,7 +40,7 @@ export const SavedServiceHostPicker = ({
           <button
             key={`${host.name}:${host.hostname}`}
             type="button"
-            className={`max-w-full rounded-md border px-2 py-1 text-left text-xs break-all whitespace-normal transition-colors ${
+            className={`max-w-full rounded-md border px-2 py-1 text-start text-xs break-all whitespace-normal transition-colors ${
               selectedHost === host.hostname
                 ? 'border-indigo-500 bg-indigo-500/20 text-white'
                 : 'border-gray-600 bg-gray-800 text-gray-200 hover:border-gray-400 hover:text-white'
@@ -56,7 +56,7 @@ export const SavedServiceHostPicker = ({
             }}
           >
             <span className="font-semibold">{host.name}</span>
-            <span className="ml-1 text-gray-400">{host.hostname}</span>
+            <span className="ms-1 text-gray-400">{host.hostname}</span>
           </button>
         ))}
       </div>

@@ -472,7 +472,7 @@ const MusicDetailsLayout = ({
                   {intl.formatMessage(messages.noArtists)}
                 </p>
               ) : (
-                <div className="scrollable-card -mr-3 grid max-h-[252px] grid-cols-3 gap-1.5 overflow-y-auto pr-3">
+                <div className="scrollable-card -me-3 grid max-h-[252px] grid-cols-3 gap-1.5 overflow-y-auto pe-3">
                   {artists.map((artist) => (
                     <Link
                       key={artist.id}
@@ -480,7 +480,7 @@ const MusicDetailsLayout = ({
                       prefetch={false}
                       className="group flex h-20 min-w-0 overflow-hidden rounded-lg border border-gray-700 bg-gray-900/30 transition hover:border-indigo-400 hover:bg-indigo-500/15 focus:ring-2 focus:ring-indigo-400 focus:outline-none"
                     >
-                      <span className="relative h-full w-[54px] flex-shrink-0 overflow-hidden border-r border-gray-700 bg-white">
+                      <span className="relative h-full w-[54px] flex-shrink-0 overflow-hidden border-e border-gray-700 bg-white">
                         <CachedImage
                           type={artist.imageType}
                           src={

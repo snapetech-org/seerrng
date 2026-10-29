@@ -85,7 +85,7 @@ const AuthorDetails = () => {
             />
           </div>
         )}
-        <div className="min-w-0 text-center lg:text-left">
+        <div className="min-w-0 text-center lg:text-start">
           <h1 className="text-3xl font-bold break-words text-white lg:text-5xl">
             {data.name}
           </h1>
@@ -130,7 +130,7 @@ const AuthorDetails = () => {
         <div className="slider-header">
           <div className="page-heading">
             {intl.formatMessage(messages.bibliography)}
-            <span className="ml-2 text-sm text-gray-400">
+            <span className="ms-2 text-sm text-gray-400">
               ({data.pagination.totalItems})
             </span>
           </div>

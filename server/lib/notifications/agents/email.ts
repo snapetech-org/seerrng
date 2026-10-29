@@ -11,6 +11,7 @@ import type { NotificationAgentEmail } from '@server/lib/settings';
 import { NotificationAgentKey } from '@server/lib/settings';
 import logger from '@server/logger';
 import type { AvailableLocale } from '@server/types/languages';
+import { getLocaleMetadata } from '@server/types/languages';
 import { mapWithConcurrency } from '@server/utils/concurrency';
 import type { EmailOptions } from 'email-templates';
 import path from 'path';
@@ -23,12 +24,17 @@ import {
   getMediaTypeLabel,
   getNotificationActionLabel,
   getNotificationActionUrl,
+  getNotificationContent,
 } from './agent';
 
 const PUBLIC_LOGO_URL =
   'https://raw.githubusercontent.com/seerr-team/seerr/refs/heads/develop/public/logo_full.svg';
 
 const messages = defineMessages('notifications.agents.email', {
+  greeting: 'Hi, {recipientName}!',
+  requestedByLabel: 'Requested By',
+  viewIssueIn: 'View Issue in {applicationTitle}',
+  openApplication: 'Open {applicationTitle}',
   issueType: '{type} issue',
   issue: 'issue',
   pendingRequest:
@@ -104,6 +110,8 @@ class EmailAgent
     locale?: AvailableLocale
   ): EmailOptions | undefined {
     const intl = getIntl(locale);
+    const emailLocale = intl.locale;
+    const direction = getLocaleMetadata(emailLocale).direction;
     const { applicationUrl, applicationTitle } =
       getExternalRuntimeConfig().main;
     const { embedPoster, options } = this.getSettings();
@@ -121,6 +129,17 @@ class EmailAgent
         },
         locals: {
           body: payload.message,
+          locale: emailLocale,
+          direction,
+          greeting:
+            recipientName && recipientName !== recipientEmail
+              ? intl.formatMessage(messages.greeting, {
+                  recipientName: `\u2068${recipientName}\u2069`,
+                })
+              : undefined,
+          openApplicationLabel: intl.formatMessage(messages.openApplication, {
+            applicationTitle,
+          }),
           applicationUrl,
           applicationTitle,
           logoUrl,
@@ -202,6 +221,18 @@ class EmailAgent
         locals: {
           event: payload.event,
           body,
+          locale: emailLocale,
+          direction,
+          greeting:
+            recipientName && recipientName !== recipientEmail
+              ? intl.formatMessage(messages.greeting, {
+                  recipientName: `\u2068${recipientName}\u2069`,
+                })
+              : undefined,
+          requestedByLabel: intl.formatMessage(messages.requestedByLabel),
+          openApplicationLabel: intl.formatMessage(messages.openApplication, {
+            applicationTitle,
+          }),
           mediaName: payload.subject,
           mediaExtra: payload.extra ?? [],
           imageUrl: embedPoster ? payload.image : undefined,
@@ -222,6 +253,7 @@ class EmailAgent
       type === Notification.SOFTWARE_AVAILABLE ||
       type === Notification.SOFTWARE_STATUS
     ) {
+      const content = getNotificationContent(payload, intl);
       return {
         template: path.join(
           __dirname,
@@ -231,10 +263,24 @@ class EmailAgent
           to: recipientEmail,
         },
         locals: {
-          event: payload.event,
-          body: payload.message ?? '',
+          event: content.event,
+          body: content.message ?? '',
+          locale: emailLocale,
+          direction,
+          greeting:
+            recipientName && recipientName !== recipientEmail
+              ? intl.formatMessage(messages.greeting, {
+                  recipientName: `\u2068${recipientName}\u2069`,
+                })
+              : undefined,
+          requestedByLabel: intl.formatMessage(messages.requestedByLabel),
+          openApplicationLabel: intl.formatMessage(messages.openApplication, {
+            applicationTitle,
+          }),
           mediaName: payload.subject,
-          mediaExtra: payload.extra ?? [],
+          mediaExtra: payload.softwareRequestStatus
+            ? []
+            : (payload.extra ?? []),
           imageUrl: embedPoster ? payload.image : undefined,
           timestamp: new Date().toTimeString(),
           requestedBy: payload.notifyUser?.displayName ?? '',
@@ -302,6 +348,17 @@ class EmailAgent
         locals: {
           event: payload.event,
           body,
+          locale: emailLocale,
+          direction,
+          greeting:
+            recipientName && recipientName !== recipientEmail
+              ? intl.formatMessage(messages.greeting, {
+                  recipientName: `\u2068${recipientName}\u2069`,
+                })
+              : undefined,
+          viewIssueLabel: intl.formatMessage(messages.viewIssueIn, {
+            applicationTitle,
+          }),
           issueDescription: payload.message,
           issueComment: payload.comment?.message,
           mediaName: payload.subject,

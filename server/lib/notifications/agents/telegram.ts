@@ -26,6 +26,8 @@ import {
   NOTIFICATION_HTTP_OPTIONS,
   getNotificationActionLabel,
   getNotificationActionUrl,
+  getNotificationContent,
+  getNotificationExtras,
 } from './agent';
 
 interface TelegramMessagePayload {
@@ -103,6 +105,8 @@ class TelegramAgent
     locale?: AvailableLocale
   ): Partial<TelegramMessagePayload | TelegramPhotoPayload> {
     const intl = getIntl(locale);
+    const content = getNotificationContent(payload, intl);
+    const extras = getNotificationExtras(payload, intl);
     const { applicationUrl, applicationTitle } =
       getExternalRuntimeConfig().main;
     const { embedPoster } = this.getSettings();
@@ -134,12 +138,12 @@ class TelegramAgent
     /* eslint-disable no-useless-escape */
     appendEscaped(
       '\*',
-      payload.event ? `${payload.event} - ${payload.subject}` : payload.subject,
+      content.event ? `${content.event} - ${payload.subject}` : payload.subject,
       '\*',
       256
     );
-    if (payload.message && !payload.comment) {
-      appendEscaped('\n', payload.message, '', Math.max(1, maxLength - 512));
+    if (content.message && !payload.comment) {
+      appendEscaped('\n', content.message, '', Math.max(1, maxLength - 512));
     }
 
     if (payload.request) {
@@ -218,7 +222,7 @@ class TelegramAgent
       );
     }
 
-    for (const extra of payload.extra ?? []) {
+    for (const extra of extras) {
       appendEscaped(
         `\n\*${escapeTelegramMarkdownText(extra.name, 128)}:\* `,
         extra.value,

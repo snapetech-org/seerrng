@@ -95,7 +95,7 @@ const QuotaDisplay = ({
               : ''
           }`}
         >
-          <div className="ml-2 text-lg">
+          <div className="ms-2 text-lg">
             {overLimit !== undefined
               ? intl.formatMessage(messages.notenoughseasonrequests)
               : mediaType === 'software'

@@ -51,7 +51,7 @@ const CompanyCard = ({
         />
       </div>
       <div
-        className={`absolute right-0 bottom-0 left-0 z-0 h-6 rounded-b-xl bg-gradient-to-t ${
+        className={`absolute start-0 end-0 bottom-0 z-0 h-6 rounded-b-xl bg-gradient-to-t ${
           isHovered ? 'from-gray-800' : 'from-gray-900'
         }`}
       />

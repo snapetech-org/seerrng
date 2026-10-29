@@ -25,7 +25,7 @@ export default function ButtonWithLoader({
       {...buttonProps}
     >
       {loading && (
-        <div className="absolute right-0 mr-4 h-4 w-4">
+        <div className="absolute end-0 me-4 h-4 w-4">
           <SmallLoadingSpinner />
         </div>
       )}

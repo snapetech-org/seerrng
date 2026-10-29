@@ -565,7 +565,7 @@ const SettingsProwlarr = () => {
               >
                 <summary className="cursor-pointer text-sm font-medium text-gray-100">
                   {intl.formatMessage(messages[categoryMessages[category]])}
-                  <span className="ml-2 text-xs text-gray-400">
+                  <span className="ms-2 text-xs text-gray-400">
                     {intl.formatMessage(messages.selectedCategories, {
                       count: selectedIds.length,
                     })}
@@ -653,7 +653,7 @@ const SettingsProwlarr = () => {
                 >
                   <summary className="cursor-pointer text-sm font-medium text-gray-100">
                     {intl.formatMessage(messages[categoryMessages[category]])}
-                    <span className="ml-2 text-xs text-gray-400">
+                    <span className="ms-2 text-xs text-gray-400">
                       {intl.formatMessage(messages.selectedIndexers, {
                         count: selectedIds.length,
                       })}

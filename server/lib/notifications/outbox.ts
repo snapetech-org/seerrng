@@ -10,7 +10,10 @@ import logger from '@server/logger';
 import { randomUUID } from 'node:crypto';
 import { In } from 'typeorm';
 import type { Notification } from '.';
-import type { NotificationPayload } from './agents/agent';
+import type {
+  NotificationPayload,
+  SoftwareRequestStatus,
+} from './agents/agent';
 
 export const MAX_NOTIFICATION_OUTBOX_ROWS = 10_000;
 export const NOTIFICATION_OUTBOX_SCAN_BATCH_SIZE = 250;
@@ -80,6 +83,7 @@ interface StoredNotificationPayload {
   comment?: StoredComment;
   pendingRequestsCount?: number;
   isAdmin?: boolean;
+  softwareRequestStatus?: SoftwareRequestStatus;
 }
 
 export type NotificationOutboxIntent =
@@ -227,6 +231,7 @@ const serializePayload = (payload: NotificationPayload): string => {
       : undefined,
     pendingRequestsCount: payload.pendingRequestsCount,
     isAdmin: payload.isAdmin,
+    softwareRequestStatus: payload.softwareRequestStatus,
   };
   return serializeStoredValue(stored);
 };
@@ -248,7 +253,16 @@ const parseStoredPayload = (serialized: string): StoredNotificationPayload => {
   ) {
     throw new Error('Stored notification outbox payload is invalid.');
   }
-  return parsed as StoredNotificationPayload;
+  const stored = parsed as StoredNotificationPayload;
+  if (
+    stored.softwareRequestStatus !== undefined &&
+    !['available', 'pending', 'approved', 'declined', 'failed'].includes(
+      stored.softwareRequestStatus
+    )
+  ) {
+    throw new Error('Stored notification outbox software status is invalid.');
+  }
+  return stored;
 };
 
 export const createNotificationOutboxRecord = async (
@@ -508,6 +522,7 @@ export const hydrateNotificationOutboxPayload = async (
       : undefined,
     pendingRequestsCount: stored.pendingRequestsCount,
     isAdmin: stored.isAdmin,
+    softwareRequestStatus: stored.softwareRequestStatus,
   };
 };
 

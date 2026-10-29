@@ -104,7 +104,7 @@ const SearchByNameModal = ({
                   fill
                 />
               </div>
-              <div className="flex-grow self-start p-3 text-left">
+              <div className="flex-grow self-start p-3 text-start">
                 <div className="text-sm leading-tight font-medium">
                   {item.year}
                 </div>

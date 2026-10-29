@@ -284,7 +284,7 @@ const NotificationsNtfy = () => {
                 htmlFor="authMethodUsernamePassword"
                 className="checkbox-label"
               >
-                <span className="mr-2">
+                <span className="me-2">
                   {intl.formatMessage(messages.usernamePasswordAuth)}
                 </span>
               </label>
@@ -304,7 +304,7 @@ const NotificationsNtfy = () => {
               </div>
             </div>
             {values.authMethodUsernamePassword && (
-              <div className="mr-2 ml-4">
+              <div className="ms-4 me-2">
                 <div className="form-row">
                   <label htmlFor="username" className="text-label">
                     {intl.formatMessage(messages.username)}
@@ -333,7 +333,7 @@ const NotificationsNtfy = () => {
             )}
             <div className="form-row">
               <label htmlFor="authMethodToken" className="checkbox-label">
-                <span className="mr-2">
+                <span className="me-2">
                   {intl.formatMessage(messages.tokenAuth)}
                 </span>
               </label>
@@ -350,7 +350,7 @@ const NotificationsNtfy = () => {
               </div>
             </div>
             {values.authMethodToken && (
-              <div className="form-row mr-2 ml-4">
+              <div className="form-row ms-4 me-2">
                 <label htmlFor="token" className="text-label">
                   {intl.formatMessage(messages.token)}
                 </label>
@@ -429,7 +429,7 @@ const NotificationsNtfy = () => {
             />
             <div className="actions">
               <div className="flex justify-end">
-                <span className="ml-3 inline-flex rounded-md shadow-sm">
+                <span className="ms-3 inline-flex rounded-md shadow-sm">
                   <Button
                     buttonType="warning"
                     disabled={isSubmitting || !isValid || isTesting}
@@ -446,7 +446,7 @@ const NotificationsNtfy = () => {
                     </span>
                   </Button>
                 </span>
-                <span className="ml-3 inline-flex rounded-md shadow-sm">
+                <span className="ms-3 inline-flex rounded-md shadow-sm">
                   <Button
                     buttonType="primary"
                     type="submit"

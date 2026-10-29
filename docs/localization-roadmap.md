@@ -56,6 +56,8 @@ values. A per-user regional format preference overrides the territory while
 preserving the interface language; it drives React Intl date/number formatting
 and byte units without changing the translation catalog. The settings form
 uses the supported ISO region list and can return to the display-language default.
+Users can also choose an independent metadata language for titles and search;
+the default follows the display language.
 
 The server-rendered document now chooses `lang`/`dir` from a validated
 locale-hint cookie, falling back to `Accept-Language`. The cookie is a
@@ -66,12 +68,15 @@ request or render translated text on the server. Full authenticated SSR locale
 hydration remains open. App-wide RTL layout and notification rendering also
 need rendered review; the direction attribute alone is not RTL acceptance.
 
-This does not certify app-wide RTL layout. Physical left/right rules remain in
-feature components, emails, and themes. Review navigation, setup, discovery,
-media detail, requests, user settings, services, calendars, tables, dialogs,
-portals, and notifications at narrow and desktop widths before claiming full
-RTL acceptance. Mirror directional affordances only; preserve media timelines
-and numeric control semantics.
+Shared CSS and production component utilities now use logical inline alignment,
+spacing, borders, and menu anchoring across the touched flows. Physical
+coordinates remain for the timeline axis, centered elements, and swipe stamps.
+Email templates declare recipient language and direction and isolate mixed
+script content, but they have not had rendered RTL review. Review navigation,
+setup, discovery, media detail, requests, user settings, services, calendars,
+tables, dialogs, portals, notifications, and both built-in themes at narrow and
+desktop widths before claiming full RTL acceptance. Mirror directional
+affordances only; preserve media timelines and numeric control semantics.
 
 The browser review recorded on 2026-10-13 verified Arabic setup and calendar
 pages at 1280×900 and 390×844. That is historical, limited route coverage; it

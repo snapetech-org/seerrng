@@ -1156,11 +1156,11 @@ const BulkRequestModal = ({
                     ) : (
                       <span aria-hidden="true" />
                     )}
-                    <span className="media-inset-poster-column-heading text-left">
+                    <span className="media-inset-poster-column-heading text-start">
                       {intl.formatMessage(globalMessages.book)}
                     </span>
                   </div>
-                  <div className="scrollable-card -mr-3 max-h-[228px] space-y-0.5 overflow-y-auto pt-1 pr-3">
+                  <div className="scrollable-card -me-3 max-h-[228px] space-y-0.5 overflow-y-auto pe-3 pt-1">
                     {column.map((item) => (
                       <div
                         key={item.id}
@@ -1511,7 +1511,7 @@ const BulkRequestModal = ({
             )}
             {modalContent}
             <div className="flex flex-wrap items-center justify-end gap-2 pt-2">
-              <div className="mr-auto flex items-center gap-2">
+              <div className="me-auto flex items-center gap-2">
                 {(hasPermission(Permission.REQUEST_ADVANCED) ||
                   hasPermission(Permission.MANAGE_REQUESTS)) &&
                   !summary && (

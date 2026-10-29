@@ -28,6 +28,8 @@ import {
   BaseAgent,
   CONFIGURABLE_NOTIFICATION_HTTP_OPTIONS,
   getNotificationActionUrl,
+  getNotificationContent,
+  getNotificationExtras,
   truncateNotificationText,
 } from './agent';
 
@@ -145,6 +147,8 @@ class DiscordAgent
     locale?: AvailableLocale
   ): DiscordRichEmbed {
     const intl = getIntl(locale);
+    const content = getNotificationContent(payload, intl);
+    const extras = getNotificationExtras(payload, intl);
     const { applicationUrl } = getExternalRuntimeConfig().main;
     const { embedPoster } = this.getSettings();
 
@@ -236,7 +240,7 @@ class DiscordAgent
       }
     }
 
-    for (const extra of payload.extra ?? []) {
+    for (const extra of extras) {
       fields.push({
         name: extra.name,
         value: extra.value,
@@ -247,11 +251,11 @@ class DiscordAgent
     const url = getNotificationActionUrl(payload, applicationUrl);
 
     return boundDiscordEmbed({
-      title: payload.event
-        ? `${payload.event}: ${payload.subject}`
+      title: content.event
+        ? `${content.event}: ${payload.subject}`
         : payload.subject,
       url,
-      description: payload.message,
+      description: content.message,
       color,
       timestamp: new Date().toISOString(),
       fields,

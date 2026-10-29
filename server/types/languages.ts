@@ -349,7 +349,9 @@ export const getLocaleFallbackChain = (
   let current: string = value;
   while (!seen.has(current)) {
     seen.add(current);
-    const locale = localeRegistry.find(({ tag }) => tag === current);
+    const locale = localeRegistry.find(
+      ({ tag }) => tag === current
+    ) as LocaleDefinition | undefined;
     if (!locale) break;
     chain.push(locale.tag as AvailableLocale);
     if (locale.tag === 'en') break;

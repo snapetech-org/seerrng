@@ -99,7 +99,7 @@ const SavedServiceHosts = () => {
             >
               <span className="min-w-0 text-sm break-all text-white">
                 <strong>{host.name}</strong>
-                <span className="ml-2 text-gray-400">{host.hostname}</span>
+                <span className="ms-2 text-gray-400">{host.hostname}</span>
               </span>
               <Button
                 type="button"

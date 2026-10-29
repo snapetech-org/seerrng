@@ -89,7 +89,7 @@ const BlocklistedTagsBadge = ({
         }
       >
         <TagIcon
-          className={compact ? 'h-2.5 w-2.5 shrink-0' : 'mr-1 h-4'}
+          className={compact ? 'h-2.5 w-2.5 shrink-0' : 'me-1 h-4'}
           aria-hidden="true"
         />
         <span className="truncate">

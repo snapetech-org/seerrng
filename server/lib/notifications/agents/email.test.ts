@@ -5,6 +5,7 @@ import { afterEach, before, describe, it, mock } from 'node:test';
 import { MediaType } from '@server/constants/media';
 import type Media from '@server/entity/Media';
 import { User } from '@server/entity/User';
+import { ALL_NOTIFICATIONS, UserSettings } from '@server/entity/UserSettings';
 import { initI18n } from '@server/i18n';
 import PreparedEmail from '@server/lib/email';
 import { Notification } from '@server/lib/notifications';
@@ -61,6 +62,10 @@ describe('Email availability subscription notifications', () => {
       id: 2,
       username: 'follower',
       email: 'follower@example.com',
+      settings: new UserSettings({
+        locale: 'ar',
+        notificationTypes: { email: ALL_NOTIFICATIONS },
+      }),
     });
 
     const sent = await agent.send(Notification.MEDIA_AVAILABLE, {
@@ -83,6 +88,8 @@ describe('Email availability subscription notifications', () => {
       sentMessage.locals
     );
     assert.match(html, /A title you follow is now available/);
+    assert.match(html, /<html lang="ar" dir="rtl">/);
+    assert.match(html, /Hi, \u2068follower\u2069!/);
     assert.doesNotMatch(html, /Requested By/);
     assert.match(html, /Arrival \(2016\)/);
   });

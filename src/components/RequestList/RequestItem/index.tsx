@@ -317,7 +317,7 @@ const RequestItemError = ({
   return (
     <div className="flex h-64 w-full flex-col justify-center rounded-xl bg-gray-800 py-4 text-gray-400 shadow-md ring-1 ring-red-500 xl:h-28 xl:flex-row">
       <div className="flex w-full flex-col justify-between overflow-hidden sm:flex-row">
-        <div className="flex w-full flex-col justify-center overflow-hidden pr-4 pl-4 sm:pr-0 xl:w-7/12 2xl:w-2/3">
+        <div className="flex w-full flex-col justify-center overflow-hidden ps-4 pe-4 sm:pe-0 xl:w-7/12 2xl:w-2/3">
           <div className="flex text-lg font-bold text-white xl:text-xl">
             {intl.formatMessage(messages.mediaerror, {
               mediaType: intl.formatMessage(
@@ -388,7 +388,7 @@ const RequestItemError = ({
             </>
           )}
         </div>
-        <div className="mt-4 ml-4 flex w-full flex-col justify-center overflow-hidden pr-4 text-sm sm:mt-0 sm:ml-2 xl:flex-1 xl:pr-0">
+        <div className="ms-4 mt-4 flex w-full flex-col justify-center overflow-hidden pe-4 text-sm sm:ms-2 sm:mt-0 xl:flex-1 xl:pe-0">
           {requestData && (
             <>
               <div className="card-field">
@@ -476,7 +476,7 @@ const RequestItemError = ({
                             href={`/users/${requestData.requestedBy.id}`}
                             className="group flex items-center truncate"
                           >
-                            <span className="avatar-sm ml-1.5">
+                            <span className="avatar-sm ms-1.5">
                               <CachedImage
                                 type="avatar"
                                 src={requestData.requestedBy.avatar}
@@ -539,7 +539,7 @@ const RequestItemError = ({
                           href={`/users/${requestData.modifiedBy.id}`}
                           className="group flex items-center truncate"
                         >
-                          <span className="avatar-sm ml-1.5">
+                          <span className="avatar-sm ms-1.5">
                             <CachedImage
                               type="avatar"
                               src={requestData.modifiedBy.avatar}
@@ -562,7 +562,7 @@ const RequestItemError = ({
           )}
         </div>
       </div>
-      <div className="z-10 mt-4 flex w-full flex-col justify-center pr-4 pl-4 xl:mt-0 xl:w-96 xl:items-end xl:pl-0">
+      <div className="z-10 mt-4 flex w-full flex-col justify-center ps-4 pe-4 xl:mt-0 xl:w-96 xl:items-end xl:ps-0">
         {hasPermission(Permission.MANAGE_REQUESTS) && requestData?.media.id && (
           <Button
             className="w-full"
@@ -862,7 +862,7 @@ const RequestItem = ({ request, revalidateList }: RequestItemProps) => {
             </div>
           )}
         <div className="relative flex w-full flex-col justify-between overflow-hidden sm:flex-row">
-          <div className="relative z-10 flex w-full items-center overflow-hidden pr-4 pl-4 sm:pr-0 xl:w-7/12 2xl:w-2/3">
+          <div className="relative z-10 flex w-full items-center overflow-hidden ps-4 pe-4 sm:pe-0 xl:w-7/12 2xl:w-2/3">
             <Link
               href={getRequestDetailHref(requestData)}
               className="relative h-auto w-12 flex-shrink-0 scale-100 transform-gpu overflow-hidden rounded-md transition duration-300 hover:scale-105"
@@ -901,7 +901,7 @@ const RequestItem = ({ request, revalidateList }: RequestItemProps) => {
                 height={900}
               />
             </Link>
-            <div className="flex flex-col justify-center overflow-hidden pl-2 xl:pl-4">
+            <div className="flex flex-col justify-center overflow-hidden ps-2 xl:ps-4">
               <div className="flex flex-wrap items-center gap-1 pt-0.5 text-xs font-medium text-white sm:pt-1">
                 {requestData.type !== 'book' && (
                   <MediaTypeBadge
@@ -939,7 +939,7 @@ const RequestItem = ({ request, revalidateList }: RequestItemProps) => {
               </div>
               <Link
                 href={getRequestDetailHref(requestData)}
-                className="mr-2 min-w-0 truncate text-lg font-bold text-white hover:underline xl:text-xl"
+                className="me-2 min-w-0 truncate text-lg font-bold text-white hover:underline xl:text-xl"
               >
                 {isMovie(title)
                   ? title.title
@@ -952,17 +952,17 @@ const RequestItem = ({ request, revalidateList }: RequestItemProps) => {
                         : title.name}
               </Link>
               {(isMusic(title) || isBook(title)) && (
-                <div className="mr-2 min-w-0 truncate text-sm text-gray-300">
+                <div className="me-2 min-w-0 truncate text-sm text-gray-300">
                   {isMusic(title) ? title.artist.name : title.author}
                 </div>
               )}
               {isMagazine(title) && title.latestIssue && (
-                <div className="mr-2 min-w-0 truncate text-sm text-gray-300">
+                <div className="me-2 min-w-0 truncate text-sm text-gray-300">
                   {title.latestIssue}
                 </div>
               )}
               {isSports(title) && (title.sport || title.country) && (
-                <div className="mr-2 min-w-0 truncate text-sm text-gray-300">
+                <div className="me-2 min-w-0 truncate text-sm text-gray-300">
                   {[title.sport, title.country].filter(Boolean).join(' · ')}
                 </div>
               )}
@@ -978,7 +978,7 @@ const RequestItem = ({ request, revalidateList }: RequestItemProps) => {
                     </span>
                     <div className="hide-scrollbar flex flex-nowrap overflow-x-scroll">
                       {activeSeasonRequests.map((season) => (
-                        <span key={`season-${season.id}`} className="mr-2">
+                        <span key={`season-${season.id}`} className="me-2">
                           <Badge>
                             {season.seasonNumber === 0
                               ? intl.formatMessage(globalMessages.specials)
@@ -991,7 +991,7 @@ const RequestItem = ({ request, revalidateList }: RequestItemProps) => {
                 )}
             </div>
           </div>
-          <div className="z-10 mt-4 ml-4 flex w-full flex-col justify-center gap-1 overflow-hidden pr-4 text-sm sm:mt-0 sm:ml-2 xl:flex-1 xl:pr-0">
+          <div className="z-10 ms-4 mt-4 flex w-full flex-col justify-center gap-1 overflow-hidden pe-4 text-sm sm:ms-2 sm:mt-0 xl:flex-1 xl:pe-0">
             <div className="card-field">
               <span className="card-field-name">
                 {intl.formatMessage(globalMessages.status)}
@@ -1139,7 +1139,7 @@ const RequestItem = ({ request, revalidateList }: RequestItemProps) => {
                           href={`/users/${requestData.requestedBy.id}`}
                           className="group flex items-center truncate"
                         >
-                          <span className="avatar-sm ml-1.5">
+                          <span className="avatar-sm ms-1.5">
                             <CachedImage
                               type="avatar"
                               src={requestData.requestedBy.avatar}
@@ -1202,7 +1202,7 @@ const RequestItem = ({ request, revalidateList }: RequestItemProps) => {
                         href={`/users/${requestData.modifiedBy.id}`}
                         className="group flex items-center truncate"
                       >
-                        <span className="avatar-sm ml-1.5">
+                        <span className="avatar-sm ms-1.5">
                           <CachedImage
                             type="avatar"
                             src={requestData.modifiedBy.avatar}
@@ -1257,7 +1257,7 @@ const RequestItem = ({ request, revalidateList }: RequestItemProps) => {
             )}
           </div>
         </div>
-        <div className="z-10 mt-4 flex w-full flex-col justify-center space-y-2 pr-4 pl-4 xl:mt-0 xl:w-96 xl:items-end xl:pl-0">
+        <div className="z-10 mt-4 flex w-full flex-col justify-center space-y-2 ps-4 pe-4 xl:mt-0 xl:w-96 xl:items-end xl:ps-0">
           {requestData.watchAheadParentRequestId && (
             <Tooltip
               content={intl.formatMessage(
@@ -1273,7 +1273,7 @@ const RequestItem = ({ request, revalidateList }: RequestItemProps) => {
             !requestData.watchAheadParentRequestId &&
             requestData.requestedBy.id === user?.id &&
             (requestData.watchAheadEpisodeCount ?? 0) > 0 && (
-              <div className="w-full text-left">
+              <div className="w-full text-start">
                 <Badge badgeType="success">
                   {intl.formatMessage(messages.watchAheadAssigned, {
                     count: requestData.watchAheadEpisodeCount,

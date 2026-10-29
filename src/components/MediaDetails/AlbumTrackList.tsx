@@ -191,10 +191,10 @@ const AlbumTrackList = ({
                   ) : (
                     <span aria-hidden="true" />
                   )}
-                  <span className="text-left">
+                  <span className="text-start">
                     {intl.formatMessage(messages.track)}
                   </span>
-                  <span className="text-left">
+                  <span className="text-start">
                     {intl.formatMessage(messages.title)}
                   </span>
                   <span className="text-center">

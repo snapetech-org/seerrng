@@ -77,6 +77,10 @@ const messages = defineMessages(
     enableOverride: 'Override Global Limit',
     applanguage: 'Display Language',
     languageDefault: 'Default ({language})',
+    metadataLanguage: 'Metadata Language',
+    metadataLanguageDefault: 'Use Display Language',
+    metadataLanguageTip:
+      'Sets the language for titles and search results independently from the interface language.',
     formatRegion: 'Regional Format',
     formatRegionDefault: 'Use Display Language',
     formatRegionTip:
@@ -314,6 +318,7 @@ const UserGeneralSettings = () => {
           displayName: data?.username !== user?.email ? data?.username : '',
           email: data?.email?.includes('@') ? data.email : '',
           locale: data?.locale,
+          metadataLocale: data?.metadataLocale ?? '',
           formatRegion: data?.formatRegion ?? '',
           preferredLanguageAll: data?.preferredLanguages?.all ?? '',
           preferredLanguageMovie: preferredLanguageFieldValue('movie'),
@@ -367,6 +372,7 @@ const UserGeneralSettings = () => {
               username: values.displayName?.trim() || undefined,
               email: values.email || undefined,
               locale: values.locale,
+              metadataLocale: values.metadataLocale || null,
               formatRegion: values.formatRegion || null,
               preferredLanguages: {
                 all: values.preferredLanguageAll || null,
@@ -453,9 +459,8 @@ const UserGeneralSettings = () => {
             });
 
             if (currentUser?.id === user?.id) {
-              const nextLocale = (
-                values.locale || currentSettings.locale
-              ) as AvailableLocale;
+              const nextLocale = (values.locale ||
+                currentSettings.locale) as AvailableLocale;
               setLocale?.(nextLocale);
               setLocaleHintCookie(nextLocale);
               setFormatRegion?.(values.formatRegion || null);
@@ -611,8 +616,9 @@ const UserGeneralSettings = () => {
                       <option value="" lang={locale}>
                         {intl.formatMessage(messages.languageDefault, {
                           language:
-                            availableLanguages[currentSettings.locale]?.display ??
-                            availableLanguages.en.display,
+                            availableLanguages[
+                              currentSettings.locale as keyof typeof availableLanguages
+                            ]?.display ?? availableLanguages.en.display,
                         })}
                       </option>
                       {(
@@ -635,6 +641,40 @@ const UserGeneralSettings = () => {
                       {intl.formatMessage(messages.translationStatusNotice)}
                     </span>
                   )}
+                </div>
+              </div>
+              <div className="form-row">
+                <label htmlFor="metadataLocale" className="text-label">
+                  {intl.formatMessage(messages.metadataLanguage)}
+                </label>
+                <div className="form-input-area">
+                  <div className="form-input-field">
+                    <Field
+                      as="select"
+                      id="metadataLocale"
+                      name="metadataLocale"
+                    >
+                      <option value="">
+                        {intl.formatMessage(messages.metadataLanguageDefault)}
+                      </option>
+                      {(
+                        Object.keys(
+                          availableLanguages
+                        ) as (keyof typeof availableLanguages)[]
+                      ).map((key) => (
+                        <option
+                          key={key}
+                          value={availableLanguages[key].code}
+                          lang={availableLanguages[key].code}
+                        >
+                          {availableLanguages[key].display} ({key})
+                        </option>
+                      ))}
+                    </Field>
+                  </div>
+                  <span className="label-tip">
+                    {intl.formatMessage(messages.metadataLanguageTip)}
+                  </span>
                 </div>
               </div>
               <div className="form-row">
@@ -801,7 +841,7 @@ const UserGeneralSettings = () => {
                               checked={movieQuotaEnabled}
                               onChange={() => setMovieQuotaEnabled((s) => !s)}
                             />
-                            <span className="ml-2 text-gray-300">
+                            <span className="ms-2 text-gray-300">
                               {intl.formatMessage(messages.enableOverride)}
                             </span>
                           </div>
@@ -844,7 +884,7 @@ const UserGeneralSettings = () => {
                               checked={tvQuotaEnabled}
                               onChange={() => setTvQuotaEnabled((s) => !s)}
                             />
-                            <span className="ml-2 text-gray-300">
+                            <span className="ms-2 text-gray-300">
                               {intl.formatMessage(messages.enableOverride)}
                             </span>
                           </div>
@@ -887,7 +927,7 @@ const UserGeneralSettings = () => {
                               checked={musicQuotaEnabled}
                               onChange={() => setMusicQuotaEnabled((s) => !s)}
                             />
-                            <span className="ml-2 text-gray-300">
+                            <span className="ms-2 text-gray-300">
                               {intl.formatMessage(messages.enableOverride)}
                             </span>
                           </div>
@@ -930,7 +970,7 @@ const UserGeneralSettings = () => {
                               checked={bookQuotaEnabled}
                               onChange={() => setBookQuotaEnabled((s) => !s)}
                             />
-                            <span className="ml-2 text-gray-300">
+                            <span className="ms-2 text-gray-300">
                               {intl.formatMessage(messages.enableOverride)}
                             </span>
                           </div>
@@ -973,7 +1013,7 @@ const UserGeneralSettings = () => {
                               checked={comicQuotaEnabled}
                               onChange={() => setComicQuotaEnabled((s) => !s)}
                             />
-                            <span className="ml-2 text-gray-300">
+                            <span className="ms-2 text-gray-300">
                               {intl.formatMessage(messages.enableOverride)}
                             </span>
                           </div>
@@ -1018,7 +1058,7 @@ const UserGeneralSettings = () => {
                                 setMagazineQuotaEnabled((enabled) => !enabled)
                               }
                             />
-                            <span className="ml-2 text-gray-300">
+                            <span className="ms-2 text-gray-300">
                               {intl.formatMessage(messages.enableOverride)}
                             </span>
                           </div>
@@ -1063,7 +1103,7 @@ const UserGeneralSettings = () => {
                                 setSoftwareQuotaEnabled((enabled) => !enabled)
                               }
                             />
-                            <span className="ml-2 text-gray-300">
+                            <span className="ms-2 text-gray-300">
                               {intl.formatMessage(messages.enableOverride)}
                             </span>
                           </div>
@@ -1387,7 +1427,7 @@ const UserGeneralSettings = () => {
                     <span />
                     <button
                       type="button"
-                      className="text-primary-400 hover:text-primary-300 focus-visible:outline-primary-400 text-left text-sm font-medium focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
+                      className="text-primary-400 hover:text-primary-300 focus-visible:outline-primary-400 text-start text-sm font-medium focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
                       onClick={() => {
                         void setFieldValue('enabledMediaCategories', {
                           ...DEFAULT_USER_ENABLED_MEDIA_CATEGORIES,
@@ -1450,7 +1490,7 @@ const UserGeneralSettings = () => {
                         <span />
                         <button
                           type="button"
-                          className="text-primary-400 hover:text-primary-300 focus-visible:outline-primary-400 text-left text-sm font-medium focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
+                          className="text-primary-400 hover:text-primary-300 focus-visible:outline-primary-400 text-start text-sm font-medium focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
                           onClick={() => {
                             void setFieldValue(
                               'showIndexerDetails',
@@ -1482,7 +1522,7 @@ const UserGeneralSettings = () => {
               />
               <div className="actions">
                 <div className="flex justify-end">
-                  <span className="ml-3 inline-flex rounded-md shadow-sm">
+                  <span className="ms-3 inline-flex rounded-md shadow-sm">
                     <Button
                       buttonType="primary"
                       type="submit"

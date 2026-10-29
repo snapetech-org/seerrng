@@ -158,7 +158,7 @@ const AuthorMovePreviewDetails = ({
         {')'}
       </summary>
       {expanded && (
-        <ul className="mt-2 max-h-64 space-y-2 overflow-y-auto pl-5 text-xs">
+        <ul className="mt-2 max-h-64 space-y-2 overflow-y-auto ps-5 text-xs">
           {author.files.map((file, index) => (
             <li
               key={`${author.authorId}-${index}-${file.sourcePath}`}
@@ -707,7 +707,11 @@ const BookshelfPathMigration = () => {
                 )}
                 <span>
                   {intl.formatMessage(messages.requiredCopy, {
-                    size: formatBytes(preview.requiredCopyBytes, 2, intl.locale),
+                    size: formatBytes(
+                      preview.requiredCopyBytes,
+                      2,
+                      intl.locale
+                    ),
                   })}
                 </span>
                 {preview.availableSpace !== undefined ? (
@@ -725,7 +729,7 @@ const BookshelfPathMigration = () => {
                   <h3 className="font-semibold">
                     {intl.formatMessage(messages.warnings)}
                   </h3>
-                  <ul className="list-disc pl-5 text-sm text-yellow-200">
+                  <ul className="list-disc ps-5 text-sm text-yellow-200">
                     {preview.warnings.map((warning, index) => (
                       <li key={`${index}-${warning}`}>{warning}</li>
                     ))}
@@ -737,7 +741,7 @@ const BookshelfPathMigration = () => {
                   <h3 className="font-semibold text-red-300">
                     {intl.formatMessage(messages.conflicts)}
                   </h3>
-                  <ul className="list-disc pl-5 text-sm text-red-200">
+                  <ul className="list-disc ps-5 text-sm text-red-200">
                     {preview.conflicts.map((conflict, index) => (
                       <li key={`${index}-${conflict}`}>{conflict}</li>
                     ))}

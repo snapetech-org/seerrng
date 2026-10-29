@@ -729,11 +729,11 @@ const SoftwareCatalog = ({
           >
             <label className="relative min-w-0 flex-1">
               <MagnifyingGlassIcon
-                className="pointer-events-none absolute top-1/2 left-3 h-5 w-5 -translate-y-1/2 text-gray-400"
+                className="pointer-events-none absolute start-3 top-1/2 h-5 w-5 -translate-y-1/2 text-gray-400"
                 aria-hidden="true"
               />
               <input
-                className="input input-lite w-full pl-10"
+                className="input input-lite w-full ps-10"
                 value={searchInput}
                 onChange={(event) => setSearchInput(event.target.value)}
                 placeholder={intl.formatMessage(messages.searchPlaceholder)}
@@ -810,7 +810,7 @@ const SoftwareCatalog = ({
                   <article className="group h-full overflow-hidden rounded-lg border border-gray-700 bg-gray-800 shadow transition hover:border-gray-500 hover:shadow-lg">
                     <div className="relative aspect-[2/3] overflow-hidden bg-gray-900">
                       {availabilityLabel(game) && (
-                        <span className="absolute top-2 left-2 z-10 rounded bg-gray-950/85 px-2 py-1 text-xs font-semibold text-white">
+                        <span className="absolute start-2 top-2 z-10 rounded bg-gray-950/85 px-2 py-1 text-xs font-semibold text-white">
                           {availabilityLabel(game)}
                         </span>
                       )}

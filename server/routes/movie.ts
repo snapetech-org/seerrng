@@ -173,7 +173,7 @@ movieRoutes.get('/:id', async (req, res, next) => {
   if ('error' in parsedLanguage) {
     return res.status(400).json({ status: 400, message: parsedLanguage.error });
   }
-  const language = parsedLanguage.value ?? req.locale;
+  const language = parsedLanguage.value ?? req.metadataLocale;
 
   try {
     const { details: tmdbMovie, provenance } = await getAggregatedMovieMetadata(
@@ -365,7 +365,7 @@ movieRoutes.get('/:id/recommendations', async (req, res, next) => {
       .status(400)
       .json({ status: 400, message: parsedShuffleSeed.error });
   }
-  const language = parsedLanguage.value ?? req.locale;
+  const language = parsedLanguage.value ?? req.metadataLocale;
 
   try {
     const results = await tmdb.getMovieRecommendations({
@@ -443,7 +443,7 @@ movieRoutes.get('/:id/similar', async (req, res, next) => {
       .status(400)
       .json({ status: 400, message: parsedShuffleSeed.error });
   }
-  const language = parsedLanguage.value ?? req.locale;
+  const language = parsedLanguage.value ?? req.metadataLocale;
 
   try {
     const results = await tmdb.getMovieSimilar({

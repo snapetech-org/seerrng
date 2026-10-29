@@ -139,6 +139,7 @@ export interface UserSettingsGeneralResponse {
   email?: string;
   discordIds?: string[];
   locale?: string;
+  metadataLocale?: string | null;
   formatRegion?: string | null;
   discoverRegion?: string;
   streamingRegion?: string;

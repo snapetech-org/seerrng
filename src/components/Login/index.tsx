@@ -246,7 +246,7 @@ const Login = ({
             <img
               src={versionedAsset('/os_icon.svg')}
               alt={settings.currentSettings.applicationTitle}
-              className="mr-2 h-5"
+              className="me-2 h-5"
             />
             <span>{settings.currentSettings.applicationTitle}</span>
           </ButtonWithLoader>
@@ -292,7 +292,7 @@ const Login = ({
           ) ?? []
         }
       />
-      <div className="absolute top-4 right-4 z-50">
+      <div className="absolute end-4 top-4 z-50">
         <LanguagePicker />
       </div>
       <div className="auth-login-brand relative z-40 flex flex-col items-center px-4 sm:mx-auto sm:w-full sm:max-w-md">
@@ -332,7 +332,7 @@ const Login = ({
                   <div className="flex-shrink-0">
                     <XCircleIcon className="h-5 w-5 text-red-300" />
                   </div>
-                  <div className="ml-3">
+                  <div className="ms-3">
                     <h3 className="text-sm font-medium text-red-300">
                       {error}
                     </h3>

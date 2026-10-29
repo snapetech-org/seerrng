@@ -94,7 +94,7 @@ const MultiRangeSlider = ({
           max={max}
           value={valueMax}
           step="1"
-          className={`pointer-events-none absolute top-0 right-0 left-0 z-20 h-2 w-full cursor-pointer appearance-none rounded-lg bg-transparent`}
+          className={`pointer-events-none absolute start-0 end-0 top-0 z-20 h-2 w-full cursor-pointer appearance-none rounded-lg bg-transparent`}
           onChange={(e) => {
             const value = Number(e.target.value);
 
@@ -106,7 +106,7 @@ const MultiRangeSlider = ({
         />
       </Tooltip>
       <div
-        className="pointer-events-none absolute top-0 z-30 mr-1 ml-1 h-2 bg-indigo-500"
+        className="pointer-events-none absolute top-0 z-30 ms-1 me-1 h-2 bg-indigo-500"
         style={{
           left: `${minThumb}%`,
           right: `${100 - maxThumb}%`,

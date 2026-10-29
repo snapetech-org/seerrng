@@ -25,6 +25,7 @@ import {
   BaseAgent,
   NOTIFICATION_HTTP_OPTIONS,
   getMediaTypeLabel,
+  getNotificationContent,
   getNotificationMediaUrl,
 } from './agent';
 
@@ -169,7 +170,7 @@ class WebPushAgent
         break;
       case Notification.SOFTWARE_AVAILABLE:
       case Notification.SOFTWARE_STATUS:
-        message = payload.message;
+        message = getNotificationContent(payload, intl).message;
         break;
       case Notification.MEDIA_DECLINED:
         message = intl.formatMessage(messages.declined, {

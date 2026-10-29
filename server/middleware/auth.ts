@@ -12,6 +12,7 @@ import {
   runWithUserCredentialVersionContext,
 } from '@server/lib/userSecurityMutation';
 import logger from '@server/logger';
+import { isAvailableLocale } from '@server/types/languages';
 import { normalizeJellyfinGuid } from '@server/utils/jellyfin';
 import { getRateLimitKey } from '@server/utils/security';
 import rateLimit from 'express-rate-limit';
@@ -98,6 +99,28 @@ const checkUserImplementation: Middleware = async (req, res, next) => {
   req.locale = user?.settings?.locale
     ? user.settings.locale
     : settings.main.locale;
+  const displayLocale = isAvailableLocale(req.locale) ? req.locale : 'en';
+  const metadataLocale = user?.settings?.metadataLocale;
+  req.metadataLocale = isAvailableLocale(metadataLocale)
+    ? metadataLocale
+    : displayLocale;
+
+  const updatesLocaleHint =
+    req.originalUrl?.startsWith('/api/v1/auth/me') ||
+    req.originalUrl?.includes('/settings/main');
+  if (
+    user &&
+    !apiKeyAuthenticated &&
+    updatesLocaleHint &&
+    req.cookies?.['seerrng-locale'] !== displayLocale
+  ) {
+    res.cookie('seerrng-locale', displayLocale, {
+      path: '/',
+      maxAge: 365 * 24 * 60 * 60 * 1000,
+      sameSite: 'lax',
+      secure: req.secure,
+    });
+  }
 
   if (user && apiKeyAuthenticated) {
     let credentialContextActive = true;

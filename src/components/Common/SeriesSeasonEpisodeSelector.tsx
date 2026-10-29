@@ -266,7 +266,7 @@ const SeriesSeasonEpisodeSelector = ({
   return (
     <div className="mt-[5px] grid min-w-0 gap-2 sm:grid-cols-2">
       <section className="app-card-inset refreshed-inset-surface min-w-[12rem] rounded-lg border border-gray-700 p-2">
-        <div className="media-inset-table-heading media-scroll-grid-header request-divider-dark request-season-grid grid items-center gap-x-2 border-b pb-2 pl-1">
+        <div className="media-inset-table-heading media-scroll-grid-header request-divider-dark request-season-grid grid items-center gap-x-2 border-b ps-1 pb-2">
           <SelectionCircle
             selected={allSeasonsSelected}
             disabled={selectableSeasons.length === 0}
@@ -277,7 +277,7 @@ const SeriesSeasonEpisodeSelector = ({
             )}
             onClick={toggleAllSeasons}
           />
-          <span className="text-left">
+          <span className="text-start">
             {intl.formatMessage(messages.season)}
           </span>
           <span className="text-center">
@@ -285,7 +285,7 @@ const SeriesSeasonEpisodeSelector = ({
           </span>
           <AvailabilityHeading />
         </div>
-        <div className="scrollable-card -mr-2 max-h-[133px] space-y-0.5 overflow-y-auto pt-1 pr-2 pb-1">
+        <div className="scrollable-card -me-2 max-h-[133px] space-y-0.5 overflow-y-auto pe-2 pt-1 pb-1">
           {seasons.map((season) => {
             const seasonSelection = selections.find(
               (selection) => selection.seasonNumber === season.seasonNumber
@@ -341,7 +341,7 @@ const SeriesSeasonEpisodeSelector = ({
                   }`}
                   onClick={() => toggleSeason(season.seasonNumber)}
                 />
-                <span className="truncate text-left text-xs font-medium text-gray-100">
+                <span className="truncate text-start text-xs font-medium text-gray-100">
                   {season.seasonNumber === 0
                     ? intl.formatMessage(messages.specials)
                     : intl.formatMessage(messages.seasonNumber, {
@@ -362,7 +362,7 @@ const SeriesSeasonEpisodeSelector = ({
       </section>
 
       <section className="app-card-inset refreshed-inset-surface min-w-0 rounded-lg border border-gray-700 p-2">
-        <div className="media-inset-table-heading media-scroll-grid-header request-divider-dark request-episode-grid grid items-center gap-x-2 border-b pb-2 pl-1">
+        <div className="media-inset-table-heading media-scroll-grid-header request-divider-dark request-episode-grid grid items-center gap-x-2 border-b ps-1 pb-2">
           <SelectionCircle
             selected={allEpisodesSelected}
             disabled={activeSeason < 0 || episodeNumbers.length === 0}
@@ -373,15 +373,15 @@ const SeriesSeasonEpisodeSelector = ({
             )}
             onClick={toggleAllEpisodes}
           />
-          <span className="text-left">
+          <span className="text-start">
             {intl.formatMessage(messages.episode)}
           </span>
-          <span className="text-left">
+          <span className="text-start">
             {intl.formatMessage(messages.title)}
           </span>
           <AvailabilityHeading />
         </div>
-        <div className="scrollable-card -mr-2 max-h-[133px] space-y-0.5 overflow-y-auto pt-1 pr-2">
+        <div className="scrollable-card -me-2 max-h-[133px] space-y-0.5 overflow-y-auto pe-2 pt-1">
           {!data && !error && activeSeason >= 0 && (
             <div className="flex h-20 items-center justify-center">
               <LoadingSpinner />

@@ -36,9 +36,8 @@ Existing RTL support sets document direction for Arabic and Hebrew and shared
 CSS has some logical properties. The project localization roadmap explicitly
 records that app-wide RTL is incomplete; shared physical left/right rules remain.
 The current date formatter uses React Intl, but the byte formatter manually
-emits English unit names and decimal strings. Current settings store a user
-interface locale, but UI language, regional formatting, and metadata/search
-language are not yet a coherent set of independent preferences.
+emits English unit names and decimal strings. UI language, regional formatting,
+and metadata/search language are separate per-user preferences in this change.
 
 The current `i18n:check` regenerates and compares only the English client and
 server catalogs. It does not gate missing/empty translations, current source
@@ -186,10 +185,33 @@ category reporting, protected URL/code checks, a visible draft notice, and
 per-message SHA-256 snapshots for both English source catalogs. The snapshot
 gate is wired into `i18n:check`; it has not been run in the repository
 environment. Current non-English catalogs remain marked `unreviewed`, and
-the source snapshot does not record per-message linguistic approval.
+the source snapshot does not record per-message linguistic approval. This
+implementation also adds an independent metadata-language setting; provider
+metadata and search use it, then fall back to the display language.
 
 **Assessment:** SeerrNG has broader catalog scope, while the supplied PlezyNG
 snapshot has the more mature localization QA and fallback-accounting workflow.
 SeerrNG's coverage is materially less consistent. It benefits from the changes
 in this PR, but neither structural check passes nor locale count should be
 read as evidence of translation fluency or app-wide RTL acceptance.
+
+## Implementation update (2026-10-29)
+
+The PR now adds an independent per-user metadata language for provider titles
+and search; a null preference follows the display language. Metadata requests
+use that preference while notifications continue to use the recipient's
+display locale. Email templates now carry recipient `lang`/`dir`, localized
+reset-password copy, localized email labels, and bidi-isolated names and titles.
+
+Shared CSS and production component utilities have been migrated to logical
+inline alignment, spacing, borders, and menu anchoring. Timeline chronology,
+centered elements, and physical swipe stamps keep their physical coordinates.
+This is code coverage, not rendered RTL acceptance.
+
+Local validation passed server and client typechecks, the shared UI style check,
+the 37-test search route suite, focused user metadata-preference coverage, and
+email-template rendering checks. `i18n:check` exits successfully but reports
+13,681 catalog issues and 519 plural warnings; non-English catalogs remain
+unreviewed. The OpenAPI file parses as 3.0.2 with 479 paths and 271 schemas
+after removing a duplicated trailing document fragment. Rendered desktop/mobile
+baseline comparison and accessibility review remain unverified.

@@ -179,7 +179,7 @@ export default function BookSeriesPreview() {
       <ol className="divide-y divide-gray-700 rounded-lg border border-gray-700">
         {data.books.map((book, index) => (
           <li key={index} className="p-4">
-            <span className="mr-3 text-gray-400">{book.position}</span>
+            <span className="me-3 text-gray-400">{book.position}</span>
             {book.book ? (
               <Link
                 className="font-semibold text-indigo-200 hover:underline"
@@ -191,7 +191,7 @@ export default function BookSeriesPreview() {
               <span className="font-semibold text-gray-100">{book.title}</span>
             )}
             {book.author && (
-              <span className="ml-3 text-gray-400">{book.author}</span>
+              <span className="ms-3 text-gray-400">{book.author}</span>
             )}
             {book.matchStatus !== 'matched' && (
               <p className="mt-2 text-sm text-gray-400">

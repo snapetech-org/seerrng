@@ -20,6 +20,8 @@ import {
   BaseAgent,
   CONFIGURABLE_NOTIFICATION_HTTP_OPTIONS,
   getNotificationActionUrl,
+  getNotificationContent,
+  getNotificationExtras,
 } from './agent';
 
 interface GotifyPayload {
@@ -78,18 +80,20 @@ class GotifyAgent
   ): GotifyPayload {
     const settings = this.getSettings();
     const intl = getIntl(settings.options.locale);
+    const content = getNotificationContent(payload, intl);
+    const extras = getNotificationExtras(payload, intl);
     const { applicationUrl, applicationTitle } =
       getExternalRuntimeConfig().main;
     const embedPoster = settings.embedPoster;
     const priority = settings.options.priority ?? 1;
 
-    const title = payload.event
-      ? `${payload.event} - ${payload.subject}`
+    const title = content.event
+      ? `${content.event} - ${payload.subject}`
       : payload.subject;
 
     let message =
-      payload.message && !payload.comment
-        ? `${escapeGotifyMarkdownText(payload.message)}  \n\n`
+      content.message && !payload.comment
+        ? `${escapeGotifyMarkdownText(content.message)}  \n\n`
         : '';
 
     if (payload.request) {
@@ -142,7 +146,7 @@ class GotifyAgent
       }  `;
     }
 
-    for (const extra of payload.extra ?? []) {
+    for (const extra of extras) {
       message += `\n\n**${escapeGotifyMarkdownText(
         extra.name
       )}**\n${escapeGotifyMarkdownText(extra.value)}  `;

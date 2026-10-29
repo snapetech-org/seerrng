@@ -201,10 +201,10 @@ export default function OidcLoginButton({
             src={provider.logo}
             alt=""
             aria-hidden="true"
-            className="mr-2 max-h-5 w-5"
+            className="me-2 max-h-5 w-5"
           />
         ) : brand ? (
-          <svg aria-hidden="true" className="mr-2 h-5 w-5" viewBox="0 0 24 24">
+          <svg aria-hidden="true" className="me-2 h-5 w-5" viewBox="0 0 24 24">
             <use
               href={`${versionedAsset('/images/oidc-provider-icons.svg')}#oidc-${brand.icon}`}
             />
@@ -215,7 +215,7 @@ export default function OidcLoginButton({
             src={versionedAsset('/images/openid.svg')}
             alt=""
             aria-hidden="true"
-            className="mr-2 max-h-5 w-5"
+            className="me-2 max-h-5 w-5"
           />
         )}
         <span className="min-w-0 truncate">{provider.name}</span>

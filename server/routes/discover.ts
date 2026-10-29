@@ -1743,7 +1743,7 @@ discoverRoutes.get('/movies', async (req, res, next) => {
         req.user?.id,
         MediaType.MOVIE,
         localResults.results,
-        req.locale
+        req.metadataLocale
       );
       return res.status(200).json(localResults);
     }
@@ -1756,7 +1756,7 @@ discoverRoutes.get('/movies', async (req, res, next) => {
         ? getDiscoverMovieFeedCacheKey({
             shelf: feedShelf,
             page,
-            language: req.locale ?? query.language ?? '',
+            language: req.metadataLocale ?? query.language ?? '',
             region:
               userRegion === 'all'
                 ? ''
@@ -1788,7 +1788,7 @@ discoverRoutes.get('/movies', async (req, res, next) => {
         const data = await tmdb.getDiscoverMovies({
           page,
           sortBy: query.sortBy,
-          language: req.locale ?? query.language,
+          language: req.metadataLocale ?? query.language,
           originalLanguage: query.language,
           primaryReleaseDateGte: query.primaryReleaseDateGte
             ? new Date(query.primaryReleaseDateGte).toISOString().split('T')[0]
@@ -1799,7 +1799,7 @@ discoverRoutes.get('/movies', async (req, res, next) => {
           'movie',
           data.results,
           query,
-          req.locale
+          req.metadataLocale
         );
         feed = {
           page: data.page,
@@ -1845,12 +1845,12 @@ discoverRoutes.get('/movies', async (req, res, next) => {
         ? await tmdb.searchMovies({
             query: query.search,
             page,
-            language: req.locale ?? query.language,
+            language: req.metadataLocale ?? query.language,
           })
         : await tmdb.getDiscoverMovies({
             page,
             sortBy: query.sortBy,
-            language: req.locale ?? query.language,
+            language: req.metadataLocale ?? query.language,
             originalLanguage: query.language,
             genre: query.genre,
             excludeGenre: query.excludeGenre === 'true',
@@ -1893,7 +1893,7 @@ discoverRoutes.get('/movies', async (req, res, next) => {
       const taggedData = matchingKeywordIds
         ? await tmdb.getDiscoverMovies({
             page,
-            language: req.locale ?? query.language,
+            language: req.metadataLocale ?? query.language,
             keywords: matchingKeywordIds,
           })
         : undefined;
@@ -1909,7 +1909,7 @@ discoverRoutes.get('/movies', async (req, res, next) => {
             ) === index
         ),
         query,
-        req.locale
+        req.metadataLocale
       );
       const providerResults =
         query.search || query.sortBy
@@ -1950,7 +1950,7 @@ discoverRoutes.get('/movies', async (req, res, next) => {
       req.user?.id,
       MediaType.MOVIE,
       rankedResults,
-      req.locale
+      req.metadataLocale
     );
 
     const media = await Media.getRelatedMedia(
@@ -2000,7 +2000,7 @@ discoverRoutes.get<{ language: string }>(
     try {
       const parsedLanguage = parseDiscoverLanguage(
         req.query.language,
-        req.locale
+        req.metadataLocale
       );
       if ('error' in parsedLanguage) {
         return next({ status: 400, message: parsedLanguage.error });
@@ -2079,7 +2079,7 @@ discoverRoutes.get<{ genreId: string }>(
     try {
       const parsedLanguage = parseDiscoverLanguage(
         req.query.language,
-        req.locale
+        req.metadataLocale
       );
       if ('error' in parsedLanguage) {
         return next({ status: 400, message: parsedLanguage.error });
@@ -2158,7 +2158,7 @@ discoverRoutes.get<{ studioId: string }>(
     try {
       const parsedLanguage = parseDiscoverLanguage(
         req.query.language,
-        req.locale
+        req.metadataLocale
       );
       if ('error' in parsedLanguage) {
         return next({ status: 400, message: parsedLanguage.error });
@@ -2229,7 +2229,7 @@ discoverRoutes.get('/movies/upcoming', async (req, res, next) => {
   try {
     const parsedLanguage = parseDiscoverLanguage(
       req.query.language,
-      req.locale
+      req.metadataLocale
     );
     if ('error' in parsedLanguage) {
       return res
@@ -2354,7 +2354,7 @@ discoverRoutes.get('/tv', async (req, res, next) => {
         req.user?.id,
         MediaType.TV,
         localResults.results,
-        req.locale
+        req.metadataLocale
       );
       return res.status(200).json(localResults);
     }
@@ -2365,12 +2365,12 @@ discoverRoutes.get('/tv', async (req, res, next) => {
       ? await tmdb.searchTvShows({
           query: query.search,
           page,
-          language: req.locale ?? query.language,
+          language: req.metadataLocale ?? query.language,
         })
       : await tmdb.getDiscoverTv({
           page,
           sortBy: query.sortBy,
-          language: req.locale ?? query.language,
+          language: req.metadataLocale ?? query.language,
           genre: query.genre,
           excludeGenre: query.excludeGenre === 'true',
           network,
@@ -2412,7 +2412,7 @@ discoverRoutes.get('/tv', async (req, res, next) => {
     const taggedData = matchingKeywordIds
       ? await tmdb.getDiscoverTv({
           page,
-          language: req.locale ?? query.language,
+          language: req.metadataLocale ?? query.language,
           keywords: matchingKeywordIds,
         })
       : undefined;
@@ -2428,7 +2428,7 @@ discoverRoutes.get('/tv', async (req, res, next) => {
           ) === index
       ),
       query,
-      req.locale
+      req.metadataLocale
     );
     const providerResults =
       query.search || query.sortBy
@@ -2453,7 +2453,7 @@ discoverRoutes.get('/tv', async (req, res, next) => {
       req.user?.id,
       MediaType.TV,
       rankedResults,
-      req.locale
+      req.metadataLocale
     );
 
     const media = await Media.getRelatedMedia(
@@ -2513,7 +2513,7 @@ discoverRoutes.get<{ language: string }>(
     try {
       const parsedLanguage = parseDiscoverLanguage(
         req.query.language,
-        req.locale
+        req.metadataLocale
       );
       if ('error' in parsedLanguage) {
         return next({ status: 400, message: parsedLanguage.error });
@@ -2592,7 +2592,7 @@ discoverRoutes.get<{ genreId: string }>(
     try {
       const parsedLanguage = parseDiscoverLanguage(
         req.query.language,
-        req.locale
+        req.metadataLocale
       );
       if ('error' in parsedLanguage) {
         return res
@@ -2673,7 +2673,7 @@ discoverRoutes.get<{ networkId: string }>(
     try {
       const parsedLanguage = parseDiscoverLanguage(
         req.query.language,
-        req.locale
+        req.metadataLocale
       );
       if ('error' in parsedLanguage) {
         return res
@@ -2746,7 +2746,7 @@ discoverRoutes.get('/tv/upcoming', async (req, res, next) => {
   try {
     const parsedLanguage = parseDiscoverLanguage(
       req.query.language,
-      req.locale
+      req.metadataLocale
     );
     if ('error' in parsedLanguage) {
       return res
@@ -2826,7 +2826,7 @@ discoverRoutes.get('/trending', async (req, res, next) => {
     }
     const parsedLanguage = parseDiscoverLanguage(
       req.query.language,
-      req.locale
+      req.metadataLocale
     );
     if ('error' in parsedLanguage) {
       return res
@@ -2971,7 +2971,7 @@ discoverRoutes.get<{ listId: string }>(
 
     const parsedLanguage = parseDiscoverLanguage(
       req.query.language,
-      req.locale
+      req.metadataLocale
     );
     if ('error' in parsedLanguage) {
       return res
@@ -3079,7 +3079,7 @@ discoverRoutes.get<{ keywordId: string }>(
     try {
       const parsedLanguage = parseDiscoverLanguage(
         req.query.language,
-        req.locale
+        req.metadataLocale
       );
       if ('error' in parsedLanguage) {
         return res
@@ -3145,7 +3145,7 @@ discoverRoutes.get<{ language: string }, GenreSliderItem[]>(
     try {
       const parsedLanguage = parseDiscoverLanguage(
         req.query.language,
-        req.locale
+        req.metadataLocale
       );
       if ('error' in parsedLanguage) {
         return next({ status: 400, message: parsedLanguage.error });
@@ -3205,7 +3205,7 @@ discoverRoutes.get<{ language: string }, GenreSliderItem[]>(
     try {
       const parsedLanguage = parseDiscoverLanguage(
         req.query.language,
-        req.locale
+        req.metadataLocale
       );
       if ('error' in parsedLanguage) {
         return next({ status: 400, message: parsedLanguage.error });

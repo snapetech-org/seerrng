@@ -338,7 +338,7 @@ const ManageSlideOver = ({
                                                 ? '/profile'
                                                 : `/users/${user.id}`
                                             }
-                                            className="z-0 -mr-2 mb-1 shrink-0 hover:z-50"
+                                            className="z-0 -me-2 mb-1 shrink-0 hover:z-50"
                                           >
                                             <CachedImage
                                               type="avatar"
@@ -442,7 +442,7 @@ const ManageSlideOver = ({
                                                 ? '/profile'
                                                 : `/users/${user.id}`
                                             }
-                                            className="z-0 -mr-2 mb-1 shrink-0 hover:z-50"
+                                            className="z-0 -me-2 mb-1 shrink-0 hover:z-50"
                                           >
                                             <CachedImage
                                               type="avatar"
