@@ -94,7 +94,7 @@ configure its source and auto-download settings if adding a volume should start
 an acquisition. Enable **Sync** on the SeerrNG service connection to scan its
 collection and show owned or actively tracked issues in SeerrNG.
 
-SeerrNG's **Indexer Search** page can query Prowlarr's configured comic
+SeerrNG's **Search > Releases** scope can query Prowlarr's configured comic
 categories for manual inspection by users with **Manage Requests**. These
 results are not grabbed or tracked; the selected comic backend handles approved
 requests. Prowlarr can sync indexers to Mylar3 or Issuarr, so confirm the

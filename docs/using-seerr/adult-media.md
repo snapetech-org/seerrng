@@ -76,9 +76,10 @@ Approved requests use the configured Whisparr default, quality profile, and
 root folder. Whisparr handles the download and import lifecycle; SeerrNG reads
 its queue and library scan to show request progress and availability.
 
-SeerrNG's **Indexer Search** can also send a manual Adult search to Prowlarr
-using the configured **XXX** category (Newznab/Torznab category `6000`). This is
-for an explicit, manual search. If enabled for the user, **Send to downloader**
+SeerrNG's **Search > Releases** scope can also send a manual Adult search to
+Prowlarr using the configured **XXX** category (Newznab/Torznab category
+`6000`). This is for an explicit, manual search. If enabled for the user,
+**Send to downloader**
 hands the chosen result to Prowlarr's configured download client. It does not
 create an Adult request or change request status. Approved requests still go
 through Whisparr.

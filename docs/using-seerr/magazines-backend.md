@@ -56,7 +56,7 @@ The magazine details page shows issue dates and whether each issue has a file.
 Magazine cards and details show the latest LazyLibrarian cover when one is
 available.
 
-SeerrNG's **Indexer Search** page can query Prowlarr's configured magazine
+SeerrNG's **Search > Releases** scope can query Prowlarr's configured magazine
 categories for users with **Manage Requests**. Users can send a result to
 Prowlarr's configured download client, without exposing a direct download URL
 or creating a SeerrNG request. LazyLibrarian still performs acquisition for

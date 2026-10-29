@@ -6,10 +6,10 @@ description: Connect Prowlarr to SeerrNG for manual category-aware indexer searc
 # Indexer searches by media category
 
 Administrators can connect one Prowlarr instance under **Settings > Prowlarr**.
-SeerrNG then provides **Indexer Search** for users with
-**Manage Requests** permission. The page searches Prowlarr directly across
-movies, TV, music, ebooks, audiobooks, comics, magazines, adult scenes, retro
-ROMs, modern ROMs, and PC games. Adult search appears only when the Adult
+SeerrNG then provides a **Releases** scope on the shared **Search** page for
+users with **Manage Requests** permission. The scope searches Prowlarr directly
+across movies, TV, music, ebooks, audiobooks, comics, magazines, adult scenes,
+retro ROMs, modern ROMs, and PC games. Adult search appears only when the Adult
 category is enabled and Whisparr is configured.
 
 Search results are private by default: indexer names and details links appear
@@ -88,8 +88,8 @@ Prowlarr API key or address is wrong, so SeerrNG cannot read the indexer list.
 
 ## Search indexers
 
-Users with **Manage Requests** open **Indexer Search** from the navigation,
-select a media category, enter at least two search characters, and choose
+Users with **Manage Requests** open **Search**, choose **Releases**, select a
+media category, enter at least two search characters, and choose
 **Search indexers**. Results show release title, protocol, size, seeders and
 leechers when provided, publish date, and categories. If indexer details are
 allowed for that user, results also show the source name and a safe HTTP or
@@ -102,9 +102,10 @@ link to the browser.
 Movie, TV, music, and book searches use Prowlarr's corresponding format-aware
 search types; comics, magazines, ROMs, and PC games use category-filtered
 general search. **Search Prowlarr** actions on supported media detail pages
-open this page with the title and category filled in. Book details preserve the
-selected ebook or audiobook format. These shortcuts are available to users
-with **Manage Requests** permission.
+open the Releases scope with the title and category filled in. Book details
+preserve the selected ebook or audiobook format. These shortcuts are available
+to users with **Manage Requests** permission. The former `/indexer-search` route
+redirects to the Releases scope.
 
 Searches are limited to 50 results per page. Administrators can set a
 per-user-per-minute limit and optional per-indexer limits. **Load more

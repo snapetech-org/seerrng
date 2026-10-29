@@ -11,7 +11,7 @@ follow provider-confirmed acquisition in **Requests > Request Status**. The
 connected providers perform the acquisition and expose imported files back to
 SeerrNG for download.
 
-SeerrNG's **Indexer Search** page can query Prowlarr's configured PC-game and
+SeerrNG's **Search > Releases** scope can query Prowlarr's configured PC-game and
 console categories for users with **Manage Requests**. Users can send a result
 to Prowlarr's configured download client with the explicit **Send to
 downloader** action; SeerrNG does not expose the underlying torrent, NZB, or

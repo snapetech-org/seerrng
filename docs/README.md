@@ -25,6 +25,7 @@ connects to.
 
 ## Use SeerrNG
 
+- [Search catalogs, available media, requests, and Prowlarr releases](/using-seerr/search/)
 - [Filter movie and series discovery by rating or streaming service](/using-seerr/movie-series-discovery-filters/)
 - [Customize Discover shelves and navigation](/using-seerr/discover/)
 - [Filter and sort local watchlists](/using-seerr/plex/watchlist-auto-request/#find-items-in-your-watchlist)

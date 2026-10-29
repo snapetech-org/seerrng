@@ -66,7 +66,7 @@ service setup and
 [Bookshelf Metadata Sources](./bookshelf-metadata-sources.md) for catalog
 behavior and provider-specific requirements.
 
-SeerrNG also provides a permission-gated **Indexer Search** page that can
+SeerrNG also provides a permission-gated **Search > Releases** scope that can
 query Prowlarr's configured ebook and audiobook categories. Those results are
 for inspection only. Approved requests still use the configured
 Bookshelf-compatible service for acquisition and tracking. Prowlarr may also
