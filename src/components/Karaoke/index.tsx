@@ -37,7 +37,7 @@ interface KaraokeSearchEnvelope {
 
 const messages = defineMessages('components.Karaoke', {
   title: 'Karaoke',
-  intro: 'Search the connected karaoke songbook and add a song to the shared session.',
+  intro: 'Search the connected karaoke songbook and request songs for the shared session.',
   setupTitle: 'Connect Karaoke Mugen',
   setupBody:
     'Ask your SeerrNG administrator to configure the Karaoke Mugen connection in the server environment.',
@@ -49,11 +49,11 @@ const messages = defineMessages('components.Karaoke', {
   searchFailed: 'The karaoke songbook could not be searched.',
   noResults: 'No karaoke songs matched this search.',
   resultsHeading: 'Songbook results',
-  request: 'Add to session',
+  request: 'Request song',
   requesting: 'Adding…',
-  requestSuccess: 'Song added to the shared session.',
-  requestPosition: 'Song added at position {position}.',
-  requestFailed: 'The song could not be added to the shared session.',
+  requestSuccess: 'Song request sent for host review.',
+  requestPosition: 'Song request sent for host review at queue position {position}.',
+  requestFailed: 'The song request could not be added to the shared queue.',
   requestPermission: 'You do not have permission to request music.',
   ready: 'Ready on karaoke server',
   downloading: 'Downloading on karaoke server',
@@ -64,8 +64,17 @@ const messages = defineMessages('components.Karaoke', {
   sessionUnavailable: 'No public karaoke request queue is available.',
   sessionFailed: 'The karaoke session could not be loaded.',
   currentSong: 'Now singing',
-  waitingHeading: 'Coming up',
-  emptyQueue: 'No songs are waiting.',
+  waitingHeading: 'Pending requests',
+  emptyQueue: 'No requests are waiting for review.',
+  accept: 'Accept',
+  accepting: 'Accepting…',
+  reject: 'Reject',
+  rejecting: 'Rejecting…',
+  requestAccepted: 'Request accepted and added to the playback queue.',
+  requestRejected: 'Request rejected.',
+  reviewFailed: 'The karaoke request could not be reviewed.',
+  upcomingHeading: 'Up next',
+  emptyUpcoming: 'No approved songs are queued to play.',
   hostControls: 'Host controls',
   play: 'Play',
   pause: 'Pause',
@@ -190,12 +199,55 @@ const SongRow = ({
   );
 };
 
-const QueueItem = ({ item }: { item: KaraokeQueueItemResponse }) => (
+const QueueItem = ({
+  item,
+  intl,
+  canModerate = false,
+  moderating = false,
+  moderationBusy = false,
+  moderatingDecision,
+  onModerate,
+}: {
+  item: KaraokeQueueItemResponse;
+  intl: ReturnType<typeof useIntl>;
+  canModerate?: boolean;
+  moderating?: boolean;
+  moderationBusy?: boolean;
+  moderatingDecision?: 'accept' | 'reject';
+  onModerate?: (playlistContentId: number, decision: 'accept' | 'reject') => void;
+}) => (
   <li>
     <article>
       <h3>{item.title}</h3>
       {item.artists.length > 0 && <p>{item.artists.join(', ')}</p>}
       {item.requester && <p>{item.requester}</p>}
+      {canModerate &&
+        item.needsReview &&
+        item.playlistContentId !== undefined &&
+        onModerate && (
+          <div>
+            <Button
+              buttonType="primary"
+              buttonSize="sm"
+              disabled={moderationBusy}
+              onClick={() => onModerate(item.playlistContentId!, 'accept')}
+            >
+              {moderating && moderatingDecision === 'accept'
+                ? intl.formatMessage(messages.accepting)
+                : intl.formatMessage(messages.accept)}
+            </Button>
+            <Button
+              buttonType="default"
+              buttonSize="sm"
+              disabled={moderationBusy}
+              onClick={() => onModerate(item.playlistContentId!, 'reject')}
+            >
+              {moderating && moderatingDecision === 'reject'
+                ? intl.formatMessage(messages.rejecting)
+                : intl.formatMessage(messages.reject)}
+            </Button>
+          </div>
+        )}
     </article>
   </li>
 );
@@ -211,9 +263,13 @@ const Karaoke = () => {
   const [query, setQuery] = useState('');
   const [searchQuery, setSearchQuery] = useState('');
   const [requestingId, setRequestingId] = useState<string>();
+  const [moderatingRequest, setModeratingRequest] = useState<{
+    playlistContentId: number;
+    decision: 'accept' | 'reject';
+  }>();
   const [notice, setNotice] = useState<string>();
   const [operationFailed, setOperationFailed] = useState<
-    'request' | 'control' | undefined
+    'request' | 'control' | 'review' | undefined
   >();
 
   const { data: status, error: statusError } = useSWR<KaraokeStatus>(
@@ -292,6 +348,36 @@ const Karaoke = () => {
       } else {
         setOperationFailed('control');
       }
+    }
+  };
+
+  const moderateRequest = async (
+    playlistContentId: number,
+    decision: 'accept' | 'reject'
+  ) => {
+    setModeratingRequest({ playlistContentId, decision });
+    setNotice(undefined);
+    setOperationFailed(undefined);
+    try {
+      await axios.post('/api/v1/karaoke/moderate', {
+        playlistContentId,
+        decision,
+      });
+      setNotice(
+        intl.formatMessage(
+          decision === 'accept' ? messages.requestAccepted : messages.requestRejected
+        )
+      );
+      void refreshSession();
+    } catch (error) {
+      const message = responseMessage(error);
+      if (message) {
+        setNotice(message);
+      } else {
+        setOperationFailed('review');
+      }
+    } finally {
+      setModeratingRequest(undefined);
     }
   };
 
@@ -400,7 +486,7 @@ const Karaoke = () => {
                   {session.current && (
                     <div>
                       <h3>{intl.formatMessage(messages.currentSong)}</h3>
-                      <QueueItem item={session.current} />
+                      <QueueItem item={session.current} intl={intl} />
                     </div>
                   )}
                   <h3>{intl.formatMessage(messages.waitingHeading)}</h3>
@@ -409,7 +495,40 @@ const Karaoke = () => {
                   ) : (
                     <ol>
                       {session.waiting.map((item) => (
-                        <QueueItem key={item.id} item={item} />
+                        <QueueItem
+                          key={item.playlistContentId ?? item.id}
+                          item={item}
+                          intl={intl}
+                          canModerate={canHost}
+                          moderating={
+                            moderatingRequest?.playlistContentId ===
+                            item.playlistContentId
+                          }
+                          moderationBusy={moderatingRequest !== undefined}
+                          moderatingDecision={
+                            moderatingRequest?.playlistContentId ===
+                            item.playlistContentId
+                              ? moderatingRequest.decision
+                              : undefined
+                          }
+                          onModerate={(playlistContentId, decision) =>
+                            void moderateRequest(playlistContentId, decision)
+                          }
+                        />
+                      ))}
+                    </ol>
+                  )}
+                  <h3>{intl.formatMessage(messages.upcomingHeading)}</h3>
+                  {session.upcoming.length === 0 ? (
+                    <p>{intl.formatMessage(messages.emptyUpcoming)}</p>
+                  ) : (
+                    <ol>
+                      {session.upcoming.map((item) => (
+                        <QueueItem
+                          key={item.playlistContentId ?? item.id}
+                          item={item}
+                          intl={intl}
+                        />
                       ))}
                     </ol>
                   )}
@@ -470,7 +589,11 @@ const Karaoke = () => {
         {operationFailed && (
           <Alert
             title={intl.formatMessage(
-              operationFailed === 'request' ? messages.requestFailed : messages.controlFailed
+              operationFailed === 'request'
+                ? messages.requestFailed
+                : operationFailed === 'review'
+                  ? messages.reviewFailed
+                  : messages.controlFailed
             )}
             type="warning"
           />

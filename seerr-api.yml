@@ -104,10 +104,13 @@ components:
           type: string
     KaraokeQueueItem:
       type: object
-      required: [id, title, artists, playing]
+      required: [id, title, artists, playing, needsReview]
       properties:
         id:
           type: string
+        playlistContentId:
+          type: integer
+          description: Karaoke Mugen public playlist content ID used for host moderation.
         title:
           type: string
         artists:
@@ -119,6 +122,8 @@ components:
         position:
           type: integer
         playing:
+          type: boolean
+        needsReview:
           type: boolean
     UserAvailabilitySubscriptionState:
       type: object
@@ -18624,12 +18629,18 @@ paths:
                   session:
                     type: object
                     nullable: true
-                    required: [name, waiting]
+                    required: [name, waiting, upcoming]
                     properties:
                       name:
                         type: string
                       waiting:
                         type: array
+                        description: Requests awaiting host review.
+                        items:
+                          $ref: '#/components/schemas/KaraokeQueueItem'
+                      upcoming:
+                        type: array
+                        description: Approved songs in the active playback queue.
                         items:
                           $ref: '#/components/schemas/KaraokeQueueItem'
                       current:
@@ -18640,7 +18651,7 @@ paths:
           description: Karaoke Mugen is unavailable
   /karaoke/request:
     post:
-      summary: Add a karaoke song to the public session queue
+      summary: Submit a karaoke song request to the public queue
       tags:
         - karaoke
       requestBody:
@@ -18656,7 +18667,7 @@ paths:
                   format: uuid
       responses:
         '201':
-          description: Song accepted into the public queue
+          description: Song request added to the public queue
           content:
             application/json:
               schema:
@@ -18679,6 +18690,48 @@ paths:
           description: Karaoke Mugen request quota reached
         '503':
           description: Karaoke Mugen is unavailable or guest requests are disabled
+  /karaoke/moderate:
+    post:
+      summary: Accept or reject a pending karaoke request
+      tags:
+        - karaoke
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [playlistContentId, decision]
+              properties:
+                playlistContentId:
+                  type: integer
+                  minimum: 1
+                decision:
+                  type: string
+                  enum: [accept, reject]
+      responses:
+        '200':
+          description: Karaoke request reviewed
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [accepted]
+                properties:
+                  accepted:
+                    type: boolean
+        '400':
+          description: Invalid request ID or decision
+        '401':
+          description: Authentication required
+        '403':
+          description: Host permission required
+        '404':
+          description: Request no longer exists in the public queue
+        '409':
+          description: Request has already been reviewed
+        '503':
+          description: Karaoke Mugen is unavailable
   /karaoke/control:
     post:
       summary: Control Karaoke Mugen playback

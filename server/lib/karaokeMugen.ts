@@ -1,5 +1,4 @@
 import { createHash } from 'node:crypto';
-import { deburr } from 'lodash';
 import { WebSocket } from 'undici';
 
 export interface KaraokeMugenStatus {
@@ -20,16 +19,19 @@ export interface KaraokeSong {
 
 export interface KaraokeQueueItem {
   id: string;
+  playlistContentId?: number;
   title: string;
   artists: string[];
   requester?: string;
   position?: number;
   playing: boolean;
+  needsReview: boolean;
 }
 
 export interface KaraokeSession {
   name: string;
   waiting: KaraokeQueueItem[];
+  upcoming: KaraokeQueueItem[];
   current?: KaraokeQueueItem;
 }
 
@@ -265,7 +267,18 @@ const songFromProvider = (value: JsonRecord): KaraokeSong | undefined => {
 };
 
 const queueItemFromProvider = (value: JsonRecord): KaraokeQueueItem | undefined => {
-  const id = idText(value.playlistcontent_id) ?? idText(value.kid);
+  const rawPlaylistContentId =
+    idText(value.playlistcontent_id) ?? idText(value.plcid);
+  const playlistContentIdValue = rawPlaylistContentId
+    ? Number(rawPlaylistContentId)
+    : undefined;
+  const playlistContentId =
+    playlistContentIdValue !== undefined &&
+    Number.isSafeInteger(playlistContentIdValue) &&
+    playlistContentIdValue > 0
+      ? playlistContentIdValue
+      : undefined;
+  const id = idText(playlistContentId) ?? idText(value.kid);
   const nested = isRecord(value.kara) ? value.kara : value;
   const title =
     localizedTitle(nested.titles) || text(nested.title) || text(value.mediafile);
@@ -273,11 +286,13 @@ const queueItemFromProvider = (value: JsonRecord): KaraokeQueueItem | undefined 
 
   return {
     id,
+    ...(playlistContentId !== undefined ? { playlistContentId } : {}),
     title,
     artists: stringArray(nested.singers),
     requester: text(value.nickname) ?? text(value.requester),
     position: typeof value.pos === 'number' ? value.pos : undefined,
     playing: value.flag_playing === true,
+    needsReview: value.flag_accepted !== true && value.flag_refused !== true,
   };
 };
 
@@ -354,9 +369,11 @@ export class KaraokeMugenProvider {
       );
       const waiting = unwrapArray(requestResult, 'contents')
         .map(queueItemFromProvider)
-        .filter((item): item is KaraokeQueueItem => !!item);
+        .filter((item): item is KaraokeQueueItem => !!item)
+        .filter((item) => item.needsReview);
 
       let current: KaraokeQueueItem | undefined;
+      let upcoming: KaraokeQueueItem[] = [];
       const currentId = currentPlaylist ? idText(currentPlaylist.plaid) : undefined;
       if (currentId) {
         const currentResult = await socket.call(
@@ -365,7 +382,7 @@ export class KaraokeMugenProvider {
             plaid: currentId,
             filter: null,
             from: -1,
-            size: 5,
+            size: 50,
             incomingSongs: false,
           },
           token
@@ -373,12 +390,21 @@ export class KaraokeMugenProvider {
         const currentItems = unwrapArray(currentResult, 'contents')
           .map(queueItemFromProvider)
           .filter((item): item is KaraokeQueueItem => !!item);
-        current = currentItems.find((item) => item.playing);
+        const currentIndex = currentItems.findIndex((item) => item.playing);
+        if (currentIndex >= 0) {
+          current = currentItems[currentIndex];
+          upcoming = currentItems
+            .slice(currentIndex + 1)
+            .filter((item) => !item.playing);
+        } else {
+          upcoming = currentItems.filter((item) => !item.playing);
+        }
       }
 
       return {
         name: text(publicPlaylist.name) ?? 'Karaoke session',
         waiting,
+        upcoming,
         ...(current ? { current } : {}),
       };
     });
@@ -389,23 +415,13 @@ export class KaraokeMugenProvider {
     requester: string,
     requesterId: number
   ): Promise<{ position?: number }> {
-    return this.withAdmin(async (socket) => {
+    return this.withAdmin(async (socket, adminToken) => {
       const suffix = createHash('sha256')
         .update(String(requesterId))
         .digest('hex')
-        .slice(0, 12);
-      const guestName = `SeerrNG ${requester.slice(0, 24)} ${suffix}`;
-      const guestLogin = deburr(
-        guestName
-          .toLowerCase()
-          .replaceAll(' ', '_')
-          .replaceAll('!', '')
-          .replaceAll("'", '')
-          .replaceAll('/', '_')
-          .replaceAll('<', '')
-          .replaceAll('?', '_')
-          .replaceAll('"', '')
-      );
+        .slice(0, 16);
+      const guestName = 'SeerrNG guest ' + suffix;
+      const guestLogin = 'seerrng_guest_' + suffix;
 
       let guest: unknown;
       try {
@@ -432,6 +448,10 @@ export class KaraokeMugenProvider {
         throw new Error('KARAOKE_MUGEN_CUSTOM_TEMPORARY_GUESTS_REQUIRED');
       }
 
+      const nickname =
+        Array.from(requester).slice(0, 28).join('') + ' · ' + suffix;
+      await socket.call('editUser', { login: guestLogin, nickname }, adminToken);
+
       const result = await socket.call(
         'addKaraToPublicPlaylist',
         { kids: [songId] },
@@ -443,6 +463,41 @@ export class KaraokeMugenProvider {
       return {
         ...(added && typeof added.pos === 'number' ? { position: added.pos } : {}),
       };
+    });
+  }
+
+  async moderateRequest(
+    playlistContentId: number,
+    decision: 'accept' | 'reject'
+  ): Promise<void> {
+    await this.withAdmin(async (socket, token) => {
+      const [playlistItem, playlistResult] = await Promise.all([
+        socket.call('getPLC', { plc_id: playlistContentId }, token),
+        socket.call('getPlaylists', {}, token),
+      ]);
+      const publicPlaylist = unwrapArray(playlistResult, 'playlists').find(
+        (playlist) => playlist.flag_public === true
+      );
+      if (
+        !isRecord(playlistItem) ||
+        !publicPlaylist ||
+        idText(playlistItem.plaid) !== idText(publicPlaylist.plaid)
+      ) {
+        throw new Error('KARAOKE_REQUEST_NOT_FOUND');
+      }
+      if (playlistItem.flag_accepted === true || playlistItem.flag_refused === true) {
+        throw new Error('KARAOKE_REQUEST_ALREADY_REVIEWED');
+      }
+      await socket.call(
+        'editPLC',
+        {
+          plc_ids: [playlistContentId],
+          ...(decision === 'accept'
+            ? { flag_accepted: true }
+            : { flag_refused: true }),
+        },
+        token
+      );
     });
   }
 

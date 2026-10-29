@@ -48,6 +48,22 @@ const PROVIDER_ERROR_RESPONSES: Record<string, { status: number; message: string
     status: 503,
     message: 'Enable AllowCustomTemporaryGuests in Karaoke Mugen to apply singer quotas consistently.',
   },
+  KARAOKE_REQUEST_NOT_FOUND: {
+    status: 404,
+    message: 'That karaoke request is no longer in the public queue.',
+  },
+  KARAOKE_REQUEST_ALREADY_REVIEWED: {
+    status: 409,
+    message: 'That karaoke request has already been reviewed.',
+  },
+  PL_VIEW_CONTENT_ERROR: {
+    status: 404,
+    message: 'That karaoke request no longer exists.',
+  },
+  NICKNAME_ALREADY_IN_USE: {
+    status: 409,
+    message: 'A karaoke singer already uses that display name.',
+  },
   NO_MORE_GUESTS_AVAILABLE: {
     status: 503,
     message: 'Karaoke Mugen has no temporary guest accounts available.',
@@ -135,6 +151,43 @@ router.post('/request', async (req, res) => {
     return res.status(201).json({ accepted: true, ...result });
   } catch (error) {
     reportProviderFailure('request', error);
+    return providerError(res, error);
+  }
+});
+
+router.post('/moderate', async (req, res) => {
+  const canHost =
+    req.user?.hasPermission(Permission.MANAGE_REQUESTS) ||
+    req.user?.hasPermission(Permission.ADMIN);
+  if (!canHost) {
+    return res.status(403).json({
+      status: 403,
+      message: 'Host permission is required to review karaoke requests.',
+    });
+  }
+
+  const playlistContentId = req.body?.playlistContentId;
+  const decision = req.body?.decision;
+  if (
+    typeof playlistContentId !== 'number' ||
+    !Number.isSafeInteger(playlistContentId) ||
+    playlistContentId < 1 ||
+    (decision !== 'accept' && decision !== 'reject')
+  ) {
+    return res.status(400).json({
+      status: 400,
+      message: 'Select a valid karaoke request and accept or reject it.',
+    });
+  }
+
+  try {
+    await karaokeMugenProvider.moderateRequest(
+      playlistContentId,
+      decision
+    );
+    return res.status(200).json({ accepted: true });
+  } catch (error) {
+    reportProviderFailure('moderate', error);
     return providerError(res, error);
   }
 });

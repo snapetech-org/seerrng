@@ -13,15 +13,18 @@ export interface KaraokeSongResponse {
 
 export interface KaraokeQueueItemResponse {
   id: string;
+  playlistContentId?: number;
   title: string;
   artists: string[];
   requester?: string;
   position?: number;
   playing: boolean;
+  needsReview: boolean;
 }
 
 export interface KaraokeSessionResponse {
   name: string;
   waiting: KaraokeQueueItemResponse[];
+  upcoming: KaraokeQueueItemResponse[];
   current?: KaraokeQueueItemResponse;
 }
