@@ -5,7 +5,7 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => ({
     destination: {
       pathname: '/search',
       query: {
-        type: 'releases',
+        scope: 'releases',
         ...(typeof query.query === 'string' ? { query: query.query } : {}),
         ...(typeof query.category === 'string'
           ? { category: query.category }

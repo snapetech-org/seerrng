@@ -1,6 +1,7 @@
 import InlineBookSeriesResults from '@app/components/BookSeriesSearch/InlineResults';
 import ReadMeABookSearch from '@app/components/Discover/DiscoverBooks/ReadMeABookSearch';
 import IndexerSearch from '@app/components/IndexerSearch';
+import Requests from '@app/components/Requests';
 import BookFormatBadge from '@app/components/Common/BookFormatBadge';
 import Button from '@app/components/Common/Button';
 import CardTextVisibilityToggle from '@app/components/Common/CardTextVisibilityToggle';
@@ -30,6 +31,7 @@ import {
 } from '@app/utils/serviceAvailability';
 import { stableSearchResults } from '@app/utils/stableSearchResults';
 import { BarsArrowDownIcon, BarsArrowUpIcon } from '@heroicons/react/24/solid';
+import { MediaStatus } from '@server/constants/media';
 import type { DetailDisclosureMediaType } from '@server/interfaces/api/userSettingsInterfaces';
 import type {
   AlbumResult,
@@ -80,8 +82,12 @@ const messages = defineMessages('components.Search', {
   magazines: 'Magazines',
   sports: 'Sports',
   software: 'Software',
-  releases: 'Releases',
   identifySong: 'Identify a Song',
+  scope: 'Search Scope',
+  libraryScope: 'Library',
+  libraryScopeHint: 'Find catalog titles already available in SeerrNG.',
+  requestsScope: 'Requests',
+  releasesScope: 'Releases',
   filter: 'Filters',
   mediaFilters: 'Media Filters',
   sortBy: 'Sort By',
@@ -129,7 +135,6 @@ const searchCategories = [
   { key: 'sports', type: 'sports', message: messages.sports },
   { key: 'software', type: 'software', message: messages.software },
   { key: 'author', type: 'author', message: messages.authors },
-  { key: 'releases', type: 'releases', message: messages.releases },
 ] as const;
 
 type SearchCategory = (typeof searchCategories)[number];
@@ -148,6 +153,23 @@ type SearchResult =
 
 const getSearchResultKey = (result: SearchResult) =>
   `${result.mediaType}:${result.id}`;
+
+const isInLibrary = (result: SearchResult) => {
+  if (
+    result.mediaType === 'album' &&
+    result.qualityStatuses?.some(
+      ({ status }) => status === MediaStatus.AVAILABLE
+    )
+  ) {
+    return true;
+  }
+
+  return (
+    'mediaInfo' in result &&
+    (result.mediaInfo?.status === MediaStatus.AVAILABLE ||
+      result.mediaInfo?.status === MediaStatus.PARTIALLY_AVAILABLE)
+  );
+};
 
 type SortOption = {
   field: SortField;
@@ -194,7 +216,6 @@ const sortFieldsByCategory: Record<
   magazine: ['date', 'title'],
   sports: ['date', 'title'],
   software: [],
-  releases: [],
 };
 
 const getSearchCategory = (
@@ -226,7 +247,6 @@ const matchesCategory = (result: SearchResult, category: SearchCategory) => {
   }
 
   if (category.type === 'software') return false;
-  if (category.type === 'releases') return false;
 
   return result.mediaType === category.type;
 };
@@ -339,12 +359,21 @@ const Search = () => {
   const router = useRouter();
   const { currentSettings } = useSettings();
   const { user, hasPermission } = useUser();
+  const scope =
+    router.query.type === 'releases'
+      ? 'releases'
+      : router.query.scope === 'library' ||
+          router.query.scope === 'requests' ||
+          router.query.scope === 'releases'
+        ? router.query.scope
+        : 'all';
   const serviceAvailability = getUserServiceAvailability(
     currentSettings,
     user?.settings?.enabledMediaCategories,
     hasPermission(Permission.ADMIN)
   );
   const showBookSeries =
+    scope === 'all' &&
     currentSettings.booksEnabled &&
     (isOptionalCatalogPathEnabled('/discover/books', serviceAvailability) ||
       isOptionalCatalogPathEnabled(
@@ -361,6 +390,17 @@ const Search = () => {
     router.query.type,
     router.query.format
   );
+  useEffect(() => {
+    if (!router.isReady || router.query.type !== 'releases') return;
+    const nextQuery = { ...router.query, scope: 'releases' };
+    delete nextQuery.type;
+    delete nextQuery.format;
+    void router.replace(
+      { pathname: router.pathname, query: nextQuery },
+      undefined,
+      { shallow: true, scroll: false }
+    );
+  }, [router]);
   const visibleSearchCategories = searchCategories.filter((searchCategory) => {
     switch (searchCategory.key) {
       case 'movie':
@@ -401,19 +441,21 @@ const Search = () => {
         );
       case 'software':
         return isAnySoftwareCategoryEnabled(serviceAvailability);
-      case 'releases':
-        return hasPermission(Permission.MANAGE_REQUESTS);
       default:
         return true;
     }
   });
-  const category = visibleSearchCategories.some(
+  const category = scope === 'all' && visibleSearchCategories.some(
     (searchCategory) => searchCategory.key === requestedCategory.key
   )
     ? requestedCategory
     : searchCategories[0];
   useEffect(() => {
-    if (!router.isReady || category.key === requestedCategory.key) return;
+    if (
+      !router.isReady ||
+      scope !== 'all' ||
+      category.key === requestedCategory.key
+    ) return;
     void router.replace(
       {
         pathname: router.pathname,
@@ -422,7 +464,7 @@ const Search = () => {
       undefined,
       { shallow: true, scroll: false }
     );
-  }, [category.key, query, requestedCategory.key, router]);
+  }, [category.key, query, requestedCategory.key, router, scope]);
   const filterMediaType: DetailDisclosureMediaType =
     category.key === 'tv'
       ? 'tv'
@@ -437,8 +479,8 @@ const Search = () => {
     scope: 'search',
     selected: category.key,
     values: visibleSearchCategories.map((item) => item.key),
-    ready: router.isReady,
-    explicit: Boolean(router.query.type || router.query.format),
+    ready: router.isReady && scope === 'all',
+    explicit: scope === 'all' && Boolean(router.query.type || router.query.format),
     restore: (value) => {
       const target = visibleSearchCategories.find(
         (item) => item.key === value
@@ -544,7 +586,9 @@ const Search = () => {
     [category.key, preferredBookFormat, query, router.query]
   );
   const isSearchReady = isSearchDataReady({
-    routerReady: router.isReady,
+    routerReady:
+      router.isReady &&
+      (scope === 'all' || (scope === 'library' && query.length >= 2)),
     category: category.key,
     query: combinedQuery,
   });
@@ -590,6 +634,11 @@ const Search = () => {
     () =>
       titles
         .filter((title) => matchesCategory(title, category))
+        .filter(
+          (title) =>
+            scope !== 'library' ||
+            (query.length >= 2 && isInLibrary(title))
+        )
         .filter((title) =>
           matchesSearchResultFilter(
             [
@@ -612,7 +661,7 @@ const Search = () => {
             resultFilter
           )
         ),
-    [category, resultFilter, titles]
+    [category, query, resultFilter, scope, titles]
   );
   const sortedTitles = useMemo(() => {
     const collator = new Intl.Collator(undefined, {
@@ -760,70 +809,110 @@ const Search = () => {
           {intl.formatMessage(messages.searchresults)}
         </Header>
       </div>
-      <PinnedFilterSection
-        mediaType={filterMediaType}
-        section="mediaFilters"
-        label={intl.formatMessage(messages.mediaFilters)}
+      <nav
+        className="app-filter-row"
+        aria-label={intl.formatMessage(messages.scope)}
       >
-        <div
-          className="app-filter-row"
-          aria-label={intl.formatMessage(messages.mediaFilters)}
-        >
-          {router.isReady && currentSettings.booksEnabled && (
-            <Link
-              className={getFilterToggleButtonClass(false)}
-              href={{
-                pathname: '/book-series',
-                query: {
-                  query,
-                  ...(preferredBookFormat
-                    ? { format: preferredBookFormat }
-                    : {}),
+        {([
+          { value: 'all', message: messages.all },
+          { value: 'library', message: messages.libraryScope },
+          { value: 'requests', message: messages.requestsScope },
+          { value: 'releases', message: messages.releasesScope },
+        ] as const).map((option) => (
+          <button
+            key={option.value}
+            type="button"
+            className={getFilterToggleButtonClass(scope === option.value)}
+            aria-pressed={scope === option.value}
+            onClick={() => {
+              void router.replace(
+                {
+                  pathname: router.pathname,
+                  query: {
+                    query: query || undefined,
+                    ...(option.value !== 'all' ? { scope: option.value } : {}),
+                  },
                 },
-              }}
-            >
-              {intl.formatMessage(messages.bookSeries)}
-            </Link>
-          )}
-          {visibleSearchCategories.map((searchCategory) => {
-            const isSelected = category.key === searchCategory.key;
-
-            return (
-              <MediaFilterOption
-                key={searchCategory.key}
-                pin={mediaPin}
-                value={searchCategory.key}
-                label={intl.formatMessage(searchCategory.message)}
-                selected={isSelected}
+                undefined,
+                { shallow: true, scroll: false }
+              );
+            }}
+          >
+            {intl.formatMessage(option.message)}
+          </button>
+        ))}
+      </nav>
+      {scope === 'library' && (
+        <p className="card-body-text">
+          {intl.formatMessage(messages.libraryScopeHint)}
+        </p>
+      )}
+      {scope === 'all' && (
+        <PinnedFilterSection
+          mediaType={filterMediaType}
+          section="mediaFilters"
+          label={intl.formatMessage(messages.mediaFilters)}
+        >
+          <div
+            className="app-filter-row"
+            aria-label={intl.formatMessage(messages.mediaFilters)}
+          >
+            {router.isReady && currentSettings.booksEnabled && (
+              <Link
+                className={getFilterToggleButtonClass(false)}
+                href={{
+                  pathname: '/book-series',
+                  query: {
+                    query,
+                    ...(preferredBookFormat
+                      ? { format: preferredBookFormat }
+                      : {}),
+                  },
+                }}
               >
-                <button
-                  type="button"
-                  className="app-control-shadow-exempt app-filter-segment-focus"
-                  aria-pressed={isSelected}
-                  onClick={() => {
-                    const nextQuery = getSearchCategoryQuery(router.query, {
-                      type: searchCategory.type,
-                      format:
-                        'format' in searchCategory
-                          ? searchCategory.format
-                          : undefined,
-                    });
+                {intl.formatMessage(messages.bookSeries)}
+              </Link>
+            )}
+            {visibleSearchCategories.map((searchCategory) => {
+              const isSelected = category.key === searchCategory.key;
 
-                    void router.replace(
-                      { pathname: router.pathname, query: nextQuery },
-                      undefined,
-                      { shallow: true, scroll: false }
-                    );
-                  }}
+              return (
+                <MediaFilterOption
+                  key={searchCategory.key}
+                  pin={mediaPin}
+                  value={searchCategory.key}
+                  label={intl.formatMessage(searchCategory.message)}
+                  selected={isSelected}
                 >
-                  {intl.formatMessage(searchCategory.message)}
-                </button>
-              </MediaFilterOption>
-            );
-          })}
-        </div>
-      </PinnedFilterSection>
-      {category.key !== 'software' && category.key !== 'releases' && (
+                  <button
+                    type="button"
+                    className="app-control-shadow-exempt app-filter-segment-focus"
+                    aria-pressed={isSelected}
+                    onClick={() => {
+                      const nextQuery = getSearchCategoryQuery(router.query, {
+                        type: searchCategory.type,
+                        format:
+                          'format' in searchCategory
+                            ? searchCategory.format
+                            : undefined,
+                      });
+
+                      void router.replace(
+                        { pathname: router.pathname, query: nextQuery },
+                        undefined,
+                        { shallow: true, scroll: false }
+                      );
+                    }}
+                  >
+                    {intl.formatMessage(searchCategory.message)}
+                  </button>
+                </MediaFilterOption>
+              );
+            })}
+          </div>
+        </PinnedFilterSection>
+      )}
+      {scope === 'all' && category.key !== 'software' && (
         <PinnedFilterSection
           mediaType={filterMediaType}
           section="filters"
@@ -854,7 +943,7 @@ const Search = () => {
           </div>
         </PinnedFilterSection>
       )}
-      {category.key !== 'software' && category.key !== 'releases' && (
+      {scope === 'all' && category.key !== 'software' && (
         <PinnedFilterSection
           mediaType={filterMediaType}
           section="sortBy"
@@ -913,10 +1002,10 @@ const Search = () => {
           </div>
         </PinnedFilterSection>
       )}
-      {router.isReady && showBookSeries && (
+      {scope === 'all' && router.isReady && showBookSeries && (
         <InlineBookSeriesResults query={query} format={preferredBookFormat} />
       )}
-      {category.key === 'music' && query && (
+      {scope === 'all' && category.key === 'music' && query && (
         <div className="app-action-row">
           <Button
             as="a"
@@ -928,11 +1017,18 @@ const Search = () => {
           </Button>
         </div>
       )}
-      {category.key === 'audiobook' && (
-        <ReadMeABookSearch searchQuery={query} />
+      {scope === 'all' &&
+        (category.key === 'audiobook' ||
+          (category.key === 'all' && query.length >= 2)) && (
+        <ReadMeABookSearch
+          searchQuery={query}
+          showRequests={category.key === 'audiobook'}
+        />
       )}
-      {category.key === 'releases' ? (
+      {scope === 'releases' ? (
         <IndexerSearch embedded />
+      ) : scope === 'requests' ? (
+        <Requests embedded initialSearch={query} />
       ) : category.key === 'software' ? (
         <SoftwareCatalog externalQuery={query} embedded />
       ) : error && stableTitles.length === 0 ? (
@@ -940,8 +1036,11 @@ const Search = () => {
       ) : (
         <>
           {error && searchError}
-          {category.key === 'all' && query && (
+          {category.key === 'all' && query && scope === 'all' && (
             <SoftwareSearchPreview query={query} />
+          )}
+          {category.key === 'all' && query && scope === 'library' && (
+            <SoftwareSearchPreview query={query} availableOnly />
           )}
           <ListView
             items={stableTitles}

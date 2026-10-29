@@ -29,7 +29,13 @@ const messages = defineMessages('components.Search.SoftwarePreview', {
   available: 'In library',
 });
 
-const SoftwareSearchPreview = ({ query }: { query: string }) => {
+const SoftwareSearchPreview = ({
+  query,
+  availableOnly = false,
+}: {
+  query: string;
+  availableOnly?: boolean;
+}) => {
   const intl = useIntl();
   const { currentSettings } = useSettings();
   const { user, hasPermission } = useUser();
@@ -44,7 +50,7 @@ const SoftwareSearchPreview = ({ query }: { query: string }) => {
   const categoryKey = categories.join(',');
   const { data } = useSWR<PreviewItem[]>(
     query && categories.length
-      ? ['software-search-preview', query, categoryKey]
+      ? ['software-search-preview', query, categoryKey, availableOnly]
       : null,
     async () => {
       const responses = await Promise.allSettled(
@@ -52,7 +58,7 @@ const SoftwareSearchPreview = ({ query }: { query: string }) => {
           const params = new URLSearchParams({
             category,
             q: query,
-            limit: '4',
+            limit: availableOnly ? '50' : '4',
           });
           const response = await axios.get<{ results: PreviewGame[] }>(
             `/api/v1/request/software/catalog/search?${params.toString()}`
@@ -70,7 +76,7 @@ const SoftwareSearchPreview = ({ query }: { query: string }) => {
       return successful.filter((game) => {
         if (seen.has(game.igdbId)) return false;
         seen.add(game.igdbId);
-        return true;
+        return !availableOnly || game.availability === 'available';
       });
     },
     { revalidateOnFocus: false, dedupingInterval: 30000 }

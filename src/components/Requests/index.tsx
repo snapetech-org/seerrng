@@ -2144,7 +2144,13 @@ const RequestStatusCard = ({
   );
 };
 
-const Requests = () => {
+const Requests = ({
+  embedded = false,
+  initialSearch,
+}: {
+  embedded?: boolean;
+  initialSearch?: string;
+}) => {
   const intl = useIntl();
   const router = useRouter();
   const { cache: requestCache, mutate: prefetchRequestCache } = useSWRConfig();
@@ -2159,7 +2165,7 @@ const Requests = () => {
     });
   const [mediaFilter, setMediaFilter] = useState<MediaFilter>('all');
   const [searchFilter, debouncedSearchFilter, setSearchFilter] =
-    useDebouncedState('');
+    useDebouncedState(initialSearch ?? '');
   const [filter, setFilter] = useState('all');
   const [sort, setSort] = useState<RequestStatusSortField>('added');
   const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('desc');
@@ -2181,6 +2187,10 @@ const Requests = () => {
   const [removingRequestId, setRemovingRequestId] = useState<number | null>(
     null
   );
+
+  useEffect(() => {
+    if (embedded) setSearchFilter(initialSearch ?? '');
+  }, [embedded, initialSearch, setSearchFilter]);
 
   const { data: statusUsers } = useSWR<RequestStatusUsersResponse>(
     canViewOtherUsers ? '/api/v1/request/status/users?take=100&skip=0' : null,
@@ -2453,7 +2463,25 @@ const Requests = () => {
   });
 
   const pushRouteQuery = (queryParams: Record<string, string>) => {
-    void router.push({ pathname: router.pathname, query: queryParams });
+    if (!embedded) {
+      void router.push({ pathname: router.pathname, query: queryParams });
+      return;
+    }
+
+    const nextQuery = { ...router.query };
+    [
+      'filter',
+      'mediaType',
+      'sort',
+      'sortDirection',
+      'timeFrame',
+      'userId',
+      'page',
+    ].forEach((key) => delete nextQuery[key]);
+    void router.push({
+      pathname: router.pathname,
+      query: { ...nextQuery, ...queryParams, scope: 'requests' },
+    });
   };
 
   const updateFilter = (nextFilter: string) => {
@@ -2640,7 +2668,7 @@ const Requests = () => {
   if (!data && !error) {
     return (
       <>
-        <PageTitle title={intl.formatMessage(messages.title)} />
+        {!embedded && <PageTitle title={intl.formatMessage(messages.title)} />}
         {pageHeading}
       </>
     );
@@ -2649,7 +2677,7 @@ const Requests = () => {
   if (!data) {
     return (
       <>
-        <PageTitle title={intl.formatMessage(messages.title)} />
+        {!embedded && <PageTitle title={intl.formatMessage(messages.title)} />}
         {pageHeading}
         <div className="page-error-message" role="alert">
           <div>
@@ -2785,7 +2813,7 @@ const Requests = () => {
     timeFrame !== 'all' ||
     (canViewOtherUsers && selectedUser !== 'all');
   const clearFilters = () => {
-    setSearchFilter('');
+    setSearchFilter(embedded ? (initialSearch ?? '') : '');
     setFilter('all');
     setMediaFilter('all');
     setSort('added');
@@ -2827,7 +2855,7 @@ const Requests = () => {
           />
         </Transition>
       )}
-      <PageTitle title={intl.formatMessage(messages.title)} />
+      {!embedded && <PageTitle title={intl.formatMessage(messages.title)} />}
       {pageHeading}
       {error && (
         <div className="page-error-message" data-severity="error" role="status">
@@ -2940,29 +2968,33 @@ const Requests = () => {
                     options={timeFrameOptions}
                     onChange={(value) => updateTimeFrame(value as TimeFrame)}
                   />
-                  <label className="discover-filter-control app-filter-search-control">
-                    <span
-                      className={`discover-filter-control-label ${
-                        searchFilter.trim()
-                          ? 'discover-filter-control-label-active'
-                          : ''
-                      }`}
-                    >
-                      <MagnifyingGlassIcon
-                        className="app-action-icon"
-                        aria-hidden="true"
+                  {!embedded && (
+                    <label className="discover-filter-control app-filter-search-control">
+                      <span
+                        className={`discover-filter-control-label ${
+                          searchFilter.trim()
+                            ? 'discover-filter-control-label-active'
+                            : ''
+                        }`}
+                      >
+                        <MagnifyingGlassIcon
+                          className="app-action-icon"
+                          aria-hidden="true"
+                        />
+                        {intl.formatMessage(messages.search)}
+                      </span>
+                      <input
+                        type="search"
+                        value={searchFilter}
+                        onChange={(event) =>
+                          setSearchFilter(event.target.value)
+                        }
+                        placeholder={intl.formatMessage(messages.searchRequests)}
+                        aria-label={intl.formatMessage(messages.searchRequests)}
+                        className="app-filter-search-input"
                       />
-                      {intl.formatMessage(messages.search)}
-                    </span>
-                    <input
-                      type="search"
-                      value={searchFilter}
-                      onChange={(event) => setSearchFilter(event.target.value)}
-                      placeholder={intl.formatMessage(messages.searchRequests)}
-                      aria-label={intl.formatMessage(messages.searchRequests)}
-                      className="app-filter-search-input"
-                    />
-                  </label>
+                    </label>
+                  )}
                 </div>
                 {(mediaFilter === 'book' || mediaFilter === 'audiobook') && (
                   <div className="app-filter-context">

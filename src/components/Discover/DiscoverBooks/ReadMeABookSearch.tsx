@@ -45,8 +45,10 @@ const messages = defineMessages('components.Discover.ReadMeABookSearch', {
 
 const ReadMeABookSearch = ({
   searchQuery,
+  showRequests = true,
 }: {
   searchQuery?: string;
+  showRequests?: boolean;
 }) => {
   const intl = useIntl();
   const [query, setQuery] = useState(searchQuery ?? '');
@@ -81,7 +83,7 @@ const ReadMeABookSearch = ({
     isLoading,
     mutate,
   } = useSWR<RequestItem[]>(
-    status?.enabled ? '/api/v1/readmeabook/requests' : null
+    status?.enabled && showRequests ? '/api/v1/readmeabook/requests' : null
   );
 
   if (!status?.enabled) return null;
@@ -187,47 +189,51 @@ const ReadMeABookSearch = ({
           ))}
         </div>
       ) : null}
-      <h3 className="heading">{intl.formatMessage(messages.requests)}</h3>
-      {isLoading && <LoadingSpinner />}
-      {!isLoading && requests?.length === 0 && (
-        <p className="description">{intl.formatMessage(messages.empty)}</p>
-      )}
-      {requests?.map((item) => (
-        <div className="app-list-row" key={item.id}>
-          <span className="app-list-label">{item.title}</span>
-          <span className="app-list-value">{item.author}</span>
-          <span className="app-list-value">
-            {item.status === 'awaiting_approval'
-              ? intl.formatMessage(messages.pending)
-              : item.status}
-            {item.statusMessage ? ` · ${item.statusMessage}` : ''}
-          </span>
-          {item.status !== 'awaiting_approval' && (
-            <Button
-              buttonType="default"
-              buttonSize="sm"
-              type="button"
-              disabled={busyRequestId !== undefined}
-              onClick={() => void refreshRequest(item)}
-            >
-              {intl.formatMessage(
-                busyRequestId === item.id
-                  ? messages.refreshing
-                  : messages.refresh
-              )}
-            </Button>
+      {showRequests && (
+        <>
+          <h3 className="heading">{intl.formatMessage(messages.requests)}</h3>
+          {isLoading && <LoadingSpinner />}
+          {!isLoading && requests?.length === 0 && (
+            <p className="description">{intl.formatMessage(messages.empty)}</p>
           )}
-          {details[item.id]?.downloadHistory.length ||
-          details[item.id]?.jobs.length ? (
-            <details className="app-list-value">
-              <summary>
-                {intl.formatMessage(messages.downloadProcessingDetails)}
-              </summary>
-              <pre>{JSON.stringify(details[item.id], null, 2)}</pre>
-            </details>
-          ) : null}
-        </div>
-      ))}
+          {requests?.map((item) => (
+            <div className="app-list-row" key={item.id}>
+              <span className="app-list-label">{item.title}</span>
+              <span className="app-list-value">{item.author}</span>
+              <span className="app-list-value">
+                {item.status === 'awaiting_approval'
+                  ? intl.formatMessage(messages.pending)
+                  : item.status}
+                {item.statusMessage ? ` · ${item.statusMessage}` : ''}
+              </span>
+              {item.status !== 'awaiting_approval' && (
+                <Button
+                  buttonType="default"
+                  buttonSize="sm"
+                  type="button"
+                  disabled={busyRequestId !== undefined}
+                  onClick={() => void refreshRequest(item)}
+                >
+                  {intl.formatMessage(
+                    busyRequestId === item.id
+                      ? messages.refreshing
+                      : messages.refresh
+                  )}
+                </Button>
+              )}
+              {details[item.id]?.downloadHistory.length ||
+              details[item.id]?.jobs.length ? (
+                <details className="app-list-value">
+                  <summary>
+                    {intl.formatMessage(messages.downloadProcessingDetails)}
+                  </summary>
+                  <pre>{JSON.stringify(details[item.id], null, 2)}</pre>
+                </details>
+              ) : null}
+            </div>
+          ))}
+        </>
+      )}
     </section>
   );
 };

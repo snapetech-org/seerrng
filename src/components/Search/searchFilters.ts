@@ -11,8 +11,7 @@ export type SearchFilterCategory =
   | 'comic'
   | 'magazine'
   | 'sports'
-  | 'software'
-  | 'releases';
+  | 'software';
 
 export const searchContextualFilterKeys = [
   'artist',
@@ -89,9 +88,6 @@ export const getSearchEndpoint = (
   mainQuery = '',
   hasContextualFilters = false
 ): string => {
-  if (category === 'releases') {
-    return '/api/v1/search';
-  }
   if (category === 'sports') {
     return '/api/v1/discover/sports';
   }
@@ -132,7 +128,6 @@ export const isSearchDataReady = ({
 }): boolean =>
   routerReady &&
   category !== 'software' &&
-  category !== 'releases' &&
   (category === 'all' ||
   category === 'author' ||
   category === 'comic' ||
