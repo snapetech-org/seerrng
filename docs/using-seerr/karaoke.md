@@ -28,7 +28,7 @@ Karaoke Mugen's public interface must be **Open**, **AllowGuestLogin** and **All
 ## Use karaoke
 
 1. Open **Karaoke** under **Music**.
-2. Search by song title or singer. Filter by language and song type, sort by request popularity, recently added, most played, or recent play history, then page through large result sets.
+2. Search by song title or singer. Filter by language and song type, save songs to your SeerrNG favorites, and browse or search only saved songs. Sort by request popularity, recently added, most played, or recent play history, then page through large result sets.
 3. Check the language, song type, warning badge, and media status.
 4. Request a result to add it to the shared public queue. If host review is enabled, the request waits for a host decision; Mugen reports its queue position when available.
 5. Users can cancel their own pending requests. Users with **Manage Requests** can accept or reject requests, reorder approved songs under **Up next**, and play, pause, skip, or go back to the previous song. **More playback controls** includes stop-after-current, seek, volume, mute, and show/hide lyrics commands. Use **Open stage view** for large, synchronized current and upcoming lyrics on a separate screen. Hosts can play, pause, or skip there, and the view includes a link to the Karaoke Mugen display. Press Escape or **Close stage view** to return.

@@ -130,6 +130,16 @@ components:
         canCancel:
           type: boolean
           description: True when the signed-in user owns this pending request.
+    KaraokeFavorites:
+      type: object
+      required: [songIds]
+      properties:
+        songIds:
+          type: array
+          maxItems: 500
+          items:
+            type: string
+            format: uuid
     KaraokeFilterOption:
       type: object
       required: [id, label]
@@ -18614,6 +18624,54 @@ paths:
                     format: uri
         '401':
           description: Authentication required
+  /karaoke/favorites:
+    get:
+      summary: List saved karaoke songs for the signed-in user
+      tags:
+        - karaoke
+      responses:
+        '200':
+          description: Saved Karaoke Mugen song IDs
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/KaraokeFavorites'
+        '401':
+          description: Authentication required
+        '500':
+          description: Favorites could not be loaded
+    put:
+      summary: Save or remove a song from the signed-in user's karaoke favorites
+      tags:
+        - karaoke
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [songId, favorite]
+              properties:
+                songId:
+                  type: string
+                  format: uuid
+                favorite:
+                  type: boolean
+      responses:
+        '200':
+          description: Updated saved song list
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/KaraokeFavorites'
+        '400':
+          description: Invalid song ID or favorite state
+        '401':
+          description: Authentication required
+        '409':
+          description: The user's karaoke favorite limit was reached
+        '500':
+          description: Favorites could not be saved
   /karaoke/filters:
     get:
       summary: Get songbook language and song type filters
@@ -18638,10 +18696,9 @@ paths:
       parameters:
         - in: query
           name: query
-          required: true
+          description: Search text. Omit or leave empty to browse saved songs when favoritesOnly is true.
           schema:
             type: string
-            minLength: 1
             maxLength: 120
         - in: query
           name: limit
@@ -18663,6 +18720,12 @@ paths:
             type: string
             enum: [requested, recent, played, history]
             default: requested
+        - in: query
+          name: favoritesOnly
+          description: Limit results to songs saved by the signed-in user.
+          schema:
+            type: boolean
+            default: false
         - in: query
           name: languageId
           description: Karaoke Mugen language tag ID returned by /karaoke/filters.

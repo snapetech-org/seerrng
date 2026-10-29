@@ -145,6 +145,9 @@ export class UserSettings {
   public preferredLanguages?: UserPreferredLanguages;
 
   @Column({ type: 'simple-json', nullable: true })
+  public karaokeFavoriteSongIds?: string[];
+
+  @Column({ type: 'simple-json', nullable: true })
   public enabledMediaCategories?: Partial<EnabledMediaCategories> | null;
 
   @Column({ type: 'boolean', nullable: true })

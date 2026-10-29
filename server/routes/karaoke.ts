@@ -1,3 +1,5 @@
+import { getRepository } from '@server/datasource';
+import { UserSettings } from '@server/entity/UserSettings';
 import {
   karaokeMugenProvider,
   type KaraokePlayerCommand,
@@ -16,6 +18,7 @@ router.use((_req, res, next) => {
 const MAX_QUERY_LENGTH = 120;
 const MAX_RESULTS = 50;
 const MAX_SEARCH_OFFSET = 100000;
+const MAX_SAVED_KARAOKE_FAVORITES = 500;
 const FILTER_TAG_ID = /^[a-z0-9-]{1,64}$/i;
 const SEARCH_ORDERS = new Set<KaraokeSearchOrder>([
   'requested',
@@ -28,6 +31,27 @@ const SONG_ID =
 const readFilterTagId = (value: unknown): string | undefined | null => {
   if (value === undefined || value === '') return undefined;
   return typeof value === 'string' && FILTER_TAG_ID.test(value) ? value : null;
+};
+
+const normalizeFavoriteSongIds = (value: unknown): string[] => {
+  if (!Array.isArray(value)) return [];
+  return Array.from(
+    new Set(
+      value
+        .filter(
+          (songId): songId is string =>
+            typeof songId === 'string' && SONG_ID.test(songId)
+        )
+        .map((songId) => songId.toLowerCase())
+    )
+  ).slice(0, MAX_SAVED_KARAOKE_FAVORITES);
+};
+
+const readFavoriteSongIds = async (userId: number): Promise<string[]> => {
+  const settings = await getRepository(UserSettings).findOne({
+    where: { user: { id: userId } },
+  });
+  return normalizeFavoriteSongIds(settings?.karaokeFavoriteSongIds);
 };
 
 const HOST_CONTROLS = new Set<KaraokePlayerCommand>([
@@ -46,6 +70,14 @@ const HOST_CONTROLS = new Set<KaraokePlayerCommand>([
 
 const reportProviderFailure = (operation: string, error: unknown) => {
   logger.warn('Karaoke Mugen request failed', {
+    label: 'Karaoke',
+    operation,
+    errorMessage: error instanceof Error ? error.message : 'Unknown error',
+  });
+};
+
+const reportFavoriteFailure = (operation: string, error: unknown) => {
+  logger.warn('Karaoke favorites request failed', {
     label: 'Karaoke',
     operation,
     errorMessage: error instanceof Error ? error.message : 'Unknown error',
@@ -140,12 +172,91 @@ router.get('/filters', async (_req, res) => {
   }
 });
 
-router.get('/search', async (req, res) => {
-  const query = typeof req.query.query === 'string' ? req.query.query.trim() : '';
-  if (!query || query.length > MAX_QUERY_LENGTH) {
+router.get('/favorites', async (req, res) => {
+  try {
+    return res.status(200).json({
+      songIds: await readFavoriteSongIds(req.user!.id),
+    });
+  } catch (error) {
+    reportFavoriteFailure('read', error);
+    return res.status(500).json({
+      status: 500,
+      message: 'Karaoke favorites could not be loaded.',
+    });
+  }
+});
+
+router.put('/favorites', async (req, res) => {
+  const rawSongId = req.body?.songId;
+  const favorite = req.body?.favorite;
+  const songId =
+    typeof rawSongId === 'string' ? rawSongId.toLowerCase() : '';
+
+  if (!SONG_ID.test(songId) || typeof favorite !== 'boolean') {
     return res.status(400).json({
       status: 400,
-      message: 'Enter a search between 1 and 120 characters.',
+      message: 'Select a valid karaoke song and favorite state.',
+    });
+  }
+
+  const repository = getRepository(UserSettings);
+  try {
+    let settings = await repository.findOne({
+      where: { user: { id: req.user!.id } },
+    });
+    if (!settings) {
+      settings = repository.create({
+        user: req.user!,
+        karaokeFavoriteSongIds: [],
+      });
+    }
+
+    const songIds = normalizeFavoriteSongIds(settings.karaokeFavoriteSongIds);
+    const isSaved = songIds.includes(songId);
+    let nextSongIds = songIds;
+    if (favorite && !isSaved) {
+      if (songIds.length >= MAX_SAVED_KARAOKE_FAVORITES) {
+        return res.status(409).json({
+          status: 409,
+          message: 'You can save up to 500 karaoke songs.',
+        });
+      }
+      nextSongIds = [songId, ...songIds];
+    } else if (!favorite && isSaved) {
+      nextSongIds = songIds.filter((savedSongId) => savedSongId !== songId);
+    }
+
+    settings.karaokeFavoriteSongIds = nextSongIds;
+    await repository.save(settings);
+    return res.status(200).json({ songIds: nextSongIds });
+  } catch (error) {
+    reportFavoriteFailure('write', error);
+    return res.status(500).json({
+      status: 500,
+      message: 'Karaoke favorites could not be saved.',
+    });
+  }
+});
+
+router.get('/search', async (req, res) => {
+  const rawFavoritesOnly = req.query.favoritesOnly;
+  if (
+    rawFavoritesOnly !== undefined &&
+    rawFavoritesOnly !== 'true' &&
+    rawFavoritesOnly !== 'false'
+  ) {
+    return res.status(400).json({
+      status: 400,
+      message: 'Choose whether to search saved songs.',
+    });
+  }
+  const favoritesOnly = rawFavoritesOnly === 'true';
+  const query = typeof req.query.query === 'string' ? req.query.query.trim() : '';
+  if ((!query && !favoritesOnly) || query.length > MAX_QUERY_LENGTH) {
+    return res.status(400).json({
+      status: 400,
+      message:
+        'Enter a search up to 120 characters, or enable saved songs to browse favorites.',
     });
   }
 
@@ -189,13 +300,34 @@ router.get('/search', async (req, res) => {
     });
   }
 
+  let favoriteSongIds: string[] | undefined;
+  if (favoritesOnly) {
+    try {
+      favoriteSongIds = await readFavoriteSongIds(req.user!.id);
+    } catch (error) {
+      reportFavoriteFailure('search', error);
+      return res.status(500).json({
+        status: 500,
+        message: 'Karaoke favorites could not be loaded.',
+      });
+    }
+    if (favoriteSongIds.length === 0) {
+      return res.status(200).json({
+        results: [],
+        from,
+        total: 0,
+        hasMore: false,
+      });
+    }
+  }
+
   try {
     const result = await karaokeMugenProvider.search(
       query,
       from,
       limit,
       rawOrder as KaraokeSearchOrder,
-      { languageId, songTypeId }
+      { languageId, songTypeId, favoriteSongIds }
     );
     return res.status(200).json(result);
   } catch (error) {

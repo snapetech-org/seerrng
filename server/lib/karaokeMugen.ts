@@ -572,10 +572,17 @@ export class KaraokeMugenProvider {
     from: number,
     limit: number,
     order: KaraokeSearchOrder,
-    filters: { languageId?: string; songTypeId?: string } = {}
+    filters: {
+      languageId?: string;
+      songTypeId?: string;
+      favoriteSongIds?: string[];
+    } = {}
   ): Promise<KaraokeSearchResult> {
     return this.withAdmin(async (socket, token) => {
       const criteria = [
+        filters.favoriteSongIds?.length
+          ? `k:${filters.favoriteSongIds.join(',')}`
+          : undefined,
         filters.languageId ? `t:${filters.languageId}~5` : undefined,
         filters.songTypeId ? `t:${filters.songTypeId}~3` : undefined,
       ].filter((criterion): criterion is string => !!criterion);

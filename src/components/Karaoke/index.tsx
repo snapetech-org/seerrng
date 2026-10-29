@@ -6,6 +6,7 @@ import { Permission, useUser } from '@app/hooks/useUser';
 import defineMessages from '@app/utils/defineMessages';
 import type {
   KaraokeAvailability,
+  KaraokeFavoritesResponse,
   KaraokeFiltersResponse,
   KaraokeLyricLineResponse,
   KaraokePlayerStatusResponse,
@@ -20,6 +21,7 @@ import {
   MagnifyingGlassIcon,
   PauseIcon,
   PlayIcon,
+  StarIcon,
 } from '@heroicons/react/24/outline';
 import axios from 'axios';
 import { useEffect, useRef, useState } from 'react';
@@ -69,6 +71,13 @@ const messages = defineMessages('components.Karaoke', {
   songTypeFilter: 'Song type',
   allSongTypes: 'Any song type',
   filterFailed: 'The songbook filters could not be loaded.',
+  favoritesOnly: 'Show only my saved songs',
+  noFavoriteResults: 'No saved songs matched this search.',
+  saveFavorite: 'Save song to favorites',
+  removeFavorite: 'Remove song from favorites',
+  favoriteSaved: 'Song saved to your favorites.',
+  favoriteRemoved: 'Song removed from your favorites.',
+  favoriteFailed: 'The song could not be saved to favorites.',
   orderRequested: 'Most requested',
   orderRecent: 'Recently added',
   orderPlayed: 'Most played',
@@ -159,6 +168,9 @@ const fetchResults = async (url: string) =>
 const fetchFilters = async (url: string) =>
   (await axios.get<KaraokeFiltersResponse>(url)).data;
 
+const fetchFavorites = async (url: string) =>
+  (await axios.get<KaraokeFavoritesResponse>(url)).data;
+
 const responseMessage = (error: unknown): string | undefined => {
   if (!axios.isAxiosError<{ message?: unknown }>(error)) return undefined;
   const message = error.response?.data?.message;
@@ -195,13 +207,19 @@ const SongRow = ({
   song,
   canRequest,
   requesting,
+  isFavorite,
+  favoriteBusy,
   onRequest,
+  onToggleFavorite,
   intl,
 }: {
   song: KaraokeSongResponse;
   canRequest: boolean;
   requesting: boolean;
+  isFavorite: boolean;
+  favoriteBusy: boolean;
   onRequest: () => void;
+  onToggleFavorite: () => void;
   intl: ReturnType<typeof useIntl>;
 }) => {
   const duration = formatDuration(song.durationSeconds, intl);
@@ -241,21 +259,36 @@ const SongRow = ({
         {song.hasWarnings && (
           <p role="note">{intl.formatMessage(messages.warning)}</p>
         )}
-        <Button
-          buttonType="primary"
-          buttonSize="sm"
-          disabled={!canRequest || requesting || song.availability === 'downloading'}
-          disabledReason={
-            !canRequest
-              ? intl.formatMessage(messages.requestPermission)
-              : undefined
-          }
-          onClick={onRequest}
-        >
-          {requesting
-            ? intl.formatMessage(messages.requesting)
-            : intl.formatMessage(messages.request)}
-        </Button>
+        <div className="mt-2 flex flex-wrap gap-2">
+          <Button
+            buttonType={isFavorite ? 'primary' : 'default'}
+            buttonSize="sm"
+            iconOnly
+            aria-label={intl.formatMessage(
+              isFavorite ? messages.removeFavorite : messages.saveFavorite
+            )}
+            aria-pressed={isFavorite}
+            disabled={favoriteBusy}
+            onClick={onToggleFavorite}
+          >
+            <StarIcon aria-hidden="true" />
+          </Button>
+          <Button
+            buttonType="primary"
+            buttonSize="sm"
+            disabled={!canRequest || requesting || song.availability === 'downloading'}
+            disabledReason={
+              !canRequest
+                ? intl.formatMessage(messages.requestPermission)
+                : undefined
+            }
+            onClick={onRequest}
+          >
+            {requesting
+              ? intl.formatMessage(messages.requesting)
+              : intl.formatMessage(messages.request)}
+          </Button>
+        </div>
       </article>
     </li>
   );
@@ -720,8 +753,11 @@ const Karaoke = () => {
     useState<KaraokeSearchOrder>('requested');
   const [languageFilter, setLanguageFilter] = useState('');
   const [songTypeFilter, setSongTypeFilter] = useState('');
+  const [favoritesOnly, setFavoritesOnly] = useState(false);
   const [searchPage, setSearchPage] = useState(0);
   const [requestingId, setRequestingId] = useState<string>();
+  const [favoriteBusyId, setFavoriteBusyId] = useState<string>();
+  const [favoriteSongIds, setFavoriteSongIds] = useState<string[]>([]);
   const [moderatingRequest, setModeratingRequest] = useState<{
     playlistContentId: number;
     decision: 'accept' | 'reject';
@@ -732,7 +768,13 @@ const Karaoke = () => {
   const [volume, setVolume] = useState(100);
   const [notice, setNotice] = useState<string>();
   const [operationFailed, setOperationFailed] = useState<
-    'request' | 'control' | 'review' | 'cancel' | 'reorder' | undefined
+    | 'request'
+    | 'control'
+    | 'review'
+    | 'cancel'
+    | 'reorder'
+    | 'favorite'
+    | undefined
   >();
 
   const { data: status, error: statusError } = useSWR<KaraokeStatus>(
@@ -744,6 +786,18 @@ const Karaoke = () => {
       status?.configured ? '/api/v1/karaoke/filters' : null,
       fetchFilters
     );
+  const {
+    data: favoriteResponse,
+    error: favoritesError,
+    mutate: refreshFavorites,
+  } = useSWR<KaraokeFavoritesResponse>(
+    status?.configured ? '/api/v1/karaoke/favorites' : null,
+    fetchFavorites
+  );
+
+  useEffect(() => {
+    if (favoriteResponse) setFavoriteSongIds(favoriteResponse.songIds);
+  }, [favoriteResponse]);
 
   useEffect(() => {
     const timer = window.setTimeout(() => setSearchQuery(query.trim()), 300);
@@ -752,10 +806,10 @@ const Karaoke = () => {
 
   useEffect(() => {
     setSearchPage(0);
-  }, [searchQuery, searchOrder, languageFilter, songTypeFilter]);
+  }, [searchQuery, searchOrder, languageFilter, songTypeFilter, favoritesOnly]);
 
   const searchKey =
-    status?.configured && searchQuery.length >= 2
+    status?.configured && (searchQuery.length >= 2 || favoritesOnly)
       ? '/api/v1/karaoke/search?query=' +
         encodeURIComponent(searchQuery) +
         '&limit=25' +
@@ -768,10 +822,14 @@ const Karaoke = () => {
           : '') +
         (songTypeFilter
           ? '&songTypeId=' + encodeURIComponent(songTypeFilter)
-          : '')
+          : '') +
+        (favoritesOnly ? '&favoritesOnly=true' : '')
       : null;
-  const { data: searchResult, error: searchError } =
-    useSWR<KaraokeSearchResponse>(searchKey, fetchResults);
+  const {
+    data: searchResult,
+    error: searchError,
+    mutate: refreshSearch,
+  } = useSWR<KaraokeSearchResponse>(searchKey, fetchResults);
 
   const sessionKey = status?.configured ? '/api/v1/karaoke/session' : null;
   const {
@@ -820,6 +878,37 @@ const Karaoke = () => {
       }
     } finally {
       setRequestingId(undefined);
+    }
+  };
+
+  const toggleFavorite = async (songId: string, favorite: boolean) => {
+    if (favoriteBusyId !== undefined) return;
+    setFavoriteBusyId(songId);
+    setNotice(undefined);
+    setOperationFailed(undefined);
+    try {
+      const response = await axios.put<KaraokeFavoritesResponse>(
+        '/api/v1/karaoke/favorites',
+        { songId, favorite }
+      );
+      setFavoriteSongIds(response.data.songIds);
+      if (favoritesOnly) setSearchPage(0);
+      setNotice(
+        intl.formatMessage(
+          favorite ? messages.favoriteSaved : messages.favoriteRemoved
+        )
+      );
+      void refreshFavorites();
+      void refreshSearch();
+    } catch (error) {
+      const message = responseMessage(error);
+      if (message) {
+        setNotice(message);
+      } else {
+        setOperationFailed('favorite');
+      }
+    } finally {
+      setFavoriteBusyId(undefined);
     }
   };
 
@@ -1007,6 +1096,20 @@ const Karaoke = () => {
                     </option>
                   ))}
                 </select>
+                <div className="flex items-center gap-2">
+                  <input
+                    id="karaoke-favorites-only"
+                    type="checkbox"
+                    checked={favoritesOnly}
+                    onChange={(event) => {
+                      setSearchPage(0);
+                      setFavoritesOnly(event.target.checked);
+                    }}
+                  />
+                  <label htmlFor="karaoke-favorites-only">
+                    {intl.formatMessage(messages.favoritesOnly)}
+                  </label>
+                </div>
                 <label htmlFor="karaoke-order">
                   {intl.formatMessage(messages.orderLabel)}
                 </label>
@@ -1042,12 +1145,18 @@ const Karaoke = () => {
                 </Button>
               </form>
 
-              {searchQuery.length < 2 && (
+              {searchQuery.length < 2 && !favoritesOnly && (
                 <p>{intl.formatMessage(messages.typeToSearch)}</p>
               )}
               {filterError && (
                 <Alert
                   title={intl.formatMessage(messages.filterFailed)}
+                  type="warning"
+                />
+              )}
+              {favoritesError && (
+                <Alert
+                  title={intl.formatMessage(messages.favoriteFailed)}
                   type="warning"
                 />
               )}
@@ -1057,8 +1166,13 @@ const Karaoke = () => {
                   type="warning"
                 />
               )}
-              {searchResult?.results.length === 0 && searchQuery.length >= 2 && (
-                <p>{intl.formatMessage(messages.noResults)}</p>
+              {searchResult?.results.length === 0 &&
+                (searchQuery.length >= 2 || favoritesOnly) && (
+                <p>
+                  {intl.formatMessage(
+                    favoritesOnly ? messages.noFavoriteResults : messages.noResults
+                  )}
+                </p>
               )}
               {searchResult && searchResult.results.length > 0 && (
                 <>
@@ -1084,6 +1198,16 @@ const Karaoke = () => {
                         song={song}
                         canRequest={canRequest}
                         requesting={requestingId === song.id}
+                        isFavorite={favoriteSongIds.includes(song.id)}
+                        favoriteBusy={
+                          favoriteBusyId !== undefined || favoriteResponse === undefined
+                        }
+                        onToggleFavorite={() =>
+                          void toggleFavorite(
+                            song.id,
+                            !favoriteSongIds.includes(song.id)
+                          )
+                        }
                         onRequest={() => void requestSong(song.id)}
                         intl={intl}
                       />
@@ -1378,7 +1502,9 @@ const Karaoke = () => {
                     ? messages.cancelFailed
                     : operationFailed === 'reorder'
                       ? messages.reorderFailed
-                      : messages.controlFailed
+                      : operationFailed === 'favorite'
+                        ? messages.favoriteFailed
+                        : messages.controlFailed
             )}
             type="warning"
           />

@@ -23,6 +23,10 @@ export interface KaraokeFiltersResponse {
   songTypes: KaraokeFilterOptionResponse[];
 }
 
+export interface KaraokeFavoritesResponse {
+  songIds: string[];
+}
+
 export interface KaraokeSearchResponse {
   results: KaraokeSongResponse[];
   from: number;
