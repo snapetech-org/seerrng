@@ -19,6 +19,16 @@ export interface KaraokeSong {
 
 export type KaraokeSearchOrder = 'requested' | 'recent' | 'played' | 'history';
 
+export interface KaraokeFilterOption {
+  id: string;
+  label: string;
+}
+
+export interface KaraokeFilters {
+  languages: KaraokeFilterOption[];
+  songTypes: KaraokeFilterOption[];
+}
+
 export interface KaraokeSearchResult {
   results: KaraokeSong[];
   from: number;
@@ -420,6 +430,7 @@ const unwrapArray = (value: unknown, property: string): JsonRecord[] => {
 };
 
 export class KaraokeMugenProvider {
+  private filtersCache?: { expiresAt: number; filters: KaraokeFilters };
   private readonly lyricsCache = new Map<
     string,
     { expiresAt: number; lines: KaraokeLyricLine[] }
@@ -510,17 +521,69 @@ export class KaraokeMugenProvider {
     return guestToken;
   }
 
+  async filters(): Promise<KaraokeFilters> {
+    const cached = this.filtersCache;
+    if (cached && cached.expiresAt > Date.now()) return cached.filters;
+
+    return this.withAdmin(async (socket, token) => {
+      const [languageResult, songTypeResult] = await Promise.all([
+        socket.call(
+          'getTags',
+          { type: 5, from: 0, size: 500, stripEmpty: true, order: 'az' },
+          token
+        ),
+        socket.call(
+          'getTags',
+          { type: 3, from: 0, size: 500, stripEmpty: true, order: 'az' },
+          token
+        ),
+      ]);
+      const optionsFrom = (value: unknown): KaraokeFilterOption[] =>
+        unwrapArray(value, 'content')
+          .map((tag) => {
+            const id = text(tag.tid);
+            const i18n = isRecord(tag.i18n) ? tag.i18n : undefined;
+            const label =
+              (i18n ? text(i18n.eng) : undefined) ??
+              text(tag.name) ??
+              text(tag.short);
+            return id && label ? { id, label } : undefined;
+          })
+          .filter((option): option is KaraokeFilterOption => !!option)
+          .sort((left, right) =>
+            left.label.localeCompare(right.label, undefined, {
+              sensitivity: 'base',
+            })
+          );
+      const filters = {
+        languages: optionsFrom(languageResult),
+        songTypes: optionsFrom(songTypeResult),
+      };
+      this.filtersCache = {
+        expiresAt: Date.now() + 10 * 60 * 1000,
+        filters,
+      };
+      return filters;
+    });
+  }
+
   async search(
     query: string,
     from: number,
     limit: number,
-    order: KaraokeSearchOrder
+    order: KaraokeSearchOrder,
+    filters: { languageId?: string; songTypeId?: string } = {}
   ): Promise<KaraokeSearchResult> {
     return this.withAdmin(async (socket, token) => {
+      const criteria = [
+        filters.languageId ? `t:${filters.languageId}~5` : undefined,
+        filters.songTypeId ? `t:${filters.songTypeId}~3` : undefined,
+      ].filter((criterion): criterion is string => !!criterion);
       const result = await socket.call(
         'getKaras',
         {
           filter: query,
+          ...(criteria.length > 0 ? { q: criteria.join('!') } : {}),
           from,
           size: limit,
           order,

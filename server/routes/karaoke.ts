@@ -16,6 +16,7 @@ router.use((_req, res, next) => {
 const MAX_QUERY_LENGTH = 120;
 const MAX_RESULTS = 50;
 const MAX_SEARCH_OFFSET = 100000;
+const FILTER_TAG_ID = /^[a-z0-9-]{1,64}$/i;
 const SEARCH_ORDERS = new Set<KaraokeSearchOrder>([
   'requested',
   'recent',
@@ -24,6 +25,11 @@ const SEARCH_ORDERS = new Set<KaraokeSearchOrder>([
 ]);
 const SONG_ID =
   /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+const readFilterTagId = (value: unknown): string | undefined | null => {
+  if (value === undefined || value === '') return undefined;
+  return typeof value === 'string' && FILTER_TAG_ID.test(value) ? value : null;
+};
+
 const HOST_CONTROLS = new Set<KaraokePlayerCommand>([
   'play',
   'pause',
@@ -125,6 +131,15 @@ router.get('/status', (_req, res) => {
   return res.status(200).json(karaokeMugenProvider.status());
 });
 
+router.get('/filters', async (_req, res) => {
+  try {
+    return res.status(200).json(await karaokeMugenProvider.filters());
+  } catch (error) {
+    reportProviderFailure('filters', error);
+    return providerError(res, error);
+  }
+});
+
 router.get('/search', async (req, res) => {
   const query = typeof req.query.query === 'string' ? req.query.query.trim() : '';
   if (!query || query.length > MAX_QUERY_LENGTH) {
@@ -165,12 +180,22 @@ router.get('/search', async (req, res) => {
     });
   }
 
+  const languageId = readFilterTagId(req.query.languageId);
+  const songTypeId = readFilterTagId(req.query.songTypeId);
+  if (languageId === null || songTypeId === null) {
+    return res.status(400).json({
+      status: 400,
+      message: 'Choose a valid Karaoke Mugen language or song type.',
+    });
+  }
+
   try {
     const result = await karaokeMugenProvider.search(
       query,
       from,
       limit,
-      rawOrder as KaraokeSearchOrder
+      rawOrder as KaraokeSearchOrder,
+      { languageId, songTypeId }
     );
     return res.status(200).json(result);
   } catch (error) {

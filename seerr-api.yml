@@ -130,6 +130,27 @@ components:
         canCancel:
           type: boolean
           description: True when the signed-in user owns this pending request.
+    KaraokeFilterOption:
+      type: object
+      required: [id, label]
+      properties:
+        id:
+          type: string
+          pattern: '^[A-Za-z0-9-]{1,64}$'
+        label:
+          type: string
+    KaraokeFilters:
+      type: object
+      required: [languages, songTypes]
+      properties:
+        languages:
+          type: array
+          items:
+            $ref: '#/components/schemas/KaraokeFilterOption'
+        songTypes:
+          type: array
+          items:
+            $ref: '#/components/schemas/KaraokeFilterOption'
     KaraokeLyricLine:
       type: object
       required: [startSeconds, endSeconds, text]
@@ -18593,6 +18614,22 @@ paths:
                     format: uri
         '401':
           description: Authentication required
+  /karaoke/filters:
+    get:
+      summary: Get songbook language and song type filters
+      tags:
+        - karaoke
+      responses:
+        '200':
+          description: Available language and song type filters
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/KaraokeFilters'
+        '401':
+          description: Authentication required
+        '503':
+          description: Karaoke Mugen is unavailable
   /karaoke/search:
     get:
       summary: Search the Karaoke Mugen songbook
@@ -18626,6 +18663,18 @@ paths:
             type: string
             enum: [requested, recent, played, history]
             default: requested
+        - in: query
+          name: languageId
+          description: Karaoke Mugen language tag ID returned by /karaoke/filters.
+          schema:
+            type: string
+            pattern: '^[A-Za-z0-9-]{1,64}$'
+        - in: query
+          name: songTypeId
+          description: Karaoke Mugen song type tag ID returned by /karaoke/filters.
+          schema:
+            type: string
+            pattern: '^[A-Za-z0-9-]{1,64}$'
       responses:
         '200':
           description: Matching karaoke songs

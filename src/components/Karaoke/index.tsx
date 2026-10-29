@@ -6,6 +6,7 @@ import { Permission, useUser } from '@app/hooks/useUser';
 import defineMessages from '@app/utils/defineMessages';
 import type {
   KaraokeAvailability,
+  KaraokeFiltersResponse,
   KaraokeLyricLineResponse,
   KaraokePlayerStatusResponse,
   KaraokeQueueItemResponse,
@@ -63,6 +64,11 @@ const messages = defineMessages('components.Karaoke', {
   noResults: 'No karaoke songs matched this search.',
   resultsHeading: 'Songbook results',
   orderLabel: 'Sort songs',
+  languageFilter: 'Language',
+  allLanguages: 'Any language',
+  songTypeFilter: 'Song type',
+  allSongTypes: 'Any song type',
+  filterFailed: 'The songbook filters could not be loaded.',
   orderRequested: 'Most requested',
   orderRecent: 'Recently added',
   orderPlayed: 'Most played',
@@ -149,6 +155,9 @@ const fetchSession = async (url: string) =>
 
 const fetchResults = async (url: string) =>
   (await axios.get<KaraokeSearchResponse>(url)).data;
+
+const fetchFilters = async (url: string) =>
+  (await axios.get<KaraokeFiltersResponse>(url)).data;
 
 const responseMessage = (error: unknown): string | undefined => {
   if (!axios.isAxiosError<{ message?: unknown }>(error)) return undefined;
@@ -709,6 +718,8 @@ const Karaoke = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [searchOrder, setSearchOrder] =
     useState<KaraokeSearchOrder>('requested');
+  const [languageFilter, setLanguageFilter] = useState('');
+  const [songTypeFilter, setSongTypeFilter] = useState('');
   const [searchPage, setSearchPage] = useState(0);
   const [requestingId, setRequestingId] = useState<string>();
   const [moderatingRequest, setModeratingRequest] = useState<{
@@ -728,6 +739,11 @@ const Karaoke = () => {
     '/api/v1/karaoke/status',
     fetchStatus
   );
+  const { data: filterOptions, error: filterError } =
+    useSWR<KaraokeFiltersResponse>(
+      status?.configured ? '/api/v1/karaoke/filters' : null,
+      fetchFilters
+    );
 
   useEffect(() => {
     const timer = window.setTimeout(() => setSearchQuery(query.trim()), 300);
@@ -736,7 +752,7 @@ const Karaoke = () => {
 
   useEffect(() => {
     setSearchPage(0);
-  }, [searchQuery, searchOrder]);
+  }, [searchQuery, searchOrder, languageFilter, songTypeFilter]);
 
   const searchKey =
     status?.configured && searchQuery.length >= 2
@@ -746,7 +762,13 @@ const Karaoke = () => {
         '&from=' +
         String(searchPage * 25) +
         '&order=' +
-        searchOrder
+        searchOrder +
+        (languageFilter
+          ? '&languageId=' + encodeURIComponent(languageFilter)
+          : '') +
+        (songTypeFilter
+          ? '&songTypeId=' + encodeURIComponent(songTypeFilter)
+          : '')
       : null;
   const { data: searchResult, error: searchError } =
     useSWR<KaraokeSearchResponse>(searchKey, fetchResults);
@@ -943,15 +965,58 @@ const Karaoke = () => {
                   placeholder={intl.formatMessage(messages.searchPlaceholder)}
                   className="app-filter-search-input"
                 />
+                <label htmlFor="karaoke-language-filter">
+                  {intl.formatMessage(messages.languageFilter)}
+                </label>
+                <select
+                  id="karaoke-language-filter"
+                  value={languageFilter}
+                  onChange={(event) => {
+                    setSearchPage(0);
+                    setLanguageFilter(event.target.value);
+                  }}
+                  className="app-filter-search-input"
+                >
+                  <option value="">
+                    {intl.formatMessage(messages.allLanguages)}
+                  </option>
+                  {filterOptions?.languages.map((option) => (
+                    <option key={option.id} value={option.id}>
+                      {option.label}
+                    </option>
+                  ))}
+                </select>
+                <label htmlFor="karaoke-song-type-filter">
+                  {intl.formatMessage(messages.songTypeFilter)}
+                </label>
+                <select
+                  id="karaoke-song-type-filter"
+                  value={songTypeFilter}
+                  onChange={(event) => {
+                    setSearchPage(0);
+                    setSongTypeFilter(event.target.value);
+                  }}
+                  className="app-filter-search-input"
+                >
+                  <option value="">
+                    {intl.formatMessage(messages.allSongTypes)}
+                  </option>
+                  {filterOptions?.songTypes.map((option) => (
+                    <option key={option.id} value={option.id}>
+                      {option.label}
+                    </option>
+                  ))}
+                </select>
                 <label htmlFor="karaoke-order">
                   {intl.formatMessage(messages.orderLabel)}
                 </label>
                 <select
                   id="karaoke-order"
                   value={searchOrder}
-                  onChange={(event) =>
-                    setSearchOrder(event.target.value as KaraokeSearchOrder)
-                  }
+                  onChange={(event) => {
+                    setSearchPage(0);
+                    setSearchOrder(event.target.value as KaraokeSearchOrder);
+                  }}
                   className="app-filter-search-input"
                 >
                   <option value="requested">
@@ -979,6 +1044,12 @@ const Karaoke = () => {
 
               {searchQuery.length < 2 && (
                 <p>{intl.formatMessage(messages.typeToSearch)}</p>
+              )}
+              {filterError && (
+                <Alert
+                  title={intl.formatMessage(messages.filterFailed)}
+                  type="warning"
+                />
               )}
               {searchError && (
                 <Alert

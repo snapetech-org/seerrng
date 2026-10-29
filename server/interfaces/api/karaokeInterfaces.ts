@@ -13,6 +13,16 @@ export interface KaraokeSongResponse {
 
 export type KaraokeSearchOrder = 'requested' | 'recent' | 'played' | 'history';
 
+export interface KaraokeFilterOptionResponse {
+  id: string;
+  label: string;
+}
+
+export interface KaraokeFiltersResponse {
+  languages: KaraokeFilterOptionResponse[];
+  songTypes: KaraokeFilterOptionResponse[];
+}
+
 export interface KaraokeSearchResponse {
   results: KaraokeSongResponse[];
   from: number;
