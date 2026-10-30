@@ -1,6 +1,3 @@
-import { OptionalDisclosure } from '@app/components/Persius/Primitives';
-import { DiscoveryHeader, HeroShelf } from '@app/components/Persius/Discovery';
-import usePersius from '@app/components/Persius/usePersius';
 import Button from '@app/components/Common/Button';
 import ConfirmButton from '@app/components/Common/ConfirmButton';
 import Header from '@app/components/Common/Header';
@@ -11,6 +8,9 @@ import { sliderTitles } from '@app/components/Discover/constants';
 import ReadMeABookHomeSection from '@app/components/Discover/ReadMeABookHomeSection';
 import discoveryMessages from '@app/components/DiscoveryIntegrations/messages';
 import MediaSlider from '@app/components/MediaSlider';
+import { DiscoveryHeader, HeroShelf } from '@app/components/Persius/Discovery';
+import { OptionalDisclosure } from '@app/components/Persius/Primitives';
+import usePersius from '@app/components/Persius/usePersius';
 import { DiscoverSliderScrollRestorationContext } from '@app/components/Slider';
 import { encodeURIExtraParams } from '@app/hooks/useDiscover';
 import useSettings from '@app/hooks/useSettings';
@@ -264,8 +264,11 @@ const Discover = ({ initialSliders }: DiscoverProps) => {
       ) : (
         <Header>{intl.formatMessage(messages.discover)}</Header>
       )}
-      <OptionalDisclosure enabled={persius} label={intl.formatMessage(messages.customizediscover)}>
-      <Link
+      <OptionalDisclosure
+        enabled={persius}
+        label={intl.formatMessage(messages.customizediscover)}
+      >
+        <Link
           href="/discover/providers"
           className="mb-4 inline-flex text-sm text-blue-400 hover:text-blue-300"
         >

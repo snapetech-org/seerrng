@@ -1,5 +1,3 @@
-import { PersiusDock } from '@app/components/Persius/Chrome';
-import usePersius from '@app/components/Persius/usePersius';
 import AppDataWarning from '@app/components/AppDataWarning';
 import DiscoveryModeTabs, {
   discoveryMediaTypeForPath,
@@ -12,6 +10,9 @@ import ThemePicker from '@app/components/Layout/ThemePicker';
 import UserDropdown from '@app/components/Layout/UserDropdown';
 import UserWarnings from '@app/components/Layout/UserWarnings';
 import useRequestCount from '@app/components/Layout/useRequestCount';
+import { PersiusDock } from '@app/components/Persius/Chrome';
+import { OptionalDisclosure } from '@app/components/Persius/Primitives';
+import usePersius from '@app/components/Persius/usePersius';
 import useLocale from '@app/hooks/useLocale';
 import useSettings from '@app/hooks/useSettings';
 import { Permission, useUser } from '@app/hooks/useUser';
@@ -287,7 +288,7 @@ const Layout = ({ children }: LayoutProps) => {
             <button
               className={`me-2 text-white ${
                 isScrolled ? 'opacity-90' : 'opacity-70'
-              } pwa-only transition duration-300 hover:text-white focus:text-white focus:outline-none`}
+              } ${persius && /^\/(movie|tv|book)\//.test(router.pathname) ? 'persius-back' : 'pwa-only'} transition duration-300 hover:text-white focus:text-white focus:outline-none`}
               onClick={() => router.back()}
               aria-label={intl.formatMessage(globalMessages.backPreviousPage)}
             >
@@ -308,15 +309,27 @@ const Layout = ({ children }: LayoutProps) => {
             <div className="mx-auto" data-page-layout-part="content">
               <UserWarnings />
               {hasPermission(Permission.ADMIN) && <AppDataWarning />}
-              {discoveryMediaType && currentSettings.swipeEnabled !== false && (
-                <div className="app-filter-section-gap">
-                  <DiscoveryModeTabs
-                    selected="discover"
-                    mediaType={discoveryMediaType}
-                  />
-                </div>
-              )}
+              {!persius &&
+                discoveryMediaType &&
+                currentSettings.swipeEnabled !== false && (
+                  <div className="app-filter-section-gap">
+                    <DiscoveryModeTabs
+                      selected="discover"
+                      mediaType={discoveryMediaType}
+                    />
+                  </div>
+                )}
               {children}
+              {persius &&
+                discoveryMediaType &&
+                currentSettings.swipeEnabled !== false && (
+                  <OptionalDisclosure enabled>
+                    <DiscoveryModeTabs
+                      selected="discover"
+                      mediaType={discoveryMediaType}
+                    />
+                  </OptionalDisclosure>
+                )}
             </div>
           </div>
         </main>

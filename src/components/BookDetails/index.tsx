@@ -888,12 +888,23 @@ const BookDetails = () => {
         playbackActions={playbackActions}
         playbackUnavailableReason={playbackUnavailableReason}
         additionalContent={additionalContent}
-        canRequestNarration={canRequest && audiobookCategoryEnabled && hasAudiobookService && data.mediaInfo?.status !== MediaStatus.BLOCKLISTED}
+        canRequestNarration={
+          canRequest &&
+          audiobookCategoryEnabled &&
+          hasAudiobookService &&
+          data.mediaInfo?.status !== MediaStatus.BLOCKLISTED
+        }
         onChanged={() => void revalidate()}
+        onFormatChange={(format) =>
+          void router.replace(
+            { pathname: router.pathname, query: { ...router.query, format } },
+            undefined,
+            { shallow: true, scroll: false }
+          )
+        }
       />
     </>
   );
 };
 
 export default BookDetails;
-

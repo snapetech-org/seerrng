@@ -309,6 +309,7 @@ const hasAdultRequestAccess = (user?: User | null): boolean =>
   ) ?? false;
 const requestStatusFilters = [
   'all',
+  'active',
   'recent',
   'approved',
   'processing',
@@ -1877,6 +1878,13 @@ requestRoutes.get<
     let statusFilter: MediaRequestStatus[];
 
     switch (filter) {
+      case 'active':
+        statusFilter = [
+          MediaRequestStatus.PENDING,
+          MediaRequestStatus.APPROVED,
+          MediaRequestStatus.FAILED,
+        ];
+        break;
       case 'approved':
       case 'processing':
         statusFilter = [MediaRequestStatus.APPROVED];

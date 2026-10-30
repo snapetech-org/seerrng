@@ -402,4 +402,3 @@ export const navigationSections: NavigationSection[] = [
     ],
   },
 ];
-

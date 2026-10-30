@@ -13,6 +13,7 @@ import {
   setPersistentResponse,
   usePersistentResponse,
 } from '@app/utils/swrCache';
+import { getViewerAvailabilityPresentation } from '@app/utils/viewerAvailabilityPresentation';
 import { MediaRequestStatus, MediaStatus } from '@server/constants/media';
 import { buildDiscoverQueryString } from '@server/utils/discoverQuery';
 import { useRouter } from 'next/router';
@@ -37,6 +38,7 @@ interface BaseMedia {
   mediaInfo?: {
     status: MediaStatus;
     status4k?: MediaStatus;
+    viewerRequestCoverage?: { standard?: boolean; fourK?: boolean };
     serviceId?: number | null;
     externalServiceId?: number | null;
     audiobookServiceId?: number | null;
@@ -160,6 +162,7 @@ const useDiscover = <
     enabled = true,
     hideAvailable = true,
     availabilityView,
+    availabilityBookFormat,
     hideBlocklisted = true,
     randomizeOrder = false,
     availableQuality,
@@ -172,6 +175,7 @@ const useDiscover = <
     enabled?: boolean;
     hideAvailable?: boolean;
     availabilityView?: 'all' | 'available' | 'missing';
+    availabilityBookFormat?: 'ebook' | 'audiobook' | 'all';
     hideBlocklisted?: boolean;
     randomizeOrder?: boolean;
     availableQuality?: AvailableQualityFilter;
@@ -306,14 +310,30 @@ const useDiscover = <
 
     if (availabilityView && availabilityView !== 'all') {
       filteredTitles = filteredTitles.filter((item) => {
-        const available = [
-          item.mediaInfo?.status,
-          item.mediaInfo?.status4k,
-        ].some(
-          (status) =>
-            status === MediaStatus.AVAILABLE ||
-            status === MediaStatus.PARTIALLY_AVAILABLE
-        );
+        const media = item.mediaInfo;
+        const available =
+          item.mediaType === 'book'
+            ? Boolean(
+                media &&
+                (availabilityBookFormat === 'ebook' ||
+                availabilityBookFormat === 'audiobook'
+                  ? hasLinkedBookFormat(media, availabilityBookFormat)
+                  : hasLinkedBookFormat(media, 'ebook') ||
+                    hasLinkedBookFormat(media, 'audiobook'))
+              )
+            : (['standard', 'fourK'] as const).some((quality) => {
+                const status =
+                  quality === 'standard' ? media?.status : media?.status4k;
+                return (
+                  (status === MediaStatus.AVAILABLE ||
+                    status === MediaStatus.PARTIALLY_AVAILABLE) &&
+                  !getViewerAvailabilityPresentation(
+                    status,
+                    settings.currentSettings.otherUsersAvailability,
+                    media?.viewerRequestCoverage?.[quality]
+                  ).hidden
+                );
+              });
         return availabilityView === 'available' ? available : !available;
       });
     }
@@ -344,6 +364,8 @@ const useDiscover = <
     data,
     availableQuality,
     availabilityView,
+    availabilityBookFormat,
+    settings.currentSettings.otherUsersAvailability,
     hideAvailable,
     hideBlocklisted,
     canManageBlocklist,

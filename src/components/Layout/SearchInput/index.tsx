@@ -1,10 +1,10 @@
-import usePersius from '@app/components/Persius/usePersius';
 import persiusMessages from '@app/components/Persius/messages';
-import { useRouter } from 'next/router';
+import usePersius from '@app/components/Persius/usePersius';
 import useSearchInput from '@app/hooks/useSearchInput';
 import defineMessages from '@app/utils/defineMessages';
 import { XCircleIcon } from '@heroicons/react/24/outline';
 import { MagnifyingGlassIcon } from '@heroicons/react/24/solid';
+import { useRouter } from 'next/router';
 import type { KeyboardEvent } from 'react';
 import { useCallback, useEffect } from 'react';
 import { useIntl } from 'react-intl';

@@ -37,5 +37,10 @@ export function calendarDate(value: string): Date | undefined {
     Number(match[3]),
     12
   );
-  return Number.isFinite(date.getTime()) ? date : undefined;
+  return Number.isFinite(date.getTime()) &&
+    date.getFullYear() === Number(match[1]) &&
+    date.getMonth() === Number(match[2]) - 1 &&
+    date.getDate() === Number(match[3])
+    ? date
+    : undefined;
 }

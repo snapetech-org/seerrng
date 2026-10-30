@@ -16,9 +16,14 @@ import {
 describe('interface theme contract', () => {
   it('defaults to SeerrOrig and validates built-in or custom theme IDs', () => {
     assert.equal(DEFAULT_INTERFACE_THEME_ID, 'seerrOrig');
-    assert.deepEqual(INTERFACE_THEME_IDS, ['seerrOrig', 'seerrNGJ']);
+    assert.deepEqual(INTERFACE_THEME_IDS, [
+      'seerrOrig',
+      'seerrNGJ',
+      'persiusNG',
+    ]);
     assert.equal(parseInterfaceTheme('seerrOrig'), 'seerrOrig');
     assert.equal(parseInterfaceTheme('seerrNGJ'), 'seerrNGJ');
+    assert.equal(parseInterfaceTheme('persiusNG'), 'persiusNG');
     assert.equal(parseInterfaceTheme('seerrngj'), 'seerrngj');
     assert.equal(parseInterfaceTheme('community-dark'), 'community-dark');
     assert.equal(parseInterfaceTheme('../outside'), null);
@@ -26,15 +31,9 @@ describe('interface theme contract', () => {
     assert.equal(parseInterfaceTheme({ theme: 'seerrOrig' }), null);
   });
 
-  it('ships two separately scoped, materially different interface sheets', () => {
-    const orig = readFileSync(
-      'themes/seerrOrig/theme.css',
-      'utf8'
-    );
-    const john = readFileSync(
-      'themes/seerrNGJ/theme.css',
-      'utf8'
-    );
+  it('retains the two original separately scoped interface sheets', () => {
+    const orig = readFileSync('themes/seerrOrig/theme.css', 'utf8');
+    const john = readFileSync('themes/seerrNGJ/theme.css', 'utf8');
     assert.notEqual(orig, john);
     for (const sheet of [orig, john]) {
       assert.match(sheet, /data-interface-theme/);

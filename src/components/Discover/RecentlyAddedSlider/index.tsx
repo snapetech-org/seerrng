@@ -1,5 +1,5 @@
-import usePersius from '@app/components/Persius/usePersius';
 import persiusMessages from '@app/components/Persius/messages';
+import usePersius from '@app/components/Persius/usePersius';
 import Slider from '@app/components/Slider';
 import TmdbTitleCard from '@app/components/TitleCard/TmdbTitleCard';
 import useDiscoverRowSnapshot from '@app/hooks/useDiscoverRowSnapshot';

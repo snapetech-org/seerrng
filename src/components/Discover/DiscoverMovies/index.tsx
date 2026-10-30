@@ -1,8 +1,3 @@
-import CatalogControls, {
-  libraryView,
-} from '@app/components/Persius/CatalogControls';
-import usePersius from '@app/components/Persius/usePersius';
-import persiusMessages from '@app/components/Persius/messages';
 import CachedImage from '@app/components/Common/CachedImage';
 import Header from '@app/components/Common/Header';
 import ListView from '@app/components/Common/ListView';
@@ -14,6 +9,11 @@ import {
 } from '@app/components/Discover/constants';
 import MediaDiscoveryControls from '@app/components/Discover/MediaDiscoveryControls';
 import { studios } from '@app/components/Discover/StudioSlider';
+import CatalogControls, {
+  libraryView,
+} from '@app/components/Persius/CatalogControls';
+import persiusMessages from '@app/components/Persius/messages';
+import usePersius from '@app/components/Persius/usePersius';
 import useDiscover from '@app/hooks/useDiscover';
 import useDiscoverScrollRestoration from '@app/hooks/useDiscoverScrollRestoration';
 import { useSearchActivityReporter } from '@app/hooks/useSearchActivity';

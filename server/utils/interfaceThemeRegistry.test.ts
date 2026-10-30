@@ -17,16 +17,22 @@ after(() => {
 });
 
 describe('built-in interface theme packages', () => {
-  it('loads two validated packages with independent layout metadata and CSS', () => {
+  it('loads three validated packages with independent layout metadata and CSS', () => {
     const themes = listInstalledInterfaceThemes();
     assert.deepEqual(
       themes.map(({ id }) => id),
-      ['seerrOrig', 'seerrNGJ']
+      ['seerrOrig', 'seerrNGJ', 'persiusNG']
     );
     assert.equal(themes[0].navigation, 'flat');
     assert.equal(themes[1].navigation, 'grouped');
     assert.equal(themes[0].activeNavigationIcon, 'outline');
     assert.equal(themes[1].activeNavigationIcon, 'filled');
+    assert.equal(themes[2].navigation, 'grouped');
+    assert.equal(themes[2].activeNavigationIcon, 'outline');
+    assert.match(
+      getInstalledInterfaceTheme('persiusNG')?.css ?? '',
+      /--interface-sidebar-width: 244px/
+    );
     assert.notEqual(
       getInstalledInterfaceTheme('seerrOrig')?.css,
       getInstalledInterfaceTheme('seerrNGJ')?.css

@@ -1,5 +1,3 @@
-import PersiusBookDetail from '@app/components/Persius/BookDetail';
-import usePersius from '@app/components/Persius/usePersius';
 import BookSeriesLinks from '@app/components/BookSeriesDetails/BookSeriesLinks';
 import BookSeriesSummaryCard from '@app/components/BookSeriesDetails/BookSeriesSummaryCard';
 import CachedImage from '@app/components/Common/CachedImage';
@@ -10,18 +8,17 @@ import DetailDisclosureButton from '@app/components/MediaDetails/DetailDisclosur
 import MediaQualitySelect from '@app/components/MediaDetails/MediaQualitySelect';
 import PlaybackTrackList from '@app/components/MediaDetails/PlaybackTrackList';
 import { subjectTagClassName } from '@app/components/MediaDetails/subjectTagStyle';
+import PersiusBookDetail from '@app/components/Persius/BookDetail';
+import usePersius from '@app/components/Persius/usePersius';
 import useDetailDisclosurePins from '@app/hooks/useDetailDisclosurePins';
 import usePlaybackCatalog from '@app/hooks/usePlaybackCatalog';
 import { encodeApiPathSegment } from '@app/utils/apiPath';
-import { normalizeBookOverviewMarkdown } from '@app/utils/bookMarkdown';
 import defineMessages from '@app/utils/defineMessages';
 import { resolveCanonicalPlaybackSelection } from '@app/utils/playbackSelection';
-import { getSafeMarkdownHref } from '@app/utils/safeUrl';
 import type { BookDetails, BookRatingResponse } from '@server/models/Book';
 import Link from 'next/link';
 import { useEffect, useState, type ReactNode } from 'react';
 import { useIntl } from 'react-intl';
-import ReactMarkdown from 'react-markdown';
 
 const messages = defineMessages('components.BookDetails.Layout', {
   mediaAndFormat: 'Media & Format',
@@ -75,6 +72,7 @@ interface BookDetailsLayoutProps {
   additionalContent?: ReactNode;
   canRequestNarration?: boolean;
   onChanged?: () => void;
+  onFormatChange?: (format: 'ebook' | 'audiobook') => void;
 }
 
 const BookDetailsLayout = ({
@@ -90,6 +88,7 @@ const BookDetailsLayout = ({
   additionalContent,
   canRequestNarration = false,
   onChanged,
+  onFormatChange,
 }: BookDetailsLayoutProps) => {
   const intl = useIntl();
   const persius = usePersius();
@@ -163,12 +162,235 @@ const BookDetailsLayout = ({
           : messages.notAvailable
     );
 
-  if (persius) return <PersiusBookDetail data={data} coverage={formatCoverage} format={selectedPlaybackFormat} onFormatChange={setSelectedPlaybackFormat}
-    actions={<>{primaryActions}{secondaryActions}</>}
-    playback={playbackActions?.(effectivePlaybackItemIds, selectedPlaybackFormat)}
-    extra={<>{catalogActions}{additionalContent}{playbackCatalog && availablePlaybackItemIds.length > 0 && <PlaybackTrackList catalog={playbackCatalog} selectedItemIds={selectedPlaybackItemIds} onSelectionChange={setSelectedPlaybackItemIds} />}</>}
-    canRequest={canRequestNarration} onChanged={onChanged}
-  />;
+  const bookDetailExtras = (
+    <>
+      {' '}
+      <BookSeriesLinks bookId={data.id} />
+      <div className="media-detail-disclosure-row">
+        {data.series && data.series.length > 0 && (
+          <DetailDisclosureButton
+            label={intl.formatMessage(messages.collection)}
+            open={showCollection}
+            onClick={() => setShowCollection((open) => !open)}
+            pinned={pins.collection}
+            onPinClick={() => void togglePinned('collection')}
+          />
+        )}
+        <DetailDisclosureButton
+          label={intl.formatMessage(messages.keywords)}
+          open={showGenres}
+          onClick={() => setShowGenres((open) => !open)}
+          pinned={pins.subjectTags}
+          onPinClick={() => void togglePinned('subjectTags')}
+        />
+        <DetailDisclosureButton
+          label={intl.formatMessage(messages.bookDetails)}
+          open={showDetails}
+          onClick={() => setShowDetails((open) => !open)}
+          pinned={pins.details}
+          onPinClick={() => void togglePinned('details')}
+          controls="book-additional-details"
+        />
+        {catalogActions}
+      </div>
+      {showCollection && data.series && data.series.length > 0 && (
+        <div className="card-spacing-before space-y-2">
+          {data.series.map((series) => (
+            <BookSeriesSummaryCard
+              key={series.id}
+              seriesId={series.id}
+              title={series.title}
+            />
+          ))}
+        </div>
+      )}
+      {showGenres && (
+        <section className="app-card-inset refreshed-inset-surface card-spacing-before rounded-lg border border-gray-700 p-3">
+          <h2 className="media-inset-heading mb-2">
+            {intl.formatMessage(messages.keywords)}
+          </h2>
+          {genres.length === 0 ? (
+            <p className="refreshed-detail-text-muted text-xs">
+              {intl.formatMessage(messages.noKeywords)}
+            </p>
+          ) : (
+            <div className="flex flex-wrap gap-1.5">
+              {genres.map((genre, index) => (
+                <Link
+                  key={genre}
+                  href={`/discover/books?subject=${encodeURIComponent(genre)}&sortBy=ranked`}
+                  className={subjectTagClassName(index)}
+                >
+                  {genre}
+                </Link>
+              ))}
+            </div>
+          )}
+        </section>
+      )}
+      {showDetails && (
+        <section
+          id="book-additional-details"
+          className="app-card-inset refreshed-inset-surface card-spacing-before rounded-lg border border-gray-700 p-3"
+        >
+          <h2 className="media-inset-heading detail-card-heading-after">
+            {intl.formatMessage(messages.bookDetails)}
+          </h2>
+          <div className="detail-three-column-grid grid">
+            <dl className="media-detail-rows grid min-w-0 grid-cols-[max-content_minmax(0,1fr)] content-start gap-x-3 text-xs">
+              <dt className="font-medium text-gray-100">
+                {intl.formatMessage(messages.publisher)}:
+              </dt>
+              <dd className="m-0 truncate">{data.publisher || unavailable}</dd>
+              <dt className="font-medium text-gray-100">
+                {intl.formatMessage(messages.edition)}:
+              </dt>
+              <dd className="m-0 truncate">{data.editionId || unavailable}</dd>
+            </dl>
+            <dl className="media-detail-rows media-detail-column-divider grid min-w-0 grid-cols-[max-content_minmax(0,1fr)] content-start gap-x-3 text-xs">
+              <dt className="font-medium text-gray-100">
+                {intl.formatMessage(messages.openLibrary)}:
+              </dt>
+              <dd className="m-0 truncate">
+                <a
+                  href={`https://openlibrary.org/works/${workId}`}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="text-indigo-300 hover:text-indigo-200 hover:underline focus:ring-2 focus:ring-indigo-400 focus:outline-none"
+                >
+                  {data.id}
+                </a>
+              </dd>
+            </dl>
+            <dl className="media-detail-rows media-detail-column-divider grid min-w-0 grid-cols-[max-content_minmax(0,1fr)] content-start gap-x-3 text-xs">
+              <dt className="font-medium text-gray-100">
+                {intl.formatMessage(messages.isbnCandidates)}:
+              </dt>
+              <dd className="m-0 min-w-0">
+                {data.isbnCandidates?.length
+                  ? data.isbnCandidates.slice(0, 4).map((candidate) => (
+                      <span
+                        className="block truncate"
+                        key={`${candidate.editionId ?? candidate.isbn}-${candidate.isbn}`}
+                        title={[
+                          candidate.isbn,
+                          candidate.title,
+                          candidate.format,
+                        ]
+                          .filter(Boolean)
+                          .join(' · ')}
+                      >
+                        {candidate.isbn}
+                      </span>
+                    ))
+                  : unavailable}
+              </dd>
+            </dl>
+          </div>
+        </section>
+      )}
+    </>
+  );
+
+  const bookPlaybackControls = (
+    <div className="media-rating-row">
+      <MediaQualitySelect
+        value={selectedPlaybackFormat}
+        options={[
+          {
+            label: intl.formatMessage(messages.ebook),
+            value: 'ebook',
+          },
+          {
+            label: intl.formatMessage(messages.audiobook),
+            value: 'audiobook',
+          },
+        ]}
+        onChange={setSelectedPlaybackFormat}
+        label={intl.formatMessage(messages.format)}
+        autoSelectAvailable={false}
+      />
+      {playbackActions?.(effectivePlaybackItemIds, selectedPlaybackFormat)}
+      {playbackActions && (
+        <PlayOnDeviceButton
+          mediaId={data.mediaInfo?.id}
+          unavailableReason={playbackUnavailableReason?.(
+            selectedPlaybackFormat
+          )}
+          itemIds={
+            selectedPlaybackFormat === 'audiobook'
+              ? effectivePlaybackItemIds
+              : []
+          }
+        />
+      )}
+      <BookRating
+        average={
+          ratingData?.average ??
+          (data.provider === 'bookshelf' ? data.ratingsAverage : undefined)
+        }
+        count={
+          ratingData?.count ||
+          (data.provider === 'bookshelf' ? data.ratingsCount : undefined)
+        }
+        source={
+          ratingData?.average !== undefined && ratingData.count > 0
+            ? ratingData.source === 'bookshelf'
+              ? 'Bookshelf'
+              : 'Open Library'
+            : data.provider === 'bookshelf'
+              ? 'Bookshelf'
+              : 'Open Library'
+        }
+        href={
+          ratingData?.workId && ratingData.source === 'openlibrary'
+            ? `https://openlibrary.org/works/${encodeURIComponent(ratingData.workId)}`
+            : data.provider !== 'bookshelf'
+              ? `https://openlibrary.org/works/${encodeURIComponent(data.id)}`
+              : undefined
+        }
+      />
+    </div>
+  );
+
+  if (persius)
+    return (
+      <PersiusBookDetail
+        data={data}
+        coverage={formatCoverage}
+        format={selectedPlaybackFormat}
+        onFormatChange={(format) => {
+          setSelectedPlaybackFormat(format);
+          onFormatChange?.(format);
+        }}
+        actions={
+          <>
+            {primaryActions}
+            {secondaryActions}
+          </>
+        }
+        playback={playbackActions?.(
+          effectivePlaybackItemIds,
+          selectedPlaybackFormat
+        )}
+        extra={
+          <>
+            {bookPlaybackControls}
+            {bookDetailExtras}
+            {additionalContent}
+            {playbackCatalog && availablePlaybackItemIds.length > 0 && (
+              <PlaybackTrackList
+                catalog={playbackCatalog}
+                selectedItemIds={selectedPlaybackItemIds}
+                onSelectionChange={setSelectedPlaybackItemIds}
+              />
+            )}
+          </>
+        }
+        canRequest={canRequestNarration}
+        onChanged={onChanged}
+      />
+    );
 
   return (
     <div className="media-page">
@@ -352,231 +574,14 @@ const BookDetailsLayout = ({
               onSelectionChange={setSelectedPlaybackItemIds}
             />
           )}
-          <div className="media-rating-row">
-            <MediaQualitySelect
-              value={selectedPlaybackFormat}
-              options={[
-                {
-                  label: intl.formatMessage(messages.ebook),
-                  value: 'ebook',
-                },
-                {
-                  label: intl.formatMessage(messages.audiobook),
-                  value: 'audiobook',
-                },
-              ]}
-              onChange={setSelectedPlaybackFormat}
-              label={intl.formatMessage(messages.format)}
-              autoSelectAvailable={false}
-            />
-            {playbackActions?.(
-              effectivePlaybackItemIds,
-              selectedPlaybackFormat
-            )}
-            {playbackActions && (
-              <PlayOnDeviceButton
-                mediaId={data.mediaInfo?.id}
-                unavailableReason={playbackUnavailableReason?.(
-                  selectedPlaybackFormat
-                )}
-                itemIds={
-                  selectedPlaybackFormat === 'audiobook'
-                    ? effectivePlaybackItemIds
-                    : []
-                }
-              />
-            )}
-            <BookRating
-              average={
-                ratingData?.average ??
-                (data.provider === 'bookshelf'
-                  ? data.ratingsAverage
-                  : undefined)
-              }
-              count={
-                ratingData?.count ||
-                (data.provider === 'bookshelf' ? data.ratingsCount : undefined)
-              }
-              source={
-                ratingData?.average !== undefined && ratingData.count > 0
-                  ? ratingData.source === 'bookshelf'
-                    ? 'Bookshelf'
-                    : 'Open Library'
-                  : data.provider === 'bookshelf'
-                    ? 'Bookshelf'
-                    : 'Open Library'
-              }
-              href={
-                ratingData?.workId && ratingData.source === 'openlibrary'
-                  ? `https://openlibrary.org/works/${encodeURIComponent(ratingData.workId)}`
-                  : data.provider !== 'bookshelf'
-                    ? `https://openlibrary.org/works/${encodeURIComponent(data.id)}`
-                    : undefined
-              }
-            />
-          </div>
+          {bookPlaybackControls}
 
           <div className="media-primary-action-row">
             {primaryActions}
             {secondaryActions}
           </div>
 
-          <BookSeriesLinks bookId={data.id} />
-
-          <section className="app-card-inset refreshed-inset-surface card-spacing-before rounded-lg border border-gray-700 p-3">
-            <h2 className="media-inset-heading">
-              {intl.formatMessage(messages.overview)}
-            </h2>
-            <div className="refreshed-detail-text-muted prose prose-sm prose-p:my-0 prose-p:leading-5 prose-a:text-indigo-300 prose-a:underline prose-a:hover:text-indigo-200 mt-4 max-w-none text-sm leading-5">
-              <ReactMarkdown
-                skipHtml
-                urlTransform={getSafeMarkdownHref}
-                components={{
-                  a: ({ children, ...props }) => (
-                    <a {...props} target="_blank" rel="noreferrer">
-                      {children}
-                    </a>
-                  ),
-                }}
-              >
-                {normalizeBookOverviewMarkdown(
-                  data.description ||
-                    intl.formatMessage(messages.overviewUnavailable)
-                )}
-              </ReactMarkdown>
-            </div>
-          </section>
-
-          <div className="media-detail-disclosure-row">
-            {data.series && data.series.length > 0 && (
-              <DetailDisclosureButton
-                label={intl.formatMessage(messages.collection)}
-                open={showCollection}
-                onClick={() => setShowCollection((open) => !open)}
-                pinned={pins.collection}
-                onPinClick={() => void togglePinned('collection')}
-              />
-            )}
-            <DetailDisclosureButton
-              label={intl.formatMessage(messages.keywords)}
-              open={showGenres}
-              onClick={() => setShowGenres((open) => !open)}
-              pinned={pins.subjectTags}
-              onPinClick={() => void togglePinned('subjectTags')}
-            />
-            <DetailDisclosureButton
-              label={intl.formatMessage(messages.bookDetails)}
-              open={showDetails}
-              onClick={() => setShowDetails((open) => !open)}
-              pinned={pins.details}
-              onPinClick={() => void togglePinned('details')}
-              controls="book-additional-details"
-            />
-            {catalogActions}
-          </div>
-
-          {showCollection && data.series && data.series.length > 0 && (
-            <div className="card-spacing-before space-y-2">
-              {data.series.map((series) => (
-                <BookSeriesSummaryCard
-                  key={series.id}
-                  seriesId={series.id}
-                  title={series.title}
-                />
-              ))}
-            </div>
-          )}
-
-          {showGenres && (
-            <section className="app-card-inset refreshed-inset-surface card-spacing-before rounded-lg border border-gray-700 p-3">
-              <h2 className="media-inset-heading mb-2">
-                {intl.formatMessage(messages.keywords)}
-              </h2>
-              {genres.length === 0 ? (
-                <p className="refreshed-detail-text-muted text-xs">
-                  {intl.formatMessage(messages.noKeywords)}
-                </p>
-              ) : (
-                <div className="flex flex-wrap gap-1.5">
-                  {genres.map((genre, index) => (
-                    <Link
-                      key={genre}
-                      href={`/discover/books?subject=${encodeURIComponent(genre)}&sortBy=ranked`}
-                      className={subjectTagClassName(index)}
-                    >
-                      {genre}
-                    </Link>
-                  ))}
-                </div>
-              )}
-            </section>
-          )}
-
-          {showDetails && (
-            <section
-              id="book-additional-details"
-              className="app-card-inset refreshed-inset-surface card-spacing-before rounded-lg border border-gray-700 p-3"
-            >
-              <h2 className="media-inset-heading detail-card-heading-after">
-                {intl.formatMessage(messages.bookDetails)}
-              </h2>
-              <div className="detail-three-column-grid grid">
-                <dl className="media-detail-rows grid min-w-0 grid-cols-[max-content_minmax(0,1fr)] content-start gap-x-3 text-xs">
-                  <dt className="font-medium text-gray-100">
-                    {intl.formatMessage(messages.publisher)}:
-                  </dt>
-                  <dd className="m-0 truncate">
-                    {data.publisher || unavailable}
-                  </dd>
-                  <dt className="font-medium text-gray-100">
-                    {intl.formatMessage(messages.edition)}:
-                  </dt>
-                  <dd className="m-0 truncate">
-                    {data.editionId || unavailable}
-                  </dd>
-                </dl>
-                <dl className="media-detail-rows media-detail-column-divider grid min-w-0 grid-cols-[max-content_minmax(0,1fr)] content-start gap-x-3 text-xs">
-                  <dt className="font-medium text-gray-100">
-                    {intl.formatMessage(messages.openLibrary)}:
-                  </dt>
-                  <dd className="m-0 truncate">
-                    <a
-                      href={`https://openlibrary.org/works/${workId}`}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="text-indigo-300 hover:text-indigo-200 hover:underline focus:ring-2 focus:ring-indigo-400 focus:outline-none"
-                    >
-                      {data.id}
-                    </a>
-                  </dd>
-                </dl>
-                <dl className="media-detail-rows media-detail-column-divider grid min-w-0 grid-cols-[max-content_minmax(0,1fr)] content-start gap-x-3 text-xs">
-                  <dt className="font-medium text-gray-100">
-                    {intl.formatMessage(messages.isbnCandidates)}:
-                  </dt>
-                  <dd className="m-0 min-w-0">
-                    {data.isbnCandidates?.length
-                      ? data.isbnCandidates.slice(0, 4).map((candidate) => (
-                          <span
-                            className="block truncate"
-                            key={`${candidate.editionId ?? candidate.isbn}-${candidate.isbn}`}
-                            title={[
-                              candidate.isbn,
-                              candidate.title,
-                              candidate.format,
-                            ]
-                              .filter(Boolean)
-                              .join(' · ')}
-                          >
-                            {candidate.isbn}
-                          </span>
-                        ))
-                      : unavailable}
-                  </dd>
-                </dl>
-              </div>
-            </section>
-          )}
+          {bookDetailExtras}
           {additionalContent}
         </div>
       </article>
@@ -586,4 +591,3 @@ const BookDetailsLayout = ({
 };
 
 export default BookDetailsLayout;
-

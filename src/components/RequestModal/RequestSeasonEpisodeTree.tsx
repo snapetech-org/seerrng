@@ -2,6 +2,10 @@ import PageErrorMessage from '@app/components/Common/PageErrorMessage';
 import SeasonEpisodeTree, {
   formatTreeNumber,
 } from '@app/components/MediaDetails/SeasonEpisodeTree';
+import persiusMessages from '@app/components/Persius/messages';
+import { OptionalDisclosure } from '@app/components/Persius/Primitives';
+import SeasonPicker from '@app/components/Persius/SeasonPicker';
+import { usePersius } from '@app/components/Persius/usePersius';
 import defineMessages from '@app/utils/defineMessages';
 import type { SeasonEpisodeSelection } from '@server/interfaces/api/seasonInterfaces';
 import type { SeasonWithEpisodes, TvDetails } from '@server/models/Tv';
@@ -56,6 +60,7 @@ const RequestSeasonEpisodeTree = ({
   onReadyChange,
 }: RequestSeasonEpisodeTreeProps) => {
   const intl = useIntl();
+  const persius = usePersius();
   const { data, error, isValidating, mutate } = useSWR<SeasonWithEpisodes[]>(
     seasons.length
       ? [
@@ -180,28 +185,51 @@ const RequestSeasonEpisodeTree = ({
       data-selection-tree
       aria-busy={isValidating}
     >
-      <SeasonEpisodeTree
-        key={tvId}
-        layout={1}
-        selectionPurpose="request"
-        disabled={!ready}
-        seasons={treeData}
-        selectedIds={renderedSelectedIds}
-        selectionMode={selectionMode}
-        onSelectionChange={(ids) => {
-          if (ready) {
-            onSelectionsChange(
-              treeSelectionToRequests(
-                treeData,
-                ids,
-                selections,
-                selectionMode === 'single-episode'
-              )
-            );
+      {persius && selectionMode === 'multiple' && (
+        <>
+          <SeasonPicker
+            seasons={treeData}
+            selectedIds={renderedSelectedIds}
+            disabled={!ready}
+            onChange={(ids) => {
+              if (ready)
+                onSelectionsChange(
+                  treeSelectionToRequests(treeData, ids, selections)
+                );
+            }}
+          />
+          {feedback}
+        </>
+      )}
+      <OptionalDisclosure
+        enabled={persius && selectionMode === 'multiple'}
+        label={intl.formatMessage(persiusMessages.episodeChoices)}
+      >
+        <SeasonEpisodeTree
+          key={tvId}
+          layout={1}
+          selectionPurpose="request"
+          disabled={!ready}
+          seasons={treeData}
+          selectedIds={renderedSelectedIds}
+          selectionMode={selectionMode}
+          onSelectionChange={(ids) => {
+            if (ready) {
+              onSelectionsChange(
+                treeSelectionToRequests(
+                  treeData,
+                  ids,
+                  selections,
+                  selectionMode === 'single-episode'
+                )
+              );
+            }
+          }}
+          feedback={
+            persius && selectionMode === 'multiple' ? undefined : feedback
           }
-        }}
-        feedback={feedback}
-      />
+        />
+      </OptionalDisclosure>
     </div>
   );
 };

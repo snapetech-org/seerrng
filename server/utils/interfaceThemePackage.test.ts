@@ -1,5 +1,8 @@
 import assert from 'node:assert/strict';
+import { readFileSync } from 'node:fs';
+import { resolve } from 'node:path';
 import { describe, it } from 'node:test';
+import { INTERFACE_THEME_IDS } from './interfaceTheme';
 import {
   validateInterfaceThemeCss,
   validateInterfaceThemeManifest,
@@ -20,6 +23,18 @@ const manifest = {
 } as const;
 
 describe('interface theme package contract', () => {
+  it('loads every registered built-in package with its exact ID and scoped CSS', () => {
+    for (const id of INTERFACE_THEME_IDS) {
+      const directory = resolve(process.cwd(), 'themes', id);
+      const result = validateInterfaceThemePackage(
+        JSON.parse(readFileSync(resolve(directory, 'manifest.json'), 'utf8')),
+        readFileSync(resolve(directory, 'theme.css'), 'utf8'),
+        id
+      );
+      assert.equal(result.manifest.id, id);
+    }
+  });
+
   it('validates metadata and selectors scoped to the package theme root', () => {
     const css = `
       :root[data-interface-theme='studio-dark'] {
@@ -75,7 +90,8 @@ describe('interface theme package contract', () => {
       )
     );
     assert.throws(
-      () => validateInterfaceThemeManifest({ ...manifest, script: 'install.js' }),
+      () =>
+        validateInterfaceThemeManifest({ ...manifest, script: 'install.js' }),
       /unknown manifest field/
     );
     assert.throws(

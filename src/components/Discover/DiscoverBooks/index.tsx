@@ -1,8 +1,3 @@
-import { BookShelves } from '@app/components/Persius/BookShelves';
-import { AvailabilitySegments, libraryView } from '@app/components/Persius/CatalogControls';
-import { OptionalDisclosure } from '@app/components/Persius/Primitives';
-import usePersius from '@app/components/Persius/usePersius';
-import persiusMessages from '@app/components/Persius/messages';
 import InlineBookSeriesResults from '@app/components/BookSeriesSearch/InlineResults';
 import Button from '@app/components/Common/Button';
 import CardTextVisibilityToggle from '@app/components/Common/CardTextVisibilityToggle';
@@ -21,6 +16,14 @@ import {
 import LibraryFilterFields from '@app/components/Discover/FilterPanel/LibraryFilterFields';
 import { bookSortOptions } from '@app/components/Discover/FilterPanel/libraryFilterUtils';
 import PinnedFilterSection from '@app/components/Discover/PinnedFilterSection';
+import { BookShelves } from '@app/components/Persius/BookShelves';
+import {
+  AvailabilitySegments,
+  libraryView,
+} from '@app/components/Persius/CatalogControls';
+import persiusMessages from '@app/components/Persius/messages';
+import { OptionalDisclosure } from '@app/components/Persius/Primitives';
+import usePersius from '@app/components/Persius/usePersius';
 import useDebouncedState from '@app/hooks/useDebouncedState';
 import useDiscover from '@app/hooks/useDiscover';
 import useDiscoverScrollRestoration from '@app/hooks/useDiscoverScrollRestoration';
@@ -214,7 +217,10 @@ const DiscoverBooks = ({
     {
       query,
       author: authorQuery,
-      narrator: activeFormat === 'audiobook' && typeof routeQuery.narrator === 'string' ? routeQuery.narrator : undefined,
+      narrator:
+        activeFormat === 'audiobook' && typeof routeQuery.narrator === 'string'
+          ? routeQuery.narrator
+          : undefined,
       subject,
       firstPublishYear,
       language,
@@ -228,9 +234,13 @@ const DiscoverBooks = ({
     {
       enabled: isRouteReady && hasEnabledBookFormat,
       hideAvailable: !persius,
-      availabilityView: persius ? libraryView(routeQuery.libraryView) : undefined,
+      availabilityView: persius
+        ? libraryView(routeQuery.libraryView)
+        : undefined,
+      availabilityBookFormat: activeFormat,
       randomizeOrder:
-        (!persius && (sortBy === 'ranked' || sortBy === 'ranked.asc')) || sortBy === 'random',
+        (!persius && (sortBy === 'ranked' || sortBy === 'ranked.asc')) ||
+        sortBy === 'random',
       showErrorToast: false,
       hideErrorWithResults: false,
     }
@@ -305,184 +315,256 @@ const DiscoverBooks = ({
   const providerMessage = (
     discover.error as { response?: { data?: { message?: string } } } | undefined
   )?.response?.data?.message;
+  const bookFilters = (
+    <OptionalDisclosure
+      enabled={persius}
+      className="persius-catalog-more"
+      panelClassName="persius-filter-expanded"
+      label={intl.formatMessage(persiusMessages.filters)}
+    >
+      <RelatedTools tools={['share', 'bookRecommendations', 'following']} />
+      {activeFormat === 'audiobook' && <ReadMeABookSearch />}
+      {mediaFilters}
+      {!persius && showFormatTabs && (
+        <PinnedFilterSection
+          mediaType="book"
+          section="mediaFilters"
+          label={intl.formatMessage(messages.mediaFilters)}
+        >
+          <BookFormatTabs
+            format={activeFormat}
+            availableFormats={availableFormats}
+            query={routeQuery}
+            currentPath={currentPath}
+          />
+        </PinnedFilterSection>
+      )}
+      <PinnedFilterSection
+        mediaType="book"
+        section="filters"
+        label={intl.formatMessage(messages.filters)}
+      >
+        <div className="app-filter-row">
+          <FilterResetButton
+            label={intl.formatMessage(messages.clearFilters)}
+            selected={!hasActiveFilters}
+            onClick={() => {
+              setSearch('');
+              setAuthor('');
+              setParam({
+                narrator: undefined,
+                libraryView: undefined,
+                search: undefined,
+                author: undefined,
+                subject: undefined,
+                firstPublishYear: undefined,
+                language: undefined,
+                minRating: undefined,
+                sortBy: undefined,
+              });
+            }}
+          />
+          <CardTextVisibilityToggle mediaType="book" />
+          <LibraryFilterFields
+            mediaType="book"
+            audiobook={activeFormat === 'audiobook'}
+            search={search}
+            onSearchChange={setSearch}
+            onSearchSubmit={() => {
+              const nextSearch = search.trim();
+              routedSearchRef.current = nextSearch;
+              update(
+                { search: nextSearch || undefined, page: undefined },
+                { shallow: true, scroll: false }
+              );
+            }}
+            author={author}
+            onAuthorChange={setAuthor}
+            onAuthorSubmit={() => {
+              const nextAuthor = author.trim();
+              routedAuthorRef.current = nextAuthor;
+              update(
+                { author: nextAuthor || undefined, page: undefined },
+                { shallow: true, scroll: false }
+              );
+            }}
+            firstPublishYear={firstPublishYear}
+            subject={subject}
+            minRating={minRating}
+            language={language}
+            setParam={setParam}
+          />
+        </div>
+      </PinnedFilterSection>
+      <PinnedFilterSection
+        mediaType="book"
+        section="sortBy"
+        label={intl.formatMessage(messages.sortBy)}
+      >
+        <div className="app-filter-row">
+          <button
+            className={getFilterToggleButtonClass(
+              sortBy === 'ranked' || sortBy === 'ranked.asc'
+            )}
+            onClick={() =>
+              setParam({
+                sortBy: sortBy === 'ranked' ? 'ranked.asc' : 'ranked',
+              })
+            }
+          >
+            {intl.formatMessage(messages.recommended)}
+            {sortBy === 'ranked.asc' ? (
+              <BarsArrowUpIcon className="app-action-icon" />
+            ) : (
+              <BarsArrowDownIcon className="app-action-icon" />
+            )}
+          </button>
+          <button
+            className={getFilterToggleButtonClass(sortBy === 'trending')}
+            onClick={() => setParam({ sortBy: 'trending' })}
+          >
+            {intl.formatMessage(messages.trending)}
+          </button>
+          <button
+            className={getFilterToggleButtonClass(
+              sortBy === 'rating' ||
+                sortBy === 'rating.desc' ||
+                sortBy === 'rating.asc'
+            )}
+            onClick={() =>
+              setParam({
+                sortBy:
+                  sortBy === 'rating' || sortBy === 'rating.desc'
+                    ? 'rating.asc'
+                    : 'rating.desc',
+              })
+            }
+          >
+            {intl.formatMessage(messages.rating)}
+            {sortBy === 'rating.asc' ? (
+              <BarsArrowUpIcon className="app-action-icon" />
+            ) : (
+              <BarsArrowDownIcon className="app-action-icon" />
+            )}
+          </button>
+          <button
+            className={getFilterToggleButtonClass(
+              sortBy === 'editions' || sortBy === 'editions.asc'
+            )}
+            onClick={() =>
+              setParam({
+                sortBy: sortBy === 'editions' ? 'editions.asc' : 'editions',
+              })
+            }
+          >
+            {intl.formatMessage(messages.editions)}
+            {sortBy === 'editions.asc' ? (
+              <BarsArrowUpIcon className="app-action-icon" />
+            ) : (
+              <BarsArrowDownIcon className="app-action-icon" />
+            )}
+          </button>
+          <button
+            className={getFilterToggleButtonClass(
+              sortBy === 'newest' || sortBy === 'oldest'
+            )}
+            onClick={() =>
+              setParam({ sortBy: sortBy === 'newest' ? 'oldest' : 'newest' })
+            }
+          >
+            {intl.formatMessage(messages.date)}
+            {sortBy === 'oldest' ? (
+              <BarsArrowUpIcon className="app-action-icon" />
+            ) : (
+              <BarsArrowDownIcon className="app-action-icon" />
+            )}
+          </button>
+          <button
+            className={getFilterToggleButtonClass(sortBy === 'random')}
+            onClick={() =>
+              sortBy === 'random'
+                ? discover.mutate?.()
+                : setParam({ sortBy: 'random' })
+            }
+          >
+            {intl.formatMessage(messages.random)}
+            <BarsArrowDownIcon className="app-action-icon" />
+          </button>
+        </div>
+      </PinnedFilterSection>
+    </OptionalDisclosure>
+  );
   return (
     <>
       <PageTitle title={title} />
       <div className="app-filter-section-gap">
         <Header>{persius ? intl.formatMessage(messages.books) : title}</Header>
-        {persius && showFormatTabs && <BookFormatTabs format={activeFormat} availableFormats={availableFormats} query={routeQuery} currentPath={currentPath} />}
-        <OptionalDisclosure enabled={persius} label={intl.formatMessage(persiusMessages.filters)}>
-        <RelatedTools tools={['share', 'bookRecommendations', 'following']} />
-        {activeFormat === 'audiobook' && <ReadMeABookSearch />}
-        {mediaFilters}
-        {!persius && showFormatTabs && (
-          <PinnedFilterSection
-            mediaType="book"
-            section="mediaFilters"
-            label={intl.formatMessage(messages.mediaFilters)}
-          >
-            <BookFormatTabs
-              format={activeFormat}
-              availableFormats={availableFormats}
-              query={routeQuery}
-              currentPath={currentPath}
-            />
-          </PinnedFilterSection>
+        {persius && showFormatTabs && (
+          <BookFormatTabs
+            format={activeFormat}
+            availableFormats={availableFormats}
+            query={routeQuery}
+            currentPath={currentPath}
+          />
         )}
-        <PinnedFilterSection
-          mediaType="book"
-          section="filters"
-          label={intl.formatMessage(messages.filters)}
-        >
-          <div className="app-filter-row">
-            <FilterResetButton
-              label={intl.formatMessage(messages.clearFilters)}
-              selected={!hasActiveFilters}
-              onClick={() => {
-                setSearch('');
-                setAuthor('');
-                setParam({
-                  search: undefined,
-                  author: undefined,
-                  subject: undefined,
-                  firstPublishYear: undefined,
-                  language: undefined,
-                  minRating: undefined,
-                  sortBy: undefined,
-                });
-              }}
-            />
-            <CardTextVisibilityToggle mediaType="book" />
-            <LibraryFilterFields
-              mediaType="book"
-              audiobook={activeFormat === 'audiobook'}
-              search={search}
-              onSearchChange={setSearch}
-              onSearchSubmit={() => {
-                const nextSearch = search.trim();
-                routedSearchRef.current = nextSearch;
-                update(
-                  { search: nextSearch || undefined, page: undefined },
-                  { shallow: true, scroll: false }
-                );
-              }}
-              author={author}
-              onAuthorChange={setAuthor}
-              onAuthorSubmit={() => {
-                const nextAuthor = author.trim();
-                routedAuthorRef.current = nextAuthor;
-                update(
-                  { author: nextAuthor || undefined, page: undefined },
-                  { shallow: true, scroll: false }
-                );
-              }}
-              firstPublishYear={firstPublishYear}
-              subject={subject}
-              minRating={minRating}
-              language={language}
-              setParam={setParam}
-            />
-          </div>
-        </PinnedFilterSection>
-        <PinnedFilterSection
-          mediaType="book"
-          section="sortBy"
-          label={intl.formatMessage(messages.sortBy)}
-        >
-          <div className="app-filter-row">
-            <button
-              className={getFilterToggleButtonClass(
-                sortBy === 'ranked' || sortBy === 'ranked.asc'
-              )}
-              onClick={() =>
-                setParam({
-                  sortBy: sortBy === 'ranked' ? 'ranked.asc' : 'ranked',
-                })
-              }
-            >
-              {intl.formatMessage(messages.recommended)}
-              {sortBy === 'ranked.asc' ? (
-                <BarsArrowUpIcon className="app-action-icon" />
-              ) : (
-                <BarsArrowDownIcon className="app-action-icon" />
-              )}
-            </button>
-            <button
-              className={getFilterToggleButtonClass(sortBy === 'trending')}
-              onClick={() => setParam({ sortBy: 'trending' })}
-            >
-              {intl.formatMessage(messages.trending)}
-            </button>
-            <button
-              className={getFilterToggleButtonClass(
-                sortBy === 'rating' ||
-                  sortBy === 'rating.desc' ||
-                  sortBy === 'rating.asc'
-              )}
-              onClick={() =>
-                setParam({
-                  sortBy:
-                    sortBy === 'rating' || sortBy === 'rating.desc'
-                      ? 'rating.asc'
-                      : 'rating.desc',
-                })
-              }
-            >
-              {intl.formatMessage(messages.rating)}
-              {sortBy === 'rating.asc' ? (
-                <BarsArrowUpIcon className="app-action-icon" />
-              ) : (
-                <BarsArrowDownIcon className="app-action-icon" />
-              )}
-            </button>
-            <button
-              className={getFilterToggleButtonClass(
-                sortBy === 'editions' || sortBy === 'editions.asc'
-              )}
-              onClick={() =>
-                setParam({
-                  sortBy: sortBy === 'editions' ? 'editions.asc' : 'editions',
-                })
-              }
-            >
-              {intl.formatMessage(messages.editions)}
-              {sortBy === 'editions.asc' ? (
-                <BarsArrowUpIcon className="app-action-icon" />
-              ) : (
-                <BarsArrowDownIcon className="app-action-icon" />
-              )}
-            </button>
-            <button
-              className={getFilterToggleButtonClass(
-                sortBy === 'newest' || sortBy === 'oldest'
-              )}
-              onClick={() =>
-                setParam({ sortBy: sortBy === 'newest' ? 'oldest' : 'newest' })
-              }
-            >
-              {intl.formatMessage(messages.date)}
-              {sortBy === 'oldest' ? (
-                <BarsArrowUpIcon className="app-action-icon" />
-              ) : (
-                <BarsArrowDownIcon className="app-action-icon" />
-              )}
-            </button>
-            <button
-              className={getFilterToggleButtonClass(sortBy === 'random')}
-              onClick={() =>
-                sortBy === 'random'
-                  ? discover.mutate?.()
-                  : setParam({ sortBy: 'random' })
-              }
-            >
-              {intl.formatMessage(messages.random)}
-              <BarsArrowDownIcon className="app-action-icon" />
-            </button>
-          </div>
-        </PinnedFilterSection>
-        </OptionalDisclosure>
+        {!persius && bookFilters}
       </div>
-      {persius && <><BookShelves books={discover.titles} audiobook={activeFormat === 'audiobook'} /><section className="persius-section"><div className="persius-section-header"><h2 className="page-heading">{intl.formatMessage(activeFormat === 'audiobook' ? persiusMessages.popularAudio : persiusMessages.allEbooks)}</h2></div><div className="persius-filter-row persius-book-controls"><AvailabilitySegments value={libraryView(routeQuery.libraryView)} onChange={(value) => setParam({ libraryView: value === 'all' ? undefined : value })} /><label className="persius-sort">{intl.formatMessage(persiusMessages.sort)}<select value={sortBy} onChange={(event) => setParam({ sortBy: event.target.value })}><option value="ranked">{intl.formatMessage(persiusMessages.popular)}</option><option value="trending">{intl.formatMessage(messages.trending)}</option><option value="newest">{intl.formatMessage(messages.date)}</option><option value="rating.desc">{intl.formatMessage(messages.rating)}</option>{!['ranked', 'trending', 'newest', 'rating.desc'].includes(sortBy) && <option value={sortBy}>{sortBy}</option>}</select></label><span className="persius-filter-count">{intl.formatMessage(persiusMessages.loadedTitles, { count: discover.titles.length })}</span></div></section></>}
+      {persius && (
+        <>
+          <BookShelves
+            books={discover.titles}
+            audiobook={activeFormat === 'audiobook'}
+          />
+          <section className="persius-section">
+            <div className="persius-section-header">
+              <h2 className="page-heading">
+                {intl.formatMessage(
+                  activeFormat === 'audiobook'
+                    ? persiusMessages.popularAudio
+                    : persiusMessages.allEbooks
+                )}
+              </h2>
+            </div>
+            <div className="persius-filter-row persius-book-controls">
+              {bookFilters}
+              <AvailabilitySegments
+                value={libraryView(routeQuery.libraryView)}
+                onChange={(value) =>
+                  setParam({ libraryView: value === 'all' ? undefined : value })
+                }
+              />
+              <label className="persius-sort">
+                {intl.formatMessage(persiusMessages.sort)}
+                <select
+                  value={sortBy}
+                  onChange={(event) => setParam({ sortBy: event.target.value })}
+                >
+                  <option value="ranked">
+                    {intl.formatMessage(persiusMessages.popular)}
+                  </option>
+                  <option value="trending">
+                    {intl.formatMessage(messages.trending)}
+                  </option>
+                  <option value="newest">
+                    {intl.formatMessage(messages.date)}
+                  </option>
+                  <option value="rating.desc">
+                    {intl.formatMessage(messages.rating)}
+                  </option>
+                  {!['ranked', 'trending', 'newest', 'rating.desc'].includes(
+                    sortBy
+                  ) && <option value={sortBy}>{sortBy}</option>}
+                </select>
+              </label>
+              <span className="persius-filter-count">
+                {intl.formatMessage(persiusMessages.loadedTitles, {
+                  count: discover.titles.length,
+                })}
+              </span>
+            </div>
+          </section>
+        </>
+      )}
       {isRouteReady && query.trim().length >= 2 && (
         <Link
           href={{
@@ -550,4 +632,3 @@ const DiscoverBooks = ({
   );
 };
 export default DiscoverBooks;
-

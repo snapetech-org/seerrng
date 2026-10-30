@@ -8,14 +8,13 @@ import {
   getUserServiceAvailability,
   isConfiguredMediaCategoryEnabled,
 } from '@app/utils/serviceAvailability';
+import { getViewerAvailabilityPresentation } from '@app/utils/viewerAvailabilityPresentation';
 import {
-  BookOpenIcon,
   CalendarDaysIcon,
   CheckIcon,
   ClockIcon,
   FilmIcon,
   PlusIcon,
-  SpeakerWaveIcon,
   TvIcon,
 } from '@heroicons/react/24/outline';
 import { MediaStatus } from '@server/constants/media';
@@ -24,6 +23,7 @@ import dynamic from 'next/dynamic';
 import Link from 'next/link';
 import { useState } from 'react';
 import { useIntl } from 'react-intl';
+import { ClosedBookIcon, HeadphonesIcon } from './Icons';
 import messages from './messages';
 
 const RequestModal = dynamic(() => import('@app/components/RequestModal'), {
@@ -50,13 +50,13 @@ export function DiscoveryHeader() {
     {
       href: '/discover/books',
       label: messages.books,
-      icon: BookOpenIcon,
+      icon: ClosedBookIcon,
       type: 'ebook',
     },
     {
       href: '/discover/audiobooks',
       label: messages.audiobooks,
-      icon: SpeakerWaveIcon,
+      icon: HeadphonesIcon,
       type: 'audiobook',
     },
   ] as const;
@@ -102,12 +102,19 @@ export function HeroCard({
 }) {
   const intl = useIntl();
   const { hasPermission } = useUser();
+  const { currentSettings } = useSettings();
   const [requestOpen, setRequestOpen] = useState(false);
   const movie = item.mediaType === 'movie';
   const title = movie ? item.title : item.name;
   const date = movie ? item.releaseDate : item.firstAirDate;
   const href = `/${movie ? 'movie' : 'tv'}/${item.id}`;
-  const available = item.mediaInfo?.status === MediaStatus.AVAILABLE;
+  const availability = getViewerAvailabilityPresentation(
+    item.mediaInfo?.status,
+    currentSettings.otherUsersAvailability,
+    item.mediaInfo?.viewerRequestCoverage?.standard
+  );
+  const available =
+    item.mediaInfo?.status === MediaStatus.AVAILABLE && !availability.hidden;
   const requested =
     item.mediaInfo?.status === MediaStatus.PENDING ||
     item.mediaInfo?.status === MediaStatus.PROCESSING;
@@ -143,14 +150,27 @@ export function HeroCard({
           {available ? (
             <Link href={href} className="persius-chip">
               <CheckIcon aria-hidden="true" />
-              {intl.formatMessage(messages.inLibrary)}
+              {intl.formatMessage(
+                availability.shared
+                  ? messages.sharedLibrary
+                  : messages.inLibrary
+              )}
             </Link>
           ) : requested ? (
             <Link href={href} className="persius-chip">
               <ClockIcon aria-hidden="true" />
               {intl.formatMessage(messages.requested)}
             </Link>
-          ) : hasPermission(Permission.REQUEST) ? (
+          ) : item.mediaInfo?.status !== MediaStatus.BLOCKLISTED &&
+            hasPermission(
+              [
+                Permission.REQUEST,
+                movie ? Permission.REQUEST_MOVIE : Permission.REQUEST_TV,
+                Permission.REQUEST_4K,
+                movie ? Permission.REQUEST_4K_MOVIE : Permission.REQUEST_4K_TV,
+              ],
+              { type: 'or' }
+            ) ? (
             <Button buttonType="primary" onClick={() => setRequestOpen(true)}>
               <PlusIcon aria-hidden="true" />
               {intl.formatMessage(messages.request)}
@@ -226,6 +246,8 @@ export function HeroShelf() {
           aria-busy="true"
           aria-label={intl.formatMessage(messages.loading)}
         />
+      ) : items.length === 0 ? (
+        <p role="status">{intl.formatMessage(messages.empty)}</p>
       ) : (
         <div className="persius-rail">
           {items.map((item) => (

@@ -1,7 +1,8 @@
-import { duration } from '@app/components/Persius/format';
 import ArtistCard from '@app/components/ArtistCard';
 import AuthorCard from '@app/components/AuthorCard';
 import Button from '@app/components/Common/Button';
+import { duration } from '@app/components/Persius/format';
+import usePersius from '@app/components/Persius/usePersius';
 import PersonCard from '@app/components/PersonCard';
 import TitleCard from '@app/components/TitleCard';
 import LibraryTitleCard from '@app/components/TitleCard/LibraryTitleCard';
@@ -96,6 +97,7 @@ const ListView = ({
   enableDiscoverNavigation = false,
 }: ListViewProps) => {
   const intl = useIntl();
+  const persius = usePersius();
   const { visibility } = useCardTextVisibility();
   const { hasPermission } = useUser();
   const { currentSettings } = useSettings();
@@ -404,12 +406,14 @@ const ListView = ({
                 status={title.mediaInfo?.status}
                 title={title.title}
                 artist={
+                  persius &&
                   (title.bookFormat ?? preferredBookFormat) === 'audiobook'
                     ? title.narrators?.join(' & ') || title.author
                     : title.author
                 }
                 captionMeta={duration(
-                  title.audiobookDuration
+                  (title.bookFormat ?? preferredBookFormat) === 'audiobook' &&
+                    title.audiobookDuration
                     ? title.audiobookDuration / 60
                     : undefined
                 )}
@@ -478,6 +482,7 @@ const ListView = ({
       }),
     [
       visibleItems,
+      persius,
       visibility.album,
       visibility.book,
       visibility.movie,

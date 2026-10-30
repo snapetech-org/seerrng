@@ -20817,6 +20817,7 @@ paths:
             enum:
               [
                 all,
+                active,
                 recent,
                 approved,
                 available,
@@ -27040,3 +27041,4 @@ paths:
 security:
   - cookieAuth: []
   - apiKey: []
+

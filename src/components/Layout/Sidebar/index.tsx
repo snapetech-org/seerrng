@@ -1,6 +1,3 @@
-import { PersiusBrand } from '@app/components/Persius/Chrome';
-import UserDropdown from '@app/components/Layout/UserDropdown';
-import { getPersiusNavigationSections } from './navigationPresentation';
 import Badge from '@app/components/Common/Badge';
 import FollowUnreadCount from '@app/components/Following/FollowUnreadCount';
 import {
@@ -9,7 +6,10 @@ import {
   type NavigationLink,
 } from '@app/components/Layout/Sidebar/navigation';
 import { getNavigationSectionsForTheme } from '@app/components/Layout/Sidebar/navigationPresentation';
+import UserDropdown from '@app/components/Layout/UserDropdown';
 import VersionStatus from '@app/components/Layout/VersionStatus';
+import { PersiusBrand } from '@app/components/Persius/Chrome';
+import { PersiusNavigationIcon } from '@app/components/Persius/Icons';
 import { useTheme } from '@app/context/ThemeContext';
 import useBlocklistNavigation from '@app/hooks/useBlocklistNavigation';
 import useClickOutside from '@app/hooks/useClickOutside';
@@ -24,11 +24,14 @@ import {
 import versionedAsset from '@app/utils/versionedAsset';
 import { Transition, TransitionChild } from '@headlessui/react';
 import { XMarkIcon } from '@heroicons/react/24/outline';
+import type { RequestResultsResponse } from '@server/interfaces/api/requestInterfaces';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { cloneElement, Fragment, useEffect, useRef } from 'react';
 import { useIntl } from 'react-intl';
+import useSWR from 'swr';
+import { getPersiusNavigationSections } from './navigationPresentation';
 
 interface SidebarProps {
   open?: boolean;
@@ -55,6 +58,15 @@ const Sidebar = ({
   const { user, hasPermission } = useUser();
   const showBlocklistNavigation = useBlocklistNavigation();
   const { currentSettings } = useSettings();
+  const { data: ownRequests } = useSWR<RequestResultsResponse>(
+    persius && user?.id
+      ? `/api/v1/request?take=1&skip=0&filter=active&requestedBy=${user.id}`
+      : null,
+    { refreshInterval: 30000 }
+  );
+  const requestBadgeCount = persius
+    ? (ownRequests?.pageInfo.results ?? 0)
+    : pendingRequestsCount;
   const serviceAvailability = getUserServiceAvailability(
     currentSettings,
     user?.settings?.enabledMediaCategories,
@@ -95,18 +107,24 @@ const Sidebar = ({
     device: 'mobile' | 'desktop'
   ) => {
     const selected =
-      (link.id === 'audiobooks' &&
+      (persius &&
+        link.id === 'audiobooks' &&
         router.pathname.startsWith('/book/') &&
         router.query.format === 'audiobook') ||
-      (link.id === 'books' &&
+      (persius &&
+      link.id === 'books' &&
       router.pathname.startsWith('/book/') &&
       router.query.format === 'audiobook'
         ? false
         : router.pathname.match(link.activeRegExp));
-    const navigationIcon =
-      interfaceThemeDefinition.activeNavigationIcon === 'filled' && selected
-        ? link.svgIconSelected
-        : link.svgIcon;
+    const navigationIcon = persius ? (
+      <PersiusNavigationIcon name={link.id} fallback={link.svgIcon} />
+    ) : interfaceThemeDefinition.activeNavigationIcon === 'filled' &&
+      selected ? (
+      link.svgIconSelected
+    ) : (
+      link.svgIcon
+    );
     const iconClass = device === 'desktop' ? 'me-3 h-6 w-6' : 'me-3 h-6 w-6';
     const className =
       device === 'mobile'
@@ -144,8 +162,8 @@ const Sidebar = ({
         {link.messagesKey === 'following' && <FollowUnreadCount />}
         {device === 'desktop' &&
           link.messagesKey === 'requests' &&
-          pendingRequestsCount > 0 &&
-          hasPermission(Permission.MANAGE_REQUESTS) && (
+          requestBadgeCount > 0 &&
+          (persius || hasPermission(Permission.MANAGE_REQUESTS)) && (
             <div className="ms-auto flex">
               <Badge
                 className={`rounded-md bg-gradient-to-br ${
@@ -154,7 +172,7 @@ const Sidebar = ({
                     : 'border-indigo-500 from-indigo-600 to-purple-600'
                 }`}
               >
-                {pendingRequestsCount}
+                {requestBadgeCount}
               </Badge>
             </div>
           )}

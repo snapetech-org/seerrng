@@ -1,4 +1,3 @@
-import usePersius from '@app/components/Persius/usePersius';
 import Spinner from '@app/assets/spinner.svg';
 import AssociationBadge from '@app/components/Association/AssociationBadge';
 import BlocklistConfirmationModal from '@app/components/BlocklistConfirmationModal';
@@ -11,6 +10,7 @@ import MediaTypeBadge from '@app/components/Common/MediaTypeBadge';
 import StatusBadgeMini from '@app/components/Common/StatusBadgeMini';
 import Tooltip from '@app/components/Common/Tooltip';
 import WatchedBadge from '@app/components/Common/WatchedBadge';
+import usePersius from '@app/components/Persius/usePersius';
 import ErrorCard from '@app/components/TitleCard/ErrorCard';
 import Placeholder from '@app/components/TitleCard/Placeholder';
 import PosterRatingPopover from '@app/components/TitleCard/PosterRatingPopover';

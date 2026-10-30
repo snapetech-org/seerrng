@@ -102,6 +102,12 @@ export default function CatalogControls({
               )}
           </select>
         </label>
+        <details className="persius-secondary persius-catalog-more">
+          <summary>{intl.formatMessage(messages.filters)}</summary>
+          <div className="persius-filter-expanded">
+            <FilterPanel type={type} currentFilters={filters} />
+          </div>
+        </details>
         <span className="persius-filter-count">
           {intl.formatMessage(messages.loadedTitles, { count })}
         </span>
@@ -139,10 +145,6 @@ export default function CatalogControls({
           </button>
         ))}
       </div>
-      <details className="persius-secondary">
-        <summary>{intl.formatMessage(messages.filters)}</summary>
-        <FilterPanel type={type} currentFilters={filters} />
-      </details>
     </div>
   );
 }

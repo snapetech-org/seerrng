@@ -1,0 +1,395 @@
+{
+  "renders": [
+    {
+      "story": "discover",
+      "width": 1782,
+      "height": 1055,
+      "scrollWidth": 1782,
+      "viewport": 1782,
+      "boxes": {
+        ".sidebar": {
+          "x": 0,
+          "y": 0,
+          "w": 244,
+          "h": 1055
+        },
+        ".app-search-input": {
+          "x": 284,
+          "y": 13.5,
+          "w": 560,
+          "h": 42
+        },
+        ".persius-hero": {
+          "x": 396,
+          "y": 294.84375,
+          "w": 564,
+          "h": 352
+        },
+        "[data-poster-region=\"frame\"]": {
+          "x": 396,
+          "y": 732.84375,
+          "w": 164,
+          "h": 246
+        },
+        ".persius-request": null,
+        ".persius-release": null,
+        ".persius-season": null,
+        ".page-overlay-card": null
+      }
+    },
+    {
+      "story": "movies",
+      "width": 1788,
+      "height": 1038,
+      "scrollWidth": 1788,
+      "viewport": 1788,
+      "boxes": {
+        ".sidebar": {
+          "x": 0,
+          "y": 0,
+          "w": 244,
+          "h": 1038
+        },
+        ".app-search-input": {
+          "x": 284,
+          "y": 13.5,
+          "w": 560,
+          "h": 42
+        },
+        ".persius-hero": null,
+        "[data-poster-region=\"frame\"]": {
+          "x": 396,
+          "y": 336,
+          "w": 191.65625,
+          "h": 287.484375
+        },
+        ".persius-request": null,
+        ".persius-release": null,
+        ".persius-season": null,
+        ".page-overlay-card": null
+      }
+    },
+    {
+      "story": "detail",
+      "width": 1782,
+      "height": 1060,
+      "scrollWidth": 1782,
+      "viewport": 1782,
+      "boxes": {
+        ".sidebar": {
+          "x": 0,
+          "y": 0,
+          "w": 244,
+          "h": 1060
+        },
+        ".app-search-input": {
+          "x": 284,
+          "y": 13.5,
+          "w": 560,
+          "h": 42
+        },
+        ".persius-hero": null,
+        "[data-poster-region=\"frame\"]": null,
+        ".persius-request": null,
+        ".persius-release": null,
+        ".persius-season": null,
+        ".page-overlay-card": null
+      }
+    },
+    {
+      "story": "seasons",
+      "width": 1776,
+      "height": 1058,
+      "scrollWidth": 1776,
+      "viewport": 1776,
+      "boxes": {
+        ".sidebar": {
+          "x": 0,
+          "y": 0,
+          "w": 244,
+          "h": 1058
+        },
+        ".app-search-input": {
+          "x": 284,
+          "y": 13.5,
+          "w": 560,
+          "h": 42
+        },
+        ".persius-hero": null,
+        "[data-poster-region=\"frame\"]": {
+          "x": 396,
+          "y": 336,
+          "w": 191.65625,
+          "h": 287.484375
+        },
+        ".persius-request": null,
+        ".persius-release": null,
+        ".persius-season": {
+          "x": 600,
+          "y": 257,
+          "w": 576,
+          "h": 65
+        },
+        ".page-overlay-card": {
+          "x": 568,
+          "y": 85,
+          "w": 640,
+          "h": 888
+        }
+      }
+    },
+    {
+      "story": "books",
+      "width": 1772,
+      "height": 1064,
+      "scrollWidth": 1772,
+      "viewport": 1772,
+      "boxes": {
+        ".sidebar": {
+          "x": 0,
+          "y": 0,
+          "w": 244,
+          "h": 1064
+        },
+        ".app-search-input": {
+          "x": 284,
+          "y": 13.5,
+          "w": 560,
+          "h": 42
+        },
+        ".persius-hero": null,
+        "[data-poster-region=\"frame\"]": {
+          "x": 396,
+          "y": 609,
+          "w": 191.65625,
+          "h": 287.484375
+        },
+        ".persius-request": null,
+        ".persius-release": null,
+        ".persius-season": null,
+        ".page-overlay-card": null
+      }
+    },
+    {
+      "story": "audio",
+      "width": 1726,
+      "height": 1061,
+      "scrollWidth": 1726,
+      "viewport": 1726,
+      "boxes": {
+        ".sidebar": {
+          "x": 0,
+          "y": 0,
+          "w": 244,
+          "h": 1061
+        },
+        ".app-search-input": {
+          "x": 284,
+          "y": 13.5,
+          "w": 560,
+          "h": 42
+        },
+        ".persius-hero": null,
+        "[data-poster-region=\"frame\"]": {
+          "x": 396,
+          "y": 483.390625,
+          "w": 180,
+          "h": 180
+        },
+        ".persius-request": null,
+        ".persius-release": null,
+        ".persius-season": null,
+        ".page-overlay-card": null
+      }
+    },
+    {
+      "story": "narrations",
+      "width": 1736,
+      "height": 1046,
+      "scrollWidth": 1736,
+      "viewport": 1736,
+      "boxes": {
+        ".sidebar": {
+          "x": 0,
+          "y": 0,
+          "w": 244,
+          "h": 1046
+        },
+        ".app-search-input": {
+          "x": 284,
+          "y": 13.5,
+          "w": 560,
+          "h": 42
+        },
+        ".persius-hero": null,
+        "[data-poster-region=\"frame\"]": null,
+        ".persius-request": null,
+        ".persius-release": null,
+        ".persius-season": null,
+        ".page-overlay-card": null
+      }
+    },
+    {
+      "story": "requests",
+      "width": 1726,
+      "height": 1067,
+      "scrollWidth": 1726,
+      "viewport": 1726,
+      "boxes": {
+        ".sidebar": {
+          "x": 0,
+          "y": 0,
+          "w": 244,
+          "h": 1067
+        },
+        ".app-search-input": {
+          "x": 284,
+          "y": 13.5,
+          "w": 560,
+          "h": 42
+        },
+        ".persius-hero": null,
+        "[data-poster-region=\"frame\"]": null,
+        ".persius-request": {
+          "x": 396,
+          "y": 283.75,
+          "w": 615,
+          "h": 136
+        },
+        ".persius-release": null,
+        ".persius-season": null,
+        ".page-overlay-card": null
+      }
+    },
+    {
+      "story": "coming",
+      "width": 1760,
+      "height": 1055,
+      "scrollWidth": 1760,
+      "viewport": 1760,
+      "boxes": {
+        ".sidebar": {
+          "x": 0,
+          "y": 0,
+          "w": 244,
+          "h": 1055
+        },
+        ".app-search-input": {
+          "x": 284,
+          "y": 13.5,
+          "w": 560,
+          "h": 42
+        },
+        ".persius-hero": null,
+        "[data-poster-region=\"frame\"]": null,
+        ".persius-request": null,
+        ".persius-release": {
+          "x": 396,
+          "y": 244,
+          "w": 408,
+          "h": 104
+        },
+        ".persius-season": null,
+        ".page-overlay-card": null
+      }
+    },
+    {
+      "story": "discover",
+      "width": 390,
+      "overflow": 0
+    },
+    {
+      "story": "movies",
+      "width": 390,
+      "overflow": 0
+    },
+    {
+      "story": "detail",
+      "width": 390,
+      "overflow": 0
+    },
+    {
+      "story": "seasons",
+      "width": 390,
+      "overflow": 0
+    },
+    {
+      "story": "books",
+      "width": 390,
+      "overflow": 0
+    },
+    {
+      "story": "audio",
+      "width": 390,
+      "overflow": 0
+    },
+    {
+      "story": "narrations",
+      "width": 390,
+      "overflow": 0
+    },
+    {
+      "story": "requests",
+      "width": 390,
+      "overflow": 0
+    },
+    {
+      "story": "coming",
+      "width": 390,
+      "overflow": 0
+    },
+    {
+      "story": "discover",
+      "width": 768,
+      "overflow": 0
+    },
+    {
+      "story": "movies",
+      "width": 768,
+      "overflow": 0
+    },
+    {
+      "story": "detail",
+      "width": 768,
+      "overflow": 0
+    },
+    {
+      "story": "seasons",
+      "width": 768,
+      "overflow": 0
+    },
+    {
+      "story": "books",
+      "width": 768,
+      "overflow": 0
+    },
+    {
+      "story": "audio",
+      "width": 768,
+      "overflow": 0
+    },
+    {
+      "story": "narrations",
+      "width": 768,
+      "overflow": 0
+    },
+    {
+      "story": "requests",
+      "width": 768,
+      "overflow": 0
+    },
+    {
+      "story": "coming",
+      "width": 768,
+      "overflow": 0
+    }
+  ],
+  "checks": [
+    "season clear/latest/entire/individual selection",
+    "dialog focus trap, search shortcut suppression, trigger focus restoration",
+    "unavailable season and episode excluded from shortcuts",
+    "narration choice auto-selects missing recording and hides duplicate available request",
+    "search shortcut/editing, light mode and interface switch round trip"
+  ],
+  "errors": []
+}

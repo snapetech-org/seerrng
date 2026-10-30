@@ -2,6 +2,8 @@ import type { ButtonProps, ButtonType } from '@app/components/Common/Button';
 import Button from '@app/components/Common/Button';
 import CachedImage from '@app/components/Common/CachedImage';
 import LoadingSpinner from '@app/components/Common/LoadingSpinner';
+import useDialogFocus from '@app/components/Persius/useDialogFocus';
+import usePersius from '@app/components/Persius/usePersius';
 import useClickOutside from '@app/hooks/useClickOutside';
 import { useLockBodyScroll } from '@app/hooks/useLockBodyScroll';
 import useModalBackNavigation from '@app/hooks/useModalBackNavigation';
@@ -94,6 +96,8 @@ const Modal = React.forwardRef<HTMLDivElement, ModalProps>(
   ) => {
     const intl = useIntl();
     const modalRef = useRef<HTMLDivElement>(null);
+    const persius = usePersius();
+    useDialogFocus(modalRef, persius && !loading);
     useModalBackNavigation(manageHistory ? onCancel : undefined);
     const backgroundClickableRef = useRef(backgroundClickable); // This ref is used to detect state change inside the useClickOutside hook
     useEffect(() => {
@@ -173,7 +177,10 @@ const Modal = React.forwardRef<HTMLDivElement, ModalProps>(
                 )}
               </div>
             )}
-            <div className="relative min-w-0 pt-0.5 sm:flex sm:items-center">
+            <div
+              data-modal-part="heading"
+              className="relative min-w-0 pt-0.5 sm:flex sm:items-center"
+            >
               <div
                 className={`mt-3 min-w-0 truncate text-center text-white sm:mt-0 sm:text-left`}
               >
@@ -203,6 +210,7 @@ const Modal = React.forwardRef<HTMLDivElement, ModalProps>(
             </div>
             {children && (
               <div
+                data-modal-part="content"
                 className={`relative mt-4 text-sm leading-5 text-gray-300 ${contentClass} ${
                   !(onCancel || onOk || onSecondary || onTertiary) ? 'mb-3' : ''
                 }`}

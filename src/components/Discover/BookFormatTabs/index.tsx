@@ -1,6 +1,7 @@
-import usePersius from '@app/components/Persius/usePersius';
-import persiusMessages from '@app/components/Persius/messages';
 import MediaFilterOption from '@app/components/Discover/MediaFilterOption';
+import { ClosedBookIcon, HeadphonesIcon } from '@app/components/Persius/Icons';
+import persiusMessages from '@app/components/Persius/messages';
+import usePersius from '@app/components/Persius/usePersius';
 import useMediaFilterPin from '@app/hooks/useMediaFilterPin';
 import defineMessages from '@app/utils/defineMessages';
 import { parseQueryFromPath } from '@app/utils/routeQuery';
@@ -131,12 +132,45 @@ const BookFormatTabs = ({
     },
   });
 
-  if (persius) return <nav className="persius-segments" data-fill="true" aria-label={intl.formatMessage(messages.format)}>
-    {tabs.filter((tab) => availableFormats.includes(tab.format) && (tab.format !== 'all' || format === 'all')).map((tab) => {
-      const Icon = tab.icon;
-      return <Link key={tab.format} href={getBookFormatHref(tab.pathname, preservedQuery, tab.queryFormat)} aria-current={tab.format === format ? 'page' : undefined}><Icon aria-hidden="true" />{intl.formatMessage(tab.format === 'ebook' ? persiusMessages.ebooks : tab.label)}</Link>;
-    })}
-  </nav>;
+  if (persius)
+    return (
+      <nav
+        className="persius-segments"
+        data-fill="true"
+        aria-label={intl.formatMessage(messages.format)}
+      >
+        {tabs
+          .filter(
+            (tab) =>
+              availableFormats.includes(tab.format) &&
+              (tab.format !== 'all' || format === 'all')
+          )
+          .map((tab) => {
+            const Icon =
+              tab.format === 'ebook'
+                ? ClosedBookIcon
+                : tab.format === 'audiobook'
+                  ? HeadphonesIcon
+                  : tab.icon;
+            return (
+              <Link
+                key={tab.format}
+                href={getBookFormatHref(
+                  tab.pathname,
+                  preservedQuery,
+                  tab.queryFormat
+                )}
+                aria-current={tab.format === format ? 'page' : undefined}
+              >
+                <Icon aria-hidden="true" />
+                {intl.formatMessage(
+                  tab.format === 'ebook' ? persiusMessages.ebooks : tab.label
+                )}
+              </Link>
+            );
+          })}
+      </nav>
+    );
 
   return (
     <nav
@@ -179,4 +213,3 @@ const BookFormatTabs = ({
 };
 
 export default BookFormatTabs;
-

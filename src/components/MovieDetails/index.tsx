@@ -436,19 +436,19 @@ const MovieDetails = ({ movie }: MovieDetailsProps) => {
     </>
   );
 
-  const trailerAction = (safeTrailerUrl && (
-        <Button
-          as="a"
-          href={safeTrailerUrl}
-          target="_blank"
-          rel="noopener noreferrer"
-          buttonType="trailer"
-          buttonSize="sm"
-        >
-          <FilmIcon />
-          <span>{intl.formatMessage(messages.watchtrailer)}</span>
-        </Button>
-      ));
+  const trailerAction = safeTrailerUrl && (
+    <Button
+      as="a"
+      href={safeTrailerUrl}
+      target="_blank"
+      rel="noopener noreferrer"
+      buttonType="trailer"
+      buttonSize="sm"
+    >
+      <FilmIcon />
+      <span>{intl.formatMessage(messages.watchtrailer)}</span>
+    </Button>
+  );
 
   const primaryActions = (
     <>
@@ -589,4 +589,3 @@ const MovieDetails = ({ movie }: MovieDetailsProps) => {
 };
 
 export default MovieDetails;
-
