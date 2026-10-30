@@ -31,6 +31,7 @@ const allowedManifestKeys = new Set([
   'license',
   'navigation',
   'activeNavigationIcon',
+  'layout',
 ]);
 
 const customThemeIdPattern = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
@@ -114,6 +115,14 @@ export const validateInterfaceThemeManifest = (
     return fail('activeNavigationIcon must be outline or filled');
   }
 
+  if (
+    value.layout !== undefined &&
+    value.layout !== 'classic' &&
+    value.layout !== 'persius'
+  ) {
+    return fail('layout must be classic or persius');
+  }
+
   return {
     formatVersion: INTERFACE_THEME_FORMAT_VERSION,
     themeApiVersion: INTERFACE_THEME_API_VERSION,
@@ -125,6 +134,7 @@ export const validateInterfaceThemeManifest = (
     license: requireText(value.license, 'license', 48),
     navigation: value.navigation,
     activeNavigationIcon: value.activeNavigationIcon,
+    ...(value.layout !== undefined ? { layout: value.layout } : {}),
   };
 };
 

@@ -10,6 +10,8 @@ export const INTERFACE_THEME_IDS = [
 export type InterfaceThemeId = string;
 
 export type InterfaceThemeNavigation = 'flat' | 'grouped';
+export type InterfaceThemeLayout = 'classic' | 'persius';
+
 export type InterfaceThemeActiveNavigationIcon = 'outline' | 'filled';
 
 export type InterfaceThemeManifest = {
@@ -23,6 +25,8 @@ export type InterfaceThemeManifest = {
   license: string;
   navigation: InterfaceThemeNavigation;
   activeNavigationIcon: InterfaceThemeActiveNavigationIcon;
+  /** App-owned page composition; CSS remains unique to this package. */
+  layout?: InterfaceThemeLayout;
 };
 
 const customThemeIdPattern = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;

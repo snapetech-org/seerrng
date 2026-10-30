@@ -16,8 +16,12 @@
     "activeNavigationIcon"
   ],
   "properties": {
-    "formatVersion": { "const": 1 },
-    "themeApiVersion": { "const": 1 },
+    "formatVersion": {
+      "const": 1
+    },
+    "themeApiVersion": {
+      "const": 1
+    },
     "id": {
       "type": "string",
       "minLength": 1,
@@ -52,7 +56,15 @@
       "maxLength": 48,
       "pattern": "^(?=.*\\S)[^\\u0000-\\u001f\\u007f]+$"
     },
-    "navigation": { "enum": ["flat", "grouped"] },
-    "activeNavigationIcon": { "enum": ["outline", "filled"] }
+    "navigation": {
+      "enum": ["flat", "grouped"]
+    },
+    "activeNavigationIcon": {
+      "enum": ["outline", "filled"]
+    },
+    "layout": {
+      "enum": ["classic", "persius"],
+      "description": "Optional native page composition; omitted means classic."
+    }
   }
 }

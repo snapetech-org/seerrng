@@ -53,8 +53,8 @@ const Sidebar = ({
   const navRef = useRef<HTMLDivElement>(null);
   const router = useRouter();
   const intl = useIntl();
-  const { interfaceThemeDefinition, interfaceTheme } = useTheme();
-  const persius = interfaceTheme === 'persiusNG';
+  const { interfaceThemeDefinition } = useTheme();
+  const persius = interfaceThemeDefinition.layout === 'persius';
   const { user, hasPermission } = useUser();
   const showBlocklistNavigation = useBlocklistNavigation();
   const { currentSettings } = useSettings();

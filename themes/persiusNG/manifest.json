@@ -8,5 +8,6 @@
   "author": "SeerrNG",
   "license": "MIT",
   "navigation": "grouped",
-  "activeNavigationIcon": "outline"
+  "activeNavigationIcon": "outline",
+  "layout": "persius"
 }

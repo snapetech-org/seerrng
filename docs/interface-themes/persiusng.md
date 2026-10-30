@@ -7,7 +7,7 @@ theme remains SeerrOrig.
 PersiusNG follows the nine owner-provided October 30, 2026 mockups: a charcoal
 canvas, lavender controls, outlined navigation, posters with captions underneath,
 wide discovery features, compact request cards and a grouped release calendar.
-Its package owns the visual values; application components retain catalog data,
+Its manifest selects `layout: persius`. Its package owns the visual values; application components retain catalog data,
 permissions and request mutations.
 
 ## Design measurements
@@ -37,7 +37,9 @@ only specify dark mode.
   The application adds the built-in ID to the shared registry and client fallback.
 - `src/components/Persius/` contains presentation components. Existing page,
   modal, navigation, title-card and request owners opt in only when PersiusNG is
-  selected. Extra navigation remains available under **More**.
+  selected. Extra navigation remains available under **More**. Custom packages can
+  select the same native composition with `"layout": "persius"` while supplying
+  their own ID and stylesheet; no code fork or UI proxy is involved.
 - Library segments and genre chips update the existing catalog queries. Series
   stacks and narrator counts describe loaded catalog results, not invented totals.
   Full-cast shelves require explicit full-cast/GraphicAudio metadata.
@@ -83,15 +85,17 @@ document overflow at 390 × 844 and 768 × 844. The
 dimensions and interaction checks. Checks covered season clear/latest/all and
 individual selection, blocked episode exclusion, dialog Tab wrapping and focus
 restoration, narration selection, the search shortcut, light-mode switching and
-a theme-picker round trip.
+a theme-picker round trip. A renamed custom theme also preserved the native
+sidebar, account label and request composition with its independent CSS palette.
 
 The shared sidebar, search, buttons and six-poster fixture was also rendered at
 1782 × 1060 using the original source from base commit
 `471271589e28a77a2e1564b2ef4e1c152e7cf103` and the candidate source, separately
 under SeerrOrig and SeerrNGJ. Both comparisons had zero changed pixels.
 
-Local automated checks cover package validation, three-theme registry discovery,
-stylesheet routes and the existing six-test season request payload adapter.
+Twenty-four focused tests passed: six CLI package round trips, ten package/registry/
+stylesheet-route checks, two actual ThemeProvider integration tests and the existing
+six-test season request payload adapter.
 Changed TypeScript files were parsed and formatted. A complete application build
 and project typecheck were not available in the partial repository snapshot;
 missing application modules prevent treating its partial semantic check as a
@@ -117,3 +121,21 @@ disabled services, empty/error/loading states, available/shared/pending/failed
 media, partial-season requests, narration requests and both responsive widths.
 Recheck representative settings, library, playback and administration pages in
 all three themes before merging.
+
+## Native package and authoring follow-through
+
+PersiusNG and custom derivatives load through the application’s same-origin theme
+API. The native composition is selected by validated manifest metadata, so a
+renamed theme retains the same functional pages. `src/proxy.ts` is Next.js
+authentication/redirect middleware, not a theme rewriter; it remains intact.
+A separate UI-rewriting proxy is not a runtime dependency of this implementation.
+Retiring an existing external deployment should still follow the running-app
+acceptance checks above; no external proxy configuration was changed here.
+
+Authoring has a direct `create → validate → pack → install` workflow. Source
+commands run without a complete server build, the packer writes reproducible
+JSON bundles and checksums, and source/bundle inspection is available. Six CLI
+round-trip tests and two actual ThemeProvider tests cover independently named
+Persius compositions, same-origin stylesheet loading, account restoration and
+failed-save preservation. See [authoring](authoring.md) and
+[community submission](submitting.md).

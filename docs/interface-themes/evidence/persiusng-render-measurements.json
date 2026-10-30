@@ -389,7 +389,8 @@
     "dialog focus trap, search shortcut suppression, trigger focus restoration",
     "unavailable season and episode excluded from shortcuts",
     "narration choice auto-selects missing recording and hides duplicate available request",
-    "search shortcut/editing, light mode and interface switch round trip"
+    "search shortcut/editing, light mode and interface switch round trip",
+    "renamed custom theme retains native sidebar, profile and request composition with its own CSS palette"
   ],
   "errors": []
 }

@@ -54,6 +54,22 @@ describe('interface theme package contract', () => {
     assert.equal(theme.css, css);
   });
 
+  it('supports native composition without changing legacy manifests', () => {
+    assert.equal(validateInterfaceThemeManifest(manifest).layout, undefined);
+    assert.equal(
+      validateInterfaceThemeManifest({ ...manifest, layout: 'persius' }).layout,
+      'persius'
+    );
+    assert.equal(
+      validateInterfaceThemeManifest({ ...manifest, layout: 'classic' }).layout,
+      'classic'
+    );
+    assert.throws(
+      () => validateInterfaceThemeManifest({ ...manifest, layout: 'script' }),
+      /layout must be/
+    );
+  });
+
   it('rejects an unscoped rule and selector groups with any global selector', () => {
     assert.throws(
       () => validateInterfaceThemeCss('body { color: red; }', manifest.id),

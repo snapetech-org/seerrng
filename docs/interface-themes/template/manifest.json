@@ -4,7 +4,7 @@
   "id": "my-theme",
   "name": "My Theme",
   "description": "A short description shown in the theme picker.",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "author": "Your name",
   "license": "MIT",
   "navigation": "grouped",

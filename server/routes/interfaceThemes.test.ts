@@ -15,6 +15,11 @@ describe('public interface theme package routes', () => {
       response.body.themes.map(({ id }: { id: string }) => id),
       ['seerrOrig', 'seerrNGJ', 'persiusNG']
     );
+    assert.equal(
+      response.body.themes.find(({ id }: { id: string }) => id === 'persiusNG')
+        ?.layout,
+      'persius'
+    );
   });
 
   it('serves only a validated installed stylesheet from the same origin', async () => {

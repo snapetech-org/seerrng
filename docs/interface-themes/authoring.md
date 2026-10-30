@@ -1,7 +1,7 @@
 # Creating and Sharing SeerrNG Interface Themes
 
 SeerrNG themes are small, versioned packages that own their visual CSS and a
-few presentation choices such as navigation grouping. The application keeps
+few presentation choices such as navigation grouping and native page composition. The application keeps
 the page markup, APIs, permissions, and actions. A theme package can restyle and
 rearrange existing interface roles; it cannot add executable code or replace
 application routes.
@@ -16,12 +16,27 @@ my-theme/
   theme.css
 ```
 
-Copy [`template/`](template/) to start. Use a lowercase kebab-case ID such as
+The quickest start uses a complete native theme and rebases every CSS selector:
+
+```sh
+pnpm install
+pnpm interface-theme:create my-cinema --from persiusNG --name "My Cinema" --author "Your name"
+```
+
+This creates `my-cinema/manifest.json`, `my-cinema/theme.css` and a short README.
+No server build, running application, proxy, GitHub fork or account is required
+for creation and packaging. The command refuses to overwrite an existing folder.
+Use `--from seerrOrig` or `--from seerrNGJ` for those starting points, or an
+installed custom theme ID. An optional second argument chooses the output folder.
+The new package has its own ID and full stylesheet; it does not load or inherit
+the original package at runtime.
+
+For a small hand-written example, copy [`template/`](template/) instead. Use a lowercase kebab-case ID such as
 `my-theme`; IDs are permanent package identifiers and cannot be changed after
 users save them in their account settings.
 
 `manifest.json` declares the package identity, API versions, author, license,
-and two app-level presentation choices. `theme.css` is ordinary CSS attached
+and app-level presentation choices. `theme.css` is ordinary CSS attached
 only while that theme is selected. Use the existing shared classes and
 `data-interface-role` hooks to restyle the application's current controls and
 route families.
@@ -40,7 +55,8 @@ checks CSS syntax, selector scope, resources, and package size.
   "author": "Your name",
   "license": "MIT",
   "navigation": "grouped",
-  "activeNavigationIcon": "filled"
+  "activeNavigationIcon": "outline",
+  "layout": "persius"
 }
 ```
 
@@ -54,6 +70,64 @@ The installed catalog exposes the theme name and those supported navigation
 choices. CSS is loaded only for the selected theme. Publishing a changed
 manifest or stylesheet uses a new package version; changing the ID creates a
 separate theme and does not replace saved account settings.
+
+## Choose a native composition
+
+| Manifest `layout`    | Application markup available to your stylesheet                                                                                                    |
+| -------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Omitted or `classic` | Existing Seerr/SeerrNG catalog, detail, request and filter composition                                                                             |
+| `persius`            | Cinematic discovery, captions below posters, book/narrator shelves, recording choices, compact requests, coming-soon releases and season shortcuts |
+
+The layout is app-owned, not a script shipped by an author. Your theme ID can be
+anything valid: Persius layouts are activated by this metadata, not the reserved
+`persiusNG` name. Forking PersiusNG carries the metadata automatically. Forking
+SeerrOrig or SeerrNGJ preserves the classic composition. The CSS remains fully
+independent in either case. Navigation and icons are also native application
+choices. Persius composition supplies its grouped outline navigation; the
+`navigation` and `activeNavigationIcon` preferences govern classic compositions.
+Do not attempt to inject executable components into a package.
+
+Persius composition requires a SeerrNG release that includes PersiusNG in its
+picker. Older releases reject the unrecognized metadata rather than silently
+promising an equivalent layout. Publish the exact SeerrNG releases you tested.
+Existing version 1 themes without `layout` remain supported unchanged.
+
+## Make the stylesheet your own
+
+Edit `theme.css` to change colors, typography, radius, density, shadows, grid/flex
+arrangement and responsive behavior. Change the root variables first, then
+change the scoped component rules. For example:
+
+```css
+:root[data-interface-theme='my-cinema'] {
+  --interface-page: #101b1a;
+  --interface-panel: #192d2a;
+  --interface-accent-a: #91d6a6;
+  --interface-card-radius: 6px;
+}
+
+[data-interface-theme='my-cinema'] .persius-request {
+  border-radius: var(--interface-card-radius);
+  border-inline-start: 3px solid var(--interface-accent-a);
+}
+
+:root[data-interface-theme='my-cinema'][data-theme-mode='light'] {
+  --interface-page: #f5f7f0;
+  --interface-panel: #ffffff;
+  --interface-text: #172a23;
+  --interface-muted: #4b6258;
+}
+```
+
+Keep `my-cinema` consistent in every selector. The generator already replaces
+the base ID, including namespaced animation names. Classes such as
+`.persius-request` are shared application hooks and should keep their names.
+They do not make a custom theme depend on the PersiusNG stylesheet. For the full
+supported surfaces and route families, use the [feature map](feature-map.md).
+
+Do not hide request, permission, availability, error or keyboard-focus states to
+make a mockup look cleaner. Use the existing responsive rules as a starting point,
+check long translated titles, and retain `prefers-reduced-motion` behavior.
 
 ## CSS ownership and scope
 
@@ -91,15 +165,15 @@ theme root. Shared component roles resolve them to long-lived `--interface-*`
 tokens, so components keep semantic contracts while each package changes its
 effective appearance:
 
-| Family | Package tokens | Controls |
-| --- | --- | --- |
-| Canvas and surfaces | `--interface-page`, `--interface-panel`, `--interface-panel-raised`, `--interface-border`, `--interface-muted`, `--interface-text`, `--interface-link`, `--interface-accent-a`, `--interface-accent-b`, `--interface-sidebar-top`, `--interface-sidebar-bottom`, `--interface-sidebar-selected`, `--interface-table-header`, `--interface-table-hover` | Backgrounds, copy, links, selected navigation, and table surfaces |
-| Main geometry | `--interface-sidebar-width`, `--interface-page-gutter`, `--interface-grid-gap`, `--interface-card-radius`, `--interface-poster-radius`, `--interface-control-radius`, `--interface-main-card-padding`, `--interface-inset-card-padding`, `--interface-section-gap`, `--poster-width`, `--poster-aspect-ratio` | Navigation width, page columns, shelves, cards, controls, and poster grids |
-| Navigation | `--interface-nav-group-gap`, `--interface-nav-item-gap`, `--interface-nav-inline-inset`, `--interface-nav-nested-indent`, `--interface-nav-mobile-offset`, `--interface-nav-desktop-offset`, `--interface-nav-heading-line-height` | Grouped navigation rhythm and nested/mobile alignment |
-| Typography | `--interface-card-table-font-size`, `--interface-card-table-heading-weight`, `--interface-card-table-value-weight`, `--interface-card-title-font-size`, `--interface-page-heading-font-size`, `--interface-card-subheading-font-size`, `--interface-card-body-font-size`, `--interface-card-copy-line-height` | Page, card, and metadata hierarchy |
-| Detail and compact cards | `--interface-detail-row-height`, `--interface-detail-row-gap`, `--interface-detail-divider-width`, `--interface-detail-first-column-limit`, `--interface-detail-first-value-limit`, `--interface-detail-last-column-limit`, `--interface-card-compact-title-font-size`, `--interface-card-compact-subheading-font-size`, `--interface-card-compact-line-height`, `--interface-card-compact-height`, `--interface-card-compact-padding-block`, `--interface-card-subheading-spacing-before`, `--interface-card-body-spacing-before` | Metadata tables, disclosure cards, and compact portrait rows |
-| Controls and menus | `--interface-compact-control-height`, `--interface-profile-menu-row-height`, `--interface-button-padding-x`, `--interface-button-content-gap`, `--interface-poster-control-gap`, `--interface-dropdown-menu-surface`, `--interface-dropdown-menu-border` | Buttons, compact controls, poster badges, and menus |
-| Effects and framing | `--interface-motion-duration`, `--app-card-frame-width`, `--app-card-frame-background` | Motion timing and card edge treatments |
+| Family                   | Package tokens                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     | Controls                                                                   |
+| ------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------- |
+| Canvas and surfaces      | `--interface-page`, `--interface-panel`, `--interface-panel-raised`, `--interface-border`, `--interface-muted`, `--interface-text`, `--interface-link`, `--interface-accent-a`, `--interface-accent-b`, `--interface-sidebar-top`, `--interface-sidebar-bottom`, `--interface-sidebar-selected`, `--interface-table-header`, `--interface-table-hover`                                                                                                                                                                             | Backgrounds, copy, links, selected navigation, and table surfaces          |
+| Main geometry            | `--interface-sidebar-width`, `--interface-page-gutter`, `--interface-grid-gap`, `--interface-card-radius`, `--interface-poster-radius`, `--interface-control-radius`, `--interface-main-card-padding`, `--interface-inset-card-padding`, `--interface-section-gap`, `--poster-width`, `--poster-aspect-ratio`                                                                                                                                                                                                                      | Navigation width, page columns, shelves, cards, controls, and poster grids |
+| Navigation               | `--interface-nav-group-gap`, `--interface-nav-item-gap`, `--interface-nav-inline-inset`, `--interface-nav-nested-indent`, `--interface-nav-mobile-offset`, `--interface-nav-desktop-offset`, `--interface-nav-heading-line-height`                                                                                                                                                                                                                                                                                                 | Grouped navigation rhythm and nested/mobile alignment                      |
+| Typography               | `--interface-card-table-font-size`, `--interface-card-table-heading-weight`, `--interface-card-table-value-weight`, `--interface-card-title-font-size`, `--interface-page-heading-font-size`, `--interface-card-subheading-font-size`, `--interface-card-body-font-size`, `--interface-card-copy-line-height`                                                                                                                                                                                                                      | Page, card, and metadata hierarchy                                         |
+| Detail and compact cards | `--interface-detail-row-height`, `--interface-detail-row-gap`, `--interface-detail-divider-width`, `--interface-detail-first-column-limit`, `--interface-detail-first-value-limit`, `--interface-detail-last-column-limit`, `--interface-card-compact-title-font-size`, `--interface-card-compact-subheading-font-size`, `--interface-card-compact-line-height`, `--interface-card-compact-height`, `--interface-card-compact-padding-block`, `--interface-card-subheading-spacing-before`, `--interface-card-body-spacing-before` | Metadata tables, disclosure cards, and compact portrait rows               |
+| Controls and menus       | `--interface-compact-control-height`, `--interface-profile-menu-row-height`, `--interface-button-padding-x`, `--interface-button-content-gap`, `--interface-poster-control-gap`, `--interface-dropdown-menu-surface`, `--interface-dropdown-menu-border`                                                                                                                                                                                                                                                                           | Buttons, compact controls, poster badges, and menus                        |
+| Effects and framing      | `--interface-motion-duration`, `--app-card-frame-width`, `--app-card-frame-background`                                                                                                                                                                                                                                                                                                                                                                                                                                             | Motion timing and card edge treatments                                     |
 
 The tokens are supported design knobs, not a limit on package CSS. A theme may
 override any existing class or `data-interface-role` selector inside its exact
@@ -143,13 +217,21 @@ community packages.
 From the SeerrNG checkout, run:
 
 ```sh
-pnpm build:server
 pnpm interface-theme:validate ./my-theme
-pnpm interface-theme:pack ./my-theme ./my-theme.seerrtheme
+pnpm interface-theme:pack ./my-theme
+pnpm interface-theme:validate ./my-theme-0.1.0.seerrtheme
+pnpm interface-theme:inspect ./my-theme-0.1.0.seerrtheme
 ```
 
-The build places the Node-only theme CLI in `dist/commands/interfaceTheme.js`.
-The same commands work from a packaged SeerrNG host with Node available; for
+Checkout commands use the existing development loader and run without compiling
+the application. `pack` defaults to `<id>-<version>.seerrtheme` and also writes
+`<id>-<version>.seerrtheme.sha256`. An optional output argument changes the name.
+Both outputs are protected against overwrites; unchanged inputs produce identical
+bundle bytes. `validate` accepts source directories and packaged files. `inspect`
+prints metadata, composition, CSS size and SHA-256; `list` prints installed themes.
+
+Production builds place the Node-only CLI in `dist/commands/interfaceTheme.js`.
+The same operations work from a packaged SeerrNG host with Node available; for
 example, `node dist/commands/interfaceTheme.js validate ./my-theme` runs the
 validator directly when that host does not use pnpm.
 
@@ -157,14 +239,14 @@ Copy the resulting `.seerrtheme` file to the SeerrNG host and install it with
 the same release's CLI:
 
 ```sh
-pnpm interface-theme:install ./my-theme.seerrtheme
+pnpm interface-theme:install ./my-theme-0.1.0.seerrtheme
 ```
 
 If the ID is already installed, installation stops. Updating an existing
 custom theme requires the explicit `--replace` option:
 
 ```sh
-pnpm interface-theme:install ./my-theme.seerrtheme --replace
+pnpm interface-theme:install ./my-theme-0.1.0.seerrtheme --replace
 ```
 
 The installer validates the full package before writing, stages both files in
@@ -178,7 +260,7 @@ accounts using it, then run:
 pnpm interface-theme:uninstall my-theme
 ```
 
-The built-in SeerrOrig and SeerrNGJ packages cannot be replaced or removed.
+The built-in SeerrOrig, SeerrNGJ and PersiusNG packages cannot be replaced or removed.
 Installed packages remain in the app-data directory through application
 upgrades. Keep the source files and packaged `.seerrtheme` together when
 publishing so users can review, validate, and reproduce a release.
@@ -187,11 +269,39 @@ For a community release, publish the source directory, the `.seerrtheme`, the
 SeerrNG version/API range, and a checksum together. For example:
 
 ```sh
-sha256sum my-theme.seerrtheme > my-theme.seerrtheme.sha256
+sha256sum --check my-theme-0.1.0.seerrtheme.sha256
 ```
 
 Users should validate the package and compare its checksum against the author's
 release before installing it.
+
+## Test and install without a UI proxy
+
+1. Run the normal SeerrNG application directly. Install the package using that
+   release’s CLI as the application user, with the same `CONFIG_DIRECTORY`.
+2. Restart SeerrNG so its catalog discovers the package. Open **Theme picker →
+   Interface design** and select your theme. Refresh the page and verify your
+   account choice is restored.
+3. Confirm the browser loads `/api/v1/interface-themes/<id>/theme.css` from
+   SeerrNG itself. No stylesheet injector, userscript or UI-rewriting proxy is
+   involved. Standard HTTPS/reverse-proxy hosting and Next.js authentication
+   middleware are separate and should remain configured as needed.
+4. Review Discover, movies, series, books, audiobooks, details, requests, calendar,
+   settings and login at desktop and phone widths. Exercise request/cancel,
+   filtering, format changes, narration and season selection, keyboard focus,
+   loading/errors and authorized/unauthorized states. Also check light mode.
+5. To revise an installed theme, increment its version, validate and pack it,
+   install the new bundle with `--replace`, restart and reload. The stable ID
+   preserves each user’s selection. Keep a previously validated bundle for rollback.
+
+Browser developer tools can experiment with CSS on the direct app; copy changes
+back into the source stylesheet before packaging. The maintainer-only
+`interface-theme:preview` command updates the legacy comparison document; it is
+not a substitute for live testing of a community package.
+
+The [submission guide](submitting.md) gives a release checklist, supported review
+routes and a ready-made GitHub form. [PersiusNG’s verification record](persiusng.md)
+separates component evidence from the production acceptance that remains open.
 
 ## Versioning
 
