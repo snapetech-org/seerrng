@@ -8576,12 +8576,12 @@ describe('POST /request/bulk', () => {
     const getWorkEditionsMock = mock.method(
       OpenLibraryAPI.prototype,
       'getWorkEditions',
-      async (workId: string) =>
+      async () =>
         ({
           size: 1,
           entries: [
             {
-              key: `/books/${workId.replace(/^\/?works\//, '')}-edition`,
+              key: '/books/OL123M',
               isbn_13: ['9780441478125'],
             },
           ],
@@ -8603,7 +8603,7 @@ describe('POST /request/bulk', () => {
           title: 'New Work',
           authorId: 'OL1A',
           isbn13: '9780441478125',
-          editionId: 'new-work-edition',
+          editionId: 'OL123M',
         },
         { mediaId: 'available-work', title: 'Available Work' },
       ],
@@ -8755,12 +8755,12 @@ describe('POST /request/bulk', () => {
     const getWorkEditionsMock = mock.method(
       OpenLibraryAPI.prototype,
       'getWorkEditions',
-      async (workId: string) =>
+      async () =>
         ({
           size: 1,
           entries: [
             {
-              key: `/books/${workId.replace(/^\/?works\//, '')}-edition`,
+              key: '/books/OL123M',
               isbn_13: ['9780441478125'],
             },
           ],
@@ -8785,7 +8785,7 @@ describe('POST /request/bulk', () => {
           title: 'Zero Book Work',
           authorId: 'OL1A',
           isbn13: '9780441478125',
-          editionId: 'zero-book-work-edition',
+          editionId: 'OL123M',
         },
       ],
     });
@@ -8943,12 +8943,12 @@ describe('POST /request/bulk', () => {
     const getWorkEditionsMock = mock.method(
       OpenLibraryAPI.prototype,
       'getWorkEditions',
-      async (workId: string) =>
+      async () =>
         ({
           size: 1,
           entries: [
             {
-              key: `/books/${workId.replace(/^\/?works\//, '')}-edition`,
+              key: '/books/OL123M',
               isbn_13: ['9780441478125'],
             },
           ],
@@ -8973,7 +8973,7 @@ describe('POST /request/bulk', () => {
           title: 'New Work',
           authorId: 'OL1A',
           isbn13: '9780441478125',
-          editionId: 'new-work-edition',
+          editionId: 'OL123M',
         },
       ],
     });

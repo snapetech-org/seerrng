@@ -9,6 +9,7 @@ import http from 'node:http';
 import os from 'node:os';
 import path from 'node:path';
 import { describe, it } from 'node:test';
+import { Agent, fetch as directFetch } from 'undici';
 import { startLoopbackHttpServer } from './httpServer';
 import {
   buildHttpsRedirectLocation,
@@ -136,6 +137,7 @@ describe('TLS configuration parsing', () => {
   });
 
   it('routes SSR API calls through loopback while public HTTP only upgrades', async () => {
+    const dispatcher = new Agent();
     const originalInternalApiPort = process.env[INTERNAL_API_PORT_ENV];
     const internalApi = await startLoopbackHttpServer((_request, response) => {
       response.writeHead(200, { 'Content-Type': 'application/json' });
@@ -154,14 +156,16 @@ describe('TLS configuration parsing', () => {
       assert.ok(publicAddress && typeof publicAddress !== 'string');
 
       process.env[INTERNAL_API_PORT_ENV] = String(internalApi.port);
-      const internalResponse = await fetch(
-        `${getInternalApiBaseUrl()}/api/v1/movie/1`
+      const internalResponse = await directFetch(
+        `${getInternalApiBaseUrl()}/api/v1/movie/1`,
+        { dispatcher }
       );
       assert.equal(internalResponse.status, 200);
       assert.deepEqual(await internalResponse.json(), { id: 1 });
 
-      const publicResponse = await fetch(
-        `http://127.0.0.1:${publicAddress.port}/api/v1/movie/1`
+      const publicResponse = await directFetch(
+        `http://127.0.0.1:${publicAddress.port}/api/v1/movie/1`,
+        { dispatcher }
       );
       assert.equal(publicResponse.status, 426);
       assert.equal(
@@ -169,6 +173,7 @@ describe('TLS configuration parsing', () => {
         'https://127.0.0.1:5056/api/v1/movie/1'
       );
     } finally {
+      await dispatcher.close();
       if (originalInternalApiPort === undefined) {
         delete process.env[INTERNAL_API_PORT_ENV];
       } else {

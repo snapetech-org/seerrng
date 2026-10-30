@@ -23,11 +23,22 @@ beforeEach(() => {
       serviceType: 'audiobook',
     } as ReadarrSettings,
   ];
-  vi.spyOn(ReadarrAPI.prototype, 'lookupBook').mockImplementation(fixture.lookup);
-  vi.spyOn(ReadarrAPI.prototype, 'getEditionCatalog').mockImplementation(fixture.catalog);
-  vi.spyOn(ReadarrAPI.prototype, 'getEditions').mockImplementation(fixture.editions);
-  vi.spyOn(ReadarrAPI.prototype, 'getBookIfExists').mockImplementation(fixture.book);
-  vi.spyOn(ReadarrAPI.prototype, 'supportsWantedEditionVariants').mockReturnValue(true);
+  vi.spyOn(ReadarrAPI.prototype, 'lookupBook').mockImplementation(
+    fixture.lookup
+  );
+  vi.spyOn(ReadarrAPI.prototype, 'getEditionCatalog').mockImplementation(
+    fixture.catalog
+  );
+  vi.spyOn(ReadarrAPI.prototype, 'getEditions').mockImplementation(
+    fixture.editions
+  );
+  vi.spyOn(ReadarrAPI.prototype, 'getBookIfExists').mockImplementation(
+    fixture.book
+  );
+  vi.spyOn(
+    ReadarrAPI.prototype,
+    'supportsWantedEditionVariants'
+  ).mockReturnValue(true);
   vi.spyOn(getRepository(Media), 'findOne').mockImplementation(fixture.media);
   fixture.lookup.mockReset().mockResolvedValue([
     {

@@ -20,7 +20,8 @@ export const bookEditionQuery = (book?: BookEditionQuery): string | null => {
   });
   if (book.bookId) params.set('bookId', book.bookId);
   if (book.mediaId) params.set('mediaId', String(book.mediaId));
-  if (book.serverId !== undefined) params.set('serverId', String(book.serverId));
+  if (book.serverId !== undefined)
+    params.set('serverId', String(book.serverId));
   if (book.author) params.set('author', book.author.slice(0, 256));
   if (book.foreignBookId) params.set('foreignBookId', book.foreignBookId);
   return `/api/v1/editions/book?${params}`;

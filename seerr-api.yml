@@ -91,6 +91,56 @@ components:
           schema:
             $ref: '#/components/schemas/ErrorResponse'
   schemas:
+    InterfaceThemeId:
+      type: string
+      maxLength: 48
+      pattern: '^(seerrOrig|seerrNGJ|persiusNG|[a-z0-9]+(?:-[a-z0-9]+)*)$'
+      description: A built-in or installed custom interface package identifier.
+    InterfaceThemeManifest:
+      type: object
+      required:
+        [
+          id,
+          name,
+          description,
+          version,
+          author,
+          license,
+          formatVersion,
+          themeApiVersion,
+          navigation,
+          activeNavigationIcon,
+        ]
+      properties:
+        id:
+          $ref: '#/components/schemas/InterfaceThemeId'
+        name:
+          type: string
+        description:
+          type: string
+        version:
+          type: string
+        author:
+          type: string
+        license:
+          type: string
+        formatVersion:
+          type: integer
+          enum: [1]
+        themeApiVersion:
+          type: integer
+          enum: [1]
+        navigation:
+          type: string
+          enum: [flat, grouped]
+        activeNavigationIcon:
+          type: string
+          enum: [outline, filled]
+        layout:
+          type: string
+          enum: [classic, persius]
+        builtIn:
+          type: boolean
     ErrorResponse:
       type: object
       properties:
@@ -2374,6 +2424,8 @@ components:
     UserSettings:
       type: object
       properties:
+        interfaceTheme:
+          $ref: '#/components/schemas/InterfaceThemeId'
         themePalette:
           type: string
           description: Account theme preference. SeerrNG is adopted once on installation or upgrade; subsequent user choices survive later upgrades.
@@ -8222,6 +8274,87 @@ components:
       name: X-Api-Key
 
 paths:
+  /interface-themes:
+    get:
+      summary: List validated native interface packages
+      description: Public metadata for built-in and administrator-installed CSS-only themes. Does not expose installation paths.
+      tags: [public]
+      security: []
+      responses:
+        '200':
+          description: Installed interface packages
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [themes]
+                properties:
+                  themes:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/InterfaceThemeManifest'
+  /interface-themes/{id}/theme.css:
+    get:
+      summary: Load a validated interface stylesheet
+      tags: [public]
+      security: []
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            $ref: '#/components/schemas/InterfaceThemeId'
+      responses:
+        '200':
+          description: Scoped CSS for the installed package, served from this origin with nosniff protection.
+          content:
+            text/css:
+              schema:
+                type: string
+        '400':
+          description: Invalid package identifier
+        '404':
+          description: Package is not installed
+  /user/{userId}/settings/interface-theme:
+    post:
+      summary: Save the signed-in user's native interface package
+      description: Only the account owner may change this preference. The package must already be installed. Installation and removal remain administrator CLI operations.
+      tags: [users]
+      parameters:
+        - in: path
+          name: userId
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties: false
+              required: [theme]
+              properties:
+                theme:
+                  $ref: '#/components/schemas/InterfaceThemeId'
+      responses:
+        '200':
+          description: Persisted interface package preference
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [interfaceTheme]
+                properties:
+                  interfaceTheme:
+                    $ref: '#/components/schemas/InterfaceThemeId'
+        '400':
+          description: Invalid or uninstalled package
+        '401':
+          description: Authentication required
+        '403':
+          description: Only the signed-in user can change their interface
   /desktop/auth-tickets:
     post:
       summary: Issue a one-time native desktop authentication ticket

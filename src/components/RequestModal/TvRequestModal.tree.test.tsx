@@ -1095,8 +1095,8 @@ it('submits the Persius future-season switch through the native request flow', a
     vi.mocked(axios.post).mockClear();
     await fixture(
       async (doc) => {
-        const control = doc.querySelector<HTMLButtonElement>('[role="switch"]');
-        expect(control?.getAttribute('aria-checked')).toBe('true');
+        const control = doc.querySelector<HTMLInputElement>('[role="switch"]');
+        expect(control?.checked).toBe(true);
         if (!enabled) {
           await act(async () => control!.click());
         }
@@ -1106,7 +1106,11 @@ it('submits the Persius future-season switch through the native request flow', a
           expect.objectContaining({ monitorFutureSeasons: enabled })
         );
       },
-      { configure: () => { fixtureState.persius = true; } }
+      {
+        configure: () => {
+          fixtureState.persius = true;
+        },
+      }
     );
   }
 });
@@ -1114,9 +1118,9 @@ it('submits the Persius future-season switch through the native request flow', a
 it('keeps automatic future seasons off when the watch gate manages the request', async () => {
   await fixture(
     async (doc) => {
-      const control = doc.querySelector<HTMLButtonElement>('[role="switch"]');
+      const control = doc.querySelector<HTMLInputElement>('[role="switch"]');
       expect(control?.disabled).toBe(true);
-      expect(control?.getAttribute('aria-checked')).toBe('false');
+      expect(control?.checked).toBe(false);
     },
     {
       configure: () => {

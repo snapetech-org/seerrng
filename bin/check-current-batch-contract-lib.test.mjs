@@ -2000,17 +2000,18 @@ test('conditional request layouts retain the shared canvas in every branch', () 
     ).some((error) => error.includes('must use the same site canvas'));
   assert.equal(passes(source), true);
   assert.equal(
-    passes(source.replace(
-      "'request-modal-site-surface persius-season-modal'",
-      "'persius-season-modal'"
-    )),
+    passes(
+      source.replace(
+        "'request-modal-site-surface persius-season-modal'",
+        "'persius-season-modal'"
+      )
+    ),
     false
   );
   assert.equal(
-    passes(source.replace(
-      ": 'request-modal-site-surface'",
-      ": 'legacy-canvas'"
-    )),
+    passes(
+      source.replace(": 'request-modal-site-surface'", ": 'legacy-canvas'")
+    ),
     false
   );
 });
@@ -2025,9 +2026,11 @@ test('server builds retain packaged themes and fail closed when resources are om
       themeCopy + ' && ',
       ''
     );
-    assert.ok(validateCurrentBatchContract(
-      repositoryFilesWith({ 'package.json': JSON.stringify(changed) })
-    ).some((error) => error.includes('including packaged interface themes')));
+    assert.ok(
+      validateCurrentBatchContract(
+        repositoryFilesWith({ 'package.json': JSON.stringify(changed) })
+      ).some((error) => error.includes('including packaged interface themes'))
+    );
   }
 });
 
@@ -2036,33 +2039,44 @@ test('Persius format terminology does not exempt unrelated user-facing labels', 
   const source = repositoryFilesWith()[file];
   const reason = 'user-visible Ebook terminology';
   assert.equal(
-    validateCurrentBatchContract(repositoryFilesWith({ [file]: source }))
-      .some((error) => error.includes(reason)),
+    validateCurrentBatchContract(repositoryFilesWith({ [file]: source })).some(
+      (error) => error.includes(reason)
+    ),
     false
   );
   assert.ok(
-    validateCurrentBatchContract(repositoryFilesWith({
-      [file]: source.replace("books: 'Books'", "books: 'Ebooks'"),
-    })).some((error) => error.includes(reason))
+    validateCurrentBatchContract(
+      repositoryFilesWith({
+        [file]: source.replace("books: 'Books'", "books: 'Ebooks'"),
+      })
+    ).some((error) => error.includes(reason))
   );
 });
 
 test('compact inputs consume theme tokens and retain both built-in sizes', () => {
   const shared = 'src/styles/interfaceThemes/shared.css';
   const source = repositoryFilesWith()[shared];
-  assert.ok(validateCurrentBatchContract(repositoryFilesWith({
-    [shared]: source.replace(
-      '--compact-control-height: var(--interface-compact-control-height);',
-      '--compact-control-height: 2rem;'
-    ),
-  })).some((error) => error.includes('selected theme token')));
+  assert.ok(
+    validateCurrentBatchContract(
+      repositoryFilesWith({
+        [shared]: source.replace(
+          '--compact-control-height: var(--interface-compact-control-height);',
+          '--compact-control-height: 2rem;'
+        ),
+      })
+    ).some((error) => error.includes('selected theme token'))
+  );
   for (const theme of ['seerrOrig', 'seerrNGJ']) {
     const file = `themes/${theme}/theme.css`;
-    assert.ok(validateCurrentBatchContract(repositoryFilesWith({
-      [file]: repositoryFilesWith()[file].replace(
-        /--interface-compact-control-height:\s*[^;]+;/,
-        '--interface-compact-control-height: 2rem;'
-      ),
-    })).some((error) => error.includes('accepted compact input height')));
+    assert.ok(
+      validateCurrentBatchContract(
+        repositoryFilesWith({
+          [file]: repositoryFilesWith()[file].replace(
+            /--interface-compact-control-height:\s*[^;]+;/,
+            '--interface-compact-control-height: 2rem;'
+          ),
+        })
+      ).some((error) => error.includes('accepted compact input height'))
+    );
   }
 });

@@ -2797,9 +2797,9 @@ const validateCurrentBatchContract = (files) => {
   for (const name of ['build:server', 'build:server:compile']) {
     const steps =
       typeof publicScripts[name] === 'string'
-        ? publicScripts[name].split('&&').map((step) =>
-            step.trim().replace(/\s+/g, ' ')
-          )
+        ? publicScripts[name]
+            .split('&&')
+            .map((step) => step.trim().replace(/\s+/g, ' '))
         : [];
     if (
       steps.length !== serverBuildSteps.length ||

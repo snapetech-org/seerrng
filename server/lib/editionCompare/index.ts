@@ -126,7 +126,10 @@ export const compareBookEditions = async (options: {
   title?: string;
 }): Promise<EditionComparison> => {
   if (options.mediaId) {
-    const service = await getLibraryBookService(options.mediaId, options.format);
+    const service = await getLibraryBookService(
+      options.mediaId,
+      options.format
+    );
     if (
       service &&
       (options.serverId === undefined || service.server.id === options.serverId)

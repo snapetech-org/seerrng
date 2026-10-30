@@ -125,6 +125,39 @@ test('an account can change and restore the complete interface profile', async (
   expect(document.documentElement.dataset.interfaceTheme).toBe('seerrOrig');
 });
 
+test('a superseded restoration cannot detach the current account stylesheet', async () => {
+  fixture.user = account(1, 'seerr', 'seerrOrig');
+  await act(async () => render());
+  const previous = document.querySelector<HTMLLinkElement>(
+    'link[data-interface-theme-stylesheet]'
+  );
+  // Keep the next stylesheet pending while two restoration effects subscribe
+  // to the same load. The superseded effect must not leave the winner detached.
+  vi.mocked(document.head.append).mockRestore();
+  fixture.user = account(1, 'seerr', 'persiusNG');
+  await act(async () => render());
+  const pending = document.querySelector<HTMLLinkElement>(
+    'link[data-interface-theme-id="persiusNG"]'
+  );
+  expect(pending?.media).toBe('not all');
+  fixture.user = account(2, 'aurora', 'persiusNG');
+  await act(async () => render());
+  expect(
+    document.querySelectorAll('link[data-interface-theme-id="persiusNG"]')
+  ).toHaveLength(1);
+  await act(async () => {
+    pending?.dispatchEvent(new dom.window.Event('load'));
+  });
+  expect(theme.interfaceTheme).toBe('persiusNG');
+  expect(theme.palette).toBe('aurora');
+  expect(pending?.isConnected).toBe(true);
+  expect(pending?.media).toBe('all');
+  expect(previous?.isConnected).toBe(false);
+  expect(
+    document.querySelectorAll('link[data-interface-theme-stylesheet]')
+  ).toHaveLength(1);
+});
+
 test('later logins restore the account choice instead of resetting it or sharing another user choice', async () => {
   localStorage.setItem('seerr-theme-palette', 'classic');
   fixture.user = account(1, 'aurora');

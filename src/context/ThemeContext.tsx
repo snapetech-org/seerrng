@@ -945,6 +945,9 @@ const prepareThemeStylesheet = (themeId: string): Promise<HTMLLinkElement> => {
 
 const activateThemeStylesheet = (selected: HTMLLinkElement): void => {
   selected.media = 'all';
+  // Restoration effects share an in-flight load. A superseded subscriber may
+  // detach it before the current subscriber runs, so activation owns attachment.
+  if (!selected.isConnected) document.head.append(selected);
   for (const link of document.head.querySelectorAll<HTMLLinkElement>(
     `link[${THEME_STYLESHEET_ATTRIBUTE}]`
   )) {
