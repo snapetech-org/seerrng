@@ -49,6 +49,10 @@ import type {
 import type { SeasonEpisodeSelection } from '@server/interfaces/api/seasonInterfaces';
 import { hasAvailableBookFormat } from '@server/lib/bookAvailability';
 import {
+  BookRequestEditConflictError,
+  planBookRequestEdit,
+} from '@server/lib/bookRequestEdit';
+import {
   isValidMusicBrainzResourceId,
   isValidOpenLibraryResourceId,
   normalizeMusicBrainzId,
@@ -4024,23 +4028,21 @@ requestRoutes.put<{ requestId: string }>(
                     if (body.tags !== undefined) {
                       request.tags = body.tags;
                     }
-                  } else if (
-                    request.type === MediaType.MUSIC ||
-                    request.type === MediaType.BOOK
-                  ) {
+                  } else if (request.type === MediaType.BOOK) {
+                    Object.assign(
+                      request,
+                      await planBookRequestEdit(request, body)
+                    );
+                  } else if (request.type === MediaType.MUSIC) {
                     const nextServerId =
                       body.serverId === undefined
                         ? request.serverId
                         : body.serverId;
-                    const nextBookFormat =
-                      request.type === MediaType.BOOK
-                        ? (body.format ?? request.bookFormat ?? 'ebook')
-                        : null;
 
                     validateExternalServiceConfiguration(
                       request.type,
                       nextServerId,
-                      nextBookFormat
+                      null
                     );
 
                     if (body.serverId !== undefined) {
@@ -4057,10 +4059,6 @@ requestRoutes.put<{ requestId: string }>(
                     }
                     if (body.tags !== undefined) {
                       request.tags = body.tags;
-                    }
-                    if (request.type === MediaType.BOOK) {
-                      request.bookFormat =
-                        body.format ?? request.bookFormat ?? 'ebook';
                     }
                   } else if (request.type === MediaType.TV) {
                     const requestedSeasons =
@@ -4530,7 +4528,10 @@ requestRoutes.put<{ requestId: string }>(
           message: 'You do not have permission to modify this request.',
         });
       }
-      if (e instanceof TvSeasonWatchGateError) {
+      if (
+        e instanceof TvSeasonWatchGateError ||
+        e instanceof BookRequestEditConflictError
+      ) {
         return next({ status: e.status, message: e.message });
       }
       if (e instanceof ServiceConfigurationError) {

@@ -96,7 +96,7 @@ const UserDropdown = () => {
   };
 
   return (
-    <Menu as="div" className="app-user-menu relative">
+    <Menu as="div" className="relative">
       <div>
         <MenuButton
           className="flex max-w-xs items-center rounded-full text-sm ring-1 ring-gray-700 hover:ring-gray-500 focus:ring-gray-500 focus:outline-none"

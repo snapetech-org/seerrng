@@ -27,8 +27,8 @@ import type { SeasonEpisodeSelection } from '@server/interfaces/api/seasonInterf
 import { compareBookEditions } from '@server/lib/editionCompare';
 import {
   normalizeMusicBrainzId,
-  normalizeOpenLibraryEditionId,
   normalizeOpenLibraryAuthorId,
+  normalizeOpenLibraryEditionId,
   normalizeOpenLibraryWorkId,
 } from '@server/lib/externalIds';
 import { getExternalRuntimeConfig } from '@server/lib/externalRuntimeConfig';
@@ -1604,7 +1604,10 @@ export class MediaRequest {
       // Verify the exact performance at the resolved destination before bypassing
       // work-level availability. Client edition IDs are never authority.
       const preferredEditionId = requestBody.preferredEditionId;
-      if (isProviderBookEdition(preferredEditionId) && requestedBookFormat === 'both') {
+      if (
+        isProviderBookEdition(preferredEditionId) &&
+        requestedBookFormat === 'both'
+      ) {
         throw new ServiceConfigurationError(
           'A specific edition requires a single book format.'
         );
@@ -1625,7 +1628,9 @@ export class MediaRequest {
         const authorKey = expectedWork?.authors?.[0]?.author?.key;
         const expectedAuthor = authorKey
           ? (
-              await openLibrary.getAuthor(normalizeOpenLibraryAuthorId(authorKey))
+              await openLibrary.getAuthor(
+                normalizeOpenLibraryAuthorId(authorKey)
+              )
             )?.name
           : undefined;
         const comparison = await compareBookEditions({
@@ -1671,7 +1676,7 @@ export class MediaRequest {
       const blockingRequests = hasEditionChoice
         ? destinationRequests.filter(
             (request) =>
-              !request.preferredEditionId ||
+              !isProviderBookEdition(request.preferredEditionId) ||
               request.preferredEditionId === preferredEditionId
           )
         : destinationRequests;

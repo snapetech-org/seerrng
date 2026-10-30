@@ -270,10 +270,10 @@
 [data-interface-theme='persiusNG'] .searchbar.app-searchbar-scrolled {
   background: var(--interface-panel);
 }
-[data-interface-theme='persiusNG'] .app-searchbar-inner {
+[data-interface-theme='persiusNG'] [data-theme-part='searchbar-inner'] {
   padding-inline: 40px;
 }
-[data-interface-theme='persiusNG'] .app-searchbar-field {
+[data-interface-theme='persiusNG'] [data-theme-part='searchbar-field'] {
   flex: 0 1 560px;
 }
 [data-interface-theme='persiusNG'] .app-search-input {
@@ -291,7 +291,7 @@
   color: var(--interface-muted);
   opacity: 1;
 }
-[data-interface-theme='persiusNG'] .app-searchbar-field svg {
+[data-interface-theme='persiusNG'] [data-theme-part='searchbar-field'] svg {
   color: var(--interface-muted);
 }
 [data-interface-theme='persiusNG'] .persius-search-shortcut {
@@ -839,7 +839,7 @@
   [data-interface-theme='persiusNG'] .searchbar {
     inset-inline-start: var(--interface-sidebar-width);
   }
-  [data-interface-theme='persiusNG'] .app-searchbar-account {
+  [data-interface-theme='persiusNG'] [data-theme-part='searchbar-account'] {
     display: none;
   }
 }
@@ -854,14 +854,14 @@
   }
 }
 @media (max-width: 1023px) {
-  [data-interface-theme='persiusNG'] .app-searchbar-inner {
+  [data-interface-theme='persiusNG'] [data-theme-part='searchbar-inner'] {
     padding-inline: 16px;
   }
-  [data-interface-theme='persiusNG'] .app-searchbar-field {
+  [data-interface-theme='persiusNG'] [data-theme-part='searchbar-field'] {
     flex: 1;
   }
   [data-interface-theme='persiusNG']
-    .app-searchbar-account
+    [data-theme-part='searchbar-account']
     .persius-account-label {
     display: none;
   }
@@ -1791,7 +1791,9 @@
   background: var(--interface-accent-a);
   color: #0b0d11;
 }
-[data-interface-theme='persiusNG'] .persius-season-modal .request-media-card {
+[data-interface-theme='persiusNG']
+  .persius-season-modal
+  [data-theme-part='request-media-card'] {
   overflow: visible;
   padding: 0;
   border: 0;
@@ -1800,7 +1802,7 @@
 }
 [data-interface-theme='persiusNG']
   .persius-season-modal
-  .request-media-card
+  [data-theme-part='request-media-card']
   > [aria-hidden] {
   display: none;
 }
@@ -1923,12 +1925,14 @@
   width: 18px;
   height: 18px;
 }
-[data-interface-theme='persiusNG'] .persius-season-modal .request-media-card {
+[data-interface-theme='persiusNG']
+  .persius-season-modal
+  [data-theme-part='request-media-card'] {
   display: block;
 }
 [data-interface-theme='persiusNG']
   .persius-season-modal
-  .request-media-card
+  [data-theme-part='request-media-card']
   > [data-card-part='content'] {
   display: block;
   padding: 0;
@@ -2162,14 +2166,14 @@
 }
 [data-interface-theme='persiusNG']
   .persius-season-modal
-  .request-media-card
+  [data-theme-part='request-media-card']
   > [data-card-part='content'] {
   display: flex;
   flex-direction: column;
 }
 [data-interface-theme='persiusNG']
   .persius-season-modal
-  .request-media-card
+  [data-theme-part='request-media-card']
   > [data-card-part='content']
   > .persius-secondary {
   order: 1;

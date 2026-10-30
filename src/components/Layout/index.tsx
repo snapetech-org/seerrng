@@ -274,7 +274,10 @@ const Layout = ({ children }: LayoutProps) => {
             isScrolled ? 'app-searchbar-scrolled' : 'bg-transparent'
           } lg:start-64`}
         >
-          <div className="app-searchbar-inner flex flex-1 items-center justify-between px-4">
+          <div
+            data-theme-part="searchbar-inner"
+            className="flex flex-1 items-center justify-between px-4"
+          >
             <button
               className={`me-2 hidden text-white sm:block ${
                 isScrolled ? 'opacity-90' : 'opacity-70'
@@ -294,10 +297,13 @@ const Layout = ({ children }: LayoutProps) => {
             >
               <ArrowLeftIcon className="w-7 rtl:rotate-180" />
             </button>
-            <div className="app-searchbar-field min-w-0 flex-1">
+            <div data-theme-part="searchbar-field" className="min-w-0 flex-1">
               <SearchInput />
             </div>
-            <div className="app-searchbar-account relative z-20 ms-2 flex shrink-0 items-center gap-2">
+            <div
+              data-theme-part="searchbar-account"
+              className="relative z-20 ms-2 flex shrink-0 items-center gap-2"
+            >
               <ThemePicker />
               <UserDropdown />
             </div>

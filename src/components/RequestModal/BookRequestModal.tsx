@@ -483,7 +483,10 @@ const BookRequestModal = ({
       return;
     }
 
-    if (formatAvailable[bookFormat]) {
+    if (
+      formatAvailable[bookFormat] ||
+      isProviderBookEdition(editRequest?.preferredEditionId)
+    ) {
       return;
     }
 
@@ -495,6 +498,7 @@ const BookRequestModal = ({
   }, [
     bookFormat,
     bookServices,
+    editRequest?.preferredEditionId,
     formatAvailable,
     formatAvailable.audiobook,
     formatAvailable.ebook,
@@ -615,12 +619,18 @@ const BookRequestModal = ({
     {
       label: intl.formatMessage(messages.ebook),
       value: 'ebook' as const,
-      disabled: !formatAvailable.ebook,
+      disabled:
+        !formatAvailable.ebook ||
+        (isProviderBookEdition(editRequest?.preferredEditionId) &&
+          editRequest?.bookFormat !== 'ebook'),
     },
     {
       label: intl.formatMessage(messages.audiobook),
       value: 'audiobook' as const,
-      disabled: !formatAvailable.audiobook,
+      disabled:
+        !formatAvailable.audiobook ||
+        (isProviderBookEdition(editRequest?.preferredEditionId) &&
+          editRequest?.bookFormat !== 'audiobook'),
     },
   ];
 
