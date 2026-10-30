@@ -888,9 +888,12 @@ const BookDetails = () => {
         playbackActions={playbackActions}
         playbackUnavailableReason={playbackUnavailableReason}
         additionalContent={additionalContent}
+        canRequestNarration={canRequest && audiobookCategoryEnabled && hasAudiobookService && data.mediaInfo?.status !== MediaStatus.BLOCKLISTED}
+        onChanged={() => void revalidate()}
       />
     </>
   );
 };
 
 export default BookDetails;
+

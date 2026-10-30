@@ -1,3 +1,6 @@
+import { OptionalDisclosure } from '@app/components/Persius/Primitives';
+import { DiscoveryHeader, HeroShelf } from '@app/components/Persius/Discovery';
+import usePersius from '@app/components/Persius/usePersius';
 import Button from '@app/components/Common/Button';
 import ConfirmButton from '@app/components/Common/ConfirmButton';
 import Header from '@app/components/Common/Header';
@@ -140,6 +143,7 @@ type DiscoverProps = {
 
 const Discover = ({ initialSliders }: DiscoverProps) => {
   const intl = useIntl();
+  const persius = usePersius();
   const { hasPermission, user } = useUser();
   const { currentSettings } = useSettings();
   const serviceAvailability = useMemo(
@@ -252,14 +256,23 @@ const Discover = ({ initialSliders }: DiscoverProps) => {
       data-discover-editor-open={isEditing ? 'true' : 'false'}
     >
       <PageTitle title={intl.formatMessage(messages.discover)} />
-      <Header>{intl.formatMessage(messages.discover)}</Header>
+      {persius && !isEditing ? (
+        <>
+          <DiscoveryHeader />
+          <HeroShelf />
+        </>
+      ) : (
+        <Header>{intl.formatMessage(messages.discover)}</Header>
+      )}
+      <OptionalDisclosure enabled={persius} label={intl.formatMessage(messages.customizediscover)}>
       <Link
-        href="/discover/providers"
-        className="mb-4 inline-flex text-sm text-blue-400 hover:text-blue-300"
-      >
-        <FormattedMessage {...discoveryMessages['providers.explore']} />
-      </Link>
-      {!isEditing && <PersonalizedRows />}
+          href="/discover/providers"
+          className="mb-4 inline-flex text-sm text-blue-400 hover:text-blue-300"
+        >
+          <FormattedMessage {...discoveryMessages['providers.explore']} />
+        </Link>
+        {!isEditing && <PersonalizedRows />}
+      </OptionalDisclosure>
       {hasPermission(Permission.ADMIN) && (
         <>
           {isEditing && (
@@ -347,6 +360,12 @@ const Discover = ({ initialSliders }: DiscoverProps) => {
         </>
       )}
       {visibleSliders?.map((slider, index) => {
+        if (
+          persius &&
+          !isEditing &&
+          slider.type === DiscoverSliderType.TRENDING
+        )
+          return null;
         let sliderComponent: React.ReactNode;
 
         switch (slider.type) {

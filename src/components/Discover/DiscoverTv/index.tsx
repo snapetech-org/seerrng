@@ -1,3 +1,8 @@
+import CatalogControls, {
+  libraryView,
+} from '@app/components/Persius/CatalogControls';
+import usePersius from '@app/components/Persius/usePersius';
+import persiusMessages from '@app/components/Persius/messages';
 import Button from '@app/components/Common/Button';
 import CachedImage from '@app/components/Common/CachedImage';
 import Header from '@app/components/Common/Header';
@@ -50,6 +55,7 @@ const DiscoverTv = ({
   mediaFilters,
 }: DiscoverTvProps = {}) => {
   const intl = useIntl();
+  const persius = usePersius();
   const router = useRouter();
   const watchlistPreview =
     process.env.NODE_ENV === 'development' &&
@@ -65,9 +71,12 @@ const DiscoverTv = ({
     '/api/v1/discover/tv',
     preparedFilters,
     {
-      randomizeOrder: randomizeOrder ?? !preparedFilters.sortBy,
+      randomizeOrder: randomizeOrder ?? (!persius && !preparedFilters.sortBy),
       availableQuality: preparedFilters.availability,
-      hideAvailable: !preparedFilters.availability,
+      hideAvailable: !persius && !preparedFilters.availability,
+      availabilityView: persius
+        ? libraryView(router.query.libraryView)
+        : undefined,
     }
   );
   useSearchActivityReporter(
@@ -101,6 +110,11 @@ const DiscoverTv = ({
       <PageTitle title={title} />
       <div className="app-filter-section-gap">
         <Header>{title}</Header>
+        {persius && (
+          <p className="persius-description">
+            {intl.formatMessage(persiusMessages.seriesDescription)}
+          </p>
+        )}
         {mediaFilters}
         {networkLogo && (
           <div className="catalog-branding">
@@ -113,7 +127,15 @@ const DiscoverTv = ({
             />
           </div>
         )}
-        <MediaDiscoveryControls type="tv" currentFilters={preparedFilters} />
+        {persius ? (
+          <CatalogControls
+            type="tv"
+            filters={preparedFilters}
+            count={discover.titles.length}
+          />
+        ) : (
+          <MediaDiscoveryControls type="tv" currentFilters={preparedFilters} />
+        )}
         {watchlistPreview && (
           <Button
             type="button"

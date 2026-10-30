@@ -1,3 +1,5 @@
+import { PersiusDock } from '@app/components/Persius/Chrome';
+import usePersius from '@app/components/Persius/usePersius';
 import AppDataWarning from '@app/components/AppDataWarning';
 import DiscoveryModeTabs, {
   discoveryMediaTypeForPath,
@@ -33,6 +35,7 @@ type LayoutProps = {
 };
 
 const Layout = ({ children }: LayoutProps) => {
+  const persius = usePersius();
   const [isSidebarOpen, setSidebarOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const isScrolledRef = useRef(false);
@@ -236,7 +239,10 @@ const Layout = ({ children }: LayoutProps) => {
   }, []);
 
   return (
-    <div className="app-shell flex h-full min-h-full min-w-0">
+    <div
+      className="app-shell flex h-full min-h-full min-w-0"
+      data-presentation={persius ? 'persius' : undefined}
+    >
       <div className="pwa-only fixed inset-0 z-20 h-1 w-full border-gray-700 md:border-t" />
       <div className="app-backdrop pointer-events-none fixed inset-0 h-full w-full" />
       <Sidebar
@@ -256,6 +262,7 @@ const Layout = ({ children }: LayoutProps) => {
         />
       </div>
 
+      {persius && <PersiusDock />}
       <div
         data-interface-role="main-content"
         className="relative mb-16 flex w-0 min-w-0 flex-1 flex-col lg:ms-64"
@@ -266,7 +273,7 @@ const Layout = ({ children }: LayoutProps) => {
             isScrolled ? 'app-searchbar-scrolled' : 'bg-transparent'
           } lg:start-64`}
         >
-          <div className="flex flex-1 items-center justify-between px-4">
+          <div className="app-searchbar-inner flex flex-1 items-center justify-between px-4">
             <button
               className={`me-2 hidden text-white sm:block ${
                 isScrolled ? 'opacity-90' : 'opacity-70'
@@ -286,10 +293,10 @@ const Layout = ({ children }: LayoutProps) => {
             >
               <ArrowLeftIcon className="w-7 rtl:rotate-180" />
             </button>
-            <div className="min-w-0 flex-1">
+            <div className="app-searchbar-field min-w-0 flex-1">
               <SearchInput />
             </div>
-            <div className="relative z-20 ms-2 flex shrink-0 items-center gap-2">
+            <div className="app-searchbar-account relative z-20 ms-2 flex shrink-0 items-center gap-2">
               <ThemePicker />
               <UserDropdown />
             </div>

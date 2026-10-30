@@ -1,3 +1,4 @@
+import { duration } from '@app/components/Persius/format';
 import ArtistCard from '@app/components/ArtistCard';
 import AuthorCard from '@app/components/AuthorCard';
 import Button from '@app/components/Common/Button';
@@ -402,7 +403,16 @@ const ListView = ({
                 isAddedToWatchlist={title.mediaInfo?.watchlists?.length ?? 0}
                 status={title.mediaInfo?.status}
                 title={title.title}
-                artist={title.author}
+                artist={
+                  (title.bookFormat ?? preferredBookFormat) === 'audiobook'
+                    ? title.narrators?.join(' & ') || title.author
+                    : title.author
+                }
+                captionMeta={duration(
+                  title.audiobookDuration
+                    ? title.audiobookDuration / 60
+                    : undefined
+                )}
                 bookRatingAverage={title.ratingsAverage}
                 bookRatingCount={title.ratingsCount}
                 year={title.firstPublishYear?.toString()}

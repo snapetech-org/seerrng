@@ -48,6 +48,9 @@ import type { ReactElement, SVGProps } from 'react';
 
 export const menuMessages = defineMessages('components.Layout.Sidebar', {
   discover: 'Discover',
+  you: 'You',
+  more: 'More',
+  comingSoon: 'Coming soon',
   calendar: 'Calendar',
   downloads: 'Download Inbox',
   acquisitionTools: 'Acquisition Tools',
@@ -399,3 +402,4 @@ export const navigationSections: NavigationSection[] = [
     ],
   },
 ];
+

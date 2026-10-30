@@ -1,3 +1,5 @@
+import { PersiusAccountLabel } from '@app/components/Persius/Chrome';
+import usePersius from '@app/components/Persius/usePersius';
 import CachedImage from '@app/components/Common/CachedImage';
 import MiniQuotaDisplay from '@app/components/Layout/UserDropdown/MiniQuotaDisplay';
 import { useNativeRuntime } from '@app/context/NativeRuntimeContext';
@@ -45,6 +47,7 @@ const ForwardedLink = forwardRef<
 ForwardedLink.displayName = 'ForwardedLink';
 
 const UserDropdown = () => {
+  const persius = usePersius();
   const intl = useIntl();
   const { user, revalidate } = useUser();
   const router = useRouter();
@@ -93,7 +96,7 @@ const UserDropdown = () => {
   };
 
   return (
-    <Menu as="div" className="relative">
+    <Menu as="div" className="app-user-menu relative">
       <div>
         <MenuButton
           className="flex max-w-xs items-center rounded-full text-sm ring-1 ring-gray-700 hover:ring-gray-500 focus:ring-gray-500 focus:outline-none"
@@ -108,6 +111,7 @@ const UserDropdown = () => {
             width={40}
             height={40}
           />
+          {persius && <PersiusAccountLabel />}
         </MenuButton>
       </div>
       <MenuItems

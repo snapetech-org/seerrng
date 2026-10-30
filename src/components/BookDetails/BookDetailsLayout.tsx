@@ -1,3 +1,5 @@
+import PersiusBookDetail from '@app/components/Persius/BookDetail';
+import usePersius from '@app/components/Persius/usePersius';
 import BookSeriesLinks from '@app/components/BookSeriesDetails/BookSeriesLinks';
 import BookSeriesSummaryCard from '@app/components/BookSeriesDetails/BookSeriesSummaryCard';
 import CachedImage from '@app/components/Common/CachedImage';
@@ -71,6 +73,8 @@ interface BookDetailsLayoutProps {
   ) => ReactNode;
   playbackUnavailableReason?: (format: 'ebook' | 'audiobook') => string;
   additionalContent?: ReactNode;
+  canRequestNarration?: boolean;
+  onChanged?: () => void;
 }
 
 const BookDetailsLayout = ({
@@ -84,8 +88,11 @@ const BookDetailsLayout = ({
   playbackActions,
   playbackUnavailableReason,
   additionalContent,
+  canRequestNarration = false,
+  onChanged,
 }: BookDetailsLayoutProps) => {
   const intl = useIntl();
+  const persius = usePersius();
   const { pins, togglePinned } = useDetailDisclosurePins('book');
   const [showDetails, setShowDetails] = useState(false);
   const [showCollection, setShowCollection] = useState(false);
@@ -155,6 +162,13 @@ const BookDetailsLayout = ({
           ? messages.requested
           : messages.notAvailable
     );
+
+  if (persius) return <PersiusBookDetail data={data} coverage={formatCoverage} format={selectedPlaybackFormat} onFormatChange={setSelectedPlaybackFormat}
+    actions={<>{primaryActions}{secondaryActions}</>}
+    playback={playbackActions?.(effectivePlaybackItemIds, selectedPlaybackFormat)}
+    extra={<>{catalogActions}{additionalContent}{playbackCatalog && availablePlaybackItemIds.length > 0 && <PlaybackTrackList catalog={playbackCatalog} selectedItemIds={selectedPlaybackItemIds} onSelectionChange={setSelectedPlaybackItemIds} />}</>}
+    canRequest={canRequestNarration} onChanged={onChanged}
+  />;
 
   return (
     <div className="media-page">
@@ -572,3 +586,4 @@ const BookDetailsLayout = ({
 };
 
 export default BookDetailsLayout;
+

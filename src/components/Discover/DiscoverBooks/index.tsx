@@ -1,3 +1,8 @@
+import { BookShelves } from '@app/components/Persius/BookShelves';
+import { AvailabilitySegments, libraryView } from '@app/components/Persius/CatalogControls';
+import { OptionalDisclosure } from '@app/components/Persius/Primitives';
+import usePersius from '@app/components/Persius/usePersius';
+import persiusMessages from '@app/components/Persius/messages';
 import InlineBookSeriesResults from '@app/components/BookSeriesSearch/InlineResults';
 import Button from '@app/components/Common/Button';
 import CardTextVisibilityToggle from '@app/components/Common/CardTextVisibilityToggle';
@@ -73,6 +78,7 @@ const DiscoverBooks = ({
   defaultSortBy = 'ranked',
 }: DiscoverBooksProps) => {
   const intl = useIntl();
+  const persius = usePersius();
   const router = useRouter();
   const { currentSettings } = useSettings();
   const { user, hasPermission } = useUser();
@@ -208,6 +214,7 @@ const DiscoverBooks = ({
     {
       query,
       author: authorQuery,
+      narrator: activeFormat === 'audiobook' && typeof routeQuery.narrator === 'string' ? routeQuery.narrator : undefined,
       subject,
       firstPublishYear,
       language,
@@ -220,8 +227,10 @@ const DiscoverBooks = ({
     },
     {
       enabled: isRouteReady && hasEnabledBookFormat,
+      hideAvailable: !persius,
+      availabilityView: persius ? libraryView(routeQuery.libraryView) : undefined,
       randomizeOrder:
-        sortBy === 'ranked' || sortBy === 'ranked.asc' || sortBy === 'random',
+        (!persius && (sortBy === 'ranked' || sortBy === 'ranked.asc')) || sortBy === 'random',
       showErrorToast: false,
       hideErrorWithResults: false,
     }
@@ -300,11 +309,13 @@ const DiscoverBooks = ({
     <>
       <PageTitle title={title} />
       <div className="app-filter-section-gap">
-        <Header>{title}</Header>
+        <Header>{persius ? intl.formatMessage(messages.books) : title}</Header>
+        {persius && showFormatTabs && <BookFormatTabs format={activeFormat} availableFormats={availableFormats} query={routeQuery} currentPath={currentPath} />}
+        <OptionalDisclosure enabled={persius} label={intl.formatMessage(persiusMessages.filters)}>
         <RelatedTools tools={['share', 'bookRecommendations', 'following']} />
         {activeFormat === 'audiobook' && <ReadMeABookSearch />}
         {mediaFilters}
-        {showFormatTabs && (
+        {!persius && showFormatTabs && (
           <PinnedFilterSection
             mediaType="book"
             section="mediaFilters"
@@ -469,7 +480,9 @@ const DiscoverBooks = ({
             </button>
           </div>
         </PinnedFilterSection>
+        </OptionalDisclosure>
       </div>
+      {persius && <><BookShelves books={discover.titles} audiobook={activeFormat === 'audiobook'} /><section className="persius-section"><div className="persius-section-header"><h2 className="page-heading">{intl.formatMessage(activeFormat === 'audiobook' ? persiusMessages.popularAudio : persiusMessages.allEbooks)}</h2></div><div className="persius-filter-row persius-book-controls"><AvailabilitySegments value={libraryView(routeQuery.libraryView)} onChange={(value) => setParam({ libraryView: value === 'all' ? undefined : value })} /><label className="persius-sort">{intl.formatMessage(persiusMessages.sort)}<select value={sortBy} onChange={(event) => setParam({ sortBy: event.target.value })}><option value="ranked">{intl.formatMessage(persiusMessages.popular)}</option><option value="trending">{intl.formatMessage(messages.trending)}</option><option value="newest">{intl.formatMessage(messages.date)}</option><option value="rating.desc">{intl.formatMessage(messages.rating)}</option>{!['ranked', 'trending', 'newest', 'rating.desc'].includes(sortBy) && <option value={sortBy}>{sortBy}</option>}</select></label><span className="persius-filter-count">{intl.formatMessage(persiusMessages.loadedTitles, { count: discover.titles.length })}</span></div></section></>}
       {isRouteReady && query.trim().length >= 2 && (
         <Link
           href={{
@@ -537,3 +550,4 @@ const DiscoverBooks = ({
   );
 };
 export default DiscoverBooks;
+

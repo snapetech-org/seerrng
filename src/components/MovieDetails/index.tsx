@@ -436,10 +436,7 @@ const MovieDetails = ({ movie }: MovieDetailsProps) => {
     </>
   );
 
-  const primaryActions = (
-    <>
-      <DiscoverDetailNavigation id={Number(movieId)} mediaType="movie" />
-      {safeTrailerUrl && (
+  const trailerAction = (safeTrailerUrl && (
         <Button
           as="a"
           href={safeTrailerUrl}
@@ -451,7 +448,12 @@ const MovieDetails = ({ movie }: MovieDetailsProps) => {
           <FilmIcon />
           <span>{intl.formatMessage(messages.watchtrailer)}</span>
         </Button>
-      )}
+      ));
+
+  const primaryActions = (
+    <>
+      <DiscoverDetailNavigation id={Number(movieId)} mediaType="movie" />
+      {trailerAction}
       <AssociationBadge mediaType="movie" id={data.id} variant="button" />
     </>
   );
@@ -574,6 +576,7 @@ const MovieDetails = ({ movie }: MovieDetailsProps) => {
           )
         }
         primaryActions={primaryActions}
+        trailerAction={trailerAction}
         secondaryActions={secondaryActions}
         indexerSearchAction={indexerSearchAction}
         indexerCompanionActions={indexerCompanionActions}
@@ -586,3 +589,4 @@ const MovieDetails = ({ movie }: MovieDetailsProps) => {
 };
 
 export default MovieDetails;
+

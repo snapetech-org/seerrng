@@ -1,0 +1,12 @@
+{
+  "formatVersion": 1,
+  "themeApiVersion": 1,
+  "id": "persiusNG",
+  "name": "PersiusNG",
+  "description": "Quiet charcoal surfaces, lavender controls, cinematic discovery and compact requests.",
+  "version": "1.0.0",
+  "author": "SeerrNG",
+  "license": "MIT",
+  "navigation": "grouped",
+  "activeNavigationIcon": "outline"
+}

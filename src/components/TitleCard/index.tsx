@@ -1,3 +1,4 @@
+import usePersius from '@app/components/Persius/usePersius';
 import Spinner from '@app/assets/spinner.svg';
 import AssociationBadge from '@app/components/Association/AssociationBadge';
 import BlocklistConfirmationModal from '@app/components/BlocklistConfirmationModal';
@@ -67,6 +68,7 @@ interface TitleCardProps {
   enablePosterFallbackLookup?: boolean;
   summary?: string;
   year?: string;
+  captionMeta?: string;
   title: string;
   titleWeight?: 'regular';
   /** Development visual prototype only; never uses persisted membership. */
@@ -144,6 +146,7 @@ const TitleCard = ({
   enablePosterFallbackLookup = false,
   summary,
   year,
+  captionMeta,
   title,
   titleWeight = 'regular',
   watchlistPreview = false,
@@ -176,6 +179,7 @@ const TitleCard = ({
   viewerRequestCoverage,
 }: TitleCardProps) => {
   const isTouch = useIsTouch();
+  const persius = usePersius();
   const router = useRouter();
   const intl = useIntl();
   const settings = useSettings();
@@ -795,7 +799,7 @@ const TitleCard = ({
     currentStatus !== MediaStatus.UNKNOWN &&
     currentStatus !== MediaStatus.DELETED;
   const showTextOverlay =
-    showText || !posterImage || showDetail || showRequestModal;
+    (!persius && showText) || !posterImage || showDetail || showRequestModal;
   const showFullDetailOverlay = !posterImage || showDetail || showRequestModal;
   const requestLabel =
     isBook && preferredBookFormat
@@ -938,6 +942,7 @@ const TitleCard = ({
     <div
       className="poster-layout title-card-shell"
       data-media-type={mediaType}
+      data-book-format={preferredBookFormat}
       data-testid="title-card"
       ref={cardRef}
     >
@@ -1339,7 +1344,27 @@ const TitleCard = ({
           </Transition>
         </div>
       </div>
-      {showDetail &&
+      {persius && (
+        <div className="persius-poster-caption">
+          <Link
+            href={detailHrefWithDiscoverContext}
+            as={detailAsWithDiscoverContext}
+            prefetch={false}
+            onClick={onOpen}
+            title={title}
+          >
+            {title}
+          </Link>
+          {artist && <span title={artist}>{artist}</span>}
+          {(captionMeta || year) && (
+            <span>
+              {[year?.slice(0, 4), captionMeta].filter(Boolean).join(' · ')}
+            </span>
+          )}
+        </div>
+      )}
+      {!persius &&
+        showDetail &&
         (mediaType === 'movie' ||
           mediaType === 'tv' ||
           mediaType === 'album' ||

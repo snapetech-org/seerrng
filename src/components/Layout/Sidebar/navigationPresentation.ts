@@ -1,6 +1,47 @@
 import type { InterfaceThemeNavigation } from '@server/utils/interfaceTheme';
 import type { NavigationSection } from './navigation';
 
+/** Reorder only links that have already passed permission/service filtering. */
+export const getPersiusNavigationSections = (
+  sections: NavigationSection[]
+): NavigationSection[] => {
+  const links = sections.flatMap((section) => section.links);
+  const primary = ['discover-home', 'movies', 'series', 'books', 'audiobooks'];
+  const personal = ['requests', 'calendar'];
+  const ordered = (ids: string[]) =>
+    ids.flatMap((id) => links.filter((link) => link.id === id));
+  return [
+    {
+      id: 'persius-discover',
+      ariaLabelKey: 'discover',
+      links: ordered(primary),
+    },
+    {
+      id: 'persius-you',
+      ariaLabelKey: 'you',
+      headingKey: 'you',
+      links: ordered(personal).map((link) =>
+        link.id === 'calendar'
+          ? {
+              ...link,
+              href: '/coming-soon',
+              messagesKey: 'comingSoon' as const,
+              activeRegExp: /^\/(?:coming-soon|calendar)(?:\/|$)/,
+            }
+          : link
+      ),
+    },
+    {
+      id: 'persius-more',
+      ariaLabelKey: 'more',
+      headingKey: 'more',
+      links: links.filter(
+        (link) => !primary.includes(link.id) && !personal.includes(link.id)
+      ),
+    },
+  ].filter((section) => section.links.length > 0);
+};
+
 const originalNavigationOrder = [
   'discover-home',
   'movies',

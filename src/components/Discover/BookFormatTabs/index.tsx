@@ -1,3 +1,5 @@
+import usePersius from '@app/components/Persius/usePersius';
+import persiusMessages from '@app/components/Persius/messages';
 import MediaFilterOption from '@app/components/Discover/MediaFilterOption';
 import useMediaFilterPin from '@app/hooks/useMediaFilterPin';
 import defineMessages from '@app/utils/defineMessages';
@@ -74,6 +76,7 @@ const BookFormatTabs = ({
   availableFormats = ['all', 'ebook', 'audiobook'],
 }: BookFormatTabsProps) => {
   const intl = useIntl();
+  const persius = usePersius();
   const router = useRouter();
   const allPathname =
     router.pathname === '/discover/audiobooks'
@@ -128,6 +131,13 @@ const BookFormatTabs = ({
     },
   });
 
+  if (persius) return <nav className="persius-segments" data-fill="true" aria-label={intl.formatMessage(messages.format)}>
+    {tabs.filter((tab) => availableFormats.includes(tab.format) && (tab.format !== 'all' || format === 'all')).map((tab) => {
+      const Icon = tab.icon;
+      return <Link key={tab.format} href={getBookFormatHref(tab.pathname, preservedQuery, tab.queryFormat)} aria-current={tab.format === format ? 'page' : undefined}><Icon aria-hidden="true" />{intl.formatMessage(tab.format === 'ebook' ? persiusMessages.ebooks : tab.label)}</Link>;
+    })}
+  </nav>;
+
   return (
     <nav
       aria-label={intl.formatMessage(messages.format)}
@@ -169,3 +179,4 @@ const BookFormatTabs = ({
 };
 
 export default BookFormatTabs;
+

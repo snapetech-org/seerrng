@@ -1,3 +1,6 @@
+import { PersiusBrand } from '@app/components/Persius/Chrome';
+import UserDropdown from '@app/components/Layout/UserDropdown';
+import { getPersiusNavigationSections } from './navigationPresentation';
 import Badge from '@app/components/Common/Badge';
 import FollowUnreadCount from '@app/components/Following/FollowUnreadCount';
 import {
@@ -47,7 +50,8 @@ const Sidebar = ({
   const navRef = useRef<HTMLDivElement>(null);
   const router = useRouter();
   const intl = useIntl();
-  const { interfaceThemeDefinition } = useTheme();
+  const { interfaceThemeDefinition, interfaceTheme } = useTheme();
+  const persius = interfaceTheme === 'persiusNG';
   const { user, hasPermission } = useUser();
   const showBlocklistNavigation = useBlocklistNavigation();
   const { currentSettings } = useSettings();
@@ -79,16 +83,26 @@ const Sidebar = ({
     }))
     .filter((section) => section.links.length > 0);
 
-  const displayedSidebarSections = getNavigationSectionsForTheme(
-    visibleSidebarSections,
-    interfaceThemeDefinition.navigation
-  );
+  const displayedSidebarSections = persius
+    ? getPersiusNavigationSections(visibleSidebarSections)
+    : getNavigationSectionsForTheme(
+        visibleSidebarSections,
+        interfaceThemeDefinition.navigation
+      );
 
   const renderNavigationLink = (
     link: NavigationLink,
     device: 'mobile' | 'desktop'
   ) => {
-    const selected = router.pathname.match(link.activeRegExp);
+    const selected =
+      (link.id === 'audiobooks' &&
+        router.pathname.startsWith('/book/') &&
+        router.query.format === 'audiobook') ||
+      (link.id === 'books' &&
+      router.pathname.startsWith('/book/') &&
+      router.query.format === 'audiobook'
+        ? false
+        : router.pathname.match(link.activeRegExp));
     const navigationIcon =
       interfaceThemeDefinition.activeNavigationIcon === 'filled' && selected
         ? link.svgIconSelected
@@ -165,30 +179,47 @@ const Sidebar = ({
   };
 
   const renderNavigationSections = (device: 'mobile' | 'desktop') =>
-    displayedSidebarSections.map((section) => (
-      <div
-        key={`${device}-${section.id}`}
-        className="sidebar-navigation-section"
-        data-navigation-section={section.id}
-        role={
-          interfaceThemeDefinition.navigation === 'flat' ? undefined : 'group'
-        }
-        aria-label={
-          interfaceThemeDefinition.navigation === 'flat'
-            ? undefined
-            : intl.formatMessage(menuMessages[section.ariaLabelKey])
-        }
-      >
-        {section.headingKey && (
-          <h2 className="sidebar-navigation-heading">
-            {intl.formatMessage(menuMessages[section.headingKey])}
-          </h2>
-        )}
+    displayedSidebarSections.map((section) => {
+      const content = (
         <div className="sidebar-navigation-items">
           {section.links.map((link) => renderNavigationLink(link, device))}
         </div>
-      </div>
-    ));
+      );
+      if (persius && section.id === 'persius-more')
+        return (
+          <details
+            key={`${device}-${section.id}`}
+            className="sidebar-navigation-section persius-navigation-more"
+          >
+            <summary className="sidebar-navigation-heading">
+              {intl.formatMessage(menuMessages.more)}
+            </summary>
+            {content}
+          </details>
+        );
+      return (
+        <div
+          key={`${device}-${section.id}`}
+          className="sidebar-navigation-section"
+          data-navigation-section={section.id}
+          role={
+            interfaceThemeDefinition.navigation === 'flat' ? undefined : 'group'
+          }
+          aria-label={
+            interfaceThemeDefinition.navigation === 'flat'
+              ? undefined
+              : intl.formatMessage(menuMessages[section.ariaLabelKey])
+          }
+        >
+          {section.headingKey && (
+            <h2 className="sidebar-navigation-heading">
+              {intl.formatMessage(menuMessages[section.headingKey])}
+            </h2>
+          )}
+          {content}
+        </div>
+      );
+    });
 
   useEffect(() => {
     if (openIssuesCount) {
@@ -249,17 +280,21 @@ const Sidebar = ({
                     ref={navRef}
                     className="flex flex-1 flex-col overflow-y-auto pt-4 pb-8 sm:pb-4"
                   >
-                    <div className="flex flex-shrink-0 items-center px-2">
-                      <span className="w-full px-4 text-xl text-gray-50">
-                        <Link href="/" className="relative block h-24 w-64">
-                          <Image
-                            src={versionedAsset('/logo_full.svg')}
-                            alt="Seerr"
-                            fill
-                            className="object-contain object-left rtl:object-right"
-                          />
-                        </Link>
-                      </span>
+                    <div className="sidebar-brand-slot flex flex-shrink-0 items-center px-2">
+                      {persius ? (
+                        <PersiusBrand />
+                      ) : (
+                        <span className="w-full px-4 text-xl text-gray-50">
+                          <Link href="/" className="relative block h-24 w-64">
+                            <Image
+                              src={versionedAsset('/logo_full.svg')}
+                              alt="Seerr"
+                              fill
+                              className="object-contain object-left rtl:object-right"
+                            />
+                          </Link>
+                        </span>
+                      )}
                     </div>
                     <nav
                       className="sidebar-navigation"
@@ -270,6 +305,11 @@ const Sidebar = ({
                     >
                       {renderNavigationSections('mobile')}
                     </nav>
+                    {persius && (
+                      <div className="persius-sidebar-account">
+                        <UserDropdown />
+                      </div>
+                    )}
                     {hasPermission(Permission.ADMIN) && (
                       <div className="px-2">
                         <VersionStatus onClick={() => setClosed()} />
@@ -290,18 +330,22 @@ const Sidebar = ({
         <div className="sidebar flex w-64 flex-col">
           <div className="flex h-0 flex-1 flex-col">
             <div className="flex flex-1 flex-col overflow-y-auto pb-4">
-              <div className="flex flex-shrink-0 items-center">
-                <span className="w-full px-4 py-2 text-2xl text-gray-50">
-                  <Link href="/" className="relative block h-24">
-                    <Image
-                      src={versionedAsset('/logo_full.svg')}
-                      alt="Seerr"
-                      fill
-                      className="object-contain object-left rtl:object-right"
-                      loading="eager"
-                    />
-                  </Link>
-                </span>
+              <div className="sidebar-brand-slot flex flex-shrink-0 items-center">
+                {persius ? (
+                  <PersiusBrand />
+                ) : (
+                  <span className="w-full px-4 py-2 text-2xl text-gray-50">
+                    <Link href="/" className="relative block h-24">
+                      <Image
+                        src={versionedAsset('/logo_full.svg')}
+                        alt="Seerr"
+                        fill
+                        className="object-contain object-left rtl:object-right"
+                        loading="eager"
+                      />
+                    </Link>
+                  </span>
+                )}
               </div>
               <nav
                 className="sidebar-navigation"
@@ -312,6 +356,11 @@ const Sidebar = ({
               >
                 {renderNavigationSections('desktop')}
               </nav>
+              {persius && (
+                <div className="persius-sidebar-account">
+                  <UserDropdown />
+                </div>
+              )}
               {hasPermission(Permission.ADMIN) && (
                 <div className="px-2">
                   <VersionStatus />

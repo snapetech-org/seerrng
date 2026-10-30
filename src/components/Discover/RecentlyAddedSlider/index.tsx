@@ -1,3 +1,5 @@
+import usePersius from '@app/components/Persius/usePersius';
+import persiusMessages from '@app/components/Persius/messages';
 import Slider from '@app/components/Slider';
 import TmdbTitleCard from '@app/components/TitleCard/TmdbTitleCard';
 import useDiscoverRowSnapshot from '@app/hooks/useDiscoverRowSnapshot';
@@ -25,6 +27,7 @@ const messages = defineMessages('components.Discover.RecentlyAddedSlider', {
 
 const RecentlyAddedSlider = () => {
   const intl = useIntl();
+  const persius = usePersius();
   const { hasPermission, user } = useUser();
   const { currentSettings } = useSettings();
   const serviceAvailability = getUserServiceAvailability(
@@ -95,7 +98,13 @@ const RecentlyAddedSlider = () => {
         heading={
           <>
             <div className="page-heading">
-              <span>{intl.formatMessage(messages.recentlyAdded)}</span>
+              <span>
+                {intl.formatMessage(
+                  persius
+                    ? persiusMessages.newInLibrary
+                    : messages.recentlyAdded
+                )}
+              </span>
             </div>
           </>
         }

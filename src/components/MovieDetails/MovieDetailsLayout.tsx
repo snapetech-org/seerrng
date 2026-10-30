@@ -1,3 +1,5 @@
+import PersiusMovieDetail from '@app/components/Persius/MovieDetail';
+import usePersius from '@app/components/Persius/usePersius';
 import CollectionSummaryCard from '@app/components/CollectionDetails/CollectionSummaryCard';
 import DetailDisclosureButton from '@app/components/MediaDetails/DetailDisclosureButton';
 import ExpandableCreditList from '@app/components/MediaDetails/ExpandableCreditList';
@@ -72,6 +74,7 @@ interface MovieDetailsLayoutProps {
   }[];
   show4kAvailability: boolean;
   primaryActions: ReactNode;
+  trailerAction?: ReactNode;
   secondaryActions: ReactNode;
   indexerSearchAction: ReactNode;
   indexerCompanionActions: ReactNode;
@@ -92,6 +95,7 @@ const MovieDetailsLayout = ({
   filteredReleases,
   show4kAvailability,
   primaryActions,
+  trailerAction,
   secondaryActions,
   indexerSearchAction,
   indexerCompanionActions,
@@ -100,6 +104,7 @@ const MovieDetailsLayout = ({
   playbackActions,
 }: MovieDetailsLayoutProps) => {
   const intl = useIntl();
+  const persius = usePersius();
   const settings = useSettings();
   const { data: watchedStatus } = useWatchStatus(
     'movie',
@@ -207,6 +212,13 @@ const MovieDetailsLayout = ({
       ? '4K'
       : undefined,
   ].filter(Boolean);
+
+  if (persius) return <PersiusMovieDetail
+    data={data} requestAction={requestAction} trailerAction={trailerAction}
+    ratings={<VideoRatings mediaType="movie" id={data.id} voteAverage={data.voteAverage} voteCount={data.voteCount} ratings={ratingData} />}
+    playbackActions={availableFormats.length ? playbackActions?.(selectedQuality === '4k') : undefined}
+    tools={<>{primaryActions}{secondaryActions}{reportIssueAction}{indexerSearchAction}{indexerCompanionActions}<MediaQualitySelect value={selectedQuality} options={[{ label: 'HD', value: 'hd', disabled: !availableFormats.includes('HD') }, ...(show4kAvailability ? [{ label: '4K', value: '4k', disabled: !availableFormats.includes('4K') }] : [])]} onChange={setSelectedQuality} label={intl.formatMessage(messages.quality)} /></>}
+  />;
 
   return (
     <div className="media-page">
@@ -565,3 +577,4 @@ const MovieDetailsLayout = ({
 };
 
 export default MovieDetailsLayout;
+

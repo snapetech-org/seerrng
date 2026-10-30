@@ -1,3 +1,8 @@
+import CatalogControls, {
+  libraryView,
+} from '@app/components/Persius/CatalogControls';
+import usePersius from '@app/components/Persius/usePersius';
+import persiusMessages from '@app/components/Persius/messages';
 import CachedImage from '@app/components/Common/CachedImage';
 import Header from '@app/components/Common/Header';
 import ListView from '@app/components/Common/ListView';
@@ -41,6 +46,7 @@ const DiscoverMovies = ({
   mediaFilters,
 }: DiscoverMoviesProps = {}) => {
   const intl = useIntl();
+  const persius = usePersius();
   const router = useRouter();
   const preparedFilters = withDefaultTmdbRatingMinimumVotes({
     ...initialFilters,
@@ -51,9 +57,12 @@ const DiscoverMovies = ({
     '/api/v1/discover/movies',
     preparedFilters,
     {
-      randomizeOrder: randomizeOrder ?? !preparedFilters.sortBy,
+      randomizeOrder: randomizeOrder ?? (!persius && !preparedFilters.sortBy),
       availableQuality: preparedFilters.availability,
-      hideAvailable: !preparedFilters.availability,
+      hideAvailable: !persius && !preparedFilters.availability,
+      availabilityView: persius
+        ? libraryView(router.query.libraryView)
+        : undefined,
     }
   );
   useSearchActivityReporter(
@@ -96,6 +105,11 @@ const DiscoverMovies = ({
       <PageTitle title={title} />
       <div className="mb-4">
         <Header>{title}</Header>
+        {persius && (
+          <p className="persius-description">
+            {intl.formatMessage(persiusMessages.moviesDescription)}
+          </p>
+        )}
         {mediaFilters}
         {studioLogo && (
           <div className="relative mx-auto my-4 h-20 w-full max-w-sm sm:h-24">
@@ -110,7 +124,18 @@ const DiscoverMovies = ({
             />
           </div>
         )}
-        <MediaDiscoveryControls type="movie" currentFilters={preparedFilters} />
+        {persius ? (
+          <CatalogControls
+            type="movie"
+            filters={preparedFilters}
+            count={discover.titles.length}
+          />
+        ) : (
+          <MediaDiscoveryControls
+            type="movie"
+            currentFilters={preparedFilters}
+          />
+        )}
       </div>
       <ListView
         enableDiscoverNavigation
