@@ -73,6 +73,8 @@ export interface ChaptarrEditionCard {
   publisher?: string;
   releaseDate?: string;
   imageUrl?: string;
+  sampleUrl?: string;
+  editionLabel?: string;
   monitored: boolean;
   owned: boolean;
 }
@@ -2835,30 +2837,34 @@ class ReadarrAPI extends ServarrBase<ReadarrQueueItem> {
 
   /**
    * Track a distinct performance next to the one already selected. Returns
-   * undefined when the policy, capability, or edition does not apply so the
-   * caller falls back to the ordinary single-selection path.
+   * undefined only when the request did not select alongside. Capability or
+   * catalog failures must not fall back to replacing the existing recording.
    */
   private async addEditionAlongside(
     existingBook: ReadarrBook,
     options: ReadarrBookOptions
   ): Promise<ReadarrAddBookResult | undefined> {
-    if (options.editionPolicy !== 'alongside' || !this.isChaptarr()) {
-      return undefined;
-    }
+    if (options.editionPolicy !== 'alongside') return undefined;
+    if (!this.isChaptarr())
+      throw new Error('This destination cannot add an edition alongside.');
     await this.ensureCapabilities();
     if (!this.supportsWantedEditionVariants()) {
-      return undefined;
+      throw new Error(
+        'This destination no longer supports additional editions.'
+      );
     }
     const requested = options.editions?.find((edition) => edition.monitored);
     if (!requested) {
-      return undefined;
+      throw new Error('An additional edition requires an explicit selection.');
     }
     const catalog = await this.getEditionCatalog(existingBook.id);
     const match = catalog.find(
       (edition) => edition.foreignEditionId === requested.foreignEditionId
     );
     if (!match) {
-      return undefined;
+      throw new Error(
+        'The selected additional edition is missing from the catalog.'
+      );
     }
     if (match.monitored) {
       return { ...existingBook, createdBook: false, createdAuthor: false };

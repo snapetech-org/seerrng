@@ -95,12 +95,12 @@ const Sidebar = ({
     }))
     .filter((section) => section.links.length > 0);
 
-  const displayedSidebarSections = persius
-    ? getPersiusNavigationSections(visibleSidebarSections)
-    : getNavigationSectionsForTheme(
-        visibleSidebarSections,
-        interfaceThemeDefinition.navigation
-      );
+  const displayedSidebarSections = getNavigationSectionsForTheme(
+    persius
+      ? getPersiusNavigationSections(visibleSidebarSections)
+      : visibleSidebarSections,
+    interfaceThemeDefinition.navigation
+  );
 
   const renderNavigationLink = (
     link: NavigationLink,
@@ -117,14 +117,14 @@ const Sidebar = ({
       router.query.format === 'audiobook'
         ? false
         : router.pathname.match(link.activeRegExp));
-    const navigationIcon = persius ? (
-      <PersiusNavigationIcon name={link.id} fallback={link.svgIcon} />
-    ) : interfaceThemeDefinition.activeNavigationIcon === 'filled' &&
-      selected ? (
-      link.svgIconSelected
-    ) : (
-      link.svgIcon
-    );
+    const navigationIcon =
+      interfaceThemeDefinition.activeNavigationIcon === 'filled' && selected ? (
+        link.svgIconSelected
+      ) : persius ? (
+        <PersiusNavigationIcon name={link.id} fallback={link.svgIcon} />
+      ) : (
+        link.svgIcon
+      );
     const iconClass = device === 'desktop' ? 'me-3 h-6 w-6' : 'me-3 h-6 w-6';
     const className =
       device === 'mobile'

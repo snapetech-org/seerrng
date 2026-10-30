@@ -6050,6 +6050,10 @@ components:
           nullable: true
           description: Stable, non-sensitive classification for the most recent failed movie or TV dispatch. Cleared when the request is retried or resubmitted.
           readOnly: true
+        monitorFutureSeasons:
+          type: boolean
+          nullable: true
+          description: TV-only future-season preference. Null inherits the service default. Episode Queue and season watch gates take priority.
         overrideTvdbId:
           type: integer
           minimum: 1
@@ -11941,7 +11945,7 @@ paths:
   /editions/book:
     get:
       summary: Compare editions and narrations of a book
-      description: Returns comparable edition cards. Details the catalog does not provide are listed as unknown.
+      description: Returns comparable edition cards with exact edition ownership. Optional sampleUrl (HTTPS only) and editionLabel are present only when supplied by the provider. Details the catalog does not provide are listed as unknown.
       tags:
         - editions
       parameters:
@@ -11967,6 +11971,18 @@ paths:
           name: foreignBookId
           schema:
             type: string
+        - in: query
+          name: bookId
+          description: Canonical catalog book identity. Selects its configured provider and exact work.
+          schema:
+            type: string
+            maxLength: 2048
+        - in: query
+          name: author
+          description: Expected author for a title lookup.
+          schema:
+            type: string
+            maxLength: 256
       responses:
         '200':
           description: Edition comparison
@@ -20944,6 +20960,9 @@ paths:
                   minimum: 0
                   nullable: true
                   description: Sonarr v5 metadata language ID. Requires advanced request permission.
+                monitorFutureSeasons:
+                  type: boolean
+                  description: Monitor future TV seasons in Sonarr. False preserves existing Sonarr monitoring; true is unavailable under Episode Queue or a season watch gate.
                 sonarrSeasonType:
                   type: string
                   maxLength: 100
@@ -22567,6 +22586,9 @@ paths:
                   minimum: 0
                   nullable: true
                   description: Sonarr v5 metadata language ID. Requires advanced request permission.
+                monitorFutureSeasons:
+                  type: boolean
+                  description: Monitor future TV seasons in Sonarr. False preserves existing Sonarr monitoring; true is unavailable under Episode Queue or a season watch gate.
                 sonarrSeasonType:
                   type: string
                   maxLength: 100
@@ -27041,4 +27063,3 @@ paths:
 security:
   - cookieAuth: []
   - apiKey: []
-

@@ -24,6 +24,7 @@ import MediaServiceStatus from '@server/entity/MediaServiceStatus';
 import OverrideRule from '@server/entity/OverrideRule';
 import type { MediaRequestBody } from '@server/interfaces/api/requestInterfaces';
 import type { SeasonEpisodeSelection } from '@server/interfaces/api/seasonInterfaces';
+import { compareBookEditions } from '@server/lib/editionCompare';
 import {
   normalizeMusicBrainzId,
   normalizeOpenLibraryEditionId,
@@ -1591,16 +1592,84 @@ export class MediaRequest {
               'request.metadataProfileId',
               'request.rootFolder',
               'request.bookFormat',
+              'request.preferredEditionId',
               'request.serviceTargets',
               'requestedBy.id',
             ])
             .where('request.media = :mediaId', { mediaId: media.id })
             .getMany()
         : [];
+      // Verify the exact performance at the resolved destination before bypassing
+      // work-level availability. Client edition IDs are never authority.
+      const preferredEditionId = requestBody.preferredEditionId;
+      if (preferredEditionId && requestedBookFormat === 'both') {
+        throw new ServiceConfigurationError(
+          'A specific edition requires a single book format.'
+        );
+      }
+      const hasEditionChoice = !!preferredEditionId;
+      if (requestBody.editionPolicy === 'alongside' && !hasEditionChoice) {
+        throw new ServiceConfigurationError(
+          'Choose one book format and a specific edition to add alongside.'
+        );
+      }
+      if (hasEditionChoice) {
+        const expectedTitle = parseBookshelfBookId(
+          requestBody.mediaId.toString()
+        )
+          ? undefined
+          : (await openLibrary.getWork(openLibraryId)).title;
+        const comparison = await compareBookEditions({
+          title: expectedTitle,
+          mediaId: media.id,
+          bookId: requestBody.mediaId.toString(),
+          serverId: selectedReadarr?.id,
+          format: requestedServiceType,
+          term:
+            requestBody.preferredIsbn13 ||
+            requestBody.isbn13 ||
+            parseBookshelfBookId(requestBody.mediaId.toString())
+              ?.foreignBookId ||
+            expectedTitle ||
+            requestBody.mediaId.toString(),
+        });
+        const selectedEdition = comparison.editions.find(
+          (edition) => edition.id === preferredEditionId
+        );
+        if (!selectedEdition || selectedEdition.requestable === false)
+          throw new ServiceConfigurationError(
+            'The selected edition could not be verified for this book and destination.'
+          );
+        if (selectedEdition.owned)
+          throw new DuplicateMediaRequestError(
+            'This exact edition is already available.'
+          );
+        if (
+          requestBody.editionPolicy === 'alongside' &&
+          !comparison.supportsAlongside
+        ) {
+          throw new ServiceConfigurationError(
+            'This destination cannot keep another edition alongside the existing one.'
+          );
+        }
+      }
+      const editionRequests = hasEditionChoice
+        ? destinationRequests.filter(
+            (request) => request.preferredEditionId === preferredEditionId
+          )
+        : destinationRequests;
+      const blockingRequests = hasEditionChoice
+        ? destinationRequests.filter(
+            (request) =>
+              !request.preferredEditionId ||
+              request.preferredEditionId === preferredEditionId
+          )
+        : destinationRequests;
       const isLegacyBookTargetAvailable = (
         target: MediaRequestServiceTarget
       ): boolean => {
         if (
+          hasEditionChoice ||
           media.status !== MediaStatus.AVAILABLE ||
           hasTrackedAvailableDestination(destinationRequests, target)
         ) {
@@ -1622,17 +1691,17 @@ export class MediaRequest {
       const uncoveredBookTargets = bookTargets.filter(
         (target) =>
           !isLegacyBookTargetAvailable(target) &&
-          !isDestinationAvailableInTargets(destinationRequests, target) &&
-          !isDestinationCoveredByActiveRequest(destinationRequests, target)
+          !isDestinationAvailableInTargets(editionRequests, target) &&
+          !isDestinationCoveredByActiveRequest(blockingRequests, target)
       );
 
       const unavailableBookTargets = bookTargets.filter(
         (target) =>
           !isLegacyBookTargetAvailable(target) &&
-          !isDestinationAvailableInTargets(destinationRequests, target)
+          !isDestinationAvailableInTargets(editionRequests, target)
       );
       const promotablePendingRequest = findPromotablePendingRequest(
-        destinationRequests,
+        editionRequests,
         unavailableBookTargets,
         user,
         MediaType.BOOK
@@ -1643,7 +1712,7 @@ export class MediaRequest {
 
       if (
         bookTargets.some((target) =>
-          isDestinationCoveredByActiveRequest(destinationRequests, target)
+          isDestinationCoveredByActiveRequest(blockingRequests, target)
         )
       ) {
         throw new DuplicateMediaRequestError(
@@ -2654,6 +2723,19 @@ export class MediaRequest {
     }
 
     const resolvedTvdbId = media.tvdbId ?? tvdbId;
+    const futureSeasonsRestricted =
+      watchAheadEpisodeCount > 0 ||
+      isTvSeasonWatchGateEnabledForUser(requestUser);
+    if (
+      requestBody.mediaType === MediaType.TV &&
+      requestBody.monitorFutureSeasons === true &&
+      futureSeasonsRestricted
+    ) {
+      throw new RequestPermissionError(
+        'Future seasons are managed by Episode Queue or the season watch gate.'
+      );
+    }
+
     if (watchAheadEpisodeCount > 0) {
       if (
         !Number.isSafeInteger(Number(resolvedTvdbId)) ||
@@ -3304,6 +3386,9 @@ export class MediaRequest {
           modifiedBy: autoApproved ? user : undefined,
           is4k: requestBody.is4k,
           watchAheadEpisodeCount,
+          monitorFutureSeasons: futureSeasonsRestricted
+            ? false
+            : requestBody.monitorFutureSeasons,
           watchAheadUsesUserDefault,
           serverId,
           profileId: profileId,
@@ -3464,6 +3549,10 @@ export class MediaRequest {
 
   @Column({ default: false })
   public is4k: boolean;
+
+  /** Null preserves the service default for existing requests. */
+  @Column({ type: 'boolean', nullable: true })
+  public monitorFutureSeasons?: boolean | null;
 
   /** Number of upcoming unwatched episodes to keep requested automatically. */
   @Column({ type: 'integer', default: 0 })

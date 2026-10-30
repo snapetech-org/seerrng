@@ -1,3 +1,4 @@
+import type { EditionChoice } from '@app/components/EditionCompare';
 import useSettings from '@app/hooks/useSettings';
 import { Permission, useUser } from '@app/hooks/useUser';
 import { Transition } from '@headlessui/react';
@@ -67,6 +68,7 @@ interface RequestModalProps {
   sportarrLeagueId?: string;
   sportarrTitle?: string;
   initialBookFormat?: 'ebook' | 'audiobook' | 'both';
+  initialEditionChoice?: EditionChoice;
   initialMusicServerId?: number;
   initialIs4k?: boolean;
   is4k?: boolean;
@@ -92,6 +94,7 @@ const RequestModal = ({
   sportarrLeagueId,
   sportarrTitle,
   initialBookFormat,
+  initialEditionChoice,
   initialMusicServerId,
   initialIs4k,
   is4k,
@@ -154,6 +157,7 @@ const RequestModal = ({
           onCancel={onCancel}
           bookId={bookId}
           initialBookFormat={initialBookFormat}
+          initialEditionChoice={initialEditionChoice}
           onUpdating={onUpdating}
           editRequest={editRequest}
         />

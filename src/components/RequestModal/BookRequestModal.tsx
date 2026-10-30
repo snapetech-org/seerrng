@@ -22,6 +22,7 @@ import {
   isRequestDestinationRequested,
 } from '@app/components/RequestModal/requestAvailability';
 import useAdvancedOptionsDisclosure from '@app/hooks/useAdvancedOptionsDisclosure';
+import useBookEditions from '@app/hooks/useBookEditions';
 import useSettings from '@app/hooks/useSettings';
 import useToasts from '@app/hooks/useToasts';
 import { useUser } from '@app/hooks/useUser';
@@ -127,6 +128,7 @@ const matchesBookLanguage = (
 interface BookRequestModalProps {
   bookId: string;
   initialBookFormat?: 'ebook' | 'audiobook' | 'both';
+  initialEditionChoice?: EditionChoice;
   onCancel?: () => void;
   onComplete?: (newStatus: MediaStatus) => void;
   onUpdating?: (isUpdating: boolean) => void;
@@ -136,6 +138,7 @@ interface BookRequestModalProps {
 const BookRequestModal = ({
   bookId,
   initialBookFormat = 'ebook',
+  initialEditionChoice,
   onCancel,
   onComplete,
   onUpdating,
@@ -158,9 +161,9 @@ const BookRequestModal = ({
   );
   const [hasUserSelectedFormat, setHasUserSelectedFormat] = useState(false);
   const [selectedIsbn, setSelectedIsbn] = useState<string>('');
-  const [editionChoice, setEditionChoice] = useState<EditionChoice>({
-    policy: 'only',
-  });
+  const [editionChoice, setEditionChoice] = useState<EditionChoice>(
+    initialEditionChoice ?? { policy: 'only' }
+  );
   const [preferredLanguage, setPreferredLanguage] = useState('');
   const [appliedPreferenceUserId, setAppliedPreferenceUserId] = useState<
     number | null
@@ -182,6 +185,28 @@ const BookRequestModal = ({
       revalidateOnMount: true,
     }
   );
+  const { data: editionComparison } = useBookEditions(
+    data
+      ? {
+          bookId: data.id,
+          mediaId: data.mediaInfo?.id,
+          format: bookFormat,
+          title: data.title,
+          author: data.author,
+        }
+      : undefined
+  );
+  const selectedEdition = editionComparison?.editions.find(
+    (item) => item.id === editionChoice.editionId
+  );
+  const isDistinctEdition = !!selectedEdition && !selectedEdition.owned;
+  const invalidEditionChoice =
+    !!editionChoice.editionId &&
+    (!selectedEdition ||
+      selectedEdition.requestable === false ||
+      selectedEdition.owned ||
+      (editionChoice.policy === 'alongside' &&
+        !editionComparison?.supportsAlongside));
   const canChooseRequestUser = hasPermission(
     [Permission.MANAGE_REQUESTS, Permission.MANAGE_USERS],
     { type: 'or' }
@@ -323,7 +348,9 @@ const BookRequestModal = ({
       }
     );
   const selectedDestinationCovered =
-    selectedDestinationFullyCovered && !selectedDestinationPromotable;
+    selectedDestinationFullyCovered &&
+    !selectedDestinationPromotable &&
+    !isDistinctEdition;
   const { data: quota } = useSWR<QuotaResponse>(
     user &&
       (!requestOverrides?.user?.id ||
@@ -342,10 +369,17 @@ const BookRequestModal = ({
     );
     setHasUserSelectedFormat(false);
     setSelectedIsbn('');
+    setEditionChoice(initialEditionChoice ?? { policy: 'only' });
     setPreferredLanguage('');
     setAppliedPreferenceUserId(null);
     setRequestOverrides(null);
-  }, [bookId, editRequest?.bookFormat, editRequest?.id, initialBookFormat]);
+  }, [
+    bookId,
+    editRequest?.bookFormat,
+    editRequest?.id,
+    initialBookFormat,
+    initialEditionChoice,
+  ]);
 
   useEffect(() => {
     if (
@@ -444,7 +478,12 @@ const BookRequestModal = ({
   ]);
 
   useEffect(() => {
-    if (editRequest || hasUserSelectedFormat || !data?.mediaInfo) {
+    if (
+      editRequest ||
+      initialEditionChoice ||
+      hasUserSelectedFormat ||
+      !data?.mediaInfo
+    ) {
       return;
     }
 
@@ -483,7 +522,12 @@ const BookRequestModal = ({
     } else if (!ebookCovered && audiobookCovered) {
       setBookFormat('ebook');
     }
-  }, [data?.mediaInfo, editRequest, hasUserSelectedFormat]);
+  }, [
+    data?.mediaInfo,
+    editRequest,
+    hasUserSelectedFormat,
+    initialEditionChoice,
+  ]);
 
   useEffect(() => {
     onUpdating?.(isUpdating);
@@ -568,7 +612,7 @@ const BookRequestModal = ({
   };
 
   const sendRequest = useCallback(async () => {
-    if (selectedDestinationCovered) {
+    if (selectedDestinationCovered || invalidEditionChoice) {
       return;
     }
 
@@ -653,6 +697,7 @@ const BookRequestModal = ({
     onComplete,
     getOverrideParams,
     selectedDestinationCovered,
+    invalidEditionChoice,
     selectedIsbn,
     editionChoice,
   ]);
@@ -1043,6 +1088,7 @@ const BookRequestModal = ({
         </div>
         {data && (
           <EditionCardPicker
+            bookId={data.id}
             key={bookFormat}
             mediaId={
               bookFormat === 'audiobook'
@@ -1119,6 +1165,7 @@ const BookRequestModal = ({
             disabled={
               isUpdating ||
               selectedDestinationCovered ||
+              invalidEditionChoice ||
               quota?.book?.restricted ||
               !!formatWarning
             }

@@ -207,6 +207,7 @@ type RequestLike = {
   type: MediaType;
   is4k: boolean;
   bookFormat?: 'ebook' | 'audiobook' | 'both' | null;
+  preferredEditionId?: string | null;
   serverId?: number | null;
   serviceTargets?: MediaRequestServiceTarget[] | null;
   createdAt: Date;
@@ -404,6 +405,8 @@ const isRequestSatisfied = (request: RequestLike): boolean => {
   }
 
   if (request.type === MediaType.BOOK) {
+    if (request.preferredEditionId)
+      return request.status === MediaRequestStatus.COMPLETED;
     if (!isAvailableStatus(mediaStatus)) {
       return false;
     }

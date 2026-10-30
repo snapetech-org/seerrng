@@ -19,6 +19,7 @@ import {
   MediaRequest,
   type MediaRequestServiceTarget,
 } from '@server/entity/MediaRequest';
+import { hasRequestedEditionFiles } from '@server/lib/editionCompare/availability';
 import { getExternalRuntimeConfig } from '@server/lib/externalRuntimeConfig';
 import { normalizeValidIsbn } from '@server/lib/isbn';
 import {
@@ -345,7 +346,13 @@ class BookRequestSearchManager {
         Number.isFinite(eventTime) && eventTime >= operation.createdAt.getTime()
       );
     });
-    if ((book.statistics?.bookFileCount ?? 0) > 0) {
+    if (
+      await hasRequestedEditionFiles(
+        readarr,
+        book,
+        operation.request.preferredEditionId
+      )
+    ) {
       await this.setState(operation, 'available');
       await this.finalizeRequest(operation.requestId);
       return;
@@ -424,7 +431,13 @@ class BookRequestSearchManager {
       providerEditionId
     );
 
-    if ((book?.statistics?.bookFileCount ?? 0) > 0) {
+    if (
+      await hasRequestedEditionFiles(
+        readarr,
+        book,
+        operation.request.preferredEditionId
+      )
+    ) {
       await this.setState(operation, 'available');
       await this.finalizeRequest(operation.requestId);
       return;
@@ -475,7 +488,13 @@ class BookRequestSearchManager {
       providerEditionId
     );
 
-    if ((book?.statistics?.bookFileCount ?? 0) > 0) {
+    if (
+      await hasRequestedEditionFiles(
+        readarr,
+        book,
+        operation.request.preferredEditionId
+      )
+    ) {
       await this.setState(operation, 'available');
       await this.finalizeRequest(operation.requestId);
       return;
@@ -1054,7 +1073,12 @@ class BookRequestSearchManager {
       where: { id: requestId },
       relations: { media: true },
     });
-    if (!request) {
+    if (
+      !request ||
+      ![MediaRequestStatus.APPROVED, MediaRequestStatus.COMPLETED].includes(
+        request.status
+      )
+    ) {
       await getRepository(BookRequestSearch).delete({ requestId });
       return;
     }
@@ -1063,6 +1087,33 @@ class BookRequestSearchManager {
     const unavailable = operations.find((item) => item.state === 'unavailable');
     const terminalFailure = failed ?? unavailable;
     if (!terminalFailure) {
+      if (request.preferredEditionId) {
+        const result = await getRepository(MediaRequest).update(
+          { id: requestId, status: MediaRequestStatus.APPROVED },
+          {
+            status: MediaRequestStatus.COMPLETED,
+            failureReason: null,
+            serviceTargets: request.serviceTargets?.map((target) =>
+              operations.some(
+                (operation) =>
+                  target.serviceType === 'readarr' &&
+                  target.serverId === operation.serviceId &&
+                  target.format === operation.format
+              )
+                ? { ...target, status: MediaStatus.AVAILABLE }
+                : target
+            ),
+          }
+        );
+        // A concurrent cancellation must not be resurrected by a completed scan.
+        if (
+          !result.affected &&
+          request.status !== MediaRequestStatus.COMPLETED
+        ) {
+          await getRepository(BookRequestSearch).delete({ requestId });
+          return;
+        }
+      }
       // Publish availability before removing the operation. Otherwise the
       // status projection loses its authoritative tracking state and falls
       // back to "Adding to library" until the next availability scan.

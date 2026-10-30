@@ -126,15 +126,15 @@
         ".persius-release": null,
         ".persius-season": {
           "x": 600,
-          "y": 257,
+          "y": 241,
           "w": 576,
           "h": 65
         },
         ".page-overlay-card": {
           "x": 568,
-          "y": 85,
+          "y": 69,
           "w": 640,
-          "h": 888
+          "h": 920
         }
       }
     },
@@ -386,11 +386,26 @@
   ],
   "checks": [
     "season clear/latest/entire/individual selection",
+    "native future-season switch pointer and keyboard state",
     "dialog focus trap, search shortcut suppression, trigger focus restoration",
     "unavailable season and episode excluded from shortcuts",
     "narration choice auto-selects missing recording and hides duplicate available request",
     "search shortcut/editing, light mode and interface switch round trip",
-    "renamed custom theme retains native sidebar, profile and request composition with its own CSS palette"
+    "renamed custom theme retains native sidebar, profile and request composition with its own CSS palette and flat navigation"
   ],
-  "errors": []
+  "errors": [],
+  "legacyComparisons": [
+    {
+      "theme": "seerrOrig",
+      "width": 1782,
+      "height": 1060,
+      "changedPixels": 0
+    },
+    {
+      "theme": "seerrNGJ",
+      "width": 1782,
+      "height": 1060,
+      "changedPixels": 0
+    }
+  ]
 }

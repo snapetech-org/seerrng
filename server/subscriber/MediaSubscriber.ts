@@ -79,6 +79,8 @@ export class MediaSubscriber implements EntitySubscriberInterface<Media> {
       return true;
     }
 
+    if (request.preferredEditionId)
+      return request.status === MediaRequestStatus.COMPLETED;
     return isRequestedBookFormatAvailable(media, request.bookFormat ?? 'ebook');
   }
 

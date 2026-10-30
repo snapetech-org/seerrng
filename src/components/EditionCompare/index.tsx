@@ -3,12 +3,12 @@ import Button from '@app/components/Common/Button';
 import CoverImage from '@app/components/Common/CoverImage';
 import LoadingSpinner from '@app/components/Common/LoadingSpinner';
 import FollowButton from '@app/components/Following/FollowButton';
+import useBookEditions from '@app/hooks/useBookEditions';
 import useToasts from '@app/hooks/useToasts';
 import { Permission, useUser } from '@app/hooks/useUser';
 import defineMessages from '@app/utils/defineMessages';
 import type {
   EditionCard,
-  EditionComparison,
   NarratorSeriesPlan,
 } from '@server/lib/editionCompare';
 import axios from 'axios';
@@ -111,6 +111,7 @@ const unknownLabels = {
 } as const;
 
 interface EditionCardPickerProps {
+  bookId?: string;
   mediaId?: number;
   format: 'ebook' | 'audiobook';
   title: string;
@@ -125,6 +126,7 @@ interface EditionCardPickerProps {
  * visibly unknown. Returns nothing when the catalog lists no editions.
  */
 export const EditionCardPicker = ({
+  bookId,
   mediaId,
   format,
   title,
@@ -134,16 +136,14 @@ export const EditionCardPicker = ({
   onChange,
 }: EditionCardPickerProps) => {
   const intl = useIntl();
-  const params = new URLSearchParams({
+  const { data, error, mutate } = useBookEditions({
+    bookId,
+    mediaId,
     format,
-    term: [title, author].filter(Boolean).join(' '),
     title,
+    author,
+    foreignBookId,
   });
-  if (mediaId) params.set('mediaId', String(mediaId));
-  if (foreignBookId) params.set('foreignBookId', foreignBookId);
-  const { data, error, mutate } = useSWR<EditionComparison>(
-    `/api/v1/editions/book?${params}`
-  );
 
   const hasLibraryVersion = !!data?.editions.some(
     (card) => card.selected || card.owned
@@ -152,10 +152,10 @@ export const EditionCardPicker = ({
 
   // A second version only makes sense when the library holds one already.
   useEffect(() => {
-    if (value.policy === 'alongside' && !alongsideAvailable) {
+    if (data && value.policy === 'alongside' && !alongsideAvailable) {
       onChange({ ...value, policy: 'only' });
     }
-  }, [alongsideAvailable, onChange, value]);
+  }, [data, alongsideAvailable, onChange, value]);
 
   if (error && !data) {
     return (
@@ -233,6 +233,7 @@ export const EditionCardPicker = ({
                 type="radio"
                 name="edition-card"
                 checked={value.editionId === card.id}
+                disabled={card.requestable === false}
                 onChange={() => select(card)}
               />
               <CoverImage src={card.imageUrl} alt="" />

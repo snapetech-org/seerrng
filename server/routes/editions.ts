@@ -49,6 +49,8 @@ editionRoutes.get('/book', async (req, res, next) => {
     return res.status(200).json(
       await compareBookEditions({
         mediaId: parseId(req.query.mediaId),
+        bookId: str(req.query.bookId, 2048),
+        author: str(req.query.author, 256),
         format,
         term,
         foreignBookId,

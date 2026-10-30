@@ -1,11 +1,18 @@
 import Button from '@app/components/Common/Button';
 import CachedImage from '@app/components/Common/CachedImage';
+import type { EditionChoice } from '@app/components/EditionCompare';
+import useBookEditions from '@app/hooks/useBookEditions';
 import { encodeApiPathSegment } from '@app/utils/apiPath';
 import { normalizeBookOverviewMarkdown } from '@app/utils/bookMarkdown';
+import {
+  initialNarration,
+  recommendedNarration,
+} from '@app/utils/narrationSelection';
 import { getSafeMarkdownHref } from '@app/utils/safeUrl';
 import { CheckIcon } from '@heroicons/react/24/outline';
 import { MediaRequestStatus, MediaStatus } from '@server/constants/media';
-import type { BookDetails, BookResult } from '@server/models/Book';
+import type { EditionCard } from '@server/lib/editionCompare';
+import type { BookDetails } from '@server/models/Book';
 import dynamic from 'next/dynamic';
 import Link from 'next/link';
 import {
@@ -18,19 +25,16 @@ import {
 } from 'react';
 import { useIntl } from 'react-intl';
 import ReactMarkdown from 'react-markdown';
-import useSWR from 'swr';
 import { duration } from './format';
 import { ClosedBookIcon, HeadphonesIcon } from './Icons';
 import messages from './messages';
+import NarrationSample from './NarrationSample';
 
 const RequestModal = dynamic(() => import('@app/components/RequestModal'), {
   ssr: false,
 });
 type Format = 'ebook' | 'audiobook';
 type Coverage = { format: Format; available: boolean; requested: boolean };
-const identity = (value?: string) =>
-  value?.normalize('NFKC').trim().toLocaleLowerCase().replace(/\s+/g, ' ');
-
 export function NarrationPicker({
   book,
   available,
@@ -38,6 +42,7 @@ export function NarrationPicker({
   canRequest,
   playback,
   onChanged,
+  onCoverageChanged,
 }: {
   book: BookDetails;
   available: boolean;
@@ -45,67 +50,80 @@ export function NarrationPicker({
   canRequest: boolean;
   playback?: ReactNode;
   onChanged?: () => void;
+  onCoverageChanged?: (
+    coverage: { owned: number; total: number } | undefined
+  ) => void;
 }) {
   const intl = useIntl();
-  const [selectedId, setSelectedId] = useState(book.id);
-  const [requestId, setRequestId] = useState<string>();
-  const autoSelected = useRef(false);
-  const { data, error, mutate } = useSWR<{ results: BookResult[] }>(
-    `/api/v1/discover/books?query=${encodeURIComponent(book.title.slice(0, 160))}&format=audiobook&responseVersion=3`,
-    { revalidateOnFocus: false }
+  const [selectedId, setSelectedId] = useState<string>();
+  const [requestChoice, setRequestChoice] = useState<EditionChoice>();
+  const [requestOpen, setRequestOpen] = useState(false);
+  const [sampleId, setSampleId] = useState<string>();
+  const selectedByUser = useRef(false);
+  const { data, error, mutate } = useBookEditions({
+    bookId: book.id,
+    mediaId: book.mediaInfo?.id,
+    format: 'audiobook',
+    title: book.title,
+    author: book.author,
+  });
+  const recordings = useMemo<EditionCard[]>(
+    () =>
+      data?.editions.length
+        ? data.editions
+        : [
+            {
+              id: book.id,
+              title: book.title,
+              format: 'audiobook',
+              narrators: book.narrators ?? [],
+              production: 'unknown',
+              abridged: 'unknown',
+              durationSeconds: book.audiobookDuration,
+              publisher: book.publisher,
+              releaseDate: book.firstPublishYear?.toString(),
+              imageUrl: book.posterPath,
+              selected: available,
+              owned: available,
+              unknownFields: [],
+            },
+          ],
+    [book, available, data]
   );
+  const recommendation = recommendedNarration(recordings, intl.locale);
+  const selected =
+    recordings.find((item) => item.id === selectedId) ??
+    initialNarration(recordings, intl.locale)!;
   useEffect(() => {
-    setSelectedId(book.id);
-    setRequestId(undefined);
-    autoSelected.current = false;
+    setSelectedId(undefined);
+    setRequestOpen(false);
+    setSampleId(undefined);
+    selectedByUser.current = false;
   }, [book.id]);
-  const recordings = useMemo(() => {
-    const candidates = (data?.results ?? []).filter(
-      (candidate) =>
-        identity(candidate.title) === identity(book.title) &&
-        Boolean(book.author) &&
-        identity(candidate.author) === identity(book.author) &&
-        candidate.id !== book.id
-    );
-    return [
-      ...new Map(
-        [book, ...candidates].map((candidate) => [candidate.id, candidate])
-      ).values(),
-    ];
-  }, [book, data]);
-  const selected = recordings.find((item) => item.id === selectedId) ?? book;
-  const inLibrary = useCallback(
-    (item: BookResult) =>
-      item.id === book.id
-        ? available
-        : Boolean(
-            item.mediaInfo &&
-            ((item.mediaInfo.audiobookLibraryServiceId != null &&
-              item.mediaInfo.audiobookLibraryItemId) ||
-              (item.mediaInfo.audiobookServiceId != null &&
-                item.mediaInfo.audiobookExternalServiceId != null))
-          ),
-    [available, book.id]
-  );
   useEffect(() => {
-    if (data && !autoSelected.current) {
-      autoSelected.current = true;
-      if (available) {
-        const next = recordings.find((item) => !inLibrary(item));
-        if (next) setSelectedId(next.id);
-      }
-    }
-  }, [data, available, recordings, inLibrary]);
-  const pending =
-    selected.id === book.id
-      ? requested
-      : selected.mediaInfo?.requests?.some(
-          (request) =>
-            (request.bookFormat === 'audiobook' ||
-              request.bookFormat === 'both') &&
-            (request.status === MediaRequestStatus.PENDING ||
-              request.status === MediaRequestStatus.APPROVED)
-        );
+    if (!selectedByUser.current)
+      setSelectedId(initialNarration(recordings, intl.locale)?.id);
+  }, [recordings, intl.locale]);
+  const ownedCount = recordings.filter((item) => item.owned).length;
+  useEffect(() => {
+    onCoverageChanged?.(
+      data?.editions.length
+        ? { owned: ownedCount, total: recordings.length }
+        : undefined
+    );
+  }, [data, ownedCount, recordings.length, onCoverageChanged]);
+  const hasEditions = Boolean(data?.editions.length);
+  const pending = hasEditions
+    ? book.mediaInfo?.requests?.some(
+        (request) =>
+          (request.bookFormat === 'audiobook' ||
+            request.bookFormat === 'both') &&
+          (request.status === MediaRequestStatus.PENDING ||
+            request.status === MediaRequestStatus.APPROVED) &&
+          (!request.preferredEditionId ||
+            request.preferredEditionId === selected.id)
+      )
+    : requested;
   return (
     <section>
       <div className="persius-section-header">
@@ -121,6 +139,11 @@ export function NarrationPicker({
       <p className="persius-narration-hint">
         {intl.formatMessage(messages.narrationHint)}
       </p>
+      {!data && !error && (
+        <p className="persius-narration-hint" role="status">
+          {intl.formatMessage(messages.narrationLoading)}
+        </p>
+      )}
       <fieldset className="persius-recordings">
         <legend className="sr-only">
           {intl.formatMessage(messages.narrations)}
@@ -130,7 +153,7 @@ export function NarrationPicker({
             className="persius-recording"
             key={recording.id}
             data-selected={selected.id === recording.id}
-            data-available={inLibrary(recording)}
+            data-available={recording.owned}
           >
             <label className="persius-recording-choice">
               <input
@@ -138,13 +161,17 @@ export function NarrationPicker({
                 name={`narration-${book.id}`}
                 value={recording.id}
                 checked={selected.id === recording.id}
-                onChange={() => setSelectedId(recording.id)}
+                onChange={() => {
+                  selectedByUser.current = true;
+                  setSelectedId(recording.id);
+                  setSampleId(undefined);
+                }}
               />
               <span className="persius-recording-cover">
-                {recording.posterPath ? (
+                {recording.imageUrl ? (
                   <CachedImage
                     type="book"
-                    src={recording.posterPath}
+                    src={recording.imageUrl}
                     alt=""
                     fill
                     sizes="64px"
@@ -155,33 +182,69 @@ export function NarrationPicker({
               </span>
               <span className="persius-recording-copy">
                 <strong>
-                  {recording.narrators?.join(', ') ||
+                  {recording.narrators.join(', ') ||
                     intl.formatMessage(messages.narratorUnknown)}
                 </strong>
                 <small>
                   {[
                     duration(
-                      recording.audiobookDuration
-                        ? recording.audiobookDuration / 60
+                      recording.durationSeconds
+                        ? recording.durationSeconds / 60
                         : undefined
                     ),
                     recording.publisher,
-                    recording.firstPublishYear,
+                    recording.releaseDate?.match(/^\d{4}/)?.[0],
                   ]
                     .filter(Boolean)
                     .join(' · ') || intl.formatMessage(messages.unknown)}
                 </small>
-                {inLibrary(recording) && (
-                  <span className="persius-status" data-tone="success">
-                    <CheckIcon aria-hidden="true" />
-                    {intl.formatMessage(messages.inLibrary)}
-                  </span>
-                )}
+                <span className="persius-recording-badges">
+                  {recording.owned && (
+                    <span className="persius-status" data-tone="success">
+                      <CheckIcon aria-hidden="true" />
+                      {intl.formatMessage(messages.inLibrary)}
+                    </span>
+                  )}
+                  {recommendation?.id === recording.id && (
+                    <span
+                      className="persius-status"
+                      data-tone="progress"
+                      title={intl.formatMessage(messages.recommendationReason)}
+                    >
+                      {intl.formatMessage(messages.recommended)}
+                    </span>
+                  )}
+                  {recording.editionLabel && (
+                    <span className="persius-status">
+                      {recording.editionLabel}
+                    </span>
+                  )}
+                  {recording.production === 'full-cast' && (
+                    <span className="persius-status">
+                      {intl.formatMessage(messages.fullCastRecording)}
+                    </span>
+                  )}
+                  {recording.abridged === 'abridged' && (
+                    <span className="persius-status">
+                      {intl.formatMessage(messages.abridgedRecording)}
+                    </span>
+                  )}
+                </span>
               </span>
             </label>
-            {recording.id === book.id && available && (
-              <div className="persius-recording-actions">{playback}</div>
-            )}
+            <div className="persius-recording-actions">
+              {recording.owned && recording.selected ? (
+                playback
+              ) : (
+                <NarrationSample
+                  url={recording.sampleUrl}
+                  active={sampleId === recording.id}
+                  onActiveChange={(active) =>
+                    setSampleId(active ? recording.id : undefined)
+                  }
+                />
+              )}
+            </div>
           </div>
         ))}
       </fieldset>
@@ -193,37 +256,53 @@ export function NarrationPicker({
           </Button>
         </p>
       )}
-      {!inLibrary(selected) && (
+      {!selected.owned && (
         <Button
           className="persius-request-recording"
           buttonType="primary"
           disabled={
             !canRequest ||
+            selected.requestable === false ||
             pending ||
-            selected.mediaInfo?.status === MediaStatus.BLOCKLISTED
+            book.mediaInfo?.status === MediaStatus.BLOCKLISTED
           }
-          onClick={() => setRequestId(selected.id)}
+          onClick={() => {
+            setSampleId(undefined);
+            setRequestChoice(
+              hasEditions
+                ? {
+                    editionId: selected.id,
+                    variantKey: selected.id,
+                    policy:
+                      ownedCount > 0 && data?.supportsAlongside
+                        ? 'alongside'
+                        : 'only',
+                  }
+                : undefined
+            );
+            setRequestOpen(true);
+          }}
         >
           {intl.formatMessage(
             pending
               ? messages.requested
-              : selected.narrators?.length
+              : selected.narrators.length
                 ? messages.requestRecording
                 : messages.request,
-            { narrator: selected.narrators?.join(', ') }
+            { narrator: selected.narrators.join(', ') }
           )}
         </Button>
       )}
-      {requestId && (
+      {requestOpen && (
         <RequestModal
-          key={requestId}
-          bookId={requestId}
+          bookId={book.id}
           type="book"
           initialBookFormat="audiobook"
+          initialEditionChoice={requestChoice}
           show
-          onCancel={() => setRequestId(undefined)}
+          onCancel={() => setRequestOpen(false)}
           onComplete={() => {
-            setRequestId(undefined);
+            setRequestOpen(false);
             void mutate();
             onChanged?.();
           }}
@@ -255,6 +334,21 @@ export default function BookDetail({
   onChanged?: () => void;
 }) {
   const intl = useIntl();
+  const [narrationCoverage, setNarrationCoverage] = useState<{
+    owned: number;
+    total: number;
+    bookId: string;
+  }>();
+  const updateNarrationCoverage = useCallback(
+    (coverage: { owned: number; total: number } | undefined) => {
+      setNarrationCoverage(
+        coverage ? { ...coverage, bookId: data.id } : undefined
+      );
+    },
+    [data.id]
+  );
+  const currentCoverage =
+    narrationCoverage?.bookId === data.id ? narrationCoverage : undefined;
   const description = (
     <ReactMarkdown skipHtml urlTransform={getSafeMarkdownHref}>
       {normalizeBookOverviewMarkdown(data.description || '')}
@@ -354,14 +448,22 @@ export default function BookDetail({
                 item.format === 'ebook' ? messages.ebooks : messages.audiobooks
               )}
             </strong>
-            <small data-available={item.available}>
-              {intl.formatMessage(
-                item.available
-                  ? messages.inLibrary
-                  : item.requested
-                    ? messages.requested
-                    : messages.notYet
-              )}
+            <small
+              data-available={
+                item.format === 'audiobook' && currentCoverage
+                  ? currentCoverage.owned > 0
+                  : item.available
+              }
+            >
+              {item.format === 'audiobook' && currentCoverage
+                ? intl.formatMessage(messages.narrationOwned, currentCoverage)
+                : intl.formatMessage(
+                    item.available
+                      ? messages.inLibrary
+                      : item.requested
+                        ? messages.requested
+                        : messages.notYet
+                  )}
             </small>
           </button>
         ))}
@@ -370,7 +472,9 @@ export default function BookDetail({
         <div>
           {format === 'audiobook' ? (
             <NarrationPicker
+              key={data.id}
               book={data}
+              onCoverageChanged={updateNarrationCoverage}
               available={Boolean(
                 coverage.find((item) => item.format === 'audiobook')?.available
               )}

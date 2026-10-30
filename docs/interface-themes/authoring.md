@@ -83,8 +83,9 @@ anything valid: Persius layouts are activated by this metadata, not the reserved
 `persiusNG` name. Forking PersiusNG carries the metadata automatically. Forking
 SeerrOrig or SeerrNGJ preserves the classic composition. The CSS remains fully
 independent in either case. Navigation and icons are also native application
-choices. Persius composition supplies its grouped outline navigation; the
-`navigation` and `activeNavigationIcon` preferences govern classic compositions.
+choices. The `navigation` and `activeNavigationIcon` preferences apply to both
+compositions. PersiusNG defaults to grouped navigation and outlined icons; a
+derivative can select a flat menu or filled active icons without editing React.
 Do not attempt to inject executable components into a package.
 
 Persius composition requires a SeerrNG release that includes PersiusNG in its
@@ -302,6 +303,15 @@ not a substitute for live testing of a community package.
 The [submission guide](submitting.md) gives a release checklist, supported review
 routes and a ready-made GitHub form. [PersiusNG’s verification record](persiusng.md)
 separates component evidence from the production acceptance that remains open.
+
+## Recording and season controls
+
+Persius derivatives may style `.persius-recordings`, `.persius-recording-choice`,
+`.persius-recording-badges`, `.persius-sample` and `.persius-future-seasons`.
+Retain visible keyboard focus, selected/disabled states and readable descriptions.
+The application owns the audio element and request behavior. Do not create fake
+availability, sample links or request actions with CSS generated content.
+See [native request flows](native-request-flows.md) for data and provider behavior.
 
 ## Versioning
 

@@ -36,17 +36,24 @@ only specify dark mode.
 - `themes/persiusNG/` contains the scoped stylesheet and validated manifest.
   The application adds the built-in ID to the shared registry and client fallback.
 - `src/components/Persius/` contains presentation components. Existing page,
-  modal, navigation, title-card and request owners opt in only when PersiusNG is
-  selected. Extra navigation remains available under **More**. Custom packages can
+  modal, navigation, title-card and request owners opt in when the selected theme
+  declares the Persius composition. Extra navigation remains available under **More**. Custom packages can
   select the same native composition with `"layout": "persius"` while supplying
   their own ID and stylesheet; no code fork or UI proxy is involved.
 - Library segments and genre chips update the existing catalog queries. Series
   stacks and narrator counts describe loaded catalog results, not invented totals.
   Full-cast shelves require explicit full-cast/GraphicAudio metadata.
-- Narrations come from catalog results matching the current title and author.
-  Requesting a selected recording passes that exact book ID and audiobook format
-  into the existing request modal. Availability, pending requests, service setup
-  and permissions still govern the actions.
+- Narrations use the native edition catalog, with exact provider work identity
+  or a verified title/author lookup. The request retains the original work ID,
+  selected provider edition, audiobook format and explicit alongside/replacement
+  policy. Another recording's files cannot satisfy that request. Missing provider
+  identities cannot be requested. Samples load only after a click and only when
+  a provider supplies an HTTPS preview. Edition labels are provider metadata;
+  the recommendation chooses a missing unabridged recording in the UI language.
+- The future-season switch is stored on TV requests and sent to Sonarr v3/v5 for
+  new and existing series. Episode Queue and watch-gate policy take priority.
+  Opting out preserves monitoring already established in Sonarr. Existing null
+  preferences keep the server default. See [native request flows](native-request-flows.md).
 - Requests default to the viewer's active requests. **Active**, **Ready** and
   **All** counts come from the request API. Authorized users can include other
   users through the additional controls. Status actions and byte-based download
@@ -85,17 +92,21 @@ document overflow at 390 × 844 and 768 × 844. The
 dimensions and interaction checks. Checks covered season clear/latest/all and
 individual selection, blocked episode exclusion, dialog Tab wrapping and focus
 restoration, narration selection, the search shortcut, light-mode switching and
-a theme-picker round trip. A renamed custom theme also preserved the native
-sidebar, account label and request composition with its independent CSS palette.
+a theme-picker round trip, and the future-season switch with pointer and keyboard.
+A renamed custom theme also preserved the native account and request composition
+with an independent CSS palette and flat navigation.
 
 The shared sidebar, search, buttons and six-poster fixture was also rendered at
 1782 × 1060 using the original source from base commit
 `471271589e28a77a2e1564b2ef4e1c152e7cf103` and the candidate source, separately
 under SeerrOrig and SeerrNGJ. Both comparisons had zero changed pixels.
 
-Twenty-four focused tests passed: six CLI package round trips, ten package/registry/
-stylesheet-route checks, two actual ThemeProvider integration tests and the existing
-six-test season request payload adapter.
+Fifty-three focused tests passed: six CLI round trips; ten package/registry/route
+checks; two actual ThemeProvider checks; six season-selection adapter checks;
+seven edition metadata/ownership checks; four edition lookup checks; six narration
+component checks; seven Sonarr/Readarr adapter checks; and five future-season
+validation/policy/migration checks. The two migration SQL contracts were executed
+against SQLite; a PostgreSQL server was not available.
 Changed TypeScript files were parsed and formatted. A complete application build
 and project typecheck were not available in the partial repository snapshot;
 missing application modules prevent treating its partial semantic check as a
@@ -109,11 +120,12 @@ real request mutations, signed-in permission/service combinations, notifications
 downloads or external playback. Validate those on a running instance before
 marking the UI complete, as required by `AGENTS.md`.
 
-Catalog content, artwork, ratings, runtimes and counts remain real data. The mockup's
-narration samples, recommendation labels, recording edition tags and automatic
-future-season toggle have no verified equivalent in the current interfaces and
-are not fabricated. The existing detailed request controls remain reachable.
-Coming-soon copy also avoids promising downloads on theatrical release day.
+Catalog content, artwork, ratings, runtimes and counts remain real data. The native
+code now supports narration samples, recommendations, recording edition labels
+and automatic future-season monitoring. Sample URLs and edition labels depend on
+provider metadata and are not fabricated when absent. The existing detailed
+request controls remain reachable. Coming-soon copy avoids promising downloads
+on theatrical release day.
 
 For final acceptance, enable PersiusNG on the running instance and revisit the
 routes above at their listed viewports. Check ordinary and privileged accounts,
@@ -139,3 +151,10 @@ round-trip tests and two actual ThemeProvider tests cover independently named
 Persius compositions, same-origin stylesheet loading, account restoration and
 failed-save preservation. See [authoring](authoring.md) and
 [community submission](submitting.md).
+
+## Confidence
+
+High: scoped package validation, authoring round trips, the focused checks and
+recorded component renders. Moderate: full request integration, because the
+production database, providers and signed-in routes were not exercised together.
+Unknown: exact production pixel parity and deployment-specific proxy retirement.
