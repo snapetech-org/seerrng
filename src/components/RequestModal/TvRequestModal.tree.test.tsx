@@ -10,6 +10,7 @@ import { afterEach, expect, it, vi } from 'vitest';
 import TvRequestModal from './TvRequestModal';
 
 const fixtureState = vi.hoisted(() => ({
+  persius: false,
   data: {} as Record<string, unknown>,
   quota: { tv: { limit: 0, remaining: 10 } },
   catalog: undefined as unknown,
@@ -32,6 +33,9 @@ const fixtureState = vi.hoisted(() => ({
   ready: true,
   mutate: vi.fn(),
   addToast: vi.fn(),
+}));
+vi.mock('@app/components/Persius/usePersius', () => ({
+  usePersius: () => fixtureState.persius,
 }));
 vi.mock('axios', () => ({
   default: { post: vi.fn(), put: vi.fn(), delete: vi.fn() },
@@ -364,6 +368,7 @@ async function fixture(
   };
   fixtureState.quota = { tv: { limit: 0, remaining: 10 } };
   fixtureState.catalog = undefined;
+  fixtureState.persius = false;
   fixtureState.partialRequestsEnabled = true;
   fixtureState.tvSeasonWatchGateEnabled = false;
   fixtureState.watchStatus = undefined;
@@ -1080,6 +1085,43 @@ it('does not expose a per-request Episode Queue control while editing a show', a
         fixtureState.sonarrServers = [
           { id: 1, name: 'Sonarr', is4k: false, isDefault: true },
         ];
+      },
+    }
+  );
+});
+
+it('submits the Persius future-season switch through the native request flow', async () => {
+  for (const enabled of [true, false]) {
+    vi.mocked(axios.post).mockClear();
+    await fixture(
+      async (doc) => {
+        const control = doc.querySelector<HTMLButtonElement>('[role="switch"]');
+        expect(control?.getAttribute('aria-checked')).toBe('true');
+        if (!enabled) {
+          await act(async () => control!.click());
+        }
+        await click(doc, 'modal-ok-button');
+        expect(axios.post).toHaveBeenCalledExactlyOnceWith(
+          '/api/v1/request',
+          expect.objectContaining({ monitorFutureSeasons: enabled })
+        );
+      },
+      { configure: () => { fixtureState.persius = true; } }
+    );
+  }
+});
+
+it('keeps automatic future seasons off when the watch gate manages the request', async () => {
+  await fixture(
+    async (doc) => {
+      const control = doc.querySelector<HTMLButtonElement>('[role="switch"]');
+      expect(control?.disabled).toBe(true);
+      expect(control?.getAttribute('aria-checked')).toBe('false');
+    },
+    {
+      configure: () => {
+        fixtureState.persius = true;
+        fixtureState.tvSeasonWatchGateEnabled = true;
       },
     }
   );

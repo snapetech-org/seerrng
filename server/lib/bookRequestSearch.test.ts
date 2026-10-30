@@ -8,9 +8,14 @@ import {
 import { getRepository } from '@server/datasource';
 import { BookRequestSearch } from '@server/entity/BookRequestSearch';
 import Media from '@server/entity/Media';
-import { MediaRequest } from '@server/entity/MediaRequest';
+import {
+  MediaRequest,
+  getRequestMutationAdmissionKey,
+  runWithRequestAdmission,
+} from '@server/entity/MediaRequest';
 import MediaRequestStatusEvent from '@server/entity/MediaRequestStatusEvent';
 import { User } from '@server/entity/User';
+import notificationManager, { Notification } from '@server/lib/notifications';
 import { getSettings } from '@server/lib/settings';
 import { resetTestDb, seedTestDb } from '@server/utils/seedTestDb';
 import assert from 'node:assert/strict';
@@ -155,6 +160,106 @@ describe('BookRequestSearchManager', () => {
   afterEach(() => {
     mock.restoreAll();
     getSettings().readarr = [];
+  });
+
+  it('completes an exact recording through notification and status history subscribers once', async () => {
+    const { request } = await createTrackedRequest({
+      createdBook: false,
+      createdAuthor: false,
+    });
+    await getRepository(MediaRequest).update(request.id, {
+      status: MediaRequestStatus.APPROVED,
+      preferredEditionId: 'hc:voice-2',
+      serviceTargets: [
+        {
+          serviceType: 'readarr',
+          serverId: 20,
+          format: 'ebook',
+          status: MediaStatus.PROCESSING,
+        },
+      ],
+    });
+    await getRepository(BookRequestSearch).update(
+      { requestId: request.id },
+      { state: 'available', providerEditionId: 'hc:voice-2' }
+    );
+    const notification = mock.method(
+      notificationManager,
+      'sendNotificationIntent'
+    );
+    notification.mock.mockImplementation(async () => undefined);
+
+    await bookRequestSearchManager.run();
+
+    const saved = await getRepository(MediaRequest).findOneByOrFail({
+      id: request.id,
+    });
+    assert.equal(saved.status, MediaRequestStatus.COMPLETED);
+    assert.equal(saved.serviceTargets?.[0].status, MediaStatus.AVAILABLE);
+    assert.equal(notification.mock.callCount(), 1);
+    assert.equal(
+      notification.mock.calls[0].arguments[0],
+      Notification.MEDIA_AVAILABLE
+    );
+    assert.deepEqual(notification.mock.calls[0].arguments[1], {
+      kind: 'media-request',
+      requestId: request.id,
+    });
+    const history = await getRepository(MediaRequestStatusEvent).findBy({
+      requestId: request.id,
+    });
+    assert.ok(
+      history.some((event) => event.stage === RequestStatusStage.AVAILABLE)
+    );
+
+    await bookRequestSearchManager.run();
+    assert.equal(notification.mock.callCount(), 1);
+  });
+
+  it('does not complete a recording after cancellation wins the request admission lock', async () => {
+    const { request } = await createTrackedRequest({
+      createdBook: false,
+      createdAuthor: false,
+    });
+    await getRepository(MediaRequest).update(request.id, {
+      status: MediaRequestStatus.APPROVED,
+      preferredEditionId: 'hc:voice-2',
+    });
+    await getRepository(BookRequestSearch).update(
+      { requestId: request.id },
+      { state: 'available', providerEditionId: 'hc:voice-2' }
+    );
+    let entered!: () => void;
+    let release!: () => void;
+    const locked = new Promise<void>((resolve) => {
+      entered = resolve;
+    });
+    const gate = new Promise<void>((resolve) => {
+      release = resolve;
+    });
+    const cancellation = runWithRequestAdmission(
+      [getRequestMutationAdmissionKey(request.id)],
+      async () => {
+        entered();
+        await gate;
+        await getRepository(MediaRequest).update(request.id, {
+          status: MediaRequestStatus.DECLINED,
+        });
+      }
+    );
+    await locked;
+    const completion = bookRequestSearchManager.run();
+    release();
+    await Promise.all([cancellation, completion]);
+
+    const saved = await getRepository(MediaRequest).findOneByOrFail({
+      id: request.id,
+    });
+    assert.equal(saved.status, MediaRequestStatus.DECLINED);
+    assert.equal(
+      await getRepository(BookRequestSearch).countBy({ requestId: request.id }),
+      0
+    );
   });
 
   it('keeps an active Bookshelf command in the searching state', async () => {

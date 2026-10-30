@@ -5,6 +5,15 @@ the same commit as each implementation slice. A source change is not visual
 acceptance: rendered review stays unverified until the application has been
 captured at matching viewports and states.
 
+## Current integration follow-up
+
+PersiusNG, native package serving and community authoring are tracked in
+[the 2026-10-30 integration checkpoint](integration-checkpoint-20261030.md).
+The full source/dependency integration pass found additional regressions; its
+execution environment was lost before the final checks. Production and live
+visual acceptance remain incomplete. Earlier results below describe their
+recorded source slices.
+
 ## Implementation basis
 
 - Rebuild base: `snapetech-org/seerrng` `main`, commit

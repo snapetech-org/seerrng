@@ -92,6 +92,7 @@ import {
 import { isSportarrLeagueExternalId } from '@server/lib/sportarrIdentity';
 import { isTvSeasonWatchGateEnabledForUser } from '@server/lib/tvSeasonWatchGate';
 import logger from '@server/logger';
+import { isProviderBookEdition } from '@server/utils/bookEdition';
 import { parseBookshelfBookId } from '@server/utils/bookshelfCatalog';
 import {
   hydrateBookshelfLookupResult,
@@ -2115,7 +2116,7 @@ export class MediaRequestSubscriber implements EntitySubscriberInterface<MediaRe
       if (
         requestedBookFormat !== 'both' &&
         bookFormatAlreadyAvailable &&
-        !entity.preferredEditionId
+        !isProviderBookEdition(entity.preferredEditionId)
       ) {
         logger.warn('Book already exists, marking request as COMPLETED', {
           label: 'Media Request',
@@ -2944,7 +2945,7 @@ export class MediaRequestSubscriber implements EntitySubscriberInterface<MediaRe
           tags,
           externalServiceId: localBookId,
           externalServiceSlug: result.titleSlug ?? providerBookId,
-          status: entity.preferredEditionId
+          status: isProviderBookEdition(entity.preferredEditionId)
             ? MediaStatus.PROCESSING
             : media.status,
         });

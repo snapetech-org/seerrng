@@ -480,7 +480,9 @@ const MovieDetailsLayout = ({
                       ]
                     : []),
                 ]}
-                onChange={setSelectedQuality}
+                onChange={(quality) =>
+                  setSelectedQuality(quality === '4k' ? '4k' : 'hd')
+                }
                 label={intl.formatMessage(messages.quality)}
               />
             </>

@@ -24,6 +24,7 @@ import {
   reconcileRequestedMusicAvailability,
 } from '@server/lib/musicAvailability';
 import logger from '@server/logger';
+import { isProviderBookEdition } from '@server/utils/bookEdition';
 import { readarrServiceSupportsFormat } from '@server/utils/readarrService';
 import type { EntityManager, Repository } from 'typeorm';
 import { In, MoreThan } from 'typeorm';
@@ -405,7 +406,7 @@ const isRequestSatisfied = (request: RequestLike): boolean => {
   }
 
   if (request.type === MediaType.BOOK) {
-    if (request.preferredEditionId)
+    if (isProviderBookEdition(request.preferredEditionId))
       return request.status === MediaRequestStatus.COMPLETED;
     if (!isAvailableStatus(mediaStatus)) {
       return false;

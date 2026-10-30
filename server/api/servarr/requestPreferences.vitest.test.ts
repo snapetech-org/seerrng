@@ -5,35 +5,6 @@ import ReadarrAPI, {
 } from './readarr';
 import SonarrAPI, { type AddSeriesOptions, type SonarrSeries } from './sonarr';
 const transport = vi.hoisted(() => ({ request: vi.fn() }));
-vi.mock('@server/lib/externalIds', () => ({
-  normalizeOpenLibraryEditionId: (value: string) => value,
-  normalizeOpenLibraryWorkId: (value: string) => value,
-}));
-vi.mock('@server/logger', () => ({
-  default: { info: vi.fn(), debug: vi.fn(), warn: vi.fn(), error: vi.fn() },
-}));
-vi.mock('@server/utils/safeRemoteImage', () => ({
-  fetchSafeRemoteImage: vi.fn(),
-  normalizeSafeRasterImage: vi.fn(),
-  MAX_SAFE_REMOTE_IMAGE_BYTES: 1024,
-}));
-vi.mock('@server/utils/security', () => ({
-  redactSecrets: (value: unknown) => value,
-}));
-vi.mock('./base', () => ({
-  default: class {
-    request = transport.request;
-  },
-  isServarrServiceUrl: () => true,
-  sanitizeServarrImages: (value: unknown) => value ?? [],
-  sanitizeServarrRecordArray: (value: unknown) => value ?? [],
-  sanitizeServarrProfiles: (value: unknown) => value ?? [],
-  sanitizeServarrSystemStatus: (value: unknown) => value,
-  MAX_SERVARR_CONFIGURATION_RESULTS: 1000,
-  MAX_SERVARR_LIBRARY_RESPONSE_BYTES: 1000,
-  MAX_SERVARR_LIBRARY_RESULTS: 1000,
-  MAX_SERVARR_LOOKUP_RESULTS: 1000,
-}));
 const options: AddSeriesOptions = {
   tvdbid: 33,
   title: 'A Series',
@@ -65,6 +36,7 @@ for (const version of ['v3', 'v5'] as const) {
       url: 'http://fixture:8989/api/v3',
       apiKey: 'test',
     });
+    Object.defineProperty(api, 'request', { value: transport.request });
     const raw = { ...rawSeries, id: existing ? 42 : 0, monitorNewItems };
     Object.defineProperty(api, 'getApiVersion', { value: async () => version });
     vi.spyOn(api, 'getSeriesByTvdbId').mockResolvedValue(

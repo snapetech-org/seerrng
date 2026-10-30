@@ -13,12 +13,15 @@ import usePersius from '@app/components/Persius/usePersius';
 import useDetailDisclosurePins from '@app/hooks/useDetailDisclosurePins';
 import usePlaybackCatalog from '@app/hooks/usePlaybackCatalog';
 import { encodeApiPathSegment } from '@app/utils/apiPath';
+import { normalizeBookOverviewMarkdown } from '@app/utils/bookMarkdown';
 import defineMessages from '@app/utils/defineMessages';
 import { resolveCanonicalPlaybackSelection } from '@app/utils/playbackSelection';
+import { getSafeMarkdownHref } from '@app/utils/safeUrl';
 import type { BookDetails, BookRatingResponse } from '@server/models/Book';
 import Link from 'next/link';
 import { useEffect, useState, type ReactNode } from 'react';
 import { useIntl } from 'react-intl';
+import ReactMarkdown from 'react-markdown';
 
 const messages = defineMessages('components.BookDetails.Layout', {
   mediaAndFormat: 'Media & Format',
@@ -166,6 +169,31 @@ const BookDetailsLayout = ({
     <>
       {' '}
       <BookSeriesLinks bookId={data.id} />
+      {!persius && (
+        <section className="app-card-inset refreshed-inset-surface card-spacing-before rounded-lg border border-gray-700 p-3">
+          <h2 className="media-inset-heading">
+            {intl.formatMessage(messages.overview)}
+          </h2>
+          <div className="refreshed-detail-text-muted prose prose-sm prose-p:my-0 prose-p:leading-5 prose-a:text-indigo-300 prose-a:underline prose-a:hover:text-indigo-200 mt-4 max-w-none text-sm leading-5">
+            <ReactMarkdown
+              skipHtml
+              urlTransform={getSafeMarkdownHref}
+              components={{
+                a: ({ children, ...props }) => (
+                  <a {...props} target="_blank" rel="noreferrer">
+                    {children}
+                  </a>
+                ),
+              }}
+            >
+              {normalizeBookOverviewMarkdown(
+                data.description ||
+                  intl.formatMessage(messages.overviewUnavailable)
+              )}
+            </ReactMarkdown>
+          </div>
+        </section>
+      )}
       <div className="media-detail-disclosure-row">
         {data.series && data.series.length > 0 && (
           <DetailDisclosureButton

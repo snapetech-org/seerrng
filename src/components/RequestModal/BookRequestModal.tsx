@@ -46,6 +46,7 @@ import type { QuotaResponse } from '@server/interfaces/api/userInterfaces';
 import type { UserPreferredLanguages } from '@server/interfaces/api/userSettingsInterfaces';
 import { Permission, hasAutoApprovePermission } from '@server/lib/permissions';
 import type { BookDetails } from '@server/models/Book';
+import { isProviderBookEdition } from '@server/utils/bookEdition';
 import {
   getPreferredLanguage,
   languageCodesMatch,
@@ -162,7 +163,13 @@ const BookRequestModal = ({
   const [hasUserSelectedFormat, setHasUserSelectedFormat] = useState(false);
   const [selectedIsbn, setSelectedIsbn] = useState<string>('');
   const [editionChoice, setEditionChoice] = useState<EditionChoice>(
-    initialEditionChoice ?? { policy: 'only' }
+    initialEditionChoice ?? {
+      editionId: isProviderBookEdition(editRequest?.preferredEditionId)
+        ? (editRequest?.preferredEditionId ?? undefined)
+        : undefined,
+      policy: editRequest?.editionPolicy ?? 'only',
+      variantKey: editRequest?.variantKey ?? undefined,
+    }
   );
   const [preferredLanguage, setPreferredLanguage] = useState('');
   const [appliedPreferenceUserId, setAppliedPreferenceUserId] = useState<
@@ -185,28 +192,6 @@ const BookRequestModal = ({
       revalidateOnMount: true,
     }
   );
-  const { data: editionComparison } = useBookEditions(
-    data
-      ? {
-          bookId: data.id,
-          mediaId: data.mediaInfo?.id,
-          format: bookFormat,
-          title: data.title,
-          author: data.author,
-        }
-      : undefined
-  );
-  const selectedEdition = editionComparison?.editions.find(
-    (item) => item.id === editionChoice.editionId
-  );
-  const isDistinctEdition = !!selectedEdition && !selectedEdition.owned;
-  const invalidEditionChoice =
-    !!editionChoice.editionId &&
-    (!selectedEdition ||
-      selectedEdition.requestable === false ||
-      selectedEdition.owned ||
-      (editionChoice.policy === 'alongside' &&
-        !editionComparison?.supportsAlongside));
   const canChooseRequestUser = hasPermission(
     [Permission.MANAGE_REQUESTS, Permission.MANAGE_USERS],
     { type: 'or' }
@@ -282,6 +267,32 @@ const BookRequestModal = ({
       : defaultAudiobookService,
     bookFormat === 'audiobook' ? requestOverrides : null
   );
+  const editionServerId =
+    (bookFormat === 'audiobook' ? audiobookDestination : ebookDestination)
+      ?.serverId ?? undefined;
+  const { data: editionComparison } = useBookEditions(
+    data
+      ? {
+          bookId: data.id,
+          mediaId: data.mediaInfo?.id,
+          serverId: editionServerId,
+          format: bookFormat,
+          title: data.title,
+          author: data.author,
+        }
+      : undefined
+  );
+  const selectedEdition = editionComparison?.editions.find(
+    (item) => item.id === editionChoice.editionId
+  );
+  const isDistinctEdition = !!selectedEdition && !selectedEdition.owned;
+  const invalidEditionChoice =
+    !!editionChoice.editionId &&
+    (!selectedEdition ||
+      selectedEdition.requestable === false ||
+      selectedEdition.owned ||
+      (editionChoice.policy === 'alongside' &&
+        !editionComparison?.supportsAlongside));
   const selectedDestinations =
     bookFormat === 'audiobook' ? [audiobookDestination] : [ebookDestination];
   const destinationAvailable = (format: 'ebook' | 'audiobook') => {
@@ -368,8 +379,16 @@ const BookRequestModal = ({
         : 'ebook'
     );
     setHasUserSelectedFormat(false);
-    setSelectedIsbn('');
-    setEditionChoice(initialEditionChoice ?? { policy: 'only' });
+    setSelectedIsbn(editRequest?.preferredIsbn13 ?? '');
+    setEditionChoice(
+      initialEditionChoice ?? {
+        editionId: isProviderBookEdition(editRequest?.preferredEditionId)
+          ? (editRequest?.preferredEditionId ?? undefined)
+          : undefined,
+        policy: editRequest?.editionPolicy ?? 'only',
+        variantKey: editRequest?.variantKey ?? undefined,
+      }
+    );
     setPreferredLanguage('');
     setAppliedPreferenceUserId(null);
     setRequestOverrides(null);
@@ -377,6 +396,10 @@ const BookRequestModal = ({
     bookId,
     editRequest?.bookFormat,
     editRequest?.id,
+    editRequest?.preferredEditionId,
+    editRequest?.preferredIsbn13,
+    editRequest?.editionPolicy,
+    editRequest?.variantKey,
     initialBookFormat,
     initialEditionChoice,
   ]);
@@ -561,6 +584,7 @@ const BookRequestModal = ({
     setHasUserSelectedFormat(true);
     setRequestOverrides(null);
     setBookFormat(value);
+    setEditionChoice({ policy: 'only' });
   };
 
   const formatWarning =
@@ -1089,7 +1113,8 @@ const BookRequestModal = ({
         {data && (
           <EditionCardPicker
             bookId={data.id}
-            key={bookFormat}
+            serverId={editionServerId}
+            key={`${bookFormat}:${editionServerId ?? 'default'}`}
             mediaId={
               bookFormat === 'audiobook'
                 ? data.mediaInfo?.audiobookExternalServiceId !== undefined &&

@@ -8,13 +8,14 @@ import { ThemeProvider, themePalettes, useTheme } from './ThemeContext';
 
 const fixture = vi.hoisted(() => ({
   user: undefined as User | undefined,
+  get: vi.fn(),
   post: vi.fn(),
   revalidate: vi.fn(),
 }));
 vi.mock('@app/hooks/useUser', () => ({
   useUser: () => ({ user: fixture.user, revalidate: fixture.revalidate }),
 }));
-vi.mock('axios', () => ({ default: { post: fixture.post } }));
+vi.mock('axios', () => ({ default: { get: fixture.get, post: fixture.post } }));
 
 let root: Root;
 let dom: JSDOM;
@@ -48,7 +49,17 @@ beforeEach(() => {
   vi.stubGlobal('document', dom.window.document);
   vi.stubGlobal('localStorage', dom.window.localStorage);
   vi.stubGlobal('IS_REACT_ACT_ENVIRONMENT', true);
+  const append = document.head.append.bind(document.head);
+  vi.spyOn(document.head, 'append').mockImplementation((...nodes) => {
+    append(...nodes);
+    for (const node of nodes) {
+      if (typeof node !== 'string' && node.nodeName === 'LINK') {
+        queueMicrotask(() => node.dispatchEvent(new dom.window.Event('load')));
+      }
+    }
+  });
   fixture.user = undefined;
+  fixture.get.mockReset().mockResolvedValue({ data: { themes: [] } });
   fixture.post.mockReset();
   fixture.revalidate.mockReset();
   fixture.revalidate.mockImplementation(async (callback) => {
@@ -62,6 +73,7 @@ beforeEach(() => {
 });
 afterEach(async () => {
   await act(async () => root.unmount());
+  vi.restoreAllMocks();
   container.remove();
   dom.window.close();
   vi.unstubAllGlobals();
@@ -84,9 +96,13 @@ test('new installs use SeerrNG and keep its palette selected in light mode', asy
   expect(document.documentElement.dataset.themeMode).toBe('light');
   expect(theme.interfaceTheme).toBe('seerrOrig');
   expect(document.documentElement.dataset.interfaceTheme).toBe('seerrOrig');
-  expect(
-    document.documentElement.style.getPropertyValue('--color-indigo-600')
-  ).toBe('79 70 229');
+  const sheets = document.querySelectorAll<HTMLLinkElement>(
+    'link[data-interface-theme-stylesheet]'
+  );
+  expect(sheets).toHaveLength(1);
+  expect(sheets[0].getAttribute('href')).toBe(
+    '/api/v1/interface-themes/seerrOrig/theme.css'
+  );
   expect(fixture.post).not.toHaveBeenCalled();
 });
 

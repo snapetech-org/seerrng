@@ -166,7 +166,7 @@ export default function ComingSoon() {
       {discover.isLoadingInitialData && (
         <p role="status">{intl.formatMessage(messages.loading)}</p>
       )}
-      {discover.error && (
+      {!!discover.error && (
         <p role="alert">
           {intl.formatMessage(messages.failed)}{' '}
           <Button onClick={() => discover.mutate?.()}>

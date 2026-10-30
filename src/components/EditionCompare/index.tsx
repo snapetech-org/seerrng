@@ -113,6 +113,7 @@ const unknownLabels = {
 interface EditionCardPickerProps {
   bookId?: string;
   mediaId?: number;
+  serverId?: number;
   format: 'ebook' | 'audiobook';
   title: string;
   author?: string;
@@ -128,6 +129,7 @@ interface EditionCardPickerProps {
 export const EditionCardPicker = ({
   bookId,
   mediaId,
+  serverId,
   format,
   title,
   author,
@@ -139,6 +141,7 @@ export const EditionCardPicker = ({
   const { data, error, mutate } = useBookEditions({
     bookId,
     mediaId,
+    serverId,
     format,
     title,
     author,

@@ -6,8 +6,11 @@ they do not ship executable request logic or require a UI-rewriting proxy.
 ## Recording choices
 
 `GET /api/v1/editions/book` accepts `format`, `mediaId`, canonical `bookId`,
-`term`, expected `title`/`author`, and optional `foreignBookId`. A Bookshelf work
-identity selects its configured service and exact provider work. Other catalog
+`term`, expected `title`/`author`, optional `foreignBookId`, and optional
+`serverId` (including zero). An explicit server selects the configured destination
+for that format; exact ownership is evaluated there. Without an override, a
+Bookshelf work identity selects its configured service and exact provider work.
+Other lookups prefer the configured default service for the format. Other catalog
 lookups require the supplied title and author to match. Library responses include
 exact edition ownership; ordinary Readarr ownership is inferred only when a
 single monitored edition matches and its monitored-edition file total is positive.
@@ -26,7 +29,10 @@ recording. The request modal explains the replacement policy on providers that
 only support one monitored version. The background search and status projection
 require the chosen edition's files; an older recording's generic work-level
 availability does not complete the new request. Completion preserves concurrent
-cancellation and updates only the corresponding service targets.
+cancellation through the shared request admission lock and updates only the
+corresponding service targets. Saving the full request entity preserves the
+transactional notification intent and status-history subscribers. Legacy Open
+Library edition IDs remain ISBN metadata, not provider recording identities.
 
 Optional `sampleUrl` and `editionLabel` pass through from the provider. Samples
 accept HTTPS without embedded credentials, are not fetched until a click, and
@@ -65,3 +71,7 @@ external transport, plus validation and ownership helpers. Migration SQL is
 round-tripped against SQLite. The full production Next.js build, PostgreSQL
 migration, real provider acquisition/playback and concurrent multi-user flows
 still require a running deployment. See [PersiusNG evidence](persiusng.md).
+
+The [native integration checkpoint](integration-checkpoint-20261030.md) records
+current failures, recovery changes and remaining production gates. Pending-request
+destination edits still need edition revalidation and target synchronization.

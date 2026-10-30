@@ -10,7 +10,7 @@ export const getPersiusNavigationSections = (
   const personal = ['requests', 'calendar'];
   const ordered = (ids: string[]) =>
     ids.flatMap((id) => links.filter((link) => link.id === id));
-  return [
+  const orderedSections: NavigationSection[] = [
     {
       id: 'persius-discover',
       ariaLabelKey: 'discover',
@@ -39,7 +39,8 @@ export const getPersiusNavigationSections = (
         (link) => !primary.includes(link.id) && !personal.includes(link.id)
       ),
     },
-  ].filter((section) => section.links.length > 0);
+  ];
+  return orderedSections.filter((section) => section.links.length > 0);
 };
 
 const originalNavigationOrder = [

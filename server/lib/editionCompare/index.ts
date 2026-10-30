@@ -3,9 +3,9 @@ import ReadarrAPI from '@server/api/servarr/readarr';
 import { MediaType } from '@server/constants/media';
 import { getRepository } from '@server/datasource';
 import Media from '@server/entity/Media';
+import { getExternalRuntimeConfig } from '@server/lib/externalRuntimeConfig';
 import { titleSimilarity } from '@server/lib/resolve/match';
 import type { ReadarrSettings } from '@server/lib/settings';
-import { getSettings } from '@server/lib/settings';
 import { parseBookshelfBookId } from '@server/utils/bookshelfCatalog';
 import { readarrServiceSupportsFormat } from '@server/utils/readarrService';
 import { hasExactEditionFiles } from './availability';
@@ -48,9 +48,12 @@ export const getLibraryBookService = async (
   ) {
     return undefined;
   }
-  const servers = getSettings().readarr;
+  const servers = getExternalRuntimeConfig().readarr;
   const server = servers.find(
-    (entry) => entry.id === serviceId && entry.backend !== 'bindery'
+    (entry) =>
+      entry.id === serviceId &&
+      entry.backend !== 'bindery' &&
+      readarrServiceSupportsFormat(entry, format)
   );
   if (!server) return undefined;
   return {
@@ -65,10 +68,54 @@ export const getLibraryBookService = async (
   };
 };
 
+const compareLibraryEditions = async (
+  api: ReadarrAPI,
+  bookId: number,
+  format: BookFormat
+): Promise<EditionComparison | undefined> => {
+  const catalog = await api.getEditionCatalog(bookId);
+  if (catalog.length) {
+    return {
+      format,
+      editions: catalog
+        .filter((edition) => edition.isEbook === (format === 'ebook'))
+        .map((edition) => cardFromCatalog(edition, format)),
+      supportsAlongside: api.supportsWantedEditionVariants(),
+      source: 'library',
+    };
+  }
+  const [book, editions] = await Promise.all([
+    api.getBookIfExists(bookId),
+    api.getEditions(bookId),
+  ]);
+  if (editions.length)
+    return {
+      format,
+      supportsAlongside: false,
+      source: 'library',
+      editions: (editions as LookupEdition[])
+        .filter(
+          (edition) =>
+            edition.isEbook === undefined ||
+            edition.isEbook === (format === 'ebook')
+        )
+        .map((edition) => ({
+          ...cardFromLookup(edition, format),
+          owned: hasExactEditionFiles(
+            edition.foreignEditionId,
+            [],
+            editions,
+            book?.statistics?.bookFileCount ?? 0
+          ),
+        })),
+    };
+  return undefined;
+};
+
 export const compareBookEditions = async (options: {
   mediaId?: number;
   bookId?: string;
-  /** Internal resolved destination, never read directly from the public query. */
+  /** Configured destination used for edition lookup and exact ownership. */
   serverId?: number;
   author?: string;
   format: BookFormat;
@@ -79,66 +126,35 @@ export const compareBookEditions = async (options: {
   title?: string;
 }): Promise<EditionComparison> => {
   if (options.mediaId) {
-    const service = await getLibraryBookService(
-      options.mediaId,
-      options.format
-    );
+    const service = await getLibraryBookService(options.mediaId, options.format);
     if (
       service &&
       (options.serverId === undefined || service.server.id === options.serverId)
     ) {
-      const catalog = await service.api.getEditionCatalog(service.bookId);
-      if (catalog.length) {
-        return {
-          format: options.format,
-          editions: catalog
-            .filter(
-              (edition) => edition.isEbook === (options.format === 'ebook')
-            )
-            .map((edition) => cardFromCatalog(edition, options.format)),
-          supportsAlongside: service.api.supportsWantedEditionVariants(),
-          source: 'library',
-        };
-      }
-      const [book, editions] = await Promise.all([
-        service.api.getBookIfExists(service.bookId),
-        service.api.getEditions(service.bookId),
-      ]);
-      if (editions.length)
-        return {
-          format: options.format,
-          supportsAlongside: false,
-          source: 'library',
-          editions: (editions as LookupEdition[])
-            .filter(
-              (edition) =>
-                edition.isEbook === undefined ||
-                edition.isEbook === (options.format === 'ebook')
-            )
-            .map((edition) => ({
-              ...cardFromLookup(edition, options.format),
-              owned: hasExactEditionFiles(
-                edition.foreignEditionId,
-                [],
-                editions,
-                book?.statistics?.bookFileCount ?? 0
-              ),
-            })),
-        };
+      const comparison = await compareLibraryEditions(
+        service.api,
+        service.bookId,
+        options.format
+      );
+      if (comparison) return comparison;
     }
   }
 
   const identity = options.bookId
     ? parseBookshelfBookId(options.bookId)
     : undefined;
-  const servers = getSettings().readarr;
+  const servers = getExternalRuntimeConfig().readarr;
   const wantedServer = options.serverId ?? identity?.serviceId;
-  const server = servers.find(
+  const candidates = servers.filter(
     (entry) =>
       entry.backend !== 'bindery' &&
       (wantedServer === undefined || entry.id === wantedServer) &&
       readarrServiceSupportsFormat(entry, options.format)
   );
+  const server =
+    wantedServer === undefined
+      ? (candidates.find((entry) => entry.isDefault) ?? candidates[0])
+      : candidates[0];
   if (
     server &&
     options.term &&
@@ -151,9 +167,9 @@ export const compareBookEditions = async (options: {
     });
     const results = await api.lookupBook(options.term).catch(() => []);
     const foreignBookId = options.foreignBookId ?? identity?.foreignBookId;
-    const match = foreignBookId
-      ? results.find((entry) => entry.foreignBookId === foreignBookId)
-      : results.find(
+    const matches = foreignBookId
+      ? results.filter((entry) => entry.foreignBookId === foreignBookId)
+      : results.filter(
           (entry) =>
             (!options.title ||
               titleSimilarity(options.title, entry.title) >= 0.95) &&
@@ -162,6 +178,18 @@ export const compareBookEditions = async (options: {
                 titleSimilarity(options.author, entry.author.authorName) >=
                   0.95))
         );
+    const match = matches.length === 1 ? matches[0] : undefined;
+    if (match?.id && match.id > 0) {
+      const localBook = await api.getBookIfExists(match.id);
+      if (localBook?.foreignBookId === match.foreignBookId) {
+        const comparison = await compareLibraryEditions(
+          api,
+          match.id,
+          options.format
+        );
+        if (comparison) return comparison;
+      }
+    }
     const editions = (match?.editions ?? []) as LookupEdition[];
     if (editions.length) {
       return {

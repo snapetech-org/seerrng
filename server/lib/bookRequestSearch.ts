@@ -17,6 +17,8 @@ import MediaIdentifier, {
 } from '@server/entity/MediaIdentifier';
 import {
   MediaRequest,
+  getRequestMutationAdmissionKey,
+  runWithRequestAdmission,
   type MediaRequestServiceTarget,
 } from '@server/entity/MediaRequest';
 import { hasRequestedEditionFiles } from '@server/lib/editionCompare/availability';
@@ -28,6 +30,7 @@ import {
 } from '@server/lib/requestStatus';
 import type { ReadarrSettings } from '@server/lib/settings';
 import logger from '@server/logger';
+import { isProviderBookEdition } from '@server/utils/bookEdition';
 
 const terminalCommandStates = new Set([
   'completed',
@@ -1059,6 +1062,19 @@ class BookRequestSearchManager {
       message: string;
     }
   ): Promise<void> {
+    return runWithRequestAdmission(
+      [getRequestMutationAdmissionKey(requestId)],
+      () => this.finalizeLockedRequest(requestId, detail)
+    );
+  }
+
+  private async finalizeLockedRequest(
+    requestId: number,
+    detail?: {
+      stage: RequestStatusStage.UNAVAILABLE | RequestStatusStage.FAILED;
+      message: string;
+    }
+  ): Promise<void> {
     const operations = await getRepository(BookRequestSearch).find({
       where: { requestId },
     });
@@ -1087,32 +1103,26 @@ class BookRequestSearchManager {
     const unavailable = operations.find((item) => item.state === 'unavailable');
     const terminalFailure = failed ?? unavailable;
     if (!terminalFailure) {
-      if (request.preferredEditionId) {
-        const result = await getRepository(MediaRequest).update(
-          { id: requestId, status: MediaRequestStatus.APPROVED },
-          {
-            status: MediaRequestStatus.COMPLETED,
-            failureReason: null,
-            serviceTargets: request.serviceTargets?.map((target) =>
-              operations.some(
-                (operation) =>
-                  target.serviceType === 'readarr' &&
-                  target.serverId === operation.serviceId &&
-                  target.format === operation.format
-              )
-                ? { ...target, status: MediaStatus.AVAILABLE }
-                : target
-            ),
-          }
+      if (
+        isProviderBookEdition(request.preferredEditionId) &&
+        request.status === MediaRequestStatus.APPROVED
+      ) {
+        request.status = MediaRequestStatus.COMPLETED;
+        request.failureReason = null;
+        request.serviceTargets = request.serviceTargets?.map((target) =>
+          operations.some(
+            (operation) =>
+              target.serviceType === 'readarr' &&
+              target.serverId === operation.serviceId &&
+              target.format === operation.format
+          )
+            ? { ...target, status: MediaStatus.AVAILABLE }
+            : target
         );
-        // A concurrent cancellation must not be resurrected by a completed scan.
-        if (
-          !result.affected &&
-          request.status !== MediaRequestStatus.COMPLETED
-        ) {
-          await getRepository(BookRequestSearch).delete({ requestId });
-          return;
-        }
+        // The request admission lock is shared with cancellation. Save the full
+        // entity so the existing transactional notification outbox and status
+        // history subscribers observe this exact recording's completion.
+        await getRepository(MediaRequest).save(request);
       }
       // Publish availability before removing the operation. Otherwise the
       // status projection loses its authoritative tracking state and falls

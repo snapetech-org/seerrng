@@ -15,3 +15,7 @@ Recording choices now retain the selected provider edition through the native
 request flow, with catalog-supplied samples and edition labels. TV requests can
 opt into future seasons in Sonarr. Create, validate, package and install independent
 CSS themes with the documented CLI and community submission workflow.
+
+The container includes the theme management command. Recording completion keeps
+notification and status history behavior, and classic book details retain their
+formatted overview and safe links.

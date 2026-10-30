@@ -28,6 +28,7 @@ import { compareBookEditions } from '@server/lib/editionCompare';
 import {
   normalizeMusicBrainzId,
   normalizeOpenLibraryEditionId,
+  normalizeOpenLibraryAuthorId,
   normalizeOpenLibraryWorkId,
 } from '@server/lib/externalIds';
 import { getExternalRuntimeConfig } from '@server/lib/externalRuntimeConfig';
@@ -94,6 +95,7 @@ import {
 } from '@server/lib/videoMaturityPolicy';
 import logger from '@server/logger';
 import AsyncLock from '@server/utils/asyncLock';
+import { isProviderBookEdition } from '@server/utils/bookEdition';
 import { parseBookshelfBookId } from '@server/utils/bookshelfCatalog';
 import { DbAwareColumn, resolveDbType } from '@server/utils/DbColumnHelper';
 import {
@@ -1602,25 +1604,33 @@ export class MediaRequest {
       // Verify the exact performance at the resolved destination before bypassing
       // work-level availability. Client edition IDs are never authority.
       const preferredEditionId = requestBody.preferredEditionId;
-      if (preferredEditionId && requestedBookFormat === 'both') {
+      if (isProviderBookEdition(preferredEditionId) && requestedBookFormat === 'both') {
         throw new ServiceConfigurationError(
           'A specific edition requires a single book format.'
         );
       }
-      const hasEditionChoice = !!preferredEditionId;
+      const hasEditionChoice = isProviderBookEdition(preferredEditionId);
       if (requestBody.editionPolicy === 'alongside' && !hasEditionChoice) {
         throw new ServiceConfigurationError(
           'Choose one book format and a specific edition to add alongside.'
         );
       }
       if (hasEditionChoice) {
-        const expectedTitle = parseBookshelfBookId(
+        const expectedWork = parseBookshelfBookId(
           requestBody.mediaId.toString()
         )
           ? undefined
-          : (await openLibrary.getWork(openLibraryId)).title;
+          : await openLibrary.getWork(openLibraryId);
+        const expectedTitle = expectedWork?.title;
+        const authorKey = expectedWork?.authors?.[0]?.author?.key;
+        const expectedAuthor = authorKey
+          ? (
+              await openLibrary.getAuthor(normalizeOpenLibraryAuthorId(authorKey))
+            )?.name
+          : undefined;
         const comparison = await compareBookEditions({
           title: expectedTitle,
+          author: expectedAuthor,
           mediaId: media.id,
           bookId: requestBody.mediaId.toString(),
           serverId: selectedReadarr?.id,
