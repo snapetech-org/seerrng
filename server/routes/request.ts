@@ -3747,6 +3747,9 @@ requestRoutes.get('/:requestId', async (req, res, next) => {
           modifiedBy: true,
           media: { identifiers: true },
         },
+        // Request and media seasons are independent collections. Load their
+        // relations separately to avoid multiplying rows for long-running TV.
+        relationLoadStrategy: 'query',
       });
 
       if (request.type === MediaType.ADULT && !hasAdultRequestAccess(actor)) {
