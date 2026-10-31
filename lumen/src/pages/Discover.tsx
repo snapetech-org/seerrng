@@ -79,6 +79,16 @@ function useNewOnPlex() {
   return items;
 }
 
+// big films sit in several genres, so give each tile the first backdrop no earlier tile used
+function genreArt(list: Genre[]): [Genre, string | undefined][] {
+  const used = new Set<string>();
+  return list.map((g) => {
+    const art = g.backdrops.find((b) => !used.has(b)) || g.backdrops[0];
+    if (art) used.add(art);
+    return [g, art];
+  });
+}
+
 const CHIPS: [IconName, string, string][] = [
   ['film', 'Movies', '/movies'],
   ['tv', 'Series', '/series'],
@@ -285,14 +295,10 @@ export default function Discover() {
       {on.genres && genres.data && (
         <Section title="Browse by genre">
           <div className="genres">
-            {genres.data.slice(0, 12).map((g) => (
+            {genreArt(genres.data.slice(0, 12)).map(([g, art]) => (
               <Link key={g.id} className="genre" to={`/movies?genre=${g.id}`}>
-                {g.backdrops[0] && (
-                  <img
-                    src={tmdbImg(g.backdrops[0], 'w780')}
-                    alt=""
-                    loading="lazy"
-                  />
+                {art && (
+                  <img src={tmdbImg(art, 'w780')} alt="" loading="lazy" />
                 )}
                 <span>{g.name}</span>
               </Link>
