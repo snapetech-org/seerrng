@@ -45,6 +45,7 @@ import type {
   RequestStatusDetailResponse,
   RequestStatusResultsResponse,
   RequestStatusUsersResponse,
+  StreamingRequestPolicyRejectionResponse,
 } from '@server/interfaces/api/requestInterfaces';
 import type { SeasonEpisodeSelection } from '@server/interfaces/api/seasonInterfaces';
 import { hasAvailableBookFormat } from '@server/lib/bookAvailability';
@@ -98,6 +99,7 @@ import { runWithCurrentServarrService } from '@server/lib/serviceAdmission';
 import { getSettings } from '@server/lib/settings';
 import { isSportarrLeagueExternalId } from '@server/lib/sportarrIdentity';
 import { normalizeStashDbId } from '@server/lib/stashdbIdentity';
+import { StreamingRequestPolicyRejection } from '@server/lib/streamingRequestPolicy';
 import {
   TvSeasonWatchGateError,
   enforceTvSeasonWatchGate,
@@ -1037,6 +1039,30 @@ const sanitizeMediaRequestBody = (
     };
   }
   if (
+    bodyObject.bypassStreamingRequestPolicy !== undefined &&
+    typeof bodyObject.bypassStreamingRequestPolicy !== 'boolean'
+  ) {
+    return {
+      error: {
+        status: 400,
+        message: 'bypassStreamingRequestPolicy must be a boolean.',
+      },
+    };
+  }
+  if (
+    bodyObject.bypassStreamingRequestPolicy === true &&
+    (!options.requireCreateIdentity ||
+      (mediaType !== MediaType.MOVIE && mediaType !== MediaType.TV))
+  ) {
+    return {
+      error: {
+        status: 400,
+        message:
+          'bypassStreamingRequestPolicy is only valid for new movie or series requests.',
+      },
+    };
+  }
+  if (
     bodyObject.requestQuotaApproval === true &&
     (!options.requireCreateIdentity ||
       (mediaType !== MediaType.MOVIE && mediaType !== MediaType.TV))
@@ -1551,6 +1577,8 @@ const sanitizeMediaRequestBody = (
     seasonRequests: seasonRequests.value,
     requestQuotaApproval: bodyObject.requestQuotaApproval as
       boolean | undefined,
+    bypassStreamingRequestPolicy:
+      bodyObject.bypassStreamingRequestPolicy === true,
   } as MediaRequestBody;
 
   return {
@@ -2556,7 +2584,10 @@ requestRoutes.get<
   }
 });
 
-requestRoutes.post<never, MediaRequest, MediaRequestBody>(
+type MediaRequestCreationResponse =
+  MediaRequest | StreamingRequestPolicyRejectionResponse;
+
+requestRoutes.post<never, MediaRequestCreationResponse, MediaRequestBody>(
   '/',
   async (req, res, next) => {
     try {
@@ -2655,6 +2686,15 @@ requestRoutes.post<never, MediaRequest, MediaRequestBody>(
 
       if (error instanceof TvSeasonWatchGateError) {
         return next({ status: error.status, message: error.message });
+      }
+
+      if (error instanceof StreamingRequestPolicyRejection) {
+        return res.status(403).json({
+          status: 403,
+          code: 'STREAMING_REQUEST_POLICY_REJECTED',
+          message: error.message,
+          allowOverride: error.allowUserOverride,
+        });
       }
 
       switch (error.constructor) {

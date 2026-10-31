@@ -21,6 +21,7 @@ import { isValidURL } from '@app/utils/urlValidationHelper';
 import { ArrowDownOnSquareIcon } from '@heroicons/react/24/outline';
 import { ArrowPathIcon } from '@heroicons/react/24/solid';
 import { OtherUserAvailabilityMode } from '@server/constants/availability';
+import { DEFAULT_STREAMING_REQUEST_POLICY } from '@server/constants/streamingRequestPolicy';
 import type { UserSettingsGeneralResponse } from '@server/interfaces/api/userSettingsInterfaces';
 import type { MainSettings } from '@server/lib/settings';
 import type { AvailableLocale } from '@server/types/languages';
@@ -68,6 +69,22 @@ const messages = defineMessages('components.Settings.SettingsMain', {
     'The "Process Blocklisted Tags" job will blocklist this many pages into each sort. Larger numbers will create a more accurate blocklist, but use more space.',
   streamingRegion: 'Streaming Region',
   streamingRegionTip: 'Show streaming sites by regional availability',
+  streamingPolicy: 'Streaming Availability Request Policy',
+  streamingPolicyTip:
+    'Apply an optional movie and series request rule to each requester’s selected streaming subscriptions. Use the user’s Streaming Region, then the global Streaming Region, then US. Only TMDB subscription streaming (Flatrate) availability counts; rent, buy, and missing regional data do not trigger the rule.',
+  streamingPolicyCondition: 'When the title is',
+  streamingPolicyAvailable: 'Available on a selected service',
+  streamingPolicyUnavailable: 'Not available on selected services',
+  streamingPolicyAction: 'Matching request behavior',
+  streamingPolicyReject: 'Reject the request',
+  streamingPolicyPending: 'Leave the request pending',
+  streamingPolicyApprove: 'Approve the request automatically',
+  streamingPolicyMessage: 'Rejection message',
+  streamingPolicyMessageTip:
+    'Optional. Use {title}, {providers}, and {region} to include request details.',
+  streamingPolicyAllowOverride: 'Allow users to request anyway',
+  streamingPolicyAllowOverrideTip:
+    'Show the requester a per-request option to continue after a policy rejection. Normal permissions and quotas still apply.',
   hideBlocklisted: 'Hide Blocklisted Items',
   hideBlocklistedTip:
     'Hide blocklisted items from discover pages for all users with the "Manage Blocklist" permission',
@@ -210,6 +227,13 @@ const SettingsMain = () => {
         }
       }
     ),
+    streamingRequestPolicy: Yup.object().shape({
+      enabled: Yup.boolean().required(),
+      condition: Yup.string().oneOf(['available', 'unavailable']).required(),
+      action: Yup.string().oneOf(['reject', 'pending', 'approve']).required(),
+      rejectionMessage: Yup.string().max(1000).required(),
+      allowUserOverride: Yup.boolean().required(),
+    }),
   });
 
   const regenerate = async () => {
@@ -253,6 +277,10 @@ const SettingsMain = () => {
           discoverRegion: data?.discoverRegion,
           originalLanguage: data?.originalLanguage,
           streamingRegion: data?.streamingRegion || 'US',
+          streamingRequestPolicy: {
+            ...DEFAULT_STREAMING_REQUEST_POLICY,
+            ...data?.streamingRequestPolicy,
+          },
           blocklistRegion: data?.blocklistRegion || '',
           blocklistLanguage: data?.blocklistLanguage || '',
           blocklistedTags: data?.blocklistedTags,
@@ -292,6 +320,7 @@ const SettingsMain = () => {
               locale: values.locale,
               discoverRegion: values.discoverRegion,
               streamingRegion: values.streamingRegion,
+              streamingRequestPolicy: values.streamingRequestPolicy,
               originalLanguage: values.originalLanguage,
               blocklistRegion: values.blocklistRegion,
               blocklistLanguage: values.blocklistLanguage,
@@ -540,6 +569,129 @@ const SettingsMain = () => {
                       />
                     </div>
                   </SettingsFormRow>
+                  <SettingsFormRow
+                    htmlFor="streamingRequestPolicy.enabled"
+                    label={intl.formatMessage(messages.streamingPolicy)}
+                    description={intl.formatMessage(
+                      messages.streamingPolicyTip
+                    )}
+                    labelClassName="checkbox-label"
+                  >
+                    <SettingsField
+                      type="checkbox"
+                      id="streamingRequestPolicy.enabled"
+                      name="streamingRequestPolicy.enabled"
+                      onChange={() => {
+                        setFieldValue(
+                          'streamingRequestPolicy.enabled',
+                          !values.streamingRequestPolicy.enabled
+                        );
+                      }}
+                    />
+                  </SettingsFormRow>
+                  {values.streamingRequestPolicy.enabled && (
+                    <>
+                      <SettingsFormRow
+                        htmlFor="streamingRequestPolicy.condition"
+                        label={intl.formatMessage(
+                          messages.streamingPolicyCondition
+                        )}
+                      >
+                        <div className="form-input-field">
+                          <Field
+                            as="select"
+                            id="streamingRequestPolicy.condition"
+                            name="streamingRequestPolicy.condition"
+                          >
+                            <option value="available">
+                              {intl.formatMessage(
+                                messages.streamingPolicyAvailable
+                              )}
+                            </option>
+                            <option value="unavailable">
+                              {intl.formatMessage(
+                                messages.streamingPolicyUnavailable
+                              )}
+                            </option>
+                          </Field>
+                        </div>
+                      </SettingsFormRow>
+                      <SettingsFormRow
+                        htmlFor="streamingRequestPolicy.action"
+                        label={intl.formatMessage(
+                          messages.streamingPolicyAction
+                        )}
+                      >
+                        <div className="form-input-field">
+                          <Field
+                            as="select"
+                            id="streamingRequestPolicy.action"
+                            name="streamingRequestPolicy.action"
+                          >
+                            <option value="reject">
+                              {intl.formatMessage(
+                                messages.streamingPolicyReject
+                              )}
+                            </option>
+                            <option value="pending">
+                              {intl.formatMessage(
+                                messages.streamingPolicyPending
+                              )}
+                            </option>
+                            <option value="approve">
+                              {intl.formatMessage(
+                                messages.streamingPolicyApprove
+                              )}
+                            </option>
+                          </Field>
+                        </div>
+                      </SettingsFormRow>
+                      {values.streamingRequestPolicy.action === 'reject' && (
+                        <>
+                          <SettingsFormRow
+                            htmlFor="streamingRequestPolicy.rejectionMessage"
+                            label={intl.formatMessage(
+                              messages.streamingPolicyMessage
+                            )}
+                            description={intl.formatMessage(
+                              messages.streamingPolicyMessageTip
+                            )}
+                          >
+                            <Field
+                              as="textarea"
+                              id="streamingRequestPolicy.rejectionMessage"
+                              name="streamingRequestPolicy.rejectionMessage"
+                              maxLength={1000}
+                              rows={3}
+                            />
+                          </SettingsFormRow>
+                          <SettingsFormRow
+                            htmlFor="streamingRequestPolicy.allowUserOverride"
+                            label={intl.formatMessage(
+                              messages.streamingPolicyAllowOverride
+                            )}
+                            description={intl.formatMessage(
+                              messages.streamingPolicyAllowOverrideTip
+                            )}
+                            labelClassName="checkbox-label"
+                          >
+                            <SettingsField
+                              type="checkbox"
+                              id="streamingRequestPolicy.allowUserOverride"
+                              name="streamingRequestPolicy.allowUserOverride"
+                              onChange={() => {
+                                setFieldValue(
+                                  'streamingRequestPolicy.allowUserOverride',
+                                  !values.streamingRequestPolicy
+                                    .allowUserOverride
+                                );
+                              }}
+                            />
+                          </SettingsFormRow>
+                        </>
+                      )}
+                    </>
+                  )}
                   <SettingsFormRow
                     htmlFor="blocklistRegion"
                     label={intl.formatMessage(messages.blocklistRegion)}

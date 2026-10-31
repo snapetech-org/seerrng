@@ -141,6 +141,7 @@ export interface UserSettingsGeneralResponse {
   locale?: string;
   discoverRegion?: string;
   streamingRegion?: string;
+  streamingSubscriptionProviderIds?: number[];
   originalLanguage?: string;
   preferredLanguages?: UserPreferredLanguages;
   enabledMediaCategories?: Partial<EnabledMediaCategories> | null;

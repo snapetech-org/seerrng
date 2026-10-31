@@ -64,6 +64,17 @@ off hides details for everyone.
 
 Users can override the [global filter settings](/using-seerr/settings/general#discover-region-discover-language--streaming-region) to suit their own preferences.
 
+### Streaming Region & Subscriptions
+
+Set the user's **Streaming Region** and select the streaming providers they
+subscribe to. If no user region is set, requests use the global Streaming
+Region, then US if the global region is also unset. These preferences supply
+the account context for the optional [streaming availability request
+policy](/using-seerr/settings/general#streaming-availability-request-policy).
+The same controls are available in the user's own **Profile Settings > General**
+page. The policy considers subscription streaming only; TMDB rent and buy
+listings do not count.
+
 ### Movie Request Limit & Series Request Limit
 
 You can override the default settings and assign different request limits for specific users by checking the **Enable Override** box and selecting the desired request limit and time period.

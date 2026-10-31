@@ -171,7 +171,9 @@ Recent repository updates include:
   previous-season watch gate, and Sonarr monitoring for future seasons when
   the latest regular season was requested. Failed TV requests retain their
   context and support verified season mapping; bounded failure explanations
-  and request history are localized.
+  and request history are localized. Administrators can also apply an
+  optional per-user streaming-availability policy to movie and series requests,
+  with reject, pending, automatic-approval, and one-time override choices.
 - **User workflows:** local watchlist filters, a browser-saved Subject Tags
   visibility preference, private one-time availability notices for followed
   requests, per-user shared-availability display choices, and opt-in

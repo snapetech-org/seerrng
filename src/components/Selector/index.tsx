@@ -493,11 +493,12 @@ export const KeywordSelector = ({
 };
 
 type WatchProviderSelectorProps = {
-  type: 'movie' | 'tv';
+  type: 'movie' | 'tv' | 'both';
   region?: string;
   activeProviders?: number[];
   onChange: (region: string, value: number[]) => void;
   regionLabel?: string;
+  showRegionSelector?: boolean;
 };
 
 export const WatchProviderSelector = ({
@@ -506,6 +507,7 @@ export const WatchProviderSelector = ({
   region,
   activeProviders,
   regionLabel,
+  showRegionSelector = true,
 }: WatchProviderSelectorProps) => {
   const intl = useIntl();
   const { currentSettings } = useSettings();
@@ -520,11 +522,38 @@ export const WatchProviderSelector = ({
   const [activeProvider, setActiveProvider] = useState<number[]>(
     activeProviders ?? []
   );
-  const { data, isLoading } = useSWR<WatchProviderDetails[]>(
-    `/api/v1/watchproviders/${
-      type === 'movie' ? 'movies' : 'tv'
-    }?watchRegion=${watchRegion}`
+  const movieProviders = useSWR<WatchProviderDetails[]>(
+    type !== 'tv'
+      ? `/api/v1/watchproviders/movies?watchRegion=${watchRegion}`
+      : null
   );
+  const tvProviders = useSWR<WatchProviderDetails[]>(
+    type !== 'movie'
+      ? `/api/v1/watchproviders/tv?watchRegion=${watchRegion}`
+      : null
+  );
+  const data = useMemo(() => {
+    if (type === 'movie') {
+      return movieProviders.data;
+    }
+    if (type === 'tv') {
+      return tvProviders.data;
+    }
+
+    const providersById = new Map<number, WatchProviderDetails>();
+    for (const provider of [
+      ...(movieProviders.data ?? []),
+      ...(tvProviders.data ?? []),
+    ]) {
+      if (!providersById.has(provider.id)) {
+        providersById.set(provider.id, provider);
+      }
+    }
+    return [...providersById.values()];
+  }, [movieProviders.data, tvProviders.data, type]);
+  const isLoading =
+    (type !== 'tv' && movieProviders.isLoading) ||
+    (type !== 'movie' && tvProviders.isLoading);
   const activityId = useId();
   useSearchActivityReporter(
     Boolean(regionLabel) && isLoading,
@@ -595,9 +624,28 @@ export const WatchProviderSelector = ({
 
   return (
     <>
-      {regionLabel ? (
-        <div className="discover-filter-control" data-provider-region="region">
-          <span className="discover-filter-control-label">{regionLabel}</span>
+      {showRegionSelector &&
+        (regionLabel ? (
+          <div
+            className="discover-filter-control"
+            data-provider-region="region"
+          >
+            <span className="discover-filter-control-label">{regionLabel}</span>
+            <RegionSelector
+              value={watchRegion}
+              name="watchRegion"
+              onChange={(_name, value) => {
+                if (value !== watchRegion) {
+                  setActiveProvider([]);
+                }
+                setWatchRegion(value);
+              }}
+              disableAll
+              watchProviders
+              compact
+            />
+          </div>
+        ) : (
           <RegionSelector
             value={watchRegion}
             name="watchRegion"
@@ -609,23 +657,8 @@ export const WatchProviderSelector = ({
             }}
             disableAll
             watchProviders
-            compact
           />
-        </div>
-      ) : (
-        <RegionSelector
-          value={watchRegion}
-          name="watchRegion"
-          onChange={(_name, value) => {
-            if (value !== watchRegion) {
-              setActiveProvider([]);
-            }
-            setWatchRegion(value);
-          }}
-          disableAll
-          watchProviders
-        />
-      )}
+        ))}
       {isLoading ? (
         regionLabel ? null : (
           <SmallLoadingSpinner />

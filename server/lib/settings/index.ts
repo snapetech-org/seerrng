@@ -12,6 +12,10 @@ import {
   type ProwlarrCategoryMappings,
 } from '@server/constants/prowlarr';
 import { MediaServerType } from '@server/constants/server';
+import {
+  DEFAULT_STREAMING_REQUEST_POLICY,
+  type StreamingRequestPolicySettings,
+} from '@server/constants/streamingRequestPolicy';
 import { assertNoSymlinkDirectoryComponents } from '@server/lib/pathSecurity';
 import { Permission } from '@server/lib/permissions';
 import { runMigrations } from '@server/lib/settings/migrator';
@@ -578,6 +582,7 @@ export interface MainSettings {
   newPlexLogin: boolean;
   discoverRegion: string;
   streamingRegion: string;
+  streamingRequestPolicy: StreamingRequestPolicySettings;
   originalLanguage: string;
   blocklistRegion: string;
   blocklistLanguage: string;
@@ -997,6 +1002,7 @@ class Settings {
         newPlexLogin: true,
         discoverRegion: '',
         streamingRegion: '',
+        streamingRequestPolicy: { ...DEFAULT_STREAMING_REQUEST_POLICY },
         originalLanguage: '',
         blocklistRegion: '',
         blocklistLanguage: '',
@@ -2067,6 +2073,7 @@ class Settings {
         newPlexLogin: true,
         discoverRegion: '',
         streamingRegion: '',
+        streamingRequestPolicy: { ...DEFAULT_STREAMING_REQUEST_POLICY },
         originalLanguage: '',
         blocklistRegion: '',
         blocklistLanguage: '',

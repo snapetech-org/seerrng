@@ -79,6 +79,12 @@ import {
 import { isSportarrLeagueExternalId } from '@server/lib/sportarrIdentity';
 import { normalizeStashDbId } from '@server/lib/stashdbIdentity';
 import {
+  StreamingRequestPolicyRejection,
+  evaluateStreamingRequestPolicy,
+  formatStreamingRequestRejectionMessage,
+  normalizeStreamingRequestPolicy,
+} from '@server/lib/streamingRequestPolicy';
+import {
   enforceTvSeasonWatchGate,
   filterTvSeasonSelectionsByWatchGate,
   isTvSeasonWatchGateEnabledForUser,
@@ -2548,6 +2554,55 @@ export class MediaRequest {
       }
     }
 
+    const streamingRequestPolicy = normalizeStreamingRequestPolicy(
+      settings.main.streamingRequestPolicy
+    );
+    const streamingRequestPolicyMatch = evaluateStreamingRequestPolicy({
+      policy: streamingRequestPolicy,
+      providerIds: requestUser.settings?.streamingSubscriptionProviderIds,
+      userRegion: requestUser.settings?.streamingRegion,
+      defaultRegion: settings.main.streamingRegion,
+      media: tmdbMedia,
+    });
+    const canOverrideStreamingRequestPolicy =
+      streamingRequestPolicy.enabled &&
+      streamingRequestPolicy.action === 'reject' &&
+      streamingRequestPolicy.allowUserOverride &&
+      requestBody.userId === undefined &&
+      requestUser.id === user.id &&
+      !options.isAutoRequest;
+    if (
+      requestBody.bypassStreamingRequestPolicy &&
+      !canOverrideStreamingRequestPolicy
+    ) {
+      throw new RequestPermissionError(
+        'The streaming availability rule cannot be overridden for this request.'
+      );
+    }
+    const effectiveStreamingRequestPolicyAction =
+      requestBody.bypassStreamingRequestPolicy &&
+      streamingRequestPolicyMatch?.action === 'reject'
+        ? undefined
+        : streamingRequestPolicyMatch?.action;
+    const rejectStreamingRequest = (): void => {
+      if (
+        effectiveStreamingRequestPolicyAction !== 'reject' ||
+        !streamingRequestPolicyMatch
+      ) {
+        return;
+      }
+
+      const title = 'title' in tmdbMedia ? tmdbMedia.title : tmdbMedia.name;
+      throw new StreamingRequestPolicyRejection(
+        formatStreamingRequestRejectionMessage({
+          policy: streamingRequestPolicy,
+          match: streamingRequestPolicyMatch,
+          title,
+        }),
+        canOverrideStreamingRequestPolicy
+      );
+    };
+
     const serviceRequestServerId = requestBody.requestServiceServerId;
     if (serviceRequestServerId !== undefined) {
       if (
@@ -2994,13 +3049,16 @@ export class MediaRequest {
     }
 
     if (requestBody.mediaType === MediaType.MOVIE) {
+      rejectStreamingRequest();
       const autoApproved =
         !quotaException &&
-        hasAutoApprovePermission(
-          requestUser.permissions,
-          'movie',
-          requestBody.is4k
-        );
+        (effectiveStreamingRequestPolicyAction === 'approve' ||
+          (effectiveStreamingRequestPolicyAction !== 'pending' &&
+            hasAutoApprovePermission(
+              requestUser.permissions,
+              'movie',
+              requestBody.is4k
+            )));
       const request = new MediaRequest({
         type: MediaType.MOVIE,
         media,
@@ -3287,13 +3345,16 @@ export class MediaRequest {
         requestMedia: Media,
         selections: SeasonEpisodeSelection[]
       ): Promise<MediaRequest> => {
+        rejectStreamingRequest();
         const autoApproved =
           !quotaException &&
-          hasAutoApprovePermission(
-            requestUser.permissions,
-            'tv',
-            requestBody.is4k
-          );
+          (effectiveStreamingRequestPolicyAction === 'approve' ||
+            (effectiveStreamingRequestPolicyAction !== 'pending' &&
+              hasAutoApprovePermission(
+                requestUser.permissions,
+                'tv',
+                requestBody.is4k
+              )));
         const request = new MediaRequest({
           type: MediaType.TV,
           media: requestMedia,

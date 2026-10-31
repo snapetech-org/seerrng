@@ -13,6 +13,7 @@ import {
   type MediaCategoryKey,
 } from '@server/constants/mediaCategories';
 import { MediaServerType } from '@server/constants/server';
+import { MAX_STREAMING_SUBSCRIPTION_PROVIDERS } from '@server/constants/streamingRequestPolicy';
 import { TV_SEASON_WATCH_GATE_STATUS } from '@server/constants/tvSeasonWatchGate';
 import { UserType } from '@server/constants/user';
 import { USER_SETTINGS_LIMITS } from '@server/constants/userSettings';
@@ -1309,6 +1310,28 @@ const parseGeneralSettingsBody = (
     value.preferredLanguages = preferredLanguages.value;
   }
 
+  if (hasOwn(bodyObject, 'streamingSubscriptionProviderIds')) {
+    const providerIds = bodyObject.streamingSubscriptionProviderIds;
+    if (
+      providerIds !== null &&
+      (!Array.isArray(providerIds) ||
+        providerIds.length > MAX_STREAMING_SUBSCRIPTION_PROVIDERS ||
+        providerIds.some(
+          (providerId) =>
+            typeof providerId !== 'number' ||
+            !Number.isSafeInteger(providerId) ||
+            providerId < 1
+        ))
+    ) {
+      return {
+        error: `streamingSubscriptionProviderIds must contain at most ${MAX_STREAMING_SUBSCRIPTION_PROVIDERS} positive provider IDs.`,
+      };
+    }
+    value.streamingSubscriptionProviderIds = [
+      ...new Set(Array.isArray(providerIds) ? providerIds : []),
+    ];
+  }
+
   if (hasOwn(bodyObject, 'enabledMediaCategories')) {
     const categories = bodyObject.enabledMediaCategories;
     if (categories === null) {
@@ -1761,6 +1784,8 @@ userSettingsRoutes.get<{ id: string }, UserSettingsGeneralResponse>(
             locale: user.settings?.locale,
             discoverRegion: user.settings?.discoverRegion,
             streamingRegion: user.settings?.streamingRegion,
+            streamingSubscriptionProviderIds:
+              user.settings?.streamingSubscriptionProviderIds ?? [],
             originalLanguage: user.settings?.originalLanguage,
             preferredLanguages: user.settings?.preferredLanguages,
             enabledMediaCategories: getUserEnabledMediaCategories(user),
@@ -1966,6 +1991,7 @@ userSettingsRoutes.post<
             'locale',
             'discoverRegion',
             'streamingRegion',
+            'streamingSubscriptionProviderIds',
             'originalLanguage',
             'preferredLanguages',
             'watchlistSyncMovies',
@@ -2011,6 +2037,8 @@ userSettingsRoutes.post<
             locale: savedUser.settings?.locale,
             discoverRegion: savedUser.settings?.discoverRegion,
             streamingRegion: savedUser.settings?.streamingRegion,
+            streamingSubscriptionProviderIds:
+              savedUser.settings?.streamingSubscriptionProviderIds ?? [],
             originalLanguage: savedUser.settings?.originalLanguage,
             preferredLanguages: savedUser.settings?.preferredLanguages,
             enabledMediaCategories: getUserEnabledMediaCategories(savedUser),

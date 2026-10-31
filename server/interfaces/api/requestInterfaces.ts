@@ -27,6 +27,13 @@ export interface RequestResultsResponse extends PaginatedResponse {
   };
 }
 
+export interface StreamingRequestPolicyRejectionResponse {
+  status: number;
+  code: 'STREAMING_REQUEST_POLICY_REJECTED';
+  message: string;
+  allowOverride: boolean;
+}
+
 export type MediaRequestBody = {
   mediaType: MediaType;
   mediaId: number | string;
@@ -57,6 +64,7 @@ export type MediaRequestBody = {
   tags?: number[];
   ignoreQuota?: boolean;
   requestQuotaApproval?: boolean;
+  bypassStreamingRequestPolicy?: boolean;
 };
 
 export type BulkMediaRequestItem = {
