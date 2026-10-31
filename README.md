@@ -182,6 +182,9 @@ Recent repository updates include:
 - **Integrations:** MusicBrainz and Cover Art Archive connectivity checks with
   bounded artwork traffic controls, plus a preview-first BookshelfNG to
   ChaptarrNG database migration helper for single-database setups.
+- **Kubernetes:** the Helm chart can stop its single application pod with
+  `replicaCount: 0` for maintenance and resume it with `replicaCount: 1`;
+  values that would start multiple SeerrNG instances are rejected.
 
 These changes are in the repository; use the [release notes](./CHANGELOG.md)
 to confirm which ones are included in a published build. SeerrNG continues to

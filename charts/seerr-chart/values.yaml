@@ -10,6 +10,9 @@ imagePullSecrets: []
 nameOverride: ''
 fullnameOverride: ''
 
+# -- Number of SeerrNG pods to run. Set 0 during maintenance; only 0 or 1 is supported.
+replicaCount: 1
+
 # Liveness / Readiness / Startup Probes
 probes:
   # -- Configure liveness probe

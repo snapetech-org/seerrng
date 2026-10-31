@@ -20,6 +20,13 @@ Refer to the SeerrNG Kubernetes documentation in this repository.
 
 ## Update Notes
 
+### Scaling down for maintenance (chart 1.0.135)
+
+Set `replicaCount: 0` before storage migration, backup, or other maintenance
+that requires SeerrNG to stop. The configuration claim is retained while the
+StatefulSet has no pods. Restore `replicaCount: 1` to resume service. SeerrNG
+supports one application instance; values below 0 or above 1 are rejected.
+
 ### Updating to 3.0.0
 
 Nothing has changed; the upstream chart was rebranded from `jellyseerr` to `seerr`. SeerrNG keeps that inherited chart structure and changes the default image and metadata for this fork.
@@ -31,6 +38,8 @@ Seerr is a stateful application and it is not designed to have multiple replicas
 - replacing `Deployment` with `StatefulSet`
 - removing `replicaCount` value
 
-If `replicaCount` value was used - remove it. Helm update should work fine after that.
+If `replicaCount` was set for a chart version before 2.7.0, remove it when
+upgrading to 2.7.0. Chart 1.0.135 later reintroduced the value with a strict
+0-or-1 range for maintenance scaling.
 
 {{ template "chart.valuesSection" . }}
