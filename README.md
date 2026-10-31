@@ -81,13 +81,18 @@ For local MCP access, see the [SnapeTech MCP integration guide](./docs/integrati
 
 - Requests and approvals for movies, shows, music, ebooks, audiobooks, comics, magazines, emulation ROMs, and PC games.
 - A companion Android APK client for connecting to one or more self-hosted SeerrNG servers.
-- Movie and series Discover filters with 0.1-point TMDB rating thresholds and streaming-service availability filters by region.
+- Movie and series Discover filters with 0.1-point TMDB rating thresholds and streaming-service availability filters by region; provider filters support bulk select and clear, administrators can add public TMDB lists to custom sliders, filter state can be shared or restored from the URL, and each home slider restores its horizontal position when you return from a title.
 - Media-server integration with Plex, Jellyfin, and Emby, including watch-state-aware My Library views scoped to each linked account.
+- Movie and TV title cards show standard and 4K availability separately across search, Discover, collections, people, and list views, so a 4K-only copy is visible as 4K.
+- Sign-in returns users to a validated in-app destination across local, media-server, and OIDC login, and sign-out clears the previous return destination. OIDC account provisioning requires a verified email and applies the configured account-admission and role rules.
 - Optional Jellyfin and Emby profile sync during user imports, refreshing linked provider names and avatars while preserving SeerrNG email addresses, local passwords, and permissions.
 - Labeled movie and TV request destinations across multiple Radarr and Sonarr instances, with per-user access and availability tracked for each destination.
-- Managers can approve a one-time movie or TV request exception when a user's quota is full; optional Slack actions use a mapped account and the same request permissions as the web app.
+- Long-running TV details and request pages stay responsive when a series has many stored and requested seasons.
+- Managers can approve a one-time movie or TV request exception when a user's quota is full; optional Slack actions use a mapped account and the same request permissions as the web app. Manager API clients need both user-management and request-management permission to attribute requests to a selected user; request admission and quota checks use that requester.
 - Automation service integration with Radarr, Sonarr, Lidarr, and Bookshelf/Readarr-compatible APIs.
-- Sonarr v5 support alongside v3/v4, including metadata-language and season-order options with explicit season mapping for recovery.
+- SeerrNG [PR #446](https://github.com/snapetech-org/seerrng/pull/446) proposes bounded, paginated Servarr queue tracking with refresh-completion checks and a per-service Download Queue Size control. It covers 10–10,000 items per service, defaults to 1,000, and keeps recovery on strict complete snapshots. Source context: closed, unmerged Seerr [PR #3473](https://github.com/seerr-team/seerr/pull/3473) and open Seerr [PR #3535](https://github.com/seerr-team/seerr/pull/3535).
+- Notifications for email, Discord, Slack, Telegram, Gotify, ntfy, Pushover, Pushbullet, Apprise, Web Push, and custom webhooks, with provider-specific poster, priority, sound, and email transport options documented in the [notification guides](./docs/using-seerr/notifications/index.mdx).
+- Sonarr v5 support alongside v3/v4, including metadata-language and season-order options with explicit season mapping for recovery. Scans account for both TVDB and resolved TMDB identity, distinguish confirmed absence from incomplete or failed checks, and reconcile abandoned processing seasons and request selections only after relevant configured servers finish.
 - An optional TV request gate that checks whether the previous regular season was watched through a linked Plex, Jellyfin, or Emby account.
 - Admin-configured Prowlarr connection, per-indexer diagnostics, category coverage, and format-aware manual search across movies, TV, music, books, comics, magazines, ROMs, and PC games, with title-prefilled search links from media details; approved requests still go through their configured acquisition providers.
 - Music discovery and metadata through MusicBrainz, ListenBrainz, Cover Art Archive, TheAudioDB, and archive-backed artwork sources.
@@ -148,9 +153,9 @@ For local MCP access, see the [SnapeTech MCP integration guide](./docs/integrati
 - A [preview-first BookshelfNG-to-ChaptarrNG database migration helper](./docs/using-seerr/bookshelf-backend.md#installer-script) for single-database installations. Migration apply remains frozen until feature, migration, rollback, and installation-channel acceptance is complete. BookshelfNG issue #144 is closed, but that did not close the remaining gates: do not run `--apply` or start ChaptarrNG against BookshelfNG appdata; keep BookshelfNG in service.
 - Admin-only Bookshelf path moves with a conflict and disk-space preview, confirmation, API access, and a dry-run-first CLI. The mover works inside one BookshelfNG database; consolidate an old split deployment before using it.
 - Resumable, layered Readarr/softcover-to-Hardcover migration with strict matching, softcover metadata recovery, validation, cutover checks, and an opt-in deterministic local-record fallback for books Hardcover cannot import.
-- Per-user cross-media watchlists; local-only lists support title search, media-type filters, and stable sorting, while combined Plex lists preserve Plex ordering. The request workflow also includes blocklists, quotas, override rules, permissions, notifications, issue reporting, and request management.
+- Per-user cross-media watchlists; local-only lists support title search, media-type filters, and stable sorting, while combined Plex lists preserve Plex ordering. The request workflow also includes blocklists, quotas, override rules, permissions, notifications, issue reporting, and request management. Users with issue-reporting permission can report processing movie and series requests before the media is available.
 - Users can choose whether movie and TV copies requested by someone else appear as shared or stay hidden; this changes the availability display, not media-server access.
-- Discover shelves can be reordered and customized; movie and series filters include fractional ratings, streaming-service inclusion or exclusion, and category exclusions. Discover detail navigation keeps the selected result context, and rating details work on touch screens.
+- Discover shelves can be reordered and customized with public TMDB lists. Movie and series filters include fractional ratings, streaming-service inclusion or exclusion, category exclusions, and URL-backed state. Catalog pagination follows TMDB's reported page total. SeerrNG's scoped handling for a failed later page—retry once, skip only an isolated repeat failure, and surface first-page or consecutive failures—is proposed in [PR #456](https://github.com/snapetech-org/seerrng/pull/456), following [Seerr issue #3654](https://github.com/seerr-team/seerr/issues/3654) and [PR #3656](https://github.com/seerr-team/seerr/pull/3656). Discover detail navigation keeps the selected result context, each shelf restores its own horizontal position on return, and rating details work on touch screens.
 - Movie and Series Subject Tags can be hidden with a browser-saved preference shared across both detail pages.
 - Authenticated **Download copy** links in Request Status for verified movie, TV, book, comic, magazine, ROM, and PC game files.
 - Request lifecycle tracking and availability notifications link users back to the matching Request Status item, where available files can be selected and saved.
@@ -163,13 +168,13 @@ SeerrNG is active fork work. Movie and TV behavior is inherited and generally st
 
 Recent repository updates include:
 
-- **Discover:** editable shared shelves; more precise rating and streaming
-  filters; category exclusions; detail navigation through the current result
-  list; and restored carousel position when returning from a title.
+- **Discover:** editable shared shelves, including public TMDB list sliders; more precise rating and streaming filters; category exclusions; URL-backed filter state; detail navigation through the current result list; and restoration of each carousel's horizontal position when returning from a title.
+- **Search matching:** SeerrNG PR [#442](https://github.com/snapetech-org/seerrng/pull/442) proposes retrying an unmatched TMDB query after normalizing punctuation, spacing, apostrophes, and diacritics, while keeping successful raw-query results unchanged.
 - **Requests:** per-user access to labeled Radarr/Sonarr destinations, quota
   exception approvals, optional Slack approval actions, an optional
   previous-season watch gate, and Sonarr monitoring for future seasons when
-  the latest regular season was requested. Failed TV requests retain their
+  the latest regular season was requested. Long-running TV request details
+  remain responsive with large season histories. Failed TV requests retain their
   context and support verified season mapping; bounded failure explanations
   and request history are localized.
 - **User workflows:** local watchlist filters, a browser-saved Subject Tags
@@ -177,8 +182,13 @@ Recent repository updates include:
   requests, per-user shared-availability display choices, and opt-in
   Jellyfin/Emby profile refresh during imports.
 - **Sonarr:** v5 API support alongside v3/v4, metadata-language and season-order
-  choices, and request recovery scoped to the selected service, quality, and
-  season order.
+  choices, request recovery scoped to the selected service, quality, and season
+  order, plus orphaned-season reconciliation using both TVDB and resolved TMDB
+  identity.
+- **Availability and sign-in:** separate standard and 4K status on title cards,
+  and safe return to the requested in-app page after authentication.
+- **Downloads:** complete, bounded Servarr queue reads wait for monitored-download
+  refreshes and preserve the last verified state when a full snapshot is unavailable.
 - **Integrations:** MusicBrainz and Cover Art Archive connectivity checks with
   bounded artwork traffic controls, plus a preview-first BookshelfNG to
   ChaptarrNG database migration helper for single-database setups.
@@ -276,6 +286,8 @@ docker run -d \
   -e PORT=5055 \
   -p 5055:5055 \
   -v /path/to/seerrng/config:/app/config \
+  --security-opt=no-new-privileges \
+  --cap-drop=ALL \
   --restart unless-stopped \
   ghcr.io/snapetech-org/seerrng:latest
 ```
@@ -299,6 +311,10 @@ services:
       - 5055:5055
     volumes:
       - /path/to/seerrng/config:/app/config
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
     restart: unless-stopped
 ```
 
