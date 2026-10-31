@@ -42,5 +42,9 @@ numbering. SeerrNG attaches indicators when the Sonarr series uses the matching
 TVDB order; alternate season orders and scene numbering are left unmarked until
 their episode identities can be matched safely.
 
-This capability adapts work discussed in Seerr [PR #1671](https://github.com/seerr-team/seerr/pull/1671)
-and [PR #3527](https://github.com/seerr-team/seerr/pull/3527).
+This capability adapts work discussed in Seerr [PR #1671](https://github.com/seerr-team/seerr/pull/1671),
+[PR #3355](https://github.com/seerr-team/seerr/pull/3355), [PR #3361](https://github.com/seerr-team/seerr/pull/3361),
+and [PR #3527](https://github.com/seerr-team/seerr/pull/3527). The current SeerrNG
+implementation reads Sonarr file availability only. Related Plex and Jellyfin
+scanner sources discussed in Seerr [PR #3402](https://github.com/seerr-team/seerr/pull/3402)
+are not included.
