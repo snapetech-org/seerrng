@@ -93,6 +93,9 @@ function sameCopy(k: string, narrator?: string) {
   return shared >= 3 || shared >= Math.min(mine.size, theirs.length) / 2;
 }
 
+// Hardcover tags that name a format, not a subject ("Audiobook" on the ebook page)
+const FORMAT_TAG = /^(audio ?books?|e-?books?|kindle|audible)$/i;
+
 export default function BookDetail() {
   const { id = '' } = useParams();
   const [p] = useSearchParams();
@@ -113,8 +116,10 @@ export default function BookDetail() {
   const reload = altId ? second.reload : first.reload;
   const work = hardcoverWorkId(bookId);
   const showNarr = f === 'audiobook' && prefs.narratorChoice;
+  // narrations load on the ebook page too, so its Audiobook button reads the same as on the audiobook page
+  const narrData = prefs.narratorChoice && !!work;
   const eds = useApi<{ editions: Edition[] }>(
-    showNarr && work
+    narrData
       ? `/editions/book?format=audiobook&term=${encodeURIComponent('work:' + work)}`
       : null
   );
@@ -129,7 +134,7 @@ export default function BookDetail() {
   const [cwTick, setCwTick] = useState(0);
   const [justAsked, setJustAsked] = useState<Set<string>>(new Set());
   useEffect(() => {
-    if (!showNarr || !work) return;
+    if (!narrData) return;
     let live = true;
     chaptarrWork(work)
       .then((d) => live && setCw(d))
@@ -137,7 +142,7 @@ export default function BookDetail() {
     return () => {
       live = false;
     };
-  }, [showNarr, work, cwTick]);
+  }, [narrData, work, cwTick]);
   // ChaptarrNG also lists unmonitored catalogue entries (an author's other books); only copies
   // with files or that are monitored count as "in the library" or "requested"
   const local = useMemo(
@@ -376,6 +381,7 @@ export default function BookDetail() {
       <div className="dbody">
         <div className="fmt">
           <Link
+            replace
             to={`/book/${encodeURIComponent(bookIdFor(bookId, 'ebook'))}`}
             aria-current={!audio ? 'page' : undefined}
           >
@@ -386,6 +392,7 @@ export default function BookDetail() {
             <small>EPUB, works with Kindle</small>
           </Link>
           <Link
+            replace
             to={`/book/${encodeURIComponent(bookIdFor(bookId, 'audiobook'))}?f=audio`}
             aria-current={audio ? 'page' : undefined}
           >
@@ -394,9 +401,9 @@ export default function BookDetail() {
               Audiobook
             </b>
             <small>
-              {showNarr && rows.length
+              {narrData && rows.length
                 ? `${rows.length} narration${rows.length > 1 ? 's' : ''}${longest ? ' · ' + fmtHrs(longest) : ''}`
-                : 'Unabridged'}
+                : 'Plays in Audiobookshelf'}
             </small>
           </Link>
         </div>
@@ -546,8 +553,12 @@ export default function BookDetail() {
                           )}
                         </span>
                         <span>
-                          <div className="who">{l.narrator || l.title}</div>
-                          <div className="det">{l.title}</div>
+                          <div className="who">
+                            {l.narrator || 'Another copy'}
+                          </div>
+                          <div className="det">
+                            {l.narrator ? l.title : 'Narrator not listed'}
+                          </div>
                           <div className="tags">
                             <span className="tag own">
                               <Icon name="check" />
@@ -589,7 +600,7 @@ export default function BookDetail() {
             )}
             <div className="dacts pc">
               {main}
-              {anotherMode && ownsAny && chosenRow ? listen : null}
+              {audio && anotherMode && ownsAny && chosenRow ? listen : null}
             </div>
           </div>
           <aside>
@@ -603,7 +614,13 @@ export default function BookDetail() {
                 ],
                 ['First published', b.firstPublishYear],
                 ['Listening time', audio && longest ? fmtHrs(longest) : ''],
-                ['Subjects', (b.subjects || []).slice(0, 4).join(', ')],
+                [
+                  'Subjects',
+                  (b.subjects || [])
+                    .filter((t) => !FORMAT_TAG.test(t))
+                    .slice(0, 4)
+                    .join(', '),
+                ],
               ]}
             />
           </aside>
