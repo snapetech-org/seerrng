@@ -32,7 +32,7 @@ concurrency:
 jobs:
   package-helm-chart:
     name: Package helm chart
-    runs-on: ${{ fromJSON(format('{{"group":"ng-shared-main-jit","labels":["self-hosted","linux","x64","ng-shared-main-seerrng","ng-main-run-{0}"]}}', github.run_id)) }}
+    runs-on: ${{ fromJSON(format('{{"group":"ng-shared-main-jit","labels":["self-hosted","linux","x64","ng-shared-main-seerrng","ng-main-run-{0}","gha-{0}-package-helm-chart"]}}', github.run_id)) }}
     timeout-minutes: 30
     permissions:
       contents: read
@@ -201,7 +201,7 @@ jobs:
   verify:
     name: Verify signatures for each chart tag
     needs: [publish]
-    runs-on: ${{ fromJSON(format('{{"group":"ng-shared-main-jit","labels":["self-hosted","linux","x64","ng-shared-main-seerrng","ng-main-run-{0}"]}}', github.run_id)) }}
+    runs-on: ${{ fromJSON(format('{{"group":"ng-shared-main-jit","labels":["self-hosted","linux","x64","ng-shared-main-seerrng","ng-main-run-{0}","gha-{0}-verify"]}}', github.run_id)) }}
     timeout-minutes: 15
     permissions:
       contents: read
