@@ -2,7 +2,7 @@
 ---
 # yaml-language-server: $schema=https://json.schemastore.org/github-workflow.json
 name: Merge Conflict Labeler
-run-name: ${{ format('action:{0}:pool:{1}', inputs.action_tag, inputs.runner_pool_tag) }}
+run-name: ${{ format('action:{0}:pool:{1}', inputs.action, inputs.runner_pool) }}
 
 on:
   workflow_dispatch:
@@ -20,18 +20,6 @@ on:
         options:
           - private
 
-      action_tag:
-        description: Action tag for this workflow
-        required: true
-        type: choice
-        options:
-          - run
-      runner_pool_tag:
-        description: Ephemeral JIT runner-pool tag
-        required: true
-        type: choice
-        options:
-          - private
 permissions:
   contents: read
 
