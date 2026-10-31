@@ -39,6 +39,9 @@ probes:
 extraEnv: []
 # -- Environment variables from secrets or configmaps to add to the seerr pods
 extraEnvFrom: []
+# -- Additional Kubernetes resource objects rendered and managed with this chart release.
+# -- Each object is templated with this chart's values and named templates before rendering.
+extraResources: []
 
 serviceAccount:
   # -- Specifies whether a service account should be created

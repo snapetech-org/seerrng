@@ -59,12 +59,14 @@ For local MCP access, see the [SnapeTech MCP integration guide](./docs/integrati
   - [Slack notifications](./docs/using-seerr/notifications/slack.md)
   - [Telegram notifications](./docs/using-seerr/notifications/telegram.md)
   - [Configure notifications and follow request availability](./docs/using-seerr/notifications/index.mdx)
+  - [Kubernetes installation and Helm chart](./docs/getting-started/kubernetes.mdx)
 - [Screenshots](#screenshots)
 - [Install](#install)
   - [Docker](#docker)
   - [Docker Compose](#docker-compose)
   - [Unraid](#unraid)
   - [Linux packages](#linux-packages)
+  - [Kubernetes](#kubernetes)
 - [Android APK](#android-apk)
 - [Required Setup](#required-setup)
 - [Bookshelf and Hardcover](#bookshelf-and-hardcover)
@@ -333,6 +335,10 @@ The current tested mobile packages are attached to the
 The GitHub Android packages have Play Billing disabled, so they remain unlimited evaluation builds; the 20-session cap and lifetime purchase UI are only enabled in a configured Play build. These are prerelease test builds, not store-approved releases. See the
 [mobile release readiness guide](./docs/mobile-release-readiness.md) for
 signing details, test results, store status, and remaining release work.
+
+### Kubernetes
+
+The signed SeerrNG Helm chart can render administrator-supplied Kubernetes resource objects with the same release. The `extraResources` value is empty by default; see the [Kubernetes guide](./docs/getting-started/kubernetes.mdx) and [chart values](./charts/seerr-chart/README.md).
 
 ## Required Setup
 
