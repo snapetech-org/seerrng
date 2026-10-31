@@ -967,7 +967,7 @@
       "callsites": [
         {
           "path": "server/commands/interfaceTheme.ts",
-          "line": 239,
+          "line": 244,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'A valid installed custom theme ID is required.'",
@@ -1722,7 +1722,7 @@
         },
         {
           "path": "server/routes/interfaceThemes.ts",
-          "line": 17,
+          "line": 18,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Not found.'",
@@ -3670,7 +3670,7 @@
       "callsites": [
         {
           "path": "server/routes/adult.ts",
-          "line": 274,
+          "line": 276,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Whisparr scene catalog is unavailable right now.'",
@@ -4469,7 +4469,7 @@
       "callsites": [
         {
           "path": "server/routes/adult.ts",
-          "line": 210,
+          "line": 212,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "query\n          ? 'Whisparr scene search is unavailable right now.'\n          : 'Whisparr library browsing is unavailable right now.'",
@@ -7058,7 +7058,7 @@
       "callsites": [
         {
           "path": "server/utils/interfaceThemeRegistry.ts",
-          "line": 84,
+          "line": 78,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'The installed interface theme path is not a directory.'",
@@ -7077,7 +7077,7 @@
       "callsites": [
         {
           "path": "server/routes/adult.ts",
-          "line": 146,
+          "line": 148,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Whisparr server ID is invalid.'",
@@ -7085,7 +7085,7 @@
         },
         {
           "path": "server/routes/adult.ts",
-          "line": 288,
+          "line": 290,
           "kind": "response-body",
           "field": "body",
           "expression": "'Whisparr server ID is invalid.'",
@@ -7093,7 +7093,7 @@
         },
         {
           "path": "server/routes/adult.ts",
-          "line": 334,
+          "line": 336,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Whisparr server ID is invalid.'",
@@ -8392,7 +8392,7 @@
       "callsites": [
         {
           "path": "server/commands/interfaceTheme.ts",
-          "line": 90,
+          "line": 93,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Unsupported .seerrtheme package format.'",
@@ -9125,7 +9125,7 @@
       "callsites": [
         {
           "path": "server/commands/interfaceTheme.ts",
-          "line": 162,
+          "line": 166,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'The installed themes would exceed the total CSS size limit.'",
@@ -10961,7 +10961,7 @@
       "callsites": [
         {
           "path": "server/commands/interfaceTheme.ts",
-          "line": 213,
+          "line": 218,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Output already exists; choose a new package filename.'",
@@ -11580,7 +11580,7 @@
       "callsites": [
         {
           "path": "server/commands/interfaceTheme.ts",
-          "line": 79,
+          "line": 82,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Theme package is not valid JSON.'",
@@ -12008,7 +12008,7 @@
       "callsites": [
         {
           "path": "server/utils/interfaceThemeRegistry.ts",
-          "line": 39,
+          "line": 36,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Theme package file is not a supported regular file.'",
@@ -13407,7 +13407,7 @@
       "callsites": [
         {
           "path": "server/routes/adult.ts",
-          "line": 139,
+          "line": 141,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Query is too long.'",
@@ -13483,7 +13483,7 @@
       "callsites": [
         {
           "path": "server/routes/adult.ts",
-          "line": 282,
+          "line": 284,
           "kind": "response-body",
           "field": "body",
           "expression": "'Adult scene cover not found.'",
@@ -13491,7 +13491,7 @@
         },
         {
           "path": "server/routes/adult.ts",
-          "line": 317,
+          "line": 319,
           "kind": "response-body",
           "field": "body",
           "expression": "'Adult scene cover not found.'",
@@ -19205,7 +19205,7 @@
       "callsites": [
         {
           "path": "server/routes/adult.ts",
-          "line": 156,
+          "line": 158,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Whisparr server was not found.'",
@@ -19213,7 +19213,7 @@
         },
         {
           "path": "server/routes/adult.ts",
-          "line": 343,
+          "line": 345,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Whisparr server was not found.'",
@@ -21021,7 +21021,7 @@
       "callsites": [
         {
           "path": "server/commands/interfaceTheme.ts",
-          "line": 251,
+          "line": 258,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'The selected theme install target is not a directory.'",
@@ -30726,7 +30726,7 @@
       "callsites": [
         {
           "path": "server/commands/interfaceTheme.ts",
-          "line": 112,
+          "line": 115,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'The configured theme install path is not a directory.'",
@@ -30734,7 +30734,7 @@
         },
         {
           "path": "server/commands/interfaceTheme.ts",
-          "line": 244,
+          "line": 250,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'The configured theme install path is not a directory.'",
@@ -32330,7 +32330,7 @@
       "callsites": [
         {
           "path": "server/routes/adult.ts",
-          "line": 373,
+          "line": 375,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Whisparr scene details are unavailable right now.'",
@@ -32338,7 +32338,7 @@
         },
         {
           "path": "server/routes/adult.ts",
-          "line": 409,
+          "line": 411,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Whisparr scene details are unavailable right now.'",
@@ -38472,7 +38472,7 @@
       "callsites": [
         {
           "path": "server/commands/interfaceTheme.ts",
-          "line": 248,
+          "line": 255,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "`Theme \"${id}\" is not installed.`",
@@ -40455,7 +40455,7 @@
       "callsites": [
         {
           "path": "server/commands/interfaceTheme.ts",
-          "line": 42,
+          "line": 45,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "`Unsupported or oversized package file: ${filename}`",
@@ -42681,7 +42681,7 @@
       "callsites": [
         {
           "path": "server/commands/interfaceTheme.ts",
-          "line": 68,
+          "line": 71,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Custom theme packages cannot replace built-in themes.'",
@@ -42689,7 +42689,7 @@
         },
         {
           "path": "server/commands/interfaceTheme.ts",
-          "line": 101,
+          "line": 104,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Custom theme packages cannot replace built-in themes.'",
@@ -45535,7 +45535,7 @@
       "callsites": [
         {
           "path": "server/utils/interfaceThemeRegistry.ts",
-          "line": 50,
+          "line": 47,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Theme package directory is not a supported directory.'",
@@ -45581,7 +45581,7 @@
       "callsites": [
         {
           "path": "server/commands/interfaceTheme.ts",
-          "line": 64,
+          "line": 67,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'manifest.json is not valid JSON.'",
@@ -47786,7 +47786,7 @@
       "callsites": [
         {
           "path": "server/utils/interfaceThemePackage.ts",
-          "line": 307,
+          "line": 313,
           "kind": "authored-message-variable",
           "field": "message",
           "expression": "error instanceof Error ? error.message : 'invalid syntax'",
@@ -50398,7 +50398,7 @@
       "callsites": [
         {
           "path": "server/utils/interfaceThemeRegistry.ts",
-          "line": 64,
+          "line": 61,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Theme manifest is not valid JSON.'",
@@ -51500,7 +51500,7 @@
       "callsites": [
         {
           "path": "server/commands/interfaceTheme.ts",
-          "line": 122,
+          "line": 125,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "`Theme \"${theme.manifest.id}\" is already installed; pass --replace to update it.`",
@@ -52118,7 +52118,7 @@
       "callsites": [
         {
           "path": "server/commands/interfaceTheme.ts",
-          "line": 50,
+          "line": 53,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Theme source must be a real directory.'",
@@ -53194,7 +53194,7 @@
       "callsites": [
         {
           "path": "server/routes/adult.ts",
-          "line": 210,
+          "line": 212,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "query\n          ? 'Whisparr scene search is unavailable right now.'\n          : 'Whisparr library browsing is unavailable right now.'",
@@ -55028,7 +55028,7 @@
       "callsites": [
         {
           "path": "server/routes/adult.ts",
-          "line": 326,
+          "line": 328,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Adult scene not found.'",
@@ -55036,7 +55036,7 @@
         },
         {
           "path": "server/routes/adult.ts",
-          "line": 380,
+          "line": 382,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Adult scene not found.'",
@@ -55886,7 +55886,7 @@
       "callsites": [
         {
           "path": "server/commands/interfaceTheme.ts",
-          "line": 155,
+          "line": 158,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "`At most ${MAX_INSTALLED_INTERFACE_THEMES} custom themes can be installed.`",
@@ -56390,7 +56390,7 @@
       "callsites": [
         {
           "path": "server/commands/interfaceTheme.ts",
-          "line": 128,
+          "line": 131,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'The existing theme install target is not a directory.'",
@@ -63853,7 +63853,7 @@
     },
     {
       "path": "server/commands/interfaceTheme.ts",
-      "line": 29,
+      "line": 32,
       "kind": "app-error-candidate",
       "field": "message",
       "expression": "[\n      'Usage:',\n      '  pnpm interface-theme:validate <theme-directory>',\n      '  pnpm interface-theme:pack <theme-directory> <output.seerrtheme>',\n      '  pnpm interface-theme:install <package.seerrtheme> [--replace]',\n      '  pnpm interface-theme:uninstall <custom-theme-id>',\n    ].join('\\n')",
@@ -66736,7 +66736,7 @@
       "line": 127,
       "kind": "message-helper-return",
       "field": "message",
-      "expression": "{\n        template: path.join(__dirname, '../../../templates/email/test-email'),\n        message: {\n          to: recipientEmail,\n        },\n        locals: {\n          body: payload.message,\n          locale: emailLocale,\n          direction,\n          greeting:\n            recipientName && recipientName !== recipientEmail\n              ? intl.formatMessage(messages.greeting, {\n                  recipientName: `\\u2068${recipientName}\\u2069`,\n                })\n              : undefined,\n          openApplicationLabel: intl.formatMessage(messages.openApplication, {\n            applicationTitle,\n          }),\n          applicationUrl,\n          applicationTitle,\n          logoUrl,\n          recipientName,\n          recipientEmail,\n        },\n      }",
+      "expression": "{\n        template: path.join(__dirname, '../../../templates/email/test-email'),\n        message: {\n          to: recipientEmail,\n        },\n        locals: {\n          body: payload.message,\n          testSubject: payload.subject,\n          locale: emailLocale,\n          direction,\n          greeting:\n            recipientName && recipientName !== recipientEmail\n              ? intl.formatMessage(messages.greeting, {\n                  recipientName: `\\u2068${recipientName}\\u2069`,\n                })\n              : undefined,\n          openApplicationLabel: intl.formatMessage(messages.openApplication, {\n            applicationTitle,\n          }),\n          applicationUrl,\n          applicationTitle,\n          logoUrl,\n          recipientName,\n          recipientEmail,\n        },\n      }",
       "source": "{value0}",
       "reason": "dynamic/provider/user value"
     },
@@ -66751,7 +66751,7 @@
     },
     {
       "path": "server/lib/notifications/agents/email.ts",
-      "line": 215,
+      "line": 216,
       "kind": "message-helper-return",
       "field": "message",
       "expression": "{\n        template: path.join(\n          __dirname,\n          '../../../templates/email/media-request'\n        ),\n        message: {\n          to: recipientEmail,\n        },\n        locals: {\n          event: payload.event,\n          body,\n          locale: emailLocale,\n          direction,\n          greeting:\n            recipientName && recipientName !== recipientEmail\n              ? intl.formatMessage(messages.greeting, {\n                  recipientName: `\\u2068${recipientName}\\u2069`,\n                })\n              : undefined,\n          requestedByLabel: intl.formatMessage(messages.requestedByLabel),\n          openApplicationLabel: intl.formatMessage(messages.openApplication, {\n            applicationTitle,\n          }),\n          mediaName: payload.subject,\n          mediaExtra: payload.extra ?? [],\n          imageUrl: embedPoster ? payload.image : undefined,\n          timestamp: new Date().toTimeString(),\n          requestedBy: payload.request?.requestedBy.displayName,\n          actionUrl: getNotificationActionUrl(payload, applicationUrl),\n          actionLabel: intl.formatMessage(getNotificationActionLabel(payload), {\n            applicationTitle,\n          }),\n          applicationUrl,\n          applicationTitle,\n          logoUrl,\n          recipientName,\n          recipientEmail,\n        },\n      }",
@@ -66760,7 +66760,7 @@
     },
     {
       "path": "server/lib/notifications/agents/email.ts",
-      "line": 220,
+      "line": 221,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "{\n          to: recipientEmail,\n        }",
@@ -66769,7 +66769,7 @@
     },
     {
       "path": "server/lib/notifications/agents/email.ts",
-      "line": 259,
+      "line": 260,
       "kind": "message-helper-return",
       "field": "message",
       "expression": "{\n        template: path.join(\n          __dirname,\n          '../../../templates/email/media-request'\n        ),\n        message: {\n          to: recipientEmail,\n        },\n        locals: {\n          event: content.event,\n          body: content.message ?? '',\n          locale: emailLocale,\n          direction,\n          greeting:\n            recipientName && recipientName !== recipientEmail\n              ? intl.formatMessage(messages.greeting, {\n                  recipientName: `\\u2068${recipientName}\\u2069`,\n                })\n              : undefined,\n          requestedByLabel: intl.formatMessage(messages.requestedByLabel),\n          openApplicationLabel: intl.formatMessage(messages.openApplication, {\n            applicationTitle,\n          }),\n          mediaName: payload.subject,\n          mediaExtra: payload.softwareRequestStatus\n            ? []\n            : (payload.extra ?? []),\n          imageUrl: embedPoster ? payload.image : undefined,\n          timestamp: new Date().toTimeString(),\n          requestedBy: payload.notifyUser?.displayName ?? '',\n          actionUrl: getNotificationActionUrl(payload, applicationUrl),\n          actionLabel: intl.formatMessage(getNotificationActionLabel(payload), {\n            applicationTitle,\n          }),\n          applicationUrl,\n          applicationTitle,\n          logoUrl,\n          recipientName,\n          recipientEmail,\n        },\n      }",
@@ -66778,7 +66778,7 @@
     },
     {
       "path": "server/lib/notifications/agents/email.ts",
-      "line": 264,
+      "line": 265,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "{\n          to: recipientEmail,\n        }",
@@ -66787,7 +66787,7 @@
     },
     {
       "path": "server/lib/notifications/agents/email.ts",
-      "line": 345,
+      "line": 346,
       "kind": "message-helper-return",
       "field": "message",
       "expression": "{\n        template: path.join(__dirname, '../../../templates/email/media-issue'),\n        message: {\n          to: recipientEmail,\n        },\n        locals: {\n          event: payload.event,\n          body,\n          locale: emailLocale,\n          direction,\n          greeting:\n            recipientName && recipientName !== recipientEmail\n              ? intl.formatMessage(messages.greeting, {\n                  recipientName: `\\u2068${recipientName}\\u2069`,\n                })\n              : undefined,\n          viewIssueLabel: intl.formatMessage(messages.viewIssueIn, {\n            applicationTitle,\n          }),\n          issueDescription: payload.message,\n          issueComment: payload.comment?.message,\n          mediaName: payload.subject,\n          extra: payload.extra ?? [],\n          imageUrl: embedPoster ? payload.image : undefined,\n          timestamp: new Date().toTimeString(),\n          actionUrl: getNotificationActionUrl(payload, applicationUrl),\n          applicationUrl,\n          applicationTitle,\n          logoUrl,\n          recipientName,\n          recipientEmail,\n        },\n      }",
@@ -66796,7 +66796,7 @@
     },
     {
       "path": "server/lib/notifications/agents/email.ts",
-      "line": 347,
+      "line": 348,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "{\n          to: recipientEmail,\n        }",
@@ -66805,7 +66805,7 @@
     },
     {
       "path": "server/lib/notifications/agents/email.ts",
-      "line": 380,
+      "line": 381,
       "kind": "message-helper-return",
       "field": "message",
       "expression": "undefined",
@@ -66814,7 +66814,7 @@
     },
     {
       "path": "server/lib/notifications/agents/email.ts",
-      "line": 434,
+      "line": 435,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "e.message",
@@ -66823,7 +66823,7 @@
     },
     {
       "path": "server/lib/notifications/agents/email.ts",
-      "line": 494,
+      "line": 495,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "e.message",
@@ -69919,7 +69919,7 @@
     },
     {
       "path": "server/routes/adult.ts",
-      "line": 310,
+      "line": 312,
       "kind": "response-body",
       "field": "body",
       "expression": "cover.imageBuffer",
@@ -81223,7 +81223,7 @@
     },
     {
       "path": "server/utils/interfaceThemePackage.ts",
-      "line": 307,
+      "line": 313,
       "kind": "authored-message-variable",
       "field": "message",
       "expression": "error instanceof Error ? error.message : 'invalid syntax'",
