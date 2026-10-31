@@ -490,6 +490,29 @@
     {
       "domain": "client",
       "locale": "de",
+      "id": "components.Continuation.novel",
+      "source": "Light Novel",
+      "target": "Light Novel",
+      "sourceHash": "0d571462e5edc5db8046a7d9b2d3263445974e689b7dc0e1ae6870faba9b464d",
+      "targetHash": "0d571462e5edc5db8046a7d9b2d3263445974e689b7dc0e1ae6870faba9b464d",
+      "classification": "localized-equivalent",
+      "equivalenceType": "accepted-media-term",
+      "sourceCallsites": [
+        {
+          "path": "src/components/Continuation/index.tsx",
+          "line": 38,
+          "defaultMessage": "'Light Novel'"
+        }
+      ],
+      "reason": "Machine-assisted contextual review (Codex, 2026-10-31): in this media-format label, `Light Novel` is an established Deutsch publishing/category term for the Japanese illustrated-novel format. The German distributor describes Dokico as a Manga- und Light-Novel-Verlag and uses Light Novel in book listings. The identical target is therefore accepted terminology for this callsite, not untranslated prose or an English fallback. Native-speaker and RTL review have not been performed; this equivalence record expires 2027-10-31.",
+      "expiresOn": "2027-10-31",
+      "evidenceLinks": [
+        "https://www.ppm-vertrieb.de/verlage.html"
+      ]
+    },
+    {
+      "domain": "client",
+      "locale": "de",
       "id": "components.CuratedCollection.genres",
       "source": "Genres",
       "target": "Genres",
@@ -1086,6 +1109,29 @@
       ],
       "reason": "Machine-assisted contextual review (Codex, 2026-10-31): `Manga` is the established Deutsch label for this media, music-genre, or content-format concept at this callsite. This is an accepted localized/international media term, not untranslated English prose or a fallback. Native-speaker and RTL review have not been performed; this equivalence record expires 2027-10-31.",
       "expiresOn": "2027-10-31"
+    },
+    {
+      "domain": "client",
+      "locale": "de",
+      "id": "components.Franchise.novel",
+      "source": "Light Novel",
+      "target": "Light Novel",
+      "sourceHash": "0d571462e5edc5db8046a7d9b2d3263445974e689b7dc0e1ae6870faba9b464d",
+      "targetHash": "0d571462e5edc5db8046a7d9b2d3263445974e689b7dc0e1ae6870faba9b464d",
+      "classification": "localized-equivalent",
+      "equivalenceType": "accepted-media-term",
+      "sourceCallsites": [
+        {
+          "path": "src/components/Franchise/index.tsx",
+          "line": 30,
+          "defaultMessage": "'Light Novel'"
+        }
+      ],
+      "reason": "Machine-assisted contextual review (Codex, 2026-10-31): in this media-format label, `Light Novel` is an established Deutsch publishing/category term for the Japanese illustrated-novel format. The German distributor describes Dokico as a Manga- und Light-Novel-Verlag and uses Light Novel in book listings. The identical target is therefore accepted terminology for this callsite, not untranslated prose or an English fallback. Native-speaker and RTL review have not been performed; this equivalence record expires 2027-10-31.",
+      "expiresOn": "2027-10-31",
+      "evidenceLinks": [
+        "https://www.ppm-vertrieb.de/verlage.html"
+      ]
     },
     {
       "domain": "client",
@@ -4761,6 +4807,29 @@
       ],
       "reason": "Machine-assisted contextual review (Codex, 2026-10-31): `Manga` is the established Français label for this media, music-genre, or content-format concept at this callsite. This is an accepted localized/international media term, not untranslated English prose or a fallback. Native-speaker and RTL review have not been performed; this equivalence record expires 2027-10-31.",
       "expiresOn": "2027-10-31"
+    },
+    {
+      "domain": "client",
+      "locale": "fr",
+      "id": "components.Continuation.novel",
+      "source": "Light Novel",
+      "target": "Light Novel",
+      "sourceHash": "0d571462e5edc5db8046a7d9b2d3263445974e689b7dc0e1ae6870faba9b464d",
+      "targetHash": "0d571462e5edc5db8046a7d9b2d3263445974e689b7dc0e1ae6870faba9b464d",
+      "classification": "localized-equivalent",
+      "equivalenceType": "accepted-media-term",
+      "sourceCallsites": [
+        {
+          "path": "src/components/Continuation/index.tsx",
+          "line": 38,
+          "defaultMessage": "'Light Novel'"
+        }
+      ],
+      "reason": "Machine-assisted contextual review (Codex, 2026-10-31): in this media-format label, `Light Novel` is an established français publishing/category term for the Japanese illustrated-novel format. The French publisher Mahô Éditions identifies its catalog as mangas et Light Novels and uses Light Novel as the format name. The identical target is therefore accepted terminology for this callsite, not untranslated prose or an English fallback. Native-speaker and RTL review have not been performed; this equivalence record expires 2027-10-31.",
+      "expiresOn": "2027-10-31",
+      "evidenceLinks": [
+        "https://www.maho-editions.com/quisommesnous"
+      ]
     },
     {
       "domain": "client",
@@ -8710,6 +8779,29 @@
     {
       "domain": "client",
       "locale": "pt-BR",
+      "id": "components.Continuation.novel",
+      "source": "Light Novel",
+      "target": "Light Novel",
+      "sourceHash": "0d571462e5edc5db8046a7d9b2d3263445974e689b7dc0e1ae6870faba9b464d",
+      "targetHash": "0d571462e5edc5db8046a7d9b2d3263445974e689b7dc0e1ae6870faba9b464d",
+      "classification": "localized-equivalent",
+      "equivalenceType": "accepted-media-term",
+      "sourceCallsites": [
+        {
+          "path": "src/components/Continuation/index.tsx",
+          "line": 38,
+          "defaultMessage": "'Light Novel'"
+        }
+      ],
+      "reason": "Machine-assisted contextual review (Codex, 2026-10-31): in this media-format label, `Light Novel` is an established português brasileiro publishing/category term for the Japanese illustrated-novel format. Brazilian publisher Editora JBC lists Light Novel as a genre/category in its titles catalog. The identical target is therefore accepted terminology for this callsite, not untranslated prose or an English fallback. Native-speaker and RTL review have not been performed; this equivalence record expires 2027-10-31.",
+      "expiresOn": "2027-10-31",
+      "evidenceLinks": [
+        "https://editorajbc.com.br/titulos/"
+      ]
+    },
+    {
+      "domain": "client",
+      "locale": "pt-BR",
       "id": "components.Discover.CreateSlider.jazz",
       "source": "Jazz",
       "target": "Jazz",
@@ -8806,6 +8898,29 @@
       ],
       "reason": "Machine-assisted contextual review (Codex, 2026-10-31): `Anime` is the established Português (Brasil) label for this media, music-genre, or content-format concept at this callsite. This is an accepted localized/international media term, not untranslated English prose or a fallback. Native-speaker and RTL review have not been performed; this equivalence record expires 2027-10-31.",
       "expiresOn": "2027-10-31"
+    },
+    {
+      "domain": "client",
+      "locale": "pt-BR",
+      "id": "components.Franchise.novel",
+      "source": "Light Novel",
+      "target": "Light Novel",
+      "sourceHash": "0d571462e5edc5db8046a7d9b2d3263445974e689b7dc0e1ae6870faba9b464d",
+      "targetHash": "0d571462e5edc5db8046a7d9b2d3263445974e689b7dc0e1ae6870faba9b464d",
+      "classification": "localized-equivalent",
+      "equivalenceType": "accepted-media-term",
+      "sourceCallsites": [
+        {
+          "path": "src/components/Franchise/index.tsx",
+          "line": 30,
+          "defaultMessage": "'Light Novel'"
+        }
+      ],
+      "reason": "Machine-assisted contextual review (Codex, 2026-10-31): in this media-format label, `Light Novel` is an established português brasileiro publishing/category term for the Japanese illustrated-novel format. Brazilian publisher Editora JBC lists Light Novel as a genre/category in its titles catalog. The identical target is therefore accepted terminology for this callsite, not untranslated prose or an English fallback. Native-speaker and RTL review have not been performed; this equivalence record expires 2027-10-31.",
+      "expiresOn": "2027-10-31",
+      "evidenceLinks": [
+        "https://editorajbc.com.br/titulos/"
+      ]
     },
     {
       "domain": "client",
@@ -9050,6 +9165,29 @@
     {
       "domain": "client",
       "locale": "vi",
+      "id": "components.Continuation.novel",
+      "source": "Light Novel",
+      "target": "Light Novel",
+      "sourceHash": "0d571462e5edc5db8046a7d9b2d3263445974e689b7dc0e1ae6870faba9b464d",
+      "targetHash": "0d571462e5edc5db8046a7d9b2d3263445974e689b7dc0e1ae6870faba9b464d",
+      "classification": "localized-equivalent",
+      "equivalenceType": "accepted-media-term",
+      "sourceCallsites": [
+        {
+          "path": "src/components/Continuation/index.tsx",
+          "line": 38,
+          "defaultMessage": "'Light Novel'"
+        }
+      ],
+      "reason": "Machine-assisted contextual review (Codex, 2026-10-31): in this media-format label, `Light Novel` is an established tiếng Việt publishing/category term for the Japanese illustrated-novel format. Vietnamese publisher NXB Kim Đồng uses Light-novel in the listing title for a published novel. The identical target is therefore accepted terminology for this callsite, not untranslated prose or an English fallback. Native-speaker and RTL review have not been performed; this equivalence record expires 2027-10-31.",
+      "expiresOn": "2027-10-31",
+      "evidenceLinks": [
+        "https://nxbkimdong.com.vn/?cid=9&id=37922&page=newsview"
+      ]
+    },
+    {
+      "domain": "client",
+      "locale": "vi",
       "id": "components.Discover.CreateSlider.hipHop",
       "source": "Hip-Hop",
       "target": "Hip-Hop",
@@ -9166,6 +9304,29 @@
       ],
       "reason": "Machine-assisted contextual review (Codex, 2026-10-31): `Manga` is the established Tiếng Việt label for this media, music-genre, or content-format concept at this callsite. This is an accepted localized/international media term, not untranslated English prose or a fallback. Native-speaker and RTL review have not been performed; this equivalence record expires 2027-10-31.",
       "expiresOn": "2027-10-31"
+    },
+    {
+      "domain": "client",
+      "locale": "vi",
+      "id": "components.Franchise.novel",
+      "source": "Light Novel",
+      "target": "Light Novel",
+      "sourceHash": "0d571462e5edc5db8046a7d9b2d3263445974e689b7dc0e1ae6870faba9b464d",
+      "targetHash": "0d571462e5edc5db8046a7d9b2d3263445974e689b7dc0e1ae6870faba9b464d",
+      "classification": "localized-equivalent",
+      "equivalenceType": "accepted-media-term",
+      "sourceCallsites": [
+        {
+          "path": "src/components/Franchise/index.tsx",
+          "line": 30,
+          "defaultMessage": "'Light Novel'"
+        }
+      ],
+      "reason": "Machine-assisted contextual review (Codex, 2026-10-31): in this media-format label, `Light Novel` is an established tiếng Việt publishing/category term for the Japanese illustrated-novel format. Vietnamese publisher NXB Kim Đồng uses Light-novel in the listing title for a published novel. The identical target is therefore accepted terminology for this callsite, not untranslated prose or an English fallback. Native-speaker and RTL review have not been performed; this equivalence record expires 2027-10-31.",
+      "expiresOn": "2027-10-31",
+      "evidenceLinks": [
+        "https://nxbkimdong.com.vn/?cid=9&id=37922&page=newsview"
+      ]
     },
     {
       "domain": "client",

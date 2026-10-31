@@ -11,6 +11,7 @@ import {
   getLocalizedEquivalentEntry,
   getProvenanceKey,
   hasUnreviewedTranslations,
+  isSafeSourceRelativePath,
   isValidProvenanceEntry,
   matchesProvenanceFingerprints,
   matchesSourceCallsiteLine,
@@ -247,6 +248,34 @@ for (const entry of fallbackManifest.entries) {
 
 const equivalentEntries = new Map();
 const equivalentSourceFiles = new Map();
+const isInsideDirectory = (directory, candidate) => {
+  const relative = path.relative(directory, candidate);
+  return (
+    relative !== '' &&
+    relative !== '..' &&
+    !relative.startsWith('..' + path.sep) &&
+    !path.isAbsolute(relative)
+  );
+};
+const hasSafeEquivalentCallsitePath = (callsite, domain) => {
+  const prefix = domain === 'client' ? 'src' : 'server';
+  if (
+    !isSafeSourceRelativePath(callsite.path, prefix) ||
+    !fs.existsSync(path.join(root, callsite.path))
+  ) {
+    return false;
+  }
+  try {
+    const sourceRoot = fs.realpathSync(path.resolve(root, prefix));
+    const sourceFile = fs.realpathSync(path.resolve(root, callsite.path));
+    return (
+      fs.statSync(sourceFile).isFile() &&
+      isInsideDirectory(sourceRoot, sourceFile)
+    );
+  } catch {
+    return false;
+  }
+};
 if (
   equivalentManifest.schemaVersion !== 1 ||
   !Array.isArray(equivalentManifest.entries)
@@ -295,10 +324,7 @@ for (const entry of equivalentManifest.entries) {
       (callsite) =>
         !callsite ||
         typeof callsite.path !== 'string' ||
-        !callsite.path.startsWith(
-          entry.domain === 'client' ? 'src/' : 'server/'
-        ) ||
-        !fs.existsSync(path.join(root, callsite.path)) ||
+        !hasSafeEquivalentCallsitePath(callsite, entry.domain) ||
         !Number.isInteger(callsite.line) ||
         callsite.line < 1 ||
         typeof callsite.defaultMessage !== 'string'

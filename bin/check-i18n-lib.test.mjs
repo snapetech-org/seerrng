@@ -9,6 +9,7 @@ import {
   getFallbackEntry,
   getLocalizedEquivalentEntry,
   hasUnreviewedTranslations,
+  isSafeSourceRelativePath,
   isValidProvenanceEntry,
   matchesProvenanceFingerprints,
   matchesSourceCallsiteLine,
@@ -334,6 +335,16 @@ test('locale-equivalence evidence must still match its recorded source line and 
     false,
     'a stale message literal cannot pass the callsite check'
   );
+});
+
+test('locale-equivalence source paths stay inside the repository source roots', () => {
+  assert.equal(
+    isSafeSourceRelativePath('src/components/Details/index.tsx', 'src'),
+    true
+  );
+  assert.equal(isSafeSourceRelativePath('src/../../outside.tsx', 'src'), false);
+  assert.equal(isSafeSourceRelativePath('/tmp/escape.tsx', 'src'), false);
+  assert.equal(isSafeSourceRelativePath('src\\\\outside.tsx', 'src'), false);
 });
 
 test('unlisted English and empty values remain explicit coverage gaps', () => {

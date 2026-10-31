@@ -65511,9 +65511,10 @@
       "id": "components.GameContent.typeSeasonPass",
       "status": "draft",
       "provenance": "machine-draft",
-      "source": "Qwen 3.8 27B (local), generated 2026-10-30",
+      "source": "Codex contextual manual correction; generated 2026-10-31; unverified",
       "sourceHash": "e64e6a4fad6195306b59848e13a300308a2f0cd72323fc1c83490124dc22b5c5",
-      "targetHash": "e64e6a4fad6195306b59848e13a300308a2f0cd72323fc1c83490124dc22b5c5"
+      "targetHash": "e69d0d2863079e8f3fbc8d6bef3928ad62038e6824b51be28895ec3da555142e",
+      "correctionReason": "Contextual machine-draft correction: `Season Pass` is an app-authored game-content category in components.GameContent.typeSeasonPass and is localized as `Tiket Musim`. Indonesian-language Steam catalog copy uses `Tiket Musim` for Season Pass (Farming Simulator 25 Year 1 Season Pass). Native-speaker and RTL review not performed."
     },
     {
       "domain": "client",

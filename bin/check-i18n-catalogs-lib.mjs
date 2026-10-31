@@ -1,3 +1,5 @@
+import path from 'node:path';
+
 const fallbackKey = (domain, id) => `${domain}:${id}`;
 
 export const getFallbackEntry = (fallbackEntries, domain, id) =>
@@ -39,6 +41,15 @@ export const matchesSourceCallsiteLine = ({
     normalizeIndentation(defaultMessage)
   );
 };
+
+export const isSafeSourceRelativePath = (value, sourcePrefix) =>
+  typeof value === 'string' &&
+  typeof sourcePrefix === 'string' &&
+  !path.isAbsolute(value) &&
+  value.startsWith(`${sourcePrefix}/`) &&
+  !value.split(/[\\/]+/).includes('..') &&
+  !value.includes('\\') &&
+  path.normalize(value) === value;
 
 export const classifyCatalogEntry = ({
   hasValue,
