@@ -11,6 +11,7 @@ const sharedCss = readFileSync(
   new URL('./interfaceThemes/shared.css', import.meta.url),
   'utf8'
 );
+const cssRoot = postcss.parse(css);
 const origThemeCss = readFileSync(
   new URL('../../themes/seerrOrig/theme.css', import.meta.url),
   'utf8'
@@ -35,10 +36,20 @@ const rule = (selector) => {
   return css.slice(open + 1, css.indexOf('}', open));
 };
 const rules = (selector) => {
-  const escaped = selector.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-  return [...css.matchAll(new RegExp(`\\n  ${escaped}\\s*\\{([^}]*)\\}`, 'g'))]
-    .map((match) => match[1])
-    .join('\n');
+  const declarations = [];
+  cssRoot.walkRules((rule) => {
+    if (
+      !postcss.list
+        .comma(rule.selector)
+        .some((item) => item.trim() === selector)
+    ) {
+      return;
+    }
+    declarations.push(
+      rule.nodes?.map((node) => node.toString()).join('\n') ?? ''
+    );
+  });
+  return declarations.join('\n');
 };
 const classNameTokens = (source) => {
   const directClassNames = [
