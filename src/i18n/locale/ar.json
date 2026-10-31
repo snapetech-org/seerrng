@@ -86,7 +86,7 @@
   "components.ArtistDetails.soundtrack": "الموسيقى التصويرية",
   "components.ArtistDetails.unknownalbum": "ألبوم غير معروف",
   "components.Association.AssociationDetailCard.author": "صاحب البلاغ",
-  "components.Association.AssociationDetailCard.country": "موسيقى الريف",
+  "components.Association.AssociationDetailCard.country": "البلد",
   "components.Association.AssociationDetailCard.director": "مخرج",
   "components.Association.AssociationDetailCard.isbn": "ISBN",
   "components.Association.AssociationDetailCard.knownFor": "معروف بـ",

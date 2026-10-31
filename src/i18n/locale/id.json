@@ -86,7 +86,7 @@
   "components.ArtistDetails.soundtrack": "trek suara",
   "components.ArtistDetails.unknownalbum": "Album tidak diketahui",
   "components.Association.AssociationDetailCard.author": "Penulis",
-  "components.Association.AssociationDetailCard.country": "Musik country",
+  "components.Association.AssociationDetailCard.country": "Negara",
   "components.Association.AssociationDetailCard.director": "Sutradara",
   "components.Association.AssociationDetailCard.isbn": "ISBN",
   "components.Association.AssociationDetailCard.knownFor": "Dikenal karena",

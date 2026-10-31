@@ -86,7 +86,7 @@
   "components.ArtistDetails.soundtrack": "Banda sonora",
   "components.ArtistDetails.unknownalbum": "Álbum desconocido",
   "components.Association.AssociationDetailCard.author": "Autor",
-  "components.Association.AssociationDetailCard.country": "Música country",
+  "components.Association.AssociationDetailCard.country": "País",
   "components.Association.AssociationDetailCard.director": "Director",
   "components.Association.AssociationDetailCard.isbn": "ISBN",
   "components.Association.AssociationDetailCard.knownFor": "Conocido por",

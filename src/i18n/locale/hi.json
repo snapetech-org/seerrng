@@ -86,7 +86,7 @@
   "components.ArtistDetails.soundtrack": "साउंडट्रैक",
   "components.ArtistDetails.unknownalbum": "अज्ञात एल्बम",
   "components.Association.AssociationDetailCard.author": "लेखक",
-  "components.Association.AssociationDetailCard.country": "कंट्री संगीत",
+  "components.Association.AssociationDetailCard.country": "देश",
   "components.Association.AssociationDetailCard.director": "निर्देशक",
   "components.Association.AssociationDetailCard.isbn": "ISBN",
   "components.Association.AssociationDetailCard.knownFor": "के लिए प्रसिद्ध",
