@@ -18,7 +18,7 @@ export const PLEXTV_HTTP_OPTIONS = {
 } as const;
 export const MAX_PLEX_SHARED_USERS = 250;
 export const MAX_PLEX_WATCHLIST_PAGE_SIZE = 100;
-export const PLEX_WATCHLIST_HYDRATION_CONCURRENCY = 10;
+export const PLEX_WATCHLIST_HYDRATION_CONCURRENCY = 5;
 const PLEX_WATCHLIST_USER_STATE_CACHE_TTL_SECONDS = 15;
 const PLEX_DISCOVER_API_URL = 'https://discover.provider.plex.tv';
 const PLEX_METADATA_API_URL = 'https://metadata.provider.plex.tv';
@@ -638,10 +638,16 @@ class PlexTvAPI extends ExternalAPI {
         cachedWatchlist?.response?.MediaContainer?.Metadata,
         size
       );
+      let hasFatalMetadataError = false;
+      let fatalMetadataError: unknown;
       const watchlistDetails = await mapWithConcurrency(
         ratingKeys,
         PLEX_WATCHLIST_HYDRATION_CONCURRENCY,
         async (ratingKey) => {
+          if (hasFatalMetadataError) {
+            return undefined;
+          }
+
           let detailedResponse: MetadataResponse;
           try {
             detailedResponse = await this.getRolling<MetadataResponse>(
@@ -651,15 +657,35 @@ class PlexTvAPI extends ExternalAPI {
               }
             );
           } catch (e) {
-            if (e.response?.status === 404) {
+            const details = getHttpErrorDetails(e);
+            if (details.status === 404) {
               logger.warn(
                 `Item with ratingKey ${ratingKey} not found, it may have been removed from the server.`,
                 { label: 'Plex.TV Metadata API' }
               );
               return undefined;
-            } else {
-              throw e;
             }
+
+            if (
+              !details.status &&
+              !details.upstreamStatusCode &&
+              ['ETIMEDOUT', 'ECONNABORTED', 'ENETUNREACH'].includes(
+                details.errorCode ?? ''
+              )
+            ) {
+              logger.warn('Skipping unreachable Plex watchlist item', {
+                label: 'Plex.TV Metadata API',
+                ratingKey,
+                errorCode: details.errorCode,
+              });
+              return undefined;
+            }
+
+            if (!hasFatalMetadataError) {
+              hasFatalMetadataError = true;
+              fatalMetadataError = e;
+            }
+            return undefined;
           }
 
           const metadata =
@@ -677,6 +703,10 @@ class PlexTvAPI extends ExternalAPI {
           return parsePlexWatchlistMetadata(metadata);
         }
       );
+
+      if (hasFatalMetadataError) {
+        throw fatalMetadataError;
+      }
 
       const filteredList = watchlistDetails.filter(
         (detail): detail is PlexWatchlistItem => detail !== undefined

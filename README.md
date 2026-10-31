@@ -184,6 +184,11 @@ Recent repository updates include:
   can also require Jellyfin Quick Connect and reject password-based Jellyfin
   sign-in while keeping local and OpenID Connect options independently
   controlled.
+- **Plex Watchlists:** metadata lookups are bounded to five at a time. An
+  unreachable or timed-out item no longer prevents the rest of a page from
+  loading; authentication and other provider failures remain visible. This
+  adaptation addresses Seerr [issue #3235](https://github.com/seerr-team/seerr/issues/3235)
+  and [PR #3251](https://github.com/seerr-team/seerr/pull/3251).
 - **Sonarr:** v5 API support alongside v3/v4, metadata-language and season-order
   choices, and request recovery scoped to the selected service, quality, and
   season order.
