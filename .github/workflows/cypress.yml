@@ -6,6 +6,11 @@ run-name: ${{ format('action:{0}:pool:{1}', inputs.action_tag, inputs.runner_poo
 
 on:
   workflow_call:
+    inputs:
+      pr_sha:
+        description: Exact trusted owner PR head SHA to validate
+        required: false
+        type: string
     secrets:
       CYPRESS_RECORD_KEY:
         required: false
@@ -41,6 +46,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
+          ref: ${{ inputs.pr_sha || github.sha }}
           persist-credentials: false
 
       - name: Set up Node.js
@@ -121,8 +127,8 @@ jobs:
           WITH_MIGRATIONS: true
           E2E_TESTS: true
           PORT: 5056
-          COMMIT_INFO_MESSAGE: ${{ github.event.head_commit.message || github.sha }}
-          COMMIT_INFO_SHA: ${{ github.sha }}
+          COMMIT_INFO_MESSAGE: ${{ github.event.head_commit.message || inputs.pr_sha || github.sha }}
+          COMMIT_INFO_SHA: ${{ inputs.pr_sha || github.sha }}
 
       - name: Run Cypress suite without Cypress Cloud
         if: steps.cypress-recording.outputs.enabled != 'true'

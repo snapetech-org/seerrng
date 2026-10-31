@@ -483,15 +483,78 @@ test('owner PR validation is metadata-only, main-pinned, and exact-SHA', () => {
   for (let shard = 1; shard <= 4; shard += 1) {
     assert.ok(workflowSource.includes(`gha-{0}-unit-test-shard-${shard}`));
   }
-  const skippedForOwnerPr = [
-    'release-notes',
-    'cypress',
-    'test-docs',
-    'docs-links',
-    'helm',
-  ];
+  const skippedForOwnerPr = ['release-notes', 'helm'];
   for (const jobId of skippedForOwnerPr) {
     assert.match(ciWorkflow.jobs[jobId].if, /inputs\.pr_number == ''/u, jobId);
+  }
+
+  const reusableOwnerPrChecks = [
+    ['cypress', 'cypress.yml', 'cypress-run', 'cypress-run'],
+    ['test-docs', 'test-docs.yml', 'test-build', 'test-build'],
+    ['docs-links', 'docs-link-check.yml', 'link-check', 'link-check'],
+  ];
+  for (const [
+    jobId,
+    workflowFile,
+    reusableJobId,
+    labelSuffix,
+  ] of reusableOwnerPrChecks) {
+    const callerJob = ciWorkflow.jobs[jobId];
+    const reusableWorkflow = yaml.load(
+      fs.readFileSync(
+        path.join(rootDirectory, '.github', 'workflows', workflowFile),
+        'utf8'
+      )
+    );
+    const reusableJob = reusableWorkflow.jobs[reusableJobId];
+    const checkout = reusableJob.steps.find((step) => step.name === 'Checkout');
+
+    assert.match(callerJob.if, /inputs\.pr_sha != ''/u, jobId);
+    assert.match(callerJob.if, /inputs\.target_run_id != ''/u, jobId);
+    assert.match(
+      callerJob.if,
+      /github\.actor == 'github-actions\[bot\]'/u,
+      jobId
+    );
+    assert.equal(callerJob.with.pr_sha, '${{ inputs.pr_sha }}', jobId);
+    assert.ok(
+      workflowSource.includes(`gha-{0}-${labelSuffix}`),
+      `${jobId} must document its exact owner-PR label for broker routing`
+    );
+    assert.equal(
+      reusableWorkflow.on.workflow_call.inputs.pr_sha.required,
+      false,
+      workflowFile
+    );
+    assert.equal(
+      reusableWorkflow.on.workflow_call.inputs.pr_sha.type,
+      'string',
+      workflowFile
+    );
+    assert.match(
+      checkout.with.ref,
+      /inputs\.pr_sha \|\| github\.sha/u,
+      workflowFile
+    );
+    assert.equal(checkout.with['persist-credentials'], false, workflowFile);
+    assert.match(
+      reusableJob['runs-on'],
+      /"group":"ng-shared-main-jit"/u,
+      workflowFile
+    );
+    assert.match(
+      reusableJob['runs-on'],
+      new RegExp(`gha-\\{0\\}-${labelSuffix}`, 'u')
+    );
+    if (jobId === 'cypress') {
+      const cloudRun = reusableJob.steps.find(
+        (step) => step.name === 'Run Cypress suite with Cypress Cloud'
+      );
+      assert.match(
+        cloudRun.env.COMMIT_INFO_SHA,
+        /inputs\.pr_sha \|\| github\.sha/u
+      );
+    }
   }
 
   assert.equal(reporter.name, 'Report trusted owner PR validation');
@@ -502,6 +565,9 @@ test('owner PR validation is metadata-only, main-pinned, and exact-SHA', () => {
     'node-test',
     'jellyfin-plugin',
     'playwright',
+    'cypress',
+    'test-docs',
+    'docs-links',
   ]);
   assert.match(reporter.if, /always\(\)/u);
   assert.match(reporter.if, /github\.actor == 'github-actions\[bot\]'/u);
@@ -516,6 +582,15 @@ test('owner PR validation is metadata-only, main-pinned, and exact-SHA', () => {
     reporter.steps[0].env.VALIDATION_RESULT,
     /needs\.test\.result == 'success'/u
   );
+  for (const jobId of ['cypress', 'test-docs', 'docs-links']) {
+    const needsReference = jobId.includes('-')
+      ? `needs\\['${jobId}'\\]`
+      : `needs\\.${jobId}`;
+    assert.match(
+      reporter.steps[0].env.VALIDATION_RESULT,
+      new RegExp(`${needsReference}\\.result == 'success'`, 'u')
+    );
+  }
   assert.match(reporter.steps[0].run, /"name": "SeerrNG owner PR validation"/u);
   assert.match(reporter.steps[0].run, /actions\/runs\//u);
 });

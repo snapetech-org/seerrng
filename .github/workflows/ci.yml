@@ -464,28 +464,47 @@ jobs:
           CI: true
         run: pnpm exec playwright test --reporter=json
 
+  # Owner-PR reusable check runner label: gha-{0}-cypress-run.
   cypress:
     name: Cypress browser tests
     if: >-
       github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main' &&
-      inputs.pr_number == '' && (inputs.action == 'ci' || inputs.action == 'publish-image')
+      ((inputs.pr_number != '' && inputs.pr_sha != '' && inputs.target_run_id != '' &&
+        github.actor == 'github-actions[bot]' && inputs.action == 'ci') ||
+       (inputs.pr_number == '' && (inputs.action == 'ci' || inputs.action == 'publish-image')))
     permissions:
       contents: read
     uses: ./.github/workflows/cypress.yml
+    with:
+      pr_sha: ${{ inputs.pr_sha }}
 
+  # Owner-PR reusable check runner label: gha-{0}-test-build.
   test-docs:
-    if: github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main' && inputs.pr_number == '' && (inputs.action == 'ci' || inputs.action == 'publish-image')
+    if: >-
+      github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main' &&
+      ((inputs.pr_number != '' && inputs.pr_sha != '' && inputs.target_run_id != '' &&
+        github.actor == 'github-actions[bot]' && inputs.action == 'ci') ||
+       (inputs.pr_number == '' && (inputs.action == 'ci' || inputs.action == 'publish-image')))
     name: Build docs website
     permissions:
       contents: read
     uses: ./.github/workflows/test-docs.yml
+    with:
+      pr_sha: ${{ inputs.pr_sha }}
 
+  # Owner-PR reusable check runner label: gha-{0}-link-check.
   docs-links:
-    if: github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main' && inputs.pr_number == '' && (inputs.action == 'ci' || inputs.action == 'publish-image')
+    if: >-
+      github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main' &&
+      ((inputs.pr_number != '' && inputs.pr_sha != '' && inputs.target_run_id != '' &&
+        github.actor == 'github-actions[bot]' && inputs.action == 'ci') ||
+       (inputs.pr_number == '' && (inputs.action == 'ci' || inputs.action == 'publish-image')))
     name: Check documentation links
     permissions:
       contents: read
     uses: ./.github/workflows/docs-link-check.yml
+    with:
+      pr_sha: ${{ inputs.pr_sha }}
 
   helm:
     if: github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main' && inputs.pr_number == '' && (inputs.action == 'ci' || inputs.action == 'publish-image')
@@ -503,6 +522,9 @@ jobs:
       - node-test
       - jellyfin-plugin
       - playwright
+      - cypress
+      - test-docs
+      - docs-links
     if: >-
       always() && github.event_name == 'workflow_dispatch' &&
       github.ref == 'refs/heads/main' && inputs.action == 'ci' &&
@@ -524,7 +546,10 @@ jobs:
                  needs['unit-test'].result == 'success' &&
                  needs['node-test'].result == 'success' &&
                  needs['jellyfin-plugin'].result == 'success' &&
-                 needs.playwright.result == 'success') && 'success' || 'failure' }}
+                 needs.playwright.result == 'success' &&
+                 needs.cypress.result == 'success' &&
+                 needs['test-docs'].result == 'success' &&
+                 needs['docs-links'].result == 'success') && 'success' || 'failure' }}
           VALIDATION_RUN_ID: ${{ github.run_id }}
         run: |
           python3 - <<'PY'
