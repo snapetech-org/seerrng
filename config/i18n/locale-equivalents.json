@@ -9179,10 +9179,10 @@
           "defaultMessage": "'Light Novel'"
         }
       ],
-      "reason": "Machine-assisted contextual review (Codex, 2026-10-31): in this media-format label, `Light Novel` is an established tiếng Việt publishing/category term for the Japanese illustrated-novel format. Vietnamese publisher NXB Kim Đồng uses Light-novel in the listing title for a published novel. The identical target is therefore accepted terminology for this callsite, not untranslated prose or an English fallback. Native-speaker and RTL review have not been performed; this equivalence record expires 2027-10-31.",
+      "reason": "Machine-assisted contextual review (Codex, 2026-10-31): in this media-format label, `Light Novel` is an established tiếng Việt publishing/category term for the Japanese illustrated-novel format. Vietnamese publisher NXB Kim Đồng’s Wings Books catalog lists published titles using the category marker “(Light Novel)”. The identical target is therefore accepted terminology for this callsite, not untranslated prose or an English fallback. Native-speaker and RTL review have not been performed; this equivalence record expires 2027-10-31.",
       "expiresOn": "2027-10-31",
       "evidenceLinks": [
-        "https://nxbkimdong.com.vn/?cid=9&id=37922&page=newsview"
+        "https://nxbkimdong.com.vn/wings-books-1"
       ]
     },
     {
@@ -9322,10 +9322,10 @@
           "defaultMessage": "'Light Novel'"
         }
       ],
-      "reason": "Machine-assisted contextual review (Codex, 2026-10-31): in this media-format label, `Light Novel` is an established tiếng Việt publishing/category term for the Japanese illustrated-novel format. Vietnamese publisher NXB Kim Đồng uses Light-novel in the listing title for a published novel. The identical target is therefore accepted terminology for this callsite, not untranslated prose or an English fallback. Native-speaker and RTL review have not been performed; this equivalence record expires 2027-10-31.",
+      "reason": "Machine-assisted contextual review (Codex, 2026-10-31): in this media-format label, `Light Novel` is an established tiếng Việt publishing/category term for the Japanese illustrated-novel format. Vietnamese publisher NXB Kim Đồng’s Wings Books catalog lists published titles using the category marker “(Light Novel)”. The identical target is therefore accepted terminology for this callsite, not untranslated prose or an English fallback. Native-speaker and RTL review have not been performed; this equivalence record expires 2027-10-31.",
       "expiresOn": "2027-10-31",
       "evidenceLinks": [
-        "https://nxbkimdong.com.vn/?cid=9&id=37922&page=newsview"
+        "https://nxbkimdong.com.vn/wings-books-1"
       ]
     },
     {
