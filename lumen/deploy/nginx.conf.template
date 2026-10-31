@@ -1,0 +1,85 @@
+# One origin for the app and SeerrNG's API, so SeerrNG's sign-in cookie just works.
+#   SEERR_URL         SeerrNG's API (e.g. http://seerrng:5055)
+#   SEERR_EXTRAS_URL  optional companion proxy (ChaptarrNG lookups, "request another narrator")
+#   SEERR_FULL_URL    where people reach full SeerrNG for pages Lumen doesn't have
+
+# The visitor's address: Cloudflare's header when present, else whoever connected. SeerrNG
+# trusts one proxy hop, so it must see the visitor here, not the tunnel.
+map $http_cf_connecting_ip $lumen_client_ip {
+  "" $remote_addr;
+  default $http_cf_connecting_ip;
+}
+map $http_x_forwarded_for $lumen_forwarded_for {
+  "" $remote_addr;
+  default $http_x_forwarded_for;
+}
+
+# The same protections full SeerrNG sends with its pages: no framing (clickjacking), scripts only
+# from this origin. Outside hosts: Google Fonts, Plex sign-in, and cover art from many CDNs.
+map "" $lumen_csp {
+  default "default-src 'self'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; object-src 'none'; script-src 'self'; script-src-attr 'none'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' data: blob: https:; connect-src 'self' https://plex.tv https://*.plex.tv; manifest-src 'self'; worker-src 'self'; frame-src 'none'";
+}
+
+server {
+  listen 80;
+  root /usr/share/nginx/html;
+  server_tokens off;
+
+  # security headers (repeated in each location below that sets headers of its own)
+  add_header Content-Security-Policy $lumen_csp;
+  add_header X-Frame-Options DENY;
+  add_header X-Content-Type-Options nosniff;
+  add_header Referrer-Policy same-origin;
+
+  location /api/ {
+    proxy_pass ${SEERR_URL};
+    proxy_set_header Host $host;
+    proxy_set_header X-Forwarded-For $lumen_forwarded_for;
+    proxy_set_header X-Real-IP $lumen_client_ip;
+    proxy_set_header X-Forwarded-Proto $http_x_forwarded_proto;
+  }
+  location ~ ^/(imageproxy|avatarproxy)/ {
+    proxy_pass ${SEERR_URL};
+    proxy_set_header Host $host;
+  }
+  location /seerr-classic/ {
+    proxy_pass ${SEERR_EXTRAS_URL};
+    proxy_set_header Host $host;
+    proxy_set_header X-Forwarded-For $lumen_forwarded_for;
+  }
+
+  # SeerrNG pages Lumen doesn't have (links in emails, old bookmarks): open them in full SeerrNG
+  location ~ ^/(issues|settings|users|profile|collection|person|discover|calendar|blocklist|setup|swipe|following|library|downloads|recordings|share|identify|indexer-search|track-requests|book-series|author|software|franchise|collections|associations|resetpassword)(/|$) {
+    return 302 ${SEERR_FULL_URL}$request_uri;
+  }
+
+  # replaces SeerrNG's service worker; must never be cached or the old one lingers
+  location = /sw.js {
+    add_header Cache-Control "no-store";
+    add_header Content-Security-Policy $lumen_csp;
+    add_header X-Frame-Options DENY;
+    add_header X-Content-Type-Options nosniff;
+    add_header Referrer-Policy same-origin;
+    try_files $uri =404;
+  }
+  location = /manifest.webmanifest {
+    default_type application/manifest+json;
+    try_files $uri =404;
+  }
+  location /assets/ {
+    add_header Cache-Control "public, max-age=31536000, immutable";
+    add_header Content-Security-Policy $lumen_csp;
+    add_header X-Frame-Options DENY;
+    add_header X-Content-Type-Options nosniff;
+    add_header Referrer-Policy same-origin;
+  }
+  # client-side routes (/movie/123, /books, ...) all load the app
+  location / {
+    add_header Cache-Control "no-cache";
+    add_header Content-Security-Policy $lumen_csp;
+    add_header X-Frame-Options DENY;
+    add_header X-Content-Type-Options nosniff;
+    add_header Referrer-Policy same-origin;
+    try_files $uri /index.html;
+  }
+}

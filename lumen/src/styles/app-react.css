@@ -1,0 +1,359 @@
+/* Parts the mockup didn't need: sign-in, loading placeholders. Same tokens as lumen.css. */
+.boot {
+  min-height: 100vh;
+  background: var(--bg);
+}
+
+.login {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  background:
+    radial-gradient(
+      1200px 600px at 50% -10%,
+      color-mix(in srgb, var(--accent) 18%, transparent),
+      transparent
+    ),
+    var(--bg);
+}
+.login-card {
+  width: min(420px, 100%);
+  display: grid;
+  gap: 14px;
+  padding: 28px;
+  border-radius: var(--r-xl);
+  background: var(--surface);
+  box-shadow:
+    0 0 0 1px var(--line),
+    var(--shadow-float);
+}
+.login-card .brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 800;
+  font-size: 18px;
+}
+.login-card .brand .mark {
+  width: 30px;
+  height: 30px;
+  border-radius: 9px;
+  background: var(--accent);
+  color: var(--accent-ink);
+  display: grid;
+  place-items: center;
+}
+.login-card h1 {
+  font-size: 24px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+  margin: 6px 0 0;
+}
+.login-card .sub {
+  margin: 0;
+  color: var(--ink-2);
+}
+.login-plex {
+  min-height: 48px;
+  font-size: 16px;
+}
+.login-local {
+  display: grid;
+  gap: 10px;
+}
+.login-local label {
+  display: grid;
+  gap: 4px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--ink-2);
+}
+.login-local input {
+  height: 44px;
+  border-radius: 12px;
+  border: 1px solid var(--line);
+  background: var(--surface-2);
+  color: var(--ink);
+  padding: 0 12px;
+  font: inherit;
+  font-size: 16px;
+}
+.login-err {
+  color: var(--bad);
+  margin: 0;
+  font-size: 14px;
+}
+
+.skel {
+  background: linear-gradient(
+    90deg,
+    var(--surface-2),
+    var(--surface-3),
+    var(--surface-2)
+  );
+  background-size: 200% 100%;
+  animation: lumen-skel 1.4s ease-in-out infinite;
+}
+.skel-line {
+  height: 12px;
+  width: 70%;
+  margin-top: 8px;
+  border-radius: 6px;
+  background: var(--surface-2);
+}
+@keyframes lumen-skel {
+  0% {
+    background-position: 100% 0;
+  }
+  100% {
+    background-position: -100% 0;
+  }
+}
+
+/* pages beyond the mockup's sample data */
+.more {
+  justify-self: center;
+  margin-top: 8px;
+}
+.detail-loading {
+  min-height: 60vh;
+}
+.ph-only-row {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+@media (min-width: 1040px) {
+  .ph-only-row {
+    display: none;
+  }
+}
+.person i {
+  overflow: hidden;
+}
+.person i img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.set.locked {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+.adv {
+  border-radius: var(--r-lg);
+  background: var(--surface);
+  box-shadow: 0 0 0 1px var(--line);
+  padding: 10px 14px;
+}
+.adv summary {
+  cursor: pointer;
+  font-weight: 650;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--ink-2);
+}
+.adv-grid {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-top: 10px;
+}
+.adv-grid .sel select {
+  max-width: 260px;
+}
+.empty .btn {
+  display: inline-flex;
+}
+.recent {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+/* phones and tablets stack the columns: keep the facts off the narration list */
+@media (max-width: 1039px) {
+  .dcols {
+    display: grid;
+    gap: 22px;
+  }
+  .dcols > * {
+    min-width: 0;
+  }
+}
+/* facts beside the overview: two roomy columns instead of four cramped ones */
+.dcols aside .facts2 {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+.dcols aside .facts2 dd {
+  overflow-wrap: normal;
+  word-break: normal;
+  hyphens: auto;
+}
+.nrow.unavailable {
+  opacity: 0.55;
+  cursor: default;
+}
+
+.detail-loading {
+  display: grid;
+  gap: 16px;
+  padding-top: 8px;
+}
+.detail-loading::before {
+  content: '';
+  height: min(42vw, 360px);
+  border-radius: var(--r-xl);
+  background: linear-gradient(
+    90deg,
+    var(--surface-2),
+    var(--surface-3),
+    var(--surface-2)
+  );
+  background-size: 200% 100%;
+  animation: lumen-skel 1.4s ease-in-out infinite;
+}
+.detail-loading::after {
+  content: 'Loading…';
+  color: var(--ink-3);
+  font-weight: 600;
+}
+.more-scroll {
+  min-height: 48px;
+  display: grid;
+  place-items: center;
+  color: var(--ink-3);
+  font-size: 14px;
+  font-weight: 600;
+}
+/* genre chips: wrap on desktop so every genre is reachable without a scrollbar; phones keep the swipe row */
+@media (min-width: 700px) {
+  .toolbar .chips.genre-chips {
+    flex-wrap: wrap;
+    overflow: visible;
+    margin: 0;
+    padding: 2px 0;
+  }
+}
+.chip .ico.sm {
+  width: 14px;
+  height: 14px;
+}
+/* requests: book covers fill the frame like movie backdrops (blurred cover behind the sharp one) */
+.rq .art.cover {
+  background: var(--surface-2);
+}
+.rq .art.cover img {
+  position: relative;
+  object-fit: contain;
+  background: transparent;
+}
+.rq .art.cover img.art-fill {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: blur(14px) saturate(1.2);
+  transform: scale(1.25);
+  opacity: 0.55;
+}
+.rq .rqa .btn {
+  min-height: 34px;
+}
+
+/* extra categories (music, comics, magazines, games, sports, adult) */
+.extra-q {
+  margin-top: 14px;
+  max-width: 560px;
+}
+.extra-q input {
+  flex: 1;
+  min-width: 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  color: var(--ink);
+  outline: none;
+}
+.art-ph {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  color: var(--ink-3);
+  background: var(--surface-2);
+}
+.art-ph .ico {
+  width: 34%;
+  height: 34%;
+}
+.poster.wide .art {
+  aspect-ratio: 16 / 9;
+  border-radius: var(--r-md);
+}
+.grid.wideg {
+  grid-template-columns: repeat(auto-fill, minmax(min(260px, 100%), 1fr));
+}
+.tlist {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.trow {
+  display: grid;
+  grid-template-columns: 34px minmax(0, 1fr) auto;
+  gap: 12px;
+  align-items: center;
+  padding: 11px 14px;
+}
+.trow + .trow {
+  border-top: 1px solid var(--line);
+}
+.trow b {
+  font-weight: 650;
+  font-size: 15px;
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.trow small {
+  display: block;
+  color: var(--ink-3);
+  font-size: 13px;
+}
+.trow .tn {
+  color: var(--ink-3);
+  font-variant-numeric: tabular-nums;
+  font-size: 14px;
+  text-align: right;
+}
+.trow .tl {
+  color: var(--ink-3);
+  font-variant-numeric: tabular-nums;
+  font-size: 14px;
+}
+.game-pick {
+  margin: 4px 0 12px;
+}
+.shots {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(220px, 100%), 1fr));
+  gap: 10px;
+}
+.shots img {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  border-radius: var(--r-md);
+}
+.detail .by a {
+  color: inherit;
+  text-decoration: underline;
+  text-decoration-color: var(--line);
+  text-underline-offset: 3px;
+}
