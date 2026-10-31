@@ -1533,17 +1533,68 @@ test('release archive platforms route only to private native runners', () => {
   assert.doesNotMatch(expression, /ubuntu-latest|windows-latest|macos-\d/u);
 });
 
-test('trusted main iOS validation uses the private Apple runner', () => {
+test('trusted main iOS validation requires a run-scoped private Apple JIT runner', () => {
   const ios = readWorkflow('ios.yml');
   assert.deepEqual(Object.keys(ios.on), ['workflow_dispatch']);
   assert.deepEqual(ios.on.workflow_dispatch.inputs.runner_pool_tag.options, [
     'private',
   ]);
-  assert.match(
-    ios.jobs.ios['runs-on'],
-    /"group":"private-apple-builds"[\s\S]*"private-apple"/u
+  const expression = ios.jobs.ios['runs-on'];
+  const route = runInNewContext(
+    expression.slice(3, -2),
+    {
+      github: { run_id: 123 },
+      fromJSON: JSON.parse,
+      format: (template, runId) =>
+        template
+          .replaceAll('{{', '{')
+          .replaceAll('}}', '}')
+          .replaceAll('{0}', String(runId)),
+    },
+    { timeout: 100 }
   );
-  assert.doesNotMatch(ios.jobs.ios['runs-on'], /macos-\d/u);
+  assert.deepEqual(route, {
+    group: 'private-apple-builds',
+    labels: [
+      'self-hosted',
+      'macOS',
+      'ARM64',
+      'private-apple',
+      'ng-main-run-123',
+      'gha-123-build-ios',
+    ],
+  });
+  assert.doesNotMatch(expression, /macos-\d|\|\|/u);
+});
+
+test('release iOS package requires a run-scoped private Apple JIT runner', () => {
+  const releaseAssets = readWorkflow('release-assets.yml');
+  const expression = releaseAssets.jobs['build-ios']['runs-on'];
+  const route = runInNewContext(
+    expression.slice(3, -2),
+    {
+      github: { run_id: 123 },
+      fromJSON: JSON.parse,
+      format: (template, runId) =>
+        template
+          .replaceAll('{{', '{')
+          .replaceAll('}}', '}')
+          .replaceAll('{0}', String(runId)),
+    },
+    { timeout: 100 }
+  );
+  assert.deepEqual(route, {
+    group: 'private-apple-builds',
+    labels: [
+      'self-hosted',
+      'macOS',
+      'ARM64',
+      'private-apple',
+      'ng-main-run-123',
+      'gha-123-build-ios',
+    ],
+  });
+  assert.doesNotMatch(expression, /macos-\d|\|\|/u);
 });
 
 test('release notes flow into the draft release and Discord announcement', () => {

@@ -317,7 +317,7 @@ jobs:
   build-ios:
     name: Build iOS Simulator release package
     needs: resolve
-    runs-on: ${{ fromJSON(format('{{"group":"private-apple-builds","labels":["self-hosted","macOS","ARM64","private-apple"]}}')) }}
+    runs-on: ${{ fromJSON(format('{{"group":"private-apple-builds","labels":["self-hosted","macOS","ARM64","private-apple","ng-main-run-{0}","gha-{0}-build-ios"]}}', github.run_id)) }}
     timeout-minutes: 60
     permissions:
       actions: read
