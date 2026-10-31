@@ -40,6 +40,7 @@ export interface PublicSettingsResponse {
   enable4k: boolean;
   localLogin: boolean;
   mediaServerLogin: boolean;
+  quickConnectOnly: boolean;
   movie4kEnabled: boolean;
   series4kEnabled: boolean;
   musicEnabled: boolean;

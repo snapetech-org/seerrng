@@ -913,6 +913,7 @@ authRoutes.post('/jellyfin/bridge', authRateLimit, async (req, res, next) => {
   if (
     settings.main.mediaServerType !== MediaServerType.JELLYFIN ||
     settings.main.mediaServerLogin === false ||
+    settings.main.quickConnectOnly === true ||
     !settings.jellyfin.bridgeLoginEnabled ||
     !settings.jellyfin.serverId
   ) {
@@ -990,6 +991,7 @@ authRoutes.post('/jellyfin/bridge', authRateLimit, async (req, res, next) => {
       async () => {
         const currentSettings = getSettings();
         if (
+          currentSettings.main.quickConnectOnly === true ||
           !currentSettings.jellyfin.bridgeLoginEnabled ||
           getJellyfinAuthAuthorityKey(currentSettings) !== initialAuthorityKey
         ) {
@@ -1165,6 +1167,15 @@ authRoutes.post('/jellyfin', authRateLimit, async (req, res, next) => {
     return res.status(403).json({ error: 'Jellyfin login is disabled' });
   }
 
+  if (
+    settings.main.mediaServerType === MediaServerType.JELLYFIN &&
+    settings.main.quickConnectOnly === true
+  ) {
+    return res.status(403).json({
+      error: 'Jellyfin password sign-in is disabled. Use Quick Connect.',
+    });
+  }
+
   if (settings.jellyfin.ip !== '' && body.hostname) {
     return res
       .status(409)
@@ -1290,6 +1301,9 @@ authRoutes.post('/jellyfin', authRateLimit, async (req, res, next) => {
           (activeSettings.main.mediaServerType !==
             MediaServerType.NOT_CONFIGURED &&
             (activeSettings.main.mediaServerLogin === false ||
+              (activeSettings.main.mediaServerType ===
+                MediaServerType.JELLYFIN &&
+                activeSettings.main.quickConnectOnly === true) ||
               (activeSettings.main.mediaServerType !==
                 MediaServerType.JELLYFIN &&
                 activeSettings.main.mediaServerType !== MediaServerType.EMBY)))
