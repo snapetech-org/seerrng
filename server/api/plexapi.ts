@@ -1,8 +1,10 @@
 import ExternalAPI from '@server/api/externalapi';
 import MusicBrainz from '@server/api/musicbrainz';
+import { ApiErrorCode } from '@server/constants/error';
 import type { Library, PlexSettings } from '@server/lib/settings';
 import { getSettings } from '@server/lib/settings';
 import logger from '@server/logger';
+import { ApiError } from '@server/types/error';
 import AsyncLock from '@server/utils/asyncLock';
 import {
   buildServiceUrl,
@@ -903,6 +905,14 @@ class PlexAPI extends ExternalAPI {
         label: 'Plex API',
         message: e.message,
       });
+      if (axios.isAxiosError(e)) {
+        if (!e.response) {
+          throw new ApiError(502, ApiErrorCode.ConnectionError);
+        }
+
+        throw new ApiError(e.response.status, ApiErrorCode.Unknown);
+      }
+
       throw e;
     }
   }

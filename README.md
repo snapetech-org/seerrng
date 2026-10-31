@@ -82,7 +82,7 @@ For local MCP access, see the [SnapeTech MCP integration guide](./docs/integrati
 - Requests and approvals for movies, shows, music, ebooks, audiobooks, comics, magazines, emulation ROMs, and PC games.
 - A companion Android APK client for connecting to one or more self-hosted SeerrNG servers.
 - Movie and series Discover filters with 0.1-point TMDB rating thresholds and streaming-service availability filters by region.
-- Media-server integration with Plex, Jellyfin, and Emby, including watch-state-aware My Library views scoped to each linked account.
+- Media-server integration with Plex, Jellyfin, and Emby, including watch-state-aware My Library views scoped to each linked account. Failed Plex library syncs preserve the saved library list, report connection failures clearly, and retry startup migration on the next restart.
 - Optional Jellyfin and Emby profile sync during user imports, refreshing linked provider names and avatars while preserving SeerrNG email addresses, local passwords, and permissions.
 - Labeled movie and TV request destinations across multiple Radarr and Sonarr instances, with per-user access and availability tracked for each destination.
 - Managers can approve a one-time movie or TV request exception when a user's quota is full; optional Slack actions use a mapped account and the same request permissions as the web app.
