@@ -27,6 +27,14 @@
     },
     {
       "domain": "client",
+      "id": "components.BackendBookSeriesDetails.source",
+      "sourceHash": "6d5da7af329f97be10b553723330a6c5107b2d7245f1c8b02f8f2eeb072aeb16",
+      "owner": "localization-maintainers",
+      "reason": "Machine-assisted contextual review (Codex, 2026-10-31): The book-server source name and already localized book format are dynamic values; this template contains only placeholders and a neutral separator. Source: src/components/BackendBookSeriesDetails/index.tsx. The exact source template is intentionally preserved; this is not a claim that surrounding dynamic content is English-free. Native-speaker and RTL review have not been performed; this approval expires 2027-10-31.",
+      "expiresOn": "2027-10-31"
+    },
+    {
+      "domain": "client",
       "id": "components.BookDetails.Layout.isbn",
       "sourceHash": "623c18690950532afea764f43c68b005b3d39e80eb78813fe5247f7e8ca842f8",
       "owner": "localization-maintainers",
@@ -39,6 +47,22 @@
       "sourceHash": "11e9037f6de21cf3445904c8621c6703f437870c57227eee49c4032e5e0498de",
       "owner": "localization-maintainers",
       "reason": "Machine-assisted contextual QA (Codex, 2026-10-31): Open Library is a named catalog provider. The exact source value is intentionally preserved. Native-speaker and RTL review have not been performed; this approval expires 2027-10-31.",
+      "expiresOn": "2027-10-31"
+    },
+    {
+      "domain": "client",
+      "id": "components.BookRecommendations.seriesPart",
+      "sourceHash": "a4180c34961688fa4ef1ed87fdc2db8fc372ce6a9849bd1f7c6ea4559e2d3562",
+      "owner": "localization-maintainers",
+      "reason": "Machine-assisted contextual review (Codex, 2026-10-31): The series title and position are book metadata values supplied by the result; the template contains no English words. Source: src/components/BookRecommendations/index.tsx. The exact source template is intentionally preserved; this is not a claim that surrounding dynamic content is English-free. Native-speaker and RTL review have not been performed; this approval expires 2027-10-31.",
+      "expiresOn": "2027-10-31"
+    },
+    {
+      "domain": "client",
+      "id": "components.BookSeriesLinks.source",
+      "sourceHash": "6d5da7af329f97be10b553723330a6c5107b2d7245f1c8b02f8f2eeb072aeb16",
+      "owner": "localization-maintainers",
+      "reason": "Machine-assisted contextual review (Codex, 2026-10-31): The server name is provider metadata and format is formatted through localized message IDs; the template contains no English words. Source: src/components/BookSeriesDetails/BookSeriesLinks.tsx. The exact source template is intentionally preserved; this is not a claim that surrounding dynamic content is English-free. Native-speaker and RTL review have not been performed; this approval expires 2027-10-31.",
       "expiresOn": "2027-10-31"
     },
     {
@@ -87,6 +111,14 @@
       "sourceHash": "3b502e62c8e5f45fce63c758173cd1668ec7e0e0039da84d3ba8328519488ff7",
       "owner": "localization-maintainers",
       "reason": "Machine-assisted contextual QA (Codex, 2026-10-31): Whisparr is a product name; the remaining {service} value is dynamic provider data and the separator carries no prose. The exact source value is intentionally preserved. Native-speaker and RTL review have not been performed; this approval expires 2027-10-31.",
+      "expiresOn": "2027-10-31"
+    },
+    {
+      "domain": "client",
+      "id": "components.Discover.DiscoverAdult.year",
+      "sourceHash": "ab0d6549c51f6f7f407eb9018ba8cc918459818623060c0fee811f4358450d70",
+      "owner": "localization-maintainers",
+      "reason": "Machine-assisted contextual review (Codex, 2026-10-31): This card appends the numeric scene year in parentheses; no English text is present. Source: src/components/Discover/DiscoverAdult/AdultSceneCard.tsx. The exact source template is intentionally preserved; this is not a claim that surrounding dynamic content is English-free. Native-speaker and RTL review have not been performed; this approval expires 2027-10-31.",
       "expiresOn": "2027-10-31"
     },
     {
@@ -195,6 +227,14 @@
     },
     {
       "domain": "client",
+      "id": "components.ManageMediaActions.titleWithYear",
+      "sourceHash": "0b2793d5f0a36e1c7f54e92ae033f3e29b9624c9d1aabf41ffa3d9116ea58ae0",
+      "owner": "localization-maintainers",
+      "reason": "Machine-assisted contextual review (Codex, 2026-10-31): The title and release year are media/provider metadata; the template contains no English words. Source: src/components/ManageSlideOver/ManageMediaActions.tsx. The exact source template is intentionally preserved; this is not a claim that surrounding dynamic content is English-free. Native-speaker and RTL review have not been performed; this approval expires 2027-10-31.",
+      "expiresOn": "2027-10-31"
+    },
+    {
+      "domain": "client",
       "id": "components.MediaDetails.MetadataAttribution.tmdb",
       "sourceHash": "d48b09a78b6dfb05b47f2ce1852d1339a66f58dd731ff4a8093cdcee383c42d5",
       "owner": "localization-maintainers",
@@ -267,6 +307,14 @@
     },
     {
       "domain": "client",
+      "id": "components.PersonDetails.lifespan",
+      "sourceHash": "3229a72a737ea0372aa691947f3baaec44c0324b3644990e6f587f0a655fb4fd",
+      "owner": "localization-maintainers",
+      "reason": "Machine-assisted contextual review (Codex, 2026-10-31): Both placeholders are dates formatted for the active locale; the template contains only a date separator. Source: src/components/PersonDetails/index.tsx. The exact source template is intentionally preserved; this is not a claim that surrounding dynamic content is English-free. Native-speaker and RTL review have not been performed; this approval expires 2027-10-31.",
+      "expiresOn": "2027-10-31"
+    },
+    {
+      "domain": "client",
       "id": "components.ReaderDeliverySettings.addressPlaceholder",
       "sourceHash": "6365169ed2966d8f26eb0a81e26fc299db4b9551773b4a0958013dde74b6f4b0",
       "owner": "localization-maintainers",
@@ -295,6 +343,22 @@
       "sourceHash": "323e41792751e840ad9e398d5057120cb1f1b730acbb193ee6498eb3b481059c",
       "owner": "localization-maintainers",
       "reason": "Machine-assisted contextual QA (Codex, 2026-10-31): HD is a standard media-resolution abbreviation. The exact source value is intentionally preserved. Native-speaker and RTL review have not been performed; this approval expires 2027-10-31.",
+      "expiresOn": "2027-10-31"
+    },
+    {
+      "domain": "client",
+      "id": "components.RequestCard.TvSeasonMappingModal.historyItem",
+      "sourceHash": "1930a9db93a6f3caf497a778f8c7298226e1814e69a7eb511604fa5ccc0c0f3a",
+      "owner": "localization-maintainers",
+      "reason": "Machine-assisted contextual review (Codex, 2026-10-31): The event comes from provider history as sourceTitle/eventType and the date is formatted with the active locale; preserve that dynamic API content. Source: src/components/RequestCard/TvSeasonMappingModal/index.tsx. The exact source template is intentionally preserved; this is not a claim that surrounding dynamic content is English-free. Native-speaker and RTL review have not been performed; this approval expires 2027-10-31.",
+      "expiresOn": "2027-10-31"
+    },
+    {
+      "domain": "client",
+      "id": "components.RequestCard.TvSeasonMappingModal.seasonYear",
+      "sourceHash": "59ffab7e754ad198356422fb79e0c278bc49bcb52ca8600e53bcbc871e0446ce",
+      "owner": "localization-maintainers",
+      "reason": "Machine-assisted contextual review (Codex, 2026-10-31): The season label is formatted from a localized catalog message and year is numeric; no English text is present. Source: src/components/RequestCard/TvSeasonMappingModal/index.tsx. The exact source template is intentionally preserved; this is not a claim that surrounding dynamic content is English-free. Native-speaker and RTL review have not been performed; this approval expires 2027-10-31.",
       "expiresOn": "2027-10-31"
     },
     {
@@ -343,6 +407,14 @@
       "sourceHash": "1ad97af04856f9036bafd399c137036330c58af9398c9ac05c1c617e6eeaa81b",
       "owner": "localization-maintainers",
       "reason": "Machine-assisted contextual QA (Codex, 2026-10-31): TheTVDB ID is a provider-specific technical identifier label. The exact source value is intentionally preserved. Native-speaker and RTL review have not been performed; this approval expires 2027-10-31.",
+      "expiresOn": "2027-10-31"
+    },
+    {
+      "domain": "client",
+      "id": "components.RequestModal.AdvancedRequester.folder",
+      "sourceHash": "3675b6e82e783ddacbc1d4cf8fa2bd85ecc2e3f03c1023616c5b6dd1f41c8a93",
+      "owner": "localization-maintainers",
+      "reason": "Machine-assisted contextual review (Codex, 2026-10-31): The path is a filesystem value and space is formatted with locale-aware byte formatting; no English text is present. Source: src/components/RequestModal/AdvancedRequester/index.tsx. The exact source template is intentionally preserved; this is not a claim that surrounding dynamic content is English-free. Native-speaker and RTL review have not been performed; this approval expires 2027-10-31.",
       "expiresOn": "2027-10-31"
     },
     {
@@ -487,6 +559,14 @@
       "sourceHash": "72e9a59f5a1d6289dbacb35df897d6c007c55a27e77018455c37e7b372668475",
       "owner": "localization-maintainers",
       "reason": "Machine-assisted contextual review (Codex, 2026-10-31): in the referenced login and service-connection settings fields, Port means the network endpoint number, not a harbor. Port is the standard technical term retained verbatim in the target values that use it. Source hash verified. Native-speaker and RTL review have not been performed; expires 2027-10-31.",
+      "expiresOn": "2027-10-31"
+    },
+    {
+      "domain": "client",
+      "id": "components.Settings.BookshelfPathMigration.sourceDestination",
+      "sourceHash": "85e22644b6609a7ef7a1c56a528a22cb8c4af9442e2025776196a3842c64e7b7",
+      "owner": "localization-maintainers",
+      "reason": "Machine-assisted contextual review (Codex, 2026-10-31): Both placeholders are filesystem source/destination paths shown in the migration preview; preserve them verbatim. Source: src/components/Settings/BookshelfPathMigration.tsx. The exact source template is intentionally preserved; this is not a claim that surrounding dynamic content is English-free. Native-speaker and RTL review have not been performed; this approval expires 2027-10-31.",
       "expiresOn": "2027-10-31"
     },
     {
@@ -643,6 +723,14 @@
     },
     {
       "domain": "client",
+      "id": "components.Settings.menuJellyfinSettings",
+      "sourceHash": "29dbd69350ee655d0c523c2618d2fa411df2d498981811b5cd165d25623a9997",
+      "owner": "localization-maintainers",
+      "reason": "Machine-assisted contextual review (Codex, 2026-10-31): The placeholder is the configured Jellyfin or Emby product name selected from ServerType; no other text is present. Source: src/components/Settings/SettingsLayout.tsx. The exact source template is intentionally preserved; this is not a claim that surrounding dynamic content is English-free. Native-speaker and RTL review have not been performed; this approval expires 2027-10-31.",
+      "expiresOn": "2027-10-31"
+    },
+    {
+      "domain": "client",
       "id": "components.Settings.menuPlexSettings",
       "sourceHash": "f9624fd5f7aab7c6f3c0d4d5f267579344f0fdd04b7982c892a2fcd52ed9dfd7",
       "owner": "localization-maintainers",
@@ -755,6 +843,14 @@
     },
     {
       "domain": "client",
+      "id": "components.SoftwareCatalog.hoursValue",
+      "sourceHash": "3348a9c82a658890b67e78352883ad6100e0136bffb283db27dffea340993e06",
+      "owner": "localization-maintainers",
+      "reason": "Machine-assisted contextual review (Codex, 2026-10-31): The value is a numeric hour count followed by the standard hour symbol `h`; no English word is present. Source: src/components/SoftwareCatalog/index.tsx. The exact source template is intentionally preserved; this is not a claim that surrounding dynamic content is English-free. Native-speaker and RTL review have not been performed; this approval expires 2027-10-31.",
+      "expiresOn": "2027-10-31"
+    },
+    {
+      "domain": "client",
       "id": "components.SoftwareCatalog.linux",
       "sourceHash": "4828e60247c1636f57b7446a314e7f599c12b53d40061cc851a1442004354fed",
       "owner": "localization-maintainers",
@@ -795,6 +891,14 @@
     },
     {
       "domain": "client",
+      "id": "components.Soulseek.SongIdentify.progress",
+      "sourceHash": "eaefb9050eaca05ab882d51fbe719d056019d5456e8276719f6629af4eaa8b34",
+      "owner": "localization-maintainers",
+      "reason": "Machine-assisted contextual review (Codex, 2026-10-31): Stage/status is returned by the SongID API and percentage is numeric; the template contains no app-authored English words. Source: src/components/Soulseek/SongIdentify.tsx and server/api/slskdn.ts. The exact source template is intentionally preserved; this is not a claim that surrounding dynamic content is English-free. Native-speaker and RTL review have not been performed; this approval expires 2027-10-31.",
+      "expiresOn": "2027-10-31"
+    },
+    {
+      "domain": "client",
       "id": "components.StatusBadge.seasonepisodenumber",
       "sourceHash": "6e6685d6693d5782c788320921fb73458fe57b27dad0a8fd23b2268fa5f2276c",
       "owner": "localization-maintainers",
@@ -807,6 +911,38 @@
       "sourceHash": "3abfe68ba17af6c57c5695e5f2b06368f502732cffd3851b8c404bbac8d318d3",
       "owner": "localization-maintainers",
       "reason": "Machine-assisted contextual QA (Codex, 2026-10-31): S{seasonNumber} is the standard season identifier notation. The exact source value is intentionally preserved. Native-speaker and RTL review have not been performed; this approval expires 2027-10-31.",
+      "expiresOn": "2027-10-31"
+    },
+    {
+      "domain": "client",
+      "id": "components.StatusBadge.status",
+      "sourceHash": "c9f9dfcfdf7bd32460e5a8778dfa586b0210a3f43e4b5e62f1774aae07e6adfd",
+      "owner": "localization-maintainers",
+      "reason": "Machine-assisted contextual review (Codex, 2026-10-31): The status value is supplied as an already localized message or a caller override; the template contains only that dynamic label. Source: src/components/StatusBadge/index.tsx. The exact source template is intentionally preserved; this is not a claim that surrounding dynamic content is English-free. Native-speaker and RTL review have not been performed; this approval expires 2027-10-31.",
+      "expiresOn": "2027-10-31"
+    },
+    {
+      "domain": "client",
+      "id": "components.StatusBadge.status4k",
+      "sourceHash": "0d3e085e74223886610730037f249fb43a2d7f216174dddc530cba62566bea70",
+      "owner": "localization-maintainers",
+      "reason": "Machine-assisted contextual review (Codex, 2026-10-31): `4K` is the standardized video-resolution label and status is already localized or supplied by the caller; no other English wording is present. Source: src/components/StatusBadge/index.tsx. The exact source template is intentionally preserved; this is not a claim that surrounding dynamic content is English-free. Native-speaker and RTL review have not been performed; this approval expires 2027-10-31.",
+      "expiresOn": "2027-10-31"
+    },
+    {
+      "domain": "client",
+      "id": "components.Swipe.SwipeCardView.bookRating",
+      "sourceHash": "6fe32dc2273ca5a2bdcbc18ab065c19a7495668eb670103fd25993711b1f9039",
+      "owner": "localization-maintainers",
+      "reason": "Machine-assisted contextual review (Codex, 2026-10-31): The value is a numeric book rating on a fixed five-point scale; no English text is present. Source: src/components/Swipe/SwipeCardView.tsx. The exact source template is intentionally preserved; this is not a claim that surrounding dynamic content is English-free. Native-speaker and RTL review have not been performed; this approval expires 2027-10-31.",
+      "expiresOn": "2027-10-31"
+    },
+    {
+      "domain": "client",
+      "id": "components.Swipe.SwipeCardView.rating",
+      "sourceHash": "ac9ebd2fc52c0257d2bd1bbec56ef27744b1103c3e8319414246f02d41a0babe",
+      "owner": "localization-maintainers",
+      "reason": "Machine-assisted contextual review (Codex, 2026-10-31): The value is a numeric rating on a fixed ten-point scale; no English text is present. Source: src/components/Swipe/SwipeCardView.tsx. The exact source template is intentionally preserved; this is not a claim that surrounding dynamic content is English-free. Native-speaker and RTL review have not been performed; this approval expires 2027-10-31.",
       "expiresOn": "2027-10-31"
     },
     {
@@ -863,6 +999,14 @@
       "sourceHash": "7cf7cb84b8b3ff22be27f6f56456c6c5e311f4206703eb8ebf278085b81c1d57",
       "owner": "localization-maintainers",
       "reason": "Machine-assisted contextual QA (Codex, 2026-10-31): This is an example IMDb watchlist URL; preserve the provider URL and path as technical input guidance. The exact source value is intentionally preserved. Native-speaker and RTL review have not been performed; this approval expires 2027-10-31.",
+      "expiresOn": "2027-10-31"
+    },
+    {
+      "domain": "client",
+      "id": "components.UserProfile.UserSettings.UserGeneralSettings.RequestRootFolders.service",
+      "sourceHash": "ca49eda5a4eba496935b0cb6348b604c8b340aa9b569ad11e36f87209d03d2c5",
+      "owner": "localization-maintainers",
+      "reason": "Machine-assisted contextual review (Codex, 2026-10-31): Media type is formatted through a localized message and name is a connected-service value; no English text is present. Source: src/components/UserProfile/UserSettings/UserGeneralSettings/RequestRootFolderSettings.tsx. The exact source template is intentionally preserved; this is not a claim that surrounding dynamic content is English-free. Native-speaker and RTL review have not been performed; this approval expires 2027-10-31.",
       "expiresOn": "2027-10-31"
     },
     {
@@ -951,6 +1095,22 @@
       "sourceHash": "5c7807d62633679a03b58527467fecba4621f9c63994965f3861bc6cea201316",
       "owner": "localization-maintainers",
       "reason": "Machine-assisted contextual QA (Codex, 2026-10-31): TV-Y7 is the fixed U.S. TV Parental Guidelines rating code. The exact source value is intentionally preserved. Native-speaker and RTL review have not been performed; this approval expires 2027-10-31.",
+      "expiresOn": "2027-10-31"
+    },
+    {
+      "domain": "client",
+      "id": "i18n.delimitedlist",
+      "sourceHash": "69b32a50e305b806b6c35fc53544e2641678dbe930d300d0a4fd56125b844260",
+      "owner": "localization-maintainers",
+      "reason": "Machine-assisted contextual review (Codex, 2026-10-31): The template joins two dynamic, already localized names. The unchanged Western comma is conventional for exact-value locales; Arabic uses U+060C and Japanese/Chinese catalogs already use their localized separators. Source: src/i18n/globalMessages.ts and its LanguageSelector/PersonDetails consumers. The exact source template is intentionally preserved; this is not a claim that surrounding dynamic content is English-free. Native-speaker and RTL review have not been performed; this approval expires 2027-10-31.",
+      "expiresOn": "2027-10-31"
+    },
+    {
+      "domain": "client",
+      "id": "pages.errormessagewithcode",
+      "sourceHash": "3b02e712ad5907ad5fdc8277f0484b3a1de945a11ded1596a89c53d614c67689",
+      "owner": "localization-maintainers",
+      "reason": "Machine-assisted contextual review (Codex, 2026-10-31): The placeholders are a numeric status code and dynamic API error payload; the template has no English words. Preserve the error text verbatim. Source: src/pages/_error.tsx and src/pages/404.tsx. The exact source template is intentionally preserved; this is not a claim that surrounding dynamic content is English-free. Native-speaker and RTL review have not been performed; this approval expires 2027-10-31.",
       "expiresOn": "2027-10-31"
     }
   ]

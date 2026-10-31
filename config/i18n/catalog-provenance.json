@@ -155296,6 +155296,17 @@
       "sourceHash": "b6136c0366498f839f4d77ebf3cde523c63aa7ce6e35a509dd086e72a5f7b96f",
       "targetHash": "2babf6777fb632f9b8b9c0adbdc3a1e6ec847f62edd52a7034942ca1508b70c1",
       "correctionReason": "This is ordinary UI prose in the issue summary; Indonesian catalog entries using the same source are translated as Media dan format. Machine-draft; native-speaker and RTL review not performed."
+    },
+    {
+      "domain": "client",
+      "locale": "ar",
+      "id": "i18n.delimitedlist",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "Codex contextual correction; generated 2026-10-31; unverified",
+      "sourceHash": "69b32a50e305b806b6c35fc53544e2641678dbe930d300d0a4fd56125b844260",
+      "targetHash": "1fa6c94d1510e39d3f1dbde913aa3c8f5bfb847a9fcbd6f56dd92f4c717dd6f5",
+      "correctionReason": "This message formats two dynamic names in Arabic list contexts (language names and person names). Modern Standard Arabic uses the Arabic comma U+060C; the placeholder values and ordering remain unchanged. Machine-draft; native-speaker and RTL review not performed."
     }
   ]
 }

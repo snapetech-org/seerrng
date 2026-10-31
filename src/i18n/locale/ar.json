@@ -6711,7 +6711,7 @@
   "i18n.delete": "حذف",
   "i18n.deleted": "محذوف",
   "i18n.deleting": "جاري الحذف…",
-  "i18n.delimitedlist": "{a}, {b}",
+  "i18n.delimitedlist": "{a}، {b}",
   "i18n.discoveryFeedPages": "صفحات موجز الاكتشاف",
   "i18n.dismissNotification": "تجاهل هذا الإشعار",
   "i18n.ebook": "كتاب",
