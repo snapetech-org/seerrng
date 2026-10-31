@@ -131,10 +131,15 @@ const stream = run({
     join(BASE_DIR, 'server/migration/**'),
   ],
   testNamePatterns: opts.testNamePattern,
-  // Let child reporters flush their IPC events before exiting. Forcing exit
-  // can truncate high-volume reports and lose the root summary on Node 24.
-  forceExit: false,
+  // Some test imports retain background service handles. Exit workers after
+  // their tests, and require the parent to receive a complete summary below.
+  forceExit: true,
 });
+
+// A formatted report can be piped to multiple destinations. Reusing that
+// stream also keeps the local archive and terminal on the same report cursor.
+let specOutput: NodeJS.ReadableStream | undefined;
+const specReporter = () => (specOutput ??= stream.compose(reporters.spec));
 
 // A failed assertion or test file sets the final exit status but does not stop
 // the remaining files. Preserve a complete, human-readable local report for a
@@ -144,7 +149,7 @@ if (isFullSuite && !runningInCi) {
   const reportTimestamp = new Date().toISOString().replace(/[:.]/g, '-');
   const reportPath = join(reportDirectory, `unit-tests-${reportTimestamp}.log`);
   mkdirSync(reportDirectory, { recursive: true });
-  stream.compose(reporters.spec).pipe(createWriteStream(reportPath));
+  specReporter().pipe(createWriteStream(reportPath));
   console.log(`Full test report: ${reportPath}`);
 }
 
@@ -196,8 +201,10 @@ if (opts.testReporter.length > 0) {
           ? process.stderr
           : createWriteStream(destArg);
 
-    stream.compose(reporter).pipe(dest);
+    (reporterName === 'spec' ? specReporter() : stream.compose(reporter)).pipe(
+      dest
+    );
   }
 } else {
-  stream.compose(reporters.spec).pipe(process.stdout);
+  specReporter().pipe(process.stdout);
 }
