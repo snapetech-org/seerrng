@@ -38,6 +38,7 @@ For local MCP access, see the [SnapeTech MCP integration guide](./docs/integrati
   - [Configure comics](./docs/using-seerr/comics-backend.md)
   - [Configure magazines](./docs/using-seerr/magazines-backend.md)
   - [Movie and series Discover filters](./docs/using-seerr/movie-series-discovery-filters.md)
+  - [Private movie watch sessions](./docs/using-seerr/watch-sessions.md)
   - [Choose request destinations](./docs/using-seerr/settings/services.md#request-destination-label-optional)
   - [Require previous-season watch progress](./docs/using-seerr/settings/general.md#require-the-previous-season-to-be-watched)
   - [Hide subject tags](./docs/using-seerr/media-details-and-playback.md#hide-subject-tags)
@@ -149,6 +150,7 @@ For local MCP access, see the [SnapeTech MCP integration guide](./docs/integrati
 - Admin-only Bookshelf path moves with a conflict and disk-space preview, confirmation, API access, and a dry-run-first CLI. The mover works inside one BookshelfNG database; consolidate an old split deployment before using it.
 - Resumable, layered Readarr/softcover-to-Hardcover migration with strict matching, softcover metadata recovery, validation, cutover checks, and an opt-in deterministic local-record fallback for books Hardcover cannot import.
 - Per-user cross-media watchlists; local-only lists support title search, media-type filters, and stable sorting, while combined Plex lists preserve Plex ordering. The request workflow also includes blocklists, quotas, override rules, permissions, notifications, issue reporting, and request management.
+- Private movie watch sessions, adapted from the use case in [Seerr issue #3310](https://github.com/seerr-team/seerr/issues/3310): invite household members, review a bounded shared movie deck with private ballots, optionally contribute watchlist candidates without attribution, and see only unanimous matches. Each session applies the strictest participating member's maturity policy; a match goes through the regular request flow and never creates a request automatically. See the [watch sessions guide](./docs/using-seerr/watch-sessions.md).
 - Users can choose whether movie and TV copies requested by someone else appear as shared or stay hidden; this changes the availability display, not media-server access.
 - Discover shelves can be reordered and customized; movie and series filters include fractional ratings, streaming-service inclusion or exclusion, and category exclusions. Discover detail navigation keeps the selected result context, and rating details work on touch screens.
 - Movie and Series Subject Tags can be hidden with a browser-saved preference shared across both detail pages.
@@ -175,7 +177,9 @@ Recent repository updates include:
 - **User workflows:** local watchlist filters, a browser-saved Subject Tags
   visibility preference, private one-time availability notices for followed
   requests, per-user shared-availability display choices, and opt-in
-  Jellyfin/Emby profile refresh during imports.
+  Jellyfin/Emby profile refresh during imports. Private watch sessions add
+  one-use invitations, optional anonymous watchlist contributions, private
+  ballots and unanimous movie matches.
 - **Sonarr:** v5 API support alongside v3/v4, metadata-language and season-order
   choices, and request recovery scoped to the selected service, quality, and
   season order.

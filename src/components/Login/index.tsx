@@ -16,6 +16,7 @@ import { useUser } from '@app/hooks/useUser';
 import defineMessages from '@app/utils/defineMessages';
 import { getSafeReturnPath } from '@app/utils/loginReturn';
 import versionedAsset from '@app/utils/versionedAsset';
+import { captureWatchSessionInviteTokenFromHash } from '@app/utils/watchSessionInvite';
 import { Transition } from '@headlessui/react';
 import { XCircleIcon } from '@heroicons/react/24/solid';
 import { MediaServerType, ServerType } from '@server/constants/server';
@@ -72,6 +73,17 @@ const Login = ({
 
   useEffect(() => {
     if (!router.isReady) return;
+    const requestedReturnTo = getSafeReturnPath(
+      Array.isArray(router.query.returnTo)
+        ? router.query.returnTo[0]
+        : router.query.returnTo
+    );
+    if (
+      requestedReturnTo &&
+      requestedReturnTo.split(/[?#]/, 1)[0] === '/watch-sessions/join'
+    ) {
+      captureWatchSessionInviteTokenFromHash();
+    }
     const params = new URLSearchParams(window.location.hash.slice(1));
     const token = params.get('loginToken');
     if (token && /^[A-Za-z0-9_-]{43}$/.test(token)) {
@@ -84,7 +96,7 @@ const Login = ({
         `${window.location.pathname}${window.location.search}`
       );
     }
-  }, [router.isReady]);
+  }, [router.isReady, router.query.returnTo]);
 
   const handleGeneratedLoginLink = async () => {
     if (!loginLinkToken) return;

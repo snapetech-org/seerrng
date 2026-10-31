@@ -55,6 +55,7 @@ export const menuMessages = defineMessages('components.Layout.Sidebar', {
   myMedia: 'My Media',
   gamesLibrary: 'My Games',
   swipe: 'Swipe',
+  watchSessions: 'Watch Sessions',
   share: 'Share & Identify',
   following: 'Following',
   gameFinder: 'Game Finder',
@@ -154,6 +155,15 @@ export const navigationSections: NavigationSection[] = [
         svgIcon: <HeartIcon aria-hidden="true" />,
         svgIconSelected: <FilledHeartIcon aria-hidden="true" />,
         activeRegExp: /^\/swipe$/,
+        requiredPermission: Permission.REQUEST,
+      },
+      {
+        id: 'watch-sessions',
+        href: '/watch-sessions',
+        messagesKey: 'watchSessions',
+        svgIcon: <UsersIcon aria-hidden="true" />,
+        svgIconSelected: <FilledUsersIcon aria-hidden="true" />,
+        activeRegExp: /^\/watch-sessions(?:\/|$)/,
         requiredPermission: Permission.REQUEST,
       },
       {
