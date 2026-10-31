@@ -65,6 +65,8 @@ These settings blocklist any TV shows or movies that have one of the entered tag
 
 The limit setting determines how many pages per tag the job will process, with each page containing 20 entries. The job cycles through all 16 available discovery sort options, querying the defined number of pages to blocklist media that is most likely to appear at the top of each sort. Higher limits will create a more accurate blocklist, but will require more storage.
 
+This is a bounded scan, not an exhaustive lookup of every TMDB title with a tag. The page limit applies to each tag, media type, and sort option, so matching titles outside the scanned pages may remain outside the automatic blocklist. The default limit is 50 pages. The job runs weekly by default; use **Settings → Jobs & Cache** to review or change its schedule, or choose **Run Now** to start a scan immediately. Running it manually does not change the schedule.
+
 Blocklisted tags are disabled until at least one tag is entered. These settings cannot be overridden in user settings.
 
 ## Hide Available Media
