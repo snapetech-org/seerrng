@@ -147,6 +147,11 @@ If the hostname or IP address you configured above is not accessible outside you
 
 Enable this setting if you would like to scan your Radarr/Sonarr server for existing media/request status. It is recommended that you enable this setting, so that users cannot submit requests for media which has already been requested or is already available.
 
+To show file availability for each TV episode, enable **Track Individual
+Episode Availability** under **Settings → General** and use TheTVDB as the
+selected TV or anime metadata provider. See [individual episode availability](../individual-episode-availability.md)
+for the scan and display details.
+
 #### Enable Automatic Search (optional)
 
 Enable this setting to have Radarr/Sonarr to automatically search for media upon approval of a request.

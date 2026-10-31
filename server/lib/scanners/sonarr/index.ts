@@ -24,6 +24,12 @@ import Season from '@server/entity/Season';
 import SeasonRequest, {
   isActiveSeasonRequest,
 } from '@server/entity/SeasonRequest';
+import {
+  clearSonarrEpisodeAvailabilityForSeries,
+  removeMissingSonarrEpisodeSeries,
+  syncSonarrEpisodeAvailability,
+  type SonarrSeasonAvailabilitySync,
+} from '@server/lib/episodeAvailability';
 import { getExternalRuntimeConfig } from '@server/lib/externalRuntimeConfig';
 import { runMediaEntityMutation } from '@server/lib/mediaMutation';
 import { upsertMediaSearchMetadata } from '@server/lib/mediaSearchMetadata';
@@ -40,11 +46,15 @@ import {
   getSeasonMappingsForTvdbIdentifier,
 } from '@server/lib/seasonNumberMapping';
 import {
-  ServarrServiceAuthorityChangedError,
   runWithServarrServiceSnapshot,
   runWithServarrServiceSnapshots,
+  ServarrServiceAuthorityChangedError,
 } from '@server/lib/serviceAdmission';
-import { getSettings, type SonarrSettings } from '@server/lib/settings';
+import {
+  getSettings,
+  MetadataProviderType,
+  type SonarrSettings,
+} from '@server/lib/settings';
 import { is4kResolution } from '@server/lib/videoResolution';
 import { getHttpErrorDetails } from '@server/utils/httpError';
 import { uniqWith } from 'lodash';
@@ -192,6 +202,21 @@ class SonarrScanner
           const hasCompleteMediaIdentity = this.items.every(
             (series) => Number.isSafeInteger(series.tvdbId) && series.tvdbId > 0
           );
+          const hasCompleteSeriesIdentity = this.items.every(
+            (series) => Number.isSafeInteger(series.id) && (series.id ?? 0) > 0
+          );
+          if (
+            getSettings().main.trackEpisodeAvailability &&
+            this.items.length > 0 &&
+            hasCompleteSeriesIdentity
+          ) {
+            await runWithServarrServiceSnapshot('sonarr', server, () =>
+              removeMissingSonarrEpisodeSeries(
+                server.id,
+                this.items.map((series) => series.id!)
+              )
+            );
+          }
           if (this.items.length > 0 && hasCompleteMediaIdentity) {
             const formats = scansBothResolutions
               ? ([
@@ -322,20 +347,65 @@ class SonarrScanner
         (season) => (season.statistics?.episodeFileCount ?? 0) > 0
       );
       const sonarrSeriesId = sonarrSeries.id;
-      const episodeFiles =
+      const settings = getSettings();
+      const mayTrackEpisodeAvailability =
+        settings.main.trackEpisodeAvailability &&
+        (settings.metadataSettings.tv === MetadataProviderType.TVDB ||
+          settings.metadataSettings.anime === MetadataProviderType.TVDB);
+      let episodeFiles:
+        Awaited<ReturnType<SonarrAPI['getEpisodes']>> | undefined;
+      let episodeListingFetched = false;
+      const hasValidSeriesId =
+        Number.isSafeInteger(sonarrSeriesId) && (sonarrSeriesId ?? 0) > 0;
+      if (
         this.resolutionAwareSingleServer &&
         hasEpisodeFiles &&
-        typeof sonarrSeriesId === 'number' &&
-        Number.isSafeInteger(sonarrSeriesId) &&
-        sonarrSeriesId > 0
-          ? await runWithServarrServiceSnapshot(
-              'sonarr',
-              this.currentServer,
-              () => this.sonarrApi.getEpisodes(sonarrSeriesId, true)
-            )
-          : this.resolutionAwareSingleServer
-            ? []
-            : undefined;
+        hasValidSeriesId
+      ) {
+        episodeFiles = await runWithServarrServiceSnapshot(
+          'sonarr',
+          this.currentServer,
+          () => this.sonarrApi.getEpisodes(sonarrSeriesId!, true)
+        );
+        episodeListingFetched = true;
+      } else if (this.resolutionAwareSingleServer) {
+        episodeFiles = [];
+      }
+      if (
+        mayTrackEpisodeAvailability &&
+        hasValidSeriesId &&
+        !episodeListingFetched
+      ) {
+        try {
+          episodeFiles = await runWithServarrServiceSnapshot(
+            'sonarr',
+            this.currentServer,
+            () =>
+              this.sonarrApi.getEpisodes(
+                sonarrSeriesId!,
+                this.resolutionAwareSingleServer
+              )
+          );
+          episodeListingFetched = true;
+        } catch (e) {
+          this.log(
+            'Unable to refresh per-episode Sonarr availability; keeping the last successful scan.',
+            'warn',
+            {
+              errorMessage: e instanceof Error ? e.message : String(e),
+              title: sonarrSeries.title,
+            }
+          );
+        }
+      }
+      const expectedEpisodeCount = sonarrSeries.seasons.reduce(
+        (total, season) => total + (season.statistics?.totalEpisodeCount ?? 0),
+        0
+      );
+      const episodeListingComplete =
+        episodeListingFetched &&
+        expectedEpisodeCount > 0 &&
+        (episodeFiles?.length ?? 0) >= expectedEpisodeCount;
       const mediaMatches = await findMediaForTvdbId(
         dataSource.manager,
         sonarrSeries.tvdbId
@@ -350,7 +420,8 @@ class SonarrScanner
             sonarrSeries,
             media,
             server4k,
-            episodeFiles
+            episodeFiles,
+            episodeListingComplete
           );
         } catch (e) {
           if (e instanceof ServarrServiceAuthorityChangedError) throw e;
@@ -386,7 +457,8 @@ class SonarrScanner
     sonarrSeries: SonarrSeries,
     media: Media | undefined,
     server4k: boolean,
-    episodeFiles?: Awaited<ReturnType<SonarrAPI['getEpisodes']>>
+    episodeFiles?: Awaited<ReturnType<SonarrAPI['getEpisodes']>>,
+    episodeListingComplete = false
   ): Promise<number> {
     let tvShow: TmdbTvScanDetails | TmdbTvDetails;
     if (!media || !media.tmdbId) {
@@ -409,6 +481,11 @@ class SonarrScanner
     if (!this.resolutionAwareSingleServer) {
       (server4k ? this.scanned4kTmdbIds : this.scannedTmdbIds).add(tmdbId);
     }
+    const tmdbIdentifiesAnime = tvShow.keywords.results.some(
+      (keyword) => keyword.id === ANIME_KEYWORD_ID
+    );
+    const seriesUsesAnimeMetadata =
+      this.isAnimeSeries(sonarrSeries) || tmdbIdentifiesAnime;
     tvShow = await this.applyMetadataProvider(
       tvShow,
       this.isAnimeSeries(sonarrSeries)
@@ -549,6 +626,45 @@ class SonarrScanner
       tmdbId,
       mediaType: MediaType.TV,
     });
+    const settingsForEpisodeAvailability = getSettings();
+    const episodeMetadataProvider = seriesUsesAnimeMetadata
+      ? settingsForEpisodeAvailability.metadataSettings.anime
+      : settingsForEpisodeAvailability.metadataSettings.tv;
+    const displayedEpisodeMetadataProvider = tmdbIdentifiesAnime
+      ? settingsForEpisodeAvailability.metadataSettings.anime
+      : settingsForEpisodeAvailability.metadataSettings.tv;
+    if (
+      updatedMedia &&
+      Number.isSafeInteger(sonarrSeries.id) &&
+      (sonarrSeries.id ?? 0) > 0 &&
+      settingsForEpisodeAvailability.main.trackEpisodeAvailability &&
+      episodeListingComplete &&
+      episodeFiles
+    ) {
+      const episodeOrder = sonarrSeries.seasonType?.toLowerCase();
+      const hasCompatibleEpisodeOrder =
+        !sonarrSeries.useSceneNumbering &&
+        (!episodeOrder ||
+          episodeOrder === 'standard' ||
+          episodeOrder === 'official');
+      await runWithServarrServiceSnapshot('sonarr', this.currentServer, () =>
+        episodeMetadataProvider === MetadataProviderType.TVDB &&
+        displayedEpisodeMetadataProvider === MetadataProviderType.TVDB &&
+        hasCompatibleEpisodeOrder
+          ? this.syncEpisodeAvailabilityForSeries(
+              updatedMedia,
+              sonarrSeries,
+              processableSeasons,
+              seasonMappings,
+              episodeFiles,
+              server4k
+            )
+          : clearSonarrEpisodeAvailabilityForSeries(
+              this.currentServer.id,
+              sonarrSeries.id!
+            )
+      );
+    }
     if (updatedMedia && this.isAnimeSeries(sonarrSeries)) {
       await this.persistAnimeIdentifiers(updatedMedia, sonarrSeries);
     }
@@ -579,6 +695,86 @@ class SonarrScanner
     });
 
     return tmdbId;
+  }
+
+  private async syncEpisodeAvailabilityForSeries(
+    media: Media,
+    sonarrSeries: SonarrSeries,
+    processableSeasons: ProcessableSeason[],
+    seasonMappings: ReturnType<typeof getSeasonMappingsForTvdbIdentifier>,
+    episodes: Awaited<ReturnType<SonarrAPI['getEpisodes']>>,
+    server4k: boolean
+  ): Promise<void> {
+    const databaseSeasons = await getRepository(Season).find({
+      where: { media: { id: media.id } },
+    });
+    const databaseSeasonByNumber = new Map(
+      databaseSeasons.map((season) => [season.seasonNumber, season])
+    );
+    const metadataSeasonByExternalNumber = new Map<number, number>();
+    const ambiguousExternalSeasonNumbers = new Set<number>();
+
+    for (const season of processableSeasons) {
+      const externalSeasonNumber = externalSeasonNumberFor(
+        season.seasonNumber,
+        seasonMappings
+      );
+      const existingSeasonNumber =
+        metadataSeasonByExternalNumber.get(externalSeasonNumber);
+      if (
+        existingSeasonNumber !== undefined &&
+        existingSeasonNumber !== season.seasonNumber
+      ) {
+        metadataSeasonByExternalNumber.delete(externalSeasonNumber);
+        ambiguousExternalSeasonNumbers.add(externalSeasonNumber);
+      } else if (!ambiguousExternalSeasonNumbers.has(externalSeasonNumber)) {
+        metadataSeasonByExternalNumber.set(
+          externalSeasonNumber,
+          season.seasonNumber
+        );
+      }
+    }
+
+    const episodesBySeason = new Map<
+      number,
+      SonarrSeasonAvailabilitySync['episodes']
+    >();
+    for (const episode of episodes) {
+      if (!episode.hasFile || !Number.isSafeInteger(episode.episodeNumber)) {
+        continue;
+      }
+      const metadataSeasonNumber = metadataSeasonByExternalNumber.get(
+        episode.seasonNumber
+      );
+      if (metadataSeasonNumber === undefined) continue;
+      const databaseSeason = databaseSeasonByNumber.get(metadataSeasonNumber);
+      if (!databaseSeason) continue;
+
+      const is4k = this.resolutionAwareSingleServer
+        ? is4kResolution(episode.fileResolution)
+        : server4k;
+      if (is4k === undefined) continue;
+
+      const seasonEpisodes = episodesBySeason.get(databaseSeason.id) ?? [];
+      seasonEpisodes.push({ episodeNumber: episode.episodeNumber, is4k });
+      episodesBySeason.set(databaseSeason.id, seasonEpisodes);
+    }
+
+    await syncSonarrEpisodeAvailability(
+      this.currentServer.id,
+      sonarrSeries.id!,
+      processableSeasons.flatMap((season) => {
+        const databaseSeason = databaseSeasonByNumber.get(season.seasonNumber);
+        return databaseSeason
+          ? [
+              {
+                seasonId: databaseSeason.id,
+                episodes: episodesBySeason.get(databaseSeason.id) ?? [],
+              },
+            ]
+          : [];
+      })
+    );
   }
 
   private async applyMetadataProvider(

@@ -2695,6 +2695,11 @@ components:
         enableSpecialEpisodes:
           type: boolean
           example: false
+        trackEpisodeAvailability:
+          type: boolean
+          default: false
+          description: Records available TV episodes from synchronized Sonarr services. Tracking requires TheTVDB as the selected metadata provider for the series.
+          example: false
         includeAdult:
           type: boolean
           example: false
@@ -5641,6 +5646,14 @@ components:
         stillPath:
           type: string
           nullable: true
+        sonarrAvailability:
+          type: object
+          description: Sonarr file availability by quality when individual episode tracking is enabled.
+          properties:
+            hd:
+              type: boolean
+            fourK:
+              type: boolean
         voteAverage:
           type: number
         voteCount:

@@ -14,6 +14,8 @@ import { MediaType } from '@server/constants/media';
 import { getRepository } from '@server/datasource';
 import Media from '@server/entity/Media';
 import { Watchlist } from '@server/entity/Watchlist';
+import { getSonarrEpisodeAvailability } from '@server/lib/episodeAvailability';
+import { getExternalRuntimeConfig } from '@server/lib/externalRuntimeConfig';
 import { enqueueImageCacheWarm } from '@server/lib/imageCacheWarmer';
 import { upsertMediaSearchMetadata } from '@server/lib/mediaSearchMetadata';
 import {
@@ -412,11 +414,12 @@ tvRoutes.get('/:id/season/:seasonNumber', async (req, res, next) => {
     ) {
       return next({ status: 404, message: 'Season not found.' });
     }
-    const metadataProvider = tmdbTv.keywords.results.some(
+    const isAnime = tmdbTv.keywords.results.some(
       (keyword: TmdbKeyword) => keyword.id === ANIME_KEYWORD_ID
-    )
-      ? await getMetadataProvider('anime')
-      : await getMetadataProvider('tv');
+    );
+    const metadataProvider = await getMetadataProvider(
+      isAnime ? 'anime' : 'tv'
+    );
 
     const season = await metadataProvider.getTvSeason({
       tvId,
@@ -424,7 +427,30 @@ tvRoutes.get('/:id/season/:seasonNumber', async (req, res, next) => {
       language,
     });
 
-    return res.status(200).json(mapSeasonWithEpisodes(season));
+    const mappedSeason = mapSeasonWithEpisodes(season);
+    const settings = getSettings();
+    const metadataSource = isAnime
+      ? settings.metadataSettings.anime
+      : settings.metadataSettings.tv;
+    if (
+      settings.main.trackEpisodeAvailability &&
+      metadataSource === MetadataProviderType.TVDB
+    ) {
+      const availability = await getSonarrEpisodeAvailability(
+        tvId,
+        seasonNumber,
+        getExternalRuntimeConfig().sonarr,
+        settings.main.enable4k
+      );
+      mappedSeason.episodes = mappedSeason.episodes.map((episode) => {
+        const sonarrAvailability = availability.get(episode.episodeNumber);
+        return sonarrAvailability
+          ? { ...episode, sonarrAvailability }
+          : episode;
+      });
+    }
+
+    return res.status(200).json(mappedSeason);
   } catch (e) {
     logger.debug('Something went wrong retrieving season', {
       label: 'API',
