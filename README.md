@@ -171,7 +171,9 @@ Recent repository updates include:
   previous-season watch gate, and Sonarr monitoring for future seasons when
   the latest regular season was requested. Failed TV requests retain their
   context and support verified season mapping; bounded failure explanations
-  and request history are localized.
+  and request history are localized. Request rows use their paginated list data
+  on mount, focus, and reconnect rather than making duplicate detail reads;
+  active-download details continue to refresh.
 - **User workflows:** local watchlist filters, a browser-saved Subject Tags
   visibility preference, private one-time availability notices for followed
   requests, per-user shared-availability display choices, and opt-in
