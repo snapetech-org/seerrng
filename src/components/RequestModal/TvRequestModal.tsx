@@ -1191,6 +1191,17 @@ const TvRequestModal = ({
           ? updateRequest(true)
           : updateRequest()
       : sendRequest();
+  const showSeasonTree =
+    usesEpisodeSelection &&
+    Boolean(data) &&
+    (!isFailedManagerRepair || selectedSeasons.length === 0);
+  const futureSeasonControl = persius ? (
+    <FutureSeasonToggle
+      checked={Boolean(futureSeasonPreference)}
+      disabled={futureSeasonsRestricted}
+      onChange={setMonitorFutureSeasons}
+    />
+  ) : null;
 
   return data && !error && !data.externalIds.tvdbId && searchModal.show ? (
     <SearchByNameModal
@@ -1466,46 +1477,39 @@ const TvRequestModal = ({
               {intl.formatMessage(messages.repairPreservesSelections)}
             </p>
           )}
-          {usesEpisodeSelection &&
-            data &&
-            (!isFailedManagerRepair || selectedSeasons.length === 0) && (
-              <RequestSeasonEpisodeTree
-                key={requestSelectionKey}
-                tvId={data.id}
-                seasons={visibleSeasons}
-                selections={requestableSelections}
-                disabledSeasons={getAllRequestedSeasons()}
-                disabledEpisodes={blockedEpisodesBySeason}
-                availableEpisodesBySeason={availableEpisodesBySeason}
-                selectionMode={
-                  watchAheadEpisodeCount > 0 && !editRequest
-                    ? 'single-episode'
-                    : 'multiple'
+          {showSeasonTree && data && (
+            <RequestSeasonEpisodeTree
+              key={requestSelectionKey}
+              tvId={data.id}
+              seasons={visibleSeasons}
+              selections={requestableSelections}
+              disabledSeasons={getAllRequestedSeasons()}
+              disabledEpisodes={blockedEpisodesBySeason}
+              availableEpisodesBySeason={availableEpisodesBySeason}
+              selectionMode={
+                watchAheadEpisodeCount > 0 && !editRequest
+                  ? 'single-episode'
+                  : 'multiple'
+              }
+              onReadyChange={setRequestTreeReady}
+              afterSeasonSelection={futureSeasonControl}
+              onSelectionsChange={(nextSelections) => {
+                const allowedSelections =
+                  (quota?.tv.remaining ?? 0) +
+                  (editRequest?.seasons.filter(isActiveSeasonRequest).length ??
+                    0);
+                if (
+                  !quota?.tv.limit ||
+                  requestOverrides?.ignoreQuota ||
+                  nextSelections.length <= seasonSelections.length ||
+                  nextSelections.length <= allowedSelections
+                ) {
+                  setSeasonSelections(nextSelections);
                 }
-                onReadyChange={setRequestTreeReady}
-                onSelectionsChange={(nextSelections) => {
-                  const allowedSelections =
-                    (quota?.tv.remaining ?? 0) +
-                    (editRequest?.seasons.filter(isActiveSeasonRequest)
-                      .length ?? 0);
-                  if (
-                    !quota?.tv.limit ||
-                    requestOverrides?.ignoreQuota ||
-                    nextSelections.length <= seasonSelections.length ||
-                    nextSelections.length <= allowedSelections
-                  ) {
-                    setSeasonSelections(nextSelections);
-                  }
-                }}
-              />
-            )}
-          {persius && (
-            <FutureSeasonToggle
-              checked={Boolean(futureSeasonPreference)}
-              disabled={futureSeasonsRestricted}
-              onChange={setMonitorFutureSeasons}
+              }}
             />
           )}
+          {!showSeasonTree && futureSeasonControl}
           {seasonWatchGateDisplayMessage && (
             <div
               className="page-error-message"

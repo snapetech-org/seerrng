@@ -131,8 +131,9 @@ const stream = run({
     join(BASE_DIR, 'server/migration/**'),
   ],
   testNamePatterns: opts.testNamePattern,
-  // ensure test process doesn't hang when tests fail
-  forceExit: true,
+  // Let child reporters flush their IPC events before exiting. Forcing exit
+  // can truncate high-volume reports and lose the root summary on Node 24.
+  forceExit: false,
 });
 
 // A failed assertion or test file sets the final exit status but does not stop
@@ -152,6 +153,19 @@ if (isFullSuite && !runningInCi) {
 // callers and CI.
 stream.on('test:fail', () => {
   process.exitCode = 1;
+});
+let receivedSummary = false;
+stream.on('test:summary', (summary) => {
+  if (summary.file === undefined) {
+    receivedSummary = true;
+    if (!summary.success) process.exitCode = 1;
+  }
+});
+process.on('beforeExit', () => {
+  if (!receivedSummary) {
+    console.error('Test runner exited without a complete root summary.');
+    process.exitCode = 1;
+  }
 });
 
 // In CI, write a JUnit report to a file for use by GitHub

@@ -1,93 +1,104 @@
-# PersiusNG native integration checkpoint — 2026-10-30
+# PersiusNG native integration checkpoint — 2026-10-30/31
 
-Status: **incomplete; keep draft PR #424 unmerged**. This record supersedes any
-interpretation of component-fixture evidence as production acceptance.
+Status: **native code integration implemented and locally verified; draft PR
+#424 remains unmerged for release-environment checks**. This record replaces the
+interrupted-checkout status. It does not claim live provider acquisition or a
+pixel-identical match of changing catalog content.
 
-## Source and environment
+## Native implementation
 
-The integration workspace was hydrated from
-`b3b4fd29f879145551a6e857c5d0cb7757004d5d`: 3,338 source/resource blobs were
-verified against the repository. Archived release notes and large README-cover
-images were excluded. The existing partial checkout was preserved.
-
-The exact lockfile installed 1,458 packages with pnpm 10.24.0. Node was 24.22.1;
-the native better-sqlite3 binding was rebuilt successfully, reporting SQLite
-3.53.4. Tests used the repository's native setup and actual database subscribers.
-
-The execution environment became unavailable during the broader integration
-checks. The changes in this checkpoint were replayed against that exact remote
-head through GitHub and must be rerun in a restored workspace. They are not a
-byte-for-byte archive of every transient local edit. In particular, the unfinished
-pending-request retarget implementation was not published as verified code.
-
-## Changes preserved
-
-| Owner | Change |
+| Area | Integrated behavior |
 | --- | --- |
-| Native client composition | Correct contextual navigation typing, movie quality narrowing, error rendering, and advanced-request user policy typing. |
-| Theme runtime | Permit presentation hooks outside a provider to retain classic composition; keep the strict application theme hook. ThemeProvider fixtures now model catalog GETs and stylesheet load completion. |
-| Container package | Include the interface-theme CLI wrapper alongside its compiled command. |
-| Book identity and status | Separate Open Library ISBN metadata editions from exact provider recordings, preserving legacy request/availability behavior. |
-| Recording completion | Share the cancellation admission lock and save the full request entity so notification intents and status-history subscribers observe completion exactly once. |
-| Edition destinations | Carry the selected server through hook, picker, API and OpenAPI schema; accept server ID zero; validate the configured format destination; use runtime service configuration, default preference, unambiguous work matching and destination-specific ownership. |
-| Request selection | Reset recording choices on format changes and preserve saved provider choices/legacy ISBNs during edit initialization. |
-| Classic book details | Restore the original overview section, Markdown normalization and safe link transform, scoped to the classic composition. |
-| Build contracts | Retain every required server build step including theme assets; check theme-owned compact geometry; require the shared modal canvas in both conditional branches; allow only the explicitly approved Persius format label. |
-| Regression harnesses | Use actual provider classes with instance/prototype transport boundaries under native setup, preserve badge assertions without attribute-order dependence, and resolve the SQLite child-process TypeScript entry explicitly. |
-| Translations | Restore generated alphabetical ordering without changing English message values. |
+| Theme runtime | Built-in PersiusNG and separately named community packages load from SeerrNG's same-origin catalog/CSS API. The account preference persists through the real own-profile route. Production OpenAPI validation admits these routes. A superseded selection cannot strand a loaded stylesheet off-document. |
+| Reference composition | Native Discover, movie/series catalogs, movie detail, ebooks, audiobooks, recording selection, current Requests, coming-soon calendar and season dialog use the Persius composition and independently owned CSS. Caption geometry, dialog surfaces, mobile chrome, request actions, detail search alignment, overflow and keyboard dismissal were reviewed in the production app. |
+| Current Requests route | `components/Requests` uses native status snapshots, polling, owner-scoped Active/Ready/All tabs, progress, retries, cancellation and download actions. Detailed management/history remains reachable. Explicit All and All Users filters survive query restoration. Classic themes retain their existing rendering. |
+| Recording identity | Provider work/edition identity, selected format and alongside policy survive the native request flow. Legacy Open Library ISBN IDs keep their original semantics. Edition lookup verifies exact ownership at the selected configured destination, including server ID zero. |
+| Pending recording edits | Exact recording identity/format are immutable. Retargeting revalidates the destination edition and capability, then updates request and service targets together. Zero IDs, empty tags, both-format legacy behavior, permissions and failed-edit rollback are covered. |
+| Recording completion | Completion shares the cancellation admission lock and saves the full entity, preserving notification intents and status-history subscribers. Another recording's work-level availability cannot complete the request. |
+| Future seasons | Nullable SQLite/PostgreSQL preference, validation and Sonarr v3/v5 adapters preserve legacy defaults. Episode Queue and watch gates retain priority; opting out does not unmonitor another existing request. |
+| Community authoring | Create, validate, inspect, pack, install, replace, list and uninstall work with independent CSS, manifest composition/navigation choices, reproducible bundles and checksum sidecars. The packaged CLI works without TypeScript source. Guides, template/schema, submission form and release notes are included. |
+| Browser harness | Signed-in production routes use deterministic catalog/read fixtures. Optional offline server checks reject external HTTP/fetch/socket destinations before environment-proxy translation. Browser fixtures reject unhandled external traffic. The disposable media-server fixture uses loopback. |
 
-The selected package remains served natively by SeerrNG. `src/proxy.ts` remains
-authentication/redirect middleware. No external deployment configuration changed.
+`src/proxy.ts` is still authentication/redirect middleware. A separate
+UI-rewriting proxy is not a runtime dependency. No running deployment or external
+proxy configuration was changed.
 
-## Observed verification
+## Verification
 
-- The last completed focused native run before environment loss passed **54
-  tests in four files**: book-search completion/cancellation (19), edition
-  lookup/ownership (6), Sonarr request preferences (7), and native TV request
-  modal behavior (22).
-- A broader run started while imports and compatibility fixes were still
-  changing: 620 files passed, 18 failed and 2 skipped; 4,384 tests passed, 125
-  failed and 5 skipped. This is diagnostic output from a moving source tree,
-  **not a final result for this checkpoint**.
-- The production build stopped in prebuild checks before Next/server compilation.
-  Its findings included the missing classic overview and stale ownership/build
-  contracts. The source corrections above have not had a native build rerun.
-- The earlier 53-test isolated run and 27 component-fixture renders remain
-  historical evidence for their earlier source. They do not validate this
-  checkpoint or a signed-in production instance.
-- After environment loss, source inspection, JSON/order checks and JavaScript
-  syntax validation of the contract library were possible. Native TypeScript,
-  formatting, test, production-build and browser execution were unavailable.
+The restored checkout uses Node 24.22.1 and the exact pnpm 10.24.0 lockfile (1,458
+packages), with native better-sqlite3/SQLite 3.53.4. Database tests use the normal
+repository setup and real subscribers. The final production build includes both
+the server and all 141 statically generated Next.js pages.
 
-The 54-test result describes the earlier working state. Recovery changes,
-including contract/fixture repairs and classic-overview restoration, were made
-after that run and require verification on the final published revision.
+| Check | Observed result |
+| --- | --- |
+| Full native Vitest suite | 640 files passed, two skipped; **4,525 tests passed, five skipped**, zero failures. |
+| Focused post-review checks | 36 tests passed in six files, including native OpenAPI/theme contracts and request entry; a subsequent 36-test/four-file season and dialog run also passed. These runs overlap and are not an additional unique-test total. |
+| Native Node runner | Full rerun in progress after the reporter fix; the prior truncated invocation is not counted as a pass. Focused runner checks: two passed. |
+| Tooling | **325 passed, four skipped**, zero failures; includes theme CLI round trips, the offline boundary and native PostgreSQL opt-in gate. |
+| Current-batch / UI style | Passed; 73 geometry/role tests passed. |
+| Formatting / lint / types / translations | Server/client type checks, lint (warnings only) and translation/prebuild checks passed. Whole-repository formatting passed, including the new browser harness; generated browser output is excluded consistently with Git. |
+| Production build | Passed server and Next.js production build with the normal prebuild checks. |
+| Signed-in browser suite | **20 passed**, zero failures, skips or flaky results. Includes 27 route/viewport captures and document-overflow checks, plus ordinary-user season dialogs, classic themes and an installed derivative. |
+| Classic theme comparisons | **20 matched baseline/candidate captures**, across SeerrOrig/SeerrNGJ, five route families and two widths. 18 have identical pixels; two show text/gradient rasterization variation, with no observed layout regression. Raw differences are recorded in the report. |
+| Compiled theme package smoke | Create, validate, pack/checksum, install, inspect, list and uninstall passed from a staged runtime without server TypeScript sources. A separately installed derivative also passes native catalog/picker/persistence browser checks. |
 
-## Remaining before production
+The complete native suite runs on an unchanged application tree. The subsequent
+small visual and fallback changes are covered by the focused checks, final
+production build and browser suite. HTTP/TLS regressions were traced to test
+transport using the host proxy; tests now own a direct dispatcher. Production
+transport was not altered to accommodate the test environment.
 
-1. Complete pending-book-request editing: preserve an exact recording's identity
-   and format, revalidate it when the destination changes, and synchronize the
-   persisted service targets with the edited server/profile/root/tags. Include
-   permission, default/zero-ID destination, legacy ISBN and both-format regressions.
-2. Run native tests on an unchanged final tree. Recheck ThemeProvider stylesheet
-   loading, standalone season-tree consumers, book availability, request routes,
-   notifications/history and the revised build-contract mutations.
-3. Reproduce the HTTP/TLS loopback socket failures seen in the broader run before
-   deciding whether they are harness/environment failures or production defects.
-   Do not alter production transport based only on that incomplete run.
-4. Run the repository's format, lint, server/client typechecks, tooling and Node
-   suites, i18n/current-batch checks, and a complete production build. Verify
-   container CLI and packaged-theme behavior from the built output.
-5. Execute the PostgreSQL migration path against a disposable database; run
-   Playwright/Cypress and signed-in route comparisons for all nine mockup flows,
-   existing themes, loading/error states and responsive breakpoints.
-6. Confirm provider round trips where required before retiring an external
-   UI-rewriting proxy. No running deployment or pixel-for-pixel production match
-   has been accepted.
+The initial native Node invocation exited without a complete report and is not
+counted as a pass. A high-volume reproduction showed that forced worker exit can
+drop buffered results. The runner now permits natural completion, checks for a
+root summary and preserves nonzero failure status. Its failure-exit and complete
+1,600-result/two-destination regression tests pass in both native Node and Vitest.
+The native Node result above refers to the subsequent invocation.
 
-No workflow was dispatched. Checkpoint commits use `[skip ci]`; private ephemeral
-JIT runner policy remains unchanged. No merge or deployment was performed.
+Screenshot capture now requires two identical frames after route/font/image
+readiness. The final classic comparison contains 74,291 changed pixels, of which
+74,275 differ by one channel level; only three exceed an eight-level channel
+difference. The differences are in one phone Requests capture and the settings
+sidebar gradient. They are recorded rather than masked or called exact matches.
 
-Confidence: **high** in the observed focused test result; **moderate** in the
-recovered source changes; **unknown** for final production build and exact live
-visual parity.
+The [native browser report](evidence/persiusng-native-verification.json),
+[desktop sheet](evidence/persiusng-native-desktop.jpg) and
+[phone sheet](evidence/persiusng-native-phone.jpg) record the reference routes,
+viewports, scope and comparison outcomes. The classic baseline is
+`8a72b6db85e63b7560f5498194b22d33034d5d38`; the candidate is this commit's
+application source. Earlier component-only evidence remains historical.
+
+## Release-environment checks
+
+1. **Native PostgreSQL execution.** SQLite round trips and PostgreSQL SQL/adapter
+   contracts are covered. The opt-in theme/future-season migration test checks
+   existing values, null/true/false, repeat up/down and rollback with TypeORM.
+   It needs `SEERR_MIGRATION_TEST_POSTGRES_URL` pointing to a disposable database.
+   This environment cannot run PostgreSQL as its available root-only identity.
+   The native PostgreSQL tests remain explicit skips, not passes.
+2. **Cypress runner.** Verification found no installed Cypress executable. The
+   installation attempt returned a truncated/non-ZIP download. The production
+   route checks ran in Playwright/Chromium; the separate Cypress suite was not
+   executed. Run it on the project's private ephemeral JIT environment with its
+   browser dependencies before release.
+3. **Live providers and original artwork.** Browser catalog/provider reads are
+   deterministic fixtures. Native tests exercise adapter payloads and real local
+   persistence, not live Sonarr/Bookshelf acquisition or external playback.
+   Test artwork is low-resolution contact-sheet material, not runtime assets.
+   Confirm provider round trips and compare original-resolution artwork on the
+   intended deployment before retiring its old UI proxy. Real titles, counts,
+   metadata, permissions and additional management controls remain data-driven.
+
+Initial compatibility attempts were stopped by automatic approval review
+because the seeded Plex account could contact a private or external destination.
+The completed browser runs use local accounts without linked provider credentials,
+loopback configuration and the offline boundaries described above. No real media
+provider credential was used for these acceptance checks.
+
+No CI workflow was dispatched. Commits carry `[skip ci]`, and the private
+ephemeral JIT runner policy is preserved. No merge or deployment was performed.
+
+Confidence: **high** in native code integration, the observed checks and the
+bounded rendered comparisons; **moderate** in exact live visual parity until the
+original artwork/provider deployment checks above are performed.

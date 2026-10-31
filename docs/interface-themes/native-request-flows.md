@@ -34,6 +34,15 @@ corresponding service targets. Saving the full request entity preserves the
 transactional notification intent and status-history subscribers. Legacy Open
 Library edition IDs remain ISBN metadata, not provider recording identities.
 
+Editing a pending request keeps an exact recording's identity and single format
+immutable. Changing its destination revalidates the edition and exact ownership
+on that destination, including the alongside capability, before saving anything.
+The request and its persisted service targets change together. Server/profile ID
+zero and explicitly empty tags are valid values. Legacy ISBN requests and
+requests for both formats retain their separate behavior. A failed destination
+lookup leaves the original request and targets intact; ownership and request
+management permissions still apply.
+
 Optional `sampleUrl` and `editionLabel` pass through from the provider. Samples
 accept HTTPS without embedded credentials, are not fetched until a click, and
 stop when another recording is selected or the component closes. Missing samples
@@ -64,14 +73,29 @@ series and preserves other fields when updating its future-season preference.
 The option is available in the native Persius composition; custom themes can
 style `.persius-future-seasons`, its label, description and switch.
 
+## Current request page
+
+`src/pages/requests/index.tsx` renders `components/Requests`, using
+`GET /api/v1/request/status` and the per-request status/history endpoints. Persius
+uses those same snapshots for its compact rows, status pills, download progress
+and actions. Active/Ready/All counts retain the selected owner scope. The default
+is the viewer's active requests; explicit All and All Users selections survive
+query restoration. The additional filters and authorized management controls
+remain available. **Details and actions** opens the existing request details and
+history without expanding the compact row. Cancellation uses the native request
+DELETE route and its confirmation, authorization and error handling.
+
 ## Validation boundaries
 
-Focused tests exercise actual components and provider adapter methods with mocked
-external transport, plus validation and ownership helpers. Migration SQL is
-round-tripped against SQLite. The full production Next.js build, PostgreSQL
-migration, real provider acquisition/playback and concurrent multi-user flows
-still require a running deployment. See [PersiusNG evidence](persiusng.md).
+Native database/API tests cover recording edits, identity, destination ownership,
+request permissions, completion/cancellation, notification history and provider
+adapter payloads. The production build and signed-in browser checks also exercise
+the actual page components, theme endpoints, saved preferences, recording entry,
+season controls and current request status page. Provider transport and catalog
+responses are deterministic fixtures in these checks; they do not acquire media.
 
-The [native integration checkpoint](integration-checkpoint-20261030.md) records
-current failures, recovery changes and remaining production gates. Pending-request
-destination edits still need edition revalidation and target synchronization.
+SQLite migration execution passes. PostgreSQL migration SQL has an executable,
+opt-in round-trip test but requires a disposable PostgreSQL URL. Real provider
+acquisition, external playback and deployment-specific proxy retirement remain
+deployment checks. See the [integration checkpoint](integration-checkpoint-20261030.md)
+and [visual evidence](persiusng.md) for exact results and exclusions.

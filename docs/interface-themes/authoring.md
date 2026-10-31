@@ -182,6 +182,16 @@ scope, including grid/flex ordering, responsive layout, control shape, shadows,
 and component surfaces. Keep behavior and accessibility in shared role
 contracts; put design values on the theme root so changes remain easy to audit.
 
+`data-theme-part` identifies inner composition boundaries without competing with
+the broader `data-interface-role` contract. Supported hooks include
+`searchbar-inner`, `searchbar-field`, `searchbar-account` and `request-media-card`.
+Dialogs expose `data-modal-part="heading"` and `data-modal-part="content"`.
+Use these hooks when an inner boundary needs an arrangement; retain their native
+children and interactions. Shared request surfaces read `--theme-overlay-menu`
+as RGB channels and `--main-card-padding` for their canvas. Override those tokens
+on the scoped surface when its canvas differs from the rest of your package,
+and use `--app-card-frame-width` for the existing decorative frame.
+
 Themes can rearrange existing components with CSS Grid, Flexbox, `order`, and
 the app's semantic role hooks. Themes do not ship HTML, React components, route
 definitions, event handlers, icons, fonts, or images. That keeps a theme
@@ -303,6 +313,24 @@ not a substitute for live testing of a community package.
 The [submission guide](submitting.md) gives a release checklist, supported review
 routes and a ready-made GitHub form. [PersiusNG’s verification record](persiusng.md)
 separates component evidence from the production acceptance that remains open.
+
+For a repeatable offline check of the production build, seed the disposable
+Cypress configuration, build SeerrNG, and run the native browser specification:
+
+```sh
+pnpm cypress:prepare
+pnpm build
+E2E_OFFLINE=true pnpm exec playwright test playwright/persius-integration.spec.ts
+```
+
+This uses local test accounts and deterministic catalog fixtures. The optional
+server network guard rejects non-loopback service connections; the browser
+fixture also rejects unhandled external requests. Do not point this command at
+a live configuration. To include your installed Persius derivative in the test,
+install it into the disposable `cypress/runtime-config` directory before startup
+and set `E2E_CUSTOM_THEME_ID` to its ID. The test checks catalog discovery, native
+composition, loading one independent stylesheet and account restoration after
+reload. An unset ID explicitly skips only this additional package check.
 
 ## Recording and season controls
 

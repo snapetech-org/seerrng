@@ -10,22 +10,24 @@ export function RequestTabs({
   filter,
   scope,
   onChange,
+  endpoint = '/api/v1/request',
 }: {
   filter: string;
   scope: string;
   onChange: (filter: string) => void;
+  endpoint?: '/api/v1/request' | '/api/v1/request/status';
 }) {
   const intl = useIntl();
   const { data: active } = useSWR<RequestResultsResponse>(
-    `/api/v1/request?take=1&skip=0&filter=active${scope}`,
+    `${endpoint}?take=1&skip=0&filter=active${scope}`,
     { refreshInterval: 15000 }
   );
   const { data: ready } = useSWR<RequestResultsResponse>(
-    `/api/v1/request?take=1&skip=0&filter=available${scope}`,
+    `${endpoint}?take=1&skip=0&filter=available${scope}`,
     { refreshInterval: 15000 }
   );
   const { data: all } = useSWR<RequestResultsResponse>(
-    `/api/v1/request?take=1&skip=0&filter=all${scope}`,
+    `${endpoint}?take=1&skip=0&filter=all${scope}`,
     { refreshInterval: 15000 }
   );
   return (

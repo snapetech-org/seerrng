@@ -12,6 +12,7 @@ import DiscoverDetailNavigation from '@app/components/Discover/DiscoverDetailNav
 import { canReportMovieIssue } from '@app/components/IssueDetails/issueMediaFormat';
 import LiveTvButton from '@app/components/LiveTv/LiveTvButton';
 import MovieDetailsLayout from '@app/components/MovieDetails/MovieDetailsLayout';
+import usePersius from '@app/components/Persius/usePersius';
 import RequestButton from '@app/components/RequestButton';
 import usePlaybackCatalog from '@app/hooks/usePlaybackCatalog';
 import useSettings from '@app/hooks/useSettings';
@@ -78,6 +79,7 @@ interface MovieDetailsProps {
 }
 
 const MovieDetails = ({ movie }: MovieDetailsProps) => {
+  const persius = usePersius();
   const settings = useSettings();
   const { user, hasPermission } = useUser();
   const router = useRouter();
@@ -461,7 +463,8 @@ const MovieDetails = ({ movie }: MovieDetailsProps) => {
   const requestAction = (
     <RequestButton
       buttonSize="sm"
-      buttonType="detailRequest"
+      buttonType={persius ? 'primary' : 'detailRequest'}
+      singleRequestEntry={persius}
       className="ml-0"
       mediaType="movie"
       media={data.mediaInfo}

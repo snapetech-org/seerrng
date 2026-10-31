@@ -19,3 +19,10 @@ CSS themes with the documented CLI and community submission workflow.
 The container includes the theme management command. Recording completion keeps
 notification and status history behavior, and classic book details retain their
 formatted overview and safe links.
+
+The current Requests page uses compact native status rows with owner-scoped tabs,
+download progress, cancellation and the existing details/history controls.
+Pending recording edits revalidate the chosen destination and update service
+targets together. Native theme endpoints are included in the production OpenAPI
+contract, and theme switching safely restores a loaded stylesheet after an
+interrupted selection. Dialogs retain keyboard focus and close with Escape.

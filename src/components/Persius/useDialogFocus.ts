@@ -1,10 +1,13 @@
-import { useEffect, type RefObject } from 'react';
+import { useEffect, useRef, type RefObject } from 'react';
 
 /** Keep keyboard focus in the topmost dialog and return it to its trigger. */
 export default function useDialogFocus(
   ref: RefObject<HTMLElement | null>,
-  enabled: boolean
+  enabled: boolean,
+  onDismiss?: () => void
 ) {
+  const dismiss = useRef(onDismiss);
+  dismiss.current = onDismiss;
   useEffect(() => {
     if (!enabled) return;
     const previous =
@@ -23,9 +26,15 @@ export default function useDialogFocus(
       );
     const frame = requestAnimationFrame(() => focusable()[0]?.focus());
     const onKey = (event: KeyboardEvent) => {
-      if (event.key !== 'Tab' || event.defaultPrevented) return;
+      if (event.defaultPrevented) return;
       const dialogs = document.querySelectorAll('[aria-modal="true"]');
       if (dialogs[dialogs.length - 1] !== ref.current) return;
+      if (event.key === 'Escape' && dismiss.current) {
+        event.preventDefault();
+        dismiss.current();
+        return;
+      }
+      if (event.key !== 'Tab') return;
       const elements = focusable();
       const first = elements[0],
         last = elements.at(-1);

@@ -78,6 +78,7 @@
   --persius-success: #39d883;
   --persius-warning: #ffb331;
   --persius-danger: #ff806e;
+  --persius-panel-rgb: 20 23 29;
 }
 :root[data-interface-theme='persiusNG'][data-theme-mode='light'] {
   color-scheme: light;
@@ -100,6 +101,7 @@
   --persius-success: #087c42;
   --persius-warning: #8c5600;
   --persius-danger: #b52c24;
+  --persius-panel-rgb: 255 255 255;
 }
 [data-interface-theme='persiusNG'] body {
   margin: 0;
@@ -121,6 +123,13 @@
   background: var(--interface-panel);
   border-inline-end: 1px solid var(--interface-border);
   box-shadow: none;
+}
+[data-interface-theme='persiusNG'] .app-mobile-menu-surface,
+[data-interface-theme='persiusNG'] .mobile-menu-navigation {
+  background: var(--interface-panel);
+  border-color: var(--interface-border);
+  color: var(--interface-text);
+  backdrop-filter: none;
 }
 [data-interface-theme='persiusNG'] .sidebar-brand-slot {
   min-height: var(--persius-header-height);
@@ -272,6 +281,7 @@
 }
 [data-interface-theme='persiusNG'] [data-theme-part='searchbar-inner'] {
   padding-inline: 40px;
+  justify-content: flex-start;
 }
 [data-interface-theme='persiusNG'] [data-theme-part='searchbar-field'] {
   flex: 0 1 560px;
@@ -461,6 +471,9 @@
 [data-interface-theme='persiusNG'] ul.cards-vertical .poster-layout {
   width: 100%;
 }
+[data-interface-theme='persiusNG'] ul.cards-vertical.poster-grid > li {
+  aspect-ratio: auto;
+}
 [data-interface-theme='persiusNG'] .persius-poster-caption {
   display: grid;
   gap: 3px;
@@ -519,6 +532,14 @@
   .poster-layout
   [data-poster-region='controls'] {
   padding: 6px;
+}
+[data-interface-theme='persiusNG']
+  .poster-layout:not(:hover):not(:focus-within)
+  :is(
+    [data-poster-region='association-slot'],
+    [data-poster-region='blocklist-slot']
+  ) {
+  opacity: 0;
 }
 [data-interface-theme='persiusNG']
   .poster-layout
@@ -789,8 +810,11 @@
   height: 18px;
 }
 [data-interface-theme='persiusNG'] .persius-dock-picker [role='menu'] {
-  inset: auto 48px 0 auto;
+  inset: 50% 48px auto auto;
+  transform: translateY(-50%);
   max-width: calc(100vw - 72px);
+  max-height: calc(100dvh - 140px);
+  overflow-y: auto;
 }
 [data-interface-theme='persiusNG']
   .persius-dock-picker
@@ -804,6 +828,8 @@
   align-items: center;
 }
 [data-interface-theme='persiusNG'] .page-overlay-card {
+  --theme-overlay-menu: var(--persius-panel-rgb);
+  --main-card-padding: 24px 30px 16px;
   max-width: 640px;
   max-height: calc(100dvh - 48px);
   border: 1px solid var(--interface-border);
@@ -1148,6 +1174,8 @@
 }
 [data-interface-theme='persiusNG'] .persius-detail-ratings {
   display: flex;
+  flex-wrap: wrap;
+  gap: 8px 16px;
   align-items: center;
   min-height: 24px;
   margin-bottom: 24px;
@@ -1664,6 +1692,7 @@
   color: var(--interface-link);
 }
 [data-interface-theme='persiusNG'] .persius-season-modal {
+  --main-card-padding: 24px 30px 0;
   width: 640px;
   max-height: min(920px, calc(100dvh - 48px));
   padding: 24px 30px 0;
@@ -1766,6 +1795,7 @@
   .persius-season-modal
   .request-selection-layout {
   display: block;
+  margin-block-start: 0;
 }
 [data-interface-theme='persiusNG']
   .persius-season-modal
@@ -1794,6 +1824,8 @@
 [data-interface-theme='persiusNG']
   .persius-season-modal
   [data-theme-part='request-media-card'] {
+  --main-card-padding: 0;
+  --app-card-frame-width: 0px;
   overflow: visible;
   padding: 0;
   border: 0;
@@ -2212,7 +2244,7 @@
 
 [data-interface-theme='persiusNG'] .persius-future-seasons {
   color: var(--interface-text);
-  margin-top: 12px;
+  margin-top: 0;
   display: flex;
   align-items: center;
   justify-content: space-between;

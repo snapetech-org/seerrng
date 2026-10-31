@@ -97,7 +97,7 @@ const Modal = React.forwardRef<HTMLDivElement, ModalProps>(
     const intl = useIntl();
     const modalRef = useRef<HTMLDivElement>(null);
     const persius = usePersius();
-    useDialogFocus(modalRef, persius && !loading);
+    useDialogFocus(modalRef, persius && !loading, onCancel);
     useModalBackNavigation(manageHistory ? onCancel : undefined);
     const backgroundClickableRef = useRef(backgroundClickable); // This ref is used to detect state change inside the useClickOutside hook
     useEffect(() => {

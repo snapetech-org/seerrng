@@ -63,98 +63,94 @@ only specify dark mode.
   calendar at this route. Dates are parsed without UTC day shifts.
 - Season shortcuts feed the existing episode-selection adapter, exclude blocked
   episodes and preserve its metadata readiness guards. Individual episode
-  controls remain available in a disclosure. PersiusNG dialogs retain keyboard
+  controls remain available in a disclosure after the future-season option, in
+  the same visual and keyboard order. PersiusNG dialogs retain keyboard
   focus and restore it to their trigger.
 
-## Validation and evidence
+## Native application evidence
 
-The committed [contact sheet](evidence/persiusng-desktop.jpg) shows component
-fixtures, not a running SeerrNG installation. The fixtures use the actual shared
-components, PersiusNG components and application styles, with mocked session,
-router, API and image-loader boundaries. Artwork was cropped from the supplied
-references for comparison; those crops are not runtime application assets.
+The current evidence comes from the compiled production server and Next.js app,
+with real local sign-in, saved account preferences, the native theme catalog and
+same-origin CSS endpoints. The browser tests provide deterministic catalog,
+service-read and artwork fixtures; they do not rewrite the UI or replace the
+page components. The server runs with the optional offline test guard and the
+browser rejects unhandled external traffic.
 
-| View / target route                     | Reference viewport |
-| --------------------------------------- | ------------------ |
-| Discover `/`                            | 1782 × 1055        |
-| Movies `/discover/movies`               | 1788 × 1038        |
-| Movie detail `/movie/:id`               | 1782 × 1060        |
-| Series request dialog `/discover/tv`    | 1776 × 1058        |
-| Books `/discover/books`                 | 1772 × 1064        |
-| Audiobooks `/discover/audiobooks`       | 1726 × 1061        |
-| Narrations `/book/:id?format=audiobook` | 1736 × 1046        |
-| Requests `/requests`                    | 1726 × 1067        |
-| Coming soon `/coming-soon`              | 1760 × 1055        |
+| View / native route | Reference desktop viewport | Additional widths |
+| --- | --- | --- |
+| Discover `/` | 1782 × 1055 | 768, 390 |
+| Movies `/discover/movies` | 1788 × 1038 | 768, 390 |
+| Movie detail `/movie/:id` | 1782 × 1060 | 768, 390 |
+| Series `/discover/tv` and season dialog | 1776 × 1058 | 768, 390 |
+| Books `/discover/books` | 1772 × 1064 | 768, 390 |
+| Audiobooks `/discover/audiobooks` | 1726 × 1061 | 768, 390 |
+| Narrations `/book/:id?format=audiobook` | 1736 × 1046 | 768, 390 |
+| Requests `/requests` | 1726 × 1067 | 768, 390 |
+| Coming soon `/coming-soon` | 1760 × 1055 | 768, 390 |
 
-All nine fixtures rendered without browser exceptions at those sizes and without
-document overflow at 390 × 844 and 768 × 844. The
-[measurement report](evidence/persiusng-render-measurements.json) records their
-dimensions and interaction checks. Checks covered season clear/latest/all and
-individual selection, blocked episode exclusion, dialog Tab wrapping and focus
-restoration, narration selection, the search shortcut, light-mode switching and
-a theme-picker round trip, and the future-season switch with pointer and keyboard.
-A renamed custom theme also preserved the native account and request composition
-with an independent CSS palette and flat navigation.
+The [desktop sheet](evidence/persiusng-native-desktop.jpg),
+[phone sheet](evidence/persiusng-native-phone.jpg) and
+[native verification report](evidence/persiusng-native-verification.json) record
+these routes. Review covered the reference geometry, color and typography,
+poster captions, card spacing, shared surfaces, search placement, request actions,
+dialog scrolling, keyboard focus and document overflow. The season dialog also
+uses an ordinary requester's account, with privileged controls retained for
+administrators.
 
-The shared sidebar, search, buttons and six-poster fixture was also rendered at
-1782 × 1060 using the original source from base commit
-`471271589e28a77a2e1564b2ef4e1c152e7cf103` and the candidate source, separately
-under SeerrOrig and SeerrNGJ. Both comparisons had zero changed pixels.
+Full-size examples show the [native Requests route](evidence/persiusng-native-requests-1726.jpg)
+and season dialog at [desktop](evidence/persiusng-native-season-dialog-1776.jpg)
+and [phone](evidence/persiusng-native-season-dialog-390.jpg) widths.
 
-Fifty-three focused tests passed: six CLI round trips; ten package/registry/route
-checks; two actual ThemeProvider checks; six season-selection adapter checks;
-seven edition metadata/ownership checks; four edition lookup checks; six narration
-component checks; seven Sonarr/Readarr adapter checks; and five future-season
-validation/policy/migration checks. The two migration SQL contracts were executed
-against SQLite; a PostgreSQL server was not available.
-Changed TypeScript files were parsed and formatted. A complete application build
-and project typecheck were not available in the partial repository snapshot;
-missing application modules prevent treating its partial semantic check as a
-project-wide pass. No CI workflow was requested or run.
+The browser specification exercises library/genre/sort filters, keyboard poster
+entry, all/latest/clear season selection, the future-season switch, Escape and
+focus handling, narration selection into the native request modal, owner-scoped
+request tabs, details/history, loading/empty/error recovery, the theme picker,
+light mode and failed-save preservation. A separately named community package
+is created by the compiled CLI, installed into the test app, selected, and
+restored after reload with its own stylesheet and the native Persius composition.
 
-## Acceptance still requiring the running application
+SeerrOrig and SeerrNGJ are also rendered at 1782 × 1060 and 390 × 844 for movies,
+movie details, book details, requests and settings. The matching baseline is the
+previous integrated revision `8a72b6db85e63b7560f5498194b22d33034d5d38`.
+The verification report records comparison outcomes. Earlier component-only
+[evidence](evidence/persiusng-desktop.jpg) remains historical and is used only
+as an artwork fixture source by the native browser test.
 
-Production UI acceptance and a pixel-for-pixel match remain **unverified**. The
-fixtures do not exercise full page composition, a production Next.js build,
-real request mutations, signed-in permission/service combinations, notifications,
-downloads or external playback. Validate those on a running instance before
-marking the UI complete, as required by `AGENTS.md`.
+## Deliberate differences from static mockups
 
-Catalog content, artwork, ratings, runtimes and counts remain real data. The native
-code now supports narration samples, recommendations, recording edition labels
-and automatic future-season monitoring. Sample URLs and edition labels depend on
-provider metadata and are not fabricated when absent. The existing detailed
-request controls remain reachable. Coming-soon copy avoids promising downloads
-on theatrical release day.
+Catalog titles, artwork, ratings, release dates, runtimes, counts, quotas and
+availability come from the application data. The test artwork is cropped from
+a small reference contact sheet, so its resolution is unsuitable for judging
+production artwork quality or claiming a pixel-identical image comparison.
+Provider attribution and existing management, filters, playback and request
+controls remain available. Missing samples, trailers or edition metadata are
+not fabricated. Coming-soon copy does not promise downloads on a theatrical
+release date. Light mode and phone layouts are adaptations because the supplied
+references specify desktop dark mode.
 
-For final acceptance, enable PersiusNG on the running instance and revisit the
-routes above at their listed viewports. Check ordinary and privileged accounts,
-disabled services, empty/error/loading states, available/shared/pending/failed
-media, partial-season requests, narration requests and both responsive widths.
-Recheck representative settings, library, playback and administration pages in
-all three themes before merging.
+The native implementation follows the mockups' composition and measurements;
+a literal pixel-for-pixel match of live content has not been claimed. Use real
+catalog data and the original-resolution references for deployment acceptance.
 
-## Native package and authoring follow-through
+## Native package and authoring
 
-PersiusNG and custom derivatives load through the application’s same-origin theme
-API. The native composition is selected by validated manifest metadata, so a
-renamed theme retains the same functional pages. `src/proxy.ts` is Next.js
-authentication/redirect middleware, not a theme rewriter; it remains intact.
-A separate UI-rewriting proxy is not a runtime dependency of this implementation.
-Retiring an existing external deployment should still follow the running-app
-acceptance checks above; no external proxy configuration was changed here.
+PersiusNG and custom derivatives load through SeerrNG's same-origin theme API.
+Validated manifest metadata selects the composition, so a renamed theme retains
+its native pages. `src/proxy.ts` remains Next.js authentication/redirect middleware.
+A UI-rewriting proxy is not a runtime dependency, and no external proxy or
+production deployment configuration has been changed.
 
-Authoring has a direct `create → validate → pack → install` workflow. Source
-commands run without a complete server build, the packer writes reproducible
-JSON bundles and checksums, and source/bundle inspection is available. Six CLI
-round-trip tests and two actual ThemeProvider tests cover independently named
-Persius compositions, same-origin stylesheet loading, account restoration and
-failed-save preservation. See [authoring](authoring.md) and
-[community submission](submitting.md).
+Authoring supports `create → validate → pack → install`, plus inspect, list,
+replace and uninstall. Packages carry an independent ID, CSS, composition and
+navigation preferences. The compiled CLI works without TypeScript source files;
+reproducible bundles have checksum sidecars. See [authoring](authoring.md),
+[community submission](submitting.md) and [native request flows](native-request-flows.md).
 
-## Confidence
+## Release verification boundaries
 
-High: scoped package validation, authoring round trips, the focused checks and
-recorded component renders. Moderate: full request integration, because the
-production database, providers and signed-in routes were not exercised together.
-Unknown: exact production pixel parity and deployment-specific proxy retirement.
+The [integration checkpoint](integration-checkpoint-20261030.md) is the current
+source of exact suite results and environment exclusions. It supersedes the
+previous interrupted-checkout status. Native PostgreSQL execution, live provider
+acquisition/external playback and the deployment's original-resolution visual
+acceptance remain release-environment checks. No merge, deployment or CI dispatch
+was performed as part of this integration.

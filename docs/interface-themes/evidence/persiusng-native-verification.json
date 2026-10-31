@@ -1,0 +1,1554 @@
+{
+  "schemaVersion": 1,
+  "date": "2026-10-31",
+  "sourceParent": "8a72b6db85e63b7560f5498194b22d33034d5d38",
+  "candidate": "The containing commit; modified source SHA-256 values are recorded below.",
+  "runtime": {
+    "node": "24.22.1",
+    "pnpm": "10.24.0",
+    "sqlite": "3.53.4",
+    "browser": "Chromium 138",
+    "playwright": "1.63.0"
+  },
+  "verification": {
+    "nativeVitest": {
+      "passed": 4525,
+      "skipped": 5,
+      "failed": 0,
+      "filesPassed": 640,
+      "filesSkipped": 2,
+      "seconds": 657.48
+    },
+    "focusedRequestTheme": {
+      "passed": 36,
+      "files": 6
+    },
+    "focusedFinalSeasonDialog": {
+      "passed": 36,
+      "files": 4
+    },
+    "runnerRegression": {
+      "nativePassed": 2,
+      "vitestPassed": 2,
+      "fixtureSubtestsPerReporter": 1600
+    },
+    "nativeNode": {
+      "status": "running-after-reporter-fix",
+      "previousIncompleteInvocationCountedAsPass": false
+    },
+    "tooling": {
+      "passed": 325,
+      "skipped": 4,
+      "failed": 0
+    },
+    "currentBatchAndUiStyle": {
+      "passed": true,
+      "geometryTests": 73
+    },
+    "types": {
+      "server": true,
+      "client": true
+    },
+    "lint": {
+      "passed": true,
+      "warningsRemain": true
+    },
+    "formatting": {
+      "passed": true,
+      "generatedBrowserOutputExcluded": true
+    },
+    "productionBuild": {
+      "server": true,
+      "next": true,
+      "staticPages": 141,
+      "normalPrebuildChecks": true
+    },
+    "browser": {
+      "startTime": "2026-10-31T00:52:21.801Z",
+      "duration": 110766.691,
+      "expected": 20,
+      "skipped": 0,
+      "unexpected": 0,
+      "flaky": 0
+    },
+    "classicBaselineBrowser": {
+      "startTime": "2026-10-31T00:54:24.304Z",
+      "duration": 34152.846000000005,
+      "expected": 2,
+      "skipped": 0,
+      "unexpected": 0,
+      "flaky": 0
+    },
+    "compiledCli": {
+      "compiledWrapper": true,
+      "sourceDirectoryPresent": false,
+      "createValidatePackInstallInspectListUninstall": true,
+      "checksum": "a20d4ec62ba299967c51d77c32f45435504d7f0ad372caf18c4d6610cfd4b18c"
+    },
+    "installedDerivativeBrowser": {
+      "id": "integration-cinema",
+      "independentStylesheet": true,
+      "nativePersiusComposition": true,
+      "preferenceSurvivesReload": true
+    }
+  },
+  "references": [
+    {
+      "flow": "discover",
+      "desktop": [
+        1782,
+        1055
+      ],
+      "additionalWidths": [
+        768,
+        390
+      ]
+    },
+    {
+      "flow": "movies",
+      "desktop": [
+        1788,
+        1038
+      ],
+      "additionalWidths": [
+        768,
+        390
+      ]
+    },
+    {
+      "flow": "movie-detail",
+      "desktop": [
+        1782,
+        1060
+      ],
+      "additionalWidths": [
+        768,
+        390
+      ]
+    },
+    {
+      "flow": "series",
+      "desktop": [
+        1776,
+        1058
+      ],
+      "additionalWidths": [
+        768,
+        390
+      ]
+    },
+    {
+      "flow": "books",
+      "desktop": [
+        1772,
+        1064
+      ],
+      "additionalWidths": [
+        768,
+        390
+      ]
+    },
+    {
+      "flow": "audiobooks",
+      "desktop": [
+        1726,
+        1061
+      ],
+      "additionalWidths": [
+        768,
+        390
+      ]
+    },
+    {
+      "flow": "narrations",
+      "desktop": [
+        1736,
+        1046
+      ],
+      "additionalWidths": [
+        768,
+        390
+      ]
+    },
+    {
+      "flow": "requests",
+      "desktop": [
+        1726,
+        1067
+      ],
+      "additionalWidths": [
+        768,
+        390
+      ]
+    },
+    {
+      "flow": "coming-soon",
+      "desktop": [
+        1760,
+        1055
+      ],
+      "additionalWidths": [
+        768,
+        390
+      ]
+    }
+  ],
+  "documentOverflow": [
+    {
+      "file": "audiobooks-1726-geometry.json",
+      "width": 1726,
+      "scrollWidth": 1726,
+      "elements": []
+    },
+    {
+      "file": "audiobooks-390-geometry.json",
+      "width": 390,
+      "scrollWidth": 390,
+      "elements": []
+    },
+    {
+      "file": "audiobooks-768-geometry.json",
+      "width": 768,
+      "scrollWidth": 768,
+      "elements": []
+    },
+    {
+      "file": "books-1772-geometry.json",
+      "width": 1772,
+      "scrollWidth": 1772,
+      "elements": []
+    },
+    {
+      "file": "books-390-geometry.json",
+      "width": 390,
+      "scrollWidth": 390,
+      "elements": [
+        {
+          "tag": "A",
+          "class": "persius-series-card",
+          "width": 238,
+          "right": 508
+        },
+        {
+          "tag": "DIV",
+          "class": "persius-book-stack",
+          "width": 208,
+          "right": 493
+        },
+        {
+          "tag": "DIV",
+          "class": "",
+          "width": 80,
+          "right": 407
+        },
+        {
+          "tag": "IMG",
+          "class": "",
+          "width": 80,
+          "right": 407
+        },
+        {
+          "tag": "STRONG",
+          "class": "",
+          "width": 208,
+          "right": 493
+        },
+        {
+          "tag": "SMALL",
+          "class": "",
+          "width": 208,
+          "right": 493
+        },
+        {
+          "tag": "A",
+          "class": "persius-series-card",
+          "width": 238,
+          "right": 758
+        },
+        {
+          "tag": "DIV",
+          "class": "persius-book-stack",
+          "width": 208,
+          "right": 743
+        },
+        {
+          "tag": "DIV",
+          "class": "",
+          "width": 80,
+          "right": 615
+        },
+        {
+          "tag": "IMG",
+          "class": "",
+          "width": 80,
+          "right": 615
+        },
+        {
+          "tag": "DIV",
+          "class": "",
+          "width": 80,
+          "right": 657
+        },
+        {
+          "tag": "IMG",
+          "class": "",
+          "width": 80,
+          "right": 657
+        },
+        {
+          "tag": "STRONG",
+          "class": "",
+          "width": 208,
+          "right": 743
+        },
+        {
+          "tag": "SMALL",
+          "class": "",
+          "width": 208,
+          "right": 743
+        }
+      ]
+    },
+    {
+      "file": "books-768-geometry.json",
+      "width": 768,
+      "scrollWidth": 768,
+      "elements": [
+        {
+          "tag": "A",
+          "class": "persius-series-card",
+          "width": 238,
+          "right": 778
+        }
+      ]
+    },
+    {
+      "file": "coming-soon-1760-geometry.json",
+      "width": 1760,
+      "scrollWidth": 1760,
+      "elements": []
+    },
+    {
+      "file": "coming-soon-390-geometry.json",
+      "width": 390,
+      "scrollWidth": 390,
+      "elements": []
+    },
+    {
+      "file": "coming-soon-768-geometry.json",
+      "width": 768,
+      "scrollWidth": 768,
+      "elements": []
+    },
+    {
+      "file": "discover-1782-geometry.json",
+      "width": 1782,
+      "scrollWidth": 1782,
+      "elements": [
+        {
+          "tag": "ARTICLE",
+          "class": "persius-hero",
+          "width": 564,
+          "right": 2112
+        },
+        {
+          "tag": "IMG",
+          "class": "",
+          "width": 564,
+          "right": 2112
+        },
+        {
+          "tag": "DIV",
+          "class": "persius-hero-content",
+          "width": 564,
+          "right": 2112
+        },
+        {
+          "tag": "A",
+          "class": "persius-hero-title",
+          "width": 528,
+          "right": 2094
+        },
+        {
+          "tag": "DIV",
+          "class": "persius-hero-footer",
+          "width": 528,
+          "right": 2094
+        },
+        {
+          "tag": "BUTTON",
+          "class": "app-button app-button-primary button-standard Button_button__Ok99v",
+          "width": 110,
+          "right": 2094
+        },
+        {
+          "tag": "SPAN",
+          "class": "",
+          "width": 76,
+          "right": 2077
+        },
+        {
+          "tag": "svg",
+          "class": {},
+          "width": 16,
+          "right": 2017
+        },
+        {
+          "tag": "path",
+          "class": {},
+          "width": 10,
+          "right": 2014
+        },
+        {
+          "tag": "ARTICLE",
+          "class": "persius-hero",
+          "width": 564,
+          "right": 2688
+        },
+        {
+          "tag": "IMG",
+          "class": "",
+          "width": 564,
+          "right": 2688
+        },
+        {
+          "tag": "DIV",
+          "class": "persius-hero-content",
+          "width": 564,
+          "right": 2688
+        },
+        {
+          "tag": "SPAN",
+          "class": "persius-hero-kicker",
+          "width": 113.609375,
+          "right": 2255.609375
+        },
+        {
+          "tag": "A",
+          "class": "persius-hero-title",
+          "width": 528,
+          "right": 2670
+        },
+        {
+          "tag": "DIV",
+          "class": "persius-hero-footer",
+          "width": 528,
+          "right": 2670
+        },
+        {
+          "tag": "SPAN",
+          "class": "",
+          "width": 79.65625,
+          "right": 2221.65625
+        },
+        {
+          "tag": "A",
+          "class": "persius-chip",
+          "width": 112,
+          "right": 2670
+        },
+        {
+          "tag": "svg",
+          "class": {},
+          "width": 16,
+          "right": 2591
+        },
+        {
+          "tag": "path",
+          "class": {},
+          "width": 10,
+          "right": 2588
+        },
+        {
+          "tag": "ARTICLE",
+          "class": "persius-hero",
+          "width": 564,
+          "right": 3264
+        },
+        {
+          "tag": "IMG",
+          "class": "",
+          "width": 564,
+          "right": 3264
+        },
+        {
+          "tag": "DIV",
+          "class": "persius-hero-content",
+          "width": 564,
+          "right": 3264
+        },
+        {
+          "tag": "SPAN",
+          "class": "persius-hero-kicker",
+          "width": 113.609375,
+          "right": 2831.609375
+        },
+        {
+          "tag": "A",
+          "class": "persius-hero-title",
+          "width": 528,
+          "right": 3246
+        },
+        {
+          "tag": "DIV",
+          "class": "persius-hero-footer",
+          "width": 528,
+          "right": 3246
+        },
+        {
+          "tag": "SPAN",
+          "class": "",
+          "width": 79.65625,
+          "right": 2797.65625
+        },
+        {
+          "tag": "BUTTON",
+          "class": "app-button app-button-primary button-standard Button_button__Ok99v",
+          "width": 110,
+          "right": 3246
+        },
+        {
+          "tag": "SPAN",
+          "class": "",
+          "width": 76,
+          "right": 3229
+        },
+        {
+          "tag": "svg",
+          "class": {},
+          "width": 16,
+          "right": 3169
+        },
+        {
+          "tag": "path",
+          "class": {},
+          "width": 10,
+          "right": 3166
+        }
+      ]
+    },
+    {
+      "file": "discover-390-geometry.json",
+      "width": 390,
+      "scrollWidth": 390,
+      "elements": [
+        {
+          "tag": "ARTICLE",
+          "class": "persius-hero",
+          "width": 327.59375,
+          "right": 687.1875
+        },
+        {
+          "tag": "IMG",
+          "class": "",
+          "width": 327.59375,
+          "right": 687.1875
+        },
+        {
+          "tag": "DIV",
+          "class": "persius-hero-content",
+          "width": 327.59375,
+          "right": 687.1875
+        },
+        {
+          "tag": "SPAN",
+          "class": "persius-hero-kicker",
+          "width": 113.609375,
+          "right": 491.203125
+        },
+        {
+          "tag": "A",
+          "class": "persius-hero-title",
+          "width": 291.59375,
+          "right": 669.1875
+        },
+        {
+          "tag": "DIV",
+          "class": "persius-hero-footer",
+          "width": 291.59375,
+          "right": 669.1875
+        },
+        {
+          "tag": "SPAN",
+          "class": "",
+          "width": 79.65625,
+          "right": 457.25
+        },
+        {
+          "tag": "BUTTON",
+          "class": "app-button app-button-primary button-standard Button_button__Ok99v",
+          "width": 110,
+          "right": 669.1875
+        },
+        {
+          "tag": "SPAN",
+          "class": "",
+          "width": 76,
+          "right": 652.1875
+        },
+        {
+          "tag": "svg",
+          "class": {},
+          "width": 16,
+          "right": 592.1875
+        },
+        {
+          "tag": "path",
+          "class": {},
+          "width": 10,
+          "right": 589.1875
+        },
+        {
+          "tag": "ARTICLE",
+          "class": "persius-hero",
+          "width": 327.59375,
+          "right": 1026.78125
+        },
+        {
+          "tag": "IMG",
+          "class": "",
+          "width": 327.59375,
+          "right": 1026.78125
+        },
+        {
+          "tag": "DIV",
+          "class": "persius-hero-content",
+          "width": 327.59375,
+          "right": 1026.78125
+        },
+        {
+          "tag": "SPAN",
+          "class": "persius-hero-kicker",
+          "width": 113.609375,
+          "right": 830.796875
+        },
+        {
+          "tag": "A",
+          "class": "persius-hero-title",
+          "width": 291.59375,
+          "right": 1008.78125
+        },
+        {
+          "tag": "DIV",
+          "class": "persius-hero-footer",
+          "width": 291.59375,
+          "right": 1008.78125
+        },
+        {
+          "tag": "SPAN",
+          "class": "",
+          "width": 79.65625,
+          "right": 796.84375
+        },
+        {
+          "tag": "BUTTON",
+          "class": "app-button app-button-primary button-standard Button_button__Ok99v",
+          "width": 110,
+          "right": 1008.78125
+        },
+        {
+          "tag": "SPAN",
+          "class": "",
+          "width": 76,
+          "right": 991.78125
+        },
+        {
+          "tag": "svg",
+          "class": {},
+          "width": 16,
+          "right": 931.78125
+        },
+        {
+          "tag": "path",
+          "class": {},
+          "width": 10,
+          "right": 928.78125
+        },
+        {
+          "tag": "ARTICLE",
+          "class": "persius-hero",
+          "width": 327.59375,
+          "right": 1366.375
+        },
+        {
+          "tag": "IMG",
+          "class": "",
+          "width": 327.59375,
+          "right": 1366.375
+        },
+        {
+          "tag": "DIV",
+          "class": "persius-hero-content",
+          "width": 327.59375,
+          "right": 1366.375
+        },
+        {
+          "tag": "SPAN",
+          "class": "persius-hero-kicker",
+          "width": 113.609375,
+          "right": 1170.390625
+        },
+        {
+          "tag": "A",
+          "class": "persius-hero-title",
+          "width": 291.59375,
+          "right": 1348.375
+        },
+        {
+          "tag": "DIV",
+          "class": "persius-hero-footer",
+          "width": 291.59375,
+          "right": 1348.375
+        },
+        {
+          "tag": "SPAN",
+          "class": "",
+          "width": 79.65625,
+          "right": 1136.4375
+        },
+        {
+          "tag": "A",
+          "class": "persius-chip",
+          "width": 112,
+          "right": 1348.375
+        }
+      ]
+    },
+    {
+      "file": "discover-768-geometry.json",
+      "width": 768,
+      "scrollWidth": 768,
+      "elements": [
+        {
+          "tag": "ARTICLE",
+          "class": "persius-hero",
+          "width": 564,
+          "right": 1180
+        },
+        {
+          "tag": "IMG",
+          "class": "",
+          "width": 564,
+          "right": 1180
+        },
+        {
+          "tag": "DIV",
+          "class": "persius-hero-content",
+          "width": 564,
+          "right": 1180
+        },
+        {
+          "tag": "A",
+          "class": "persius-hero-title",
+          "width": 528,
+          "right": 1162
+        },
+        {
+          "tag": "DIV",
+          "class": "persius-hero-footer",
+          "width": 528,
+          "right": 1162
+        },
+        {
+          "tag": "BUTTON",
+          "class": "app-button app-button-primary button-standard Button_button__Ok99v",
+          "width": 110,
+          "right": 1162
+        },
+        {
+          "tag": "SPAN",
+          "class": "",
+          "width": 76,
+          "right": 1145
+        },
+        {
+          "tag": "svg",
+          "class": {},
+          "width": 16,
+          "right": 1085
+        },
+        {
+          "tag": "path",
+          "class": {},
+          "width": 10,
+          "right": 1082
+        },
+        {
+          "tag": "ARTICLE",
+          "class": "persius-hero",
+          "width": 564,
+          "right": 1756
+        },
+        {
+          "tag": "IMG",
+          "class": "",
+          "width": 564,
+          "right": 1756
+        },
+        {
+          "tag": "DIV",
+          "class": "persius-hero-content",
+          "width": 564,
+          "right": 1756
+        },
+        {
+          "tag": "SPAN",
+          "class": "persius-hero-kicker",
+          "width": 113.609375,
+          "right": 1323.609375
+        },
+        {
+          "tag": "A",
+          "class": "persius-hero-title",
+          "width": 528,
+          "right": 1738
+        },
+        {
+          "tag": "DIV",
+          "class": "persius-hero-footer",
+          "width": 528,
+          "right": 1738
+        },
+        {
+          "tag": "SPAN",
+          "class": "",
+          "width": 79.65625,
+          "right": 1289.65625
+        },
+        {
+          "tag": "BUTTON",
+          "class": "app-button app-button-primary button-standard Button_button__Ok99v",
+          "width": 110,
+          "right": 1738
+        },
+        {
+          "tag": "SPAN",
+          "class": "",
+          "width": 76,
+          "right": 1721
+        },
+        {
+          "tag": "svg",
+          "class": {},
+          "width": 16,
+          "right": 1661
+        },
+        {
+          "tag": "path",
+          "class": {},
+          "width": 10,
+          "right": 1658
+        },
+        {
+          "tag": "ARTICLE",
+          "class": "persius-hero",
+          "width": 564,
+          "right": 2332
+        },
+        {
+          "tag": "IMG",
+          "class": "",
+          "width": 564,
+          "right": 2332
+        },
+        {
+          "tag": "DIV",
+          "class": "persius-hero-content",
+          "width": 564,
+          "right": 2332
+        },
+        {
+          "tag": "SPAN",
+          "class": "persius-hero-kicker",
+          "width": 113.609375,
+          "right": 1899.609375
+        },
+        {
+          "tag": "A",
+          "class": "persius-hero-title",
+          "width": 528,
+          "right": 2314
+        },
+        {
+          "tag": "DIV",
+          "class": "persius-hero-footer",
+          "width": 528,
+          "right": 2314
+        },
+        {
+          "tag": "SPAN",
+          "class": "",
+          "width": 79.65625,
+          "right": 1865.65625
+        },
+        {
+          "tag": "A",
+          "class": "persius-chip",
+          "width": 112,
+          "right": 2314
+        },
+        {
+          "tag": "svg",
+          "class": {},
+          "width": 16,
+          "right": 2235
+        },
+        {
+          "tag": "path",
+          "class": {},
+          "width": 10,
+          "right": 2232
+        }
+      ]
+    },
+    {
+      "file": "movie-detail-1782-geometry.json",
+      "width": 1782,
+      "scrollWidth": 1782,
+      "elements": []
+    },
+    {
+      "file": "movie-detail-390-geometry.json",
+      "width": 390,
+      "scrollWidth": 390,
+      "elements": []
+    },
+    {
+      "file": "movie-detail-768-geometry.json",
+      "width": 768,
+      "scrollWidth": 768,
+      "elements": []
+    },
+    {
+      "file": "movies-1788-geometry.json",
+      "width": 1788,
+      "scrollWidth": 1788,
+      "elements": []
+    },
+    {
+      "file": "movies-390-geometry.json",
+      "width": 390,
+      "scrollWidth": 390,
+      "elements": [
+        {
+          "tag": "DIV",
+          "class": "availability-quality-control ",
+          "width": 277,
+          "right": 493
+        },
+        {
+          "tag": "BUTTON",
+          "class": "availability-quality-option availability-quality-option-active",
+          "width": 48,
+          "right": 393
+        },
+        {
+          "tag": "BUTTON",
+          "class": "availability-quality-option ",
+          "width": 51,
+          "right": 444
+        },
+        {
+          "tag": "BUTTON",
+          "class": "availability-quality-option ",
+          "width": 48,
+          "right": 492
+        },
+        {
+          "tag": "INPUT",
+          "class": "app-filter-search-input",
+          "width": 32,
+          "right": 403
+        },
+        {
+          "tag": "BUTTON",
+          "class": "app-control-shadow-exempt app-filter-select-trigger",
+          "width": 81,
+          "right": 407
+        },
+        {
+          "tag": "BUTTON",
+          "class": "app-control-shadow-exempt app-filter-select-trigger",
+          "width": 81,
+          "right": 416
+        },
+        {
+          "tag": "svg",
+          "class": {},
+          "width": 18,
+          "right": 400
+        },
+        {
+          "tag": "path",
+          "class": {},
+          "width": 12.375,
+          "right": 397.2015380859375
+        },
+        {
+          "tag": "BUTTON",
+          "class": "app-control-shadow-exempt app-filter-select-trigger app-filter-select-trigger-rating",
+          "width": 81,
+          "right": 407
+        },
+        {
+          "tag": "BUTTON",
+          "class": "app-control-shadow-exempt app-filter-select-trigger",
+          "width": 81,
+          "right": 459
+        },
+        {
+          "tag": "SPAN",
+          "class": "",
+          "width": 23,
+          "right": 417
+        },
+        {
+          "tag": "svg",
+          "class": {},
+          "width": 18,
+          "right": 443
+        },
+        {
+          "tag": "path",
+          "class": {},
+          "width": 12.375,
+          "right": 440.2015380859375
+        },
+        {
+          "tag": "BUTTON",
+          "class": "app-filter-button app-filter-button-idle",
+          "width": 198,
+          "right": 414
+        },
+        {
+          "tag": "svg",
+          "class": {},
+          "width": 18,
+          "right": 397
+        },
+        {
+          "tag": "path",
+          "class": {},
+          "width": 12.375,
+          "right": 394.2015380859375
+        },
+        {
+          "tag": "BUTTON",
+          "class": "persius-chip",
+          "width": 88,
+          "right": 404
+        }
+      ]
+    },
+    {
+      "file": "movies-768-geometry.json",
+      "width": 768,
+      "scrollWidth": 768,
+      "elements": []
+    },
+    {
+      "file": "narrations-1736-geometry.json",
+      "width": 1736,
+      "scrollWidth": 1736,
+      "elements": [
+        {
+          "tag": "IMG",
+          "class": "persius-detail-backdrop",
+          "width": 1518,
+          "right": 1775
+        }
+      ]
+    },
+    {
+      "file": "narrations-390-geometry.json",
+      "width": 390,
+      "scrollWidth": 390,
+      "elements": [
+        {
+          "tag": "IMG",
+          "class": "persius-detail-backdrop",
+          "width": 448.5,
+          "right": 419.25
+        }
+      ]
+    },
+    {
+      "file": "narrations-768-geometry.json",
+      "width": 768,
+      "scrollWidth": 768,
+      "elements": [
+        {
+          "tag": "IMG",
+          "class": "persius-detail-backdrop",
+          "width": 883.199951171875,
+          "right": 825.5999755859375
+        }
+      ]
+    },
+    {
+      "file": "requests-1726-geometry.json",
+      "width": 1726,
+      "scrollWidth": 1726,
+      "elements": []
+    },
+    {
+      "file": "requests-390-geometry.json",
+      "width": 390,
+      "scrollWidth": 390,
+      "elements": []
+    },
+    {
+      "file": "requests-768-geometry.json",
+      "width": 768,
+      "scrollWidth": 768,
+      "elements": []
+    },
+    {
+      "file": "series-1776-geometry.json",
+      "width": 1776,
+      "scrollWidth": 1776,
+      "elements": []
+    },
+    {
+      "file": "series-390-geometry.json",
+      "width": 390,
+      "scrollWidth": 390,
+      "elements": [
+        {
+          "tag": "DIV",
+          "class": "availability-quality-control ",
+          "width": 277,
+          "right": 493
+        },
+        {
+          "tag": "BUTTON",
+          "class": "availability-quality-option availability-quality-option-active",
+          "width": 48,
+          "right": 393
+        },
+        {
+          "tag": "BUTTON",
+          "class": "availability-quality-option ",
+          "width": 51,
+          "right": 444
+        },
+        {
+          "tag": "BUTTON",
+          "class": "availability-quality-option ",
+          "width": 48,
+          "right": 492
+        },
+        {
+          "tag": "INPUT",
+          "class": "app-filter-search-input",
+          "width": 32,
+          "right": 403
+        },
+        {
+          "tag": "BUTTON",
+          "class": "app-control-shadow-exempt app-filter-select-trigger",
+          "width": 81,
+          "right": 407
+        },
+        {
+          "tag": "BUTTON",
+          "class": "app-control-shadow-exempt app-filter-select-trigger",
+          "width": 81,
+          "right": 416
+        },
+        {
+          "tag": "svg",
+          "class": {},
+          "width": 18,
+          "right": 400
+        },
+        {
+          "tag": "path",
+          "class": {},
+          "width": 12.375,
+          "right": 397.2015380859375
+        },
+        {
+          "tag": "BUTTON",
+          "class": "app-control-shadow-exempt app-filter-select-trigger app-filter-select-trigger-rating",
+          "width": 81,
+          "right": 407
+        },
+        {
+          "tag": "BUTTON",
+          "class": "app-control-shadow-exempt app-filter-select-trigger",
+          "width": 81,
+          "right": 459
+        },
+        {
+          "tag": "SPAN",
+          "class": "",
+          "width": 23,
+          "right": 417
+        },
+        {
+          "tag": "svg",
+          "class": {},
+          "width": 18,
+          "right": 443
+        },
+        {
+          "tag": "path",
+          "class": {},
+          "width": 12.375,
+          "right": 440.2015380859375
+        },
+        {
+          "tag": "BUTTON",
+          "class": "app-filter-button app-filter-button-idle",
+          "width": 198,
+          "right": 414
+        },
+        {
+          "tag": "svg",
+          "class": {},
+          "width": 18,
+          "right": 397
+        },
+        {
+          "tag": "path",
+          "class": {},
+          "width": 12.375,
+          "right": 394.2015380859375
+        },
+        {
+          "tag": "BUTTON",
+          "class": "persius-chip",
+          "width": 88,
+          "right": 404
+        }
+      ]
+    },
+    {
+      "file": "series-768-geometry.json",
+      "width": 768,
+      "scrollWidth": 768,
+      "elements": []
+    }
+  ],
+  "classicThemeComparison": {
+    "baselineCommit": "8a72b6db85e63b7560f5498194b22d33034d5d38",
+    "themes": [
+      "seerrOrig",
+      "seerrNGJ"
+    ],
+    "routes": [
+      "/discover/movies",
+      "/movie/101",
+      "/book/OL999W",
+      "/requests",
+      "/settings/main"
+    ],
+    "method": "Matched viewports and fixtures; completed route progress, loaded fonts, decoded images, disabled screenshot animations and two identical capture frames. No masking or injected style overrides.",
+    "observed": "18 captures have identical pixels. Two show text/gradient rasterization variation; 74,275 of the 74,291 changed pixels differ by only one channel level. Three pixels exceed an eight-level channel delta. No layout regression was observed.",
+    "captures": [
+      {
+        "file": "seerrNGJ-book-detail-1782.png",
+        "viewport": [
+          1782,
+          1060
+        ],
+        "changedPixels": 0,
+        "maxChannelDelta": 0,
+        "bounds": null
+      },
+      {
+        "file": "seerrNGJ-book-detail-390.png",
+        "viewport": [
+          390,
+          844
+        ],
+        "changedPixels": 0,
+        "maxChannelDelta": 0,
+        "bounds": null
+      },
+      {
+        "file": "seerrNGJ-movie-detail-1782.png",
+        "viewport": [
+          1782,
+          1060
+        ],
+        "changedPixels": 0,
+        "maxChannelDelta": 0,
+        "bounds": null
+      },
+      {
+        "file": "seerrNGJ-movie-detail-390.png",
+        "viewport": [
+          390,
+          844
+        ],
+        "changedPixels": 0,
+        "maxChannelDelta": 0,
+        "bounds": null
+      },
+      {
+        "file": "seerrNGJ-movies-1782.png",
+        "viewport": [
+          1782,
+          1060
+        ],
+        "changedPixels": 0,
+        "maxChannelDelta": 0,
+        "bounds": null
+      },
+      {
+        "file": "seerrNGJ-movies-390.png",
+        "viewport": [
+          390,
+          844
+        ],
+        "changedPixels": 0,
+        "maxChannelDelta": 0,
+        "bounds": null
+      },
+      {
+        "file": "seerrNGJ-requests-1782.png",
+        "viewport": [
+          1782,
+          1060
+        ],
+        "changedPixels": 0,
+        "maxChannelDelta": 0,
+        "bounds": null
+      },
+      {
+        "file": "seerrNGJ-requests-390.png",
+        "viewport": [
+          390,
+          844
+        ],
+        "changedPixels": 6,
+        "maxChannelDelta": 4,
+        "bounds": [
+          16,
+          486,
+          18,
+          493
+        ]
+      },
+      {
+        "file": "seerrNGJ-settings-1782.png",
+        "viewport": [
+          1782,
+          1060
+        ],
+        "changedPixels": 74285,
+        "maxChannelDelta": 24,
+        "bounds": [
+          0,
+          0,
+          287,
+          1047
+        ]
+      },
+      {
+        "file": "seerrNGJ-settings-390.png",
+        "viewport": [
+          390,
+          844
+        ],
+        "changedPixels": 0,
+        "maxChannelDelta": 0,
+        "bounds": null
+      },
+      {
+        "file": "seerrOrig-book-detail-1782.png",
+        "viewport": [
+          1782,
+          1060
+        ],
+        "changedPixels": 0,
+        "maxChannelDelta": 0,
+        "bounds": null
+      },
+      {
+        "file": "seerrOrig-book-detail-390.png",
+        "viewport": [
+          390,
+          844
+        ],
+        "changedPixels": 0,
+        "maxChannelDelta": 0,
+        "bounds": null
+      },
+      {
+        "file": "seerrOrig-movie-detail-1782.png",
+        "viewport": [
+          1782,
+          1060
+        ],
+        "changedPixels": 0,
+        "maxChannelDelta": 0,
+        "bounds": null
+      },
+      {
+        "file": "seerrOrig-movie-detail-390.png",
+        "viewport": [
+          390,
+          844
+        ],
+        "changedPixels": 0,
+        "maxChannelDelta": 0,
+        "bounds": null
+      },
+      {
+        "file": "seerrOrig-movies-1782.png",
+        "viewport": [
+          1782,
+          1060
+        ],
+        "changedPixels": 0,
+        "maxChannelDelta": 0,
+        "bounds": null
+      },
+      {
+        "file": "seerrOrig-movies-390.png",
+        "viewport": [
+          390,
+          844
+        ],
+        "changedPixels": 0,
+        "maxChannelDelta": 0,
+        "bounds": null
+      },
+      {
+        "file": "seerrOrig-requests-1782.png",
+        "viewport": [
+          1782,
+          1060
+        ],
+        "changedPixels": 0,
+        "maxChannelDelta": 0,
+        "bounds": null
+      },
+      {
+        "file": "seerrOrig-requests-390.png",
+        "viewport": [
+          390,
+          844
+        ],
+        "changedPixels": 0,
+        "maxChannelDelta": 0,
+        "bounds": null
+      },
+      {
+        "file": "seerrOrig-settings-1782.png",
+        "viewport": [
+          1782,
+          1060
+        ],
+        "changedPixels": 0,
+        "maxChannelDelta": 0,
+        "bounds": null
+      },
+      {
+        "file": "seerrOrig-settings-390.png",
+        "viewport": [
+          390,
+          844
+        ],
+        "changedPixels": 0,
+        "maxChannelDelta": 0,
+        "bounds": null
+      }
+    ]
+  },
+  "screenshotSha256": {
+    "audiobooks-1726.png": "6b001da8eb3070043a5d9ab4288e3179ef3157918e7b143948671e8e6909b22f",
+    "audiobooks-390.png": "e882e413fdc5215193986e26ee0aa032c25dbab1b880c09a55db8b5fcece0fa1",
+    "audiobooks-768.png": "83bf7759478595b7b93cf8b250f3cd044d4515a4cb73591b16cffd65faab4fa7",
+    "books-1772.png": "7f119ae65bd42a2efa9a22e41d3e2a32e67639fe19cb77943bc5072cbd645a91",
+    "books-390.png": "90036fc04304d2d537398514b328dd794cad8b23bfb86e990c36f1b0cd0135ca",
+    "books-768.png": "1741d7488f29318de446cf68d602e39812890e7295c03122ce59b3dfbc9765cf",
+    "coming-soon-1760.png": "aa7016b1246bccc575116d16451bf990333e9f65fd0f9bf4198cae6e668e79e7",
+    "coming-soon-390.png": "bf31827161f25f29e7d83c6445c3acc94374602853ee76746f2700be27bb1be1",
+    "coming-soon-768.png": "5181c65c14e3d0df99bbb8f44bcd095b4ee86f18a9bdbc22238dcc43ab9e03c2",
+    "community-package.png": "4308b7e31f3ba47016e7d5723cdca77b56090f343c455fb1e9ca2674a67a45bf",
+    "discover-1782.png": "3318e37d11a17cfad6f30320df10ef1be9c4ff41c51518d60a03e50ed896bbaf",
+    "discover-390.png": "38b7064a793554b473a76e0e49b0fd2d999b9c965b51c694525b5c22731b043e",
+    "discover-768.png": "bb67095668c8412c8b8723eba1dbfb549ca4aa4f563b20729482668cc3aea6ad",
+    "movie-detail-1782.png": "5397408a5fe67e0805d53c828f28aebc97b2e0b444bbff7afe3df856427b608e",
+    "movie-detail-390.png": "c30592b9f20c7f874baf6bd91c05d5efde4667863d8f70517c357eec28247318",
+    "movie-detail-768.png": "1e4b220febf73cdae74dcf63ffa5c96537e35394fa5f67ad4dc5415780411d89",
+    "movies-1788.png": "e110b730e6fcf4fd71bcc94a4d68d3feebc7eee93f134e9154cce092cb947feb",
+    "movies-390.png": "ecf6d0f4c450ecde51b3566a7824a3c278bb33799e970a84fa0b043f75bc9a21",
+    "movies-768.png": "c8b367a9366e087e06bd5430504ef232e610f13c8ca0166a7d78d2d47fce3ac0",
+    "narrations-1736.png": "52309c4c77d3c4667062006660636db55f7aeb3296655edf4bf98482971160d1",
+    "narrations-390.png": "b57b6396e50fddb907c0ce962c3b5825f58b0fa951923a31c386f971a5e58fbd",
+    "narrations-768.png": "2e5ddfdfeb88d10ebbc46f759fdbbc33f24a739139a3ee476819931d9ffe62ed",
+    "requests-1726.png": "d286f06257397735498b69cb05ec3c26280d87fb4d1941fda935560f88eabb2b",
+    "requests-390.png": "f2a9774e02289a954825d733ccd73ecc264a27cfdb7765a30f01dc2817f0a1b7",
+    "requests-768.png": "3e3bc0a636685c92110db03a806591835fdcdd5df45df9eacb207b099b1d8625",
+    "requests-empty.png": "97f2f139f4969170d0c791acbcb4f4426f9ceef5cec6757b63bc5c71caced659",
+    "requests-error.png": "9e13aad90eaeb016525e43ac8f5ae9e4fefdb4f1e6cc321558592623f36b3728",
+    "requests-loading.png": "b29b5fec07c0f964eff7d7e624df4b540bb32123dbaa9f78418cd058f3549c6f",
+    "season-dialog-1776.png": "239348c9d3928d9a7df4830f7720401c99b97bd368a9f79b75c1d32c04ef141e",
+    "season-dialog-390.png": "7315b4d122272804d2c08d9930a9a80d356145f8628001ed1686c4f60cad998b",
+    "seerrNGJ-book-detail-1782.png": "74ea0ec95b244da749d6f3909109d2273a1d9de0e671e8f95d700516a3eebffa",
+    "seerrNGJ-book-detail-390.png": "d45aa66c4598e5556fc53e70b18c92a36bf277bf2bb7af3686caf0bf6482ea40",
+    "seerrNGJ-movie-detail-1782.png": "bc4cbc5f329a2f39a292e948208068ee461ebb4eb1bb0a026de7cfcfbacb175f",
+    "seerrNGJ-movie-detail-390.png": "bed7da706db15e1829f57a9b73a7f5bc0de517bd81f3c1ddb06f718f4bb5dd96",
+    "seerrNGJ-movies-1782.png": "53edd5338b88688fdfcd99b599cbdb51861ef58afd54c1fe1bdc01dc27676d65",
+    "seerrNGJ-movies-390.png": "1da34f4345bff1ccf0d319fba62eb0b3d4c95792711a91de7cf3306afae3a8a7",
+    "seerrNGJ-requests-1782.png": "13dbd368f2a518ea6dae94319972aa291c31dd8d7d97cd4578b1e6acb6dc6e76",
+    "seerrNGJ-requests-390.png": "4d1d6466b0cb9a6d42d837a5a819bc0c664f8e09dda02cfe8abb8a32410818bc",
+    "seerrNGJ-settings-1782.png": "a86b52111044429910f95e88a35aef74e4e1a0d1588e8f271adf614496e20288",
+    "seerrNGJ-settings-390.png": "ecf69674edac77580c51532a600ba50bf0a7f4d7f320b851c0e1b1768dc2706c",
+    "seerrOrig-book-detail-1782.png": "062bdeebdfd778681e90690f86c9be20aa3d20a18b9afbae4c3b2a156e6334a3",
+    "seerrOrig-book-detail-390.png": "9fded43c4888e0d3a44031208680856a347af5d61616325beb324d01adff8731",
+    "seerrOrig-movie-detail-1782.png": "451784ae35a0c9d7d0543d171cf5bde328fbf9d7a09a3adcb802f83a167c7383",
+    "seerrOrig-movie-detail-390.png": "7db51ec7c20b2c214e890d9783bda7c63adf65f17943b710115a835072d3634b",
+    "seerrOrig-movies-1782.png": "fd924f15ff9d7e9f60b3759c643af0adb5b73d1e63649d08f84960fece39e788",
+    "seerrOrig-movies-390.png": "ef7fe7ff16e05c5eb34141091dc91e8812ff627b5bb5558b8a184c5fdb3a9938",
+    "seerrOrig-requests-1782.png": "b729ecb13455b4c618f871c4c7ae50f094ef24fa804fb27c798e9c067f9178be",
+    "seerrOrig-requests-390.png": "b51954587be115fb3c1e2cfe1426d6e2b448de06d7043f726112cdf151907656",
+    "seerrOrig-settings-1782.png": "08a226dcb40578c5734a8d866663cf173b31a08eaa2288f527ce65569a060adf",
+    "seerrOrig-settings-390.png": "cb6434ce12e383f233dff65d0591facc5c63802501f7f16ace06b131de2ac9d7",
+    "series-1776.png": "c5876a98131745f30e8256cb4f9dd42368c396e7c3bc7bed81f9901a417e5b9a",
+    "series-390.png": "afe879240f57c79053a872e0904bc6cf1f0e24656b3e79b513339f4f716b8726",
+    "series-768.png": "cd87e11aed5a50846258eb96eb61769fff73c23defa8a34c1062d678fdd42ae0"
+  },
+  "applicationSourceSha256": {
+    "bin/e2e-network-guard.cjs": "0d01478d643ce153aa53f11e3bbdf270077311b20d54bcb94e8132c832c3a022",
+    "bin/e2e-network-guard.test.mjs": "9b3d80516f534c7a569d8ee02b1e9837cc1762a297b16ff1bd54bc074cf830dd",
+    "bin/interface-theme-postgres-migration.test.mjs": "adcba223e2d0ecbcee62df1d02a4d12671881cb16d08118de82fa9b2e1944705",
+    "bin/run-cypress-start.mjs": "682147e800d94d2a8bf5a04c148a576d8ca3c476e9819fd713092e926ce93481",
+    "bin/run-tooling-tests.mjs": "ae6e79b54d0d46f620c2fc39fdc1f0713c6a632b9670d3d03b16e0cdb970723b",
+    "cypress/config/settings.cypress.json": "b279575c502104f7c3bbda7d966273e2458f295094212b8625f199a372fa0e82",
+    "playwright/persius-integration.spec.ts": "940607e313bb6bbf96b5481ba41d0b6124a922789fdc12232446b0929647ea63",
+    "server/test/fixtures/runner-report.fixture.ts": "9b9f02d04b160218166974b377b3bad84f79e9809d363e888f7c3fe7da4446dc",
+    "server/test/index.mts": "981392f859a4764419e37a6a7ae447447424c0364a537b654d130ac71304b40a",
+    "server/test/runner.test.ts": "9e018eb8710f7833eee57eca6c5a8baaf3d7498c2450560ea121abcf22c92879",
+    "src/components/Common/ConfirmButton/index.tsx": "a0da333a35fab73248e15b9e9dbb54fd02032e06f9723b611383c7f3556ce5e2",
+    "src/components/Common/ListView/index.tsx": "f2f8647eac555ce4b696de39876de23ab9f5aec9bb15ae6691bb8c8c9722a1e3",
+    "src/components/Common/Modal/index.tsx": "db7dd91b51478d7c2fb9e9703df7b270a138f651222c4e74a579f8db48dccbfc",
+    "src/components/MovieDetails/index.tsx": "b28ebca49709a6e34b38470d4cbeb58895f14891f2fb193eac3ff1d69e79848c",
+    "src/components/Persius/Requests.tsx": "cde0ebad488d955a3a1e3decd131ff6a61ede93bca60c7b4139f3b95bb3d5cc2",
+    "src/components/Persius/useDialogFocus.ts": "12a689071e9da709aa7c36741ce271e4fed867162820e77c50715d531d708d8c",
+    "src/components/Persius/useDialogFocus.vitest.test.tsx": "57dc3c64462181f00ff6c9fb58b9ee98ecc96d9a0cd620c2f02e40d82b08f7f5",
+    "src/components/RequestModal/RequestSeasonEpisodeTree.tsx": "2935dae10ec8460de1a5e32e7e440251cced937292e16023e6ca10904b15bebf",
+    "src/components/RequestModal/TvRequestModal.tree.test.tsx": "204ce7c433645f429a24995db9a8b505bc66d79bf835ebe118f7bee93f024609",
+    "src/components/RequestModal/TvRequestModal.tsx": "2173cf5bf9a18e6d14348e267d7378f3266d572206498ee1bf33b9a1b6f85f7e",
+    "src/components/Requests/index.tsx": "00ef72117ee195f0f77dd8c4b1e8d7d63c20df7b76fc45976a306a150556731e",
+    "src/styles/buttonGeometry.test.mjs": "4a20ca6f343dd4b0448606e7fecf61b477d47d486a4f6cb1edfc9170eec9027b",
+    "themes/persiusNG/theme.css": "05612825b7b89d144a4d47cdbd4e9220fc43374aa4505c8582761c0571a75352",
+    ".prettierignore": "25e62940d38df0b5b7d96915d6eeb90d7f95763c4b0c74f0b577e51a44a0406b",
+    "prettier-scope.txt": "25e62940d38df0b5b7d96915d6eeb90d7f95763c4b0c74f0b577e51a44a0406b"
+  },
+  "boundaries": [
+    "Real local sign-in, account preference writes, production native routes and same-origin theme catalog/CSS are exercised.",
+    "Catalog, service reads and artwork are deterministic browser fixtures. The test server and browser reject unhandled external network destinations.",
+    "Artwork is cropped from historical low-resolution contact-sheet evidence; it is not shipped as runtime artwork and does not establish original-artwork pixel parity.",
+    "Native PostgreSQL tests require a disposable external database and remain skipped here.",
+    "Cypress binary installation returned an invalid/truncated archive; Cypress was not executed.",
+    "Live provider acquisition and external playback were not performed.",
+    "Full Vitest preceded the final small presentation/fallback and runner changes; focused tests, native browser tests and the final production build cover those changes.",
+    "No CI dispatch, merge, deployment or external UI proxy configuration change was performed."
+  ]
+}

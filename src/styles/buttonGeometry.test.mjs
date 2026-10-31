@@ -1665,7 +1665,7 @@ test('software media filters persist and isolate their request category', () => 
   assert.match(requests, /category=\{softwareCategory\}/);
   assert.match(
     requests,
-    /softwareCategory === undefined && \([\s\S]*?<div className="card-stack">/
+    /softwareCategory === undefined && \([\s\S]*?<div\s+className=\{persius \? 'persius-request-grid' : 'card-stack'\}/
   );
   assert.match(softwareRequests, /params\.set\('category', category\)/);
 });
@@ -2025,7 +2025,7 @@ test('Request load errors use the shared red message card and descriptive retry 
   assert.match(initialErrorBranch, /buttonIcon="retry"/);
 
   const refreshErrorBranch = requests.match(
-    /\{error && \(([\s\S]*?)\n      \)\}\n\n      <PinnedFilterSection/
+    /\{error && \(([\s\S]*?)\n      \)\}/
   )?.[1];
   assert.ok(refreshErrorBranch, 'the refresh error branch must exist');
   assert.match(
@@ -2197,18 +2197,17 @@ test('compact cards change size and retain shared text spacing/style', () => {
     compactRule,
     /(?:^|\n)\s*(?:font|color|margin|padding|line-height|display|gap)[-:]/
   );
-  assert.match(
-    sharedCss,
-    /--card-compact-title-font-size: var\(--interface-card-compact-title-font-size\)/
-  );
-  assert.match(
-    sharedCss,
-    /--card-compact-subheading-font-size: var\(--interface-card-compact-subheading-font-size\)/
-  );
-  assert.match(
-    sharedCss,
-    /--card-subheading-spacing-before: var\(--interface-card-subheading-spacing-before\)/
-  );
+  const sharedTokens = new Map();
+  postcss.parse(sharedCss).walkDecls((declaration) => {
+    sharedTokens.set(declaration.prop, declaration.value.replace(/\s/g, ''));
+  });
+  for (const token of [
+    'card-compact-title-font-size',
+    'card-compact-subheading-font-size',
+    'card-subheading-spacing-before',
+  ]) {
+    assert.equal(sharedTokens.get(`--${token}`), `var(--interface-${token})`);
+  }
   assert.doesNotMatch(
     compactRule,
     /(?:^|\n)\s*--card-subheading-spacing-before\s*:/

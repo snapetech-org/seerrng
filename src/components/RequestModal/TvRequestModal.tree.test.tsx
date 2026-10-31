@@ -250,6 +250,7 @@ vi.mock('@app/components/RequestModal/RequestSeasonEpisodeTree', () => ({
     onReadyChange,
     onSelectionsChange,
     selectionMode,
+    afterSeasonSelection,
   }: {
     selections: SeasonEpisodeSelection[];
     disabledSeasons: number[];
@@ -257,6 +258,7 @@ vi.mock('@app/components/RequestModal/RequestSeasonEpisodeTree', () => ({
     onReadyChange: (ready: boolean) => void;
     onSelectionsChange: (selection: SeasonEpisodeSelection[]) => void;
     selectionMode: 'multiple' | 'single-episode';
+    afterSeasonSelection?: React.ReactNode;
   }) {
     useEffect(() => {
       onReadyChange(fixtureState.ready);
@@ -325,6 +327,7 @@ vi.mock('@app/components/RequestModal/RequestSeasonEpisodeTree', () => ({
         >
           Clear
         </button>
+        {afterSeasonSelection}
       </div>
     );
   },

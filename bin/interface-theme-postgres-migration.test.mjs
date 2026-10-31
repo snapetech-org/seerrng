@@ -3,12 +3,13 @@ import { randomUUID } from 'node:crypto';
 import { test } from 'node:test';
 import { DataSource } from 'typeorm';
 import { AddUserInterfaceTheme1792700000000 } from '../server/migration/postgres/1792700000000-AddUserInterfaceTheme.ts';
+import { RequestFutureSeasons1793400000000 } from '../server/migration/postgres/1793400000000-RequestFutureSeasons.ts';
 
 const postgresUrl = process.env.SEERR_MIGRATION_TEST_POSTGRES_URL;
 const postgresTest = postgresUrl ? test : test.skip;
 
 postgresTest(
-  'PostgreSQL interface-theme migration executes, preserves John, and rolls back',
+  'PostgreSQL theme and future-season migrations preserve existing values and roll back',
   async () => {
     const schema = `seerrng_interface_theme_${randomUUID().replaceAll('-', '')}`;
     const admin = await new DataSource({
@@ -52,6 +53,35 @@ postgresTest(
         await migration.down(queryRunner);
         assert.equal(
           await queryRunner.hasColumn('user_settings', 'interfaceTheme'),
+          false
+        );
+
+        await queryRunner.query(
+          'CREATE TABLE "media_request" ("id" integer PRIMARY KEY)'
+        );
+        await queryRunner.query(
+          'INSERT INTO "media_request" ("id") VALUES (1)'
+        );
+        const futureSeasons = new RequestFutureSeasons1793400000000();
+        await futureSeasons.up(queryRunner);
+        await futureSeasons.up(queryRunner);
+        await queryRunner.query(
+          'INSERT INTO "media_request" ("id", "monitorFutureSeasons") VALUES (2, true), (3, false)'
+        );
+        assert.deepEqual(
+          await queryRunner.query(
+            'SELECT "id", "monitorFutureSeasons" FROM "media_request" ORDER BY "id"'
+          ),
+          [
+            { id: 1, monitorFutureSeasons: null },
+            { id: 2, monitorFutureSeasons: true },
+            { id: 3, monitorFutureSeasons: false },
+          ]
+        );
+        await futureSeasons.down(queryRunner);
+        await futureSeasons.down(queryRunner);
+        assert.equal(
+          await queryRunner.hasColumn('media_request', 'monitorFutureSeasons'),
           false
         );
       } finally {

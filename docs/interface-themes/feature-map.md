@@ -82,8 +82,25 @@ stylesheet. The existing composition remains the default for older packages.
 Neither choice needs a UI-rewriting proxy or additional theme JavaScript.
 
 The nine reference routes, dimensions, retained controls, responsive checks and
-remaining live-app acceptance are recorded in [PersiusNG](persiusng.md). All
+native browser evidence and release-environment boundaries are recorded in
+[PersiusNG](persiusng.md). All
 other routes still use the shared native owners above. Permission/service
 filtering and backend features remain application-owned in every composition.
 Use the [authoring guide](authoring.md) to build independent packages and the
 [submission checklist](submitting.md) to document route and state coverage.
+
+
+## Native Persius verification scope — 2026-10-31
+
+The nine reference flows above now run in the production app with local sign-in,
+real theme APIs and account persistence. Catalog/provider reads are fixtures;
+no UI rewriting is involved. The current `/requests` route uses native status
+snapshots and history, with compact presentation retaining the same permissions
+and request mutations. The supported composition also works for an installed,
+independently named community stylesheet.
+
+Representative classic-theme comparison routes are movies, movie detail, book
+detail, requests and settings at matching desktop and phone viewports. This
+bounded evidence does not establish visual acceptance for every route in the
+broader family inventory. See the [verification report](evidence/persiusng-native-verification.json)
+and [integration checkpoint](integration-checkpoint-20261030.md).

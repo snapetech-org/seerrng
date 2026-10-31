@@ -5,7 +5,15 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
-const result = spawnSync(process.execPath, ['dist/index.js'], {
+const args =
+  process.env.E2E_OFFLINE === 'true'
+    ? [
+        '--require',
+        path.join(root, 'bin/e2e-network-guard.cjs'),
+        'dist/index.js',
+      ]
+    : ['dist/index.js'];
+const result = spawnSync(process.execPath, args, {
   cwd: root,
   env: {
     ...process.env,

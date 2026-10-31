@@ -243,68 +243,116 @@ const ListView = ({
 
         switch (title.mediaType) {
           case 'movie':
-            titleCard = (
-              <TitleCard
-                titleWeight={posterTitleWeight}
-                key={`${title.mediaType}:${title.id}`}
-                id={title.id}
-                isAddedToWatchlist={title.mediaInfo?.watchlists?.length ?? 0}
-                image={title.posterPath}
-                status={title.mediaInfo?.status}
-                status4k={title.mediaInfo?.status4k}
-                viewerRequestCoverage={title.mediaInfo?.viewerRequestCoverage}
-                summary={title.overview}
-                title={title.title}
-                userScore={title.voteAverage}
-                voteCount={title.voteCount}
-                year={title.releaseDate}
-                mediaType={title.mediaType}
-                inProgress={(title.mediaInfo?.downloadStatus ?? []).length > 0}
-                inProgress4k={
-                  (title.mediaInfo?.downloadStatus4k ?? []).length > 0
-                }
-                canExpand
-                showText={visibility.movie === 'always'}
-                discoverNavigationContextId={discoverNavigationContextId}
-                onOpen={createTitleOpenHandler({
-                  id: title.id,
-                  mediaType: title.mediaType,
-                })}
-              />
-            );
+            titleCard =
+              persius && !watchlistPreview ? (
+                <TmdbTitleCard
+                  id={title.id}
+                  tmdbId={title.id}
+                  type={title.mediaType}
+                  isAddedToWatchlist={!!title.mediaInfo?.watchlists?.length}
+                  title={title.title}
+                  posterPath={title.posterPath}
+                  summary={title.overview}
+                  year={title.releaseDate}
+                  status={title.mediaInfo?.status}
+                  status4k={title.mediaInfo?.status4k}
+                  viewerRequestCoverage={title.mediaInfo?.viewerRequestCoverage}
+                  canExpand
+                  mutateParent={mutateParent}
+                  discoverNavigationContextId={discoverNavigationContextId}
+                  onOpen={createTitleOpenHandler({
+                    id: title.id,
+                    mediaType: title.mediaType,
+                  })}
+                />
+              ) : (
+                <TitleCard
+                  titleWeight={posterTitleWeight}
+                  key={`${title.mediaType}:${title.id}`}
+                  id={title.id}
+                  isAddedToWatchlist={title.mediaInfo?.watchlists?.length ?? 0}
+                  image={title.posterPath}
+                  status={title.mediaInfo?.status}
+                  status4k={title.mediaInfo?.status4k}
+                  viewerRequestCoverage={title.mediaInfo?.viewerRequestCoverage}
+                  summary={title.overview}
+                  title={title.title}
+                  userScore={title.voteAverage}
+                  voteCount={title.voteCount}
+                  year={title.releaseDate}
+                  mediaType={title.mediaType}
+                  inProgress={
+                    (title.mediaInfo?.downloadStatus ?? []).length > 0
+                  }
+                  inProgress4k={
+                    (title.mediaInfo?.downloadStatus4k ?? []).length > 0
+                  }
+                  canExpand
+                  showText={visibility.movie === 'always'}
+                  discoverNavigationContextId={discoverNavigationContextId}
+                  onOpen={createTitleOpenHandler({
+                    id: title.id,
+                    mediaType: title.mediaType,
+                  })}
+                />
+              );
             break;
           case 'tv':
-            titleCard = (
-              <TitleCard
-                titleWeight={posterTitleWeight}
-                watchlistPreview={watchlistPreview}
-                watchlistPreviewDisabled={watchlistPreviewDisabled}
-                key={`${title.mediaType}:${title.id}`}
-                id={title.id}
-                isAddedToWatchlist={title.mediaInfo?.watchlists?.length ?? 0}
-                image={title.posterPath}
-                status={title.mediaInfo?.status}
-                status4k={title.mediaInfo?.status4k}
-                viewerRequestCoverage={title.mediaInfo?.viewerRequestCoverage}
-                summary={title.overview}
-                title={title.name}
-                userScore={title.voteAverage}
-                voteCount={title.voteCount}
-                year={title.firstAirDate}
-                mediaType={title.mediaType}
-                inProgress={(title.mediaInfo?.downloadStatus ?? []).length > 0}
-                inProgress4k={
-                  (title.mediaInfo?.downloadStatus4k ?? []).length > 0
-                }
-                canExpand
-                showText={visibility.tv === 'always'}
-                discoverNavigationContextId={discoverNavigationContextId}
-                onOpen={createTitleOpenHandler({
-                  id: title.id,
-                  mediaType: title.mediaType,
-                })}
-              />
-            );
+            titleCard =
+              persius && !watchlistPreview ? (
+                <TmdbTitleCard
+                  id={title.id}
+                  tmdbId={title.id}
+                  type={title.mediaType}
+                  isAddedToWatchlist={!!title.mediaInfo?.watchlists?.length}
+                  title={title.name}
+                  posterPath={title.posterPath}
+                  summary={title.overview}
+                  year={title.firstAirDate}
+                  status={title.mediaInfo?.status}
+                  status4k={title.mediaInfo?.status4k}
+                  viewerRequestCoverage={title.mediaInfo?.viewerRequestCoverage}
+                  canExpand
+                  mutateParent={mutateParent}
+                  discoverNavigationContextId={discoverNavigationContextId}
+                  onOpen={createTitleOpenHandler({
+                    id: title.id,
+                    mediaType: title.mediaType,
+                  })}
+                />
+              ) : (
+                <TitleCard
+                  titleWeight={posterTitleWeight}
+                  watchlistPreview={watchlistPreview}
+                  watchlistPreviewDisabled={watchlistPreviewDisabled}
+                  key={`${title.mediaType}:${title.id}`}
+                  id={title.id}
+                  isAddedToWatchlist={title.mediaInfo?.watchlists?.length ?? 0}
+                  image={title.posterPath}
+                  status={title.mediaInfo?.status}
+                  status4k={title.mediaInfo?.status4k}
+                  viewerRequestCoverage={title.mediaInfo?.viewerRequestCoverage}
+                  summary={title.overview}
+                  title={title.name}
+                  userScore={title.voteAverage}
+                  voteCount={title.voteCount}
+                  year={title.firstAirDate}
+                  mediaType={title.mediaType}
+                  inProgress={
+                    (title.mediaInfo?.downloadStatus ?? []).length > 0
+                  }
+                  inProgress4k={
+                    (title.mediaInfo?.downloadStatus4k ?? []).length > 0
+                  }
+                  canExpand
+                  showText={visibility.tv === 'always'}
+                  discoverNavigationContextId={discoverNavigationContextId}
+                  onOpen={createTitleOpenHandler({
+                    id: title.id,
+                    mediaType: title.mediaType,
+                  })}
+                />
+              );
             break;
           case 'sports':
             titleCard = (
