@@ -5,6 +5,10 @@ import ImageFader from '@app/components/Common/ImageFader';
 import LoadingSpinner from '@app/components/Common/LoadingSpinner';
 import Modal from '@app/components/Common/Modal';
 import PageTitle from '@app/components/Common/PageTitle';
+import {
+  CompactSelect,
+  type CompactSelectOption,
+} from '@app/components/Discover/FilterPanel/CompactFilterSelect';
 import ExternalLinkBlock from '@app/components/ExternalLinkBlock';
 import TitleCard from '@app/components/TitleCard';
 import { SettingsContext } from '@app/context/SettingsContext';
@@ -13,10 +17,12 @@ import { Permission, useUser } from '@app/hooks/useUser';
 import globalMessages from '@app/i18n/globalMessages';
 import ErrorPage from '@app/pages/_error';
 import defineMessages from '@app/utils/defineMessages';
-import { CircleStackIcon } from '@heroicons/react/24/solid';
 import type { PersonCombinedCreditsResponse } from '@server/interfaces/api/personInterfaces';
 import type { PersonMovieBulkRequestResponse } from '@server/interfaces/api/requestInterfaces';
-import type { PersonDetails as PersonDetailsType } from '@server/models/Person';
+import type {
+  PersonCredit,
+  PersonDetails as PersonDetailsType,
+} from '@server/models/Person';
 import axios from 'axios';
 import { useRouter } from 'next/router';
 import { useContext, useMemo, useState } from 'react';
@@ -31,6 +37,18 @@ const messages = defineMessages('components.PersonDetails', {
   appearsin: 'Appearances',
   crewmember: 'Crew',
   ascharacter: 'as {character}',
+  mediaTypeFilter: 'Media type',
+  creditSort: 'Sort credits',
+  sortPopularityDesc: 'Popularity (high)',
+  sortPopularityAsc: 'Popularity (low)',
+  sortReleaseDateDesc: 'Release date (newest)',
+  sortReleaseDateAsc: 'Release date (oldest)',
+  sortRatingDesc: 'Rating (highest)',
+  sortRatingAsc: 'Rating (lowest)',
+  sortTitleAsc: 'Title (A–Z)',
+  sortTitleDesc: 'Title (Z–A)',
+  sortVoteCountDesc: 'Votes (most)',
+  sortVoteCountAsc: 'Votes (fewest)',
   requestAllMovies: 'Request All Movies',
   requestAllMoviesTitle: 'Request All Movies by {person}',
   requestAllMoviesDescription:
@@ -42,6 +60,78 @@ const messages = defineMessages('components.PersonDetails', {
 });
 
 type MediaType = 'all' | 'movie' | 'tv';
+type CreditSortOption =
+  | 'popularity.asc'
+  | 'popularity.desc'
+  | 'release_date.asc'
+  | 'release_date.desc'
+  | 'vote_average.asc'
+  | 'vote_average.desc'
+  | 'title.asc'
+  | 'title.desc'
+  | 'vote_count.asc'
+  | 'vote_count.desc';
+
+const sortPersonCredits = <T extends PersonCredit>(
+  credits: T[],
+  sortOption: CreditSortOption,
+  locale: string
+): T[] => {
+  const ascending = sortOption.endsWith('.asc');
+  const direction = ascending ? 1 : -1;
+  const field = sortOption.slice(0, sortOption.lastIndexOf('.'));
+  const collator = new Intl.Collator(locale, {
+    sensitivity: 'base',
+    numeric: true,
+  });
+
+  return [...credits].sort((left, right) => {
+    if (field === 'title') {
+      const leftTitle = left.mediaType === 'movie' ? left.title : left.name;
+      const rightTitle = right.mediaType === 'movie' ? right.title : right.name;
+      const leftHasTitle = Boolean(leftTitle?.trim());
+      const rightHasTitle = Boolean(rightTitle?.trim());
+      // Keep incomplete metadata after known values in either sort direction.
+      if (leftHasTitle !== rightHasTitle) return leftHasTitle ? -1 : 1;
+      if (!leftHasTitle) return 0;
+      return direction * collator.compare(leftTitle, rightTitle);
+    }
+
+    if (field === 'release_date') {
+      const leftDate = Date.parse(
+        left.mediaType === 'movie' ? left.releaseDate : left.firstAirDate
+      );
+      const rightDate = Date.parse(
+        right.mediaType === 'movie' ? right.releaseDate : right.firstAirDate
+      );
+      const leftHasDate = Number.isFinite(leftDate);
+      const rightHasDate = Number.isFinite(rightDate);
+      // An unknown release date is not an old or future release.
+      if (leftHasDate !== rightHasDate) return leftHasDate ? -1 : 1;
+      if (!leftHasDate) return 0;
+      return direction * (leftDate - rightDate);
+    }
+
+    const leftValue =
+      field === 'popularity'
+        ? left.popularity
+        : field === 'vote_average'
+          ? left.voteAverage
+          : left.voteCount;
+    const rightValue =
+      field === 'popularity'
+        ? right.popularity
+        : field === 'vote_average'
+          ? right.voteAverage
+          : right.voteCount;
+    const leftHasValue = Number.isFinite(leftValue);
+    const rightHasValue = Number.isFinite(rightValue);
+    // Keep missing provider values last instead of treating them as zero.
+    if (leftHasValue !== rightHasValue) return leftHasValue ? -1 : 1;
+    if (!leftHasValue) return 0;
+    return direction * (leftValue - rightValue);
+  });
+};
 
 const groupById = <T extends { id: number | string }>(items: T[]) =>
   items.reduce<Record<string, T[]>>((groups, item) => {
@@ -56,7 +146,9 @@ const PersonDetails = () => {
   const { currentSettings } = useContext(SettingsContext);
   const { hasPermission } = useUser();
   const { addToast } = useToasts();
-  const [currentMediaType, setCurrentMediaType] = useState<string>('all');
+  const [currentMediaType, setCurrentMediaType] = useState<MediaType>('all');
+  const [creditSort, setCreditSort] =
+    useState<CreditSortOption>('vote_count.desc');
   const [showRequestAllMovies, setShowRequestAllMovies] = useState(false);
   const [requestingAllMovies, setRequestingAllMovies] = useState(false);
   const personId =
@@ -83,8 +175,8 @@ const PersonDetails = () => {
       character: objs.map((pos) => pos.character).join(', '),
     }));
 
-    return reduced;
-  }, [combinedCredits, currentMediaType]);
+    return sortPersonCredits(reduced, creditSort, intl.locale);
+  }, [combinedCredits, currentMediaType, creditSort, intl.locale]);
 
   const sortedCrew = useMemo(() => {
     const filtered = (combinedCredits?.crew ?? []).filter(
@@ -98,8 +190,8 @@ const PersonDetails = () => {
       job: objs.map((pos) => pos.job).join(', '),
     }));
 
-    return reduced;
-  }, [combinedCredits, currentMediaType]);
+    return sortPersonCredits(reduced, creditSort, intl.locale);
+  }, [combinedCredits, currentMediaType, creditSort, intl.locale]);
 
   const movieIds = useMemo(() => {
     const movies = [
@@ -232,26 +324,78 @@ const PersonDetails = () => {
 
   const isLoading = !combinedCredits && !errorCombinedCredits;
 
-  const mediaTypePicker = (
-    <div className="mb-2 flex flex-grow sm:mr-2 sm:mb-0 lg:flex-grow-0">
-      <span className="inline-flex cursor-default items-center rounded-l-md border border-r-0 border-gray-500 bg-gray-800 px-3 text-sm text-gray-100">
-        <CircleStackIcon className="h-6 w-6" />
-      </span>
-      <select
-        id="mediaType"
-        name="mediaType"
-        onChange={(e) => {
-          setCurrentMediaType(e.target.value as MediaType);
-        }}
+  const mediaTypeOptions: CompactSelectOption[] = [
+    {
+      label: intl.formatMessage(globalMessages.all),
+      value: 'all',
+    },
+    {
+      label: intl.formatMessage(globalMessages.movies),
+      value: 'movie',
+    },
+    {
+      label: intl.formatMessage(globalMessages.tvshows),
+      value: 'tv',
+    },
+  ];
+  const creditSortOptions: CompactSelectOption[] = [
+    {
+      label: intl.formatMessage(messages.sortVoteCountDesc),
+      value: 'vote_count.desc',
+    },
+    {
+      label: intl.formatMessage(messages.sortVoteCountAsc),
+      value: 'vote_count.asc',
+    },
+    {
+      label: intl.formatMessage(messages.sortPopularityDesc),
+      value: 'popularity.desc',
+    },
+    {
+      label: intl.formatMessage(messages.sortPopularityAsc),
+      value: 'popularity.asc',
+    },
+    {
+      label: intl.formatMessage(messages.sortReleaseDateDesc),
+      value: 'release_date.desc',
+    },
+    {
+      label: intl.formatMessage(messages.sortReleaseDateAsc),
+      value: 'release_date.asc',
+    },
+    {
+      label: intl.formatMessage(messages.sortRatingDesc),
+      value: 'vote_average.desc',
+    },
+    {
+      label: intl.formatMessage(messages.sortRatingAsc),
+      value: 'vote_average.asc',
+    },
+    {
+      label: intl.formatMessage(messages.sortTitleAsc),
+      value: 'title.asc',
+    },
+    {
+      label: intl.formatMessage(messages.sortTitleDesc),
+      value: 'title.desc',
+    },
+  ];
+  const creditFilters = (
+    <div className="app-filter-row">
+      <CompactSelect
+        label={intl.formatMessage(messages.mediaTypeFilter)}
         value={currentMediaType}
-        className="rounded-e-only"
-      >
-        <option value="all">{intl.formatMessage(globalMessages.all)}</option>
-        <option value="movie">
-          {intl.formatMessage(globalMessages.movies)}
-        </option>
-        <option value="tv">{intl.formatMessage(globalMessages.tvshows)}</option>
-      </select>
+        options={mediaTypeOptions}
+        onChange={(value) => setCurrentMediaType(value as MediaType)}
+        defaultValue="all"
+      />
+      <CompactSelect
+        label={intl.formatMessage(messages.creditSort)}
+        value={creditSort}
+        options={creditSortOptions}
+        onChange={(value) => setCreditSort(value as CreditSortOption)}
+        defaultValue="vote_count.desc"
+      />
     </div>
   );
 
@@ -385,9 +529,7 @@ const PersonDetails = () => {
         <div className="w-full text-center text-gray-300 lg:text-left">
           <div className="flex w-full items-center justify-center lg:justify-between">
             <h1 className="text-3xl text-white lg:text-4xl">{data.name}</h1>
-            <div className="hidden flex-shrink-0 lg:block">
-              {mediaTypePicker}
-            </div>
+            <div className="hidden flex-shrink-0 lg:block">{creditFilters}</div>
           </div>
           <div className="flex w-full items-center justify-center lg:justify-between">
             <div className="mt-3 mb-3">
@@ -413,7 +555,7 @@ const PersonDetails = () => {
               </div>
             )}
           </div>
-          <div className="lg:hidden">{mediaTypePicker}</div>
+          <div className="lg:hidden">{creditFilters}</div>
           {data.biography && (
             <div className="relative text-left">
               {/* eslint-disable-next-line jsx-a11y/click-events-have-key-events */}

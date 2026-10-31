@@ -82,6 +82,7 @@ For local MCP access, see the [SnapeTech MCP integration guide](./docs/integrati
 - Requests and approvals for movies, shows, music, ebooks, audiobooks, comics, magazines, emulation ROMs, and PC games.
 - A companion Android APK client for connecting to one or more self-hosted SeerrNG servers.
 - Movie and series Discover filters with 0.1-point TMDB rating thresholds and streaming-service availability filters by region.
+- Person pages with movie or TV credit filters and sorting by popularity, release date, rating, vote count, or title.
 - Media-server integration with Plex, Jellyfin, and Emby, including watch-state-aware My Library views scoped to each linked account.
 - Optional Jellyfin and Emby profile sync during user imports, refreshing linked provider names and avatars while preserving SeerrNG email addresses, local passwords, and permissions.
 - Labeled movie and TV request destinations across multiple Radarr and Sonarr instances, with per-user access and availability tracked for each destination.
@@ -214,6 +215,7 @@ SeerrNG documentation is maintained in the [docs folder](https://github.com/snap
 - [Cross-project OIDC implementation contract](./docs/maintainers/oidc-cross-project-template.md) · [provider catalog and official setup links](./docs/maintainers/oidc-provider-catalog.md)
 - [Create custom Discover sliders](./docs/using-seerr/custom-discover-sliders.md)
 - [Filter movie and series Discover results](./docs/using-seerr/movie-series-discovery-filters.md)
+- [Browse and sort movie and TV credits on person pages](./docs/using-seerr/people-and-credits.md)
 - [Configure Sonarr v5 and season orders](./docs/using-seerr/settings/services.md)
 - [Require previous-season watch progress](./docs/using-seerr/settings/general.md#require-the-previous-season-to-be-watched)
 - [Choose movie and TV request destinations](./docs/using-seerr/settings/services.md#request-destination-label-optional)
