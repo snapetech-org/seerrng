@@ -31,8 +31,6 @@ const pages = [
   '/discover/movies',
   '/discover/tv',
   '/discover/list/8',
-  '/movie/550',
-  '/movie/550/cast',
   '/person/287',
   '/games',
   '/settings/services',
@@ -136,6 +134,22 @@ test('cast posters never overlap their neighbours', async ({
   baseURL,
 }) => {
   await loginAsAdmin(page, baseURL);
+  await page.route('**/api/v1/movie/550*', (route) =>
+    route.fulfill({
+      json: {
+        id: 550,
+        title: 'Fight Club',
+        credits: {
+          cast: Array.from({ length: 30 }, (_, index) => ({
+            id: index + 1,
+            name: `Cast member ${index + 1}`,
+            character: `Character ${index + 1}`,
+            profilePath: null,
+          })),
+        },
+      },
+    })
+  );
   await page.setViewportSize({ width: 1440, height: 900 });
   await page.goto('/movie/550/cast');
   await page.waitForLoadState('networkidle');
