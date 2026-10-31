@@ -2,9 +2,9 @@
 
 ## Reporting Security Issues
 
-Maintainers and community take security bugs seriously. We appreciate your efforts to responsibly disclose your findings, and will make every effort to acknowledge your contributions.
+SeerrNG maintainers take security reports seriously. We appreciate responsible disclosure and will acknowledge reports and coordinate with reporters as we assess them.
 
-To report a security issue, please use the GitHub Security Advisory ["Report a Vulnerability"](../../security/advisories/new) tab.
+To report a security issue, use the GitHub Security Advisory ["Report a Vulnerability"](../../security/advisories/new) form. Reports submitted there are private to the reporter and repository maintainers while they are being assessed.
 
 **Please do not report security vulnerabilities through public GitHub issues, discussions, or Discord.**
 
@@ -21,7 +21,7 @@ To help us better understand and resolve the issue, please include as much of th
 
 ## Response Timeline
 
-We will send a response indicating the next steps in handling your report. After the initial reply to your report, the security team will keep you informed of the progress towards a fix and full announcement, and may ask for additional information or guidance.
+We will send a response indicating the next steps in handling your report. After the initial reply, maintainers will keep you informed of progress toward a fix and coordinated announcement, and may ask for additional information or guidance.
 
 ## Disclosure Policy
 
@@ -31,7 +31,7 @@ We will send a response indicating the next steps in handling your report. After
 
 ## Third-Party Dependencies
 
-If you discover a security vulnerability in a third-party dependency used by Seerr, please report it directly to the maintainers of that module. You can also notify us through our security advisory process so we can:
+If you discover a security vulnerability in a third-party dependency used by SeerrNG, please report it directly to that module's maintainers. You can also notify us through our security advisory process so we can:
 
 - Track the issue and monitor for updates
 - Apply patches or workarounds if available

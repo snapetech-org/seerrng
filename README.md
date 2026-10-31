@@ -74,6 +74,7 @@ For local MCP access, see the [SnapeTech MCP integration guide](./docs/integrati
 - [Testing Real Integrations](#testing-real-integrations)
 - [Legal Use](#legal-use)
 - [Support](#support)
+- [Security](#security)
 - [Contributing](#contributing)
 - [Attribution](#attribution)
 
@@ -855,6 +856,10 @@ SeerrNG is intended for lawful personal media management. The project does not p
 - Discussions: https://github.com/snapetech-org/seerrng/discussions
 
 Use upstream Seerr documentation when you need background on inherited deployment or video-library behavior, but report SeerrNG-specific music, book, cache, packaging, and branding issues in this repository.
+
+## Security
+
+Report vulnerabilities through [GitHub's private vulnerability form](https://github.com/snapetech-org/seerrng/security/advisories/new), after reading the [SeerrNG security policy](./SECURITY.md). Do not include vulnerability details in public issues, discussions, or Discord.
 
 ## Contributing
 
