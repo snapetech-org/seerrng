@@ -21,20 +21,40 @@ Recovery](./bookshelf-metadata-sources.md).
 For BookshelfNG's SeerrNG-specific API behavior, see
 [BookshelfNG interoperability](#bookshelfng-interoperability).
 
-BookshelfNG's planned retirement in favor of ChaptarrNG is not released yet.
-ChaptarrNG `v0.9.977` includes single-database SQLite preview and conversion
-tools, but production apply remains frozen pending migration, rollback,
-feature-parity, and installation-channel acceptance. Draft ChaptarrNG PR #131
-adds further migration support and has passed synthetic populated-data checks;
-that candidate is unpublished. No legacy identity bridge has been published
-or enabled, so keep the existing BookshelfNG database and installation until the
+As of 2026-10-31, BookshelfNG `0.4.21.76` and ChaptarrNG `v0.9.977` remain the
+latest public releases; ChaptarrNG `main` is
+`fa55ffabe632c7ee003791635ebe53fb1895d3df`, with latest application source
+snapshot `bd589312`. ChaptarrNG `v0.9.977`
+includes single-database SQLite preview, conversion, and rollback tools in
+the standard product. ChaptarrNG PR
+[#183](https://github.com/snapetech-org/chaptarrng/pull/183) merged at
+`96c953b2`; its migration handoff uses the ordinary ChaptarrNG product and
+does not create a compatibility image. Follow-up main commits retain the
+legacy Docker port contracts. The PR's exact merge-head Build
+[#41168525352](https://github.com/snapetech-org/chaptarrng/actions/runs/41168525352)
+is waiting and is not current application-source validation; main and
+standalone platform/archive jobs remain queued at older source. No exact-head
+pass for application source `bd589312` or current `main` `fa55ffab` is recorded
+here. Migration apply remains frozen pending feature, migration, rollback,
+and installation-channel acceptance. No legacy package, image, installer,
+updater, or chart identity has been redirected.
+
+The current source-path audit compares BookshelfNG `1bd7f2dc` with ChaptarrNG
+`main` target `fa55ffab` (application source `bd589312`): 1,174 changed paths,
+56 reviewed mappings, 587 dispositions, and 587 paths without a final
+disposition. Those are
+source-review counts, not missing-feature counts or SeerrNG acceptance
+evidence. The merged PR #183 changes are included in the target snapshot. See
+the [pinned consolidation audit](https://github.com/snapetech-org/bookshelfng/blob/main/docs/maintainers/chaptarr-consolidation.md#exact-head-source-path-audit--2026-10-31).
+
+Keep the existing BookshelfNG database and installation in service until the
 [feature, migration, and distribution gates](https://github.com/snapetech-org/bookshelfng/blob/main/docs/maintainers/chaptarr-consolidation.md)
-pass. BookshelfNG's retirement gate is its capabilities validated in
-ChaptarrNG. The later ChaptarrNG-to-Chaptarr gate is separate: all BookshelfNG
-features carried over plus every ChaptarrNG maintained or actively added
-feature, including unpublished work, block retirement as a whole. Each feature
-remains an individual blocker until tested against the supported upstream
-release; see the [combined ChaptarrNG retirement matrix](https://github.com/snapetech-org/chaptarrng/blob/main/docs/FORK_FEATURES.md#chaptarrng-retirement-blockers).
+pass. Closing BookshelfNG issue #144 did not close those gates or authorize
+cutover. Each BookshelfNG capability, data/configuration path, rollback path,
+and channel remains an individual blocker. The later ChaptarrNG-to-Chaptarr
+gate is separate and cumulative: all BookshelfNG features carried over plus
+every ChaptarrNG maintained, active, or unreleased capability blocks
+retirement. See the [combined ChaptarrNG retirement matrix](https://github.com/snapetech-org/chaptarrng/blob/main/docs/FORK_FEATURES.md#chaptarrng-retirement-gates).
 
 ## One BookshelfNG instance for both formats
 
@@ -272,8 +292,11 @@ node scripts/setup-assistant.mjs --profile books --output ./my-books-stack
 
 ChaptarrNG is standalone. It does not require BookshelfNG, Hardcover,
 rreading-glasses, PostgreSQL, or BookLore. BookLore is an optional external
-notification destination. Follow the [ChaptarrNG service setup](#chaptarrng)
-and its [migration guide](https://github.com/snapetech-org/chaptarrng/blob/main/docs/MIGRATE_FROM_BOOKSHELFNG.md)
+BookDrop destination for imported files, not a required dependency or a
+replacement for ChaptarrNG's library database. See ChaptarrNG's
+[BookLore integration guide](https://github.com/snapetech-org/chaptarrng/blob/main/docs/BOOKLORE_INTEGRATION.md).
+Follow the [ChaptarrNG service setup](#chaptarrng) and its
+[migration guide](https://github.com/snapetech-org/chaptarrng/blob/main/docs/MIGRATE_FROM_BOOKSHELFNG.md)
 when replacing an existing BookshelfNG instance.
 
 ### Existing BookshelfNG installations
@@ -561,9 +584,9 @@ For the validated deployment, the important in-container paths were:
 ## Installer Script
 
 > **Migration is frozen for now.** ChaptarrNG `v0.9.977` is the latest
-> published release, and BookshelfNG issue #144 keeps production cutover gated
-> on feature parity, representative data and rollback, and installation-channel
-> acceptance. Use the migration helper for read-only preview only. Do not pass
+> published release. BookshelfNG issue #144 is closed, but feature parity,
+> representative data and rollback, and installation-channel acceptance remain
+> open. Use the migration helper for read-only preview only. Do not pass
 > `--apply` or start ChaptarrNG against BookshelfNG appdata. Keep the existing
 > BookshelfNG service running until the retirement gates close.
 
@@ -590,8 +613,8 @@ promoting a database. Fill each `mediaType` with `audiobook`, `ebook`, or
 and rerun preview before applying. The same standard ChaptarrNG image reads
 that map during preview, apply, and normal startup.
 
-After issue #144 is closed and production cutover is approved, review the
-report, stop BookshelfNG, and apply with an independent backup location:
+After all retirement gates pass and production cutover is explicitly approved,
+review the report, stop BookshelfNG, and apply with an independent backup location:
 
 ```bash
 BOOKSHELF_EBOOKS_CONFIG_DIR=/path/to/bookshelf-config \
