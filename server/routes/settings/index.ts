@@ -2157,6 +2157,7 @@ settingsRoutes.post(
             name: library.title,
             enabled: existing?.enabled ?? false,
             type: library.type,
+            lastScan: existing?.lastScan,
           };
         });
 
