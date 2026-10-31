@@ -555,6 +555,14 @@
     },
     {
       "domain": "client",
+      "id": "components.Settings.BinderyModal.baseUrl",
+      "sourceHash": "f1a52d70f8c5d169c6e94a65b7c011e547cdc017c230c676c2bdfcf13cc5ea82",
+      "owner": "localization-maintainers",
+      "reason": "Machine-assisted contextual QA (Codex, 2026-10-31): This is the base URL configuration field for a service endpoint; `URL base` is the standard Spanish technical label. Source callsite: src/components/Settings/BinderyModal/index.tsx. The complete source value is a standard technical term in this context; native-speaker and RTL review have not been performed. This approval expires 2027-10-31.",
+      "expiresOn": "2027-10-31"
+    },
+    {
+      "domain": "client",
       "id": "components.Settings.BinderyModal.port",
       "sourceHash": "72e9a59f5a1d6289dbacb35df897d6c007c55a27e77018455c37e7b372668475",
       "owner": "localization-maintainers",
@@ -603,6 +611,14 @@
     },
     {
       "domain": "client",
+      "id": "components.Settings.Notifications.NotificationsNtfy.token",
+      "sourceHash": "d2089be672953d1136faa84079af1b6f3967fed8932dabffba3032d30e3c0618",
+      "owner": "localization-maintainers",
+      "reason": "Machine-assisted contextual QA (Codex, 2026-10-31): This is the ntfy authentication credential field. `Token` is the standard authentication term. Source callsite: src/components/Settings/Notifications/NotificationsNtfy/index.tsx. The complete source value is a standard technical term in this context; native-speaker and RTL review have not been performed. This approval expires 2027-10-31.",
+      "expiresOn": "2027-10-31"
+    },
+    {
+      "domain": "client",
       "id": "components.Settings.RadarrModal.port",
       "sourceHash": "72e9a59f5a1d6289dbacb35df897d6c007c55a27e77018455c37e7b372668475",
       "owner": "localization-maintainers",
@@ -639,6 +655,22 @@
       "sourceHash": "72e9a59f5a1d6289dbacb35df897d6c007c55a27e77018455c37e7b372668475",
       "owner": "localization-maintainers",
       "reason": "Machine-assisted contextual review (Codex, 2026-10-31): in the referenced login and service-connection settings fields, Port means the network endpoint number, not a harbor. Port is the standard technical term retained verbatim in the target values that use it. Source hash verified. Native-speaker and RTL review have not been performed; expires 2027-10-31.",
+      "expiresOn": "2027-10-31"
+    },
+    {
+      "domain": "client",
+      "id": "components.Settings.SettingsJobsCache.cache",
+      "sourceHash": "a76ce82a974999d815b24e30286466c727c9bdbe92c88e676362ce22878ad12d",
+      "owner": "localization-maintainers",
+      "reason": "Machine-assisted contextual QA (Codex, 2026-10-31): This labels the application cache controls/status. `Cache` is a standard computing term in this context. Source callsite: src/components/Settings/SettingsJobsCache/index.tsx. The complete source value is a standard technical term in this context; native-speaker and RTL review have not been performed. This approval expires 2027-10-31.",
+      "expiresOn": "2027-10-31"
+    },
+    {
+      "domain": "client",
+      "id": "components.Settings.SettingsJobsCache.dnscachename",
+      "sourceHash": "2db533557011ec539fc4c6604367e99cbb77c0a49b8b73b655841d3ee08f4f3e",
+      "owner": "localization-maintainers",
+      "reason": "Machine-assisted contextual QA (Codex, 2026-10-31): This field is the network hostname used by the DNS/cache job settings. `Hostname` is the standard network term. Source callsite: src/components/Settings/SettingsJobsCache/index.tsx. The complete source value is a standard technical term in this context; native-speaker and RTL review have not been performed. This approval expires 2027-10-31.",
       "expiresOn": "2027-10-31"
     },
     {
@@ -779,6 +811,22 @@
     },
     {
       "domain": "client",
+      "id": "components.Settings.webhook",
+      "sourceHash": "4814f62c108d82de42a65c515d56fc220b7fe8521510fd128919664daaa167bb",
+      "owner": "localization-maintainers",
+      "reason": "Machine-assisted contextual QA (Codex, 2026-10-31): This names the webhook notification integration. `Webhook` is the standard protocol/integration term. Source callsite: src/components/Settings/SettingsNotifications.tsx. The complete source value is a standard technical term in this context; native-speaker and RTL review have not been performed. This approval expires 2027-10-31.",
+      "expiresOn": "2027-10-31"
+    },
+    {
+      "domain": "client",
+      "id": "components.SettingsProwlarr.address",
+      "sourceHash": "2db533557011ec539fc4c6604367e99cbb77c0a49b8b73b655841d3ee08f4f3e",
+      "owner": "localization-maintainers",
+      "reason": "Machine-assisted contextual QA (Codex, 2026-10-31): This is the Prowlarr service host name field. `Hostname` is standard network configuration terminology. Source callsite: src/components/Settings/SettingsProwlarr.tsx. The complete source value is a standard technical term in this context; native-speaker and RTL review have not been performed. This approval expires 2027-10-31.",
+      "expiresOn": "2027-10-31"
+    },
+    {
+      "domain": "client",
       "id": "components.SettingsProwlarr.port",
       "sourceHash": "72e9a59f5a1d6289dbacb35df897d6c007c55a27e77018455c37e7b372668475",
       "owner": "localization-maintainers",
@@ -791,6 +839,14 @@
       "sourceHash": "ca62d5e073f52f3ceb83f72d4d70d4fcd8b1ed041cddfb02ccfbbe1f90134f05",
       "owner": "localization-maintainers",
       "reason": "Machine-assisted contextual QA (Codex, 2026-10-31): TV is a standard media-type acronym. The exact source value is intentionally preserved. Native-speaker and RTL review have not been performed; this approval expires 2027-10-31.",
+      "expiresOn": "2027-10-31"
+    },
+    {
+      "domain": "client",
+      "id": "components.SettingsSoftwareAcquisition.hostname",
+      "sourceHash": "2db533557011ec539fc4c6604367e99cbb77c0a49b8b73b655841d3ee08f4f3e",
+      "owner": "localization-maintainers",
+      "reason": "Machine-assisted contextual QA (Codex, 2026-10-31): This is a backend endpoint host field. `Hostname` is standard network configuration terminology. Source callsite: src/components/Settings/SettingsSoftwareAcquisition.tsx. The complete source value is a standard technical term in this context; native-speaker and RTL review have not been performed. This approval expires 2027-10-31.",
       "expiresOn": "2027-10-31"
     },
     {
@@ -823,6 +879,14 @@
       "sourceHash": "ca62d5e073f52f3ceb83f72d4d70d4fcd8b1ed041cddfb02ccfbbe1f90134f05",
       "owner": "localization-maintainers",
       "reason": "Machine-assisted contextual QA (Codex, 2026-10-31): TV is a standard media-type acronym. The exact source value is intentionally preserved. Native-speaker and RTL review have not been performed; this approval expires 2027-10-31.",
+      "expiresOn": "2027-10-31"
+    },
+    {
+      "domain": "client",
+      "id": "components.Setup.torrentTitle",
+      "sourceHash": "a2189b35a4e10e1dedc956d94e251c187e1c0d5d87cb471c980b09c10ed5b132",
+      "owner": "localization-maintainers",
+      "reason": "Machine-assisted contextual QA (Codex, 2026-10-31): This names the BitTorrent client connection setup section. `Torrent` is the standard peer-to-peer protocol/file-sharing term in French. Source callsite: src/components/Setup/SetupConnectionsGuide.tsx. The complete source value is a standard technical term in this context; native-speaker and RTL review have not been performed. This approval expires 2027-10-31.",
       "expiresOn": "2027-10-31"
     },
     {
@@ -1095,6 +1159,14 @@
       "sourceHash": "5c7807d62633679a03b58527467fecba4621f9c63994965f3861bc6cea201316",
       "owner": "localization-maintainers",
       "reason": "Machine-assisted contextual QA (Codex, 2026-10-31): TV-Y7 is the fixed U.S. TV Parental Guidelines rating code. The exact source value is intentionally preserved. Native-speaker and RTL review have not been performed; this approval expires 2027-10-31.",
+      "expiresOn": "2027-10-31"
+    },
+    {
+      "domain": "client",
+      "id": "components.UserProfile.UserSettings.UserNotificationSettings.UserNotificationsWebPush.browser",
+      "sourceHash": "d31de1a5c5c8ba2a210a167cf0d0dc2425c57ea7525f4b73a4b7ab934af79dfc",
+      "owner": "localization-maintainers",
+      "reason": "Machine-assisted contextual QA (Codex, 2026-10-31): This identifies the browser that registered a Web Push device. `Browser` is the standard software-client term. Source callsite: src/components/UserProfile/UserSettings/UserNotificationSettings/UserNotificationsWebPush/DeviceItem.tsx. The complete source value is a standard technical term in this context; native-speaker and RTL review have not been performed. This approval expires 2027-10-31.",
       "expiresOn": "2027-10-31"
     },
     {
