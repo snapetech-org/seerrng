@@ -133,6 +133,46 @@ followRoutes.post('/', async (req, res) => {
       .status(400)
       .json({ error: 'The follow conditions are invalid.' });
   }
+  if (
+    body.kind === 'tmdb-person' ||
+    body.kind === 'tmdb-studio' ||
+    body.kind === 'tmdb-network'
+  ) {
+    const tmdbId = conditions?.ref?.tmdbId;
+    const subjectType =
+      body.kind === 'tmdb-person'
+        ? 'person'
+        : body.kind === 'tmdb-studio'
+          ? 'studio'
+          : 'network';
+    if (
+      typeof tmdbId !== 'number' ||
+      !Number.isSafeInteger(tmdbId) ||
+      tmdbId <= 0 ||
+      tmdbId > 1_000_000_000 ||
+      subjectKey !== `tmdb:${subjectType}:${tmdbId}`
+    ) {
+      return res.status(400).json({
+        error: 'Choose a valid TMDB person, production company, or network.',
+      });
+    }
+  }
+  if (body.kind === 'tmdb-genre') {
+    const genreId = conditions?.ref?.genreId;
+    const mediaType = conditions?.ref?.mediaType;
+    if (
+      typeof genreId !== 'number' ||
+      !Number.isSafeInteger(genreId) ||
+      genreId <= 0 ||
+      genreId > 1_000_000_000 ||
+      (mediaType !== 'movie' && mediaType !== 'tv') ||
+      subjectKey !== `tmdb:genre:${mediaType}:${genreId}`
+    ) {
+      return res.status(400).json({
+        error: 'Choose a valid movie or series genre.',
+      });
+    }
+  }
   const autoRequest = body.autoRequest === true;
   if (autoRequest && !AUTO_REQUEST_KINDS.includes(body.kind)) {
     return res
@@ -155,7 +195,7 @@ followRoutes.post('/', async (req, res) => {
     notify: body.notify !== false,
     autoRequest,
   });
-  // Record a baseline now so only future changes become news.
+  // Start a baseline now; TMDB adapters may include a small upcoming set.
   const hydrated = await repository.findOne({
     where: { id: follow.id },
     relations: { user: true },

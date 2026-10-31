@@ -8,7 +8,7 @@ import {
   targetHref,
   type FollowTarget,
 } from '@app/components/Following/targetHref';
-import useFollows from '@app/hooks/useFollows';
+import useFollows, { type FollowView } from '@app/hooks/useFollows';
 import useToasts from '@app/hooks/useToasts';
 import defineMessages from '@app/utils/defineMessages';
 import axios from 'axios';
@@ -34,18 +34,55 @@ interface FollowEventView {
   };
 }
 
+const validTmdbId = (value: unknown): number | undefined =>
+  typeof value === 'number' &&
+  Number.isSafeInteger(value) &&
+  value > 0 &&
+  value <= 1_000_000_000
+    ? value
+    : undefined;
+
+const tmdbBrowseHref = (follow: FollowView): string | undefined => {
+  const ref = follow.conditions?.ref;
+  if (!ref || typeof ref !== 'object' || Array.isArray(ref)) {
+    return undefined;
+  }
+  const values = ref as Record<string, unknown>;
+  if (follow.kind === 'tmdb-person') {
+    const id = validTmdbId(values.tmdbId);
+    return id ? `/person/${id}` : undefined;
+  }
+  if (follow.kind === 'tmdb-studio') {
+    const id = validTmdbId(values.tmdbId);
+    return id ? `/discover/movies/studio/${id}` : undefined;
+  }
+  if (follow.kind === 'tmdb-network') {
+    const id = validTmdbId(values.tmdbId);
+    return id ? `/discover/tv/network/${id}` : undefined;
+  }
+  if (follow.kind === 'tmdb-genre') {
+    const id = validTmdbId(values.genreId);
+    const mediaType = values.mediaType;
+    return id && (mediaType === 'movie' || mediaType === 'tv')
+      ? `/discover/${mediaType}/genre/${id}`
+      : undefined;
+  }
+  return undefined;
+};
+
 const messages = defineMessages('components.Following', {
   title: 'Following',
   description:
-    'Personal news about the narrators, series, games, artists, and projects you follow. Each item says why it is here.',
+    'Personal news about the people, production companies, networks, genres, narrators, series, games, artists, and projects you follow. Each item explains why it appeared.',
   news: 'New for You',
   markAllSeen: 'Mark All Seen',
   nothingNew:
-    'Nothing new yet. Follow a series, narrator, game, or artist and changes will show up here.',
+    'Nothing new yet. Follow a person, production company, network, genre, series, narrator, game, or artist and updates will show up here.',
   following: 'What You Follow',
   nothingFollowed:
-    'You are not following anything. Use Follow on a series, book, game, or artist.',
+    'You are not following anything. Use Follow on a person, production company, network, genre, series, book, game, or artist.',
   open: 'Open',
+  browse: 'Browse',
   request: 'Request',
   notify: 'Notify Me',
   autoRequest: 'Request Automatically',
@@ -58,7 +95,7 @@ const messages = defineMessages('components.Following', {
   failed: 'This could not be saved.',
   howHeading: 'How Following Works',
   howBody:
-    'Press Follow on a narrator, series, game, artist, or patch project. SeerrNG checks for changes about every 30 minutes and adds an item here with the reason it appeared. Nothing is requested for you unless you turn on Request Automatically, which is limited to books.',
+    'Press Follow on a person, production company, network, genre, narrator, series, game, artist, or patch project. The first check can show up to three current upcoming titles per media type; later checks add new recent or upcoming items. SeerrNG checks about every 30 minutes. A listed release date does not confirm library availability. Nothing is requested for you unless you turn on Request Automatically, which is limited to books.',
   startFollowing: 'Places to start following',
   unreadAnnounce:
     '{count, plural, =0 {No unread updates.} one {# unread update.} other {# unread updates.}}',
@@ -70,6 +107,10 @@ const messages = defineMessages('components.Following', {
   kindArtist: 'Artist',
   kindPatch: 'Patch Project',
   kindFranchise: 'Franchise',
+  kindTmdbPerson: 'TMDB Person',
+  kindTmdbStudio: 'Production Company',
+  kindTmdbNetwork: 'TV Network',
+  kindTmdbGenre: 'Genre',
   nextVolumeAnnounced:
     'The next volume of {series} is announced in {language}: {title}.',
   newVolumeReleased: 'A new {language} volume of {series} is out: {title}.',
@@ -84,6 +125,12 @@ const messages = defineMessages('components.Following', {
   newFranchiseRelation: 'New connection in {franchise}: {relation}.',
   savedDiscoveryMatch: 'A new match for “{discovery}”: {attributes}.',
   collectorsAreSharing: 'Collectors you follow are sharing {title}.',
+  newVideoTitle:
+    'New movie or series title related to {subject}: {title} ({date}).',
+  upcomingVideoTitle:
+    'Upcoming movie or series related to {subject}: {title} ({date}).',
+  videoReleaseDateReached:
+    'The listed release date has passed for {title}, related to {subject} ({date}).',
   fallbackReason: 'Something changed for {label}.',
 });
 
@@ -96,6 +143,10 @@ const kindMessages = {
   'artist-release-type': messages.kindArtist,
   'patch-project': messages.kindPatch,
   franchise: messages.kindFranchise,
+  'tmdb-person': messages.kindTmdbPerson,
+  'tmdb-studio': messages.kindTmdbStudio,
+  'tmdb-network': messages.kindTmdbNetwork,
+  'tmdb-genre': messages.kindTmdbGenre,
 } as const;
 
 const reasonMessages: Record<string, { id: string; defaultMessage: string }> = {
@@ -111,6 +162,9 @@ const reasonMessages: Record<string, { id: string; defaultMessage: string }> = {
   newFranchiseRelation: messages.newFranchiseRelation,
   savedDiscoveryMatch: messages.savedDiscoveryMatch,
   collectorsAreSharing: messages.collectorsAreSharing,
+  newVideoTitle: messages.newVideoTitle,
+  upcomingVideoTitle: messages.upcomingVideoTitle,
+  videoReleaseDateReached: messages.videoReleaseDateReached,
 };
 
 const PAGE_SIZE = 30;
@@ -189,7 +243,16 @@ const Following = () => {
                   className="app-card-sub card-layout media-choice-card"
                   data-choice-state={event.seen ? 'muted' : undefined}
                 >
-                  <CoverImage src={event.imageUrl} alt="" />
+                  <CoverImage
+                    src={event.imageUrl}
+                    alt=""
+                    type={
+                      event.target?.mediaType === 'movie' ||
+                      event.target?.mediaType === 'tv'
+                        ? 'tmdb'
+                        : undefined
+                    }
+                  />
                   <div data-card-part="body">
                     <div className="media-fact-row">
                       <h3 className="card-title">{event.title}</h3>
@@ -288,64 +351,74 @@ const Following = () => {
         </section>
       ) : (
         <ul className="card-list" data-list-layout="stacked">
-          {follows?.map((follow) => (
-            <li key={follow.id}>
-              <article className="app-card-sub card-layout">
-                <h3 className="card-title">{follow.subjectLabel}</h3>
-                <p className="card-subheading">
-                  {intl.formatMessage(
-                    kindMessages[follow.kind as keyof typeof kindMessages] ??
-                      messages.kindFranchise
-                  )}
-                </p>
-                <div className="media-fact-row">
-                  <label className="card-body-text">
-                    <input
-                      type="checkbox"
-                      checked={follow.notify}
-                      onChange={(event) =>
-                        void update(follow.id, {
-                          notify: event.currentTarget.checked,
-                        })
-                      }
-                    />{' '}
-                    {intl.formatMessage(messages.notify)}
-                  </label>
-                  {[
-                    'narrator',
-                    'author',
-                    'series-language',
-                    'edition',
-                  ].includes(follow.kind) && (
-                    <label
-                      className="card-body-text"
-                      title={intl.formatMessage(messages.autoRequestHelp)}
-                    >
+          {follows?.map((follow) => {
+            const browseHref = tmdbBrowseHref(follow);
+            return (
+              <li key={follow.id}>
+                <article className="app-card-sub card-layout">
+                  <h3 className="card-title">{follow.subjectLabel}</h3>
+                  <p className="card-subheading">
+                    {intl.formatMessage(
+                      kindMessages[follow.kind as keyof typeof kindMessages] ??
+                        messages.kindFranchise
+                    )}
+                  </p>
+                  <div className="media-fact-row">
+                    <label className="card-body-text">
                       <input
                         type="checkbox"
-                        checked={follow.autoRequest}
+                        checked={follow.notify}
                         onChange={(event) =>
                           void update(follow.id, {
-                            autoRequest: event.currentTarget.checked,
+                            notify: event.currentTarget.checked,
                           })
                         }
                       />{' '}
-                      {intl.formatMessage(messages.autoRequest)}
+                      {intl.formatMessage(messages.notify)}
                     </label>
-                  )}
-                </div>
-                <div className="app-action-row">
-                  <Button
-                    buttonType="danger"
-                    buttonSize="sm"
-                    onClick={() => void unfollow(follow.id)}
-                  >
-                    {intl.formatMessage(messages.stopFollowing)}
-                  </Button>
-                </div>
-              </article>
-            </li>
-          ))}
+                    {[
+                      'narrator',
+                      'author',
+                      'series-language',
+                      'edition',
+                    ].includes(follow.kind) && (
+                      <label
+                        className="card-body-text"
+                        title={intl.formatMessage(messages.autoRequestHelp)}
+                      >
+                        <input
+                          type="checkbox"
+                          checked={follow.autoRequest}
+                          onChange={(event) =>
+                            void update(follow.id, {
+                              autoRequest: event.currentTarget.checked,
+                            })
+                          }
+                        />{' '}
+                        {intl.formatMessage(messages.autoRequest)}
+                      </label>
+                    )}
+                  </div>
+                  <div className="app-action-row">
+                    {browseHref && (
+                      <Link href={browseHref} legacyBehavior passHref>
+                        <Button as="a" buttonType="default" buttonSize="sm">
+                          {intl.formatMessage(messages.browse)}
+                        </Button>
+                      </Link>
+                    )}
+                    <Button
+                      buttonType="danger"
+                      buttonSize="sm"
+                      onClick={() => void unfollow(follow.id)}
+                    >
+                      {intl.formatMessage(messages.stopFollowing)}
+                    </Button>
+                  </div>
+                </article>
+              </li>
+            );
+          })}
         </ul>
       )}
     </div>

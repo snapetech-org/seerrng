@@ -10,7 +10,11 @@ export type FollowKind =
   | 'expansion'
   | 'artist-release-type'
   | 'patch-project'
-  | 'franchise';
+  | 'franchise'
+  | 'tmdb-person'
+  | 'tmdb-studio'
+  | 'tmdb-network'
+  | 'tmdb-genre';
 
 export interface FollowView {
   id: number;

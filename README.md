@@ -82,6 +82,7 @@ For local MCP access, see the [SnapeTech MCP integration guide](./docs/integrati
 - Requests and approvals for movies, shows, music, ebooks, audiobooks, comics, magazines, emulation ROMs, and PC games.
 - A companion Android APK client for connecting to one or more self-hosted SeerrNG servers.
 - Movie and series Discover filters with 0.1-point TMDB rating thresholds and streaming-service availability filters by region.
+- Personal Following for cast, crew, production companies, TV networks, media-specific genres, narrators, authors, and other interests, with a bounded feed of recent and upcoming media. See the [Following guide](docs/using-seerr/following.md) for its baseline, date window, and notification behavior.
 - Media-server integration with Plex, Jellyfin, and Emby, including watch-state-aware My Library views scoped to each linked account.
 - Optional Jellyfin and Emby profile sync during user imports, refreshing linked provider names and avatars while preserving SeerrNG email addresses, local passwords, and permissions.
 - Labeled movie and TV request destinations across multiple Radarr and Sonarr instances, with per-user access and availability tracked for each destination.
@@ -139,7 +140,7 @@ For local MCP access, see the [SnapeTech MCP integration guide](./docs/integrati
 - **Editions and narrations:** compare narrators, full-cast and solo, abridged and unabridged, and keep a second performance alongside the first (ChaptarrNG); compare a series by narrator; request a specific standard, deluxe, or remastered album release.
 - **Games and patches:** compare game editions and request only the expansions you choose (QuestarrNG), find games by theme, mode, perspective, and language with saved searches, and request exact translation or ROM-hack versions with the original kept alongside (ROMarrNG).
 - **Discovery you steer:** Hardcover book recommendations with standalone, first-in-series, and less-popular filters; Collector Picks from slskdN with the reason each appeared.
-- **Following:** follow narrators, authors, series, game content, artists, and patch projects and read personal news that says why each item appeared; optional auto-request is limited to books.
+- **Following:** follow cast and crew, production companies, TV networks, movie or series genres, narrators, authors, series, game content, artists, and patch projects. The personal feed explains each recent or upcoming update; automatic requests remain limited to supported book follows. See the [Following guide](docs/using-seerr/following.md) for date bounds, baseline behavior, maturity limits, and notification scope.
 - A standalone [SeerrNG Companion browser extension](https://github.com/snapetech-org/seerrng-companion) for requesting from IMDb, Letterboxd, Steam, Goodreads, AniList, and more.
 - Catalog browsing and requests for Retro and Modern emulation systems and PC games for Windows, Linux, and macOS, with QuestarrNG and ROMarrNG handling acquisition.
 - Administrator-controlled availability switches for each supported category, including separate ebook, audiobook, Retro, Modern, and PC Games controls.

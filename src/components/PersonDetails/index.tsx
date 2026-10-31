@@ -6,6 +6,7 @@ import LoadingSpinner from '@app/components/Common/LoadingSpinner';
 import Modal from '@app/components/Common/Modal';
 import PageTitle from '@app/components/Common/PageTitle';
 import ExternalLinkBlock from '@app/components/ExternalLinkBlock';
+import FollowButton from '@app/components/Following/FollowButton';
 import TitleCard from '@app/components/TitleCard';
 import { SettingsContext } from '@app/context/SettingsContext';
 import useToasts from '@app/hooks/useToasts';
@@ -118,6 +119,7 @@ const PersonDetails = () => {
       type: 'or',
     }) &&
     movieIds.length > 0;
+  const canFollowPerson = hasPermission(Permission.REQUEST);
 
   const requestAllMovies = async () => {
     setRequestingAllMovies(true);
@@ -436,14 +438,26 @@ const PersonDetails = () => {
           )}
         </div>
       </div>
-      {canRequestAllMovies && (
+      {(canRequestAllMovies || canFollowPerson) && (
         <div className="app-action-row" data-action-placement="leading">
-          <Button
-            buttonType="primary"
-            onClick={() => setShowRequestAllMovies(true)}
-          >
-            {intl.formatMessage(messages.requestAllMovies)}
-          </Button>
+          {canRequestAllMovies && (
+            <Button
+              buttonType="primary"
+              onClick={() => setShowRequestAllMovies(true)}
+            >
+              {intl.formatMessage(messages.requestAllMovies)}
+            </Button>
+          )}
+          {canFollowPerson && (
+            <FollowButton
+              input={{
+                kind: 'tmdb-person',
+                subjectKey: `tmdb:person:${data.id}`,
+                subjectLabel: data.name,
+                conditions: { ref: { tmdbId: data.id } },
+              }}
+            />
+          )}
         </div>
       )}
       {showRequestAllMovies && canRequestAllMovies && (

@@ -23,13 +23,16 @@ export type FollowReasonKey =
   | 'newArtistRelease'
   | 'newFranchiseRelation'
   | 'savedDiscoveryMatch'
-  | 'collectorsAreSharing';
+  | 'collectorsAreSharing'
+  | 'newVideoTitle'
+  | 'upcomingVideoTitle'
+  | 'videoReleaseDateReached';
 
 export interface AdapterResult {
   events: NewFollowEvent[];
   /** Replaces the follow's cursor so nothing is reported twice. */
   cursor: Record<string, unknown>;
-  /** First evaluation records a baseline instead of flooding the person. */
+  /** First evaluation records a baseline and can surface a bounded upcoming set. */
   baseline?: boolean;
 }
 

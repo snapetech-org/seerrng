@@ -180,6 +180,22 @@ components:
           type: integer
         kind:
           type: string
+          enum:
+            [
+              narrator,
+              author,
+              series-language,
+              edition,
+              expansion,
+              artist-release-type,
+              patch-project,
+              franchise,
+              saved-discovery,
+              tmdb-person,
+              tmdb-studio,
+              tmdb-network,
+              tmdb-genre,
+            ]
         subjectKey:
           type: string
         subjectLabel:
@@ -187,6 +203,7 @@ components:
         conditions:
           type: object
           nullable: true
+          description: TMDB follows use ref.tmdbId for person, company, or network IDs. Genre follows use ref.genreId and ref.mediaType (movie or tv).
           additionalProperties: true
         notify:
           type: boolean
@@ -199,6 +216,86 @@ components:
         createdAt:
           type: string
           format: date-time
+    FollowEvent:
+      type: object
+      required:
+        [id, reasonKey, reasonValues, title, target, seen, createdAt, follow]
+      properties:
+        id:
+          type: integer
+        reasonKey:
+          type: string
+          enum:
+            [
+              nextVolumeAnnounced,
+              newVolumeReleased,
+              newNarrationAvailable,
+              fullCastProduction,
+              newBookByNarrator,
+              newBookByAuthor,
+              newExpansion,
+              newPatchVersion,
+              newArtistRelease,
+              newFranchiseRelation,
+              savedDiscoveryMatch,
+              collectorsAreSharing,
+              newVideoTitle,
+              upcomingVideoTitle,
+              videoReleaseDateReached,
+            ]
+          description: Stable key for the localized explanation of this event.
+        reasonValues:
+          type: object
+          additionalProperties:
+            type: string
+        title:
+          type: string
+        imageUrl:
+          type: string
+          nullable: true
+        target:
+          type: object
+          nullable: true
+          properties:
+            mediaType:
+              type: string
+            id:
+              type: string
+            variantKey:
+              type: string
+        seen:
+          type: boolean
+        createdAt:
+          type: string
+          format: date-time
+        follow:
+          type: object
+          required: [id, kind, subjectLabel, autoRequest]
+          properties:
+            id:
+              type: integer
+            kind:
+              type: string
+              enum:
+                [
+                  narrator,
+                  author,
+                  series-language,
+                  edition,
+                  expansion,
+                  artist-release-type,
+                  patch-project,
+                  franchise,
+                  saved-discovery,
+                  tmdb-person,
+                  tmdb-studio,
+                  tmdb-network,
+                  tmdb-genre,
+                ]
+            subjectLabel:
+              type: string
+            autoRequest:
+              type: boolean
     SwipeSettings:
       type: object
       properties:
@@ -12064,8 +12161,8 @@ paths:
                     items:
                       $ref: '#/components/schemas/Follow'
     post:
-      summary: Follow a narrator, series, game, artist, or project
-      description: Idempotent for the same subject. The first evaluation records a baseline so only later changes become news.
+      summary: Follow a person, production company, network, genre, narrator, series, game, artist, or project
+      description: Idempotent for the same subject. Person, production-company, and network follows require conditions.ref.tmdbId to match the ID in subjectKey (tmdb:person:{id}, tmdb:studio:{id}, or tmdb:network:{id}). Genre follows require conditions.ref.genreId and conditions.ref.mediaType and a matching subjectKey (tmdb:genre:{mediaType}:{id}). For TMDB follows, the first evaluation records a baseline with a small set of current upcoming titles. Checks are bounded and respect the user's video maturity limits. Automatic requests are not available for TMDB follows.
       tags:
         - follow
       requestBody:
@@ -12088,6 +12185,10 @@ paths:
                       artist-release-type,
                       patch-project,
                       franchise,
+                      tmdb-person,
+                      tmdb-studio,
+                      tmdb-network,
+                      tmdb-genre,
                     ]
                 subjectKey:
                   type: string
@@ -12095,6 +12196,7 @@ paths:
                   type: string
                 conditions:
                   type: object
+                  description: TMDB person, studio, and network follows use ref.tmdbId; genre follows use ref.genreId and ref.mediaType (movie or tv).
                   additionalProperties: true
                 notify:
                   type: boolean
@@ -12182,7 +12284,15 @@ paths:
             application/json:
               schema:
                 type: object
-                additionalProperties: true
+                required: [total, results]
+                properties:
+                  total:
+                    type: integer
+                    minimum: 0
+                  results:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/FollowEvent'
   /follow/events/count:
     get:
       summary: Unseen personal news count
