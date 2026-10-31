@@ -1,4 +1,677 @@
 {
   "schemaVersion": 1,
-  "entries": []
+  "entries": [
+    {
+      "domain": "client",
+      "id": "components.ArtistDetails.ep",
+      "sourceHash": "dcc9be2679d9e1a4b7f2b903f67ee5638a679da66f1b6a39666c4b09fbd95ce3",
+      "owner": "localization-maintainers",
+      "reason": "Machine-assisted contextual QA (Codex, 2026-10-31): EP is the standard abbreviation for an extended-play music release. The exact source value is intentionally preserved. Native-speaker and RTL review have not been performed; this approval expires 2027-10-31.",
+      "expiresOn": "2027-10-31"
+    },
+    {
+      "domain": "client",
+      "id": "components.Association.AssociationDetailCard.isbn",
+      "sourceHash": "623c18690950532afea764f43c68b005b3d39e80eb78813fe5247f7e8ca842f8",
+      "owner": "localization-maintainers",
+      "reason": "Machine-assisted contextual QA (Codex, 2026-10-31): ISBN is a standardized book identifier acronym. The exact source value is intentionally preserved. Native-speaker and RTL review have not been performed; this approval expires 2027-10-31.",
+      "expiresOn": "2027-10-31"
+    },
+    {
+      "domain": "client",
+      "id": "components.AuthorDetails.AuthorWorkCard.isbn",
+      "sourceHash": "623c18690950532afea764f43c68b005b3d39e80eb78813fe5247f7e8ca842f8",
+      "owner": "localization-maintainers",
+      "reason": "Machine-assisted contextual QA (Codex, 2026-10-31): ISBN is a standardized book identifier acronym. The exact source value is intentionally preserved. Native-speaker and RTL review have not been performed; this approval expires 2027-10-31.",
+      "expiresOn": "2027-10-31"
+    },
+    {
+      "domain": "client",
+      "id": "components.BookDetails.Layout.isbn",
+      "sourceHash": "623c18690950532afea764f43c68b005b3d39e80eb78813fe5247f7e8ca842f8",
+      "owner": "localization-maintainers",
+      "reason": "Machine-assisted contextual QA (Codex, 2026-10-31): ISBN is a standardized book identifier acronym. The exact source value is intentionally preserved. Native-speaker and RTL review have not been performed; this approval expires 2027-10-31.",
+      "expiresOn": "2027-10-31"
+    },
+    {
+      "domain": "client",
+      "id": "components.BookDetails.Layout.openLibrary",
+      "sourceHash": "11e9037f6de21cf3445904c8621c6703f437870c57227eee49c4032e5e0498de",
+      "owner": "localization-maintainers",
+      "reason": "Machine-assisted contextual QA (Codex, 2026-10-31): Open Library is a named catalog provider. The exact source value is intentionally preserved. Native-speaker and RTL review have not been performed; this approval expires 2027-10-31.",
+      "expiresOn": "2027-10-31"
+    },
+    {
+      "domain": "client",
+      "id": "components.CollectionDetails.imdb",
+      "sourceHash": "061f3a4e4a30d7b2312fb974a8e7820919827ab79f2471051956749145e20075",
+      "owner": "localization-maintainers",
+      "reason": "Machine-assisted contextual QA (Codex, 2026-10-31): IMDb is a provider/brand name. The exact source value is intentionally preserved. Native-speaker and RTL review have not been performed; this approval expires 2027-10-31.",
+      "expiresOn": "2027-10-31"
+    },
+    {
+      "domain": "client",
+      "id": "components.CollectionDetails.tmdb",
+      "sourceHash": "d48b09a78b6dfb05b47f2ce1852d1339a66f58dd731ff4a8093cdcee383c42d5",
+      "owner": "localization-maintainers",
+      "reason": "Machine-assisted contextual QA (Codex, 2026-10-31): TMDB is a provider acronym. The exact source value is intentionally preserved. Native-speaker and RTL review have not been performed; this approval expires 2027-10-31.",
+      "expiresOn": "2027-10-31"
+    },
+    {
+      "domain": "client",
+      "id": "components.CollectionRatings.imdb",
+      "sourceHash": "061f3a4e4a30d7b2312fb974a8e7820919827ab79f2471051956749145e20075",
+      "owner": "localization-maintainers",
+      "reason": "Machine-assisted contextual QA (Codex, 2026-10-31): IMDb is a provider/brand name. The exact source value is intentionally preserved. Native-speaker and RTL review have not been performed; this approval expires 2027-10-31.",
+      "expiresOn": "2027-10-31"
+    },
+    {
+      "domain": "client",
+      "id": "components.CollectionRatings.tmdb",
+      "sourceHash": "d48b09a78b6dfb05b47f2ce1852d1339a66f58dd731ff4a8093cdcee383c42d5",
+      "owner": "localization-maintainers",
+      "reason": "Machine-assisted contextual QA (Codex, 2026-10-31): TMDB is a provider acronym. The exact source value is intentionally preserved. Native-speaker and RTL review have not been performed; this approval expires 2027-10-31.",
+      "expiresOn": "2027-10-31"
+    },
+    {
+      "domain": "client",
+      "id": "components.CollectionRatings.trakt",
+      "sourceHash": "a83ce4f49068164f2d42b6e2b434d2926bf1e100656bf302cc0059b928c3fdc5",
+      "owner": "localization-maintainers",
+      "reason": "Machine-assisted contextual QA (Codex, 2026-10-31): Trakt is a provider/brand name. The exact source value is intentionally preserved. Native-speaker and RTL review have not been performed; this approval expires 2027-10-31.",
+      "expiresOn": "2027-10-31"
+    },
+    {
+      "domain": "client",
+      "id": "components.Discover.DiscoverAdult.service",
+      "sourceHash": "3b502e62c8e5f45fce63c758173cd1668ec7e0e0039da84d3ba8328519488ff7",
+      "owner": "localization-maintainers",
+      "reason": "Machine-assisted contextual QA (Codex, 2026-10-31): Whisparr is a product name; the remaining {service} value is dynamic provider data and the separator carries no prose. The exact source value is intentionally preserved. Native-speaker and RTL review have not been performed; this approval expires 2027-10-31.",
+      "expiresOn": "2027-10-31"
+    },
+    {
+      "domain": "client",
+      "id": "components.Discover.DiscoverMusic.ep",
+      "sourceHash": "dcc9be2679d9e1a4b7f2b903f67ee5638a679da66f1b6a39666c4b09fbd95ce3",
+      "owner": "localization-maintainers",
+      "reason": "Machine-assisted contextual QA (Codex, 2026-10-31): EP is the standard abbreviation for an extended-play music release. The exact source value is intentionally preserved. Native-speaker and RTL review have not been performed; this approval expires 2027-10-31.",
+      "expiresOn": "2027-10-31"
+    },
+    {
+      "domain": "client",
+      "id": "components.Discover.NetworkSlider.Editor.networkId",
+      "sourceHash": "373a2ab1201ce7b33db490cb9a6dc73c59f98e5bb0196e48d10124607c80cbd6",
+      "owner": "localization-maintainers",
+      "reason": "Machine-assisted contextual QA (Codex, 2026-10-31): TMDB is a provider acronym; ID and {id} are technical/dynamic identifier text. The exact source value is intentionally preserved. Native-speaker and RTL review have not been performed; this approval expires 2027-10-31.",
+      "expiresOn": "2027-10-31"
+    },
+    {
+      "domain": "client",
+      "id": "components.Discover.ReadMeABookSearch.title",
+      "sourceHash": "2599491c98428477d3f249d958eeb61550fa1c7b1b20fc24791f9c26bcb65df9",
+      "owner": "localization-maintainers",
+      "reason": "Machine-assisted contextual QA (Codex, 2026-10-31): ReadMeABook is the integrated product name. The exact source value is intentionally preserved. Native-speaker and RTL review have not been performed; this approval expires 2027-10-31.",
+      "expiresOn": "2027-10-31"
+    },
+    {
+      "domain": "client",
+      "id": "components.DownloadBlock.liveRate",
+      "sourceHash": "bb005a2d64357812dd25e0ff08ba72e6f6696307c4dc6677ecf14128749fc58e",
+      "owner": "localization-maintainers",
+      "reason": "Machine-assisted contextual QA (Codex, 2026-10-31): This is a dynamic rate followed by the standard “per second” unit notation /s; it contains no ordinary prose. The exact source value is intentionally preserved. Native-speaker and RTL review have not been performed; this approval expires 2027-10-31.",
+      "expiresOn": "2027-10-31"
+    },
+    {
+      "domain": "client",
+      "id": "components.EditionCompare.duration",
+      "sourceHash": "425dc6c72de6fdc579549bfa261e44ea9dd0c30a37287124881b2f48b9e0b6f4",
+      "owner": "localization-maintainers",
+      "reason": "Machine-assisted contextual QA (Codex, 2026-10-31): This is a compact dynamic duration using standard h/m time-unit notation, not a sentence. The exact source value is intentionally preserved. Native-speaker and RTL review have not been performed; this approval expires 2027-10-31.",
+      "expiresOn": "2027-10-31"
+    },
+    {
+      "domain": "client",
+      "id": "components.IndexerSearch.categoryTv",
+      "sourceHash": "ca62d5e073f52f3ceb83f72d4d70d4fcd8b1ed041cddfb02ccfbbe1f90134f05",
+      "owner": "localization-maintainers",
+      "reason": "Machine-assisted contextual QA (Codex, 2026-10-31): TV is a standard media-type acronym. The exact source value is intentionally preserved. Native-speaker and RTL review have not been performed; this approval expires 2027-10-31.",
+      "expiresOn": "2027-10-31"
+    },
+    {
+      "domain": "client",
+      "id": "components.IssueList.ep",
+      "sourceHash": "dcc9be2679d9e1a4b7f2b903f67ee5638a679da66f1b6a39666c4b09fbd95ce3",
+      "owner": "localization-maintainers",
+      "reason": "Machine-assisted contextual QA (Codex, 2026-10-31): EP is the standard abbreviation for an extended-play music release. The exact source value is intentionally preserved. Native-speaker and RTL review have not been performed; this approval expires 2027-10-31.",
+      "expiresOn": "2027-10-31"
+    },
+    {
+      "domain": "client",
+      "id": "components.IssueModal.CreateIssueModal.hd",
+      "sourceHash": "323e41792751e840ad9e398d5057120cb1f1b730acbb193ee6498eb3b481059c",
+      "owner": "localization-maintainers",
+      "reason": "Machine-assisted contextual QA (Codex, 2026-10-31): HD is a standard media-resolution abbreviation. The exact source value is intentionally preserved. Native-speaker and RTL review have not been performed; this approval expires 2027-10-31.",
+      "expiresOn": "2027-10-31"
+    },
+    {
+      "domain": "client",
+      "id": "components.IssueModal.CreateIssueModal.ultraHd",
+      "sourceHash": "cc1e5d5a9c88e51f820aa0ea398b7195da9ae54fcd2a34a1fc9124fde6d4a9a8",
+      "owner": "localization-maintainers",
+      "reason": "Machine-assisted contextual QA (Codex, 2026-10-31): 4K is a standard media-resolution designation. The exact source value is intentionally preserved. Native-speaker and RTL review have not been performed; this approval expires 2027-10-31.",
+      "expiresOn": "2027-10-31"
+    },
+    {
+      "domain": "client",
+      "id": "components.Layout.VersionStatus.streammain",
+      "sourceHash": "f83a4c9ac1c2405b140e9356cc71dd4ae4c81fd7e1f67dc3b730f3954e9f353f",
+      "owner": "localization-maintainers",
+      "reason": "Machine-assisted contextual QA (Codex, 2026-10-31): SeerrNG Main is the named application update stream in this version-status selector. The exact source value is intentionally preserved. Native-speaker and RTL review have not been performed; this approval expires 2027-10-31.",
+      "expiresOn": "2027-10-31"
+    },
+    {
+      "domain": "client",
+      "id": "components.Layout.VersionStatus.streamstable",
+      "sourceHash": "231d27db949fed105842b1fe107e6610a44c44b9dde73d619d68c427f0ac9398",
+      "owner": "localization-maintainers",
+      "reason": "Machine-assisted contextual QA (Codex, 2026-10-31): SeerrNG Stable is the named application update stream in this version-status selector. The exact source value is intentionally preserved. Native-speaker and RTL review have not been performed; this approval expires 2027-10-31.",
+      "expiresOn": "2027-10-31"
+    },
+    {
+      "domain": "client",
+      "id": "components.Login.hostname",
+      "sourceHash": "a225449bbb70726ed183b9ad491eb3cfeff392158ddb57cce2e63c9816aeadae",
+      "owner": "localization-maintainers",
+      "reason": "Machine-assisted contextual QA (Codex, 2026-10-31): The complete value is a dynamic media-server name placeholder followed only by the standard URL acronym; it contains no localizable prose. The exact source value is intentionally preserved. Native-speaker and RTL review have not been performed; this approval expires 2027-10-31.",
+      "expiresOn": "2027-10-31"
+    },
+    {
+      "domain": "client",
+      "id": "components.MediaDetails.MetadataAttribution.tmdb",
+      "sourceHash": "d48b09a78b6dfb05b47f2ce1852d1339a66f58dd731ff4a8093cdcee383c42d5",
+      "owner": "localization-maintainers",
+      "reason": "Machine-assisted contextual QA (Codex, 2026-10-31): TMDB is a provider acronym. The exact source value is intentionally preserved. Native-speaker and RTL review have not been performed; this approval expires 2027-10-31.",
+      "expiresOn": "2027-10-31"
+    },
+    {
+      "domain": "client",
+      "id": "components.MediaDetails.MetadataAttribution.tvdb",
+      "sourceHash": "057d3732b28b30cab999ad5be77745abacbf33b608e2fb4b109c249891f8ef8c",
+      "owner": "localization-maintainers",
+      "reason": "Machine-assisted contextual QA (Codex, 2026-10-31): TheTVDB.com is a provider domain/brand. The exact source value is intentionally preserved. Native-speaker and RTL review have not been performed; this approval expires 2027-10-31.",
+      "expiresOn": "2027-10-31"
+    },
+    {
+      "domain": "client",
+      "id": "components.MetadataSelector.tvdbLabel",
+      "sourceHash": "b30fb6fb1f28ca0919a80e87186e8013701b4d9d892782cfe63a7b6cc4c8c052",
+      "owner": "localization-maintainers",
+      "reason": "Machine-assisted contextual QA (Codex, 2026-10-31): TheTVDB is a provider name. The exact source value is intentionally preserved. Native-speaker and RTL review have not been performed; this approval expires 2027-10-31.",
+      "expiresOn": "2027-10-31"
+    },
+    {
+      "domain": "client",
+      "id": "components.MovieDetails.Layout.hd",
+      "sourceHash": "323e41792751e840ad9e398d5057120cb1f1b730acbb193ee6498eb3b481059c",
+      "owner": "localization-maintainers",
+      "reason": "Machine-assisted contextual QA (Codex, 2026-10-31): HD is a standard media-resolution abbreviation. The exact source value is intentionally preserved. Native-speaker and RTL review have not been performed; this approval expires 2027-10-31.",
+      "expiresOn": "2027-10-31"
+    },
+    {
+      "domain": "client",
+      "id": "components.MovieDetails.Layout.ultraHd",
+      "sourceHash": "cc1e5d5a9c88e51f820aa0ea398b7195da9ae54fcd2a34a1fc9124fde6d4a9a8",
+      "owner": "localization-maintainers",
+      "reason": "Machine-assisted contextual QA (Codex, 2026-10-31): 4K is a standard media-resolution designation. The exact source value is intentionally preserved. Native-speaker and RTL review have not been performed; this approval expires 2027-10-31.",
+      "expiresOn": "2027-10-31"
+    },
+    {
+      "domain": "client",
+      "id": "components.MovieSummaryCard.hd",
+      "sourceHash": "323e41792751e840ad9e398d5057120cb1f1b730acbb193ee6498eb3b481059c",
+      "owner": "localization-maintainers",
+      "reason": "Machine-assisted contextual QA (Codex, 2026-10-31): HD is a standard media-resolution abbreviation. The exact source value is intentionally preserved. Native-speaker and RTL review have not been performed; this approval expires 2027-10-31.",
+      "expiresOn": "2027-10-31"
+    },
+    {
+      "domain": "client",
+      "id": "components.MovieSummaryCard.ultraHd",
+      "sourceHash": "cc1e5d5a9c88e51f820aa0ea398b7195da9ae54fcd2a34a1fc9124fde6d4a9a8",
+      "owner": "localization-maintainers",
+      "reason": "Machine-assisted contextual QA (Codex, 2026-10-31): 4K is a standard media-resolution designation. The exact source value is intentionally preserved. Native-speaker and RTL review have not been performed; this approval expires 2027-10-31.",
+      "expiresOn": "2027-10-31"
+    },
+    {
+      "domain": "client",
+      "id": "components.MusicDetails.Layout.musicBrainz",
+      "sourceHash": "e4ef84fb5d15c267ad1d49d304957611cd201a7e3b83c7c137859fffa7294ae6",
+      "owner": "localization-maintainers",
+      "reason": "Machine-assisted contextual QA (Codex, 2026-10-31): MusicBrainz is the music metadata provider name. The exact source value is intentionally preserved. Native-speaker and RTL review have not been performed; this approval expires 2027-10-31.",
+      "expiresOn": "2027-10-31"
+    },
+    {
+      "domain": "client",
+      "id": "components.ReaderDeliverySettings.addressPlaceholder",
+      "sourceHash": "6365169ed2966d8f26eb0a81e26fc299db4b9551773b4a0958013dde74b6f4b0",
+      "owner": "localization-maintainers",
+      "reason": "Machine-assisted contextual QA (Codex, 2026-10-31): This is a sample HTTPS URL placeholder, not interface prose; the protocol and host example must remain intact. The exact source value is intentionally preserved. Native-speaker and RTL review have not been performed; this approval expires 2027-10-31.",
+      "expiresOn": "2027-10-31"
+    },
+    {
+      "domain": "client",
+      "id": "components.ReaderDeliverySettings.bookorbit",
+      "sourceHash": "6a466c4f7e5203c03076aa1515a501c5d04361324e2c686972d80db42255cafa",
+      "owner": "localization-maintainers",
+      "reason": "Machine-assisted contextual QA (Codex, 2026-10-31): BookOrbit is the integrated service name. The exact source value is intentionally preserved. Native-speaker and RTL review have not been performed; this approval expires 2027-10-31.",
+      "expiresOn": "2027-10-31"
+    },
+    {
+      "domain": "client",
+      "id": "components.ReaderGroupingAction.bookorbit",
+      "sourceHash": "6a466c4f7e5203c03076aa1515a501c5d04361324e2c686972d80db42255cafa",
+      "owner": "localization-maintainers",
+      "reason": "Machine-assisted contextual QA (Codex, 2026-10-31): BookOrbit is the integrated service name. The exact source value is intentionally preserved. Native-speaker and RTL review have not been performed; this approval expires 2027-10-31.",
+      "expiresOn": "2027-10-31"
+    },
+    {
+      "domain": "client",
+      "id": "components.RequestButton.hd",
+      "sourceHash": "323e41792751e840ad9e398d5057120cb1f1b730acbb193ee6498eb3b481059c",
+      "owner": "localization-maintainers",
+      "reason": "Machine-assisted contextual QA (Codex, 2026-10-31): HD is a standard media-resolution abbreviation. The exact source value is intentionally preserved. Native-speaker and RTL review have not been performed; this approval expires 2027-10-31.",
+      "expiresOn": "2027-10-31"
+    },
+    {
+      "domain": "client",
+      "id": "components.RequestCard.tmdbid",
+      "sourceHash": "7cee9774e8070d60d9f36c84ea43a3f56226eb753f30d1144409b836abda86b8",
+      "owner": "localization-maintainers",
+      "reason": "Machine-assisted contextual QA (Codex, 2026-10-31): TMDB ID is a provider-specific technical identifier label. The exact source value is intentionally preserved. Native-speaker and RTL review have not been performed; this approval expires 2027-10-31.",
+      "expiresOn": "2027-10-31"
+    },
+    {
+      "domain": "client",
+      "id": "components.RequestCard.tvdbid",
+      "sourceHash": "1ad97af04856f9036bafd399c137036330c58af9398c9ac05c1c617e6eeaa81b",
+      "owner": "localization-maintainers",
+      "reason": "Machine-assisted contextual QA (Codex, 2026-10-31): TheTVDB ID is a provider-specific technical identifier label. The exact source value is intentionally preserved. Native-speaker and RTL review have not been performed; this approval expires 2027-10-31.",
+      "expiresOn": "2027-10-31"
+    },
+    {
+      "domain": "client",
+      "id": "components.RequestList.RequestItem.mbid",
+      "sourceHash": "69e8a1b88bb0f4c0c8e1ec65926d7e3940f4e2a621d20f41ad125170021276c6",
+      "owner": "localization-maintainers",
+      "reason": "Machine-assisted contextual QA (Codex, 2026-10-31): MusicBrainz ID is a provider-specific technical identifier label. The exact source value is intentionally preserved. Native-speaker and RTL review have not been performed; this approval expires 2027-10-31.",
+      "expiresOn": "2027-10-31"
+    },
+    {
+      "domain": "client",
+      "id": "components.RequestList.RequestItem.olid",
+      "sourceHash": "264c1bf5032cc9c8dff7a9963ed75d470583bb7fae59f6f6f2eb9661c2394480",
+      "owner": "localization-maintainers",
+      "reason": "Machine-assisted contextual QA (Codex, 2026-10-31): Open Library ID is a provider-specific technical identifier label. The exact source value is intentionally preserved. Native-speaker and RTL review have not been performed; this approval expires 2027-10-31.",
+      "expiresOn": "2027-10-31"
+    },
+    {
+      "domain": "client",
+      "id": "components.RequestList.RequestItem.tmdbid",
+      "sourceHash": "7cee9774e8070d60d9f36c84ea43a3f56226eb753f30d1144409b836abda86b8",
+      "owner": "localization-maintainers",
+      "reason": "Machine-assisted contextual QA (Codex, 2026-10-31): TMDB ID is a provider-specific technical identifier label. The exact source value is intentionally preserved. Native-speaker and RTL review have not been performed; this approval expires 2027-10-31.",
+      "expiresOn": "2027-10-31"
+    },
+    {
+      "domain": "client",
+      "id": "components.RequestList.RequestItem.tvdbid",
+      "sourceHash": "1ad97af04856f9036bafd399c137036330c58af9398c9ac05c1c617e6eeaa81b",
+      "owner": "localization-maintainers",
+      "reason": "Machine-assisted contextual QA (Codex, 2026-10-31): TheTVDB ID is a provider-specific technical identifier label. The exact source value is intentionally preserved. Native-speaker and RTL review have not been performed; this approval expires 2027-10-31.",
+      "expiresOn": "2027-10-31"
+    },
+    {
+      "domain": "client",
+      "id": "components.RequestModal.BulkRequestItemCard.isbn",
+      "sourceHash": "623c18690950532afea764f43c68b005b3d39e80eb78813fe5247f7e8ca842f8",
+      "owner": "localization-maintainers",
+      "reason": "Machine-assisted contextual QA (Codex, 2026-10-31): ISBN is a standardized book identifier acronym. The exact source value is intentionally preserved. Native-speaker and RTL review have not been performed; this approval expires 2027-10-31.",
+      "expiresOn": "2027-10-31"
+    },
+    {
+      "domain": "client",
+      "id": "components.RequestModal.MusicCollection.hd",
+      "sourceHash": "b84e48724bb66bb9cddd31b9d61541dea165218c94882526bae3e1c2d8bf0b74",
+      "owner": "localization-maintainers",
+      "reason": "Machine-assisted contextual QA (Codex, 2026-10-31): MP3 is a standardized audio format name. The exact source value is intentionally preserved. Native-speaker and RTL review have not been performed; this approval expires 2027-10-31.",
+      "expiresOn": "2027-10-31"
+    },
+    {
+      "domain": "client",
+      "id": "components.RequestModal.MusicCollection.ultraHd",
+      "sourceHash": "95f9e7a66bfb10d3c609f2c88ef3566ae3239ab4e025d0e661f7779f62c02ada",
+      "owner": "localization-maintainers",
+      "reason": "Machine-assisted contextual QA (Codex, 2026-10-31): FLAC is a standardized audio format name. The exact source value is intentionally preserved. Native-speaker and RTL review have not been performed; this approval expires 2027-10-31.",
+      "expiresOn": "2027-10-31"
+    },
+    {
+      "domain": "client",
+      "id": "components.RequestModal.PlaylistImportModal.urlPlaceholder",
+      "sourceHash": "a73f242daefd735f1268b5960d187d9f3fda99436ebf1a6fe1ec8baf0fdef449",
+      "owner": "localization-maintainers",
+      "reason": "Machine-assisted contextual QA (Codex, 2026-10-31): This is an example Spotify playlist URL; preserve the provider URL and path as technical input guidance. The exact source value is intentionally preserved. Native-speaker and RTL review have not been performed; this approval expires 2027-10-31.",
+      "expiresOn": "2027-10-31"
+    },
+    {
+      "domain": "client",
+      "id": "components.RequestModal.hd",
+      "sourceHash": "323e41792751e840ad9e398d5057120cb1f1b730acbb193ee6498eb3b481059c",
+      "owner": "localization-maintainers",
+      "reason": "Machine-assisted contextual QA (Codex, 2026-10-31): HD is a standard media-resolution abbreviation. The exact source value is intentionally preserved. Native-speaker and RTL review have not been performed; this approval expires 2027-10-31.",
+      "expiresOn": "2027-10-31"
+    },
+    {
+      "domain": "client",
+      "id": "components.RequestModal.ultraHd",
+      "sourceHash": "cc1e5d5a9c88e51f820aa0ea398b7195da9ae54fcd2a34a1fc9124fde6d4a9a8",
+      "owner": "localization-maintainers",
+      "reason": "Machine-assisted contextual QA (Codex, 2026-10-31): 4K is a standard media-resolution designation. The exact source value is intentionally preserved. Native-speaker and RTL review have not been performed; this approval expires 2027-10-31.",
+      "expiresOn": "2027-10-31"
+    },
+    {
+      "domain": "client",
+      "id": "components.RequestStatus.SoftwareRequests.arm64",
+      "sourceHash": "3a8d055c8fba3b6098ba85bd127558a309b1bf636dd89c353b4068268625c6a6",
+      "owner": "localization-maintainers",
+      "reason": "Machine-assisted contextual QA (Codex, 2026-10-31): ARM64 is a standard processor architecture identifier. The exact source value is intentionally preserved. Native-speaker and RTL review have not been performed; this approval expires 2027-10-31.",
+      "expiresOn": "2027-10-31"
+    },
+    {
+      "domain": "client",
+      "id": "components.RequestStatus.SoftwareRequests.linux",
+      "sourceHash": "4828e60247c1636f57b7446a314e7f599c12b53d40061cc851a1442004354fed",
+      "owner": "localization-maintainers",
+      "reason": "Machine-assisted contextual QA (Codex, 2026-10-31): Linux is the operating-system name. The exact source value is intentionally preserved. Native-speaker and RTL review have not been performed; this approval expires 2027-10-31.",
+      "expiresOn": "2027-10-31"
+    },
+    {
+      "domain": "client",
+      "id": "components.RequestStatus.SoftwareRequests.macos",
+      "sourceHash": "aed6b7aa2a0511a9bbcaae2a10127a3139fc6494c57769b31b1a694c14483ce7",
+      "owner": "localization-maintainers",
+      "reason": "Machine-assisted contextual QA (Codex, 2026-10-31): macOS is the operating-system product name. The exact source value is intentionally preserved. Native-speaker and RTL review have not been performed; this approval expires 2027-10-31.",
+      "expiresOn": "2027-10-31"
+    },
+    {
+      "domain": "client",
+      "id": "components.RequestStatus.SoftwareRequests.windows",
+      "sourceHash": "d598026a9cbc60505f138ce53ac78088d582100c196d0f70c7e2538d4a8d7e10",
+      "owner": "localization-maintainers",
+      "reason": "Machine-assisted contextual QA (Codex, 2026-10-31): Windows is the operating-system product name. The exact source value is intentionally preserved. Native-speaker and RTL review have not been performed; this approval expires 2027-10-31.",
+      "expiresOn": "2027-10-31"
+    },
+    {
+      "domain": "client",
+      "id": "components.RequestStatus.SoftwareRequests.x64",
+      "sourceHash": "5609f728403e197bb255ef50c62aeabb1f93b09f7b7c379903440b65cd4319cb",
+      "owner": "localization-maintainers",
+      "reason": "Machine-assisted contextual QA (Codex, 2026-10-31): x64 is a standard processor architecture identifier. The exact source value is intentionally preserved. Native-speaker and RTL review have not been performed; this approval expires 2027-10-31.",
+      "expiresOn": "2027-10-31"
+    },
+    {
+      "domain": "client",
+      "id": "components.RequestStatus.SoftwareRequests.x86",
+      "sourceHash": "13d6a668eb0789a68e20ff5b93a5fd42981d81c14f9fb6a0756a9368b8e2037e",
+      "owner": "localization-maintainers",
+      "reason": "Machine-assisted contextual QA (Codex, 2026-10-31): x86 is a standard processor architecture identifier. The exact source value is intentionally preserved. Native-speaker and RTL review have not been performed; this approval expires 2027-10-31.",
+      "expiresOn": "2027-10-31"
+    },
+    {
+      "domain": "client",
+      "id": "components.Requests.eta",
+      "sourceHash": "bf5c5a4a00cce832242f5d7e4312e17dc3a8f60fa20b4149d895eaae597a3982",
+      "owner": "localization-maintainers",
+      "reason": "Machine-assisted contextual QA (Codex, 2026-10-31): ETA is a standard status abbreviation followed by a dynamic date placeholder; there is no ordinary prose to translate. The exact source value is intentionally preserved. Native-speaker and RTL review have not been performed; this approval expires 2027-10-31.",
+      "expiresOn": "2027-10-31"
+    },
+    {
+      "domain": "client",
+      "id": "components.Requests.fourK",
+      "sourceHash": "cc1e5d5a9c88e51f820aa0ea398b7195da9ae54fcd2a34a1fc9124fde6d4a9a8",
+      "owner": "localization-maintainers",
+      "reason": "Machine-assisted contextual QA (Codex, 2026-10-31): 4K is a standard media-resolution designation. The exact source value is intentionally preserved. Native-speaker and RTL review have not been performed; this approval expires 2027-10-31.",
+      "expiresOn": "2027-10-31"
+    },
+    {
+      "domain": "client",
+      "id": "components.Requests.hd",
+      "sourceHash": "323e41792751e840ad9e398d5057120cb1f1b730acbb193ee6498eb3b481059c",
+      "owner": "localization-maintainers",
+      "reason": "Machine-assisted contextual QA (Codex, 2026-10-31): HD is a standard media-resolution abbreviation. The exact source value is intentionally preserved. Native-speaker and RTL review have not been performed; this approval expires 2027-10-31.",
+      "expiresOn": "2027-10-31"
+    },
+    {
+      "domain": "client",
+      "id": "components.Settings.SettingsAbout.tmdbLogoLabel",
+      "sourceHash": "127aa67cd3b65efaad862b3fd5d8166c88e785c7401c59fe0384ddc7e502caac",
+      "owner": "localization-maintainers",
+      "reason": "Machine-assisted contextual QA (Codex, 2026-10-31): The Movie Database (TMDB) is the provider’s official expanded name and acronym. The exact source value is intentionally preserved. Native-speaker and RTL review have not been performed; this approval expires 2027-10-31.",
+      "expiresOn": "2027-10-31"
+    },
+    {
+      "domain": "client",
+      "id": "components.Settings.SettingsMain.downloadPathMappingsExample",
+      "sourceHash": "44e1c539ecdb527124d96c25ab9d21ca3f16474ee5a78582c49c97a48ab3b240",
+      "owner": "localization-maintainers",
+      "reason": "Machine-assisted contextual QA (Codex, 2026-10-31): This value is a literal JSON configuration example containing keys and filesystem paths, not translatable UI prose. The exact source value is intentionally preserved. Native-speaker and RTL review have not been performed; this approval expires 2027-10-31.",
+      "expiresOn": "2027-10-31"
+    },
+    {
+      "domain": "client",
+      "id": "components.Settings.SettingsRecognition.providerAnthropic",
+      "sourceHash": "12dcc4844286ede037546230e1dc9d57d0492c149e925733122c14e7c6f57d53",
+      "owner": "localization-maintainers",
+      "reason": "Machine-assisted contextual QA (Codex, 2026-10-31): Anthropic Claude is a provider/model product name. The exact source value is intentionally preserved. Native-speaker and RTL review have not been performed; this approval expires 2027-10-31.",
+      "expiresOn": "2027-10-31"
+    },
+    {
+      "domain": "client",
+      "id": "components.Settings.SettingsSlskdn.songId",
+      "sourceHash": "6f241a97c33313f8885165cf0e615d3cc49e143622b4fe45a5cbd426c557416e",
+      "owner": "localization-maintainers",
+      "reason": "Machine-assisted contextual QA (Codex, 2026-10-31): SongID is the exact technical identifier name exposed by slskdN. The exact source value is intentionally preserved. Native-speaker and RTL review have not been performed; this approval expires 2027-10-31.",
+      "expiresOn": "2027-10-31"
+    },
+    {
+      "domain": "client",
+      "id": "components.Settings.SettingsSlskdn.title",
+      "sourceHash": "29ef42c737c4f7985cea6042fb0df9c9e294cb1fcec973009b26123d94a4a82b",
+      "owner": "localization-maintainers",
+      "reason": "Machine-assisted contextual QA (Codex, 2026-10-31): Soulseek (slskdN) is the service/product name. The exact source value is intentionally preserved. Native-speaker and RTL review have not been performed; this approval expires 2027-10-31.",
+      "expiresOn": "2027-10-31"
+    },
+    {
+      "domain": "client",
+      "id": "components.Settings.is4k",
+      "sourceHash": "cc1e5d5a9c88e51f820aa0ea398b7195da9ae54fcd2a34a1fc9124fde6d4a9a8",
+      "owner": "localization-maintainers",
+      "reason": "Machine-assisted contextual QA (Codex, 2026-10-31): 4K is a standard media-resolution designation. The exact source value is intentionally preserved. Native-speaker and RTL review have not been performed; this approval expires 2027-10-31.",
+      "expiresOn": "2027-10-31"
+    },
+    {
+      "domain": "client",
+      "id": "components.Settings.menuPlexSettings",
+      "sourceHash": "f9624fd5f7aab7c6f3c0d4d5f267579344f0fdd04b7982c892a2fcd52ed9dfd7",
+      "owner": "localization-maintainers",
+      "reason": "Machine-assisted contextual QA (Codex, 2026-10-31): Plex is the connected provider/product name. The exact source value is intentionally preserved. Native-speaker and RTL review have not been performed; this approval expires 2027-10-31.",
+      "expiresOn": "2027-10-31"
+    },
+    {
+      "domain": "client",
+      "id": "components.Settings.menuProwlarr",
+      "sourceHash": "c5244cb74f83161ffbe3816569275d06b333064cea2f2bc2215caf341108c880",
+      "owner": "localization-maintainers",
+      "reason": "Machine-assisted contextual QA (Codex, 2026-10-31): Prowlarr is the connected service/product name. The exact source value is intentionally preserved. Native-speaker and RTL review have not been performed; this approval expires 2027-10-31.",
+      "expiresOn": "2027-10-31"
+    },
+    {
+      "domain": "client",
+      "id": "components.Settings.musicBrainz",
+      "sourceHash": "e4ef84fb5d15c267ad1d49d304957611cd201a7e3b83c7c137859fffa7294ae6",
+      "owner": "localization-maintainers",
+      "reason": "Machine-assisted contextual QA (Codex, 2026-10-31): MusicBrainz is the music metadata provider name. The exact source value is intentionally preserved. Native-speaker and RTL review have not been performed; this approval expires 2027-10-31.",
+      "expiresOn": "2027-10-31"
+    },
+    {
+      "domain": "client",
+      "id": "components.Settings.plex",
+      "sourceHash": "f9624fd5f7aab7c6f3c0d4d5f267579344f0fdd04b7982c892a2fcd52ed9dfd7",
+      "owner": "localization-maintainers",
+      "reason": "Machine-assisted contextual QA (Codex, 2026-10-31): Plex is the connected provider/product name. The exact source value is intentionally preserved. Native-speaker and RTL review have not been performed; this approval expires 2027-10-31.",
+      "expiresOn": "2027-10-31"
+    },
+    {
+      "domain": "client",
+      "id": "components.Settings.ssl",
+      "sourceHash": "07f9736e7adea312f1bc0253942b76f515a6696c302fe09e4eefe5a9e550b15d",
+      "owner": "localization-maintainers",
+      "reason": "Machine-assisted contextual QA (Codex, 2026-10-31): SSL is a standard security-protocol acronym used as a settings label. The exact source value is intentionally preserved. Native-speaker and RTL review have not been performed; this approval expires 2027-10-31.",
+      "expiresOn": "2027-10-31"
+    },
+    {
+      "domain": "client",
+      "id": "components.SettingsProwlarr.tv",
+      "sourceHash": "ca62d5e073f52f3ceb83f72d4d70d4fcd8b1ed041cddfb02ccfbbe1f90134f05",
+      "owner": "localization-maintainers",
+      "reason": "Machine-assisted contextual QA (Codex, 2026-10-31): TV is a standard media-type acronym. The exact source value is intentionally preserved. Native-speaker and RTL review have not been performed; this approval expires 2027-10-31.",
+      "expiresOn": "2027-10-31"
+    },
+    {
+      "domain": "client",
+      "id": "components.SettingsSoftwareAcquisition.questarrTitle",
+      "sourceHash": "4c5eeb1c9b86deaa25254b35aa863743c824df72eaea307bb183dfb2c0b736ae",
+      "owner": "localization-maintainers",
+      "reason": "Machine-assisted contextual QA (Codex, 2026-10-31): QuestarrNG is an integrated product name. The exact source value is intentionally preserved. Native-speaker and RTL review have not been performed; this approval expires 2027-10-31.",
+      "expiresOn": "2027-10-31"
+    },
+    {
+      "domain": "client",
+      "id": "components.SettingsSoftwareAcquisition.romarrTitle",
+      "sourceHash": "c68159637fd5026107bf5ae14e51e79a877ee9f34f49937697aa2c570171353d",
+      "owner": "localization-maintainers",
+      "reason": "Machine-assisted contextual QA (Codex, 2026-10-31): ROMarrNG is an integrated product name. The exact source value is intentionally preserved. Native-speaker and RTL review have not been performed; this approval expires 2027-10-31.",
+      "expiresOn": "2027-10-31"
+    },
+    {
+      "domain": "client",
+      "id": "components.Setup.categoryTv",
+      "sourceHash": "ca62d5e073f52f3ceb83f72d4d70d4fcd8b1ed041cddfb02ccfbbe1f90134f05",
+      "owner": "localization-maintainers",
+      "reason": "Machine-assisted contextual QA (Codex, 2026-10-31): TV is a standard media-type acronym. The exact source value is intentionally preserved. Native-speaker and RTL review have not been performed; this approval expires 2027-10-31.",
+      "expiresOn": "2027-10-31"
+    },
+    {
+      "domain": "client",
+      "id": "components.SoftwareCatalog.arm64",
+      "sourceHash": "3a8d055c8fba3b6098ba85bd127558a309b1bf636dd89c353b4068268625c6a6",
+      "owner": "localization-maintainers",
+      "reason": "Machine-assisted contextual QA (Codex, 2026-10-31): ARM64 is a standard processor architecture identifier. The exact source value is intentionally preserved. Native-speaker and RTL review have not been performed; this approval expires 2027-10-31.",
+      "expiresOn": "2027-10-31"
+    },
+    {
+      "domain": "client",
+      "id": "components.SoftwareCatalog.linux",
+      "sourceHash": "4828e60247c1636f57b7446a314e7f599c12b53d40061cc851a1442004354fed",
+      "owner": "localization-maintainers",
+      "reason": "Machine-assisted contextual QA (Codex, 2026-10-31): Linux is the operating-system name. The exact source value is intentionally preserved. Native-speaker and RTL review have not been performed; this approval expires 2027-10-31.",
+      "expiresOn": "2027-10-31"
+    },
+    {
+      "domain": "client",
+      "id": "components.SoftwareCatalog.macos",
+      "sourceHash": "aed6b7aa2a0511a9bbcaae2a10127a3139fc6494c57769b31b1a694c14483ce7",
+      "owner": "localization-maintainers",
+      "reason": "Machine-assisted contextual QA (Codex, 2026-10-31): macOS is the operating-system product name. The exact source value is intentionally preserved. Native-speaker and RTL review have not been performed; this approval expires 2027-10-31.",
+      "expiresOn": "2027-10-31"
+    },
+    {
+      "domain": "client",
+      "id": "components.SoftwareCatalog.windows",
+      "sourceHash": "d598026a9cbc60505f138ce53ac78088d582100c196d0f70c7e2538d4a8d7e10",
+      "owner": "localization-maintainers",
+      "reason": "Machine-assisted contextual QA (Codex, 2026-10-31): Windows is the operating-system product name. The exact source value is intentionally preserved. Native-speaker and RTL review have not been performed; this approval expires 2027-10-31.",
+      "expiresOn": "2027-10-31"
+    },
+    {
+      "domain": "client",
+      "id": "components.SoftwareCatalog.x64",
+      "sourceHash": "5609f728403e197bb255ef50c62aeabb1f93b09f7b7c379903440b65cd4319cb",
+      "owner": "localization-maintainers",
+      "reason": "Machine-assisted contextual QA (Codex, 2026-10-31): x64 is a standard processor architecture identifier. The exact source value is intentionally preserved. Native-speaker and RTL review have not been performed; this approval expires 2027-10-31.",
+      "expiresOn": "2027-10-31"
+    },
+    {
+      "domain": "client",
+      "id": "components.SoftwareCatalog.x86",
+      "sourceHash": "13d6a668eb0789a68e20ff5b93a5fd42981d81c14f9fb6a0756a9368b8e2037e",
+      "owner": "localization-maintainers",
+      "reason": "Machine-assisted contextual QA (Codex, 2026-10-31): x86 is a standard processor architecture identifier. The exact source value is intentionally preserved. Native-speaker and RTL review have not been performed; this approval expires 2027-10-31.",
+      "expiresOn": "2027-10-31"
+    },
+    {
+      "domain": "client",
+      "id": "components.StatusBadge.seasonepisodenumber",
+      "sourceHash": "6e6685d6693d5782c788320921fb73458fe57b27dad0a8fd23b2268fa5f2276c",
+      "owner": "localization-maintainers",
+      "reason": "Machine-assisted contextual QA (Codex, 2026-10-31): S{seasonNumber}E{episodeNumber} is the standard season/episode identifier notation. The exact source value is intentionally preserved. Native-speaker and RTL review have not been performed; this approval expires 2027-10-31.",
+      "expiresOn": "2027-10-31"
+    },
+    {
+      "domain": "client",
+      "id": "components.StatusBadge.seasonnumber",
+      "sourceHash": "3abfe68ba17af6c57c5695e5f2b06368f502732cffd3851b8c404bbac8d318d3",
+      "owner": "localization-maintainers",
+      "reason": "Machine-assisted contextual QA (Codex, 2026-10-31): S{seasonNumber} is the standard season identifier notation. The exact source value is intentionally preserved. Native-speaker and RTL review have not been performed; this approval expires 2027-10-31.",
+      "expiresOn": "2027-10-31"
+    },
+    {
+      "domain": "client",
+      "id": "components.TvCollectionRequestModal.hd",
+      "sourceHash": "323e41792751e840ad9e398d5057120cb1f1b730acbb193ee6498eb3b481059c",
+      "owner": "localization-maintainers",
+      "reason": "Machine-assisted contextual QA (Codex, 2026-10-31): HD is a standard media-resolution abbreviation. The exact source value is intentionally preserved. Native-speaker and RTL review have not been performed; this approval expires 2027-10-31.",
+      "expiresOn": "2027-10-31"
+    },
+    {
+      "domain": "client",
+      "id": "components.TvCollectionRequestModal.ultraHd",
+      "sourceHash": "cc1e5d5a9c88e51f820aa0ea398b7195da9ae54fcd2a34a1fc9124fde6d4a9a8",
+      "owner": "localization-maintainers",
+      "reason": "Machine-assisted contextual QA (Codex, 2026-10-31): 4K is a standard media-resolution designation. The exact source value is intentionally preserved. Native-speaker and RTL review have not been performed; this approval expires 2027-10-31.",
+      "expiresOn": "2027-10-31"
+    },
+    {
+      "domain": "client",
+      "id": "components.TvDetails.Layout.hd",
+      "sourceHash": "323e41792751e840ad9e398d5057120cb1f1b730acbb193ee6498eb3b481059c",
+      "owner": "localization-maintainers",
+      "reason": "Machine-assisted contextual QA (Codex, 2026-10-31): HD is a standard media-resolution abbreviation. The exact source value is intentionally preserved. Native-speaker and RTL review have not been performed; this approval expires 2027-10-31.",
+      "expiresOn": "2027-10-31"
+    },
+    {
+      "domain": "client",
+      "id": "components.TvDetails.Layout.ultraHd",
+      "sourceHash": "cc1e5d5a9c88e51f820aa0ea398b7195da9ae54fcd2a34a1fc9124fde6d4a9a8",
+      "owner": "localization-maintainers",
+      "reason": "Machine-assisted contextual QA (Codex, 2026-10-31): 4K is a standard media-resolution designation. The exact source value is intentionally preserved. Native-speaker and RTL review have not been performed; this approval expires 2027-10-31.",
+      "expiresOn": "2027-10-31"
+    },
+    {
+      "domain": "client",
+      "id": "components.UserProfile.UserSettings.UserGeneralSettings.ExternalRequestLists.urlPlaceholder",
+      "sourceHash": "7cf7cb84b8b3ff22be27f6f56456c6c5e311f4206703eb8ebf278085b81c1d57",
+      "owner": "localization-maintainers",
+      "reason": "Machine-assisted contextual QA (Codex, 2026-10-31): This is an example IMDb watchlist URL; preserve the provider URL and path as technical input guidance. The exact source value is intentionally preserved. Native-speaker and RTL review have not been performed; this approval expires 2027-10-31.",
+      "expiresOn": "2027-10-31"
+    }
+  ]
 }
