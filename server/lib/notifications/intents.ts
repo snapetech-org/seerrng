@@ -489,8 +489,9 @@ const hydrateIssueCommentIntent = async (
   // Deleted comments and orphaned issue references cannot be hydrated.
   if (!comment) return undefined;
   if (!comment.issue) return undefined;
-  const issue = await getRepository(Issue).findOneBy({
-    id: comment.issue.id,
+  const issue = await getRepository(Issue).findOne({
+    where: { id: comment.issue.id },
+    relations: { createdBy: { settings: true } },
   });
   if (!issue) return undefined;
   const [firstComment] = sortBy(issue.comments, 'id');
