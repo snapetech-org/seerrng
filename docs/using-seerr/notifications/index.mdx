@@ -20,6 +20,20 @@ Simply configure your desired notification agents in **Settings -> Notifications
 
 Users can customize their notification preferences in their own user notification settings.
 
+## Notification language
+
+Media-request event titles and follower availability notices use the language
+selected for each notification delivery. Discord can use the notified user's
+profile language when **Use user locale** is enabled; other agents use their
+configured language where available. The configurable webhook uses the
+server's default language. Messages without a translation use English.
+
+Titles cover Movie, Series, Music, Book, Comic, Magazine, Adult Scene, and
+Sports requests. Movie and Series titles also distinguish 4K requests. This
+adapts the notification-title localization approach in Seerr
+[PR #3421](https://github.com/seerr-team/seerr/pull/3421) to SeerrNG's
+per-agent delivery and durable notification queue.
+
 ## Follow a movie or series request
 
 When another user has an active request for a movie or series, the title's
