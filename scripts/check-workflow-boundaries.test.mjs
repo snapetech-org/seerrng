@@ -336,13 +336,17 @@ test('unit-test shards use private JIT runners with exact-run labels', () => {
   );
   const runner = ciWorkflow.jobs['unit-test']?.['runs-on'];
   assertSharedMainJitRunner(runner, 'unit-test');
-  assert.deepEqual(ciWorkflow.on.push.branches, ['main']);
+  assert.equal(ciWorkflow.on.push, undefined);
   assert.equal(Object.hasOwn(ciWorkflow.on, 'pull_request'), false);
   assert.equal(Object.hasOwn(ciWorkflow.on, 'pull_request_target'), false);
   assert.deepEqual(
-    ciWorkflow.on.workflow_dispatch.inputs.runner_pool_tag.options,
+    ciWorkflow.on.workflow_dispatch.inputs.runner_pool.options,
     ['private']
   );
+  assert.deepEqual(ciWorkflow.on.workflow_dispatch.inputs.action.options, [
+    'ci',
+    'publish-image',
+  ]);
   assert.equal(ciWorkflow.jobs['unit-test']?.strategy?.['max-parallel'], 4);
   assert.equal(ciWorkflow.jobs['preflight-deploy'], undefined);
   assert.equal(ciWorkflow.jobs['deploy-main'], undefined);
