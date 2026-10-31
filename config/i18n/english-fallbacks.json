@@ -459,14 +459,6 @@
     },
     {
       "domain": "client",
-      "id": "components.Settings.SettingsMain.downloadPathMappingsExample",
-      "sourceHash": "44e1c539ecdb527124d96c25ab9d21ca3f16474ee5a78582c49c97a48ab3b240",
-      "owner": "localization-maintainers",
-      "reason": "Machine-assisted contextual QA (Codex, 2026-10-31): This value is a literal JSON configuration example containing keys and filesystem paths, not translatable UI prose. The exact source value is intentionally preserved. Native-speaker and RTL review have not been performed; this approval expires 2027-10-31.",
-      "expiresOn": "2027-10-31"
-    },
-    {
-      "domain": "client",
       "id": "components.Settings.SettingsRecognition.providerAnthropic",
       "sourceHash": "12dcc4844286ede037546230e1dc9d57d0492c149e925733122c14e7c6f57d53",
       "owner": "localization-maintainers",
