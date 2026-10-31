@@ -559,7 +559,6 @@ jobs:
     permissions:
       contents: read
       packages: read
-      security-events: write
     env:
       TRIVY_CACHE_DIR: .trivycache
     steps:
@@ -602,9 +601,10 @@ jobs:
             --ignore-unfixed \
             "${GHCR_IMAGE}@${IMAGE_DIGEST}"
 
-      - name: Upload SARIF to code scanning
+      - name: Retain Trivy SARIF report
         if: always()
-        uses: github/codeql-action/upload-sarif@9b3254085494b55a0f7c4c2b3d2d52cc712ce370 # v4.39.1
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
-          sarif_file: trivy-main-${{ matrix.suffix }}.sarif
-          category: trivy-main-${{ matrix.suffix }}
+          name: trivy-main-${{ matrix.suffix }}-sarif
+          path: trivy-main-${{ matrix.suffix }}.sarif
+          if-no-files-found: warn
