@@ -85,6 +85,7 @@ For local MCP access, see the [SnapeTech MCP integration guide](./docs/integrati
 - Media-server integration with Plex, Jellyfin, and Emby, including watch-state-aware My Library views scoped to each linked account.
 - Optional Jellyfin and Emby profile sync during user imports, refreshing linked provider names and avatars while preserving SeerrNG email addresses, local passwords, and permissions.
 - Labeled movie and TV request destinations across multiple Radarr and Sonarr instances, with per-user access and availability tracked for each destination.
+- Advanced movie and TV requests resolve service, anime, account, and rule defaults without treating every displayed value as a deliberate override; editable requests can return to the configured Servarr defaults.
 - Managers can approve a one-time movie or TV request exception when a user's quota is full; optional Slack actions use a mapped account and the same request permissions as the web app.
 - Automation service integration with Radarr, Sonarr, Lidarr, and Bookshelf/Readarr-compatible APIs.
 - Sonarr v5 support alongside v3/v4, including metadata-language and season-order options with explicit season mapping for recovery.
@@ -170,8 +171,9 @@ Recent repository updates include:
   exception approvals, optional Slack approval actions, an optional
   previous-season watch gate, and Sonarr monitoring for future seasons when
   the latest regular season was requested. Failed TV requests retain their
-  context and support verified season mapping; bounded failure explanations
-  and request history are localized.
+  context and support verified season mapping; advanced request defaults and
+  override rules are documented; bounded failure explanations and request
+  history remain localized.
 - **User workflows:** local watchlist filters, a browser-saved Subject Tags
   visibility preference, private one-time availability notices for followed
   requests, per-user shared-availability display choices, and opt-in
@@ -245,6 +247,7 @@ SeerrNG documentation is maintained in the [docs folder](https://github.com/snap
 - [Configure Bookshelf](./docs/using-seerr/bookshelf-backend.md)
 - [Move ebook or audiobook files between Bookshelf root folders](./docs/using-seerr/bookshelf-media-path-migration.md)
 - [Bookshelf metadata sources](./docs/using-seerr/bookshelf-metadata-sources.md)
+- [Understand request defaults and overrides](./docs/using-seerr/request-defaults.md)
 - [Configure override rules](./docs/using-seerr/override-rules.md)
 - [Manage users and request preferences](./docs/using-seerr/users/editing-users.md)
 - [REST API reference](./seerr-api.yml)

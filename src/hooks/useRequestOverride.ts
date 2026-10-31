@@ -103,7 +103,7 @@ const useRequestOverride = (request: MediaRequest): OverrideStatus => {
         : undefined,
     rootFolder:
       defaultServer?.activeDirectory !== request.rootFolder
-        ? request.rootFolder
+        ? (request.rootFolder ?? undefined)
         : undefined,
     languageProfile:
       request.type === 'tv' &&

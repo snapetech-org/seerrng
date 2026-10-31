@@ -5278,6 +5278,48 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/BulkMediaRequestResult'
+    RequestTargetOptions:
+      type: object
+      description: >-
+        Effective profile, root folder, tags, and (for TV) language profile shown in the advanced request form. Accepted only when editing a movie or TV request with advanced request permission. These values keep the saved destination snapshot aligned with the form and are separate from explicit request overrides.
+      properties:
+        profileId:
+          type: integer
+          minimum: 0
+          nullable: true
+        rootFolder:
+          type: string
+          nullable: true
+        languageProfileId:
+          type: integer
+          minimum: 0
+          nullable: true
+          description: Required for TV requests; omit for movie requests.
+        tags:
+          type: array
+          nullable: true
+          items:
+            type: integer
+            minimum: 1
+      required:
+        - profileId
+        - rootFolder
+        - tags
+    RequesterSelectedOptions:
+      type: object
+      description: >-
+        Advanced fields explicitly selected by the requester. A selected field remains explicit even when its value equals the value already shown as the default, so a matching override rule does not replace that choice. Accepted only for new movie or TV requests with advanced request permission.
+      properties:
+        profile:
+          type: boolean
+        rootFolder:
+          type: boolean
+        languageProfile:
+          type: boolean
+          description: TV requests only.
+        tags:
+          type: boolean
+      additionalProperties: false
     PersonMovieBulkRequestResult:
       type: object
       properties:
@@ -20955,6 +20997,8 @@ paths:
                   type: array
                   items:
                     type: number
+                requesterSelectedOptions:
+                  $ref: '#/components/schemas/RequesterSelectedOptions'
                 format:
                   type: string
                   enum: [ebook, audiobook, both]
@@ -22557,10 +22601,13 @@ paths:
                   type: number
                 profileId:
                   type: number
+                  nullable: true
                 rootFolder:
                   type: string
+                  nullable: true
                 languageProfileId:
                   type: number
+                  nullable: true
                 metadataLanguageId:
                   type: integer
                   minimum: 0
@@ -22576,8 +22623,11 @@ paths:
                   type: number
                 tags:
                   type: array
+                  nullable: true
                   items:
                     type: number
+                requestTargetOptions:
+                  $ref: '#/components/schemas/RequestTargetOptions'
                 format:
                   type: string
                   enum: [ebook, audiobook, both]
