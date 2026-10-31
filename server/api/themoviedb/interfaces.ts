@@ -49,6 +49,17 @@ export interface TmdbCollectionResult {
   original_language: string;
 }
 
+export interface TmdbSearchCollectionResult {
+  id: number;
+  name: string;
+  original_name: string;
+  adult: boolean;
+  poster_path?: string;
+  backdrop_path?: string;
+  overview: string;
+  original_language: string;
+}
+
 export interface TmdbPersonResult {
   id: number;
   known_for_department?: string;
@@ -70,6 +81,10 @@ export interface TmdbSearchMultiResponse extends TmdbPaginatedResponse {
   results: (
     TmdbMovieResult | TmdbTvResult | TmdbPersonResult | TmdbCollectionResult
   )[];
+}
+
+export interface TmdbSearchCollectionResponse extends TmdbPaginatedResponse {
+  results: TmdbSearchCollectionResult[];
 }
 
 export interface TmdbSearchMovieResponse extends TmdbPaginatedResponse {

@@ -4506,6 +4506,39 @@ components:
           type: string
         mediaInfo:
           $ref: '#/components/schemas/MediaInfo'
+    CollectionSearchResult:
+      type: object
+      required:
+        - id
+        - mediaType
+        - title
+        - originalTitle
+        - adult
+        - overview
+        - originalLanguage
+      properties:
+        id:
+          type: integer
+          example: 10
+        mediaType:
+          type: string
+          enum: [collection]
+        title:
+          type: string
+          example: Star Wars Collection
+        originalTitle:
+          type: string
+          example: Star Wars Collection
+        adult:
+          type: boolean
+        posterPath:
+          type: string
+        backdropPath:
+          type: string
+        overview:
+          type: string
+        originalLanguage:
+          type: string
     MusicResult:
       type: object
       required:
@@ -16734,8 +16767,8 @@ paths:
                     type: number
   /search:
     get:
-      summary: Search for movies, TV shows, people, music, books, authors, comics, and magazines
-      description: Returns movies, TV shows, people, music albums, artists, books, authors, and comics from TMDB, MusicBrainz, ListenBrainz, Open Library, configured Bookshelf services, and ComicVine, plus magazine titles from configured LazyLibrarian catalogs.
+      summary: Search for movies, TV shows, collections, people, music, books, authors, comics, and magazines
+      description: Returns movies, TV shows, movie collections and people from TMDB; music albums and artists from MusicBrainz; books and authors from Open Library and configured Bookshelf services; comics from ComicVine; and magazine titles from configured LazyLibrarian catalogs. TMDB collection results are included in global searches and omitted for users with a movie maturity limit because collection search does not provide member ratings.
       tags:
         - search
       parameters:
@@ -16828,6 +16861,7 @@ paths:
                       anyOf:
                         - $ref: '#/components/schemas/MovieResult'
                         - $ref: '#/components/schemas/TvResult'
+                        - $ref: '#/components/schemas/CollectionSearchResult'
                         - $ref: '#/components/schemas/PersonResult'
                         - $ref: '#/components/schemas/MusicResult'
                         - $ref: '#/components/schemas/ArtistResult'

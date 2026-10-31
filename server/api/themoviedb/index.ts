@@ -7,6 +7,7 @@ import type { ContentRestriction } from '@server/lib/contentRestriction';
 import { currentContentRestriction } from '@server/lib/contentRestriction';
 import { getSettings } from '@server/lib/settings';
 import { sortBy } from 'lodash';
+import { createHash } from 'node:crypto';
 import { getTmdbAuthHeaders, getTmdbAuthParams } from './auth';
 import { logTmdbRequestFailure } from './diagnostics';
 import type {
@@ -26,6 +27,7 @@ import type {
   TmdbPersonDetails,
   TmdbProductionCompany,
   TmdbRegion,
+  TmdbSearchCollectionResponse,
   TmdbSearchMovieResponse,
   TmdbSearchMultiResponse,
   TmdbSearchTvResponse,
@@ -47,6 +49,21 @@ const MAX_TMDB_DETAIL_ARRAY = 500;
 const MAX_TMDB_DETAIL_VIDEOS = 100;
 const MAX_TMDB_WATCH_PROVIDER_REGIONS = 250;
 const MAX_TMDB_WATCH_PROVIDERS_PER_TYPE = 100;
+const COLLECTION_SEARCH_PAGE_CACHE_TTL_SECONDS = 600;
+
+type TmdbCollectionSearchPageSummary = {
+  total_pages: number;
+  total_results: number;
+};
+
+const isTmdbCollectionSearchPageSummary = (
+  value: unknown
+): value is TmdbCollectionSearchPageSummary =>
+  isRecord(value) &&
+  Number.isSafeInteger(value.total_pages) &&
+  (value.total_pages as number) > 0 &&
+  Number.isSafeInteger(value.total_results) &&
+  (value.total_results as number) >= 0;
 
 const isRecord = (value: unknown): value is Record<string, unknown> =>
   !!value && typeof value === 'object' && !Array.isArray(value);
@@ -974,6 +991,61 @@ class TheMovieDb extends ExternalAPI implements TvShowProvider {
         total_results: 0,
       };
     }
+  };
+
+  public searchCollections = async ({
+    query,
+    page = 1,
+    includeAdult = this.includeAdult,
+    language = this.locale,
+  }: SearchOptions): Promise<TmdbSearchCollectionResponse> => {
+    const allowAdult = this.contentRestriction ? false : includeAdult;
+    const pageCache = cacheManager.getCache('tmdb').data;
+    const pageCacheKey = `search-collections:pages:${createHash('sha256')
+      .update(JSON.stringify({ query, language, allowAdult }))
+      .digest('hex')}`;
+    const knownSummary =
+      pageCache.get<TmdbCollectionSearchPageSummary>(pageCacheKey);
+
+    if (
+      isTmdbCollectionSearchPageSummary(knownSummary) &&
+      page > knownSummary.total_pages
+    ) {
+      return {
+        page,
+        total_pages: knownSummary.total_pages,
+        total_results: knownSummary.total_results,
+        results: [],
+      };
+    }
+
+    const data = await this.get<TmdbSearchCollectionResponse>(
+      '/search/collection',
+      {
+        params: {
+          query,
+          page,
+          include_adult: allowAdult,
+          language,
+        },
+      }
+    );
+    const response = sanitizeTmdbPagedResponse<TmdbSearchCollectionResponse>(
+      data,
+      page
+    );
+    response.total_pages = Math.min(response.total_pages, 500);
+
+    pageCache.set(
+      pageCacheKey,
+      {
+        total_pages: response.total_pages,
+        total_results: response.total_results,
+      },
+      COLLECTION_SEARCH_PAGE_CACHE_TTL_SECONDS
+    );
+
+    return response;
   };
 
   public searchMovies = async ({
