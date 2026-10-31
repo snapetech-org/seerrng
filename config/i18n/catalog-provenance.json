@@ -22703,9 +22703,10 @@
       "id": "components.Swipe.modern",
       "status": "draft",
       "provenance": "machine-draft",
-      "source": "Qwen 3.8 27B (local), generated 2026-10-30",
+      "source": "Codex contextual correction; generated 2026-10-31; unverified",
       "sourceHash": "eef6c7f6ddd4067eb8afcea1a2104116ed5c09287b11433ed96a2b3c47cbb55c",
-      "targetHash": "eef6c7f6ddd4067eb8afcea1a2104116ed5c09287b11433ed96a2b3c47cbb55c"
+      "targetHash": "ea2049ce73dc464f4f449f4a570e8f16862bb2225bff80a1c07e2ccbabca49ac",
+      "correctionReason": "Contextual machine-draft correction: 'Modern' is app-authored UI copy in components.Swipe.modern; localized as 'Moderne'. Dynamic values and protected names remain unchanged. Native-speaker and RTL review not performed."
     },
     {
       "domain": "client",
@@ -24603,9 +24604,10 @@
       "id": "components.BackendBookSeriesDetails.extra",
       "status": "draft",
       "provenance": "machine-draft",
-      "source": "Qwen 3.8 27B (local), generated 2026-10-30",
+      "source": "Codex contextual correction; generated 2026-10-31; unverified",
       "sourceHash": "2e4aaf05df1cbfb30a89bd189df147c7e70f2f46a698a95336b344c0ecb79041",
-      "targetHash": "2e4aaf05df1cbfb30a89bd189df147c7e70f2f46a698a95336b344c0ecb79041"
+      "targetHash": "403c53d7eeea3a2dc8c005ca786143eecd1b0df3b54a8ee20528a3a49c64770c",
+      "correctionReason": "Contextual machine-draft correction: 'Extra' is app-authored UI copy in components.BackendBookSeriesDetails.extra; localized as 'Adicional'. Dynamic values and protected names remain unchanged. Native-speaker and RTL review not performed."
     },
     {
       "domain": "client",
@@ -64141,9 +64143,10 @@
       "id": "components.EditionCompare.musicDeluxe",
       "status": "draft",
       "provenance": "machine-draft",
-      "source": "Qwen 3.8 27B (local), generated 2026-10-30",
+      "source": "Codex contextual correction; generated 2026-10-31; unverified",
       "sourceHash": "bc82ef996c59199719ede3418f591e365cf5c19191a6e7d26e327954729929b8",
-      "targetHash": "bc82ef996c59199719ede3418f591e365cf5c19191a6e7d26e327954729929b8"
+      "targetHash": "023330ce0dccc3980db9abbfb00c4451096c2da74fc251ced4eebb650db98566",
+      "correctionReason": "Contextual machine-draft correction: 'Deluxe' is app-authored UI copy in components.EditionCompare.musicDeluxe; localized as 'Edisi mewah'. Dynamic values and protected names remain unchanged. Native-speaker and RTL review not performed."
     },
     {
       "domain": "client",
@@ -64671,9 +64674,10 @@
       "id": "components.Following.kindFranchise",
       "status": "draft",
       "provenance": "machine-draft",
-      "source": "Qwen 3.8 27B (local), generated 2026-10-30",
+      "source": "Codex contextual correction; generated 2026-10-31; unverified",
       "sourceHash": "cae83311f5ab2f27220741ec46d3900cded1577220aaf5542d9ab69f8408feee",
-      "targetHash": "cae83311f5ab2f27220741ec46d3900cded1577220aaf5542d9ab69f8408feee"
+      "targetHash": "95df7331c4f438281c0543835fb9bf24db6bcc6f0150847807c5ba2725c57924",
+      "correctionReason": "Contextual machine-draft correction: 'Franchise' is app-authored UI copy in components.Following.kindFranchise; localized as 'Waralaba'. Dynamic values and protected names remain unchanged. Native-speaker and RTL review not performed."
     },
     {
       "domain": "client",
@@ -71600,9 +71604,10 @@
       "id": "components.TvDetails.franchise",
       "status": "draft",
       "provenance": "machine-draft",
-      "source": "Qwen 3.8 27B (local), generated 2026-10-30",
+      "source": "Codex contextual correction; generated 2026-10-31; unverified",
       "sourceHash": "cae83311f5ab2f27220741ec46d3900cded1577220aaf5542d9ab69f8408feee",
-      "targetHash": "cae83311f5ab2f27220741ec46d3900cded1577220aaf5542d9ab69f8408feee"
+      "targetHash": "95df7331c4f438281c0543835fb9bf24db6bcc6f0150847807c5ba2725c57924",
+      "correctionReason": "Contextual machine-draft correction: 'Franchise' is app-authored UI copy in components.TvDetails.franchise; localized as 'Waralaba'. Dynamic values and protected names remain unchanged. Native-speaker and RTL review not performed."
     },
     {
       "domain": "client",
@@ -102638,9 +102643,10 @@
       "id": "components.PatchProjects.PatchDiscovery.hack",
       "status": "draft",
       "provenance": "machine-draft",
-      "source": "Qwen 3.8 27B (local), generated 2026-10-30",
+      "source": "Codex contextual correction; generated 2026-10-31; unverified",
       "sourceHash": "ba144765e7f9157e055af5cd9d4b3f28f0a311f13d853396db67ddcc46b3f2aa",
-      "targetHash": "ba144765e7f9157e055af5cd9d4b3f28f0a311f13d853396db67ddcc46b3f2aa"
+      "targetHash": "7a74f9cf691bced9b89aa646a09c1a4b3765f74129e63f91ceab451e641c564c",
+      "correctionReason": "Contextual machine-draft correction: 'ROM Hacks' is app-authored UI copy in components.PatchProjects.PatchDiscovery.hack; localized as 'Modificações de ROM'. Dynamic values and protected names remain unchanged. Native-speaker and RTL review not performed."
     },
     {
       "domain": "client",
@@ -102858,9 +102864,10 @@
       "id": "components.PatchProjects.hack",
       "status": "draft",
       "provenance": "machine-draft",
-      "source": "Qwen 3.8 27B (local), generated 2026-10-30",
+      "source": "Codex contextual correction; generated 2026-10-31; unverified",
       "sourceHash": "b0a98d327dd518289a10ad547d2f7e8eb0cb98d7055f44d50f87e7189078f642",
-      "targetHash": "b0a98d327dd518289a10ad547d2f7e8eb0cb98d7055f44d50f87e7189078f642"
+      "targetHash": "1bf64470b286516dd804cea02cd58cf72ea8550185d1937ead6c57d999d14521",
+      "correctionReason": "Contextual machine-draft correction: 'ROM Hack' is app-authored UI copy in components.PatchProjects.hack; localized as 'Modificação de ROM'. Dynamic values and protected names remain unchanged. Native-speaker and RTL review not performed."
     },
     {
       "domain": "client",
@@ -155645,6 +155652,72 @@
       "sourceHash": "c1c224b03cd9bc7b6a86d77f5dace40191766c485cd55dc48caf9ac873335d6f",
       "targetHash": "e7d3e769f3f593dadcb8634cc5b09fc90dd3a61c4a06a79cb0923662fe6fae6b",
       "correctionReason": "Contextual machine-draft correction: 'Admin' is app-authored UI copy in components.UserProfile.UserSettings.UserGeneralSettings.admin; localized as 'Administrator'. No dynamic values or protected names were changed. Native-speaker and RTL review not performed."
+    },
+    {
+      "domain": "client",
+      "locale": "de",
+      "id": "components.PermissionEdit.admin",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "Codex contextual correction; generated 2026-10-31; unverified",
+      "sourceHash": "c1c224b03cd9bc7b6a86d77f5dace40191766c485cd55dc48caf9ac873335d6f",
+      "targetHash": "e7d3e769f3f593dadcb8634cc5b09fc90dd3a61c4a06a79cb0923662fe6fae6b",
+      "correctionReason": "Contextual machine-draft correction: 'Admin' is app-authored UI copy in components.PermissionEdit.admin; localized as 'Administrator'. Dynamic values and protected names remain unchanged. Native-speaker and RTL review not performed."
+    },
+    {
+      "domain": "client",
+      "locale": "de",
+      "id": "components.UserList.admin",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "Codex contextual correction; generated 2026-10-31; unverified",
+      "sourceHash": "c1c224b03cd9bc7b6a86d77f5dace40191766c485cd55dc48caf9ac873335d6f",
+      "targetHash": "e7d3e769f3f593dadcb8634cc5b09fc90dd3a61c4a06a79cb0923662fe6fae6b",
+      "correctionReason": "Contextual machine-draft correction: 'Admin' is app-authored UI copy in components.UserList.admin; localized as 'Administrator'. Dynamic values and protected names remain unchanged. Native-speaker and RTL review not performed."
+    },
+    {
+      "domain": "client",
+      "locale": "de",
+      "id": "components.UserProfile.UserSettings.UserGeneralSettings.admin",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "Codex contextual correction; generated 2026-10-31; unverified",
+      "sourceHash": "c1c224b03cd9bc7b6a86d77f5dace40191766c485cd55dc48caf9ac873335d6f",
+      "targetHash": "e7d3e769f3f593dadcb8634cc5b09fc90dd3a61c4a06a79cb0923662fe6fae6b",
+      "correctionReason": "Contextual machine-draft correction: 'Admin' is app-authored UI copy in components.UserProfile.UserSettings.UserGeneralSettings.admin; localized as 'Administrator'. Dynamic values and protected names remain unchanged. Native-speaker and RTL review not performed."
+    },
+    {
+      "domain": "client",
+      "locale": "id",
+      "id": "components.Discover.FilterPanel.pilot",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "Codex contextual correction; generated 2026-10-31; unverified",
+      "sourceHash": "383e2d946278a872c3723cb83a961d8c4809df7110628cca0ba1a808267b3561",
+      "targetHash": "735139a8e4487efc9f2ff5a12673da2d7868d134c5ae43716c589b04831eaa5e",
+      "correctionReason": "Contextual machine-draft correction: 'Pilot' is app-authored UI copy in components.Discover.FilterPanel.pilot; localized as 'Episode percontohan'. Dynamic values and protected names remain unchanged. Native-speaker and RTL review not performed."
+    },
+    {
+      "domain": "client",
+      "locale": "id",
+      "id": "components.RequestModal.CollectionFilters.pilot",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "Codex contextual correction; generated 2026-10-31; unverified",
+      "sourceHash": "383e2d946278a872c3723cb83a961d8c4809df7110628cca0ba1a808267b3561",
+      "targetHash": "735139a8e4487efc9f2ff5a12673da2d7868d134c5ae43716c589b04831eaa5e",
+      "correctionReason": "Contextual machine-draft correction: 'Pilot' is app-authored UI copy in components.RequestModal.CollectionFilters.pilot; localized as 'Episode percontohan'. Dynamic values and protected names remain unchanged. Native-speaker and RTL review not performed."
+    },
+    {
+      "domain": "client",
+      "locale": "id",
+      "id": "components.Selector.pilot",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "Codex contextual correction; generated 2026-10-31; unverified",
+      "sourceHash": "383e2d946278a872c3723cb83a961d8c4809df7110628cca0ba1a808267b3561",
+      "targetHash": "735139a8e4487efc9f2ff5a12673da2d7868d134c5ae43716c589b04831eaa5e",
+      "correctionReason": "Contextual machine-draft correction: 'Pilot' is app-authored UI copy in components.Selector.pilot; localized as 'Episode percontohan'. Dynamic values and protected names remain unchanged. Native-speaker and RTL review not performed."
     }
   ]
 }

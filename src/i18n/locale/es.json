@@ -180,7 +180,7 @@
   "components.BackendBookSeriesDetails.blocked": "Bloqueado",
   "components.BackendBookSeriesDetails.description": "Solicita los libros seleccionados o usa Monitor de serie para el seguimiento continuo. Tu servidor de libros gestiona las búsquedas y descargas.",
   "components.BackendBookSeriesDetails.ebook": "Libro",
-  "components.BackendBookSeriesDetails.extra": "Extra",
+  "components.BackendBookSeriesDetails.extra": "Adicional",
   "components.BackendBookSeriesDetails.extras": "Incluir libros complementarios y otros extras en las solicitudes",
   "components.BackendBookSeriesDetails.linkedBooks": "Libros de la serie",
   "components.BackendBookSeriesDetails.manage": "Gestionar la serie en {server}",
