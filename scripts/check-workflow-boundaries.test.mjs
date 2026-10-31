@@ -34,6 +34,7 @@ const assertSharedMainJitRunner = (runner, context) => {
   assert.match(runner, /"group":"ng-shared-main-jit"/u, context);
   assert.match(runner, /"ng-shared-main-seerrng"/u, context);
   assert.match(runner, /"ng-main-run-\{0\}"/u, context);
+  assert.match(runner, /gha-\{0\}-(?:\{1\}-)?[a-z0-9-]+/u, context);
   assert.match(runner, /github\.run_id/u, context);
   assert.doesNotMatch(
     runner,
@@ -276,6 +277,87 @@ test('renderer bumps and packages multiple changed charts', () => {
   }
 });
 
+test('all shared-main JIT workflow jobs have unique job-scoped labels', () => {
+  const workflowsDirectory = path.join(rootDirectory, '.github', 'workflows');
+  const unscopedJobs = [];
+  for (const fileName of fs.readdirSync(workflowsDirectory)) {
+    if (!/\.ya?ml$/u.test(fileName)) continue;
+    const source = fs.readFileSync(
+      path.join(workflowsDirectory, fileName),
+      'utf8'
+    );
+    source.split('\n').forEach((line, index) => {
+      if (
+        line.includes('runs-on:') &&
+        line.includes('ng-main-run-{0}') &&
+        !line.includes('gha-{0}-')
+      ) {
+        unscopedJobs.push(`${fileName}:${index + 1}`);
+      }
+    });
+  }
+  assert.deepEqual(unscopedJobs, []);
+});
+
+test('CodeQL workflow invocations are disabled', () => {
+  const workflowsDirectory = path.join(rootDirectory, '.github', 'workflows');
+  assert.equal(
+    fs.existsSync(path.join(workflowsDirectory, 'codeql.yml')),
+    false
+  );
+  assert.equal(
+    fs.existsSync(
+      path.join(workflowsDirectory, 'publish-codeql-model-pack.yml')
+    ),
+    false
+  );
+  assert.equal(
+    fs.existsSync(path.join(rootDirectory, '.github', 'codeql')),
+    false
+  );
+
+  const workflowSources = fs
+    .readdirSync(workflowsDirectory)
+    .filter((fileName) => /\.ya?ml$/u.test(fileName))
+    .map((fileName) =>
+      fs.readFileSync(path.join(workflowsDirectory, fileName), 'utf8')
+    );
+  assert.ok(
+    workflowSources.every(
+      (source) =>
+        !source.includes('github/codeql-action/') &&
+        !/setup-codeql|security-events:\s*write/iu.test(source)
+    )
+  );
+
+  const dependabot = fs.readFileSync(
+    path.join(rootDirectory, '.github', 'dependabot.yml'),
+    'utf8'
+  );
+  assert.doesNotMatch(dependabot, /codeql/iu);
+
+  const matrixSuffix = '${{ matrix.suffix }}';
+  for (const [fileName, artifactPrefix] of [
+    ['ci.yml', 'trivy-main'],
+    ['release.yml', 'trivy-release'],
+    ['trivy-scan.yml', 'trivy'],
+  ]) {
+    const source = fs.readFileSync(
+      path.join(workflowsDirectory, fileName),
+      'utf8'
+    );
+    assert.match(source, /actions\/upload-artifact@/u, fileName);
+    assert.ok(
+      source.includes(`name: ${artifactPrefix}-${matrixSuffix}-sarif`),
+      `${fileName} must name the retained report artifact`
+    );
+    assert.ok(
+      source.includes(`path: ${artifactPrefix}-${matrixSuffix}.sarif`),
+      `${fileName} must retain the SARIF output`
+    );
+  }
+});
+
 test('unit-test shards use private JIT runners with exact-run labels', () => {
   const ciWorkflow = yaml.load(
     fs.readFileSync(
@@ -285,7 +367,9 @@ test('unit-test shards use private JIT runners with exact-run labels', () => {
   );
   const runner = ciWorkflow.jobs['unit-test']?.['runs-on'];
   assertSharedMainJitRunner(runner, 'unit-test');
-  assert.equal(ciWorkflow.on.push, undefined);
+  assert.deepEqual(ciWorkflow.on.push.branches, ['main']);
+  assert.equal(Object.hasOwn(ciWorkflow.on, 'pull_request'), false);
+  assert.equal(Object.hasOwn(ciWorkflow.on, 'pull_request_target'), false);
   assert.deepEqual(
     ciWorkflow.on.workflow_dispatch.inputs.runner_pool_tag.options,
     ['private']
@@ -323,62 +407,6 @@ test('main validation and image scanning use private JIT runners', () => {
   );
   assert.match(semgrep, /docker info/u);
   assert.match(semgrep, /docker run/u);
-});
-
-test('CodeQL is disabled while Trivy SARIF remains downloadable', () => {
-  const workflowsDirectory = path.join(rootDirectory, '.github', 'workflows');
-  const workflowFiles = fs
-    .readdirSync(workflowsDirectory)
-    .filter((name) => /\.ya?ml$/u.test(name));
-
-  assert.ok(
-    workflowFiles.every((name) => !/codeql/iu.test(name)),
-    'CodeQL workflows must be removed'
-  );
-  assert.equal(
-    fs.existsSync(path.join(rootDirectory, '.github', 'codeql')),
-    false,
-    'the CodeQL model pack must be removed'
-  );
-
-  for (const filename of workflowFiles) {
-    const source = fs.readFileSync(
-      path.join(workflowsDirectory, filename),
-      'utf8'
-    );
-    assert.doesNotMatch(
-      source,
-      /github\/codeql-action\/|setup-codeql|security-events:\s*write/iu,
-      filename
-    );
-  }
-
-  const dependabot = fs.readFileSync(
-    path.join(rootDirectory, '.github', 'dependabot.yml'),
-    'utf8'
-  );
-  assert.doesNotMatch(dependabot, /codeql/iu);
-
-  const matrixSuffix = '${{ matrix.suffix }}';
-  for (const [filename, artifactPrefix] of [
-    ['ci.yml', 'trivy-main'],
-    ['release.yml', 'trivy-release'],
-    ['trivy-scan.yml', 'trivy'],
-  ]) {
-    const source = fs.readFileSync(
-      path.join(workflowsDirectory, filename),
-      'utf8'
-    );
-    assert.match(source, /actions\/upload-artifact@/u, filename);
-    assert.ok(
-      source.includes(`name: ${artifactPrefix}-${matrixSuffix}-sarif`),
-      `${filename} must name the retained report artifact`
-    );
-    assert.ok(
-      source.includes(`path: ${artifactPrefix}-${matrixSuffix}.sarif`),
-      `${filename} must retain the SARIF output`
-    );
-  }
 });
 
 test('shared runner jobs use SeerrNG and exact-run labels', () => {

@@ -2,9 +2,11 @@
 ---
 # yaml-language-server: $schema=https://json.schemastore.org/github-workflow.json
 name: SeerrNG CI
-run-name: ${{ format('action:{0}:pool:{1}', inputs.action_tag, inputs.runner_pool_tag) }}
+run-name: ${{ format('action:{0}:pool:{1}', inputs.action_tag || 'validate', inputs.runner_pool_tag || 'private') }}
 
 on:
+  push:
+    branches: [main]
   workflow_dispatch:
     inputs:
       action_tag:
@@ -31,15 +33,15 @@ concurrency:
 
 jobs:
   release-notes:
-    if: inputs.action_tag == 'validate' || inputs.action_tag == 'publish-image'
+    if: (inputs.action_tag == 'validate' || inputs.action_tag == 'publish-image') || (github.event_name == 'push' && github.ref == 'refs/heads/main')
     name: Release-note contract
     timeout-minutes: 10
-    runs-on: ${{ fromJSON(format('{{"group":"ng-shared-main-jit","labels":["self-hosted","linux","x64","ng-shared-main-seerrng","ng-main-run-{0}"]}}', github.run_id)) }}
+    runs-on: ${{ fromJSON(format('{{"group":"ng-shared-main-jit","labels":["self-hosted","linux","x64","ng-shared-main-seerrng","ng-main-run-{0}","gha-{0}-release-notes"]}}', github.run_id)) }}
     steps:
       - name: Checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
-          # Release-note validation compares the workflow-dispatch commit to its parent.
+          # Push validation compares the new main commit to its previous head.
           fetch-depth: 2
           fetch-tags: true
           persist-credentials: false
@@ -66,7 +68,7 @@ jobs:
           fi
           body_file="$RUNNER_TEMP/pr-body.md"
           printf '%s' "$PR_BODY" > "$body_file"
-          if [[ "$GITHUB_EVENT_NAME" == "workflow_dispatch" ]] && git diff --quiet "$base_sha" "$HEAD_SHA" -- release-notes; then
+          if [[ "$GITHUB_EVENT_NAME" == "workflow_dispatch" || "$GITHUB_EVENT_NAME" == "push" ]] && git diff --quiet "$base_sha" "$HEAD_SHA" -- release-notes; then
             printf '%s' 'release-note: none' > "$body_file"
           fi
           validation_args=()
@@ -82,10 +84,10 @@ jobs:
           node scripts/check-changelog-tags.mjs
 
   i18n-and-tooling:
-    if: inputs.action_tag == 'validate' || inputs.action_tag == 'publish-image'
+    if: (inputs.action_tag == 'validate' || inputs.action_tag == 'publish-image') || (github.event_name == 'push' && github.ref == 'refs/heads/main')
     name: i18n and tooling tests
     timeout-minutes: 45
-    runs-on: ${{ fromJSON(format('{{"group":"ng-shared-main-jit","labels":["self-hosted","linux","x64","ng-shared-main-seerrng","ng-main-run-{0}"]}}', github.run_id)) }}
+    runs-on: ${{ fromJSON(format('{{"group":"ng-shared-main-jit","labels":["self-hosted","linux","x64","ng-shared-main-seerrng","ng-main-run-{0}","gha-{0}-i18n-and-tooling"]}}', github.run_id)) }}
     services:
       postgres:
         image: postgres:16-alpine@sha256:57c72fd2a128e416c7fcc499958864df5301e940bca0a56f58fddf30ffc07777
@@ -136,10 +138,10 @@ jobs:
         run: pnpm test:tooling
 
   test:
-    if: inputs.action_tag == 'validate' || inputs.action_tag == 'publish-image'
+    if: (inputs.action_tag == 'validate' || inputs.action_tag == 'publish-image') || (github.event_name == 'push' && github.ref == 'refs/heads/main')
     name: Lint, typecheck, and production build
     timeout-minutes: 60
-    runs-on: ${{ fromJSON(format('{{"group":"ng-shared-main-jit","labels":["self-hosted","linux","x64","ng-shared-main-seerrng","ng-main-run-{0}"]}}', github.run_id)) }}
+    runs-on: ${{ fromJSON(format('{{"group":"ng-shared-main-jit","labels":["self-hosted","linux","x64","ng-shared-main-seerrng","ng-main-run-{0}","gha-{0}-test"]}}', github.run_id)) }}
     steps:
       - name: Checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -177,10 +179,10 @@ jobs:
         run: pnpm bundle:check
 
   unit-test:
-    if: inputs.action_tag == 'validate' || inputs.action_tag == 'publish-image'
+    if: (inputs.action_tag == 'validate' || inputs.action_tag == 'publish-image') || (github.event_name == 'push' && github.ref == 'refs/heads/main')
     name: Vitest shard ${{ matrix.shard }} of 4
     timeout-minutes: 75
-    runs-on: ${{ fromJSON(format('{{"group":"ng-shared-main-jit","labels":["self-hosted","linux","x64","ng-shared-main-seerrng","ng-main-run-{0}"]}}', github.run_id)) }}
+    runs-on: ${{ fromJSON(format('{{"group":"ng-shared-main-jit","labels":["self-hosted","linux","x64","ng-shared-main-seerrng","ng-main-run-{0}","gha-{0}-{1}-unit-test"]}}', github.run_id, strategy.job-index)) }}
     strategy:
       fail-fast: false
       max-parallel: 4
@@ -212,10 +214,10 @@ jobs:
         run: pnpm test:ci --shard=${{ matrix.shard }}/4
 
   node-test:
-    if: inputs.action_tag == 'validate' || inputs.action_tag == 'publish-image'
+    if: (inputs.action_tag == 'validate' || inputs.action_tag == 'publish-image') || (github.event_name == 'push' && github.ref == 'refs/heads/main')
     name: Native TypeScript tests
     timeout-minutes: 75
-    runs-on: ${{ fromJSON(format('{{"group":"ng-shared-main-jit","labels":["self-hosted","linux","x64","ng-shared-main-seerrng","ng-main-run-{0}"]}}', github.run_id)) }}
+    runs-on: ${{ fromJSON(format('{{"group":"ng-shared-main-jit","labels":["self-hosted","linux","x64","ng-shared-main-seerrng","ng-main-run-{0}","gha-{0}-node-test"]}}', github.run_id)) }}
     container:
       image: node:24.22.1-bookworm@sha256:6449e19d8184d84062525b6a7524def03146c2cb04a7f08b076680d0e8e4240a
     steps:
@@ -242,10 +244,10 @@ jobs:
         run: pnpm test:node --test-concurrency=4
 
   jellyfin-plugin:
-    if: inputs.action_tag == 'validate' || inputs.action_tag == 'publish-image'
+    if: (inputs.action_tag == 'validate' || inputs.action_tag == 'publish-image') || (github.event_name == 'push' && github.ref == 'refs/heads/main')
     name: Build and smoke test Jellyfin bridge plugin
     timeout-minutes: 30
-    runs-on: ${{ fromJSON(format('{{"group":"ng-shared-main-jit","labels":["self-hosted","linux","x64","ng-shared-main-seerrng","ng-main-run-{0}"]}}', github.run_id)) }}
+    runs-on: ${{ fromJSON(format('{{"group":"ng-shared-main-jit","labels":["self-hosted","linux","x64","ng-shared-main-seerrng","ng-main-run-{0}","gha-{0}-jellyfin-plugin"]}}', github.run_id)) }}
     steps:
       - name: Checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -275,10 +277,10 @@ jobs:
           --plugin-output artifacts/seerrng-jellyfin-bridge
 
   playwright:
-    if: inputs.action_tag == 'validate' || inputs.action_tag == 'publish-image'
+    if: (inputs.action_tag == 'validate' || inputs.action_tag == 'publish-image') || (github.event_name == 'push' && github.ref == 'refs/heads/main')
     name: Playwright browser tests
     timeout-minutes: 60
-    runs-on: ${{ fromJSON(format('{{"group":"ng-shared-main-jit","labels":["self-hosted","linux","x64","ng-shared-main-seerrng","ng-main-run-{0}"]}}', github.run_id)) }}
+    runs-on: ${{ fromJSON(format('{{"group":"ng-shared-main-jit","labels":["self-hosted","linux","x64","ng-shared-main-seerrng","ng-main-run-{0}","gha-{0}-playwright"]}}', github.run_id)) }}
     permissions:
       contents: read
     env:
@@ -327,7 +329,7 @@ jobs:
   cypress:
     name: Cypress browser tests
     if: >-
-      (inputs.action_tag == 'validate' || inputs.action_tag == 'publish-image') && (github.event_name != 'workflow_dispatch' || github.ref == 'refs/heads/main')
+      (inputs.action_tag == 'validate' || inputs.action_tag == 'publish-image' || (github.event_name == 'push' && github.ref == 'refs/heads/main')) && (github.event_name != 'workflow_dispatch' || github.ref == 'refs/heads/main')
     permissions:
       contents: read
     uses: ./.github/workflows/cypress.yml
@@ -335,21 +337,21 @@ jobs:
       CYPRESS_RECORD_KEY: ${{ github.event_name == 'push' && secrets.CYPRESS_RECORD_KEY || '' }}
 
   test-docs:
-    if: inputs.action_tag == 'validate' || inputs.action_tag == 'publish-image'
+    if: (inputs.action_tag == 'validate' || inputs.action_tag == 'publish-image') || (github.event_name == 'push' && github.ref == 'refs/heads/main')
     name: Build docs website
     permissions:
       contents: read
     uses: ./.github/workflows/test-docs.yml
 
   docs-links:
-    if: inputs.action_tag == 'validate' || inputs.action_tag == 'publish-image'
+    if: (inputs.action_tag == 'validate' || inputs.action_tag == 'publish-image') || (github.event_name == 'push' && github.ref == 'refs/heads/main')
     name: Check documentation links
     permissions:
       contents: read
     uses: ./.github/workflows/docs-link-check.yml
 
   helm:
-    if: inputs.action_tag == 'validate' || inputs.action_tag == 'publish-image'
+    if: (inputs.action_tag == 'validate' || inputs.action_tag == 'publish-image') || (github.event_name == 'push' && github.ref == 'refs/heads/main')
     name: Lint and test Helm charts
     permissions:
       contents: read
@@ -374,7 +376,7 @@ jobs:
     concurrency:
       group: seerrng-main-image-publish
       cancel-in-progress: false
-    runs-on: ${{ fromJSON(format('{{"group":"ng-shared-main-jit","labels":["self-hosted","linux","x64","ng-shared-main-seerrng","ng-main-run-{0}"]}}', github.run_id)) }}
+    runs-on: ${{ fromJSON(format('{{"group":"ng-shared-main-jit","labels":["self-hosted","linux","x64","ng-shared-main-seerrng","ng-main-run-{0}","gha-{0}-publish"]}}', github.run_id)) }}
     permissions:
       contents: read
       packages: write
@@ -547,7 +549,7 @@ jobs:
     if: >-
       inputs.action_tag == 'publish-image' && inputs.runner_pool_tag == 'private' && (github.ref == 'refs/heads/main' && needs.publish.result == 'success')
     needs: [publish]
-    runs-on: ${{ fromJSON(format('{{"group":"ng-shared-main-jit","labels":["self-hosted","linux","x64","ng-shared-main-seerrng","ng-main-run-{0}"]}}', github.run_id)) }}
+    runs-on: ${{ fromJSON(format('{{"group":"ng-shared-main-jit","labels":["self-hosted","linux","x64","ng-shared-main-seerrng","ng-main-run-{0}","gha-{0}-{1}-scan-main-image"]}}', github.run_id, strategy.job-index)) }}
     strategy:
       fail-fast: false
       matrix:
@@ -601,10 +603,11 @@ jobs:
             --ignore-unfixed \
             "${GHCR_IMAGE}@${IMAGE_DIGEST}"
 
-      - name: Retain Trivy SARIF report
+      - name: Preserve Trivy scan result
         if: always()
         uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: trivy-main-${{ matrix.suffix }}-sarif
           path: trivy-main-${{ matrix.suffix }}.sarif
           if-no-files-found: warn
+          retention-days: 7
