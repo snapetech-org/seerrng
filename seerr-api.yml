@@ -2753,6 +2753,15 @@ components:
         trustProxy:
           type: boolean
           example: false
+        restrictAdministratorSignInToNetworks:
+          type: boolean
+          description: Require administrators to sign in from a configured client network.
+          example: false
+        administratorSignInAllowedNetworks:
+          type: string
+          maxLength: 4096
+          description: Up to 100 IPv4 or IPv6 addresses and CIDR subnets, separated by newlines or commas.
+          example: '192.168.0.0/16\n100.64.0.0/10'
         tls:
           $ref: '#/components/schemas/TlsSettings'
         proxy:
