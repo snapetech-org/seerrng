@@ -323,8 +323,39 @@ test('CodeQL workflow invocations are disabled', () => {
       fs.readFileSync(path.join(workflowsDirectory, fileName), 'utf8')
     );
   assert.ok(
-    workflowSources.every((source) => !source.includes('github/codeql-action/'))
+    workflowSources.every(
+      (source) =>
+        !source.includes('github/codeql-action/') &&
+        !/setup-codeql|security-events:\s*write/iu.test(source)
+    )
   );
+
+  const dependabot = fs.readFileSync(
+    path.join(rootDirectory, '.github', 'dependabot.yml'),
+    'utf8'
+  );
+  assert.doesNotMatch(dependabot, /codeql/iu);
+
+  const matrixSuffix = '${{ matrix.suffix }}';
+  for (const [fileName, artifactPrefix] of [
+    ['ci.yml', 'trivy-main'],
+    ['release.yml', 'trivy-release'],
+    ['trivy-scan.yml', 'trivy'],
+  ]) {
+    const source = fs.readFileSync(
+      path.join(workflowsDirectory, fileName),
+      'utf8'
+    );
+    assert.match(source, /actions\/upload-artifact@/u, fileName);
+    assert.ok(
+      source.includes(`name: ${artifactPrefix}-${matrixSuffix}-sarif`),
+      `${fileName} must name the retained report artifact`
+    );
+    assert.ok(
+      source.includes(`path: ${artifactPrefix}-${matrixSuffix}.sarif`),
+      `${fileName} must retain the SARIF output`
+    );
+  }
 });
 
 test('unit-test shards use private JIT runners with exact-run labels', () => {
