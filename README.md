@@ -864,7 +864,8 @@ Contributions should target SeerrNG behavior and this repository's current branc
 - Avoid reintroducing upstream-only branding.
 - Add or update tests for request, validation, service-routing, cache, and scanner behavior.
 - Run the relevant typecheck/test commands.
-- Disclose AI assistance as required by [CONTRIBUTING.md](./CONTRIBUTING.md).
+- Disclose AI use and its scope in the pull request, and report the checks you
+  actually ran. See [CONTRIBUTING.md](./CONTRIBUTING.md#ai-assistance).
 
 ## Attribution
 

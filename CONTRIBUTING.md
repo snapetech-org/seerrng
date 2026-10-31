@@ -51,6 +51,18 @@ Steps:
   [`release-notes/`](./release-notes/README.md). Internal changes can use the
   `release-note: none` commit trailer.
 - Format changed code and run the applicable tests.
+- Before starting a substantial new feature or broad refactor, open an issue or
+  discussion and wait for maintainers to agree on the scope. Focused bug fixes
+  and work on confirmed issues can be submitted directly.
+
+### AI Assistance
+
+AI tools may assist with or generate code, tests, documentation, and
+translations. Contributors remain responsible for the submitted work: review
+it, understand it, preserve attribution, and report only verification that was
+actually performed. Disclose AI use and its scope in the pull request
+description. AI assistance does not add a separate human sign-off requirement;
+the normal project checks and GitHub rules still apply.
 
 ### UI Text Style
 
@@ -105,10 +117,11 @@ DB_TYPE="postgres" DB_USER=postgres DB_PASS=postgres pnpm start
 
 (You can shutdown the server once the message "Server ready on 5055" appears)
 
-4. Let TypeORM generate the migrations:
+4. Create a short, descriptive branch name, such as `fix/request-status-display`
+   or `docs/installation-guide`, then let TypeORM generate the migrations:
 
 ```bash
-git switch -c your-feature-branch
+git switch -c fix/short-descriptive-name
 pnpm i
 pnpm migration:generate server/migration/sqlite/YourMigrationName
 DB_TYPE="postgres" DB_USER=postgres DB_PASS=postgres pnpm migration:generate server/migration/postgres/YourMigrationName
