@@ -29,6 +29,7 @@ For local MCP access, see the [SnapeTech MCP integration guide](./docs/integrati
   - [SeerrNG Android app](./docs/getting-started/android-app.md)
   - [Move between Seerr and SeerrNG](./docs/using-seerr/migrating-between-seerr-and-seerrng.md)
   - [Choose available media categories](./docs/using-seerr/settings/media-categories.md)
+  - [Manage the family age gate and per-user maturity limits](./docs/using-seerr/age-gate.md)
   - [Software requests: ROMs and PC games](./docs/using-seerr/software-acquisition.md)
   - [Request Status and Download copy](./docs/using-seerr/request-status.md)
   - [Books, authors, and series](./docs/using-seerr/books-and-series.md)
@@ -89,6 +90,7 @@ For local MCP access, see the [SnapeTech MCP integration guide](./docs/integrati
 - Automation service integration with Radarr, Sonarr, Lidarr, and Bookshelf/Readarr-compatible APIs.
 - Sonarr v5 support alongside v3/v4, including metadata-language and season-order options with explicit season mapping for recovery.
 - An optional TV request gate that checks whether the previous regular season was watched through a linked Plex, Jellyfin, or Emby account.
+- Administrator-managed family controls: separate movie and TV rating limits for each account, plus an optional family age gate with a configurable default that filters Adult, explicit, and mature-tagged titles across supported media categories.
 - Admin-configured Prowlarr connection, per-indexer diagnostics, category coverage, and format-aware manual search across movies, TV, music, books, comics, magazines, ROMs, and PC games, with title-prefilled search links from media details; approved requests still go through their configured acquisition providers.
 - Music discovery and metadata through MusicBrainz, ListenBrainz, Cover Art Archive, TheAudioDB, and archive-backed artwork sources.
 - Administrators can test MusicBrainz and Cover Art Archive connectivity and set bounded Cover Art Archive request limits.
@@ -154,7 +156,8 @@ Recent repository updates include:
 - **User workflows:** local watchlist filters, a browser-saved Subject Tags
   visibility preference, private one-time availability notices for followed
   requests, per-user shared-availability display choices, and opt-in
-  Jellyfin/Emby profile refresh during imports.
+  Jellyfin/Emby profile refresh during imports. Administrators can also set
+  per-user movie and TV rating limits and control the broader family age gate.
 - **Sonarr:** v5 API support alongside v3/v4, metadata-language and season-order
   choices, and request recovery scoped to the selected service, quality, and
   season order.
@@ -226,6 +229,7 @@ SeerrNG documentation is maintained in the [docs folder](https://github.com/snap
 - [Bookshelf metadata sources](./docs/using-seerr/bookshelf-metadata-sources.md)
 - [Configure override rules](./docs/using-seerr/override-rules.md)
 - [Manage users and request preferences](./docs/using-seerr/users/editing-users.md)
+- [Manage the family age gate and per-user maturity limits](./docs/using-seerr/age-gate.md)
 - [REST API reference](./seerr-api.yml)
 
 ## Screenshots
