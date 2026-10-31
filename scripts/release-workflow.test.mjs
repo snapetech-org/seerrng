@@ -458,6 +458,10 @@ test('Chocolatey packages only verified Windows release archives', () => {
     (step) => step.name === 'Submit package to Chocolatey Community Repository'
   );
 
+  assert.equal(
+    workflow['run-name'],
+    "${{ format('action:{0}:pool:{1}:tag:{2}', inputs.action_tag, inputs.runner_pool_tag, inputs.tag) }}"
+  );
   assert.equal(workflow.on.workflow_dispatch.inputs.tag.required, true);
   assert.deepEqual(workflow.on.workflow_dispatch.inputs.action_tag.options, [
     'release',
