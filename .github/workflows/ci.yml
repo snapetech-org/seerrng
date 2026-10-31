@@ -2,9 +2,15 @@
 ---
 # yaml-language-server: $schema=https://json.schemastore.org/github-workflow.json
 name: SeerrNG CI
-run-name: ${{ format('action:{0}:pool:{1}', inputs.action, inputs.runner_pool) }}
+run-name: >-
+  ${{ github.event_name == 'workflow_dispatch' && inputs.pr_number != '' &&
+      format('owner-pr:{0}:{1}:{2}:action:{3}:pool:{4}', inputs.pr_number, inputs.pr_sha, inputs.target_run_id, inputs.action, inputs.runner_pool) ||
+      format('action:{0}:pool:{1}', inputs.action || 'ci', inputs.runner_pool || 'private') }}
 
 on:
+  pull_request_target:
+    branches: [main]
+    types: [labeled]
   workflow_dispatch:
     inputs:
       action:
@@ -17,6 +23,18 @@ on:
         type: choice
         required: true
         options: [private]
+      pr_number:
+        description: Trusted owner PR number (set only by the metadata dispatcher)
+        type: string
+        required: false
+      pr_sha:
+        description: Exact owner PR head SHA
+        type: string
+        required: false
+      target_run_id:
+        description: Metadata-only pull_request_target run ID
+        type: string
+        required: false
 
 permissions:
   contents: read
@@ -30,8 +48,93 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
+  dispatch-owner-pr:
+    name: Dispatch trusted owner PR validation
+    if: >-
+      github.event_name == 'pull_request_target' &&
+      github.event.action == 'labeled' &&
+      (startsWith(github.event.label.name, 'action:') ||
+       startsWith(github.event.label.name, 'pool:')) &&
+      contains(github.event.pull_request.labels.*.name, 'action:ci') &&
+      contains(github.event.pull_request.labels.*.name, 'pool:private') &&
+      github.actor == 'snapetech' &&
+      github.event.pull_request.user.login == 'snapetech' &&
+      github.event.pull_request.head.repo.full_name == github.repository &&
+      github.event.pull_request.head.repo.id == github.repository_id &&
+      github.event.pull_request.base.ref == 'main'
+    runs-on: ${{ fromJSON(format('{{"group":"ng-shared-main-jit","labels":["self-hosted","linux","x64","ng-shared-main-packer","ng-main-run-{0}","gha-{0}-owner-pr-dispatcher"]}}', github.run_id)) }}
+    permissions:
+      actions: write
+      contents: none
+    steps:
+      - name: Dispatch PR-head validation from main
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+          PR_SHA: ${{ github.event.pull_request.head.sha }}
+          TARGET_RUN_ID: ${{ github.run_id }}
+          REPOSITORY: ${{ github.repository }}
+          PR_LABELS_JSON: ${{ toJSON(github.event.pull_request.labels.*.name) }}
+        run: |
+          python3 - <<'PY'
+          import json
+          import os
+          import re
+          from urllib.request import Request, urlopen
+
+          repository = os.environ["REPOSITORY"]
+          number = os.environ["PR_NUMBER"]
+          sha = os.environ["PR_SHA"]
+          target_run_id = os.environ["TARGET_RUN_ID"]
+          token = os.environ["GH_TOKEN"]
+          labels = json.loads(os.environ["PR_LABELS_JSON"])
+          action_labels = [
+              label for label in labels
+              if isinstance(label, str) and label.startswith("action:")
+          ]
+          pool_labels = [
+              label for label in labels
+              if isinstance(label, str) and label.startswith("pool:")
+          ]
+          if action_labels != ["action:ci"] or pool_labels != ["pool:private"]:
+              raise SystemExit("add exactly action:ci and pool:private labels")
+          if repository != "snapetech-org/seerrng":
+              raise SystemExit("unexpected repository")
+          if not re.fullmatch(r"[1-9][0-9]*", number):
+              raise SystemExit("invalid pull request number")
+          if not re.fullmatch(r"[0-9a-f]{40}", sha):
+              raise SystemExit("invalid pull request head SHA")
+          if not re.fullmatch(r"[1-9][0-9]*", target_run_id):
+              raise SystemExit("invalid metadata run ID")
+
+          payload = json.dumps({
+              "ref": "main",
+              "inputs": {
+                  "action": "ci",
+                  "runner_pool": "private",
+                  "pr_number": number,
+                  "pr_sha": sha,
+                  "target_run_id": target_run_id,
+              },
+          }).encode("utf-8")
+          request = Request(
+              "https://api.github.com/repos/snapetech-org/seerrng/actions/workflows/ci.yml/dispatches",
+              data=payload,
+              headers={
+                  "Accept": "application/vnd.github+json",
+                  "Authorization": f"Bearer {token}",
+                  "Content-Type": "application/json",
+                  "X-GitHub-Api-Version": "2022-11-28",
+              },
+              method="POST",
+          )
+          with urlopen(request, timeout=20) as response:
+              if response.status != 204:
+                  raise SystemExit(f"workflow dispatch returned HTTP {response.status}")
+          PY
+
   release-notes:
-    if: github.ref == 'refs/heads/main' && (inputs.action == 'ci' || inputs.action == 'publish-image')
+    if: github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main' && inputs.pr_number == '' && (inputs.action == 'ci' || inputs.action == 'publish-image')
     name: Release-note contract
     timeout-minutes: 10
     runs-on: ${{ fromJSON(format('{{"group":"ng-shared-main-jit","labels":["self-hosted","linux","x64","ng-shared-main-seerrng","ng-main-run-{0}","gha-{0}-release-notes"]}}', github.run_id)) }}
@@ -73,7 +176,12 @@ jobs:
           node scripts/check-changelog-tags.mjs
 
   i18n-and-tooling:
-    if: github.ref == 'refs/heads/main' && (inputs.action == 'ci' || inputs.action == 'publish-image')
+    if: >-
+      github.event_name == 'workflow_dispatch' &&
+      github.ref == 'refs/heads/main' &&
+      ((inputs.pr_number != '' && inputs.pr_sha != '' && inputs.target_run_id != '' &&
+        github.actor == 'github-actions[bot]' && inputs.action == 'ci') ||
+       (inputs.pr_number == '' && (inputs.action == 'ci' || inputs.action == 'publish-image')))
     name: i18n and tooling tests
     timeout-minutes: 45
     runs-on: ${{ fromJSON(format('{{"group":"ng-shared-main-jit","labels":["self-hosted","linux","x64","ng-shared-main-seerrng","ng-main-run-{0}","gha-{0}-i18n-and-tooling"]}}', github.run_id)) }}
@@ -95,6 +203,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
+          ref: ${{ inputs.pr_number != '' && inputs.pr_sha || github.sha }}
           # Tooling tests validate release tags as well as the current tree.
           fetch-depth: 1
           fetch-tags: true
@@ -127,7 +236,12 @@ jobs:
         run: pnpm test:tooling
 
   test:
-    if: github.ref == 'refs/heads/main' && (inputs.action == 'ci' || inputs.action == 'publish-image')
+    if: >-
+      github.event_name == 'workflow_dispatch' &&
+      github.ref == 'refs/heads/main' &&
+      ((inputs.pr_number != '' && inputs.pr_sha != '' && inputs.target_run_id != '' &&
+        github.actor == 'github-actions[bot]' && inputs.action == 'ci') ||
+       (inputs.pr_number == '' && (inputs.action == 'ci' || inputs.action == 'publish-image')))
     name: Lint, typecheck, and production build
     timeout-minutes: 60
     runs-on: ${{ fromJSON(format('{{"group":"ng-shared-main-jit","labels":["self-hosted","linux","x64","ng-shared-main-seerrng","ng-main-run-{0}","gha-{0}-test"]}}', github.run_id)) }}
@@ -135,6 +249,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
+          ref: ${{ inputs.pr_number != '' && inputs.pr_sha || github.sha }}
           persist-credentials: false
 
       - name: Set up Node.js
@@ -168,21 +283,37 @@ jobs:
         run: pnpm bundle:check
 
   unit-test:
-    if: github.ref == 'refs/heads/main' && (inputs.action == 'ci' || inputs.action == 'publish-image')
+    if: >-
+      github.event_name == 'workflow_dispatch' &&
+      github.ref == 'refs/heads/main' &&
+      ((inputs.pr_number != '' && inputs.pr_sha != '' && inputs.target_run_id != '' &&
+        github.actor == 'github-actions[bot]' && inputs.action == 'ci') ||
+       (inputs.pr_number == '' && (inputs.action == 'ci' || inputs.action == 'publish-image')))
     name: Vitest shard ${{ matrix.shard }} of 4
     timeout-minutes: 75
-    runs-on: ${{ fromJSON(format('{{"group":"ng-shared-main-jit","labels":["self-hosted","linux","x64","ng-shared-main-seerrng","ng-main-run-{0}","gha-{0}-{1}-unit-test"]}}', github.run_id, strategy.job-index)) }}
+    # Owner-PR labels: gha-{0}-unit-test-shard-1, gha-{0}-unit-test-shard-2,
+    # gha-{0}-unit-test-shard-3, gha-{0}-unit-test-shard-4.
+    runs-on: ${{ fromJSON(format('{{"group":"ng-shared-main-jit","labels":["self-hosted","linux","x64","ng-shared-main-seerrng","ng-main-run-{0}","gha-{0}-{1}"]}}', github.run_id, inputs.pr_number != '' && matrix.owner_pr_suffix || format('{0}-unit-test', strategy.job-index))) }}
     strategy:
       fail-fast: false
       max-parallel: 4
       matrix:
-        shard: [1, 2, 3, 4]
+        include:
+          - shard: 1
+            owner_pr_suffix: unit-test-shard-1
+          - shard: 2
+            owner_pr_suffix: unit-test-shard-2
+          - shard: 3
+            owner_pr_suffix: unit-test-shard-3
+          - shard: 4
+            owner_pr_suffix: unit-test-shard-4
     container:
       image: node:24.22.1-bookworm@sha256:6449e19d8184d84062525b6a7524def03146c2cb04a7f08b076680d0e8e4240a
     steps:
       - name: Checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
+          ref: ${{ inputs.pr_number != '' && inputs.pr_sha || github.sha }}
           persist-credentials: false
 
       - name: Trust checked-out workspace
@@ -203,7 +334,12 @@ jobs:
         run: pnpm test:ci --shard=${{ matrix.shard }}/4
 
   node-test:
-    if: github.ref == 'refs/heads/main' && (inputs.action == 'ci' || inputs.action == 'publish-image')
+    if: >-
+      github.event_name == 'workflow_dispatch' &&
+      github.ref == 'refs/heads/main' &&
+      ((inputs.pr_number != '' && inputs.pr_sha != '' && inputs.target_run_id != '' &&
+        github.actor == 'github-actions[bot]' && inputs.action == 'ci') ||
+       (inputs.pr_number == '' && (inputs.action == 'ci' || inputs.action == 'publish-image')))
     name: Native TypeScript tests
     timeout-minutes: 75
     runs-on: ${{ fromJSON(format('{{"group":"ng-shared-main-jit","labels":["self-hosted","linux","x64","ng-shared-main-seerrng","ng-main-run-{0}","gha-{0}-node-test"]}}', github.run_id)) }}
@@ -213,6 +349,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
+          ref: ${{ inputs.pr_number != '' && inputs.pr_sha || github.sha }}
           persist-credentials: false
 
       - name: Trust checked-out workspace
@@ -233,7 +370,12 @@ jobs:
         run: pnpm test:node --test-concurrency=4
 
   jellyfin-plugin:
-    if: github.ref == 'refs/heads/main' && (inputs.action == 'ci' || inputs.action == 'publish-image')
+    if: >-
+      github.event_name == 'workflow_dispatch' &&
+      github.ref == 'refs/heads/main' &&
+      ((inputs.pr_number != '' && inputs.pr_sha != '' && inputs.target_run_id != '' &&
+        github.actor == 'github-actions[bot]' && inputs.action == 'ci') ||
+       (inputs.pr_number == '' && (inputs.action == 'ci' || inputs.action == 'publish-image')))
     name: Build and smoke test Jellyfin bridge plugin
     timeout-minutes: 30
     runs-on: ${{ fromJSON(format('{{"group":"ng-shared-main-jit","labels":["self-hosted","linux","x64","ng-shared-main-seerrng","ng-main-run-{0}","gha-{0}-jellyfin-plugin"]}}', github.run_id)) }}
@@ -241,6 +383,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
+          ref: ${{ inputs.pr_number != '' && inputs.pr_sha || github.sha }}
           persist-credentials: false
 
       - name: Set up .NET SDK
@@ -266,7 +409,12 @@ jobs:
           --plugin-output artifacts/seerrng-jellyfin-bridge
 
   playwright:
-    if: github.ref == 'refs/heads/main' && (inputs.action == 'ci' || inputs.action == 'publish-image')
+    if: >-
+      github.event_name == 'workflow_dispatch' &&
+      github.ref == 'refs/heads/main' &&
+      ((inputs.pr_number != '' && inputs.pr_sha != '' && inputs.target_run_id != '' &&
+        github.actor == 'github-actions[bot]' && inputs.action == 'ci') ||
+       (inputs.pr_number == '' && (inputs.action == 'ci' || inputs.action == 'publish-image')))
     name: Playwright browser tests
     timeout-minutes: 60
     runs-on: ${{ fromJSON(format('{{"group":"ng-shared-main-jit","labels":["self-hosted","linux","x64","ng-shared-main-seerrng","ng-main-run-{0}","gha-{0}-playwright"]}}', github.run_id)) }}
@@ -279,6 +427,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
+          ref: ${{ inputs.pr_number != '' && inputs.pr_sha || github.sha }}
           persist-credentials: false
 
       - name: Set up Node.js
@@ -315,34 +464,138 @@ jobs:
           CI: true
         run: pnpm exec playwright test --reporter=json
 
+  # Owner-PR reusable check runner label: gha-{0}-cypress-run.
   cypress:
     name: Cypress browser tests
     if: >-
-      github.ref == 'refs/heads/main' && (inputs.action == 'ci' || inputs.action == 'publish-image')
+      github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main' &&
+      ((inputs.pr_number != '' && inputs.pr_sha != '' && inputs.target_run_id != '' &&
+        github.actor == 'github-actions[bot]' && inputs.action == 'ci') ||
+       (inputs.pr_number == '' && (inputs.action == 'ci' || inputs.action == 'publish-image')))
     permissions:
       contents: read
     uses: ./.github/workflows/cypress.yml
+    with:
+      pr_sha: ${{ inputs.pr_sha }}
 
+  # Owner-PR reusable check runner label: gha-{0}-test-build.
   test-docs:
-    if: github.ref == 'refs/heads/main' && (inputs.action == 'ci' || inputs.action == 'publish-image')
+    if: >-
+      github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main' &&
+      ((inputs.pr_number != '' && inputs.pr_sha != '' && inputs.target_run_id != '' &&
+        github.actor == 'github-actions[bot]' && inputs.action == 'ci') ||
+       (inputs.pr_number == '' && (inputs.action == 'ci' || inputs.action == 'publish-image')))
     name: Build docs website
     permissions:
       contents: read
     uses: ./.github/workflows/test-docs.yml
+    with:
+      pr_sha: ${{ inputs.pr_sha }}
 
+  # Owner-PR reusable check runner label: gha-{0}-link-check.
   docs-links:
-    if: github.ref == 'refs/heads/main' && (inputs.action == 'ci' || inputs.action == 'publish-image')
+    if: >-
+      github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main' &&
+      ((inputs.pr_number != '' && inputs.pr_sha != '' && inputs.target_run_id != '' &&
+        github.actor == 'github-actions[bot]' && inputs.action == 'ci') ||
+       (inputs.pr_number == '' && (inputs.action == 'ci' || inputs.action == 'publish-image')))
     name: Check documentation links
     permissions:
       contents: read
     uses: ./.github/workflows/docs-link-check.yml
+    with:
+      pr_sha: ${{ inputs.pr_sha }}
 
   helm:
-    if: github.ref == 'refs/heads/main' && (inputs.action == 'ci' || inputs.action == 'publish-image')
+    if: github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main' && inputs.pr_number == '' && (inputs.action == 'ci' || inputs.action == 'publish-image')
     name: Lint and test Helm charts
     permissions:
       contents: read
     uses: ./.github/workflows/lint-helm-charts.yml
+
+  report-owner-pr-check:
+    name: Report trusted owner PR validation
+    needs:
+      - i18n-and-tooling
+      - test
+      - unit-test
+      - node-test
+      - jellyfin-plugin
+      - playwright
+      - cypress
+      - test-docs
+      - docs-links
+    if: >-
+      always() && github.event_name == 'workflow_dispatch' &&
+      github.ref == 'refs/heads/main' && inputs.action == 'ci' &&
+      inputs.runner_pool == 'private' && inputs.pr_number != '' &&
+      inputs.pr_sha != '' && inputs.target_run_id != '' &&
+      github.actor == 'github-actions[bot]'
+    runs-on: ${{ fromJSON(format('{{"group":"ng-shared-main-jit","labels":["self-hosted","linux","x64","ng-shared-main-seerrng","ng-main-run-{0}","gha-{0}-owner-pr-reporter"]}}', github.run_id)) }}
+    permissions:
+      checks: write
+      contents: none
+    steps:
+      - name: Attach validation result to the PR head
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PR_SHA: ${{ inputs.pr_sha }}
+          VALIDATION_RESULT: >-
+            ${{ (needs['i18n-and-tooling'].result == 'success' &&
+                 needs.test.result == 'success' &&
+                 needs['unit-test'].result == 'success' &&
+                 needs['node-test'].result == 'success' &&
+                 needs['jellyfin-plugin'].result == 'success' &&
+                 needs.playwright.result == 'success' &&
+                 needs.cypress.result == 'success' &&
+                 needs['test-docs'].result == 'success' &&
+                 needs['docs-links'].result == 'success') && 'success' || 'failure' }}
+          VALIDATION_RUN_ID: ${{ github.run_id }}
+        run: |
+          python3 - <<'PY'
+          import json
+          import os
+          import re
+          from urllib.request import Request, urlopen
+
+          sha = os.environ["PR_SHA"]
+          result = os.environ["VALIDATION_RESULT"]
+          run_id = os.environ["VALIDATION_RUN_ID"]
+          if not re.fullmatch(r"[0-9a-f]{40}", sha):
+              raise SystemExit("invalid pull request head SHA")
+          if not re.fullmatch(r"[1-9][0-9]*", run_id):
+              raise SystemExit("invalid validation run ID")
+          conclusion = "success" if result == "success" else "failure"
+          payload = json.dumps({
+              "name": "SeerrNG owner PR validation",
+              "head_sha": sha,
+              "external_id": run_id,
+              "status": "completed",
+              "conclusion": conclusion,
+              "details_url": (
+                  "https://github.com/snapetech-org/seerrng/actions/runs/" + run_id
+              ),
+              "output": {
+                  "title": "SeerrNG validation " + conclusion,
+                  "summary": "See the linked main-pinned workflow run for exact-SHA validation details.",
+              },
+          }).encode("utf-8")
+          request = Request(
+              "https://api.github.com/repos/snapetech-org/seerrng/check-runs",
+              data=payload,
+              headers={
+                  "Accept": "application/vnd.github+json",
+                  "Authorization": f"Bearer {os.environ['GH_TOKEN']}",
+                  "Content-Type": "application/json",
+                  "X-GitHub-Api-Version": "2022-11-28",
+              },
+              method="POST",
+          )
+          with urlopen(request, timeout=20) as response:
+              if response.status not in {201, 202}:
+                  raise SystemExit(f"check creation returned HTTP {response.status}")
+          PY
+
   publish:
     name: Publish multi-arch image
     timeout-minutes: 90
@@ -359,7 +612,8 @@ jobs:
       - docs-links
       - helm
     if: >-
-      github.ref == 'refs/heads/main' && inputs.action == 'publish-image' && inputs.runner_pool == 'private'
+      github.ref == 'refs/heads/main' && inputs.pr_number == '' &&
+      inputs.action == 'publish-image' && inputs.runner_pool == 'private'
     concurrency:
       group: seerrng-main-image-publish
       cancel-in-progress: false
@@ -534,7 +788,8 @@ jobs:
   scan-main-image:
     name: Scan main image (${{ matrix.platform }})
     if: >-
-      github.ref == 'refs/heads/main' && inputs.action == 'publish-image' && inputs.runner_pool == 'private' && needs.publish.result == 'success'
+      github.ref == 'refs/heads/main' && inputs.pr_number == '' &&
+      inputs.action == 'publish-image' && inputs.runner_pool == 'private' && needs.publish.result == 'success'
     needs: [publish]
     runs-on: ${{ fromJSON(format('{{"group":"ng-shared-main-jit","labels":["self-hosted","linux","x64","ng-shared-main-seerrng","ng-main-run-{0}","gha-{0}-{1}-scan-main-image"]}}', github.run_id, strategy.job-index)) }}
     strategy:

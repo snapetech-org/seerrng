@@ -7,6 +7,7 @@ import { spawnSync } from 'node:child_process';
 import fs from 'node:fs/promises';
 import os from 'node:os';
 import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 import {
   PRIVATE_SQLITE_DIRECTORY_MODE,
   PRIVATE_SQLITE_FILE_MODE,
@@ -88,13 +89,16 @@ describe('SQLite file permissions', () => {
           'tsconfig-paths/register',
           '-e',
           script,
-          require.resolve('../datasource'),
+          fileURLToPath(new URL('../datasource.ts', import.meta.url)),
         ],
         {
           env: {
             ...process.env,
             NODE_ENV: 'production',
             CONFIG_DIRECTORY: parent,
+            TS_NODE_PROJECT: fileURLToPath(
+              new URL('../tsconfig.json', import.meta.url)
+            ),
           },
           encoding: 'utf8',
           timeout: 30000,

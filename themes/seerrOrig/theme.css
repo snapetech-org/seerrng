@@ -6,7 +6,10 @@
 /* This package owns the narrow-phone poster density as well as the desktop
    size. Shared poster components consume these values without choosing them. */
 @media (max-width: 389px) {
-  :is(:root[data-interface-theme='seerrOrig'], [data-interface-theme='seerrOrig']) {
+  :is(
+    :root[data-interface-theme='seerrOrig'],
+    [data-interface-theme='seerrOrig']
+  ) {
     --poster-width: calc((100vw - 2rem - 2 * var(--card-spacing)) / 2);
   }
 }

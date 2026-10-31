@@ -8,13 +8,14 @@ import { ThemeProvider, themePalettes, useTheme } from './ThemeContext';
 
 const fixture = vi.hoisted(() => ({
   user: undefined as User | undefined,
+  get: vi.fn(),
   post: vi.fn(),
   revalidate: vi.fn(),
 }));
 vi.mock('@app/hooks/useUser', () => ({
   useUser: () => ({ user: fixture.user, revalidate: fixture.revalidate }),
 }));
-vi.mock('axios', () => ({ default: { post: fixture.post } }));
+vi.mock('axios', () => ({ default: { get: fixture.get, post: fixture.post } }));
 
 let root: Root;
 let dom: JSDOM;
@@ -48,7 +49,18 @@ beforeEach(() => {
   vi.stubGlobal('document', dom.window.document);
   vi.stubGlobal('localStorage', dom.window.localStorage);
   vi.stubGlobal('IS_REACT_ACT_ENVIRONMENT', true);
+  const append = document.head.append.bind(document.head);
+  vi.spyOn(document.head, 'append').mockImplementation((...nodes) => {
+    append(...nodes);
+    for (const node of nodes) {
+      if (node instanceof dom.window.HTMLLinkElement) {
+        node.dispatchEvent(new dom.window.Event('load'));
+      }
+    }
+  });
   fixture.user = undefined;
+  fixture.get.mockReset();
+  fixture.get.mockRejectedValue(new Error('catalog unavailable'));
   fixture.post.mockReset();
   fixture.revalidate.mockReset();
   fixture.revalidate.mockImplementation(async (callback) => {
@@ -63,6 +75,7 @@ beforeEach(() => {
 afterEach(async () => {
   await act(async () => root.unmount());
   container.remove();
+  vi.restoreAllMocks();
   dom.window.close();
   vi.unstubAllGlobals();
 });
