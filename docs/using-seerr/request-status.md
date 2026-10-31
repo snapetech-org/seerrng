@@ -52,6 +52,13 @@ series or season mapping is selected automatically. Mappings are separate for
 each Sonarr destination, quality, and season order, so repairing one request
 does not change how another instance or order maps the same TVDB series.
 
+An approved movie or TV request fails promptly with a service-unavailable
+reason if its selected Radarr or Sonarr server was removed or is incompatible
+with the request, or no default server is configured for its quality. Check the
+matching service in **Settings > Services**, select or configure a usable
+destination, then use **Retry**. A request whose explicit destination was
+removed can also be reassigned by a request manager.
+
 Request API responses include a stable `failureReason` code when a movie or TV
 dispatch failure can be classified. The code distinguishes an unavailable
 selected service, a dispatch failure, an unresolved TVDB identity, unverified
