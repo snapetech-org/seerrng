@@ -62,6 +62,7 @@ import { cleanMagazineTitle } from '@server/lib/magazineIdentity';
 import { isMediaCategoryEnabled } from '@server/lib/mediaCategories';
 import { hydrateMediaRequestRelations } from '@server/lib/mediaRequestHydration';
 import { aliasDownloadId } from '@server/lib/mediaResponse';
+import { hydrateMediaSummaryRelations } from '@server/lib/mediaSummaryHydration';
 import { Permission } from '@server/lib/permissions';
 import requestDispatchManager from '@server/lib/requestDispatch';
 import {
@@ -2103,6 +2104,7 @@ requestRoutes.get<
       .getManyAndCount();
     const requests = await hydrateMediaRequestRelations(requestRows, {
       includeMediaIdentifiers: true,
+      viewer: requestReadLease?.actor ?? req.user,
     });
 
     const canHydrateServiceProfiles =
@@ -2640,8 +2642,13 @@ requestRoutes.post<never, MediaRequest, MediaRequestBody>(
         expectedCredentialVersion: getExpectedCredentialVersion(req),
         requestQuotaApproval: body.value.requestQuotaApproval === true,
       });
+      const [viewerRequest] = await hydrateMediaRequestRelations([request], {
+        viewer: req.user,
+      });
 
-      return res.status(201).json(filterEntityResponse(request, req.user));
+      return res
+        .status(201)
+        .json(filterEntityResponse(viewerRequest, req.user));
     } catch (error) {
       if (!(error instanceof Error)) {
         logger.error('Failed to submit media request', {
@@ -3069,8 +3076,12 @@ requestRoutes.post<never, BulkMediaRequestResponse, BulkMediaRequestBody>(
         userId: req.user.id,
       });
 
+      const viewerRequests = await hydrateMediaRequestRelations(created, {
+        viewer: req.user,
+      });
+
       return res.status(207).json({
-        created: filterEntityResponse(created, req.user),
+        created: filterEntityResponse(viewerRequests, req.user),
         skipped,
         failed,
       });
@@ -3389,6 +3400,7 @@ requestRoutes.get<
           filter: parsedFilter.value,
           sort,
           sortDirection,
+          viewer: actor,
         });
 
         return res.status(200).json({
@@ -3560,6 +3572,7 @@ requestRoutes.get<
         if (!current) {
           return next({ status: 404, message: 'Request not found.' });
         }
+        await hydrateMediaSummaryRelations([request.media], actor);
         const history = await getRequestStatusHistory(request.id);
         return res.status(200).json({
           request: filterEntityResponse(request, actor),
@@ -3766,7 +3779,12 @@ requestRoutes.get('/:requestId', async (req, res, next) => {
         });
       }
 
-      return res.status(200).json(filterEntityResponse(request, req.user));
+      const [viewerRequest] = await hydrateMediaRequestRelations([request], {
+        viewer: req.user,
+      });
+      return res
+        .status(200)
+        .json(filterEntityResponse(viewerRequest, req.user));
     });
   } catch (e) {
     if (e instanceof UserMutationActorUnauthorizedError) {
@@ -4480,9 +4498,13 @@ requestRoutes.put<{ requestId: string }>(
                   }
                   request.requestedBy = requestUser;
                   await requestRepository.save(request);
+                  const [viewerRequest] = await hydrateMediaRequestRelations(
+                    [request],
+                    { viewer: req.user }
+                  );
                   return res
                     .status(200)
-                    .json(filterEntityResponse(request, req.user));
+                    .json(filterEntityResponse(viewerRequest, req.user));
                 }
               );
             }
@@ -5010,10 +5032,14 @@ requestRoutes.post<{
             }
             await requestDispatchManager.enqueue(request.id);
             await recordRequestRetry(request.id);
+            const [viewerRequest] = await hydrateMediaRequestRelations(
+              [request],
+              { viewer: req.user }
+            );
 
             return res
               .status(200)
-              .json(filterEntityResponse(request, req.user));
+              .json(filterEntityResponse(viewerRequest, req.user));
           }
         ),
       {
@@ -5166,7 +5192,12 @@ requestRoutes.post<{
         newStatus,
         getExpectedCredentialVersion(req)
       );
-      return res.status(200).json(filterEntityResponse(request, req.user));
+      const [viewerRequest] = await hydrateMediaRequestRelations([request], {
+        viewer: req.user,
+      });
+      return res
+        .status(200)
+        .json(filterEntityResponse(viewerRequest, req.user));
     } catch (error) {
       if (error instanceof UserMutationActorUnauthorizedError) {
         return next({

@@ -2916,6 +2916,23 @@ export class MediaRequest {
             .getMany()
         : [];
     const destinationRequests = await loadDestinationRequests(media);
+    const destinationLibraryStatus =
+      selectedDestination &&
+      selectedDestination.serverId !== null &&
+      selectedDestination.serverId !== undefined &&
+      media.id &&
+      (requestBody.mediaType === MediaType.MOVIE ||
+        requestBody.mediaType === MediaType.TV)
+        ? await getRepository(MediaServiceStatus).findOne({
+            where: {
+              mediaId: media.id,
+              serviceType:
+                requestBody.mediaType === MediaType.MOVIE ? 'radarr' : 'sonarr',
+              serverId: selectedDestination.serverId,
+              format: requestBody.is4k ? '4k' : 'standard',
+            },
+          })
+        : undefined;
 
     if (
       !selectedDestination &&
@@ -2943,8 +2960,25 @@ export class MediaRequest {
           MediaStatus.AVAILABLE &&
         (media[requestBody.is4k ? 'serviceId4k' : 'serviceId'] == null ||
           media[requestBody.is4k ? 'serviceId4k' : 'serviceId'] === serverId);
+      const selectedTvSeasonNumbers =
+        requestBody.mediaType === MediaType.TV
+          ? (requestBody.seasonRequests?.map(
+              (selection) => selection.seasonNumber
+            ) ??
+            (Array.isArray(requestBody.seasons) ? requestBody.seasons : []))
+          : [];
+      const isDestinationLibraryAvailable =
+        destinationLibraryStatus?.status === MediaStatus.AVAILABLE ||
+        (requestBody.mediaType === MediaType.TV &&
+          selectedTvSeasonNumbers.length > 0 &&
+          selectedTvSeasonNumbers.every(
+            (seasonNumber) =>
+              destinationLibraryStatus?.seasonStatuses?.[seasonNumber] ===
+              MediaStatus.AVAILABLE
+          ));
       if (
         isLegacyDestinationAvailable ||
+        isDestinationLibraryAvailable ||
         isDestinationAvailableInTargets(
           destinationRequests,
           selectedDestination

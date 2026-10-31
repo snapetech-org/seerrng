@@ -73,6 +73,7 @@ import { extractImageCacheUrls } from '@server/lib/imageCacheUrls';
 import { enqueueImageCacheWarm } from '@server/lib/imageCacheWarmer';
 import { normalizeMagazineTitle } from '@server/lib/magazineIdentity';
 import { findMagazineMediaByTitles } from '@server/lib/magazineMediaMatcher';
+import { getMediaServerAccessContext } from '@server/lib/mediaServerAvailability';
 import { hydrateMediaSummaryRelations } from '@server/lib/mediaSummaryHydration';
 import {
   getAvailableMusicQualities,
@@ -1324,6 +1325,13 @@ const getLiveAvailableMovieDiscoverResponse = async ({
   query: FilterOptions;
   user?: User;
 }) => {
+  // Live Arr inventory has no viewer-scoped media-server identity to verify.
+  // The indexed fallback below carries native media-server IDs and can fail
+  // closed for linked viewers instead of presenting global Arr status.
+  if (await getMediaServerAccessContext(user)) {
+    return undefined;
+  }
+
   const availability = await getLiveRadarrMovieAvailability();
   const isRequestedQualityAuthoritative =
     quality === '4k'
@@ -1513,7 +1521,6 @@ const getLocalAvailableVideoDiscoverResponse = async ({
     })
     .orderBy('media.updatedAt', 'DESC')
     .getMany();
-  await hydrateMediaSummaryRelations(mediaItems, user);
 
   const metadata = mediaItems.length
     ? await getRepository(MediaSearchMetadata).find({
@@ -1594,12 +1601,22 @@ const getLocalAvailableVideoDiscoverResponse = async ({
   const itemsPerPage = 20;
   const pageStart = (page - 1) * itemsPerPage;
   const pageItems = localItems.slice(pageStart, pageStart + itemsPerPage);
+  const pageMedia = pageItems.map(({ media }) => media);
+  await hydrateMediaSummaryRelations(pageMedia, user, {
+    preferredAvailabilityFormat: quality === '4k' ? '4k' : 'standard',
+  });
+  const viewerAccessContext = await getMediaServerAccessContext(user);
+  const visiblePageItems = viewerAccessContext
+    ? pageItems.filter(({ media }) =>
+        AVAILABLE_MEDIA_STATUSES.includes(media[statusField])
+      )
+    : pageItems;
 
   return {
     page,
     totalPages: Math.max(1, Math.ceil(localItems.length / itemsPerPage)),
     totalResults: localItems.length,
-    results: pageItems.map(
+    results: visiblePageItems.map(
       ({ media, metadata: itemMetadata, title, genreIds, releaseDate }) => {
         const common = {
           id: media.tmdbId,

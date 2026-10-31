@@ -38,6 +38,7 @@ For local MCP access, see the [SnapeTech MCP integration guide](./docs/integrati
   - [Configure comics](./docs/using-seerr/comics-backend.md)
   - [Configure magazines](./docs/using-seerr/magazines-backend.md)
   - [Movie and series Discover filters](./docs/using-seerr/movie-series-discovery-filters.md)
+  - [Per-user movie and TV availability](./docs/using-seerr/media-server-access.md)
   - [Choose request destinations](./docs/using-seerr/settings/services.md#request-destination-label-optional)
   - [Require previous-season watch progress](./docs/using-seerr/settings/general.md#require-the-previous-season-to-be-watched)
   - [Hide subject tags](./docs/using-seerr/media-details-and-playback.md#hide-subject-tags)
@@ -84,6 +85,7 @@ For local MCP access, see the [SnapeTech MCP integration guide](./docs/integrati
 - Movie and series Discover filters with 0.1-point TMDB rating thresholds and streaming-service availability filters by region.
 - Media-server integration with Plex, Jellyfin, and Emby, including watch-state-aware My Library views scoped to each linked account.
 - Administrators can require Jellyfin Quick Connect by hiding and rejecting Jellyfin password sign-in while controlling local and OpenID Connect sign-in separately; requested in Seerr [issue #3300](https://github.com/seerr-team/seerr/issues/3300).
+- Viewer-scoped movie and TV availability checks for linked Plex, Jellyfin, and Emby accounts, including visible seasons and exact request destinations. This SeerrNG adaptation is informed by Seerr [issue #180](https://github.com/seerr-team/seerr/issues/180) and [PR #3296](https://github.com/seerr-team/seerr/pull/3296); it does not change media-server permissions.
 - Optional Jellyfin and Emby profile sync during user imports, refreshing linked provider names and avatars while preserving SeerrNG email addresses, local passwords, and permissions.
 - Labeled movie and TV request destinations across multiple Radarr and Sonarr instances, with per-user access and availability tracked for each destination.
 - Managers can approve a one-time movie or TV request exception when a user's quota is full; optional Slack actions use a mapped account and the same request permissions as the web app.
@@ -175,10 +177,13 @@ Recent repository updates include:
   and request history are localized.
 - **User workflows:** local watchlist filters, a browser-saved Subject Tags
   visibility preference, private one-time availability notices for followed
-  requests, per-user shared-availability display choices, and opt-in
-  Jellyfin/Emby profile refresh during imports. Administrators can also require
-  Jellyfin Quick Connect and reject password-based Jellyfin sign-in while
-  keeping local and OpenID Connect options independently controlled.
+  requests, per-user shared-availability display choices, viewer-scoped movie
+  and TV library availability, and opt-in Jellyfin/Emby profile refresh during
+  imports. The availability check adapts Seerr [issue #180](https://github.com/seerr-team/seerr/issues/180)
+  and [PR #3296](https://github.com/seerr-team/seerr/pull/3296). Administrators
+  can also require Jellyfin Quick Connect and reject password-based Jellyfin
+  sign-in while keeping local and OpenID Connect options independently
+  controlled.
 - **Sonarr:** v5 API support alongside v3/v4, metadata-language and season-order
   choices, and request recovery scoped to the selected service, quality, and
   season order.

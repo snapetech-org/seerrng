@@ -26,6 +26,7 @@ connects to.
 ## Use SeerrNG
 
 - [Filter movie and series discovery by rating or streaming service](/using-seerr/movie-series-discovery-filters/)
+- [Per-user movie and TV availability](/using-seerr/media-server-access/)
 - [Customize Discover shelves and navigation](/using-seerr/discover/)
 - [Filter and sort local watchlists](/using-seerr/plex/watchlist-auto-request/#find-items-in-your-watchlist)
 - [Follow another user's active request](/using-seerr/notifications/#follow-a-movie-or-series-request)

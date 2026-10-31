@@ -6173,7 +6173,7 @@ components:
         serviceStatuses:
           type: array
           readOnly: true
-          description: Availability tracked independently for each Radarr or Sonarr instance and quality.
+          description: Availability tracked independently for each Radarr or Sonarr instance and quality. For linked media-server users, a destination that cannot be matched to verified primary media-server access may be returned as Unknown.
           items:
             type: object
             properties:
@@ -6217,11 +6217,11 @@ components:
         status:
           type: number
           example: 0
-          description: Availability of the media. 1 = `UNKNOWN`, 2 = `PENDING`, 3 = `PROCESSING`, 4 = `PARTIALLY_AVAILABLE`, 5 = `AVAILABLE`, 6 = `DELETED`
+          description: Availability of the media. For movie and TV responses to a user with a linked Plex, Jellyfin, or Emby account, this is projected against that viewer's verified item and season access; Unknown may mean restricted or unverified, not absent from the server. 1 = `UNKNOWN`, 2 = `PENDING`, 3 = `PROCESSING`, 4 = `PARTIALLY_AVAILABLE`, 5 = `AVAILABLE`, 6 = `DELETED`.
         status4k:
           type: number
           example: 0
-          description: Availability of the 4K media copy. Uses the same values as `status`.
+          description: Availability of the 4K media copy. Uses the same values and viewer-scoped projection as `status`.
         viewerRequestCoverage:
           type: object
           readOnly: true
@@ -23704,7 +23704,7 @@ paths:
   /media:
     get:
       summary: Get media
-      description: Returns all media (can be filtered and limited) in a JSON object.
+      description: Returns media (filterable and paginated). For users with a linked Plex, Jellyfin, or Emby account, movie and TV availability reflects that viewer's verified item and season access; unverified availability is returned as Unknown without changing the stored library scan status.
       tags:
         - media
       parameters:
