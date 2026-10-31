@@ -146462,6 +146462,4086 @@
       "sourceHash": "19b1d7fb6c3f37e43b70083a9068cb2ac9f24c71dcda0f6539c4a861bcb5bbb0",
       "targetHash": "f46e40289a71b25606ee026cfcd4030844526e54618f030720ab28ad9600c934",
       "correctionReason": "Translated the availability-subscription notification in email/web-push context; unverified and not native-reviewed."
+    },
+    {
+      "domain": "client",
+      "locale": "ar",
+      "id": "components.VisualLab.demoPageTitleSample",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "91ac8dd7c3e5b59a83e6e7d32da42c7cee25d2eccb4fe317949e5a046d1082a9",
+      "targetHash": "1e30401d486ec07947f3d884c6880fc6a58394764a41026746bc3c2f9adddd25"
+    },
+    {
+      "domain": "client",
+      "locale": "ar",
+      "id": "components.VisualLab.demoCardTitleSample",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "1441a2959af749da99f417b41e4e7c3dbfa419b3ee53307499427acf05ae2ebc",
+      "targetHash": "498fbf73afcd0c584c65c1a7cfe97d85c64d9c251b058775e1ba7d53ebd9ab73"
+    },
+    {
+      "domain": "client",
+      "locale": "ar",
+      "id": "components.VisualLab.demoCardHeadingSample",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "82aa09315a68f2932bbbe1b7da898e4ea14cd6660c98a75ab91c47c6266f076a",
+      "targetHash": "0613e4bf3a863fb115da870e599234ad249834a8e25133f5e398668bc9873947"
+    },
+    {
+      "domain": "client",
+      "locale": "ar",
+      "id": "components.VisualLab.demoButtonTextSample",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "de217b1f0cbfb55cf2361e04b4abc3fea5921488a85754fe4b772dd658edbe69",
+      "targetHash": "8e7ef0871f7b0c95fb41f04a8293a8da8b28900cf8319fcb8c091cb5ac94d03e"
+    },
+    {
+      "domain": "client",
+      "locale": "ar",
+      "id": "components.VisualLab.demoLight",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "dbcd5e7bb7a0f538810de44c3efbd813037ee3fa358747bb71fa58e157af45f7",
+      "targetHash": "aabb4f12fa3153597ebbb38e5efa02fb3ff614b029865eea332ac6f8eb080bed"
+    },
+    {
+      "domain": "client",
+      "locale": "ar",
+      "id": "components.VisualLab.demoNormal",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "a7248eeb45eb1ce247f81693283e22e8b39e8a50890cecd22d02e75025547d90",
+      "targetHash": "f3569af245009e0627ca7be479ab5e7fcd2de2fcea47b00c74550a00c43364d8"
+    },
+    {
+      "domain": "client",
+      "locale": "ar",
+      "id": "components.VisualLab.demoDark",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "60acc53f13a5d1bf115878c4a785e9a43e8286c4139a8402a6ac7d23966f9153",
+      "targetHash": "b95b2ced0e0ac9d2fa58021f3fa74f6052f77ab69f9dc07f61284ae0c9f624fb"
+    },
+    {
+      "domain": "client",
+      "locale": "ar",
+      "id": "components.VisualLab.demoDimmed",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "4ddaab2594c5fad34ec1bafd89c9a4451f2fa36cc17ec9acecf83aaf1b7c0e4c",
+      "targetHash": "23ec7ac101497b864216e18613faeb89bcfe6bd129231c54f290d151ad5393a1"
+    },
+    {
+      "domain": "client",
+      "locale": "ar",
+      "id": "components.VisualLab.demoActive",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "92340695899bd2d86223e4a007620e0d6502fc0e08809773634c7e0743764a9c",
+      "targetHash": "629e90b3af3d7de597dc85a8ed4e643f85b67c3aa432a85748fa6f431c33d62e"
+    },
+    {
+      "domain": "client",
+      "locale": "ar",
+      "id": "components.VisualLab.demoHover",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "c76ae86ad3014c852af277f5be355d149bf02287b4a04a7911bbc1614ffec4db",
+      "targetHash": "141251f6c396e584cd4009332ecf053446767557b8769cbbe91ec7b83a41228d"
+    },
+    {
+      "domain": "client",
+      "locale": "ar",
+      "id": "components.VisualLab.demoFamilyTitle",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "0da1089b33efe6adbe5b162a9c00c74c7465b3f5e388e4e6991cbbaa03fa9537",
+      "targetHash": "6e461f290c0a9e8aa177543ba7254822f51dad85131f3ade367e434215d542a7"
+    },
+    {
+      "domain": "client",
+      "locale": "ar",
+      "id": "components.VisualLab.demoFamilyPaletteButtons",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "6ffda9450faac785626a963dc35bc7ed499917de6c837a0d0912e6d7466d66ac",
+      "targetHash": "2e0a913f223fa21bd52008545de9e87e112a5f5787bf4a7ee16aeaa004becbe4"
+    },
+    {
+      "domain": "client",
+      "locale": "ar",
+      "id": "components.VisualLab.demoMetallicBackgroundBorder",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "373389c058feba3d9cd8ef9a76999dab51f4fc39df40971f0726aaa6b1c1e793",
+      "targetHash": "211ab05053453062058b682e31cf64e19a30a65d906a73989f339177a8af3899"
+    },
+    {
+      "domain": "client",
+      "locale": "ar",
+      "id": "components.VisualLab.demoFamilyBorder",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "238a86d0e2d0c4ed759b3603dc21c13fb6523f082202a1ead7fe25a48b30768a",
+      "targetHash": "533e9488eb570be9e80a911e7b48f34280f5ce68a9ece765204e26ae511b554e"
+    },
+    {
+      "domain": "client",
+      "locale": "ar",
+      "id": "components.VisualLab.demoMetallicBorderBackground",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "07df98da49cdc85e4c924367cddbf4b4ddfcecada3f2d7014221de624e8064ed",
+      "targetHash": "0916e1ba3cf694d3915e5c8758efd5cba5b667bc9c97b047181ca952b1c28cdc"
+    },
+    {
+      "domain": "client",
+      "locale": "ar",
+      "id": "components.VisualLab.demoStyleName",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "980c5892e4b4d69b5e08ee5223c031c1da1e04ce7e3e961156a2d4c621b41088",
+      "targetHash": "fa8391ea75de5b7b10586926487de73d8bb5d7bcfa1cadc3efa54c0025fd721e"
+    },
+    {
+      "domain": "client",
+      "locale": "ar",
+      "id": "components.VisualLab.demoPaletteName",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "8aef834e0891337d2f49b03af6097ef1671053ba588fbcf9fbaf6246118bacb0",
+      "targetHash": "6bb1a9c5552ac59090221607177976d9a408edb0dbd8988fe423f2f8ddadcc7a"
+    },
+    {
+      "domain": "client",
+      "locale": "ar",
+      "id": "components.VisualLab.demoColorPaletteName",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "272b41e0071399b5e7f52e5f23c6d940f0b2107aa73620645eeb05cb6fbe1e74",
+      "targetHash": "2cd5523e858ce885e8a0c11f874acc41033316b81d4a335c12cfcb822784e666"
+    },
+    {
+      "domain": "client",
+      "locale": "ar",
+      "id": "components.VisualLab.demoShadeColorName",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "ba42b7dee624f4607608f5cbbe0f941aa4ca49df2b172afee748402cc76d28c2",
+      "targetHash": "5e1d9412f3a9dba9c10abd745fdc71255d2dec9b61d8563f5104d028790f4d3c"
+    },
+    {
+      "domain": "client",
+      "locale": "ar",
+      "id": "components.VisualLab.demoSteel",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "ea9973d1460ee95c08102b183f8c7fd7b4f05fa716cab4f91e9672ccd893a6d2",
+      "targetHash": "69eb9e8b8d96686579127d8867cebdb8d82e97264ce4b633023a597eaa78ca8a"
+    },
+    {
+      "domain": "client",
+      "locale": "ar",
+      "id": "components.VisualLab.demoChrome",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "c4ef2ec214f90032f39dddfbfe51add7ef2c79da14fb2ccf14cb4c9ad15e5c9a",
+      "targetHash": "ce59580c5278555f23f51c03728b1f0e7cf304ee65ad35b1bb92e811277fa870"
+    },
+    {
+      "domain": "client",
+      "locale": "ar",
+      "id": "components.VisualLab.demoLiquid",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "9a83788b3550a100cc8d7585ff4aeec4a4e2d040226e595ed21fe398fdea232e",
+      "targetHash": "9dff9f3cfc5fe10ea49c0068ab4907f9ceaa6f734a7f036224b248305aa997c5"
+    },
+    {
+      "domain": "client",
+      "locale": "ar",
+      "id": "components.VisualLab.demoGray",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "0d5adda3cdccf937bd9c9e66c8000f98d9d0a91e7c3a166e2dfdc91386911cd2",
+      "targetHash": "682d788f24a104639e381de2113668144a56f9d54b548a4bf8cc3c5a7ba09a5b"
+    },
+    {
+      "domain": "client",
+      "locale": "ar",
+      "id": "components.VisualLab.demoBlack",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "c6cfe6e4f129a34671d10c1bbe158eff05197d388727e331951b0ec2637c194e",
+      "targetHash": "b5847ac66b11240c7ea20ea970a826ec945c7004d831f75ce31c610b2175c8e8"
+    },
+    {
+      "domain": "client",
+      "locale": "ar",
+      "id": "components.VisualLab.demoRed",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "ba19e9c3d5f49882ddaafed4f286a8a81491150426d321179270e27e74a89097",
+      "targetHash": "2822596a9ac959bfc96aa340f21afa229b36c90519d9ace6690303374b534a47"
+    },
+    {
+      "domain": "client",
+      "locale": "ar",
+      "id": "components.VisualLab.demoOrange",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "78e7771b8b46e11ddb34ba48887e1330525215f96d94778980d1186e6f09f6b4",
+      "targetHash": "13cddea6c182b580abcc58643abf13096a8ce206d4cb49468d60ad9a8597f8e8"
+    },
+    {
+      "domain": "client",
+      "locale": "ar",
+      "id": "components.VisualLab.demoYellow",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "19dd83f117525b931fccdafe808aaa6939af792ee549f359eff13fac0d622f5d",
+      "targetHash": "4b3038e79f620ffb47412a7cb4091af4d2e3acde88573d0b522fbd9013a16583"
+    },
+    {
+      "domain": "client",
+      "locale": "ar",
+      "id": "components.VisualLab.demoLime",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "c9665c96a8678e037a9ca363b9b6fbf0b7942ae352f1f6c807f45f9094c9ec9a",
+      "targetHash": "f95c53565a8fc61fa05efd9bd5f256de9f8538fe1cbbecd81bc3c5c417480658"
+    },
+    {
+      "domain": "client",
+      "locale": "ar",
+      "id": "components.VisualLab.demoGreen",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "d486dfbd5fb578340bccbdd0a662527eab38550648d5f44517e5ac71b8824703",
+      "targetHash": "fd3c2a5c44605041a38b548a6b9c9febb58b9aa730a66479efd4c01d4727fdcd"
+    },
+    {
+      "domain": "client",
+      "locale": "ar",
+      "id": "components.VisualLab.demoAqua",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "7a4721a879cb49bf793cbf62a831c2e70ae16da6a6a56fc83fe0dcdccaacee97",
+      "targetHash": "b9ed7fdcf3b1bac7a5971d8e9f31a72eaefc985dc5e6aea3f19dc00e74d35d4a"
+    },
+    {
+      "domain": "client",
+      "locale": "ar",
+      "id": "components.VisualLab.demoBlue",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "ec7d56a01607001e6401366417c5e2eb00ffa0df17ca1a9a831e0b32c8f11bf7",
+      "targetHash": "2a722a6b0021f4806713fb75cb9db8e6b070943d8f275c3a54fbca2df684f831"
+    },
+    {
+      "domain": "client",
+      "locale": "ar",
+      "id": "components.VisualLab.demoPurple",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "7d465fb9b9314846b72698017691e756af05e0a548e347a3b7c54ca5b85270de",
+      "targetHash": "bc897af6bc1087f257c8a637ad6b421d82912a37e51e60f8e847a10ba9c2c309"
+    },
+    {
+      "domain": "client",
+      "locale": "ar",
+      "id": "components.VisualLab.demoPlum",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "c8b2fae9f5dc3c52c4e223323f26f5c5e5726210c2da7f7cd3370bce461836a1",
+      "targetHash": "516fafc1ee7edd9472524c05e5d1ae128b61231c202b2d3cad9a90c0c29baaf1"
+    },
+    {
+      "domain": "client",
+      "locale": "ar",
+      "id": "components.VisualLab.demoPink",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "bd38ed7732402b1a93261916c5906016cdccd1a9600b3864208246f6a3299bd0",
+      "targetHash": "07293572a18454080c5f5f4a3d32de8cc9037ff25ade30b5260b24ec8a671f15"
+    },
+    {
+      "domain": "client",
+      "locale": "de",
+      "id": "components.VisualLab.demoPageTitleSample",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "91ac8dd7c3e5b59a83e6e7d32da42c7cee25d2eccb4fe317949e5a046d1082a9",
+      "targetHash": "bdd2327e64acd4f1b0f7365bc90fed6e8f6c94b4846bcded524fecb405a9d1c5"
+    },
+    {
+      "domain": "client",
+      "locale": "de",
+      "id": "components.VisualLab.demoCardTitleSample",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "1441a2959af749da99f417b41e4e7c3dbfa419b3ee53307499427acf05ae2ebc",
+      "targetHash": "9279e6c5b2eec740faa2e5a55f8644d6d8d6e2a707d94463f42fb53af9a6ddd7"
+    },
+    {
+      "domain": "client",
+      "locale": "de",
+      "id": "components.VisualLab.demoCardHeadingSample",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "82aa09315a68f2932bbbe1b7da898e4ea14cd6660c98a75ab91c47c6266f076a",
+      "targetHash": "e984163cc943331eb6851acf62f2b30224a4310f527d2c3f60f16f56d24ab642"
+    },
+    {
+      "domain": "client",
+      "locale": "de",
+      "id": "components.VisualLab.demoButtonTextSample",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "de217b1f0cbfb55cf2361e04b4abc3fea5921488a85754fe4b772dd658edbe69",
+      "targetHash": "ce780492130aac6bc2b74c0cf6e2d07bef3d7d3326e8067656a7e2f3fee4af22"
+    },
+    {
+      "domain": "client",
+      "locale": "de",
+      "id": "components.VisualLab.demoLight",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "dbcd5e7bb7a0f538810de44c3efbd813037ee3fa358747bb71fa58e157af45f7",
+      "targetHash": "8d586f8b60df1ad7502b52fc50d2e0b6d0d9b5643875c054d821dfd8e6672bed"
+    },
+    {
+      "domain": "client",
+      "locale": "de",
+      "id": "components.VisualLab.demoNormal",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "a7248eeb45eb1ce247f81693283e22e8b39e8a50890cecd22d02e75025547d90",
+      "targetHash": "a7248eeb45eb1ce247f81693283e22e8b39e8a50890cecd22d02e75025547d90"
+    },
+    {
+      "domain": "client",
+      "locale": "de",
+      "id": "components.VisualLab.demoDark",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "60acc53f13a5d1bf115878c4a785e9a43e8286c4139a8402a6ac7d23966f9153",
+      "targetHash": "368b231be48a946af5069620ce6f006363d2a6db05732f1e630dade6c0d79177"
+    },
+    {
+      "domain": "client",
+      "locale": "de",
+      "id": "components.VisualLab.demoDimmed",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "4ddaab2594c5fad34ec1bafd89c9a4451f2fa36cc17ec9acecf83aaf1b7c0e4c",
+      "targetHash": "4860d6b49baba51944be22619fc611acea24b1031a1d0676b37dbbea1bb94ae5"
+    },
+    {
+      "domain": "client",
+      "locale": "de",
+      "id": "components.VisualLab.demoActive",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "92340695899bd2d86223e4a007620e0d6502fc0e08809773634c7e0743764a9c",
+      "targetHash": "8163454f378f0814a0911afc75bb63814643a45803a0460003800e1c6b9be636"
+    },
+    {
+      "domain": "client",
+      "locale": "de",
+      "id": "components.VisualLab.demoHover",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "c76ae86ad3014c852af277f5be355d149bf02287b4a04a7911bbc1614ffec4db",
+      "targetHash": "b40d214684c4c3015c295347a31149546c28e31a1a6901db6b1ac2eff02e60f7"
+    },
+    {
+      "domain": "client",
+      "locale": "de",
+      "id": "components.VisualLab.demoFamilyTitle",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "0da1089b33efe6adbe5b162a9c00c74c7465b3f5e388e4e6991cbbaa03fa9537",
+      "targetHash": "433ff6f714b111afb796ef29e12d045ca739e83c0cdce426ce84fbda3e9317ee"
+    },
+    {
+      "domain": "client",
+      "locale": "de",
+      "id": "components.VisualLab.demoFamilyPaletteButtons",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "6ffda9450faac785626a963dc35bc7ed499917de6c837a0d0912e6d7466d66ac",
+      "targetHash": "5d9143d4fc216641dfb64cbc44b991978452ca297aacc83a8b99630facd38914"
+    },
+    {
+      "domain": "client",
+      "locale": "de",
+      "id": "components.VisualLab.demoMetallicBackgroundBorder",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "373389c058feba3d9cd8ef9a76999dab51f4fc39df40971f0726aaa6b1c1e793",
+      "targetHash": "712cefa76574f535c79fb19f5c74c661acab2bf4a06777ba5bd5e342006ca533"
+    },
+    {
+      "domain": "client",
+      "locale": "de",
+      "id": "components.VisualLab.demoFamilyBorder",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "238a86d0e2d0c4ed759b3603dc21c13fb6523f082202a1ead7fe25a48b30768a",
+      "targetHash": "dd594a68b85f5aa55d9de392161f7cbbb3b37323fec68b811e315532bbb2c990"
+    },
+    {
+      "domain": "client",
+      "locale": "de",
+      "id": "components.VisualLab.demoMetallicBorderBackground",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "07df98da49cdc85e4c924367cddbf4b4ddfcecada3f2d7014221de624e8064ed",
+      "targetHash": "6c5e49f73d1eb2d0816916be211f0560293ef54b70c5dd58a2def12214c6bb45"
+    },
+    {
+      "domain": "client",
+      "locale": "de",
+      "id": "components.VisualLab.demoStyleName",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "980c5892e4b4d69b5e08ee5223c031c1da1e04ce7e3e961156a2d4c621b41088",
+      "targetHash": "1aa12ee06d4da8f706ace5cf7a8001f4ce3b5e49a846d7101e70b1ed72642b4c"
+    },
+    {
+      "domain": "client",
+      "locale": "de",
+      "id": "components.VisualLab.demoPaletteName",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "8aef834e0891337d2f49b03af6097ef1671053ba588fbcf9fbaf6246118bacb0",
+      "targetHash": "f35849fbe9dc776e10164c23cde4dd79800ed3eb411e2b5d17f157e38212b99e"
+    },
+    {
+      "domain": "client",
+      "locale": "de",
+      "id": "components.VisualLab.demoColorPaletteName",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "272b41e0071399b5e7f52e5f23c6d940f0b2107aa73620645eeb05cb6fbe1e74",
+      "targetHash": "78e964224a740b8b23cc486754b8e47d6066cb2cc7db16c729b97ea87e202670"
+    },
+    {
+      "domain": "client",
+      "locale": "de",
+      "id": "components.VisualLab.demoShadeColorName",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "ba42b7dee624f4607608f5cbbe0f941aa4ca49df2b172afee748402cc76d28c2",
+      "targetHash": "3a560ab0c2b744abb1fb877f819c186537ba7b54b124769dbb5f836380cd3690"
+    },
+    {
+      "domain": "client",
+      "locale": "de",
+      "id": "components.VisualLab.demoSteel",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "ea9973d1460ee95c08102b183f8c7fd7b4f05fa716cab4f91e9672ccd893a6d2",
+      "targetHash": "fb1984c2e2e3eacb8409cd0024eeed36eef686e5e8628be37af3cad37acc2dcb"
+    },
+    {
+      "domain": "client",
+      "locale": "de",
+      "id": "components.VisualLab.demoChrome",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "c4ef2ec214f90032f39dddfbfe51add7ef2c79da14fb2ccf14cb4c9ad15e5c9a",
+      "targetHash": "3450988d97ced890c0f28a011cda369b50578a2077314b90eba3fc4396bd2226"
+    },
+    {
+      "domain": "client",
+      "locale": "de",
+      "id": "components.VisualLab.demoLiquid",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "9a83788b3550a100cc8d7585ff4aeec4a4e2d040226e595ed21fe398fdea232e",
+      "targetHash": "7b674d818c7a43ec2fdb7b1d836d375d48ccfd7bb36dc698ed8ade146ba2a41f"
+    },
+    {
+      "domain": "client",
+      "locale": "de",
+      "id": "components.VisualLab.demoGray",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "0d5adda3cdccf937bd9c9e66c8000f98d9d0a91e7c3a166e2dfdc91386911cd2",
+      "targetHash": "6a8f4aecb9d96f2a519463a2a2e2206da94aaeae687693c22a2b8be1398c6095"
+    },
+    {
+      "domain": "client",
+      "locale": "de",
+      "id": "components.VisualLab.demoBlack",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "c6cfe6e4f129a34671d10c1bbe158eff05197d388727e331951b0ec2637c194e",
+      "targetHash": "25e5d3fea1eb6e4ad4bec36bed978639d36a068dd3c73d2797e2bd50d43ae998"
+    },
+    {
+      "domain": "client",
+      "locale": "de",
+      "id": "components.VisualLab.demoRed",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "ba19e9c3d5f49882ddaafed4f286a8a81491150426d321179270e27e74a89097",
+      "targetHash": "2207deb65b865e54d1b7f9b38706ffa6025b82e9b11200c8e24f746d5021826e"
+    },
+    {
+      "domain": "client",
+      "locale": "de",
+      "id": "components.VisualLab.demoOrange",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "78e7771b8b46e11ddb34ba48887e1330525215f96d94778980d1186e6f09f6b4",
+      "targetHash": "78e7771b8b46e11ddb34ba48887e1330525215f96d94778980d1186e6f09f6b4"
+    },
+    {
+      "domain": "client",
+      "locale": "de",
+      "id": "components.VisualLab.demoYellow",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "19dd83f117525b931fccdafe808aaa6939af792ee549f359eff13fac0d622f5d",
+      "targetHash": "5fa3188cc950d6d3a7806ffa0cd2addce49dbcdb24cbc2e37abc2fba24b5b1e0"
+    },
+    {
+      "domain": "client",
+      "locale": "de",
+      "id": "components.VisualLab.demoLime",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "c9665c96a8678e037a9ca363b9b6fbf0b7942ae352f1f6c807f45f9094c9ec9a",
+      "targetHash": "949894deacf8d45b218d45d94985a778893f304b9ea020b4a7389c930d586b78"
+    },
+    {
+      "domain": "client",
+      "locale": "de",
+      "id": "components.VisualLab.demoGreen",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "d486dfbd5fb578340bccbdd0a662527eab38550648d5f44517e5ac71b8824703",
+      "targetHash": "995223df54c67b633d920845f5c82356e0c9e72a2c91b38faf2e80f5a5ff5da5"
+    },
+    {
+      "domain": "client",
+      "locale": "de",
+      "id": "components.VisualLab.demoAqua",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "7a4721a879cb49bf793cbf62a831c2e70ae16da6a6a56fc83fe0dcdccaacee97",
+      "targetHash": "1244c537d5f6b028db7bfff4da763af1d034e40434e1ea48c856156c758cb0b6"
+    },
+    {
+      "domain": "client",
+      "locale": "de",
+      "id": "components.VisualLab.demoBlue",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "ec7d56a01607001e6401366417c5e2eb00ffa0df17ca1a9a831e0b32c8f11bf7",
+      "targetHash": "8d55f705cf2bad60dd31066c454d6ca7a88bad84d08805b125501d7e77a2afce"
+    },
+    {
+      "domain": "client",
+      "locale": "de",
+      "id": "components.VisualLab.demoPurple",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "7d465fb9b9314846b72698017691e756af05e0a548e347a3b7c54ca5b85270de",
+      "targetHash": "dcb7f576709be400ad4d9a67ce08fb67624ef23f743c28a159f29904edcee81a"
+    },
+    {
+      "domain": "client",
+      "locale": "de",
+      "id": "components.VisualLab.demoPlum",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "c8b2fae9f5dc3c52c4e223323f26f5c5e5726210c2da7f7cd3370bce461836a1",
+      "targetHash": "562596b1b788ca61e97c170913c391e512fbd8499d72b76e43702d8fc0dc86ca"
+    },
+    {
+      "domain": "client",
+      "locale": "de",
+      "id": "components.VisualLab.demoPink",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "bd38ed7732402b1a93261916c5906016cdccd1a9600b3864208246f6a3299bd0",
+      "targetHash": "75f9577a1637cf7a30d4fc7c7839d5c71b626946b0f784ee92da0f1ae4e707df"
+    },
+    {
+      "domain": "client",
+      "locale": "es",
+      "id": "components.VisualLab.demoPageTitleSample",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "91ac8dd7c3e5b59a83e6e7d32da42c7cee25d2eccb4fe317949e5a046d1082a9",
+      "targetHash": "4cd56614bfe422a469986097968bd1ceac9e2fc45d5d000f2d8a2175c0ec17b7"
+    },
+    {
+      "domain": "client",
+      "locale": "es",
+      "id": "components.VisualLab.demoCardTitleSample",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "1441a2959af749da99f417b41e4e7c3dbfa419b3ee53307499427acf05ae2ebc",
+      "targetHash": "9eae3a2062531a1010b2f28c6bcfa8c97ddb6144d157bda3b46994fd60ff15c1"
+    },
+    {
+      "domain": "client",
+      "locale": "es",
+      "id": "components.VisualLab.demoCardHeadingSample",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "82aa09315a68f2932bbbe1b7da898e4ea14cd6660c98a75ab91c47c6266f076a",
+      "targetHash": "5cbf639e0cbffd5905b04f2f8df3779f1a9cf7f26b2286b802052f0169abbb26"
+    },
+    {
+      "domain": "client",
+      "locale": "es",
+      "id": "components.VisualLab.demoButtonTextSample",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "de217b1f0cbfb55cf2361e04b4abc3fea5921488a85754fe4b772dd658edbe69",
+      "targetHash": "0746df8abcc2578bb46d90c8c23b5ca5f3d98db70c046bb6a1ac9647fb29b648"
+    },
+    {
+      "domain": "client",
+      "locale": "es",
+      "id": "components.VisualLab.demoLight",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "dbcd5e7bb7a0f538810de44c3efbd813037ee3fa358747bb71fa58e157af45f7",
+      "targetHash": "2f3e8dcc246498504bc7fef416082aebd9869d8c360432e5a443b28dc304067f"
+    },
+    {
+      "domain": "client",
+      "locale": "es",
+      "id": "components.VisualLab.demoNormal",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "a7248eeb45eb1ce247f81693283e22e8b39e8a50890cecd22d02e75025547d90",
+      "targetHash": "a7248eeb45eb1ce247f81693283e22e8b39e8a50890cecd22d02e75025547d90"
+    },
+    {
+      "domain": "client",
+      "locale": "es",
+      "id": "components.VisualLab.demoDark",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "60acc53f13a5d1bf115878c4a785e9a43e8286c4139a8402a6ac7d23966f9153",
+      "targetHash": "1b1c27c397aee60cfa874aa6a2a1629439b41d214d70aaa6a67f8c1f439d3398"
+    },
+    {
+      "domain": "client",
+      "locale": "es",
+      "id": "components.VisualLab.demoDimmed",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "4ddaab2594c5fad34ec1bafd89c9a4451f2fa36cc17ec9acecf83aaf1b7c0e4c",
+      "targetHash": "77079c67685916287c3272f8c3d7467d8658538c69cdbb1c6f5b47338256fb4b"
+    },
+    {
+      "domain": "client",
+      "locale": "es",
+      "id": "components.VisualLab.demoActive",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "92340695899bd2d86223e4a007620e0d6502fc0e08809773634c7e0743764a9c",
+      "targetHash": "723858144bd5482d4ad8ae46e5fbbcca18061cf39e453730e025a286f1c0ea7f"
+    },
+    {
+      "domain": "client",
+      "locale": "es",
+      "id": "components.VisualLab.demoHover",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "c76ae86ad3014c852af277f5be355d149bf02287b4a04a7911bbc1614ffec4db",
+      "targetHash": "a16b1424a02b2a896570bd5225fd3b599fa0386ce2b19fdd1ca98bdcce659972"
+    },
+    {
+      "domain": "client",
+      "locale": "es",
+      "id": "components.VisualLab.demoFamilyTitle",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "0da1089b33efe6adbe5b162a9c00c74c7465b3f5e388e4e6991cbbaa03fa9537",
+      "targetHash": "42f5be57f213311c536f8e238e6023719f3531e282c3087bf1a809fbbbcf38b1"
+    },
+    {
+      "domain": "client",
+      "locale": "es",
+      "id": "components.VisualLab.demoFamilyPaletteButtons",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "6ffda9450faac785626a963dc35bc7ed499917de6c837a0d0912e6d7466d66ac",
+      "targetHash": "938b7dffa0e766522a9f1ad5d68df3865011c9ac3d291c0621bfe5a9a646762c"
+    },
+    {
+      "domain": "client",
+      "locale": "es",
+      "id": "components.VisualLab.demoMetallicBackgroundBorder",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "373389c058feba3d9cd8ef9a76999dab51f4fc39df40971f0726aaa6b1c1e793",
+      "targetHash": "b2a0559cd1712d04e87b973e62fd96d027bf879d75186187212ca69f3574d8d2"
+    },
+    {
+      "domain": "client",
+      "locale": "es",
+      "id": "components.VisualLab.demoFamilyBorder",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "238a86d0e2d0c4ed759b3603dc21c13fb6523f082202a1ead7fe25a48b30768a",
+      "targetHash": "05aa3b07175c5f88144cf8d86cd61db4da5d855f0894d7d339e3ee543f555df7"
+    },
+    {
+      "domain": "client",
+      "locale": "es",
+      "id": "components.VisualLab.demoMetallicBorderBackground",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "07df98da49cdc85e4c924367cddbf4b4ddfcecada3f2d7014221de624e8064ed",
+      "targetHash": "590ae0b50294a79150970c716d837422bd08daa8e7823ecb98f7b40a08ed154f"
+    },
+    {
+      "domain": "client",
+      "locale": "es",
+      "id": "components.VisualLab.demoStyleName",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "980c5892e4b4d69b5e08ee5223c031c1da1e04ce7e3e961156a2d4c621b41088",
+      "targetHash": "1aa12ee06d4da8f706ace5cf7a8001f4ce3b5e49a846d7101e70b1ed72642b4c"
+    },
+    {
+      "domain": "client",
+      "locale": "es",
+      "id": "components.VisualLab.demoPaletteName",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "8aef834e0891337d2f49b03af6097ef1671053ba588fbcf9fbaf6246118bacb0",
+      "targetHash": "801045f2367cf5e5de3cd305ffd67b27e2cd9847210e4b5ea55ab58b04a1e1cc"
+    },
+    {
+      "domain": "client",
+      "locale": "es",
+      "id": "components.VisualLab.demoColorPaletteName",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "272b41e0071399b5e7f52e5f23c6d940f0b2107aa73620645eeb05cb6fbe1e74",
+      "targetHash": "ad9a3f977a307d54add09be9ccc7807b6a166dab34b2e93cb50cbd45f89bee8a"
+    },
+    {
+      "domain": "client",
+      "locale": "es",
+      "id": "components.VisualLab.demoShadeColorName",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "ba42b7dee624f4607608f5cbbe0f941aa4ca49df2b172afee748402cc76d28c2",
+      "targetHash": "5e1d9412f3a9dba9c10abd745fdc71255d2dec9b61d8563f5104d028790f4d3c"
+    },
+    {
+      "domain": "client",
+      "locale": "es",
+      "id": "components.VisualLab.demoSteel",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "ea9973d1460ee95c08102b183f8c7fd7b4f05fa716cab4f91e9672ccd893a6d2",
+      "targetHash": "5ce5d9104ee23a83b8ac5b918094046cac099ed61e07bf021824fa50b8f630f6"
+    },
+    {
+      "domain": "client",
+      "locale": "es",
+      "id": "components.VisualLab.demoChrome",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "c4ef2ec214f90032f39dddfbfe51add7ef2c79da14fb2ccf14cb4c9ad15e5c9a",
+      "targetHash": "ce65de648f6727ec38290ffd12490ecacb4c937c7f91e46d990e5ded21d2164f"
+    },
+    {
+      "domain": "client",
+      "locale": "es",
+      "id": "components.VisualLab.demoLiquid",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "9a83788b3550a100cc8d7585ff4aeec4a4e2d040226e595ed21fe398fdea232e",
+      "targetHash": "b5ce83cd9497437fabc6ff4a6b6c74ac5d1e6f6a83b623732feaad539b3bdd7d"
+    },
+    {
+      "domain": "client",
+      "locale": "es",
+      "id": "components.VisualLab.demoGray",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "0d5adda3cdccf937bd9c9e66c8000f98d9d0a91e7c3a166e2dfdc91386911cd2",
+      "targetHash": "e8650efbfda55fe8f665a868cf00377da67340e6e99f649ca469369b2c77dfe2"
+    },
+    {
+      "domain": "client",
+      "locale": "es",
+      "id": "components.VisualLab.demoBlack",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "c6cfe6e4f129a34671d10c1bbe158eff05197d388727e331951b0ec2637c194e",
+      "targetHash": "6723390ac7c7cfce386f90b377c37592dac250379ccba04d40a6035cb2161457"
+    },
+    {
+      "domain": "client",
+      "locale": "es",
+      "id": "components.VisualLab.demoRed",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "ba19e9c3d5f49882ddaafed4f286a8a81491150426d321179270e27e74a89097",
+      "targetHash": "7069e90c206b0e2d349c46d3798730577338dbb0dca9dfd2f2f897c55e668e71"
+    },
+    {
+      "domain": "client",
+      "locale": "es",
+      "id": "components.VisualLab.demoOrange",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "78e7771b8b46e11ddb34ba48887e1330525215f96d94778980d1186e6f09f6b4",
+      "targetHash": "15263c30b956539523319aacdfae99af6d0a5a8afd975292815194ce9de43e51"
+    },
+    {
+      "domain": "client",
+      "locale": "es",
+      "id": "components.VisualLab.demoYellow",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "19dd83f117525b931fccdafe808aaa6939af792ee549f359eff13fac0d622f5d",
+      "targetHash": "8a7ae3ac199faedabd3134a7f4bf27acde54b2f17ee423b3da1b644143942501"
+    },
+    {
+      "domain": "client",
+      "locale": "es",
+      "id": "components.VisualLab.demoLime",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "c9665c96a8678e037a9ca363b9b6fbf0b7942ae352f1f6c807f45f9094c9ec9a",
+      "targetHash": "aaf2d054d5f750cbf297a4ecd8c58f861a34a48ff7159ce6cd08f986f6a0c0eb"
+    },
+    {
+      "domain": "client",
+      "locale": "es",
+      "id": "components.VisualLab.demoGreen",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "d486dfbd5fb578340bccbdd0a662527eab38550648d5f44517e5ac71b8824703",
+      "targetHash": "40598e1cb1d239fd0cbfac98ea7b63887e3fbb23ff0f3205ecd3a15b3b7a1aff"
+    },
+    {
+      "domain": "client",
+      "locale": "es",
+      "id": "components.VisualLab.demoAqua",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "7a4721a879cb49bf793cbf62a831c2e70ae16da6a6a56fc83fe0dcdccaacee97",
+      "targetHash": "35320b6e6d3229c1b2e87fd6ba27f85e244ac16c5a8b3252cc1212f596e5c757"
+    },
+    {
+      "domain": "client",
+      "locale": "es",
+      "id": "components.VisualLab.demoBlue",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "ec7d56a01607001e6401366417c5e2eb00ffa0df17ca1a9a831e0b32c8f11bf7",
+      "targetHash": "b0bf526b23af19619a579501bd7943dd899c211fd2ef69e9f8ab0dc5b43b439a"
+    },
+    {
+      "domain": "client",
+      "locale": "es",
+      "id": "components.VisualLab.demoPurple",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "7d465fb9b9314846b72698017691e756af05e0a548e347a3b7c54ca5b85270de",
+      "targetHash": "b2a78cb479c541235f2a909921f7862ff0e4e83ce026d305de7e66c3872c8c86"
+    },
+    {
+      "domain": "client",
+      "locale": "es",
+      "id": "components.VisualLab.demoPlum",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "c8b2fae9f5dc3c52c4e223323f26f5c5e5726210c2da7f7cd3370bce461836a1",
+      "targetHash": "968bac9e3bc3d13d789acca91d123592635b65bd18db6ed0d45b0ca2d3e1b8d1"
+    },
+    {
+      "domain": "client",
+      "locale": "es",
+      "id": "components.VisualLab.demoPink",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "bd38ed7732402b1a93261916c5906016cdccd1a9600b3864208246f6a3299bd0",
+      "targetHash": "75f9577a1637cf7a30d4fc7c7839d5c71b626946b0f784ee92da0f1ae4e707df"
+    },
+    {
+      "domain": "client",
+      "locale": "fr",
+      "id": "components.VisualLab.demoPageTitleSample",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "91ac8dd7c3e5b59a83e6e7d32da42c7cee25d2eccb4fe317949e5a046d1082a9",
+      "targetHash": "98675c498f235c7e067f1d837d1ace895a1af2103dee0ee3ad7ac89be3538f37"
+    },
+    {
+      "domain": "client",
+      "locale": "fr",
+      "id": "components.VisualLab.demoCardTitleSample",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "1441a2959af749da99f417b41e4e7c3dbfa419b3ee53307499427acf05ae2ebc",
+      "targetHash": "3b0b1edc4b177f10dcc767e0ef2a9a869fff74fb619de2f533f002b84ad995f2"
+    },
+    {
+      "domain": "client",
+      "locale": "fr",
+      "id": "components.VisualLab.demoCardHeadingSample",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "82aa09315a68f2932bbbe1b7da898e4ea14cd6660c98a75ab91c47c6266f076a",
+      "targetHash": "2ff405494c7c5d5766ecf58cbfc65fdff5af71cf8790267cd861657191d93b76"
+    },
+    {
+      "domain": "client",
+      "locale": "fr",
+      "id": "components.VisualLab.demoButtonTextSample",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "de217b1f0cbfb55cf2361e04b4abc3fea5921488a85754fe4b772dd658edbe69",
+      "targetHash": "9ba3b1e488d17d28992004b8dbbab58be41c180980c7f20e5cd52b499d7eec12"
+    },
+    {
+      "domain": "client",
+      "locale": "fr",
+      "id": "components.VisualLab.demoLight",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "dbcd5e7bb7a0f538810de44c3efbd813037ee3fa358747bb71fa58e157af45f7",
+      "targetHash": "addc12a8f8096d53e7de0190d15565293b4791fab8e059da261736dda00237e7"
+    },
+    {
+      "domain": "client",
+      "locale": "fr",
+      "id": "components.VisualLab.demoNormal",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "a7248eeb45eb1ce247f81693283e22e8b39e8a50890cecd22d02e75025547d90",
+      "targetHash": "a7248eeb45eb1ce247f81693283e22e8b39e8a50890cecd22d02e75025547d90"
+    },
+    {
+      "domain": "client",
+      "locale": "fr",
+      "id": "components.VisualLab.demoDark",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "60acc53f13a5d1bf115878c4a785e9a43e8286c4139a8402a6ac7d23966f9153",
+      "targetHash": "9a3477edfb6a2894fb4120909bed830f86c85bed24007eeecc68b1d950a21366"
+    },
+    {
+      "domain": "client",
+      "locale": "fr",
+      "id": "components.VisualLab.demoDimmed",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "4ddaab2594c5fad34ec1bafd89c9a4451f2fa36cc17ec9acecf83aaf1b7c0e4c",
+      "targetHash": "53e8bcea564d2c7417e31d0ca188970ac30b21c7aa4ef845d9f9b5ae53e8fdd1"
+    },
+    {
+      "domain": "client",
+      "locale": "fr",
+      "id": "components.VisualLab.demoActive",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "92340695899bd2d86223e4a007620e0d6502fc0e08809773634c7e0743764a9c",
+      "targetHash": "ad26287ab66ba05cce95d869b68d61cc706c2dc4804ee819c9600a805fce59cd"
+    },
+    {
+      "domain": "client",
+      "locale": "fr",
+      "id": "components.VisualLab.demoHover",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "c76ae86ad3014c852af277f5be355d149bf02287b4a04a7911bbc1614ffec4db",
+      "targetHash": "f3aebc9ed3c31750b2688bcc5dc143ad91836f809bb9434552f4869b68acd12c"
+    },
+    {
+      "domain": "client",
+      "locale": "fr",
+      "id": "components.VisualLab.demoFamilyTitle",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "0da1089b33efe6adbe5b162a9c00c74c7465b3f5e388e4e6991cbbaa03fa9537",
+      "targetHash": "f723a6f82b3a2c52387024edbaaf82599469cb5290ab04b926cb96472c1e24b6"
+    },
+    {
+      "domain": "client",
+      "locale": "fr",
+      "id": "components.VisualLab.demoFamilyPaletteButtons",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "6ffda9450faac785626a963dc35bc7ed499917de6c837a0d0912e6d7466d66ac",
+      "targetHash": "173d94cbb794f9137b263935e17de7da24757e5cf7e857e746d3f7d0d5a7318b"
+    },
+    {
+      "domain": "client",
+      "locale": "fr",
+      "id": "components.VisualLab.demoMetallicBackgroundBorder",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "373389c058feba3d9cd8ef9a76999dab51f4fc39df40971f0726aaa6b1c1e793",
+      "targetHash": "09e0c0804dab2bb510f7528e7046fdb8dbc353400902f947cfff9e76af574874"
+    },
+    {
+      "domain": "client",
+      "locale": "fr",
+      "id": "components.VisualLab.demoFamilyBorder",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "238a86d0e2d0c4ed759b3603dc21c13fb6523f082202a1ead7fe25a48b30768a",
+      "targetHash": "90e8cc9171df42bfdca34d3c1a906679bc8c812d669bce22d3781a09a2c5f171"
+    },
+    {
+      "domain": "client",
+      "locale": "fr",
+      "id": "components.VisualLab.demoMetallicBorderBackground",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "07df98da49cdc85e4c924367cddbf4b4ddfcecada3f2d7014221de624e8064ed",
+      "targetHash": "cc460b0f8e60ec980a6b49dacebf0f2aa66023e57a98711907a85f6f394ba18d"
+    },
+    {
+      "domain": "client",
+      "locale": "fr",
+      "id": "components.VisualLab.demoStyleName",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "980c5892e4b4d69b5e08ee5223c031c1da1e04ce7e3e961156a2d4c621b41088",
+      "targetHash": "e5d8feb7dd6583e48dc81a51fe851f7d2a4055a6637fbcabd387f582ea54c0b6"
+    },
+    {
+      "domain": "client",
+      "locale": "fr",
+      "id": "components.VisualLab.demoPaletteName",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "8aef834e0891337d2f49b03af6097ef1671053ba588fbcf9fbaf6246118bacb0",
+      "targetHash": "b8a0c178054423a844a5ce6ec585ae8464e87c2b862061e6c40d8d3343dcb266"
+    },
+    {
+      "domain": "client",
+      "locale": "fr",
+      "id": "components.VisualLab.demoColorPaletteName",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "272b41e0071399b5e7f52e5f23c6d940f0b2107aa73620645eeb05cb6fbe1e74",
+      "targetHash": "e8b0d982467f859b70fe2370ec347e6eec04a4bc4390f9538f6137d59e6eebce"
+    },
+    {
+      "domain": "client",
+      "locale": "fr",
+      "id": "components.VisualLab.demoShadeColorName",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "ba42b7dee624f4607608f5cbbe0f941aa4ca49df2b172afee748402cc76d28c2",
+      "targetHash": "5e1d9412f3a9dba9c10abd745fdc71255d2dec9b61d8563f5104d028790f4d3c"
+    },
+    {
+      "domain": "client",
+      "locale": "fr",
+      "id": "components.VisualLab.demoSteel",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "ea9973d1460ee95c08102b183f8c7fd7b4f05fa716cab4f91e9672ccd893a6d2",
+      "targetHash": "3b17e8228cfdafd76ad36a8cf9a1e919e366b1c25ff7b28be321c7d8fbccd5fd"
+    },
+    {
+      "domain": "client",
+      "locale": "fr",
+      "id": "components.VisualLab.demoChrome",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "c4ef2ec214f90032f39dddfbfe51add7ef2c79da14fb2ccf14cb4c9ad15e5c9a",
+      "targetHash": "67f66b2b06946e864de6aaad934c5145730c80a0b76fef01a01380a68c3114c9"
+    },
+    {
+      "domain": "client",
+      "locale": "fr",
+      "id": "components.VisualLab.demoLiquid",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "9a83788b3550a100cc8d7585ff4aeec4a4e2d040226e595ed21fe398fdea232e",
+      "targetHash": "e6fb09cbcc840a9eff356e8059f2012ac3d75e7b3661fc2cde51eecb83bdc67d"
+    },
+    {
+      "domain": "client",
+      "locale": "fr",
+      "id": "components.VisualLab.demoGray",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "0d5adda3cdccf937bd9c9e66c8000f98d9d0a91e7c3a166e2dfdc91386911cd2",
+      "targetHash": "e8650efbfda55fe8f665a868cf00377da67340e6e99f649ca469369b2c77dfe2"
+    },
+    {
+      "domain": "client",
+      "locale": "fr",
+      "id": "components.VisualLab.demoBlack",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "c6cfe6e4f129a34671d10c1bbe158eff05197d388727e331951b0ec2637c194e",
+      "targetHash": "363e04e91a4c97d82e356bdcabe6466ed390def3cb19da54f3942c5405a27be8"
+    },
+    {
+      "domain": "client",
+      "locale": "fr",
+      "id": "components.VisualLab.demoRed",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "ba19e9c3d5f49882ddaafed4f286a8a81491150426d321179270e27e74a89097",
+      "targetHash": "31c2afaf8ba87d89cadb3b095af9c2f1185d65cd2ce653693c76040dad49b1d9"
+    },
+    {
+      "domain": "client",
+      "locale": "fr",
+      "id": "components.VisualLab.demoOrange",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "78e7771b8b46e11ddb34ba48887e1330525215f96d94778980d1186e6f09f6b4",
+      "targetHash": "f27778489a6f1173487a276e289c30b1366009d508d2453ba19417ae2819b0f8"
+    },
+    {
+      "domain": "client",
+      "locale": "fr",
+      "id": "components.VisualLab.demoYellow",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "19dd83f117525b931fccdafe808aaa6939af792ee549f359eff13fac0d622f5d",
+      "targetHash": "dea9f56b97dc3a871fa8e19edfcd1e53618549fb744e5a103f1c6fbed3672c8f"
+    },
+    {
+      "domain": "client",
+      "locale": "fr",
+      "id": "components.VisualLab.demoLime",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "c9665c96a8678e037a9ca363b9b6fbf0b7942ae352f1f6c807f45f9094c9ec9a",
+      "targetHash": "7b58cb3c4a15ef954f32dc04c12b9b2ff255e8f4275f626e3f2926bd10f3e6d1"
+    },
+    {
+      "domain": "client",
+      "locale": "fr",
+      "id": "components.VisualLab.demoGreen",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "d486dfbd5fb578340bccbdd0a662527eab38550648d5f44517e5ac71b8824703",
+      "targetHash": "ccd3bc7eac6cd28291e24afbf7b8902fdd460f0cc6ef9941ea3d0bbe0b595eb0"
+    },
+    {
+      "domain": "client",
+      "locale": "fr",
+      "id": "components.VisualLab.demoAqua",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "7a4721a879cb49bf793cbf62a831c2e70ae16da6a6a56fc83fe0dcdccaacee97",
+      "targetHash": "27b0da11a987cdd9d967d1407ed614def9a4c082e7a632f2bc3d161a65fb332e"
+    },
+    {
+      "domain": "client",
+      "locale": "fr",
+      "id": "components.VisualLab.demoBlue",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "ec7d56a01607001e6401366417c5e2eb00ffa0df17ca1a9a831e0b32c8f11bf7",
+      "targetHash": "573a30914f3e3150106ca617db88d2864194b1e17e397e74932571566975fc51"
+    },
+    {
+      "domain": "client",
+      "locale": "fr",
+      "id": "components.VisualLab.demoPurple",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "7d465fb9b9314846b72698017691e756af05e0a548e347a3b7c54ca5b85270de",
+      "targetHash": "2a36428839a37e680cdce701c1100a695cf2cac101f81f594ba4ec8c8c8a8d3b"
+    },
+    {
+      "domain": "client",
+      "locale": "fr",
+      "id": "components.VisualLab.demoPlum",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "c8b2fae9f5dc3c52c4e223323f26f5c5e5726210c2da7f7cd3370bce461836a1",
+      "targetHash": "79403a38ef252306a966db0b3b1ec65a034e2980db1427dfda8dcadf9df0d926"
+    },
+    {
+      "domain": "client",
+      "locale": "fr",
+      "id": "components.VisualLab.demoPink",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "bd38ed7732402b1a93261916c5906016cdccd1a9600b3864208246f6a3299bd0",
+      "targetHash": "e10d850954a8e6113899eda0b14aa4706caaa04a73a804a693360816f6360c8d"
+    },
+    {
+      "domain": "client",
+      "locale": "hi",
+      "id": "components.VisualLab.demoPageTitleSample",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "91ac8dd7c3e5b59a83e6e7d32da42c7cee25d2eccb4fe317949e5a046d1082a9",
+      "targetHash": "5042edcb2f64fcfa9abccba4645166951a68de045b1103c4b1996727e0ef1315"
+    },
+    {
+      "domain": "client",
+      "locale": "hi",
+      "id": "components.VisualLab.demoCardTitleSample",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "1441a2959af749da99f417b41e4e7c3dbfa419b3ee53307499427acf05ae2ebc",
+      "targetHash": "1ac358298f08fe720b265c0943ea43de8926bd07d7fdd1d697e38adb4e5fc456"
+    },
+    {
+      "domain": "client",
+      "locale": "hi",
+      "id": "components.VisualLab.demoCardHeadingSample",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "82aa09315a68f2932bbbe1b7da898e4ea14cd6660c98a75ab91c47c6266f076a",
+      "targetHash": "e16a37767c6687430cace71386d6983380d8e56630f750218a87db6c185a37f5"
+    },
+    {
+      "domain": "client",
+      "locale": "hi",
+      "id": "components.VisualLab.demoButtonTextSample",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "de217b1f0cbfb55cf2361e04b4abc3fea5921488a85754fe4b772dd658edbe69",
+      "targetHash": "78e54df7ad02f29cafcd5054291389c1e681fae289a9f8ce17e856e997131f8a"
+    },
+    {
+      "domain": "client",
+      "locale": "hi",
+      "id": "components.VisualLab.demoLight",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "dbcd5e7bb7a0f538810de44c3efbd813037ee3fa358747bb71fa58e157af45f7",
+      "targetHash": "2df223dc5d48fdb7c094bebff50725fc018d86a6193bf15cdb25d63fbbccaad0"
+    },
+    {
+      "domain": "client",
+      "locale": "hi",
+      "id": "components.VisualLab.demoNormal",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "a7248eeb45eb1ce247f81693283e22e8b39e8a50890cecd22d02e75025547d90",
+      "targetHash": "74655133d6d00bd747fb0a860769b44c9b340505cd4a45c67016c34b8ccae07b"
+    },
+    {
+      "domain": "client",
+      "locale": "hi",
+      "id": "components.VisualLab.demoDark",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "60acc53f13a5d1bf115878c4a785e9a43e8286c4139a8402a6ac7d23966f9153",
+      "targetHash": "3a272314289b64cdbac8a37c42613c0873d070bf3632c0e45231fc91b47a64e6"
+    },
+    {
+      "domain": "client",
+      "locale": "hi",
+      "id": "components.VisualLab.demoDimmed",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "4ddaab2594c5fad34ec1bafd89c9a4451f2fa36cc17ec9acecf83aaf1b7c0e4c",
+      "targetHash": "158729313750bd4ada5f8c2ef3f9bb0e7db6841a57b7dc49f91746eddb3d2e9e"
+    },
+    {
+      "domain": "client",
+      "locale": "hi",
+      "id": "components.VisualLab.demoActive",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "92340695899bd2d86223e4a007620e0d6502fc0e08809773634c7e0743764a9c",
+      "targetHash": "ea1ef8692bd8e2b16c6b0dc2797a30407c93a1dade982e1b91db95b4c4ea8c66"
+    },
+    {
+      "domain": "client",
+      "locale": "hi",
+      "id": "components.VisualLab.demoHover",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "c76ae86ad3014c852af277f5be355d149bf02287b4a04a7911bbc1614ffec4db",
+      "targetHash": "ff9d070185e8fdebb81f0c4ecff964e9c13235e49eb155f4722d6a7cc61781b9"
+    },
+    {
+      "domain": "client",
+      "locale": "hi",
+      "id": "components.VisualLab.demoFamilyTitle",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "0da1089b33efe6adbe5b162a9c00c74c7465b3f5e388e4e6991cbbaa03fa9537",
+      "targetHash": "bebc027c593346ec7e74c115072bec2bd1ccb916a3ec1b1fcb8b92c8f144cb7e"
+    },
+    {
+      "domain": "client",
+      "locale": "hi",
+      "id": "components.VisualLab.demoFamilyPaletteButtons",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "6ffda9450faac785626a963dc35bc7ed499917de6c837a0d0912e6d7466d66ac",
+      "targetHash": "af7dbbd92a6828bab61bb2fb964a303b14e2ac7315b2745f952872559861a863"
+    },
+    {
+      "domain": "client",
+      "locale": "hi",
+      "id": "components.VisualLab.demoMetallicBackgroundBorder",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "373389c058feba3d9cd8ef9a76999dab51f4fc39df40971f0726aaa6b1c1e793",
+      "targetHash": "8ec6f730bbffd23a0e7915851014d718da930ca18534717ac188d6c1fb6c5f3d"
+    },
+    {
+      "domain": "client",
+      "locale": "hi",
+      "id": "components.VisualLab.demoFamilyBorder",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "238a86d0e2d0c4ed759b3603dc21c13fb6523f082202a1ead7fe25a48b30768a",
+      "targetHash": "b19cf4ab9ce1beb63508c6ec4baaf0dfe111b1a18d892cad1f9a95b40e865d94"
+    },
+    {
+      "domain": "client",
+      "locale": "hi",
+      "id": "components.VisualLab.demoMetallicBorderBackground",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "07df98da49cdc85e4c924367cddbf4b4ddfcecada3f2d7014221de624e8064ed",
+      "targetHash": "60b740ed972532d4972b751f2bb9676b109c779d2d9cea15583cb405e9545958"
+    },
+    {
+      "domain": "client",
+      "locale": "hi",
+      "id": "components.VisualLab.demoStyleName",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "980c5892e4b4d69b5e08ee5223c031c1da1e04ce7e3e961156a2d4c621b41088",
+      "targetHash": "fa8391ea75de5b7b10586926487de73d8bb5d7bcfa1cadc3efa54c0025fd721e"
+    },
+    {
+      "domain": "client",
+      "locale": "hi",
+      "id": "components.VisualLab.demoPaletteName",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "8aef834e0891337d2f49b03af6097ef1671053ba588fbcf9fbaf6246118bacb0",
+      "targetHash": "46877cb45ce588d279cdbb469e52a40deed9c890ca8fe12b9c0081dcda0ad8ed"
+    },
+    {
+      "domain": "client",
+      "locale": "hi",
+      "id": "components.VisualLab.demoColorPaletteName",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "272b41e0071399b5e7f52e5f23c6d940f0b2107aa73620645eeb05cb6fbe1e74",
+      "targetHash": "2cadeb07ab97cdee0ff1dd46af4c0597a80b7994a09600fff4c54d866fe11881"
+    },
+    {
+      "domain": "client",
+      "locale": "hi",
+      "id": "components.VisualLab.demoShadeColorName",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "ba42b7dee624f4607608f5cbbe0f941aa4ca49df2b172afee748402cc76d28c2",
+      "targetHash": "5e1d9412f3a9dba9c10abd745fdc71255d2dec9b61d8563f5104d028790f4d3c"
+    },
+    {
+      "domain": "client",
+      "locale": "hi",
+      "id": "components.VisualLab.demoSteel",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "ea9973d1460ee95c08102b183f8c7fd7b4f05fa716cab4f91e9672ccd893a6d2",
+      "targetHash": "8abfb8ef8db8544906438247ee1a97c84be000b7dc6cf2334a29e477e79495d6"
+    },
+    {
+      "domain": "client",
+      "locale": "hi",
+      "id": "components.VisualLab.demoChrome",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "c4ef2ec214f90032f39dddfbfe51add7ef2c79da14fb2ccf14cb4c9ad15e5c9a",
+      "targetHash": "cb19d6becada57bd98e57b56a18d4f55d5708ed87eb7845dd84febe3a63a8dd1"
+    },
+    {
+      "domain": "client",
+      "locale": "hi",
+      "id": "components.VisualLab.demoLiquid",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "9a83788b3550a100cc8d7585ff4aeec4a4e2d040226e595ed21fe398fdea232e",
+      "targetHash": "bc7feb4ed07b00eb8938fd11a16cffef26a01350b73301cf617e54486ba4b19e"
+    },
+    {
+      "domain": "client",
+      "locale": "hi",
+      "id": "components.VisualLab.demoGray",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "0d5adda3cdccf937bd9c9e66c8000f98d9d0a91e7c3a166e2dfdc91386911cd2",
+      "targetHash": "5efbb91aee3bce69c9b0fcfc1062e6e12a28386b15141e23f6409765aeab0d95"
+    },
+    {
+      "domain": "client",
+      "locale": "hi",
+      "id": "components.VisualLab.demoBlack",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "c6cfe6e4f129a34671d10c1bbe158eff05197d388727e331951b0ec2637c194e",
+      "targetHash": "1c2f91f4bd13ceaaf081f6b2986a97a0be52945bfd04ee1525b8589c673615d9"
+    },
+    {
+      "domain": "client",
+      "locale": "hi",
+      "id": "components.VisualLab.demoRed",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "ba19e9c3d5f49882ddaafed4f286a8a81491150426d321179270e27e74a89097",
+      "targetHash": "4e9b43d14a02b731ec7d3631191647171e1e807655e6e4d7009e0dfcdd6f2160"
+    },
+    {
+      "domain": "client",
+      "locale": "hi",
+      "id": "components.VisualLab.demoOrange",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "78e7771b8b46e11ddb34ba48887e1330525215f96d94778980d1186e6f09f6b4",
+      "targetHash": "1965e815f8e815fb0322693c9deb02cc0bc4edab0ed6f5bd3a15a087e8a00ef4"
+    },
+    {
+      "domain": "client",
+      "locale": "hi",
+      "id": "components.VisualLab.demoYellow",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "19dd83f117525b931fccdafe808aaa6939af792ee549f359eff13fac0d622f5d",
+      "targetHash": "30922e5c070ff51acb2a50d58720c1e60f9bb516d6b2fa821cfe12886757c70b"
+    },
+    {
+      "domain": "client",
+      "locale": "hi",
+      "id": "components.VisualLab.demoLime",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "c9665c96a8678e037a9ca363b9b6fbf0b7942ae352f1f6c807f45f9094c9ec9a",
+      "targetHash": "9c6c33322eb468021532b2c0d3897772b76bda5c9dd6c43f18e3deeb4ef9178a"
+    },
+    {
+      "domain": "client",
+      "locale": "hi",
+      "id": "components.VisualLab.demoGreen",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "d486dfbd5fb578340bccbdd0a662527eab38550648d5f44517e5ac71b8824703",
+      "targetHash": "92e20d87b8861be1f269a2aef432e1deef4f4f1b64f9d853d132f6626ee04e33"
+    },
+    {
+      "domain": "client",
+      "locale": "hi",
+      "id": "components.VisualLab.demoAqua",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "7a4721a879cb49bf793cbf62a831c2e70ae16da6a6a56fc83fe0dcdccaacee97",
+      "targetHash": "1ffc7f058f460e372e6c46eefd341a081989d79c87d981288e2411dabe0b0bc9"
+    },
+    {
+      "domain": "client",
+      "locale": "hi",
+      "id": "components.VisualLab.demoBlue",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "ec7d56a01607001e6401366417c5e2eb00ffa0df17ca1a9a831e0b32c8f11bf7",
+      "targetHash": "f736e3d2b3d0c861aa90cf60e63912e5aee5a9b24c286e31573b24638021bae7"
+    },
+    {
+      "domain": "client",
+      "locale": "hi",
+      "id": "components.VisualLab.demoPurple",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "7d465fb9b9314846b72698017691e756af05e0a548e347a3b7c54ca5b85270de",
+      "targetHash": "1c2e4659d999a38843a612dde85ff87bab2806b0c5ae623b5b2913c55a996678"
+    },
+    {
+      "domain": "client",
+      "locale": "hi",
+      "id": "components.VisualLab.demoPlum",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "c8b2fae9f5dc3c52c4e223323f26f5c5e5726210c2da7f7cd3370bce461836a1",
+      "targetHash": "7165d2c135fe4e855b6aebe9cfc1431b323a737a7a69f975f35901bcec6bcce6"
+    },
+    {
+      "domain": "client",
+      "locale": "hi",
+      "id": "components.VisualLab.demoPink",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "bd38ed7732402b1a93261916c5906016cdccd1a9600b3864208246f6a3299bd0",
+      "targetHash": "573538cbc88e3790e3958ccbc2892f496bb74263f7f12ae56bb4b11079602f44"
+    },
+    {
+      "domain": "client",
+      "locale": "id",
+      "id": "components.VisualLab.demoPageTitleSample",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "91ac8dd7c3e5b59a83e6e7d32da42c7cee25d2eccb4fe317949e5a046d1082a9",
+      "targetHash": "7f300e842c472c9991da11d731eeb2506e99ba72aee1a9d7842f661362d29c92"
+    },
+    {
+      "domain": "client",
+      "locale": "id",
+      "id": "components.VisualLab.demoCardTitleSample",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "1441a2959af749da99f417b41e4e7c3dbfa419b3ee53307499427acf05ae2ebc",
+      "targetHash": "de240927a5966fb9d3d18ac3939312e3258f353f713ae22a01f7dbc448632a08"
+    },
+    {
+      "domain": "client",
+      "locale": "id",
+      "id": "components.VisualLab.demoCardHeadingSample",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "82aa09315a68f2932bbbe1b7da898e4ea14cd6660c98a75ab91c47c6266f076a",
+      "targetHash": "d0e9ad429b256415d613cce50c0e4d1b39ae5ebcb891bff9cd70a2b20d8e2c41"
+    },
+    {
+      "domain": "client",
+      "locale": "id",
+      "id": "components.VisualLab.demoButtonTextSample",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "de217b1f0cbfb55cf2361e04b4abc3fea5921488a85754fe4b772dd658edbe69",
+      "targetHash": "11f2d43e560c4cc2fd611e4e656df4c4bc3e071f68dd984fa9787a3def526f2d"
+    },
+    {
+      "domain": "client",
+      "locale": "id",
+      "id": "components.VisualLab.demoLight",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "dbcd5e7bb7a0f538810de44c3efbd813037ee3fa358747bb71fa58e157af45f7",
+      "targetHash": "da35850283f53626ceb9a7e0c677e93a818fb0a8a5032bf5e38aed286d312d54"
+    },
+    {
+      "domain": "client",
+      "locale": "id",
+      "id": "components.VisualLab.demoNormal",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "a7248eeb45eb1ce247f81693283e22e8b39e8a50890cecd22d02e75025547d90",
+      "targetHash": "a7248eeb45eb1ce247f81693283e22e8b39e8a50890cecd22d02e75025547d90"
+    },
+    {
+      "domain": "client",
+      "locale": "id",
+      "id": "components.VisualLab.demoDark",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "60acc53f13a5d1bf115878c4a785e9a43e8286c4139a8402a6ac7d23966f9153",
+      "targetHash": "c14cf60b3cf359a9de58fe34a1b082a268645837fee7fa8a3288f677898cea94"
+    },
+    {
+      "domain": "client",
+      "locale": "id",
+      "id": "components.VisualLab.demoDimmed",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "4ddaab2594c5fad34ec1bafd89c9a4451f2fa36cc17ec9acecf83aaf1b7c0e4c",
+      "targetHash": "0a07911336e12ed184e32de729dad669e382f2a22814fe1d8f716e4bcaa751f1"
+    },
+    {
+      "domain": "client",
+      "locale": "id",
+      "id": "components.VisualLab.demoActive",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "92340695899bd2d86223e4a007620e0d6502fc0e08809773634c7e0743764a9c",
+      "targetHash": "d5f884547452e6cff09b69df4d373169ac67adcdc022b305c0617c5cd0c39941"
+    },
+    {
+      "domain": "client",
+      "locale": "id",
+      "id": "components.VisualLab.demoHover",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "c76ae86ad3014c852af277f5be355d149bf02287b4a04a7911bbc1614ffec4db",
+      "targetHash": "0f502f472439a6f1b9c5dbffed1500fe464c6d6131fe36dea73610271b7b4ac0"
+    },
+    {
+      "domain": "client",
+      "locale": "id",
+      "id": "components.VisualLab.demoFamilyTitle",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "0da1089b33efe6adbe5b162a9c00c74c7465b3f5e388e4e6991cbbaa03fa9537",
+      "targetHash": "efd2c6c9ffdf8d0a8d725f172ea1d346ebcbeb371a99a2873219c5719d0fe46a"
+    },
+    {
+      "domain": "client",
+      "locale": "id",
+      "id": "components.VisualLab.demoFamilyPaletteButtons",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "6ffda9450faac785626a963dc35bc7ed499917de6c837a0d0912e6d7466d66ac",
+      "targetHash": "6eab600e8a43d081f7d4827fe1d6fcbd650ecee1725f2ef20f76485aa42fdde6"
+    },
+    {
+      "domain": "client",
+      "locale": "id",
+      "id": "components.VisualLab.demoMetallicBackgroundBorder",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "373389c058feba3d9cd8ef9a76999dab51f4fc39df40971f0726aaa6b1c1e793",
+      "targetHash": "1a6308bd7c5511f4186d49c335bea17458a95d1e5fea3a61e0f1186354d0cf6e"
+    },
+    {
+      "domain": "client",
+      "locale": "id",
+      "id": "components.VisualLab.demoFamilyBorder",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "238a86d0e2d0c4ed759b3603dc21c13fb6523f082202a1ead7fe25a48b30768a",
+      "targetHash": "b9ff9cf21b6c0eb9c8db44de633e4ec2d7b2a470c6bb2178bd3c20d8f129cc01"
+    },
+    {
+      "domain": "client",
+      "locale": "id",
+      "id": "components.VisualLab.demoMetallicBorderBackground",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "07df98da49cdc85e4c924367cddbf4b4ddfcecada3f2d7014221de624e8064ed",
+      "targetHash": "475c1f8129e1378e62702a1df8d8cd3287e27e8b48e655017a59d409b7127de0"
+    },
+    {
+      "domain": "client",
+      "locale": "id",
+      "id": "components.VisualLab.demoStyleName",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "980c5892e4b4d69b5e08ee5223c031c1da1e04ce7e3e961156a2d4c621b41088",
+      "targetHash": "1aa12ee06d4da8f706ace5cf7a8001f4ce3b5e49a846d7101e70b1ed72642b4c"
+    },
+    {
+      "domain": "client",
+      "locale": "id",
+      "id": "components.VisualLab.demoPaletteName",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "8aef834e0891337d2f49b03af6097ef1671053ba588fbcf9fbaf6246118bacb0",
+      "targetHash": "0c005345dcfb7d8eae5526c5645c6e2024d3fe67c30ba7af2913e60cd654ff2f"
+    },
+    {
+      "domain": "client",
+      "locale": "id",
+      "id": "components.VisualLab.demoColorPaletteName",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "272b41e0071399b5e7f52e5f23c6d940f0b2107aa73620645eeb05cb6fbe1e74",
+      "targetHash": "5f1e2569fa834503f21afa56166a15d234f13216c1611b77c8699daa9472d7a2"
+    },
+    {
+      "domain": "client",
+      "locale": "id",
+      "id": "components.VisualLab.demoShadeColorName",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "ba42b7dee624f4607608f5cbbe0f941aa4ca49df2b172afee748402cc76d28c2",
+      "targetHash": "5e1d9412f3a9dba9c10abd745fdc71255d2dec9b61d8563f5104d028790f4d3c"
+    },
+    {
+      "domain": "client",
+      "locale": "id",
+      "id": "components.VisualLab.demoSteel",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "ea9973d1460ee95c08102b183f8c7fd7b4f05fa716cab4f91e9672ccd893a6d2",
+      "targetHash": "0b6af7d377dad0193152edf1ef44d852155a29143ea77a5b40f831120a780454"
+    },
+    {
+      "domain": "client",
+      "locale": "id",
+      "id": "components.VisualLab.demoChrome",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "c4ef2ec214f90032f39dddfbfe51add7ef2c79da14fb2ccf14cb4c9ad15e5c9a",
+      "targetHash": "3037242e1e42b23ebef2ba97bcb605b110e8cc90e097de40c9f57eba0f69bf22"
+    },
+    {
+      "domain": "client",
+      "locale": "id",
+      "id": "components.VisualLab.demoLiquid",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "9a83788b3550a100cc8d7585ff4aeec4a4e2d040226e595ed21fe398fdea232e",
+      "targetHash": "e906d06bdea07fa26bd17fab06ad9e30576c52681418648e5353395d649db86b"
+    },
+    {
+      "domain": "client",
+      "locale": "id",
+      "id": "components.VisualLab.demoGray",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "0d5adda3cdccf937bd9c9e66c8000f98d9d0a91e7c3a166e2dfdc91386911cd2",
+      "targetHash": "0f5727ce4f880521fd9528b38509b5f7802b05d51fd3b2137a5447afbc5edfd6"
+    },
+    {
+      "domain": "client",
+      "locale": "id",
+      "id": "components.VisualLab.demoBlack",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "c6cfe6e4f129a34671d10c1bbe158eff05197d388727e331951b0ec2637c194e",
+      "targetHash": "75186c23266f778dabf3ef278561912796611c1abd2a0b0517aad5d248cd6252"
+    },
+    {
+      "domain": "client",
+      "locale": "id",
+      "id": "components.VisualLab.demoRed",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "ba19e9c3d5f49882ddaafed4f286a8a81491150426d321179270e27e74a89097",
+      "targetHash": "8785c15ca1dec8f70edaa4b03857a21b8641ce501c4bbc76eb7dce04c81ca6ef"
+    },
+    {
+      "domain": "client",
+      "locale": "id",
+      "id": "components.VisualLab.demoOrange",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "78e7771b8b46e11ddb34ba48887e1330525215f96d94778980d1186e6f09f6b4",
+      "targetHash": "417e71f23597b6140f87e7059bc88a4fbb57d45e018f310220618892582b65c2"
+    },
+    {
+      "domain": "client",
+      "locale": "id",
+      "id": "components.VisualLab.demoYellow",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "19dd83f117525b931fccdafe808aaa6939af792ee549f359eff13fac0d622f5d",
+      "targetHash": "18d155d91f73ab8223021f84ebf5c1b04efefa3db9cf53059954d488cad2bec1"
+    },
+    {
+      "domain": "client",
+      "locale": "id",
+      "id": "components.VisualLab.demoLime",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "c9665c96a8678e037a9ca363b9b6fbf0b7942ae352f1f6c807f45f9094c9ec9a",
+      "targetHash": "4e8858015c3d57ead22ebcaea748a9523af8dc50087d17c3a6f7c4ec6b1f5f2a"
+    },
+    {
+      "domain": "client",
+      "locale": "id",
+      "id": "components.VisualLab.demoGreen",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "d486dfbd5fb578340bccbdd0a662527eab38550648d5f44517e5ac71b8824703",
+      "targetHash": "542e681feff47047010beb8777988c3fc8edb76c42cb6d7ea153e2288b5b1234"
+    },
+    {
+      "domain": "client",
+      "locale": "id",
+      "id": "components.VisualLab.demoAqua",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "7a4721a879cb49bf793cbf62a831c2e70ae16da6a6a56fc83fe0dcdccaacee97",
+      "targetHash": "9158e3737b64bfcb5c36f0fa54418f56eafafdcc6922a21dc15117087fbc5c96"
+    },
+    {
+      "domain": "client",
+      "locale": "id",
+      "id": "components.VisualLab.demoBlue",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "ec7d56a01607001e6401366417c5e2eb00ffa0df17ca1a9a831e0b32c8f11bf7",
+      "targetHash": "f1e3f765f60c4417c3adb0000613f985aa1f0eedcda0df61f28009407b5b89b0"
+    },
+    {
+      "domain": "client",
+      "locale": "id",
+      "id": "components.VisualLab.demoPurple",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "7d465fb9b9314846b72698017691e756af05e0a548e347a3b7c54ca5b85270de",
+      "targetHash": "8e2a537d5d57a34fc633a913d3f1323ad5b9497e656df79430dbff3e8bdd5532"
+    },
+    {
+      "domain": "client",
+      "locale": "id",
+      "id": "components.VisualLab.demoPlum",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "c8b2fae9f5dc3c52c4e223323f26f5c5e5726210c2da7f7cd3370bce461836a1",
+      "targetHash": "a94f7484124c6aaaa5ce3775e3d044b3a5bb353391272433357cd9affdcce0ef"
+    },
+    {
+      "domain": "client",
+      "locale": "id",
+      "id": "components.VisualLab.demoPink",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "bd38ed7732402b1a93261916c5906016cdccd1a9600b3864208246f6a3299bd0",
+      "targetHash": "6cd06e9608fc6cd0678755c481228128d8a989bc36fd4c320e9de7ae58d6eb76"
+    },
+    {
+      "domain": "client",
+      "locale": "ja",
+      "id": "components.VisualLab.demoPageTitleSample",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "91ac8dd7c3e5b59a83e6e7d32da42c7cee25d2eccb4fe317949e5a046d1082a9",
+      "targetHash": "5ab8573fa355276829c8878d91b6a020566d51ecd811a739e7cdbf07f64e501e"
+    },
+    {
+      "domain": "client",
+      "locale": "ja",
+      "id": "components.VisualLab.demoCardTitleSample",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "1441a2959af749da99f417b41e4e7c3dbfa419b3ee53307499427acf05ae2ebc",
+      "targetHash": "d061acc710514dd5663700843b095b3273413523e4e6087c819f69cb13b4620a"
+    },
+    {
+      "domain": "client",
+      "locale": "ja",
+      "id": "components.VisualLab.demoCardHeadingSample",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "82aa09315a68f2932bbbe1b7da898e4ea14cd6660c98a75ab91c47c6266f076a",
+      "targetHash": "18e1392c796faf6adad31fcc481192fa854c33bdbab798378156c84546a40a62"
+    },
+    {
+      "domain": "client",
+      "locale": "ja",
+      "id": "components.VisualLab.demoButtonTextSample",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "de217b1f0cbfb55cf2361e04b4abc3fea5921488a85754fe4b772dd658edbe69",
+      "targetHash": "59dc5628ebe9bf6e2091af13a1eaf18d0f0a73e89443cc5538156a23923eefae"
+    },
+    {
+      "domain": "client",
+      "locale": "ja",
+      "id": "components.VisualLab.demoLight",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "dbcd5e7bb7a0f538810de44c3efbd813037ee3fa358747bb71fa58e157af45f7",
+      "targetHash": "53b4a762f917cedf1cfe514512579444b7cec34143ed06069bfa53cb0ef8aced"
+    },
+    {
+      "domain": "client",
+      "locale": "ja",
+      "id": "components.VisualLab.demoNormal",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "a7248eeb45eb1ce247f81693283e22e8b39e8a50890cecd22d02e75025547d90",
+      "targetHash": "6f5de510e11de8b4c55ed1395cc4e133ec90600009ce5b8982586c194efef49d"
+    },
+    {
+      "domain": "client",
+      "locale": "ja",
+      "id": "components.VisualLab.demoDark",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "60acc53f13a5d1bf115878c4a785e9a43e8286c4139a8402a6ac7d23966f9153",
+      "targetHash": "89d3be2b2e1c99075bc76352536579149b905a44585875715764053b779566d1"
+    },
+    {
+      "domain": "client",
+      "locale": "ja",
+      "id": "components.VisualLab.demoDimmed",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "4ddaab2594c5fad34ec1bafd89c9a4451f2fa36cc17ec9acecf83aaf1b7c0e4c",
+      "targetHash": "d53ecccc93f820248e81e9ef72c3ec2767a03770eda1a8aba86e3b540a75ba0d"
+    },
+    {
+      "domain": "client",
+      "locale": "ja",
+      "id": "components.VisualLab.demoActive",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "92340695899bd2d86223e4a007620e0d6502fc0e08809773634c7e0743764a9c",
+      "targetHash": "087cda2b40628663ded42a1c47aca6449783892341c319d192d32f736b544b79"
+    },
+    {
+      "domain": "client",
+      "locale": "ja",
+      "id": "components.VisualLab.demoHover",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "c76ae86ad3014c852af277f5be355d149bf02287b4a04a7911bbc1614ffec4db",
+      "targetHash": "6d444dcfe9c4d325e5c9d2f5273eeab1bde2637df418bc209ffa3ff1e3fcbbb1"
+    },
+    {
+      "domain": "client",
+      "locale": "ja",
+      "id": "components.VisualLab.demoFamilyTitle",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "0da1089b33efe6adbe5b162a9c00c74c7465b3f5e388e4e6991cbbaa03fa9537",
+      "targetHash": "9ea2e2d48e2bf2f12c29b92f5ae1b16b9d08f7319f3f4548e2cc7a30ea289a92"
+    },
+    {
+      "domain": "client",
+      "locale": "ja",
+      "id": "components.VisualLab.demoFamilyPaletteButtons",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "6ffda9450faac785626a963dc35bc7ed499917de6c837a0d0912e6d7466d66ac",
+      "targetHash": "e1966111159a2a9c55a13a177282edd3588ca8172df8b9cffed02a1d9039cadf"
+    },
+    {
+      "domain": "client",
+      "locale": "ja",
+      "id": "components.VisualLab.demoMetallicBackgroundBorder",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "373389c058feba3d9cd8ef9a76999dab51f4fc39df40971f0726aaa6b1c1e793",
+      "targetHash": "97803e0c585da7d74fe5b473f4fc2c6a87ad4bd42a175efb5aa1124b8738de7d"
+    },
+    {
+      "domain": "client",
+      "locale": "ja",
+      "id": "components.VisualLab.demoFamilyBorder",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "238a86d0e2d0c4ed759b3603dc21c13fb6523f082202a1ead7fe25a48b30768a",
+      "targetHash": "0e8aea7f17208c2a3da015d35793659739a83aba9513d1bd03204729d19d2f16"
+    },
+    {
+      "domain": "client",
+      "locale": "ja",
+      "id": "components.VisualLab.demoMetallicBorderBackground",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "07df98da49cdc85e4c924367cddbf4b4ddfcecada3f2d7014221de624e8064ed",
+      "targetHash": "0b342d225efaae7a81f8a681b1062f1d75445ef4e9c0cb5862b12a8541c7188d"
+    },
+    {
+      "domain": "client",
+      "locale": "ja",
+      "id": "components.VisualLab.demoStyleName",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "980c5892e4b4d69b5e08ee5223c031c1da1e04ce7e3e961156a2d4c621b41088",
+      "targetHash": "1996b71e5c28808435aca77f8239e44d8bf5dc2d973437a7a8312b07e41f464b"
+    },
+    {
+      "domain": "client",
+      "locale": "ja",
+      "id": "components.VisualLab.demoPaletteName",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "8aef834e0891337d2f49b03af6097ef1671053ba588fbcf9fbaf6246118bacb0",
+      "targetHash": "66aa27ce41089221501fb0f245d44ada5c2ff00305c00a32522d875ca921d80d"
+    },
+    {
+      "domain": "client",
+      "locale": "ja",
+      "id": "components.VisualLab.demoColorPaletteName",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "272b41e0071399b5e7f52e5f23c6d940f0b2107aa73620645eeb05cb6fbe1e74",
+      "targetHash": "0420eadde7a5d797960cd79a104c45796f8c7b2c70f05be04fdc9b0ddfe2cb10"
+    },
+    {
+      "domain": "client",
+      "locale": "ja",
+      "id": "components.VisualLab.demoShadeColorName",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "ba42b7dee624f4607608f5cbbe0f941aa4ca49df2b172afee748402cc76d28c2",
+      "targetHash": "3a560ab0c2b744abb1fb877f819c186537ba7b54b124769dbb5f836380cd3690"
+    },
+    {
+      "domain": "client",
+      "locale": "ja",
+      "id": "components.VisualLab.demoSteel",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "ea9973d1460ee95c08102b183f8c7fd7b4f05fa716cab4f91e9672ccd893a6d2",
+      "targetHash": "86be560bf7dcfc54ad4c47c2c9649333caea2d39fc7ad2d1a7c71990579fb5be"
+    },
+    {
+      "domain": "client",
+      "locale": "ja",
+      "id": "components.VisualLab.demoChrome",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "c4ef2ec214f90032f39dddfbfe51add7ef2c79da14fb2ccf14cb4c9ad15e5c9a",
+      "targetHash": "db358287c1784c8e0e79321fb2f9d2a6fbf6b4fe0b0717c43a043056d372797a"
+    },
+    {
+      "domain": "client",
+      "locale": "ja",
+      "id": "components.VisualLab.demoLiquid",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "9a83788b3550a100cc8d7585ff4aeec4a4e2d040226e595ed21fe398fdea232e",
+      "targetHash": "651d7d9707d2eac9be78ffeb46d190e8dd1b32ade18cde573ff89da6f54c8092"
+    },
+    {
+      "domain": "client",
+      "locale": "ja",
+      "id": "components.VisualLab.demoGray",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "0d5adda3cdccf937bd9c9e66c8000f98d9d0a91e7c3a166e2dfdc91386911cd2",
+      "targetHash": "527ecc45c67fcdbd396778a49fad9064a76d0abca5b93eceb778bcdd582b1686"
+    },
+    {
+      "domain": "client",
+      "locale": "ja",
+      "id": "components.VisualLab.demoBlack",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "c6cfe6e4f129a34671d10c1bbe158eff05197d388727e331951b0ec2637c194e",
+      "targetHash": "2bd0ec0d9940a9f4fe2d77cf6cb4ea7d8b9b8a8059802fb7f3f5060bb30fa945"
+    },
+    {
+      "domain": "client",
+      "locale": "ja",
+      "id": "components.VisualLab.demoRed",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "ba19e9c3d5f49882ddaafed4f286a8a81491150426d321179270e27e74a89097",
+      "targetHash": "34f67a62520fa14de95dd42432796d4c83d7a4f2407740ce934558d063305164"
+    },
+    {
+      "domain": "client",
+      "locale": "ja",
+      "id": "components.VisualLab.demoOrange",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "78e7771b8b46e11ddb34ba48887e1330525215f96d94778980d1186e6f09f6b4",
+      "targetHash": "0349fe3db634e0ab4940ee6092ea8418205b1a089364de8cf46a5dfe68a3441b"
+    },
+    {
+      "domain": "client",
+      "locale": "ja",
+      "id": "components.VisualLab.demoYellow",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "19dd83f117525b931fccdafe808aaa6939af792ee549f359eff13fac0d622f5d",
+      "targetHash": "7bdfbcf722cb6df10d41d2db201eab83d089aa14d5c9e4ed70d2570d942d3f58"
+    },
+    {
+      "domain": "client",
+      "locale": "ja",
+      "id": "components.VisualLab.demoLime",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "c9665c96a8678e037a9ca363b9b6fbf0b7942ae352f1f6c807f45f9094c9ec9a",
+      "targetHash": "a6d874c25979178bccf4e1f94b2e2ff9984b6ad28272248c47e2d5f412837083"
+    },
+    {
+      "domain": "client",
+      "locale": "ja",
+      "id": "components.VisualLab.demoGreen",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "d486dfbd5fb578340bccbdd0a662527eab38550648d5f44517e5ac71b8824703",
+      "targetHash": "4fba6ff08fdf1208f06a00834b4cd58f9e35d03cd3dd8a91433f7c9b380382a7"
+    },
+    {
+      "domain": "client",
+      "locale": "ja",
+      "id": "components.VisualLab.demoAqua",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "7a4721a879cb49bf793cbf62a831c2e70ae16da6a6a56fc83fe0dcdccaacee97",
+      "targetHash": "5aea395ecc091c6a3567091b760244286eba72b4cc0ecdc7a3c60e5cce8b7340"
+    },
+    {
+      "domain": "client",
+      "locale": "ja",
+      "id": "components.VisualLab.demoBlue",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "ec7d56a01607001e6401366417c5e2eb00ffa0df17ca1a9a831e0b32c8f11bf7",
+      "targetHash": "31bb924ccb3c8137abb34ad4bba9cdbefae59859e53a7c5572c2f893c91ec724"
+    },
+    {
+      "domain": "client",
+      "locale": "ja",
+      "id": "components.VisualLab.demoPurple",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "7d465fb9b9314846b72698017691e756af05e0a548e347a3b7c54ca5b85270de",
+      "targetHash": "e20f1f931571d848899187ba32f5311a2d5ac792592b1f2a71547b8e7a9a52fd"
+    },
+    {
+      "domain": "client",
+      "locale": "ja",
+      "id": "components.VisualLab.demoPlum",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "c8b2fae9f5dc3c52c4e223323f26f5c5e5726210c2da7f7cd3370bce461836a1",
+      "targetHash": "8a5718e678acfd024b71f79fa8fff758bca302123785a92b6e1c2584f33d333a"
+    },
+    {
+      "domain": "client",
+      "locale": "ja",
+      "id": "components.VisualLab.demoPink",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "bd38ed7732402b1a93261916c5906016cdccd1a9600b3864208246f6a3299bd0",
+      "targetHash": "903a26de8165d89ccff5549d9f85406f852b2c571d965b84116016ac516ac1fb"
+    },
+    {
+      "domain": "client",
+      "locale": "ko",
+      "id": "components.VisualLab.demoPageTitleSample",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "91ac8dd7c3e5b59a83e6e7d32da42c7cee25d2eccb4fe317949e5a046d1082a9",
+      "targetHash": "c23312e5aac333cd377786fdb5509638a3fe54708bcece4469595fff269ef474"
+    },
+    {
+      "domain": "client",
+      "locale": "ko",
+      "id": "components.VisualLab.demoCardTitleSample",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "1441a2959af749da99f417b41e4e7c3dbfa419b3ee53307499427acf05ae2ebc",
+      "targetHash": "92ab0fddb7f04da5114c3c35530883aaf2c24dbbd3c18bf75781794d519def04"
+    },
+    {
+      "domain": "client",
+      "locale": "ko",
+      "id": "components.VisualLab.demoCardHeadingSample",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "82aa09315a68f2932bbbe1b7da898e4ea14cd6660c98a75ab91c47c6266f076a",
+      "targetHash": "5c6b7bbd71680228cdbcb2b832ca79300b96a828802cca139630d66a67e03d6f"
+    },
+    {
+      "domain": "client",
+      "locale": "ko",
+      "id": "components.VisualLab.demoButtonTextSample",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "de217b1f0cbfb55cf2361e04b4abc3fea5921488a85754fe4b772dd658edbe69",
+      "targetHash": "cbf4e80c99b2148db4b7b4ec2728f74633b67f598091a9c359683d55818cfd5f"
+    },
+    {
+      "domain": "client",
+      "locale": "ko",
+      "id": "components.VisualLab.demoLight",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "dbcd5e7bb7a0f538810de44c3efbd813037ee3fa358747bb71fa58e157af45f7",
+      "targetHash": "eafc4a2a5f72e8820d904397edadb62c1b66f96bb214ac8f8ad2373a7d1d19c9"
+    },
+    {
+      "domain": "client",
+      "locale": "ko",
+      "id": "components.VisualLab.demoNormal",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "a7248eeb45eb1ce247f81693283e22e8b39e8a50890cecd22d02e75025547d90",
+      "targetHash": "3603b4581160941a6c8f1fc2974898b1dd28b8ad037eb53e01538e33c1246be2"
+    },
+    {
+      "domain": "client",
+      "locale": "ko",
+      "id": "components.VisualLab.demoDark",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "60acc53f13a5d1bf115878c4a785e9a43e8286c4139a8402a6ac7d23966f9153",
+      "targetHash": "ad8e225df5d6049c1b218e0c7d3b4edbcaa2d0bdac9abfd7a96221b008a349ec"
+    },
+    {
+      "domain": "client",
+      "locale": "ko",
+      "id": "components.VisualLab.demoDimmed",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "4ddaab2594c5fad34ec1bafd89c9a4451f2fa36cc17ec9acecf83aaf1b7c0e4c",
+      "targetHash": "62d308c7c0afeae1a50238c36764af5b1497fdc975bff17c9205c8f6b6f3838e"
+    },
+    {
+      "domain": "client",
+      "locale": "ko",
+      "id": "components.VisualLab.demoActive",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "92340695899bd2d86223e4a007620e0d6502fc0e08809773634c7e0743764a9c",
+      "targetHash": "d9ba6551c71e529c26d3147a3280bbcb14501e78758923bb65e03c30960b1d9b"
+    },
+    {
+      "domain": "client",
+      "locale": "ko",
+      "id": "components.VisualLab.demoHover",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "c76ae86ad3014c852af277f5be355d149bf02287b4a04a7911bbc1614ffec4db",
+      "targetHash": "656c92356a82c74637d80b6114e0bc4143ff34d12a96f8a156292cee849c9272"
+    },
+    {
+      "domain": "client",
+      "locale": "ko",
+      "id": "components.VisualLab.demoFamilyTitle",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "0da1089b33efe6adbe5b162a9c00c74c7465b3f5e388e4e6991cbbaa03fa9537",
+      "targetHash": "808b410c3c7f93de797ff2dd067675c1692ec0664e93d873260865c119896e4a"
+    },
+    {
+      "domain": "client",
+      "locale": "ko",
+      "id": "components.VisualLab.demoFamilyPaletteButtons",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "6ffda9450faac785626a963dc35bc7ed499917de6c837a0d0912e6d7466d66ac",
+      "targetHash": "e7373758951f75e26bb7c72eb6b3a334345da0c9ba321ab1d0d72a014b45024e"
+    },
+    {
+      "domain": "client",
+      "locale": "ko",
+      "id": "components.VisualLab.demoMetallicBackgroundBorder",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "373389c058feba3d9cd8ef9a76999dab51f4fc39df40971f0726aaa6b1c1e793",
+      "targetHash": "ce8fe6deba380fa0563fee42af06bd2ccbb27bccca6358d8240c2f4bebbf485a"
+    },
+    {
+      "domain": "client",
+      "locale": "ko",
+      "id": "components.VisualLab.demoFamilyBorder",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "238a86d0e2d0c4ed759b3603dc21c13fb6523f082202a1ead7fe25a48b30768a",
+      "targetHash": "aad1ef35d566a89e3fa078d1f149dd0f445d27285b6fb4824217f5625ccbb1fa"
+    },
+    {
+      "domain": "client",
+      "locale": "ko",
+      "id": "components.VisualLab.demoMetallicBorderBackground",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "07df98da49cdc85e4c924367cddbf4b4ddfcecada3f2d7014221de624e8064ed",
+      "targetHash": "0e09c2152c99fa99b82083fa95c7132c6c0fa8af5b53f83036bfa38b20f03bbe"
+    },
+    {
+      "domain": "client",
+      "locale": "ko",
+      "id": "components.VisualLab.demoStyleName",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "980c5892e4b4d69b5e08ee5223c031c1da1e04ce7e3e961156a2d4c621b41088",
+      "targetHash": "58b259887fb680154a703f1e5c06f734ce34e442aa6075d4fbab7ba03210e01c"
+    },
+    {
+      "domain": "client",
+      "locale": "ko",
+      "id": "components.VisualLab.demoPaletteName",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "8aef834e0891337d2f49b03af6097ef1671053ba588fbcf9fbaf6246118bacb0",
+      "targetHash": "37f7cd2ab95be5deadd6eece97f892dfeb3dd547870ed758f59366f7194e6dfb"
+    },
+    {
+      "domain": "client",
+      "locale": "ko",
+      "id": "components.VisualLab.demoColorPaletteName",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "272b41e0071399b5e7f52e5f23c6d940f0b2107aa73620645eeb05cb6fbe1e74",
+      "targetHash": "649900c1fc60628b9d4103c0573ed3a4f6d55f6838486ee48d0338d3c92793db"
+    },
+    {
+      "domain": "client",
+      "locale": "ko",
+      "id": "components.VisualLab.demoShadeColorName",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "ba42b7dee624f4607608f5cbbe0f941aa4ca49df2b172afee748402cc76d28c2",
+      "targetHash": "3a560ab0c2b744abb1fb877f819c186537ba7b54b124769dbb5f836380cd3690"
+    },
+    {
+      "domain": "client",
+      "locale": "ko",
+      "id": "components.VisualLab.demoSteel",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "ea9973d1460ee95c08102b183f8c7fd7b4f05fa716cab4f91e9672ccd893a6d2",
+      "targetHash": "d3bc1c0131ccf7c686813969aabe9dab7058c0770d15a935a4debe55ec90e808"
+    },
+    {
+      "domain": "client",
+      "locale": "ko",
+      "id": "components.VisualLab.demoChrome",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "c4ef2ec214f90032f39dddfbfe51add7ef2c79da14fb2ccf14cb4c9ad15e5c9a",
+      "targetHash": "ba7da3f885a3d688635147dd1f6692162a7b76c3b7aa03904db3369f5673bd86"
+    },
+    {
+      "domain": "client",
+      "locale": "ko",
+      "id": "components.VisualLab.demoLiquid",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "9a83788b3550a100cc8d7585ff4aeec4a4e2d040226e595ed21fe398fdea232e",
+      "targetHash": "d740a57b48f357060227e21cbaccd7d89b337948484886760c0b37ede9804a09"
+    },
+    {
+      "domain": "client",
+      "locale": "ko",
+      "id": "components.VisualLab.demoGray",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "0d5adda3cdccf937bd9c9e66c8000f98d9d0a91e7c3a166e2dfdc91386911cd2",
+      "targetHash": "d1b93538300e4bba352da189c4b0c19b5cb6bad0604c580df2a8a57fb4eeb8ba"
+    },
+    {
+      "domain": "client",
+      "locale": "ko",
+      "id": "components.VisualLab.demoBlack",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "c6cfe6e4f129a34671d10c1bbe158eff05197d388727e331951b0ec2637c194e",
+      "targetHash": "8e807b5d10541700a7d036736f6262bb0bb2f3ac57c4e69cd1b99e6f77ec8f31"
+    },
+    {
+      "domain": "client",
+      "locale": "ko",
+      "id": "components.VisualLab.demoRed",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "ba19e9c3d5f49882ddaafed4f286a8a81491150426d321179270e27e74a89097",
+      "targetHash": "91515f9862243a0c4e9f5b593515dbb3fedce3f8347814e73795cce98d70b9f7"
+    },
+    {
+      "domain": "client",
+      "locale": "ko",
+      "id": "components.VisualLab.demoOrange",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "78e7771b8b46e11ddb34ba48887e1330525215f96d94778980d1186e6f09f6b4",
+      "targetHash": "c975ea17dc9d78cc2b1b8d13fb2b151e86955d7ed6377678db2bf73686b69808"
+    },
+    {
+      "domain": "client",
+      "locale": "ko",
+      "id": "components.VisualLab.demoYellow",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "19dd83f117525b931fccdafe808aaa6939af792ee549f359eff13fac0d622f5d",
+      "targetHash": "abfa58fa6970af91e0a0350c37c888370d88e9e136bb4d567c67cfc497a767ae"
+    },
+    {
+      "domain": "client",
+      "locale": "ko",
+      "id": "components.VisualLab.demoLime",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "c9665c96a8678e037a9ca363b9b6fbf0b7942ae352f1f6c807f45f9094c9ec9a",
+      "targetHash": "31b87ee6c339d5b54c97a32d3679972564ec40ca56d63e211b080a7dd8b10c45"
+    },
+    {
+      "domain": "client",
+      "locale": "ko",
+      "id": "components.VisualLab.demoGreen",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "d486dfbd5fb578340bccbdd0a662527eab38550648d5f44517e5ac71b8824703",
+      "targetHash": "04631d74f90fa5919a633e9fdd4777e2ece4f84b037a45aed9bea1d65e638dbe"
+    },
+    {
+      "domain": "client",
+      "locale": "ko",
+      "id": "components.VisualLab.demoAqua",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "7a4721a879cb49bf793cbf62a831c2e70ae16da6a6a56fc83fe0dcdccaacee97",
+      "targetHash": "be72af2aae03a1758b9006b7291fa93dd8c35ff3e7fab50b41b7d02d2d707d3a"
+    },
+    {
+      "domain": "client",
+      "locale": "ko",
+      "id": "components.VisualLab.demoBlue",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "ec7d56a01607001e6401366417c5e2eb00ffa0df17ca1a9a831e0b32c8f11bf7",
+      "targetHash": "5751d675c232e47a836a3625e9701b742a81735f269223f7f910f5e35a46446c"
+    },
+    {
+      "domain": "client",
+      "locale": "ko",
+      "id": "components.VisualLab.demoPurple",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "7d465fb9b9314846b72698017691e756af05e0a548e347a3b7c54ca5b85270de",
+      "targetHash": "96b6ef53a436d0304b3c7a0bf90b6c5ace7dc55ed0ae56b134457db32709cabb"
+    },
+    {
+      "domain": "client",
+      "locale": "ko",
+      "id": "components.VisualLab.demoPlum",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "c8b2fae9f5dc3c52c4e223323f26f5c5e5726210c2da7f7cd3370bce461836a1",
+      "targetHash": "e5b6ecb4df995b6f7e252bc2e4027e38898d0a1a5e0a3027f05aab5361be5b8d"
+    },
+    {
+      "domain": "client",
+      "locale": "ko",
+      "id": "components.VisualLab.demoPink",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "bd38ed7732402b1a93261916c5906016cdccd1a9600b3864208246f6a3299bd0",
+      "targetHash": "345b79fd8bf50a835b27df0ae8029efa9b070e98f639226eb5ed4b5f96665489"
+    },
+    {
+      "domain": "client",
+      "locale": "pt-BR",
+      "id": "components.VisualLab.demoPageTitleSample",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "91ac8dd7c3e5b59a83e6e7d32da42c7cee25d2eccb4fe317949e5a046d1082a9",
+      "targetHash": "ed0ab50081eac701a7daab15e39fbfe48af720c77585be0fc097d477f0c83ba9"
+    },
+    {
+      "domain": "client",
+      "locale": "pt-BR",
+      "id": "components.VisualLab.demoCardTitleSample",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "1441a2959af749da99f417b41e4e7c3dbfa419b3ee53307499427acf05ae2ebc",
+      "targetHash": "eca88832b8d8962ecaf2cf93e368af89cfa0a1a018d1b1d0add2ca88497c4617"
+    },
+    {
+      "domain": "client",
+      "locale": "pt-BR",
+      "id": "components.VisualLab.demoCardHeadingSample",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "82aa09315a68f2932bbbe1b7da898e4ea14cd6660c98a75ab91c47c6266f076a",
+      "targetHash": "2b8d587359da459e087fc924dc9bbfb164efecc1962dbfd48af6b36a03fc2573"
+    },
+    {
+      "domain": "client",
+      "locale": "pt-BR",
+      "id": "components.VisualLab.demoButtonTextSample",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "de217b1f0cbfb55cf2361e04b4abc3fea5921488a85754fe4b772dd658edbe69",
+      "targetHash": "b3e6bca3b45e6260fba9b7304f711e8bc75d3b722617719ca1165777119fef1e"
+    },
+    {
+      "domain": "client",
+      "locale": "pt-BR",
+      "id": "components.VisualLab.demoLight",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "dbcd5e7bb7a0f538810de44c3efbd813037ee3fa358747bb71fa58e157af45f7",
+      "targetHash": "2f3e8dcc246498504bc7fef416082aebd9869d8c360432e5a443b28dc304067f"
+    },
+    {
+      "domain": "client",
+      "locale": "pt-BR",
+      "id": "components.VisualLab.demoNormal",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "a7248eeb45eb1ce247f81693283e22e8b39e8a50890cecd22d02e75025547d90",
+      "targetHash": "a7248eeb45eb1ce247f81693283e22e8b39e8a50890cecd22d02e75025547d90"
+    },
+    {
+      "domain": "client",
+      "locale": "pt-BR",
+      "id": "components.VisualLab.demoDark",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "60acc53f13a5d1bf115878c4a785e9a43e8286c4139a8402a6ac7d23966f9153",
+      "targetHash": "fde8bb83362a212b735f30d7d0525b3bce1235453efb6bc58960ab82ec287f41"
+    },
+    {
+      "domain": "client",
+      "locale": "pt-BR",
+      "id": "components.VisualLab.demoDimmed",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "4ddaab2594c5fad34ec1bafd89c9a4451f2fa36cc17ec9acecf83aaf1b7c0e4c",
+      "targetHash": "7321e69edb45b7d5abc94fa12534f9c0ec96784dabcbc1292e88144dcc95cd83"
+    },
+    {
+      "domain": "client",
+      "locale": "pt-BR",
+      "id": "components.VisualLab.demoActive",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "92340695899bd2d86223e4a007620e0d6502fc0e08809773634c7e0743764a9c",
+      "targetHash": "499ee302f6884f271c02454123715953dc245991fead15d51ee12c5e4f405bc6"
+    },
+    {
+      "domain": "client",
+      "locale": "pt-BR",
+      "id": "components.VisualLab.demoHover",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "c76ae86ad3014c852af277f5be355d149bf02287b4a04a7911bbc1614ffec4db",
+      "targetHash": "20eae25d4592e88ed21701e89676c6b4e917c7133cde6db881c9a6b1a5561724"
+    },
+    {
+      "domain": "client",
+      "locale": "pt-BR",
+      "id": "components.VisualLab.demoFamilyTitle",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "0da1089b33efe6adbe5b162a9c00c74c7465b3f5e388e4e6991cbbaa03fa9537",
+      "targetHash": "42f5be57f213311c536f8e238e6023719f3531e282c3087bf1a809fbbbcf38b1"
+    },
+    {
+      "domain": "client",
+      "locale": "pt-BR",
+      "id": "components.VisualLab.demoFamilyPaletteButtons",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "6ffda9450faac785626a963dc35bc7ed499917de6c837a0d0912e6d7466d66ac",
+      "targetHash": "42d6d08438bfb27df7b87c73de2f01268143a5d9ea06c663d496aa896cde8e8c"
+    },
+    {
+      "domain": "client",
+      "locale": "pt-BR",
+      "id": "components.VisualLab.demoMetallicBackgroundBorder",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "373389c058feba3d9cd8ef9a76999dab51f4fc39df40971f0726aaa6b1c1e793",
+      "targetHash": "fe8fa8499cec3c2286dfc4bca57eba9405eb363891c9b291db79423a28178fc2"
+    },
+    {
+      "domain": "client",
+      "locale": "pt-BR",
+      "id": "components.VisualLab.demoFamilyBorder",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "238a86d0e2d0c4ed759b3603dc21c13fb6523f082202a1ead7fe25a48b30768a",
+      "targetHash": "9fa45fc670390fe81239ccf451e906a1f3d7e36a6bb8ae45e70fec9e5ea2e71f"
+    },
+    {
+      "domain": "client",
+      "locale": "pt-BR",
+      "id": "components.VisualLab.demoMetallicBorderBackground",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "07df98da49cdc85e4c924367cddbf4b4ddfcecada3f2d7014221de624e8064ed",
+      "targetHash": "3da6c282972d0853d0ba890380dc2f0d27f59b607cac87a82f78fd7b9185060d"
+    },
+    {
+      "domain": "client",
+      "locale": "pt-BR",
+      "id": "components.VisualLab.demoStyleName",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "980c5892e4b4d69b5e08ee5223c031c1da1e04ce7e3e961156a2d4c621b41088",
+      "targetHash": "1aa12ee06d4da8f706ace5cf7a8001f4ce3b5e49a846d7101e70b1ed72642b4c"
+    },
+    {
+      "domain": "client",
+      "locale": "pt-BR",
+      "id": "components.VisualLab.demoPaletteName",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "8aef834e0891337d2f49b03af6097ef1671053ba588fbcf9fbaf6246118bacb0",
+      "targetHash": "801045f2367cf5e5de3cd305ffd67b27e2cd9847210e4b5ea55ab58b04a1e1cc"
+    },
+    {
+      "domain": "client",
+      "locale": "pt-BR",
+      "id": "components.VisualLab.demoColorPaletteName",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "272b41e0071399b5e7f52e5f23c6d940f0b2107aa73620645eeb05cb6fbe1e74",
+      "targetHash": "ad9a3f977a307d54add09be9ccc7807b6a166dab34b2e93cb50cbd45f89bee8a"
+    },
+    {
+      "domain": "client",
+      "locale": "pt-BR",
+      "id": "components.VisualLab.demoShadeColorName",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "ba42b7dee624f4607608f5cbbe0f941aa4ca49df2b172afee748402cc76d28c2",
+      "targetHash": "5e1d9412f3a9dba9c10abd745fdc71255d2dec9b61d8563f5104d028790f4d3c"
+    },
+    {
+      "domain": "client",
+      "locale": "pt-BR",
+      "id": "components.VisualLab.demoSteel",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "ea9973d1460ee95c08102b183f8c7fd7b4f05fa716cab4f91e9672ccd893a6d2",
+      "targetHash": "82a0d5d454d1ab732831998cb5525ba464d6ff5596520dfb20a5c75a121778c3"
+    },
+    {
+      "domain": "client",
+      "locale": "pt-BR",
+      "id": "components.VisualLab.demoChrome",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "c4ef2ec214f90032f39dddfbfe51add7ef2c79da14fb2ccf14cb4c9ad15e5c9a",
+      "targetHash": "ce65de648f6727ec38290ffd12490ecacb4c937c7f91e46d990e5ded21d2164f"
+    },
+    {
+      "domain": "client",
+      "locale": "pt-BR",
+      "id": "components.VisualLab.demoLiquid",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "9a83788b3550a100cc8d7585ff4aeec4a4e2d040226e595ed21fe398fdea232e",
+      "targetHash": "b5ce83cd9497437fabc6ff4a6b6c74ac5d1e6f6a83b623732feaad539b3bdd7d"
+    },
+    {
+      "domain": "client",
+      "locale": "pt-BR",
+      "id": "components.VisualLab.demoGray",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "0d5adda3cdccf937bd9c9e66c8000f98d9d0a91e7c3a166e2dfdc91386911cd2",
+      "targetHash": "1a31c2cb1e4bc43654d78bb6568dd8f5118871b7f39ff6d69568749d01eca302"
+    },
+    {
+      "domain": "client",
+      "locale": "pt-BR",
+      "id": "components.VisualLab.demoBlack",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "c6cfe6e4f129a34671d10c1bbe158eff05197d388727e331951b0ec2637c194e",
+      "targetHash": "4b652af43d8d0e7ed4fbc3199befad043129a5db83c96d3bcc670671f883486f"
+    },
+    {
+      "domain": "client",
+      "locale": "pt-BR",
+      "id": "components.VisualLab.demoRed",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "ba19e9c3d5f49882ddaafed4f286a8a81491150426d321179270e27e74a89097",
+      "targetHash": "6741b8b5e1c22dad0b2bb859eb405949d4e908e47417f4299b634176e4e17397"
+    },
+    {
+      "domain": "client",
+      "locale": "pt-BR",
+      "id": "components.VisualLab.demoOrange",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "78e7771b8b46e11ddb34ba48887e1330525215f96d94778980d1186e6f09f6b4",
+      "targetHash": "2b2b4ad00333d9934c9e27c1de3c07baae15f50f8c0e4a6374426e2ad618c62f"
+    },
+    {
+      "domain": "client",
+      "locale": "pt-BR",
+      "id": "components.VisualLab.demoYellow",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "19dd83f117525b931fccdafe808aaa6939af792ee549f359eff13fac0d622f5d",
+      "targetHash": "1875203bcdcc507d245f20730c58b40a6cd8430691c232081756e6046991b1fe"
+    },
+    {
+      "domain": "client",
+      "locale": "pt-BR",
+      "id": "components.VisualLab.demoLime",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "c9665c96a8678e037a9ca363b9b6fbf0b7942ae352f1f6c807f45f9094c9ec9a",
+      "targetHash": "435fb2b893f0297946cc68f737f5b719180042f1b7569c61bba3f7345820b33a"
+    },
+    {
+      "domain": "client",
+      "locale": "pt-BR",
+      "id": "components.VisualLab.demoGreen",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "d486dfbd5fb578340bccbdd0a662527eab38550648d5f44517e5ac71b8824703",
+      "targetHash": "40598e1cb1d239fd0cbfac98ea7b63887e3fbb23ff0f3205ecd3a15b3b7a1aff"
+    },
+    {
+      "domain": "client",
+      "locale": "pt-BR",
+      "id": "components.VisualLab.demoAqua",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "7a4721a879cb49bf793cbf62a831c2e70ae16da6a6a56fc83fe0dcdccaacee97",
+      "targetHash": "a8b73589729851a8fa0141bceec20049148052b7db6343691a760de2314e7982"
+    },
+    {
+      "domain": "client",
+      "locale": "pt-BR",
+      "id": "components.VisualLab.demoBlue",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "ec7d56a01607001e6401366417c5e2eb00ffa0df17ca1a9a831e0b32c8f11bf7",
+      "targetHash": "b0bf526b23af19619a579501bd7943dd899c211fd2ef69e9f8ab0dc5b43b439a"
+    },
+    {
+      "domain": "client",
+      "locale": "pt-BR",
+      "id": "components.VisualLab.demoPurple",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "7d465fb9b9314846b72698017691e756af05e0a548e347a3b7c54ca5b85270de",
+      "targetHash": "57a73ede5f6fcfde315f64add9a87ce1da302f071f06842f4bf99f7d90a80d4b"
+    },
+    {
+      "domain": "client",
+      "locale": "pt-BR",
+      "id": "components.VisualLab.demoPlum",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "c8b2fae9f5dc3c52c4e223323f26f5c5e5726210c2da7f7cd3370bce461836a1",
+      "targetHash": "4608e5c84ff92bfb65b20d78dbdbb54a4b2308655f6f3edf5268a0448cd5d091"
+    },
+    {
+      "domain": "client",
+      "locale": "pt-BR",
+      "id": "components.VisualLab.demoPink",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "bd38ed7732402b1a93261916c5906016cdccd1a9600b3864208246f6a3299bd0",
+      "targetHash": "75f9577a1637cf7a30d4fc7c7839d5c71b626946b0f784ee92da0f1ae4e707df"
+    },
+    {
+      "domain": "client",
+      "locale": "vi",
+      "id": "components.VisualLab.demoPageTitleSample",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "91ac8dd7c3e5b59a83e6e7d32da42c7cee25d2eccb4fe317949e5a046d1082a9",
+      "targetHash": "e8d725713f8e6e4e6c34391137d01677556e612fd0510cd1ff4c9e5df286cef1"
+    },
+    {
+      "domain": "client",
+      "locale": "vi",
+      "id": "components.VisualLab.demoCardTitleSample",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "1441a2959af749da99f417b41e4e7c3dbfa419b3ee53307499427acf05ae2ebc",
+      "targetHash": "6da5c980bbf6144a9195866863756a68d1599fa965e4567b2ff4ec007cbfa750"
+    },
+    {
+      "domain": "client",
+      "locale": "vi",
+      "id": "components.VisualLab.demoCardHeadingSample",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "82aa09315a68f2932bbbe1b7da898e4ea14cd6660c98a75ab91c47c6266f076a",
+      "targetHash": "59bc5459e1826b509423820ea11523fba462fc0338e3a9bff5c5fb73be28a497"
+    },
+    {
+      "domain": "client",
+      "locale": "vi",
+      "id": "components.VisualLab.demoButtonTextSample",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "de217b1f0cbfb55cf2361e04b4abc3fea5921488a85754fe4b772dd658edbe69",
+      "targetHash": "04396a2ea6a1a18a2a1734b737dde78aea032f4d3cd12cf6fdb08f9f3a7d1a45"
+    },
+    {
+      "domain": "client",
+      "locale": "vi",
+      "id": "components.VisualLab.demoLight",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "dbcd5e7bb7a0f538810de44c3efbd813037ee3fa358747bb71fa58e157af45f7",
+      "targetHash": "8f0c677d1854d0d037c033e2e0c5d7665dfcfbdfb610c425dc8064412ff38c19"
+    },
+    {
+      "domain": "client",
+      "locale": "vi",
+      "id": "components.VisualLab.demoNormal",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "a7248eeb45eb1ce247f81693283e22e8b39e8a50890cecd22d02e75025547d90",
+      "targetHash": "23c1bd438c6bddf2b19e7167ee40f281effb5d8084ba63e2185b40cb97c0be95"
+    },
+    {
+      "domain": "client",
+      "locale": "vi",
+      "id": "components.VisualLab.demoDark",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "60acc53f13a5d1bf115878c4a785e9a43e8286c4139a8402a6ac7d23966f9153",
+      "targetHash": "4ac2d2671b2f2673683a6b51d1e4518dc9caafbc46d27f7228f349fcb0486187"
+    },
+    {
+      "domain": "client",
+      "locale": "vi",
+      "id": "components.VisualLab.demoDimmed",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "4ddaab2594c5fad34ec1bafd89c9a4451f2fa36cc17ec9acecf83aaf1b7c0e4c",
+      "targetHash": "7a24fbf0e4c6ce57d2fcb8c4821b4c530b0fa73ec7b00ff8d271818ce7c7e237"
+    },
+    {
+      "domain": "client",
+      "locale": "vi",
+      "id": "components.VisualLab.demoActive",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "92340695899bd2d86223e4a007620e0d6502fc0e08809773634c7e0743764a9c",
+      "targetHash": "767d67bb4d43d0e1c79282119080e58b4cf234eaddb6cd7c7ba4c9c850dc29b1"
+    },
+    {
+      "domain": "client",
+      "locale": "vi",
+      "id": "components.VisualLab.demoHover",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "c76ae86ad3014c852af277f5be355d149bf02287b4a04a7911bbc1614ffec4db",
+      "targetHash": "1e8429d8c3406ca8d050771c2d051c9da79bba5b737e81c440d7dccbabecb6da"
+    },
+    {
+      "domain": "client",
+      "locale": "vi",
+      "id": "components.VisualLab.demoFamilyTitle",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "0da1089b33efe6adbe5b162a9c00c74c7465b3f5e388e4e6991cbbaa03fa9537",
+      "targetHash": "b01c35c12637156b274164bbcbebef52c80f3c4f9c16209a0198c91aa1d07230"
+    },
+    {
+      "domain": "client",
+      "locale": "vi",
+      "id": "components.VisualLab.demoFamilyPaletteButtons",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "6ffda9450faac785626a963dc35bc7ed499917de6c837a0d0912e6d7466d66ac",
+      "targetHash": "b7817dd7bf9e9843c7d48dff0e2ae18d070b5f2ba588d11ab31d601f893b4e2c"
+    },
+    {
+      "domain": "client",
+      "locale": "vi",
+      "id": "components.VisualLab.demoMetallicBackgroundBorder",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "373389c058feba3d9cd8ef9a76999dab51f4fc39df40971f0726aaa6b1c1e793",
+      "targetHash": "1aa344b1550232b3bce5135ee42a09a70f53c70b7e8d922bc5fd064262661ac9"
+    },
+    {
+      "domain": "client",
+      "locale": "vi",
+      "id": "components.VisualLab.demoFamilyBorder",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "238a86d0e2d0c4ed759b3603dc21c13fb6523f082202a1ead7fe25a48b30768a",
+      "targetHash": "9fd626073622a9c334bef616faedc0c122dad38b3260e86d2afeda29c2655599"
+    },
+    {
+      "domain": "client",
+      "locale": "vi",
+      "id": "components.VisualLab.demoMetallicBorderBackground",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "07df98da49cdc85e4c924367cddbf4b4ddfcecada3f2d7014221de624e8064ed",
+      "targetHash": "6e9f1c49174cb229dffee6b3763f4296e6a309c45b3c4ca7414427a331f508f5"
+    },
+    {
+      "domain": "client",
+      "locale": "vi",
+      "id": "components.VisualLab.demoStyleName",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "980c5892e4b4d69b5e08ee5223c031c1da1e04ce7e3e961156a2d4c621b41088",
+      "targetHash": "802949880b21a8b40fdf7fd76762e40068360a232d8bc13502b428e92926de7d"
+    },
+    {
+      "domain": "client",
+      "locale": "vi",
+      "id": "components.VisualLab.demoPaletteName",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "8aef834e0891337d2f49b03af6097ef1671053ba588fbcf9fbaf6246118bacb0",
+      "targetHash": "fe0dc50cab412bdb82ca71fcb5b5b82e5856eecb579fc5b47f2803cfdb065147"
+    },
+    {
+      "domain": "client",
+      "locale": "vi",
+      "id": "components.VisualLab.demoColorPaletteName",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "272b41e0071399b5e7f52e5f23c6d940f0b2107aa73620645eeb05cb6fbe1e74",
+      "targetHash": "5779bc21a820810c1f033543a93339753b270c082c65a96f89ecb21bab568776"
+    },
+    {
+      "domain": "client",
+      "locale": "vi",
+      "id": "components.VisualLab.demoShadeColorName",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "ba42b7dee624f4607608f5cbbe0f941aa4ca49df2b172afee748402cc76d28c2",
+      "targetHash": "5e1d9412f3a9dba9c10abd745fdc71255d2dec9b61d8563f5104d028790f4d3c"
+    },
+    {
+      "domain": "client",
+      "locale": "vi",
+      "id": "components.VisualLab.demoSteel",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "ea9973d1460ee95c08102b183f8c7fd7b4f05fa716cab4f91e9672ccd893a6d2",
+      "targetHash": "2d2ccb23be0959cdd1edcc136733b2d984c04f27eb1215ee4f99368f1e349d31"
+    },
+    {
+      "domain": "client",
+      "locale": "vi",
+      "id": "components.VisualLab.demoChrome",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "c4ef2ec214f90032f39dddfbfe51add7ef2c79da14fb2ccf14cb4c9ad15e5c9a",
+      "targetHash": "c4ef2ec214f90032f39dddfbfe51add7ef2c79da14fb2ccf14cb4c9ad15e5c9a"
+    },
+    {
+      "domain": "client",
+      "locale": "vi",
+      "id": "components.VisualLab.demoLiquid",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "9a83788b3550a100cc8d7585ff4aeec4a4e2d040226e595ed21fe398fdea232e",
+      "targetHash": "a9d1a8d6f6d6b27fbb06462e08bab1794e0c6a158526c79eed65e291e9e6f39d"
+    },
+    {
+      "domain": "client",
+      "locale": "vi",
+      "id": "components.VisualLab.demoGray",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "0d5adda3cdccf937bd9c9e66c8000f98d9d0a91e7c3a166e2dfdc91386911cd2",
+      "targetHash": "ad13258b70e67b2841abc50d36c1b65a7075d4462c7714d5616496e8c3bc8736"
+    },
+    {
+      "domain": "client",
+      "locale": "vi",
+      "id": "components.VisualLab.demoBlack",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "c6cfe6e4f129a34671d10c1bbe158eff05197d388727e331951b0ec2637c194e",
+      "targetHash": "0c317df329963c1bf4ee1ae3d906fb887c30803d172ef490e9c805348f07be3e"
+    },
+    {
+      "domain": "client",
+      "locale": "vi",
+      "id": "components.VisualLab.demoRed",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "ba19e9c3d5f49882ddaafed4f286a8a81491150426d321179270e27e74a89097",
+      "targetHash": "d59ee61d79e8e6bcab225687e72dc972ce3447d7d2757df607f0dd68890a230f"
+    },
+    {
+      "domain": "client",
+      "locale": "vi",
+      "id": "components.VisualLab.demoOrange",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "78e7771b8b46e11ddb34ba48887e1330525215f96d94778980d1186e6f09f6b4",
+      "targetHash": "441830f84aaad99efb31206925018d73da6d19f056b19677c1a16f78a070ea96"
+    },
+    {
+      "domain": "client",
+      "locale": "vi",
+      "id": "components.VisualLab.demoYellow",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "19dd83f117525b931fccdafe808aaa6939af792ee549f359eff13fac0d622f5d",
+      "targetHash": "3fb909dba00e788ed246db397016a580b225ce6944ff56f0ec2635c36e659bf8"
+    },
+    {
+      "domain": "client",
+      "locale": "vi",
+      "id": "components.VisualLab.demoLime",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "c9665c96a8678e037a9ca363b9b6fbf0b7942ae352f1f6c807f45f9094c9ec9a",
+      "targetHash": "983b8fa35af8087540522bc137970fb973183cb376814ec731cb84443084e7c2"
+    },
+    {
+      "domain": "client",
+      "locale": "vi",
+      "id": "components.VisualLab.demoGreen",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "d486dfbd5fb578340bccbdd0a662527eab38550648d5f44517e5ac71b8824703",
+      "targetHash": "5847b8f30308b6b603c8ff2de9da2de99d00e87f2973c9a31c9ebbdc0ae62755"
+    },
+    {
+      "domain": "client",
+      "locale": "vi",
+      "id": "components.VisualLab.demoAqua",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "7a4721a879cb49bf793cbf62a831c2e70ae16da6a6a56fc83fe0dcdccaacee97",
+      "targetHash": "90b7a9607e8f90f99a4764e555460cd3887d101d531d2d86926d069e48bc383b"
+    },
+    {
+      "domain": "client",
+      "locale": "vi",
+      "id": "components.VisualLab.demoBlue",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "ec7d56a01607001e6401366417c5e2eb00ffa0df17ca1a9a831e0b32c8f11bf7",
+      "targetHash": "4a7073feef978ba79c3fb124f602317538c1893923e45e579d5901e66c9a346b"
+    },
+    {
+      "domain": "client",
+      "locale": "vi",
+      "id": "components.VisualLab.demoPurple",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "7d465fb9b9314846b72698017691e756af05e0a548e347a3b7c54ca5b85270de",
+      "targetHash": "8d911e4b83614d0abc85ab6a07ba5e128eca02b73a1448412f7fac0873b357e4"
+    },
+    {
+      "domain": "client",
+      "locale": "vi",
+      "id": "components.VisualLab.demoPlum",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "c8b2fae9f5dc3c52c4e223323f26f5c5e5726210c2da7f7cd3370bce461836a1",
+      "targetHash": "c3e81ebf71cc17eba45c46aef263aaa1ad74338ecbf4826bc28bc1299a0e2eda"
+    },
+    {
+      "domain": "client",
+      "locale": "vi",
+      "id": "components.VisualLab.demoPink",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "bd38ed7732402b1a93261916c5906016cdccd1a9600b3864208246f6a3299bd0",
+      "targetHash": "4f1f0b58ff2e9c3f7408e253653d214df2e7993b436ab334c8dea171f8c47cb7"
+    },
+    {
+      "domain": "client",
+      "locale": "zh-CN",
+      "id": "components.VisualLab.demoPageTitleSample",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "91ac8dd7c3e5b59a83e6e7d32da42c7cee25d2eccb4fe317949e5a046d1082a9",
+      "targetHash": "5ce2d4cc85397eea58ca60d20c5040a216f55fe5469e42010e251d3efe6c67b7"
+    },
+    {
+      "domain": "client",
+      "locale": "zh-CN",
+      "id": "components.VisualLab.demoCardTitleSample",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "1441a2959af749da99f417b41e4e7c3dbfa419b3ee53307499427acf05ae2ebc",
+      "targetHash": "5fb69327ff6d1eabb47499f61adc77b000abb8b53436fa38caebc0a1898a271d"
+    },
+    {
+      "domain": "client",
+      "locale": "zh-CN",
+      "id": "components.VisualLab.demoCardHeadingSample",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "82aa09315a68f2932bbbe1b7da898e4ea14cd6660c98a75ab91c47c6266f076a",
+      "targetHash": "26c518a80be4782a096169990a10dccc71f487984a8dbe6f2f6a70999f5256a3"
+    },
+    {
+      "domain": "client",
+      "locale": "zh-CN",
+      "id": "components.VisualLab.demoButtonTextSample",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "de217b1f0cbfb55cf2361e04b4abc3fea5921488a85754fe4b772dd658edbe69",
+      "targetHash": "2b79301b1f55ec482ba9d0f4aceeb2937b890c6c9d995af3315f3c3334bcea96"
+    },
+    {
+      "domain": "client",
+      "locale": "zh-CN",
+      "id": "components.VisualLab.demoLight",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "dbcd5e7bb7a0f538810de44c3efbd813037ee3fa358747bb71fa58e157af45f7",
+      "targetHash": "aa0819dfc4d8d78280b8c7605b008bfc9df42b585f9106feaa3c8d5bdfda711e"
+    },
+    {
+      "domain": "client",
+      "locale": "zh-CN",
+      "id": "components.VisualLab.demoNormal",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "a7248eeb45eb1ce247f81693283e22e8b39e8a50890cecd22d02e75025547d90",
+      "targetHash": "40fae00b7c6d8ac0cd85538a3e7fc83236c89bbcdb12577e1eb8b522b739dd77"
+    },
+    {
+      "domain": "client",
+      "locale": "zh-CN",
+      "id": "components.VisualLab.demoDark",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "60acc53f13a5d1bf115878c4a785e9a43e8286c4139a8402a6ac7d23966f9153",
+      "targetHash": "a6b75d0680322a61f4d46185dfb28c875fea97ad8868217b4cbfee3de639f2c1"
+    },
+    {
+      "domain": "client",
+      "locale": "zh-CN",
+      "id": "components.VisualLab.demoDimmed",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "4ddaab2594c5fad34ec1bafd89c9a4451f2fa36cc17ec9acecf83aaf1b7c0e4c",
+      "targetHash": "7195b7209b38536ea58fc8e578f33f7887cdd22b516d50838b690a3c1b85997c"
+    },
+    {
+      "domain": "client",
+      "locale": "zh-CN",
+      "id": "components.VisualLab.demoActive",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "92340695899bd2d86223e4a007620e0d6502fc0e08809773634c7e0743764a9c",
+      "targetHash": "dd1286c29e9b158b1f7f07ee14a98e15664d902b6d19e3caceb3993045d2622c"
+    },
+    {
+      "domain": "client",
+      "locale": "zh-CN",
+      "id": "components.VisualLab.demoHover",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "c76ae86ad3014c852af277f5be355d149bf02287b4a04a7911bbc1614ffec4db",
+      "targetHash": "e204cab5b84f8402535bf1b1bc00dbaf1d8da6b683c147ef65937b59ab347aac"
+    },
+    {
+      "domain": "client",
+      "locale": "zh-CN",
+      "id": "components.VisualLab.demoFamilyTitle",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "0da1089b33efe6adbe5b162a9c00c74c7465b3f5e388e4e6991cbbaa03fa9537",
+      "targetHash": "0fbd2fd8e65ee39799a8b7bb6b94712da73ad2b4280e7ec3661a5265ea9d72e2"
+    },
+    {
+      "domain": "client",
+      "locale": "zh-CN",
+      "id": "components.VisualLab.demoFamilyPaletteButtons",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "6ffda9450faac785626a963dc35bc7ed499917de6c837a0d0912e6d7466d66ac",
+      "targetHash": "3d7cb88d9f640182132a5f353ad1c289b015ef31b5af6183e560704b6bbf9132"
+    },
+    {
+      "domain": "client",
+      "locale": "zh-CN",
+      "id": "components.VisualLab.demoMetallicBackgroundBorder",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "373389c058feba3d9cd8ef9a76999dab51f4fc39df40971f0726aaa6b1c1e793",
+      "targetHash": "c2995c31e580d3b4c157b6af1f02fcd2289c34dd2126ff55d7ef5b64aebdb54a"
+    },
+    {
+      "domain": "client",
+      "locale": "zh-CN",
+      "id": "components.VisualLab.demoFamilyBorder",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "238a86d0e2d0c4ed759b3603dc21c13fb6523f082202a1ead7fe25a48b30768a",
+      "targetHash": "6890b3763b337469207e316e97182dbe90003f0380844ce15f2566ff8c2be2fe"
+    },
+    {
+      "domain": "client",
+      "locale": "zh-CN",
+      "id": "components.VisualLab.demoMetallicBorderBackground",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "07df98da49cdc85e4c924367cddbf4b4ddfcecada3f2d7014221de624e8064ed",
+      "targetHash": "e34fe2987348e404126092318fa0fbd2b98677ad1b556aa00fe818cb3ec1ca70"
+    },
+    {
+      "domain": "client",
+      "locale": "zh-CN",
+      "id": "components.VisualLab.demoStyleName",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "980c5892e4b4d69b5e08ee5223c031c1da1e04ce7e3e961156a2d4c621b41088",
+      "targetHash": "1996b71e5c28808435aca77f8239e44d8bf5dc2d973437a7a8312b07e41f464b"
+    },
+    {
+      "domain": "client",
+      "locale": "zh-CN",
+      "id": "components.VisualLab.demoPaletteName",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "8aef834e0891337d2f49b03af6097ef1671053ba588fbcf9fbaf6246118bacb0",
+      "targetHash": "d5b11f181f435587eda1974a3664a307ce5bdd0d2898bdd511e1377268db10bf"
+    },
+    {
+      "domain": "client",
+      "locale": "zh-CN",
+      "id": "components.VisualLab.demoColorPaletteName",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "272b41e0071399b5e7f52e5f23c6d940f0b2107aa73620645eeb05cb6fbe1e74",
+      "targetHash": "2598083fec35e179ebc4a873c2992656b6b9eb3d8e8db9e02b233f1da68540ab"
+    },
+    {
+      "domain": "client",
+      "locale": "zh-CN",
+      "id": "components.VisualLab.demoShadeColorName",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "ba42b7dee624f4607608f5cbbe0f941aa4ca49df2b172afee748402cc76d28c2",
+      "targetHash": "3a560ab0c2b744abb1fb877f819c186537ba7b54b124769dbb5f836380cd3690"
+    },
+    {
+      "domain": "client",
+      "locale": "zh-CN",
+      "id": "components.VisualLab.demoSteel",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "ea9973d1460ee95c08102b183f8c7fd7b4f05fa716cab4f91e9672ccd893a6d2",
+      "targetHash": "1232085ef0d48b89d04a250cae493f51fea152ec56e79002f6e88f14342d580e"
+    },
+    {
+      "domain": "client",
+      "locale": "zh-CN",
+      "id": "components.VisualLab.demoChrome",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "c4ef2ec214f90032f39dddfbfe51add7ef2c79da14fb2ccf14cb4c9ad15e5c9a",
+      "targetHash": "fa7c8b091389cfb8f9b928bd8a72d13a342776b858254b240a8264b56da49291"
+    },
+    {
+      "domain": "client",
+      "locale": "zh-CN",
+      "id": "components.VisualLab.demoLiquid",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "9a83788b3550a100cc8d7585ff4aeec4a4e2d040226e595ed21fe398fdea232e",
+      "targetHash": "0af1e7a02076fcafd5f7338bc61a9599ea7177274d28149bd7db9bfd31d5d374"
+    },
+    {
+      "domain": "client",
+      "locale": "zh-CN",
+      "id": "components.VisualLab.demoGray",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "0d5adda3cdccf937bd9c9e66c8000f98d9d0a91e7c3a166e2dfdc91386911cd2",
+      "targetHash": "051e67d913f4a72ed2c58b25acecf2a27a4796c98b7b1c6f740783a4c3e0ff40"
+    },
+    {
+      "domain": "client",
+      "locale": "zh-CN",
+      "id": "components.VisualLab.demoBlack",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "c6cfe6e4f129a34671d10c1bbe158eff05197d388727e331951b0ec2637c194e",
+      "targetHash": "ed7d2c54184be5f5b81cbcae880942acec9635014aad20bab6cca1d68dbe3f75"
+    },
+    {
+      "domain": "client",
+      "locale": "zh-CN",
+      "id": "components.VisualLab.demoRed",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "ba19e9c3d5f49882ddaafed4f286a8a81491150426d321179270e27e74a89097",
+      "targetHash": "789f61dbfcc7a2d21a5a9b3ef23d0dbac2aee42a2b91d65baaeb20a94f3152ab"
+    },
+    {
+      "domain": "client",
+      "locale": "zh-CN",
+      "id": "components.VisualLab.demoOrange",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "78e7771b8b46e11ddb34ba48887e1330525215f96d94778980d1186e6f09f6b4",
+      "targetHash": "aa1e899dd35771b09b529c0cd95933b738c8439cabda7b9725cc0f0f7d84bd80"
+    },
+    {
+      "domain": "client",
+      "locale": "zh-CN",
+      "id": "components.VisualLab.demoYellow",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "19dd83f117525b931fccdafe808aaa6939af792ee549f359eff13fac0d622f5d",
+      "targetHash": "d451c07d739b33060e74dd870a7358770d977dbe716b40207b724a2c48629494"
+    },
+    {
+      "domain": "client",
+      "locale": "zh-CN",
+      "id": "components.VisualLab.demoLime",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "c9665c96a8678e037a9ca363b9b6fbf0b7942ae352f1f6c807f45f9094c9ec9a",
+      "targetHash": "0c90583c6b0883a77b9337f4d54a14fc279fe38115eced00f61d27ecca64ba38"
+    },
+    {
+      "domain": "client",
+      "locale": "zh-CN",
+      "id": "components.VisualLab.demoGreen",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "d486dfbd5fb578340bccbdd0a662527eab38550648d5f44517e5ac71b8824703",
+      "targetHash": "30c83dc25b12c32c466f0e53d832734caacf0474ebf33c63cdf92e9e8895e092"
+    },
+    {
+      "domain": "client",
+      "locale": "zh-CN",
+      "id": "components.VisualLab.demoAqua",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "7a4721a879cb49bf793cbf62a831c2e70ae16da6a6a56fc83fe0dcdccaacee97",
+      "targetHash": "d76f2cfec9943354200acd97b9e0d4143fc310992c234c21336fceb2f1e0d213"
+    },
+    {
+      "domain": "client",
+      "locale": "zh-CN",
+      "id": "components.VisualLab.demoBlue",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "ec7d56a01607001e6401366417c5e2eb00ffa0df17ca1a9a831e0b32c8f11bf7",
+      "targetHash": "67035e6b7f82acdb9ab43bb4925f377f4a7e5a5a3cc61b8eb3db2038364c3cf3"
+    },
+    {
+      "domain": "client",
+      "locale": "zh-CN",
+      "id": "components.VisualLab.demoPurple",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "7d465fb9b9314846b72698017691e756af05e0a548e347a3b7c54ca5b85270de",
+      "targetHash": "2ed9c6fabac2013a5f22579002391088dff9b7741db4f7eee2f5ed5381b2b708"
+    },
+    {
+      "domain": "client",
+      "locale": "zh-CN",
+      "id": "components.VisualLab.demoPlum",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "c8b2fae9f5dc3c52c4e223323f26f5c5e5726210c2da7f7cd3370bce461836a1",
+      "targetHash": "6dd123127702645ba5c1326278cbd46ce6f8c7cc703327576440af972233bec3"
+    },
+    {
+      "domain": "client",
+      "locale": "zh-CN",
+      "id": "components.VisualLab.demoPink",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "bd38ed7732402b1a93261916c5906016cdccd1a9600b3864208246f6a3299bd0",
+      "targetHash": "dbd379b39f0d3537b35b86b85ac4ab3c7904f5d957c70fb831640c4c755c4bad"
+    },
+    {
+      "domain": "client",
+      "locale": "zh-TW",
+      "id": "components.VisualLab.demoPageTitleSample",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "91ac8dd7c3e5b59a83e6e7d32da42c7cee25d2eccb4fe317949e5a046d1082a9",
+      "targetHash": "e89d84c5e96e1f572c930df26b2bbd7fd20d6af8a79059e2e9cc85bb2f3d58d2"
+    },
+    {
+      "domain": "client",
+      "locale": "zh-TW",
+      "id": "components.VisualLab.demoCardTitleSample",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "1441a2959af749da99f417b41e4e7c3dbfa419b3ee53307499427acf05ae2ebc",
+      "targetHash": "ac146ed8c6ddfda184f40a69733d80bc2a97e757664555191a3eb0eedd40fb29"
+    },
+    {
+      "domain": "client",
+      "locale": "zh-TW",
+      "id": "components.VisualLab.demoCardHeadingSample",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "82aa09315a68f2932bbbe1b7da898e4ea14cd6660c98a75ab91c47c6266f076a",
+      "targetHash": "e508cd9cf6d856832ca264135c76ca1e1bc5f7782425c0657c1c442eb149393f"
+    },
+    {
+      "domain": "client",
+      "locale": "zh-TW",
+      "id": "components.VisualLab.demoButtonTextSample",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "de217b1f0cbfb55cf2361e04b4abc3fea5921488a85754fe4b772dd658edbe69",
+      "targetHash": "867b5f47339dfbc716656c38c0ddb5fb2627b01db44e0ebfc996c862ced32b86"
+    },
+    {
+      "domain": "client",
+      "locale": "zh-TW",
+      "id": "components.VisualLab.demoLight",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "dbcd5e7bb7a0f538810de44c3efbd813037ee3fa358747bb71fa58e157af45f7",
+      "targetHash": "dee60aee2501c6236e57945e6b35a9c8db13320a20645a717799f39dfdad5541"
+    },
+    {
+      "domain": "client",
+      "locale": "zh-TW",
+      "id": "components.VisualLab.demoNormal",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "a7248eeb45eb1ce247f81693283e22e8b39e8a50890cecd22d02e75025547d90",
+      "targetHash": "6f5de510e11de8b4c55ed1395cc4e133ec90600009ce5b8982586c194efef49d"
+    },
+    {
+      "domain": "client",
+      "locale": "zh-TW",
+      "id": "components.VisualLab.demoDark",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "60acc53f13a5d1bf115878c4a785e9a43e8286c4139a8402a6ac7d23966f9153",
+      "targetHash": "a6b75d0680322a61f4d46185dfb28c875fea97ad8868217b4cbfee3de639f2c1"
+    },
+    {
+      "domain": "client",
+      "locale": "zh-TW",
+      "id": "components.VisualLab.demoDimmed",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "4ddaab2594c5fad34ec1bafd89c9a4451f2fa36cc17ec9acecf83aaf1b7c0e4c",
+      "targetHash": "06a5c9161d1d2c95be2ea8bf87c4b93c63af6d8ff622ed4b060ec811029ce4cd"
+    },
+    {
+      "domain": "client",
+      "locale": "zh-TW",
+      "id": "components.VisualLab.demoActive",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "92340695899bd2d86223e4a007620e0d6502fc0e08809773634c7e0743764a9c",
+      "targetHash": "e65e03bd028063ef02b114a18f6fe414468a60835192e8cebaa5a390f61fe91a"
+    },
+    {
+      "domain": "client",
+      "locale": "zh-TW",
+      "id": "components.VisualLab.demoHover",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "c76ae86ad3014c852af277f5be355d149bf02287b4a04a7911bbc1614ffec4db",
+      "targetHash": "9eb166f4edc954b4af5ecb95ce3faf1bb3030b3aab3a85bbc5e4c88954d44a85"
+    },
+    {
+      "domain": "client",
+      "locale": "zh-TW",
+      "id": "components.VisualLab.demoFamilyTitle",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "0da1089b33efe6adbe5b162a9c00c74c7465b3f5e388e4e6991cbbaa03fa9537",
+      "targetHash": "c38837b98fe2d5db42d535932c8305720d8f4426cbd96ba5f5376b985a006c81"
+    },
+    {
+      "domain": "client",
+      "locale": "zh-TW",
+      "id": "components.VisualLab.demoFamilyPaletteButtons",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "6ffda9450faac785626a963dc35bc7ed499917de6c837a0d0912e6d7466d66ac",
+      "targetHash": "a024b84861f98ac64244e90d459f588e5a4eade0258c4748035464d4b94f6cf8"
+    },
+    {
+      "domain": "client",
+      "locale": "zh-TW",
+      "id": "components.VisualLab.demoMetallicBackgroundBorder",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "373389c058feba3d9cd8ef9a76999dab51f4fc39df40971f0726aaa6b1c1e793",
+      "targetHash": "2eda606a7f33ba90cbd653678bc03d97416846826c43b4ba7c2bc4534d6a6fdc"
+    },
+    {
+      "domain": "client",
+      "locale": "zh-TW",
+      "id": "components.VisualLab.demoFamilyBorder",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "238a86d0e2d0c4ed759b3603dc21c13fb6523f082202a1ead7fe25a48b30768a",
+      "targetHash": "cdc323337a8edf4d732f1a84e44b4f33fb71206e5d4fa5961d0c51833c81617e"
+    },
+    {
+      "domain": "client",
+      "locale": "zh-TW",
+      "id": "components.VisualLab.demoMetallicBorderBackground",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "07df98da49cdc85e4c924367cddbf4b4ddfcecada3f2d7014221de624e8064ed",
+      "targetHash": "6b9d1f774d43f4e013aeb76ace66214029dc5cb475433422109f1b88b5756cfe"
+    },
+    {
+      "domain": "client",
+      "locale": "zh-TW",
+      "id": "components.VisualLab.demoStyleName",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "980c5892e4b4d69b5e08ee5223c031c1da1e04ce7e3e961156a2d4c621b41088",
+      "targetHash": "1996b71e5c28808435aca77f8239e44d8bf5dc2d973437a7a8312b07e41f464b"
+    },
+    {
+      "domain": "client",
+      "locale": "zh-TW",
+      "id": "components.VisualLab.demoPaletteName",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "8aef834e0891337d2f49b03af6097ef1671053ba588fbcf9fbaf6246118bacb0",
+      "targetHash": "3de44ca11b21ce9b588b1e3c8edb4a84a13aec073a55de112fcf9f3d780f5650"
+    },
+    {
+      "domain": "client",
+      "locale": "zh-TW",
+      "id": "components.VisualLab.demoColorPaletteName",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "272b41e0071399b5e7f52e5f23c6d940f0b2107aa73620645eeb05cb6fbe1e74",
+      "targetHash": "a8dffd583a1e49ed63ff0e763d6d289033e96d5cc6ea6d5e8357795bdf9d0f03"
+    },
+    {
+      "domain": "client",
+      "locale": "zh-TW",
+      "id": "components.VisualLab.demoShadeColorName",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "ba42b7dee624f4607608f5cbbe0f941aa4ca49df2b172afee748402cc76d28c2",
+      "targetHash": "3a560ab0c2b744abb1fb877f819c186537ba7b54b124769dbb5f836380cd3690"
+    },
+    {
+      "domain": "client",
+      "locale": "zh-TW",
+      "id": "components.VisualLab.demoSteel",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "ea9973d1460ee95c08102b183f8c7fd7b4f05fa716cab4f91e9672ccd893a6d2",
+      "targetHash": "a8071995649999883c6c0251cffead01d5a0507ee0477a654a4d883272eab93c"
+    },
+    {
+      "domain": "client",
+      "locale": "zh-TW",
+      "id": "components.VisualLab.demoChrome",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "c4ef2ec214f90032f39dddfbfe51add7ef2c79da14fb2ccf14cb4c9ad15e5c9a",
+      "targetHash": "634682e694ec3cabf3b6788f4977c03c8c04b78a9dfb054dd723785872636976"
+    },
+    {
+      "domain": "client",
+      "locale": "zh-TW",
+      "id": "components.VisualLab.demoLiquid",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "9a83788b3550a100cc8d7585ff4aeec4a4e2d040226e595ed21fe398fdea232e",
+      "targetHash": "4108f51cdadb6c4f23ca9dee86c2b13d1701969c4d0ff68b7b212db90084a8bd"
+    },
+    {
+      "domain": "client",
+      "locale": "zh-TW",
+      "id": "components.VisualLab.demoGray",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "0d5adda3cdccf937bd9c9e66c8000f98d9d0a91e7c3a166e2dfdc91386911cd2",
+      "targetHash": "051e67d913f4a72ed2c58b25acecf2a27a4796c98b7b1c6f740783a4c3e0ff40"
+    },
+    {
+      "domain": "client",
+      "locale": "zh-TW",
+      "id": "components.VisualLab.demoBlack",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "c6cfe6e4f129a34671d10c1bbe158eff05197d388727e331951b0ec2637c194e",
+      "targetHash": "ed7d2c54184be5f5b81cbcae880942acec9635014aad20bab6cca1d68dbe3f75"
+    },
+    {
+      "domain": "client",
+      "locale": "zh-TW",
+      "id": "components.VisualLab.demoRed",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "ba19e9c3d5f49882ddaafed4f286a8a81491150426d321179270e27e74a89097",
+      "targetHash": "b0111de0e398e53a87f38b53356835b22891675d721388a7f16fb160c5a20dc3"
+    },
+    {
+      "domain": "client",
+      "locale": "zh-TW",
+      "id": "components.VisualLab.demoOrange",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "78e7771b8b46e11ddb34ba48887e1330525215f96d94778980d1186e6f09f6b4",
+      "targetHash": "4e9ad5744ab1fd91ab710804ce4038db760e8a0bea574468c154cf56f716b75a"
+    },
+    {
+      "domain": "client",
+      "locale": "zh-TW",
+      "id": "components.VisualLab.demoYellow",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "19dd83f117525b931fccdafe808aaa6939af792ee549f359eff13fac0d622f5d",
+      "targetHash": "79570872561e8720529b4b3446e8c06a071585c501f0e51523b4afc6120eb3d2"
+    },
+    {
+      "domain": "client",
+      "locale": "zh-TW",
+      "id": "components.VisualLab.demoLime",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "c9665c96a8678e037a9ca363b9b6fbf0b7942ae352f1f6c807f45f9094c9ec9a",
+      "targetHash": "e3fdcac084a0771a79d115265b930dca98eccbf05d1d494cd1bdc09ab46dc215"
+    },
+    {
+      "domain": "client",
+      "locale": "zh-TW",
+      "id": "components.VisualLab.demoGreen",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "d486dfbd5fb578340bccbdd0a662527eab38550648d5f44517e5ac71b8824703",
+      "targetHash": "64035d1d296904487b3da5e7ee209b61c4d4287dd0a255be89d3e3641fb2ec44"
+    },
+    {
+      "domain": "client",
+      "locale": "zh-TW",
+      "id": "components.VisualLab.demoAqua",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "7a4721a879cb49bf793cbf62a831c2e70ae16da6a6a56fc83fe0dcdccaacee97",
+      "targetHash": "d76f2cfec9943354200acd97b9e0d4143fc310992c234c21336fceb2f1e0d213"
+    },
+    {
+      "domain": "client",
+      "locale": "zh-TW",
+      "id": "components.VisualLab.demoBlue",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "ec7d56a01607001e6401366417c5e2eb00ffa0df17ca1a9a831e0b32c8f11bf7",
+      "targetHash": "6bd61827c599e81a0dba73c04f98b16fcf2ee81f5ef2a2bf125f7252f97ea8b7"
+    },
+    {
+      "domain": "client",
+      "locale": "zh-TW",
+      "id": "components.VisualLab.demoPurple",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "7d465fb9b9314846b72698017691e756af05e0a548e347a3b7c54ca5b85270de",
+      "targetHash": "2ed9c6fabac2013a5f22579002391088dff9b7741db4f7eee2f5ed5381b2b708"
+    },
+    {
+      "domain": "client",
+      "locale": "zh-TW",
+      "id": "components.VisualLab.demoPlum",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "c8b2fae9f5dc3c52c4e223323f26f5c5e5726210c2da7f7cd3370bce461836a1",
+      "targetHash": "6dd123127702645ba5c1326278cbd46ce6f8c7cc703327576440af972233bec3"
+    },
+    {
+      "domain": "client",
+      "locale": "zh-TW",
+      "id": "components.VisualLab.demoPink",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual draft (2026-10-30); unverified",
+      "sourceHash": "bd38ed7732402b1a93261916c5906016cdccd1a9600b3864208246f6a3299bd0",
+      "targetHash": "16d3988c76ad7b5abce93d045575bf9e89efd6a67d292747e6e129ebf4a1a1e3"
     }
   ]
 }
