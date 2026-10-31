@@ -113,8 +113,10 @@ for (const viewport of [
     // services. The request deliberately omits the optional request.media link.
     // Next data navigation is a browser request; the page's internal API call
     // during server rendering is server-to-server and cannot be intercepted by
-    // page.route.
+    // page.route. Keep a separate browser API fixture for the post-navigation
+    // SWR refresh.
     let detailsFixtureApplied = false;
+    let browserMovieFixtureApplied = false;
     let discoveryFixtureApplied = false;
     await page.route('**/api/v1/discover/movies*', async (route) => {
       discoveryFixtureApplied = true;
@@ -134,6 +136,10 @@ for (const viewport of [
           ],
         },
       });
+    });
+    await page.route('**/api/v1/movie/438148', (route) => {
+      browserMovieFixtureApplied = true;
+      return route.fulfill({ json: movie });
     });
     await page.route('**/_next/data/**/movie/438148.json*', (route) => {
       detailsFixtureApplied = true;
@@ -171,6 +177,9 @@ for (const viewport of [
         pathname.endsWith('/movie/438148.json')
       );
     });
+    const browserMovieResponse = page.waitForResponse(
+      (response) => new URL(response.url()).pathname === '/api/v1/movie/438148'
+    );
     await page.goto('/discover/movies');
     await expect(page.getByTestId('title-card')).toHaveCount(1);
     expect(discoveryFixtureApplied).toBe(true);
@@ -182,6 +191,21 @@ for (const viewport of [
     const mockedMovieResponse = await movieResponse;
     expect(mockedMovieResponse.status()).toBe(200);
     expect(detailsFixtureApplied).toBe(true);
+    expect(await mockedMovieResponse.json()).toMatchObject({
+      pageProps: {
+        movie: {
+          title: movie.title,
+          mediaInfo: { requests: [{ id: request.id }] },
+        },
+      },
+    });
+    const mockedBrowserMovieResponse = await browserMovieResponse;
+    expect(mockedBrowserMovieResponse.status()).toBe(200);
+    expect(browserMovieFixtureApplied).toBe(true);
+    expect(await mockedBrowserMovieResponse.json()).toMatchObject({
+      title: movie.title,
+      mediaInfo: { requests: [{ id: request.id }] },
+    });
     await expect(page.getByTestId('media-title')).toContainText(movie.title);
     const manageButton = page.getByRole('button', { name: 'Manage Movie' });
     await expect(manageButton).toBeEnabled();
