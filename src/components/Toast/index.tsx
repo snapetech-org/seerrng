@@ -1,3 +1,4 @@
+import ApiMessageText from '@app/components/Common/ApiMessageText';
 import globalMessages from '@app/i18n/globalMessages';
 import {
   CheckCircleIcon,
@@ -54,12 +55,12 @@ const Toast = ({
                 )}
               </div>
               <div
-                className="ml-3 w-0 flex-1 text-white"
+                className="ms-3 w-0 flex-1 text-white"
                 style={{ pointerEvents: 'none' }}
               >
-                {children}
+                {<ApiMessageText>{children}</ApiMessageText>}
               </div>
-              <div className="ml-4 flex flex-shrink-0">
+              <div className="ms-4 flex flex-shrink-0">
                 <button
                   onClick={() => onDismiss()}
                   aria-label={intl.formatMessage(

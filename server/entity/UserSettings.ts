@@ -132,6 +132,12 @@ export class UserSettings {
   @Column({ default: '' })
   public locale?: string;
 
+  @Column({ type: 'varchar', nullable: true })
+  public metadataLocale?: string | null;
+
+  @Column({ type: 'varchar', nullable: true })
+  public formatRegion?: string | null;
+
   @Column({ nullable: true })
   public discoverRegion?: string;
 
@@ -297,6 +303,8 @@ export class UserSettings {
     return {
       id: this.id,
       locale: this.locale,
+      metadataLocale: this.metadataLocale,
+      formatRegion: this.formatRegion,
       discoverRegion: this.discoverRegion,
       streamingRegion: this.streamingRegion,
       originalLanguage: this.originalLanguage,

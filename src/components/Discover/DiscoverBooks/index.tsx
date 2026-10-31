@@ -1,4 +1,5 @@
 import InlineBookSeriesResults from '@app/components/BookSeriesSearch/InlineResults';
+import ApiMessageText from '@app/components/Common/ApiMessageText';
 import Button from '@app/components/Common/Button';
 import CardTextVisibilityToggle from '@app/components/Common/CardTextVisibilityToggle';
 import Header from '@app/components/Common/Header';
@@ -497,7 +498,11 @@ const DiscoverBooks = ({
         >
           <div>
             <p className="font-medium">
-              {providerMessage ?? intl.formatMessage(messages.unavailable)}
+              {
+                <ApiMessageText>
+                  {providerMessage ?? intl.formatMessage(messages.unavailable)}
+                </ApiMessageText>
+              }
             </p>
             <p className="mt-1 text-sm text-red-100/80">
               {intl.formatMessage(messages.unavailableHint)}

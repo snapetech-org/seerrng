@@ -22,6 +22,7 @@ import {
 } from '@app/utils/apiPath';
 import defineMessages from '@app/utils/defineMessages';
 import { getTmdbPosterImageUrl } from '@app/utils/imageCache';
+import { formatDurationMinutes } from '@app/utils/numberHelpers';
 import { getSafeHref } from '@app/utils/safeUrl';
 import { EyeIcon, ServerIcon } from '@heroicons/react/24/outline';
 import { IssueStatus } from '@server/constants/issue';
@@ -132,15 +133,25 @@ const getReleaseDate = (title: IssueTitle): string | undefined =>
             ? title.latestIssue
             : title.firstAirDate;
 
-const getRuntime = (title: IssueTitle, unavailable: string): string => {
+const getRuntime = (
+  title: IssueTitle,
+  unavailable: string,
+  intl: ReturnType<typeof useIntl>
+): string => {
   if (isBook(title)) {
-    return title.numberOfPages?.toLocaleString() ?? unavailable;
+    return title.numberOfPages != null
+      ? intl.formatNumber(title.numberOfPages)
+      : unavailable;
   }
   if (isComic(title)) {
-    return title.issueCount?.toLocaleString() ?? unavailable;
+    return title.issueCount != null
+      ? intl.formatNumber(title.issueCount)
+      : unavailable;
   }
   if (isMagazine(title)) {
-    return title.issueCount?.toLocaleString() ?? unavailable;
+    return title.issueCount != null
+      ? intl.formatNumber(title.issueCount)
+      : unavailable;
   }
   const minutes = isMovie(title)
     ? title.runtime
@@ -149,7 +160,7 @@ const getRuntime = (title: IssueTitle, unavailable: string): string => {
           title.tracks.reduce((total, track) => total + track.length, 0) / 60000
         )
       : title.episodeRunTime[0];
-  return minutes ? `${minutes.toLocaleString()} minutes` : unavailable;
+  return minutes ? formatDurationMinutes(minutes, intl.locale) : unavailable;
 };
 
 const getBackdrop = (
@@ -467,7 +478,7 @@ const IssueItem = ({
                   :
                 </dt>
                 <dd className="card:col-start-3 card:row-start-3 m-0 truncate">
-                  {getRuntime(title, unavailable)}
+                  {getRuntime(title, unavailable, intl)}
                 </dd>
                 <div className="media-detail-rows media-detail-column-divider card:col-span-1 card:col-start-5 card:row-span-3 card:row-start-1 col-span-2 grid min-w-0 grid-cols-[max-content_minmax(0,1fr)] content-start gap-x-3">
                   <dt className="font-medium text-gray-100">

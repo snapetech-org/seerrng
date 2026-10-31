@@ -3,7 +3,7 @@ import seerrNGJ from '@themes/seerrNGJ/manifest.json';
 import seerrOrig from '@themes/seerrOrig/manifest.json';
 
 /** Built-in picker fallback; the package manifests remain the source of truth. */
-const toBuiltInInterfaceThemeManifest = (
+const parseBuiltInManifest = (
   manifest: typeof seerrOrig,
   expectedId: InterfaceThemeManifest['id']
 ): InterfaceThemeManifest => {
@@ -33,6 +33,6 @@ const toBuiltInInterfaceThemeManifest = (
 };
 
 export const BUILT_IN_INTERFACE_THEME_MANIFESTS: InterfaceThemeManifest[] = [
-  toBuiltInInterfaceThemeManifest(seerrOrig, 'seerrOrig'),
-  toBuiltInInterfaceThemeManifest(seerrNGJ, 'seerrNGJ'),
+  parseBuiltInManifest(seerrOrig, 'seerrOrig'),
+  parseBuiltInManifest(seerrNGJ, 'seerrNGJ'),
 ];

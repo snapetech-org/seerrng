@@ -1,0 +1,203 @@
+{
+  "schemaVersion": 1,
+  "entries": [
+    {
+      "file": "src/components/Blocklist/index.tsx",
+      "expression": "message",
+      "classification": "localized-rich-text",
+      "reason": "This is the rich-text callback argument supplied by an enclosing intl.formatMessage call."
+    },
+    {
+      "file": "src/components/BlocklistedTagsSelector/index.tsx",
+      "expression": "error",
+      "classification": "localized-state",
+      "reason": "The producing state/validation path uses intl.formatMessage before rendering."
+    },
+    {
+      "file": "src/components/CollectionDetails/CuratedCollectionDetails.tsx",
+      "expression": "availability.error",
+      "classification": "localized-child-boundary",
+      "reason": "ReaderGroupingAction owns this error prop and renders it through ApiMessageText."
+    },
+    {
+      "file": "src/components/CollectionDetails/index.tsx",
+      "expression": "availability.error",
+      "classification": "localized-child-boundary",
+      "reason": "ReaderGroupingAction owns this error prop and renders it through ApiMessageText."
+    },
+    {
+      "file": "src/components/Collectors/index.tsx",
+      "expression": "reason",
+      "classification": "provider-data",
+      "reason": "Collector recommendations contain dynamic reasons returned by the configured slskdN service; no Seerr-authored fixed copy is constructed here."
+    },
+    {
+      "file": "src/components/ComicDetails/index.tsx",
+      "expression": "message",
+      "classification": "localized-rich-text",
+      "reason": "This is the rich-text callback argument supplied by an enclosing intl.formatMessage call."
+    },
+    {
+      "file": "src/components/DiscoveryIntegrations/IdentityMappingControls.tsx",
+      "expression": "notice",
+      "classification": "localized-state",
+      "reason": "The producing state/validation path uses intl.formatMessage before rendering."
+    },
+    {
+      "file": "src/components/DiscoveryIntegrations/TrackingControls.tsx",
+      "expression": "notice",
+      "classification": "localized-state",
+      "reason": "The producing state/validation path uses intl.formatMessage before rendering."
+    },
+    {
+      "file": "src/components/IndexerSearch/index.tsx",
+      "expression": "errorMessage",
+      "classification": "localized-state",
+      "reason": "The producing state/validation path uses intl.formatMessage before rendering."
+    },
+    {
+      "file": "src/components/IssueDetails/IssueComment/index.tsx",
+      "expression": "comment.message",
+      "classification": "user-data",
+      "reason": "Issue comments and the original issue description are user-authored Markdown; preserve their text."
+    },
+    {
+      "file": "src/components/IssueDetails/IssueDiscussion.tsx",
+      "expression": "description?.message ?? ''",
+      "classification": "user-data",
+      "reason": "Issue comments and the original issue description are user-authored Markdown; preserve their text."
+    },
+    {
+      "file": "src/components/IssueDetails/IssueDiscussion.tsx",
+      "expression": "errors.message",
+      "classification": "localized-state",
+      "reason": "The producing state/validation path uses intl.formatMessage before rendering."
+    },
+    {
+      "file": "src/components/IssueModal/CreateIssueModal/index.tsx",
+      "expression": "errors.message",
+      "classification": "localized-state",
+      "reason": "The producing state/validation path uses intl.formatMessage before rendering."
+    },
+    {
+      "file": "src/components/MagazineDetails/index.tsx",
+      "expression": "message",
+      "classification": "localized-rich-text",
+      "reason": "This is the rich-text callback argument supplied by an enclosing intl.formatMessage call."
+    },
+    {
+      "file": "src/components/MagazineDetails/index.tsx",
+      "expression": "message",
+      "classification": "localized-rich-text",
+      "reason": "This is the rich-text callback argument supplied by an enclosing intl.formatMessage call."
+    },
+    {
+      "file": "src/components/MagazineDetails/index.tsx",
+      "expression": "message",
+      "classification": "localized-rich-text",
+      "reason": "This is the rich-text callback argument supplied by an enclosing intl.formatMessage call."
+    },
+    {
+      "file": "src/components/NotificationTypeSelector/index.tsx",
+      "expression": "error",
+      "classification": "localized-state",
+      "reason": "The producing state/validation path uses intl.formatMessage before rendering."
+    },
+    {
+      "file": "src/components/RequestModal/TvCollectionRequestModal.tsx",
+      "expression": "message",
+      "classification": "localized-rich-text",
+      "reason": "This is the rich-text callback argument supplied by an enclosing intl.formatMessage call."
+    },
+    {
+      "file": "src/components/Requests/index.tsx",
+      "expression": "event.message\n                          ? formatRequestStatusMessage(intl, event)\n                          : getStageLabel(intl, event.stage as StatusStage)",
+      "classification": "localized-child-boundary",
+      "reason": "formatRequestStatusMessage localizes stable status events and its legacy-message fallback uses formatApiMessage."
+    },
+    {
+      "file": "src/components/Search/index.tsx",
+      "expression": "error && searchError",
+      "classification": "localized-child-boundary",
+      "reason": "This expression renders an already-built React error block whose fixed copy uses Intl and explicit API text boundaries."
+    },
+    {
+      "file": "src/components/Settings/SettingsLogs/index.tsx",
+      "expression": "activeLog.log?.message",
+      "classification": "diagnostic-data",
+      "reason": "The log viewer displays original operational records for diagnosis and search; preserve emitted log data."
+    },
+    {
+      "file": "src/components/Settings/SettingsLogs/index.tsx",
+      "expression": "row.message",
+      "classification": "diagnostic-data",
+      "reason": "The log viewer displays original operational records for diagnosis and search; preserve emitted log data."
+    },
+    {
+      "file": "src/components/Settings/SetupConnectionsImport.tsx",
+      "expression": "error",
+      "classification": "localized-state",
+      "reason": "The producing state/validation path uses intl.formatMessage before rendering."
+    },
+    {
+      "file": "src/components/Share/index.tsx",
+      "expression": "notice",
+      "classification": "localized-state",
+      "reason": "The producing state/validation path uses intl.formatMessage before rendering."
+    },
+    {
+      "file": "src/components/Slider/index.tsx",
+      "expression": "notice",
+      "classification": "localized-child-boundary",
+      "reason": "The three notice callers (MediaSlider, RecentRequestsSlider, PersonalizedRows) pass translated JSX error/status blocks."
+    },
+    {
+      "file": "src/components/TvDetails/index.tsx",
+      "expression": "error && loadErrorMessage",
+      "classification": "localized-child-boundary",
+      "reason": "This expression renders an already-built React error block whose fixed copy uses Intl and explicit API text boundaries."
+    },
+    {
+      "file": "src/components/UserProfile/UserSettings/UserGeneralSettings/BookHomeSections.tsx",
+      "expression": "message",
+      "classification": "localized-state",
+      "reason": "The producing state/validation path uses intl.formatMessage before rendering."
+    },
+    {
+      "file": "src/components/UserProfile/UserSettings/UserLinkedAccountsSettings/LinkJellyfinModal.tsx",
+      "expression": "error",
+      "classification": "localized-state",
+      "reason": "The producing state/validation path uses intl.formatMessage before rendering."
+    },
+    {
+      "file": "src/components/UserProfile/UserSettings/UserLinkedAccountsSettings/index.tsx",
+      "expression": "error",
+      "classification": "localized-state",
+      "reason": "The producing state/validation path uses intl.formatMessage before rendering."
+    },
+    {
+      "file": "src/hooks/useToasts.tsx",
+      "expression": "message",
+      "classification": "localized-child-boundary",
+      "reason": "Toast owns this ReactNode and wraps string content in ApiMessageText; callback/JSX nodes retain their own translations."
+    },
+    {
+      "file": "src/pages/downloads.tsx",
+      "expression": "warning.title",
+      "classification": "provider-data",
+      "reason": "Warning title, service name and service type identify provider/media/service data, not an app message."
+    },
+    {
+      "file": "src/pages/downloads.tsx",
+      "expression": "warning.serviceName",
+      "classification": "provider-data",
+      "reason": "Warning title, service name and service type identify provider/media/service data, not an app message."
+    },
+    {
+      "file": "src/pages/downloads.tsx",
+      "expression": "warning.serviceType",
+      "classification": "provider-data",
+      "reason": "Warning title, service name and service type identify provider/media/service data, not an app message."
+    }
+  ]
+}

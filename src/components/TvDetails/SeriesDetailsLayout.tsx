@@ -30,6 +30,10 @@ import useSettings from '@app/hooks/useSettings';
 import useWatchStatus from '@app/hooks/useWatchStatus';
 import defineMessages from '@app/utils/defineMessages';
 import { getTmdbPosterImageUrl } from '@app/utils/imageCache';
+import {
+  formatDurationMinutes,
+  formatLocalizedList,
+} from '@app/utils/numberHelpers';
 import { resolveCanonicalPlaybackSelection } from '@app/utils/playbackSelection';
 import {
   getViewerAvailabilityPresentation,
@@ -487,9 +491,10 @@ const SeriesDetailsLayout = ({
                     </dt>
                     <dd className="card-table-value">
                       {data.episodeRunTime[0]
-                        ? intl.formatMessage(messages.minutes, {
-                            minutes: data.episodeRunTime[0],
-                          })
+                        ? formatDurationMinutes(
+                            data.episodeRunTime[0],
+                            intl.locale
+                          )
                         : unavailable}
                     </dd>
                     <div className="card-table media-detail-column-divider">
@@ -870,9 +875,10 @@ const SeriesDetailsLayout = ({
                           </dt>
                           <dd className="card-table-value">
                             {data.episodeRunTime[0]
-                              ? intl.formatMessage(messages.minutes, {
-                                  minutes: data.episodeRunTime[0],
-                                })
+                              ? formatDurationMinutes(
+                                  data.episodeRunTime[0],
+                                  intl.locale
+                                )
                               : unavailable}
                           </dd>
                           <dt className="card-table-heading">
@@ -950,7 +956,10 @@ const SeriesDetailsLayout = ({
                             <div>
                               <dt>{intl.formatMessage(messages.director)}:</dt>
                               <dd>
-                                {supplementalDirectors.slice(0, 4).join(', ')}
+                                {formatLocalizedList(
+                                  supplementalDirectors.slice(0, 4),
+                                  intl.locale
+                                )}
                               </dd>
                             </div>
                           )}
@@ -958,7 +967,10 @@ const SeriesDetailsLayout = ({
                             <div>
                               <dt>{intl.formatMessage(messages.writers)}:</dt>
                               <dd>
-                                {supplementalWriters.slice(0, 4).join(', ')}
+                                {formatLocalizedList(
+                                  supplementalWriters.slice(0, 4),
+                                  intl.locale
+                                )}
                               </dd>
                             </div>
                           )}

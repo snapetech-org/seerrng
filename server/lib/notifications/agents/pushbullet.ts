@@ -21,6 +21,9 @@ import {
   BaseAgent,
   NOTIFICATION_DELIVERY_CONCURRENCY,
   NOTIFICATION_HTTP_OPTIONS,
+  getLocalizedNotificationPayload,
+  getNotificationContent,
+  getNotificationExtras,
 } from './agent';
 
 interface PushbulletPayload {
@@ -52,10 +55,13 @@ class PushbulletAgent
     locale?: AvailableLocale
   ): PushbulletPayload {
     const intl = getIntl(locale);
-    const title = payload.event
-      ? `${payload.event} - ${payload.subject}`
+    payload = getLocalizedNotificationPayload(payload, intl);
+    const content = getNotificationContent(payload, intl);
+    const extras = getNotificationExtras(payload, intl);
+    const title = content.event
+      ? `${content.event} - ${payload.subject}`
       : payload.subject;
-    let body = payload.message && !payload.comment ? payload.message : '';
+    let body = content.message && !payload.comment ? content.message : '';
 
     if (payload.request) {
       body += `\n\n${intl.formatMessage(globalMessages.requestedBy)}: ${payload.request.requestedBy.displayName}`;
@@ -101,7 +107,7 @@ class PushbulletAgent
       }`;
     }
 
-    for (const extra of payload.extra ?? []) {
+    for (const extra of extras) {
       body += `\n${extra.name}: ${extra.value}`;
     }
 

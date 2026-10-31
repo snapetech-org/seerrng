@@ -1,3 +1,4 @@
+import ApiMessageText from '@app/components/Common/ApiMessageText';
 import Badge from '@app/components/Common/Badge';
 import CachedImage from '@app/components/Common/CachedImage';
 import type { SwipeCardData } from '@app/components/Swipe/swipeCatalog';
@@ -177,7 +178,9 @@ const SwipeCardView = ({
         </div>
         {card.subtitle && <p className="card-subheading">{card.subtitle}</p>}
         {(card.reason ?? card.because) && (
-          <p className="card-body-text">{card.reason ?? card.because}</p>
+          <p className="card-body-text">
+            <ApiMessageText>{card.reason ?? card.because}</ApiMessageText>
+          </p>
         )}
         {card.overview && <p className="card-body-text">{card.overview}</p>}
       </div>

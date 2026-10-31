@@ -1,7 +1,11 @@
 import { createIntl, createIntlCache } from '@formatjs/intl';
 import { getSettings } from '@server/lib/settings';
 import type { AvailableLocale } from '@server/types/languages';
-import { availableLocales } from '@server/types/languages';
+import {
+  availableLocales,
+  getLocaleFallbackChain,
+  localeCatalogFiles,
+} from '@server/types/languages';
 import fs from 'fs';
 import path from 'path';
 
@@ -9,19 +13,30 @@ export type IntlInstance = ReturnType<typeof createIntl>;
 
 const cache = createIntlCache();
 const intls = new Map<string, IntlInstance>();
-const localeCatalogNames: Partial<Record<AvailableLocale, string>> = {
-  'zh-CN': 'zh-Hans',
-  'zh-TW': 'zh-Hant',
-};
 
 export function initI18n(): void {
+  intls.clear();
+
   for (const locale of availableLocales) {
-    const catalogName = localeCatalogNames[locale] || locale;
-    const filePath = path.join(__dirname, `locale/${catalogName}.json`);
+    const messages: Record<string, string> = {};
+    const fallbackChain = getLocaleFallbackChain(locale).reverse();
 
-    if (!fs.existsSync(filePath)) continue;
+    for (const fallback of fallbackChain) {
+      const filePath = path.join(
+        __dirname,
+        'locale',
+        localeCatalogFiles[fallback]
+      );
 
-    const messages = JSON.parse(fs.readFileSync(filePath, 'utf-8'));
+      if (!fs.existsSync(filePath)) {
+        if (fallback === 'en') {
+          throw new Error('Failed to initialize English locale - en.json is required');
+        }
+        continue;
+      }
+
+      Object.assign(messages, JSON.parse(fs.readFileSync(filePath, 'utf-8')));
+    }
 
     intls.set(
       locale,

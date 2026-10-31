@@ -13,6 +13,7 @@ import { Permission, useUser } from '@app/hooks/useUser';
 import globalMessages from '@app/i18n/globalMessages';
 import ErrorPage from '@app/pages/_error';
 import defineMessages from '@app/utils/defineMessages';
+import { formatLocalizedList } from '@app/utils/numberHelpers';
 import { CircleStackIcon } from '@heroicons/react/24/solid';
 import type { PersonCombinedCreditsResponse } from '@server/interfaces/api/personInterfaces';
 import type { PersonMovieBulkRequestResponse } from '@server/interfaces/api/requestInterfaces';
@@ -80,11 +81,14 @@ const PersonDetails = () => {
 
     const reduced = Object.values(grouped).map((objs) => ({
       ...objs[0],
-      character: objs.map((pos) => pos.character).join(', '),
+      character: formatLocalizedList(
+        objs.map((pos) => pos.character),
+        intl.locale
+      ),
     }));
 
     return reduced;
-  }, [combinedCredits, currentMediaType]);
+  }, [combinedCredits, currentMediaType, intl.locale]);
 
   const sortedCrew = useMemo(() => {
     const filtered = (combinedCredits?.crew ?? []).filter(
@@ -95,11 +99,14 @@ const PersonDetails = () => {
 
     const reduced = Object.values(grouped).map((objs) => ({
       ...objs[0],
-      job: objs.map((pos) => pos.job).join(', '),
+      job: formatLocalizedList(
+        objs.map((pos) => pos.job),
+        intl.locale
+      ),
     }));
 
     return reduced;
-  }, [combinedCredits, currentMediaType]);
+  }, [combinedCredits, currentMediaType, intl.locale]);
 
   const movieIds = useMemo(() => {
     const movies = [
@@ -233,8 +240,8 @@ const PersonDetails = () => {
   const isLoading = !combinedCredits && !errorCombinedCredits;
 
   const mediaTypePicker = (
-    <div className="mb-2 flex flex-grow sm:mr-2 sm:mb-0 lg:flex-grow-0">
-      <span className="inline-flex cursor-default items-center rounded-l-md border border-r-0 border-gray-500 bg-gray-800 px-3 text-sm text-gray-100">
+    <div className="mb-2 flex flex-grow sm:me-2 sm:mb-0 lg:flex-grow-0">
+      <span className="inline-flex cursor-default items-center rounded-s-md border border-e-0 border-gray-500 bg-gray-800 px-3 text-sm text-gray-100">
         <CircleStackIcon className="h-6 w-6" />
       </span>
       <select
@@ -353,7 +360,7 @@ const PersonDetails = () => {
     <>
       <PageTitle title={data.name} />
       {(sortedCrew || sortedCast) && (
-        <div className="absolute top-0 right-0 left-0 z-0 h-96">
+        <div className="absolute start-0 end-0 top-0 z-0 h-96">
           <ImageFader
             isDarker
             backgroundImages={[...(sortedCast ?? []), ...(sortedCrew ?? [])]
@@ -372,7 +379,7 @@ const PersonDetails = () => {
         }`}
       >
         {data.profilePath && (
-          <div className="relative mr-0 mb-6 h-36 w-36 flex-shrink-0 overflow-hidden rounded-full ring-1 ring-gray-700 lg:mr-6 lg:mb-0 lg:h-44 lg:w-44">
+          <div className="relative me-0 mb-6 h-36 w-36 flex-shrink-0 overflow-hidden rounded-full ring-1 ring-gray-700 lg:me-6 lg:mb-0 lg:h-44 lg:w-44">
             <CachedImage
               type="tmdb"
               src={`https://image.tmdb.org/t/p/w600_and_h900_bestv2${data.profilePath}`}
@@ -382,7 +389,7 @@ const PersonDetails = () => {
             />
           </div>
         )}
-        <div className="w-full text-center text-gray-300 lg:text-left">
+        <div className="w-full text-center text-gray-300 lg:text-start">
           <div className="flex w-full items-center justify-center lg:justify-between">
             <h1 className="text-3xl text-white lg:text-4xl">{data.name}</h1>
             <div className="hidden flex-shrink-0 lg:block">
@@ -415,7 +422,7 @@ const PersonDetails = () => {
           </div>
           <div className="lg:hidden">{mediaTypePicker}</div>
           {data.biography && (
-            <div className="relative text-left">
+            <div className="relative text-start">
               {/* eslint-disable-next-line jsx-a11y/click-events-have-key-events */}
               <div
                 className="group ring-0 outline-none"
@@ -426,7 +433,7 @@ const PersonDetails = () => {
                 <TruncateMarkup
                   lines={showBio ? 200 : 6}
                   ellipsis={
-                    <Ellipsis className="relative -top-0.5 ml-2 inline-block opacity-70 transition duration-300 group-hover:opacity-100" />
+                    <Ellipsis className="relative -top-0.5 ms-2 inline-block opacity-70 transition duration-300 group-hover:opacity-100" />
                   }
                 >
                   <p className="pt-2 text-sm lg:text-base">{data.biography}</p>

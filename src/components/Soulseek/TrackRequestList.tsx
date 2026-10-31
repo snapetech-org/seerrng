@@ -1,3 +1,4 @@
+import ApiMessageText from '@app/components/Common/ApiMessageText';
 import Badge from '@app/components/Common/Badge';
 import Button from '@app/components/Common/Button';
 import LoadingSpinner from '@app/components/Common/LoadingSpinner';
@@ -165,7 +166,9 @@ const TrackRequestList = () => {
             )}
           </dl>
           {request.lastError && (
-            <p className="card-body-text">{request.lastError}</p>
+            <p className="card-body-text">
+              {<ApiMessageText>{request.lastError}</ApiMessageText>}
+            </p>
           )}
           {active && (canManage || isOwner) && (
             <div className="app-action-row">

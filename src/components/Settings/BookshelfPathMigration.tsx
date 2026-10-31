@@ -1,7 +1,9 @@
+import ApiMessageText from '@app/components/Common/ApiMessageText';
 import Button from '@app/components/Common/Button';
 import PageTitle from '@app/components/Common/PageTitle';
 import SettingsField from '@app/components/Settings/SettingsField';
 import defineMessages from '@app/utils/defineMessages';
+import { formatBytes } from '@app/utils/numberHelpers';
 import type {
   ReadarrMediaMoveBatchPreview,
   ReadarrMediaMoveCommand,
@@ -120,18 +122,6 @@ const normalizePath = (value: string): string => {
 
 const AUTHORS_PER_PAGE = 100;
 
-const formatBytes = (value: number): string => {
-  if (!Number.isFinite(value) || value <= 0) return '0 B';
-  const units = ['B', 'KB', 'MB', 'GB', 'TB'];
-  let size = value;
-  let unit = 0;
-  while (size >= 1024 && unit < units.length - 1) {
-    size /= 1024;
-    unit += 1;
-  }
-  return `${size.toFixed(unit === 0 ? 0 : 1)} ${units[unit]}`;
-};
-
 const responseMessage = (error: unknown, fallback: string): string =>
   axios.isAxiosError<{ message?: string }>(error) &&
   typeof error.response?.data?.message === 'string'
@@ -169,7 +159,7 @@ const AuthorMovePreviewDetails = ({
         {')'}
       </summary>
       {expanded && (
-        <ul className="mt-2 max-h-64 space-y-2 overflow-y-auto pl-5 text-xs">
+        <ul className="mt-2 max-h-64 space-y-2 overflow-y-auto ps-5 text-xs">
           {author.files.map((file, index) => (
             <li
               key={`${author.authorId}-${index}-${file.sourcePath}`}
@@ -718,13 +708,17 @@ const BookshelfPathMigration = () => {
                 )}
                 <span>
                   {intl.formatMessage(messages.requiredCopy, {
-                    size: formatBytes(preview.requiredCopyBytes),
+                    size: formatBytes(
+                      preview.requiredCopyBytes,
+                      2,
+                      intl.locale
+                    ),
                   })}
                 </span>
                 {preview.availableSpace !== undefined ? (
                   <span>
                     {intl.formatMessage(messages.availableSpace, {
-                      size: formatBytes(preview.availableSpace),
+                      size: formatBytes(preview.availableSpace, 2, intl.locale),
                     })}
                   </span>
                 ) : (
@@ -736,9 +730,11 @@ const BookshelfPathMigration = () => {
                   <h3 className="font-semibold">
                     {intl.formatMessage(messages.warnings)}
                   </h3>
-                  <ul className="list-disc pl-5 text-sm text-yellow-200">
+                  <ul className="list-disc ps-5 text-sm text-yellow-200">
                     {preview.warnings.map((warning, index) => (
-                      <li key={`${index}-${warning}`}>{warning}</li>
+                      <li key={`${index}-${warning}`}>
+                        {<ApiMessageText>{warning}</ApiMessageText>}
+                      </li>
                     ))}
                   </ul>
                 </div>
@@ -748,7 +744,7 @@ const BookshelfPathMigration = () => {
                   <h3 className="font-semibold text-red-300">
                     {intl.formatMessage(messages.conflicts)}
                   </h3>
-                  <ul className="list-disc pl-5 text-sm text-red-200">
+                  <ul className="list-disc ps-5 text-sm text-red-200">
                     {preview.conflicts.map((conflict, index) => (
                       <li key={`${index}-${conflict}`}>{conflict}</li>
                     ))}
@@ -801,7 +797,7 @@ const BookshelfPathMigration = () => {
                   : 'text-green-300'
               }
             >
-              {notice}
+              {<ApiMessageText>{notice}</ApiMessageText>}
             </p>
           )}
           {command && !commandTerminal && (
@@ -821,7 +817,7 @@ const BookshelfPathMigration = () => {
           )}
           {errorMessage && (
             <p role="alert" className="text-red-300">
-              {errorMessage}
+              {<ApiMessageText>{errorMessage}</ApiMessageText>}
             </p>
           )}
         </div>

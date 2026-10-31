@@ -48,8 +48,8 @@ const TD = memo(
           alignText === 'center'
             ? 'text-center'
             : alignText === 'right'
-              ? 'text-right'
-              : 'text-left',
+              ? 'text-end'
+              : 'text-start',
           noPadding ? 'p-0' : undefined,
           className,
         ]

@@ -1,3 +1,4 @@
+import ApiMessageText from '@app/components/Common/ApiMessageText';
 import Badge from '@app/components/Common/Badge';
 import Button from '@app/components/Common/Button';
 import CachedImage from '@app/components/Common/CachedImage';
@@ -33,6 +34,10 @@ import globalMessages from '@app/i18n/globalMessages';
 import { sortCrewPriority } from '@app/utils/creditHelpers';
 import defineMessages from '@app/utils/defineMessages';
 import { getTmdbPosterImageUrl } from '@app/utils/imageCache';
+import {
+  formatDurationMinutes,
+  formatLocalizedList,
+} from '@app/utils/numberHelpers';
 import {
   getAvailableEpisodesBySeason,
   getDefaultUnavailableSeasonSelections,
@@ -1323,7 +1328,7 @@ const TvRequestModal = ({
                     </dt>
                     <dd className="card-table-value">
                       {runtime
-                        ? `${intl.formatNumber(runtime)} minutes`
+                        ? formatDurationMinutes(runtime, intl.locale)
                         : notAvailable}
                     </dd>
                     <div className="card-table media-detail-column-divider">
@@ -1350,10 +1355,10 @@ const TvRequestModal = ({
                       data-lines="2"
                     >
                       {data?.genres?.length
-                        ? data.genres
-                            .slice(0, 3)
-                            .map((genre) => genre.name)
-                            .join(', ')
+                        ? formatLocalizedList(
+                            data.genres.slice(0, 3).map((genre) => genre.name),
+                            intl.locale
+                          )
                         : notAvailable}
                     </dd>
                   </dl>
@@ -1447,7 +1452,13 @@ const TvRequestModal = ({
                 seasonWatchGateFailure === 'unavailable' ? 'alert' : 'status'
               }
             >
-              <span>{seasonWatchGateDisplayMessage}</span>
+              <span>
+                {
+                  <ApiMessageText>
+                    {seasonWatchGateDisplayMessage}
+                  </ApiMessageText>
+                }
+              </span>
               {seasonWatchGateFailure === 'account' && (
                 <Button
                   as="a"
@@ -1634,7 +1645,11 @@ const TvRequestModal = ({
                     className="request-episode-queue-description refreshed-detail-text-muted"
                     role="status"
                   >
-                    {watchAheadUnavailableMessage}
+                    {
+                      <ApiMessageText>
+                        {watchAheadUnavailableMessage}
+                      </ApiMessageText>
+                    }
                   </p>
                 )}
                 {needsWatchAheadAccountLink && (

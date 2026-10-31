@@ -20,7 +20,10 @@ import type { NotificationAgent, NotificationPayload } from './agent';
 import {
   BaseAgent,
   CONFIGURABLE_NOTIFICATION_HTTP_OPTIONS,
+  getLocalizedNotificationPayload,
   getNotificationActionUrl,
+  getNotificationContent,
+  getNotificationExtras,
   truncateNotificationUtf8,
 } from './agent';
 
@@ -71,16 +74,19 @@ class AppriseAgent
   public buildPayload(type: Notification, payload: NotificationPayload) {
     const settings = this.getSettings();
     const intl = getIntl(settings.options.locale as AvailableLocale);
+    payload = getLocalizedNotificationPayload(payload, intl);
     const { applicationUrl } = getExternalRuntimeConfig().main;
+    const content = getNotificationContent(payload, intl);
+    const extras = getNotificationExtras(payload, intl);
 
     const title = truncateNotificationUtf8(
-      payload.event ? `${payload.event} - ${payload.subject}` : payload.subject,
+      content.event ? `${content.event} - ${payload.subject}` : payload.subject,
       APPRISE_TITLE_BYTE_LIMIT
     );
 
     const lines: string[] = [];
-    if (payload.message && !payload.comment) {
-      lines.push(payload.message);
+    if (content.message && !payload.comment) {
+      lines.push(content.message);
     }
 
     if (payload.request) {
@@ -128,7 +134,7 @@ class AppriseAgent
       );
     }
 
-    for (const extra of payload.extra ?? []) {
+    for (const extra of extras) {
       lines.push(`${extra.name}: ${extra.value}`);
     }
 

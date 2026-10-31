@@ -292,7 +292,7 @@ const SettingsNetwork = () => {
                 </div>
                 <div className="form-row">
                   <label htmlFor="tlsMode" className="text-label">
-                    <span className="mr-2">
+                    <span className="me-2">
                       {intl.formatMessage(messages.tlsMode)}
                     </span>
                     <SettingsBadge badgeType="restartRequired" />
@@ -325,7 +325,7 @@ const SettingsNetwork = () => {
                 </div>
                 {values.tlsMode !== 'disabled' && (
                   <>
-                    <div className="mr-2 ml-4">
+                    <div className="ms-4 me-2">
                       <div className="form-row">
                         <label htmlFor="tlsHttpsPort" className="text-label">
                           {intl.formatMessage(messages.httpsPort)}
@@ -407,7 +407,7 @@ const SettingsNetwork = () => {
                         htmlFor="tlsRedirectHttpToHttps"
                         className="checkbox-label"
                       >
-                        <span className="mr-2">
+                        <span className="me-2">
                           {intl.formatMessage(messages.redirectHttpToHttps)}
                         </span>
                         <SettingsBadge badgeType="restartRequired" />
@@ -438,7 +438,7 @@ const SettingsNetwork = () => {
                         htmlFor="tlsAllowHttpAuth"
                         className="checkbox-label"
                       >
-                        <span className="mr-2">
+                        <span className="me-2">
                           {intl.formatMessage(messages.allowHttpAuth)}
                         </span>
                         <SettingsBadge badgeType="restartRequired" />
@@ -474,7 +474,7 @@ const SettingsNetwork = () => {
                             id="tlsHttpAuthAcknowledged"
                             name="tlsHttpAuthAcknowledged"
                           />
-                          <span className="ml-2">
+                          <span className="ms-2">
                             {intl.formatMessage(messages.acknowledgeHttpRisk)}
                           </span>
                         </label>
@@ -489,7 +489,7 @@ const SettingsNetwork = () => {
                 )}
                 <div className="form-row">
                   <label htmlFor="trustProxy" className="checkbox-label">
-                    <span className="mr-2">
+                    <span className="me-2">
                       {intl.formatMessage(messages.trustProxy)}
                     </span>
                     <SettingsBadge badgeType="restartRequired" />
@@ -510,7 +510,7 @@ const SettingsNetwork = () => {
                 </div>
                 <div className="form-row">
                   <label htmlFor="csrfProtection" className="checkbox-label">
-                    <span className="mr-2">
+                    <span className="me-2">
                       {intl.formatMessage(messages.csrfProtection)}
                     </span>
                     <span className="settings-badge-row">
@@ -543,7 +543,7 @@ const SettingsNetwork = () => {
                 </div>
                 <div className="form-row">
                   <label htmlFor="forceIpv4First" className="checkbox-label">
-                    <span className="mr-2">
+                    <span className="me-2">
                       {intl.formatMessage(messages.forceIpv4First)}
                     </span>
                     <span className="settings-badge-row">
@@ -568,7 +568,7 @@ const SettingsNetwork = () => {
                 </div>
                 <div className="form-row">
                   <label htmlFor="dnsCacheEnabled" className="checkbox-label">
-                    <span className="mr-2">
+                    <span className="me-2">
                       {intl.formatMessage(messages.dnsCache)}
                     </span>
                     <span className="settings-badge-row">
@@ -600,7 +600,7 @@ const SettingsNetwork = () => {
                 </div>
                 {values.dnsCacheEnabled && (
                   <>
-                    <div className="mr-2 ml-4">
+                    <div className="ms-4 me-2">
                       <div className="form-row">
                         <label
                           htmlFor="dnsCacheForceMinTtl"
@@ -654,7 +654,7 @@ const SettingsNetwork = () => {
                 )}
                 <div className="form-row">
                   <label htmlFor="apiRequestTimeout" className="text-label">
-                    <span className="mr-2">
+                    <span className="me-2">
                       {intl.formatMessage(messages.apiRequestTimeout)}
                     </span>
                     <SettingsBadge badgeType="restartRequired" />
@@ -679,7 +679,7 @@ const SettingsNetwork = () => {
                 </div>
                 <div className="form-row">
                   <label htmlFor="proxyEnabled" className="checkbox-label">
-                    <span className="mr-2">
+                    <span className="me-2">
                       {intl.formatMessage(messages.proxyEnabled)}
                     </span>
                     <span className="settings-badge-row">
@@ -703,7 +703,7 @@ const SettingsNetwork = () => {
                 </div>
                 {values.proxyEnabled && (
                   <>
-                    <div className="mr-2 ml-4">
+                    <div className="ms-4 me-2">
                       <div className="form-row">
                         <label
                           htmlFor="proxyHostname"
@@ -860,7 +860,7 @@ const SettingsNetwork = () => {
                 )}
                 <div className="actions">
                   <div className="flex justify-end">
-                    <span className="ml-3 inline-flex rounded-md shadow-sm">
+                    <span className="ms-3 inline-flex rounded-md shadow-sm">
                       <Button
                         buttonType="primary"
                         type="submit"

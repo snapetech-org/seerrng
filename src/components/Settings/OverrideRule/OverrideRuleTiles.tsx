@@ -214,7 +214,7 @@ const OverrideRuleTiles = ({
       {rules.map((rule) => (
         <li
           key={rule.id}
-          className="settings-service-card app-card-inset refreshed-inset-surface text-left"
+          className="settings-service-card app-card-inset refreshed-inset-surface text-start"
         >
           <div className="settings-rule-card-content">
             <h3 className="settings-service-title">

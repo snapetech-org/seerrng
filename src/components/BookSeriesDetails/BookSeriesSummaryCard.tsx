@@ -1,6 +1,7 @@
 import CachedImage from '@app/components/Common/CachedImage';
 import { encodeApiPathSegment } from '@app/utils/apiPath';
 import defineMessages from '@app/utils/defineMessages';
+import { formatLocalizedList } from '@app/utils/numberHelpers';
 import type { BookSeriesDetails } from '@server/models/Book';
 import Link from 'next/link';
 import { useIntl } from 'react-intl';
@@ -81,7 +82,7 @@ const BookSeriesSummaryCard = ({
               {intl.formatMessage(messages.genres)}:
             </dt>
             <dd className="collection-summary-genres-value">
-              {genres.join(', ') || '—'}
+              {formatLocalizedList(genres, intl.locale) || '—'}
             </dd>
             <div className="collection-summary-size">
               <dt className="collection-summary-size-label">

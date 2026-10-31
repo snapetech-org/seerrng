@@ -2388,6 +2388,19 @@ components:
           type: string
           nullable: true
           example: 'en'
+        metadataLocale:
+          type: string
+          nullable: true
+          maxLength: 35
+          description: Locale used for media metadata and search results. Null follows the display language.
+          example: 'fr'
+        formatRegion:
+          type: string
+          nullable: true
+          maxLength: 2
+          pattern: '^[A-Z]{2}$'
+          description: ISO 3166-1 alpha-2 region code used for date, time, number, and unit formatting.
+          example: 'US'
         discoverRegion:
           type: string
           nullable: true

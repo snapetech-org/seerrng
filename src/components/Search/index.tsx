@@ -1,4 +1,5 @@
 import InlineBookSeriesResults from '@app/components/BookSeriesSearch/InlineResults';
+import ApiMessageText from '@app/components/Common/ApiMessageText';
 import BookFormatBadge from '@app/components/Common/BookFormatBadge';
 import Button from '@app/components/Common/Button';
 import CardTextVisibilityToggle from '@app/components/Common/CardTextVisibilityToggle';
@@ -711,8 +712,12 @@ const Search = () => {
     >
       <div>
         <p className="font-medium">
-          {providerErrorMessage ??
-            intl.formatMessage(messages.searchUnavailable)}
+          {
+            <ApiMessageText>
+              {providerErrorMessage ??
+                intl.formatMessage(messages.searchUnavailable)}
+            </ApiMessageText>
+          }
         </p>
         <p className="mt-1 text-sm text-red-100/80">
           {intl.formatMessage(messages.searchUnavailableHint)}

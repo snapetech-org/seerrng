@@ -18,10 +18,14 @@ import { getPositiveQueryParamNumber } from '@app/hooks/useUpdateQueryParams';
 import { Permission, UserType, useUser } from '@app/hooks/useUser';
 import globalMessages from '@app/i18n/globalMessages';
 import ErrorPage from '@app/pages/_error';
+import type { BrowserLocalePreference } from '@app/utils/browserLocale';
+import { getBrowserLocalePreference } from '@app/utils/browserLocale';
 import defineMessages from '@app/utils/defineMessages';
+import { setLocaleHintCookie } from '@app/utils/localeHint';
 import { ArrowDownOnSquareIcon } from '@heroicons/react/24/outline';
 import type { TmdbLanguage } from '@server/api/themoviedb/interfaces';
 import { ApiErrorCode } from '@server/constants/error';
+import { formatRegionCodes } from '@server/constants/formatRegions';
 import { DEFAULT_USER_ENABLED_MEDIA_CATEGORIES } from '@server/constants/mediaCategories';
 import { ServerType } from '@server/constants/server';
 import type { UserSettingsGeneralResponse } from '@server/interfaces/api/userSettingsInterfaces';
@@ -75,6 +79,17 @@ const messages = defineMessages(
     enableOverride: 'Override Global Limit',
     applanguage: 'Display Language',
     languageDefault: 'Default ({language})',
+    languageBrowserDefault: 'Use Browser Language ({language})',
+    metadataLanguage: 'Metadata Language',
+    metadataLanguageDefault: 'Use Display Language',
+    metadataLanguageTip:
+      'Sets the language for titles and search results independently from the interface language.',
+    formatRegion: 'Regional Format',
+    formatRegionDefault: 'Use Display Language',
+    formatRegionTip:
+      'Sets date, time, number, and unit formats independently from the display language.',
+    translationStatusNotice:
+      'This catalog is still under review, so some interface text may appear in English.',
     preferredLanguageAll: 'Preferred Language for All Media',
     preferredLanguageMovie: 'Movie Language Override',
     preferredLanguageTv: 'Series Language Override',
@@ -136,7 +151,9 @@ const messages = defineMessages(
 const UserGeneralSettings = () => {
   const intl = useIntl();
   const { addToast } = useToasts();
-  const { locale, setLocale } = useLocale();
+  const { locale, setLocale, setFormatRegion } = useLocale();
+  const [browserPreference, setBrowserPreference] =
+    useState<BrowserLocalePreference>();
   const [movieQuotaEnabled, setMovieQuotaEnabled] = useState(false);
   const [tvQuotaEnabled, setTvQuotaEnabled] = useState(false);
   const [musicQuotaEnabled, setMusicQuotaEnabled] = useState(false);
@@ -156,6 +173,9 @@ const UserGeneralSettings = () => {
   const { user: currentUser, hasPermission: currentHasPermission } = useUser();
   const { currentSettings } = useSettings();
   const isAdminTarget = hasPermission(Permission.ADMIN);
+  useEffect(() => {
+    setBrowserPreference(getBrowserLocalePreference());
+  }, []);
   const {
     data,
     error,
@@ -164,6 +184,22 @@ const UserGeneralSettings = () => {
     user ? `/api/v1/user/${user?.id}/settings/main` : null
   );
   const { data: languages } = useSWR<TmdbLanguage[]>('/api/v1/languages');
+  const formatRegionOptions = useMemo(
+    () =>
+      formatRegionCodes
+        .map((code) => ({
+          code,
+          name:
+            intl.formatDisplayName(code, {
+              type: 'region',
+              fallback: 'none',
+            }) || code,
+        }))
+        .sort((left, right) =>
+          left.name.localeCompare(right.name, intl.locale)
+        ),
+    [intl]
+  );
   const preferredLanguageOptions = useMemo(
     () =>
       (languages ?? [])
@@ -290,6 +326,8 @@ const UserGeneralSettings = () => {
           displayName: data?.username !== user?.email ? data?.username : '',
           email: data?.email?.includes('@') ? data.email : '',
           locale: data?.locale,
+          metadataLocale: data?.metadataLocale ?? '',
+          formatRegion: data?.formatRegion ?? '',
           preferredLanguageAll: data?.preferredLanguages?.all ?? '',
           preferredLanguageMovie: preferredLanguageFieldValue('movie'),
           preferredLanguageTv: preferredLanguageFieldValue('tv'),
@@ -342,6 +380,8 @@ const UserGeneralSettings = () => {
               username: values.displayName?.trim() || undefined,
               email: values.email || undefined,
               locale: values.locale,
+              metadataLocale: values.metadataLocale || null,
+              formatRegion: values.formatRegion || null,
               preferredLanguages: {
                 all: values.preferredLanguageAll || null,
                 movie:
@@ -426,11 +466,17 @@ const UserGeneralSettings = () => {
                   : undefined,
             });
 
-            if (currentUser?.id === user?.id && setLocale) {
-              setLocale(
-                (values.locale
-                  ? values.locale
-                  : currentSettings.locale) as AvailableLocale
+            if (currentUser?.id === user?.id) {
+              const nextLocale = (values.locale ||
+                browserPreference?.locale ||
+                currentSettings.locale) as AvailableLocale;
+              setLocale?.(nextLocale);
+              setLocaleHintCookie(nextLocale);
+              setFormatRegion?.(
+                values.formatRegion ||
+                  (!values.locale
+                    ? (browserPreference?.formatRegion ?? null)
+                    : null)
               );
             }
 
@@ -582,9 +628,12 @@ const UserGeneralSettings = () => {
                   <div className="form-input-field">
                     <Field as="select" id="locale" name="locale">
                       <option value="" lang={locale}>
-                        {intl.formatMessage(messages.languageDefault, {
+                        {intl.formatMessage(messages.languageBrowserDefault, {
                           language:
-                            availableLanguages[currentSettings.locale].display,
+                            availableLanguages[
+                              (browserPreference?.locale ??
+                                currentSettings.locale) as keyof typeof availableLanguages
+                            ]?.display ?? availableLanguages.en.display,
                         })}
                       </option>
                       {(
@@ -597,11 +646,74 @@ const UserGeneralSettings = () => {
                           value={availableLanguages[key].code}
                           lang={availableLanguages[key].code}
                         >
-                          {availableLanguages[key].display}
+                          {availableLanguages[key].display} ({key})
                         </option>
                       ))}
                     </Field>
                   </div>
+                  {(values.locale ||
+                    browserPreference?.locale ||
+                    currentSettings.locale) !== 'en' && (
+                    <span className="label-tip">
+                      {intl.formatMessage(messages.translationStatusNotice)}
+                    </span>
+                  )}
+                </div>
+              </div>
+              <div className="form-row">
+                <label htmlFor="metadataLocale" className="text-label">
+                  {intl.formatMessage(messages.metadataLanguage)}
+                </label>
+                <div className="form-input-area">
+                  <div className="form-input-field">
+                    <Field
+                      as="select"
+                      id="metadataLocale"
+                      name="metadataLocale"
+                    >
+                      <option value="">
+                        {intl.formatMessage(messages.metadataLanguageDefault)}
+                      </option>
+                      {(
+                        Object.keys(
+                          availableLanguages
+                        ) as (keyof typeof availableLanguages)[]
+                      ).map((key) => (
+                        <option
+                          key={key}
+                          value={availableLanguages[key].code}
+                          lang={availableLanguages[key].code}
+                        >
+                          {availableLanguages[key].display} ({key})
+                        </option>
+                      ))}
+                    </Field>
+                  </div>
+                  <span className="label-tip">
+                    {intl.formatMessage(messages.metadataLanguageTip)}
+                  </span>
+                </div>
+              </div>
+              <div className="form-row">
+                <label htmlFor="formatRegion" className="text-label">
+                  {intl.formatMessage(messages.formatRegion)}
+                </label>
+                <div className="form-input-area">
+                  <div className="form-input-field">
+                    <Field as="select" id="formatRegion" name="formatRegion">
+                      <option value="">
+                        {intl.formatMessage(messages.formatRegionDefault)}
+                      </option>
+                      {formatRegionOptions.map(({ code, name }) => (
+                        <option key={code} value={code}>
+                          {name} ({code})
+                        </option>
+                      ))}
+                    </Field>
+                  </div>
+                  <span className="label-tip">
+                    {intl.formatMessage(messages.formatRegionTip)}
+                  </span>
                 </div>
               </div>
               <div className="form-row">
@@ -746,7 +858,7 @@ const UserGeneralSettings = () => {
                               checked={movieQuotaEnabled}
                               onChange={() => setMovieQuotaEnabled((s) => !s)}
                             />
-                            <span className="ml-2 text-gray-300">
+                            <span className="ms-2 text-gray-300">
                               {intl.formatMessage(messages.enableOverride)}
                             </span>
                           </div>
@@ -789,7 +901,7 @@ const UserGeneralSettings = () => {
                               checked={tvQuotaEnabled}
                               onChange={() => setTvQuotaEnabled((s) => !s)}
                             />
-                            <span className="ml-2 text-gray-300">
+                            <span className="ms-2 text-gray-300">
                               {intl.formatMessage(messages.enableOverride)}
                             </span>
                           </div>
@@ -832,7 +944,7 @@ const UserGeneralSettings = () => {
                               checked={musicQuotaEnabled}
                               onChange={() => setMusicQuotaEnabled((s) => !s)}
                             />
-                            <span className="ml-2 text-gray-300">
+                            <span className="ms-2 text-gray-300">
                               {intl.formatMessage(messages.enableOverride)}
                             </span>
                           </div>
@@ -875,7 +987,7 @@ const UserGeneralSettings = () => {
                               checked={bookQuotaEnabled}
                               onChange={() => setBookQuotaEnabled((s) => !s)}
                             />
-                            <span className="ml-2 text-gray-300">
+                            <span className="ms-2 text-gray-300">
                               {intl.formatMessage(messages.enableOverride)}
                             </span>
                           </div>
@@ -918,7 +1030,7 @@ const UserGeneralSettings = () => {
                               checked={comicQuotaEnabled}
                               onChange={() => setComicQuotaEnabled((s) => !s)}
                             />
-                            <span className="ml-2 text-gray-300">
+                            <span className="ms-2 text-gray-300">
                               {intl.formatMessage(messages.enableOverride)}
                             </span>
                           </div>
@@ -963,7 +1075,7 @@ const UserGeneralSettings = () => {
                                 setMagazineQuotaEnabled((enabled) => !enabled)
                               }
                             />
-                            <span className="ml-2 text-gray-300">
+                            <span className="ms-2 text-gray-300">
                               {intl.formatMessage(messages.enableOverride)}
                             </span>
                           </div>
@@ -1008,7 +1120,7 @@ const UserGeneralSettings = () => {
                                 setSoftwareQuotaEnabled((enabled) => !enabled)
                               }
                             />
-                            <span className="ml-2 text-gray-300">
+                            <span className="ms-2 text-gray-300">
                               {intl.formatMessage(messages.enableOverride)}
                             </span>
                           </div>
@@ -1332,7 +1444,7 @@ const UserGeneralSettings = () => {
                     <span />
                     <button
                       type="button"
-                      className="text-primary-400 hover:text-primary-300 focus-visible:outline-primary-400 text-left text-sm font-medium focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
+                      className="text-primary-400 hover:text-primary-300 focus-visible:outline-primary-400 text-start text-sm font-medium focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
                       onClick={() => {
                         void setFieldValue('enabledMediaCategories', {
                           ...DEFAULT_USER_ENABLED_MEDIA_CATEGORIES,
@@ -1395,7 +1507,7 @@ const UserGeneralSettings = () => {
                         <span />
                         <button
                           type="button"
-                          className="text-primary-400 hover:text-primary-300 focus-visible:outline-primary-400 text-left text-sm font-medium focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
+                          className="text-primary-400 hover:text-primary-300 focus-visible:outline-primary-400 text-start text-sm font-medium focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
                           onClick={() => {
                             void setFieldValue(
                               'showIndexerDetails',
@@ -1427,7 +1539,7 @@ const UserGeneralSettings = () => {
               />
               <div className="actions">
                 <div className="flex justify-end">
-                  <span className="ml-3 inline-flex rounded-md shadow-sm">
+                  <span className="ms-3 inline-flex rounded-md shadow-sm">
                     <Button
                       buttonType="primary"
                       type="submit"

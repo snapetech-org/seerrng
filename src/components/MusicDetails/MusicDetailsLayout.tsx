@@ -13,6 +13,7 @@ import useDetailDisclosurePins from '@app/hooks/useDetailDisclosurePins';
 import usePlaybackCatalog from '@app/hooks/usePlaybackCatalog';
 import { encodeApiPathSegment } from '@app/utils/apiPath';
 import defineMessages from '@app/utils/defineMessages';
+import { formatDurationMinutes } from '@app/utils/numberHelpers';
 import { resolveCanonicalPlaybackSelection } from '@app/utils/playbackSelection';
 import type { MusicDetails, MusicRatingResponse } from '@server/models/Music';
 import Link from 'next/link';
@@ -284,9 +285,7 @@ const MusicDetailsLayout = ({
                     </dt>
                     <dd className="card:col-start-3 card:row-start-3 m-0 truncate">
                       {runtimeMinutes > 0
-                        ? intl.formatMessage(messages.minutes, {
-                            minutes: runtimeMinutes,
-                          })
+                        ? formatDurationMinutes(runtimeMinutes, intl.locale)
                         : unavailable}
                     </dd>
                     <div className="media-detail-rows media-detail-column-divider card:col-span-1 card:col-start-5 card:row-span-3 card:row-start-1 col-span-2 grid min-w-0 grid-cols-[max-content_minmax(0,1fr)] content-start gap-x-3">
@@ -472,7 +471,7 @@ const MusicDetailsLayout = ({
                   {intl.formatMessage(messages.noArtists)}
                 </p>
               ) : (
-                <div className="scrollable-card -mr-3 grid max-h-[252px] grid-cols-3 gap-1.5 overflow-y-auto pr-3">
+                <div className="scrollable-card -me-3 grid max-h-[252px] grid-cols-3 gap-1.5 overflow-y-auto pe-3">
                   {artists.map((artist) => (
                     <Link
                       key={artist.id}
@@ -480,7 +479,7 @@ const MusicDetailsLayout = ({
                       prefetch={false}
                       className="group flex h-20 min-w-0 overflow-hidden rounded-lg border border-gray-700 bg-gray-900/30 transition hover:border-indigo-400 hover:bg-indigo-500/15 focus:ring-2 focus:ring-indigo-400 focus:outline-none"
                     >
-                      <span className="relative h-full w-[54px] flex-shrink-0 overflow-hidden border-r border-gray-700 bg-white">
+                      <span className="relative h-full w-[54px] flex-shrink-0 overflow-hidden border-e border-gray-700 bg-white">
                         <CachedImage
                           type={artist.imageType}
                           src={

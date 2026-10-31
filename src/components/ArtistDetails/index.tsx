@@ -236,7 +236,7 @@ const ArtistDetails = () => {
             />
           </div>
         )}
-        <div className="min-w-0 text-center lg:text-left">
+        <div className="min-w-0 text-center lg:text-start">
           <div className="flex min-w-0 flex-wrap items-center justify-center gap-3 lg:justify-start">
             <MediaTypeBadge mediaType="artist" variant="inline" />
             <h1 className="min-w-0 text-3xl font-bold break-words text-white lg:text-5xl">
@@ -319,7 +319,7 @@ const ArtistDetails = () => {
                 <div className="slider-header">
                   <div className="page-heading">
                     {intl.formatMessage(messages[albumTypeMessages[type]])}
-                    <span className="ml-2 text-sm text-gray-400">
+                    <span className="ms-2 text-sm text-gray-400">
                       ({totalCount})
                     </span>
                   </div>

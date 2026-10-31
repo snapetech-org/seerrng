@@ -205,15 +205,15 @@ const DiscoverSliderEdit = ({
     >
       {hoverPosition === Position.Above && (
         <div
-          className={`absolute -top-3 left-0 w-full border-t-4 border-indigo-500`}
+          className={`absolute start-0 -top-3 w-full border-t-4 border-indigo-500`}
         />
       )}
       {hoverPosition === Position.Below && (
         <div
-          className={`absolute -bottom-2 left-0 w-full border-t-4 border-indigo-500`}
+          className={`absolute start-0 -bottom-2 w-full border-t-4 border-indigo-500`}
         />
       )}
-      <div className="flex w-full flex-col rounded-t-lg border-t border-r border-l border-gray-800 bg-gray-900 p-4 text-gray-400 md:flex-row md:items-center md:space-x-2">
+      <div className="flex w-full flex-col rounded-t-lg border-s border-e border-t border-gray-800 bg-gray-900 p-4 text-gray-400 md:flex-row md:items-center md:space-x-2">
         <div
           className={`${slider.data ? 'mb-4' : 'mb-0'} flex space-x-2 md:mb-0`}
         >
@@ -315,7 +315,7 @@ const DiscoverSliderEdit = ({
               )}
             </>
           )}
-          <div className="absolute top-4 right-14 flex px-2 md:relative md:top-0 md:right-0">
+          <div className="absolute end-14 top-4 flex px-2 md:relative md:end-0 md:top-0">
             <button
               data-testid="discover-slider-move-up"
               aria-label={intl.formatMessage(messages.moveSectionUp)}
@@ -345,7 +345,7 @@ const DiscoverSliderEdit = ({
               <ChevronDownIcon className="h-7 w-7 md:h-6 md:w-6" />
             </button>
           </div>
-          <div className="absolute top-4 right-4 flex-1 text-right md:relative md:top-0 md:right-0">
+          <div className="absolute end-4 top-4 flex-1 text-end md:relative md:end-0 md:top-0">
             <Tooltip content={intl.formatMessage(messages.enable)}>
               <SlideCheckbox
                 onClick={() => {

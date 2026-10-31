@@ -1163,11 +1163,19 @@ describe('User route input validation', () => {
       email: 'admin@seerr.dev',
       locale: 'not-a-locale',
     });
+    const metadataLocaleRes = await agent.post('/user/1/settings/main').send({
+      metadataLocale: 'not-a-locale',
+    });
 
     assert.strictEqual(res.status, 400);
     assert.match(res.body.message, /User settings body must be an object/i);
     assert.strictEqual(localeRes.status, 400);
     assert.match(localeRes.body.message, /locale must be a supported locale/i);
+    assert.strictEqual(metadataLocaleRes.status, 400);
+    assert.match(
+      metadataLocaleRes.body.message,
+      /metadataLocale must be a supported locale/i
+    );
   });
 
   it('rejects malformed notification settings bodies', async () => {
@@ -3516,6 +3524,37 @@ describe('User route input validation', () => {
     assert.strictEqual(saved.username, before.username);
     assert.strictEqual(saved.email, before.email);
     assert.strictEqual(saved.settings?.locale, 'fr');
+  });
+
+  it('persists an independent metadata locale and resets it to the display language', async () => {
+    const userRepository = getRepository(User);
+    const before = await userRepository.findOneByOrFail({ id: 2 });
+    const previousMetadataLocale = before.settings?.metadataLocale;
+    const agent = await loginAs('admin@seerr.dev', 'test1234');
+
+    try {
+      const saved = await agent.post('/user/2/settings/main').send({
+        metadataLocale: 'fr',
+      });
+      assert.strictEqual(saved.status, 200);
+      assert.strictEqual(saved.body.metadataLocale, 'fr');
+
+      const user = await userRepository.findOneByOrFail({ id: 2 });
+      assert.strictEqual(user.settings?.metadataLocale, 'fr');
+
+      const cleared = await agent.post('/user/2/settings/main').send({
+        metadataLocale: null,
+      });
+      assert.strictEqual(cleared.status, 200);
+      assert.strictEqual(cleared.body.metadataLocale, null);
+
+      const clearedUser = await userRepository.findOneByOrFail({ id: 2 });
+      assert.strictEqual(clearedUser.settings?.metadataLocale, null);
+    } finally {
+      await agent.post('/user/2/settings/main').send({
+        metadataLocale: previousMetadataLocale ?? null,
+      });
+    }
   });
 
   it('preserves omitted general settings and clears only explicit values', async () => {

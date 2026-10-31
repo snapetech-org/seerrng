@@ -105,7 +105,7 @@ const SettingsAbout = () => {
                 >
                   <Badge
                     badgeType="warning"
-                    className="ml-2 !cursor-pointer transition hover:bg-yellow-400"
+                    className="ms-2 !cursor-pointer transition hover:bg-yellow-400"
                   >
                     {intl.formatMessage(messages.updateCheckUnavailable)}
                   </Badge>
@@ -123,7 +123,7 @@ const SettingsAbout = () => {
                   >
                     <Badge
                       badgeType="warning"
-                      className="ml-2 !cursor-pointer transition hover:bg-yellow-400"
+                      className="ms-2 !cursor-pointer transition hover:bg-yellow-400"
                     >
                       {intl.formatMessage(messages.outofdate)}
                     </Badge>
@@ -140,7 +140,7 @@ const SettingsAbout = () => {
                   >
                     <Badge
                       badgeType="success"
-                      className="ml-2 !cursor-pointer transition hover:bg-green-400"
+                      className="ms-2 !cursor-pointer transition hover:bg-green-400"
                     >
                       {intl.formatMessage(messages.uptodate)}
                     </Badge>
@@ -159,7 +159,7 @@ const SettingsAbout = () => {
               >
                 <Badge
                   badgeType="primary"
-                  className="ml-2 !cursor-pointer transition hover:bg-yellow-400"
+                  className="ms-2 !cursor-pointer transition hover:bg-yellow-400"
                 >
                   {intl.formatMessage(messages.versionCheckDisabled)}
                 </Badge>

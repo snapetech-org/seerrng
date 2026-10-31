@@ -1,3 +1,4 @@
+import { formatApiMessage } from '@app/utils/apiMessage';
 import defineMessages from '@app/utils/defineMessages';
 import type { RequestStatusMessageKey } from '@server/lib/requestStatus';
 import type { IntlShape, MessageDescriptor } from 'react-intl';
@@ -102,4 +103,4 @@ export const formatRequestStatusMessage = (
 ): string =>
   status.messageKey
     ? intl.formatMessage(messagesByKey[status.messageKey])
-    : (status.message ?? '');
+    : formatApiMessage(intl, status.message ?? '');

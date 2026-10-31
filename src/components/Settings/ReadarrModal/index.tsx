@@ -1,3 +1,4 @@
+import ApiMessageText from '@app/components/Common/ApiMessageText';
 import Button from '@app/components/Common/Button';
 import Modal from '@app/components/Common/Modal';
 import SensitiveInput from '@app/components/Common/SensitiveInput';
@@ -19,6 +20,9 @@ import { useIntl } from 'react-intl';
 import * as Yup from 'yup';
 
 const messages = defineMessages('components.Settings.ReadarrModal', {
+  diagnosticProvider: 'Provider: {provider}.',
+  diagnosticMetadata: 'Metadata: {source}.',
+  diagnosticPendingImport: 'Pending import ID: {id}.',
   createreadarr: 'Add ChaptarrNG Server',
   editreadarr: 'Edit Book Server',
   validationNameRequired: 'You must provide a server name',
@@ -528,20 +532,60 @@ const ReadarrModal = ({
                   {diagnosticResponse && (
                     <p className="description mt-2">
                       {diagnosticResponse.category}:{' '}
-                      {diagnosticResponse.message}
-                      {diagnosticResponse.provider
-                        ? ` Provider: ${diagnosticResponse.provider}.`
-                        : ''}
-                      {diagnosticResponse.metadataSource
-                        ? ` Metadata: ${diagnosticResponse.metadataSource}.`
-                        : ''}
-                      {diagnosticResponse.pendingId
-                        ? ` Pending import ID: ${diagnosticResponse.pendingId}.`
-                        : ''}
+                      {
+                        <ApiMessageText>
+                          {diagnosticResponse.message}
+                        </ApiMessageText>
+                      }
+                      {diagnosticResponse.provider && (
+                        <>
+                          {' '}
+                          {intl.formatMessage(messages.diagnosticProvider, {
+                            provider: (
+                              <bdi dir="auto">
+                                {diagnosticResponse.provider}
+                              </bdi>
+                            ),
+                          })}
+                        </>
+                      )}
+                      {diagnosticResponse.metadataSource && (
+                        <>
+                          {' '}
+                          {intl.formatMessage(messages.diagnosticMetadata, {
+                            source: (
+                              <bdi dir="auto">
+                                {diagnosticResponse.metadataSource}
+                              </bdi>
+                            ),
+                          })}
+                        </>
+                      )}
+                      {diagnosticResponse.pendingId && (
+                        <>
+                          {' '}
+                          {intl.formatMessage(
+                            messages.diagnosticPendingImport,
+                            {
+                              id: (
+                                <bdi dir="auto">
+                                  {diagnosticResponse.pendingId}
+                                </bdi>
+                              ),
+                            }
+                          )}
+                        </>
+                      )}
                       {(diagnosticResponse.providerNotice ??
-                      diagnosticResponse.legacyWarning)
-                        ? ` ${diagnosticResponse.providerNotice ?? diagnosticResponse.legacyWarning}`
-                        : ''}
+                        diagnosticResponse.legacyWarning) && (
+                        <>
+                          {' '}
+                          <ApiMessageText>
+                            {diagnosticResponse.providerNotice ??
+                              diagnosticResponse.legacyWarning}
+                          </ApiMessageText>
+                        </>
+                      )}
                     </p>
                   )}
                 </div>

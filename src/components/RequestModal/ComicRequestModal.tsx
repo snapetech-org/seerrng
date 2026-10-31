@@ -399,7 +399,7 @@ const ComicRequestModal = ({
             comicServices &&
             comicServices.length > 1 && (
               <select
-                className="request-form-control compact-control mr-auto rounded-md border px-2 text-[11px] font-medium"
+                className="request-form-control compact-control me-auto rounded-md border px-2 text-[11px] font-medium"
                 value={selectedServerId ?? ''}
                 onChange={(e) =>
                   setSelectedServerId(

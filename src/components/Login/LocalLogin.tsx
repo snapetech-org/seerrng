@@ -112,7 +112,7 @@ const LocalLogin = ({ revalidate }: LocalLoginProps) => {
                   </div>
                   {touched.email && values.email.match(/\s$/) && (
                     <div className="warning label-tip flex items-center">
-                      <ExclamationTriangleIcon className="mr-1 h-4 w-4" />
+                      <ExclamationTriangleIcon className="me-1 h-4 w-4" />
                       {intl.formatMessage(
                         messages.tipEmailHasTrailingWhitespace
                       )}

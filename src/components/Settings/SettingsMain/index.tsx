@@ -697,7 +697,7 @@ const SettingsMain = () => {
                       htmlFor="partialRequestsEnabled"
                       className="checkbox-label"
                     >
-                      <span className="mr-2">
+                      <span className="me-2">
                         {intl.formatMessage(messages.partialRequestsEnabled)}
                       </span>
                     </label>
@@ -764,7 +764,7 @@ const SettingsMain = () => {
                       htmlFor="enableSpecialEpisodes"
                       className="checkbox-label"
                     >
-                      <span className="mr-2">
+                      <span className="me-2">
                         {intl.formatMessage(messages.enableSpecialEpisodes)}
                       </span>
                     </label>
@@ -1023,7 +1023,7 @@ const SettingsMain = () => {
               </section>
               <div className="actions">
                 <div className="flex justify-end">
-                  <span className="ml-3 inline-flex rounded-md shadow-sm">
+                  <span className="ms-3 inline-flex rounded-md shadow-sm">
                     <Button
                       buttonType="primary"
                       type="submit"

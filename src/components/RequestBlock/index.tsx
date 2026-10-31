@@ -130,11 +130,11 @@ const RequestBlock = ({
       )}
       <div className="px-4 py-3 text-gray-300">
         <div className="flex items-center justify-between">
-          <div className="mr-6 min-w-0 flex-1 flex-col items-center text-sm leading-5">
+          <div className="me-6 min-w-0 flex-1 flex-col items-center text-sm leading-5">
             <div className="white mb-1 flex flex-nowrap">
               <span className="flex w-40 items-center truncate md:w-auto">
                 <Tooltip content={intl.formatMessage(messages.requestedby)}>
-                  <UserIcon className="mr-1.5 h-5 w-5 min-w-0 flex-shrink-0" />
+                  <UserIcon className="me-1.5 h-5 w-5 min-w-0 flex-shrink-0" />
                 </Tooltip>
                 <Link
                   href={
@@ -164,7 +164,7 @@ const RequestBlock = ({
                   <Tooltip
                     content={intl.formatMessage(messages.lastmodifiedby)}
                   >
-                    <EyeIcon className="mr-1.5 h-5 w-5 flex-shrink-0" />
+                    <EyeIcon className="me-1.5 h-5 w-5 flex-shrink-0" />
                   </Tooltip>
                   <Link
                     href={
@@ -190,13 +190,13 @@ const RequestBlock = ({
               </div>
             )}
           </div>
-          <div className="ml-2 flex flex-shrink-0 flex-wrap">
+          <div className="ms-2 flex flex-shrink-0 flex-wrap">
             {request.status === MediaRequestStatus.PENDING && (
               <>
                 <Tooltip content={intl.formatMessage(messages.approve)}>
                   <Button
                     buttonType="success"
-                    className="mr-1"
+                    className="me-1"
                     onClick={() => updateRequest('approve')}
                     disabled={isUpdating}
                   >
@@ -206,7 +206,7 @@ const RequestBlock = ({
                 <Tooltip content={intl.formatMessage(messages.decline)}>
                   <Button
                     buttonType="danger"
-                    className="mr-1"
+                    className="me-1"
                     onClick={() => updateRequest('decline')}
                     disabled={isUpdating}
                   >
@@ -241,9 +241,9 @@ const RequestBlock = ({
         </div>
         <div className="mt-2 sm:flex sm:justify-between">
           <div className="sm:flex">
-            <div className="mr-6 flex items-center text-sm leading-5">
+            <div className="me-6 flex items-center text-sm leading-5">
               {request.type !== 'book' && (
-                <span className="mr-1">
+                <span className="me-1">
                   <MediaTypeBadge
                     mediaType={getMediaTypeBadgeType(request.type) ?? 'movie'}
                     variant="compact"
@@ -251,12 +251,12 @@ const RequestBlock = ({
                 </span>
               )}
               {request.is4k && (
-                <span className="mr-1">
+                <span className="me-1">
                   <Badge badgeType="warning">4K</Badge>
                 </span>
               )}
               {request.type === 'book' && (
-                <span className="mr-1">
+                <span className="me-1">
                   <Tooltip content={intl.formatMessage(messages.bookFormat)}>
                     <BookFormatBadge
                       format={getRequestedBookFormat(request.bookFormat)}
@@ -294,7 +294,7 @@ const RequestBlock = ({
           </div>
           <div className="mt-2 flex items-center text-sm leading-5 sm:mt-0">
             <Tooltip content={intl.formatMessage(messages.requestdate)}>
-              <CalendarIcon className="mr-1.5 h-5 w-5 flex-shrink-0" />
+              <CalendarIcon className="me-1.5 h-5 w-5 flex-shrink-0" />
             </Tooltip>
             <Tooltip
               content={intl.formatDate(request.createdAt, {
@@ -327,7 +327,7 @@ const RequestBlock = ({
               {activeSeasonRequests.map((season) => (
                 <span
                   key={`season-${season.id}`}
-                  className="mr-2 mb-1 inline-block"
+                  className="me-2 mb-1 inline-block"
                 >
                   <Badge>
                     {season.seasonNumber === 0
@@ -387,7 +387,7 @@ const RequestBlock = ({
               )}
               {rootFolder && (
                 <li className="flex justify-between px-1 py-2">
-                  <span className="mr-2 font-bold">
+                  <span className="me-2 font-bold">
                     {intl.formatMessage(messages.rootfolder)}
                   </span>
                   <span>{rootFolder}</span>
@@ -395,7 +395,7 @@ const RequestBlock = ({
               )}
               {languageProfile && (
                 <li className="flex justify-between px-1 py-2">
-                  <span className="mr-2 font-bold">
+                  <span className="me-2 font-bold">
                     {intl.formatMessage(messages.languageprofile)}
                   </span>
                   <span>{languageProfile}</span>

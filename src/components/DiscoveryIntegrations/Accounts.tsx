@@ -281,7 +281,7 @@ export default function DiscoveryAccounts() {
             </form>
           )}
           <Button
-            className="ml-3"
+            className="ms-3"
             disabled={busy}
             onClick={() =>
               void act(async () => {

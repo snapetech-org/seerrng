@@ -111,12 +111,12 @@ const BlocklistBlock = ({
   return (
     <div className="px-4 py-3 text-gray-300">
       <div className="flex items-center justify-between">
-        <div className="mr-6 min-w-0 flex-1 flex-col items-center text-sm leading-5">
+        <div className="me-6 min-w-0 flex-1 flex-col items-center text-sm leading-5">
           <div className="white mb-1 flex flex-nowrap">
             {data.user ? (
               <>
                 <Tooltip content={intl.formatMessage(messages.blocklistedby)}>
-                  <UserIcon className="mr-1.5 h-5 w-5 min-w-0 flex-shrink-0" />
+                  <UserIcon className="me-1.5 h-5 w-5 min-w-0 flex-shrink-0" />
                 </Tooltip>
                 <span className="w-40 truncate md:w-auto">
                   <Link
@@ -142,7 +142,7 @@ const BlocklistBlock = ({
             ) : null}
           </div>
         </div>
-        <div className="ml-2 flex flex-shrink-0 flex-wrap">
+        <div className="ms-2 flex flex-shrink-0 flex-wrap">
           <Tooltip
             content={intl.formatMessage(globalMessages.removefromBlocklist)}
           >
@@ -160,7 +160,7 @@ const BlocklistBlock = ({
       </div>
       <div className="mt-2 sm:flex sm:justify-between">
         <div className="sm:flex">
-          <div className="mr-6 flex items-center text-sm leading-5">
+          <div className="me-6 flex items-center text-sm leading-5">
             <Badge badgeType="danger">
               {intl.formatMessage(globalMessages.blocklisted)}
             </Badge>
@@ -168,7 +168,7 @@ const BlocklistBlock = ({
         </div>
         <div className="mt-2 flex items-center text-sm leading-5 sm:mt-0">
           <Tooltip content={intl.formatMessage(messages.blocklistdate)}>
-            <CalendarIcon className="mr-1.5 h-5 w-5 flex-shrink-0" />
+            <CalendarIcon className="me-1.5 h-5 w-5 flex-shrink-0" />
           </Tooltip>
           <span>
             {intl.formatDate(data.createdAt, {

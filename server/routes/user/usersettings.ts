@@ -6,6 +6,7 @@ import {
 } from '@server/constants/bookHomeSections';
 import { EPISODE_QUEUE_ACCESS_STATUS } from '@server/constants/episodeQueueAccess';
 import { ApiErrorCode } from '@server/constants/error';
+import { isAvailableFormatRegion } from '@server/constants/formatRegions';
 import { MediaType } from '@server/constants/media';
 import {
   MEDIA_CATEGORY_KEYS,
@@ -1090,6 +1091,8 @@ type GeneralStringField =
   | 'username'
   | 'email'
   | 'locale'
+  | 'metadataLocale'
+  | 'formatRegion'
   | 'discoverRegion'
   | 'streamingRegion'
   | 'originalLanguage';
@@ -1251,6 +1254,8 @@ const parseGeneralSettingsBody = (
     ['username', USER_SETTINGS_LIMITS.username],
     ['email', USER_SETTINGS_LIMITS.email],
     ['locale', USER_SETTINGS_LIMITS.locale],
+    ['metadataLocale', USER_SETTINGS_LIMITS.metadataLocale],
+    ['formatRegion', USER_SETTINGS_LIMITS.formatRegion],
     ['discoverRegion', USER_SETTINGS_LIMITS.region],
     ['streamingRegion', USER_SETTINGS_LIMITS.region],
     ['originalLanguage', USER_SETTINGS_LIMITS.language],
@@ -1294,6 +1299,20 @@ const parseGeneralSettingsBody = (
       !isAvailableLocale(parsed.value)
     ) {
       return { error: 'locale must be a supported locale.' };
+    }
+    if (
+      fieldName === 'metadataLocale' &&
+      parsed.value != null &&
+      !isAvailableLocale(parsed.value)
+    ) {
+      return { error: 'metadataLocale must be a supported locale.' };
+    }
+    if (
+      fieldName === 'formatRegion' &&
+      parsed.value != null &&
+      !isAvailableFormatRegion(parsed.value)
+    ) {
+      return { error: 'formatRegion must be a supported region code.' };
     }
 
     value[fieldName] = parsed.value;
@@ -1759,6 +1778,8 @@ userSettingsRoutes.get<{ id: string }, UserSettingsGeneralResponse>(
             email: user.email,
             discordIds: user.settings?.discordIds,
             locale: user.settings?.locale,
+            metadataLocale: user.settings?.metadataLocale,
+            formatRegion: user.settings?.formatRegion,
             discoverRegion: user.settings?.discoverRegion,
             streamingRegion: user.settings?.streamingRegion,
             originalLanguage: user.settings?.originalLanguage,
@@ -1964,6 +1985,8 @@ userSettingsRoutes.post<
           for (const fieldName of [
             'discordIds',
             'locale',
+            'metadataLocale',
+            'formatRegion',
             'discoverRegion',
             'streamingRegion',
             'originalLanguage',
@@ -2009,6 +2032,8 @@ userSettingsRoutes.post<
             username: savedUser.username,
             discordIds: savedUser.settings?.discordIds ?? [],
             locale: savedUser.settings?.locale,
+            metadataLocale: savedUser.settings?.metadataLocale,
+            formatRegion: savedUser.settings?.formatRegion,
             discoverRegion: savedUser.settings?.discoverRegion,
             streamingRegion: savedUser.settings?.streamingRegion,
             originalLanguage: savedUser.settings?.originalLanguage,

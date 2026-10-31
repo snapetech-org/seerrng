@@ -4,6 +4,16 @@ import { createRequire } from 'node:module';
 import path from 'node:path';
 import test from 'node:test';
 import { fileURLToPath } from 'node:url';
+import {
+  classifyCatalogEntry,
+  getFallbackEntry,
+  getLocalizedEquivalentEntry,
+  hasUnreviewedTranslations,
+  isSafeSourceRelativePath,
+  isValidProvenanceEntry,
+  matchesProvenanceFingerprints,
+  matchesSourceCallsiteLine,
+} from './check-i18n-catalogs-lib.mjs';
 
 const require = createRequire(import.meta.url);
 const { getLocaleDifferences } = require('./check-i18n-lib.js');
@@ -222,6 +232,193 @@ test('reports stale English message overrides with both values', () => {
         extracted: 'Report an Issue',
       },
     ]
+  );
+});
+
+test('fallback authorization is scoped to both catalog domain and message id', () => {
+  const fallbacks = new Map([
+    ['client:shared.message', { domain: 'client', id: 'shared.message' }],
+  ]);
+
+  assert.ok(getFallbackEntry(fallbacks, 'client', 'shared.message'));
+  assert.equal(
+    getFallbackEntry(fallbacks, 'server', 'shared.message'),
+    undefined
+  );
+});
+
+test('parent translations and approved English fallbacks satisfy coverage', () => {
+  assert.deepEqual(
+    classifyCatalogEntry({
+      hasValue: false,
+      sourceValue: 'Search',
+      hasParentTranslation: true,
+    }),
+    { kind: 'inherited', coverageGap: false }
+  );
+  assert.deepEqual(
+    classifyCatalogEntry({
+      hasValue: false,
+      sourceValue: 'Search',
+      hasFallback: true,
+    }),
+    { kind: 'intentionallyEnglish', coverageGap: false }
+  );
+});
+
+test('same-spelling target-language equivalents are covered without being fallbacks', () => {
+  const equivalents = new Map([
+    [
+      'client:fr:common.page',
+      { domain: 'client', locale: 'fr', id: 'common.page' },
+    ],
+  ]);
+  assert.ok(
+    getLocalizedEquivalentEntry(equivalents, 'client', 'fr', 'common.page')
+  );
+  assert.equal(
+    getLocalizedEquivalentEntry(equivalents, 'client', 'de', 'common.page'),
+    undefined
+  );
+  assert.equal(
+    getLocalizedEquivalentEntry(equivalents, 'server', 'fr', 'common.page'),
+    undefined
+  );
+
+  assert.deepEqual(
+    classifyCatalogEntry({
+      hasValue: true,
+      value: 'Page',
+      sourceValue: 'Page',
+      hasLocalizedEquivalent: true,
+      reviewStatus: 'draft',
+    }),
+    {
+      kind: 'localizedEquivalent',
+      reviewStatus: 'draft',
+      coverageGap: false,
+    }
+  );
+});
+
+test('locale-equivalence evidence must still match its recorded source line and message', () => {
+  const sourceText = [
+    "const messages = defineMessages('pages', {",
+    "  page: 'Page {page}',",
+    "  label: 'Search',",
+    '});',
+  ].join('\n');
+
+  assert.equal(
+    matchesSourceCallsiteLine({
+      sourceText,
+      line: 2,
+      defaultMessage: "'Page {page}'",
+    }),
+    true
+  );
+  assert.equal(
+    matchesSourceCallsiteLine({
+      sourceText,
+      line: 3,
+      defaultMessage: "'Page {page}'",
+    }),
+    false,
+    'a stale line cannot borrow a nearby declaration'
+  );
+  assert.equal(
+    matchesSourceCallsiteLine({
+      sourceText,
+      line: 2,
+      defaultMessage: "'Page {number}'",
+    }),
+    false,
+    'a stale message literal cannot pass the callsite check'
+  );
+});
+
+test('locale-equivalence source paths stay inside the repository source roots', () => {
+  assert.equal(
+    isSafeSourceRelativePath('src/components/Details/index.tsx', 'src'),
+    true
+  );
+  assert.equal(isSafeSourceRelativePath('src/../../outside.tsx', 'src'), false);
+  assert.equal(isSafeSourceRelativePath('/tmp/escape.tsx', 'src'), false);
+  assert.equal(isSafeSourceRelativePath('src\\\\outside.tsx', 'src'), false);
+});
+
+test('unlisted English and empty values remain explicit coverage gaps', () => {
+  assert.equal(
+    classifyCatalogEntry({
+      hasValue: true,
+      value: 'Search',
+      sourceValue: 'Search',
+    }).coverageGap,
+    true
+  );
+  assert.equal(
+    classifyCatalogEntry({
+      hasValue: true,
+      value: '   ',
+      sourceValue: 'Search',
+      hasFallback: true,
+    }).kind,
+    'empty'
+  );
+  assert.equal(
+    classifyCatalogEntry({
+      hasValue: true,
+      value: 'Plex',
+      sourceValue: 'Plex',
+      reviewStatus: 'reviewed',
+    }).coverageGap,
+    false
+  );
+});
+
+test('draft translations still require human review', () => {
+  const state = classifyCatalogEntry({
+    hasValue: true,
+    value: 'Rechercher',
+    sourceValue: 'Search',
+    reviewStatus: 'draft',
+  });
+
+  assert.equal(state.reviewStatus, 'draft');
+  assert.equal(hasUnreviewedTranslations({ unreviewed: 0, draft: 1 }), true);
+  assert.equal(hasUnreviewedTranslations({ unreviewed: 0, draft: 0 }), false);
+});
+
+test('catalog review provenance must match a source and target fingerprint', () => {
+  const valid = {
+    domain: 'client',
+    locale: 'fr',
+    id: 'common.search',
+    sourceHash: 'a'.repeat(64),
+    targetHash: 'b'.repeat(64),
+    status: 'reviewed',
+    provenance: 'human-review',
+    reviewer: 'reviewer@example.test',
+    reviewedAt: '2026-10-29',
+  };
+
+  assert.equal(isValidProvenanceEntry(valid), true);
+  assert.equal(
+    isValidProvenanceEntry({ ...valid, targetHash: 'changed' }),
+    false
+  );
+  assert.equal(isValidProvenanceEntry({ ...valid, reviewer: '  ' }), false);
+  assert.equal(
+    isValidProvenanceEntry({ ...valid, reviewedAt: '2026-02-30' }),
+    false
+  );
+  assert.equal(
+    matchesProvenanceFingerprints(valid, 'a'.repeat(64), 'b'.repeat(64)),
+    true
+  );
+  assert.equal(
+    matchesProvenanceFingerprints(valid, 'c'.repeat(64), 'b'.repeat(64)),
+    false
   );
 });
 

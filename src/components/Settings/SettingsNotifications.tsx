@@ -35,7 +35,7 @@ const SettingsNotifications = ({ children }: SettingsNotificationsProps) => {
       text: intl.formatMessage(messages.email),
       content: (
         <span className="flex items-center">
-          <EnvelopeIcon className="mr-2 h-4" />
+          <EnvelopeIcon className="me-2 h-4" />
           {intl.formatMessage(messages.email)}
         </span>
       ),
@@ -46,7 +46,7 @@ const SettingsNotifications = ({ children }: SettingsNotificationsProps) => {
       text: intl.formatMessage(messages.webpush),
       content: (
         <span className="flex items-center">
-          <CloudIcon className="mr-2 h-4" />
+          <CloudIcon className="me-2 h-4" />
           {intl.formatMessage(messages.webpush)}
         </span>
       ),
@@ -63,7 +63,7 @@ const SettingsNotifications = ({ children }: SettingsNotificationsProps) => {
       text: 'Discord',
       content: (
         <span className="flex items-center">
-          <DiscordLogo className="mr-2 h-4" />
+          <DiscordLogo className="me-2 h-4" />
           Discord
         </span>
       ),
@@ -74,7 +74,7 @@ const SettingsNotifications = ({ children }: SettingsNotificationsProps) => {
       text: 'Gotify',
       content: (
         <span className="flex items-center">
-          <GotifyLogo className="mr-2 h-4" />
+          <GotifyLogo className="me-2 h-4" />
           Gotify
         </span>
       ),
@@ -85,7 +85,7 @@ const SettingsNotifications = ({ children }: SettingsNotificationsProps) => {
       text: 'ntfy.sh',
       content: (
         <span className="flex items-center">
-          <NtfyLogo className="mr-2 h-4" />
+          <NtfyLogo className="me-2 h-4" />
           ntfy.sh
         </span>
       ),
@@ -96,7 +96,7 @@ const SettingsNotifications = ({ children }: SettingsNotificationsProps) => {
       text: 'Pushbullet',
       content: (
         <span className="flex items-center">
-          <PushbulletLogo className="mr-2 h-4" />
+          <PushbulletLogo className="me-2 h-4" />
           Pushbullet
         </span>
       ),
@@ -107,7 +107,7 @@ const SettingsNotifications = ({ children }: SettingsNotificationsProps) => {
       text: 'Pushover',
       content: (
         <span className="flex items-center">
-          <PushoverLogo className="mr-2 h-4" />
+          <PushoverLogo className="me-2 h-4" />
           Pushover
         </span>
       ),
@@ -118,7 +118,7 @@ const SettingsNotifications = ({ children }: SettingsNotificationsProps) => {
       text: 'Slack',
       content: (
         <span className="flex items-center">
-          <SlackLogo className="mr-2 h-4" />
+          <SlackLogo className="me-2 h-4" />
           Slack
         </span>
       ),
@@ -129,7 +129,7 @@ const SettingsNotifications = ({ children }: SettingsNotificationsProps) => {
       text: 'Telegram',
       content: (
         <span className="flex items-center">
-          <TelegramLogo className="mr-2 h-4" />
+          <TelegramLogo className="me-2 h-4" />
           Telegram
         </span>
       ),
@@ -140,7 +140,7 @@ const SettingsNotifications = ({ children }: SettingsNotificationsProps) => {
       text: intl.formatMessage(messages.webhook),
       content: (
         <span className="flex items-center">
-          <BoltIcon className="mr-2 h-4" />
+          <BoltIcon className="me-2 h-4" />
           {intl.formatMessage(messages.webhook)}
         </span>
       ),

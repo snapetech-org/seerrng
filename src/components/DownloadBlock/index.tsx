@@ -74,7 +74,7 @@ const DownloadBlock = ({
           <BookFormatBadge
             format={bookFormat}
             variant="compact"
-            className="mr-2 shrink-0"
+            className="me-2 shrink-0"
           />
         )}
         <span className="w-56 min-w-0 truncate sm:w-80 md:w-full">
@@ -112,7 +112,7 @@ const DownloadBlock = ({
       <div className="flex items-center justify-between text-xs">
         <span>
           {is4k && (
-            <Badge badgeType="warning" className="mr-2">
+            <Badge badgeType="warning" className="me-2">
               4K
             </Badge>
           )}
@@ -140,7 +140,7 @@ const DownloadBlock = ({
                   : live.state === 'stalled'
                     ? intl.formatMessage(messages.liveStalled)
                     : intl.formatMessage(messages.liveRate, {
-                        rate: formatBytes(live.downloadRate, 1),
+                        rate: formatBytes(live.downloadRate, 1, intl.locale),
                       })}
                 {live.seeds !== null &&
                   ` · ${intl.formatMessage(messages.liveSeeds, {

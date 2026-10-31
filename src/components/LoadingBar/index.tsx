@@ -11,7 +11,7 @@ interface BarProps {
 const Bar = ({ progress, isFinished }: BarProps) => {
   return (
     <div
-      className={`fixed top-0 left-0 z-50 w-full transition-opacity duration-400 ease-out ${
+      className={`fixed start-0 top-0 z-50 w-full transition-opacity duration-400 ease-out ${
         isFinished ? 'opacity-0' : 'opacity-100'
       }`}
     >

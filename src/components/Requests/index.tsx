@@ -1,3 +1,5 @@
+import ApiMessageText from '@app/components/Common/ApiMessageText';
+import BidiText from '@app/components/Common/BidiText';
 import BookFormatBadge, {
   getBookFormatMessage,
   getRequestedBookFormat,
@@ -31,6 +33,7 @@ import useRequestStatusScrollRestoration from '@app/hooks/useRequestStatusScroll
 import { useSearchActivityReporter } from '@app/hooks/useSearchActivity';
 import useToasts from '@app/hooks/useToasts';
 import { Permission, useUser } from '@app/hooks/useUser';
+import { formatApiMessage } from '@app/utils/apiMessage';
 import {
   encodeApiPathSegment,
   normalizeMusicBrainzId,
@@ -39,6 +42,10 @@ import {
 import { sortCrewPriority } from '@app/utils/creditHelpers';
 import defineMessages from '@app/utils/defineMessages';
 import { getTmdbPosterImageUrl } from '@app/utils/imageCache';
+import {
+  formatDurationMinutes,
+  formatBytes as formatLocalizedBytes,
+} from '@app/utils/numberHelpers';
 import { Transition } from '@headlessui/react';
 import {
   ArrowDownTrayIcon,
@@ -850,16 +857,14 @@ const getRuntime = (
   if (item.request.type === 'movie') {
     const minutes = (details as MovieDetails).runtime;
     return minutes && Number.isFinite(minutes)
-      ? intl.formatMessage(messages.minutes, { count: minutes })
+      ? formatDurationMinutes(minutes, intl.locale)
       : notAvailable;
   }
   if (item.request.type === 'tv') {
     const minutes = (details as TvDetails).episodeRunTime.find(
       (runtime) => runtime > 0 && Number.isFinite(runtime)
     );
-    return minutes
-      ? intl.formatMessage(messages.minutes, { count: minutes })
-      : notAvailable;
+    return minutes ? formatDurationMinutes(minutes, intl.locale) : notAvailable;
   }
   if (item.request.type === 'music') {
     const milliseconds = (details as MusicDetails).tracks.reduce(
@@ -867,9 +872,7 @@ const getRuntime = (
       0
     );
     return milliseconds > 0
-      ? intl.formatMessage(messages.minutes, {
-          count: Math.round(milliseconds / 60000),
-        })
+      ? formatDurationMinutes(Math.round(milliseconds / 60000), intl.locale)
       : notAvailable;
   }
 
@@ -1187,15 +1190,8 @@ const formatBytes = (
   if (value === null || !Number.isFinite(value) || value < 0) {
     return intl.formatMessage(messages.notAvailable);
   }
-  if (value < 1024) return `${Math.round(value)} B`;
-  const units = ['KB', 'MB', 'GB', 'TB'];
-  let size = value;
-  let unit = -1;
-  do {
-    size /= 1024;
-    unit += 1;
-  } while (size >= 1024 && unit < units.length - 1);
-  return `${size.toFixed(size >= 10 ? 0 : 1)} ${units[unit]}`;
+
+  return formatLocalizedBytes(value, value < 1024 ? 0 : 1, intl.locale);
 };
 
 const getStageLabel = (intl: ReturnType<typeof useIntl>, stage: StatusStage) =>
@@ -1730,11 +1726,11 @@ const RequestStatusCard = ({
                 href={detailHref}
                 className="detail-summary-title app-detail-title-link"
               >
-                {displayTitle}
+                <BidiText>{displayTitle}</BidiText>
               </Link>
             ) : (
               <h3 className="detail-summary-title app-detail-title">
-                {displayTitle}
+                <BidiText>{displayTitle}</BidiText>
               </h3>
             )}
 
@@ -2055,10 +2051,10 @@ const RequestStatusCard = ({
         ) : null}
 
         <div className="app-action-row request-status-action-row">
-          <Tooltip content={currentMessage}>
+          <Tooltip content={<ApiMessageText>{currentMessage}</ApiMessageText>}>
             <span
               className={`request-status-control ${requestStatusTone[currentStage] ?? requestStatusTone.cancelled}`}
-              aria-label={`${getStageLabel(intl, currentStage)}: ${currentMessage}`}
+              aria-label={`${getStageLabel(intl, currentStage)}: ${formatApiMessage(intl, currentMessage)}`}
               tabIndex={0}
             >
               <StageIcon className="request-status-control-icon" aria-hidden />

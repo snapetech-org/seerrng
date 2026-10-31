@@ -1,4 +1,5 @@
 import Alert from '@app/components/Common/Alert';
+import ApiMessageText from '@app/components/Common/ApiMessageText';
 import Button from '@app/components/Common/Button';
 import Header from '@app/components/Common/Header';
 import PageTitle from '@app/components/Common/PageTitle';
@@ -157,7 +158,11 @@ const DiscoverAdult = () => {
       </div>
       {discover.error && (
         <Alert
-          title={providerMessage ?? intl.formatMessage(messages.unavailable)}
+          title={
+            <ApiMessageText>
+              {providerMessage ?? intl.formatMessage(messages.unavailable)}
+            </ApiMessageText>
+          }
           type="warning"
         >
           <Button

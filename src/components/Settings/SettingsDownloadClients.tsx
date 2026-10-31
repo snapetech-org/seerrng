@@ -9,6 +9,7 @@ import {
   type SetupDownloadProfile,
 } from '@app/components/Setup/setupDownloadClients';
 import useToasts from '@app/hooks/useToasts';
+import { formatApiMessage } from '@app/utils/apiMessage';
 import defineMessages from '@app/utils/defineMessages';
 import type {
   DownloadClientSettings,
@@ -597,7 +598,7 @@ const SettingsDownloadClients = ({
               <Alert
                 type="warning"
                 title={intl.formatMessage(messages.lastCheckFailed, {
-                  error: health.error,
+                  error: formatApiMessage(intl, health.error),
                 })}
               />
             )}
@@ -614,7 +615,10 @@ const SettingsDownloadClients = ({
                       })}
                 </Alert>
               ) : (
-                <Alert type="error" title={result.error} />
+                <Alert
+                  type="error"
+                  title={formatApiMessage(intl, result.error)}
+                />
               ))}
             <div className="settings-card-actions">
               <Button
@@ -659,7 +663,9 @@ const SettingsDownloadClients = ({
         )}
         {data && draft && !error && (
           <form onSubmit={(event) => void submit(event)}>
-            {saveError && <Alert type="error" title={saveError} />}
+            {saveError && (
+              <Alert type="error" title={formatApiMessage(intl, saveError)} />
+            )}
             {draft.clients.length === 0 ? (
               <p className="settings-group-description">
                 {intl.formatMessage(messages.noClients)}

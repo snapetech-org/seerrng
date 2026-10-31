@@ -551,7 +551,7 @@ blocklistRoutes.post(
       const tmdb = new TheMovieDb();
       const collection = await tmdb.getCollection({
         collectionId,
-        language: req.locale,
+        language: req.metadataLocale,
       });
 
       const parsedParts = parseBlocklistCollectionParts(collection.parts);
@@ -744,7 +744,7 @@ blocklistRoutes.delete(
       const tmdb = new TheMovieDb();
       const collection = await tmdb.getCollection({
         collectionId,
-        language: req.locale,
+        language: req.metadataLocale,
       });
 
       const parsedParts = parseBlocklistCollectionParts(collection.parts);

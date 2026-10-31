@@ -62,6 +62,11 @@ describe('availability subscription notification intents', () => {
     assert.ok(payload);
     assert.strictEqual(payload.subject, 'Arrival (2016)');
     assert.strictEqual(payload.event, 'Movie Now Available');
+    assert.deepEqual(payload.eventMessage, {
+      kind: 'available',
+      mediaType: 'movie',
+      is4k: false,
+    });
     assert.strictEqual(payload.mediaUrl, '/movie/329865');
     assert.strictEqual(payload.notifyUser?.id, user.id);
     assert.strictEqual(payload.notifyAdmin, false);

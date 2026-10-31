@@ -1,3 +1,4 @@
+import ApiMessageText from '@app/components/Common/ApiMessageText';
 import Badge from '@app/components/Common/Badge';
 import Button from '@app/components/Common/Button';
 import CachedImage from '@app/components/Common/CachedImage';
@@ -654,7 +655,9 @@ const SoftwareRequests = ({
                         </span>
                       </div>
                       {message && status === 'failed' && (
-                        <p className="app-compact-request-warning">{message}</p>
+                        <p className="app-compact-request-warning">
+                          {<ApiMessageText>{message}</ApiMessageText>}
+                        </p>
                       )}
                       {status === 'failed' && request.failureCode && (
                         <p className="app-compact-request-note">
@@ -909,7 +912,11 @@ const SoftwareRequests = ({
                               </time>
                               {event.message && (
                                 <p className="refreshed-detail-text-muted app-compact-request-history-message">
-                                  {event.message}
+                                  {
+                                    <ApiMessageText>
+                                      {event.message}
+                                    </ApiMessageText>
+                                  }
                                 </p>
                               )}
                               {event.failureCode && (

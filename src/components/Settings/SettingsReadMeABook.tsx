@@ -1,3 +1,4 @@
+import ApiMessageText from '@app/components/Common/ApiMessageText';
 import Button from '@app/components/Common/Button';
 import LoadingSpinner from '@app/components/Common/LoadingSpinner';
 import { SavedServiceHostPicker } from '@app/components/Settings/SavedServiceHostPicker';
@@ -251,10 +252,12 @@ const SettingsReadMeABook = () => {
       </form>
       {message && (
         <p className="description" role="status">
-          {message}
+          {<ApiMessageText>{message}</ApiMessageText>}
         </p>
       )}
-      {failure && <p className="error">{failure}</p>}
+      {failure && (
+        <p className="error">{<ApiMessageText>{failure}</ApiMessageText>}</p>
+      )}
       {draft.enabled && (
         <>
           <h4 className="heading">{intl.formatMessage(messages.approvals)}</h4>

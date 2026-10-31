@@ -26,7 +26,7 @@ const LabeledCheckbox = memo(
           <div className="flex h-6 items-center">
             <Field type="checkbox" id={id} name={id} onChange={onChange} />
           </div>
-          <div className="ml-3 text-sm leading-6">
+          <div className="ms-3 text-sm leading-6">
             <label htmlFor={id} className="block" aria-label={label}>
               <div className="flex flex-col">
                 <span className="font-medium text-white">{label}</span>
@@ -37,7 +37,7 @@ const LabeledCheckbox = memo(
         </div>
         {
           /* can hold child checkboxes */
-          children && <div className="mt-4 pl-10">{children}</div>
+          children && <div className="mt-4 ps-10">{children}</div>
         }
       </>
     );

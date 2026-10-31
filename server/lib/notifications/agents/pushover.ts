@@ -28,8 +28,11 @@ import {
   BaseAgent,
   NOTIFICATION_DELIVERY_CONCURRENCY,
   NOTIFICATION_HTTP_OPTIONS,
+  getLocalizedNotificationPayload,
   getNotificationActionLabel,
   getNotificationActionUrl,
+  getNotificationContent,
+  getNotificationExtras,
   truncateNotificationText,
 } from './agent';
 
@@ -182,21 +185,24 @@ class PushoverAgent
     locale?: AvailableLocale
   ): Promise<Partial<PushoverPayload>> {
     const intl = getIntl(locale);
+    payload = getLocalizedNotificationPayload(payload, intl);
+    const content = getNotificationContent(payload, intl);
+    const extras = getNotificationExtras(payload, intl);
     const { applicationUrl, applicationTitle } =
       getExternalRuntimeConfig().main;
     const { embedPoster } = this.getSettings();
     const escape = escapePushoverHtmlText;
 
     const title = truncateNotificationText(
-      payload.event ?? payload.subject,
+      content.event ?? payload.subject,
       PUSHOVER_TITLE_LIMIT
     );
-    let message = payload.event ? `<b>${escape(payload.subject)}</b>` : '';
+    let message = content.event ? `<b>${escape(payload.subject)}</b>` : '';
     let priority = 0;
 
-    if (payload.message && !payload.comment) {
+    if (content.message && !payload.comment) {
       message += `<small>${message ? '\n' : ''}${escape(
-        payload.message
+        content.message
       )}</small>`;
     }
 
@@ -264,7 +270,7 @@ class PushoverAgent
       }
     }
 
-    for (const extra of payload.extra ?? []) {
+    for (const extra of extras) {
       message += `<small>\n<b>${escape(extra.name)}:</b> ${escape(
         extra.value
       )}</small>`;

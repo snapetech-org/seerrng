@@ -24,7 +24,9 @@ import type { NotificationAgent, NotificationPayload } from './agent';
 import {
   BaseAgent,
   NOTIFICATION_HTTP_OPTIONS,
+  getLocalizedNotificationPayload,
   getMediaTypeLabel,
+  getNotificationContent,
   getNotificationMediaUrl,
 } from './agent';
 
@@ -119,6 +121,7 @@ class WebPushAgent
     locale?: AvailableLocale
   ): PushNotificationPayload {
     const intl = getIntl(locale);
+    payload = getLocalizedNotificationPayload(payload, intl);
     const { embedPoster } = this.getSettings();
 
     const mediaType = payload.media
@@ -169,7 +172,7 @@ class WebPushAgent
         break;
       case Notification.SOFTWARE_AVAILABLE:
       case Notification.SOFTWARE_STATUS:
-        message = payload.message;
+        message = getNotificationContent(payload, intl).message;
         break;
       case Notification.MEDIA_DECLINED:
         message = intl.formatMessage(messages.declined, {

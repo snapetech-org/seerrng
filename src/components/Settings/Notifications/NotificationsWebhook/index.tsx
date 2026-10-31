@@ -352,7 +352,7 @@ const NotificationsWebhook = () => {
             </div>
             <div className="form-row">
               <label htmlFor="supportVariables" className="checkbox-label">
-                <span className="mr-2">
+                <span className="me-2">
                   {intl.formatMessage(messages.supportVariables)}
                 </span>
                 <SettingsBadge badgeType="experimental" />
@@ -536,7 +536,7 @@ const NotificationsWebhook = () => {
                       e.preventDefault();
                       resetPayload();
                     }}
-                    className="mr-2"
+                    className="me-2"
                   >
                     <ArrowPathIcon />
                     <span>{intl.formatMessage(messages.resetPayload)}</span>
@@ -579,7 +579,7 @@ const NotificationsWebhook = () => {
             />
             <div className="actions">
               <div className="flex justify-end">
-                <span className="ml-3 inline-flex rounded-md shadow-sm">
+                <span className="ms-3 inline-flex rounded-md shadow-sm">
                   <Button
                     buttonType="warning"
                     disabled={isSubmitting || !isValid || isTesting}
@@ -596,7 +596,7 @@ const NotificationsWebhook = () => {
                     </span>
                   </Button>
                 </span>
-                <span className="ml-3 inline-flex rounded-md shadow-sm">
+                <span className="ms-3 inline-flex rounded-md shadow-sm">
                   <Button
                     buttonType="primary"
                     type="submit"

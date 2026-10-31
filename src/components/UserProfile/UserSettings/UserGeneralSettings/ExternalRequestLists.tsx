@@ -1,3 +1,4 @@
+import ApiMessageText from '@app/components/Common/ApiMessageText';
 import Button from '@app/components/Common/Button';
 import LoadingSpinner from '@app/components/Common/LoadingSpinner';
 import useLocale from '@app/hooks/useLocale';
@@ -274,8 +275,16 @@ const ExternalRequestLists = () => {
         </div>
       </form>
 
-      {message && <p className="description">{message}</p>}
-      {errorMessage && <p className="error">{errorMessage}</p>}
+      {message && (
+        <p className="description">
+          {<ApiMessageText>{message}</ApiMessageText>}
+        </p>
+      )}
+      {errorMessage && (
+        <p className="error">
+          {<ApiMessageText>{errorMessage}</ApiMessageText>}
+        </p>
+      )}
       {error && <p className="error">{intl.formatMessage(messages.error)}</p>}
       {isLoading && <LoadingSpinner />}
       {!isLoading && lists?.length === 0 && (
@@ -314,7 +323,9 @@ const ExternalRequestLists = () => {
                     : intl.formatMessage(messages.syncedNever)}
                 </span>
                 {list.lastSyncError && (
-                  <span className="error">{list.lastSyncError}</span>
+                  <span className="error">
+                    {<ApiMessageText>{list.lastSyncError}</ApiMessageText>}
+                  </span>
                 )}
                 <div className="app-action-row">
                   {(list.provider === 'imdb' ||

@@ -1,5 +1,6 @@
 import { IssueStatus, IssueType } from '@server/constants/issue';
 import { MediaStatus } from '@server/constants/media';
+import { getIntl } from '@server/i18n';
 import {
   normalizeExternalBookId,
   normalizeMusicBrainzId,
@@ -9,6 +10,7 @@ import { getExternalNotificationAgent } from '@server/lib/externalRuntimeConfig'
 import type { NotificationAgentWebhook } from '@server/lib/settings';
 import { NotificationAgentKey } from '@server/lib/settings';
 import logger from '@server/logger';
+import type { AvailableLocale } from '@server/types/languages';
 import {
   createSafeHttpUrl,
   redactSecrets,
@@ -18,7 +20,11 @@ import axios from 'axios';
 import { get } from 'lodash';
 import { Notification, hasNotificationType } from '..';
 import type { NotificationAgent, NotificationPayload } from './agent';
-import { BaseAgent, CONFIGURABLE_NOTIFICATION_HTTP_OPTIONS } from './agent';
+import {
+  BaseAgent,
+  CONFIGURABLE_NOTIFICATION_HTTP_OPTIONS,
+  getLocalizedNotificationPayload,
+} from './agent';
 
 export const MAX_WEBHOOK_PAYLOAD_BYTES = 64 * 1024;
 const MAX_WEBHOOK_PAYLOAD_DEPTH = 32;
@@ -112,6 +118,7 @@ const KeyMap: Record<string, string | KeyMapFunction> = {
   event: 'event',
   subject: 'subject',
   message: 'message',
+  software_request_status: 'softwareRequestStatus',
   image: 'image',
   notifyuser_username: 'notifyUser.displayName',
   notifyuser_email: 'notifyUser.email',
@@ -285,6 +292,8 @@ class WebhookAgent
   }
 
   private buildPayload(type: Notification, payload: NotificationPayload) {
+    const intl = getIntl(this.getSettings().options.locale as AvailableLocale);
+    payload = getLocalizedNotificationPayload(payload, intl);
     const parsedJSON = decodeStoredWebhookPayloadTemplate(
       this.getSettings().options.jsonPayload
     ).template;

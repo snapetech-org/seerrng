@@ -406,11 +406,11 @@ export default function MusicCollectionRequestModal({
                   ) : (
                     <span aria-hidden="true" />
                   )}
-                  <span className="media-inset-poster-column-heading text-left">
+                  <span className="media-inset-poster-column-heading text-start">
                     {intl.formatMessage(messages.album)}
                   </span>
                 </div>
-                <div className="scrollable-card -mr-3 max-h-[228px] space-y-0.5 overflow-y-auto pt-1 pr-3">
+                <div className="scrollable-card -me-3 max-h-[228px] space-y-0.5 overflow-y-auto pe-3 pt-1">
                   {columnParts.map((part) => {
                     const presentation = ready(part) ? 'ready' : 'covered';
                     const selected = isSelectedPart(part.id);
@@ -539,7 +539,7 @@ export default function MusicCollectionRequestModal({
           )}
 
           <div className="flex flex-wrap items-center justify-end gap-2 pt-2">
-            <div className="mr-auto flex items-center gap-2">
+            <div className="me-auto flex items-center gap-2">
               {canUseAdvancedOptions && (
                 <AdvancedOptionsDisclosureButton
                   label={intl.formatMessage(messages.advancedOptions)}

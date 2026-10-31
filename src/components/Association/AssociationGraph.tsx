@@ -245,7 +245,7 @@ const AssociationGraph = ({ graph }: { graph: GraphData }) => {
   return (
     <div className="relative h-[70vh] min-h-[28rem] w-full overflow-hidden rounded-lg border border-gray-700 bg-gray-900">
       <div
-        className="absolute top-3 left-3 z-10 flex max-w-[calc(100%-1.5rem)] flex-wrap gap-2 rounded-lg border border-gray-700 bg-gray-950/90 px-3 py-2 text-xs text-gray-300 shadow-xl"
+        className="absolute start-3 top-3 z-10 flex max-w-[calc(100%-1.5rem)] flex-wrap gap-2 rounded-lg border border-gray-700 bg-gray-950/90 px-3 py-2 text-xs text-gray-300 shadow-xl"
         data-testid="association-graph-legend"
       >
         {Object.entries(EDGE_LABEL).map(([type, label]) => (
@@ -285,7 +285,7 @@ const AssociationGraph = ({ graph }: { graph: GraphData }) => {
         <Controls showInteractive={false} />
       </ReactFlow>
       {selected && !selected.isRoot && (
-        <div className="absolute right-3 bottom-3 left-3 z-10 rounded-lg border border-gray-700 bg-gray-950/95 p-3 text-sm shadow-xl sm:left-auto sm:w-80">
+        <div className="absolute start-3 end-3 bottom-3 z-10 rounded-lg border border-gray-700 bg-gray-950/95 p-3 text-sm shadow-xl sm:start-auto sm:w-80">
           <div className="flex items-start gap-3">
             {selected.image && (
               <div className="relative h-16 w-11 flex-shrink-0 overflow-hidden rounded bg-gray-800">

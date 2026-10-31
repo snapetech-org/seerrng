@@ -23,8 +23,11 @@ import type { NotificationAgent, NotificationPayload } from './agent';
 import {
   BaseAgent,
   CONFIGURABLE_NOTIFICATION_HTTP_OPTIONS,
+  getLocalizedNotificationPayload,
   getNotificationActionLabel,
   getNotificationActionUrl,
+  getNotificationContent,
+  getNotificationExtras,
 } from './agent';
 
 interface EmbedField {
@@ -152,6 +155,9 @@ class SlackAgent
   ): SlackBlockEmbed {
     const settings = this.getSettings();
     const intl = getIntl(settings.options.locale);
+    payload = getLocalizedNotificationPayload(payload, intl);
+    const content = getNotificationContent(payload, intl);
+    const extras = getNotificationExtras(payload, intl);
     const { applicationUrl, applicationTitle } =
       getExternalRuntimeConfig().main;
     const embedPoster = settings.embedPoster;
@@ -222,20 +228,20 @@ class SlackAgent
       );
     }
 
-    for (const extra of payload.extra ?? []) {
+    for (const extra of extras) {
       fields.push(buildSlackField(extra.name, extra.value));
     }
 
     const blocks: EmbedBlock[] = [];
 
-    if (payload.event) {
+    if (content.event) {
       blocks.push({
         type: 'context',
         elements: [
           {
             type: 'mrkdwn',
             text: `*${escapeSlackMrkdwnText(
-              payload.event,
+              content.event,
               SLACK_SECTION_TEXT_LIMIT - 2
             )}*`,
             verbatim: true,
@@ -252,13 +258,13 @@ class SlackAgent
       },
     });
 
-    if (payload.message) {
+    if (content.message) {
       blocks.push({
         type: 'section',
         text: {
           type: 'mrkdwn',
           text: escapeSlackMrkdwnText(
-            payload.message,
+            content.message,
             SLACK_SECTION_TEXT_LIMIT
           ),
           verbatim: true,
@@ -373,7 +379,7 @@ class SlackAgent
 
     return {
       text: escapeSlackMrkdwnText(
-        payload.event ?? payload.subject,
+        content.event ?? payload.subject,
         SLACK_FALLBACK_TEXT_LIMIT
       ),
       blocks,

@@ -23,6 +23,10 @@ import globalMessages from '@app/i18n/globalMessages';
 import { sortCrewPriority } from '@app/utils/creditHelpers';
 import defineMessages from '@app/utils/defineMessages';
 import { getTmdbPosterImageUrl } from '@app/utils/imageCache';
+import {
+  formatDurationMinutes,
+  formatLocalizedList,
+} from '@app/utils/numberHelpers';
 import { ArrowDownTrayIcon, XMarkIcon } from '@heroicons/react/24/outline';
 import { ANIME_KEYWORD_ID } from '@server/api/themoviedb/constants';
 import { MediaRequestStatus, MediaStatus } from '@server/constants/media';
@@ -637,7 +641,7 @@ const MovieRequestModal = ({
                   </dt>
                   <dd className="card:col-start-3 card:row-start-3 m-0 truncate">
                     {data?.runtime
-                      ? `${intl.formatNumber(data.runtime)} minutes`
+                      ? formatDurationMinutes(data.runtime, intl.locale)
                       : notAvailable}
                   </dd>
 
@@ -664,10 +668,10 @@ const MovieRequestModal = ({
                   </dt>
                   <dd className="card:col-span-3 card:col-start-3 card:row-start-4 m-0 line-clamp-2 min-w-0 break-words">
                     {data?.genres?.length
-                      ? data.genres
-                          .slice(0, 3)
-                          .map((genre) => genre.name)
-                          .join(', ')
+                      ? formatLocalizedList(
+                          data.genres.slice(0, 3).map((genre) => genre.name),
+                          intl.locale
+                        )
                       : notAvailable}
                   </dd>
                 </dl>
@@ -786,7 +790,7 @@ const MovieRequestModal = ({
         )}
 
         <div className="flex flex-wrap items-center justify-end gap-2 pt-2">
-          <div className="mr-auto flex items-center gap-2">
+          <div className="me-auto flex items-center gap-2">
             {canUseAdvancedOptions && (
               <AdvancedOptionsDisclosureButton
                 label={intl.formatMessage(messages.advancedOptions)}
