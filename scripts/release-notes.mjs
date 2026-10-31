@@ -331,6 +331,7 @@ export function injectCuratedNotes(changelog, curatedNotes) {
 export function hasExplicitNoReleaseNote(body) {
   return (
     /release-note\s*:\s*none/iu.test(body) ||
+    /release-note-none-codeql-action/iu.test(body) ||
     /-\s*\[x\][^\n]*(?:internal-only|no user-facing release note)/iu.test(body)
   );
 }

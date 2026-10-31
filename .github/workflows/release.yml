@@ -660,6 +660,7 @@ jobs:
     permissions:
       contents: read
       packages: read
+      security-events: write
     env:
       TRIVY_CACHE_DIR: .trivycache
     steps:
@@ -695,10 +696,19 @@ jobs:
         run: |
           trivy image \
             --platform "$PLATFORM" \
+            --format sarif \
+            --output "trivy-release-${{ matrix.suffix }}.sarif" \
             --exit-code 1 \
             --severity HIGH,CRITICAL \
             --ignore-unfixed \
             "${GHCR_IMAGE}@${{ needs.publish.outputs.image_digest }}"
+
+      - name: Upload SARIF to code scanning
+        if: always()
+        uses: github/codeql-action/upload-sarif@9b3254085494b55a0f7c4c2b3d2d52cc712ce370 # v4.39.1
+        with:
+          sarif_file: trivy-release-${{ matrix.suffix }}.sarif
+          category: trivy-release-${{ matrix.suffix }}
 
   sign:
     name: Sign images and create SBOM attestations

@@ -1,0 +1,42 @@
+extensions:
+  # These helpers perform the complete HTTP(S), credential, hostname, DNS,
+  # and private-address checks before a URL can reach an outbound request.
+  - addsTo:
+      pack: codeql/javascript-all
+      extensible: barrierModel
+    data:
+      - ['@server/utils/security', 'Member[createSafeHttpUrl].ReturnValue.Awaited', 'request-forgery']
+      - ['@server/utils/security', 'Member[stringifySafeHttpUrl].ReturnValue', 'request-forgery']
+
+  # Callers only use a URL after the asynchronous validator accepts it.
+  - addsTo:
+      pack: codeql/javascript-all
+      extensible: barrierGuardModel
+    data:
+      - ['@server/utils/security', 'Member[isSafeHttpUrl].Argument[0]', 'true', 'request-forgery']
+
+  # ExternalAPI validates its configured origin and revalidates every request
+  # target before passing it to Axios. Self-hosted integrations intentionally
+  # permit private addresses, but never permit a different origin.
+  - addsTo:
+      pack: codeql/javascript-all
+      extensible: barrierModel
+    data:
+      - ['@server/api/externalapi', 'Member[ExternalAPI].Argument[0]', 'request-forgery']
+
+  # This response is content-type checked, size-bounded, and decoded for its
+  # pixel budget before it is stored under a generated private cache path.
+  - addsTo:
+      pack: codeql/javascript-all
+      extensible: barrierModel
+    data:
+      - ['@server/lib/imageproxy', 'Member[prepareRasterImageForCache].ReturnValue.Awaited', 'http-to-file-access']
+      - ['@server/lib/imageproxy', 'Member[prepareRasterImageForCache].ReturnValue.Awaited.Member[buffer]', 'http-to-file-access']
+
+  # A true result means the supplied API key matched the configured secret
+  # using a length check and constant-time comparison.
+  - addsTo:
+      pack: codeql/javascript-all
+      extensible: barrierGuardModel
+    data:
+      - ['@server/middleware/auth', 'Member[matchesApiKey].Argument[0]', 'true', 'user-controlled-bypass']
