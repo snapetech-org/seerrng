@@ -1296,7 +1296,7 @@
   "components.Franchise.novel": "Light Novel",
   "components.Franchise.open": "Öffnen",
   "components.Franchise.title": "Franchise",
-  "components.Franchise.titled": "{title} Franchise",
+  "components.Franchise.titled": "{title}-Franchise",
   "components.Franchise.tv": "Serie",
   "components.Franchise.verified": "Bestätigt",
   "components.GameContent.adds": "Diese Anfrage fügt {count, plural, one {# Element} other {# Elemente}} hinzu, die du noch nicht besitzt.",

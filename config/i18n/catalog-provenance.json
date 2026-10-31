@@ -16634,9 +16634,10 @@
       "id": "components.Franchise.titled",
       "status": "draft",
       "provenance": "machine-draft",
-      "source": "Qwen 3.8 27B (local), generated 2026-10-30",
+      "source": "Codex contextual correction; generated 2026-10-31; unverified",
       "sourceHash": "70912ea770b5143ab64e4c38b13ac6a36816fb4881dc02325818dd14b4e5ba38",
-      "targetHash": "70912ea770b5143ab64e4c38b13ac6a36816fb4881dc02325818dd14b4e5ba38"
+      "targetHash": "d3f54d3d9ca8a87f866b2fe03c7b014cb972f28789d25d4bde1709a5db057750",
+      "correctionReason": "Contextual machine-draft correction: German compound nouns with a proper-name prefix are joined by a hyphen, so the page heading is localized as `{title}-Franchise` instead of English word order `{title} Franchise`. The dynamic title remains untouched. Source callsite: src/components/Franchise/index.tsx. Native-speaker and RTL review not performed."
     },
     {
       "domain": "client",

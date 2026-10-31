@@ -7,6 +7,7 @@ import { fileURLToPath } from 'node:url';
 import {
   classifyCatalogEntry,
   getFallbackEntry,
+  getLocalizedEquivalentEntry,
   hasUnreviewedTranslations,
   isValidProvenanceEntry,
   matchesProvenanceFingerprints,
@@ -260,6 +261,41 @@ test('parent translations and approved English fallbacks satisfy coverage', () =
       hasFallback: true,
     }),
     { kind: 'intentionallyEnglish', coverageGap: false }
+  );
+});
+
+test('same-spelling target-language equivalents are covered without being fallbacks', () => {
+  const equivalents = new Map([
+    [
+      'client:fr:common.page',
+      { domain: 'client', locale: 'fr', id: 'common.page' },
+    ],
+  ]);
+  assert.ok(
+    getLocalizedEquivalentEntry(equivalents, 'client', 'fr', 'common.page')
+  );
+  assert.equal(
+    getLocalizedEquivalentEntry(equivalents, 'client', 'de', 'common.page'),
+    undefined
+  );
+  assert.equal(
+    getLocalizedEquivalentEntry(equivalents, 'server', 'fr', 'common.page'),
+    undefined
+  );
+
+  assert.deepEqual(
+    classifyCatalogEntry({
+      hasValue: true,
+      value: 'Page',
+      sourceValue: 'Page',
+      hasLocalizedEquivalent: true,
+      reviewStatus: 'draft',
+    }),
+    {
+      kind: 'localizedEquivalent',
+      reviewStatus: 'draft',
+      coverageGap: false,
+    }
   );
 });
 

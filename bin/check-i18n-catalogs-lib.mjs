@@ -3,6 +3,13 @@ const fallbackKey = (domain, id) => `${domain}:${id}`;
 export const getFallbackEntry = (fallbackEntries, domain, id) =>
   fallbackEntries.get(fallbackKey(domain, id));
 
+export const getLocalizedEquivalentEntry = (
+  equivalentEntries,
+  domain,
+  locale,
+  id
+) => equivalentEntries.get(`${domain}:${locale}:${id}`);
+
 export const getProvenanceKey = (domain, locale, id) =>
   `${domain}:${locale}:${id}`;
 
@@ -12,6 +19,7 @@ export const classifyCatalogEntry = ({
   sourceValue,
   hasParentTranslation = false,
   hasFallback = false,
+  hasLocalizedEquivalent = false,
   reviewStatus = 'unreviewed',
 }) => {
   if (!hasValue) {
@@ -32,6 +40,12 @@ export const classifyCatalogEntry = ({
       reviewStatus === 'reviewed' || reviewStatus === 'draft'
         ? reviewStatus
         : 'unreviewed';
+    if (hasLocalizedEquivalent)
+      return {
+        kind: 'localizedEquivalent',
+        reviewStatus: review,
+        coverageGap: false,
+      };
     return {
       kind: 'identicalToEnglish',
       reviewStatus: review,

@@ -8,6 +8,7 @@ import { fileURLToPath } from 'node:url';
 import {
   classifyCatalogEntry,
   getFallbackEntry,
+  getLocalizedEquivalentEntry,
   getProvenanceKey,
   hasUnreviewedTranslations,
   isValidProvenanceEntry,
@@ -37,6 +38,10 @@ if (
 const fallbackPath = path.join(root, 'config/i18n/english-fallbacks.json');
 const fallbackManifest = fs.existsSync(fallbackPath)
   ? JSON.parse(fs.readFileSync(fallbackPath, 'utf8'))
+  : { schemaVersion: 1, entries: [] };
+const equivalentPath = path.join(root, 'config/i18n/locale-equivalents.json');
+const equivalentManifest = fs.existsSync(equivalentPath)
+  ? JSON.parse(fs.readFileSync(equivalentPath, 'utf8'))
   : { schemaVersion: 1, entries: [] };
 const provenancePath = path.join(root, 'config/i18n/catalog-provenance.json');
 const provenanceManifest = fs.existsSync(provenancePath)
@@ -239,6 +244,97 @@ for (const entry of fallbackManifest.entries) {
   fallbackEntries.set(`${entry.domain}:${entry.id}`, entry);
 }
 
+const equivalentEntries = new Map();
+if (
+  equivalentManifest.schemaVersion !== 1 ||
+  !Array.isArray(equivalentManifest.entries)
+) {
+  throw new Error('Invalid config/i18n/locale-equivalents.json schema.');
+}
+const baseLocale = config.locales.find(
+  (locale) => locale.tag === config.baseLocale
+);
+if (!baseLocale) throw new Error('Base locale is missing from the registry.');
+for (const entry of equivalentManifest.entries) {
+  const key =
+    entry &&
+    typeof entry.domain === 'string' &&
+    typeof entry.locale === 'string' &&
+    typeof entry.id === 'string'
+      ? getProvenanceKey(entry.domain, entry.locale, entry.id)
+      : '';
+  const locale = config.locales.find((item) => item.tag === entry?.locale);
+  const callsites = entry?.sourceCallsites;
+  if (
+    !entry ||
+    !['client', 'server'].includes(entry.domain) ||
+    !locale ||
+    entry.locale === config.baseLocale ||
+    typeof entry.id !== 'string' ||
+    entry.classification !== 'localized-equivalent' ||
+    ![
+      'same-spelling-native-equivalent',
+      'accepted-media-term',
+      'localized-placeholder-template',
+    ].includes(entry.equivalenceType) ||
+    typeof entry.source !== 'string' ||
+    typeof entry.target !== 'string' ||
+    typeof entry.sourceHash !== 'string' ||
+    typeof entry.targetHash !== 'string' ||
+    !/^[a-f0-9]{64}$/i.test(entry.sourceHash) ||
+    !/^[a-f0-9]{64}$/i.test(entry.targetHash) ||
+    typeof entry.reason !== 'string' ||
+    !entry.reason.trim() ||
+    typeof entry.expiresOn !== 'string' ||
+    !/^\d{4}-\d{2}-\d{2}$/.test(entry.expiresOn) ||
+    !Array.isArray(callsites) ||
+    callsites.length === 0 ||
+    callsites.some(
+      (callsite) =>
+        !callsite ||
+        typeof callsite.path !== 'string' ||
+        !callsite.path.startsWith(
+          entry.domain === 'client' ? 'src/' : 'server/'
+        ) ||
+        !fs.existsSync(path.join(root, callsite.path)) ||
+        !Number.isInteger(callsite.line) ||
+        callsite.line < 1 ||
+        typeof callsite.defaultMessage !== 'string'
+    ) ||
+    equivalentEntries.has(key)
+  ) {
+    throw new Error('Invalid or duplicate locale-equivalence entry.');
+  }
+  const expiry = new Date(entry.expiresOn + 'T23:59:59Z').getTime();
+  if (!Number.isFinite(expiry) || expiry < Date.now()) {
+    throw new Error('Expired locale-equivalence entry: ' + key);
+  }
+  if (fallbackEntries.has(`${entry.domain}:${entry.id}`)) {
+    throw new Error('Locale equivalence overlaps English fallback: ' + key);
+  }
+  const sourceMessage = readCatalog(entry.domain, baseLocale)[entry.id];
+  const targetMessage = readCatalog(entry.domain, locale)[entry.id];
+  if (
+    typeof sourceMessage !== 'string' ||
+    typeof targetMessage !== 'string' ||
+    sourceMessage !== targetMessage ||
+    entry.source !== sourceMessage ||
+    entry.target !== targetMessage ||
+    entry.sourceHash !== hashSource(sourceMessage) ||
+    entry.targetHash !== hashSource(targetMessage)
+  ) {
+    addProblem(
+      entry.domain,
+      entry.locale,
+      entry.id,
+      'stale-equivalence',
+      'Source or target text changed; re-review this locale-equivalence entry.'
+    );
+    continue;
+  }
+  equivalentEntries.set(key, entry);
+}
+
 for (const domain of ['client', 'server']) {
   const sourceLocale = config.locales.find(
     (locale) => locale.tag === config.baseLocale
@@ -382,6 +478,7 @@ for (const domain of ['client', 'server']) {
       draft: 0,
       unreviewed: 0,
       identicalToEnglish: 0,
+      localizedEquivalent: 0,
       intentionallyEnglish: 0,
       missing: 0,
       empty: 0,
@@ -411,6 +508,12 @@ for (const domain of ['client', 'server']) {
       const hasValue = Object.prototype.hasOwnProperty.call(translated, id);
       const targetMessage = translated[id];
       const fallbackEntry = getFallbackEntry(fallbackEntries, domain, id);
+      const localizedEquivalent = getLocalizedEquivalentEntry(
+        equivalentEntries,
+        domain,
+        locale.tag,
+        id
+      );
       const isSelectableTranslation = locale.tag !== config.baseLocale;
       const parentTranslation =
         isSelectableTranslation && !hasValue
@@ -425,6 +528,8 @@ for (const domain of ['client', 'server']) {
         sourceValue: sourceMessage,
         hasParentTranslation: Boolean(parentTranslation),
         hasFallback: isSelectableTranslation && Boolean(fallbackEntry),
+        hasLocalizedEquivalent:
+          isSelectableTranslation && Boolean(localizedEquivalent),
         reviewStatus: provenance?.status,
       });
 
@@ -451,7 +556,10 @@ for (const domain of ['client', 'server']) {
         ]++;
         continue;
       }
-      if (state.kind === 'empty') {
+      if (state.kind === 'localizedEquivalent') {
+        report.localizedEquivalent++;
+        if (isSelectableTranslation) report[state.reviewStatus]++;
+      } else if (state.kind === 'empty') {
         report.empty++;
         if (isSelectableTranslation) report.coverageGaps++;
         addProblem(
@@ -462,8 +570,7 @@ for (const domain of ['client', 'server']) {
           'Catalog value must be a non-empty string.'
         );
         continue;
-      }
-      if (state.kind === 'identicalToEnglish') {
+      } else if (state.kind === 'identicalToEnglish') {
         report.identicalToEnglish++;
         if (isSelectableTranslation) {
           report[state.reviewStatus]++;
@@ -577,6 +684,7 @@ if (jsonOutput) {
           defaultStatus: provenanceManifest.defaultStatus,
           defaultProvenance: provenanceManifest.defaultProvenance,
           explicitOverrides: provenanceEntries.size,
+          localeEquivalences: equivalentEntries.size,
         },
       },
       null,
@@ -605,6 +713,8 @@ if (jsonOutput) {
         ' inherited, ' +
         report.identicalToEnglish +
         ' English-identical, ' +
+        report.localizedEquivalent +
+        ' same-spelling localized equivalents, ' +
         report.intentionallyEnglish +
         ' approved English fallback, ' +
         report.reviewed +
@@ -656,6 +766,7 @@ const hasStaleMetadata = problems.some(
   (problem) =>
     problem.kind === 'stale-source' ||
     problem.kind === 'stale-fallback' ||
+    problem.kind === 'stale-equivalence' ||
     problem.kind === 'stale-provenance'
 );
 
