@@ -151,8 +151,8 @@ test('the CI image publisher uses the private pool only for trusted main jobs', 
   assert.equal(workflow.jobs['preflight-deploy'], undefined);
   assert.equal(workflow.jobs['deploy-main'], undefined);
   assert.match(publisher.if, /github\.ref == 'refs\/heads\/main'/u);
-  assert.match(publisher.if, /inputs\.action_tag == 'publish-image'/u);
-  assert.match(publisher.if, /inputs\.runner_pool_tag == 'private'/u);
+  assert.match(publisher.if, /inputs\.action == 'publish-image'/u);
+  assert.match(publisher.if, /inputs\.runner_pool == 'private'/u);
   assert.match(publisher['runs-on'], /"group":"ng-shared-main-jit"/u);
   assert.match(publisher['runs-on'], /"ng-shared-main-seerrng"/u);
   assert.match(publisher['runs-on'], /"ng-main-run-\{0\}"/u);
