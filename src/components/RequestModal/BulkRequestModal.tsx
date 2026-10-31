@@ -70,6 +70,10 @@ import { useIntl } from 'react-intl';
 import useSWR, { mutate } from 'swr';
 import BulkRequestItemCard from './BulkRequestItemCard';
 
+const requestModalMessages = defineMessages('components.RequestModal', {
+  advancedOptions: 'Advanced Options',
+});
+
 const messages = defineMessages('components.RequestModal.BulkRequestModal', {
   requestdiscography: 'Request Discography',
   requestitems: 'Request {count} {count, plural, one {Item} other {Items}}',
@@ -1516,7 +1520,9 @@ const BulkRequestModal = ({
                   hasPermission(Permission.MANAGE_REQUESTS)) &&
                   !summary && (
                     <AdvancedOptionsDisclosureButton
-                      label="Advanced Options"
+                      label={intl.formatMessage(
+                        requestModalMessages.advancedOptions
+                      )}
                       open={advancedOptionsOpen}
                       pinned={advancedOptionsPinned}
                       onToggle={toggleAdvancedOptions}
