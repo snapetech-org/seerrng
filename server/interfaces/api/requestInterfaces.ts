@@ -27,6 +27,20 @@ export interface RequestResultsResponse extends PaginatedResponse {
   };
 }
 
+export type RequestTargetOptions = {
+  profileId: number | null;
+  rootFolder: string | null;
+  languageProfileId?: number | null;
+  tags: number[] | null;
+};
+
+export type RequesterSelectedOptions = {
+  profile?: boolean;
+  rootFolder?: boolean;
+  languageProfile?: boolean;
+  tags?: boolean;
+};
+
 export type MediaRequestBody = {
   mediaType: MediaType;
   mediaId: number | string;
@@ -38,10 +52,10 @@ export type MediaRequestBody = {
   is4k?: boolean;
   serverId?: number;
   requestServiceServerId?: number;
-  profileId?: number;
+  profileId?: number | null;
   profileName?: string;
-  rootFolder?: string;
-  languageProfileId?: number;
+  rootFolder?: string | null;
+  languageProfileId?: number | null;
   metadataLanguageId?: number | null;
   sonarrSeasonType?: string | null;
   metadataProfileId?: number;
@@ -54,7 +68,9 @@ export type MediaRequestBody = {
   variantKey?: string;
   authorId?: string;
   userId?: number;
-  tags?: number[];
+  tags?: number[] | null;
+  requestTargetOptions?: RequestTargetOptions;
+  requesterSelectedOptions?: RequesterSelectedOptions;
   ignoreQuota?: boolean;
   requestQuotaApproval?: boolean;
 };
