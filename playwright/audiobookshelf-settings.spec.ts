@@ -54,7 +54,10 @@ test('admins can connect a read-only Audiobookshelf book library', async ({
     .getByRole('button', { name: 'Connect Audiobookshelf library' })
     .click();
 
-  const dialog = page.getByRole('dialog');
+  const dialog = page.getByRole('dialog', {
+    name: 'Add Audiobookshelf library',
+  });
+  await expect(dialog).toBeVisible();
   await expect(dialog.getByText(/read-only audiobook library/i)).toBeVisible();
   await expect(dialog.getByText(/matched by ISBN/i)).toBeVisible();
   await dialog.getByLabel('Connection name').fill('Home audiobooks');
