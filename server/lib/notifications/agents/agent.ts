@@ -313,6 +313,8 @@ export const getMediaTypeLabel = (
   switch (mediaType) {
     case MediaType.MOVIE:
       return intl.formatMessage(globalMessages.movie);
+    case MediaType.TV:
+      return intl.formatMessage(globalMessages.series);
     case MediaType.MUSIC:
       return intl.formatMessage(globalMessages.music);
     case MediaType.BOOK:
@@ -323,10 +325,24 @@ export const getMediaTypeLabel = (
       return intl.formatMessage(globalMessages.magazine);
     case MediaType.ADULT:
       return intl.formatMessage(globalMessages.adult);
+    case MediaType.SPORTS:
+      return intl.formatMessage(globalMessages.sports);
     default:
       return intl.formatMessage(globalMessages.series);
   }
 };
+
+export const getIssueTypeLabel = (
+  intl: IntlInstance,
+  issueType: Issue['issueType']
+): string =>
+  intl.formatMessage(globalMessages.issueTypeLabel, { type: issueType });
+
+export const getIssueTypeName = (
+  intl: IntlInstance,
+  issueType: Issue['issueType']
+): string =>
+  intl.formatMessage(globalMessages.issueTypeNameMessage, { type: issueType });
 
 export const getNotificationMediaUrl = (
   payload: Pick<NotificationPayload, 'media' | 'mediaUrl'>

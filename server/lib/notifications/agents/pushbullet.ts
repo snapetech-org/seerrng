@@ -1,4 +1,4 @@
-import { IssueStatus, IssueTypeName } from '@server/constants/issue';
+import { IssueStatus } from '@server/constants/issue';
 import { MediaStatus } from '@server/constants/media';
 import { getIntl } from '@server/i18n';
 import globalMessages from '@server/i18n/globalMessages';
@@ -22,6 +22,7 @@ import {
   NOTIFICATION_DELIVERY_CONCURRENCY,
   NOTIFICATION_HTTP_OPTIONS,
   getLocalizedNotificationPayload,
+  getIssueTypeLabel,
   getNotificationContent,
   getNotificationExtras,
 } from './agent';
@@ -99,7 +100,7 @@ class PushbulletAgent
       body += `\n\n${intl.formatMessage(globalMessages.commentFrom, { userName: payload.comment.user.displayName })}:\n${payload.comment.message}`;
     } else if (payload.issue) {
       body += `\n\n${intl.formatMessage(globalMessages.reportedBy)}: ${payload.issue.createdBy.displayName}`;
-      body += `\n${intl.formatMessage(globalMessages.issueType)}: ${IssueTypeName[payload.issue.issueType]}`;
+      body += `\n${intl.formatMessage(globalMessages.issueType)}: ${getIssueTypeLabel(intl, payload.issue.issueType)}`;
       body += `\n${intl.formatMessage(globalMessages.issueStatus)}: ${
         payload.issue.status === IssueStatus.OPEN
           ? intl.formatMessage(globalMessages.open)

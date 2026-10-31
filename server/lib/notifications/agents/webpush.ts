@@ -1,4 +1,4 @@
-import { IssueType, IssueTypeName } from '@server/constants/issue';
+import { IssueType } from '@server/constants/issue';
 import { MediaRequestStatus } from '@server/constants/media';
 import { getRepository } from '@server/datasource';
 import MediaRequest from '@server/entity/MediaRequest';
@@ -25,6 +25,7 @@ import {
   BaseAgent,
   NOTIFICATION_HTTP_OPTIONS,
   getLocalizedNotificationPayload,
+  getIssueTypeName,
   getMediaTypeLabel,
   getNotificationContent,
   getNotificationMediaUrl,
@@ -132,9 +133,7 @@ class WebPushAgent
 
     const issueType = payload.issue
       ? payload.issue.issueType !== IssueType.OTHER
-        ? intl.formatMessage(globalMessages.issueTypeName, {
-            type: IssueTypeName[payload.issue.issueType].toLowerCase(),
-          })
+        ? getIssueTypeName(intl, payload.issue.issueType)
         : intl.formatMessage(globalMessages.issue)
       : undefined;
 

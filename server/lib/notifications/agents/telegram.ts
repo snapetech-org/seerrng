@@ -1,4 +1,4 @@
-import { IssueStatus, IssueTypeName } from '@server/constants/issue';
+import { IssueStatus } from '@server/constants/issue';
 import { MediaStatus } from '@server/constants/media';
 import { getIntl } from '@server/i18n';
 import globalMessages from '@server/i18n/globalMessages';
@@ -25,6 +25,7 @@ import {
   NOTIFICATION_DELIVERY_CONCURRENCY,
   NOTIFICATION_HTTP_OPTIONS,
   getLocalizedNotificationPayload,
+  getIssueTypeLabel,
   getNotificationActionLabel,
   getNotificationActionUrl,
   getNotificationContent,
@@ -212,7 +213,7 @@ class TelegramAgent
         `\n\*${escapeTelegramMarkdownText(
           intl.formatMessage(globalMessages.issueType)
         )}:\* `,
-        IssueTypeName[payload.issue.issueType]
+        getIssueTypeLabel(intl, payload.issue.issueType)
       );
       appendEscaped(
         `\n\*${escapeTelegramMarkdownText(

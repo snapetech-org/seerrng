@@ -1,5 +1,4 @@
-import { IssueType, IssueTypeName } from '@server/constants/issue';
-import { MediaType } from '@server/constants/media';
+import { IssueType } from '@server/constants/issue';
 import { defineMessages, getIntl } from '@server/i18n';
 import PreparedEmail from '@server/lib/email';
 import {
@@ -22,6 +21,7 @@ import {
   BaseAgent,
   NOTIFICATION_DELIVERY_CONCURRENCY,
   getLocalizedNotificationPayload,
+  getIssueTypeName,
   getMediaTypeLabel,
   getNotificationActionLabel,
   getNotificationActionUrl,
@@ -36,7 +36,6 @@ const messages = defineMessages('notifications.agents.email', {
   requestedByLabel: 'Requested By',
   viewIssueIn: 'View Issue in {applicationTitle}',
   openApplication: 'Open {applicationTitle}',
-  issueType: '{type} issue',
   issue: 'issue',
   pendingRequest:
     'A new request for the following {mediaType} is pending approval:',
@@ -62,10 +61,10 @@ const messages = defineMessages('notifications.agents.email', {
   declinedRequest: 'Your request for the following {mediaType} was declined:',
   declinedRequest4k:
     'Your request for the following {mediaType} in 4K was declined:',
-  failedRequest:
-    'A request for the following {mediaType} failed to be added to {service}:',
-  failedRequest4k:
-    'A request for the following {mediaType} in 4K failed to be added to {service}:',
+  failedRequestNoService:
+    'A request for the following {mediaType} could not be added:',
+  failedRequest4kNoService:
+    'A request for the following {mediaType} in 4K could not be added:',
   issueCreated:
     'A new {issueType} has been reported by {userName} for the {mediaType} {subject}:',
   issueComment:
@@ -201,14 +200,10 @@ class EmailAgent
           break;
         case Notification.MEDIA_FAILED:
           body = intl.formatMessage(
-            is4k ? messages.failedRequest4k : messages.failedRequest,
-            {
-              mediaType,
-              service:
-                payload.media?.mediaType === MediaType.MOVIE
-                  ? 'Radarr'
-                  : 'Sonarr',
-            }
+            is4k
+              ? messages.failedRequest4kNoService
+              : messages.failedRequestNoService,
+            { mediaType, applicationTitle }
           );
           break;
       }
@@ -300,10 +295,8 @@ class EmailAgent
       };
     } else if (payload.issue) {
       const issueType =
-        payload.issue && payload.issue.issueType !== IssueType.OTHER
-          ? intl.formatMessage(messages.issueType, {
-              type: IssueTypeName[payload.issue.issueType].toLowerCase(),
-            })
+        payload.issue.issueType !== IssueType.OTHER
+          ? getIssueTypeName(intl, payload.issue.issueType)
           : intl.formatMessage(messages.issue);
 
       let body = '';

@@ -1,4 +1,4 @@
-import { IssueStatus, IssueTypeName } from '@server/constants/issue';
+import { IssueStatus } from '@server/constants/issue';
 import { getIntl } from '@server/i18n';
 import globalMessages from '@server/i18n/globalMessages';
 import {
@@ -21,6 +21,7 @@ import {
   BaseAgent,
   CONFIGURABLE_NOTIFICATION_HTTP_OPTIONS,
   getLocalizedNotificationPayload,
+  getIssueTypeLabel,
   getNotificationActionUrl,
   getNotificationContent,
   getNotificationExtras,
@@ -125,7 +126,7 @@ class AppriseAgent
     } else if (payload.issue) {
       lines.push(
         `${intl.formatMessage(globalMessages.reportedBy)}: ${payload.issue.createdBy.displayName}`,
-        `${intl.formatMessage(globalMessages.issueType)}: ${IssueTypeName[payload.issue.issueType]}`,
+        `${intl.formatMessage(globalMessages.issueType)}: ${getIssueTypeLabel(intl, payload.issue.issueType)}`,
         `${intl.formatMessage(globalMessages.issueStatus)}: ${
           payload.issue.status === IssueStatus.OPEN
             ? intl.formatMessage(globalMessages.open)

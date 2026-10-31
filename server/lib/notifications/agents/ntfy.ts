@@ -1,4 +1,4 @@
-import { IssueStatus, IssueTypeName } from '@server/constants/issue';
+import { IssueStatus } from '@server/constants/issue';
 import { getIntl } from '@server/i18n';
 import globalMessages from '@server/i18n/globalMessages';
 import {
@@ -21,6 +21,7 @@ import {
   BaseAgent,
   CONFIGURABLE_NOTIFICATION_HTTP_OPTIONS,
   getLocalizedNotificationPayload,
+  getIssueTypeLabel,
   getNotificationActionUrl,
   getNotificationContent,
   getNotificationExtras,
@@ -109,7 +110,7 @@ class NtfyAgent
       )}:**\n${escapeNtfyMarkdownText(payload.comment.message)}`;
     } else if (payload.issue) {
       message += `\n\n**${intl.formatMessage(globalMessages.reportedBy)}:** ${escapeNtfyMarkdownText(payload.issue.createdBy.displayName)}`;
-      message += `\n**${intl.formatMessage(globalMessages.issueType)}:** ${IssueTypeName[payload.issue.issueType]}`;
+      message += `\n**${intl.formatMessage(globalMessages.issueType)}:** ${getIssueTypeLabel(intl, payload.issue.issueType)}`;
       message += `\n**${intl.formatMessage(globalMessages.issueStatus)}:** ${
         payload.issue.status === IssueStatus.OPEN
           ? intl.formatMessage(globalMessages.open)

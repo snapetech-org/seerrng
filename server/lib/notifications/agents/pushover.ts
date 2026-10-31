@@ -1,4 +1,4 @@
-import { IssueStatus, IssueTypeName } from '@server/constants/issue';
+import { IssueStatus } from '@server/constants/issue';
 import { MediaStatus } from '@server/constants/media';
 import { getIntl } from '@server/i18n';
 import globalMessages from '@server/i18n/globalMessages';
@@ -29,6 +29,7 @@ import {
   NOTIFICATION_DELIVERY_CONCURRENCY,
   NOTIFICATION_HTTP_OPTIONS,
   getLocalizedNotificationPayload,
+  getIssueTypeLabel,
   getNotificationActionLabel,
   getNotificationActionUrl,
   getNotificationContent,
@@ -256,7 +257,7 @@ class PushoverAgent
       )}:</b> ${escape(payload.issue.createdBy.displayName)}</small>`;
       message += `<small>\n<b>${escape(
         intl.formatMessage(globalMessages.issueType)
-      )}:</b> ${escape(IssueTypeName[payload.issue.issueType])}</small>`;
+      )}:</b> ${escape(getIssueTypeLabel(intl, payload.issue.issueType))}</small>`;
       message += `<small>\n<b>${escape(
         intl.formatMessage(globalMessages.issueStatus)
       )}:</b> ${escape(

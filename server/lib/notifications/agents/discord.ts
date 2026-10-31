@@ -1,5 +1,5 @@
 import { EmbedColors } from '@server/constants/discord';
-import { IssueStatus, IssueTypeName } from '@server/constants/issue';
+import { IssueStatus } from '@server/constants/issue';
 import { getIntl } from '@server/i18n';
 import globalMessages from '@server/i18n/globalMessages';
 import {
@@ -28,6 +28,7 @@ import {
   BaseAgent,
   CONFIGURABLE_NOTIFICATION_HTTP_OPTIONS,
   getLocalizedNotificationPayload,
+  getIssueTypeLabel,
   getNotificationActionUrl,
   getNotificationContent,
   getNotificationExtras,
@@ -215,7 +216,7 @@ class DiscordAgent
         },
         {
           name: intl.formatMessage(globalMessages.issueType),
-          value: IssueTypeName[payload.issue.issueType],
+          value: getIssueTypeLabel(intl, payload.issue.issueType),
           inline: true,
         },
         {
