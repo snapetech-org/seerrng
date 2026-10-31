@@ -1482,19 +1482,19 @@ test('release archive platforms route only to private native runners', () => {
     'ng-main-run-123',
     'gha-123-2-build',
   ]);
-  assertRoute('macos-arm64', 'ng-shared-main-jit', [
+  assertRoute('macos-arm64', 'private-apple-builds', [
     'self-hosted',
     'macOS',
     'ARM64',
-    'ng-shared-main-seerrng',
+    'private-apple',
     'ng-main-run-123',
     'gha-123-2-build',
   ]);
-  assertRoute('macos-x64', 'ng-shared-main-jit', [
+  assertRoute('macos-x64', 'private-apple-builds', [
     'self-hosted',
     'macOS',
     'X64',
-    'ng-shared-main-seerrng',
+    'private-apple',
     'ng-main-run-123',
     'gha-123-2-build',
   ]);
