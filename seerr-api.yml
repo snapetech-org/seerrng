@@ -173,6 +173,55 @@ components:
             additionalProperties: true
         usedExternalProvider:
           type: boolean
+    InterfaceThemeManifest:
+      type: object
+      additionalProperties: false
+      required:
+        - formatVersion
+        - themeApiVersion
+        - id
+        - name
+        - description
+        - version
+        - author
+        - license
+        - navigation
+        - activeNavigationIcon
+      properties:
+        formatVersion:
+          type: integer
+          enum: [1]
+        themeApiVersion:
+          type: integer
+          enum: [1]
+        id:
+          type: string
+          minLength: 1
+          maxLength: 48
+        name:
+          type: string
+          minLength: 1
+          maxLength: 64
+        description:
+          type: string
+          minLength: 1
+          maxLength: 180
+        version:
+          type: string
+        author:
+          type: string
+          minLength: 1
+          maxLength: 80
+        license:
+          type: string
+          minLength: 1
+          maxLength: 48
+        navigation:
+          type: string
+          enum: [flat, grouped]
+        activeNavigationIcon:
+          type: string
+          enum: [outline, filled]
     Follow:
       type: object
       properties:
@@ -8360,6 +8409,52 @@ paths:
           description: Authentication is required.
         '429':
           description: The cache warming request rate limit was exceeded.
+  /interface-themes:
+    get:
+      summary: List installed interface themes
+      description: Returns validated built-in and administrator-installed CSS-only interface themes.
+      security: []
+      tags:
+        - public
+      responses:
+        '200':
+          description: Installed themes available to the current application.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - themes
+                properties:
+                  themes:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/InterfaceThemeManifest'
+  /interface-themes/{id}/theme.css:
+    get:
+      summary: Get an installed interface theme stylesheet
+      description: Serves the stylesheet for an installed, validated interface theme from the same origin.
+      security: []
+      tags:
+        - public
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 48
+          description: Stable theme identifier.
+      responses:
+        '200':
+          description: CSS for the requested installed theme.
+          content:
+            text/css:
+              schema:
+                type: string
+        '404':
+          $ref: '#/components/responses/ErrorResponse'
   /status:
     get:
       summary: Get Seerr status
