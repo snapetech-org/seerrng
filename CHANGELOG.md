@@ -75,6 +75,7 @@ that are not called out here.
 - *(ui)* Record release-note disposition - ([f3b04e8](https://github.com/snapetech-org/seerrng/commit/f3b04e8e4826a00284144988e4f8bfe42ad124de))
 - *(ui)* Tighten agent visual checklist - ([723dd92](https://github.com/snapetech-org/seerrng/commit/723dd922ca252a80206795a7ca9a3b607163641f))
 - *(ui)* Require visual contract and rendered acceptance - ([c4917a1](https://github.com/snapetech-org/seerrng/commit/c4917a1716281f63382b1ae6a067671f9cd54c5b))
+- Refresh BookshelfNG backend retirement status (#430) - ([b1d36bf](https://github.com/snapetech-org/seerrng/commit/b1d36bf72c3e3ada0f444163b96feedc09027571))
 - Remove human review gates - ([19b3fa0](https://github.com/snapetech-org/seerrng/commit/19b3fa07e1cd1b0c6cedb14fd74b34897838308d))
 
 ### ⚡ Performance
