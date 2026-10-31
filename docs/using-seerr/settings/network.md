@@ -32,7 +32,9 @@ HTTP(S) proxy in **Settings > Network**. SeerrNG selects the proxy per request,
 so long-lived clients created during startup use it after settings load. This
 includes metadata scans, Cover Art Archive lookups, and Steam library
 synchronization. Configured bypass filters and safe direct-connection rules
-still apply.
+still apply. If proxy initialization or the startup connectivity check fails,
+SeerrNG logs the failure and restores direct routing; resolve that connection
+before relying on the proxy in a network that blocks direct egress.
 
 ## Enable Proxy Support
 

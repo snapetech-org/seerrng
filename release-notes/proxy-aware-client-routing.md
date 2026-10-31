@@ -6,4 +6,4 @@ action: restart
 breaking: false
 ---
 
-The configured outbound HTTP(S) proxy now covers Cover Art Archive and Steam library requests, including clients created before proxy initialization. Existing bypass filters and safe direct-connection rules remain in effect.
+After successful proxy initialization, outbound proxy routing now covers Cover Art Archive and Steam library requests, including clients created before startup. Existing bypass filters, safe direct-connection rules, and initialization-failure behavior remain unchanged.
