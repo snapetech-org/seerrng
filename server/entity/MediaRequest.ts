@@ -147,7 +147,11 @@ export type MediaRequestServiceTarget = {
   externalServiceId?: number | null;
   externalServiceSlug?: string | null;
   status?: MediaStatus | null;
+  requesterTagOnly?: boolean;
 };
+
+const isPositiveSafeServiceId = (value: unknown): value is number =>
+  Number.isSafeInteger(value) && typeof value === 'number' && value > 0;
 
 type MediaRequestOptions = {
   expectedCredentialVersion?: number;
@@ -542,6 +546,28 @@ export class MediaRequest {
       throw new Error('User missing from request context.');
     }
 
+    const requesterTagOnly = requestBody.requesterTagOnly === true;
+    if (requesterTagOnly) {
+      if (
+        (requestBody.mediaType !== MediaType.MOVIE &&
+          requestBody.mediaType !== MediaType.TV) ||
+        options.isAutoRequest
+      ) {
+        throw new RequestPermissionError(
+          'Requester tag-only mode is only available for direct movie or TV requests.'
+        );
+      }
+      if (
+        requestBody.mediaType === MediaType.TV &&
+        (requestBody.seasons !== 'all' ||
+          (requestBody.seasonRequests?.length ?? 0) > 0)
+      ) {
+        throw new RequestPermissionError(
+          'Requester tag-only mode requires a full-series selection.'
+        );
+      }
+    }
+
     const canRequestQuotaApproval =
       options.requestQuotaApproval === true &&
       (requestBody.mediaType === MediaType.MOVIE ||
@@ -589,6 +615,11 @@ export class MediaRequest {
       requestBody.mediaType === MediaType.TV && !options.isAutoRequest
         ? (requestUser.settings?.episodeQueueDefaultEpisodeCount ?? 0)
         : 0;
+    if (requesterTagOnly) {
+      // This action changes only the requester's Servarr tag. The normal TV
+      // watch-ahead selector describes acquisition scope and does not apply.
+      watchAheadEpisodeCount = 0;
+    }
     if (
       !Number.isSafeInteger(watchAheadEpisodeCount) ||
       watchAheadEpisodeCount < 0 ||
@@ -2637,6 +2668,7 @@ export class MediaRequest {
       }
 
       if (
+        !requesterTagOnly &&
         (media.status === MediaStatus.UNKNOWN ||
           media.status === MediaStatus.DELETED) &&
         !requestBody.is4k
@@ -2645,6 +2677,7 @@ export class MediaRequest {
       }
 
       if (
+        !requesterTagOnly &&
         (media.status4k === MediaStatus.UNKNOWN ||
           media.status4k === MediaStatus.DELETED) &&
         requestBody.is4k
@@ -2706,6 +2739,23 @@ export class MediaRequest {
       );
     }
     const selectedServer = requestedServer ?? defaultServer;
+    if (requesterTagOnly) {
+      if (!selectedServer?.tagRequests) {
+        throw new ServiceConfigurationError(
+          'Requester tags are not enabled for the selected service.'
+        );
+      }
+      const serviceType =
+        requestBody.mediaType === MediaType.MOVIE ? 'radarr' : 'sonarr';
+      if (
+        !selectedServer.isDefault &&
+        !canRequestFromService(requestUser, serviceType, selectedServer.id)
+      ) {
+        throw new RequestPermissionError(
+          'You do not have access to the selected requester-tag destination.'
+        );
+      }
+    }
     if (
       (requestBody.mediaType === MediaType.MOVIE ||
         requestBody.mediaType === MediaType.TV) &&
@@ -2741,37 +2791,49 @@ export class MediaRequest {
         ? (selectedServer as SonarrSettings)
         : undefined;
 
-    let rootFolder = useAdvancedOptions
-      ? (requestBody.rootFolder ??
-        requestRootFolder ??
-        selectedServer?.activeDirectory)
-      : (requestRootFolder ?? selectedServer?.activeDirectory);
-    let profileId = useAdvancedOptions
-      ? (requestBody.profileId ?? selectedServer?.activeProfileId)
-      : selectedServer?.activeProfileId;
-    let tags = useAdvancedOptions
-      ? (requestBody.tags ?? selectedServer?.tags)
-      : selectedServer?.tags;
+    let rootFolder = requesterTagOnly
+      ? undefined
+      : useAdvancedOptions
+        ? (requestBody.rootFolder ??
+          requestRootFolder ??
+          selectedServer?.activeDirectory)
+        : (requestRootFolder ?? selectedServer?.activeDirectory);
+    let profileId = requesterTagOnly
+      ? undefined
+      : useAdvancedOptions
+        ? (requestBody.profileId ?? selectedServer?.activeProfileId)
+        : selectedServer?.activeProfileId;
+    let tags = requesterTagOnly
+      ? undefined
+      : useAdvancedOptions
+        ? (requestBody.tags ?? selectedServer?.tags)
+        : selectedServer?.tags;
     let languageProfileId =
-      requestBody.mediaType === MediaType.TV
+      !requesterTagOnly && requestBody.mediaType === MediaType.TV
         ? useAdvancedOptions
           ? (requestBody.languageProfileId ??
             selectedSonarr?.activeLanguageProfileId)
           : selectedSonarr?.activeLanguageProfileId
         : undefined;
     const metadataLanguageId =
-      requestBody.mediaType === MediaType.TV && useAdvancedOptions
+      !requesterTagOnly &&
+      requestBody.mediaType === MediaType.TV &&
+      useAdvancedOptions
         ? requestBody.metadataLanguageId
         : undefined;
     const sonarrSeasonType =
-      requestBody.mediaType === MediaType.TV && useAdvancedOptions
+      !requesterTagOnly &&
+      requestBody.mediaType === MediaType.TV &&
+      useAdvancedOptions
         ? requestBody.sonarrSeasonType
         : undefined;
 
-    const mediaLanguagePreference = getPreferredLanguage(
-      requestUser.settings?.preferredLanguages,
-      requestBody.mediaType === MediaType.MOVIE ? 'movie' : 'tv'
-    );
+    const mediaLanguagePreference = requesterTagOnly
+      ? undefined
+      : getPreferredLanguage(
+          requestUser.settings?.preferredLanguages,
+          requestBody.mediaType === MediaType.MOVIE ? 'movie' : 'tv'
+        );
     if (mediaLanguagePreference) {
       if (
         requestBody.mediaType === MediaType.MOVIE &&
@@ -2841,16 +2903,17 @@ export class MediaRequest {
       }
     }
 
-    const overrideResult = selectedServer
-      ? await evaluateOverrideRules({
-          mediaType: requestBody.mediaType,
-          is4k: Boolean(requestBody.is4k),
-          tmdbMedia,
-          requestUser,
-          tags,
-          serviceId: selectedServer.id,
-        })
-      : undefined;
+    const overrideResult =
+      selectedServer && !requesterTagOnly
+        ? await evaluateOverrideRules({
+            mediaType: requestBody.mediaType,
+            is4k: Boolean(requestBody.is4k),
+            tmdbMedia,
+            requestUser,
+            tags,
+            serviceId: selectedServer.id,
+          })
+        : undefined;
 
     if (overrideResult) {
       const requesterSelectedRootFolder =
@@ -2900,10 +2963,43 @@ export class MediaRequest {
               requestBody.mediaType === MediaType.MOVIE ? 'radarr' : 'sonarr',
             format: requestBody.is4k ? '4k' : 'standard',
             serverId,
-            profileId: profileId ?? null,
-            languageProfileId: languageProfileId ?? null,
-            rootFolder: rootFolder ?? null,
+            profileId: requesterTagOnly ? null : (profileId ?? null),
+            languageProfileId: requesterTagOnly
+              ? null
+              : (languageProfileId ?? null),
+            rootFolder: requesterTagOnly ? null : (rootFolder ?? null),
+            requesterTagOnly: requesterTagOnly || undefined,
           };
+    let requesterTagOnlyServiceStatus: MediaServiceStatus | undefined;
+    if (requesterTagOnly) {
+      if (!selectedDestination || !isPositiveSafeServiceId(media.id)) {
+        throw new ServiceConfigurationError(
+          'A selected, existing service destination is required for a requester tag.'
+        );
+      }
+
+      const serviceType =
+        requestBody.mediaType === MediaType.MOVIE ? 'radarr' : 'sonarr';
+      const format = requestBody.is4k ? '4k' : 'standard';
+      const serviceStatus = await getRepository(MediaServiceStatus).findOne({
+        where: {
+          mediaId: media.id,
+          serviceType,
+          serverId: selectedDestination.serverId!,
+          format,
+        },
+      });
+      if (
+        !serviceStatus ||
+        serviceStatus.status !== MediaStatus.AVAILABLE ||
+        !isPositiveSafeServiceId(serviceStatus.externalServiceId)
+      ) {
+        throw new DuplicateMediaRequestError(
+          'The selected service does not have a confirmed available item for this media.'
+        );
+      }
+      requesterTagOnlyServiceStatus = serviceStatus;
+    }
     const loadDestinationRequests = async (
       requestMedia: Media
     ): Promise<MediaRequest[]> =>
@@ -2932,7 +3028,38 @@ export class MediaRequest {
       );
     }
 
-    if (selectedDestination) {
+    if (requesterTagOnly && selectedDestination) {
+      const hasOwnActiveRequestForService = destinationRequests.some(
+        (request) => {
+          if (
+            request.requestedBy?.id !== requestUser.id ||
+            request.type !== requestBody.mediaType ||
+            request.is4k !== requestBody.is4k ||
+            (request.status !== MediaRequestStatus.PENDING &&
+              request.status !== MediaRequestStatus.APPROVED)
+          ) {
+            return false;
+          }
+
+          const targets = request.serviceTargets ?? [];
+          return targets.length > 0
+            ? targets.some(
+                (target) =>
+                  target.serviceType === selectedDestination.serviceType &&
+                  target.format === selectedDestination.format &&
+                  target.serverId === selectedDestination.serverId
+              )
+            : request.serverId === selectedDestination.serverId;
+        }
+      );
+      if (hasOwnActiveRequestForService) {
+        throw new DuplicateMediaRequestError(
+          'You already have an active request for this media on the selected service.'
+        );
+      }
+    }
+
+    if (selectedDestination && !requesterTagOnly) {
       const hasTrackedAvailability = hasTrackedAvailableDestination(
         destinationRequests,
         selectedDestination
@@ -3001,6 +3128,30 @@ export class MediaRequest {
           'movie',
           requestBody.is4k
         );
+      const requestTarget: MediaRequestServiceTarget | undefined =
+        serverId === undefined
+          ? undefined
+          : requesterTagOnly
+            ? {
+                serviceType: 'radarr',
+                format: requestBody.is4k ? '4k' : 'standard',
+                serverId,
+                externalServiceId:
+                  requesterTagOnlyServiceStatus!.externalServiceId,
+                externalServiceSlug:
+                  requesterTagOnlyServiceStatus!.externalServiceSlug,
+                status: MediaStatus.AVAILABLE,
+                requesterTagOnly: true,
+              }
+            : {
+                serviceType: 'radarr',
+                format: requestBody.is4k ? '4k' : 'standard',
+                serverId,
+                profileId: profileId ?? null,
+                rootFolder: rootFolder ?? null,
+                tags: tags ?? null,
+                status: MediaStatus.PENDING,
+              };
       const request = new MediaRequest({
         type: MediaType.MOVIE,
         media,
@@ -3013,23 +3164,10 @@ export class MediaRequest {
         modifiedBy: autoApproved ? user : undefined,
         is4k: requestBody.is4k,
         serverId,
-        profileId: profileId,
-        rootFolder: rootFolder,
-        tags: tags,
-        serviceTargets:
-          serverId === undefined
-            ? []
-            : [
-                {
-                  serviceType: 'radarr',
-                  format: requestBody.is4k ? '4k' : 'standard',
-                  serverId,
-                  profileId: profileId ?? null,
-                  rootFolder: rootFolder ?? null,
-                  tags: tags ?? null,
-                  status: MediaStatus.PENDING,
-                },
-              ],
+        profileId: requesterTagOnly ? undefined : profileId,
+        rootFolder: requesterTagOnly ? undefined : rootFolder,
+        tags: requesterTagOnly ? undefined : tags,
+        serviceTargets: requestTarget ? [requestTarget] : [],
         isAutoRequest: options.isAutoRequest ?? false,
         ignoreQuota,
         quotaException,
@@ -3068,6 +3206,19 @@ export class MediaRequest {
           (selection) => selection.seasonNumber > 0
         );
       }
+      if (
+        requesterTagOnly &&
+        requestedSeasonSelections.some(
+          (selection) =>
+            requesterTagOnlyServiceStatus?.seasonStatuses?.[
+              selection.seasonNumber
+            ] !== MediaStatus.AVAILABLE
+        )
+      ) {
+        throw new DuplicateMediaRequestError(
+          'Every selected season must be available on the selected Sonarr service before adding a requester tag.'
+        );
+      }
 
       const selectionIsCoveredByRequest = (
         request: MediaRequest,
@@ -3095,19 +3246,20 @@ export class MediaRequest {
           coveredEpisodes.has(episode)
         );
       };
-      const promotablePendingRequest = selectedDestination
-        ? findPromotablePendingRequest(
-            destinationRequests.filter((request) =>
-              requestedSeasonSelections.every((selection) =>
-                selectionIsCoveredByRequest(request, selection)
-              )
-            ),
-            [selectedDestination],
-            user,
-            MediaType.TV,
-            requestBody.is4k
-          )
-        : undefined;
+      const promotablePendingRequest =
+        selectedDestination && !requesterTagOnly
+          ? findPromotablePendingRequest(
+              destinationRequests.filter((request) =>
+                requestedSeasonSelections.every((selection) =>
+                  selectionIsCoveredByRequest(request, selection)
+                )
+              ),
+              [selectedDestination],
+              user,
+              MediaType.TV,
+              requestBody.is4k
+            )
+          : undefined;
       if (promotablePendingRequest) {
         if (isTvSeasonWatchGateEnabledForUser(requestUser)) {
           await enforceTvSeasonWatchGate(
@@ -3192,7 +3344,9 @@ export class MediaRequest {
         });
       };
 
-      let finalSeasonSelections = await getFinalSeasons(media);
+      let finalSeasonSelections = requesterTagOnly
+        ? requestedSeasonSelections
+        : await getFinalSeasons(media);
 
       if (finalSeasonSelections.length === 0) {
         throw new NoSeasonsAvailableError('No seasons available to request');
@@ -3222,7 +3376,22 @@ export class MediaRequest {
         }
       }
 
-      if (!settings.main.partialRequestsEnabled) {
+      if (
+        requesterTagOnly &&
+        requestedSeasonSelections.some(
+          (selection) =>
+            !finalSeasonSelections.some(
+              (finalSelection) =>
+                finalSelection.seasonNumber === selection.seasonNumber
+            )
+        )
+      ) {
+        throw new RequestPermissionError(
+          'All seasons must satisfy your TV watch policy before adding a requester tag.'
+        );
+      }
+
+      if (!settings.main.partialRequestsEnabled && !requesterTagOnly) {
         const hasSingleQueuedEpisode =
           watchAheadEpisodeCount > 0 &&
           finalSeasonSelections.length === 1 &&
@@ -3294,6 +3463,31 @@ export class MediaRequest {
             'tv',
             requestBody.is4k
           );
+        const requestTarget: MediaRequestServiceTarget | undefined =
+          serverId === undefined
+            ? undefined
+            : requesterTagOnly
+              ? {
+                  serviceType: 'sonarr',
+                  format: requestBody.is4k ? '4k' : 'standard',
+                  serverId,
+                  externalServiceId:
+                    requesterTagOnlyServiceStatus!.externalServiceId,
+                  externalServiceSlug:
+                    requesterTagOnlyServiceStatus!.externalServiceSlug,
+                  status: MediaStatus.AVAILABLE,
+                  requesterTagOnly: true,
+                }
+              : {
+                  serviceType: 'sonarr',
+                  format: requestBody.is4k ? '4k' : 'standard',
+                  serverId,
+                  profileId: profileId ?? null,
+                  languageProfileId: languageProfileId ?? null,
+                  rootFolder: rootFolder ?? null,
+                  tags: tags ?? null,
+                  status: MediaStatus.PENDING,
+                };
         const request = new MediaRequest({
           type: MediaType.TV,
           media: requestMedia,
@@ -3306,27 +3500,13 @@ export class MediaRequest {
           watchAheadEpisodeCount,
           watchAheadUsesUserDefault,
           serverId,
-          profileId: profileId,
-          rootFolder: rootFolder,
-          languageProfileId,
-          metadataLanguageId,
-          sonarrSeasonType,
-          tags: tags,
-          serviceTargets:
-            serverId === undefined
-              ? []
-              : [
-                  {
-                    serviceType: 'sonarr',
-                    format: requestBody.is4k ? '4k' : 'standard',
-                    serverId,
-                    profileId: profileId ?? null,
-                    languageProfileId: languageProfileId ?? null,
-                    rootFolder: rootFolder ?? null,
-                    tags: tags ?? null,
-                    status: MediaStatus.PENDING,
-                  },
-                ],
+          profileId: requesterTagOnly ? undefined : profileId,
+          rootFolder: requesterTagOnly ? undefined : rootFolder,
+          languageProfileId: requesterTagOnly ? undefined : languageProfileId,
+          metadataLanguageId: requesterTagOnly ? null : metadataLanguageId,
+          sonarrSeasonType: requesterTagOnly ? null : sonarrSeasonType,
+          tags: requesterTagOnly ? undefined : tags,
+          serviceTargets: requestTarget ? [requestTarget] : [],
           seasons: selections.map(
             (selection) =>
               new SeasonRequest({

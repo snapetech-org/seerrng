@@ -13,6 +13,7 @@ import {
   canPromotePendingDestinationRequests,
   createRequestDestination,
   isRequestDestinationAvailable,
+  isRequestDestinationConfirmedAvailable,
   isRequestDestinationRequested,
   isVideoQualityAvailable,
 } from '@app/components/RequestModal/requestAvailability';
@@ -40,6 +41,13 @@ import useSWR, { mutate } from 'swr';
 
 const messages = defineMessages('components.RequestModal', {
   requestSuccess: '<strong>{title}</strong> requested successfully!',
+  requesterTagRequestSubmitted:
+    'Your tag request for <strong>{title}</strong> was submitted.',
+  addRequesterTag: 'Add Your Tag',
+  requesterTagOnlyNotice:
+    'This adds your personal requester tag to the existing item on the selected service. It will not send another acquisition request.',
+  requesterTagOnlyUnavailable:
+    'The selected service no longer confirms this item as available. Close and refresh before adding your tag.',
   requestCancel: 'Request for <strong>{title}</strong> canceled.',
   requestmovietitle: 'Request Movie',
   requestmovie4ktitle: 'Request Movie in 4K',
@@ -82,6 +90,8 @@ const messages = defineMessages('components.RequestModal', {
 
 interface RequestModalProps extends React.HTMLAttributes<HTMLDivElement> {
   tmdbId: number;
+  initialServerId?: number;
+  requesterTagOnly?: boolean;
   is4k?: boolean;
   editRequest?: NonFunctionProperties<MediaRequest>;
   onCancel?: () => void;
@@ -94,18 +104,33 @@ const MovieRequestModal = ({
   onCancel,
   onComplete,
   tmdbId,
+  initialServerId,
+  requesterTagOnly: requesterTagOnlyIntent = false,
   onUpdating,
   editRequest,
   is4k = false,
   allow4kServerSelection = false,
 }: RequestModalProps) => {
+  const isRequesterTagOnlyRequest = Boolean(
+    editRequest?.serviceTargets?.some((target) => target.requesterTagOnly)
+  );
+  const requesterTagOnlyMode =
+    requesterTagOnlyIntent || isRequesterTagOnlyRequest;
+  const initialRequestServerId =
+    initialServerId ??
+    (isRequesterTagOnlyRequest ? editRequest?.serverId : undefined);
   const [isUpdating, setIsUpdating] = useState(false);
   const [selectedIs4k, setSelectedIs4k] = useState(is4k);
   const [qualityRevision, setQualityRevision] = useState(0);
-  const [requestServiceServerId, setRequestServiceServerId] =
-    useState<number>();
+  const [requestServiceServerId, setRequestServiceServerId] = useState<
+    number | undefined
+  >(initialRequestServerId);
   const [requestOverrides, setRequestOverrides] =
-    useState<RequestOverrides | null>(null);
+    useState<RequestOverrides | null>(() =>
+      initialRequestServerId === undefined
+        ? null
+        : { server: initialRequestServerId }
+    );
   const { addToast } = useToasts();
   const { data, error } = useSWR<MovieDetails>(`/api/v1/movie/${tmdbId}`, {
     revalidateOnMount: true,
@@ -127,14 +152,13 @@ const MovieRequestModal = ({
     !hasPermission(Permission.MANAGE_REQUESTS) &&
     quota?.movie.restricted
   );
-  const { data: radarrServers } = useSWR<ServiceCommonServer[]>(
-    '/api/v1/service/radarr',
-    {
-      refreshInterval: 0,
-      refreshWhenHidden: false,
-      revalidateOnFocus: false,
-    }
-  );
+  const { data: radarrServers, error: radarrServersError } = useSWR<
+    ServiceCommonServer[]
+  >('/api/v1/service/radarr', {
+    refreshInterval: 0,
+    refreshWhenHidden: false,
+    revalidateOnFocus: false,
+  });
   const {
     open: advancedOptionsOpen,
     pinned: advancedOptionsPinned,
@@ -154,7 +178,8 @@ const MovieRequestModal = ({
     editRequest?.status === MediaRequestStatus.FAILED &&
     hasPermission(Permission.MANAGE_REQUESTS);
   const selectedService = radarrServers?.find(
-    (server) => server.id === requestOverrides?.server
+    (server) =>
+      server.id === requestOverrides?.server && server.is4k === effectiveIs4k
   );
   const fallbackService = radarrServers?.find(
     (server) => server.isDefault && server.is4k === effectiveIs4k
@@ -202,13 +227,47 @@ const MovieRequestModal = ({
     (isRequestDestinationAvailable(data?.mediaInfo, selectedDestination) ||
       (!selectedDestination &&
         isVideoQualityAvailable(data?.mediaInfo, 'movie', effectiveIs4k)));
-  const selectedDestinationRequested =
-    !editRequest &&
-    isRequestDestinationRequested(
-      data?.mediaInfo?.requests,
+  const requesterTagOnly =
+    requesterTagOnlyMode &&
+    destinationService?.tagRequests === true &&
+    isRequestDestinationConfirmedAvailable(
+      data?.mediaInfo,
       selectedDestination
     );
+  const requesterTagOnlyUnavailable = requesterTagOnlyMode && !requesterTagOnly;
+  const requesterTagOnlyAvailabilityResolved =
+    (data !== undefined && radarrServers !== undefined) ||
+    Boolean(error || radarrServersError);
+  const requesterTagOnlyUnavailableMessage =
+    requesterTagOnlyUnavailable && requesterTagOnlyAvailabilityResolved;
+  const requesterTagOnlyAlreadyRequested =
+    requesterTagOnly &&
+    (data?.mediaInfo?.requests ?? []).some(
+      (request) =>
+        request.requestedBy?.id === requestDestinationUserId &&
+        (request.status === MediaRequestStatus.PENDING ||
+          request.status === MediaRequestStatus.APPROVED) &&
+        (request.serviceTargets?.length
+          ? request.serviceTargets.some(
+              (target) =>
+                target.serviceType === 'radarr' &&
+                target.serverId === selectedDestination?.serverId &&
+                target.format === selectedDestination?.format
+            )
+          : request.type === 'movie' &&
+            request.serverId === selectedDestination?.serverId &&
+            request.is4k === (selectedDestination?.format === '4k'))
+    );
+  const selectedDestinationRequested =
+    !editRequest &&
+    (requesterTagOnly
+      ? requesterTagOnlyAlreadyRequested
+      : isRequestDestinationRequested(
+          data?.mediaInfo?.requests,
+          selectedDestination
+        ));
   const selectedDestinationPromotable =
+    !requesterTagOnly &&
     selectedDestinationRequested &&
     canPromotePendingDestinationRequests(
       data?.mediaInfo?.requests,
@@ -223,7 +282,7 @@ const MovieRequestModal = ({
       }
     );
   const selectedDestinationCovered =
-    selectedDestinationAvailable ||
+    (selectedDestinationAvailable && !requesterTagOnly) ||
     (selectedDestinationRequested && !selectedDestinationPromotable);
   const requestDestinationSettingsLoading =
     Boolean(requestDestinationUserId) &&
@@ -237,7 +296,11 @@ const MovieRequestModal = ({
   }, [isUpdating, onUpdating]);
 
   const sendRequest = useCallback(async () => {
-    if (selectedDestinationCovered || requestDestinationSettingsLoading) {
+    if (
+      requesterTagOnlyUnavailable ||
+      selectedDestinationCovered ||
+      requestDestinationSettingsLoading
+    ) {
       return;
     }
 
@@ -263,6 +326,7 @@ const MovieRequestModal = ({
           : selectedRequestServiceServerId,
         ignoreQuota: requestOverrides?.ignoreQuota,
         requestQuotaApproval: requestQuotaApproval || undefined,
+        requesterTagOnly: requesterTagOnly || undefined,
         ...overrideParams,
       });
       mutate('/api/v1/request?filter=all&take=10&sort=modified&skip=0');
@@ -280,7 +344,9 @@ const MovieRequestModal = ({
             {intl.formatMessage(
               response.data.quotaException
                 ? messages.quotaApprovalSubmitted
-                : messages.requestSuccess,
+                : requesterTagOnly
+                  ? messages.requesterTagRequestSubmitted
+                  : messages.requestSuccess,
               {
                 title: data?.title,
                 strong: (msg: React.ReactNode) => <strong>{msg}</strong>,
@@ -312,6 +378,8 @@ const MovieRequestModal = ({
     requestDestinationSettingsLoading,
     canUseAdvancedOptions,
     requestQuotaApproval,
+    requesterTagOnly,
+    requesterTagOnlyUnavailable,
     data?.id,
     data?.title,
     effectiveIs4k,
@@ -333,7 +401,12 @@ const MovieRequestModal = ({
 
       if (response.status === 204) {
         if (onComplete) {
-          onComplete(MediaStatus.UNKNOWN, is4k);
+          onComplete(
+            isRequesterTagOnlyRequest
+              ? MediaStatus.AVAILABLE
+              : MediaStatus.UNKNOWN,
+            is4k
+          );
         }
         addToast(
           <span>
@@ -354,17 +427,25 @@ const MovieRequestModal = ({
     setIsUpdating(true);
 
     try {
-      await axios.put(`/api/v1/request/${editRequest?.id}`, {
-        mediaType: 'movie',
-        serverId: requestOverrides?.server,
-        profileId: requestOverrides?.profile,
-        rootFolder: requestOverrides?.folder,
-        userId: requestOverrides?.user?.id,
-        tags: requestOverrides?.tags,
-      });
-
-      if (alsoApproveRequest) {
+      if (
+        isRequesterTagOnlyRequest &&
+        alsoApproveRequest &&
+        !isFailedManagerRepair
+      ) {
         await axios.post(`/api/v1/request/${editRequest?.id}/approve`);
+      } else {
+        await axios.put(`/api/v1/request/${editRequest?.id}`, {
+          mediaType: 'movie',
+          serverId: requestOverrides?.server,
+          profileId: requestOverrides?.profile,
+          rootFolder: requestOverrides?.folder,
+          userId: requestOverrides?.user?.id,
+          tags: requestOverrides?.tags,
+        });
+
+        if (alsoApproveRequest) {
+          await axios.post(`/api/v1/request/${editRequest?.id}/approve`);
+        }
       }
       mutate('/api/v1/request?filter=all&take=10&sort=modified&skip=0');
       mutate('/api/v1/request/count');
@@ -390,7 +471,10 @@ const MovieRequestModal = ({
       );
 
       if (onComplete) {
-        onComplete(MediaStatus.PENDING, is4k);
+        onComplete(
+          requesterTagOnly ? MediaStatus.AVAILABLE : MediaStatus.PENDING,
+          is4k
+        );
       }
     } catch {
       addToast(<span>{intl.formatMessage(messages.errorediting)}</span>, {
@@ -425,15 +509,22 @@ const MovieRequestModal = ({
             ? updateRequest()
             : hasPermission(Permission.MANAGE_REQUESTS)
               ? updateRequest(true)
-              : hasPermission(Permission.REQUEST_ADVANCED)
+              : hasPermission(Permission.REQUEST_ADVANCED) &&
+                  !requesterTagOnlyMode
                 ? updateRequest()
                 : cancelRequest()
         }
-        okDisabled={isUpdating}
+        okDisabled={
+          isUpdating ||
+          (requesterTagOnlyUnavailable &&
+            (hasPermission(Permission.MANAGE_REQUESTS) ||
+              isFailedManagerRepair))
+        }
         okButtonProps={{
           buttonIcon:
             !hasPermission(Permission.MANAGE_REQUESTS) &&
-            !hasPermission(Permission.REQUEST_ADVANCED)
+            (!hasPermission(Permission.REQUEST_ADVANCED) ||
+              requesterTagOnlyMode)
               ? 'cancel'
               : undefined,
         }}
@@ -443,20 +534,24 @@ const MovieRequestModal = ({
             ? intl.formatMessage(messages.saveAndRetry)
             : hasPermission(Permission.MANAGE_REQUESTS)
               ? intl.formatMessage(messages.approve)
-              : hasPermission(Permission.REQUEST_ADVANCED)
+              : hasPermission(Permission.REQUEST_ADVANCED) &&
+                  !requesterTagOnlyMode
                 ? intl.formatMessage(messages.edit)
                 : intl.formatMessage(messages.cancel)
         }
         okButtonType={
           isFailedManagerRepair || hasPermission(Permission.MANAGE_REQUESTS)
             ? 'success'
-            : hasPermission(Permission.REQUEST_ADVANCED)
+            : hasPermission(Permission.REQUEST_ADVANCED) &&
+                !requesterTagOnlyMode
               ? 'primary'
               : 'danger'
         }
         onSecondary={
           !isFailedManagerRepair &&
           isOwner &&
+          (!requesterTagOnlyMode ||
+            hasPermission(Permission.MANAGE_REQUESTS)) &&
           hasPermission(
             [Permission.REQUEST_ADVANCED, Permission.MANAGE_REQUESTS],
             { type: 'or' }
@@ -468,6 +563,8 @@ const MovieRequestModal = ({
         secondaryText={
           !isFailedManagerRepair &&
           isOwner &&
+          (!requesterTagOnlyMode ||
+            hasPermission(Permission.MANAGE_REQUESTS)) &&
           hasPermission(
             [Permission.REQUEST_ADVANCED, Permission.MANAGE_REQUESTS],
             { type: 'or' }
@@ -499,29 +596,44 @@ const MovieRequestModal = ({
                     username: editRequest.requestedBy.displayName,
                   })}
           </div>
-          {(hasPermission(Permission.REQUEST_ADVANCED) ||
-            hasPermission(Permission.MANAGE_REQUESTS)) && (
-            <AdvancedRequester
-              type="movie"
-              tmdbId={tmdbId}
-              is4k={is4k}
-              requestUser={editRequest.requestedBy}
-              requestId={editRequest.id}
-              defaultOverrides={{
-                folder: editRequest.rootFolder,
-                profile: editRequest.profileId,
-                server: editRequest.serverId,
-                tags: editRequest.tags,
-              }}
-              reassignMissingServer={isFailedManagerRepair}
-              requestedByPortal={
-                isFailedManagerRepair ? null : requestedByPortal
-              }
-              onChange={(overrides) => {
-                setRequestOverrides(overrides);
-              }}
-            />
+          {requesterTagOnlyMode && (
+            <p className="app-card-inset refreshed-inset-surface card-body-text">
+              {intl.formatMessage(messages.requesterTagOnlyNotice)}
+            </p>
           )}
+          {requesterTagOnlyUnavailableMessage && (
+            <p
+              className="page-error-message"
+              data-severity="error"
+              role="alert"
+            >
+              {intl.formatMessage(messages.requesterTagOnlyUnavailable)}
+            </p>
+          )}
+          {(hasPermission(Permission.REQUEST_ADVANCED) ||
+            hasPermission(Permission.MANAGE_REQUESTS)) &&
+            !requesterTagOnlyMode && (
+              <AdvancedRequester
+                type="movie"
+                tmdbId={tmdbId}
+                is4k={is4k}
+                requestUser={editRequest.requestedBy}
+                requestId={editRequest.id}
+                defaultOverrides={{
+                  folder: editRequest.rootFolder,
+                  profile: editRequest.profileId,
+                  server: editRequest.serverId,
+                  tags: editRequest.tags,
+                }}
+                reassignMissingServer={isFailedManagerRepair}
+                requestedByPortal={
+                  isFailedManagerRepair ? null : requestedByPortal
+                }
+                onChange={(overrides) => {
+                  setRequestOverrides(overrides);
+                }}
+              />
+            )}
         </RequestMediaCard>
       </Modal>
     );
@@ -545,11 +657,13 @@ const MovieRequestModal = ({
   const studio = data?.productionCompanies?.[0]?.name ?? notAvailable;
   const requestButtonLabel = isUpdating
     ? intl.formatMessage(globalMessages.requesting)
-    : requestQuotaApproval
-      ? intl.formatMessage(messages.requestQuotaApproval)
-      : intl.formatMessage(
-          effectiveIs4k ? globalMessages.request4k : globalMessages.request
-        );
+    : requesterTagOnly
+      ? intl.formatMessage(messages.addRequesterTag)
+      : requestQuotaApproval
+        ? intl.formatMessage(messages.requestQuotaApproval)
+        : intl.formatMessage(
+            effectiveIs4k ? globalMessages.request4k : globalMessages.request
+          );
 
   return (
     <Modal
@@ -565,7 +679,8 @@ const MovieRequestModal = ({
         selectedDestinationCovered ||
         (quota?.movie.restricted &&
           !requestOverrides?.ignoreQuota &&
-          !requestQuotaApproval)
+          !requestQuotaApproval) ||
+        requesterTagOnlyUnavailable
       }
       title={intl.formatMessage(
         effectiveIs4k
@@ -702,7 +817,9 @@ const MovieRequestModal = ({
                 </dt>
                 <dd className="m-0 min-w-0">
                   <RequestFooterStatus
-                    available={selectedDestinationAvailable}
+                    available={
+                      selectedDestinationAvailable && !requesterTagOnly
+                    }
                     requested={selectedDestinationRequested}
                     hasAutoApprove={hasAutoApprove}
                   />
@@ -713,23 +830,40 @@ const MovieRequestModal = ({
         </div>
 
         <div className="request-selection-options card-spacing-before">
-          <MediaQualitySelect
-            value={effectiveIs4k ? '4k' : 'hd'}
-            options={[
-              { label: 'HD', value: 'hd' },
-              { label: '4K', value: '4k' },
-            ]}
-            onChange={(quality) => {
-              setSelectedIs4k(quality === '4k');
-              setRequestServiceServerId(undefined);
-              setRequestOverrides(null);
-              setQualityRevision((current) => current + 1);
-            }}
-            label={intl.formatMessage(messages.quality)}
-            autoSelectAvailable={false}
-            purpose="request"
-          />
-          {!canUseAdvancedOptions &&
+          {requesterTagOnlyMode && (
+            <p className="app-card-inset refreshed-inset-surface card-body-text">
+              {intl.formatMessage(messages.requesterTagOnlyNotice)}
+            </p>
+          )}
+          {requesterTagOnlyUnavailableMessage && (
+            <p
+              className="page-error-message"
+              data-severity="error"
+              role="alert"
+            >
+              {intl.formatMessage(messages.requesterTagOnlyUnavailable)}
+            </p>
+          )}
+          {!requesterTagOnlyMode && (
+            <MediaQualitySelect
+              value={effectiveIs4k ? '4k' : 'hd'}
+              options={[
+                { label: 'HD', value: 'hd' },
+                { label: '4K', value: '4k' },
+              ]}
+              onChange={(quality) => {
+                setSelectedIs4k(quality === '4k');
+                setRequestServiceServerId(undefined);
+                setRequestOverrides(null);
+                setQualityRevision((current) => current + 1);
+              }}
+              label={intl.formatMessage(messages.quality)}
+              autoSelectAvailable={false}
+              purpose="request"
+            />
+          )}
+          {!requesterTagOnlyMode &&
+            !canUseAdvancedOptions &&
             requestServiceOptions.length > 0 &&
             (fallbackService || requestServiceOptions.length > 1) && (
               <RequestListboxControl
@@ -765,7 +899,7 @@ const MovieRequestModal = ({
             )}
         </div>
 
-        {canUseAdvancedOptions && (
+        {canUseAdvancedOptions && !requesterTagOnlyMode && (
           <AdvancedRequester
             key={(selectedIs4k ? '4k' : 'hd') + '-' + qualityRevision}
             type="movie"
@@ -787,7 +921,7 @@ const MovieRequestModal = ({
 
         <div className="flex flex-wrap items-center justify-end gap-2 pt-2">
           <div className="mr-auto flex items-center gap-2">
-            {canUseAdvancedOptions && (
+            {canUseAdvancedOptions && !requesterTagOnlyMode && (
               <AdvancedOptionsDisclosureButton
                 label={intl.formatMessage(messages.advancedOptions)}
                 open={advancedOptionsOpen}
@@ -820,7 +954,8 @@ const MovieRequestModal = ({
               selectedDestinationCovered ||
               (quota?.movie.restricted &&
                 !requestOverrides?.ignoreQuota &&
-                !requestQuotaApproval)
+                !requestQuotaApproval) ||
+              requesterTagOnlyUnavailable
             }
             className="app-button app-button-success button-standard"
           >

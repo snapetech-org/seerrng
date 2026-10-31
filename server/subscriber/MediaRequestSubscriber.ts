@@ -778,6 +778,281 @@ export class MediaRequestSubscriber implements EntitySubscriberInterface<MediaRe
     return true;
   }
 
+  private getRequesterTagOnlyTarget(
+    entity: MediaRequest,
+    serviceType: 'radarr' | 'sonarr'
+  ): MediaRequestServiceTarget {
+    const targets = (entity.serviceTargets ?? []).filter(
+      (target) => target.requesterTagOnly === true
+    );
+    const target = targets[0];
+    const expectedFormat = entity.is4k ? '4k' : 'standard';
+    if (
+      targets.length !== 1 ||
+      !target ||
+      target.serviceType !== serviceType ||
+      target.serverId !== entity.serverId ||
+      target.format !== expectedFormat ||
+      !isPositiveSafeInteger(target.externalServiceId)
+    ) {
+      throw new Error('The requester-tag request has no valid service target.');
+    }
+    return target;
+  }
+
+  private async verifyRequesterTagOnlyAvailability(
+    entity: MediaRequest,
+    target: MediaRequestServiceTarget
+  ): Promise<void> {
+    if (!entity.media?.id) {
+      throw new Error('The requester-tag request has no media record.');
+    }
+    const status = await getRepository(MediaServiceStatus).findOne({
+      where: {
+        mediaId: entity.media.id,
+        serviceType: target.serviceType as 'radarr' | 'sonarr',
+        serverId: target.serverId,
+        format: target.format as 'standard' | '4k',
+      },
+    });
+    if (
+      !status ||
+      status.status !== MediaStatus.AVAILABLE ||
+      status.externalServiceId !== target.externalServiceId
+    ) {
+      throw new Error(
+        'The selected service no longer confirms this available item.'
+      );
+    }
+
+    if (target.serviceType === 'sonarr') {
+      const requestedSeasons = (entity.seasons ?? []).filter(
+        isActiveSeasonRequest
+      );
+      if (
+        requestedSeasons.length === 0 ||
+        requestedSeasons.some(
+          (season) =>
+            season.episodeNumbers?.length ||
+            status.seasonStatuses?.[season.seasonNumber] !==
+              MediaStatus.AVAILABLE
+        )
+      ) {
+        throw new Error(
+          'The selected Sonarr seasons are no longer fully available.'
+        );
+      }
+    }
+  }
+
+  private async resolveRequiredRequesterTag(
+    client: RadarrAPI | SonarrAPI,
+    entity: MediaRequest,
+    serviceType: 'radarr' | 'sonarr',
+    serverId: number
+  ): Promise<{ id: number; label: string }> {
+    const label = `${entity.requestedBy.id}-${sanitizeDisplayName(
+      entity.requestedBy.displayName
+    )}`;
+    const resolution = await resolveRequesterTag(
+      client,
+      [],
+      entity.requestedBy.id,
+      label
+    );
+    if (resolution.failureStage || resolution.tags.length !== 1) {
+      logger.warn(
+        'Unable to resolve the requester tag for an available-media request.',
+        {
+          label: 'Media Request',
+          requestId: entity.id,
+          mediaId: entity.media.id,
+          userId: entity.requestedBy.id,
+          serviceType,
+          serverId,
+          tagOperation: resolution.failureStage ?? 'invalid-result',
+        }
+      );
+      throw new Error('The requester tag could not be resolved.');
+    }
+    return { id: resolution.tags[0], label };
+  }
+
+  private async completeRequesterTagOnlyRequest(
+    entity: MediaRequest,
+    target: MediaRequestServiceTarget,
+    tagId: number
+  ): Promise<void> {
+    const repository = getRepository(MediaRequest);
+    const current = await repository.findOne({
+      where: { id: entity.id },
+      relations: { seasons: true },
+    });
+    if (!current || current.status !== MediaRequestStatus.APPROVED) {
+      throw new Error('The requester-tag request is no longer approved.');
+    }
+
+    current.status = MediaRequestStatus.COMPLETED;
+    current.failureReason = null;
+    current.serviceTargets = (current.serviceTargets ?? []).map((candidate) =>
+      candidate.requesterTagOnly &&
+      candidate.serviceType === target.serviceType &&
+      candidate.serverId === target.serverId &&
+      candidate.format === target.format
+        ? {
+            ...candidate,
+            externalServiceId: target.externalServiceId,
+            externalServiceSlug: target.externalServiceSlug,
+            tags: [tagId],
+            status: MediaStatus.AVAILABLE,
+          }
+        : candidate
+    );
+    if (current.type === MediaType.TV) {
+      current.seasons.forEach((season) => {
+        season.status = MediaRequestStatus.COMPLETED;
+      });
+    }
+    await repository.save(current);
+  }
+
+  private async sendRequesterTagOnlyToRadarr(
+    entity: MediaRequest,
+    media: Media
+  ): Promise<void> {
+    const target = this.getRequesterTagOnlyTarget(entity, 'radarr');
+    const settings = getExternalRuntimeConfig().radarr.find(
+      (server) =>
+        server.id === target.serverId &&
+        server.is4k === entity.is4k &&
+        server.tagRequests
+    );
+    if (!settings) {
+      throw new Error(
+        'Requester tags are disabled on the selected Radarr service.'
+      );
+    }
+    await this.verifyRequesterTagOnlyAvailability(entity, target);
+
+    const radarr = new RadarrAPI({
+      apiKey: settings.apiKey,
+      url: RadarrAPI.buildUrl(settings, '/api/v3'),
+    });
+    const movie = await radarr.getMovie({ id: target.externalServiceId! });
+    if (
+      movie.id !== target.externalServiceId ||
+      movie.tmdbId !== media.tmdbId ||
+      !movie.hasFile
+    ) {
+      throw new Error('Radarr no longer confirms the matching movie file.');
+    }
+
+    const requesterTag = await this.resolveRequiredRequesterTag(
+      radarr,
+      entity,
+      'radarr',
+      settings.id
+    );
+    if (!movie.tags.includes(requesterTag.id)) {
+      await radarr.addTagsToMovie(movie.id, [requesterTag.id]);
+      const updatedMovie = await radarr.getMovie({ id: movie.id });
+      if (
+        updatedMovie.id !== movie.id ||
+        updatedMovie.tmdbId !== media.tmdbId ||
+        !updatedMovie.hasFile ||
+        !updatedMovie.tags.includes(requesterTag.id)
+      ) {
+        throw new Error('Radarr did not confirm the requester tag update.');
+      }
+    }
+
+    radarr.clearCache({ tmdbId: media.tmdbId, externalId: movie.id });
+    await this.completeRequesterTagOnlyRequest(entity, target, requesterTag.id);
+  }
+
+  private async sendRequesterTagOnlyToSonarr(
+    entity: MediaRequest,
+    media: Media
+  ): Promise<void> {
+    const target = this.getRequesterTagOnlyTarget(entity, 'sonarr');
+    const settings = getExternalRuntimeConfig().sonarr.find(
+      (server) =>
+        server.id === target.serverId &&
+        server.is4k === entity.is4k &&
+        server.tagRequests
+    );
+    if (!settings) {
+      throw new Error(
+        'Requester tags are disabled on the selected Sonarr service.'
+      );
+    }
+    await this.verifyRequesterTagOnlyAvailability(entity, target);
+
+    const sonarr = new SonarrAPI({
+      apiKey: settings.apiKey,
+      url: SonarrAPI.buildUrl(settings, '/api/v3'),
+    });
+    const seriesId = target.externalServiceId!;
+    const series = await sonarr.getSeriesById(seriesId);
+    const expectedTvdbId = isPositiveSafeInteger(entity.overrideTvdbId)
+      ? entity.overrideTvdbId
+      : media.tvdbId;
+    if (
+      !isPositiveSafeInteger(expectedTvdbId) ||
+      series.id !== seriesId ||
+      series.tvdbId !== expectedTvdbId
+    ) {
+      throw new Error(
+        'Sonarr no longer confirms the matching series identity.'
+      );
+    }
+    const selectedSeasonNumbers = (entity.seasons ?? [])
+      .filter(isActiveSeasonRequest)
+      .map((season) => season.seasonNumber);
+    const providerSeasons = new Map(
+      series.seasons.map((season) => [season.seasonNumber, season])
+    );
+    if (
+      selectedSeasonNumbers.length === 0 ||
+      selectedSeasonNumbers.some((seasonNumber) => {
+        const statistics = providerSeasons.get(seasonNumber)?.statistics;
+        return (
+          !statistics ||
+          statistics.episodeCount <= 0 ||
+          statistics.episodeFileCount < statistics.episodeCount
+        );
+      })
+    ) {
+      throw new Error(
+        'Sonarr no longer confirms every selected season is complete.'
+      );
+    }
+
+    const requesterTag = await this.resolveRequiredRequesterTag(
+      sonarr,
+      entity,
+      'sonarr',
+      settings.id
+    );
+    if (!series.tags.includes(requesterTag.id)) {
+      await sonarr.addTagsToSeries(seriesId, [requesterTag.id]);
+      const updatedSeries = await sonarr.getSeriesById(seriesId);
+      if (
+        updatedSeries.id !== seriesId ||
+        updatedSeries.tvdbId !== expectedTvdbId ||
+        !updatedSeries.tags.includes(requesterTag.id)
+      ) {
+        throw new Error('Sonarr did not confirm the requester tag update.');
+      }
+    }
+
+    sonarr.clearCache({
+      tvdbId: expectedTvdbId,
+      externalId: series.id,
+    });
+    await this.completeRequesterTagOnlyRequest(entity, target, requesterTag.id);
+  }
+
   private async failRequestForMissingServer(
     entity: MediaRequest,
     media: Media,
@@ -1074,6 +1349,11 @@ export class MediaRequestSubscriber implements EntitySubscriberInterface<MediaRe
           return false;
         }
 
+        if (entity.serviceTargets?.some((target) => target.requesterTagOnly)) {
+          await this.sendRequesterTagOnlyToRadarr(entity, media);
+          return true;
+        }
+
         if (await this.completeAvailableRequest(entity, media)) {
           return true;
         }
@@ -1352,6 +1632,11 @@ export class MediaRequestSubscriber implements EntitySubscriberInterface<MediaRe
 
         if (!media) {
           throw new Error('Media data not found');
+        }
+
+        if (entity.serviceTargets?.some((target) => target.requesterTagOnly)) {
+          await this.sendRequesterTagOnlyToSonarr(entity, media);
+          return true;
         }
 
         if (await this.completeAvailableRequest(entity, media)) {

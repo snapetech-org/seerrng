@@ -55,6 +55,7 @@ export type MediaRequestBody = {
   authorId?: string;
   userId?: number;
   tags?: number[];
+  requesterTagOnly?: boolean;
   ignoreQuota?: boolean;
   requestQuotaApproval?: boolean;
 };

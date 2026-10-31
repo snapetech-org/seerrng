@@ -827,6 +827,29 @@ class SonarrAPI extends ServarrBase<{
     }
   }
 
+  public async addTagsToSeries(
+    seriesId: number,
+    tagIds: number[]
+  ): Promise<void> {
+    const tags = [...new Set(tagIds)];
+    if (
+      !Number.isSafeInteger(seriesId) ||
+      seriesId <= 0 ||
+      tags.length === 0 ||
+      tags.some((tagId) => !Number.isSafeInteger(tagId) || tagId <= 0)
+    ) {
+      throw new Error(
+        'A valid Sonarr series and at least one tag are required.'
+      );
+    }
+
+    await this.request('PUT', '/series/editor', {
+      seriesIds: [seriesId],
+      tags,
+      applyTags: 'add',
+    });
+  }
+
   public async getSeriesCover(seriesId: number): Promise<SonarrCoverImage> {
     const series = await this.getSeriesById(seriesId).catch(() => undefined);
     const advertisedCoverPaths = (series?.images ?? [])
