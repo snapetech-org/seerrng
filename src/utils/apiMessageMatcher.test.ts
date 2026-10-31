@@ -35,6 +35,12 @@ describe('source-bound API message matching', () => {
     );
   });
 
+  it('leaves the original message intact when a value repeats a template boundary', () => {
+    expect(
+      match('Cannot move /books/ into /draft.epub into /library.')
+    ).toBeUndefined();
+  });
+
   it('uses the most specific authored template and leaves unknown output untouched', () => {
     expect(match('Failed to load Radarr item 42.')).toEqual({
       key: 'specific',

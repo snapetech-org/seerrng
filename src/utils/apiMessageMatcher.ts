@@ -8,11 +8,19 @@ export type ApiMessagePattern<Key extends string = string> = readonly [
   readonly string[],
 ];
 
-/** Capture opaque data between literal fragments without regex backtracking. */
+type TemplateCapture =
+  | { state: 'matched'; values: string[] }
+  | { state: 'ambiguous' };
+
+/**
+ * Capture opaque data only when each literal boundary has a unique position.
+ * A provider value or path can itself contain the boundary text, so choosing
+ * the first occurrence could move part of that value into another placeholder.
+ */
 const captureValues = (
   parts: readonly string[],
   message: string
-): string[] | undefined => {
+): TemplateCapture | undefined => {
   if (!message.startsWith(parts[0])) return undefined;
   const suffix = parts[parts.length - 1];
   if (!message.endsWith(suffix)) return undefined;
@@ -21,13 +29,19 @@ const captureValues = (
   if (position > end) return undefined;
   const values: string[] = [];
   for (let index = 1; index < parts.length - 1; index += 1) {
-    const next = message.indexOf(parts[index], position);
-    if (next < position || next + parts[index].length > end) return undefined;
+    const boundary = parts[index];
+    if (!boundary) return { state: 'ambiguous' };
+    const next = message.indexOf(boundary, position);
+    if (next < position || next + boundary.length > end) return undefined;
+    const repeated = message.indexOf(boundary, next + 1);
+    if (repeated >= 0 && repeated + boundary.length <= end) {
+      return { state: 'ambiguous' };
+    }
     values.push(message.slice(position, next));
-    position = next + parts[index].length;
+    position = next + boundary.length;
   }
   values.push(message.slice(position, end));
-  return values;
+  return { state: 'matched', values };
 };
 
 /** Match authored phrases only; never translate the captured data itself. */
@@ -52,12 +66,13 @@ export const createApiMessageMatcher = <Key extends string>(
     // Unknown/large provider output remains verbatim and avoids template work.
     if (message.length > 16_384) return undefined;
     for (const template of templates) {
-      const values = captureValues(template.parts, message);
-      if (values)
+      const capture = captureValues(template.parts, message);
+      if (capture?.state === 'ambiguous') return undefined;
+      if (capture?.state === 'matched')
         return {
           key: template.key,
           values: Object.fromEntries(
-            values.map((value, index) => [`value${index}`, value])
+            capture.values.map((value, index) => [`value${index}`, value])
           ),
         };
     }
