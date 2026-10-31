@@ -51,6 +51,9 @@ Steps:
   [`release-notes/`](./release-notes/README.md). Internal changes can use the
   `release-note: none` commit trailer.
 - Format changed code and run the applicable tests.
+- Before starting a substantial new feature or broad refactor, open an issue or
+  discussion and wait for maintainers to agree on the scope. Focused bug fixes
+  and work on confirmed issues can be submitted directly.
 
 ### AI Assistance
 
