@@ -22,8 +22,9 @@ For BookshelfNG's SeerrNG-specific API behavior, see
 [BookshelfNG interoperability](#bookshelfng-interoperability).
 
 As of 2026-10-31, BookshelfNG `0.4.21.76` and ChaptarrNG `v0.9.977` remain the
-latest public releases; ChaptarrNG `main` is `4e5f895c`, with application
-source snapshot `bd589312`. ChaptarrNG `v0.9.977`
+latest public releases; ChaptarrNG `main` is
+`fa55ffabe632c7ee003791635ebe53fb1895d3df`, with latest application source
+snapshot `bd589312`. ChaptarrNG `v0.9.977`
 includes single-database SQLite preview, conversion, and rollback tools in
 the standard product. ChaptarrNG PR
 [#183](https://github.com/snapetech-org/chaptarrng/pull/183) merged at
@@ -33,13 +34,15 @@ legacy Docker port contracts. The PR's exact merge-head Build
 [#41168525352](https://github.com/snapetech-org/chaptarrng/actions/runs/41168525352)
 is waiting and is not current application-source validation; main and
 standalone platform/archive jobs remain queued at older source. No exact-head
-pass for `bd589312` is recorded here. Migration apply remains frozen pending feature,
-migration, rollback, and installation-channel acceptance. No legacy package,
-image, installer, updater, or chart identity has been redirected.
+pass for application source `bd589312` or current `main` `fa55ffab` is recorded
+here. Migration apply remains frozen pending feature, migration, rollback,
+and installation-channel acceptance. No legacy package, image, installer,
+updater, or chart identity has been redirected.
 
 The current source-path audit compares BookshelfNG `1bd7f2dc` with ChaptarrNG
-application source `bd589312`: 1,174 changed paths, 56 reviewed mappings, 587
-dispositions, and 587 paths without a final disposition. Those are
+`main` target `fa55ffab` (application source `bd589312`): 1,174 changed paths,
+56 reviewed mappings, 587 dispositions, and 587 paths without a final
+disposition. Those are
 source-review counts, not missing-feature counts or SeerrNG acceptance
 evidence. The merged PR #183 changes are included in the target snapshot. See
 the [pinned consolidation audit](https://github.com/snapetech-org/bookshelfng/blob/main/docs/maintainers/chaptarr-consolidation.md#exact-head-source-path-audit--2026-10-31).

@@ -107,24 +107,27 @@ For local MCP access, see the [SnapeTech MCP integration guide](./docs/integrati
 - The BookshelfNG-to-ChaptarrNG handoff is implemented in ChaptarrNG's one
   standard product, but BookshelfNG distribution retirement remains blocked.
   Public releases remain BookshelfNG `0.4.21.76` and ChaptarrNG `v0.9.977`;
-  ChaptarrNG `main` is `4e5f895c`, with application source snapshot
-  `bd589312`. ChaptarrNG PR
+  ChaptarrNG `main` is `fa55ffab` (full SHA
+  `fa55ffabe632c7ee003791635ebe53fb1895d3df`), with latest application source
+  snapshot `bd589312`. ChaptarrNG PR
   [#183](https://github.com/snapetech-org/chaptarrng/pull/183) merged at
   `96c953b2`, with follow-up main commits preserving legacy Docker handoff
   ports. The merged code does not add a compatibility image. Build run
   [41168525352](https://github.com/snapetech-org/chaptarrng/actions/runs/41168525352)
   is waiting on its merge-head validation at `96c953b2`; it does not validate
   the current application source. The main dispatch and platform/archive runs
-  remain queued at older source; no exact-head pass for `bd589312` is recorded
-  here. No BookshelfNG package, image, installer, updater, or chart
-  identity has been redirected. Keep BookshelfNG serving its existing data
+  remain queued at older source; no exact-head pass for application source
+  `bd589312` or current `main` `fa55ffab` is recorded here. No BookshelfNG
+  package, image, installer, updater, or chart identity has been redirected.
+  Keep BookshelfNG serving its existing data
   until feature parity, populated-data conversion, rollback, and each old
   installation channel are individually accepted. Each BookshelfNG
   capability, data/configuration path, and channel remains a blocker. The
   separate ChaptarrNG-to-upstream gate includes carried BookshelfNG behavior
   plus all ChaptarrNG features that are maintained, active, or unreleased.
   The current source-path audit compares BookshelfNG `1bd7f2dc` with ChaptarrNG
-  application source `bd589312` and has 587 open dispositions; that is a path
+  `main` `fa55ffab` (application source `bd589312`), with 587 open
+  dispositions; that is a path
   review count, not a missing-feature count. See
   the [BookshelfNG consolidation report](https://github.com/snapetech-org/bookshelfng/blob/main/docs/maintainers/chaptarr-consolidation.md)
   and [ChaptarrNG's itemized retirement matrix](https://github.com/snapetech-org/chaptarrng/blob/main/docs/FORK_FEATURES.md#itemized-active-and-unreleased-chaptarrng-blockers).
@@ -397,7 +400,8 @@ commits preserve the legacy Docker port contracts. The exact merge-head Build
 [41168525352](https://github.com/snapetech-org/chaptarrng/actions/runs/41168525352)
 is waiting and does not validate current application source `bd589312`; the
 main and standalone platform/archive jobs remain queued at older source. No
-exact-head pass for `bd589312` is recorded here. No legacy identity bridge has
+exact-head pass for application source `bd589312` or current `main` `fa55ffab`
+is recorded here. No legacy identity bridge has
 been published or enabled, so existing BookshelfNG installations should keep
 their current data and backup path. ChaptarrNG remains the maintained destination. Its later
 retirement into upstream Chaptarr must preserve both ChaptarrNG's maintained
