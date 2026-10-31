@@ -111,9 +111,12 @@ for (const viewport of [
 
     // Keep this browser regression independent from TMDB and configured
     // services. The request deliberately omits the optional request.media link.
-    // Match suffixes as well as the bare endpoint, and assert the browser used
-    // this response before interacting with the request controls.
-    let movieFixtureApplied = false;
+    // Next data navigation is a browser request; the page's internal API call
+    // during server rendering is server-to-server and cannot be intercepted by
+    // page.route. Keep a separate browser API fixture for the post-navigation
+    // SWR refresh.
+    let detailsFixtureApplied = false;
+    let browserMovieFixtureApplied = false;
     let discoveryFixtureApplied = false;
     await page.route('**/api/v1/discover/movies*', async (route) => {
       discoveryFixtureApplied = true;
@@ -134,17 +137,16 @@ for (const viewport of [
         },
       });
     });
-    await page.route('**/api/v1/movie/438148**', async (route) => {
-      movieFixtureApplied = true;
-      await route.fulfill({
-        status: 200,
-        contentType: 'application/json',
-        body: JSON.stringify(movie),
+    await page.route('**/api/v1/movie/438148', (route) => {
+      browserMovieFixtureApplied = true;
+      return route.fulfill({ json: movie });
+    });
+    await page.route('**/_next/data/**/movie/438148.json*', (route) => {
+      detailsFixtureApplied = true;
+      return route.fulfill({
+        json: { pageProps: { movie }, __N_SSP: true },
       });
     });
-    await page.route('**/_next/data/**/movie/438148.json*', (route) =>
-      route.fulfill({ json: { pageProps: { movie }, __N_SSP: true } })
-    );
     await page.route('**/api/v1/movie/438148/ratingscombined*', (route) =>
       route.fulfill({ json: {} })
     );
@@ -168,20 +170,42 @@ for (const viewport of [
       route.fulfill({ status: 404, json: { message: 'Not found' } })
     );
 
-    const movieResponse = page.waitForResponse(
+    const movieResponse = page.waitForResponse((response) => {
+      const pathname = new URL(response.url()).pathname;
+      return (
+        pathname.includes('/_next/data/') &&
+        pathname.endsWith('/movie/438148.json')
+      );
+    });
+    const browserMovieResponse = page.waitForResponse(
       (response) => new URL(response.url()).pathname === '/api/v1/movie/438148'
     );
     await page.goto('/discover/movies');
     await expect(page.getByTestId('title-card')).toHaveCount(1);
     expect(discoveryFixtureApplied).toBe(true);
-    await page.getByTestId('title-card').first().click();
+    const card = page.getByTestId('title-card').first();
+    await card.hover();
+    const detailsLink = card.locator('[data-poster-region="detail-link"]');
+    await expect(detailsLink).toBeVisible();
+    await detailsLink.click();
     const mockedMovieResponse = await movieResponse;
     expect(mockedMovieResponse.status()).toBe(200);
+    expect(detailsFixtureApplied).toBe(true);
     expect(await mockedMovieResponse.json()).toMatchObject({
+      pageProps: {
+        movie: {
+          title: movie.title,
+          mediaInfo: { requests: [{ id: request.id }] },
+        },
+      },
+    });
+    const mockedBrowserMovieResponse = await browserMovieResponse;
+    expect(mockedBrowserMovieResponse.status()).toBe(200);
+    expect(browserMovieFixtureApplied).toBe(true);
+    expect(await mockedBrowserMovieResponse.json()).toMatchObject({
       title: movie.title,
       mediaInfo: { requests: [{ id: request.id }] },
     });
-    expect(movieFixtureApplied).toBe(true);
     await expect(page.getByTestId('media-title')).toContainText(movie.title);
     const manageButton = page.getByRole('button', { name: 'Manage Movie' });
     await expect(manageButton).toBeEnabled();
