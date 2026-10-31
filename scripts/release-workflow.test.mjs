@@ -452,9 +452,32 @@ test('Chocolatey packages only verified Windows release archives', () => {
     job.if,
     "github.ref == 'refs/heads/main' && inputs.action_tag == 'release' && inputs.runner_pool_tag == 'private'"
   );
-  assert.match(job['runs-on'], /"group":"packer-windows"/u);
-  assert.match(job['runs-on'], /"Windows"/u);
-  assert.match(job['runs-on'], /"ng-shared-main-seerrng"/u);
+  const runner = runInNewContext(
+    job['runs-on'].slice(3, -2),
+    {
+      github: { run_id: 123 },
+      fromJSON: JSON.parse,
+      format: (template, runId) =>
+        template
+          .replaceAll('{{', '{')
+          .replaceAll('}}', '}')
+          .replaceAll('{0}', String(runId)),
+    },
+    { timeout: 100 }
+  );
+  assert.deepEqual(runner, {
+    group: 'packer-windows',
+    labels: [
+      'self-hosted',
+      'Windows',
+      'X64',
+      'on-demand',
+      'packer-windows',
+      'seerrng',
+      'gha-123-publish-chocolatey',
+    ],
+  });
+  assert.doesNotMatch(job['runs-on'], /ng-shared-main|ng-main-run/u);
   assert.match(job['runs-on'], /github\.run_id/u);
   assert.doesNotMatch(job['runs-on'], /windows-latest/u);
   assert.ok(credentialStep);
@@ -1514,18 +1537,18 @@ test('release archive platforms route only to private native runners', () => {
     'self-hosted',
     'Windows',
     'X64',
+    'on-demand',
     'packer-windows',
-    'ng-shared-main-seerrng',
-    'ng-main-run-123',
+    'seerrng',
     'gha-123-2-build',
   ]);
   assertRoute('windows-arm64', 'packer-windows', [
     'self-hosted',
     'Windows',
     'ARM64',
+    'on-demand',
     'packer-windows',
-    'ng-shared-main-seerrng',
-    'ng-main-run-123',
+    'seerrng',
     'gha-123-2-build',
   ]);
   assert.equal(route('unknown'), false);
