@@ -18,7 +18,23 @@ To confirm that the chart you are using is authentic and unmodified, please refe
 ```console
 helm install seerr oci://ghcr.io/snapetech-org/seerrng/seerr-chart
 ```
-Helm values can be found in the Seerr repository under [charts/seerr-chart/README.md](https://github.com/snapetech-org/seerrng/tree/main/charts/seerr-chart).
+Helm values can be found in the SeerrNG repository under [charts/seerr-chart/README.md](https://github.com/snapetech-org/seerrng/tree/main/charts/seerr-chart).
+
+## Additional Kubernetes resources
+
+Set `extraResources` when a SeerrNG installation needs related Kubernetes objects managed by the same Helm release. The default is an empty list, so existing chart installs render no additional resources. Each entry must be one Kubernetes resource object with `apiVersion`, `kind`, and `metadata`; Helm templates in string values can reference this chart's values and named templates.
+
+```yaml
+extraResources:
+  - apiVersion: v1
+    kind: ConfigMap
+    metadata:
+      name: '{{ include "seerr.fullname" . }}-operations'
+    data:
+      owner: media-operations
+```
+
+Helm manages these objects with the SeerrNG release during upgrades and removal. Use only manifests you trust; these entries can create any resource your Helm credentials are allowed to manage. Consult your cluster policy and the target resource's API before applying them.
 
 Verify the signature with [cosign](https://docs.sigstore.dev/cosign/system_config/installation/) (replace [tag], with the TAG you want to verify) :
 ```console

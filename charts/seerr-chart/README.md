@@ -1,6 +1,6 @@
 # seerr-chart
 
-![Version: 1.0.135](https://img.shields.io/badge/Version-1.0.135-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: v3.72.6](https://img.shields.io/badge/AppVersion-v3.72.6-informational?style=flat-square)
+![Version: 1.0.136](https://img.shields.io/badge/Version-1.0.136-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: v3.72.6](https://img.shields.io/badge/AppVersion-v3.72.6-informational?style=flat-square)
 
 SeerrNG Helm chart for Kubernetes
 
@@ -25,6 +25,10 @@ Kubernetes: `>=1.23.0-0`
 Refer to the SeerrNG Kubernetes documentation in this repository.
 
 ## Update Notes
+
+### Updating to 1.0.136
+
+The chart can now render additional Kubernetes resource objects as part of the same Helm release. The `extraResources` value is empty by default; see the [Kubernetes guide](../../docs/getting-started/kubernetes.mdx) for an example.
 
 ### Updating to 3.0.0
 
@@ -58,6 +62,7 @@ If `replicaCount` value was used - remove it. Helm update should work fine after
 | enableServiceLinks | bool | `false` | Inject environment variables for active Kubernetes Services into the pod |
 | extraEnv | list | `[]` | Environment variables to add to the seerr pods |
 | extraEnvFrom | list | `[]` | Environment variables from secrets or configmaps to add to the seerr pods |
+| extraResources | list | `[]` | Additional Kubernetes resource objects rendered and managed with this chart release. Each object is templated with this chart's values and named templates before rendering. |
 | fullnameOverride | string | `""` |  |
 | hostUsers | bool | `true` | docs: https://kubernetes.io/docs/concepts/workloads/pods/user-namespaces/ |
 | image.pullPolicy | string | `"IfNotPresent"` |  |
