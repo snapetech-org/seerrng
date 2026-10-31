@@ -43,16 +43,18 @@ test('chart and tooling validation use the current CI triggers and tools', () =>
   assert.equal(Object.hasOwn(ciWorkflow.on, 'pull_request'), false);
   assert.ok(Object.hasOwn(ciWorkflow.on, 'workflow_dispatch'));
   assert.equal(Object.hasOwn(ciWorkflow.on, 'pull_request_target'), false);
-  assert.deepEqual(
-    ciWorkflow.on.workflow_dispatch.inputs.runner_pool.options,
-    ['private']
-  );
+  assert.deepEqual(ciWorkflow.on.workflow_dispatch.inputs.runner_pool.options, [
+    'private',
+  ]);
   assert.deepEqual(ciWorkflow.on.workflow_dispatch.inputs.action.options, [
     'ci',
     'publish-image',
   ]);
   assert.equal(ciWorkflow.on.workflow_dispatch.inputs.action.required, true);
-  assert.equal(ciWorkflow.on.workflow_dispatch.inputs.runner_pool.required, true);
+  assert.equal(
+    ciWorkflow.on.workflow_dispatch.inputs.runner_pool.required,
+    true
+  );
   const toolingSteps = ciWorkflow.jobs['i18n-and-tooling'].steps;
   const checkout = toolingSteps.find((step) => step.name === 'Checkout');
   const helmSetup = toolingSteps.find(

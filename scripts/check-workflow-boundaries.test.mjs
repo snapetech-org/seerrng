@@ -301,6 +301,20 @@ test('all shared-main JIT workflow jobs have unique job-scoped labels', () => {
 
 test('CodeQL workflow invocations are disabled', () => {
   const workflowsDirectory = path.join(rootDirectory, '.github', 'workflows');
+  const codeqlConfigurationDirectory = path.join(
+    rootDirectory,
+    '.github',
+    'codeql'
+  );
+  const containsFiles = (directory) =>
+    fs.readdirSync(directory, { withFileTypes: true }).some((entry) => {
+      const entryPath = path.join(directory, entry.name);
+      return (
+        entry.isFile() ||
+        entry.isSymbolicLink() ||
+        (entry.isDirectory() && containsFiles(entryPath))
+      );
+    });
   assert.equal(
     fs.existsSync(path.join(workflowsDirectory, 'codeql.yml')),
     false
@@ -312,7 +326,8 @@ test('CodeQL workflow invocations are disabled', () => {
     false
   );
   assert.equal(
-    fs.existsSync(path.join(rootDirectory, '.github', 'codeql')),
+    fs.existsSync(codeqlConfigurationDirectory) &&
+      containsFiles(codeqlConfigurationDirectory),
     false
   );
 
@@ -339,10 +354,9 @@ test('unit-test shards use private JIT runners with exact-run labels', () => {
   assert.equal(ciWorkflow.on.push, undefined);
   assert.equal(Object.hasOwn(ciWorkflow.on, 'pull_request'), false);
   assert.equal(Object.hasOwn(ciWorkflow.on, 'pull_request_target'), false);
-  assert.deepEqual(
-    ciWorkflow.on.workflow_dispatch.inputs.runner_pool.options,
-    ['private']
-  );
+  assert.deepEqual(ciWorkflow.on.workflow_dispatch.inputs.runner_pool.options, [
+    'private',
+  ]);
   assert.deepEqual(ciWorkflow.on.workflow_dispatch.inputs.action.options, [
     'ci',
     'publish-image',

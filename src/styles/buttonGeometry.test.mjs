@@ -111,9 +111,18 @@ test('Request preserves its typography, color and border styling', () => {
 test('action buttons keep the 24px WCAG target without growing their text or glyphs', () => {
   assert.match(css, /--action-control-height: 1\.5rem;/);
   assert.match(css, /--action-control-content-height: 0\.875rem;/);
-  assert.match(sharedCss, /--button-padding-x: var\(--interface-button-padding-x\);/);
-  assert.match(sharedCss, /--action-control-padding-x: var\(--button-padding-x\);/);
-  assert.match(sharedCss, /--compact-button-padding-x: var\(--button-padding-x\);/);
+  assert.match(
+    sharedCss,
+    /--button-padding-x: var\(--interface-button-padding-x\);/
+  );
+  assert.match(
+    sharedCss,
+    /--action-control-padding-x: var\(--button-padding-x\);/
+  );
+  assert.match(
+    sharedCss,
+    /--compact-button-padding-x: var\(--button-padding-x\);/
+  );
   assert.match(origThemeCss, /--interface-button-padding-x: 5px;/);
   assert.match(ngjThemeCss, /--interface-button-padding-x: 8px;/);
   assert.match(
@@ -132,7 +141,10 @@ test('action buttons keep the 24px WCAG target without growing their text or gly
 });
 
 test('editable inputs retain 20px while dropdown buttons share 16px action sizing', () => {
-  assert.match(sharedCss, /--compact-control-height: var\(--interface-compact-control-height\);/);
+  assert.match(
+    sharedCss,
+    /--compact-control-height: var\(--interface-compact-control-height\);/
+  );
   assert.match(origThemeCss, /--interface-compact-control-height: 1\.25rem;/);
   assert.match(ngjThemeCss, /--interface-compact-control-height: 1\.5rem;/);
   assert.match(
@@ -148,8 +160,14 @@ test('editable inputs retain 20px while dropdown buttons share 16px action sizin
 test('poster badges keep the shared compact poster geometry', () => {
   assert.match(css, /--poster-control-height: 1\.5rem;/);
   assert.match(css, /--poster-control-content-height: 0\.875rem;/);
-  assert.match(sharedCss, /--poster-control-padding-x: var\(--button-padding-x\);/);
-  assert.match(sharedCss, /--poster-control-gap: var\(--interface-poster-control-gap\);/);
+  assert.match(
+    sharedCss,
+    /--poster-control-padding-x: var\(--button-padding-x\);/
+  );
+  assert.match(
+    sharedCss,
+    /--poster-control-gap: var\(--interface-poster-control-gap\);/
+  );
   assert.match(origThemeCss, /--interface-poster-control-gap: 0\.125rem;/);
   assert.match(ngjThemeCss, /--interface-poster-control-gap: 0\.25rem;/);
   assert.match(
@@ -703,7 +721,10 @@ test('page and card layouts own spacing independently of asset appearance', () =
     rule('.card-layout'),
     /--card-spacing: var\(--card-layout-spacing\)/
   );
-  assert.match(sharedCss, /--card-layout-spacing: var\(--interface-section-gap\)/);
+  assert.match(
+    sharedCss,
+    /--card-layout-spacing: var\(--interface-section-gap\)/
+  );
   assert.match(
     css,
     /\.card-layout,\s*\.app-card-main,\s*\.app-card-sub,\s*\.app-card-inset\s*\{/
@@ -736,12 +757,18 @@ test('section headings share page-title treatment with their independent 24px si
   assert.match(shared, /font-weight: 700/);
   assert.match(heading, /font-size: var\(--page-heading-font-size\)/);
   assert.match(heading, /line-height: var\(--page-heading-line-height\)/);
-  assert.match(sharedCss, /--page-heading-font-size: var\(--interface-page-heading-font-size\)/);
+  assert.match(
+    sharedCss,
+    /--page-heading-font-size: var\(--interface-page-heading-font-size\)/
+  );
   assert.match(
     heading,
     /--page-heading-line-height: calc\(var\(--page-heading-font-size\) \+ 4px\)/
   );
-  assert.match(sharedCss, /--card-title-font-size: var\(--interface-card-title-font-size\)/);
+  assert.match(
+    sharedCss,
+    /--card-title-font-size: var\(--interface-card-title-font-size\)/
+  );
   assert.doesNotMatch(css, /\.slider-title\s*\{/);
   const lab = readFileSync(
     new URL('./visual-lab.css', import.meta.url),
@@ -1012,7 +1039,10 @@ test('poster-card titles inherit standard card-title typography without local pr
   visit(file);
   assert.ok(titles > 0, 'poster titles must consume the shared title role');
   assert.match(rule('.card-title'), /font-size: var\(--card-title-font-size\)/);
-  assert.match(sharedCss, /--card-title-font-size: var\(--interface-card-title-font-size\);/);
+  assert.match(
+    sharedCss,
+    /--card-title-font-size: var\(--interface-card-title-font-size\);/
+  );
 });
 
 test('reviewed card titles select regular weight without changing shared title geometry', () => {
@@ -2147,6 +2177,7 @@ test('card copy uses global subheading and body roles', () => {
 
 test('compact cards change size and retain shared text spacing/style', () => {
   const source = component('MediaDetails/ExpandableCreditList.tsx');
+  const normalizedSharedCss = sharedCss.replace(/\s+/g, '');
   assert.match(
     source,
     /<Link[^>]*className="card-title"[^>]*>\s*\{credit.name\}/
@@ -2167,9 +2198,18 @@ test('compact cards change size and retain shared text spacing/style', () => {
     compactRule,
     /(?:^|\n)\s*(?:font|color|margin|padding|line-height|display|gap)[-:]/
   );
-  assert.match(sharedCss, /--card-compact-title-font-size: var\(--interface-card-compact-title-font-size\)/);
-  assert.match(sharedCss, /--card-compact-subheading-font-size: var\(--interface-card-compact-subheading-font-size\)/);
-  assert.match(sharedCss, /--card-subheading-spacing-before: var\(--interface-card-subheading-spacing-before\)/);
+  assert.match(
+    sharedCss,
+    /--card-compact-title-font-size: var\(--interface-card-compact-title-font-size\)/
+  );
+  assert.match(
+    normalizedSharedCss,
+    /--card-compact-subheading-font-size:var\(--interface-card-compact-subheading-font-size\)/
+  );
+  assert.match(
+    normalizedSharedCss,
+    /--card-subheading-spacing-before:var\(--interface-card-subheading-spacing-before\)/
+  );
   assert.doesNotMatch(
     compactRule,
     /(?:^|\n)\s*--card-subheading-spacing-before\s*:/
@@ -2241,8 +2281,14 @@ test('compact portrait cards share the fixed 70px height and compact text stylin
   );
   assert.match(compact, /--card-min-height: var\(--card-height\)/);
   assert.doesNotMatch(compact, /calc\(/);
-  assert.match(sharedCss, /--card-compact-line-height: var\(--interface-card-compact-line-height\)/);
-  assert.match(sharedCss, /--card-compact-height: var\(--interface-card-compact-height\)/);
+  assert.match(
+    sharedCss,
+    /--card-compact-line-height: var\(--interface-card-compact-line-height\)/
+  );
+  assert.match(
+    sharedCss,
+    /--card-compact-height: var\(--interface-card-compact-height\)/
+  );
   assert.match(origThemeCss, /--interface-card-compact-height: 70px;/);
   assert.match(ngjThemeCss, /--interface-card-compact-height: 84px;/);
   assert.match(
@@ -2253,7 +2299,10 @@ test('compact portrait cards share the fixed 70px height and compact text stylin
     rule('.card-subheading'),
     /line-height: var\(--card-copy-line-height\)/
   );
-  assert.match(sharedCss, /--card-compact-padding-block: var\(--interface-card-compact-padding-block\)/);
+  assert.match(
+    sharedCss,
+    /--card-compact-padding-block: var\(--interface-card-compact-padding-block\)/
+  );
   assert.doesNotMatch(source, /className="[^\"]*\bh-20\b/);
   assert.match(source, /data-card-part="artwork"/);
   assert.match(source, /data-card-part="content"/);
@@ -2364,7 +2413,10 @@ test('shared list and scroll roles preserve approved compact geometry', () => {
     rule('.scrollable-card[data-scroll-layout]'),
     /padding-inline-end: var\(--inset-card-padding\)/
   );
-  assert.match(sharedCss, /--card-compact-height: var\(--interface-card-compact-height\)/);
+  assert.match(
+    sharedCss,
+    /--card-compact-height: var\(--interface-card-compact-height\)/
+  );
   assert.match(origThemeCss, /--interface-card-compact-height: 70px;/);
   assert.match(ngjThemeCss, /--interface-card-compact-height: 84px;/);
 });
