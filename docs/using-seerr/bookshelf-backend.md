@@ -21,20 +21,38 @@ Recovery](./bookshelf-metadata-sources.md).
 For BookshelfNG's SeerrNG-specific API behavior, see
 [BookshelfNG interoperability](#bookshelfng-interoperability).
 
-BookshelfNG's planned retirement in favor of ChaptarrNG is not released yet.
-ChaptarrNG `v0.9.977` includes single-database SQLite preview and conversion
-tools, but production apply remains frozen pending migration, rollback,
-feature-parity, and installation-channel acceptance. Draft ChaptarrNG PR #131
-adds further migration support and has passed synthetic populated-data checks;
-that candidate is unpublished. No legacy identity bridge has been published
-or enabled, so keep the existing BookshelfNG database and installation until the
+As of 2026-10-30, BookshelfNG `0.4.21.76` and ChaptarrNG `v0.9.977` are the
+latest public releases; ChaptarrNG `main` is `64689f1f`. ChaptarrNG `v0.9.977`
+includes single-database SQLite preview, conversion, and rollback tools in
+the standard product. Migration apply remains frozen pending feature,
+migration, rollback, and installation-channel acceptance. The follow-up
+one-image migration and installer work is proposed in ChaptarrNG PR
+[#183](https://github.com/snapetech-org/chaptarrng/pull/183), which is not
+merged or released. The prior Build
+[#41164597664](https://github.com/snapetech-org/chaptarrng/actions/runs/41164597664)
+was cancelled on an older head. The earlier PR dispatch
+[#41167825847](https://github.com/snapetech-org/chaptarrng/actions/runs/41167825847)
+was queued on pre-integration head `f63796dd`; exact-head validation for the
+updated PR has not started. The scheduled legacy distribution bridge
+[#41157387864](https://github.com/snapetech-org/bookshelfng/actions/runs/41157387864)
+is waiting behind 16 earlier runs with no jobs started; no legacy identity
+bridge has been published or enabled.
+
+The current main-to-main source-path audit compares BookshelfNG `1bd7f2dc`
+with ChaptarrNG `64689f1f`: 1,174 changed paths, 56 reviewed mappings, 644 dispositions, and
+530 paths without a final disposition. Those are source-review counts, not
+missing-feature counts or SeerrNG acceptance evidence. See the
+[pinned consolidation audit](https://github.com/snapetech-org/bookshelfng/blob/main/docs/maintainers/chaptarr-consolidation.md#exact-head-source-path-audit--2026-10-30).
+The unmerged changes in ChaptarrNG PR #183 are not included.
+
+Keep the existing BookshelfNG database and installation in service until the
 [feature, migration, and distribution gates](https://github.com/snapetech-org/bookshelfng/blob/main/docs/maintainers/chaptarr-consolidation.md)
-pass. BookshelfNG's retirement gate is its capabilities validated in
-ChaptarrNG. The later ChaptarrNG-to-Chaptarr gate is separate: all BookshelfNG
-features carried over plus every ChaptarrNG maintained or actively added
-feature, including unpublished work, block retirement as a whole. Each feature
-remains an individual blocker until tested against the supported upstream
-release; see the [combined ChaptarrNG retirement matrix](https://github.com/snapetech-org/chaptarrng/blob/main/docs/FORK_FEATURES.md#chaptarrng-retirement-blockers).
+pass. Closing BookshelfNG issue #144 did not close those gates or authorize
+cutover. Each BookshelfNG capability, data/configuration path, rollback path,
+and channel remains an individual blocker. The later ChaptarrNG-to-Chaptarr
+gate is separate and cumulative: all BookshelfNG features carried over plus
+every ChaptarrNG maintained, active, or unreleased capability blocks
+retirement. See the [combined ChaptarrNG retirement matrix](https://github.com/snapetech-org/chaptarrng/blob/main/docs/FORK_FEATURES.md#chaptarrng-retirement-gates).
 
 ## One BookshelfNG instance for both formats
 
@@ -561,9 +579,9 @@ For the validated deployment, the important in-container paths were:
 ## Installer Script
 
 > **Migration is frozen for now.** ChaptarrNG `v0.9.977` is the latest
-> published release, and BookshelfNG issue #144 keeps production cutover gated
-> on feature parity, representative data and rollback, and installation-channel
-> acceptance. Use the migration helper for read-only preview only. Do not pass
+> published release. BookshelfNG issue #144 is closed, but feature parity,
+> representative data and rollback, and installation-channel acceptance remain
+> open. Use the migration helper for read-only preview only. Do not pass
 > `--apply` or start ChaptarrNG against BookshelfNG appdata. Keep the existing
 > BookshelfNG service running until the retirement gates close.
 
@@ -590,8 +608,8 @@ promoting a database. Fill each `mediaType` with `audiobook`, `ebook`, or
 and rerun preview before applying. The same standard ChaptarrNG image reads
 that map during preview, apply, and normal startup.
 
-After issue #144 is closed and production cutover is approved, review the
-report, stop BookshelfNG, and apply with an independent backup location:
+After all retirement gates pass and production cutover is explicitly approved,
+review the report, stop BookshelfNG, and apply with an independent backup location:
 
 ```bash
 BOOKSHELF_EBOOKS_CONFIG_DIR=/path/to/bookshelf-config \

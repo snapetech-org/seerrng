@@ -104,11 +104,27 @@ For local MCP access, see the [SnapeTech MCP integration guide](./docs/integrati
   progress and retry timing, and resume after imports complete. Pending imports
   are cancelled only when no other active request still needs them; ChaptarrNG
   `0.9.941+` also supports a restricted SeerrNG service key.
-- The BookshelfNG-to-ChaptarrNG consolidation is still gated on BookshelfNG's
+- The BookshelfNG-to-ChaptarrNG consolidation remains blocked. As of 2026-10-30,
+  BookshelfNG `0.4.21.76` and ChaptarrNG `v0.9.977` are the latest public
+  releases; ChaptarrNG `main` is `64689f1f`. ChaptarrNG PR
+  [#183](https://github.com/snapetech-org/chaptarrng/pull/183) proposes the
+  one-image handoff and remains unmerged/unreleased. The prior Build
+  [41164597664](https://github.com/snapetech-org/chaptarrng/actions/runs/41164597664)
+  was cancelled on an older head. Its previous PR dispatch
+  [41167825847](https://github.com/snapetech-org/chaptarrng/actions/runs/41167825847)
+  was queued on pre-integration head `f63796dd`; exact-head validation for the
+  updated PR has not started. The BookshelfNG bridge run
+  [41157387864](https://github.com/snapetech-org/bookshelfng/actions/runs/41157387864)
+  is waiting behind 16 earlier bridge runs with no jobs started. No legacy
+  package, image, installer, updater, or chart identity has been redirected.
+  Retirement is gated on BookshelfNG's
   complete enhanced feature set, populated-data conversion, and each old
   installation channel. The later ChaptarrNG-to-upstream gate also includes
   every ChaptarrNG feature it maintains or is actively adding, including
-  unpublished work. See the [BookshelfNG consolidation report](https://github.com/snapetech-org/bookshelfng/blob/main/docs/maintainers/chaptarr-consolidation.md)
+  unpublished work. The current main-to-main source-path audit compares
+  BookshelfNG `1bd7f2dc` with ChaptarrNG `64689f1f` and has 530 open
+  dispositions; this is a review-path count, not a missing-feature count. See
+  the [BookshelfNG consolidation report](https://github.com/snapetech-org/bookshelfng/blob/main/docs/maintainers/chaptarr-consolidation.md)
   and [ChaptarrNG's itemized retirement matrix](https://github.com/snapetech-org/chaptarrng/blob/main/docs/FORK_FEATURES.md#itemized-active-and-unreleased-chaptarrng-blockers).
 - Optional read-only Audiobookshelf library scanning marks ISBN-matched items
   as available audiobooks without sending acquisition requests or changing
@@ -124,7 +140,7 @@ For local MCP access, see the [SnapeTech MCP integration guide](./docs/integrati
 - Administrator-controlled availability switches for each supported category, including separate ebook, audiobook, Retro, Modern, and PC Games controls.
 - Bookshelf backend diagnostics that classify Hardcover, softcover/Goodreads, and unknown metadata providers.
 - Hardcover-first Bookshelf deployment and migration tooling for existing Readarr or softcover libraries.
-- A [preview-first BookshelfNG-to-ChaptarrNG database migration helper](./docs/using-seerr/bookshelf-backend.md#installer-script) for single-database installations. Migration apply is frozen pending BookshelfNG issue #144 acceptance: do not run `--apply` or start ChaptarrNG against BookshelfNG appdata; keep BookshelfNG in service.
+- A [preview-first BookshelfNG-to-ChaptarrNG database migration helper](./docs/using-seerr/bookshelf-backend.md#installer-script) for single-database installations. Migration apply remains frozen until feature, migration, rollback, and installation-channel acceptance is complete. BookshelfNG issue #144 is closed, but that did not close the remaining gates: do not run `--apply` or start ChaptarrNG against BookshelfNG appdata; keep BookshelfNG in service.
 - Admin-only Bookshelf path moves with a conflict and disk-space preview, confirmation, API access, and a dry-run-first CLI. The mover works inside one BookshelfNG database; consolidate an old split deployment before using it.
 - Resumable, layered Readarr/softcover-to-Hardcover migration with strict matching, softcover metadata recovery, validation, cutover checks, and an opt-in deterministic local-record fallback for books Hardcover cannot import.
 - Per-user cross-media watchlists; local-only lists support title search, media-type filters, and stable sorting, while combined Plex lists preserve Plex ordering. The request workflow also includes blocklists, quotas, override rules, permissions, notifications, issue reporting, and request management.
@@ -364,14 +380,15 @@ can each handle Book and Audiobook formats; one BookshelfNG instance can serve
 both. QuestarrNG handles PC game acquisition, while ROMarrNG handles emulation
 systems and ROM acquisition.
 
-BookshelfNG's planned retirement in favor of ChaptarrNG is not released yet.
-ChaptarrNG `v0.9.977` includes single-database SQLite migration preview and
-conversion tooling, but apply remains frozen while migration, rollback,
-feature-parity, and installation-channel acceptance are open. Draft ChaptarrNG
-PR #131 has additional migration support and synthetic populated-data evidence,
-but remains unpublished. No legacy identity bridge has been published or
-enabled, so existing BookshelfNG installations should keep their current data
-and backup path. ChaptarrNG remains the maintained destination. Its later retirement into
+As of 2026-10-30, BookshelfNG `0.4.21.76` and ChaptarrNG `v0.9.977` are the
+latest public releases. ChaptarrNG `v0.9.977` includes single-database
+SQLite migration preview and conversion tooling, but apply remains frozen
+while migration, rollback, feature-parity, and installation-channel
+acceptance are open. Follow-up migration and installer work is proposed in
+ChaptarrNG PR #183 and has not passed exact-head private-JIT validation. No
+legacy identity bridge has been published or enabled, so existing BookshelfNG
+installations should keep their current data and backup path. ChaptarrNG remains the
+maintained destination. Its later retirement into
 upstream Chaptarr must preserve both ChaptarrNG's maintained and actively added
 features, including unpublished work, and the BookshelfNG features carried
 over. That complete union blocks ChaptarrNG retirement as a whole. Each
