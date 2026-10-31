@@ -41,6 +41,10 @@ interface Episode {
   seasonNumber: number;
   showId: number;
   stillPath?: string;
+  sonarrAvailability?: {
+    hd: boolean;
+    fourK: boolean;
+  };
   voteAverage: number;
   voteCount: number;
 }

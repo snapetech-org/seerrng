@@ -1,4 +1,5 @@
 import AirDateBadge from '@app/components/AirDateBadge';
+import Badge from '@app/components/Common/Badge';
 import CachedImage from '@app/components/Common/CachedImage';
 import LoadingSpinner from '@app/components/Common/LoadingSpinner';
 import defineMessages from '@app/utils/defineMessages';
@@ -7,6 +8,8 @@ import { useIntl } from 'react-intl';
 import useSWR from 'swr';
 
 const messages = defineMessages('components.TvDetails.Season', {
+  sonarrAvailable: 'Available · Sonarr',
+  sonarrAvailableAriaLabel: 'Available in Sonarr',
   somethingwentwrong: 'Something went wrong while retrieving season data.',
   noepisodes: 'Episode list unavailable.',
 });
@@ -51,6 +54,17 @@ const Season = ({ seasonNumber, tvId }: SeasonProps) => {
                     </h3>
                     {episode.airDate && (
                       <AirDateBadge airDate={episode.airDate} />
+                    )}
+                    {(episode.sonarrAvailability?.hd ||
+                      episode.sonarrAvailability?.fourK) && (
+                      <Badge
+                        badgeType="success"
+                        aria-label={intl.formatMessage(
+                          messages.sonarrAvailableAriaLabel
+                        )}
+                      >
+                        {intl.formatMessage(messages.sonarrAvailable)}
+                      </Badge>
                     )}
                   </div>
                   {episode.overview && <p>{episode.overview}</p>}

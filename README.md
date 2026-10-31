@@ -29,6 +29,7 @@ For local MCP access, see the [SnapeTech MCP integration guide](./docs/integrati
   - [SeerrNG Android app](./docs/getting-started/android-app.md)
   - [Move between Seerr and SeerrNG](./docs/using-seerr/migrating-between-seerr-and-seerrng.md)
   - [Choose available media categories](./docs/using-seerr/settings/media-categories.md)
+  - [Track individual TV episode availability](./docs/using-seerr/individual-episode-availability.md)
   - [Software requests: ROMs and PC games](./docs/using-seerr/software-acquisition.md)
   - [Request Status and Download copy](./docs/using-seerr/request-status.md)
   - [Books, authors, and series](./docs/using-seerr/books-and-series.md)
@@ -88,6 +89,7 @@ For local MCP access, see the [SnapeTech MCP integration guide](./docs/integrati
 - Managers can approve a one-time movie or TV request exception when a user's quota is full; optional Slack actions use a mapped account and the same request permissions as the web app.
 - Automation service integration with Radarr, Sonarr, Lidarr, and Bookshelf/Readarr-compatible APIs.
 - Sonarr v5 support alongside v3/v4, including metadata-language and season-order options with explicit season mapping for recovery.
+- Optional per-episode Sonarr file availability on TV season pages, kept separate from media-server playback access.
 - An optional TV request gate that checks whether the previous regular season was watched through a linked Plex, Jellyfin, or Emby account.
 - Admin-configured Prowlarr connection, per-indexer diagnostics, category coverage, and format-aware manual search across movies, TV, music, books, comics, magazines, ROMs, and PC games, with title-prefilled search links from media details; approved requests still go through their configured acquisition providers.
 - Music discovery and metadata through MusicBrainz, ListenBrainz, Cover Art Archive, TheAudioDB, and archive-backed artwork sources.
@@ -178,7 +180,7 @@ Recent repository updates include:
   Jellyfin/Emby profile refresh during imports.
 - **Sonarr:** v5 API support alongside v3/v4, metadata-language and season-order
   choices, and request recovery scoped to the selected service, quality, and
-  season order.
+  season order, plus optional per-episode file availability on TV season pages.
 - **Integrations:** MusicBrainz and Cover Art Archive connectivity checks with
   bounded artwork traffic controls, plus a preview-first BookshelfNG to
   ChaptarrNG database migration helper for single-database setups.
@@ -215,6 +217,7 @@ SeerrNG documentation is maintained in the [docs folder](https://github.com/snap
 - [Create custom Discover sliders](./docs/using-seerr/custom-discover-sliders.md)
 - [Filter movie and series Discover results](./docs/using-seerr/movie-series-discovery-filters.md)
 - [Configure Sonarr v5 and season orders](./docs/using-seerr/settings/services.md)
+- [Track individual TV episode availability](./docs/using-seerr/individual-episode-availability.md)
 - [Require previous-season watch progress](./docs/using-seerr/settings/general.md#require-the-previous-season-to-be-watched)
 - [Choose movie and TV request destinations](./docs/using-seerr/settings/services.md#request-destination-label-optional)
 - [Filter and sort local watchlists](./docs/using-seerr/plex/watchlist-auto-request.md#find-items-in-your-watchlist)

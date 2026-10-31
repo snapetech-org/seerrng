@@ -108,6 +108,9 @@ const messages = defineMessages('components.Settings.SettingsMain', {
   personMovieBulkRequestsEnabledTip:
     'Let users request every movie listed on a person page. Requests are sent in batches of 100 and still follow normal permissions and request quotas.',
   enableSpecialEpisodes: 'Allow Special Episodes Requests',
+  trackEpisodeAvailability: 'Track Individual Episode Availability',
+  trackEpisodeAvailabilityTip:
+    'Record which TV episodes have files in Sonarr during library scans. This makes partially available seasons easier to review. The selected TV or anime metadata provider must be TheTVDB. If the scan has not already fetched episode details, tracking makes one additional episode-list request per series.',
   locale: 'Display Language',
   youtubeUrl: 'YouTube URL',
   youtubeUrlTip:
@@ -263,6 +266,7 @@ const SettingsMain = () => {
           personMovieBulkRequestsEnabled:
             data?.personMovieBulkRequestsEnabled ?? false,
           enableSpecialEpisodes: data?.enableSpecialEpisodes,
+          trackEpisodeAvailability: data?.trackEpisodeAvailability ?? false,
           cacheImages: data?.cacheImages,
           includeAdult: data?.includeAdult ?? false,
           youtubeUrl: data?.youtubeUrl,
@@ -303,6 +307,7 @@ const SettingsMain = () => {
               personMovieBulkRequestsEnabled:
                 values.personMovieBulkRequestsEnabled,
               enableSpecialEpisodes: values.enableSpecialEpisodes,
+              trackEpisodeAvailability: values.trackEpisodeAvailability,
               cacheImages: values.cacheImages,
               includeAdult: values.includeAdult,
               youtubeUrl: values.youtubeUrl,
@@ -782,6 +787,28 @@ const SettingsMain = () => {
                       />
                     </div>
                   </div>
+                  <SettingsFormRow
+                    htmlFor="trackEpisodeAvailability"
+                    label={intl.formatMessage(
+                      messages.trackEpisodeAvailability
+                    )}
+                    description={intl.formatMessage(
+                      messages.trackEpisodeAvailabilityTip
+                    )}
+                    labelClassName="checkbox-label"
+                  >
+                    <SettingsField
+                      type="checkbox"
+                      id="trackEpisodeAvailability"
+                      name="trackEpisodeAvailability"
+                      onChange={() => {
+                        setFieldValue(
+                          'trackEpisodeAvailability',
+                          !values.trackEpisodeAvailability
+                        );
+                      }}
+                    />
+                  </SettingsFormRow>
                   <SettingsFormRow
                     htmlFor="youtubeUrl"
                     label={intl.formatMessage(messages.youtubeUrl)}
