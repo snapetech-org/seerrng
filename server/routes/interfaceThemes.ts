@@ -14,7 +14,8 @@ router.get('/', (_req, res) =>
 
 router.get('/:id/theme.css', (req, res) => {
   const theme = getInstalledInterfaceTheme(req.params.id);
-  if (!theme) return res.status(404).json({ status: 404, message: 'Not found.' });
+  if (!theme)
+    return res.status(404).json({ status: 404, message: 'Not found.' });
   return res
     .set('Content-Type', 'text/css; charset=utf-8')
     .set('X-Content-Type-Options', 'nosniff')

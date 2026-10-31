@@ -57,6 +57,7 @@ export default defineConfig({
     alias: {
       '@server': resolve(projectRoot, 'server'),
       '@app': resolve(projectRoot, 'src'),
+      '@themes': resolve(projectRoot, 'themes'),
       'node:test': resolve(projectRoot, 'server/test/vitestNodeTest.ts'),
     },
   },

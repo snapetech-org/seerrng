@@ -28,6 +28,7 @@ const portableTests = [
   'bin/duplicate-detector/index.test.mjs',
   'bin/duplicate-detector/triage.test.mjs',
   'scripts/brace-expansion.security.test.mjs',
+  'scripts/deepmerge-security.test.mjs',
   'scripts/android-workflow.test.mjs',
   'scripts/commit-message-prompt.test.mjs',
   'scripts/dev-server.test.mjs',

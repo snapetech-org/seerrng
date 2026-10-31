@@ -20,6 +20,24 @@ const readWorkflow = (name) =>
 const ghCliSetupRef = '${{ github.sha }}';
 const ghCliSetupPath = './.github-actions/.github/actions/setup-gh-cli';
 
+test('Windows release routes declare the Packer JIT source marker', () => {
+  for (const workflowName of [
+    'release.yml',
+    'release-assets.yml',
+    'release-chocolatey.yml',
+  ]) {
+    const source = fs.readFileSync(
+      path.join(workflowDirectory, workflowName),
+      'utf8'
+    );
+    assert.match(
+      source,
+      /^# packer-windows-jit-v1$/mu,
+      `${workflowName} must be included in the Packer Windows JIT source inventory`
+    );
+  }
+});
+
 test('every release job that calls GitHub CLI installs the pinned CLI first', () => {
   const release = readWorkflow('release.yml');
   const ghJobs = Object.entries(release.jobs).filter(([, job]) =>
@@ -64,9 +82,13 @@ test('release assets build while image verification runs, then package channels 
   const release = readWorkflow('release.yml');
   const assetBuild = release.jobs['build-release-assets'];
   const packageDispatch = release.jobs['dispatch-package-channels'];
+  const chocolateyDispatch = release.jobs['dispatch-chocolatey'];
   const publishRelease = release.jobs['publish-release'];
   const dispatchScript = packageDispatch.steps.find(
     (step) => step.name === 'Dispatch package workflows'
+  ).run;
+  const chocolateyDispatchScript = chocolateyDispatch.steps.find(
+    (step) => step.name === 'Dispatch Chocolatey package workflow'
   ).run;
 
   assert.equal(
@@ -111,7 +133,6 @@ test('release assets build while image verification runs, then package channels 
   ]);
   assert.equal(packageDispatch['timeout-minutes'], 360);
   assert.match(dispatchScript, /--ref main/u);
-  assert.match(dispatchScript, /release-chocolatey\.yml/u);
   assert.match(dispatchScript, /release-linux-packages\.yml/u);
   assert.match(
     dispatchScript,
@@ -121,6 +142,10 @@ test('release assets build while image verification runs, then package channels 
     dispatchScript,
     /optional_workflows=\([\s\S]*release-snap\.yml/u
   );
+  assert.match(chocolateyDispatchScript, /release-chocolatey\.yml/u);
+  assert.match(chocolateyDispatchScript, /--ref main/u);
+  assert.match(chocolateyDispatchScript, /-f action_tag=release/u);
+  assert.match(chocolateyDispatchScript, /-f runner_pool_tag=private/u);
   assert.doesNotMatch(
     dispatchScript.match(/required_workflows=\(([\s\S]*?)\)/u)?.[1] ?? '',
     /release-ppa\.yml/u,
@@ -433,10 +458,48 @@ test('Chocolatey packages only verified Windows release archives', () => {
     (step) => step.name === 'Submit package to Chocolatey Community Repository'
   );
 
+  assert.equal(
+    workflow['run-name'],
+    "${{ format('action:{0}:pool:{1}:tag:{2}', inputs.action_tag, inputs.runner_pool_tag, inputs.tag) }}"
+  );
   assert.equal(workflow.on.workflow_dispatch.inputs.tag.required, true);
-  assert.match(job['runs-on'], /"group":"packer-windows"/u);
-  assert.match(job['runs-on'], /"Windows"/u);
-  assert.match(job['runs-on'], /"ng-shared-main-seerrng"/u);
+  assert.deepEqual(workflow.on.workflow_dispatch.inputs.action_tag.options, [
+    'release',
+  ]);
+  assert.deepEqual(
+    workflow.on.workflow_dispatch.inputs.runner_pool_tag.options,
+    ['private']
+  );
+  assert.equal(
+    job.if,
+    "github.ref == 'refs/heads/main' && inputs.action_tag == 'release' && inputs.runner_pool_tag == 'private'"
+  );
+  const runner = runInNewContext(
+    job['runs-on'].slice(3, -2),
+    {
+      github: { run_id: 123 },
+      fromJSON: JSON.parse,
+      format: (template, runId) =>
+        template
+          .replaceAll('{{', '{')
+          .replaceAll('}}', '}')
+          .replaceAll('{0}', String(runId)),
+    },
+    { timeout: 100 }
+  );
+  assert.deepEqual(runner, {
+    group: 'packer-windows',
+    labels: [
+      'self-hosted',
+      'Windows',
+      'X64',
+      'on-demand',
+      'packer-windows',
+      'seerrng',
+      'gha-123-publish-chocolatey',
+    ],
+  });
+  assert.doesNotMatch(job['runs-on'], /ng-shared-main|ng-main-run/u);
   assert.match(job['runs-on'], /github\.run_id/u);
   assert.doesNotMatch(job['runs-on'], /windows-latest/u);
   assert.ok(credentialStep);
@@ -571,8 +634,18 @@ test('multi-architecture publishers perform the real build once and verify the i
   assert.equal(ci.on.push, undefined);
   assert.equal(Object.hasOwn(ci.on, 'workflow_dispatch'), true);
   assert.equal(Object.hasOwn(ci.on, 'pull_request'), false);
-  assert.equal(Object.hasOwn(ci.on, 'pull_request_target'), false);
-  assert.match(ci['run-name'], /inputs\.action, inputs\.runner_pool/u);
+  assert.deepEqual(ci.on.pull_request_target, {
+    branches: ['main'],
+    types: ['labeled'],
+  });
+  assert.match(
+    ci['run-name'],
+    /owner-pr:\{0\}:\{1\}:\{2\}:action:\{3\}:pool:\{4\}/u
+  );
+  assert.match(
+    ci['run-name'],
+    /format\('action:\{0\}:pool:\{1\}', inputs\.action \|\| 'ci', inputs\.runner_pool \|\| 'private'\)/u
+  );
   for (const jobName of [
     'release-notes',
     'i18n-and-tooling',
@@ -633,11 +706,9 @@ test('multi-architecture publishers perform the real build once and verify the i
     ).run,
     /verify-container-manifest\.sh --require-provenance/u
   );
-  assert.equal(
-    ci.jobs['scan-main-image'].if.includes(
-      "github.ref == 'refs/heads/main' && inputs.action == 'publish-image' && inputs.runner_pool == 'private' && needs.publish.result == 'success'"
-    ),
-    true
+  assert.match(
+    ci.jobs['scan-main-image'].if,
+    /github\.ref == 'refs\/heads\/main'[\s\S]*inputs\.pr_number == ''[\s\S]*inputs\.action == 'publish-image'[\s\S]*needs\.publish\.result == 'success'/u
   );
   assert.deepEqual(ci.jobs['scan-main-image'].needs, ['publish']);
   assert.deepEqual(ci.jobs['scan-main-image'].strategy.matrix.include, [
@@ -867,6 +938,10 @@ test('release publishing runs only from main dispatches so private runners serve
   assert.match(validation.if, /github\.event_name != 'workflow_dispatch'/u);
   assert.match(validation.if, /github\.ref == 'refs\/heads\/main'/u);
   assert.equal(
+    release['run-name'],
+    "${{ format('action:{0}:pool:{1}:tag:{2}', inputs.action_tag, inputs.runner_pool_tag, inputs.tag) }}"
+  );
+  assert.equal(
     release.concurrency.group,
     '${{ github.workflow }}-${{ github.event_name }}-${{ inputs.tag || github.ref_name }}-${{ github.run_id }}'
   );
@@ -884,12 +959,22 @@ test('release assets support trusted reuse and main-only manual dispatch', () =>
 
   assert.equal(workflowCall.inputs.tag.required, true);
   assert.equal(workflowCall.inputs.tag.type, 'string');
+  assert.equal(workflowCall.inputs.action_tag.required, true);
+  assert.equal(workflowCall.inputs.action_tag.type, 'string');
+  assert.equal(workflowCall.inputs.runner_pool_tag.required, true);
+  assert.equal(workflowCall.inputs.runner_pool_tag.type, 'string');
   assert.equal(workflowCall.inputs.reuse_from_run_id.required, false);
   assert.equal(workflowCall.inputs.reuse_from_run_id.type, 'string');
   assert.equal(workflowCall.inputs.reuse_from_run_id.default, '');
   assert.equal(assets.jobs.build['timeout-minutes'], 45);
-  assert.match(resolve.if, /github\.event_name != 'workflow_dispatch'/u);
-  assert.match(resolve.if, /github\.ref == 'refs\/heads\/main'/u);
+  assert.equal(
+    resolve.if,
+    "github.ref == 'refs/heads/main' && inputs.action_tag == 'release' && inputs.runner_pool_tag == 'private'"
+  );
+  assert.equal(
+    assets.jobs.build.if,
+    "github.ref == 'refs/heads/main' && inputs.action_tag == 'release' && inputs.runner_pool_tag == 'private'"
+  );
   assert.equal(workflowCall.inputs.reuse_windows_x64_artifact.type, 'boolean');
   assert.equal(
     workflowCall.inputs.reuse_windows_arm64_artifact.type,
@@ -932,6 +1017,11 @@ test('release recovery validates reusable artifacts and repairs the failed relea
   );
 
   assert.equal(inputs.reuse_from_run_id.type, 'string');
+  assert.equal(assetBuild.with.action_tag, '${{ inputs.action_tag }}');
+  assert.equal(
+    assetBuild.with.runner_pool_tag,
+    '${{ inputs.runner_pool_tag }}'
+  );
   assert.equal(inputs.reuse_published_image.type, 'boolean');
   assert.equal(inputs.reuse_published_image.default, false);
   assert.equal(recoveryValidation.if, "inputs.reuse_from_run_id != ''");
@@ -1449,19 +1539,19 @@ test('release archive platforms route only to private native runners', () => {
     'ng-main-run-123',
     'gha-123-2-build',
   ]);
-  assertRoute('macos-arm64', 'ng-shared-main-jit', [
+  assertRoute('macos-arm64', 'private-apple-builds', [
     'self-hosted',
     'macOS',
     'ARM64',
-    'ng-shared-main-seerrng',
+    'private-apple',
     'ng-main-run-123',
     'gha-123-2-build',
   ]);
-  assertRoute('macos-x64', 'ng-shared-main-jit', [
+  assertRoute('macos-x64', 'private-apple-builds', [
     'self-hosted',
     'macOS',
     'X64',
-    'ng-shared-main-seerrng',
+    'private-apple',
     'ng-main-run-123',
     'gha-123-2-build',
   ]);
@@ -1469,18 +1559,18 @@ test('release archive platforms route only to private native runners', () => {
     'self-hosted',
     'Windows',
     'X64',
+    'on-demand',
     'packer-windows',
-    'ng-shared-main-seerrng',
-    'ng-main-run-123',
+    'seerrng',
     'gha-123-2-build',
   ]);
   assertRoute('windows-arm64', 'packer-windows', [
     'self-hosted',
     'Windows',
     'ARM64',
+    'on-demand',
     'packer-windows',
-    'ng-shared-main-seerrng',
-    'ng-main-run-123',
+    'seerrng',
     'gha-123-2-build',
   ]);
   assert.equal(route('unknown'), false);
@@ -1488,17 +1578,68 @@ test('release archive platforms route only to private native runners', () => {
   assert.doesNotMatch(expression, /ubuntu-latest|windows-latest|macos-\d/u);
 });
 
-test('trusted main iOS validation uses the private Apple runner', () => {
+test('trusted main iOS validation requires a run-scoped private Apple JIT runner', () => {
   const ios = readWorkflow('ios.yml');
   assert.deepEqual(Object.keys(ios.on), ['workflow_dispatch']);
   assert.deepEqual(ios.on.workflow_dispatch.inputs.runner_pool_tag.options, [
     'private',
   ]);
-  assert.match(
-    ios.jobs.ios['runs-on'],
-    /"group":"private-apple-builds"[\s\S]*"private-apple"/u
+  const expression = ios.jobs.ios['runs-on'];
+  const route = runInNewContext(
+    expression.slice(3, -2),
+    {
+      github: { run_id: 123 },
+      fromJSON: JSON.parse,
+      format: (template, runId) =>
+        template
+          .replaceAll('{{', '{')
+          .replaceAll('}}', '}')
+          .replaceAll('{0}', String(runId)),
+    },
+    { timeout: 100 }
   );
-  assert.doesNotMatch(ios.jobs.ios['runs-on'], /macos-\d/u);
+  assert.deepEqual(route, {
+    group: 'private-apple-builds',
+    labels: [
+      'self-hosted',
+      'macOS',
+      'ARM64',
+      'private-apple',
+      'ng-main-run-123',
+      'gha-123-build-ios',
+    ],
+  });
+  assert.doesNotMatch(expression, /macos-\d|\|\|/u);
+});
+
+test('release iOS package requires a run-scoped private Apple JIT runner', () => {
+  const releaseAssets = readWorkflow('release-assets.yml');
+  const expression = releaseAssets.jobs['build-ios']['runs-on'];
+  const route = runInNewContext(
+    expression.slice(3, -2),
+    {
+      github: { run_id: 123 },
+      fromJSON: JSON.parse,
+      format: (template, runId) =>
+        template
+          .replaceAll('{{', '{')
+          .replaceAll('}}', '}')
+          .replaceAll('{0}', String(runId)),
+    },
+    { timeout: 100 }
+  );
+  assert.deepEqual(route, {
+    group: 'private-apple-builds',
+    labels: [
+      'self-hosted',
+      'macOS',
+      'ARM64',
+      'private-apple',
+      'ng-main-run-123',
+      'gha-123-build-ios',
+    ],
+  });
+  assert.doesNotMatch(expression, /macos-\d|\|\|/u);
 });
 
 test('release notes flow into the draft release and Discord announcement', () => {

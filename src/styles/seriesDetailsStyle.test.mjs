@@ -170,8 +170,14 @@ const verifyPlaybackMenuOwners = (stylesheet) => {
 
 test('playback menus inherit the selected surface and escape the parent frame layer', () => {
   verifyPlaybackMenuOwners(`${css}\n${sharedCss}`);
-  assert.match(origThemeCss, /--interface-dropdown-menu-surface: var\(--interface-panel\);/);
-  assert.match(ngjThemeCss, /--interface-dropdown-menu-surface: var\(--interface-panel\);/);
+  assert.match(
+    origThemeCss,
+    /--interface-dropdown-menu-surface: var\(--interface-panel\);/
+  );
+  assert.match(
+    ngjThemeCss,
+    /--interface-dropdown-menu-surface: var\(--interface-panel\);/
+  );
 });
 
 test('menu owner check rejects later clipping/transparency, trapped layers and duplicate gaps', () => {
@@ -204,7 +210,11 @@ test('menu owner check rejects later clipping/transparency, trapped layers and d
       /\.app-action-row gap has one owner/,
     ],
   ]) {
-    assert.notEqual(broken, ownerCss, 'negative fixture changes the stylesheet');
+    assert.notEqual(
+      broken,
+      ownerCss,
+      'negative fixture changes the stylesheet'
+    );
     assert.throws(() => verifyPlaybackMenuOwners(broken), diagnostic);
   }
 });

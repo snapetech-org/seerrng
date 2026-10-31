@@ -601,10 +601,7 @@ test('outline branch guides terminate at the final episode elbow', () => {
     outlineGeometry.body,
     /--selection-tree-episode-number-column:\s*calc\(2ch\s*\+\s*var\(--card-spacing\)\)/
   );
-  assert.match(
-    css,
-    /--card-layout-spacing:\s*var\(--interface-section-gap\)/
-  );
+  assert.match(css, /--card-layout-spacing:\s*var\(--interface-section-gap\)/);
   const numberAlignment = rules.find(
     (rule) =>
       rule.selector.includes("data-tree-layout='outline'") &&

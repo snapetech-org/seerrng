@@ -2768,7 +2768,7 @@ const validateCurrentBatchContract = (files) => {
   );
   requirePublicCommand(
     'build:server',
-    'tsc --project server/tsconfig.json && copyfiles -u 2 server/templates/**/*.{html,pug} dist/templates && copyfiles -u 2 "server/i18n/locale/*.json" dist/i18n && node scripts/replace-server-import-aliases.mjs dist',
+    'tsc --project server/tsconfig.json && copyfiles -u 2 server/templates/**/*.{html,pug} dist/templates && copyfiles -u 2 "server/i18n/locale/*.json" dist/i18n && copyfiles -u 1 "themes/**/*" dist/interface-themes && node scripts/replace-server-import-aliases.mjs dist',
     'the public server build must retain upstream compilation, resources and alias resolution'
   );
   requirePublicCommand(
@@ -3473,9 +3473,19 @@ const validateCurrentBatchContract = (files) => {
     );
   }
   requireText(
-    globals,
-    '--compact-control-height: 1.25rem;',
-    'all micro-controls must resolve their 20-pixel height through one shared rule'
+    'src/styles/interfaceThemes/shared.css',
+    '--compact-control-height: var(--interface-compact-control-height);',
+    'compact controls must resolve their selected theme height through one shared rule'
+  );
+  requireText(
+    'themes/seerrOrig/theme.css',
+    '--interface-compact-control-height: 1.25rem;',
+    'SeerrOrig must retain its 20-pixel compact-control height'
+  );
+  requireText(
+    'themes/seerrNGJ/theme.css',
+    '--interface-compact-control-height: 1.5rem;',
+    'SeerrNGJ must retain its 24-pixel compact-control height'
   );
   requireText(
     globals,

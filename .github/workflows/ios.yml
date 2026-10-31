@@ -24,7 +24,7 @@ permissions:
 jobs:
   ios:
     name: Test and package iOS Simulator build
-    runs-on: ${{ fromJSON('{"group":"private-apple-builds","labels":["self-hosted","macOS","ARM64","private-apple"]}') }}
+    runs-on: ${{ fromJSON(format('{{"group":"private-apple-builds","labels":["self-hosted","macOS","ARM64","private-apple","ng-main-run-{0}","gha-{0}-build-ios"]}}', github.run_id)) }}
     timeout-minutes: 45
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1

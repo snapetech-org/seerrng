@@ -75,12 +75,26 @@ describe('interface theme package contract', () => {
       )
     );
     assert.throws(
-      () => validateInterfaceThemeManifest({ ...manifest, script: 'install.js' }),
+      () =>
+        validateInterfaceThemeManifest({ ...manifest, script: 'install.js' }),
       /unknown manifest field/
     );
     assert.throws(
       () => validateInterfaceThemeManifest({ ...manifest, id: '../escape' }),
       /lowercase kebab-case/
     );
+  });
+
+  it('rejects control characters in manifest text', () => {
+    for (const character of ['\u0000', '\u001f', '\u007f']) {
+      assert.throws(
+        () =>
+          validateInterfaceThemeManifest({
+            ...manifest,
+            name: `Studio${character}Dark`,
+          }),
+        /name must be a non-empty string/
+      );
+    }
   });
 });

@@ -69,7 +69,9 @@ const parseRequestedServiceId = (value: unknown): number | undefined | null => {
   if (value === undefined) return undefined;
   if (typeof value !== 'string' || !/^\d+$/.test(value)) return null;
   const id = Number(value);
-  return Number.isSafeInteger(id) && id >= 0 && id <= MAX_SERVICE_ID ? id : null;
+  return Number.isSafeInteger(id) && id >= 0 && id <= MAX_SERVICE_ID
+    ? id
+    : null;
 };
 
 const getCoverPath = (scene: WhisparrSceneLookup, serverId: number) => {

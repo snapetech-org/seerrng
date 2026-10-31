@@ -1,3 +1,16 @@
+import { appDataPath } from '@server/utils/appDataVolume';
+import {
+  INTERFACE_THEME_IDS,
+  parseInterfaceTheme,
+} from '@server/utils/interfaceTheme';
+import {
+  MAX_INSTALLED_INTERFACE_THEME_CSS_BYTES,
+  MAX_INSTALLED_INTERFACE_THEMES,
+  MAX_INTERFACE_THEME_CSS_BYTES,
+  MAX_INTERFACE_THEME_MANIFEST_BYTES,
+  validateInterfaceThemePackage,
+} from '@server/utils/interfaceThemePackage';
+import { randomUUID } from 'node:crypto';
 import {
   existsSync,
   lstatSync,
@@ -8,17 +21,7 @@ import {
   rmSync,
   writeFileSync,
 } from 'node:fs';
-import { randomUUID } from 'node:crypto';
 import path from 'node:path';
-import { appDataPath } from '../utils/appDataVolume';
-import { INTERFACE_THEME_IDS, parseInterfaceTheme } from '../utils/interfaceTheme';
-import {
-  MAX_INTERFACE_THEME_CSS_BYTES,
-  MAX_INTERFACE_THEME_MANIFEST_BYTES,
-  MAX_INSTALLED_INTERFACE_THEMES,
-  MAX_INSTALLED_INTERFACE_THEME_CSS_BYTES,
-  validateInterfaceThemePackage,
-} from '../utils/interfaceThemePackage';
 
 const MAX_BUNDLE_BYTES = 2 * 1024 * 1024;
 const themeInstallRoot = path.join(appDataPath(), 'interface-themes');
@@ -159,7 +162,9 @@ const installTheme = (filename: string, replace: boolean): void => {
     installedCssBytes + nextCssBytes >
     MAX_INSTALLED_INTERFACE_THEME_CSS_BYTES
   ) {
-    throw new Error('The installed themes would exceed the total CSS size limit.');
+    throw new Error(
+      'The installed themes would exceed the total CSS size limit.'
+    );
   }
 
   const staging = path.join(
@@ -241,7 +246,9 @@ try {
     if (existsSync(themeInstallRoot)) {
       const rootStat = lstatSync(themeInstallRoot);
       if (rootStat.isSymbolicLink() || !rootStat.isDirectory()) {
-        throw new Error('The configured theme install path is not a directory.');
+        throw new Error(
+          'The configured theme install path is not a directory.'
+        );
       }
     }
     const target = path.join(themeInstallRoot, id);
@@ -256,6 +263,8 @@ try {
     usage();
   }
 } catch (error) {
-  console.error(error instanceof Error ? error.message : 'Theme command failed.');
+  console.error(
+    error instanceof Error ? error.message : 'Theme command failed.'
+  );
   process.exitCode = 1;
 }

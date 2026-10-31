@@ -28,7 +28,12 @@ const rootVariables = (stylesheet) => {
   });
   return variables;
 };
-const verifyThemeSpacing = (stylesheet, sectionGap, mainPadding, insetPadding) => {
+const verifyThemeSpacing = (
+  stylesheet,
+  sectionGap,
+  mainPadding,
+  insetPadding
+) => {
   const variables = rootVariables(stylesheet);
   assert.equal(
     variables.get('--interface-section-gap'),

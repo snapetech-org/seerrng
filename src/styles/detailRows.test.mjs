@@ -114,10 +114,7 @@ test('summary posters retain their size while heading gaps follow each theme', (
     css,
     /\.detail-card-poster\s*\{\s*width: 5rem;\s*height: 7\.5rem;/
   );
-  assert.match(
-    sharedCss,
-    /--detail-heading-gap: var\(--card-spacing\);/
-  );
+  assert.match(sharedCss, /--detail-heading-gap: var\(--card-spacing\);/);
   assert.match(origThemeCss, /--interface-section-gap: 1\.5rem;/);
   assert.match(ngjThemeCss, /--interface-section-gap: 0\.75rem;/);
   assert.match(
@@ -136,8 +133,14 @@ test('summary posters retain their size while heading gaps follow each theme', (
 });
 
 test('detail row geometry follows each theme and allows content-driven expansion', () => {
-  assert.match(sharedCss, /--detail-row-height: var\(--interface-detail-row-height\);/);
-  assert.match(sharedCss, /--detail-row-gap: var\(--interface-detail-row-gap\);/);
+  assert.match(
+    sharedCss,
+    /--detail-row-height: var\(--interface-detail-row-height\);/
+  );
+  assert.match(
+    sharedCss,
+    /--detail-row-gap: var\(--interface-detail-row-gap\);/
+  );
   assert.match(origThemeCss, /--interface-detail-row-height: 1rem;/);
   assert.match(ngjThemeCss, /--interface-detail-row-height: 1\.125rem;/);
   assert.match(origThemeCss, /--interface-detail-row-gap: 0\.25rem;/);

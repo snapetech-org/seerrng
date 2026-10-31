@@ -78,7 +78,9 @@
   --sidebar-navigation-nested-indent: var(--interface-nav-nested-indent);
   --sidebar-navigation-mobile-offset: var(--interface-nav-mobile-offset);
   --sidebar-navigation-desktop-offset: var(--interface-nav-desktop-offset);
-  --sidebar-navigation-heading-line-height: var(--interface-nav-heading-line-height);
+  --sidebar-navigation-heading-line-height: var(
+    --interface-nav-heading-line-height
+  );
   --compact-control-height: var(--interface-compact-control-height);
   --filter-control-height: var(--action-control-height);
   --filter-control-content-height: calc(var(--filter-control-height) - 2px);
@@ -97,12 +99,16 @@
   --card-subheading-font-size: var(--interface-card-subheading-font-size);
   --card-body-font-size: var(--interface-card-body-font-size);
   --card-compact-title-font-size: var(--interface-card-compact-title-font-size);
-  --card-compact-subheading-font-size: var(--interface-card-compact-subheading-font-size);
+  --card-compact-subheading-font-size: var(
+    --interface-card-compact-subheading-font-size
+  );
   --card-compact-line-height: var(--interface-card-compact-line-height);
   --card-compact-height: var(--interface-card-compact-height);
   --card-compact-padding-block: var(--interface-card-compact-padding-block);
   --card-copy-line-height: var(--interface-card-copy-line-height);
-  --card-subheading-spacing-before: var(--interface-card-subheading-spacing-before);
+  --card-subheading-spacing-before: var(
+    --interface-card-subheading-spacing-before
+  );
   --card-body-spacing-before: var(--interface-card-body-spacing-before);
   --detail-divider-width: var(--interface-detail-divider-width);
   --detail-first-column-limit: var(--interface-detail-first-column-limit);

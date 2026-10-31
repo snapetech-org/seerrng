@@ -26,7 +26,9 @@ const customThemeIdPattern = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
 export const parseInterfaceTheme = (value: unknown): InterfaceThemeId | null =>
   typeof value === 'string' &&
   value.length <= 48 &&
-  (INTERFACE_THEME_IDS.includes(value as (typeof INTERFACE_THEME_IDS)[number]) ||
+  (INTERFACE_THEME_IDS.includes(
+    value as (typeof INTERFACE_THEME_IDS)[number]
+  ) ||
     customThemeIdPattern.test(value))
     ? value
     : null;

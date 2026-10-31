@@ -1,7 +1,10 @@
 /* SeerrNGJ: John’s blue/silver visual system and grouped, data-rich layouts. */
 /* Each package owns its narrow-phone poster density as well as desktop size. */
 @media (max-width: 389px) {
-  :is(:root[data-interface-theme='seerrNGJ'], [data-interface-theme='seerrNGJ']) {
+  :is(
+    :root[data-interface-theme='seerrNGJ'],
+    [data-interface-theme='seerrNGJ']
+  ) {
     --poster-width: calc((100vw - 2rem - 2 * var(--card-spacing)) / 2);
   }
 }
