@@ -90,6 +90,8 @@ test('does not treat request parameters or provider properties as displayed copy
 
 const {
   findUnlocalizedDisplayExpressions,
+  findUnlocalizedAccessibilityAttributes,
+  findUnlocalizedEmailSubjectCopy,
 } = require('./api-message-surface-lib.cjs');
 const display = (text) =>
   findUnlocalizedDisplayExpressions(
@@ -124,6 +126,54 @@ test('preserves protocol schemes and provider branding in display data', () => {
   assert.equal(
     display('<span>{provider === "mylar" ? "Mylar3" : "Kapowarr"}</span>')
       .length,
+    0
+  );
+});
+
+const accessibility = (text) =>
+  findUnlocalizedAccessibilityAttributes(
+    ts.createSourceFile(
+      'src/example.tsx',
+      text,
+      ts.ScriptTarget.Latest,
+      true,
+      ts.ScriptKind.TSX
+    ),
+    'src/example.tsx'
+  );
+test('rejects fixed English accessibility attributes but preserves localized or brand values', () => {
+  assert.equal(
+    accessibility('<section aria-roledescription="carousel" />')[0].text,
+    'carousel'
+  );
+  assert.equal(
+    accessibility(
+      '<section aria-roledescription={intl.formatMessage(messages.roleDescription)} /><a aria-label="Simkl" />'
+    ).length,
+    0
+  );
+});
+
+test('rejects fixed English email subject copy but accepts translated subject values', () => {
+  assert.equal(
+    findUnlocalizedEmailSubjectCopy(
+      'server/templates/email/test-email/subject.pug',
+      '!= `Test Notification [${applicationTitle}]`\n'
+    )[0].text,
+    'Test Notification []'
+  );
+  assert.equal(
+    findUnlocalizedEmailSubjectCopy(
+      'server/templates/email/test-email/subject.pug',
+      '!= `${testSubject} [${applicationTitle}]`\n'
+    ).length,
+    0
+  );
+  assert.equal(
+    findUnlocalizedEmailSubjectCopy(
+      'server/templates/email/media-issue/subject.pug',
+      '!= `${event} - ${mediaName} [${applicationTitle}]`\n'
+    ).length,
     0
   );
 });

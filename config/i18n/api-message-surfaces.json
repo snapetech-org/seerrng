@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "scope": "Rendered JSX message/error/status fields. This guard complements the authored-server-source and direct-response caller inventories; it does not certify arbitrary provider/user/log text as translated.",
+  "scope": "Entries inventory rendered JSX message/error/status fields. Companion checks also reject static accessibility text attributes and fixed copy in app-authored email subject templates. The guard complements the authored-server-source and direct-response caller inventories; it does not certify arbitrary provider/user/log text as translated.",
   "entries": [
     {
       "file": "src/components/Blocklist/index.tsx",

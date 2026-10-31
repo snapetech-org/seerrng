@@ -383,6 +383,7 @@
   "components.BookSeriesSearch.CoverCarousel.next": "Next book covers",
   "components.BookSeriesSearch.CoverCarousel.open": "Open {series}: {book}",
   "components.BookSeriesSearch.CoverCarousel.previous": "Previous book covers",
+  "components.BookSeriesSearch.CoverCarousel.roleDescription": "carousel",
   "components.BookSeriesSearch.InlineResults.browse": "View all series results",
   "components.BookSeriesSearch.InlineResults.catalog": "Other Catalog Matches",
   "components.BookSeriesSearch.InlineResults.catalogHint": "Explore other catalog entries for this series. Their book lists may differ from your book server.",

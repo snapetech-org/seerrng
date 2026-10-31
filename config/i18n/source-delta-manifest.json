@@ -1,0 +1,55 @@
+{
+  "schemaVersion": 1,
+  "baseHead": "7524d8f6e5a94c781104b2ddb05535c4bb788bd0",
+  "sourceLocale": "en",
+  "domain": "client",
+  "source": {
+    "id": "components.BookSeriesSearch.CoverCarousel.roleDescription",
+    "message": "carousel",
+    "sourceSha256": "7565e4480e567f25d965c3e92a3d1a69143e8b21f4a9538548673d7fd1734055",
+    "callsites": [
+      {
+        "path": "src/components/BookSeriesSearch/CoverCarousel.tsx",
+        "line": 19,
+        "kind": "accessible-role-description"
+      },
+      {
+        "path": "src/components/BookSeriesSearch/CoverCarousel.tsx",
+        "line": 120,
+        "kind": "aria-roledescription"
+      }
+    ]
+  },
+  "localeAccounting": {
+    "activeLocaleCount": 38,
+    "nonEnglishEffectiveLocaleCount": 37,
+    "rolloutDirectLocaleCount": 12,
+    "pendingDirectCellCount": 12,
+    "rolloutEffectiveLocaleCount": 13,
+    "outOfRolloutNonEnglishLocaleCount": 24,
+    "pendingDirectLocales": [
+      { "tag": "ar", "clientFile": "ar.json", "status": "pending" },
+      { "tag": "de", "clientFile": "de.json", "status": "pending" },
+      { "tag": "es", "clientFile": "es.json", "status": "pending" },
+      { "tag": "fr", "clientFile": "fr.json", "status": "pending" },
+      { "tag": "hi", "clientFile": "hi.json", "status": "pending" },
+      { "tag": "id", "clientFile": "id.json", "status": "pending" },
+      { "tag": "ja", "clientFile": "ja.json", "status": "pending" },
+      { "tag": "ko", "clientFile": "ko.json", "status": "pending" },
+      { "tag": "pt-BR", "clientFile": "pt_BR.json", "status": "pending" },
+      { "tag": "vi", "clientFile": "vi.json", "status": "pending" },
+      { "tag": "zh-CN", "clientFile": "zh_Hans.json", "status": "pending" },
+      { "tag": "zh-TW", "clientFile": "zh_Hant.json", "status": "pending" }
+    ],
+    "regionalInheritance": [
+      {
+        "tag": "es-MX",
+        "clientFile": "es_MX.json",
+        "inheritsFrom": "es",
+        "status": "pending-via-parent",
+        "directCellRequired": false
+      }
+    ]
+  },
+  "translationCatalogsChanged": []
+}

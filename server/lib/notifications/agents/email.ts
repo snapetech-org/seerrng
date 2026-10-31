@@ -131,6 +131,7 @@ class EmailAgent
         },
         locals: {
           body: payload.message,
+          testSubject: payload.subject,
           locale: emailLocale,
           direction,
           greeting:

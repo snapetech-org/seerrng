@@ -201,3 +201,74 @@ const findUnlocalizedDisplayExpressions = (source, relativePath) => {
 };
 module.exports.findUnlocalizedDisplayExpressions =
   findUnlocalizedDisplayExpressions;
+
+const findUnlocalizedAccessibilityAttributes = (source, relativePath) => {
+  const found = [];
+  const textAttributes = new Set([
+    'aria-label',
+    'aria-description',
+    'aria-roledescription',
+    'aria-valuetext',
+    'alt',
+  ]);
+  // These are product/provider names, not translatable accessibility copy.
+  const preservedNames = new Set(['Seerr', 'Simkl']);
+  const visit = (node) => {
+    if (
+      ts.isJsxAttribute(node) &&
+      textAttributes.has(node.name.getText(source)) &&
+      node.initializer &&
+      ts.isStringLiteralLike(node.initializer) &&
+      node.initializer.text.trim() &&
+      !preservedNames.has(node.initializer.text)
+    ) {
+      found.push({
+        file: relativePath,
+        line:
+          source.getLineAndCharacterOfPosition(node.getStart(source)).line + 1,
+        attribute: node.name.getText(source),
+        text: node.initializer.text,
+      });
+    }
+    ts.forEachChild(node, visit);
+  };
+  visit(source);
+  return found;
+};
+module.exports.findUnlocalizedAccessibilityAttributes =
+  findUnlocalizedAccessibilityAttributes;
+
+const findUnlocalizedEmailSubjectCopy = (relativePath, text) => {
+  if (!/^server\/templates\/email\/[^/]+\/subject\.pug$/.test(relativePath))
+    return [];
+
+  const found = [];
+  for (const [index, line] of text.split(/\r?\n/).entries()) {
+    let literalText;
+    const expression = line.match(/^\s*(?:!=|=)\s*(.+?)\s*$/);
+    if (expression) {
+      const template = expression[1].match(/`([^`]*)`/);
+      if (template) {
+        literalText = template[1].replace(/\$\{[^}]*\}/g, '');
+      } else {
+        literalText = [...expression[1].matchAll(/(['"])(.*?)\1/g)]
+          .map((match) => match[2])
+          .join(' ');
+      }
+    } else {
+      const pugText = line.match(/^\s*\|\s*(.+?)\s*$/);
+      if (pugText) literalText = pugText[1];
+    }
+
+    if (literalText && /[A-Za-z]{3,}/.test(literalText)) {
+      found.push({
+        file: relativePath,
+        line: index + 1,
+        text: literalText.trim(),
+      });
+    }
+  }
+  return found;
+};
+module.exports.findUnlocalizedEmailSubjectCopy =
+  findUnlocalizedEmailSubjectCopy;

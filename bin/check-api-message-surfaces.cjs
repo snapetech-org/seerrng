@@ -5,6 +5,8 @@ const ts = require(W + '/node_modules/typescript');
 const {
   findUnlocalizedMessageConstructions,
   findUnlocalizedDisplayExpressions,
+  findUnlocalizedAccessibilityAttributes,
+  findUnlocalizedEmailSubjectCopy,
 } = require('./api-message-surface-lib.cjs');
 const files = (dir) =>
   fs
@@ -18,6 +20,8 @@ const files = (dir) =>
     );
 const rows = [];
 const rawConstructions = [];
+const rawAccessibility = [];
+const rawEmailSubjects = [];
 const controlState = new Set([
   'src/components/DiscoveryIntegrations/Configuration.tsx:setMessage:saved',
   'src/components/DiscoveryIntegrations/Configuration.tsx:setMessage:failed',
@@ -44,6 +48,12 @@ for (const file of files(W + '/src')) {
   );
   rawConstructions.push(
     ...findUnlocalizedDisplayExpressions(
+      sf,
+      path.relative(W, file).split(path.sep).join('/')
+    )
+  );
+  rawAccessibility.push(
+    ...findUnlocalizedAccessibilityAttributes(
       sf,
       path.relative(W, file).split(path.sep).join('/')
     )
@@ -105,11 +115,42 @@ for (const file of files(W + '/src')) {
   visit(sf);
 }
 
-if (rawConstructions.length) {
-  console.error(
-    'Fixed message construction needs a locale key or explicit classification:'
+for (const entry of fs.readdirSync(path.join(W, 'server/templates/email'), {
+  withFileTypes: true,
+})) {
+  if (!entry.isDirectory()) continue;
+  const file = path.join(
+    W,
+    'server/templates/email',
+    entry.name,
+    'subject.pug'
   );
-  console.error(JSON.stringify(rawConstructions, null, 2));
+  if (!fs.existsSync(file)) continue;
+  rawEmailSubjects.push(
+    ...findUnlocalizedEmailSubjectCopy(
+      path.relative(W, file).split(path.sep).join('/'),
+      fs.readFileSync(file, 'utf8')
+    )
+  );
+}
+
+if (
+  rawConstructions.length ||
+  rawAccessibility.length ||
+  rawEmailSubjects.length
+) {
+  console.error('Fixed user-facing copy needs a locale message:');
+  console.error(
+    JSON.stringify(
+      {
+        messageConstructions: rawConstructions,
+        accessibilityAttributes: rawAccessibility,
+        emailSubjects: rawEmailSubjects,
+      },
+      null,
+      2
+    )
+  );
   process.exit(1);
 }
 
@@ -138,7 +179,7 @@ if (missing.length) {
 const manifest = {
   schemaVersion: 1,
   scope:
-    'Rendered JSX message/error/status fields. This guard complements the authored-server-source and direct-response caller inventories; it does not certify arbitrary provider/user/log text as translated.',
+    'Entries inventory rendered JSX message/error/status fields. Companion checks also reject static accessibility text attributes and fixed copy in app-authored email subject templates. The guard complements the authored-server-source and direct-response caller inventories; it does not certify arbitrary provider/user/log text as translated.',
   entries: rows,
 };
 const target = path.join(W, 'config/i18n/api-message-surfaces.json');

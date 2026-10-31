@@ -16,6 +16,7 @@ const messages = defineMessages('components.BookSeriesSearch.CoverCarousel', {
   previous: 'Previous book covers',
   next: 'Next book covers',
   open: 'Open {series}: {book}',
+  roleDescription: 'carousel',
 });
 
 function Cover({ book }: { book: BookSeriesCovers['books'][number] }) {
@@ -115,7 +116,7 @@ export default function CoverCarousel({
         <div
           className="mt-3"
           role="group"
-          aria-roledescription="carousel"
+          aria-roledescription={intl.formatMessage(messages.roleDescription)}
           aria-label={intl.formatMessage(messages.covers, { series: title })}
         >
           <div className="mb-2 flex justify-end gap-1">

@@ -6,7 +6,7 @@ import { MediaType } from '@server/constants/media';
 import type Media from '@server/entity/Media';
 import { User } from '@server/entity/User';
 import { ALL_NOTIFICATIONS, UserSettings } from '@server/entity/UserSettings';
-import { initI18n } from '@server/i18n';
+import { getIntl, initI18n } from '@server/i18n';
 import PreparedEmail from '@server/lib/email';
 import { Notification } from '@server/lib/notifications';
 import { getSettings, type NotificationAgentEmail } from '@server/lib/settings';
@@ -92,5 +92,75 @@ describe('Email availability subscription notifications', () => {
     assert.match(html, /مرحبًا، \u2068follower\u2069!/);
     assert.doesNotMatch(html, /Requested By/);
     assert.match(html, /Arrival \(2016\)/);
+  });
+});
+
+describe('Email test notifications', () => {
+  it('uses the recipient locale for the subject', async () => {
+    let sentMessage: Parameters<PreparedEmail['send']>[0] | undefined;
+    mock.method(
+      PreparedEmail.prototype,
+      'send',
+      async (message: Parameters<PreparedEmail['send']>[0]) => {
+        sentMessage = message;
+        return true;
+      }
+    );
+
+    const emailSettings: NotificationAgentEmail = {
+      enabled: true,
+      embedPoster: false,
+      types: Notification.TEST_NOTIFICATION,
+      options: {
+        userEmailRequired: false,
+        emailFrom: 'seerr@example.com',
+        smtpHost: 'smtp.example.com',
+        smtpPort: 587,
+        secure: false,
+        ignoreTls: false,
+        requireTls: true,
+        allowSelfSigned: false,
+        senderName: 'SeerrNG',
+        usePublicLogo: false,
+      },
+    };
+    const recipient = new User({
+      id: 3,
+      username: 'recipient',
+      email: 'recipient@example.com',
+      settings: new UserSettings({
+        locale: 'es',
+        notificationTypes: { email: ALL_NOTIFICATIONS },
+      }),
+    });
+
+    const sent = await new EmailAgent(emailSettings).send(
+      Notification.TEST_NOTIFICATION,
+      {
+        subject: getIntl('es').formatMessage({
+          id: 'notifications.test.subject',
+          defaultMessage: 'Test Notification',
+        }),
+        message: getIntl('es').formatMessage({
+          id: 'notifications.test.message',
+          defaultMessage: 'Check check, 1, 2, 3. Are we coming in clear?',
+        }),
+        notifySystem: false,
+        notifyAdmin: false,
+        notifyUser: recipient,
+      }
+    );
+
+    assert.strictEqual(sent, true);
+    assert.ok(sentMessage);
+    const email = new PreparedEmail(emailSettings);
+    const subject = await email.render(
+      join(String(sentMessage.template), 'subject'),
+      sentMessage.locals
+    );
+    assert.strictEqual(
+      subject,
+      `Notificación de prueba [${getSettings().main.applicationTitle}]`
+    );
   });
 });
