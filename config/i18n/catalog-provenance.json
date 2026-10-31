@@ -155040,6 +155040,226 @@
       "sourceHash": "701d021d08c54579f23343581e45b65ffb1150b2c99f94352fdac4b7036dbbd5",
       "targetHash": "099f6d781edf319939c017087b22d8926f907fe657cd4c46ba680dda2075aedd",
       "correctionReason": "The source component is SportarrRequestModal and renders data.country as the country of a sports league. This is geographic country, not the Country music genre. Corrected the false-friend translation. Machine-draft; not native-reviewed or RTL-reviewed."
+    },
+    {
+      "domain": "client",
+      "locale": "de",
+      "id": "components.ExternalMediaManageSlideOver.comicTitle",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "Codex contextual correction; generated 2026-10-31; unverified",
+      "sourceHash": "47bedccc50bb79505d511d4c9fa7157cba36721fdfca9410c96d22fe55fb9dc2",
+      "targetHash": "47bedccc50bb79505d511d4c9fa7157cba36721fdfca9410c96d22fe55fb9dc2",
+      "correctionReason": "German `Komisch` means funny/strange, while these app fields label comic media. Use the standard German media-category loanword `Comic`. Machine-draft; no native-speaker or RTL review has been performed."
+    },
+    {
+      "domain": "client",
+      "locale": "de",
+      "id": "components.Requests.comic",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "Codex contextual correction; generated 2026-10-31; unverified",
+      "sourceHash": "47bedccc50bb79505d511d4c9fa7157cba36721fdfca9410c96d22fe55fb9dc2",
+      "targetHash": "47bedccc50bb79505d511d4c9fa7157cba36721fdfca9410c96d22fe55fb9dc2",
+      "correctionReason": "German `Komisch` means funny/strange, while these app fields label comic media. Use the standard German media-category loanword `Comic`. Machine-draft; no native-speaker or RTL review has been performed."
+    },
+    {
+      "domain": "client",
+      "locale": "de",
+      "id": "i18n.comic",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "Codex contextual correction; generated 2026-10-31; unverified",
+      "sourceHash": "47bedccc50bb79505d511d4c9fa7157cba36721fdfca9410c96d22fe55fb9dc2",
+      "targetHash": "47bedccc50bb79505d511d4c9fa7157cba36721fdfca9410c96d22fe55fb9dc2",
+      "correctionReason": "German `Komisch` means funny/strange, while these app fields label comic media. Use the standard German media-category loanword `Comic`. Machine-draft; no native-speaker or RTL review has been performed."
+    },
+    {
+      "domain": "client",
+      "locale": "id",
+      "id": "components.GameLibrary.retro",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "Codex contextual correction; generated 2026-10-31; unverified",
+      "sourceHash": "f41c7e0a6f974b849126ba9b962d290afd0c0b2069cc8a4d9885d1792418a97b",
+      "targetHash": "f41c7e0a6f974b849126ba9b962d290afd0c0b2069cc8a4d9885d1792418a97b",
+      "correctionReason": "These fields label the app’s retro-game catalog/category (`retro` software category). Indonesian `mundur` means backward; use the established category loanword `Retro`. Machine-draft; no native-speaker or RTL review has been performed."
+    },
+    {
+      "domain": "client",
+      "locale": "id",
+      "id": "components.RequestStatus.SoftwareRequests.retro",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "Codex contextual correction; generated 2026-10-31; unverified",
+      "sourceHash": "f41c7e0a6f974b849126ba9b962d290afd0c0b2069cc8a4d9885d1792418a97b",
+      "targetHash": "f41c7e0a6f974b849126ba9b962d290afd0c0b2069cc8a4d9885d1792418a97b",
+      "correctionReason": "These fields label the app’s retro-game catalog/category (`retro` software category). Indonesian `mundur` means backward; use the established category loanword `Retro`. Machine-draft; no native-speaker or RTL review has been performed."
+    },
+    {
+      "domain": "client",
+      "locale": "id",
+      "id": "components.SettingsSoftwareAcquisition.retro",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "Codex contextual correction; generated 2026-10-31; unverified",
+      "sourceHash": "f41c7e0a6f974b849126ba9b962d290afd0c0b2069cc8a4d9885d1792418a97b",
+      "targetHash": "f41c7e0a6f974b849126ba9b962d290afd0c0b2069cc8a4d9885d1792418a97b",
+      "correctionReason": "These fields label the app’s retro-game catalog/category (`retro` software category). Indonesian `mundur` means backward; use the established category loanword `Retro`. Machine-draft; no native-speaker or RTL review has been performed."
+    },
+    {
+      "domain": "client",
+      "locale": "id",
+      "id": "components.SoftwareCatalog.retro",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "Codex contextual correction; generated 2026-10-31; unverified",
+      "sourceHash": "f41c7e0a6f974b849126ba9b962d290afd0c0b2069cc8a4d9885d1792418a97b",
+      "targetHash": "f41c7e0a6f974b849126ba9b962d290afd0c0b2069cc8a4d9885d1792418a97b",
+      "correctionReason": "These fields label the app’s retro-game catalog/category (`retro` software category). Indonesian `mundur` means backward; use the established category loanword `Retro`. Machine-draft; no native-speaker or RTL review has been performed."
+    },
+    {
+      "domain": "client",
+      "locale": "fr",
+      "id": "components.Discover.DiscoverSports.title",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "Codex contextual correction; generated 2026-10-31; unverified",
+      "sourceHash": "9b1f5daf0a3d610e5a819b6c7664ffde2ea2f299fb1cacedfc6d1b68bed5e351",
+      "targetHash": "9b1f5daf0a3d610e5a819b6c7664ffde2ea2f299fb1cacedfc6d1b68bed5e351",
+      "correctionReason": "This is the sports-media category/section label. French `sportif` is an adjective meaning athletic; the French noun/category label is `Sports`, matching existing same-source catalog uses. Machine-draft; no native-speaker or RTL review has been performed."
+    },
+    {
+      "domain": "client",
+      "locale": "fr",
+      "id": "components.Layout.Sidebar.browsesports",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "Codex contextual correction; generated 2026-10-31; unverified",
+      "sourceHash": "9b1f5daf0a3d610e5a819b6c7664ffde2ea2f299fb1cacedfc6d1b68bed5e351",
+      "targetHash": "9b1f5daf0a3d610e5a819b6c7664ffde2ea2f299fb1cacedfc6d1b68bed5e351",
+      "correctionReason": "This is the sports-media category/section label. French `sportif` is an adjective meaning athletic; the French noun/category label is `Sports`, matching existing same-source catalog uses. Machine-draft; no native-speaker or RTL review has been performed."
+    },
+    {
+      "domain": "client",
+      "locale": "fr",
+      "id": "components.Requests.sports",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "Codex contextual correction; generated 2026-10-31; unverified",
+      "sourceHash": "9b1f5daf0a3d610e5a819b6c7664ffde2ea2f299fb1cacedfc6d1b68bed5e351",
+      "targetHash": "9b1f5daf0a3d610e5a819b6c7664ffde2ea2f299fb1cacedfc6d1b68bed5e351",
+      "correctionReason": "This is the sports-media category/section label. French `sportif` is an adjective meaning athletic; the French noun/category label is `Sports`, matching existing same-source catalog uses. Machine-draft; no native-speaker or RTL review has been performed."
+    },
+    {
+      "domain": "client",
+      "locale": "fr",
+      "id": "components.Requests.sportsLeagues",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "Codex contextual correction; generated 2026-10-31; unverified",
+      "sourceHash": "9b1f5daf0a3d610e5a819b6c7664ffde2ea2f299fb1cacedfc6d1b68bed5e351",
+      "targetHash": "9b1f5daf0a3d610e5a819b6c7664ffde2ea2f299fb1cacedfc6d1b68bed5e351",
+      "correctionReason": "This is the sports-media category/section label. French `sportif` is an adjective meaning athletic; the French noun/category label is `Sports`, matching existing same-source catalog uses. Machine-draft; no native-speaker or RTL review has been performed."
+    },
+    {
+      "domain": "client",
+      "locale": "fr",
+      "id": "components.Search.sports",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "Codex contextual correction; generated 2026-10-31; unverified",
+      "sourceHash": "9b1f5daf0a3d610e5a819b6c7664ffde2ea2f299fb1cacedfc6d1b68bed5e351",
+      "targetHash": "9b1f5daf0a3d610e5a819b6c7664ffde2ea2f299fb1cacedfc6d1b68bed5e351",
+      "correctionReason": "This is the sports-media category/section label. French `sportif` is an adjective meaning athletic; the French noun/category label is `Sports`, matching existing same-source catalog uses. Machine-draft; no native-speaker or RTL review has been performed."
+    },
+    {
+      "domain": "client",
+      "locale": "fr",
+      "id": "components.SettingsProwlarr.sports",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "Codex contextual correction; generated 2026-10-31; unverified",
+      "sourceHash": "9b1f5daf0a3d610e5a819b6c7664ffde2ea2f299fb1cacedfc6d1b68bed5e351",
+      "targetHash": "9b1f5daf0a3d610e5a819b6c7664ffde2ea2f299fb1cacedfc6d1b68bed5e351",
+      "correctionReason": "This is the sports-media category/section label. French `sportif` is an adjective meaning athletic; the French noun/category label is `Sports`, matching existing same-source catalog uses. Machine-draft; no native-speaker or RTL review has been performed."
+    },
+    {
+      "domain": "client",
+      "locale": "fr",
+      "id": "i18n.sports",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "Codex contextual correction; generated 2026-10-31; unverified",
+      "sourceHash": "9b1f5daf0a3d610e5a819b6c7664ffde2ea2f299fb1cacedfc6d1b68bed5e351",
+      "targetHash": "9b1f5daf0a3d610e5a819b6c7664ffde2ea2f299fb1cacedfc6d1b68bed5e351",
+      "correctionReason": "This is the sports-media category/section label. French `sportif` is an adjective meaning athletic; the French noun/category label is `Sports`, matching existing same-source catalog uses. Machine-draft; no native-speaker or RTL review has been performed."
+    },
+    {
+      "domain": "client",
+      "locale": "de",
+      "id": "components.Discover.DiscoverMusic.single",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "Codex contextual correction; generated 2026-10-31; unverified",
+      "sourceHash": "8888a029aaf60b70574640efd1655343d1c46c692918c113c16f44f606477253",
+      "targetHash": "8888a029aaf60b70574640efd1655343d1c46c692918c113c16f44f606477253",
+      "correctionReason": "This UI value is the music release type alongside Album and EP, not a person’s relationship status. Use the established music-format term `Single`. Machine-draft; no native-speaker or RTL review has been performed."
+    },
+    {
+      "domain": "client",
+      "locale": "fr",
+      "id": "components.Discover.DiscoverMusic.single",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "Codex contextual correction; generated 2026-10-31; unverified",
+      "sourceHash": "8888a029aaf60b70574640efd1655343d1c46c692918c113c16f44f606477253",
+      "targetHash": "8888a029aaf60b70574640efd1655343d1c46c692918c113c16f44f606477253",
+      "correctionReason": "This UI value is the music release type alongside Album and EP, not a person’s relationship status. Use the established music-format term `Single`. Machine-draft; no native-speaker or RTL review has been performed."
+    },
+    {
+      "domain": "client",
+      "locale": "pt-BR",
+      "id": "components.Discover.DiscoverMusic.single",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "Codex contextual correction; generated 2026-10-31; unverified",
+      "sourceHash": "8888a029aaf60b70574640efd1655343d1c46c692918c113c16f44f606477253",
+      "targetHash": "8888a029aaf60b70574640efd1655343d1c46c692918c113c16f44f606477253",
+      "correctionReason": "This UI value is the music release type alongside Album and EP, not a person’s relationship status. Use the established music-format term `Single`. Machine-draft; no native-speaker or RTL review has been performed."
+    },
+    {
+      "domain": "client",
+      "locale": "de",
+      "id": "components.IssueList.single",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "Codex contextual correction; generated 2026-10-31; unverified",
+      "sourceHash": "8888a029aaf60b70574640efd1655343d1c46c692918c113c16f44f606477253",
+      "targetHash": "8888a029aaf60b70574640efd1655343d1c46c692918c113c16f44f606477253",
+      "correctionReason": "This UI value is the music release type alongside Album and EP, not a person’s relationship status. Use the established music-format term `Single`. Machine-draft; no native-speaker or RTL review has been performed."
+    },
+    {
+      "domain": "client",
+      "locale": "fr",
+      "id": "components.IssueList.single",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "Codex contextual correction; generated 2026-10-31; unverified",
+      "sourceHash": "8888a029aaf60b70574640efd1655343d1c46c692918c113c16f44f606477253",
+      "targetHash": "8888a029aaf60b70574640efd1655343d1c46c692918c113c16f44f606477253",
+      "correctionReason": "This UI value is the music release type alongside Album and EP, not a person’s relationship status. Use the established music-format term `Single`. Machine-draft; no native-speaker or RTL review has been performed."
+    },
+    {
+      "domain": "client",
+      "locale": "pt-BR",
+      "id": "components.IssueList.single",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "Codex contextual correction; generated 2026-10-31; unverified",
+      "sourceHash": "8888a029aaf60b70574640efd1655343d1c46c692918c113c16f44f606477253",
+      "targetHash": "8888a029aaf60b70574640efd1655343d1c46c692918c113c16f44f606477253",
+      "correctionReason": "This UI value is the music release type alongside Album and EP, not a person’s relationship status. Use the established music-format term `Single`. Machine-draft; no native-speaker or RTL review has been performed."
     }
   ]
 }
