@@ -2461,7 +2461,7 @@
   "components.PersonDetails.requestAllMoviesSuccess": "제출하기 {created} 영화 요청. {skipped} 건너 뛰기; {failed} 실패.",
   "components.PersonDetails.requestAllMoviesTitle": "모든 영화 {person}",
   "components.QuotaSelector.adultMedia": "{count, plural, other {성인 미디어 요청}}",
-  "components.QuotaSelector.adultRequests": "{quotaLimit} <quotaUnits>{adultMedia} per {quotaDays} {days}</quotaUnits>",
+  "components.QuotaSelector.adultRequests": "{quotaLimit} <quotaUnits>{quotaDays}{days}마다 {adultMedia}</quotaUnits>",
   "components.QuotaSelector.albums": "{count, plural, one {앨범} other {앨범}}",
   "components.QuotaSelector.bookRequests": "{quotaLimit} <quotaUnits>{quotaDays}{days}마다 {books}</quotaUnits>",
   "components.QuotaSelector.books": "{count, plural, one {도서} other {도서}}",

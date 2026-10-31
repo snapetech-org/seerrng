@@ -6136,7 +6136,7 @@
   "components.UserProfile.UserSettings.LinkJellyfinModal.password": "Mot de passe",
   "components.UserProfile.UserSettings.LinkJellyfinModal.passwordRequired": "Vous devez fournir un mot de passe",
   "components.UserProfile.UserSettings.LinkJellyfinModal.quickConnect": "Utiliser Quick Connect",
-  "components.UserProfile.UserSettings.LinkJellyfinModal.save": "Lien",
+  "components.UserProfile.UserSettings.LinkJellyfinModal.save": "Lier",
   "components.UserProfile.UserSettings.LinkJellyfinModal.saving": "Ajout en cours…",
   "components.UserProfile.UserSettings.LinkJellyfinModal.title": "Associer le compte {mediaServerName}",
   "components.UserProfile.UserSettings.LinkJellyfinModal.username": "Nom d'utilisateur",

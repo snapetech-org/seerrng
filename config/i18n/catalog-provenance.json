@@ -18899,9 +18899,10 @@
       "id": "components.Requests.adult",
       "status": "draft",
       "provenance": "machine-draft",
-      "source": "Qwen 3.8 27B (local), generated 2026-10-30",
+      "source": "Codex contextual manual semantic correction; generated 2026-10-31; unverified",
       "sourceHash": "ad08defcbfea908e4c8d6b3097b6f2c96572a09a779bf322cee503554fad0006",
-      "targetHash": "ad08defcbfea908e4c8d6b3097b6f2c96572a09a779bf322cee503554fad0006"
+      "targetHash": "e8fe7e4b9afe3567d7e413d9109997c9dcaf757168dea38d21a2b8e47feb4dbd",
+      "correctionReason": "This is a media-type filter label, not a product name; use the app’s existing German term for adult media."
     },
     {
       "domain": "client",
@@ -18909,9 +18910,10 @@
       "id": "components.Requests.adults",
       "status": "draft",
       "provenance": "machine-draft",
-      "source": "Qwen 3.8 27B (local), generated 2026-10-30",
+      "source": "Codex contextual manual semantic correction; generated 2026-10-31; unverified",
       "sourceHash": "ad08defcbfea908e4c8d6b3097b6f2c96572a09a779bf322cee503554fad0006",
-      "targetHash": "ad08defcbfea908e4c8d6b3097b6f2c96572a09a779bf322cee503554fad0006"
+      "targetHash": "e8fe7e4b9afe3567d7e413d9109997c9dcaf757168dea38d21a2b8e47feb4dbd",
+      "correctionReason": "This is a media-type filter label, not a product name; use the app’s existing German term for adult media."
     },
     {
       "domain": "client",
@@ -20679,9 +20681,10 @@
       "id": "components.Settings.mediaTypeAdult",
       "status": "draft",
       "provenance": "machine-draft",
-      "source": "Qwen 3.8 27B (local), generated 2026-10-30",
+      "source": "Codex contextual manual semantic correction; generated 2026-10-31; unverified",
       "sourceHash": "7fdc3e8038e87ff56a0e429878710670c2b28ceaf3ece041f2e7e7866b002adb",
-      "targetHash": "7fdc3e8038e87ff56a0e429878710670c2b28ceaf3ece041f2e7e7866b002adb"
+      "targetHash": "e8fe7e4b9afe3567d7e413d9109997c9dcaf757168dea38d21a2b8e47feb4dbd",
+      "correctionReason": "This interpolated media type is ordinary English; use the established German term so the surrounding request sentence is localized."
     },
     {
       "domain": "client",
@@ -57107,9 +57110,10 @@
       "id": "components.Settings.mediaTypeAdult",
       "status": "draft",
       "provenance": "machine-draft",
-      "source": "Qwen 3.8 27B (local), generated 2026-10-30",
+      "source": "Codex contextual manual semantic correction; generated 2026-10-31; unverified",
       "sourceHash": "7fdc3e8038e87ff56a0e429878710670c2b28ceaf3ece041f2e7e7866b002adb",
-      "targetHash": "7fdc3e8038e87ff56a0e429878710670c2b28ceaf3ece041f2e7e7866b002adb"
+      "targetHash": "ff24d09d7e52476c14fb1a1fa069d791360ff09d33a561d42ed250a6b30f0ae2",
+      "correctionReason": "This interpolated media type is ordinary English; translate it as adult media."
     },
     {
       "domain": "client",
@@ -57137,9 +57141,10 @@
       "id": "components.Settings.serviceCategories",
       "status": "draft",
       "provenance": "machine-draft",
-      "source": "Qwen 3.8 27B (local), generated 2026-10-30",
+      "source": "Codex contextual manual semantic correction; generated 2026-10-31; unverified",
       "sourceHash": "6b0443701775e9527200f9ea2c41e7390ee237d7977e1c3b2a097e1707db7ccc",
-      "targetHash": "6b0443701775e9527200f9ea2c41e7390ee237d7977e1c3b2a097e1707db7ccc"
+      "targetHash": "cb1a4ed2129980dbd1690b7c4398acfee25efdc7c551409936952c7a923cd710",
+      "correctionReason": "Visible settings label was left as ordinary English; translated as “service categories”."
     },
     {
       "domain": "client",
@@ -57147,9 +57152,10 @@
       "id": "components.Settings.serviceCategoryBooks",
       "status": "draft",
       "provenance": "machine-draft",
-      "source": "Qwen 3.8 27B (local), generated 2026-10-30",
+      "source": "Codex contextual manual semantic correction; generated 2026-10-31; unverified",
       "sourceHash": "87779437ebcfa564e24e298bfe439dc262e80f606b367908b93c08f16dd7adcf",
-      "targetHash": "87779437ebcfa564e24e298bfe439dc262e80f606b367908b93c08f16dd7adcf"
+      "targetHash": "79c10bd3e6f470972c56c5c87f6402e54481052f95b2cd9928a019bd70b5fc0a",
+      "correctionReason": "Visible settings category was left as ordinary English; translated while retaining the established audiobook loanword."
     },
     {
       "domain": "client",
@@ -57157,9 +57163,10 @@
       "id": "components.Settings.serviceCategoryMusic",
       "status": "draft",
       "provenance": "machine-draft",
-      "source": "Qwen 3.8 27B (local), generated 2026-10-30",
+      "source": "Codex contextual manual semantic correction; generated 2026-10-31; unverified",
       "sourceHash": "6eb00b4b2614a144d41ccdf709017a675953fae2df6cfd6b397bd9e4d8708461",
-      "targetHash": "6eb00b4b2614a144d41ccdf709017a675953fae2df6cfd6b397bd9e4d8708461"
+      "targetHash": "323187a3b46f0380994908fc1adc951de983f85bbafb9603fb8c640a027a44c7",
+      "correctionReason": "Visible settings category was left as ordinary English; translated as “music”."
     },
     {
       "domain": "client",
@@ -57167,9 +57174,10 @@
       "id": "components.Settings.serviceCategoryTools",
       "status": "draft",
       "provenance": "machine-draft",
-      "source": "Qwen 3.8 27B (local), generated 2026-10-30",
+      "source": "Codex contextual manual semantic correction; generated 2026-10-31; unverified",
       "sourceHash": "6725e7bbcd28f3a8a586fa34bf191fd72dde8b61756932cd3237c17a6f196f1a",
-      "targetHash": "6725e7bbcd28f3a8a586fa34bf191fd72dde8b61756932cd3237c17a6f196f1a"
+      "targetHash": "dd73da44a4d5c30623e8dc80a46ceee2d24b76b123f94e29ef50c9c4ae3f3f89",
+      "correctionReason": "Visible settings category was left as ordinary English; translated as the commonly used Hindi UI term for the system section."
     },
     {
       "domain": "client",
@@ -57177,9 +57185,10 @@
       "id": "components.Settings.serviceCategoryTvMovies",
       "status": "draft",
       "provenance": "machine-draft",
-      "source": "Qwen 3.8 27B (local), generated 2026-10-30",
+      "source": "Codex contextual manual semantic correction; generated 2026-10-31; unverified",
       "sourceHash": "c86db08f9407d198a987b420f479929ff0d6a8f4ce21cc0bef6a7035753c13da",
-      "targetHash": "c86db08f9407d198a987b420f479929ff0d6a8f4ce21cc0bef6a7035753c13da"
+      "targetHash": "0f09d987a804d32c18cea3108579a3b878d046aecc3d2b885285bcabd20a2bef",
+      "correctionReason": "Visible settings category was left as ordinary English; the TV acronym is retained and “movies” is translated."
     },
     {
       "domain": "client",
@@ -57207,9 +57216,10 @@
       "id": "components.Settings.serviceGroupDiscovery",
       "status": "draft",
       "provenance": "machine-draft",
-      "source": "Qwen 3.8 27B (local), generated 2026-10-30",
+      "source": "Codex contextual manual semantic correction; generated 2026-10-31; unverified",
       "sourceHash": "f84650b4380e0d77920882ba5f679ba23e88b3cec939f8fb23dacdc06fcb126b",
-      "targetHash": "f84650b4380e0d77920882ba5f679ba23e88b3cec939f8fb23dacdc06fcb126b"
+      "targetHash": "2c0bbc187b84feeaa3196c12aff1df63003cad44b275e3adbc5513f742931096",
+      "correctionReason": "Visible settings group was left as ordinary English; translated as “discovery features”."
     },
     {
       "domain": "client",
@@ -57217,9 +57227,10 @@
       "id": "components.Settings.serviceGroupMusicLibrary",
       "status": "draft",
       "provenance": "machine-draft",
-      "source": "Qwen 3.8 27B (local), generated 2026-10-30",
+      "source": "Codex contextual manual semantic correction; generated 2026-10-31; unverified",
       "sourceHash": "9ee72e22adb1e71e9649f6f1a0ae0d2b43647e0b13667c8eac3a15a1a5e036e1",
-      "targetHash": "9ee72e22adb1e71e9649f6f1a0ae0d2b43647e0b13667c8eac3a15a1a5e036e1"
+      "targetHash": "df91a28171d8e2671d2d5af9867bcda636cc8a81180ecbbc958fc15863bd3ab7",
+      "correctionReason": "Visible settings group was left as ordinary English; translated with the established Hindi loanword for library."
     },
     {
       "domain": "client",
@@ -57247,9 +57258,10 @@
       "id": "components.Settings.serviceGroupRequestDestinations",
       "status": "draft",
       "provenance": "machine-draft",
-      "source": "Qwen 3.8 27B (local), generated 2026-10-30",
+      "source": "Codex contextual manual semantic correction; generated 2026-10-31; unverified",
       "sourceHash": "9d0473d6f5cfcbdd04d9aeb96fab2d9ea36eac1796d03cc2b280476a64fbe2f9",
-      "targetHash": "9d0473d6f5cfcbdd04d9aeb96fab2d9ea36eac1796d03cc2b280476a64fbe2f9"
+      "targetHash": "fdd04dbcb5d75821259f7faa964a0ed686b35d92a9096204b8d8528f65076b5b",
+      "correctionReason": "Visible settings group was left as ordinary English; translated as request destinations."
     },
     {
       "domain": "client",
@@ -57257,9 +57269,10 @@
       "id": "components.Settings.serviceGroupRequestRouting",
       "status": "draft",
       "provenance": "machine-draft",
-      "source": "Qwen 3.8 27B (local), generated 2026-10-30",
+      "source": "Codex contextual manual semantic correction; generated 2026-10-31; unverified",
       "sourceHash": "aaa68aaba79ca473023f8745a2fd7b7ae5d05b84aa3545e60758572e89bacc38",
-      "targetHash": "aaa68aaba79ca473023f8745a2fd7b7ae5d05b84aa3545e60758572e89bacc38"
+      "targetHash": "7d7e19b2e391bb64a47054c79f3b88fbddad6620cfbc920192f8f31b78fcef85",
+      "correctionReason": "Visible settings group was left as ordinary English; translated with the standard technical loanword for routing."
     },
     {
       "domain": "client",
@@ -57297,9 +57310,10 @@
       "id": "components.Settings.setupServiceCategoryBooks",
       "status": "draft",
       "provenance": "machine-draft",
-      "source": "Qwen 3.8 27B (local), generated 2026-10-30",
+      "source": "Codex contextual manual semantic correction; generated 2026-10-31; unverified",
       "sourceHash": "4bc0bbb1324deaf0241fe99dc3d2162389ed14777514491c7489bdb4c4919ea7",
-      "targetHash": "4bc0bbb1324deaf0241fe99dc3d2162389ed14777514491c7489bdb4c4919ea7"
+      "targetHash": "580e16567d003bf55d01d1bb574929dcdc7c810b6c8fff8dda0102ffa01d7619",
+      "correctionReason": "Visible setup category was left as ordinary English; all three media categories are translated."
     },
     {
       "domain": "client",
@@ -90897,9 +90911,10 @@
       "id": "components.QuotaSelector.adultRequests",
       "status": "draft",
       "provenance": "machine-draft",
-      "source": "Qwen 3.8 27B (local), generated 2026-10-30",
+      "source": "Codex contextual manual semantic correction; generated 2026-10-31; unverified",
       "sourceHash": "2c6417b77ca72cf1e9fcc5653b0d043f0539a135ff729d42d899996ba6d694d0",
-      "targetHash": "2c6417b77ca72cf1e9fcc5653b0d043f0539a135ff729d42d899996ba6d694d0"
+      "targetHash": "7cdaa669d39adb21123a961d1bb83b640cf435c34aa9bcc3eb180b2c2c8dbea9",
+      "correctionReason": "Matches the natural per-period ordering used by sibling Korean quota labels and replaces the English “per”; placeholders and tag are retained."
     },
     {
       "domain": "client",
@@ -97147,9 +97162,10 @@
       "id": "components.AdultDetails.performers",
       "status": "draft",
       "provenance": "machine-draft",
-      "source": "Qwen 3.8 27B (local), generated 2026-10-30",
+      "source": "Codex contextual manual semantic correction; generated 2026-10-31; unverified",
       "sourceHash": "60fcd8741080ac499a9c76a73cf4304fa23178583846581f192dc57e69fb5d2a",
-      "targetHash": "60fcd8741080ac499a9c76a73cf4304fa23178583846581f192dc57e69fb5d2a"
+      "targetHash": "ed5610dcd3bfa8522b084cbbab168385ddcb3976258ab64bd3ed8d8ab9c4a817",
+      "correctionReason": "AdultDetails renders a list of people credited as performers; use the app’s existing performer term for Brazilian Portuguese."
     },
     {
       "domain": "client",
@@ -103961,9 +103977,10 @@
       "id": "components.Settings.BinderyModal.audiobook",
       "status": "draft",
       "provenance": "machine-draft",
-      "source": "Qwen 3.8 27B (local), generated 2026-10-30",
+      "source": "Codex contextual manual semantic correction; generated 2026-10-31; unverified",
       "sourceHash": "8716cb3d8010144e1aa703eb837f23f79d34e9603b3e7173d6ce935cac473b74",
-      "targetHash": "8716cb3d8010144e1aa703eb837f23f79d34e9603b3e7173d6ce935cac473b74"
+      "targetHash": "c7e41731621a9a9515ff29ff30d83d64594d27d128969c5ae740e660c11a19e3",
+      "correctionReason": "This user-facing media format should use the catalog’s established Brazilian Portuguese term “Audiolivro”."
     },
     {
       "domain": "client",
@@ -107002,9 +107019,10 @@
       "id": "components.Share.formatAudiobook",
       "status": "draft",
       "provenance": "machine-draft",
-      "source": "Qwen 3.8 27B (local), generated 2026-10-30",
+      "source": "Codex contextual manual semantic correction; generated 2026-10-31; unverified",
       "sourceHash": "8716cb3d8010144e1aa703eb837f23f79d34e9603b3e7173d6ce935cac473b74",
-      "targetHash": "8716cb3d8010144e1aa703eb837f23f79d34e9603b3e7173d6ce935cac473b74"
+      "targetHash": "c7e41731621a9a9515ff29ff30d83d64594d27d128969c5ae740e660c11a19e3",
+      "correctionReason": "This user-facing media format should use the catalog’s established Brazilian Portuguese term “Audiolivro”."
     },
     {
       "domain": "client",
@@ -153778,6 +153796,72 @@
       "sourceHash": "fefbc1519f161aae9ff064c5f642fd6998dd7d7968ac61e381bcfd834bcf29b2",
       "targetHash": "3c7de6053eceee2aa35faaa713acf79f24e84e6214682f6816ed54870b3fdee3",
       "correctionReason": "Added missing target-locale CLDR plural categories using the existing other branch; all ICU arguments and exact-value selectors are retained."
+    },
+    {
+      "domain": "client",
+      "locale": "es",
+      "id": "components.UserProfile.UserSettings.LinkJellyfinModal.save",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "Codex contextual manual semantic correction; generated 2026-10-31; unverified",
+      "sourceHash": "a6a32dbc5618ea39f6df5b0f9808e3588b19e00d5f6f96c69492e40386e5aeab",
+      "targetHash": "dc878d24c5c45aebec079420837a6151608c7b6e53549d4a15a34bfcee16199a",
+      "correctionReason": "Source code uses this string as an account-link action button; “Vincular” matches the app’s Spanish action wording."
+    },
+    {
+      "domain": "client",
+      "locale": "fr",
+      "id": "components.UserProfile.UserSettings.LinkJellyfinModal.save",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "Codex contextual manual semantic correction; generated 2026-10-31; unverified",
+      "sourceHash": "a6a32dbc5618ea39f6df5b0f9808e3588b19e00d5f6f96c69492e40386e5aeab",
+      "targetHash": "3c4ea4cf04f493d7aafb2ed08296e5eeb1fc7ee392cc8ed545ffd4de010be32f",
+      "correctionReason": "Source code uses this string as an account-link action button; “Lier” matches the app’s French action wording."
+    },
+    {
+      "domain": "client",
+      "locale": "pt-BR",
+      "id": "components.UserProfile.UserSettings.LinkJellyfinModal.save",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "Codex contextual manual semantic correction; generated 2026-10-31; unverified",
+      "sourceHash": "a6a32dbc5618ea39f6df5b0f9808e3588b19e00d5f6f96c69492e40386e5aeab",
+      "targetHash": "dc878d24c5c45aebec079420837a6151608c7b6e53549d4a15a34bfcee16199a",
+      "correctionReason": "Source code uses this string as an account-link action button; “Vincular” is the natural Brazilian Portuguese action."
+    },
+    {
+      "domain": "client",
+      "locale": "hi",
+      "id": "components.UserProfile.UserSettings.LinkJellyfinModal.save",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "Codex contextual manual semantic correction; generated 2026-10-31; unverified",
+      "sourceHash": "a6a32dbc5618ea39f6df5b0f9808e3588b19e00d5f6f96c69492e40386e5aeab",
+      "targetHash": "a55b03d2c972da514fc9ff628d8d315defe6f443a5c827419f76581d0d59530b",
+      "correctionReason": "Source code uses this string as an account-link action button; use the Hindi imperative instead of the English loanword alone."
+    },
+    {
+      "domain": "client",
+      "locale": "es",
+      "id": "components.Settings.SettingsSwipe.baseUrl",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "Codex contextual manual semantic correction; generated 2026-10-31; unverified",
+      "sourceHash": "70589413a3c9793339fcf764276727ac652fa7dfe2f15fb5671251303a52ca49",
+      "targetHash": "f1a52d70f8c5d169c6e94a65b7c011e547cdc017c230c676c2bdfcf13cc5ea82",
+      "correctionReason": "This is a user-facing field label; standard Spanish word order is “URL base”, as used elsewhere in the Spanish catalog."
+    },
+    {
+      "domain": "client",
+      "locale": "hi",
+      "id": "components.Settings.noDefaultServer",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "Codex contextual manual semantic correction; generated 2026-10-31; unverified",
+      "sourceHash": "a05d659ec6e409ed649e94090cd4db016d382d6d000357b6b7f65a86ecc10824",
+      "targetHash": "f2d47e2a5a93a1f8453c04fa1c5c1b3bb0050107869c58d8f4234cfbd7d8a773",
+      "correctionReason": "The prior Hindi wording had incorrect word order and obscured the requirement. This version preserves the conditional/action meaning and all placeholders."
     }
   ]
 }
