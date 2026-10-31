@@ -81,7 +81,7 @@ For local MCP access, see the [SnapeTech MCP integration guide](./docs/integrati
 
 - Requests and approvals for movies, shows, music, ebooks, audiobooks, comics, magazines, emulation ROMs, and PC games.
 - A companion Android APK client for connecting to one or more self-hosted SeerrNG servers.
-- Movie and series Discover filters with 0.1-point TMDB rating thresholds and streaming-service availability filters by region; administrators can add public TMDB lists to custom sliders and filter state can be shared or restored from the URL.
+- Movie and series Discover filters with 0.1-point TMDB rating thresholds and streaming-service availability filters by region; administrators can add public TMDB lists to custom sliders, filter state can be shared or restored from the URL, and each home slider restores its horizontal position when you return from a title.
 - Media-server integration with Plex, Jellyfin, and Emby, including watch-state-aware My Library views scoped to each linked account.
 - Movie and TV title cards show standard and 4K availability separately across search, Discover, collections, people, and list views, so a 4K-only copy is visible as 4K.
 - Sign-in returns users to a validated in-app destination across local, media-server, and OIDC login, and sign-out clears the previous return destination.
@@ -150,9 +150,9 @@ For local MCP access, see the [SnapeTech MCP integration guide](./docs/integrati
 - A [preview-first BookshelfNG-to-ChaptarrNG database migration helper](./docs/using-seerr/bookshelf-backend.md#installer-script) for single-database installations. Migration apply remains frozen until feature, migration, rollback, and installation-channel acceptance is complete. BookshelfNG issue #144 is closed, but that did not close the remaining gates: do not run `--apply` or start ChaptarrNG against BookshelfNG appdata; keep BookshelfNG in service.
 - Admin-only Bookshelf path moves with a conflict and disk-space preview, confirmation, API access, and a dry-run-first CLI. The mover works inside one BookshelfNG database; consolidate an old split deployment before using it.
 - Resumable, layered Readarr/softcover-to-Hardcover migration with strict matching, softcover metadata recovery, validation, cutover checks, and an opt-in deterministic local-record fallback for books Hardcover cannot import.
-- Per-user cross-media watchlists; local-only lists support title search, media-type filters, and stable sorting, while combined Plex lists preserve Plex ordering. The request workflow also includes blocklists, quotas, override rules, permissions, notifications, issue reporting, and request management.
+- Per-user cross-media watchlists; local-only lists support title search, media-type filters, and stable sorting, while combined Plex lists preserve Plex ordering. The request workflow also includes blocklists, quotas, override rules, permissions, notifications, issue reporting, and request management. Users with issue-reporting permission can report processing movie and series requests before the media is available.
 - Users can choose whether movie and TV copies requested by someone else appear as shared or stay hidden; this changes the availability display, not media-server access.
-- Discover shelves can be reordered and customized with public TMDB lists. Movie and series filters include fractional ratings, streaming-service inclusion or exclusion, category exclusions, and URL-backed state. Discover detail navigation keeps the selected result context, and rating details work on touch screens.
+- Discover shelves can be reordered and customized with public TMDB lists. Movie and series filters include fractional ratings, streaming-service inclusion or exclusion, category exclusions, and URL-backed state. Discover detail navigation keeps the selected result context, each shelf restores its own horizontal position on return, and rating details work on touch screens.
 - Movie and Series Subject Tags can be hidden with a browser-saved preference shared across both detail pages.
 - Authenticated **Download copy** links in Request Status for verified movie, TV, book, comic, magazine, ROM, and PC game files.
 - Request lifecycle tracking and availability notifications link users back to the matching Request Status item, where available files can be selected and saved.
@@ -165,7 +165,7 @@ SeerrNG is active fork work. Movie and TV behavior is inherited and generally st
 
 Recent repository updates include:
 
-- **Discover:** editable shared shelves, including public TMDB list sliders; more precise rating and streaming filters; category exclusions; URL-backed filter state; detail navigation through the current result list; and restored carousel position when returning from a title.
+- **Discover:** editable shared shelves, including public TMDB list sliders; more precise rating and streaming filters; category exclusions; URL-backed filter state; detail navigation through the current result list; and restoration of each carousel's horizontal position when returning from a title.
 - **Requests:** per-user access to labeled Radarr/Sonarr destinations, quota
   exception approvals, optional Slack approval actions, an optional
   previous-season watch gate, and Sonarr monitoring for future seasons when
