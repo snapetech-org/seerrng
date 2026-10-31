@@ -156,6 +156,7 @@ For local MCP access, see the [SnapeTech MCP integration guide](./docs/integrati
 - Request lifecycle tracking and availability notifications link users back to the matching Request Status item, where available files can be selected and saved.
 - Signed-in household members can follow another user's active movie or series request for a one-time availability notice through their own configured notification channels.
 - Browser, service-worker, API, DNS, avatar, and image-proxy caching tuned for faster refreshes and tab restores.
+- Server-side Axios requests use a versioned User-Agent; provider-specific values are preserved. See [Network settings](docs/using-seerr/settings/network.md#outbound-request-identity).
 
 ## Project Status
 

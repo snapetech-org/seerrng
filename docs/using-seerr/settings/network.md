@@ -126,3 +126,13 @@ recovery steps.
 The API Request Timeout setting defines the maximum time (in seconds) Seerr will wait for a response from external services, such as Radarr or Sonarr. The default value is 10 seconds, though it can be entirely disabled by setting it to 0. Please note that any changes to this value require restarting Seerr to take effect.
 
 Enforcing a timeout ensures the Seerr interface remains responsive and prevents infinite loading states when a connected service unexpectedly goes offline. Conversely, you may want to increase this value if you frequently experience failed requests due to your external services being slow to respond, which often happens when they are under heavy load or querying network-mounted storage.
+
+## Outbound request identity
+
+SeerrNG adds a versioned Seerr/<version> User-Agent to its server-side Axios
+requests when an integration has not supplied a protocol-specific value. This
+includes remote image requests handled by the image proxy. Provider-specific
+User-Agent values are preserved. Remote services can use this header to identify
+the software version; it does not contain a SeerrNG account or request identity.
+
+This extends the outbound request identification work in [Seerr PR #3395](https://github.com/seerr-team/seerr/pull/3395).

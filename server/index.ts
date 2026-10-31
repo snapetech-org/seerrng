@@ -91,6 +91,7 @@ import {
   createHttpsUpgradeHandler,
   initializeTls,
 } from '@server/utils/tls';
+import '@server/utils/userAgent';
 import compression from 'compression';
 import cookieParser from 'cookie-parser';
 import type { NextFunction, Request, Response } from 'express';
