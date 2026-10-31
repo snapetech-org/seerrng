@@ -19,6 +19,7 @@ type Audiobook = {
 type RequestItem = Pick<ReadMeABookRequest, 'asin' | 'status'>;
 
 const messages = defineMessages('components.Discover.ReadMeABookHomeSection', {
+  requestedTitle: '{title} requested.',
   request: 'Request',
   requesting: 'Requesting…',
   requested: 'Requested',
@@ -59,7 +60,11 @@ const ReadMeABookHomeSection = ({ title, section, subject }: Props) => {
     setNotice(undefined);
     try {
       await axios.post('/api/v1/readmeabook/requests', book);
-      setNotice(`${book.title} requested.`);
+      setNotice(
+        intl.formatMessage(messages.requestedTitle, {
+          title: `\u2068${book.title}\u2069`,
+        })
+      );
       await mutate();
     } catch (caught) {
       setNotice(

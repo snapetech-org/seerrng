@@ -1,6 +1,9 @@
 import defineMessages from '@app/utils/defineMessages';
 
 const globalMessages = defineMessages('i18n', {
+  ok: 'Ok',
+  unknown: 'Unknown',
+  countOfTotal: '{count, number} of {total, number}',
   available: 'Available',
   partiallyavailable: 'Partially Available',
   notavailable: 'Not Available',

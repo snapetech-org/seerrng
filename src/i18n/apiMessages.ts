@@ -19,6 +19,8 @@ export const apiMessages: Record<
   m0100181c834d51bb8fff: '[Readarr] Failed to lookup author: {value0}',
   m015509a53fe7196f05b5:
     'Your request was approved and is waiting to be dispatched.',
+  m016c40f4f1ee82c70ea0:
+    'Window is not defined. Are you calling this in the browser?',
   m016fcf2e8d8f71ad9900: 'Issue user not found',
   m01754239bc7ce586eb4e: 'Plex returned invalid metadata',
   m017b64ce175c7b9bd5b1: 'Google Books returned an invalid search response.',
@@ -35,7 +37,6 @@ export const apiMessages: Record<
   m02ad0e74d47c538a824c: 'Google Books is unavailable. Try again shortly.',
   m02dfb04fc6525fda5c08: 'This list is already connected.',
   m02dfc7136440ef5e87b3: 'No default Lidarr server configured.',
-  m02e98b9ca898f1e3808f: '{value0}:standard',
   m031e117ad2dfbdc8d858: 'Unable to retrieve watch provider regions.',
   m032537ac6e8460967060:
     'Seerr cannot safely remove an untracked empty Bookshelf entry.',
@@ -43,6 +44,7 @@ export const apiMessages: Record<
   m033e8669823f02a82e9b: 'Unsupported migration database type: {value0}',
   m03a4b22094ab06bada1e:
     'Spotify did not return any importable tracks from this playlist.',
+  m03da0fea7bffba45a4d1: 'No supported app connection suggestions were found.',
   m03dc0921a6dec1fe28e9:
     'Set Jellyfin as the active media server and enable media-server sign-in before enabling bridge sign-in.',
   m03dc4bde4ad356959f3c:
@@ -71,7 +73,6 @@ export const apiMessages: Record<
   m05e26dcf8a5c67102cb4: 'Cannot refresh Trakt token without a refresh token',
   m05f73fd10a09b2ff6f16: 'You can have up to {value0} active recordings.',
   m0602faccdad407e81382: 'Invalid book ID.',
-  m06271baf49532c879aa3: 'info',
   m062a2301fb64da954404: 'No addresses found for {value0}',
   m06587ddce90ecdc425b8: 'No default Sportarr server is configured.',
   m065dfbc18897bad9b44c:
@@ -89,7 +90,6 @@ export const apiMessages: Record<
   m074408278e13efd37d1f: 'This game is already linked to the catalog.',
   m0761705ee05e01de26d5: 'Invalid series cover content type.',
   m077dceb0eb2f8f2ff2d2: 'Could not review TV request access.',
-  m0782507b1e3595b6ea18: 'account-not-linked',
   m078dd32c9ff587ee1e46: 'settings contains unsupported field {value0}.',
   m07a5749e14540548096f: 'Magazine title is invalid.',
   m07acde9d03c4d6fc12fa: 'Trakt repeated a sync page.',
@@ -109,6 +109,7 @@ export const apiMessages: Record<
   m087ccfff535824051b24: 'Bindery returned an invalid or repeated library row.',
   m08946699eba6a2f1e96c: 'ROMarrNG: {value0}',
   m08abdaba478736d0c66f: 'Email address required.',
+  m08ac1b43c378e56b7f6b: 'Collection is no longer accessible.',
   m08ba96e55bd9ebd45b22: '{value0} must be {value1} characters or fewer.',
   m08d431e37c89e1e5c398: 'Media data not found.',
   m094db48ba873c52368df: 'Invalid series watch request.',
@@ -121,6 +122,7 @@ export const apiMessages: Record<
     '{value0} must be a decimal integer between 1 and 65535.',
   m09d0928b7e3a8f5bc009: 'Check check, 1, 2, 3. Are we coming in clear?',
   m09ea3f1f83ad6c149b62: 'Tunerr returned invalid recording history.',
+  m0a2666ec9adc478f2dba: 'Inconsistent collection capability.',
   m0a6934b7f1d7b01a6d47:
     'Request for this comic already exists at the selected destination.',
   m0a7f8033d335e75b99fc: 'Unable to test metadata providers.',
@@ -139,6 +141,7 @@ export const apiMessages: Record<
   m0b32447dd9d1a826dcc9: 'Settings body must be an object.',
   m0b33703eea6421cb5830: 'Invalid software request id.',
   m0b3fc7176fb77831957e: 'Media server configuration changed during login.',
+  m0b570eb9b0e9ff05fb9f: 'The operation was aborted.',
   m0b5a756b4b39c61fc1ac: 'Media type must be a string.',
   m0b8c2c7d830734780830: 'The game could not be added to your library.',
   m0bb4ecec33688632fb9a: 'Provide 1 to 200 valid TMDB movie IDs.',
@@ -161,6 +164,7 @@ export const apiMessages: Record<
   m0caaa29eb36ba135fe09: 'Chaptarr returned an invalid pending add ID.',
   m0cd7bb3089910dccd77b: 'Invalid comic identity.',
   m0cdd74535be0c71f3dc0: 'Invalid Plex collection selection.',
+  m0cdf275bfa9ce8ddd412: 'Malformed CSV quoting.',
   m0d1aa7daf134cba1ff93: 'Open Library book discovery request timed out.',
   m0d1f623c24509c4a535f: 'Cannot check series collections right now.',
   m0d2d3b16bdad80d2d4bc: 'requestRootFolders must be an object.',
@@ -182,6 +186,8 @@ export const apiMessages: Record<
   m0dca21848c253cfa0ef6: 'Sports league media data not found.',
   m0e4ae90be81aa3354858: 'Notification outbox {value0} claim was lost.',
   m0e4c37ed0a64b4ff21f7: 'format must be ebook, audiobook, or both.',
+  m0e4f7149909f8915a43e:
+    'ROMarrNG cannot stop a download after it reaches the download client. Cancel it in ROMarrNG or the download client.',
   m0e5a66a83359829dcc09: 'This recording is no longer active.',
   m0ed69eb916a5bc24b464: 'Whisparr scene catalog is unavailable right now.',
   m0ed7e6dd1e3d36993ad4: 'A marker path is required',
@@ -192,6 +198,7 @@ export const apiMessages: Record<
   m0f19c130ce9bf4ef7c84: 'Book request is missing lookup identifiers',
   m0f1c70c5e0481e357118:
     'A maximum of {value0} instances can be configured for each service type.',
+  m0f2e36aa704a05d614bb: 'Native saved state could not be verified.',
   m0f55cb38f654f25b2a77: 'Each track needs an artist and title.',
   m0f59ea8891e5672092ee: 'Could not connect to Jellystat.',
   m0f60bafa6769619d1a06: 'Choose a valid Swipe decision.',
@@ -214,6 +221,7 @@ export const apiMessages: Record<
   m1073f4310ff32f58eda9:
     'The account provider could not complete this operation. Try again shortly.',
   m1080e20ee0e03e005970: 'A valid issue ID is required for an issue mutation.',
+  m10a2b517235a5f594455: 'Plex returned an invalid authentication token.',
   m10c4fb20e6236bbf6d2a: 'Tunerr URL reachable from Sportarr is invalid.',
   m10f7e7e0798699d0c41a: 'Webhook payload exceeds maximum depth.',
   m10f82e43c9e385f679a6: 'Movie cover not found',
@@ -247,6 +255,7 @@ export const apiMessages: Record<
   m133aca3758ae7b6d9562: 'Album lookup exceeded its limit.',
   m133ff71b5ab9b34baa86:
     'Emulation system groups must be an object of at most 500 systems.',
+  m139641a483da1cc392e9: 'Plex PIN expired before login completed.',
   m13a8e921226f69649799: 'Unable to retrieve artist discography.',
   m13bdb825bb83d65cd93a: 'Adult media request quota exceeded.',
   m13df637ee481c6731f8c: 'Unverified official collection',
@@ -259,6 +268,7 @@ export const apiMessages: Record<
   m1461fa4f32a89ae0060d: 'Invalid mediaType query parameter.',
   m148044b7ef1bb6a62e7c:
     'LazyLibrarian, the service used for magazine searches, is unavailable. Please try again.',
+  m14952c9de493cd06bc18: 'Plex returned an invalid PIN response.',
   m14a20d84fdfebdd6f18d: 'rTorrent returned an unexpected torrent list.',
   m14a577183561975a9624: 'Download bundle could not be streamed.',
   m14c6585400581576692d:
@@ -290,11 +300,11 @@ export const apiMessages: Record<
   m167855b4834223d810bd: '[RT API] Failed to retrieve movie ratings: {value0}',
   m169159ec1a40796285db: 'PC game requests are disabled by the administrator.',
   m1692bfc880002c4b370b: 'ComicVine returned an invalid search response.',
+  m1693fec1fc4b2be44e51: '{value0} requests are disabled by the administrator.',
   m16a13c09b4272d0ba05f: 'MusicBrainz returned no valid artist result.',
   m16a3b229bc2c4b345562:
     'Open Library, the service used for book searches, timed out or is unavailable. Please try again.',
   m16c5cd7aab5f257d8ed0: '[TMDB] Failed to fetch movie studio: {value0}',
-  m16d34b5e7bcb341ee6cb: 'failure',
   m16f1e0814fbc898c339f: 'Invalid album catalogue item',
   m170a3e8c6d93effdb402: 'Unable to find the source material.',
   m17525d8037adf665dfee: 'Failed to get metadata languages',
@@ -318,6 +328,7 @@ export const apiMessages: Record<
   m18a58c831a94266b2dfe: 'That decision was not found.',
   m18bef14e87cd6bfb5923: 'Only movie and TV maturity limits may be updated.',
   m18c6ebedd7f77bf3dfc4: 'Plex collection identity changed.',
+  m18caecd1418c8d69e721: 'Unknown outbox finalization error',
   m18dd656b92958ebc79f6: 'Webhook settings must be an object.',
   m193eb2eb895cbf9d784e: 'Unable to read {value0} at {value1}',
   m19652fdb8dc37df9468b:
@@ -345,6 +356,7 @@ export const apiMessages: Record<
   m1ade0e5e15dcc862769c: 'Service is still referenced by {value0}.',
   m1af9e2d33ce6ebb42f1b:
     'A playback session and at least one media item are required.',
+  m1b3acca5f5ba5b1b94a5: 'The setup file is larger than 256 KB.',
   m1b4b39c77d778d8952c1:
     'You do not have permission to make adult media requests.',
   m1b79712b0657613be926: 'Invalid interface theme.',
@@ -352,6 +364,7 @@ export const apiMessages: Record<
   m1ba503694658d14f419b: 'Tunerr returned an invalid sports report.',
   m1baebb368a6e311e934f: 'A valid user credential context is required.',
   m1bcd29aee93acfcc662c: 'Catalog must be tracked or public.',
+  m1bd0392d3a4d5701178d: 'This album is already available.',
   m1bd2541d0ee3e0938e63: 'Unable to create blocklist.',
   m1be13d2bccc67bae8bc0:
     'Bookshelf has not finished its search command and cannot confirm cancellation yet.',
@@ -366,6 +379,7 @@ export const apiMessages: Record<
   m1cba0aa50c7822e93016: 'You can only edit your own comments.',
   m1cbd28c179c0dc387cab:
     'No cached or provider metadata is available for this title',
+  m1cd450869749af1719f3: 'IndexedDB aborted',
   m1cf663b881408197b9e8:
     'Season mappings must use unique, non-negative integer season numbers.',
   m1d8f6bf6096847b238a7: '{value0} must be a string.',
@@ -394,7 +408,10 @@ export const apiMessages: Record<
   m1fdb3191a2bbd3ebfb7f: 'Unable to retrieve blocklist count.',
   m1fea02b08255f6493790: 'Recommendations could not be loaded. Try again.',
   m1feb2108b7652df76874: 'SABnzbd returned an error.',
+  m1ff1bf8741b74b829ab0:
+    'Unable to open the Plex login window. Please allow popups for this site and try again.',
   m20028a45a430b34dcd1b: 'Bulk requests only support music and books.',
+  m200467cefd3cab60a959: 'Unable to poll when pin is not initialized.',
   m202f9e11f74c71114c6a:
     'Minimum rating must be between 1 and 5 in half-star steps.',
   m20332f5d9c14a820c35e: 'TorrentNG rejected the API token.',
@@ -427,6 +444,7 @@ export const apiMessages: Record<
   m2249da88a837fd4c6d02: 'Unable to retrieve request status.',
   m22a303d0ed05df2afbe3: 'Trakt rating must be between 1 and 10',
   m22c34ec30c44c916125d: 'Task queue capacity must be a non-negative integer.',
+  m22d58ef30ef52e5b1b9a: 'Missing or invalid media identifier',
   m22e13512288ab0b2c9da: 'ageGate.maxTvCertification must be valid.',
   m22fc05e032c2baee90a9: 'Settings lock path must be a regular file.',
   m22fdc582c0851ece00c2: 'Bookshelf server with provided ID does not exist.',
@@ -461,6 +479,7 @@ export const apiMessages: Record<
   m24d2bc1d81a5d87e33f5:
     'A Plex server and at least one media item are required.',
   m24f61c142514845165e9: 'Jellystat is not configured.',
+  m25059fe71a885df31877: 'Theme preference was not confirmed.',
   m253c8e4729e687b6d8df: 'A partial season request must include an episode.',
   m253d9cd01bcd1c29f1c0: 'Invalid ISBN batch.',
   m253fb2c524557949dbaf: 'Unable to exchange AniList authorization code',
@@ -478,6 +497,7 @@ export const apiMessages: Record<
   m26a435f5e43cc0256653: 'Transmission rejected the username or password.',
   m26a56a7730a3c24062dc: 'editionPolicy must be only, either, or alongside.',
   m26bd93db20c19d6fc2b9: 'Choose a supported vision provider.',
+  m26e12db8e93f8a0bce5b: 'IndexedDB transaction completed without a result.',
   m26ff19d6528cc449b45b: 'TV request access has not been approved.',
   m272ca982297473b15f34: 'Keyword not found.',
   m273b6e0005c303e76a09:
@@ -513,6 +533,7 @@ export const apiMessages: Record<
   m29b95010401ee054a9a1: 'You do not have permission to modify this request.',
   m29c14cdd5672d05f2632: 'Search rate limit reached.',
   m29cc8c1180e816279686: 'Spotify returned an invalid playlist item page.',
+  m29cd80700c6bee433fb7: '[SW] Resubscribe failed: {value0}',
   m29eadf0c8b26e5aac0c5: 'Sportarr league ID must be a positive integer',
   m29fb650cf036b2059566: 'No pending access request.',
   m2a06c5df56b7b015c882: 'Select the destination libraries.',
@@ -547,6 +568,7 @@ export const apiMessages: Record<
     'The selected anime quality profile does not exist on the Sonarr server.',
   m2ccfbbd572d8fd0732da: 'Could not load Episode Queue access.',
   m2d172f5d5d4ad20e985a: 'This league is already monitored in Sportarr.',
+  m2d43198e24baad05654f: 'OIDC authorization redirect must be a URL string.',
   m2d5e1d6724f7d3cfa2a0: 'Unable to retrieve similar series.',
   m2d6cfe296977fb3e198b: 'Invalid swipe.',
   m2d943e19fb0ccd19067c: 'format must be ebook or audiobook.',
@@ -678,12 +700,15 @@ export const apiMessages: Record<
     "You do not have permission to view this user''s requests.",
   m38b4af5e8de11d81f7f4:
     'proxy hostname and port are required when proxy is enabled.',
+  m38d0a6862dd0a2281610: 'OIDC login requires browser session storage.',
   m38eae6e87007bffa9519:
     'You do not have permission to manage this request download.',
   m391b790cf0996db8c0ce: 'Invalid book identity.',
   m3932a5542c3277810378: 'Failed to connect to LazyLibrarian.',
+  m39351d75f6cc1eb8b21c: 'Collection update was not confirmed.',
   m393915782fef1ba0fa8d: 'Invalid MDBList list URL: {value0}',
   m393cdd336ba72a48bcc9: 'Unhandled result type: {value0}',
+  m39606db4e4f4d1237dff: 'The media server returned an unsafe playlist URL.',
   m3963b1fa47b4237b9bc8: 'Add at least one track.',
   m3966cc31e4e2a574b441: 'You do not have permission to request audiobooks.',
   m397741edb60abe43d767: '[{value0}] Failed to run command: {value1}',
@@ -747,6 +772,7 @@ export const apiMessages: Record<
   m3e195c5d69b8360f13af: 'Magazine request is missing its LazyLibrarian title.',
   m3e1e991d7dec466c115d:
     'No default Bookshelf server configured for audiobook.',
+  m3e4443e52275a9a09299: 'unknown error',
   m3e5c73cf2074b700e435: 'Upstream response is not a supported raster image',
   m3e6801640bb9d69a35ac: 'Move details must be an object.',
   m3e76a377397702add115: 'The download client could not be reached.',
@@ -771,7 +797,6 @@ export const apiMessages: Record<
   m3fb930670c8ec18818da: 'Network IDs must be positive safe integers.',
   m3fc6cea7345af0719403: 'Bindery did not confirm the request withdrawal.',
   m40099228a97df9b475a9: 'Unable to use this sign-in link.',
-  m4012aea1a0d0dc9b9e47: 'collection-limit',
   m401a86ba5d7a9107ce9a: 'Live TV recording is not set up.',
   m403d06c50806714c5b78: 'That card is no longer in your deck.',
   m405a4798c3257376ad7a: 'download warning is retryable',
@@ -792,6 +817,7 @@ export const apiMessages: Record<
   m4163aeb2d10421f8ab82: 'Invalid recording request.',
   m41759ee5d0ec11d69c30: 'Something wrong',
   m418e4d28a7d611f8b714: '[{value0}] Invalid configured service URL',
+  m41cc17f2b1265fd3d749: 'Unknown cover error',
   m41e69229cb8919d33366:
     'The game catalog could not confirm this title. Try again.',
   m41f276cc05823b1c6ae8: 'Select a valid audiobook.',
@@ -901,7 +927,6 @@ export const apiMessages: Record<
   m4ba8023243ac98e4c505: 'Unable to compare editions.',
   m4bb7e5a8170d095fc2ca: 'This Swipe category is unavailable.',
   m4bcace44a57a714f3957: 'Invalid TV quota count returned by database.',
-  m4bd9354bb652233497a0: 'warning',
   m4be397c2c34aaf9a4a04: '{value0} must be either "true" or "false".',
   m4be54654bf7cc364ba80: 'Bookshelf service not found.',
   m4c03ad71ef8f61ae9c7f:
@@ -962,6 +987,7 @@ export const apiMessages: Record<
   m4fb4650b629e2f6a97d5:
     '[TMDB] Failed to fetch person combined credits: {value0}',
   m4fb4bc2fe61c8e5d70eb: 'Unable to retrieve series genre slider.',
+  m4fbf71dc8be69b105a66: 'Native saving is unavailable.',
   m4fe4ceaa75aea5f9bc65:
     '[Sonarr] Failed to retrieve cover for series {value0}: No cover path worked',
   m4fe79fe44289cf266598: 'Unable to find TMDB ID',
@@ -984,6 +1010,7 @@ export const apiMessages: Record<
   m51a4dc16d9100dbade69: 'Choose a team to follow.',
   m51b027a8f298149feceb: 'Unsafe Simkl catalog path.',
   m51dc434412d69cae392b: 'Stored webhook payload is too large.',
+  m51df5f63a9b34fc9634f: 'Invalid offset catalog pagination options.',
   m5217bf0a902e03aa2d7c: 'Sportarr returned an invalid XMLTV sync result.',
   m522d26c8409da145612c: 'Unknown email error',
   m523ba2cbb954a7f75018: 'Request body contains invalid fields.',
@@ -1014,7 +1041,6 @@ export const apiMessages: Record<
   m5420c96f79e2507b23e0: '[TMDB] Failed to fetch upcoming movies: {value0}',
   m543e68302678dbc33076: 'endpoint must not include a fragment.',
   m54472ece3ce459dae8dc: 'You do not have permission to make book requests.',
-  m54802d652d42906e73bf: 'series-not-found',
   m5496107a9c043b3c7336:
     'Library verification changed or deletion failed. No successful deletions were recorded. Refresh and review a new confirmation.',
   m549c36ebdb8e7f107a01: 'Reader delivery settings must be an object.',
@@ -1050,6 +1076,7 @@ export const apiMessages: Record<
   m56b956146240ef8099db: 'Invalid Episode Queue default.',
   m56bd61100a60421b3cde:
     'QuestarrNG refused the connection during the {value0}. Check the hostname and port.',
+  m56bda472e775e0dd7ae8: 'Setup initialization was not persisted.',
   m56eaf63f6aeac94e344e: 'Media id must be a positive integer.',
   m56f13cf9da9003a35eef: 'SABnzbd rejected the API key.',
   m56f7f3ab18d1ae7342bc:
@@ -1078,6 +1105,7 @@ export const apiMessages: Record<
     'No current books match this rule. You can still create it for books added to the reader library later.',
   m586fce09f595ef307ab2: '[ListenBrainz] Invalid MusicBrainz artist ID',
   m587d81c44e1334a9ae48: 'Metron returned an invalid series response.',
+  m589b33ff42d3a48d58e0: 'The IMDb export has no titles.',
   m58a0f9abef577d07001e: 'Media server returned an invalid user identity.',
   m58ba5c083248bb6e2397: 'Failed to update series in Sonarr',
   m58bd81064f71ae3d232b: 'User mutation authority changed before admission.',
@@ -1109,6 +1137,7 @@ export const apiMessages: Record<
     'This comic is already available at the selected destination.',
   m5b25a66e3771bf3a4636:
     'Audiobookshelf library changed during the scan. Orphan cleanup was skipped; the next scan will retry.',
+  m5b372417caf62c6b21d4: 'useTheme must be used inside ThemeProvider',
   m5b51f4d1f27cb78f630f: 'Only http and https links can be read.',
   m5bbc4316bdbc4eda5fe1: 'slskdN did not return a remediation job.',
   m5bc974c77225511b0a44: '[TMDB] Failed to fetch keyword: {value0}',
@@ -1118,6 +1147,7 @@ export const apiMessages: Record<
     'The selected Bookshelf server is configured for ebook requests, not ebook requests.',
   m5c4b5b56b8aeab89bc10: 'Password must be at least 8 characters long.',
   m5c629e90500e4f6c506b: 'Failed to initiate quick connect.',
+  m5c746affbfb955a248d1: 'invalid pack',
   m5c8b80f989b439f0ee8b:
     'downloadPathMappings[{value0}].serviceId must be a positive integer.',
   m5c97384538762a6eaa9d: 'Settings structure must not contain circular values.',
@@ -1149,12 +1179,14 @@ export const apiMessages: Record<
   m5e9f9877cb0aa02c7045: 'You do not have permission to retry this request.',
   m5ebafc4c13de2b6c4cb9: '{value0} must contain positive integer ids.',
   m5eea0138b3b0b1a7fa24: 'You do not have permission to view this issue.',
+  m5f2db4725c05ddb2e2a2: 'Linked account changed.',
   m5f513a3099516336a695:
     'Bookshelf lookup returned results, but none had usable author and edition metadata.',
   m5f58eb3fb6b599673559: 'Deluge rejected the Web UI password.',
   m5f58fe833b105fa68536: 'Radarr server with provided ID does not exist.',
   m5f7177260c81bb0687c1: 'mediaId is required for adult requests.',
   m5fa000611e33edc9da41: 'The Tunerr guide is larger than SeerrNG accepts.',
+  m5fc72bd8b3b2fbe85e29: 'Invalid Discover manifest response.',
   m5fe3baed644cd2d8f315: 'Network not found.',
   m5fed3b409fa89eba5600: 'Genre not found.',
   m5ffd349f62360c8c9265:
@@ -1238,6 +1270,7 @@ export const apiMessages: Record<
   m65eeddf0ae28f6f38757: 'No default Whisparr server is configured.',
   m65fcee7311a59dbc1839: 'The selected LazyLibrarian server no longer exists.',
   m66023cbea356c5a0640f: 'endpoint must be a public HTTPS URL.',
+  m6603bb680d92f8110a71: 'Internal API path parameter must be a scalar.',
   m6615f23acd850bdadf6d: 'Invalid series cover identity.',
   m6638b8bf900777e490a5: 'defaultSeasonType is invalid.',
   m667034fbf23d799954b8: 'Request access is required.',
@@ -1275,6 +1308,8 @@ export const apiMessages: Record<
   m694ee2367ffc82ca403b: 'A valid user API key context is required.',
   m695c15d41e2bba815eed:
     'tls.httpAuthAcknowledged must be true before HTTP authentication can be enabled.',
+  m6972173489f99b92916a:
+    'You must initialize the plex headers clientside to login',
   m69746321d8af54e7f3e5: 'Indexer search limits contain an invalid indexer ID.',
   m697d474fc15094276dfc: 'Provider hostname and API key are required.',
   m69908324d7ed91eb2505: 'Settings file exceeds maximum size',
@@ -1297,6 +1332,7 @@ export const apiMessages: Record<
   m6b14455179961ea2fb9e: 'Unexpected created collection.',
   m6b18a2f666300b7ac84b:
     'The selected Bookshelf server is not configured for either requested book format.',
+  m6b1b4a3246e7feca83d7: 'Withdrawn in SeerrNG.',
   m6b2e648ed574d9f394f3: 'Settings instance not found.',
   m6b472548d8e3a8219f83: 'Plex returned an invalid PIN.',
   m6b5d3403cf9af66c7424:
@@ -1331,12 +1367,12 @@ export const apiMessages: Record<
   m6df9bc22381ad1b664f0: 'Unable to retrieve logs.',
   m6e06cccad354888f51c7:
     'Apprise configuration key must be 1 to 64 letters, numbers, hyphens, or underscores.',
+  m6e2c9b999327efd3b1d5: '{value0} requests are unavailable for this user.',
   m6e31433a5ff94270db68: 'Prowlarr is not configured.',
   m6e5fef5fc7644e7a9e23:
     'Choose a streaming service before setting its match mode.',
   m6e65c784d5f2f4a8314b: '[Lidarr] Failed to search album: {value0}',
   m6e7c91d8575b54faf2d0: 'Repeated Plex collection member.',
-  m6e93a14277a9cd2e6a0f: 'catalog-search',
   m6e941430530a139e79cc: 'Not following.',
   m6ebc8e9ed99bdad65519: 'Image cache filename must not contain path segments',
   m6ecd23e5a10a6b30450f: 'Invalid Plex collection total.',
@@ -1370,6 +1406,7 @@ export const apiMessages: Record<
   m70fbe9a5074279f14226: 'Could not connect to Navidrome.',
   m71101d690264fe143764:
     'Both book formats require default ebook and audiobook Bookshelf servers.',
+  m71127450c4055ceea50a: 'Unknown avatar error',
   m711d8ae9e354bc646625: 'Unable to submit bulk request.',
   m714362fe8369e69e77a0: 'Tautulli version not supported',
   m714a5e9a2a6e4155e7f7: 'slskdN hostname is invalid.',
@@ -1384,6 +1421,7 @@ export const apiMessages: Record<
     'seasons must contain integers no greater than {value0}.',
   m7205d87bedf046153947: 'Plex returned invalid collection metadata.',
   m7219f7d6cc963fe43d46: 'Invalid recommendation feed.',
+  m7223f2132f37448ec0ee: 'This ebook is already available.',
   m724bb310da5fd0f666d7: 'Log file must not be hard-linked: {value0}',
   m72a0d1145a1b8d3a7c30: 'Cache not found.',
   m72a37a706c9c231bcf2e: 'defaultEpisodeCount must be an integer from 0 to 5.',
@@ -1397,6 +1435,7 @@ export const apiMessages: Record<
   m731f6cb6c51c6f08e03e: 'OIDC provider returned an invalid subject.',
   m737c2aceff89eec20ae7:
     'The QuestarrNG hostname could not be resolved during the {value0}.',
+  m737fd6071fe8298b1ff1: 'TV request response did not contain a media request.',
   m738bcb487566cda86ca5:
     'Streaming service filters cannot be combined with local availability results.',
   m73c9da1a382a3126a67e: '{value0} must be a valid HTTP URL.',
@@ -1443,6 +1482,7 @@ export const apiMessages: Record<
     'You no longer have permission to manage the blocklist.',
   m765a84376ffccbbec466: 'Servarr returned an invalid tag',
   m767d4feb29e2237d0703: 'mediaId must be a canonical StashDB scene ID.',
+  m767e0fab9b99d06ad7d1: 'Subscription failed',
   m768cb3be7ae9fe62e497: 'mediaId must be a valid MusicBrainz resource ID.',
   m76e99a0f8b7a5e204524: 'Image response is not a supported raster image.',
   m770e3c614abd860863b4: 'Open Library returned an invalid {value0}.',
@@ -1457,6 +1497,7 @@ export const apiMessages: Record<
     '[ListenBrainz] Failed to fetch artist details: Unknown error',
   m779bdb05d97ca158ee13: 'Unable to process override rules.',
   m77b012b2afb9a6971475: 'seasonRequests must be an array.',
+  m77daa7c9d23678327c1d: 'Missing media identifier',
   m77dbb592bfc8e274c449:
     'Library availability changed or could not be verified. Refresh and review the current status.',
   m77dbcdabc8a0fd94e92a: 'Missing media ID.',
@@ -1492,6 +1533,7 @@ export const apiMessages: Record<
     'Stored notification outbox payload exceeds maximum size.',
   m7ab1c8ae09bf983e3ba0: 'A current library confirmation is required.',
   m7ab30fae5d21f502f8a2: 'Image exceeds maximum allowed size',
+  m7ac8f478373fb2a52a4c: 'This Plex login attempt is no longer active.',
   m7ace025d60a519691efd:
     'Media server authority changed before request admission.',
   m7ae5301abd64b94de5ac: 'contentRestricted is invalid.',
@@ -1547,6 +1589,7 @@ export const apiMessages: Record<
     'The connected comics service could not accept this request. Check its connection and ComicVine metadata settings, then retry.',
   m7eba4c44471c0deb9167:
     'TLS material must be a private regular file: {value0}',
+  m7ee85a0d389281d5291a: 'Unknown background error',
   m7f08b46aec957adb527c: 'Webhook payload is invalid.',
   m7f2b8fd41a190270efc8: 'Comic series: {value0} (CBR, CBZ, or CB7 files)',
   m7f5c145fb190733ecd3b:
@@ -1573,8 +1616,10 @@ export const apiMessages: Record<
   m806e3cdef9658376314f: 'The vision provider URL is invalid.',
   m806fe0459ef5fc39c556: 'Invalid software status filter.',
   m80a3ef5bacda1efb3926: 'User missing from request context.',
+  m80de5ba77f205c2a34d5: 'Invalid numbered catalog pagination options.',
   m80ef41c05938ad7f05ab: 'The download service did not confirm cancellation.',
   m80f74dd616a85d065bd3: 'You do not have permission to comment on this issue.',
+  m81124a0c4b8a0e5bfeba: 'Issue subscribing to push notifications: {value0}',
   m8113951de0abd9569eec: 'preferredIsbn13 must be a valid ISBN.',
   m8127d9e0e004357fd5b3: 'Invalid request body.',
   m813bbb8c42a086b48602: 'ComicVine volume index is incomplete.',
@@ -1586,6 +1631,7 @@ export const apiMessages: Record<
   m8197b08bc80c733f4c13:
     'This request cannot be retried from its current state.',
   m81a789a7cffba47dff9a: 'Lidarr returned an invalid artist record',
+  m81ae27f22598538fac32: 'Unknown scheduled job error',
   m81cc868395de9f7f38e9: 'ComicVine issue page is invalid.',
   m81e528dbfca502931346: 'Item already blocklisted',
   m81e88a2670874485ce25: 'slskdN is not set up.',
@@ -1642,6 +1688,8 @@ export const apiMessages: Record<
   m871c001e8134481fbe99:
     'LazyLibrarian does not support cancelling an individual magazine search through its API.',
   m873acf78d75ecb839372: 'Stored notification outbox intent is invalid.',
+  m875432714f71c5d3cd15:
+    'Sign in and choose an installed interface theme after the current save finishes.',
   m876919b99f890dbe3c90: 'AniList Viewer query returned no user',
   m87894fbbb14b338f1ea0: 'settings must include at least one supported field.',
   m87c8306f865d2152ffc1: 'slskdN {value0} returned HTTP {value1}.',
@@ -1658,6 +1706,7 @@ export const apiMessages: Record<
   m88856d4bba270eebd9ea: 'defaultPermissions must be valid.',
   m888c8c749dedcbd5811f:
     'QuestarrNG returned HTTP {value0} during the {value1}.',
+  m88c798afb299eda189d5: 'Invalid collection identifier.',
   m88d16975f614a1419324: 'Issue mutation forbidden',
   m88d7c530bcd524263bff: 'Indexer search limits must be an object.',
   m88e051482b4cdf0abbf9:
@@ -1685,6 +1734,7 @@ export const apiMessages: Record<
   m8aeadc98721704a2b6a3:
     'ChaptarrNG is preparing the requested audiobook while it imports the author.',
   m8b00dd90732ea5f3458e: 'requestQuotaApproval must be a boolean.',
+  m8b23ffe38e815ea9447d: 'This is not an IMDb title export.',
   m8b3c75e4dc18a931829c: 'Metadata test flags must be booleans.',
   m8b3f81c7a17e7cc9743d: 'Choose favorites from your library or requests.',
   m8b63e3e35832839b0d99: 'Unable to retrieve comic details.',
@@ -1692,7 +1742,6 @@ export const apiMessages: Record<
   m8b7741e1aac03b859db0: '{value0} must be at most {value1} characters.',
   m8b83363faf5540e7fb69: 'Sportarr returned an invalid {value0} list.',
   m8ba020c75e047a8ef847: 'Unable to retrieve book details.',
-  m8ba687ae900ffd3df314: 'catalog-identity',
   m8babbcacd4584f331250: 'You do not have permission to make comic requests.',
   m8bbbcb298e40333bd9ad: 'Library lookup failed.',
   m8bc8959958c898c65b3d:
@@ -1713,6 +1762,8 @@ export const apiMessages: Record<
   m8d012cef08494352f891: 'Failed to connect to Sportarr',
   m8d1d794fd3be9ba2d690: 'TVDB ID not found',
   m8d27f56dea0105d53294: 'Cover Art Archive request queue is full.',
+  m8d2eac921b51817adb44:
+    'Plex client identifier missing. Reload the page and try again.',
   m8d2f1a7144048f9e54de: 'Concurrency must be a positive integer.',
   m8d3ecbd767f38925ea41: 'Unable to start playback.',
   m8d47196032b8491754fe: 'Book home sections could not be saved.',
@@ -1769,6 +1820,7 @@ export const apiMessages: Record<
   m923105feddafe75863e3: 'Unable to replace the media-server playlist.',
   m92311fb678c16093d91c: 'Invalid metadata test settings.',
   m923bad444376b23da067: 'Invalid music identity.',
+  m924326ae747c171adc0f: 'Invalid built-in interface theme manifest: {value0}',
   m925deab4b58075574365: 'Choose a valid author or series.',
   m9260b6cd57057a70f4c4:
     'ROMarrNG must advertise the version 2 DAT catalog and have DATs loaded before you select it.',
@@ -1811,6 +1863,8 @@ export const apiMessages: Record<
   m96874878dc44a82a68bb: 'Wikidata item was not found',
   m969dfce3d9f1eb388051: 'Invalid series ID',
   m96b330e475224023dce6: 'Email delivery is not configured.',
+  m96b72773cea5d38757aa:
+    'Sign in and choose a valid theme after the current save finishes.',
   m96d0d177ce1800281afb: 'The selected file is not a valid profile picture.',
   m96f755abb16ab653c78f: 'seasonRequests must not contain duplicate seasons.',
   m96fb59ef3183e5dba445: 'mediaId must be a positive integer.',
@@ -1883,6 +1937,7 @@ export const apiMessages: Record<
     'IMDb CSV lists are updated by importing a new IMDb watchlist export.',
   m9df98bf1db427225f5b3:
     'You do not have access to the selected request destination.',
+  m9e12f34f9ebb0cb9b2c1: 'Interface theme preference was not confirmed.',
   m9e2701a8b0d0be36e3d2:
     'Music search is temporarily unavailable. Please try again.',
   m9e3d30db5cfafab2f2b7:
@@ -1909,6 +1964,7 @@ export const apiMessages: Record<
     'BookOrbit did not recognize the grouping API. Check that the service version and address are correct.',
   m9ff03bed400f650f54e3: 'Choose a valid US TV rating limit.',
   m9fffac6801d9d739eab0: 'Artist not found',
+  ma01f4a954ceec8c007e4: 'Failed to test music metadata providers',
   ma020c9109bc4d893366f: '{value0} must contain at most {value1} numeric IDs.',
   ma02d43394c239fdcb788:
     'Choose either a request destination or advanced server override.',
@@ -1939,8 +1995,10 @@ export const apiMessages: Record<
   ma1ba4521c1e20f76bcae: 'Unable to process item.',
   ma1c313b231ced57dd78c: 'Servarr returned an invalid command',
   ma1dca3e758754d7ae6d8: '[Lidarr] Failed to retrieve artists: {value0}',
+  ma1ebb18159bb5be04741: 'Choose a valid SeerrNG setup connections JSON file.',
   ma1edeef49e116689780e: 'rTorrent rejected the username or password.',
   ma22dee46bde298d77a3a: 'Theme "{value0}" is not installed.',
+  ma257b88b5fffba6bb986: 'Unconfirmed action',
   ma25f73e98da1f005a6cc:
     'BookOrbit rejected the account or it cannot manage Collections. Check the account credentials and permissions.',
   ma26e00752a807e08d15c: 'Each network must be an object.',
@@ -2026,6 +2084,7 @@ export const apiMessages: Record<
   ma91c0729fd8ab24bc04c: 'You do not have permission to modify this issue.',
   ma92ea46309a911595f58: 'Failed to delete media',
   ma9318bf6fa5e94c4e0e2: 'Failed to send Pushover notification.',
+  ma9377bb36d3d644d15ba: 'The IMDb export contains an invalid title ID.',
   ma94971da60d04f54323c: 'Search result offset is invalid.',
   ma97e7bcd055ef5d06488:
     'No default BackIssue server is configured for comic requests',
@@ -2045,6 +2104,7 @@ export const apiMessages: Record<
   maa465e522be8f975f168: '{value0} must be "always" or "hover".',
   maa535de6054985465a61: 'mediaType is invalid.',
   maa53878694287153b659: 'Invalid log read limit.',
+  maa5bb704d4076935c1b3: 'Collection status could not be verified.',
   maa82785965f41146fadf: 'Each season mapping must contain two season numbers.',
   maaa6c089e3a66d9a53b2: '[MusicBrainz] Failed to search albums: {value0}',
   maab919f42e99197dd73f: 'Unable to retrieve issue counts.',
@@ -2092,7 +2152,6 @@ export const apiMessages: Record<
   mad50ab9142da9849b189: 'Servarr returned invalid system status',
   mad875dd37ca56137578a: 'mediaType is required.',
   madaadeb03781f6d34868: 'Failed to send Discord notification.',
-  madd49face549c6c2057d: 'not-authorized',
   made99afa7b4d93acab6d: 'Auth header must be {value0} characters or fewer.',
   madf77c751cf62b8c01e5: 'You cannot review your own request.',
   mae1edf30d8ebd8f27e2a: 'Invalid job enabled setting.',
@@ -2110,13 +2169,14 @@ export const apiMessages: Record<
     'Quota approval can only be requested for your own movie or TV request.',
   maeaa8ffeab92007f80ac: 'User already exists with submitted email.',
   maedf25250a55b4ad7198: 'Choose a supported AI provider.',
-  maee408847d35e44e9943: 'success',
   maf2035a4175034ba526f: 'Failed to load image',
   maf27199b42bbef4d2b2d: 'Use the category catalog to load this deck.',
   maf3728ba9cd2d8f06889:
     'The download client could not be reached. Check its address.',
   maf4be493b617228e1d85:
     'Add the BookOrbit address and an account with Collection management access in Settings > Services > Reader Apps.',
+  maf65c6ee935ba49bd40d:
+    'Provider did not finish before the global search deadline.',
   maf684700eb93d19d7629:
     'Open Library returned an invalid author search response.',
   maf6adbb4e6ca12c16247: 'Could not save media filter pin.',
@@ -2195,6 +2255,7 @@ export const apiMessages: Record<
     'Streaming slider data must contain a two-letter region and provider ids.',
   mb5203bd0ed87af18d5aa:
     'Automatic blocklist exceeds the {value0}-entry safety limit.',
+  mb560f6de2669f0577d89: 'Issue unsubscribing to push notifications: {value0}',
   mb59d1734fd1b0b70f8ae:
     'Steam returned an invalid game record. No library changes were saved.',
   mb5a288040b9bc966da8e: 'Kapowarr server not configured.',
@@ -2220,6 +2281,7 @@ export const apiMessages: Record<
     'Too many discovery requests are in progress for this account.',
   mb7bb8c5b80275f57e284:
     '[Sportarr] Failed to retrieve system status: {value0}',
+  mb7e6c0a3c10cfec986b8: 'Unknown provider error',
   mb7fd278318dff83fa637: 'This account cannot be deleted.',
   mb8298f7ce74848051554: 'Invalid profile picture size.',
   mb840ad8ccbcfdad50b10: 'Grimmory returned an invalid match count.',
@@ -2258,7 +2320,9 @@ export const apiMessages: Record<
   mbb1b67482a9304472ad3: 'Navidrome rejected the username or password.',
   mbb2b74fc1d635b73dace: 'Invalid hostname provided.',
   mbb3a2b7286174602a64d: 'Magazine cover not found.',
+  mbb625ebfbefcc0bbb530: 'Software catalog search failed.',
   mbb8795ae087309972c69: 'Invalid media-server item response',
+  mbb9cb69a033e8b40b824: 'Unknown delivery error',
   mbba810b772ab6c8d1a9a:
     'Test reached the network: {value0}. Stub the API client this test uses.',
   mbbcab89e83eea63c90d1: '{value0}: username is invalid.',
@@ -2282,10 +2346,12 @@ export const apiMessages: Record<
   mbdda97b96679325255f7: 'OIDC form-post callback is only supported for Apple',
   mbe0373db62efcf16c53f:
     'A playlist name, Plex server, and at least one media item are required.',
+  mbe04e1d9c5b1b6c062e5: 'Unknown dispatch finalization error',
   mbe0d62996c264de4ada4: 'Unable to retrieve author details.',
   mbe148f73d00afee6906e: 'Unable to retrieve TV certifications.',
   mbe1aff8f510dbd04650d: 'Failed to send Apprise notification.',
   mbe2eab6f5d68563bdd54: 'Settings structure exceeds safe nesting limits.',
+  mbe45d3bd16ea39d96365: 'Unknown agent error',
   mbe4f51e8512a576c7342: 'dnsCache must be an object.',
   mbe63037da66d8f972c74:
     'preferredLanguages.{value0} must be a two-letter language code.',
@@ -2301,6 +2367,8 @@ export const apiMessages: Record<
   mbece11f5fd062e0e62ea: 'IMDb CSV exports can only update an IMDb watchlist.',
   mbed8c7b5a5e9f08158cc: 'Provide text, a link, or an ISBN.',
   mbed965317d4cb718fd51: '{value0}: URL base is invalid.',
+  mbedf2bde2a1342a72d28:
+    'Goodreads-compatible metadata source detected. SeerrNG supports this backend.',
   mbee0480887ced396c6a2: 'Jellyfin login is disabled',
   mbee85bd60b43feb179d7:
     'The DAT catalog does not include genre or release-year filters.',
@@ -2338,6 +2406,7 @@ export const apiMessages: Record<
   mc1835f8d976f8d48329f: 'Issue comment edit forbidden',
   mc1a25ee4550b40f0aa24: 'That model ID was not found.',
   mc1acdbcc571109a2cd42: 'You do not have permission to request software.',
+  mc1d1f31022a233de89ab: 'Failed to test connection',
   mc1d79053be944a5a1875: 'At most 500 indexer search limits may be configured.',
   mc1df9ed9387b1dd10727: 'Hardcover list synchronization is unavailable.',
   mc1f94a23d911d05a26fa: 'Failed to connect to Mylar',
@@ -2352,6 +2421,7 @@ export const apiMessages: Record<
   mc26a50635c4538c47141: 'Invalid TVDB metadata ID',
   mc2c5e727b28955b10dcc: 'Jellyfin returned an invalid authentication response',
   mc2d2e365d8bcebad5ac4: 'Jellyfin API key application name is invalid',
+  mc2ec8fdcf847600204b2: 'Unknown lookup error',
   mc320446cebba19d24d4d: 'Failed to execute Radarr movie search.',
   mc3889d7aa0cc7b728ee2: 'Unable to find admin user to edit',
   mc3d5376f63403ceb08af:
@@ -2403,10 +2473,13 @@ export const apiMessages: Record<
   mc817edeb578c8d71906b: 'ComicVine returned an invalid issue response.',
   mc824470d68d4d10d104e: 'Invalid album ID.',
   mc83b2e910a682e9ef44e: 'External URL must be a valid HTTP or HTTPS URL.',
+  mc843e80de99129fd4027: 'Unable to call login if class is not initialized.',
+  mc88fb6627be23f59d630: 'unsupported pack',
   mc8a5c5fa033fd8302c31: '[Readarr] Failed to add book: {value0}',
   mc8aaea60a2fc99b42bb2: '{value0} settings must be an object.',
   mc8bc24bdc73ac3589868:
     'mediaId must be a positive integer ComicVine volume ID.',
+  mc8cc3df201a6e9b58a38: 'Native saved-state change was not confirmed.',
   mc8d1937084d661adca27: '{value0} must be a hexadecimal color.',
   mc8e9bf5cdc98558e9b6d:
     'Directory path contains a non-directory component: {value0}',
@@ -2437,6 +2510,7 @@ export const apiMessages: Record<
   mcab55a6f6670f8d1dc0a: 'invalid syntax',
   mcace22a331af9c087a27:
     'Only request managers can reassign failed movie or TV requests.',
+  mcad0fc7a05075397191b: 'Invalid issue ID',
   mcad1f786a5d236e3198f:
     'Manual season mapping is only available for failed TVDB resolution or season-mismatch requests.',
   mcadaa63147f322b01072: 'A title is required.',
@@ -2539,6 +2613,9 @@ export const apiMessages: Record<
     'The Live TV guide is not available yet. Try again shortly.',
   md25783e0ca1133374177:
     'preferredLanguages contains an unsupported media type.',
+  md264d144c1b81de92297: 'Unknown notification error',
+  md27aba9a4b8d75f3fb54: 'Unknown cache error',
+  md284aed595a332aa227d: 'Unknown sync error',
   md2995a3f956f116d1d8c:
     'You do not have permission to modify an administrator',
   md2a9547fa8ca74d4bcac:
@@ -2569,9 +2646,11 @@ export const apiMessages: Record<
   md5469ef52564a6a6ff07: '{value0} scored this',
   md547b659a4aceabdacb2: 'Invalid Discover state item list.',
   md54ee9d16c31e747a147: 'Invalid metadata provider.',
+  md582ab7229c3831166a0: 'Unknown HTTP error',
   md60ffb3e176d54f61ce3: 'Unable to delete the request status entry.',
   md6157b2f967a2586b334: 'Magazine title must contain 1 to 256 characters.',
   md61abfe71c6fb10d70c7: 'Category mappings contain an unsupported media type.',
+  md62257fc3735aaa4c39c: 'IndexedDB error',
   md639796f4a88dc2362e2: 'Unable to retrieve series by network.',
   md63b7a30de8053b2cf6f: '[TMDB] Failed to fetch TV network: {value0}',
   md64da26a4fea6ab8edf0: 'Invalid magazine identity.',
@@ -2599,6 +2678,7 @@ export const apiMessages: Record<
   md7fa140d4e82ae7d910c:
     'The selected Bookshelf server is configured for audiobook requests, not ebook requests.',
   md7fdc476756719949963: 'Book request details are available in SeerrNG.',
+  md806eaa7090f9d54b8e5: 'Failed to save Metadata settings',
   md810d55874cfaa22a09f: 'No usable release is currently available.',
   md818b791c1350844dcc2: 'tags must be an array of integers.',
   md82dcde01b8496ecd979: 'Invalid discovery query parameters.',
@@ -2677,6 +2757,8 @@ export const apiMessages: Record<
   mdd1d25d3d9d8e4e30d93: 'Download client settings could not be saved.',
   mdd2bfd72a382344b280a: 'AniList returned an empty response',
   mdd39693075035a290505: 'serviceType is invalid.',
+  mdd5dcf50ecbee5c31706:
+    'The setup file does not contain a valid connections list.',
   mdd8f130ac993a4bb99f3:
     'The default Sportarr connection changed during setup. Refresh the page and retry.',
   mddb1705212ae4c480009: 'Enter the Tunerr hostname before enabling Live TV.',
@@ -2699,6 +2781,7 @@ export const apiMessages: Record<
   mdfa404765c26c54929e9:
     'seasonRequests are limited to 5000 selected episodes.',
   mdfb6ccf509fc68f3f40e: 'ReadMeABook is not configured.',
+  mdfc01a33d5d702bbce5a: 'Sign in to save advanced theme settings.',
   mdfe3c0035e2a0159913d: 'That link is not a readable page.',
   mdfe9527944c3805ca368: 'Invalid watchlist payload.',
   me00509728e4358467459: 'An artist and MusicBrainz id are required.',
@@ -2717,10 +2800,10 @@ export const apiMessages: Record<
   me170115acb01670f29dc: 'Prowlarr SSL setting must be a boolean.',
   me171e0e5bca5b9381658: 'Unable to load avatar image.',
   me17f25d97a009127bbfd: 'Audiobookshelf returned an invalid library list.',
-  me18bab88e10081201c15: 'unsupported-server',
   me1b2b8c553d40c5815b3: 'Notification outbox extra descriptor is invalid.',
   me1b41fc8e1d4bd73cab7: 'Jellystat API key is required.',
   me1eb45d8578142f483c8: 'Failed to get series history',
+  me24b06582057a31f4a81: 'OIDC authorization redirect is not allowed.',
   me24b7cd232968fd51d4a: 'Invalid shared game filters.',
   me24ecd01e1188c6ba5a4:
     '{value0} service configuration changed during operation.',
@@ -2760,6 +2843,8 @@ export const apiMessages: Record<
   me4a0ab8ebf0cda3d4709:
     '[Whisparr] Scene inventory returned an invalid response.',
   me4e20211b3d6742ab165: 'Invalid screen media identity.',
+  me5029c4cf2585e141508: 'Unknown recovery error',
+  me508a5d9e2d41fc7d574: 'Could not load the selected interface theme.',
   me52ab271d5c4dea7b664: 'Transmission returned an unsuccessful RPC result.',
   me52d4fe1e7c79c68ac92: 'Jellyfin is not configured.',
   me538705b602a31790d3c: 'Bindery declined the requester-owned book request.',
@@ -2794,7 +2879,6 @@ export const apiMessages: Record<
   me6dbef749b19707e453c: '{value0} is not a supported theme token.',
   me7428d73ec6db546c9b8: 'requestRootFolders paths must be valid folder paths.',
   me752e4ff690e9823f8f0: 'Failed to get language profiles',
-  me7595a535b725f00ae22: 'watchlist-confirmation',
   me772cafb6f8e1371bf0e: 'Choose an airing to record.',
   me78225c0070a34250871: 'Choose a valid book home layout.',
   me7859597980468f5ebe4: 'serviceType must be ebook, audiobook, or both.',
@@ -2820,6 +2904,8 @@ export const apiMessages: Record<
   me8ad1d1c1e1bdecd2adc: 'Jellystat rejected the API key.',
   me8be213041e5693ed0d4: ': password is invalid.',
   me8cb9eaf7b49c3749999: 'Live download settings must be an object.',
+  me8df1c4d53f19f5a73f0:
+    'Window is undefined. Are you running this in the browser?',
   me8e80f806b2e9315483a:
     '[TMDB] Failed to get TV show using the external TVDB ID: {value0}',
   me906cacd0c313217dab2: 'Discogs master identity mismatch',
@@ -2918,6 +3004,7 @@ export const apiMessages: Record<
   mf0fe774788f5d59bd9b6: '{value0} is required.',
   mf11e8d920e5fc9002f44:
     '[Readarr] Failed to retrieve cover for book {value0}: No cover path worked',
+  mf125a7515f111c073b8e: 'Unknown database error',
   mf13b690dc37728a91c66: 'Collection update could not be verified.',
   mf1414f08041e2e9c36c1: 'Session data could not be serialized',
   mf142fe45bdb6a33e5d12: 'TV media was not found while saving season mappings.',
@@ -2953,6 +3040,7 @@ export const apiMessages: Record<
     'A request destination can only be selected for a movie or series.',
   mf3c709c2b0dc4a2a6b03: 'Invalid external media ID',
   mf3d32c46d0d9e875c232: 'Comic backend ID not found',
+  mf3dd182407ba4618911f: 'The list sync failed.',
   mf403cf8a9bacc01cbcea: 'Image response exceeds the maximum allowed size.',
   mf412be43147ccd563e87: 'User not found.',
   mf41c8730704fe424d7b9: 'The selected Whisparr server no longer exists.',
@@ -2964,6 +3052,8 @@ export const apiMessages: Record<
   mf44fdb9b36bb74875db2: 'Invalid TVmaze show ID',
   mf48700de77d556b43ecf: 'Author not found',
   mf48b7dc5e65268c59093: 'tls.mode is invalid.',
+  mf48d4518c53806a9ccca:
+    'Setup connection assistance must be used inside SetupConnectionsProvider.',
   mf4ad1d34bdcb6d43181d: 'Configured audiobook catalogs are unavailable.',
   mf4d61c31473100984940: 'Tunerr {value0} URL is invalid.',
   mf4effd8375c5aa08951b: 'Service actor is missing.',
@@ -3000,6 +3090,7 @@ export const apiMessages: Record<
   mf765fbc09643c5915778: 'This access request is no longer pending.',
   mf76604cda57cdd093b08: 'Category mappings must be an object.',
   mf786b42bc86cae751864: 'Bookshelf audiobook server not configured',
+  mf7873f054c0be1e97141: 'ReadMeABook could not process this request.',
   mf7cbe6b4aec139258ba8: '[Lidarr] Failed to retrieve album: {value0}',
   mf7cce17f9b18329f8471:
     'The local server certificate is not issued by the local CA.',
@@ -3020,6 +3111,7 @@ export const apiMessages: Record<
   mf98161d44440bb72ae3f:
     '[TMDB] Failed to fetch movie certifications: {value0}',
   mf98bfa1be2f06b21e239: 'override-rule:{value0}',
+  mf98f4c2c4e06d883e768: 'Request for this album already exists.',
   mf9bc23a578d232c04108: 'Only pending requests can be approved.',
   mf9be00d25675ac2d7fcd:
     'SEERR_TLS_CERT_FILE and SEERR_TLS_KEY_FILE are required when SEERR_TLS_MODE=provided.',
@@ -3032,6 +3124,7 @@ export const apiMessages: Record<
   mfb5239208679944e2bee:
     '[MusicBrainz] Failed to fetch release group: {value0}',
   mfb539981d455006bdba0: 'Game discovery is unavailable.',
+  mfb75dbb19a84b4c9cc8d: 'Both requested book formats are already available.',
   mfb79261bbab73fd499c7: 'Bookshelf book ID not found',
   mfbd772cd54bf6783856a:
     'Indexer assignments contain an unsupported media type.',
@@ -3048,6 +3141,7 @@ export const apiMessages: Record<
   mfc78944c75cbffe58e7a: 'Jellyfin returned an invalid server name',
   mfca478f73299733c2487: 'Sonarr server not configured.',
   mfcab49845a309c14aa3e: 'Issue comment body must be an object.',
+  mfccd1a699e5666f5b4ea: 'Reset password link is invalid.',
   mfcd066f2ac7a627a4200: 'seasons must be an array or all.',
   mfcf337ea598e64c577b1: 'Stored notification outbox payload is invalid.',
   mfcf42dd5c7286de6e9f3: 'BookOrbit returned an invalid match count.',
@@ -3121,6 +3215,10 @@ export const apiMessagePatterns: readonly (readonly [
     'm015509a53fe7196f05b5',
     ['Your request was approved and is waiting to be dispatched.'],
   ],
+  [
+    'm016c40f4f1ee82c70ea0',
+    ['Window is not defined. Are you calling this in the browser?'],
+  ],
   ['m016fcf2e8d8f71ad9900', ['Issue user not found']],
   ['m01754239bc7ce586eb4e', ['Plex returned invalid metadata']],
   [
@@ -3159,7 +3257,6 @@ export const apiMessagePatterns: readonly (readonly [
   ],
   ['m02dfb04fc6525fda5c08', ['This list is already connected.']],
   ['m02dfc7136440ef5e87b3', ['No default Lidarr server configured.']],
-  ['m02e98b9ca898f1e3808f', ['', ':standard']],
   ['m031e117ad2dfbdc8d858', ['Unable to retrieve watch provider regions.']],
   [
     'm032537ac6e8460967060',
@@ -3170,6 +3267,10 @@ export const apiMessagePatterns: readonly (readonly [
   [
     'm03a4b22094ab06bada1e',
     ['Spotify did not return any importable tracks from this playlist.'],
+  ],
+  [
+    'm03da0fea7bffba45a4d1',
+    ['No supported app connection suggestions were found.'],
   ],
   [
     'm03dc0921a6dec1fe28e9',
@@ -3237,7 +3338,6 @@ export const apiMessagePatterns: readonly (readonly [
   ],
   ['m05f73fd10a09b2ff6f16', ['You can have up to ', ' active recordings.']],
   ['m0602faccdad407e81382', ['Invalid book ID.']],
-  ['m06271baf49532c879aa3', ['info']],
   ['m062a2301fb64da954404', ['No addresses found for ', '']],
   ['m06587ddce90ecdc425b8', ['No default Sportarr server is configured.']],
   [
@@ -3265,7 +3365,6 @@ export const apiMessagePatterns: readonly (readonly [
   ['m074408278e13efd37d1f', ['This game is already linked to the catalog.']],
   ['m0761705ee05e01de26d5', ['Invalid series cover content type.']],
   ['m077dceb0eb2f8f2ff2d2', ['Could not review TV request access.']],
-  ['m0782507b1e3595b6ea18', ['account-not-linked']],
   ['m078dd32c9ff587ee1e46', ['settings contains unsupported field ', '.']],
   ['m07a5749e14540548096f', ['Magazine title is invalid.']],
   ['m07acde9d03c4d6fc12fa', ['Trakt repeated a sync page.']],
@@ -3294,6 +3393,7 @@ export const apiMessagePatterns: readonly (readonly [
   ],
   ['m08946699eba6a2f1e96c', ['ROMarrNG: ', '']],
   ['m08abdaba478736d0c66f', ['Email address required.']],
+  ['m08ac1b43c378e56b7f6b', ['Collection is no longer accessible.']],
   ['m08ba96e55bd9ebd45b22', ['', ' must be ', ' characters or fewer.']],
   ['m08d431e37c89e1e5c398', ['Media data not found.']],
   ['m094db48ba873c52368df', ['Invalid series watch request.']],
@@ -3310,6 +3410,7 @@ export const apiMessagePatterns: readonly (readonly [
   ],
   ['m09d0928b7e3a8f5bc009', ['Check check, 1, 2, 3. Are we coming in clear?']],
   ['m09ea3f1f83ad6c149b62', ['Tunerr returned invalid recording history.']],
+  ['m0a2666ec9adc478f2dba', ['Inconsistent collection capability.']],
   [
     'm0a6934b7f1d7b01a6d47',
     ['Request for this comic already exists at the selected destination.'],
@@ -3346,6 +3447,7 @@ export const apiMessagePatterns: readonly (readonly [
     'm0b3fc7176fb77831957e',
     ['Media server configuration changed during login.'],
   ],
+  ['m0b570eb9b0e9ff05fb9f', ['The operation was aborted.']],
   ['m0b5a756b4b39c61fc1ac', ['Media type must be a string.']],
   ['m0b8c2c7d830734780830', ['The game could not be added to your library.']],
   ['m0bb4ecec33688632fb9a', ['Provide 1 to 200 valid TMDB movie IDs.']],
@@ -3380,6 +3482,7 @@ export const apiMessagePatterns: readonly (readonly [
   ['m0caaa29eb36ba135fe09', ['Chaptarr returned an invalid pending add ID.']],
   ['m0cd7bb3089910dccd77b', ['Invalid comic identity.']],
   ['m0cdd74535be0c71f3dc0', ['Invalid Plex collection selection.']],
+  ['m0cdf275bfa9ce8ddd412', ['Malformed CSV quoting.']],
   ['m0d1aa7daf134cba1ff93', ['Open Library book discovery request timed out.']],
   ['m0d1f623c24509c4a535f', ['Cannot check series collections right now.']],
   ['m0d2d3b16bdad80d2d4bc', ['requestRootFolders must be an object.']],
@@ -3419,6 +3522,12 @@ export const apiMessagePatterns: readonly (readonly [
   ['m0dca21848c253cfa0ef6', ['Sports league media data not found.']],
   ['m0e4ae90be81aa3354858', ['Notification outbox ', ' claim was lost.']],
   ['m0e4c37ed0a64b4ff21f7', ['format must be ebook, audiobook, or both.']],
+  [
+    'm0e4f7149909f8915a43e',
+    [
+      'ROMarrNG cannot stop a download after it reaches the download client. Cancel it in ROMarrNG or the download client.',
+    ],
+  ],
   ['m0e5a66a83359829dcc09', ['This recording is no longer active.']],
   [
     'm0ed69eb916a5bc24b464',
@@ -3436,6 +3545,7 @@ export const apiMessagePatterns: readonly (readonly [
     'm0f1c70c5e0481e357118',
     ['A maximum of ', ' instances can be configured for each service type.'],
   ],
+  ['m0f2e36aa704a05d614bb', ['Native saved state could not be verified.']],
   ['m0f55cb38f654f25b2a77', ['Each track needs an artist and title.']],
   ['m0f59ea8891e5672092ee', ['Could not connect to Jellystat.']],
   ['m0f60bafa6769619d1a06', ['Choose a valid Swipe decision.']],
@@ -3476,6 +3586,7 @@ export const apiMessagePatterns: readonly (readonly [
     'm1080e20ee0e03e005970',
     ['A valid issue ID is required for an issue mutation.'],
   ],
+  ['m10a2b517235a5f594455', ['Plex returned an invalid authentication token.']],
   ['m10c4fb20e6236bbf6d2a', ['Tunerr URL reachable from Sportarr is invalid.']],
   ['m10f7e7e0798699d0c41a', ['Webhook payload exceeds maximum depth.']],
   ['m10f82e43c9e385f679a6', ['Movie cover not found']],
@@ -3527,6 +3638,7 @@ export const apiMessagePatterns: readonly (readonly [
     'm133ff71b5ab9b34baa86',
     ['Emulation system groups must be an object of at most 500 systems.'],
   ],
+  ['m139641a483da1cc392e9', ['Plex PIN expired before login completed.']],
   ['m13a8e921226f69649799', ['Unable to retrieve artist discography.']],
   ['m13bdb825bb83d65cd93a', ['Adult media request quota exceeded.']],
   ['m13df637ee481c6731f8c', ['Unverified official collection']],
@@ -3546,6 +3658,7 @@ export const apiMessagePatterns: readonly (readonly [
       'LazyLibrarian, the service used for magazine searches, is unavailable. Please try again.',
     ],
   ],
+  ['m14952c9de493cd06bc18', ['Plex returned an invalid PIN response.']],
   ['m14a20d84fdfebdd6f18d', ['rTorrent returned an unexpected torrent list.']],
   ['m14a577183561975a9624', ['Download bundle could not be streamed.']],
   [
@@ -3600,6 +3713,10 @@ export const apiMessagePatterns: readonly (readonly [
     ['PC game requests are disabled by the administrator.'],
   ],
   ['m1692bfc880002c4b370b', ['ComicVine returned an invalid search response.']],
+  [
+    'm1693fec1fc4b2be44e51',
+    ['', ' requests are disabled by the administrator.'],
+  ],
   ['m16a13c09b4272d0ba05f', ['MusicBrainz returned no valid artist result.']],
   [
     'm16a3b229bc2c4b345562',
@@ -3608,7 +3725,6 @@ export const apiMessagePatterns: readonly (readonly [
     ],
   ],
   ['m16c5cd7aab5f257d8ed0', ['[TMDB] Failed to fetch movie studio: ', '']],
-  ['m16d34b5e7bcb341ee6cb', ['failure']],
   ['m16f1e0814fbc898c339f', ['Invalid album catalogue item']],
   ['m170a3e8c6d93effdb402', ['Unable to find the source material.']],
   ['m17525d8037adf665dfee', ['Failed to get metadata languages']],
@@ -3655,6 +3771,7 @@ export const apiMessagePatterns: readonly (readonly [
     ['Only movie and TV maturity limits may be updated.'],
   ],
   ['m18c6ebedd7f77bf3dfc4', ['Plex collection identity changed.']],
+  ['m18caecd1418c8d69e721', ['Unknown outbox finalization error']],
   ['m18dd656b92958ebc79f6', ['Webhook settings must be an object.']],
   ['m193eb2eb895cbf9d784e', ['Unable to read ', ' at ', '']],
   [
@@ -3701,6 +3818,7 @@ export const apiMessagePatterns: readonly (readonly [
     'm1af9e2d33ce6ebb42f1b',
     ['A playback session and at least one media item are required.'],
   ],
+  ['m1b3acca5f5ba5b1b94a5', ['The setup file is larger than 256 KB.']],
   [
     'm1b4b39c77d778d8952c1',
     ['You do not have permission to make adult media requests.'],
@@ -3710,6 +3828,7 @@ export const apiMessagePatterns: readonly (readonly [
   ['m1ba503694658d14f419b', ['Tunerr returned an invalid sports report.']],
   ['m1baebb368a6e311e934f', ['A valid user credential context is required.']],
   ['m1bcd29aee93acfcc662c', ['Catalog must be tracked or public.']],
+  ['m1bd0392d3a4d5701178d', ['This album is already available.']],
   ['m1bd2541d0ee3e0938e63', ['Unable to create blocklist.']],
   [
     'm1be13d2bccc67bae8bc0',
@@ -3736,6 +3855,7 @@ export const apiMessagePatterns: readonly (readonly [
     'm1cbd28c179c0dc387cab',
     ['No cached or provider metadata is available for this title'],
   ],
+  ['m1cd450869749af1719f3', ['IndexedDB aborted']],
   [
     'm1cf663b881408197b9e8',
     ['Season mappings must use unique, non-negative integer season numbers.'],
@@ -3781,7 +3901,14 @@ export const apiMessagePatterns: readonly (readonly [
     ['Recommendations could not be loaded. Try again.'],
   ],
   ['m1feb2108b7652df76874', ['SABnzbd returned an error.']],
+  [
+    'm1ff1bf8741b74b829ab0',
+    [
+      'Unable to open the Plex login window. Please allow popups for this site and try again.',
+    ],
+  ],
   ['m20028a45a430b34dcd1b', ['Bulk requests only support music and books.']],
+  ['m200467cefd3cab60a959', ['Unable to poll when pin is not initialized.']],
   [
     'm202f9e11f74c71114c6a',
     ['Minimum rating must be between 1 and 5 in half-star steps.'],
@@ -3841,6 +3968,7 @@ export const apiMessagePatterns: readonly (readonly [
     'm22c34ec30c44c916125d',
     ['Task queue capacity must be a non-negative integer.'],
   ],
+  ['m22d58ef30ef52e5b1b9a', ['Missing or invalid media identifier']],
   ['m22e13512288ab0b2c9da', ['ageGate.maxTvCertification must be valid.']],
   ['m22fc05e032c2baee90a9', ['Settings lock path must be a regular file.']],
   [
@@ -3900,6 +4028,7 @@ export const apiMessagePatterns: readonly (readonly [
     ['A Plex server and at least one media item are required.'],
   ],
   ['m24f61c142514845165e9', ['Jellystat is not configured.']],
+  ['m25059fe71a885df31877', ['Theme preference was not confirmed.']],
   [
     'm253c8e4729e687b6d8df',
     ['A partial season request must include an episode.'],
@@ -3934,6 +4063,10 @@ export const apiMessagePatterns: readonly (readonly [
     ['editionPolicy must be only, either, or alongside.'],
   ],
   ['m26bd93db20c19d6fc2b9', ['Choose a supported vision provider.']],
+  [
+    'm26e12db8e93f8a0bce5b',
+    ['IndexedDB transaction completed without a result.'],
+  ],
   ['m26ff19d6528cc449b45b', ['TV request access has not been approved.']],
   ['m272ca982297473b15f34', ['Keyword not found.']],
   [
@@ -3994,6 +4127,7 @@ export const apiMessagePatterns: readonly (readonly [
     'm29cc8c1180e816279686',
     ['Spotify returned an invalid playlist item page.'],
   ],
+  ['m29cd80700c6bee433fb7', ['[SW] Resubscribe failed: ', '']],
   ['m29eadf0c8b26e5aac0c5', ['Sportarr league ID must be a positive integer']],
   ['m29fb650cf036b2059566', ['No pending access request.']],
   ['m2a06c5df56b7b015c882', ['Select the destination libraries.']],
@@ -4048,6 +4182,10 @@ export const apiMessagePatterns: readonly (readonly [
   ],
   ['m2ccfbbd572d8fd0732da', ['Could not load Episode Queue access.']],
   ['m2d172f5d5d4ad20e985a', ['This league is already monitored in Sportarr.']],
+  [
+    'm2d43198e24baad05654f',
+    ['OIDC authorization redirect must be a URL string.'],
+  ],
   ['m2d5e1d6724f7d3cfa2a0', ['Unable to retrieve similar series.']],
   ['m2d6cfe296977fb3e198b', ['Invalid swipe.']],
   ['m2d943e19fb0ccd19067c', ['format must be ebook or audiobook.']],
@@ -4291,14 +4429,20 @@ export const apiMessagePatterns: readonly (readonly [
     'm38b4af5e8de11d81f7f4',
     ['proxy hostname and port are required when proxy is enabled.'],
   ],
+  ['m38d0a6862dd0a2281610', ['OIDC login requires browser session storage.']],
   [
     'm38eae6e87007bffa9519',
     ['You do not have permission to manage this request download.'],
   ],
   ['m391b790cf0996db8c0ce', ['Invalid book identity.']],
   ['m3932a5542c3277810378', ['Failed to connect to LazyLibrarian.']],
+  ['m39351d75f6cc1eb8b21c', ['Collection update was not confirmed.']],
   ['m393915782fef1ba0fa8d', ['Invalid MDBList list URL: ', '']],
   ['m393cdd336ba72a48bcc9', ['Unhandled result type: ', '']],
+  [
+    'm39606db4e4f4d1237dff',
+    ['The media server returned an unsafe playlist URL.'],
+  ],
   ['m3963b1fa47b4237b9bc8', ['Add at least one track.']],
   [
     'm3966cc31e4e2a574b441',
@@ -4416,6 +4560,7 @@ export const apiMessagePatterns: readonly (readonly [
     'm3e1e991d7dec466c115d',
     ['No default Bookshelf server configured for audiobook.'],
   ],
+  ['m3e4443e52275a9a09299', ['unknown error']],
   [
     'm3e5c73cf2074b700e435',
     ['Upstream response is not a supported raster image'],
@@ -4463,7 +4608,6 @@ export const apiMessagePatterns: readonly (readonly [
     ['Bindery did not confirm the request withdrawal.'],
   ],
   ['m40099228a97df9b475a9', ['Unable to use this sign-in link.']],
-  ['m4012aea1a0d0dc9b9e47', ['collection-limit']],
   ['m401a86ba5d7a9107ce9a', ['Live TV recording is not set up.']],
   ['m403d06c50806714c5b78', ['That card is no longer in your deck.']],
   ['m405a4798c3257376ad7a', ['download warning is retryable']],
@@ -4491,6 +4635,7 @@ export const apiMessagePatterns: readonly (readonly [
   ['m4163aeb2d10421f8ab82', ['Invalid recording request.']],
   ['m41759ee5d0ec11d69c30', ['Something wrong']],
   ['m418e4d28a7d611f8b714', ['[', '] Invalid configured service URL']],
+  ['m41cc17f2b1265fd3d749', ['Unknown cover error']],
   [
     'm41e69229cb8919d33366',
     ['The game catalog could not confirm this title. Try again.'],
@@ -4670,7 +4815,6 @@ export const apiMessagePatterns: readonly (readonly [
   ['m4ba8023243ac98e4c505', ['Unable to compare editions.']],
   ['m4bb7e5a8170d095fc2ca', ['This Swipe category is unavailable.']],
   ['m4bcace44a57a714f3957', ['Invalid TV quota count returned by database.']],
-  ['m4bd9354bb652233497a0', ['warning']],
   ['m4be397c2c34aaf9a4a04', ['', ' must be either "true" or "false".']],
   ['m4be54654bf7cc364ba80', ['Bookshelf service not found.']],
   [
@@ -4775,6 +4919,7 @@ export const apiMessagePatterns: readonly (readonly [
     ['[TMDB] Failed to fetch person combined credits: ', ''],
   ],
   ['m4fb4bc2fe61c8e5d70eb', ['Unable to retrieve series genre slider.']],
+  ['m4fbf71dc8be69b105a66', ['Native saving is unavailable.']],
   [
     'm4fe4ceaa75aea5f9bc65',
     ['[Sonarr] Failed to retrieve cover for series ', ': No cover path worked'],
@@ -4811,6 +4956,7 @@ export const apiMessagePatterns: readonly (readonly [
   ['m51a4dc16d9100dbade69', ['Choose a team to follow.']],
   ['m51b027a8f298149feceb', ['Unsafe Simkl catalog path.']],
   ['m51dc434412d69cae392b', ['Stored webhook payload is too large.']],
+  ['m51df5f63a9b34fc9634f', ['Invalid offset catalog pagination options.']],
   [
     'm5217bf0a902e03aa2d7c',
     ['Sportarr returned an invalid XMLTV sync result.'],
@@ -4873,7 +5019,6 @@ export const apiMessagePatterns: readonly (readonly [
     'm54472ece3ce459dae8dc',
     ['You do not have permission to make book requests.'],
   ],
-  ['m54802d652d42906e73bf', ['series-not-found']],
   [
     'm5496107a9c043b3c7336',
     [
@@ -4941,6 +5086,7 @@ export const apiMessagePatterns: readonly (readonly [
       '. Check the hostname and port.',
     ],
   ],
+  ['m56bda472e775e0dd7ae8', ['Setup initialization was not persisted.']],
   ['m56eaf63f6aeac94e344e', ['Media id must be a positive integer.']],
   ['m56f13cf9da9003a35eef', ['SABnzbd rejected the API key.']],
   [
@@ -4986,6 +5132,7 @@ export const apiMessagePatterns: readonly (readonly [
   ],
   ['m586fce09f595ef307ab2', ['[ListenBrainz] Invalid MusicBrainz artist ID']],
   ['m587d81c44e1334a9ae48', ['Metron returned an invalid series response.']],
+  ['m589b33ff42d3a48d58e0', ['The IMDb export has no titles.']],
   [
     'm58a0f9abef577d07001e',
     ['Media server returned an invalid user identity.'],
@@ -5053,6 +5200,7 @@ export const apiMessagePatterns: readonly (readonly [
       'Audiobookshelf library changed during the scan. Orphan cleanup was skipped; the next scan will retry.',
     ],
   ],
+  ['m5b372417caf62c6b21d4', ['useTheme must be used inside ThemeProvider']],
   ['m5b51f4d1f27cb78f630f', ['Only http and https links can be read.']],
   ['m5bbc4316bdbc4eda5fe1', ['slskdN did not return a remediation job.']],
   ['m5bc974c77225511b0a44', ['[TMDB] Failed to fetch keyword: ', '']],
@@ -5066,6 +5214,7 @@ export const apiMessagePatterns: readonly (readonly [
   ],
   ['m5c4b5b56b8aeab89bc10', ['Password must be at least 8 characters long.']],
   ['m5c629e90500e4f6c506b', ['Failed to initiate quick connect.']],
+  ['m5c746affbfb955a248d1', ['invalid pack']],
   [
     'm5c8b80f989b439f0ee8b',
     ['downloadPathMappings[', '].serviceId must be a positive integer.'],
@@ -5131,6 +5280,7 @@ export const apiMessagePatterns: readonly (readonly [
   ],
   ['m5ebafc4c13de2b6c4cb9', ['', ' must contain positive integer ids.']],
   ['m5eea0138b3b0b1a7fa24', ['You do not have permission to view this issue.']],
+  ['m5f2db4725c05ddb2e2a2', ['Linked account changed.']],
   [
     'm5f513a3099516336a695',
     [
@@ -5144,6 +5294,7 @@ export const apiMessagePatterns: readonly (readonly [
     'm5fa000611e33edc9da41',
     ['The Tunerr guide is larger than SeerrNG accepts.'],
   ],
+  ['m5fc72bd8b3b2fbe85e29', ['Invalid Discover manifest response.']],
   ['m5fe3baed644cd2d8f315', ['Network not found.']],
   ['m5fed3b409fa89eba5600', ['Genre not found.']],
   [
@@ -5286,6 +5437,7 @@ export const apiMessagePatterns: readonly (readonly [
     ['The selected LazyLibrarian server no longer exists.'],
   ],
   ['m66023cbea356c5a0640f', ['endpoint must be a public HTTPS URL.']],
+  ['m6603bb680d92f8110a71', ['Internal API path parameter must be a scalar.']],
   ['m6615f23acd850bdadf6d', ['Invalid series cover identity.']],
   ['m6638b8bf900777e490a5', ['defaultSeasonType is invalid.']],
   ['m667034fbf23d799954b8', ['Request access is required.']],
@@ -5364,6 +5516,10 @@ export const apiMessagePatterns: readonly (readonly [
     ],
   ],
   [
+    'm6972173489f99b92916a',
+    ['You must initialize the plex headers clientside to login'],
+  ],
+  [
     'm69746321d8af54e7f3e5',
     ['Indexer search limits contain an invalid indexer ID.'],
   ],
@@ -5402,6 +5558,7 @@ export const apiMessagePatterns: readonly (readonly [
       'The selected Bookshelf server is not configured for either requested book format.',
     ],
   ],
+  ['m6b1b4a3246e7feca83d7', ['Withdrawn in SeerrNG.']],
   ['m6b2e648ed574d9f394f3', ['Settings instance not found.']],
   ['m6b472548d8e3a8219f83', ['Plex returned an invalid PIN.']],
   [
@@ -5466,6 +5623,7 @@ export const apiMessagePatterns: readonly (readonly [
       'Apprise configuration key must be 1 to 64 letters, numbers, hyphens, or underscores.',
     ],
   ],
+  ['m6e2c9b999327efd3b1d5', ['', ' requests are unavailable for this user.']],
   ['m6e31433a5ff94270db68', ['Prowlarr is not configured.']],
   [
     'm6e5fef5fc7644e7a9e23',
@@ -5473,7 +5631,6 @@ export const apiMessagePatterns: readonly (readonly [
   ],
   ['m6e65c784d5f2f4a8314b', ['[Lidarr] Failed to search album: ', '']],
   ['m6e7c91d8575b54faf2d0', ['Repeated Plex collection member.']],
-  ['m6e93a14277a9cd2e6a0f', ['catalog-search']],
   ['m6e941430530a139e79cc', ['Not following.']],
   [
     'm6ebc8e9ed99bdad65519',
@@ -5538,6 +5695,7 @@ export const apiMessagePatterns: readonly (readonly [
       'Both book formats require default ebook and audiobook Bookshelf servers.',
     ],
   ],
+  ['m71127450c4055ceea50a', ['Unknown avatar error']],
   ['m711d8ae9e354bc646625', ['Unable to submit bulk request.']],
   ['m714362fe8369e69e77a0', ['Tautulli version not supported']],
   ['m714a5e9a2a6e4155e7f7', ['slskdN hostname is invalid.']],
@@ -5558,6 +5716,7 @@ export const apiMessagePatterns: readonly (readonly [
   ],
   ['m7205d87bedf046153947', ['Plex returned invalid collection metadata.']],
   ['m7219f7d6cc963fe43d46', ['Invalid recommendation feed.']],
+  ['m7223f2132f37448ec0ee', ['This ebook is already available.']],
   ['m724bb310da5fd0f666d7', ['Log file must not be hard-linked: ', '']],
   ['m72a0d1145a1b8d3a7c30', ['Cache not found.']],
   [
@@ -5582,6 +5741,10 @@ export const apiMessagePatterns: readonly (readonly [
   [
     'm737c2aceff89eec20ae7',
     ['The QuestarrNG hostname could not be resolved during the ', '.'],
+  ],
+  [
+    'm737fd6071fe8298b1ff1',
+    ['TV request response did not contain a media request.'],
   ],
   [
     'm738bcb487566cda86ca5',
@@ -5661,6 +5824,7 @@ export const apiMessagePatterns: readonly (readonly [
   ],
   ['m765a84376ffccbbec466', ['Servarr returned an invalid tag']],
   ['m767d4feb29e2237d0703', ['mediaId must be a canonical StashDB scene ID.']],
+  ['m767e0fab9b99d06ad7d1', ['Subscription failed']],
   [
     'm768cb3be7ae9fe62e497',
     ['mediaId must be a valid MusicBrainz resource ID.'],
@@ -5691,6 +5855,7 @@ export const apiMessagePatterns: readonly (readonly [
   ],
   ['m779bdb05d97ca158ee13', ['Unable to process override rules.']],
   ['m77b012b2afb9a6971475', ['seasonRequests must be an array.']],
+  ['m77daa7c9d23678327c1d', ['Missing media identifier']],
   [
     'm77dbb592bfc8e274c449',
     [
@@ -5756,6 +5921,7 @@ export const apiMessagePatterns: readonly (readonly [
   ],
   ['m7ab1c8ae09bf983e3ba0', ['A current library confirmation is required.']],
   ['m7ab30fae5d21f502f8a2', ['Image exceeds maximum allowed size']],
+  ['m7ac8f478373fb2a52a4c', ['This Plex login attempt is no longer active.']],
   [
     'm7ace025d60a519691efd',
     ['Media server authority changed before request admission.'],
@@ -5853,6 +6019,7 @@ export const apiMessagePatterns: readonly (readonly [
     'm7eba4c44471c0deb9167',
     ['TLS material must be a private regular file: ', ''],
   ],
+  ['m7ee85a0d389281d5291a', ['Unknown background error']],
   ['m7f08b46aec957adb527c', ['Webhook payload is invalid.']],
   ['m7f2b8fd41a190270efc8', ['Comic series: ', ' (CBR, CBZ, or CB7 files)']],
   [
@@ -5894,6 +6061,7 @@ export const apiMessagePatterns: readonly (readonly [
   ['m806e3cdef9658376314f', ['The vision provider URL is invalid.']],
   ['m806fe0459ef5fc39c556', ['Invalid software status filter.']],
   ['m80a3ef5bacda1efb3926', ['User missing from request context.']],
+  ['m80de5ba77f205c2a34d5', ['Invalid numbered catalog pagination options.']],
   [
     'm80ef41c05938ad7f05ab',
     ['The download service did not confirm cancellation.'],
@@ -5902,6 +6070,7 @@ export const apiMessagePatterns: readonly (readonly [
     'm80f74dd616a85d065bd3',
     ['You do not have permission to comment on this issue.'],
   ],
+  ['m81124a0c4b8a0e5bfeba', ['Issue subscribing to push notifications: ', '']],
   ['m8113951de0abd9569eec', ['preferredIsbn13 must be a valid ISBN.']],
   ['m8127d9e0e004357fd5b3', ['Invalid request body.']],
   ['m813bbb8c42a086b48602', ['ComicVine volume index is incomplete.']],
@@ -5920,6 +6089,7 @@ export const apiMessagePatterns: readonly (readonly [
     ['This request cannot be retried from its current state.'],
   ],
   ['m81a789a7cffba47dff9a', ['Lidarr returned an invalid artist record']],
+  ['m81ae27f22598538fac32', ['Unknown scheduled job error']],
   ['m81cc868395de9f7f38e9', ['ComicVine issue page is invalid.']],
   ['m81e528dbfca502931346', ['Item already blocklisted']],
   ['m81e88a2670874485ce25', ['slskdN is not set up.']],
@@ -6013,6 +6183,12 @@ export const apiMessagePatterns: readonly (readonly [
     ],
   ],
   ['m873acf78d75ecb839372', ['Stored notification outbox intent is invalid.']],
+  [
+    'm875432714f71c5d3cd15',
+    [
+      'Sign in and choose an installed interface theme after the current save finishes.',
+    ],
+  ],
   ['m876919b99f890dbe3c90', ['AniList Viewer query returned no user']],
   [
     'm87894fbbb14b338f1ea0',
@@ -6033,6 +6209,7 @@ export const apiMessagePatterns: readonly (readonly [
   ['m882b2df86b2fc61fd04e', ['Bindery user ID is invalid.']],
   ['m88856d4bba270eebd9ea', ['defaultPermissions must be valid.']],
   ['m888c8c749dedcbd5811f', ['QuestarrNG returned HTTP ', ' during the ', '.']],
+  ['m88c798afb299eda189d5', ['Invalid collection identifier.']],
   ['m88d16975f614a1419324', ['Issue mutation forbidden']],
   ['m88d7c530bcd524263bff', ['Indexer search limits must be an object.']],
   [
@@ -6082,6 +6259,7 @@ export const apiMessagePatterns: readonly (readonly [
     ],
   ],
   ['m8b00dd90732ea5f3458e', ['requestQuotaApproval must be a boolean.']],
+  ['m8b23ffe38e815ea9447d', ['This is not an IMDb title export.']],
   ['m8b3c75e4dc18a931829c', ['Metadata test flags must be booleans.']],
   [
     'm8b3f81c7a17e7cc9743d',
@@ -6092,7 +6270,6 @@ export const apiMessagePatterns: readonly (readonly [
   ['m8b7741e1aac03b859db0', ['', ' must be at most ', ' characters.']],
   ['m8b83363faf5540e7fb69', ['Sportarr returned an invalid ', ' list.']],
   ['m8ba020c75e047a8ef847', ['Unable to retrieve book details.']],
-  ['m8ba687ae900ffd3df314', ['catalog-identity']],
   [
     'm8babbcacd4584f331250',
     ['You do not have permission to make comic requests.'],
@@ -6132,6 +6309,10 @@ export const apiMessagePatterns: readonly (readonly [
   ['m8d012cef08494352f891', ['Failed to connect to Sportarr']],
   ['m8d1d794fd3be9ba2d690', ['TVDB ID not found']],
   ['m8d27f56dea0105d53294', ['Cover Art Archive request queue is full.']],
+  [
+    'm8d2eac921b51817adb44',
+    ['Plex client identifier missing. Reload the page and try again.'],
+  ],
   ['m8d2f1a7144048f9e54de', ['Concurrency must be a positive integer.']],
   ['m8d3ecbd767f38925ea41', ['Unable to start playback.']],
   ['m8d47196032b8491754fe', ['Book home sections could not be saved.']],
@@ -6226,6 +6407,10 @@ export const apiMessagePatterns: readonly (readonly [
   ['m923105feddafe75863e3', ['Unable to replace the media-server playlist.']],
   ['m92311fb678c16093d91c', ['Invalid metadata test settings.']],
   ['m923bad444376b23da067', ['Invalid music identity.']],
+  [
+    'm924326ae747c171adc0f',
+    ['Invalid built-in interface theme manifest: ', ''],
+  ],
   ['m925deab4b58075574365', ['Choose a valid author or series.']],
   [
     'm9260b6cd57057a70f4c4',
@@ -6300,6 +6485,10 @@ export const apiMessagePatterns: readonly (readonly [
   ['m96874878dc44a82a68bb', ['Wikidata item was not found']],
   ['m969dfce3d9f1eb388051', ['Invalid series ID']],
   ['m96b330e475224023dce6', ['Email delivery is not configured.']],
+  [
+    'm96b72773cea5d38757aa',
+    ['Sign in and choose a valid theme after the current save finishes.'],
+  ],
   [
     'm96d0d177ce1800281afb',
     ['The selected file is not a valid profile picture.'],
@@ -6428,6 +6617,7 @@ export const apiMessagePatterns: readonly (readonly [
     'm9df98bf1db427225f5b3',
     ['You do not have access to the selected request destination.'],
   ],
+  ['m9e12f34f9ebb0cb9b2c1', ['Interface theme preference was not confirmed.']],
   [
     'm9e2701a8b0d0be36e3d2',
     ['Music search is temporarily unavailable. Please try again.'],
@@ -6471,6 +6661,7 @@ export const apiMessagePatterns: readonly (readonly [
   ],
   ['m9ff03bed400f650f54e3', ['Choose a valid US TV rating limit.']],
   ['m9fffac6801d9d739eab0', ['Artist not found']],
+  ['ma01f4a954ceec8c007e4', ['Failed to test music metadata providers']],
   ['ma020c9109bc4d893366f', ['', ' must contain at most ', ' numeric IDs.']],
   [
     'ma02d43394c239fdcb788',
@@ -6525,8 +6716,13 @@ export const apiMessagePatterns: readonly (readonly [
   ['ma1ba4521c1e20f76bcae', ['Unable to process item.']],
   ['ma1c313b231ced57dd78c', ['Servarr returned an invalid command']],
   ['ma1dca3e758754d7ae6d8', ['[Lidarr] Failed to retrieve artists: ', '']],
+  [
+    'ma1ebb18159bb5be04741',
+    ['Choose a valid SeerrNG setup connections JSON file.'],
+  ],
   ['ma1edeef49e116689780e', ['rTorrent rejected the username or password.']],
   ['ma22dee46bde298d77a3a', ['Theme "', '" is not installed.']],
+  ['ma257b88b5fffba6bb986', ['Unconfirmed action']],
   [
     'ma25f73e98da1f005a6cc',
     [
@@ -6685,6 +6881,7 @@ export const apiMessagePatterns: readonly (readonly [
   ],
   ['ma92ea46309a911595f58', ['Failed to delete media']],
   ['ma9318bf6fa5e94c4e0e2', ['Failed to send Pushover notification.']],
+  ['ma9377bb36d3d644d15ba', ['The IMDb export contains an invalid title ID.']],
   ['ma94971da60d04f54323c', ['Search result offset is invalid.']],
   [
     'ma97e7bcd055ef5d06488',
@@ -6716,6 +6913,7 @@ export const apiMessagePatterns: readonly (readonly [
   ['maa465e522be8f975f168', ['', ' must be "always" or "hover".']],
   ['maa535de6054985465a61', ['mediaType is invalid.']],
   ['maa53878694287153b659', ['Invalid log read limit.']],
+  ['maa5bb704d4076935c1b3', ['Collection status could not be verified.']],
   [
     'maa82785965f41146fadf',
     ['Each season mapping must contain two season numbers.'],
@@ -6806,7 +7004,6 @@ export const apiMessagePatterns: readonly (readonly [
   ['mad50ab9142da9849b189', ['Servarr returned invalid system status']],
   ['mad875dd37ca56137578a', ['mediaType is required.']],
   ['madaadeb03781f6d34868', ['Failed to send Discord notification.']],
-  ['madd49face549c6c2057d', ['not-authorized']],
   ['made99afa7b4d93acab6d', ['Auth header must be ', ' characters or fewer.']],
   ['madf77c751cf62b8c01e5', ['You cannot review your own request.']],
   ['mae1edf30d8ebd8f27e2a', ['Invalid job enabled setting.']],
@@ -6835,7 +7032,6 @@ export const apiMessagePatterns: readonly (readonly [
   ],
   ['maeaa8ffeab92007f80ac', ['User already exists with submitted email.']],
   ['maedf25250a55b4ad7198', ['Choose a supported AI provider.']],
-  ['maee408847d35e44e9943', ['success']],
   ['maf2035a4175034ba526f', ['Failed to load image']],
   ['maf27199b42bbef4d2b2d', ['Use the category catalog to load this deck.']],
   [
@@ -6847,6 +7043,10 @@ export const apiMessagePatterns: readonly (readonly [
     [
       'Add the BookOrbit address and an account with Collection management access in Settings > Services > Reader Apps.',
     ],
+  ],
+  [
+    'maf65c6ee935ba49bd40d',
+    ['Provider did not finish before the global search deadline.'],
   ],
   [
     'maf684700eb93d19d7629',
@@ -6988,6 +7188,10 @@ export const apiMessagePatterns: readonly (readonly [
     ['Automatic blocklist exceeds the ', '-entry safety limit.'],
   ],
   [
+    'mb560f6de2669f0577d89',
+    ['Issue unsubscribing to push notifications: ', ''],
+  ],
+  [
     'mb59d1734fd1b0b70f8ae',
     ['Steam returned an invalid game record. No library changes were saved.'],
   ],
@@ -7030,6 +7234,7 @@ export const apiMessagePatterns: readonly (readonly [
     'mb7bb8c5b80275f57e284',
     ['[Sportarr] Failed to retrieve system status: ', ''],
   ],
+  ['mb7e6c0a3c10cfec986b8', ['Unknown provider error']],
   ['mb7fd278318dff83fa637', ['This account cannot be deleted.']],
   ['mb8298f7ce74848051554', ['Invalid profile picture size.']],
   ['mb840ad8ccbcfdad50b10', ['Grimmory returned an invalid match count.']],
@@ -7082,7 +7287,9 @@ export const apiMessagePatterns: readonly (readonly [
   ['mbb1b67482a9304472ad3', ['Navidrome rejected the username or password.']],
   ['mbb2b74fc1d635b73dace', ['Invalid hostname provided.']],
   ['mbb3a2b7286174602a64d', ['Magazine cover not found.']],
+  ['mbb625ebfbefcc0bbb530', ['Software catalog search failed.']],
   ['mbb8795ae087309972c69', ['Invalid media-server item response']],
+  ['mbb9cb69a033e8b40b824', ['Unknown delivery error']],
   [
     'mbba810b772ab6c8d1a9a',
     ['Test reached the network: ', '. Stub the API client this test uses.'],
@@ -7131,6 +7338,7 @@ export const apiMessagePatterns: readonly (readonly [
     'mbe0373db62efcf16c53f',
     ['A playlist name, Plex server, and at least one media item are required.'],
   ],
+  ['mbe04e1d9c5b1b6c062e5', ['Unknown dispatch finalization error']],
   ['mbe0d62996c264de4ada4', ['Unable to retrieve author details.']],
   ['mbe148f73d00afee6906e', ['Unable to retrieve TV certifications.']],
   ['mbe1aff8f510dbd04650d', ['Failed to send Apprise notification.']],
@@ -7138,6 +7346,7 @@ export const apiMessagePatterns: readonly (readonly [
     'mbe2eab6f5d68563bdd54',
     ['Settings structure exceeds safe nesting limits.'],
   ],
+  ['mbe45d3bd16ea39d96365', ['Unknown agent error']],
   ['mbe4f51e8512a576c7342', ['dnsCache must be an object.']],
   [
     'mbe63037da66d8f972c74',
@@ -7162,6 +7371,12 @@ export const apiMessagePatterns: readonly (readonly [
   ],
   ['mbed8c7b5a5e9f08158cc', ['Provide text, a link, or an ISBN.']],
   ['mbed965317d4cb718fd51', ['', ': URL base is invalid.']],
+  [
+    'mbedf2bde2a1342a72d28',
+    [
+      'Goodreads-compatible metadata source detected. SeerrNG supports this backend.',
+    ],
+  ],
   ['mbee0480887ced396c6a2', ['Jellyfin login is disabled']],
   [
     'mbee85bd60b43feb179d7',
@@ -7224,6 +7439,7 @@ export const apiMessagePatterns: readonly (readonly [
     'mc1acdbcc571109a2cd42',
     ['You do not have permission to request software.'],
   ],
+  ['mc1d1f31022a233de89ab', ['Failed to test connection']],
   [
     'mc1d79053be944a5a1875',
     ['At most 500 indexer search limits may be configured.'],
@@ -7248,6 +7464,7 @@ export const apiMessagePatterns: readonly (readonly [
     ['Jellyfin returned an invalid authentication response'],
   ],
   ['mc2d2e365d8bcebad5ac4', ['Jellyfin API key application name is invalid']],
+  ['mc2ec8fdcf847600204b2', ['Unknown lookup error']],
   ['mc320446cebba19d24d4d', ['Failed to execute Radarr movie search.']],
   ['mc3889d7aa0cc7b728ee2', ['Unable to find admin user to edit']],
   [
@@ -7341,12 +7558,18 @@ export const apiMessagePatterns: readonly (readonly [
     'mc83b2e910a682e9ef44e',
     ['External URL must be a valid HTTP or HTTPS URL.'],
   ],
+  [
+    'mc843e80de99129fd4027',
+    ['Unable to call login if class is not initialized.'],
+  ],
+  ['mc88fb6627be23f59d630', ['unsupported pack']],
   ['mc8a5c5fa033fd8302c31', ['[Readarr] Failed to add book: ', '']],
   ['mc8aaea60a2fc99b42bb2', ['', ' settings must be an object.']],
   [
     'mc8bc24bdc73ac3589868',
     ['mediaId must be a positive integer ComicVine volume ID.'],
   ],
+  ['mc8cc3df201a6e9b58a38', ['Native saved-state change was not confirmed.']],
   ['mc8d1937084d661adca27', ['', ' must be a hexadecimal color.']],
   [
     'mc8e9bf5cdc98558e9b6d',
@@ -7403,6 +7626,7 @@ export const apiMessagePatterns: readonly (readonly [
     'mcace22a331af9c087a27',
     ['Only request managers can reassign failed movie or TV requests.'],
   ],
+  ['mcad0fc7a05075397191b', ['Invalid issue ID']],
   [
     'mcad1f786a5d236e3198f',
     [
@@ -7593,6 +7817,9 @@ export const apiMessagePatterns: readonly (readonly [
     'md25783e0ca1133374177',
     ['preferredLanguages contains an unsupported media type.'],
   ],
+  ['md264d144c1b81de92297', ['Unknown notification error']],
+  ['md27aba9a4b8d75f3fb54', ['Unknown cache error']],
+  ['md284aed595a332aa227d', ['Unknown sync error']],
   [
     'md2995a3f956f116d1d8c',
     ['You do not have permission to modify an administrator'],
@@ -7641,6 +7868,7 @@ export const apiMessagePatterns: readonly (readonly [
   ['md5469ef52564a6a6ff07', ['', ' scored this']],
   ['md547b659a4aceabdacb2', ['Invalid Discover state item list.']],
   ['md54ee9d16c31e747a147', ['Invalid metadata provider.']],
+  ['md582ab7229c3831166a0', ['Unknown HTTP error']],
   ['md60ffb3e176d54f61ce3', ['Unable to delete the request status entry.']],
   [
     'md6157b2f967a2586b334',
@@ -7650,6 +7878,7 @@ export const apiMessagePatterns: readonly (readonly [
     'md61abfe71c6fb10d70c7',
     ['Category mappings contain an unsupported media type.'],
   ],
+  ['md62257fc3735aaa4c39c', ['IndexedDB error']],
   ['md639796f4a88dc2362e2', ['Unable to retrieve series by network.']],
   ['md63b7a30de8053b2cf6f', ['[TMDB] Failed to fetch TV network: ', '']],
   ['md64da26a4fea6ab8edf0', ['Invalid magazine identity.']],
@@ -7700,6 +7929,7 @@ export const apiMessagePatterns: readonly (readonly [
     ],
   ],
   ['md7fdc476756719949963', ['Book request details are available in SeerrNG.']],
+  ['md806eaa7090f9d54b8e5', ['Failed to save Metadata settings']],
   ['md810d55874cfaa22a09f', ['No usable release is currently available.']],
   ['md818b791c1350844dcc2', ['tags must be an array of integers.']],
   ['md82dcde01b8496ecd979', ['Invalid discovery query parameters.']],
@@ -7835,6 +8065,10 @@ export const apiMessagePatterns: readonly (readonly [
   ['mdd2bfd72a382344b280a', ['AniList returned an empty response']],
   ['mdd39693075035a290505', ['serviceType is invalid.']],
   [
+    'mdd5dcf50ecbee5c31706',
+    ['The setup file does not contain a valid connections list.'],
+  ],
+  [
     'mdd8f130ac993a4bb99f3',
     [
       'The default Sportarr connection changed during setup. Refresh the page and retry.',
@@ -7874,6 +8108,7 @@ export const apiMessagePatterns: readonly (readonly [
     ['seasonRequests are limited to 5000 selected episodes.'],
   ],
   ['mdfb6ccf509fc68f3f40e', ['ReadMeABook is not configured.']],
+  ['mdfc01a33d5d702bbce5a', ['Sign in to save advanced theme settings.']],
   ['mdfe3c0035e2a0159913d', ['That link is not a readable page.']],
   ['mdfe9527944c3805ca368', ['Invalid watchlist payload.']],
   ['me00509728e4358467459', ['An artist and MusicBrainz id are required.']],
@@ -7910,13 +8145,13 @@ export const apiMessagePatterns: readonly (readonly [
     'me17f25d97a009127bbfd',
     ['Audiobookshelf returned an invalid library list.'],
   ],
-  ['me18bab88e10081201c15', ['unsupported-server']],
   [
     'me1b2b8c553d40c5815b3',
     ['Notification outbox extra descriptor is invalid.'],
   ],
   ['me1b41fc8e1d4bd73cab7', ['Jellystat API key is required.']],
   ['me1eb45d8578142f483c8', ['Failed to get series history']],
+  ['me24b06582057a31f4a81', ['OIDC authorization redirect is not allowed.']],
   ['me24b7cd232968fd51d4a', ['Invalid shared game filters.']],
   [
     'me24ecd01e1188c6ba5a4',
@@ -7995,6 +8230,8 @@ export const apiMessagePatterns: readonly (readonly [
     ['[Whisparr] Scene inventory returned an invalid response.'],
   ],
   ['me4e20211b3d6742ab165', ['Invalid screen media identity.']],
+  ['me5029c4cf2585e141508', ['Unknown recovery error']],
+  ['me508a5d9e2d41fc7d574', ['Could not load the selected interface theme.']],
   [
     'me52ab271d5c4dea7b664',
     ['Transmission returned an unsuccessful RPC result.'],
@@ -8061,7 +8298,6 @@ export const apiMessagePatterns: readonly (readonly [
     ['requestRootFolders paths must be valid folder paths.'],
   ],
   ['me752e4ff690e9823f8f0', ['Failed to get language profiles']],
-  ['me7595a535b725f00ae22', ['watchlist-confirmation']],
   ['me772cafb6f8e1371bf0e', ['Choose an airing to record.']],
   ['me78225c0070a34250871', ['Choose a valid book home layout.']],
   ['me7859597980468f5ebe4', ['serviceType must be ebook, audiobook, or both.']],
@@ -8098,6 +8334,10 @@ export const apiMessagePatterns: readonly (readonly [
   ['me8ad1d1c1e1bdecd2adc', ['Jellystat rejected the API key.']],
   ['me8be213041e5693ed0d4', [': password is invalid.']],
   ['me8cb9eaf7b49c3749999', ['Live download settings must be an object.']],
+  [
+    'me8df1c4d53f19f5a73f0',
+    ['Window is undefined. Are you running this in the browser?'],
+  ],
   [
     'me8e80f806b2e9315483a',
     ['[TMDB] Failed to get TV show using the external TVDB ID: ', ''],
@@ -8277,6 +8517,7 @@ export const apiMessagePatterns: readonly (readonly [
     'mf11e8d920e5fc9002f44',
     ['[Readarr] Failed to retrieve cover for book ', ': No cover path worked'],
   ],
+  ['mf125a7515f111c073b8e', ['Unknown database error']],
   ['mf13b690dc37728a91c66', ['Collection update could not be verified.']],
   ['mf1414f08041e2e9c36c1', ['Session data could not be serialized']],
   [
@@ -8348,6 +8589,7 @@ export const apiMessagePatterns: readonly (readonly [
   ],
   ['mf3c709c2b0dc4a2a6b03', ['Invalid external media ID']],
   ['mf3d32c46d0d9e875c232', ['Comic backend ID not found']],
+  ['mf3dd182407ba4618911f', ['The list sync failed.']],
   [
     'mf403cf8a9bacc01cbcea',
     ['Image response exceeds the maximum allowed size.'],
@@ -8364,6 +8606,12 @@ export const apiMessagePatterns: readonly (readonly [
   ['mf44fdb9b36bb74875db2', ['Invalid TVmaze show ID']],
   ['mf48700de77d556b43ecf', ['Author not found']],
   ['mf48b7dc5e65268c59093', ['tls.mode is invalid.']],
+  [
+    'mf48d4518c53806a9ccca',
+    [
+      'Setup connection assistance must be used inside SetupConnectionsProvider.',
+    ],
+  ],
   ['mf4ad1d34bdcb6d43181d', ['Configured audiobook catalogs are unavailable.']],
   ['mf4d61c31473100984940', ['Tunerr ', ' URL is invalid.']],
   ['mf4effd8375c5aa08951b', ['Service actor is missing.']],
@@ -8436,6 +8684,7 @@ export const apiMessagePatterns: readonly (readonly [
   ['mf765fbc09643c5915778', ['This access request is no longer pending.']],
   ['mf76604cda57cdd093b08', ['Category mappings must be an object.']],
   ['mf786b42bc86cae751864', ['Bookshelf audiobook server not configured']],
+  ['mf7873f054c0be1e97141', ['ReadMeABook could not process this request.']],
   ['mf7cbe6b4aec139258ba8', ['[Lidarr] Failed to retrieve album: ', '']],
   [
     'mf7cce17f9b18329f8471',
@@ -8467,6 +8716,7 @@ export const apiMessagePatterns: readonly (readonly [
     ['[TMDB] Failed to fetch movie certifications: ', ''],
   ],
   ['mf98bfa1be2f06b21e239', ['override-rule:', '']],
+  ['mf98f4c2c4e06d883e768', ['Request for this album already exists.']],
   ['mf9bc23a578d232c04108', ['Only pending requests can be approved.']],
   [
     'mf9be00d25675ac2d7fcd',
@@ -8492,6 +8742,10 @@ export const apiMessagePatterns: readonly (readonly [
     ['[MusicBrainz] Failed to fetch release group: ', ''],
   ],
   ['mfb539981d455006bdba0', ['Game discovery is unavailable.']],
+  [
+    'mfb75dbb19a84b4c9cc8d',
+    ['Both requested book formats are already available.'],
+  ],
   ['mfb79261bbab73fd499c7', ['Bookshelf book ID not found']],
   [
     'mfbd772cd54bf6783856a',
@@ -8521,6 +8775,7 @@ export const apiMessagePatterns: readonly (readonly [
   ['mfc78944c75cbffe58e7a', ['Jellyfin returned an invalid server name']],
   ['mfca478f73299733c2487', ['Sonarr server not configured.']],
   ['mfcab49845a309c14aa3e', ['Issue comment body must be an object.']],
+  ['mfccd1a699e5666f5b4ea', ['Reset password link is invalid.']],
   ['mfcd066f2ac7a627a4200', ['seasons must be an array or all.']],
   ['mfcf337ea598e64c577b1', ['Stored notification outbox payload is invalid.']],
   ['mfcf42dd5c7286de6e9f3', ['BookOrbit returned an invalid match count.']],

@@ -817,7 +817,10 @@ const SettingsPlex = ({ isSetupSettings, onComplete }: SettingsPlexProps) => {
             <div className="absolute inset-0 flex h-8 w-full items-center justify-center text-sm">
               <span>
                 {dataSync?.running
-                  ? `${dataSync.progress} of ${dataSync.total}`
+                  ? intl.formatMessage(globalMessages.countOfTotal, {
+                      count: dataSync.progress,
+                      total: dataSync.total,
+                    })
                   : intl.formatMessage(messages.notrunning)}
               </span>
             </div>

@@ -37,6 +37,26 @@ test('all current authored API/persisted-message sources have a recorded catalog
     )
   );
   assert(
+    current.entries.some(
+      (entry) =>
+        entry.source ===
+        'Goodreads-compatible metadata source detected. SeerrNG supports this backend.'
+    )
+  );
+  assert(
+    current.entries.some((entry) => entry.source === 'Unknown HTTP error')
+  );
+  assert(
+    current.entries.some((entry) => entry.source === 'Malformed CSV quoting.')
+  );
+  assert(
+    current.opaque.some(
+      (entry) =>
+        entry.source === 'browser-session-not-established' &&
+        entry.reason === 'stable protocol/control-flow code'
+    )
+  );
+  assert(
     current.opaque.some(
       (entry) => entry.reason === 'stable protocol/control-flow code'
     )

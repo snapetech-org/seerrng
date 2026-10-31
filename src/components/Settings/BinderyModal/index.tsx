@@ -278,7 +278,8 @@ const BinderyModal = ({ settings, onClose, onSave }: BinderyModalProps) => {
                   <p className="flex items-center gap-2 font-semibold">
                     <CheckCircleIcon className="h-5 w-5 text-green-400" />
                     {intl.formatMessage(messages.version)}:{' '}
-                    {testResult.system.version ?? 'unknown'}
+                    {testResult.system.version ??
+                      intl.formatMessage(globalMessages.unknown)}
                   </p>
                   <p className="mt-2 flex items-start gap-2">
                     {testResult.features.requestsForUser ? (

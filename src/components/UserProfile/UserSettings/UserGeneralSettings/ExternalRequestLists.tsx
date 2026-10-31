@@ -32,6 +32,8 @@ interface ExternalRequestListSyncResult {
 const messages = defineMessages(
   'components.UserProfile.UserSettings.UserGeneralSettings.ExternalRequestLists',
   {
+    hardcoverConnected:
+      'Hardcover connected. Books found on your shelf: {count, number}.',
     title: 'External request lists',
     description:
       'Connect a public IMDb watchlist, Goodreads to-read shelf, or your Hardcover Want to Read shelf. New items are checked daily and requested through your normal permissions and approval settings. If IMDb blocks server-side sync, export your watchlist as CSV and import the file here.',
@@ -112,7 +114,9 @@ const ExternalRequestLists = () => {
       );
       setHardcoverToken('');
       setMessage(
-        `Hardcover connected. ${data.validatedBooks} books found on your shelf.`
+        intl.formatMessage(messages.hardcoverConnected, {
+          count: data.validatedBooks,
+        })
       );
       await mutate();
     } catch (error) {

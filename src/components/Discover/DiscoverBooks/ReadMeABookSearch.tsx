@@ -27,6 +27,7 @@ type RemoteDetails = {
 };
 
 const messages = defineMessages('components.Discover.ReadMeABookSearch', {
+  requestedTitle: '{title} requested.',
   title: 'ReadMeABook',
   description: 'Search available audiobooks and request them through SeerrNG.',
   query: 'Title, author, or narrator',
@@ -80,7 +81,11 @@ const ReadMeABookSearch = () => {
     setNotice(undefined);
     try {
       await axios.post('/api/v1/readmeabook/requests', book);
-      setNotice(`${book.title} requested.`);
+      setNotice(
+        intl.formatMessage(messages.requestedTitle, {
+          title: `\u2068${book.title}\u2069`,
+        })
+      );
       await mutate();
     } catch (error) {
       setNotice(

@@ -15,6 +15,7 @@ import { useIntl } from 'react-intl';
 import useSWR, { mutate } from 'swr';
 
 const messages = defineMessages('components.SettingsProwlarr', {
+  indexerCount: 'Indexers: {count, number}',
   title: 'Prowlarr indexers',
   description:
     'Optional: connect Prowlarr to run category-aware manual searches from SeerrNG. Approved requests continue through your configured media managers and software providers.',
@@ -594,7 +595,7 @@ const SettingsProwlarr = () => {
                     <option key={option.id} value={option.id}>
                       {option.name} ({option.id})
                       {option.indexerCount
-                        ? ` · ${option.indexerCount} indexers`
+                        ? ` · ${intl.formatMessage(messages.indexerCount, { count: option.indexerCount })}`
                         : ''}
                     </option>
                   ))}

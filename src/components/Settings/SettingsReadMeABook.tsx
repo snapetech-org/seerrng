@@ -39,6 +39,7 @@ const messages = defineMessages('components.Settings.SettingsReadMeABook', {
   apiKey: 'API token',
   savedToken: 'Saved token — leave empty to keep it',
   clearToken: 'Remove saved token',
+  saved: 'ReadMeABook settings saved.',
   save: 'Save settings',
   saving: 'Saving…',
   test: 'Test connection',
@@ -104,7 +105,7 @@ const SettingsReadMeABook = () => {
     setSaving(true);
     try {
       await axios.put('/api/v1/settings/readmeabook', payload());
-      setMessage('ReadMeABook settings saved.');
+      setMessage(intl.formatMessage(messages.saved));
       await mutate();
     } catch (caught) {
       setFailure(

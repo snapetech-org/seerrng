@@ -13,6 +13,8 @@ import useSWR from 'swr';
 const EMPTY_EPISODES: SeasonWithEpisodes['episodes'] = [];
 
 const messages = defineMessages('components.TrackingControls', {
+  seasonNumber: 'Season {number, number}',
+  episodeNumber: 'Episode {number, number}',
   consent: 'Enable tracking updates in Linked Accounts',
   watched: 'Mark watched',
   unwatched: 'Mark unwatched',
@@ -275,7 +277,10 @@ export default function TrackingControls({
                       >
                         {seasons.map((season) => (
                           <option key={season.id} value={season.seasonNumber}>
-                            {season.name || `Season ${season.seasonNumber}`}
+                            {season.name ||
+                              intl.formatMessage(messages.seasonNumber, {
+                                number: season.seasonNumber,
+                              })}
                           </option>
                         ))}
                       </select>
@@ -346,7 +351,7 @@ export default function TrackingControls({
                                 key={episode.id}
                                 value={episode.episodeNumber}
                               >
-                                {`E${episode.episodeNumber} — ${episode.name || `Episode ${episode.episodeNumber}`}${stateLabel ? ` (${stateLabel})` : ''}`}
+                                {`E${episode.episodeNumber} — ${episode.name || intl.formatMessage(messages.episodeNumber, { number: episode.episodeNumber })}${stateLabel ? ` (${stateLabel})` : ''}`}
                               </option>
                             );
                           })}

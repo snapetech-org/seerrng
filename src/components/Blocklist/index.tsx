@@ -890,18 +890,22 @@ const BlocklistedItem = ({ item, revalidateList }: BlocklistedItemProps) => {
                 </dt>
                 <dd className="card:col-start-3 card:row-start-1 m-0 truncate">
                   {item.mediaType === 'tv'
-                    ? 'Series'
+                    ? intl.formatMessage(globalMessages.tvshow)
                     : item.mediaType === 'music'
-                      ? 'Music · Album'
+                      ? `${intl.formatMessage(globalMessages.music)} · ${intl.formatMessage(globalMessages.album)}`
                       : item.mediaType === 'book'
-                        ? 'Book'
+                        ? intl.formatMessage(globalMessages.book)
                         : item.mediaType === 'comic'
-                          ? 'Comic'
+                          ? intl.formatMessage(globalMessages.comic)
                           : item.mediaType === 'magazine'
-                            ? 'Magazine'
+                            ? intl.formatMessage(globalMessages.magazine)
                             : item.mediaType === 'movie'
-                              ? 'Movie'
-                              : item.mediaType}
+                              ? intl.formatMessage(globalMessages.movie)
+                              : item.mediaType === 'adult'
+                                ? intl.formatMessage(globalMessages.adult)
+                                : item.mediaType === 'sports'
+                                  ? intl.formatMessage(globalMessages.sports)
+                                  : item.mediaType}
                 </dd>
                 <dt className="card:col-start-1 card:row-start-2 font-medium text-gray-100">
                   {intl.formatMessage(

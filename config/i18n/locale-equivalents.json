@@ -2816,7 +2816,7 @@
       "sourceCallsites": [
         {
           "path": "src/components/Settings/SettingsProwlarr.tsx",
-          "line": 76,
+          "line": 77,
           "defaultMessage": "'Comics'"
         }
       ],
@@ -3236,7 +3236,7 @@
       "sourceCallsites": [
         {
           "path": "src/i18n/globalMessages.ts",
-          "line": 42,
+          "line": 45,
           "defaultMessage": "'Album'"
         }
       ],
@@ -3256,7 +3256,7 @@
       "sourceCallsites": [
         {
           "path": "src/i18n/globalMessages.ts",
-          "line": 50,
+          "line": 53,
           "defaultMessage": "'Comic'"
         }
       ],
@@ -3276,7 +3276,7 @@
       "sourceCallsites": [
         {
           "path": "src/i18n/globalMessages.ts",
-          "line": 51,
+          "line": 54,
           "defaultMessage": "'Comics'"
         }
       ],
@@ -3296,7 +3296,7 @@
       "sourceCallsites": [
         {
           "path": "src/i18n/globalMessages.ts",
-          "line": 44,
+          "line": 47,
           "defaultMessage": "'Person'"
         }
       ],
@@ -3316,7 +3316,7 @@
       "sourceCallsites": [
         {
           "path": "src/i18n/globalMessages.ts",
-          "line": 104,
+          "line": 107,
           "defaultMessage": "'Status'"
         }
       ],
@@ -4276,7 +4276,7 @@
       "sourceCallsites": [
         {
           "path": "src/i18n/globalMessages.ts",
-          "line": 106,
+          "line": 109,
           "defaultMessage": "'Experimental'"
         }
       ],
@@ -6504,7 +6504,7 @@
       "sourceCallsites": [
         {
           "path": "src/components/Settings/SettingsProwlarr.tsx",
-          "line": 79,
+          "line": 80,
           "defaultMessage": "'Sports'"
         }
       ],
@@ -6884,7 +6884,7 @@
       "sourceCallsites": [
         {
           "path": "src/i18n/globalMessages.ts",
-          "line": 42,
+          "line": 45,
           "defaultMessage": "'Album'"
         }
       ],
@@ -6904,7 +6904,7 @@
       "sourceCallsites": [
         {
           "path": "src/i18n/globalMessages.ts",
-          "line": 38,
+          "line": 41,
           "defaultMessage": "'Collection'"
         }
       ],
@@ -6924,7 +6924,7 @@
       "sourceCallsites": [
         {
           "path": "src/i18n/globalMessages.ts",
-          "line": 87,
+          "line": 90,
           "defaultMessage": "'Notifications'"
         }
       ],
@@ -6944,7 +6944,7 @@
       "sourceCallsites": [
         {
           "path": "src/i18n/globalMessages.ts",
-          "line": 55,
+          "line": 58,
           "defaultMessage": "'Sports'"
         }
       ],
@@ -8669,7 +8669,7 @@
       "sourceCallsites": [
         {
           "path": "src/i18n/globalMessages.ts",
-          "line": 42,
+          "line": 45,
           "defaultMessage": "'Album'"
         }
       ],
@@ -8689,7 +8689,7 @@
       "sourceCallsites": [
         {
           "path": "src/i18n/globalMessages.ts",
-          "line": 104,
+          "line": 107,
           "defaultMessage": "'Status'"
         }
       ],
@@ -9095,7 +9095,7 @@
       "sourceCallsites": [
         {
           "path": "src/i18n/globalMessages.ts",
-          "line": 106,
+          "line": 109,
           "defaultMessage": "'Experimental'"
         }
       ],
@@ -9461,7 +9461,7 @@
       "sourceCallsites": [
         {
           "path": "src/i18n/globalMessages.ts",
-          "line": 42,
+          "line": 45,
           "defaultMessage": "'Album'"
         }
       ],

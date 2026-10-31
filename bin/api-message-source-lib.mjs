@@ -17,6 +17,14 @@ const messageFields = new Set([
   'reason',
   'reasons',
   'because',
+  'notice',
+  'notices',
+  'warnings',
+  'errorMessage',
+  'warningMessage',
+  'successMessage',
+  'failureReason',
+  'lastReason',
 ]);
 const hash = (value) => createHash('sha256').update(value).digest('hex');
 const sourceFiles = (directory) =>
@@ -78,6 +86,8 @@ const alternatives = (original, depth = 0) => {
   const initializer = authoredInitializer(node);
   if (initializer !== node) return alternatives(initializer, depth + 1);
   if (ts.isStringLiteralLike(node)) return [[node.text]];
+  if (ts.isArrayLiteralExpression(node))
+    return node.elements.flatMap((element) => alternatives(element, depth + 1));
   if (ts.isConditionalExpression(node)) {
     return [
       ...alternatives(node.whenTrue, depth + 1),
@@ -157,7 +167,10 @@ export const quoteIcuLiteral = (value) =>
 export const scanApiMessageSources = (root) => {
   const entries = new Map();
   const opaque = [];
-  for (const file of sourceFiles(path.join(root, 'server')).sort()) {
+  for (const file of [
+    ...sourceFiles(path.join(root, 'server')),
+    ...sourceFiles(path.join(root, 'src')),
+  ].sort()) {
     if (file.includes(`${path.sep}i18n${path.sep}locale${path.sep}`)) continue;
     const text = fs.readFileSync(file, 'utf8');
     const source = ts.createSourceFile(
@@ -180,7 +193,13 @@ export const scanApiMessageSources = (root) => {
         const pattern = toPattern(variant, source);
         const authoredLength = pattern.parts.join('').trim().length;
         let reason;
-        if (!pattern.rawSource.trim()) reason = 'empty value';
+        if (
+          kind.startsWith('protocol-helper') ||
+          (kind === 'message-list-entry' &&
+            /^[a-z][a-z0-9]*(?:[A-Z][A-Za-z0-9]*)+$/.test(pattern.rawSource))
+        )
+          reason = 'stable protocol/control-flow code';
+        else if (!pattern.rawSource.trim()) reason = 'empty value';
         else if (!authoredLength) reason = 'dynamic/provider/user value';
         else if (
           pattern.expressions.length &&
@@ -190,7 +209,7 @@ export const scanApiMessageSources = (root) => {
             'data assembly without a sufficiently specific authored phrase';
         else if (
           /^[A-Z][A-Z0-9_]*_[A-Z0-9_]+$/.test(pattern.rawSource) ||
-          (field === 'reason' &&
+          ((/reason$/i.test(field) || kind === 'app-error-candidate') &&
             /^[a-z][a-z0-9]*(?:[-_.:][a-z0-9]+)+$/.test(pattern.rawSource))
         )
           reason = 'stable protocol/control-flow code';
@@ -241,6 +260,16 @@ export const scanApiMessageSources = (root) => {
       }
     };
     const visit = (node) => {
+      if (relativePath.startsWith('src/')) {
+        if (
+          ts.isNewExpression(node) &&
+          /(?:Error|Exception)$/.test(node.expression.getText(source)) &&
+          node.arguments?.[0]
+        )
+          add(node.arguments[0], 'app-error-candidate', 'message');
+        ts.forEachChild(node, visit);
+        return;
+      }
       if (
         ts.isPropertyAssignment(node) &&
         messageFields.has(propertyName(node.name))
@@ -253,18 +282,28 @@ export const scanApiMessageSources = (root) => {
       if (
         ts.isVariableDeclaration(node) &&
         ts.isIdentifier(node.name) &&
-        /(?:message|error|warning|summary)$/i.test(node.name.text) &&
+        /(?:message|error|warning|summary|notice|reason)s?$/i.test(
+          node.name.text
+        ) &&
         node.initializer
       )
         add(node.initializer, 'authored-message-variable', node.name.text);
       if (
         ts.isReturnStatement(node) &&
         node.expression &&
-        /(?:error|message|warning|rule|summary|status)/i.test(
+        /(?:error|message|warning|rule|summary|status|notice|reason)/i.test(
           messageHelperName(node)
         )
       )
-        add(node.expression, 'message-helper-return', 'message');
+        add(
+          node.expression,
+          /(?:id|filters?|types?|codes?|keys?|slug|path|url)$/i.test(
+            messageHelperName(node)
+          )
+            ? 'protocol-helper-return'
+            : 'message-helper-return',
+          'message'
+        );
       if (
         ts.isBinaryExpression(node) &&
         node.operatorToken.kind === ts.SyntaxKind.EqualsToken &&
@@ -272,6 +311,22 @@ export const scanApiMessageSources = (root) => {
         messageFields.has(node.left.name.text)
       )
         add(node.right, 'persisted-message-assignment', node.left.name.text);
+      if (
+        ts.isArrowFunction(node) &&
+        !ts.isBlock(node.body) &&
+        /(?:error|message|warning|rule|summary|status|notice|reason)/i.test(
+          messageHelperName(node.body)
+        )
+      )
+        add(
+          node.body,
+          /(?:id|filters?|types?|codes?|keys?|slug|path|url)$/i.test(
+            messageHelperName(node.body)
+          )
+            ? 'protocol-helper-expression'
+            : 'message-helper-expression',
+          'message'
+        );
       if (ts.isCallExpression(node)) {
         const callee = node.expression;
         const name = ts.isPropertyAccessExpression(callee)
@@ -279,6 +334,17 @@ export const scanApiMessageSources = (root) => {
           : ts.isIdentifier(callee)
             ? callee.text
             : '';
+        if (name === 'push' && ts.isPropertyAccessExpression(callee)) {
+          const owner = callee.expression;
+          const field = ts.isPropertyAccessExpression(owner)
+            ? owner.name.text
+            : ts.isIdentifier(owner)
+              ? owner.text
+              : '';
+          if (messageFields.has(field))
+            for (const argument of node.arguments)
+              add(argument, 'message-list-entry', field);
+        }
         if (
           name === 'send' &&
           ts.isPropertyAccessExpression(callee) &&

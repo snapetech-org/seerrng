@@ -29,6 +29,13 @@ import { CSSTransition, SwitchTransition } from 'react-transition-group';
 import useSWR from 'swr';
 
 const messages = defineMessages('components.Login', {
+  signinFailed: 'Unable to complete sign-in.',
+  sessionMissing:
+    'Sign-in succeeded, but the browser session could not be established.',
+  loginLinkFailed: 'Unable to use this sign-in link.',
+  plexSessionMissing:
+    'Plex sign-in succeeded, but Seerr could not establish a browser session. Check that you are using the HTTPS URL or that direct HTTP session cookies are enabled.',
+  plexSigninFailed: 'Unable to complete Plex sign-in.',
   signin: 'Sign In',
   signinheader: 'Sign in to continue',
   signinwithplex: 'Use your Plex account',
@@ -57,6 +64,9 @@ const Login = ({
   initialBackdrops?: LoginBackdrop[];
 }) => {
   const intl = useIntl();
+  // Keep error copy current without restarting an in-flight Plex sign-in.
+  const intlRef = useRef(intl);
+  intlRef.current = intl;
   const router = useRouter();
   const settings = useSettings();
   const { user, revalidate } = useUser();
@@ -95,12 +105,11 @@ const Login = ({
       const response = await axios.post('/api/v1/auth/login-link', {
         token: loginLinkToken,
       });
-      if (!response.data?.id) throw new Error('Unable to complete sign-in.');
+      if (!response.data?.id)
+        throw new Error(intl.formatMessage(messages.signinFailed));
       const authenticatedUser = await revalidate();
       if (!authenticatedUser) {
-        throw new Error(
-          'Sign-in succeeded, but the browser session could not be established.'
-        );
+        throw new Error(intl.formatMessage(messages.sessionMissing));
       }
     } catch (caught) {
       setError(
@@ -109,7 +118,7 @@ const Login = ({
           ? caught.response.data.message
           : caught instanceof Error
             ? caught.message
-            : 'Unable to use this sign-in link.'
+            : intl.formatMessage(messages.loginLinkFailed)
       );
       setLoginLinkToken(undefined);
     } finally {
@@ -134,13 +143,15 @@ const Login = ({
 
         if (active) {
           if (!response.data?.id) {
-            throw new Error('Unable to complete Plex sign-in.');
+            throw new Error(
+              intlRef.current.formatMessage(messages.plexSigninFailed)
+            );
           }
 
           const authenticatedUser = await revalidate();
           if (!authenticatedUser) {
             throw new Error(
-              'Plex sign-in succeeded, but Seerr could not establish a browser session. Check that you are using the HTTPS URL or that direct HTTP session cookies are enabled.'
+              intlRef.current.formatMessage(messages.plexSessionMissing)
             );
           }
         }
@@ -151,7 +162,9 @@ const Login = ({
             : e instanceof Error
               ? e.message
               : undefined;
-          setError(message || 'Unable to complete Plex sign-in.');
+          setError(
+            message || intlRef.current.formatMessage(messages.plexSigninFailed)
+          );
         }
       } finally {
         if (active) {

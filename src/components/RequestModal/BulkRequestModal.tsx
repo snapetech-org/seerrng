@@ -1209,9 +1209,9 @@ const BulkRequestModal = ({
                                 return (
                                   <div key={bookFormat} className="contents">
                                     <dt className="font-medium text-gray-100">
-                                      {bookFormat === 'ebook'
-                                        ? 'Book'
-                                        : 'Audiobook'}
+                                      {intl.formatMessage(
+                                        getBookFormatMessage(bookFormat)
+                                      )}
                                       :
                                     </dt>
                                     <dd className="m-0 truncate font-medium">
@@ -1224,11 +1224,13 @@ const BulkRequestModal = ({
                                               : 'unavailable'
                                         }
                                       >
-                                        {available
-                                          ? 'Available'
-                                          : requested
-                                            ? 'Requested'
-                                            : 'Not Available'}
+                                        {intl.formatMessage(
+                                          available
+                                            ? globalMessages.available
+                                            : requested
+                                              ? globalMessages.requested
+                                              : globalMessages.notavailable
+                                        )}
                                       </AvailabilityValue>
                                     </dd>
                                   </div>

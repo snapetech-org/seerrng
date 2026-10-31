@@ -224,7 +224,7 @@ const Modal = React.forwardRef<HTMLDivElement, ModalProps>(
                       data-testid="modal-ok-button"
                       {...okButtonProps}
                     >
-                      {okText ? okText : 'Ok'}
+                      {okText || intl.formatMessage(globalMessages.ok)}
                     </Button>
                   )}
                   {typeof onSecondary === 'function' && secondaryText && (

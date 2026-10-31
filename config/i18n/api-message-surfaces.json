@@ -227,7 +227,7 @@
     },
     {
       "file": "src/components/Discover/DiscoverBooks/ReadMeABookSearch.tsx",
-      "line": 144,
+      "line": 149,
       "expression": "notice",
       "context": [
         "ApiMessageText",
@@ -238,7 +238,7 @@
     },
     {
       "file": "src/components/Discover/DiscoverBooks/ReadMeABookSearch.tsx",
-      "line": 190,
+      "line": 195,
       "expression": "item.statusMessage",
       "context": [
         "ApiMessageText",
@@ -261,7 +261,7 @@
     },
     {
       "file": "src/components/Discover/ReadMeABookHomeSection.tsx",
-      "line": 85,
+      "line": 90,
       "expression": "notice",
       "context": [
         "ApiMessageText",
@@ -305,7 +305,7 @@
     },
     {
       "file": "src/components/DiscoveryIntegrations/TrackingControls.tsx",
-      "line": 585,
+      "line": 590,
       "expression": "notice",
       "context": [
         "p",
@@ -482,7 +482,7 @@
     },
     {
       "file": "src/components/Login/index.tsx",
-      "line": 338,
+      "line": 351,
       "expression": "error",
       "context": [
         "ApiMessageText",
@@ -1046,7 +1046,7 @@
     },
     {
       "file": "src/components/Settings/SettingsProwlarr.tsx",
-      "line": 150,
+      "line": 151,
       "expression": "intl.formatMessage(messages[message], {\n        date: intl.formatDate(date, {\n          dateStyle: 'medium',\n          timeStyle: 'short',\n        }),\n      })",
       "context": [
         "p"
@@ -1055,7 +1055,7 @@
     },
     {
       "file": "src/components/Settings/SettingsProwlarr.tsx",
-      "line": 808,
+      "line": 809,
       "expression": "errorMessage",
       "context": [
         "ApiMessageText",
@@ -1066,7 +1066,7 @@
     },
     {
       "file": "src/components/Settings/SettingsProwlarr.tsx",
-      "line": 879,
+      "line": 880,
       "expression": "item.error",
       "context": [
         "ApiMessageText",
@@ -1083,7 +1083,7 @@
     },
     {
       "file": "src/components/Settings/SettingsReadMeABook.tsx",
-      "line": 255,
+      "line": 256,
       "expression": "message",
       "context": [
         "ApiMessageText",
@@ -1347,7 +1347,7 @@
     },
     {
       "file": "src/components/UserProfile/UserSettings/UserGeneralSettings/ExternalRequestLists.tsx",
-      "line": 280,
+      "line": 284,
       "expression": "message",
       "context": [
         "ApiMessageText",
@@ -1358,7 +1358,7 @@
     },
     {
       "file": "src/components/UserProfile/UserSettings/UserGeneralSettings/ExternalRequestLists.tsx",
-      "line": 285,
+      "line": 289,
       "expression": "errorMessage",
       "context": [
         "ApiMessageText",
@@ -1369,7 +1369,7 @@
     },
     {
       "file": "src/components/UserProfile/UserSettings/UserGeneralSettings/ExternalRequestLists.tsx",
-      "line": 288,
+      "line": 292,
       "expression": "intl.formatMessage(messages.error)",
       "context": [
         "p",
@@ -1379,7 +1379,7 @@
     },
     {
       "file": "src/components/UserProfile/UserSettings/UserGeneralSettings/ExternalRequestLists.tsx",
-      "line": 327,
+      "line": 331,
       "expression": "list.lastSyncError",
       "context": [
         "ApiMessageText",

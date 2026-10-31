@@ -2,6 +2,10 @@ const fs = require('fs'),
   path = require('path');
 const W = path.resolve(__dirname, '..');
 const ts = require(W + '/node_modules/typescript');
+const {
+  findUnlocalizedMessageConstructions,
+  findUnlocalizedDisplayExpressions,
+} = require('./api-message-surface-lib.cjs');
 const files = (dir) =>
   fs
     .readdirSync(dir, { withFileTypes: true })
@@ -13,6 +17,15 @@ const files = (dir) =>
           : []
     );
 const rows = [];
+const rawConstructions = [];
+const controlState = new Set([
+  'src/components/DiscoveryIntegrations/Configuration.tsx:setMessage:saved',
+  'src/components/DiscoveryIntegrations/Configuration.tsx:setMessage:failed',
+  'src/components/GameLibrary/index.tsx:setManualStatus:backlog',
+  // ProviderStatus is a protocol/state enum; render helpers localize its labels.
+  'src/components/Settings/SettingsMetadata.tsx:setProviderStatus:not tested',
+  'src/components/Settings/SettingsMetadata.tsx:setProviderStatus:failed',
+]);
 for (const file of files(W + '/src')) {
   const text = fs.readFileSync(file, 'utf8'),
     sf = ts.createSourceFile(
@@ -22,10 +35,23 @@ for (const file of files(W + '/src')) {
       true,
       ts.ScriptKind.TSX
     );
+  rawConstructions.push(
+    ...findUnlocalizedMessageConstructions(
+      sf,
+      path.relative(W, file).split(path.sep).join('/'),
+      controlState
+    )
+  );
+  rawConstructions.push(
+    ...findUnlocalizedDisplayExpressions(
+      sf,
+      path.relative(W, file).split(path.sep).join('/')
+    )
+  );
   const visit = (n) => {
     if (ts.isJsxExpression(n) && n.expression) {
       const x = n.expression,
-        raw = x.getText(sf);
+        raw = x.getText(sf).replaceAll('\r\n', '\n');
       let jsx = false;
       const check = (k) => {
         if (ts.isJsxElement(k) || ts.isJsxSelfClosingElement(k)) {
@@ -64,7 +90,7 @@ for (const file of files(W + '/src')) {
                 ? 'already-localized'
                 : 'review-required';
           rows.push({
-            file: path.relative(W, file),
+            file: path.relative(W, file).split(path.sep).join('/'),
             line: sf.getLineAndCharacterOfPosition(n.getStart(sf)).line + 1,
             expression: raw,
             context,
@@ -77,6 +103,14 @@ for (const file of files(W + '/src')) {
     ts.forEachChild(n, visit);
   };
   visit(sf);
+}
+
+if (rawConstructions.length) {
+  console.error(
+    'Fixed message construction needs a locale key or explicit classification:'
+  );
+  console.error(JSON.stringify(rawConstructions, null, 2));
+  process.exit(1);
 }
 
 const classifications = JSON.parse(
