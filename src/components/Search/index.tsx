@@ -34,6 +34,7 @@ import type {
   ArtistResult,
   AuthorResult,
   BookResult,
+  CollectionResult,
   ComicResult,
   MagazineResult,
   MovieResult,
@@ -133,6 +134,7 @@ type SearchResult =
   | MovieResult
   | TvResult
   | PersonResult
+  | CollectionResult
   | AlbumResult
   | ArtistResult
   | BookResult
