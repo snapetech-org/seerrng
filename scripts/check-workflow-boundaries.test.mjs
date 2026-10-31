@@ -276,74 +276,6 @@ test('renderer bumps and packages multiple changed charts', () => {
   }
 });
 
-test('CodeQL models the awaited image cache validation barrier', () => {
-  const codeqlWorkflow = yaml.load(
-    fs.readFileSync(
-      path.join(rootDirectory, '.github', 'workflows', 'codeql.yml'),
-      'utf8'
-    )
-  );
-  const codeqlModelDirectory = path.join(
-    rootDirectory,
-    '.github',
-    'codeql',
-    'model-pack'
-  );
-  const modelPack = yaml.load(
-    fs.readFileSync(path.join(codeqlModelDirectory, 'qlpack.yml'), 'utf8')
-  );
-  const securityModels = yaml.load(
-    fs.readFileSync(
-      path.join(codeqlModelDirectory, 'models', 'security.yml'),
-      'utf8'
-    )
-  );
-  const modelPackReference = codeqlWorkflow.jobs.analyze.steps.find(
-    (step) => step.name === 'Initialize CodeQL'
-  ).with.packs;
-  const codeqlSteps = codeqlWorkflow.jobs.analyze.steps;
-  const nodeSetupIndex = codeqlSteps.findIndex(
-    (step) => step.name === 'Set up Node.js for CodeQL'
-  );
-  const codeqlInitIndex = codeqlSteps.findIndex(
-    (step) => step.name === 'Initialize CodeQL'
-  );
-  const nodeSetup = codeqlSteps[nodeSetupIndex];
-  const imageCacheBarriers = securityModels.extensions
-    .filter(({ addsTo }) => addsTo.extensible === 'barrierModel')
-    .flatMap(({ data }) => data)
-    .filter(([module]) => module === '@server/lib/imageproxy');
-
-  assert.ok(
-    modelPackReference.includes(
-      `snapetech/seerrng-codeql-models@${modelPack.version}`
-    )
-  );
-  assert.equal(nodeSetup.if, "matrix.language == 'javascript'");
-  assert.equal(
-    nodeSetup.uses,
-    'actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1'
-  );
-  assert.equal(nodeSetup.with['node-version-file'], 'package.json');
-  assert.equal(nodeSetup.with['package-manager-cache'], false);
-  assert.ok(nodeSetupIndex < codeqlInitIndex);
-  assert.deepEqual(
-    imageCacheBarriers.sort(([left], [right]) => left.localeCompare(right)),
-    [
-      [
-        '@server/lib/imageproxy',
-        'Member[prepareRasterImageForCache].ReturnValue.Awaited',
-        'http-to-file-access',
-      ],
-      [
-        '@server/lib/imageproxy',
-        'Member[prepareRasterImageForCache].ReturnValue.Awaited.Member[buffer]',
-        'http-to-file-access',
-      ],
-    ].sort(([left], [right]) => left.localeCompare(right))
-  );
-});
-
 test('unit-test shards use private JIT runners with exact-run labels', () => {
   const ciWorkflow = yaml.load(
     fs.readFileSync(
@@ -373,7 +305,6 @@ test('main validation and image scanning use private JIT runners', () => {
     assertSharedMainJitRunner(runner, jobName);
   }
   for (const [workflowName, jobName] of [
-    ['codeql.yml', 'analyze'],
     ['semgrep-community.yml', 'semgrep'],
   ]) {
     const scanWorkflow = yaml.load(

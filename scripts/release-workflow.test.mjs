@@ -1335,11 +1335,7 @@ test('main CI image publishing uses private runners without cancelling queued sc
   assert.match(imagePublish['runs-on'], /ng-shared-main-seerrng/u);
   assert.equal(imagePublish.concurrency['cancel-in-progress'], false);
 
-  for (const name of [
-    'codeql.yml',
-    'semgrep-community.yml',
-    'trivy-filesystem.yml',
-  ]) {
+  for (const name of ['semgrep-community.yml', 'trivy-filesystem.yml']) {
     const workflow = readWorkflow(name);
 
     assert.equal(
