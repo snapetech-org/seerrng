@@ -885,6 +885,10 @@ test('release publishing runs only from main dispatches so private runners serve
   assert.match(validation.if, /github\.event_name != 'workflow_dispatch'/u);
   assert.match(validation.if, /github\.ref == 'refs\/heads\/main'/u);
   assert.equal(
+    release['run-name'],
+    "${{ format('action:{0}:tag:{1}:pool:{2}', inputs.action_tag, inputs.tag, inputs.runner_pool_tag) }}"
+  );
+  assert.equal(
     release.concurrency.group,
     '${{ github.workflow }}-${{ github.event_name }}-${{ inputs.tag || github.ref_name }}-${{ github.run_id }}'
   );
