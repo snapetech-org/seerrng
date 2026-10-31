@@ -624,6 +624,7 @@ const RequestItem = ({ request, revalidateList }: RequestItemProps) => {
     fallbackData: request,
     revalidateOnMount: false,
     revalidateOnFocus: false,
+    revalidateOnReconnect: false,
     refreshInterval: refreshIntervalHelper(
       {
         downloadStatus: request.media.downloadStatus,

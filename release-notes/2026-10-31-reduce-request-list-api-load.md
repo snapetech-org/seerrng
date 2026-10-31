@@ -6,4 +6,4 @@ action: none
 breaking: false
 ---
 
-Request rows use the paginated list response on mount and focus instead of fetching the same request again. Details for active downloads continue to refresh.
+Request rows use the paginated list response on mount, focus, and reconnect instead of fetching the same request again. Details for active downloads continue to refresh.
