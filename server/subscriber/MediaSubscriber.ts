@@ -82,7 +82,7 @@ export class MediaSubscriber implements EntitySubscriberInterface<Media> {
     return isRequestedBookFormatAvailable(media, request.bookFormat ?? 'ebook');
   }
 
-  private async updateChildRequestStatus(
+  private async completeChildRequests(
     manager: EntityManager,
     event: Media,
     is4k: boolean
@@ -102,7 +102,14 @@ export class MediaSubscriber implements EntitySubscriberInterface<Media> {
             event.mediaType !== MediaType.BOOK ||
             this.isBookRequestSatisfied(event, request)
           ) {
-            request.status = MediaRequestStatus.APPROVED;
+            // Mark the request complete before its subscriber can dispatch it
+            // to an acquisition service. The media is already available.
+            request.status = MediaRequestStatus.COMPLETED;
+            request.seasons.forEach((season) => {
+              if (isActiveSeasonRequest(season)) {
+                season.status = MediaRequestStatus.COMPLETED;
+              }
+            });
             await requestRepository.save(request);
           }
         }
@@ -250,7 +257,7 @@ export class MediaSubscriber implements EntitySubscriberInterface<Media> {
       event.entity.status === MediaStatus.AVAILABLE &&
       event.databaseEntity.status === MediaStatus.PENDING
     ) {
-      await this.updateChildRequestStatus(
+      await this.completeChildRequests(
         event.manager,
         event.entity as Media,
         false
@@ -261,7 +268,7 @@ export class MediaSubscriber implements EntitySubscriberInterface<Media> {
       event.entity.status4k === MediaStatus.AVAILABLE &&
       event.databaseEntity.status4k === MediaStatus.PENDING
     ) {
-      await this.updateChildRequestStatus(
+      await this.completeChildRequests(
         event.manager,
         event.entity as Media,
         true
