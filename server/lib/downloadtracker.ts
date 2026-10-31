@@ -16,7 +16,6 @@ import {
 } from '@server/lib/serviceAdmission';
 import type { DVRSettings, ReadarrSettings } from '@server/lib/settings';
 import logger from '@server/logger';
-import { trackBackgroundTask } from '@server/utils/backgroundTasks';
 import { mapWithConcurrency } from '@server/utils/concurrency';
 import { MAX_SERVARR_INSTANCES_PER_TYPE } from '@server/utils/servarrSettings';
 import { uniqWith } from 'lodash';
@@ -117,8 +116,10 @@ export class DownloadTracker {
   private readarrServers: Record<number, DownloadingItem[]> = {};
   private kapowarrServers: Record<number, DownloadingItem[]> = {};
   private backissueServers: Record<number, DownloadingItem[]> = {};
-  private monitoredRefreshes = new Set<string>();
+  private monitoredRefreshes = new Map<string, Promise<boolean>>();
   private lastMonitoredRefresh = new Map<string, number>();
+  /** Keep stale snapshots visible without reading after a refresh that failed. */
+  private failedMonitoredRefreshes = new Set<string>();
   private activeUpdate?: Promise<void>;
 
   private runWithCurrentServarrDownloadServer<
@@ -148,47 +149,55 @@ export class DownloadTracker {
     );
   }
 
-  private refreshMonitoredDownloads(
+  private ensureMonitoredDownloadsRefreshed(
     key: string,
     serviceType: ServarrDownloadServiceType,
     server: DownloadTrackerServerSettings,
     refresh: () => Promise<void>,
     serverName: string
-  ): void {
+  ): Promise<boolean> {
+    const activeRefresh = this.monitoredRefreshes.get(key);
+    if (activeRefresh) {
+      return activeRefresh;
+    }
+
     const lastRefresh = this.lastMonitoredRefresh.get(key) ?? 0;
 
     if (Date.now() - lastRefresh < DownloadTracker.monitoredRefreshCooldownMs) {
-      return;
+      return Promise.resolve(!this.failedMonitoredRefreshes.has(key));
     }
 
-    if (this.monitoredRefreshes.has(key)) {
-      return;
-    }
-
-    this.monitoredRefreshes.add(key);
     this.lastMonitoredRefresh.set(key, Date.now());
-    trackBackgroundTask(
-      `refresh monitored downloads for ${serverName}`,
-      async () => {
-        try {
-          await this.runWithCurrentServarrDownloadServer(
-            serviceType,
-            server,
-            refresh
-          );
-        } catch (e) {
-          logger.debug(
-            `Unable to refresh monitored downloads for server: ${serverName}`,
-            {
-              errorMessage: e instanceof Error ? e.message : String(e),
-              label: 'Download Tracker',
-            }
-          );
-        } finally {
-          this.monitoredRefreshes.delete(key);
+    const refreshTask = this.runWithCurrentServarrDownloadServer(
+      serviceType,
+      server,
+      refresh
+    )
+      .then(() => true)
+      .catch((e) => {
+        logger.debug(
+          `Unable to refresh monitored downloads for server: ${serverName}`,
+          {
+            errorMessage: e instanceof Error ? e.message : String(e),
+            label: 'Download Tracker',
+          }
+        );
+        return false;
+      })
+      .then((refreshed) => {
+        if (refreshed) {
+          this.failedMonitoredRefreshes.delete(key);
+        } else {
+          this.failedMonitoredRefreshes.add(key);
         }
-      }
-    );
+        return refreshed;
+      })
+      .finally(() => {
+        this.monitoredRefreshes.delete(key);
+      });
+
+    this.monitoredRefreshes.set(key, refreshTask);
+    return refreshTask;
   }
 
   private async loadHistory(
@@ -465,13 +474,17 @@ export class DownloadTracker {
           });
 
           try {
-            this.refreshMonitoredDownloads(
-              `radarr:${server.id}`,
-              'radarr',
-              server,
-              () => radarr.refreshMonitoredDownloads(),
-              server.name
-            );
+            if (
+              !(await this.ensureMonitoredDownloadsRefreshed(
+                `radarr:${server.id}`,
+                'radarr',
+                server,
+                () => radarr.refreshMonitoredDownloads(),
+                server.name
+              ))
+            ) {
+              return;
+            }
             const [queueItems, historyItems] = await Promise.all([
               this.runWithCurrentServarrDownloadServer('radarr', server, () =>
                 radarr.getQueue()
@@ -563,13 +576,17 @@ export class DownloadTracker {
         });
 
         try {
-          this.refreshMonitoredDownloads(
-            `whisparr:${server.id}`,
-            'whisparr',
-            server,
-            () => whisparr.refreshMonitoredDownloads(),
-            server.name
-          );
+          if (
+            !(await this.ensureMonitoredDownloadsRefreshed(
+              `whisparr:${server.id}`,
+              'whisparr',
+              server,
+              () => whisparr.refreshMonitoredDownloads(),
+              server.name
+            ))
+          ) {
+            return;
+          }
           const [queueItems, historyItems] = await Promise.all([
             this.runWithCurrentServarrDownloadServer('whisparr', server, () =>
               whisparr.getQueue()
@@ -657,13 +674,17 @@ export class DownloadTracker {
           });
 
           try {
-            this.refreshMonitoredDownloads(
-              `sonarr:${server.id}`,
-              'sonarr',
-              server,
-              () => sonarr.refreshMonitoredDownloads(),
-              server.name
-            );
+            if (
+              !(await this.ensureMonitoredDownloadsRefreshed(
+                `sonarr:${server.id}`,
+                'sonarr',
+                server,
+                () => sonarr.refreshMonitoredDownloads(),
+                server.name
+              ))
+            ) {
+              return;
+            }
             const [queueItems, historyItems] = await Promise.all([
               this.runWithCurrentServarrDownloadServer('sonarr', server, () =>
                 sonarr.getQueue()
@@ -760,13 +781,17 @@ export class DownloadTracker {
           });
 
           try {
-            this.refreshMonitoredDownloads(
-              `lidarr:${server.id}`,
-              'lidarr',
-              server,
-              () => lidarr.refreshMonitoredDownloads(),
-              server.name
-            );
+            if (
+              !(await this.ensureMonitoredDownloadsRefreshed(
+                `lidarr:${server.id}`,
+                'lidarr',
+                server,
+                () => lidarr.refreshMonitoredDownloads(),
+                server.name
+              ))
+            ) {
+              return;
+            }
             const [queueItems, historyItems] = await Promise.all([
               this.runWithCurrentServarrDownloadServer('lidarr', server, () =>
                 lidarr.getQueue()
@@ -1019,13 +1044,17 @@ export class DownloadTracker {
           });
 
           try {
-            this.refreshMonitoredDownloads(
-              `readarr:${server.id}`,
-              'readarr',
-              server,
-              () => readarr.refreshMonitoredDownloads(),
-              server.name
-            );
+            if (
+              !(await this.ensureMonitoredDownloadsRefreshed(
+                `readarr:${server.id}`,
+                'readarr',
+                server,
+                () => readarr.refreshMonitoredDownloads(),
+                server.name
+              ))
+            ) {
+              return;
+            }
             const queueItems = await this.runWithCurrentServarrDownloadServer(
               'readarr',
               server,

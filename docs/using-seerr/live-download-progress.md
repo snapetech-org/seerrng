@@ -7,7 +7,13 @@ sidebar_position: 7
 # Live download progress
 
 By default, SeerrNG updates download progress when the scheduled **Download
-Sync** job reads the Radarr, Sonarr, Lidarr, and Bookshelf queues. If you connect
+Sync** job refreshes and reads the Radarr, Sonarr, Lidarr, Whisparr, and
+Bookshelf/Readarr queues.
+It waits for each monitored-download refresh command to finish before reading a
+complete queue snapshot. Each snapshot is paginated and bounded to 10,000
+records. If the refresh fails, a page is missing, the reported total changes
+between pages, or the limit is exceeded, SeerrNG keeps the last complete
+progress state instead of treating unread items as gone. If you connect
 the torrent clients those services use, progress bars on request and media
 pages update every few seconds while someone is viewing them. Each download also
 shows its current speed and seed count.

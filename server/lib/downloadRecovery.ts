@@ -276,15 +276,18 @@ class DownloadRecovery {
     const stateRepository = getRepository(DownloadRecoveryState);
 
     try {
-      await service.api.refreshMonitoredDownloads().catch((e) => {
-        logger.debug('Unable to refresh monitored downloads before recovery.', {
-          label: 'Download Recovery',
-          service: service.label,
-          server: service.server.name,
-          errorMessage: e instanceof Error ? e.message : String(e),
-        });
+      await service.api.refreshMonitoredDownloads();
+    } catch (e) {
+      logger.debug('Unable to refresh monitored downloads before recovery.', {
+        label: 'Download Recovery',
+        service: service.label,
+        server: service.server.name,
+        errorMessage: e instanceof Error ? e.message : String(e),
       });
+      return;
+    }
 
+    try {
       const queueItems = await service.api.getQueue();
       const uniqueQueueItems = deduplicateRecoveryQueue(queueItems);
       const activeDownloadIds = uniqueQueueItems.map((item) => item.downloadId);
