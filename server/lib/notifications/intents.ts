@@ -22,7 +22,10 @@ import { normalizeStashDbId } from '@server/lib/stashdbIdentity';
 import { parseBookshelfBookId } from '@server/utils/bookshelfCatalog';
 import { sortBy, truncate } from 'lodash';
 import { Notification } from '.';
-import type { NotificationPayload } from './agents/agent';
+import type {
+  NotificationEventKind,
+  NotificationPayload,
+} from './agents/agent';
 import type { NotificationOutboxIntent } from './outbox';
 
 const getMediaDetails = async (
@@ -135,34 +138,42 @@ export const buildMediaRequestNotificationPayload = async (
                 ? 'Adult Scene'
                 : 'Book';
   let event: string | undefined;
+  let eventKind: NotificationEventKind | undefined;
   let notifyAdmin = true;
   let notifySystem = true;
   switch (type) {
     case Notification.MEDIA_AVAILABLE:
       event = `${entity.is4k ? '4K ' : ''}${mediaType} Now Available`;
+      eventKind = 'available';
       notifyAdmin = false;
       break;
     case Notification.MEDIA_APPROVED:
       event = `${entity.is4k ? '4K ' : ''}${mediaType} Request Approved`;
+      eventKind = 'approved';
       notifyAdmin = false;
       break;
     case Notification.MEDIA_DECLINED:
       event = `${entity.is4k ? '4K ' : ''}${mediaType} Request Declined`;
+      eventKind = 'declined';
       notifyAdmin = false;
       break;
     case Notification.MEDIA_PENDING:
       event = `New ${entity.is4k ? '4K ' : ''}${mediaType} Request`;
+      eventKind = 'pending';
       break;
     case Notification.MEDIA_AUTO_REQUESTED:
       event = `${entity.is4k ? '4K ' : ''}${mediaType} Request Automatically Submitted`;
+      eventKind = 'autoRequested';
       notifyAdmin = false;
       notifySystem = false;
       break;
     case Notification.MEDIA_AUTO_APPROVED:
       event = `${entity.is4k ? '4K ' : ''}${mediaType} Request Automatically Approved`;
+      eventKind = 'autoApproved';
       break;
     case Notification.MEDIA_FAILED:
       event = `${entity.is4k ? '4K ' : ''}${mediaType} Request Failed`;
+      eventKind = 'failed';
       break;
   }
   const base = {
@@ -172,6 +183,9 @@ export const buildMediaRequestNotificationPayload = async (
     notifySystem,
     notifyUser: notifyAdmin ? undefined : entity.requestedBy,
     event,
+    eventMessage: eventKind
+      ? { kind: eventKind, mediaType: entity.type, is4k: entity.is4k }
+      : undefined,
   };
   const notificationMediaUrl = (mediaUrl: string): string =>
     type === Notification.MEDIA_AVAILABLE &&
@@ -403,6 +417,11 @@ const hydrateMediaAvailabilitySubscriptionIntent = async (
 
   return {
     event: `${mediaType} Now Available`,
+    eventMessage: {
+      kind: 'available',
+      mediaType: media.mediaType,
+      is4k: false,
+    },
     subject: title,
     notifySystem: false,
     notifyAdmin: false,

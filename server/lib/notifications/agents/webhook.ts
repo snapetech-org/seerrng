@@ -1,5 +1,6 @@
 import { IssueStatus, IssueType } from '@server/constants/issue';
 import { MediaStatus } from '@server/constants/media';
+import { getIntl } from '@server/i18n';
 import {
   normalizeExternalBookId,
   normalizeMusicBrainzId,
@@ -18,7 +19,11 @@ import axios from 'axios';
 import { get } from 'lodash';
 import { Notification, hasNotificationType } from '..';
 import type { NotificationAgent, NotificationPayload } from './agent';
-import { BaseAgent, CONFIGURABLE_NOTIFICATION_HTTP_OPTIONS } from './agent';
+import {
+  BaseAgent,
+  CONFIGURABLE_NOTIFICATION_HTTP_OPTIONS,
+  getNotificationEvent,
+} from './agent';
 
 export const MAX_WEBHOOK_PAYLOAD_BYTES = 64 * 1024;
 const MAX_WEBHOOK_PAYLOAD_DEPTH = 32;
@@ -109,7 +114,7 @@ type KeyMapFunction = (
 
 const KeyMap: Record<string, string | KeyMapFunction> = {
   notification_type: (_payload, type) => Notification[type],
-  event: 'event',
+  event: (payload) => getNotificationEvent(payload, getIntl()) ?? '',
   subject: 'subject',
   message: 'message',
   image: 'image',

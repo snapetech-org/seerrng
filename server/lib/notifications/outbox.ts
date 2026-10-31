@@ -10,7 +10,11 @@ import logger from '@server/logger';
 import { randomUUID } from 'node:crypto';
 import { In } from 'typeorm';
 import type { Notification } from '.';
-import type { NotificationPayload } from './agents/agent';
+import type {
+  NotificationEventDescriptor,
+  NotificationEventKind,
+  NotificationPayload,
+} from './agents/agent';
 
 export const MAX_NOTIFICATION_OUTBOX_ROWS = 10_000;
 export const NOTIFICATION_OUTBOX_SCAN_BATCH_SIZE = 250;
@@ -65,6 +69,7 @@ interface StoredComment {
 
 interface StoredNotificationPayload {
   event?: string;
+  eventMessage?: NotificationEventDescriptor;
   subject: string;
   notifySystem: boolean;
   notifyAdmin: boolean;
@@ -168,9 +173,56 @@ const serializeStoredValue = (value: unknown): string => {
   return serialized;
 };
 
+const storedNotificationEventKinds = new Set<NotificationEventKind>([
+  'available',
+  'approved',
+  'declined',
+  'pending',
+  'autoRequested',
+  'autoApproved',
+  'failed',
+]);
+
+const storedMediaTypes = new Set([
+  'movie',
+  'tv',
+  'music',
+  'book',
+  'comic',
+  'magazine',
+  'adult',
+  'sports',
+]);
+
+const parseStoredNotificationEvent = (
+  value: unknown
+): NotificationEventDescriptor | undefined => {
+  if (value === undefined) {
+    return undefined;
+  }
+
+  if (!value || typeof value !== 'object') {
+    throw new Error('Stored notification event is invalid.');
+  }
+
+  const event = value as Record<string, unknown>;
+  if (
+    typeof event.kind !== 'string' ||
+    !storedNotificationEventKinds.has(event.kind as NotificationEventKind) ||
+    typeof event.mediaType !== 'string' ||
+    !storedMediaTypes.has(event.mediaType) ||
+    typeof event.is4k !== 'boolean'
+  ) {
+    throw new Error('Stored notification event is invalid.');
+  }
+
+  return event as unknown as NotificationEventDescriptor;
+};
+
 const serializePayload = (payload: NotificationPayload): string => {
   const stored: StoredNotificationPayload = {
     event: payload.event,
+    eventMessage: payload.eventMessage,
     subject: payload.subject,
     notifySystem: payload.notifySystem,
     notifyAdmin: payload.notifyAdmin,
@@ -248,7 +300,9 @@ const parseStoredPayload = (serialized: string): StoredNotificationPayload => {
   ) {
     throw new Error('Stored notification outbox payload is invalid.');
   }
-  return parsed as StoredNotificationPayload;
+  const stored = parsed as StoredNotificationPayload;
+  stored.eventMessage = parseStoredNotificationEvent(stored.eventMessage);
+  return stored;
 };
 
 export const createNotificationOutboxRecord = async (
@@ -467,6 +521,7 @@ export const hydrateNotificationOutboxPayload = async (
 
   return {
     event: stored.event,
+    eventMessage: stored.eventMessage,
     subject: stored.subject,
     notifySystem: stored.notifySystem,
     notifyAdmin: stored.notifyAdmin,
