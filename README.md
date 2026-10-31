@@ -170,7 +170,9 @@ to confirm which ones are included in a published build. SeerrNG continues to
 adapt selected upstream work in attributed, reviewable changes. The
 [fork-retirement matrix](./docs/fork-rationale.md) describes the behavior and
 upgrade evidence a supported replacement would need before the core fork could
-be retired.
+be retired. Because the OpenAPI specification also validates runtime requests,
+maintainers keep it aligned with route inputs and permission-aware responses;
+see the [API contract guide](./docs/maintainers/openapi-api-contract.md).
 
 Release notes are maintained in [`CHANGELOG.md`](./CHANGELOG.md). User-facing
 pull requests add a concise release-note fragment under
@@ -204,6 +206,7 @@ SeerrNG documentation is maintained in the [docs folder](https://github.com/snap
 - [Hide Subject Tags](./docs/using-seerr/media-details-and-playback.md#hide-subject-tags)
 - [Why SeerrNG maintains companion forks](./docs/using-seerr/dependency-forks.md)
 - [Why SeerrNG is a fork and what could retire it](./docs/fork-rationale.md)
+- [Maintain the OpenAPI API contract](./docs/maintainers/openapi-api-contract.md) — keep request validation and API documentation aligned with SeerrNG routes and response filtering.
 - [ChaptarrNG fork changes and capabilities](https://github.com/snapetech-org/chaptarrng/blob/main/docs/FORK_FEATURES.md)
 - [Discover and request comics](./docs/using-seerr/comics-backend.md)
 - [Discover and request magazines](./docs/using-seerr/magazines-backend.md)
