@@ -1144,6 +1144,12 @@ authRoutes.post('/jellyfin', authRateLimit, async (req, res, next) => {
     return res.status(400).json({ error: serverType.error });
   }
 
+  const configuredJellyfinServerType =
+    initialMediaServerType === MediaServerType.JELLYFIN ||
+    initialMediaServerType === MediaServerType.EMBY
+      ? initialMediaServerType
+      : undefined;
+
   body.username = username.value;
   body.password = password.value;
   body.email = email.value;
@@ -1151,7 +1157,7 @@ authRoutes.post('/jellyfin', authRateLimit, async (req, res, next) => {
   body.urlBase = normalizedUrlBase || undefined;
   body.port = port.value;
   body.useSsl = useSsl.value;
-  body.serverType = serverType.value;
+  body.serverType = configuredJellyfinServerType ?? serverType.value;
 
   //Make sure jellyfin login is enabled, but only if jellyfin && Emby is not already configured
   if (
@@ -1430,27 +1436,49 @@ authRoutes.post('/jellyfin', authRateLimit, async (req, res, next) => {
             deviceId,
             allowPrivateAddresses
           );
-          const apiKey = await jellyfinClient.createApiToken('Seerr');
+          const configuredApiKey = getSettings().jellyfin.apiKey;
+          const apiKey =
+            configuredApiKey || (await jellyfinClient.createApiToken('Seerr'));
 
           const serverName = await jellyfinserver.getServerName();
 
           await runWithConfigurationAdmission('jellyfin', () =>
-            settings.persistChanges((current) => ({
-              main: {
-                ...current.main,
-                mediaServerType: body.serverType!,
-              },
-              jellyfin: {
-                ...current.jellyfin,
-                name: serverName,
-                serverId: account.User.ServerId,
-                ip: body.hostname ?? '',
-                port: body.port ?? 8096,
-                urlBase: body.urlBase ?? '',
-                useSsl: body.useSsl ?? false,
-                apiKey,
-              },
-            }))
+            settings.persistChanges((current) => {
+              const preserveConfiguredConnection = current.jellyfin.ip !== '';
+
+              return {
+                main: {
+                  ...current.main,
+                  mediaServerType:
+                    current.main.mediaServerType ===
+                    MediaServerType.NOT_CONFIGURED
+                      ? body.serverType!
+                      : current.main.mediaServerType,
+                },
+                jellyfin: {
+                  ...current.jellyfin,
+                  name: preserveConfiguredConnection
+                    ? current.jellyfin.name || serverName
+                    : serverName,
+                  serverId: preserveConfiguredConnection
+                    ? current.jellyfin.serverId || account.User.ServerId
+                    : account.User.ServerId,
+                  ip: preserveConfiguredConnection
+                    ? current.jellyfin.ip
+                    : (body.hostname ?? ''),
+                  port: preserveConfiguredConnection
+                    ? current.jellyfin.port
+                    : (body.port ?? 8096),
+                  urlBase: preserveConfiguredConnection
+                    ? current.jellyfin.urlBase
+                    : (body.urlBase ?? ''),
+                  useSsl: preserveConfiguredConnection
+                    ? current.jellyfin.useSsl
+                    : (body.useSsl ?? false),
+                  apiKey: current.jellyfin.apiKey || apiKey,
+                },
+              };
+            })
           );
           startJobs();
         }
