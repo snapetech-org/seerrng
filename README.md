@@ -168,6 +168,7 @@ SeerrNG is active fork work. Movie and TV behavior is inherited and generally st
 Recent repository updates include:
 
 - **Discover:** editable shared shelves, including public TMDB list sliders; more precise rating and streaming filters; category exclusions; URL-backed filter state; detail navigation through the current result list; and restoration of each carousel's horizontal position when returning from a title.
+- **Search matching:** SeerrNG PR [#442](https://github.com/snapetech-org/seerrng/pull/442) proposes retrying an unmatched TMDB query after normalizing punctuation, spacing, apostrophes, and diacritics, while keeping successful raw-query results unchanged.
 - **Requests:** per-user access to labeled Radarr/Sonarr destinations, quota
   exception approvals, optional Slack approval actions, an optional
   previous-season watch gate, and Sonarr monitoring for future seasons when
