@@ -1,5 +1,9 @@
 import Modal from '@app/components/Common/Modal';
 import SensitiveInput from '@app/components/Common/SensitiveInput';
+import ServarrDownloadQueueSizeField, {
+  createServarrDownloadQueueSizeSchema,
+  DEFAULT_SERVARR_DOWNLOAD_QUEUE_SIZE,
+} from '@app/components/Settings/ServarrDownloadQueueSizeField';
 import Field, {
   default as SettingsField,
 } from '@app/components/Settings/SettingsField';
@@ -145,6 +149,7 @@ const SonarrModal = ({ onClose, sonarr, onSave }: SonarrModalProps) => {
   });
 
   const SonarrSettingsSchema = Yup.object().shape({
+    downloadQueueSize: createServarrDownloadQueueSizeSchema(intl),
     name: Yup.string().required(
       intl.formatMessage(messages.validationNameRequired)
     ),
@@ -291,6 +296,8 @@ const SonarrModal = ({ onClose, sonarr, onSave }: SonarrModalProps) => {
           is4k: sonarr?.is4k ?? false,
           enableSeasonFolders: sonarr?.enableSeasonFolders ?? false,
           externalUrl: sonarr?.externalUrl,
+          downloadQueueSize:
+            sonarr?.downloadQueueSize ?? DEFAULT_SERVARR_DOWNLOAD_QUEUE_SIZE,
           syncEnabled: sonarr?.syncEnabled ?? false,
           enableSearch: !sonarr?.preventSearch,
           tagRequests: sonarr?.tagRequests ?? false,
@@ -353,6 +360,7 @@ const SonarrModal = ({ onClose, sonarr, onSave }: SonarrModalProps) => {
               isDefault: values.isDefault,
               enableSeasonFolders: values.enableSeasonFolders,
               externalUrl: values.externalUrl,
+              downloadQueueSize: Number(values.downloadQueueSize),
               syncEnabled: values.syncEnabled,
               preventSearch: !values.enableSearch,
               tagRequests: values.tagRequests,
@@ -1239,6 +1247,7 @@ const SonarrModal = ({ onClose, sonarr, onSave }: SonarrModalProps) => {
                     {intl.formatMessage(messages.syncEnabledHelp)}
                   </span>
                 </div>
+                <ServarrDownloadQueueSizeField />
                 <div className="form-row">
                   <label htmlFor="enableSearch" className="checkbox-label">
                     {intl.formatMessage(messages.enableSearch)}

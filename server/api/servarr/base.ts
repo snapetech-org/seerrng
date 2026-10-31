@@ -4,6 +4,10 @@ import cacheManager from '@server/lib/cache';
 import { getExternalRuntimeConfig } from '@server/lib/externalRuntimeConfig';
 import type { DVRSettings } from '@server/lib/settings';
 import logger from '@server/logger';
+import {
+  MAX_SERVARR_DOWNLOAD_QUEUE_SIZE,
+  validateServarrDownloadQueueSize,
+} from '@server/utils/servarrSettings';
 import { buildServiceUrl, trimTrailingSlashes } from '@server/utils/serviceUrl';
 import type { AxiosRequestConfig } from 'axios';
 
@@ -107,7 +111,7 @@ export interface Tag {
 }
 
 export const MAX_SERVARR_CONFIGURATION_RESULTS = 1_000;
-export const MAX_SERVARR_QUEUE_RESULTS = 10_000;
+export const MAX_SERVARR_QUEUE_RESULTS = MAX_SERVARR_DOWNLOAD_QUEUE_SIZE;
 export const MAX_SERVARR_QUEUE_PAGE_SIZE = 1_000;
 const MAX_SERVARR_INTERVENTION_QUEUE_RESULTS = 5_000;
 const SERVARR_INTERVENTION_QUEUE_PAGE_SIZE = 250;
@@ -553,12 +557,19 @@ class ServarrBase<QueueItemAppendT> extends ExternalAPI {
     }
   }
 
-  public async getQueue(): Promise<(QueueItem & QueueItemAppendT)[]> {
+  public async getQueue(
+    maxRecords?: number
+  ): Promise<(QueueItem & QueueItemAppendT)[]> {
     try {
-      return await this.getCompleteQueueSnapshot(
-        MAX_SERVARR_QUEUE_PAGE_SIZE,
-        MAX_SERVARR_QUEUE_RESULTS,
-        true
+      const maximum =
+        maxRecords === undefined
+          ? MAX_SERVARR_QUEUE_RESULTS
+          : validateServarrDownloadQueueSize(maxRecords);
+      return await this.getQueueSnapshot(
+        Math.min(MAX_SERVARR_QUEUE_PAGE_SIZE, maximum),
+        maximum,
+        true,
+        maxRecords !== undefined
       );
     } catch (e) {
       throw new Error(
@@ -720,21 +731,22 @@ class ServarrBase<QueueItemAppendT> extends ExternalAPI {
     }
   }
 
-  /** Complete bounded queue snapshot. Never infer disappearance from a partial page. */
+  /** Read an uncapped, complete queue snapshot within the safety bound. */
   public async getInterventionQueue(): Promise<
     (QueueItem & QueueItemAppendT)[]
   > {
-    return this.getCompleteQueueSnapshot(
+    return this.getQueueSnapshot(
       SERVARR_INTERVENTION_QUEUE_PAGE_SIZE,
       MAX_SERVARR_INTERVENTION_QUEUE_RESULTS,
       true
     );
   }
 
-  private async getCompleteQueueSnapshot(
+  private async getQueueSnapshot(
     pageSize: number,
     maximum: number,
-    includeEpisode: boolean
+    includeEpisode: boolean,
+    allowCappedSnapshot = false
   ): Promise<(QueueItem & QueueItemAppendT)[]> {
     const records: (QueueItem & QueueItemAppendT)[] = [];
     const seen = new Set<number>();
@@ -755,7 +767,7 @@ class ServarrBase<QueueItemAppendT> extends ExternalAPI {
         typeof total !== 'number' ||
         !Number.isSafeInteger(total) ||
         total < 0 ||
-        total > maximum ||
+        (total > maximum && !allowCappedSnapshot) ||
         !isRecord(data) ||
         !Array.isArray(data.records)
       ) {
@@ -769,7 +781,8 @@ class ServarrBase<QueueItemAppendT> extends ExternalAPI {
       }
       expectedTotal = total;
 
-      const remaining = total - records.length;
+      const targetRecords = Math.min(total, maximum);
+      const remaining = targetRecords - records.length;
       const expectedPageRecords = Math.min(pageSize, remaining);
       if (remaining < 0 || data.records.length !== expectedPageRecords) {
         throw new Error('Queue snapshot is incomplete.');
@@ -791,7 +804,7 @@ class ServarrBase<QueueItemAppendT> extends ExternalAPI {
         seen.add(item.id);
       });
       records.push(...items);
-      if (records.length === total) {
+      if (records.length === targetRecords) {
         return records;
       }
     }

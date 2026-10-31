@@ -3257,6 +3257,12 @@ components:
         preventSearch:
           type: boolean
           example: false
+        downloadQueueSize:
+          type: integer
+          minimum: 10
+          maximum: 10000
+          default: 1000
+          description: Maximum queue records included by Download Sync for this service instance.
       required:
         - name
         - hostname
@@ -3325,6 +3331,12 @@ components:
           type: boolean
         tagRequests:
           type: boolean
+        downloadQueueSize:
+          type: integer
+          minimum: 10
+          maximum: 10000
+          default: 1000
+          description: Maximum queue records included by Download Sync for this service instance.
         overrideRule:
           type: array
           items:
@@ -3766,6 +3778,12 @@ components:
         preventSearch:
           type: boolean
           example: false
+        downloadQueueSize:
+          type: integer
+          minimum: 10
+          maximum: 10000
+          default: 1000
+          description: Maximum queue records included by Download Sync for this service instance.
       required:
         - name
         - hostname

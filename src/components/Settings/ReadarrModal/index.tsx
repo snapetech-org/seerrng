@@ -1,6 +1,10 @@
 import Button from '@app/components/Common/Button';
 import Modal from '@app/components/Common/Modal';
 import SensitiveInput from '@app/components/Common/SensitiveInput';
+import ServarrDownloadQueueSizeField, {
+  createServarrDownloadQueueSizeSchema,
+  DEFAULT_SERVARR_DOWNLOAD_QUEUE_SIZE,
+} from '@app/components/Settings/ServarrDownloadQueueSizeField';
 import Field, {
   default as SettingsField,
 } from '@app/components/Settings/SettingsField';
@@ -167,6 +171,7 @@ const ReadarrModal = ({
   });
 
   const ReadarrSettingsSchema = Yup.object().shape({
+    downloadQueueSize: createServarrDownloadQueueSizeSchema(intl),
     name: Yup.string().required(
       intl.formatMessage(messages.validationNameRequired)
     ),
@@ -323,6 +328,10 @@ const ReadarrModal = ({
           rootFolder: readarr?.activeDirectory ?? '',
           isDefault: readarr?.isDefault ?? Boolean(copyFrom),
           externalUrl: readarr?.externalUrl ?? copyFrom?.externalUrl ?? '',
+          downloadQueueSize:
+            readarr?.downloadQueueSize ??
+            copyFrom?.downloadQueueSize ??
+            DEFAULT_SERVARR_DOWNLOAD_QUEUE_SIZE,
           syncEnabled: readarr?.syncEnabled ?? copyFrom?.syncEnabled ?? false,
           enableSearch: !(readarr?.preventSearch ?? copyFrom?.preventSearch),
           activeMetadataProfileId: readarr?.activeMetadataProfileId ?? '',
@@ -352,6 +361,7 @@ const ReadarrModal = ({
               isDefault: values.isDefault,
               is4k: false,
               externalUrl: values.externalUrl,
+              downloadQueueSize: Number(values.downloadQueueSize),
               syncEnabled: values.syncEnabled,
               preventSearch: !values.enableSearch,
               tagRequests: false,
@@ -877,6 +887,7 @@ const ReadarrModal = ({
                   {intl.formatMessage(messages.syncEnabledHelp)}
                 </span>
               </div>
+              <ServarrDownloadQueueSizeField />
               <div className="form-row">
                 <label htmlFor="enableSearch" className="checkbox-label">
                   {intl.formatMessage(messages.enableSearch)}

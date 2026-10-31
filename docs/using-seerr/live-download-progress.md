@@ -1,6 +1,6 @@
 ---
 title: Live download progress
-description: Show live torrent speed, seeds, and progress by connecting the download clients your *arr services use.
+description: Configure bounded Servarr queue tracking and show live download speed, seeds, and progress.
 sidebar_position: 7
 ---
 
@@ -10,13 +10,23 @@ By default, SeerrNG updates download progress when the scheduled **Download
 Sync** job refreshes and reads the Radarr, Sonarr, Lidarr, Whisparr, and
 Bookshelf/Readarr queues.
 It waits for each monitored-download refresh command to finish before reading a
-complete queue snapshot. Each snapshot is paginated and bounded to 10,000
-records. If the refresh fails, a page is missing, the reported total changes
-between pages, or the limit is exceeded, SeerrNG keeps the last complete
-progress state instead of treating unread items as gone. If you connect
-the torrent clients those services use, progress bars on request and media
-pages update every few seconds while someone is viewing them. Each download also
-shows its current speed and seed count.
+queue snapshot. Reads are paginated and bounded. If the refresh fails, a page is
+missing, or the reported total changes between pages, SeerrNG keeps the last
+verified progress state instead of treating unread items as gone. Download Sync
+uses the **Download Queue Size** setting on each Radarr, Sonarr, Lidarr,
+Whisparr, or Bookshelf/Readarr service under **Settings → Services**. Edit a
+service to set its limit. The default is 1,000 items; choose a
+whole number from 10 to 10,000. When a service has more queued items than its
+limit, SeerrNG tracks only the first items returned up to that limit. Items
+outside that window can appear once they move into the tracked range. This cap
+affects SeerrNG progress tracking only; it does not change how the service
+processes downloads.
+
+Queue recovery and intervention use separate, uncapped snapshots with strict
+completeness checks. They do not act on a queue when a complete snapshot is
+unavailable or exceeds the safety bound. If you connect the torrent clients those services use, progress bars on
+request and media pages update every few seconds while someone is viewing them.
+Each download also shows its current speed and seed count.
 
 SeerrNG only **reads** these clients. It never adds, pauses, moves, or removes
 torrents; your *arr services keep full control of downloads.
