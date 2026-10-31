@@ -1070,6 +1070,14 @@ authRoutes.post('/jellyfin', authRateLimit, async (req, res, next) => {
   const settings = getSettings();
   const initialJellyfinAuthorityKey = getJellyfinAuthAuthorityKey(settings);
   const initialMediaServerType = settings.main.mediaServerType;
+  if (
+    initialMediaServerType === MediaServerType.JELLYFIN &&
+    settings.main.jellyfinQuickConnectOnly
+  ) {
+    return res.status(403).json({
+      error: 'Jellyfin password sign-in is disabled. Use Quick Connect.',
+    });
+  }
   const userRepository = getRepository(User);
   const parsedBody = parseRequestBodyObject(req.body);
   if ('error' in parsedBody) {
@@ -1283,6 +1291,14 @@ authRoutes.post('/jellyfin', authRateLimit, async (req, res, next) => {
       jellyfinAdmissionResources,
       async () => {
         const activeSettings = getSettings();
+        if (
+          activeSettings.main.mediaServerType === MediaServerType.JELLYFIN &&
+          activeSettings.main.jellyfinQuickConnectOnly
+        ) {
+          return res.status(403).json({
+            error: 'Jellyfin password sign-in is disabled. Use Quick Connect.',
+          });
+        }
         if (
           getJellyfinAuthAuthorityKey(activeSettings) !==
             initialJellyfinAuthorityKey ||
@@ -1691,11 +1707,15 @@ authRoutes.post(
   '/jellyfin/quickconnect/initiate',
   authRateLimit,
   async (req, res, next) => {
-    if (getSettings().main.mediaServerType !== MediaServerType.JELLYFIN) {
+    const settings = getSettings();
+    if (settings.main.mediaServerType !== MediaServerType.JELLYFIN) {
       return next({
         status: 403,
         message: 'Quick Connect is only supported by Jellyfin.',
       });
+    }
+    if (!settings.main.mediaServerLogin) {
+      return next({ status: 403, message: 'Jellyfin sign-in is disabled.' });
     }
 
     try {
@@ -1729,11 +1749,15 @@ authRoutes.get(
   '/jellyfin/quickconnect/check',
   authRateLimit,
   async (req, res, next) => {
-    if (getSettings().main.mediaServerType !== MediaServerType.JELLYFIN) {
+    const settings = getSettings();
+    if (settings.main.mediaServerType !== MediaServerType.JELLYFIN) {
       return next({
         status: 403,
         message: 'Quick Connect is only supported by Jellyfin.',
       });
+    }
+    if (!settings.main.mediaServerLogin) {
+      return next({ status: 403, message: 'Jellyfin sign-in is disabled.' });
     }
 
     const result = quickConnectSecret.safeParse(req.query);
@@ -1797,6 +1821,9 @@ authRoutes.post(
         status: 403,
         message: 'Quick Connect is only supported by Jellyfin.',
       });
+    }
+    if (!settings.main.mediaServerLogin) {
+      return next({ status: 403, message: 'Jellyfin sign-in is disabled.' });
     }
 
     try {

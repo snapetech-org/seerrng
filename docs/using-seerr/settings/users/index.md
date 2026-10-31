@@ -27,6 +27,23 @@ When disabled, users will only be able to sign in using their email address. Use
 
 This setting is **enabled** by default.
 
+### Require Jellyfin Quick Connect
+
+When Jellyfin is the configured media server and media-server sign-in is
+enabled, administrators can require Quick Connect for Jellyfin sign-in. This
+hides the Jellyfin username and password form and rejects direct password-based
+Jellyfin sign-in requests to the API. The Quick Connect button remains
+available.
+
+Local account sign-in and OpenID Connect are controlled by their own settings.
+Sign-in from an already-authenticated Jellyfin session through the Jellyfin
+bridge is also separate from password sign-in. This option does not affect
+Emby or Plex sign-in.
+
+This setting is **disabled** by default. It is available only when Jellyfin is
+configured and **Enable Jellyfin Sign-In** is enabled. The option was added in
+response to Seerr [issue #3300](https://github.com/seerr-team/seerr/issues/3300).
+
 ## Enable New Jellyfin/Emby/Plex Sign-In
 
 When enabled, users with access to your media server will be able to sign in to Seerr even if they have not yet been imported. Users will be automatically assigned the permissions configured in the [Default Permissions](#default-permissions) setting upon first sign-in.
