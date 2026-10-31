@@ -77,6 +77,8 @@ docker run -d \
   -e PORT=5055 \
   -p 5055:5055 \
   -v /path/to/appdata/config:/app/config \
+  --security-opt=no-new-privileges \
+  --cap-drop=ALL \
   --restart unless-stopped \
   --health-cmd "node /app/scripts/healthcheck.mjs" \
   --health-start-period 20s \

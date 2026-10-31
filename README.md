@@ -283,6 +283,8 @@ docker run -d \
   -e PORT=5055 \
   -p 5055:5055 \
   -v /path/to/seerrng/config:/app/config \
+  --security-opt=no-new-privileges \
+  --cap-drop=ALL \
   --restart unless-stopped \
   ghcr.io/snapetech-org/seerrng:latest
 ```
@@ -306,6 +308,10 @@ services:
       - 5055:5055
     volumes:
       - /path/to/seerrng/config:/app/config
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
     restart: unless-stopped
 ```
 
