@@ -18,6 +18,8 @@ const KEYWORD_LOOKUP_CONCURRENCY = 8;
 
 export const compactBlocklistSourceBadgeClass =
   'compact-detail-status-badge compact-detail-status-badge-danger max-w-full gap-0.5';
+export const blocklistSourceBadgeClass =
+  'items-center border border-red-500 !text-red-400';
 
 interface BlocklistedTagsBadgeProps {
   data: BlocklistItem;
@@ -83,9 +85,7 @@ const BlocklistedTagsBadge = ({
         badgeType="dark"
         shape={compact ? 'standard' : 'pill'}
         className={
-          compact
-            ? compactBlocklistSourceBadgeClass
-            : 'items-center border border-red-500 !text-red-400'
+          compact ? compactBlocklistSourceBadgeClass : blocklistSourceBadgeClass
         }
       >
         <TagIcon

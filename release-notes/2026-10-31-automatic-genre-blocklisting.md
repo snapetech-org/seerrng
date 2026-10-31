@@ -1,0 +1,1 @@
+Administrators can automatically blocklist movies and series by TMDB genre. Movie and series rules are configured separately, appear as an automatic source in blocklist filters, and preserve manual entries and saved media status when rules change. This SeerrNG adaptation cites closed Seerr [PR #3318](https://github.com/seerr-team/seerr/pull/3318).

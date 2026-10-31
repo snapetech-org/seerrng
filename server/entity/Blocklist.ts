@@ -64,7 +64,10 @@ export class Blocklist implements BlocklistItem {
   public media: Media;
 
   @Column({ nullable: true, type: 'varchar' })
-  public blocklistedTags?: string;
+  public blocklistedTags?: string | null;
+
+  @Column({ nullable: true, type: 'varchar' })
+  public blocklistedGenres?: string | null;
 
   @Column({ nullable: true, type: 'int' })
   public previousStatus?: MediaStatus | null;
@@ -137,7 +140,8 @@ export class Blocklist implements BlocklistItem {
         externalId?: string;
         externalProvider?: MediaIdentifierProvider;
         user?: User;
-        blocklistedTags?: string;
+        blocklistedTags?: string | null;
+        blocklistedGenres?: string | null;
       };
     },
     entityManager?: EntityManager

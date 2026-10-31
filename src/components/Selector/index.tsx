@@ -219,6 +219,7 @@ export const CompanySelector = ({
 
 type GenreSelectorProps = (BaseSelectorMultiProps | BaseSelectorSingleProps) & {
   type: 'movie' | 'tv';
+  inputId?: string;
 };
 
 export const GenreSelector = ({
@@ -228,6 +229,7 @@ export const GenreSelector = ({
   compact,
   onChange,
   type,
+  inputId,
 }: GenreSelectorProps) => {
   const intl = useIntl();
   const genreUrl = `/api/v1/genres/${type}`;
@@ -296,6 +298,7 @@ export const GenreSelector = ({
       key={`genre-select-${type}-${defaultDataValue}-${availableGenreOptions.length}`}
       className={`react-select-container ${compact ? 'discover-compact-select' : ''}`}
       classNamePrefix="react-select"
+      inputId={inputId}
       unstyled={compact}
       components={compact ? compactSelectComponents : undefined}
       defaultValue={isMulti ? defaultDataValue : defaultDataValue?.[0]}

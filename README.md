@@ -86,6 +86,7 @@ For local MCP access, see the [SnapeTech MCP integration guide](./docs/integrati
 - Optional Jellyfin and Emby profile sync during user imports, refreshing linked provider names and avatars while preserving SeerrNG email addresses, local passwords, and permissions.
 - Labeled movie and TV request destinations across multiple Radarr and Sonarr instances, with per-user access and availability tracked for each destination.
 - Managers can approve a one-time movie or TV request exception when a user's quota is full; optional Slack actions use a mapped account and the same request permissions as the web app.
+- Administrators can automatically blocklist movies and series by TMDB keyword or type-specific genre. Source filters distinguish automatic rules from manual entries, and removing a rule preserves manual blocks and restores saved media status. See the [automatic blocklist settings guide](./docs/using-seerr/settings/general.md#automatic-blocklist-rules). This SeerrNG adaptation is attributed to closed Seerr [PR #3318](https://github.com/seerr-team/seerr/pull/3318).
 - Automation service integration with Radarr, Sonarr, Lidarr, and Bookshelf/Readarr-compatible APIs.
 - Sonarr v5 support alongside v3/v4, including metadata-language and season-order options with explicit season mapping for recovery.
 - An optional TV request gate that checks whether the previous regular season was watched through a linked Plex, Jellyfin, or Emby account.
@@ -240,7 +241,7 @@ SeerrNG documentation is maintained in the [docs folder](https://github.com/snap
 - [Configure notifications](./docs/using-seerr/notifications/index.mdx)
 - [Slack notification settings](./docs/using-seerr/notifications/slack.md)
 - [Telegram notification settings](./docs/using-seerr/notifications/telegram.md)
-- [Hide requested or available media](./docs/using-seerr/settings/general.md)
+- [Configure automatic blocklist rules and global media visibility](./docs/using-seerr/settings/general.md)
 - [Choose which media categories are available](./docs/using-seerr/settings/media-categories.md)
 - [Configure Bookshelf](./docs/using-seerr/bookshelf-backend.md)
 - [Move ebook or audiobook files between Bookshelf root folders](./docs/using-seerr/bookshelf-media-path-migration.md)

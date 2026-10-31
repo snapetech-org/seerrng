@@ -776,15 +776,15 @@ export const startJobs = (): void => {
 
   scheduledJobs.push({
     id: 'process-blocklisted-tags',
-    name: 'Process Blocklisted Tags',
+    name: 'Process Blocklist Rules',
     type: 'process',
     interval: 'days',
     cronSchedule: jobs['process-blocklisted-tags'].schedule,
     job: schedule.scheduleJob(jobs['process-blocklisted-tags'].schedule, () => {
-      logger.info('Starting scheduled job: Process Blocklisted Tags', {
+      logger.info('Starting scheduled job: Process Blocklist Rules', {
         label: 'Jobs',
       });
-      return runTrackedJob('Process Blocklisted Tags', () =>
+      return runTrackedJob('Process Blocklist Rules', () =>
         blocklistedTagsProcessor.run()
       );
     }),

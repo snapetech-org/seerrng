@@ -34,7 +34,7 @@ const jobMessages = defineMessages('components.Settings.SettingsJobsCache', {
   'external-request-list-sync': 'External Request List Sync',
   'reader-delivery-kobo-sync': 'BookOrbit Kobo Collection Sync',
   'follow-sync': 'Followed Interests Sync',
-  'process-blocklisted-tags': 'Process Blocklisted Tags',
+  'process-blocklisted-tags': 'Process Blocklist Rules',
 } satisfies Record<JobId, string>);
 
 export const getJobMessage = (

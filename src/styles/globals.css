@@ -7860,6 +7860,11 @@
     @apply mt-[5px] sm:mt-[5px];
   }
 
+  .settings-page-content .settings-form-row:focus-within {
+    position: relative;
+    z-index: 1;
+  }
+
   .settings-page-content .form-row > label,
   .settings-page-content .form-row > .text-label,
   .settings-page-content .form-row > .group-label {
