@@ -2,6 +2,7 @@ import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { describe, it } from 'node:test';
 
+import { BUILT_IN_INTERFACE_THEME_MANIFESTS } from '@app/utils/interfaceThemeCatalog';
 import {
   DEFAULT_INTERFACE_THEME_ID,
   INTERFACE_THEME_IDS,
@@ -14,6 +15,42 @@ import {
 } from './ThemeContext';
 
 describe('interface theme contract', () => {
+  it('loads built-in manifests with supported version and navigation values', () => {
+    assert.deepEqual(
+      BUILT_IN_INTERFACE_THEME_MANIFESTS.map(
+        ({
+          id,
+          formatVersion,
+          themeApiVersion,
+          navigation,
+          activeNavigationIcon,
+        }) => ({
+          id,
+          formatVersion,
+          themeApiVersion,
+          navigation,
+          activeNavigationIcon,
+        })
+      ),
+      [
+        {
+          id: 'seerrOrig',
+          formatVersion: 1,
+          themeApiVersion: 1,
+          navigation: 'flat',
+          activeNavigationIcon: 'outline',
+        },
+        {
+          id: 'seerrNGJ',
+          formatVersion: 1,
+          themeApiVersion: 1,
+          navigation: 'grouped',
+          activeNavigationIcon: 'filled',
+        },
+      ]
+    );
+  });
+
   it('defaults to SeerrOrig and validates built-in or custom theme IDs', () => {
     assert.equal(DEFAULT_INTERFACE_THEME_ID, 'seerrOrig');
     assert.deepEqual(INTERFACE_THEME_IDS, ['seerrOrig', 'seerrNGJ']);
@@ -27,14 +64,8 @@ describe('interface theme contract', () => {
   });
 
   it('ships two separately scoped, materially different interface sheets', () => {
-    const orig = readFileSync(
-      'themes/seerrOrig/theme.css',
-      'utf8'
-    );
-    const john = readFileSync(
-      'themes/seerrNGJ/theme.css',
-      'utf8'
-    );
+    const orig = readFileSync('themes/seerrOrig/theme.css', 'utf8');
+    const john = readFileSync('themes/seerrNGJ/theme.css', 'utf8');
     assert.notEqual(orig, john);
     for (const sheet of [orig, john]) {
       assert.match(sheet, /data-interface-theme/);
