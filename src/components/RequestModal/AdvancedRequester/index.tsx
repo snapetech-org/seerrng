@@ -291,6 +291,7 @@ const AdvancedRequester = ({
     useState<string>(defaultOverrides?.sonarrSeasonType ?? '');
   const profileManuallySelected = useRef(false);
   const languageManuallySelected = useRef(false);
+  const ruleLanguageProfileId = useRef<number | null>(null);
 
   const [selectedTags, setSelectedTags] = useState<number[]>(
     defaultOverrides?.tags ?? []
@@ -791,6 +792,40 @@ const AdvancedRequester = ({
           ) {
             setSelectedTags(override.tags);
           }
+          if (
+            type === 'tv' &&
+            defaultOverrides?.language == null &&
+            !languageManuallySelected.current
+          ) {
+            const matchingLanguageProfile =
+              override.languageProfileId == null
+                ? undefined
+                : serverData.languageProfiles?.find(
+                    (profile) => profile.id === override.languageProfileId
+                  );
+            if (matchingLanguageProfile) {
+              ruleLanguageProfileId.current = matchingLanguageProfile.id;
+              setSelectedLanguage(matchingLanguageProfile.id);
+            } else if (ruleLanguageProfileId.current != null) {
+              const preferredLanguageProfile = preferredLanguage
+                ? serverData.languageProfiles?.find(
+                    (profile) =>
+                      (profile.languages ?? []).some((language) =>
+                        languageNameMatchesCode(language, preferredLanguage)
+                      ) ||
+                      languageNameMatchesCode(profile.name, preferredLanguage)
+                  )
+                : undefined;
+              const defaultLanguageProfileId = isAnime
+                ? (serverData.server.activeAnimeLanguageProfileId ??
+                  serverData.server.activeLanguageProfileId)
+                : serverData.server.activeLanguageProfileId;
+              ruleLanguageProfileId.current = null;
+              setSelectedLanguage(
+                preferredLanguageProfile?.id ?? defaultLanguageProfileId ?? -1
+              );
+            }
+          }
         } catch {
           if (cancelled) {
             return;
@@ -820,8 +855,12 @@ const AdvancedRequester = ({
     requestUser?.id,
     currentUser?.id,
     defaultOverrides?.folder,
+    defaultOverrides?.language,
     defaultOverrides?.profile,
     defaultOverrides?.tags,
+    isAnime,
+    preferredLanguage,
+    serverData?.languageProfiles,
   ]);
 
   if (!data && !error) {
