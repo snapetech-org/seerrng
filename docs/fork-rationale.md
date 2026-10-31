@@ -5,7 +5,7 @@ description: Public checklist for the behavior and release evidence needed befor
 
 # What upstream needs before SeerrNG can disappear
 
-**Last reviewed: October 16, 2026.**
+**Last reviewed: October 31, 2026.**
 
 SeerrNG is maintained as a separate fork so it can add cross-media workflows
 and adapt selected Seerr changes for its users. This matrix records what a
@@ -28,6 +28,7 @@ required migration and operator path have been checked.
 | Gate | Replacement must provide | Evidence before closing the gate |
 | --- | --- | --- |
 | Media scope | The categories SeerrNG users still rely on: movies, series, music, ebooks and audiobooks, comics, magazines, emulation ROMs, and PC games. A supported extension or service can supply a category. | Each needed category can be discovered, requested, approved, acquired or delivered, scanned, and tracked without a SeerrNG-only core patch. |
+| Outbound API identity | Server-side Axios requests use a versioned application User-Agent by default, while protocol-specific identifiers remain intact. Source context includes Seerr [PR #3395](https://github.com/seerr-team/seerr/pull/3395). | Review the default client, provider-specific Axios clients, and image proxy; remote services receive no SeerrNG account or request identifier. |
 | Music metadata providers | Administrators can check MusicBrainz and Cover Art Archive connectivity and set bounded Cover Art Archive request-rate and concurrency limits. Source context includes Seerr [PR #3110](https://github.com/seerr-team/seerr/pull/3110) and [PR #3116](https://github.com/seerr-team/seerr/pull/3116). | Provider checks report current connectivity independently, do not alter artwork caches, and enforce configured limits across concurrent requests and validated redirects without weakening URL validation or recovery. |
 | Web Push device identity | A user's separate devices retain separate subscriptions even when their browser signatures match. Endpoint rotation replaces only the matching subscription, and logout or disable actions on a shared browser remain account-scoped. Source context includes Seerr [issue #2660](https://github.com/seerr-team/seerr/issues/2660) and [PR #3142](https://github.com/seerr-team/seerr/pull/3142). | Checks cover sibling devices with identical signatures, endpoint rotation with a changed signature, same-endpoint key refresh, and cross-user logout or disable behavior. |
 | Discover filters and lists | Movie and series discovery supports tenth-point ratings, region-aware streaming inclusion and exclusion, genre exclusions, movie-studio and series-status exclusions, public TMDB lists, and shareable filter state. Source context includes Seerr [PR #3607](https://github.com/seerr-team/seerr/pull/3607), [PR #626](https://github.com/seerr-team/seerr/pull/626), [issue #898](https://github.com/seerr-team/seerr/issues/898), [PR #3166](https://github.com/seerr-team/seerr/pull/3166), and [issue #3090](https://github.com/seerr-team/seerr/issues/3090). | Checks cover movie and series catalogs, contextual search, local availability, URL validation and restoration, filtering and pagination. Any supported extension also provides the shared shelf customization users rely on. |

@@ -1,3 +1,4 @@
+import { userAgentRequestInterceptor } from '@server/utils/userAgent';
 import type { AxiosInstance } from 'axios';
 import axios from 'axios';
 
@@ -24,14 +25,19 @@ const isRecord = (value: unknown): value is Record<string, unknown> =>
   !!value && typeof value === 'object' && !Array.isArray(value);
 
 export class SteamAPI {
+  private readonly client: AxiosInstance;
+
   constructor(
     private readonly apiKey: string,
-    private readonly client: AxiosInstance = axios.create({
+    client: AxiosInstance = axios.create({
       timeout: 15_000,
       maxRedirects: 0,
       maxContentLength: 16 * 1024 * 1024,
     })
-  ) {}
+  ) {
+    this.client = client;
+    this.client.interceptors.request.use(userAgentRequestInterceptor);
+  }
 
   public async verifyOpenIdAssertion(
     assertion: Record<string, string>

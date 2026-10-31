@@ -25,6 +25,7 @@ import {
 import logger from '@server/logger';
 import { BoundedTaskQueue } from '@server/utils/concurrency';
 import { proxyRequestInterceptor } from '@server/utils/customProxyAgent';
+import { userAgentRequestInterceptor } from '@server/utils/userAgent';
 import axios, { type AxiosInstance } from 'axios';
 import { createHash, randomBytes } from 'node:crypto';
 
@@ -253,6 +254,7 @@ class TraktAPI extends ExternalAPI {
       },
     });
     this.rawAxios.interceptors.request.use(proxyRequestInterceptor);
+    this.rawAxios.interceptors.request.use(userAgentRequestInterceptor);
   }
 
   private circuitKey(): string {

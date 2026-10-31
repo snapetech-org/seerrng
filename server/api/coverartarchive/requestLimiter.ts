@@ -1,3 +1,4 @@
+import { userAgentRequestInterceptor } from '@server/utils/userAgent';
 import axios from 'axios';
 import rateLimit from 'axios-rate-limit';
 
@@ -67,7 +68,12 @@ let configuredMaxConcurrentRequests =
   DEFAULT_MUSIC_METADATA_SETTINGS.coverArtArchive.maxConcurrentRequests;
 
 /** The CAA RPS limit is shared across requests and provider instances. */
-export const coverArtArchiveHttpClient = rateLimit(axios.create(), {
+const coverArtArchiveAxiosClient = axios.create();
+coverArtArchiveAxiosClient.interceptors.request.use(
+  userAgentRequestInterceptor
+);
+
+export const coverArtArchiveHttpClient = rateLimit(coverArtArchiveAxiosClient, {
   maxRequests:
     DEFAULT_MUSIC_METADATA_SETTINGS.coverArtArchive.maxRequestsPerSecond,
   perMilliseconds: 1000,
