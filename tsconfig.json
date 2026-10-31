@@ -21,7 +21,8 @@
     "rootDir": ".",
     "paths": {
       "@server/*": ["./server/*"],
-      "@app/*": ["./src/*"]
+      "@app/*": ["./src/*"],
+      "@themes/*": ["./themes/*"]
     }
   },
   "include": ["next-env.d.ts", "src/**/*.ts", "src/**/*.tsx"],

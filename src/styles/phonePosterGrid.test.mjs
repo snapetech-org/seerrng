@@ -9,7 +9,10 @@ const interfaceThemes = Object.fromEntries(
   ['seerrOrig', 'seerrNGJ'].map((id) => [
     id,
     postcss.parse(
-      readFileSync(new URL(`../../themes/${id}/theme.css`, import.meta.url), 'utf8')
+      readFileSync(
+        new URL(`../../themes/${id}/theme.css`, import.meta.url),
+        'utf8'
+      )
     ),
   ])
 );
@@ -39,7 +42,10 @@ test('each theme owns its two-up narrow-phone poster width', () => {
     narrow.walkDecls('--poster-width', (decl) => (width = decl));
     assert.ok(width, `${id} overrides --poster-width`);
     assert.match(width.value, /100vw/, `${id} fits two posters per row`);
-    assert.match(width.parent.selector, new RegExp(`data-interface-theme=['\"]${id}['\"]`));
+    assert.match(
+      width.parent.selector,
+      new RegExp(`data-interface-theme=['\"]${id}['\"]`)
+    );
   }
 });
 

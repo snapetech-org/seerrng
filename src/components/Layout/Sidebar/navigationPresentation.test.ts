@@ -15,10 +15,7 @@ const originalOrder = [
 ];
 
 test('SeerrOrig flattens navigation and restores the upstream core order', () => {
-  const [original] = getNavigationSectionsForTheme(
-    navigationSections,
-    'flat'
-  );
+  const [original] = getNavigationSectionsForTheme(navigationSections, 'flat');
 
   assert.equal(original.id, 'original');
   assert.equal(original.headingKey, undefined);

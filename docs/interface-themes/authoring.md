@@ -16,9 +16,10 @@ my-theme/
   theme.css
 ```
 
-Copy [`template/`](template/) to start. Use a lowercase kebab-case ID such as
-`my-theme`; IDs are permanent package identifiers and cannot be changed after
-users save them in their account settings.
+Copy the [`template/` directory](https://github.com/snapetech-org/seerrng/tree/main/docs/interface-themes/template)
+to start. Use a lowercase kebab-case ID such as `my-theme`; IDs are permanent
+package identifiers and cannot be changed after users save them in their
+account settings.
 
 `manifest.json` declares the package identity, API versions, author, license,
 and two app-level presentation choices. `theme.css` is ordinary CSS attached
