@@ -1,7 +1,23 @@
-# GitHub Actions runner retirement
+# GitHub Actions runner routing
 
-Status: completed 2026-10-16. This supersedes the 2026-10-14 trusted-main pool rollout plan.
+Status: superseded 2026-10-26 by the organization-wide private JIT runner policy.
 
-All SeerrNG workflows now use GitHub-hosted runners. The unit-test shards run on `ubuntu-latest` with up to four shards in parallel. The organization `trusted-main` group and repository readiness variables are no longer used.
+All SeerrNG build, test, scan, package, and release jobs must use compatible
+private ephemeral JIT runners. GitHub-hosted runners and hosted fallback are
+not authorized. The shared runner inventory, workflow allowlists, and broker
+deployment procedure are maintained in
+`snapetech-org/packer/scripts/shared-jit-runner-pool/`; verify live broker and
+host state before treating a workflow change as deployed.
 
-The former preflight and live-deployment jobs required direct access to the `kspls0` filesystem and Docker daemon. Those jobs were removed because GitHub-hosted runners cannot deploy to that host without a configured remote deployment channel. Main image publishing remains automated; live deployment must be performed manually on the deployment host until a remote channel is configured. `scripts/verify-live-deployment.sh` remains available for checking a deployment.
+The SeerrNG main CI workflow is deliberately dispatch-only. Maintainers start
+validation from `main` with `action=ci` and `runner_pool=private`. Image
+publication remains a separate explicit `action=publish-image` dispatch, also
+from `main` on the private pool. A push to `main` does not start CI.
+
+CodeQL is disabled across `snapetech-org` by the owner directive of
+2026-10-30. Do not restore CodeQL workflows or invocations unless that
+directive is explicitly reversed.
+
+Live deployment still requires a separate configured deployment path.
+`scripts/verify-live-deployment.sh` remains available for checking a live
+deployment after it is performed.

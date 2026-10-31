@@ -6,6 +6,11 @@ run-name: ${{ format('action:{0}:pool:{1}', inputs.action_tag, inputs.runner_poo
 
 on:
   workflow_call:
+    inputs:
+      pr_sha:
+        description: Exact trusted owner PR head SHA to validate
+        required: false
+        type: string
   workflow_dispatch:
     inputs:
 
@@ -38,6 +43,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
+          ref: ${{ inputs.pr_sha || github.sha }}
           # Lychee reads the current docs; downloading full history is unnecessary.
           fetch-depth: 1
           persist-credentials: false

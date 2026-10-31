@@ -1,8 +1,8 @@
 import { JSDOM } from 'jsdom';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
-import postcss from 'postcss';
 import { test } from 'node:test';
+import postcss from 'postcss';
 
 const sharedStyles = readFileSync(
   new URL('./interfaceThemes/shared.css', import.meta.url),
@@ -48,17 +48,23 @@ const comparison = readFileSync(
 );
 
 const cssToken = (css, name) => {
-  const match = css.match(new RegExp(`--${name}:\\s*([^;]+);`));
-  assert.ok(match, `expected CSS token --${name}`);
-  return match[1].trim();
+  let token;
+  postcss.parse(css).walkDecls(`--${name}`, (declaration) => {
+    token ??= declaration.value;
+  });
+  assert.ok(token, `expected CSS token --${name}`);
+  return token.trim();
 };
 
 const embeddedStylesheet = (name) => {
-  const match = comparison.match(
-    new RegExp(`<style data-profile-stylesheet="${name}">([\\s\\S]*?)</style>`)
+  const document = new JSDOM(comparison).window.document;
+  const stylesheet = [
+    ...document.querySelectorAll('style[data-profile-stylesheet]'),
+  ].find(
+    (candidate) => candidate.getAttribute('data-profile-stylesheet') === name
   );
-  assert.ok(match, `preview is missing embedded ${name}`);
-  return match[1].slice(1);
+  assert.ok(stylesheet, `preview is missing embedded ${name}`);
+  return stylesheet.textContent?.slice(1) ?? '';
 };
 
 test('interface profiles own visibly different layout and geometry tokens', () => {

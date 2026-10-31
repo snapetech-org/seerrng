@@ -52,13 +52,21 @@ const requireText = (
   field: string,
   maxLength: number
 ): string => {
+  const containsControlCharacter =
+    typeof value === 'string' &&
+    Array.from(value).some((character) => {
+      const codePoint = character.codePointAt(0) ?? 0;
+      return codePoint <= 0x1f || codePoint === 0x7f;
+    });
   if (
     typeof value !== 'string' ||
     value.trim().length === 0 ||
     value.length > maxLength ||
-    /[\u0000-\u001f\u007f]/.test(value)
+    containsControlCharacter
   ) {
-    return fail(`${field} must be a non-empty string of at most ${maxLength} characters`);
+    return fail(
+      `${field} must be a non-empty string of at most ${maxLength} characters`
+    );
   }
   return value.trim();
 };
@@ -92,7 +100,11 @@ export const validateInterfaceThemeManifest = (
     return fail('manifest id does not match its package directory');
   }
 
-  if (!/^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)(?:-[0-9A-Za-z.-]+)?(?:\+[0-9A-Za-z.-]+)?$/.test(String(value.version))) {
+  if (
+    !/^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)(?:-[0-9A-Za-z.-]+)?(?:\+[0-9A-Za-z.-]+)?$/.test(
+      String(value.version)
+    )
+  ) {
     return fail('version must use semantic versioning');
   }
   if (value.navigation !== 'flat' && value.navigation !== 'grouped') {
@@ -161,11 +173,7 @@ const startsWithThemeRoot = (selector: string, id: string): boolean => {
   return candidates.some((candidate) => {
     if (!selector.startsWith(candidate)) return false;
     const next = selector[candidate.length];
-    return (
-      next === undefined ||
-      /\s/.test(next) ||
-      '>+~.#:*['.includes(next)
-    );
+    return next === undefined || /\s/.test(next) || '>+~.#:*['.includes(next);
   });
 };
 
@@ -216,9 +224,7 @@ const validateAtRule = (rule: AtRule, id: string): void => {
   const name = rule.name.toLowerCase();
   if (allowedAtRules.has(name)) return;
   if (keyframesAtRules.has(name)) {
-    const keyframeName = rule.params
-      .trim()
-      .replace(/^(['"])(.*)\1$/, '$2');
+    const keyframeName = rule.params.trim().replace(/^(['"])(.*)\1$/, '$2');
     if (!keyframeName.startsWith(`${id}-`)) {
       fail(`keyframe names must start with "${id}-"`);
     }
@@ -316,7 +322,10 @@ export const validateInterfaceThemePackage = (
   css: unknown,
   expectedId?: string
 ): InterfaceThemePackage => {
-  const validatedManifest = validateInterfaceThemeManifest(manifest, expectedId);
+  const validatedManifest = validateInterfaceThemeManifest(
+    manifest,
+    expectedId
+  );
   return {
     manifest: validatedManifest,
     css: validateInterfaceThemeCss(css, validatedManifest.id),

@@ -4,6 +4,14 @@ name: Build Release Assets
 on:
   workflow_call:
     inputs:
+      action_tag:
+        description: Release action authorized by the main release workflow
+        required: true
+        type: string
+      runner_pool_tag:
+        description: Private ephemeral JIT runner pool
+        required: true
+        type: string
       tag:
         description: Release tag, for example v0.1.0
         required: true
@@ -49,7 +57,7 @@ permissions:
 jobs:
   resolve:
     name: Validate release tag
-    if: github.event_name != 'workflow_dispatch' || github.ref == 'refs/heads/main'
+    if: github.ref == 'refs/heads/main' && inputs.action_tag == 'release' && inputs.runner_pool_tag == 'private'
     runs-on: ${{ fromJSON(format('{{"group":"ng-shared-main-jit","labels":["self-hosted","linux","x64","ng-shared-main-seerrng","ng-main-run-{0}","gha-{0}-resolve"]}}', github.run_id)) }}
     outputs:
       tag: ${{ steps.version.outputs.tag }}
@@ -84,12 +92,13 @@ jobs:
 
   build:
     name: Build ${{ matrix.os }} ${{ matrix.arch }}
+    if: github.ref == 'refs/heads/main' && inputs.action_tag == 'release' && inputs.runner_pool_tag == 'private'
     needs: resolve
     runs-on: >-
       ${{ matrix.runner_key == 'linux-x64' && fromJSON(format('{{"group":"ng-shared-main-jit","labels":["self-hosted","linux","x64","ng-shared-main-seerrng","ng-main-run-{0}","gha-{0}-{1}-build"]}}', github.run_id, strategy.job-index)) ||
       matrix.runner_key == 'linux-arm64' && fromJSON(format('{{"group":"ng-shared-main-jit","labels":["self-hosted","linux","arm64","ng-shared-main-seerrng","ng-main-run-{0}","gha-{0}-{1}-build"]}}', github.run_id, strategy.job-index)) ||
-      matrix.runner_key == 'macos-arm64' && fromJSON(format('{{"group":"ng-shared-main-jit","labels":["self-hosted","macOS","ARM64","ng-shared-main-seerrng","ng-main-run-{0}","gha-{0}-{1}-build"]}}', github.run_id, strategy.job-index)) ||
-      matrix.runner_key == 'macos-x64' && fromJSON(format('{{"group":"ng-shared-main-jit","labels":["self-hosted","macOS","X64","ng-shared-main-seerrng","ng-main-run-{0}","gha-{0}-{1}-build"]}}', github.run_id, strategy.job-index)) ||
+      matrix.runner_key == 'macos-arm64' && fromJSON(format('{{"group":"private-apple-builds","labels":["self-hosted","macOS","ARM64","private-apple","ng-main-run-{0}","gha-{0}-{1}-build"]}}', github.run_id, strategy.job-index)) ||
+      matrix.runner_key == 'macos-x64' && fromJSON(format('{{"group":"private-apple-builds","labels":["self-hosted","macOS","X64","private-apple","ng-main-run-{0}","gha-{0}-{1}-build"]}}', github.run_id, strategy.job-index)) ||
       matrix.runner_key == 'windows-x64' && fromJSON(format('{{"group":"packer-windows","labels":["self-hosted","Windows","X64","packer-windows","ng-shared-main-seerrng","ng-main-run-{0}","gha-{0}-{1}-build"]}}', github.run_id, strategy.job-index)) ||
       matrix.runner_key == 'windows-arm64' && fromJSON(format('{{"group":"packer-windows","labels":["self-hosted","Windows","ARM64","packer-windows","ng-shared-main-seerrng","ng-main-run-{0}","gha-{0}-{1}-build"]}}', github.run_id, strategy.job-index)) }}
     timeout-minutes: 45
@@ -308,7 +317,7 @@ jobs:
   build-ios:
     name: Build iOS Simulator release package
     needs: resolve
-    runs-on: ${{ fromJSON(format('{{"group":"private-apple-builds","labels":["self-hosted","macOS","ARM64","private-apple"]}}')) }}
+    runs-on: ${{ fromJSON(format('{{"group":"private-apple-builds","labels":["self-hosted","macOS","ARM64","private-apple","ng-main-run-{0}","gha-{0}-build-ios"]}}', github.run_id)) }}
     timeout-minutes: 60
     permissions:
       actions: read
