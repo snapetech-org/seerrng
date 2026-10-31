@@ -3037,7 +3037,7 @@
   "components.RequestModal.Sportarr.cancelRequest": "Solicitud de cancelación",
   "components.RequestModal.Sportarr.cancelSuccess": "La solicitud {title} fue cancelado.",
   "components.RequestModal.Sportarr.close": "Cerrar",
-  "components.RequestModal.Sportarr.countryLabel": "Música country",
+  "components.RequestModal.Sportarr.countryLabel": "País",
   "components.RequestModal.Sportarr.defaultService": "Default (por defecto){name})",
   "components.RequestModal.Sportarr.monitored": "Ya monitoreado en Sportarr",
   "components.RequestModal.Sportarr.noService": "No se configura ningún servicio Sportarr.",

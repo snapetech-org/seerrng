@@ -3037,7 +3037,7 @@
   "components.RequestModal.Sportarr.cancelRequest": "Batalkan permintaan",
   "components.RequestModal.Sportarr.cancelSuccess": "Permintaan untuk {title} dibatalkan.",
   "components.RequestModal.Sportarr.close": "Tutup",
-  "components.RequestModal.Sportarr.countryLabel": "Musik country",
+  "components.RequestModal.Sportarr.countryLabel": "Negara",
   "components.RequestModal.Sportarr.defaultService": "Baku ({name})",
   "components.RequestModal.Sportarr.monitored": "Sudah dipantau di Sportarr",
   "components.RequestModal.Sportarr.noService": "Tak ada layanan Sportarr yang dikonfigurasi.",
