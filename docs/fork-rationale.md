@@ -5,7 +5,7 @@ description: Public checklist for the behavior and release evidence needed befor
 
 # What upstream needs before SeerrNG can disappear
 
-**Last reviewed: October 30, 2026.**
+**Last reviewed: October 31, 2026.**
 
 SeerrNG is maintained as a separate fork so it can add cross-media workflows
 and adapt selected Seerr changes for its users. This matrix records what a
