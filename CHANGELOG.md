@@ -10,6 +10,106 @@ and the following `v3.2.7` release includes the intervening changes. Commit-leve
 links in the generated history remain the technical source of truth for changes
 that are not called out here.
 
+## [3.72.6](https://github.com/snapetech-org/seerrng/compare/v3.72.5..v3.72.6) - 2026-10-31
+
+### User-facing changes
+
+#### Added
+
+- **Migration:** Seerr and SeerrNG users can now preview and apply migrations in either direction, carrying compatible settings, accounts, requests, and database records while reporting data the destination cannot support.
+- **Interface:** Choose between the original Seerr layout and John’s SeerrNG interface. The selected design is saved to your account, and current media catalogs and request features remain available in both.
+
+#### Fixed
+
+- **Navigation:** Blocklist stays out of desktop and mobile menus until it contains an entry. Users with Blocklist permissions retain the same access after the first entry is added, and the current route stays navigable if the count is temporarily unavailable.
+- **Settings:** Prowlarr category filters and indexer assignments now show multiple options at once and keep native multi-selection usable across desktop and mobile settings layouts.
+- **Software:** ROMarrNG-only installations now show Retro and Modern software categories and patch discovery without QuestarrNG. PC Game Finder still requires QuestarrNG.
+  - **Action required:** Browse Retro and Modern catalogs when only ROMarrNG is configured
+- **Bookshelf:** Chaptarr book searches preserve Goodreads and Hardcover identities when switching metadata providers. Book details and ebook or audiobook requests use the original provider even when a new connection defaults to another catalog.
+- **Scheduled Jobs:** Scheduled job settings now describe cron expressions more accurately, including nearest-weekday offsets and alternate day and month numbering.
+- **Sonarr:** New TV requests to Sonarr v5 include the required metadata language and season order, preventing empty-field failures. Sonarr server settings now offer defaults for new-series metadata language and season order; request overrides take priority and existing series keep their metadata.
+- **Database:** SQLite permissions are secured before opening the database. Startup no longer reopens and closes active database files, preserving the locks that let backup tools and other database connections safely read current committed data. New database and journal files retain private permissions.
+
+### 🚀 Features
+- *(sonarr)* Configure new-series metadata defaults - ([83d5d0a](https://github.com/snapetech-org/seerrng/commit/83d5d0afe982eea38eb8da41142592bd749b822a))
+- *(ui)* Theme cross-media and queue layouts - ([4073471](https://github.com/snapetech-org/seerrng/commit/40734717326d2ee7fa41f05395d636111b1132c0))
+- *(ui)* Expand distinct interface layouts - ([54676a6](https://github.com/snapetech-org/seerrng/commit/54676a6e565f8ec9d120044906681df0b0f148cc))
+- *(ui)* Add SeerrOrig and SeerrNGJ interface profiles - ([8ebfc6a](https://github.com/snapetech-org/seerrng/commit/8ebfc6adc25cf0a5b38a18b5235e8132b79bff61))
+- Add bidirectional Seerr migration tool - ([75caa78](https://github.com/snapetech-org/seerrng/commit/75caa78f02f16f8bf9b269d3406036d0bbb45093))
+
+### 🐛 Bug Fixes
+- *(adult)* Accept Whisparr service id zero - ([3f3e965](https://github.com/snapetech-org/seerrng/commit/3f3e965b69b9a3947bea7d8e224689252e5f82a8))
+- *(bookshelf)* Preserve Chaptarr lookup provider identities - ([64c0dd7](https://github.com/snapetech-org/seerrng/commit/64c0dd7bb66a4443463a087ad5c6c993ec8d90d1))
+- *(catalog)* Separate game provider visibility - ([521df99](https://github.com/snapetech-org/seerrng/commit/521df992b9b45fca9512ff689444599d9ef8124f))
+- *(ci)* Complete private runner tooling setup - ([57a9429](https://github.com/snapetech-org/seerrng/commit/57a94299316b6635825cef421960bc3de2c4a02a))
+- *(ci)* Stabilize SeerrNG private runner checks - ([485a137](https://github.com/snapetech-org/seerrng/commit/485a137c62c1f3e6f9def6d25eda6a4fc20dae28))
+- *(ci)* Initialize Node before alias policy check - ([dbae8c2](https://github.com/snapetech-org/seerrng/commit/dbae8c265d2759488bffc591e761b7126b82c0cd))
+- *(ci)* Accept PR template release-note wording - ([4b498f7](https://github.com/snapetech-org/seerrng/commit/4b498f7373cda0d714221cb8ea5a6f7fc1e6c7e9))
+- *(database)* Preserve SQLite locks during startup hardening - ([b1cd627](https://github.com/snapetech-org/seerrng/commit/b1cd627e06bd84b70181002e859bcc7c22ac0566))
+- *(deps)* Patch release image vulnerabilities - ([9ae5a56](https://github.com/snapetech-org/seerrng/commit/9ae5a5672d0cb486b24957a121278081c647850f))
+- *(deps)* Upgrade Zod to patched 4.6.7 - ([183734f](https://github.com/snapetech-org/seerrng/commit/183734f15b502a3d5f38c71c231960ed22c4ea4d))
+- *(deps)* Update Next.js to 16.4.2 - ([03d5215](https://github.com/snapetech-org/seerrng/commit/03d5215668a5315e65e51d1d4db74ac59137e62d))
+- *(deps)* Bump jsdom from 30.0.1 to 30.1.3 - ([29aa2b3](https://github.com/snapetech-org/seerrng/commit/29aa2b392d84ed60e4484a357e4b62e5fdc71a6d))
+- *(deps)* Bump lru-cache from 11.2.1 to 11.5.3 - ([267031c](https://github.com/snapetech-org/seerrng/commit/267031c3bada4f6837fe767404084b95a6255d4a))
+- *(deps)* Bump @swc/core from 1.16.2 to 1.16.18 - ([b629d2b](https://github.com/snapetech-org/seerrng/commit/b629d2b225e8cf0d5f33268fadeff98bf7944e61))
+- *(deps)* Update eslint to 10.13.0 - ([171b8d5](https://github.com/snapetech-org/seerrng/commit/171b8d51e260576bcd6d51f3d5f335bebab6d1be))
+- *(deps)* Bump eslint from 10.10.0 to 10.12.0 - ([0c4074d](https://github.com/snapetech-org/seerrng/commit/0c4074dd95dcae563e9714e6068dd7d9bab99ee6))
+- *(deps)* Bump cronstrue from 3.26.0 to 3.32.0 - ([06a7151](https://github.com/snapetech-org/seerrng/commit/06a7151b3a8018d0bdcb6905e5cf474920588580))
+- *(deps)* Bump the release-note-none-codeql-action group with 5 updates - ([5c8c9fb](https://github.com/snapetech-org/seerrng/commit/5c8c9fb5ecd64ea6a78df6ef191ad514565d79da))
+- *(deps)* Bump actions/setup-java from 6.0.1 to 6.1.0 - ([f9f0ca7](https://github.com/snapetech-org/seerrng/commit/f9f0ca7cd3b22f3a4456cb86e54d1c1de4bb6dbb))
+- *(i18n)* Preserve the complete English message catalog - ([84a39d8](https://github.com/snapetech-org/seerrng/commit/84a39d8950056a5a4d3e54ca432181cd7d658b2b))
+- *(migration)* Use bundled SQLite driver - ([a0fb796](https://github.com/snapetech-org/seerrng/commit/a0fb796b118135cc0eb4245994d294fc754d6a9f))
+- *(release)* Pin Next.js 16.4.2 WASM checksum - ([8e144f0](https://github.com/snapetech-org/seerrng/commit/8e144f0e4d64814e6f1635873db084d5b4a6c2d8))
+- *(security)* Patch vulnerable runtime dependencies - ([a387456](https://github.com/snapetech-org/seerrng/commit/a387456ab6e24575040ce74c2aba209cb74c9d3b))
+- *(settings)* Preserve the complete user settings route - ([bc609b3](https://github.com/snapetech-org/seerrng/commit/bc609b3f9c27bb01b10f80b1f21f5bfce6336e99))
+- *(sonarr)* Supply required v5 series creation defaults - ([1466dc4](https://github.com/snapetech-org/seerrng/commit/1466dc4af2dc07ee4978927824035419a2dfad7a))
+- *(ui)* Align theme poster widths with their references - ([e63b27a](https://github.com/snapetech-org/seerrng/commit/e63b27a259a1ba287d32e36e8f1ba9356ebb2739))
+- *(ui)* Make theme comparison standalone and verifiable - ([c02e676](https://github.com/snapetech-org/seerrng/commit/c02e676ab36b17967922c26c96f76cab51aaec51))
+- *(ui)* Distinguish interface theme layouts - ([92ad7e0](https://github.com/snapetech-org/seerrng/commit/92ad7e0cc87e31700e37a85160516df78e3034cb))
+- *(ui)* Align shell width with active profile - ([e5a1594](https://github.com/snapetech-org/seerrng/commit/e5a1594c714464fbca98fd4d614dd306ef75139c))
+- Restore Prowlarr listboxes and hide empty Blocklist (#404) - ([322ca19](https://github.com/snapetech-org/seerrng/commit/322ca192a8e9c2cd913aa2c5058bfb505435da66))
+
+### 📖 Documentation
+- *(release)* Clarify cron schedule descriptions - ([f284153](https://github.com/snapetech-org/seerrng/commit/f284153e3ff59f68f2db8bdc4832e542a7062424))
+- *(release)* Note ROMarr-only software catalog fix - ([58ccf1e](https://github.com/snapetech-org/seerrng/commit/58ccf1eab56712d4d24105b6d80a9caffc2b2522))
+- *(ui)* Record release-note disposition - ([f3b04e8](https://github.com/snapetech-org/seerrng/commit/f3b04e8e4826a00284144988e4f8bfe42ad124de))
+- *(ui)* Tighten agent visual checklist - ([723dd92](https://github.com/snapetech-org/seerrng/commit/723dd922ca252a80206795a7ca9a3b607163641f))
+- *(ui)* Require visual contract and rendered acceptance - ([c4917a1](https://github.com/snapetech-org/seerrng/commit/c4917a1716281f63382b1ae6a067671f9cd54c5b))
+- Remove human review gates - ([19b3fa0](https://github.com/snapetech-org/seerrng/commit/19b3fa07e1cd1b0c6cedb14fd74b34897838308d))
+
+### ⚡ Performance
+- *(ci)* Limit workflow checkout history - ([9953a55](https://github.com/snapetech-org/seerrng/commit/9953a5599b6994c0be74c3922c55b2a8f77b1444))
+- *(ci)* Shallow checkout for docs link checks - ([e471a96](https://github.com/snapetech-org/seerrng/commit/e471a9663743caecd2b156f6f98481727bd11fd0))
+
+### 🚜 Refactor
+- *(ui)* Isolate theme navigation order - ([95052b7](https://github.com/snapetech-org/seerrng/commit/95052b70cf315852e486d62babfa44490875252d))
+
+### 🎨 Styling
+- *(ci)* Format current release workflow tests - ([953bb92](https://github.com/snapetech-org/seerrng/commit/953bb92cb8799c3502a4ad8cfa7eab6b990f3b27))
+- *(release)* Format release tooling - ([9c2a074](https://github.com/snapetech-org/seerrng/commit/9c2a0749b6b182be919e1b96fb6d922c71ddece7))
+- Format PostgreSQL migration fixtures - ([24a691c](https://github.com/snapetech-org/seerrng/commit/24a691cd452c7e9f7c6ee90a8ba6f3ed0b480c04))
+
+### 🧪 Testing
+- Fix bidirectional migration round-trip fixture - ([42ac57e](https://github.com/snapetech-org/seerrng/commit/42ac57ef71b97da9f0b2ec7d73113d3ad583ba0c))
+- Align alias policy with manual recovery - ([f68a9e8](https://github.com/snapetech-org/seerrng/commit/f68a9e87c823e7845ded872d080d142bb2e761bb))
+- Quote PostgreSQL fixture columns - ([4b3227b](https://github.com/snapetech-org/seerrng/commit/4b3227b1e6daa7a2609941ef4629894038e6935c))
+- Use the current discover-language label - ([e9b96c7](https://github.com/snapetech-org/seerrng/commit/e9b96c7e261906f5531894bb87f7eba977546202))
+- Enable quota days selector before checking it - ([a1f138d](https://github.com/snapetech-org/seerrng/commit/a1f138d2879d4cef5485944f495cba6d7e7b9c11))
+- Cover PostgreSQL migration paths - ([912f190](https://github.com/snapetech-org/seerrng/commit/912f190c9738bec3223f79cf94d6944163e217ed))
+- Harden bidirectional Seerr migration - ([48a7604](https://github.com/snapetech-org/seerrng/commit/48a7604444ccf9150947dea75451a621e63f23fc))
+
+### ⚙️ Miscellaneous Tasks
+- *(release)* Start releases from main dispatch so private runners serve them - ([f7769b6](https://github.com/snapetech-org/seerrng/commit/f7769b65baa0b0d37ca9c5c37ecd860cde0f06a6))
+- Validate SeerrNG main pushes on private JIT - ([6ae7551](https://github.com/snapetech-org/seerrng/commit/6ae7551a3c67e40a81f17a210ccfa64cbef600c0))
+- Scope SeerrNG JIT jobs and retire CodeQL (#431) - ([5146e99](https://github.com/snapetech-org/seerrng/commit/5146e99f62c2329419c38cf3a94593078b789941))
+- Route release assets through private JIT runners - ([4f5541a](https://github.com/snapetech-org/seerrng/commit/4f5541aa5d83cb95e2cbd214ebda72d025d5daf6))
+- Refresh CodeQL action pins to v4.39.1 - ([29d0d58](https://github.com/snapetech-org/seerrng/commit/29d0d5847f38210068c163f39a19c0a7748cbaba))
+- Expose migration postgres service to tests - ([529ecd7](https://github.com/snapetech-org/seerrng/commit/529ecd7bd2a4b9e2ec091770f68235874b97f5d3))
+- Require explicit action and pool dispatch - ([e70f559](https://github.com/snapetech-org/seerrng/commit/e70f559ccb1f32391b35f3fefc8827bad356631b))
+- Require action and pool for validation - ([909adb1](https://github.com/snapetech-org/seerrng/commit/909adb1f11627f842cc3bb8f974b88d5d365fc8c))
+- Require explicit labeler dispatch - ([449683d](https://github.com/snapetech-org/seerrng/commit/449683d5a40b2cfff7f748f35db080524deac3b7))
+- Trigger releases from v* tags - ([5396842](https://github.com/snapetech-org/seerrng/commit/53968425f25fcb93a412534b7b053be7611a8d65))
+
 ## [3.72.5](https://github.com/snapetech-org/seerrng/compare/v3.72.4..v3.72.5) - 2026-10-24
 
 ### User-facing changes
