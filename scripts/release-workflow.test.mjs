@@ -568,10 +568,42 @@ test('multi-architecture publishers perform the real build once and verify the i
     'docs-links',
     'helm',
   ]);
-  assert.equal(ci.on.push, undefined);
+  assert.deepEqual(ci.on.push.branches, ['main']);
   assert.equal(Object.hasOwn(ci.on, 'workflow_dispatch'), true);
   assert.equal(Object.hasOwn(ci.on, 'pull_request'), false);
   assert.equal(Object.hasOwn(ci.on, 'pull_request_target'), false);
+  assert.match(ci['run-name'], /inputs\.action_tag \|\| 'validate'/u);
+  for (const jobName of [
+    'release-notes',
+    'i18n-and-tooling',
+    'test',
+    'unit-test',
+    'node-test',
+    'jellyfin-plugin',
+    'playwright',
+    'cypress',
+    'test-docs',
+    'docs-links',
+    'helm',
+  ]) {
+    assert.match(
+      ci.jobs[jobName].if,
+      /github\.event_name == 'push' && github\.ref == 'refs\/heads\/main'/u,
+      `${jobName} should validate main pushes on the private route`
+    );
+  }
+  assert.doesNotMatch(ci.jobs.publish.if, /github\.event_name == 'push'/u);
+  assert.doesNotMatch(
+    ci.jobs['scan-main-image'].if,
+    /github\.event_name == 'push'/u
+  );
+  const releaseNoteValidation = ci.jobs['release-notes'].steps.find(
+    (step) => step.name === 'Validate release-note fragment or explicit opt-out'
+  );
+  assert.match(
+    releaseNoteValidation.run,
+    /GITHUB_EVENT_NAME" == "workflow_dispatch" \|\| "\$GITHUB_EVENT_NAME" == "push"/u
+  );
   assert.equal(ci.jobs['preflight-deploy'], undefined);
   assert.equal(ci.jobs['deploy-main'], undefined);
   assert.match(
