@@ -66657,9 +66657,10 @@
       "id": "components.QuotaSelector.adultRequests",
       "status": "draft",
       "provenance": "machine-draft",
-      "source": "Qwen 3.8 27B (local), generated 2026-10-30",
+      "source": "Codex contextual correction; generated 2026-10-31; unverified",
       "sourceHash": "2c6417b77ca72cf1e9fcc5653b0d043f0539a135ff729d42d899996ba6d694d0",
-      "targetHash": "2c6417b77ca72cf1e9fcc5653b0d043f0539a135ff729d42d899996ba6d694d0"
+      "targetHash": "530ea5f00264d6bba6b4e3dc09ba4a1a7f83165892e3313c224c430fe85d9a0d",
+      "correctionReason": "In the quota UI, `per` expresses a recurring interval; Indonesian uses `setiap` (“every”). Dynamic media, limit and day values remain placeholders. Machine-draft; native-speaker and RTL review not performed."
     },
     {
       "domain": "client",
@@ -112897,9 +112898,10 @@
       "id": "components.EditionCompare.tracks",
       "status": "draft",
       "provenance": "machine-draft",
-      "source": "Qwen 3.8 27B (local), generated 2026-10-30",
+      "source": "Codex contextual correction; generated 2026-10-31; unverified",
       "sourceHash": "c8a37004100a7ca337b594cb7d83a70152fc09f08f5c74f96d0ff091db4124ac",
-      "targetHash": "c8a37004100a7ca337b594cb7d83a70152fc09f08f5c74f96d0ff091db4124ac"
+      "targetHash": "d757d6b10a0ebe208b25fe2cb5ca0ee64f71fd8fa72ac97adbc40919927cd14d",
+      "correctionReason": "EditionCompare is comparing music releases; `track` here means an audio track, rendered as the Vietnamese `bản nhạc`. Vietnamese uses the same noun form for singular and plural. Machine-draft; native-speaker review not performed."
     },
     {
       "domain": "client",

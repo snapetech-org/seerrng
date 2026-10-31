@@ -1194,7 +1194,7 @@
   "components.EditionCompare.seriesLoadFailed": "Không thể tải so sánh người kể chuyện. Bạn vẫn có thể yêu cầu từng cuốn sách riêng lẻ.",
   "components.EditionCompare.seriesUnsupported": "So sánh người kể chuyện xuyên suốt bộ sách cần phiên bản Chaptarr mới hơn.",
   "components.EditionCompare.soloNarrator": "Một người kể chuyện",
-  "components.EditionCompare.tracks": "{count, plural, one {# track} other {# tracks}}",
+  "components.EditionCompare.tracks": "{count, plural, one {# bản nhạc} other {# bản nhạc}}",
   "components.EditionCompare.unabridged": "Đầy đủ",
   "components.EditionCompare.unknown": "Không có trong danh sách: {fields}",
   "components.EditionCompare.unknownAbridged": "bản rút gọn",

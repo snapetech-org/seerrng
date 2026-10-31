@@ -2461,7 +2461,7 @@
   "components.PersonDetails.requestAllMoviesSuccess": "Diberikan {created} permintaan film. {skipped} dilewati; {failed} gagal.",
   "components.PersonDetails.requestAllMoviesTitle": "Permintaan Semua Film oleh {person}",
   "components.QuotaSelector.adultMedia": "{count, plural, other {permintaan media dewasa}}",
-  "components.QuotaSelector.adultRequests": "{quotaLimit} <quotaUnits>{adultMedia} per {quotaDays} {days}</quotaUnits>",
+  "components.QuotaSelector.adultRequests": "{quotaLimit} <quotaUnits>{adultMedia} setiap {quotaDays} {days}</quotaUnits>",
   "components.QuotaSelector.albums": "{count, plural, one {album} other {album}}",
   "components.QuotaSelector.bookRequests": "{quotaLimit} <quotaUnits>{books} setiap {quotaDays} {days}</quotaUnits>",
   "components.QuotaSelector.books": "{count, plural, one {buku} other {buku}}",
