@@ -52,6 +52,25 @@ const draftMessageKeys = [
   'demoPink',
 ];
 
+const existingMessageKeys = [
+  'title',
+  'titleText',
+  'titleTextDescription',
+  'borders',
+  'bordersDescription',
+  'buttons',
+  'buttonsDescription',
+  'seriesTestingPage',
+  'seriesTestingDescription',
+  'paletteTreatmentFilter',
+  'allPalettes',
+  'solidPalette',
+  'gradientPalette',
+  'metallicPalette',
+];
+
+const allVisualLabMessageKeys = [...existingMessageKeys, ...draftMessageKeys];
+
 const staticTextMessages: Record<string, string> = {
   Active: 'demoActive',
   All: 'allPalettes',
@@ -214,7 +233,7 @@ describe('Visual Lab iframe localization contract', () => {
           'utf8'
         )
       );
-      for (const key of draftMessageKeys) {
+      for (const key of allVisualLabMessageKeys) {
         const id = `components.VisualLab.${key}`;
         assert.equal(
           typeof catalog[id],
