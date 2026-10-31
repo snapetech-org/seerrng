@@ -1589,8 +1589,10 @@ export class MediaRequestSubscriber implements EntitySubscriberInterface<MediaRe
         if (
           entity.rootFolder &&
           entity.rootFolder !== '' &&
-          entity.rootFolder !== rootFolder
+          entity.rootFolder !== sonarrSettings.activeDirectory
         ) {
+          // Requests without a selected folder carry the standard directory;
+          // that default must not override the anime-specific directory.
           rootFolder = entity.rootFolder;
           logger.info(`Request has an override root folder: ${rootFolder}`, {
             label: 'Media Request',

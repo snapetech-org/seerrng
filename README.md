@@ -178,7 +178,8 @@ Recent repository updates include:
   Jellyfin/Emby profile refresh during imports.
 - **Sonarr:** v5 API support alongside v3/v4, metadata-language and season-order
   choices, and request recovery scoped to the selected service, quality, and
-  season order.
+  season order. Anime routing honors the configured anime root folder while
+  preserving folder overrides ([Seerr issue #3410](https://github.com/seerr-team/seerr/issues/3410)).
 - **Integrations:** MusicBrainz and Cover Art Archive connectivity checks with
   bounded artwork traffic controls, plus a preview-first BookshelfNG to
   ChaptarrNG database migration helper for single-database setups.
