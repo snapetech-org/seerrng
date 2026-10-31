@@ -58,6 +58,9 @@ test('admins can connect a read-only Audiobookshelf book library', async ({
     name: 'Add Audiobookshelf library',
   });
   await expect(dialog).toBeVisible();
+  await expect(dialog.getByTestId('modal-title')).toHaveText(
+    'Add Audiobookshelf library'
+  );
   await expect(dialog.getByText(/read-only audiobook library/i)).toBeVisible();
   await expect(dialog.getByText(/matched by ISBN/i)).toBeVisible();
   await dialog.getByLabel('Connection name').fill('Home audiobooks');
