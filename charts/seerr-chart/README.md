@@ -1,6 +1,6 @@
 # seerr-chart
 
-![Version: 1.0.134](https://img.shields.io/badge/Version-1.0.134-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: v3.72.5](https://img.shields.io/badge/AppVersion-v3.72.5-informational?style=flat-square)
+![Version: 1.0.135](https://img.shields.io/badge/Version-1.0.135-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: v3.72.5](https://img.shields.io/badge/AppVersion-v3.72.5-informational?style=flat-square)
 
 SeerrNG Helm chart for Kubernetes
 
@@ -26,6 +26,10 @@ Refer to the SeerrNG Kubernetes documentation in this repository.
 
 ## Update Notes
 
+### Scaling down for maintenance (chart 1.0.135)
+
+Set `replicaCount: 0` before storage migration, backup, or other maintenance that requires SeerrNG to stop. The configuration claim is retained while the StatefulSet has no pods. Restore `replicaCount: 1` to resume service. SeerrNG supports one application instance; values below 0 or above 1 are rejected.
+
 ### Updating to 3.0.0
 
 Nothing has changed; the upstream chart was rebranded from `jellyseerr` to `seerr`. SeerrNG keeps that inherited chart structure and changes the default image and metadata for this fork.
@@ -37,7 +41,7 @@ Seerr is a stateful application and it is not designed to have multiple replicas
 - replacing `Deployment` with `StatefulSet`
 - removing `replicaCount` value
 
-If `replicaCount` value was used - remove it. Helm update should work fine after that.
+If `replicaCount` was set for a chart version before 2.7.0, remove it when upgrading to 2.7.0. Chart 1.0.135 later reintroduced the value with a strict 0-or-1 range for maintenance scaling.
 
 ## Values
 
@@ -83,6 +87,7 @@ If `replicaCount` value was used - remove it. Helm update should work fine after
 | probes.livenessProbe | object | `{"initialDelaySeconds":20,"periodSeconds":15,"timeoutSeconds":3}` | Configure liveness probe |
 | probes.readinessProbe | object | `{"initialDelaySeconds":60,"periodSeconds":15,"timeoutSeconds":3}` | Configure readiness probe |
 | probes.startupProbe | object | `{"failureThreshold":120,"httpGet":{"path":"/api/v1/settings/public","port":"http"},"periodSeconds":5,"timeoutSeconds":3}` | Configure startup probe |
+| replicaCount | integer | `1` | Number of SeerrNG pods to run. Use 0 to stop the application during maintenance; only 0 or 1 is supported. |
 | resources | object | `{}` |  |
 | route.main.additionalRules | list | `[]` |  |
 | route.main.annotations | object | `{}` |  |

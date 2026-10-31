@@ -5,7 +5,7 @@ description: Public checklist for the behavior and release evidence needed befor
 
 # What upstream needs before SeerrNG can disappear
 
-**Last reviewed: October 16, 2026.**
+**Last reviewed: October 31, 2026.**
 
 SeerrNG is maintained as a separate fork so it can add cross-media workflows
 and adapt selected Seerr changes for its users. This matrix records what a
@@ -51,6 +51,7 @@ required migration and operator path have been checked.
 | Permissions and security | Authorization, scoped integration credentials, validated external requests, safe file delivery, and path handling remain at least as strong as SeerrNG's. | Security review and regression coverage show that existing permission and data boundaries hold across the replacement path. |
 | Data and API transition | A supported path preserves or intentionally transforms requests, user preferences, permissions, provider links, API clients, and other state operators need. | A representative SeerrNG backup upgrades to the supported replacement in a disposable environment. Data integrity, client compatibility, rollback, and recovery are documented and verified. |
 | Release and operator support | Installation, configuration, backup, upgrade, rollback, troubleshooting, and support guidance cover the deployment channels SeerrNG users rely on. | Operators can move from a supported SeerrNG release to a supported replacement using documented steps and a tested recovery path. |
+| Helm maintenance scaling | Kubernetes packaging can stop the single SeerrNG application instance during storage maintenance or backups and resume it afterward without deleting the configuration claim. Source context includes Seerr [PR #3629](https://github.com/seerr-team/seerr/pull/3629). | Chart rendering accepts 0 or 1 replica, rejects negative or multiple replicas, and preserves the configuration claim through scale-down and recovery. |
 | Companion services | BookshelfNG, ChaptarrNG, QuestarrNG, and ROMarrNG remain usable through supported APIs, adapters, or extensions. Retiring SeerrNG does not itself retire a companion project. | Each companion integration needed by users has a maintained compatibility path; companion-fork retirement stays a separate decision with its own criteria. |
 
 The matrix is a retirement checklist, not a claim that a particular upstream
