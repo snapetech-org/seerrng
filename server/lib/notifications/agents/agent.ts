@@ -195,10 +195,10 @@ export const getNotificationExtras = (
   }
 
   return (payload.extra ?? []).map((extra) => ({
-    ...extra,
     name: extra.label
       ? intl.formatMessage(notificationContentMessages[extra.label])
       : extra.name,
+    value: extra.value,
   }));
 };
 

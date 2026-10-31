@@ -43,7 +43,7 @@ describe('notification content descriptors', () => {
     assert.equal(translated.subject, base.subject);
     assert.equal(translated.message, 'Détails dans SeerrNG.');
     assert.deepEqual(translated.extra, [
-      { name: 'Éditeur', label: 'publisher', value: 'Publisher <raw>' },
+      { name: 'Éditeur', value: 'Publisher <raw>' },
     ]);
     assert.deepEqual(payload, before);
   });
