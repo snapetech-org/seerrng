@@ -12,6 +12,7 @@ import { MediaRequestStatus, MediaStatus } from '@server/constants/media';
 import type Media from '@server/entity/Media';
 import type { MediaRequest } from '@server/entity/MediaRequest';
 import type { ServiceCommonServer } from '@server/interfaces/api/serviceInterfaces';
+import type { FormatRequestOption } from '@app/components/Common/FormatRequestControl';
 import { hasAutoApprovePermission } from '@server/lib/permissions';
 import axios from 'axios';
 import dynamic from 'next/dynamic';
@@ -36,6 +37,9 @@ const messages = defineMessages('components.RequestButton', {
   unavailableFormat: 'This format cannot be requested in the current state.',
   noService: 'No service is configured for this format.',
   blocklisted: 'This title is blocklisted.',
+  addYourTag: 'Add Your Tag',
+  tagFormatOption: '{quality} · Add Your Tag',
+  tagRequestPending: 'Your tag request is already waiting for this service.',
 });
 
 interface ButtonOption {
@@ -44,6 +48,12 @@ interface ButtonOption {
   action: () => void;
   svg?: React.ReactNode;
   buttonType?: ButtonType;
+}
+
+interface RequestFormatOption extends FormatRequestOption {
+  requesterTagOnly?: boolean;
+  serverId?: number;
+  buttonLabel?: string;
 }
 
 interface RequestButtonProps {
@@ -81,9 +91,78 @@ const RequestButton = ({
   );
   const [showRequestModal, setShowRequestModal] = useState(false);
   const [showRequest4kModal, setShowRequest4kModal] = useState(false);
+  const [requestInitialServerId, setRequestInitialServerId] =
+    useState<number>();
+  const [requesterTagOnlyAction, setRequesterTagOnlyAction] = useState(false);
   const [editRequest, setEditRequest] = useState(false);
   const [isModifying, setIsModifying] = useState(false);
   const modificationActiveRef = useRef(false);
+  const canSelectAnyTagDestination = hasPermission(
+    [Permission.ADMIN, Permission.MANAGE_REQUESTS, Permission.REQUEST_ADVANCED],
+    { type: 'or' }
+  );
+  const getRequesterTagService = (is4k: boolean) => {
+    if (!user) {
+      return undefined;
+    }
+
+    const configuredServices = (requestServices ?? [])
+      .filter(
+        (service) =>
+          service.is4k === is4k &&
+          service.tagRequests === true &&
+          (canSelectAnyTagDestination ||
+            service.isDefault ||
+            user.requestServices?.includes(`${serviceType}:${service.id}`)) &&
+          (service.isDefault ||
+            canSelectAnyTagDestination ||
+            Boolean(service.requestButtonLabel?.trim())) &&
+          media?.serviceStatuses?.some(
+            (status) =>
+              status.serviceType === serviceType &&
+              status.serverId === service.id &&
+              status.format === (is4k ? '4k' : 'standard') &&
+              status.status === MediaStatus.AVAILABLE
+          )
+      )
+      .sort(
+        (left, right) =>
+          Number(right.isDefault) - Number(left.isDefault) || left.id - right.id
+      );
+
+    return configuredServices[0];
+  };
+  const hasOwnActiveRequestForTagService = (serverId: number, is4k: boolean) =>
+    (media?.requests ?? []).some(
+      (request) =>
+        request.requestedBy?.id === user?.id &&
+        (request.status === MediaRequestStatus.PENDING ||
+          request.status === MediaRequestStatus.APPROVED) &&
+        (request.serviceTargets?.length
+          ? request.serviceTargets.some(
+              (target) =>
+                target.serviceType === serviceType &&
+                target.serverId === serverId &&
+                target.format === (is4k ? '4k' : 'standard')
+            )
+          : request.type === mediaType &&
+            request.serverId === serverId &&
+            request.is4k === is4k)
+    );
+  const openRequestModal = (
+    is4k: boolean,
+    tagOnly = false,
+    serverId?: number
+  ) => {
+    setEditRequest(false);
+    setRequestInitialServerId(serverId);
+    setRequesterTagOnlyAction(tagOnly);
+    if (is4k) {
+      setShowRequest4kModal(true);
+    } else {
+      setShowRequestModal(true);
+    }
+  };
 
   // All pending requests
   const activeRequests = media?.requests.filter(
@@ -152,6 +231,11 @@ const RequestButton = ({
         id: 'active-request',
         text: intl.formatMessage(messages.viewrequest),
         action: () => {
+          const tagTarget = activeRequest.serviceTargets?.find(
+            (target) => target.requesterTagOnly
+          );
+          setRequestInitialServerId(tagTarget?.serverId);
+          setRequesterTagOnlyAction(Boolean(tagTarget));
           setEditRequest(true);
           setShowRequestModal(true);
         },
@@ -169,6 +253,11 @@ const RequestButton = ({
         id: 'active-4k-request',
         text: intl.formatMessage(messages.viewrequest4k),
         action: () => {
+          const tagTarget = active4kRequest.serviceTargets?.find(
+            (target) => target.requesterTagOnly
+          );
+          setRequestInitialServerId(tagTarget?.serverId);
+          setRequesterTagOnlyAction(Boolean(tagTarget));
           setEditRequest(true);
           setShowRequest4kModal(true);
         },
@@ -196,8 +285,7 @@ const RequestButton = ({
       id: 'request',
       text: intl.formatMessage(globalMessages.request),
       action: () => {
-        setEditRequest(false);
-        setShowRequestModal(true);
+        openRequestModal(false);
       },
       svg: <ArrowDownTrayIcon />,
     });
@@ -215,8 +303,7 @@ const RequestButton = ({
       id: 'request-more',
       text: intl.formatMessage(messages.requestmore),
       action: () => {
-        setEditRequest(false);
-        setShowRequestModal(true);
+        openRequestModal(false);
       },
       svg: <ArrowDownTrayIcon />,
     });
@@ -243,8 +330,7 @@ const RequestButton = ({
       id: 'request4k',
       text: intl.formatMessage(globalMessages.request4k),
       action: () => {
-        setEditRequest(false);
-        setShowRequest4kModal(true);
+        openRequestModal(true);
       },
       svg: <ArrowDownTrayIcon />,
     });
@@ -263,8 +349,7 @@ const RequestButton = ({
       id: 'request-more-4k',
       text: intl.formatMessage(messages.requestmore4k),
       action: () => {
-        setEditRequest(false);
-        setShowRequest4kModal(true);
+        openRequestModal(true);
       },
       svg: <ArrowDownTrayIcon />,
     });
@@ -325,42 +410,63 @@ const RequestButton = ({
     hasAutoApprovePermission(user.permissions, mediaType, true);
   const standardIsAvailable = isVideoQualityAvailable(media, mediaType);
   const fourKIsAvailable = isVideoQualityAvailable(media, mediaType, true);
+  const standardTagService = getRequesterTagService(false);
+  const fourKTagService = getRequesterTagService(true);
+  const standardTagRequestPending = Boolean(
+    standardTagService &&
+    hasOwnActiveRequestForTagService(standardTagService.id, false)
+  );
+  const fourKTagRequestPending = Boolean(
+    fourKTagService &&
+    hasOwnActiveRequestForTagService(fourKTagService.id, true)
+  );
   const canOpenStandardAlternate =
     canChooseAlternateTarget && hasStandardService && !isBlocklisted;
   const canOpen4kAlternate =
     canChooseAlternateTarget && has4kService && !isBlocklisted;
-  const requestOptions = [
+  const requestOptions: RequestFormatOption[] = [
     ...(canRequestStandard
       ? [
           {
             id: 'standard',
-            label: intl.formatMessage(messages.hd),
-            onClick: standardRequestButton
-              ? standardRequestButton.action
-              : canApproveStandard && activeRequest
-                ? () => void modifyRequest(activeRequest, 'approve')
-                : () => {
-                    setEditRequest(false);
-                    setShowRequestModal(true);
-                  },
-            disabled:
-              standardIsAvailable ||
-              !hasStandardService ||
-              isBlocklisted ||
-              (!standardRequestButton &&
-                !(canApproveStandard && activeRequest) &&
-                !canOpenStandardAlternate),
-            disabledReason: standardIsAvailable
-              ? intl.formatMessage(messages.availableFormat)
-              : !hasStandardService
-                ? intl.formatMessage(messages.noService)
-                : isBlocklisted
-                  ? intl.formatMessage(messages.blocklisted)
-                  : activeRequest
-                    ? intl.formatMessage(messages.pendingFormat)
-                    : standardIsAvailable
-                      ? intl.formatMessage(messages.availableFormat)
+            label: standardTagService
+              ? intl.formatMessage(messages.tagFormatOption, { quality: 'HD' })
+              : intl.formatMessage(messages.hd),
+            onClick: standardTagService
+              ? () => openRequestModal(false, true, standardTagService.id)
+              : standardRequestButton
+                ? standardRequestButton.action
+                : canApproveStandard && activeRequest
+                  ? () => void modifyRequest(activeRequest, 'approve')
+                  : () => openRequestModal(false),
+            disabled: standardTagService
+              ? standardTagRequestPending || isBlocklisted
+              : standardIsAvailable ||
+                !hasStandardService ||
+                isBlocklisted ||
+                (!standardRequestButton &&
+                  !(canApproveStandard && activeRequest) &&
+                  !canOpenStandardAlternate),
+            disabledReason: standardTagService
+              ? isBlocklisted
+                ? intl.formatMessage(messages.blocklisted)
+                : standardTagRequestPending
+                  ? intl.formatMessage(messages.tagRequestPending)
+                  : undefined
+              : standardIsAvailable
+                ? intl.formatMessage(messages.availableFormat)
+                : !hasStandardService
+                  ? intl.formatMessage(messages.noService)
+                  : isBlocklisted
+                    ? intl.formatMessage(messages.blocklisted)
+                    : activeRequest
+                      ? intl.formatMessage(messages.pendingFormat)
                       : intl.formatMessage(messages.unavailableFormat),
+            requesterTagOnly: Boolean(standardTagService),
+            serverId: standardTagService?.id,
+            buttonLabel: standardTagService
+              ? intl.formatMessage(messages.addYourTag)
+              : undefined,
           },
         ]
       : []),
@@ -368,33 +474,44 @@ const RequestButton = ({
       ? [
           {
             id: '4k',
-            label: '4K',
-            onClick: request4kButton
-              ? request4kButton.action
-              : canApprove4k && active4kRequest
-                ? () => void modifyRequest(active4kRequest, 'approve')
-                : () => {
-                    setEditRequest(false);
-                    setShowRequest4kModal(true);
-                  },
-            disabled:
-              fourKIsAvailable ||
-              !has4kService ||
-              isBlocklisted ||
-              (!request4kButton &&
-                !(canApprove4k && active4kRequest) &&
-                !canOpen4kAlternate),
-            disabledReason: fourKIsAvailable
-              ? intl.formatMessage(messages.availableFormat)
-              : !has4kService
-                ? intl.formatMessage(messages.noService)
-                : isBlocklisted
-                  ? intl.formatMessage(messages.blocklisted)
-                  : active4kRequest
-                    ? intl.formatMessage(messages.pendingFormat)
-                    : fourKIsAvailable
-                      ? intl.formatMessage(messages.availableFormat)
+            label: fourKTagService
+              ? intl.formatMessage(messages.tagFormatOption, { quality: '4K' })
+              : '4K',
+            onClick: fourKTagService
+              ? () => openRequestModal(true, true, fourKTagService.id)
+              : request4kButton
+                ? request4kButton.action
+                : canApprove4k && active4kRequest
+                  ? () => void modifyRequest(active4kRequest, 'approve')
+                  : () => openRequestModal(true),
+            disabled: fourKTagService
+              ? fourKTagRequestPending || isBlocklisted
+              : fourKIsAvailable ||
+                !has4kService ||
+                isBlocklisted ||
+                (!request4kButton &&
+                  !(canApprove4k && active4kRequest) &&
+                  !canOpen4kAlternate),
+            disabledReason: fourKTagService
+              ? isBlocklisted
+                ? intl.formatMessage(messages.blocklisted)
+                : fourKTagRequestPending
+                  ? intl.formatMessage(messages.tagRequestPending)
+                  : undefined
+              : fourKIsAvailable
+                ? intl.formatMessage(messages.availableFormat)
+                : !has4kService
+                  ? intl.formatMessage(messages.noService)
+                  : isBlocklisted
+                    ? intl.formatMessage(messages.blocklisted)
+                    : active4kRequest
+                      ? intl.formatMessage(messages.pendingFormat)
                       : intl.formatMessage(messages.unavailableFormat),
+            requesterTagOnly: Boolean(fourKTagService),
+            serverId: fourKTagService?.id,
+            buttonLabel: fourKTagService
+              ? intl.formatMessage(messages.addYourTag)
+              : undefined,
           },
         ]
       : []),
@@ -411,8 +528,11 @@ const RequestButton = ({
     }
     const is4k = entryOption.id === '4k';
     const pendingRequest = is4k ? active4kRequest : activeRequest;
+    setRequestInitialServerId(entryOption.serverId);
+    setRequesterTagOnlyAction(entryOption.requesterTagOnly ?? false);
     setEditRequest(
-      !!pendingRequest &&
+      !entryOption.requesterTagOnly &&
+        !!pendingRequest &&
         (pendingRequest.requestedBy?.id === user?.id ||
           hasPermission(Permission.MANAGE_REQUESTS))
     );
@@ -431,6 +551,8 @@ const RequestButton = ({
           show={showRequestModal}
           type={mediaType}
           show4kSelector
+          initialServerId={requestInitialServerId}
+          requesterTagOnly={requesterTagOnlyAction}
           editRequest={editRequest ? activeRequest : undefined}
           onComplete={() => {
             onUpdate();
@@ -445,6 +567,8 @@ const RequestButton = ({
           show={showRequest4kModal}
           type={mediaType}
           show4kSelector
+          initialServerId={requestInitialServerId}
+          requesterTagOnly={requesterTagOnlyAction}
           editRequest={editRequest ? active4kRequest : undefined}
           is4k
           onComplete={() => {
@@ -480,7 +604,10 @@ const RequestButton = ({
             className={className}
           >
             <ArrowDownTrayIcon aria-hidden="true" />
-            <span>{intl.formatMessage(globalMessages.request)}</span>
+            <span>
+              {entryOption?.buttonLabel ??
+                intl.formatMessage(globalMessages.request)}
+            </span>
           </Button>
         )
       ) : (

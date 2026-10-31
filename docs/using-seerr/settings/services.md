@@ -159,6 +159,16 @@ still sends the request with the server's configured tags and any tags selected
 for that request. The requester tag is skipped for that dispatch, and SeerrNG
 logs a warning.
 
+This setting also enables **Add Your Tag** for a movie or fully available
+series that already exists on that exact service. The action follows the
+requester's normal request permission, destination access, quota, and approval
+rules. After approval, SeerrNG adds the requester tag to the existing item
+without starting an acquisition. TV tag requests cover the full series only;
+every regular season must be available on the selected Sonarr server. See
+[Add your requester tag to available media](../requester-tags.md) for the user
+flow. This SeerrNG adaptation follows the idea in
+[Seerr PR #3423](https://github.com/seerr-team/seerr/pull/3423).
+
 ### ChaptarrNG / Bookshelf Settings
 
 Use SeerrNG as the request portal for your household. People request books in

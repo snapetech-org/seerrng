@@ -15,8 +15,10 @@ import RequestMediaCard from '@app/components/RequestModal/RequestMediaCard';
 import RequestSeasonEpisodeTree from '@app/components/RequestModal/RequestSeasonEpisodeTree';
 import SearchByNameModal from '@app/components/RequestModal/SearchByNameModal';
 import {
+  areAllRequestDestinationSeasonsAvailable,
   canPromotePendingDestinationRequests,
   createRequestDestination,
+  isRequestDestinationConfirmedAvailable,
   isRequestDestinationAvailable,
   isRequestDestinationRequested,
   isRequestDestinationSeasonAvailable,
@@ -72,6 +74,13 @@ import useSWR, { mutate } from 'swr';
 
 const messages = defineMessages('components.RequestModal', {
   requestSuccess: '<strong>{title}</strong> requested successfully!',
+  requesterTagRequestSubmitted:
+    'Your tag request for <strong>{title}</strong> was submitted.',
+  addRequesterTag: 'Add Your Tag',
+  requesterTagOnlyNotice:
+    'This adds your personal requester tag to the existing item on the selected service. It will not send another acquisition request.',
+  requesterTagOnlyUnavailable:
+    'The selected service no longer confirms this item as available. Close and refresh before adding your tag.',
   requestseriestitle: 'Request Series',
   requestseries4ktitle: 'Request Series in 4K',
   edit: 'Edit Request',
@@ -183,6 +192,8 @@ const messages = defineMessages('components.RequestModal', {
 
 interface RequestModalProps extends React.HTMLAttributes<HTMLDivElement> {
   tmdbId: number;
+  initialServerId?: number;
+  requesterTagOnly?: boolean;
   onCancel?: () => void;
   onComplete?: (newStatus: MediaStatus, is4k?: boolean) => void;
   onUpdating?: (isUpdating: boolean) => void;
@@ -195,17 +206,28 @@ const TvRequestModal = ({
   onCancel,
   onComplete,
   tmdbId,
+  initialServerId,
+  requesterTagOnly: requesterTagOnlyIntent = false,
   onUpdating,
   editRequest,
   is4k = false,
   allow4kServerSelection = false,
 }: RequestModalProps) => {
+  const isRequesterTagOnlyRequest = Boolean(
+    editRequest?.serviceTargets?.some((target) => target.requesterTagOnly)
+  );
+  const requesterTagOnlyMode =
+    requesterTagOnlyIntent || isRequesterTagOnlyRequest;
+  const initialRequestServerId =
+    initialServerId ??
+    (isRequesterTagOnlyRequest ? editRequest?.serverId : undefined);
   const settings = useSettings();
   const { user, hasPermission } = useUser();
   const [selectedIs4k, setSelectedIs4k] = useState(is4k);
   const [qualityRevision, setQualityRevision] = useState(0);
-  const [requestServiceServerId, setRequestServiceServerId] =
-    useState<number>();
+  const [requestServiceServerId, setRequestServiceServerId] = useState<
+    number | undefined
+  >(initialRequestServerId);
   const { addToast } = useToasts();
   const editingSeasonSelections: SeasonEpisodeSelection[] = (
     editRequest?.seasons ?? []
@@ -219,7 +241,11 @@ const TvRequestModal = ({
     }));
   const { data, error } = useSWR<TvDetails>(`/api/v1/tv/${tmdbId}`);
   const [requestOverrides, setRequestOverrides] =
-    useState<RequestOverrides | null>(null);
+    useState<RequestOverrides | null>(() =>
+      initialRequestServerId === undefined
+        ? null
+        : { server: initialRequestServerId }
+    );
   const requestOwner =
     editRequest?.requestedBy ?? requestOverrides?.user ?? user;
   const requestOwnerId = requestOwner?.id;
@@ -307,14 +333,13 @@ const TvRequestModal = ({
       ? 'your'
       : `${requestOwner?.displayName ?? 'this user'}’s`;
 
-  const { data: sonarrServers } = useSWR<ServiceCommonServer[]>(
-    '/api/v1/service/sonarr',
-    {
-      refreshInterval: 0,
-      refreshWhenHidden: false,
-      revalidateOnFocus: false,
-    }
-  );
+  const { data: sonarrServers, error: sonarrServersError } = useSWR<
+    ServiceCommonServer[]
+  >('/api/v1/service/sonarr', {
+    refreshInterval: 0,
+    refreshWhenHidden: false,
+    revalidateOnFocus: false,
+  });
   const selectedService = sonarrServers?.find(
     (server) => server.id === requestOverrides?.server
   );
@@ -436,17 +461,58 @@ const TvRequestModal = ({
     Boolean(requestDestinationUserId) &&
     !requestRootFolders &&
     !requestRootFoldersError;
+  const requesterTagSeasonNumbers = (data?.seasons ?? [])
+    .filter((season) => season.episodeCount > 0 && season.seasonNumber !== 0)
+    .map((season) => season.seasonNumber);
+  const requesterTagOnly =
+    requesterTagOnlyMode &&
+    watchAheadService?.tagRequests === true &&
+    isRequestDestinationConfirmedAvailable(
+      data?.mediaInfo,
+      selectedDestination
+    ) &&
+    areAllRequestDestinationSeasonsAvailable(
+      data?.mediaInfo,
+      selectedDestination,
+      requesterTagSeasonNumbers
+    );
+  const requesterTagOnlyUnavailable = requesterTagOnlyMode && !requesterTagOnly;
+  const requesterTagOnlyAvailabilityResolved =
+    (data !== undefined && sonarrServers !== undefined) ||
+    Boolean(error || sonarrServersError);
+  const requesterTagOnlyUnavailableMessage =
+    requesterTagOnlyUnavailable && requesterTagOnlyAvailabilityResolved;
   const selectedDestinationAvailable =
     !editRequest &&
     (isRequestDestinationAvailable(data?.mediaInfo, selectedDestination) ||
       (!selectedDestination &&
         isVideoQualityAvailable(data?.mediaInfo, 'tv', effectiveIs4k)));
+  const requesterTagOnlyAlreadyRequested =
+    requesterTagOnly &&
+    (data?.mediaInfo?.requests ?? []).some(
+      (request) =>
+        request.requestedBy?.id === requestDestinationUserId &&
+        (request.status === MediaRequestStatus.PENDING ||
+          request.status === MediaRequestStatus.APPROVED) &&
+        (request.serviceTargets?.length
+          ? request.serviceTargets.some(
+              (target) =>
+                target.serviceType === 'sonarr' &&
+                target.serverId === selectedDestination?.serverId &&
+                target.format === selectedDestination?.format
+            )
+          : request.serverId === selectedDestination?.serverId &&
+            request.type === 'tv' &&
+            request.is4k === (selectedDestination?.format === '4k'))
+    );
   const selectedDestinationRequested =
     !editRequest &&
-    isRequestDestinationRequested(
-      data?.mediaInfo?.requests,
-      selectedDestination
-    );
+    (requesterTagOnly
+      ? requesterTagOnlyAlreadyRequested
+      : isRequestDestinationRequested(
+          data?.mediaInfo?.requests,
+          selectedDestination
+        ));
   const currentlyRemaining =
     (quota?.tv.remaining ?? 0) -
     selectedSeasons.length +
@@ -475,27 +541,38 @@ const TvRequestModal = ({
 
     try {
       if (selectedSeasons.length > 0) {
-        const response = await axios.put(`/api/v1/request/${editRequest.id}`, {
-          mediaType: 'tv',
-          serverId: requestOverrides?.server,
-          profileId: requestOverrides?.profile,
-          rootFolder: requestOverrides?.folder,
-          languageProfileId: requestOverrides?.language,
-          metadataLanguageId: requestOverrides?.metadataLanguage,
-          sonarrSeasonType: requestOverrides?.sonarrSeasonType,
-          userId: requestOverrides?.user?.id,
-          tags: requestOverrides?.tags,
-          seasons: [...selectedSeasons].sort((a, b) => a - b),
-          seasonRequests: seasonSelections,
-        });
-
-        if (response.status === 202) {
-          showAlreadyAvailableToast();
-          return;
-        }
-
-        if (alsoApproveRequest) {
+        if (
+          isRequesterTagOnlyRequest &&
+          alsoApproveRequest &&
+          !isFailedManagerRepair
+        ) {
           await axios.post(`/api/v1/request/${editRequest.id}/approve`);
+        } else {
+          const response = await axios.put(
+            `/api/v1/request/${editRequest.id}`,
+            {
+              mediaType: 'tv',
+              serverId: requestOverrides?.server,
+              profileId: requestOverrides?.profile,
+              rootFolder: requestOverrides?.folder,
+              languageProfileId: requestOverrides?.language,
+              metadataLanguageId: requestOverrides?.metadataLanguage,
+              sonarrSeasonType: requestOverrides?.sonarrSeasonType,
+              userId: requestOverrides?.user?.id,
+              tags: requestOverrides?.tags,
+              seasons: [...selectedSeasons].sort((a, b) => a - b),
+              seasonRequests: seasonSelections,
+            }
+          );
+
+          if (response.status === 202) {
+            showAlreadyAvailableToast();
+            return;
+          }
+
+          if (alsoApproveRequest) {
+            await axios.post(`/api/v1/request/${editRequest.id}/approve`);
+          }
         }
       } else {
         await axios.delete(`/api/v1/request/${editRequest.id}`);
@@ -528,7 +605,10 @@ const TvRequestModal = ({
         }
       );
       if (onComplete) {
-        onComplete(MediaStatus.PENDING, effectiveIs4k);
+        onComplete(
+          requesterTagOnlyMode ? MediaStatus.AVAILABLE : MediaStatus.PENDING,
+          effectiveIs4k
+        );
       }
     } catch (error) {
       const serverMessage =
@@ -553,8 +633,40 @@ const TvRequestModal = ({
     }
   };
 
+  const cancelRequesterTagOnlyRequest = async () => {
+    if (!editRequest) {
+      return;
+    }
+
+    onUpdating?.(true);
+    mutate('/api/v1/request/count');
+
+    try {
+      await axios.delete(`/api/v1/request/${editRequest.id}`);
+      mutate('/api/v1/request?filter=all&take=10&sort=modified&skip=0');
+      mutate('/api/v1/request/count');
+      addToast(
+        <span>
+          {intl.formatMessage(messages.requestcancelled, {
+            title: data?.name,
+            strong: (msg: React.ReactNode) => <strong>{msg}</strong>,
+          })}
+        </span>,
+        { appearance: 'success', autoDismiss: true }
+      );
+      onComplete?.(MediaStatus.AVAILABLE, effectiveIs4k);
+    } catch {
+      addToast(intl.formatMessage(messages.errorediting), {
+        appearance: 'error',
+        autoDismiss: true,
+      });
+    } finally {
+      onUpdating?.(false);
+    }
+  };
+
   const sendRequest = async () => {
-    if (requestDisabled) {
+    if (requestDisabled || requesterTagOnlyUnavailable) {
       return;
     }
 
@@ -593,18 +705,22 @@ const TvRequestModal = ({
             : selectedRequestServiceServerId,
           ignoreQuota: requestOverrides?.ignoreQuota,
           requestQuotaApproval: requestQuotaApproval || undefined,
-          seasons: stagesFullSeriesThroughWatchGate
+          requesterTagOnly: requesterTagOnly || undefined,
+          seasons: requesterTagOnly
             ? 'all'
-            : usesEpisodeSelection
+            : stagesFullSeriesThroughWatchGate
+              ? 'all'
+              : usesEpisodeSelection
+                ? requestableSelections
+                    .map((selection) => selection.seasonNumber)
+                    .sort((a, b) => a - b)
+                : fullSeasonSelectionsToSubmit.map(
+                    (selection) => selection.seasonNumber
+                  ),
+          seasonRequests:
+            usesEpisodeSelection && !requesterTagOnly
               ? requestableSelections
-                  .map((selection) => selection.seasonNumber)
-                  .sort((a, b) => a - b)
-              : fullSeasonSelectionsToSubmit.map(
-                  (selection) => selection.seasonNumber
-                ),
-          seasonRequests: usesEpisodeSelection
-            ? requestableSelections
-            : undefined,
+              : undefined,
           ...overrideParams,
         }
       );
@@ -631,7 +747,9 @@ const TvRequestModal = ({
           {intl.formatMessage(
             response.data.quotaException
               ? messages.quotaApprovalSubmitted
-              : messages.requestSuccess,
+              : requesterTagOnly
+                ? messages.requesterTagRequestSubmitted
+                : messages.requestSuccess,
             {
               title: data?.name,
               strong: (msg: React.ReactNode) => <strong>{msg}</strong>,
@@ -820,6 +938,7 @@ const TvRequestModal = ({
 
   useEffect(() => {
     if (
+      requesterTagOnly ||
       !episodeQueueAccess ||
       editRequest ||
       !data ||
@@ -842,26 +961,34 @@ const TvRequestModal = ({
     episodeQueueAccess,
     initializedSelectionKey,
     requestSelectionKey,
+    requesterTagOnly,
     settings.currentSettings.partialRequestsEnabled,
     watchAheadAppliesToRequest,
     watchAheadEpisodeCount,
   ]);
   const usesEpisodeSelection =
-    settings.currentSettings.partialRequestsEnabled ||
-    watchAheadEpisodeCount > 0;
+    !requesterTagOnly &&
+    (settings.currentSettings.partialRequestsEnabled ||
+      watchAheadEpisodeCount > 0);
   const blockedEpisodesBySeason = mergeEpisodeNumbersBySeason(
     availableEpisodesBySeason,
     getAllRequestedEpisodes()
   );
-  const requestSelections = usesEpisodeSelection
-    ? seasonSelections
-    : unrequestedSeasons.map((seasonNumber) => ({ seasonNumber }));
-  const requestableSelections = getRequestableTvSelections(
-    requestSelections,
-    data?.seasons ?? [],
-    getAllRequestedSeasons(),
-    blockedEpisodesBySeason
-  );
+  const requestSelections = requesterTagOnly
+    ? getAllSeasons()
+        .filter((seasonNumber) => seasonNumber !== 0)
+        .map((seasonNumber) => ({ seasonNumber }))
+    : usesEpisodeSelection
+      ? seasonSelections
+      : unrequestedSeasons.map((seasonNumber) => ({ seasonNumber }));
+  const requestableSelections = requesterTagOnly
+    ? requestSelections
+    : getRequestableTvSelections(
+        requestSelections,
+        data?.seasons ?? [],
+        getAllRequestedSeasons(),
+        blockedEpisodesBySeason
+      );
   const seasonWatchGateCatalog = (data?.seasons ?? []).map((season) => ({
     seasonNumber: season.seasonNumber,
     episodeCount: season.episodeCount,
@@ -1013,42 +1140,55 @@ const TvRequestModal = ({
     (partialQuotaExceeded || (!usesEpisodeSelection && fullQuotaExceeded))
   );
   const gateBlocksSubmission =
-    seasonWatchGateMessage &&
-    (usesEpisodeSelection || fullSeasonSelectionsToSubmit.length === 0)
-      ? seasonWatchGateMessage
-      : undefined;
+    requesterTagOnly &&
+    seasonWatchGateApplies &&
+    (Boolean(seasonWatchGateMessage) ||
+      gateAllowedSeasonSelections.length !== requestableSelections.length)
+      ? (seasonWatchGateMessage ??
+        intl.formatMessage(messages.seasonWatchGateUnavailable))
+      : seasonWatchGateMessage &&
+          (usesEpisodeSelection || fullSeasonSelectionsToSubmit.length === 0)
+        ? seasonWatchGateMessage
+        : undefined;
   const seasonWatchGateDisplayMessage =
     seasonWatchGateMessage &&
     !usesEpisodeSelection &&
     fullSeasonSelectionsToSubmit.length > 0
-      ? intl.formatMessage(messages.seasonWatchGateStaged, {
-          reason: seasonWatchGateMessage,
-        })
+      ? requesterTagOnly
+        ? seasonWatchGateMessage
+        : intl.formatMessage(messages.seasonWatchGateStaged, {
+            reason: seasonWatchGateMessage,
+          })
       : seasonWatchGateMessage;
   const submissionSelectionCount = usesEpisodeSelection
     ? requestableSelections.length
     : fullSeasonSelectionsToSubmit.length;
   const requestDisabledReason =
-    usesEpisodeSelection && !requestTreeReady && selectedSeasons.length > 0
-      ? intl.formatMessage(messages.episodesLoading)
-      : !requestQuotaApproval &&
-          (partialQuotaExceeded || (!usesEpisodeSelection && fullQuotaExceeded))
-        ? intl.formatMessage(messages.requestQuotaExceeded)
-        : submissionSelectionCount === 0
-          ? (gateBlocksSubmission ??
-            (usesEpisodeSelection &&
-            seasonSelections.length === 0 &&
-            unrequestedSeasons.length > 0
-              ? intl.formatMessage(messages.selectUnavailableItemsToRequest)
-              : intl.formatMessage(
-                  unrequestedSeasons.length === 0
-                    ? messages.noUnavailableItems
-                    : messages.alreadyAvailable
-                )))
-          : gateBlocksSubmission;
+    requesterTagOnlyUnavailableMessage &&
+    (hasPermission(Permission.MANAGE_REQUESTS) || isFailedManagerRepair)
+      ? intl.formatMessage(messages.requesterTagOnlyUnavailable)
+      : usesEpisodeSelection && !requestTreeReady && selectedSeasons.length > 0
+        ? intl.formatMessage(messages.episodesLoading)
+        : !requestQuotaApproval &&
+            (partialQuotaExceeded ||
+              (!usesEpisodeSelection && fullQuotaExceeded))
+          ? intl.formatMessage(messages.requestQuotaExceeded)
+          : submissionSelectionCount === 0
+            ? (gateBlocksSubmission ??
+              (usesEpisodeSelection &&
+              seasonSelections.length === 0 &&
+              unrequestedSeasons.length > 0
+                ? intl.formatMessage(messages.selectUnavailableItemsToRequest)
+                : intl.formatMessage(
+                    unrequestedSeasons.length === 0
+                      ? messages.noUnavailableItems
+                      : messages.alreadyAvailable
+                  )))
+            : gateBlocksSubmission;
 
   useEffect(() => {
     if (
+      requesterTagOnly ||
       editRequest ||
       !settings.currentSettings.partialRequestsEnabled ||
       !data ||
@@ -1073,6 +1213,7 @@ const TvRequestModal = ({
     getAllSeasons,
     initializedSelectionKey,
     requestSelectionKey,
+    requesterTagOnly,
     settings.currentSettings.partialRequestsEnabled,
   ]);
 
@@ -1096,6 +1237,7 @@ const TvRequestModal = ({
     effectiveIs4k
   );
   const selectedDestinationPromotable =
+    !requesterTagOnly &&
     selectedDestinationRequested &&
     canPromotePendingDestinationRequests(
       data?.mediaInfo?.requests,
@@ -1105,9 +1247,10 @@ const TvRequestModal = ({
         hasAutoApprove,
       }
     );
-  const selectedDestinationCovered =
-    selectedDestinationAvailable ||
-    (selectedDestinationRequested && !selectedDestinationPromotable);
+  const selectedDestinationCovered = requesterTagOnly
+    ? requesterTagOnlyAlreadyRequested
+    : selectedDestinationAvailable ||
+      (selectedDestinationRequested && !selectedDestinationPromotable);
   const notAvailable = intl.formatMessage(messages.notAvailable);
   const firstAirDate = data?.firstAirDate
     ? intl.formatDate(new Date(`${data.firstAirDate}T00:00:00`), {
@@ -1141,24 +1284,38 @@ const TvRequestModal = ({
   const requestButtonLabel = editRequest
     ? isFailedManagerRepair
       ? intl.formatMessage(messages.saveAndRetry)
-      : selectedSeasons.length === 0
-        ? intl.formatMessage(messages.cancel)
-        : hasPermission(Permission.MANAGE_REQUESTS)
+      : isRequesterTagOnlyRequest
+        ? hasPermission(Permission.MANAGE_REQUESTS)
           ? intl.formatMessage(messages.approve)
-          : intl.formatMessage(messages.edit)
-    : requestQuotaApproval
-      ? intl.formatMessage(messages.requestQuotaApproval)
-      : intl.formatMessage(globalMessages.request);
+          : intl.formatMessage(messages.cancel)
+        : selectedSeasons.length === 0
+          ? intl.formatMessage(messages.cancel)
+          : hasPermission(Permission.MANAGE_REQUESTS)
+            ? intl.formatMessage(messages.approve)
+            : intl.formatMessage(messages.edit)
+    : requesterTagOnly
+      ? intl.formatMessage(messages.addRequesterTag)
+      : requestQuotaApproval
+        ? intl.formatMessage(messages.requestQuotaApproval)
+        : intl.formatMessage(globalMessages.request);
   const requestDisabled = editRequest
-    ? (isFailedManagerRepair
-        ? selectedSeasons.length === 0
-        : usesEpisodeSelection &&
-          selectedSeasons.length > 0 &&
-          !requestTreeReady) || Boolean(gateBlocksSubmission)
+    ? isRequesterTagOnlyRequest
+      ? isFailedManagerRepair
+        ? selectedSeasons.length === 0 ||
+          requesterTagOnlyUnavailable ||
+          Boolean(gateBlocksSubmission)
+        : hasPermission(Permission.MANAGE_REQUESTS) &&
+          requesterTagOnlyUnavailable
+      : (isFailedManagerRepair
+          ? selectedSeasons.length === 0
+          : usesEpisodeSelection &&
+            selectedSeasons.length > 0 &&
+            !requestTreeReady) || Boolean(gateBlocksSubmission)
     : (usesEpisodeSelection && !requestTreeReady) ||
       requestDestinationSettingsLoading ||
-      !episodeQueueAccess ||
-      Boolean(episodeQueueAccessError) ||
+      (!requesterTagOnly &&
+        (!episodeQueueAccess || Boolean(episodeQueueAccessError))) ||
+      requesterTagOnlyUnavailable ||
       selectedDestinationCovered ||
       submissionSelectionCount === 0 ||
       (!requestQuotaApproval &&
@@ -1170,9 +1327,13 @@ const TvRequestModal = ({
     editRequest
       ? isFailedManagerRepair
         ? updateRequest(false)
-        : hasPermission(Permission.MANAGE_REQUESTS)
-          ? updateRequest(true)
-          : updateRequest()
+        : isRequesterTagOnlyRequest
+          ? hasPermission(Permission.MANAGE_REQUESTS)
+            ? updateRequest(true)
+            : cancelRequesterTagOnlyRequest()
+          : hasPermission(Permission.MANAGE_REQUESTS)
+            ? updateRequest(true)
+            : updateRequest()
       : sendRequest();
 
   return data && !error && !data.externalIds.tvdbId && searchModal.show ? (
@@ -1387,7 +1548,9 @@ const TvRequestModal = ({
                   </dt>
                   <dd className="card-table-value">
                     <RequestFooterStatus
-                      available={selectedDestinationAvailable}
+                      available={
+                        selectedDestinationAvailable && !requesterTagOnly
+                      }
                       requested={selectedDestinationRequested}
                       hasAutoApprove={hasAutoApprove}
                     />
@@ -1399,6 +1562,20 @@ const TvRequestModal = ({
         </div>
 
         <div className="request-selection-layout">
+          {requesterTagOnlyMode && (
+            <p className="app-card-inset refreshed-inset-surface card-body-text">
+              {intl.formatMessage(messages.requesterTagOnlyNotice)}
+            </p>
+          )}
+          {requesterTagOnlyUnavailableMessage && (
+            <p
+              className="page-error-message"
+              data-severity="error"
+              role="alert"
+            >
+              {intl.formatMessage(messages.requesterTagOnlyUnavailable)}
+            </p>
+          )}
           {isFailedManagerRepair && selectedSeasons.length > 0 && (
             <p className="app-card-inset refreshed-inset-surface card-body-text">
               {intl.formatMessage(messages.repairPreservesSelections)}
@@ -1502,7 +1679,7 @@ const TvRequestModal = ({
             )}
 
           <div className="request-selection-options">
-            {!editRequest && (
+            {!editRequest && !requesterTagOnlyMode && (
               <MediaQualitySelect
                 value={effectiveIs4k ? '4k' : 'hd'}
                 options={[
@@ -1521,6 +1698,7 @@ const TvRequestModal = ({
               />
             )}
             {!editRequest &&
+              !requesterTagOnlyMode &&
               !canUseAdvancedOptions &&
               requestServiceOptions.length > 0 &&
               (fallbackService || requestServiceOptions.length > 1) && (
@@ -1555,7 +1733,7 @@ const TvRequestModal = ({
                   loadingLabel={intl.formatMessage(messages.destination)}
                 />
               )}
-            {watchAheadCardVisible && (
+            {watchAheadCardVisible && !requesterTagOnlyMode && (
               <section
                 className="app-card-inset refreshed-inset-surface detail-item-padded request-episode-queue"
                 aria-labelledby="tv-episode-queue-heading"
@@ -1671,7 +1849,7 @@ const TvRequestModal = ({
             )}
           </div>
         </div>
-        {canUseAdvancedOptions && (
+        {canUseAdvancedOptions && !requesterTagOnlyMode && (
           <AdvancedRequester
             key={(selectedIs4k ? '4k' : 'hd') + '-' + qualityRevision}
             type="tv"
@@ -1707,7 +1885,7 @@ const TvRequestModal = ({
 
         <div className="app-action-row app-modal-actions">
           <div className="app-action-row" data-action-placement="leading">
-            {canUseAdvancedOptions && (
+            {canUseAdvancedOptions && !requesterTagOnlyMode && (
               <AdvancedOptionsDisclosureButton
                 label={intl.formatMessage(messages.advancedOptions)}
                 open={advancedOptionsOpen}
@@ -1739,7 +1917,9 @@ const TvRequestModal = ({
             buttonType="success"
             buttonSize="standard"
           >
-            {editRequest && selectedSeasons.length === 0 ? (
+            {(editRequest && selectedSeasons.length === 0) ||
+            (isRequesterTagOnlyRequest &&
+              !hasPermission(Permission.MANAGE_REQUESTS)) ? (
               <XMarkIcon aria-hidden="true" />
             ) : (
               <ArrowDownTrayIcon aria-hidden="true" />

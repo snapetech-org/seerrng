@@ -343,6 +343,29 @@ class RadarrAPI extends ServarrBase<{ movieId: number }> {
     }
   };
 
+  public async addTagsToMovie(
+    movieId: number,
+    tagIds: number[]
+  ): Promise<void> {
+    const tags = [...new Set(tagIds)];
+    if (
+      !Number.isSafeInteger(movieId) ||
+      movieId <= 0 ||
+      tags.length === 0 ||
+      tags.some((tagId) => !Number.isSafeInteger(tagId) || tagId <= 0)
+    ) {
+      throw new Error(
+        'A valid Radarr movie and at least one tag are required.'
+      );
+    }
+
+    await this.request('PUT', '/movie/editor', {
+      movieIds: [movieId],
+      tags,
+      applyTags: 'add',
+    });
+  }
+
   public async getMovieCover(movieId: number): Promise<RadarrCoverImage> {
     const movie = await this.getMovie({ id: movieId }).catch(() => undefined);
     const advertisedCoverPaths = (movie?.images ?? [])

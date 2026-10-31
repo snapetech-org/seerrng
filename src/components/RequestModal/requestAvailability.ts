@@ -21,7 +21,12 @@ interface DestinationAvailabilityMedia {
   serviceId4k?: number | null;
   serviceStatuses?: Pick<
     MediaServiceStatus,
-    'serviceType' | 'serverId' | 'format' | 'status' | 'seasonStatuses'
+    | 'serviceType'
+    | 'serverId'
+    | 'format'
+    | 'status'
+    | 'externalServiceId'
+    | 'seasonStatuses'
   >[];
   seasons?: {
     seasonNumber: number;
@@ -41,6 +46,36 @@ const getServiceStatusForDestination = (
       status.serverId === selected?.serverId &&
       status.format === selected?.format
   );
+
+export const isRequestDestinationConfirmedAvailable = (
+  media: DestinationAvailabilityMedia | null | undefined,
+  selected: RequestDestination | null | undefined
+): boolean => {
+  const serviceStatus = getServiceStatusForDestination(media, selected);
+  // Non-manager responses intentionally omit provider item IDs. The exact
+  // service/quality row is enough to show the affordance; the request API
+  // revalidates the item ID and identity before it writes a tag.
+  return serviceStatus?.status === MediaStatus.AVAILABLE;
+};
+
+export const areAllRequestDestinationSeasonsAvailable = (
+  media: DestinationAvailabilityMedia | null | undefined,
+  selected: RequestDestination | null | undefined,
+  seasonNumbers: number[]
+): boolean => {
+  if (!selected || seasonNumbers.length === 0) {
+    return false;
+  }
+
+  const serviceStatus = getServiceStatusForDestination(media, selected);
+  return (
+    serviceStatus?.status === MediaStatus.AVAILABLE &&
+    seasonNumbers.every(
+      (seasonNumber) =>
+        serviceStatus.seasonStatuses?.[seasonNumber] === MediaStatus.AVAILABLE
+    )
+  );
+};
 
 // Availability is quality-specific; a partial series must still allow its
 // missing episodes to be requested.
