@@ -4485,7 +4485,7 @@
   "components.Settings.SettingsMain.downloadCopies": "Download Kopien",
   "components.Settings.SettingsMain.downloadCopiesDescription": "Erlauben Sie SeerrNG, importierte Dateien über Request Status zu bedienen. Pfadzuordnungen verbinden einen vom Manager gemeldeten Bibliothekspfad mit einem schreibgeschützten Pfad, der innerhalb von SeerrNG installiert ist.",
   "components.Settings.SettingsMain.downloadPathMappings": "Bibliothek Path Mappings",
-  "components.Settings.SettingsMain.downloadPathMappingsExample": "[\n  '{'\n    \"serviceType\": \"radarr\",\n    \"serviceId\": 1,\n    \"remoteRoot\": \"/movies\",\n    \"localRoot\": \"/mnt/media/movies\"\n  '}'\n]",
+  "components.Settings.SettingsMain.downloadPathMappingsExample": "[\n  '{'\n    \"serviceType\": \"radarr\",\n    \"serviceId\": 1,\n    \"remoteRoot\": \"/Filme\",\n    \"localRoot\": \"/mnt/media/Filme\"\n  '}'\n]",
   "components.Settings.SettingsMain.downloadPathMappingsJsonError": "Geben Sie ein JSON-Array mit maximal 100 Pfadzuordnungen ein.",
   "components.Settings.SettingsMain.downloadPathMappingsTip": "Geben Sie ein JSON Array ein. Jede Zuordnung hat serviceType, optional serviceId, remoteRoot und localRoot. Verwenden Sie schmale Bibliothekswurzeln; SeerrNG bietet nur Dateien an, die innerhalb einer abgebildeten Wurzel aufgelöst werden.",
   "components.Settings.SettingsMain.enable4k": "4K aktivieren",

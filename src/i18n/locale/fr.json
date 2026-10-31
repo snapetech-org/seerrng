@@ -4485,7 +4485,7 @@
   "components.Settings.SettingsMain.downloadCopies": "Télécharger des copies",
   "components.Settings.SettingsMain.downloadCopiesDescription": "Permettre à SeerrNG de desservir les fichiers importés par l'état de la demande. Les mappages de trajectoire relient un chemin de bibliothèque signalé par un gestionnaire à un chemin en lecture seule monté à l'intérieur de SeerrNG.",
   "components.Settings.SettingsMain.downloadPathMappings": "Cartographie des voies de la bibliothèque",
-  "components.Settings.SettingsMain.downloadPathMappingsExample": "[\n  '{'\n    \"serviceType\": \"radarr\",\n    \"serviceId\": 1,\n    \"remoteRoot\": \"/movies\",\n    \"localRoot\": \"/mnt/media/movies\"\n  '}'\n]",
+  "components.Settings.SettingsMain.downloadPathMappingsExample": "[\n  '{'\n    \"serviceType\": \"radarr\",\n    \"serviceId\": 1,\n    \"remoteRoot\": \"/films\",\n    \"localRoot\": \"/mnt/media/films\"\n  '}'\n]",
   "components.Settings.SettingsMain.downloadPathMappingsJsonError": "Entrez un tableau JSON avec au plus 100 mappages de chemin.",
   "components.Settings.SettingsMain.downloadPathMappingsTip": "Saisissez un tableau JSON. Chaque cartographie a serviceType, option serviceId, distantRoot et localRoot. Utilisez des racines de bibliothèque étroites; SeerrNG offre seulement des fichiers qui résolvent à l'intérieur d'une racine mapidée.",
   "components.Settings.SettingsMain.enable4k": "Activer le 4K",

@@ -4485,7 +4485,7 @@
   "components.Settings.SettingsMain.downloadCopies": "Baixar cópias",
   "components.Settings.SettingsMain.downloadCopiesDescription": "Permita que o SeerrNG sirva arquivos importados através do Status de Pedido. Mapeamentos de caminhos conectam um caminho de biblioteca relatado pelo gerente a um caminho somente de leitura montado dentro do SeerrNG.",
   "components.Settings.SettingsMain.downloadPathMappings": "Mapeamento do Caminho da Biblioteca",
-  "components.Settings.SettingsMain.downloadPathMappingsExample": "[\n  '{'\n    \"serviceType\": \"radarr\",\n    \"serviceId\": 1,\n    \"remoteRoot\": \"/movies\",\n    \"localRoot\": \"/mnt/media/movies\"\n  '}'\n]",
+  "components.Settings.SettingsMain.downloadPathMappingsExample": "[\n  '{'\n    \"serviceType\": \"radarr\",\n    \"serviceId\": 1,\n    \"remoteRoot\": \"/filmes\",\n    \"localRoot\": \"/mnt/media/filmes\"\n  '}'\n]",
   "components.Settings.SettingsMain.downloadPathMappingsJsonError": "Digite uma matriz JSON com no máximo 100 mapeamentos de caminho.",
   "components.Settings.SettingsMain.downloadPathMappingsTip": "Digite uma matriz JSON. Cada mapeamento tem tipo de serviço, serviço opcional, remoto e local. Use raízes de biblioteca estreitas, SeerrNG só oferece arquivos que resolvem dentro de uma raiz mapeada.",
   "components.Settings.SettingsMain.enable4k": "Ativar 4K",

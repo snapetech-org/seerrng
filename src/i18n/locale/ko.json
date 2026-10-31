@@ -4485,7 +4485,7 @@
   "components.Settings.SettingsMain.downloadCopies": "Copies 다운로드",
   "components.Settings.SettingsMain.downloadCopiesDescription": "Request Status를 통해 가져온 파일을 제공하도록 허용합니다. 경로 매핑은 관리자가 보고한 라이브러리 경로를 SeerrNG 컨테이너에 읽기 전용으로 마운트된 경로에 연결합니다.",
   "components.Settings.SettingsMain.downloadPathMappings": "도서관 경로 Mappings",
-  "components.Settings.SettingsMain.downloadPathMappingsExample": "[\n  '{'\n    \"serviceType\": \"radarr\",\n    \"serviceId\": 1,\n    \"remoteRoot\": \"/movies\",\n    \"localRoot\": \"/mnt/media/movies\"\n  '}'\n]",
+  "components.Settings.SettingsMain.downloadPathMappingsExample": "[\n  '{'\n    \"serviceType\": \"radarr\",\n    \"serviceId\": 1,\n    \"remoteRoot\": \"/영화\",\n    \"localRoot\": \"/mnt/media/영화\"\n  '}'\n]",
   "components.Settings.SettingsMain.downloadPathMappingsJsonError": "최대 100 경로 매핑으로 JSON 배열을 입력합니다.",
   "components.Settings.SettingsMain.downloadPathMappingsTip": "JSON 배열을 입력하십시오. 각 매핑에는 serviceType, 선택적인 serviceId, remoteRoot 및 localRoot가 있습니다. 좁은 라이브러리 루트를 사용; SeerrNG는 맵핑 된 루트 내부를 해결하는 파일을 제공합니다.",
   "components.Settings.SettingsMain.enable4k": "4K 활성화",

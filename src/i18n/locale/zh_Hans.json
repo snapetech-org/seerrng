@@ -4485,7 +4485,7 @@
   "components.Settings.SettingsMain.downloadCopies": "下载副本",
   "components.Settings.SettingsMain.downloadCopiesDescription": "允许 SeerrNG 通过请求状态服务导入文件。 路径映射将管理器报告库路径连接到安装在内部的只读路径 SeerrNG.",
   "components.Settings.SettingsMain.downloadPathMappings": "库路径映射",
-  "components.Settings.SettingsMain.downloadPathMappingsExample": "[\n  '{'\n    \"serviceType\": \"radarr\",\n    \"serviceId\": 1,\n    \"remoteRoot\": \"/movies\",\n    \"localRoot\": \"/mnt/media/movies\"\n  '}'\n]",
+  "components.Settings.SettingsMain.downloadPathMappingsExample": "[\n  '{'\n    \"serviceType\": \"radarr\",\n    \"serviceId\": 1,\n    \"remoteRoot\": \"/电影\",\n    \"localRoot\": \"/mnt/media/电影\"\n  '}'\n]",
   "components.Settings.SettingsMain.downloadPathMappingsJsonError": "输入最多100个路径映射的 JSON 阵列 。",
   "components.Settings.SettingsMain.downloadPathMappingsTip": "输入 JSON 阵列 。 每个映射都有服务Type,可选服务Id,远程Root,以及localRoot. 使用狭义库根; SeerrNG 只提供在映射根内解析的文件 。",
   "components.Settings.SettingsMain.enable4k": "启用 4K",

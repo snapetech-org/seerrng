@@ -4485,7 +4485,7 @@
   "components.Settings.SettingsMain.downloadCopies": "Copies डाउनलोड",
   "components.Settings.SettingsMain.downloadCopiesDescription": "अनुरोध स्थिति के माध्यम से SeerrNG को आयातित फ़ाइलों की सेवा करने की अनुमति दें। पथ मैपिंग प्रबंधक-रिपोर्ट किए गए लाइब्रेरी पथ को SeerrNG के अंदर लगे केवल पढ़ने योग्य पथ से जोड़ती है।",
   "components.Settings.SettingsMain.downloadPathMappings": "पुस्तकालय पथ मानचित्रण",
-  "components.Settings.SettingsMain.downloadPathMappingsExample": "[\n  '{'\n    \"serviceType\": \"radarr\",\n    \"serviceId\": 1,\n    \"remoteRoot\": \"/movies\",\n    \"localRoot\": \"/mnt/media/movies\"\n  '}'\n]",
+  "components.Settings.SettingsMain.downloadPathMappingsExample": "[\n  '{'\n    \"serviceType\": \"radarr\",\n    \"serviceId\": 1,\n    \"remoteRoot\": \"/फ़िल्में\",\n    \"localRoot\": \"/mnt/media/फ़िल्में\"\n  '}'\n]",
   "components.Settings.SettingsMain.downloadPathMappingsJsonError": "अधिकांश 100 पथ मैपिंग के साथ एक JSON सरणी दर्ज करें।",
   "components.Settings.SettingsMain.downloadPathMappingsTip": "एक JSON सरणी दर्ज करें। प्रत्येक मैपिंग में सर्विसटाइप, वैकल्पिक सर्विसआईडी, रिमोट रूट और स्थानीय रूट है। संकीर्ण पुस्तकालय जड़ों का उपयोग करें; SeerrNG केवल उन फ़ाइलों को प्रदान करता है जो मानचित्रित जड़ के अंदर हल करती हैं।",
   "components.Settings.SettingsMain.enable4k": "4K सक्षम करें",

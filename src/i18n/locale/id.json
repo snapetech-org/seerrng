@@ -4485,7 +4485,7 @@
   "components.Settings.SettingsMain.downloadCopies": "Unduh Salinan",
   "components.Settings.SettingsMain.downloadCopiesDescription": "Ijinkan SeerrNG untuk melayani berkas impor melalui Status Permintaan. pemetaan path menghubungkan jalur pustaka manajer- dilaporkan ke jalur baca-saja yang dimount dalam SeerrNG.",
   "components.Settings.SettingsMain.downloadPathMappings": "Peta Lokasi Pustaka",
-  "components.Settings.SettingsMain.downloadPathMappingsExample": "[\n  '{'\n    \"serviceType\": \"radarr\",\n    \"serviceId\": 1,\n    \"remoteRoot\": \"/movies\",\n    \"localRoot\": \"/mnt/media/movies\"\n  '}'\n]",
+  "components.Settings.SettingsMain.downloadPathMappingsExample": "[\n  '{'\n    \"serviceType\": \"radarr\",\n    \"serviceId\": 1,\n    \"remoteRoot\": \"/film\",\n    \"localRoot\": \"/mnt/media/film\"\n  '}'\n]",
   "components.Settings.SettingsMain.downloadPathMappingsJsonError": "Masukkan JSON array dengan hampir 100 pemetaan jalur.",
   "components.Settings.SettingsMain.downloadPathMappingsTip": "Masukkan larik JSON. Setiap pemetaan memiliki serviceType, serviceId opsional, remoteRoot, dan localRoot. Gunakan akar perpustakaan yang sempit; SeerrNG hanya menawarkan file yang diselesaikan di dalam root yang dipetakan.",
   "components.Settings.SettingsMain.enable4k": "Aktifkan 4K",

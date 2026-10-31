@@ -4485,7 +4485,7 @@
   "components.Settings.SettingsMain.downloadCopies": "下載副本",
   "components.Settings.SettingsMain.downloadCopiesDescription": "允許 SeerrNG 透過要求狀態伺服匯入的檔案 。 路徑映射將管理員報告的函式庫路徑連結到 SeerrNG 內載的只讀路徑 。",
   "components.Settings.SettingsMain.downloadPathMappings": "圖書室路徑映射",
-  "components.Settings.SettingsMain.downloadPathMappingsExample": "[\n  '{'\n    \"serviceType\": \"radarr\",\n    \"serviceId\": 1,\n    \"remoteRoot\": \"/movies\",\n    \"localRoot\": \"/mnt/media/movies\"\n  '}'\n]",
+  "components.Settings.SettingsMain.downloadPathMappingsExample": "[\n  '{'\n    \"serviceType\": \"radarr\",\n    \"serviceId\": 1,\n    \"remoteRoot\": \"/電影\",\n    \"localRoot\": \"/mnt/media/電影\"\n  '}'\n]",
   "components.Settings.SettingsMain.downloadPathMappingsJsonError": "輸入最多100個路徑映射的 JSON 陣列 。",
   "components.Settings.SettingsMain.downloadPathMappingsTip": "輸入 JSON 陣列。每個映射都有 serviceType、可選的 serviceId、remoteRoot 和 localRoot。使用狹窄的庫根； SeerrNG 僅提供在映射根內部解析的檔案。",
   "components.Settings.SettingsMain.enable4k": "啟用 4K",

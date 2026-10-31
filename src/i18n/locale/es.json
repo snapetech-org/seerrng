@@ -4485,7 +4485,7 @@
   "components.Settings.SettingsMain.downloadCopies": "Descargar Copies",
   "components.Settings.SettingsMain.downloadCopiesDescription": "Permitir a SeerrNG servir archivos importados a través del estado de solicitud. Las cartografías de ruta conectan una ruta de biblioteca informada por el administrador a una ruta de sólo lectura montada dentro de SeerrNG.",
   "components.Settings.SettingsMain.downloadPathMappings": "Cartografías de ruta de la biblioteca",
-  "components.Settings.SettingsMain.downloadPathMappingsExample": "[\n  '{'\n    \"serviceType\": \"radarr\",\n    \"serviceId\": 1,\n    \"remoteRoot\": \"/movies\",\n    \"localRoot\": \"/mnt/media/movies\"\n  '}'\n]",
+  "components.Settings.SettingsMain.downloadPathMappingsExample": "[\n  '{'\n    \"serviceType\": \"radarr\",\n    \"serviceId\": 1,\n    \"remoteRoot\": \"/películas\",\n    \"localRoot\": \"/mnt/media/películas\"\n  '}'\n]",
   "components.Settings.SettingsMain.downloadPathMappingsJsonError": "Introduzca un array JSON con más de 100 cartografías de ruta.",
   "components.Settings.SettingsMain.downloadPathMappingsTip": "Introduzca un array JSON. Cada asignación tiene servicioType, servicio opcional, control remoto y localRoot. Use raíces de biblioteca estrechas; SeerrNG sólo ofrece archivos que resuelven dentro de una raíz mapeada.",
   "components.Settings.SettingsMain.enable4k": "Habilitar 4K",

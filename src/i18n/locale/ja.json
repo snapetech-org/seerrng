@@ -4485,7 +4485,7 @@
   "components.Settings.SettingsMain.downloadCopies": "Copiesをダウンロード",
   "components.Settings.SettingsMain.downloadCopiesDescription": "リクエストステータスでインポートされたファイルを提供するSeerrNG を許可します。 Path マッピングは、Manager-reported ライブラリパスを、SeerrNG の内部にマウントされた読み取り専用パスに接続します。",
   "components.Settings.SettingsMain.downloadPathMappings": "図書館のパスマッピング",
-  "components.Settings.SettingsMain.downloadPathMappingsExample": "[\n  '{'\n    \"serviceType\": \"radarr\",\n    \"serviceId\": 1,\n    \"remoteRoot\": \"/movies\",\n    \"localRoot\": \"/mnt/media/movies\"\n  '}'\n]",
+  "components.Settings.SettingsMain.downloadPathMappingsExample": "[\n  '{'\n    \"serviceType\": \"radarr\",\n    \"serviceId\": 1,\n    \"remoteRoot\": \"/映画\",\n    \"localRoot\": \"/mnt/media/映画\"\n  '}'\n]",
   "components.Settings.SettingsMain.downloadPathMappingsJsonError": "ほとんどの100パスマッピングでJSON配列を入力します。",
   "components.Settings.SettingsMain.downloadPathMappingsTip": "JSON 配列を入力します。 各マッピングには、serviceType、オプションサービスId、remoteRoot、および localRoot があります。 狭いライブラリのルートを使用してください。SeerrNG は、マップされたルート内で解決するファイルのみを提供しています。",
   "components.Settings.SettingsMain.enable4k": "4Kを有効にする",

@@ -4485,7 +4485,7 @@
   "components.Settings.SettingsMain.downloadCopies": "Tải bản sao",
   "components.Settings.SettingsMain.downloadCopiesDescription": "Cho phép SeerrNG phân phát các tệp đã nhập thông qua Trạng thái yêu cầu. Ánh xạ đường dẫn kết nối đường dẫn thư viện do người quản lý báo cáo với đường dẫn chỉ đọc được gắn bên trong SeerrNG.",
   "components.Settings.SettingsMain.downloadPathMappings": "Ánh xạ đường dẫn thư viện",
-  "components.Settings.SettingsMain.downloadPathMappingsExample": "[\n  '{'\n    \"serviceType\": \"radarr\",\n    \"serviceId\": 1,\n    \"remoteRoot\": \"/movies\",\n    \"localRoot\": \"/mnt/media/movies\"\n  '}'\n]",
+  "components.Settings.SettingsMain.downloadPathMappingsExample": "[\n  '{'\n    \"serviceType\": \"radarr\",\n    \"serviceId\": 1,\n    \"remoteRoot\": \"/phim\",\n    \"localRoot\": \"/mnt/media/phim\"\n  '}'\n]",
   "components.Settings.SettingsMain.downloadPathMappingsJsonError": "Nhập một dãy JSON với nhiều nhất 100 đường dẫn.",
   "components.Settings.SettingsMain.downloadPathMappingsTip": "Nhập dãy JSON. Mỗi bản đồ có kiểu dáng dịch vụ, dịch vụ tùy chọn, từ xaRoot, và localRoot. Dùng rễ thư viện hẹp; SeerrNG chỉ cung cấp các tập tin có thể giải quyết bên trong gốc bản đồ.",
   "components.Settings.SettingsMain.enable4k": "Bật 4K",

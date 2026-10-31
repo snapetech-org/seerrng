@@ -155720,6 +155720,138 @@
       "sourceHash": "383e2d946278a872c3723cb83a961d8c4809df7110628cca0ba1a808267b3561",
       "targetHash": "735139a8e4487efc9f2ff5a12673da2d7868d134c5ae43716c589b04831eaa5e",
       "correctionReason": "Contextual machine-draft correction: 'Pilot' is app-authored UI copy in components.Selector.pilot; localized as 'Episode percontohan'. Dynamic values and protected names remain unchanged. Native-speaker and RTL review not performed."
+    },
+    {
+      "domain": "client",
+      "locale": "ar",
+      "id": "components.Settings.SettingsMain.downloadPathMappingsExample",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "Codex contextual sample-path localization; generated 2026-10-31; unverified",
+      "sourceHash": "44e1c539ecdb527124d96c25ab9d21ca3f16474ee5a78582c49c97a48ab3b240",
+      "targetHash": "d6fbb13e160a567b2b5204651e9bb10f72586b2e08674271b1ce4dd574aed90c",
+      "correctionReason": "Contextual machine-draft localization of the user-facing textarea example: the illustrative media directory segment is written as “أفلام” in this locale in both paths; the required JSON property names, Radarr service identifier, number, syntax, and path mapping structure remain exact so the example can be copied and edited. The example paths are placeholders, not actual user or server data. Native-speaker and RTL review not performed."
+    },
+    {
+      "domain": "client",
+      "locale": "de",
+      "id": "components.Settings.SettingsMain.downloadPathMappingsExample",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "Codex contextual sample-path localization; generated 2026-10-31; unverified",
+      "sourceHash": "44e1c539ecdb527124d96c25ab9d21ca3f16474ee5a78582c49c97a48ab3b240",
+      "targetHash": "712417815fe498ba687e127c7ff61ab356ad8a77e27702b4749c60967e5244d3",
+      "correctionReason": "Contextual machine-draft localization of the user-facing textarea example: the illustrative media directory segment is written as “Filme” in this locale in both paths; the required JSON property names, Radarr service identifier, number, syntax, and path mapping structure remain exact so the example can be copied and edited. The example paths are placeholders, not actual user or server data. Native-speaker and RTL review not performed."
+    },
+    {
+      "domain": "client",
+      "locale": "es",
+      "id": "components.Settings.SettingsMain.downloadPathMappingsExample",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "Codex contextual sample-path localization; generated 2026-10-31; unverified",
+      "sourceHash": "44e1c539ecdb527124d96c25ab9d21ca3f16474ee5a78582c49c97a48ab3b240",
+      "targetHash": "fae84ee8c1d72f7f4da084740527d66cec918b57510a15b3fee3259d99c6a772",
+      "correctionReason": "Contextual machine-draft localization of the user-facing textarea example: the illustrative media directory segment is written as “películas” in this locale in both paths; the required JSON property names, Radarr service identifier, number, syntax, and path mapping structure remain exact so the example can be copied and edited. The example paths are placeholders, not actual user or server data. Native-speaker and RTL review not performed."
+    },
+    {
+      "domain": "client",
+      "locale": "fr",
+      "id": "components.Settings.SettingsMain.downloadPathMappingsExample",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "Codex contextual sample-path localization; generated 2026-10-31; unverified",
+      "sourceHash": "44e1c539ecdb527124d96c25ab9d21ca3f16474ee5a78582c49c97a48ab3b240",
+      "targetHash": "c6c23567d48c80a3392c5c16dd5bb4e67e47701bf16825c6edd1edc1a3d3b98a",
+      "correctionReason": "Contextual machine-draft localization of the user-facing textarea example: the illustrative media directory segment is written as “films” in this locale in both paths; the required JSON property names, Radarr service identifier, number, syntax, and path mapping structure remain exact so the example can be copied and edited. The example paths are placeholders, not actual user or server data. Native-speaker and RTL review not performed."
+    },
+    {
+      "domain": "client",
+      "locale": "hi",
+      "id": "components.Settings.SettingsMain.downloadPathMappingsExample",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "Codex contextual sample-path localization; generated 2026-10-31; unverified",
+      "sourceHash": "44e1c539ecdb527124d96c25ab9d21ca3f16474ee5a78582c49c97a48ab3b240",
+      "targetHash": "d90c0f5a883e096715d6786acadb5cc2d3e20266fde58e448a43ddf2b78bbe66",
+      "correctionReason": "Contextual machine-draft localization of the user-facing textarea example: the illustrative media directory segment is written as “फ़िल्में” in this locale in both paths; the required JSON property names, Radarr service identifier, number, syntax, and path mapping structure remain exact so the example can be copied and edited. The example paths are placeholders, not actual user or server data. Native-speaker and RTL review not performed."
+    },
+    {
+      "domain": "client",
+      "locale": "id",
+      "id": "components.Settings.SettingsMain.downloadPathMappingsExample",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "Codex contextual sample-path localization; generated 2026-10-31; unverified",
+      "sourceHash": "44e1c539ecdb527124d96c25ab9d21ca3f16474ee5a78582c49c97a48ab3b240",
+      "targetHash": "3ebf7b1c407c2c0d8716b339d0109450e78ef31e0481842b44de7cefaf74a45d",
+      "correctionReason": "Contextual machine-draft localization of the user-facing textarea example: the illustrative media directory segment is written as “film” in this locale in both paths; the required JSON property names, Radarr service identifier, number, syntax, and path mapping structure remain exact so the example can be copied and edited. The example paths are placeholders, not actual user or server data. Native-speaker and RTL review not performed."
+    },
+    {
+      "domain": "client",
+      "locale": "ja",
+      "id": "components.Settings.SettingsMain.downloadPathMappingsExample",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "Codex contextual sample-path localization; generated 2026-10-31; unverified",
+      "sourceHash": "44e1c539ecdb527124d96c25ab9d21ca3f16474ee5a78582c49c97a48ab3b240",
+      "targetHash": "82df6499bd0ec05f5e528c2a2fa03820a25896217a0691600874ee8bfce92d44",
+      "correctionReason": "Contextual machine-draft localization of the user-facing textarea example: the illustrative media directory segment is written as “映画” in this locale in both paths; the required JSON property names, Radarr service identifier, number, syntax, and path mapping structure remain exact so the example can be copied and edited. The example paths are placeholders, not actual user or server data. Native-speaker and RTL review not performed."
+    },
+    {
+      "domain": "client",
+      "locale": "ko",
+      "id": "components.Settings.SettingsMain.downloadPathMappingsExample",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "Codex contextual sample-path localization; generated 2026-10-31; unverified",
+      "sourceHash": "44e1c539ecdb527124d96c25ab9d21ca3f16474ee5a78582c49c97a48ab3b240",
+      "targetHash": "4d7c67428993507ea2f2a19bdfcd031ae9a019c898b2102b3e4e456c689524d9",
+      "correctionReason": "Contextual machine-draft localization of the user-facing textarea example: the illustrative media directory segment is written as “영화” in this locale in both paths; the required JSON property names, Radarr service identifier, number, syntax, and path mapping structure remain exact so the example can be copied and edited. The example paths are placeholders, not actual user or server data. Native-speaker and RTL review not performed."
+    },
+    {
+      "domain": "client",
+      "locale": "pt-BR",
+      "id": "components.Settings.SettingsMain.downloadPathMappingsExample",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "Codex contextual sample-path localization; generated 2026-10-31; unverified",
+      "sourceHash": "44e1c539ecdb527124d96c25ab9d21ca3f16474ee5a78582c49c97a48ab3b240",
+      "targetHash": "9ea9531ff07641e51fdf42044fb64e116937721c98122a80c513b6fed265d814",
+      "correctionReason": "Contextual machine-draft localization of the user-facing textarea example: the illustrative media directory segment is written as “filmes” in this locale in both paths; the required JSON property names, Radarr service identifier, number, syntax, and path mapping structure remain exact so the example can be copied and edited. The example paths are placeholders, not actual user or server data. Native-speaker and RTL review not performed."
+    },
+    {
+      "domain": "client",
+      "locale": "vi",
+      "id": "components.Settings.SettingsMain.downloadPathMappingsExample",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "Codex contextual sample-path localization; generated 2026-10-31; unverified",
+      "sourceHash": "44e1c539ecdb527124d96c25ab9d21ca3f16474ee5a78582c49c97a48ab3b240",
+      "targetHash": "70de0dfba707fbce68e7a5bacb8fae29176d989e8b8f4664a59a18779b9b3397",
+      "correctionReason": "Contextual machine-draft localization of the user-facing textarea example: the illustrative media directory segment is written as “phim” in this locale in both paths; the required JSON property names, Radarr service identifier, number, syntax, and path mapping structure remain exact so the example can be copied and edited. The example paths are placeholders, not actual user or server data. Native-speaker and RTL review not performed."
+    },
+    {
+      "domain": "client",
+      "locale": "zh-CN",
+      "id": "components.Settings.SettingsMain.downloadPathMappingsExample",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "Codex contextual sample-path localization; generated 2026-10-31; unverified",
+      "sourceHash": "44e1c539ecdb527124d96c25ab9d21ca3f16474ee5a78582c49c97a48ab3b240",
+      "targetHash": "02145bca6594586efc45ffddd54385beeb91dab606e89cbb0f1f18e1d8c6be1c",
+      "correctionReason": "Contextual machine-draft localization of the user-facing textarea example: the illustrative media directory segment is written as “电影” in this locale in both paths; the required JSON property names, Radarr service identifier, number, syntax, and path mapping structure remain exact so the example can be copied and edited. The example paths are placeholders, not actual user or server data. Native-speaker and RTL review not performed."
+    },
+    {
+      "domain": "client",
+      "locale": "zh-TW",
+      "id": "components.Settings.SettingsMain.downloadPathMappingsExample",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "Codex contextual sample-path localization; generated 2026-10-31; unverified",
+      "sourceHash": "44e1c539ecdb527124d96c25ab9d21ca3f16474ee5a78582c49c97a48ab3b240",
+      "targetHash": "81c1abf71ba401873a5bfde84f372b365ec0f89a5ab67a2132e263601c3574c6",
+      "correctionReason": "Contextual machine-draft localization of the user-facing textarea example: the illustrative media directory segment is written as “電影” in this locale in both paths; the required JSON property names, Radarr service identifier, number, syntax, and path mapping structure remain exact so the example can be copied and edited. The example paths are placeholders, not actual user or server data. Native-speaker and RTL review not performed."
     }
   ]
 }

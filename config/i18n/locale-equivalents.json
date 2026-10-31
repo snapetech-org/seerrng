@@ -9467,6 +9467,144 @@
       ],
       "reason": "Machine-assisted contextual review (Codex, 2026-10-31): `Album` is the established Tiếng Việt label for this media, music-genre, or content-format concept at this callsite. This is an accepted localized/international media term, not untranslated English prose or a fallback. Native-speaker and RTL review have not been performed; this equivalence record expires 2027-10-31.",
       "expiresOn": "2027-10-31"
+    },
+    {
+      "domain": "client",
+      "locale": "id",
+      "id": "components.IssueDetails.IssueAffectedEpisodes.episode",
+      "source": "Episode",
+      "target": "Episode",
+      "sourceHash": "b19c450b47d69b869823afa53978c557a3868b9b8e77c1715ca0f526133c73f0",
+      "targetHash": "b19c450b47d69b869823afa53978c557a3868b9b8e77c1715ca0f526133c73f0",
+      "classification": "localized-equivalent",
+      "equivalenceType": "same-spelling-native-equivalent",
+      "sourceCallsites": [
+        {
+          "path": "src/components/IssueDetails/IssueAffectedEpisodes.tsx",
+          "line": 15,
+          "defaultMessage": "'Episode'"
+        }
+      ],
+      "reason": "Machine-assisted contextual review (Codex, 2026-10-31): “Episode” is also the standard Bahasa Indonesia word for this episode label/template. KBBI lists “episode” as a noun meaning a distinct part/event or a series of a story, matching this media UI use. This identical spelling is a localized lexical equivalent, not an English fallback. Native-speaker and RTL review have not been performed; this equivalence expires 2027-10-31.",
+      "expiresOn": "2027-10-31",
+      "evidenceLinks": [
+        "https://kbbi.web.id/episode"
+      ]
+    },
+    {
+      "domain": "client",
+      "locale": "id",
+      "id": "components.IssueDetails.IssueAffectedEpisodes.episodeNumber",
+      "source": "Episode {episodeNumber}",
+      "target": "Episode {episodeNumber}",
+      "sourceHash": "12d69a5ba0e915bb848fb3ef310c97ee727a2e080c852a07c3e8637d83d65207",
+      "targetHash": "12d69a5ba0e915bb848fb3ef310c97ee727a2e080c852a07c3e8637d83d65207",
+      "classification": "localized-equivalent",
+      "equivalenceType": "same-spelling-native-equivalent",
+      "sourceCallsites": [
+        {
+          "path": "src/components/IssueDetails/IssueAffectedEpisodes.tsx",
+          "line": 18,
+          "defaultMessage": "'Episode {episodeNumber}'"
+        }
+      ],
+      "reason": "Machine-assisted contextual review (Codex, 2026-10-31): “Episode {episodeNumber}” is also the standard Bahasa Indonesia word for this episode label/template. KBBI lists “episode” as a noun meaning a distinct part/event or a series of a story, matching this media UI use. This identical spelling is a localized lexical equivalent, not an English fallback. Native-speaker and RTL review have not been performed; this equivalence expires 2027-10-31.",
+      "expiresOn": "2027-10-31",
+      "evidenceLinks": [
+        "https://kbbi.web.id/episode"
+      ]
+    },
+    {
+      "domain": "client",
+      "locale": "id",
+      "id": "components.LiveTv.LiveTvButton.episode",
+      "source": "Episode",
+      "target": "Episode",
+      "sourceHash": "b19c450b47d69b869823afa53978c557a3868b9b8e77c1715ca0f526133c73f0",
+      "targetHash": "b19c450b47d69b869823afa53978c557a3868b9b8e77c1715ca0f526133c73f0",
+      "classification": "localized-equivalent",
+      "equivalenceType": "same-spelling-native-equivalent",
+      "sourceCallsites": [
+        {
+          "path": "src/components/LiveTv/LiveTvButton.tsx",
+          "line": 25,
+          "defaultMessage": "'Episode'"
+        }
+      ],
+      "reason": "Machine-assisted contextual review (Codex, 2026-10-31): “Episode” is also the standard Bahasa Indonesia word for this episode label/template. KBBI lists “episode” as a noun meaning a distinct part/event or a series of a story, matching this media UI use. This identical spelling is a localized lexical equivalent, not an English fallback. Native-speaker and RTL review have not been performed; this equivalence expires 2027-10-31.",
+      "expiresOn": "2027-10-31",
+      "evidenceLinks": [
+        "https://kbbi.web.id/episode"
+      ]
+    },
+    {
+      "domain": "client",
+      "locale": "id",
+      "id": "components.MediaDetails.SeasonEpisodeTree.episodeSelectionLabel",
+      "source": "{action} episode {episodeNumber}: {episodeName}",
+      "target": "{action} episode {episodeNumber}: {episodeName}",
+      "sourceHash": "0185207fe52ed9ea3319abfd579d62a897734293aadfddc5877a79eece937e03",
+      "targetHash": "0185207fe52ed9ea3319abfd579d62a897734293aadfddc5877a79eece937e03",
+      "classification": "localized-equivalent",
+      "equivalenceType": "same-spelling-native-equivalent",
+      "sourceCallsites": [
+        {
+          "path": "src/components/MediaDetails/SeasonEpisodeTree.tsx",
+          "line": 47,
+          "defaultMessage": "'{action} episode {episodeNumber}: {episodeName}'"
+        }
+      ],
+      "reason": "Machine-assisted contextual review (Codex, 2026-10-31): “{action} episode {episodeNumber}: {episodeName}” is also the standard Bahasa Indonesia word for this episode label/template. KBBI lists “episode” as a noun meaning a distinct part/event or a series of a story, matching this media UI use. This identical spelling is a localized lexical equivalent, not an English fallback. Native-speaker and RTL review have not been performed; this equivalence expires 2027-10-31.",
+      "expiresOn": "2027-10-31",
+      "evidenceLinks": [
+        "https://kbbi.web.id/episode"
+      ]
+    },
+    {
+      "domain": "client",
+      "locale": "id",
+      "id": "components.RequestModal.SeasonEpisodeSelector.episode",
+      "source": "Episode",
+      "target": "Episode",
+      "sourceHash": "b19c450b47d69b869823afa53978c557a3868b9b8e77c1715ca0f526133c73f0",
+      "targetHash": "b19c450b47d69b869823afa53978c557a3868b9b8e77c1715ca0f526133c73f0",
+      "classification": "localized-equivalent",
+      "equivalenceType": "same-spelling-native-equivalent",
+      "sourceCallsites": [
+        {
+          "path": "src/components/Common/SeriesSeasonEpisodeSelector.tsx",
+          "line": 25,
+          "defaultMessage": "'Episode'"
+        }
+      ],
+      "reason": "Machine-assisted contextual review (Codex, 2026-10-31): “Episode” is also the standard Bahasa Indonesia word for this episode label/template. KBBI lists “episode” as a noun meaning a distinct part/event or a series of a story, matching this media UI use. This identical spelling is a localized lexical equivalent, not an English fallback. Native-speaker and RTL review have not been performed; this equivalence expires 2027-10-31.",
+      "expiresOn": "2027-10-31",
+      "evidenceLinks": [
+        "https://kbbi.web.id/episode"
+      ]
+    },
+    {
+      "domain": "client",
+      "locale": "id",
+      "id": "components.RequestModal.SeasonEpisodeSelector.episodeNumber",
+      "source": "Episode {number}",
+      "target": "Episode {number}",
+      "sourceHash": "317a41ae9c632fe430a61a50734ad4bf36405b26acd12dc81fe672bd3299a95e",
+      "targetHash": "317a41ae9c632fe430a61a50734ad4bf36405b26acd12dc81fe672bd3299a95e",
+      "classification": "localized-equivalent",
+      "equivalenceType": "same-spelling-native-equivalent",
+      "sourceCallsites": [
+        {
+          "path": "src/components/Common/SeriesSeasonEpisodeSelector.tsx",
+          "line": 29,
+          "defaultMessage": "'Episode {number}'"
+        }
+      ],
+      "reason": "Machine-assisted contextual review (Codex, 2026-10-31): “Episode {number}” is also the standard Bahasa Indonesia word for this episode label/template. KBBI lists “episode” as a noun meaning a distinct part/event or a series of a story, matching this media UI use. This identical spelling is a localized lexical equivalent, not an English fallback. Native-speaker and RTL review have not been performed; this equivalence expires 2027-10-31.",
+      "expiresOn": "2027-10-31",
+      "evidenceLinks": [
+        "https://kbbi.web.id/episode"
+      ]
     }
   ],
   "baseRevision": "6dd2f4157ebcbab80294d8ad94a5bb7e8bdf972d",

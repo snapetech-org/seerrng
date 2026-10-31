@@ -4485,7 +4485,7 @@
   "components.Settings.SettingsMain.downloadCopies": "عدد النسخ",
   "components.Settings.SettingsMain.downloadCopiesDescription": "السماح لـ SeerrNG بخدمة الملفات المستوردة من خلال حالة الطلب. تقوم تعيينات المسار بتوصيل مسار المكتبة الذي أبلغ عنه المدير بمسار للقراءة فقط مثبت داخل SeerrNG.",
   "components.Settings.SettingsMain.downloadPathMappings": "رسوم المكتبة",
-  "components.Settings.SettingsMain.downloadPathMappingsExample": "[\n  '{'\n    \"serviceType\": \"radarr\",\n    \"serviceId\": 1,\n    \"remoteRoot\": \"/movies\",\n    \"localRoot\": \"/mnt/media/movies\"\n  '}'\n]",
+  "components.Settings.SettingsMain.downloadPathMappingsExample": "[\n  '{'\n    \"serviceType\": \"radarr\",\n    \"serviceId\": 1,\n    \"remoteRoot\": \"/أفلام\",\n    \"localRoot\": \"/mnt/media/أفلام\"\n  '}'\n]",
   "components.Settings.SettingsMain.downloadPathMappingsJsonError": "أدخل JSON صفيفة مع أكثر من 100 خريطة طريق",
   "components.Settings.SettingsMain.downloadPathMappingsTip": "أدخل JSON صفيفة ولكل رسم بياني خدمات تقنية، وخدمة اختيارية، والروت البعيدة، والروت المحلية. (ب) استخدام الجذور الضيقة للمكتبة؛ SeerrNG فقط يقدم الملفات التي تُحل داخل الجذر المُحدد",
   "components.Settings.SettingsMain.enable4k": "تفعيل 4K",
