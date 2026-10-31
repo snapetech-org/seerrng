@@ -76,5 +76,7 @@
   "notifications.common.viewMedia": "Ver medios in {applicationTitle}",
   "notifications.common.viewRequestStatus": "Ver Estado de solicitud en {applicationTitle}",
   "notifications.test.message": "Probando, 1, 2, 3. Se recibe alto y claro?",
-  "notifications.test.subject": "Notificación de prueba"
+  "notifications.test.subject": "Notificación de prueba",
+  "notifications.agents.email.availabilitySubscription": "Un título que sigues ya está disponible:",
+  "notifications.agents.webpush.availabilitySubscription": "¡Un título que sigues ya está disponible!"
 }

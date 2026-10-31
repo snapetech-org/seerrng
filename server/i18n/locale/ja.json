@@ -76,5 +76,7 @@
   "notifications.common.viewMedia": "メディアを見る {applicationTitle}",
   "notifications.common.viewRequestStatus": "リクエストステータスを表示 {applicationTitle}",
   "notifications.test.message": "チェック, 1, 2, 3 お問い合わせ",
-  "notifications.test.subject": "テスト通知"
+  "notifications.test.subject": "テスト通知",
+  "notifications.agents.email.availabilitySubscription": "フォロー中の作品が利用可能になりました：",
+  "notifications.agents.webpush.availabilitySubscription": "フォロー中の作品が利用可能になりました！"
 }

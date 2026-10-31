@@ -145981,6 +145981,28 @@
     },
     {
       "domain": "server",
+      "locale": "ar",
+      "id": "notifications.agents.email.availabilitySubscription",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual translation (2026-10-30); unverified",
+      "sourceHash": "0ac3dd93601cdd157ee6ade2837521ce71a4cff7fe2d6bf567873ac5956812c6",
+      "targetHash": "fe24e69dc9f15de788fc3e9042877ea2d4d1ae0c752d48e16c3dc38b3ce70f07",
+      "correctionReason": "Translated the availability-subscription notification in email/web-push context; unverified and not native-reviewed."
+    },
+    {
+      "domain": "server",
+      "locale": "ar",
+      "id": "notifications.agents.webpush.availabilitySubscription",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual translation (2026-10-30); unverified",
+      "sourceHash": "19b1d7fb6c3f37e43b70083a9068cb2ac9f24c71dcda0f6539c4a861bcb5bbb0",
+      "targetHash": "45f50434a2694663e5d348708c23106a7a7fd6a0baedc5a21c6dd32b2eb577a1",
+      "correctionReason": "Translated the availability-subscription notification in email/web-push context; unverified and not native-reviewed."
+    },
+    {
+      "domain": "server",
       "locale": "de",
       "id": "notifications.agents.email.requestedByLabel",
       "status": "draft",
@@ -145998,6 +146020,28 @@
       "source": "Reused same-locale client translation for identical English source; machine draft 2026-10-30",
       "sourceHash": "ad089fc28d270d476c2bdba330444e0be66ebcd1d932f317895d419c4451c751",
       "targetHash": "07037faabe303915d380320aee78d2df03e842b3dbf85294e8fa8698ee18a509"
+    },
+    {
+      "domain": "server",
+      "locale": "de",
+      "id": "notifications.agents.email.availabilitySubscription",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual translation (2026-10-30); unverified",
+      "sourceHash": "0ac3dd93601cdd157ee6ade2837521ce71a4cff7fe2d6bf567873ac5956812c6",
+      "targetHash": "602e1a054f758bf25babbad41907a89584c622f03a471ee1eb813f216ecd43b7",
+      "correctionReason": "Translated the availability-subscription notification in email/web-push context; unverified and not native-reviewed."
+    },
+    {
+      "domain": "server",
+      "locale": "de",
+      "id": "notifications.agents.webpush.availabilitySubscription",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual translation (2026-10-30); unverified",
+      "sourceHash": "19b1d7fb6c3f37e43b70083a9068cb2ac9f24c71dcda0f6539c4a861bcb5bbb0",
+      "targetHash": "c5921f6e4a36c19a7953754559fb17fb73a0f467ce33d409dfebdbd82726f4bc",
+      "correctionReason": "Translated the availability-subscription notification in email/web-push context; unverified and not native-reviewed."
     },
     {
       "domain": "server",
@@ -146021,6 +146065,28 @@
     },
     {
       "domain": "server",
+      "locale": "es",
+      "id": "notifications.agents.email.availabilitySubscription",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual translation (2026-10-30); unverified",
+      "sourceHash": "0ac3dd93601cdd157ee6ade2837521ce71a4cff7fe2d6bf567873ac5956812c6",
+      "targetHash": "9153fed602ddb90087d4f30a6abb2e905e8aa549a6e9264452ca8b31d1ea442e",
+      "correctionReason": "Translated the availability-subscription notification in email/web-push context; unverified and not native-reviewed."
+    },
+    {
+      "domain": "server",
+      "locale": "es",
+      "id": "notifications.agents.webpush.availabilitySubscription",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual translation (2026-10-30); unverified",
+      "sourceHash": "19b1d7fb6c3f37e43b70083a9068cb2ac9f24c71dcda0f6539c4a861bcb5bbb0",
+      "targetHash": "b7a649f3b3ecfa3d01d10cd4931179f53b7fb6521308fb4125a88121d6c93fc6",
+      "correctionReason": "Translated the availability-subscription notification in email/web-push context; unverified and not native-reviewed."
+    },
+    {
+      "domain": "server",
       "locale": "fr",
       "id": "notifications.agents.email.requestedByLabel",
       "status": "draft",
@@ -146038,6 +146104,28 @@
       "source": "Reused same-locale client translation for identical English source; machine draft 2026-10-30",
       "sourceHash": "ad089fc28d270d476c2bdba330444e0be66ebcd1d932f317895d419c4451c751",
       "targetHash": "e9d178445f185d87f5fbec4454fd59aa93f0804c3082d03ede028a9b7c17e89c"
+    },
+    {
+      "domain": "server",
+      "locale": "fr",
+      "id": "notifications.agents.email.availabilitySubscription",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual translation (2026-10-30); unverified",
+      "sourceHash": "0ac3dd93601cdd157ee6ade2837521ce71a4cff7fe2d6bf567873ac5956812c6",
+      "targetHash": "79607fffd756b32c2f931103f22cc849d5bf50232a8c44f99e4836fa7dea8722",
+      "correctionReason": "Translated the availability-subscription notification in email/web-push context; unverified and not native-reviewed."
+    },
+    {
+      "domain": "server",
+      "locale": "fr",
+      "id": "notifications.agents.webpush.availabilitySubscription",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual translation (2026-10-30); unverified",
+      "sourceHash": "19b1d7fb6c3f37e43b70083a9068cb2ac9f24c71dcda0f6539c4a861bcb5bbb0",
+      "targetHash": "d982808c91cfcab527be964a6a10270a30ec477a38eab576362af5c82737d4b1",
+      "correctionReason": "Translated the availability-subscription notification in email/web-push context; unverified and not native-reviewed."
     },
     {
       "domain": "server",
@@ -146061,6 +146149,28 @@
     },
     {
       "domain": "server",
+      "locale": "hi",
+      "id": "notifications.agents.email.availabilitySubscription",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual translation (2026-10-30); unverified",
+      "sourceHash": "0ac3dd93601cdd157ee6ade2837521ce71a4cff7fe2d6bf567873ac5956812c6",
+      "targetHash": "7ed665ec0c8edeee663cf2dc1b1189800c04a59a5f82e6dae25bfd8b852c7054",
+      "correctionReason": "Translated the availability-subscription notification in email/web-push context; unverified and not native-reviewed."
+    },
+    {
+      "domain": "server",
+      "locale": "hi",
+      "id": "notifications.agents.webpush.availabilitySubscription",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual translation (2026-10-30); unverified",
+      "sourceHash": "19b1d7fb6c3f37e43b70083a9068cb2ac9f24c71dcda0f6539c4a861bcb5bbb0",
+      "targetHash": "527aa5ec9c006b0492b6ca5aff10adaab211c8b11355bff6f5495390801e3351",
+      "correctionReason": "Translated the availability-subscription notification in email/web-push context; unverified and not native-reviewed."
+    },
+    {
+      "domain": "server",
       "locale": "id",
       "id": "notifications.agents.email.requestedByLabel",
       "status": "draft",
@@ -146078,6 +146188,28 @@
       "source": "Reused same-locale client translation for identical English source; machine draft 2026-10-30",
       "sourceHash": "ad089fc28d270d476c2bdba330444e0be66ebcd1d932f317895d419c4451c751",
       "targetHash": "aeb873b7307a9c975bcdf340169768e36729a83d17f41dccafbf422f689daf25"
+    },
+    {
+      "domain": "server",
+      "locale": "id",
+      "id": "notifications.agents.email.availabilitySubscription",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual translation (2026-10-30); unverified",
+      "sourceHash": "0ac3dd93601cdd157ee6ade2837521ce71a4cff7fe2d6bf567873ac5956812c6",
+      "targetHash": "4f15ec4a9a3412ecf0bb25bea188846055744b45e47b7a4a3d7cacb11a8b4b53",
+      "correctionReason": "Translated the availability-subscription notification in email/web-push context; unverified and not native-reviewed."
+    },
+    {
+      "domain": "server",
+      "locale": "id",
+      "id": "notifications.agents.webpush.availabilitySubscription",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual translation (2026-10-30); unverified",
+      "sourceHash": "19b1d7fb6c3f37e43b70083a9068cb2ac9f24c71dcda0f6539c4a861bcb5bbb0",
+      "targetHash": "e1d56218b8b1d86f16b0f18a90294e3a71efbe610f3817dffeadf5b375553359",
+      "correctionReason": "Translated the availability-subscription notification in email/web-push context; unverified and not native-reviewed."
     },
     {
       "domain": "server",
@@ -146101,6 +146233,28 @@
     },
     {
       "domain": "server",
+      "locale": "ja",
+      "id": "notifications.agents.email.availabilitySubscription",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual translation (2026-10-30); unverified",
+      "sourceHash": "0ac3dd93601cdd157ee6ade2837521ce71a4cff7fe2d6bf567873ac5956812c6",
+      "targetHash": "a0cadec71ce984149c5f0272e3ee44d27056f907bd122ffe60b76ec674f6c554",
+      "correctionReason": "Translated the availability-subscription notification in email/web-push context; unverified and not native-reviewed."
+    },
+    {
+      "domain": "server",
+      "locale": "ja",
+      "id": "notifications.agents.webpush.availabilitySubscription",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual translation (2026-10-30); unverified",
+      "sourceHash": "19b1d7fb6c3f37e43b70083a9068cb2ac9f24c71dcda0f6539c4a861bcb5bbb0",
+      "targetHash": "ad8fe33d81b97c0df3e5df5b1629c6bd044a61e11cdf4ab727feab5774af4f76",
+      "correctionReason": "Translated the availability-subscription notification in email/web-push context; unverified and not native-reviewed."
+    },
+    {
+      "domain": "server",
       "locale": "ko",
       "id": "notifications.agents.email.requestedByLabel",
       "status": "draft",
@@ -146118,6 +146272,28 @@
       "source": "Reused same-locale client translation for identical English source; machine draft 2026-10-30",
       "sourceHash": "ad089fc28d270d476c2bdba330444e0be66ebcd1d932f317895d419c4451c751",
       "targetHash": "b66d544e622868cf947095ed728b2a3fdb2553e29230a367a0e21c3dcfcf4ceb"
+    },
+    {
+      "domain": "server",
+      "locale": "ko",
+      "id": "notifications.agents.email.availabilitySubscription",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual translation (2026-10-30); unverified",
+      "sourceHash": "0ac3dd93601cdd157ee6ade2837521ce71a4cff7fe2d6bf567873ac5956812c6",
+      "targetHash": "504bb153c5f04e20a87644887ba5ed80467c6859933be98c0b7a1deb51d6cd57",
+      "correctionReason": "Translated the availability-subscription notification in email/web-push context; unverified and not native-reviewed."
+    },
+    {
+      "domain": "server",
+      "locale": "ko",
+      "id": "notifications.agents.webpush.availabilitySubscription",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual translation (2026-10-30); unverified",
+      "sourceHash": "19b1d7fb6c3f37e43b70083a9068cb2ac9f24c71dcda0f6539c4a861bcb5bbb0",
+      "targetHash": "80fbb8377115d7d442bdfe5dd8b96e000af9d3eb35dba7726f984abf93b3b468",
+      "correctionReason": "Translated the availability-subscription notification in email/web-push context; unverified and not native-reviewed."
     },
     {
       "domain": "server",
@@ -146141,6 +146317,28 @@
     },
     {
       "domain": "server",
+      "locale": "pt-BR",
+      "id": "notifications.agents.email.availabilitySubscription",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual translation (2026-10-30); unverified",
+      "sourceHash": "0ac3dd93601cdd157ee6ade2837521ce71a4cff7fe2d6bf567873ac5956812c6",
+      "targetHash": "b23cb85fa2e164cd4f47defcc0b92cb227945858892813354bc42b8fc9929cdc",
+      "correctionReason": "Translated the availability-subscription notification in email/web-push context; unverified and not native-reviewed."
+    },
+    {
+      "domain": "server",
+      "locale": "pt-BR",
+      "id": "notifications.agents.webpush.availabilitySubscription",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual translation (2026-10-30); unverified",
+      "sourceHash": "19b1d7fb6c3f37e43b70083a9068cb2ac9f24c71dcda0f6539c4a861bcb5bbb0",
+      "targetHash": "0c2cf02c35955d33381b49a8ebf3b2bc6ea0de2655f476b8edcc39ec33edf8b6",
+      "correctionReason": "Translated the availability-subscription notification in email/web-push context; unverified and not native-reviewed."
+    },
+    {
+      "domain": "server",
       "locale": "vi",
       "id": "notifications.agents.email.requestedByLabel",
       "status": "draft",
@@ -146158,6 +146356,28 @@
       "source": "Reused same-locale client translation for identical English source; machine draft 2026-10-30",
       "sourceHash": "ad089fc28d270d476c2bdba330444e0be66ebcd1d932f317895d419c4451c751",
       "targetHash": "fd5dc10d68a4e696b7f5e470e138ee1c903741cf594fa7ff1f3902e5c27a8934"
+    },
+    {
+      "domain": "server",
+      "locale": "vi",
+      "id": "notifications.agents.email.availabilitySubscription",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual translation (2026-10-30); unverified",
+      "sourceHash": "0ac3dd93601cdd157ee6ade2837521ce71a4cff7fe2d6bf567873ac5956812c6",
+      "targetHash": "61aa446814da5d6872264e0ef2d95a410a999ef73a3285d01f18ca4015a03eb6",
+      "correctionReason": "Translated the availability-subscription notification in email/web-push context; unverified and not native-reviewed."
+    },
+    {
+      "domain": "server",
+      "locale": "vi",
+      "id": "notifications.agents.webpush.availabilitySubscription",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual translation (2026-10-30); unverified",
+      "sourceHash": "19b1d7fb6c3f37e43b70083a9068cb2ac9f24c71dcda0f6539c4a861bcb5bbb0",
+      "targetHash": "007825a0e8e77f1d35a9738d42a2ca013844c5c767cf1ab3909ab09c5d26a8a2",
+      "correctionReason": "Translated the availability-subscription notification in email/web-push context; unverified and not native-reviewed."
     },
     {
       "domain": "server",
@@ -146181,6 +146401,28 @@
     },
     {
       "domain": "server",
+      "locale": "zh-CN",
+      "id": "notifications.agents.email.availabilitySubscription",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual translation (2026-10-30); unverified",
+      "sourceHash": "0ac3dd93601cdd157ee6ade2837521ce71a4cff7fe2d6bf567873ac5956812c6",
+      "targetHash": "a9e61b53c411c5ba469288cf777cc8d78785c2363ee34813fe31176144b2edb3",
+      "correctionReason": "Translated the availability-subscription notification in email/web-push context; unverified and not native-reviewed."
+    },
+    {
+      "domain": "server",
+      "locale": "zh-CN",
+      "id": "notifications.agents.webpush.availabilitySubscription",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual translation (2026-10-30); unverified",
+      "sourceHash": "19b1d7fb6c3f37e43b70083a9068cb2ac9f24c71dcda0f6539c4a861bcb5bbb0",
+      "targetHash": "be88fd121404cd716a91dc078a1a64683cd7db8860e27b1c46cee7d30a26901b",
+      "correctionReason": "Translated the availability-subscription notification in email/web-push context; unverified and not native-reviewed."
+    },
+    {
+      "domain": "server",
       "locale": "zh-TW",
       "id": "notifications.agents.email.requestedByLabel",
       "status": "draft",
@@ -146198,6 +146440,28 @@
       "source": "Reused same-locale client translation for identical English source; machine draft 2026-10-30",
       "sourceHash": "ad089fc28d270d476c2bdba330444e0be66ebcd1d932f317895d419c4451c751",
       "targetHash": "087eb3ed2bf5a3c702c5b356079fc7a4fa4e2a097d1a56dca5778169bfbe1bf7"
+    },
+    {
+      "domain": "server",
+      "locale": "zh-TW",
+      "id": "notifications.agents.email.availabilitySubscription",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual translation (2026-10-30); unverified",
+      "sourceHash": "0ac3dd93601cdd157ee6ade2837521ce71a4cff7fe2d6bf567873ac5956812c6",
+      "targetHash": "cde8276fb353e5d0c5e5c2ec8f6f17b8ebc901d6d1541379e74946bc3a07ac8b",
+      "correctionReason": "Translated the availability-subscription notification in email/web-push context; unverified and not native-reviewed."
+    },
+    {
+      "domain": "server",
+      "locale": "zh-TW",
+      "id": "notifications.agents.webpush.availabilitySubscription",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "OpenAI Codex contextual translation (2026-10-30); unverified",
+      "sourceHash": "19b1d7fb6c3f37e43b70083a9068cb2ac9f24c71dcda0f6539c4a861bcb5bbb0",
+      "targetHash": "f46e40289a71b25606ee026cfcd4030844526e54618f030720ab28ad9600c934",
+      "correctionReason": "Translated the availability-subscription notification in email/web-push context; unverified and not native-reviewed."
     }
   ]
 }

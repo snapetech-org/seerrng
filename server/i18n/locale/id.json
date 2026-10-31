@@ -76,5 +76,7 @@
   "notifications.common.viewMedia": "Lihat Media di {applicationTitle}",
   "notifications.common.viewRequestStatus": "Lihat Status Permintaan di {applicationTitle}",
   "notifications.test.message": "Tes, tes, 1, 2, 3. Apakah suara kami terdengar jelas?",
-  "notifications.test.subject": "Notifikasi Uji"
+  "notifications.test.subject": "Notifikasi Uji",
+  "notifications.agents.email.availabilitySubscription": "Judul yang Anda ikuti kini tersedia:",
+  "notifications.agents.webpush.availabilitySubscription": "Judul yang Anda ikuti kini tersedia!"
 }

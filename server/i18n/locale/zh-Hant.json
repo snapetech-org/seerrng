@@ -76,5 +76,7 @@
   "notifications.common.viewMedia": "在 {applicationTitle} 中檢視媒體",
   "notifications.common.viewRequestStatus": "在 {applicationTitle} 中查看請求狀態",
   "notifications.test.message": "測試、測試，1、2、3。收得到嗎？",
-  "notifications.test.subject": "測試通知"
+  "notifications.test.subject": "測試通知",
+  "notifications.agents.email.availabilitySubscription": "你追蹤的作品現已可用：",
+  "notifications.agents.webpush.availabilitySubscription": "你追蹤的作品現已可用！"
 }

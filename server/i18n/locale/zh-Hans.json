@@ -76,5 +76,7 @@
   "notifications.common.viewMedia": "查看媒体 {applicationTitle}",
   "notifications.common.viewRequestStatus": "查看请求状态 {applicationTitle}",
   "notifications.test.message": "检查检查,1,2,3。 我们进来了吗?",
-  "notifications.test.subject": "测试通知"
+  "notifications.test.subject": "测试通知",
+  "notifications.agents.email.availabilitySubscription": "您关注的作品现已可用：",
+  "notifications.agents.webpush.availabilitySubscription": "您关注的作品现已可用！"
 }

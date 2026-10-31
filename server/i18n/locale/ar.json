@@ -76,5 +76,7 @@
   "notifications.common.viewMedia": "عرض الوسائط في {applicationTitle}",
   "notifications.common.viewRequestStatus": "حالة طلب المشاهدة {applicationTitle}",
   "notifications.test.message": "تحقق، 1، 2، 3. هل نحن واضحون؟",
-  "notifications.test.subject": "الإخطار بالشهادة"
+  "notifications.test.subject": "الإخطار بالشهادة",
+  "notifications.agents.email.availabilitySubscription": "أصبح أحد العناوين التي تتابعها متاحًا:",
+  "notifications.agents.webpush.availabilitySubscription": "أصبح أحد العناوين التي تتابعها متاحًا!"
 }

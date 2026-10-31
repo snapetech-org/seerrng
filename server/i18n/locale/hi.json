@@ -76,5 +76,7 @@
   "notifications.common.viewMedia": "मीडिया देखें {applicationTitle}",
   "notifications.common.viewRequestStatus": "में अनुरोध स्थिति देखें {applicationTitle}",
   "notifications.test.message": "चेक, 1, 2, 3 क्या हम स्पष्ट रूप से आ रहे हैं?",
-  "notifications.test.subject": "टेस्ट अधिसूचना"
+  "notifications.test.subject": "टेस्ट अधिसूचना",
+  "notifications.agents.email.availabilitySubscription": "आप जिस शीर्षक को फ़ॉलो करते हैं, वह अब उपलब्ध है:",
+  "notifications.agents.webpush.availabilitySubscription": "आप जिस शीर्षक को फ़ॉलो करते हैं, वह अब उपलब्ध है!"
 }

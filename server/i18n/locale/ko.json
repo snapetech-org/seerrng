@@ -76,5 +76,7 @@
   "notifications.common.viewMedia": "미디어 보기 {applicationTitle}",
   "notifications.common.viewRequestStatus": "{applicationTitle}에서 요청 상태 보기",
   "notifications.test.message": "체크인, 1, 2, 3 우리는 분명해?",
-  "notifications.test.subject": "시험 알림"
+  "notifications.test.subject": "시험 알림",
+  "notifications.agents.email.availabilitySubscription": "팔로우 중인 작품을 이제 이용할 수 있습니다:",
+  "notifications.agents.webpush.availabilitySubscription": "팔로우 중인 작품을 이제 이용할 수 있습니다!"
 }

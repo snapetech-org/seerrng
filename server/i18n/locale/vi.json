@@ -76,5 +76,7 @@
   "notifications.common.viewMedia": "Xem phương tiện trong {applicationTitle}",
   "notifications.common.viewRequestStatus": "Xem trạng thái yêu cầu trong {applicationTitle}",
   "notifications.test.message": "Kiểm tra, 1, 2, 3. Rõ chưa?",
-  "notifications.test.subject": "Thông báo thử"
+  "notifications.test.subject": "Thông báo thử",
+  "notifications.agents.email.availabilitySubscription": "Tác phẩm bạn theo dõi hiện đã có sẵn:",
+  "notifications.agents.webpush.availabilitySubscription": "Tác phẩm bạn theo dõi hiện đã có sẵn!"
 }

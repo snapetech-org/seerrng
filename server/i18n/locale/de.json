@@ -76,5 +76,7 @@
   "notifications.common.viewMedia": "Medieninhalt in {applicationTitle} anzeigen",
   "notifications.common.viewRequestStatus": "Anforderungsstatus in {applicationTitle} anzeigen",
   "notifications.test.message": "Test, Test, 1, 2, 3. Kommt alles klar an?",
-  "notifications.test.subject": "Testbenachrichtigung"
+  "notifications.test.subject": "Testbenachrichtigung",
+  "notifications.agents.email.availabilitySubscription": "Ein Titel, dem Sie folgen, ist jetzt verfügbar:",
+  "notifications.agents.webpush.availabilitySubscription": "Ein Titel, dem Sie folgen, ist jetzt verfügbar!"
 }
