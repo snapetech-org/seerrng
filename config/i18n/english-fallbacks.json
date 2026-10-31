@@ -187,6 +187,14 @@
     },
     {
       "domain": "client",
+      "id": "components.Login.port",
+      "sourceHash": "72e9a59f5a1d6289dbacb35df897d6c007c55a27e77018455c37e7b372668475",
+      "owner": "localization-maintainers",
+      "reason": "Machine-assisted contextual review (Codex, 2026-10-31): in the referenced login and service-connection settings fields, Port means the network endpoint number, not a harbor. Port is the standard technical term retained verbatim in the target values that use it. Source hash verified. Native-speaker and RTL review have not been performed; expires 2027-10-31.",
+      "expiresOn": "2027-10-31"
+    },
+    {
+      "domain": "client",
       "id": "components.MediaDetails.MetadataAttribution.tmdb",
       "sourceHash": "d48b09a78b6dfb05b47f2ce1852d1339a66f58dd731ff4a8093cdcee383c42d5",
       "owner": "localization-maintainers",
@@ -459,6 +467,78 @@
     },
     {
       "domain": "client",
+      "id": "components.Settings.AudiobookshelfModal.port",
+      "sourceHash": "72e9a59f5a1d6289dbacb35df897d6c007c55a27e77018455c37e7b372668475",
+      "owner": "localization-maintainers",
+      "reason": "Machine-assisted contextual review (Codex, 2026-10-31): in the referenced login and service-connection settings fields, Port means the network endpoint number, not a harbor. Port is the standard technical term retained verbatim in the target values that use it. Source hash verified. Native-speaker and RTL review have not been performed; expires 2027-10-31.",
+      "expiresOn": "2027-10-31"
+    },
+    {
+      "domain": "client",
+      "id": "components.Settings.BackIssueModal.port",
+      "sourceHash": "72e9a59f5a1d6289dbacb35df897d6c007c55a27e77018455c37e7b372668475",
+      "owner": "localization-maintainers",
+      "reason": "Machine-assisted contextual review (Codex, 2026-10-31): in the referenced login and service-connection settings fields, Port means the network endpoint number, not a harbor. Port is the standard technical term retained verbatim in the target values that use it. Source hash verified. Native-speaker and RTL review have not been performed; expires 2027-10-31.",
+      "expiresOn": "2027-10-31"
+    },
+    {
+      "domain": "client",
+      "id": "components.Settings.BinderyModal.port",
+      "sourceHash": "72e9a59f5a1d6289dbacb35df897d6c007c55a27e77018455c37e7b372668475",
+      "owner": "localization-maintainers",
+      "reason": "Machine-assisted contextual review (Codex, 2026-10-31): in the referenced login and service-connection settings fields, Port means the network endpoint number, not a harbor. Port is the standard technical term retained verbatim in the target values that use it. Source hash verified. Native-speaker and RTL review have not been performed; expires 2027-10-31.",
+      "expiresOn": "2027-10-31"
+    },
+    {
+      "domain": "client",
+      "id": "components.Settings.KapowarrModal.port",
+      "sourceHash": "72e9a59f5a1d6289dbacb35df897d6c007c55a27e77018455c37e7b372668475",
+      "owner": "localization-maintainers",
+      "reason": "Machine-assisted contextual review (Codex, 2026-10-31): in the referenced login and service-connection settings fields, Port means the network endpoint number, not a harbor. Port is the standard technical term retained verbatim in the target values that use it. Source hash verified. Native-speaker and RTL review have not been performed; expires 2027-10-31.",
+      "expiresOn": "2027-10-31"
+    },
+    {
+      "domain": "client",
+      "id": "components.Settings.LazyLibrarianModal.port",
+      "sourceHash": "72e9a59f5a1d6289dbacb35df897d6c007c55a27e77018455c37e7b372668475",
+      "owner": "localization-maintainers",
+      "reason": "Machine-assisted contextual review (Codex, 2026-10-31): in the referenced login and service-connection settings fields, Port means the network endpoint number, not a harbor. Port is the standard technical term retained verbatim in the target values that use it. Source hash verified. Native-speaker and RTL review have not been performed; expires 2027-10-31.",
+      "expiresOn": "2027-10-31"
+    },
+    {
+      "domain": "client",
+      "id": "components.Settings.LidarrModal.port",
+      "sourceHash": "72e9a59f5a1d6289dbacb35df897d6c007c55a27e77018455c37e7b372668475",
+      "owner": "localization-maintainers",
+      "reason": "Machine-assisted contextual review (Codex, 2026-10-31): in the referenced login and service-connection settings fields, Port means the network endpoint number, not a harbor. Port is the standard technical term retained verbatim in the target values that use it. Source hash verified. Native-speaker and RTL review have not been performed; expires 2027-10-31.",
+      "expiresOn": "2027-10-31"
+    },
+    {
+      "domain": "client",
+      "id": "components.Settings.MylarModal.port",
+      "sourceHash": "72e9a59f5a1d6289dbacb35df897d6c007c55a27e77018455c37e7b372668475",
+      "owner": "localization-maintainers",
+      "reason": "Machine-assisted contextual review (Codex, 2026-10-31): in the referenced login and service-connection settings fields, Port means the network endpoint number, not a harbor. Port is the standard technical term retained verbatim in the target values that use it. Source hash verified. Native-speaker and RTL review have not been performed; expires 2027-10-31.",
+      "expiresOn": "2027-10-31"
+    },
+    {
+      "domain": "client",
+      "id": "components.Settings.RadarrModal.port",
+      "sourceHash": "72e9a59f5a1d6289dbacb35df897d6c007c55a27e77018455c37e7b372668475",
+      "owner": "localization-maintainers",
+      "reason": "Machine-assisted contextual review (Codex, 2026-10-31): in the referenced login and service-connection settings fields, Port means the network endpoint number, not a harbor. Port is the standard technical term retained verbatim in the target values that use it. Source hash verified. Native-speaker and RTL review have not been performed; expires 2027-10-31.",
+      "expiresOn": "2027-10-31"
+    },
+    {
+      "domain": "client",
+      "id": "components.Settings.ReadarrModal.port",
+      "sourceHash": "72e9a59f5a1d6289dbacb35df897d6c007c55a27e77018455c37e7b372668475",
+      "owner": "localization-maintainers",
+      "reason": "Machine-assisted contextual review (Codex, 2026-10-31): in the referenced login and service-connection settings fields, Port means the network endpoint number, not a harbor. Port is the standard technical term retained verbatim in the target values that use it. Source hash verified. Native-speaker and RTL review have not been performed; expires 2027-10-31.",
+      "expiresOn": "2027-10-31"
+    },
+    {
+      "domain": "client",
       "id": "components.Settings.SettingsAbout.kofi",
       "sourceHash": "76c38e42cf40e957992b9c703923af7198922f5f21a9fcb8f143389aa45443d4",
       "owner": "localization-maintainers",
@@ -475,10 +555,34 @@
     },
     {
       "domain": "client",
+      "id": "components.Settings.SettingsDownloadClients.port",
+      "sourceHash": "72e9a59f5a1d6289dbacb35df897d6c007c55a27e77018455c37e7b372668475",
+      "owner": "localization-maintainers",
+      "reason": "Machine-assisted contextual review (Codex, 2026-10-31): in the referenced login and service-connection settings fields, Port means the network endpoint number, not a harbor. Port is the standard technical term retained verbatim in the target values that use it. Source hash verified. Native-speaker and RTL review have not been performed; expires 2027-10-31.",
+      "expiresOn": "2027-10-31"
+    },
+    {
+      "domain": "client",
+      "id": "components.Settings.SettingsReadMeABook.port",
+      "sourceHash": "72e9a59f5a1d6289dbacb35df897d6c007c55a27e77018455c37e7b372668475",
+      "owner": "localization-maintainers",
+      "reason": "Machine-assisted contextual review (Codex, 2026-10-31): in the referenced login and service-connection settings fields, Port means the network endpoint number, not a harbor. Port is the standard technical term retained verbatim in the target values that use it. Source hash verified. Native-speaker and RTL review have not been performed; expires 2027-10-31.",
+      "expiresOn": "2027-10-31"
+    },
+    {
+      "domain": "client",
       "id": "components.Settings.SettingsRecognition.providerAnthropic",
       "sourceHash": "12dcc4844286ede037546230e1dc9d57d0492c149e925733122c14e7c6f57d53",
       "owner": "localization-maintainers",
       "reason": "Machine-assisted contextual QA (Codex, 2026-10-31): Anthropic Claude is a provider/model product name. The exact source value is intentionally preserved. Native-speaker and RTL review have not been performed; this approval expires 2027-10-31.",
+      "expiresOn": "2027-10-31"
+    },
+    {
+      "domain": "client",
+      "id": "components.Settings.SettingsSlskdn.port",
+      "sourceHash": "72e9a59f5a1d6289dbacb35df897d6c007c55a27e77018455c37e7b372668475",
+      "owner": "localization-maintainers",
+      "reason": "Machine-assisted contextual review (Codex, 2026-10-31): in the referenced login and service-connection settings fields, Port means the network endpoint number, not a harbor. Port is the standard technical term retained verbatim in the target values that use it. Source hash verified. Native-speaker and RTL review have not been performed; expires 2027-10-31.",
       "expiresOn": "2027-10-31"
     },
     {
@@ -495,6 +599,30 @@
       "sourceHash": "29ef42c737c4f7985cea6042fb0df9c9e294cb1fcec973009b26123d94a4a82b",
       "owner": "localization-maintainers",
       "reason": "Machine-assisted contextual QA (Codex, 2026-10-31): Soulseek (slskdN) is the service/product name. The exact source value is intentionally preserved. Native-speaker and RTL review have not been performed; this approval expires 2027-10-31.",
+      "expiresOn": "2027-10-31"
+    },
+    {
+      "domain": "client",
+      "id": "components.Settings.SonarrModal.port",
+      "sourceHash": "72e9a59f5a1d6289dbacb35df897d6c007c55a27e77018455c37e7b372668475",
+      "owner": "localization-maintainers",
+      "reason": "Machine-assisted contextual review (Codex, 2026-10-31): in the referenced login and service-connection settings fields, Port means the network endpoint number, not a harbor. Port is the standard technical term retained verbatim in the target values that use it. Source hash verified. Native-speaker and RTL review have not been performed; expires 2027-10-31.",
+      "expiresOn": "2027-10-31"
+    },
+    {
+      "domain": "client",
+      "id": "components.Settings.SportarrModal.port",
+      "sourceHash": "72e9a59f5a1d6289dbacb35df897d6c007c55a27e77018455c37e7b372668475",
+      "owner": "localization-maintainers",
+      "reason": "Machine-assisted contextual review (Codex, 2026-10-31): in the referenced login and service-connection settings fields, Port means the network endpoint number, not a harbor. Port is the standard technical term retained verbatim in the target values that use it. Source hash verified. Native-speaker and RTL review have not been performed; expires 2027-10-31.",
+      "expiresOn": "2027-10-31"
+    },
+    {
+      "domain": "client",
+      "id": "components.Settings.WhisparrModal.port",
+      "sourceHash": "72e9a59f5a1d6289dbacb35df897d6c007c55a27e77018455c37e7b372668475",
+      "owner": "localization-maintainers",
+      "reason": "Machine-assisted contextual review (Codex, 2026-10-31): in the referenced login and service-connection settings fields, Port means the network endpoint number, not a harbor. Port is the standard technical term retained verbatim in the target values that use it. Source hash verified. Native-speaker and RTL review have not been performed; expires 2027-10-31.",
       "expiresOn": "2027-10-31"
     },
     {
@@ -547,6 +675,14 @@
     },
     {
       "domain": "client",
+      "id": "components.Settings.port",
+      "sourceHash": "72e9a59f5a1d6289dbacb35df897d6c007c55a27e77018455c37e7b372668475",
+      "owner": "localization-maintainers",
+      "reason": "Machine-assisted contextual review (Codex, 2026-10-31): in the referenced login and service-connection settings fields, Port means the network endpoint number, not a harbor. Port is the standard technical term retained verbatim in the target values that use it. Source hash verified. Native-speaker and RTL review have not been performed; expires 2027-10-31.",
+      "expiresOn": "2027-10-31"
+    },
+    {
+      "domain": "client",
       "id": "components.Settings.ssl",
       "sourceHash": "07f9736e7adea312f1bc0253942b76f515a6696c302fe09e4eefe5a9e550b15d",
       "owner": "localization-maintainers",
@@ -555,10 +691,26 @@
     },
     {
       "domain": "client",
+      "id": "components.SettingsProwlarr.port",
+      "sourceHash": "72e9a59f5a1d6289dbacb35df897d6c007c55a27e77018455c37e7b372668475",
+      "owner": "localization-maintainers",
+      "reason": "Machine-assisted contextual review (Codex, 2026-10-31): in the referenced login and service-connection settings fields, Port means the network endpoint number, not a harbor. Port is the standard technical term retained verbatim in the target values that use it. Source hash verified. Native-speaker and RTL review have not been performed; expires 2027-10-31.",
+      "expiresOn": "2027-10-31"
+    },
+    {
+      "domain": "client",
       "id": "components.SettingsProwlarr.tv",
       "sourceHash": "ca62d5e073f52f3ceb83f72d4d70d4fcd8b1ed041cddfb02ccfbbe1f90134f05",
       "owner": "localization-maintainers",
       "reason": "Machine-assisted contextual QA (Codex, 2026-10-31): TV is a standard media-type acronym. The exact source value is intentionally preserved. Native-speaker and RTL review have not been performed; this approval expires 2027-10-31.",
+      "expiresOn": "2027-10-31"
+    },
+    {
+      "domain": "client",
+      "id": "components.SettingsSoftwareAcquisition.port",
+      "sourceHash": "72e9a59f5a1d6289dbacb35df897d6c007c55a27e77018455c37e7b372668475",
+      "owner": "localization-maintainers",
+      "reason": "Machine-assisted contextual review (Codex, 2026-10-31): in the referenced login and service-connection settings fields, Port means the network endpoint number, not a harbor. Port is the standard technical term retained verbatim in the target values that use it. Source hash verified. Native-speaker and RTL review have not been performed; expires 2027-10-31.",
       "expiresOn": "2027-10-31"
     },
     {
