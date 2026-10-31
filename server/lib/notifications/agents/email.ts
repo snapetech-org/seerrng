@@ -23,6 +23,7 @@ import {
   getMediaTypeLabel,
   getNotificationActionLabel,
   getNotificationActionUrl,
+  getNotificationEvent,
 } from './agent';
 
 const PUBLIC_LOGO_URL =
@@ -104,6 +105,7 @@ class EmailAgent
     locale?: AvailableLocale
   ): EmailOptions | undefined {
     const intl = getIntl(locale);
+    const event = getNotificationEvent(payload, intl);
     const { applicationUrl, applicationTitle } =
       getExternalRuntimeConfig().main;
     const { embedPoster, options } = this.getSettings();
@@ -200,7 +202,7 @@ class EmailAgent
           to: recipientEmail,
         },
         locals: {
-          event: payload.event,
+          event: event,
           body,
           mediaName: payload.subject,
           mediaExtra: payload.extra ?? [],
@@ -231,7 +233,7 @@ class EmailAgent
           to: recipientEmail,
         },
         locals: {
-          event: payload.event,
+          event: event,
           body: payload.message ?? '',
           mediaName: payload.subject,
           mediaExtra: payload.extra ?? [],
@@ -300,7 +302,7 @@ class EmailAgent
           to: recipientEmail,
         },
         locals: {
-          event: payload.event,
+          event: event,
           body,
           issueDescription: payload.message,
           issueComment: payload.comment?.message,

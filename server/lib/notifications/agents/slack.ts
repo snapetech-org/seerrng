@@ -25,6 +25,7 @@ import {
   CONFIGURABLE_NOTIFICATION_HTTP_OPTIONS,
   getNotificationActionLabel,
   getNotificationActionUrl,
+  getNotificationEvent,
 } from './agent';
 
 interface EmbedField {
@@ -152,6 +153,7 @@ class SlackAgent
   ): SlackBlockEmbed {
     const settings = this.getSettings();
     const intl = getIntl(settings.options.locale);
+    const event = getNotificationEvent(payload, intl);
     const { applicationUrl, applicationTitle } =
       getExternalRuntimeConfig().main;
     const embedPoster = settings.embedPoster;
@@ -228,14 +230,14 @@ class SlackAgent
 
     const blocks: EmbedBlock[] = [];
 
-    if (payload.event) {
+    if (event) {
       blocks.push({
         type: 'context',
         elements: [
           {
             type: 'mrkdwn',
             text: `*${escapeSlackMrkdwnText(
-              payload.event,
+              event,
               SLACK_SECTION_TEXT_LIMIT - 2
             )}*`,
             verbatim: true,
@@ -373,7 +375,7 @@ class SlackAgent
 
     return {
       text: escapeSlackMrkdwnText(
-        payload.event ?? payload.subject,
+        event ?? payload.subject,
         SLACK_FALLBACK_TEXT_LIMIT
       ),
       blocks,

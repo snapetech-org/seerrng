@@ -26,6 +26,7 @@ import {
   NOTIFICATION_HTTP_OPTIONS,
   getNotificationActionLabel,
   getNotificationActionUrl,
+  getNotificationEvent,
 } from './agent';
 
 interface TelegramMessagePayload {
@@ -103,6 +104,7 @@ class TelegramAgent
     locale?: AvailableLocale
   ): Partial<TelegramMessagePayload | TelegramPhotoPayload> {
     const intl = getIntl(locale);
+    const event = getNotificationEvent(payload, intl);
     const { applicationUrl, applicationTitle } =
       getExternalRuntimeConfig().main;
     const { embedPoster } = this.getSettings();
@@ -134,7 +136,7 @@ class TelegramAgent
     /* eslint-disable no-useless-escape */
     appendEscaped(
       '\*',
-      payload.event ? `${payload.event} - ${payload.subject}` : payload.subject,
+      event ? `${event} - ${payload.subject}` : payload.subject,
       '\*',
       256
     );

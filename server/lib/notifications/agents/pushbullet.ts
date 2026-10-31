@@ -21,6 +21,7 @@ import {
   BaseAgent,
   NOTIFICATION_DELIVERY_CONCURRENCY,
   NOTIFICATION_HTTP_OPTIONS,
+  getNotificationEvent,
 } from './agent';
 
 interface PushbulletPayload {
@@ -52,9 +53,8 @@ class PushbulletAgent
     locale?: AvailableLocale
   ): PushbulletPayload {
     const intl = getIntl(locale);
-    const title = payload.event
-      ? `${payload.event} - ${payload.subject}`
-      : payload.subject;
+    const event = getNotificationEvent(payload, intl);
+    const title = event ? `${event} - ${payload.subject}` : payload.subject;
     let body = payload.message && !payload.comment ? payload.message : '';
 
     if (payload.request) {

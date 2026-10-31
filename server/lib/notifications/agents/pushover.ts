@@ -30,6 +30,7 @@ import {
   NOTIFICATION_HTTP_OPTIONS,
   getNotificationActionLabel,
   getNotificationActionUrl,
+  getNotificationEvent,
   truncateNotificationText,
 } from './agent';
 
@@ -182,16 +183,17 @@ class PushoverAgent
     locale?: AvailableLocale
   ): Promise<Partial<PushoverPayload>> {
     const intl = getIntl(locale);
+    const event = getNotificationEvent(payload, intl);
     const { applicationUrl, applicationTitle } =
       getExternalRuntimeConfig().main;
     const { embedPoster } = this.getSettings();
     const escape = escapePushoverHtmlText;
 
     const title = truncateNotificationText(
-      payload.event ?? payload.subject,
+      event ?? payload.subject,
       PUSHOVER_TITLE_LIMIT
     );
-    let message = payload.event ? `<b>${escape(payload.subject)}</b>` : '';
+    let message = event ? `<b>${escape(payload.subject)}</b>` : '';
     let priority = 0;
 
     if (payload.message && !payload.comment) {

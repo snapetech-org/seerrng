@@ -21,6 +21,7 @@ import {
   BaseAgent,
   CONFIGURABLE_NOTIFICATION_HTTP_OPTIONS,
   getNotificationActionUrl,
+  getNotificationEvent,
   truncateNotificationUtf8,
 } from './agent';
 
@@ -71,10 +72,11 @@ class AppriseAgent
   public buildPayload(type: Notification, payload: NotificationPayload) {
     const settings = this.getSettings();
     const intl = getIntl(settings.options.locale as AvailableLocale);
+    const event = getNotificationEvent(payload, intl);
     const { applicationUrl } = getExternalRuntimeConfig().main;
 
     const title = truncateNotificationUtf8(
-      payload.event ? `${payload.event} - ${payload.subject}` : payload.subject,
+      event ? `${event} - ${payload.subject}` : payload.subject,
       APPRISE_TITLE_BYTE_LIMIT
     );
 
