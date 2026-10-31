@@ -93,7 +93,7 @@ This setting is **disabled** by default.
 
 When enabled, media that has been requested (but not yet available) will not appear on the "Discover" home page, or in the "Recommended" or "Similar" categories or other links on media detail pages.
 
-Requested media will still appear in search results, however, so it is possible to locate and view hidden items by searching for them by title.
+This includes movie and TV media with a **Pending** or **Processing** status in either the standard or 4K library, even when no active request record remains. Hidden items still appear in search results.
 
 This setting is **disabled** by default.
 
