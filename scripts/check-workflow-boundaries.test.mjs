@@ -34,7 +34,7 @@ const assertSharedMainJitRunner = (runner, context) => {
   assert.match(runner, /"group":"ng-shared-main-jit"/u, context);
   assert.match(runner, /"ng-shared-main-seerrng"/u, context);
   assert.match(runner, /"ng-main-run-\{0\}"/u, context);
-  assert.match(runner, /gha-\{0\}-(?:\{1\}-)?[a-z0-9-]+/u, context);
+  assert.match(runner, /gha-\{0\}-(?:\{1\}-)?(?:[a-z0-9-]+|\{1\})/u, context);
   assert.match(runner, /github\.run_id/u, context);
   assert.doesNotMatch(
     runner,
@@ -353,7 +353,13 @@ test('unit-test shards use private JIT runners with exact-run labels', () => {
   assertSharedMainJitRunner(runner, 'unit-test');
   assert.equal(ciWorkflow.on.push, undefined);
   assert.equal(Object.hasOwn(ciWorkflow.on, 'pull_request'), false);
-  assert.equal(Object.hasOwn(ciWorkflow.on, 'pull_request_target'), false);
+  assert.deepEqual(ciWorkflow.on.pull_request_target.branches, ['main']);
+  assert.deepEqual(ciWorkflow.on.pull_request_target.types, [
+    'opened',
+    'synchronize',
+    'reopened',
+    'labeled',
+  ]);
   assert.deepEqual(ciWorkflow.on.workflow_dispatch.inputs.runner_pool.options, [
     'private',
   ]);
@@ -364,6 +370,145 @@ test('unit-test shards use private JIT runners with exact-run labels', () => {
   assert.equal(ciWorkflow.jobs['unit-test']?.strategy?.['max-parallel'], 4);
   assert.equal(ciWorkflow.jobs['preflight-deploy'], undefined);
   assert.equal(ciWorkflow.jobs['deploy-main'], undefined);
+});
+
+test('owner PR validation is metadata-only, main-pinned, and exact-SHA', () => {
+  const workflowSource = fs.readFileSync(
+    path.join(rootDirectory, '.github', 'workflows', 'ci.yml'),
+    'utf8'
+  );
+  const ciWorkflow = yaml.load(workflowSource);
+  const workflowInputs = ciWorkflow.on.workflow_dispatch.inputs;
+  const dispatcher = ciWorkflow.jobs['dispatch-owner-pr'];
+  const reporter = ciWorkflow.jobs['report-owner-pr-check'];
+
+  assert.match(
+    ciWorkflow['run-name'],
+    /owner-pr:\{0\}:\{1\}:\{2\}:action:\{3\}:pool:\{4\}/u
+  );
+  assert.equal(workflowInputs.pr_number.required, false);
+  assert.equal(workflowInputs.pr_sha.required, false);
+  assert.equal(workflowInputs.target_run_id.required, false);
+  assert.match(dispatcher.if, /github\.actor == 'snapetech'/u);
+  assert.match(
+    dispatcher.if,
+    /github\.event\.pull_request\.user\.login == 'snapetech'/u
+  );
+  assert.match(
+    dispatcher.if,
+    /github\.event\.pull_request\.head\.repo\.id == github\.repository_id/u
+  );
+  assert.match(
+    dispatcher.if,
+    /github\.event\.pull_request\.base\.ref == 'main'/u
+  );
+  assert.match(
+    dispatcher.if,
+    /contains\(github\.event\.pull_request\.labels\.\*\.name, 'action:ci'\)/u
+  );
+  assert.match(
+    dispatcher.if,
+    /contains\(github\.event\.pull_request\.labels\.\*\.name, 'pool:private'\)/u
+  );
+  assert.deepEqual(dispatcher.permissions, {
+    actions: 'write',
+    contents: 'none',
+  });
+  assert.match(dispatcher['runs-on'], /"group":"ng-shared-main-jit"/u);
+  assert.match(dispatcher['runs-on'], /"ng-shared-main-seerrng"/u);
+  assert.match(dispatcher['runs-on'], /"ng-main-run-\{0\}"/u);
+  assert.match(dispatcher['runs-on'], /gha-\{0\}-owner-pr-dispatcher/u);
+  assert.doesNotMatch(
+    dispatcher['runs-on'],
+    /(?:ubuntu|macos|windows)-latest/u
+  );
+  assert.doesNotMatch(
+    JSON.stringify(dispatcher),
+    /actions\/checkout|secrets\./u
+  );
+  assert.match(dispatcher.steps[0].run, /"ref": "main"/u);
+  assert.match(
+    dispatcher.steps[0].run,
+    /actions\/workflows\/ci\.yml\/dispatches/u
+  );
+  assert.match(dispatcher.steps[0].run, /"action": "ci"/u);
+  assert.match(dispatcher.steps[0].run, /"runner_pool": "private"/u);
+  assert.equal(
+    dispatcher.steps[0].env.PR_LABELS_JSON,
+    '${{ toJSON(github.event.pull_request.labels.*.name) }}'
+  );
+  assert.match(
+    dispatcher.steps[0].run,
+    /action_labels != \["action:ci"\] or pool_labels != \["pool:private"\]/u
+  );
+
+  const exactShaJobs = [
+    ['i18n-and-tooling', 'i18n-and-tooling'],
+    ['test', 'test'],
+    ['node-test', 'node-test'],
+    ['jellyfin-plugin', 'jellyfin-plugin'],
+    ['playwright', 'playwright'],
+  ];
+  for (const [jobId, labelSuffix] of exactShaJobs) {
+    const job = ciWorkflow.jobs[jobId];
+    const checkout = job.steps.find((step) => step.name === 'Checkout');
+    assert.match(job.if, /github\.actor == 'github-actions\[bot\]'/u, jobId);
+    assert.match(checkout.with.ref, /inputs\.pr_sha/u, jobId);
+    assert.equal(checkout.with['persist-credentials'], false, jobId);
+    assert.match(job['runs-on'], /"group":"ng-shared-main-jit"/u, jobId);
+    assert.match(job['runs-on'], /"ng-main-run-\{0\}"/u, jobId);
+    assert.match(job['runs-on'], new RegExp(`gha-\\{0\\}-${labelSuffix}`, 'u'));
+  }
+
+  const unitTest = ciWorkflow.jobs['unit-test'];
+  assert.match(unitTest['runs-on'], /matrix\.owner_pr_suffix/u);
+  assert.deepEqual(
+    unitTest.strategy.matrix.include.map((shard) => shard.owner_pr_suffix),
+    [
+      'unit-test-shard-1',
+      'unit-test-shard-2',
+      'unit-test-shard-3',
+      'unit-test-shard-4',
+    ]
+  );
+  for (let shard = 1; shard <= 4; shard += 1) {
+    assert.ok(workflowSource.includes(`gha-{0}-unit-test-shard-${shard}`));
+  }
+  const skippedForOwnerPr = [
+    'release-notes',
+    'cypress',
+    'test-docs',
+    'docs-links',
+    'helm',
+  ];
+  for (const jobId of skippedForOwnerPr) {
+    assert.match(ciWorkflow.jobs[jobId].if, /inputs\.pr_number == ''/u, jobId);
+  }
+
+  assert.equal(reporter.name, 'Report trusted owner PR validation');
+  assert.deepEqual(reporter.needs, [
+    'i18n-and-tooling',
+    'test',
+    'unit-test',
+    'node-test',
+    'jellyfin-plugin',
+    'playwright',
+  ]);
+  assert.match(reporter.if, /always\(\)/u);
+  assert.match(reporter.if, /github\.actor == 'github-actions\[bot\]'/u);
+  assert.deepEqual(reporter.permissions, {
+    checks: 'write',
+    contents: 'none',
+  });
+  assert.match(reporter['runs-on'], /gha-\{0\}-owner-pr-reporter/u);
+  assert.doesNotMatch(JSON.stringify(reporter), /actions\/checkout|secrets\./u);
+  assert.match(reporter.steps[0].env.PR_SHA, /inputs\.pr_sha/u);
+  assert.match(
+    reporter.steps[0].env.VALIDATION_RESULT,
+    /needs\.test\.result == 'success'/u
+  );
+  assert.match(reporter.steps[0].run, /"name": "SeerrNG owner PR validation"/u);
+  assert.match(reporter.steps[0].run, /actions\/runs\//u);
 });
 
 test('main validation and image scanning use private JIT runners', () => {

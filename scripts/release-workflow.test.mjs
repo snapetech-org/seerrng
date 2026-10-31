@@ -589,8 +589,18 @@ test('multi-architecture publishers perform the real build once and verify the i
   assert.equal(ci.on.push, undefined);
   assert.equal(Object.hasOwn(ci.on, 'workflow_dispatch'), true);
   assert.equal(Object.hasOwn(ci.on, 'pull_request'), false);
-  assert.equal(Object.hasOwn(ci.on, 'pull_request_target'), false);
-  assert.match(ci['run-name'], /inputs\.action, inputs\.runner_pool/u);
+  assert.deepEqual(ci.on.pull_request_target, {
+    branches: ['main'],
+    types: ['opened', 'synchronize', 'reopened', 'labeled'],
+  });
+  assert.match(
+    ci['run-name'],
+    /owner-pr:\{0\}:\{1\}:\{2\}:action:\{3\}:pool:\{4\}/u
+  );
+  assert.match(
+    ci['run-name'],
+    /format\('action:\{0\}:pool:\{1\}', inputs\.action \|\| 'ci', inputs\.runner_pool \|\| 'private'\)/u
+  );
   for (const jobName of [
     'release-notes',
     'i18n-and-tooling',
@@ -651,11 +661,9 @@ test('multi-architecture publishers perform the real build once and verify the i
     ).run,
     /verify-container-manifest\.sh --require-provenance/u
   );
-  assert.equal(
-    ci.jobs['scan-main-image'].if.includes(
-      "github.ref == 'refs/heads/main' && inputs.action == 'publish-image' && inputs.runner_pool == 'private' && needs.publish.result == 'success'"
-    ),
-    true
+  assert.match(
+    ci.jobs['scan-main-image'].if,
+    /github\.ref == 'refs\/heads\/main'[\s\S]*inputs\.pr_number == ''[\s\S]*inputs\.action == 'publish-image'[\s\S]*needs\.publish\.result == 'success'/u
   );
   assert.deepEqual(ci.jobs['scan-main-image'].needs, ['publish']);
   assert.deepEqual(ci.jobs['scan-main-image'].strategy.matrix.include, [

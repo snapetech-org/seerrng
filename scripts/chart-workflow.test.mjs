@@ -42,7 +42,13 @@ test('chart and tooling validation use the current CI triggers and tools', () =>
   assert.equal(ciWorkflow.on.push, undefined);
   assert.equal(Object.hasOwn(ciWorkflow.on, 'pull_request'), false);
   assert.ok(Object.hasOwn(ciWorkflow.on, 'workflow_dispatch'));
-  assert.equal(Object.hasOwn(ciWorkflow.on, 'pull_request_target'), false);
+  assert.deepEqual(ciWorkflow.on.pull_request_target.branches, ['main']);
+  assert.deepEqual(ciWorkflow.on.pull_request_target.types, [
+    'opened',
+    'synchronize',
+    'reopened',
+    'labeled',
+  ]);
   assert.deepEqual(ciWorkflow.on.workflow_dispatch.inputs.runner_pool.options, [
     'private',
   ]);
