@@ -179,6 +179,9 @@ Recent repository updates include:
 - **Sonarr:** v5 API support alongside v3/v4, metadata-language and season-order
   choices, and request recovery scoped to the selected service, quality, and
   season order.
+- **TMDB details:** Movie and series detail pages remain usable when optional
+  appended sections such as credits, keywords, content ratings, or provider
+  results are missing from a response.
 - **Integrations:** MusicBrainz and Cover Art Archive connectivity checks with
   bounded artwork traffic controls, plus a preview-first BookshelfNG to
   ChaptarrNG database migration helper for single-database setups.
