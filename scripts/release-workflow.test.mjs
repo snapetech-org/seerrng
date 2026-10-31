@@ -886,7 +886,7 @@ test('release publishing runs only from main dispatches so private runners serve
   assert.match(validation.if, /github\.ref == 'refs\/heads\/main'/u);
   assert.equal(
     release['run-name'],
-    "${{ format('action:{0}:tag:{1}:pool:{2}', inputs.action_tag, inputs.tag, inputs.runner_pool_tag) }}"
+    "${{ format('action:{0}:pool:{1}:tag:{2}', inputs.action_tag, inputs.runner_pool_tag, inputs.tag) }}"
   );
   assert.equal(
     release.concurrency.group,
