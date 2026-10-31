@@ -1599,7 +1599,7 @@
   "components.IssueDetails.IssueMediaSummary.issueCount": "{count, plural, one {# edisi} other {# edisi}}",
   "components.IssueDetails.IssueMediaSummary.issues": "Edisi",
   "components.IssueDetails.IssueMediaSummary.latestIssue": "Edisi terbaru",
-  "components.IssueDetails.IssueMediaSummary.mediaAndFormat": "Media & Format",
+  "components.IssueDetails.IssueMediaSummary.mediaAndFormat": "Media dan format",
   "components.IssueDetails.IssueMediaSummary.minutes": "{count, plural, one {# menit} other {# menit}}",
   "components.IssueDetails.IssueMediaSummary.network": "Jaringan",
   "components.IssueDetails.IssueMediaSummary.notAvailable": "Tidak tersedia",

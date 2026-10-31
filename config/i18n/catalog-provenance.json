@@ -107855,9 +107855,10 @@
       "id": "components.Swipe.retro",
       "status": "draft",
       "provenance": "machine-draft",
-      "source": "Qwen 3.8 27B (local), generated 2026-10-30",
+      "source": "Codex contextual correction; generated 2026-10-31; unverified",
       "sourceHash": "f41c7e0a6f974b849126ba9b962d290afd0c0b2069cc8a4d9885d1792418a97b",
-      "targetHash": "f41c7e0a6f974b849126ba9b962d290afd0c0b2069cc8a4d9885d1792418a97b"
+      "targetHash": "d10e481fa149d6d5aadc776677e034aa905d45ad5f047f71a9dc43474c30c926",
+      "correctionReason": "This label names the retro software category in Swipe; Brazilian Portuguese orthography uses Retrô, matching the same category elsewhere in the catalog. Machine-draft; native-speaker and RTL review not performed."
     },
     {
       "domain": "client",
@@ -155260,6 +155261,39 @@
       "sourceHash": "8888a029aaf60b70574640efd1655343d1c46c692918c113c16f44f606477253",
       "targetHash": "8888a029aaf60b70574640efd1655343d1c46c692918c113c16f44f606477253",
       "correctionReason": "This UI value is the music release type alongside Album and EP, not a person’s relationship status. Use the established music-format term `Single`. Machine-draft; no native-speaker or RTL review has been performed."
+    },
+    {
+      "domain": "client",
+      "locale": "de",
+      "id": "components.Discover.CreateSlider.country",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "Codex contextual correction; generated 2026-10-31; unverified",
+      "sourceHash": "701d021d08c54579f23343581e45b65ffb1150b2c99f94352fdac4b7036dbbd5",
+      "targetHash": "9cc62d55e9e60c15968dfa54b09ec998b92b7868f70a89182c6055b7cdd5833f",
+      "correctionReason": "CreateSlider supplies MusicBrainz genre labels alongside jazz, metal, pop, and rock. Country is the music genre here, not a geographic country; localized as Country-Musik. Machine-draft; native-speaker and RTL review not performed."
+    },
+    {
+      "domain": "client",
+      "locale": "fr",
+      "id": "components.Discover.CreateSlider.country",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "Codex contextual correction; generated 2026-10-31; unverified",
+      "sourceHash": "701d021d08c54579f23343581e45b65ffb1150b2c99f94352fdac4b7036dbbd5",
+      "targetHash": "b7b7bccc6d6d595b5f41699d524263fe3faa1a2dc561f47802971ec1578e4880",
+      "correctionReason": "CreateSlider supplies MusicBrainz genre labels alongside jazz, metal, pop, and rock. Country is the music genre here, not a geographic country; localized as musique country. Machine-draft; native-speaker and RTL review not performed."
+    },
+    {
+      "domain": "client",
+      "locale": "id",
+      "id": "components.IssueDetails.IssueMediaSummary.mediaAndFormat",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "Codex contextual correction; generated 2026-10-31; unverified",
+      "sourceHash": "b6136c0366498f839f4d77ebf3cde523c63aa7ce6e35a509dd086e72a5f7b96f",
+      "targetHash": "2babf6777fb632f9b8b9c0adbdc3a1e6ec847f62edd52a7034942ca1508b70c1",
+      "correctionReason": "This is ordinary UI prose in the issue summary; Indonesian catalog entries using the same source are translated as Media dan format. Machine-draft; native-speaker and RTL review not performed."
     }
   ]
 }
