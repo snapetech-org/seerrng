@@ -154,6 +154,7 @@ For local MCP access, see the [SnapeTech MCP integration guide](./docs/integrati
 - Movie and Series Subject Tags can be hidden with a browser-saved preference shared across both detail pages.
 - Authenticated **Download copy** links in Request Status for verified movie, TV, book, comic, magazine, ROM, and PC game files.
 - Request lifecycle tracking and availability notifications link users back to the matching Request Status item, where available files can be selected and saved.
+- Generic webhook notifications support bounded JSON templates, custom headers, and allowlisted lowercase, URL-encoding, and slugification filters. See the [webhook guide](./docs/using-seerr/notifications/webhook.md#json-payload).
 - Signed-in household members can follow another user's active movie or series request for a one-time availability notice through their own configured notification channels.
 - Browser, service-worker, API, DNS, avatar, and image-proxy caching tuned for faster refreshes and tab restores.
 

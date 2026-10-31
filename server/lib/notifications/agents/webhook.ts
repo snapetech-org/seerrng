@@ -189,6 +189,69 @@ const KeyMap: Record<string, string | KeyMapFunction> = {
   commentedBy_settings_telegramChatId: 'comment.user.settings.telegramChatId',
 };
 
+type WebhookTemplateFilter = (value: string) => string;
+
+const WEBHOOK_TEMPLATE_FILTERS: Record<string, WebhookTemplateFilter> = {
+  lowercase: (value) => value.toLowerCase(),
+  urlencode: (value) => encodeURIComponent(value),
+  slugify: (value) =>
+    value
+      .normalize('NFKD')
+      .replace(/\p{M}/gu, '')
+      .toLowerCase()
+      .replace(/[^\p{L}\p{N}]+/gu, '-')
+      .replace(/^-+|-+$/g, ''),
+};
+
+const renderWebhookTemplateString = (
+  template: string,
+  payload: NotificationPayload,
+  type: Notification
+): string =>
+  template.replace(/{{([^{}]+)}}/g, (placeholder, expression: string) => {
+    const [variableName, ...filterNames] = expression
+      .split('|')
+      .map((part) => part.trim());
+
+    if (!variableName || !/^[A-Za-z][A-Za-z0-9_]*$/.test(variableName)) {
+      if (expression.includes('|')) {
+        throw new Error('Webhook template expression is invalid.');
+      }
+      return placeholder;
+    }
+
+    const variable = Object.prototype.hasOwnProperty.call(KeyMap, variableName)
+      ? KeyMap[variableName]
+      : undefined;
+    if (!variable) {
+      if (filterNames.length > 0) {
+        throw new Error('Webhook template variable is unknown.');
+      }
+      return placeholder;
+    }
+
+    const variableValue =
+      typeof variable === 'function'
+        ? variable(payload, type)
+        : get(payload, variable);
+    let rendered = String(variableValue ?? '');
+
+    for (const filterName of filterNames) {
+      const filter = Object.prototype.hasOwnProperty.call(
+        WEBHOOK_TEMPLATE_FILTERS,
+        filterName
+      )
+        ? WEBHOOK_TEMPLATE_FILTERS[filterName]
+        : undefined;
+      if (!filter) {
+        throw new Error('Webhook template filter is unknown.');
+      }
+      rendered = filter(rendered);
+    }
+
+    return rendered;
+  });
+
 class WebhookAgent
   extends BaseAgent<NotificationAgentWebhook>
   implements NotificationAgent
@@ -259,15 +322,11 @@ class WebhookAgent
       }
 
       if (typeof finalPayload[key] === 'string') {
-        Object.keys(KeyMap).forEach((keymapKey) => {
-          const keymapValue = KeyMap[keymapKey as keyof typeof KeyMap];
-          finalPayload[key] = (finalPayload[key] as string).replaceAll(
-            `{{${keymapKey}}}`,
-            typeof keymapValue === 'function'
-              ? keymapValue(payload, type)
-              : (get(payload, keymapValue) ?? '')
-          );
-        });
+        finalPayload[key] = renderWebhookTemplateString(
+          finalPayload[key] as string,
+          payload,
+          type
+        );
       } else if (finalPayload[key] && typeof finalPayload[key] === 'object') {
         finalPayload[key] = this.parseKeys(
           finalPayload[key] as Record<string, unknown>,
