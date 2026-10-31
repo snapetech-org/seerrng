@@ -225,9 +225,7 @@ Enable this setting to connect to Plex via HTTPS rather than HTTP. Self-signed c
 
 #### Web App URL (optional)
 
-The **Play on Plex** buttons on media pages link to items on your Plex server. By default, these links use the [Plex Web App](https://support.plex.tv/articles/200288666-opening-plex-web-app/) hosted from plex.tv, but you can provide the URL to the web app on your Plex server and we'll use that instead!
-
-Note that you will need to enter the full path to the web app (e.g., `https://plex.myawesomeserver.com/web`).
+The **Play on Plex** buttons on media pages link to items on your Plex server. By default, these links use the [Plex Web App](https://support.plex.tv/articles/200288666-opening-plex-web-app/) hosted from plex.tv. To open those links in a self-hosted Plex Web App, enter the full URL that users open in their browser, including the web app path—for example, `https://plex.myawesomeserver.com/web/index.html`. Some Plex and reverse-proxy setups also resolve the shorter `https://plex.myawesomeserver.com/web` path. Include any required port or proxy base path. Leave this field blank to use the hosted Plex Web App.
 
 ### Plex Libraries
 
