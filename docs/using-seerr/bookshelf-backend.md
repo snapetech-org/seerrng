@@ -21,29 +21,28 @@ Recovery](./bookshelf-metadata-sources.md).
 For BookshelfNG's SeerrNG-specific API behavior, see
 [BookshelfNG interoperability](#bookshelfng-interoperability).
 
-As of 2026-10-30, BookshelfNG `0.4.21.76` and ChaptarrNG `v0.9.977` are the
-latest public releases; ChaptarrNG `main` is `64689f1f`. ChaptarrNG `v0.9.977`
+As of 2026-10-31, BookshelfNG `0.4.21.76` and ChaptarrNG `v0.9.977` remain the
+latest public releases; ChaptarrNG `main` is `4e5f895c`, with application
+source snapshot `bd589312`. ChaptarrNG `v0.9.977`
 includes single-database SQLite preview, conversion, and rollback tools in
-the standard product. Migration apply remains frozen pending feature,
-migration, rollback, and installation-channel acceptance. The follow-up
-one-image migration and installer work is proposed in ChaptarrNG PR
-[#183](https://github.com/snapetech-org/chaptarrng/pull/183), which is not
-merged or released. The prior Build
-[#41164597664](https://github.com/snapetech-org/chaptarrng/actions/runs/41164597664)
-was cancelled on an older head. The earlier PR dispatch
-[#41167825847](https://github.com/snapetech-org/chaptarrng/actions/runs/41167825847)
-was queued on pre-integration head `f63796dd`; exact-head validation for the
-updated PR has not started. The scheduled legacy distribution bridge
-[#41157387864](https://github.com/snapetech-org/bookshelfng/actions/runs/41157387864)
-is waiting behind 16 earlier runs with no jobs started; no legacy identity
-bridge has been published or enabled.
+the standard product. ChaptarrNG PR
+[#183](https://github.com/snapetech-org/chaptarrng/pull/183) merged at
+`96c953b2`; its migration handoff uses the ordinary ChaptarrNG product and
+does not create a compatibility image. Follow-up main commits retain the
+legacy Docker port contracts. The PR's exact merge-head Build
+[#41168525352](https://github.com/snapetech-org/chaptarrng/actions/runs/41168525352)
+is waiting and is not current application-source validation; main and
+standalone platform/archive jobs remain queued at older source. No exact-head
+pass for `bd589312` is recorded here. Migration apply remains frozen pending feature,
+migration, rollback, and installation-channel acceptance. No legacy package,
+image, installer, updater, or chart identity has been redirected.
 
-The current main-to-main source-path audit compares BookshelfNG `1bd7f2dc`
-with ChaptarrNG `64689f1f`: 1,174 changed paths, 56 reviewed mappings, 644 dispositions, and
-530 paths without a final disposition. Those are source-review counts, not
-missing-feature counts or SeerrNG acceptance evidence. See the
-[pinned consolidation audit](https://github.com/snapetech-org/bookshelfng/blob/main/docs/maintainers/chaptarr-consolidation.md#exact-head-source-path-audit--2026-10-30).
-The unmerged changes in ChaptarrNG PR #183 are not included.
+The current source-path audit compares BookshelfNG `1bd7f2dc` with ChaptarrNG
+application source `bd589312`: 1,174 changed paths, 56 reviewed mappings, 587
+dispositions, and 587 paths without a final disposition. Those are
+source-review counts, not missing-feature counts or SeerrNG acceptance
+evidence. The merged PR #183 changes are included in the target snapshot. See
+the [pinned consolidation audit](https://github.com/snapetech-org/bookshelfng/blob/main/docs/maintainers/chaptarr-consolidation.md#exact-head-source-path-audit--2026-10-31).
 
 Keep the existing BookshelfNG database and installation in service until the
 [feature, migration, and distribution gates](https://github.com/snapetech-org/bookshelfng/blob/main/docs/maintainers/chaptarr-consolidation.md)
@@ -290,8 +289,11 @@ node scripts/setup-assistant.mjs --profile books --output ./my-books-stack
 
 ChaptarrNG is standalone. It does not require BookshelfNG, Hardcover,
 rreading-glasses, PostgreSQL, or BookLore. BookLore is an optional external
-notification destination. Follow the [ChaptarrNG service setup](#chaptarrng)
-and its [migration guide](https://github.com/snapetech-org/chaptarrng/blob/main/docs/MIGRATE_FROM_BOOKSHELFNG.md)
+BookDrop destination for imported files, not a required dependency or a
+replacement for ChaptarrNG's library database. See ChaptarrNG's
+[BookLore integration guide](https://github.com/snapetech-org/chaptarrng/blob/main/docs/BOOKLORE_INTEGRATION.md).
+Follow the [ChaptarrNG service setup](#chaptarrng) and its
+[migration guide](https://github.com/snapetech-org/chaptarrng/blob/main/docs/MIGRATE_FROM_BOOKSHELFNG.md)
 when replacing an existing BookshelfNG instance.
 
 ### Existing BookshelfNG installations

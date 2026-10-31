@@ -96,34 +96,36 @@ For local MCP access, see the [SnapeTech MCP integration guide](./docs/integrati
 - Audiobook discovery from connected audiobook catalogs, with author and narrator filtering and no ebook-only search results.
 - Comic discovery through ComicVine and magazine discovery through Google Books or LazyLibrarian. For new comic automation setups, SeerrNG recommends [Issuarr](https://github.com/issuarr/issuarr), the actively developed successor to [Mylar3](https://github.com/MylarComics/mylar3); existing Mylar3 connections remain supported through the same service type. Kapowarr and BackIssue are also supported comic backends, and LazyLibrarian handles magazines.
 - Separate ebook and audiobook service routing so both formats can be requested, approved, scanned, retried, and removed independently.
-- One BookshelfNG instance can manage both formats on the same book record.
-  When both formats are enabled, their separate SeerrNG service entries can
-  point to the same BookshelfNG URL and API key; separate app instances are
-  not required.
+- Existing BookshelfNG installations can manage both formats on the same book
+  record. When both formats are enabled, their separate SeerrNG service
+  entries can point to the same BookshelfNG URL and API key; new deployments
+  should use the standard ChaptarrNG service.
 - ChaptarrNG requests preserve the selected book format, show author-preparation
   progress and retry timing, and resume after imports complete. Pending imports
   are cancelled only when no other active request still needs them; ChaptarrNG
   `0.9.941+` also supports a restricted SeerrNG service key.
-- The BookshelfNG-to-ChaptarrNG consolidation remains blocked. As of 2026-10-30,
-  BookshelfNG `0.4.21.76` and ChaptarrNG `v0.9.977` are the latest public
-  releases; ChaptarrNG `main` is `64689f1f`. ChaptarrNG PR
-  [#183](https://github.com/snapetech-org/chaptarrng/pull/183) proposes the
-  one-image handoff and remains unmerged/unreleased. The prior Build
-  [41164597664](https://github.com/snapetech-org/chaptarrng/actions/runs/41164597664)
-  was cancelled on an older head. Its previous PR dispatch
-  [41167825847](https://github.com/snapetech-org/chaptarrng/actions/runs/41167825847)
-  was queued on pre-integration head `f63796dd`; exact-head validation for the
-  updated PR has not started. The BookshelfNG bridge run
-  [41157387864](https://github.com/snapetech-org/bookshelfng/actions/runs/41157387864)
-  is waiting behind 16 earlier bridge runs with no jobs started. No legacy
-  package, image, installer, updater, or chart identity has been redirected.
-  Retirement is gated on BookshelfNG's
-  complete enhanced feature set, populated-data conversion, and each old
-  installation channel. The later ChaptarrNG-to-upstream gate also includes
-  every ChaptarrNG feature it maintains or is actively adding, including
-  unpublished work. The current main-to-main source-path audit compares
-  BookshelfNG `1bd7f2dc` with ChaptarrNG `64689f1f` and has 530 open
-  dispositions; this is a review-path count, not a missing-feature count. See
+- The BookshelfNG-to-ChaptarrNG handoff is implemented in ChaptarrNG's one
+  standard product, but BookshelfNG distribution retirement remains blocked.
+  Public releases remain BookshelfNG `0.4.21.76` and ChaptarrNG `v0.9.977`;
+  ChaptarrNG `main` is `4e5f895c`, with application source snapshot
+  `bd589312`. ChaptarrNG PR
+  [#183](https://github.com/snapetech-org/chaptarrng/pull/183) merged at
+  `96c953b2`, with follow-up main commits preserving legacy Docker handoff
+  ports. The merged code does not add a compatibility image. Build run
+  [41168525352](https://github.com/snapetech-org/chaptarrng/actions/runs/41168525352)
+  is waiting on its merge-head validation at `96c953b2`; it does not validate
+  the current application source. The main dispatch and platform/archive runs
+  remain queued at older source; no exact-head pass for `bd589312` is recorded
+  here. No BookshelfNG package, image, installer, updater, or chart
+  identity has been redirected. Keep BookshelfNG serving its existing data
+  until feature parity, populated-data conversion, rollback, and each old
+  installation channel are individually accepted. Each BookshelfNG
+  capability, data/configuration path, and channel remains a blocker. The
+  separate ChaptarrNG-to-upstream gate includes carried BookshelfNG behavior
+  plus all ChaptarrNG features that are maintained, active, or unreleased.
+  The current source-path audit compares BookshelfNG `1bd7f2dc` with ChaptarrNG
+  application source `bd589312` and has 587 open dispositions; that is a path
+  review count, not a missing-feature count. See
   the [BookshelfNG consolidation report](https://github.com/snapetech-org/bookshelfng/blob/main/docs/maintainers/chaptarr-consolidation.md)
   and [ChaptarrNG's itemized retirement matrix](https://github.com/snapetech-org/chaptarrng/blob/main/docs/FORK_FEATURES.md#itemized-active-and-unreleased-chaptarrng-blockers).
 - Optional read-only Audiobookshelf library scanning marks ISBN-matched items
@@ -138,8 +140,8 @@ For local MCP access, see the [SnapeTech MCP integration guide](./docs/integrati
 - A standalone [SeerrNG Companion browser extension](https://github.com/snapetech-org/seerrng-companion) for requesting from IMDb, Letterboxd, Steam, Goodreads, AniList, and more.
 - Catalog browsing and requests for Retro and Modern emulation systems and PC games for Windows, Linux, and macOS, with QuestarrNG and ROMarrNG handling acquisition.
 - Administrator-controlled availability switches for each supported category, including separate ebook, audiobook, Retro, Modern, and PC Games controls.
-- Bookshelf backend diagnostics that classify Hardcover, softcover/Goodreads, and unknown metadata providers.
-- Hardcover-first Bookshelf deployment and migration tooling for existing Readarr or softcover libraries.
+- Book backend diagnostics that classify Hardcover, softcover/Goodreads, and unknown metadata providers.
+- ChaptarrNG is the recommended Hardcover-first book service for new deployments; BookshelfNG migration tooling remains available for existing Readarr or softcover libraries.
 - A [preview-first BookshelfNG-to-ChaptarrNG database migration helper](./docs/using-seerr/bookshelf-backend.md#installer-script) for single-database installations. Migration apply remains frozen until feature, migration, rollback, and installation-channel acceptance is complete. BookshelfNG issue #144 is closed, but that did not close the remaining gates: do not run `--apply` or start ChaptarrNG against BookshelfNG appdata; keep BookshelfNG in service.
 - Admin-only Bookshelf path moves with a conflict and disk-space preview, confirmation, API access, and a dry-run-first CLI. The mover works inside one BookshelfNG database; consolidate an old split deployment before using it.
 - Resumable, layered Readarr/softcover-to-Hardcover migration with strict matching, softcover metadata recovery, validation, cutover checks, and an opt-in deterministic local-record fallback for books Hardcover cannot import.
@@ -352,8 +354,8 @@ Music:
 
 Books:
 
-- Bookshelf or another Readarr-compatible service configured in **Settings > Services**. New deployments should use the Hardcover-backed Bookshelf image.
-- One BookshelfNG instance can manage both ebooks and audiobooks. Add two SeerrNG service entries with the same connection details and mark one as ebook-capable and one as audiobook-capable.
+- ChaptarrNG is the recommended book service for new deployments; existing BookshelfNG and other Readarr-compatible services remain supported for current installations.
+- One ChaptarrNG instance can manage both ebooks and audiobooks. Add two SeerrNG service entries with the same connection details and choose the matching format for each. Existing BookshelfNG installations can keep using one instance for both formats while the migration gates remain open.
 - Audiobookshelf can be connected separately under **Settings > Services > Audiobookshelf Availability** to detect existing audiobooks. It is read-only and matches books by ISBN.
 - Separate defaults for ebook and audiobook so **Both** format requests can route to each format.
 - Existing Readarr or softcover/Goodreads libraries should be migrated before switching to Hardcover metadata. The service settings modal links directly to the Bookshelf Hardcover migration runbook.
@@ -375,27 +377,35 @@ SeerrNG-specific API behavior, the recommended Snapetech NG forks are
 [BookshelfNG](https://github.com/snapetech-org/bookshelfng),
 [ChaptarrNG](https://github.com/snapetech-org/chaptarrng),
 [QuestarrNG](https://github.com/snapetech-org/QuestarrNG), and
-[ROMarrNG](https://github.com/snapetech-org/ROMarrNG). BookshelfNG or ChaptarrNG
-can each handle Book and Audiobook formats; one BookshelfNG instance can serve
-both. QuestarrNG handles PC game acquisition, while ROMarrNG handles emulation
+[ROMarrNG](https://github.com/snapetech-org/ROMarrNG). ChaptarrNG is the
+recommended book service for new installations; BookshelfNG remains available
+for existing installations while migration acceptance is open. One ChaptarrNG
+instance can serve both Book and Audiobook requests. ChaptarrNG also has an
+optional BookLore BookDrop destination for imported files; BookLore is an
+external app, not a SeerrNG or ChaptarrNG dependency. See the
+[BookLore integration guide](https://github.com/snapetech-org/chaptarrng/blob/main/docs/BOOKLORE_INTEGRATION.md).
+QuestarrNG handles PC game acquisition, while ROMarrNG handles emulation
 systems and ROM acquisition.
 
-As of 2026-10-30, BookshelfNG `0.4.21.76` and ChaptarrNG `v0.9.977` are the
-latest public releases. ChaptarrNG `v0.9.977` includes single-database
-SQLite migration preview and conversion tooling, but apply remains frozen
-while migration, rollback, feature-parity, and installation-channel
-acceptance are open. Follow-up migration and installer work is proposed in
-ChaptarrNG PR #183 and has not passed exact-head private-JIT validation. No
-legacy identity bridge has been published or enabled, so existing BookshelfNG
-installations should keep their current data and backup path. ChaptarrNG remains the
-maintained destination. Its later retirement into
-upstream Chaptarr must preserve both ChaptarrNG's maintained and actively added
-features, including unpublished work, and the BookshelfNG features carried
-over. That complete union blocks ChaptarrNG retirement as a whole. Each
-feature, sub-feature, data path, and distribution channel remains an individual
-blocker; active ChaptarrNG branches and open feature PRs count before release.
-See the
-[combined feature snapshot](https://github.com/snapetech-org/chaptarrng/blob/main/docs/FORK_FEATURES.md#chaptarrng-retirement-blockers)
+As of 2026-10-31, BookshelfNG `0.4.21.76` and ChaptarrNG `v0.9.977` remain the
+latest public releases. ChaptarrNG `v0.9.977` includes single-database SQLite
+migration preview and conversion tooling, but apply remains frozen while
+migration, rollback, feature-parity, and installation-channel acceptance are
+open. ChaptarrNG PR #183 merged at `96c953b2`; its handoff uses the ordinary
+ChaptarrNG product and does not add a compatibility image. Follow-up main
+commits preserve the legacy Docker port contracts. The exact merge-head Build
+[41168525352](https://github.com/snapetech-org/chaptarrng/actions/runs/41168525352)
+is waiting and does not validate current application source `bd589312`; the
+main and standalone platform/archive jobs remain queued at older source. No
+exact-head pass for `bd589312` is recorded here. No legacy identity bridge has
+been published or enabled, so existing BookshelfNG installations should keep
+their current data and backup path. ChaptarrNG remains the maintained destination. Its later
+retirement into upstream Chaptarr must preserve both ChaptarrNG's maintained
+and actively added features, including unpublished work, and the BookshelfNG
+features carried over. That complete union blocks ChaptarrNG retirement as a
+whole. Each feature, sub-feature, data path, and distribution channel remains
+an individual blocker; active ChaptarrNG branches and open feature PRs count
+before release. See the [combined feature snapshot](https://github.com/snapetech-org/chaptarrng/blob/main/docs/FORK_FEATURES.md#chaptarrng-retirement-blockers)
 and the [fork transition criteria](./docs/using-seerr/dependency-forks.md).
 
 Radarr, Sonarr, Lidarr, LazyLibrarian, Mylar3, Issuarr, Kapowarr, and BackIssue are
@@ -406,9 +416,10 @@ providers, explains what each maintained NG fork provides, and links to the
 
 ## Bookshelf and Hardcover
 
-SeerrNG treats Bookshelf as the recommended backend for book requests. The
-default deployment path uses the Snapetech BookshelfNG fork with Hardcover
-metadata:
+SeerrNG recommends ChaptarrNG as the book backend for new deployments. Existing
+BookshelfNG instances remain supported while migration acceptance is open.
+Both services can manage ebooks and audiobooks from one instance; configure
+separate SeerrNG service entries for the formats you enable.
 
 ```text
 ghcr.io/snapetech/bookshelfng:hardcover
