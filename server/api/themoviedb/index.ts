@@ -909,6 +909,16 @@ const stripUnreadTvCredits = <T>(data: T): T => {
   return data;
 };
 
+const normalizeTmdbSearchQuery = (query: string): string =>
+  query
+    .replace(/[\u0027\u2018\u2019\u02bc]/gu, '')
+    .normalize('NFD')
+    .replace(/\p{M}/gu, '')
+    .replace(/[^\p{L}\p{N}\s]+/gu, ' ')
+    .toLowerCase()
+    .replace(/\s+/gu, ' ')
+    .trim();
+
 class TheMovieDb extends ExternalAPI implements TvShowProvider {
   private scanCache = cacheManager.getCache('tmdbscan').data;
   private locale: string;
@@ -965,7 +975,37 @@ class TheMovieDb extends ExternalAPI implements TvShowProvider {
         },
       });
 
-      return sanitizeTmdbPagedResponse<TmdbSearchMultiResponse>(data, page);
+      const response = sanitizeTmdbPagedResponse<TmdbSearchMultiResponse>(
+        data,
+        page
+      );
+      const normalizedQuery = normalizeTmdbSearchQuery(query);
+
+      if (
+        response.total_results > 0 ||
+        response.results.length > 0 ||
+        !normalizedQuery ||
+        normalizedQuery === query
+      ) {
+        return response;
+      }
+
+      const normalizedData = await this.get<TmdbSearchMultiResponse>(
+        '/search/multi',
+        {
+          params: {
+            query: normalizedQuery,
+            page,
+            include_adult: this.contentRestriction ? false : includeAdult,
+            language,
+          },
+        }
+      );
+
+      return sanitizeTmdbPagedResponse<TmdbSearchMultiResponse>(
+        normalizedData,
+        page
+      );
     } catch {
       return {
         page: 1,
