@@ -336,7 +336,9 @@ test('unit-test shards use private JIT runners with exact-run labels', () => {
   );
   const runner = ciWorkflow.jobs['unit-test']?.['runs-on'];
   assertSharedMainJitRunner(runner, 'unit-test');
-  assert.equal(ciWorkflow.on.push, undefined);
+  assert.deepEqual(ciWorkflow.on.push.branches, ['main']);
+  assert.equal(Object.hasOwn(ciWorkflow.on, 'pull_request'), false);
+  assert.equal(Object.hasOwn(ciWorkflow.on, 'pull_request_target'), false);
   assert.deepEqual(
     ciWorkflow.on.workflow_dispatch.inputs.runner_pool_tag.options,
     ['private']
