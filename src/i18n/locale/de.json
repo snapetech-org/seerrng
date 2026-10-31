@@ -5302,7 +5302,7 @@
   "components.SettingsSoftwareAcquisition.clearSteamWebApiKey": "Speicherte Steam-Taste entfernen",
   "components.SettingsSoftwareAcquisition.configureRomarr": "Verbinden Sie ROMarrNG, um die unterstützten Systeme zu laden.",
   "components.SettingsSoftwareAcquisition.connectionSuccess": "{service} verbunden ist.",
-  "components.SettingsSoftwareAcquisition.contractVersion": "Integration API v{version}",
+  "components.SettingsSoftwareAcquisition.contractVersion": "Integrations-API v{version}",
   "components.SettingsSoftwareAcquisition.datCatalogReady": "DAT Katalog bereit für {count} Systeme",
   "components.SettingsSoftwareAcquisition.datCatalogUnavailable": "Diese ROMarrNG-Version wirbt nicht für einen geladenen DAT-Katalog.",
   "components.SettingsSoftwareAcquisition.description": "Verbinden Sie die ROM- und PC-Spiel-Akquisitionsdienste, die von SeerrNG-Anfragen verwendet werden.",

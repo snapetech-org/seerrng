@@ -36702,9 +36702,10 @@
       "id": "components.BackendBookSeriesDetails.audiobook",
       "status": "draft",
       "provenance": "machine-draft",
-      "source": "Qwen 3.8 27B (local), generated 2026-10-30",
+      "source": "Codex contextual manual semantic correction; generated 2026-10-31; unverified",
       "sourceHash": "8716cb3d8010144e1aa703eb837f23f79d34e9603b3e7173d6ce935cac473b74",
-      "targetHash": "8716cb3d8010144e1aa703eb837f23f79d34e9603b3e7173d6ce935cac473b74"
+      "targetHash": "24eb7a9bb46eff02af399c06e5bd29c4a7ff3ed9f50f3888b009d53b3e8e6b2d",
+      "correctionReason": "Translates the audio-book format label using the existing French catalog term."
     },
     {
       "domain": "client",
@@ -36952,9 +36953,10 @@
       "id": "components.BookRecommendations.audiobook",
       "status": "draft",
       "provenance": "machine-draft",
-      "source": "Qwen 3.8 27B (local), generated 2026-10-30",
+      "source": "Codex contextual manual semantic correction; generated 2026-10-31; unverified",
       "sourceHash": "8716cb3d8010144e1aa703eb837f23f79d34e9603b3e7173d6ce935cac473b74",
-      "targetHash": "8716cb3d8010144e1aa703eb837f23f79d34e9603b3e7173d6ce935cac473b74"
+      "targetHash": "24eb7a9bb46eff02af399c06e5bd29c4a7ff3ed9f50f3888b009d53b3e8e6b2d",
+      "correctionReason": "Translates the audio-book format label using the existing French catalog term."
     },
     {
       "domain": "client",
@@ -97384,9 +97386,10 @@
       "id": "components.BackendBookSeriesDetails.audiobook",
       "status": "draft",
       "provenance": "machine-draft",
-      "source": "Qwen 3.8 27B (local), generated 2026-10-30",
+      "source": "Codex contextual manual semantic correction; generated 2026-10-31; unverified",
       "sourceHash": "8716cb3d8010144e1aa703eb837f23f79d34e9603b3e7173d6ce935cac473b74",
-      "targetHash": "8716cb3d8010144e1aa703eb837f23f79d34e9603b3e7173d6ce935cac473b74"
+      "targetHash": "c7e41731621a9a9515ff29ff30d83d64594d27d128969c5ae740e660c11a19e3",
+      "correctionReason": "Translates the audio-book format label using the existing Brazilian Portuguese catalog term."
     },
     {
       "domain": "client",
@@ -97634,9 +97637,10 @@
       "id": "components.BookRecommendations.audiobook",
       "status": "draft",
       "provenance": "machine-draft",
-      "source": "Qwen 3.8 27B (local), generated 2026-10-30",
+      "source": "Codex contextual manual semantic correction; generated 2026-10-31; unverified",
       "sourceHash": "8716cb3d8010144e1aa703eb837f23f79d34e9603b3e7173d6ce935cac473b74",
-      "targetHash": "8716cb3d8010144e1aa703eb837f23f79d34e9603b3e7173d6ce935cac473b74"
+      "targetHash": "c7e41731621a9a9515ff29ff30d83d64594d27d128969c5ae740e660c11a19e3",
+      "correctionReason": "Translates the audio-book format label using the existing Brazilian Portuguese catalog term."
     },
     {
       "domain": "client",
@@ -97995,9 +97999,10 @@
       "id": "components.BookSeriesLinks.audiobook",
       "status": "draft",
       "provenance": "machine-draft",
-      "source": "Qwen 3.8 27B (local), generated 2026-10-30",
+      "source": "Codex contextual manual semantic correction; generated 2026-10-31; unverified",
       "sourceHash": "8716cb3d8010144e1aa703eb837f23f79d34e9603b3e7173d6ce935cac473b74",
-      "targetHash": "8716cb3d8010144e1aa703eb837f23f79d34e9603b3e7173d6ce935cac473b74"
+      "targetHash": "c7e41731621a9a9515ff29ff30d83d64594d27d128969c5ae740e660c11a19e3",
+      "correctionReason": "Translates the audio-book format label using the existing Brazilian Portuguese catalog term."
     },
     {
       "domain": "client",
@@ -98075,9 +98080,10 @@
       "id": "components.BookSeriesPreview.audiobook",
       "status": "draft",
       "provenance": "machine-draft",
-      "source": "Qwen 3.8 27B (local), generated 2026-10-30",
+      "source": "Codex contextual manual semantic correction; generated 2026-10-31; unverified",
       "sourceHash": "a01be1671e8272084901c592024bcb8272e2b81fc895178358d107c5de99e4cb",
-      "targetHash": "a01be1671e8272084901c592024bcb8272e2b81fc895178358d107c5de99e4cb"
+      "targetHash": "ee91a39fe54c6fa6409174333c2ba4c8a7b2260bce6b42c9daaeaafe9f1ebec5",
+      "correctionReason": "Translates the plural audio-book format label using the existing Brazilian Portuguese catalog term."
     },
     {
       "domain": "client",
@@ -153864,6 +153870,17 @@
       "sourceHash": "a05d659ec6e409ed649e94090cd4db016d382d6d000357b6b7f65a86ecc10824",
       "targetHash": "f2d47e2a5a93a1f8453c04fa1c5c1b3bb0050107869c58d8f4234cfbd7d8a773",
       "correctionReason": "The prior Hindi wording had incorrect word order and obscured the requirement. This version preserves the conditional/action meaning and all placeholders."
+    },
+    {
+      "domain": "client",
+      "locale": "de",
+      "id": "components.SettingsSoftwareAcquisition.contractVersion",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "Codex contextual manual semantic correction; generated 2026-10-31; unverified",
+      "sourceHash": "836997dda1793db8aea966e1266ba9018cf843d6e020ca2fa211055ad89242dc",
+      "targetHash": "78db34a622aea573067cd13ad808fbf29dcc0d193931e4aef9f1318e3bf50428",
+      "correctionReason": "Localizes “Integration” as a German compound while preserving the standard API acronym and exact {version} placeholder."
     }
   ]
 }
