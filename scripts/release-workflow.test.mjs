@@ -20,6 +20,24 @@ const readWorkflow = (name) =>
 const ghCliSetupRef = '${{ github.sha }}';
 const ghCliSetupPath = './.github-actions/.github/actions/setup-gh-cli';
 
+test('Windows release routes declare the Packer JIT source marker', () => {
+  for (const workflowName of [
+    'release.yml',
+    'release-assets.yml',
+    'release-chocolatey.yml',
+  ]) {
+    const source = fs.readFileSync(
+      path.join(workflowDirectory, workflowName),
+      'utf8'
+    );
+    assert.match(
+      source,
+      /^# packer-windows-jit-v1$/mu,
+      `${workflowName} must be included in the Packer Windows JIT source inventory`
+    );
+  }
+});
+
 test('every release job that calls GitHub CLI installs the pinned CLI first', () => {
   const release = readWorkflow('release.yml');
   const ghJobs = Object.entries(release.jobs).filter(([, job]) =>
