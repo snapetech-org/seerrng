@@ -591,7 +591,7 @@ test('multi-architecture publishers perform the real build once and verify the i
   assert.equal(Object.hasOwn(ci.on, 'pull_request'), false);
   assert.deepEqual(ci.on.pull_request_target, {
     branches: ['main'],
-    types: ['opened', 'synchronize', 'reopened', 'labeled'],
+    types: ['labeled'],
   });
   assert.match(
     ci['run-name'],

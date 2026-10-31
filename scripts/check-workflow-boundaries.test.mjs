@@ -354,12 +354,7 @@ test('unit-test shards use private JIT runners with exact-run labels', () => {
   assert.equal(ciWorkflow.on.push, undefined);
   assert.equal(Object.hasOwn(ciWorkflow.on, 'pull_request'), false);
   assert.deepEqual(ciWorkflow.on.pull_request_target.branches, ['main']);
-  assert.deepEqual(ciWorkflow.on.pull_request_target.types, [
-    'opened',
-    'synchronize',
-    'reopened',
-    'labeled',
-  ]);
+  assert.deepEqual(ciWorkflow.on.pull_request_target.types, ['labeled']);
   assert.deepEqual(ciWorkflow.on.workflow_dispatch.inputs.runner_pool.options, [
     'private',
   ]);
@@ -390,6 +385,15 @@ test('owner PR validation is metadata-only, main-pinned, and exact-SHA', () => {
   assert.equal(workflowInputs.pr_sha.required, false);
   assert.equal(workflowInputs.target_run_id.required, false);
   assert.match(dispatcher.if, /github\.actor == 'snapetech'/u);
+  assert.match(dispatcher.if, /github\.event\.action == 'labeled'/u);
+  assert.match(
+    dispatcher.if,
+    /startsWith\(github\.event\.label\.name, 'action:'\)/u
+  );
+  assert.match(
+    dispatcher.if,
+    /startsWith\(github\.event\.label\.name, 'pool:'\)/u
+  );
   assert.match(
     dispatcher.if,
     /github\.event\.pull_request\.user\.login == 'snapetech'/u

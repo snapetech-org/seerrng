@@ -10,7 +10,7 @@ run-name: >-
 on:
   pull_request_target:
     branches: [main]
-    types: [opened, synchronize, reopened, labeled]
+    types: [labeled]
   workflow_dispatch:
     inputs:
       action:
@@ -52,8 +52,8 @@ jobs:
     name: Dispatch trusted owner PR validation
     if: >-
       github.event_name == 'pull_request_target' &&
-      (github.event.action != 'labeled' ||
-       startsWith(github.event.label.name, 'action:') ||
+      github.event.action == 'labeled' &&
+      (startsWith(github.event.label.name, 'action:') ||
        startsWith(github.event.label.name, 'pool:')) &&
       contains(github.event.pull_request.labels.*.name, 'action:ci') &&
       contains(github.event.pull_request.labels.*.name, 'pool:private') &&
