@@ -136,12 +136,6 @@ test('internal-only work has an explicit opt-out marker', () => {
   assert.equal(hasExplicitNoReleaseNote('release-note: none'), true);
   assert.equal(
     hasExplicitNoReleaseNote(
-      'Bump the release-note-none-codeql-action group across dependencies.'
-    ),
-    true
-  );
-  assert.equal(
-    hasExplicitNoReleaseNote(
       '- [x] This change is internal-only and does not need a user-facing release note.'
     ),
     true

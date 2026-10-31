@@ -1287,6 +1287,7 @@ test('trusted main release retries use the private runner pools', () => {
     assert.match(runsOn, /"group":"ng-shared-main-jit"/u, label);
     assert.match(runsOn, /"ng-shared-main-seerrng"/u, label);
     assert.match(runsOn, /github\.run_id/u, label);
+    assert.match(runsOn, /gha-\{0\}-(?:\{1\}-)?[a-z0-9-]+/u, label);
     assert.doesNotMatch(
       runsOn,
       /(?:ubuntu|windows|macos)-\d|\|\|\s*matrix\.runner(?:\W|$)/u,
@@ -1335,11 +1336,7 @@ test('main CI image publishing uses private runners without cancelling queued sc
   assert.match(imagePublish['runs-on'], /ng-shared-main-seerrng/u);
   assert.equal(imagePublish.concurrency['cancel-in-progress'], false);
 
-  for (const name of [
-    'codeql.yml',
-    'semgrep-community.yml',
-    'trivy-filesystem.yml',
-  ]) {
+  for (const name of ['semgrep-community.yml', 'trivy-filesystem.yml']) {
     const workflow = readWorkflow(name);
 
     assert.equal(

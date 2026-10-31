@@ -25,6 +25,3 @@ updates:
     commit-message:
       prefix: "fix(deps)"
     groups:
-      release-note-none-codeql-action:
-        patterns:
-          - "github/codeql-action/*"

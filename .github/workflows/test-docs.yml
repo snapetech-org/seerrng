@@ -12,7 +12,7 @@ concurrency:
 jobs:
   test-build:
     name: Build and test docs website
-    runs-on: ${{ fromJSON(format('{{"group":"ng-shared-main-jit","labels":["self-hosted","linux","x64","ng-shared-main-seerrng","ng-main-run-{0}"]}}', github.run_id)) }}
+    runs-on: ${{ fromJSON(format('{{"group":"ng-shared-main-jit","labels":["self-hosted","linux","x64","ng-shared-main-seerrng","ng-main-run-{0}","gha-{0}-test-build"]}}', github.run_id)) }}
     timeout-minutes: 30
     permissions:
       contents: read
