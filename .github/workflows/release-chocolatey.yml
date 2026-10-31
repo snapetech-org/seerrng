@@ -31,7 +31,7 @@ concurrency:
 jobs:
   publish-chocolatey:
     name: Build and submit Chocolatey package
-    if: github.ref == 'refs/heads/main'
+    if: github.ref == 'refs/heads/main' && inputs.action_tag == 'release' && inputs.runner_pool_tag == 'private'
     runs-on: ${{ fromJSON(format('{{"group":"packer-windows","labels":["self-hosted","Windows","X64","packer-windows","ng-shared-main-seerrng","ng-main-run-{0}","gha-{0}-publish-chocolatey"]}}', github.run_id)) }}
     timeout-minutes: 60
     permissions:

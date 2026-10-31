@@ -1136,7 +1136,10 @@ jobs:
             echo "Skipping Chocolatey for pre-release tag $TAG."
             exit 0
           fi
-          gh workflow run release-chocolatey.yml --repo "$REPO" --ref main -f "tag=$TAG"
+          gh workflow run release-chocolatey.yml --repo "$REPO" --ref main \
+            -f action_tag=release \
+            -f runner_pool_tag=private \
+            -f "tag=$TAG"
 
   build-release-assets:
     name: Build release assets
@@ -1144,6 +1147,8 @@ jobs:
     needs: [validate-main-tag, create-draft-release]
     uses: ./.github/workflows/release-assets.yml
     with:
+      action_tag: ${{ inputs.action_tag }}
+      runner_pool_tag: ${{ inputs.runner_pool_tag }}
       tag: ${{ inputs.tag || github.ref_name }}
       reuse_from_run_id: ${{ inputs.reuse_from_run_id || '' }}
       reuse_windows_x64_artifact: ${{ needs.validate-main-tag.outputs.reuse_windows_x64_artifact == 'true' }}
