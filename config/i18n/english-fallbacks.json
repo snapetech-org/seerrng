@@ -2,62 +2,6 @@
   "schemaVersion": 1,
   "entries": [
     {
-      "domain": "client",
-      "id": "components.GameLibrary.formattedCombinedPlaytime",
-      "sourceHash": "c19e41349f684fbcca15bcd8414959c8decbc794d69c721b9e4c7480412cb26b",
-      "owner": "localization-maintainers",
-      "reason": "Locale-aware duration text is used until each selected locale provides a reviewed translation.",
-      "expiresOn": "2027-10-29"
-    },
-    {
-      "domain": "client",
-      "id": "components.GameLibrary.formattedPlaytime",
-      "sourceHash": "d6d3ba3b82e41522ee03a4673d882a6841d10a0f624a7fa8987967ef8d8ab0cc",
-      "owner": "localization-maintainers",
-      "reason": "Locale-aware duration text is used until each selected locale provides a reviewed translation.",
-      "expiresOn": "2027-10-29"
-    },
-    {
-      "domain": "client",
-      "id": "components.UserProfile.UserSettings.UserGeneralSettings.languageBrowserDefault",
-      "sourceHash": "8ad01fea965329309d7356dd4f95919ed20aceac2b621cc41d42b5f2981b45b4",
-      "owner": "localization-maintainers",
-      "reason": "The browser-default option is new and remains visible in English until a locale-specific translation is reviewed.",
-      "expiresOn": "2027-10-29"
-    },
-    {
-      "domain": "client",
-      "id": "components.UserProfile.UserSettings.UserGeneralSettings.metadataLanguage",
-      "sourceHash": "97d5504a944ee9321cdf872df22e3a418b8c2cf9fa80d1e27dbb9022882ee9a1",
-      "owner": "localization-maintainers",
-      "reason": "New settings copy is temporarily shown through the approved English fallback while locale catalogs await human review.",
-      "expiresOn": "2027-10-29"
-    },
-    {
-      "domain": "client",
-      "id": "components.UserProfile.UserSettings.UserGeneralSettings.metadataLanguageDefault",
-      "sourceHash": "fd70c31a2dcb82b0fc2147f057594783d7fec8ff0b6e40f06351e10a21d0866d",
-      "owner": "localization-maintainers",
-      "reason": "New settings copy is temporarily shown through the approved English fallback while locale catalogs await human review.",
-      "expiresOn": "2027-10-29"
-    },
-    {
-      "domain": "client",
-      "id": "components.UserProfile.UserSettings.UserGeneralSettings.metadataLanguageTip",
-      "sourceHash": "b2f722f94136c366b45b88383045928af797f8962f10130c008468a36e76b350",
-      "owner": "localization-maintainers",
-      "reason": "New settings copy is temporarily shown through the approved English fallback while locale catalogs await human review.",
-      "expiresOn": "2027-10-29"
-    },
-    {
-      "domain": "client",
-      "id": "components.UserProfile.UserSettings.UserGeneralSettings.translationStatusNotice",
-      "sourceHash": "4f0a63926511ee6399a1f38c51a5ecdec809802140f9034d720b847a75e4a42e",
-      "owner": "localization-maintainers",
-      "reason": "The review notice must remain readable in English while each locale catalog is awaiting human review.",
-      "expiresOn": "2027-10-29"
-    },
-    {
       "domain": "server",
       "id": "emails.resetPassword.action",
       "sourceHash": "21275ae92ccfd250f61300be6cb60fc11142e0ae0314885248cdd0510a6b1ab4",
@@ -117,14 +61,6 @@
       "domain": "server",
       "id": "notifications.agents.email.openApplication",
       "sourceHash": "137e4314327ff82128d4c9ed37e848dc7d158bd3a4f5f7ee5227cc14f041a0ea",
-      "owner": "localization-maintainers",
-      "reason": "New email copy is temporarily shown through the approved English fallback while locale catalogs await human review.",
-      "expiresOn": "2027-10-29"
-    },
-    {
-      "domain": "server",
-      "id": "notifications.agents.email.requestedByLabel",
-      "sourceHash": "80e37c7ff11cde00392c2efe89423254878e5a8002ab93691643a702fcd113ce",
       "owner": "localization-maintainers",
       "reason": "New email copy is temporarily shown through the approved English fallback while locale catalogs await human review.",
       "expiresOn": "2027-10-29"
