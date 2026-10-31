@@ -4350,7 +4350,7 @@
   "components.Settings.SettingsGeneratedLoginLinks.selectUser": "Selecione um usuário",
   "components.Settings.SettingsGeneratedLoginLinks.title": "Links de login gerados pelo administrador",
   "components.Settings.SettingsGeneratedLoginLinks.used": "Usado",
-  "components.Settings.SettingsJobsCache.adult-scan": "Whisparr Adult Scene Scan",
+  "components.Settings.SettingsJobsCache.adult-scan": "Verificação de cenas adultas do Whisparr",
   "components.Settings.SettingsJobsCache.availability-sync": "Sincronização de Disponibilidade de Mídia",
   "components.Settings.SettingsJobsCache.backissue-scan": "Digitalização de quadrinhos da BackIssue",
   "components.Settings.SettingsJobsCache.cache": "Cache.",

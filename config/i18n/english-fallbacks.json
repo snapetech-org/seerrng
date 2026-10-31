@@ -203,6 +203,14 @@
     },
     {
       "domain": "client",
+      "id": "components.MediaDetails.MetadataAttribution.wikidata",
+      "sourceHash": "a8269b6531320c99bdf27f9db6300be29453b1c8fe7a079963a55b0427a3bcf7",
+      "owner": "localization-maintainers",
+      "reason": "Machine-assisted contextual QA (Codex, 2026-10-31): Wikidata is the proper name of the linked structured-knowledge project. The exact source value is intentionally preserved. Native-speaker and RTL review have not been performed; this approval expires 2027-10-31.",
+      "expiresOn": "2027-10-31"
+    },
+    {
+      "domain": "client",
       "id": "components.MetadataSelector.tvdbLabel",
       "sourceHash": "b30fb6fb1f28ca0919a80e87186e8013701b4d9d892782cfe63a7b6cc4c8c052",
       "owner": "localization-maintainers",
@@ -451,6 +459,14 @@
     },
     {
       "domain": "client",
+      "id": "components.Settings.SettingsAbout.kofi",
+      "sourceHash": "76c38e42cf40e957992b9c703923af7198922f5f21a9fcb8f143389aa45443d4",
+      "owner": "localization-maintainers",
+      "reason": "Machine-assisted contextual QA (Codex, 2026-10-31): Ko-fi is the name of the connected creator-support service; the complete source value is the brand name. The exact source value is intentionally preserved. Native-speaker and RTL review have not been performed; this approval expires 2027-10-31.",
+      "expiresOn": "2027-10-31"
+    },
+    {
+      "domain": "client",
       "id": "components.Settings.SettingsAbout.tmdbLogoLabel",
       "sourceHash": "127aa67cd3b65efaad862b3fd5d8166c88e785c7401c59fe0384ddc7e502caac",
       "owner": "localization-maintainers",
@@ -479,6 +495,14 @@
       "sourceHash": "29ef42c737c4f7985cea6042fb0df9c9e294cb1fcec973009b26123d94a4a82b",
       "owner": "localization-maintainers",
       "reason": "Machine-assisted contextual QA (Codex, 2026-10-31): Soulseek (slskdN) is the service/product name. The exact source value is intentionally preserved. Native-speaker and RTL review have not been performed; this approval expires 2027-10-31.",
+      "expiresOn": "2027-10-31"
+    },
+    {
+      "domain": "client",
+      "id": "components.Settings.coverArtArchive",
+      "sourceHash": "3c02c06c3de29b5a6f3fe9bfccff4a9cc45148d1e377bf257e211198a0770fb4",
+      "owner": "localization-maintainers",
+      "reason": "Machine-assisted contextual QA (Codex, 2026-10-31): Cover Art Archive is the proper name of the external cover-art archive service associated with MusicBrainz. The exact source value is intentionally preserved. Native-speaker and RTL review have not been performed; this approval expires 2027-10-31.",
       "expiresOn": "2027-10-31"
     },
     {
@@ -563,6 +587,14 @@
     },
     {
       "domain": "client",
+      "id": "components.Setup.usenetTitle",
+      "sourceHash": "e0a4531fbff2e521dda085f933236872c10f9afc50df390bb1291e518a4e9620",
+      "owner": "localization-maintainers",
+      "reason": "Machine-assisted contextual QA (Codex, 2026-10-31): Usenet is the standard proper name of the networked discussion system; the full value is its name. The exact source value is intentionally preserved. Native-speaker and RTL review have not been performed; this approval expires 2027-10-31.",
+      "expiresOn": "2027-10-31"
+    },
+    {
+      "domain": "client",
       "id": "components.SoftwareCatalog.arm64",
       "sourceHash": "3a8d055c8fba3b6098ba85bd127558a309b1bf636dd89c353b4068268625c6a6",
       "owner": "localization-maintainers",
@@ -627,6 +659,22 @@
     },
     {
       "domain": "client",
+      "id": "components.TitleCard.tmdbid",
+      "sourceHash": "7cee9774e8070d60d9f36c84ea43a3f56226eb753f30d1144409b836abda86b8",
+      "owner": "localization-maintainers",
+      "reason": "Machine-assisted contextual QA (Codex, 2026-10-31): TMDB is the provider acronym and ID is the standard identifier abbreviation in this provider-specific field label. The exact source value is intentionally preserved. Native-speaker and RTL review have not been performed; this approval expires 2027-10-31.",
+      "expiresOn": "2027-10-31"
+    },
+    {
+      "domain": "client",
+      "id": "components.TitleCard.tvdbid",
+      "sourceHash": "1ad97af04856f9036bafd399c137036330c58af9398c9ac05c1c617e6eeaa81b",
+      "owner": "localization-maintainers",
+      "reason": "Machine-assisted contextual QA (Codex, 2026-10-31): TheTVDB is the provider name and ID is the standard identifier abbreviation in this provider-specific field label. The exact source value is intentionally preserved. Native-speaker and RTL review have not been performed; this approval expires 2027-10-31.",
+      "expiresOn": "2027-10-31"
+    },
+    {
+      "domain": "client",
       "id": "components.TvCollectionRequestModal.hd",
       "sourceHash": "323e41792751e840ad9e398d5057120cb1f1b730acbb193ee6498eb3b481059c",
       "owner": "localization-maintainers",
@@ -663,6 +711,94 @@
       "sourceHash": "7cf7cb84b8b3ff22be27f6f56456c6c5e311f4206703eb8ebf278085b81c1d57",
       "owner": "localization-maintainers",
       "reason": "Machine-assisted contextual QA (Codex, 2026-10-31): This is an example IMDb watchlist URL; preserve the provider URL and path as technical input guidance. The exact source value is intentionally preserved. Native-speaker and RTL review have not been performed; this approval expires 2027-10-31.",
+      "expiresOn": "2027-10-31"
+    },
+    {
+      "domain": "client",
+      "id": "components.UserProfile.UserSettings.UserMaturityControls.movieG",
+      "sourceHash": "333e0a1e27815d0ceee55c473fe3dc93d56c63e3bee2b3b4aee8eed6d70191a3",
+      "owner": "localization-maintainers",
+      "reason": "Machine-assisted contextual QA (Codex, 2026-10-31): G is the fixed U.S. Motion Picture Association film-rating code for general audiences. The exact source value is intentionally preserved. Native-speaker and RTL review have not been performed; this approval expires 2027-10-31.",
+      "expiresOn": "2027-10-31"
+    },
+    {
+      "domain": "client",
+      "id": "components.UserProfile.UserSettings.UserMaturityControls.movieNc17",
+      "sourceHash": "971008ea831cbcf487274f3618cb4c85856d6c3cc797d77a89e5a2429da4e145",
+      "owner": "localization-maintainers",
+      "reason": "Machine-assisted contextual QA (Codex, 2026-10-31): NC-17 is the fixed U.S. Motion Picture Association film-rating code. The exact source value is intentionally preserved. Native-speaker and RTL review have not been performed; this approval expires 2027-10-31.",
+      "expiresOn": "2027-10-31"
+    },
+    {
+      "domain": "client",
+      "id": "components.UserProfile.UserSettings.UserMaturityControls.moviePg",
+      "sourceHash": "91f026c996feb33556b5d418d17e015945f305c96666b62e5c6284cc1df22a09",
+      "owner": "localization-maintainers",
+      "reason": "Machine-assisted contextual QA (Codex, 2026-10-31): PG is the fixed U.S. Motion Picture Association film-rating code. The exact source value is intentionally preserved. Native-speaker and RTL review have not been performed; this approval expires 2027-10-31.",
+      "expiresOn": "2027-10-31"
+    },
+    {
+      "domain": "client",
+      "id": "components.UserProfile.UserSettings.UserMaturityControls.moviePg13",
+      "sourceHash": "f9eedea8db3ec2354f9d5bbdf7515e4592fd6e9e1a884905c61cb69e5a9dce0b",
+      "owner": "localization-maintainers",
+      "reason": "Machine-assisted contextual QA (Codex, 2026-10-31): PG-13 is the fixed U.S. Motion Picture Association film-rating code. The exact source value is intentionally preserved. Native-speaker and RTL review have not been performed; this approval expires 2027-10-31.",
+      "expiresOn": "2027-10-31"
+    },
+    {
+      "domain": "client",
+      "id": "components.UserProfile.UserSettings.UserMaturityControls.movieR",
+      "sourceHash": "8c2574892063f995fdf756bce07f46c1a5193e54cd52837ed91e32008ccf41ac",
+      "owner": "localization-maintainers",
+      "reason": "Machine-assisted contextual QA (Codex, 2026-10-31): R is the fixed U.S. Motion Picture Association film-rating code. The exact source value is intentionally preserved. Native-speaker and RTL review have not been performed; this approval expires 2027-10-31.",
+      "expiresOn": "2027-10-31"
+    },
+    {
+      "domain": "client",
+      "id": "components.UserProfile.UserSettings.UserMaturityControls.tv14",
+      "sourceHash": "a09b4863fc2289211e66acbc2afdf2d8b7e81d582972330d9d574fc92644bfee",
+      "owner": "localization-maintainers",
+      "reason": "Machine-assisted contextual QA (Codex, 2026-10-31): TV-14 is the fixed U.S. TV Parental Guidelines rating code. The exact source value is intentionally preserved. Native-speaker and RTL review have not been performed; this approval expires 2027-10-31.",
+      "expiresOn": "2027-10-31"
+    },
+    {
+      "domain": "client",
+      "id": "components.UserProfile.UserSettings.UserMaturityControls.tvG",
+      "sourceHash": "9d9c5f9f9487283c3b72426ca6d0af4e0cf689cf9f6c4b62cb5fc1cbe4f46f1d",
+      "owner": "localization-maintainers",
+      "reason": "Machine-assisted contextual QA (Codex, 2026-10-31): TV-G is the fixed U.S. TV Parental Guidelines rating code. The exact source value is intentionally preserved. Native-speaker and RTL review have not been performed; this approval expires 2027-10-31.",
+      "expiresOn": "2027-10-31"
+    },
+    {
+      "domain": "client",
+      "id": "components.UserProfile.UserSettings.UserMaturityControls.tvMa",
+      "sourceHash": "2aa77aa53e64f76d2c494fc67f619daa9ad18386fcd9cab09288fa1e7eec69bf",
+      "owner": "localization-maintainers",
+      "reason": "Machine-assisted contextual QA (Codex, 2026-10-31): TV-MA is the fixed U.S. TV Parental Guidelines rating code. The exact source value is intentionally preserved. Native-speaker and RTL review have not been performed; this approval expires 2027-10-31.",
+      "expiresOn": "2027-10-31"
+    },
+    {
+      "domain": "client",
+      "id": "components.UserProfile.UserSettings.UserMaturityControls.tvPg",
+      "sourceHash": "f6894a5aa28a6aa2d6d1e7bd6465df267fbf2b2cdac55e948be13e9973467ae6",
+      "owner": "localization-maintainers",
+      "reason": "Machine-assisted contextual QA (Codex, 2026-10-31): TV-PG is the fixed U.S. TV Parental Guidelines rating code. The exact source value is intentionally preserved. Native-speaker and RTL review have not been performed; this approval expires 2027-10-31.",
+      "expiresOn": "2027-10-31"
+    },
+    {
+      "domain": "client",
+      "id": "components.UserProfile.UserSettings.UserMaturityControls.tvY",
+      "sourceHash": "36c584b960f0d1ba12452b6d3d12eb073113c414dbbf07133c9237548ebccb91",
+      "owner": "localization-maintainers",
+      "reason": "Machine-assisted contextual QA (Codex, 2026-10-31): TV-Y is the fixed U.S. TV Parental Guidelines rating code. The exact source value is intentionally preserved. Native-speaker and RTL review have not been performed; this approval expires 2027-10-31.",
+      "expiresOn": "2027-10-31"
+    },
+    {
+      "domain": "client",
+      "id": "components.UserProfile.UserSettings.UserMaturityControls.tvY7",
+      "sourceHash": "5c7807d62633679a03b58527467fecba4621f9c63994965f3861bc6cea201316",
+      "owner": "localization-maintainers",
+      "reason": "Machine-assisted contextual QA (Codex, 2026-10-31): TV-Y7 is the fixed U.S. TV Parental Guidelines rating code. The exact source value is intentionally preserved. Native-speaker and RTL review have not been performed; this approval expires 2027-10-31.",
       "expiresOn": "2027-10-31"
     }
   ]

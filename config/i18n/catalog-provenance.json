@@ -19621,9 +19621,10 @@
       "id": "components.Settings.SettingsJobsCache.adult-scan",
       "status": "draft",
       "provenance": "machine-draft",
-      "source": "Qwen 3.8 27B (local), generated 2026-10-30",
+      "source": "Codex contextual manual semantic correction; generated 2026-10-31; unverified",
       "sourceHash": "ee50cff367848343a496e54d3d9ff1f2c163315ae98febca61ec904266be4f7d",
-      "targetHash": "ee50cff367848343a496e54d3d9ff1f2c163315ae98febca61ec904266be4f7d"
+      "targetHash": "bb04b91c2eaee35c3b30e27c76a8ccb6ae3628df0dc9d052204ab4fe904ec420",
+      "correctionReason": "Translates the user-facing adult-scene scan job name while retaining the Whisparr product name."
     },
     {
       "domain": "client",
@@ -104598,9 +104599,10 @@
       "id": "components.Settings.SettingsJobsCache.adult-scan",
       "status": "draft",
       "provenance": "machine-draft",
-      "source": "Qwen 3.8 27B (local), generated 2026-10-30",
+      "source": "Codex contextual manual semantic correction; generated 2026-10-31; unverified",
       "sourceHash": "ee50cff367848343a496e54d3d9ff1f2c163315ae98febca61ec904266be4f7d",
-      "targetHash": "ee50cff367848343a496e54d3d9ff1f2c163315ae98febca61ec904266be4f7d"
+      "targetHash": "3ac3378866d144d4e21a701cb5ffd580d521564deee2ea44f0fd735450c770ee",
+      "correctionReason": "Translates the user-facing adult-scene scan job name while retaining the Whisparr product name."
     },
     {
       "domain": "client",
