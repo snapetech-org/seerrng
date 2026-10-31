@@ -173,7 +173,7 @@ Recent repository updates include:
   context and support verified season mapping; bounded failure explanations
   and request history are localized. Administrators can also apply an
   optional per-user streaming-availability policy to movie and series requests,
-  with reject, pending, automatic-approval, and one-time override choices.
+  with reject, pending, automatic-approval, and per-request override choices.
 - **User workflows:** local watchlist filters, a browser-saved Subject Tags
   visibility preference, private one-time availability notices for followed
   requests, per-user shared-availability display choices, and opt-in
