@@ -16,13 +16,14 @@ export const overrideRuleConditionFields = [
   'genre',
   'language',
   'keywords',
+  'productionCountries',
 ] as const satisfies readonly (keyof OverrideRule)[];
 export type OverrideRuleConditionField =
   (typeof overrideRuleConditionFields)[number];
 const MAX_OVERRIDE_RULE_ROUTING_ID = 1_000_000_000;
 const MAX_OVERRIDE_RULE_ROUTING_TAGS = 100;
 
-const hasConditionValue = (value: unknown): boolean =>
+const hasConditionValue = (value: unknown): value is string =>
   typeof value === 'string' && value.trim().length > 0;
 
 export const getOverrideRuleSpecificity = (
@@ -126,6 +127,7 @@ export const catalogOverrideRuleMatches = (
   userId: number,
   metadata: CatalogRuleMetadata = {}
 ): boolean =>
+  !hasConditionValue(rule.productionCountries) &&
   overrideRuleMatchesUser(rule, userId) &&
   matchesCatalogTerms(rule.genre, metadata.genres) &&
   matchesCatalogTerms(rule.keywords, metadata.keywords) &&
@@ -219,6 +221,11 @@ export const evaluateOverrideRules = async ({
     'keywords' in tmdbMedia.keywords
       ? tmdbMedia.keywords.keywords
       : tmdbMedia.keywords.results;
+  const productionCountryCodes = new Set(
+    tmdbMedia.production_countries.map((country) =>
+      country.iso_3166_1.toUpperCase()
+    )
+  );
   const isAnimeTv = mediaType === MediaType.TV && hasTmdbKeyword(tmdbMedia);
   const matchingRules = rules.filter((rule) => {
     if (
@@ -253,6 +260,17 @@ export const evaluateOverrideRules = async ({
         )
     ) {
       return false;
+    }
+    if (hasConditionValue(rule.productionCountries)) {
+      if (
+        !rule.productionCountries
+          .split('|')
+          .some((country) =>
+            productionCountryCodes.has(country.trim().toUpperCase())
+          )
+      ) {
+        return false;
+      }
     }
     return true;
   });

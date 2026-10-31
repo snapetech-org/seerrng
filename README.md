@@ -172,7 +172,9 @@ Recent repository updates include:
   the latest regular season was requested. Failed TV requests retain their
   context and support verified season mapping; missing movie or TV service
   destinations fail promptly with a retry path, and bounded failure
-  explanations and request history are localized.
+  explanations and request history are localized. Radarr and Sonarr override
+  rules can also match a movie or series by its TMDB production countries,
+  following the use case in Seerr [issue #3439](https://github.com/seerr-team/seerr/issues/3439).
 - **User workflows:** local watchlist filters, a browser-saved Subject Tags
   visibility preference, private one-time availability notices for followed
   requests, per-user shared-availability display choices, and opt-in

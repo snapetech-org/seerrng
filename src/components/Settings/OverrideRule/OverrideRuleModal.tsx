@@ -16,13 +16,15 @@ import type {
   LidarrSettings,
   RadarrSettings,
   ReadarrSettings,
+  Region,
   SonarrSettings,
 } from '@server/lib/settings';
 import axios from 'axios';
 import { Field, Formik } from 'formik';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useIntl } from 'react-intl';
 import Select from 'react-select';
+import useSWR from 'swr';
 
 const messages = defineMessages('components.Settings.OverrideRuleModal', {
   createrule: 'New Override Rule',
@@ -43,6 +45,11 @@ const messages = defineMessages('components.Settings.OverrideRuleModal', {
   genres: 'Genres',
   languages: 'Languages',
   keywords: 'Keywords',
+  productionCountries: 'Production Countries',
+  productionCountriesDescription:
+    'Matches when any selected country appears in the title’s production-country metadata. Titles without that metadata do not match. You can select up to 100 countries.',
+  selectCountries: 'Select Countries',
+  noCountryOptions: 'No Countries Available',
   catalogGenrePlaceholder: 'Comma-separated album genres or book subjects',
   catalogKeywordPlaceholder: 'Comma-separated album tags or book subjects',
   rootfolder: 'Root Folder',
@@ -58,6 +65,11 @@ const messages = defineMessages('components.Settings.OverrideRuleModal', {
 
 type OptionType = {
   value: number;
+  label: string;
+};
+
+type CountryOption = {
+  value: string;
   label: string;
 };
 
@@ -81,6 +93,21 @@ const OverrideRuleModal = ({
   const intl = useIntl();
   const { addToast } = useToasts();
   const { currentSettings } = useSettings();
+  const { data: regions } = useSWR<Region[]>('/api/v1/regions');
+  const productionCountryOptions = useMemo(
+    () =>
+      (regions ?? [])
+        .map((region) => ({
+          value: region.iso_3166_1,
+          label:
+            intl.formatDisplayName(region.iso_3166_1, {
+              type: 'region',
+              fallback: 'none',
+            }) ?? region.english_name,
+        }))
+        .sort((left, right) => left.label.localeCompare(right.label)),
+    [intl, regions]
+  );
   const [isValidated, setIsValidated] = useState(rule ? true : false);
   const [isTesting, setIsTesting] = useState(false);
   const [testResponse, setTestResponse] = useState<DVRTestResponse>({
@@ -179,6 +206,7 @@ const OverrideRuleModal = ({
           genre: rule?.genre,
           language: rule?.language,
           keywords: rule?.keywords,
+          productionCountries: rule?.productionCountries,
           profileId: rule?.profileId,
           rootFolder: rule?.rootFolder,
           tags: rule?.tags,
@@ -191,6 +219,11 @@ const OverrideRuleModal = ({
               language:
                 values.lidarrServiceId != null ? null : values.language || null,
               keywords: values.keywords || null,
+              productionCountries:
+                values.lidarrServiceId != null ||
+                values.readarrServiceId != null
+                  ? null
+                  : values.productionCountries || null,
               profileId:
                 values.profileId == null || String(values.profileId) === ''
                   ? null
@@ -247,7 +280,8 @@ const OverrideRuleModal = ({
                 (!values.users &&
                   !values.genre &&
                   !values.language &&
-                  !values.keywords) ||
+                  !values.keywords &&
+                  !values.productionCountries) ||
                 (!values.rootFolder &&
                   String(values.profileId ?? '') === '' &&
                   !values.tags)
@@ -318,6 +352,7 @@ const OverrideRuleModal = ({
                             setFieldValue('genre', null);
                             setFieldValue('language', null);
                             setFieldValue('keywords', null);
+                            setFieldValue('productionCountries', null);
                             const match = lidarrServices.find(
                               (s) => s.id === id
                             );
@@ -329,6 +364,7 @@ const OverrideRuleModal = ({
                             setFieldValue('sonarrServiceId', null);
                             setFieldValue('lidarrServiceId', null);
                             setFieldValue('readarrServiceId', id);
+                            setFieldValue('productionCountries', null);
                             const match = readarrServices.find(
                               (s) => s.id === id
                             );
@@ -540,6 +576,70 @@ const OverrideRuleModal = ({
                       )}
                   </div>
                 </div>
+                {(values.radarrServiceId != null ||
+                  values.sonarrServiceId != null) && (
+                  <div className="form-row">
+                    <label htmlFor="productionCountries" className="text-label">
+                      {intl.formatMessage(messages.productionCountries)}
+                    </label>
+                    <div className="form-input-area">
+                      <div className="form-input-field">
+                        <Select<CountryOption, true>
+                          inputId="productionCountries"
+                          options={productionCountryOptions}
+                          isMulti
+                          isDisabled={!isValidated || isTesting}
+                          placeholder={intl.formatMessage(
+                            messages.selectCountries
+                          )}
+                          className="react-select-container"
+                          classNamePrefix="react-select"
+                          value={(values.productionCountries ?? '')
+                            .split('|')
+                            .filter(Boolean)
+                            .map((rawCountryCode) => {
+                              const countryCode = rawCountryCode.toUpperCase();
+                              return (
+                                productionCountryOptions.find(
+                                  (option) => option.value === countryCode
+                                ) ?? {
+                                  value: countryCode,
+                                  label: countryCode,
+                                }
+                              );
+                            })}
+                          isOptionDisabled={(option) => {
+                            const selectedCountryCodes = (
+                              values.productionCountries ?? ''
+                            )
+                              .split('|')
+                              .filter(Boolean);
+                            return (
+                              selectedCountryCodes.length >= 100 &&
+                              !selectedCountryCodes.includes(option.value)
+                            );
+                          }}
+                          onChange={(selectedCountries) => {
+                            setFieldValue(
+                              'productionCountries',
+                              selectedCountries
+                                .map((country) => country.value)
+                                .join('|')
+                            );
+                          }}
+                          noOptionsMessage={() =>
+                            intl.formatMessage(messages.noCountryOptions)
+                          }
+                        />
+                      </div>
+                      <p className="description">
+                        {intl.formatMessage(
+                          messages.productionCountriesDescription
+                        )}
+                      </p>
+                    </div>
+                  </div>
+                )}
                 <h3 className="mt-4 text-lg leading-8 font-bold text-gray-100">
                   {intl.formatMessage(messages.settings)}
                 </h3>

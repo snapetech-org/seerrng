@@ -32,6 +32,7 @@ const messages = defineMessages('components.Settings.OverrideRuleTile', {
   genre: 'Genre',
   language: 'Language',
   keywords: 'Keywords',
+  productionCountries: 'Production Countries',
   conditions: 'Conditions',
   settings: 'Settings',
 });
@@ -298,6 +299,28 @@ const OverrideRuleTiles = ({
                           </span>
                         );
                       })}
+                    </span>
+                  </dd>
+                </>
+              )}
+              {rule.productionCountries && (
+                <>
+                  <dt>{intl.formatMessage(messages.productionCountries)}</dt>
+                  <dd>
+                    <span className="inline-flex flex-wrap gap-x-2">
+                      {rule.productionCountries
+                        .split('|')
+                        .map((rawCountryCode) => {
+                          const countryCode = rawCountryCode.toUpperCase();
+                          return (
+                            <span key={countryCode}>
+                              {intl.formatDisplayName(countryCode, {
+                                type: 'region',
+                                fallback: 'none',
+                              }) ?? countryCode}
+                            </span>
+                          );
+                        })}
                     </span>
                   </dd>
                 </>
