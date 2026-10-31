@@ -16,9 +16,12 @@ import {
 } from '@server/lib/serviceAdmission';
 import type { DVRSettings, ReadarrSettings } from '@server/lib/settings';
 import logger from '@server/logger';
-import { trackBackgroundTask } from '@server/utils/backgroundTasks';
 import { mapWithConcurrency } from '@server/utils/concurrency';
-import { MAX_SERVARR_INSTANCES_PER_TYPE } from '@server/utils/servarrSettings';
+import {
+  DEFAULT_SERVARR_DOWNLOAD_QUEUE_SIZE,
+  MAX_SERVARR_INSTANCES_PER_TYPE,
+  validateServarrDownloadQueueSize,
+} from '@server/utils/servarrSettings';
 import { uniqWith } from 'lodash';
 
 interface EpisodeNumberResult {
@@ -101,6 +104,13 @@ export const DOWNLOAD_TRACKER_SERVER_CONCURRENCY = 5;
 type DownloadTrackerServerSettings = DVRSettings &
   Partial<Pick<ReadarrSettings, 'serviceType'>>;
 
+const getServarrDownloadQueueSize = (
+  server: Pick<DVRSettings, 'downloadQueueSize'>
+): number =>
+  validateServarrDownloadQueueSize(
+    server.downloadQueueSize ?? DEFAULT_SERVARR_DOWNLOAD_QUEUE_SIZE
+  );
+
 export const hasSameServarrDownloadAuthority = hasSameServarrServiceAuthority;
 
 export class DownloadTracker {
@@ -117,8 +127,10 @@ export class DownloadTracker {
   private readarrServers: Record<number, DownloadingItem[]> = {};
   private kapowarrServers: Record<number, DownloadingItem[]> = {};
   private backissueServers: Record<number, DownloadingItem[]> = {};
-  private monitoredRefreshes = new Set<string>();
+  private monitoredRefreshes = new Map<string, Promise<boolean>>();
   private lastMonitoredRefresh = new Map<string, number>();
+  /** Keep stale snapshots visible without reading after a refresh that failed. */
+  private failedMonitoredRefreshes = new Set<string>();
   private activeUpdate?: Promise<void>;
 
   private runWithCurrentServarrDownloadServer<
@@ -148,47 +160,55 @@ export class DownloadTracker {
     );
   }
 
-  private refreshMonitoredDownloads(
+  private ensureMonitoredDownloadsRefreshed(
     key: string,
     serviceType: ServarrDownloadServiceType,
     server: DownloadTrackerServerSettings,
     refresh: () => Promise<void>,
     serverName: string
-  ): void {
+  ): Promise<boolean> {
+    const activeRefresh = this.monitoredRefreshes.get(key);
+    if (activeRefresh) {
+      return activeRefresh;
+    }
+
     const lastRefresh = this.lastMonitoredRefresh.get(key) ?? 0;
 
     if (Date.now() - lastRefresh < DownloadTracker.monitoredRefreshCooldownMs) {
-      return;
+      return Promise.resolve(!this.failedMonitoredRefreshes.has(key));
     }
 
-    if (this.monitoredRefreshes.has(key)) {
-      return;
-    }
-
-    this.monitoredRefreshes.add(key);
     this.lastMonitoredRefresh.set(key, Date.now());
-    trackBackgroundTask(
-      `refresh monitored downloads for ${serverName}`,
-      async () => {
-        try {
-          await this.runWithCurrentServarrDownloadServer(
-            serviceType,
-            server,
-            refresh
-          );
-        } catch (e) {
-          logger.debug(
-            `Unable to refresh monitored downloads for server: ${serverName}`,
-            {
-              errorMessage: e instanceof Error ? e.message : String(e),
-              label: 'Download Tracker',
-            }
-          );
-        } finally {
-          this.monitoredRefreshes.delete(key);
+    const refreshTask = this.runWithCurrentServarrDownloadServer(
+      serviceType,
+      server,
+      refresh
+    )
+      .then(() => true)
+      .catch((e) => {
+        logger.debug(
+          `Unable to refresh monitored downloads for server: ${serverName}`,
+          {
+            errorMessage: e instanceof Error ? e.message : String(e),
+            label: 'Download Tracker',
+          }
+        );
+        return false;
+      })
+      .then((refreshed) => {
+        if (refreshed) {
+          this.failedMonitoredRefreshes.delete(key);
+        } else {
+          this.failedMonitoredRefreshes.add(key);
         }
-      }
-    );
+        return refreshed;
+      })
+      .finally(() => {
+        this.monitoredRefreshes.delete(key);
+      });
+
+    this.monitoredRefreshes.set(key, refreshTask);
+    return refreshTask;
   }
 
   private async loadHistory(
@@ -443,7 +463,9 @@ export class DownloadTracker {
 
     // Remove duplicate servers
     const filteredServers = uniqWith(
-      settings.radarr.slice(0, MAX_SERVARR_INSTANCES_PER_TYPE),
+      settings.radarr
+        .filter((server) => server.syncEnabled)
+        .slice(0, MAX_SERVARR_INSTANCES_PER_TYPE),
       (radarrA, radarrB) => {
         return (
           radarrA.hostname === radarrB.hostname &&
@@ -458,85 +480,98 @@ export class DownloadTracker {
       filteredServers,
       DOWNLOAD_TRACKER_SERVER_CONCURRENCY,
       async (server) => {
-        if (server.syncEnabled) {
-          const radarr = new RadarrAPI({
-            apiKey: server.apiKey,
-            url: RadarrAPI.buildUrl(server, '/api/v3'),
-          });
+        const radarr = new RadarrAPI({
+          apiKey: server.apiKey,
+          url: RadarrAPI.buildUrl(server, '/api/v3'),
+        });
+        const matchingServers = settings.radarr.filter(
+          (candidate) =>
+            candidate.syncEnabled &&
+            candidate.id !== server.id &&
+            candidate.hostname === server.hostname &&
+            candidate.port === server.port &&
+            candidate.baseUrl === server.baseUrl
+        );
 
-          try {
-            this.refreshMonitoredDownloads(
+        try {
+          const queueLimits = new Map(
+            [server, ...matchingServers].map((candidate) => [
+              candidate.id,
+              getServarrDownloadQueueSize(candidate),
+            ])
+          );
+          const physicalQueueLimit = Math.max(...queueLimits.values());
+
+          if (
+            !(await this.ensureMonitoredDownloadsRefreshed(
               `radarr:${server.id}`,
               'radarr',
               server,
               () => radarr.refreshMonitoredDownloads(),
               server.name
-            );
-            const [queueItems, historyItems] = await Promise.all([
-              this.runWithCurrentServarrDownloadServer('radarr', server, () =>
-                radarr.getQueue()
-              ),
-              this.loadHistory('radarr', server, radarr, server.name),
-            ]);
-            if (!queueItems) {
-              delete this.radarrServers[server.id];
-              delete this.radarrHistory[server.id];
-              return;
-            }
-
-            if (historyItems) {
-              this.radarrHistory[server.id] = historyItems;
-            }
-            this.radarrServers[server.id] = queueItems.map((item) => ({
-              externalId: item.movieId,
-              estimatedCompletionTime: new Date(item.estimatedCompletionTime),
-              mediaType: MediaType.MOVIE,
-              size: item.size,
-              sizeLeft: item.sizeleft,
-              status: item.status,
-              timeLeft: item.timeleft,
-              title: item.title,
-              downloadId: item.downloadId,
-              ...getQueueState(item),
-            }));
-
-            if (queueItems.length > 0) {
-              logger.debug(
-                `Found ${queueItems.length} item(s) in progress on Radarr server: ${server.name}`,
-                { label: 'Download Tracker' }
-              );
-            }
-          } catch {
-            logger.error(
-              `Unable to get queue from Radarr server: ${server.name}`,
-              {
-                label: 'Download Tracker',
-              }
-            );
+            ))
+          ) {
+            return;
           }
 
-          // Duplicate this data to matching servers
-          const matchingServers = settings.radarr.filter(
-            (rs) =>
-              rs.hostname === server.hostname &&
-              rs.port === server.port &&
-              rs.baseUrl === server.baseUrl &&
-              rs.id !== server.id
-          );
+          const [queueItems, historyItems] = await Promise.all([
+            this.runWithCurrentServarrDownloadServer('radarr', server, () =>
+              radarr.getQueue(physicalQueueLimit)
+            ),
+            this.loadHistory('radarr', server, radarr, server.name),
+          ]);
+          if (!queueItems) {
+            delete this.radarrServers[server.id];
+            delete this.radarrHistory[server.id];
+            return;
+          }
 
+          const serverDownloads = queueItems.map((item) => ({
+            externalId: item.movieId,
+            estimatedCompletionTime: new Date(item.estimatedCompletionTime),
+            mediaType: MediaType.MOVIE,
+            size: item.size,
+            sizeLeft: item.sizeleft,
+            status: item.status,
+            timeLeft: item.timeleft,
+            title: item.title,
+            downloadId: item.downloadId,
+            ...getQueueState(item),
+          }));
+
+          for (const candidate of [server, ...matchingServers]) {
+            const queueLimit = queueLimits.get(candidate.id);
+            if (queueLimit === undefined) continue;
+            this.radarrServers[candidate.id] = serverDownloads.slice(
+              0,
+              queueLimit
+            );
+            if (historyItems) {
+              this.radarrHistory[candidate.id] = historyItems;
+            }
+          }
+
+          if (queueItems.length > 0) {
+            logger.debug(
+              `Found ${queueItems.length} item(s) in progress on Radarr server: ${server.name}`,
+              { label: 'Download Tracker' }
+            );
+          }
           if (matchingServers.length > 0) {
             logger.debug(
               `Matching download data to ${matchingServers.length} other Radarr server(s)`,
               { label: 'Download Tracker' }
             );
           }
-
-          matchingServers.forEach((ms) => {
-            if (ms.syncEnabled) {
-              this.radarrServers[ms.id] = this.radarrServers[server.id];
-              this.radarrHistory[ms.id] = this.radarrHistory[server.id];
+        } catch (error) {
+          logger.error(
+            `Unable to get queue from Radarr server: ${server.name}`,
+            {
+              errorMessage:
+                error instanceof Error ? error.message : String(error),
+              label: 'Download Tracker',
             }
-          });
+          );
         }
       }
     );
@@ -545,7 +580,9 @@ export class DownloadTracker {
   private async updateWhisparrDownloads() {
     const settings = getExternalRuntimeConfig();
     const filteredServers = uniqWith(
-      settings.whisparr.slice(0, MAX_SERVARR_INSTANCES_PER_TYPE),
+      settings.whisparr
+        .filter((server) => server.syncEnabled)
+        .slice(0, MAX_SERVARR_INSTANCES_PER_TYPE),
       (left, right) =>
         left.hostname === right.hostname &&
         left.port === right.port &&
@@ -556,23 +593,42 @@ export class DownloadTracker {
       filteredServers,
       DOWNLOAD_TRACKER_SERVER_CONCURRENCY,
       async (server) => {
-        if (!server.syncEnabled) return;
         const whisparr = new WhisparrAPI({
           apiKey: server.apiKey,
           url: WhisparrAPI.buildUrl(server, '/api/v3'),
         });
+        const matchingServers = settings.whisparr.filter(
+          (candidate) =>
+            candidate.syncEnabled &&
+            candidate.id !== server.id &&
+            candidate.hostname === server.hostname &&
+            candidate.port === server.port &&
+            candidate.baseUrl === server.baseUrl
+        );
 
         try {
-          this.refreshMonitoredDownloads(
-            `whisparr:${server.id}`,
-            'whisparr',
-            server,
-            () => whisparr.refreshMonitoredDownloads(),
-            server.name
+          const queueLimits = new Map(
+            [server, ...matchingServers].map((candidate) => [
+              candidate.id,
+              getServarrDownloadQueueSize(candidate),
+            ])
           );
+          const physicalQueueLimit = Math.max(...queueLimits.values());
+
+          if (
+            !(await this.ensureMonitoredDownloadsRefreshed(
+              `whisparr:${server.id}`,
+              'whisparr',
+              server,
+              () => whisparr.refreshMonitoredDownloads(),
+              server.name
+            ))
+          ) {
+            return;
+          }
           const [queueItems, historyItems] = await Promise.all([
             this.runWithCurrentServarrDownloadServer('whisparr', server, () =>
-              whisparr.getQueue()
+              whisparr.getQueue(physicalQueueLimit)
             ),
             this.loadHistory('whisparr', server, whisparr, server.name),
           ]);
@@ -581,8 +637,7 @@ export class DownloadTracker {
             delete this.whisparrHistory[server.id];
             return;
           }
-          if (historyItems) this.whisparrHistory[server.id] = historyItems;
-          this.whisparrServers[server.id] = queueItems.flatMap((item) =>
+          const serverDownloads = queueItems.flatMap((item) =>
             item.movieId === undefined
               ? []
               : [
@@ -602,6 +657,23 @@ export class DownloadTracker {
                   },
                 ]
           );
+          for (const candidate of [server, ...matchingServers]) {
+            const queueLimit = queueLimits.get(candidate.id);
+            if (queueLimit === undefined) continue;
+            this.whisparrServers[candidate.id] = serverDownloads.slice(
+              0,
+              queueLimit
+            );
+            if (historyItems) {
+              this.whisparrHistory[candidate.id] = historyItems;
+            }
+          }
+          if (matchingServers.length > 0) {
+            logger.debug(
+              `Matching download data to ${matchingServers.length} other Whisparr server(s)`,
+              { label: 'Download Tracker' }
+            );
+          }
         } catch (error) {
           logger.error(
             `Unable to get queue from Whisparr server: ${server.name}`,
@@ -611,20 +683,7 @@ export class DownloadTracker {
               label: 'Download Tracker',
             }
           );
-        }
-
-        for (const matching of settings.whisparr.filter(
-          (candidate) =>
-            candidate.id !== server.id &&
-            candidate.syncEnabled &&
-            candidate.hostname === server.hostname &&
-            candidate.port === server.port &&
-            candidate.baseUrl === server.baseUrl
-        )) {
-          this.whisparrServers[matching.id] =
-            this.whisparrServers[server.id] ?? [];
-          this.whisparrHistory[matching.id] =
-            this.whisparrHistory[server.id] ?? [];
+          return;
         }
       }
     );
@@ -635,7 +694,9 @@ export class DownloadTracker {
 
     // Remove duplicate servers
     const filteredServers = uniqWith(
-      settings.sonarr.slice(0, MAX_SERVARR_INSTANCES_PER_TYPE),
+      settings.sonarr
+        .filter((server) => server.syncEnabled)
+        .slice(0, MAX_SERVARR_INSTANCES_PER_TYPE),
       (sonarrA, sonarrB) => {
         return (
           sonarrA.hostname === sonarrB.hostname &&
@@ -650,86 +711,99 @@ export class DownloadTracker {
       filteredServers,
       DOWNLOAD_TRACKER_SERVER_CONCURRENCY,
       async (server) => {
-        if (server.syncEnabled) {
-          const sonarr = new SonarrAPI({
-            apiKey: server.apiKey,
-            url: SonarrAPI.buildUrl(server, '/api/v3'),
-          });
+        const sonarr = new SonarrAPI({
+          apiKey: server.apiKey,
+          url: SonarrAPI.buildUrl(server, '/api/v3'),
+        });
+        const matchingServers = settings.sonarr.filter(
+          (candidate) =>
+            candidate.syncEnabled &&
+            candidate.id !== server.id &&
+            candidate.hostname === server.hostname &&
+            candidate.port === server.port &&
+            candidate.baseUrl === server.baseUrl
+        );
 
-          try {
-            this.refreshMonitoredDownloads(
+        try {
+          const queueLimits = new Map(
+            [server, ...matchingServers].map((candidate) => [
+              candidate.id,
+              getServarrDownloadQueueSize(candidate),
+            ])
+          );
+          const physicalQueueLimit = Math.max(...queueLimits.values());
+
+          if (
+            !(await this.ensureMonitoredDownloadsRefreshed(
               `sonarr:${server.id}`,
               'sonarr',
               server,
               () => sonarr.refreshMonitoredDownloads(),
               server.name
-            );
-            const [queueItems, historyItems] = await Promise.all([
-              this.runWithCurrentServarrDownloadServer('sonarr', server, () =>
-                sonarr.getQueue()
-              ),
-              this.loadHistory('sonarr', server, sonarr, server.name),
-            ]);
-            if (!queueItems) {
-              delete this.sonarrServers[server.id];
-              delete this.sonarrHistory[server.id];
-              return;
-            }
-
-            if (historyItems) {
-              this.sonarrHistory[server.id] = historyItems;
-            }
-            this.sonarrServers[server.id] = queueItems.map((item) => ({
-              externalId: item.seriesId,
-              estimatedCompletionTime: new Date(item.estimatedCompletionTime),
-              mediaType: MediaType.TV,
-              size: item.size,
-              sizeLeft: item.sizeleft,
-              status: item.status,
-              timeLeft: item.timeleft,
-              title: item.title,
-              episode: item.episode,
-              downloadId: item.downloadId,
-              ...getQueueState(item),
-            }));
-
-            if (queueItems.length > 0) {
-              logger.debug(
-                `Found ${queueItems.length} item(s) in progress on Sonarr server: ${server.name}`,
-                { label: 'Download Tracker' }
-              );
-            }
-          } catch {
-            logger.error(
-              `Unable to get queue from Sonarr server: ${server.name}`,
-              {
-                label: 'Download Tracker',
-              }
-            );
+            ))
+          ) {
+            return;
           }
 
-          // Duplicate this data to matching servers
-          const matchingServers = settings.sonarr.filter(
-            (ss) =>
-              ss.hostname === server.hostname &&
-              ss.port === server.port &&
-              ss.baseUrl === server.baseUrl &&
-              ss.id !== server.id
-          );
+          const [queueItems, historyItems] = await Promise.all([
+            this.runWithCurrentServarrDownloadServer('sonarr', server, () =>
+              sonarr.getQueue(physicalQueueLimit)
+            ),
+            this.loadHistory('sonarr', server, sonarr, server.name),
+          ]);
+          if (!queueItems) {
+            delete this.sonarrServers[server.id];
+            delete this.sonarrHistory[server.id];
+            return;
+          }
 
+          const serverDownloads = queueItems.map((item) => ({
+            externalId: item.seriesId,
+            estimatedCompletionTime: new Date(item.estimatedCompletionTime),
+            mediaType: MediaType.TV,
+            size: item.size,
+            sizeLeft: item.sizeleft,
+            status: item.status,
+            timeLeft: item.timeleft,
+            title: item.title,
+            episode: item.episode,
+            downloadId: item.downloadId,
+            ...getQueueState(item),
+          }));
+
+          for (const candidate of [server, ...matchingServers]) {
+            const queueLimit = queueLimits.get(candidate.id);
+            if (queueLimit === undefined) continue;
+            this.sonarrServers[candidate.id] = serverDownloads.slice(
+              0,
+              queueLimit
+            );
+            if (historyItems) {
+              this.sonarrHistory[candidate.id] = historyItems;
+            }
+          }
+
+          if (queueItems.length > 0) {
+            logger.debug(
+              `Found ${queueItems.length} item(s) in progress on Sonarr server: ${server.name}`,
+              { label: 'Download Tracker' }
+            );
+          }
           if (matchingServers.length > 0) {
             logger.debug(
               `Matching download data to ${matchingServers.length} other Sonarr server(s)`,
               { label: 'Download Tracker' }
             );
           }
-
-          matchingServers.forEach((ms) => {
-            if (ms.syncEnabled) {
-              this.sonarrServers[ms.id] = this.sonarrServers[server.id];
-              this.sonarrHistory[ms.id] = this.sonarrHistory[server.id];
+        } catch (error) {
+          logger.error(
+            `Unable to get queue from Sonarr server: ${server.name}`,
+            {
+              errorMessage:
+                error instanceof Error ? error.message : String(error),
+              label: 'Download Tracker',
             }
-          });
+          );
         }
       }
     );
@@ -739,7 +813,9 @@ export class DownloadTracker {
     const settings = getExternalRuntimeConfig();
 
     const filteredServers = uniqWith(
-      settings.lidarr.slice(0, MAX_SERVARR_INSTANCES_PER_TYPE),
+      settings.lidarr
+        .filter((server) => server.syncEnabled)
+        .slice(0, MAX_SERVARR_INSTANCES_PER_TYPE),
       (lidarrA, lidarrB) => {
         return (
           lidarrA.hostname === lidarrB.hostname &&
@@ -753,87 +829,100 @@ export class DownloadTracker {
       filteredServers,
       DOWNLOAD_TRACKER_SERVER_CONCURRENCY,
       async (server) => {
-        if (server.syncEnabled) {
-          const lidarr = new LidarrAPI({
-            apiKey: server.apiKey,
-            url: LidarrAPI.buildUrl(server, '/api/v1'),
-          });
+        const lidarr = new LidarrAPI({
+          apiKey: server.apiKey,
+          url: LidarrAPI.buildUrl(server, '/api/v1'),
+        });
+        const matchingServers = settings.lidarr.filter(
+          (candidate) =>
+            candidate.syncEnabled &&
+            candidate.id !== server.id &&
+            candidate.hostname === server.hostname &&
+            candidate.port === server.port &&
+            candidate.baseUrl === server.baseUrl
+        );
 
-          try {
-            this.refreshMonitoredDownloads(
+        try {
+          const queueLimits = new Map(
+            [server, ...matchingServers].map((candidate) => [
+              candidate.id,
+              getServarrDownloadQueueSize(candidate),
+            ])
+          );
+          const physicalQueueLimit = Math.max(...queueLimits.values());
+
+          if (
+            !(await this.ensureMonitoredDownloadsRefreshed(
               `lidarr:${server.id}`,
               'lidarr',
               server,
               () => lidarr.refreshMonitoredDownloads(),
               server.name
-            );
-            const [queueItems, historyItems] = await Promise.all([
-              this.runWithCurrentServarrDownloadServer('lidarr', server, () =>
-                lidarr.getQueue()
-              ),
-              this.loadHistory('lidarr', server, lidarr, server.name),
-            ]);
-            if (!queueItems) {
-              delete this.lidarrServers[server.id];
-              delete this.lidarrHistory[server.id];
-              return;
-            }
-
-            if (historyItems) {
-              this.lidarrHistory[server.id] = historyItems;
-            }
-            this.lidarrServers[server.id] = queueItems
-              .filter((item) => item.albumId !== undefined)
-              .map((item) => ({
-                externalId: item.albumId,
-                estimatedCompletionTime: new Date(item.estimatedCompletionTime),
-                mediaType: MediaType.MUSIC,
-                size: item.size,
-                sizeLeft: item.sizeleft,
-                status: item.status,
-                timeLeft: item.timeleft,
-                title: item.title,
-                downloadId: item.downloadId,
-                ...getQueueState(item),
-              }));
-
-            if (queueItems.length > 0) {
-              logger.debug(
-                `Found ${queueItems.length} item(s) in progress on Lidarr server: ${server.name}`,
-                { label: 'Download Tracker' }
-              );
-            }
-          } catch (e) {
-            logger.error(
-              `Unable to get queue from Lidarr server: ${server.name}`,
-              {
-                errorMessage: e.message,
-                label: 'Download Tracker',
-              }
-            );
+            ))
+          ) {
+            return;
           }
 
-          const matchingServers = settings.lidarr.filter(
-            (ls) =>
-              ls.hostname === server.hostname &&
-              ls.port === server.port &&
-              ls.baseUrl === server.baseUrl &&
-              ls.id !== server.id
-          );
+          const [queueItems, historyItems] = await Promise.all([
+            this.runWithCurrentServarrDownloadServer('lidarr', server, () =>
+              lidarr.getQueue(physicalQueueLimit)
+            ),
+            this.loadHistory('lidarr', server, lidarr, server.name),
+          ]);
+          if (!queueItems) {
+            delete this.lidarrServers[server.id];
+            delete this.lidarrHistory[server.id];
+            return;
+          }
 
+          const serverDownloads = queueItems
+            .filter((item) => item.albumId !== undefined)
+            .map((item) => ({
+              externalId: item.albumId,
+              estimatedCompletionTime: new Date(item.estimatedCompletionTime),
+              mediaType: MediaType.MUSIC,
+              size: item.size,
+              sizeLeft: item.sizeleft,
+              status: item.status,
+              timeLeft: item.timeleft,
+              title: item.title,
+              downloadId: item.downloadId,
+              ...getQueueState(item),
+            }));
+
+          for (const candidate of [server, ...matchingServers]) {
+            const queueLimit = queueLimits.get(candidate.id);
+            if (queueLimit === undefined) continue;
+            this.lidarrServers[candidate.id] = serverDownloads.slice(
+              0,
+              queueLimit
+            );
+            if (historyItems) {
+              this.lidarrHistory[candidate.id] = historyItems;
+            }
+          }
+
+          if (queueItems.length > 0) {
+            logger.debug(
+              `Found ${queueItems.length} item(s) in progress on Lidarr server: ${server.name}`,
+              { label: 'Download Tracker' }
+            );
+          }
           if (matchingServers.length > 0) {
             logger.debug(
               `Matching download data to ${matchingServers.length} other Lidarr server(s)`,
               { label: 'Download Tracker' }
             );
           }
-
-          matchingServers.forEach((ms) => {
-            if (ms.syncEnabled) {
-              this.lidarrServers[ms.id] = this.lidarrServers[server.id];
-              this.lidarrHistory[ms.id] = this.lidarrHistory[server.id];
+        } catch (error) {
+          logger.error(
+            `Unable to get queue from Lidarr server: ${server.name}`,
+            {
+              errorMessage:
+                error instanceof Error ? error.message : String(error),
+              label: 'Download Tracker',
             }
-          });
+          );
         }
       }
     );
@@ -1000,7 +1089,7 @@ export class DownloadTracker {
 
     const filteredServers = uniqWith(
       settings.readarr
-        .filter((server) => server.backend !== 'bindery')
+        .filter((server) => server.backend !== 'bindery' && server.syncEnabled)
         .slice(0, MAX_SERVARR_INSTANCES_PER_TYPE),
       (readarrA, readarrB) =>
         isMatchingReadarrDownloadServer(readarrA, readarrB)
@@ -1010,91 +1099,102 @@ export class DownloadTracker {
       filteredServers,
       DOWNLOAD_TRACKER_SERVER_CONCURRENCY,
       async (server) => {
-        if (server.syncEnabled) {
-          const readarr = new ReadarrAPI({
-            apiKey: server.apiKey,
-            url: ReadarrAPI.buildUrl(server, '/api/v1'),
-            mediaType:
-              server.serviceType === 'audiobook' ? 'audiobook' : 'ebook',
-          });
+        const readarr = new ReadarrAPI({
+          apiKey: server.apiKey,
+          url: ReadarrAPI.buildUrl(server, '/api/v1'),
+          mediaType: server.serviceType === 'audiobook' ? 'audiobook' : 'ebook',
+        });
+        const matchingServers = settings.readarr.filter(
+          (candidate) =>
+            candidate.backend !== 'bindery' &&
+            candidate.syncEnabled &&
+            candidate.id !== server.id &&
+            isMatchingReadarrDownloadServer(candidate, server)
+        );
 
-          try {
-            this.refreshMonitoredDownloads(
+        try {
+          const queueLimits = new Map(
+            [server, ...matchingServers].map((candidate) => [
+              candidate.id,
+              getServarrDownloadQueueSize(candidate),
+            ])
+          );
+          const physicalQueueLimit = Math.max(...queueLimits.values());
+
+          if (
+            !(await this.ensureMonitoredDownloadsRefreshed(
               `readarr:${server.id}`,
               'readarr',
               server,
               () => readarr.refreshMonitoredDownloads(),
               server.name
-            );
-            const queueItems = await this.runWithCurrentServarrDownloadServer(
-              'readarr',
-              server,
-              () => readarr.getQueue()
-            );
-            if (!queueItems) {
-              delete this.readarrServers[server.id];
-              return;
-            }
+            ))
+          ) {
+            return;
+          }
 
-            this.readarrServers[server.id] = queueItems
-              .map((item) => ({
-                item,
-                bookId: item.bookId ?? item.book?.id,
-              }))
-              .filter(
-                (
-                  queueItem
-                ): queueItem is typeof queueItem & { bookId: number } =>
-                  queueItem.bookId !== undefined
-              )
-              .map(({ item, bookId }) => ({
-                externalId: bookId,
-                estimatedCompletionTime: new Date(item.estimatedCompletionTime),
-                mediaType: MediaType.BOOK,
-                size: item.size,
-                sizeLeft: item.sizeleft,
-                status: item.status,
-                timeLeft: item.timeleft,
-                title: item.title,
-                downloadId: item.downloadId,
-                ...getQueueState(item),
-              }));
+          const queueItems = await this.runWithCurrentServarrDownloadServer(
+            'readarr',
+            server,
+            () => readarr.getQueue(physicalQueueLimit)
+          );
+          if (!queueItems) {
+            delete this.readarrServers[server.id];
+            return;
+          }
 
-            if (queueItems.length > 0) {
-              logger.debug(
-                `Found ${queueItems.length} item(s) in progress on Bookshelf server: ${server.name}`,
-                { label: 'Download Tracker' }
-              );
-            }
-          } catch (e) {
-            logger.error(
-              `Unable to get queue from Bookshelf server: ${server.name}`,
-              {
-                errorMessage: e.message,
-                label: 'Download Tracker',
-              }
+          const serverDownloads = queueItems
+            .map((item) => ({
+              item,
+              bookId: item.bookId ?? item.book?.id,
+            }))
+            .filter(
+              (queueItem): queueItem is typeof queueItem & { bookId: number } =>
+                queueItem.bookId !== undefined
+            )
+            .map(({ item, bookId }) => ({
+              externalId: bookId,
+              estimatedCompletionTime: new Date(item.estimatedCompletionTime),
+              mediaType: MediaType.BOOK,
+              size: item.size,
+              sizeLeft: item.sizeleft,
+              status: item.status,
+              timeLeft: item.timeleft,
+              title: item.title,
+              downloadId: item.downloadId,
+              ...getQueueState(item),
+            }));
+
+          for (const candidate of [server, ...matchingServers]) {
+            const queueLimit = queueLimits.get(candidate.id);
+            if (queueLimit === undefined) continue;
+            this.readarrServers[candidate.id] = serverDownloads.slice(
+              0,
+              queueLimit
             );
           }
 
-          const matchingServers = settings.readarr.filter(
-            (rs) =>
-              rs.backend !== 'bindery' &&
-              isMatchingReadarrDownloadServer(rs, server) &&
-              rs.id !== server.id
-          );
-
+          if (queueItems.length > 0) {
+            logger.debug(
+              `Found ${queueItems.length} item(s) in progress on Bookshelf server: ${server.name}`,
+              { label: 'Download Tracker' }
+            );
+          }
           if (matchingServers.length > 0) {
             logger.debug(
               `Matching download data to ${matchingServers.length} other Bookshelf server(s)`,
               { label: 'Download Tracker' }
             );
           }
-
-          matchingServers.forEach((ms) => {
-            if (ms.syncEnabled) {
-              this.readarrServers[ms.id] = this.readarrServers[server.id];
+        } catch (error) {
+          logger.error(
+            `Unable to get queue from Bookshelf server: ${server.name}`,
+            {
+              errorMessage:
+                error instanceof Error ? error.message : String(error),
+              label: 'Download Tracker',
             }
-          });
+          );
         }
       }
     );

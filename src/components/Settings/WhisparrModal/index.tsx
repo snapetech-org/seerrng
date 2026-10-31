@@ -1,5 +1,9 @@
 import Modal from '@app/components/Common/Modal';
 import SensitiveInput from '@app/components/Common/SensitiveInput';
+import ServarrDownloadQueueSizeField, {
+  createServarrDownloadQueueSizeSchema,
+  DEFAULT_SERVARR_DOWNLOAD_QUEUE_SIZE,
+} from '@app/components/Settings/ServarrDownloadQueueSizeField';
 import Field, {
   default as SettingsField,
 } from '@app/components/Settings/SettingsField';
@@ -71,6 +75,7 @@ const WhisparrModal = ({ whisparr, onClose, onSave }: WhisparrModalProps) => {
   });
 
   const schema = Yup.object().shape({
+    downloadQueueSize: createServarrDownloadQueueSizeSchema(intl),
     name: Yup.string().required(intl.formatMessage(messages.required)),
     hostname: Yup.string().required(intl.formatMessage(messages.required)),
     port: Yup.number().required(intl.formatMessage(messages.required)),
@@ -156,6 +161,8 @@ const WhisparrModal = ({ whisparr, onClose, onSave }: WhisparrModalProps) => {
           rootFolder: whisparr?.activeDirectory ?? '',
           isDefault: whisparr?.isDefault ?? !whisparr,
           externalUrl: whisparr?.externalUrl ?? '',
+          downloadQueueSize:
+            whisparr?.downloadQueueSize ?? DEFAULT_SERVARR_DOWNLOAD_QUEUE_SIZE,
           syncEnabled: whisparr?.syncEnabled ?? false,
           enableSearch: !whisparr?.preventSearch,
           tagRequests: whisparr?.tagRequests ?? false,
@@ -178,6 +185,7 @@ const WhisparrModal = ({ whisparr, onClose, onSave }: WhisparrModalProps) => {
             is4k: false,
             isDefault: values.isDefault,
             externalUrl: values.externalUrl || undefined,
+            downloadQueueSize: Number(values.downloadQueueSize),
             syncEnabled: values.syncEnabled,
             preventSearch: !values.enableSearch,
             tagRequests: values.tagRequests,
@@ -413,6 +421,7 @@ const WhisparrModal = ({ whisparr, onClose, onSave }: WhisparrModalProps) => {
                 {intl.formatMessage(messages.syncHelp)}
               </span>
             </div>
+            <ServarrDownloadQueueSizeField />
             <div className="form-row">
               <label htmlFor="enableSearch" className="checkbox-label">
                 {intl.formatMessage(messages.enableSearch)}
