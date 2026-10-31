@@ -719,9 +719,10 @@
       "id": "components.BookRecommendations.likes",
       "status": "draft",
       "provenance": "machine-draft",
-      "source": "Qwen 3.8 27B (local), generated 2026-10-30",
+      "source": "Codex contextual Arabic plural review; 2026-10-31; unverified",
       "sourceHash": "d867d3f6d66c3ea57482a0500e7340f90fce21c0dc01a6a10bd210504e589499",
-      "targetHash": "efd7bb893308521c3e57b5a676815c13461575b0764971a715cd7fb3c954caf3"
+      "targetHash": "8617b85d9e0a9afe0e19ca7d556fb6f2387895c4d1a32695e0d767fa990c6745",
+      "correctionReason": "Contextual Arabic machine-draft correction: six cardinal categories and the source screen meaning are reviewed; dynamic argument names, exact selectors, rich-text tags, and protocol/product names are preserved. Fluency and full RTL acceptance remain unverified."
     },
     {
       "domain": "client",
@@ -1759,9 +1760,10 @@
       "id": "components.Collectors.sharedBy",
       "status": "draft",
       "provenance": "machine-draft",
-      "source": "Qwen 3.8 27B (local), generated 2026-10-30",
+      "source": "Codex contextual Arabic plural review; 2026-10-31; unverified",
       "sourceHash": "a3e29e926f9caabce9062681f332cc71242a703dbb0c2b8a2c43774a3059394d",
-      "targetHash": "74ec2f672dafd11c9cf01c41a185d6c5e033ab0afd3d498c4f5fb17884b0d8b6"
+      "targetHash": "58c38022e7b95d1895856276360eafb735b567dde83b84b60c9185a8fd909265",
+      "correctionReason": "Contextual Arabic machine-draft correction: six cardinal categories and the source screen meaning are reviewed; dynamic argument names, exact selectors, rich-text tags, and protocol/product names are preserved. Fluency and full RTL acceptance remain unverified."
     },
     {
       "domain": "client",
@@ -2499,9 +2501,10 @@
       "id": "components.Discover.DiscoverAdult.resultCount",
       "status": "draft",
       "provenance": "machine-draft",
-      "source": "Qwen 3.8 27B (local), generated 2026-10-30",
+      "source": "Codex contextual Arabic plural review; 2026-10-31; unverified",
       "sourceHash": "d2902a14df7f1e22d8f9c91d9f19a3ecbfb72d39242d6e16e9c2dc71df5533a9",
-      "targetHash": "3565ef3b1201bf79ab0be4bd7eafbb078fff343f71ba2bef1495ca8511ec99de"
+      "targetHash": "4e2213964640ab0f9731b812deffa46f87543992e3ea4ea46510fd308fee660d",
+      "correctionReason": "Contextual Arabic machine-draft correction: six cardinal categories and the source screen meaning are reviewed; dynamic argument names, exact selectors, rich-text tags, and protocol/product names are preserved. Fluency and full RTL acceptance remain unverified."
     },
     {
       "domain": "client",
@@ -3519,9 +3522,10 @@
       "id": "components.EditionCompare.otherOnly",
       "status": "draft",
       "provenance": "machine-draft",
-      "source": "Qwen 3.8 27B (local), generated 2026-10-30",
+      "source": "Codex contextual Arabic plural review; 2026-10-31; unverified",
       "sourceHash": "e1197d975679faddc80ef332b9b5b4b6d9ba0ace17a5f2e8138294dcd925aad0",
-      "targetHash": "e3cfa9225fa776a5a56843bfadc881ce8e9daf2e41e1b48ccc33e7c8054256d6"
+      "targetHash": "441eb11e47c91b794c74f07cc00b7336622bfe17f84a581f1ebbd61b00f98315",
+      "correctionReason": "Contextual Arabic machine-draft correction: six cardinal categories and the source screen meaning are reviewed; dynamic argument names, exact selectors, rich-text tags, and protocol/product names are preserved. Fluency and full RTL acceptance remain unverified."
     },
     {
       "domain": "client",
@@ -3639,9 +3643,10 @@
       "id": "components.EditionCompare.tracks",
       "status": "draft",
       "provenance": "machine-draft",
-      "source": "Qwen 3.8 27B (local), generated 2026-10-30",
+      "source": "Codex contextual Arabic plural review; 2026-10-31; unverified",
       "sourceHash": "c8a37004100a7ca337b594cb7d83a70152fc09f08f5c74f96d0ff091db4124ac",
-      "targetHash": "8e7892285c24d77b603d1d95e05c3ecf2139dcb039de27b12a7246c449475f48"
+      "targetHash": "5e6e356d2c7a711e4fd9f3a06873b08bbbe769e8547f15c6480ff3f69425addf",
+      "correctionReason": "Contextual Arabic machine-draft correction: six cardinal categories and the source screen meaning are reviewed; dynamic argument names, exact selectors, rich-text tags, and protocol/product names are preserved. Fluency and full RTL acceptance remain unverified."
     },
     {
       "domain": "client",
@@ -4219,9 +4224,10 @@
       "id": "components.Following.unreadAnnounce",
       "status": "draft",
       "provenance": "machine-draft",
-      "source": "Qwen 3.8 27B (local), generated 2026-10-30",
+      "source": "Codex contextual Arabic plural review; 2026-10-31; unverified",
       "sourceHash": "3798a60d56a2b5869ea432f3eb8b79b02ea7920050dbb5f2534b3709fac95c77",
-      "targetHash": "318838d46497e6da3559451d65df3aa2bfdcf8a14769f809029e6dd0df5f9581"
+      "targetHash": "c7b54b02065f90c6381702aa397731a6c3ed6494b0a1a43fd22c7bafccd11467",
+      "correctionReason": "Follow-up Arabic contextual read-through: preserve zero/singular/dual meaning and remove duplicate numeric output; remains machine-draft/unverified."
     },
     {
       "domain": "client",
@@ -4529,9 +4535,10 @@
       "id": "components.GameContent.adds",
       "status": "draft",
       "provenance": "machine-draft",
-      "source": "Qwen 3.8 27B (local), generated 2026-10-30",
+      "source": "Codex contextual Arabic plural correction; generated 2026-10-31; unverified",
       "sourceHash": "87e33f3fc61e547ed30a3463f83a14873f8d05252d3235be683d2b6c9ce4e84e",
-      "targetHash": "1dc3106ae8a2396dfdadbac02c0b12e87b4de5184e60ceaf485832f6d395878a"
+      "targetHash": "4474c4337611cb01b63efb88a87515eb891c20cea54e50431400aa243c6fa9fd",
+      "correctionReason": "Contextual machine-draft Arabic correction: translated app-authored prose and supplied valid Arabic cardinal branches while preserving argument names, exact-value selectors, rich-text tags, and dynamic values. Arabic plural categories follow CLDR; all wording remains unverified by a native speaker or RTL reviewer."
     },
     {
       "domain": "client",
@@ -6159,9 +6166,10 @@
       "id": "components.RequestList.RequestItem.watchAheadAssigned",
       "status": "draft",
       "provenance": "machine-draft",
-      "source": "Qwen 3.8 27B (local), generated 2026-10-30",
+      "source": "Codex contextual Arabic plural review; 2026-10-31; unverified",
       "sourceHash": "7bb93a860b37c334b7373123a04dfbc16f661cf630b1d36a31589b6631ba674b",
-      "targetHash": "788cac6c3e73b9a896ce92776ce132e0c1961925a8586be2757ecbc7329b54aa"
+      "targetHash": "523c07322a795f598494c1ccbd1bfb3ec3d1770da4faa3d4539bdae73039ad8d",
+      "correctionReason": "Rendered cardinal-sample read-through: align gender, isolate the dynamic media-type label, and use natural singular/dual forms without redundant displayed digits; remains machine-draft/unverified."
     },
     {
       "domain": "client",
@@ -6789,9 +6797,10 @@
       "id": "components.Requests.watchAheadAssigned",
       "status": "draft",
       "provenance": "machine-draft",
-      "source": "Qwen 3.8 27B (local), generated 2026-10-30",
+      "source": "Codex contextual Arabic plural review; 2026-10-31; unverified",
       "sourceHash": "7bb93a860b37c334b7373123a04dfbc16f661cf630b1d36a31589b6631ba674b",
-      "targetHash": "86ba3e36aa402f394a255cec48ec31e4e73b482ff504522b4f3359e1cd61ee87"
+      "targetHash": "523c07322a795f598494c1ccbd1bfb3ec3d1770da4faa3d4539bdae73039ad8d",
+      "correctionReason": "Rendered cardinal-sample read-through: align gender, isolate the dynamic media-type label, and use natural singular/dual forms without redundant displayed digits; remains machine-draft/unverified."
     },
     {
       "domain": "client",
@@ -9411,9 +9420,10 @@
       "id": "components.Setup.libraryCount",
       "status": "draft",
       "provenance": "machine-draft",
-      "source": "Qwen 3.8 27B (local), generated 2026-10-30",
+      "source": "Codex contextual Arabic plural review; 2026-10-31; unverified",
       "sourceHash": "ac016ac8e56cbe94316e7ec021e858c00abc2a51965309b9ca61103ad15cadb4",
-      "targetHash": "a9bc1876af488fdd417804f322f1b70a9e67138a77e3519237bb705c1bf49c62"
+      "targetHash": "4f808ea215cd53980af35188dd4fa3cdd039e14ec32a68416977eb9b1ae72055",
+      "correctionReason": "Contextual Arabic machine-draft correction: six cardinal categories and the source screen meaning are reviewed; dynamic argument names, exact selectors, rich-text tags, and protocol/product names are preserved. Fluency and full RTL acceptance remain unverified."
     },
     {
       "domain": "client",
@@ -10161,9 +10171,10 @@
       "id": "components.Share.requestedMany",
       "status": "draft",
       "provenance": "machine-draft",
-      "source": "Qwen 3.8 27B (local), generated 2026-10-30",
+      "source": "Codex contextual Arabic plural review; 2026-10-31; unverified",
       "sourceHash": "eb9c3b376b77e03d215e844d0d0272b550762a7506f35109d80aed7f1d6577d2",
-      "targetHash": "fe068d7444eea0cd8a467ddee563dcecb2ff5778b18c3ab8736b573f4358f0d7"
+      "targetHash": "a2dfa12e3ece50e70f5e9029a7d4a69f3825423c7633db6a0133a08645d1d81c",
+      "correctionReason": "Contextual Arabic machine-draft correction: six cardinal categories and the source screen meaning are reviewed; dynamic argument names, exact selectors, rich-text tags, and protocol/product names are preserved. Fluency and full RTL acceptance remain unverified."
     },
     {
       "domain": "client",
@@ -10171,9 +10182,10 @@
       "id": "components.Share.resultCount",
       "status": "draft",
       "provenance": "machine-draft",
-      "source": "Qwen 3.8 27B (local), generated 2026-10-30",
+      "source": "Codex contextual Arabic plural review; 2026-10-31; unverified",
       "sourceHash": "9accb3f321a6aa0ee60a8aaadffefbc331e327349062714f3d96d54355096f16",
-      "targetHash": "9d0194518cfc56906516ff622fd474c5ea68df2c547f4ca6d0da203b96650c41"
+      "targetHash": "c73274e096a6b914091ee1801779c74d47e3c3e1e3341fde1da28e95b9d51f12",
+      "correctionReason": "Contextual Arabic machine-draft correction: six cardinal categories and the source screen meaning are reviewed; dynamic argument names, exact selectors, rich-text tags, and protocol/product names are preserved. Fluency and full RTL acceptance remain unverified."
     },
     {
       "domain": "client",
@@ -155852,6 +155864,644 @@
       "sourceHash": "44e1c539ecdb527124d96c25ab9d21ca3f16474ee5a78582c49c97a48ab3b240",
       "targetHash": "81c1abf71ba401873a5bfde84f372b365ec0f89a5ab67a2132e263601c3574c6",
       "correctionReason": "Contextual machine-draft localization of the user-facing textarea example: the illustrative media directory segment is written as “電影” in this locale in both paths; the required JSON property names, Radarr service identifier, number, syntax, and path mapping structure remain exact so the example can be copied and edited. The example paths are placeholders, not actual user or server data. Native-speaker and RTL review not performed."
+    },
+    {
+      "domain": "client",
+      "locale": "ar",
+      "id": "components.Discover.FilterPanel.durationHours",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "Codex contextual Arabic plural review; 2026-10-31; unverified",
+      "sourceHash": "74b8c3c7908a2d4bdb042cd2d27f86a8ea712695013815eee870bdf9e4428d06",
+      "targetHash": "0ed26c988be310286271321a7b613f7cab94f18599c81aee587890da29971355",
+      "correctionReason": "Contextual Arabic machine-draft correction: six cardinal categories and the source screen meaning are reviewed; dynamic argument names, exact selectors, rich-text tags, and protocol/product names are preserved. Fluency and full RTL acceptance remain unverified."
+    },
+    {
+      "domain": "client",
+      "locale": "ar",
+      "id": "components.DiscographyRequestActions.confirm",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "Codex contextual Arabic plural review; 2026-10-31; unverified",
+      "sourceHash": "e8dfac04a45595b680e567d1ce9722146755cbdf200fad51aaafb0e390b07d24",
+      "targetHash": "db0c1850eccf72064b5fe4b0b3197b6a9678392727a1ad46a430a5c4f55d50df",
+      "correctionReason": "Contextual Arabic machine-draft correction: six cardinal categories and the source screen meaning are reviewed; dynamic argument names, exact selectors, rich-text tags, and protocol/product names are preserved. Fluency and full RTL acceptance remain unverified."
+    },
+    {
+      "domain": "client",
+      "locale": "ar",
+      "id": "components.Layout.VersionStatus.commitsbehind",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "Codex contextual Arabic plural review; 2026-10-31; unverified",
+      "sourceHash": "f2a72e4f2693f559a16fff4645088179ea9220dd8e2e76df8abc0da6c314e686",
+      "targetHash": "a18a5f4e9cbb63ea3374f5b58b4ed7f17b18ccf7af20143d36e9b9af146c81bb",
+      "correctionReason": "Follow-up Arabic contextual read-through: preserve zero/singular/dual meaning and remove duplicate numeric output; remains machine-draft/unverified."
+    },
+    {
+      "domain": "client",
+      "locale": "ar",
+      "id": "components.ManageMediaActions.closeConfirm",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "Codex contextual Arabic plural correction; generated 2026-10-31; unverified",
+      "sourceHash": "c59f24bbedeeb190c8a2c0f987795654c11086d4a5b1228d9ea2da0f3cfc249e",
+      "targetHash": "332241aeeacc9689ba57b51f289b48b34f9f1e0b2e53412262b2f645b78d9f14",
+      "correctionReason": "Contextual machine-draft Arabic correction: translated app-authored prose and supplied valid Arabic cardinal branches while preserving argument names, exact-value selectors, rich-text tags, and dynamic values. Arabic plural categories follow CLDR; all wording remains unverified by a native speaker or RTL reviewer."
+    },
+    {
+      "domain": "client",
+      "locale": "ar",
+      "id": "components.ManageMediaActions.deleteConfirm",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "Codex contextual Arabic plural correction; generated 2026-10-31; unverified",
+      "sourceHash": "3ed56aaf9ecd61481d9397db9dc406c70d7422428f9bae033c32745c116d5ad1",
+      "targetHash": "bb455d31174a871ff51bd4e2730c4fb0a20681392f14b53d20e01dc9fb3252b2",
+      "correctionReason": "Contextual machine-draft Arabic correction: translated app-authored prose and supplied valid Arabic cardinal branches while preserving argument names, exact-value selectors, rich-text tags, and dynamic values. Arabic plural categories follow CLDR; all wording remains unverified by a native speaker or RTL reviewer."
+    },
+    {
+      "domain": "client",
+      "locale": "ar",
+      "id": "components.GameLibrary.ownerCount",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "Codex contextual Arabic plural correction; generated 2026-10-31; unverified",
+      "sourceHash": "bad8257bbce1cf97eca170a691ef419a08905f7b0b546125dc1954b232451fcb",
+      "targetHash": "2d9564acecaa9669bca5304c6cf9876a058553de2414fd0518e3d46bfc55d43d",
+      "correctionReason": "Contextual machine-draft Arabic correction: translated app-authored prose and supplied valid Arabic cardinal branches while preserving argument names, exact-value selectors, rich-text tags, and dynamic values. Arabic plural categories follow CLDR; all wording remains unverified by a native speaker or RTL reviewer."
+    },
+    {
+      "domain": "client",
+      "locale": "ar",
+      "id": "components.IssueDetails.IssueMediaSummary.issueCount",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "Codex contextual Arabic plural review; 2026-10-31; unverified",
+      "sourceHash": "af2851fc530f8585b6372690b4632202bbc8ffc0e61e00557dbd6c133e20a76e",
+      "targetHash": "34925b1c4b24210b10dec9534b66979a7abd229a5bd3a0c0f8e1b0c435a3e723",
+      "correctionReason": "Contextual Arabic machine-draft correction: six cardinal categories and the source screen meaning are reviewed; dynamic argument names, exact selectors, rich-text tags, and protocol/product names are preserved. Fluency and full RTL acceptance remain unverified."
+    },
+    {
+      "domain": "client",
+      "locale": "ar",
+      "id": "components.RequestButton.requestupdatesfailed",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "Codex contextual Arabic plural correction; generated 2026-10-31; unverified",
+      "sourceHash": "4f5f5b0587065fa8a07154c52919118b7f31619fc32867e344b570a33a79fe90",
+      "targetHash": "9212cfc8a0064dab39ee5fbb927b4ed630b582c302d5ada809b8b43386daf06f",
+      "correctionReason": "Contextual machine-draft Arabic correction: translated app-authored prose and supplied valid Arabic cardinal branches while preserving argument names, exact-value selectors, rich-text tags, and dynamic values. Arabic plural categories follow CLDR; all wording remains unverified by a native speaker or RTL reviewer."
+    },
+    {
+      "domain": "client",
+      "locale": "ar",
+      "id": "components.RequestModal.QuotaDisplay.allowedRequests",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "Codex contextual Arabic plural correction; generated 2026-10-31; unverified",
+      "sourceHash": "dfb018d7a63b586ea6aa3bba17c9dd3e39387bce85f87dc0deced7aed380777b",
+      "targetHash": "de4105058f9211cfdf251750db24bdd8e1998b9d81109a93734a8d578b0b3bbe",
+      "correctionReason": "Contextual machine-draft Arabic correction: translated app-authored prose and supplied valid Arabic cardinal branches while preserving argument names, exact-value selectors, rich-text tags, and dynamic values. Arabic plural categories follow CLDR; all wording remains unverified by a native speaker or RTL reviewer."
+    },
+    {
+      "domain": "client",
+      "locale": "ar",
+      "id": "components.RequestModal.QuotaDisplay.allowedRequestsUser",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "Codex contextual Arabic plural correction; generated 2026-10-31; unverified",
+      "sourceHash": "9b1eb2c5b78c8fca66d769557688c045c2e83d3297c60f1cbec81a356e03a42b",
+      "targetHash": "1002e2ed5ea804ed5cac5d36775d98df51944f137030461c994ee1e2377c9054",
+      "correctionReason": "Contextual machine-draft Arabic correction: translated app-authored prose and supplied valid Arabic cardinal branches while preserving argument names, exact-value selectors, rich-text tags, and dynamic values. Arabic plural categories follow CLDR; all wording remains unverified by a native speaker or RTL reviewer."
+    },
+    {
+      "domain": "client",
+      "locale": "ar",
+      "id": "components.CuratedCollection.confirmBlocklist",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "Codex contextual Arabic plural review; 2026-10-31; unverified",
+      "sourceHash": "13da7ea9c61a1353caed64b31139f3c3e5542f0a7ddeb206ab1308084ebaff70",
+      "targetHash": "3aa8a816449ce07b0692ff7d151c65474d065b78268135d3cc9959483f2f2072",
+      "correctionReason": "Contextual Arabic machine-draft correction: six cardinal categories and the source screen meaning are reviewed; dynamic argument names, exact selectors, rich-text tags, and protocol/product names are preserved. Fluency and full RTL acceptance remain unverified."
+    },
+    {
+      "domain": "client",
+      "locale": "ar",
+      "id": "components.CuratedCollection.confirmBlocklistMusic",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "Codex contextual Arabic plural review; 2026-10-31; unverified",
+      "sourceHash": "b1b315cc4296f64f8f2cd1cb50d24dca58d890da0c9422df9a5884096bff9188",
+      "targetHash": "5fb3d807bf9717fe7d5872c34ecb9e22255dd800b53a4bf8e5fd140c97b84214",
+      "correctionReason": "Contextual Arabic machine-draft correction: six cardinal categories and the source screen meaning are reviewed; dynamic argument names, exact selectors, rich-text tags, and protocol/product names are preserved. Fluency and full RTL acceptance remain unverified."
+    },
+    {
+      "domain": "client",
+      "locale": "ar",
+      "id": "components.DownloadBlock.liveSeeds",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "Codex contextual Arabic plural review; 2026-10-31; unverified",
+      "sourceHash": "b92a441b822f1c3b53912566f4a5a399349434ac109b7373d1961981d278fd58",
+      "targetHash": "baeadf23fb0d45e2e9f0a6f408b081cc21c3bfde4f34e3fe02ebde3bcf1075da",
+      "correctionReason": "Contextual Arabic machine-draft correction: six cardinal categories and the source screen meaning are reviewed; dynamic argument names, exact selectors, rich-text tags, and protocol/product names are preserved. Fluency and full RTL acceptance remain unverified."
+    },
+    {
+      "domain": "client",
+      "locale": "ar",
+      "id": "components.GameLibrary.totalGames",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "Codex contextual Arabic plural review; 2026-10-31; unverified",
+      "sourceHash": "0b2820d98e5448b2ead1d36568d53464a907a1de0948d4ddf7ca2adac71a34ec",
+      "targetHash": "ea07fb1c310fc76e4174707c8e304829dbf06d41bfe64b6a471d69eabbfaf9cf",
+      "correctionReason": "Contextual Arabic machine-draft correction: six cardinal categories and the source screen meaning are reviewed; dynamic argument names, exact selectors, rich-text tags, and protocol/product names are preserved. Fluency and full RTL acceptance remain unverified."
+    },
+    {
+      "domain": "client",
+      "locale": "ar",
+      "id": "components.IssueDetails.IssueMediaSummary.minutes",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "Codex contextual Arabic plural review; 2026-10-31; unverified",
+      "sourceHash": "48f209430d9231077ec7c4f7652d2511f1e5782a50b221e168ceb2e0d2083af8",
+      "targetHash": "de4853fec7e0df2a286103f69f1bcf2d27d9a4b2c23f44f7764e2707e580d19a",
+      "correctionReason": "Contextual Arabic machine-draft correction: six cardinal categories and the source screen meaning are reviewed; dynamic argument names, exact selectors, rich-text tags, and protocol/product names are preserved. Fluency and full RTL acceptance remain unverified."
+    },
+    {
+      "domain": "client",
+      "locale": "ar",
+      "id": "components.IssueList.IssueItem.affectedSummary.seasonCount",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "Codex contextual Arabic plural review; 2026-10-31; unverified",
+      "sourceHash": "96c5bd618be3aa509fa35e719404fcdbb1df7d669a10c2839564e1389eaed145",
+      "targetHash": "f9972986806435dc2cd93f681442b9cad596ff307a7cc40d5673975bc2957623",
+      "correctionReason": "Contextual Arabic machine-draft correction: six cardinal categories and the source screen meaning are reviewed; dynamic argument names, exact selectors, rich-text tags, and protocol/product names are preserved. Fluency and full RTL acceptance remain unverified."
+    },
+    {
+      "domain": "client",
+      "locale": "ar",
+      "id": "components.ManageSlideOver.plays",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "Codex contextual Arabic plural review; 2026-10-31; unverified",
+      "sourceHash": "02402bc9bf7998836f87979431731e618f790a961f151a0f8d834be7009bb154",
+      "targetHash": "40b8fb72f914356baa1c19d35acd950ccfd0ab0e7165f62e0b2d3566bf231d8e",
+      "correctionReason": "Rendered cardinal-sample read-through: align gender, isolate the dynamic media-type label, and use natural singular/dual forms without redundant displayed digits; remains machine-draft/unverified."
+    },
+    {
+      "domain": "client",
+      "locale": "ar",
+      "id": "components.Media.JellystatWatchSummary.plays",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "Codex contextual Arabic plural review; 2026-10-31; unverified",
+      "sourceHash": "d4b0f19f77c8f5533190619252e90cbdf55c8b24412351a57c044ed97a5f359a",
+      "targetHash": "5af57630ce4acac1db461867bb193689e9bebe9b1b053d5c4697077594965379",
+      "correctionReason": "Contextual Arabic machine-draft correction: six cardinal categories and the source screen meaning are reviewed; dynamic argument names, exact selectors, rich-text tags, and protocol/product names are preserved. Fluency and full RTL acceptance remain unverified."
+    },
+    {
+      "domain": "client",
+      "locale": "ar",
+      "id": "components.ReaderDeliverySettings.groupingCount",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "Codex contextual Arabic plural review; 2026-10-31; unverified",
+      "sourceHash": "1eb9964e951859b502c0ac9fdad846fa5fb86264fb746192c25517ec0f9f3753",
+      "targetHash": "7b99b1b671542416e05ef449172af0e917d66e55a4ee03aa89b80f86791c6bcf",
+      "correctionReason": "Contextual Arabic machine-draft correction: six cardinal categories and the source screen meaning are reviewed; dynamic argument names, exact selectors, rich-text tags, and protocol/product names are preserved. Fluency and full RTL acceptance remain unverified."
+    },
+    {
+      "domain": "client",
+      "locale": "ar",
+      "id": "components.ReaderGroupingAction.matches",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "Codex contextual Arabic plural review; 2026-10-31; unverified",
+      "sourceHash": "494ad28b40089f390cf234416c410aeb6a4a96e6504d4143d93cb059a68efdd3",
+      "targetHash": "b813a0136766a4a7100502103418def75f50f6f4e75974fd960ce601e7090125",
+      "correctionReason": "Contextual Arabic machine-draft correction: six cardinal categories and the source screen meaning are reviewed; dynamic argument names, exact selectors, rich-text tags, and protocol/product names are preserved. Fluency and full RTL acceptance remain unverified."
+    },
+    {
+      "domain": "client",
+      "locale": "ar",
+      "id": "components.RequestBlock.seasons",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "Codex contextual Arabic plural review; 2026-10-31; unverified",
+      "sourceHash": "d003c71b108b8f5fd101540cfb477eb1c2b4ff5747bb059fbf2ce1cd64be43e8",
+      "targetHash": "ffdca1a9539c08405b932104a46572f9ca6210dd587168b03258d5f9c4c106ef",
+      "correctionReason": "Contextual Arabic machine-draft correction: six cardinal categories and the source screen meaning are reviewed; dynamic argument names, exact selectors, rich-text tags, and protocol/product names are preserved. Fluency and full RTL acceptance remain unverified."
+    },
+    {
+      "domain": "client",
+      "locale": "ar",
+      "id": "components.RequestList.RequestItem.seasons",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "Codex contextual Arabic plural review; 2026-10-31; unverified",
+      "sourceHash": "d003c71b108b8f5fd101540cfb477eb1c2b4ff5747bb059fbf2ce1cd64be43e8",
+      "targetHash": "ffdca1a9539c08405b932104a46572f9ca6210dd587168b03258d5f9c4c106ef",
+      "correctionReason": "Contextual Arabic machine-draft correction: six cardinal categories and the source screen meaning are reviewed; dynamic argument names, exact selectors, rich-text tags, and protocol/product names are preserved. Fluency and full RTL acceptance remain unverified."
+    },
+    {
+      "domain": "client",
+      "locale": "ar",
+      "id": "components.RequestModal.BulkRequestModal.requestitems",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "Codex contextual Arabic plural review; 2026-10-31; unverified",
+      "sourceHash": "87ac858076eb782c84929bd8d28c6dcf7733eb7468c4fc9bdb3d1ed5ed4dabc5",
+      "targetHash": "f9fdf2da28fc49b55594521bedb6ad775ec2bf11e4293814731deae75643c3a9",
+      "correctionReason": "Contextual Arabic machine-draft correction: six cardinal categories and the source screen meaning are reviewed; dynamic argument names, exact selectors, rich-text tags, and protocol/product names are preserved. Fluency and full RTL acceptance remain unverified."
+    },
+    {
+      "domain": "client",
+      "locale": "ar",
+      "id": "components.RequestModal.BulkRequestModal.requestitemsFormat",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "Codex contextual Arabic plural review; 2026-10-31; unverified",
+      "sourceHash": "08c609065db2badb3d65ef240c4c4c8a116ec7ae123b20a20258e98720c3d193",
+      "targetHash": "84e35096e9be5437b8c9db42902acc54bec5b860503f39deecd08361eaec3efe",
+      "correctionReason": "Contextual Arabic machine-draft correction: six cardinal categories and the source screen meaning are reviewed; dynamic argument names, exact selectors, rich-text tags, and protocol/product names are preserved. Fluency and full RTL acceptance remain unverified."
+    },
+    {
+      "domain": "client",
+      "locale": "ar",
+      "id": "components.RequestModal.QuotaDisplay.requestsremaining",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "Codex contextual Arabic plural review; 2026-10-31; unverified",
+      "sourceHash": "e4e5ce20a8c1ec2e3947f917adddb3f04be0a4c1dd813d90833aaf10b8f1dfe0",
+      "targetHash": "cad41a1a9eeb3a2de9bed299f5132aa6842a83814954fc65202a5738294714bc",
+      "correctionReason": "Rendered cardinal-sample read-through: align gender, isolate the dynamic media-type label, and use natural singular/dual forms without redundant displayed digits; remains machine-draft/unverified."
+    },
+    {
+      "domain": "client",
+      "locale": "ar",
+      "id": "components.RequestModal.QuotaDisplay.requiredquota",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "Codex contextual Arabic plural review; 2026-10-31; unverified",
+      "sourceHash": "ee4d5e900a83d01ba910e558bb4094684c874e8b875a5d9a5c3c21264141baa0",
+      "targetHash": "787b1819b5c3c2ae855a565fa86b712f5e6fecb17f4be4131ee98335a3ec5aff",
+      "correctionReason": "Contextual Arabic machine-draft correction: six cardinal categories and the source screen meaning are reviewed; dynamic argument names, exact selectors, rich-text tags, and protocol/product names are preserved. Fluency and full RTL acceptance remain unverified."
+    },
+    {
+      "domain": "client",
+      "locale": "ar",
+      "id": "components.RequestModal.QuotaDisplay.requiredquotaUser",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "Codex contextual Arabic plural review; 2026-10-31; unverified",
+      "sourceHash": "07980884604239bcb0d5ed5f93b82af608c05b4976eb2a123a63fccf7242a5af",
+      "targetHash": "ed4cc3f850ec1b1efa4bdd8368f9db7deb51498740616f1c0a0d893585d4d6bc",
+      "correctionReason": "Contextual Arabic machine-draft correction: six cardinal categories and the source screen meaning are reviewed; dynamic argument names, exact selectors, rich-text tags, and protocol/product names are preserved. Fluency and full RTL acceptance remain unverified."
+    },
+    {
+      "domain": "client",
+      "locale": "ar",
+      "id": "components.RequestModal.QuotaDisplay.softwareRequestsRemaining",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "Codex contextual Arabic plural review; 2026-10-31; unverified",
+      "sourceHash": "f5927d66b85d5e09777d23277bb58eef2ee1ea1c72e068a2ab61aabce1d3dc97",
+      "targetHash": "a8eb581e45232b91ad48d6223636cc0297ffc80b2db0b98d1cc472bafc5d8b5c",
+      "correctionReason": "Contextual Arabic machine-draft correction: six cardinal categories and the source screen meaning are reviewed; dynamic argument names, exact selectors, rich-text tags, and protocol/product names are preserved. Fluency and full RTL acceptance remain unverified."
+    },
+    {
+      "domain": "client",
+      "locale": "ar",
+      "id": "components.RequestModal.watchAheadEpisodeOption",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "Codex contextual Arabic plural review; 2026-10-31; unverified",
+      "sourceHash": "8870229e7e13a9223f9a68fe53bb5da5588f4509613c8cf6fbf819a3c2478922",
+      "targetHash": "d50a73b40a1e8af09654580b839c39b88e1e82f5626f9f3fd9fc775eff5fb763",
+      "correctionReason": "Contextual Arabic machine-draft correction: six cardinal categories and the source screen meaning are reviewed; dynamic argument names, exact selectors, rich-text tags, and protocol/product names are preserved. Fluency and full RTL acceptance remain unverified."
+    },
+    {
+      "domain": "client",
+      "locale": "ar",
+      "id": "components.Requests.olderRequests",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "Codex contextual Arabic plural review; 2026-10-31; unverified",
+      "sourceHash": "f42eb8268b6cdd015ae8c54b072567e2d79a8d1c69070e6820cddb32cd86f542",
+      "targetHash": "0ba347554447171c99c2c3cdcb95cfb6b190e7721e8da4a27bd6a08aa7a4ba45",
+      "correctionReason": "Contextual Arabic machine-draft correction: six cardinal categories and the source screen meaning are reviewed; dynamic argument names, exact selectors, rich-text tags, and protocol/product names are preserved. Fluency and full RTL acceptance remain unverified."
+    },
+    {
+      "domain": "client",
+      "locale": "ar",
+      "id": "components.Settings.SetupConnectionsImport.imported",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "Codex contextual Arabic plural review; 2026-10-31; unverified",
+      "sourceHash": "c4c15d6cc3b22f084050e7e9addd0b588e7843ae7d396ac8418100a37c9fc2d2",
+      "targetHash": "245f92d655299739a76a3a4bf088e0accdaaeb7a40141f8a594bd02ceb14d72e",
+      "correctionReason": "Contextual Arabic machine-draft correction: six cardinal categories and the source screen meaning are reviewed; dynamic argument names, exact selectors, rich-text tags, and protocol/product names are preserved. Fluency and full RTL acceptance remain unverified."
+    },
+    {
+      "domain": "client",
+      "locale": "ar",
+      "id": "components.Soulseek.AlbumLibraryHealthButton.fixAll",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "Codex contextual Arabic plural review; 2026-10-31; unverified",
+      "sourceHash": "5ab9244f2590842e4ac90890146b7bbded5a9f39ad395f3fc8ce6cdb7a7532b7",
+      "targetHash": "fa0ebf806b1d21bebde0fe195e8f61073d3ac90e8f37f62066febb43bd8b3dfb",
+      "correctionReason": "Rendered cardinal-sample read-through: align gender, isolate the dynamic media-type label, and use natural singular/dual forms without redundant displayed digits; remains machine-draft/unverified."
+    },
+    {
+      "domain": "client",
+      "locale": "ar",
+      "id": "components.Soulseek.AlbumLibraryHealthButton.fixStarted",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "Codex contextual Arabic plural review; 2026-10-31; unverified",
+      "sourceHash": "3a6f5adc03c08f66fe134c8b26a27e33cc48772a9ab0dd88de7cca8b456e9870",
+      "targetHash": "8124e8e60b805b64fe01904e7d5d84edbc918fc3deda061c09cf24052047307d",
+      "correctionReason": "Rendered cardinal-sample read-through: align gender, isolate the dynamic media-type label, and use natural singular/dual forms without redundant displayed digits; remains machine-draft/unverified."
+    },
+    {
+      "domain": "client",
+      "locale": "ar",
+      "id": "components.Soulseek.SoulseekUnmatchedTracks.request",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "Codex contextual Arabic plural review; 2026-10-31; unverified",
+      "sourceHash": "ee979662fcbf75d6a4006a34a2d8687f3961f7aa0d43631d258dbfafef8c943b",
+      "targetHash": "16c37d5b60a35067f7bf206fb1d7fdd886d3448f45f90fa6947f907a3bde7406",
+      "correctionReason": "Contextual Arabic machine-draft correction: six cardinal categories and the source screen meaning are reviewed; dynamic argument names, exact selectors, rich-text tags, and protocol/product names are preserved. Fluency and full RTL acceptance remain unverified."
+    },
+    {
+      "domain": "client",
+      "locale": "ar",
+      "id": "components.Soulseek.SoulseekUnmatchedTracks.requested",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "Codex contextual Arabic plural review; 2026-10-31; unverified",
+      "sourceHash": "11c91272223dc7bee2269e8862e2a28bf20d0d9e901d388b8d52184578125157",
+      "targetHash": "168ba60537fe1e455ff3f5c0481861906e3e077096a23da5e0c95ea7872a9c46",
+      "correctionReason": "Contextual Arabic machine-draft correction: six cardinal categories and the source screen meaning are reviewed; dynamic argument names, exact selectors, rich-text tags, and protocol/product names are preserved. Fluency and full RTL acceptance remain unverified."
+    },
+    {
+      "domain": "client",
+      "locale": "ar",
+      "id": "components.UserList.importedfromJellyfin",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "Codex contextual Arabic plural review; 2026-10-31; unverified",
+      "sourceHash": "48fe31cc40fe97844319f1d64fa25eddebb35284a1c514c62a96169db058b311",
+      "targetHash": "46bff93699755684878751b08f9996f2d475cdaee250a059841aeb71931fa2b9",
+      "correctionReason": "Rendered cardinal-sample read-through: align gender, isolate the dynamic media-type label, and use natural singular/dual forms without redundant displayed digits; remains machine-draft/unverified."
+    },
+    {
+      "domain": "client",
+      "locale": "ar",
+      "id": "components.UserList.importedfromplex",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "Codex contextual Arabic plural review; 2026-10-31; unverified",
+      "sourceHash": "fefbc1519f161aae9ff064c5f642fd6998dd7d7968ac61e381bcfd834bcf29b2",
+      "targetHash": "21ac6d461508ec9a8e407cb41b271db94530986b7a701ef8b5e7776862c2d6c0",
+      "correctionReason": "Rendered cardinal-sample read-through: align gender, isolate the dynamic media-type label, and use natural singular/dual forms without redundant displayed digits; remains machine-draft/unverified."
+    },
+    {
+      "domain": "client",
+      "locale": "ar",
+      "id": "components.QuotaSelector.albums",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "Codex contextual Arabic plural review; 2026-10-31; unverified",
+      "sourceHash": "07cec89510187bfa97f70b3365be3c3e2c5040d49f852590e087e148d591b2b7",
+      "targetHash": "0a88681eb5ff48b615558a4e0d072ca05cf233f6af98ff8da2869843dadf0753",
+      "correctionReason": "Contextual Arabic machine-draft correction: six cardinal categories and the source screen meaning are reviewed; dynamic argument names, exact selectors, rich-text tags, and protocol/product names are preserved. Fluency and full RTL acceptance remain unverified."
+    },
+    {
+      "domain": "client",
+      "locale": "ar",
+      "id": "components.QuotaSelector.books",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "Codex contextual Arabic plural review; 2026-10-31; unverified",
+      "sourceHash": "9b3a5765bde9ccdc0466091ffe94047573f89c3c2b4a8e774b77803c1f0822de",
+      "targetHash": "dc36ad6843b2a1cbd4b369963e0231144c6a5b7e7fba43e656390dea06b7dceb",
+      "correctionReason": "Contextual Arabic machine-draft correction: six cardinal categories and the source screen meaning are reviewed; dynamic argument names, exact selectors, rich-text tags, and protocol/product names are preserved. Fluency and full RTL acceptance remain unverified."
+    },
+    {
+      "domain": "client",
+      "locale": "ar",
+      "id": "components.QuotaSelector.comics",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "Codex contextual Arabic plural review; 2026-10-31; unverified",
+      "sourceHash": "e3a4a217841a649066c0edeefda7c52193d08ccf033545efc81e3ae375b1c36c",
+      "targetHash": "6db20f4fa58c8a66d0cf1c476fe2a8352a0bf73691a8be667db1abafed6ea873",
+      "correctionReason": "Contextual Arabic machine-draft correction: six cardinal categories and the source screen meaning are reviewed; dynamic argument names, exact selectors, rich-text tags, and protocol/product names are preserved. Fluency and full RTL acceptance remain unverified."
+    },
+    {
+      "domain": "client",
+      "locale": "ar",
+      "id": "components.QuotaSelector.days",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "Codex contextual Arabic plural review; 2026-10-31; unverified",
+      "sourceHash": "3a99a92f18aed133287fb78c48ae82686db2c9e9a35a51a12001fea39ece0115",
+      "targetHash": "daffed77493f11b6fd9151f5ba9cbf6728e811f4dac3eaf72385b741138dfdcb",
+      "correctionReason": "Contextual Arabic machine-draft correction: six cardinal categories and the source screen meaning are reviewed; dynamic argument names, exact selectors, rich-text tags, and protocol/product names are preserved. Fluency and full RTL acceptance remain unverified."
+    },
+    {
+      "domain": "client",
+      "locale": "ar",
+      "id": "components.QuotaSelector.magazines",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "Codex contextual Arabic plural review; 2026-10-31; unverified",
+      "sourceHash": "52f562bba441628f004cd53d667261849dfe80004ce8d41ab62e04308d0f7084",
+      "targetHash": "bdb5ed153de974b9faa89f0d42fc66479cd56c139500461cfc7b9a05a3c04ccc",
+      "correctionReason": "Contextual Arabic machine-draft correction: six cardinal categories and the source screen meaning are reviewed; dynamic argument names, exact selectors, rich-text tags, and protocol/product names are preserved. Fluency and full RTL acceptance remain unverified."
+    },
+    {
+      "domain": "client",
+      "locale": "ar",
+      "id": "components.QuotaSelector.movies",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "Codex contextual Arabic plural review; 2026-10-31; unverified",
+      "sourceHash": "d3a5b23a46e3074156d95290eb1672bd944e06bb557b070ec35878d456c7ad33",
+      "targetHash": "c3b0754922a07cf54dbafa49107f048e9dc26852d395fa26dc7f1fbbdb9bb625",
+      "correctionReason": "Contextual Arabic machine-draft correction: six cardinal categories and the source screen meaning are reviewed; dynamic argument names, exact selectors, rich-text tags, and protocol/product names are preserved. Fluency and full RTL acceptance remain unverified."
+    },
+    {
+      "domain": "client",
+      "locale": "ar",
+      "id": "components.QuotaSelector.seasons",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "Codex contextual Arabic plural review; 2026-10-31; unverified",
+      "sourceHash": "58ce0091b740b1dd649b4267cf3853172a7bdc96898e13171626fe7aba4002f5",
+      "targetHash": "6740e03387dfd81516374e89bd179f2fdc79f3d590c990ceee282c3752d54a16",
+      "correctionReason": "Contextual Arabic machine-draft correction: six cardinal categories and the source screen meaning are reviewed; dynamic argument names, exact selectors, rich-text tags, and protocol/product names are preserved. Fluency and full RTL acceptance remain unverified."
+    },
+    {
+      "domain": "client",
+      "locale": "ar",
+      "id": "components.QuotaSelector.software",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "Codex contextual Arabic plural review; 2026-10-31; unverified",
+      "sourceHash": "033649a8309f42ccbeaab10c58be8a61301bb08755635f11c7c269b8fac8a3d4",
+      "targetHash": "f328944b9e263b013753aeeafb6c4a8e59f25a84d6996a70150c162bbf570f03",
+      "correctionReason": "Contextual Arabic machine-draft correction: six cardinal categories and the source screen meaning are reviewed; dynamic argument names, exact selectors, rich-text tags, and protocol/product names are preserved. Fluency and full RTL acceptance remain unverified."
+    },
+    {
+      "domain": "client",
+      "locale": "ar",
+      "id": "components.RequestModal.QuotaDisplay.booklimit",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "Codex contextual Arabic plural review; 2026-10-31; unverified",
+      "sourceHash": "c7b2b3dd68e319ff3287b9567e8d9bb17d9995b5c7bdfe5973aa6f1973bfd23c",
+      "targetHash": "c0a2ace641fcb5f9a6775d8d6228d23fc480114a03d09319d69bf8747fd5c77e",
+      "correctionReason": "Contextual Arabic machine-draft correction: six cardinal categories and the source screen meaning are reviewed; dynamic argument names, exact selectors, rich-text tags, and protocol/product names are preserved. Fluency and full RTL acceptance remain unverified."
+    },
+    {
+      "domain": "client",
+      "locale": "ar",
+      "id": "components.RequestModal.QuotaDisplay.comiclimit",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "Codex contextual Arabic plural review; 2026-10-31; unverified",
+      "sourceHash": "48e93505bdd1e19cbd758c2e3ab1c15549d07fffaa673cc83e8918bab47c86b9",
+      "targetHash": "cfb6b6951d3f8066e899f9207463d98e754c453ccef09090a608aa8dd6d3bccf",
+      "correctionReason": "Contextual Arabic machine-draft correction: six cardinal categories and the source screen meaning are reviewed; dynamic argument names, exact selectors, rich-text tags, and protocol/product names are preserved. Fluency and full RTL acceptance remain unverified."
+    },
+    {
+      "domain": "client",
+      "locale": "ar",
+      "id": "components.RequestModal.QuotaDisplay.magazinelimit",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "Codex contextual Arabic plural review; 2026-10-31; unverified",
+      "sourceHash": "b08a7c535a86ed183888e6080ad623187f9dbe0a7346ae15d60dd2654570d98b",
+      "targetHash": "b3c8ec3b3b4e134eb35a986634bed6d9e03252775a64d47417e91a9ea54b0b7d",
+      "correctionReason": "Contextual Arabic machine-draft correction: six cardinal categories and the source screen meaning are reviewed; dynamic argument names, exact selectors, rich-text tags, and protocol/product names are preserved. Fluency and full RTL acceptance remain unverified."
+    },
+    {
+      "domain": "client",
+      "locale": "ar",
+      "id": "components.RequestModal.QuotaDisplay.movielimit",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "Codex contextual Arabic plural review; 2026-10-31; unverified",
+      "sourceHash": "0eb0e4ce59f0eaf37d7e428f410a2d95e8c905a4ae842b58e918ee97344dd34d",
+      "targetHash": "fc0090adc8a6cf79275c4ad2c7cf9c8f4fe5f4cd9c6a8b4bbbaee5339f63d976",
+      "correctionReason": "Contextual Arabic machine-draft correction: six cardinal categories and the source screen meaning are reviewed; dynamic argument names, exact selectors, rich-text tags, and protocol/product names are preserved. Fluency and full RTL acceptance remain unverified."
+    },
+    {
+      "domain": "client",
+      "locale": "ar",
+      "id": "components.RequestModal.QuotaDisplay.musiclimit",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "Codex contextual Arabic plural review; 2026-10-31; unverified",
+      "sourceHash": "863af380147c6ddcfae212ae698b6d5d46ccf9a55a51edd66393af9776bb595d",
+      "targetHash": "9c972cffcc225ee04494b5226e2d530b86a4070655e563b570c8b997635ee47d",
+      "correctionReason": "Contextual Arabic machine-draft correction: six cardinal categories and the source screen meaning are reviewed; dynamic argument names, exact selectors, rich-text tags, and protocol/product names are preserved. Fluency and full RTL acceptance remain unverified."
+    },
+    {
+      "domain": "client",
+      "locale": "ar",
+      "id": "components.RequestModal.QuotaDisplay.seasonlimit",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "Codex contextual Arabic plural review; 2026-10-31; unverified",
+      "sourceHash": "3b4f9b90497cffe57d1070f525c31e6dc8e4b179ec8844b87c24df37d70a4195",
+      "targetHash": "a35e42b9dcd962034fd472d3fe8e83e9a9d8fb1d4cca2b2ce3b91e2cf895405b",
+      "correctionReason": "Contextual Arabic machine-draft correction: six cardinal categories and the source screen meaning are reviewed; dynamic argument names, exact selectors, rich-text tags, and protocol/product names are preserved. Fluency and full RTL acceptance remain unverified."
+    },
+    {
+      "domain": "client",
+      "locale": "ar",
+      "id": "components.RequestModal.QuotaDisplay.softwarelimit",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "Codex contextual Arabic plural review; 2026-10-31; unverified",
+      "sourceHash": "b95a8cc124367b02cd88c219557ae7b196c6064f42ca7f74ed03750462a9eec1",
+      "targetHash": "8cab9ea10ccdf63fd047cbdb457fe8ad612ef6aea3a408ecb50eb85460ead468",
+      "correctionReason": "Contextual Arabic machine-draft correction: six cardinal categories and the source screen meaning are reviewed; dynamic argument names, exact selectors, rich-text tags, and protocol/product names are preserved. Fluency and full RTL acceptance remain unverified."
+    },
+    {
+      "domain": "client",
+      "locale": "ar",
+      "id": "components.Settings.SettingsJobsCache.editJobScheduleSelectorDays",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "Codex contextual Arabic plural review; 2026-10-31; unverified",
+      "sourceHash": "623d8466318329f2d116c574691d8f6b41462e0557a34384cc579359f1bc5779",
+      "targetHash": "207af0466342e152779001ac84629319198a5040909ad0b0f2480b1fc2d10da0",
+      "correctionReason": "Contextual Arabic machine-draft correction: six cardinal categories and the source screen meaning are reviewed; dynamic argument names, exact selectors, rich-text tags, and protocol/product names are preserved. Fluency and full RTL acceptance remain unverified."
+    },
+    {
+      "domain": "client",
+      "locale": "ar",
+      "id": "components.Settings.SettingsJobsCache.editJobScheduleSelectorHours",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "Codex contextual Arabic plural review; 2026-10-31; unverified",
+      "sourceHash": "7e0bf5f6b68513ae653eb0a214b4002975067fbd8193444ce579f9a8104acab1",
+      "targetHash": "04fc746db2b2ce2831c469d2692680aad8d333bc7df32f08b833c775d0715c35",
+      "correctionReason": "Contextual Arabic machine-draft correction: six cardinal categories and the source screen meaning are reviewed; dynamic argument names, exact selectors, rich-text tags, and protocol/product names are preserved. Fluency and full RTL acceptance remain unverified."
+    },
+    {
+      "domain": "client",
+      "locale": "ar",
+      "id": "components.Settings.SettingsJobsCache.editJobScheduleSelectorMinutes",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "Codex contextual Arabic plural review; 2026-10-31; unverified",
+      "sourceHash": "8c9168121ebc61e3469a554a51edf890bb5d18b6dab83bc18ec5fb5436f64b3c",
+      "targetHash": "897c95e30801b2c12ef03dd83e0f7b3e523eaec5631f7fedfa3953a232e882d1",
+      "correctionReason": "Contextual Arabic machine-draft correction: six cardinal categories and the source screen meaning are reviewed; dynamic argument names, exact selectors, rich-text tags, and protocol/product names are preserved. Fluency and full RTL acceptance remain unverified."
+    },
+    {
+      "domain": "client",
+      "locale": "ar",
+      "id": "components.Settings.SettingsJobsCache.editJobScheduleSelectorSeconds",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "Codex contextual Arabic plural review; 2026-10-31; unverified",
+      "sourceHash": "616d82fc67f2204722da0084a14dd0ed030c469f76716519254e5a0938de08df",
+      "targetHash": "9e444e04e89b3f48ee9b5199e56c71bce2510bc23a7f3bf807581554f47143bf",
+      "correctionReason": "Contextual Arabic machine-draft correction: six cardinal categories and the source screen meaning are reviewed; dynamic argument names, exact selectors, rich-text tags, and protocol/product names are preserved. Fluency and full RTL acceptance remain unverified."
+    },
+    {
+      "domain": "client",
+      "locale": "ar",
+      "id": "components.Settings.BookshelfPathMigration.authorFileCounts",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "Codex contextual Arabic plural review; 2026-10-31; unverified",
+      "sourceHash": "439760c4f9d95aa9702269518d6f6566b98835a02925d8602753c2c3fb36d0fe",
+      "targetHash": "0a08f6035f2bdffb4b61a03b9d05b97aae7313d39ebc602d6f7a533afa0b3944",
+      "correctionReason": "Contextual Arabic machine-draft correction: six cardinal categories and the source screen meaning are reviewed; dynamic argument names, exact selectors, rich-text tags, and protocol/product names are preserved. Fluency and full RTL acceptance remain unverified."
+    },
+    {
+      "domain": "client",
+      "locale": "ar",
+      "id": "components.Soulseek.SoulseekUnmatchedTracks.description",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "Codex contextual Arabic plural review; 2026-10-31; unverified",
+      "sourceHash": "976f635a570bd70f0ff82c6a77027c2a633078a4e0a99517bd3d0bd4d417033f",
+      "targetHash": "0824a508c61a7a35cc452ccfabd2dd04e8079b2526c06bf7014990ee6e8045f2",
+      "correctionReason": "Contextual Arabic machine-draft correction: six cardinal categories and the source screen meaning are reviewed; dynamic argument names, exact selectors, rich-text tags, and protocol/product names are preserved. Fluency and full RTL acceptance remain unverified."
     }
   ]
 }
