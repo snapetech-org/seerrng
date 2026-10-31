@@ -149,8 +149,9 @@ Recent repository updates include:
   exception approvals, optional Slack approval actions, an optional
   previous-season watch gate, and Sonarr monitoring for future seasons when
   the latest regular season was requested. Failed TV requests retain their
-  context and support verified season mapping; bounded failure explanations
-  and request history are localized.
+  context and support verified season mapping; requests complete without a
+  duplicate dispatch when library activity makes the requested media available.
+  Bounded failure explanations and request history are localized.
 - **User workflows:** local watchlist filters, a browser-saved Subject Tags
   visibility preference, private one-time availability notices for followed
   requests, per-user shared-availability display choices, and opt-in
