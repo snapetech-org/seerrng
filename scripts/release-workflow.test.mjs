@@ -550,8 +550,8 @@ test('multi-architecture publishers perform the real build once and verify the i
 
   assert.equal(ci.jobs.build, undefined);
   assert.match(ci.jobs.publish.if, /github\.ref == 'refs\/heads\/main'/u);
-  assert.match(ci.jobs.publish.if, /inputs\.action_tag == 'publish-image'/u);
-  assert.match(ci.jobs.publish.if, /inputs\.runner_pool_tag == 'private'/u);
+  assert.match(ci.jobs.publish.if, /inputs\.action == 'publish-image'/u);
+  assert.match(ci.jobs.publish.if, /inputs\.runner_pool == 'private'/u);
   assert.match(ci.jobs.publish['runs-on'], /"group":"ng-shared-main-jit"/u);
   assert.match(ci.jobs.publish['runs-on'], /github\.run_id/u);
   assert.doesNotMatch(ci.jobs.publish['runs-on'], /ubuntu-latest/u);
@@ -572,6 +572,53 @@ test('multi-architecture publishers perform the real build once and verify the i
   assert.equal(Object.hasOwn(ci.on, 'workflow_dispatch'), true);
   assert.equal(Object.hasOwn(ci.on, 'pull_request'), false);
   assert.equal(Object.hasOwn(ci.on, 'pull_request_target'), false);
+  assert.match(ci['run-name'], /inputs\.action, inputs\.runner_pool/u);
+  for (const jobName of [
+    'release-notes',
+    'i18n-and-tooling',
+    'test',
+    'unit-test',
+    'node-test',
+    'jellyfin-plugin',
+    'playwright',
+    'cypress',
+    'test-docs',
+    'docs-links',
+    'helm',
+  ]) {
+    assert.match(
+      ci.jobs[jobName].if,
+      /github\.ref == 'refs\/heads\/main'/u,
+      `${jobName} should only run from main`
+    );
+    assert.match(
+      ci.jobs[jobName].if,
+      /inputs\.action == 'ci'/u,
+      `${jobName} should run for the explicit CI action`
+    );
+    assert.doesNotMatch(
+      ci.jobs[jobName].if,
+      /github\.event_name == 'push'/u,
+      `${jobName} must not run automatically on pushes`
+    );
+  }
+  assert.doesNotMatch(ci.jobs.publish.if, /github\.event_name == 'push'/u);
+  assert.doesNotMatch(
+    ci.jobs['scan-main-image'].if,
+    /github\.event_name == 'push'/u
+  );
+  const releaseNoteValidation = ci.jobs['release-notes'].steps.find(
+    (step) => step.name === 'Validate release-note fragment or explicit opt-out'
+  );
+  assert.match(
+    releaseNoteValidation.run,
+    /git rev-parse --verify "\$\{HEAD_SHA\}\^1"/u
+  );
+  assert.match(
+    releaseNoteValidation.run,
+    /git diff --quiet "\$base_sha" "\$HEAD_SHA" -- release-notes/u
+  );
+  assert.doesNotMatch(releaseNoteValidation.run, /GITHUB_EVENT_NAME|push/u);
   assert.equal(ci.jobs['preflight-deploy'], undefined);
   assert.equal(ci.jobs['deploy-main'], undefined);
   assert.match(
@@ -588,7 +635,7 @@ test('multi-architecture publishers perform the real build once and verify the i
   );
   assert.equal(
     ci.jobs['scan-main-image'].if.includes(
-      "github.ref == 'refs/heads/main' && needs.publish.result == 'success'"
+      "github.ref == 'refs/heads/main' && inputs.action == 'publish-image' && inputs.runner_pool == 'private' && needs.publish.result == 'success'"
     ),
     true
   );
@@ -1287,6 +1334,7 @@ test('trusted main release retries use the private runner pools', () => {
     assert.match(runsOn, /"group":"ng-shared-main-jit"/u, label);
     assert.match(runsOn, /"ng-shared-main-seerrng"/u, label);
     assert.match(runsOn, /github\.run_id/u, label);
+    assert.match(runsOn, /gha-\{0\}-(?:\{1\}-)?[a-z0-9-]+/u, label);
     assert.doesNotMatch(
       runsOn,
       /(?:ubuntu|windows|macos)-\d|\|\|\s*matrix\.runner(?:\W|$)/u,
@@ -1335,11 +1383,7 @@ test('main CI image publishing uses private runners without cancelling queued sc
   assert.match(imagePublish['runs-on'], /ng-shared-main-seerrng/u);
   assert.equal(imagePublish.concurrency['cancel-in-progress'], false);
 
-  for (const name of [
-    'codeql.yml',
-    'semgrep-community.yml',
-    'trivy-filesystem.yml',
-  ]) {
+  for (const name of ['semgrep-community.yml', 'trivy-filesystem.yml']) {
     const workflow = readWorkflow(name);
 
     assert.equal(
@@ -1562,25 +1606,21 @@ test('release asset checksums match the builder sidecar names', () => {
   assert.match(assetsText, /checksum_base="\$\{checksum_base%\.aab\}-aab"/u);
 });
 
-test('CI validates release notes with push and pull-request event context', () => {
+test('manual main CI validates release notes against the selected commit parent', () => {
   const ci = readWorkflow('ci.yml');
   const validation = ci.jobs['release-notes'].steps.find(
     (step) => step.name === 'Validate release-note fragment or explicit opt-out'
   );
 
   assert.ok(validation);
-  assert.equal(
-    validation.env.BASE_SHA,
-    '${{ github.event.pull_request.base.sha || github.event.before }}'
+  assert.deepEqual(validation.env, { HEAD_SHA: '${{ github.sha }}' });
+  assert.match(validation.run, /git rev-parse --verify "\$\{HEAD_SHA\}\^1"/u);
+  assert.match(
+    validation.run,
+    /git diff --quiet "\$base_sha" "\$HEAD_SHA" -- release-notes/u
   );
-  assert.equal(
-    validation.env.HEAD_SHA,
-    '${{ github.event.pull_request.head.sha || github.sha }}'
-  );
-  assert.equal(
-    validation.env.PR_BODY,
-    "${{ github.event.pull_request.body || github.event.head_commit.message || '' }}"
-  );
+  assert.match(validation.run, /printf '%s' 'release-note: none'/u);
+  assert.doesNotMatch(validation.run, /GITHUB_EVENT_NAME|pull_request|push/u);
   assert.doesNotMatch(validation.run, /\$\{\{/u);
   assert.match(validation.run, /--summary-file "\$GITHUB_STEP_SUMMARY"/u);
 });

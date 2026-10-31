@@ -34,6 +34,7 @@ const assertSharedMainJitRunner = (runner, context) => {
   assert.match(runner, /"group":"ng-shared-main-jit"/u, context);
   assert.match(runner, /"ng-shared-main-seerrng"/u, context);
   assert.match(runner, /"ng-main-run-\{0\}"/u, context);
+  assert.match(runner, /gha-\{0\}-(?:\{1\}-)?[a-z0-9-]+/u, context);
   assert.match(runner, /github\.run_id/u, context);
   assert.doesNotMatch(
     runner,
@@ -276,71 +277,53 @@ test('renderer bumps and packages multiple changed charts', () => {
   }
 });
 
-test('CodeQL models the awaited image cache validation barrier', () => {
-  const codeqlWorkflow = yaml.load(
-    fs.readFileSync(
-      path.join(rootDirectory, '.github', 'workflows', 'codeql.yml'),
+test('all shared-main JIT workflow jobs have unique job-scoped labels', () => {
+  const workflowsDirectory = path.join(rootDirectory, '.github', 'workflows');
+  const unscopedJobs = [];
+  for (const fileName of fs.readdirSync(workflowsDirectory)) {
+    if (!/\.ya?ml$/u.test(fileName)) continue;
+    const source = fs.readFileSync(
+      path.join(workflowsDirectory, fileName),
       'utf8'
-    )
-  );
-  const codeqlModelDirectory = path.join(
-    rootDirectory,
-    '.github',
-    'codeql',
-    'model-pack'
-  );
-  const modelPack = yaml.load(
-    fs.readFileSync(path.join(codeqlModelDirectory, 'qlpack.yml'), 'utf8')
-  );
-  const securityModels = yaml.load(
-    fs.readFileSync(
-      path.join(codeqlModelDirectory, 'models', 'security.yml'),
-      'utf8'
-    )
-  );
-  const modelPackReference = codeqlWorkflow.jobs.analyze.steps.find(
-    (step) => step.name === 'Initialize CodeQL'
-  ).with.packs;
-  const codeqlSteps = codeqlWorkflow.jobs.analyze.steps;
-  const nodeSetupIndex = codeqlSteps.findIndex(
-    (step) => step.name === 'Set up Node.js for CodeQL'
-  );
-  const codeqlInitIndex = codeqlSteps.findIndex(
-    (step) => step.name === 'Initialize CodeQL'
-  );
-  const nodeSetup = codeqlSteps[nodeSetupIndex];
-  const imageCacheBarriers = securityModels.extensions
-    .filter(({ addsTo }) => addsTo.extensible === 'barrierModel')
-    .flatMap(({ data }) => data)
-    .filter(([module]) => module === '@server/lib/imageproxy');
+    );
+    source.split('\n').forEach((line, index) => {
+      if (
+        line.includes('runs-on:') &&
+        line.includes('ng-main-run-{0}') &&
+        !line.includes('gha-{0}-')
+      ) {
+        unscopedJobs.push(`${fileName}:${index + 1}`);
+      }
+    });
+  }
+  assert.deepEqual(unscopedJobs, []);
+});
 
-  assert.ok(
-    modelPackReference.includes(
-      `snapetech/seerrng-codeql-models@${modelPack.version}`
-    )
-  );
-  assert.equal(nodeSetup.if, "matrix.language == 'javascript'");
+test('CodeQL workflow invocations are disabled', () => {
+  const workflowsDirectory = path.join(rootDirectory, '.github', 'workflows');
   assert.equal(
-    nodeSetup.uses,
-    'actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1'
+    fs.existsSync(path.join(workflowsDirectory, 'codeql.yml')),
+    false
   );
-  assert.equal(nodeSetup.with['node-version-file'], 'package.json');
-  assert.equal(nodeSetup.with['package-manager-cache'], false);
-  assert.ok(nodeSetupIndex < codeqlInitIndex);
-  assert.deepEqual(
-    imageCacheBarriers.sort(([left], [right]) => left.localeCompare(right)),
-    [
-      [
-        '@server/lib/imageproxy',
-        'Member[prepareRasterImageForCache].ReturnValue.Awaited',
-        'http-to-file-access',
-      ],
-      [
-        '@server/lib/imageproxy',
-        'Member[prepareRasterImageForCache].ReturnValue.Awaited.Member[buffer]',
-        'http-to-file-access',
-      ],
-    ].sort(([left], [right]) => left.localeCompare(right))
+  assert.equal(
+    fs.existsSync(
+      path.join(workflowsDirectory, 'publish-codeql-model-pack.yml')
+    ),
+    false
+  );
+  assert.equal(
+    fs.existsSync(path.join(rootDirectory, '.github', 'codeql')),
+    false
+  );
+
+  const workflowSources = fs
+    .readdirSync(workflowsDirectory)
+    .filter((fileName) => /\.ya?ml$/u.test(fileName))
+    .map((fileName) =>
+      fs.readFileSync(path.join(workflowsDirectory, fileName), 'utf8')
+    );
+  assert.ok(
+    workflowSources.every((source) => !source.includes('github/codeql-action/'))
   );
 });
 
@@ -354,10 +337,16 @@ test('unit-test shards use private JIT runners with exact-run labels', () => {
   const runner = ciWorkflow.jobs['unit-test']?.['runs-on'];
   assertSharedMainJitRunner(runner, 'unit-test');
   assert.equal(ciWorkflow.on.push, undefined);
+  assert.equal(Object.hasOwn(ciWorkflow.on, 'pull_request'), false);
+  assert.equal(Object.hasOwn(ciWorkflow.on, 'pull_request_target'), false);
   assert.deepEqual(
-    ciWorkflow.on.workflow_dispatch.inputs.runner_pool_tag.options,
+    ciWorkflow.on.workflow_dispatch.inputs.runner_pool.options,
     ['private']
   );
+  assert.deepEqual(ciWorkflow.on.workflow_dispatch.inputs.action.options, [
+    'ci',
+    'publish-image',
+  ]);
   assert.equal(ciWorkflow.jobs['unit-test']?.strategy?.['max-parallel'], 4);
   assert.equal(ciWorkflow.jobs['preflight-deploy'], undefined);
   assert.equal(ciWorkflow.jobs['deploy-main'], undefined);
@@ -373,7 +362,6 @@ test('main validation and image scanning use private JIT runners', () => {
     assertSharedMainJitRunner(runner, jobName);
   }
   for (const [workflowName, jobName] of [
-    ['codeql.yml', 'analyze'],
     ['semgrep-community.yml', 'semgrep'],
   ]) {
     const scanWorkflow = yaml.load(

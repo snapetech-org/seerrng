@@ -43,7 +43,7 @@ jobs:
   label:
     name: Labeling
     if: inputs.action == 'merge-conflict-labeler' && inputs.runner_pool == 'private'
-    runs-on: ${{ fromJSON(format('{{"group":"ng-shared-main-jit","labels":["self-hosted","linux","x64","ng-shared-main-seerrng","ng-main-run-{0}"]}}', github.run_id)) }}
+    runs-on: ${{ fromJSON(format('{{"group":"ng-shared-main-jit","labels":["self-hosted","linux","x64","ng-shared-main-seerrng","ng-main-run-{0}","gha-{0}-label"]}}', github.run_id)) }}
     timeout-minutes: 10
     permissions:
       contents: read
