@@ -11,6 +11,7 @@ import {
   hasUnreviewedTranslations,
   isValidProvenanceEntry,
   matchesProvenanceFingerprints,
+  matchesSourceCallsiteLine,
 } from './check-i18n-catalogs-lib.mjs';
 
 const require = createRequire(import.meta.url);
@@ -296,6 +297,42 @@ test('same-spelling target-language equivalents are covered without being fallba
       reviewStatus: 'draft',
       coverageGap: false,
     }
+  );
+});
+
+test('locale-equivalence evidence must still match its recorded source line and message', () => {
+  const sourceText = [
+    "const messages = defineMessages('pages', {",
+    "  page: 'Page {page}',",
+    "  label: 'Search',",
+    '});',
+  ].join('\n');
+
+  assert.equal(
+    matchesSourceCallsiteLine({
+      sourceText,
+      line: 2,
+      defaultMessage: "'Page {page}'",
+    }),
+    true
+  );
+  assert.equal(
+    matchesSourceCallsiteLine({
+      sourceText,
+      line: 3,
+      defaultMessage: "'Page {page}'",
+    }),
+    false,
+    'a stale line cannot borrow a nearby declaration'
+  );
+  assert.equal(
+    matchesSourceCallsiteLine({
+      sourceText,
+      line: 2,
+      defaultMessage: "'Page {number}'",
+    }),
+    false,
+    'a stale message literal cannot pass the callsite check'
   );
 });
 

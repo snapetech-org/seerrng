@@ -13,6 +13,33 @@ export const getLocalizedEquivalentEntry = (
 export const getProvenanceKey = (domain, locale, id) =>
   `${domain}:${locale}:${id}`;
 
+export const matchesSourceCallsiteLine = ({
+  sourceText,
+  line,
+  defaultMessage,
+}) => {
+  if (
+    typeof sourceText !== 'string' ||
+    !Number.isInteger(line) ||
+    line < 1 ||
+    typeof defaultMessage !== 'string' ||
+    !defaultMessage
+  ) {
+    return false;
+  }
+  const sourceLine = sourceText.split(/\r?\n/)[line - 1];
+  if (sourceLine === undefined) return false;
+  const normalizeIndentation = (value) =>
+    value
+      .replace(/\r/g, '')
+      .split('\n')
+      .map((part) => part.trimStart())
+      .join('\n');
+  return normalizeIndentation(sourceLine).includes(
+    normalizeIndentation(defaultMessage)
+  );
+};
+
 export const classifyCatalogEntry = ({
   hasValue,
   value,

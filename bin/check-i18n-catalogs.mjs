@@ -13,6 +13,7 @@ import {
   hasUnreviewedTranslations,
   isValidProvenanceEntry,
   matchesProvenanceFingerprints,
+  matchesSourceCallsiteLine,
 } from './check-i18n-catalogs-lib.mjs';
 
 const require = createRequire(import.meta.url);
@@ -245,6 +246,7 @@ for (const entry of fallbackManifest.entries) {
 }
 
 const equivalentEntries = new Map();
+const equivalentSourceFiles = new Map();
 if (
   equivalentManifest.schemaVersion !== 1 ||
   !Array.isArray(equivalentManifest.entries)
@@ -329,6 +331,29 @@ for (const entry of equivalentManifest.entries) {
       entry.id,
       'stale-equivalence',
       'Source or target text changed; re-review this locale-equivalence entry.'
+    );
+    continue;
+  }
+  const callsiteMatches = callsites.every((callsite) => {
+    if (!equivalentSourceFiles.has(callsite.path)) {
+      equivalentSourceFiles.set(
+        callsite.path,
+        fs.readFileSync(path.join(root, callsite.path), 'utf8')
+      );
+    }
+    return matchesSourceCallsiteLine({
+      sourceText: equivalentSourceFiles.get(callsite.path),
+      line: callsite.line,
+      defaultMessage: callsite.defaultMessage,
+    });
+  });
+  if (!callsiteMatches) {
+    addProblem(
+      entry.domain,
+      entry.locale,
+      entry.id,
+      'stale-equivalence',
+      'A recorded source callsite line no longer contains its default message.'
     );
     continue;
   }
