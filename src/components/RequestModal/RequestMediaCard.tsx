@@ -13,7 +13,10 @@ const RequestMediaCard = ({
   artworkType,
   children,
 }: RequestMediaCardProps) => (
-  <article className="media-detail-card app-card-main card-layout refreshed-card-surface">
+  <article
+    data-theme-part="request-media-card"
+    className="media-detail-card app-card-main card-layout refreshed-card-surface"
+  >
     {artwork && <MediaDetailArtwork type={artworkType} src={artwork} />}
     <div data-card-part="content">{children}</div>
   </article>

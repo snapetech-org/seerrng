@@ -6,7 +6,10 @@ import {
   type NavigationLink,
 } from '@app/components/Layout/Sidebar/navigation';
 import { getNavigationSectionsForTheme } from '@app/components/Layout/Sidebar/navigationPresentation';
+import UserDropdown from '@app/components/Layout/UserDropdown';
 import VersionStatus from '@app/components/Layout/VersionStatus';
+import { PersiusBrand } from '@app/components/Persius/Chrome';
+import { PersiusNavigationIcon } from '@app/components/Persius/Icons';
 import { useTheme } from '@app/context/ThemeContext';
 import useBlocklistNavigation from '@app/hooks/useBlocklistNavigation';
 import useClickOutside from '@app/hooks/useClickOutside';
@@ -21,11 +24,14 @@ import {
 import versionedAsset from '@app/utils/versionedAsset';
 import { Transition, TransitionChild } from '@headlessui/react';
 import { XMarkIcon } from '@heroicons/react/24/outline';
+import type { RequestResultsResponse } from '@server/interfaces/api/requestInterfaces';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { cloneElement, Fragment, useEffect, useRef } from 'react';
 import { useIntl } from 'react-intl';
+import useSWR from 'swr';
+import { getPersiusNavigationSections } from './navigationPresentation';
 
 interface SidebarProps {
   open?: boolean;
@@ -48,9 +54,19 @@ const Sidebar = ({
   const router = useRouter();
   const intl = useIntl();
   const { interfaceThemeDefinition } = useTheme();
+  const persius = interfaceThemeDefinition.layout === 'persius';
   const { user, hasPermission } = useUser();
   const showBlocklistNavigation = useBlocklistNavigation();
   const { currentSettings } = useSettings();
+  const { data: ownRequests } = useSWR<RequestResultsResponse>(
+    persius && user?.id
+      ? `/api/v1/request?take=1&skip=0&filter=active&requestedBy=${user.id}`
+      : null,
+    { refreshInterval: 30000 }
+  );
+  const requestBadgeCount = persius
+    ? (ownRequests?.pageInfo.results ?? 0)
+    : pendingRequestsCount;
   const serviceAvailability = getUserServiceAvailability(
     currentSettings,
     user?.settings?.enabledMediaCategories,
@@ -80,7 +96,9 @@ const Sidebar = ({
     .filter((section) => section.links.length > 0);
 
   const displayedSidebarSections = getNavigationSectionsForTheme(
-    visibleSidebarSections,
+    persius
+      ? getPersiusNavigationSections(visibleSidebarSections)
+      : visibleSidebarSections,
     interfaceThemeDefinition.navigation
   );
 
@@ -88,11 +106,25 @@ const Sidebar = ({
     link: NavigationLink,
     device: 'mobile' | 'desktop'
   ) => {
-    const selected = router.pathname.match(link.activeRegExp);
+    const selected =
+      (persius &&
+        link.id === 'audiobooks' &&
+        router.pathname.startsWith('/book/') &&
+        router.query.format === 'audiobook') ||
+      (persius &&
+      link.id === 'books' &&
+      router.pathname.startsWith('/book/') &&
+      router.query.format === 'audiobook'
+        ? false
+        : router.pathname.match(link.activeRegExp));
     const navigationIcon =
-      interfaceThemeDefinition.activeNavigationIcon === 'filled' && selected
-        ? link.svgIconSelected
-        : link.svgIcon;
+      interfaceThemeDefinition.activeNavigationIcon === 'filled' && selected ? (
+        link.svgIconSelected
+      ) : persius ? (
+        <PersiusNavigationIcon name={link.id} fallback={link.svgIcon} />
+      ) : (
+        link.svgIcon
+      );
     const iconClass = device === 'desktop' ? 'me-3 h-6 w-6' : 'me-3 h-6 w-6';
     const className =
       device === 'mobile'
@@ -130,8 +162,8 @@ const Sidebar = ({
         {link.messagesKey === 'following' && <FollowUnreadCount />}
         {device === 'desktop' &&
           link.messagesKey === 'requests' &&
-          pendingRequestsCount > 0 &&
-          hasPermission(Permission.MANAGE_REQUESTS) && (
+          requestBadgeCount > 0 &&
+          (persius || hasPermission(Permission.MANAGE_REQUESTS)) && (
             <div className="ms-auto flex">
               <Badge
                 className={`rounded-md bg-gradient-to-br ${
@@ -140,7 +172,7 @@ const Sidebar = ({
                     : 'border-indigo-500 from-indigo-600 to-purple-600'
                 }`}
               >
-                {pendingRequestsCount}
+                {requestBadgeCount}
               </Badge>
             </div>
           )}
@@ -165,30 +197,47 @@ const Sidebar = ({
   };
 
   const renderNavigationSections = (device: 'mobile' | 'desktop') =>
-    displayedSidebarSections.map((section) => (
-      <div
-        key={`${device}-${section.id}`}
-        className="sidebar-navigation-section"
-        data-navigation-section={section.id}
-        role={
-          interfaceThemeDefinition.navigation === 'flat' ? undefined : 'group'
-        }
-        aria-label={
-          interfaceThemeDefinition.navigation === 'flat'
-            ? undefined
-            : intl.formatMessage(menuMessages[section.ariaLabelKey])
-        }
-      >
-        {section.headingKey && (
-          <h2 className="sidebar-navigation-heading">
-            {intl.formatMessage(menuMessages[section.headingKey])}
-          </h2>
-        )}
+    displayedSidebarSections.map((section) => {
+      const content = (
         <div className="sidebar-navigation-items">
           {section.links.map((link) => renderNavigationLink(link, device))}
         </div>
-      </div>
-    ));
+      );
+      if (persius && section.id === 'persius-more')
+        return (
+          <details
+            key={`${device}-${section.id}`}
+            className="sidebar-navigation-section persius-navigation-more"
+          >
+            <summary className="sidebar-navigation-heading">
+              {intl.formatMessage(menuMessages.more)}
+            </summary>
+            {content}
+          </details>
+        );
+      return (
+        <div
+          key={`${device}-${section.id}`}
+          className="sidebar-navigation-section"
+          data-navigation-section={section.id}
+          role={
+            interfaceThemeDefinition.navigation === 'flat' ? undefined : 'group'
+          }
+          aria-label={
+            interfaceThemeDefinition.navigation === 'flat'
+              ? undefined
+              : intl.formatMessage(menuMessages[section.ariaLabelKey])
+          }
+        >
+          {section.headingKey && (
+            <h2 className="sidebar-navigation-heading">
+              {intl.formatMessage(menuMessages[section.headingKey])}
+            </h2>
+          )}
+          {content}
+        </div>
+      );
+    });
 
   useEffect(() => {
     if (openIssuesCount) {
@@ -249,17 +298,21 @@ const Sidebar = ({
                     ref={navRef}
                     className="flex flex-1 flex-col overflow-y-auto pt-4 pb-8 sm:pb-4"
                   >
-                    <div className="flex flex-shrink-0 items-center px-2">
-                      <span className="w-full px-4 text-xl text-gray-50">
-                        <Link href="/" className="relative block h-24 w-64">
-                          <Image
-                            src={versionedAsset('/logo_full.svg')}
-                            alt="Seerr"
-                            fill
-                            className="object-contain object-left rtl:object-right"
-                          />
-                        </Link>
-                      </span>
+                    <div className="sidebar-brand-slot flex flex-shrink-0 items-center px-2">
+                      {persius ? (
+                        <PersiusBrand />
+                      ) : (
+                        <span className="w-full px-4 text-xl text-gray-50">
+                          <Link href="/" className="relative block h-24 w-64">
+                            <Image
+                              src={versionedAsset('/logo_full.svg')}
+                              alt="Seerr"
+                              fill
+                              className="object-contain object-left rtl:object-right"
+                            />
+                          </Link>
+                        </span>
+                      )}
                     </div>
                     <nav
                       className="sidebar-navigation"
@@ -270,6 +323,11 @@ const Sidebar = ({
                     >
                       {renderNavigationSections('mobile')}
                     </nav>
+                    {persius && (
+                      <div className="persius-sidebar-account">
+                        <UserDropdown />
+                      </div>
+                    )}
                     {hasPermission(Permission.ADMIN) && (
                       <div className="px-2">
                         <VersionStatus onClick={() => setClosed()} />
@@ -290,18 +348,22 @@ const Sidebar = ({
         <div className="sidebar flex w-64 flex-col">
           <div className="flex h-0 flex-1 flex-col">
             <div className="flex flex-1 flex-col overflow-y-auto pb-4">
-              <div className="flex flex-shrink-0 items-center">
-                <span className="w-full px-4 py-2 text-2xl text-gray-50">
-                  <Link href="/" className="relative block h-24">
-                    <Image
-                      src={versionedAsset('/logo_full.svg')}
-                      alt="Seerr"
-                      fill
-                      className="object-contain object-left rtl:object-right"
-                      loading="eager"
-                    />
-                  </Link>
-                </span>
+              <div className="sidebar-brand-slot flex flex-shrink-0 items-center">
+                {persius ? (
+                  <PersiusBrand />
+                ) : (
+                  <span className="w-full px-4 py-2 text-2xl text-gray-50">
+                    <Link href="/" className="relative block h-24">
+                      <Image
+                        src={versionedAsset('/logo_full.svg')}
+                        alt="Seerr"
+                        fill
+                        className="object-contain object-left rtl:object-right"
+                        loading="eager"
+                      />
+                    </Link>
+                  </span>
+                )}
               </div>
               <nav
                 className="sidebar-navigation"
@@ -312,6 +374,11 @@ const Sidebar = ({
               >
                 {renderNavigationSections('desktop')}
               </nav>
+              {persius && (
+                <div className="persius-sidebar-account">
+                  <UserDropdown />
+                </div>
+              )}
               {hasPermission(Permission.ADMIN) && (
                 <div className="px-2">
                   <VersionStatus />

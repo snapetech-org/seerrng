@@ -88,12 +88,13 @@ describe('SQLite file permissions', () => {
           'tsconfig-paths/register',
           '-e',
           script,
-          require.resolve('../datasource'),
+          require.resolve('../datasource.ts'),
         ],
         {
           env: {
             ...process.env,
             NODE_ENV: 'production',
+            TS_NODE_PROJECT: path.resolve(__dirname, '../tsconfig.json'),
             CONFIG_DIRECTORY: parent,
           },
           encoding: 'utf8',

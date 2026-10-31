@@ -1,5 +1,6 @@
 import { useUser } from '@app/hooks/useUser';
 import { getAdvancedThemePreset } from '@app/utils/advancedThemePresets';
+import { BUILT_IN_INTERFACE_THEME_MANIFESTS } from '@app/utils/interfaceThemeCatalog';
 import {
   readLocalStorageValue,
   writeLocalStorageValue,
@@ -13,10 +14,9 @@ import {
 import {
   DEFAULT_INTERFACE_THEME_ID,
   parseInterfaceTheme,
-  type InterfaceThemeManifest,
   type InterfaceThemeId,
+  type InterfaceThemeManifest,
 } from '@server/utils/interfaceTheme';
-import { BUILT_IN_INTERFACE_THEME_MANIFESTS } from '@app/utils/interfaceThemeCatalog';
 import {
   DEFAULT_THEME_PALETTE_ID,
   parseThemePalette,
@@ -945,6 +945,9 @@ const prepareThemeStylesheet = (themeId: string): Promise<HTMLLinkElement> => {
 
 const activateThemeStylesheet = (selected: HTMLLinkElement): void => {
   selected.media = 'all';
+  // Restoration effects share an in-flight load. A superseded subscriber may
+  // detach it before the current subscriber runs, so activation owns attachment.
+  if (!selected.isConnected) document.head.append(selected);
   for (const link of document.head.querySelectorAll<HTMLLinkElement>(
     `link[${THEME_STYLESHEET_ATTRIBUTE}]`
   )) {
@@ -1242,7 +1245,10 @@ export const ThemeProvider = ({ children }: { children: ReactNode }) => {
             parseInterfaceTheme(theme.id) === theme.id &&
             (theme.navigation === 'flat' || theme.navigation === 'grouped') &&
             (theme.activeNavigationIcon === 'outline' ||
-              theme.activeNavigationIcon === 'filled')
+              theme.activeNavigationIcon === 'filled') &&
+            (theme.layout === undefined ||
+              theme.layout === 'classic' ||
+              theme.layout === 'persius')
         );
         if (
           validThemes.some((theme) => theme.id === DEFAULT_INTERFACE_THEME_ID)
@@ -1548,8 +1554,10 @@ export const ThemeProvider = ({ children }: { children: ReactNode }) => {
   );
 };
 
+export const useOptionalTheme = () => useContext(ThemeContext);
+
 export const useTheme = () => {
-  const themeContext = useContext(ThemeContext);
+  const themeContext = useOptionalTheme();
 
   if (!themeContext) {
     throw new Error('useTheme must be used inside ThemeProvider');

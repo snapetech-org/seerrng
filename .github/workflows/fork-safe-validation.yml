@@ -15,7 +15,7 @@ jobs:
       github.event.pull_request.base.ref == 'main'
     runs-on:
       group: public-fork-jit
-      labels: [self-hosted, linux, x64, public-pr-seerrng, ng-public-run-${{ github.run_id }}]
+      labels: [self-hosted, linux, x64, public-pr-seerrng, 'ng-public-run-${{ github.run_id }}']
     timeout-minutes: 30
     permissions:
       contents: read

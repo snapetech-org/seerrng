@@ -4,6 +4,10 @@ import CachedImage from '@app/components/Common/CachedImage';
 import { getMediaServerName } from '@app/components/Common/MediaServerIcon';
 import Modal from '@app/components/Common/Modal';
 import MediaQualitySelect from '@app/components/MediaDetails/MediaQualitySelect';
+import FutureSeasonToggle from '@app/components/Persius/FutureSeasonToggle';
+import { OptionalDisclosure } from '@app/components/Persius/Primitives';
+import persiusMessages from '@app/components/Persius/messages';
+import { usePersius } from '@app/components/Persius/usePersius';
 import AdvancedOptionsDisclosureButton from '@app/components/RequestModal/AdvancedOptionsDisclosureButton';
 import type { RequestOverrides } from '@app/components/RequestModal/AdvancedRequester';
 import AdvancedRequester, {
@@ -285,6 +289,17 @@ const TvRequestModal = ({
     [playbackCatalog]
   );
   const intl = useIntl();
+  const persius = usePersius();
+  const [monitorFutureSeasons, setMonitorFutureSeasons] = useState<
+    boolean | undefined
+  >(editRequest?.monitorFutureSeasons ?? (persius ? true : undefined));
+  const futureSeasonsRestricted =
+    watchAheadEpisodeCount > 0 ||
+    settings.currentSettings.tvSeasonWatchGateEnabled ||
+    requestOwnerPlaybackProfile?.tvSeasonWatchGateStatus === 'enabled';
+  const futureSeasonPreference = futureSeasonsRestricted
+    ? false
+    : monitorFutureSeasons;
   const [searchModal, setSearchModal] = useState<{
     show: boolean;
   }>({
@@ -477,6 +492,7 @@ const TvRequestModal = ({
       if (selectedSeasons.length > 0) {
         const response = await axios.put(`/api/v1/request/${editRequest.id}`, {
           mediaType: 'tv',
+          monitorFutureSeasons: futureSeasonPreference,
           serverId: requestOverrides?.server,
           profileId: requestOverrides?.profile,
           rootFolder: requestOverrides?.folder,
@@ -587,6 +603,7 @@ const TvRequestModal = ({
           mediaId: data?.id,
           tvdbId: tvdbId ?? data?.externalIds.tvdbId,
           mediaType: 'tv',
+          monitorFutureSeasons: futureSeasonPreference,
           is4k: effectiveIs4k,
           requestServiceServerId: canUseAdvancedOptions
             ? undefined
@@ -1174,6 +1191,17 @@ const TvRequestModal = ({
           ? updateRequest(true)
           : updateRequest()
       : sendRequest();
+  const showSeasonTree =
+    usesEpisodeSelection &&
+    Boolean(data) &&
+    (!isFailedManagerRepair || selectedSeasons.length === 0);
+  const futureSeasonControl = persius ? (
+    <FutureSeasonToggle
+      checked={Boolean(futureSeasonPreference)}
+      disabled={futureSeasonsRestricted}
+      onChange={setMonitorFutureSeasons}
+    />
+  ) : null;
 
   return data && !error && !data.externalIds.tvdbId && searchModal.show ? (
     <SearchByNameModal
@@ -1197,20 +1225,25 @@ const TvRequestModal = ({
       onCancel={closeAction}
       onOk={submitAction}
       hideActions
-      alignTop
-      title={intl.formatMessage(
-        editRequest
-          ? isFailedManagerRepair
-            ? is4k
-              ? messages.failed4krequest
-              : messages.failedrequest
-            : is4k
-              ? messages.pending4krequest
-              : messages.pendingrequest
-          : effectiveIs4k
-            ? messages.requestseries4ktitle
-            : messages.requestseriestitle
-      )}
+      alignTop={!persius}
+      ariaLabel={persius ? data?.name : undefined}
+      title={
+        persius
+          ? undefined
+          : intl.formatMessage(
+              editRequest
+                ? isFailedManagerRepair
+                  ? is4k
+                    ? messages.failed4krequest
+                    : messages.failedrequest
+                  : is4k
+                    ? messages.pending4krequest
+                    : messages.pendingrequest
+                : effectiveIs4k
+                  ? messages.requestseries4ktitle
+                  : messages.requestseriestitle
+            )
+      }
       okText={requestButtonLabel}
       okButtonProps={{
         buttonIcon:
@@ -1238,8 +1271,45 @@ const TvRequestModal = ({
       }
       cancelButtonType={editRequest ? 'danger' : 'default'}
       actionButtonSize={editRequest ? 'standard' : 'sm'}
-      dialogClass="request-modal-site-surface"
+      dialogClass={
+        persius
+          ? 'request-modal-site-surface persius-season-modal'
+          : 'request-modal-site-surface'
+      }
     >
+      {persius && (
+        <div className="persius-modal-identity">
+          <div className="persius-modal-poster">
+            <CachedImage
+              type="tmdb"
+              src={
+                getTmdbPosterImageUrl(data?.posterPath) ||
+                '/images/seerr_poster_not_found.png'
+              }
+              alt=""
+              fill
+              sizes="56px"
+            />
+          </div>
+          <div>
+            <h2>{data?.name}</h2>
+            <p>
+              {releaseYear}
+              {data?.seasons?.length
+                ? ` · ${intl.formatMessage(persiusMessages.seasonsCount, { count: data.seasons.filter((season) => season.seasonNumber > 0).length })}`
+                : ''}
+            </p>
+          </div>
+          <button
+            type="button"
+            className="persius-modal-close"
+            aria-label={intl.formatMessage(globalMessages.close)}
+            onClick={closeAction}
+          >
+            <XMarkIcon aria-hidden="true" />
+          </button>
+        </div>
+      )}
       <RequestMediaCard
         artwork={
           data?.backdropPath
@@ -1282,161 +1352,164 @@ const TvRequestModal = ({
             }
           />
         )}
-        <div className="app-card-inset refreshed-inset-surface detail-summary-card">
-          <div className="app-detail-summary-grid">
-            <div className="app-detail-poster-frame detail-card-poster">
-              <CachedImage
-                type="tmdb"
-                src={
-                  getTmdbPosterImageUrl(data?.posterPath) ||
-                  '/images/seerr_poster_not_found.png'
-                }
-                alt=""
-                fill
-                sizes="(min-width: 640px) 80px, 64px"
-                className="media-detail-artwork-image"
-              />
-            </div>
+        <OptionalDisclosure enabled={persius}>
+          <div className="app-card-inset refreshed-inset-surface detail-summary-card">
+            <div className="app-detail-summary-grid">
+              <div className="app-detail-poster-frame detail-card-poster">
+                <CachedImage
+                  type="tmdb"
+                  src={
+                    getTmdbPosterImageUrl(data?.posterPath) ||
+                    '/images/seerr_poster_not_found.png'
+                  }
+                  alt=""
+                  fill
+                  sizes="(min-width: 640px) 80px, 64px"
+                  className="media-detail-artwork-image"
+                />
+              </div>
 
-            <div>
-              <h3 className="card-title detail-summary-title">
-                {data?.name}
-                {releaseYear ? ` (${releaseYear})` : ''}
-              </h3>
+              <div>
+                <h3 className="card-title detail-summary-title">
+                  {data?.name}
+                  {releaseYear ? ` (${releaseYear})` : ''}
+                </h3>
 
-              <div className="detail-card-heading-spacing detail-three-column-grid">
-                <div className="detail-paired-column-span">
-                  <dl className="card-table detail-paired-columns">
-                    <dt className="card-table-heading">
-                      {intl.formatMessage(messages.mediaAndFormat)}:
-                    </dt>
-                    <dd className="card-table-value">
-                      {intl.formatMessage(globalMessages.tvshow)} ·{' '}
-                      {effectiveIs4k ? '4K' : 'HD'}
-                    </dd>
-                    <dt className="card-table-heading">
-                      {intl.formatMessage(messages.releaseDate)}:
-                    </dt>
-                    <dd className="card-table-value">{firstAirDate}</dd>
-                    <dt className="card-table-heading">
-                      {intl.formatMessage(messages.runtime)}:
-                    </dt>
-                    <dd className="card-table-value">
-                      {runtime
-                        ? `${intl.formatNumber(runtime)} minutes`
-                        : notAvailable}
-                    </dd>
-                    <div className="card-table media-detail-column-divider">
-                      {featuredCrew.map((person) => (
-                        <div
-                          className="card-table-group"
-                          key={`${person.job}-${person.id}`}
-                        >
-                          <dt className="card-table-heading">{person.job}:</dt>
-                          <dd className="card-table-value">{person.name}</dd>
-                        </div>
-                      ))}
+                <div className="detail-card-heading-spacing detail-three-column-grid">
+                  <div className="detail-paired-column-span">
+                    <dl className="card-table detail-paired-columns">
                       <dt className="card-table-heading">
-                        {intl.formatMessage(messages.network)}:
+                        {intl.formatMessage(messages.mediaAndFormat)}:
                       </dt>
-                      <dd className="card-table-value">{network}</dd>
-                    </div>
+                      <dd className="card-table-value">
+                        {intl.formatMessage(globalMessages.tvshow)} ·{' '}
+                        {effectiveIs4k ? '4K' : 'HD'}
+                      </dd>
+                      <dt className="card-table-heading">
+                        {intl.formatMessage(messages.releaseDate)}:
+                      </dt>
+                      <dd className="card-table-value">{firstAirDate}</dd>
+                      <dt className="card-table-heading">
+                        {intl.formatMessage(messages.runtime)}:
+                      </dt>
+                      <dd className="card-table-value">
+                        {runtime
+                          ? `${intl.formatNumber(runtime)} minutes`
+                          : notAvailable}
+                      </dd>
+                      <div className="card-table media-detail-column-divider">
+                        {featuredCrew.map((person) => (
+                          <div
+                            className="card-table-group"
+                            key={`${person.job}-${person.id}`}
+                          >
+                            <dt className="card-table-heading">
+                              {person.job}:
+                            </dt>
+                            <dd className="card-table-value">{person.name}</dd>
+                          </div>
+                        ))}
+                        <dt className="card-table-heading">
+                          {intl.formatMessage(messages.network)}:
+                        </dt>
+                        <dd className="card-table-value">{network}</dd>
+                      </div>
+                      <dt className="card-table-heading">
+                        {intl.formatMessage(messages.genres)}:
+                      </dt>
+                      <dd
+                        className="card-table-value"
+                        data-wrap="true"
+                        data-lines="2"
+                      >
+                        {data?.genres?.length
+                          ? data.genres
+                              .slice(0, 3)
+                              .map((genre) => genre.name)
+                              .join(', ')
+                          : notAvailable}
+                      </dd>
+                    </dl>
+                  </div>
+                  <dl className="card-table media-detail-column-divider">
                     <dt className="card-table-heading">
-                      {intl.formatMessage(messages.genres)}:
+                      {intl.formatMessage(messages.status)}:
                     </dt>
-                    <dd
-                      className="card-table-value"
-                      data-wrap="true"
-                      data-lines="2"
-                    >
-                      {data?.genres?.length
-                        ? data.genres
-                            .slice(0, 3)
-                            .map((genre) => genre.name)
-                            .join(', ')
-                        : notAvailable}
+                    <dd className="card-table-value">
+                      {intl.formatMessage(
+                        selectedDestinationAvailable
+                          ? globalMessages.available
+                          : selectedDestinationRequested
+                            ? messages.requested
+                            : messages.readyToRequest
+                      )}
+                    </dd>
+                    <dt className="card-table-heading">
+                      {intl.formatMessage(messages.service)}:
+                    </dt>
+                    <dd className="card-table-value">
+                      {selectedService?.name ??
+                        (selectedRequestService
+                          ? `${selectedRequestService.requestButtonLabel} (${selectedRequestService.name})`
+                          : undefined) ??
+                        fallbackService?.name ??
+                        notAvailable}
+                    </dd>
+                    <dt className="card-table-heading">
+                      {intl.formatMessage(messages.approval)}:
+                    </dt>
+                    <dd className="card-table-value">
+                      <RequestFooterStatus
+                        available={selectedDestinationAvailable}
+                        requested={selectedDestinationRequested}
+                        hasAutoApprove={hasAutoApprove}
+                      />
                     </dd>
                   </dl>
                 </div>
-                <dl className="card-table media-detail-column-divider">
-                  <dt className="card-table-heading">
-                    {intl.formatMessage(messages.status)}:
-                  </dt>
-                  <dd className="card-table-value">
-                    {intl.formatMessage(
-                      selectedDestinationAvailable
-                        ? globalMessages.available
-                        : selectedDestinationRequested
-                          ? messages.requested
-                          : messages.readyToRequest
-                    )}
-                  </dd>
-                  <dt className="card-table-heading">
-                    {intl.formatMessage(messages.service)}:
-                  </dt>
-                  <dd className="card-table-value">
-                    {selectedService?.name ??
-                      (selectedRequestService
-                        ? `${selectedRequestService.requestButtonLabel} (${selectedRequestService.name})`
-                        : undefined) ??
-                      fallbackService?.name ??
-                      notAvailable}
-                  </dd>
-                  <dt className="card-table-heading">
-                    {intl.formatMessage(messages.approval)}:
-                  </dt>
-                  <dd className="card-table-value">
-                    <RequestFooterStatus
-                      available={selectedDestinationAvailable}
-                      requested={selectedDestinationRequested}
-                      hasAutoApprove={hasAutoApprove}
-                    />
-                  </dd>
-                </dl>
               </div>
             </div>
           </div>
-        </div>
-
+        </OptionalDisclosure>
         <div className="request-selection-layout">
           {isFailedManagerRepair && selectedSeasons.length > 0 && (
             <p className="app-card-inset refreshed-inset-surface card-body-text">
               {intl.formatMessage(messages.repairPreservesSelections)}
             </p>
           )}
-          {usesEpisodeSelection &&
-            data &&
-            (!isFailedManagerRepair || selectedSeasons.length === 0) && (
-              <RequestSeasonEpisodeTree
-                key={requestSelectionKey}
-                tvId={data.id}
-                seasons={visibleSeasons}
-                selections={requestableSelections}
-                disabledSeasons={getAllRequestedSeasons()}
-                disabledEpisodes={blockedEpisodesBySeason}
-                availableEpisodesBySeason={availableEpisodesBySeason}
-                selectionMode={
-                  watchAheadEpisodeCount > 0 && !editRequest
-                    ? 'single-episode'
-                    : 'multiple'
+          {showSeasonTree && data && (
+            <RequestSeasonEpisodeTree
+              key={requestSelectionKey}
+              tvId={data.id}
+              seasons={visibleSeasons}
+              selections={requestableSelections}
+              disabledSeasons={getAllRequestedSeasons()}
+              disabledEpisodes={blockedEpisodesBySeason}
+              availableEpisodesBySeason={availableEpisodesBySeason}
+              selectionMode={
+                watchAheadEpisodeCount > 0 && !editRequest
+                  ? 'single-episode'
+                  : 'multiple'
+              }
+              onReadyChange={setRequestTreeReady}
+              afterSeasonSelection={futureSeasonControl}
+              onSelectionsChange={(nextSelections) => {
+                const allowedSelections =
+                  (quota?.tv.remaining ?? 0) +
+                  (editRequest?.seasons.filter(isActiveSeasonRequest).length ??
+                    0);
+                if (
+                  !quota?.tv.limit ||
+                  requestOverrides?.ignoreQuota ||
+                  nextSelections.length <= seasonSelections.length ||
+                  nextSelections.length <= allowedSelections
+                ) {
+                  setSeasonSelections(nextSelections);
                 }
-                onReadyChange={setRequestTreeReady}
-                onSelectionsChange={(nextSelections) => {
-                  const allowedSelections =
-                    (quota?.tv.remaining ?? 0) +
-                    (editRequest?.seasons.filter(isActiveSeasonRequest)
-                      .length ?? 0);
-                  if (
-                    !quota?.tv.limit ||
-                    requestOverrides?.ignoreQuota ||
-                    nextSelections.length <= seasonSelections.length ||
-                    nextSelections.length <= allowedSelections
-                  ) {
-                    setSeasonSelections(nextSelections);
-                  }
-                }}
-              />
-            )}
+              }}
+            />
+          )}
+          {!showSeasonTree && futureSeasonControl}
           {seasonWatchGateDisplayMessage && (
             <div
               className="page-error-message"
@@ -1501,175 +1574,180 @@ const TvRequestModal = ({
               </div>
             )}
 
-          <div className="request-selection-options">
-            {!editRequest && (
-              <MediaQualitySelect
-                value={effectiveIs4k ? '4k' : 'hd'}
-                options={[
-                  { label: 'HD', value: 'hd' },
-                  { label: '4K', value: '4k' },
-                ]}
-                onChange={(quality) => {
-                  setSelectedIs4k(quality === '4k');
-                  setRequestServiceServerId(undefined);
-                  setRequestOverrides(null);
-                  setQualityRevision((current) => current + 1);
-                }}
-                label={intl.formatMessage(messages.quality)}
-                autoSelectAvailable={false}
-                purpose="request"
-              />
-            )}
-            {!editRequest &&
-              !canUseAdvancedOptions &&
-              requestServiceOptions.length > 0 &&
-              (fallbackService || requestServiceOptions.length > 1) && (
-                <RequestListboxControl
-                  id="tv-request-destination"
-                  label={intl.formatMessage(messages.destination)}
-                  value={selectedRequestServiceServerId ?? -1}
+          <OptionalDisclosure enabled={persius}>
+            <div className="request-selection-options">
+              {!editRequest && (
+                <MediaQualitySelect
+                  value={effectiveIs4k ? '4k' : 'hd'}
                   options={[
-                    ...(fallbackService
-                      ? [
-                          {
-                            value: -1,
-                            label: intl.formatMessage(
-                              messages.defaultDestination,
-                              { name: fallbackService.name }
-                            ),
-                          },
-                        ]
-                      : []),
-                    ...requestServiceOptions.map((server) => ({
-                      value: server.id,
-                      label: `${server.requestButtonLabel} (${server.name})`,
-                    })),
+                    { label: 'HD', value: 'hd' },
+                    { label: '4K', value: '4k' },
                   ]}
-                  onChange={(serverId) => {
-                    setRequestServiceServerId(
-                      serverId < 0 ? undefined : serverId
-                    );
+                  onChange={(quality) => {
+                    setSelectedIs4k(quality === '4k');
+                    setRequestServiceServerId(undefined);
                     setRequestOverrides(null);
+                    setQualityRevision((current) => current + 1);
                   }}
-                  disabled={Boolean(editRequest)}
-                  loadingLabel={intl.formatMessage(messages.destination)}
+                  label={intl.formatMessage(messages.quality)}
+                  autoSelectAvailable={false}
+                  purpose="request"
                 />
               )}
-            {watchAheadCardVisible && (
-              <section
-                className="app-card-inset refreshed-inset-surface detail-item-padded request-episode-queue"
-                aria-labelledby="tv-episode-queue-heading"
-              >
-                <div className="request-episode-queue-header">
-                  <h3
-                    id="tv-episode-queue-heading"
-                    className="request-episode-queue-title"
-                  >
-                    {intl.formatMessage(messages.watchAheadLabel)}
-                  </h3>
-                  {episodeQueueAccess && (
-                    <Badge
-                      badgeType={
-                        defaultWatchAheadEpisodeCount > 0
-                          ? 'success'
-                          : 'default'
-                      }
-                    >
-                      {intl.formatMessage(messages.watchAheadAdminManaged)}
-                    </Badge>
-                  )}
-                </div>
-                <p className="request-episode-queue-description refreshed-detail-text-muted">
-                  {episodeQueueAccess
-                    ? defaultWatchAheadEpisodeCount > 0
-                      ? editRequest && watchAheadEpisodeCount > 0
-                        ? intl.formatMessage(
-                            messages.watchAheadActiveForRequest,
+              {!editRequest &&
+                !canUseAdvancedOptions &&
+                requestServiceOptions.length > 0 &&
+                (fallbackService || requestServiceOptions.length > 1) && (
+                  <RequestListboxControl
+                    id="tv-request-destination"
+                    label={intl.formatMessage(messages.destination)}
+                    value={selectedRequestServiceServerId ?? -1}
+                    options={[
+                      ...(fallbackService
+                        ? [
                             {
-                              count: intl.formatMessage(
-                                messages.watchAheadEpisodeOption,
-                                { count: watchAheadEpisodeCount }
+                              value: -1,
+                              label: intl.formatMessage(
+                                messages.defaultDestination,
+                                { name: fallbackService.name }
                               ),
-                            }
-                          )
-                        : !editRequest && watchAheadAppliesToRequest
+                            },
+                          ]
+                        : []),
+                      ...requestServiceOptions.map((server) => ({
+                        value: server.id,
+                        label: `${server.requestButtonLabel} (${server.name})`,
+                      })),
+                    ]}
+                    onChange={(serverId) => {
+                      setRequestServiceServerId(
+                        serverId < 0 ? undefined : serverId
+                      );
+                      setRequestOverrides(null);
+                    }}
+                    disabled={Boolean(editRequest)}
+                    loadingLabel={intl.formatMessage(messages.destination)}
+                  />
+                )}
+              {watchAheadCardVisible && (
+                <section
+                  className="app-card-inset refreshed-inset-surface detail-item-padded request-episode-queue"
+                  aria-labelledby="tv-episode-queue-heading"
+                >
+                  <div className="request-episode-queue-header">
+                    <h3
+                      id="tv-episode-queue-heading"
+                      className="request-episode-queue-title"
+                    >
+                      {intl.formatMessage(messages.watchAheadLabel)}
+                    </h3>
+                    {episodeQueueAccess && (
+                      <Badge
+                        badgeType={
+                          defaultWatchAheadEpisodeCount > 0
+                            ? 'success'
+                            : 'default'
+                        }
+                      >
+                        {intl.formatMessage(messages.watchAheadAdminManaged)}
+                      </Badge>
+                    )}
+                  </div>
+                  <p className="request-episode-queue-description refreshed-detail-text-muted">
+                    {episodeQueueAccess
+                      ? defaultWatchAheadEpisodeCount > 0
+                        ? editRequest && watchAheadEpisodeCount > 0
                           ? intl.formatMessage(
-                              messages.watchAheadEnabledForAccount,
+                              messages.watchAheadActiveForRequest,
                               {
-                                owner: watchAheadOwnerLabel,
                                 count: intl.formatMessage(
                                   messages.watchAheadEpisodeOption,
-                                  { count: defaultWatchAheadEpisodeCount }
+                                  { count: watchAheadEpisodeCount }
                                 ),
                               }
                             )
-                          : intl.formatMessage(
-                              messages.watchAheadAssignedButUnavailable,
-                              {
-                                owner: watchAheadOwnerLabel,
-                                count: intl.formatMessage(
-                                  messages.watchAheadEpisodeOption,
-                                  { count: defaultWatchAheadEpisodeCount }
-                                ),
-                              }
-                            )
-                      : intl.formatMessage(messages.watchAheadOffForAccount, {
-                          owner: watchAheadOwnerLabel,
-                        })
-                    : episodeQueueAccessError
-                      ? intl.formatMessage(messages.watchAheadLoadError)
-                      : intl.formatMessage(messages.watchAheadLoading)}
-                </p>
-                {episodeQueueAccess &&
-                  watchAheadEpisodeCount > 0 &&
-                  !editRequest && (
-                    <p className="request-episode-queue-description refreshed-detail-text-muted">
-                      {intl.formatMessage(messages.watchAheadStartingEpisode, {
-                        owner: watchAheadOwnerLabel,
-                      })}
+                          : !editRequest && watchAheadAppliesToRequest
+                            ? intl.formatMessage(
+                                messages.watchAheadEnabledForAccount,
+                                {
+                                  owner: watchAheadOwnerLabel,
+                                  count: intl.formatMessage(
+                                    messages.watchAheadEpisodeOption,
+                                    { count: defaultWatchAheadEpisodeCount }
+                                  ),
+                                }
+                              )
+                            : intl.formatMessage(
+                                messages.watchAheadAssignedButUnavailable,
+                                {
+                                  owner: watchAheadOwnerLabel,
+                                  count: intl.formatMessage(
+                                    messages.watchAheadEpisodeOption,
+                                    { count: defaultWatchAheadEpisodeCount }
+                                  ),
+                                }
+                              )
+                        : intl.formatMessage(messages.watchAheadOffForAccount, {
+                            owner: watchAheadOwnerLabel,
+                          })
+                      : episodeQueueAccessError
+                        ? intl.formatMessage(messages.watchAheadLoadError)
+                        : intl.formatMessage(messages.watchAheadLoading)}
+                  </p>
+                  {episodeQueueAccess &&
+                    watchAheadEpisodeCount > 0 &&
+                    !editRequest && (
+                      <p className="request-episode-queue-description refreshed-detail-text-muted">
+                        {intl.formatMessage(
+                          messages.watchAheadStartingEpisode,
+                          {
+                            owner: watchAheadOwnerLabel,
+                          }
+                        )}
+                      </p>
+                    )}
+                  {watchAheadUnavailableMessage && (
+                    <p
+                      className="request-episode-queue-description refreshed-detail-text-muted"
+                      role="status"
+                    >
+                      {watchAheadUnavailableMessage}
                     </p>
                   )}
-                {watchAheadUnavailableMessage && (
-                  <p
-                    className="request-episode-queue-description refreshed-detail-text-muted"
-                    role="status"
-                  >
-                    {watchAheadUnavailableMessage}
-                  </p>
-                )}
-                {needsWatchAheadAccountLink && (
+                  {needsWatchAheadAccountLink && (
+                    <Button
+                      as="a"
+                      href="/profile/settings/linked-accounts"
+                      buttonType="ghost"
+                      buttonSize="sm"
+                    >
+                      {intl.formatMessage(messages.watchAheadLinkAccount)}
+                    </Button>
+                  )}
+                  {episodeQueueAccessError && (
+                    <Button
+                      type="button"
+                      buttonType="ghost"
+                      buttonSize="sm"
+                      onClick={() => void refreshEpisodeQueueAccess()}
+                    >
+                      {intl.formatMessage(messages.watchAheadRetry)}
+                    </Button>
+                  )}
                   <Button
                     as="a"
-                    href="/profile/settings/linked-accounts"
+                    href="https://github.com/snapetech-org/seerrng/blob/main/docs/using-seerr/jellyfin-watch-ahead.md"
+                    target="_blank"
+                    rel="noreferrer"
                     buttonType="ghost"
                     buttonSize="sm"
                   >
-                    {intl.formatMessage(messages.watchAheadLinkAccount)}
+                    {intl.formatMessage(messages.watchAheadLearnMore)}
                   </Button>
-                )}
-                {episodeQueueAccessError && (
-                  <Button
-                    type="button"
-                    buttonType="ghost"
-                    buttonSize="sm"
-                    onClick={() => void refreshEpisodeQueueAccess()}
-                  >
-                    {intl.formatMessage(messages.watchAheadRetry)}
-                  </Button>
-                )}
-                <Button
-                  as="a"
-                  href="https://github.com/snapetech-org/seerrng/blob/main/docs/using-seerr/jellyfin-watch-ahead.md"
-                  target="_blank"
-                  rel="noreferrer"
-                  buttonType="ghost"
-                  buttonSize="sm"
-                >
-                  {intl.formatMessage(messages.watchAheadLearnMore)}
-                </Button>
-              </section>
-            )}
-          </div>
+                </section>
+              )}
+            </div>
+          </OptionalDisclosure>
         </div>
         {canUseAdvancedOptions && (
           <AdvancedRequester
@@ -1718,18 +1796,20 @@ const TvRequestModal = ({
             )}
           </div>
           <div className="app-action-row" ref={setRequestedByPortal} />
-          <Button
-            type="button"
-            onClick={closeAction}
-            data-testid="modal-cancel-button"
-            buttonType="danger"
-            buttonSize="standard"
-          >
-            <XMarkIcon aria-hidden="true" />
-            {editRequest
-              ? intl.formatMessage(globalMessages.close)
-              : intl.formatMessage(globalMessages.cancel)}
-          </Button>
+          {!persius && (
+            <Button
+              type="button"
+              onClick={closeAction}
+              data-testid="modal-cancel-button"
+              buttonType="danger"
+              buttonSize="standard"
+            >
+              <XMarkIcon aria-hidden="true" />
+              {editRequest
+                ? intl.formatMessage(globalMessages.close)
+                : intl.formatMessage(globalMessages.cancel)}
+            </Button>
+          )}
           <Button
             type="button"
             disabled={requestDisabled}
@@ -1741,9 +1821,9 @@ const TvRequestModal = ({
           >
             {editRequest && selectedSeasons.length === 0 ? (
               <XMarkIcon aria-hidden="true" />
-            ) : (
+            ) : !persius ? (
               <ArrowDownTrayIcon aria-hidden="true" />
-            )}
+            ) : null}
             {requestButtonLabel}
           </Button>
         </div>

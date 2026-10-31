@@ -5,10 +5,12 @@ import BookFormatBadge, {
 } from '@app/components/Common/BookFormatBadge';
 import Button from '@app/components/Common/Button';
 import CachedImage from '@app/components/Common/CachedImage';
+import ConfirmButton from '@app/components/Common/ConfirmButton';
 import { PageStatus } from '@app/components/Common/LoadingSpinner';
 import MediaTypeBadge, {
   type MediaTypeBadgeType,
 } from '@app/components/Common/MediaTypeBadge';
+import Modal from '@app/components/Common/Modal';
 import PageTitle from '@app/components/Common/PageTitle';
 import PaginationFooter from '@app/components/Common/PaginationFooter';
 import Tooltip from '@app/components/Common/Tooltip';
@@ -20,6 +22,10 @@ import {
 } from '@app/components/Discover/FilterPanel/CompactFilterSelect';
 import MediaFilterOption from '@app/components/Discover/MediaFilterOption';
 import { PinnedFilterSectionGroup } from '@app/components/Discover/PinnedFilterSection';
+import { RequestRow, RequestTabs } from '@app/components/Persius/Requests';
+import { duration } from '@app/components/Persius/format';
+import persiusMessages from '@app/components/Persius/messages';
+import usePersius from '@app/components/Persius/usePersius';
 import SoftwareRequests from '@app/components/RequestStatus/SoftwareRequests';
 import {
   formatRequestStatusMessage,
@@ -31,6 +37,7 @@ import useRequestStatusScrollRestoration from '@app/hooks/useRequestStatusScroll
 import { useSearchActivityReporter } from '@app/hooks/useSearchActivity';
 import useToasts from '@app/hooks/useToasts';
 import { Permission, useUser } from '@app/hooks/useUser';
+import globalMessages from '@app/i18n/globalMessages';
 import {
   encodeApiPathSegment,
   normalizeMusicBrainzId,
@@ -48,6 +55,7 @@ import {
   ChevronLeftIcon,
   ChevronRightIcon,
   ClockIcon,
+  EllipsisHorizontalIcon,
   ExclamationTriangleIcon,
   InformationCircleIcon,
   MagnifyingGlassIcon,
@@ -1324,6 +1332,9 @@ const RequestStatusCard = ({
   isHistoryOpen,
   onToggleHistory,
 }: RequestStatusCardProps) => {
+  const persius = usePersius();
+  const [cancelling, setCancelling] = useState(false);
+  const [showDetails, setShowDetails] = useState(false);
   const intl = useIntl();
   const { addToast } = useToasts();
   const { hasPermission, user } = useUser();
@@ -1626,6 +1637,488 @@ const RequestStatusCard = ({
     </>
   );
 
+  const cancelRequest = async () => {
+    setCancelling(true);
+    try {
+      await axios.delete(`/api/v1/request/${item.request.id}`);
+      await refreshRequestStatus();
+    } catch {
+      addToast(intl.formatMessage(messages.modifyFailed), {
+        appearance: 'error',
+        autoDismiss: true,
+      });
+    } finally {
+      setCancelling(false);
+    }
+  };
+  const expandedDetails = (
+    <article
+      className="media-detail-card app-card-main refreshed-card-surface"
+      data-testid={`request-status-${item.request.id}`}
+    >
+      {backdrop && (
+        <div className="media-detail-artwork-layer">
+          <CachedImage
+            type={backdrop.type}
+            src={backdrop.src}
+            alt=""
+            fill
+            sizes="100vw"
+            className="media-detail-artwork-image"
+          />
+          <div className="refreshed-artwork-scrim" />
+          <div className="refreshed-artwork-gradient" />
+        </div>
+      )}
+      <div className="app-card-inset refreshed-inset-surface detail-summary-card app-detail-summary-grid">
+        <div>
+          {detailHref ? (
+            <Link
+              href={detailHref}
+              aria-label={displayTitle}
+              className="detail-card-poster app-detail-poster-link"
+            >
+              <CachedImage
+                src={poster.src}
+                type={poster.type}
+                alt=""
+                fill
+                sizes="(min-width: 640px) 80px, 64px"
+                className="media-detail-artwork-image"
+              />
+              <span>{posterBadge}</span>
+            </Link>
+          ) : (
+            <div className="detail-card-poster app-detail-poster-frame">
+              <CachedImage
+                src={poster.src}
+                type={poster.type}
+                alt=""
+                fill
+                sizes="(min-width: 640px) 80px, 64px"
+                className="media-detail-artwork-image"
+              />
+              <span>{posterBadge}</span>
+            </div>
+          )}
+        </div>
+
+        <div>
+          {detailHref ? (
+            <Link
+              href={detailHref}
+              className="detail-summary-title app-detail-title-link"
+            >
+              {displayTitle}
+            </Link>
+          ) : (
+            <h3 className="detail-summary-title app-detail-title">
+              {displayTitle}
+            </h3>
+          )}
+
+          <div className="detail-card-heading-spacing detail-three-column-grid">
+            <div className="detail-paired-column-span">
+              <dl className="card-table detail-paired-columns">
+                <dt className="card-table-heading">
+                  {intl.formatMessage(messages.mediaAndFormat)}:
+                </dt>
+                <dd className="card-table-value">
+                  {getMediaBadge(intl, item)} · {getMediaFormat(intl, item)}
+                </dd>
+                <dt className="card-table-heading">
+                  {getReleaseDateLabel(intl, item)}:
+                </dt>
+                <dd className="card-table-value">{displayReleaseDate}</dd>
+                <dt className="card-table-heading">
+                  {getRuntimeLabel(intl, item)}:
+                </dt>
+                <dd className="card-table-value">
+                  {getRuntimeOrPages(intl, details, item)}
+                </dd>
+
+                <div className="card-table media-detail-column-divider">
+                  {[...featuredCredits, ...secondaryDetails].map(
+                    (credit, index) => (
+                      <Fragment key={`${credit.label}-${index}`}>
+                        <dt className="card-table-heading">{credit.label}:</dt>
+                        <dd className="card-table-value">
+                          {credit.href ? (
+                            <Link
+                              href={credit.href}
+                              className="app-detail-link"
+                            >
+                              {credit.name}
+                            </Link>
+                          ) : (
+                            credit.name
+                          )}
+                        </dd>
+                      </Fragment>
+                    )
+                  )}
+                </div>
+
+                <dt className="card-table-heading">
+                  {intl.formatMessage(messages.genres)}:
+                </dt>
+                {genres.length > 0 ? (
+                  <dd
+                    className="card-table-value"
+                    data-wrap="true"
+                    data-lines="2"
+                  >
+                    {genres.map((genre, index) => (
+                      <span key={`${genre.href}-${genre.name}`}>
+                        {index > 0 && ', '}
+                        <Link href={genre.href} className="app-detail-link">
+                          {genre.name}
+                        </Link>
+                      </span>
+                    ))}
+                  </dd>
+                ) : (
+                  <dd className="card-table-value">{notAvailable}</dd>
+                )}
+              </dl>
+            </div>
+
+            <dl className="card-table media-detail-column-divider">
+              <dt className="card-table-heading">
+                {intl.formatMessage(messages.requestedByLabel)}:
+              </dt>
+              <dd className="card-table-value">
+                <Link
+                  href={`/users/${item.request.requestedBy.id}`}
+                  className="app-detail-link"
+                >
+                  {item.request.requestedBy.displayName}
+                </Link>
+              </dd>
+              <dt className="card-table-heading">
+                {intl.formatMessage(messages.requestedDateTime)}:
+              </dt>
+              <dd className="card-table-value">
+                {createdAt ? (
+                  <FormattedDate value={createdAt} dateStyle="medium" />
+                ) : (
+                  notAvailable
+                )}
+              </dd>
+              <dt aria-hidden="true" />
+              <dd className="card-table-value">
+                {createdAt ? (
+                  <FormattedDate value={createdAt} timeStyle="short" />
+                ) : (
+                  notAvailable
+                )}
+              </dd>
+              <dt className="card-table-heading">
+                {intl.formatMessage(messages.serviceLabel)}:
+              </dt>
+              <dd className="card-table-value">
+                {getDisplayServiceName(current.service) ?? notAvailable}
+              </dd>
+            </dl>
+          </div>
+        </div>
+      </div>
+
+      <div className="app-card-inset refreshed-inset-surface app-timeline-card card-spacing-before">
+        {timelineHasOverflow && (
+          <button
+            type="button"
+            onClick={() => scrollTimeline(-1)}
+            className="app-button app-button-default app-timeline-scroll-control"
+            data-direction="previous"
+            aria-label={intl.formatMessage(messages.scrollProgressLeft)}
+          >
+            <ChevronLeftIcon
+              className="app-navigation-icon"
+              aria-hidden="true"
+            />
+          </button>
+        )}
+        <div
+          ref={timelineRef}
+          className="hide-scrollbar app-timeline-scroll"
+          aria-label={intl.formatMessage(messages.requestLifecycle)}
+        >
+          <div className="app-timeline-track">
+            {timelineStages.map((stage, index) => {
+              const isAvailable = currentStage === 'available';
+              const isCurrent =
+                !terminalWithoutProgress &&
+                !isAvailable &&
+                currentStage === stage;
+              const isComplete =
+                !terminalWithoutProgress &&
+                (isAvailable ? index <= activeIndex : index < activeIndex);
+              return (
+                <div key={stage} className="app-timeline-stage">
+                  {index < timelineStages.length - 1 && (
+                    <span
+                      className={`app-timeline-connector ${
+                        !terminalWithoutProgress && index < activeIndex
+                          ? 'app-timeline-connector-complete'
+                          : ''
+                      }`}
+                      aria-hidden="true"
+                    />
+                  )}
+                  <span
+                    className={`app-timeline-dot ${
+                      isCurrent
+                        ? 'app-timeline-dot-current'
+                        : isComplete
+                          ? 'app-timeline-dot-complete'
+                          : 'app-timeline-dot-idle'
+                    }`}
+                  >
+                    {isComplete ? (
+                      <CheckIcon
+                        className="app-timeline-dot-icon"
+                        strokeWidth={3}
+                        aria-hidden="true"
+                      />
+                    ) : isCurrent ? (
+                      <StageIcon
+                        className="app-timeline-dot-icon"
+                        aria-hidden="true"
+                      />
+                    ) : null}
+                  </span>
+                  <span
+                    className={`app-timeline-label ${
+                      isCurrent
+                        ? 'app-timeline-label-active'
+                        : 'app-timeline-label-idle'
+                    }`}
+                  >
+                    {getStageLabel(intl, stage)}
+                  </span>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+        {timelineHasOverflow && (
+          <button
+            type="button"
+            onClick={() => scrollTimeline(1)}
+            className="app-button app-button-default app-timeline-scroll-control"
+            data-direction="next"
+            aria-label={intl.formatMessage(messages.scrollProgressRight)}
+          >
+            <ChevronRightIcon
+              className="app-navigation-icon"
+              aria-hidden="true"
+            />
+          </button>
+        )}
+      </div>
+
+      {current.stage === 'downloading' && current.percent !== null && (
+        <div className="app-card-inset refreshed-inset-surface app-progress-card card-spacing-before">
+          <div className="app-progress-header">
+            <span className="app-progress-summary">
+              <span>
+                {intl.formatMessage(messages.progressFrom, {
+                  percent: current.percent.toFixed(1).replace(/\.0$/, ''),
+                })}
+              </span>
+              {current.size !== null && current.sizeLeft !== null && (
+                <>
+                  <span
+                    className="refreshed-detail-text-muted"
+                    aria-hidden="true"
+                  >
+                    |
+                  </span>
+                  <span>
+                    {intl.formatMessage(messages.sizeProgress, {
+                      complete: formatBytes(
+                        intl,
+                        current.size - current.sizeLeft
+                      ),
+                      total: formatBytes(intl, current.size),
+                    })}
+                  </span>
+                </>
+              )}
+            </span>
+            {estimatedCompletionTime && (
+              <span>
+                {intl.formatMessage(messages.eta, {
+                  date: (
+                    <FormattedDate
+                      value={estimatedCompletionTime}
+                      dateStyle="short"
+                      timeStyle="short"
+                    />
+                  ),
+                })}
+              </span>
+            )}
+          </div>
+          <div
+            className="app-progress-track"
+            role="progressbar"
+            aria-valuemin={0}
+            aria-valuemax={100}
+            aria-valuenow={current.percent}
+            aria-valuetext={`${current.percent}%`}
+          >
+            <div
+              className="app-progress-fill"
+              style={{
+                width: `${Math.min(100, Math.max(0, current.percent))}%`,
+              }}
+            />
+          </div>
+        </div>
+      )}
+
+      {current.bookImportProgresses?.length ? (
+        <div
+          className="refreshed-detail-text-muted"
+          role="status"
+          aria-live="polite"
+        >
+          {current.bookImportProgresses.map((progress) => {
+            const format =
+              progress.format === 'audiobook' ? 'audiobook' : 'ebook';
+            const nextAttemptAt = getValidDate(progress.nextAttemptAt);
+            return (
+              <div key={progress.format}>
+                <span>
+                  {intl.formatMessage(messages.pendingImportTitle, {
+                    format,
+                  })}
+                </span>
+                {typeof progress.attemptCount === 'number' &&
+                  progress.attemptCount > 0 &&
+                  (progress.maxAttempts && progress.maxAttempts > 0 ? (
+                    <span>
+                      {' '}
+                      {intl.formatMessage(messages.pendingImportAttempt, {
+                        attempt: progress.attemptCount,
+                        maxAttempts: progress.maxAttempts,
+                      })}
+                    </span>
+                  ) : (
+                    <span>
+                      {' '}
+                      {intl.formatMessage(messages.pendingImportRetrying, {
+                        attempt: progress.attemptCount,
+                      })}
+                    </span>
+                  ))}
+                {nextAttemptAt && (
+                  <span>
+                    {' '}
+                    {intl.formatMessage(messages.pendingImportNextRetry, {
+                      time: intl.formatDate(nextAttemptAt, {
+                        dateStyle: 'medium',
+                        timeStyle: 'short',
+                      }),
+                    })}
+                  </span>
+                )}
+              </div>
+            );
+          })}
+        </div>
+      ) : null}
+
+      <div className="app-action-row request-status-action-row">
+        <Tooltip content={currentMessage}>
+          <span
+            className={`request-status-control ${requestStatusTone[currentStage] ?? requestStatusTone.cancelled}`}
+            aria-label={`${getStageLabel(intl, currentStage)}: ${currentMessage}`}
+            tabIndex={0}
+          >
+            <StageIcon className="request-status-control-icon" aria-hidden />
+            {intl.formatMessage(
+              messages[
+                requestStatusMessageKey[currentStage] ??
+                  requestStatusMessageKey.cancelled
+              ]
+            )}
+          </span>
+        </Tooltip>
+        <Button
+          type="button"
+          buttonType="manage"
+          buttonSize="sm"
+          aria-expanded={isHistoryOpen}
+          aria-label={intl.formatMessage(messages.history)}
+          onClick={() => onToggleHistory(item.request.id)}
+        >
+          <ClockIcon className="app-action-icon" aria-hidden="true" />
+          {intl.formatMessage(messages.history)}
+          <ChevronDownIcon
+            className="app-disclosure-chevron"
+            aria-hidden="true"
+          />
+        </Button>
+        {actionControls}
+        <RequestDownloadAction
+          requestId={item.request.id}
+          enabled={currentStage === 'available'}
+        />
+      </div>
+
+      {isHistoryOpen && (
+        <section className="app-card-inset refreshed-inset-surface app-history-card card-spacing-before">
+          <h4 className="app-history-title">
+            {intl.formatMessage(messages.history)}
+          </h4>
+          {chronologicalHistory.length === 0 ? (
+            <p className="refreshed-detail-text-muted app-history-empty">
+              {intl.formatMessage(messages.noHistory)}
+            </p>
+          ) : (
+            <ol className="card-table app-history-grid">
+              {chronologicalHistory.map((event) => {
+                const eventDate = getValidDate(event.createdAt);
+                if (!eventDate) {
+                  return null;
+                }
+
+                return (
+                  <li key={event.id} className="app-history-row">
+                    <time
+                      className="refreshed-detail-text-muted app-history-time"
+                      dateTime={eventDate.toISOString()}
+                    >
+                      <FormattedDate value={eventDate} dateStyle="medium" />
+                    </time>
+                    <time
+                      className="refreshed-detail-text-muted app-history-time"
+                      dateTime={eventDate.toISOString()}
+                    >
+                      <FormattedDate value={eventDate} timeStyle="short" />
+                    </time>
+                    <span className="app-history-action">
+                      {getStageLabel(intl, event.stage as StatusStage)}
+                    </span>
+                    <span className="refreshed-detail-text app-history-description">
+                      {event.message
+                        ? formatRequestStatusMessage(intl, event)
+                        : getStageLabel(intl, event.stage as StatusStage)}
+                      {event.percent !== null && ` · ${event.percent}%`}
+                    </span>
+                  </li>
+                );
+              })}
+            </ol>
+          )}
+        </section>
+      )}
+    </article>
+  );
+
   return (
     <>
       {showEditModal && (
@@ -1673,478 +2166,130 @@ const RequestStatusCard = ({
           }}
         />
       )}
-      <article
-        className="media-detail-card app-card-main refreshed-card-surface"
-        data-testid={`request-status-${item.request.id}`}
-      >
-        {backdrop && (
-          <div className="media-detail-artwork-layer">
-            <CachedImage
-              type={backdrop.type}
-              src={backdrop.src}
-              alt=""
-              fill
-              sizes="100vw"
-              className="media-detail-artwork-image"
-            />
-            <div className="refreshed-artwork-scrim" />
-            <div className="refreshed-artwork-gradient" />
-          </div>
-        )}
-        <div className="app-card-inset refreshed-inset-surface detail-summary-card app-detail-summary-grid">
-          <div>
-            {detailHref ? (
-              <Link
-                href={detailHref}
-                aria-label={displayTitle}
-                className="detail-card-poster app-detail-poster-link"
+      {persius && showDetails && (
+        <Modal
+          title={title}
+          onCancel={() => setShowDetails(false)}
+          cancelText={intl.formatMessage(globalMessages.close)}
+        >
+          {expandedDetails}
+        </Modal>
+      )}
+      {persius ? (
+        <RequestRow
+          title={title}
+          href={detailHref ?? `/requests?requestId=${item.request.id}`}
+          artwork={
+            item.request.type === 'book'
+              ? poster.src
+              : (backdrop?.src ?? poster.src)
+          }
+          artworkType={poster.type}
+          metadata={[
+            getMediaBadge(intl, item),
+            details && 'runtime' in details
+              ? duration(details.runtime)
+              : undefined,
+            item.request.type === 'book' && details && 'author' in details
+              ? details.author
+              : undefined,
+            createdAt
+              ? intl.formatDate(createdAt, { month: 'short', day: 'numeric' })
+              : undefined,
+          ]
+            .filter(Boolean)
+            .join(' · ')}
+          status={
+            <>
+              <span
+                className="persius-status"
+                data-tone={
+                  currentStage === 'available'
+                    ? 'success'
+                    : current.needsAttention
+                      ? 'danger'
+                      : currentStage === 'downloading'
+                        ? 'progress'
+                        : 'warning'
+                }
               >
-                <CachedImage
-                  src={poster.src}
-                  type={poster.type}
-                  alt=""
-                  fill
-                  sizes="(min-width: 640px) 80px, 64px"
-                  className="media-detail-artwork-image"
-                />
-                <span>{posterBadge}</span>
-              </Link>
-            ) : (
-              <div className="detail-card-poster app-detail-poster-frame">
-                <CachedImage
-                  src={poster.src}
-                  type={poster.type}
-                  alt=""
-                  fill
-                  sizes="(min-width: 640px) 80px, 64px"
-                  className="media-detail-artwork-image"
-                />
-                <span>{posterBadge}</span>
-              </div>
-            )}
-          </div>
-
-          <div>
-            {detailHref ? (
-              <Link
-                href={detailHref}
-                className="detail-summary-title app-detail-title-link"
-              >
-                {displayTitle}
-              </Link>
-            ) : (
-              <h3 className="detail-summary-title app-detail-title">
-                {displayTitle}
-              </h3>
-            )}
-
-            <div className="detail-card-heading-spacing detail-three-column-grid">
-              <div className="detail-paired-column-span">
-                <dl className="card-table detail-paired-columns">
-                  <dt className="card-table-heading">
-                    {intl.formatMessage(messages.mediaAndFormat)}:
-                  </dt>
-                  <dd className="card-table-value">
-                    {getMediaBadge(intl, item)} · {getMediaFormat(intl, item)}
-                  </dd>
-                  <dt className="card-table-heading">
-                    {getReleaseDateLabel(intl, item)}:
-                  </dt>
-                  <dd className="card-table-value">{displayReleaseDate}</dd>
-                  <dt className="card-table-heading">
-                    {getRuntimeLabel(intl, item)}:
-                  </dt>
-                  <dd className="card-table-value">
-                    {getRuntimeOrPages(intl, details, item)}
-                  </dd>
-
-                  <div className="card-table media-detail-column-divider">
-                    {[...featuredCredits, ...secondaryDetails].map(
-                      (credit, index) => (
-                        <Fragment key={`${credit.label}-${index}`}>
-                          <dt className="card-table-heading">
-                            {credit.label}:
-                          </dt>
-                          <dd className="card-table-value">
-                            {credit.href ? (
-                              <Link
-                                href={credit.href}
-                                className="app-detail-link"
-                              >
-                                {credit.name}
-                              </Link>
-                            ) : (
-                              credit.name
-                            )}
-                          </dd>
-                        </Fragment>
-                      )
-                    )}
-                  </div>
-
-                  <dt className="card-table-heading">
-                    {intl.formatMessage(messages.genres)}:
-                  </dt>
-                  {genres.length > 0 ? (
-                    <dd
-                      className="card-table-value"
-                      data-wrap="true"
-                      data-lines="2"
-                    >
-                      {genres.map((genre, index) => (
-                        <span key={`${genre.href}-${genre.name}`}>
-                          {index > 0 && ', '}
-                          <Link href={genre.href} className="app-detail-link">
-                            {genre.name}
-                          </Link>
-                        </span>
-                      ))}
-                    </dd>
-                  ) : (
-                    <dd className="card-table-value">{notAvailable}</dd>
-                  )}
-                </dl>
-              </div>
-
-              <dl className="card-table media-detail-column-divider">
-                <dt className="card-table-heading">
-                  {intl.formatMessage(messages.requestedByLabel)}:
-                </dt>
-                <dd className="card-table-value">
-                  <Link
-                    href={`/users/${item.request.requestedBy.id}`}
-                    className="app-detail-link"
-                  >
-                    {item.request.requestedBy.displayName}
-                  </Link>
-                </dd>
-                <dt className="card-table-heading">
-                  {intl.formatMessage(messages.requestedDateTime)}:
-                </dt>
-                <dd className="card-table-value">
-                  {createdAt ? (
-                    <FormattedDate value={createdAt} dateStyle="medium" />
-                  ) : (
-                    notAvailable
-                  )}
-                </dd>
-                <dt aria-hidden="true" />
-                <dd className="card-table-value">
-                  {createdAt ? (
-                    <FormattedDate value={createdAt} timeStyle="short" />
-                  ) : (
-                    notAvailable
-                  )}
-                </dd>
-                <dt className="card-table-heading">
-                  {intl.formatMessage(messages.serviceLabel)}:
-                </dt>
-                <dd className="card-table-value">
-                  {getDisplayServiceName(current.service) ?? notAvailable}
-                </dd>
-              </dl>
-            </div>
-          </div>
-        </div>
-
-        <div className="app-card-inset refreshed-inset-surface app-timeline-card card-spacing-before">
-          {timelineHasOverflow && (
-            <button
-              type="button"
-              onClick={() => scrollTimeline(-1)}
-              className="app-button app-button-default app-timeline-scroll-control"
-              data-direction="previous"
-              aria-label={intl.formatMessage(messages.scrollProgressLeft)}
-            >
-              <ChevronLeftIcon
-                className="app-navigation-icon"
-                aria-hidden="true"
-              />
-            </button>
-          )}
-          <div
-            ref={timelineRef}
-            className="hide-scrollbar app-timeline-scroll"
-            aria-label={intl.formatMessage(messages.requestLifecycle)}
-          >
-            <div className="app-timeline-track">
-              {timelineStages.map((stage, index) => {
-                const isAvailable = currentStage === 'available';
-                const isCurrent =
-                  !terminalWithoutProgress &&
-                  !isAvailable &&
-                  currentStage === stage;
-                const isComplete =
-                  !terminalWithoutProgress &&
-                  (isAvailable ? index <= activeIndex : index < activeIndex);
-                return (
-                  <div key={stage} className="app-timeline-stage">
-                    {index < timelineStages.length - 1 && (
-                      <span
-                        className={`app-timeline-connector ${
-                          !terminalWithoutProgress && index < activeIndex
-                            ? 'app-timeline-connector-complete'
-                            : ''
-                        }`}
-                        aria-hidden="true"
-                      />
-                    )}
-                    <span
-                      className={`app-timeline-dot ${
-                        isCurrent
-                          ? 'app-timeline-dot-current'
-                          : isComplete
-                            ? 'app-timeline-dot-complete'
-                            : 'app-timeline-dot-idle'
-                      }`}
-                    >
-                      {isComplete ? (
-                        <CheckIcon
-                          className="app-timeline-dot-icon"
-                          strokeWidth={3}
-                          aria-hidden="true"
-                        />
-                      ) : isCurrent ? (
-                        <StageIcon
-                          className="app-timeline-dot-icon"
-                          aria-hidden="true"
-                        />
-                      ) : null}
-                    </span>
-                    <span
-                      className={`app-timeline-label ${
-                        isCurrent
-                          ? 'app-timeline-label-active'
-                          : 'app-timeline-label-idle'
-                      }`}
-                    >
-                      {getStageLabel(intl, stage)}
-                    </span>
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-          {timelineHasOverflow && (
-            <button
-              type="button"
-              onClick={() => scrollTimeline(1)}
-              className="app-button app-button-default app-timeline-scroll-control"
-              data-direction="next"
-              aria-label={intl.formatMessage(messages.scrollProgressRight)}
-            >
-              <ChevronRightIcon
-                className="app-navigation-icon"
-                aria-hidden="true"
-              />
-            </button>
-          )}
-        </div>
-
-        {current.stage === 'downloading' && current.percent !== null && (
-          <div className="app-card-inset refreshed-inset-surface app-progress-card card-spacing-before">
-            <div className="app-progress-header">
-              <span className="app-progress-summary">
-                <span>
-                  {intl.formatMessage(messages.progressFrom, {
-                    percent: current.percent.toFixed(1).replace(/\.0$/, ''),
-                  })}
-                </span>
-                {current.size !== null && current.sizeLeft !== null && (
-                  <>
-                    <span
-                      className="refreshed-detail-text-muted"
-                      aria-hidden="true"
-                    >
-                      |
-                    </span>
-                    <span>
-                      {intl.formatMessage(messages.sizeProgress, {
-                        complete: formatBytes(
-                          intl,
-                          current.size - current.sizeLeft
-                        ),
-                        total: formatBytes(intl, current.size),
-                      })}
-                    </span>
-                  </>
-                )}
+                <StageIcon aria-hidden="true" />
+                {getStageLabel(intl, currentStage)}
+                {currentStage === 'downloading' && current.percent !== null
+                  ? ` ${Math.round(current.percent)}%`
+                  : ''}
               </span>
-              {estimatedCompletionTime && (
-                <span>
-                  {intl.formatMessage(messages.eta, {
-                    date: (
-                      <FormattedDate
-                        value={estimatedCompletionTime}
-                        dateStyle="short"
-                        timeStyle="short"
-                      />
-                    ),
-                  })}
-                </span>
+              <span>{currentMessage}</span>
+            </>
+          }
+          progress={
+            currentStage === 'downloading' && current.percent !== null
+              ? Math.min(100, Math.max(0, current.percent))
+              : undefined
+          }
+          actions={
+            <>
+              {current.needsAttention &&
+                item.request.type === 'book' &&
+                bookFormat === 'audiobook' &&
+                detailHref && (
+                  <Link
+                    className="persius-button"
+                    data-primary="true"
+                    href={detailHref}
+                  >
+                    {intl.formatMessage(persiusMessages.chooseNarrator)}
+                  </Link>
+                )}
+              {canRetry && (
+                <Button
+                  buttonType="default"
+                  buttonSize="sm"
+                  disabled={isRetrying || cancelling}
+                  onClick={() => void onRetry(item.request.id)}
+                >
+                  {intl.formatMessage(messages.retry)}
+                </Button>
               )}
-            </div>
-            <div
-              className="app-progress-track"
-              role="progressbar"
-              aria-valuemin={0}
-              aria-valuemax={100}
-              aria-valuenow={current.percent}
-              aria-valuetext={`${current.percent}%`}
-            >
-              <div
-                className="app-progress-fill"
-                style={{
-                  width: `${Math.min(100, Math.max(0, current.percent))}%`,
-                }}
+              {!current.isTerminal &&
+                (canShowDelete ||
+                  (item.request.status === MediaRequestStatus.PENDING &&
+                    item.request.requestedBy.id === user?.id)) && (
+                  <ConfirmButton
+                    buttonType="default"
+                    buttonSize="sm"
+                    disabled={cancelling}
+                    confirmText={intl.formatMessage(globalMessages.areyousure)}
+                    onClick={() => void cancelRequest()}
+                  >
+                    {intl.formatMessage(globalMessages.cancel)}
+                  </ConfirmButton>
+                )}
+              <RequestDownloadAction
+                requestId={item.request.id}
+                enabled={currentStage === 'available'}
               />
-            </div>
-          </div>
-        )}
-
-        {current.bookImportProgresses?.length ? (
-          <div
-            className="refreshed-detail-text-muted"
-            role="status"
-            aria-live="polite"
-          >
-            {current.bookImportProgresses.map((progress) => {
-              const format =
-                progress.format === 'audiobook' ? 'audiobook' : 'ebook';
-              const nextAttemptAt = getValidDate(progress.nextAttemptAt);
-              return (
-                <div key={progress.format}>
-                  <span>
-                    {intl.formatMessage(messages.pendingImportTitle, {
-                      format,
-                    })}
-                  </span>
-                  {typeof progress.attemptCount === 'number' &&
-                    progress.attemptCount > 0 &&
-                    (progress.maxAttempts && progress.maxAttempts > 0 ? (
-                      <span>
-                        {' '}
-                        {intl.formatMessage(messages.pendingImportAttempt, {
-                          attempt: progress.attemptCount,
-                          maxAttempts: progress.maxAttempts,
-                        })}
-                      </span>
-                    ) : (
-                      <span>
-                        {' '}
-                        {intl.formatMessage(messages.pendingImportRetrying, {
-                          attempt: progress.attemptCount,
-                        })}
-                      </span>
-                    ))}
-                  {nextAttemptAt && (
-                    <span>
-                      {' '}
-                      {intl.formatMessage(messages.pendingImportNextRetry, {
-                        time: intl.formatDate(nextAttemptAt, {
-                          dateStyle: 'medium',
-                          timeStyle: 'short',
-                        }),
-                      })}
-                    </span>
-                  )}
-                </div>
-              );
-            })}
-          </div>
-        ) : null}
-
-        <div className="app-action-row request-status-action-row">
-          <Tooltip content={currentMessage}>
-            <span
-              className={`request-status-control ${requestStatusTone[currentStage] ?? requestStatusTone.cancelled}`}
-              aria-label={`${getStageLabel(intl, currentStage)}: ${currentMessage}`}
-              tabIndex={0}
-            >
-              <StageIcon className="request-status-control-icon" aria-hidden />
-              {intl.formatMessage(
-                messages[
-                  requestStatusMessageKey[currentStage] ??
-                    requestStatusMessageKey.cancelled
-                ]
-              )}
-            </span>
-          </Tooltip>
-          <Button
-            type="button"
-            buttonType="manage"
-            buttonSize="sm"
-            aria-expanded={isHistoryOpen}
-            aria-label={intl.formatMessage(messages.history)}
-            onClick={() => onToggleHistory(item.request.id)}
-          >
-            <ClockIcon className="app-action-icon" aria-hidden="true" />
-            {intl.formatMessage(messages.history)}
-            <ChevronDownIcon
-              className="app-disclosure-chevron"
-              aria-hidden="true"
-            />
-          </Button>
-          {actionControls}
-          <RequestDownloadAction
-            requestId={item.request.id}
-            enabled={currentStage === 'available'}
-          />
-        </div>
-
-        {isHistoryOpen && (
-          <section className="app-card-inset refreshed-inset-surface app-history-card card-spacing-before">
-            <h4 className="app-history-title">
-              {intl.formatMessage(messages.history)}
-            </h4>
-            {chronologicalHistory.length === 0 ? (
-              <p className="refreshed-detail-text-muted app-history-empty">
-                {intl.formatMessage(messages.noHistory)}
-              </p>
-            ) : (
-              <ol className="card-table app-history-grid">
-                {chronologicalHistory.map((event) => {
-                  const eventDate = getValidDate(event.createdAt);
-                  if (!eventDate) {
-                    return null;
-                  }
-
-                  return (
-                    <li key={event.id} className="app-history-row">
-                      <time
-                        className="refreshed-detail-text-muted app-history-time"
-                        dateTime={eventDate.toISOString()}
-                      >
-                        <FormattedDate value={eventDate} dateStyle="medium" />
-                      </time>
-                      <time
-                        className="refreshed-detail-text-muted app-history-time"
-                        dateTime={eventDate.toISOString()}
-                      >
-                        <FormattedDate value={eventDate} timeStyle="short" />
-                      </time>
-                      <span className="app-history-action">
-                        {getStageLabel(intl, event.stage as StatusStage)}
-                      </span>
-                      <span className="refreshed-detail-text app-history-description">
-                        {event.message
-                          ? formatRequestStatusMessage(intl, event)
-                          : getStageLabel(intl, event.stage as StatusStage)}
-                        {event.percent !== null && ` · ${event.percent}%`}
-                      </span>
-                    </li>
-                  );
-                })}
-              </ol>
-            )}
-          </section>
-        )}
-      </article>
+              <Button
+                buttonType="default"
+                buttonSize="sm"
+                aria-label={intl.formatMessage(persiusMessages.details)}
+                onClick={() => setShowDetails(true)}
+              >
+                <EllipsisHorizontalIcon aria-hidden="true" />
+              </Button>
+            </>
+          }
+        />
+      ) : (
+        expandedDetails
+      )}
     </>
   );
 };
 
 const Requests = () => {
+  const persius = usePersius();
+  const [showFilters, setShowFilters] = useState(false);
   const intl = useIntl();
   const router = useRouter();
   const { cache: requestCache, mutate: prefetchRequestCache } = useSWRConfig();
@@ -2192,7 +2337,11 @@ const Requests = () => {
       return;
     }
 
-    setFilter(getSafeQueryValue(router.query.filter, requestTypeFilterValues));
+    setFilter(
+      router.query.filter === undefined && persius
+        ? 'active'
+        : getSafeQueryValue(router.query.filter, requestTypeFilterValues)
+    );
     setMediaFilter(
       getSafeQueryValue(router.query.mediaType, mediaTypeValues) as MediaFilter
     );
@@ -2220,10 +2369,13 @@ const Requests = () => {
     setSelectedUser(
       resolveRequestStatusUserSelection({
         canViewOtherUsers,
-        queryUserId: rawUserId,
+        queryUserId:
+          rawUserId ??
+          (persius && currentUser ? String(currentUser.id) : undefined),
       })
     );
   }, [
+    persius,
     canViewOtherUsers,
     currentUser?.id,
     router.isReady,
@@ -2439,14 +2591,16 @@ const Requests = () => {
     nextUser?: UserSelection | null;
     nextPage?: number;
   } = {}) => ({
-    ...(nextFilter !== 'all' ? { filter: nextFilter } : {}),
+    ...(persius || nextFilter !== 'all' ? { filter: nextFilter } : {}),
     ...(nextMediaFilter !== 'all' ? { mediaType: nextMediaFilter } : {}),
     ...(nextSort !== 'added' ? { sort: nextSort } : {}),
     ...(nextSortDirection !== 'desc'
       ? { sortDirection: nextSortDirection }
       : {}),
     ...(nextTimeFrame !== 'all' ? { timeFrame: nextTimeFrame } : {}),
-    ...(canViewOtherUsers && nextUser !== null && nextUser !== 'all'
+    ...(canViewOtherUsers &&
+    nextUser !== null &&
+    (persius || nextUser !== 'all')
       ? { userId: String(nextUser) }
       : {}),
     ...(nextPage > 1 ? { page: String(nextPage) } : {}),
@@ -2630,6 +2784,16 @@ const Requests = () => {
       <h2 className="page-title" data-testid="page-header">
         {intl.formatMessage(messages.title)}
       </h2>
+      {persius && (
+        <Button
+          buttonType="default"
+          buttonSize="sm"
+          aria-expanded={showFilters}
+          onClick={() => setShowFilters(!showFilters)}
+        >
+          {intl.formatMessage(persiusMessages.filters)}
+        </Button>
+      )}
       <PageStatus
         active={isValidating}
         label={intl.formatMessage(messages.loading)}
@@ -2778,20 +2942,22 @@ const Requests = () => {
         : null;
   const hasFilters =
     searchFilter.trim() !== '' ||
-    filter !== 'all' ||
+    filter !== (persius ? 'active' : 'all') ||
     mediaFilter !== 'all' ||
     sort !== 'added' ||
     sortDirection !== 'desc' ||
     timeFrame !== 'all' ||
-    (canViewOtherUsers && selectedUser !== 'all');
+    (canViewOtherUsers && selectedUser !== (persius ? currentUser?.id : 'all'));
   const clearFilters = () => {
     setSearchFilter('');
-    setFilter('all');
+    setFilter(persius ? 'active' : 'all');
     setMediaFilter('all');
     setSort('added');
     setSortDirection('desc');
     setTimeFrame('all');
-    setSelectedUser(canViewOtherUsers ? 'all' : null);
+    setSelectedUser(
+      canViewOtherUsers ? (persius ? (currentUser?.id ?? null) : 'all') : null
+    );
     pushRouteQuery({});
   };
 
@@ -2829,6 +2995,32 @@ const Requests = () => {
       )}
       <PageTitle title={intl.formatMessage(messages.title)} />
       {pageHeading}
+      {persius && (
+        <>
+          <p className="persius-description">
+            {intl.formatMessage(persiusMessages.requestsDescription)}
+          </p>
+          <RequestTabs
+            endpoint="/api/v1/request/status"
+            filter={filter}
+            scope={
+              query
+                ? '&' +
+                  Array.from(new URLSearchParams(query.split('?')[1]))
+                    .filter(
+                      ([key]) => !['take', 'skip', 'filter'].includes(key)
+                    )
+                    .map(
+                      ([key, value]) =>
+                        `${encodeURIComponent(key)}=${encodeURIComponent(value)}`
+                    )
+                    .join('&')
+                : ''
+            }
+            onChange={updateFilter}
+          />
+        </>
+      )}
       {error && (
         <div className="page-error-message" data-severity="error" role="status">
           <div>
@@ -2854,164 +3046,170 @@ const Requests = () => {
         </div>
       )}
 
-      <PinnedFilterSectionGroup
-        mediaType={
-          mediaFilter === 'tv'
-            ? 'tv'
-            : mediaFilter === 'music'
-              ? 'music'
-              : mediaFilter === 'book' || mediaFilter === 'audiobook'
-                ? 'book'
-                : mediaFilter === 'sports'
-                  ? 'tv'
-                  : 'movie'
-        }
-        sections={[
-          {
-            section: 'taskFilters',
-            label: intl.formatMessage(messages.taskFilters),
-            children: (
-              <div className="app-filter-row">
-                <FilterResetButton
-                  label={intl.formatMessage(messages.clearFilters)}
-                  selected={!hasFilters}
-                  onClick={clearFilters}
-                />
-                {taskFilterOptions.map((option) => (
-                  <button
-                    key={option.key}
-                    type="button"
-                    onClick={() => updateFilter(option.filter)}
-                    className={getFilterToggleButtonClass(
-                      selectedTaskFilter === option.key
-                    )}
-                  >
-                    <span>{intl.formatMessage(messages[option.label])}</span>
-                    <span className="app-filter-count">{option.value}</span>
-                  </button>
-                ))}
-                {isAdminView && canViewOtherUsers && (
-                  <CompactSelect
-                    label={intl.formatMessage(messages.userFilter)}
-                    value={String(selectedUser ?? currentUser?.id ?? 'all')}
-                    options={requestUserOptions}
-                    onChange={updateUser}
-                    defaultValue="all"
-                  />
-                )}
-              </div>
-            ),
-          },
-          {
-            section: 'mediaFilters',
-            label: intl.formatMessage(messages.mediaFilters),
-            children: (
-              <div className="app-filter-row">
-                {mediaFilters.map((option) => (
-                  <MediaFilterOption
-                    key={option.value}
-                    pin={mediaPin}
-                    value={option.value}
-                    label={intl.formatMessage(messages[option.label])}
-                    selected={mediaFilter === option.value}
-                  >
-                    <button
-                      type="button"
-                      aria-pressed={mediaFilter === option.value}
-                      onClick={() => updateMediaFilter(option.value)}
-                      className="app-control-shadow-exempt app-filter-segment-focus"
-                    >
-                      {intl.formatMessage(messages[option.label])}
-                    </button>
-                  </MediaFilterOption>
-                ))}
-              </div>
-            ),
-          },
-          {
-            section: 'filters',
-            label: intl.formatMessage(messages.filter),
-            children: (
-              <>
+      <div hidden={persius && !showFilters}>
+        <PinnedFilterSectionGroup
+          mediaType={
+            mediaFilter === 'tv'
+              ? 'tv'
+              : mediaFilter === 'music'
+                ? 'music'
+                : mediaFilter === 'book' || mediaFilter === 'audiobook'
+                  ? 'book'
+                  : mediaFilter === 'sports'
+                    ? 'tv'
+                    : 'movie'
+          }
+          sections={[
+            {
+              section: 'taskFilters',
+              label: intl.formatMessage(messages.taskFilters),
+              children: (
                 <div className="app-filter-row">
-                  <CompactSelect
-                    label={intl.formatMessage(messages.timeFrame)}
-                    value={timeFrame}
-                    options={timeFrameOptions}
-                    onChange={(value) => updateTimeFrame(value as TimeFrame)}
+                  <FilterResetButton
+                    label={intl.formatMessage(messages.clearFilters)}
+                    selected={!hasFilters}
+                    onClick={clearFilters}
                   />
-                  <label className="discover-filter-control app-filter-search-control">
-                    <span
-                      className={`discover-filter-control-label ${
-                        searchFilter.trim()
-                          ? 'discover-filter-control-label-active'
-                          : ''
-                      }`}
-                    >
-                      <MagnifyingGlassIcon
-                        className="app-action-icon"
-                        aria-hidden="true"
-                      />
-                      {intl.formatMessage(messages.search)}
-                    </span>
-                    <input
-                      type="search"
-                      value={searchFilter}
-                      onChange={(event) => setSearchFilter(event.target.value)}
-                      placeholder={intl.formatMessage(messages.searchRequests)}
-                      aria-label={intl.formatMessage(messages.searchRequests)}
-                      className="app-filter-search-input"
-                    />
-                  </label>
-                </div>
-                {(mediaFilter === 'book' || mediaFilter === 'audiobook') && (
-                  <div className="app-filter-context">
-                    <span>{intl.formatMessage(messages.showingFormat)}</span>
-                    <BookFormatBadge
-                      format={mediaFilter === 'book' ? 'ebook' : 'audiobook'}
-                      variant="inline"
-                    />
-                  </div>
-                )}
-              </>
-            ),
-          },
-          {
-            section: 'sortBy',
-            label: intl.formatMessage(messages.sortBy),
-            children: (
-              <div className="app-filter-row">
-                {sortOptions.map((option) => {
-                  const active = sort === option.value;
-                  const displayedDirection = active
-                    ? sortDirection
-                    : getDefaultSortDirection(option.value);
-                  const DirectionIcon =
-                    displayedDirection === 'asc'
-                      ? BarsArrowUpIcon
-                      : BarsArrowDownIcon;
-                  return (
+                  {taskFilterOptions.map((option) => (
                     <button
-                      key={option.value}
+                      key={option.key}
                       type="button"
-                      aria-pressed={active}
-                      aria-label={`${intl.formatMessage(messages[option.label])} (${intl.formatMessage(active && sortDirection === 'asc' ? messages.sortAscending : messages.sortDescending)})`}
-                      onClick={() => updateSort(option.value)}
-                      className={getFilterToggleButtonClass(active)}
+                      onClick={() => updateFilter(option.filter)}
+                      className={getFilterToggleButtonClass(
+                        selectedTaskFilter === option.key
+                      )}
                     >
-                      {intl.formatMessage(messages[option.label])}
-                      <DirectionIcon
-                        className="app-navigation-icon"
-                        aria-hidden="true"
-                      />
+                      <span>{intl.formatMessage(messages[option.label])}</span>
+                      <span className="app-filter-count">{option.value}</span>
                     </button>
-                  );
-                })}
-              </div>
-            ),
-          },
-        ]}
-      />
+                  ))}
+                  {isAdminView && canViewOtherUsers && (
+                    <CompactSelect
+                      label={intl.formatMessage(messages.userFilter)}
+                      value={String(selectedUser ?? currentUser?.id ?? 'all')}
+                      options={requestUserOptions}
+                      onChange={updateUser}
+                      defaultValue="all"
+                    />
+                  )}
+                </div>
+              ),
+            },
+            {
+              section: 'mediaFilters',
+              label: intl.formatMessage(messages.mediaFilters),
+              children: (
+                <div className="app-filter-row">
+                  {mediaFilters.map((option) => (
+                    <MediaFilterOption
+                      key={option.value}
+                      pin={mediaPin}
+                      value={option.value}
+                      label={intl.formatMessage(messages[option.label])}
+                      selected={mediaFilter === option.value}
+                    >
+                      <button
+                        type="button"
+                        aria-pressed={mediaFilter === option.value}
+                        onClick={() => updateMediaFilter(option.value)}
+                        className="app-control-shadow-exempt app-filter-segment-focus"
+                      >
+                        {intl.formatMessage(messages[option.label])}
+                      </button>
+                    </MediaFilterOption>
+                  ))}
+                </div>
+              ),
+            },
+            {
+              section: 'filters',
+              label: intl.formatMessage(messages.filter),
+              children: (
+                <>
+                  <div className="app-filter-row">
+                    <CompactSelect
+                      label={intl.formatMessage(messages.timeFrame)}
+                      value={timeFrame}
+                      options={timeFrameOptions}
+                      onChange={(value) => updateTimeFrame(value as TimeFrame)}
+                    />
+                    <label className="discover-filter-control app-filter-search-control">
+                      <span
+                        className={`discover-filter-control-label ${
+                          searchFilter.trim()
+                            ? 'discover-filter-control-label-active'
+                            : ''
+                        }`}
+                      >
+                        <MagnifyingGlassIcon
+                          className="app-action-icon"
+                          aria-hidden="true"
+                        />
+                        {intl.formatMessage(messages.search)}
+                      </span>
+                      <input
+                        type="search"
+                        value={searchFilter}
+                        onChange={(event) =>
+                          setSearchFilter(event.target.value)
+                        }
+                        placeholder={intl.formatMessage(
+                          messages.searchRequests
+                        )}
+                        aria-label={intl.formatMessage(messages.searchRequests)}
+                        className="app-filter-search-input"
+                      />
+                    </label>
+                  </div>
+                  {(mediaFilter === 'book' || mediaFilter === 'audiobook') && (
+                    <div className="app-filter-context">
+                      <span>{intl.formatMessage(messages.showingFormat)}</span>
+                      <BookFormatBadge
+                        format={mediaFilter === 'book' ? 'ebook' : 'audiobook'}
+                        variant="inline"
+                      />
+                    </div>
+                  )}
+                </>
+              ),
+            },
+            {
+              section: 'sortBy',
+              label: intl.formatMessage(messages.sortBy),
+              children: (
+                <div className="app-filter-row">
+                  {sortOptions.map((option) => {
+                    const active = sort === option.value;
+                    const displayedDirection = active
+                      ? sortDirection
+                      : getDefaultSortDirection(option.value);
+                    const DirectionIcon =
+                      displayedDirection === 'asc'
+                        ? BarsArrowUpIcon
+                        : BarsArrowDownIcon;
+                    return (
+                      <button
+                        key={option.value}
+                        type="button"
+                        aria-pressed={active}
+                        aria-label={`${intl.formatMessage(messages[option.label])} (${intl.formatMessage(active && sortDirection === 'asc' ? messages.sortAscending : messages.sortDescending)})`}
+                        onClick={() => updateSort(option.value)}
+                        className={getFilterToggleButtonClass(active)}
+                      >
+                        {intl.formatMessage(messages[option.label])}
+                        <DirectionIcon
+                          className="app-navigation-icon"
+                          aria-hidden="true"
+                        />
+                      </button>
+                    );
+                  })}
+                </div>
+              ),
+            },
+          ]}
+        />
+      </div>
 
       {timeFrame !== 'all' && data.olderCount > 0 && (
         <div className="page-error-message" data-severity="info" role="status">
@@ -3042,7 +3240,7 @@ const Requests = () => {
       />
 
       {softwareCategory === undefined && (
-        <div className="card-stack">
+        <div className={persius ? 'persius-request-grid' : 'card-stack'}>
           {data.results.map((item) => (
             <RequestStatusCard
               key={item.request.id}

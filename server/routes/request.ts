@@ -49,6 +49,10 @@ import type {
 import type { SeasonEpisodeSelection } from '@server/interfaces/api/seasonInterfaces';
 import { hasAvailableBookFormat } from '@server/lib/bookAvailability';
 import {
+  BookRequestEditConflictError,
+  planBookRequestEdit,
+} from '@server/lib/bookRequestEdit';
+import {
   isValidMusicBrainzResourceId,
   isValidOpenLibraryResourceId,
   normalizeMusicBrainzId,
@@ -57,6 +61,7 @@ import {
   normalizeOpenLibraryWorkId,
 } from '@server/lib/externalIds';
 import { getExternalRuntimeConfig } from '@server/lib/externalRuntimeConfig';
+import { validateFutureSeasonPreference } from '@server/lib/futureSeasonMonitoring';
 import { normalizeValidIsbn } from '@server/lib/isbn';
 import { cleanMagazineTitle } from '@server/lib/magazineIdentity';
 import { isMediaCategoryEnabled } from '@server/lib/mediaCategories';
@@ -309,6 +314,7 @@ const hasAdultRequestAccess = (user?: User | null): boolean =>
   ) ?? false;
 const requestStatusFilters = [
   'all',
+  'active',
   'recent',
   'approved',
   'processing',
@@ -1015,6 +1021,13 @@ const sanitizeMediaRequestBody = (
       error: { status: 400, message: 'mediaType is required.' },
     };
   }
+
+  const futureSeasonError = validateFutureSeasonPreference(
+    bodyObject.monitorFutureSeasons,
+    mediaType
+  );
+  if (futureSeasonError)
+    return { error: { status: 400, message: futureSeasonError } };
 
   if (bodyObject.is4k !== undefined && typeof bodyObject.is4k !== 'boolean') {
     return {
@@ -1877,6 +1890,13 @@ requestRoutes.get<
     let statusFilter: MediaRequestStatus[];
 
     switch (filter) {
+      case 'active':
+        statusFilter = [
+          MediaRequestStatus.PENDING,
+          MediaRequestStatus.APPROVED,
+          MediaRequestStatus.FAILED,
+        ];
+        break;
       case 'approved':
       case 'processing':
         statusFilter = [MediaRequestStatus.APPROVED];
@@ -4008,23 +4028,21 @@ requestRoutes.put<{ requestId: string }>(
                     if (body.tags !== undefined) {
                       request.tags = body.tags;
                     }
-                  } else if (
-                    request.type === MediaType.MUSIC ||
-                    request.type === MediaType.BOOK
-                  ) {
+                  } else if (request.type === MediaType.BOOK) {
+                    Object.assign(
+                      request,
+                      await planBookRequestEdit(request, body)
+                    );
+                  } else if (request.type === MediaType.MUSIC) {
                     const nextServerId =
                       body.serverId === undefined
                         ? request.serverId
                         : body.serverId;
-                    const nextBookFormat =
-                      request.type === MediaType.BOOK
-                        ? (body.format ?? request.bookFormat ?? 'ebook')
-                        : null;
 
                     validateExternalServiceConfiguration(
                       request.type,
                       nextServerId,
-                      nextBookFormat
+                      null
                     );
 
                     if (body.serverId !== undefined) {
@@ -4041,10 +4059,6 @@ requestRoutes.put<{ requestId: string }>(
                     }
                     if (body.tags !== undefined) {
                       request.tags = body.tags;
-                    }
-                    if (request.type === MediaType.BOOK) {
-                      request.bookFormat =
-                        body.format ?? request.bookFormat ?? 'ebook';
                     }
                   } else if (request.type === MediaType.TV) {
                     const requestedSeasons =
@@ -4452,6 +4466,22 @@ requestRoutes.put<{ requestId: string }>(
                     }
                   }
 
+                  if (request.type === MediaType.TV) {
+                    const restricted =
+                      (request.watchAheadEpisodeCount ?? 0) > 0 ||
+                      isTvSeasonWatchGateEnabledForUser(requestUser);
+                    if (body.monitorFutureSeasons === true && restricted) {
+                      return next({
+                        status: 403,
+                        message:
+                          'Future seasons are managed by Episode Queue or the season watch gate.',
+                      });
+                    }
+                    if (restricted) request.monitorFutureSeasons = false;
+                    else if (body.monitorFutureSeasons !== undefined)
+                      request.monitorFutureSeasons = body.monitorFutureSeasons;
+                  }
+
                   if (changesRequestUser && request.type === MediaType.TV) {
                     request.watchAheadEpisodeCount = 0;
                     request.watchAheadLastSeason = null;
@@ -4498,7 +4528,10 @@ requestRoutes.put<{ requestId: string }>(
           message: 'You do not have permission to modify this request.',
         });
       }
-      if (e instanceof TvSeasonWatchGateError) {
+      if (
+        e instanceof TvSeasonWatchGateError ||
+        e instanceof BookRequestEditConflictError
+      ) {
         return next({ status: e.status, message: e.message });
       }
       if (e instanceof ServiceConfigurationError) {

@@ -1,11 +1,6 @@
-import {
-  existsSync,
-  lstatSync,
-  readFileSync,
-  readdirSync,
-} from 'node:fs';
+import { existsSync, lstatSync, readdirSync, readFileSync } from 'node:fs';
 import path from 'node:path';
-import { appDataPath } from '@server/utils/appDataVolume';
+import { appDataPath } from './appDataVolume';
 import {
   INTERFACE_THEME_IDS,
   parseInterfaceTheme,
@@ -27,10 +22,12 @@ let packageCache: Map<string, InterfaceThemePackage> | undefined;
 
 const builtInThemeRoot = (): string => {
   const compiledRoot = path.resolve(__dirname, '../interface-themes');
-  if (existsSync(path.join(compiledRoot, INTERFACE_THEME_IDS[0], 'manifest.json'))) {
+  if (
+    existsSync(path.join(compiledRoot, INTERFACE_THEME_IDS[0], 'manifest.json'))
+  ) {
     return compiledRoot;
   }
-  return path.resolve(process.cwd(), 'themes');
+  return path.resolve(__dirname, '../../themes');
 };
 
 const regularFile = (filename: string, maxBytes: number): string => {
@@ -71,10 +68,7 @@ const loadPackages = (): Map<string, InterfaceThemePackage> => {
   const builtInRoot = builtInThemeRoot();
 
   for (const id of INTERFACE_THEME_IDS) {
-    packages.set(
-      id,
-      readPackageDirectory(path.join(builtInRoot, id), id)
-    );
+    packages.set(id, readPackageDirectory(path.join(builtInRoot, id), id));
   }
 
   const customRoot = path.join(appDataPath(), CUSTOM_THEME_DIRECTORY_NAME);
@@ -92,13 +86,23 @@ const loadPackages = (): Map<string, InterfaceThemePackage> => {
 
     for (const entry of entries) {
       const id = parseInterfaceTheme(entry.name);
-      if (!id || builtInIds.has(id) || customCount >= MAX_INSTALLED_INTERFACE_THEMES) {
+      if (
+        !id ||
+        builtInIds.has(id) ||
+        customCount >= MAX_INSTALLED_INTERFACE_THEMES
+      ) {
         continue;
       }
       try {
-        const loaded = readPackageDirectory(path.join(customRoot, entry.name), id);
+        const loaded = readPackageDirectory(
+          path.join(customRoot, entry.name),
+          id
+        );
         const cssBytes = Buffer.byteLength(loaded.css, 'utf8');
-        if (totalCssBytes + cssBytes > MAX_INSTALLED_INTERFACE_THEME_CSS_BYTES) {
+        if (
+          totalCssBytes + cssBytes >
+          MAX_INSTALLED_INTERFACE_THEME_CSS_BYTES
+        ) {
           continue;
         }
         totalCssBytes += cssBytes;
@@ -125,8 +129,12 @@ export const listInstalledInterfaceThemes = (): InterfaceThemeManifest[] =>
     .sort((left, right) => {
       if (builtInIds.has(left.id) && builtInIds.has(right.id)) {
         return (
-          INTERFACE_THEME_IDS.indexOf(left.id as (typeof INTERFACE_THEME_IDS)[number]) -
-          INTERFACE_THEME_IDS.indexOf(right.id as (typeof INTERFACE_THEME_IDS)[number])
+          INTERFACE_THEME_IDS.indexOf(
+            left.id as (typeof INTERFACE_THEME_IDS)[number]
+          ) -
+          INTERFACE_THEME_IDS.indexOf(
+            right.id as (typeof INTERFACE_THEME_IDS)[number]
+          )
         );
       }
       if (builtInIds.has(left.id)) return -1;

@@ -303,11 +303,11 @@ no advertising SDKs. See the [pricing and monetization decision](./android/MONET
 The current tested mobile packages are attached to the
 [SeerrNG mobile prerelease](https://github.com/snapetech-org/seerrng/releases/tag/mobile-v3.63.0-ci.35):
 
-| Package | Download | SHA-256 |
-| --- | --- | --- |
-| Android APK for direct install (stable project signing key) | [APK](https://github.com/snapetech-org/seerrng/releases/download/mobile-v3.63.0-ci.35/seerrng-v3.63.0-ci.35-android.apk) | [checksum](https://github.com/snapetech-org/seerrng/releases/download/mobile-v3.63.0-ci.35/seerrng-v3.63.0-ci.35-android.sha256) |
-| Android App Bundle signed with the upload key | [AAB](https://github.com/snapetech-org/seerrng/releases/download/mobile-v3.63.0-ci.35/seerrng-v3.63.0-ci.35-android.aab) | [checksum](https://github.com/snapetech-org/seerrng/releases/download/mobile-v3.63.0-ci.35/seerrng-v3.63.0-ci.35-android-aab.sha256) |
-| iOS Simulator build (not an iPhone/iPad installable IPA) | [Simulator ZIP](https://github.com/snapetech-org/seerrng/releases/download/mobile-v3.63.0-ci.35/seerrng-v3.63.0-ci.20-ios-simulator.zip) | [checksum](https://github.com/snapetech-org/seerrng/releases/download/mobile-v3.63.0-ci.35/seerrng-v3.63.0-ci.20-ios-simulator.sha256) |
+| Package                                                     | Download                                                                                                                                 | SHA-256                                                                                                                                |
+| ----------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------- |
+| Android APK for direct install (stable project signing key) | [APK](https://github.com/snapetech-org/seerrng/releases/download/mobile-v3.63.0-ci.35/seerrng-v3.63.0-ci.35-android.apk)                 | [checksum](https://github.com/snapetech-org/seerrng/releases/download/mobile-v3.63.0-ci.35/seerrng-v3.63.0-ci.35-android.sha256)       |
+| Android App Bundle signed with the upload key               | [AAB](https://github.com/snapetech-org/seerrng/releases/download/mobile-v3.63.0-ci.35/seerrng-v3.63.0-ci.35-android.aab)                 | [checksum](https://github.com/snapetech-org/seerrng/releases/download/mobile-v3.63.0-ci.35/seerrng-v3.63.0-ci.35-android-aab.sha256)   |
+| iOS Simulator build (not an iPhone/iPad installable IPA)    | [Simulator ZIP](https://github.com/snapetech-org/seerrng/releases/download/mobile-v3.63.0-ci.35/seerrng-v3.63.0-ci.20-ios-simulator.zip) | [checksum](https://github.com/snapetech-org/seerrng/releases/download/mobile-v3.63.0-ci.35/seerrng-v3.63.0-ci.20-ios-simulator.sha256) |
 
 The GitHub Android packages have Play Billing disabled, so they remain unlimited evaluation builds; the 20-session cap and lifetime purchase UI are only enabled in a configured Play build. These are prerelease test builds, not store-approved releases. See the
 [mobile release readiness guide](./docs/mobile-release-readiness.md) for
@@ -422,11 +422,11 @@ systemd service, metadata configuration, and SeerrNG connection.
 
 Hardcover metadata modes are:
 
-| Mode | Path | Local proxy | Best for |
-| --- | --- | --- | --- |
+| Mode                                                   | Path                                      | Local proxy         | Best for                                                                    |
+| ------------------------------------------------------ | ----------------------------------------- | ------------------- | --------------------------------------------------------------------------- |
 | `compatibility` (default for fresh Hardcover installs) | BookshelfNG → rreading-glasses → upstream | On, with PostgreSQL | A durable shared cache, centralized throttling, or a compatibility boundary |
-| `native` (explicit opt-in) | BookshelfNG → Hardcover GraphQL | Off | The simplest direct Hardcover deployment |
-| `hosted` | BookshelfNG → `METADATA_URL` | Off | A hosted compatibility endpoint without local state |
+| `native` (explicit opt-in)                             | BookshelfNG → Hardcover GraphQL           | Off                 | The simplest direct Hardcover deployment                                    |
+| `hosted`                                               | BookshelfNG → `METADATA_URL`              | Off                 | A hosted compatibility endpoint without local state                         |
 
 Compatibility mode is the installer default because it keeps BookshelfNG
 decoupled from Hardcover's GraphQL API and centralizes authentication, caching,
@@ -641,35 +641,35 @@ full layered chain.
 
 Common runtime variables:
 
-| Variable | Purpose |
-| --- | --- |
-| `PORT` | HTTP port. Defaults to `5055`. |
-| `LOG_LEVEL` | Server log level. |
-| `NO_COLOR` | Set to a non-empty value to disable ANSI colors in console logs, unless `FORCE_COLOR` is non-empty. |
-| `FORCE_COLOR` | A non-empty value overrides terminal detection and `NO_COLOR`; `0` or `false` disables console colors, and any other value enables them. |
-| `TERM` | The terminal type; `dumb` disables console colors unless `FORCE_COLOR` is non-empty. |
-| `CONFIG_DIRECTORY` | Alternate config directory for non-container installs. |
-| `TMDB_API_KEY` | Optional TMDB v3 API key override. SeerrNG uses its bundled application key when this is unset. |
-| `TMDB_READ_ACCESS_TOKEN` | Optional TMDB v4 bearer-token override. When set, it takes precedence over `TMDB_API_KEY`. |
-| `SEARCH_CREDIT_CONCURRENCY` | Maximum concurrent TMDB credit lookups per server process during movie/TV searches; defaults to `10` and is capped at `40`. |
-| `METRICS_ENABLED` | Enables the Prometheus `/metrics` endpoint when set to `true`. |
-| `METRICS_AUTH_TOKEN` | Long random bearer token required by `/metrics` when metrics are enabled. |
-| `OIDC_ALLOW_PRIVATE_ADDRESSES` | Allows server-side OIDC requests to private network addresses. Required only for an intentionally internal identity provider. |
-| `OIDC_ALLOW_INSECURE` | Allows non-HTTPS OIDC provider requests. |
-| `SEERR_EXTERNAL_READ_ONLY` | Blocks mutating requests to external automation APIs when enabled. Useful for test/lab environments. Production refuses to start with this enabled unless explicitly allowed. |
-| `SEERR_ALLOW_PRODUCTION_EXTERNAL_READ_ONLY` | Allows `SEERR_EXTERNAL_READ_ONLY` in production for an intentional read-only clone. Do not set this on the writable request.snape.tech deployment. |
-| `SEERR_REQUIRE_PUBLIC_SETUP_HOSTS` | Rejects private/LAN Jellyfin or Emby hostnames during the first-run setup wizard. Disabled by default because nearly all self-hosted media servers are on a LAN; see [Network settings](docs/using-seerr/settings/network.md). |
-| `SEERR_ALLOW_PRIVATE_NOTIFICATION_URLS` | Allows Discord/Slack/webhook/ntfy/Gotify notification URLs to target private/internal addresses. Needed only if your notification receiver also runs on your LAN. Disabled by default. |
-| `SEERR_ALLOW_PRIVATE_PUSH_ENDPOINTS` | Allows web push subscription endpoints to target private/internal addresses. Disabled by default; the browser push service is normally public. |
-| `SEERR_TLS_MODE` | Explicit environment override selecting `disabled` (default), `self-signed`, or `provided` for direct HTTPS. Self-signed/provided modes serve HTTPS on `SEERR_HTTPS_PORT`; HTTP redirects only when the redirect setting is enabled. See [Built-in HTTPS](docs/using-seerr/advanced/built-in-tls.mdx). |
-| `SEERR_HTTPS_PORT` | HTTPS listener port when `SEERR_TLS_MODE` is `self-signed` or `provided`. Defaults to `5056` and must differ from `PORT`. |
-| `SEERR_TLS_HOSTS` | Comma-separated DNS names/IP addresses included in generated self-signed certificates and accepted for HTTP-to-HTTPS redirects. Defaults to `localhost,127.0.0.1,::1`. |
-| `SEERR_TLS_CERT_FILE` / `SEERR_TLS_KEY_FILE` | PEM certificate and matching private key used when `SEERR_TLS_MODE=provided`. The certificate must include DNS/IP subject alternative names. |
-| `SEERR_TLS_CA_FILE` | Optional PEM CA bundle passed to the Node TLS context in `provided` mode; serve intermediates in the certificate file itself. |
-| `SEERR_HTTP_REDIRECT_TO_HTTPS` | Environment override for the saved HTTP behavior when built-in TLS is enabled. Set `true` for 308 redirects; set `false` to keep an HTTP upgrade/recovery response while HTTPS is verified. |
-| `SEERR_ALLOW_HTTP_AUTH` | Explicitly permits browser sessions over direct HTTP when `SEERR_TLS_MODE=disabled`. Disabled by default; mutually exclusive with TLS and warns about session-cookie interception. |
-| `SEERR_SKIP_DB_MIGRATIONS` | Skips automatically running database migrations at startup in production. Only relevant when migrations are run out-of-band (e.g. `pnpm migration:run`, or a prepared Cypress test database). |
-| `JELLYFIN_TYPE` | One-time settings-migration hint. Set to `emby` before the first start after upgrading if your existing configuration was saved as `Jellyfin` but the server is actually Emby; relabels the stored media server type and can be unset afterward. |
+| Variable                                     | Purpose                                                                                                                                                                                                                                                                                                |
+| -------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `PORT`                                       | HTTP port. Defaults to `5055`.                                                                                                                                                                                                                                                                         |
+| `LOG_LEVEL`                                  | Server log level.                                                                                                                                                                                                                                                                                      |
+| `NO_COLOR`                                   | Set to a non-empty value to disable ANSI colors in console logs, unless `FORCE_COLOR` is non-empty.                                                                                                                                                                                                    |
+| `FORCE_COLOR`                                | A non-empty value overrides terminal detection and `NO_COLOR`; `0` or `false` disables console colors, and any other value enables them.                                                                                                                                                               |
+| `TERM`                                       | The terminal type; `dumb` disables console colors unless `FORCE_COLOR` is non-empty.                                                                                                                                                                                                                   |
+| `CONFIG_DIRECTORY`                           | Alternate config directory for non-container installs.                                                                                                                                                                                                                                                 |
+| `TMDB_API_KEY`                               | Optional TMDB v3 API key override. SeerrNG uses its bundled application key when this is unset.                                                                                                                                                                                                        |
+| `TMDB_READ_ACCESS_TOKEN`                     | Optional TMDB v4 bearer-token override. When set, it takes precedence over `TMDB_API_KEY`.                                                                                                                                                                                                             |
+| `SEARCH_CREDIT_CONCURRENCY`                  | Maximum concurrent TMDB credit lookups per server process during movie/TV searches; defaults to `10` and is capped at `40`.                                                                                                                                                                            |
+| `METRICS_ENABLED`                            | Enables the Prometheus `/metrics` endpoint when set to `true`.                                                                                                                                                                                                                                         |
+| `METRICS_AUTH_TOKEN`                         | Long random bearer token required by `/metrics` when metrics are enabled.                                                                                                                                                                                                                              |
+| `OIDC_ALLOW_PRIVATE_ADDRESSES`               | Allows server-side OIDC requests to private network addresses. Required only for an intentionally internal identity provider.                                                                                                                                                                          |
+| `OIDC_ALLOW_INSECURE`                        | Allows non-HTTPS OIDC provider requests.                                                                                                                                                                                                                                                               |
+| `SEERR_EXTERNAL_READ_ONLY`                   | Blocks mutating requests to external automation APIs when enabled. Useful for test/lab environments. Production refuses to start with this enabled unless explicitly allowed.                                                                                                                          |
+| `SEERR_ALLOW_PRODUCTION_EXTERNAL_READ_ONLY`  | Allows `SEERR_EXTERNAL_READ_ONLY` in production for an intentional read-only clone. Do not set this on the writable request.snape.tech deployment.                                                                                                                                                     |
+| `SEERR_REQUIRE_PUBLIC_SETUP_HOSTS`           | Rejects private/LAN Jellyfin or Emby hostnames during the first-run setup wizard. Disabled by default because nearly all self-hosted media servers are on a LAN; see [Network settings](docs/using-seerr/settings/network.md).                                                                         |
+| `SEERR_ALLOW_PRIVATE_NOTIFICATION_URLS`      | Allows Discord/Slack/webhook/ntfy/Gotify notification URLs to target private/internal addresses. Needed only if your notification receiver also runs on your LAN. Disabled by default.                                                                                                                 |
+| `SEERR_ALLOW_PRIVATE_PUSH_ENDPOINTS`         | Allows web push subscription endpoints to target private/internal addresses. Disabled by default; the browser push service is normally public.                                                                                                                                                         |
+| `SEERR_TLS_MODE`                             | Explicit environment override selecting `disabled` (default), `self-signed`, or `provided` for direct HTTPS. Self-signed/provided modes serve HTTPS on `SEERR_HTTPS_PORT`; HTTP redirects only when the redirect setting is enabled. See [Built-in HTTPS](docs/using-seerr/advanced/built-in-tls.mdx). |
+| `SEERR_HTTPS_PORT`                           | HTTPS listener port when `SEERR_TLS_MODE` is `self-signed` or `provided`. Defaults to `5056` and must differ from `PORT`.                                                                                                                                                                              |
+| `SEERR_TLS_HOSTS`                            | Comma-separated DNS names/IP addresses included in generated self-signed certificates and accepted for HTTP-to-HTTPS redirects. Defaults to `localhost,127.0.0.1,::1`.                                                                                                                                 |
+| `SEERR_TLS_CERT_FILE` / `SEERR_TLS_KEY_FILE` | PEM certificate and matching private key used when `SEERR_TLS_MODE=provided`. The certificate must include DNS/IP subject alternative names.                                                                                                                                                           |
+| `SEERR_TLS_CA_FILE`                          | Optional PEM CA bundle passed to the Node TLS context in `provided` mode; serve intermediates in the certificate file itself.                                                                                                                                                                          |
+| `SEERR_HTTP_REDIRECT_TO_HTTPS`               | Environment override for the saved HTTP behavior when built-in TLS is enabled. Set `true` for 308 redirects; set `false` to keep an HTTP upgrade/recovery response while HTTPS is verified.                                                                                                            |
+| `SEERR_ALLOW_HTTP_AUTH`                      | Explicitly permits browser sessions over direct HTTP when `SEERR_TLS_MODE=disabled`. Disabled by default; mutually exclusive with TLS and warns about session-cookie interception.                                                                                                                     |
+| `SEERR_SKIP_DB_MIGRATIONS`                   | Skips automatically running database migrations at startup in production. Only relevant when migrations are run out-of-band (e.g. `pnpm migration:run`, or a prepared Cypress test database).                                                                                                          |
+| `JELLYFIN_TYPE`                              | One-time settings-migration hint. Set to `emby` before the first start after upgrading if your existing configuration was saved as `Jellyfin` but the server is actually Emby; relabels the stored media server type and can be unset afterward.                                                       |
 
 ### First-run browser transport
 
@@ -691,37 +691,37 @@ Use deployment secrets, `.env` files, or container environment variables. Do not
 Bookshelf deployment and migration variables live on the helper scripts rather
 than the SeerrNG runtime container. Common ones include:
 
-| Variable | Purpose |
-| --- | --- |
-| `BOOKSHELF_BACKEND` | `auto`, `hardcover`, or `softcover`. |
-| `BOOKSHELF_IMAGE` | Override the Bookshelf image. Hardcover mode uses the stable Snapetech `main` release tag by default; use a digest to pin it. |
-| `BOOKSHELF_METADATA_MODE` | `compatibility` (default for fresh Hardcover), `native`, or `hosted`. |
-| `BOOKSHELF_METADATA_URL` | Compatibility or hosted metadata URL. Native Hardcover uses it only when native mode is disabled. |
-| `BOOKSHELF_HARDCOVER_NATIVE` | Rendered Bookshelf flag; the installer sets it from `BOOKSHELF_METADATA_MODE`. |
-| `BOOKSHELF_HARDCOVER_AUTH` | Native-mode token passed to BookshelfNG; compatibility mode passes `HARDCOVER_AUTH` to rreading-glasses instead. |
-| `BOOKSHELF_HARDCOVER_API_URL` | Optional native Hardcover GraphQL base URL. Defaults to `https://api.hardcover.app`. |
-| `BOOKSHELF_METADATA_SOURCES` | Legacy shared runtime override. When supplied to the installer it applies to both services; otherwise the per-service values take precedence. |
-| `BOOKSHELF_EBOOKS_METADATA_SOURCES` | Ebook source list; defaults to `gutendex,googlebooks,europeana`. Google Books and Europeana run only when their keys are configured. |
-| `BOOKSHELF_AUDIOBOOKS_METADATA_SOURCES` | Audiobook source list; defaults to `loc,gutendex,googlebooks,europeana`. Google Books and Europeana run only when their keys are configured. |
-| `GOOGLE_BOOKS_API_KEY` | Optional Google Books runtime/migration key; Google Books is skipped without it. |
-| `EUROPEANA_API_KEY` | Optional Europeana runtime key; a free registered key is required, and runtime search uses openly reusable text records. |
-| `HARDCOVER_APIFY_GOODREADS_ACTOR` / `HARDCOVER_APIFY_TOKEN` | Optional runtime/migration Goodreads-compatible Actor; usage may be metered. |
-| `HARDCOVER_APIFY_GOODREADS_INPUT_TEMPLATE` | Optional Apify Actor JSON input template containing `{{query}}`. |
-| `HARDCOVER_AUTH` | Hardcover API token. The installer passes it to native BookshelfNG by default, or to rreading-glasses in compatibility mode; include the `Bearer ` prefix. |
-| `COOKIE` | Optional Goodreads cookie for softcover mode. |
-| `BOOKSHELF_EBOOKS_CONFIG_DIR` | Ebook Bookshelf/Readarr config directory. |
-| `BOOKSHELF_AUDIOBOOKS_CONFIG_DIR` | Audiobook Bookshelf/Readarr config directory. |
-| `HARDCOVER_EBOOK_API_KEY` / `HARDCOVER_AUDIOBOOK_API_KEY` | API keys for target Hardcover Bookshelf instances. |
-| `HARDCOVER_SOFTCOVER_EBOOK_BASE_URL` / `HARDCOVER_SOFTCOVER_AUDIOBOOK_BASE_URL` | Optional softcover recovery endpoints. |
-| `HARDCOVER_OPENLIBRARY_RECOVERY` | Enables OpenLibrary-assisted native Hardcover remapping. Defaults to `true`. |
-| `HARDCOVER_GOOGLEBOOKS_RECOVERY` | Enables Google Books recovery for migration/reconciliation. Defaults to `true`; `GOOGLE_BOOKS_API_KEY` is required by Google's public API. |
-| `HARDCOVER_LOC_RECOVERY` | Enables Library of Congress catalog recovery for migration/reconciliation. Defaults to `true`. |
-| `HARDCOVER_APIFY_GOODREADS_ACTOR` / `HARDCOVER_APIFY_TOKEN` | Optional Apify Actor adapter for Goodreads-compatible recovery. Actor runs may be metered; set a JSON `HARDCOVER_APIFY_GOODREADS_INPUT_TEMPLATE` containing `{{query}}` when the Actor uses a different input schema. |
-| `HARDCOVER_APIFY_API_BASE_URL` | Apify API base URL; defaults to `https://api.apify.com`. |
-| `HARDCOVER_GOOGLEBOOKS_BASE_URL` / `HARDCOVER_LOC_BASE_URL` | Override provider API bases for controlled deployments and tests. |
-| `HARDCOVER_LOCAL_DB_IMPORT` | Enables deterministic local DB fallback after API and softcover recovery fail. |
-| `HARDCOVER_MATCH_CONCURRENCY` | Match report lookup concurrency. |
-| `HARDCOVER_API_TIMEOUT_MS` | Target API timeout for migration requests. |
+| Variable                                                                        | Purpose                                                                                                                                                                                                               |
+| ------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `BOOKSHELF_BACKEND`                                                             | `auto`, `hardcover`, or `softcover`.                                                                                                                                                                                  |
+| `BOOKSHELF_IMAGE`                                                               | Override the Bookshelf image. Hardcover mode uses the stable Snapetech `main` release tag by default; use a digest to pin it.                                                                                         |
+| `BOOKSHELF_METADATA_MODE`                                                       | `compatibility` (default for fresh Hardcover), `native`, or `hosted`.                                                                                                                                                 |
+| `BOOKSHELF_METADATA_URL`                                                        | Compatibility or hosted metadata URL. Native Hardcover uses it only when native mode is disabled.                                                                                                                     |
+| `BOOKSHELF_HARDCOVER_NATIVE`                                                    | Rendered Bookshelf flag; the installer sets it from `BOOKSHELF_METADATA_MODE`.                                                                                                                                        |
+| `BOOKSHELF_HARDCOVER_AUTH`                                                      | Native-mode token passed to BookshelfNG; compatibility mode passes `HARDCOVER_AUTH` to rreading-glasses instead.                                                                                                      |
+| `BOOKSHELF_HARDCOVER_API_URL`                                                   | Optional native Hardcover GraphQL base URL. Defaults to `https://api.hardcover.app`.                                                                                                                                  |
+| `BOOKSHELF_METADATA_SOURCES`                                                    | Legacy shared runtime override. When supplied to the installer it applies to both services; otherwise the per-service values take precedence.                                                                         |
+| `BOOKSHELF_EBOOKS_METADATA_SOURCES`                                             | Ebook source list; defaults to `gutendex,googlebooks,europeana`. Google Books and Europeana run only when their keys are configured.                                                                                  |
+| `BOOKSHELF_AUDIOBOOKS_METADATA_SOURCES`                                         | Audiobook source list; defaults to `loc,gutendex,googlebooks,europeana`. Google Books and Europeana run only when their keys are configured.                                                                          |
+| `GOOGLE_BOOKS_API_KEY`                                                          | Optional Google Books runtime/migration key; Google Books is skipped without it.                                                                                                                                      |
+| `EUROPEANA_API_KEY`                                                             | Optional Europeana runtime key; a free registered key is required, and runtime search uses openly reusable text records.                                                                                              |
+| `HARDCOVER_APIFY_GOODREADS_ACTOR` / `HARDCOVER_APIFY_TOKEN`                     | Optional runtime/migration Goodreads-compatible Actor; usage may be metered.                                                                                                                                          |
+| `HARDCOVER_APIFY_GOODREADS_INPUT_TEMPLATE`                                      | Optional Apify Actor JSON input template containing `{{query}}`.                                                                                                                                                      |
+| `HARDCOVER_AUTH`                                                                | Hardcover API token. The installer passes it to native BookshelfNG by default, or to rreading-glasses in compatibility mode; include the `Bearer ` prefix.                                                            |
+| `COOKIE`                                                                        | Optional Goodreads cookie for softcover mode.                                                                                                                                                                         |
+| `BOOKSHELF_EBOOKS_CONFIG_DIR`                                                   | Ebook Bookshelf/Readarr config directory.                                                                                                                                                                             |
+| `BOOKSHELF_AUDIOBOOKS_CONFIG_DIR`                                               | Audiobook Bookshelf/Readarr config directory.                                                                                                                                                                         |
+| `HARDCOVER_EBOOK_API_KEY` / `HARDCOVER_AUDIOBOOK_API_KEY`                       | API keys for target Hardcover Bookshelf instances.                                                                                                                                                                    |
+| `HARDCOVER_SOFTCOVER_EBOOK_BASE_URL` / `HARDCOVER_SOFTCOVER_AUDIOBOOK_BASE_URL` | Optional softcover recovery endpoints.                                                                                                                                                                                |
+| `HARDCOVER_OPENLIBRARY_RECOVERY`                                                | Enables OpenLibrary-assisted native Hardcover remapping. Defaults to `true`.                                                                                                                                          |
+| `HARDCOVER_GOOGLEBOOKS_RECOVERY`                                                | Enables Google Books recovery for migration/reconciliation. Defaults to `true`; `GOOGLE_BOOKS_API_KEY` is required by Google's public API.                                                                            |
+| `HARDCOVER_LOC_RECOVERY`                                                        | Enables Library of Congress catalog recovery for migration/reconciliation. Defaults to `true`.                                                                                                                        |
+| `HARDCOVER_APIFY_GOODREADS_ACTOR` / `HARDCOVER_APIFY_TOKEN`                     | Optional Apify Actor adapter for Goodreads-compatible recovery. Actor runs may be metered; set a JSON `HARDCOVER_APIFY_GOODREADS_INPUT_TEMPLATE` containing `{{query}}` when the Actor uses a different input schema. |
+| `HARDCOVER_APIFY_API_BASE_URL`                                                  | Apify API base URL; defaults to `https://api.apify.com`.                                                                                                                                                              |
+| `HARDCOVER_GOOGLEBOOKS_BASE_URL` / `HARDCOVER_LOC_BASE_URL`                     | Override provider API bases for controlled deployments and tests.                                                                                                                                                     |
+| `HARDCOVER_LOCAL_DB_IMPORT`                                                     | Enables deterministic local DB fallback after API and softcover recovery fail.                                                                                                                                        |
+| `HARDCOVER_MATCH_CONCURRENCY`                                                   | Match report lookup concurrency.                                                                                                                                                                                      |
+| `HARDCOVER_API_TIMEOUT_MS`                                                      | Target API timeout for migration requests.                                                                                                                                                                            |
 
 ### Cypress Runtime Config
 
@@ -841,3 +841,13 @@ SeerrNG builds on Seerr, Jellyseerr, and Overseerr. Inherited code, documentatio
 ## Local security scanning
 
 Run `./scripts/security-scan-local.sh` for local Semgrep CE and the Trivy scanners that fit this repository. The installed pre-commit hook scans the staged source/config snapshot after linting; Trivy runs on demand or in CI. This public repository also runs Semgrep CE and Trivy in GitHub Actions on main changes, pull requests, and weekly. Semgrep reports are retained as run artifacts for triage. See [security-scanning.md](docs/security-scanning.md). Use `./scripts/update-security-tools.sh` to refresh local scanner data and the Trivy database.
+
+## Make the interface your own
+
+Choose SeerrOrig, SeerrNGJ or PersiusNG in the theme picker, or install a community
+`.seerrtheme` package. Every theme owns its stylesheet and runs inside SeerrNG;
+a UI-rewriting proxy is not required.
+
+[Create and package a theme](docs/interface-themes/authoring.md) ·
+[Submit a community theme](docs/interface-themes/submitting.md) ·
+[PersiusNG design and validation](docs/interface-themes/persiusng.md)

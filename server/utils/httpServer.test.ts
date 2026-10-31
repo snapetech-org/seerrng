@@ -1,6 +1,7 @@
 import assert from 'node:assert/strict';
 import http from 'node:http';
 import { describe, it } from 'node:test';
+import { Agent, fetch as directFetch } from 'undici';
 import {
   HTTP_SERVER_LIMITS,
   configureHttpServer,
@@ -56,6 +57,7 @@ describe('configureHttpServer', () => {
 
 describe('startLoopbackHttpServer', () => {
   it('serves its handler on an ephemeral loopback-only port', async () => {
+    const dispatcher = new Agent();
     const { server, port } = await startLoopbackHttpServer(
       (_request, response) => {
         response.writeHead(200, { 'Content-Type': 'text/plain' });
@@ -69,10 +71,14 @@ describe('startLoopbackHttpServer', () => {
       assert.equal(address.address, '127.0.0.1');
       assert.equal(address.port, port);
 
-      const response = await fetch(`http://127.0.0.1:${port}/api/v1/movie/1`);
+      const response = await directFetch(
+        `http://127.0.0.1:${port}/api/v1/movie/1`,
+        { dispatcher }
+      );
       assert.equal(response.status, 200);
       assert.equal(await response.text(), 'internal API');
     } finally {
+      await dispatcher.close();
       await new Promise<void>((resolve, reject) => {
         server.close((error) => (error ? reject(error) : resolve()));
       });

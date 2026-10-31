@@ -1,5 +1,7 @@
 import CachedImage from '@app/components/Common/CachedImage';
 import MiniQuotaDisplay from '@app/components/Layout/UserDropdown/MiniQuotaDisplay';
+import { PersiusAccountLabel } from '@app/components/Persius/Chrome';
+import usePersius from '@app/components/Persius/usePersius';
 import { useNativeRuntime } from '@app/context/NativeRuntimeContext';
 import { useUser } from '@app/hooks/useUser';
 import defineMessages from '@app/utils/defineMessages';
@@ -45,6 +47,7 @@ const ForwardedLink = forwardRef<
 ForwardedLink.displayName = 'ForwardedLink';
 
 const UserDropdown = () => {
+  const persius = usePersius();
   const intl = useIntl();
   const { user, revalidate } = useUser();
   const router = useRouter();
@@ -108,6 +111,7 @@ const UserDropdown = () => {
             width={40}
             height={40}
           />
+          {persius && <PersiusAccountLabel />}
         </MenuButton>
       </div>
       <MenuItems

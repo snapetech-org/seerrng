@@ -8,13 +8,14 @@ import { ThemeProvider, themePalettes, useTheme } from './ThemeContext';
 
 const fixture = vi.hoisted(() => ({
   user: undefined as User | undefined,
+  get: vi.fn(),
   post: vi.fn(),
   revalidate: vi.fn(),
 }));
 vi.mock('@app/hooks/useUser', () => ({
   useUser: () => ({ user: fixture.user, revalidate: fixture.revalidate }),
 }));
-vi.mock('axios', () => ({ default: { post: fixture.post } }));
+vi.mock('axios', () => ({ default: { get: fixture.get, post: fixture.post } }));
 
 let root: Root;
 let dom: JSDOM;
@@ -48,7 +49,17 @@ beforeEach(() => {
   vi.stubGlobal('document', dom.window.document);
   vi.stubGlobal('localStorage', dom.window.localStorage);
   vi.stubGlobal('IS_REACT_ACT_ENVIRONMENT', true);
+  const append = document.head.append.bind(document.head);
+  vi.spyOn(document.head, 'append').mockImplementation((...nodes) => {
+    append(...nodes);
+    for (const node of nodes) {
+      if (typeof node !== 'string' && node.nodeName === 'LINK') {
+        queueMicrotask(() => node.dispatchEvent(new dom.window.Event('load')));
+      }
+    }
+  });
   fixture.user = undefined;
+  fixture.get.mockReset().mockResolvedValue({ data: { themes: [] } });
   fixture.post.mockReset();
   fixture.revalidate.mockReset();
   fixture.revalidate.mockImplementation(async (callback) => {
@@ -62,6 +73,7 @@ beforeEach(() => {
 });
 afterEach(async () => {
   await act(async () => root.unmount());
+  vi.restoreAllMocks();
   container.remove();
   dom.window.close();
   vi.unstubAllGlobals();
@@ -84,9 +96,13 @@ test('new installs use SeerrNG and keep its palette selected in light mode', asy
   expect(document.documentElement.dataset.themeMode).toBe('light');
   expect(theme.interfaceTheme).toBe('seerrOrig');
   expect(document.documentElement.dataset.interfaceTheme).toBe('seerrOrig');
-  expect(
-    document.documentElement.style.getPropertyValue('--color-indigo-600')
-  ).toBe('79 70 229');
+  const sheets = document.querySelectorAll<HTMLLinkElement>(
+    'link[data-interface-theme-stylesheet]'
+  );
+  expect(sheets).toHaveLength(1);
+  expect(sheets[0].getAttribute('href')).toBe(
+    '/api/v1/interface-themes/seerrOrig/theme.css'
+  );
   expect(fixture.post).not.toHaveBeenCalled();
 });
 
@@ -107,6 +123,39 @@ test('an account can change and restore the complete interface profile', async (
   await act(async () => render());
   expect(theme.interfaceTheme).toBe('seerrOrig');
   expect(document.documentElement.dataset.interfaceTheme).toBe('seerrOrig');
+});
+
+test('a superseded restoration cannot detach the current account stylesheet', async () => {
+  fixture.user = account(1, 'seerr', 'seerrOrig');
+  await act(async () => render());
+  const previous = document.querySelector<HTMLLinkElement>(
+    'link[data-interface-theme-stylesheet]'
+  );
+  // Keep the next stylesheet pending while two restoration effects subscribe
+  // to the same load. The superseded effect must not leave the winner detached.
+  vi.mocked(document.head.append).mockRestore();
+  fixture.user = account(1, 'seerr', 'persiusNG');
+  await act(async () => render());
+  const pending = document.querySelector<HTMLLinkElement>(
+    'link[data-interface-theme-id="persiusNG"]'
+  );
+  expect(pending?.media).toBe('not all');
+  fixture.user = account(2, 'aurora', 'persiusNG');
+  await act(async () => render());
+  expect(
+    document.querySelectorAll('link[data-interface-theme-id="persiusNG"]')
+  ).toHaveLength(1);
+  await act(async () => {
+    pending?.dispatchEvent(new dom.window.Event('load'));
+  });
+  expect(theme.interfaceTheme).toBe('persiusNG');
+  expect(theme.palette).toBe('aurora');
+  expect(pending?.isConnected).toBe(true);
+  expect(pending?.media).toBe('all');
+  expect(previous?.isConnected).toBe(false);
+  expect(
+    document.querySelectorAll('link[data-interface-theme-stylesheet]')
+  ).toHaveLength(1);
 });
 
 test('later logins restore the account choice instead of resetting it or sharing another user choice', async () => {

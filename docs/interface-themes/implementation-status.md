@@ -5,6 +5,23 @@ the same commit as each implementation slice. A source change is not visual
 acceptance: rendered review stays unverified until the application has been
 captured at matching viewports and states.
 
+## Current integration follow-up — 2026-10-31
+
+The restored checkout now has the native PersiusNG implementation, production
+OpenAPI theme routes, current Requests page integration, recording retargeting,
+independent community packages and authoring/submission documentation integrated.
+The full native Vitest suite passes (4,525 tests; five database-dependent skips), and the
+production server/Next.js build passes. Signed-in browser evidence now covers the
+nine reference flows, native account preferences and an installed community theme.
+The native Node suite also passes (3,819 tests; five database-dependent skips),
+with complete matching terminal and archive reports.
+
+Use the [current integration checkpoint](integration-checkpoint-20261030.md) for
+final check totals, old-theme comparisons and explicit release-environment gates.
+The entries below are historical slices, including their former open gates;
+they are not the current cumulative result. This work does not deploy or merge
+the draft PR, and does not claim pixel-identical live catalog content.
+
 ## Implementation basis
 
 - Rebuild base: `snapetech-org/seerrng` `main`, commit

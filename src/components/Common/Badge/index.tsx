@@ -114,6 +114,8 @@ const Badge = (
         href={safeHref}
         target="_blank"
         rel="noopener noreferrer"
+        data-interface-role="status-badge"
+        data-badge-tone={badgeType}
         className={badgeStyle.join(' ')}
         aria-describedby={ariaDescribedBy}
         ref={ref as React.Ref<HTMLAnchorElement>}
@@ -126,6 +128,8 @@ const Badge = (
       <Link
         {...props}
         href={safeHref}
+        data-interface-role="status-badge"
+        data-badge-tone={badgeType}
         className={badgeStyle.join(' ')}
         aria-describedby={ariaDescribedBy}
         ref={ref as React.Ref<HTMLAnchorElement>}
@@ -137,6 +141,8 @@ const Badge = (
     return (
       <span
         {...props}
+        data-interface-role="status-badge"
+        data-badge-tone={badgeType}
         className={badgeStyle.join(' ')}
         aria-describedby={ariaDescribedBy}
         ref={ref as React.Ref<HTMLSpanElement>}

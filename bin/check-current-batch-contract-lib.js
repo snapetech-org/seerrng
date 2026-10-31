@@ -493,12 +493,21 @@ const validateRequestMediaArtwork = (
 const validateTvRequestCanvas = (source, stylesheet, inset) => {
   try {
     const jsx = parsedJsx(source);
+    const retainsCanvas = (value) => {
+      if (!value) return false;
+      if (jsx.ts.isParenthesizedExpression(value))
+        return retainsCanvas(value.expression);
+      if (jsx.ts.isConditionalExpression(value))
+        return retainsCanvas(value.whenTrue) && retainsCanvas(value.whenFalse);
+      return (
+        jsx.ts.isStringLiteral(value) &&
+        value.text.split(/\s+/).includes('request-modal-site-surface')
+      );
+    };
     const modal = jsx.elements.find(
       (node) =>
         jsx.tag(node) === 'Modal' &&
-        (jsx.text(node, 'dialogClass') ?? '')
-          .split(/\s+/)
-          .includes('request-modal-site-surface')
+        retainsCanvas(jsx.expression(node, 'dialogClass'))
     );
     const shell = jsx.elements.find(
       (node) =>
@@ -1604,13 +1613,25 @@ const validateCurrentBatchContract = (files) => {
       fileName !== 'src/components/RequestModal/AdvancedRequester/index.tsx'
   );
   for (const fileName of visibleTerminologyFiles) {
-    const sourceWithoutServiceNames = requireFile(fileName).replaceAll(
+    let sourceWithoutServiceNames = requireFile(fileName).replaceAll(
       'Bookshelf-Ebook',
       ''
     );
+    // The opt-in Persius book-format label follows the approved mockup.
+    // Other labels, including unrelated strings in this module, stay checked.
+    if (fileName === 'src/components/Persius/messages.ts')
+      sourceWithoutServiceNames = sourceWithoutServiceNames.replace(
+        /\bebooks:\s*'Ebooks'/,
+        "ebooks: 'Books'"
+      );
+    if (fileName === 'src/i18n/locale/en.json')
+      sourceWithoutServiceNames = sourceWithoutServiceNames.replace(
+        /"components\.Persius\.ebooks":\s*"Ebooks"/,
+        '"components.Persius.ebooks": "Books"'
+      );
     if (/\bEbooks?\b/.test(sourceWithoutServiceNames)) {
       errors.push(
-        `${fileName}: user-visible Ebook terminology must be Book; configured service names are the only exception`
+        `${fileName}: user-visible Ebook terminology must be Book outside configured service names and the approved Persius format label`
       );
     }
   }
@@ -2766,11 +2787,28 @@ const validateCurrentBatchContract = (files) => {
     'next build --webpack',
     'the public client build must retain the upstream Next compiler'
   );
-  requirePublicCommand(
-    'build:server',
-    'tsc --project server/tsconfig.json && copyfiles -u 2 server/templates/**/*.{html,pug} dist/templates && copyfiles -u 2 "server/i18n/locale/*.json" dist/i18n && node scripts/replace-server-import-aliases.mjs dist',
-    'the public server build must retain upstream compilation, resources and alias resolution'
-  );
+  const serverBuildSteps = [
+    'tsc --project server/tsconfig.json',
+    'copyfiles -u 2 server/templates/**/*.{html,pug} dist/templates',
+    'copyfiles -u 2 "server/i18n/locale/*.json" dist/i18n',
+    'copyfiles -u 1 "themes/**/*" dist/interface-themes',
+    'node scripts/replace-server-import-aliases.mjs dist',
+  ];
+  for (const name of ['build:server', 'build:server:compile']) {
+    const steps =
+      typeof publicScripts[name] === 'string'
+        ? publicScripts[name]
+            .split('&&')
+            .map((step) => step.trim().replace(/\s+/g, ' '))
+        : [];
+    if (
+      steps.length !== serverBuildSteps.length ||
+      steps.some((step, index) => step !== serverBuildSteps[index])
+    )
+      errors.push(
+        `package.json: ${name} must retain upstream compilation, resources and alias resolution, including packaged interface themes`
+      );
+  }
   requirePublicCommand(
     'prebuild',
     'pnpm i18n:check && pnpm current-batch:check',
@@ -3473,10 +3511,20 @@ const validateCurrentBatchContract = (files) => {
     );
   }
   requireText(
-    globals,
-    '--compact-control-height: 1.25rem;',
-    'all micro-controls must resolve their 20-pixel height through one shared rule'
+    'src/styles/interfaceThemes/shared.css',
+    '--compact-control-height: var(--interface-compact-control-height);',
+    'compact controls must resolve their height through the selected theme token'
   );
+  for (const [theme, height] of [
+    ['seerrOrig', '1.25rem'],
+    ['seerrNGJ', '1.5rem'],
+  ]) {
+    requireText(
+      `themes/${theme}/theme.css`,
+      `--interface-compact-control-height: ${height};`,
+      'built-in themes must preserve their accepted compact input height'
+    );
+  }
   requireText(
     globals,
     '.compact-control {\n    height: var(--compact-control-height);',

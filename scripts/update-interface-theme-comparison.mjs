@@ -34,7 +34,9 @@ for (const { embeddedName, sourcePath } of stylesheets) {
   const fullSourcePath = `${repositoryRoot}${sourcePath}`;
 
   if (end === -1) {
-    throw new Error(`Could not find the end of the ${embeddedName} style block`);
+    throw new Error(
+      `Could not find the end of the ${embeddedName} style block`
+    );
   }
 
   const source = readFileSync(fullSourcePath, 'utf8');

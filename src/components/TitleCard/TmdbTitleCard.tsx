@@ -1,3 +1,4 @@
+import { duration } from '@app/components/Persius/format';
 import TitleCard from '@app/components/TitleCard';
 import { Permission, useUser } from '@app/hooks/useUser';
 import globalMessages from '@app/i18n/globalMessages';
@@ -209,6 +210,7 @@ const TmdbTitleCard = ({
       userScore={title.voteAverage}
       voteCount={title.voteCount}
       year={title.releaseDate}
+      captionMeta={duration(title.runtime)}
       mediaType={'movie'}
       inProgress={(title.mediaInfo?.downloadStatus ?? []).length > 0}
       inProgress4k={(title.mediaInfo?.downloadStatus4k ?? []).length > 0}

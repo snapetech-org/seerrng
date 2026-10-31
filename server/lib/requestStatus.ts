@@ -24,6 +24,7 @@ import {
   reconcileRequestedMusicAvailability,
 } from '@server/lib/musicAvailability';
 import logger from '@server/logger';
+import { isProviderBookEdition } from '@server/utils/bookEdition';
 import { readarrServiceSupportsFormat } from '@server/utils/readarrService';
 import type { EntityManager, Repository } from 'typeorm';
 import { In, MoreThan } from 'typeorm';
@@ -207,6 +208,7 @@ type RequestLike = {
   type: MediaType;
   is4k: boolean;
   bookFormat?: 'ebook' | 'audiobook' | 'both' | null;
+  preferredEditionId?: string | null;
   serverId?: number | null;
   serviceTargets?: MediaRequestServiceTarget[] | null;
   createdAt: Date;
@@ -404,6 +406,8 @@ const isRequestSatisfied = (request: RequestLike): boolean => {
   }
 
   if (request.type === MediaType.BOOK) {
+    if (isProviderBookEdition(request.preferredEditionId))
+      return request.status === MediaRequestStatus.COMPLETED;
     if (!isAvailableStatus(mediaStatus)) {
       return false;
     }

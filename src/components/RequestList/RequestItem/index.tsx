@@ -10,6 +10,10 @@ import MediaTypeBadge, {
   getMediaTypeBadgeType,
 } from '@app/components/Common/MediaTypeBadge';
 import Tooltip from '@app/components/Common/Tooltip';
+import { RequestRow } from '@app/components/Persius/Requests';
+import { duration } from '@app/components/Persius/format';
+import persiusMessages from '@app/components/Persius/messages';
+import { usePersius } from '@app/components/Persius/usePersius';
 import { canRetryRequest } from '@app/components/RequestCard/retryPermissions';
 import RequestFailureDetails from '@app/components/RequestFailureDetails';
 import StatusBadge from '@app/components/StatusBadge';
@@ -584,6 +588,7 @@ interface RequestItemProps {
 }
 
 const RequestItem = ({ request, revalidateList }: RequestItemProps) => {
+  const persius = usePersius();
   const { ref, inView } = useInView({
     triggerOnce: true,
   });
@@ -786,6 +791,333 @@ const RequestItem = ({ request, revalidateList }: RequestItemProps) => {
     );
   }
 
+  const requestStatus =
+    requestData.status === MediaRequestStatus.DECLINED ? (
+      <Badge badgeType="danger">
+        {intl.formatMessage(globalMessages.declined)}
+      </Badge>
+    ) : requestData.status === MediaRequestStatus.FAILED ? (
+      <Badge
+        badgeType="danger"
+        href={getRequestDetailHref(requestData, true)}
+        aria-describedby={
+          failureInfo
+            ? getRequestFailureDescriptionId(requestData.id, 'request-list')
+            : undefined
+        }
+      >
+        {intl.formatMessage(globalMessages.failed)}
+      </Badge>
+    ) : requestData.status === MediaRequestStatus.PENDING &&
+      getRequestMediaStatus(requestData) === MediaStatus.DELETED ? (
+      <Badge badgeType="warning" href={getRequestDetailHref(requestData, true)}>
+        {intl.formatMessage(globalMessages.pending)}
+      </Badge>
+    ) : (
+      <StatusBadge
+        status={getRequestMediaStatus(requestData)}
+        downloadItem={getRequestDownloadStatus(requestData)}
+        title={
+          isMovie(title)
+            ? title.title
+            : isMusic(title)
+              ? title.title
+              : isBook(title)
+                ? title.title
+                : isComic(title) || isMagazine(title) || isSports(title)
+                  ? title.title
+                  : title.name
+        }
+        inProgress={(getRequestDownloadStatus(requestData) ?? []).length > 0}
+        is4k={requestData.is4k}
+        tmdbId={
+          requestData.type === 'music'
+            ? undefined
+            : requestData.type === 'book'
+              ? undefined
+              : requestData.type === 'comic' ||
+                  requestData.type === 'magazine' ||
+                  requestData.type === 'sports'
+                ? undefined
+                : requestData.media.tmdbId
+        }
+        mbId={
+          requestData.type === 'music'
+            ? (requestData.media.mbId ?? undefined)
+            : undefined
+        }
+        externalId={
+          requestData.type === 'book'
+            ? getBookId(requestData)
+            : requestData.type === 'comic'
+              ? getComicId(requestData)
+              : requestData.type === 'magazine'
+                ? getMagazineId(requestData)
+                : requestData.type === 'sports'
+                  ? getSportarrId(requestData)
+                  : undefined
+        }
+        mediaType={
+          requestData.type === 'music'
+            ? 'music'
+            : requestData.type === 'book'
+              ? 'book'
+              : requestData.type === 'comic'
+                ? 'comic'
+                : requestData.type === 'magazine'
+                  ? 'magazine'
+                  : requestData.type === 'sports'
+                    ? 'sports'
+                    : requestData.type === 'tv'
+                      ? 'tv'
+                      : 'movie'
+        }
+        bookFormat={
+          requestData.type === 'book'
+            ? getRequestedBookFormat(requestData.bookFormat)
+            : undefined
+        }
+        plexUrl={requestData.is4k ? plexUrl4k : plexUrl}
+        serviceUrl={getRequestServiceUrl(requestData)}
+        requestId={requestData.id}
+        canFailDownload={canFailDownload}
+      />
+    );
+  const requestActions = (
+    <>
+      {' '}
+      {requestData.watchAheadParentRequestId && (
+        <Tooltip
+          content={intl.formatMessage(messages.watchAheadEpisodeBadgeTooltip)}
+        >
+          <span className="request-status-control request-status-control-success">
+            {intl.formatMessage(messages.watchAheadEpisodeBadge)}
+          </span>
+        </Tooltip>
+      )}
+      {requestData.type === 'tv' &&
+        !requestData.watchAheadParentRequestId &&
+        requestData.requestedBy.id === user?.id &&
+        (requestData.watchAheadEpisodeCount ?? 0) > 0 && (
+          <div className="w-full text-left">
+            <Badge badgeType="success">
+              {intl.formatMessage(messages.watchAheadAssigned, {
+                count: requestData.watchAheadEpisodeCount,
+              })}
+            </Badge>
+          </div>
+        )}
+      {requestData.status === MediaRequestStatus.FAILED && canRetry && (
+        <Button
+          className="request-tvdb-mapping-action"
+          buttonType="primary"
+          disabled={isRetrying || retryUnavailable}
+          disabledReason={
+            retryUnavailable
+              ? intl.formatMessage(
+                  globalMessages.requestFailureRetryUnavailable
+                )
+              : undefined
+          }
+          aria-describedby={
+            retryUnavailable
+              ? getRequestFailureDescriptionId(requestData.id, 'request-list')
+              : undefined
+          }
+          onClick={() => retryRequest()}
+        >
+          <ArrowPathIcon
+            className={isRetrying ? 'animate-spin' : ''}
+            style={{ animationDirection: 'reverse' }}
+          />
+          <span>
+            {intl.formatMessage(
+              isRetrying ? globalMessages.retrying : globalMessages.retry
+            )}
+          </span>
+        </Button>
+      )}
+      {canRetry &&
+        hasPermission(Permission.MANAGE_REQUESTS) &&
+        canManuallyMapTvdbSeasons(
+          requestData.type,
+          requestData.status,
+          requestData.failureReason
+        ) && (
+          <Button
+            className="request-tvdb-mapping-action"
+            buttonType="primary"
+            disabled={isRetrying}
+            onClick={() => setShowSeasonMappingModal(true)}
+          >
+            {intl.formatMessage(messages.mapTvSeasons)}
+          </Button>
+        )}
+      {requestData.status !== MediaRequestStatus.PENDING &&
+        hasPermission(Permission.MANAGE_REQUESTS) && (
+          <>
+            <ConfirmButton
+              onClick={() => deleteRequest()}
+              confirmText={intl.formatMessage(globalMessages.areyousure)}
+              className="w-full"
+            >
+              <TrashIcon />
+              <span>{intl.formatMessage(messages.deleterequest)}</span>
+            </ConfirmButton>
+            {request.canRemove && (
+              <ConfirmButton
+                onClick={() => deleteMediaFile()}
+                confirmText={intl.formatMessage(globalMessages.areyousure)}
+                className="w-full"
+              >
+                <TrashIcon />
+                <span>
+                  {intl.formatMessage(messages.removearr, {
+                    arr:
+                      request.type === 'movie'
+                        ? 'Radarr'
+                        : request.type === 'music'
+                          ? 'Lidarr'
+                          : request.type === 'book'
+                            ? 'Bookshelf'
+                            : 'Sonarr',
+                  })}
+                </span>
+              </ConfirmButton>
+            )}
+          </>
+        )}
+      {requestData.status === MediaRequestStatus.PENDING &&
+        hasPermission(Permission.MANAGE_REQUESTS) && (
+          <div className="flex w-full flex-row space-x-2">
+            <span className="w-full">
+              <Button
+                className="w-full"
+                buttonType="success"
+                onClick={() => modifyRequest('approve')}
+                disabled={updatingType !== null}
+              >
+                {updatingType === 'approve' ? <Spinner /> : <CheckIcon />}
+                <span>{intl.formatMessage(globalMessages.approve)}</span>
+              </Button>
+            </span>
+            <span className="w-full">
+              <Button
+                className="w-full"
+                buttonType="danger"
+                onClick={() => modifyRequest('decline')}
+                disabled={updatingType !== null}
+              >
+                {updatingType === 'decline' ? <Spinner /> : <XMarkIcon />}
+                <span>{intl.formatMessage(globalMessages.decline)}</span>
+              </Button>
+            </span>
+          </div>
+        )}
+      {requestData.status === MediaRequestStatus.PENDING &&
+        (hasPermission(Permission.MANAGE_REQUESTS) ||
+          (requestData.requestedBy.id === user?.id &&
+            (requestData.type === 'tv' ||
+              hasPermission(Permission.REQUEST_ADVANCED)))) && (
+          <span className="w-full">
+            <Button
+              className="w-full"
+              buttonType="primary"
+              onClick={() => setShowEditModal(true)}
+              disabled={updatingType !== null}
+            >
+              <PencilIcon />
+              <span>{intl.formatMessage(messages.editrequest)}</span>
+            </Button>
+          </span>
+        )}
+      {requestData.status === MediaRequestStatus.PENDING &&
+        !hasPermission(Permission.MANAGE_REQUESTS) &&
+        requestData.requestedBy.id === user?.id && (
+          <ConfirmButton
+            onClick={() => deleteRequest()}
+            confirmText={intl.formatMessage(globalMessages.areyousure)}
+            className="w-full"
+          >
+            <XMarkIcon />
+            <span>{intl.formatMessage(messages.cancelRequest)}</span>
+          </ConfirmButton>
+        )}
+    </>
+  );
+  const displayTitle = 'title' in title ? title.title : title.name;
+  const downloads = getRequestDownloadStatus(requestData) ?? [];
+  const totalBytes = downloads.reduce(
+    (sum, item) => sum + (Number.isFinite(item.size) ? item.size : 0),
+    0
+  );
+  const progress =
+    totalBytes > 0
+      ? Math.min(
+          100,
+          Math.max(
+            0,
+            Math.round(
+              (downloads.reduce(
+                (sum, item) => sum + (item.size - item.sizeLeft),
+                0
+              ) /
+                totalBytes) *
+                100
+            )
+          )
+        )
+      : downloads.length === 1 && Number.isFinite(downloads[0].percent)
+        ? Math.min(100, Math.max(0, downloads[0].percent!))
+        : undefined;
+  const compactArtwork =
+    !isMusic(title) &&
+    !isBook(title) &&
+    !isComic(title) &&
+    !isMagazine(title) &&
+    !isSports(title) &&
+    title.backdropPath
+      ? `https://image.tmdb.org/t/p/w500${title.backdropPath}`
+      : title.posterPath
+        ? isMovie(title) ||
+          (!isMusic(title) &&
+            !isBook(title) &&
+            !isComic(title) &&
+            !isMagazine(title) &&
+            !isSports(title))
+          ? getTmdbPosterImageUrl(title.posterPath)
+          : title.posterPath
+        : '/images/seerr_poster_not_found.png';
+  const compactMeta = [
+    intl.formatMessage(
+      isBook(title)
+        ? requestData.bookFormat === 'audiobook'
+          ? messages.audiobook
+          : messages.ebook
+        : isMovie(title)
+          ? persiusMessages.movies
+          : requestData.type === 'tv'
+            ? persiusMessages.series
+            : globalMessages[requestData.type === 'music' ? 'music' : 'books']
+    ),
+    isMovie(title)
+      ? duration(title.runtime)
+      : isBook(title)
+        ? requestData.bookFormat === 'audiobook'
+          ? title.narrators?.join(' & ') || title.author
+          : title.author
+        : requestData.type === 'tv' && activeSeasonRequests.length
+          ? intl.formatMessage(messages.seasons, {
+              seasonCount: activeSeasonRequests.length,
+            }) +
+            ' ' +
+            activeSeasonRequests.map((season) => season.seasonNumber).join(', ')
+          : undefined,
+    intl.formatDate(requestData.createdAt, { month: 'short', day: 'numeric' }),
+  ]
+    .filter(Boolean)
+    .join(' · ');
+
   return (
     <>
       <RequestModal
@@ -840,265 +1172,39 @@ const RequestItem = ({ request, revalidateList }: RequestItemProps) => {
           }}
         />
       )}
-      <div
-        data-interface-role="request-card"
-        className="relative flex w-full flex-col justify-between overflow-hidden rounded-xl bg-gray-800 py-2 text-gray-400 shadow-md ring-1 ring-gray-700 xl:h-28 xl:flex-row"
-      >
-        {!isMusic(title) &&
-          !isBook(title) &&
-          !isComic(title) &&
-          !isMagazine(title) &&
-          !isSports(title) &&
-          title.backdropPath && (
-            <div className="absolute inset-0 z-0 w-full bg-cover bg-center xl:w-2/3">
-              <CachedImage
-                type="tmdb"
-                src={`https://image.tmdb.org/t/p/w1920_and_h800_multi_faces/${title.backdropPath}`}
-                alt=""
-                className="object-cover"
-                fill
-              />
-              <div className="request-card-artwork-gradient" />
-            </div>
-          )}
-        <div className="relative flex w-full flex-col justify-between overflow-hidden sm:flex-row">
-          <div className="relative z-10 flex w-full items-center overflow-hidden pr-4 pl-4 sm:pr-0 xl:w-7/12 2xl:w-2/3">
-            <Link
-              href={getRequestDetailHref(requestData)}
-              className="relative h-auto w-12 flex-shrink-0 scale-100 transform-gpu overflow-hidden rounded-md transition duration-300 hover:scale-105"
-            >
-              <CachedImage
-                type={
-                  isBook(title)
-                    ? 'book'
-                    : isMusic(title)
-                      ? 'music'
-                      : isComic(title) || isMagazine(title)
-                        ? 'book'
-                        : 'tmdb'
-                }
-                src={
-                  (isMusic(title) ||
-                    isBook(title) ||
-                    isComic(title) ||
-                    isMagazine(title) ||
-                    isSports(title)) &&
-                  title.posterPath
-                    ? title.posterPath
-                    : !isMusic(title) &&
-                        !isBook(title) &&
-                        !isComic(title) &&
-                        !isMagazine(title) &&
-                        !isSports(title) &&
-                        title.posterPath
-                      ? getTmdbPosterImageUrl(title.posterPath)
-                      : '/images/seerr_poster_not_found.png'
-                }
-                alt=""
-                sizes="100vw"
-                className="h-auto w-full object-cover"
-                width={600}
-                height={900}
-              />
-            </Link>
-            <div className="flex flex-col justify-center overflow-hidden pl-2 xl:pl-4">
-              <div className="flex flex-wrap items-center gap-1 pt-0.5 text-xs font-medium text-white sm:pt-1">
-                {requestData.type !== 'book' && (
-                  <MediaTypeBadge
-                    mediaType={
-                      getMediaTypeBadgeType(requestData.type) ?? 'movie'
-                    }
-                    variant="compact"
-                  />
+      {persius ? (
+        <RequestRow
+          title={displayTitle}
+          href={getRequestDetailHref(requestData)}
+          artwork={compactArtwork}
+          artworkType={
+            isBook(title) || isComic(title) || isMagazine(title)
+              ? 'book'
+              : isMusic(title)
+                ? 'music'
+                : 'tmdb'
+          }
+          metadata={compactMeta}
+          status={requestStatus}
+          progress={progress}
+          actions={
+            <>
+              {requestData.status === MediaRequestStatus.FAILED &&
+                requestData.type === 'book' &&
+                requestData.bookFormat === 'audiobook' && (
+                  <Link
+                    className="persius-button"
+                    data-primary="true"
+                    href={getRequestDetailHref(requestData)}
+                  >
+                    {intl.formatMessage(persiusMessages.chooseNarrator)}
+                  </Link>
                 )}
-                {requestData.type !== 'book' && requestData.is4k && (
-                  <Badge badgeType="warning">4K</Badge>
-                )}
-                <span>
-                  {(isMovie(title)
-                    ? title.releaseDate
-                    : isMusic(title)
-                      ? title.releaseDate
-                      : isBook(title)
-                        ? title.firstPublishYear?.toString()
-                        : isComic(title)
-                          ? title.startYear
-                          : isMagazine(title)
-                            ? title.latestIssue
-                            : isSports(title)
-                              ? title.year?.toString()
-                              : title.firstAirDate
-                  )?.slice(0, 4)}
-                </span>
-                {requestData.status === MediaRequestStatus.PENDING &&
-                  requestData.quotaException && (
-                    <Badge badgeType="warning">
-                      {intl.formatMessage(messages.overQuota)}
-                    </Badge>
-                  )}
-              </div>
-              <Link
-                href={getRequestDetailHref(requestData)}
-                className="mr-2 min-w-0 truncate text-lg font-bold text-white hover:underline xl:text-xl"
-              >
-                {isMovie(title)
-                  ? title.title
-                  : isMusic(title)
-                    ? title.title
-                    : isBook(title)
-                      ? title.title
-                      : isComic(title) || isMagazine(title) || isSports(title)
-                        ? title.title
-                        : title.name}
-              </Link>
-              {(isMusic(title) || isBook(title)) && (
-                <div className="mr-2 min-w-0 truncate text-sm text-gray-300">
-                  {isMusic(title) ? title.artist.name : title.author}
-                </div>
-              )}
-              {isMagazine(title) && title.latestIssue && (
-                <div className="mr-2 min-w-0 truncate text-sm text-gray-300">
-                  {title.latestIssue}
-                </div>
-              )}
-              {isSports(title) && (title.sport || title.country) && (
-                <div className="mr-2 min-w-0 truncate text-sm text-gray-300">
-                  {[title.sport, title.country].filter(Boolean).join(' · ')}
-                </div>
-              )}
-              {!isMovie(title) &&
-                !isMusic(title) &&
-                !isBook(title) &&
-                activeSeasonRequests.length > 0 && (
-                  <div className="card-field">
-                    <span className="card-field-name">
-                      {intl.formatMessage(messages.seasons, {
-                        seasonCount: activeSeasonRequests.length,
-                      })}
-                    </span>
-                    <div className="hide-scrollbar flex flex-nowrap overflow-x-scroll">
-                      {activeSeasonRequests.map((season) => (
-                        <span key={`season-${season.id}`} className="mr-2">
-                          <Badge>
-                            {season.seasonNumber === 0
-                              ? intl.formatMessage(globalMessages.specials)
-                              : season.seasonNumber}
-                          </Badge>
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-                )}
-            </div>
-          </div>
-          <div className="z-10 mt-4 ml-4 flex w-full flex-col justify-center gap-1 overflow-hidden pr-4 text-sm sm:mt-0 sm:ml-2 xl:flex-1 xl:pr-0">
-            <div className="card-field">
-              <span className="card-field-name">
-                {intl.formatMessage(globalMessages.status)}
-              </span>
-              {requestData.status === MediaRequestStatus.DECLINED ? (
-                <Badge badgeType="danger">
-                  {intl.formatMessage(globalMessages.declined)}
-                </Badge>
-              ) : requestData.status === MediaRequestStatus.FAILED ? (
-                <Badge
-                  badgeType="danger"
-                  href={getRequestDetailHref(requestData, true)}
-                  aria-describedby={
-                    failureInfo
-                      ? getRequestFailureDescriptionId(
-                          requestData.id,
-                          'request-list'
-                        )
-                      : undefined
-                  }
-                >
-                  {intl.formatMessage(globalMessages.failed)}
-                </Badge>
-              ) : requestData.status === MediaRequestStatus.PENDING &&
-                getRequestMediaStatus(requestData) === MediaStatus.DELETED ? (
-                <Badge
-                  badgeType="warning"
-                  href={getRequestDetailHref(requestData, true)}
-                >
-                  {intl.formatMessage(globalMessages.pending)}
-                </Badge>
-              ) : (
-                <StatusBadge
-                  status={getRequestMediaStatus(requestData)}
-                  downloadItem={getRequestDownloadStatus(requestData)}
-                  title={
-                    isMovie(title)
-                      ? title.title
-                      : isMusic(title)
-                        ? title.title
-                        : isBook(title)
-                          ? title.title
-                          : isComic(title) ||
-                              isMagazine(title) ||
-                              isSports(title)
-                            ? title.title
-                            : title.name
-                  }
-                  inProgress={
-                    (getRequestDownloadStatus(requestData) ?? []).length > 0
-                  }
-                  is4k={requestData.is4k}
-                  tmdbId={
-                    requestData.type === 'music'
-                      ? undefined
-                      : requestData.type === 'book'
-                        ? undefined
-                        : requestData.type === 'comic' ||
-                            requestData.type === 'magazine' ||
-                            requestData.type === 'sports'
-                          ? undefined
-                          : requestData.media.tmdbId
-                  }
-                  mbId={
-                    requestData.type === 'music'
-                      ? (requestData.media.mbId ?? undefined)
-                      : undefined
-                  }
-                  externalId={
-                    requestData.type === 'book'
-                      ? getBookId(requestData)
-                      : requestData.type === 'comic'
-                        ? getComicId(requestData)
-                        : requestData.type === 'magazine'
-                          ? getMagazineId(requestData)
-                          : requestData.type === 'sports'
-                            ? getSportarrId(requestData)
-                            : undefined
-                  }
-                  mediaType={
-                    requestData.type === 'music'
-                      ? 'music'
-                      : requestData.type === 'book'
-                        ? 'book'
-                        : requestData.type === 'comic'
-                          ? 'comic'
-                          : requestData.type === 'magazine'
-                            ? 'magazine'
-                            : requestData.type === 'sports'
-                              ? 'sports'
-                              : requestData.type === 'tv'
-                                ? 'tv'
-                                : 'movie'
-                  }
-                  bookFormat={
-                    requestData.type === 'book'
-                      ? getRequestedBookFormat(requestData.bookFormat)
-                      : undefined
-                  }
-                  plexUrl={requestData.is4k ? plexUrl4k : plexUrl}
-                  serviceUrl={getRequestServiceUrl(requestData)}
-                  requestId={requestData.id}
-                  canFailDownload={canFailDownload}
-                />
-              )}
-            </div>
-            {requestData.status === MediaRequestStatus.FAILED && (
+              {requestActions}
+            </>
+          }
+          details={
+            requestData.status === MediaRequestStatus.FAILED && (
               <RequestFailureDetails
                 failureReason={requestData.failureReason}
                 requestId={requestData.id}
@@ -1109,15 +1215,251 @@ const RequestItem = ({ request, revalidateList }: RequestItemProps) => {
                   'request-list'
                 )}
               />
+            )
+          }
+        />
+      ) : (
+        <div
+          data-interface-role="request-card"
+          className="relative flex w-full flex-col justify-between overflow-hidden rounded-xl bg-gray-800 py-2 text-gray-400 shadow-md ring-1 ring-gray-700 xl:h-28 xl:flex-row"
+        >
+          {!isMusic(title) &&
+            !isBook(title) &&
+            !isComic(title) &&
+            !isMagazine(title) &&
+            !isSports(title) &&
+            title.backdropPath && (
+              <div className="absolute inset-0 z-0 w-full bg-cover bg-center xl:w-2/3">
+                <CachedImage
+                  type="tmdb"
+                  src={`https://image.tmdb.org/t/p/w1920_and_h800_multi_faces/${title.backdropPath}`}
+                  alt=""
+                  className="object-cover"
+                  fill
+                />
+                <div className="request-card-artwork-gradient" />
+              </div>
             )}
-            <div className="card-field">
-              {hasPermission(
-                [Permission.MANAGE_REQUESTS, Permission.REQUEST_VIEW],
-                { type: 'or' }
-              ) ? (
-                <>
+          <div className="relative flex w-full flex-col justify-between overflow-hidden sm:flex-row">
+            <div className="relative z-10 flex w-full items-center overflow-hidden pr-4 pl-4 sm:pr-0 xl:w-7/12 2xl:w-2/3">
+              <Link
+                href={getRequestDetailHref(requestData)}
+                className="relative h-auto w-12 flex-shrink-0 scale-100 transform-gpu overflow-hidden rounded-md transition duration-300 hover:scale-105"
+              >
+                <CachedImage
+                  type={
+                    isBook(title)
+                      ? 'book'
+                      : isMusic(title)
+                        ? 'music'
+                        : isComic(title) || isMagazine(title)
+                          ? 'book'
+                          : 'tmdb'
+                  }
+                  src={
+                    (isMusic(title) ||
+                      isBook(title) ||
+                      isComic(title) ||
+                      isMagazine(title) ||
+                      isSports(title)) &&
+                    title.posterPath
+                      ? title.posterPath
+                      : !isMusic(title) &&
+                          !isBook(title) &&
+                          !isComic(title) &&
+                          !isMagazine(title) &&
+                          !isSports(title) &&
+                          title.posterPath
+                        ? getTmdbPosterImageUrl(title.posterPath)
+                        : '/images/seerr_poster_not_found.png'
+                  }
+                  alt=""
+                  sizes="100vw"
+                  className="h-auto w-full object-cover"
+                  width={600}
+                  height={900}
+                />
+              </Link>
+              <div className="flex flex-col justify-center overflow-hidden pl-2 xl:pl-4">
+                <div className="flex flex-wrap items-center gap-1 pt-0.5 text-xs font-medium text-white sm:pt-1">
+                  {requestData.type !== 'book' && (
+                    <MediaTypeBadge
+                      mediaType={
+                        getMediaTypeBadgeType(requestData.type) ?? 'movie'
+                      }
+                      variant="compact"
+                    />
+                  )}
+                  {requestData.type !== 'book' && requestData.is4k && (
+                    <Badge badgeType="warning">4K</Badge>
+                  )}
+                  <span>
+                    {(isMovie(title)
+                      ? title.releaseDate
+                      : isMusic(title)
+                        ? title.releaseDate
+                        : isBook(title)
+                          ? title.firstPublishYear?.toString()
+                          : isComic(title)
+                            ? title.startYear
+                            : isMagazine(title)
+                              ? title.latestIssue
+                              : isSports(title)
+                                ? title.year?.toString()
+                                : title.firstAirDate
+                    )?.slice(0, 4)}
+                  </span>
+                  {requestData.status === MediaRequestStatus.PENDING &&
+                    requestData.quotaException && (
+                      <Badge badgeType="warning">
+                        {intl.formatMessage(messages.overQuota)}
+                      </Badge>
+                    )}
+                </div>
+                <Link
+                  href={getRequestDetailHref(requestData)}
+                  className="mr-2 min-w-0 truncate text-lg font-bold text-white hover:underline xl:text-xl"
+                >
+                  {isMovie(title)
+                    ? title.title
+                    : isMusic(title)
+                      ? title.title
+                      : isBook(title)
+                        ? title.title
+                        : isComic(title) || isMagazine(title) || isSports(title)
+                          ? title.title
+                          : title.name}
+                </Link>
+                {(isMusic(title) || isBook(title)) && (
+                  <div className="mr-2 min-w-0 truncate text-sm text-gray-300">
+                    {isMusic(title) ? title.artist.name : title.author}
+                  </div>
+                )}
+                {isMagazine(title) && title.latestIssue && (
+                  <div className="mr-2 min-w-0 truncate text-sm text-gray-300">
+                    {title.latestIssue}
+                  </div>
+                )}
+                {isSports(title) && (title.sport || title.country) && (
+                  <div className="mr-2 min-w-0 truncate text-sm text-gray-300">
+                    {[title.sport, title.country].filter(Boolean).join(' · ')}
+                  </div>
+                )}
+                {!isMovie(title) &&
+                  !isMusic(title) &&
+                  !isBook(title) &&
+                  activeSeasonRequests.length > 0 && (
+                    <div className="card-field">
+                      <span className="card-field-name">
+                        {intl.formatMessage(messages.seasons, {
+                          seasonCount: activeSeasonRequests.length,
+                        })}
+                      </span>
+                      <div className="hide-scrollbar flex flex-nowrap overflow-x-scroll">
+                        {activeSeasonRequests.map((season) => (
+                          <span key={`season-${season.id}`} className="mr-2">
+                            <Badge>
+                              {season.seasonNumber === 0
+                                ? intl.formatMessage(globalMessages.specials)
+                                : season.seasonNumber}
+                            </Badge>
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+              </div>
+            </div>
+            <div className="z-10 mt-4 ml-4 flex w-full flex-col justify-center gap-1 overflow-hidden pr-4 text-sm sm:mt-0 sm:ml-2 xl:flex-1 xl:pr-0">
+              <div className="card-field">
+                <span className="card-field-name">
+                  {intl.formatMessage(globalMessages.status)}
+                </span>
+                {requestStatus}
+              </div>
+              {requestData.status === MediaRequestStatus.FAILED && (
+                <RequestFailureDetails
+                  failureReason={requestData.failureReason}
+                  requestId={requestData.id}
+                  requestType={requestData.type}
+                  searchTitle={failureSearchTitle}
+                  descriptionId={getRequestFailureDescriptionId(
+                    requestData.id,
+                    'request-list'
+                  )}
+                />
+              )}
+              <div className="card-field">
+                {hasPermission(
+                  [Permission.MANAGE_REQUESTS, Permission.REQUEST_VIEW],
+                  { type: 'or' }
+                ) ? (
+                  <>
+                    <span className="card-field-name">
+                      {intl.formatMessage(messages.requested)}
+                    </span>
+                    <span className="flex truncate text-sm text-gray-300">
+                      {intl.formatMessage(messages.modifieduserdate, {
+                        date: (
+                          <FormattedRelativeTime
+                            key="date"
+                            value={Math.floor(
+                              (new Date(requestData.createdAt).getTime() -
+                                Date.now()) /
+                                1000
+                            )}
+                            updateIntervalInSeconds={1}
+                            numeric="auto"
+                          />
+                        ),
+                        user: (
+                          <Link
+                            key="user"
+                            href={`/users/${requestData.requestedBy.id}`}
+                            className="group flex items-center truncate"
+                          >
+                            <span className="avatar-sm ml-1.5">
+                              <CachedImage
+                                type="avatar"
+                                src={requestData.requestedBy.avatar}
+                                alt=""
+                                className="avatar-sm object-cover"
+                                width={20}
+                                height={20}
+                              />
+                            </span>
+                            <span className="truncate text-sm font-semibold group-hover:text-white group-hover:underline">
+                              {requestData.requestedBy.displayName}
+                            </span>
+                          </Link>
+                        ),
+                      })}
+                    </span>
+                  </>
+                ) : (
+                  <>
+                    <span className="card-field-name">
+                      {intl.formatMessage(messages.requesteddate)}
+                    </span>
+                    <span className="flex truncate text-sm text-gray-300">
+                      <FormattedRelativeTime
+                        key="date"
+                        value={Math.floor(
+                          (new Date(requestData.createdAt).getTime() -
+                            Date.now()) /
+                            1000
+                        )}
+                        updateIntervalInSeconds={1}
+                        numeric="auto"
+                      />
+                    </span>
+                  </>
+                )}
+              </div>
+              {requestData.modifiedBy && (
+                <div className="card-field">
                   <span className="card-field-name">
-                    {intl.formatMessage(messages.requested)}
+                    {intl.formatMessage(messages.modified)}
                   </span>
                   <span className="flex truncate text-sm text-gray-300">
                     {intl.formatMessage(messages.modifieduserdate, {
@@ -1125,7 +1467,7 @@ const RequestItem = ({ request, revalidateList }: RequestItemProps) => {
                         <FormattedRelativeTime
                           key="date"
                           value={Math.floor(
-                            (new Date(requestData.createdAt).getTime() -
+                            (new Date(requestData.updatedAt).getTime() -
                               Date.now()) /
                               1000
                           )}
@@ -1136,13 +1478,13 @@ const RequestItem = ({ request, revalidateList }: RequestItemProps) => {
                       user: (
                         <Link
                           key="user"
-                          href={`/users/${requestData.requestedBy.id}`}
+                          href={`/users/${requestData.modifiedBy.id}`}
                           className="group flex items-center truncate"
                         >
                           <span className="avatar-sm ml-1.5">
                             <CachedImage
                               type="avatar"
-                              src={requestData.requestedBy.avatar}
+                              src={requestData.modifiedBy.avatar}
                               alt=""
                               className="avatar-sm object-cover"
                               width={20}
@@ -1150,278 +1492,55 @@ const RequestItem = ({ request, revalidateList }: RequestItemProps) => {
                             />
                           </span>
                           <span className="truncate text-sm font-semibold group-hover:text-white group-hover:underline">
-                            {requestData.requestedBy.displayName}
+                            {requestData.modifiedBy.displayName}
                           </span>
                         </Link>
                       ),
                     })}
                   </span>
-                </>
-              ) : (
-                <>
+                </div>
+              )}
+              {request.profileName && (
+                <div className="card-field">
                   <span className="card-field-name">
-                    {intl.formatMessage(messages.requesteddate)}
+                    {intl.formatMessage(messages.profileName)}
                   </span>
                   <span className="flex truncate text-sm text-gray-300">
-                    <FormattedRelativeTime
-                      key="date"
-                      value={Math.floor(
-                        (new Date(requestData.createdAt).getTime() -
-                          Date.now()) /
-                          1000
-                      )}
-                      updateIntervalInSeconds={1}
-                      numeric="auto"
-                    />
+                    {request.profileName}
                   </span>
-                </>
+                </div>
+              )}
+              {requestData.type === 'book' && (
+                <div className="card-field">
+                  <span className="card-field-name">
+                    {intl.formatMessage(messages.bookFormat)}
+                  </span>
+                  <BookFormatBadge
+                    format={getRequestedBookFormat(requestData.bookFormat)}
+                    variant="compact"
+                  />
+                </div>
+              )}
+              {hasPartialBookService && (
+                <div className="card-field">
+                  <span className="card-field-name">
+                    {intl.formatMessage(messages.partialBookService)}
+                  </span>
+                  <span className="flex truncate text-sm text-gray-300">
+                    {requestData.media.serviceId !== null &&
+                    requestData.media.serviceId !== undefined
+                      ? intl.formatMessage(messages.ebook)
+                      : intl.formatMessage(messages.audiobook)}
+                  </span>
+                </div>
               )}
             </div>
-            {requestData.modifiedBy && (
-              <div className="card-field">
-                <span className="card-field-name">
-                  {intl.formatMessage(messages.modified)}
-                </span>
-                <span className="flex truncate text-sm text-gray-300">
-                  {intl.formatMessage(messages.modifieduserdate, {
-                    date: (
-                      <FormattedRelativeTime
-                        key="date"
-                        value={Math.floor(
-                          (new Date(requestData.updatedAt).getTime() -
-                            Date.now()) /
-                            1000
-                        )}
-                        updateIntervalInSeconds={1}
-                        numeric="auto"
-                      />
-                    ),
-                    user: (
-                      <Link
-                        key="user"
-                        href={`/users/${requestData.modifiedBy.id}`}
-                        className="group flex items-center truncate"
-                      >
-                        <span className="avatar-sm ml-1.5">
-                          <CachedImage
-                            type="avatar"
-                            src={requestData.modifiedBy.avatar}
-                            alt=""
-                            className="avatar-sm object-cover"
-                            width={20}
-                            height={20}
-                          />
-                        </span>
-                        <span className="truncate text-sm font-semibold group-hover:text-white group-hover:underline">
-                          {requestData.modifiedBy.displayName}
-                        </span>
-                      </Link>
-                    ),
-                  })}
-                </span>
-              </div>
-            )}
-            {request.profileName && (
-              <div className="card-field">
-                <span className="card-field-name">
-                  {intl.formatMessage(messages.profileName)}
-                </span>
-                <span className="flex truncate text-sm text-gray-300">
-                  {request.profileName}
-                </span>
-              </div>
-            )}
-            {requestData.type === 'book' && (
-              <div className="card-field">
-                <span className="card-field-name">
-                  {intl.formatMessage(messages.bookFormat)}
-                </span>
-                <BookFormatBadge
-                  format={getRequestedBookFormat(requestData.bookFormat)}
-                  variant="compact"
-                />
-              </div>
-            )}
-            {hasPartialBookService && (
-              <div className="card-field">
-                <span className="card-field-name">
-                  {intl.formatMessage(messages.partialBookService)}
-                </span>
-                <span className="flex truncate text-sm text-gray-300">
-                  {requestData.media.serviceId !== null &&
-                  requestData.media.serviceId !== undefined
-                    ? intl.formatMessage(messages.ebook)
-                    : intl.formatMessage(messages.audiobook)}
-                </span>
-              </div>
-            )}
+          </div>
+          <div className="z-10 mt-4 flex w-full flex-col justify-center space-y-2 pr-4 pl-4 xl:mt-0 xl:w-96 xl:items-end xl:pl-0">
+            {requestActions}
           </div>
         </div>
-        <div className="z-10 mt-4 flex w-full flex-col justify-center space-y-2 pr-4 pl-4 xl:mt-0 xl:w-96 xl:items-end xl:pl-0">
-          {requestData.watchAheadParentRequestId && (
-            <Tooltip
-              content={intl.formatMessage(
-                messages.watchAheadEpisodeBadgeTooltip
-              )}
-            >
-              <span className="request-status-control request-status-control-success">
-                {intl.formatMessage(messages.watchAheadEpisodeBadge)}
-              </span>
-            </Tooltip>
-          )}
-          {requestData.type === 'tv' &&
-            !requestData.watchAheadParentRequestId &&
-            requestData.requestedBy.id === user?.id &&
-            (requestData.watchAheadEpisodeCount ?? 0) > 0 && (
-              <div className="w-full text-left">
-                <Badge badgeType="success">
-                  {intl.formatMessage(messages.watchAheadAssigned, {
-                    count: requestData.watchAheadEpisodeCount,
-                  })}
-                </Badge>
-              </div>
-            )}
-          {requestData.status === MediaRequestStatus.FAILED && canRetry && (
-            <Button
-              className="request-tvdb-mapping-action"
-              buttonType="primary"
-              disabled={isRetrying || retryUnavailable}
-              disabledReason={
-                retryUnavailable
-                  ? intl.formatMessage(
-                      globalMessages.requestFailureRetryUnavailable
-                    )
-                  : undefined
-              }
-              aria-describedby={
-                retryUnavailable
-                  ? getRequestFailureDescriptionId(
-                      requestData.id,
-                      'request-list'
-                    )
-                  : undefined
-              }
-              onClick={() => retryRequest()}
-            >
-              <ArrowPathIcon
-                className={isRetrying ? 'animate-spin' : ''}
-                style={{ animationDirection: 'reverse' }}
-              />
-              <span>
-                {intl.formatMessage(
-                  isRetrying ? globalMessages.retrying : globalMessages.retry
-                )}
-              </span>
-            </Button>
-          )}
-          {canRetry &&
-            hasPermission(Permission.MANAGE_REQUESTS) &&
-            canManuallyMapTvdbSeasons(
-              requestData.type,
-              requestData.status,
-              requestData.failureReason
-            ) && (
-              <Button
-                className="request-tvdb-mapping-action"
-                buttonType="primary"
-                disabled={isRetrying}
-                onClick={() => setShowSeasonMappingModal(true)}
-              >
-                {intl.formatMessage(messages.mapTvSeasons)}
-              </Button>
-            )}
-          {requestData.status !== MediaRequestStatus.PENDING &&
-            hasPermission(Permission.MANAGE_REQUESTS) && (
-              <>
-                <ConfirmButton
-                  onClick={() => deleteRequest()}
-                  confirmText={intl.formatMessage(globalMessages.areyousure)}
-                  className="w-full"
-                >
-                  <TrashIcon />
-                  <span>{intl.formatMessage(messages.deleterequest)}</span>
-                </ConfirmButton>
-                {request.canRemove && (
-                  <ConfirmButton
-                    onClick={() => deleteMediaFile()}
-                    confirmText={intl.formatMessage(globalMessages.areyousure)}
-                    className="w-full"
-                  >
-                    <TrashIcon />
-                    <span>
-                      {intl.formatMessage(messages.removearr, {
-                        arr:
-                          request.type === 'movie'
-                            ? 'Radarr'
-                            : request.type === 'music'
-                              ? 'Lidarr'
-                              : request.type === 'book'
-                                ? 'Bookshelf'
-                                : 'Sonarr',
-                      })}
-                    </span>
-                  </ConfirmButton>
-                )}
-              </>
-            )}
-          {requestData.status === MediaRequestStatus.PENDING &&
-            hasPermission(Permission.MANAGE_REQUESTS) && (
-              <div className="flex w-full flex-row space-x-2">
-                <span className="w-full">
-                  <Button
-                    className="w-full"
-                    buttonType="success"
-                    onClick={() => modifyRequest('approve')}
-                    disabled={updatingType !== null}
-                  >
-                    {updatingType === 'approve' ? <Spinner /> : <CheckIcon />}
-                    <span>{intl.formatMessage(globalMessages.approve)}</span>
-                  </Button>
-                </span>
-                <span className="w-full">
-                  <Button
-                    className="w-full"
-                    buttonType="danger"
-                    onClick={() => modifyRequest('decline')}
-                    disabled={updatingType !== null}
-                  >
-                    {updatingType === 'decline' ? <Spinner /> : <XMarkIcon />}
-                    <span>{intl.formatMessage(globalMessages.decline)}</span>
-                  </Button>
-                </span>
-              </div>
-            )}
-          {requestData.status === MediaRequestStatus.PENDING &&
-            (hasPermission(Permission.MANAGE_REQUESTS) ||
-              (requestData.requestedBy.id === user?.id &&
-                (requestData.type === 'tv' ||
-                  hasPermission(Permission.REQUEST_ADVANCED)))) && (
-              <span className="w-full">
-                <Button
-                  className="w-full"
-                  buttonType="primary"
-                  onClick={() => setShowEditModal(true)}
-                  disabled={updatingType !== null}
-                >
-                  <PencilIcon />
-                  <span>{intl.formatMessage(messages.editrequest)}</span>
-                </Button>
-              </span>
-            )}
-          {requestData.status === MediaRequestStatus.PENDING &&
-            !hasPermission(Permission.MANAGE_REQUESTS) &&
-            requestData.requestedBy.id === user?.id && (
-              <ConfirmButton
-                onClick={() => deleteRequest()}
-                confirmText={intl.formatMessage(globalMessages.areyousure)}
-                className="w-full"
-              >
-                <XMarkIcon />
-                <span>{intl.formatMessage(messages.cancelRequest)}</span>
-              </ConfirmButton>
-            )}
-        </div>
-      </div>
+      )}
     </>
   );
 };
