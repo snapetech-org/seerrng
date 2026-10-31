@@ -82,6 +82,7 @@ For local MCP access, see the [SnapeTech MCP integration guide](./docs/integrati
 - Requests and approvals for movies, shows, music, ebooks, audiobooks, comics, magazines, emulation ROMs, and PC games.
 - A companion Android APK client for connecting to one or more self-hosted SeerrNG servers.
 - Movie and series Discover filters with 0.1-point TMDB rating thresholds and streaming-service availability filters by region.
+- Optional administrator network restrictions for SeerrNG browser sign-ins, using IPv4 or IPv6 address and CIDR allowlists without blocking remote access for regular users.
 - Media-server integration with Plex, Jellyfin, and Emby, including watch-state-aware My Library views scoped to each linked account.
 - Optional Jellyfin and Emby profile sync during user imports, refreshing linked provider names and avatars while preserving SeerrNG email addresses, local passwords, and permissions.
 - Labeled movie and TV request destinations across multiple Radarr and Sonarr instances, with per-user access and availability tracked for each destination.
@@ -215,6 +216,7 @@ SeerrNG documentation is maintained in the [docs folder](https://github.com/snap
 - [Create custom Discover sliders](./docs/using-seerr/custom-discover-sliders.md)
 - [Filter movie and series Discover results](./docs/using-seerr/movie-series-discovery-filters.md)
 - [Configure Sonarr v5 and season orders](./docs/using-seerr/settings/services.md)
+- [Restrict administrator sign-in by client network](./docs/using-seerr/settings/network.md#restrict-administrator-sign-in-by-client-network)
 - [Require previous-season watch progress](./docs/using-seerr/settings/general.md#require-the-previous-season-to-be-watched)
 - [Choose movie and TV request destinations](./docs/using-seerr/settings/services.md#request-destination-label-optional)
 - [Filter and sort local watchlists](./docs/using-seerr/plex/watchlist-auto-request.md#find-items-in-your-watchlist)

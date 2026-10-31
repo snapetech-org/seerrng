@@ -626,6 +626,8 @@ export interface NetworkSettings {
   csrfProtection: boolean;
   forceIpv4First: boolean;
   trustProxy: boolean;
+  restrictAdministratorSignInToNetworks: boolean;
+  administratorSignInAllowedNetworks: string;
   tls: TlsSettings;
   proxy: ProxySettings;
   dnsCache: DnsCacheSettings;
@@ -1326,6 +1328,8 @@ class Settings {
         csrfProtection: false,
         forceIpv4First: false,
         trustProxy: false,
+        restrictAdministratorSignInToNetworks: false,
+        administratorSignInAllowedNetworks: '',
         tls: {
           mode: 'disabled',
           httpsPort: 5056,
@@ -2389,6 +2393,8 @@ class Settings {
         csrfProtection: false,
         forceIpv4First: false,
         trustProxy: false,
+        restrictAdministratorSignInToNetworks: false,
+        administratorSignInAllowedNetworks: '',
         tls: {
           mode: 'disabled',
           httpsPort: 5056,
