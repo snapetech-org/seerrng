@@ -72,6 +72,15 @@ export const getOverrideRuleProfileId = (
     ? rule.profileId
     : undefined;
 
+export const getOverrideRuleLanguageProfileId = (
+  rule: OverrideRule
+): number | undefined =>
+  Number.isSafeInteger(rule.languageProfileId) &&
+  rule.languageProfileId! >= 0 &&
+  rule.languageProfileId! <= MAX_OVERRIDE_RULE_ROUTING_ID
+    ? rule.languageProfileId
+    : undefined;
+
 export const getOverrideRuleTagIds = (rule: OverrideRule): number[] => {
   if (!hasConditionValue(rule.tags)) {
     return [];
@@ -96,6 +105,7 @@ export const getOverrideRuleTagIds = (rule: OverrideRule): number[] => {
 export type OverrideRulesResult = {
   rootFolder: string | null;
   profileId: number | null;
+  languageProfileId: number | null;
   tags: number[] | null;
 };
 
@@ -169,6 +179,7 @@ export const evaluateRequesterOverrideRules = async ({
   return {
     rootFolder: rule?.rootFolder || null,
     profileId: rule ? (getOverrideRuleProfileId(rule) ?? null) : null,
+    languageProfileId: null,
     tags:
       overrideTags.length > 0
         ? [...new Set([...(tags ?? []), ...overrideTags])]
@@ -281,6 +292,10 @@ export const evaluateOverrideRules = async ({
   return {
     rootFolder: rule?.rootFolder || null,
     profileId: profileId ?? null,
+    languageProfileId:
+      mediaType === MediaType.TV && rule
+        ? (getOverrideRuleLanguageProfileId(rule) ?? null)
+        : null,
     tags:
       overrideTags.length > 0
         ? [...new Set([...(tags ?? []), ...overrideTags])]

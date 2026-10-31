@@ -41,6 +41,9 @@ class OverrideRule {
   @Column({ type: 'int', nullable: true })
   public profileId?: number;
 
+  @Column({ type: 'int', nullable: true })
+  public languageProfileId?: number;
+
   @Column({ nullable: true })
   public rootFolder?: string;
 

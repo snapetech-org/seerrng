@@ -52,6 +52,7 @@ const overrideRuleBodyFields = new Set<keyof OverrideRuleBody>([
   'keywords',
   'productionCountries',
   'profileId',
+  'languageProfileId',
   'rootFolder',
   'tags',
   'radarrServiceId',
@@ -67,6 +68,7 @@ type OverrideRuleBody = {
   keywords?: string | null;
   productionCountries?: string | null;
   profileId?: number | null;
+  languageProfileId?: number | null;
   rootFolder?: string | null;
   tags?: string | null;
   radarrServiceId?: number | null;
@@ -82,6 +84,7 @@ type OverrideRulePatch = {
   keywords?: string | null;
   productionCountries?: string | null;
   profileId?: number | null;
+  languageProfileId?: number | null;
   rootFolder?: string | null;
   tags?: string | null;
   radarrServiceId?: number | null;
@@ -328,7 +331,11 @@ const validateOverrideRuleShape = (
     return { error: 'Override rules must define at least one condition.' };
   }
 
-  if (![rule.profileId, rule.rootFolder, rule.tags].some(hasRuleValue)) {
+  if (
+    ![rule.profileId, rule.languageProfileId, rule.rootFolder, rule.tags].some(
+      hasRuleValue
+    )
+  ) {
     return { error: 'Override rules must define at least one setting.' };
   }
 
@@ -344,6 +351,12 @@ const validateOverrideRuleShape = (
     return {
       error:
         'Production countries are only available for Radarr and Sonarr rules.',
+    };
+  }
+
+  if (hasRuleValue(rule.languageProfileId) && rule.sonarrServiceId == null) {
+    return {
+      error: 'Language profiles are only available for Sonarr rules.',
     };
   }
 
@@ -425,6 +438,17 @@ const parseOverrideRuleBody = (
   if (typeof profileId === 'object' && profileId && 'error' in profileId) {
     return profileId;
   }
+  const languageProfileId = parseOptionalRuleInteger(
+    bodyObject.languageProfileId,
+    'Language profile ID'
+  );
+  if (
+    typeof languageProfileId === 'object' &&
+    languageProfileId &&
+    'error' in languageProfileId
+  ) {
+    return languageProfileId;
+  }
   const radarrServiceId = parseOptionalRuleInteger(
     bodyObject.radarrServiceId,
     'Radarr service ID'
@@ -477,6 +501,7 @@ const parseOverrideRuleBody = (
     keywords,
     productionCountries,
     profileId,
+    languageProfileId,
     rootFolder,
     tags,
     radarrServiceId,
@@ -721,6 +746,7 @@ overrideRuleRoutes.post<
         return res.status(200).json({
           rootFolder: null,
           profileId: null,
+          languageProfileId: null,
           tags: req.body.tags ?? null,
         });
       }

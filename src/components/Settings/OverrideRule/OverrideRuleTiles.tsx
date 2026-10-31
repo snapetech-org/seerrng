@@ -1,5 +1,8 @@
 import Button from '@app/components/Common/Button';
-import type { DVRTestResponse } from '@app/components/Settings/SettingsServices';
+import type {
+  DVRTestResponse,
+  SonarrTestResponse,
+} from '@app/components/Settings/SettingsServices';
 import globalMessages from '@app/i18n/globalMessages';
 import defineMessages from '@app/utils/defineMessages';
 import { PencilIcon, TrashIcon } from '@heroicons/react/24/solid';
@@ -33,6 +36,7 @@ const messages = defineMessages('components.Settings.OverrideRuleTile', {
   language: 'Language',
   keywords: 'Keywords',
   productionCountries: 'Production Countries',
+  languageProfile: 'Language Profile',
   conditions: 'Conditions',
   settings: 'Settings',
 });
@@ -68,12 +72,20 @@ const OverrideRuleTiles = ({
   const { data: languages } = useSWR<Language[]>('/api/v1/languages');
   const { data: genres } = useSWR<TmdbGenre[]>('/api/v1/genres/movie');
   const [testResponses, setTestResponses] = useState<
-    (DVRTestResponse & { type: string; id: number })[]
+    (DVRTestResponse & {
+      languageProfiles?: SonarrTestResponse['languageProfiles'];
+      type: string;
+      id: number;
+    })[]
   >([]);
 
   const getServiceInfos = useCallback(
     async (signal: AbortSignal) => {
-      const results: (DVRTestResponse & { type: string; id: number })[] = [];
+      const results: (DVRTestResponse & {
+        languageProfiles?: SonarrTestResponse['languageProfiles'];
+        type: string;
+        id: number;
+      })[] = [];
       const services = [
         ...radarrServices.map((service) => ({
           service,
@@ -101,7 +113,11 @@ const OverrideRuleTiles = ({
       for (const { service, type } of services) {
         const { hostname, port, apiKey, baseUrl, useSsl = false } = service;
         try {
-          const response = await axios.post<DVRTestResponse>(
+          const response = await axios.post<
+            DVRTestResponse & {
+              languageProfiles?: SonarrTestResponse['languageProfiles'];
+            }
+          >(
             `/api/v1/settings/${type}/test`,
             {
               id: service.id,
@@ -349,6 +365,22 @@ const OverrideRuleTiles = ({
                       ?.profiles.find(
                         (profile) => rule.profileId === profile.id
                       )?.name || rule.profileId}
+                  </dd>
+                </>
+              )}
+              {rule.languageProfileId != null && (
+                <>
+                  <dt>{intl.formatMessage(messages.languageProfile)}</dt>
+                  <dd>
+                    {testResponses
+                      .find(
+                        (response) =>
+                          response.id === rule.sonarrServiceId &&
+                          response.type === 'sonarr'
+                      )
+                      ?.languageProfiles?.find(
+                        (profile) => profile.id === rule.languageProfileId
+                      )?.name ?? rule.languageProfileId}
                   </dd>
                 </>
               )}

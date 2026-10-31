@@ -3,7 +3,7 @@ import ListenBrainzAPI from '@server/api/listenbrainz';
 import MusicBrainz from '@server/api/musicbrainz';
 import OpenLibraryAPI from '@server/api/openlibrary';
 import RadarrAPI from '@server/api/servarr/radarr';
-import SonarrAPI from '@server/api/servarr/sonarr';
+import SonarrAPI, { type LanguageProfile } from '@server/api/servarr/sonarr';
 import SportarrAPI from '@server/api/servarr/sportarr';
 import WhisparrAPI from '@server/api/servarr/whisparr';
 import TheMovieDb from '@server/api/themoviedb';
@@ -2759,6 +2759,7 @@ export class MediaRequest {
             selectedSonarr?.activeLanguageProfileId)
           : selectedSonarr?.activeLanguageProfileId
         : undefined;
+    let sonarrLanguageProfiles: LanguageProfile[] | undefined;
     const metadataLanguageId =
       requestBody.mediaType === MediaType.TV && useAdvancedOptions
         ? requestBody.metadataLanguageId
@@ -2809,6 +2810,7 @@ export class MediaRequest {
             const languageProfiles = await sonarr
               .getLanguageProfiles()
               .catch(() => []);
+            sonarrLanguageProfiles = languageProfiles;
             const preferredProfile = languageProfiles.find(
               (profile) =>
                 (profile.languages ?? []).some((language) =>
@@ -2857,16 +2859,42 @@ export class MediaRequest {
         useAdvancedOptions && requestBody.rootFolder !== undefined;
       const requesterSelectedProfile =
         useAdvancedOptions && requestBody.profileId !== undefined;
+      const requesterSelectedLanguageProfile =
+        useAdvancedOptions && requestBody.languageProfileId !== undefined;
       const requesterSelectedTags =
         useAdvancedOptions && requestBody.tags !== undefined;
       const addedRuleTags =
         overrideResult.tags?.filter((tag) => !tags?.includes(tag)) ?? [];
+      let appliedRuleLanguageProfile = false;
 
       if (overrideResult.rootFolder && !requesterSelectedRootFolder) {
         rootFolder = overrideResult.rootFolder;
       }
       if (overrideResult.profileId !== null && !requesterSelectedProfile) {
         profileId = overrideResult.profileId;
+      }
+      if (
+        overrideResult.languageProfileId !== null &&
+        !requesterSelectedLanguageProfile &&
+        selectedSonarr
+      ) {
+        const languageProfiles =
+          sonarrLanguageProfiles ??
+          (await new SonarrAPI({
+            apiKey: selectedSonarr.apiKey,
+            url: SonarrAPI.buildUrl(selectedSonarr, '/api/v3'),
+          })
+            .getLanguageProfiles()
+            .catch(() => []));
+        if (
+          languageProfiles.some(
+            (languageProfile) =>
+              languageProfile.id === overrideResult.languageProfileId
+          )
+        ) {
+          languageProfileId = overrideResult.languageProfileId;
+          appliedRuleLanguageProfile = true;
+        }
       }
       if (!requesterSelectedTags && overrideResult.tags !== null) {
         tags = overrideResult.tags;
@@ -2875,6 +2903,7 @@ export class MediaRequest {
       if (
         (overrideResult.rootFolder && !requesterSelectedRootFolder) ||
         (overrideResult.profileId !== null && !requesterSelectedProfile) ||
+        appliedRuleLanguageProfile ||
         (addedRuleTags.length > 0 && !requesterSelectedTags)
       ) {
         logger.debug('Override rule applied.', {
@@ -2886,6 +2915,9 @@ export class MediaRequest {
             profileId: requesterSelectedProfile
               ? null
               : overrideResult.profileId,
+            languageProfileId: appliedRuleLanguageProfile
+              ? overrideResult.languageProfileId
+              : null,
             tags: requesterSelectedTags ? null : addedRuleTags,
           },
         });

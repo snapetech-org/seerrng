@@ -5,7 +5,10 @@ import {
   KeywordSelector,
   UserSelector,
 } from '@app/components/Selector';
-import type { DVRTestResponse } from '@app/components/Settings/SettingsServices';
+import type {
+  DVRTestResponse,
+  SonarrTestResponse,
+} from '@app/components/Settings/SettingsServices';
 import useSettings from '@app/hooks/useSettings';
 import useToasts from '@app/hooks/useToasts';
 import globalMessages from '@app/i18n/globalMessages';
@@ -56,6 +59,8 @@ const messages = defineMessages('components.Settings.OverrideRuleModal', {
   selectRootFolder: 'Select root folder',
   qualityprofile: 'Quality Profile',
   selectQualityProfile: 'Select quality profile',
+  languageProfile: 'Language Profile',
+  selectLanguageProfile: 'Select Language Profile',
   tags: 'Tags',
   notagoptions: 'No tags',
   selecttags: 'Select tags',
@@ -71,6 +76,10 @@ type OptionType = {
 type CountryOption = {
   value: string;
   label: string;
+};
+
+type OverrideRuleTestResponse = DVRTestResponse & {
+  languageProfiles?: SonarrTestResponse['languageProfiles'];
 };
 
 interface OverrideRuleModalProps {
@@ -110,10 +119,11 @@ const OverrideRuleModal = ({
   );
   const [isValidated, setIsValidated] = useState(rule ? true : false);
   const [isTesting, setIsTesting] = useState(false);
-  const [testResponse, setTestResponse] = useState<DVRTestResponse>({
+  const [testResponse, setTestResponse] = useState<OverrideRuleTestResponse>({
     profiles: [],
     rootFolders: [],
     tags: [],
+    languageProfiles: null,
   });
 
   const getServiceInfos = useCallback(
@@ -139,7 +149,7 @@ const OverrideRuleModal = ({
     ) => {
       setIsTesting(true);
       try {
-        const response = await axios.post<DVRTestResponse>(
+        const response = await axios.post<OverrideRuleTestResponse>(
           `/api/v1/settings/${type}/test`,
           {
             id,
@@ -208,11 +218,22 @@ const OverrideRuleModal = ({
           keywords: rule?.keywords,
           productionCountries: rule?.productionCountries,
           profileId: rule?.profileId,
+          languageProfileId: rule?.languageProfileId,
           rootFolder: rule?.rootFolder,
           tags: rule?.tags,
         }}
         onSubmit={async (values) => {
           try {
+            const selectedLanguageProfileId =
+              values.languageProfileId == null ||
+              String(values.languageProfileId) === ''
+                ? null
+                : Number(values.languageProfileId);
+            const languageProfileIsAvailable =
+              selectedLanguageProfileId != null &&
+              testResponse.languageProfiles?.some(
+                (profile) => profile.id === selectedLanguageProfileId
+              );
             const submission = {
               users: values.users || null,
               genre: values.genre || null,
@@ -228,6 +249,11 @@ const OverrideRuleModal = ({
                 values.profileId == null || String(values.profileId) === ''
                   ? null
                   : Number(values.profileId),
+              languageProfileId:
+                values.sonarrServiceId == null ||
+                (!languageProfileIsAvailable && isValidated && !isTesting)
+                  ? null
+                  : selectedLanguageProfileId,
               rootFolder: values.rootFolder || null,
               tags: values.tags || null,
               radarrServiceId: values.radarrServiceId,
@@ -276,6 +302,7 @@ const OverrideRuleModal = ({
               }
               okDisabled={
                 isSubmitting ||
+                isTesting ||
                 !isValid ||
                 (!values.users &&
                   !values.genre &&
@@ -284,6 +311,8 @@ const OverrideRuleModal = ({
                   !values.productionCountries) ||
                 (!values.rootFolder &&
                   String(values.profileId ?? '') === '' &&
+                  (values.languageProfileId == null ||
+                    String(values.languageProfileId) === '') &&
                   !values.tags)
               }
               onOk={() => handleSubmit()}
@@ -327,6 +356,7 @@ const OverrideRuleModal = ({
                             setFieldValue('sonarrServiceId', null);
                             setFieldValue('lidarrServiceId', null);
                             setFieldValue('readarrServiceId', null);
+                            setFieldValue('languageProfileId', null);
                             const match = radarrServices.find(
                               (s) => s.id === id
                             );
@@ -338,6 +368,7 @@ const OverrideRuleModal = ({
                             setFieldValue('sonarrServiceId', id);
                             setFieldValue('lidarrServiceId', null);
                             setFieldValue('readarrServiceId', null);
+                            setFieldValue('languageProfileId', null);
                             const match = sonarrServices.find(
                               (s) => s.id === id
                             );
@@ -349,6 +380,7 @@ const OverrideRuleModal = ({
                             setFieldValue('sonarrServiceId', null);
                             setFieldValue('lidarrServiceId', id);
                             setFieldValue('readarrServiceId', null);
+                            setFieldValue('languageProfileId', null);
                             setFieldValue('genre', null);
                             setFieldValue('language', null);
                             setFieldValue('keywords', null);
@@ -364,6 +396,7 @@ const OverrideRuleModal = ({
                             setFieldValue('sonarrServiceId', null);
                             setFieldValue('lidarrServiceId', null);
                             setFieldValue('readarrServiceId', id);
+                            setFieldValue('languageProfileId', null);
                             setFieldValue('productionCountries', null);
                             const match = readarrServices.find(
                               (s) => s.id === id
@@ -376,6 +409,7 @@ const OverrideRuleModal = ({
                             setFieldValue('sonarrServiceId', null);
                             setFieldValue('lidarrServiceId', null);
                             setFieldValue('readarrServiceId', null);
+                            setFieldValue('languageProfileId', null);
                             setIsValidated(false);
                           }
                         }}
@@ -712,6 +746,38 @@ const OverrideRuleModal = ({
                       )}
                   </div>
                 </div>
+                {values.sonarrServiceId != null &&
+                  (testResponse.languageProfiles?.length ?? 0) > 0 && (
+                    <div className="form-row">
+                      <label
+                        htmlFor="languageProfileIdRule"
+                        className="text-label"
+                      >
+                        {intl.formatMessage(messages.languageProfile)}
+                      </label>
+                      <div className="form-input-area">
+                        <div className="form-input-field">
+                          <Field
+                            as="select"
+                            id="languageProfileIdRule"
+                            name="languageProfileId"
+                            disabled={!isValidated || isTesting}
+                          >
+                            <option value="">
+                              {intl.formatMessage(
+                                messages.selectLanguageProfile
+                              )}
+                            </option>
+                            {testResponse.languageProfiles?.map((profile) => (
+                              <option key={profile.id} value={profile.id}>
+                                {profile.name}
+                              </option>
+                            ))}
+                          </Field>
+                        </div>
+                      </div>
+                    </div>
+                  )}
                 <div className="form-row">
                   <label htmlFor="tags" className="text-label">
                     {intl.formatMessage(messages.tags)}

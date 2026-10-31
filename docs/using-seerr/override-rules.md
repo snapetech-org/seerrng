@@ -19,6 +19,9 @@ can also fill in request options when a requester opens **Advanced Options**.
    TMDB metadata; up to 100 countries can be selected. For Lidarr, rules match
    the selected requester.
 4. Choose the root folder, quality profile, and tags the rule should set.
+   Sonarr services that expose language profiles also let you select a
+   language profile. Radarr's quality profile can represent the preferred
+   language through the profile's own settings.
 5. Save the rule.
 
 The service must be connected and its root folders, profiles, and tags must be
@@ -49,4 +52,7 @@ service's normal settings.
 In **Advanced Options**, choose the requester, service, and media options as
 usual. When a saved rule matches a movie or series request, its configured
 root folder, quality profile, and tags are applied to the form so they can be
-reviewed before submitting.
+reviewed before submitting. For Sonarr, a matching language profile is also
+selected when the connected version exposes language profiles. An explicit
+language profile chosen by the requester is preserved. Sonarr v5 metadata
+language remains a separate lookup setting and is not changed by this rule.
