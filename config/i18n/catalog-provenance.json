@@ -65044,9 +65044,10 @@
       "id": "components.Franchise.game",
       "status": "draft",
       "provenance": "machine-draft",
-      "source": "Qwen 3.8 27B (local), generated 2026-10-30",
+      "source": "Codex contextual manual semantic correction; generated 2026-10-31; unverified",
       "sourceHash": "5c412a262086b9701cda06302f6667f9265b1807d0368fcec6cc03bf64fc250b",
-      "targetHash": "5c412a262086b9701cda06302f6667f9265b1807d0368fcec6cc03bf64fc250b"
+      "targetHash": "5fc1a5ed1f8f12bc5ae3fa5492267a71204b1d15840ed853e404c02e1e9ef392",
+      "correctionReason": "Uses the established Indonesian media-category term “Permainan” rather than leaving the English category label unchanged."
     },
     {
       "domain": "client",
@@ -70974,9 +70975,10 @@
       "id": "components.Share.typeGame",
       "status": "draft",
       "provenance": "machine-draft",
-      "source": "Qwen 3.8 27B (local), generated 2026-10-30",
+      "source": "Codex contextual manual semantic correction; generated 2026-10-31; unverified",
       "sourceHash": "5c412a262086b9701cda06302f6667f9265b1807d0368fcec6cc03bf64fc250b",
-      "targetHash": "5c412a262086b9701cda06302f6667f9265b1807d0368fcec6cc03bf64fc250b"
+      "targetHash": "5fc1a5ed1f8f12bc5ae3fa5492267a71204b1d15840ed853e404c02e1e9ef392",
+      "correctionReason": "Uses the established Indonesian media-category term “Permainan” rather than leaving the English category label unchanged."
     },
     {
       "domain": "client",
