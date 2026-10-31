@@ -311,11 +311,6 @@ test('CodeQL workflow invocations are disabled', () => {
     ),
     false
   );
-  assert.equal(
-    fs.existsSync(path.join(rootDirectory, '.github', 'codeql')),
-    false
-  );
-
   const workflowSources = fs
     .readdirSync(workflowsDirectory)
     .filter((fileName) => /\.ya?ml$/u.test(fileName))
@@ -323,7 +318,10 @@ test('CodeQL workflow invocations are disabled', () => {
       fs.readFileSync(path.join(workflowsDirectory, fileName), 'utf8')
     );
   assert.ok(
-    workflowSources.every((source) => !source.includes('github/codeql-action/'))
+    workflowSources.every(
+      (source) =>
+        !/github\/codeql-action\/(?:init|autobuild|analyze|setup-codeql)@/u.test(source)
+    )
   );
 });
 

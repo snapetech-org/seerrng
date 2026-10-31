@@ -1,0 +1,8 @@
+name: snapetech/seerrng-codeql-models
+version: 0.0.15
+library: true
+description: CodeQL models for Seerr's validated HTTP request helpers
+extensionTargets:
+  codeql/javascript-all: '*'
+dataExtensions:
+  - models/**/*.yml
