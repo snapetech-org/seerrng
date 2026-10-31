@@ -2143,23 +2143,66 @@ components:
           type: number
           example: 1
     WatchlistRequest:
+      description: |
+        Add a movie, TV series, music release, book, comic, or magazine to the
+        signed-in user's watchlist. `mediaType` is required. Use `tmdbId` for
+        movies and TV, `mbId` for music, and `externalId` for books, comics,
+        and magazines.
       type: object
       required:
-        - tmdbId
         - mediaType
       properties:
         tmdbId:
-          type: number
+          type: integer
+          format: int32
+          minimum: 1
+          maximum: 1000000000
           example: 1
         mediaType:
           type: string
           enum:
             - movie
             - tv
+            - music
+            - book
+            - comic
+            - magazine
+        mbId:
+          type: string
+          minLength: 1
+          maxLength: 512
+          description: MusicBrainz release-group ID for music entries.
+        externalId:
+          type: string
+          minLength: 1
+          maxLength: 512
+          description: Open Library work ID, ComicVine volume ID, or magazine title.
         ratingKey:
           type: string
+          minLength: 1
+          maxLength: 512
         title:
           type: string
+          maxLength: 512
+      oneOf:
+        - required: [tmdbId]
+          properties:
+            mediaType:
+              enum: [movie, tv]
+        - required: [mbId]
+          properties:
+            mediaType:
+              enum: [music]
+        - required: [externalId]
+          properties:
+            mediaType:
+              enum: [book, comic]
+        - required: [externalId]
+          properties:
+            mediaType:
+              enum: [magazine]
+            externalId:
+              maxLength: 256
     Watchlist:
       type: object
       properties:
@@ -15563,6 +15606,16 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Watchlist'
+        '400':
+          $ref: '#/components/responses/ErrorResponse'
+        '401':
+          $ref: '#/components/responses/ErrorResponse'
+        '403':
+          $ref: '#/components/responses/ErrorResponse'
+        '409':
+          $ref: '#/components/responses/ErrorResponse'
+        '500':
+          $ref: '#/components/responses/ErrorResponse'
   /watchlist/{mediaId}:
     delete:
       summary: Delete watchlist item

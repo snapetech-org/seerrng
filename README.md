@@ -190,6 +190,11 @@ Recent repository updates include:
 - **Integrations:** MusicBrainz and Cover Art Archive connectivity checks with
   bounded artwork traffic controls, plus a preview-first BookshelfNG to
   ChaptarrNG database migration helper for single-database setups.
+- **API integrations:** the OpenAPI watchlist contract describes the
+  type-specific IDs required for each supported media type and matches the
+  server's validation. Seerr [issue #3298](https://github.com/seerr-team/seerr/issues/3298)
+  reported the mismatch, and [PR #3425](https://github.com/seerr-team/seerr/pull/3425)
+  corrected the movie and TV request schema upstream.
 
 These changes are in the repository; use the [release notes](./CHANGELOG.md)
 to confirm which ones are included in a published build. SeerrNG continues to

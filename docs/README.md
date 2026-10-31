@@ -96,7 +96,7 @@ connects to.
 - [Setup experience contract](/maintainers/setup-experience-contract): evolve the existing first-run, category, and service surfaces.
 
 - [Why SeerrNG maintains a fork and what a replacement must provide](/fork-rationale/)
-- [REST API reference](/api/seerr-api/)
+- [REST API and OpenAPI reference](/api/seerr-api/) — request schemas document the supported media identifiers and match server validation.
 - [Third-party client compatibility](/using-seerr/third-party-client-compatibility/)
 - [Contribution guidelines](https://github.com/snapetech-org/seerrng/blob/main/CONTRIBUTING.md)
 - [Support on Discord](https://discord.gg/5PyXBfvS6T)
