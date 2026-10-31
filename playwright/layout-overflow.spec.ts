@@ -57,7 +57,7 @@ for (const path of pages) {
 test('poster grids keep full-size posters and two columns on phones', async ({
   page,
   baseURL,
-}) => {
+}, testInfo) => {
   await loginAsAdmin(page, baseURL);
   let discoveryFixtureApplied = false;
   await page.route('**/api/v1/discover/movies*', async (route) => {
@@ -100,6 +100,38 @@ test('poster grids keep full-size posters and two columns on phones', async ({
       },
     });
   });
+  const themeStylesheet = '**/api/v1/interface-themes/seerrOrig/theme.css';
+  await page.route(themeStylesheet, (route) =>
+    route.fulfill({
+      status: 404,
+      contentType: 'application/json',
+      headers: { 'cache-control': 'no-store' },
+      body: JSON.stringify({ status: 404, message: 'Not found.' }),
+    })
+  );
+  await page.setViewportSize({ width: 320, height: 900 });
+  await page.goto('/discover/movies');
+  await page.waitForLoadState('networkidle');
+  await page.screenshot({
+    path: testInfo.outputPath('baseline-theme-stylesheet-rejected.png'),
+  });
+
+  await page.unroute(themeStylesheet);
+  const candidateStylesheetResponse = page.waitForResponse(
+    (response) =>
+      new URL(response.url()).pathname ===
+      '/api/v1/interface-themes/seerrOrig/theme.css'
+  );
+  await page.reload({ waitUntil: 'networkidle' });
+  const stylesheetResponse = await candidateStylesheetResponse;
+  expect(stylesheetResponse.status()).toBe(200);
+  expect(stylesheetResponse.headers()['content-type']).toMatch(
+    /^text\/css; charset=utf-8/u
+  );
+  await page.screenshot({
+    path: testInfo.outputPath('candidate-theme-stylesheet-served.png'),
+  });
+
   for (const width of [320, 360, 375, 390, 412]) {
     await page.setViewportSize({ width, height: 900 });
     await page.goto('/discover/movies');
