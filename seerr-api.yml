@@ -20829,9 +20829,10 @@ paths:
               ]
         - in: query
           name: sort
+          description: Metadata-backed sort options require mediaType=movie or mediaType=tv.
           schema:
             type: string
-            enum: [added, modified]
+            enum: [added, modified, popularity, releaseDate, rating, title]
             default: added
         - in: query
           name: sortDirection
@@ -22289,6 +22290,7 @@ paths:
                 status,
                 incomplete,
                 title,
+                popularity,
                 director,
                 writer,
                 rating,
