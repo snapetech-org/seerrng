@@ -87,6 +87,7 @@ For local MCP access, see the [SnapeTech MCP integration guide](./docs/integrati
 - Sign-in returns users to a validated in-app destination across local, media-server, and OIDC login, and sign-out clears the previous return destination. OIDC account provisioning requires a verified email and applies the configured account-admission and role rules.
 - Optional Jellyfin and Emby profile sync during user imports, refreshing linked provider names and avatars while preserving SeerrNG email addresses, local passwords, and permissions.
 - Labeled movie and TV request destinations across multiple Radarr and Sonarr instances, with per-user access and availability tracked for each destination.
+- Long-running TV details and request pages stay responsive when a series has many stored and requested seasons.
 - Managers can approve a one-time movie or TV request exception when a user's quota is full; optional Slack actions use a mapped account and the same request permissions as the web app. Manager API clients need both user-management and request-management permission to attribute requests to a selected user; request admission and quota checks use that requester.
 - Automation service integration with Radarr, Sonarr, Lidarr, and Bookshelf/Readarr-compatible APIs.
 - Notifications for email, Discord, Slack, Telegram, Gotify, ntfy, Pushover, Pushbullet, Apprise, Web Push, and custom webhooks, with provider-specific poster, priority, sound, and email transport options documented in the [notification guides](./docs/using-seerr/notifications/index.mdx).
@@ -170,7 +171,8 @@ Recent repository updates include:
 - **Requests:** per-user access to labeled Radarr/Sonarr destinations, quota
   exception approvals, optional Slack approval actions, an optional
   previous-season watch gate, and Sonarr monitoring for future seasons when
-  the latest regular season was requested. Failed TV requests retain their
+  the latest regular season was requested. Long-running TV request details
+  remain responsive with large season histories. Failed TV requests retain their
   context and support verified season mapping; bounded failure explanations
   and request history are localized.
 - **User workflows:** local watchlist filters, a browser-saved Subject Tags
