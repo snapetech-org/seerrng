@@ -30,9 +30,13 @@ const validationScript = workflow.jobs.publish.steps.find(
   (step) => step.name === 'Validate generated change manifest'
 ).run;
 
-const assertSharedMainJitRunner = (runner, context) => {
+const assertSharedMainJitRunner = (
+  runner,
+  context,
+  repositoryRunnerLabel = 'ng-shared-main-seerrng'
+) => {
   assert.match(runner, /"group":"ng-shared-main-jit"/u, context);
-  assert.match(runner, /"ng-shared-main-seerrng"/u, context);
+  assert.match(runner, new RegExp(`"${repositoryRunnerLabel}"`, 'u'), context);
   assert.match(runner, /"ng-main-run-\{0\}"/u, context);
   assert.match(runner, /gha-\{0\}-(?:\{1\}-)?(?:[a-z0-9-]+|\{1\})/u, context);
   assert.match(runner, /github\.run_id/u, context);
@@ -419,7 +423,8 @@ test('owner PR validation is metadata-only, main-pinned, and exact-SHA', () => {
     contents: 'none',
   });
   assert.match(dispatcher['runs-on'], /"group":"ng-shared-main-jit"/u);
-  assert.match(dispatcher['runs-on'], /"ng-shared-main-seerrng"/u);
+  assert.match(dispatcher['runs-on'], /"ng-shared-main-packer"/u);
+  assert.doesNotMatch(dispatcher['runs-on'], /"ng-shared-main-seerrng"/u);
   assert.match(dispatcher['runs-on'], /"ng-main-run-\{0\}"/u);
   assert.match(dispatcher['runs-on'], /gha-\{0\}-owner-pr-dispatcher/u);
   assert.doesNotMatch(
@@ -563,7 +568,15 @@ test('shared runner jobs use SeerrNG and exact-run labels', () => {
         continue;
       }
       sharedRunnerCount += 1;
-      assertSharedMainJitRunner(runner, `${filename}/${jobName}`);
+      const repositoryRunnerLabel =
+        filename === 'ci.yml' && jobName === 'dispatch-owner-pr'
+          ? 'ng-shared-main-packer'
+          : undefined;
+      assertSharedMainJitRunner(
+        runner,
+        `${filename}/${jobName}`,
+        repositoryRunnerLabel
+      );
     }
   }
   assert.ok(sharedRunnerCount > 0);
