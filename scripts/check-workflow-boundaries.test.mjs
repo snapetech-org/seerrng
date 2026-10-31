@@ -36,7 +36,7 @@ const assertSharedMainJitRunner = (
   repositoryRunnerLabel = 'ng-shared-main-seerrng'
 ) => {
   assert.match(runner, /"group":"ng-shared-main-jit"/u, context);
-  assert.match(runner, new RegExp(`"${repositoryRunnerLabel}"`, 'u'), context);
+  assert.ok(runner.includes(`"${repositoryRunnerLabel}"`), context);
   assert.match(runner, /"ng-main-run-\{0\}"/u, context);
   assert.match(runner, /gha-\{0\}-(?:\{1\}-)?(?:[a-z0-9-]+|\{1\})/u, context);
   assert.match(runner, /github\.run_id/u, context);
