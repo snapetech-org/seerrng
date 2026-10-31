@@ -90,6 +90,7 @@ For local MCP access, see the [SnapeTech MCP integration guide](./docs/integrati
 - Long-running TV details and request pages stay responsive when a series has many stored and requested seasons.
 - Managers can approve a one-time movie or TV request exception when a user's quota is full; optional Slack actions use a mapped account and the same request permissions as the web app. Manager API clients need both user-management and request-management permission to attribute requests to a selected user; request admission and quota checks use that requester.
 - Automation service integration with Radarr, Sonarr, Lidarr, and Bookshelf/Readarr-compatible APIs.
+- Complete, paginated Servarr queue snapshots with refresh completion checks; incomplete or oversized reads preserve the last verified download state. Source context: closed Seerr [PR #3473](https://github.com/seerr-team/seerr/pull/3473).
 - Notifications for email, Discord, Slack, Telegram, Gotify, ntfy, Pushover, Pushbullet, Apprise, Web Push, and custom webhooks, with provider-specific poster, priority, sound, and email transport options documented in the [notification guides](./docs/using-seerr/notifications/index.mdx).
 - Sonarr v5 support alongside v3/v4, including metadata-language and season-order options with explicit season mapping for recovery. Scans account for both TVDB and resolved TMDB identity, distinguish confirmed absence from incomplete or failed checks, and reconcile abandoned processing seasons and request selections only after relevant configured servers finish.
 - An optional TV request gate that checks whether the previous regular season was watched through a linked Plex, Jellyfin, or Emby account.
@@ -186,6 +187,8 @@ Recent repository updates include:
   identity.
 - **Availability and sign-in:** separate standard and 4K status on title cards,
   and safe return to the requested in-app page after authentication.
+- **Downloads:** complete, bounded Servarr queue reads wait for monitored-download
+  refreshes and preserve the last verified state when a full snapshot is unavailable.
 - **Integrations:** MusicBrainz and Cover Art Archive connectivity checks with
   bounded artwork traffic controls, plus a preview-first BookshelfNG to
   ChaptarrNG database migration helper for single-database setups.
