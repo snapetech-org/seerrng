@@ -27,6 +27,7 @@ import type { NotificationAgent, NotificationPayload } from './agent';
 import {
   BaseAgent,
   CONFIGURABLE_NOTIFICATION_HTTP_OPTIONS,
+  getLocalizedNotificationPayload,
   getNotificationActionUrl,
   getNotificationContent,
   getNotificationExtras,
@@ -147,6 +148,7 @@ class DiscordAgent
     locale?: AvailableLocale
   ): DiscordRichEmbed {
     const intl = getIntl(locale);
+    payload = getLocalizedNotificationPayload(payload, intl);
     const content = getNotificationContent(payload, intl);
     const extras = getNotificationExtras(payload, intl);
     const { applicationUrl } = getExternalRuntimeConfig().main;

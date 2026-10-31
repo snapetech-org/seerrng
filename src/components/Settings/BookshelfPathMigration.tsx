@@ -1,3 +1,4 @@
+import ApiMessageText from '@app/components/Common/ApiMessageText';
 import Button from '@app/components/Common/Button';
 import PageTitle from '@app/components/Common/PageTitle';
 import SettingsField from '@app/components/Settings/SettingsField';
@@ -731,7 +732,9 @@ const BookshelfPathMigration = () => {
                   </h3>
                   <ul className="list-disc ps-5 text-sm text-yellow-200">
                     {preview.warnings.map((warning, index) => (
-                      <li key={`${index}-${warning}`}>{warning}</li>
+                      <li key={`${index}-${warning}`}>
+                        {<ApiMessageText>{warning}</ApiMessageText>}
+                      </li>
                     ))}
                   </ul>
                 </div>
@@ -794,7 +797,7 @@ const BookshelfPathMigration = () => {
                   : 'text-green-300'
               }
             >
-              {notice}
+              {<ApiMessageText>{notice}</ApiMessageText>}
             </p>
           )}
           {command && !commandTerminal && (
@@ -814,7 +817,7 @@ const BookshelfPathMigration = () => {
           )}
           {errorMessage && (
             <p role="alert" className="text-red-300">
-              {errorMessage}
+              {<ApiMessageText>{errorMessage}</ApiMessageText>}
             </p>
           )}
         </div>

@@ -24,6 +24,7 @@ import {
   BaseAgent,
   NOTIFICATION_DELIVERY_CONCURRENCY,
   NOTIFICATION_HTTP_OPTIONS,
+  getLocalizedNotificationPayload,
   getNotificationActionLabel,
   getNotificationActionUrl,
   getNotificationContent,
@@ -105,6 +106,7 @@ class TelegramAgent
     locale?: AvailableLocale
   ): Partial<TelegramMessagePayload | TelegramPhotoPayload> {
     const intl = getIntl(locale);
+    payload = getLocalizedNotificationPayload(payload, intl);
     const content = getNotificationContent(payload, intl);
     const extras = getNotificationExtras(payload, intl);
     const { applicationUrl, applicationTitle } =

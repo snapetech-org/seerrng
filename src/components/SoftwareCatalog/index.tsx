@@ -1,3 +1,4 @@
+import ApiMessageText from '@app/components/Common/ApiMessageText';
 import Button from '@app/components/Common/Button';
 import CachedImage from '@app/components/Common/CachedImage';
 import Header from '@app/components/Common/Header';
@@ -1255,7 +1256,7 @@ const SoftwareCatalog = ({
               />
               {requestError && (
                 <p role="alert" className="text-sm text-red-300">
-                  {requestError}
+                  {<ApiMessageText>{requestError}</ApiMessageText>}
                 </p>
               )}
             </div>

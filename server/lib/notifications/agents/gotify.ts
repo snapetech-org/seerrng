@@ -19,6 +19,7 @@ import type { NotificationAgent, NotificationPayload } from './agent';
 import {
   BaseAgent,
   CONFIGURABLE_NOTIFICATION_HTTP_OPTIONS,
+  getLocalizedNotificationPayload,
   getNotificationActionUrl,
   getNotificationContent,
   getNotificationExtras,
@@ -80,6 +81,7 @@ class GotifyAgent
   ): GotifyPayload {
     const settings = this.getSettings();
     const intl = getIntl(settings.options.locale);
+    payload = getLocalizedNotificationPayload(payload, intl);
     const content = getNotificationContent(payload, intl);
     const extras = getNotificationExtras(payload, intl);
     const { applicationUrl, applicationTitle } =

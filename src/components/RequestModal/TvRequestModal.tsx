@@ -1,3 +1,4 @@
+import ApiMessageText from '@app/components/Common/ApiMessageText';
 import Badge from '@app/components/Common/Badge';
 import Button from '@app/components/Common/Button';
 import CachedImage from '@app/components/Common/CachedImage';
@@ -1451,7 +1452,13 @@ const TvRequestModal = ({
                 seasonWatchGateFailure === 'unavailable' ? 'alert' : 'status'
               }
             >
-              <span>{seasonWatchGateDisplayMessage}</span>
+              <span>
+                {
+                  <ApiMessageText>
+                    {seasonWatchGateDisplayMessage}
+                  </ApiMessageText>
+                }
+              </span>
               {seasonWatchGateFailure === 'account' && (
                 <Button
                   as="a"
@@ -1638,7 +1645,11 @@ const TvRequestModal = ({
                     className="request-episode-queue-description refreshed-detail-text-muted"
                     role="status"
                   >
-                    {watchAheadUnavailableMessage}
+                    {
+                      <ApiMessageText>
+                        {watchAheadUnavailableMessage}
+                      </ApiMessageText>
+                    }
                   </p>
                 )}
                 {needsWatchAheadAccountLink && (

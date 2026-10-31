@@ -20,6 +20,7 @@ import type { NotificationAgent, NotificationPayload } from './agent';
 import {
   BaseAgent,
   CONFIGURABLE_NOTIFICATION_HTTP_OPTIONS,
+  getLocalizedNotificationPayload,
   getNotificationActionUrl,
   getNotificationContent,
   getNotificationExtras,
@@ -73,6 +74,7 @@ class AppriseAgent
   public buildPayload(type: Notification, payload: NotificationPayload) {
     const settings = this.getSettings();
     const intl = getIntl(settings.options.locale as AvailableLocale);
+    payload = getLocalizedNotificationPayload(payload, intl);
     const { applicationUrl } = getExternalRuntimeConfig().main;
     const content = getNotificationContent(payload, intl);
     const extras = getNotificationExtras(payload, intl);

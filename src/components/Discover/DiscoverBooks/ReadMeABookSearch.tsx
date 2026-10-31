@@ -1,3 +1,4 @@
+import ApiMessageText from '@app/components/Common/ApiMessageText';
 import Button from '@app/components/Common/Button';
 import LoadingSpinner from '@app/components/Common/LoadingSpinner';
 import defineMessages from '@app/utils/defineMessages';
@@ -140,7 +141,7 @@ const ReadMeABookSearch = () => {
       </form>
       {notice && (
         <p className="description" role="status">
-          {notice}
+          {<ApiMessageText>{notice}</ApiMessageText>}
         </p>
       )}
       {isSearching && <LoadingSpinner />}
@@ -183,7 +184,14 @@ const ReadMeABookSearch = () => {
             {item.status === 'awaiting_approval'
               ? intl.formatMessage(messages.pending)
               : item.status}
-            {item.statusMessage ? ` · ${item.statusMessage}` : ''}
+            {item.statusMessage ? (
+              <>
+                {' '}
+                · <ApiMessageText>{item.statusMessage}</ApiMessageText>
+              </>
+            ) : (
+              ''
+            )}
           </span>
           {item.status !== 'awaiting_approval' && (
             <Button

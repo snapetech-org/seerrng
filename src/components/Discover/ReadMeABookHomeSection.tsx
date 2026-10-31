@@ -1,3 +1,4 @@
+import ApiMessageText from '@app/components/Common/ApiMessageText';
 import Button from '@app/components/Common/Button';
 import LoadingSpinner from '@app/components/Common/LoadingSpinner';
 import defineMessages from '@app/utils/defineMessages';
@@ -81,7 +82,7 @@ const ReadMeABookHomeSection = ({ title, section, subject }: Props) => {
       )}
       {notice && (
         <p className="description" role="status">
-          {notice}
+          {<ApiMessageText>{notice}</ApiMessageText>}
         </p>
       )}
       {books?.length ? (

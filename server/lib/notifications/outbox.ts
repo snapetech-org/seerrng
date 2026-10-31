@@ -11,7 +11,12 @@ import { randomUUID } from 'node:crypto';
 import { In } from 'typeorm';
 import type { Notification } from '.';
 import type {
+  NotificationBodyMessage,
+  NotificationEventDescriptor,
+  NotificationExtraLabel,
+  NotificationIssueEventDescriptor,
   NotificationPayload,
+  NotificationSubjectMessage,
   SoftwareRequestStatus,
 } from './agents/agent';
 
@@ -68,6 +73,10 @@ interface StoredComment {
 
 interface StoredNotificationPayload {
   event?: string;
+  eventMessage?: NotificationEventDescriptor;
+  issueEventMessage?: NotificationIssueEventDescriptor;
+  bodyMessage?: NotificationBodyMessage;
+  subjectMessage?: NotificationSubjectMessage;
   subject: string;
   notifySystem: boolean;
   notifyAdmin: boolean;
@@ -77,7 +86,7 @@ interface StoredNotificationPayload {
   image?: string;
   message?: string;
   availabilitySubscription?: boolean;
-  extra?: { name: string; value: string }[];
+  extra?: { name: string; value: string; label?: NotificationExtraLabel }[];
   request?: StoredRequest;
   issue?: StoredIssue;
   comment?: StoredComment;
@@ -172,9 +181,100 @@ const serializeStoredValue = (value: unknown): string => {
   return serialized;
 };
 
+const validateNotificationDescriptors = (
+  payload: Pick<
+    NotificationPayload,
+    | 'eventMessage'
+    | 'issueEventMessage'
+    | 'bodyMessage'
+    | 'subjectMessage'
+    | 'extra'
+  >
+): void => {
+  const event = payload.eventMessage;
+  if (
+    event !== undefined &&
+    (!event ||
+      typeof event !== 'object' ||
+      ![
+        'available',
+        'approved',
+        'declined',
+        'pending',
+        'autoRequested',
+        'autoApproved',
+        'failed',
+      ].includes(event.kind) ||
+      ![
+        'movie',
+        'tv',
+        'music',
+        'book',
+        'comic',
+        'magazine',
+        'adult',
+        'sports',
+      ].includes(event.mediaType) ||
+      typeof event.is4k !== 'boolean')
+  ) {
+    throw new Error('Notification outbox event descriptor is invalid.');
+  }
+  const issue = payload.issueEventMessage;
+  if (
+    issue !== undefined &&
+    (!issue ||
+      typeof issue !== 'object' ||
+      !['created', 'resolved', 'reopened', 'comment'].includes(issue.kind) ||
+      !['video', 'audio', 'subtitles', 'other'].includes(issue.issueType))
+  ) {
+    throw new Error('Notification outbox issue descriptor is invalid.');
+  }
+  if (
+    payload.bodyMessage !== undefined &&
+    ![
+      'comicRequestDetails',
+      'magazineRequestDetails',
+      'adultRequestDetails',
+    ].includes(payload.bodyMessage)
+  ) {
+    throw new Error('Notification outbox body descriptor is invalid.');
+  }
+  if (
+    payload.subjectMessage !== undefined &&
+    !['bookRequest', 'adultSceneRequest'].includes(payload.subjectMessage)
+  ) {
+    throw new Error('Notification outbox subject descriptor is invalid.');
+  }
+  if (
+    payload.extra !== undefined &&
+    (!Array.isArray(payload.extra) ||
+      payload.extra.some(
+        (extra) =>
+          !extra ||
+          typeof extra.name !== 'string' ||
+          typeof extra.value !== 'string' ||
+          (extra.label !== undefined &&
+            ![
+              'requestedSeasons',
+              'artist',
+              'publisher',
+              'affectedSeason',
+              'affectedEpisode',
+            ].includes(extra.label))
+      ))
+  ) {
+    throw new Error('Notification outbox extra descriptor is invalid.');
+  }
+};
+
 const serializePayload = (payload: NotificationPayload): string => {
+  validateNotificationDescriptors(payload);
   const stored: StoredNotificationPayload = {
     event: payload.event,
+    eventMessage: payload.eventMessage,
+    issueEventMessage: payload.issueEventMessage,
+    bodyMessage: payload.bodyMessage,
+    subjectMessage: payload.subjectMessage,
     subject: payload.subject,
     notifySystem: payload.notifySystem,
     notifyAdmin: payload.notifyAdmin,
@@ -205,7 +305,11 @@ const serializePayload = (payload: NotificationPayload): string => {
     image: payload.image,
     message: payload.message,
     availabilitySubscription: payload.availabilitySubscription,
-    extra: payload.extra?.map(({ name, value }) => ({ name, value })),
+    extra: payload.extra?.map(({ name, value, label }) => ({
+      name,
+      value,
+      label,
+    })),
     request: payload.request
       ? {
           id: payload.request.id,
@@ -262,6 +366,7 @@ const parseStoredPayload = (serialized: string): StoredNotificationPayload => {
   ) {
     throw new Error('Stored notification outbox software status is invalid.');
   }
+  validateNotificationDescriptors(stored);
   return stored;
 };
 
@@ -481,6 +586,10 @@ export const hydrateNotificationOutboxPayload = async (
 
   return {
     event: stored.event,
+    eventMessage: stored.eventMessage,
+    issueEventMessage: stored.issueEventMessage,
+    bodyMessage: stored.bodyMessage,
+    subjectMessage: stored.subjectMessage,
     subject: stored.subject,
     notifySystem: stored.notifySystem,
     notifyAdmin: stored.notifyAdmin,

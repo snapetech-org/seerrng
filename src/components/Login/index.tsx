@@ -1,6 +1,7 @@
 import EmbyLogo from '@app/assets/services/emby-icon-only.svg';
 import JellyfinLogo from '@app/assets/services/jellyfin-icon.svg';
 import PlexLogo from '@app/assets/services/plex.svg';
+import ApiMessageText from '@app/components/Common/ApiMessageText';
 import Button from '@app/components/Common/Button';
 import ButtonWithLoader from '@app/components/Common/ButtonWithLoader';
 import ImageFader from '@app/components/Common/ImageFader';
@@ -334,7 +335,7 @@ const Login = ({
                   </div>
                   <div className="ms-3">
                     <h3 className="text-sm font-medium text-red-300">
-                      {error}
+                      {<ApiMessageText>{error}</ApiMessageText>}
                     </h3>
                   </div>
                 </div>

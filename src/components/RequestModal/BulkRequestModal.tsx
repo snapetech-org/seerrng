@@ -1,6 +1,7 @@
 import AuthorSummaryCard from '@app/components/AuthorDetails/AuthorSummaryCard';
 import BookSeriesSummaryCard from '@app/components/BookSeriesDetails/BookSeriesSummaryCard';
 import Alert from '@app/components/Common/Alert';
+import ApiMessageText from '@app/components/Common/ApiMessageText';
 import {
   getBookFormatMessage,
   type RequestedBookFormat,
@@ -996,7 +997,9 @@ const BulkRequestModal = ({
           <div className="font-medium text-white">
             {failure.title ?? failure.mediaId}
           </div>
-          <div className="text-sm text-gray-300">{failure.reason}</div>
+          <div className="text-sm text-gray-300">
+            {<ApiMessageText>{failure.reason}</ApiMessageText>}
+          </div>
         </div>
       ))}
     </div>

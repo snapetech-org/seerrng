@@ -360,7 +360,7 @@
       "sourceCallsites": [
         {
           "path": "src/components/BookSeriesDetails/index.tsx",
-          "line": 57,
+          "line": 58,
           "defaultMessage": "'Genres'"
         }
       ],
@@ -703,7 +703,7 @@
       "sourceCallsites": [
         {
           "path": "src/components/Discover/DiscoverComics/index.tsx",
-          "line": 19,
+          "line": 20,
           "defaultMessage": "'Comics'"
         }
       ],
@@ -1226,7 +1226,7 @@
       "sourceCallsites": [
         {
           "path": "src/components/GameLibrary/index.tsx",
-          "line": 33,
+          "line": 34,
           "defaultMessage": "'Retro'"
         }
       ],
@@ -2026,7 +2026,7 @@
       "sourceCallsites": [
         {
           "path": "src/components/RequestModal/BulkRequestModal.tsx",
-          "line": 102,
+          "line": 103,
           "defaultMessage": "'Format'"
         }
       ],
@@ -2046,7 +2046,7 @@
       "sourceCallsites": [
         {
           "path": "src/components/RequestModal/BulkRequestModal.tsx",
-          "line": 115,
+          "line": 116,
           "defaultMessage": "'Genres'"
         }
       ],
@@ -2271,7 +2271,7 @@
         },
         {
           "path": "src/components/RequestModal/TvRequestModal.tsx",
-          "line": 119,
+          "line": 120,
           "defaultMessage": "'Genres'"
         }
       ],
@@ -2296,7 +2296,7 @@
         },
         {
           "path": "src/components/RequestModal/TvRequestModal.tsx",
-          "line": 121,
+          "line": 122,
           "defaultMessage": "'Status'"
         }
       ],
@@ -2336,7 +2336,7 @@
       "sourceCallsites": [
         {
           "path": "src/components/RequestStatus/SoftwareRequests.tsx",
-          "line": 42,
+          "line": 43,
           "defaultMessage": "'Retro'"
         }
       ],
@@ -2356,7 +2356,7 @@
       "sourceCallsites": [
         {
           "path": "src/components/RequestStatus/SoftwareRequests.tsx",
-          "line": 53,
+          "line": 54,
           "defaultMessage": "'Universal'"
         }
       ],
@@ -2376,7 +2376,7 @@
       "sourceCallsites": [
         {
           "path": "src/components/Requests/index.tsx",
-          "line": 137,
+          "line": 139,
           "defaultMessage": "'Album'"
         }
       ],
@@ -2396,7 +2396,7 @@
       "sourceCallsites": [
         {
           "path": "src/components/Requests/index.tsx",
-          "line": 138,
+          "line": 140,
           "defaultMessage": "'Comic'"
         }
       ],
@@ -2416,7 +2416,7 @@
       "sourceCallsites": [
         {
           "path": "src/components/Requests/index.tsx",
-          "line": 192,
+          "line": 194,
           "defaultMessage": "'Comics'"
         }
       ],
@@ -2436,7 +2436,7 @@
       "sourceCallsites": [
         {
           "path": "src/components/Requests/index.tsx",
-          "line": 201,
+          "line": 203,
           "defaultMessage": "'Format'"
         }
       ],
@@ -2456,7 +2456,7 @@
       "sourceCallsites": [
         {
           "path": "src/components/Requests/index.tsx",
-          "line": 158,
+          "line": 160,
           "defaultMessage": "'Genres'"
         }
       ],
@@ -2476,7 +2476,7 @@
       "sourceCallsites": [
         {
           "path": "src/components/Requests/index.tsx",
-          "line": 206,
+          "line": 208,
           "defaultMessage": "'Status'"
         }
       ],
@@ -2496,7 +2496,7 @@
       "sourceCallsites": [
         {
           "path": "src/components/Requests/index.tsx",
-          "line": 168,
+          "line": 170,
           "defaultMessage": "'Sport'"
         }
       ],
@@ -2516,7 +2516,7 @@
       "sourceCallsites": [
         {
           "path": "src/components/Requests/index.tsx",
-          "line": 170,
+          "line": 172,
           "defaultMessage": "'Studio'"
         }
       ],
@@ -2556,7 +2556,7 @@
       "sourceCallsites": [
         {
           "path": "src/components/Search/index.tsx",
-          "line": 77,
+          "line": 78,
           "defaultMessage": "'Comics'"
         }
       ],
@@ -2576,7 +2576,7 @@
       "sourceCallsites": [
         {
           "path": "src/components/Search/index.tsx",
-          "line": 80,
+          "line": 81,
           "defaultMessage": "'Software'"
         }
       ],
@@ -2656,7 +2656,7 @@
       "sourceCallsites": [
         {
           "path": "src/components/Settings/SavedServiceHosts.tsx",
-          "line": 16,
+          "line": 17,
           "defaultMessage": "'Name'"
         }
       ],
@@ -2696,7 +2696,7 @@
       "sourceCallsites": [
         {
           "path": "src/components/Settings/SettingsDownloadClients.tsx",
-          "line": 38,
+          "line": 39,
           "defaultMessage": "'Name'"
         }
       ],
@@ -2816,7 +2816,7 @@
       "sourceCallsites": [
         {
           "path": "src/components/Settings/SettingsProwlarr.tsx",
-          "line": 75,
+          "line": 76,
           "defaultMessage": "'Comics'"
         }
       ],
@@ -2836,7 +2836,7 @@
       "sourceCallsites": [
         {
           "path": "src/components/Settings/SettingsSoftwareAcquisition.tsx",
-          "line": 63,
+          "line": 64,
           "defaultMessage": "'Retro'"
         }
       ],
@@ -2916,7 +2916,7 @@
       "sourceCallsites": [
         {
           "path": "src/components/SoftwareCatalog/index.tsx",
-          "line": 54,
+          "line": 55,
           "defaultMessage": "'Genre'"
         }
       ],
@@ -2936,7 +2936,7 @@
       "sourceCallsites": [
         {
           "path": "src/components/SoftwareCatalog/index.tsx",
-          "line": 49,
+          "line": 50,
           "defaultMessage": "'Retro'"
         }
       ],
@@ -2956,7 +2956,7 @@
       "sourceCallsites": [
         {
           "path": "src/components/SoftwareCatalog/index.tsx",
-          "line": 46,
+          "line": 47,
           "defaultMessage": "'Software'"
         }
       ],
@@ -2976,7 +2976,7 @@
       "sourceCallsites": [
         {
           "path": "src/components/SoftwareCatalog/index.tsx",
-          "line": 88,
+          "line": 89,
           "defaultMessage": "'Universal'"
         }
       ],
@@ -2996,7 +2996,7 @@
       "sourceCallsites": [
         {
           "path": "src/components/Soulseek/AlbumLibraryHealthButton.tsx",
-          "line": 37,
+          "line": 38,
           "defaultMessage": "'Status'"
         }
       ],
@@ -3436,7 +3436,7 @@
       "sourceCallsites": [
         {
           "path": "src/components/Common/QuickConnectModal/index.tsx",
-          "line": 13,
+          "line": 14,
           "defaultMessage": "'Error'"
         }
       ],
@@ -3636,7 +3636,7 @@
       "sourceCallsites": [
         {
           "path": "src/components/GameLibrary/index.tsx",
-          "line": 33,
+          "line": 34,
           "defaultMessage": "'Retro'"
         }
       ],
@@ -3776,7 +3776,7 @@
       "sourceCallsites": [
         {
           "path": "src/components/RequestStatus/SoftwareRequests.tsx",
-          "line": 42,
+          "line": 43,
           "defaultMessage": "'Retro'"
         }
       ],
@@ -3796,7 +3796,7 @@
       "sourceCallsites": [
         {
           "path": "src/components/RequestStatus/SoftwareRequests.tsx",
-          "line": 53,
+          "line": 54,
           "defaultMessage": "'Universal'"
         }
       ],
@@ -3816,7 +3816,7 @@
       "sourceCallsites": [
         {
           "path": "src/components/Requests/index.tsx",
-          "line": 163,
+          "line": 165,
           "defaultMessage": "'Director'"
         }
       ],
@@ -3836,7 +3836,7 @@
       "sourceCallsites": [
         {
           "path": "src/components/Requests/index.tsx",
-          "line": 207,
+          "line": 209,
           "defaultMessage": "'Director'"
         }
       ],
@@ -3876,7 +3876,7 @@
       "sourceCallsites": [
         {
           "path": "src/components/Search/index.tsx",
-          "line": 93,
+          "line": 94,
           "defaultMessage": "'Director'"
         }
       ],
@@ -3896,7 +3896,7 @@
       "sourceCallsites": [
         {
           "path": "src/components/Search/index.tsx",
-          "line": 80,
+          "line": 81,
           "defaultMessage": "'Software'"
         }
       ],
@@ -4056,7 +4056,7 @@
       "sourceCallsites": [
         {
           "path": "src/components/Settings/SettingsSoftwareAcquisition.tsx",
-          "line": 63,
+          "line": 64,
           "defaultMessage": "'Retro'"
         }
       ],
@@ -4116,7 +4116,7 @@
       "sourceCallsites": [
         {
           "path": "src/components/SoftwareCatalog/index.tsx",
-          "line": 49,
+          "line": 50,
           "defaultMessage": "'Retro'"
         }
       ],
@@ -4136,7 +4136,7 @@
       "sourceCallsites": [
         {
           "path": "src/components/SoftwareCatalog/index.tsx",
-          "line": 46,
+          "line": 47,
           "defaultMessage": "'Software'"
         }
       ],
@@ -4156,7 +4156,7 @@
       "sourceCallsites": [
         {
           "path": "src/components/SoftwareCatalog/index.tsx",
-          "line": 88,
+          "line": 89,
           "defaultMessage": "'Universal'"
         }
       ],
@@ -5044,7 +5044,7 @@
       "sourceCallsites": [
         {
           "path": "src/components/Discover/DiscoverSports/index.tsx",
-          "line": 18,
+          "line": 19,
           "defaultMessage": "'Sports'"
         }
       ],
@@ -5824,7 +5824,7 @@
       "sourceCallsites": [
         {
           "path": "src/components/RequestModal/BulkRequestModal.tsx",
-          "line": 102,
+          "line": 103,
           "defaultMessage": "'Format'"
         }
       ],
@@ -5924,7 +5924,7 @@
       "sourceCallsites": [
         {
           "path": "src/components/Requests/index.tsx",
-          "line": 137,
+          "line": 139,
           "defaultMessage": "'Album'"
         }
       ],
@@ -5944,7 +5944,7 @@
       "sourceCallsites": [
         {
           "path": "src/components/Requests/index.tsx",
-          "line": 201,
+          "line": 203,
           "defaultMessage": "'Format'"
         }
       ],
@@ -5964,7 +5964,7 @@
       "sourceCallsites": [
         {
           "path": "src/components/Requests/index.tsx",
-          "line": 156,
+          "line": 158,
           "defaultMessage": "'Pages'"
         }
       ],
@@ -5984,7 +5984,7 @@
       "sourceCallsites": [
         {
           "path": "src/components/Requests/index.tsx",
-          "line": 171,
+          "line": 173,
           "defaultMessage": "'Date'"
         }
       ],
@@ -6004,7 +6004,7 @@
       "sourceCallsites": [
         {
           "path": "src/components/Requests/index.tsx",
-          "line": 203,
+          "line": 205,
           "defaultMessage": "'Date'"
         }
       ],
@@ -6024,7 +6024,7 @@
       "sourceCallsites": [
         {
           "path": "src/components/Requests/index.tsx",
-          "line": 168,
+          "line": 170,
           "defaultMessage": "'Sport'"
         }
       ],
@@ -6044,7 +6044,7 @@
       "sourceCallsites": [
         {
           "path": "src/components/Requests/index.tsx",
-          "line": 141,
+          "line": 143,
           "defaultMessage": "'Sports'"
         }
       ],
@@ -6064,7 +6064,7 @@
       "sourceCallsites": [
         {
           "path": "src/components/Requests/index.tsx",
-          "line": 195,
+          "line": 197,
           "defaultMessage": "'Sports'"
         }
       ],
@@ -6084,7 +6084,7 @@
       "sourceCallsites": [
         {
           "path": "src/components/Requests/index.tsx",
-          "line": 170,
+          "line": 172,
           "defaultMessage": "'Studio'"
         }
       ],
@@ -6104,7 +6104,7 @@
       "sourceCallsites": [
         {
           "path": "src/components/Search/index.tsx",
-          "line": 89,
+          "line": 90,
           "defaultMessage": "'Date'"
         }
       ],
@@ -6124,7 +6124,7 @@
       "sourceCallsites": [
         {
           "path": "src/components/Search/index.tsx",
-          "line": 79,
+          "line": 80,
           "defaultMessage": "'Sports'"
         }
       ],
@@ -6284,7 +6284,7 @@
       "sourceCallsites": [
         {
           "path": "src/components/Settings/SettingsDownloadClients.tsx",
-          "line": 39,
+          "line": 40,
           "defaultMessage": "'Client'"
         }
       ],
@@ -6364,7 +6364,7 @@
       "sourceCallsites": [
         {
           "path": "src/components/Settings/SettingsSwipe.tsx",
-          "line": 40,
+          "line": 41,
           "defaultMessage": "'Effort'"
         }
       ],
@@ -6504,7 +6504,7 @@
       "sourceCallsites": [
         {
           "path": "src/components/Settings/SettingsProwlarr.tsx",
-          "line": 78,
+          "line": 79,
           "defaultMessage": "'Sports'"
         }
       ],
@@ -6584,7 +6584,7 @@
       "sourceCallsites": [
         {
           "path": "src/components/SoftwareCatalog/index.tsx",
-          "line": 81,
+          "line": 82,
           "defaultMessage": "'Architecture'"
         }
       ],
@@ -6604,7 +6604,7 @@
       "sourceCallsites": [
         {
           "path": "src/components/SoftwareCatalog/index.tsx",
-          "line": 54,
+          "line": 55,
           "defaultMessage": "'Genre'"
         }
       ],
@@ -7444,7 +7444,7 @@
       "sourceCallsites": [
         {
           "path": "src/components/GameLibrary/index.tsx",
-          "line": 34,
+          "line": 35,
           "defaultMessage": "'Modern'"
         }
       ],
@@ -7464,7 +7464,7 @@
       "sourceCallsites": [
         {
           "path": "src/components/GameLibrary/index.tsx",
-          "line": 60,
+          "line": 61,
           "defaultMessage": "'Platform'"
         }
       ],
@@ -7484,7 +7484,7 @@
       "sourceCallsites": [
         {
           "path": "src/components/GameLibrary/index.tsx",
-          "line": 33,
+          "line": 34,
           "defaultMessage": "'Retro'"
         }
       ],
@@ -7944,7 +7944,7 @@
       "sourceCallsites": [
         {
           "path": "src/components/RequestModal/BulkRequestModal.tsx",
-          "line": 102,
+          "line": 103,
           "defaultMessage": "'Format'"
         }
       ],
@@ -8109,7 +8109,7 @@
         },
         {
           "path": "src/components/RequestModal/TvRequestModal.tsx",
-          "line": 121,
+          "line": 122,
           "defaultMessage": "'Status'"
         }
       ],
@@ -8149,7 +8149,7 @@
       "sourceCallsites": [
         {
           "path": "src/components/RequestStatus/SoftwareRequests.tsx",
-          "line": 43,
+          "line": 44,
           "defaultMessage": "'Modern'"
         }
       ],
@@ -8169,7 +8169,7 @@
       "sourceCallsites": [
         {
           "path": "src/components/RequestStatus/SoftwareRequests.tsx",
-          "line": 42,
+          "line": 43,
           "defaultMessage": "'Retro'"
         }
       ],
@@ -8189,7 +8189,7 @@
       "sourceCallsites": [
         {
           "path": "src/components/RequestStatus/SoftwareRequests.tsx",
-          "line": 53,
+          "line": 54,
           "defaultMessage": "'Universal'"
         }
       ],
@@ -8209,7 +8209,7 @@
       "sourceCallsites": [
         {
           "path": "src/components/Requests/index.tsx",
-          "line": 137,
+          "line": 139,
           "defaultMessage": "'Album'"
         }
       ],
@@ -8229,7 +8229,7 @@
       "sourceCallsites": [
         {
           "path": "src/components/Requests/index.tsx",
-          "line": 201,
+          "line": 203,
           "defaultMessage": "'Format'"
         }
       ],
@@ -8249,7 +8249,7 @@
       "sourceCallsites": [
         {
           "path": "src/components/Requests/index.tsx",
-          "line": 206,
+          "line": 208,
           "defaultMessage": "'Status'"
         }
       ],
@@ -8269,7 +8269,7 @@
       "sourceCallsites": [
         {
           "path": "src/components/Requests/index.tsx",
-          "line": 170,
+          "line": 172,
           "defaultMessage": "'Studio'"
         }
       ],
@@ -8349,7 +8349,7 @@
       "sourceCallsites": [
         {
           "path": "src/components/Settings/SettingsRecognition.tsx",
-          "line": 39,
+          "line": 40,
           "defaultMessage": "'Model'"
         }
       ],
@@ -8369,7 +8369,7 @@
       "sourceCallsites": [
         {
           "path": "src/components/Settings/SettingsSwipe.tsx",
-          "line": 38,
+          "line": 39,
           "defaultMessage": "'Model'"
         }
       ],
@@ -8409,7 +8409,7 @@
       "sourceCallsites": [
         {
           "path": "src/components/Settings/SettingsSoftwareAcquisition.tsx",
-          "line": 64,
+          "line": 65,
           "defaultMessage": "'Modern'"
         }
       ],
@@ -8429,7 +8429,7 @@
       "sourceCallsites": [
         {
           "path": "src/components/Settings/SettingsSoftwareAcquisition.tsx",
-          "line": 63,
+          "line": 64,
           "defaultMessage": "'Retro'"
         }
       ],
@@ -8489,7 +8489,7 @@
       "sourceCallsites": [
         {
           "path": "src/components/SoftwareCatalog/index.tsx",
-          "line": 54,
+          "line": 55,
           "defaultMessage": "'Genre'"
         }
       ],
@@ -8509,7 +8509,7 @@
       "sourceCallsites": [
         {
           "path": "src/components/SoftwareCatalog/index.tsx",
-          "line": 50,
+          "line": 51,
           "defaultMessage": "'Modern'"
         }
       ],
@@ -8529,7 +8529,7 @@
       "sourceCallsites": [
         {
           "path": "src/components/SoftwareCatalog/index.tsx",
-          "line": 49,
+          "line": 50,
           "defaultMessage": "'Retro'"
         }
       ],
@@ -8549,7 +8549,7 @@
       "sourceCallsites": [
         {
           "path": "src/components/SoftwareCatalog/index.tsx",
-          "line": 88,
+          "line": 89,
           "defaultMessage": "'Universal'"
         }
       ],
@@ -8569,7 +8569,7 @@
       "sourceCallsites": [
         {
           "path": "src/components/Soulseek/AlbumLibraryHealthButton.tsx",
-          "line": 37,
+          "line": 38,
           "defaultMessage": "'Status'"
         }
       ],
@@ -8975,7 +8975,7 @@
       "sourceCallsites": [
         {
           "path": "src/components/RequestStatus/SoftwareRequests.tsx",
-          "line": 53,
+          "line": 54,
           "defaultMessage": "'Universal'"
         }
       ],
@@ -9055,7 +9055,7 @@
       "sourceCallsites": [
         {
           "path": "src/components/SoftwareCatalog/index.tsx",
-          "line": 88,
+          "line": 89,
           "defaultMessage": "'Universal'"
         }
       ],
@@ -9381,7 +9381,7 @@
       "sourceCallsites": [
         {
           "path": "src/components/Requests/index.tsx",
-          "line": 137,
+          "line": 139,
           "defaultMessage": "'Album'"
         }
       ],

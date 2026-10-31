@@ -1,4 +1,5 @@
 import Alert from '@app/components/Common/Alert';
+import ApiMessageText from '@app/components/Common/ApiMessageText';
 import Button from '@app/components/Common/Button';
 import LoadingSpinner from '@app/components/Common/LoadingSpinner';
 import SettingsField from '@app/components/Settings/SettingsField';
@@ -655,7 +656,12 @@ const ReaderDeliverySettings = () => {
         )}
         {data && draft && !error && (
           <form onSubmit={(event) => void submit(event)}>
-            {saveError && <Alert type="error" title={saveError} />}
+            {saveError && (
+              <Alert
+                type="error"
+                title={<ApiMessageText>{saveError}</ApiMessageText>}
+              />
+            )}
             <ul className="reader-settings-grid">
               {renderProvider(
                 'grimmory',
@@ -746,7 +752,10 @@ const ReaderDeliverySettings = () => {
             {intl.formatMessage(messages.scopeVisibilityNote)}
           </p>
           {groupingActionError && (
-            <Alert type="error" title={groupingActionError} />
+            <Alert
+              type="error"
+              title={<ApiMessageText>{groupingActionError}</ApiMessageText>}
+            />
           )}
           {groupingsError && (
             <Alert
@@ -801,7 +810,11 @@ const ReaderDeliverySettings = () => {
                             className="settings-form-row-description"
                             role="status"
                           >
-                            {grouping.lastError}
+                            {
+                              <ApiMessageText>
+                                {grouping.lastError}
+                              </ApiMessageText>
+                            }
                           </p>
                         )}
                         {grouping.provider === 'bookorbit' && (
@@ -838,7 +851,11 @@ const ReaderDeliverySettings = () => {
                                 className="settings-form-row-description"
                                 role="status"
                               >
-                                {grouping.koboSyncError}
+                                {
+                                  <ApiMessageText>
+                                    {grouping.koboSyncError}
+                                  </ApiMessageText>
+                                }
                               </p>
                             )}
                           </>

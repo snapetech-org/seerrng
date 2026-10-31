@@ -21,6 +21,7 @@ import {
   BaseAgent,
   NOTIFICATION_DELIVERY_CONCURRENCY,
   NOTIFICATION_HTTP_OPTIONS,
+  getLocalizedNotificationPayload,
   getNotificationContent,
   getNotificationExtras,
 } from './agent';
@@ -54,6 +55,7 @@ class PushbulletAgent
     locale?: AvailableLocale
   ): PushbulletPayload {
     const intl = getIntl(locale);
+    payload = getLocalizedNotificationPayload(payload, intl);
     const content = getNotificationContent(payload, intl);
     const extras = getNotificationExtras(payload, intl);
     const title = content.event

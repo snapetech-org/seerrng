@@ -1,4 +1,5 @@
 import Alert from '@app/components/Common/Alert';
+import ApiMessageText from '@app/components/Common/ApiMessageText';
 import Button from '@app/components/Common/Button';
 import LoadingSpinner from '@app/components/Common/LoadingSpinner';
 import { Permission, useUser } from '@app/hooks/useUser';
@@ -277,12 +278,17 @@ const ReaderGroupingAction = ({ target }: { target: ReaderGroupingTarget }) => {
           <p className="settings-group-description">
             {intl.formatMessage(messages.intro)}
           </p>
-          {error && <Alert type="error" title={error} />}
+          {error && (
+            <Alert
+              type="error"
+              title={<ApiMessageText>{error}</ApiMessageText>}
+            />
+          )}
           {result ? (
             <>
               <Alert type="info" title={intl.formatMessage(messages.result)}>
                 <p>{result.grouping.groupName}</p>
-                <p>{result.ruleSummary}</p>
+                <p>{<ApiMessageText>{result.ruleSummary}</ApiMessageText>}</p>
                 {result.grouping.countVerified ? (
                   <p>
                     {intl.formatMessage(messages.matches, {
@@ -300,7 +306,13 @@ const ReaderGroupingAction = ({ target }: { target: ReaderGroupingTarget }) => {
                   <p>{intl.formatMessage(messages.koboSyncReady)}</p>
                 )}
                 {result.grouping.koboSyncError && (
-                  <p>{result.grouping.koboSyncError}</p>
+                  <p>
+                    {
+                      <ApiMessageText>
+                        {result.grouping.koboSyncError}
+                      </ApiMessageText>
+                    }
+                  </p>
                 )}
                 {result.warning &&
                   result.warning !== result.grouping.koboSyncError && (
@@ -414,7 +426,11 @@ const ReaderGroupingAction = ({ target }: { target: ReaderGroupingTarget }) => {
                       : intl.formatMessage(messages.noMatches)
                   }
                 >
-                  {preview.ruleSummary && <p>{preview.ruleSummary}</p>}
+                  {preview.ruleSummary && (
+                    <p>
+                      {<ApiMessageText>{preview.ruleSummary}</ApiMessageText>}
+                    </p>
+                  )}
                   {preview.sampleTitles.length > 0 && (
                     <>
                       <p>{intl.formatMessage(messages.sampleTitles)}</p>

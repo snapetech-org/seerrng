@@ -1,4 +1,5 @@
 import Alert from '@app/components/Common/Alert';
+import ApiMessageText from '@app/components/Common/ApiMessageText';
 import LoadingSpinner from '@app/components/Common/LoadingSpinner';
 import Modal from '@app/components/Common/Modal';
 import { useQuickConnect } from '@app/hooks/useQuickConnect';
@@ -80,7 +81,9 @@ const QuickConnectModal = ({
       >
         {showInlineError && errorMessage && (
           <div className="mb-4">
-            <Alert type="error">{errorMessage}</Alert>
+            <Alert type="error">
+              <ApiMessageText>{errorMessage}</ApiMessageText>
+            </Alert>
           </div>
         )}
 
@@ -117,7 +120,9 @@ const QuickConnectModal = ({
               <h3 className="text-lg font-semibold text-red-500">
                 {intl.formatMessage(messages.error)}
               </h3>
-              <p className="mt-2 text-gray-300">{errorMessage}</p>
+              <p className="mt-2 text-gray-300">
+                <ApiMessageText>{errorMessage}</ApiMessageText>
+              </p>
             </div>
           </div>
         )}

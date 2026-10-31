@@ -87,9 +87,9 @@ describe('Email availability subscription notifications', () => {
       join(String(sentMessage.template), 'html'),
       sentMessage.locals
     );
-    assert.match(html, /A title you follow is now available/);
+    assert.match(html, /أصبح أحد العناوين التي تتابعها متاحًا:/);
     assert.match(html, /<html lang="ar" dir="rtl">/);
-    assert.match(html, /Hi, \u2068follower\u2069!/);
+    assert.match(html, /مرحبًا، \u2068follower\u2069!/);
     assert.doesNotMatch(html, /Requested By/);
     assert.match(html, /Arrival \(2016\)/);
   });

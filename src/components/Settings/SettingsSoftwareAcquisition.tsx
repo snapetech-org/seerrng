@@ -1,4 +1,5 @@
 import Alert from '@app/components/Common/Alert';
+import ApiMessageText from '@app/components/Common/ApiMessageText';
 import Button from '@app/components/Common/Button';
 import LoadingSpinner from '@app/components/Common/LoadingSpinner';
 import SelectionCircle from '@app/components/Common/SelectionCircle';
@@ -560,7 +561,7 @@ const SettingsSoftwareAcquisition = () => {
                   : 'text-sm text-red-300'
               }
             >
-              {testState.message}
+              {<ApiMessageText>{testState.message}</ApiMessageText>}
             </span>
           )}
         </div>
@@ -657,7 +658,10 @@ const SettingsSoftwareAcquisition = () => {
               : intl.formatMessage(messages.previewPlatformMappings)}
           </Button>
           {mappingPreviewError && (
-            <Alert type="error" title={mappingPreviewError} />
+            <Alert
+              type="error"
+              title={<ApiMessageText>{mappingPreviewError}</ApiMessageText>}
+            />
           )}
           {mappingPreview && (
             <>
@@ -930,7 +934,7 @@ const SettingsSoftwareAcquisition = () => {
                   : 'text-sm text-red-300'
               }
             >
-              {saveState.message}
+              {<ApiMessageText>{saveState.message}</ApiMessageText>}
             </span>
           )}
         </div>

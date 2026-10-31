@@ -22,7 +22,11 @@ import { normalizeStashDbId } from '@server/lib/stashdbIdentity';
 import { parseBookshelfBookId } from '@server/utils/bookshelfCatalog';
 import { sortBy, truncate } from 'lodash';
 import { Notification } from '.';
-import type { NotificationPayload } from './agents/agent';
+import type {
+  NotificationEventDescriptor,
+  NotificationExtraLabel,
+  NotificationPayload,
+} from './agents/agent';
 import type { NotificationOutboxIntent } from './outbox';
 
 const getMediaDetails = async (
@@ -165,6 +169,18 @@ export const buildMediaRequestNotificationPayload = async (
       event = `${entity.is4k ? '4K ' : ''}${mediaType} Request Failed`;
       break;
   }
+  const eventKinds: Partial<
+    Record<Notification, NotificationEventDescriptor['kind']>
+  > = {
+    [Notification.MEDIA_AVAILABLE]: 'available',
+    [Notification.MEDIA_APPROVED]: 'approved',
+    [Notification.MEDIA_DECLINED]: 'declined',
+    [Notification.MEDIA_PENDING]: 'pending',
+    [Notification.MEDIA_AUTO_REQUESTED]: 'autoRequested',
+    [Notification.MEDIA_AUTO_APPROVED]: 'autoApproved',
+    [Notification.MEDIA_FAILED]: 'failed',
+  };
+  const eventKind = eventKinds[type];
   const base = {
     media,
     request: entity,
@@ -172,6 +188,9 @@ export const buildMediaRequestNotificationPayload = async (
     notifySystem,
     notifyUser: notifyAdmin ? undefined : entity.requestedBy,
     event,
+    eventMessage: eventKind
+      ? { kind: eventKind, mediaType: entity.type, is4k: entity.is4k }
+      : undefined,
   };
   const notificationMediaUrl = (mediaUrl: string): string =>
     type === Notification.MEDIA_AVAILABLE &&
@@ -212,6 +231,7 @@ export const buildMediaRequestNotificationPayload = async (
       extra: [
         {
           name: 'Requested Seasons',
+          label: 'requestedSeasons',
           value: entity.seasons
             .map(({ seasonNumber }) => seasonNumber)
             .join(', '),
@@ -233,7 +253,7 @@ export const buildMediaRequestNotificationPayload = async (
       image: album.caa_release_mbid
         ? `https://coverartarchive.org/release/${album.caa_release_mbid}/front-500`
         : undefined,
-      extra: [{ name: 'Artist', value: artist.name }],
+      extra: [{ name: 'Artist', label: 'artist', value: artist.name }],
     };
   }
   if (entity.type === MediaType.BOOK) {
@@ -272,10 +292,17 @@ export const buildMediaRequestNotificationPayload = async (
           `/book/${encodeURIComponent(bookshelfId)}`
         ),
         subject: title || 'Book request',
+        subjectMessage: title ? undefined : 'bookRequest',
         message: author || metadata?.publisher || undefined,
         image: undefined,
         extra: metadata?.publisher
-          ? [{ name: 'Publisher', value: metadata.publisher }]
+          ? [
+              {
+                name: 'Publisher',
+                label: 'publisher',
+                value: metadata.publisher,
+              },
+            ]
           : undefined,
       };
     }
@@ -335,6 +362,10 @@ export const buildMediaRequestNotificationPayload = async (
         ) || undefined,
       subject: title,
       message: `${mediaType} request details are available in SeerrNG.`,
+      bodyMessage:
+        entity.type === MediaType.COMIC
+          ? 'comicRequestDetails'
+          : 'magazineRequestDetails',
       image,
     };
   }
@@ -350,7 +381,12 @@ export const buildMediaRequestNotificationPayload = async (
         ? notificationMediaUrl(`/adult/${encodeURIComponent(stashDbId)}`)
         : undefined,
       subject: media.externalServiceSlug ?? stashDbId ?? 'Adult scene request',
+      subjectMessage:
+        media.externalServiceSlug == null && stashDbId == null
+          ? 'adultSceneRequest'
+          : undefined,
       message: `${mediaType} request details are available in SeerrNG.`,
+      bodyMessage: 'adultRequestDetails',
       image: undefined,
     };
   }
@@ -403,6 +439,11 @@ const hydrateMediaAvailabilitySubscriptionIntent = async (
 
   return {
     event: `${mediaType} Now Available`,
+    eventMessage: {
+      kind: 'available',
+      mediaType: media.mediaType,
+      is4k: false,
+    },
     subject: title,
     notifySystem: false,
     notifyAdmin: false,
@@ -439,12 +480,21 @@ const hydrateIssueIntent = async (
   if (!firstComment) {
     throw new Error(`Notification issue ${issue.id} has no comments.`);
   }
-  const extra: { name: string; value: string }[] = [];
+  const extra: {
+    name: string;
+    value: string;
+    label?: NotificationExtraLabel;
+  }[] = [];
   if (issue.media.mediaType === MediaType.TV && issue.problemSeason > 0) {
-    extra.push({ name: 'Affected Season', value: String(issue.problemSeason) });
+    extra.push({
+      name: 'Affected Season',
+      label: 'affectedSeason',
+      value: String(issue.problemSeason),
+    });
     if (issue.problemEpisode > 0) {
       extra.push({
         name: 'Affected Episode',
+        label: 'affectedEpisode',
         value: String(issue.problemEpisode),
       });
     }
@@ -461,6 +511,22 @@ const hydrateIssueIntent = async (
         ? `${IssueTypeName[issue.issueType]} `
         : ''
     }Issue ${action}`,
+    issueEventMessage: {
+      kind:
+        type === Notification.ISSUE_CREATED
+          ? 'created'
+          : type === Notification.ISSUE_RESOLVED
+            ? 'resolved'
+            : 'reopened',
+      issueType:
+        issue.issueType === IssueType.VIDEO
+          ? 'video'
+          : issue.issueType === IssueType.AUDIO
+            ? 'audio'
+            : issue.issueType === IssueType.SUBTITLES
+              ? 'subtitles'
+              : 'other',
+    },
     subject: title,
     message: firstComment.message,
     issue,
@@ -504,6 +570,17 @@ const hydrateIssueCommentIntent = async (
         ? `${IssueTypeName[issue.issueType]} `
         : ''
     }Issue`,
+    issueEventMessage: {
+      kind: 'comment',
+      issueType:
+        issue.issueType === IssueType.VIDEO
+          ? 'video'
+          : issue.issueType === IssueType.AUDIO
+            ? 'audio'
+            : issue.issueType === IssueType.SUBTITLES
+              ? 'subtitles'
+              : 'other',
+    },
     subject: title,
     message: firstComment.message,
     comment,

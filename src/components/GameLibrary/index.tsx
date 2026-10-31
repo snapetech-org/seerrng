@@ -1,3 +1,4 @@
+import ApiMessageText from '@app/components/Common/ApiMessageText';
 import Button from '@app/components/Common/Button';
 import CachedImage from '@app/components/Common/CachedImage';
 import LoadingSpinner from '@app/components/Common/LoadingSpinner';
@@ -951,7 +952,7 @@ const GameLibrary = () => {
                   }
                   role={steamFeedbackIsError ? 'alert' : 'status'}
                 >
-                  {steamFeedback}
+                  {<ApiMessageText>{steamFeedback}</ApiMessageText>}
                 </p>
               )}
               <div className="app-action-row">
@@ -1050,7 +1051,7 @@ const GameLibrary = () => {
               )}
               {errorMessage && (
                 <p className="page-error-message" role="alert">
-                  {errorMessage}
+                  {<ApiMessageText>{errorMessage}</ApiMessageText>}
                 </p>
               )}
               {libraryLoading ? (
@@ -1377,7 +1378,7 @@ const GameLibrary = () => {
             )}
             {errorMessage && (
               <p className="page-error-message" role="alert">
-                {errorMessage}
+                {<ApiMessageText>{errorMessage}</ApiMessageText>}
               </p>
             )}
           </div>
@@ -1454,7 +1455,7 @@ const GameLibrary = () => {
             )}
             {errorMessage && (
               <p className="page-error-message" role="alert">
-                {errorMessage}
+                {<ApiMessageText>{errorMessage}</ApiMessageText>}
               </p>
             )}
           </div>

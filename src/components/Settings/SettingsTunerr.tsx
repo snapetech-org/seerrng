@@ -1,10 +1,12 @@
 import Alert from '@app/components/Common/Alert';
+import ApiMessageText from '@app/components/Common/ApiMessageText';
 import Button from '@app/components/Common/Button';
 import LoadingSpinner from '@app/components/Common/LoadingSpinner';
 import { SavedServiceHostPicker } from '@app/components/Settings/SavedServiceHostPicker';
 import SettingsField from '@app/components/Settings/SettingsField';
 import { useLiveTvStatus } from '@app/hooks/useLiveTv';
 import useToasts from '@app/hooks/useToasts';
+import { formatApiMessage } from '@app/utils/apiMessage';
 import defineMessages from '@app/utils/defineMessages';
 import type { TunerrSportarrIntegrationStatus } from '@server/interfaces/api/settingsInterfaces';
 import type { TunerrSettings } from '@server/lib/settings';
@@ -313,7 +315,12 @@ const SettingsTunerr = () => {
         )}
         {data && draft && !error && (
           <form onSubmit={(event) => void submit(event)}>
-            {saveError && <Alert type="error" title={saveError} />}
+            {saveError && (
+              <Alert
+                type="error"
+                title={<ApiMessageText>{saveError}</ApiMessageText>}
+              />
+            )}
             <Alert type="info">
               <p>{intl.formatMessage(messages.setupNote)}</p>
             </Alert>
@@ -338,7 +345,7 @@ const SettingsTunerr = () => {
               <Alert
                 type="warning"
                 title={intl.formatMessage(messages.guideError, {
-                  error: guide.lastError,
+                  error: formatApiMessage(intl, guide.lastError),
                 })}
               />
             )}
@@ -599,7 +606,12 @@ const SettingsTunerr = () => {
                   />
                 )}
               {sportarrConnectError && (
-                <Alert type="error" title={sportarrConnectError} />
+                <Alert
+                  type="error"
+                  title={
+                    <ApiMessageText>{sportarrConnectError}</ApiMessageText>
+                  }
+                />
               )}
               {sportarrConnectSuccess && (
                 <Alert type="info">
@@ -653,7 +665,12 @@ const SettingsTunerr = () => {
                     />
                   )}
                   {testResult.error && (
-                    <Alert type="error" title={testResult.error} />
+                    <Alert
+                      type="error"
+                      title={
+                        <ApiMessageText>{testResult.error}</ApiMessageText>
+                      }
+                    />
                   )}
                   {testResult.guideError && (
                     <Alert

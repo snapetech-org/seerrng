@@ -28,6 +28,7 @@ import {
   BaseAgent,
   NOTIFICATION_DELIVERY_CONCURRENCY,
   NOTIFICATION_HTTP_OPTIONS,
+  getLocalizedNotificationPayload,
   getNotificationActionLabel,
   getNotificationActionUrl,
   getNotificationContent,
@@ -184,6 +185,7 @@ class PushoverAgent
     locale?: AvailableLocale
   ): Promise<Partial<PushoverPayload>> {
     const intl = getIntl(locale);
+    payload = getLocalizedNotificationPayload(payload, intl);
     const content = getNotificationContent(payload, intl);
     const extras = getNotificationExtras(payload, intl);
     const { applicationUrl, applicationTitle } =

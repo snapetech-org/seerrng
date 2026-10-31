@@ -21,6 +21,7 @@ import type { NotificationAgent, NotificationPayload } from './agent';
 import {
   BaseAgent,
   NOTIFICATION_DELIVERY_CONCURRENCY,
+  getLocalizedNotificationPayload,
   getMediaTypeLabel,
   getNotificationActionLabel,
   getNotificationActionUrl,
@@ -110,6 +111,7 @@ class EmailAgent
     locale?: AvailableLocale
   ): EmailOptions | undefined {
     const intl = getIntl(locale);
+    payload = getLocalizedNotificationPayload(payload, intl);
     const emailLocale = intl.locale;
     const direction = getLocaleMetadata(emailLocale).direction;
     const { applicationUrl, applicationTitle } =

@@ -1,3 +1,4 @@
+import ApiMessageText from '@app/components/Common/ApiMessageText';
 import Badge from '@app/components/Common/Badge';
 import Button from '@app/components/Common/Button';
 import LoadingSpinner from '@app/components/Common/LoadingSpinner';
@@ -182,7 +183,9 @@ const RecordingList = () => {
             )}
           </dl>
           {recording.lastError && (
-            <p className="card-body-text">{recording.lastError}</p>
+            <p className="card-body-text">
+              {<ApiMessageText>{recording.lastError}</ApiMessageText>}
+            </p>
           )}
           {active && (canManage || isOwner) && (
             <div className="app-action-row">

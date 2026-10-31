@@ -1,4 +1,5 @@
 import ButtonWithLoader from '@app/components/Common/ButtonWithLoader';
+import defineMessages from '@app/utils/defineMessages';
 import { buildLoginPath, getSafeReturnPath } from '@app/utils/loginReturn';
 import {
   clearOidcReturnState,
@@ -14,6 +15,12 @@ import type { PublicOidcProvider } from '@server/lib/settings';
 import { useRouter } from 'next/router';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useIntl } from 'react-intl';
+
+const messages = defineMessages('components.Login.OidcLoginButton', {
+  setupGuide: 'Provider setup guide',
+  setupGuideLabel:
+    '{provider} identity provider setup guide (opens in a new tab)',
+});
 
 const getQueryValue = (value: string | string[] | undefined) =>
   Array.isArray(value) ? value[0] : value;
@@ -222,14 +229,17 @@ export default function OidcLoginButton({
       </ButtonWithLoader>
       <a
         className="mt-1 block text-center text-xs text-gray-400 underline underline-offset-2"
-        aria-label={`${brand?.label ?? provider.name} identity provider setup guide (opens in a new tab)`}
+        aria-label={intl.formatMessage(messages.setupGuideLabel, {
+          provider: brand?.label ?? provider.name,
+        })}
         href={
           brand?.setupUrl ?? 'https://openid.net/developers/how-connect-works/'
         }
         target="_blank"
         rel="noopener noreferrer"
       >
-        Provider setup guide <span aria-hidden="true">↗</span>
+        {intl.formatMessage(messages.setupGuide)}{' '}
+        <span aria-hidden="true">↗</span>
       </a>
     </div>
   );

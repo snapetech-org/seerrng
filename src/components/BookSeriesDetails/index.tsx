@@ -47,6 +47,7 @@ import useSWR from 'swr';
 
 const messages = defineMessages('components.BookSeriesDetails', {
   collection: 'Collection',
+  collectionTitle: '{title} Collection',
   requestCollection: 'Request Collection',
   mediaType: 'Media Type',
   allBooks: 'All Books',
@@ -216,7 +217,11 @@ const BookSeriesDetails = ({ series }: { series?: BookSeriesDetailsType }) => {
 
   return (
     <>
-      <PageTitle title={`${data.title} Collection`} />
+      <PageTitle
+        title={intl.formatMessage(messages.collectionTitle, {
+          title: data.title,
+        })}
+      />
       {showRequest && (
         <BulkRequestModal
           show={showRequest}

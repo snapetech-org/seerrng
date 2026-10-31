@@ -32,6 +32,12 @@ const messages = defineMessages(
     loadError: 'Episodes could not be loaded. Try selecting the season again.',
     availabilityLegend:
       'Bright green check: fully available. Dark green check: partially available. Red X: not available.',
+    selectSeasonNumber: 'Select season {number, number}',
+    clearSeasonNumber: 'Clear season {number, number}',
+    selectSpecials: 'Select specials',
+    clearSpecials: 'Clear specials',
+    selectEpisodeNumber: 'Select episode {number, number}',
+    clearEpisodeNumber: 'Clear episode {number, number}',
     clearAllSeasons: 'Clear all seasons',
     selectAllSeasons: 'Select all seasons',
     clearAllEpisodes: 'Clear all episodes',
@@ -310,7 +316,9 @@ const SeriesSeasonEpisodeSelector = ({
                 data-selectable={!disabled}
                 role={!disabled ? 'button' : undefined}
                 tabIndex={!disabled ? 0 : undefined}
-                aria-label={`Select season ${season.seasonNumber}`}
+                aria-label={intl.formatMessage(messages.selectSeasonNumber, {
+                  number: season.seasonNumber,
+                })}
                 onClick={(event) => {
                   selectFromRow(event, () => {
                     if (disabled) {
@@ -332,13 +340,20 @@ const SeriesSeasonEpisodeSelector = ({
                   selected={selected}
                   partial={partial}
                   disabled={disabled}
-                  label={`${seasonSelection ? 'Clear' : 'Select'} ${
+                  label={
                     season.seasonNumber === 0
-                      ? intl.formatMessage(messages.specials)
-                      : intl.formatMessage(messages.seasonNumber, {
-                          number: season.seasonNumber,
-                        })
-                  }`}
+                      ? intl.formatMessage(
+                          seasonSelection
+                            ? messages.clearSpecials
+                            : messages.selectSpecials
+                        )
+                      : intl.formatMessage(
+                          seasonSelection
+                            ? messages.clearSeasonNumber
+                            : messages.selectSeasonNumber,
+                          { number: season.seasonNumber }
+                        )
+                  }
                   onClick={() => toggleSeason(season.seasonNumber)}
                 />
                 <span className="truncate text-start text-xs font-medium text-gray-100">
@@ -423,7 +438,9 @@ const SeriesSeasonEpisodeSelector = ({
                 data-selectable={!disabled}
                 role={!disabled ? 'button' : undefined}
                 tabIndex={!disabled ? 0 : undefined}
-                aria-label={`Select episode ${episode.episodeNumber}`}
+                aria-label={intl.formatMessage(messages.selectEpisodeNumber, {
+                  number: episode.episodeNumber,
+                })}
                 onClick={(event) => {
                   if (!disabled) {
                     selectFromRow(event, () =>
@@ -442,7 +459,12 @@ const SeriesSeasonEpisodeSelector = ({
                 <SelectionCircle
                   selected={selected}
                   disabled={disabled}
-                  label={`${selected ? 'Clear' : 'Select'} Episode ${episode.episodeNumber}`}
+                  label={intl.formatMessage(
+                    selected
+                      ? messages.clearEpisodeNumber
+                      : messages.selectEpisodeNumber,
+                    { number: episode.episodeNumber }
+                  )}
                   onClick={() => toggleEpisode(episode.episodeNumber)}
                 />
                 <span className="text-xs font-medium text-gray-100">

@@ -4,7 +4,7 @@ import type IssueComment from '@server/entity/IssueComment';
 import type Media from '@server/entity/Media';
 import type { MediaRequest } from '@server/entity/MediaRequest';
 import type { User } from '@server/entity/User';
-import type { IntlInstance } from '@server/i18n';
+import { defineMessages, type IntlInstance } from '@server/i18n';
 import globalMessages from '@server/i18n/globalMessages';
 import {
   isValidOpenLibraryResourceId,
@@ -21,6 +21,10 @@ export type SoftwareRequestStatus =
 
 export interface NotificationPayload {
   event?: string;
+  eventMessage?: NotificationEventDescriptor;
+  issueEventMessage?: NotificationIssueEventDescriptor;
+  bodyMessage?: NotificationBodyMessage;
+  subjectMessage?: NotificationSubjectMessage;
   subject: string;
   notifySystem: boolean;
   notifyAdmin: boolean;
@@ -30,7 +34,7 @@ export interface NotificationPayload {
   image?: string;
   message?: string;
   availabilitySubscription?: boolean;
-  extra?: { name: string; value: string }[];
+  extra?: { name: string; value: string; label?: NotificationExtraLabel }[];
   request?: MediaRequest;
   issue?: Issue;
   comment?: IssueComment;
@@ -39,12 +43,106 @@ export interface NotificationPayload {
   softwareRequestStatus?: SoftwareRequestStatus;
 }
 
+export type NotificationEventKind =
+  | 'available'
+  | 'approved'
+  | 'declined'
+  | 'pending'
+  | 'autoRequested'
+  | 'autoApproved'
+  | 'failed';
+
+export interface NotificationEventDescriptor {
+  kind: NotificationEventKind;
+  mediaType: Media['mediaType'];
+  is4k: boolean;
+}
+
+const mediaRequestEventMessages = defineMessages('notifications.event', {
+  available:
+    '{mediaType, select, movie {{quality}Movie Now Available} tv {{quality}Series Now Available} music {{quality}Music Now Available} book {{quality}Book Now Available} comic {{quality}Comic Now Available} magazine {{quality}Magazine Now Available} adult {{quality}Adult Scene Now Available} sports {{quality}Sports Event Now Available} other {{quality}Media Now Available}}',
+  approved:
+    '{mediaType, select, movie {{quality}Movie Request Approved} tv {{quality}Series Request Approved} music {{quality}Music Request Approved} book {{quality}Book Request Approved} comic {{quality}Comic Request Approved} magazine {{quality}Magazine Request Approved} adult {{quality}Adult Scene Request Approved} sports {{quality}Sports Event Request Approved} other {{quality}Media Request Approved}}',
+  declined:
+    '{mediaType, select, movie {{quality}Movie Request Declined} tv {{quality}Series Request Declined} music {{quality}Music Request Declined} book {{quality}Book Request Declined} comic {{quality}Comic Request Declined} magazine {{quality}Magazine Request Declined} adult {{quality}Adult Scene Request Declined} sports {{quality}Sports Event Request Declined} other {{quality}Media Request Declined}}',
+  pending:
+    '{mediaType, select, movie {New {quality}Movie Request} tv {New {quality}Series Request} music {New {quality}Music Request} book {New {quality}Book Request} comic {New {quality}Comic Request} magazine {New {quality}Magazine Request} adult {New {quality}Adult Scene Request} sports {New {quality}Sports Event Request} other {New {quality}Media Request}}',
+  autoRequested:
+    '{mediaType, select, movie {{quality}Movie Request Automatically Submitted} tv {{quality}Series Request Automatically Submitted} music {{quality}Music Request Automatically Submitted} book {{quality}Book Request Automatically Submitted} comic {{quality}Comic Request Automatically Submitted} magazine {{quality}Magazine Request Automatically Submitted} adult {{quality}Adult Scene Request Automatically Submitted} sports {{quality}Sports Event Automatically Submitted} other {{quality}Media Request Automatically Submitted}}',
+  autoApproved:
+    '{mediaType, select, movie {{quality}Movie Request Automatically Approved} tv {{quality}Series Request Automatically Approved} music {{quality}Music Request Automatically Approved} book {{quality}Book Request Automatically Approved} comic {{quality}Comic Request Automatically Approved} magazine {{quality}Magazine Request Automatically Approved} adult {{quality}Adult Scene Request Automatically Approved} sports {{quality}Sports Event Request Automatically Approved} other {{quality}Media Request Automatically Approved}}',
+  failed:
+    '{mediaType, select, movie {{quality}Movie Request Failed} tv {{quality}Series Request Failed} music {{quality}Music Request Failed} book {{quality}Book Request Failed} comic {{quality}Comic Request Failed} magazine {{quality}Magazine Request Failed} adult {{quality}Adult Scene Request Failed} sports {{quality}Sports Event Request Failed} other {{quality}Media Request Failed}}',
+});
+
+export const getNotificationEvent = (
+  payload: Pick<NotificationPayload, 'event' | 'eventMessage'>,
+  intl: IntlInstance
+): string | undefined => {
+  if (!payload.eventMessage) {
+    return payload.event;
+  }
+
+  return intl.formatMessage(
+    mediaRequestEventMessages[payload.eventMessage.kind],
+    {
+      mediaType: payload.eventMessage.mediaType,
+      quality: payload.eventMessage.is4k ? '4K ' : '',
+    }
+  );
+};
+
+export type NotificationIssueEventDescriptor = {
+  kind: 'created' | 'resolved' | 'reopened' | 'comment';
+  issueType: 'video' | 'audio' | 'subtitles' | 'other';
+};
+export type NotificationBodyMessage =
+  'comicRequestDetails' | 'magazineRequestDetails' | 'adultRequestDetails';
+export type NotificationSubjectMessage = 'bookRequest' | 'adultSceneRequest';
+export type NotificationExtraLabel =
+  | 'requestedSeasons'
+  | 'artist'
+  | 'publisher'
+  | 'affectedSeason'
+  | 'affectedEpisode';
+
+const notificationContentMessages = defineMessages('notifications.content', {
+  created:
+    '{issueType, select, video {New Video Issue Reported} audio {New Audio Issue Reported} subtitles {New Subtitle Issue Reported} other {New Issue Reported}}',
+  resolved:
+    '{issueType, select, video {Video Issue Resolved} audio {Audio Issue Resolved} subtitles {Subtitle Issue Resolved} other {Issue Resolved}}',
+  reopened:
+    '{issueType, select, video {Video Issue Reopened} audio {Audio Issue Reopened} subtitles {Subtitle Issue Reopened} other {Issue Reopened}}',
+  comment:
+    '{issueType, select, video {New Comment on Video Issue} audio {New Comment on Audio Issue} subtitles {New Comment on Subtitle Issue} other {New Comment on Issue}}',
+  comicRequestDetails: 'Comic request details are available in SeerrNG.',
+  magazineRequestDetails: 'Magazine request details are available in SeerrNG.',
+  adultRequestDetails: 'Adult Scene request details are available in SeerrNG.',
+  bookRequest: 'Book request',
+  adultSceneRequest: 'Adult scene request',
+  requestedSeasons: 'Requested Seasons',
+  artist: 'Artist',
+  publisher: 'Publisher',
+  affectedSeason: 'Affected Season',
+  affectedEpisode: 'Affected Episode',
+});
+
 export const getNotificationContent = (
   payload: NotificationPayload,
   intl: IntlInstance
 ): { event?: string; message?: string } => {
   if (!payload.softwareRequestStatus) {
-    return { event: payload.event, message: payload.message };
+    return {
+      event: payload.issueEventMessage
+        ? intl.formatMessage(
+            notificationContentMessages[payload.issueEventMessage.kind],
+            { issueType: payload.issueEventMessage.issueType }
+          )
+        : getNotificationEvent(payload, intl),
+      message: payload.bodyMessage
+        ? intl.formatMessage(notificationContentMessages[payload.bodyMessage])
+        : payload.message,
+    };
   }
 
   const messages = {
@@ -96,8 +194,27 @@ export const getNotificationExtras = (
     ];
   }
 
-  return payload.extra ?? [];
+  return (payload.extra ?? []).map((extra) => ({
+    ...extra,
+    name: extra.label
+      ? intl.formatMessage(notificationContentMessages[extra.label])
+      : extra.name,
+  }));
 };
+
+// Resolve only app-authored descriptors at delivery time. Dynamic media titles,
+// comments, provider descriptions, and legacy/custom payloads stay verbatim.
+export const getLocalizedNotificationPayload = (
+  payload: NotificationPayload,
+  intl: IntlInstance
+): NotificationPayload => ({
+  ...payload,
+  ...getNotificationContent(payload, intl),
+  subject: payload.subjectMessage
+    ? intl.formatMessage(notificationContentMessages[payload.subjectMessage])
+    : payload.subject,
+  extra: getNotificationExtras(payload, intl),
+});
 
 export const NOTIFICATION_HTTP_OPTIONS = {
   ...createSafeHttpRequestOptions(

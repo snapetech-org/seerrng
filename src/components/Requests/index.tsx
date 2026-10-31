@@ -1,3 +1,4 @@
+import ApiMessageText from '@app/components/Common/ApiMessageText';
 import BidiText from '@app/components/Common/BidiText';
 import BookFormatBadge, {
   getBookFormatMessage,
@@ -32,6 +33,7 @@ import useRequestStatusScrollRestoration from '@app/hooks/useRequestStatusScroll
 import { useSearchActivityReporter } from '@app/hooks/useSearchActivity';
 import useToasts from '@app/hooks/useToasts';
 import { Permission, useUser } from '@app/hooks/useUser';
+import { formatApiMessage } from '@app/utils/apiMessage';
 import {
   encodeApiPathSegment,
   normalizeMusicBrainzId,
@@ -2049,10 +2051,10 @@ const RequestStatusCard = ({
         ) : null}
 
         <div className="app-action-row request-status-action-row">
-          <Tooltip content={currentMessage}>
+          <Tooltip content={<ApiMessageText>{currentMessage}</ApiMessageText>}>
             <span
               className={`request-status-control ${requestStatusTone[currentStage] ?? requestStatusTone.cancelled}`}
-              aria-label={`${getStageLabel(intl, currentStage)}: ${currentMessage}`}
+              aria-label={`${getStageLabel(intl, currentStage)}: ${formatApiMessage(intl, currentMessage)}`}
               tabIndex={0}
             >
               <StageIcon className="request-status-control-icon" aria-hidden />
