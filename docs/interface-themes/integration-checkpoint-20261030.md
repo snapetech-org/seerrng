@@ -34,7 +34,7 @@ the server and all 141 statically generated Next.js pages.
 | --- | --- |
 | Full native Vitest suite | 640 files passed, two skipped; **4,525 tests passed, five skipped**, zero failures. |
 | Focused post-review checks | 36 tests passed in six files, including native OpenAPI/theme contracts and request entry; a subsequent 36-test/four-file season and dialog run also passed. These runs overlap and are not an additional unique-test total. |
-| Native Node runner | Full rerun in progress with a shared report stream; earlier truncated/interrupted invocations are not counted as passes. Focused native reproduction: 167 passed with complete matching reports. |
+| Native Node runner | **3,819 passed, 5 skipped**, zero failures/cancellations; complete matching terminal/archive reports (1155.4 seconds, four workers). |
 | Tooling | **325 passed, four skipped**, zero failures; includes theme CLI round trips, the offline boundary and native PostgreSQL opt-in gate. |
 | Current-batch / UI style | Passed; 73 geometry/role tests passed. |
 | Formatting / lint / types / translations | Server/client type checks, lint (warnings only) and translation/prebuild checks passed. Whole-repository formatting passed, including the new browser harness; generated browser output is excluded consistently with Git. |
@@ -43,21 +43,23 @@ the server and all 141 statically generated Next.js pages.
 | Classic theme comparisons | **20 matched baseline/candidate captures**, across SeerrOrig/SeerrNGJ, five route families and two widths. 18 have identical pixels; two show text/gradient rasterization variation, with no observed layout regression. Raw differences are recorded in the report. |
 | Compiled theme package smoke | Create, validate, pack/checksum, install, inspect, list and uninstall passed from a staged runtime without server TypeScript sources. A separately installed derivative also passes native catalog/picker/persistence browser checks. |
 
-The complete native suite runs on an unchanged application tree. The subsequent
-small visual and fallback changes are covered by the focused checks, final
-production build and browser suite. HTTP/TLS regressions were traced to test
+The full Vitest result precedes the final small visual and fallback changes;
+those changes are covered by the focused checks, final production build and
+browser suite. The complete native Node run uses the final application tree.
+HTTP/TLS regressions were traced to test
 transport using the host proxy; tests now own a direct dispatcher. Production
 transport was not altered to accommodate the test environment.
 
-The initial native Node invocation exited without a complete report and is not
-counted as a pass. A natural-shutdown diagnostic retained background service
-handles and was stopped. The runner now shares one formatted report between
-terminal and archive, checks
-for a root summary and preserves nonzero failure status. Worker shutdown remains
-enabled because some imported services retain background handles. Its failure-exit
-and complete 1,600-result/two-destination regression tests pass in native Node and
-Vitest. A 167-test native reproduction covering authentication, Readarr series
-contracts and the runner also passed with identical terminal/archive content.
+Earlier native Node invocations that lacked a complete report are not counted
+as passes. The runner delegates isolated workers, coverage, reporter completion
+and aggregate status to Node's native CLI. Its test-only bootstrap flushes piped
+result output before forced exit; the CLI waits for registered reporters before
+shutting down services that retain background handles. The wrapper preserves the
+isolated environment, forwards interruption signals and returns the CLI's status.
+Three regressions cover failure status, all 1,600 results plus coverage reaching
+both report destinations, and a delayed final reporter completing despite a
+retained worker service handle. Nested regression invocations cannot overwrite
+the enclosing CI JUnit report. No application startup loads the test bootstrap.
 The native Node result above refers to the subsequent full invocation.
 
 Screenshot capture now requires two identical frames after route/font/image

@@ -10,9 +10,11 @@ captured at matching viewports and states.
 The restored checkout now has the native PersiusNG implementation, production
 OpenAPI theme routes, current Requests page integration, recording retargeting,
 independent community packages and authoring/submission documentation integrated.
-The full native suite passes (4,525 tests; five database-dependent skips), and the
+The full native Vitest suite passes (4,525 tests; five database-dependent skips), and the
 production server/Next.js build passes. Signed-in browser evidence now covers the
 nine reference flows, native account preferences and an installed community theme.
+The native Node suite also passes (3,819 tests; five database-dependent skips),
+with complete matching terminal and archive reports.
 
 Use the [current integration checkpoint](integration-checkpoint-20261030.md) for
 final check totals, old-theme comparisons and explicit release-environment gates.
