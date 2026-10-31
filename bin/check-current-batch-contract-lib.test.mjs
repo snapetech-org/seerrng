@@ -223,6 +223,51 @@ test('upstream public commands preserve build-time translation and visual guards
       `${name}: ${reason}`
     );
   }
+  const serverBuild = JSON.parse(packageSource).scripts['build:server'];
+  const withoutThemeAssets = serverBuild.replace(
+    ' && copyfiles -u 1 "themes/**/*" dist/interface-themes',
+    ''
+  );
+  assert.notEqual(withoutThemeAssets, serverBuild, 'theme copy is present');
+  assert.ok(
+    validateCurrentBatchContract(
+      repositoryFilesWith({
+        'package.json': JSON.stringify({
+          ...JSON.parse(packageSource),
+          scripts: {
+            ...JSON.parse(packageSource).scripts,
+            'build:server': withoutThemeAssets,
+          },
+        }),
+      })
+    ).some((error) =>
+      error.includes('upstream compilation, resources and alias resolution')
+    ),
+    'the public server build must keep theme package resources'
+  );
+  const sharedCssFile = 'src/styles/interfaceThemes/shared.css';
+  const sharedCss = repositoryFilesWith()[sharedCssFile];
+  assert.ok(
+    sharedCss.includes(
+      '--compact-control-height: var(--interface-compact-control-height);'
+    ),
+    'compact-control theme mapping is present'
+  );
+  assert.ok(
+    validateCurrentBatchContract(
+      repositoryFilesWith({
+        [sharedCssFile]: sharedCss.replace(
+          '--compact-control-height: var(--interface-compact-control-height);',
+          '--compact-control-height: 1.25rem;'
+        ),
+      })
+    ).some((error) =>
+      error.includes(
+        'compact controls must resolve their selected theme height through one shared rule'
+      )
+    ),
+    'compact controls must resolve the selected theme token through the shared mapping'
+  );
 });
 
 test('current shared owners pass their checks and functional mutations fail', () => {
