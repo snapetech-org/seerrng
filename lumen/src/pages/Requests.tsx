@@ -10,7 +10,7 @@ import {
   tmdbImg,
   type BookResult,
   type RequestItem,
-  type TitleResult,
+  type TvDetails,
 } from '../api';
 import { useAuth } from '../auth';
 import { shortDate } from '../components/cards';
@@ -37,6 +37,9 @@ interface Row {
   cover?: boolean;
   href: string;
   sub: string;
+  // series: seasons that hadn't aired when the title was looked up (nothing to wait for yet)
+  unaired?: number[];
+  airing?: boolean;
 }
 
 // what a request looks like to the person who made it, in plain words
@@ -51,7 +54,38 @@ function eta(t?: string) {
     : `About ${Math.round(mins / 60)} hr${Math.round(mins / 60) === 1 ? '' : 's'} left`;
 }
 
-function state(r: RequestItem): {
+// a series request is done once every requested season that has aired is at least partly on
+// Plex: ongoing shows stay partial for good, and new episodes are fetched as they air.
+// Returns the requested, aired seasons with nothing on Plex yet (null if not a series).
+function seasonsMissing(x: Row) {
+  const r = x.r;
+  if (r.type !== 'tv' || !r.seasons?.length) return null;
+  const have = new Map(
+    (r.media.seasons || []).map((s) => [
+      s.seasonNumber,
+      (r.is4k ? s.status4k : s.status) || 0,
+    ])
+  );
+  return r.seasons
+    .map((s) => s.seasonNumber)
+    .filter(
+      (n) => !x.unaired?.includes(n) && (have.get(n) || 0) < MediaStatus.PARTIAL
+    )
+    .sort((a, b) => a - b);
+}
+// [10, 11, 12, 13, 15] -> "Seasons 10–13, 15"
+function seasonList(ns: number[]) {
+  const runs: string[] = [];
+  for (let i = 0; i < ns.length;) {
+    let j = i;
+    while (ns[j + 1] === ns[j] + 1) j++;
+    runs.push(j > i ? `${ns[i]}–${ns[j]}` : `${ns[i]}`);
+    i = j + 1;
+  }
+  return `${ns.length === 1 ? 'Season' : 'Seasons'} ${runs.join(', ')}`;
+}
+
+function state(x: Row): {
   k: 'ok' | 'dl' | 'wait' | 'bad';
   word: string;
   ico: IconName;
@@ -59,6 +93,7 @@ function state(r: RequestItem): {
   pct?: number;
   detail?: string;
 } {
+  const r = x.r;
   // a 4K request follows the 4K copy, not the HD one already on Plex
   const ms = r.is4k ? r.media.status4k : r.media.status;
   const dls =
@@ -105,8 +140,31 @@ function state(r: RequestItem): {
       pct,
       detail: eta(dls[0]?.timeLeft),
     };
-  if (ms === MediaStatus.PARTIAL)
-    return { k: 'ok', word: 'Partly on Plex', ico: 'check', active: true };
+  if (ms === MediaStatus.PARTIAL) {
+    const missing = seasonsMissing(x);
+    return missing && !missing.length
+      ? {
+          k: 'ok',
+          word: r.is4k ? '4K on Plex' : 'On Plex',
+          ico: 'check',
+          active: false,
+          detail:
+            x.airing == null
+              ? undefined // title not looked up yet
+              : x.airing
+                ? 'New episodes added as they air'
+                : 'A few episodes missing',
+        }
+      : {
+          k: 'ok',
+          word: 'Partly on Plex',
+          ico: 'check',
+          active: true,
+          detail: missing?.length
+            ? `${seasonList(missing)} not found yet`
+            : undefined,
+        };
+  }
   return { k: 'wait', word: 'Requested', ico: 'clock', active: true };
 }
 
@@ -136,13 +194,17 @@ const saveDescribed = () => {
 const retryLater = new Set<number>();
 async function describe(r: RequestItem): Promise<Row> {
   const known = described.get(r.id);
-  if (known) return { ...known, r };
+  // series kept before seasons were remembered get looked up once more
+  if (known && isDescribed(r)) return { ...known, r };
   const row = await describeOnce(r);
   const { r: _ignored, ...rest } = row;
   void _ignored;
   if (!retryLater.delete(r.id)) described.set(r.id, rest);
+  else if (known) return { ...known, r }; // keep the old name until a lookup works
   return row;
 }
+const isDescribed = (r: RequestItem) =>
+  !!described.get(r.id) && (r.type !== 'tv' || !!described.get(r.id)?.unaired);
 // SeerrNG rate-limits bursts (and book lookups to 30 a minute), so look a few up at a time and
 // at most 12 new books per visit; the rest show a plain label now and get named next time.
 const BOOK_LOOKUPS_PER_VISIT = 12; // an ebook can take 2 calls (plain id, then the Hardcover form)
@@ -177,11 +239,13 @@ async function describeAll(list: RequestItem[]): Promise<Row[]> {
     while (next < list.length) {
       const i = next++;
       const r = list[i];
-      const known = described.has(r.id);
+      const known = isDescribed(r);
       if (r.type === 'book' && !known && ++books > BOOK_LOOKUPS_PER_VISIT)
         out[i] = bookPlaceholder(r);
       else if (limited && !known && (r.type === 'movie' || r.type === 'tv'))
-        out[i] = titlePlaceholder(r);
+        out[i] = described.has(r.id)
+          ? { ...described.get(r.id)!, r }
+          : titlePlaceholder(r);
       else out[i] = await describe(r);
     }
   };
@@ -249,9 +313,10 @@ async function describeOnce(r: RequestItem): Promise<Row> {
   const extra = await describeExtra(r);
   if (extra) return extra;
   const kind = r.type === 'tv' ? 'tv' : 'movie';
-  const t = await api<TitleResult>(`/${kind}/${r.media.tmdbId}`).catch(
+  const t = await api<TvDetails>(`/${kind}/${r.media.tmdbId}`).catch(
     keepUnless404(r)
   );
+  const today = new Date().toISOString().slice(0, 10);
   const seasons = r.seasons?.length
     ? r.seasons.length === 1
       ? `Season ${r.seasons[0].seasonNumber}`
@@ -265,6 +330,16 @@ async function describeOnce(r: RequestItem): Promise<Row> {
     sub: [kind === 'tv' ? 'Series' : 'Movie', seasons, r.is4k ? '4K' : '']
       .filter(Boolean)
       .join(' · '),
+    ...(kind === 'tv'
+      ? {
+          unaired: (t?.seasons || [])
+            .filter((s) => !s.episodeCount || !s.airDate || s.airDate > today)
+            .map((s) => s.seasonNumber),
+          airing: ['Returning Series', 'In Production', 'Planned'].includes(
+            t?.status || ''
+          ),
+        }
+      : {}),
   };
 }
 
@@ -415,15 +490,15 @@ export default function Requests() {
   }, [user, tick, extras.games.length]);
 
   // keep download percentages moving while anything is downloading
-  const busy = (rows || []).some((x) => state(x.r).pct != null);
+  const busy = (rows || []).some((x) => state(x).pct != null);
   useEffect(() => {
     if (!busy) return;
     const t = window.setInterval(() => setTick((n) => n + 1), 30_000);
     return () => window.clearInterval(t);
   }, [busy]);
   const all = rows || [];
-  const act = all.filter((x) => state(x.r).active);
-  const ready = all.filter((x) => state(x.r).k === 'ok' && !state(x.r).active);
+  const act = all.filter((x) => state(x).active);
+  const ready = all.filter((x) => state(x).k === 'ok' && !state(x).active);
   const list = tab === 'ready' ? ready : tab === 'all' ? all : act;
   const cancel = async (id: number) => {
     try {
@@ -499,7 +574,7 @@ export default function Requests() {
       )}
       <div className="rqlist">
         {list.map((x) => {
-          const st = state(x.r);
+          const st = state(x);
           return (
             <div className="rq" key={x.r.id}>
               <div className={`art ${x.cover ? 'cover' : ''}`}>

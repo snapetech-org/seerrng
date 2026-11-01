@@ -389,6 +389,7 @@ export interface RequestItem {
     downloadStatus?: DownloadItem[];
     downloadStatus4k?: DownloadItem[];
     audiobookDownloadStatus?: DownloadItem[];
+    seasons?: { seasonNumber: number; status: number; status4k?: number }[];
     identifiers?: { provider: string; value: string }[];
     mbId?: string | null;
   };
