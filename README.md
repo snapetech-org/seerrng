@@ -345,6 +345,12 @@ Core:
 - Sonarr for TV automation.
 - SQLite or PostgreSQL for the application database.
 
+An empty SeerrNG database can be provisioned with a Jellyfin or Emby connection
+already stored in `settings.json`. The first administrator sign-in preserves
+that connection and any existing media-server API key; SeerrNG creates an API
+key only when none is configured. Keep `settings.json` private and out of source
+control.
+
 Music:
 
 - Lidarr server configured in **Settings > Services**.
