@@ -17,6 +17,9 @@ export default function ApiMessageText({
   const intl = useIntl();
   if (typeof children !== 'string') return <>{children}</>;
 
+  const languageFor = (messageId: string) =>
+    intl.messages[messageId] === undefined ? 'en' : intl.locale;
+
   if (trustedKey !== undefined) {
     const descriptor = apiMessages[trustedKey];
     if (!descriptor) return <bdi dir="auto" lang="und">{children}</bdi>;
@@ -29,7 +32,7 @@ export default function ApiMessageText({
       ])
     );
     return (
-      <span lang={intl.locale} dir="auto">
+      <span lang={languageFor(descriptor.id)} dir="auto">
         {intl.formatMessage(descriptor, values)}
       </span>
     );
@@ -46,7 +49,7 @@ export default function ApiMessageText({
     ])
   );
   return (
-    <span lang={intl.locale} dir="auto">
+    <span lang={languageFor(apiMessages[match.key].id)} dir="auto">
       {intl.formatMessage(apiMessages[match.key], values)}
     </span>
   );
