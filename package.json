@@ -192,7 +192,7 @@
     "@vitest/coverage-v8": "^4.1.12",
     "@vitest/ui": "^4.1.12",
     "autoprefixer": "^10.6.0",
-    "baseline-browser-mapping": "^2.11.28",
+    "baseline-browser-mapping": "^2.11.32",
     "commander": "^15.0.0",
     "chokidar": "5.0.0",
     "cy-mobile-commands": "0.3.0",
