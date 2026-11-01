@@ -156,7 +156,9 @@ export const withSettingsFileLock = async <Result>(
       if ((error as NodeJS.ErrnoException).code !== 'EEXIST') throw error;
       if (await removeAbandonedSettingsLock(lockPath)) continue;
       if (Date.now() >= deadline) {
-        throw new Error('Timed out waiting for the settings file lock.');
+        throw new Error('Timed out waiting for the settings file lock.', {
+          cause: error,
+        });
       }
       await new Promise((resolve) =>
         setTimeout(resolve, SETTINGS_LOCK_RETRY_MS)

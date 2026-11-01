@@ -167,7 +167,8 @@ class ListenBrainzAPI extends ExternalAPI {
       throw new Error(
         `[ListenBrainz] Failed to fetch album details: ${
           e instanceof Error ? e.message : 'Unknown error'
-        }`
+        }`,
+        { cause: e }
       );
     }
   }
@@ -192,7 +193,8 @@ class ListenBrainzAPI extends ExternalAPI {
       throw new Error(
         `[ListenBrainz] Failed to fetch artist details: ${
           e instanceof Error ? e.message : 'Unknown error'
-        }`
+        }`,
+        { cause: e }
       );
     }
   }
