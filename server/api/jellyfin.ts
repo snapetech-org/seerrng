@@ -187,6 +187,7 @@ export interface JellyfinPlaylist {
 export const MAX_JELLYFIN_USERS = 1_000;
 export const MAX_JELLYFIN_LIBRARIES = 10_000;
 export const MAX_JELLYFIN_LIBRARY_ITEMS = 100_000;
+const JELLYFIN_LIBRARY_PAGE_SIZE = 1_000;
 export const MAX_JELLYFIN_EPISODES = 10_000;
 export const MAX_JELLYFIN_SEASONS = 1_000;
 export const MAX_JELLYFIN_MEDIA_SOURCES = 100;
@@ -1014,25 +1015,113 @@ class JellyfinAPI extends ExternalAPI {
     id: string,
     libraryType?: JellyfinLibrary['type']
   ): Promise<JellyfinLibraryItem[]> {
-    try {
-      const libraryItemsResponse = await this.get<any>('/Items', {
-        params: {
-          SortBy: 'SortName',
-          SortOrder: 'Ascending',
-          IncludeItemTypes:
-            libraryType === 'music' ? 'MusicAlbum' : 'Series,Movie,Others',
-          Recursive: true,
-          StartIndex: 0,
-          ParentId: boundedJellyfinText(id, 128),
-          collapseBoxSetItems: false,
-        },
-      });
+    const inventory = await this.getLibraryContentsWithInventory(
+      id,
+      libraryType
+    );
+    return inventory.items;
+  }
 
-      return sanitizeJellyfinLibraryItems(
-        libraryItemsResponse?.Items,
-        MAX_JELLYFIN_LIBRARY_ITEMS,
-        { excludeVirtual: true }
-      ) as JellyfinLibraryItem[];
+  public async getLibraryContentsWithInventory(
+    id: string,
+    libraryType?: JellyfinLibrary['type']
+  ): Promise<{ items: JellyfinLibraryItem[]; complete: boolean }> {
+    try {
+      const itemsById = new Map<string, JellyfinLibraryItem>();
+      let complete = true;
+      let expectedTotal: number | undefined;
+      let offset = 0;
+      let observedCount = 0;
+
+      while (offset < MAX_JELLYFIN_LIBRARY_ITEMS) {
+        const response = await this.get<unknown>('/Items', {
+          params: {
+            SortBy: 'SortName',
+            SortOrder: 'Ascending',
+            IncludeItemTypes:
+              libraryType === 'music' ? 'MusicAlbum' : 'Series,Movie,Others',
+            Recursive: true,
+            StartIndex: offset,
+            Limit: JELLYFIN_LIBRARY_PAGE_SIZE,
+            EnableTotalRecordCount: true,
+            EnableImages: false,
+            ParentId: boundedJellyfinText(id, 128),
+            collapseBoxSetItems: false,
+          },
+        });
+
+        if (!isRecord(response) || !Array.isArray(response.Items)) {
+          throw new Error('Jellyfin returned an invalid library inventory.');
+        }
+
+        const reportedTotal = response.TotalRecordCount;
+        if (Number.isSafeInteger(reportedTotal) && Number(reportedTotal) >= 0) {
+          const total = Number(reportedTotal);
+          if (expectedTotal === undefined) {
+            expectedTotal = total;
+          } else if (expectedTotal !== total) {
+            expectedTotal = Math.max(expectedTotal, total);
+            complete = false;
+          }
+          if (total >= MAX_JELLYFIN_LIBRARY_ITEMS) complete = false;
+        } else {
+          complete = false;
+        }
+
+        const rawItems = response.Items.slice(0, JELLYFIN_LIBRARY_PAGE_SIZE);
+        if (response.Items.length > JELLYFIN_LIBRARY_PAGE_SIZE) {
+          complete = false;
+        }
+        const pageItems = sanitizeJellyfinLibraryItems(
+          rawItems,
+          JELLYFIN_LIBRARY_PAGE_SIZE,
+          { excludeVirtual: true }
+        ) as JellyfinLibraryItem[];
+        const sanitizedSeriesIds = new Set(
+          pageItems.filter(({ Type }) => Type === 'Series').map(({ Id }) => Id)
+        );
+        if (
+          rawItems.some(
+            (item) =>
+              !isRecord(item) ||
+              (item.Type === 'Series' &&
+                !sanitizedSeriesIds.has(boundedJellyfinText(item.Id, 128)))
+          )
+        ) {
+          complete = false;
+        }
+
+        for (const item of pageItems) {
+          if (itemsById.has(item.Id)) {
+            complete = false;
+            continue;
+          }
+          itemsById.set(item.Id, item);
+        }
+
+        observedCount += rawItems.length;
+        if (rawItems.length === 0) break;
+        if (
+          expectedTotal === undefined &&
+          rawItems.length < JELLYFIN_LIBRARY_PAGE_SIZE
+        ) {
+          break;
+        }
+        offset += rawItems.length;
+        if (expectedTotal !== undefined && observedCount >= expectedTotal) {
+          break;
+        }
+      }
+
+      if (
+        expectedTotal === undefined ||
+        observedCount !== expectedTotal ||
+        offset >= MAX_JELLYFIN_LIBRARY_ITEMS
+      ) {
+        complete = false;
+      }
+
+      return { items: [...itemsById.values()], complete };
     } catch (e) {
       logger.error(
         `Something went wrong while getting library content from the Jellyfin server: ${e.message}`,

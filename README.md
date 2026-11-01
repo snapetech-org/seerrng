@@ -89,7 +89,7 @@ For local MCP access, see the [SnapeTech MCP integration guide](./docs/integrati
 - Managers can approve a one-time movie or TV request exception when a user's quota is full; optional Slack actions use a mapped account and the same request permissions as the web app.
 - Automation service integration with Radarr, Sonarr, Lidarr, and Bookshelf/Readarr-compatible APIs.
 - Sonarr v5 support alongside v3/v4, including metadata-language and season-order options with explicit season mapping for recovery.
-- Optional per-episode Sonarr file availability on TV season pages, kept separate from media-server playback access.
+- Optional per-episode file availability from Sonarr, Plex, Jellyfin, and Emby on TV season pages. Badges preserve source and standard/4K distinctions; media-server library episode order must match the selected TV or anime metadata provider. File presence remains separate from per-user playback access. See [individual episode availability](./docs/using-seerr/individual-episode-availability.md).
 - An optional TV request gate that checks whether the previous regular season was watched through a linked Plex, Jellyfin, or Emby account.
 - Admin-configured Prowlarr connection, per-indexer diagnostics, category coverage, and format-aware manual search across movies, TV, music, books, comics, magazines, ROMs, and PC games, with title-prefilled search links from media details; approved requests still go through their configured acquisition providers.
 - Music discovery and metadata through MusicBrainz, ListenBrainz, Cover Art Archive, TheAudioDB, and archive-backed artwork sources.
@@ -180,7 +180,14 @@ Recent repository updates include:
   Jellyfin/Emby profile refresh during imports.
 - **Sonarr:** v5 API support alongside v3/v4, metadata-language and season-order
   choices, and request recovery scoped to the selected service, quality, and
-  season order, plus optional per-episode file availability on TV season pages.
+  season order.
+- **Episode availability:** optional per-episode file indicators from Sonarr
+  and media-server libraries, with independent source reconciliation and
+  standard/4K state. Sonarr uses TVDB order; Plex, Jellyfin, and Emby libraries
+  require an explicit numbering-order choice that matches the active TV or
+  anime metadata provider. These indicators describe scanned file presence,
+  not a user's access or ability to play the file. See the
+  [setup and behavior guide](./docs/using-seerr/individual-episode-availability.md).
 - **Integrations:** MusicBrainz and Cover Art Archive connectivity checks with
   bounded artwork traffic controls, plus a preview-first BookshelfNG to
   ChaptarrNG database migration helper for single-database setups.

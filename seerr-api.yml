@@ -2843,6 +2843,10 @@ components:
         enabled:
           type: boolean
           example: false
+        episodeOrderProvider:
+          type: string
+          enum: [tmdb, tvdb]
+          description: Episode numbering order configured for this TV library.
         type:
           type: string
           enum: [show, movie, music, book]
@@ -3015,6 +3019,10 @@ components:
         enabled:
           type: boolean
           example: false
+        episodeOrderProvider:
+          type: string
+          enum: [tmdb, tvdb]
+          description: Episode numbering order configured for this TV library.
         type:
           type: string
           enum: [show, movie, music, book]
@@ -5654,6 +5662,20 @@ components:
               type: boolean
             fourK:
               type: boolean
+        availabilitySources:
+          type: array
+          description: File availability by configured Sonarr or media-server source and quality. Media-server file presence does not confirm access for a particular user.
+          items:
+            type: object
+            required: [sourceType, hd, fourK]
+            properties:
+              sourceType:
+                type: string
+                enum: [sonarr, plex, jellyfin, emby]
+              hd:
+                type: boolean
+              fourK:
+                type: boolean
         voteAverage:
           type: number
         voteCount:
@@ -8761,7 +8783,7 @@ paths:
                   $ref: '#/components/schemas/JellyfinLibrary'
     post:
       summary: Update Jellyfin libraries
-      description: Optionally synchronizes libraries and updates which libraries are enabled.
+      description: Synchronizes libraries or updates enabled libraries and the episode numbering order for a TV library. Omitted enable preserves current enabled state; an empty enable string disables all libraries. Episode order updates must be sent separately from library synchronization.
       tags:
         - settings
       requestBody:
@@ -8775,7 +8797,15 @@ paths:
                   type: boolean
                 enable:
                   type: string
-                  description: Comma-separated library IDs. Omitted or empty disables all libraries.
+                  description: Comma-separated library IDs. Omit to preserve enabled state; an empty string disables all libraries.
+                episodeOrderLibraryId:
+                  type: string
+                  maxLength: 128
+                  description: ID of the TV library whose episode numbering order is being updated.
+                episodeOrderProvider:
+                  type: string
+                  enum: [none, tmdb, tvdb]
+                  description: Set the library's episode numbering provider, or none to clear it. Send with episodeOrderLibraryId.
       responses:
         '200':
           description: 'Jellyfin libraries updated'
@@ -8785,6 +8815,8 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/JellyfinLibrary'
+        '400':
+          description: Invalid library update or episode-order selection.
   /settings/jellyfin/users:
     get:
       summary: Get Jellyfin Users
@@ -8930,7 +8962,7 @@ paths:
                   $ref: '#/components/schemas/PlexLibrary'
     post:
       summary: Update Plex libraries
-      description: Optionally synchronizes libraries and updates which libraries are enabled.
+      description: Synchronizes libraries or updates enabled libraries and the episode numbering order for a TV library. Omitted enable preserves current enabled state; an empty enable string disables all libraries. Episode order updates must be sent separately from library synchronization.
       tags:
         - settings
       requestBody:
@@ -8944,7 +8976,15 @@ paths:
                   type: boolean
                 enable:
                   type: string
-                  description: Comma-separated library IDs. Omitted or empty disables all libraries.
+                  description: Comma-separated library IDs. Omit to preserve enabled state; an empty string disables all libraries.
+                episodeOrderLibraryId:
+                  type: string
+                  maxLength: 128
+                  description: ID of the TV library whose episode numbering order is being updated.
+                episodeOrderProvider:
+                  type: string
+                  enum: [none, tmdb, tvdb]
+                  description: Set the library's episode numbering provider, or none to clear it. Send with episodeOrderLibraryId.
       responses:
         '200':
           description: 'Plex libraries updated'
@@ -8954,6 +8994,8 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/PlexLibrary'
+        '400':
+          description: Invalid library update or episode-order selection.
   /settings/plex/library/{libraryId}/type:
     put:
       summary: Reclassify a Plex artist library

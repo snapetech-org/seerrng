@@ -14,7 +14,10 @@ import { MediaType } from '@server/constants/media';
 import { getRepository } from '@server/datasource';
 import Media from '@server/entity/Media';
 import { Watchlist } from '@server/entity/Watchlist';
-import { getSonarrEpisodeAvailability } from '@server/lib/episodeAvailability';
+import {
+  getActiveEpisodeAvailabilitySources,
+  getEpisodeAvailability,
+} from '@server/lib/episodeAvailability';
 import { getExternalRuntimeConfig } from '@server/lib/externalRuntimeConfig';
 import { enqueueImageCacheWarm } from '@server/lib/imageCacheWarmer';
 import { upsertMediaSearchMetadata } from '@server/lib/mediaSearchMetadata';
@@ -432,21 +435,35 @@ tvRoutes.get('/:id/season/:seasonNumber', async (req, res, next) => {
     const metadataSource = isAnime
       ? settings.metadataSettings.anime
       : settings.metadataSettings.tv;
-    if (
-      settings.main.trackEpisodeAvailability &&
-      metadataSource === MetadataProviderType.TVDB
-    ) {
-      const availability = await getSonarrEpisodeAvailability(
+    if (settings.main.trackEpisodeAvailability) {
+      const availabilitySources = getActiveEpisodeAvailabilitySources(
+        metadataSource,
+        {
+          sonarr: getExternalRuntimeConfig().sonarr,
+          plex: settings.plex,
+          jellyfin: settings.jellyfin,
+          mediaServerType: settings.main.mediaServerType,
+        }
+      );
+      const availability = await getEpisodeAvailability(
         tvId,
         seasonNumber,
-        getExternalRuntimeConfig().sonarr,
+        metadataSource,
+        availabilitySources,
         settings.main.enable4k
       );
       mappedSeason.episodes = mappedSeason.episodes.map((episode) => {
-        const sonarrAvailability = availability.get(episode.episodeNumber);
-        return sonarrAvailability
-          ? { ...episode, sonarrAvailability }
-          : episode;
+        const episodeAvailability = availability.get(episode.episodeNumber);
+        if (!episodeAvailability) return episode;
+        return {
+          ...episode,
+          ...(episodeAvailability.sonarrAvailability
+            ? { sonarrAvailability: episodeAvailability.sonarrAvailability }
+            : {}),
+          ...(episodeAvailability.sources.length > 0
+            ? { availabilitySources: episodeAvailability.sources }
+            : {}),
+        };
       });
     }
 

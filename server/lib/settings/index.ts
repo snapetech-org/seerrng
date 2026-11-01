@@ -49,6 +49,7 @@ export interface Library {
   name: string;
   enabled: boolean;
   type: 'show' | 'movie' | 'music' | 'book';
+  episodeOrderProvider?: MetadataProviderType;
   lastScan?: number;
 }
 
