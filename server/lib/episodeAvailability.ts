@@ -107,6 +107,19 @@ export const removeMissingSonarrEpisodeSeries = async (
     .execute();
 };
 
+export const clearSonarrEpisodeAvailabilityForService = async (
+  serviceId: number
+): Promise<void> => {
+  if (!Number.isSafeInteger(serviceId) || serviceId <= 0) return;
+
+  await getRepository(EpisodeAvailability)
+    .createQueryBuilder()
+    .delete()
+    .from(EpisodeAvailability)
+    .where('"serviceId" = :serviceId', { serviceId })
+    .execute();
+};
+
 export const clearSonarrEpisodeAvailabilityForSeries = async (
   serviceId: number,
   externalSeriesId: number

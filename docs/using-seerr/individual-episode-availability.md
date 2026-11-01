@@ -24,7 +24,8 @@ file belongs to the standard or 4K library. A resolution-aware single Sonarr
 server reuses its existing detailed episode list when that scan has already
 fetched one. Otherwise, tracking adds one episode-list request for that scanned
 series. If the list cannot be confirmed complete, SeerrNG keeps the last
-successful per-episode data.
+successful per-episode data. A confirmed empty Sonarr inventory clears that
+service's episode records, and removing a Sonarr service clears its records.
 
 The feature appears after a successful Sonarr scan. It does not change request
 eligibility or the season-level availability state. With **Enable 4K** off,

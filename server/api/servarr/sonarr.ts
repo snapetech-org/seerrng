@@ -744,7 +744,12 @@ class SonarrAPI extends ServarrBase<{
   public async getSeries({
     strict = false,
     tvdbId,
-  }: { strict?: boolean; tvdbId?: number } = {}): Promise<SonarrSeries[]> {
+    requireTvdbId = true,
+  }: {
+    strict?: boolean;
+    tvdbId?: number;
+    requireTvdbId?: boolean;
+  } = {}): Promise<SonarrSeries[]> {
     try {
       const response = await this.request<SonarrSeries[]>(
         'GET',
@@ -769,11 +774,11 @@ class SonarrAPI extends ServarrBase<{
           series.length !== response.data.length ||
           series.some(
             (item) =>
-              !Number.isSafeInteger(item.tvdbId) ||
-              item.tvdbId <= 0 ||
               typeof item.id !== 'number' ||
               !Number.isSafeInteger(item.id) ||
-              item.id <= 0
+              item.id <= 0 ||
+              (requireTvdbId &&
+                (!Number.isSafeInteger(item.tvdbId) || item.tvdbId <= 0))
           ))
       ) {
         throw new Error(

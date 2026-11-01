@@ -1,4 +1,5 @@
 import SonarrAPI from '@server/api/servarr/sonarr';
+import { clearSonarrEpisodeAvailabilityForService } from '@server/lib/episodeAvailability';
 import { getExternalRuntimeConfig } from '@server/lib/externalRuntimeConfig';
 import { Permission } from '@server/lib/permissions';
 import { runWithServarrServiceCollectionMutationAdmission } from '@server/lib/serviceAdmission';
@@ -302,6 +303,19 @@ sonarrRoutes.delete<{ id: string }>(
         await settings.persistSection('sonarr', (current) =>
           current.filter(({ id }) => id !== sonarrId)
         );
+
+        try {
+          await clearSonarrEpisodeAvailabilityForService(sonarrId);
+        } catch (error) {
+          logger.warn(
+            'Could not clear episode availability after removing a Sonarr service.',
+            {
+              errorMessage:
+                error instanceof Error ? error.message : String(error),
+              serviceId: sonarrId,
+            }
+          );
+        }
 
         return res.status(200).json(redactSecrets(removed));
       }

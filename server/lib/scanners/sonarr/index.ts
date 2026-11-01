@@ -26,6 +26,7 @@ import SeasonRequest, {
 } from '@server/entity/SeasonRequest';
 import {
   clearSonarrEpisodeAvailabilityForSeries,
+  clearSonarrEpisodeAvailabilityForService,
   removeMissingSonarrEpisodeSeries,
   syncSonarrEpisodeAvailability,
   type SonarrSeasonAvailabilitySync,
@@ -157,6 +158,7 @@ class SonarrScanner
             'info'
           );
 
+          let episodeInventoryComplete = false;
           this.items = await runWithServarrServiceSnapshot(
             'sonarr',
             server,
@@ -165,7 +167,29 @@ class SonarrScanner
                 apiKey: current.apiKey,
                 url: SonarrAPI.buildUrl(current, '/api/v3'),
               });
-              return this.sonarrApi.getSeries();
+              if (!getSettings().main.trackEpisodeAvailability) {
+                return this.sonarrApi.getSeries();
+              }
+
+              try {
+                const inventory = await this.sonarrApi.getSeries({
+                  strict: true,
+                  requireTvdbId: false,
+                });
+                episodeInventoryComplete = true;
+                return inventory;
+              } catch (error) {
+                this.log(
+                  'Could not confirm a complete Sonarr inventory; skipping episode availability cleanup for this scan.',
+                  'warn',
+                  {
+                    errorMessage:
+                      error instanceof Error ? error.message : String(error),
+                    server: current.name,
+                  }
+                );
+                return this.sonarrApi.getSeries();
+              }
             }
           );
 
@@ -202,19 +226,17 @@ class SonarrScanner
           const hasCompleteMediaIdentity = this.items.every(
             (series) => Number.isSafeInteger(series.tvdbId) && series.tvdbId > 0
           );
-          const hasCompleteSeriesIdentity = this.items.every(
-            (series) => Number.isSafeInteger(series.id) && (series.id ?? 0) > 0
-          );
           if (
             getSettings().main.trackEpisodeAvailability &&
-            this.items.length > 0 &&
-            hasCompleteSeriesIdentity
+            episodeInventoryComplete
           ) {
             await runWithServarrServiceSnapshot('sonarr', server, () =>
-              removeMissingSonarrEpisodeSeries(
-                server.id,
-                this.items.map((series) => series.id!)
-              )
+              this.items.length === 0
+                ? clearSonarrEpisodeAvailabilityForService(server.id)
+                : removeMissingSonarrEpisodeSeries(
+                    server.id,
+                    this.items.map((series) => series.id!)
+                  )
             );
           }
           if (this.items.length > 0 && hasCompleteMediaIdentity) {
