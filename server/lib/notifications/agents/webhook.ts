@@ -10,7 +10,6 @@ import { getExternalNotificationAgent } from '@server/lib/externalRuntimeConfig'
 import type { NotificationAgentWebhook } from '@server/lib/settings';
 import { NotificationAgentKey } from '@server/lib/settings';
 import logger from '@server/logger';
-import type { AvailableLocale } from '@server/types/languages';
 import {
   createSafeHttpUrl,
   redactSecrets,
@@ -292,7 +291,8 @@ class WebhookAgent
   }
 
   private buildPayload(type: Notification, payload: NotificationPayload) {
-    const intl = getIntl(this.getSettings().options.locale as AvailableLocale);
+    // Webhooks have no per-agent locale setting; use the configured server locale.
+    const intl = getIntl();
     payload = getLocalizedNotificationPayload(payload, intl);
     const parsedJSON = decodeStoredWebhookPayloadTemplate(
       this.getSettings().options.jsonPayload
