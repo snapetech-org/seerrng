@@ -13,6 +13,29 @@ const { Globby } = docusaurusRequire('@docusaurus/utils');
 const { match } = docusaurusRequire(
   'http-proxy-middleware/dist/context-matcher.js'
 );
+const presetRequire = createRequire(
+  require.resolve('@docusaurus/preset-classic/package.json')
+);
+const pluginSvgrRequire = createRequire(
+  presetRequire.resolve('@docusaurus/plugin-svgr/package.json')
+);
+const webpackRequire = createRequire(
+  pluginSvgrRequire.resolve('@svgr/webpack/package.json')
+);
+const svgoRequire = createRequire(
+  webpackRequire.resolve('@svgr/plugin-svgo/package.json')
+);
+const deepmerge = svgoRequire('deepmerge');
+
+test('patched deepmerge rejects prototype keys in the docs build dependency graph', () => {
+  const source = JSON.parse('{"__proto__":{"seerrngDocsPolluted":true}}');
+  const result = deepmerge(Object.create(null), source);
+
+  assert.equal(Object.getPrototypeOf(result), Object.prototype);
+  assert.equal(Object.hasOwn(result, '__proto__'), false);
+  assert.equal(result.seerrngDocsPolluted, undefined);
+  assert.equal({}.seerrngDocsPolluted, undefined);
+});
 
 test('patched Docusaurus Globby preserves directory expansion and ignore options', async () => {
   const root = await mkdtemp(path.join(os.tmpdir(), 'seerrng-glob-patch-'));

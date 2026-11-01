@@ -20,6 +20,24 @@ const readWorkflow = (name) =>
 const ghCliSetupRef = '${{ github.sha }}';
 const ghCliSetupPath = './.github-actions/.github/actions/setup-gh-cli';
 
+test('Windows release routes declare the Packer JIT source marker', () => {
+  for (const workflowName of [
+    'release.yml',
+    'release-assets.yml',
+    'release-chocolatey.yml',
+  ]) {
+    const source = fs.readFileSync(
+      path.join(workflowDirectory, workflowName),
+      'utf8'
+    );
+    assert.match(
+      source,
+      /^# packer-windows-jit-v1$/mu,
+      `${workflowName} must be included in the Packer Windows JIT source inventory`
+    );
+  }
+});
+
 test('every release job that calls GitHub CLI installs the pinned CLI first', () => {
   const release = readWorkflow('release.yml');
   const ghJobs = Object.entries(release.jobs).filter(([, job]) =>
@@ -440,6 +458,10 @@ test('Chocolatey packages only verified Windows release archives', () => {
     (step) => step.name === 'Submit package to Chocolatey Community Repository'
   );
 
+  assert.equal(
+    workflow['run-name'],
+    "${{ format('action:{0}:pool:{1}:tag:{2}', inputs.action_tag, inputs.runner_pool_tag, inputs.tag) }}"
+  );
   assert.equal(workflow.on.workflow_dispatch.inputs.tag.required, true);
   assert.deepEqual(workflow.on.workflow_dispatch.inputs.action_tag.options, [
     'release',
@@ -452,9 +474,32 @@ test('Chocolatey packages only verified Windows release archives', () => {
     job.if,
     "github.ref == 'refs/heads/main' && inputs.action_tag == 'release' && inputs.runner_pool_tag == 'private'"
   );
-  assert.match(job['runs-on'], /"group":"packer-windows"/u);
-  assert.match(job['runs-on'], /"Windows"/u);
-  assert.match(job['runs-on'], /"ng-shared-main-seerrng"/u);
+  const runner = runInNewContext(
+    job['runs-on'].slice(3, -2),
+    {
+      github: { run_id: 123 },
+      fromJSON: JSON.parse,
+      format: (template, runId) =>
+        template
+          .replaceAll('{{', '{')
+          .replaceAll('}}', '}')
+          .replaceAll('{0}', String(runId)),
+    },
+    { timeout: 100 }
+  );
+  assert.deepEqual(runner, {
+    group: 'packer-windows',
+    labels: [
+      'self-hosted',
+      'Windows',
+      'X64',
+      'on-demand',
+      'packer-windows',
+      'seerrng',
+      'gha-123-publish-chocolatey',
+    ],
+  });
+  assert.doesNotMatch(job['runs-on'], /ng-shared-main|ng-main-run/u);
   assert.match(job['runs-on'], /github\.run_id/u);
   assert.doesNotMatch(job['runs-on'], /windows-latest/u);
   assert.ok(credentialStep);
@@ -1514,18 +1559,18 @@ test('release archive platforms route only to private native runners', () => {
     'self-hosted',
     'Windows',
     'X64',
+    'on-demand',
     'packer-windows',
-    'ng-shared-main-seerrng',
-    'ng-main-run-123',
+    'seerrng',
     'gha-123-2-build',
   ]);
   assertRoute('windows-arm64', 'packer-windows', [
     'self-hosted',
     'Windows',
     'ARM64',
+    'on-demand',
     'packer-windows',
-    'ng-shared-main-seerrng',
-    'ng-main-run-123',
+    'seerrng',
     'gha-123-2-build',
   ]);
   assert.equal(route('unknown'), false);

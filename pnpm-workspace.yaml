@@ -1,10 +1,15 @@
 minimumReleaseAge: 10080
 # Security fixes younger than the configured release age; remove after one week.
 minimumReleaseAgeExclude:
+  - '@isaacs/nonrecursive-glob-match@1.0.3'
   - body-parser@2.4.0
   - fast-uri@3.1.9
+  - follow-redirects@1.16.2
+  - minimatch@11.0.1
   - multer@2.5.0
   - nodemailer@10.1.4
+  - qs@6.16.1
+  - systeminformation@5.33.16
 
 onlyBuiltDependencies:
   - '@swc/core'
@@ -32,8 +37,8 @@ overrides:
   brace-expansion: 5.0.12
   browserslist: 4.28.9
   dompurify: 3.4.17
-  follow-redirects: 1.16.1
-  eslint-plugin-jsx-a11y>minimatch: 3.1.5
+  follow-redirects: 1.16.2
+  eslint-plugin-jsx-a11y>minimatch: 11.0.1
   fast-uri: 3.1.9
   flatted: 3.4.2
   form-data: 4.0.6
@@ -44,7 +49,7 @@ overrides:
   lodash: 4.18.1
   lodash-es: 4.18.1
   mailparser: 3.9.8
-  minimatch: 9.0.7
+  minimatch: 11.0.1
   moment: 2.31.0
   multer: 2.5.0
   nanoid@3: 3.3.18
@@ -54,12 +59,12 @@ overrides:
   postcss: 8.5.28
   postcss-selector-parser: 7.1.6
   proxy-addr: 2.0.8
-  qs: 6.16.0
+  qs: 6.16.1
   sharp: 0.35.5
   source-map-js: 1.2.2
   shell-quote: 1.11.0
   svgo: 3.3.5
-  systeminformation: 5.31.17
+  systeminformation: 5.33.16
   tar: 7.5.21
   tmp: 0.2.7
   ua-parser-js: 2.0.10
@@ -70,4 +75,6 @@ overrides:
   yaml: 1.10.3
 
 patchedDependencies:
+  deepmerge@4.3.1: patches/deepmerge@4.3.1.patch
+  eslint-plugin-jsx-a11y@6.10.2: patches/eslint-plugin-jsx-a11y@6.10.2.patch
   eslint-plugin-no-relative-import-paths@1.6.1: patches/eslint-plugin-no-relative-import-paths@1.6.1.patch

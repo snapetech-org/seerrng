@@ -237,7 +237,10 @@ export const getSharedGameLibrary = async (
 
   if (entries.length > maxEntries) throw new SharedGameLibraryLimitError();
 
-  const grouped = new Map<string, SharedGame & { ownerIds: Set<number> }>();
+  const grouped = new Map<
+    string,
+    Omit<SharedGame, 'ownerCount'> & { ownerIds: Set<number> }
+  >();
   for (const entry of entries) {
     const owner = entry.user;
     if (!owner) continue;
@@ -250,7 +253,6 @@ export const getSharedGameLibrary = async (
       summary: entry.summary,
       coverUrl: entry.coverUrl,
       owners: [],
-      ownerCount: 0,
       steamAppId: entry.steamAppId,
       playtimeMinutes: 0,
       ownerIds: new Set<number>(),
@@ -273,7 +275,6 @@ export const getSharedGameLibrary = async (
         platformName: entry.platformName,
         playtimeMinutes: entry.playtimeMinutes,
       });
-      game.ownerCount += 1;
       game.playtimeMinutes += entry.playtimeMinutes;
     }
     if (game.steamAppId === null) game.steamAppId = entry.steamAppId;
@@ -281,7 +282,10 @@ export const getSharedGameLibrary = async (
   }
 
   return [...grouped.values()]
-    .map(({ ownerIds: _ownerIds, ...game }) => game)
+    .map(({ ownerIds, ...game }) => ({
+      ...game,
+      ownerCount: ownerIds.size,
+    }))
     .sort(
       (left, right) =>
         right.ownerCount - left.ownerCount ||
