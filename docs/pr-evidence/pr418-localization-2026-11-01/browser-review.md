@@ -49,3 +49,11 @@ All files are PNG captures at 1440×1000. SHA-256 hashes:
 - The first read-only `/setup` request timed out at 20 seconds while Next compiled the route. The server later logged `GET /setup 200 in 91s`; the next read-only request returned `HTTP 200` and 30,675 bytes in 3.8 seconds.
 - Stopped this server cleanly after the route returned 200. Process IDs 3482781/3482816 exited and port 5066 was clear. Its logs remain in task scratch at `seerrng-browser-review-20261101/runtime-config/logs/seerr-2026-11-01.log`.
 - Tracked worktree status at the checked head was clean before this evidence was added. No test, build, or CI command was run.
+
+## Exact-head spot review (2026-11-01)
+
+- Rechecked PR #418 as OPEN at source commit `affd7a87860e3613d5c6842c20eb0b45f3bd062f` and tree `2471ca52d8b94504879e5842e8ffae920a22e180`; the isolated headed preview was serving this worktree.
+- At 1440×1000, the setup language picker changed the rendered first-run page to Spanish and Arabic. The Spanish setup stepper and transport warning wrapped within their panels. Arabic showed right-to-left copy, right-aligned controls, and a reversed stepper with no visible clipping or overlap in the captured viewport.
+- The blue `HTTPS mode` and authenticated-HTTP labels remain visually low-contrast on the amber warning panel in both locales. This is an unmeasured observation; no contrast ratio was calculated and no styling change was made.
+- Scope is the initial `/setup` viewport and locale switch only. The full setup flow, authenticated routes, mobile layout, and the other ten locales were not re-reviewed at this head. No transport choice, server connection, or login was submitted; no saved browser state was changed.
+- Exact-head screenshots: `current-head/setup-ar-1440x1000.png` (SHA-256 `78a2b32a62b728442f3e1d33ccd198c81f7afebf8bcadea4940f3aa7ae91fa7e`) and `current-head/setup-es-1440x1000.png` (SHA-256 `5ae7582b95b31c73c0b0bf85ccab259594652d1e9b7117ab590227f7b02054e1`).
