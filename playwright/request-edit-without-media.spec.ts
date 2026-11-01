@@ -174,7 +174,11 @@ for (const viewport of [
     await page.goto('/discover/movies');
     await expect(page.getByTestId('title-card')).toHaveCount(1);
     expect(discoveryFixtureApplied).toBe(true);
-    await page.getByTestId('title-card').first().click();
+    const titleCard = page.getByTestId('title-card').first();
+    await titleCard.hover();
+    const detailLink = titleCard.locator('[data-poster-region="detail-link"]');
+    await expect(detailLink).toBeVisible();
+    await detailLink.click();
     const mockedMovieResponse = await movieResponse;
     expect(mockedMovieResponse.status()).toBe(200);
     expect(await mockedMovieResponse.json()).toMatchObject({

@@ -185,7 +185,11 @@ const mockMediaNavigation = async (
   await page.goto(media.discoveryPath);
   await expect(page.getByTestId('title-card')).toHaveCount(1);
   expect(discoveryFixtureApplied).toBe(true);
-  await page.getByTestId('title-card').first().click();
+  const titleCard = page.getByTestId('title-card').first();
+  await titleCard.hover();
+  const detailLink = titleCard.locator('[data-poster-region="detail-link"]');
+  await expect(detailLink).toBeVisible();
+  await detailLink.click();
   await page.waitForURL((url) => url.pathname === media.route);
   await page.waitForLoadState('networkidle');
   expect(detailsFixtureApplied).toBe(true);

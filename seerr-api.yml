@@ -8207,6 +8207,57 @@ components:
             minimum: 1
       required:
         - mediaIds
+    InterfaceThemeManifest:
+      type: object
+      additionalProperties: false
+      required:
+        - formatVersion
+        - themeApiVersion
+        - id
+        - name
+        - description
+        - version
+        - author
+        - license
+        - navigation
+        - activeNavigationIcon
+      properties:
+        formatVersion:
+          type: integer
+          enum: [1]
+        themeApiVersion:
+          type: integer
+          enum: [1]
+        id:
+          type: string
+          minLength: 1
+          maxLength: 48
+          pattern: '^(?:seerrOrig|seerrNGJ|[a-z0-9]+(?:-[a-z0-9]+)*)$'
+        name:
+          type: string
+          minLength: 1
+          maxLength: 64
+        description:
+          type: string
+          minLength: 1
+          maxLength: 180
+        version:
+          type: string
+          pattern: '^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)(?:-[0-9A-Za-z.-]+)?(?:\+[0-9A-Za-z.-]+)?$'
+        author:
+          type: string
+          minLength: 1
+          maxLength: 80
+        license:
+          type: string
+          minLength: 1
+          maxLength: 48
+        navigation:
+          type: string
+          enum: [flat, grouped]
+        activeNavigationIcon:
+          type: string
+          enum: [outline, filled]
   securitySchemes:
     cookieAuth:
       type: apiKey
@@ -8279,6 +8330,54 @@ paths:
           description: Ticket redemption rate limit reached.
         '503':
           description: Jellyfin could not be reached to validate the linked account.
+  /interface-themes:
+    get:
+      summary: List installed interface themes
+      description: Returns the built-in and installed interface theme manifests. This endpoint is public so the stylesheet can load before a user signs in.
+      tags:
+        - public
+      security: []
+      responses:
+        '200':
+          description: Installed interface themes.
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: false
+                required:
+                  - themes
+                properties:
+                  themes:
+                    type: array
+                    maxItems: 18
+                    items:
+                      $ref: '#/components/schemas/InterfaceThemeManifest'
+  /interface-themes/{id}/theme.css:
+    get:
+      summary: Get an installed interface theme stylesheet
+      description: Serves a validated built-in or installed theme stylesheet from the same origin. This endpoint is public so the selected theme can load before a user signs in.
+      tags:
+        - public
+      security: []
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 48
+            pattern: '^(?:seerrOrig|seerrNGJ|[a-z0-9]+(?:-[a-z0-9]+)*)$'
+      responses:
+        '200':
+          description: Validated theme CSS.
+          content:
+            text/css:
+              schema:
+                type: string
+        '404':
+          $ref: '#/components/responses/ErrorResponse'
   /association/{mediaType}/{id}:
     get:
       summary: Get cross-medium associations
