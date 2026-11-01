@@ -27,14 +27,33 @@ if [[ ! "$xcode_major" =~ ^[0-9]+$ ]] || (( xcode_major < 26 )); then
   exit 2
 fi
 
-temporary_root="${RUNNER_TEMP:-${TMPDIR:-/tmp}}"
-build_dir="$(mktemp -d "$temporary_root/seerrng-ios-build.XXXXXX")"
-trap 'rm -rf -- "$build_dir"' EXIT
+script_dir="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd -P)"
+# shellcheck source=ios-release-workspace.sh
+source "$script_dir/ios-release-workspace.sh"
+build_dir="$(ios_release_create_local_workspace build)"
+mkdir -m 700 "$build_dir/tmp"
+export TMPDIR="$build_dir/tmp"
 mkdir -p "$output_dir"
-result_bundle="$output_dir/seerrng-${tag}-ios-tests.xcresult"
-if [[ -e "$result_bundle" ]]; then
-  rm -rf -- "$result_bundle"
-fi
+result_bundle="$build_dir/seerrng-${tag}-ios-tests.xcresult"
+
+cleanup() {
+  local exit_status=$?
+  trap - EXIT
+
+  if (( exit_status != 0 )) && [[ -d "$result_bundle" ]]; then
+    local diagnostic_archive="$build_dir/seerrng-${tag}-ios-tests.xcresult.zip"
+    if ditto -c -k --sequesterRsrc --keepParent "$result_bundle" "$diagnostic_archive" \
+      && cp -- "$diagnostic_archive" "$output_dir/"; then
+      echo "Preserved Xcode test diagnostics at $output_dir/${diagnostic_archive##*/}" >&2
+    else
+      echo 'Could not preserve the local Xcode result bundle after the failed build.' >&2
+    fi
+  fi
+
+  rm -rf -- "$build_dir"
+  exit "$exit_status"
+}
+trap cleanup EXIT
 
 project='ios/SeerrNG.xcodeproj'
 scheme='SeerrNG'
@@ -46,7 +65,7 @@ xcodebuild \
   -scheme "$scheme" \
   -configuration Debug \
   -destination "platform=iOS Simulator,name=${IOS_SIMULATOR_NAME:-iPhone 17}" \
-  -derivedDataPath "$build_dir" \
+  -derivedDataPath "$build_dir/DerivedData" \
   -resultBundlePath "$result_bundle" \
   "${version_settings[@]}" \
   CODE_SIGNING_ALLOWED=NO \
@@ -57,17 +76,21 @@ xcodebuild \
   -scheme "$scheme" \
   -configuration Release \
   -destination 'generic/platform=iOS Simulator' \
-  -derivedDataPath "$build_dir" \
+  -derivedDataPath "$build_dir/DerivedData" \
   "${version_settings[@]}" \
   CODE_SIGNING_ALLOWED=NO \
   build
 
-app="$build_dir/Build/Products/Release-iphonesimulator/SeerrNG.app"
+app="$build_dir/DerivedData/Build/Products/Release-iphonesimulator/SeerrNG.app"
 test -d "$app"
 plutil -lint -- "$app/Info.plist"
-archive="$output_dir/seerrng-${tag}-ios-simulator.zip"
-ditto -c -k --sequesterRsrc --keepParent "$app" "$archive"
-checksum="${archive%.zip}.sha256"
-(cd "$output_dir" && shasum -a 256 "${archive##*/}" > "${checksum##*/}")
+archive_name="seerrng-${tag}-ios-simulator.zip"
+local_archive="$build_dir/$archive_name"
+ditto -c -k --sequesterRsrc --keepParent "$app" "$local_archive"
+local_checksum="$build_dir/${archive_name%.zip}.sha256"
+(cd "$build_dir" && shasum -a 256 "$archive_name" > "${archive_name%.zip}.sha256")
+cp -- "$local_archive" "$output_dir/$archive_name"
+cp -- "$local_checksum" "$output_dir/"
+archive="$output_dir/$archive_name"
 echo "Built iOS Simulator app package: $archive"
 echo 'This .app package runs in the iOS Simulator; it is not an iPhone/iPad installable IPA.'
