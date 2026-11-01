@@ -25,6 +25,7 @@ import {
   NOTIFICATION_DELIVERY_CONCURRENCY,
   NOTIFICATION_HTTP_OPTIONS,
   getLocalizedNotificationPayload,
+  formatNotificationTitle,
   getNotificationCommentFrom,
   isolateBidiText,
   getIssueTypeLabel,
@@ -143,7 +144,7 @@ class TelegramAgent
     /* eslint-disable no-useless-escape */
     appendEscaped(
       '\*',
-      content.event ? `${content.event} - ${payload.subject}` : payload.subject,
+      formatNotificationTitle(content.event, payload.subject),
       '\*',
       256
     );

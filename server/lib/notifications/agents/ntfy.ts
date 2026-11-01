@@ -21,6 +21,7 @@ import {
   BaseAgent,
   CONFIGURABLE_NOTIFICATION_HTTP_OPTIONS,
   getLocalizedNotificationPayload,
+  formatNotificationTitle,
   getNotificationCommentFrom,
   isolateBidiText,
   getIssueTypeLabel,
@@ -68,7 +69,7 @@ class NtfyAgent
     const priority = settings.options.priority ?? 3;
 
     const title = truncateNotificationUtf8(
-      content.event ? `${content.event} - ${payload.subject}` : payload.subject,
+      formatNotificationTitle(content.event, payload.subject),
       NTFY_TITLE_BYTE_LIMIT
     );
     let message =

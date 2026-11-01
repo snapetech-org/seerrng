@@ -255,7 +255,10 @@ class SlackAgent
       type: 'header',
       text: {
         type: 'plain_text',
-        text: truncateSlackText(payload.subject, SLACK_HEADER_TEXT_LIMIT),
+        text: truncateSlackText(
+          isolateBidiText(payload.subject),
+          SLACK_HEADER_TEXT_LIMIT
+        ),
       },
     });
 
@@ -275,7 +278,7 @@ class SlackAgent
             ? {
                 type: 'image',
                 image_url: payload.image,
-                alt_text: payload.subject,
+                alt_text: isolateBidiText(payload.subject),
               }
             : undefined,
       });
@@ -380,7 +383,7 @@ class SlackAgent
 
     return {
       text: escapeSlackMrkdwnText(
-        content.event ?? payload.subject,
+        content.event ?? isolateBidiText(payload.subject),
         SLACK_FALLBACK_TEXT_LIMIT
       ),
       blocks,

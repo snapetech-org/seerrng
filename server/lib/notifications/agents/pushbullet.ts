@@ -22,6 +22,7 @@ import {
   NOTIFICATION_DELIVERY_CONCURRENCY,
   NOTIFICATION_HTTP_OPTIONS,
   getLocalizedNotificationPayload,
+  formatNotificationTitle,
   getNotificationCommentFrom,
   isolateBidiText,
   getIssueTypeLabel,
@@ -61,9 +62,7 @@ class PushbulletAgent
     payload = getLocalizedNotificationPayload(payload, intl);
     const content = getNotificationContent(payload, intl);
     const extras = getNotificationExtras(payload, intl);
-    const title = content.event
-      ? `${content.event} - ${payload.subject}`
-      : payload.subject;
+    const title = formatNotificationTitle(content.event, payload.subject);
     let body = content.message && !payload.comment ? content.message : '';
 
     if (payload.request) {

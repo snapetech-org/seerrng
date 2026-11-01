@@ -245,7 +245,7 @@ class WebPushAgent
 
     return {
       notificationType: Notification[type],
-      subject: payload.subject,
+      subject: isolateBidiText(payload.subject),
       message,
       image: embedPoster ? payload.image : undefined,
       requestId: payload.request?.id,

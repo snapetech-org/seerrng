@@ -28,6 +28,7 @@ import {
   BaseAgent,
   CONFIGURABLE_NOTIFICATION_HTTP_OPTIONS,
   getLocalizedNotificationPayload,
+  formatNotificationTitle,
   getNotificationCommentFrom,
   isolateBidiText,
   getIssueTypeLabel,
@@ -254,9 +255,7 @@ class DiscordAgent
     const url = getNotificationActionUrl(payload, applicationUrl);
 
     return boundDiscordEmbed({
-      title: content.event
-        ? `${content.event}: ${payload.subject}`
-        : payload.subject,
+      title: formatNotificationTitle(content.event, payload.subject, ': '),
       url,
       description: content.message,
       color,

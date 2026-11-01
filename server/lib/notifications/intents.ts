@@ -22,6 +22,7 @@ import { normalizeStashDbId } from '@server/lib/stashdbIdentity';
 import { parseBookshelfBookId } from '@server/utils/bookshelfCatalog';
 import { sortBy, truncate } from 'lodash';
 import { Notification } from '.';
+import { getIssueTypeMessageKey } from './agents/issueTypeMessageKey';
 import type {
   NotificationEventDescriptor,
   NotificationExtraLabel,
@@ -518,14 +519,7 @@ const hydrateIssueIntent = async (
           : type === Notification.ISSUE_RESOLVED
             ? 'resolved'
             : 'reopened',
-      issueType:
-        issue.issueType === IssueType.VIDEO
-          ? 'video'
-          : issue.issueType === IssueType.AUDIO
-            ? 'audio'
-            : issue.issueType === IssueType.SUBTITLES
-              ? 'subtitles'
-              : 'other',
+      issueType: getIssueTypeMessageKey(issue.issueType),
     },
     subject: title,
     message: firstComment.message,
@@ -572,14 +566,7 @@ const hydrateIssueCommentIntent = async (
     }Issue`,
     issueEventMessage: {
       kind: 'comment',
-      issueType:
-        issue.issueType === IssueType.VIDEO
-          ? 'video'
-          : issue.issueType === IssueType.AUDIO
-            ? 'audio'
-            : issue.issueType === IssueType.SUBTITLES
-              ? 'subtitles'
-              : 'other',
+      issueType: getIssueTypeMessageKey(issue.issueType),
     },
     subject: title,
     message: firstComment.message,

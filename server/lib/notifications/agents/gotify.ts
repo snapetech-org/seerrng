@@ -20,6 +20,7 @@ import {
   BaseAgent,
   CONFIGURABLE_NOTIFICATION_HTTP_OPTIONS,
   getLocalizedNotificationPayload,
+  formatNotificationTitle,
   getNotificationCommentFrom,
   isolateBidiText,
   getIssueTypeLabel,
@@ -92,9 +93,7 @@ class GotifyAgent
     const embedPoster = settings.embedPoster;
     const priority = settings.options.priority ?? 1;
 
-    const title = content.event
-      ? `${content.event} - ${payload.subject}`
-      : payload.subject;
+    const title = formatNotificationTitle(content.event, payload.subject);
 
     let message =
       content.message && !payload.comment

@@ -21,6 +21,7 @@ import {
   BaseAgent,
   CONFIGURABLE_NOTIFICATION_HTTP_OPTIONS,
   getLocalizedNotificationPayload,
+  formatNotificationTitle,
   getNotificationCommentFrom,
   isolateBidiText,
   getIssueTypeLabel,
@@ -83,7 +84,7 @@ class AppriseAgent
     const extras = getNotificationExtras(payload, intl);
 
     const title = truncateNotificationUtf8(
-      content.event ? `${content.event} - ${payload.subject}` : payload.subject,
+      formatNotificationTitle(content.event, payload.subject),
       APPRISE_TITLE_BYTE_LIMIT
     );
 

@@ -197,10 +197,12 @@ class PushoverAgent
     const escape = escapePushoverHtmlText;
 
     const title = truncateNotificationText(
-      content.event ?? payload.subject,
+      content.event ?? isolateBidiText(payload.subject),
       PUSHOVER_TITLE_LIMIT
     );
-    let message = content.event ? `<b>${escape(payload.subject)}</b>` : '';
+    let message = content.event
+      ? `<b>${escape(isolateBidiText(payload.subject))}</b>`
+      : '';
     let priority = 0;
 
     if (content.message && !payload.comment) {

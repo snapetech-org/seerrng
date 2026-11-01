@@ -233,6 +233,7 @@ class EmailAgent
             applicationTitle,
           }),
           mediaName: payload.subject,
+          mediaNameForSubject: isolateBidiText(payload.subject),
           mediaExtra: payload.extra ?? [],
           imageUrl: embedPoster ? payload.image : undefined,
           timestamp: new Date().toTimeString(),
@@ -277,6 +278,7 @@ class EmailAgent
             applicationTitle,
           }),
           mediaName: payload.subject,
+          mediaNameForSubject: isolateBidiText(payload.subject),
           mediaExtra: payload.softwareRequestStatus
             ? []
             : (payload.extra ?? []),
@@ -308,7 +310,7 @@ class EmailAgent
             issueType,
             userName: isolateBidiText(payload.issue.createdBy.displayName),
             mediaType,
-            subject: payload.subject,
+            subject: isolateBidiText(payload.subject),
           });
           break;
         case Notification.ISSUE_COMMENT:
@@ -316,7 +318,7 @@ class EmailAgent
             userName: isolateBidiText(payload.comment?.user.displayName),
             issueType,
             mediaType,
-            subject: payload.subject,
+            subject: isolateBidiText(payload.subject),
           });
           break;
         case Notification.ISSUE_RESOLVED:
@@ -324,7 +326,7 @@ class EmailAgent
             issueType,
             userName: isolateBidiText(payload.issue.modifiedBy?.displayName),
             mediaType,
-            subject: payload.subject,
+            subject: isolateBidiText(payload.subject),
           });
           break;
         case Notification.ISSUE_REOPENED:
@@ -332,7 +334,7 @@ class EmailAgent
             issueType,
             userName: isolateBidiText(payload.issue.modifiedBy?.displayName),
             mediaType,
-            subject: payload.subject,
+            subject: isolateBidiText(payload.subject),
           });
           break;
       }
@@ -359,6 +361,7 @@ class EmailAgent
           issueDescription: payload.message,
           issueComment: payload.comment?.message,
           mediaName: payload.subject,
+          mediaNameForSubject: isolateBidiText(payload.subject),
           extra: payload.extra ?? [],
           imageUrl: embedPoster ? payload.image : undefined,
           timestamp: new Date().toTimeString(),

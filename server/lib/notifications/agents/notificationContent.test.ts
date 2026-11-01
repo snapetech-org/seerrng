@@ -1,7 +1,11 @@
 import { createIntl } from '@formatjs/intl';
+import { IssueType } from '@server/constants/issue';
 import assert from 'node:assert/strict';
 import { describe, it } from 'node:test';
 import {
+  formatNotificationTitle,
+  getIssueTypeLabel,
+  getIssueTypeName,
   getLocalizedNotificationPayload,
   getNotificationCommentFrom,
   getNotificationEvent,
@@ -21,6 +25,45 @@ const base: NotificationPayload = {
 // Supplying recipient messages here checks delivery-time resolution independently
 // of the shipped catalog, which is checked separately by the catalog audit.
 describe('notification content descriptors', () => {
+  it('maps numeric issue types to canonical ICU selector keys', () => {
+    const intl = createIntl({
+      locale: 'en',
+      messages: {
+        'notifications.common.issueTypeLabel':
+          '{type, select, video {Video} audio {Audio} subtitles {Subtitle} other {Other}}',
+        'notifications.common.issueTypeNameMessage':
+          '{type, select, video {Video issue} audio {Audio issue} subtitles {Subtitle issue} other {Issue}}',
+      },
+    });
+    const cases = [
+      [IssueType.VIDEO, 'Video', 'Video issue'],
+      [IssueType.AUDIO, 'Audio', 'Audio issue'],
+      [IssueType.SUBTITLES, 'Subtitle', 'Subtitle issue'],
+      [IssueType.OTHER, 'Other', 'Issue'],
+    ] as const;
+
+    for (const [issueType, label, name] of cases) {
+      assert.equal(getIssueTypeLabel(intl, issueType), label);
+      assert.equal(getIssueTypeName(intl, issueType), name);
+    }
+  });
+
+  it('isolates an opaque title when composing localized notification text', () => {
+    const subject = 'فيلم 2025 — Паразит';
+    assert.equal(
+      formatNotificationTitle('New request', subject),
+      `New request - \u2068${subject}\u2069`
+    );
+    assert.equal(
+      formatNotificationTitle(undefined, subject),
+      `\u2068${subject}\u2069`
+    );
+    assert.equal(
+      formatNotificationTitle('New issue', subject, ': '),
+      `New issue: \u2068${subject}\u2069`
+    );
+  });
+
   it('isolates dynamic names inside localized comment labels', () => {
     const userName = 'alice אבג';
     const intl = createIntl({

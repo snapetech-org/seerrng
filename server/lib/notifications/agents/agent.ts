@@ -15,6 +15,10 @@ import type { NotificationAgentConfig } from '@server/lib/settings';
 import { normalizeStashDbId } from '@server/lib/stashdbIdentity';
 import { createSafeHttpRequestOptions } from '@server/utils/security';
 import type { Notification } from '..';
+import {
+  getIssueTypeMessageKey,
+  type IssueTypeMessageKey,
+} from './issueTypeMessageKey';
 
 export type SoftwareRequestStatus =
   'available' | 'pending' | 'approved' | 'declined' | 'failed';
@@ -94,7 +98,7 @@ export const getNotificationEvent = (
 
 export type NotificationIssueEventDescriptor = {
   kind: 'created' | 'resolved' | 'reopened' | 'comment';
-  issueType: 'video' | 'audio' | 'subtitles' | 'other';
+  issueType: IssueTypeMessageKey;
 };
 export type NotificationBodyMessage =
   'comicRequestDetails' | 'magazineRequestDetails' | 'adultRequestDetails';
@@ -336,13 +340,17 @@ export const getIssueTypeLabel = (
   intl: IntlInstance,
   issueType: Issue['issueType']
 ): string =>
-  intl.formatMessage(globalMessages.issueTypeLabel, { type: issueType });
+  intl.formatMessage(globalMessages.issueTypeLabel, {
+    type: getIssueTypeMessageKey(issueType),
+  });
 
 export const getIssueTypeName = (
   intl: IntlInstance,
   issueType: Issue['issueType']
 ): string =>
-  intl.formatMessage(globalMessages.issueTypeNameMessage, { type: issueType });
+  intl.formatMessage(globalMessages.issueTypeNameMessage, {
+    type: getIssueTypeMessageKey(issueType),
+  });
 
 export const getNotificationMediaUrl = (
   payload: Pick<NotificationPayload, 'media' | 'mediaUrl'>
@@ -457,13 +465,23 @@ export interface NotificationAgent {
   send(type: Notification, payload: NotificationPayload): Promise<boolean>;
 }
 
-/** Keep dynamic display names directionally isolated in notification copy. */
+/** Keep dynamic text directionally isolated at notification display boundaries. */
 export function isolateBidiText(value: string): string;
 export function isolateBidiText(value: undefined): undefined;
 export function isolateBidiText(value: string | undefined): string | undefined;
 export function isolateBidiText(value: string | undefined): string | undefined {
   return value === undefined || value === '' ? value : `\u2068${value}\u2069`;
 }
+
+/** Isolate opaque notification titles from localized and surrounding text. */
+export const formatNotificationTitle = (
+  event: string | undefined,
+  subject: string,
+  separator = ' - '
+): string => {
+  const isolatedSubject = isolateBidiText(subject);
+  return event ? `${event}${separator}${isolatedSubject}` : isolatedSubject;
+};
 
 export const getNotificationCommentFrom = (
   userName: string,
