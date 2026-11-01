@@ -420,6 +420,21 @@ export const resolveAcceptLanguage = (
         )
       : undefined;
     if (scriptMatch) return scriptMatch.tag as AvailableLocale;
+    const region = new Intl.Locale(canonical).region?.toUpperCase();
+    const chineseRegionEquivalent =
+      language === 'zh'
+        ? region === 'HK' || region === 'MO'
+          ? 'zh-TW'
+          : region === 'SG'
+            ? 'zh-CN'
+            : undefined
+        : undefined;
+    const chineseRegionMatch = chineseRegionEquivalent
+      ? localeRegistry.find(
+          ({ tag }) => tag.toLowerCase() === chineseRegionEquivalent.toLowerCase()
+        )
+      : undefined;
+    if (chineseRegionMatch) return chineseRegionMatch.tag as AvailableLocale;
     const match = localeRegistry.find(
       ({ tag }) => tag.toLowerCase() === language
     );
