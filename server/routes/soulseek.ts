@@ -36,14 +36,38 @@ const MAX_TRACKED_SONGID_RUNS = 2_000;
 
 const soulseekRoutes = Router();
 
+const sendAppMessageError = (
+  res: Response,
+  status: number,
+  message: string,
+  messageKey: string | null,
+  messageParams: Record<string, string> | null = null
+) =>
+  res.status(status).json({
+    message,
+    messageOrigin: 'app',
+    messageKey,
+    messageParams,
+  });
+
 const sendError = (res: Response, error: unknown) => {
   if (error instanceof TrackRequestError) {
-    return res.status(error.status).json({ message: error.message });
+    return res.status(error.status).json({
+      message: error.message,
+      messageOrigin: error.messageOrigin,
+      messageKey: error.messageKey ?? null,
+      messageParams: error.messageParams ?? null,
+    });
   }
   if (error instanceof SlskdnError) {
     return res
       .status(error.kind === 'unsupported' ? 503 : 502)
-      .json({ message: error.message });
+      .json({
+        message: error.message,
+        messageOrigin: 'opaque',
+        messageKey: null,
+        messageParams: null,
+      });
   }
   throw error;
 };
@@ -177,14 +201,28 @@ const loadTrackRequest = async (rawId: string) => {
 
 soulseekRoutes.post('/track-requests/:id/approve', async (req, res) => {
   if (!req.user?.hasPermission(Permission.MANAGE_REQUESTS)) {
-    return res.status(403).json({ message: 'Access denied.' });
+    return sendAppMessageError(
+      res,
+      403,
+      'Access denied.',
+      'm278f003df0c26e51fe43'
+    );
   }
   const request = await loadTrackRequest(req.params.id);
-  if (!request) return res.status(404).json({ message: 'Request not found.' });
+  if (!request)
+    return sendAppMessageError(
+      res,
+      404,
+      'Request not found.',
+      'm6eecd04f35f139c66100'
+    );
   if (request.status !== 'pending') {
-    return res
-      .status(409)
-      .json({ message: 'Only pending requests can be approved.' });
+    return sendAppMessageError(
+      res,
+      409,
+      'Only pending requests can be approved.',
+      'mf9bc23a578d232c04108'
+    );
   }
   try {
     return res
@@ -197,10 +235,21 @@ soulseekRoutes.post('/track-requests/:id/approve', async (req, res) => {
 
 soulseekRoutes.post('/track-requests/:id/decline', async (req, res) => {
   if (!req.user?.hasPermission(Permission.MANAGE_REQUESTS)) {
-    return res.status(403).json({ message: 'Access denied.' });
+    return sendAppMessageError(
+      res,
+      403,
+      'Access denied.',
+      'm278f003df0c26e51fe43'
+    );
   }
   const request = await loadTrackRequest(req.params.id);
-  if (!request) return res.status(404).json({ message: 'Request not found.' });
+  if (!request)
+    return sendAppMessageError(
+      res,
+      404,
+      'Request not found.',
+      'm6eecd04f35f139c66100'
+    );
   try {
     return res
       .status(200)
@@ -213,12 +262,23 @@ soulseekRoutes.post('/track-requests/:id/decline', async (req, res) => {
 soulseekRoutes.delete('/track-requests/:id', async (req, res) => {
   const user = req.user!;
   const request = await loadTrackRequest(req.params.id);
-  if (!request) return res.status(404).json({ message: 'Request not found.' });
+  if (!request)
+    return sendAppMessageError(
+      res,
+      404,
+      'Request not found.',
+      'm6eecd04f35f139c66100'
+    );
   if (
     !user.hasPermission(Permission.MANAGE_REQUESTS) &&
     request.requestedById !== user.id
   ) {
-    return res.status(403).json({ message: 'Access denied.' });
+    return sendAppMessageError(
+      res,
+      403,
+      'Access denied.',
+      'm278f003df0c26e51fe43'
+    );
   }
   try {
     return res

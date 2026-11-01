@@ -31,9 +31,28 @@ const MAX_TITLE_LENGTH = 300;
 
 const liveTvRoutes = Router();
 
+const sendAppMessageError = (
+  res: Response,
+  status: number,
+  message: string,
+  messageKey: string | null,
+  messageParams: Record<string, string> | null = null
+) =>
+  res.status(status).json({
+    message,
+    messageOrigin: 'app',
+    messageKey,
+    messageParams,
+  });
+
 const sendError = (res: Response, error: unknown) => {
   if (error instanceof RecordingRequestError) {
-    return res.status(error.status).json({ message: error.message });
+    return res.status(error.status).json({
+      message: error.message,
+      messageOrigin: error.messageOrigin,
+      messageKey: error.messageKey ?? null,
+      messageParams: error.messageParams ?? null,
+    });
   }
   throw error;
 };
@@ -210,23 +229,42 @@ const loadRequest = async (rawId: string) => {
 
 liveTvRoutes.post('/recordings/:id/approve', async (req, res) => {
   if (!req.user?.hasPermission(Permission.MANAGE_REQUESTS)) {
-    return res.status(403).json({ message: 'Access denied.' });
+    return sendAppMessageError(
+      res,
+      403,
+      'Access denied.',
+      'm278f003df0c26e51fe43'
+    );
   }
   const request = await loadRequest(req.params.id);
   if (!request)
-    return res.status(404).json({ message: 'Recording not found.' });
+    return sendAppMessageError(
+      res,
+      404,
+      'Recording not found.',
+      'm8ad16b56eda6624f1eb8'
+    );
   if (request.status !== 'pending') {
-    return res
-      .status(409)
-      .json({ message: 'Only pending recordings can be approved.' });
+    return sendAppMessageError(
+      res,
+      409,
+      'Only pending recordings can be approved.',
+      'm7a52fd3c0076ca200511'
+    );
   }
   if (request.endsAt && new Date(request.endsAt) <= new Date()) {
+    const message = 'The airing ended before the request was approved.';
     request.status = 'failed';
-    request.lastError = 'The airing ended before the request was approved.';
+    request.lastError = message;
     request.lastErrorMessageKey = 'm81449891a25bdca602db';
     request.lastErrorMessageParams = null;
     await getRepository(RecordingRequest).save(request);
-    return res.status(409).json({ message: request.lastError });
+    return sendAppMessageError(
+      res,
+      409,
+      message,
+      'm81449891a25bdca602db'
+    );
   }
   try {
     return res
@@ -239,11 +277,21 @@ liveTvRoutes.post('/recordings/:id/approve', async (req, res) => {
 
 liveTvRoutes.post('/recordings/:id/decline', async (req, res) => {
   if (!req.user?.hasPermission(Permission.MANAGE_REQUESTS)) {
-    return res.status(403).json({ message: 'Access denied.' });
+    return sendAppMessageError(
+      res,
+      403,
+      'Access denied.',
+      'm278f003df0c26e51fe43'
+    );
   }
   const request = await loadRequest(req.params.id);
   if (!request)
-    return res.status(404).json({ message: 'Recording not found.' });
+    return sendAppMessageError(
+      res,
+      404,
+      'Recording not found.',
+      'm8ad16b56eda6624f1eb8'
+    );
   try {
     return res
       .status(200)
@@ -257,13 +305,23 @@ liveTvRoutes.delete('/recordings/:id', async (req, res) => {
   const user = req.user!;
   const request = await loadRequest(req.params.id);
   if (!request)
-    return res.status(404).json({ message: 'Recording not found.' });
+    return sendAppMessageError(
+      res,
+      404,
+      'Recording not found.',
+      'm8ad16b56eda6624f1eb8'
+    );
   const isOwner = request.requestedById === user.id;
   if (
     !user.hasPermission(Permission.MANAGE_REQUESTS) &&
     (!isOwner || !user.hasPermission(Permission.REQUEST))
   ) {
-    return res.status(403).json({ message: 'Access denied.' });
+    return sendAppMessageError(
+      res,
+      403,
+      'Access denied.',
+      'm278f003df0c26e51fe43'
+    );
   }
   try {
     return res

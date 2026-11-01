@@ -34,7 +34,8 @@ export class RecordingRequestError extends Error {
     message: string,
     public readonly status: 400 | 403 | 404 | 409 | 502 | 503,
     public readonly messageKey?: string,
-    public readonly messageParams?: Record<string, string>
+    public readonly messageParams?: Record<string, string>,
+    public readonly messageOrigin: 'app' | 'opaque' = 'app'
   ) {
     super(message);
     this.name = 'RecordingRequestError';
@@ -205,7 +206,9 @@ export const scheduleRecording = async (
         ? error.message
         : 'Tunerr could not be reached to schedule the recording.',
       502,
-      error instanceof TunerrError ? undefined : 'm484187190108c50c01d2'
+      error instanceof TunerrError ? undefined : 'm484187190108c50c01d2',
+      undefined,
+      error instanceof TunerrError ? 'opaque' : 'app'
     );
   }
   request.modifiedBy = approver;
@@ -217,13 +220,18 @@ export const createRecordingRequest = async (
   input: CreateRecordingInput
 ): Promise<RecordingRequest> => {
   if (!isTunerrConfigured()) {
-    throw new RecordingRequestError('Live TV recording is not set up.', 404);
+    throw new RecordingRequestError(
+      'Live TV recording is not set up.',
+      404,
+      'm401a86ba5d7a9107ce9a'
+    );
   }
   const snapshot = await guideIndex.get();
   if (!snapshot) {
     throw new RecordingRequestError(
       'The Live TV guide is not available yet. Try again shortly.',
-      503
+      503,
+      'md229ab75270903b9c485'
     );
   }
 
@@ -237,7 +245,9 @@ export const createRecordingRequest = async (
   if (activeCount >= MAX_ACTIVE_RECORDINGS_PER_USER) {
     throw new RecordingRequestError(
       `You can have up to ${MAX_ACTIVE_RECORDINGS_PER_USER} active recordings.`,
-      409
+      409,
+      'm05f73fd10a09b2ff6f16',
+      { value0: String(MAX_ACTIVE_RECORDINGS_PER_USER) }
     );
   }
 
@@ -253,13 +263,18 @@ export const createRecordingRequest = async (
   if (input.kind === 'airing') {
     const start = input.start ? new Date(input.start) : undefined;
     if (!input.channel || !start || Number.isNaN(start.getTime())) {
-      throw new RecordingRequestError('Choose an airing to record.', 400);
+      throw new RecordingRequestError(
+        'Choose an airing to record.',
+        400,
+        'me772cafb6f8e1371bf0e'
+      );
     }
     const programme = findProgrammeInSnapshot(snapshot, input.channel, start);
     if (!programme || programme.stop <= new Date()) {
       throw new RecordingRequestError(
         'That airing is no longer in the guide.',
-        404
+        404,
+        'm4ae5c7ac2383d51a63ef'
       );
     }
     Object.assign(request, {
@@ -276,14 +291,16 @@ export const createRecordingRequest = async (
     if (!key || airings.length === 0) {
       throw new RecordingRequestError(
         'That title is not in the Live TV guide.',
-        404
+        404,
+        'm48356a50c2e77acc3180'
       );
     }
     const channel = input.channel?.trim() || null;
     if (channel && !airings.some((airing) => airing.channel === channel)) {
       throw new RecordingRequestError(
         'That title does not air on the chosen channel.',
-        400
+        400,
+        'm9bdb1d27c069a1abd2af'
       );
     }
     Object.assign(request, {
@@ -309,7 +326,8 @@ export const createRecordingRequest = async (
   if (duplicate) {
     throw new RecordingRequestError(
       'You already requested this recording.',
-      409
+      409,
+      'm6ced96813d4150a75669'
     );
   }
 
@@ -342,7 +360,8 @@ export const declineRecording = async (
   if (request.status !== 'pending') {
     throw new RecordingRequestError(
       'Only pending recordings can be declined.',
-      409
+      409,
+      'm1de79f3bc0de64ba4afe'
     );
   }
   request.status = 'declined';
@@ -355,7 +374,11 @@ export const cancelRecording = async (
   user: User
 ) => {
   if (!ACTIVE_RECORDING_STATUSES.includes(request.status)) {
-    throw new RecordingRequestError('This recording is no longer active.', 409);
+    throw new RecordingRequestError(
+      'This recording is no longer active.',
+      409,
+      'm0e5a66a83359829dcc09'
+    );
   }
   if (request.tunerrRuleId) {
     try {
@@ -365,7 +388,10 @@ export const cancelRecording = async (
         error instanceof TunerrError
           ? error.message
           : 'Tunerr could not be reached to cancel the recording.',
-        502
+        502,
+        error instanceof TunerrError ? undefined : 'm14033cffcb159b9f43be',
+        undefined,
+        error instanceof TunerrError ? 'opaque' : 'app'
       );
     }
   }
