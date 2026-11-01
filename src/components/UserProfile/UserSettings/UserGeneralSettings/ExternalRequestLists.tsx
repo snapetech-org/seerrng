@@ -330,12 +330,12 @@ const ExternalRequestLists = () => {
                 >
                   {list.sourceUrl}
                 </a>
-                <span className="app-list-value">
+                <span className="app-list-value" lang={locale}>
                   {list.lastSyncedAt
-                    ? new Intl.DateTimeFormat(locale, {
+                    ? intl.formatDate(new Date(list.lastSyncedAt), {
                         dateStyle: 'medium',
                         timeStyle: 'short',
-                      }).format(new Date(list.lastSyncedAt))
+                      })
                     : intl.formatMessage(messages.syncedNever)}
                 </span>
                 {list.lastSyncError && (

@@ -21,6 +21,7 @@ import {
   BaseAgent,
   NOTIFICATION_DELIVERY_CONCURRENCY,
   getLocalizedNotificationPayload,
+  isolateBidiText,
   getIssueTypeName,
   getMediaTypeLabel,
   getNotificationActionLabel,
@@ -305,14 +306,14 @@ class EmailAgent
         case Notification.ISSUE_CREATED:
           body = intl.formatMessage(messages.issueCreated, {
             issueType,
-            userName: payload.issue.createdBy.displayName,
+            userName: isolateBidiText(payload.issue.createdBy.displayName),
             mediaType,
             subject: payload.subject,
           });
           break;
         case Notification.ISSUE_COMMENT:
           body = intl.formatMessage(messages.issueComment, {
-            userName: payload.comment?.user.displayName,
+            userName: isolateBidiText(payload.comment?.user.displayName),
             issueType,
             mediaType,
             subject: payload.subject,
@@ -321,7 +322,7 @@ class EmailAgent
         case Notification.ISSUE_RESOLVED:
           body = intl.formatMessage(messages.issueResolved, {
             issueType,
-            userName: payload.issue.modifiedBy?.displayName,
+            userName: isolateBidiText(payload.issue.modifiedBy?.displayName),
             mediaType,
             subject: payload.subject,
           });
@@ -329,7 +330,7 @@ class EmailAgent
         case Notification.ISSUE_REOPENED:
           body = intl.formatMessage(messages.issueReopened, {
             issueType,
-            userName: payload.issue.modifiedBy?.displayName,
+            userName: isolateBidiText(payload.issue.modifiedBy?.displayName),
             mediaType,
             subject: payload.subject,
           });

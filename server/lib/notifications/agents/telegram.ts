@@ -25,6 +25,8 @@ import {
   NOTIFICATION_DELIVERY_CONCURRENCY,
   NOTIFICATION_HTTP_OPTIONS,
   getLocalizedNotificationPayload,
+  getNotificationCommentFrom,
+  isolateBidiText,
   getIssueTypeLabel,
   getNotificationActionLabel,
   getNotificationActionUrl,
@@ -154,7 +156,7 @@ class TelegramAgent
         `\n\n\*${escapeTelegramMarkdownText(
           intl.formatMessage(globalMessages.requestedBy)
         )}:\* `,
-        payload.request.requestedBy.displayName
+        isolateBidiText(payload.request.requestedBy.displayName)
       );
 
       let status = '';
@@ -194,9 +196,7 @@ class TelegramAgent
     } else if (payload.comment) {
       appendEscaped(
         `\n\n\*${escapeTelegramMarkdownText(
-          intl.formatMessage(globalMessages.commentFrom, {
-            userName: payload.comment.user.displayName,
-          })
+          getNotificationCommentFrom(payload.comment.user.displayName, intl)
         )}:\* `,
         payload.comment.message,
         '',
@@ -207,7 +207,7 @@ class TelegramAgent
         `\n\n\*${escapeTelegramMarkdownText(
           intl.formatMessage(globalMessages.reportedBy)
         )}:\* `,
-        payload.issue.createdBy.displayName
+        isolateBidiText(payload.issue.createdBy.displayName)
       );
       appendEscaped(
         `\n\*${escapeTelegramMarkdownText(

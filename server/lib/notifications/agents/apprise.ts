@@ -21,6 +21,8 @@ import {
   BaseAgent,
   CONFIGURABLE_NOTIFICATION_HTTP_OPTIONS,
   getLocalizedNotificationPayload,
+  getNotificationCommentFrom,
+  isolateBidiText,
   getIssueTypeLabel,
   getNotificationActionUrl,
   getNotificationContent,
@@ -92,7 +94,9 @@ class AppriseAgent
 
     if (payload.request) {
       lines.push(
-        `${intl.formatMessage(globalMessages.requestedBy)}: ${payload.request.requestedBy.displayName}`
+        `${intl.formatMessage(globalMessages.requestedBy)}: ${isolateBidiText(
+          payload.request.requestedBy.displayName
+        )}`
       );
       const status = (() => {
         switch (type) {
@@ -118,14 +122,14 @@ class AppriseAgent
       }
     } else if (payload.comment) {
       lines.push(
-        `${intl.formatMessage(globalMessages.commentFrom, {
-          userName: payload.comment.user.displayName,
-        })}:`,
+        `${getNotificationCommentFrom(payload.comment.user.displayName, intl)}:`,
         payload.comment.message
       );
     } else if (payload.issue) {
       lines.push(
-        `${intl.formatMessage(globalMessages.reportedBy)}: ${payload.issue.createdBy.displayName}`,
+        `${intl.formatMessage(globalMessages.reportedBy)}: ${isolateBidiText(
+          payload.issue.createdBy.displayName
+        )}`,
         `${intl.formatMessage(globalMessages.issueType)}: ${getIssueTypeLabel(intl, payload.issue.issueType)}`,
         `${intl.formatMessage(globalMessages.issueStatus)}: ${
           payload.issue.status === IssueStatus.OPEN

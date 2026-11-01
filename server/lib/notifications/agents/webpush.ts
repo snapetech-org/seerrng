@@ -25,6 +25,7 @@ import {
   BaseAgent,
   NOTIFICATION_HTTP_OPTIONS,
   getLocalizedNotificationPayload,
+  isolateBidiText,
   getIssueTypeName,
   getMediaTypeLabel,
   getNotificationContent,
@@ -158,7 +159,7 @@ class WebPushAgent
         message = intl.formatMessage(messages.autoApproved, {
           quality,
           mediaType,
-          userName: payload.request?.requestedBy.displayName,
+          userName: isolateBidiText(payload.request?.requestedBy.displayName),
         });
         break;
       case Notification.MEDIA_AVAILABLE:
@@ -189,31 +190,31 @@ class WebPushAgent
         message = intl.formatMessage(messages.pending, {
           quality,
           mediaType,
-          userName: payload.request?.requestedBy.displayName,
+          userName: isolateBidiText(payload.request?.requestedBy.displayName),
         });
         break;
       case Notification.ISSUE_CREATED:
         message = intl.formatMessage(messages.issueCreated, {
           issueType,
-          userName: payload.issue?.createdBy.displayName,
+          userName: isolateBidiText(payload.issue?.createdBy.displayName),
         });
         break;
       case Notification.ISSUE_COMMENT:
         message = intl.formatMessage(messages.issueComment, {
-          userName: payload.comment?.user.displayName,
+          userName: isolateBidiText(payload.comment?.user.displayName),
           issueType,
         });
         break;
       case Notification.ISSUE_RESOLVED:
         message = intl.formatMessage(messages.issueResolved, {
           issueType,
-          userName: payload.issue?.modifiedBy?.displayName,
+          userName: isolateBidiText(payload.issue?.modifiedBy?.displayName),
         });
         break;
       case Notification.ISSUE_REOPENED:
         message = intl.formatMessage(messages.issueReopened, {
           issueType,
-          userName: payload.issue?.modifiedBy?.displayName,
+          userName: isolateBidiText(payload.issue?.modifiedBy?.displayName),
         });
         break;
       default:

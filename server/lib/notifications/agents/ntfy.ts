@@ -21,6 +21,8 @@ import {
   BaseAgent,
   CONFIGURABLE_NOTIFICATION_HTTP_OPTIONS,
   getLocalizedNotificationPayload,
+  getNotificationCommentFrom,
+  isolateBidiText,
   getIssueTypeLabel,
   getNotificationActionUrl,
   getNotificationContent,
@@ -77,7 +79,7 @@ class NtfyAgent
     if (payload.request) {
       message += `${message ? '\n\n' : ''}**${escapeNtfyMarkdownText(
         intl.formatMessage(globalMessages.requestedBy)
-      )}:** ${escapeNtfyMarkdownText(payload.request.requestedBy.displayName)}`;
+      )}:** ${escapeNtfyMarkdownText(isolateBidiText(payload.request.requestedBy.displayName))}`;
 
       let status = '';
       switch (type) {
@@ -104,12 +106,12 @@ class NtfyAgent
       }
     } else if (payload.comment) {
       message += `\n**${escapeNtfyMarkdownText(
-        intl.formatMessage(globalMessages.commentFrom, {
-          userName: payload.comment.user.displayName,
-        })
+        getNotificationCommentFrom(payload.comment.user.displayName, intl)
       )}:**\n${escapeNtfyMarkdownText(payload.comment.message)}`;
     } else if (payload.issue) {
-      message += `\n\n**${intl.formatMessage(globalMessages.reportedBy)}:** ${escapeNtfyMarkdownText(payload.issue.createdBy.displayName)}`;
+      message += `\n\n**${intl.formatMessage(globalMessages.reportedBy)}:** ${escapeNtfyMarkdownText(
+        isolateBidiText(payload.issue.createdBy.displayName)
+      )}`;
       message += `\n**${intl.formatMessage(globalMessages.issueType)}:** ${getIssueTypeLabel(intl, payload.issue.issueType)}`;
       message += `\n**${intl.formatMessage(globalMessages.issueStatus)}:** ${
         payload.issue.status === IssueStatus.OPEN

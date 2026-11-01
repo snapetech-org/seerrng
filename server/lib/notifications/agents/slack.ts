@@ -24,6 +24,8 @@ import {
   BaseAgent,
   CONFIGURABLE_NOTIFICATION_HTTP_OPTIONS,
   getLocalizedNotificationPayload,
+  getNotificationCommentFrom,
+  isolateBidiText,
   getIssueTypeLabel,
   getNotificationActionLabel,
   getNotificationActionUrl,
@@ -169,7 +171,7 @@ class SlackAgent
       fields.push(
         buildSlackField(
           intl.formatMessage(globalMessages.requestedBy),
-          payload.request.requestedBy.displayName
+          isolateBidiText(payload.request.requestedBy.displayName)
         )
       );
 
@@ -204,9 +206,7 @@ class SlackAgent
     } else if (payload.comment) {
       fields.push(
         buildSlackField(
-          intl.formatMessage(globalMessages.commentFrom, {
-            userName: payload.comment.user.displayName,
-          }),
+          getNotificationCommentFrom(payload.comment.user.displayName, intl),
           payload.comment.message
         )
       );
@@ -214,7 +214,7 @@ class SlackAgent
       fields.push(
         buildSlackField(
           intl.formatMessage(globalMessages.reportedBy),
-          payload.issue.createdBy.displayName
+          isolateBidiText(payload.issue.createdBy.displayName)
         ),
         buildSlackField(
           intl.formatMessage(globalMessages.issueType),

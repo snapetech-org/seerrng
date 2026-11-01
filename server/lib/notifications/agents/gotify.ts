@@ -20,6 +20,8 @@ import {
   BaseAgent,
   CONFIGURABLE_NOTIFICATION_HTTP_OPTIONS,
   getLocalizedNotificationPayload,
+  getNotificationCommentFrom,
+  isolateBidiText,
   getIssueTypeLabel,
   getNotificationActionUrl,
   getNotificationContent,
@@ -103,7 +105,7 @@ class GotifyAgent
       message += `\n**${escapeGotifyMarkdownText(
         intl.formatMessage(globalMessages.requestedBy)
       )}:** ${escapeGotifyMarkdownText(
-        payload.request.requestedBy.displayName
+        isolateBidiText(payload.request.requestedBy.displayName)
       )}  `;
 
       let status = '';
@@ -133,14 +135,12 @@ class GotifyAgent
       }
     } else if (payload.comment) {
       message += `\n${escapeGotifyMarkdownText(
-        intl.formatMessage(globalMessages.commentFrom, {
-          userName: payload.comment.user.displayName,
-        })
+        getNotificationCommentFrom(payload.comment.user.displayName, intl)
       )}:\n${escapeGotifyMarkdownText(payload.comment.message)}  `;
     } else if (payload.issue) {
       message += `\n\n**${escapeGotifyMarkdownText(
         intl.formatMessage(globalMessages.reportedBy)
-      )}:** ${escapeGotifyMarkdownText(payload.issue.createdBy.displayName)}  `;
+      )}:** ${escapeGotifyMarkdownText(isolateBidiText(payload.issue.createdBy.displayName))}  `;
       message += `\n**${intl.formatMessage(globalMessages.issueType)}:** ${getIssueTypeLabel(intl, payload.issue.issueType)}  `;
       message += `\n**${intl.formatMessage(globalMessages.issueStatus)}:** ${
         payload.issue.status === IssueStatus.OPEN

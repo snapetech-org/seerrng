@@ -28,6 +28,8 @@ import {
   BaseAgent,
   CONFIGURABLE_NOTIFICATION_HTTP_OPTIONS,
   getLocalizedNotificationPayload,
+  getNotificationCommentFrom,
+  isolateBidiText,
   getIssueTypeLabel,
   getNotificationActionUrl,
   getNotificationContent,
@@ -163,7 +165,7 @@ class DiscordAgent
     if (payload.request) {
       fields.push({
         name: intl.formatMessage(globalMessages.requestedBy),
-        value: payload.request.requestedBy.displayName,
+        value: isolateBidiText(payload.request.requestedBy.displayName),
         inline: true,
       });
 
@@ -201,9 +203,7 @@ class DiscordAgent
       }
     } else if (payload.comment) {
       fields.push({
-        name: intl.formatMessage(globalMessages.commentFrom, {
-          userName: payload.comment.user.displayName,
-        }),
+        name: getNotificationCommentFrom(payload.comment.user.displayName, intl),
         value: payload.comment.message,
         inline: false,
       });
@@ -211,7 +211,7 @@ class DiscordAgent
       fields.push(
         {
           name: intl.formatMessage(globalMessages.reportedBy),
-          value: payload.issue.createdBy.displayName,
+          value: isolateBidiText(payload.issue.createdBy.displayName),
           inline: true,
         },
         {

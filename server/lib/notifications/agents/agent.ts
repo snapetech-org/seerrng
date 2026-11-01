@@ -456,3 +456,19 @@ export interface NotificationAgent {
   shouldSend(): boolean;
   send(type: Notification, payload: NotificationPayload): Promise<boolean>;
 }
+
+/** Keep dynamic display names directionally isolated in notification copy. */
+export function isolateBidiText(value: string): string;
+export function isolateBidiText(value: undefined): undefined;
+export function isolateBidiText(value: string | undefined): string | undefined;
+export function isolateBidiText(value: string | undefined): string | undefined {
+  return value === undefined || value === '' ? value : `\u2068${value}\u2069`;
+}
+
+export const getNotificationCommentFrom = (
+  userName: string,
+  intl: IntlInstance
+): string =>
+  intl.formatMessage(globalMessages.commentFrom, {
+    userName: isolateBidiText(userName),
+  });

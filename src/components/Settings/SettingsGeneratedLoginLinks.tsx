@@ -213,10 +213,10 @@ const SettingsGeneratedLoginLinks = () => {
           {links?.map((link) => (
             <div className="app-list-row" key={link.id}>
               <span className="app-list-value">
-                {new Intl.DateTimeFormat(undefined, {
+                {intl.formatDate(new Date(link.createdAt), {
                   dateStyle: 'medium',
                   timeStyle: 'short',
-                }).format(new Date(link.createdAt))}
+                })}
               </span>
               <span className="app-list-value">
                 {intl.formatMessage(messages[link.status])}

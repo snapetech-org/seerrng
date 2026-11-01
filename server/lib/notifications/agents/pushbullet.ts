@@ -22,6 +22,8 @@ import {
   NOTIFICATION_DELIVERY_CONCURRENCY,
   NOTIFICATION_HTTP_OPTIONS,
   getLocalizedNotificationPayload,
+  getNotificationCommentFrom,
+  isolateBidiText,
   getIssueTypeLabel,
   getNotificationContent,
   getNotificationExtras,
@@ -65,7 +67,9 @@ class PushbulletAgent
     let body = content.message && !payload.comment ? content.message : '';
 
     if (payload.request) {
-      body += `\n\n${intl.formatMessage(globalMessages.requestedBy)}: ${payload.request.requestedBy.displayName}`;
+      body += `\n\n${intl.formatMessage(globalMessages.requestedBy)}: ${isolateBidiText(
+        payload.request.requestedBy.displayName
+      )}`;
 
       let status = '';
       switch (type) {
@@ -97,9 +101,13 @@ class PushbulletAgent
         body += `\n${intl.formatMessage(globalMessages.requestStatus)}: ${status}`;
       }
     } else if (payload.comment) {
-      body += `\n\n${intl.formatMessage(globalMessages.commentFrom, { userName: payload.comment.user.displayName })}:\n${payload.comment.message}`;
+      body += `\n\n${getNotificationCommentFrom(
+        payload.comment.user.displayName, intl
+      )}:\n${payload.comment.message}`;
     } else if (payload.issue) {
-      body += `\n\n${intl.formatMessage(globalMessages.reportedBy)}: ${payload.issue.createdBy.displayName}`;
+      body += `\n\n${intl.formatMessage(globalMessages.reportedBy)}: ${isolateBidiText(
+        payload.issue.createdBy.displayName
+      )}`;
       body += `\n${intl.formatMessage(globalMessages.issueType)}: ${getIssueTypeLabel(intl, payload.issue.issueType)}`;
       body += `\n${intl.formatMessage(globalMessages.issueStatus)}: ${
         payload.issue.status === IssueStatus.OPEN

@@ -29,6 +29,8 @@ import {
   NOTIFICATION_DELIVERY_CONCURRENCY,
   NOTIFICATION_HTTP_OPTIONS,
   getLocalizedNotificationPayload,
+  getNotificationCommentFrom,
+  isolateBidiText,
   getIssueTypeLabel,
   getNotificationActionLabel,
   getNotificationActionUrl,
@@ -210,7 +212,7 @@ class PushoverAgent
     if (payload.request) {
       message += `<small>\n\n<b>${escape(
         intl.formatMessage(globalMessages.requestedBy)
-      )}:</b> ${escape(payload.request.requestedBy.displayName)}</small>`;
+      )}:</b> ${escape(isolateBidiText(payload.request.requestedBy.displayName))}</small>`;
 
       let status = '';
       switch (type) {
@@ -247,14 +249,12 @@ class PushoverAgent
       }
     } else if (payload.comment) {
       message += `<small>\n\n<b>${escape(
-        intl.formatMessage(globalMessages.commentFrom, {
-          userName: payload.comment.user.displayName,
-        })
+        getNotificationCommentFrom(payload.comment.user.displayName, intl)
       )}:</b> ${escape(payload.comment.message)}</small>`;
     } else if (payload.issue) {
       message += `<small>\n\n<b>${escape(
         intl.formatMessage(globalMessages.reportedBy)
-      )}:</b> ${escape(payload.issue.createdBy.displayName)}</small>`;
+      )}:</b> ${escape(isolateBidiText(payload.issue.createdBy.displayName))}</small>`;
       message += `<small>\n<b>${escape(
         intl.formatMessage(globalMessages.issueType)
       )}:</b> ${escape(getIssueTypeLabel(intl, payload.issue.issueType))}</small>`;

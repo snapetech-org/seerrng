@@ -3,7 +3,9 @@ import assert from 'node:assert/strict';
 import { describe, it } from 'node:test';
 import {
   getLocalizedNotificationPayload,
+  getNotificationCommentFrom,
   getNotificationEvent,
+  isolateBidiText,
   type NotificationEventKind,
   type NotificationPayload,
 } from './agent';
@@ -19,6 +21,26 @@ const base: NotificationPayload = {
 // Supplying recipient messages here checks delivery-time resolution independently
 // of the shipped catalog, which is checked separately by the catalog audit.
 describe('notification content descriptors', () => {
+  it('isolates dynamic names inside localized comment labels', () => {
+    const userName = 'alice אבג';
+    const intl = createIntl({
+      locale: 'ar',
+      messages: { 'notifications.common.commentFrom': 'تعليق من {userName}' },
+    });
+
+    assert.equal(
+      getNotificationCommentFrom(userName, intl),
+      `تعليق من \u2068${userName}\u2069`
+    );
+  });
+
+  it('isolates names without changing plain-text content', () => {
+    const userName = 'alice <admin> אבג';
+
+    assert.equal(isolateBidiText(userName), `\u2068${userName}\u2069`);
+    assert.equal(isolateBidiText(undefined), undefined);
+  });
+
   it('resolves fixed content for each recipient without mutating stored or dynamic text', () => {
     const intl = createIntl({
       locale: 'fr',

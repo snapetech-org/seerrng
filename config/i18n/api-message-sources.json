@@ -66661,7 +66661,7 @@
     },
     {
       "path": "server/lib/notifications/agents/apprise.ts",
-      "line": 40,
+      "line": 42,
       "kind": "protocol-helper-return",
       "field": "message",
       "expression": "'failure'",
@@ -66670,7 +66670,7 @@
     },
     {
       "path": "server/lib/notifications/agents/apprise.ts",
-      "line": 44,
+      "line": 46,
       "kind": "protocol-helper-return",
       "field": "message",
       "expression": "'success'",
@@ -66679,7 +66679,7 @@
     },
     {
       "path": "server/lib/notifications/agents/apprise.ts",
-      "line": 48,
+      "line": 50,
       "kind": "protocol-helper-return",
       "field": "message",
       "expression": "'warning'",
@@ -66688,7 +66688,7 @@
     },
     {
       "path": "server/lib/notifications/agents/apprise.ts",
-      "line": 50,
+      "line": 52,
       "kind": "protocol-helper-return",
       "field": "message",
       "expression": "'info'",
@@ -66697,7 +66697,7 @@
     },
     {
       "path": "server/lib/notifications/agents/apprise.ts",
-      "line": 151,
+      "line": 155,
       "kind": "authored-message-variable",
       "field": "appriseMessage",
       "expression": "{\n      title,\n      body,\n      type: appriseMessageType(type),\n      format: 'text',\n    }",
@@ -66706,7 +66706,7 @@
     },
     {
       "path": "server/lib/notifications/agents/apprise.ts",
-      "line": 235,
+      "line": 239,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "e.message",
@@ -66724,7 +66724,7 @@
     },
     {
       "path": "server/lib/notifications/agents/email.ts",
-      "line": 34,
+      "line": 35,
       "kind": "authored-message-variable",
       "field": "messages",
       "expression": "defineMessages('notifications.agents.email', {\n  greeting: 'Hi, {recipientName}!',\n  requestedByLabel: 'Requested By',\n  viewIssueIn: 'View Issue in {applicationTitle}',\n  openApplication: 'Open {applicationTitle}',\n  issueType: '{type} issue',\n  issue: 'issue',\n  pendingRequest:\n    'A new request for the following {mediaType} is pending approval:',\n  pendingRequest4k:\n    'A new request for the following {mediaType} in 4K is pending approval:',\n  autoRequested:\n    'A new request for the following {mediaType} was automatically submitted:',\n  autoRequested4k:\n    'A new request for the following {mediaType} in 4K was automatically submitted:',\n  approvedRequest:\n    'Your request for the following {mediaType} has been approved:',\n  approvedRequest4k:\n    'Your request for the following {mediaType} in 4K has been approved:',\n  autoApproved:\n    'A new request for the following {mediaType} has been automatically approved:',\n  autoApproved4k:\n    'A new request for the following {mediaType} in 4K has been automatically approved:',\n  availableRequest:\n    'Your request for the following {mediaType} is now available:',\n  availableRequest4k:\n    'Your request for the following {mediaType} in 4K is now available:',\n  availabilitySubscription: 'A title you follow is now available:',\n  declinedRequest: 'Your request for the following {mediaType} was declined:',\n  declinedRequest4k:\n    'Your request for the following {mediaType} in 4K was declined:',\n  failedRequest:\n    'A request for the following {mediaType} failed to be added to {service}:',\n  failedRequest4k:\n    'A request for the following {mediaType} in 4K failed to be added to {service}:',\n  issueCreated:\n    'A new {issueType} has been reported by {userName} for the {mediaType} {subject}:',\n  issueComment:\n    '{userName} commented on the {issueType} for the {mediaType} {subject}:',\n  issueResolved:\n    'The {issueType} for the {mediaType} {subject} was marked as resolved by {userName}!',\n  issueReopened:\n    'The {issueType} for the {mediaType} {subject} was reopened by {userName}.',\n})",
@@ -66733,7 +66733,7 @@
     },
     {
       "path": "server/lib/notifications/agents/email.ts",
-      "line": 127,
+      "line": 128,
       "kind": "message-helper-return",
       "field": "message",
       "expression": "{\n        template: path.join(__dirname, '../../../templates/email/test-email'),\n        message: {\n          to: recipientEmail,\n        },\n        locals: {\n          body: payload.message,\n          testSubject: payload.subject,\n          locale: emailLocale,\n          direction,\n          greeting:\n            recipientName && recipientName !== recipientEmail\n              ? intl.formatMessage(messages.greeting, {\n                  recipientName: `\\u2068${recipientName}\\u2069`,\n                })\n              : undefined,\n          openApplicationLabel: intl.formatMessage(messages.openApplication, {\n            applicationTitle,\n          }),\n          applicationUrl,\n          applicationTitle,\n          logoUrl,\n          recipientName,\n          recipientEmail,\n        },\n      }",
@@ -66742,7 +66742,7 @@
     },
     {
       "path": "server/lib/notifications/agents/email.ts",
-      "line": 129,
+      "line": 130,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "{\n          to: recipientEmail,\n        }",
@@ -66751,7 +66751,7 @@
     },
     {
       "path": "server/lib/notifications/agents/email.ts",
-      "line": 216,
+      "line": 217,
       "kind": "message-helper-return",
       "field": "message",
       "expression": "{\n        template: path.join(\n          __dirname,\n          '../../../templates/email/media-request'\n        ),\n        message: {\n          to: recipientEmail,\n        },\n        locals: {\n          event: payload.event,\n          body,\n          locale: emailLocale,\n          direction,\n          greeting:\n            recipientName && recipientName !== recipientEmail\n              ? intl.formatMessage(messages.greeting, {\n                  recipientName: `\\u2068${recipientName}\\u2069`,\n                })\n              : undefined,\n          requestedByLabel: intl.formatMessage(messages.requestedByLabel),\n          openApplicationLabel: intl.formatMessage(messages.openApplication, {\n            applicationTitle,\n          }),\n          mediaName: payload.subject,\n          mediaExtra: payload.extra ?? [],\n          imageUrl: embedPoster ? payload.image : undefined,\n          timestamp: new Date().toTimeString(),\n          requestedBy: payload.request?.requestedBy.displayName,\n          actionUrl: getNotificationActionUrl(payload, applicationUrl),\n          actionLabel: intl.formatMessage(getNotificationActionLabel(payload), {\n            applicationTitle,\n          }),\n          applicationUrl,\n          applicationTitle,\n          logoUrl,\n          recipientName,\n          recipientEmail,\n        },\n      }",
@@ -66760,7 +66760,7 @@
     },
     {
       "path": "server/lib/notifications/agents/email.ts",
-      "line": 221,
+      "line": 222,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "{\n          to: recipientEmail,\n        }",
@@ -66769,7 +66769,7 @@
     },
     {
       "path": "server/lib/notifications/agents/email.ts",
-      "line": 260,
+      "line": 261,
       "kind": "message-helper-return",
       "field": "message",
       "expression": "{\n        template: path.join(\n          __dirname,\n          '../../../templates/email/media-request'\n        ),\n        message: {\n          to: recipientEmail,\n        },\n        locals: {\n          event: content.event,\n          body: content.message ?? '',\n          locale: emailLocale,\n          direction,\n          greeting:\n            recipientName && recipientName !== recipientEmail\n              ? intl.formatMessage(messages.greeting, {\n                  recipientName: `\\u2068${recipientName}\\u2069`,\n                })\n              : undefined,\n          requestedByLabel: intl.formatMessage(messages.requestedByLabel),\n          openApplicationLabel: intl.formatMessage(messages.openApplication, {\n            applicationTitle,\n          }),\n          mediaName: payload.subject,\n          mediaExtra: payload.softwareRequestStatus\n            ? []\n            : (payload.extra ?? []),\n          imageUrl: embedPoster ? payload.image : undefined,\n          timestamp: new Date().toTimeString(),\n          requestedBy: payload.notifyUser?.displayName ?? '',\n          actionUrl: getNotificationActionUrl(payload, applicationUrl),\n          actionLabel: intl.formatMessage(getNotificationActionLabel(payload), {\n            applicationTitle,\n          }),\n          applicationUrl,\n          applicationTitle,\n          logoUrl,\n          recipientName,\n          recipientEmail,\n        },\n      }",
@@ -66778,7 +66778,7 @@
     },
     {
       "path": "server/lib/notifications/agents/email.ts",
-      "line": 265,
+      "line": 266,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "{\n          to: recipientEmail,\n        }",
@@ -66787,7 +66787,7 @@
     },
     {
       "path": "server/lib/notifications/agents/email.ts",
-      "line": 346,
+      "line": 347,
       "kind": "message-helper-return",
       "field": "message",
       "expression": "{\n        template: path.join(__dirname, '../../../templates/email/media-issue'),\n        message: {\n          to: recipientEmail,\n        },\n        locals: {\n          event: payload.event,\n          body,\n          locale: emailLocale,\n          direction,\n          greeting:\n            recipientName && recipientName !== recipientEmail\n              ? intl.formatMessage(messages.greeting, {\n                  recipientName: `\\u2068${recipientName}\\u2069`,\n                })\n              : undefined,\n          viewIssueLabel: intl.formatMessage(messages.viewIssueIn, {\n            applicationTitle,\n          }),\n          issueDescription: payload.message,\n          issueComment: payload.comment?.message,\n          mediaName: payload.subject,\n          extra: payload.extra ?? [],\n          imageUrl: embedPoster ? payload.image : undefined,\n          timestamp: new Date().toTimeString(),\n          actionUrl: getNotificationActionUrl(payload, applicationUrl),\n          applicationUrl,\n          applicationTitle,\n          logoUrl,\n          recipientName,\n          recipientEmail,\n        },\n      }",
@@ -66796,7 +66796,7 @@
     },
     {
       "path": "server/lib/notifications/agents/email.ts",
-      "line": 348,
+      "line": 349,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "{\n          to: recipientEmail,\n        }",
@@ -66805,7 +66805,7 @@
     },
     {
       "path": "server/lib/notifications/agents/email.ts",
-      "line": 381,
+      "line": 382,
       "kind": "message-helper-return",
       "field": "message",
       "expression": "undefined",
@@ -66814,7 +66814,7 @@
     },
     {
       "path": "server/lib/notifications/agents/email.ts",
-      "line": 435,
+      "line": 436,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "e.message",
@@ -66823,7 +66823,7 @@
     },
     {
       "path": "server/lib/notifications/agents/email.ts",
-      "line": 495,
+      "line": 496,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "e.message",
@@ -66832,7 +66832,7 @@
     },
     {
       "path": "server/lib/notifications/agents/gotify.ts",
-      "line": 97,
+      "line": 99,
       "kind": "authored-message-variable",
       "field": "message",
       "expression": "content.message && !payload.comment\n        ? `${escapeGotifyMarkdownText(content.message)}  \\n\\n`\n        : ''",
@@ -66841,7 +66841,7 @@
     },
     {
       "path": "server/lib/notifications/agents/gotify.ts",
-      "line": 97,
+      "line": 99,
       "kind": "authored-message-variable",
       "field": "message",
       "expression": "content.message && !payload.comment\n        ? `${escapeGotifyMarkdownText(content.message)}  \\n\\n`\n        : ''",
@@ -66859,7 +66859,7 @@
     },
     {
       "path": "server/lib/notifications/agents/ntfy.ts",
-      "line": 72,
+      "line": 74,
       "kind": "authored-message-variable",
       "field": "message",
       "expression": "content.message && !payload.comment\n        ? escapeNtfyMarkdownText(content.message)\n        : ''",
@@ -66868,7 +66868,7 @@
     },
     {
       "path": "server/lib/notifications/agents/ntfy.ts",
-      "line": 72,
+      "line": 74,
       "kind": "authored-message-variable",
       "field": "message",
       "expression": "content.message && !payload.comment\n        ? escapeNtfyMarkdownText(content.message)\n        : ''",
@@ -66877,7 +66877,7 @@
     },
     {
       "path": "server/lib/notifications/agents/ntfy.ts",
-      "line": 236,
+      "line": 238,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "e.message",
@@ -66886,7 +66886,7 @@
     },
     {
       "path": "server/lib/notifications/agents/pushbullet.ts",
-      "line": 159,
+      "line": 167,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "e.message",
@@ -66895,7 +66895,7 @@
     },
     {
       "path": "server/lib/notifications/agents/pushbullet.ts",
-      "line": 203,
+      "line": 211,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "e.message",
@@ -66904,7 +66904,7 @@
     },
     {
       "path": "server/lib/notifications/agents/pushbullet.ts",
-      "line": 257,
+      "line": 265,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "e.message",
@@ -66913,7 +66913,7 @@
     },
     {
       "path": "server/lib/notifications/agents/pushover.ts",
-      "line": 175,
+      "line": 177,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "e.message",
@@ -66922,7 +66922,7 @@
     },
     {
       "path": "server/lib/notifications/agents/pushover.ts",
-      "line": 200,
+      "line": 202,
       "kind": "authored-message-variable",
       "field": "message",
       "expression": "content.event ? `<b>${escape(payload.subject)}</b>` : ''",
@@ -66931,7 +66931,7 @@
     },
     {
       "path": "server/lib/notifications/agents/pushover.ts",
-      "line": 200,
+      "line": 202,
       "kind": "authored-message-variable",
       "field": "message",
       "expression": "content.event ? `<b>${escape(payload.subject)}</b>` : ''",
@@ -66976,7 +66976,7 @@
     },
     {
       "path": "server/lib/notifications/agents/telegram.ts",
-      "line": 120,
+      "line": 122,
       "kind": "authored-message-variable",
       "field": "message",
       "expression": "''",
@@ -67021,7 +67021,7 @@
     },
     {
       "path": "server/lib/notifications/agents/webpush.ts",
-      "line": 33,
+      "line": 34,
       "kind": "authored-message-variable",
       "field": "messages",
       "expression": "defineMessages('notifications.agents.webpush', {\n  autoRequested: 'Automatically submitted a new {quality}{mediaType} request.',\n  approved: 'Your {quality}{mediaType} request has been approved.',\n  autoApproved:\n    'Automatically approved a new {quality}{mediaType} request from {userName}.',\n  available: 'Your {quality}{mediaType} request is now available!',\n  availabilitySubscription: 'A title you follow is now available!',\n  declined: 'Your {quality}{mediaType} request was declined.',\n  failed: 'Failed to process {quality}{mediaType} request.',\n  pending:\n    'Approval required for a new {quality}{mediaType} request from {userName}.',\n  issueCreated: 'A new {issueType} was reported by {userName}.',\n  issueComment: '{userName} commented on the {issueType}.',\n  issueResolved: 'The {issueType} was marked as resolved by {userName}!',\n  issueReopened: 'The {issueType} was reopened by {userName}.',\n  viewIssue: 'View Issue',\n  viewRequestStatus: 'View Request Status',\n  viewMedia: 'View Media',\n})",
@@ -67030,7 +67030,7 @@
     },
     {
       "path": "server/lib/notifications/agents/webpush.ts",
-      "line": 311,
+      "line": 312,
       "kind": "authored-message-variable",
       "field": "webPushError",
       "expression": "e as WebPushError",
@@ -67039,7 +67039,7 @@
     },
     {
       "path": "server/lib/notifications/agents/webpush.ts",
-      "line": 316,
+      "line": 317,
       "kind": "authored-message-variable",
       "field": "errorMessage",
       "expression": "webPushError.message || String(e)",
@@ -67048,7 +67048,7 @@
     },
     {
       "path": "server/lib/notifications/agents/webpush.ts",
-      "line": 316,
+      "line": 317,
       "kind": "authored-message-variable",
       "field": "errorMessage",
       "expression": "webPushError.message || String(e)",
