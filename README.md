@@ -87,6 +87,7 @@ For local MCP access, see the [SnapeTech MCP integration guide](./docs/integrati
 - Labeled movie and TV request destinations across multiple Radarr and Sonarr instances, with per-user access and availability tracked for each destination.
 - Managers can approve a one-time movie or TV request exception when a user's quota is full; optional Slack actions use a mapped account and the same request permissions as the web app.
 - Automation service integration with Radarr, Sonarr, Lidarr, and Bookshelf/Readarr-compatible APIs.
+- Optional per-instance Radarr/Sonarr tag exclusions for library scans, with existing request history preserved and non-excluded service copies still counted.
 - Sonarr v5 support alongside v3/v4, including metadata-language and season-order options with explicit season mapping for recovery.
 - An optional TV request gate that checks whether the previous regular season was watched through a linked Plex, Jellyfin, or Emby account.
 - Admin-configured Prowlarr connection, per-indexer diagnostics, category coverage, and format-aware manual search across movies, TV, music, books, comics, magazines, ROMs, and PC games, with title-prefilled search links from media details; approved requests still go through their configured acquisition providers.
@@ -179,6 +180,9 @@ Recent repository updates include:
 - **Sonarr:** v5 API support alongside v3/v4, metadata-language and season-order
   choices, and request recovery scoped to the selected service, quality, and
   season order.
+- **Radarr/Sonarr sync:** administrators can omit tagged library entries from
+  an instance's scan without losing existing SeerrNG requests or hiding a
+  matching copy found on another non-excluded service.
 - **Integrations:** MusicBrainz and Cover Art Archive connectivity checks with
   bounded artwork traffic controls, plus a preview-first BookshelfNG to
   ChaptarrNG database migration helper for single-database setups.

@@ -429,11 +429,20 @@ export const parseRadarrSettings = (
   );
   if ('error' in minimumAvailability) return minimumAvailability;
 
+  const syncExcludedTags = parseNumberArray(
+    settings.syncExcludedTags === undefined
+      ? (current?.syncExcludedTags ?? [])
+      : settings.syncExcludedTags,
+    'syncExcludedTags'
+  );
+  if ('error' in syncExcludedTags) return syncExcludedTags;
+
   return {
     value: {
       ...parsed.value,
       ...requestButton.value,
       minimumAvailability: minimumAvailability.value,
+      syncExcludedTags: syncExcludedTags.value,
     },
   };
 };
@@ -479,6 +488,13 @@ export const parseSonarrSettings = (
 
   const animeTags = parseNumberArray(settings.animeTags, 'animeTags');
   if ('error' in animeTags) return animeTags;
+  const syncExcludedTags = parseNumberArray(
+    settings.syncExcludedTags === undefined
+      ? (current?.syncExcludedTags ?? [])
+      : settings.syncExcludedTags,
+    'syncExcludedTags'
+  );
+  if ('error' in syncExcludedTags) return syncExcludedTags;
   const activeAnimeProfileId = parseOptionalServiceId(
     settings.activeAnimeProfileId,
     'activeAnimeProfileId'
@@ -539,6 +555,7 @@ export const parseSonarrSettings = (
       defaultMetadataLanguageId: defaultMetadataLanguageId.value,
       defaultSeasonType,
       animeTags: animeTags.value,
+      syncExcludedTags: syncExcludedTags.value,
       enableSeasonFolders: enableSeasonFolders.value,
       monitorNewItems,
     },

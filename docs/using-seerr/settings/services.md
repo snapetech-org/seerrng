@@ -147,6 +147,23 @@ If the hostname or IP address you configured above is not accessible outside you
 
 Enable this setting if you would like to scan your Radarr/Sonarr server for existing media/request status. It is recommended that you enable this setting, so that users cannot submit requests for media which has already been requested or is already available.
 
+#### Exclude Tags from Scan (optional)
+
+After testing the connection, select any Radarr or Sonarr tags whose matching
+movies or series should be omitted from that service's SeerrNG scan. A matching
+item is marked unknown for that instance, so it will not block a request to the
+same destination. Existing SeerrNG media records and requests are retained. If
+that instance was the only recorded source, its title-wide availability is also
+cleared; a matching copy on another non-excluded service can still count as
+available. If the same endpoint is configured more than once, its active
+entries share one scan and their excluded tags are combined.
+
+This setting only changes the Radarr or Sonarr scan. Other configured services
+can still report the same media as available, including in Discover's Recently
+Added shelf when a media-server integration reports it. Existing settings
+files need no migration; an omitted exclusion list behaves as empty. The
+feature is inactive until **Enable Scan** is selected.
+
 #### Enable Automatic Search (optional)
 
 Enable this setting to have Radarr/Sonarr to automatically search for media upon approval of a request.
