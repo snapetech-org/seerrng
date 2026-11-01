@@ -108,9 +108,12 @@ export const RequestStatusMessageText = ({
 }): ReactNode => {
   const intl = useIntl();
   if (messageKey) {
+    const descriptor = messagesByKey[messageKey];
+    const messageLocale =
+      intl.messages[descriptor.id] === undefined ? 'en' : intl.locale;
     return (
-      <span lang={intl.locale} dir="auto">
-        {intl.formatMessage(messagesByKey[messageKey])}
+      <span lang={messageLocale} dir="auto">
+        {intl.formatMessage(descriptor)}
       </span>
     );
   }
