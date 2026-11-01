@@ -9,12 +9,39 @@ const htmlToTextPath =
 const deepmergePath = createRequire(htmlToTextPath).resolve('deepmerge');
 const deepmerge = createRequire(deepmergePath)(deepmergePath);
 
-test('deepmerge rejects own __proto__ keys on null-prototype merge targets', () => {
+const assertNoPoisonedPrototype = (value, property) => {
+  assert.equal(Object.getPrototypeOf(value), Object.prototype);
+  assert.equal(Object.hasOwn(value, '__proto__'), false);
+  assert.equal(value[property], undefined);
+  assert.equal({}[property], undefined);
+};
+
+test('deepmerge rejects source __proto__ keys on null-prototype targets', () => {
   const source = JSON.parse('{"__proto__":{"seerrngPolluted":true}}');
   const result = deepmerge(Object.create(null), source);
 
-  assert.equal(Object.getPrototypeOf(result), Object.prototype);
-  assert.equal(Object.hasOwn(result, '__proto__'), false);
-  assert.equal(result.seerrngPolluted, undefined);
-  assert.equal({}.seerrngPolluted, undefined);
+  assertNoPoisonedPrototype(result, 'seerrngPolluted');
+});
+
+test('deepmerge rejects nested source __proto__ keys on null placeholders', () => {
+  const source = JSON.parse(
+    '{"session":{"__proto__":{"seerrngPolluted":true}}}'
+  );
+  const result = deepmerge({ session: null }, source);
+
+  assertNoPoisonedPrototype(result.session, 'seerrngPolluted');
+});
+
+test('deepmerge rejects own __proto__ keys copied from merge targets', () => {
+  const target = JSON.parse('{"__proto__":{"seerrngPolluted":true}}');
+  const result = deepmerge(target, {});
+
+  assertNoPoisonedPrototype(result, 'seerrngPolluted');
+});
+
+test('deepmerge rejects __proto__ keys while cloning array objects', () => {
+  const item = JSON.parse('{"__proto__":{"seerrngPolluted":true}}');
+  const result = deepmerge([], [item]);
+
+  assertNoPoisonedPrototype(result[0], 'seerrngPolluted');
 });

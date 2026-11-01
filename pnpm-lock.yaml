@@ -57,7 +57,7 @@ overrides:
 
 patchedDependencies:
   deepmerge@4.3.1:
-    hash: 3dfae8a71ba803765abe4c61c02845340e2d2feafaaf99fee1875ccaaad649ad
+    hash: 817d264f1c4fe013bfb9ba263214b0a25736b01f712c134b6bdb12f8d0c3d54b
     path: patches/deepmerge@4.3.1.patch
   eslint-plugin-jsx-a11y@6.10.2:
     hash: b8ef271a4b50b7ee48a5e92a3ee36f8e5ca942682264a445d0b76b82b084e993
@@ -9173,7 +9173,7 @@ snapshots:
     dependencies:
       '@svgr/core': 8.1.0(typescript@6.0.3)
       cosmiconfig: 8.3.6(typescript@6.0.3)
-      deepmerge: 4.3.1(patch_hash=3dfae8a71ba803765abe4c61c02845340e2d2feafaaf99fee1875ccaaad649ad)
+      deepmerge: 4.3.1(patch_hash=817d264f1c4fe013bfb9ba263214b0a25736b01f712c134b6bdb12f8d0c3d54b)
       svgo: 3.3.5
     transitivePeerDependencies:
       - typescript
@@ -10681,7 +10681,7 @@ snapshots:
 
   deepmerge@2.2.1: {}
 
-  deepmerge@4.3.1(patch_hash=3dfae8a71ba803765abe4c61c02845340e2d2feafaaf99fee1875ccaaad649ad): {}
+  deepmerge@4.3.1(patch_hash=817d264f1c4fe013bfb9ba263214b0a25736b01f712c134b6bdb12f8d0c3d54b): {}
 
   define-data-property@1.1.4:
     dependencies:
@@ -11717,7 +11717,7 @@ snapshots:
   html-to-text@9.0.5:
     dependencies:
       '@selderee/plugin-htmlparser2': 0.11.0
-      deepmerge: 4.3.1(patch_hash=3dfae8a71ba803765abe4c61c02845340e2d2feafaaf99fee1875ccaaad649ad)
+      deepmerge: 4.3.1(patch_hash=817d264f1c4fe013bfb9ba263214b0a25736b01f712c134b6bdb12f8d0c3d54b)
       dom-serializer: 2.0.0
       htmlparser2: 8.0.2
       selderee: 0.11.0

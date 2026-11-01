@@ -6,6 +6,13 @@ diff --git a/index.js b/index.js
 +	if (key === '__proto__') {
 +		return true
 +	}
+@@ -57,3 +60,6 @@
+ 		getKeys(target).forEach(function(key) {
++			if (key === '__proto__') {
++				return
++			}
+ 			destination[key] = cloneUnlessOtherwiseSpecified(target[key], options)
+ 		})
 diff --git a/dist/cjs.js b/dist/cjs.js
 --- a/dist/cjs.js
 +++ b/dist/cjs.js
@@ -14,10 +21,25 @@ diff --git a/dist/cjs.js b/dist/cjs.js
 +	if (key === '__proto__') {
 +		return true
 +	}
+@@ -82,3 +85,6 @@
+ 		getKeys(target).forEach(function(key) {
++			if (key === '__proto__') {
++				return
++			}
+ 			destination[key] = cloneUnlessOtherwiseSpecified(target[key], options);
+ 		});
 diff --git a/dist/umd.js b/dist/umd.js
 --- a/dist/umd.js
 +++ b/dist/umd.js
-@@ -77,0 +78,3 @@
+@@ -77,1 +77,4 @@
+ 	function propertyIsUnsafe(target, key) {
 +		if (key === '__proto__') {
 +			return true
 +		}
+@@ -86,3 +89,6 @@
+ 			getKeys(target).forEach(function(key) {
++				if (key === '__proto__') {
++					return
++				}
+ 				destination[key] = cloneUnlessOtherwiseSpecified(target[key], options);
+ 			});

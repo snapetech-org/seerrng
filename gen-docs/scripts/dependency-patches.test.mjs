@@ -27,14 +27,30 @@ const svgoRequire = createRequire(
 );
 const deepmerge = svgoRequire('deepmerge');
 
-test('patched deepmerge rejects prototype keys in the docs build dependency graph', () => {
-  const source = JSON.parse('{"__proto__":{"seerrngDocsPolluted":true}}');
-  const result = deepmerge(Object.create(null), source);
-
-  assert.equal(Object.getPrototypeOf(result), Object.prototype);
-  assert.equal(Object.hasOwn(result, '__proto__'), false);
-  assert.equal(result.seerrngDocsPolluted, undefined);
+const assertNoDocsPrototypePoisoning = (value) => {
+  assert.equal(Object.getPrototypeOf(value), Object.prototype);
+  assert.equal(Object.hasOwn(value, '__proto__'), false);
+  assert.equal(value.seerrngDocsPolluted, undefined);
   assert.equal({}.seerrngDocsPolluted, undefined);
+};
+
+test('patched deepmerge rejects prototype keys in all docs build merge paths', () => {
+  const source = JSON.parse('{"__proto__":{"seerrngDocsPolluted":true}}');
+  const nullTargetResult = deepmerge(Object.create(null), source);
+  const nestedNullResult = deepmerge(
+    { session: null },
+    JSON.parse('{"session":{"__proto__":{"seerrngDocsPolluted":true}}}')
+  );
+  const ownTargetResult = deepmerge(
+    JSON.parse('{"__proto__":{"seerrngDocsPolluted":true}}'),
+    {}
+  );
+  const arrayCloneResult = deepmerge([], [source]);
+
+  assertNoDocsPrototypePoisoning(nullTargetResult);
+  assertNoDocsPrototypePoisoning(nestedNullResult.session);
+  assertNoDocsPrototypePoisoning(ownTargetResult);
+  assertNoDocsPrototypePoisoning(arrayCloneResult[0]);
 });
 
 test('patched Docusaurus Globby preserves directory expansion and ignore options', async () => {
