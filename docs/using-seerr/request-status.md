@@ -36,6 +36,21 @@ approve, decline, or edit, depending on your permissions. Actions for deleting
 status entries or removing available media are permission-controlled and
 include a confirmation step.
 
+### Automatic retries for temporary provider failures
+
+When an approved movie or TV request cannot reach Radarr or Sonarr because of a
+temporary network failure, timeout, rate limit, or server error, SeerrNG keeps
+the request approved and retries it in the background. The retry delay starts
+at one minute, doubles between attempts, and is capped at six hours; after 50
+failed attempts the request moves to **Failed** and can be retried manually
+after the provider problem is fixed. Invalid settings and other non-transient
+errors remain visible for review instead of being retried repeatedly.
+
+If Radarr or Sonarr accepted a request before its response was lost, SeerrNG
+uses the existing TMDB or TVDB identity to reconcile that title during retry.
+The original request and its selected destination remain attached to the
+result.
+
 For TV requests, SeerrNG can resolve a missing TVDB identifier through TVDB's
 confirmed TMDB match or the selected Sonarr server's TMDB lookup. It checks
 requested regular seasons against official TVDB season data before dispatch.

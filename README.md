@@ -85,6 +85,7 @@ For local MCP access, see the [SnapeTech MCP integration guide](./docs/integrati
 - Media-server integration with Plex, Jellyfin, and Emby, including watch-state-aware My Library views scoped to each linked account.
 - Optional Jellyfin and Emby profile sync during user imports, refreshing linked provider names and avatars while preserving SeerrNG email addresses, local passwords, and permissions.
 - Labeled movie and TV request destinations across multiple Radarr and Sonarr instances, with per-user access and availability tracked for each destination.
+- Temporary Radarr and Sonarr connection or server failures retry automatically with durable, bounded backoff; non-transient failures remain visible for review and manual retry.
 - Managers can approve a one-time movie or TV request exception when a user's quota is full; optional Slack actions use a mapped account and the same request permissions as the web app.
 - Automation service integration with Radarr, Sonarr, Lidarr, and Bookshelf/Readarr-compatible APIs.
 - Sonarr v5 support alongside v3/v4, including metadata-language and season-order options with explicit season mapping for recovery.
