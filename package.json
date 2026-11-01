@@ -226,7 +226,7 @@
     "vitest": "^4.1.12"
   },
   "engines": {
-    "node": "^24.22.1",
+    "node": "^24.22.2",
     "pnpm": "^10.0.0"
   },
   "scarfSettings": {

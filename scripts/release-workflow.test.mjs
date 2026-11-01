@@ -1737,7 +1737,7 @@ test('main CI release-note checks fetch tags with shallow history', () => {
 
 test('containerized CI test jobs use pinned Debian images with Git available', () => {
   const ci = readWorkflow('ci.yml');
-  const imagePattern = /^node:24\.22\.1-bookworm@sha256:[0-9a-f]{64}$/u;
+  const imagePattern = /^node:24\.22\.2-bookworm@sha256:[0-9a-f]{64}$/u;
 
   assert.match(ci.jobs['unit-test'].container.image, imagePattern);
   assert.match(ci.jobs['node-test'].container.image, imagePattern);

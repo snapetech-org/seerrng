@@ -72,8 +72,8 @@ jobs:
           set -euo pipefail
           mkdir -p flatpak-src/seerrng flatpak-src/node
           tar -xzf "seerrng-${{ steps.version.outputs.tag }}-linux-x64.tar.gz" --strip-components=1 -C flatpak-src/seerrng
-          curl -fsSLo node.tar.xz https://nodejs.org/dist/v24.22.1/node-v24.22.1-linux-x64.tar.xz
-          echo "6c172a9ab6718f7b801fb5a7bd486af2ee5e32758086a04b84fcce2aa77095e6  node.tar.xz" | sha256sum -c -
+          curl -fsSLo node.tar.xz https://nodejs.org/dist/v24.22.2/node-v24.22.2-linux-x64.tar.xz
+          echo "48cc0e21e048790e54c0cf5749c2725005313d652651c40b7a21feb9697aaf75  node.tar.xz" | sha256sum -c -
           tar -xJf node.tar.xz --strip-components=1 -C flatpak-src/node
       - name: Build Flatpak bundle
         run: |
