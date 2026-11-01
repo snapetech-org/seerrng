@@ -49,6 +49,36 @@ test('each theme owns its two-up narrow-phone poster width', () => {
   }
 });
 
+test('narrow-phone poster widths override each theme default in the cascade', () => {
+  for (const [id, stylesheet] of Object.entries(interfaceThemes)) {
+    const defaultRule = stylesheet.nodes.find(
+      (node) =>
+        node.type === 'rule' &&
+        node.selector.includes(`data-interface-theme='${id}'`) &&
+        node.nodes.some(
+          (child) =>
+            child.type === 'decl' &&
+            child.prop === '--poster-width' &&
+            child.value.endsWith('px')
+        )
+    );
+    const narrowRule = stylesheet.nodes.find(
+      (node) =>
+        node.type === 'atrule' &&
+        node.name === 'media' &&
+        /max-width:\s*389px/.test(node.params)
+    );
+
+    assert.ok(defaultRule, `${id} declares its default poster width`);
+    assert.ok(narrowRule, `${id} declares a narrow-phone override`);
+    assert.ok(
+      stylesheet.nodes.indexOf(narrowRule) >
+        stylesheet.nodes.indexOf(defaultRule),
+      `${id} applies its narrow-phone width after the default`
+    );
+  }
+});
+
 test('custom properties used by root-level overrides are defined at :root', () => {
   // A var() that is only defined on a descendant (for example .page-layout) is
   // invalid at :root, which made --poster-width empty and collapsed posters.
