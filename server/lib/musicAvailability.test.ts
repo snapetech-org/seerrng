@@ -27,6 +27,22 @@ afterEach(() => {
 });
 
 describe('requested music availability reconciliation', () => {
+  it('skips requests whose linked media is missing instead of aborting Download Sync', async () => {
+    const orphanedRequests = [MediaType.MOVIE, MediaType.MUSIC].map(
+      (type) =>
+        ({
+          id: 9000,
+          type,
+          status: MediaRequestStatus.APPROVED,
+          media: null,
+        }) as unknown as MediaRequest
+    );
+
+    await assert.doesNotReject(
+      reconcileRequestedMusicAvailability(orphanedRequests)
+    );
+  });
+
   it('marks a Picard-processed request available when Lidarr reports imported tracks', async () => {
     getSettings().lidarr = [
       {
