@@ -91,7 +91,12 @@ export function ExtraSearch({
         placeholder={placeholder}
         value={value}
         autoComplete="off"
+        autoCapitalize="none"
+        autoCorrect="off"
+        spellCheck={false}
+        enterKeyHint="search"
         onChange={(e) => onChange(e.target.value)}
+        onKeyDown={(e) => e.key === 'Enter' && e.currentTarget.blur()}
       />
     </label>
   );

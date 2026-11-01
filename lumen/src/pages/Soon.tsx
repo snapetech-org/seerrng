@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import {
   requestMovie,
@@ -33,6 +34,7 @@ export default function Soon() {
   const movies = useApi<Paged<TitleResult>>('/discover/movies/upcoming').data;
   const tv = useApi<Paged<TitleResult>>('/discover/tv/upcoming').data;
   const toast = useToast();
+  const [asked, setAsked] = useState<Set<string>>(new Set());
   const items = [
     ...(movies?.results || []).map((m) => ({
       ...m,
@@ -52,13 +54,23 @@ export default function Soon() {
     const k = it.date.slice(0, 7);
     months.set(k, [...(months.get(k) || []), it]);
   }
+  // rows flip to Requested as soon as you tap (the lists are cached, so their status lags)
   const req = async (it: (typeof items)[number]) => {
+    const key = it.mediaType + it.id;
+    const unask = () =>
+      setAsked((a) => {
+        const n = new Set(a);
+        n.delete(key);
+        return n;
+      });
+    setAsked((a) => new Set(a).add(key));
     try {
       await (it.mediaType === 'tv'
         ? requestSeries(it.id)
         : requestMovie(it.id));
       toast(`Requested ${it.title || it.name}. It downloads when it’s out.`);
     } catch (e) {
+      unask();
       toast(e instanceof Error ? e.message : 'Request failed');
     }
   };
@@ -82,7 +94,11 @@ export default function Soon() {
           </h2>
           <div className="sl">
             {list.map((it) => {
-              const s = statusOf(it.mediaInfo);
+              const s =
+                statusOf(it.mediaInfo) ||
+                (asked.has(it.mediaType + it.id)
+                  ? ({ k: 'wait', word: 'Requested', ico: 'clock' } as const)
+                  : null);
               return (
                 <div className="si" key={it.mediaType + it.id}>
                   <div className="date">

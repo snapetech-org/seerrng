@@ -1,5 +1,10 @@
 import { useEffect, useState } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import {
+  Link,
+  useLocation,
+  useNavigationType,
+  useSearchParams,
+} from 'react-router-dom';
 import {
   api,
   hcBookSearch,
@@ -10,6 +15,8 @@ import {
   type TitleResult,
 } from '../api';
 import { BookCard, Section, TitleCard } from '../components/cards';
+import { useExtras } from '../extras';
+import { useApi } from '../hooks';
 import { Icon } from '../icons';
 import { usePrefs } from '../settings';
 
@@ -34,6 +41,37 @@ export default function Search() {
   const [recent, setRecent] = useState<string[]>(() =>
     JSON.parse(localStorage.getItem(RECENT_KEY) || '[]')
   );
+  const [searching, setSearching] = useState(false);
+  const navType = useNavigationType();
+  // a new key per history entry, even when Enter pushes the same URL typing already showed
+  const entryKey = useLocation().key;
+  const extras = useExtras();
+  const term0 = (p.get('q') || '').trim();
+  // nothing typed yet: something to tap instead of an empty screen
+  const trending = useApi<Paged<TitleResult>>(
+    term0 ? null : '/discover/trending'
+  ).data;
+  // a search is remembered when it's finished (Enter, or a result opened), not on every keystroke,
+  // so slow typing on a phone doesn't fill the list with "the off", "the offi"…
+  const remember = (t: string) => {
+    t = t.trim();
+    if (t.length < 2) return;
+    setRecent((cur) => {
+      const next = [t, ...cur.filter((r) => r !== t)].slice(0, 6);
+      localStorage.setItem(RECENT_KEY, JSON.stringify(next));
+      return next;
+    });
+  };
+  const forget = () => {
+    setRecent([]);
+    localStorage.removeItem(RECENT_KEY);
+  };
+  // Enter in the desktop search bar opens /search?q= as a new history entry (typing only replaces
+  // it), so a pushed query counts as a finished search, also when already on this page
+  useEffect(() => {
+    if (navType === 'PUSH' && term0) remember(term0);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [entryKey]);
   const scopes = (Object.keys(SCOPES) as Scope[]).filter(
     (s) => prefs.showBooks || (s !== 'ebook' && s !== 'audio')
   );
@@ -46,9 +84,11 @@ export default function Search() {
     if (!term) {
       setTitles(null);
       setBooks(null);
+      setSearching(false);
       return;
     }
     let live = true;
+    setSearching(true);
     const t = setTimeout(async () => {
       const wantTitles = f === 'all' || f === 'movie' || f === 'tv';
       const wantBooks =
@@ -90,9 +130,7 @@ export default function Search() {
                 b.mediaType === 'book' && b.posterPath && !isBookshelf(b.id)
             )
       );
-      const next = [term, ...recent.filter((r) => r !== term)].slice(0, 6);
-      setRecent(next);
-      localStorage.setItem(RECENT_KEY, JSON.stringify(next));
+      setSearching(false);
     }, 300);
     return () => {
       live = false;
@@ -140,9 +178,19 @@ export default function Search() {
             placeholder={ph}
             value={q}
             autoComplete="off"
+            autoCapitalize="none"
+            autoCorrect="off"
+            spellCheck={false}
+            enterKeyHint="search"
             onChange={(e) => {
               setQ(e.target.value);
               setParam('q', e.target.value);
+            }}
+            onKeyDown={(e) => {
+              if (e.key !== 'Enter') return;
+              remember(e.currentTarget.value);
+              // phones: put the keyboard away so the results can be seen
+              e.currentTarget.blur();
             }}
           />
         </label>
@@ -160,7 +208,14 @@ export default function Search() {
         </div>
       </header>
       {!p.get('q') && !!recent.length && (
-        <Section title="Recent searches">
+        <Section
+          title="Recent searches"
+          action={
+            <button className="link" onClick={forget}>
+              Clear
+            </button>
+          }
+        >
           <div className="recent">
             {recent.map((r) => (
               <button
@@ -178,7 +233,50 @@ export default function Search() {
           </div>
         </Section>
       )}
-      {nothing && (
+      {!term0 && (
+        <Section title="Browse">
+          <div className="chips wrap">
+            {(
+              [
+                ['/movies', 'Movies', true],
+                ['/series', 'Series', true],
+                ['/books', 'Books', prefs.showBooks],
+                ['/audiobooks', 'Audiobooks', prefs.showBooks],
+                ['/soon', 'Coming soon', true],
+              ] as const
+            )
+              .filter((x) => x[2])
+              .map(([to, t]) => (
+                <Link key={to} className="chip" to={to}>
+                  {t}
+                </Link>
+              ))}
+            {extras.list.map((e) => (
+              <Link key={e.path} className="chip" to={e.path}>
+                {e.label}
+              </Link>
+            ))}
+          </div>
+        </Section>
+      )}
+      {!term0 && !!trending?.results.length && (
+        <Section title="Trending this week">
+          <div className="grid">
+            {trending.results
+              .filter((r) => r.mediaType === 'movie' || r.mediaType === 'tv')
+              .slice(0, 12)
+              .map((m) => (
+                <TitleCard key={m.mediaType + m.id} it={m} />
+              ))}
+          </div>
+        </Section>
+      )}
+      {searching && (
+        <p className="note searching" role="status">
+          Searching…
+        </p>
+      )}
+      {nothing && !searching && (
         <div className="empty">
           <b>
             No {f === 'all' ? 'matches' : SCOPES[f].toLowerCase()} for “
@@ -197,41 +295,48 @@ export default function Search() {
           )}
         </div>
       )}
-      {!!movies.length && (
-        <Section title="Movies">
-          <div className="grid">
-            {movies.map((m) => (
-              <TitleCard key={m.id} it={m} />
-            ))}
-          </div>
-        </Section>
-      )}
-      {!!shows.length && (
-        <Section title="Series">
-          <div className="grid">
-            {shows.map((m) => (
-              <TitleCard key={m.id} it={m} />
-            ))}
-          </div>
-        </Section>
-      )}
-      {!!bookCards.length && (
-        <Section
-          title={
-            f === 'audio'
-              ? 'Audiobooks'
-              : f === 'ebook'
-                ? 'Books'
-                : 'Books & audiobooks'
-          }
-        >
-          <div className={`grid ${f === 'audio' ? 'sqg' : ''}`}>
-            {bookCards.map((b) => (
-              <BookCard key={b.id} b={b} />
-            ))}
-          </div>
-        </Section>
-      )}
+      <div
+        className={`results ${searching ? 'stale' : ''}`}
+        onClickCapture={(e) => {
+          if ((e.target as HTMLElement).closest('a,button')) remember(term0);
+        }}
+      >
+        {!!movies.length && (
+          <Section title="Movies">
+            <div className="grid">
+              {movies.map((m) => (
+                <TitleCard key={m.id} it={m} />
+              ))}
+            </div>
+          </Section>
+        )}
+        {!!shows.length && (
+          <Section title="Series">
+            <div className="grid">
+              {shows.map((m) => (
+                <TitleCard key={m.id} it={m} />
+              ))}
+            </div>
+          </Section>
+        )}
+        {!!bookCards.length && (
+          <Section
+            title={
+              f === 'audio'
+                ? 'Audiobooks'
+                : f === 'ebook'
+                  ? 'Books'
+                  : 'Books & audiobooks'
+            }
+          >
+            <div className={`grid ${f === 'audio' ? 'sqg' : ''}`}>
+              {bookCards.map((b) => (
+                <BookCard key={b.id} b={b} />
+              ))}
+            </div>
+          </Section>
+        )}
+      </div>
     </>
   );
 }

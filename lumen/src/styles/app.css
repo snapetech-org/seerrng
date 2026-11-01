@@ -7,6 +7,7 @@
 /* ---------- Shell ---------- */
 .app {
   min-height: 100vh;
+  min-height: 100dvh;
 }
 .view {
   max-width: 1320px;
@@ -1693,6 +1694,7 @@ body.is-detail .toast {
     position: sticky;
     top: 0;
     height: 100vh;
+    height: 100dvh;
     padding: 24px 14px;
     border-right: 1px solid var(--line);
     background: var(--surface);

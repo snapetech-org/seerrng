@@ -1,5 +1,4 @@
 import { useEffect, useState, type ReactNode } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { api, type Person, type RequestOptions } from '../api';
 import { useAuth } from '../auth';
 import { Icon, type IconName } from '../icons';
@@ -98,16 +97,9 @@ export function DetailTop({
   by?: ReactNode;
   line: ReactNode[];
 }) {
-  const nav = useNavigate();
+  // the floating back button lives in Shell, so it's there while the page loads or if it fails
   return (
     <>
-      <button
-        className="dback ph-only"
-        aria-label="Back"
-        onClick={() => nav(-1)}
-      >
-        <Icon name="chevL" />
-      </button>
       <div className={`dhero ${backdrop ? '' : 'blur'}`}>
         {(backdrop || poster) && <img src={backdrop || poster} alt="" />}
       </div>

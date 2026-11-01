@@ -23,6 +23,7 @@ import { PrefsProvider } from './settings';
 import './styles/app-react.css';
 import './styles/app.css';
 import './styles/lumen.css';
+import './styles/touch.css';
 
 function App() {
   const { user } = useAuth();

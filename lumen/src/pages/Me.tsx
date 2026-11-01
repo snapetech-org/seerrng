@@ -1,7 +1,7 @@
 import { useAuth } from '../auth';
 import { Section } from '../components/cards';
 import { initials, SEERR_PUBLIC_URL } from '../components/Shell';
-import { useApi } from '../hooks';
+import { CAN_HOVER, useApi } from '../hooks';
 import { Icon } from '../icons';
 import { DISCOVER_ROWS, usePrefs, type DiscoverRow } from '../settings';
 
@@ -138,7 +138,11 @@ export default function Me() {
             path="hoverRequest"
             on={prefs.hoverRequest}
             title="Quick request on posters"
-            sub="Hovering a poster shows Request without opening it"
+            sub={
+              CAN_HOVER
+                ? 'Hovering a poster shows Request without opening it'
+                : 'A + on each poster requests it without opening it'
+            }
           />
           <Toggle
             path="wholeSeriesDefault"

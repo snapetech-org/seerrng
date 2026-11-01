@@ -3,7 +3,7 @@ import { Link, useSearchParams } from 'react-router-dom';
 import { MediaStatus, type TitleResult } from '../api';
 import { MoreOnScroll, TitleCard } from '../components/cards';
 import { Avatar } from '../components/Shell';
-import { useApi, usePaged } from '../hooks';
+import { CAN_HOVER, useApi, usePaged } from '../hooks';
 import { Icon } from '../icons';
 import { usePrefs } from '../settings';
 
@@ -88,7 +88,7 @@ export default function Browse({ kind }: { kind: 'movie' | 'tv' }) {
         </div>
         <p className="sub">
           {kind === 'movie'
-            ? 'Hover a poster to request in one click. Everything on Plex has a green check.'
+            ? `${!prefs.hoverRequest ? 'Open a poster to request it.' : CAN_HOVER ? 'Hover a poster to request in one click.' : 'Tap + on a poster to request in one tap.'} Everything on Plex has a green check.`
             : prefs.wholeSeriesDefault
               ? 'Requesting gets the whole show. Only want some? Untick seasons on the show’s page.'
               : 'Pick the seasons you want on each show’s page.'}

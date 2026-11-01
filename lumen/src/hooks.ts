@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { api, hardcoverWorkId, hcCovers } from './api';
 
 // small response cache so going back to a page doesn't refetch everything
@@ -55,20 +56,39 @@ export const usePublicSettings = () =>
   useApi<PublicSettings>('/settings/public').data;
 
 // page-at-a-time lists (discover endpoints return { page, totalPages, results })
+// each history entry keeps what it had loaded, so Back lands on the same rows (and scroll spot)
+const pagedSnap = new Map<
+  string,
+  { items: unknown[]; page: number; total: number }
+>();
 export function usePaged<T>(base: string) {
-  const [items, setItems] = useState<T[]>([]);
-  const [page, setPage] = useState(0);
-  const [total, setTotal] = useState(1);
+  const entry = useLocation().key;
+  const snapKey = `${entry}|${base}`;
+  const snap = pagedSnap.get(snapKey);
+  const [items, setItems] = useState<T[]>((snap?.items as T[]) || []);
+  const [page, setPage] = useState(snap?.page || 0);
+  const [total, setTotal] = useState(snap?.total || 1);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   // one page in flight at a time: scroll triggers can fire twice before state catches up
   const inFlight = useRef<string | null>(null);
+  const shownBase = useRef(base);
   useEffect(() => {
-    setItems([]);
-    setPage(0);
-    setTotal(1);
+    if (shownBase.current === base) return; // first render: state already set above
+    shownBase.current = base;
+    const s = pagedSnap.get(`${entry}|${base}`);
+    setItems((s?.items as T[]) || []);
+    setPage(s?.page || 0);
+    setTotal(s?.total || 1);
     inFlight.current = null;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [base]);
+  useEffect(() => {
+    if (page > 0) pagedSnap.set(snapKey, { items, page, total });
+    // keep memory bounded: a long session visits many lists
+    if (pagedSnap.size > 30)
+      pagedSnap.delete(pagedSnap.keys().next().value as string);
+  }, [snapKey, items, page, total]);
   const more = useCallback(async () => {
     if (loading || page >= total) return;
     const key = `${base}#${page + 1}`;
@@ -193,3 +213,68 @@ export function useEbookCovers<
     return c ? { ...b, posterPath: c } : b;
   });
 }
+
+// Back inside the app; a page opened straight from a link has nothing behind it, so go to Discover
+// instead of leaving the site (detail pages hide the tab bar, so this is the only way out)
+export function useBack() {
+  const nav = useNavigate();
+  const { key } = useLocation();
+  return useCallback(() => {
+    if (key === 'default') nav('/', { replace: true });
+    else nav(-1);
+  }, [key, nav]);
+}
+
+// pull down at the top of the page to refresh (touch only). The page's own overscroll is turned
+// off meanwhile so Android Chrome doesn't also reload the whole app.
+export function usePullToRefresh(onRefresh: () => void) {
+  const [dist, setDist] = useState(0);
+  const fire = useRef(onRefresh);
+  fire.current = onRefresh;
+  useEffect(() => {
+    const ARM = 70;
+    let startY: number | null = null;
+    let d = 0;
+    const start = (e: TouchEvent) => {
+      startY =
+        window.scrollY <= 0 && e.touches.length === 1
+          ? e.touches[0].clientY
+          : null;
+      d = 0;
+    };
+    const move = (e: TouchEvent) => {
+      if (startY == null) return;
+      const dy = e.touches[0].clientY - startY;
+      if (dy <= 0 || window.scrollY > 0) {
+        if (d) setDist((d = 0));
+        return;
+      }
+      d = Math.min(110, dy * 0.5); // resistance
+      setDist(d);
+    };
+    const end = () => {
+      if (startY != null && d >= ARM) fire.current();
+      startY = null;
+      d = 0;
+      setDist(0);
+    };
+    document.documentElement.classList.add('no-overscroll');
+    window.addEventListener('touchstart', start, { passive: true });
+    window.addEventListener('touchmove', move, { passive: true });
+    window.addEventListener('touchend', end, { passive: true });
+    window.addEventListener('touchcancel', end, { passive: true });
+    return () => {
+      document.documentElement.classList.remove('no-overscroll');
+      window.removeEventListener('touchstart', start);
+      window.removeEventListener('touchmove', move);
+      window.removeEventListener('touchend', end);
+      window.removeEventListener('touchcancel', end);
+    };
+  }, []);
+  return { dist, state: dist >= 70 ? 'armed' : dist > 0 ? 'pull' : 'idle' };
+}
+
+// a mouse (or trackpad) that can hover; phones and tablets get tap versions of hover controls
+export const CAN_HOVER =
+  typeof window !== 'undefined' &&
+  window.matchMedia('(hover: hover) and (pointer: fine)').matches;

@@ -34,6 +34,7 @@ const P: Record<string, string> = {
   game: '<path d="M6.5 8h11a4 4 0 0 1 3.9 4.8l-.8 3.9a2.2 2.2 0 0 1-3.8 1L14.5 15h-5l-2.3 2.7a2.2 2.2 0 0 1-3.8-1l-.8-3.9A4 4 0 0 1 6.5 8z"/><path d="M8 10.5v3M6.5 12h3M15.5 11.5h.01M17.5 13h.01"/>',
   trophy:
     '<path d="M8 4h8v5a4 4 0 0 1-8 0z"/><path d="M8 6H5a3 3 0 0 0 3 4M16 6h3a3 3 0 0 1-3 4M12 13v4M8.5 20h7M10 17h4"/>',
+  refresh: '<path d="M20 11a8 8 0 1 0-2.3 5.7"/><path d="M20 4v7h-7"/>',
   lock: '<rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/>',
 };
 

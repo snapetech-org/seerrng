@@ -57,6 +57,36 @@ export const Glyph = ({ s }: { s: Stat }) =>
     </span>
   ) : null;
 
+// touch screens can't hover, so posters get a small round request button instead of the overlay
+// (CSS shows it only where there's no mouse; the overlay keeps working on desktop)
+export function TouchQuick({
+  label,
+  onClick,
+}: {
+  label: string;
+  onClick: () => Promise<void>;
+}) {
+  const [busy, setBusy] = useState(false);
+  return (
+    <button
+      className="tq"
+      aria-label={label}
+      title={label}
+      disabled={busy}
+      onClick={async () => {
+        setBusy(true);
+        try {
+          await onClick();
+        } finally {
+          setBusy(false);
+        }
+      }}
+    >
+      <Icon name="plus" />
+    </button>
+  );
+}
+
 const TODAY = new Date().toISOString().slice(0, 10);
 const MON = [
   'Jan',
@@ -167,6 +197,12 @@ export function TitleCard({ it, meta }: { it: TitleResult; meta?: string }) {
         )}
         <Glyph s={s} />
         <Link className="hit" to={href} aria-label={titleOf(it)} />
+        {prefs.hoverRequest && !s && (!tv || prefs.wholeSeriesDefault) && (
+          <TouchQuick
+            label={`Request ${titleOf(it)}${tv ? ' (entire series)' : ''}`}
+            onClick={go}
+          />
+        )}
         {prefs.hoverRequest && (
           <div className="qa">
             <div className="qt">{titleOf(it)}</div>
@@ -222,6 +258,12 @@ export function BookCard({ b }: { b: BookResult }) {
         {b.posterPath && <img loading="lazy" src={b.posterPath} alt="" />}
         <Glyph s={s} />
         <Link className="hit" to={href} aria-label={b.title} />
+        {prefs.hoverRequest && !s && straight && (
+          <TouchQuick
+            label={`Request ${b.title} (${audio ? 'audiobook' : 'ebook'})`}
+            onClick={go}
+          />
+        )}
         {prefs.hoverRequest && (
           <div className="qa">
             <div className="qt">{b.title}</div>
@@ -328,10 +370,23 @@ export function FeatCard({
         <span className="row">
           <span className="mm">{mm}</span>
           {s?.k === 'ok' ? (
-            <button className="btn go">
-              <Icon name="play" size="sm" />
-              Watch
-            </button>
+            // this button used to do nothing: open Plex when we have a link, else the title page
+            plexUrl(it.mediaInfo) ? (
+              <a
+                className="btn go"
+                href={plexUrl(it.mediaInfo)}
+                target="_blank"
+                rel="noreferrer"
+              >
+                <Icon name="play" size="sm" />
+                Watch
+              </a>
+            ) : (
+              <Link className="btn go" to={`/${tv ? 'tv' : 'movie'}/${it.id}`}>
+                <Icon name="play" size="sm" />
+                Watch
+              </Link>
+            )
           ) : s || done ? (
             <span className="btn go done">
               <Icon name="clock" size="sm" />
@@ -414,10 +469,12 @@ export function Rail({
 export function Section({
   title,
   link,
+  action,
   children,
 }: {
   title: string;
   link?: [string, string];
+  action?: ReactNode;
   children: ReactNode;
 }) {
   return (
@@ -425,6 +482,7 @@ export function Section({
       <div className="sec-head">
         <h2>{title}</h2>
         {link && <Link to={link[1]}>{link[0]}</Link>}
+        {action}
       </div>
       {children}
     </section>

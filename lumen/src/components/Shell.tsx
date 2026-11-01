@@ -9,7 +9,11 @@ import {
 import { useAuth } from '../auth';
 import { useExtras } from '../extras';
 import { Icon, type IconName } from '../icons';
+import { useBack } from '../hooks';
 import { usePrefs } from '../settings';
+
+// scroll position of each history entry, for Back
+const scrollSpots = new Map<string, number>();
 
 // where "Advanced" (full SeerrNG for admins and settings) lives
 export const SEERR_PUBLIC_URL =
@@ -100,12 +104,54 @@ export default function Shell({ children }: { children: ReactNode }) {
   useEffect(() => {
     document.body.classList.toggle('is-detail', detail);
   }, [detail]);
-  // a newly opened page starts at the top; Back keeps where you were (the browser restores it)
+  // a newly opened page starts at the top; Back returns to where you were. The browser can't do
+  // that itself here: lists load after the page appears, so its restore runs on a short page.
   const navType = useNavigationType();
+  const back = useBack();
+  const entry = useRef(loc.key);
+  entry.current = loc.key;
   useEffect(() => {
-    if (navType !== 'POP' && !loc.hash) window.scrollTo(0, 0);
+    history.scrollRestoration = 'manual';
+    let raf = 0;
+    const save = () => {
+      cancelAnimationFrame(raf);
+      raf = requestAnimationFrame(() =>
+        scrollSpots.set(entry.current, window.scrollY)
+      );
+    };
+    window.addEventListener('scroll', save, { passive: true });
+    return () => window.removeEventListener('scroll', save);
+  }, []);
+  const lastPath = useRef(loc.pathname);
+  useEffect(() => {
+    const moved = lastPath.current !== loc.pathname;
+    lastPath.current = loc.pathname;
+    if (navType !== 'POP') {
+      // filters and tabs only change the query string: stay put
+      if (moved && !loc.hash) window.scrollTo(0, 0);
+      return;
+    }
+    const target = scrollSpots.get(loc.key) || 0;
+    if (!target) return;
+    // rows above load back in over a moment and push things around, so hold the spot for a few
+    // seconds (or until the person touches, scrolls or types), not just until it first gets there
+    let stop = false;
+    const quit = () => (stop = true);
+    const until = Date.now() + 3000;
+    const step = () => {
+      if (stop || Date.now() > until) return;
+      if (Math.abs(window.scrollY - target) > 2) window.scrollTo(0, target);
+      requestAnimationFrame(step);
+    };
+    step();
+    const evs = ['touchstart', 'wheel', 'keydown', 'mousedown'] as const;
+    for (const ev of evs) window.addEventListener(ev, quit, { passive: true });
+    return () => {
+      stop = true;
+      for (const ev of evs) window.removeEventListener(ev, quit);
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [loc.pathname]);
+  }, [loc.key]);
   // tapping the tab or link for the page you're already on goes back to the top
   const toTop = (to: string) => (e: React.MouseEvent) => {
     if (loc.pathname === to && !loc.search) {
@@ -198,7 +244,7 @@ export default function Shell({ children }: { children: ReactNode }) {
             <button
               className="icon-btn tb-back"
               aria-label="Back"
-              onClick={() => nav(-1)}
+              onClick={back}
             >
               <Icon name="chevL" />
             </button>
@@ -211,6 +257,10 @@ export default function Shell({ children }: { children: ReactNode }) {
                   type="search"
                   placeholder={placeholder}
                   autoComplete="off"
+                  autoCapitalize="none"
+                  autoCorrect="off"
+                  spellCheck={false}
+                  enterKeyHint="search"
                   value={term}
                   onChange={(e) => {
                     setTerm(e.target.value);
@@ -232,6 +282,12 @@ export default function Shell({ children }: { children: ReactNode }) {
           </main>
         </div>
       </div>
+      {/* phones: detail pages hide the tab bar, so this is the way out (also while loading) */}
+      {detail && (
+        <button className="dback ph-only" aria-label="Back" onClick={back}>
+          <Icon name="chevL" />
+        </button>
+      )}
       <nav className="tabbar" aria-label="Tabs">
         {TABS.filter(([h]) => prefs.showBooks || !isBook(h)).map(
           ([h, i, t]) => (

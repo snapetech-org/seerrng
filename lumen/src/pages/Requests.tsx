@@ -2,7 +2,9 @@ import { useEffect, useState } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
 import {
   api,
+  ApiError,
   cancelRequest,
+  hardcoverEbookId,
   MediaStatus,
   plexUrl,
   tmdbImg,
@@ -25,6 +27,7 @@ import {
   type Scene,
   type SoftwareRequest,
 } from '../extras';
+import { usePullToRefresh } from '../hooks';
 import { Icon, type IconName } from '../icons';
 
 interface Row {
@@ -107,29 +110,133 @@ function state(r: RequestItem): {
   return { k: 'wait', word: 'Requested', ico: 'clock', active: true };
 }
 
-// titles and artwork don't change, so each request is described once and reused on refresh
-const described = new Map<number, Omit<Row, 'r'>>();
+// titles and artwork don't change, so each request is described once and kept on this device.
+// A lookup that failed for a passing reason isn't kept, so the next visit tries again.
+const DESC_KEY = 'lumen-request-titles';
+const described = new Map<number, Omit<Row, 'r'>>(
+  (() => {
+    try {
+      return JSON.parse(localStorage.getItem(DESC_KEY) || '[]');
+    } catch {
+      return [];
+    }
+  })()
+);
+const saveDescribed = () => {
+  try {
+    localStorage.setItem(
+      DESC_KEY,
+      JSON.stringify([...described].slice(-400)) // newest 400 are plenty
+    );
+  } catch {
+    // storage full or blocked: it's only a cache
+  }
+};
+// lookups that failed for a passing reason (rate limit, outage): not kept, tried again next visit
+const retryLater = new Set<number>();
 async function describe(r: RequestItem): Promise<Row> {
   const known = described.get(r.id);
   if (known) return { ...known, r };
   const row = await describeOnce(r);
   const { r: _ignored, ...rest } = row;
   void _ignored;
-  described.set(r.id, rest);
+  if (!retryLater.delete(r.id)) described.set(r.id, rest);
   return row;
 }
+// SeerrNG rate-limits bursts (and book lookups to 30 a minute), so look a few up at a time and
+// at most 12 new books per visit; the rest show a plain label now and get named next time.
+const BOOK_LOOKUPS_PER_VISIT = 12; // an ebook can take 2 calls (plain id, then the Hardcover form)
+let bookLimited = false;
+// two requests for the same book (another narration, ebook + audiobook) share one lookup
+const bookCalls = new Map<
+  string,
+  Promise<{ b: BookResult | null; st: number }>
+>();
+const fetchBook = (bid: string) => {
+  let p = bookCalls.get(bid);
+  if (!p) {
+    p = api<BookResult>(`/book/${encodeURIComponent(bid)}`).then(
+      (b) => ({ b, st: 200 }),
+      (e) => ({ b: null, st: e instanceof ApiError ? e.status : 0 })
+    );
+    bookCalls.set(bid, p);
+  }
+  return p;
+};
+// movie/series lookups share SeerrNG's 60-a-minute metadata limit with the rest of the app: after
+// a 429, stop for this visit so browsing keeps working (the rest are named next visit)
+let limited = false;
+async function describeAll(list: RequestItem[]): Promise<Row[]> {
+  const out: Row[] = new Array(list.length);
+  let next = 0;
+  let books = 0;
+  bookLimited = false;
+  bookCalls.clear();
+  limited = false;
+  const worker = async () => {
+    while (next < list.length) {
+      const i = next++;
+      const r = list[i];
+      const known = described.has(r.id);
+      if (r.type === 'book' && !known && ++books > BOOK_LOOKUPS_PER_VISIT)
+        out[i] = bookPlaceholder(r);
+      else if (limited && !known && (r.type === 'movie' || r.type === 'tv'))
+        out[i] = titlePlaceholder(r);
+      else out[i] = await describe(r);
+    }
+  };
+  await Promise.all(Array.from({ length: 4 }, worker));
+  saveDescribed();
+  return out;
+}
+const bookId = (r: RequestItem) =>
+  r.media.identifiers?.find((i) => i.provider === 'bookshelf')?.value ||
+  r.media.identifiers?.[0]?.value ||
+  '';
+function titlePlaceholder(r: RequestItem): Row {
+  const kind = r.type === 'tv' ? 'tv' : 'movie';
+  return {
+    r,
+    title: kind === 'tv' ? 'Series' : 'Movie',
+    href: `/${kind}/${r.media.tmdbId}`,
+    sub: kind === 'tv' ? 'Series' : 'Movie',
+  };
+}
+function bookPlaceholder(r: RequestItem): Row {
+  const id = bookId(r);
+  const audio = r.bookFormat === 'audiobook' || id.startsWith('bookshelf:1:');
+  return {
+    r,
+    title: 'Book',
+    cover: true,
+    href: `/book/${encodeURIComponent(id)}${audio ? '?f=audio' : ''}`,
+    sub: audio ? 'Audiobook' : 'Ebook',
+  };
+}
+const keepUnless404 = (r: RequestItem) => (e: unknown) => {
+  const st = e instanceof ApiError ? e.status : 0;
+  if (st === 429) limited = true;
+  if (st !== 404) retryLater.add(r.id);
+  return null;
+};
 async function describeOnce(r: RequestItem): Promise<Row> {
   if (r.type === 'book') {
-    const id =
-      r.media.identifiers?.find((i) => i.provider === 'bookshelf')?.value ||
-      r.media.identifiers?.[0]?.value ||
-      '';
+    const id = bookId(r);
     const audio = r.bookFormat === 'audiobook' || id.startsWith('bookshelf:1:');
-    const b = id
-      ? await api<BookResult>(`/book/${encodeURIComponent(id)}`).catch(
-          () => null
-        )
-      : null;
+    // a 404 is permanent (kept, so it isn't asked again); a 429 or outage is retried next visit
+    const look = async (bid: string) => {
+      const { b, st } = await fetchBook(bid);
+      if (!b) {
+        if (st === 429) bookLimited = true; // stop asking this visit, so book pages still load
+        if (st !== 404) retryLater.add(r.id);
+      }
+      return b;
+    };
+    let b = id && !bookLimited ? await look(id) : null;
+    // ebooks: newer SeerrNG looks plain ids up on Goodreads; name Hardcover like the book page does
+    const alt = !b && !audio && !bookLimited ? hardcoverEbookId(id) : null;
+    if (alt && !retryLater.has(r.id)) b = await look(alt);
+    if (bookLimited) retryLater.add(r.id);
     return {
       r,
       title: b?.title || 'Book',
@@ -143,7 +250,7 @@ async function describeOnce(r: RequestItem): Promise<Row> {
   if (extra) return extra;
   const kind = r.type === 'tv' ? 'tv' : 'movie';
   const t = await api<TitleResult>(`/${kind}/${r.media.tmdbId}`).catch(
-    () => null
+    keepUnless404(r)
   );
   const seasons = r.seasons?.length
     ? r.seasons.length === 1
@@ -165,7 +272,7 @@ async function describeOnce(r: RequestItem): Promise<Row> {
 const idOf = (r: RequestItem, provider: string) =>
   r.media.identifiers?.find((i) => i.provider === provider)?.value;
 async function describeExtra(r: RequestItem): Promise<Row | null> {
-  const get = <T,>(path: string) => api<T>(path).catch(() => null);
+  const get = <T,>(path: string) => api<T>(path).catch(keepUnless404(r));
   if (r.type === 'music') {
     const id = r.media.mbId || idOf(r, 'musicbrainz') || '';
     const a = id ? await get<AlbumDetails>(`/music/${id}`) : null;
@@ -274,6 +381,11 @@ export default function Requests() {
   const tab = p.get('tab') || 'active';
   const [rows, setRows] = useState<Row[] | null>(null);
   const [tick, setTick] = useState(0);
+  const [refreshing, setRefreshing] = useState(false);
+  const pull = usePullToRefresh(() => {
+    setRefreshing(true);
+    setTick((t) => t + 1);
+  });
   const extras = useExtras();
 
   useEffect(() => {
@@ -281,7 +393,7 @@ export default function Requests() {
     let live = true;
     const media = api<{ results: RequestItem[] }>(
       `/request?take=40&skip=0&filter=all&sort=added&requestedBy=${user.id}`
-    ).then((d) => Promise.all(d.results.map(describe)));
+    ).then((d) => describeAll(d.results));
     // game requests only when a games category is on (the endpoint refuses otherwise)
     const games = extras.games.length
       ? api<{ results: SoftwareRequest[] }>(
@@ -295,7 +407,8 @@ export default function Requests() {
         a.concat(b).sort((x, y) => y.r.createdAt.localeCompare(x.r.createdAt))
       )
       .then((x) => live && setRows(x))
-      .catch(() => live && setRows([]));
+      .catch(() => live && setRows([]))
+      .finally(() => live && setRefreshing(false));
     return () => {
       live = false;
     };
@@ -338,6 +451,22 @@ export default function Requests() {
         </div>
         <p className="sub">Everything you’ve asked for, newest first.</p>
       </header>
+      {/* pull-to-refresh pill: fixed, so it never shifts the page layout */}
+      <div
+        className={`ptr ${refreshing ? 'busy' : pull.state}`}
+        style={{
+          transform: `translate(-50%, ${refreshing ? 56 : pull.dist - 44}px)`,
+          opacity: refreshing ? 1 : Math.min(1, pull.dist / 50),
+        }}
+        role="status"
+      >
+        <Icon name="refresh" size="sm" />
+        {refreshing
+          ? 'Refreshing…'
+          : pull.state === 'armed'
+            ? 'Release to refresh'
+            : 'Pull to refresh'}
+      </div>
       <div className="seg" role="group" aria-label="Show">
         {[
           ['active', 'Active', act.length],
