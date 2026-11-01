@@ -91,9 +91,9 @@ This setting is **disabled** by default.
 
 ## Hide Requested Media
 
-When enabled, media that has been requested (but not yet available) will not appear on the "Discover" home page, or in the "Recommended" or "Similar" categories or other links on media detail pages.
+When enabled, movie and TV media with an active request are hidden from Discover shelves, movie and TV result grids, and the "Recommended", "Similar", or other discovery links on media detail pages.
 
-This includes movie and TV media with a **Pending** or **Processing** status in either the standard or 4K library, even when no active request record remains. Hidden items still appear in search results.
+This also includes movie and TV media with a **Pending** or **Processing** status in either the standard or 4K library, even when no active request record remains. Titles remain available through explicit searches, including searches entered on the movie and TV discovery pages.
 
 This setting is **disabled** by default.
 

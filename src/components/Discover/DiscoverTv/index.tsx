@@ -74,7 +74,7 @@ const DiscoverTv = ({
     discover.isLoadingInitialData ||
       discover.isLoadingMore ||
       discover.isValidating ||
-      discover.isSearchingAvailableQuality,
+      discover.isSearchingFilteredResults,
     'series-discovery'
   );
   useDiscoverScrollRestoration({
@@ -155,7 +155,7 @@ const DiscoverTv = ({
           isEmpty={discover.isEmpty}
           isLoading={
             discover.isLoadingInitialData ||
-            discover.isSearchingAvailableQuality ||
+            discover.isSearchingFilteredResults ||
             (discover.isLoadingMore && discover.titles.length > 0)
           }
           isReachingEnd={discover.isReachingEnd}

@@ -32,6 +32,7 @@ import {
   hasMediaSliderResults,
   shouldShowMoreSliderCard,
 } from '@app/utils/mediaSlider';
+import { shouldHideRequestedMedia } from '@app/utils/requestVisibility';
 import { ArrowPathIcon } from '@heroicons/react/24/outline';
 import { MediaStatus } from '@server/constants/media';
 import type { DiscoverHomeStateResponse } from '@server/interfaces/api/discoverHomeInterfaces';
@@ -347,9 +348,12 @@ const MediaSlider = ({
         }
 
         if (
-          settings.currentSettings.hideRequested &&
           (item.mediaType === 'movie' || item.mediaType === 'tv') &&
-          item.mediaInfo?.hasActiveRequest
+          shouldHideRequestedMedia(
+            settings.currentSettings.hideRequested,
+            item.mediaType,
+            item.mediaInfo?.hasActiveRequest
+          )
         ) {
           continue;
         }
