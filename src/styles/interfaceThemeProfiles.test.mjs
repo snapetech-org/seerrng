@@ -125,7 +125,10 @@ test('interface profiles own visibly different layout and geometry tokens', () =
     profiles.seerrNGJ,
     /grid-template-columns: 5rem minmax\(0, 1fr\);/
   );
-  assert.deepEqual(desktopDetailsGrid(profiles.seerrOrig), desktopDetailsLayout);
+  assert.deepEqual(
+    desktopDetailsGrid(profiles.seerrOrig),
+    desktopDetailsLayout
+  );
   assert.deepEqual(desktopDetailsGrid(profiles.seerrNGJ), desktopDetailsLayout);
   assert.match(
     profiles.seerrOrig,
