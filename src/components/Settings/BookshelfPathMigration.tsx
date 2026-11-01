@@ -1,5 +1,6 @@
 import ApiMessageText from '@app/components/Common/ApiMessageText';
 import Button from '@app/components/Common/Button';
+import OpaqueApiMessageText from '@app/components/Common/OpaqueApiMessageText';
 import PageTitle from '@app/components/Common/PageTitle';
 import SettingsField from '@app/components/Settings/SettingsField';
 import defineMessages from '@app/utils/defineMessages';
@@ -733,7 +734,11 @@ const BookshelfPathMigration = () => {
                   <ul className="list-disc ps-5 text-sm text-yellow-200">
                     {preview.warnings.map((warning, index) => (
                       <li key={`${index}-${warning}`}>
-                        {<ApiMessageText>{warning}</ApiMessageText>}
+                        {
+                          <OpaqueApiMessageText>
+                            {warning}
+                          </OpaqueApiMessageText>
+                        }
                       </li>
                     ))}
                   </ul>
@@ -746,7 +751,9 @@ const BookshelfPathMigration = () => {
                   </h3>
                   <ul className="list-disc ps-5 text-sm text-red-200">
                     {preview.conflicts.map((conflict, index) => (
-                      <li key={`${index}-${conflict}`}>{conflict}</li>
+                      <li key={`${index}-${conflict}`}>
+                        <OpaqueApiMessageText>{conflict}</OpaqueApiMessageText>
+                      </li>
                     ))}
                   </ul>
                 </div>

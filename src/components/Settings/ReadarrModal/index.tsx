@@ -1,6 +1,7 @@
 import ApiMessageText from '@app/components/Common/ApiMessageText';
 import Button from '@app/components/Common/Button';
 import Modal from '@app/components/Common/Modal';
+import OpaqueApiMessageText from '@app/components/Common/OpaqueApiMessageText';
 import SensitiveInput from '@app/components/Common/SensitiveInput';
 import Field, {
   default as SettingsField,
@@ -117,12 +118,18 @@ interface DiagnosticResponse {
   category:
     | 'ok'
     | 'backend_unreachable'
+    | 'unsupported_operation'
+    | 'invalid_request'
     | 'lookup_empty'
     | 'lookup_incomplete'
     | 'provider_failed'
     | 'backend_add_pending'
-    | 'backend_add_rejected';
+    | 'backend_add_rejected'
+    | 'backend_cleanup_failed';
   message: string;
+  messageOrigin?: 'app' | 'opaque';
+  detailMessage?: string;
+  detailMessageOrigin?: 'app' | 'opaque';
   provider?: BookshelfProvider;
   providerNotice?: string;
   legacyWarning?: string;
@@ -260,6 +267,7 @@ const ReadarrModal = ({
                   response.data.providerNotice ??
                   response.data.legacyWarning ??
                   'Bookshelf connection established successfully.',
+                messageOrigin: 'app',
                 provider: response.data.provider,
                 providerNotice:
                   response.data.providerNotice ?? response.data.legacyWarning,
@@ -503,15 +511,31 @@ const ReadarrModal = ({
                           }
                         );
                       } catch (e) {
-                        const message = axios.isAxiosError(e)
-                          ? e.response?.data?.message || e.message
-                          : e instanceof Error
+                        const responseMessage =
+                          axios.isAxiosError(e) &&
+                          typeof e.response?.data?.message === 'string'
+                            ? e.response.data.message
+                            : undefined;
+                        const message =
+                          responseMessage ??
+                          (e instanceof Error
                             ? e.message
-                            : 'Diagnostic request failed.';
+                            : 'Diagnostic request failed.');
+                        const responseOrigin =
+                          axios.isAxiosError(e) &&
+                          e.response?.data?.messageOrigin === 'app'
+                            ? 'app'
+                            : undefined;
                         setDiagnosticResponse({
                           ok: false,
                           category: 'backend_unreachable',
                           message,
+                          messageOrigin:
+                            responseOrigin ??
+                            (responseMessage === 'Internal server error.' ||
+                            !(e instanceof Error)
+                              ? 'app'
+                              : 'opaque'),
                         });
                         addToast(
                           intl.formatMessage(messages.diagnosticFailed),
@@ -531,18 +555,39 @@ const ReadarrModal = ({
                   </Button>
                   {diagnosticResponse && (
                     <p className="description mt-2">
-                      {diagnosticResponse.category}:{' '}
-                      {
+                      <bdi dir="ltr" lang="und">
+                        {diagnosticResponse.category}
+                      </bdi>
+                      {' '}
+                      {diagnosticResponse.messageOrigin === 'app' ? (
                         <ApiMessageText>
                           {diagnosticResponse.message}
                         </ApiMessageText>
-                      }
+                      ) : (
+                        <OpaqueApiMessageText>
+                          {diagnosticResponse.message}
+                        </OpaqueApiMessageText>
+                      )}
+                      {diagnosticResponse.detailMessage && (
+                        <>
+                          {' '}
+                          {diagnosticResponse.detailMessageOrigin === 'app' ? (
+                            <ApiMessageText>
+                              {diagnosticResponse.detailMessage}
+                            </ApiMessageText>
+                          ) : (
+                            <OpaqueApiMessageText>
+                              {diagnosticResponse.detailMessage}
+                            </OpaqueApiMessageText>
+                          )}
+                        </>
+                      )}
                       {diagnosticResponse.provider && (
                         <>
                           {' '}
                           {intl.formatMessage(messages.diagnosticProvider, {
                             provider: (
-                              <bdi dir="auto">
+                              <bdi dir="auto" lang="und">
                                 {diagnosticResponse.provider}
                               </bdi>
                             ),
@@ -554,7 +599,7 @@ const ReadarrModal = ({
                           {' '}
                           {intl.formatMessage(messages.diagnosticMetadata, {
                             source: (
-                              <bdi dir="auto">
+                              <bdi dir="auto" lang="und">
                                 {diagnosticResponse.metadataSource}
                               </bdi>
                             ),
@@ -568,7 +613,7 @@ const ReadarrModal = ({
                             messages.diagnosticPendingImport,
                             {
                               id: (
-                                <bdi dir="auto">
+                                <bdi dir="ltr" lang="und">
                                   {diagnosticResponse.pendingId}
                                 </bdi>
                               ),

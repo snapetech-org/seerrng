@@ -2,11 +2,11 @@ import Alert from '@app/components/Common/Alert';
 import ApiMessageText from '@app/components/Common/ApiMessageText';
 import Button from '@app/components/Common/Button';
 import LoadingSpinner from '@app/components/Common/LoadingSpinner';
+import OpaqueApiMessageText from '@app/components/Common/OpaqueApiMessageText';
 import { SavedServiceHostPicker } from '@app/components/Settings/SavedServiceHostPicker';
 import SettingsField from '@app/components/Settings/SettingsField';
 import { useLiveTvStatus } from '@app/hooks/useLiveTv';
 import useToasts from '@app/hooks/useToasts';
-import { formatApiMessage } from '@app/utils/apiMessage';
 import defineMessages from '@app/utils/defineMessages';
 import type { TunerrSportarrIntegrationStatus } from '@server/interfaces/api/settingsInterfaces';
 import type { TunerrSettings } from '@server/lib/settings';
@@ -116,7 +116,9 @@ interface TestResult {
   guide: boolean;
   missingFeatures: string[];
   error?: string;
+  errorOrigin?: 'app' | 'opaque';
   guideError?: string;
+  guideErrorOrigin?: 'app' | 'opaque';
 }
 
 const toDraft = (settings: TunerrSettings): Draft => ({
@@ -230,7 +232,9 @@ const SettingsTunerr = () => {
           guide: !!body.guide,
           missingFeatures: body.missingFeatures ?? [],
           error: body.error ?? errorMessage(failure),
+          errorOrigin: body.errorOrigin,
           guideError: body.guideError,
+          guideErrorOrigin: body.guideErrorOrigin,
         });
       } else {
         setTestResult({ deck: false, guide: false, missingFeatures: [] });
@@ -345,7 +349,14 @@ const SettingsTunerr = () => {
               <Alert
                 type="warning"
                 title={intl.formatMessage(messages.guideError, {
-                  error: formatApiMessage(intl, guide.lastError),
+                  error:
+                    guide.lastErrorOrigin === 'opaque' ? (
+                      <OpaqueApiMessageText>
+                        {guide.lastError}
+                      </OpaqueApiMessageText>
+                    ) : (
+                      <ApiMessageText>{guide.lastError}</ApiMessageText>
+                    ),
                 })}
               />
             )}
@@ -676,7 +687,16 @@ const SettingsTunerr = () => {
                     <Alert
                       type="error"
                       title={intl.formatMessage(messages.testGuideFailed, {
-                        error: testResult.guideError,
+                        error:
+                          testResult.guideErrorOrigin === 'opaque' ? (
+                            <OpaqueApiMessageText>
+                              {testResult.guideError}
+                            </OpaqueApiMessageText>
+                          ) : (
+                            <ApiMessageText>
+                              {testResult.guideError}
+                            </ApiMessageText>
+                          ),
                       })}
                     />
                   )}

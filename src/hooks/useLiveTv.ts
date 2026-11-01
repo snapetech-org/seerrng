@@ -11,6 +11,7 @@ export interface LiveTvStatus {
     channelCount: number;
     truncated: boolean;
     lastError?: string;
+    lastErrorOrigin?: 'app' | 'opaque';
   };
 }
 

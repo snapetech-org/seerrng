@@ -180,6 +180,8 @@ const SettingsGeneratedLoginLinks = () => {
             <input
               id="generated-login-link"
               readOnly
+              dir="ltr"
+              lang="und"
               value={generatedUrl}
               onFocus={(event) => event.currentTarget.select()}
             />

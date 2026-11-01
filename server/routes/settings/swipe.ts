@@ -124,7 +124,11 @@ swipeSettingsRoutes.put(
   authorizedMutation(Permission.ADMIN, async (req, res) => {
     const settings = getSettings();
     const parsed = parseSwipeSettings(req.body, settings.swipe);
-    if ('error' in parsed) return res.status(400).json({ error: parsed.error });
+    if ('error' in parsed) {
+      return res
+        .status(400)
+        .json({ error: parsed.error, errorOrigin: 'app' as const });
+    }
     try {
       const saved = await settings.persistSection('swipe', (current) => {
         const locked = parseSwipeSettings(req.body, current);
@@ -148,9 +152,15 @@ swipeSettingsRoutes.post(
       isRecord(req.body) ? req.body : {},
       getSettings().swipe
     );
-    if ('error' in parsed) return res.status(400).json({ error: parsed.error });
+    if ('error' in parsed) {
+      return res
+        .status(400)
+        .json({ error: parsed.error, errorOrigin: 'app' as const });
+    }
     if (parsed.value.aiProvider === 'none') {
-      return res.status(400).json({ error: 'Choose an AI provider to test.' });
+      return res
+        .status(400)
+        .json({ error: 'Choose an AI provider to test.', errorOrigin: 'app' });
     }
     try {
       await testAiConnection(parsed.value);
@@ -170,7 +180,18 @@ swipeSettingsRoutes.post(
                   : error instanceof Error
                     ? error.message
                     : 'The AI provider could not be reached.';
-      return res.status(502).json({ success: false, error: message });
+      const errorOrigin =
+        error instanceof Anthropic.APIError ||
+        error instanceof Anthropic.AuthenticationError ||
+        error instanceof Anthropic.NotFoundError ||
+        error instanceof Anthropic.RateLimitError ||
+        error instanceof AiProviderError ||
+        !(error instanceof Error)
+          ? 'app'
+          : 'opaque';
+      return res
+        .status(502)
+        .json({ success: false, error: message, errorOrigin });
     }
   })
 );

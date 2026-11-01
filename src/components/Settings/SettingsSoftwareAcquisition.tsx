@@ -2,6 +2,7 @@ import Alert from '@app/components/Common/Alert';
 import ApiMessageText from '@app/components/Common/ApiMessageText';
 import Button from '@app/components/Common/Button';
 import LoadingSpinner from '@app/components/Common/LoadingSpinner';
+import OpaqueApiMessageText from '@app/components/Common/OpaqueApiMessageText';
 import SelectionCircle from '@app/components/Common/SelectionCircle';
 import Tooltip from '@app/components/Common/Tooltip';
 import { SavedServiceHostPicker } from '@app/components/Settings/SavedServiceHostPicker';
@@ -152,7 +153,21 @@ interface PlatformMappingPreview {
 
 interface TestState {
   provider?: 'romarr' | 'questarr';
-  success: boolean;
+  success: true;
+  response: {
+    service: string;
+    platformCount?: number;
+    apiVersion?: number;
+    requestContractVersion?: number;
+    capabilities?: { catalog?: boolean; datCatalog?: boolean };
+    datCatalogPlatformCount?: number;
+    unmatchedDatNames?: string[];
+  };
+}
+
+interface TestFailureState {
+  provider?: 'romarr' | 'questarr';
+  success: false;
   message: string;
 }
 
@@ -209,7 +224,9 @@ const SettingsSoftwareAcquisition = () => {
   const [clearSteamApiKey, setClearSteamApiKey] = useState(false);
   const [saving, setSaving] = useState(false);
   const [testing, setTesting] = useState<'romarr' | 'questarr' | null>(null);
-  const [testState, setTestState] = useState<TestState | null>(null);
+  const [testState, setTestState] = useState<
+    TestState | TestFailureState | null
+  >(null);
   const [saveState, setSaveState] = useState<{
     success: boolean;
     message: string;
@@ -309,54 +326,10 @@ const SettingsSoftwareAcquisition = () => {
         `/api/v1/settings/software-acquisition/test/${provider}`,
         getProviderPayload(current)
       );
-      const connectionMessage =
-        provider === 'romarr' && typeof response.data.platformCount === 'number'
-          ? intl.formatMessage(messages.romarrConnectionSuccess, {
-              service: response.data.service,
-              platformCount: response.data.platformCount,
-            })
-          : intl.formatMessage(messages.connectionSuccess, {
-              service: response.data.service,
-            });
-      const providerDetails =
-        provider === 'romarr'
-          ? [
-              intl.formatMessage(
-                response.data.capabilities?.catalog
-                  ? messages.catalogReady
-                  : messages.catalogUnavailable
-              ),
-              response.data.capabilities?.datCatalog &&
-              typeof response.data.datCatalogPlatformCount === 'number'
-                ? intl.formatMessage(messages.datCatalogReady, {
-                    count: response.data.datCatalogPlatformCount,
-                  })
-                : intl.formatMessage(messages.datCatalogUnavailable),
-              ...(response.data.unmatchedDatNames?.length
-                ? [
-                    intl.formatMessage(messages.unmatchedDatNames, {
-                      count: response.data.unmatchedDatNames.length,
-                      names: response.data.unmatchedDatNames
-                        .slice(0, 4)
-                        .join(', '),
-                    }),
-                  ]
-                : []),
-            ]
-          : [];
-      const providerDetail = providerDetails.join(' · ');
       setTestState({
         provider,
         success: true,
-        message: `${connectionMessage}${providerDetail ? ` · ${providerDetail}` : ''} · ${intl.formatMessage(
-          messages.contractVersion,
-          {
-            version:
-              response.data.requestContractVersion ??
-              response.data.apiVersion ??
-              1,
-          }
-        )}`,
+        response: response.data,
       });
       if (provider === 'romarr') {
         await mutate('/api/v1/request/software/catalog/systems');
@@ -561,7 +534,69 @@ const SettingsSoftwareAcquisition = () => {
                   : 'text-sm text-red-300'
               }
             >
-              {<ApiMessageText>{testState.message}</ApiMessageText>}
+              {testState.success ? (
+                <>
+                  {provider === 'romarr' &&
+                  typeof testState.response.platformCount === 'number'
+                    ? intl.formatMessage(messages.romarrConnectionSuccess, {
+                        service: (
+                          <bdi dir="auto" lang="und">
+                            {testState.response.service}
+                          </bdi>
+                        ),
+                        platformCount: testState.response.platformCount,
+                      })
+                    : intl.formatMessage(messages.connectionSuccess, {
+                        service: (
+                          <bdi dir="auto" lang="und">
+                            {testState.response.service}
+                          </bdi>
+                        ),
+                      })}
+                  {provider === 'romarr' && (
+                    <>
+                      {' · '}
+                      {intl.formatMessage(
+                        testState.response.capabilities?.catalog
+                          ? messages.catalogReady
+                          : messages.catalogUnavailable
+                      )}
+                      {' · '}
+                      {testState.response.capabilities?.datCatalog &&
+                      typeof testState.response.datCatalogPlatformCount ===
+                        'number'
+                        ? intl.formatMessage(messages.datCatalogReady, {
+                            count: testState.response.datCatalogPlatformCount,
+                          })
+                        : intl.formatMessage(messages.datCatalogUnavailable)}
+                      {testState.response.unmatchedDatNames?.length ? (
+                        <>
+                          {' · '}
+                          {intl.formatMessage(messages.unmatchedDatNames, {
+                            count: testState.response.unmatchedDatNames.length,
+                            names: (
+                              <OpaqueApiMessageText>
+                                {testState.response.unmatchedDatNames
+                                  .slice(0, 4)
+                                  .join(', ')}
+                              </OpaqueApiMessageText>
+                            ),
+                          })}
+                        </>
+                      ) : null}
+                    </>
+                  )}
+                  {' · '}
+                  {intl.formatMessage(messages.contractVersion, {
+                    version:
+                      testState.response.requestContractVersion ??
+                      testState.response.apiVersion ??
+                      1,
+                  })}
+                </>
+              ) : (
+                <ApiMessageText>{testState.message}</ApiMessageText>
+              )}
             </span>
           )}
         </div>
@@ -831,7 +866,11 @@ const SettingsSoftwareAcquisition = () => {
                   type="warning"
                   title={intl.formatMessage(messages.unmatchedDatSystems, {
                     count: systemsData.unmatchedDatNames.length,
-                    names: systemsData.unmatchedDatNames.slice(0, 4).join(', '),
+                    names: (
+                      <OpaqueApiMessageText>
+                        {systemsData.unmatchedDatNames.slice(0, 4).join(', ')}
+                      </OpaqueApiMessageText>
+                    ),
                   })}
                 />
               </div>

@@ -1,6 +1,7 @@
 import ApiMessageText from '@app/components/Common/ApiMessageText';
 import Button from '@app/components/Common/Button';
 import LoadingSpinner from '@app/components/Common/LoadingSpinner';
+import OpaqueApiMessageText from '@app/components/Common/OpaqueApiMessageText';
 import useLocale from '@app/hooks/useLocale';
 import defineMessages from '@app/utils/defineMessages';
 import {
@@ -72,6 +73,7 @@ const ExternalRequestLists = () => {
   const [busyListId, setBusyListId] = useState<number | null>(null);
   const [message, setMessage] = useState<string>();
   const [errorMessage, setErrorMessage] = useState<string>();
+  const [opaqueErrorMessage, setOpaqueErrorMessage] = useState<string>();
   const {
     data: lists,
     error,
@@ -89,6 +91,7 @@ const ExternalRequestLists = () => {
     event.preventDefault();
     setMessage(undefined);
     setErrorMessage(undefined);
+    setOpaqueErrorMessage(undefined);
     setSaving(true);
     try {
       await axios.post('/api/v1/request/lists', { url: sourceUrl.trim() });
@@ -106,6 +109,7 @@ const ExternalRequestLists = () => {
     event.preventDefault();
     setMessage(undefined);
     setErrorMessage(undefined);
+    setOpaqueErrorMessage(undefined);
     setSaving(true);
     try {
       const { data } = await axios.post<{ validatedBooks: number }>(
@@ -129,6 +133,7 @@ const ExternalRequestLists = () => {
   const syncList = async (list: ExternalRequestList) => {
     setMessage(undefined);
     setErrorMessage(undefined);
+    setOpaqueErrorMessage(undefined);
     setBusyListId(list.id);
     try {
       const { data } = await axios.post<ExternalRequestListSyncResult>(
@@ -142,7 +147,7 @@ const ExternalRequestLists = () => {
           failed: data.failed,
         })
       );
-      if (data.error) setErrorMessage(data.error);
+      if (data.error) setOpaqueErrorMessage(data.error);
       await mutate();
     } catch (error) {
       setErrorMessage(formatError(error));
@@ -154,6 +159,7 @@ const ExternalRequestLists = () => {
   const importImdbCsv = async (list: ExternalRequestList, file: File) => {
     setMessage(undefined);
     setErrorMessage(undefined);
+    setOpaqueErrorMessage(undefined);
     setBusyListId(list.id);
     try {
       if (file.size > 5 * 1024 * 1024) {
@@ -192,7 +198,7 @@ const ExternalRequestLists = () => {
           failed: summary.failed,
         })
       );
-      if (summary.error) setErrorMessage(summary.error);
+      if (summary.error) setOpaqueErrorMessage(summary.error);
       await mutate();
     } catch (error) {
       setErrorMessage(
@@ -210,6 +216,7 @@ const ExternalRequestLists = () => {
   const removeList = async (list: ExternalRequestList) => {
     setMessage(undefined);
     setErrorMessage(undefined);
+    setOpaqueErrorMessage(undefined);
     setBusyListId(list.id);
     try {
       await axios.delete(`/api/v1/request/lists/${list.id}`);
@@ -289,6 +296,11 @@ const ExternalRequestLists = () => {
           {<ApiMessageText>{errorMessage}</ApiMessageText>}
         </p>
       )}
+      {opaqueErrorMessage && (
+        <p className="error">
+          <OpaqueApiMessageText>{opaqueErrorMessage}</OpaqueApiMessageText>
+        </p>
+      )}
       {error && <p className="error">{intl.formatMessage(messages.error)}</p>}
       {isLoading && <LoadingSpinner />}
       {!isLoading && lists?.length === 0 && (
@@ -328,7 +340,9 @@ const ExternalRequestLists = () => {
                 </span>
                 {list.lastSyncError && (
                   <span className="error">
-                    {<ApiMessageText>{list.lastSyncError}</ApiMessageText>}
+                    <OpaqueApiMessageText>
+                      {list.lastSyncError}
+                    </OpaqueApiMessageText>
                   </span>
                 )}
                 <div className="app-action-row">

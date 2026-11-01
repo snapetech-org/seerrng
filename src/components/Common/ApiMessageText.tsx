@@ -8,11 +8,11 @@ export default function ApiMessageText({ children }: { children: ReactNode }) {
   const intl = useIntl();
   if (typeof children !== 'string') return <>{children}</>;
   const match = matchApiMessage(children);
-  if (!match) return <bdi dir="auto">{children}</bdi>;
+  if (!match) return <bdi dir="auto" lang="und">{children}</bdi>;
   const values = Object.fromEntries(
     Object.entries(match.values).map(([name, value]) => [
       name,
-      <bdi key={name} dir="auto">
+      <bdi key={name} dir="auto" lang="und">
         {value}
       </bdi>,
     ])

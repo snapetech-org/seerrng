@@ -202,9 +202,11 @@ export default class DelugeClient implements DownloadClientAdapter {
         await this.login();
         return this.call<T>(method, params, false);
       }
+      const remoteMessage = safeMessage(error.message);
       throw new DownloadClientError(
-        safeMessage(error.message) ?? 'Deluge returned an RPC error.',
-        error.code === 1 ? 'auth' : 'protocol'
+        remoteMessage ?? 'Deluge returned an RPC error.',
+        error.code === 1 ? 'auth' : 'protocol',
+        remoteMessage ? 'opaque' : 'app'
       );
     }
     return response.data.result as T;

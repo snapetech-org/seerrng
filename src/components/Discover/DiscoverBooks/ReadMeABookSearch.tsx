@@ -1,6 +1,7 @@
 import ApiMessageText from '@app/components/Common/ApiMessageText';
 import Button from '@app/components/Common/Button';
 import LoadingSpinner from '@app/components/Common/LoadingSpinner';
+import OpaqueApiMessageText from '@app/components/Common/OpaqueApiMessageText';
 import defineMessages from '@app/utils/defineMessages';
 import type ReadMeABookRequest from '@server/entity/ReadMeABookRequest';
 import axios from 'axios';
@@ -192,7 +193,10 @@ const ReadMeABookSearch = () => {
             {item.statusMessage ? (
               <>
                 {' '}
-                · <ApiMessageText>{item.statusMessage}</ApiMessageText>
+                ·{' '}
+                <OpaqueApiMessageText>
+                  {item.statusMessage}
+                </OpaqueApiMessageText>
               </>
             ) : (
               ''
