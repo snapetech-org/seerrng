@@ -2768,7 +2768,7 @@ const validateCurrentBatchContract = (files) => {
   );
   requirePublicCommand(
     'build:server',
-    'tsc --project server/tsconfig.json && copyfiles -u 2 server/templates/**/*.{html,pug} dist/templates && copyfiles -u 2 "server/i18n/locale/*.json" dist/i18n && copyfiles -u 1 "themes/**/*" dist/interface-themes && node scripts/replace-server-import-aliases.mjs dist',
+    'tsc --project server/tsconfig.json && node scripts/copy-server-assets.mjs && node scripts/replace-server-import-aliases.mjs dist',
     'the public server build must retain upstream compilation, resources and alias resolution'
   );
   requirePublicCommand(
