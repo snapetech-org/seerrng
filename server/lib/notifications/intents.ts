@@ -153,6 +153,9 @@ export const buildMediaRequestNotificationPayload = async (
     case Notification.MEDIA_PENDING:
       event = `New ${entity.is4k ? '4K ' : ''}${mediaType} Request`;
       break;
+    case Notification.MEDIA_PENDING_UPDATED:
+      event = `Pending ${entity.is4k ? '4K ' : ''}${mediaType} Request Updated`;
+      break;
     case Notification.MEDIA_AUTO_REQUESTED:
       event = `${entity.is4k ? '4K ' : ''}${mediaType} Request Automatically Submitted`;
       notifyAdmin = false;
