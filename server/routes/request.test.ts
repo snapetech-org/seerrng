@@ -3228,7 +3228,7 @@ describe('POST /request', () => {
     assert.equal(await getRepository(Media).count(), 1);
   });
 
-  it('shares media identity across concurrent standard and 4K requests', async (t) => {
+  it('rejects a concurrent request for the same movie at another quality', async (t) => {
     Object.defineProperty(TheMovieDb.prototype, 'getMovie', {
       configurable: true,
       get: () => async () =>
@@ -3270,13 +3270,23 @@ describe('POST /request', () => {
 
     assert.equal(
       results.filter((result) => result.status === 'fulfilled').length,
-      2
+      1
     );
-    assert.equal(await getRepository(MediaRequest).count(), 2);
+    const rejection = results.find(
+      (result): result is PromiseRejectedResult => result.status === 'rejected'
+    );
+    assert.ok(rejection);
+    assert.match(
+      String(rejection.reason),
+      /unresolved .* request already exists/i
+    );
+    assert.equal(await getRepository(MediaRequest).count(), 1);
     assert.equal(await getRepository(Media).count(), 1);
     const media = await getRepository(Media).findOneByOrFail({ tmdbId: 551 });
-    assert.notEqual(media.status, MediaStatus.UNKNOWN);
-    assert.notEqual(media.status4k, MediaStatus.UNKNOWN);
+    assert.ok(
+      media.status !== MediaStatus.UNKNOWN ||
+        media.status4k !== MediaStatus.UNKNOWN
+    );
   });
 
   it('returns the post-approval media status instead of the pre-subscriber snapshot', async (t) => {
