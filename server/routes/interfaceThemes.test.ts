@@ -59,7 +59,10 @@ describe('public interface theme routes behind the OpenAPI validator', () => {
       _req: express.Request,
       res: express.Response,
       _next: express.NextFunction
-    ) => res.status(error.status ?? 500).json(error)
+    ) => {
+      void _next;
+      res.status(error.status ?? 500).json(error);
+    }
   );
 
   it('allows the public manifest and CSS endpoints through validation', async () => {

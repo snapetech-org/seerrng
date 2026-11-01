@@ -818,7 +818,7 @@
       [data-interface-theme='seerrOrig']
     )
     [data-detail-layout='movie'] {
-    grid-template-columns: minmax(0, 1fr);
-    grid-template-areas: 'actions' 'information';
+    grid-template-columns: minmax(0, 1fr) minmax(18rem, 23rem);
+    grid-template-areas: 'information actions';
   }
 }
