@@ -24,6 +24,7 @@ interface TrackRequestView {
   searchCount: number;
   lastMatchCount: number;
   lastError?: string;
+  lastErrorMessageKey?: string;
   createdAt: string;
   requestedBy?: { id: number; displayName: string };
 }
@@ -167,7 +168,9 @@ const TrackRequestList = () => {
           </dl>
           {request.lastError && (
             <p className="card-body-text">
-              {<ApiMessageText>{request.lastError}</ApiMessageText>}
+              <ApiMessageText trustedKey={request.lastErrorMessageKey ?? null}>
+                {request.lastError}
+              </ApiMessageText>
             </p>
           )}
           {active && (canManage || isOwner) && (

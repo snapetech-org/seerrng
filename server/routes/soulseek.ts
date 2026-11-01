@@ -58,6 +58,7 @@ export const trackRequestView = (request: TrackRequest) => ({
   searchCount: request.searchCount,
   lastMatchCount: request.lastMatchCount,
   lastError: request.lastError ?? undefined,
+  lastErrorMessageKey: request.lastErrorMessageKey ?? undefined,
   createdAt: request.createdAt,
   updatedAt: request.updatedAt,
   requestedBy: request.requestedBy

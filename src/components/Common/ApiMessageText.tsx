@@ -4,9 +4,37 @@ import type { ReactNode } from 'react';
 import { useIntl } from 'react-intl';
 
 /** Display a known API/status phrase in the active locale; keep data verbatim. */
-export default function ApiMessageText({ children }: { children: ReactNode }) {
+export default function ApiMessageText({
+  children,
+  trustedKey,
+  trustedParams,
+}: {
+  children: ReactNode;
+  /** Explicit server-authored descriptor; null means the source is opaque. */
+  trustedKey?: string | null;
+  trustedParams?: Record<string, string> | null;
+}) {
   const intl = useIntl();
   if (typeof children !== 'string') return <>{children}</>;
+
+  if (trustedKey !== undefined) {
+    const descriptor = apiMessages[trustedKey];
+    if (!descriptor) return <bdi dir="auto" lang="und">{children}</bdi>;
+    const values = Object.fromEntries(
+      Object.entries(trustedParams ?? {}).map(([name, value]) => [
+        name,
+        <bdi key={name} dir="auto" lang="und">
+          {value}
+        </bdi>,
+      ])
+    );
+    return (
+      <span lang={intl.locale} dir="auto">
+        {intl.formatMessage(descriptor, values)}
+      </span>
+    );
+  }
+
   const match = matchApiMessage(children);
   if (!match) return <bdi dir="auto" lang="und">{children}</bdi>;
   const values = Object.fromEntries(

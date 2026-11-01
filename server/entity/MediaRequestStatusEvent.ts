@@ -51,6 +51,10 @@ export class MediaRequestStatusEvent {
   @Column({ type: 'varchar', length: 512, nullable: true })
   public message?: string | null;
 
+  /** Trusted source descriptor; null means the saved message is opaque. */
+  @Column({ type: 'varchar', length: 64, nullable: true })
+  public messageKey?: string | null;
+
   @Column({ type: 'real', nullable: true })
   public percent?: number | null;
 

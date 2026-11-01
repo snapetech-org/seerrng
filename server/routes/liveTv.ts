@@ -54,6 +54,8 @@ export const recordingView = (request: RecordingRequest) => ({
   completedCount: request.completedCount,
   failedCount: request.failedCount,
   lastError: request.lastError ?? undefined,
+  lastErrorMessageKey: request.lastErrorMessageKey ?? undefined,
+  lastErrorMessageParams: request.lastErrorMessageParams ?? undefined,
   createdAt: request.createdAt,
   updatedAt: request.updatedAt,
   requestedBy: request.requestedBy
@@ -221,6 +223,8 @@ liveTvRoutes.post('/recordings/:id/approve', async (req, res) => {
   if (request.endsAt && new Date(request.endsAt) <= new Date()) {
     request.status = 'failed';
     request.lastError = 'The airing ended before the request was approved.';
+    request.lastErrorMessageKey = 'm81449891a25bdca602db';
+    request.lastErrorMessageParams = null;
     await getRepository(RecordingRequest).save(request);
     return res.status(409).json({ message: request.lastError });
   }

@@ -1,4 +1,3 @@
-import ApiMessageText from '@app/components/Common/ApiMessageText';
 import BidiText from '@app/components/Common/BidiText';
 import BookFormatBadge, {
   getBookFormatMessage,
@@ -24,7 +23,7 @@ import MediaFilterOption from '@app/components/Discover/MediaFilterOption';
 import { PinnedFilterSectionGroup } from '@app/components/Discover/PinnedFilterSection';
 import SoftwareRequests from '@app/components/RequestStatus/SoftwareRequests';
 import {
-  formatRequestStatusMessage,
+  RequestStatusMessageText,
   requestStatusMessages,
 } from '@app/components/RequestStatus/messages';
 import useDebouncedState from '@app/hooks/useDebouncedState';
@@ -33,7 +32,6 @@ import useRequestStatusScrollRestoration from '@app/hooks/useRequestStatusScroll
 import { useSearchActivityReporter } from '@app/hooks/useSearchActivity';
 import useToasts from '@app/hooks/useToasts';
 import { Permission, useUser } from '@app/hooks/useUser';
-import { formatApiMessage } from '@app/utils/apiMessage';
 import {
   encodeApiPathSegment,
   normalizeMusicBrainzId,
@@ -1380,7 +1378,6 @@ const RequestStatusCard = ({
         retryable: false,
       }
     : observedCurrent;
-  const currentMessage = formatRequestStatusMessage(intl, current);
   const history = detail?.history.results ?? [];
   const currentStage = statusStageValues.includes(current.stage)
     ? (current.stage as StatusStage)
@@ -2051,10 +2048,17 @@ const RequestStatusCard = ({
         ) : null}
 
         <div className="app-action-row request-status-action-row">
-          <Tooltip content={<ApiMessageText>{currentMessage}</ApiMessageText>}>
+          <Tooltip
+            content={
+              <RequestStatusMessageText
+                message={current.message}
+                messageKey={current.messageKey}
+              />
+            }
+          >
             <span
               className={`request-status-control ${requestStatusTone[currentStage] ?? requestStatusTone.cancelled}`}
-              aria-label={`${getStageLabel(intl, currentStage)}: ${formatApiMessage(intl, currentMessage)}`}
+              aria-label={getStageLabel(intl, currentStage)}
               tabIndex={0}
             >
               <StageIcon className="request-status-control-icon" aria-hidden />
@@ -2124,7 +2128,12 @@ const RequestStatusCard = ({
                       </span>
                       <span className="refreshed-detail-text app-history-description">
                         {event.message
-                          ? formatRequestStatusMessage(intl, event)
+                          ? (
+                              <RequestStatusMessageText
+                                message={event.message}
+                                messageKey={event.messageKey}
+                              />
+                            )
                           : getStageLabel(intl, event.stage as StatusStage)}
                         {event.percent !== null && ` · ${event.percent}%`}
                       </span>

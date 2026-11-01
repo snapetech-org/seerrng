@@ -964,7 +964,8 @@ export class MediaRequestSubscriber implements EntitySubscriberInterface<MediaRe
         await recordRequestStatusOverride(
           request.id,
           RequestStatusStage.UNAVAILABLE,
-          'No usable release is currently available.'
+          'No usable release is currently available.',
+          'unavailable'
         );
       }
       return { delivered };
@@ -975,7 +976,8 @@ export class MediaRequestSubscriber implements EntitySubscriberInterface<MediaRe
         await recordRequestStatusOverride(
           request.id,
           RequestStatusStage.UNAVAILABLE,
-          'No usable release is currently available.'
+          'No usable release is currently available.',
+          'unavailable'
         );
       }
       return { delivered };
@@ -993,7 +995,8 @@ export class MediaRequestSubscriber implements EntitySubscriberInterface<MediaRe
         await recordRequestStatusOverride(
           request.id,
           RequestStatusStage.UNAVAILABLE,
-          'No usable release is currently available.'
+          'No usable release is currently available.',
+          'unavailable'
         );
       }
       return { delivered };
@@ -1018,7 +1021,8 @@ export class MediaRequestSubscriber implements EntitySubscriberInterface<MediaRe
         await recordRequestStatusOverride(
           request.id,
           RequestStatusStage.UNAVAILABLE,
-          'Whisparr has not found a usable release for this adult scene yet.'
+          'Whisparr has not found a usable release for this adult scene yet.',
+          'adultUnavailable'
         );
       }
       return { delivered };

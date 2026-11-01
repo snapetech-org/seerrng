@@ -1,7 +1,9 @@
-import { formatApiMessage } from '@app/utils/apiMessage';
+import OpaqueApiMessageText from '@app/components/Common/OpaqueApiMessageText';
 import defineMessages from '@app/utils/defineMessages';
 import type { RequestStatusMessageKey } from '@server/lib/requestStatus';
-import type { IntlShape, MessageDescriptor } from 'react-intl';
+import type { MessageDescriptor } from 'react-intl';
+import { useIntl } from 'react-intl';
+import type { ReactNode } from 'react';
 
 export const requestStatusMessages = defineMessages(
   'components.RequestStatus',
@@ -97,10 +99,20 @@ const messagesByKey: Record<RequestStatusMessageKey, MessageDescriptor> = {
   approvedForProcessing: requestStatusMessages.approvedForProcessing,
 };
 
-export const formatRequestStatusMessage = (
-  intl: IntlShape,
-  status: { message: string | null; messageKey?: RequestStatusMessageKey }
-): string =>
-  status.messageKey
-    ? intl.formatMessage(messagesByKey[status.messageKey])
-    : formatApiMessage(intl, status.message ?? '');
+export const RequestStatusMessageText = ({
+  message,
+  messageKey,
+}: {
+  message: string | null;
+  messageKey?: RequestStatusMessageKey;
+}): ReactNode => {
+  const intl = useIntl();
+  if (messageKey) {
+    return (
+      <span lang={intl.locale} dir="auto">
+        {intl.formatMessage(messagesByKey[messageKey])}
+      </span>
+    );
+  }
+  return <OpaqueApiMessageText>{message ?? ''}</OpaqueApiMessageText>;
+};

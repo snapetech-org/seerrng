@@ -32,7 +32,9 @@ export const MAX_ACTIVE_RECORDINGS_PER_USER = 25;
 export class RecordingRequestError extends Error {
   constructor(
     message: string,
-    public readonly status: 400 | 403 | 404 | 409 | 502 | 503
+    public readonly status: 400 | 403 | 404 | 409 | 502 | 503,
+    public readonly messageKey?: string,
+    public readonly messageParams?: Record<string, string>
   ) {
     super(message);
     this.name = 'RecordingRequestError';
@@ -81,6 +83,8 @@ export interface RecordingStatusUpdate {
   completedCount: number;
   failedCount: number;
   lastError?: string | null;
+  lastErrorMessageKey?: string | null;
+  lastErrorMessageParams?: Record<string, string> | null;
   removeRule: boolean;
 }
 
@@ -111,6 +115,8 @@ export const nextRecordingStatus = (
       completedCount,
       failedCount,
       lastError: null,
+      lastErrorMessageKey: null,
+      lastErrorMessageParams: null,
       removeRule: true,
     };
   }
@@ -132,6 +138,11 @@ export const nextRecordingStatus = (
         failedCount > 0
           ? 'Tunerr could not record this airing.'
           : 'Tunerr did not record this airing. Check that its recorder is running with recording rules enabled.',
+      lastErrorMessageKey:
+        failedCount > 0
+          ? 'mcb116fdee8c92888f9f3'
+          : 'mf36dca3f014e54d23ebc',
+      lastErrorMessageParams: null,
       removeRule: true,
     };
   }
@@ -165,7 +176,9 @@ const ensureTunerrSupportsRules = async (api: LiveTvProvider) => {
   if (missing.length > 0) {
     throw new RecordingRequestError(
       `This Tunerr version cannot record SeerrNG requests (missing: ${missing.join(', ')}). Update Tunerr.`,
-      503
+      503,
+      'm34fc2ad115ae06832eb3',
+      { value0: missing.join(', ') }
     );
   }
 };
@@ -183,13 +196,16 @@ export const scheduleRecording = async (
     request.tunerrRuleId = rule.id;
     request.status = 'scheduled';
     request.lastError = null;
+    request.lastErrorMessageKey = null;
+    request.lastErrorMessageParams = null;
   } catch (error) {
     if (error instanceof RecordingRequestError) throw error;
     throw new RecordingRequestError(
       error instanceof TunerrError
         ? error.message
         : 'Tunerr could not be reached to schedule the recording.',
-      502
+      502,
+      error instanceof TunerrError ? undefined : 'm484187190108c50c01d2'
     );
   }
   request.modifiedBy = approver;
@@ -304,6 +320,14 @@ export const createRecordingRequest = async (
     } catch (error) {
       saved.lastError =
         error instanceof Error ? error.message.slice(0, 500) : null;
+      saved.lastErrorMessageKey =
+        error instanceof RecordingRequestError
+          ? (error.messageKey ?? null)
+          : null;
+      saved.lastErrorMessageParams =
+        error instanceof RecordingRequestError
+          ? (error.messageParams ?? null)
+          : null;
       await repository.save(saved);
       throw error;
     }
@@ -390,6 +414,12 @@ export const syncRecordings = async (): Promise<void> => {
       request.completedCount = update.completedCount;
       request.failedCount = update.failedCount;
       if (update.lastError !== undefined) request.lastError = update.lastError;
+      if (update.lastErrorMessageKey !== undefined) {
+        request.lastErrorMessageKey = update.lastErrorMessageKey;
+      }
+      if (update.lastErrorMessageParams !== undefined) {
+        request.lastErrorMessageParams = update.lastErrorMessageParams;
+      }
       request.lastCheckedAt = now;
       await repository.save(request);
     }

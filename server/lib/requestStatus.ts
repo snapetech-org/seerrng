@@ -231,6 +231,7 @@ type StatusEventLike = Pick<
   | 'format'
   | 'service'
   | 'message'
+  | 'messageKey'
   | 'percent'
   | 'size'
   | 'sizeLeft'
@@ -960,10 +961,19 @@ const REQUEST_STATUS_MESSAGE_KEYS = new Map<string, RequestStatusMessageKey>([
   ['Approved for processing.', 'approvedForProcessing'],
 ]);
 
+/** Resolve only app-authored source phrases, never persisted/provider text. */
 export const getRequestStatusMessageKey = (
   message: string | null | undefined
 ): RequestStatusMessageKey | undefined =>
   message ? REQUEST_STATUS_MESSAGE_KEYS.get(message) : undefined;
+
+const isRequestStatusMessageKey = (
+  value: string | null | undefined
+): value is RequestStatusMessageKey =>
+  !!value &&
+  [...REQUEST_STATUS_MESSAGE_KEYS.values()].includes(
+    value as RequestStatusMessageKey
+  );
 
 const getStageFromRequest = (
   request: RequestLike,
@@ -1242,20 +1252,29 @@ export const getRequestStatus = (
   const latestEvent = options.latestEvent;
   const hasGenericBookFailureMessage =
     request.type === MediaType.BOOK &&
-    (latestEvent?.message === 'No usable release is currently available.' ||
-      latestEvent?.message === 'The download or import failed.' ||
-      latestEvent?.message === 'The request could not be completed.');
-  const message =
-    result.message ??
-    (latestEvent &&
+    (latestEvent?.messageKey === 'unavailable' ||
+      latestEvent?.messageKey === 'downloadImportFailed' ||
+      latestEvent?.messageKey === 'couldNotComplete');
+  const useLatestEventMessage =
+    !result.message &&
+    latestEvent &&
     (stage === RequestStatusStage.UNAVAILABLE ||
       stage === RequestStatusStage.FAILED) &&
     latestEvent.stage === stage &&
-    latestEvent.message &&
-    !hasGenericBookFailureMessage
-      ? latestEvent.message
+    !!latestEvent.message &&
+    !hasGenericBookFailureMessage;
+  const message =
+    result.message ??
+    (useLatestEventMessage
+      ? latestEvent.message!
       : getMessage(stage, result.queueFailure, request.type));
-  const messageKey = getRequestStatusMessageKey(message);
+  const messageKey = result.message
+    ? getRequestStatusMessageKey(result.message)
+    : useLatestEventMessage
+      ? isRequestStatusMessageKey(latestEvent?.messageKey)
+        ? latestEvent.messageKey
+        : undefined
+      : getRequestStatusMessageKey(message);
 
   return {
     stage,
@@ -1378,7 +1397,9 @@ const eventToHistoryItem = (
   event: MediaRequestStatusEvent
 ): RequestStatusHistoryItem => {
   const message = event.message ?? null;
-  const messageKey = getRequestStatusMessageKey(message);
+  const messageKey = isRequestStatusMessageKey(event.messageKey)
+    ? event.messageKey
+    : undefined;
   return {
     id: event.id,
     requestId: event.requestId,
@@ -1408,6 +1429,7 @@ const makeFingerprint = (status: RequestStatusSnapshot): string =>
     status.percent === null ? 'unknown' : status.percent.toFixed(1),
     status.sizeLeft === null ? 'unknown' : Math.round(status.sizeLeft),
     status.service ?? 'unknown',
+    status.messageKey ?? 'opaque',
     status.downloadCount,
     status.downloadId ?? 'unknown',
   ]
@@ -1455,6 +1477,7 @@ const persistStatusEvent = async (
         format: request.bookFormat ?? null,
         service: status.service,
         message: status.message,
+        messageKey: status.messageKey ?? null,
         percent: status.percent,
         size: status.size,
         sizeLeft: status.sizeLeft,
@@ -1531,7 +1554,8 @@ export const recordRequestStatus = async (
 export const recordRequestStatusOverride = async (
   requestId: number,
   stage: RequestStatusStage,
-  message: string
+  message: string,
+  messageKey?: RequestStatusMessageKey
 ): Promise<void> => {
   const request = await loadRequest(requestId);
   if (!request) {
@@ -1544,6 +1568,7 @@ export const recordRequestStatusOverride = async (
   });
   status.stage = stage;
   status.message = message.slice(0, 512);
+  status.messageKey = messageKey;
   status.isTerminal = (
     REQUEST_STATUS_TERMINAL_STAGES as readonly string[]
   ).includes(stage);
@@ -1575,6 +1600,7 @@ export const recordRequestRetry = async (requestId: number): Promise<void> => {
         format: request.bookFormat ?? null,
         service: getServiceName(request) ?? latestEvent?.service ?? null,
         message: 'The request was retried and is waiting to be dispatched.',
+        messageKey: 'requestRetried',
         percent: null,
         size: null,
         sizeLeft: null,
@@ -1628,6 +1654,7 @@ export const recordRequestCancellation = async (
     downloadId: null,
     service: null,
     message: getMessage(RequestStatusStage.CANCELLED),
+    messageKey: 'cancelled',
     observedAt: new Date(),
     isTerminal: true,
     needsAttention: true,
@@ -1645,6 +1672,7 @@ export const recordRequestCancellation = async (
         attempt: status.attempt,
         format: request.bookFormat ?? null,
         message: status.message,
+        messageKey: status.messageKey,
         downloadCount: 0,
         fingerprint,
       })

@@ -184,7 +184,12 @@ const RecordingList = () => {
           </dl>
           {recording.lastError && (
             <p className="card-body-text">
-              {<ApiMessageText>{recording.lastError}</ApiMessageText>}
+              <ApiMessageText
+                trustedKey={recording.lastErrorMessageKey ?? null}
+                trustedParams={recording.lastErrorMessageParams ?? null}
+              >
+                {recording.lastError}
+              </ApiMessageText>
             </p>
           )}
           {active && (canManage || isOwner) && (
