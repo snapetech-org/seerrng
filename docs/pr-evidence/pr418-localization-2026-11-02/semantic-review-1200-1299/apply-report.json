@@ -1,0 +1,34 @@
+{
+  "repository": "snapetech-org/seerrng",
+  "pullRequest": 418,
+  "inputHead": "6ff9de1c39a19fe9c508f09e0f6a885022632d8b",
+  "inputTree": "68d7525714b3628bbe7b69701d8be08add152832",
+  "sourcePositions": [
+    1200,
+    1299
+  ],
+  "rowsReviewed": 1200,
+  "cellsChanged": 115,
+  "exactTargetReadbacks": 115,
+  "catalogKeysByLocale": {
+    "ar": 9494,
+    "de": 9494,
+    "es": 9494,
+    "fr": 9494,
+    "hi": 9494,
+    "id": 9494,
+    "ja": 9494,
+    "ko": 9494,
+    "pt_BR": 9494,
+    "vi": 9494,
+    "zh_Hans": 9494,
+    "zh_Hant": 9494
+  },
+  "catalogKeySetParity": "pass",
+  "changedCellsMatchPlan": "pass",
+  "placeholderMarkupProtectedLiteralParity": "pass",
+  "gitDiffCheck": "pending",
+  "nativeSpeakerApproval": false,
+  "exactHeadBrowserReview": false,
+  "testsBuildsScansCIWorkflowsReleasesTagsMerges": false
+}
