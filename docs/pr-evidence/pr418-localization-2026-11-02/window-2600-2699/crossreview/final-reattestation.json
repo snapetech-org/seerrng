@@ -1,0 +1,14 @@
+{
+  "base": "221d8e0d542802da7529cd272c928cc747677e5c",
+  "checkedAtLocal": "2026-11-02T15:33:45.298908-06:00",
+  "commitTree": "06cfd94ee611684c33e9e78af9d8bb60a2e98825",
+  "draft": true,
+  "head": "9242898e23f7f25d515d10b5b0b51df322e395fb",
+  "headRef": "codex/seerrng-localization-overhaul-20261028",
+  "passed": true,
+  "remoteBranchHead": "9242898e23f7f25d515d10b5b0b51df322e395fb",
+  "state": "open",
+  "worktreeHead": "9242898e23f7f25d515d10b5b0b51df322e395fb",
+  "worktreeStatus": "",
+  "worktreeTree": "06cfd94ee611684c33e9e78af9d8bb60a2e98825"
+}
