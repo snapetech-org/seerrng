@@ -1,0 +1,30 @@
+{
+  "schemaVersion": 1,
+  "repository": "snapetech-org/seerrng",
+  "pullRequest": 418,
+  "preApplyHead": "2b40cb73e2d2f1b85b1532f0145c3f2f961f06b0",
+  "preApplyTree": "fdc5c1c42b0688c9c388adcd2b2996d00db99faf",
+  "preApplyBranch": "codex/seerrng-localization-overhaul-20261028",
+  "prIsDraft": true,
+  "proposalLedgerPath": "/mnt/disks/scratch/task-worktrees/localization-20261030/semantic-results/seerrng-v13-5a434217-strict/manual-reconciliations/independent-corrections-250-300-2026-11-02/independent-cell-review.jsonl",
+  "proposalLedgerSha256": "06b367d98cf0c0d811ae0012c96462a274eec81da1e4bb06c2ca204df1bbbbac",
+  "rootCrossReviewPath": "/mnt/disks/scratch/task-worktrees/localization-20261030/semantic-results/seerrng-v13-5a434217-strict/manual-reconciliations/independent-corrections-250-300-2026-11-02/root-independent-cross-review-250-299-2026-11-02.jsonl",
+  "rootCrossReviewSha256": "94f9149a82d8abd64ce6caf26332451b3cb8958a0e2f9a0640fa38c5e7166cbd",
+  "rootApplyPlanPath": "/mnt/disks/scratch/task-worktrees/localization-20261030/semantic-results/seerrng-v13-5a434217-strict/manual-reconciliations/independent-corrections-250-300-2026-11-02/root-exact-hash-apply-plan-250-299-2026-11-02.jsonl",
+  "rootApplyPlanSha256": "7d9e852345e8f7bee5ece17c92ec2b78de38eaba70cd951006a19421954b35f1",
+  "reviewedRows": 182,
+  "correctionRows": 181,
+  "acceptedCurrentRows": 1,
+  "correctionRowsByFile": {
+    "src/i18n/locale/ar.json": 138,
+    "server/i18n/locale/ar.json": 43
+  },
+  "liveSourceTargetHashMismatches": 0,
+  "validator": "pass",
+  "numericParity": "pass",
+  "exactLiteralOnlyException": [
+    "utils.ApiMessage.ma64b218fa0087783f3e2"
+  ],
+  "catalogsModified": false,
+  "nativeSpeakerApproval": false
+}
