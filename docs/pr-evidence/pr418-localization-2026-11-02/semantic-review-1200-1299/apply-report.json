@@ -27,7 +27,7 @@
   "catalogKeySetParity": "pass",
   "changedCellsMatchPlan": "pass",
   "placeholderMarkupProtectedLiteralParity": "pass",
-  "gitDiffCheck": "pending",
+  "gitDiffCheck": "pass",
   "nativeSpeakerApproval": false,
   "exactHeadBrowserReview": false,
   "testsBuildsScansCIWorkflowsReleasesTagsMerges": false
