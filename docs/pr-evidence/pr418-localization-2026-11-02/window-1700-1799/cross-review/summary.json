@@ -1,0 +1,103 @@
+{
+  "additionalFindingCount": 43,
+  "additionalFindingTypes": {
+    "correction": 25,
+    "refinement": 16,
+    "revise-candidate": 2
+  },
+  "allICUArgumentSignaturesPreserved": true,
+  "blockers": [
+    "Native-speaker approval remains outstanding for machine-reviewed translations.",
+    "The two UserWarnings keys emailInvalid and passwordRequired have definition-only caller evidence; their rendering remains unclaimed."
+  ],
+  "callerContextRowsReviewed": 100,
+  "callerLineReferencesReattested": 319,
+  "candidateMarkupMismatches": 0,
+  "candidatePlaceholderMismatches": 0,
+  "candidateProtectedLiteralMismatches": 0,
+  "cellsReviewed": 1200,
+  "confidence": "moderate overall; high for clear semantic/structural errors and correction findings; native-language confirmation remains separate",
+  "definitionOnlyUnclaimedCellCount": 24,
+  "definitionOnlyUnclaimedKeys": [
+    "components.Layout.UserWarnings.emailInvalid",
+    "components.Layout.UserWarnings.passwordRequired"
+  ],
+  "directRenderingClaimForThoseKeys": false,
+  "finalTargetMarkupMismatches": 0,
+  "finalTargetPlaceholderMismatches": 0,
+  "finalTargetProtectedLiteralMismatches": 0,
+  "head": "670d1a213179dcc690f27a8b92c2372dba699091",
+  "historicalReuseContextsPreserved": 12,
+  "historicalReuseFinalTargetHashesFrozen": 0,
+  "inputPacketHashes": {
+    "callerContextsSha256": "c3c1754cc141d77f8d0b02a02f1d43ae8e7e3a7ea0450c16f4116770996affd3",
+    "inputManifestSha256": "fe4087465bbac6a35f3ab150e9ed4a4439c713042eb76daad3b54f1e6caef5c1",
+    "inputSha256SumsVerified": true,
+    "primaryReviewLedgerSha256": "9b22dfad5bdf3b0a8ba8989342c3bd9efc788f48fdcc02be679f6a5c7475bb67",
+    "primarySha256SumsVerified": true,
+    "priorBoundarySha256": "3e6c13076ecdb225488545cb96b1012defc2bb9464fa33b4738bb0bb837b86f4",
+    "sourceCurrentCellsSha256": "c11ca2d25c3e9a6d32ab3fcf5cac7e33c1c969df2eeea75c4693997bdec948f7",
+    "sourceWindowSha256": "3bdcd1142cd44b36bc337353d2872a5b667e0ac5c6163da69506a0c593536c42"
+  },
+  "isDraft": true,
+  "limitations": [
+    "Read-only review of the pinned catalog cells and caller snapshots; no tests/builds/scans/CI/browser/workflow actions were run.",
+    "The 12 historical reusable-equivalence records contain no frozen final-target hashes; they were preserved as context and independently reviewed.",
+    "No repository or PR edits were made."
+  ],
+  "locales": [
+    "ar",
+    "de",
+    "es",
+    "fr",
+    "hi",
+    "id",
+    "ja",
+    "ko",
+    "pt_BR",
+    "vi",
+    "zh_Hans",
+    "zh_Hant"
+  ],
+  "nativeSpeakerApproval": "outstanding",
+  "packet": "SeerrNG PR #418 W1700–1799 independent cross-review",
+  "perCellVerdictCounts": {
+    "agree-current": 956,
+    "agree-primary-correction": 170,
+    "agree-primary-refinement": 30,
+    "extra-correction": 25,
+    "extra-refinement": 16,
+    "preserve-frozen-prior": 1,
+    "revise-primary-candidate": 2
+  },
+  "preservedExactPriorDispositionCount": 1,
+  "preservedExactPriorSpanish": {
+    "crossReviewDisposition": "preserved-exact",
+    "crossReviewFinalTarget": "Tipo de problema",
+    "crossReviewFinalTargetHash": "1cd1be52b38250c8fbc651fc3038255e1f8862c0766fd5917af6a7621ebf4ca8",
+    "locale": "es",
+    "priorDisposition": "accept",
+    "priorFile": "docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-600-649/exact-hash-apply-plan.jsonl",
+    "priorFileSha256": "7d7f705289cf74d3e84b4bed7c1aedbf4cadf679c35939e3759c780e65877ad3",
+    "priorFinalTarget": "Tipo de problema",
+    "priorFinalTargetHash": "1cd1be52b38250c8fbc651fc3038255e1f8862c0766fd5917af6a7621ebf4ca8",
+    "priorRowSha256": "59ad0305b8643a3ad7c4509af10672f32b56f9817d76f57bb898764fdd6ddd55",
+    "sourceId": "components.IssueModal.CreateIssueModal.issueType"
+  },
+  "primaryDispositionCounts": {
+    "accept-current": 997,
+    "preserve-prior-disposition": 1,
+    "propose-correction": 172,
+    "propose-refinement": 30
+  },
+  "pullRequest": 418,
+  "repository": "snapetech-org/SeerrNG",
+  "revisedPrimaryCandidateCount": 2,
+  "sourceIds": 100,
+  "sourcePositionRange": [
+    1700,
+    1799
+  ],
+  "state": "OPEN",
+  "tree": "be2a8a70ef7f86f3499be7c2190a07b3d2d78036"
+}
