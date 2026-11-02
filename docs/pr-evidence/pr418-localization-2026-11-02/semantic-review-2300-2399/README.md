@@ -1,0 +1,7 @@
+# SeerrNG PR #418 semantic review, source positions 2300–2399
+
+This evidence records a 100-message by 12-locale semantic review window in `src/i18n/locale/en.json`, positions 2300–2399, focused on notification type settings and permission settings. The pinned input pull request was OPEN/DRAFT at commit `d49b44895d0ded9796f0c970ad09141212e9a98f` (tree `cebcfc11e0ea37c42f5b6e979e96cca8c89c7814`).
+
+Primary review covered 1,200 cells: 1,031 accepted current values and 169 proposed corrections. Independent cross-review accepted 149 proposals, revised 19 proposals, and retained one current value. The final readback confirms 168 catalog values changed, all 1,200 reviewed targets match the adjudicated values, all 12 catalogs retain the same 9,494-key set, and no unplanned catalog values changed. Caller-context review covered 340 references across five files. Placeholder, markup, and protected-literal mismatches in final targets: zero.
+
+The `primary/` and `crossreview/` folders preserve the original packets, input and output manifests, ledgers, and checksums. `apply-readback/` contains the adjudicated plan, exact target readback, and catalog pre-apply pins. This packet provides static semantic and structural evidence only. Qualified native-speaker approval and exact-head headed-browser acceptance remain outstanding; no test, build, scan, CI job, merge, release, or tag was run or created.

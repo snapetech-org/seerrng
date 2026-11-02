@@ -1,0 +1,48 @@
+{
+  "base": "221d8e0d542802da7529cd272c928cc747677e5c",
+  "branch": "codex/seerrng-localization-overhaul-20261028",
+  "callerFileHashesAndPinnedLinesReverified": true,
+  "checkedAtLocal": "2026-11-02T13:17:34.422176-06:00",
+  "currentTargetReadbackMismatches": 0,
+  "draft": true,
+  "head": "d49b44895d0ded9796f0c970ad09141212e9a98f",
+  "host": "kspld0",
+  "independentSubsetPacketChecksums": {
+    "INPUT-SHA256SUMS": {
+      "entries": 26,
+      "manifestSha256": "4ef6c6734231a0e1d33c2a68cb7ea261721d25339cdfc408ee9d94e7aefc0e54",
+      "valid": true
+    },
+    "SHA256SUMS": {
+      "entries": 6,
+      "manifestSha256": "2365d85095484a76e8a902a8c9ce447bca7e59506b7315f77ee1713aecd27850",
+      "valid": true
+    }
+  },
+  "passed": true,
+  "primaryPacketChecksums": {
+    "INPUT-SHA256SUMS": {
+      "entries": 5,
+      "manifestSha256": "4fb434a3307cae9faaa1a82b2e869c81685a5475b0b86649553c18bb46dbcf1b",
+      "valid": true
+    },
+    "SHA256SUMS": {
+      "entries": 17,
+      "manifestSha256": "1b330243b632d4d6f54596a60fdb6573bcdf222fae9d3e9696e29ba9ddaa7e15",
+      "valid": true
+    }
+  },
+  "proposedCellCurrentTargetReadbacks": 169,
+  "pullRequest": 418,
+  "remoteBranchHead": "d49b44895d0ded9796f0c970ad09141212e9a98f",
+  "repositoryModified": false,
+  "repositoryState": {
+    "head": "d49b44895d0ded9796f0c970ad09141212e9a98f",
+    "status": "",
+    "tree": "cebcfc11e0ea37c42f5b6e979e96cca8c89c7814"
+  },
+  "sourceCatalogAnd12LocaleHashesReverified": true,
+  "state": "open",
+  "testsBuildsCiRun": false,
+  "treeFromGitHub": "cebcfc11e0ea37c42f5b6e979e96cca8c89c7814"
+}
