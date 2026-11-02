@@ -1,0 +1,169 @@
+{
+  "acceptedCurrentNoOpCount": 2,
+  "acceptedCurrentNoOps": [
+    {
+      "id": "components.Settings.BackIssueModal.edit",
+      "locale": "hi",
+      "reviewRange": "0200-0299",
+      "sha256": "99b7cce68e3c984eb6297bf44d4627dca8cbcd601f30f0eab9566ade4f8cb032",
+      "value": "BackIssue सर्वर संपादित करें"
+    },
+    {
+      "id": "components.Settings.BinderyModal.audiobook",
+      "locale": "pt-BR",
+      "reviewRange": "0200-0299",
+      "sha256": "c7e41731621a9a9515ff29ff30d83d64594d27d128969c5ae740e660c11a19e3",
+      "value": "Audiolivro"
+    }
+  ],
+  "automatedTestsBuildsAndCI": "not run",
+  "byLocale": {
+    "ar": 130,
+    "de": 19,
+    "es": 89,
+    "fr": 63,
+    "hi": 111,
+    "id": 56,
+    "ja": 86,
+    "ko": 125,
+    "pt-BR": 74,
+    "vi": 106,
+    "zh-CN": 102,
+    "zh-TW": 117
+  },
+  "byReviewRange": {
+    "0000-0099": {
+      "accepted": 363,
+      "acceptedCurrentNoOpCells": 0,
+      "appliedProposals": 373,
+      "changedTargetCells": 373,
+      "crossRows": 373,
+      "refined": 10
+    },
+    "0100-0199": {
+      "accepted": 215,
+      "acceptedCurrentNoOpCells": 0,
+      "appliedProposals": 218,
+      "changedTargetCells": 218,
+      "crossRows": 218,
+      "refined": 3
+    },
+    "0200-0299": {
+      "accepted": 273,
+      "acceptedCurrentNoOpCells": 2,
+      "appliedProposals": 291,
+      "changedTargetCells": 289,
+      "crossRows": 299,
+      "refined": 18
+    },
+    "0300-0399": {
+      "accepted": 182,
+      "acceptedCurrentNoOpCells": 0,
+      "appliedProposals": 198,
+      "changedTargetCells": 198,
+      "crossRows": 198,
+      "refined": 16
+    }
+  },
+  "catalogs": {
+    "src/i18n/locale/ar.json": {
+      "afterSha256": "67e04a2db5c18b810db03044ffbe0811e58ec4872c81cc6adfce89892b932914",
+      "beforeSha256": "d8b21c494d294d29647e667a7c77b96f6bbbe619ddb9d29721807297b19514f5",
+      "cellsChanged": 130,
+      "keys": 9494
+    },
+    "src/i18n/locale/de.json": {
+      "afterSha256": "4bd3c1b2b3cc8940b5221d3ccc496a3a49b778317fa6495c42ca1a1bca18dc01",
+      "beforeSha256": "448e99cedcf44b3df2dfd135dd6002c3b902f34fcbcd4185ddfe34270c389c25",
+      "cellsChanged": 19,
+      "keys": 9494
+    },
+    "src/i18n/locale/es.json": {
+      "afterSha256": "5c60699f21f638edaae3f8ed548b1b1387c9fd4eed6409c5dd0f774362e3f851",
+      "beforeSha256": "eadf9f4bf7f1b40dda15dcad373c0bb62be8f6cb13436571523ba26c2cfd7ed6",
+      "cellsChanged": 89,
+      "keys": 9494
+    },
+    "src/i18n/locale/fr.json": {
+      "afterSha256": "98ada3ff5936acd8e7ae7f86542e3eb91bae95a19e29c79e7c489a263abf7b15",
+      "beforeSha256": "02300fc041459326d67d34aa029aa500c386bb8608c2edd508fb4ff1018ba5cb",
+      "cellsChanged": 63,
+      "keys": 9494
+    },
+    "src/i18n/locale/hi.json": {
+      "afterSha256": "1879b0e7121201a8b460cff81ab16d22fb6c9b896ef6a6e047dac50ffeee8b50",
+      "beforeSha256": "be8d65b93d569bee0908454100c59f02b4efabd3ab42bd73bd40d8b4cf25eb2a",
+      "cellsChanged": 111,
+      "keys": 9494
+    },
+    "src/i18n/locale/id.json": {
+      "afterSha256": "2f3d566de1c93ba25f5f9fc08580d54697bbff8d931edbb4401cb8e1db044a30",
+      "beforeSha256": "a9fba1b0607488f4a0c0f726be46853e9393596d8d6b59742bfad7bc7ebb4fd7",
+      "cellsChanged": 56,
+      "keys": 9494
+    },
+    "src/i18n/locale/ja.json": {
+      "afterSha256": "f17ce27476b2ac47e26b1297133bf9ce46217fcd4ffdaa66cf2a03861129f849",
+      "beforeSha256": "1a407c79dd1d1499e69960c2dbdf550fea685028076ecab8504064b74f0d896a",
+      "cellsChanged": 86,
+      "keys": 9494
+    },
+    "src/i18n/locale/ko.json": {
+      "afterSha256": "65362d1f0b641b6a8d9c61ab15d6c016135860acbd793022b10c7176ca9a9c0b",
+      "beforeSha256": "57e03f61bdb5081f102384412110bd7c4b0128be8473d775303baaec549e7e6b",
+      "cellsChanged": 125,
+      "keys": 9494
+    },
+    "src/i18n/locale/pt_BR.json": {
+      "afterSha256": "9dbbee3101df712ed413207577da7732d7a8fba893a18973decd059ee9ecffd3",
+      "beforeSha256": "7171e07d12d09216bc2986995a175ae9a7817c195d2b261436cdd2130814205b",
+      "cellsChanged": 74,
+      "keys": 9494
+    },
+    "src/i18n/locale/vi.json": {
+      "afterSha256": "921690e91208a3088b9037d6d879a91f87d7f5ab223fe8b7ebf90dc7205a9e4b",
+      "beforeSha256": "c1ecc280bc4fb58101c44939f2456823ab29f49b1216ad047494cb209c2b0ec1",
+      "cellsChanged": 106,
+      "keys": 9494
+    },
+    "src/i18n/locale/zh_Hans.json": {
+      "afterSha256": "cc9b1099f2f3dd1bcf83c338016319e25db79268fb539ab3172fcbde93006078",
+      "beforeSha256": "2114cc886fe0f78403d5735f0a1c989766c296e98e1bef6fdae419d64b494c4e",
+      "cellsChanged": 102,
+      "keys": 9494
+    },
+    "src/i18n/locale/zh_Hant.json": {
+      "afterSha256": "4c31460559f8782de7709268aa7f6c28c8a4659accecbef214d364fc331fa15e",
+      "beforeSha256": "7da86984c85b6b520f87cf3790579b9bb52636d4bc3016a78649ba1775548c4a",
+      "cellsChanged": 117,
+      "keys": 9494
+    }
+  },
+  "nativeSpeakerApproval": false,
+  "preApplyHead": "d1137d06ffb5af57ef599ac9bf495aff2a990a7b",
+  "preApplyTree": "0aa22f0bb43e3e30d216e2ae19939220e05f04f7",
+  "priorDispositionCellsPreservedWithoutReAdjudication": 87,
+  "priorDispositionRowsByRoute": {
+    "prior-correction-applied-exact-target-match": 67,
+    "prior-equivalence-reviewed-target-matches-live": 19,
+    "prior-independent-accepted-current-needs-root-ledger-check": 1
+  },
+  "priorDispositionsCarriedForward": {
+    "0000-0099": 30,
+    "0100-0199": 21,
+    "0200-0299": 8,
+    "0300-0399": 28
+  },
+  "pullRequest": 418,
+  "repository": "snapetech-org/seerrng",
+  "schemaVersion": 1,
+  "sourceCodeChanged": false,
+  "sourceIdLocaleCandidatesCrossReviewed": 1080,
+  "sourceIdLocaleCellsChanged": 1078,
+  "sourceIdPositions": "0-399",
+  "sourceTree": "db8d479688d06980e63c5f71362d64f16efa50d8",
+  "uniqueCellsChanged": 1078,
+  "visualAcceptance": "unverified; browser rendering was blocked because the isolated browser cannot reach the private/LAN application origin; no alternative browser or desktop was used",
+  "window": "W700-749",
+  "workflowsChanged": false
+}

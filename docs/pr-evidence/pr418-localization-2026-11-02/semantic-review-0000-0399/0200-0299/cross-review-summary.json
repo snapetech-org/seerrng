@@ -1,0 +1,212 @@
+{
+  "candidateDispositions": {
+    "accept-proposal": 273,
+    "hold": 0,
+    "refine-proposal": 18
+  },
+  "candidatesByLocale": {
+    "ar": {
+      "accept-proposal": 36,
+      "hold": 0,
+      "refine-proposal": 1
+    },
+    "de": {
+      "accept-proposal": 3,
+      "hold": 0,
+      "refine-proposal": 0
+    },
+    "es": {
+      "accept-proposal": 21,
+      "hold": 0,
+      "refine-proposal": 2
+    },
+    "fr": {
+      "accept-proposal": 11,
+      "hold": 0,
+      "refine-proposal": 2
+    },
+    "hi": {
+      "accept-proposal": 40,
+      "hold": 0,
+      "refine-proposal": 3
+    },
+    "id": {
+      "accept-proposal": 8,
+      "hold": 0,
+      "refine-proposal": 2
+    },
+    "ja": {
+      "accept-proposal": 10,
+      "hold": 0,
+      "refine-proposal": 1
+    },
+    "ko": {
+      "accept-proposal": 31,
+      "hold": 0,
+      "refine-proposal": 1
+    },
+    "pt-BR": {
+      "accept-proposal": 15,
+      "hold": 0,
+      "refine-proposal": 2
+    },
+    "vi": {
+      "accept-proposal": 33,
+      "hold": 0,
+      "refine-proposal": 1
+    },
+    "zh-CN": {
+      "accept-proposal": 32,
+      "hold": 0,
+      "refine-proposal": 1
+    },
+    "zh-TW": {
+      "accept-proposal": 33,
+      "hold": 0,
+      "refine-proposal": 2
+    }
+  },
+  "confidence": "moderate",
+  "correctionNeededCandidatesReviewed": 291,
+  "crossReviewLedgerPath": "reviews/crossreview-0200-0299/semantic-crossreview-0200-0299.jsonl",
+  "crossReviewLedgerSha256": "a7bf2d348057832e071014399b43fb600f0e4749d0c001d94bdf733cde719c87",
+  "liveHead": "d1137d06ffb5af57ef599ac9bf495aff2a990a7b",
+  "liveTree": "0aa22f0bb43e3e30d216e2ae19939220e05f04f7",
+  "nativeSpeakerApproval": false,
+  "pinnedCallerSnippetMismatches": 0,
+  "primaryLedgerPath": "output/reviews/slice-0200-0299/independent-review.jsonl",
+  "primaryLedgerSha256": "3b99583104d7b7ba9105cafa47a839610baeaef49ce4e65d67c91b07c671bd7d",
+  "primaryPacketChecksums": "passed",
+  "priorGermanDispositionsCarriedForwardUnchanged": 8,
+  "priorRowsById": [
+    "components.Selector.clearAll",
+    "components.Settings.AudiobookshelfModal.portRequired",
+    "components.Settings.AudiobookshelfModal.test",
+    "components.Settings.BackIssueModal.apiKey",
+    "components.Settings.BackIssueModal.apiKeyHelp",
+    "components.Settings.BackIssueModal.defaultServer",
+    "components.Settings.BackIssueModal.intro",
+    "components.Settings.BackIssueModal.portRequired"
+  ],
+  "pullRequest": 418,
+  "pullRequestDraft": true,
+  "pullRequestState": "OPEN",
+  "refinements": [
+    {
+      "finalTarget": "الإبقاء على مفتاح API الحالي",
+      "id": "components.Settings.BinderyModal.keepExisting",
+      "locale": "ar",
+      "rationale": "Caller usage confirms the button restores the saved API key via the redacted-secret sentinel, so this means keep the current API key rather than existing items."
+    },
+    {
+      "finalTarget": "Conservar la clave de API actual",
+      "id": "components.Settings.BinderyModal.keepExisting",
+      "locale": "es",
+      "rationale": "Caller usage confirms the button restores the saved API key via the redacted-secret sentinel, so this means keep the current API key rather than existing items."
+    },
+    {
+      "finalTarget": "Se admiten las solicitudes por usuario. SeerrNG encontró {accountCount} cuentas de Bindery. SeerrNG compara nombres de usuario, nombres de usuario de Plex o Jellyfin y direcciones de correo electrónico sin distinguir mayúsculas de minúsculas. Habilita la opción «Auto-approve requests» para cada cuenta en Bindery si la adquisición debe comenzar sin una segunda aprobación. Para bibliotecas de usuario privadas, habilita también BINDERY_ENFORCE_TENANCY en Bindery.",
+      "id": "components.Settings.BinderyModal.ownerFeature",
+      "locale": "es",
+      "rationale": "The sentence names Bindery’s title-cased “Auto-approve requests” option; keeping the exact option name makes the instruction actionable in the external service UI."
+    },
+    {
+      "finalTarget": "Adresse facultative pour ouvrir le livre audio correspondant dans le navigateur. Si vous définissez une URL Base, SeerrNG l’ajoute automatiquement à cette adresse.",
+      "id": "components.Settings.AudiobookshelfModal.externalUrlHelp",
+      "locale": "fr",
+      "rationale": "The proposed target replaces the Audiobookshelf-specific instruction with generic wording and drops both the matching-audiobook purpose and automatic URL Base append behavior; this restores both."
+    },
+    {
+      "finalTarget": "Les demandes par utilisateur sont prises en charge. SeerrNG a trouvé {accountCount} comptes Bindery. SeerrNG fait correspondre les noms d’utilisateur, les noms d’utilisateur Plex ou Jellyfin et les adresses e-mail sans distinction de casse. Activez l’option « Auto-approve requests » pour chaque compte dans Bindery si l’acquisition doit démarrer sans seconde approbation. Pour les bibliothèques privées des utilisateurs, activez également BINDERY_ENFORCE_TENANCY dans Bindery.",
+      "id": "components.Settings.BinderyModal.ownerFeature",
+      "locale": "fr",
+      "rationale": "The sentence names Bindery’s title-cased “Auto-approve requests” option; keeping the exact option name makes the instruction actionable in the external service UI."
+    },
+    {
+      "finalTarget": "संबंधित ऑडियोबुक खोलने के लिए वैकल्पिक ब्राउज़र पता। यदि आप URL Base सेट करते हैं, तो SeerrNG इसे इस पते में अपने-आप जोड़ देगा।",
+      "id": "components.Settings.AudiobookshelfModal.externalUrlHelp",
+      "locale": "hi",
+      "rationale": "The proposed target replaces the Audiobookshelf-specific instruction with generic wording and drops both the matching-audiobook purpose and automatic URL Base append behavior; this restores both."
+    },
+    {
+      "finalTarget": "BackIssue API कुंजी दर्ज करें।",
+      "id": "components.Settings.BackIssueModal.apiKeyRequired",
+      "locale": "hi",
+      "rationale": "The proposal ends with a Chinese full stop; use the Hindi danda while preserving the accepted wording."
+    },
+    {
+      "finalTarget": "प्रति-उपयोगकर्ता अनुरोध समर्थित हैं। SeerrNG को {accountCount} Bindery खाते मिले। SeerrNG उपयोगकर्ता नाम, Plex या Jellyfin उपयोगकर्ता नाम और ईमेल पतों का मिलान बड़े और छोटे अक्षरों का भेद किए बिना करता है। यदि बिना दूसरी मंज़ूरी के अधिग्रहण शुरू करना हो, तो Bindery में हर खाते के लिए “Auto-approve requests” सक्षम करें। निजी उपयोगकर्ता लाइब्रेरी के लिए Bindery में BINDERY_ENFORCE_TENANCY भी सक्षम करें।",
+      "id": "components.Settings.BinderyModal.ownerFeature",
+      "locale": "hi",
+      "rationale": "The sentence names Bindery’s title-cased “Auto-approve requests” option; keeping the exact option name makes the instruction actionable in the external service UI."
+    },
+    {
+      "finalTarget": "Alamat peramban opsional untuk membuka audiobook yang sesuai. Jika Anda menetapkan URL Base, SeerrNG akan menambahkannya ke alamat ini secara otomatis.",
+      "id": "components.Settings.AudiobookshelfModal.externalUrlHelp",
+      "locale": "id",
+      "rationale": "The proposed target replaces the Audiobookshelf-specific instruction with generic wording and drops both the matching-audiobook purpose and automatic URL Base append behavior; this restores both."
+    },
+    {
+      "finalTarget": "Permintaan per pengguna didukung. SeerrNG menemukan {accountCount} akun Bindery. SeerrNG mencocokkan nama pengguna, nama pengguna Plex atau Jellyfin, dan alamat email tanpa membedakan huruf besar/kecil. Aktifkan opsi “Auto-approve requests” untuk setiap akun di Bindery jika akuisisi perlu dimulai tanpa persetujuan kedua. Untuk pustaka pengguna pribadi, aktifkan juga BINDERY_ENFORCE_TENANCY di Bindery.",
+      "id": "components.Settings.BinderyModal.ownerFeature",
+      "locale": "id",
+      "rationale": "The sentence names Bindery’s title-cased “Auto-approve requests” option; keeping the exact option name makes the instruction actionable in the external service UI."
+    },
+    {
+      "finalTarget": "対応するオーディオブックを開くための任意のブラウザーアドレスです。URL Baseを設定すると、SeerrNGはその値をこのアドレスに自動で追加します。",
+      "id": "components.Settings.AudiobookshelfModal.externalUrlHelp",
+      "locale": "ja",
+      "rationale": "The proposed target replaces the Audiobookshelf-specific instruction with generic wording and drops both the matching-audiobook purpose and automatic URL Base append behavior; this restores both."
+    },
+    {
+      "finalTarget": "해당 오디오북을 열기 위한 선택적 브라우저 주소입니다. URL Base를 설정하면 SeerrNG가 해당 URL Base를 이 주소에 자동으로 추가합니다.",
+      "id": "components.Settings.AudiobookshelfModal.externalUrlHelp",
+      "locale": "ko",
+      "rationale": "The proposed target replaces the Audiobookshelf-specific instruction with generic wording and drops both the matching-audiobook purpose and automatic URL Base append behavior; this restores both."
+    },
+    {
+      "finalTarget": "Manter a chave de API atual",
+      "id": "components.Settings.BinderyModal.keepExisting",
+      "locale": "pt-BR",
+      "rationale": "Caller usage confirms the button restores the saved API key via the redacted-secret sentinel, so this means keep the current API key rather than existing items."
+    },
+    {
+      "finalTarget": "Solicitações por usuário são compatíveis. SeerrNG encontrou {accountCount} contas do Bindery. O SeerrNG compara nomes de usuário, nomes de usuário do Plex ou Jellyfin e endereços de e-mail sem diferenciar maiúsculas de minúsculas. Ative a opção “Auto-approve requests” para cada conta no Bindery se a aquisição precisar começar sem uma segunda aprovação. Para bibliotecas privadas de usuários, ative também BINDERY_ENFORCE_TENANCY no Bindery.",
+      "id": "components.Settings.BinderyModal.ownerFeature",
+      "locale": "pt-BR",
+      "rationale": "The sentence names Bindery’s title-cased “Auto-approve requests” option; keeping the exact option name makes the instruction actionable in the external service UI."
+    },
+    {
+      "finalTarget": "Giữ khóa API hiện có",
+      "id": "components.Settings.BinderyModal.keepExisting",
+      "locale": "vi",
+      "rationale": "Caller usage confirms the button restores the saved API key via the redacted-secret sentinel, so this means keep the current API key rather than existing items."
+    },
+    {
+      "finalTarget": "用于在浏览器中打开匹配的有声书的可选地址。如果设置了 URL Base，SeerrNG 会自动将 URL Base 附加到此地址。",
+      "id": "components.Settings.AudiobookshelfModal.externalUrlHelp",
+      "locale": "zh-CN",
+      "rationale": "The proposed target replaces the Audiobookshelf-specific instruction with generic wording and drops both the matching-audiobook purpose and automatic URL Base append behavior; this restores both."
+    },
+    {
+      "finalTarget": "用於在瀏覽器中開啟對應有聲書的選用地址。若設定了 URL Base，SeerrNG 會自動將 URL Base 加到此地址。",
+      "id": "components.Settings.AudiobookshelfModal.externalUrlHelp",
+      "locale": "zh-TW",
+      "rationale": "The proposed target replaces the Audiobookshelf-specific instruction with generic wording and drops both the matching-audiobook purpose and automatic URL Base append behavior; this restores both."
+    },
+    {
+      "finalTarget": "保留目前的 API 金鑰",
+      "id": "components.Settings.BinderyModal.keepExisting",
+      "locale": "zh-TW",
+      "rationale": "Caller usage confirms the button restores the saved API key via the redacted-secret sentinel, so this means keep the current API key rather than existing items."
+    }
+  ],
+  "repository": "snapetech-org/seerrng",
+  "rowsInCrossReviewLedger": 299,
+  "schemaVersion": 1,
+  "scope": "Review evidence only; no repository/catalog edits, tests, builds, CI, browser, push, or PR operations performed.",
+  "sourceAndCurrentTargetHashMismatches": 0,
+  "verifiedCallerSnippetsAgainstPinnedHead": 704,
+  "verifiedRowsAgainstPinnedHead": 299,
+  "window": "W700-749 positions 200-299"
+}
