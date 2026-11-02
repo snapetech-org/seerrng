@@ -1,0 +1,2105 @@
+{
+  "candidateCount": 262,
+  "candidateTargets": [
+    {
+      "candidateTarget": "<strong>{title}</strong> को देखने की सूची में सफलतापूर्वक जोड़ दिया गया!",
+      "candidateTargetHash": "db67ca472c25d10187be2b4917bab0f8515590a1e09538d62e0816182ee52072",
+      "disposition": "propose-correction",
+      "locale": "hi",
+      "sourceId": "components.MovieDetails.watchlistSuccess",
+      "sourcePosition": 2201
+    },
+    {
+      "candidateTarget": "<strong>{title}</strong> berhasil ditambahkan ke daftar tontonan!",
+      "candidateTargetHash": "47653604b02eef7ca8195d0a28019d6717f1ca7fe9ea1bccbec227f1c5938485",
+      "disposition": "propose-correction",
+      "locale": "id",
+      "sourceId": "components.MovieDetails.watchlistSuccess",
+      "sourcePosition": 2201
+    },
+    {
+      "candidateTarget": "<strong>{title}</strong> foi adicionado com sucesso à lista para assistir!",
+      "candidateTargetHash": "604d13ae7619f3b7d75641897b5420a552631922c8c442440e1da0c4f354feb1",
+      "disposition": "propose-correction",
+      "locale": "pt_BR",
+      "sourceId": "components.MovieDetails.watchlistSuccess",
+      "sourcePosition": 2201
+    },
+    {
+      "candidateTarget": "<strong>{title}</strong> đã được thêm vào danh sách theo dõi thành công!",
+      "candidateTargetHash": "35a97fe7e46456861e8cc9aaecfbeafb1eacb1c04d36ccec59297782209b4af6",
+      "disposition": "propose-correction",
+      "locale": "vi",
+      "sourceId": "components.MovieDetails.watchlistSuccess",
+      "sourcePosition": 2201
+    },
+    {
+      "candidateTarget": "<strong>{title}</strong>已成功添加到待看列表！",
+      "candidateTargetHash": "2bc9f4a80b0e923498153fe2af12545a9db26ed73297294a388935a4d4c93e62",
+      "disposition": "propose-correction",
+      "locale": "zh_Hans",
+      "sourceId": "components.MovieDetails.watchlistSuccess",
+      "sourcePosition": 2201
+    },
+    {
+      "candidateTarget": "<strong>{title}</strong> 已成功加入待看清單！",
+      "candidateTargetHash": "5972a32b0e32d342094393df7855f16d80885e9d76adb02f86334350a1926f27",
+      "disposition": "propose-correction",
+      "locale": "zh_Hant",
+      "sourceId": "components.MovieDetails.watchlistSuccess",
+      "sourcePosition": 2201
+    },
+    {
+      "candidateTarget": "شاهد المقطع الدعائي",
+      "candidateTargetHash": "2483185d3c8bede9d6542f7edf4bc1aaeb898bca43a4bf65b19a9a18b9fbe070",
+      "disposition": "propose-correction",
+      "locale": "ar",
+      "sourceId": "components.MovieDetails.watchtrailer",
+      "sourcePosition": 2202
+    },
+    {
+      "candidateTarget": "ट्रेलर देखें",
+      "candidateTargetHash": "c5ec8f6dd0fe79d3317629d71ced6a3bd69ea7f595778de81c111c9c7e634cd6",
+      "disposition": "propose-correction",
+      "locale": "hi",
+      "sourceId": "components.MovieDetails.watchtrailer",
+      "sourcePosition": 2202
+    },
+    {
+      "candidateTarget": "Assistir ao trailer",
+      "candidateTargetHash": "35fdfa3a3c096d9c261d4e4247553e050c8ad74bb4635c35de70c065a5c98e8e",
+      "disposition": "propose-correction",
+      "locale": "pt_BR",
+      "sourceId": "components.MovieDetails.watchtrailer",
+      "sourcePosition": 2202
+    },
+    {
+      "candidateTarget": "Xem trailer",
+      "candidateTargetHash": "939efcf3970e6df3b875f0a09cc57044769a5ff1ab5fb2913587b6aabd966381",
+      "disposition": "propose-correction",
+      "locale": "vi",
+      "sourceId": "components.MovieDetails.watchtrailer",
+      "sourcePosition": 2202
+    },
+    {
+      "candidateTarget": "{minutes} minutes",
+      "candidateTargetHash": "fc339bac371eeb975e5df021c7596084dd03da1e208469c6cb144d39e23fe468",
+      "disposition": "propose-correction",
+      "locale": "fr",
+      "sourceId": "components.MovieSummaryCard.minutes",
+      "sourcePosition": 2208
+    },
+    {
+      "candidateTarget": "{minutes}分",
+      "candidateTargetHash": "f3473aad95db5635e23ede90a8e3673b0395ccac294243f5dcb966b3e3b99feb",
+      "disposition": "propose-correction",
+      "locale": "ja",
+      "sourceId": "components.MovieSummaryCard.minutes",
+      "sourcePosition": 2208
+    },
+    {
+      "candidateTarget": "{minutes}분",
+      "candidateTargetHash": "c447d2a0b8060dd0092f29ee2c1e35e5734a6d266815a70d4ade1f501ea1453f",
+      "disposition": "propose-correction",
+      "locale": "ko",
+      "sourceId": "components.MovieSummaryCard.minutes",
+      "sourcePosition": 2208
+    },
+    {
+      "candidateTarget": "تاريخ الإصدار",
+      "candidateTargetHash": "4e5892a34a0649e9813d5f894db4f132893819c0fe0414e768664e91d3fa179a",
+      "disposition": "propose-correction",
+      "locale": "ar",
+      "sourceId": "components.MovieSummaryCard.releaseDate",
+      "sourcePosition": 2211
+    },
+    {
+      "candidateTarget": "Ngày phát hành",
+      "candidateTargetHash": "c941d8a4348627aa40189a1f57ed002585ff86567a32c94a04e42ab12eaf24ee",
+      "disposition": "propose-correction",
+      "locale": "vi",
+      "sourceId": "components.MovieSummaryCard.releaseDate",
+      "sourcePosition": 2211
+    },
+    {
+      "candidateTarget": "發行日期",
+      "candidateTargetHash": "d7daa02155fccac0690e48b15e84b4b93351af5d551b5e201d750229f9b1f23a",
+      "disposition": "propose-correction",
+      "locale": "zh_Hant",
+      "sourceId": "components.MovieSummaryCard.releaseDate",
+      "sourcePosition": 2211
+    },
+    {
+      "candidateTarget": "अवधि",
+      "candidateTargetHash": "16a3378e5a9d3f64d161120324b431d4dc2839dbce72ef083e312622dc9d641c",
+      "disposition": "propose-refinement",
+      "locale": "hi",
+      "sourceId": "components.MovieSummaryCard.runtime",
+      "sourcePosition": 2212
+    },
+    {
+      "candidateTarget": "Durasi",
+      "candidateTargetHash": "dd22ab55ef76e02df5d4af06bdcd447b6d8b6581fa2df9d1b54afab09f03f8d0",
+      "disposition": "propose-correction",
+      "locale": "id",
+      "sourceId": "components.MovieSummaryCard.runtime",
+      "sourcePosition": 2212
+    },
+    {
+      "candidateTarget": "上映時間",
+      "candidateTargetHash": "81cec3875806060d0bccfa2474c1b6d196087573026cd08e63a30db59f565c7a",
+      "disposition": "propose-correction",
+      "locale": "ja",
+      "sourceId": "components.MovieSummaryCard.runtime",
+      "sourcePosition": 2212
+    },
+    {
+      "candidateTarget": "片长",
+      "candidateTargetHash": "9ed297990bda412aa1c96e542b3d6f15dca873f04d0b6ec5b6685aeb44eba5a5",
+      "disposition": "propose-correction",
+      "locale": "zh_Hans",
+      "sourceId": "components.MovieSummaryCard.runtime",
+      "sourcePosition": 2212
+    },
+    {
+      "candidateTarget": "片長",
+      "candidateTargetHash": "22932aef17ce2e508988890c08dd565e7a56d170dad68b6eb7675572c68ca3da",
+      "disposition": "propose-correction",
+      "locale": "zh_Hant",
+      "sourceId": "components.MovieSummaryCard.runtime",
+      "sourcePosition": 2212
+    },
+    {
+      "candidateTarget": "पटकथा",
+      "candidateTargetHash": "b4e9fe6ac3235ddd69c4894c031d6f7c7b456ea6c99b85b1284ff26b4148da15",
+      "disposition": "propose-refinement",
+      "locale": "hi",
+      "sourceId": "components.MovieSummaryCard.screenplay",
+      "sourcePosition": 2213
+    },
+    {
+      "candidateTarget": "脚本",
+      "candidateTargetHash": "5d4f709636eedc04f0726cd225444770dd600e0b4d57864d8d1c3286100be097",
+      "disposition": "propose-correction",
+      "locale": "ja",
+      "sourceId": "components.MovieSummaryCard.screenplay",
+      "sourcePosition": 2213
+    },
+    {
+      "candidateTarget": "각본",
+      "candidateTargetHash": "5b4071baf9856da58bff72e677b084e963d546835ed5c69dfc7e9053579bf594",
+      "disposition": "propose-correction",
+      "locale": "ko",
+      "sourceId": "components.MovieSummaryCard.screenplay",
+      "sourcePosition": 2213
+    },
+    {
+      "candidateTarget": "Kịch bản",
+      "candidateTargetHash": "602e5f276afb79413b7c5dabc05ba78d19c98f68bc0b9655f43a9ce7f1083928",
+      "disposition": "propose-correction",
+      "locale": "vi",
+      "sourceId": "components.MovieSummaryCard.screenplay",
+      "sourcePosition": 2213
+    },
+    {
+      "candidateTarget": "تمت المشاهدة",
+      "candidateTargetHash": "dafaeac1139ceb0e4cadd145a18c9d20735df330e71a4809b5bafa4589178118",
+      "disposition": "propose-correction",
+      "locale": "ar",
+      "sourceId": "components.MovieSummaryCard.watched",
+      "sourcePosition": 2218
+    },
+    {
+      "candidateTarget": "Vu",
+      "candidateTargetHash": "fcd8d2f9b3ea119073eba0c519cf253f5b85d5d22e3b378ebd4e4ea1882ac2e9",
+      "disposition": "propose-correction",
+      "locale": "fr",
+      "sourceId": "components.MovieSummaryCard.watched",
+      "sourcePosition": 2218
+    },
+    {
+      "candidateTarget": "देखा जा चुका",
+      "candidateTargetHash": "7ce917e50bc2ded32edf6e45daa2642d6536859aff7865c4d1f99e66cbcf2428",
+      "disposition": "propose-correction",
+      "locale": "hi",
+      "sourceId": "components.MovieSummaryCard.watched",
+      "sourcePosition": 2218
+    },
+    {
+      "candidateTarget": "Sudah ditonton",
+      "candidateTargetHash": "b8f5e30402d7382ac3a8c520e140ce688618d6ac8abc220ffd554b99e99c41bb",
+      "disposition": "propose-correction",
+      "locale": "id",
+      "sourceId": "components.MovieSummaryCard.watched",
+      "sourcePosition": 2218
+    },
+    {
+      "candidateTarget": "視聴済み",
+      "candidateTargetHash": "b508342dce2810ebdc1e773a9db753e96e13ef7c6f093187a15b97a8815e5e7f",
+      "disposition": "propose-correction",
+      "locale": "ja",
+      "sourceId": "components.MovieSummaryCard.watched",
+      "sourcePosition": 2218
+    },
+    {
+      "candidateTarget": "시청 완료",
+      "candidateTargetHash": "ba9cde70ca5e84a5dfe362d8ce2188851ad23b349fde11fb0e74bec299a97729",
+      "disposition": "propose-correction",
+      "locale": "ko",
+      "sourceId": "components.MovieSummaryCard.watched",
+      "sourcePosition": 2218
+    },
+    {
+      "candidateTarget": "Assistido",
+      "candidateTargetHash": "31efafde306b68e2f135577e497cc237d17a877d6bd5efde22e75afbfd7a02ac",
+      "disposition": "propose-correction",
+      "locale": "pt_BR",
+      "sourceId": "components.MovieSummaryCard.watched",
+      "sourcePosition": 2218
+    },
+    {
+      "candidateTarget": "Đã xem",
+      "candidateTargetHash": "95526f88c1b06eb89ec0422dd85787827c4856605bbd7daaf3b054860c1c5ae5",
+      "disposition": "propose-correction",
+      "locale": "vi",
+      "sourceId": "components.MovieSummaryCard.watched",
+      "sourcePosition": 2218
+    },
+    {
+      "candidateTarget": "已观看",
+      "candidateTargetHash": "2861440ef23ad09f11878f291882acfaa5f94fff9d0d76149a85037ca9979b07",
+      "disposition": "propose-correction",
+      "locale": "zh_Hans",
+      "sourceId": "components.MovieSummaryCard.watched",
+      "sourcePosition": 2218
+    },
+    {
+      "candidateTarget": "已觀看",
+      "candidateTargetHash": "52ac21dda6f4a77ed61782852b61542898895611ec596b61d64957e12440f024",
+      "disposition": "propose-correction",
+      "locale": "zh_Hant",
+      "sourceId": "components.MovieSummaryCard.watched",
+      "sourcePosition": 2218
+    },
+    {
+      "candidateTarget": "الفنان",
+      "candidateTargetHash": "994450fc148b620041d3b1c62badd17a909e46c9a7d8b3c7c81e164857c8040e",
+      "disposition": "propose-correction",
+      "locale": "ar",
+      "sourceId": "components.MusicArtistFilter.artist",
+      "sourcePosition": 2219
+    },
+    {
+      "candidateTarget": "لا يوجد فنانون مطابقون.",
+      "candidateTargetHash": "64a1461c37a162c2be2512c010e7a9022bb62483b2c99868dbed7bbd717c5f6d",
+      "disposition": "propose-correction",
+      "locale": "ar",
+      "sourceId": "components.MusicArtistFilter.empty",
+      "sourcePosition": 2220
+    },
+    {
+      "candidateTarget": "Aucun artiste correspondant",
+      "candidateTargetHash": "72ca318bb8b23a66a35854a110ad206b9c88f039198554f7726fb2551cbbfbbf",
+      "disposition": "propose-correction",
+      "locale": "fr",
+      "sourceId": "components.MusicArtistFilter.empty",
+      "sourcePosition": 2220
+    },
+    {
+      "candidateTarget": "कोई मेल खाने वाले कलाकार नहीं मिले।",
+      "candidateTargetHash": "7018595b06a5cf16ccbed2d7346f9e666a6470775afc470a88504482998a5bef",
+      "disposition": "propose-correction",
+      "locale": "hi",
+      "sourceId": "components.MusicArtistFilter.empty",
+      "sourcePosition": 2220
+    },
+    {
+      "candidateTarget": "一致するアーティストがいません",
+      "candidateTargetHash": "9cb23b5163d0cfe88335ffe71eaeea5e0127a4e62866f53a0fbd198f392852a9",
+      "disposition": "propose-correction",
+      "locale": "ja",
+      "sourceId": "components.MusicArtistFilter.empty",
+      "sourcePosition": 2220
+    },
+    {
+      "candidateTarget": "일치하는 아티스트가 없습니다",
+      "candidateTargetHash": "c10bb56bf4e1f4e0dd25c855be9c8edacc779cdc325bf8e1f000ce26fa462081",
+      "disposition": "propose-correction",
+      "locale": "ko",
+      "sourceId": "components.MusicArtistFilter.empty",
+      "sourcePosition": 2220
+    },
+    {
+      "candidateTarget": "沒有符合條件的藝人",
+      "candidateTargetHash": "bc89dec64f2554e509f23b19df3e59ba7af33d411a5fc2b98ab231e2df318f51",
+      "disposition": "propose-correction",
+      "locale": "zh_Hant",
+      "sourceId": "components.MusicArtistFilter.empty",
+      "sourcePosition": 2220
+    },
+    {
+      "candidateTarget": "البحث عن الفنانين غير متاح. حاول مرة أخرى.",
+      "candidateTargetHash": "c378e2e41a25cf6bbe1df928e9e77cd3d5610f23ede1365117f00904f1449b4a",
+      "disposition": "propose-correction",
+      "locale": "ar",
+      "sourceId": "components.MusicArtistFilter.failed",
+      "sourcePosition": 2221
+    },
+    {
+      "candidateTarget": "Recherche d’artistes indisponible. Réessayez.",
+      "candidateTargetHash": "ac6e60b1f33fbc330e5033724bba355eaf7db5fc30e947b8088f6e00f835c575",
+      "disposition": "propose-correction",
+      "locale": "fr",
+      "sourceId": "components.MusicArtistFilter.failed",
+      "sourcePosition": 2221
+    },
+    {
+      "candidateTarget": "कलाकार खोज उपलब्ध नहीं है। फिर से प्रयास करें।",
+      "candidateTargetHash": "28888aa4af9196f5520116ab7e7ff42d0ba68e2b82ae6fd96fa223f3d702de0b",
+      "disposition": "propose-correction",
+      "locale": "hi",
+      "sourceId": "components.MusicArtistFilter.failed",
+      "sourcePosition": 2221
+    },
+    {
+      "candidateTarget": "아티스트 검색을 사용할 수 없습니다. 다시 시도하세요.",
+      "candidateTargetHash": "8dbff3dd18188bfd43a07e2282a7eb918035dbf9912ba124f3bb71f92610b613",
+      "disposition": "propose-correction",
+      "locale": "ko",
+      "sourceId": "components.MusicArtistFilter.failed",
+      "sourcePosition": 2221
+    },
+    {
+      "candidateTarget": "Không thể tìm kiếm nghệ sĩ. Vui lòng thử lại.",
+      "candidateTargetHash": "24a7d23cc45b2c311a40231a670253f9fcef154de8d72918e06dc0bab15d325a",
+      "disposition": "propose-correction",
+      "locale": "vi",
+      "sourceId": "components.MusicArtistFilter.failed",
+      "sourcePosition": 2221
+    },
+    {
+      "candidateTarget": "无法搜索艺人，请重试。",
+      "candidateTargetHash": "de978a0b5556439ec5310e1bcb40ca0aa70591d5fbb23dbc4e12fc7ae98486cd",
+      "disposition": "propose-correction",
+      "locale": "zh_Hans",
+      "sourceId": "components.MusicArtistFilter.failed",
+      "sourcePosition": 2221
+    },
+    {
+      "candidateTarget": "無法搜尋藝人，請再試一次。",
+      "candidateTargetHash": "89853e2a61db35fc9cfb3d4c11ec8ae8f84ee71044da33b4c194cd34959957a8",
+      "disposition": "propose-correction",
+      "locale": "zh_Hant",
+      "sourceId": "components.MusicArtistFilter.failed",
+      "sourcePosition": 2221
+    },
+    {
+      "candidateTarget": "ابحث عن فنانين…",
+      "candidateTargetHash": "e47e500ee2d54ba5b8dedf20c9b412dd3c17942578a1b78e08ecd43bcc7b8949",
+      "disposition": "propose-correction",
+      "locale": "ar",
+      "sourceId": "components.MusicArtistFilter.placeholder",
+      "sourcePosition": 2222
+    },
+    {
+      "candidateTarget": "कलाकार खोजें…",
+      "candidateTargetHash": "50c2e62bbfa688b72dcfd4f88153235a92d5a1195381eeff71ae56e21caf424a",
+      "disposition": "propose-correction",
+      "locale": "hi",
+      "sourceId": "components.MusicArtistFilter.placeholder",
+      "sourcePosition": 2222
+    },
+    {
+      "candidateTarget": "아티스트 검색…",
+      "candidateTargetHash": "db00b04a6f3f8d84e098817076ee1068b780fa2c522c753e86f03a431fb42761",
+      "disposition": "propose-correction",
+      "locale": "ko",
+      "sourceId": "components.MusicArtistFilter.placeholder",
+      "sourcePosition": 2222
+    },
+    {
+      "candidateTarget": "Tìm kiếm nghệ sĩ…",
+      "candidateTargetHash": "50aaf92ec024a7d1362144dcebd4a76a8d85417d309cd0126562bbff2b1b2210",
+      "disposition": "propose-correction",
+      "locale": "vi",
+      "sourceId": "components.MusicArtistFilter.placeholder",
+      "sourcePosition": 2222
+    },
+    {
+      "candidateTarget": "搜尋藝人…",
+      "candidateTargetHash": "b9fd108a4d969d04affcb815f1e8aed2f38e364a75fcd7b32625de1673bba021",
+      "disposition": "propose-correction",
+      "locale": "zh_Hant",
+      "sourceId": "components.MusicArtistFilter.placeholder",
+      "sourcePosition": 2222
+    },
+    {
+      "candidateTarget": "検索するには入力を開始してください。",
+      "candidateTargetHash": "3c4309a58f4d177f4820aa5b56db408812ccbab50903ee875a34717fce3c19fe",
+      "disposition": "propose-correction",
+      "locale": "ja",
+      "sourceId": "components.MusicArtistFilter.start",
+      "sourcePosition": 2223
+    },
+    {
+      "candidateTarget": "검색하려면 입력을 시작하세요.",
+      "candidateTargetHash": "3c3af717c39a1fa3af195e110132cacb96068aff799bb24329000f5886075e7b",
+      "disposition": "propose-correction",
+      "locale": "ko",
+      "sourceId": "components.MusicArtistFilter.start",
+      "sourcePosition": 2223
+    },
+    {
+      "candidateTarget": "开始输入以搜索。",
+      "candidateTargetHash": "6cd57e9ca8bb3ad379d1922b2a712a58c529dac6eadcbbeb3e364148adc2d5b4",
+      "disposition": "propose-correction",
+      "locale": "zh_Hans",
+      "sourceId": "components.MusicArtistFilter.start",
+      "sourcePosition": 2223
+    },
+    {
+      "candidateTarget": "開始輸入以搜尋。",
+      "candidateTargetHash": "5a1728d369285f5a7cd77097b3a140ba81d6c01de8e8f6ba5794cf92a355c09e",
+      "disposition": "propose-correction",
+      "locale": "zh_Hant",
+      "sourceId": "components.MusicArtistFilter.start",
+      "sourcePosition": 2223
+    },
+    {
+      "candidateTarget": "عوامل تصفية المجموعة",
+      "candidateTargetHash": "378dc30025585e3cf5c636b480b376dc2b2164b2a4afd77793794ac8d2e1c496",
+      "disposition": "propose-correction",
+      "locale": "ar",
+      "sourceId": "components.MusicCollectionFilters.label",
+      "sourcePosition": 2227
+    },
+    {
+      "candidateTarget": "Sammlungsfilter",
+      "candidateTargetHash": "0ea647f9aa7fb4fd9234bd2331c2d49fb7acae06743d433a0acf0aa5f148a4c0",
+      "disposition": "propose-correction",
+      "locale": "de",
+      "sourceId": "components.MusicCollectionFilters.label",
+      "sourcePosition": 2227
+    },
+    {
+      "candidateTarget": "Filtres de collection",
+      "candidateTargetHash": "395831d8658d009507a277bb9b9ba43c5eecb1e73e53ff68a7d6a5278d4fe05b",
+      "disposition": "propose-correction",
+      "locale": "fr",
+      "sourceId": "components.MusicCollectionFilters.label",
+      "sourcePosition": 2227
+    },
+    {
+      "candidateTarget": "संग्रह के फ़िल्टर",
+      "candidateTargetHash": "37497992cce159ce4261042d41984e196426caf92eff0bc1d90d5f1f315a1bad",
+      "disposition": "propose-correction",
+      "locale": "hi",
+      "sourceId": "components.MusicCollectionFilters.label",
+      "sourcePosition": 2227
+    },
+    {
+      "candidateTarget": "Filter koleksi",
+      "candidateTargetHash": "5518caad2bb28eb671ae274621364784a68e2cdfe5205ad102fb6f3d256cf00b",
+      "disposition": "propose-correction",
+      "locale": "id",
+      "sourceId": "components.MusicCollectionFilters.label",
+      "sourcePosition": 2227
+    },
+    {
+      "candidateTarget": "컬렉션 필터",
+      "candidateTargetHash": "90f3b75b9d8da1721bdf7bc9c2b6b47b2235bd96dc8da4851567897a8b398118",
+      "disposition": "propose-correction",
+      "locale": "ko",
+      "sourceId": "components.MusicCollectionFilters.label",
+      "sourcePosition": 2227
+    },
+    {
+      "candidateTarget": "Bộ lọc bộ sưu tập",
+      "candidateTargetHash": "bf6b388bbb501e0fcaf86a72d3505fc1a3960a66deff72407df1935042019a2a",
+      "disposition": "propose-correction",
+      "locale": "vi",
+      "sourceId": "components.MusicCollectionFilters.label",
+      "sourcePosition": 2227
+    },
+    {
+      "candidateTarget": "收藏篩選器",
+      "candidateTargetHash": "5604b8141930e0a6217c3eb770946c3db4af3f3232d0cfcc8324ff14ccd98cc0",
+      "disposition": "propose-correction",
+      "locale": "zh_Hant",
+      "sourceId": "components.MusicCollectionFilters.label",
+      "sourcePosition": 2227
+    },
+    {
+      "candidateTarget": "جارٍ التحميل...",
+      "candidateTargetHash": "fc33fff94632ba60e60e940d44839acd1a8bf08458f3d68039a77834008126a9",
+      "disposition": "propose-correction",
+      "locale": "ar",
+      "sourceId": "components.MusicCollectionFilters.loading",
+      "sourcePosition": 2228
+    },
+    {
+      "candidateTarget": "लोड हो रहा है...",
+      "candidateTargetHash": "6c790f94bfec385ba580000ae651127af0ea924220525dc79b8318b57c85095f",
+      "disposition": "propose-correction",
+      "locale": "hi",
+      "sourceId": "components.MusicCollectionFilters.loading",
+      "sourcePosition": 2228
+    },
+    {
+      "candidateTarget": "Đang tải...",
+      "candidateTargetHash": "148ded8380553e499ed48a224e4abaf1c900d48cb9bf06783cc8065a694c007d",
+      "disposition": "propose-correction",
+      "locale": "vi",
+      "sourceId": "components.MusicCollectionFilters.loading",
+      "sourcePosition": 2228
+    },
+    {
+      "candidateTarget": "正在加载…",
+      "candidateTargetHash": "21bd738e0d7191a79734e976e49d15bafeb3f3385ae69620e52984d7da0e8c40",
+      "disposition": "propose-correction",
+      "locale": "zh_Hans",
+      "sourceId": "components.MusicCollectionFilters.loading",
+      "sourcePosition": 2228
+    },
+    {
+      "candidateTarget": "正在載入…",
+      "candidateTargetHash": "3456fed2e7fac2a0d0bb0ddb6c3784485bc4541653573ee07e78df45e9ee978a",
+      "disposition": "propose-correction",
+      "locale": "zh_Hant",
+      "sourceId": "components.MusicCollectionFilters.loading",
+      "sourcePosition": 2228
+    },
+    {
+      "candidateTarget": "선택 {selected}/{total}",
+      "candidateTargetHash": "1b2be3c1d24c6e2614d4cb805e4cc3376c6762909983ad261a61e842752d3a38",
+      "disposition": "propose-correction",
+      "locale": "ko",
+      "sourceId": "components.MusicCollectionFilters.selection",
+      "sourcePosition": 2229
+    },
+    {
+      "candidateTarget": "سنة الإصدار",
+      "candidateTargetHash": "835e2c3c5a9dddd14dd7dc5f00d02d310536145d621bcbca1e417801c3f6ac72",
+      "disposition": "propose-correction",
+      "locale": "ar",
+      "sourceId": "components.MusicCollectionFilters.year",
+      "sourcePosition": 2231
+    },
+    {
+      "candidateTarget": "출시 연도",
+      "candidateTargetHash": "2179900f0965fdd8a5e0b4442421e2af45289a5b92a28d0b0dd33f2a5f094f36",
+      "disposition": "propose-correction",
+      "locale": "ko",
+      "sourceId": "components.MusicCollectionFilters.year",
+      "sourcePosition": 2231
+    },
+    {
+      "candidateTarget": "Năm phát hành",
+      "candidateTargetHash": "442595bdf192c17c1bff797c5baee8b9ea80cc424f4efcb1773ba8423c6c49c3",
+      "disposition": "propose-correction",
+      "locale": "vi",
+      "sourceId": "components.MusicCollectionFilters.year",
+      "sourcePosition": 2231
+    },
+    {
+      "candidateTarget": "發行年份",
+      "candidateTargetHash": "5b5166b26a8f3355e2edc18438e34ca50c92afbef44bf4258cc244e0289e7787",
+      "disposition": "propose-correction",
+      "locale": "zh_Hant",
+      "sourceId": "components.MusicCollectionFilters.year",
+      "sourcePosition": 2231
+    },
+    {
+      "candidateTarget": "Artiste de l’album",
+      "candidateTargetHash": "61d7c60608948c693835f0c9dbea3e772685f67ce76f75f00888232e28ec8352",
+      "disposition": "propose-correction",
+      "locale": "fr",
+      "sourceId": "components.MusicDetails.Layout.albumArtist",
+      "sourcePosition": 2232
+    },
+    {
+      "candidateTarget": "Nghệ sĩ của album",
+      "candidateTargetHash": "69ec3721744bcb0021c48c50df5c03532948e9716e63a30b0df75160e4849a71",
+      "disposition": "propose-correction",
+      "locale": "vi",
+      "sourceId": "components.MusicDetails.Layout.albumArtist",
+      "sourcePosition": 2232
+    },
+    {
+      "candidateTarget": "專輯藝人",
+      "candidateTargetHash": "925a8b48b948fe95ad91f2b70d4d175fc55f9d7c1b2a9d8394dbc19f98e2b23f",
+      "disposition": "propose-correction",
+      "locale": "zh_Hant",
+      "sourceId": "components.MusicDetails.Layout.albumArtist",
+      "sourcePosition": 2232
+    },
+    {
+      "candidateTarget": "詳細",
+      "candidateTargetHash": "9652e7b5f69922bdce983e3534b7b370bd965dce40e4f7ec2f39a443eed006d6",
+      "disposition": "propose-correction",
+      "locale": "ja",
+      "sourceId": "components.MusicDetails.Layout.albumDetails",
+      "sourcePosition": 2233
+    },
+    {
+      "candidateTarget": "نوع الألبوم",
+      "candidateTargetHash": "ad4eb0929e90e2283df6a0e7c0c3f6f44e3b2b4ad84ca70ccf72b9e9340e1b8c",
+      "disposition": "propose-refinement",
+      "locale": "ar",
+      "sourceId": "components.MusicDetails.Layout.albumType",
+      "sourcePosition": 2234
+    },
+    {
+      "candidateTarget": "Loại album",
+      "candidateTargetHash": "c4c587486f33661ac193347a117a4fa0ac8fd48cbb2c9d16a8f2331ed4d31cbc",
+      "disposition": "propose-correction",
+      "locale": "vi",
+      "sourceId": "components.MusicDetails.Layout.albumType",
+      "sourcePosition": 2234
+    },
+    {
+      "candidateTarget": "专辑类型",
+      "candidateTargetHash": "3a71eed09d8346e829963b01f4230e054eb10d960f2cdab871a66289aa250fba",
+      "disposition": "propose-correction",
+      "locale": "zh_Hans",
+      "sourceId": "components.MusicDetails.Layout.albumType",
+      "sourcePosition": 2234
+    },
+    {
+      "candidateTarget": "專輯類型",
+      "candidateTargetHash": "76c39c9320987f7ca941bd710941dcaedd30eb91ffecdbc3197f0bb6329fcf69",
+      "disposition": "propose-correction",
+      "locale": "zh_Hant",
+      "sourceId": "components.MusicDetails.Layout.albumType",
+      "sourcePosition": 2234
+    },
+    {
+      "candidateTarget": "الفنان",
+      "candidateTargetHash": "994450fc148b620041d3b1c62badd17a909e46c9a7d8b3c7c81e164857c8040e",
+      "disposition": "propose-correction",
+      "locale": "ar",
+      "sourceId": "components.MusicDetails.Layout.artist",
+      "sourcePosition": 2235
+    },
+    {
+      "candidateTarget": "نوع الفنان",
+      "candidateTargetHash": "c31553cf97bcfe1e9315c6f7243f1bb225a9bcca07b38d040e894ceb0d8bfbe8",
+      "disposition": "propose-correction",
+      "locale": "ar",
+      "sourceId": "components.MusicDetails.Layout.artistType",
+      "sourcePosition": 2236
+    },
+    {
+      "candidateTarget": "القائمة الكاملة للفنانين",
+      "candidateTargetHash": "2b024c49d94c5882de2c1d255a230f82077bbbe0166d29974240c10fd0ecfb15",
+      "disposition": "propose-correction",
+      "locale": "ar",
+      "sourceId": "components.MusicDetails.Layout.fullArtistList",
+      "sourcePosition": 2238
+    },
+    {
+      "candidateTarget": "{minutes} minutes",
+      "candidateTargetHash": "fc339bac371eeb975e5df021c7596084dd03da1e208469c6cb144d39e23fe468",
+      "disposition": "propose-correction",
+      "locale": "fr",
+      "sourceId": "components.MusicDetails.Layout.minutes",
+      "sourcePosition": 2242
+    },
+    {
+      "candidateTarget": "{minutes}分",
+      "candidateTargetHash": "f3473aad95db5635e23ede90a8e3673b0395ccac294243f5dcb966b3e3b99feb",
+      "disposition": "propose-correction",
+      "locale": "ja",
+      "sourceId": "components.MusicDetails.Layout.minutes",
+      "sourcePosition": 2242
+    },
+    {
+      "candidateTarget": "{minutes}분",
+      "candidateTargetHash": "c447d2a0b8060dd0092f29ee2c1e35e5734a6d266815a70d4ade1f501ea1453f",
+      "disposition": "propose-correction",
+      "locale": "ko",
+      "sourceId": "components.MusicDetails.Layout.minutes",
+      "sourcePosition": 2242
+    },
+    {
+      "candidateTarget": "تقييم MusicBrainz: {score} من {votes} صوتًا",
+      "candidateTargetHash": "7da4830544b0f8c946ec6b2d4732fe07f8e3547644491da2f307b5850e776e21",
+      "disposition": "propose-refinement",
+      "locale": "ar",
+      "sourceId": "components.MusicDetails.Layout.musicBrainzRating",
+      "sourcePosition": 2244
+    },
+    {
+      "candidateTarget": "MusicBrainz रेटिंग: {score} ({votes} वोट)",
+      "candidateTargetHash": "cac164051a85844648c5e8050391e87404c745aab4e27041541dcd44c2b55983",
+      "disposition": "propose-correction",
+      "locale": "hi",
+      "sourceId": "components.MusicDetails.Layout.musicBrainzRating",
+      "sourcePosition": 2244
+    },
+    {
+      "candidateTarget": "MusicBrainzの評価：{votes}票中{score}",
+      "candidateTargetHash": "399ce44013cf73963353fd5ba6bbc4c1d64d01c0049186a1d94d06b12378481a",
+      "disposition": "propose-correction",
+      "locale": "ja",
+      "sourceId": "components.MusicDetails.Layout.musicBrainzRating",
+      "sourcePosition": 2244
+    },
+    {
+      "candidateTarget": "MusicBrainz 평점: {votes}표 중 {score}",
+      "candidateTargetHash": "d77df31d0eff2e3172d43c7cbf23d8e7ad1142f3793e21d70be096412dcc2c45",
+      "disposition": "propose-correction",
+      "locale": "ko",
+      "sourceId": "components.MusicDetails.Layout.musicBrainzRating",
+      "sourcePosition": 2244
+    },
+    {
+      "candidateTarget": "Đánh giá MusicBrainz: {score} từ {votes} lượt bình chọn",
+      "candidateTargetHash": "5e14e5085a96b5c0777cd3675d53d934cb78f2ebf67ab7290518daaa3af1fbdd",
+      "disposition": "propose-correction",
+      "locale": "vi",
+      "sourceId": "components.MusicDetails.Layout.musicBrainzRating",
+      "sourcePosition": 2244
+    },
+    {
+      "candidateTarget": "MusicBrainz 评分：{votes} 票中 {score}",
+      "candidateTargetHash": "0a96ab3456724ff2bc529cd778ae77e248ee7b2c069afe36c74752811cdcfc32",
+      "disposition": "propose-correction",
+      "locale": "zh_Hans",
+      "sourceId": "components.MusicDetails.Layout.musicBrainzRating",
+      "sourcePosition": 2244
+    },
+    {
+      "candidateTarget": "MusicBrainz 評分：{votes} 票中 {score}",
+      "candidateTargetHash": "4c745a5a14c07260cc428806f9e219123b09c3fdcde4671f439ec2e7b0d5fcce",
+      "disposition": "propose-correction",
+      "locale": "zh_Hant",
+      "sourceId": "components.MusicDetails.Layout.musicBrainzRating",
+      "sourcePosition": 2244
+    },
+    {
+      "candidateTarget": "لا تتوفر معلومات عن الفنانين.",
+      "candidateTargetHash": "c44454d559cbfba1675e703255b183d6a8558a95e450099b74b6d6b77d3902f7",
+      "disposition": "propose-correction",
+      "locale": "ar",
+      "sourceId": "components.MusicDetails.Layout.noArtists",
+      "sourcePosition": 2245
+    },
+    {
+      "candidateTarget": "이용 가능한 아티스트 정보가 없습니다.",
+      "candidateTargetHash": "bffff9e2db378d72f4792a766ee1854612f1ca68a21a4f0744a7fbdbe8e956b1",
+      "disposition": "propose-correction",
+      "locale": "ko",
+      "sourceId": "components.MusicDetails.Layout.noArtists",
+      "sourcePosition": 2245
+    },
+    {
+      "candidateTarget": "主題タグはありません。",
+      "candidateTargetHash": "95ad0d48b2c4899539538e6013c84f1faa4c2f30a8f5d87c96f66da48ed4acb4",
+      "disposition": "propose-correction",
+      "locale": "ja",
+      "sourceId": "components.MusicDetails.Layout.noTags",
+      "sourcePosition": 2246
+    },
+    {
+      "candidateTarget": "Nenhuma tag de assunto disponível.",
+      "candidateTargetHash": "ee99017f6fb571ac8e1793d203af368b0b7e0ea9f6b5a29567adb742fbd92837",
+      "disposition": "propose-correction",
+      "locale": "pt_BR",
+      "sourceId": "components.MusicDetails.Layout.noTags",
+      "sourcePosition": 2246
+    },
+    {
+      "candidateTarget": "Không có thẻ chủ đề nào.",
+      "candidateTargetHash": "2bec311a8e67f4748cede3b4b6eb82ef1c10597ca3d81746cdbb3173f3b63e12",
+      "disposition": "propose-correction",
+      "locale": "vi",
+      "sourceId": "components.MusicDetails.Layout.noTags",
+      "sourcePosition": 2246
+    },
+    {
+      "candidateTarget": "品質",
+      "candidateTargetHash": "82c7ca70ec216c99edb6cbb5e914ff48155c6d35536331866fe48e00720f8371",
+      "disposition": "propose-correction",
+      "locale": "ja",
+      "sourceId": "components.MusicDetails.Layout.quality",
+      "sourcePosition": 2249
+    },
+    {
+      "candidateTarget": "품질",
+      "candidateTargetHash": "ce22e94483cb4fbf1920e212499c588148e78593c67a345915b19fb4eecd67c7",
+      "disposition": "propose-correction",
+      "locale": "ko",
+      "sourceId": "components.MusicDetails.Layout.quality",
+      "sourcePosition": 2249
+    },
+    {
+      "candidateTarget": "品質",
+      "candidateTargetHash": "82c7ca70ec216c99edb6cbb5e914ff48155c6d35536331866fe48e00720f8371",
+      "disposition": "propose-correction",
+      "locale": "zh_Hant",
+      "sourceId": "components.MusicDetails.Layout.quality",
+      "sourcePosition": 2249
+    },
+    {
+      "candidateTarget": "تاريخ الإصدار",
+      "candidateTargetHash": "4e5892a34a0649e9813d5f894db4f132893819c0fe0414e768664e91d3fa179a",
+      "disposition": "propose-correction",
+      "locale": "ar",
+      "sourceId": "components.MusicDetails.Layout.releaseDate",
+      "sourcePosition": 2250
+    },
+    {
+      "candidateTarget": "Ngày phát hành",
+      "candidateTargetHash": "c941d8a4348627aa40189a1f57ed002585ff86567a32c94a04e42ab12eaf24ee",
+      "disposition": "propose-correction",
+      "locale": "vi",
+      "sourceId": "components.MusicDetails.Layout.releaseDate",
+      "sourcePosition": 2250
+    },
+    {
+      "candidateTarget": "發行日期",
+      "candidateTargetHash": "d7daa02155fccac0690e48b15e84b4b93351af5d551b5e201d750229f9b1f23a",
+      "disposition": "propose-correction",
+      "locale": "zh_Hant",
+      "sourceId": "components.MusicDetails.Layout.releaseDate",
+      "sourcePosition": 2250
+    },
+    {
+      "candidateTarget": "अवधि",
+      "candidateTargetHash": "16a3378e5a9d3f64d161120324b431d4dc2839dbce72ef083e312622dc9d641c",
+      "disposition": "propose-refinement",
+      "locale": "hi",
+      "sourceId": "components.MusicDetails.Layout.runtime",
+      "sourcePosition": 2251
+    },
+    {
+      "candidateTarget": "Durasi",
+      "candidateTargetHash": "dd22ab55ef76e02df5d4af06bdcd447b6d8b6581fa2df9d1b54afab09f03f8d0",
+      "disposition": "propose-correction",
+      "locale": "id",
+      "sourceId": "components.MusicDetails.Layout.runtime",
+      "sourcePosition": 2251
+    },
+    {
+      "candidateTarget": "上映時間",
+      "candidateTargetHash": "81cec3875806060d0bccfa2474c1b6d196087573026cd08e63a30db59f565c7a",
+      "disposition": "propose-correction",
+      "locale": "ja",
+      "sourceId": "components.MusicDetails.Layout.runtime",
+      "sourcePosition": 2251
+    },
+    {
+      "candidateTarget": "片长",
+      "candidateTargetHash": "9ed297990bda412aa1c96e542b3d6f15dca873f04d0b6ec5b6685aeb44eba5a5",
+      "disposition": "propose-correction",
+      "locale": "zh_Hans",
+      "sourceId": "components.MusicDetails.Layout.runtime",
+      "sourcePosition": 2251
+    },
+    {
+      "candidateTarget": "片長",
+      "candidateTargetHash": "22932aef17ce2e508988890c08dd565e7a56d170dad68b6eb7675572c68ca3da",
+      "disposition": "propose-correction",
+      "locale": "zh_Hant",
+      "sourceId": "components.MusicDetails.Layout.runtime",
+      "sourcePosition": 2251
+    },
+    {
+      "candidateTarget": "وسوم الموضوع",
+      "candidateTargetHash": "060309a83bf3ea02e71f5085d97ebcd791a0700bc6a50fc0db06af14ead529b1",
+      "disposition": "propose-correction",
+      "locale": "ar",
+      "sourceId": "components.MusicDetails.Layout.subjectTags",
+      "sourcePosition": 2254
+    },
+    {
+      "candidateTarget": "Themen-Tags",
+      "candidateTargetHash": "b9b6989ba1d0cec404d4010d31108f2e04da445e209b987f98fe8c1ed9a9c9bb",
+      "disposition": "propose-correction",
+      "locale": "de",
+      "sourceId": "components.MusicDetails.Layout.subjectTags",
+      "sourcePosition": 2254
+    },
+    {
+      "candidateTarget": "주제 태그",
+      "candidateTargetHash": "b8973fb1bdc3304f5ef57d9da15a534628a6264956ce45fbed8516fb9fb8487d",
+      "disposition": "propose-correction",
+      "locale": "ko",
+      "sourceId": "components.MusicDetails.Layout.subjectTags",
+      "sourcePosition": 2254
+    },
+    {
+      "candidateTarget": "Thẻ chủ đề",
+      "candidateTargetHash": "925cc14b25a24f25de25d0e88048cd55053ea029f8d94b41fc8660e5f4aebe88",
+      "disposition": "propose-correction",
+      "locale": "vi",
+      "sourceId": "components.MusicDetails.Layout.subjectTags",
+      "sourcePosition": 2254
+    },
+    {
+      "candidateTarget": "主題標籤",
+      "candidateTargetHash": "fa940a3ea2a1bfe9a145da67e7174722bf3d8ac6396e719df0ea47f5a6b34ccb",
+      "disposition": "propose-correction",
+      "locale": "zh_Hant",
+      "sourceId": "components.MusicDetails.Layout.subjectTags",
+      "sourcePosition": 2254
+    },
+    {
+      "candidateTarget": "فنان المقطوعة",
+      "candidateTargetHash": "ad463cb23dc38c440352f7b3e43c7c9181ea9ccb8d41cfd39057844bc531e57d",
+      "disposition": "propose-correction",
+      "locale": "ar",
+      "sourceId": "components.MusicDetails.Layout.trackArtist",
+      "sourcePosition": 2255
+    },
+    {
+      "candidateTarget": "Artiste du morceau",
+      "candidateTargetHash": "e5f999123d822a7cd9c22b709de152b8c68b38cfdf5e7c53896adb0d9b09ce8b",
+      "disposition": "propose-correction",
+      "locale": "fr",
+      "sourceId": "components.MusicDetails.Layout.trackArtist",
+      "sourcePosition": 2255
+    },
+    {
+      "candidateTarget": "Nghệ sĩ của bản nhạc",
+      "candidateTargetHash": "f8420063eaea55608afaabdb732f6175196fc64e044a8c7387790d4f9d81a0ac",
+      "disposition": "propose-correction",
+      "locale": "vi",
+      "sourceId": "components.MusicDetails.Layout.trackArtist",
+      "sourcePosition": 2255
+    },
+    {
+      "candidateTarget": "عدد المقطوعات",
+      "candidateTargetHash": "cdbfce9dac6e780ba21033838308a4171ae7398fab9ae295c7d0b637eca16ee4",
+      "disposition": "propose-correction",
+      "locale": "ar",
+      "sourceId": "components.MusicDetails.Layout.trackCount",
+      "sourcePosition": 2256
+    },
+    {
+      "candidateTarget": "ट्रैक की संख्या",
+      "candidateTargetHash": "462c44fa6059f85c0f0c7b07edb5e89883bcd7452f593cb96d3e09e3207d02c8",
+      "disposition": "propose-correction",
+      "locale": "hi",
+      "sourceId": "components.MusicDetails.Layout.trackCount",
+      "sourcePosition": 2256
+    },
+    {
+      "candidateTarget": "Jumlah trek",
+      "candidateTargetHash": "c1090002de9aa49940e1ec33cda8347897e9475a17904983b4f3ab6115d33da6",
+      "disposition": "propose-correction",
+      "locale": "id",
+      "sourceId": "components.MusicDetails.Layout.trackCount",
+      "sourcePosition": 2256
+    },
+    {
+      "candidateTarget": "Số bản nhạc",
+      "candidateTargetHash": "26344a3e84b94d2ce6e28342298f664e7567973656a0d72c2dcfd50604d3c3b5",
+      "disposition": "propose-correction",
+      "locale": "vi",
+      "sourceId": "components.MusicDetails.Layout.trackCount",
+      "sourcePosition": 2256
+    },
+    {
+      "candidateTarget": "الفنانون",
+      "candidateTargetHash": "5b45fac723f0a4201b70992f6143d3311071861230bac44537a8321e02e60113",
+      "disposition": "propose-correction",
+      "locale": "ar",
+      "sourceId": "components.MusicDetails.Layout.viewArtists",
+      "sourcePosition": 2257
+    },
+    {
+      "candidateTarget": "देखने की सूची में जोड़ें",
+      "candidateTargetHash": "f5faff71ed6ef29fdddc30b821e53cd048551bdb902266235af363ca8294c43b",
+      "disposition": "propose-correction",
+      "locale": "hi",
+      "sourceId": "components.MusicDetails.addtowatchlist",
+      "sourcePosition": 2258
+    },
+    {
+      "candidateTarget": "Tambahkan ke daftar tontonan",
+      "candidateTargetHash": "065d565c471daeca6627d30cbd5c122cc360e85b2874db87ec5a939a9db7a679",
+      "disposition": "propose-refinement",
+      "locale": "id",
+      "sourceId": "components.MusicDetails.addtowatchlist",
+      "sourcePosition": 2258
+    },
+    {
+      "candidateTarget": "관심 목록에 추가",
+      "candidateTargetHash": "fc132d7c957a1f484e86dbc8184999437cf7c32c0d69ad6a5cf39ae8008654e3",
+      "disposition": "propose-correction",
+      "locale": "ko",
+      "sourceId": "components.MusicDetails.addtowatchlist",
+      "sourcePosition": 2258
+    },
+    {
+      "candidateTarget": "Adicionar à lista para assistir",
+      "candidateTargetHash": "197b90c9436040ffffbc753a0ac15db88493202dca7dfe3bbf90f0ca6d30c01e",
+      "disposition": "propose-correction",
+      "locale": "pt_BR",
+      "sourceId": "components.MusicDetails.addtowatchlist",
+      "sourcePosition": 2258
+    },
+    {
+      "candidateTarget": "Thêm vào danh sách theo dõi",
+      "candidateTargetHash": "26e442e1e1d437f556ada4f2f8100669f69cb705b698f7b160cb712f0276155b",
+      "disposition": "propose-correction",
+      "locale": "vi",
+      "sourceId": "components.MusicDetails.addtowatchlist",
+      "sourcePosition": 2258
+    },
+    {
+      "candidateTarget": "添加到待看列表",
+      "candidateTargetHash": "f683d20c885f3cf26a13a5ffef93d10042df549aeb461fa8ea111124e7d166b9",
+      "disposition": "propose-correction",
+      "locale": "zh_Hans",
+      "sourceId": "components.MusicDetails.addtowatchlist",
+      "sourcePosition": 2258
+    },
+    {
+      "candidateTarget": "加入待看清單",
+      "candidateTargetHash": "892432f95011c92214c3189b0072a60fc0239fc5566ac47fd1d72704fd91713f",
+      "disposition": "propose-correction",
+      "locale": "zh_Hant",
+      "sourceId": "components.MusicDetails.addtowatchlist",
+      "sourcePosition": 2258
+    },
+    {
+      "candidateTarget": "هذا العنوان مدرج في قائمة الحظر.",
+      "candidateTargetHash": "a1718293ee21bfb299f20ee193d68f7b83eb2d06cc03ea2a9642277d934c5b76",
+      "disposition": "propose-correction",
+      "locale": "ar",
+      "sourceId": "components.MusicDetails.blocklisted",
+      "sourcePosition": 2259
+    },
+    {
+      "candidateTarget": "यह शीर्षक ब्लॉकलिस्ट में है।",
+      "candidateTargetHash": "5d28251f9eaf16bf803bbb9cebc6e2467204fa13e92e2d5675de8e0e87c3215d",
+      "disposition": "propose-correction",
+      "locale": "hi",
+      "sourceId": "components.MusicDetails.blocklisted",
+      "sourcePosition": 2259
+    },
+    {
+      "candidateTarget": "このタイトルはブロックリストに登録されています。",
+      "candidateTargetHash": "e0c96662f6a3cc409da01eba3324b11eeb4e6d846a194d9bb52859025aadf4a1",
+      "disposition": "propose-correction",
+      "locale": "ja",
+      "sourceId": "components.MusicDetails.blocklisted",
+      "sourcePosition": 2259
+    },
+    {
+      "candidateTarget": "이 제목은 차단 목록에 등록되어 있습니다.",
+      "candidateTargetHash": "21b99a771900e18bfcb0431be32ca5011c970842a547fb72245234257d9938a6",
+      "disposition": "propose-correction",
+      "locale": "ko",
+      "sourceId": "components.MusicDetails.blocklisted",
+      "sourcePosition": 2259
+    },
+    {
+      "candidateTarget": "Este título está na lista de bloqueio.",
+      "candidateTargetHash": "358a87735db402eca73354a8f557474705c11deb8f1909997f131263a346b6d0",
+      "disposition": "propose-correction",
+      "locale": "pt_BR",
+      "sourceId": "components.MusicDetails.blocklisted",
+      "sourcePosition": 2259
+    },
+    {
+      "candidateTarget": "Tiêu đề này nằm trong danh sách chặn.",
+      "candidateTargetHash": "421584d76dde3540c26bb4bae1fa8a9866c4f1da01bc27d3854a1c92fa78aa54",
+      "disposition": "propose-correction",
+      "locale": "vi",
+      "sourceId": "components.MusicDetails.blocklisted",
+      "sourcePosition": 2259
+    },
+    {
+      "candidateTarget": "此標題已列入封鎖清單。",
+      "candidateTargetHash": "83446718979029c00f9c1e374abe7b10b7592ddabeb71270370bd3fead81630c",
+      "disposition": "propose-correction",
+      "locale": "zh_Hant",
+      "sourceId": "components.MusicDetails.blocklisted",
+      "sourcePosition": 2259
+    },
+    {
+      "candidateTarget": "يوجد بالفعل طلب FLAC مفتوح.",
+      "candidateTargetHash": "84f8e5fa6b8c349294d923556810655d9157a2e043ed16dbd65c85baf4324f00",
+      "disposition": "propose-correction",
+      "locale": "ar",
+      "sourceId": "components.MusicDetails.flacPending",
+      "sourcePosition": 2261
+    },
+    {
+      "candidateTarget": "Sudah ada permintaan FLAC yang terbuka.",
+      "candidateTargetHash": "84e835a53a451296a31056d6d4e688587216ea63e86b764aa4de0b43e38ba52d",
+      "disposition": "propose-correction",
+      "locale": "id",
+      "sourceId": "components.MusicDetails.flacPending",
+      "sourcePosition": 2261
+    },
+    {
+      "candidateTarget": "Đã có một yêu cầu FLAC đang mở.",
+      "candidateTargetHash": "3a50cf09b84de2e3afbbd29fff86ccc3626b306a077ccf05d98d983767f1678a",
+      "disposition": "propose-correction",
+      "locale": "vi",
+      "sourceId": "components.MusicDetails.flacPending",
+      "sourcePosition": 2261
+    },
+    {
+      "candidateTarget": "لم يتم إعداد أي خدمة موسيقى FLAC.",
+      "candidateTargetHash": "3962067d389e56a0e320a6dbc1ec8ffabac60eb0ace7437e4853673326c47d5e",
+      "disposition": "propose-correction",
+      "locale": "ar",
+      "sourceId": "components.MusicDetails.flacServiceUnavailable",
+      "sourcePosition": 2262
+    },
+    {
+      "candidateTarget": "कोई FLAC संगीत सेवा कॉन्फ़िगर नहीं की गई है।",
+      "candidateTargetHash": "c1da1ca20cd69e273a515eaa0453ef6d61682d6709073564f25d0e9ecda49d9e",
+      "disposition": "propose-correction",
+      "locale": "hi",
+      "sourceId": "components.MusicDetails.flacServiceUnavailable",
+      "sourcePosition": 2262
+    },
+    {
+      "candidateTarget": "إدارة الموسيقى",
+      "candidateTargetHash": "581398bbda2565a997cc9ad342f47ecd77c49600516a52930ccd5651f1960864",
+      "disposition": "propose-correction",
+      "locale": "ar",
+      "sourceId": "components.MusicDetails.manage",
+      "sourcePosition": 2263
+    },
+    {
+      "candidateTarget": "संगीत प्रबंधित करें",
+      "candidateTargetHash": "8508f2149510e5102a03c23a91354303eaa1b90cd18d57cec057665a06256570",
+      "disposition": "propose-correction",
+      "locale": "hi",
+      "sourceId": "components.MusicDetails.manage",
+      "sourcePosition": 2263
+    },
+    {
+      "candidateTarget": "Sudah ada permintaan MP3 yang terbuka.",
+      "candidateTargetHash": "e0a301444adbc5c68037d726cc16bccd926e1e31e4290f9b98b7f2d61c16f760",
+      "disposition": "propose-correction",
+      "locale": "id",
+      "sourceId": "components.MusicDetails.mp3Pending",
+      "sourcePosition": 2265
+    },
+    {
+      "candidateTarget": "Đã có một yêu cầu MP3 đang mở.",
+      "candidateTargetHash": "942b9bf2a172a19b832d227cfee84130d83b168efbaa18decb978e2a534fc1ff",
+      "disposition": "propose-correction",
+      "locale": "vi",
+      "sourceId": "components.MusicDetails.mp3Pending",
+      "sourcePosition": 2265
+    },
+    {
+      "candidateTarget": "لم يتم إعداد أي خدمة موسيقى MP3.",
+      "candidateTargetHash": "3de1813585f5427c46c5de5c508dc0b0e9123cb024fd95887c33625b94ad85e5",
+      "disposition": "propose-correction",
+      "locale": "ar",
+      "sourceId": "components.MusicDetails.mp3ServiceUnavailable",
+      "sourcePosition": 2266
+    },
+    {
+      "candidateTarget": "कोई MP3 संगीत सेवा कॉन्फ़िगर नहीं की गई है।",
+      "candidateTargetHash": "e336542d58abf7e973b4632c4701ede981f54c253b8a00a983d730607779c96d",
+      "disposition": "propose-correction",
+      "locale": "hi",
+      "sourceId": "components.MusicDetails.mp3ServiceUnavailable",
+      "sourcePosition": 2266
+    },
+    {
+      "candidateTarget": "Chưa cấu hình dịch vụ nhạc MP3 nào.",
+      "candidateTargetHash": "4bd422247077f9f55bd1de8a4f6f93b2de6ae11160b056d0e6056f81cdbacfba",
+      "disposition": "propose-correction",
+      "locale": "vi",
+      "sourceId": "components.MusicDetails.mp3ServiceUnavailable",
+      "sourcePosition": 2266
+    },
+    {
+      "candidateTarget": "खुले मुद्दे",
+      "candidateTargetHash": "73e46c06ed88458ac593d0c642e8f20e45b105596d08c5b149d2e2f64005d95c",
+      "disposition": "propose-correction",
+      "locale": "hi",
+      "sourceId": "components.MusicDetails.openissues",
+      "sourcePosition": 2267
+    },
+    {
+      "candidateTarget": "Các vấn đề đang mở",
+      "candidateTargetHash": "0f96612e720acde1a982766111b217bc0d58dcc5388a00a7b533430c62e6feb5",
+      "disposition": "propose-correction",
+      "locale": "vi",
+      "sourceId": "components.MusicDetails.openissues",
+      "sourcePosition": 2267
+    },
+    {
+      "candidateTarget": "देखने की सूची से हटाएँ",
+      "candidateTargetHash": "7d450d3892c94b77ea76ad98c5dc540e77a9e33f19044ed1e483ce29c7046a0a",
+      "disposition": "propose-correction",
+      "locale": "hi",
+      "sourceId": "components.MusicDetails.removefromwatchlist",
+      "sourcePosition": 2268
+    },
+    {
+      "candidateTarget": "Xóa khỏi danh sách theo dõi",
+      "candidateTargetHash": "801ee75a29280b6fbe04a07fed42c065b3c1360f8c9134704ec0b6ffdc15de7e",
+      "disposition": "propose-correction",
+      "locale": "vi",
+      "sourceId": "components.MusicDetails.removefromwatchlist",
+      "sourcePosition": 2268
+    },
+    {
+      "candidateTarget": "从待看列表中移除",
+      "candidateTargetHash": "8fee04d7749038f7aad123f4a1f51f0fcc3873841adb0cfa3c910a1381f3d37b",
+      "disposition": "propose-correction",
+      "locale": "zh_Hans",
+      "sourceId": "components.MusicDetails.removefromwatchlist",
+      "sourcePosition": 2268
+    },
+    {
+      "candidateTarget": "從待看清單移除",
+      "candidateTargetHash": "ca636ccf4d8dbd91d0f8e5d4b335dad8f531fa36e089d0d85f35d9770264ea44",
+      "disposition": "propose-correction",
+      "locale": "zh_Hant",
+      "sourceId": "components.MusicDetails.removefromwatchlist",
+      "sourcePosition": 2268
+    },
+    {
+      "candidateTarget": "اطلب قائمة إصدارات الفنان",
+      "candidateTargetHash": "75355c826e9a028e33ab04c4ad48e7f3d3f98f15d954f48922d9c13392a8058a",
+      "disposition": "propose-correction",
+      "locale": "ar",
+      "sourceId": "components.MusicDetails.requestdiscography",
+      "sourcePosition": 2270
+    },
+    {
+      "candidateTarget": "Solicitar discografía",
+      "candidateTargetHash": "88682946f7ab419370fd24aad126a314f618b6d35505ab28ea74d53beaf370ff",
+      "disposition": "propose-correction",
+      "locale": "es",
+      "sourceId": "components.MusicDetails.requestdiscography",
+      "sourcePosition": 2270
+    },
+    {
+      "candidateTarget": "डिस्कोग्राफी का अनुरोध करें",
+      "candidateTargetHash": "f4cb2d79d7bc2dfc39e207b8370e3084dc701a8a07f58245f6eed7c74d3cf295",
+      "disposition": "propose-correction",
+      "locale": "hi",
+      "sourceId": "components.MusicDetails.requestdiscography",
+      "sourcePosition": 2270
+    },
+    {
+      "candidateTarget": "Ajukan permintaan diskografi",
+      "candidateTargetHash": "5aad933a35efb0ba25a32e15fda87c55fc53bfa76b1f6facbc4a848fee3046d0",
+      "disposition": "propose-correction",
+      "locale": "id",
+      "sourceId": "components.MusicDetails.requestdiscography",
+      "sourcePosition": 2270
+    },
+    {
+      "candidateTarget": "Yêu cầu danh mục đĩa nhạc",
+      "candidateTargetHash": "8fb37a76992d319a92e65b2383a5d70b4eefa76f458d0f720db5fe344a8e85b8",
+      "disposition": "propose-correction",
+      "locale": "vi",
+      "sourceId": "components.MusicDetails.requestdiscography",
+      "sourcePosition": 2270
+    },
+    {
+      "candidateTarget": "请求完整唱片目录",
+      "candidateTargetHash": "100bc66b491cac8cb2a9f254163f39e7c7d831de54f19837ac077fa47aa77eec",
+      "disposition": "propose-correction",
+      "locale": "zh_Hans",
+      "sourceId": "components.MusicDetails.requestdiscography",
+      "sourcePosition": 2270
+    },
+    {
+      "candidateTarget": "要求完整唱片目錄",
+      "candidateTargetHash": "191e1dda6811121d22f2bffa5aeb111b7537508c62582aea91fe1a736013a26e",
+      "disposition": "propose-correction",
+      "locale": "zh_Hant",
+      "sourceId": "components.MusicDetails.requestdiscography",
+      "sourcePosition": 2270
+    },
+    {
+      "candidateTarget": "لا تتوفر حاليًا أي مقطوعات قابلة للتشغيل.",
+      "candidateTargetHash": "84b20ea73036d565224dd495540ffe894987e5ffbe2a44b54cf70f32a17479ca",
+      "disposition": "propose-refinement",
+      "locale": "ar",
+      "sourceId": "components.MusicDetails.selectToPlay",
+      "sourcePosition": 2271
+    },
+    {
+      "candidateTarget": "वर्तमान में चलाए जा सकने वाले कोई ट्रैक उपलब्ध नहीं हैं।",
+      "candidateTargetHash": "5630581d9bf86c773b72e395914cb340b9183fc12b75aa987b8693ccbf0e7a4c",
+      "disposition": "propose-correction",
+      "locale": "hi",
+      "sourceId": "components.MusicDetails.selectToPlay",
+      "sourcePosition": 2271
+    },
+    {
+      "candidateTarget": "Nenhuma faixa reproduzível está disponível no momento.",
+      "candidateTargetHash": "ec643f95b9ebc71961861c555a4fe3b7ee6800637939a8e7911692ed58a706cc",
+      "disposition": "propose-correction",
+      "locale": "pt_BR",
+      "sourceId": "components.MusicDetails.selectToPlay",
+      "sourcePosition": 2271
+    },
+    {
+      "candidateTarget": "Hiện không có bản nhạc nào có thể phát.",
+      "candidateTargetHash": "efc5654774f7e69759cf102491ec700c7d8d93faadfaa78e8d2798b7d05ea376",
+      "disposition": "propose-correction",
+      "locale": "vi",
+      "sourceId": "components.MusicDetails.selectToPlay",
+      "sourcePosition": 2271
+    },
+    {
+      "candidateTarget": "Xem yêu cầu",
+      "candidateTargetHash": "c8961072a4720607b23fabdb53d8cb6439b41a09abc922e26fc511d60ad04ed0",
+      "disposition": "propose-correction",
+      "locale": "vi",
+      "sourceId": "components.MusicDetails.viewrequest",
+      "sourcePosition": 2272
+    },
+    {
+      "candidateTarget": "تمت إزالة <strong>{title}</strong> من قائمة المتابعة بنجاح!",
+      "candidateTargetHash": "8a4549ee8d625a453f4493175b23b2dd5dda469d4a2f8ff9baaed855bd5f2894",
+      "disposition": "propose-correction",
+      "locale": "ar",
+      "sourceId": "components.MusicDetails.watchlistDeleted",
+      "sourcePosition": 2273
+    },
+    {
+      "candidateTarget": "<strong>{title}</strong> को देखने की सूची से सफलतापूर्वक हटा दिया गया!",
+      "candidateTargetHash": "1648499816c6c708fb77c1537dba05a2af85e3b99e18026115b3214a1d2a480d",
+      "disposition": "propose-correction",
+      "locale": "hi",
+      "sourceId": "components.MusicDetails.watchlistDeleted",
+      "sourcePosition": 2273
+    },
+    {
+      "candidateTarget": "<strong>{title}</strong> berhasil dihapus dari daftar tontonan!",
+      "candidateTargetHash": "bd37ae6b80d78bd0c71b215347b9a48cdf3d07ec40bdc178d0b76440c4b469a8",
+      "disposition": "propose-correction",
+      "locale": "id",
+      "sourceId": "components.MusicDetails.watchlistDeleted",
+      "sourcePosition": 2273
+    },
+    {
+      "candidateTarget": "<strong>{title}</strong> をウォッチリストから削除しました！",
+      "candidateTargetHash": "c5729495c82bd588e62a4f91feac0711655aeed42c6dd6a37c865a8b75e8a4fc",
+      "disposition": "propose-correction",
+      "locale": "ja",
+      "sourceId": "components.MusicDetails.watchlistDeleted",
+      "sourcePosition": 2273
+    },
+    {
+      "candidateTarget": "<strong>{title}</strong> đã được xóa khỏi danh sách theo dõi thành công!",
+      "candidateTargetHash": "f6635c40f63f2d6adfad20a0bad976eb2e27428a861ffce9ca6875589f57b7a8",
+      "disposition": "propose-correction",
+      "locale": "vi",
+      "sourceId": "components.MusicDetails.watchlistDeleted",
+      "sourcePosition": 2273
+    },
+    {
+      "candidateTarget": "<strong>{title}</strong> 已成功从待看列表中移除！",
+      "candidateTargetHash": "cef533415427f7a66174878377f98187b71f13b0f61f55c7644fe14585a34ed9",
+      "disposition": "propose-correction",
+      "locale": "zh_Hans",
+      "sourceId": "components.MusicDetails.watchlistDeleted",
+      "sourcePosition": 2273
+    },
+    {
+      "candidateTarget": "<strong>{title}</strong> 已成功從待看清單中移除！",
+      "candidateTargetHash": "c4239d555ac754f16768ec069721c4ed6285951e98c4e2904c03b82048ed77c3",
+      "disposition": "propose-correction",
+      "locale": "zh_Hant",
+      "sourceId": "components.MusicDetails.watchlistDeleted",
+      "sourcePosition": 2273
+    },
+    {
+      "candidateTarget": "تمت إضافة <strong>{title}</strong> إلى قائمة المتابعة بنجاح!",
+      "candidateTargetHash": "15f094b2077d6f3eb28cd3f7290bee721e8b67c84e39b48ef338cd4b2f1e4d84",
+      "disposition": "propose-correction",
+      "locale": "ar",
+      "sourceId": "components.MusicDetails.watchlistSuccess",
+      "sourcePosition": 2275
+    },
+    {
+      "candidateTarget": "<strong>{title}</strong> को देखने की सूची में सफलतापूर्वक जोड़ दिया गया!",
+      "candidateTargetHash": "db67ca472c25d10187be2b4917bab0f8515590a1e09538d62e0816182ee52072",
+      "disposition": "propose-correction",
+      "locale": "hi",
+      "sourceId": "components.MusicDetails.watchlistSuccess",
+      "sourcePosition": 2275
+    },
+    {
+      "candidateTarget": "<strong>{title}</strong> berhasil ditambahkan ke daftar tontonan!",
+      "candidateTargetHash": "47653604b02eef7ca8195d0a28019d6717f1ca7fe9ea1bccbec227f1c5938485",
+      "disposition": "propose-correction",
+      "locale": "id",
+      "sourceId": "components.MusicDetails.watchlistSuccess",
+      "sourcePosition": 2275
+    },
+    {
+      "candidateTarget": "<strong>{title}</strong> をウォッチリストに追加しました！",
+      "candidateTargetHash": "0e75ed377b97bd98de0136c75f65dcc6fd228905c2c4a3a215d83aad0af240eb",
+      "disposition": "propose-correction",
+      "locale": "ja",
+      "sourceId": "components.MusicDetails.watchlistSuccess",
+      "sourcePosition": 2275
+    },
+    {
+      "candidateTarget": "<strong>{title}</strong> foi adicionado com sucesso à lista para assistir!",
+      "candidateTargetHash": "604d13ae7619f3b7d75641897b5420a552631922c8c442440e1da0c4f354feb1",
+      "disposition": "propose-correction",
+      "locale": "pt_BR",
+      "sourceId": "components.MusicDetails.watchlistSuccess",
+      "sourcePosition": 2275
+    },
+    {
+      "candidateTarget": "<strong>{title}</strong> đã được thêm vào danh sách theo dõi thành công!",
+      "candidateTargetHash": "35a97fe7e46456861e8cc9aaecfbeafb1eacb1c04d36ccec59297782209b4af6",
+      "disposition": "propose-correction",
+      "locale": "vi",
+      "sourceId": "components.MusicDetails.watchlistSuccess",
+      "sourcePosition": 2275
+    },
+    {
+      "candidateTarget": "<strong>{title}</strong>已成功添加到待看列表！",
+      "candidateTargetHash": "2bc9f4a80b0e923498153fe2af12545a9db26ed73297294a388935a4d4c93e62",
+      "disposition": "propose-correction",
+      "locale": "zh_Hans",
+      "sourceId": "components.MusicDetails.watchlistSuccess",
+      "sourcePosition": 2275
+    },
+    {
+      "candidateTarget": "<strong>{title}</strong> 已成功加入待看清單！",
+      "candidateTargetHash": "5972a32b0e32d342094393df7855f16d80885e9d76adb02f86334350a1926f27",
+      "disposition": "propose-correction",
+      "locale": "zh_Hant",
+      "sourceId": "components.MusicDetails.watchlistSuccess",
+      "sourcePosition": 2275
+    },
+    {
+      "candidateTarget": "{source}: لا يتوفر تقييم.",
+      "candidateTargetHash": "248e6f011917ce8ad6b8a0a0d9882fca640f51a477d5adcd9cca4562cc4df65e",
+      "disposition": "propose-correction",
+      "locale": "ar",
+      "sourceId": "components.MusicRatings.absent",
+      "sourcePosition": 2276
+    },
+    {
+      "candidateTarget": "{source}: 評価はありません。",
+      "candidateTargetHash": "4d9d49895919b453eeaa8aebb50f437f8a2211cf36ae852543d7c4f1f2dee6b6",
+      "disposition": "propose-correction",
+      "locale": "ja",
+      "sourceId": "components.MusicRatings.absent",
+      "sourcePosition": 2276
+    },
+    {
+      "candidateTarget": "{source}: {score}/{scale}، متوسط تقييم {count} من أصل {total} ألبومًا. لا تُحتسب الألبومات التي لا تتوفر لها تقييمات.",
+      "candidateTargetHash": "c1ac6f0b85ed5884e498b68e3c26d5040a1e688219c3616c5bbe9114e00451cc",
+      "disposition": "propose-correction",
+      "locale": "ar",
+      "sourceId": "components.MusicRatings.average",
+      "sourcePosition": 2277
+    },
+    {
+      "candidateTarget": "{source} : {score}/{scale}, moyenne des notes de {count} albums sur {total}. Les albums sans note sont exclus.",
+      "candidateTargetHash": "9e0767b709d740da0341aab96254e781a6d1650eb99bb82e84ee06d18537c018",
+      "disposition": "propose-correction",
+      "locale": "fr",
+      "sourceId": "components.MusicRatings.average",
+      "sourcePosition": 2277
+    },
+    {
+      "candidateTarget": "{source}: {score}/{scale}, कुल {total} में से रेटिंग वाले {count} एल्बमों का औसत। बिना रेटिंग वाले एल्बमों को शामिल नहीं किया जाता।",
+      "candidateTargetHash": "d394bb300d53b76634bc5e16e9cb4ae82b7175824349ffa2c8444ec77ec040ef",
+      "disposition": "propose-correction",
+      "locale": "hi",
+      "sourceId": "components.MusicRatings.average",
+      "sourcePosition": 2277
+    },
+    {
+      "candidateTarget": "{source}: {score}/{scale}, rata-rata dari {count} album berperingkat dari total {total} album. Album tanpa rating tidak dihitung.",
+      "candidateTargetHash": "325539c96e61545fd41cfcd933b19a206c17e3ec08757ae982241a649adbb684",
+      "disposition": "propose-correction",
+      "locale": "id",
+      "sourceId": "components.MusicRatings.average",
+      "sourcePosition": 2277
+    },
+    {
+      "candidateTarget": "{source}: {score}/{scale}（全{total}枚中、評価のある{count}枚の平均。未評価のアルバムは除外されます。）",
+      "candidateTargetHash": "6b6fb658c0f7ce7299f23332acfde797ee48b04570065cc5cd78bd515f4af3e1",
+      "disposition": "propose-correction",
+      "locale": "ja",
+      "sourceId": "components.MusicRatings.average",
+      "sourcePosition": 2277
+    },
+    {
+      "candidateTarget": "{source}: {score}/{scale}, 총 {total}개 중 평점이 있는 {count}개 앨범의 평균입니다. 평점이 없는 앨범은 제외됩니다.",
+      "candidateTargetHash": "875f1382ff8c0fc2b2366f9482a91f1c1e5b44251d149bdf8573401d06f562f4",
+      "disposition": "propose-correction",
+      "locale": "ko",
+      "sourceId": "components.MusicRatings.average",
+      "sourcePosition": 2277
+    },
+    {
+      "candidateTarget": "{source}: {score}/{scale}, média de {count} álbuns avaliados entre {total}. Álbuns sem avaliação são excluídos.",
+      "candidateTargetHash": "5a1737d817b9997746970a65e7bad0a3f2b5516d1a6db1af8388f4ad7f64d1d1",
+      "disposition": "propose-correction",
+      "locale": "pt_BR",
+      "sourceId": "components.MusicRatings.average",
+      "sourcePosition": 2277
+    },
+    {
+      "candidateTarget": "{source}: {score}/{scale}, trung bình của {count} album có đánh giá trên tổng số {total} album. Không tính các album thiếu đánh giá.",
+      "candidateTargetHash": "fe99c0205e5504446ada5de8c317ef2fc185014bdc8d9d7064befa5f6c6d943f",
+      "disposition": "propose-correction",
+      "locale": "vi",
+      "sourceId": "components.MusicRatings.average",
+      "sourcePosition": 2277
+    },
+    {
+      "candidateTarget": "{source}: {score}/{scale}，共 {total} 张专辑中 {count} 张已评分专辑的平均值。不计入没有评分的专辑。",
+      "candidateTargetHash": "80d9bc9de6074eb541061852da422ecf633b9f39ff8cd53fb81aed2d76a5e540",
+      "disposition": "propose-correction",
+      "locale": "zh_Hans",
+      "sourceId": "components.MusicRatings.average",
+      "sourcePosition": 2277
+    },
+    {
+      "candidateTarget": "{source}: {score}/{scale}，共 {total} 張專輯中 {count} 張已評分專輯的平均值。不計入未評分的專輯。",
+      "candidateTargetHash": "e3543107590960f8fbfcdb2461f26e20a7c91c4a0bfcbd53b011141e7a6eab1c",
+      "disposition": "propose-correction",
+      "locale": "zh_Hant",
+      "sourceId": "components.MusicRatings.average",
+      "sourcePosition": 2277
+    },
+    {
+      "candidateTarget": "تقييم Discogs يخص الإصدار المرتبط أو الإصدار الرئيسي في مدخل النسخة الرئيسية، وليس كل طبعة.",
+      "candidateTargetHash": "afbcd975cf7def5575c7a273dea2e42c3a7d23c9d8dcd66381bdbd6714de41e1",
+      "disposition": "propose-correction",
+      "locale": "ar",
+      "sourceId": "components.MusicRatings.edition",
+      "sourcePosition": 2278
+    },
+    {
+      "candidateTarget": "La calificación de Discogs corresponde a la versión enlazada o a la versión principal de la entrada maestra, no a todas las ediciones.",
+      "candidateTargetHash": "d4a400ec047e2430fc3c52c226b7314b4b1245a343c7b405f130b284fee6d0bc",
+      "disposition": "propose-correction",
+      "locale": "es",
+      "sourceId": "components.MusicRatings.edition",
+      "sourcePosition": 2278
+    },
+    {
+      "candidateTarget": "La note Discogs concerne la version liée ou la version principale de la fiche maître, et non toutes les éditions.",
+      "candidateTargetHash": "1e92717e91c0add934fb641e2599b1e7cfcc6b39641aa6b7b7f86bfb34873c3f",
+      "disposition": "propose-correction",
+      "locale": "fr",
+      "sourceId": "components.MusicRatings.edition",
+      "sourcePosition": 2278
+    },
+    {
+      "candidateTarget": "Rating Discogs berlaku untuk rilis yang ditautkan atau rilis utama pada entri master, bukan untuk setiap edisi.",
+      "candidateTargetHash": "7b792e6bd17acd8bc3007a7e8e9ed79be5f8820c78ab25289a78c5df9636f147",
+      "disposition": "propose-correction",
+      "locale": "id",
+      "sourceId": "components.MusicRatings.edition",
+      "sourcePosition": 2278
+    },
+    {
+      "candidateTarget": "Discogs の評価は、リンクされたリリースまたはマスター項目のメインリリースを対象としており、すべてのエディションを対象とするものではありません。",
+      "candidateTargetHash": "919d00a2079620adf2aafb7e9ec3b3fb919e5f99555794f3ce2eb2d90bf212a5",
+      "disposition": "propose-correction",
+      "locale": "ja",
+      "sourceId": "components.MusicRatings.edition",
+      "sourcePosition": 2278
+    },
+    {
+      "candidateTarget": "Discogs 평점은 연결된 발매본 또는 마스터 항목의 대표 발매본에 대한 것이며, 모든 에디션에 대한 것은 아닙니다.",
+      "candidateTargetHash": "5cd0dbac82e52867b29684787f793a4342dc415da2a62a93a7abc83011ee04ef",
+      "disposition": "propose-correction",
+      "locale": "ko",
+      "sourceId": "components.MusicRatings.edition",
+      "sourcePosition": 2278
+    },
+    {
+      "candidateTarget": "A avaliação do Discogs se refere ao lançamento vinculado ou ao lançamento principal da entrada mestre, não a todas as edições.",
+      "candidateTargetHash": "7d01adba4cacc02a905cec58cee9aee14a92c449666d08802bfa3aca5bc9d9c2",
+      "disposition": "propose-correction",
+      "locale": "pt_BR",
+      "sourceId": "components.MusicRatings.edition",
+      "sourcePosition": 2278
+    },
+    {
+      "candidateTarget": "Đánh giá trên Discogs áp dụng cho bản phát hành được liên kết hoặc bản phát hành chính của mục master, không phải cho mọi ấn bản.",
+      "candidateTargetHash": "7607775a4889de0e844f5d4289a25154af4c980bbee7ca8bf5d03a144c243230",
+      "disposition": "propose-correction",
+      "locale": "vi",
+      "sourceId": "components.MusicRatings.edition",
+      "sourcePosition": 2278
+    },
+    {
+      "candidateTarget": "Discogs 评分对应的是关联发行版本或主条目的主要发行版本，并非所有版本。",
+      "candidateTargetHash": "b71b14777ac0cec5a91848b91eaad330dc1e9381a0dc795cf5200f51ffa38e92",
+      "disposition": "propose-correction",
+      "locale": "zh_Hans",
+      "sourceId": "components.MusicRatings.edition",
+      "sourcePosition": 2278
+    },
+    {
+      "candidateTarget": "Discogs 評分適用於連結的發行版本或主項目的主要發行版本，並非所有版本。",
+      "candidateTargetHash": "c723ef0a99718595574f700a7bafd38f7f8cd76218b2b92f8e5ff867e91c2cf8",
+      "disposition": "propose-correction",
+      "locale": "zh_Hant",
+      "sourceId": "components.MusicRatings.edition",
+      "sourcePosition": 2278
+    },
+    {
+      "candidateTarget": "{source}: {score}/{scale} من {votes} صوتًا.",
+      "candidateTargetHash": "ce376a71e09310399ff7914407cee5b3f8f8634d49f2001532db5cfd7aa040ba",
+      "disposition": "propose-refinement",
+      "locale": "ar",
+      "sourceId": "components.MusicRatings.score",
+      "sourcePosition": 2279
+    },
+    {
+      "candidateTarget": "{source} : {score}/{scale} sur {votes} votes.",
+      "candidateTargetHash": "ab5e417d554f78507d5deb41b85e64cae267d709926cc40ca15ec9bff11cf856",
+      "disposition": "propose-correction",
+      "locale": "fr",
+      "sourceId": "components.MusicRatings.score",
+      "sourcePosition": 2279
+    },
+    {
+      "candidateTarget": "{source}: {score}/{scale} ({votes} वोटों के आधार पर)।",
+      "candidateTargetHash": "e6d7f3284003e178c50bc1bd1eba677842888d4dc5ec7a7b3ea8a8bda9febbf5",
+      "disposition": "propose-correction",
+      "locale": "hi",
+      "sourceId": "components.MusicRatings.score",
+      "sourcePosition": 2279
+    },
+    {
+      "candidateTarget": "{source}: {votes}票中{score}/{scale}。",
+      "candidateTargetHash": "0b2c53f1572f506c0ef5e3e967faa9520d801c59fa6db2d6743341a23f0eee99",
+      "disposition": "propose-correction",
+      "locale": "ja",
+      "sourceId": "components.MusicRatings.score",
+      "sourcePosition": 2279
+    },
+    {
+      "candidateTarget": "{source}: {votes}표 중 {score}/{scale}입니다.",
+      "candidateTargetHash": "27e34af4de0829b7ab2eed172844839ad6d2c4000a5be1bf13c55671887f964d",
+      "disposition": "propose-correction",
+      "locale": "ko",
+      "sourceId": "components.MusicRatings.score",
+      "sourcePosition": 2279
+    },
+    {
+      "candidateTarget": "{source}: {score}/{scale} com base em {votes} votos.",
+      "candidateTargetHash": "862917d1890c79e3ec12c1bf2ebc78c5e30110dd0eaeccf26339a3f42cc42d9f",
+      "disposition": "propose-correction",
+      "locale": "pt_BR",
+      "sourceId": "components.MusicRatings.score",
+      "sourcePosition": 2279
+    },
+    {
+      "candidateTarget": "{source}: {score}/{scale} từ {votes} lượt bình chọn.",
+      "candidateTargetHash": "f502add0fdae66589b3b72367cc730925ef02a9710ea61056f8f64d495c0082b",
+      "disposition": "propose-correction",
+      "locale": "vi",
+      "sourceId": "components.MusicRatings.score",
+      "sourcePosition": 2279
+    },
+    {
+      "candidateTarget": "{source}: {score}/{scale}（共 {votes} 票）。",
+      "candidateTargetHash": "026d7f9e699e3033cb37d14ddb9837d837570f07ad7d2b8b61e3f0891daf5016",
+      "disposition": "propose-correction",
+      "locale": "zh_Hans",
+      "sourceId": "components.MusicRatings.score",
+      "sourcePosition": 2279
+    },
+    {
+      "candidateTarget": "{source}: {score}/{scale}（共 {votes} 票）。",
+      "candidateTargetHash": "026d7f9e699e3033cb37d14ddb9837d837570f07ad7d2b8b61e3f0891daf5016",
+      "disposition": "propose-correction",
+      "locale": "zh_Hant",
+      "sourceId": "components.MusicRatings.score",
+      "sourcePosition": 2279
+    },
+    {
+      "candidateTarget": "نوع الإصدار",
+      "candidateTargetHash": "c630a991c22c410eb5c150b5e5ccac68838321d42ec87d5f03da2bfae8e8c900",
+      "disposition": "propose-correction",
+      "locale": "ar",
+      "sourceId": "components.MusicReleaseTypeSelect.label",
+      "sourcePosition": 2281
+    },
+    {
+      "candidateTarget": "Veröffentlichungstyp",
+      "candidateTargetHash": "e944b0de29e4ac05b9d74a981cebb4698aaa428520075c31e8c502a84c581f03",
+      "disposition": "propose-correction",
+      "locale": "de",
+      "sourceId": "components.MusicReleaseTypeSelect.label",
+      "sourcePosition": 2281
+    },
+    {
+      "candidateTarget": "发行类型",
+      "candidateTargetHash": "5c015eb56095154e0ba2575d41f84ae48f2644a56496a547fe1166b3b6f8a7e2",
+      "disposition": "propose-correction",
+      "locale": "zh_Hans",
+      "sourceId": "components.MusicReleaseTypeSelect.label",
+      "sourcePosition": 2281
+    },
+    {
+      "candidateTarget": "發行類型",
+      "candidateTargetHash": "2c936dc44592fd725bb89009bb1a4962fcff35f28df2571fc55e8311643274aa",
+      "disposition": "propose-correction",
+      "locale": "zh_Hant",
+      "sourceId": "components.MusicReleaseTypeSelect.label",
+      "sourcePosition": 2281
+    },
+    {
+      "candidateTarget": "Dapatkan notifikasi saat pengguna lain mengomentari isu.",
+      "candidateTargetHash": "9ed9dc1386d3e15678464d0fe84cee5a19faadfef6fbe08aef4fff8835becbef",
+      "disposition": "propose-correction",
+      "locale": "id",
+      "sourceId": "components.NotificationTypeSelector.adminissuecommentDescription",
+      "sourcePosition": 2282
+    },
+    {
+      "candidateTarget": "他のユーザーがチケットを再開したときに通知を受け取ります。",
+      "candidateTargetHash": "4b307d7e788ca6e6fcf784586997e5241496391dcf03622141bf23a4ef6fb6e0",
+      "disposition": "propose-correction",
+      "locale": "ja",
+      "sourceId": "components.NotificationTypeSelector.adminissuereopenedDescription",
+      "sourcePosition": 2283
+    },
+    {
+      "candidateTarget": "मुद्दे पर टिप्पणी",
+      "candidateTargetHash": "d1abe260b14dde9c86dfa37afa3dd61434d1b0133e0ec7ffde9d66166a0035fe",
+      "disposition": "propose-correction",
+      "locale": "hi",
+      "sourceId": "components.NotificationTypeSelector.issuecomment",
+      "sourcePosition": 2285
+    },
+    {
+      "candidateTarget": "Bình luận về vấn đề",
+      "candidateTargetHash": "a1c1fd37a130df7ffa76c1b704c6120fcd648ef9f001805d4893ba1f4116f04e",
+      "disposition": "propose-correction",
+      "locale": "vi",
+      "sourceId": "components.NotificationTypeSelector.issuecomment",
+      "sourcePosition": 2285
+    },
+    {
+      "candidateTarget": "Gửi thông báo khi có bình luận mới về các vấn đề.",
+      "candidateTargetHash": "5ffe36767bd7356b9c37bf6adbf7f60c4de31969b8f3baa1ca85b8a3fe959a7d",
+      "disposition": "propose-correction",
+      "locale": "vi",
+      "sourceId": "components.NotificationTypeSelector.issuecommentDescription",
+      "sourcePosition": 2286
+    },
+    {
+      "candidateTarget": "मुद्दा रिपोर्ट किया गया",
+      "candidateTargetHash": "c7b3b2506ff85abfeda0ce6a80b911efc877558e46ad493f741c6559ff69541c",
+      "disposition": "propose-correction",
+      "locale": "hi",
+      "sourceId": "components.NotificationTypeSelector.issuecreated",
+      "sourcePosition": 2287
+    },
+    {
+      "candidateTarget": "Isu Dilaporkan",
+      "candidateTargetHash": "4e3c44845bff6563943f272b03e217ea26e927aaba5654ff2c649d850c7c3907",
+      "disposition": "propose-correction",
+      "locale": "id",
+      "sourceId": "components.NotificationTypeSelector.issuecreated",
+      "sourcePosition": 2287
+    },
+    {
+      "candidateTarget": "チケットが報告されました",
+      "candidateTargetHash": "9fcc594217be882601f578e3d0b701548d93a8c7e744f76643235bf3c6761949",
+      "disposition": "propose-correction",
+      "locale": "ja",
+      "sourceId": "components.NotificationTypeSelector.issuecreated",
+      "sourcePosition": 2287
+    },
+    {
+      "candidateTarget": "Vấn đề đã được báo cáo",
+      "candidateTargetHash": "666957180caea7eb46c92d13c3fed02d56e14bd36ef6fba3cb55323d3ba5ac86",
+      "disposition": "propose-correction",
+      "locale": "vi",
+      "sourceId": "components.NotificationTypeSelector.issuecreated",
+      "sourcePosition": 2287
+    },
+    {
+      "candidateTarget": "问题已报告",
+      "candidateTargetHash": "a7c9236e6fe192812b007977c57be90e523ce1a0abe0b3e27d06cbfc3ddb0b5a",
+      "disposition": "propose-correction",
+      "locale": "zh_Hans",
+      "sourceId": "components.NotificationTypeSelector.issuecreated",
+      "sourcePosition": 2287
+    },
+    {
+      "candidateTarget": "問題已回報",
+      "candidateTargetHash": "08242491d98db7fb19e842c8a122054206f6ce1c74d39db93ace8e6da37bf1cc",
+      "disposition": "propose-correction",
+      "locale": "zh_Hant",
+      "sourceId": "components.NotificationTypeSelector.issuecreated",
+      "sourcePosition": 2287
+    },
+    {
+      "candidateTarget": "Gửi thông báo khi có vấn đề được báo cáo.",
+      "candidateTargetHash": "275bdbff22f6c569a65f5d51e362a74dfa53986a06f37ef794037ca5398229c6",
+      "disposition": "propose-correction",
+      "locale": "vi",
+      "sourceId": "components.NotificationTypeSelector.issuecreatedDescription",
+      "sourcePosition": 2288
+    },
+    {
+      "candidateTarget": "मुद्दा फिर से खोला गया",
+      "candidateTargetHash": "43682fd84255cc4273ca7cba5c0c9be6c25ce334acff09ac05e646718cc00d1c",
+      "disposition": "propose-correction",
+      "locale": "hi",
+      "sourceId": "components.NotificationTypeSelector.issuereopened",
+      "sourcePosition": 2289
+    },
+    {
+      "candidateTarget": "मुद्दा हल किया गया",
+      "candidateTargetHash": "41af4f11243941dca8347b241748440aad23d4bb3046c3f61767c9cec24651d4",
+      "disposition": "propose-correction",
+      "locale": "hi",
+      "sourceId": "components.NotificationTypeSelector.issueresolved",
+      "sourcePosition": 2291
+    },
+    {
+      "candidateTarget": "Isu Diselesaikan",
+      "candidateTargetHash": "0b11da26c961b0c505a445c3ac41098ec34b8c865924ad66534f552843e0aa29",
+      "disposition": "propose-correction",
+      "locale": "id",
+      "sourceId": "components.NotificationTypeSelector.issueresolved",
+      "sourcePosition": 2291
+    },
+    {
+      "candidateTarget": "Yêu cầu được tự động phê duyệt",
+      "candidateTargetHash": "71726fecb3ce57a21372a33d32b475a78f48e0382d24caa5b3ee44cfb944957c",
+      "disposition": "propose-correction",
+      "locale": "vi",
+      "sourceId": "components.NotificationTypeSelector.mediaAutoApproved",
+      "sourcePosition": 2293
+    },
+    {
+      "candidateTarget": "إرسال إشعارات عند الموافقة تلقائيًا على طلبات الوسائط الجديدة التي يقدمها المستخدمون.",
+      "candidateTargetHash": "f31b1b0c745fb8dd8fb4e579a66c014e4ca93ff27e64b46854db970bf85b3025",
+      "disposition": "propose-correction",
+      "locale": "ar",
+      "sourceId": "components.NotificationTypeSelector.mediaAutoApprovedDescription",
+      "sourcePosition": 2294
+    },
+    {
+      "candidateTarget": "Gửi thông báo khi người dùng gửi yêu cầu phương tiện mới được tự động phê duyệt.",
+      "candidateTargetHash": "ff1f2281ead41faf94f10768bd5645cc1a749170c412e2177fa44dd508793b9f",
+      "disposition": "propose-correction",
+      "locale": "vi",
+      "sourceId": "components.NotificationTypeSelector.mediaAutoApprovedDescription",
+      "sourcePosition": 2294
+    },
+    {
+      "candidateTarget": "当用户提交新的媒体请求且请求被自动批准时发送通知。",
+      "candidateTargetHash": "0fa831eafa00f1a6e4a5f73f3828f4e73d555902101d1548bbd4be2bfd58315c",
+      "disposition": "propose-correction",
+      "locale": "zh_Hans",
+      "sourceId": "components.NotificationTypeSelector.mediaAutoApprovedDescription",
+      "sourcePosition": 2294
+    },
+    {
+      "candidateTarget": "當使用者提交新的媒體請求且請求獲自動核准時發送通知。",
+      "candidateTargetHash": "aee54426e82d8a2dcaa45216683280132923fc696a616528daded0a11bcddee5",
+      "disposition": "propose-correction",
+      "locale": "zh_Hant",
+      "sourceId": "components.NotificationTypeSelector.mediaAutoApprovedDescription",
+      "sourcePosition": 2294
+    },
+    {
+      "candidateTarget": "メディアリクエストが手動で承認されたときに通知を送信します。",
+      "candidateTargetHash": "4a467dd0d236003a416f990da218060313cc9c89ab3e9738403d26e61a1022e7",
+      "disposition": "propose-correction",
+      "locale": "ja",
+      "sourceId": "components.NotificationTypeSelector.mediaapprovedDescription",
+      "sourcePosition": 2296
+    },
+    {
+      "candidateTarget": "Gửi thông báo khi các yêu cầu phương tiện được phê duyệt thủ công.",
+      "candidateTargetHash": "5a4bcdf17e98615734e90f1013564e8b76e56c00fba72087fbbc29bc935e2fc8",
+      "disposition": "propose-refinement",
+      "locale": "vi",
+      "sourceId": "components.NotificationTypeSelector.mediaapprovedDescription",
+      "sourcePosition": 2296
+    },
+    {
+      "candidateTarget": "अनुरोध अपने-आप सबमिट किया गया",
+      "candidateTargetHash": "f3b6e75c544b65d6e8c93db812919fca005f78aacbc1cd60c7bc71bad824a5f3",
+      "disposition": "propose-correction",
+      "locale": "hi",
+      "sourceId": "components.NotificationTypeSelector.mediaautorequested",
+      "sourcePosition": 2297
+    },
+    {
+      "candidateTarget": "Yêu cầu được tự động gửi",
+      "candidateTargetHash": "e8a16fbd26c2fef6030154624355725aed341bc576179fe78f5892864e5223b1",
+      "disposition": "propose-correction",
+      "locale": "vi",
+      "sourceId": "components.NotificationTypeSelector.mediaautorequested",
+      "sourcePosition": 2297
+    },
+    {
+      "candidateTarget": "تلقي إشعار عند تقديم طلبات وسائط جديدة تلقائيًا لعناصر موجودة في قائمة متابعتك.",
+      "candidateTargetHash": "d87e3bcc35b4f5180d56265f3c569474667f23c8324c360c5741e6bd51361c92",
+      "disposition": "propose-correction",
+      "locale": "ar",
+      "sourceId": "components.NotificationTypeSelector.mediaautorequestedDescription",
+      "sourcePosition": 2298
+    },
+    {
+      "candidateTarget": "जब आपकी देखने की सूची के आइटमों के लिए नए मीडिया अनुरोध अपने-आप सबमिट किए जाते हैं, तब आपको सूचित किया जाएगा।",
+      "candidateTargetHash": "55396bb465477f89efae8bdfab235671ac8f48bc1683ed78985717e831e17847",
+      "disposition": "propose-correction",
+      "locale": "hi",
+      "sourceId": "components.NotificationTypeSelector.mediaautorequestedDescription",
+      "sourcePosition": 2298
+    },
+    {
+      "candidateTarget": "Dapatkan pemberitahuan saat permintaan media baru otomatis diajukan untuk item di daftar tontonan Anda.",
+      "candidateTargetHash": "14a663601a8d8bcbdd7d8332f44f9070c6ed62bd07d3b006acfaa5b9146a7643",
+      "disposition": "propose-refinement",
+      "locale": "id",
+      "sourceId": "components.NotificationTypeSelector.mediaautorequestedDescription",
+      "sourcePosition": 2298
+    },
+    {
+      "candidateTarget": "Nhận thông báo khi yêu cầu phương tiện mới được gửi tự động cho các mục trong danh sách theo dõi của bạn.",
+      "candidateTargetHash": "9dd44c3227b01e3b5b2c4a706111d63a4a3127a71f3f773396ce3eb7c00c7c71",
+      "disposition": "propose-correction",
+      "locale": "vi",
+      "sourceId": "components.NotificationTypeSelector.mediaautorequestedDescription",
+      "sourcePosition": 2298
+    },
+    {
+      "candidateTarget": "当您的待看列表中的项目自动提交新的媒体请求时，您会收到通知。",
+      "candidateTargetHash": "d99ff2c5312ec7582c73c5fd0e245ac8b3d4ce7431ee4164794ec86f57f071b9",
+      "disposition": "propose-correction",
+      "locale": "zh_Hans",
+      "sourceId": "components.NotificationTypeSelector.mediaautorequestedDescription",
+      "sourcePosition": 2298
+    },
+    {
+      "candidateTarget": "當您的待看清單中的項目自動送出新的媒體請求時，您會收到通知。",
+      "candidateTargetHash": "45a37637c72357b0fb80defc29e97fbdb9514044b4f92533529501d04110dfc1",
+      "disposition": "propose-correction",
+      "locale": "zh_Hant",
+      "sourceId": "components.NotificationTypeSelector.mediaautorequestedDescription",
+      "sourcePosition": 2298
+    },
+    {
+      "candidateTarget": "المحتوى المطلوب متاح",
+      "candidateTargetHash": "300786e930e9b288cf88bc598308eb516a0447b5afb50308f78928b0e0007f52",
+      "disposition": "propose-correction",
+      "locale": "ar",
+      "sourceId": "components.NotificationTypeSelector.mediaavailable",
+      "sourcePosition": 2299
+    },
+    {
+      "candidateTarget": "Angefragtes Medium verfügbar",
+      "candidateTargetHash": "e4406d92a32064f0f29cbfb8995deb990ce64fe6a2f85375d1117c64f7641b9f",
+      "disposition": "propose-correction",
+      "locale": "de",
+      "sourceId": "components.NotificationTypeSelector.mediaavailable",
+      "sourcePosition": 2299
+    },
+    {
+      "candidateTarget": "Contenido solicitado disponible",
+      "candidateTargetHash": "f7f9a8c59244f3ebbf840262258dc6c79763a11d14563c0dce88ff2819a4739c",
+      "disposition": "propose-correction",
+      "locale": "es",
+      "sourceId": "components.NotificationTypeSelector.mediaavailable",
+      "sourcePosition": 2299
+    },
+    {
+      "candidateTarget": "Média demandé disponible",
+      "candidateTargetHash": "6b110082ed10d4853f794d1f6465cb15281f725bd3790f391c4550e54b97ede7",
+      "disposition": "propose-correction",
+      "locale": "fr",
+      "sourceId": "components.NotificationTypeSelector.mediaavailable",
+      "sourcePosition": 2299
+    },
+    {
+      "candidateTarget": "अनुरोधित मीडिया उपलब्ध",
+      "candidateTargetHash": "b71137397a78419de25e138b76ffb65898501227ace1a13c6799e05069bb98d5",
+      "disposition": "propose-correction",
+      "locale": "hi",
+      "sourceId": "components.NotificationTypeSelector.mediaavailable",
+      "sourcePosition": 2299
+    },
+    {
+      "candidateTarget": "Media yang diminta tersedia",
+      "candidateTargetHash": "a3fdef3a60f58ef2d7b374cfc3dd37d974c3ddbd9cf8a5ce655d7f95b130b742",
+      "disposition": "propose-correction",
+      "locale": "id",
+      "sourceId": "components.NotificationTypeSelector.mediaavailable",
+      "sourcePosition": 2299
+    },
+    {
+      "candidateTarget": "リクエストしたメディアが利用可能",
+      "candidateTargetHash": "56380d97942d65c51b5480cdcbdf85f93bd5745471f22e68ae97aad76aafa0d8",
+      "disposition": "propose-correction",
+      "locale": "ja",
+      "sourceId": "components.NotificationTypeSelector.mediaavailable",
+      "sourcePosition": 2299
+    },
+    {
+      "candidateTarget": "요청한 미디어 사용 가능",
+      "candidateTargetHash": "0e860b9e2b293f053ad0c1f9e026c386d34613fa9ceb5a551cf9aa5ddfab84b2",
+      "disposition": "propose-correction",
+      "locale": "ko",
+      "sourceId": "components.NotificationTypeSelector.mediaavailable",
+      "sourcePosition": 2299
+    },
+    {
+      "candidateTarget": "Mídia solicitada disponível",
+      "candidateTargetHash": "4f8a89e96e9bc8e4512afd01d16428aad33227348e2cfd29c730ff46f7c620bc",
+      "disposition": "propose-correction",
+      "locale": "pt_BR",
+      "sourceId": "components.NotificationTypeSelector.mediaavailable",
+      "sourcePosition": 2299
+    },
+    {
+      "candidateTarget": "Nội dung đã yêu cầu đã có sẵn",
+      "candidateTargetHash": "6d2b60608fa647a867be7c293cb98aea15ff8cbae5dfd1326b1f3e81cc138e73",
+      "disposition": "propose-correction",
+      "locale": "vi",
+      "sourceId": "components.NotificationTypeSelector.mediaavailable",
+      "sourcePosition": 2299
+    },
+    {
+      "candidateTarget": "所请求的媒体已可用",
+      "candidateTargetHash": "39a6bbced1ba50bae0b614f6cdf10be7f371ba972cb6a20b6129204350b84556",
+      "disposition": "propose-correction",
+      "locale": "zh_Hans",
+      "sourceId": "components.NotificationTypeSelector.mediaavailable",
+      "sourcePosition": 2299
+    },
+    {
+      "candidateTarget": "所請求的媒體已可用",
+      "candidateTargetHash": "975c98650a4a30ffa5ef757ee01aadc02e2da213b85d1490b1fe48e6d0407412",
+      "disposition": "propose-correction",
+      "locale": "zh_Hant",
+      "sourceId": "components.NotificationTypeSelector.mediaavailable",
+      "sourcePosition": 2299
+    }
+  ],
+  "head": "8c27beb8086ea6f840bdcde4b915d83db27f81a3",
+  "pullRequest": 418,
+  "repository": "snapetech-org/SeerrNG",
+  "tree": "2951195dd04af87add189090756e0d0f43e8e031"
+}

@@ -1,0 +1,44 @@
+{
+  "callerDefinitionOnly": [
+    {
+      "sourceId": "components.MovieSummaryCard.minutes",
+      "status": "definition-only-or-single-reference"
+    },
+    {
+      "sourceId": "components.MusicDetails.Layout.lidarrRating",
+      "status": "definition-only-or-single-reference"
+    },
+    {
+      "sourceId": "components.MusicDetails.Layout.minutes",
+      "status": "definition-only-or-single-reference"
+    },
+    {
+      "sourceId": "components.MusicDetails.Layout.musicBrainzRating",
+      "status": "definition-only-or-single-reference"
+    },
+    {
+      "sourceId": "components.MusicDetails.Layout.status",
+      "status": "definition-only-or-single-reference"
+    }
+  ],
+  "callerFiles": 9,
+  "callerGaps": [],
+  "callerRefs": 345,
+  "candidateCount": 262,
+  "exactHead": "8c27beb8086ea6f840bdcde4b915d83db27f81a3",
+  "exactTree": "2951195dd04af87add189090756e0d0f43e8e031",
+  "headRefName": "codex/seerrng-localization-overhaul-20261028",
+  "isDraft": true,
+  "localeCells": 1200,
+  "passed": true,
+  "pullRequestState": "OPEN",
+  "remoteHead": "8c27beb8086ea6f840bdcde4b915d83db27f81a3",
+  "repositoryState": {
+    "head": "8c27beb8086ea6f840bdcde4b915d83db27f81a3",
+    "status": "",
+    "tree": "2951195dd04af87add189090756e0d0f43e8e031"
+  },
+  "sourceIdListSha256": "8f62620863f998c4daa3b7c6584159b335df41edd5ec950c641718f59ca1d46c",
+  "sourceIds": 100,
+  "sourceTextHashes": 100
+}

@@ -1,0 +1,45 @@
+{
+  "repository": "snapetech-org/SeerrNG",
+  "pullRequest": 418,
+  "head": "8c27beb8086ea6f840bdcde4b915d83db27f81a3",
+  "tree": "2951195dd04af87add189090756e0d0f43e8e031",
+  "window": [
+    2200,
+    2299
+  ],
+  "sourceIds": 100,
+  "locales": 12,
+  "cells": 1200,
+  "primaryDispositions": {
+    "accept-current": 938,
+    "propose-correction": 252,
+    "propose-refinement": 10
+  },
+  "crossReviewDispositions": {
+    "accept-current": 916,
+    "accept-primary-proposal": 261,
+    "propose-correction": 22,
+    "counterproposal": 1
+  },
+  "additionalNoopCorrections": 22,
+  "primaryCandidateCounterproposals": 1,
+  "callerFiles": 9,
+  "callerContextRows": 100,
+  "callerLineRefs": 345,
+  "sourceCatalogTargetHashes": "all verified",
+  "sourceCallerPins": "all 345 line refs and nine caller file pins verified",
+  "placeholderMarkupProtectedLiterals": "all 1,200 exact",
+  "fourLocaleAuditCells": 400,
+  "fourLocaleReconciliation": {
+    "candidate_target_differs": 2,
+    "no_op_candidate_ignored": 1,
+    "primary_added_proposal": 18,
+    "same_candidate": 113,
+    "same_current_accept": 266
+  },
+  "explicitHolds": 0,
+  "nativeSpeakerApproval": false,
+  "browserReview": false,
+  "testsBuildsCi": "not run",
+  "repoEdits": false
+}
