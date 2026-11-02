@@ -1,0 +1,4730 @@
+{
+  "sourceIdRows": 100,
+  "pinnedReferences": 472,
+  "uniquePinnedFiles": 6,
+  "allReferencesVerified": true,
+  "errors": [],
+  "checks": [
+    {
+      "sourceId": "components.RequestList.RequestItem.mbid",
+      "file": "src/components/RequestList/RequestItem/index.tsx",
+      "line": 87,
+      "lineText": "mbid: 'MusicBrainz ID',",
+      "rawLineSha256": "17cede3042ca46739089bd3762a21b88a1b023383c1b0a80f03c5a2a8cb789a0",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestList.RequestItem.mbid",
+      "file": "src/components/RequestList/RequestItem/index.tsx",
+      "line": 381,
+      "lineText": "{intl.formatMessage(messages.mbid)}",
+      "rawLineSha256": "b9b5b2de35069363b52ccd9ecc5cb956b576a7c82751de2ccfd5f23cfb82a68b",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestList.RequestItem.mediaerror",
+      "file": "src/components/RequestList/RequestItem/index.tsx",
+      "line": 81,
+      "lineText": "mediaerror: '{mediaType} Not Found',",
+      "rawLineSha256": "27b94588ff1f393fb577542ac8f56a38791ce955c5e355bcc814bc420753f90c",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestList.RequestItem.mediaerror",
+      "file": "src/components/RequestList/RequestItem/index.tsx",
+      "line": 322,
+      "lineText": "{intl.formatMessage(messages.mediaerror, {",
+      "rawLineSha256": "181b9d7b8833f2848f593dc43028003a31dc5dc74c8e8a6a8c5ce7c0177e0daf",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestList.RequestItem.modified",
+      "file": "src/components/RequestList/RequestItem/index.tsx",
+      "line": 79,
+      "lineText": "modified: 'Modified',",
+      "rawLineSha256": "214797494e3c84a0d13d5a1089b3a7151ce342e7d727a165c40fe1d0bee5a172",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestList.RequestItem.modified",
+      "file": "src/components/RequestList/RequestItem/index.tsx",
+      "line": 520,
+      "lineText": "{intl.formatMessage(messages.modified)}",
+      "rawLineSha256": "455522fe539cb0b8d327f4da5fec6d26f326c6a41a7462029b395b76ac2ccdbd",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestList.RequestItem.modified",
+      "file": "src/components/RequestList/RequestItem/index.tsx",
+      "line": 1183,
+      "lineText": "{intl.formatMessage(messages.modified)}",
+      "rawLineSha256": "719f54a02ef46dce0e6f0a015f0f59d7e4ce13b35a06aa9706c3781b4c699b07",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestList.RequestItem.modifieduserdate",
+      "file": "src/components/RequestList/RequestItem/index.tsx",
+      "line": 80,
+      "lineText": "modifieduserdate: '{date} by {user}',",
+      "rawLineSha256": "a9a855de1dd5d69851740f70997a3887cc559b0c4ccc0fa7e79d33d653f85406",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestList.RequestItem.modifieduserdate",
+      "file": "src/components/RequestList/RequestItem/index.tsx",
+      "line": 460,
+      "lineText": "{intl.formatMessage(messages.modifieduserdate, {",
+      "rawLineSha256": "ad1e34632f1de92bb36c2a7b036cd74449aaa9b2dd3145ea9ab997035a5275fb",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestList.RequestItem.modifieduserdate",
+      "file": "src/components/RequestList/RequestItem/index.tsx",
+      "line": 523,
+      "lineText": "{intl.formatMessage(messages.modifieduserdate, {",
+      "rawLineSha256": "1a744b0a8acfa20f6f9d1576acac75d6fe9400214f805980e0f10225380139f8",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestList.RequestItem.modifieduserdate",
+      "file": "src/components/RequestList/RequestItem/index.tsx",
+      "line": 1123,
+      "lineText": "{intl.formatMessage(messages.modifieduserdate, {",
+      "rawLineSha256": "1a744b0a8acfa20f6f9d1576acac75d6fe9400214f805980e0f10225380139f8",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestList.RequestItem.modifieduserdate",
+      "file": "src/components/RequestList/RequestItem/index.tsx",
+      "line": 1186,
+      "lineText": "{intl.formatMessage(messages.modifieduserdate, {",
+      "rawLineSha256": "ea0ddb62e2e2fee2d1da89e7f1539c5d8626e6a247dddc837781a826703046ce",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestList.RequestItem.olid",
+      "file": "src/components/RequestList/RequestItem/index.tsx",
+      "line": 88,
+      "lineText": "olid: 'Open Library ID',",
+      "rawLineSha256": "200b65e005a1aab549b5115a78581e7c7c2cb197e8c5e4ceb8d469b581b2092d",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestList.RequestItem.olid",
+      "file": "src/components/RequestList/RequestItem/index.tsx",
+      "line": 361,
+      "lineText": "{intl.formatMessage(messages.olid)}",
+      "rawLineSha256": "78ec1f27e302352c463f509027391654a6607d2b80d9bc25217517bb19a0ad03",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestList.RequestItem.overQuota",
+      "file": "src/components/RequestList/RequestItem/index.tsx",
+      "line": 98,
+      "lineText": "overQuota: 'Over quota',",
+      "rawLineSha256": "95d599ab625d594470c6732fcc4f188c1fe8d90124b270096c37b564e77042cc",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestList.RequestItem.overQuota",
+      "file": "src/components/RequestList/RequestItem/index.tsx",
+      "line": 936,
+      "lineText": "{intl.formatMessage(messages.overQuota)}",
+      "rawLineSha256": "3284575dcfc251954ae5b0c0b5cefbf9c6b56bfd2c2bf9efeb322d2b0e364627",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestList.RequestItem.partialBookService",
+      "file": "src/components/RequestList/RequestItem/index.tsx",
+      "line": 97,
+      "lineText": "partialBookService: 'Partial Bookshelf link',",
+      "rawLineSha256": "a724c044fedc3fc9caeeca19900828dc639dc97763f8cd502a883e4867c3f379",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestList.RequestItem.partialBookService",
+      "file": "src/components/RequestList/RequestItem/index.tsx",
+      "line": 1248,
+      "lineText": "{intl.formatMessage(messages.partialBookService)}",
+      "rawLineSha256": "cab20c0deea72e7e08ed75ffee890d66f019bab3a8bc02510346d751786621a6",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestList.RequestItem.profileName",
+      "file": "src/components/RequestList/RequestItem/index.tsx",
+      "line": 92,
+      "lineText": "profileName: 'Profile',",
+      "rawLineSha256": "eca3eff8aba00f76fb707760f88e6a2dfbabd800190eab46b8383382baa4cdbd",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestList.RequestItem.profileName",
+      "file": "src/components/RequestList/RequestItem/index.tsx",
+      "line": 1224,
+      "lineText": "{request.profileName && (",
+      "rawLineSha256": "6d7c5ac24c85e33c0b453408ffa6e68241205daef55d2dd7c8cf66bcc4bf2d3f",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestList.RequestItem.profileName",
+      "file": "src/components/RequestList/RequestItem/index.tsx",
+      "line": 1227,
+      "lineText": "{intl.formatMessage(messages.profileName)}",
+      "rawLineSha256": "1fc6c2d07ea8cdf14701c844e6a3f85f4f07ff5497637518cbece0dd7973f727",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestList.RequestItem.profileName",
+      "file": "src/components/RequestList/RequestItem/index.tsx",
+      "line": 1230,
+      "lineText": "{request.profileName}",
+      "rawLineSha256": "8821e3cc1e9be8fa190e5e255c4a4bd34a8a55448129c26719236504192bafda",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestList.RequestItem.removearr",
+      "file": "src/components/RequestList/RequestItem/index.tsx",
+      "line": 90,
+      "lineText": "removearr: 'Remove from {arr}',",
+      "rawLineSha256": "5be4825077b75dadbdd5cda9fcfa958f3cf3685deb3b1ca0b994dbe0226586e2",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestList.RequestItem.removearr",
+      "file": "src/components/RequestList/RequestItem/index.tsx",
+      "line": 1352,
+      "lineText": "{intl.formatMessage(messages.removearr, {",
+      "rawLineSha256": "d8739db8648fa2f7973bad0bc919d774838c906148f5b267ca35066598914479",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestList.RequestItem.removemediaerror",
+      "file": "src/components/RequestList/RequestItem/index.tsx",
+      "line": 91,
+      "lineText": "removemediaerror: 'Something went wrong while removing the media.',",
+      "rawLineSha256": "f7036b1201f27c71d7666362fe229612a6f37b90bbb8d9db2ebe5f1f1e88b0a4",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestList.RequestItem.removemediaerror",
+      "file": "src/components/RequestList/RequestItem/index.tsx",
+      "line": 732,
+      "lineText": "addToast(intl.formatMessage(messages.removemediaerror), {",
+      "rawLineSha256": "75288b1ee0242c2b2e5ef99cf3080366ef7bd7a49ee368493938d850681cf1af",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestList.RequestItem.requested",
+      "file": "src/components/RequestList/RequestItem/index.tsx",
+      "line": 77,
+      "lineText": "requested: 'Requested',",
+      "rawLineSha256": "59c4418a167b09bb94ace5593b9ec1b9fa45b2bd3bd490ca0daeaca7c95fc637",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestList.RequestItem.requested",
+      "file": "src/components/RequestList/RequestItem/index.tsx",
+      "line": 103,
+      "lineText": "'Automatically requested by the Episode Queue as playback progressed.',",
+      "rawLineSha256": "b60b51df0b2ff906d21a1cf3f735755268bde05e052d0a42e5541d6fd3e97178",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestList.RequestItem.requested",
+      "file": "src/components/RequestList/RequestItem/index.tsx",
+      "line": 457,
+      "lineText": "{intl.formatMessage(messages.requested)}",
+      "rawLineSha256": "89999c11238edac61a31f84c1e24f8428b911d701a8e1bab0a760d5789adc39f",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestList.RequestItem.requested",
+      "file": "src/components/RequestList/RequestItem/index.tsx",
+      "line": 1120,
+      "lineText": "{intl.formatMessage(messages.requested)}",
+      "rawLineSha256": "82c4a9ae02bc57ac5f2928b22bcf8182c4b47425b963ec3d2ed6c44f4a56059c",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestList.RequestItem.requesteddate",
+      "file": "src/components/RequestList/RequestItem/index.tsx",
+      "line": 78,
+      "lineText": "requesteddate: 'Requested',",
+      "rawLineSha256": "7205cf978b72f2203ffccbc2f9a2bcd4f828d42907255e4e39e6b75a86e47f0e",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestList.RequestItem.requesteddate",
+      "file": "src/components/RequestList/RequestItem/index.tsx",
+      "line": 500,
+      "lineText": "{intl.formatMessage(messages.requesteddate)}",
+      "rawLineSha256": "3c1b2d85a1f627e31d85edf1646a7c82f9ede8e6df54f3deb140340ad61f36dc",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestList.RequestItem.requesteddate",
+      "file": "src/components/RequestList/RequestItem/index.tsx",
+      "line": 1163,
+      "lineText": "{intl.formatMessage(messages.requesteddate)}",
+      "rawLineSha256": "72c2c484741ed3977d05d1ca9c8e9ff7e141836f3252dda2b3a826ce651122cf",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestList.RequestItem.seasons",
+      "file": "src/components/RequestList/RequestItem/index.tsx",
+      "line": 73,
+      "lineText": "seasons: '{seasonCount, plural, one {Season} other {Seasons}}',",
+      "rawLineSha256": "9deed6a9fd4bcac263dd615869b8231b02fa1c584705b1212d62bc8af0f9e415",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestList.RequestItem.seasons",
+      "file": "src/components/RequestList/RequestItem/index.tsx",
+      "line": 76,
+      "lineText": "mapTvSeasons: 'Map TV seasons',",
+      "rawLineSha256": "4a654293122b0bc53b1c8ab0970d32cb00d030d65ad10bb8caf8c2e4bd0de013",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestList.RequestItem.seasons",
+      "file": "src/components/RequestList/RequestItem/index.tsx",
+      "line": 634,
+      "lineText": "const activeSeasonRequests = (requestData?.seasons ?? request.seasons).filter(",
+      "rawLineSha256": "f635a4830bac1a8828dfd060543cef69190eeed3173ca1cf11f2b250ac2e7c5c",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestList.RequestItem.seasons",
+      "file": "src/components/RequestList/RequestItem/index.tsx",
+      "line": 975,
+      "lineText": "{intl.formatMessage(messages.seasons, {",
+      "rawLineSha256": "6eb39cbdc12f458a6fdfc2e65db415b0ce8cede2840d8262305418f60e38e9c4",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestList.RequestItem.tmdbid",
+      "file": "src/components/RequestList/RequestItem/index.tsx",
+      "line": 85,
+      "lineText": "tmdbid: 'TMDB ID',",
+      "rawLineSha256": "66ca29043ffffc0ecfa9b51029eb29869ff9f309ffa85c764e5cc867d2a94586",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestList.RequestItem.tmdbid",
+      "file": "src/components/RequestList/RequestItem/index.tsx",
+      "line": 351,
+      "lineText": "{intl.formatMessage(messages.tmdbid)}",
+      "rawLineSha256": "51f781424c78db0479dc556b4dd8eda251ebb8e7d8e76a37430c9abddbe51d55",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestList.RequestItem.tvdbid",
+      "file": "src/components/RequestList/RequestItem/index.tsx",
+      "line": 86,
+      "lineText": "tvdbid: 'TheTVDB ID',",
+      "rawLineSha256": "46273c262c952095f1da99651efba009bee3475bce6698c88cf4c8c8f257230a",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestList.RequestItem.tvdbid",
+      "file": "src/components/RequestList/RequestItem/index.tsx",
+      "line": 371,
+      "lineText": "{intl.formatMessage(messages.tvdbid)}",
+      "rawLineSha256": "1599518dfacb94da8b46c53f584dcd23b81d8bc891c708e3dc605a351c50767c",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestList.RequestItem.unknowntitle",
+      "file": "src/components/RequestList/RequestItem/index.tsx",
+      "line": 89,
+      "lineText": "unknowntitle: 'Unknown Title',",
+      "rawLineSha256": "829e6933770b733282958e68a554914e835919cfcd914f1f6d02723f43918c3a",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestList.RequestItem.unknowntitle",
+      "file": "src/components/RequestList/RequestItem/index.tsx",
+      "line": 409,
+      "lineText": "title={intl.formatMessage(messages.unknowntitle)}",
+      "rawLineSha256": "985ee3f9737786a73a890b045a4c0c8638454c764892fc1a8c6ff0fb3eee6e31",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestList.RequestItem.watchAheadAssigned",
+      "file": "src/components/RequestList/RequestItem/index.tsx",
+      "line": 99,
+      "lineText": "watchAheadAssigned:",
+      "rawLineSha256": "272c0d9ebe29c85569daa019b70f42b436a7b0df6adb14f6938ee38b9f6187a3",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestList.RequestItem.watchAheadAssigned",
+      "file": "src/components/RequestList/RequestItem/index.tsx",
+      "line": 1278,
+      "lineText": "{intl.formatMessage(messages.watchAheadAssigned, {",
+      "rawLineSha256": "1a72fc8727da4db01036d232d7490565c621433b5720d2a3220e763c01204a37",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestList.RequestItem.watchAheadEpisodeBadge",
+      "file": "src/components/RequestList/RequestItem/index.tsx",
+      "line": 101,
+      "lineText": "watchAheadEpisodeBadge: 'Auto-Queued',",
+      "rawLineSha256": "c6f27802c63eb08c310f5f122799ec0dc7b3e6e9ef2ba7dea54218020a7242f4",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestList.RequestItem.watchAheadEpisodeBadge",
+      "file": "src/components/RequestList/RequestItem/index.tsx",
+      "line": 1268,
+      "lineText": "{intl.formatMessage(messages.watchAheadEpisodeBadge)}",
+      "rawLineSha256": "fefd13badc9b8e8aca4b7a5d99af2ce9a1fa6d69544dd848487077a0a9f378ef",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestList.RequestItem.watchAheadEpisodeBadgeTooltip",
+      "file": "src/components/RequestList/RequestItem/index.tsx",
+      "line": 102,
+      "lineText": "watchAheadEpisodeBadgeTooltip:",
+      "rawLineSha256": "362c06c585a44d99c4c8c82a45591e5ece34f9044e2c18c7ffb550bed7b057a1",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestList.RequestItem.watchAheadEpisodeBadgeTooltip",
+      "file": "src/components/RequestList/RequestItem/index.tsx",
+      "line": 1264,
+      "lineText": "messages.watchAheadEpisodeBadgeTooltip",
+      "rawLineSha256": "f6328bbd2b8cc77a40cd7a47a855b53b99348193a0538eecb7719525f3926b5e",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestList.mediaFilters",
+      "file": "src/components/RequestList/index.tsx",
+      "line": 44,
+      "lineText": "mediaFilters: 'Media Filters',",
+      "rawLineSha256": "325e330aa1759d9f00f0dc5b2d7a62e93746fd96e7dab636dda8a012678fd92e",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestList.mediaFilters",
+      "file": "src/components/RequestList/index.tsx",
+      "line": 293,
+      "lineText": "section: 'mediaFilters',",
+      "rawLineSha256": "11e6bccb1ef8778b51b2da4e943587d0eb98c5ed2019cd40910430cdde95c778",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestList.mediaFilters",
+      "file": "src/components/RequestList/index.tsx",
+      "line": 294,
+      "lineText": "label: intl.formatMessage(messages.mediaFilters),",
+      "rawLineSha256": "7707a37b0fa0a36c0e3ba9171a7beb80ca7267ddb9d4995684013e455bfc4698",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestList.mediaType",
+      "file": "src/components/RequestList/RequestItem/index.tsx",
+      "line": 81,
+      "lineText": "mediaerror: '{mediaType} Not Found',",
+      "rawLineSha256": "27b94588ff1f393fb577542ac8f56a38791ce955c5e355bcc814bc420753f90c",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestList.mediaType",
+      "file": "src/components/RequestList/RequestItem/index.tsx",
+      "line": 127,
+      "lineText": "return (media as BookDetails).mediaType === 'book';",
+      "rawLineSha256": "c5ed19cfe04673939ce42aee1e16e8c7927f446441532fff7773b778c40e9c9b",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestList.mediaType",
+      "file": "src/components/RequestList/RequestItem/index.tsx",
+      "line": 131,
+      "lineText": "return (media as ComicDetails).mediaType === 'comic';",
+      "rawLineSha256": "815e631129671cd28f791f31882123c1c757928bf299d1be9c72eaa5c041bda6",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestList.mediaType",
+      "file": "src/components/RequestList/RequestItem/index.tsx",
+      "line": 135,
+      "lineText": "(media as MagazineDetails).mediaType === 'magazine';",
+      "rawLineSha256": "9f420f15d5fed1044fada40e497bb3c6b40621a4670dd339fe51623b898cfb92",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestList.mediaType",
+      "file": "src/components/RequestList/RequestItem/index.tsx",
+      "line": 138,
+      "lineText": "(media as SportarrDetails).mediaType === 'sports';",
+      "rawLineSha256": "f69a261a5739968dc0793ac7049401eadc7caed5261b53cbe962be0afc59cf4d",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestList.mediaType",
+      "file": "src/components/RequestList/RequestItem/index.tsx",
+      "line": 323,
+      "lineText": "mediaType: intl.formatMessage(",
+      "rawLineSha256": "9c852a1f50eca9c7635e0813336d5b6b251c6d80372557526d10926f7f28c88b",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestList.mediaType",
+      "file": "src/components/RequestList/RequestItem/index.tsx",
+      "line": 425,
+      "lineText": "mediaType={",
+      "rawLineSha256": "081fa4446db94020acc30728a37b8bd055bcd8cdf9c9879b19be3e54cff17b18",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestList.mediaType",
+      "file": "src/components/RequestList/RequestItem/index.tsx",
+      "line": 908,
+      "lineText": "mediaType={",
+      "rawLineSha256": "081fa4446db94020acc30728a37b8bd055bcd8cdf9c9879b19be3e54cff17b18",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestList.mediaType",
+      "file": "src/components/RequestList/RequestItem/index.tsx",
+      "line": 1074,
+      "lineText": "mediaType={",
+      "rawLineSha256": "b4fbcccc092803cf8a59471daa73cb8ade0cfcbec9213d765278e2546554b5fc",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestList.mediaType",
+      "file": "src/components/RequestList/index.tsx",
+      "line": 46,
+      "lineText": "mediaType: 'Media Type',",
+      "rawLineSha256": "bab3e2cf7afc8be30b31a63997967b8c63735f1b9ba8e79a05f326bc010a81fe",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestList.mediaType",
+      "file": "src/components/RequestList/index.tsx",
+      "line": 99,
+      "lineText": "const effectiveMediaType = isMediaType(router.query.mediaType)",
+      "rawLineSha256": "e8ba0a4c1acd467cd0f1908ff7966c74aff65d4fe5c95520d1f8b1f17858b8e8",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestList.mediaType",
+      "file": "src/components/RequestList/index.tsx",
+      "line": 100,
+      "lineText": "? router.query.mediaType",
+      "rawLineSha256": "99dad46b5f9cbb7cf269c930d6ba4f5111c9a2c71dc8d5a7ed971dc96bcbe685",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestList.mediaType",
+      "file": "src/components/RequestList/index.tsx",
+      "line": 111,
+      "lineText": "}&filter=${effectiveFilter}&mediaType=${effectiveMediaType}&sort=${currentSort}&sortDirection=${currentSortDirection}${",
+      "rawLineSha256": "56420408c216aed0f6284df15e393ba4d2bea1e6ddab4201093d036beb1bf42c",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestList.mediaType",
+      "file": "src/components/RequestList/index.tsx",
+      "line": 151,
+      "lineText": "const mediaType = getQueryParamString(router.query.mediaType);",
+      "rawLineSha256": "58a931b92c3fdb10eed53af340dfda5f795e823e9e4deed8414ff8c169fdd5e6",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestList.mediaType",
+      "file": "src/components/RequestList/index.tsx",
+      "line": 157,
+      "lineText": "if (isMediaType(mediaType)) {",
+      "rawLineSha256": "2b820e53e48cd90fe20107215eb674fdb833c3383855d88a84a8090fb9156ef4",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestList.mediaType",
+      "file": "src/components/RequestList/index.tsx",
+      "line": 158,
+      "lineText": "setCurrentMediaType(mediaType);",
+      "rawLineSha256": "17e06b333144db83e8931ba11b0fbaf2c0021f3b8a58f031fa706003d205a133",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestList.mediaType",
+      "file": "src/components/RequestList/index.tsx",
+      "line": 160,
+      "lineText": "}, [router.query.filter, router.query.mediaType]);",
+      "rawLineSha256": "0bb2246252569e248016b4597bcbc20c0f36c45cd666517240adecb3a15ec0f3",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestList.mediaType",
+      "file": "src/components/RequestList/index.tsx",
+      "line": 238,
+      "lineText": "mediaType={",
+      "rawLineSha256": "9aac78d0fae3c19e40689416a911061cc1b11261341369abea9f7d831c49b682",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestList.mediaType",
+      "file": "src/components/RequestList/index.tsx",
+      "line": 283,
+      "lineText": "mediaType: effectiveMediaType,",
+      "rawLineSha256": "4fa6b2379709f9286c620d2c3604654ee4f0a7dde4471a0e7472d77c7956011d",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestList.mediaType",
+      "file": "src/components/RequestList/index.tsx",
+      "line": 285,
+      "lineText": ": { filter: value, mediaType: effectiveMediaType },",
+      "rawLineSha256": "2845845dcedf0243dd977f1bc78922cea077132072045735ee9d7ee70e5b3656",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestList.mediaType",
+      "file": "src/components/RequestList/index.tsx",
+      "line": 298,
+      "lineText": "label={intl.formatMessage(messages.mediaType)}",
+      "rawLineSha256": "7b8b3eece86ed43dcebba133f920caa321d7ca3ebe44523610b69776c61770ce",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestList.mediaType",
+      "file": "src/components/RequestList/index.tsx",
+      "line": 318,
+      "lineText": "? { userId: router.query.userId, mediaType: value }",
+      "rawLineSha256": "a09aa6d20a496f0430403ab9488dc3be6269720713eff36bf78ef188042047d7",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestList.mediaType",
+      "file": "src/components/RequestList/index.tsx",
+      "line": 319,
+      "lineText": ": { mediaType: value },",
+      "rawLineSha256": "1b43313f08e1243b48b21399215c42918fb7a4ec60922a793d5eb2c781e48e02",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestList.mediaType",
+      "file": "src/components/RequestList/index.tsx",
+      "line": 352,
+      "lineText": "mediaType: effectiveMediaType,",
+      "rawLineSha256": "4fa6b2379709f9286c620d2c3604654ee4f0a7dde4471a0e7472d77c7956011d",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestList.mediaType",
+      "file": "src/components/RequestList/index.tsx",
+      "line": 356,
+      "lineText": "mediaType: effectiveMediaType,",
+      "rawLineSha256": "4fa6b2379709f9286c620d2c3604654ee4f0a7dde4471a0e7472d77c7956011d",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestList.requests",
+      "file": "src/components/RequestList/index.tsx",
+      "line": 37,
+      "lineText": "requests: 'Requests',",
+      "rawLineSha256": "cde08849fa0e2179620d7e3f74e9c8873324c2d40867d9f8e8f2af26621d500d",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestList.requests",
+      "file": "src/components/RequestList/index.tsx",
+      "line": 181,
+      "lineText": "<PageTitle title={intl.formatMessage(messages.requests)} />",
+      "rawLineSha256": "79439202804d5e34ccbf53609aebd878c54828ada07c388b5ac16de6b6b2cc47",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestList.requests",
+      "file": "src/components/RequestList/index.tsx",
+      "line": 183,
+      "lineText": "<h2 className=\"page-title\">{intl.formatMessage(messages.requests)}</h2>",
+      "rawLineSha256": "3dbcacbb7fffbf0bd51acc67f5d7d0ae9a0a5172b23c975e0b2ad0cada909775",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestList.requests",
+      "file": "src/components/RequestList/index.tsx",
+      "line": 216,
+      "lineText": "? `${intl.formatMessage(messages.requests)} - ${user.displayName}`",
+      "rawLineSha256": "d3b3f681667a0da047dd82c9958036fdb71c7058bf5297693ca1a3af2ffaee88",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestList.requests",
+      "file": "src/components/RequestList/index.tsx",
+      "line": 217,
+      "lineText": ": intl.formatMessage(messages.requests)",
+      "rawLineSha256": "cb2133fad82840950ff3014a8db4fce4ea8ed42d47ed6a328a06db8af14ddb8e",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestList.requests",
+      "file": "src/components/RequestList/index.tsx",
+      "line": 235,
+      "lineText": "{intl.formatMessage(messages.requests)}",
+      "rawLineSha256": "40db44ed6b3cae37946e1010125459dc5ce4cb2c49bc33eb9a9e2705c817f52b",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestList.requests",
+      "file": "src/components/Soulseek/TrackRequestList.tsx",
+      "line": 36,
+      "lineText": "'Soulseek track requests are not set up. An administrator can connect slskdN in Settings → Services.',",
+      "rawLineSha256": "54767eb75ce09d93d51a96ccb30a9d9c2bf5f7ddbc2b0e5d8077cd8b4c7dcfeb",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestList.requests",
+      "file": "src/components/Soulseek/TrackRequestList.tsx",
+      "line": 41,
+      "lineText": "loadError: 'Track requests could not be loaded.',",
+      "rawLineSha256": "a8abd478204d13b59938637a7c9e54f9f1faf6b37a0e14ee838d4d587ac045e7",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestList.requests",
+      "file": "src/components/Soulseek/TrackRequestList.tsx",
+      "line": 105,
+      "lineText": "? `/api/v1/soulseek/track-requests?scope=${scopeAll ? 'all' : 'mine'}&filter=${",
+      "rawLineSha256": "900c640a51d94d5728a89b6217d939c405e33ea7c3c07ccd61d61e658b5bcc2d",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestList.requests",
+      "file": "src/components/Soulseek/TrackRequestList.tsx",
+      "line": 120,
+      "lineText": "await axios.delete(`/api/v1/soulseek/track-requests/${request.id}`);",
+      "rawLineSha256": "0083722f947b9eb8ce61b682c86bd9c769cebd9a2334adf6b9a909eb02a0476c",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestList.requests",
+      "file": "src/components/Soulseek/TrackRequestList.tsx",
+      "line": 123,
+      "lineText": "`/api/v1/soulseek/track-requests/${request.id}/${action}`",
+      "rawLineSha256": "83c84fab3df21eb079d8d6f9d22bbd8712fb34f40a23a23159b65679c4fde137",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestList.seriesMonitoring",
+      "file": "src/components/RequestList/index.tsx",
+      "line": 38,
+      "lineText": "seriesMonitoring: 'Series Monitoring Requests',",
+      "rawLineSha256": "aeaca194a4dd9e1455665384da74f6a5cdfd9b656cff11707caf7852e871e32d",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestList.showallrequests",
+      "file": "src/components/RequestList/index.tsx",
+      "line": 39,
+      "lineText": "showallrequests: 'Show All Requests',",
+      "rawLineSha256": "4ea9a77e4b8e5e5200aaa538d693d2952ea9bb2a1e838830ebe1446fee4a0ac3",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestList.showallrequests",
+      "file": "src/components/RequestList/index.tsx",
+      "line": 432,
+      "lineText": "{intl.formatMessage(messages.showallrequests)}",
+      "rawLineSha256": "8894a0ba7f21c549180317437efbc4fbeca2dba3770dae81d894366cdcae9f26",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestList.sortAdded",
+      "file": "src/components/RequestList/index.tsx",
+      "line": 40,
+      "lineText": "sortAdded: 'Most Recent',",
+      "rawLineSha256": "ee1477a1a386c88fb6e9742466078eadab958e01f08e3a2633c5394970a8389d",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestList.sortAdded",
+      "file": "src/components/RequestList/index.tsx",
+      "line": 337,
+      "lineText": "label: intl.formatMessage(messages.sortAdded),",
+      "rawLineSha256": "8c599f4f0fb5f83536aee1e22299a3c55d9a4a531f7ccbec7cade25862921db9",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestList.sortBy",
+      "file": "src/components/RequestList/index.tsx",
+      "line": 45,
+      "lineText": "sortBy: 'Sort By',",
+      "rawLineSha256": "180515aceb080bcd2e45b099d2349bc570cf5af78ad12a79808668bfb0e161d3",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestList.sortBy",
+      "file": "src/components/RequestList/index.tsx",
+      "line": 327,
+      "lineText": "section: 'sortBy',",
+      "rawLineSha256": "1f5dd801eb564188758c7cb9f6a7d897961c33a5bfa641023a9b30a84ab1de37",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestList.sortBy",
+      "file": "src/components/RequestList/index.tsx",
+      "line": 328,
+      "lineText": "label: intl.formatMessage(messages.sortBy),",
+      "rawLineSha256": "a5afad1262451d8fb0f91def86f7d9a9ad853967b2d1668a525b32a9a40674f8",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestList.sortBy",
+      "file": "src/components/RequestList/index.tsx",
+      "line": 332,
+      "lineText": "label={intl.formatMessage(messages.sortBy)}",
+      "rawLineSha256": "9fa60d72dea46e2e9b082603669851a6bdaa1c94deaa04fa6ca76149d3f985ed",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestList.sortDirection",
+      "file": "src/components/RequestList/index.tsx",
+      "line": 42,
+      "lineText": "sortDirection: 'Toggle Sort Direction',",
+      "rawLineSha256": "7be68a6972af8bc445c154afc8805594d49c969bdc83854b5e6966f0ba904647",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestList.sortDirection",
+      "file": "src/components/RequestList/index.tsx",
+      "line": 111,
+      "lineText": "}&filter=${effectiveFilter}&mediaType=${effectiveMediaType}&sort=${currentSort}&sortDirection=${currentSortDirection}${",
+      "rawLineSha256": "56420408c216aed0f6284df15e393ba4d2bea1e6ddab4201093d036beb1bf42c",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestList.sortDirection",
+      "file": "src/components/RequestList/index.tsx",
+      "line": 361,
+      "lineText": "<Tooltip content={intl.formatMessage(messages.sortDirection)}>",
+      "rawLineSha256": "1606b00633170fe48325395716eeadf0ab71ab2ba3efabfc21e9cac8b4d81328",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestList.sortDirection",
+      "file": "src/components/RequestList/index.tsx",
+      "line": 365,
+      "lineText": "aria-label={intl.formatMessage(messages.sortDirection)}",
+      "rawLineSha256": "ca633354311776fd2c3917a9165bbf7a521a24b2d06a3fe3107d1a5705771d80",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestList.sortModified",
+      "file": "src/components/RequestList/index.tsx",
+      "line": 41,
+      "lineText": "sortModified: 'Last Modified',",
+      "rawLineSha256": "889e49b5812cd8710ad34c79be1d3e08897dbb36c3024a68aa42a6816ecd8c30",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestList.sortModified",
+      "file": "src/components/RequestList/index.tsx",
+      "line": 341,
+      "lineText": "label: intl.formatMessage(messages.sortModified),",
+      "rawLineSha256": "a195edecba776640dc81da0288f1aab4ac16da417bd7c0db2b1a0a1a0467a367",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestList.taskFilters",
+      "file": "src/components/RequestList/index.tsx",
+      "line": 43,
+      "lineText": "taskFilters: 'Task Filters',",
+      "rawLineSha256": "29c3f076d7cd05a2b37dcbc2ae001cb3d0ed7471f172181de7edeff66f873df5",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestList.taskFilters",
+      "file": "src/components/RequestList/index.tsx",
+      "line": 251,
+      "lineText": "section: 'taskFilters',",
+      "rawLineSha256": "aee6f83e1764752fcfef737db9aece08cce7c4a1ccfe778c2a71b6004ddb7a6c",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestList.taskFilters",
+      "file": "src/components/RequestList/index.tsx",
+      "line": 252,
+      "lineText": "label: intl.formatMessage(messages.taskFilters),",
+      "rawLineSha256": "27c2fe58f146a092cf53454655b13368488d0c4afd5a72dca2fd81d53ee49f59",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestList.unableToConnect",
+      "file": "src/components/RequestList/index.tsx",
+      "line": 47,
+      "lineText": "unableToConnect:",
+      "rawLineSha256": "486ad18a14d3a552b03b30800e26249672c606eeb7d91ea1984293eb60ef249d",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestList.unableToConnect",
+      "file": "src/components/RequestList/index.tsx",
+      "line": 395,
+      "lineText": "{intl.formatMessage(messages.unableToConnect, {",
+      "rawLineSha256": "2c3cfc670f70aa4bb160c99c378ec7c530050324973e5537d6e7ee7be1148f38",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.Adult.approved",
+      "file": "src/components/RequestModal/AdultRequestModal.tsx",
+      "line": 37,
+      "lineText": "approved: 'Your adult scene request was approved and is being processed.',",
+      "rawLineSha256": "0a50bb652ccf6e316fb6e714ad1a18fe208852a398f637bd31d114ee280ffb34",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.Adult.approved",
+      "file": "src/components/RequestModal/AdultRequestModal.tsx",
+      "line": 40,
+      "lineText": "\"{username}'s request was approved and is being processed.\",",
+      "rawLineSha256": "37c6244c15131969a4d9ab55e4ad5164672a0b810af6ef1ee74343ae4326a217",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.Adult.approved",
+      "file": "src/components/RequestModal/AdultRequestModal.tsx",
+      "line": 285,
+      "lineText": "isApproved ? messages.approved : messages.pending",
+      "rawLineSha256": "07d09d58dd19b383e87306fab4c604ca7f3b85cf7fb132053aee820babbd7ab3",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.Adult.available",
+      "file": "src/components/RequestModal/AdultRequestModal.tsx",
+      "line": 47,
+      "lineText": "'No usable Whisparr destination is available. Ask an administrator to check the service settings.',",
+      "rawLineSha256": "c872cec749362977d1e28ac33422e880434b5b229a18426423b55a7226832108",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.Adult.available",
+      "file": "src/components/RequestModal/AdultRequestModal.tsx",
+      "line": 48,
+      "lineText": "available: 'This scene is already available on this server.',",
+      "rawLineSha256": "288b954c1c9d7d7192fe825e97df61a28f77acb22fae966d181cd3257707055c",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.Adult.available",
+      "file": "src/components/RequestModal/AdultRequestModal.tsx",
+      "line": 386,
+      "lineText": "isAvailable ? messages.available : messages.processing",
+      "rawLineSha256": "7643bd0dafacbcca11dff77944d4b79daedc995bf4ae6ef01ff64583d9f95560",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.Adult.backendError",
+      "file": "src/components/RequestModal/AdultRequestModal.tsx",
+      "line": 29,
+      "lineText": "backendError:",
+      "rawLineSha256": "542461ca6de458e2c5eefffa001a60ef8a12f75662d93a9334f261f5f9224aff",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.Adult.backendError",
+      "file": "src/components/RequestModal/AdultRequestModal.tsx",
+      "line": 181,
+      "lineText": "addToast(intl.formatMessage(messages.backendError), {",
+      "rawLineSha256": "b2e079dc9f36c36c741f82803bf52d1bb942a89d7b3a3dfd1cf4cd8dd99d671c",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.Adult.cancelError",
+      "file": "src/components/RequestModal/AdultRequestModal.tsx",
+      "line": 28,
+      "lineText": "cancelError: 'Something went wrong while canceling the request.',",
+      "rawLineSha256": "9c66f7d349c032b094598f3585e7edada284a9928af929628144024e109ebf63",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.Adult.cancelError",
+      "file": "src/components/RequestModal/AdultRequestModal.tsx",
+      "line": 253,
+      "lineText": "addToast(intl.formatMessage(messages.cancelError), {",
+      "rawLineSha256": "b6f4bb08c6e8c4dfc995174fe49943f686715afa41e42b54756a786b5246a100",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.Adult.cancelRequest",
+      "file": "src/components/RequestModal/AdultRequestModal.tsx",
+      "line": 24,
+      "lineText": "cancelRequest: 'Cancel request',",
+      "rawLineSha256": "1b37893ddc68a85bb3d16af1dd999bcf624d212d2e1c9896a2092b3a0fe887cf",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.Adult.cancelRequest",
+      "file": "src/components/RequestModal/AdultRequestModal.tsx",
+      "line": 234,
+      "lineText": "const cancelRequest = async () => {",
+      "rawLineSha256": "1becc2493bb39338756237260e1ee062e3569df2a8e93f0a33288c23eb02c481",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.Adult.cancelRequest",
+      "file": "src/components/RequestModal/AdultRequestModal.tsx",
+      "line": 273,
+      "lineText": "title={intl.formatMessage(messages.cancelRequest)}",
+      "rawLineSha256": "be9dad42db5f4b57b95bbf7e25b5e217aee6c1daa071800a86705b6bfaa56c2b",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.Adult.cancelRequest",
+      "file": "src/components/RequestModal/AdultRequestModal.tsx",
+      "line": 275,
+      "lineText": "onOk={() => void cancelRequest()}",
+      "rawLineSha256": "5c209e716856409d714b8056f2df9e6a7adbef0027dd66b6b8674763ce272d06",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.Adult.cancelRequest",
+      "file": "src/components/RequestModal/AdultRequestModal.tsx",
+      "line": 277,
+      "lineText": "okText={intl.formatMessage(messages.cancelRequest)}",
+      "rawLineSha256": "159f6a1f4c397fd9d84d410dec3fe8dd925174f728e96a42be8a6d0503b50159",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.Adult.cancelled",
+      "file": "src/components/RequestModal/AdultRequestModal.tsx",
+      "line": 26,
+      "lineText": "cancelled: 'Request for <strong>{title}</strong> canceled.',",
+      "rawLineSha256": "6a0ec02bb1e2253fff4d572c623215b613f8d07794ecdc755cbc311151560b5b",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.Adult.cancelled",
+      "file": "src/components/RequestModal/AdultRequestModal.tsx",
+      "line": 244,
+      "lineText": "{intl.formatMessage(messages.cancelled, {",
+      "rawLineSha256": "c5e50cd18fff804b7208fa99bb0c289e011adf6f562c6e02180b84edb10b8c34",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.Adult.categoryDisabled",
+      "file": "src/components/RequestModal/AdultRequestModal.tsx",
+      "line": 35,
+      "lineText": "categoryDisabled: 'Adult requests are disabled by the administrator.',",
+      "rawLineSha256": "f1f1e8c4f9974b30ab33cda7c4e9490745dc68cb1ad6c282da0d482add7f01af",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.Adult.categoryDisabled",
+      "file": "src/components/RequestModal/AdultRequestModal.tsx",
+      "line": 421,
+      "lineText": "{intl.formatMessage(messages.categoryDisabled)}",
+      "rawLineSha256": "834dcb707119c016ef612371f7a7edc1c69b471a239993658d3a5f5249d93a84",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.Adult.defaultService",
+      "file": "src/components/RequestModal/AdultRequestModal.tsx",
+      "line": 44,
+      "lineText": "defaultService: 'Default ({name})',",
+      "rawLineSha256": "fad67d1f7fdc89eb0ff618abc110c182ab5c02f313b41c2249c33c5d67f0910c",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.Adult.defaultService",
+      "file": "src/components/RequestModal/AdultRequestModal.tsx",
+      "line": 94,
+      "lineText": "const defaultService = services?.find((service) => service.isDefault);",
+      "rawLineSha256": "024596edebba3fa7b8b5bc018d16531c26da529440ae108c74fa3372de8c92d6",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.Adult.defaultService",
+      "file": "src/components/RequestModal/AdultRequestModal.tsx",
+      "line": 96,
+      "lineText": "? (selectedServerId ?? defaultService?.id)",
+      "rawLineSha256": "235c786ab1884432e99cbbd615c8ddb77b824d8cb2bf61e0f197cea4a77f9ead",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.Adult.defaultService",
+      "file": "src/components/RequestModal/AdultRequestModal.tsx",
+      "line": 97,
+      "lineText": ": defaultService?.id;",
+      "rawLineSha256": "dc58b1434a1046294c3b199f22371f30ffc5ded0cd98ff67600161978e29e5f0",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.Adult.defaultService",
+      "file": "src/components/RequestModal/AdultRequestModal.tsx",
+      "line": 101,
+      "lineText": "(services.length === 0 || (!canUseAdvancedOptions && !defaultService)))",
+      "rawLineSha256": "aeea2b264026c7f4dc1553c7bee23b61a8d6e8941852cc7390faa2147cd842fd",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.Adult.defaultService",
+      "file": "src/components/RequestModal/AdultRequestModal.tsx",
+      "line": 135,
+      "lineText": "? (selectedService ?? defaultService)",
+      "rawLineSha256": "fd3a5d2ae208a401cd36fa70823c438523384aba0edfc94769df031ecb571199",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.Adult.defaultService",
+      "file": "src/components/RequestModal/AdultRequestModal.tsx",
+      "line": 136,
+      "lineText": ": defaultService;",
+      "rawLineSha256": "9bc31418107c5e2438087afad63180cc9f9bae81e992f9d236d45acf9533d34c",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.Adult.defaultService",
+      "file": "src/components/RequestModal/AdultRequestModal.tsx",
+      "line": 367,
+      "lineText": "{defaultService",
+      "rawLineSha256": "3c5a15e1d58d58f33e65d2c744befa458f4aad6921cf97285e7f2a8e3ae74e76",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.Adult.defaultService",
+      "file": "src/components/RequestModal/AdultRequestModal.tsx",
+      "line": 368,
+      "lineText": "? intl.formatMessage(messages.defaultService, {",
+      "rawLineSha256": "42418560556f0ccffdb0f9089da45509d415a31781f96598d6b6553a1ce160e9",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.Adult.defaultService",
+      "file": "src/components/RequestModal/AdultRequestModal.tsx",
+      "line": 369,
+      "lineText": "name: defaultService.name,",
+      "rawLineSha256": "909ae49ea6afda16d7691606d0b19a9938c8673a303e5f66ffb9e8f4f5484cab",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.Adult.detailsUnavailable",
+      "file": "src/components/RequestModal/AdultRequestModal.tsx",
+      "line": 31,
+      "lineText": "detailsUnavailable: 'Whisparr scene details could not be loaded.',",
+      "rawLineSha256": "54b872fb547fcc057bdce64c05867d93660f76b96daa9e26f6b14e0e548a0aa7",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.Adult.detailsUnavailable",
+      "file": "src/components/RequestModal/AdultRequestModal.tsx",
+      "line": 124,
+      "lineText": "const detailsUnavailable = Boolean(detailsError);",
+      "rawLineSha256": "941c7d2bb6b1dc7d38e8460a45939a683f1e0e3a35f6b4026b89e92f43353408",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.Adult.detailsUnavailable",
+      "file": "src/components/RequestModal/AdultRequestModal.tsx",
+      "line": 159,
+      "lineText": "detailsUnavailable ||",
+      "rawLineSha256": "66441aa499b0105d7100333f26499331ae014554ce6e33130080e3de4925d756",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.Adult.detailsUnavailable",
+      "file": "src/components/RequestModal/AdultRequestModal.tsx",
+      "line": 222,
+      "lineText": "detailsUnavailable,",
+      "rawLineSha256": "be17eb5a3deb3bbb50ce5c1fdd486fe8ed8b877ca119cc43f1a7e3d8360199bd",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.Adult.detailsUnavailable",
+      "file": "src/components/RequestModal/AdultRequestModal.tsx",
+      "line": 312,
+      "lineText": "detailsUnavailable ||",
+      "rawLineSha256": "6c29a82586dcb09be23801e86a76166fc28d639cfcec40553528334d052cb1a6",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.Adult.detailsUnavailable",
+      "file": "src/components/RequestModal/AdultRequestModal.tsx",
+      "line": 398,
+      "lineText": "{detailsUnavailable && (",
+      "rawLineSha256": "bb1b7b380977922fa898044e5495dcf3366f435ee25d5b9a385ee23f74bce144",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.Adult.detailsUnavailable",
+      "file": "src/components/RequestModal/AdultRequestModal.tsx",
+      "line": 401,
+      "lineText": "{intl.formatMessage(messages.detailsUnavailable)}",
+      "rawLineSha256": "720c820116415e9b2d1caf790e4beee90b7dacc57b9ce6c3d1ea664462a64f6e",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.Adult.noService",
+      "file": "src/components/RequestModal/AdultRequestModal.tsx",
+      "line": 45,
+      "lineText": "noService: 'No Whisparr server is configured.',",
+      "rawLineSha256": "86248845fa607f792adbe5fb86fdc72270078f12990ea6544707f23af53f4ade",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.Adult.noService",
+      "file": "src/components/RequestModal/AdultRequestModal.tsx",
+      "line": 349,
+      "lineText": "intl.formatMessage(messages.noService)}",
+      "rawLineSha256": "1878681dcba6ad43b9f8da680ab69c2fc135a0359b00f5ae1ab21aae3efccb41",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.Adult.noService",
+      "file": "src/components/RequestModal/AdultRequestModal.tsx",
+      "line": 371,
+      "lineText": ": intl.formatMessage(messages.noService)}",
+      "rawLineSha256": "9fdb73aef76abfe41b89ecf1d17d6d48219707423fc6ad401d9eb4523341ba69",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.Adult.pending",
+      "file": "src/components/RequestModal/AdultRequestModal.tsx",
+      "line": 36,
+      "lineText": "pending: 'Your adult scene request is waiting for approval.',",
+      "rawLineSha256": "a7b9d4031b6f3e9169caf8a4bb13eebaab484a798d8f751d6d674811588441d6",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.Adult.pending",
+      "file": "src/components/RequestModal/AdultRequestModal.tsx",
+      "line": 285,
+      "lineText": "isApproved ? messages.approved : messages.pending",
+      "rawLineSha256": "07d09d58dd19b383e87306fab4c604ca7f3b85cf7fb132053aee820babbd7ab3",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.Adult.permission",
+      "file": "src/components/RequestModal/AdultRequestModal.tsx",
+      "line": 34,
+      "lineText": "permission: 'You do not have permission to request adult media.',",
+      "rawLineSha256": "8656cb531ce3f3a547cbd78a8277145037e7e8c308e649d17126fed1a16fa9a3",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.Adult.permission",
+      "file": "src/components/RequestModal/AdultRequestModal.tsx",
+      "line": 415,
+      "lineText": "{intl.formatMessage(messages.permission)}",
+      "rawLineSha256": "a933da7a1f4b694aa56fb271cde0ee152ae0e5b291e45d541281035dde4c811e",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.Adult.processing",
+      "file": "src/components/RequestModal/AdultRequestModal.tsx",
+      "line": 49,
+      "lineText": "processing: 'This scene is already being processed on this server.',",
+      "rawLineSha256": "61a1ccc152eec550836fa737a762ca17a787d3f675334243b624fbc6b4913efc",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.Adult.processing",
+      "file": "src/components/RequestModal/AdultRequestModal.tsx",
+      "line": 386,
+      "lineText": "isAvailable ? messages.available : messages.processing",
+      "rawLineSha256": "7643bd0dafacbcca11dff77944d4b79daedc995bf4ae6ef01ff64583d9f95560",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.Adult.quotaUnavailable",
+      "file": "src/components/RequestModal/AdultRequestModal.tsx",
+      "line": 32,
+      "lineText": "quotaUnavailable:",
+      "rawLineSha256": "eaef6a5530f6890123af79c29c8198015b27646676ce9a9536d08b93146c8155",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.Adult.quotaUnavailable",
+      "file": "src/components/RequestModal/AdultRequestModal.tsx",
+      "line": 125,
+      "lineText": "const quotaUnavailable = Boolean(quotaError);",
+      "rawLineSha256": "31e00ce05900d25bed5e1fd67cef4386a49b8673d61448fcdf0d7e6dc2d2f767",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.Adult.quotaUnavailable",
+      "file": "src/components/RequestModal/AdultRequestModal.tsx",
+      "line": 164,
+      "lineText": "quotaUnavailable ||",
+      "rawLineSha256": "37214c123bb7c4dc179a25c36066ec11550f98c5f7c8594257dd78fec028f234",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.Adult.quotaUnavailable",
+      "file": "src/components/RequestModal/AdultRequestModal.tsx",
+      "line": 227,
+      "lineText": "quotaUnavailable,",
+      "rawLineSha256": "33daf7aea26b535b1802d8f391fdd399daccd1890b47d9f61c796b2d9e19dc87",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.Adult.quotaUnavailable",
+      "file": "src/components/RequestModal/AdultRequestModal.tsx",
+      "line": 315,
+      "lineText": "quotaUnavailable ||",
+      "rawLineSha256": "e8ce7cd5ac7509184565617b69a5a9a13ff2d355c72893f5538aaeacf1de54a1",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.Adult.quotaUnavailable",
+      "file": "src/components/RequestModal/AdultRequestModal.tsx",
+      "line": 405,
+      "lineText": "{quotaUnavailable && (",
+      "rawLineSha256": "9cc9380525f4fe192283110768adf772daea23f9c797d99db8d7e0f75fe729f2",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.Adult.quotaUnavailable",
+      "file": "src/components/RequestModal/AdultRequestModal.tsx",
+      "line": 408,
+      "lineText": "{intl.formatMessage(messages.quotaUnavailable)}",
+      "rawLineSha256": "676071f2329e6ed1b7ed05779cc764acabd6ec4c066aa531f3a8fe5e4583706f",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.Adult.request",
+      "file": "src/components/RequestModal/AdultRequestModal.tsx",
+      "line": 23,
+      "lineText": "request: 'Request scene',",
+      "rawLineSha256": "09b8286e6b6aa9705e98cf0a1d004f80014f9cec48f85ac5a70237ed531d0481",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.Adult.request",
+      "file": "src/components/RequestModal/AdultRequestModal.tsx",
+      "line": 24,
+      "lineText": "cancelRequest: 'Cancel request',",
+      "rawLineSha256": "1b37893ddc68a85bb3d16af1dd999bcf624d212d2e1c9896a2092b3a0fe887cf",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.Adult.request",
+      "file": "src/components/RequestModal/AdultRequestModal.tsx",
+      "line": 27,
+      "lineText": "submitError: 'Something went wrong while submitting the request.',",
+      "rawLineSha256": "db9cf87ae7a52e5abbd18354b80217c34193c646b601d2cd0719529197d47de7",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.Adult.request",
+      "file": "src/components/RequestModal/AdultRequestModal.tsx",
+      "line": 28,
+      "lineText": "cancelError: 'Something went wrong while canceling the request.',",
+      "rawLineSha256": "9c66f7d349c032b094598f3585e7edada284a9928af929628144024e109ebf63",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.Adult.request",
+      "file": "src/components/RequestModal/AdultRequestModal.tsx",
+      "line": 30,
+      "lineText": "'Whisparr could not accept this scene request. Check the service and try again.',",
+      "rawLineSha256": "6db7f7b29de427ad77ce485e2aab09c2a8ff75dcc8da2b0592c4c7c493a49a62",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.Adult.request",
+      "file": "src/components/RequestModal/AdultRequestModal.tsx",
+      "line": 33,
+      "lineText": "'Your Adult request limit could not be checked. Try again in a moment.',",
+      "rawLineSha256": "7b1e50b8f82a4d44ae653ee6dc99bfd1e646f69daa0cf4e5a087695c84c4a458",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.Adult.request",
+      "file": "src/components/RequestModal/AdultRequestModal.tsx",
+      "line": 34,
+      "lineText": "permission: 'You do not have permission to request adult media.',",
+      "rawLineSha256": "8656cb531ce3f3a547cbd78a8277145037e7e8c308e649d17126fed1a16fa9a3",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.Adult.request",
+      "file": "src/components/RequestModal/AdultRequestModal.tsx",
+      "line": 36,
+      "lineText": "pending: 'Your adult scene request is waiting for approval.',",
+      "rawLineSha256": "a7b9d4031b6f3e9169caf8a4bb13eebaab484a798d8f751d6d674811588441d6",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.Adult.request",
+      "file": "src/components/RequestModal/AdultRequestModal.tsx",
+      "line": 37,
+      "lineText": "approved: 'Your adult scene request was approved and is being processed.',",
+      "rawLineSha256": "0a50bb652ccf6e316fb6e714ad1a18fe208852a398f637bd31d114ee280ffb34",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.Adult.request",
+      "file": "src/components/RequestModal/AdultRequestModal.tsx",
+      "line": 38,
+      "lineText": "requestFor: \"{username}'s request is waiting for approval.\",",
+      "rawLineSha256": "4a9384fed27f072c48e8ef1bcfc84c08c5e1648a4210e350fe59e308fece49a6",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.Adult.request",
+      "file": "src/components/RequestModal/AdultRequestModal.tsx",
+      "line": 40,
+      "lineText": "\"{username}'s request was approved and is being processed.\",",
+      "rawLineSha256": "37c6244c15131969a4d9ab55e4ad5164672a0b810af6ef1ee74343ae4326a217",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.Adult.request",
+      "file": "src/components/RequestModal/AdultRequestModal.tsx",
+      "line": 143,
+      "lineText": "mutate('/api/v1/request/count'),",
+      "rawLineSha256": "59f6362c04df69f69a8c2d229933cbb3a39bdbac3cb91a13497b84a6591afd9b",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.Adult.request",
+      "file": "src/components/RequestModal/AdultRequestModal.tsx",
+      "line": 144,
+      "lineText": "mutate('/api/v1/request?filter=all&take=10&sort=modified&skip=0'),",
+      "rawLineSha256": "d3608630319a8bc4baddf26f152d4dffd1a961853237ae108ddb2a2d3dd78b56",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.Adult.request",
+      "file": "src/components/RequestModal/AdultRequestModal.tsx",
+      "line": 147,
+      "lineText": "typeof key === 'string' && key.startsWith('/api/v1/request/status')",
+      "rawLineSha256": "d3c957ee69745ed8acda33ff432af52cc981964ff5b76f941786a5d09be10cc7",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.Adult.request",
+      "file": "src/components/RequestModal/AdultRequestModal.tsx",
+      "line": 172,
+      "lineText": "const response = await axios.post<MediaRequest>('/api/v1/request', {",
+      "rawLineSha256": "a54e0e85b056b38817961faee04da2ec25997a85aa5c3402796d1008a4fb41f6",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.Adult.request",
+      "file": "src/components/RequestModal/AdultRequestModal.tsx",
+      "line": 238,
+      "lineText": "const response = await axios.delete(`/api/v1/request/${requestId}`);",
+      "rawLineSha256": "75ce723ce26f6ec89819bd4c851177d21bd5156ddaa95a5c27c1954b075d2563",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.Adult.request",
+      "file": "src/components/RequestModal/AdultRequestModal.tsx",
+      "line": 305,
+      "lineText": "title={intl.formatMessage(messages.request)}",
+      "rawLineSha256": "b9a6671fa302fdeeb488d02c285eacce415ee6bf93258ea065d2425e50cb333b",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.Adult.request",
+      "file": "src/components/RequestModal/AdultRequestModal.tsx",
+      "line": 320,
+      "lineText": "okText={intl.formatMessage(messages.request)}",
+      "rawLineSha256": "3093a43b37de0b88d519a3a4f951d4f4a321bfdd7c8eda14cfbad80131ec4d0f",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.Adult.request",
+      "file": "src/components/RequestModal/AdultRequestModal.tsx",
+      "line": 356,
+      "lineText": "className=\"request-form-control compact-control\"",
+      "rawLineSha256": "98b76b30835a9a7a4798a7a03a6165c28f009a74bde48af896d9d07a43862bea",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.Adult.requestFor",
+      "file": "src/components/RequestModal/AdultRequestModal.tsx",
+      "line": 38,
+      "lineText": "requestFor: \"{username}'s request is waiting for approval.\",",
+      "rawLineSha256": "4a9384fed27f072c48e8ef1bcfc84c08c5e1648a4210e350fe59e308fece49a6",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.Adult.requestFor",
+      "file": "src/components/RequestModal/AdultRequestModal.tsx",
+      "line": 288,
+      "lineText": "isApproved ? messages.requestForApproved : messages.requestFor,",
+      "rawLineSha256": "bfe2fb377d63b6fa58e8327122069276ea49575353cd8bb5f7d7d73ac4422f0e",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.Adult.requestForApproved",
+      "file": "src/components/RequestModal/AdultRequestModal.tsx",
+      "line": 39,
+      "lineText": "requestForApproved:",
+      "rawLineSha256": "2a69cbbb430b478db552f87acc53c8d0d860c5370305e0d02f248daa8cb6c7a8",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.Adult.requestForApproved",
+      "file": "src/components/RequestModal/AdultRequestModal.tsx",
+      "line": 288,
+      "lineText": "isApproved ? messages.requestForApproved : messages.requestFor,",
+      "rawLineSha256": "bfe2fb377d63b6fa58e8327122069276ea49575353cd8bb5f7d7d73ac4422f0e",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.Adult.service",
+      "file": "src/components/RequestModal/AdultRequestModal.tsx",
+      "line": 30,
+      "lineText": "'Whisparr could not accept this scene request. Check the service and try again.',",
+      "rawLineSha256": "6db7f7b29de427ad77ce485e2aab09c2a8ff75dcc8da2b0592c4c7c493a49a62",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.Adult.service",
+      "file": "src/components/RequestModal/AdultRequestModal.tsx",
+      "line": 43,
+      "lineText": "service: 'Whisparr server',",
+      "rawLineSha256": "2a0135bc7cbe82a619dfb06a645ea9981dd39547bc0d1b9e14d705d7d7c23510",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.Adult.service",
+      "file": "src/components/RequestModal/AdultRequestModal.tsx",
+      "line": 47,
+      "lineText": "'No usable Whisparr destination is available. Ask an administrator to check the service settings.',",
+      "rawLineSha256": "c872cec749362977d1e28ac33422e880434b5b229a18426423b55a7226832108",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.Adult.service",
+      "file": "src/components/RequestModal/AdultRequestModal.tsx",
+      "line": 89,
+      "lineText": ">('/api/v1/service/whisparr');",
+      "rawLineSha256": "acec26fe3d096bf49088a26bcea1b7b40cf4c36b239139f6e336dd832c094b79",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.Adult.service",
+      "file": "src/components/RequestModal/AdultRequestModal.tsx",
+      "line": 94,
+      "lineText": "const defaultService = services?.find((service) => service.isDefault);",
+      "rawLineSha256": "024596edebba3fa7b8b5bc018d16531c26da529440ae108c74fa3372de8c92d6",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.Adult.service",
+      "file": "src/components/RequestModal/AdultRequestModal.tsx",
+      "line": 132,
+      "lineText": "(service) => service.id === selectedServerId",
+      "rawLineSha256": "90dae2db2904bcb27ecc4c7c244221db5eadd1eeef2ecfad309388101e4bf5d7",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.Adult.service",
+      "file": "src/components/RequestModal/AdultRequestModal.tsx",
+      "line": 344,
+      "lineText": "{intl.formatMessage(messages.service)}",
+      "rawLineSha256": "4459f6d17c984d2c6ca977515bb27d5c980ffbdab7017bbac0bb2ccb05229c88",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.Adult.service",
+      "file": "src/components/RequestModal/AdultRequestModal.tsx",
+      "line": 354,
+      "lineText": "<span>{intl.formatMessage(messages.service)}</span>",
+      "rawLineSha256": "5de957d958e97718a45aeac84f3590aba6e14584b54d428431b919c81a5f9456",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.Adult.service",
+      "file": "src/components/RequestModal/AdultRequestModal.tsx",
+      "line": 373,
+      "lineText": "{services?.map((service) => (",
+      "rawLineSha256": "156fa72ad6b8bea873fb8f2a6db59336d934e5b5813e07c3e3dfbb446da00c2a",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.Adult.service",
+      "file": "src/components/RequestModal/AdultRequestModal.tsx",
+      "line": 374,
+      "lineText": "<option key={service.id} value={service.id}>",
+      "rawLineSha256": "ad99b31e88c9028079d0d657067c6c46c17326bb166098ec1fd523d2cf1da85d",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.Adult.service",
+      "file": "src/components/RequestModal/AdultRequestModal.tsx",
+      "line": 375,
+      "lineText": "{service.name}",
+      "rawLineSha256": "a9d231b10620e86a33c98b3102ecd150b9fce277dd9c740e1f35153a5569ba41",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.Adult.serviceUnavailable",
+      "file": "src/components/RequestModal/AdultRequestModal.tsx",
+      "line": 46,
+      "lineText": "serviceUnavailable:",
+      "rawLineSha256": "bc3f32ee40208c8ace5b6b57df2758c689b5e399d1a29fd924b7cc11930f8768",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.Adult.serviceUnavailable",
+      "file": "src/components/RequestModal/AdultRequestModal.tsx",
+      "line": 98,
+      "lineText": "const serviceUnavailable = Boolean(",
+      "rawLineSha256": "29463a3d6dd24f6d0dfd7e89f964521a26978b22eba6136e96395e47290308f1",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.Adult.serviceUnavailable",
+      "file": "src/components/RequestModal/AdultRequestModal.tsx",
+      "line": 166,
+      "lineText": "serviceUnavailable",
+      "rawLineSha256": "4778918859f14e38f7136c0d413315f586ed34e584366ba196641534c454012e",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.Adult.serviceUnavailable",
+      "file": "src/components/RequestModal/AdultRequestModal.tsx",
+      "line": 231,
+      "lineText": "serviceUnavailable,",
+      "rawLineSha256": "43a4d5e993d042c8de17f9a6e5c2125ad78f9e38def3cdaf88dba2323f7ef92f",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.Adult.serviceUnavailable",
+      "file": "src/components/RequestModal/AdultRequestModal.tsx",
+      "line": 318,
+      "lineText": "serviceUnavailable",
+      "rawLineSha256": "ca45a4143b813baef3cfe36ad773942458b89d3b14f8e85b3ad29cc31681b728",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.Adult.serviceUnavailable",
+      "file": "src/components/RequestModal/AdultRequestModal.tsx",
+      "line": 391,
+      "lineText": "{serviceUnavailable && (",
+      "rawLineSha256": "16f8982a7dec22d10bb853c849d3299056f92a7f323fcbcd613adcb980e55400",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.Adult.serviceUnavailable",
+      "file": "src/components/RequestModal/AdultRequestModal.tsx",
+      "line": 394,
+      "lineText": "{intl.formatMessage(messages.serviceUnavailable)}",
+      "rawLineSha256": "ff4883adecced8349ab73709353d360ae099efdde3873c5ca9a6330239583151",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.Adult.studio",
+      "file": "src/components/RequestModal/AdultRequestModal.tsx",
+      "line": 41,
+      "lineText": "studio: 'Studio',",
+      "rawLineSha256": "6a84e0d02a55e876be11aad45649637ab6a90229818da98e9e6741ef6b5a62ca",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.Adult.studio",
+      "file": "src/components/RequestModal/AdultRequestModal.tsx",
+      "line": 327,
+      "lineText": "{data?.studio && (",
+      "rawLineSha256": "006cbf2a254f425b87ddc78f21bc4ca3d1e8bec0b5c59fa961ce2d21bd68360b",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.Adult.studio",
+      "file": "src/components/RequestModal/AdultRequestModal.tsx",
+      "line": 330,
+      "lineText": "{intl.formatMessage(messages.studio)}",
+      "rawLineSha256": "20a06858eb076a4448a593905a6bfd6b55e7821195c89dced50efed2e648b0da",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.Adult.studio",
+      "file": "src/components/RequestModal/AdultRequestModal.tsx",
+      "line": 332,
+      "lineText": "<dd className=\"refreshed-detail-text\">{data.studio}</dd>",
+      "rawLineSha256": "fc03a70919d39e8985d54157da8f568602557a580490a93fdfcab9b2919c552c",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.Adult.submitError",
+      "file": "src/components/RequestModal/AdultRequestModal.tsx",
+      "line": 27,
+      "lineText": "submitError: 'Something went wrong while submitting the request.',",
+      "rawLineSha256": "db9cf87ae7a52e5abbd18354b80217c34193c646b601d2cd0719529197d47de7",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.Adult.submitError",
+      "file": "src/components/RequestModal/AdultRequestModal.tsx",
+      "line": 209,
+      "lineText": ": intl.formatMessage(messages.submitError),",
+      "rawLineSha256": "b9677cc17fb2b85f67fa92bd1ae7c2e3ca5eab8f8fd88814b6ec3901031a6c9f",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.Adult.success",
+      "file": "src/components/RequestModal/AdultRequestModal.tsx",
+      "line": 25,
+      "lineText": "success: '<strong>{title}</strong> requested successfully.',",
+      "rawLineSha256": "fc102cad36cfc5c758a4fcecf602722a403fbbdb6da452b4b8077fe8a43a2c59",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.Adult.success",
+      "file": "src/components/RequestModal/AdultRequestModal.tsx",
+      "line": 195,
+      "lineText": "{intl.formatMessage(messages.success, {",
+      "rawLineSha256": "f40633b07b42d4bbc42448dbd29392511643668f529128504dc7f83edeff95e7",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.Adult.success",
+      "file": "src/components/RequestModal/AdultRequestModal.tsx",
+      "line": 200,
+      "lineText": "{ appearance: 'success', autoDismiss: true }",
+      "rawLineSha256": "5e96e7fc9fe699f3b54a942b260175fb7142d2fc4d1d5405fb3504fbaa8ae3e1",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.Adult.success",
+      "file": "src/components/RequestModal/AdultRequestModal.tsx",
+      "line": 249,
+      "lineText": "{ appearance: 'success', autoDismiss: true }",
+      "rawLineSha256": "49afbe359a10a74a4efdd2e38ca85ff400799090beee13f1cbc7fa7c7b2f682a",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.Adult.year",
+      "file": "src/components/RequestModal/AdultRequestModal.tsx",
+      "line": 42,
+      "lineText": "year: 'Year',",
+      "rawLineSha256": "0abbe4fcd717b4ee3358234bf50de4548bf4bf26bff5d1fc7251bdd4bb38dcc1",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.Adult.year",
+      "file": "src/components/RequestModal/AdultRequestModal.tsx",
+      "line": 335,
+      "lineText": "{data?.year && (",
+      "rawLineSha256": "1d0ff7e163e8ea90dea33110183969824e01940b973af40a1a9d097140983d3d",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.Adult.year",
+      "file": "src/components/RequestModal/AdultRequestModal.tsx",
+      "line": 338,
+      "lineText": "{intl.formatMessage(messages.year)}",
+      "rawLineSha256": "ab3e07f9d387afdc0f69ece6d7396a1f2fd53bf3d4f67e01e77f06f1e29b42f7",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.Adult.year",
+      "file": "src/components/RequestModal/AdultRequestModal.tsx",
+      "line": 340,
+      "lineText": "<dd className=\"refreshed-detail-text\">{data.year}</dd>",
+      "rawLineSha256": "8416b866db18f39d39823e9f025c868a402fbe70f8a64f69583e8afcce58cafe",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.AdvancedRequester.advancedoptions",
+      "file": "src/components/RequestModal/AdvancedRequester/index.tsx",
+      "line": 139,
+      "lineText": "advancedoptions: 'Advanced Request',",
+      "rawLineSha256": "a50888c1b0fe73ed9c08cf97e981eff620681615f064ed65e00ba14f82b0c2ff",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.AdvancedRequester.advancedoptions",
+      "file": "src/components/RequestModal/AdvancedRequester/index.tsx",
+      "line": 993,
+      "lineText": "{mediaTitle || intl.formatMessage(messages.advancedoptions)}",
+      "rawLineSha256": "78d37e1b44d8a04bebca0f8a8238a39751a5feddc17a094d129829e404e30cee",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.AdvancedRequester.animenote",
+      "file": "src/components/RequestModal/AdvancedRequester/index.tsx",
+      "line": 150,
+      "lineText": "animenote: '* This series is an anime.',",
+      "rawLineSha256": "676218030735759e7fbb80fa18070832c7ce9c4670fd6a56e91c8973ffbe0aa4",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.AdvancedRequester.animenote",
+      "file": "src/components/RequestModal/AdvancedRequester/index.tsx",
+      "line": 1384,
+      "lineText": "{intl.formatMessage(messages.animenote)}",
+      "rawLineSha256": "c8ce4bb022df0662e29aaf29e315c9dbd7a5393aa3e3765dd28c08fb7cddae11",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.AdvancedRequester.availableRootFolders",
+      "file": "src/components/RequestModal/AdvancedRequester/index.tsx",
+      "line": 144,
+      "lineText": "availableRootFolders: 'Available Root Folders',",
+      "rawLineSha256": "5f224c0ece13577272a49b92b451418df4ca208f71b65d3b9479a1061ed2a52c",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.AdvancedRequester.availableRootFolders",
+      "file": "src/components/RequestModal/AdvancedRequester/index.tsx",
+      "line": 1241,
+      "lineText": "{intl.formatMessage(messages.availableRootFolders)}",
+      "rawLineSha256": "f08c5389f69bb3f3bb94e9c9127c8032f3d62dce0e6c8cad4792f46113dc82ac",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.AdvancedRequester.availableSpace",
+      "file": "src/components/RequestModal/AdvancedRequester/index.tsx",
+      "line": 145,
+      "lineText": "availableSpace: 'Available Space',",
+      "rawLineSha256": "a648c1ffb0d9b7aa2e046d33137ccfdbed5098b90a296c974d5f8d35499c4c8e",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.AdvancedRequester.availableSpace",
+      "file": "src/components/RequestModal/AdvancedRequester/index.tsx",
+      "line": 1249,
+      "lineText": "{intl.formatMessage(messages.availableSpace)}",
+      "rawLineSha256": "5dbcfefcd6f0c82854143f689d39b64c856410fce711c92997a0048f3d51cd2a",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.AdvancedRequester.binderyDefaults",
+      "file": "src/components/RequestModal/AdvancedRequester/index.tsx",
+      "line": 160,
+      "lineText": "binderyDefaults:",
+      "rawLineSha256": "7619b6df4bcd873bf62bd90b843cb0b343aa514a5f74da5775b4213615b16295",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.AdvancedRequester.binderyDefaults",
+      "file": "src/components/RequestModal/AdvancedRequester/index.tsx",
+      "line": 1070,
+      "lineText": "{intl.formatMessage(messages.binderyDefaults)}",
+      "rawLineSha256": "20e9c83ffeaef44d4193d1934da578c0805d5009383b1de7a941886c658877f1",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.AdvancedRequester.destinationserver",
+      "file": "src/components/RequestModal/AdvancedRequester/index.tsx",
+      "line": 146,
+      "lineText": "destinationserver: 'Destination Server',",
+      "rawLineSha256": "ec028b690eeb2b0674ff654c17eaa9b81186e08db86722cdd926d04f7e7c2eb1",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.AdvancedRequester.destinationserver",
+      "file": "src/components/RequestModal/AdvancedRequester/index.tsx",
+      "line": 1048,
+      "lineText": "label={intl.formatMessage(messages.destinationserver)}",
+      "rawLineSha256": "0d058b80187c7a1c6fcbd435540a6f85c6b220f0dcda87776937e315c2de54f5",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.AdvancedRequester.folder",
+      "file": "src/components/RequestModal/AdvancedRequester/index.tsx",
+      "line": 151,
+      "lineText": "folder: '{path} ({space})',",
+      "rawLineSha256": "40dd00801de64d35fb7b72a82e415c73e4bba114a5ad9a2d43c117d08e3c9a9d",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.AdvancedRequester.folder",
+      "file": "src/components/RequestModal/AdvancedRequester/index.tsx",
+      "line": 172,
+      "lineText": "folder?: string;",
+      "rawLineSha256": "96e853e7deca70a5c511c3b324fd9d98f2d553a09881d2883e4edb72e07b593d",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.AdvancedRequester.folder",
+      "file": "src/components/RequestModal/AdvancedRequester/index.tsx",
+      "line": 281,
+      "lineText": "defaultOverrides?.folder ?? ''",
+      "rawLineSha256": "23404f42115e399db7abb62c27daa91b6a224a1d1f4751ed9610ed6521e68a93",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.AdvancedRequester.folder",
+      "file": "src/components/RequestModal/AdvancedRequester/index.tsx",
+      "line": 483,
+      "lineText": "(folder) =>",
+      "rawLineSha256": "2c84fb541f23c67a84a5035e35c8277b20eaf4bb15b16089ec440eb9617253cc",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.AdvancedRequester.folder",
+      "file": "src/components/RequestModal/AdvancedRequester/index.tsx",
+      "line": 484,
+      "lineText": "folder.path ===",
+      "rawLineSha256": "f023b69904f5afb8e662c199b544f860c797bd5065a65a2c55c755f430a7201f",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.AdvancedRequester.folder",
+      "file": "src/components/RequestModal/AdvancedRequester/index.tsx",
+      "line": 490,
+      "lineText": "(folder) =>",
+      "rawLineSha256": "2c84fb541f23c67a84a5035e35c8277b20eaf4bb15b16089ec440eb9617253cc",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.AdvancedRequester.folder",
+      "file": "src/components/RequestModal/AdvancedRequester/index.tsx",
+      "line": 491,
+      "lineText": "folder.path ===",
+      "rawLineSha256": "f023b69904f5afb8e662c199b544f860c797bd5065a65a2c55c755f430a7201f",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.AdvancedRequester.folder",
+      "file": "src/components/RequestModal/AdvancedRequester/index.tsx",
+      "line": 538,
+      "lineText": "(!applyOverrides || !defaultOverrides.folder)",
+      "rawLineSha256": "7c6e08d11abb719962ebb38599cb612fb61fc67a9a2e9ae16c1f425c82211be5",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.AdvancedRequester.folder",
+      "file": "src/components/RequestModal/AdvancedRequester/index.tsx",
+      "line": 561,
+      "lineText": "defaultOverrides?.folder,",
+      "rawLineSha256": "4ac2e26c1b2c89a2cb3084158ce86cc08a048ed77ec9f268594fb8404086a337",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.AdvancedRequester.folder",
+      "file": "src/components/RequestModal/AdvancedRequester/index.tsx",
+      "line": 636,
+      "lineText": "if (defaultOverrides && defaultOverrides.folder) {",
+      "rawLineSha256": "89f6697fbd1a6120840261e700726b8f9af0aed79dc3207ad9b7786d77439620",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.AdvancedRequester.folder",
+      "file": "src/components/RequestModal/AdvancedRequester/index.tsx",
+      "line": 637,
+      "lineText": "setSelectedFolder(defaultOverrides.folder);",
+      "rawLineSha256": "55b776d5b32a1ce5e000a2fb9e2e874c68e0eadccf941f75e145e020e4896068",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.AdvancedRequester.folder",
+      "file": "src/components/RequestModal/AdvancedRequester/index.tsx",
+      "line": 661,
+      "lineText": "defaultOverrides?.folder,",
+      "rawLineSha256": "4ac2e26c1b2c89a2cb3084158ce86cc08a048ed77ec9f268594fb8404086a337",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.AdvancedRequester.folder",
+      "file": "src/components/RequestModal/AdvancedRequester/index.tsx",
+      "line": 688,
+      "lineText": "folder:",
+      "rawLineSha256": "81de52ee30598cf17b93aa2f37cb2791c9bbce2ddde6dad92f087a8e82427358",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.AdvancedRequester.folder",
+      "file": "src/components/RequestModal/AdvancedRequester/index.tsx",
+      "line": 780,
+      "lineText": "if (!defaultOverrides?.folder && override.rootFolder) {",
+      "rawLineSha256": "d6e3e0c380387128274a3275d95382436e0d6e79cf5fc2e9042adf40b52521ba",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.AdvancedRequester.folder",
+      "file": "src/components/RequestModal/AdvancedRequester/index.tsx",
+      "line": 822,
+      "lineText": "defaultOverrides?.folder,",
+      "rawLineSha256": "4ac2e26c1b2c89a2cb3084158ce86cc08a048ed77ec9f268594fb8404086a337",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.AdvancedRequester.folder",
+      "file": "src/components/RequestModal/AdvancedRequester/index.tsx",
+      "line": 867,
+      "lineText": "(folder) =>",
+      "rawLineSha256": "f1220f67a6d0752858317483fd8a33364e5e9e727c0f891659bc7580f618d1d3",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.AdvancedRequester.folder",
+      "file": "src/components/RequestModal/AdvancedRequester/index.tsx",
+      "line": 868,
+      "lineText": "folder.path ===",
+      "rawLineSha256": "0b0b19ff2a309bde991be148248dd79d69a8551f373303a6a4325ac2ae465517",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.AdvancedRequester.folder",
+      "file": "src/components/RequestModal/AdvancedRequester/index.tsx",
+      "line": 1139,
+      "lineText": "id=\"folder\"",
+      "rawLineSha256": "f2693de3e6d80708204232b46a8ddad0a7f5406ccc2a9845b9bcf5009b9f5e33",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.AdvancedRequester.folder",
+      "file": "src/components/RequestModal/AdvancedRequester/index.tsx",
+      "line": 1142,
+      "lineText": "options={(serverData?.rootFolders ?? []).map((folder) => ({",
+      "rawLineSha256": "6d215f0aadedf9814f1437274f6efd487a357e9c0e3d13201103fb6578c2a309",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.AdvancedRequester.folder",
+      "file": "src/components/RequestModal/AdvancedRequester/index.tsx",
+      "line": 1143,
+      "lineText": "value: folder.path ?? '',",
+      "rawLineSha256": "7cee5557c8a01acf54e06c365fb522a5b639e30a59b36d299d45088dcfaa18f8",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.AdvancedRequester.folder",
+      "file": "src/components/RequestModal/AdvancedRequester/index.tsx",
+      "line": 1144,
+      "lineText": "label: intl.formatMessage(messages.folder, {",
+      "rawLineSha256": "fa54b31a39272baddae632dbe158519e3e7835966f4c67691d7f6148f119f4f0",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.AdvancedRequester.folder",
+      "file": "src/components/RequestModal/AdvancedRequester/index.tsx",
+      "line": 1145,
+      "lineText": "path: folder.path,",
+      "rawLineSha256": "c5b8daf4bddcfb03520628c8c290523891c15e9bc964c9a79c873ddb713536fb",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.AdvancedRequester.folder",
+      "file": "src/components/RequestModal/AdvancedRequester/index.tsx",
+      "line": 1146,
+      "lineText": "space: formatBytes(folder.freeSpace ?? 0, 2, intl.locale),",
+      "rawLineSha256": "c9b42093af760104d30210f7f76da5f8b2f133db22a6e589dc925294e31ae3e7",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.AdvancedRequester.folder",
+      "file": "src/components/RequestModal/AdvancedRequester/index.tsx",
+      "line": 1265,
+      "lineText": "serverData.rootFolders.map((folder) => {",
+      "rawLineSha256": "5c5a51711c827f6fb6b059c1ebeadacf14f8740131fb50b0e30a3e58399c6a60",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.AdvancedRequester.folder",
+      "file": "src/components/RequestModal/AdvancedRequester/index.tsx",
+      "line": 1266,
+      "lineText": "const isSelected = folder.path === selectedFolder;",
+      "rawLineSha256": "77f99255f4db2fc0003ea8c32c6b3b9c8a2a1c0098d17aee9b6e59d6551103ec",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.AdvancedRequester.folder",
+      "file": "src/components/RequestModal/AdvancedRequester/index.tsx",
+      "line": 1271,
+      "lineText": "key={`folder-card-${folder.id}`}",
+      "rawLineSha256": "fbe74105a2ad6e73e0318e36bf183e5d3ddd212d938a70bb43e356c835b75b9b",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.AdvancedRequester.folder",
+      "file": "src/components/RequestModal/AdvancedRequester/index.tsx",
+      "line": 1273,
+      "lineText": "onClick={() => selectRequestFolder(folder.path ?? '')}",
+      "rawLineSha256": "ad68a7e362e0031138a38a835d1b872722056e2631590feb2e82b07ceaab5ef5",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.AdvancedRequester.folder",
+      "file": "src/components/RequestModal/AdvancedRequester/index.tsx",
+      "line": 1278,
+      "lineText": "{folder.path}",
+      "rawLineSha256": "1189fa2f2908d083f50f2d543b0d57534d5a6fc3291a184b49c3e0a822a6dcc2",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.AdvancedRequester.folder",
+      "file": "src/components/RequestModal/AdvancedRequester/index.tsx",
+      "line": 1281,
+      "lineText": "{formatBytes(folder.freeSpace ?? 0, 2, intl.locale)}",
+      "rawLineSha256": "5714cfbbec76d473e04a351d30b260c613dacec5866267a8ae5d248ff88d7b34",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.AdvancedRequester.ignoreQuotaDescription",
+      "file": "src/components/RequestModal/AdvancedRequester/index.tsx",
+      "line": 163,
+      "lineText": "ignoreQuotaDescription:",
+      "rawLineSha256": "0e3853fc40665845eda970a76cb5791ce4b32d96b3caeccaae2a42ad3ea7876c",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.AdvancedRequester.ignoreQuotaDescription",
+      "file": "src/components/RequestModal/AdvancedRequester/index.tsx",
+      "line": 1370,
+      "lineText": "{intl.formatMessage(messages.ignoreQuotaDescription)}",
+      "rawLineSha256": "20c5e8cb98cc41c77ca3e699b2e1db37b82dd699093fba7b6fa347ef398f9a9d",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.AdvancedRequester.ignoreQuotaTitle",
+      "file": "src/components/RequestModal/AdvancedRequester/index.tsx",
+      "line": 162,
+      "lineText": "ignoreQuotaTitle: 'Bypass User Quota',",
+      "rawLineSha256": "518e068f1becd0be63d95641f7d421a895d2ef11a59aaa1254ef796c51d8a726",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.AdvancedRequester.ignoreQuotaTitle",
+      "file": "src/components/RequestModal/AdvancedRequester/index.tsx",
+      "line": 1352,
+      "lineText": "{intl.formatMessage(messages.ignoreQuotaTitle)}",
+      "rawLineSha256": "8c3d8520c5096e10ac32f27bb28836d8c4c176032432bef03f657df6efba8684",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.AdvancedRequester.languageprofile",
+      "file": "src/components/RequestModal/AdvancedRequester/index.tsx",
+      "line": 153,
+      "lineText": "languageprofile: 'Language Profile',",
+      "rawLineSha256": "872e4c9b9a4f62eac34ec649153bb67f83204343cc02dd28bcc36da4ea797120",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.AdvancedRequester.languageprofile",
+      "file": "src/components/RequestModal/AdvancedRequester/index.tsx",
+      "line": 1164,
+      "lineText": "label={intl.formatMessage(messages.languageprofile)}",
+      "rawLineSha256": "7722607958a1178bb5de6641e44521edfd945f45e46cbd86e69241929dbbc6c5",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.AdvancedRequester.metadataLanguage",
+      "file": "src/components/RequestModal/AdvancedRequester/index.tsx",
+      "line": 154,
+      "lineText": "metadataLanguage: 'Series metadata language',",
+      "rawLineSha256": "cf82402dc995db11c3e03f5c0de83f8d43ff5694279c4bea81d5b2fd827574f8",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.AdvancedRequester.metadataLanguage",
+      "file": "src/components/RequestModal/AdvancedRequester/index.tsx",
+      "line": 175,
+      "lineText": "metadataLanguage?: number | null;",
+      "rawLineSha256": "a09c17c90af6ae1d48df7b9834b43883c20685260726501b90cb0a7c20b511af",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.AdvancedRequester.metadataLanguage",
+      "file": "src/components/RequestModal/AdvancedRequester/index.tsx",
+      "line": 289,
+      "lineText": "useState<number>(defaultOverrides?.metadataLanguage ?? -1);",
+      "rawLineSha256": "289b94302f8e409ed44e9d3ea71b69a0cecc66b364773a3f14d31cd8c27a99ae",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.AdvancedRequester.metadataLanguage",
+      "file": "src/components/RequestModal/AdvancedRequester/index.tsx",
+      "line": 644,
+      "lineText": "if (defaultOverrides && defaultOverrides.metadataLanguage != null) {",
+      "rawLineSha256": "440daed0dfbd24a36df50a332545d2334511b37fa5607447922b1733e289ccae",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.AdvancedRequester.metadataLanguage",
+      "file": "src/components/RequestModal/AdvancedRequester/index.tsx",
+      "line": 645,
+      "lineText": "setSelectedMetadataLanguage(defaultOverrides.metadataLanguage);",
+      "rawLineSha256": "ce6739c8e5173636ccc791b7445ea4b251a9f58cfa0a3d34496401fbfda8a56f",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.AdvancedRequester.metadataLanguage",
+      "file": "src/components/RequestModal/AdvancedRequester/index.tsx",
+      "line": 665,
+      "lineText": "defaultOverrides?.metadataLanguage,",
+      "rawLineSha256": "abc37ec164fc4d546828f04928240ed95986c183362d62f4861521a0db56f090",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.AdvancedRequester.metadataLanguage",
+      "file": "src/components/RequestModal/AdvancedRequester/index.tsx",
+      "line": 709,
+      "lineText": "metadataLanguage:",
+      "rawLineSha256": "2d84e4b8da28508fb94f03bf52b1f3aa319346dc65791f11a6c6980b7946a249",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.AdvancedRequester.metadataLanguage",
+      "file": "src/components/RequestModal/AdvancedRequester/index.tsx",
+      "line": 714,
+      "lineText": ": defaultOverrides?.metadataLanguage != null",
+      "rawLineSha256": "aad287b643647e505c26cf175d29b14a806b4d4a6629f9b3a3f996b76b7645d2",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.AdvancedRequester.metadataLanguage",
+      "file": "src/components/RequestModal/AdvancedRequester/index.tsx",
+      "line": 744,
+      "lineText": "defaultOverrides?.metadataLanguage,",
+      "rawLineSha256": "abc37ec164fc4d546828f04928240ed95986c183362d62f4861521a0db56f090",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.AdvancedRequester.metadataLanguage",
+      "file": "src/components/RequestModal/AdvancedRequester/index.tsx",
+      "line": 1189,
+      "lineText": "id=\"metadataLanguage\"",
+      "rawLineSha256": "31a53f51345971b9d74500d210ea31b0f3ef23b0212a51d78353768e527522fe",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.AdvancedRequester.metadataLanguage",
+      "file": "src/components/RequestModal/AdvancedRequester/index.tsx",
+      "line": 1190,
+      "lineText": "label={intl.formatMessage(messages.metadataLanguage)}",
+      "rawLineSha256": "7162acedab9f726febe1ebd00da8b2cfb01069600e52b9670c9793872ff350ee",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.AdvancedRequester.metadataprofile",
+      "file": "src/components/RequestModal/AdvancedRequester/index.tsx",
+      "line": 148,
+      "lineText": "metadataprofile: 'Metadata Profile',",
+      "rawLineSha256": "8404694249e86877cfdb1b4adb4b5d7d55e576a58a4493a34f613bf3521adfb3",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.AdvancedRequester.metadataprofile",
+      "file": "src/components/RequestModal/AdvancedRequester/index.tsx",
+      "line": 1080,
+      "lineText": "label={intl.formatMessage(messages.metadataprofile)}",
+      "rawLineSha256": "9b6914631825c422051098695bbb179407c6450c8b00b9dad4863090e0717946",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.AdvancedRequester.notagoptions",
+      "file": "src/components/RequestModal/AdvancedRequester/index.tsx",
+      "line": 159,
+      "lineText": "notagoptions: 'No tags',",
+      "rawLineSha256": "6c9622b11027da7a6ed06ab236438eeea21016675ab33701fe2d3ea80657805a",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.AdvancedRequester.notagoptions",
+      "file": "src/components/RequestModal/AdvancedRequester/index.tsx",
+      "line": 1344,
+      "lineText": "intl.formatMessage(messages.notagoptions)",
+      "rawLineSha256": "7e3afdb2334cc538ff742d0997e096466cdd3d9d3f30a7e61e4a4af3443a489d",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.AdvancedRequester.qualityprofile",
+      "file": "src/components/RequestModal/AdvancedRequester/index.tsx",
+      "line": 147,
+      "lineText": "qualityprofile: 'Quality Profile',",
+      "rawLineSha256": "4ff2b5363182acb0cb601e5f53208c23de020a8e67f17fe7cbe270892ad1ffb9",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.AdvancedRequester.qualityprofile",
+      "file": "src/components/RequestModal/AdvancedRequester/index.tsx",
+      "line": 1108,
+      "lineText": "label={intl.formatMessage(messages.qualityprofile)}",
+      "rawLineSha256": "d8b692cac201ddb49809f97cfcb73853e72a286265b4e9a626a1955a7d547b00",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.AdvancedRequester.ready",
+      "file": "src/components/RequestModal/AdvancedRequester/index.tsx",
+      "line": 142,
+      "lineText": "ready: 'Ready to Request',",
+      "rawLineSha256": "d0c5f52c5069056ba793d7c6b9a4721c0df7c6befa90dd48934dc8c2c56e02b8",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.AdvancedRequester.ready",
+      "file": "src/components/RequestModal/AdvancedRequester/index.tsx",
+      "line": 1000,
+      "lineText": "{requestStatus || intl.formatMessage(messages.ready)}",
+      "rawLineSha256": "050ef4cd9410d4cad0c024248ef890389f14b6e3848d883044b55446384dc09d",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.AdvancedRequester.requestedBy",
+      "file": "src/components/RequestModal/AdvancedRequester/index.tsx",
+      "line": 152,
+      "lineText": "requestedBy: 'Requested By',",
+      "rawLineSha256": "7dd337a5612ae97676f209ec64015c391464adb33ec78b8998ecbf6cd292db14",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.AdvancedRequester.requestedBy",
+      "file": "src/components/RequestModal/AdvancedRequester/index.tsx",
+      "line": 913,
+      "lineText": "<span>{intl.formatMessage(messages.requestedBy)}</span>",
+      "rawLineSha256": "9bcb1b2afcb1d54ef65994a62b72555cf46f92b5103a709b8897132e2ca429c6",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.AdvancedRequester.rootfolder",
+      "file": "src/components/RequestModal/AdvancedRequester/index.tsx",
+      "line": 149,
+      "lineText": "rootfolder: 'Root Folder',",
+      "rawLineSha256": "159463c01e1faf4ad681487994b0e4da20d098a1f92c0d3c0ca0288f8d85ac00",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.AdvancedRequester.rootfolder",
+      "file": "src/components/RequestModal/AdvancedRequester/index.tsx",
+      "line": 1012,
+      "lineText": "{intl.formatMessage(messages.rootfolder)}:",
+      "rawLineSha256": "52f732153ad0358e44e9ac07397139ce0c41fe813d5c711c31368c122f240ceb",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.AdvancedRequester.rootfolder",
+      "file": "src/components/RequestModal/AdvancedRequester/index.tsx",
+      "line": 1140,
+      "lineText": "label={intl.formatMessage(messages.rootfolder)}",
+      "rawLineSha256": "2f05ef7df569b1936e1eaa40a0aa46d825e54d52b6f3766de0b8ca6d660a1c22",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.AdvancedRequester.rootfolder",
+      "file": "src/components/RequestModal/AdvancedRequester/index.tsx",
+      "line": 1246,
+      "lineText": "{intl.formatMessage(messages.rootfolder)}",
+      "rawLineSha256": "d1e015b8e2030213118f9a894c104353bd5161b8f0f670313aca16f6d909d1de",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.AdvancedRequester.seasonOrder",
+      "file": "src/components/RequestModal/AdvancedRequester/index.tsx",
+      "line": 155,
+      "lineText": "seasonOrder: 'Series order',",
+      "rawLineSha256": "4cb78179fea269f714bf5a465e7fbf056f30c0aeafb5dec4d96cb4d7b8ebbdc9",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.AdvancedRequester.seasonOrder",
+      "file": "src/components/RequestModal/AdvancedRequester/index.tsx",
+      "line": 1212,
+      "lineText": "id=\"seasonOrder\"",
+      "rawLineSha256": "268e7a8e7bfeb9059586118888362a7051dbd2a0096ad458a8ac827f55b6fddf",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.AdvancedRequester.seasonOrder",
+      "file": "src/components/RequestModal/AdvancedRequester/index.tsx",
+      "line": 1213,
+      "lineText": "label={intl.formatMessage(messages.seasonOrder)}",
+      "rawLineSha256": "050868b0daf58e5770cd394a4c9f6edc5903c2e9ebf7c879bfbe89ceaf7d455b",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.AdvancedRequester.selecttags",
+      "file": "src/components/RequestModal/AdvancedRequester/index.tsx",
+      "line": 158,
+      "lineText": "selecttags: 'Select tags',",
+      "rawLineSha256": "a05b8ae36ebebd577544ab7cf34b68b348c0af28af08f4fdc2e22e2eedb9a48e",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.AdvancedRequester.selecttags",
+      "file": "src/components/RequestModal/AdvancedRequester/index.tsx",
+      "line": 1319,
+      "lineText": "placeholder={intl.formatMessage(messages.selecttags)}",
+      "rawLineSha256": "547b89fc1ecfdc82646d03e5baec5cdd0580aab4678215a589059882f0ea80c5",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.AdvancedRequester.service",
+      "file": "src/components/RequestModal/AdvancedRequester/index.tsx",
+      "line": 140,
+      "lineText": "service: 'Service',",
+      "rawLineSha256": "d32179644ed542a34157bbf725f869e2c596aadb6f45949dddb826e33145e3c2",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.AdvancedRequester.service",
+      "file": "src/components/RequestModal/AdvancedRequester/index.tsx",
+      "line": 262,
+      "lineText": "`/api/v1/service/${serviceType}`,",
+      "rawLineSha256": "79865504a639c59a4e8d1c7b6abeba8c88d23042d8ac9099cf7bca05ccad1faf",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.AdvancedRequester.service",
+      "file": "src/components/RequestModal/AdvancedRequester/index.tsx",
+      "line": 317,
+      "lineText": "? `/api/v1/service/${serviceType}/${selectedServer}`",
+      "rawLineSha256": "732fe034c00a1eed3200a4f387f6ee3b22ca63a5a37a129f6f87c9d2b19e2edb",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.AdvancedRequester.service",
+      "file": "src/components/RequestModal/AdvancedRequester/index.tsx",
+      "line": 376,
+      "lineText": "? `/api/v1/service/sonarr/lookup/${tmdbId}?${new URLSearchParams({",
+      "rawLineSha256": "483234d54590c1b0c75cd491e22f467149652775e12864efc63ef39825472068",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.AdvancedRequester.service",
+      "file": "src/components/RequestModal/AdvancedRequester/index.tsx",
+      "line": 1003,
+      "lineText": "{intl.formatMessage(messages.service)}:",
+      "rawLineSha256": "58d8057546e5cd2ed6cb7bbd6f97cbde70e1bc2eed271a9bae90eb0d5e2883fa",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.AdvancedRequester.showOptions",
+      "file": "src/components/RequestModal/AdvancedRequester/index.tsx",
+      "line": 143,
+      "lineText": "showOptions: 'Show Options',",
+      "rawLineSha256": "2666c2ab43d84cf546d5c425476aee5f4ccc7489ba1afc0ddb6dac7653e3c5e2",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.AdvancedRequester.showOptions",
+      "file": "src/components/RequestModal/AdvancedRequester/index.tsx",
+      "line": 1023,
+      "lineText": "{intl.formatMessage(messages.showOptions)}",
+      "rawLineSha256": "160dace0c9cf3989ecb5fb0ccf483dcdbb2333c045ad81f971687e2ce8f17b23",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.AdvancedRequester.sonarrDefault",
+      "file": "src/components/RequestModal/AdvancedRequester/index.tsx",
+      "line": 156,
+      "lineText": "sonarrDefault: 'Sonarr default',",
+      "rawLineSha256": "8f484fa1a238f9f6add509ae668311140df7cc351ca03cf0b433c898a4411af4",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.AdvancedRequester.sonarrDefault",
+      "file": "src/components/RequestModal/AdvancedRequester/index.tsx",
+      "line": 1195,
+      "lineText": "label: intl.formatMessage(messages.sonarrDefault),",
+      "rawLineSha256": "21ad852110fc7a3d9d8a43ac9ae59798bf913a4309666a0eea2e39d710b80624",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.AdvancedRequester.sonarrDefault",
+      "file": "src/components/RequestModal/AdvancedRequester/index.tsx",
+      "line": 1218,
+      "lineText": "label: intl.formatMessage(messages.sonarrDefault),",
+      "rawLineSha256": "9334a8224e4f0c26eb005e0c8a9fc24e63a9a14d0b58ddbbb672de5e4dca6bc1",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.AdvancedRequester.status",
+      "file": "src/components/RequestModal/AdvancedRequester/index.tsx",
+      "line": 141,
+      "lineText": "status: 'Status',",
+      "rawLineSha256": "4860d1d7ab7b6630118801fd654a508404433dfb6bf6810e962e792d09b75703",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.AdvancedRequester.status",
+      "file": "src/components/RequestModal/AdvancedRequester/index.tsx",
+      "line": 997,
+      "lineText": "{intl.formatMessage(messages.status)}:",
+      "rawLineSha256": "5e142b28ef6cbdb72298a5d14efeb825e0b1a6ddaf6019bbb9a49493cf1c7995",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.AdvancedRequester.tags",
+      "file": "src/components/RequestModal/AdvancedRequester/index.tsx",
+      "line": 157,
+      "lineText": "tags: 'Tags',",
+      "rawLineSha256": "575cb1fd85a88a40173e222af5490abe970d7f9c5380465a2847de1e2e51d051",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.AdvancedRequester.tags",
+      "file": "src/components/RequestModal/AdvancedRequester/index.tsx",
+      "line": 158,
+      "lineText": "selecttags: 'Select tags',",
+      "rawLineSha256": "a05b8ae36ebebd577544ab7cf34b68b348c0af28af08f4fdc2e22e2eedb9a48e",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.AdvancedRequester.tags",
+      "file": "src/components/RequestModal/AdvancedRequester/index.tsx",
+      "line": 159,
+      "lineText": "notagoptions: 'No tags',",
+      "rawLineSha256": "6c9622b11027da7a6ed06ab236438eeea21016675ab33701fe2d3ea80657805a",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.AdvancedRequester.tags",
+      "file": "src/components/RequestModal/AdvancedRequester/index.tsx",
+      "line": 173,
+      "lineText": "tags?: number[];",
+      "rawLineSha256": "78ab7b04f158cf6e2e2d2ae0d10b70bf2adbd0666ed41bd036d744df1729af2e",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.AdvancedRequester.tags",
+      "file": "src/components/RequestModal/AdvancedRequester/index.tsx",
+      "line": 296,
+      "lineText": "defaultOverrides?.tags ?? []",
+      "rawLineSha256": "090a9b8506b639fa98d2aacb747af3b7f9b99eb80b4619686142bf9c8ae04024",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.AdvancedRequester.tags",
+      "file": "src/components/RequestModal/AdvancedRequester/index.tsx",
+      "line": 555,
+      "lineText": "(!applyOverrides || defaultOverrides.tags == null)",
+      "rawLineSha256": "a2f31d929451a91ad6ab88d2127a90db609e7b437a2dabed54f4e3a3988342c1",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.AdvancedRequester.tags",
+      "file": "src/components/RequestModal/AdvancedRequester/index.tsx",
+      "line": 652,
+      "lineText": "if (defaultOverrides && defaultOverrides.tags != null) {",
+      "rawLineSha256": "adb7b1efe26bc5d9054b23c2b3944b3c69a808221a0e10208e50529093c09962",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.AdvancedRequester.tags",
+      "file": "src/components/RequestModal/AdvancedRequester/index.tsx",
+      "line": 653,
+      "lineText": "setSelectedTags(defaultOverrides.tags);",
+      "rawLineSha256": "e14368692ca7ae04da6f246c843de5b670967ebd2a6d644a38a37a2f24cc0fc9",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.AdvancedRequester.tags",
+      "file": "src/components/RequestModal/AdvancedRequester/index.tsx",
+      "line": 667,
+      "lineText": "defaultOverrides?.tags,",
+      "rawLineSha256": "f327386a33f2e0b6578b7b7b3d4a26c33afe138dcdb5424e32f9ae289b9c70e2",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.AdvancedRequester.tags",
+      "file": "src/components/RequestModal/AdvancedRequester/index.tsx",
+      "line": 725,
+      "lineText": "tags: canCustomizeServiceRequest ? selectedTags : undefined,",
+      "rawLineSha256": "20ce7a20cd164c097c548f823c166eeae158fc20347e94f6bfb0b46c9591b425",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.AdvancedRequester.tags",
+      "file": "src/components/RequestModal/AdvancedRequester/index.tsx",
+      "line": 772,
+      "lineText": "tags: selectedTags.length > 0 ? selectedTags : undefined,",
+      "rawLineSha256": "4d9575901055ed3035483240c4f903897bcb61bb4bb70107880028f4932f756e",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.AdvancedRequester.tags",
+      "file": "src/components/RequestModal/AdvancedRequester/index.tsx",
+      "line": 788,
+      "lineText": "!defaultOverrides?.tags &&",
+      "rawLineSha256": "e93df4366fad7faf1705f7c12bdb3db4ed85871f28fd6e80f7fbfd54a4ea78cd",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.AdvancedRequester.tags",
+      "file": "src/components/RequestModal/AdvancedRequester/index.tsx",
+      "line": 789,
+      "lineText": "override.tags &&",
+      "rawLineSha256": "ac4f1ffd63ce639175e6b8e6f99f7393d6b71e37ca83c88a981fbade7daff2da",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.AdvancedRequester.tags",
+      "file": "src/components/RequestModal/AdvancedRequester/index.tsx",
+      "line": 790,
+      "lineText": "!isEqual(override.tags, selectedTags)",
+      "rawLineSha256": "81dc2cf6e7def146a8a438d6fee58a5e8f7838e71e925f5ef210e09bb0c23ab3",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.AdvancedRequester.tags",
+      "file": "src/components/RequestModal/AdvancedRequester/index.tsx",
+      "line": 792,
+      "lineText": "setSelectedTags(override.tags);",
+      "rawLineSha256": "baff9895993749487c990e1568fcc6a80cc72e7553bf6db507fb2012d19713f1",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.AdvancedRequester.tags",
+      "file": "src/components/RequestModal/AdvancedRequester/index.tsx",
+      "line": 824,
+      "lineText": "defaultOverrides?.tags,",
+      "rawLineSha256": "f327386a33f2e0b6578b7b7b3d4a26c33afe138dcdb5424e32f9ae289b9c70e2",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.AdvancedRequester.tags",
+      "file": "src/components/RequestModal/AdvancedRequester/index.tsx",
+      "line": 850,
+      "lineText": "!serverData.tags?.length)));",
+      "rawLineSha256": "d9fae802472f83301b7b0551188b53d62fcb10eb3674ef002275772906367e0f",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.AdvancedRequester.tags",
+      "file": "src/components/RequestModal/AdvancedRequester/index.tsx",
+      "line": 1294,
+      "lineText": "!!serverData?.tags?.length && (",
+      "rawLineSha256": "ed76a8f797b6473052295903899579f6de9864808f3969c7923effaa40c5731c",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.AdvancedRequester.tags",
+      "file": "src/components/RequestModal/AdvancedRequester/index.tsx",
+      "line": 1301,
+      "lineText": "data-options-control={panelOnly ? 'tags' : undefined}",
+      "rawLineSha256": "85f00ab9a259ea3de2ad07b6c4042546f3d78bddca3d37dc1729a1b273317ec5",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.AdvancedRequester.tags",
+      "file": "src/components/RequestModal/AdvancedRequester/index.tsx",
+      "line": 1304,
+      "lineText": "htmlFor=\"tags\"",
+      "rawLineSha256": "b86139c22543a04a8bcc9e6ba63ad2f1c3d445686626a919214b00ee63b291d4",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.AdvancedRequester.tags",
+      "file": "src/components/RequestModal/AdvancedRequester/index.tsx",
+      "line": 1310,
+      "lineText": "{intl.formatMessage(messages.tags)}",
+      "rawLineSha256": "8b83f4753c225e27aef8004338b8ebfa30b3684b50f80f654a8a5ef07e4359f4",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.AdvancedRequester.tags",
+      "file": "src/components/RequestModal/AdvancedRequester/index.tsx",
+      "line": 1313,
+      "lineText": "name=\"tags\"",
+      "rawLineSha256": "7d2fcbbdb9eff1ecb7577c52297acd067d86c0ff276e15d4e043d330ccf25be8",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.AdvancedRequester.tags",
+      "file": "src/components/RequestModal/AdvancedRequester/index.tsx",
+      "line": 1314,
+      "lineText": "options={(serverData?.tags ?? []).map((tag) => ({",
+      "rawLineSha256": "0786f24ecc5c976e5923eb1a78c4bf737eb086d1583da054d81d1b5071c59926",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.AdvancedRequester.tags",
+      "file": "src/components/RequestModal/AdvancedRequester/index.tsx",
+      "line": 1325,
+      "lineText": "const foundTag = serverData?.tags.find(",
+      "rawLineSha256": "639061a90a9cbf5ba0a4db69176eb8929403457d521a65e2090e20a527c044db",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.Book.advancedOptions",
+      "file": "src/components/RequestModal/BookRequestModal.tsx",
+      "line": 101,
+      "lineText": "advancedOptions: 'Advanced Options',",
+      "rawLineSha256": "f785ac55bedaa860fe063a7fd03da0023de38bb1a0f4839ac551811a371355a2",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.Book.advancedOptions",
+      "file": "src/components/RequestModal/BookRequestModal.tsx",
+      "line": 1093,
+      "lineText": "label={intl.formatMessage(messages.advancedOptions)}",
+      "rawLineSha256": "2b79fe9cfb9b6bccf64d4e3efa2224adc424d7d00c8d322a2b3cbf2b6f734050",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.Book.approval",
+      "file": "src/components/RequestModal/BookRequestModal.tsx",
+      "line": 71,
+      "lineText": "pendingapproval: 'Your request is pending approval.',",
+      "rawLineSha256": "cb6111713b5a2bff81c20c37df622f75f08f684cdb5e31f297d8e4b0665137e0",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.Book.approval",
+      "file": "src/components/RequestModal/BookRequestModal.tsx",
+      "line": 72,
+      "lineText": "requestfrom: \"{username}'s request is pending approval.\",",
+      "rawLineSha256": "2e8453de7f68415eb06e329186fe040f81e30c2784d8bb0cd9a9e594a0dd9fcb",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.Book.approval",
+      "file": "src/components/RequestModal/BookRequestModal.tsx",
+      "line": 97,
+      "lineText": "approval: 'Approval',",
+      "rawLineSha256": "c17380d968c9c1d9e77ee42d65553dd48bf0c1ed47b5278ee2ea931184bf15cd",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.Book.approval",
+      "file": "src/components/RequestModal/BookRequestModal.tsx",
+      "line": 964,
+      "lineText": "{intl.formatMessage(messages.approval)}:",
+      "rawLineSha256": "4548e467a7f371e9e516c065024a02ec35e2fe83be3dae9e837ff88196874ad2",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.Book.approve",
+      "file": "src/components/RequestModal/BookRequestModal.tsx",
+      "line": 68,
+      "lineText": "approve: 'Approve Request',",
+      "rawLineSha256": "770d98d0cc838beb4d00507a94df62b5af50edebfe9f2fe3ddff4eb1d8115e03",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.Book.approve",
+      "file": "src/components/RequestModal/BookRequestModal.tsx",
+      "line": 703,
+      "lineText": "await axios.post(`/api/v1/request/${editRequest?.id}/approve`);",
+      "rawLineSha256": "1cd6ce16aa4437f85434cad8c7f7be1be6fee05e4b6567bd18860f1f269621d3",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.Book.approve",
+      "file": "src/components/RequestModal/BookRequestModal.tsx",
+      "line": 764,
+      "lineText": "? intl.formatMessage(messages.approve)",
+      "rawLineSha256": "5e2a9c79dad7924e969e875e458e73b0087312213f68140c6130955b8325977e",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.Book.audiobook",
+      "file": "src/components/RequestModal/BookRequestModal.tsx",
+      "line": 86,
+      "lineText": "'No audiobook Bookshelf service is configured. Audiobook requests are unavailable.',",
+      "rawLineSha256": "afe85bfcc66de2529bd361bbf0382e66d0057a288105f44c5c43e0751350c262",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.Book.audiobook",
+      "file": "src/components/RequestModal/BookRequestModal.tsx",
+      "line": 88,
+      "lineText": "audiobook: 'Audiobook',",
+      "rawLineSha256": "44adce7ab9e4fd06baf387c0c24f82f399191e77749b7ce4a1f0e101aff63038",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.Book.audiobook",
+      "file": "src/components/RequestModal/BookRequestModal.tsx",
+      "line": 129,
+      "lineText": "initialBookFormat?: 'ebook' | 'audiobook' | 'both';",
+      "rawLineSha256": "6190b75e70e1d756de11e365dc0cec882829b65bd797a131feccc0bb28d5ef01",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.Book.audiobook",
+      "file": "src/components/RequestModal/BookRequestModal.tsx",
+      "line": 154,
+      "lineText": "const [bookFormat, setBookFormat] = useState<'ebook' | 'audiobook'>(",
+      "rawLineSha256": "16ab07ce4ab41b8cbaca4e85478715bc966720dde72d3b9aaf742cb9148dc73d",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.Book.audiobook",
+      "file": "src/components/RequestModal/BookRequestModal.tsx",
+      "line": 155,
+      "lineText": "(editRequest?.bookFormat ?? initialBookFormat) === 'audiobook'",
+      "rawLineSha256": "63472e708e382d73d36f48c1d96a5e5d8766a80e2a693b78426c564d83aba6cc",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.Book.audiobook",
+      "file": "src/components/RequestModal/BookRequestModal.tsx",
+      "line": 156,
+      "lineText": "? 'audiobook'",
+      "rawLineSha256": "a5b0d01c661f26bc66144aa9ee553ec69a666ced9d22d07c6c96ecc3f11e743e",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.Book.audiobook",
+      "file": "src/components/RequestModal/BookRequestModal.tsx",
+      "line": 242,
+      "lineText": "server.isDefault && readarrServiceSupportsFormat(server, 'audiobook')",
+      "rawLineSha256": "be64784e5ff9787a183f41d2e5da770d87a81b2a300844792c128198c6f074e7",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.Book.audiobook",
+      "file": "src/components/RequestModal/BookRequestModal.tsx",
+      "line": 254,
+      "lineText": "'audiobook',",
+      "rawLineSha256": "53a6220bdd05c5e79ae8005121ecf4f2bceecfa6a5915e1fd4703902a058da73",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.Book.audiobook",
+      "file": "src/components/RequestModal/BookRequestModal.tsx",
+      "line": 255,
+      "lineText": "bookFormat === 'audiobook'",
+      "rawLineSha256": "7c430828fc72e9978acbb70ef4aeec0f79c492dfd7a497effb766679c45cebdd",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.Book.audiobook",
+      "file": "src/components/RequestModal/BookRequestModal.tsx",
+      "line": 258,
+      "lineText": "bookFormat === 'audiobook' ? requestOverrides : null",
+      "rawLineSha256": "f77b7b01b8935d28203f25d425bcaeab5e4b7f3e4def8e915f78929c475c44cd",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.Book.audiobook",
+      "file": "src/components/RequestModal/BookRequestModal.tsx",
+      "line": 261,
+      "lineText": "bookFormat === 'audiobook' ? [audiobookDestination] : [ebookDestination];",
+      "rawLineSha256": "456b557188c79e3fcf77a6be2d9ed22ba8946031b004d12c3f7978e753eb00a0",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.Book.audiobook",
+      "file": "src/components/RequestModal/BookRequestModal.tsx",
+      "line": 262,
+      "lineText": "const destinationAvailable = (format: 'ebook' | 'audiobook') => {",
+      "rawLineSha256": "b934ab4ce0ed94d46d60bc3889ba768af41b23facbae257d619fd83f24a6fe94",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.Book.audiobook",
+      "file": "src/components/RequestModal/BookRequestModal.tsx",
+      "line": 293,
+      "lineText": "!!target && destinationAvailable(target.format as 'ebook' | 'audiobook')",
+      "rawLineSha256": "04367cd2096a8e49f2021ded59c7aee4efde2ad8be55bdf6d142c64f4288919a",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.Book.audiobook",
+      "file": "src/components/RequestModal/BookRequestModal.tsx",
+      "line": 301,
+      "lineText": "(destinationAvailable(target.format as 'ebook' | 'audiobook') ||",
+      "rawLineSha256": "3784f1762968b73b68826803239a4808a93e83df391688d637ad2b3edcf31708",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.Book.audiobook",
+      "file": "src/components/RequestModal/BookRequestModal.tsx",
+      "line": 309,
+      "lineText": "!destinationAvailable(target.format as 'ebook' | 'audiobook') &&",
+      "rawLineSha256": "2fe130ddda888f26a0acef2a2d51124b822ace22092bc0b39062b1011a625b3d",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.Book.audiobook",
+      "file": "src/components/RequestModal/BookRequestModal.tsx",
+      "line": 339,
+      "lineText": "(editRequest?.bookFormat ?? initialBookFormat) === 'audiobook'",
+      "rawLineSha256": "b16e10a10ac9d7975ed67d71c18bf500ff86c7c3d55e9509f4f6cd99e6436dfe",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.Book.audiobook",
+      "file": "src/components/RequestModal/BookRequestModal.tsx",
+      "line": 340,
+      "lineText": "? 'audiobook'",
+      "rawLineSha256": "a4c99bb245567eb48b7d653d2d2267cc184e6ec82f42ebb39253837abf291fb9",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.Book.audiobook",
+      "file": "src/components/RequestModal/BookRequestModal.tsx",
+      "line": 394,
+      "lineText": "readarrServiceSupportsFormat(service, 'audiobook')",
+      "rawLineSha256": "a5ec7747aa451d0b9aac8e0d9961b7fe338da7cefbcb6857dd73325118aa744a",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.Book.audiobook",
+      "file": "src/components/RequestModal/BookRequestModal.tsx",
+      "line": 402,
+      "lineText": "serviceAvailability.enabledMediaCategories?.audiobook !== false ||",
+      "rawLineSha256": "9069cd31f1f6cc991edf7efb1a2c6f7af9700a8f05783fee31054ee1ee5fc49b",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.Book.audiobook",
+      "file": "src/components/RequestModal/BookRequestModal.tsx",
+      "line": 404,
+      "lineText": "(editRequest.bookFormat === 'audiobook' ||",
+      "rawLineSha256": "d85df45bacc00618112ccae64ef999b8ef6440514d92e7ee49fc51e7a314df0f",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.Book.audiobook",
+      "file": "src/components/RequestModal/BookRequestModal.tsx",
+      "line": 409,
+      "lineText": "audiobook: hasAudiobookServer && hasEnabledAudiobookCategory,",
+      "rawLineSha256": "c57e9a933acc69ea0d5e95ca74d28b8bc9044d6c47c521837f9a3c559cb31021",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.Book.audiobook",
+      "file": "src/components/RequestModal/BookRequestModal.tsx",
+      "line": 435,
+      "lineText": "} else if (formatAvailable.audiobook) {",
+      "rawLineSha256": "37edd36ee2876f43765d5b96d7371ab71cbc92f56b915c37e34e240ddf6bf401",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.Book.audiobook",
+      "file": "src/components/RequestModal/BookRequestModal.tsx",
+      "line": 436,
+      "lineText": "setBookFormat('audiobook');",
+      "rawLineSha256": "de7d2821dd45b21cde60037573e0e7705769ffa45f647d166e38d322a9787253",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.Book.audiobook",
+      "file": "src/components/RequestModal/BookRequestModal.tsx",
+      "line": 442,
+      "lineText": "formatAvailable.audiobook,",
+      "rawLineSha256": "dde37936273ee206a3052e5c39b5d09c5130a851412509ecc9f628961195dc7e",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.Book.audiobook",
+      "file": "src/components/RequestModal/BookRequestModal.tsx",
+      "line": 475,
+      "lineText": "request.bookFormat === 'audiobook' || request.bookFormat === 'both'",
+      "rawLineSha256": "7ce1b21d30255dfc247d24a0994414460619ec567e391dd7c04e477ea21a8b40",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.Book.audiobook",
+      "file": "src/components/RequestModal/BookRequestModal.tsx",
+      "line": 482,
+      "lineText": "setBookFormat('audiobook');",
+      "rawLineSha256": "de7d2821dd45b21cde60037573e0e7705769ffa45f647d166e38d322a9787253",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.Book.audiobook",
+      "file": "src/components/RequestModal/BookRequestModal.tsx",
+      "line": 512,
+      "lineText": "const handleBookFormatChange = (value: 'ebook' | 'audiobook') => {",
+      "rawLineSha256": "18a49f1320ffe75cd0ca103ff5414114079d8a9e104c7cfef0f0107761875e3e",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.Book.audiobook",
+      "file": "src/components/RequestModal/BookRequestModal.tsx",
+      "line": 537,
+      "lineText": "(bookFormat === 'audiobook'",
+      "rawLineSha256": "f4a30561618fa95b6d90437b8cc77d1e3a79218af0f40cdd10f1a79eae54e302",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.Book.audiobook",
+      "file": "src/components/RequestModal/BookRequestModal.tsx",
+      "line": 553,
+      "lineText": "label: intl.formatMessage(messages.audiobook),",
+      "rawLineSha256": "96bad774191e70850e10ad59313d0b672310288829de0f71156a1f3fa63ff6d4",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.Book.audiobook",
+      "file": "src/components/RequestModal/BookRequestModal.tsx",
+      "line": 554,
+      "lineText": "value: 'audiobook' as const,",
+      "rawLineSha256": "008eadac189d5279cfc1f392295feb2afb4dbd30ab6c5185e9bbbb3af724ea04",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.Book.audiobook",
+      "file": "src/components/RequestModal/BookRequestModal.tsx",
+      "line": 555,
+      "lineText": "disabled: !formatAvailable.audiobook,",
+      "rawLineSha256": "aa5d5587913016c146962d337b366320a013a24b5fc1818121d677cf9c626a6d",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.Book.audiobook",
+      "file": "src/components/RequestModal/BookRequestModal.tsx",
+      "line": 622,
+      "lineText": ": intl.formatMessage(messages.audiobook);",
+      "rawLineSha256": "500cdf3b0f1eafcea2fb0d82a5c1ac8d2df5ceed9410f5f2707dfcb3ed81c1d1",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.Book.audiobook",
+      "file": "src/components/RequestModal/BookRequestModal.tsx",
+      "line": 1048,
+      "lineText": "bookFormat === 'audiobook'",
+      "rawLineSha256": "daaaf60c57bcb11f6773e4ba27b3cdbef1db823eb025d42a56482abcb720f926",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.Book.author",
+      "file": "src/components/RequestModal/BookRequestModal.tsx",
+      "line": 93,
+      "lineText": "author: 'Author',",
+      "rawLineSha256": "11bf843e35464bd5f6afb35ba42377d8597634c5343b3faeff284b55d83eb808",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.Book.author",
+      "file": "src/components/RequestModal/BookRequestModal.tsx",
+      "line": 924,
+      "lineText": "{intl.formatMessage(messages.author)}:",
+      "rawLineSha256": "4ac06aa2fe4f12e4ed309032531adde39f53e279d8062ae36249f907b867306a",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.Book.author",
+      "file": "src/components/RequestModal/BookRequestModal.tsx",
+      "line": 927,
+      "lineText": "{data?.author || notAvailable}",
+      "rawLineSha256": "e47cdd5880e8ec804d1b2fa1d561d7ae9fbd87d1e95293141801f204e496b18b",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.Book.author",
+      "file": "src/components/RequestModal/BookRequestModal.tsx",
+      "line": 1060,
+      "lineText": "author={data.author}",
+      "rawLineSha256": "86370c813b5aba4f85a92bd667d572b831ade9ee4470c1f385cb8f1f5d22d612",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.Book.automaticEdition",
+      "file": "src/components/RequestModal/BookRequestModal.tsx",
+      "line": 78,
+      "lineText": "automaticEdition: 'Automatic best match',",
+      "rawLineSha256": "d5829a85a6509ffb373c90982b4386b543373e0f80720b82184d79d2ddf134f2",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.Book.automaticEdition",
+      "file": "src/components/RequestModal/BookRequestModal.tsx",
+      "line": 1022,
+      "lineText": "loadingLabel={intl.formatMessage(messages.automaticEdition)}",
+      "rawLineSha256": "47f95dd25f1e1d962405f3b13f6c7994dbf43b99bde2e582b21442dfeecb3b00",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.Book.automaticEdition",
+      "file": "src/components/RequestModal/BookRequestModal.tsx",
+      "line": 1026,
+      "lineText": "label: intl.formatMessage(messages.automaticEdition),",
+      "rawLineSha256": "b91d61b40be9e1e339d55ba5b00425f5df6759aa84b2a0b37326a933a7aee8cb",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.Book.automaticEditionInfo",
+      "file": "src/components/RequestModal/BookRequestModal.tsx",
+      "line": 79,
+      "lineText": "automaticEditionInfo:",
+      "rawLineSha256": "6e3b38a1c12f5289819a4b00a4c0b485c4f60d05331387b3968db269dfac5ce1",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.Book.backendRequestFailed",
+      "file": "src/components/RequestModal/BookRequestModal.tsx",
+      "line": 74,
+      "lineText": "backendRequestFailed:",
+      "rawLineSha256": "19c81c95ee57a5f7c3118a10a2c284f239d83faf35996c319c90e931cb0049ea",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.Book.backendRequestFailed",
+      "file": "src/components/RequestModal/BookRequestModal.tsx",
+      "line": 607,
+      "lineText": "addToast(intl.formatMessage(messages.backendRequestFailed), {",
+      "rawLineSha256": "3b196cea576a18cc970656430c4d53db2922fa6faaf131d4f43852c2ba2e152e",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.Book.cancel",
+      "file": "src/components/RequestModal/BookRequestModal.tsx",
+      "line": 69,
+      "lineText": "cancel: 'Cancel Request',",
+      "rawLineSha256": "30fbfaa25ae7b46f1e076d512e44bf2ded0fe91fbb8bbd56187b7edb9fa0f874",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.Book.cancel",
+      "file": "src/components/RequestModal/BookRequestModal.tsx",
+      "line": 758,
+      "lineText": "? 'cancel'",
+      "rawLineSha256": "d1130cdb91ef781ff88258a24428436f36764187aceecfa07e2991075857b47b",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.Book.cancel",
+      "file": "src/components/RequestModal/BookRequestModal.tsx",
+      "line": 761,
+      "lineText": "secondaryButtonProps={{ buttonIcon: 'cancel' }}",
+      "rawLineSha256": "d8c434b03ebdca5fc69db58444b8b5600df8973815d1df2358ff22217b80320f",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.Book.cancel",
+      "file": "src/components/RequestModal/BookRequestModal.tsx",
+      "line": 767,
+      "lineText": ": intl.formatMessage(messages.cancel)",
+      "rawLineSha256": "9bdeb6b4906c536b15ba01de94d853e8bcbcc4c6daee0ddd8e73ea8203a723e2",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.Book.cancel",
+      "file": "src/components/RequestModal/BookRequestModal.tsx",
+      "line": 792,
+      "lineText": "? intl.formatMessage(messages.cancel)",
+      "rawLineSha256": "11b453790162b9258498cae505b2743f681cd1a7f0dc4d451c8ad61632f19571",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.Book.cancel",
+      "file": "src/components/RequestModal/BookRequestModal.tsx",
+      "line": 1109,
+      "lineText": "data-testid=\"modal-cancel-button\"",
+      "rawLineSha256": "4fcd796834b8f5c1c72d83e2cfd1442a595a69159b097e0bcd9cc6e442f5a525",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.Book.cancel",
+      "file": "src/components/RequestModal/BookRequestModal.tsx",
+      "line": 1113,
+      "lineText": "{intl.formatMessage(globalMessages.cancel)}",
+      "rawLineSha256": "56a038f56f197374d086b81918cd7fc84e01436566a0e17b04f3dce69cb6972b",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.Book.close",
+      "file": "src/components/RequestModal/BookRequestModal.tsx",
+      "line": 70,
+      "lineText": "close: 'Close',",
+      "rawLineSha256": "f2071f381e46282e1fe87621d16e9b0a5f04e3f879379710aa38eb9e6861d3bc",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.Book.close",
+      "file": "src/components/RequestModal/BookRequestModal.tsx",
+      "line": 796,
+      "lineText": "cancelText={intl.formatMessage(messages.close)}",
+      "rawLineSha256": "44efdbd22dd8154ba38e40c89c41a924b388f02314a90e8dd5d0a8e201089b0c",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.Book.ebook",
+      "file": "src/components/RequestModal/BookRequestModal.tsx",
+      "line": 87,
+      "lineText": "ebook: 'Book',",
+      "rawLineSha256": "6957b8b8994261d57d7cce2f275a7624635705d39c4346a4cfd341cb5dc41481",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.Book.ebook",
+      "file": "src/components/RequestModal/BookRequestModal.tsx",
+      "line": 129,
+      "lineText": "initialBookFormat?: 'ebook' | 'audiobook' | 'both';",
+      "rawLineSha256": "6190b75e70e1d756de11e365dc0cec882829b65bd797a131feccc0bb28d5ef01",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.Book.ebook",
+      "file": "src/components/RequestModal/BookRequestModal.tsx",
+      "line": 138,
+      "lineText": "initialBookFormat = 'ebook',",
+      "rawLineSha256": "bf739fc2862057c347795ee22abe334f71887184f1c4670aae990d8491674c81",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.Book.ebook",
+      "file": "src/components/RequestModal/BookRequestModal.tsx",
+      "line": 154,
+      "lineText": "const [bookFormat, setBookFormat] = useState<'ebook' | 'audiobook'>(",
+      "rawLineSha256": "16ab07ce4ab41b8cbaca4e85478715bc966720dde72d3b9aaf742cb9148dc73d",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.Book.ebook",
+      "file": "src/components/RequestModal/BookRequestModal.tsx",
+      "line": 157,
+      "lineText": ": 'ebook'",
+      "rawLineSha256": "86f1a20807cb0342f4801d37c8ddd7994a8d84d5933d387f7915e014a787088c",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.Book.ebook",
+      "file": "src/components/RequestModal/BookRequestModal.tsx",
+      "line": 238,
+      "lineText": "server.isDefault && readarrServiceSupportsFormat(server, 'ebook')",
+      "rawLineSha256": "f1b442ae6979cc381cc1374459704a1d7d9559bb72e60ff85fca6435ca7ab9be",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.Book.ebook",
+      "file": "src/components/RequestModal/BookRequestModal.tsx",
+      "line": 246,
+      "lineText": "'ebook',",
+      "rawLineSha256": "4e09ef12a6fe30abc56ebd722f9cb05bc3d293504fa9a63f5149a7d708052901",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.Book.ebook",
+      "file": "src/components/RequestModal/BookRequestModal.tsx",
+      "line": 247,
+      "lineText": "bookFormat === 'ebook'",
+      "rawLineSha256": "8dbe7453ef526fe504d78b67b07628d9800d6706e06a692119cbb5045dd8877f",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.Book.ebook",
+      "file": "src/components/RequestModal/BookRequestModal.tsx",
+      "line": 250,
+      "lineText": "bookFormat === 'ebook' ? requestOverrides : null",
+      "rawLineSha256": "e08017184a435e0fffa701a89bf2b34f4ed5f413bf75fc795e33980df313c0ad",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.Book.ebook",
+      "file": "src/components/RequestModal/BookRequestModal.tsx",
+      "line": 262,
+      "lineText": "const destinationAvailable = (format: 'ebook' | 'audiobook') => {",
+      "rawLineSha256": "b934ab4ce0ed94d46d60bc3889ba768af41b23facbae257d619fd83f24a6fe94",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.Book.ebook",
+      "file": "src/components/RequestModal/BookRequestModal.tsx",
+      "line": 263,
+      "lineText": "const target = format === 'ebook' ? ebookDestination : audiobookDestination;",
+      "rawLineSha256": "69d0b8aeb83a620d1673fb4033d8b56ee6e6f20cb30cc9aea0a66b6ecdb8e1bb",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.Book.ebook",
+      "file": "src/components/RequestModal/BookRequestModal.tsx",
+      "line": 265,
+      "lineText": "format === 'ebook'",
+      "rawLineSha256": "5cc7435e2f26eac13ef2d0cde2ced556fe201815da4ba954cbddb1848eb890bf",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.Book.ebook",
+      "file": "src/components/RequestModal/BookRequestModal.tsx",
+      "line": 269,
+      "lineText": "format === 'ebook'",
+      "rawLineSha256": "5cc7435e2f26eac13ef2d0cde2ced556fe201815da4ba954cbddb1848eb890bf",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.Book.ebook",
+      "file": "src/components/RequestModal/BookRequestModal.tsx",
+      "line": 293,
+      "lineText": "!!target && destinationAvailable(target.format as 'ebook' | 'audiobook')",
+      "rawLineSha256": "04367cd2096a8e49f2021ded59c7aee4efde2ad8be55bdf6d142c64f4288919a",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.Book.ebook",
+      "file": "src/components/RequestModal/BookRequestModal.tsx",
+      "line": 301,
+      "lineText": "(destinationAvailable(target.format as 'ebook' | 'audiobook') ||",
+      "rawLineSha256": "3784f1762968b73b68826803239a4808a93e83df391688d637ad2b3edcf31708",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.Book.ebook",
+      "file": "src/components/RequestModal/BookRequestModal.tsx",
+      "line": 309,
+      "lineText": "!destinationAvailable(target.format as 'ebook' | 'audiobook') &&",
+      "rawLineSha256": "2fe130ddda888f26a0acef2a2d51124b822ace22092bc0b39062b1011a625b3d",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.Book.ebook",
+      "file": "src/components/RequestModal/BookRequestModal.tsx",
+      "line": 341,
+      "lineText": ": 'ebook'",
+      "rawLineSha256": "cb91d0277216faa45609297e13b3ca8f4d187bf4384a8e9fabd026904df5f0dd",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.Book.ebook",
+      "file": "src/components/RequestModal/BookRequestModal.tsx",
+      "line": 391,
+      "lineText": "readarrServiceSupportsFormat(service, 'ebook')",
+      "rawLineSha256": "fe4fd02c6b6d8ca7a82fa1794110f5b5fc3ce797731b0296fd6ee60129ad0386",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.Book.ebook",
+      "file": "src/components/RequestModal/BookRequestModal.tsx",
+      "line": 397,
+      "lineText": "serviceAvailability.enabledMediaCategories?.ebook !== false ||",
+      "rawLineSha256": "e1d92402668e61500398dc074c4891de0ab1e8ca7ba1684e9942850747669619",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.Book.ebook",
+      "file": "src/components/RequestModal/BookRequestModal.tsx",
+      "line": 399,
+      "lineText": "(editRequest.bookFormat === 'ebook' ||",
+      "rawLineSha256": "f19856fb228cb8386264e04054d73a8314f391da79f869115318246a8ff0a4b3",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.Book.ebook",
+      "file": "src/components/RequestModal/BookRequestModal.tsx",
+      "line": 408,
+      "lineText": "ebook: hasEbookServer && hasEnabledEbookCategory,",
+      "rawLineSha256": "88528e4e9e0a0f8be0eaf1865df6d02093cfaf590925f07b039437e8aac5f454",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.Book.ebook",
+      "file": "src/components/RequestModal/BookRequestModal.tsx",
+      "line": 433,
+      "lineText": "if (formatAvailable.ebook) {",
+      "rawLineSha256": "b4d533203a7c39824148b1fd5ba535e66716e0509390a6a809884f64325a71aa",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.Book.ebook",
+      "file": "src/components/RequestModal/BookRequestModal.tsx",
+      "line": 434,
+      "lineText": "setBookFormat('ebook');",
+      "rawLineSha256": "8ad1d2486405b669683a1e2bf434e00d88f34fcecdada0dc7d70a71a4441b6e9",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.Book.ebook",
+      "file": "src/components/RequestModal/BookRequestModal.tsx",
+      "line": 443,
+      "lineText": "formatAvailable.ebook,",
+      "rawLineSha256": "44bce5790f2e43152804181c6d366a53b9fc5d71c665f074a93fe2a644fb3a6a",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.Book.ebook",
+      "file": "src/components/RequestModal/BookRequestModal.tsx",
+      "line": 470,
+      "lineText": "(request.bookFormat ?? 'ebook') === 'ebook' ||",
+      "rawLineSha256": "7f1d114056dbaf836ddda1b66ccd9689fa7320a30281bdd0ed27ac01900f42a7",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.Book.ebook",
+      "file": "src/components/RequestModal/BookRequestModal.tsx",
+      "line": 484,
+      "lineText": "setBookFormat('ebook');",
+      "rawLineSha256": "8ad1d2486405b669683a1e2bf434e00d88f34fcecdada0dc7d70a71a4441b6e9",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.Book.ebook",
+      "file": "src/components/RequestModal/BookRequestModal.tsx",
+      "line": 512,
+      "lineText": "const handleBookFormatChange = (value: 'ebook' | 'audiobook') => {",
+      "rawLineSha256": "18a49f1320ffe75cd0ca103ff5414114079d8a9e104c7cfef0f0107761875e3e",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.Book.ebook",
+      "file": "src/components/RequestModal/BookRequestModal.tsx",
+      "line": 524,
+      "lineText": "? bookFormat === 'ebook'",
+      "rawLineSha256": "038f45565d8f4e23b17131fa5513b275b8b9b7b11b8abd504b499e993570f470",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.Book.ebook",
+      "file": "src/components/RequestModal/BookRequestModal.tsx",
+      "line": 548,
+      "lineText": "label: intl.formatMessage(messages.ebook),",
+      "rawLineSha256": "f4127407ab46986aa999cafb36d8a61f799f2642e9105915bbc158e1e02015fa",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.Book.ebook",
+      "file": "src/components/RequestModal/BookRequestModal.tsx",
+      "line": 549,
+      "lineText": "value: 'ebook' as const,",
+      "rawLineSha256": "4ab5adc5190a3a9a089e9fb6b9c8536740ce285a56013a9e557bf038673358c3",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.Book.ebook",
+      "file": "src/components/RequestModal/BookRequestModal.tsx",
+      "line": 550,
+      "lineText": "disabled: !formatAvailable.ebook,",
+      "rawLineSha256": "05bf9e8a4a26f796614c718b6787d8703bee017d250f10da1b6dfd58f5389824",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.Book.ebook",
+      "file": "src/components/RequestModal/BookRequestModal.tsx",
+      "line": 620,
+      "lineText": "bookFormat === 'ebook'",
+      "rawLineSha256": "17675b7c6f5ee5d54758601720461beec5d03bd2f9e7d94907ef3253b0f7f984",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.Book.ebook",
+      "file": "src/components/RequestModal/BookRequestModal.tsx",
+      "line": 621,
+      "lineText": "? intl.formatMessage(messages.ebook)",
+      "rawLineSha256": "0c15964f4d2e9b2b1038603ea4cf228dd78e3a0815f00117ae0be90aeb535382",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.Book.edit",
+      "file": "src/components/RequestModal/BookRequestModal.tsx",
+      "line": 67,
+      "lineText": "edit: 'Edit Request',",
+      "rawLineSha256": "d621f2c4fad8afedec52691e521bc202cb21f30c5d47c08d9827cb26c30a4b85",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.Book.edit",
+      "file": "src/components/RequestModal/BookRequestModal.tsx",
+      "line": 766,
+      "lineText": "? intl.formatMessage(messages.edit)",
+      "rawLineSha256": "70df8ca3393a98d5f9694d09ca8ff879d27eba0a43124084aa1ef1d9b7180193",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.Book.editerror",
+      "file": "src/components/RequestModal/BookRequestModal.tsx",
+      "line": 76,
+      "lineText": "editerror: 'Something went wrong while editing the request.',",
+      "rawLineSha256": "5f4a343f21565729ca569fa6cce4d6d6b2460583bb261f87894fab4e6dc8547a",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.Book.editerror",
+      "file": "src/components/RequestModal/BookRequestModal.tsx",
+      "line": 683,
+      "lineText": "addToast(intl.formatMessage(messages.editerror), {",
+      "rawLineSha256": "07aebdd2240ddf205dc05c8b2f5a3ad7348621faa2ae10db15e8b60cb64f7795",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.Book.editerror",
+      "file": "src/components/RequestModal/BookRequestModal.tsx",
+      "line": 725,
+      "lineText": "addToast(intl.formatMessage(messages.editerror), {",
+      "rawLineSha256": "07aebdd2240ddf205dc05c8b2f5a3ad7348621faa2ae10db15e8b60cb64f7795",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.Book.edition",
+      "file": "src/components/RequestModal/BookRequestModal.tsx",
+      "line": 77,
+      "lineText": "edition: 'Edition / ISBN',",
+      "rawLineSha256": "ba2d8c6080d38e6e3b34a88cc7170ffb54c6629b4c1b684db88d39a0d39ee9b6",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.Book.edition",
+      "file": "src/components/RequestModal/BookRequestModal.tsx",
+      "line": 80,
+      "lineText": "'Automatic uses the first valid ISBN from Open Library. Pick a specific edition when testers report a mismatch.',",
+      "rawLineSha256": "6e493a0c36765fe0d5035b88d982e6fea056a84a41e230bde661a4b82fcdba51",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.Book.edition",
+      "file": "src/components/RequestModal/BookRequestModal.tsx",
+      "line": 991,
+      "lineText": "id=\"edition-language\"",
+      "rawLineSha256": "c6682d3a5f51bd1198ff76ef3becfa7d490d5347b272069752454a10033df851",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.Book.edition",
+      "file": "src/components/RequestModal/BookRequestModal.tsx",
+      "line": 1014,
+      "lineText": "label={intl.formatMessage(messages.edition)}",
+      "rawLineSha256": "0186cea8caeedbdd3f3d2f406e4a028fd601c850ffcba0f8f27a61beb535dbf5",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.Book.firstPublished",
+      "file": "src/components/RequestModal/BookRequestModal.tsx",
+      "line": 90,
+      "lineText": "firstPublished: 'First Published',",
+      "rawLineSha256": "93f783c168fd0e383fbd6a8b3a036b0c97b79a6a0caa687fc3cbef5e0eb2b7a6",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.Book.firstPublished",
+      "file": "src/components/RequestModal/BookRequestModal.tsx",
+      "line": 908,
+      "lineText": "{intl.formatMessage(messages.firstPublished)}:",
+      "rawLineSha256": "119d77f362c7f514c752f19e3b4daaea4e3254d40e30d45105efe6ef8f253df2",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.Book.format",
+      "file": "src/components/RequestModal/BookRequestModal.tsx",
+      "line": 60,
+      "lineText": "'<strong>{title}</strong> requested successfully as {format}.',",
+      "rawLineSha256": "fd45b4289a60463e93211544ba20329c64d1756784ca051c83d6f8cece50d8fb",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.Book.format",
+      "file": "src/components/RequestModal/BookRequestModal.tsx",
+      "line": 66,
+      "lineText": "pendingRequestFormat: 'Pending {format} Request',",
+      "rawLineSha256": "94e0ce1aa025e3d8142199fd5272ce0206da64d449d76967e1b74b43815725f4",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.Book.format",
+      "file": "src/components/RequestModal/BookRequestModal.tsx",
+      "line": 102,
+      "lineText": "format: 'Format',",
+      "rawLineSha256": "e4798e6fd3a77e28e20515f24d91e3c6890b60dcb340eae52b22278ccaea822d",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.Book.format",
+      "file": "src/components/RequestModal/BookRequestModal.tsx",
+      "line": 262,
+      "lineText": "const destinationAvailable = (format: 'ebook' | 'audiobook') => {",
+      "rawLineSha256": "b934ab4ce0ed94d46d60bc3889ba768af41b23facbae257d619fd83f24a6fe94",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.Book.format",
+      "file": "src/components/RequestModal/BookRequestModal.tsx",
+      "line": 263,
+      "lineText": "const target = format === 'ebook' ? ebookDestination : audiobookDestination;",
+      "rawLineSha256": "69d0b8aeb83a620d1673fb4033d8b56ee6e6f20cb30cc9aea0a66b6ecdb8e1bb",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.Book.format",
+      "file": "src/components/RequestModal/BookRequestModal.tsx",
+      "line": 265,
+      "lineText": "format === 'ebook'",
+      "rawLineSha256": "5cc7435e2f26eac13ef2d0cde2ced556fe201815da4ba954cbddb1848eb890bf",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.Book.format",
+      "file": "src/components/RequestModal/BookRequestModal.tsx",
+      "line": 269,
+      "lineText": "format === 'ebook'",
+      "rawLineSha256": "5cc7435e2f26eac13ef2d0cde2ced556fe201815da4ba954cbddb1848eb890bf",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.Book.format",
+      "file": "src/components/RequestModal/BookRequestModal.tsx",
+      "line": 293,
+      "lineText": "!!target && destinationAvailable(target.format as 'ebook' | 'audiobook')",
+      "rawLineSha256": "04367cd2096a8e49f2021ded59c7aee4efde2ad8be55bdf6d142c64f4288919a",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.Book.format",
+      "file": "src/components/RequestModal/BookRequestModal.tsx",
+      "line": 301,
+      "lineText": "(destinationAvailable(target.format as 'ebook' | 'audiobook') ||",
+      "rawLineSha256": "3784f1762968b73b68826803239a4808a93e83df391688d637ad2b3edcf31708",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.Book.format",
+      "file": "src/components/RequestModal/BookRequestModal.tsx",
+      "line": 309,
+      "lineText": "!destinationAvailable(target.format as 'ebook' | 'audiobook') &&",
+      "rawLineSha256": "2fe130ddda888f26a0acef2a2d51124b822ace22092bc0b39062b1011a625b3d",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.Book.format",
+      "file": "src/components/RequestModal/BookRequestModal.tsx",
+      "line": 598,
+      "lineText": "format: bookFormat,",
+      "rawLineSha256": "cfbdf9f3fc62eb16899c4f9c17f214d78c112f7451349a5a644d430e338813cf",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.Book.format",
+      "file": "src/components/RequestModal/BookRequestModal.tsx",
+      "line": 627,
+      "lineText": "format: formatLabel,",
+      "rawLineSha256": "a205ccb07ec97498ca7233cd726700905d79309bf6b80a2a20a4db02de8dac51",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.Book.format",
+      "file": "src/components/RequestModal/BookRequestModal.tsx",
+      "line": 698,
+      "lineText": "format: bookFormat,",
+      "rawLineSha256": "cfbdf9f3fc62eb16899c4f9c17f214d78c112f7451349a5a644d430e338813cf",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.Book.format",
+      "file": "src/components/RequestModal/BookRequestModal.tsx",
+      "line": 743,
+      "lineText": "format: formatLabel,",
+      "rawLineSha256": "54368ce2e12225bed4c97a5c2dcbf7bab8cf7d922acad4300b74d3d0805128f8",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.Book.format",
+      "file": "src/components/RequestModal/BookRequestModal.tsx",
+      "line": 814,
+      "lineText": "label={intl.formatMessage(messages.format)}",
+      "rawLineSha256": "9dea57c8b627681755e7acffc67da9323ae69ee54f18d3cafef08252c4212629",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.Book.format",
+      "file": "src/components/RequestModal/BookRequestModal.tsx",
+      "line": 983,
+      "lineText": "label={intl.formatMessage(messages.format)}",
+      "rawLineSha256": "9dea57c8b627681755e7acffc67da9323ae69ee54f18d3cafef08252c4212629",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.Book.format",
+      "file": "src/components/RequestModal/BookRequestModal.tsx",
+      "line": 1030,
+      "lineText": "label: [candidate.isbn, candidate.title, candidate.format]",
+      "rawLineSha256": "198a813bec3d9e509a092e2d9ee2ad4ed46a06c885a7ce9868961b5d37604416",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.Book.format",
+      "file": "src/components/RequestModal/BookRequestModal.tsx",
+      "line": 1058,
+      "lineText": "format={bookFormat}",
+      "rawLineSha256": "23f4fbeaf6c2ecbbfaecb5265b67d25cc928f6f4eeed41fd46438c6f1f2d9750",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.Book.genres",
+      "file": "src/components/RequestModal/BookRequestModal.tsx",
+      "line": 92,
+      "lineText": "genres: 'Genres',",
+      "rawLineSha256": "3acb2b4c2e94bea73b2d59c44dd814603e7ead1f00c55d957127e203b2314641",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.Book.genres",
+      "file": "src/components/RequestModal/BookRequestModal.tsx",
+      "line": 541,
+      "lineText": "const genres = data?.subjects?.slice(0, 3).join(', ') || notAvailable;",
+      "rawLineSha256": "12f4c6d6e81601916762939de70b4efbd367d919f094ffb7f525defeb511d6a1",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.Book.genres",
+      "file": "src/components/RequestModal/BookRequestModal.tsx",
+      "line": 938,
+      "lineText": "{intl.formatMessage(messages.genres)}:",
+      "rawLineSha256": "c22889d258294b9fac9af936ed52e526286b859d7170e83d45f429261ded6ab1",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.Book.genres",
+      "file": "src/components/RequestModal/BookRequestModal.tsx",
+      "line": 941,
+      "lineText": "{genres}",
+      "rawLineSha256": "5f8708f208c7c22838373f0443bf95cfc33d79aa9e6ce3bef577f957cd7521d1",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.Book.mediaAndFormat",
+      "file": "src/components/RequestModal/BookRequestModal.tsx",
+      "line": 89,
+      "lineText": "mediaAndFormat: 'Media & Format',",
+      "rawLineSha256": "e97cc7802f90fb50cda009b48299750bdbc9ddf66ee9f200453081f292ac0d6c",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.Book.mediaAndFormat",
+      "file": "src/components/RequestModal/BookRequestModal.tsx",
+      "line": 902,
+      "lineText": "{intl.formatMessage(messages.mediaAndFormat)}:",
+      "rawLineSha256": "9e490e560e5a6cf5e4dfccd9e8bf619a2a2ba8933fd2671d2ddea0d4bc688412",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.Book.noAudiobookServer",
+      "file": "src/components/RequestModal/BookRequestModal.tsx",
+      "line": 85,
+      "lineText": "noAudiobookServer:",
+      "rawLineSha256": "fee38ea464c65244605409d1a27fe148beb131d85a39647b7aaa2d24e33abeb2",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.Book.noAudiobookServer",
+      "file": "src/components/RequestModal/BookRequestModal.tsx",
+      "line": 526,
+      "lineText": ": messages.noAudiobookServer",
+      "rawLineSha256": "376bece64f425af9bcf677b8a5c9dc595e2e555d38a0397ac5f673fb31f47b4f",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.Book.noEbookServer",
+      "file": "src/components/RequestModal/BookRequestModal.tsx",
+      "line": 83,
+      "lineText": "noEbookServer:",
+      "rawLineSha256": "b340e625f182f089ca0f8ba0d520dd6ef0a4de9b2839feb3d567efe864fcf54e",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.Book.noEbookServer",
+      "file": "src/components/RequestModal/BookRequestModal.tsx",
+      "line": 525,
+      "lineText": "? messages.noEbookServer",
+      "rawLineSha256": "5cdff2dd5987d9fc88d932a53a52d2b3b26b0648f7a2734cb3e2e1c174a3342f",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.Book.noIsbnCandidates",
+      "file": "src/components/RequestModal/BookRequestModal.tsx",
+      "line": 81,
+      "lineText": "noIsbnCandidates:",
+      "rawLineSha256": "de63839b67881f108cee5f98a014748f672b482f0e4d7a2384a31e5d480ddbfe",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.Book.notAvailable",
+      "file": "src/components/RequestModal/BookRequestModal.tsx",
+      "line": 100,
+      "lineText": "notAvailable: 'Not Available',",
+      "rawLineSha256": "191d8f5aa814cedbdcfb3bf2cf240d2066d0c12e375181d67c05bead1da57105",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.Book.notAvailable",
+      "file": "src/components/RequestModal/BookRequestModal.tsx",
+      "line": 534,
+      "lineText": "const notAvailable = intl.formatMessage(messages.notAvailable);",
+      "rawLineSha256": "b482eceafec8dfa95fe713bd05c1a58174a23c0530519d7b553eacec48d63dfb",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.Book.notAvailable",
+      "file": "src/components/RequestModal/BookRequestModal.tsx",
+      "line": 540,
+      "lineText": "notAvailable;",
+      "rawLineSha256": "e648d5953f5a8f5773865bdb4f24fff39b9c0d8989cae6b7b2f0f7f85c6fbbb5",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.Book.notAvailable",
+      "file": "src/components/RequestModal/BookRequestModal.tsx",
+      "line": 541,
+      "lineText": "const genres = data?.subjects?.slice(0, 3).join(', ') || notAvailable;",
+      "rawLineSha256": "12f4c6d6e81601916762939de70b4efbd367d919f094ffb7f525defeb511d6a1",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.Book.notAvailable",
+      "file": "src/components/RequestModal/BookRequestModal.tsx",
+      "line": 911,
+      "lineText": "{data?.firstPublishYear ?? notAvailable}",
+      "rawLineSha256": "4bce4d5b5cdb76e77b4a635d05d50c443014f801b743ca7d50ef3b9d7c2d3690",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.Book.notAvailable",
+      "file": "src/components/RequestModal/BookRequestModal.tsx",
+      "line": 919,
+      "lineText": ": notAvailable}",
+      "rawLineSha256": "79caa394bbce35889a73fc087c2046b23caa58f542b45fcbb2f7f2acb024815f",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.Book.notAvailable",
+      "file": "src/components/RequestModal/BookRequestModal.tsx",
+      "line": 927,
+      "lineText": "{data?.author || notAvailable}",
+      "rawLineSha256": "e47cdd5880e8ec804d1b2fa1d561d7ae9fbd87d1e95293141801f204e496b18b",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.Book.notAvailable",
+      "file": "src/components/RequestModal/BookRequestModal.tsx",
+      "line": 933,
+      "lineText": "{data?.publisher || notAvailable}",
+      "rawLineSha256": "e9270ce900036cb240ca7de5d8b5dafe93dfc70d9b064950a860dcfe874bea2a",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.Book.pages",
+      "file": "src/components/RequestModal/BookRequestModal.tsx",
+      "line": 91,
+      "lineText": "pages: 'Pages',",
+      "rawLineSha256": "c0822270bcf3121fb21ef8d89e229be044a7f6baab1bd85c87af7d049815b207",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    },
+    {
+      "sourceId": "components.RequestModal.Book.pages",
+      "file": "src/components/RequestModal/BookRequestModal.tsx",
+      "line": 914,
+      "lineText": "{intl.formatMessage(messages.pages)}:",
+      "rawLineSha256": "1540ec19aefa14ae0c004909aec7f8fa03cd1e7d869871f8b4110c96058e6c6c",
+      "lineSha256Matches": true,
+      "adjacentContextMatches": true,
+      "ok": true
+    }
+  ],
+  "normalizationNote": "lineText and adjacent lines are stored trimmed; lineSha256 is computed from the original source line including indentation."
+}

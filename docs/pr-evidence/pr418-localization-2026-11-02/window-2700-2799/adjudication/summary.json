@@ -1,0 +1,23 @@
+{
+  "repository": "snapetech-org/SeerrNG",
+  "pullRequest": 418,
+  "head": "6bc8d0bd3dfb4f8c87c307a3e562e0fd12474118",
+  "tree": "44cf1a02d645026872759fa04a7506ee738381e5",
+  "cellCount": 1200,
+  "changedTargets": 181,
+  "unchangedTargets": 1019,
+  "additionalRefinementsAccepted": 10,
+  "primaryProposalsRevised": 1,
+  "lowConfidenceCurrentTargetsRetained": 1,
+  "holds": 0,
+  "dispositions": {
+    "accept-current": 1018,
+    "accept-additional-refinement": 10,
+    "accept-primary-proposal": 170,
+    "revise-primary-proposal": 1,
+    "accept-current-with-note": 1
+  },
+  "nativeSpeakerApproval": false,
+  "semanticConfidence": "moderate",
+  "structuralConfidence": "high"
+}

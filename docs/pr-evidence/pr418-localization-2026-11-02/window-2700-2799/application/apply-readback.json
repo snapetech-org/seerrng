@@ -1,0 +1,99 @@
+{
+  "schemaVersion": 1,
+  "repository": "snapetech-org/SeerrNG",
+  "pullRequest": 418,
+  "head": "6bc8d0bd3dfb4f8c87c307a3e562e0fd12474118",
+  "tree": "44cf1a02d645026872759fa04a7506ee738381e5",
+  "rowsReadBack": 1200,
+  "changedValuesReadBack": 181,
+  "unchangedValuesReadBack": 1019,
+  "catalogs": [
+    {
+      "path": "src/i18n/locale/ar.json",
+      "postFileSha256": "a3d073fba6d5706cff4b7da002fc3897f68b7c785efc2cda922203ca33067abd",
+      "changedValues": 18,
+      "keyCount": 9494,
+      "keyOrderPreserved": true
+    },
+    {
+      "path": "src/i18n/locale/de.json",
+      "postFileSha256": "2bca0060ef3d833628079e2152cfc958db7c5064a33215afd64ff7d1692f8825",
+      "changedValues": 4,
+      "keyCount": 9494,
+      "keyOrderPreserved": true
+    },
+    {
+      "path": "src/i18n/locale/es.json",
+      "postFileSha256": "b1dbb01793d11790fa7ac75e15db0ca18648e679afd3808c3f680c902a9914df",
+      "changedValues": 12,
+      "keyCount": 9494,
+      "keyOrderPreserved": true
+    },
+    {
+      "path": "src/i18n/locale/fr.json",
+      "postFileSha256": "3d87791e690367034cf16e0bbaf2b1b79cb6f36a73d3283297ae15211cf31027",
+      "changedValues": 7,
+      "keyCount": 9494,
+      "keyOrderPreserved": true
+    },
+    {
+      "path": "src/i18n/locale/hi.json",
+      "postFileSha256": "a8cb28ae9bad5f064f95ad39cc0e846c9578a036659116abe09d4146cd983580",
+      "changedValues": 18,
+      "keyCount": 9494,
+      "keyOrderPreserved": true
+    },
+    {
+      "path": "src/i18n/locale/id.json",
+      "postFileSha256": "964e5cc4635ac44d2d9d7ecc9f3f4fd28736c695681223e9db1eaf4e9fd924e5",
+      "changedValues": 11,
+      "keyCount": 9494,
+      "keyOrderPreserved": true
+    },
+    {
+      "path": "src/i18n/locale/ja.json",
+      "postFileSha256": "a80d6907a66cc2c72f4806e3f93970d61d0a81a6e32640367b7c317379e98847",
+      "changedValues": 18,
+      "keyCount": 9494,
+      "keyOrderPreserved": true
+    },
+    {
+      "path": "src/i18n/locale/ko.json",
+      "postFileSha256": "ed6c93a3efbc0d2d8bed6158cea31e4aef5c1ace0816316b30752ff9991a0205",
+      "changedValues": 16,
+      "keyCount": 9494,
+      "keyOrderPreserved": true
+    },
+    {
+      "path": "src/i18n/locale/pt_BR.json",
+      "postFileSha256": "4fbc92c2359bba4eda00d4889132074ebfd2289242020d87093b9284c214b661",
+      "changedValues": 14,
+      "keyCount": 9494,
+      "keyOrderPreserved": true
+    },
+    {
+      "path": "src/i18n/locale/vi.json",
+      "postFileSha256": "29a2bdff375ba825891d98262d153f1d99965f2250fc856f17a56c47642c3a45",
+      "changedValues": 27,
+      "keyCount": 9494,
+      "keyOrderPreserved": true
+    },
+    {
+      "path": "src/i18n/locale/zh_Hans.json",
+      "postFileSha256": "610cedd36e3a4361634aacb8b74c12daa117ec364628e7766bce5c31d3d79e05",
+      "changedValues": 18,
+      "keyCount": 9494,
+      "keyOrderPreserved": true
+    },
+    {
+      "path": "src/i18n/locale/zh_Hant.json",
+      "postFileSha256": "873b68a4db574b13a81ea872b9b11c0eff54ae72d8b6d911121c2479dce3a079",
+      "changedValues": 18,
+      "keyCount": 9494,
+      "keyOrderPreserved": true
+    }
+  ],
+  "allTargetHashesMatched": true,
+  "allCatalogPostHashesMatched": true,
+  "catalogKeySetsAndOrderPreserved": true
+}

@@ -1,0 +1,138 @@
+{
+  "primaryProposalReview": {
+    "total": 171,
+    "accepted": 170,
+    "revised": 1,
+    "rejected": 0,
+    "held": 0,
+    "revisionDetails": [
+      {
+        "sourcePosition": 2716,
+        "locale": "pt_BR",
+        "primaryTarget": "Fila de episódios · {count, plural, one {# episódio} other {# episódios}} atribuídos pelo administrador",
+        "crossReviewTarget": "Fila de episódios · {count, plural, one {# episódio atribuído pelo administrador} other {# episódios atribuídos pelo administrador}}",
+        "rationale": "Revise the primary proposal so the Portuguese participle agrees with the ICU branch: “episódio atribuído” for one and “episódios atribuídos” for other."
+      }
+    ]
+  },
+  "additionalMissedRefinements": [
+    {
+      "sourcePosition": 2708,
+      "locale": "hi",
+      "sourceId": "components.RequestList.RequestItem.removearr",
+      "currentTarget": "से निकालें {arr}",
+      "proposedTarget": "{arr} से हटाएँ",
+      "proposedTargetHash": "546adba2dfa6a4f2582a4aa62ecbe2a377c98a003594e2dc445d06c5fa411a16",
+      "confidence": "high",
+      "rationale": "The caller uses {arr} as the service name in “Remove from {arr}”; this Hindi order says remove {arr} from, reversing the argument. Put the placeholder before “से हटाएँ”."
+    },
+    {
+      "sourcePosition": 2711,
+      "locale": "es",
+      "sourceId": "components.RequestList.RequestItem.requesteddate",
+      "currentTarget": "Solicitado",
+      "proposedTarget": "Fecha de solicitud",
+      "proposedTargetHash": "858bf06bfe55deedc0975852acac319c54c28653dc3b6b9e17cececb486e5457",
+      "confidence": "moderate",
+      "rationale": "The non-privileged caller renders this field as a relative request date only. The current “Solicitado” is less clear than a date label; “Fecha de solicitud” names that value."
+    },
+    {
+      "sourcePosition": 2765,
+      "locale": "ar",
+      "sourceId": "components.RequestModal.AdvancedRequester.notagoptions",
+      "currentTarget": "لا يوجد علامات تعريف.",
+      "proposedTarget": "لا توجد وسوم",
+      "proposedTargetHash": "2387bcd8e55f25d12f1588919d201512753eb58b23394947b1392585b0031067",
+      "confidence": "high",
+      "rationale": "The current phrase reads like “no identification marks” and mismatches Arabic agreement. “وسوم” is the UI term for tags and agrees with “لا توجد”."
+    },
+    {
+      "sourcePosition": 2773,
+      "locale": "ar",
+      "sourceId": "components.RequestModal.AdvancedRequester.showOptions",
+      "currentTarget": "الخيارات",
+      "proposedTarget": "عرض الخيارات",
+      "proposedTargetHash": "144c9f4780d9d250b21d75004627c3eccad18d4661894e06ab9491ce0349b972",
+      "confidence": "high",
+      "rationale": "This is a disclosure button. The current Arabic says only “Options”; the proposal restores the source action “Show”."
+    },
+    {
+      "sourcePosition": 2700,
+      "locale": "pt_BR",
+      "sourceId": "components.RequestList.RequestItem.mbid",
+      "currentTarget": "ID MusicBrainz",
+      "proposedTarget": "ID do MusicBrainz",
+      "proposedTargetHash": "917ed0d9ec6a9e718bda166921e942410572c1a907aba18fdc41a80073bfe1d5",
+      "confidence": "moderate",
+      "rationale": "The current bare noun sequence “ID MusicBrainz” is awkward Portuguese. “ID do MusicBrainz” matches the neighboring ID labels and preserves the protected brand."
+    },
+    {
+      "sourcePosition": 2723,
+      "locale": "pt_BR",
+      "sourceId": "components.RequestList.showallrequests",
+      "currentTarget": "Exibir Todas Solicitações",
+      "proposedTarget": "Exibir todas as solicitações",
+      "proposedTargetHash": "37b9e474743c88fec856f5286156ba7a9a0b5569f750ea048065d8bc0e1b4d72",
+      "confidence": "moderate",
+      "rationale": "The button label currently omits the article in “todas as solicitações”. The proposed wording is grammatical and preserves “Show All Requests”."
+    },
+    {
+      "sourcePosition": 2791,
+      "locale": "pt_BR",
+      "sourceId": "components.RequestModal.Book.firstPublished",
+      "currentTarget": "Primeiro Publicado",
+      "proposedTarget": "Primeira publicação",
+      "proposedTargetHash": "3373807720a5524e1e2334494558698c27dd63675c33a12f3bfc63417dfc2f3d",
+      "confidence": "moderate",
+      "rationale": "The caller displays a publication year after this label. “Primeiro Publicado” is an awkward adjective as a field label; “Primeira publicação” names the date field."
+    },
+    {
+      "sourcePosition": 2719,
+      "locale": "zh_Hant",
+      "sourceId": "components.RequestList.mediaFilters",
+      "currentTarget": "媒體过滤器",
+      "proposedTarget": "媒體篩選",
+      "proposedTargetHash": "a1a8b51a88f7ec3f58eaf44e98eddc872b9610ae15d77862d8c734a5f3612bb3",
+      "confidence": "high",
+      "rationale": "The current value contains a Simplified Chinese character in the Traditional Chinese catalog (“滤”). This Traditional Chinese section heading preserves “Media Filters” and fixes the script mismatch."
+    },
+    {
+      "sourcePosition": 2728,
+      "locale": "zh_Hant",
+      "sourceId": "components.RequestList.taskFilters",
+      "currentTarget": "工作过滤器",
+      "proposedTarget": "任務篩選",
+      "proposedTargetHash": "d60a1cd5747a6a82580db8d4b9f6b718713a789d285833ca9d1a8978feac2d1c",
+      "confidence": "moderate",
+      "rationale": "The caller groups request-status filters here; “工作过滤器” both uses a Simplified character and renders “Task” as generic work. “任務篩選” fits the Traditional Chinese section label."
+    },
+    {
+      "sourcePosition": 2753,
+      "locale": "vi",
+      "sourceId": "components.RequestModal.AdvancedRequester.advancedoptions",
+      "currentTarget": "Yêu cầu cấp cao",
+      "proposedTarget": "Yêu cầu nâng cao",
+      "proposedTargetHash": "1895193fea339751a95b3126aad51b8daac8e52541da64ca3053957fb74c6358",
+      "confidence": "moderate",
+      "rationale": "This is the fallback heading for Advanced Request. “Cấp cao” suggests a high-ranking request; “nâng cao” is the ordinary Vietnamese UI term for advanced."
+    }
+  ],
+  "lowConfidenceNotes": [
+    {
+      "sourcePosition": 2753,
+      "locale": "ar",
+      "sourceId": "components.RequestModal.AdvancedRequester.advancedoptions",
+      "currentTarget": "متقدم",
+      "confidence": "low",
+      "note": "The fallback modal heading is “Advanced Request”; current “متقدم” says only “Advanced”. “طلب متقدم” may preserve the noun more fully, but retain current pending Arabic native review because a heading-style elliptical adjective may be intentional."
+    }
+  ],
+  "protectedNameAssessment": {
+    "trueTargetDefects": 6,
+    "correctedByPrimary": 6,
+    "DudenExceptionCount": 1,
+    "DudenException": "W2704 de Open-Library-ID retained; exact-space checker was overbroad for a German hyphenated compound. See external-reference-checks.json."
+  },
+  "nativeSpeakerApproval": false,
+  "nativeSpeakerReviewOutstanding": true
+}

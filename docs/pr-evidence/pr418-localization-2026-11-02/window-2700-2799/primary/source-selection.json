@@ -1,0 +1,733 @@
+{
+  "repository": "snapetech-org/seerrng",
+  "pullRequest": 418,
+  "head": "6bc8d0bd3dfb4f8c87c307a3e562e0fd12474118",
+  "tree": "44cf1a02d645026872759fa04a7506ee738381e5",
+  "sourceCatalog": {
+    "path": "src/i18n/locale/en.json",
+    "blob": "12e04a118c30b71b3714291adeaf9fdb2735cee4",
+    "sha256": "75ff3c90b52aedd636a506281ffbd6fb2d3739c61294b6008a517f17647e2316",
+    "bytes": 835513
+  },
+  "selected": [
+    {
+      "position": 2700,
+      "sourceId": "components.RequestList.RequestItem.mbid",
+      "source": "MusicBrainz ID",
+      "sourceHash": "32565e47be28019e58aa03f4552d83cc6defee2ce7b3de761bbb2bc2099e6866",
+      "sourceTextSha256": "69e8a1b88bb0f4c0c8e1ec65926d7e3940f4e2a621d20f41ad125170021276c6"
+    },
+    {
+      "position": 2701,
+      "sourceId": "components.RequestList.RequestItem.mediaerror",
+      "source": "{mediaType} Not Found",
+      "sourceHash": "674c8a4c7829b3d6988812d3d0c3645ef6c83b8712db48b0cc8346abc8fe4b21",
+      "sourceTextSha256": "41778ec73a530e3fba11d660b8f5988ba24cac7a82d28bcfef6bc881bc2d2082"
+    },
+    {
+      "position": 2702,
+      "sourceId": "components.RequestList.RequestItem.modified",
+      "source": "Modified",
+      "sourceHash": "9c1c1e9c247f7553d1a37fcdcccf839c090114a2cbc98386cac545ebbec562e0",
+      "sourceTextSha256": "e8ce5dcaf408935ff76747226d2e8bee4319a2f593c1d7a838115e56183d1f37"
+    },
+    {
+      "position": 2703,
+      "sourceId": "components.RequestList.RequestItem.modifieduserdate",
+      "source": "{date} by {user}",
+      "sourceHash": "525e706966d76adee773bf3b349ccee100142354e6832426495d4c213eb05f7e",
+      "sourceTextSha256": "7d37b4f910f61965c3922b86da72beb44b16455219b7a57a7adbad00b8572299"
+    },
+    {
+      "position": 2704,
+      "sourceId": "components.RequestList.RequestItem.olid",
+      "source": "Open Library ID",
+      "sourceHash": "23225fe5fae85a711419e9d182a508b59eeeb27faf754cd31020a3e38c272951",
+      "sourceTextSha256": "264c1bf5032cc9c8dff7a9963ed75d470583bb7fae59f6f6f2eb9661c2394480"
+    },
+    {
+      "position": 2705,
+      "sourceId": "components.RequestList.RequestItem.overQuota",
+      "source": "Over quota",
+      "sourceHash": "6e9b818285e742224c8b04674e4d3040ae3a6c727f012155b2f576112b9b682e",
+      "sourceTextSha256": "f854c1a24ec09075033ed98571ab7cfd36f8168a3a0c6eaacac9e27cf8671cc0"
+    },
+    {
+      "position": 2706,
+      "sourceId": "components.RequestList.RequestItem.partialBookService",
+      "source": "Partial Bookshelf link",
+      "sourceHash": "fe8d7d3cb80826087521e500201b1c0d9533f3be8c257a12a5aa62a2a3a80c3a",
+      "sourceTextSha256": "a9f282baed81aca6f442a7adc3e34f6fce675fb6344067f55f4f9bb6fdb82f58"
+    },
+    {
+      "position": 2707,
+      "sourceId": "components.RequestList.RequestItem.profileName",
+      "source": "Profile",
+      "sourceHash": "090fdf5d8a9dd1ad848cb0ff9a91872d71d8729d802b5c05858333f1a501ed28",
+      "sourceTextSha256": "d696a35bdd1883da07a8d6c41bb7a3153381b23aa197629ee273479a6eaa5a9c"
+    },
+    {
+      "position": 2708,
+      "sourceId": "components.RequestList.RequestItem.removearr",
+      "source": "Remove from {arr}",
+      "sourceHash": "f9f3f570facf0e2f2a13ad4af150030f799ee9fbd8021566c194f3e74d5af4ec",
+      "sourceTextSha256": "1e093dd169bfe905f76dc3589640dfa8e4c4459468168f89f23f4a836988b668"
+    },
+    {
+      "position": 2709,
+      "sourceId": "components.RequestList.RequestItem.removemediaerror",
+      "source": "Something went wrong while removing the media.",
+      "sourceHash": "b961378372d1d4ff725be7bbee0ca791e43901df8194063ebae6f9a4468ebf95",
+      "sourceTextSha256": "02d726d52da407a3ef24fa45c243f2885a9fe60ac066efa452756d5764dc3790"
+    },
+    {
+      "position": 2710,
+      "sourceId": "components.RequestList.RequestItem.requested",
+      "source": "Requested",
+      "sourceHash": "087756a93082ab245992b6a3443cd22debc6aaafe0fcc78a3b6f1d8d6a47fde3",
+      "sourceTextSha256": "2d9e28289facab94b41f9592b7f55bc4fc10fed54e789669468e8da31c9a5caf"
+    },
+    {
+      "position": 2711,
+      "sourceId": "components.RequestList.RequestItem.requesteddate",
+      "source": "Requested",
+      "sourceHash": "3a6204b440fb56f84fb685b7d3d528376cb6be3867d0a55d1dafff1330848f12",
+      "sourceTextSha256": "2d9e28289facab94b41f9592b7f55bc4fc10fed54e789669468e8da31c9a5caf"
+    },
+    {
+      "position": 2712,
+      "sourceId": "components.RequestList.RequestItem.seasons",
+      "source": "{seasonCount, plural, one {Season} other {Seasons}}",
+      "sourceHash": "ed957e621b4a24da5c2348eac186151f9fd88c68d05e90d6e05f265f46892340",
+      "sourceTextSha256": "d003c71b108b8f5fd101540cfb477eb1c2b4ff5747bb059fbf2ce1cd64be43e8"
+    },
+    {
+      "position": 2713,
+      "sourceId": "components.RequestList.RequestItem.tmdbid",
+      "source": "TMDB ID",
+      "sourceHash": "34e43c8670c235711d758a480457b7c6b1c21a549a97509ad40706f4801022b5",
+      "sourceTextSha256": "7cee9774e8070d60d9f36c84ea43a3f56226eb753f30d1144409b836abda86b8"
+    },
+    {
+      "position": 2714,
+      "sourceId": "components.RequestList.RequestItem.tvdbid",
+      "source": "TheTVDB ID",
+      "sourceHash": "928f56855989b3c90577b31d2d84fff7ace091123b19cc11501e20f796882b43",
+      "sourceTextSha256": "1ad97af04856f9036bafd399c137036330c58af9398c9ac05c1c617e6eeaa81b"
+    },
+    {
+      "position": 2715,
+      "sourceId": "components.RequestList.RequestItem.unknowntitle",
+      "source": "Unknown Title",
+      "sourceHash": "13446dd5cf506c576b68a244e2bc310bcb7c85b6a0d99e9a5d88632a85ab5b0c",
+      "sourceTextSha256": "9a4f24006813cd6fecfc6c398b89a9e6b0ef0710a2f82b3302b87f660f66cd8e"
+    },
+    {
+      "position": 2716,
+      "sourceId": "components.RequestList.RequestItem.watchAheadAssigned",
+      "source": "Episode Queue · {count, plural, one {# episode} other {# episodes}} by administrator",
+      "sourceHash": "604048c7bf5e361fbfaadc8eff1039cc76367fa18ae1b3c5206735a17a81845f",
+      "sourceTextSha256": "7bb93a860b37c334b7373123a04dfbc16f661cf630b1d36a31589b6631ba674b"
+    },
+    {
+      "position": 2717,
+      "sourceId": "components.RequestList.RequestItem.watchAheadEpisodeBadge",
+      "source": "Auto-Queued",
+      "sourceHash": "7e75b5ddae831f67d685bea8397339d27c6237ec76071ec49707a44e2b42b53b",
+      "sourceTextSha256": "6a3e25f07eddb9483c258937f0a5e752097bccb99581ef6cf0cc3a7baaa0104b"
+    },
+    {
+      "position": 2718,
+      "sourceId": "components.RequestList.RequestItem.watchAheadEpisodeBadgeTooltip",
+      "source": "Automatically requested by the Episode Queue as playback progressed.",
+      "sourceHash": "515afdbb0b030708fc5cb03e04e4090f16008733bc75daf5d9b33afc2890a393",
+      "sourceTextSha256": "15a27ddf21f7b7dd99c5df39f1215c158a87eed5e5e63cfbd108c761595b2ba0"
+    },
+    {
+      "position": 2719,
+      "sourceId": "components.RequestList.mediaFilters",
+      "source": "Media Filters",
+      "sourceHash": "16761bfb6e4d609ae6f7e115920fcb1a055186b05e70a166840653e1db67b46d",
+      "sourceTextSha256": "3e03da79a6a6c127f58fa8b3e71a1a6f9dfc0c702cbeaa23605d487630dacf4f"
+    },
+    {
+      "position": 2720,
+      "sourceId": "components.RequestList.mediaType",
+      "source": "Media Type",
+      "sourceHash": "67ea5801975884a840dacbcc0a3a60f81b05736fe99ff6ede7423d92d3a551c0",
+      "sourceTextSha256": "67b0e5cab1f1085436fa4fbae85240f936d4e4f7e60e923c43d07b31b8badf28"
+    },
+    {
+      "position": 2721,
+      "sourceId": "components.RequestList.requests",
+      "source": "Requests",
+      "sourceHash": "6e7a83acbf5e391dfcba74e500ceeee219dbd8575dbb444a528a9012953535e0",
+      "sourceTextSha256": "ada27592c9578e9072b465934a474d7e2c7a3d057db04101550a3cd4ac93fb0d"
+    },
+    {
+      "position": 2722,
+      "sourceId": "components.RequestList.seriesMonitoring",
+      "source": "Series Monitoring Requests",
+      "sourceHash": "3ee655359df06d511afae180b239dbdb5070ec83b338bc40b3e741cd51cc35a5",
+      "sourceTextSha256": "49f566b76e882aaac9dabb19baac81dffb20cf4ef428e1ce9d4509b19117a68d"
+    },
+    {
+      "position": 2723,
+      "sourceId": "components.RequestList.showallrequests",
+      "source": "Show All Requests",
+      "sourceHash": "67a09de8bac74e5ee97146236496d1ad4361737759e35b9b74732757b5c461ff",
+      "sourceTextSha256": "1ac96d178169ca1029a0c5a8e90535b44e63cca4d64769bd23f6a0cf00b8b580"
+    },
+    {
+      "position": 2724,
+      "sourceId": "components.RequestList.sortAdded",
+      "source": "Most Recent",
+      "sourceHash": "9f480adbd5c132a59c22a03272391c28799b51418962b6cc4db6aea523e5cd5b",
+      "sourceTextSha256": "7ffd1b8aed4049f2a4fbe91aa333ab5ae9c49d7ecceb9f71801bc2b075fcaabc"
+    },
+    {
+      "position": 2725,
+      "sourceId": "components.RequestList.sortBy",
+      "source": "Sort By",
+      "sourceHash": "a40e7a19ba34863e131e1a2cfec09be332e7862a344e183a3e7bf13fecd7e141",
+      "sourceTextSha256": "6d2227555fccff99c70e5dcb281ee3a6ac06a7412d8ffa0e0cdd73c89c32dfe8"
+    },
+    {
+      "position": 2726,
+      "sourceId": "components.RequestList.sortDirection",
+      "source": "Toggle Sort Direction",
+      "sourceHash": "f400effd2fe3e671332cc4b015e139d7bb4d99c10acaf1735f44d937a14d35c7",
+      "sourceTextSha256": "ab2fb5604c84bbd5538b2e2c9e798cff3a8df69fd6c8cf87a673f02d85afa8d7"
+    },
+    {
+      "position": 2727,
+      "sourceId": "components.RequestList.sortModified",
+      "source": "Last Modified",
+      "sourceHash": "d880b0ad1eb6960435d84db51494240a4104fcb721805c72a682e24af4040940",
+      "sourceTextSha256": "593879218a5a79c5af96cde5db4e6722abb29b97b0425d3bc4f2fb622d2ceebf"
+    },
+    {
+      "position": 2728,
+      "sourceId": "components.RequestList.taskFilters",
+      "source": "Task Filters",
+      "sourceHash": "1c515607ac57ec48f6e97f18e78830dd863559b1d9617b8d96c83e56b7d8d70e",
+      "sourceTextSha256": "b8e73d0597149a9d48d037dee69da139c306e9508b6400cb47a96271fcd1daaf"
+    },
+    {
+      "position": 2729,
+      "sourceId": "components.RequestList.unableToConnect",
+      "source": "Unable to connect to {services}. Some information may be unavailable.",
+      "sourceHash": "6d21464a857b768ea49926c62ec82b548e4666c017f06b7b9ff01f7ba55666a2",
+      "sourceTextSha256": "63700ad1cfd073344789fc289a124d5f991b8d81b4551f34c639de4b559cbd7f"
+    },
+    {
+      "position": 2730,
+      "sourceId": "components.RequestModal.Adult.approved",
+      "source": "Your adult scene request was approved and is being processed.",
+      "sourceHash": "9795b47bba42d8c47ce5d6904f35a26d0f5c054138bb3f31c081b7c53a5b33af",
+      "sourceTextSha256": "067741ab261793727801b254f54cf809fb768ef2969f159f1dc62e3f9a15bf39"
+    },
+    {
+      "position": 2731,
+      "sourceId": "components.RequestModal.Adult.available",
+      "source": "This scene is already available on this server.",
+      "sourceHash": "b9fac65c4f38bd8737db701a81cb849b1b5357668042bccd969bed721a0622b4",
+      "sourceTextSha256": "b1dd81b17b195212ec890471790addbfc8e1bbd267326ccb82d8a790fb106d80"
+    },
+    {
+      "position": 2732,
+      "sourceId": "components.RequestModal.Adult.backendError",
+      "source": "Whisparr could not accept this scene request. Check the service and try again.",
+      "sourceHash": "2f8e68e634bddb96a0e27fd1e4ceca007721ffb87a61481dbf26798b31099336",
+      "sourceTextSha256": "76559c32214f8d86f7e3a0615e379a576d0a9621bb9dfb680c5862f583c88f1f"
+    },
+    {
+      "position": 2733,
+      "sourceId": "components.RequestModal.Adult.cancelError",
+      "source": "Something went wrong while canceling the request.",
+      "sourceHash": "5905dc9dd4cef51bc9f3c2a6fe2003117266b2cae63371855eacad6154386617",
+      "sourceTextSha256": "edb51d4d4dc369b57b92012526fe6142d5259cf9b42edbd874750a746f36fcbb"
+    },
+    {
+      "position": 2734,
+      "sourceId": "components.RequestModal.Adult.cancelRequest",
+      "source": "Cancel request",
+      "sourceHash": "693959f5bea08e7d3cb8048142daff06e565c356e5609163e68a02c47d2595c4",
+      "sourceTextSha256": "56196683592dab4dd8fee3b001f87e50ac53fba0a2c05a7a935ef1c92449d546"
+    },
+    {
+      "position": 2735,
+      "sourceId": "components.RequestModal.Adult.cancelled",
+      "source": "Request for <strong>{title}</strong> canceled.",
+      "sourceHash": "34d3075de54e08ae942b17cd21e0db0dfe4e00eb298cc2a763f67041305a8c1f",
+      "sourceTextSha256": "57c0718d13130676a8f4d358b62d1095d20072828063f61607bd95488f48970f"
+    },
+    {
+      "position": 2736,
+      "sourceId": "components.RequestModal.Adult.categoryDisabled",
+      "source": "Adult requests are disabled by the administrator.",
+      "sourceHash": "90437a7de55b369b7037aa17cc79e66f8c70dd67c6bf1b572e5931e57d4a0b88",
+      "sourceTextSha256": "4a040590847aba87b8b680bfa0bbb9be2fbfac3c9ae4ce4ba70c7fd66fee1046"
+    },
+    {
+      "position": 2737,
+      "sourceId": "components.RequestModal.Adult.defaultService",
+      "source": "Default ({name})",
+      "sourceHash": "f543a49baee00ad25ee8852c04ac4a697523294fede9f06a479cd5a103999dbb",
+      "sourceTextSha256": "e438d9d6cfef95b1eec2234062e2fdb72631e7f878a2390ec94f1bc7dbe5a75c"
+    },
+    {
+      "position": 2738,
+      "sourceId": "components.RequestModal.Adult.detailsUnavailable",
+      "source": "Whisparr scene details could not be loaded.",
+      "sourceHash": "c0b4ff319a1940bd7fa0c3ff6e2dae7a14cfcd9b9995be847375a52863c18c0f",
+      "sourceTextSha256": "b082e28cea9e35b3b7ca6de4785e653fbd23b1b88c584feb12c3bfef5083fd90"
+    },
+    {
+      "position": 2739,
+      "sourceId": "components.RequestModal.Adult.noService",
+      "source": "No Whisparr server is configured.",
+      "sourceHash": "db3aa8a8ebdca581ae93f29d36a932ac9b649671b654eb42273d7da9e1f35c59",
+      "sourceTextSha256": "73a373b2585688f4885af60395800b0d1591966e1f934e94604c4000ed0f83a7"
+    },
+    {
+      "position": 2740,
+      "sourceId": "components.RequestModal.Adult.pending",
+      "source": "Your adult scene request is waiting for approval.",
+      "sourceHash": "a92b0082c255945d4dd72e0b37d920b15dc3fe7c00de4c67ee1beba2936da1a4",
+      "sourceTextSha256": "e38870d379f76464508d8d41e00c42a5fed566f622e65d415a451782adf56aa3"
+    },
+    {
+      "position": 2741,
+      "sourceId": "components.RequestModal.Adult.permission",
+      "source": "You do not have permission to request adult media.",
+      "sourceHash": "1920d6d2c613210c55413683d5e883080c2e1b106e145f2773904f4244736e27",
+      "sourceTextSha256": "8ad32529bd9d3908745cd410284e69c921cd9392213e04a25ab652d838ffd524"
+    },
+    {
+      "position": 2742,
+      "sourceId": "components.RequestModal.Adult.processing",
+      "source": "This scene is already being processed on this server.",
+      "sourceHash": "cd2cfc2e7a773f12045e2560b035b9f69cce0af9fa93f0f235907aedb70c3c84",
+      "sourceTextSha256": "b36a24347eadc47666aa84884d3d609d8072c59b33bf63c0eed71308d7f54d87"
+    },
+    {
+      "position": 2743,
+      "sourceId": "components.RequestModal.Adult.quotaUnavailable",
+      "source": "Your Adult request limit could not be checked. Try again in a moment.",
+      "sourceHash": "a1f36d1c188f93843eef42d2d1cae34fc167ae1e7555bc33ae42f70cdf49cb06",
+      "sourceTextSha256": "fb9d3b4aed5c6b964d10ed2350f659705d731d9b5bc889c4cd3a6473e4198f23"
+    },
+    {
+      "position": 2744,
+      "sourceId": "components.RequestModal.Adult.request",
+      "source": "Request scene",
+      "sourceHash": "910704599f84322f77ebde65b6cf50cadfc70a33e90c7c9cae163ac07ebc3b1e",
+      "sourceTextSha256": "4e0d7f24d5c931c7a888dad45f9ee1d9802a620821aab47a5bf33ea8325f68d8"
+    },
+    {
+      "position": 2745,
+      "sourceId": "components.RequestModal.Adult.requestFor",
+      "source": "{username}'s request is waiting for approval.",
+      "sourceHash": "b8fc9bf093f20cac94ade799b09211dc92612d7f24b4b6b5c94d633db5c6717d",
+      "sourceTextSha256": "b9526e75fcb62e035df5a04938cbaaa820ebb471824b63d01847a04d54e8377c"
+    },
+    {
+      "position": 2746,
+      "sourceId": "components.RequestModal.Adult.requestForApproved",
+      "source": "{username}'s request was approved and is being processed.",
+      "sourceHash": "b287612cf197cbcc3156c098453b81c926dc5984578b2f4061fe87788be35928",
+      "sourceTextSha256": "f4b0f0720656fb5ba0ed045ccc3523e0584ab5a925f89531b76826a1aed19faf"
+    },
+    {
+      "position": 2747,
+      "sourceId": "components.RequestModal.Adult.service",
+      "source": "Whisparr server",
+      "sourceHash": "82c4b2d9c607c3a52607a62b8476bf8758572ad32cfef2a5db833df2a571c439",
+      "sourceTextSha256": "885d364b0fba2b00355ccc63873a5e51bebe37191325276f514068d758f00e86"
+    },
+    {
+      "position": 2748,
+      "sourceId": "components.RequestModal.Adult.serviceUnavailable",
+      "source": "No usable Whisparr destination is available. Ask an administrator to check the service settings.",
+      "sourceHash": "2bb1a270c100ba41a0e4534b3699d13a0da281463afa8a2190d71243c7e48210",
+      "sourceTextSha256": "e53f935c0cfc4405ab8d76c92ba23e9b9365d437d06d7b0583ecbcc01875d4fb"
+    },
+    {
+      "position": 2749,
+      "sourceId": "components.RequestModal.Adult.studio",
+      "source": "Studio",
+      "sourceHash": "e38d7152190d6f012fef037d427679292c4341b6078898ff9749c198f3adb039",
+      "sourceTextSha256": "0aa91af2ec4c1fd761cc39b838088c06ef2190a5f72ab1e4f6fe7e7487bce5b7"
+    },
+    {
+      "position": 2750,
+      "sourceId": "components.RequestModal.Adult.submitError",
+      "source": "Something went wrong while submitting the request.",
+      "sourceHash": "b5a112a3150f0fdaad25336334435a00bc543ec45818f2db4ddb5b45fe7b59b2",
+      "sourceTextSha256": "b73871c1bc56c9b6bf4e8482a690bbe9c48f993e8f4fdc34628412ca9d737736"
+    },
+    {
+      "position": 2751,
+      "sourceId": "components.RequestModal.Adult.success",
+      "source": "<strong>{title}</strong> requested successfully.",
+      "sourceHash": "493987a5eabb3ebbb9e37df0443942a48555ccf05b7db239328cebe593199bba",
+      "sourceTextSha256": "cf0bb0f3b7858073dc2093836fa2f220a243aae0b74cf0c3ed92b35744c0c13f"
+    },
+    {
+      "position": 2752,
+      "sourceId": "components.RequestModal.Adult.year",
+      "source": "Year",
+      "sourceHash": "f28400fa109d9b300067f2f0f201ca5a0cc9f83a30f1179d9d33eb14e346f3bc",
+      "sourceTextSha256": "89f6832560dec0b7f8721d1fe3ba0b5036a5d1464ce4339bb16c3e1485bfec34"
+    },
+    {
+      "position": 2753,
+      "sourceId": "components.RequestModal.AdvancedRequester.advancedoptions",
+      "source": "Advanced Request",
+      "sourceHash": "a1676dad448c1bed1213c88ff3b2943f8b0a89ede69604de67a767a6b4c16d43",
+      "sourceTextSha256": "bf8f154275b1f84d3b9457df3baf950e23334e130a83706ed331943616cec5b8"
+    },
+    {
+      "position": 2754,
+      "sourceId": "components.RequestModal.AdvancedRequester.animenote",
+      "source": "* This series is an anime.",
+      "sourceHash": "54376641df85cf75fd2a2604abb9b450ef0c826ff33b4304f8a96f80736afcbc",
+      "sourceTextSha256": "60b57f2d6bfc7eb4dad933ff25f82f36145a4243adf2873d6dad5f51308537be"
+    },
+    {
+      "position": 2755,
+      "sourceId": "components.RequestModal.AdvancedRequester.availableRootFolders",
+      "source": "Available Root Folders",
+      "sourceHash": "f20b92f5d4458192ddae6804578dc3f5b1b79d7ab263d331b0cdb23adb94cff8",
+      "sourceTextSha256": "8dd72d8f2af1e91809f89800268d627552b132f94224713ebdd073260f143ac9"
+    },
+    {
+      "position": 2756,
+      "sourceId": "components.RequestModal.AdvancedRequester.availableSpace",
+      "source": "Available Space",
+      "sourceHash": "eb05fb9baa60aa4664f3252e2d3979adb5dcaef9993d338e1a2af0251ca7a690",
+      "sourceTextSha256": "8634b47f035ccfb059042dac78d640fadeaa1bd19510e45d210d8372a2dbb881"
+    },
+    {
+      "position": 2757,
+      "sourceId": "components.RequestModal.AdvancedRequester.binderyDefaults",
+      "source": "Bindery uses its own acquisition defaults for profiles, folders, and search.",
+      "sourceHash": "518fae67c98cb0e858712c827e68c53f889e019fac20fade1d0f1cb76dce23f6",
+      "sourceTextSha256": "38f404a9a1cdcb85d9baf850b8e35bbc852b87ea7c2a4f0ee77b58d2fae07da1"
+    },
+    {
+      "position": 2758,
+      "sourceId": "components.RequestModal.AdvancedRequester.destinationserver",
+      "source": "Destination Server",
+      "sourceHash": "71474ea7e26c8822ad204f899a6243f76a2f2344c7d6fced8ff6a61d24d66510",
+      "sourceTextSha256": "129c0fdbf429f5d86ec0cb744eb6cdae3717679fff3b8ce64d87aef78cf8c553"
+    },
+    {
+      "position": 2759,
+      "sourceId": "components.RequestModal.AdvancedRequester.folder",
+      "source": "{path} ({space})",
+      "sourceHash": "3bfc98f3159275bd82bc95655397cf42690244e02115927fcfcb28c0cc20684f",
+      "sourceTextSha256": "3675b6e82e783ddacbc1d4cf8fa2bd85ecc2e3f03c1023616c5b6dd1f41c8a93"
+    },
+    {
+      "position": 2760,
+      "sourceId": "components.RequestModal.AdvancedRequester.ignoreQuotaDescription",
+      "source": "This request will not count against the user's quota limits. Use with caution.",
+      "sourceHash": "4d233bf04e789f2783cebfba5ad04e445e674f962d14c9dbad26a6d99301f278",
+      "sourceTextSha256": "e87f102a53ef4e9fd8e47edb2514b4cc7bcab2917cde583136f0da07421abaff"
+    },
+    {
+      "position": 2761,
+      "sourceId": "components.RequestModal.AdvancedRequester.ignoreQuotaTitle",
+      "source": "Bypass User Quota",
+      "sourceHash": "aae5f5e1075e8e0c1b971f6b425113ca335123d66eadd0752dd67a0d172f3286",
+      "sourceTextSha256": "86dc7bf342c6c75ad87b2774c25929afe2c835e87708500c1e11cc638911dadc"
+    },
+    {
+      "position": 2762,
+      "sourceId": "components.RequestModal.AdvancedRequester.languageprofile",
+      "source": "Language Profile",
+      "sourceHash": "9f1bf2f81930e0892b140abe9df14973fbd4425fc7ab8f383d69afc55b13d5a0",
+      "sourceTextSha256": "2400bfe9405d35f8c45d6cdd66660b145a2b4d82a3aecd8a7fd826d46444ae12"
+    },
+    {
+      "position": 2763,
+      "sourceId": "components.RequestModal.AdvancedRequester.metadataLanguage",
+      "source": "Series metadata language",
+      "sourceHash": "51f06b12dc1146bad20587917cdb828836e22620ec6e29252a7a58252e6f70fc",
+      "sourceTextSha256": "b8c322a7615b7bd13ad5276cc99f57de2d4500faf0a3740876529681afe9f306"
+    },
+    {
+      "position": 2764,
+      "sourceId": "components.RequestModal.AdvancedRequester.metadataprofile",
+      "source": "Metadata Profile",
+      "sourceHash": "3351241c1d227a1892885fd055477e3e73c89537d297c801db757e38fcd3b7d1",
+      "sourceTextSha256": "37906511af21c39e462a8d6797eb639e4f5b526e91bee32c649ec25cb479976c"
+    },
+    {
+      "position": 2765,
+      "sourceId": "components.RequestModal.AdvancedRequester.notagoptions",
+      "source": "No tags",
+      "sourceHash": "320af6add8fe5928c57e097654d2dfb269436044c0994c5a2869624b3a2602da",
+      "sourceTextSha256": "147e6bba4382967505b88e720b211ff39956c100e6c9e0b25aa3dcea88332572"
+    },
+    {
+      "position": 2766,
+      "sourceId": "components.RequestModal.AdvancedRequester.qualityprofile",
+      "source": "Quality Profile",
+      "sourceHash": "76fd30ab06aaf3c4d4d1c7dd0d3b1d86358b27a3e76a91c0efc603e37ba9f85e",
+      "sourceTextSha256": "d7817e29e83988205b3c30f2abe17d6fac6f26f987df65279108594dcdfee19f"
+    },
+    {
+      "position": 2767,
+      "sourceId": "components.RequestModal.AdvancedRequester.ready",
+      "source": "Ready to Request",
+      "sourceHash": "f2d23e6520027d65397f22f502dcbd55b3c79f4b8f0507226d9cc35fca04c6ca",
+      "sourceTextSha256": "ff13fa56b964422731937e4cb904c19366a2bb6c236036b1eebb66dc2bb23965"
+    },
+    {
+      "position": 2768,
+      "sourceId": "components.RequestModal.AdvancedRequester.requestedBy",
+      "source": "Requested By",
+      "sourceHash": "5d909cd53a809c4f57c3a14eb1550b2ad06734988e6907d13b5f7b7ed188c288",
+      "sourceTextSha256": "80e37c7ff11cde00392c2efe89423254878e5a8002ab93691643a702fcd113ce"
+    },
+    {
+      "position": 2769,
+      "sourceId": "components.RequestModal.AdvancedRequester.rootfolder",
+      "source": "Root Folder",
+      "sourceHash": "6f9e7faba152b644686cbaabb88b06aae61bd981dd3be0f38a8bc74a13d821f6",
+      "sourceTextSha256": "9302239146645d4dc6ad0f26b8a66b2bf52f1dfda15c925ca8ab4e2c5cee5aaf"
+    },
+    {
+      "position": 2770,
+      "sourceId": "components.RequestModal.AdvancedRequester.seasonOrder",
+      "source": "Series order",
+      "sourceHash": "25f89261c0cfc5661e5161906140973bf166a92e805328210a3212701e72c2ac",
+      "sourceTextSha256": "38724a760832b23975a4de970f3e27fcafba4a91a4f8b092eafeccdac4de25fb"
+    },
+    {
+      "position": 2771,
+      "sourceId": "components.RequestModal.AdvancedRequester.selecttags",
+      "source": "Select tags",
+      "sourceHash": "24fb1357b9819edac0c8f24ef26ac059bb519c946a84031ff626c5ff0664aca5",
+      "sourceTextSha256": "4661b07b56d42b15f0946fa13bb8ab3d7aebc52b205f18d7f757998772aa3dd5"
+    },
+    {
+      "position": 2772,
+      "sourceId": "components.RequestModal.AdvancedRequester.service",
+      "source": "Service",
+      "sourceHash": "c4948e79d66b8ab63e9496b249988f6596a08de620986e6d6f68beea738f3333",
+      "sourceTextSha256": "d677190e0a9990e7d5fa9e4c1bbde44271fb8959c4acb6d43e02ed991128b4bf"
+    },
+    {
+      "position": 2773,
+      "sourceId": "components.RequestModal.AdvancedRequester.showOptions",
+      "source": "Show Options",
+      "sourceHash": "463dded453fc4fcb39649ecfea5e3d3dc43590f5a654118cbb1b4094a3f6af44",
+      "sourceTextSha256": "34d92c535bb0f6268625b3c65df207cff35eda3c00d7edd61d2f4be279d3afd2"
+    },
+    {
+      "position": 2774,
+      "sourceId": "components.RequestModal.AdvancedRequester.sonarrDefault",
+      "source": "Sonarr default",
+      "sourceHash": "1107f0433ee31a6ac7bf3298fb10eb4fa4f15e46ea8f699443fa4ac0424fcaf6",
+      "sourceTextSha256": "783fb144cc53bfae90163da477d77d185ee106fd1fc376bbde35dd6f65f02c61"
+    },
+    {
+      "position": 2775,
+      "sourceId": "components.RequestModal.AdvancedRequester.status",
+      "source": "Status",
+      "sourceHash": "28a35858b095dae8dcebdb08dc3748282de41e0816b23164f0e15a2bdfe99b4d",
+      "sourceTextSha256": "920e413c7d411b61ef3e8c63b1cb6ad058d5f95f8b481dbafe60248387d8c355"
+    },
+    {
+      "position": 2776,
+      "sourceId": "components.RequestModal.AdvancedRequester.tags",
+      "source": "Tags",
+      "sourceHash": "e4e852355669417b0edc3a4d0464affc081f04b3472fadc832107e0afc85aeee",
+      "sourceTextSha256": "1331275bc537b4c2bf1e46f7275677967515342e30b572e6852fa6f51b831fe8"
+    },
+    {
+      "position": 2777,
+      "sourceId": "components.RequestModal.Book.advancedOptions",
+      "source": "Advanced Options",
+      "sourceHash": "f5f64083dbeaad5f5aaeac82f1c5b524f5aa91eb9cbee8dd56e46a499ada922a",
+      "sourceTextSha256": "dfa2817fb2221c8b89c47c4fe8326d07c119b7c32e89e509d1061fc596fdf801"
+    },
+    {
+      "position": 2778,
+      "sourceId": "components.RequestModal.Book.approval",
+      "source": "Approval",
+      "sourceHash": "552e39a184ddfbc7c66fbd695e6b5e6a07d7a98e76e5a8b92a7384a61ecd6be6",
+      "sourceTextSha256": "147fb813a2515718ef6121c61c9636d6ffbcb055bcdb45dbb483af667aa94c8b"
+    },
+    {
+      "position": 2779,
+      "sourceId": "components.RequestModal.Book.approve",
+      "source": "Approve Request",
+      "sourceHash": "17ac336315d7487b55c70c79814be25921ab3ac9d22fda6d46d86a2dd559dc0f",
+      "sourceTextSha256": "797193f6d660fbd65e63dab06a8fc4001604a0df6ce7d50ffeac1d364621b34c"
+    },
+    {
+      "position": 2780,
+      "sourceId": "components.RequestModal.Book.audiobook",
+      "source": "Audiobook",
+      "sourceHash": "9dbd1d1a06a732178d08adb21373fb52affbf8065ffd14e600786bc5ce3fd34c",
+      "sourceTextSha256": "8716cb3d8010144e1aa703eb837f23f79d34e9603b3e7173d6ce935cac473b74"
+    },
+    {
+      "position": 2781,
+      "sourceId": "components.RequestModal.Book.author",
+      "source": "Author",
+      "sourceHash": "f209537f2fef96c574e14efc9fe940220f8c601efc4df13ce6bf19a0b8218db1",
+      "sourceTextSha256": "d95082a2ee57f3e40e3050662a346e26a872fd4d0baf57d293ac5a883f0f4ff5"
+    },
+    {
+      "position": 2782,
+      "sourceId": "components.RequestModal.Book.automaticEdition",
+      "source": "Automatic best match",
+      "sourceHash": "dddcdfc3b6483a999abd19610847c448a2ae828e41635cb8cf2f8aeae6223acf",
+      "sourceTextSha256": "f5e5c9fc1648062e08946ec8d2130d50164e1f9f3c8560c99ba96c9547be8134"
+    },
+    {
+      "position": 2783,
+      "sourceId": "components.RequestModal.Book.automaticEditionInfo",
+      "source": "Automatic uses the first valid ISBN from Open Library. Pick a specific edition when testers report a mismatch.",
+      "sourceHash": "4becc4d2ccd0a3a3fa049f149d59e501159cd5752e20e16179442057622d41fc",
+      "sourceTextSha256": "0234c05bccfd1bfe10ec4701ebb15be7acb551ef3adfcd75ac16e114deb3f5f7"
+    },
+    {
+      "position": 2784,
+      "sourceId": "components.RequestModal.Book.backendRequestFailed",
+      "source": "The request was submitted, but Bookshelf rejected it while processing.",
+      "sourceHash": "7499892221e7aa8418a4f0dc576fed012f2841ecfc29dc4b282a4ab3380b6dc0",
+      "sourceTextSha256": "000bf0221777e9bcbd98311150edae39483c767ceb144b74b497dd9fe9f6d701"
+    },
+    {
+      "position": 2785,
+      "sourceId": "components.RequestModal.Book.cancel",
+      "source": "Cancel Request",
+      "sourceHash": "12e05ed81fca480ee5584bf8b7f8cc5e190f0ff0b1fb8d1e15d03160420385b6",
+      "sourceTextSha256": "397b8bd8a84b5a0e825c0675704fd4e35c7808ab235c413a20e66466bef9b87f"
+    },
+    {
+      "position": 2786,
+      "sourceId": "components.RequestModal.Book.close",
+      "source": "Close",
+      "sourceHash": "0ea7c1cadeffcc2ffaa913b3c2361f220d3696ebac4ef4843bfba6ae37ccce69",
+      "sourceTextSha256": "7d9eb7acb13e24625c404401d8e88b2350e32162455885f18276cf802f7701ed"
+    },
+    {
+      "position": 2787,
+      "sourceId": "components.RequestModal.Book.ebook",
+      "source": "Book",
+      "sourceHash": "a579e2171bd6bcf2ae736ef1ae1f2b0e333dfe8494827c2521980059597d09dd",
+      "sourceTextSha256": "909cb81127c5e1944b16dc5944ade59facb822c7a3f250d1f0256293bfd3c055"
+    },
+    {
+      "position": 2788,
+      "sourceId": "components.RequestModal.Book.edit",
+      "source": "Edit Request",
+      "sourceHash": "9c9b4849edb21ef706d2b319810307e1b3884bb72739b16db9cf7ad27c1be06d",
+      "sourceTextSha256": "9336eb7a78bc4efe8e18f7fa7a37063ff351d0145740c6479ba8c0c2fc469428"
+    },
+    {
+      "position": 2789,
+      "sourceId": "components.RequestModal.Book.editerror",
+      "source": "Something went wrong while editing the request.",
+      "sourceHash": "7d0dd6a78f0c220f519aa7f4caf97526e68d953e6346c1b2c92ec7f8d090176d",
+      "sourceTextSha256": "619517cbc7c1a6a345f05578a1b62356837aa9b201a1bd0383d7d5e7ad0db4a7"
+    },
+    {
+      "position": 2790,
+      "sourceId": "components.RequestModal.Book.edition",
+      "source": "Edition / ISBN",
+      "sourceHash": "69a3d9b8a478b24266377196dfe0c3eafb15dc60f75137f9a15c3fae661c4ed0",
+      "sourceTextSha256": "04e631c3fb7e9ceac73d8c56767027827e534f2c0ccf5c50b58cc5da8f53e18e"
+    },
+    {
+      "position": 2791,
+      "sourceId": "components.RequestModal.Book.firstPublished",
+      "source": "First Published",
+      "sourceHash": "e82aad1aba4920f710a4a0953819fcf8df954841518b8dc69a0be21f647696e7",
+      "sourceTextSha256": "cf960540de47e88b9d49c13761166fe349c4ac4e9520594afb1b8e9b921a245d"
+    },
+    {
+      "position": 2792,
+      "sourceId": "components.RequestModal.Book.format",
+      "source": "Format",
+      "sourceHash": "fab957653d0f1db8a8b2df7274a5d7801e1103179d730287e1ac5df6507863df",
+      "sourceTextSha256": "2f343666aaa88c44430b12e6ab8a29591a069de76541125e83ff1b5acc367bf2"
+    },
+    {
+      "position": 2793,
+      "sourceId": "components.RequestModal.Book.genres",
+      "source": "Genres",
+      "sourceHash": "b374a286afa127c1ea6e85d81d4597c1002e39b5e8f5b32df048a148b6612564",
+      "sourceTextSha256": "3561abfe8067f3c1cdec6de4240f041af78d44a6ba619deee9e1d0735fe73e1e"
+    },
+    {
+      "position": 2794,
+      "sourceId": "components.RequestModal.Book.mediaAndFormat",
+      "source": "Media & Format",
+      "sourceHash": "4120d2f9d7dc741d96ecacc4152b4af642ee494eae91f86448c631d3c2ee4d18",
+      "sourceTextSha256": "b6136c0366498f839f4d77ebf3cde523c63aa7ce6e35a509dd086e72a5f7b96f"
+    },
+    {
+      "position": 2795,
+      "sourceId": "components.RequestModal.Book.noAudiobookServer",
+      "source": "No audiobook Bookshelf service is configured. Audiobook requests are unavailable.",
+      "sourceHash": "96a6a8a120b2346bad73697e00965c4689fa4f650ac6ac95d2bc7e00c2418b47",
+      "sourceTextSha256": "744e997ec65e6faaa76cbbea0f6e9bf523ac5a65220970a1b9a596d33b50bfb2"
+    },
+    {
+      "position": 2796,
+      "sourceId": "components.RequestModal.Book.noEbookServer",
+      "source": "No Book Bookshelf service is configured. Book requests are unavailable.",
+      "sourceHash": "1620d890d19dd974d07d1d48646430294f12d6f73f8f473f5b95c8d3adbde0cf",
+      "sourceTextSha256": "5491cba7542fd72f020e3425e1acf504d20910afa0d5f69ea31fa9369face5f4"
+    },
+    {
+      "position": 2797,
+      "sourceId": "components.RequestModal.Book.noIsbnCandidates",
+      "source": "No valid ISBN candidates were found. Bookshelf will fall back to title matching.",
+      "sourceHash": "9b6d40aef2a455f79c4db116389fda398fb3fa2301b1b8ec708005f5583f6233",
+      "sourceTextSha256": "249f278ec846478508c7cf2a8579b5af9f3cd3044be2276377c7a7d41bb11c83"
+    },
+    {
+      "position": 2798,
+      "sourceId": "components.RequestModal.Book.notAvailable",
+      "source": "Not Available",
+      "sourceHash": "5fe1f073f0a76531b141a75db06fb2d117594664f3b6ee2f362dd21bf276589b",
+      "sourceTextSha256": "2ab64517020b392a9fc812ab964a92701d227470faa4b5a000f005f65df742f3"
+    },
+    {
+      "position": 2799,
+      "sourceId": "components.RequestModal.Book.pages",
+      "source": "Pages",
+      "sourceHash": "ba5736bc6e33dc6012d20be700852b42532520b9f3c98ab34cb06c4030aa5fdc",
+      "sourceTextSha256": "9046da16aea909ba75a36cec13b56cb2144dc2ede45cde361e99a8d79802eabf"
+    }
+  ],
+  "sourcePositionRange": [
+    2700,
+    2799
+  ],
+  "leftBoundary": {
+    "position": 2699,
+    "sourceId": "components.RequestList.RequestItem.mapTvSeasons",
+    "source": "Map TV seasons",
+    "sourceHash": "847edcbbbf95e5ebfc9257df2a328074ce73317aa14bf6af634784c2125e89d0",
+    "sourceTextSha256": "22810798bfef7d78a94c01b3e6d234a44d3c7fc285a12078d2a9116c9ded554e"
+  },
+  "rightBoundary": {
+    "position": 2800,
+    "sourceId": "components.RequestModal.Book.pendingRequestFormat",
+    "source": "Pending {format} Request",
+    "sourceHash": "e7d08c2c8a1be4598b54374973829a44c5c59cebfb035c43e6b4c01e40965a7d",
+    "sourceTextSha256": "9ff9dd438db0e5bd3ac75d16571530332696d7580d4c7f2d19a8a7f5130ded53"
+  },
+  "count": 100
+}

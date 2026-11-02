@@ -1,0 +1,109 @@
+{
+  "schemaVersion": 1,
+  "exactHead": "6bc8d0bd3dfb4f8c87c307a3e562e0fd12474118",
+  "exactTree": "44cf1a02d645026872759fa04a7506ee738381e5",
+  "applyPlanRows": 181,
+  "readbackRows": 1200,
+  "catalogCount": 12,
+  "catalogs": [
+    {
+      "path": "src/i18n/locale/ar.json",
+      "preFileSha256": "ab9d3de803a5dfd24ad52eea551ad61b36d545e57b38282d3267a761bbd2ed03",
+      "postFileSha256": "a3d073fba6d5706cff4b7da002fc3897f68b7c785efc2cda922203ca33067abd",
+      "changedValues": 18,
+      "keyCount": 9494,
+      "keyOrderPreserved": true
+    },
+    {
+      "path": "src/i18n/locale/de.json",
+      "preFileSha256": "7e07cd613e503aa135a83004dca01c570eac327e4ab19b1b4bda01948e0f84c4",
+      "postFileSha256": "2bca0060ef3d833628079e2152cfc958db7c5064a33215afd64ff7d1692f8825",
+      "changedValues": 4,
+      "keyCount": 9494,
+      "keyOrderPreserved": true
+    },
+    {
+      "path": "src/i18n/locale/es.json",
+      "preFileSha256": "0116f157277e88e2549b718f6216e19360f04407aaefae320c22c4c831ab17e4",
+      "postFileSha256": "b1dbb01793d11790fa7ac75e15db0ca18648e679afd3808c3f680c902a9914df",
+      "changedValues": 12,
+      "keyCount": 9494,
+      "keyOrderPreserved": true
+    },
+    {
+      "path": "src/i18n/locale/fr.json",
+      "preFileSha256": "7d7f6c00abf7d04be9951e517939d852ca215542cf8a5840bda7345d9ceb0028",
+      "postFileSha256": "3d87791e690367034cf16e0bbaf2b1b79cb6f36a73d3283297ae15211cf31027",
+      "changedValues": 7,
+      "keyCount": 9494,
+      "keyOrderPreserved": true
+    },
+    {
+      "path": "src/i18n/locale/hi.json",
+      "preFileSha256": "a431241f21193ef3b29ab0573de471064dc1859ad6f60cbeaa729e11d6025fb1",
+      "postFileSha256": "a8cb28ae9bad5f064f95ad39cc0e846c9578a036659116abe09d4146cd983580",
+      "changedValues": 18,
+      "keyCount": 9494,
+      "keyOrderPreserved": true
+    },
+    {
+      "path": "src/i18n/locale/id.json",
+      "preFileSha256": "46d7cd1706e5f80e6c4b9ab554f11e4e785b01a598ac1cdbeb9ddd662b053e3f",
+      "postFileSha256": "964e5cc4635ac44d2d9d7ecc9f3f4fd28736c695681223e9db1eaf4e9fd924e5",
+      "changedValues": 11,
+      "keyCount": 9494,
+      "keyOrderPreserved": true
+    },
+    {
+      "path": "src/i18n/locale/ja.json",
+      "preFileSha256": "b2628643d17f874a47f233337027f57b3cd4e8709ccb2ae367f6d1d117207072",
+      "postFileSha256": "a80d6907a66cc2c72f4806e3f93970d61d0a81a6e32640367b7c317379e98847",
+      "changedValues": 18,
+      "keyCount": 9494,
+      "keyOrderPreserved": true
+    },
+    {
+      "path": "src/i18n/locale/ko.json",
+      "preFileSha256": "1d9f57a9b916999184dbe650d0da2819552b9b2d2567f6ffa70db8ad9a36dedb",
+      "postFileSha256": "ed6c93a3efbc0d2d8bed6158cea31e4aef5c1ace0816316b30752ff9991a0205",
+      "changedValues": 16,
+      "keyCount": 9494,
+      "keyOrderPreserved": true
+    },
+    {
+      "path": "src/i18n/locale/pt_BR.json",
+      "preFileSha256": "15a7d5f8dd053d43297d396a232b752930d67ba74086eca0d5349121176e7dea",
+      "postFileSha256": "4fbc92c2359bba4eda00d4889132074ebfd2289242020d87093b9284c214b661",
+      "changedValues": 14,
+      "keyCount": 9494,
+      "keyOrderPreserved": true
+    },
+    {
+      "path": "src/i18n/locale/vi.json",
+      "preFileSha256": "b457b572512f815bcc3d1cf0e6fa1b62399a53342a099e0b72afa607739974ea",
+      "postFileSha256": "29a2bdff375ba825891d98262d153f1d99965f2250fc856f17a56c47642c3a45",
+      "changedValues": 27,
+      "keyCount": 9494,
+      "keyOrderPreserved": true
+    },
+    {
+      "path": "src/i18n/locale/zh_Hans.json",
+      "preFileSha256": "abaf3a9a8b5d2705fe4f6729dae790a1671475cd095c4be3c20f02feb93dc883",
+      "postFileSha256": "610cedd36e3a4361634aacb8b74c12daa117ec364628e7766bce5c31d3d79e05",
+      "changedValues": 18,
+      "keyCount": 9494,
+      "keyOrderPreserved": true
+    },
+    {
+      "path": "src/i18n/locale/zh_Hant.json",
+      "preFileSha256": "e5d5055773b7a7ded29e90ed8c95767e613945924aafa6d189c563e3634b968b",
+      "postFileSha256": "873b68a4db574b13a81ea872b9b11c0eff54ae72d8b6d911121c2479dce3a079",
+      "changedValues": 18,
+      "keyCount": 9494,
+      "keyOrderPreserved": true
+    }
+  ],
+  "allTargetHashesMatched": true,
+  "keySetsAndOrderPreserved": true,
+  "exactlyPlannedValuesChanged": 181
+}
