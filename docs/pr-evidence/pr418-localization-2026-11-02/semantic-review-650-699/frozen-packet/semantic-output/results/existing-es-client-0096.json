@@ -1,0 +1,168 @@
+{
+  "schemaVersion": 1,
+  "repository": "snapetech-org/seerrng",
+  "pullRequest": 418,
+  "head": "5a4342176a8325c371a35d489cb01c58283bc983",
+  "tree": "98cd64952123c9b678e38250e7819cabb4476448",
+  "semanticManifestSha256": "3ea74cc6491aecddf9ffcedc69610f13d20b199059aef69bb3c2407feb0826ea",
+  "cellPlanSha256": "97c3402252a34aaa4f8f9f44a691281d9c35ff7b80d7edb3a26c752436af6558",
+  "retiredCellsSha256": "dc5ec05547e4da3079c0668f82a52da7999d89ef9d4f037c1cd72af9347ebd83",
+  "sourceBundleManifestSha256": "212491482d1b9207fed755af6e80ac80a97184ec8dbe84d0c4ad2bd711acae0d",
+  "sourceRowsSha256": "ad91236a31e32f199ff449f9ed4597ea6af0f5a4eff32772cefa84278cafb68c",
+  "sourceCellsSha256": "8bfcd1aa9b5d5aba4fb6317c194cd544d601543ebf250899a84a719b52e468e1",
+  "planRows": 115260,
+  "actions": {
+    "semantic-review-required": 114783,
+    "reuse-equivalence-decision": 477
+  },
+  "retiredRows": 48,
+  "reusableEquivalenceCells": 477,
+  "targetsApplied": false,
+  "batchId": "existing-es-client-0096",
+  "batchSha256": "4dbf5ec81393b8751de9545e9b728e8b3ffd3636cac862c7d1f0792f9b7a59d1",
+  "rowCount": 32,
+  "model": "qwen3.8-27b-heretic:q4km",
+  "attempt": 2,
+  "decisions": [
+    {
+      "id": "components.RequestModal.Sportarr.pendingApproval",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.RequestModal.Sportarr.pendingRequest",
+      "verdict": "correct",
+      "target": "Solicitud deportiva pendiente",
+      "confidence": "high",
+      "reason": "The source 'Pending sports request' is a noun phrase indicating the status of a single request. The current translation 'Solicitud de deportes pendientes' uses the plural 'pendientes', which incorrectly implies multiple requests or a list of pending items, and 'deportes' is less precise than 'deportiva' for the adjective modifying the request."
+    },
+    {
+      "id": "components.RequestModal.Sportarr.quotaHint",
+      "verdict": "correct",
+      "target": "Las temporadas de TV y las ligas deportivas comparten su cuota de solicitud de TV.",
+      "confidence": "high",
+      "reason": "The source 'TV seasons' refers to seasons of TV shows, not 'estaciones de televisión' (TV stations/broadcasters). 'Temporadas de TV' is the correct terminology in this context."
+    },
+    {
+      "id": "components.RequestModal.Sportarr.requestError",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.RequestModal.Sportarr.requestFrom",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.RequestModal.Sportarr.requestSuccess",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.RequestModal.Sportarr.requested",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.RequestModal.Sportarr.service",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.RequestModal.Sportarr.sportLabel",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.RequestModal.Sportarr.status",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.RequestModal.Sportarr.unmonitored",
+      "verdict": "correct",
+      "target": "Esta liga ya existe en Sportarr pero no está monitorizada. Habilítela en Sportarr antes de solicitarla aquí.",
+      "confidence": "high",
+      "reason": "The source 'Enable it' refers to the league (feminine noun 'liga'). The current translation 'Hágalo' uses the masculine pronoun 'lo', which is grammatically incorrect. 'Habilítela' is the correct imperative form. Additionally, 'no está monitorizada' is more natural than 'no es monitorizada' for a state of being."
+    },
+    {
+      "id": "components.RequestModal.Sportarr.yearLabel",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.RequestModal.advancedOptions",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.RequestModal.alreadyAvailable",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.RequestModal.approval",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.RequestModal.approve",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.RequestModal.autoapproval",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.RequestModal.available",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.RequestModal.blocklisted",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.RequestModal.cancel",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.RequestModal.defaultDestination",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.RequestModal.destination",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.RequestModal.edit",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.RequestModal.episodes",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.RequestModal.episodesLoading",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.RequestModal.errorediting",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.RequestModal.failed4kMovieRequest",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.RequestModal.failed4krequest",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.RequestModal.failedMovieRequest",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.RequestModal.failedrequest",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.RequestModal.genres",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.RequestModal.hd",
+      "verdict": "keep"
+    }
+  ],
+  "decisionsSha256": "7925213cc1ac8f04fc7fff123e2d6c0e828e2431f883c37956cba5049a432b0e",
+  "rawResponseSha256": "920a3fae8b26d34984f9453a0924232f10ab8da30caf7ff7c5c649596449c72c",
+  "rawResponseFile": "/mnt/disks/scratch/task-scratch/seerrng-review-window-650-700-422072-20261102/semantic-output/responses/existing-es-client-0096-attempt-2.json"
+}

@@ -1,0 +1,189 @@
+{
+  "schemaVersion": 1,
+  "repository": "snapetech-org/seerrng",
+  "pullRequest": 418,
+  "head": "5a4342176a8325c371a35d489cb01c58283bc983",
+  "tree": "98cd64952123c9b678e38250e7819cabb4476448",
+  "semanticManifestSha256": "3ea74cc6491aecddf9ffcedc69610f13d20b199059aef69bb3c2407feb0826ea",
+  "cellPlanSha256": "97c3402252a34aaa4f8f9f44a691281d9c35ff7b80d7edb3a26c752436af6558",
+  "retiredCellsSha256": "dc5ec05547e4da3079c0668f82a52da7999d89ef9d4f037c1cd72af9347ebd83",
+  "sourceBundleManifestSha256": "212491482d1b9207fed755af6e80ac80a97184ec8dbe84d0c4ad2bd711acae0d",
+  "sourceRowsSha256": "ad91236a31e32f199ff449f9ed4597ea6af0f5a4eff32772cefa84278cafb68c",
+  "sourceCellsSha256": "8bfcd1aa9b5d5aba4fb6317c194cd544d601543ebf250899a84a719b52e468e1",
+  "planRows": 115260,
+  "actions": {
+    "semantic-review-required": 114783,
+    "reuse-equivalence-decision": 477
+  },
+  "retiredRows": 48,
+  "reusableEquivalenceCells": 477,
+  "targetsApplied": false,
+  "batchId": "existing-es-client-0081",
+  "batchSha256": "c9dd474a6ba144cbdc1915962bf52145712cc7baba3b3bfb76c7299ac4984997",
+  "rowCount": 32,
+  "model": "qwen3.8-27b-heretic:q4km",
+  "attempt": 1,
+  "decisions": [
+    {
+      "id": "components.ReaderGroupingAction.matches",
+      "verdict": "correct",
+      "target": "{count, plural, one {# coincidencia actual} other {# coincidencias actuales}}",
+      "confidence": "high",
+      "reason": "The source uses 'match' in the context of library rules (coincidencia), not sports (partido). Additionally, the target incorrectly includes a 'many' category which is not present in the source ICU syntax and is not standard for Spanish (which typically uses one/other)."
+    },
+    {
+      "id": "components.ReaderGroupingAction.noMatches",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.ReaderGroupingAction.open",
+      "verdict": "correct",
+      "target": "Abrir {serviceName}",
+      "confidence": "high",
+      "reason": "The source 'Open' is an imperative action (Abrir), not a status (Abierto). 'Abierto' implies the state is already open, which is incorrect for a button label."
+    },
+    {
+      "id": "components.ReaderGroupingAction.openClose",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.ReaderGroupingAction.preview",
+      "verdict": "correct",
+      "target": "Previsualizar coincidencias",
+      "confidence": "high",
+      "reason": "In the context of library rules, 'matches' refers to items that satisfy the rule (coincidencias), not sports games (partidos)."
+    },
+    {
+      "id": "components.ReaderGroupingAction.previewError",
+      "verdict": "correct",
+      "target": "No se pudo revisar la biblioteca del lector.",
+      "confidence": "high",
+      "reason": "The source 'could not be checked' indicates a failure of an attempted action, which is best translated as 'No se pudo revisar' (could not be reviewed). 'No podía ser revisada' (could not be reviewed - ability/permission) is less natural for an error message. Also, 'reader library' is better as 'biblioteca del lector'."
+    },
+    {
+      "id": "components.ReaderGroupingAction.previewing",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.ReaderGroupingAction.provider",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.ReaderGroupingAction.result",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.ReaderGroupingAction.sampleTitles",
+      "verdict": "correct",
+      "target": "Algunas coincidencias",
+      "confidence": "high",
+      "reason": "Consistent with the correction for 'matches' in this context (library rules), 'coincidencias' is the correct term, not 'partidos'."
+    },
+    {
+      "id": "components.ReaderGroupingAction.save",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.ReaderGroupingAction.saveError",
+      "verdict": "correct",
+      "target": "No se pudo guardar el estante del lector.",
+      "confidence": "high",
+      "reason": "Similar to previewError, 'could not be saved' in an error context is best translated as 'No se pudo guardar'. 'No podía ser salvado' is awkward and implies inability rather than failure of the operation."
+    },
+    {
+      "id": "components.ReaderGroupingAction.saving",
+      "verdict": "correct",
+      "target": "Guardando estante...",
+      "confidence": "high",
+      "reason": "'Estante salvando' is grammatically incorrect in Spanish. The correct progressive form is 'Guardando estante' (Saving shelf)."
+    },
+    {
+      "id": "components.ReaderGroupingAction.setup",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.ReaderGroupingAction.share",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.ReaderGroupingAction.shareHelp",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.ReaderGroupingAction.syncToKobo",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.ReaderGroupingAction.syncToKoboHelp",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.ReaderGroupingAction.update",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.ReaderGroupingAction.updateAction",
+      "verdict": "correct",
+      "target": "Actualizar estante del lector",
+      "confidence": "high",
+      "reason": "The source 'Update reader shelf' is an action (Actualizar), not a noun phrase describing a shelf for updates. 'Estante de lectura de actualización' is a mistranslation of the intent."
+    },
+    {
+      "id": "components.ReaderGroupingAction.visibilityLocked",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.ReaderGroupingAction.warning",
+      "verdict": "correct",
+      "target": "El estante se guardó, pero el servicio no ha confirmado la cantidad actual de elementos. Abra el servicio y actualice el estante para verificarlo.",
+      "confidence": "high",
+      "reason": "1. 'item count' refers to the number of items (cantidad de elementos), not a financial account (cuenta). 2. 'refresh' in UI context is 'actualizar', not 'refresque' (which implies refreshing a drink or is less standard for UI). 3. 'check it' is better as 'verificarlo'."
+    },
+    {
+      "id": "components.RegionSelector.regionDefault",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.RegionSelector.regionServerDefault",
+      "verdict": "correct",
+      "target": "Predeterminado ({region})",
+      "confidence": "high",
+      "reason": "The target 'Default (por defecto){region})' is malformed with mismatched parentheses and redundant translation. 'Predeterminado' is the standard UI term for 'Default'."
+    },
+    {
+      "id": "components.RequestBlock.approve",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.RequestBlock.bookFormat",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.RequestBlock.decline",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.RequestBlock.delete",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.RequestBlock.edit",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.RequestBlock.languageprofile",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.RequestBlock.lastmodifiedby",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.RequestBlock.metadataprofilechanged",
+      "verdict": "keep"
+    }
+  ],
+  "decisionsSha256": "5c542a5bf7e383fbab578e9f86027f776ac88ac8d5390e28051b27a1984fd697",
+  "rawResponseSha256": "01c41d9dc9193b7bb202c19eb2391046422eabbe589c683b431e12b2c06936bc",
+  "rawResponseFile": "/mnt/disks/scratch/task-scratch/seerrng-review-window-650-700-422072-20261102/semantic-output/responses/existing-es-client-0081-attempt-1.json"
+}

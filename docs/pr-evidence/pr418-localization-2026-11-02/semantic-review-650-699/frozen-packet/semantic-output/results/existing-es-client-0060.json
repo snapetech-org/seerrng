@@ -1,0 +1,171 @@
+{
+  "schemaVersion": 1,
+  "repository": "snapetech-org/seerrng",
+  "pullRequest": 418,
+  "head": "5a4342176a8325c371a35d489cb01c58283bc983",
+  "tree": "98cd64952123c9b678e38250e7819cabb4476448",
+  "semanticManifestSha256": "3ea74cc6491aecddf9ffcedc69610f13d20b199059aef69bb3c2407feb0826ea",
+  "cellPlanSha256": "97c3402252a34aaa4f8f9f44a691281d9c35ff7b80d7edb3a26c752436af6558",
+  "retiredCellsSha256": "dc5ec05547e4da3079c0668f82a52da7999d89ef9d4f037c1cd72af9347ebd83",
+  "sourceBundleManifestSha256": "212491482d1b9207fed755af6e80ac80a97184ec8dbe84d0c4ad2bd711acae0d",
+  "sourceRowsSha256": "ad91236a31e32f199ff449f9ed4597ea6af0f5a4eff32772cefa84278cafb68c",
+  "sourceCellsSha256": "8bfcd1aa9b5d5aba4fb6317c194cd544d601543ebf250899a84a719b52e468e1",
+  "planRows": 115260,
+  "actions": {
+    "semantic-review-required": 114783,
+    "reuse-equivalence-decision": 477
+  },
+  "retiredRows": 48,
+  "reusableEquivalenceCells": 477,
+  "targetsApplied": false,
+  "batchId": "existing-es-client-0060",
+  "batchSha256": "4030dc33cb3b991d95f5309704bf4c12f90f44d9bc6cd345ad7c5f27577e07cd",
+  "rowCount": 32,
+  "model": "qwen3.8-27b-heretic:q4km",
+  "attempt": 1,
+  "decisions": [
+    {
+      "id": "components.Login.tipUsernameHasTrailingWhitespace",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.Login.title",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.Login.urlBase",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.Login.urlBaseHelp",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.Login.username",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.Login.validationEmailFormat",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.Login.validationEmailRequired",
+      "verdict": "correct",
+      "target": "Debes proporcionar un email",
+      "confidence": "high",
+      "reason": "Typo in 'proporcional' (should be 'proporcionar')."
+    },
+    {
+      "id": "components.Login.validationPortRequired",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.Login.validationUrlBaseLeadingSlash",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.Login.validationUrlBaseTrailingSlash",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.Login.validationUrlTrailingSlash",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.Login.validationemailformat",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.Login.validationemailrequired",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.Login.validationhostformat",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.Login.validationhostrequired",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.Login.validationpasswordrequired",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.Login.validationservertyperequired",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.Login.validationusernamerequired",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.MagazineDetails.addToWatchlist",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.MagazineDetails.issueAvailable",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.MagazineDetails.issueCount",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.MagazineDetails.issueDate",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.MagazineDetails.issueList",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.MagazineDetails.issueMissing",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.MagazineDetails.manageMagazine",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.MagazineDetails.noIssues",
+      "verdict": "correct",
+      "target": "LazyLibrarian aún no tiene detalles de los números de este título.",
+      "confidence": "high",
+      "reason": "The source specifies 'issue details' (detalles de los números), but the target omits 'issue' and says 'details about this title', which is inaccurate. Also, 'aún no' is more natural than 'todavía' at the end."
+    },
+    {
+      "id": "components.MagazineDetails.notAvailable",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.MagazineDetails.openIssues",
+      "verdict": "correct",
+      "target": "Números abiertos",
+      "confidence": "high",
+      "reason": "In the context of magazines (see issueCount, issueDate), 'Open Issues' refers to magazine issues that are open/available, not software 'Incidencias' (bugs/tickets). 'Números abiertos' is the correct terminology."
+    },
+    {
+      "id": "components.MagazineDetails.removeFromWatchlist",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.MagazineDetails.reportIssue",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.MagazineDetails.requestMagazine",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.MagazineDetails.status",
+      "verdict": "correct",
+      "target": "Estado de la solicitud",
+      "confidence": "high",
+      "reason": "'Estatuto' is a false friend for 'status' in this context. 'Estado' is the correct term for request status."
+    }
+  ],
+  "decisionsSha256": "8a603b80d9312a44349520f16bd5640b8c610332cef890399d9e9d6fdf334fa3",
+  "rawResponseSha256": "bcb39af091f5df9601d2a45cb27b9052e418277caccdab2cc614a85b2b79f2ea",
+  "rawResponseFile": "/mnt/disks/scratch/task-scratch/seerrng-review-window-650-700-422072-20261102/semantic-output/responses/existing-es-client-0060-attempt-1.json"
+}

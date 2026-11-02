@@ -1,0 +1,183 @@
+{
+  "schemaVersion": 1,
+  "repository": "snapetech-org/seerrng",
+  "pullRequest": 418,
+  "head": "5a4342176a8325c371a35d489cb01c58283bc983",
+  "tree": "98cd64952123c9b678e38250e7819cabb4476448",
+  "semanticManifestSha256": "3ea74cc6491aecddf9ffcedc69610f13d20b199059aef69bb3c2407feb0826ea",
+  "cellPlanSha256": "97c3402252a34aaa4f8f9f44a691281d9c35ff7b80d7edb3a26c752436af6558",
+  "retiredCellsSha256": "dc5ec05547e4da3079c0668f82a52da7999d89ef9d4f037c1cd72af9347ebd83",
+  "sourceBundleManifestSha256": "212491482d1b9207fed755af6e80ac80a97184ec8dbe84d0c4ad2bd711acae0d",
+  "sourceRowsSha256": "ad91236a31e32f199ff449f9ed4597ea6af0f5a4eff32772cefa84278cafb68c",
+  "sourceCellsSha256": "8bfcd1aa9b5d5aba4fb6317c194cd544d601543ebf250899a84a719b52e468e1",
+  "planRows": 115260,
+  "actions": {
+    "semantic-review-required": 114783,
+    "reuse-equivalence-decision": 477
+  },
+  "retiredRows": 48,
+  "reusableEquivalenceCells": 477,
+  "targetsApplied": false,
+  "batchId": "existing-es-client-0090",
+  "batchSha256": "b89c9b69089fb7a4ca437a94f726efa371ddd5623df7de243f843d8ca4741161",
+  "rowCount": 32,
+  "model": "qwen3.8-27b-heretic:q4km",
+  "attempt": 1,
+  "decisions": [
+    {
+      "id": "components.RequestModal.BulkRequestModal.unmatched",
+      "verdict": "correct",
+      "target": "Sin coincidencia segura",
+      "confidence": "high",
+      "reason": "La traducción literal 'coincidencia de confianza' es incorrecta; 'confident match' se refiere a una coincidencia con alta confianza/seguridad, no a una coincidencia que posee confianza."
+    },
+    {
+      "id": "components.RequestModal.CollectionFilters.any",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.RequestModal.CollectionFilters.canceled",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.RequestModal.CollectionFilters.clear",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.RequestModal.CollectionFilters.ended",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.RequestModal.CollectionFilters.genres",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.RequestModal.CollectionFilters.inProduction",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.RequestModal.CollectionFilters.language",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.RequestModal.CollectionFilters.pilot",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.RequestModal.CollectionFilters.planned",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.RequestModal.CollectionFilters.rating",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.RequestModal.CollectionFilters.releaseDate",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.RequestModal.CollectionFilters.returningSeries",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.RequestModal.CollectionFilters.status",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.RequestModal.Comic.approval",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.RequestModal.Comic.backendRequestFailed",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.RequestModal.Comic.cancel",
+      "verdict": "correct",
+      "target": "Cancelar solicitud",
+      "confidence": "high",
+      "reason": "La traducción 'Solicitud' omite la acción 'Cancel' y no refleja el texto fuente 'Cancel Request'."
+    },
+    {
+      "id": "components.RequestModal.Comic.close",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.RequestModal.Comic.configuredRootFolder",
+      "verdict": "correct",
+      "target": "Configurado por defecto ({path})",
+      "confidence": "high",
+      "reason": "La traducción original tiene una estructura gramatical incorrecta y un paréntesis desbalanceado. La corrección mantiene el placeholder y la estructura natural."
+    },
+    {
+      "id": "components.RequestModal.Comic.defaultService",
+      "verdict": "correct",
+      "target": "Predeterminado ({name})",
+      "confidence": "high",
+      "reason": "La traducción original mezcla inglés y español de forma incoherente ('Default (por defecto)') y tiene un paréntesis desbalanceado. 'Predeterminado' es el término estándar para 'Default' en interfaces."
+    },
+    {
+      "id": "components.RequestModal.Comic.editerror",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.RequestModal.Comic.issueCount",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.RequestModal.Comic.noComicsServer",
+      "verdict": "correct",
+      "target": "No hay ningún servicio de Mylar, Kapowarr o BackIssue configurado. Las solicitudes de cómics no están disponibles.",
+      "confidence": "high",
+      "reason": "La traducción original tiene errores gramaticales graves ('No Mylar... servicio está configurado' y 'solicitudes cómicas'). La corrección mejora la fluidez y precisión."
+    },
+    {
+      "id": "components.RequestModal.Comic.notAvailable",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.RequestModal.Comic.pendingapproval",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.RequestModal.Comic.pendingrequest",
+      "verdict": "correct",
+      "target": "Solicitud de cómic pendiente",
+      "confidence": "high",
+      "reason": "La traducción 'Solicitud de informática' es incorrecta; 'Comic' se refiere a cómics, no a informática."
+    },
+    {
+      "id": "components.RequestModal.Comic.publisher",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.RequestModal.Comic.readyToRequest",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.RequestModal.Comic.requestCancel",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.RequestModal.Comic.requestSuccess",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.RequestModal.Comic.requestcomic",
+      "verdict": "correct",
+      "target": "Solicitar cómic",
+      "confidence": "high",
+      "reason": "La traducción 'Solicitud Comic' usa un sustantivo en lugar de un verbo imperativo y no adapta 'Comic' al español ('cómic'). 'Solicitar cómic' es la forma correcta para un botón de acción."
+    },
+    {
+      "id": "components.RequestModal.Comic.requested",
+      "verdict": "correct",
+      "target": "Solicitado",
+      "confidence": "high",
+      "reason": "La traducción 'Solicitudes' (plural sustantivo) no refleja el estado 'Requested' (participio pasado). 'Solicitado' es la forma correcta para indicar el estado de un elemento."
+    }
+  ],
+  "decisionsSha256": "6f561550acce1b4d0c3fd06c99adbb351a42e0f4b4a8f9e56f19ef5e8ebef722",
+  "rawResponseSha256": "eeaf3d0515cc0075a7caa01a5704ec3350b500d39d15108073c58d1445ee20a1",
+  "rawResponseFile": "/mnt/disks/scratch/task-scratch/seerrng-review-window-650-700-422072-20261102/semantic-output/responses/existing-es-client-0090-attempt-1.json"
+}

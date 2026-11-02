@@ -1,0 +1,174 @@
+{
+  "schemaVersion": 1,
+  "repository": "snapetech-org/seerrng",
+  "pullRequest": 418,
+  "head": "5a4342176a8325c371a35d489cb01c58283bc983",
+  "tree": "98cd64952123c9b678e38250e7819cabb4476448",
+  "semanticManifestSha256": "3ea74cc6491aecddf9ffcedc69610f13d20b199059aef69bb3c2407feb0826ea",
+  "cellPlanSha256": "97c3402252a34aaa4f8f9f44a691281d9c35ff7b80d7edb3a26c752436af6558",
+  "retiredCellsSha256": "dc5ec05547e4da3079c0668f82a52da7999d89ef9d4f037c1cd72af9347ebd83",
+  "sourceBundleManifestSha256": "212491482d1b9207fed755af6e80ac80a97184ec8dbe84d0c4ad2bd711acae0d",
+  "sourceRowsSha256": "ad91236a31e32f199ff449f9ed4597ea6af0f5a4eff32772cefa84278cafb68c",
+  "sourceCellsSha256": "8bfcd1aa9b5d5aba4fb6317c194cd544d601543ebf250899a84a719b52e468e1",
+  "planRows": 115260,
+  "actions": {
+    "semantic-review-required": 114783,
+    "reuse-equivalence-decision": 477
+  },
+  "retiredRows": 48,
+  "reusableEquivalenceCells": 477,
+  "targetsApplied": false,
+  "batchId": "existing-es-client-0079",
+  "batchSha256": "f290e5630b6f59320acd49127be740e037c4045b611ee317355b890c950e77e0",
+  "rowCount": 32,
+  "model": "qwen3.8-27b-heretic:q4km",
+  "attempt": 1,
+  "decisions": [
+    {
+      "id": "components.ReaderDeliverySettings.confirmDeleteGrouping",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.ReaderDeliverySettings.connectionError",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.ReaderDeliverySettings.connectionSuccess",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.ReaderDeliverySettings.connectionTest",
+      "verdict": "correct",
+      "target": "Probar acceso a agrupaciones",
+      "confidence": "high",
+      "reason": "The source 'Test grouping access' is an action (button/label) to test the connection/access, not a noun phrase for 'test groups'. The current translation 'Acceso a grupos de pruebas' implies a static feature or a group for testing, which is semantically incorrect for a UI action button."
+    },
+    {
+      "id": "components.ReaderDeliverySettings.connectionTesting",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.ReaderDeliverySettings.copied",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.ReaderDeliverySettings.copyCatalogAddress",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.ReaderDeliverySettings.copyComicCatalogAddress",
+      "verdict": "correct",
+      "target": "Copiar la dirección del lector de cómics",
+      "confidence": "high",
+      "reason": "The source is an action 'Copy Comic Reader Address'. The current target 'Dirección de lectura cómica' is a noun phrase (label) and omits the action verb 'Copy'. It should be an imperative or infinitive action consistent with other copy buttons."
+    },
+    {
+      "id": "components.ReaderDeliverySettings.copyServiceCatalogAddress",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.ReaderDeliverySettings.copyUnavailable",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.ReaderDeliverySettings.deleteGrouping",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.ReaderDeliverySettings.deliveryHelp",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.ReaderDeliverySettings.description",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.ReaderDeliverySettings.grimmoryDescription",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.ReaderDeliverySettings.grimmoryKomgaSetup",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.ReaderDeliverySettings.grimmoryRecommended",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.ReaderDeliverySettings.grimmorySetup",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.ReaderDeliverySettings.groupingCount",
+      "verdict": "correct",
+      "target": "{count, plural, one {# elemento} other {# elementos}}",
+      "confidence": "high",
+      "reason": "The source uses 'item/items'. The current translation uses 'Tema/Temas' (Topic/Topics), which is semantically incorrect for library items (books/comics). 'Elemento' or 'artículo' is the correct term for generic items in this context."
+    },
+    {
+      "id": "components.ReaderDeliverySettings.groupingCountUnverified",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.ReaderDeliverySettings.groupingDeleteError",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.ReaderDeliverySettings.groupingDeleted",
+      "verdict": "correct",
+      "target": "Estante de lector gestionado eliminado.",
+      "confidence": "high",
+      "reason": "The current translation 'Managed lector estante eliminado.' is grammatically broken and mixes English ('Managed', 'lector') with Spanish ('estante', 'eliminado'). It should be fully translated and grammatically correct."
+    },
+    {
+      "id": "components.ReaderDeliverySettings.groupingError",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.ReaderDeliverySettings.groupingKoboSyncDisabled",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.ReaderDeliverySettings.groupingKoboSyncError",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.ReaderDeliverySettings.groupingKoboSyncLast",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.ReaderDeliverySettings.groupingKoboSyncPending",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.ReaderDeliverySettings.groupingKoboSyncReady",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.ReaderDeliverySettings.groupingPending",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.ReaderDeliverySettings.groupingReady",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.ReaderDeliverySettings.groupingsLoadError",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.ReaderDeliverySettings.groupingsTitle",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.ReaderDeliverySettings.komgaAddressLabel",
+      "verdict": "correct",
+      "target": "Dirección del lector de cómics Grimmory Komga",
+      "confidence": "high",
+      "reason": "The current translation 'Dirección de lectores cómicos Grimmory Komga' is awkward and grammatically incorrect ('lectores cómicos' implies the readers are comic-like). It should be 'lector de cómics' (comic reader) to match the source 'comic reader address'."
+    }
+  ],
+  "decisionsSha256": "ae7e759cb694adef5a177e54c39f269c2f354f17439f25fc3562781bb8fbd711",
+  "rawResponseSha256": "d74eeafe8d262259422245a445ab647963572ba760fcf678e3b2f22ea6df8bb4",
+  "rawResponseFile": "/mnt/disks/scratch/task-scratch/seerrng-review-window-650-700-422072-20261102/semantic-output/responses/existing-es-client-0079-attempt-1.json"
+}

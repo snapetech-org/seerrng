@@ -1,0 +1,180 @@
+{
+  "schemaVersion": 1,
+  "repository": "snapetech-org/seerrng",
+  "pullRequest": 418,
+  "head": "5a4342176a8325c371a35d489cb01c58283bc983",
+  "tree": "98cd64952123c9b678e38250e7819cabb4476448",
+  "semanticManifestSha256": "3ea74cc6491aecddf9ffcedc69610f13d20b199059aef69bb3c2407feb0826ea",
+  "cellPlanSha256": "97c3402252a34aaa4f8f9f44a691281d9c35ff7b80d7edb3a26c752436af6558",
+  "retiredCellsSha256": "dc5ec05547e4da3079c0668f82a52da7999d89ef9d4f037c1cd72af9347ebd83",
+  "sourceBundleManifestSha256": "212491482d1b9207fed755af6e80ac80a97184ec8dbe84d0c4ad2bd711acae0d",
+  "sourceRowsSha256": "ad91236a31e32f199ff449f9ed4597ea6af0f5a4eff32772cefa84278cafb68c",
+  "sourceCellsSha256": "8bfcd1aa9b5d5aba4fb6317c194cd544d601543ebf250899a84a719b52e468e1",
+  "planRows": 115260,
+  "actions": {
+    "semantic-review-required": 114783,
+    "reuse-equivalence-decision": 477
+  },
+  "retiredRows": 48,
+  "reusableEquivalenceCells": 477,
+  "targetsApplied": false,
+  "batchId": "existing-es-client-0099",
+  "batchSha256": "7d965cd050446c8a67f9ba1a9a0e0aa4ff05c89bae91394a6350d2e7ecafcda3",
+  "rowCount": 32,
+  "model": "qwen3.8-27b-heretic:q4km",
+  "attempt": 2,
+  "decisions": [
+    {
+      "id": "components.RequestModal.watchAheadEnabledForAccount",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.RequestModal.watchAheadEpisodeOption",
+      "verdict": "correct",
+      "target": "{count, plural, one {# episodio} other {# episodios}}",
+      "confidence": "high",
+      "reason": "The 'many' category is not standard in Spanish ICU MessageFormat and should be removed to ensure compatibility and correct pluralization."
+    },
+    {
+      "id": "components.RequestModal.watchAheadLabel",
+      "verdict": "correct",
+      "target": "Cola de Episodios",
+      "confidence": "high",
+      "reason": "The source 'Episode Queue' should be translated to 'Cola de Episodios' for consistency with other messages in the set (e.g., watchAheadEnabledForAccount) and natural Spanish UI phrasing."
+    },
+    {
+      "id": "components.RequestModal.watchAheadLearnMore",
+      "verdict": "correct",
+      "target": "Cómo funciona la Cola de Episodios",
+      "confidence": "high",
+      "reason": "Translate 'Episode Queue' to 'Cola de Episodios' for consistency and natural phrasing."
+    },
+    {
+      "id": "components.RequestModal.watchAheadLinkAccount",
+      "verdict": "correct",
+      "target": "Vincular cuenta",
+      "confidence": "high",
+      "reason": "'Link account' is an action; 'Cuenta de enlace' is a noun phrase. 'Vincular cuenta' is the correct imperative/infinitive form for a UI button/link."
+    },
+    {
+      "id": "components.RequestModal.watchAheadLoadError",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.RequestModal.watchAheadLoading",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.RequestModal.watchAheadOffForAccount",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.RequestModal.watchAheadRetry",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.RequestModal.watchAheadStartingEpisode",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.RequestModal.watchAheadUnavailableIdentity",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.RequestModal.watchAheadUnavailableLink",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.RequestModal.watchAheadUnavailableOtherLink",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.RequestModal.watchAheadUnavailablePermission",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.RequestModal.watchAheadUnavailableServer",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.RequestModal.watchAheadUnavailableSonarr",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.RequestStatus.SoftwareRequests.approve",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.RequestStatus.SoftwareRequests.approved",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.RequestStatus.SoftwareRequests.architecture",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.RequestStatus.SoftwareRequests.arm64",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.RequestStatus.SoftwareRequests.available",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.RequestStatus.SoftwareRequests.cancel",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.RequestStatus.SoftwareRequests.cancelRetry",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.RequestStatus.SoftwareRequests.cancelled",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.RequestStatus.SoftwareRequests.clearCancelled",
+      "verdict": "correct",
+      "target": "Eliminar solicitud cancelada",
+      "confidence": "high",
+      "reason": "'Clear cancelled request' is an action. 'Solicitud cancelada' is a noun phrase. 'Eliminar solicitud cancelada' correctly conveys the action of removing/clearing the request."
+    },
+    {
+      "id": "components.RequestStatus.SoftwareRequests.clearCancelledDescription",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.RequestStatus.SoftwareRequests.clearCancelledTitle",
+      "verdict": "correct",
+      "target": "¿Eliminar esta solicitud cancelada?",
+      "confidence": "high",
+      "reason": "'Clear' in this context means to remove/delete. 'Despejar' is incorrect (means to clear a path/area). 'Eliminar' is the correct term for removing a request."
+    },
+    {
+      "id": "components.RequestStatus.SoftwareRequests.clearFailed",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.RequestStatus.SoftwareRequests.clearSuccess",
+      "verdict": "correct",
+      "target": "Solicitud cancelada eliminada.",
+      "confidence": "high",
+      "reason": "'Cancelled request cleared' means the request was removed. 'Solicitud cancelada.' is ambiguous and incomplete. 'Solicitud cancelada eliminada.' clearly states the action completed."
+    },
+    {
+      "id": "components.RequestStatus.SoftwareRequests.confirmAfterCheck",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.RequestStatus.SoftwareRequests.datPartlyVerified",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.RequestStatus.SoftwareRequests.datVerified",
+      "verdict": "keep"
+    }
+  ],
+  "decisionsSha256": "7592722ab58d8f601d888915b96fd19f7633260578fb32d8b39b5e8cd04e0df6",
+  "rawResponseSha256": "8ff13b3d7feacb989506b61e0b754d6427f752b30b3defc762c62b720e8cb30c",
+  "rawResponseFile": "/mnt/disks/scratch/task-scratch/seerrng-review-window-650-700-422072-20261102/semantic-output/responses/existing-es-client-0099-attempt-2.json"
+}

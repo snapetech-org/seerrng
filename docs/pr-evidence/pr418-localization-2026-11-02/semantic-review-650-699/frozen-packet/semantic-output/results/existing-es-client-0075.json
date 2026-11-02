@@ -1,0 +1,204 @@
+{
+  "schemaVersion": 1,
+  "repository": "snapetech-org/seerrng",
+  "pullRequest": 418,
+  "head": "5a4342176a8325c371a35d489cb01c58283bc983",
+  "tree": "98cd64952123c9b678e38250e7819cabb4476448",
+  "semanticManifestSha256": "3ea74cc6491aecddf9ffcedc69610f13d20b199059aef69bb3c2407feb0826ea",
+  "cellPlanSha256": "97c3402252a34aaa4f8f9f44a691281d9c35ff7b80d7edb3a26c752436af6558",
+  "retiredCellsSha256": "dc5ec05547e4da3079c0668f82a52da7999d89ef9d4f037c1cd72af9347ebd83",
+  "sourceBundleManifestSha256": "212491482d1b9207fed755af6e80ac80a97184ec8dbe84d0c4ad2bd711acae0d",
+  "sourceRowsSha256": "ad91236a31e32f199ff449f9ed4597ea6af0f5a4eff32772cefa84278cafb68c",
+  "sourceCellsSha256": "8bfcd1aa9b5d5aba4fb6317c194cd544d601543ebf250899a84a719b52e468e1",
+  "planRows": 115260,
+  "actions": {
+    "semantic-review-required": 114783,
+    "reuse-equivalence-decision": 477
+  },
+  "retiredRows": 48,
+  "reusableEquivalenceCells": 477,
+  "targetsApplied": false,
+  "batchId": "existing-es-client-0075",
+  "batchSha256": "0eaa15a41894151d191d76d9e8645fd9883973eadc7f3cb4d6b44221a1907f89",
+  "rowCount": 32,
+  "model": "qwen3.8-27b-heretic:q4km",
+  "attempt": 2,
+  "decisions": [
+    {
+      "id": "components.PermissionEdit.autoapproveDescription",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.PermissionEdit.autoapproveMagazines",
+      "verdict": "correct",
+      "target": "Aprobar revistas automáticamente",
+      "confidence": "high",
+      "reason": "The source is a UI label 'Auto-Approve Magazines'. The target 'Revistas Auto-Approve' leaves the English verb untranslated and uses an unnatural word order for a Spanish UI label. 'Aprobar revistas automáticamente' is the standard, natural phrasing."
+    },
+    {
+      "id": "components.PermissionEdit.autoapproveMagazinesDescription",
+      "verdict": "correct",
+      "target": "Conceder aprobación automática para las solicitudes de revistas.",
+      "confidence": "high",
+      "reason": "The source uses the imperative 'Grant'. The target uses 'Aceptar' (Accept), which changes the meaning from granting a permission to accepting an action. 'Conceder' is the correct translation for 'Grant' in this permission context, consistent with other descriptions."
+    },
+    {
+      "id": "components.PermissionEdit.autoapproveMovies",
+      "verdict": "correct",
+      "target": "Aprobar películas automáticamente",
+      "confidence": "high",
+      "reason": "The target 'Auto-Aprueba Películas' is grammatically incorrect (conjugating 'auto' as a verb) and unnatural. 'Aprobar películas automáticamente' is the correct, natural UI label."
+    },
+    {
+      "id": "components.PermissionEdit.autoapproveMoviesDescription",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.PermissionEdit.autoapproveMusic",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.PermissionEdit.autoapproveMusicDescription",
+      "verdict": "correct",
+      "target": "Conceder aprobación automática para las solicitudes de música.",
+      "confidence": "high",
+      "reason": "The target uses 'Aceptar' (Accept) instead of 'Conceder' (Grant), which misrepresents the action of granting a permission. 'Conceder' is consistent with the source and other similar descriptions."
+    },
+    {
+      "id": "components.PermissionEdit.autoapproveSeries",
+      "verdict": "correct",
+      "target": "Aprobar series automáticamente",
+      "confidence": "high",
+      "reason": "The target 'Auto-Aprueba Series' is grammatically incorrect and unnatural. 'Aprobar series automáticamente' is the correct, natural UI label."
+    },
+    {
+      "id": "components.PermissionEdit.autoapproveSeriesDescription",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.PermissionEdit.autoapproveSports",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.PermissionEdit.autoapproveSportsDescription",
+      "verdict": "correct",
+      "target": "Conceder aprobación automática para las solicitudes de ligas deportivas.",
+      "confidence": "high",
+      "reason": "The target uses 'Aceptar' (Accept) instead of 'Conceder' (Grant). Additionally, 'solicitudes de liga deportiva' is slightly awkward; 'solicitudes de ligas deportivas' is more natural for 'sports league requests'."
+    },
+    {
+      "id": "components.PermissionEdit.autorequest",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.PermissionEdit.autorequestBooks",
+      "verdict": "correct",
+      "target": "Solicitar libros automáticamente",
+      "confidence": "high",
+      "reason": "The target 'Libros Auto-Solicitud' is an unnatural calque. 'Solicitar libros automáticamente' is the natural and correct UI label for 'Auto-Request Books'."
+    },
+    {
+      "id": "components.PermissionEdit.autorequestBooksDescription",
+      "verdict": "correct",
+      "target": "Conceder permiso para enviar automáticamente solicitudes de libros a través de listas de seguimiento.",
+      "confidence": "high",
+      "reason": "'Listas de vigilancia' (surveillance lists) is an incorrect translation for 'watchlists' in a media context. 'Listas de seguimiento' is the standard term for watchlists."
+    },
+    {
+      "id": "components.PermissionEdit.autorequestComics",
+      "verdict": "correct",
+      "target": "Solicitar cómics automáticamente",
+      "confidence": "high",
+      "reason": "The target 'Cómics de solicitud automática' is an unnatural calque. 'Solicitar cómics automáticamente' is the natural and correct UI label."
+    },
+    {
+      "id": "components.PermissionEdit.autorequestComicsDescription",
+      "verdict": "correct",
+      "target": "Conceder permiso para enviar automáticamente solicitudes de cómics a través de listas de seguimiento.",
+      "confidence": "high",
+      "reason": "The target contains two errors: 'solicitudes cómicas' is grammatically incorrect (should be 'solicitudes de cómics'), and 'listas de relojes' (clock lists) is a mistranslation of 'watchlists'."
+    },
+    {
+      "id": "components.PermissionEdit.autorequestDescription",
+      "verdict": "correct",
+      "target": "Conceder permiso para enviar automáticamente solicitudes de medios no 4K a través de listas de seguimiento.",
+      "confidence": "high",
+      "reason": "'Listas de vigilancia' is an incorrect translation for 'watchlists'. 'Listas de seguimiento' is the standard term."
+    },
+    {
+      "id": "components.PermissionEdit.autorequestMagazines",
+      "verdict": "correct",
+      "target": "Solicitar revistas automáticamente",
+      "confidence": "high",
+      "reason": "The target 'Revistas de solicitud automática' is an unnatural calque. 'Solicitar revistas automáticamente' is the natural and correct UI label."
+    },
+    {
+      "id": "components.PermissionEdit.autorequestMagazinesDescription",
+      "verdict": "correct",
+      "target": "Conceder permiso para enviar automáticamente solicitudes de revistas a través de listas de seguimiento.",
+      "confidence": "high",
+      "reason": "'Listas de vigilancia' is an incorrect translation for 'watchlists'. 'Listas de seguimiento' is the standard term."
+    },
+    {
+      "id": "components.PermissionEdit.autorequestMovies",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.PermissionEdit.autorequestMoviesDescription",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.PermissionEdit.autorequestMusic",
+      "verdict": "correct",
+      "target": "Solicitar música automáticamente",
+      "confidence": "high",
+      "reason": "The target 'Música de Auto-Solicitud' is an unnatural calque. 'Solicitar música automáticamente' is the natural and correct UI label."
+    },
+    {
+      "id": "components.PermissionEdit.autorequestMusicDescription",
+      "verdict": "correct",
+      "target": "Conceder permiso para enviar automáticamente solicitudes de música a través de listas de seguimiento.",
+      "confidence": "high",
+      "reason": "'Listas de relojes' (clock lists) is a mistranslation of 'watchlists'. 'Listas de seguimiento' is the standard term."
+    },
+    {
+      "id": "components.PermissionEdit.autorequestSeries",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.PermissionEdit.autorequestSeriesDescription",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.PermissionEdit.blocklistedItems",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.PermissionEdit.blocklistedItemsDescription",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.PermissionEdit.createissues",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.PermissionEdit.createissuesDescription",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.PermissionEdit.manageblocklist",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.PermissionEdit.manageblocklistDescription",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.PermissionEdit.managedownloads",
+      "verdict": "keep"
+    }
+  ],
+  "decisionsSha256": "9c8c1477ffc0a5e98d6979f5d3e631432f3c7cddc2039a4ddfb7aaefdb889a2e",
+  "rawResponseSha256": "f9ef846ed802574ff50e59a7d30a2e7cf29255132b108df7864947a0b94f37a3",
+  "rawResponseFile": "/mnt/disks/scratch/task-scratch/seerrng-review-window-650-700-422072-20261102/semantic-output/responses/existing-es-client-0075-attempt-2.json"
+}

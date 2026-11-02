@@ -1,0 +1,168 @@
+{
+  "schemaVersion": 1,
+  "repository": "snapetech-org/seerrng",
+  "pullRequest": 418,
+  "head": "5a4342176a8325c371a35d489cb01c58283bc983",
+  "tree": "98cd64952123c9b678e38250e7819cabb4476448",
+  "semanticManifestSha256": "3ea74cc6491aecddf9ffcedc69610f13d20b199059aef69bb3c2407feb0826ea",
+  "cellPlanSha256": "97c3402252a34aaa4f8f9f44a691281d9c35ff7b80d7edb3a26c752436af6558",
+  "retiredCellsSha256": "dc5ec05547e4da3079c0668f82a52da7999d89ef9d4f037c1cd72af9347ebd83",
+  "sourceBundleManifestSha256": "212491482d1b9207fed755af6e80ac80a97184ec8dbe84d0c4ad2bd711acae0d",
+  "sourceRowsSha256": "ad91236a31e32f199ff449f9ed4597ea6af0f5a4eff32772cefa84278cafb68c",
+  "sourceCellsSha256": "8bfcd1aa9b5d5aba4fb6317c194cd544d601543ebf250899a84a719b52e468e1",
+  "planRows": 115260,
+  "actions": {
+    "semantic-review-required": 114783,
+    "reuse-equivalence-decision": 477
+  },
+  "retiredRows": 48,
+  "reusableEquivalenceCells": 477,
+  "targetsApplied": false,
+  "batchId": "existing-es-client-0068",
+  "batchSha256": "31f445497508363a6d05346c6fd28f60f33e9d778ecc7852e5dd44587507391b",
+  "rowCount": 32,
+  "model": "qwen3.8-27b-heretic:q4km",
+  "attempt": 1,
+  "decisions": [
+    {
+      "id": "components.MovieDetails.Layout.minutes",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.MovieDetails.Layout.movieDetails",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.MovieDetails.Layout.noCast",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.MovieDetails.Layout.noCrew",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.MovieDetails.Layout.noTags",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.MovieDetails.Layout.notAvailable",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.MovieDetails.Layout.overview",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.MovieDetails.Layout.overviewUnavailable",
+      "verdict": "correct",
+      "target": "Sinopsis no disponible",
+      "confidence": "high",
+      "reason": "The source 'Overview unavailable' indicates the content is missing, but the target 'Sinopsis disponible' incorrectly states it is available. The negation must be preserved."
+    },
+    {
+      "id": "components.MovieDetails.Layout.physical",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.MovieDetails.Layout.quality",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.MovieDetails.Layout.recommendations",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.MovieDetails.Layout.releaseDate",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.MovieDetails.Layout.releaseDates",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.MovieDetails.Layout.requestAndPlayback",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.MovieDetails.Layout.revenue",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.MovieDetails.Layout.runtime",
+      "verdict": "correct",
+      "target": "Duración",
+      "confidence": "high",
+      "reason": "'Hora de correr' is a literal and unnatural translation for 'Runtime' in the context of media metadata. 'Duración' is the standard term for movie duration in Spanish."
+    },
+    {
+      "id": "components.MovieDetails.Layout.screenplay",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.MovieDetails.Layout.similar",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.MovieDetails.Layout.status",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.MovieDetails.Layout.studio",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.MovieDetails.Layout.studios",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.MovieDetails.Layout.subjectTags",
+      "verdict": "correct",
+      "target": "Etiquetas de asunto",
+      "confidence": "high",
+      "reason": "The source is 'Subject Tags' (plural). The target 'Asunto' is singular and omits the concept of 'tags'. 'Etiquetas de asunto' accurately reflects the plural nature and meaning of the source."
+    },
+    {
+      "id": "components.MovieDetails.Layout.theatrical",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.MovieDetails.Layout.ultraHd",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.MovieDetails.Layout.viewCast",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.MovieDetails.Layout.viewCollection",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.MovieDetails.Layout.viewCrew",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.MovieDetails.MovieCast.fullcast",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.MovieDetails.MovieCrew.fullcrew",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.MovieDetails.addtowatchlist",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.MovieDetails.managemovie",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.MovieDetails.recommendations",
+      "verdict": "keep"
+    }
+  ],
+  "decisionsSha256": "149d35d85faee322ef83ce014a12484a2b5927eb97838ef311b30542ba9f4521",
+  "rawResponseSha256": "cb43e7ed8de0ae7cd40a1000349d2004da218905456666e6fb648569e1e0f234",
+  "rawResponseFile": "/mnt/disks/scratch/task-scratch/seerrng-review-window-650-700-422072-20261102/semantic-output/responses/existing-es-client-0068-attempt-1.json"
+}

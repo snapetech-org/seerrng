@@ -1,0 +1,171 @@
+{
+  "schemaVersion": 1,
+  "repository": "snapetech-org/seerrng",
+  "pullRequest": 418,
+  "head": "5a4342176a8325c371a35d489cb01c58283bc983",
+  "tree": "98cd64952123c9b678e38250e7819cabb4476448",
+  "semanticManifestSha256": "3ea74cc6491aecddf9ffcedc69610f13d20b199059aef69bb3c2407feb0826ea",
+  "cellPlanSha256": "97c3402252a34aaa4f8f9f44a691281d9c35ff7b80d7edb3a26c752436af6558",
+  "retiredCellsSha256": "dc5ec05547e4da3079c0668f82a52da7999d89ef9d4f037c1cd72af9347ebd83",
+  "sourceBundleManifestSha256": "212491482d1b9207fed755af6e80ac80a97184ec8dbe84d0c4ad2bd711acae0d",
+  "sourceRowsSha256": "ad91236a31e32f199ff449f9ed4597ea6af0f5a4eff32772cefa84278cafb68c",
+  "sourceCellsSha256": "8bfcd1aa9b5d5aba4fb6317c194cd544d601543ebf250899a84a719b52e468e1",
+  "planRows": 115260,
+  "actions": {
+    "semantic-review-required": 114783,
+    "reuse-equivalence-decision": 477
+  },
+  "retiredRows": 48,
+  "reusableEquivalenceCells": 477,
+  "targetsApplied": false,
+  "batchId": "existing-es-client-0069",
+  "batchSha256": "dfbce2b5aade1c2beb6f1912230db95e3e9d4e8d0de6db79ee9eecfb87af4053",
+  "rowCount": 32,
+  "model": "qwen3.8-27b-heretic:q4km",
+  "attempt": 1,
+  "decisions": [
+    {
+      "id": "components.MovieDetails.removefromwatchlist",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.MovieDetails.reportissue",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.MovieDetails.similar",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.MovieDetails.watchlistDeleted",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.MovieDetails.watchlistError",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.MovieDetails.watchlistSuccess",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.MovieDetails.watchtrailer",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.MovieSummaryCard.availabilityHidden",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.MovieSummaryCard.genres",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.MovieSummaryCard.hd",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.MovieSummaryCard.mediaAndFormat",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.MovieSummaryCard.minutes",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.MovieSummaryCard.notAvailable",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.MovieSummaryCard.ratings",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.MovieSummaryCard.releaseDate",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.MovieSummaryCard.runtime",
+      "verdict": "correct",
+      "target": "Duración",
+      "confidence": "high",
+      "reason": "'Hora de correr' is a literal and unnatural translation for 'Runtime' in media contexts; 'Duración' is the standard UI term."
+    },
+    {
+      "id": "components.MovieSummaryCard.screenplay",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.MovieSummaryCard.sharedAvailability",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.MovieSummaryCard.sharedFormat",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.MovieSummaryCard.studio",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.MovieSummaryCard.ultraHd",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.MovieSummaryCard.watched",
+      "verdict": "correct",
+      "target": "Visto",
+      "confidence": "high",
+      "reason": "'Vigilado' implies surveillance or monitoring; 'Visto' is the correct term for content that has been watched."
+    },
+    {
+      "id": "components.MusicArtistFilter.artist",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.MusicArtistFilter.empty",
+      "verdict": "correct",
+      "target": "No hay artistas coincidentes",
+      "confidence": "high",
+      "reason": "'No hay artistas iguales' is unnatural; 'coincidentes' or 'que coincidan' is the standard phrasing for search results."
+    },
+    {
+      "id": "components.MusicArtistFilter.failed",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.MusicArtistFilter.placeholder",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.MusicArtistFilter.start",
+      "verdict": "correct",
+      "target": "Empieza a escribir para buscar.",
+      "confidence": "high",
+      "reason": "The preposition 'a' before the infinitive 'buscar' is grammatically incorrect; 'para' is required to express purpose."
+    },
+    {
+      "id": "components.MusicCollectionFilters.any",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.MusicCollectionFilters.clear",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.MusicCollectionFilters.genre",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.MusicCollectionFilters.label",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.MusicCollectionFilters.loading",
+      "verdict": "keep"
+    }
+  ],
+  "decisionsSha256": "d96c15f9925c4992a0a80eb02591fb903fee85092e96401133b26387052c5767",
+  "rawResponseSha256": "5fc001db00d94a516bf30ba61fc8b7491fe122a1b5298945d82c178352c54361",
+  "rawResponseFile": "/mnt/disks/scratch/task-scratch/seerrng-review-window-650-700-422072-20261102/semantic-output/responses/existing-es-client-0069-attempt-1.json"
+}

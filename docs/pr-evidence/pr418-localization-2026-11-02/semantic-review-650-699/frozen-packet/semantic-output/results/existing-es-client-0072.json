@@ -1,0 +1,198 @@
+{
+  "schemaVersion": 1,
+  "repository": "snapetech-org/seerrng",
+  "pullRequest": 418,
+  "head": "5a4342176a8325c371a35d489cb01c58283bc983",
+  "tree": "98cd64952123c9b678e38250e7819cabb4476448",
+  "semanticManifestSha256": "3ea74cc6491aecddf9ffcedc69610f13d20b199059aef69bb3c2407feb0826ea",
+  "cellPlanSha256": "97c3402252a34aaa4f8f9f44a691281d9c35ff7b80d7edb3a26c752436af6558",
+  "retiredCellsSha256": "dc5ec05547e4da3079c0668f82a52da7999d89ef9d4f037c1cd72af9347ebd83",
+  "sourceBundleManifestSha256": "212491482d1b9207fed755af6e80ac80a97184ec8dbe84d0c4ad2bd711acae0d",
+  "sourceRowsSha256": "ad91236a31e32f199ff449f9ed4597ea6af0f5a4eff32772cefa84278cafb68c",
+  "sourceCellsSha256": "8bfcd1aa9b5d5aba4fb6317c194cd544d601543ebf250899a84a719b52e468e1",
+  "planRows": 115260,
+  "actions": {
+    "semantic-review-required": 114783,
+    "reuse-equivalence-decision": 477
+  },
+  "retiredRows": 48,
+  "reusableEquivalenceCells": 477,
+  "targetsApplied": false,
+  "batchId": "existing-es-client-0072",
+  "batchSha256": "09a9f0e8d4f238fd0d334fe603ca092ccb7cd0eb5294dc8bb9dca9017830ca48",
+  "rowCount": 32,
+  "model": "qwen3.8-27b-heretic:q4km",
+  "attempt": 1,
+  "decisions": [
+    {
+      "id": "components.NotificationTypeSelector.mediaAutoApproved",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.NotificationTypeSelector.mediaAutoApprovedDescription",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.NotificationTypeSelector.mediaapproved",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.NotificationTypeSelector.mediaapprovedDescription",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.NotificationTypeSelector.mediaautorequested",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.NotificationTypeSelector.mediaautorequestedDescription",
+      "verdict": "correct",
+      "target": "Reciba notificaciones cuando se envíen automáticamente nuevas solicitudes de medios para elementos de su lista de seguimiento.",
+      "confidence": "high",
+      "reason": "The source uses 'Get notified' (imperative/instruction), but the target used 'Obtenga notificado' (literal and unnatural). 'Reciba notificaciones' is the standard UI phrasing. Also, 'lista de vigilancia' is a mistranslation of 'Watchlist' in this context; 'lista de seguimiento' is the correct term."
+    },
+    {
+      "id": "components.NotificationTypeSelector.mediaavailable",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.NotificationTypeSelector.mediaavailableDescription",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.NotificationTypeSelector.mediadeclined",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.NotificationTypeSelector.mediadeclinedDescription",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.NotificationTypeSelector.mediafailed",
+      "verdict": "correct",
+      "target": "Fallo en el procesamiento de la solicitud",
+      "confidence": "high",
+      "reason": "'Procesamiento de Petición Fallida' is grammatically awkward and implies the request itself failed rather than the processing action. 'Fallo en el procesamiento de la solicitud' is the natural and accurate UI phrasing for a failure status."
+    },
+    {
+      "id": "components.NotificationTypeSelector.mediafailedDescription",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.NotificationTypeSelector.mediarequested",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.NotificationTypeSelector.mediarequestedDescription",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.NotificationTypeSelector.notificationTypes",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.NotificationTypeSelector.softwareStatus",
+      "verdict": "correct",
+      "target": "Actualizaciones de solicitudes de software",
+      "confidence": "high",
+      "reason": "The source 'Software Request Updates' refers to updates regarding software requests. The target 'Actualizaciones de la solicitud de software' implies updates to a single specific request or is ambiguous. 'Actualizaciones de solicitudes de software' correctly conveys the category of notifications."
+    },
+    {
+      "id": "components.NotificationTypeSelector.softwareStatusDescription",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.NotificationTypeSelector.softwareavailable",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.NotificationTypeSelector.softwareavailableDescription",
+      "verdict": "correct",
+      "target": "Reciba notificaciones cuando las ROMs y los juegos de PC solicitados estén listos para descargar.",
+      "confidence": "high",
+      "reason": "The source uses 'Get notified' (imperative), but the target used 'Enviar' (infinitive), which is inconsistent with the user-facing instruction style. 'Reciba notificaciones' is the correct imperative form. Also, 'cuando se solicite ROMs' is grammatically incorrect; 'cuando las ROMs... solicitados estén listos' is accurate."
+    },
+    {
+      "id": "components.NotificationTypeSelector.userSoftwareStatusDescription",
+      "verdict": "correct",
+      "target": "Reciba notificaciones cuando su solicitud de software esté esperando aprobación o sea aprobada, rechazada o falle.",
+      "confidence": "high",
+      "reason": "The source uses 'Get notified' (imperative), but the target used 'Obtenga notificado' (unnatural). 'Reciba notificaciones' is the standard UI phrasing. Also, 'fracasa' is less natural than 'falle' in this technical context."
+    },
+    {
+      "id": "components.NotificationTypeSelector.userissuecommentDescription",
+      "verdict": "correct",
+      "target": "Reciba notificaciones cuando las incidencias que haya reportado reciban nuevos comentarios.",
+      "confidence": "high",
+      "reason": "The source uses 'Get notified' (imperative), but the target used 'Notificame' (informal imperative). For consistency with other UI strings and professional tone, 'Reciba notificaciones' is preferred. Also, 'incidencias que haya abierto' is less precise than 'reportado' which matches 'reported'."
+    },
+    {
+      "id": "components.NotificationTypeSelector.userissuecreatedDescription",
+      "verdict": "correct",
+      "target": "Reciba notificaciones cuando otros usuarios reporten incidencias.",
+      "confidence": "high",
+      "reason": "The source uses 'Get notified' (imperative), but the target used 'Notificame' (informal imperative). 'Reciba notificaciones' is the consistent and professional UI phrasing."
+    },
+    {
+      "id": "components.NotificationTypeSelector.userissuereopenedDescription",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.NotificationTypeSelector.userissueresolvedDescription",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.NotificationTypeSelector.usermediaAutoApprovedDescription",
+      "verdict": "correct",
+      "target": "Reciba notificaciones cuando otros usuarios envíen nuevas solicitudes de medios que se aprueben automáticamente.",
+      "confidence": "high",
+      "reason": "The source uses 'Get notified' (imperative), but the target used 'Notificar' (infinitive). 'Reciba notificaciones' is the correct imperative form for user instructions."
+    },
+    {
+      "id": "components.NotificationTypeSelector.usermediaapprovedDescription",
+      "verdict": "correct",
+      "target": "Reciba notificaciones cuando sus solicitudes de medios sean aprobadas.",
+      "confidence": "high",
+      "reason": "The source uses 'Get notified' (imperative), but the target used 'Notificar' (infinitive). 'Reciba notificaciones' is the correct imperative form. Also, 'sus solicitudes' clarifies ownership as per 'your media requests'."
+    },
+    {
+      "id": "components.NotificationTypeSelector.usermediaavailableDescription",
+      "verdict": "correct",
+      "target": "Reciba notificaciones cuando sus solicitudes de medios estén disponibles.",
+      "confidence": "high",
+      "reason": "The source uses 'Get notified' (imperative), but the target used 'Notificar' (infinitive). 'Reciba notificaciones' is the correct imperative form. Also, 'sus solicitudes de medios' is more precise than 'tus contenidos solicitados'."
+    },
+    {
+      "id": "components.NotificationTypeSelector.usermediadeclinedDescription",
+      "verdict": "correct",
+      "target": "Reciba notificaciones cuando sus solicitudes de medios sean rechazadas.",
+      "confidence": "high",
+      "reason": "The source uses 'Get notified' (imperative), but the target used 'Notificar' (infinitive). 'Reciba notificaciones' is the correct imperative form. Also, 'sus solicitudes de medios' is more precise than 'tus contenidos solicitados'."
+    },
+    {
+      "id": "components.NotificationTypeSelector.usermediafailedDescription",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.NotificationTypeSelector.usermediarequestedDescription",
+      "verdict": "correct",
+      "target": "Reciba notificaciones cuando otros usuarios envíen nuevas solicitudes de medios que requieran aprobación.",
+      "confidence": "high",
+      "reason": "The source uses 'Get notified' (imperative), but the target used 'Notificar' (infinitive). 'Reciba notificaciones' is the correct imperative form."
+    },
+    {
+      "id": "components.NotificationTypeSelector.usersoftwareavailableDescription",
+      "verdict": "correct",
+      "target": "Reciba notificaciones cuando sus ROMs y juegos de PC solicitados estén listos para descargar.",
+      "confidence": "high",
+      "reason": "The source uses 'Get notified' (imperative), but the target used 'Obtenga notificado' (unnatural). 'Reciba notificaciones' is the standard UI phrasing."
+    },
+    {
+      "id": "components.OpenLibraryRating.rating",
+      "verdict": "keep"
+    }
+  ],
+  "decisionsSha256": "9021275ae9f103af4357cefefaac0284268dd9b877dad240addbf99af9bf70d1",
+  "rawResponseSha256": "e0a447df0469642ccfe24f760a2473b0f08fc6cb0ac430a3952d91842211e843",
+  "rawResponseFile": "/mnt/disks/scratch/task-scratch/seerrng-review-window-650-700-422072-20261102/semantic-output/responses/existing-es-client-0072-attempt-1.json"
+}

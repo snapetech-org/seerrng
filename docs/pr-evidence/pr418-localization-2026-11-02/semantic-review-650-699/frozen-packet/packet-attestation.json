@@ -1,0 +1,75 @@
+{
+  "schemaVersion": 1,
+  "repository": "snapetech-org/seerrng",
+  "pullRequest": 418,
+  "liveState": "OPEN/DRAFT",
+  "liveHead": "422072d585074bdd7f8dd3046cbacede69203d6d",
+  "liveTree": "c7f3bffb628464e98188f3c8f8c4950d6038cee6",
+  "sourceCommit": "affd7a87860e3613d5c6842c20eb0b45f3bd062f",
+  "sourceTree": "2471ca52d8b94504879e5842e8ffae920a22e180",
+  "window": {
+    "batchStart": 650,
+    "batchStopExclusive": 700,
+    "batchCount": 50,
+    "cellCount": 1600
+  },
+  "selection": {
+    "firstBatchId": "existing-es-client-0054",
+    "lastBatchId": "existing-es-client-0103",
+    "allSelectedCellsMatchLive": true,
+    "liveCellAttestation": {
+      "livePrHead": "422072d585074bdd7f8dd3046cbacede69203d6d",
+      "livePrTree": "c7f3bffb628464e98188f3c8f8c4950d6038cee6",
+      "selectedBatchCount": 50,
+      "selectedCellCount": 1600,
+      "selectedCellHashesMatchLive": true
+    }
+  },
+  "sourceCatalog": {
+    "path": "src/i18n/locale/en.json",
+    "blob": "12e04a118c30b71b3714291adeaf9fdb2735cee4",
+    "sha256": "75ff3c90b52aedd636a506281ffbd6fb2d3739c61294b6008a517f17647e2316"
+  },
+  "targetCatalog": {
+    "path": "src/i18n/locale/es.json",
+    "blob": "bd957ccf3c2d3287aae2086c4c88a40f6c6c967a",
+    "sha256": "19ab22d6398a536710a09a568043f9233f27cb7d09770cb6666430b674848c59"
+  },
+  "semanticManifestSha256": "3ea74cc6491aecddf9ffcedc69610f13d20b199059aef69bb3c2407feb0826ea",
+  "cellPlanSha256": "97c3402252a34aaa4f8f9f44a691281d9c35ff7b80d7edb3a26c752436af6558",
+  "sourceBundleManifestSha256": "212491482d1b9207fed755af6e80ac80a97184ec8dbe84d0c4ad2bd711acae0d",
+  "decisionCounts": {
+    "keep": 1311,
+    "correct": 283,
+    "uncertain": 6
+  },
+  "batchValidation": {
+    "strictRunnerValidated": 49,
+    "manualExceptionValidated": 1,
+    "strictRunnerExhaustedBatches": 1,
+    "unresolvedBatchesAfterManualValidation": 0
+  },
+  "manualExceptionBatch": "existing-es-client-0094",
+  "manualExceptionCandidateId": "components.RequestModal.QuotaDisplay.quotaLinkUser",
+  "sourceContextCoverage": {
+    "candidateAndHeldIds": 289,
+    "withExactSourceLiteralCallsite": 289,
+    "withoutExactSourceLiteralCallsite": 0,
+    "callsiteRows": 949
+  },
+  "exactHeadAttestation": {
+    "selectedSourceRowsChecked": 1600,
+    "selectedSourceMismatchRows": [],
+    "selectedTargetRowsChecked": 1600,
+    "selectedTargetMismatchRows": [],
+    "sourceContextIdsChecked": 289,
+    "sourceContextIdsMissingExactCallsites": [],
+    "callerPathsChecked": 186,
+    "callerBlobMismatches": [],
+    "callerLineContextsChecked": 949
+  },
+  "nativeSpeakerApproval": false,
+  "targetsApplied": false,
+  "catalogsModified": false,
+  "testsBuildsScansCiRun": false
+}

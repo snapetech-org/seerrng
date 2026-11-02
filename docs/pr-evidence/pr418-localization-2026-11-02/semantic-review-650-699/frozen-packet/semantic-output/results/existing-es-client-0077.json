@@ -1,0 +1,168 @@
+{
+  "schemaVersion": 1,
+  "repository": "snapetech-org/seerrng",
+  "pullRequest": 418,
+  "head": "5a4342176a8325c371a35d489cb01c58283bc983",
+  "tree": "98cd64952123c9b678e38250e7819cabb4476448",
+  "semanticManifestSha256": "3ea74cc6491aecddf9ffcedc69610f13d20b199059aef69bb3c2407feb0826ea",
+  "cellPlanSha256": "97c3402252a34aaa4f8f9f44a691281d9c35ff7b80d7edb3a26c752436af6558",
+  "retiredCellsSha256": "dc5ec05547e4da3079c0668f82a52da7999d89ef9d4f037c1cd72af9347ebd83",
+  "sourceBundleManifestSha256": "212491482d1b9207fed755af6e80ac80a97184ec8dbe84d0c4ad2bd711acae0d",
+  "sourceRowsSha256": "ad91236a31e32f199ff449f9ed4597ea6af0f5a4eff32772cefa84278cafb68c",
+  "sourceCellsSha256": "8bfcd1aa9b5d5aba4fb6317c194cd544d601543ebf250899a84a719b52e468e1",
+  "planRows": 115260,
+  "actions": {
+    "semantic-review-required": 114783,
+    "reuse-equivalence-decision": 477
+  },
+  "retiredRows": 48,
+  "reusableEquivalenceCells": 477,
+  "targetsApplied": false,
+  "batchId": "existing-es-client-0077",
+  "batchSha256": "18291711fa95df3ad6aabc49045f638b8adc5037446f8f54169a67c45e7a83e2",
+  "rowCount": 32,
+  "model": "qwen3.8-27b-heretic:q4km",
+  "attempt": 1,
+  "decisions": [
+    {
+      "id": "components.PermissionEdit.viewblocklistedItemsDescription",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.PermissionEdit.viewissues",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.PermissionEdit.viewissuesDescription",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.PermissionEdit.viewrecent",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.PermissionEdit.viewrecentDescription",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.PermissionEdit.viewrequests",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.PermissionEdit.viewrequestsDescription",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.PermissionEdit.viewwatchlists",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.PermissionEdit.viewwatchlistsDescription",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.PersonDetails.alsoknownas",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.PersonDetails.appearsin",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.PersonDetails.ascharacter",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.PersonDetails.birthdate",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.PersonDetails.crewmember",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.PersonDetails.lifespan",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.PersonDetails.requestAllMovies",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.PersonDetails.requestAllMoviesConfirm",
+      "verdict": "correct",
+      "target": "Solicitar todas",
+      "confidence": "high",
+      "reason": "The source 'Request All' is a button label. The target 'Solicitud All' is a broken hybrid (Spanish noun + English word) and grammatically incorrect. 'Solicitar todas' is the correct imperative form for a UI action."
+    },
+    {
+      "id": "components.PersonDetails.requestAllMoviesDescription",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.PersonDetails.requestAllMoviesFailure",
+      "verdict": "correct",
+      "target": "No se pudieron solicitar películas de esta persona.",
+      "confidence": "high",
+      "reason": "The source 'Could not request' indicates a system failure or inability to perform the action. The target 'No podía pedir' uses the imperfect tense (past habit/ability) and is unnatural for an error message. 'No se pudieron solicitar' is the standard impersonal passive construction for failed actions in UI."
+    },
+    {
+      "id": "components.PersonDetails.requestAllMoviesSuccess",
+      "verdict": "correct",
+      "target": "Se enviaron {created} solicitudes de películas. {skipped} omitidas; {failed} fallidas.",
+      "confidence": "high",
+      "reason": "The target 'Presentado... saltado; falló' uses incorrect verb forms (past participle without auxiliary, singular verbs for plural counts) and awkward phrasing. 'Se enviaron' is the correct passive/impersonal form for success messages. 'Omitidas' and 'fallidas' correctly agree with the plural counts implied by the context of a batch operation."
+    },
+    {
+      "id": "components.PersonDetails.requestAllMoviesTitle",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.QuotaSelector.adultMedia",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.QuotaSelector.adultRequests",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.QuotaSelector.albums",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.QuotaSelector.bookRequests",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.QuotaSelector.books",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.QuotaSelector.comicRequests",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.QuotaSelector.comics",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.QuotaSelector.days",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.QuotaSelector.daysLabel",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.QuotaSelector.magazineRequests",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.QuotaSelector.magazines",
+      "verdict": "keep"
+    }
+  ],
+  "decisionsSha256": "0e7054cebc0f35b83c2e5db97d15c0bd4435480364653de0108ee1d4eba41416",
+  "rawResponseSha256": "6a63d463eb4a48a4e47e3f061bf4af7545f918b719a44954f145ca38a04efbdf",
+  "rawResponseFile": "/mnt/disks/scratch/task-scratch/seerrng-review-window-650-700-422072-20261102/semantic-output/responses/existing-es-client-0077-attempt-1.json"
+}
