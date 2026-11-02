@@ -1,0 +1,14 @@
+{
+  "allPrimaryPriorDispositionFieldsNull": true,
+  "exactHead": "404648643578992e8e12ce9dff47dd92d5ee7c1c",
+  "exactTree": "a17442223e33372e0cc16c3b8091e2515d5e39f3",
+  "note": "Historical rows are not reusable unless exact source and final target hashes match this pinned current cell; the primary ledger reused zero exact prior final dispositions.",
+  "primaryInputManifestSha256": "dc945e616b6b6013cc40104be97cc795985672d9951a8fd9b746edf085fa10b0",
+  "primaryMatchingHistoricalRows": 1212,
+  "primaryPacketManifestSha256": "6e554c3dd517356ad15e8a8dcafdbe16c68343d435363fbcefe7faaf5564e049",
+  "priorFinalDispositionsReused": 0,
+  "scopePositions": [
+    2100,
+    2199
+  ]
+}

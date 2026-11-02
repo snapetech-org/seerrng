@@ -1,0 +1,52 @@
+{
+  "additionalMissedCorrections": 8,
+  "allChecksPassed": true,
+  "boundaryCellsReattested": 24,
+  "boundaryPositions": [
+    2099,
+    2200
+  ],
+  "branchHeadAtStartAndFinish": "404648643578992e8e12ce9dff47dd92d5ee7c1c",
+  "browserActionsRun": false,
+  "callerFiles": 12,
+  "callerRefsReattested": 310,
+  "candidateOutcomes": {
+    "accept-primary-candidate": 177,
+    "revise-primary-candidate": 1
+  },
+  "cellsReattested": 1200,
+  "checkCount": 2829,
+  "currentMarkupMismatchCells": 0,
+  "currentPlaceholderMismatchCells": 0,
+  "currentProtectedLiteralMismatchCells": 10,
+  "exactHeadDeployments": 0,
+  "exactHeadStatusChecks": 0,
+  "finalMarkupMismatchCells": 0,
+  "finalPlaceholderMismatchCells": 0,
+  "finalProtectedLiteralMismatchCells": 0,
+  "headCommit": "404648643578992e8e12ce9dff47dd92d5ee7c1c",
+  "independentCellDispositions": {
+    "accept-current": 1014,
+    "accept-primary-candidate": 177,
+    "propose-additional-correction": 8,
+    "revise-primary-candidate": 1
+  },
+  "locales": 12,
+  "nativeSpeakerReview": "outstanding",
+  "primaryCandidates": 178,
+  "pullRequest": 418,
+  "queuedOutOfWindowCallerFollowups": 1,
+  "readOnly": true,
+  "repoOrPrWrites": false,
+  "repository": "snapetech-org/SeerrNG",
+  "result": "INDEPENDENT_CROSS_REVIEW_COMPLETE_PENDING_APPLICATION_AND_NATIVE_SPEAKER_REVIEW",
+  "sourceIds": 100,
+  "sourcePositions": [
+    2100,
+    2199
+  ],
+  "testsBuildsCiRun": false,
+  "tree": "a17442223e33372e0cc16c3b8091e2515d5e39f3",
+  "uniqueCallerLinePinsReattested": 291,
+  "workflowFilesTouched": false
+}

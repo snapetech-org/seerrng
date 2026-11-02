@@ -1,0 +1,1255 @@
+{
+  "candidateCount": 178,
+  "candidateTargets": [
+    {
+      "candidateTarget": "تاريخ الإصدار",
+      "candidateTargetHash": "4e5892a34a0649e9813d5f894db4f132893819c0fe0414e768664e91d3fa179a",
+      "locale": "ar",
+      "sourceId": "components.MediaDetails.SeasonEpisodeTree.releaseDate",
+      "sourcePosition": 2112
+    },
+    {
+      "candidateTarget": "Auswählen",
+      "candidateTargetHash": "0bf1eddb22bf4cfaf016d040423e7873aec47db1acce9bf57e2a467270c8be56",
+      "locale": "de",
+      "sourceId": "components.MediaDetails.SeasonEpisodeTree.select",
+      "sourcePosition": 2120
+    },
+    {
+      "candidateTarget": "غير مُشاهدة",
+      "candidateTargetHash": "c610c46db52276e1173cb338f1832ba3581156a297ab67b81831de209c19aaea",
+      "locale": "ar",
+      "sourceId": "components.MediaDetails.SeasonEpisodeTree.unwatched",
+      "sourcePosition": 2131
+    },
+    {
+      "candidateTarget": "Non regardé",
+      "candidateTargetHash": "7b1a9c9d60bc7631782ed61d1d01407dece2e94197c918415f97c1d84f6c5109",
+      "locale": "fr",
+      "sourceId": "components.MediaDetails.SeasonEpisodeTree.unwatched",
+      "sourcePosition": 2131
+    },
+    {
+      "candidateTarget": "Belum ditonton",
+      "candidateTargetHash": "acdb5baba0a84756cbe6164cf2ba6df6a7213be7e4a2d0db494f628826dc916b",
+      "locale": "id",
+      "sourceId": "components.MediaDetails.SeasonEpisodeTree.unwatched",
+      "sourcePosition": 2131
+    },
+    {
+      "candidateTarget": "تمت المشاهدة",
+      "candidateTargetHash": "dafaeac1139ceb0e4cadd145a18c9d20735df330e71a4809b5bafa4589178118",
+      "locale": "ar",
+      "sourceId": "components.MediaDetails.SeasonEpisodeTree.watched",
+      "sourcePosition": 2135
+    },
+    {
+      "candidateTarget": "Regardé",
+      "candidateTargetHash": "769e9d45570eb02a7d9185dedc753b491315a44dd32453ec059cdd0649432d9e",
+      "locale": "fr",
+      "sourceId": "components.MediaDetails.SeasonEpisodeTree.watched",
+      "sourcePosition": 2135
+    },
+    {
+      "candidateTarget": "देखा जा चुका",
+      "candidateTargetHash": "7ce917e50bc2ded32edf6e45daa2642d6536859aff7865c4d1f99e66cbcf2428",
+      "locale": "hi",
+      "sourceId": "components.MediaDetails.SeasonEpisodeTree.watched",
+      "sourcePosition": 2135
+    },
+    {
+      "candidateTarget": "Sudah ditonton",
+      "candidateTargetHash": "b8f5e30402d7382ac3a8c520e140ce688618d6ac8abc220ffd554b99e99c41bb",
+      "locale": "id",
+      "sourceId": "components.MediaDetails.SeasonEpisodeTree.watched",
+      "sourcePosition": 2135
+    },
+    {
+      "candidateTarget": "تعذّر تحميل الحلقات",
+      "candidateTargetHash": "ec1ed3a260604a61d689dcf8ab331c23ff1b0bc03a7ab805a629c0d0ec0a82b5",
+      "locale": "ar",
+      "sourceId": "components.MediaDetails.SeriesBrowser.loadError",
+      "sourcePosition": 2136
+    },
+    {
+      "candidateTarget": "एपिसोड लोड नहीं हो सके",
+      "candidateTargetHash": "8a8180e38dee6f628ba015eea6b8ea8b20ca535b16f562d07628bfe4d9df3684",
+      "locale": "hi",
+      "sourceId": "components.MediaDetails.SeriesBrowser.loadError",
+      "sourcePosition": 2136
+    },
+    {
+      "candidateTarget": "Episode tidak dapat dimuat.",
+      "candidateTargetHash": "02b7a1b03062aef2042b2a0f2e73bbb8c26594641e43a08868a6a1906e015c05",
+      "locale": "id",
+      "sourceId": "components.MediaDetails.SeriesBrowser.loadError",
+      "sourcePosition": 2136
+    },
+    {
+      "candidateTarget": "에피소드를 불러올 수 없습니다.",
+      "candidateTargetHash": "f7e3b0ff205cd52cb251d3f1b04b32263430ac0c31606e187bcdd0ce3817ad65",
+      "locale": "ko",
+      "sourceId": "components.MediaDetails.SeriesBrowser.loadError",
+      "sourcePosition": 2136
+    },
+    {
+      "candidateTarget": "Não foi possível carregar os episódios.",
+      "candidateTargetHash": "e6459414d5f96f32b4ba32ca52ca1f45552cf023f2c7345e31721bdc5dde26c7",
+      "locale": "pt_BR",
+      "sourceId": "components.MediaDetails.SeriesBrowser.loadError",
+      "sourcePosition": 2136
+    },
+    {
+      "candidateTarget": "无法加载剧集",
+      "candidateTargetHash": "9c44ad5e72e625ce828035bcf142323e094575008b454f6a15f5b0acf8d7cfff",
+      "locale": "zh_Hans",
+      "sourceId": "components.MediaDetails.SeriesBrowser.loadError",
+      "sourcePosition": 2136
+    },
+    {
+      "candidateTarget": "無法載入劇集",
+      "candidateTargetHash": "e14d3b699b300bd5fd91938db668c1b6e0c3294ca594458b46cc5ff7253eba23",
+      "locale": "zh_Hant",
+      "sourceId": "components.MediaDetails.SeriesBrowser.loadError",
+      "sourcePosition": 2136
+    },
+    {
+      "candidateTarget": "تعذّر جلب معلومات الحلقات. يُرجى المحاولة مرة أخرى.",
+      "candidateTargetHash": "313e829fbb6d460682baa3ad7c928ebf847b325b0276cc1f10dda38194be9fdc",
+      "locale": "ar",
+      "sourceId": "components.MediaDetails.SeriesBrowser.loadErrorHint",
+      "sourcePosition": 2137
+    },
+    {
+      "candidateTarget": "एपिसोड की जानकारी प्राप्त नहीं की जा सकी। कृपया फिर से प्रयास करें।",
+      "candidateTargetHash": "c8fecfa9321b60028c975f5ebda6ad7f16eaace4ec7df4c6e061156ac7f8745f",
+      "locale": "hi",
+      "sourceId": "components.MediaDetails.SeriesBrowser.loadErrorHint",
+      "sourcePosition": 2137
+    },
+    {
+      "candidateTarget": "에피소드 정보를 가져오지 못했습니다. 다시 시도해 주세요.",
+      "candidateTargetHash": "c5d0f5afb1bfff732c44a9dd7d3f32c1e04ae57ee98265fd14b2ca042d25040c",
+      "locale": "ko",
+      "sourceId": "components.MediaDetails.SeriesBrowser.loadErrorHint",
+      "sourcePosition": 2137
+    },
+    {
+      "candidateTarget": "Không thể tải thông tin tập phim. Vui lòng thử lại.",
+      "candidateTargetHash": "31c487abfc53f2059ea330150d69e688739f6a393712b6d21ede980b2fa521ae",
+      "locale": "vi",
+      "sourceId": "components.MediaDetails.SeriesBrowser.loadErrorHint",
+      "sourcePosition": 2137
+    },
+    {
+      "candidateTarget": "无法获取剧集信息，请重试。",
+      "candidateTargetHash": "3b49ea0942eb7e6c1d207383839938b02998a2a9ce06a17503ac38a1e22f5373",
+      "locale": "zh_Hans",
+      "sourceId": "components.MediaDetails.SeriesBrowser.loadErrorHint",
+      "sourcePosition": 2137
+    },
+    {
+      "candidateTarget": "無法取得劇集資訊，請再試一次。",
+      "candidateTargetHash": "75d0c9edf4feca7912f108d4336debb2d06559ebefe803df181576922430b261",
+      "locale": "zh_Hant",
+      "sourceId": "components.MediaDetails.SeriesBrowser.loadErrorHint",
+      "sourcePosition": 2137
+    },
+    {
+      "candidateTarget": "أعِد تحميل معلومات المواسم والحلقات دون تغيير اختيارك للتشغيل.",
+      "candidateTargetHash": "6907a3c07b4c0f35b5755f9121ab2b459e8bb9206483c0f633107a1e03c76a09",
+      "locale": "ar",
+      "sourceId": "components.MediaDetails.SeriesBrowser.retryEpisodesTooltip",
+      "sourcePosition": 2139
+    },
+    {
+      "candidateTarget": "Muat ulang data musim dan episode tanpa mengubah pilihan pemutaran Anda.",
+      "candidateTargetHash": "bd77fa42b45dd829bcd2be9c9ea7cae44f968609cb810a773e6c2457b5fc12b6",
+      "locale": "id",
+      "sourceId": "components.MediaDetails.SeriesBrowser.retryEpisodesTooltip",
+      "sourcePosition": 2139
+    },
+    {
+      "candidateTarget": "再生の選択を変更せずに、シーズンとエピソードを再取得します。",
+      "candidateTargetHash": "75a03aef1511e05bd7163f614084938f8b395b5d70b646377027819b325610b7",
+      "locale": "ja",
+      "sourceId": "components.MediaDetails.SeriesBrowser.retryEpisodesTooltip",
+      "sourcePosition": 2139
+    },
+    {
+      "candidateTarget": "재생 선택을 변경하지 않고 시즌 및 에피소드 정보를 다시 불러옵니다.",
+      "candidateTargetHash": "bda1de5ec1561c219d7d3a5760114a19e7b498f0696d1afd71df3dbc74b1e3d5",
+      "locale": "ko",
+      "sourceId": "components.MediaDetails.SeriesBrowser.retryEpisodesTooltip",
+      "sourcePosition": 2139
+    },
+    {
+      "candidateTarget": "Busque as temporadas e os episódios novamente sem alterar sua seleção de reprodução.",
+      "candidateTargetHash": "d5a26ca0f51b8db9285d4df7d7041da06e80fb6eabb12666c0baef84e3a835cf",
+      "locale": "pt_BR",
+      "sourceId": "components.MediaDetails.SeriesBrowser.retryEpisodesTooltip",
+      "sourcePosition": 2139
+    },
+    {
+      "candidateTarget": "Tải lại thông tin các mùa và tập mà không thay đổi lựa chọn phát của bạn.",
+      "candidateTargetHash": "7295ea17816eee99a8925cf1c1563aa650b73d33926b64bb81694f9adb75d9ea",
+      "locale": "vi",
+      "sourceId": "components.MediaDetails.SeriesBrowser.retryEpisodesTooltip",
+      "sourcePosition": 2139
+    },
+    {
+      "candidateTarget": "在不更改播放选择的情况下重新获取各季和各集的信息。",
+      "candidateTargetHash": "7c6be4c91d7cb106969f5ed86e5dbc4c69e1ea03f70dfb9ee837548b0d44d1f5",
+      "locale": "zh_Hans",
+      "sourceId": "components.MediaDetails.SeriesBrowser.retryEpisodesTooltip",
+      "sourcePosition": 2139
+    },
+    {
+      "candidateTarget": "在不變更播放選取內容的情況下，重新取得各季與各集的資訊。",
+      "candidateTargetHash": "da6c23bb9bcd1cee2f3a00324ffcbb7ff961e39bcaeed520f4cb36ce97dab1fc",
+      "locale": "zh_Hant",
+      "sourceId": "components.MediaDetails.SeriesBrowser.retryEpisodesTooltip",
+      "sourcePosition": 2139
+    },
+    {
+      "candidateTarget": "بلا عنوان",
+      "candidateTargetHash": "d2c61971b03d80e75e6475c91ecd8b19e2685c1a8860596226c791ae7d8605a2",
+      "locale": "ar",
+      "sourceId": "components.MediaDetails.SeriesBrowser.untitled",
+      "sourcePosition": 2142
+    },
+    {
+      "candidateTarget": "無題",
+      "candidateTargetHash": "6ada6dbdde3effdd961d65ad1f3c05c69370cc28fbe2e0e4ac8a3c44acff0bf6",
+      "locale": "ja",
+      "sourceId": "components.MediaDetails.SeriesBrowser.untitled",
+      "sourcePosition": 2142
+    },
+    {
+      "candidateTarget": "Muat ulang {title}",
+      "candidateTargetHash": "20f57bf9aec8ec7c6f7320fda2e470e59eff6002eff3b4708a673f58952d6558",
+      "locale": "id",
+      "sourceId": "components.MediaSlider.refreshTitle",
+      "sourcePosition": 2147
+    },
+    {
+      "candidateTarget": "{title} 새로고침",
+      "candidateTargetHash": "3ed84ad3b275833ab62f2c770bf31c3bf60efeaf9a10bd4a2b2aa255983262e9",
+      "locale": "ko",
+      "sourceId": "components.MediaSlider.refreshTitle",
+      "sourcePosition": 2147
+    },
+    {
+      "candidateTarget": "Atualizar {title}",
+      "candidateTargetHash": "8fd4fae2aedbb927398b5f97f7730ac171b6c679ff1cfc8bd2804db5fbe6c21c",
+      "locale": "pt_BR",
+      "sourceId": "components.MediaSlider.refreshTitle",
+      "sourcePosition": 2147
+    },
+    {
+      "candidateTarget": "Làm mới {title}",
+      "candidateTargetHash": "a94dd0df8fb1dd3e374d3e83f6b9f9ffebc3ecb579bd9c840eb3f7d5d6395898",
+      "locale": "vi",
+      "sourceId": "components.MediaSlider.refreshTitle",
+      "sourcePosition": 2147
+    },
+    {
+      "candidateTarget": "TMDB उपलब्ध नहीं है। सहेजे गए परिणाम दिखाए जा रहे हैं।",
+      "candidateTargetHash": "298eef841fcd62052c78242a822994fafb8745ea6234c0c3df6c8c0cef4273a0",
+      "locale": "hi",
+      "sourceId": "components.MediaSlider.showingSavedResults",
+      "sourcePosition": 2148
+    },
+    {
+      "candidateTarget": "TMDB를 사용할 수 없습니다. 저장된 결과를 표시합니다.",
+      "candidateTargetHash": "ead63e4cfbdcbdf1945b8a7d29f2f05cf7bd159a8aeeb2ce97efad1b2e576987",
+      "locale": "ko",
+      "sourceId": "components.MediaSlider.showingSavedResults",
+      "sourcePosition": 2148
+    },
+    {
+      "candidateTarget": "TMDB không khả dụng. Đang hiển thị kết quả đã lưu.",
+      "candidateTargetHash": "5d30001fd2049c655041355718d751dab04da07c1b7b90811d9a131e6d7c86c9",
+      "locale": "vi",
+      "sourceId": "components.MediaSlider.showingSavedResults",
+      "sourcePosition": 2148
+    },
+    {
+      "candidateTarget": "TMDB 不可用。现显示已保存的结果。",
+      "candidateTargetHash": "b331b94ddf83aa7f50ebac21a461fcb6c689fafd2a9368364cc650667f673b6b",
+      "locale": "zh_Hans",
+      "sourceId": "components.MediaSlider.showingSavedResults",
+      "sourcePosition": 2148
+    },
+    {
+      "candidateTarget": "TMDB 無法使用。正在顯示已儲存的結果。",
+      "candidateTargetHash": "58d57bc13f0ce7180af05960e1f5edac83a527ed18037b2801958cf3e4569746",
+      "locale": "zh_Hant",
+      "sourceId": "components.MediaSlider.showingSavedResults",
+      "sourcePosition": 2148
+    },
+    {
+      "candidateTarget": "The Movie Database (TMDB)",
+      "candidateTargetHash": "127aa67cd3b65efaad862b3fd5d8166c88e785c7401c59fe0384ddc7e502caac",
+      "locale": "ar",
+      "sourceId": "components.MetadataSelector.tmdbLabel",
+      "sourcePosition": 2152
+    },
+    {
+      "candidateTarget": "The Movie Database (TMDB)",
+      "candidateTargetHash": "127aa67cd3b65efaad862b3fd5d8166c88e785c7401c59fe0384ddc7e502caac",
+      "locale": "fr",
+      "sourceId": "components.MetadataSelector.tmdbLabel",
+      "sourcePosition": 2152
+    },
+    {
+      "candidateTarget": "The Movie Database (TMDB)",
+      "candidateTargetHash": "127aa67cd3b65efaad862b3fd5d8166c88e785c7401c59fe0384ddc7e502caac",
+      "locale": "hi",
+      "sourceId": "components.MetadataSelector.tmdbLabel",
+      "sourcePosition": 2152
+    },
+    {
+      "candidateTarget": "The Movie Database (TMDB)",
+      "candidateTargetHash": "127aa67cd3b65efaad862b3fd5d8166c88e785c7401c59fe0384ddc7e502caac",
+      "locale": "id",
+      "sourceId": "components.MetadataSelector.tmdbLabel",
+      "sourcePosition": 2152
+    },
+    {
+      "candidateTarget": "The Movie Database (TMDB)",
+      "candidateTargetHash": "127aa67cd3b65efaad862b3fd5d8166c88e785c7401c59fe0384ddc7e502caac",
+      "locale": "ja",
+      "sourceId": "components.MetadataSelector.tmdbLabel",
+      "sourcePosition": 2152
+    },
+    {
+      "candidateTarget": "The Movie Database (TMDB)",
+      "candidateTargetHash": "127aa67cd3b65efaad862b3fd5d8166c88e785c7401c59fe0384ddc7e502caac",
+      "locale": "ko",
+      "sourceId": "components.MetadataSelector.tmdbLabel",
+      "sourcePosition": 2152
+    },
+    {
+      "candidateTarget": "The Movie Database (TMDB)",
+      "candidateTargetHash": "127aa67cd3b65efaad862b3fd5d8166c88e785c7401c59fe0384ddc7e502caac",
+      "locale": "pt_BR",
+      "sourceId": "components.MetadataSelector.tmdbLabel",
+      "sourcePosition": 2152
+    },
+    {
+      "candidateTarget": "The Movie Database (TMDB)",
+      "candidateTargetHash": "127aa67cd3b65efaad862b3fd5d8166c88e785c7401c59fe0384ddc7e502caac",
+      "locale": "vi",
+      "sourceId": "components.MetadataSelector.tmdbLabel",
+      "sourcePosition": 2152
+    },
+    {
+      "candidateTarget": "The Movie Database (TMDB)",
+      "candidateTargetHash": "127aa67cd3b65efaad862b3fd5d8166c88e785c7401c59fe0384ddc7e502caac",
+      "locale": "zh_Hans",
+      "sourceId": "components.MetadataSelector.tmdbLabel",
+      "sourcePosition": 2152
+    },
+    {
+      "candidateTarget": "The Movie Database (TMDB)",
+      "candidateTargetHash": "127aa67cd3b65efaad862b3fd5d8166c88e785c7401c59fe0384ddc7e502caac",
+      "locale": "zh_Hant",
+      "sourceId": "components.MetadataSelector.tmdbLabel",
+      "sourcePosition": 2152
+    },
+    {
+      "candidateTarget": "製作国",
+      "candidateTargetHash": "c684ad487884c0aef98e728ad35d692da9e064e01a099ce3a2148e44501b355f",
+      "locale": "ja",
+      "sourceId": "components.MovieDetails.Layout.country",
+      "sourcePosition": 2155
+    },
+    {
+      "candidateTarget": "Phát hành kỹ thuật số",
+      "candidateTargetHash": "ca841e015bedcc32a64904bd3a13eb847f22bc696138e078348d202c8a1fad5d",
+      "locale": "vi",
+      "sourceId": "components.MovieDetails.Layout.digital",
+      "sourcePosition": 2156
+    },
+    {
+      "candidateTarget": "数字版",
+      "candidateTargetHash": "1ca956e6978e868a1c1942313bab832306bb50ded8307dd8b25e829d17f84fe2",
+      "locale": "zh_Hans",
+      "sourceId": "components.MovieDetails.Layout.digital",
+      "sourcePosition": 2156
+    },
+    {
+      "candidateTarget": "數位版",
+      "candidateTargetHash": "fa65771050e9f65085682215a323e74ea07046feae8bbca75d19d95096b5c44b",
+      "locale": "zh_Hant",
+      "sourceId": "components.MovieDetails.Layout.digital",
+      "sourcePosition": 2156
+    },
+    {
+      "candidateTarget": "القائمة الكاملة لطاقم التمثيل",
+      "candidateTargetHash": "d730865508e5c0c09a78f6d6078cd10a44777e4e0511426ce23d0aec064bca0d",
+      "locale": "ar",
+      "sourceId": "components.MovieDetails.Layout.fullCastList",
+      "sourcePosition": 2158
+    },
+    {
+      "candidateTarget": "Liste complète de la distribution",
+      "candidateTargetHash": "d8033d32474f7b914fc56520ca9fe8bb0db0f64182e04720f6d84fae48bcb388",
+      "locale": "fr",
+      "sourceId": "components.MovieDetails.Layout.fullCastList",
+      "sourcePosition": 2158
+    },
+    {
+      "candidateTarget": "पूरी कलाकार सूची",
+      "candidateTargetHash": "41a164ad1bc84bee7dad28fe34094f0939f807f8094db16cf8eafeae1d1a9607",
+      "locale": "hi",
+      "sourceId": "components.MovieDetails.Layout.fullCastList",
+      "sourcePosition": 2158
+    },
+    {
+      "candidateTarget": "Daftar lengkap pemeran",
+      "candidateTargetHash": "e657e8fcfae311f5326b85d37f26a06df81ae17d4f296f977f046834b99edcbd",
+      "locale": "id",
+      "sourceId": "components.MovieDetails.Layout.fullCastList",
+      "sourcePosition": 2158
+    },
+    {
+      "candidateTarget": "全キャスト一覧",
+      "candidateTargetHash": "1945a9b5cb8875e915cd22e782b6143963f08198dd91c9cbe8397b0eade5efd3",
+      "locale": "ja",
+      "sourceId": "components.MovieDetails.Layout.fullCastList",
+      "sourcePosition": 2158
+    },
+    {
+      "candidateTarget": "전체 출연진 목록",
+      "candidateTargetHash": "715bb9c4302ff236af4f360f46a813c8fb5d09134c8877b0d4c81ae577d22993",
+      "locale": "ko",
+      "sourceId": "components.MovieDetails.Layout.fullCastList",
+      "sourcePosition": 2158
+    },
+    {
+      "candidateTarget": "Danh sách đầy đủ diễn viên",
+      "candidateTargetHash": "499b4eed6a29b28fb6ccd3dedaf44968e809dd8596fd53600f369fffeb8b5550",
+      "locale": "vi",
+      "sourceId": "components.MovieDetails.Layout.fullCastList",
+      "sourcePosition": 2158
+    },
+    {
+      "candidateTarget": "完整演员名单",
+      "candidateTargetHash": "861334ba6bb43f4ffdf818e1dc91e70703eb61dd54d1533287a23b8bd92157fd",
+      "locale": "zh_Hans",
+      "sourceId": "components.MovieDetails.Layout.fullCastList",
+      "sourcePosition": 2158
+    },
+    {
+      "candidateTarget": "完整演員名單",
+      "candidateTargetHash": "a49fe9c4f836bc43a78ea2427d8028981e5951b191445090ff6b69cffafe14f6",
+      "locale": "zh_Hant",
+      "sourceId": "components.MovieDetails.Layout.fullCastList",
+      "sourcePosition": 2158
+    },
+    {
+      "candidateTarget": "القائمة الكاملة لطاقم العمل",
+      "candidateTargetHash": "3b9d24baef6ad54f8d5b7747c9464de4733c47fe1a6ed4ab75f8228b13be4134",
+      "locale": "ar",
+      "sourceId": "components.MovieDetails.Layout.fullCrewList",
+      "sourcePosition": 2159
+    },
+    {
+      "candidateTarget": "Vollständige Liste des Filmteams",
+      "candidateTargetHash": "fd9f4c14432dee525e9a1c40ebdd0173411be9b9c1e716a1f744183ede0bd87f",
+      "locale": "de",
+      "sourceId": "components.MovieDetails.Layout.fullCrewList",
+      "sourcePosition": 2159
+    },
+    {
+      "candidateTarget": "Liste complète de l’équipe technique",
+      "candidateTargetHash": "57167367d9d4b94c7f795fea5b79cbd28aa83676bac6f7df319c97ef342c0655",
+      "locale": "fr",
+      "sourceId": "components.MovieDetails.Layout.fullCrewList",
+      "sourcePosition": 2159
+    },
+    {
+      "candidateTarget": "फ़िल्म टीम की पूरी सूची",
+      "candidateTargetHash": "3df807112acffb06a9b53ff311affc6e20e757d6917b88b0b4191b3f52f10c7a",
+      "locale": "hi",
+      "sourceId": "components.MovieDetails.Layout.fullCrewList",
+      "sourcePosition": 2159
+    },
+    {
+      "candidateTarget": "Daftar lengkap kru film",
+      "candidateTargetHash": "135f790ead1b9001db74f2b7574eb266ec217ac2cce8f2d08fd061c7a4219a66",
+      "locale": "id",
+      "sourceId": "components.MovieDetails.Layout.fullCrewList",
+      "sourcePosition": 2159
+    },
+    {
+      "candidateTarget": "映画スタッフ一覧",
+      "candidateTargetHash": "88f9415762604da42c5aba0fadaf892c2e14e693564f083b365548611c07c7d7",
+      "locale": "ja",
+      "sourceId": "components.MovieDetails.Layout.fullCrewList",
+      "sourcePosition": 2159
+    },
+    {
+      "candidateTarget": "전체 제작진 목록",
+      "candidateTargetHash": "19f2ea2b78e876fde041b87ec5ce3c4325725cb02cdeb7f389c41c6cd62cbe03",
+      "locale": "ko",
+      "sourceId": "components.MovieDetails.Layout.fullCrewList",
+      "sourcePosition": 2159
+    },
+    {
+      "candidateTarget": "Lista completa da equipe técnica",
+      "candidateTargetHash": "cab8022dab54aea7f8c19f699e23d339b14c106f70b1ad38cad72a8f8381fbdb",
+      "locale": "pt_BR",
+      "sourceId": "components.MovieDetails.Layout.fullCrewList",
+      "sourcePosition": 2159
+    },
+    {
+      "candidateTarget": "Danh sách đầy đủ đoàn làm phim",
+      "candidateTargetHash": "75bc290315155dc97eddb455998070893b8db8771956e66c9ff6e93cc21395e9",
+      "locale": "vi",
+      "sourceId": "components.MovieDetails.Layout.fullCrewList",
+      "sourcePosition": 2159
+    },
+    {
+      "candidateTarget": "完整剧组名单",
+      "candidateTargetHash": "fe5c48874c43c851daf12d3caf919081bdcbd50bf1653e4deea557f99ecf1ea3",
+      "locale": "zh_Hans",
+      "sourceId": "components.MovieDetails.Layout.fullCrewList",
+      "sourcePosition": 2159
+    },
+    {
+      "candidateTarget": "完整電影工作人員名單",
+      "candidateTargetHash": "cfa81488b1e9488335da5885c81b811c2337db78d80bf38a023c6cfad8550c3e",
+      "locale": "zh_Hant",
+      "sourceId": "components.MovieDetails.Layout.fullCrewList",
+      "sourcePosition": 2159
+    },
+    {
+      "candidateTarget": "Genres",
+      "candidateTargetHash": "3561abfe8067f3c1cdec6de4240f041af78d44a6ba619deee9e1d0735fe73e1e",
+      "locale": "fr",
+      "sourceId": "components.MovieDetails.Layout.genres",
+      "sourcePosition": 2160
+    },
+    {
+      "candidateTarget": "언어",
+      "candidateTargetHash": "d870406c5d15f996b16737726445bd00d5a310d3a366264b530672be770513bf",
+      "locale": "ko",
+      "sourceId": "components.MovieDetails.Layout.language",
+      "sourcePosition": 2162
+    },
+    {
+      "candidateTarget": "Idioma",
+      "candidateTargetHash": "7ae9d418353b399fa1d9404c5187943c0be487ffa9c952b6dbb7dee8d17610d5",
+      "locale": "pt_BR",
+      "sourceId": "components.MovieDetails.Layout.language",
+      "sourcePosition": 2162
+    },
+    {
+      "candidateTarget": "{minutes} minutes",
+      "candidateTargetHash": "fc339bac371eeb975e5df021c7596084dd03da1e208469c6cb144d39e23fe468",
+      "locale": "fr",
+      "sourceId": "components.MovieDetails.Layout.minutes",
+      "sourcePosition": 2164
+    },
+    {
+      "candidateTarget": "{minutes}分",
+      "candidateTargetHash": "f3473aad95db5635e23ede90a8e3673b0395ccac294243f5dcb966b3e3b99feb",
+      "locale": "ja",
+      "sourceId": "components.MovieDetails.Layout.minutes",
+      "sourcePosition": 2164
+    },
+    {
+      "candidateTarget": "{minutes}분",
+      "candidateTargetHash": "c447d2a0b8060dd0092f29ee2c1e35e5734a6d266815a70d4ade1f501ea1453f",
+      "locale": "ko",
+      "sourceId": "components.MovieDetails.Layout.minutes",
+      "sourcePosition": 2164
+    },
+    {
+      "candidateTarget": "詳細",
+      "candidateTargetHash": "9652e7b5f69922bdce983e3534b7b370bd965dce40e4f7ec2f39a443eed006d6",
+      "locale": "ja",
+      "sourceId": "components.MovieDetails.Layout.movieDetails",
+      "sourcePosition": 2165
+    },
+    {
+      "candidateTarget": "详情",
+      "candidateTargetHash": "979a332955c855bf1b800021f3e645b9f555b4e2da354b14c5810d6621d8375b",
+      "locale": "zh_Hans",
+      "sourceId": "components.MovieDetails.Layout.movieDetails",
+      "sourcePosition": 2165
+    },
+    {
+      "candidateTarget": "詳細資訊",
+      "candidateTargetHash": "da3fb40db7bc882d9cc835aaae918ad3d13519a3d55319b2b573168671291a6e",
+      "locale": "zh_Hant",
+      "sourceId": "components.MovieDetails.Layout.movieDetails",
+      "sourcePosition": 2165
+    },
+    {
+      "candidateTarget": "主題タグはありません。",
+      "candidateTargetHash": "95ad0d48b2c4899539538e6013c84f1faa4c2f30a8f5d87c96f66da48ed4acb4",
+      "locale": "ja",
+      "sourceId": "components.MovieDetails.Layout.noTags",
+      "sourcePosition": 2168
+    },
+    {
+      "candidateTarget": "Nenhuma etiqueta de assunto disponível.",
+      "candidateTargetHash": "d2aedd204709003906a4e0f337be0071e386d902992252c3f97480e7f8c16cf8",
+      "locale": "pt_BR",
+      "sourceId": "components.MovieDetails.Layout.noTags",
+      "sourcePosition": 2168
+    },
+    {
+      "candidateTarget": "Không có thẻ chủ đề nào khả dụng.",
+      "candidateTargetHash": "d33716fc4909742c1b022bfc14565e8bdb94d0828017e7439ddf2abc0017b32d",
+      "locale": "vi",
+      "sourceId": "components.MovieDetails.Layout.noTags",
+      "sourcePosition": 2168
+    },
+    {
+      "candidateTarget": "सारांश",
+      "candidateTargetHash": "b4daa39f07e41f3decd4eee819a75b0476524f188cf77654bebc59e951613a3c",
+      "locale": "hi",
+      "sourceId": "components.MovieDetails.Layout.overview",
+      "sourcePosition": 2170
+    },
+    {
+      "candidateTarget": "Ringkasan",
+      "candidateTargetHash": "e0da1b2254ed5aff7c104bbcf4bbacc812d51fafdc865f39f791c6741b7ee3bb",
+      "locale": "id",
+      "sourceId": "components.MovieDetails.Layout.overview",
+      "sourcePosition": 2170
+    },
+    {
+      "candidateTarget": "概要",
+      "candidateTargetHash": "aaaf449bd4eac9c5629ab332244ab95c20fab59150ca0428592b44e1ffeba446",
+      "locale": "ja",
+      "sourceId": "components.MovieDetails.Layout.overview",
+      "sourcePosition": 2170
+    },
+    {
+      "candidateTarget": "개요",
+      "candidateTargetHash": "dc015df639b9ffb5aa6b2a5cd68c606c9726129faa61c17dcf988c81a0073c33",
+      "locale": "ko",
+      "sourceId": "components.MovieDetails.Layout.overview",
+      "sourcePosition": 2170
+    },
+    {
+      "candidateTarget": "Tổng quan",
+      "candidateTargetHash": "120adc28a8f81b02ca680c93369fc54f0899cc81a181d30a313b290e8397203c",
+      "locale": "vi",
+      "sourceId": "components.MovieDetails.Layout.overview",
+      "sourcePosition": 2170
+    },
+    {
+      "candidateTarget": "सारांश उपलब्ध नहीं है।",
+      "candidateTargetHash": "a112421dc290c9f198433ff80d8cb8f373efe782435f9f2d3e85116da99d7771",
+      "locale": "hi",
+      "sourceId": "components.MovieDetails.Layout.overviewUnavailable",
+      "sourcePosition": 2171
+    },
+    {
+      "candidateTarget": "Ringkasan tidak tersedia.",
+      "candidateTargetHash": "1573e31f601733a5afe051283444c8e63b7f43e7415980e33b9e13c704ae9d50",
+      "locale": "id",
+      "sourceId": "components.MovieDetails.Layout.overviewUnavailable",
+      "sourcePosition": 2171
+    },
+    {
+      "candidateTarget": "概要は利用できません。",
+      "candidateTargetHash": "22d8bb3ae5800ddb358acc92dd48d07a6336c9b88f740c937db473f35e1bc4ef",
+      "locale": "ja",
+      "sourceId": "components.MovieDetails.Layout.overviewUnavailable",
+      "sourcePosition": 2171
+    },
+    {
+      "candidateTarget": "Tổng quan không khả dụng.",
+      "candidateTargetHash": "2f7964a8f9422188d0d81c28956ac171c307008598e80953d4b93da90ff27026",
+      "locale": "vi",
+      "sourceId": "components.MovieDetails.Layout.overviewUnavailable",
+      "sourcePosition": 2171
+    },
+    {
+      "candidateTarget": "简介不可用。",
+      "candidateTargetHash": "040551411718ecc5d4a7dd825e6351986d3ca64a4c01eef57490355ae2b23e87",
+      "locale": "zh_Hans",
+      "sourceId": "components.MovieDetails.Layout.overviewUnavailable",
+      "sourcePosition": 2171
+    },
+    {
+      "candidateTarget": "概述無法使用。",
+      "candidateTargetHash": "877187ff8494dc978ad695d0534cde167a6d19c04bf3d3f934413905646d5eca",
+      "locale": "zh_Hant",
+      "sourceId": "components.MovieDetails.Layout.overviewUnavailable",
+      "sourcePosition": 2171
+    },
+    {
+      "candidateTarget": "إصدار مادي",
+      "candidateTargetHash": "45ee3456a6caf8ea254d56469b5f222c30cb3050e9b2fe601251dc872aae683e",
+      "locale": "ar",
+      "sourceId": "components.MovieDetails.Layout.physical",
+      "sourcePosition": 2172
+    },
+    {
+      "candidateTarget": "Bản phát hành vật lý",
+      "candidateTargetHash": "e2a88c5d8ee3983d0b693b63e9d673b55afb979b6eaa5e2caab65bf91192b1c5",
+      "locale": "vi",
+      "sourceId": "components.MovieDetails.Layout.physical",
+      "sourcePosition": 2172
+    },
+    {
+      "candidateTarget": "实体版",
+      "candidateTargetHash": "06f0d3b82ebf453e2e1cbe177153119d469e84b43617530aa0563238c9b6dc35",
+      "locale": "zh_Hans",
+      "sourceId": "components.MovieDetails.Layout.physical",
+      "sourcePosition": 2172
+    },
+    {
+      "candidateTarget": "實體版",
+      "candidateTargetHash": "34de62d8ff99a7a380a38f3417641a0883569629f4ddf91d55cef4abf4db8c69",
+      "locale": "zh_Hant",
+      "sourceId": "components.MovieDetails.Layout.physical",
+      "sourcePosition": 2172
+    },
+    {
+      "candidateTarget": "画質",
+      "candidateTargetHash": "97074acc36cde8ea6bc94de2978bab101e2b47da87de320b75dfb37a5971803a",
+      "locale": "ja",
+      "sourceId": "components.MovieDetails.Layout.quality",
+      "sourcePosition": 2173
+    },
+    {
+      "candidateTarget": "화질",
+      "candidateTargetHash": "6927e0e0126d727b83680727c90db9f376e6ef5a4d1bec911071a950f80f78a2",
+      "locale": "ko",
+      "sourceId": "components.MovieDetails.Layout.quality",
+      "sourcePosition": 2173
+    },
+    {
+      "candidateTarget": "تاريخ الإصدار",
+      "candidateTargetHash": "4e5892a34a0649e9813d5f894db4f132893819c0fe0414e768664e91d3fa179a",
+      "locale": "ar",
+      "sourceId": "components.MovieDetails.Layout.releaseDate",
+      "sourcePosition": 2175
+    },
+    {
+      "candidateTarget": "Ngày phát hành",
+      "candidateTargetHash": "c941d8a4348627aa40189a1f57ed002585ff86567a32c94a04e42ab12eaf24ee",
+      "locale": "vi",
+      "sourceId": "components.MovieDetails.Layout.releaseDate",
+      "sourcePosition": 2175
+    },
+    {
+      "candidateTarget": "تواريخ الإصدار",
+      "candidateTargetHash": "6d3bc08fbff5c66eb4b392271ec917877bddd103b39f5c65a772be73415a7c89",
+      "locale": "ar",
+      "sourceId": "components.MovieDetails.Layout.releaseDates",
+      "sourcePosition": 2176
+    },
+    {
+      "candidateTarget": "रिलीज़ की तारीखें",
+      "candidateTargetHash": "ce39af6fadcef8d5f83c954eb763fbbeeb9ac8e9a86e474fa697b88788650f15",
+      "locale": "hi",
+      "sourceId": "components.MovieDetails.Layout.releaseDates",
+      "sourcePosition": 2176
+    },
+    {
+      "candidateTarget": "Các ngày phát hành",
+      "candidateTargetHash": "36ae79e67644551c4765a8db10dc3eb36ecbe016e246f92cd79d1f5289bc86b7",
+      "locale": "vi",
+      "sourceId": "components.MovieDetails.Layout.releaseDates",
+      "sourcePosition": 2176
+    },
+    {
+      "candidateTarget": "興行収入",
+      "candidateTargetHash": "290e71a9b4e44a15cb128ee88586b298a97b5f915ab916ed5d2e0353eb1eeb4c",
+      "locale": "ja",
+      "sourceId": "components.MovieDetails.Layout.revenue",
+      "sourcePosition": 2178
+    },
+    {
+      "candidateTarget": "Doanh thu",
+      "candidateTargetHash": "b4265478748be777d0d7df6383303b2ac426077a55179b045f97a9ddd333e5a4",
+      "locale": "vi",
+      "sourceId": "components.MovieDetails.Layout.revenue",
+      "sourcePosition": 2178
+    },
+    {
+      "candidateTarget": "अवधि",
+      "candidateTargetHash": "16a3378e5a9d3f64d161120324b431d4dc2839dbce72ef083e312622dc9d641c",
+      "locale": "hi",
+      "sourceId": "components.MovieDetails.Layout.runtime",
+      "sourcePosition": 2179
+    },
+    {
+      "candidateTarget": "Durasi",
+      "candidateTargetHash": "dd22ab55ef76e02df5d4af06bdcd447b6d8b6581fa2df9d1b54afab09f03f8d0",
+      "locale": "id",
+      "sourceId": "components.MovieDetails.Layout.runtime",
+      "sourcePosition": 2179
+    },
+    {
+      "candidateTarget": "上映時間",
+      "candidateTargetHash": "81cec3875806060d0bccfa2474c1b6d196087573026cd08e63a30db59f565c7a",
+      "locale": "ja",
+      "sourceId": "components.MovieDetails.Layout.runtime",
+      "sourcePosition": 2179
+    },
+    {
+      "candidateTarget": "片长",
+      "candidateTargetHash": "9ed297990bda412aa1c96e542b3d6f15dca873f04d0b6ec5b6685aeb44eba5a5",
+      "locale": "zh_Hans",
+      "sourceId": "components.MovieDetails.Layout.runtime",
+      "sourcePosition": 2179
+    },
+    {
+      "candidateTarget": "片長",
+      "candidateTargetHash": "22932aef17ce2e508988890c08dd565e7a56d170dad68b6eb7675572c68ca3da",
+      "locale": "zh_Hant",
+      "sourceId": "components.MovieDetails.Layout.runtime",
+      "sourcePosition": 2179
+    },
+    {
+      "candidateTarget": "脚本",
+      "candidateTargetHash": "5d4f709636eedc04f0726cd225444770dd600e0b4d57864d8d1c3286100be097",
+      "locale": "ja",
+      "sourceId": "components.MovieDetails.Layout.screenplay",
+      "sourcePosition": 2180
+    },
+    {
+      "candidateTarget": "각본",
+      "candidateTargetHash": "5b4071baf9856da58bff72e677b084e963d546835ed5c69dfc7e9053579bf594",
+      "locale": "ko",
+      "sourceId": "components.MovieDetails.Layout.screenplay",
+      "sourcePosition": 2180
+    },
+    {
+      "candidateTarget": "Kịch bản",
+      "candidateTargetHash": "602e5f276afb79413b7c5dabc05ba78d19c98f68bc0b9655f43a9ce7f1083928",
+      "locale": "vi",
+      "sourceId": "components.MovieDetails.Layout.screenplay",
+      "sourcePosition": 2180
+    },
+    {
+      "candidateTarget": "أعمال مشابهة",
+      "candidateTargetHash": "fa9cb2c3191bb5b277a690400244548507cde929f242600acd9f12f467091166",
+      "locale": "ar",
+      "sourceId": "components.MovieDetails.Layout.similar",
+      "sourcePosition": 2181
+    },
+    {
+      "candidateTarget": "类似作品",
+      "candidateTargetHash": "90b45966b87fd828c198d02689bd647e1275f9dc38f8edf560ac51a426677917",
+      "locale": "zh_Hans",
+      "sourceId": "components.MovieDetails.Layout.similar",
+      "sourcePosition": 2181
+    },
+    {
+      "candidateTarget": "類似作品",
+      "candidateTargetHash": "0658e064a97d1129e014edf0a2ab62d7df67ddf87ab1ebcf6851f828c1fbcf09",
+      "locale": "zh_Hant",
+      "sourceId": "components.MovieDetails.Layout.similar",
+      "sourcePosition": 2181
+    },
+    {
+      "candidateTarget": "Studios de production",
+      "candidateTargetHash": "d7cda8875bb77e889b647e3f8e437afae737dc81acf7f6206ebc755705e4fdd2",
+      "locale": "fr",
+      "sourceId": "components.MovieDetails.Layout.studios",
+      "sourcePosition": 2184
+    },
+    {
+      "candidateTarget": "Perusahaan produksi",
+      "candidateTargetHash": "b5bc3d88cb85e6e98c5cb406ee1f761a6d757f5bd35513d22349849824fa19f2",
+      "locale": "id",
+      "sourceId": "components.MovieDetails.Layout.studios",
+      "sourcePosition": 2184
+    },
+    {
+      "candidateTarget": "Các hãng phim",
+      "candidateTargetHash": "16503404d098dec783c188090e0cc4f31bff850b10f93e2293395c7dd30b6453",
+      "locale": "vi",
+      "sourceId": "components.MovieDetails.Layout.studios",
+      "sourcePosition": 2184
+    },
+    {
+      "candidateTarget": "製片公司",
+      "candidateTargetHash": "0629ef1b14974a8fe26d4d24706cb99a5db60229f64130faa8271f2335046343",
+      "locale": "zh_Hant",
+      "sourceId": "components.MovieDetails.Layout.studios",
+      "sourcePosition": 2184
+    },
+    {
+      "candidateTarget": "주제 태그",
+      "candidateTargetHash": "b8973fb1bdc3304f5ef57d9da15a534628a6264956ce45fbed8516fb9fb8487d",
+      "locale": "ko",
+      "sourceId": "components.MovieDetails.Layout.subjectTags",
+      "sourcePosition": 2185
+    },
+    {
+      "candidateTarget": "Thẻ chủ đề",
+      "candidateTargetHash": "925cc14b25a24f25de25d0e88048cd55053ea029f8d94b41fc8660e5f4aebe88",
+      "locale": "vi",
+      "sourceId": "components.MovieDetails.Layout.subjectTags",
+      "sourcePosition": 2185
+    },
+    {
+      "candidateTarget": "主題標籤",
+      "candidateTargetHash": "fa940a3ea2a1bfe9a145da67e7174722bf3d8ac6396e719df0ea47f5a6b34ccb",
+      "locale": "zh_Hant",
+      "sourceId": "components.MovieDetails.Layout.subjectTags",
+      "sourcePosition": 2185
+    },
+    {
+      "candidateTarget": "إصدار سينمائي",
+      "candidateTargetHash": "9e7ccd0ed45f40b14ff4a276450e958bd9a363fb530fd1472374db30f4a3d7e6",
+      "locale": "ar",
+      "sourceId": "components.MovieDetails.Layout.theatrical",
+      "sourcePosition": 2186
+    },
+    {
+      "candidateTarget": "Kinostart",
+      "candidateTargetHash": "c4b831169af33c253a18693c2d0cc31b9162115442ec1a490f928d2651c93c9a",
+      "locale": "de",
+      "sourceId": "components.MovieDetails.Layout.theatrical",
+      "sourcePosition": 2186
+    },
+    {
+      "candidateTarget": "Estreno en cines",
+      "candidateTargetHash": "328e0285ebde46cb2688088178a3d38773d64e98f89b67d35775fa14e7500d84",
+      "locale": "es",
+      "sourceId": "components.MovieDetails.Layout.theatrical",
+      "sourcePosition": 2186
+    },
+    {
+      "candidateTarget": "Sortie en salles",
+      "candidateTargetHash": "8fcaafda6e18bf317e50071f7c28fce6311a4d1397e98c54a3954be23c8797df",
+      "locale": "fr",
+      "sourceId": "components.MovieDetails.Layout.theatrical",
+      "sourcePosition": 2186
+    },
+    {
+      "candidateTarget": "सिनेमाघरों में रिलीज़",
+      "candidateTargetHash": "656d2d4c2fdd3ee11af883159def1533d4d87abf0f298b276f6be472226506d2",
+      "locale": "hi",
+      "sourceId": "components.MovieDetails.Layout.theatrical",
+      "sourcePosition": 2186
+    },
+    {
+      "candidateTarget": "Rilis di bioskop",
+      "candidateTargetHash": "f7168dd01146acef4e4fe63fa0968a5b93d470a5251e1c122a0b6830ef5a563c",
+      "locale": "id",
+      "sourceId": "components.MovieDetails.Layout.theatrical",
+      "sourcePosition": 2186
+    },
+    {
+      "candidateTarget": "劇場公開",
+      "candidateTargetHash": "a066fbac7bb432140527422cd14777f1cb9b6f876bb9e614d0201b672bd39a54",
+      "locale": "ja",
+      "sourceId": "components.MovieDetails.Layout.theatrical",
+      "sourcePosition": 2186
+    },
+    {
+      "candidateTarget": "극장 개봉",
+      "candidateTargetHash": "0671142a1a016d8e9aa75f194beef30e6108681a31e82c7b6db406d8f55d8372",
+      "locale": "ko",
+      "sourceId": "components.MovieDetails.Layout.theatrical",
+      "sourcePosition": 2186
+    },
+    {
+      "candidateTarget": "Lançamento nos cinemas",
+      "candidateTargetHash": "b8f8bab9bbef6121b288a80c6266fe61119d15575fd610d09d97986ea61d9fd5",
+      "locale": "pt_BR",
+      "sourceId": "components.MovieDetails.Layout.theatrical",
+      "sourcePosition": 2186
+    },
+    {
+      "candidateTarget": "Phát hành tại rạp",
+      "candidateTargetHash": "05a50eb1b47a2099bf2488d21f62dee7e6a0945e35c884cb75e865df5f53104e",
+      "locale": "vi",
+      "sourceId": "components.MovieDetails.Layout.theatrical",
+      "sourcePosition": 2186
+    },
+    {
+      "candidateTarget": "院线上映",
+      "candidateTargetHash": "a1196d5374adb894c31a04f601ee9a516cf2cc4890a6f09673921ca3699c3841",
+      "locale": "zh_Hans",
+      "sourceId": "components.MovieDetails.Layout.theatrical",
+      "sourcePosition": 2186
+    },
+    {
+      "candidateTarget": "院線上映",
+      "candidateTargetHash": "9c1a71bb2e0e53e0ce2abaa832bee3e796275d44ffda83ca3923fc4a1695e10d",
+      "locale": "zh_Hant",
+      "sourceId": "components.MovieDetails.Layout.theatrical",
+      "sourcePosition": 2186
+    },
+    {
+      "candidateTarget": "طاقم العمل",
+      "candidateTargetHash": "cce791a01bae7da5d2357d67d226f74a9fb5b0cad7f35c4bc810bcd033496bbf",
+      "locale": "ar",
+      "sourceId": "components.MovieDetails.Layout.viewCrew",
+      "sourcePosition": 2190
+    },
+    {
+      "candidateTarget": "Equipe técnica",
+      "candidateTargetHash": "6ac5bfbd0afa24d751b0426a132dc76127a65628c8ffc79f983861e4c12a6e6f",
+      "locale": "pt_BR",
+      "sourceId": "components.MovieDetails.Layout.viewCrew",
+      "sourcePosition": 2190
+    },
+    {
+      "candidateTarget": "Đoàn làm phim",
+      "candidateTargetHash": "221543aaba0e0c7109639f753298aff3e904f7c79ef23352ce06009768a812fc",
+      "locale": "vi",
+      "sourceId": "components.MovieDetails.Layout.viewCrew",
+      "sourcePosition": 2190
+    },
+    {
+      "candidateTarget": "剧组",
+      "candidateTargetHash": "09a89bb5eb2179e49f80dab770a278f40cdb45739fe6fc8fd912c5ffe9f772a4",
+      "locale": "zh_Hans",
+      "sourceId": "components.MovieDetails.Layout.viewCrew",
+      "sourcePosition": 2190
+    },
+    {
+      "candidateTarget": "劇組",
+      "candidateTargetHash": "95950b7071e3f1a3313c6121d04bcb5502a273c3edc1f90f75a4cb5863214d26",
+      "locale": "zh_Hant",
+      "sourceId": "components.MovieDetails.Layout.viewCrew",
+      "sourcePosition": 2190
+    },
+    {
+      "candidateTarget": "Distribution complète",
+      "candidateTargetHash": "fb8b552a2e12b37277544937066ad90ff2d3716974b8cc972a11f34ea2b39b8f",
+      "locale": "fr",
+      "sourceId": "components.MovieDetails.MovieCast.fullcast",
+      "sourcePosition": 2191
+    },
+    {
+      "candidateTarget": "पूरी कलाकार सूची",
+      "candidateTargetHash": "41a164ad1bc84bee7dad28fe34094f0939f807f8094db16cf8eafeae1d1a9607",
+      "locale": "hi",
+      "sourceId": "components.MovieDetails.MovieCast.fullcast",
+      "sourcePosition": 2191
+    },
+    {
+      "candidateTarget": "Daftar lengkap pemeran",
+      "candidateTargetHash": "e657e8fcfae311f5326b85d37f26a06df81ae17d4f296f977f046834b99edcbd",
+      "locale": "id",
+      "sourceId": "components.MovieDetails.MovieCast.fullcast",
+      "sourcePosition": 2191
+    },
+    {
+      "candidateTarget": "Danh sách đầy đủ diễn viên",
+      "candidateTargetHash": "499b4eed6a29b28fb6ccd3dedaf44968e809dd8596fd53600f369fffeb8b5550",
+      "locale": "vi",
+      "sourceId": "components.MovieDetails.MovieCast.fullcast",
+      "sourcePosition": 2191
+    },
+    {
+      "candidateTarget": "Équipe technique complète",
+      "candidateTargetHash": "bcb94cbf3d1c503231f9e5a87d69eb96eb64bd60c8e44d2cf4e2f8930ed3f115",
+      "locale": "fr",
+      "sourceId": "components.MovieDetails.MovieCrew.fullcrew",
+      "sourcePosition": 2192
+    },
+    {
+      "candidateTarget": "पूरी फ़िल्म टीम",
+      "candidateTargetHash": "1a3eff57eda3a946971987231f084aa30ddf8b0404e37cdeac0e876053663884",
+      "locale": "hi",
+      "sourceId": "components.MovieDetails.MovieCrew.fullcrew",
+      "sourcePosition": 2192
+    },
+    {
+      "candidateTarget": "Toàn bộ đoàn làm phim",
+      "candidateTargetHash": "2b03e8bf19791d790d047c441b20b751a3295c75865fa1e83e077ec9e6071262",
+      "locale": "vi",
+      "sourceId": "components.MovieDetails.MovieCrew.fullcrew",
+      "sourcePosition": 2192
+    },
+    {
+      "candidateTarget": "完整剧组",
+      "candidateTargetHash": "44c1c1bb09876a578be2d0b3892000491d8f3d93b9fd5e48c9818a1db99abac6",
+      "locale": "zh_Hans",
+      "sourceId": "components.MovieDetails.MovieCrew.fullcrew",
+      "sourcePosition": 2192
+    },
+    {
+      "candidateTarget": "完整劇組",
+      "candidateTargetHash": "72f87fbda4fa5af1e16722c7ba82ff36e366d0a8edb36a2001f4663520e39e8e",
+      "locale": "zh_Hant",
+      "sourceId": "components.MovieDetails.MovieCrew.fullcrew",
+      "sourcePosition": 2192
+    },
+    {
+      "candidateTarget": "देखने की सूची में जोड़ें",
+      "candidateTargetHash": "f5faff71ed6ef29fdddc30b821e53cd048551bdb902266235af363ca8294c43b",
+      "locale": "hi",
+      "sourceId": "components.MovieDetails.addtowatchlist",
+      "sourcePosition": 2193
+    },
+    {
+      "candidateTarget": "Tambahkan ke daftar tontonan",
+      "candidateTargetHash": "065d565c471daeca6627d30cbd5c122cc360e85b2874db87ec5a939a9db7a679",
+      "locale": "id",
+      "sourceId": "components.MovieDetails.addtowatchlist",
+      "sourcePosition": 2193
+    },
+    {
+      "candidateTarget": "관심 목록에 추가",
+      "candidateTargetHash": "fc132d7c957a1f484e86dbc8184999437cf7c32c0d69ad6a5cf39ae8008654e3",
+      "locale": "ko",
+      "sourceId": "components.MovieDetails.addtowatchlist",
+      "sourcePosition": 2193
+    },
+    {
+      "candidateTarget": "添加到待看列表",
+      "candidateTargetHash": "f683d20c885f3cf26a13a5ffef93d10042df549aeb461fa8ea111124e7d166b9",
+      "locale": "zh_Hans",
+      "sourceId": "components.MovieDetails.addtowatchlist",
+      "sourcePosition": 2193
+    },
+    {
+      "candidateTarget": "加入待看清單",
+      "candidateTargetHash": "892432f95011c92214c3189b0072a60fc0239fc5566ac47fd1d72704fd91713f",
+      "locale": "zh_Hant",
+      "sourceId": "components.MovieDetails.addtowatchlist",
+      "sourcePosition": 2193
+    },
+    {
+      "candidateTarget": "फ़िल्म प्रबंधित करें",
+      "candidateTargetHash": "aae70a7895983dc9cefb927faaacc24822bee2c5a3d15fa0c25828c6d3b90c59",
+      "locale": "hi",
+      "sourceId": "components.MovieDetails.managemovie",
+      "sourcePosition": 2194
+    },
+    {
+      "candidateTarget": "देखने की सूची से हटाएँ",
+      "candidateTargetHash": "7d450d3892c94b77ea76ad98c5dc540e77a9e33f19044ed1e483ce29c7046a0a",
+      "locale": "hi",
+      "sourceId": "components.MovieDetails.removefromwatchlist",
+      "sourcePosition": 2196
+    },
+    {
+      "candidateTarget": "Hapus dari daftar tontonan",
+      "candidateTargetHash": "434c883772675ef585b9ef0bf60421b3bf5b242c7f96815b21e6ce0cd63aafcb",
+      "locale": "id",
+      "sourceId": "components.MovieDetails.removefromwatchlist",
+      "sourcePosition": 2196
+    },
+    {
+      "candidateTarget": "관심 목록에서 제거",
+      "candidateTargetHash": "21b28bab39ed90375c66923179053b85f7e98d539171f5696373028f9bc6d700",
+      "locale": "ko",
+      "sourceId": "components.MovieDetails.removefromwatchlist",
+      "sourcePosition": 2196
+    },
+    {
+      "candidateTarget": "Xóa khỏi danh sách xem",
+      "candidateTargetHash": "6f0f2e5ee113ffe9131fac598bd79a29609e1ca8e7d9340f81b94bb1d6ca0a5a",
+      "locale": "vi",
+      "sourceId": "components.MovieDetails.removefromwatchlist",
+      "sourcePosition": 2196
+    },
+    {
+      "candidateTarget": "从待看列表中移除",
+      "candidateTargetHash": "8fee04d7749038f7aad123f4a1f51f0fcc3873841adb0cfa3c910a1381f3d37b",
+      "locale": "zh_Hans",
+      "sourceId": "components.MovieDetails.removefromwatchlist",
+      "sourcePosition": 2196
+    },
+    {
+      "candidateTarget": "從待看清單移除",
+      "candidateTargetHash": "ca636ccf4d8dbd91d0f8e5d4b335dad8f531fa36e089d0d85f35d9770264ea44",
+      "locale": "zh_Hant",
+      "sourceId": "components.MovieDetails.removefromwatchlist",
+      "sourcePosition": 2196
+    },
+    {
+      "candidateTarget": "أعمال مشابهة",
+      "candidateTargetHash": "fa9cb2c3191bb5b277a690400244548507cde929f242600acd9f12f467091166",
+      "locale": "ar",
+      "sourceId": "components.MovieDetails.similar",
+      "sourcePosition": 2198
+    },
+    {
+      "candidateTarget": "类似作品",
+      "candidateTargetHash": "90b45966b87fd828c198d02689bd647e1275f9dc38f8edf560ac51a426677917",
+      "locale": "zh_Hans",
+      "sourceId": "components.MovieDetails.similar",
+      "sourcePosition": 2198
+    },
+    {
+      "candidateTarget": "類似作品",
+      "candidateTargetHash": "0658e064a97d1129e014edf0a2ab62d7df67ddf87ab1ebcf6851f828c1fbcf09",
+      "locale": "zh_Hant",
+      "sourceId": "components.MovieDetails.similar",
+      "sourcePosition": 2198
+    },
+    {
+      "candidateTarget": "<strong>{title}</strong> se eliminó correctamente de la lista de seguimiento.",
+      "candidateTargetHash": "c382e5c3357d950eb3032a56c664cbb6cc67de87228fbebfd6a7aa3a01354fb6",
+      "locale": "es",
+      "sourceId": "components.MovieDetails.watchlistDeleted",
+      "sourcePosition": 2199
+    },
+    {
+      "candidateTarget": "<strong>{title}</strong> को देखने की सूची से सफलतापूर्वक हटा दिया गया!",
+      "candidateTargetHash": "1648499816c6c708fb77c1537dba05a2af85e3b99e18026115b3214a1d2a480d",
+      "locale": "hi",
+      "sourceId": "components.MovieDetails.watchlistDeleted",
+      "sourcePosition": 2199
+    },
+    {
+      "candidateTarget": "<strong>{title}</strong> berhasil dihapus dari daftar tontonan!",
+      "candidateTargetHash": "bd37ae6b80d78bd0c71b215347b9a48cdf3d07ec40bdc178d0b76440c4b469a8",
+      "locale": "id",
+      "sourceId": "components.MovieDetails.watchlistDeleted",
+      "sourcePosition": 2199
+    },
+    {
+      "candidateTarget": "<strong>{title}</strong>이(가) 관심 목록에서 삭제되었습니다!",
+      "candidateTargetHash": "6d74c95270c6bebff91cebd2627cb33548ec95985bce567e600a3bf3189a85c9",
+      "locale": "ko",
+      "sourceId": "components.MovieDetails.watchlistDeleted",
+      "sourcePosition": 2199
+    },
+    {
+      "candidateTarget": "<strong>{title}</strong> foi removido com sucesso da lista para assistir!",
+      "candidateTargetHash": "13abd5596266b8f52848881de4caa1e71b7ebd25ce4c660f0474a6bdb089704a",
+      "locale": "pt_BR",
+      "sourceId": "components.MovieDetails.watchlistDeleted",
+      "sourcePosition": 2199
+    },
+    {
+      "candidateTarget": "<strong>{title}</strong> đã được xóa khỏi danh sách xem thành công!",
+      "candidateTargetHash": "f7142fe4f5b8fcec9d636cc1a82a509aa3d66084965cdcb357edcca8315565eb",
+      "locale": "vi",
+      "sourceId": "components.MovieDetails.watchlistDeleted",
+      "sourcePosition": 2199
+    },
+    {
+      "candidateTarget": "<strong>{title}</strong> 已成功从待看列表中移除！",
+      "candidateTargetHash": "cef533415427f7a66174878377f98187b71f13b0f61f55c7644fe14585a34ed9",
+      "locale": "zh_Hans",
+      "sourceId": "components.MovieDetails.watchlistDeleted",
+      "sourcePosition": 2199
+    },
+    {
+      "candidateTarget": "<strong>{title}</strong> 已成功從待看清單中移除！",
+      "candidateTargetHash": "c4239d555ac754f16768ec069721c4ed6285951e98c4e2904c03b82048ed77c3",
+      "locale": "zh_Hant",
+      "sourceId": "components.MovieDetails.watchlistDeleted",
+      "sourcePosition": 2199
+    }
+  ],
+  "head": "404648643578992e8e12ce9dff47dd92d5ee7c1c",
+  "pullRequest": 418,
+  "repository": "snapetech-org/SeerrNG",
+  "tree": "a17442223e33372e0cc16c3b8091e2515d5e39f3"
+}
