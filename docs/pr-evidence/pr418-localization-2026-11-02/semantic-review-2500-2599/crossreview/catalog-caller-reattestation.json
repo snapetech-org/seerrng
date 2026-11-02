@@ -1,0 +1,639 @@
+{
+  "allLocalesExactKeySetParity": true,
+  "callerContext": {
+    "allCallerBytesBlobsLineNumbersAndLineHashesMatchExactTree": true,
+    "callerFiles": 3,
+    "pinnedLineRefs": 358,
+    "sourceIds": 100
+  },
+  "capturedAtUtc": "2026-11-02T20:54:04.303901+00:00",
+  "currentCells": {
+    "count": 1200,
+    "liveValueAndHashMatches": true,
+    "targetLocales": [
+      "ar",
+      "de",
+      "es",
+      "fr",
+      "hi",
+      "id",
+      "ja",
+      "ko",
+      "pt_BR",
+      "vi",
+      "zh_Hans",
+      "zh_Hant"
+    ],
+    "unique": 1200
+  },
+  "currentTargetIntegrity": {
+    "countMarkerMismatchRows": [
+      {
+        "issue": "icu-count-marker",
+        "key": [
+          2534,
+          "ar"
+        ]
+      },
+      {
+        "issue": "icu-count-marker",
+        "key": [
+          2581,
+          "ar"
+        ]
+      }
+    ],
+    "placeholderMarkupAndBranchIssues": 0,
+    "protectedLiteralMismatchCells": 34,
+    "protectedLiteralMismatchRows": [
+      {
+        "issue": "protected-literal",
+        "key": [
+          2501,
+          "vi"
+        ],
+        "missing": [
+          "OPDS"
+        ]
+      },
+      {
+        "issue": "protected-literal",
+        "key": [
+          2507,
+          "fr"
+        ],
+        "missing": [
+          "BookOrbit"
+        ]
+      },
+      {
+        "issue": "protected-literal",
+        "key": [
+          2507,
+          "hi"
+        ],
+        "missing": [
+          "BookOrbit"
+        ]
+      },
+      {
+        "issue": "protected-literal",
+        "key": [
+          2507,
+          "ja"
+        ],
+        "missing": [
+          "BookOrbit"
+        ]
+      },
+      {
+        "issue": "protected-literal",
+        "key": [
+          2507,
+          "ko"
+        ],
+        "missing": [
+          "BookOrbit"
+        ]
+      },
+      {
+        "issue": "protected-literal",
+        "key": [
+          2507,
+          "vi"
+        ],
+        "missing": [
+          "BookOrbit"
+        ]
+      },
+      {
+        "issue": "protected-literal",
+        "key": [
+          2507,
+          "zh_Hans"
+        ],
+        "missing": [
+          "BookOrbit"
+        ]
+      },
+      {
+        "issue": "protected-literal",
+        "key": [
+          2507,
+          "zh_Hant"
+        ],
+        "missing": [
+          "BookOrbit"
+        ]
+      },
+      {
+        "issue": "protected-literal",
+        "key": [
+          2509,
+          "zh_Hans"
+        ],
+        "missing": [
+          "BookOrbit"
+        ]
+      },
+      {
+        "issue": "protected-literal",
+        "key": [
+          2515,
+          "hi"
+        ],
+        "missing": [
+          "OPDS"
+        ]
+      },
+      {
+        "issue": "protected-literal",
+        "key": [
+          2530,
+          "hi"
+        ],
+        "missing": [
+          "Grimmory",
+          "Komga",
+          "M4A",
+          "M4B",
+          "MP3",
+          "OPDS",
+          "PDF"
+        ]
+      },
+      {
+        "issue": "protected-literal",
+        "key": [
+          2530,
+          "vi"
+        ],
+        "missing": [
+          "OPDS"
+        ]
+      },
+      {
+        "issue": "protected-literal",
+        "key": [
+          2531,
+          "hi"
+        ],
+        "missing": [
+          "Grimmory",
+          "Komga"
+        ]
+      },
+      {
+        "issue": "protected-literal",
+        "key": [
+          2533,
+          "id"
+        ],
+        "missing": [
+          "OPDS"
+        ]
+      },
+      {
+        "issue": "protected-literal",
+        "key": [
+          2553,
+          "hi"
+        ],
+        "missing": [
+          "OPDS"
+        ]
+      },
+      {
+        "issue": "protected-literal",
+        "key": [
+          2553,
+          "vi"
+        ],
+        "missing": [
+          "OPDS"
+        ]
+      },
+      {
+        "issue": "protected-literal",
+        "key": [
+          2565,
+          "ar"
+        ],
+        "missing": [
+          "Kobo",
+          "Seerr",
+          "SeerrNG",
+          "SmartScope"
+        ]
+      },
+      {
+        "issue": "protected-literal",
+        "key": [
+          2565,
+          "fr"
+        ],
+        "missing": [
+          "Kobo",
+          "Seerr",
+          "SeerrNG",
+          "SmartScope"
+        ]
+      },
+      {
+        "issue": "protected-literal",
+        "key": [
+          2565,
+          "hi"
+        ],
+        "missing": [
+          "Kobo",
+          "Seerr",
+          "SeerrNG",
+          "SmartScope"
+        ]
+      },
+      {
+        "issue": "protected-literal",
+        "key": [
+          2565,
+          "id"
+        ],
+        "missing": [
+          "Kobo",
+          "Seerr",
+          "SeerrNG",
+          "SmartScope"
+        ]
+      },
+      {
+        "issue": "protected-literal",
+        "key": [
+          2565,
+          "ja"
+        ],
+        "missing": [
+          "Kobo",
+          "Seerr",
+          "SeerrNG",
+          "SmartScope"
+        ]
+      },
+      {
+        "issue": "protected-literal",
+        "key": [
+          2565,
+          "ko"
+        ],
+        "missing": [
+          "Kobo",
+          "Seerr",
+          "SeerrNG",
+          "SmartScope"
+        ]
+      },
+      {
+        "issue": "protected-literal",
+        "key": [
+          2565,
+          "pt_BR"
+        ],
+        "missing": [
+          "Kobo",
+          "Seerr",
+          "SeerrNG",
+          "SmartScope"
+        ]
+      },
+      {
+        "issue": "protected-literal",
+        "key": [
+          2565,
+          "vi"
+        ],
+        "missing": [
+          "Kobo",
+          "Seerr",
+          "SeerrNG",
+          "SmartScope"
+        ]
+      },
+      {
+        "issue": "protected-literal",
+        "key": [
+          2565,
+          "zh_Hans"
+        ],
+        "missing": [
+          "Kobo",
+          "Seerr",
+          "SeerrNG",
+          "SmartScope"
+        ]
+      },
+      {
+        "issue": "protected-literal",
+        "key": [
+          2565,
+          "zh_Hant"
+        ],
+        "missing": [
+          "Kobo",
+          "Seerr",
+          "SeerrNG",
+          "SmartScope"
+        ]
+      },
+      {
+        "issue": "protected-literal",
+        "key": [
+          2572,
+          "fr"
+        ],
+        "missing": [
+          "BookOrbit"
+        ]
+      },
+      {
+        "issue": "protected-literal",
+        "key": [
+          2572,
+          "hi"
+        ],
+        "missing": [
+          "BookOrbit"
+        ]
+      },
+      {
+        "issue": "protected-literal",
+        "key": [
+          2572,
+          "ja"
+        ],
+        "missing": [
+          "BookOrbit"
+        ]
+      },
+      {
+        "issue": "protected-literal",
+        "key": [
+          2572,
+          "ko"
+        ],
+        "missing": [
+          "BookOrbit"
+        ]
+      },
+      {
+        "issue": "protected-literal",
+        "key": [
+          2572,
+          "vi"
+        ],
+        "missing": [
+          "BookOrbit"
+        ]
+      },
+      {
+        "issue": "protected-literal",
+        "key": [
+          2572,
+          "zh_Hans"
+        ],
+        "missing": [
+          "BookOrbit"
+        ]
+      },
+      {
+        "issue": "protected-literal",
+        "key": [
+          2572,
+          "zh_Hant"
+        ],
+        "missing": [
+          "BookOrbit"
+        ]
+      },
+      {
+        "issue": "protected-literal",
+        "key": [
+          2596,
+          "ar"
+        ],
+        "missing": [
+          "OPDS"
+        ]
+      }
+    ]
+  },
+  "head": "0905d4be32d8b7ec3b1af701473a3fdf6e0f30a2",
+  "integrityIssues": [],
+  "localeCatalogs": [
+    {
+      "blob": "eaf1e0d9eeb9e2a59b10398a6ce7822e631412e6",
+      "bytes": 1044013,
+      "fileSha256": "8dd336b81eebd01231e5e9a60c3fda79a368fa393455e86f2621288c39460cd9",
+      "keyCount": 9494,
+      "keySetParity": true,
+      "locale": "ar",
+      "orderedKeyParity": true,
+      "path": "src/i18n/locale/ar.json"
+    },
+    {
+      "blob": "9e81fb50a0cd555db6a81236e45e649342f8890e",
+      "bytes": 926703,
+      "fileSha256": "31a410371fd227677c76f64eaf8ebab424a2af7a6a10e482012aeb5e87425ae2",
+      "keyCount": 9494,
+      "keySetParity": true,
+      "locale": "de",
+      "orderedKeyParity": true,
+      "path": "src/i18n/locale/de.json"
+    },
+    {
+      "blob": "b5e769046a3026cade2776e1ac87dc9638c1542b",
+      "bytes": 922270,
+      "fileSha256": "b655287779aa271fb4eb465b15f8146d8b7c8e6f0037b27cf62e81b86fa96b9a",
+      "keyCount": 9494,
+      "keySetParity": true,
+      "locale": "es",
+      "orderedKeyParity": true,
+      "path": "src/i18n/locale/es.json"
+    },
+    {
+      "blob": "2e548febf6b8d6aeda45923dde864cf1bbac3b1f",
+      "bytes": 939637,
+      "fileSha256": "56450b996ad086465ed3c47667fec69c86fcf43e5fbce2de30e90943b0780d64",
+      "keyCount": 9494,
+      "keySetParity": true,
+      "locale": "fr",
+      "orderedKeyParity": true,
+      "path": "src/i18n/locale/fr.json"
+    },
+    {
+      "blob": "42ba0cd2535026b8261ede7f3259888a1fef546a",
+      "bytes": 1370567,
+      "fileSha256": "48011ae4fb6a316e7b29e63991cd3dad54cf30be6f33914da82dec8ec64c720a",
+      "keyCount": 9494,
+      "keySetParity": true,
+      "locale": "hi",
+      "orderedKeyParity": true,
+      "path": "src/i18n/locale/hi.json"
+    },
+    {
+      "blob": "23e660533cf1ab938117c03f8a6077fd3f232c2f",
+      "bytes": 867259,
+      "fileSha256": "d80d4418ef6649e284495d04eb21e67b247429efbfce22384b589d60808af3b3",
+      "keyCount": 9494,
+      "keySetParity": true,
+      "locale": "id",
+      "orderedKeyParity": true,
+      "path": "src/i18n/locale/id.json"
+    },
+    {
+      "blob": "59d88a681446f83cb82ccba0c4fc1c1c8dbbbaf7",
+      "bytes": 1015265,
+      "fileSha256": "18f9a00a99d7ef3f717243496cdf281432cf54fa22ddb2258c39912c2ba5b0bf",
+      "keyCount": 9494,
+      "keySetParity": true,
+      "locale": "ja",
+      "orderedKeyParity": false,
+      "path": "src/i18n/locale/ja.json"
+    },
+    {
+      "blob": "6d62743968c7e454c52d2ac4d59a5234bb05f442",
+      "bytes": 933334,
+      "fileSha256": "13c737e8fc41c4d6a7253a7b91d74d8c934eb4b05844d4430229bc7d716a5075",
+      "keyCount": 9494,
+      "keySetParity": true,
+      "locale": "ko",
+      "orderedKeyParity": false,
+      "path": "src/i18n/locale/ko.json"
+    },
+    {
+      "blob": "a48b1460e3295c63986cfca0cb329114be0b6517",
+      "bytes": 910925,
+      "fileSha256": "4b4ef4717cef765cad74e40da053738e7b2f966bb2db8d12611dcf60e5b98519",
+      "keyCount": 9494,
+      "keySetParity": true,
+      "locale": "pt_BR",
+      "orderedKeyParity": true,
+      "path": "src/i18n/locale/pt_BR.json"
+    },
+    {
+      "blob": "59ae3a53aa931ee26968d7902c189409c6990cc0",
+      "bytes": 968591,
+      "fileSha256": "ca6b1cac9c35b5a10473c54dc988827c7909d389807b8037b91606a4baf90260",
+      "keyCount": 9494,
+      "keySetParity": true,
+      "locale": "vi",
+      "orderedKeyParity": false,
+      "path": "src/i18n/locale/vi.json"
+    },
+    {
+      "blob": "fe06b511ee7aac420d0af515ddc55229542efa41",
+      "bytes": 811822,
+      "fileSha256": "fcbc44a0e4583105fd85b28ef31c04c957f1679dcaeffbed99129bf67ab806fb",
+      "keyCount": 9494,
+      "keySetParity": true,
+      "locale": "zh_Hans",
+      "orderedKeyParity": false,
+      "path": "src/i18n/locale/zh_Hans.json"
+    },
+    {
+      "blob": "0183de756ddb089a387b5494bcde3f89a607be8e",
+      "bytes": 813204,
+      "fileSha256": "cf6547fd16f6912c2d2ea4d2d8138565ee2ce49a9359ad8993a40590cf909aae",
+      "keyCount": 9494,
+      "keySetParity": true,
+      "locale": "zh_Hant",
+      "orderedKeyParity": false,
+      "path": "src/i18n/locale/zh_Hant.json"
+    }
+  ],
+  "localesWithOrderDifferences": [
+    "ja",
+    "ko",
+    "vi",
+    "zh_Hans",
+    "zh_Hant"
+  ],
+  "orderedKeyParityByLocale": {
+    "ar": true,
+    "de": true,
+    "es": true,
+    "fr": true,
+    "hi": true,
+    "id": true,
+    "ja": false,
+    "ko": false,
+    "pt_BR": true,
+    "vi": false,
+    "zh_Hans": false,
+    "zh_Hant": false
+  },
+  "ownCrossReviewCounts": {
+    "agree": 843,
+    "revise": 57
+  },
+  "ownRevisions": 57,
+  "primaryAndRecommendedTargetStructure": {
+    "countMarkersPreserved": true,
+    "localeIcuCellsByLocale": {
+      "fr": 2,
+      "hi": 2,
+      "id": 2,
+      "ja": 2,
+      "ko": 2,
+      "pt_BR": 2,
+      "vi": 2,
+      "zh_Hans": 2,
+      "zh_Hant": 2
+    },
+    "localeSpecificPluralCategoriesChecked": true,
+    "placeholderMarkupProtectedLiteralIcuAndHashIssues": 0,
+    "sourceIcuCellsReviewed": 18
+  },
+  "primaryTargetIntegrity": {
+    "countMarkerMismatchRows": [
+      {
+        "issue": "icu-count-marker",
+        "key": [
+          2534,
+          "ar"
+        ]
+      },
+      {
+        "issue": "icu-count-marker",
+        "key": [
+          2581,
+          "ar"
+        ]
+      }
+    ],
+    "placeholderMarkupProtectedLiteralAndBranchIssues": 0
+  },
+  "pullRequest": 418,
+  "repository": "snapetech-org/SeerrNG",
+  "reviewedOwnCells": 900,
+  "sourceCatalog": {
+    "blob": "12e04a118c30b71b3714291adeaf9fdb2735cee4",
+    "bytes": 835513,
+    "fileSha256": "75ff3c90b52aedd636a506281ffbd6fb2d3739c61294b6008a517f17647e2316",
+    "keyCount": 9494,
+    "orderedKeysSha256": "47d40a21145f2f198fadaa29baeef5461718c4b6365d564af60ee015f18f1974",
+    "path": "src/i18n/locale/en.json"
+  },
+  "sourcePositions": {
+    "count": 100,
+    "first": "components.ReaderDeliveryLink.ebooks",
+    "last": "components.ReaderGroupingAction.update",
+    "range": [
+      2500,
+      2599
+    ]
+  },
+  "tree": "a09117211080bbd89d32959f17d93b02a82b966f",
+  "worktree": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng",
+  "worktreeHead": "0905d4be32d8b7ec3b1af701473a3fdf6e0f30a2",
+  "worktreeStatusPorcelain": "",
+  "worktreeTree": "a09117211080bbd89d32959f17d93b02a82b966f"
+}

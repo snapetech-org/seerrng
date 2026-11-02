@@ -1,0 +1,13 @@
+{
+  "afterSnapshot": "live-prs-after.json",
+  "allRemoteBranchesMatchPRHeads": true,
+  "allSevenHeadAndStateFieldsUnchanged": true,
+  "beforeSnapshot": "live-prs-before.json",
+  "capturedAtUtc": "2026-11-02T20:56:34.329003+00:00",
+  "changes": [],
+  "exactSeerrPR418Draft": true,
+  "exactSeerrPR418Head": "0905d4be32d8b7ec3b1af701473a3fdf6e0f30a2",
+  "exactSeerrPR418State": "OPEN",
+  "exactSeerrPR418Tree": "a09117211080bbd89d32959f17d93b02a82b966f",
+  "reposQueried": 7
+}

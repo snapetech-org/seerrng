@@ -1,0 +1,3809 @@
+{
+  "candidateCount": 475,
+  "candidateTargets": [
+    {
+      "candidateTarget": "تصفّح الكتب الإلكترونية في {serviceName}",
+      "candidateTargetHash": "80b250689390062ada1baba132faac6209544b1d86aa265edafec8fc418276f4",
+      "disposition": "propose-correction",
+      "locale": "ar",
+      "sourceId": "components.ReaderDeliveryLink.ebooks",
+      "sourcePosition": 2500
+    },
+    {
+      "candidateTarget": "عنوان تطبيق القراءة",
+      "candidateTargetHash": "af6a71fefbd93f1ac591cb79bb8b23f629f02d6777fad4466940db7cd3090fb6",
+      "disposition": "propose-correction",
+      "locale": "ar",
+      "sourceId": "components.ReaderDeliverySettings.address",
+      "sourcePosition": 2504
+    },
+    {
+      "candidateTarget": "Reader-App-Adresse",
+      "candidateTargetHash": "43839c4ee8fb580bdb5417b0b5b322b0f9a54d8ac570a50632fd73ac52f59306",
+      "disposition": "propose-correction",
+      "locale": "de",
+      "sourceId": "components.ReaderDeliverySettings.address",
+      "sourcePosition": 2504
+    },
+    {
+      "candidateTarget": "أدخل العنوان الذي يمكن للقراء فتحه في المتصفح. أضف مسار الأساس للوكيل العكسي إذا كنت تستخدمه. يمكنك لصق عنوان OPDS كامل أو عنوان Grimmory Komga.",
+      "candidateTargetHash": "fa9cd4af62dd55a299e3ad6b6d8bd5b168e2c959f119871d8be343f4429d99dd",
+      "disposition": "propose-correction",
+      "locale": "ar",
+      "sourceId": "components.ReaderDeliverySettings.addressDescription",
+      "sourcePosition": 2505
+    },
+    {
+      "candidateTarget": "BookOrbit bietet integrierte Lesefunktionen für E-Books und PDFs, Comics im CBZ/CBR/CB7-Format sowie Hörbücher im M4B/MP3/M4A/OPUS/OGG/FLAC-Format. Mit OPDS-Apps können Sie E-Books und PDFs durchsuchen, CBZ/CBR-Archive herunterladen und Zeitschriftenausgaben als PDFs importieren.",
+      "candidateTargetHash": "9614da5921f63a44a7e208718d7ed69faf3ed9612bd6b8937423c9cfc2440db7",
+      "disposition": "propose-correction",
+      "locale": "de",
+      "sourceId": "components.ReaderDeliverySettings.bookorbitDescription",
+      "sourcePosition": 2508
+    },
+    {
+      "candidateTarget": "BookOrbit tiene lectores integrados para libros electrónicos y PDF, cómics en formato CBZ/CBR/CB7 y audiolibros en M4B/MP3/M4A/OPUS/OGG/FLAC. Las aplicaciones OPDS permiten explorar libros electrónicos y PDF, descargar archivos CBZ/CBR e importar números de revista en PDF.",
+      "candidateTargetHash": "aaa004e16842a8f7a44e20bc4087b484e30363b940903715ddf9eb0a1c3fd4b8",
+      "disposition": "propose-correction",
+      "locale": "es",
+      "sourceId": "components.ReaderDeliverySettings.bookorbitDescription",
+      "sourcePosition": 2508
+    },
+    {
+      "candidateTarget": "تجاهل التغييرات",
+      "candidateTargetHash": "9f77ad0889155bb43dfe0ee5f673be9caa33857b4eb4ebba5e0b1ea7e0d9bb61",
+      "disposition": "propose-correction",
+      "locale": "ar",
+      "sourceId": "components.ReaderDeliverySettings.cancel",
+      "sourcePosition": 2510
+    },
+    {
+      "candidateTarget": "إزالة بيانات اعتماد الحساب المحفوظة",
+      "candidateTargetHash": "3f65fcbcf3ebf91da5411ffe3215827b72546da269e6198fbba4d93d48a2fc6a",
+      "disposition": "propose-correction",
+      "locale": "ar",
+      "sourceId": "components.ReaderDeliverySettings.clearCredentials",
+      "sourcePosition": 2513
+    },
+    {
+      "candidateTarget": "عنوان قارئ القصص المصورة Komga",
+      "candidateTargetHash": "a63c60440428e461403460030a25b2e9b61656d6124e389ba26cd68e54774e34",
+      "disposition": "propose-correction",
+      "locale": "ar",
+      "sourceId": "components.ReaderDeliverySettings.comicCatalogAddress",
+      "sourcePosition": 2514
+    },
+    {
+      "candidateTarget": "Adresse des Komga-Comic-Readers",
+      "candidateTargetHash": "4dcc9eeaa576a60f62af0ea4df605cc6c62dce3d7b68762a73c6a69dbb41ea86",
+      "disposition": "propose-correction",
+      "locale": "de",
+      "sourceId": "components.ReaderDeliverySettings.comicCatalogAddress",
+      "sourcePosition": 2514
+    },
+    {
+      "candidateTarget": "¿Eliminar esta agrupación gestionada por SeerrNG del servicio de lectura? Los libros y los archivos de la biblioteca no se eliminarán.",
+      "candidateTargetHash": "eb07403487cb3c6a46ead67e2cf930107d5dfb5cf587f9da37950f493473a30b",
+      "disposition": "propose-correction",
+      "locale": "es",
+      "sourceId": "components.ReaderDeliverySettings.confirmDeleteGrouping",
+      "sourcePosition": 2517
+    },
+    {
+      "candidateTarget": "تم الاتصال. يمكن لـ SeerrNG إدارة المجموعات؛ عُثر على {count} مجموعة موجودة.",
+      "candidateTargetHash": "7c1672d5fce2de5a7cf99f3b2cce3e16837e5152e6de21657c5904535235d08c",
+      "disposition": "propose-correction",
+      "locale": "ar",
+      "sourceId": "components.ReaderDeliverySettings.connectionSuccess",
+      "sourcePosition": 2519
+    },
+    {
+      "candidateTarget": "Conectado. SeerrNG puede gestionar las agrupaciones; se encontraron {count} agrupaciones existentes.",
+      "candidateTargetHash": "73efbb84945641200a618e467d116b81fecd374be44b88bc6bb2580770e0a685",
+      "disposition": "propose-correction",
+      "locale": "es",
+      "sourceId": "components.ReaderDeliverySettings.connectionSuccess",
+      "sourcePosition": 2519
+    },
+    {
+      "candidateTarget": "اختبار إمكانية الوصول إلى المجموعة",
+      "candidateTargetHash": "b58261b493255779d369cddd59f3bd93dba3604d24bfac0c25c5e4ecc0a6e9f7",
+      "disposition": "propose-correction",
+      "locale": "ar",
+      "sourceId": "components.ReaderDeliverySettings.connectionTest",
+      "sourcePosition": 2520
+    },
+    {
+      "candidateTarget": "تم نسخ عنوان تطبيق القراءة.",
+      "candidateTargetHash": "ec8aec76a3ece6d94b24a2bd7f300b944b151858d4bff7f69530e08fddf8cab8",
+      "disposition": "propose-correction",
+      "locale": "ar",
+      "sourceId": "components.ReaderDeliverySettings.copied",
+      "sourcePosition": 2522
+    },
+    {
+      "candidateTarget": "نسخ عنوان الفهرس",
+      "candidateTargetHash": "c3d5fa30e17f8d43feac86ed9df7cf8966af855b5a9a147d6946a7796a59b46f",
+      "disposition": "propose-correction",
+      "locale": "ar",
+      "sourceId": "components.ReaderDeliverySettings.copyCatalogAddress",
+      "sourcePosition": 2523
+    },
+    {
+      "candidateTarget": "نسخ عنوان قارئ القصص المصورة",
+      "candidateTargetHash": "ad74d123644a1b5a7dfdb284bdfd334fe3e43d6e31b16e52535fffa073a28f74",
+      "disposition": "propose-correction",
+      "locale": "ar",
+      "sourceId": "components.ReaderDeliverySettings.copyComicCatalogAddress",
+      "sourcePosition": 2524
+    },
+    {
+      "candidateTarget": "الوصول إلى الحافظة غير متاح هنا. حدّد عنوان تطبيق القراءة أعلاه وانسخه.",
+      "candidateTargetHash": "9f600fdccd14b5d398e057cb37f227003a06a267c2b171de91a13551435311b2",
+      "disposition": "propose-correction",
+      "locale": "ar",
+      "sourceId": "components.ReaderDeliverySettings.copyUnavailable",
+      "sourcePosition": 2526
+    },
+    {
+      "candidateTarget": "Der Zugriff auf die Zwischenablage ist hier nicht verfügbar. Markieren und kopieren Sie die oben angezeigte Reader-Adresse.",
+      "candidateTargetHash": "cede072ce4c721d8bad5e0812da1b7b9c232b6281092e8a61824bd4d85a01c55",
+      "disposition": "propose-correction",
+      "locale": "de",
+      "sourceId": "components.ReaderDeliverySettings.copyUnavailable",
+      "sourcePosition": 2526
+    },
+    {
+      "candidateTarget": "إزالة رف القراءة المُدار",
+      "candidateTargetHash": "f51e217ef07eb416c71364d087997e4ee5202bc6e9d7d22edf3d566cda20776c",
+      "disposition": "propose-correction",
+      "locale": "ar",
+      "sourceId": "components.ReaderDeliverySettings.deleteGrouping",
+      "sourcePosition": 2527
+    },
+    {
+      "candidateTarget": "Recomendado. Grimmory ofrece un catálogo OPDS para libros electrónicos y PDF, una API de Komga para transmitir páginas de cómics y un reproductor integrado para audiolibros M4B, M4A y MP3.",
+      "candidateTargetHash": "e9edc52b16ede1f7c1a15af67faed0404153287014eb150a17a7bd8527334f4b",
+      "disposition": "propose-correction",
+      "locale": "es",
+      "sourceId": "components.ReaderDeliverySettings.grimmoryDescription",
+      "sourcePosition": 2530
+    },
+    {
+      "candidateTarget": "Configuración de la API Komga de Grimmory",
+      "candidateTargetHash": "9d313cd0e8913f8242a4e5fb950db06df9ad4aef5db5a9fb9dd288ea5e5ece53",
+      "disposition": "propose-correction",
+      "locale": "es",
+      "sourceId": "components.ReaderDeliverySettings.grimmoryKomgaSetup",
+      "sourcePosition": 2531
+    },
+    {
+      "candidateTarget": "Grimmory (موصى به)",
+      "candidateTargetHash": "f35ac3ef8f0f101979c6326462d2c43f3d4fe1f6fabbdddcfdbed474c18f0950",
+      "disposition": "propose-correction",
+      "locale": "ar",
+      "sourceId": "components.ReaderDeliverySettings.grimmoryRecommended",
+      "sourcePosition": 2532
+    },
+    {
+      "candidateTarget": "Configuración de OPDS de Grimmory",
+      "candidateTargetHash": "54447a400a5d67a4bca421be4337d37598c687326673990145f69f02719fee4e",
+      "disposition": "propose-correction",
+      "locale": "es",
+      "sourceId": "components.ReaderDeliverySettings.grimmorySetup",
+      "sourcePosition": 2533
+    },
+    {
+      "candidateTarget": "{count, plural, one {# Eintrag} other {# Einträge}}",
+      "candidateTargetHash": "0025448f1947a11d2d3d9234827d23bc7e34e012bc6f8212527253b09ba5c7d3",
+      "disposition": "propose-correction",
+      "locale": "de",
+      "sourceId": "components.ReaderDeliverySettings.groupingCount",
+      "sourcePosition": 2534
+    },
+    {
+      "candidateTarget": "تعذّر إزالة رف القراءة المُدار.",
+      "candidateTargetHash": "d3ebe1888557f0ef1efb490c81cbe0edf65c9fa3b9228e9f5e2cbd3f4fd7dca2",
+      "disposition": "propose-correction",
+      "locale": "ar",
+      "sourceId": "components.ReaderDeliverySettings.groupingDeleteError",
+      "sourcePosition": 2536
+    },
+    {
+      "candidateTarget": "No se pudo eliminar el estante de lectura gestionado.",
+      "candidateTargetHash": "2e248b9c2a80fde4fee16d25eff2457ca7521b7a7925ecf0e9957d0a397969fd",
+      "disposition": "propose-correction",
+      "locale": "es",
+      "sourceId": "components.ReaderDeliverySettings.groupingDeleteError",
+      "sourcePosition": 2536
+    },
+    {
+      "candidateTarget": "تمت إزالة رف القراءة المُدار.",
+      "candidateTargetHash": "c4d1c56b39d37ba7a72d43900920ed08c9154f896b3576d4239ce594d1d21fac",
+      "disposition": "propose-correction",
+      "locale": "ar",
+      "sourceId": "components.ReaderDeliverySettings.groupingDeleted",
+      "sourcePosition": 2537
+    },
+    {
+      "candidateTarget": "يتطلب الانتباه",
+      "candidateTargetHash": "1e0045f98daadcd64ea61f543404dba0e51b6cb8e61bafcf191e968a75b8b48e",
+      "disposition": "propose-correction",
+      "locale": "ar",
+      "sourceId": "components.ReaderDeliverySettings.groupingError",
+      "sourcePosition": 2538
+    },
+    {
+      "candidateTarget": "جارٍ التحديث",
+      "candidateTargetHash": "180a188476c05d5156618060e4355f0c410220309dd529b3e0632219da850e76",
+      "disposition": "propose-correction",
+      "locale": "ar",
+      "sourceId": "components.ReaderDeliverySettings.groupingPending",
+      "sourcePosition": 2544
+    },
+    {
+      "candidateTarget": "Actualizando",
+      "candidateTargetHash": "937c8ddb1b2a977b5f76c1a0d878f733b3554fda77ddee2f4561e3363e1b043d",
+      "disposition": "propose-correction",
+      "locale": "es",
+      "sourceId": "components.ReaderDeliverySettings.groupingPending",
+      "sourcePosition": 2544
+    },
+    {
+      "candidateTarget": "تعذّر تحميل أرفف القراءة المُدارة.",
+      "candidateTargetHash": "817713ae4d78f8d190957925ad3c76db85704b3782febacd32a8bba4321987ea",
+      "disposition": "propose-correction",
+      "locale": "ar",
+      "sourceId": "components.ReaderDeliverySettings.groupingsLoadError",
+      "sourcePosition": 2546
+    },
+    {
+      "candidateTarget": "No se pudieron cargar los estantes de lectura gestionados.",
+      "candidateTargetHash": "53279ec2b37c3e4196d351badc7fc5ee7ae1f04701a8470866fc9a67f312fc44",
+      "disposition": "propose-correction",
+      "locale": "es",
+      "sourceId": "components.ReaderDeliverySettings.groupingsLoadError",
+      "sourcePosition": 2546
+    },
+    {
+      "candidateTarget": "تعذّر تحميل إعدادات تطبيق القراءة.",
+      "candidateTargetHash": "6d8dccb06535b22d19ee432a90e5efa1cbc96fbeb956d1a39149717e0a47e029",
+      "disposition": "propose-correction",
+      "locale": "ar",
+      "sourceId": "components.ReaderDeliverySettings.loadError",
+      "sourcePosition": 2551
+    },
+    {
+      "candidateTarget": "لم ينشئ SeerrNG أي أرفف للقراءة بعد.",
+      "candidateTargetHash": "eefb76f32b381bce1ed9c6dd3792105d806e43499c0e42f62eebddae33e773a7",
+      "disposition": "propose-correction",
+      "locale": "ar",
+      "sourceId": "components.ReaderDeliverySettings.noGroupings",
+      "sourcePosition": 2552
+    },
+    {
+      "candidateTarget": "فتح {serviceName}",
+      "candidateTargetHash": "46f219f816e2033933311a058b2fcf1d8abf1e94eea1c0326d3ab353bac4cfc4",
+      "disposition": "propose-correction",
+      "locale": "ar",
+      "sourceId": "components.ReaderDeliverySettings.open",
+      "sourcePosition": 2554
+    },
+    {
+      "candidateTarget": "كلمة مرور حساب المسؤول",
+      "candidateTargetHash": "8594917a88424b738c0d0dd97f19d5dbc4f03fe163c5e1519fed94b00cc86936",
+      "disposition": "propose-correction",
+      "locale": "ar",
+      "sourceId": "components.ReaderDeliverySettings.password",
+      "sourcePosition": 2555
+    },
+    {
+      "candidateTarget": "Privat für das verbundene Konto",
+      "candidateTargetHash": "3d563c188b083db6f9e3e275491948f129771f9cbd791711efe19c7d288fc37d",
+      "disposition": "propose-correction",
+      "locale": "de",
+      "sourceId": "components.ReaderDeliverySettings.privateVisibility",
+      "sourcePosition": 2558
+    },
+    {
+      "candidateTarget": "Privado para la cuenta conectada",
+      "candidateTargetHash": "50602b0fbab9c79d72f211cd78904ff7845652272c422479cc02ce68454b7a0a",
+      "disposition": "propose-correction",
+      "locale": "es",
+      "sourceId": "components.ReaderDeliverySettings.privateVisibility",
+      "sourcePosition": 2558
+    },
+    {
+      "candidateTarget": "حفظ إعدادات تطبيق القراءة",
+      "candidateTargetHash": "a0fb97c1ec570f237438e2893dbef93ceac9dadc2a9085253e9cfe02e3969940",
+      "disposition": "propose-correction",
+      "locale": "ar",
+      "sourceId": "components.ReaderDeliverySettings.save",
+      "sourcePosition": 2560
+    },
+    {
+      "candidateTarget": "تعذّر حفظ إعدادات تطبيق القراءة.",
+      "candidateTargetHash": "38ab9c92f1d1bdfb0c4cfd0f56ad8c46c67c72e92a8656638583253f77e01bda",
+      "disposition": "propose-correction",
+      "locale": "ar",
+      "sourceId": "components.ReaderDeliverySettings.saveError",
+      "sourcePosition": 2561
+    },
+    {
+      "candidateTarget": "تم حفظ إعدادات تطبيق القراءة.",
+      "candidateTargetHash": "b462945c19f17b090dfdccd0dc8f99e59b996b42854f392c46a30a0f0aea0bb8",
+      "disposition": "propose-correction",
+      "locale": "ar",
+      "sourceId": "components.ReaderDeliverySettings.saved",
+      "sourcePosition": 2562
+    },
+    {
+      "candidateTarget": "Gespeichert; lassen Sie das Feld leer, damit es gespeichert bleibt",
+      "candidateTargetHash": "8755fd105deff0fb5322b0211bcbe79b2f24d0a81c273049a32dc2aec1ec0162",
+      "disposition": "propose-correction",
+      "locale": "de",
+      "sourceId": "components.ReaderDeliverySettings.savedPassword",
+      "sourcePosition": 2563
+    },
+    {
+      "candidateTarget": "Wird gespeichert…",
+      "candidateTargetHash": "915ceeb27637953b9576bc64f8e8c88a8af76d2cf477fe2cb7f23119c4d12dd5",
+      "disposition": "propose-correction",
+      "locale": "de",
+      "sourceId": "components.ReaderDeliverySettings.saving",
+      "sourcePosition": 2564
+    },
+    {
+      "candidateTarget": "يقفل BookOrbit إمكانية تغيير مستوى ظهور SmartScope عند إنشاء النطاق. وإذا كانت مزامنة Kobo مفعّلة، يحافظ SeerrNG أيضًا على مجموعة عادية ويُزامن عناصرها كل 15 دقيقة.",
+      "candidateTargetHash": "61ea9d4d22b227d467fd0b612515b1e6693e1a7cf957b8d840a5509f529d7e8e",
+      "disposition": "propose-correction",
+      "locale": "ar",
+      "sourceId": "components.ReaderDeliverySettings.scopeVisibilityNote",
+      "sourcePosition": 2565
+    },
+    {
+      "candidateTarget": "مشترك مع مستخدمي خدمة القراءة",
+      "candidateTargetHash": "c0b65b2dc3991bdd100ab8d0dd11429a3bf3413f884c33429525da93ea10f38a",
+      "disposition": "propose-correction",
+      "locale": "ar",
+      "sourceId": "components.ReaderDeliverySettings.sharedVisibility",
+      "sourcePosition": 2566
+    },
+    {
+      "candidateTarget": "احفظ الإعدادات قبل اختبار الاتصال.",
+      "candidateTargetHash": "283dadb764bcc0e99b882033bf36a50063b4164000223d7f1a9c1c73cd8c4b8d",
+      "disposition": "propose-correction",
+      "locale": "ar",
+      "sourceId": "components.ReaderDeliverySettings.testSaveFirst",
+      "sourcePosition": 2567
+    },
+    {
+      "candidateTarget": "تطبيقات القراءة",
+      "candidateTargetHash": "fa9003fed3375e1314c40b66a7cb6644cf655375a7d06d7c5695d4dbcc50bdfe",
+      "disposition": "propose-correction",
+      "locale": "ar",
+      "sourceId": "components.ReaderDeliverySettings.title",
+      "sourcePosition": 2568
+    },
+    {
+      "candidateTarget": "احفظ هذه الإعدادات قبل استخدام روابط القراءة في صفحات تفاصيل الوسائط.",
+      "candidateTargetHash": "2f3719bc2d365a0ac6d8814170710a176c6edafd903eafc67e1b6a78b7bdfb9e",
+      "disposition": "propose-correction",
+      "locale": "ar",
+      "sourceId": "components.ReaderDeliverySettings.unsavedChanges",
+      "sourcePosition": 2569
+    },
+    {
+      "candidateTarget": "إنشاء رف للقراءة",
+      "candidateTargetHash": "1c839d9c0b258be116cd5cf46cd3359b7f86cd8440bddef2d1481a1a870a7163",
+      "disposition": "propose-correction",
+      "locale": "ar",
+      "sourceId": "components.ReaderGroupingAction.action",
+      "sourcePosition": 2571
+    },
+    {
+      "candidateTarget": "Leseregal erstellen",
+      "candidateTargetHash": "989a7ba4904c78eec4c21e642f565a6c3b2d6289c6bf03995c5954bc7978d528",
+      "disposition": "propose-correction",
+      "locale": "de",
+      "sourceId": "components.ReaderGroupingAction.action",
+      "sourcePosition": 2571
+    },
+    {
+      "candidateTarget": "عدد العناصر في المعاينة: {count}. لم تؤكد خدمة القراءة العدد المحفوظ بعد.",
+      "candidateTargetHash": "35c675a6174882569363e54f83f368b070b938fec4f472d1c0011e61ee285b2c",
+      "disposition": "propose-correction",
+      "locale": "ar",
+      "sourceId": "components.ReaderGroupingAction.countPending",
+      "sourcePosition": 2574
+    },
+    {
+      "candidateTarget": "Grimmory (موصى به)",
+      "candidateTargetHash": "f35ac3ef8f0f101979c6326462d2c43f3d4fe1f6fabbdddcfdbed474c18f0950",
+      "disposition": "propose-correction",
+      "locale": "ar",
+      "sourceId": "components.ReaderGroupingAction.grimmory",
+      "sourcePosition": 2576
+    },
+    {
+      "candidateTarget": "La entrega de Kobo de Grimmory utiliza su propio estante de inclusión. SeerrNG deja sin cambios esa configuración del proveedor.",
+      "candidateTargetHash": "4338a5bc019e5f6c6aa0d08150b40ec2a83989c288865eaa7a1992f1c90057aa",
+      "disposition": "propose-correction",
+      "locale": "es",
+      "sourceId": "components.ReaderGroupingAction.grimmoryKobo",
+      "sourcePosition": 2577
+    },
+    {
+      "candidateTarget": "Convertir esto en un estante de lectura",
+      "candidateTargetHash": "bd955862b6d085456d11915ba1fa0c2db4de5e1419b99015c081039b98302540",
+      "disposition": "propose-correction",
+      "locale": "es",
+      "sourceId": "components.ReaderGroupingAction.heading",
+      "sourcePosition": 2578
+    },
+    {
+      "candidateTarget": "SeerrNG erstellt in Ihrem Lesedienst eine dynamische, regelbasierte Gruppierung. Sie bleibt aktuell, wenn sich die Bibliothek ändert; Dateien werden nicht kopiert.",
+      "candidateTargetHash": "df69cceedc395fb2cf842d0cb17481060e98eeadd2e0d76b504dd7d93b244eb4",
+      "disposition": "propose-correction",
+      "locale": "de",
+      "sourceId": "components.ReaderGroupingAction.intro",
+      "sourcePosition": 2579
+    },
+    {
+      "candidateTarget": "فتح {serviceName}",
+      "candidateTargetHash": "46f219f816e2033933311a058b2fcf1d8abf1e94eea1c0326d3ab353bac4cfc4",
+      "disposition": "propose-correction",
+      "locale": "ar",
+      "sourceId": "components.ReaderGroupingAction.open",
+      "sourcePosition": 2583
+    },
+    {
+      "candidateTarget": "إغلاق إعداد الرف",
+      "candidateTargetHash": "8f4c7e7c00d1f011afed377ffe6f57779a1ddf8170950e40ee35a60411cc0bf4",
+      "disposition": "propose-correction",
+      "locale": "ar",
+      "sourceId": "components.ReaderGroupingAction.openClose",
+      "sourcePosition": 2584
+    },
+    {
+      "candidateTarget": "معاينة العناصر المطابقة",
+      "candidateTargetHash": "9a982b266fa98874d72df6ea396775268d8f3da1cbf06cc74d24bff47980bee1",
+      "disposition": "propose-correction",
+      "locale": "ar",
+      "sourceId": "components.ReaderGroupingAction.preview",
+      "sourcePosition": 2585
+    },
+    {
+      "candidateTarget": "تعذّر التحقق من مكتبة القراءة.",
+      "candidateTargetHash": "02ec57b5722a8af6f0c9bfca0eb50560cf6a38c7f3cbe846dd5dd788bdacb9b5",
+      "disposition": "propose-correction",
+      "locale": "ar",
+      "sourceId": "components.ReaderGroupingAction.previewError",
+      "sourcePosition": 2586
+    },
+    {
+      "candidateTarget": "جارٍ فحص المكتبة…",
+      "candidateTargetHash": "759bb1a26250087bfc61f1bbf0557c961ff1e795ad353eeb2e7f86f95a3fd7b5",
+      "disposition": "propose-correction",
+      "locale": "ar",
+      "sourceId": "components.ReaderGroupingAction.previewing",
+      "sourcePosition": 2587
+    },
+    {
+      "candidateTarget": "خدمة القراءة",
+      "candidateTargetHash": "0134afe2b3b75ca3a954f0a5c84a601905c7dfb047791600e8de46b00713a1eb",
+      "disposition": "propose-correction",
+      "locale": "ar",
+      "sourceId": "components.ReaderGroupingAction.provider",
+      "sourcePosition": 2588
+    },
+    {
+      "candidateTarget": "تم حفظ رف القراءة.",
+      "candidateTargetHash": "00c3c9aeb637f82cb5b938eee23c44563bc97a4af6d8034f97227a4a65da4cf9",
+      "disposition": "propose-correction",
+      "locale": "ar",
+      "sourceId": "components.ReaderGroupingAction.result",
+      "sourcePosition": 2589
+    },
+    {
+      "candidateTarget": "بعض العناصر المطابقة",
+      "candidateTargetHash": "085243107285ad206f68b5602f58e6bfadb2c60bd7283108c3281df1cc52a28e",
+      "disposition": "propose-correction",
+      "locale": "ar",
+      "sourceId": "components.ReaderGroupingAction.sampleTitles",
+      "sourcePosition": 2590
+    },
+    {
+      "candidateTarget": "Einige Treffer",
+      "candidateTargetHash": "b8cc2424bd3c375e53db214c652a1245a80099b03fb12a7609b793993aea942b",
+      "disposition": "propose-correction",
+      "locale": "de",
+      "sourceId": "components.ReaderGroupingAction.sampleTitles",
+      "sourcePosition": 2590
+    },
+    {
+      "candidateTarget": "إنشاء رف",
+      "candidateTargetHash": "93924d5fc45b9f05e1324fc46418028d402d1421ddf2efad219bfebd3113f381",
+      "disposition": "propose-correction",
+      "locale": "ar",
+      "sourceId": "components.ReaderGroupingAction.save",
+      "sourcePosition": 2591
+    },
+    {
+      "candidateTarget": "تعذّر حفظ رف القراءة.",
+      "candidateTargetHash": "d23f51208233b09d37b7e2fb4af6629d6f8fc657429fb5abe61be91a64155bd2",
+      "disposition": "propose-correction",
+      "locale": "ar",
+      "sourceId": "components.ReaderGroupingAction.saveError",
+      "sourcePosition": 2592
+    },
+    {
+      "candidateTarget": "Richten Sie unter Einstellungen > Dienste > Reader-Apps einen Lesedienst ein und kehren Sie dann hierher zurück.",
+      "candidateTargetHash": "b2e158aec0804fad204f81340e7ac28cafb4d0dce61add0d80ddab7e06c3a9b1",
+      "disposition": "propose-correction",
+      "locale": "de",
+      "sourceId": "components.ReaderGroupingAction.setup",
+      "sourcePosition": 2594
+    },
+    {
+      "candidateTarget": "Configura un servicio de lectura en Ajustes > Servicios > Aplicaciones de lectura y vuelve aquí.",
+      "candidateTargetHash": "c18bceeee910d0625851b05e6052b2fcc160fa3f85f7afaa15bf681c1cb2b2c5",
+      "disposition": "propose-correction",
+      "locale": "es",
+      "sourceId": "components.ReaderGroupingAction.setup",
+      "sourcePosition": 2594
+    },
+    {
+      "candidateTarget": "إذا كان حساب القراءة أو حساب OPDS تابعًا لمستخدم آخر لخدمة القراءة، فشارك هذه المجموعة ليتمكن ذلك الحساب من رؤيتها. ويظل حساب القراءة بحاجة إلى إمكانية الوصول إلى المكتبة المطابقة.",
+      "candidateTargetHash": "1bd5ac0aea8017dd9b70bdd3b4735950703069e91926cf34be16a3b91aefb6ae",
+      "disposition": "propose-correction",
+      "locale": "ar",
+      "sourceId": "components.ReaderGroupingAction.shareHelp",
+      "sourcePosition": 2596
+    },
+    {
+      "candidateTarget": "حفظ تحديثات الرف",
+      "candidateTargetHash": "89f29d48a2594ab18d19aee4ada20c5d176d2d9bbc586dcd77db82cc3c07bd93",
+      "disposition": "propose-correction",
+      "locale": "ar",
+      "sourceId": "components.ReaderGroupingAction.update",
+      "sourcePosition": 2599
+    },
+    {
+      "candidateTarget": "{serviceName} में ई-बुक ब्राउज़ करें",
+      "candidateTargetHash": "d52dc4ed437f25ee83fb5eab56c35dc8251acc67835385710f8ff01abe2416b9",
+      "disposition": "propose-correction",
+      "locale": "hi",
+      "sourceId": "components.ReaderDeliveryLink.ebooks",
+      "sourcePosition": 2500
+    },
+    {
+      "candidateTarget": "Buka perpustakaan {serviceName} di browser. Untuk menelusurinya di aplikasi pembaca, salin alamat OPDS-nya dari Pengaturan > Layanan > App Pembaca, lalu tambahkan alamat itu di aplikasi.",
+      "candidateTargetHash": "7dc77ac0074fdcf35e253234a7d488ebc92227c42afd2d39081b3aab4d680698",
+      "disposition": "propose-correction",
+      "locale": "id",
+      "sourceId": "components.ReaderDeliveryLink.ebooksHelp",
+      "sourcePosition": 2501
+    },
+    {
+      "candidateTarget": "{serviceName} में पत्रिका की PDF ब्राउज़ करें",
+      "candidateTargetHash": "01eb62655d5b1a648a2c9940421535d902fb1a99dd4226caacf8c976f0fa3475",
+      "disposition": "propose-correction",
+      "locale": "hi",
+      "sourceId": "components.ReaderDeliveryLink.magazines",
+      "sourcePosition": 2502
+    },
+    {
+      "candidateTarget": "रीडर ऐप का पता",
+      "candidateTargetHash": "82b8b848b2cc621cda6c4bbb54417dcd191763e57b96533dc32fda0d7f50f80e",
+      "disposition": "propose-correction",
+      "locale": "hi",
+      "sourceId": "components.ReaderDeliverySettings.address",
+      "sourcePosition": 2504
+    },
+    {
+      "candidateTarget": "Saisissez l’adresse que les lecteurs peuvent ouvrir dans un navigateur. Si vous utilisez un reverse proxy, indiquez également son chemin de base. Vous pouvez coller une adresse OPDS complète ou une adresse Komga de Grimmory.",
+      "candidateTargetHash": "89830e9fd395167d4902c2496e477abe755744c6ed5de6777b210ea236b5b0cc",
+      "disposition": "propose-correction",
+      "locale": "fr",
+      "sourceId": "components.ReaderDeliverySettings.addressDescription",
+      "sourcePosition": 2505
+    },
+    {
+      "candidateTarget": "वह पता दर्ज करें जिसे पाठक ब्राउज़र में खोल सकें। रिवर्स प्रॉक्सी का उपयोग करते हैं तो उसका बेस पाथ भी शामिल करें। आप पूरा OPDS पता या Grimmory Komga पता पेस्ट कर सकते हैं।",
+      "candidateTargetHash": "9c2dc56a10cf59e6b143e9d9f40917e3defa61d4204c1f37d5a13a4b3b9fc779",
+      "disposition": "propose-correction",
+      "locale": "hi",
+      "sourceId": "components.ReaderDeliverySettings.addressDescription",
+      "sourcePosition": 2505
+    },
+    {
+      "candidateTarget": "Masukkan alamat yang dapat dibuka pembaca di browser. Jika menggunakan reverse proxy, sertakan juga path dasarnya. Anda dapat menempelkan alamat OPDS lengkap atau alamat Komga Grimmory.",
+      "candidateTargetHash": "d321fdceb3b79dc8951a92aa79a004018f54c1629020c1fdb7c02f3e13583df2",
+      "disposition": "propose-correction",
+      "locale": "id",
+      "sourceId": "components.ReaderDeliverySettings.addressDescription",
+      "sourcePosition": 2505
+    },
+    {
+      "candidateTarget": "BookOrbit",
+      "candidateTargetHash": "6a466c4f7e5203c03076aa1515a501c5d04361324e2c686972d80db42255cafa",
+      "disposition": "propose-correction",
+      "locale": "fr",
+      "sourceId": "components.ReaderDeliverySettings.bookorbit",
+      "sourcePosition": 2507
+    },
+    {
+      "candidateTarget": "BookOrbit",
+      "candidateTargetHash": "6a466c4f7e5203c03076aa1515a501c5d04361324e2c686972d80db42255cafa",
+      "disposition": "propose-correction",
+      "locale": "hi",
+      "sourceId": "components.ReaderDeliverySettings.bookorbit",
+      "sourcePosition": 2507
+    },
+    {
+      "candidateTarget": "बदलाव रद्द करें",
+      "candidateTargetHash": "ef4858a89a7362a175d58280de85cab10a6f38a9fb03b484cc585d46e407b05e",
+      "disposition": "propose-correction",
+      "locale": "hi",
+      "sourceId": "components.ReaderDeliverySettings.cancel",
+      "sourcePosition": 2510
+    },
+    {
+      "candidateTarget": "Buang perubahan",
+      "candidateTargetHash": "134995a5e318c4c8b10b34a4bb263402c431bbb5745f51c9c7d0b626937f6d95",
+      "disposition": "propose-correction",
+      "locale": "id",
+      "sourceId": "components.ReaderDeliverySettings.cancel",
+      "sourcePosition": 2510
+    },
+    {
+      "candidateTarget": "सहेजे गए खाते के क्रेडेंशियल हटाएँ",
+      "candidateTargetHash": "0ef837c3efef407f666c611e00f489e78a18d704fd0ca78ca655af50dfa0f018",
+      "disposition": "propose-correction",
+      "locale": "hi",
+      "sourceId": "components.ReaderDeliverySettings.clearCredentials",
+      "sourcePosition": 2513
+    },
+    {
+      "candidateTarget": "Adresse du lecteur de comics Komga",
+      "candidateTargetHash": "988ca73a6aceb7865d27359807f2d1a612c6ebef258924ceca0237c2122e9c29",
+      "disposition": "propose-correction",
+      "locale": "fr",
+      "sourceId": "components.ReaderDeliverySettings.comicCatalogAddress",
+      "sourcePosition": 2514
+    },
+    {
+      "candidateTarget": "Komga कॉमिक रीडर का पता",
+      "candidateTargetHash": "63425d2c3701e393c6b9a216acc60ba62f57869970a2d9e0106c8d9a40127c4c",
+      "disposition": "propose-correction",
+      "locale": "hi",
+      "sourceId": "components.ReaderDeliverySettings.comicCatalogAddress",
+      "sourcePosition": 2514
+    },
+    {
+      "candidateTarget": "Alamat Pembaca Komik Komga",
+      "candidateTargetHash": "b4e0398c94019638ba7f4089a4b581ff10f8aca028a3c1848856577b91e21c2e",
+      "disposition": "propose-correction",
+      "locale": "id",
+      "sourceId": "components.ReaderDeliverySettings.comicCatalogAddress",
+      "sourcePosition": 2514
+    },
+    {
+      "candidateTarget": "Utilisez cette adresse dans une application de comics compatible avec Komga pour lire les pages en streaming. Activez l’API Komga de Grimmory et utilisez les mêmes identifiants de lecteur OPDS.",
+      "candidateTargetHash": "5f92d6112e2d6db6fb168d72b9e9bd07453384097f64c0b48c55b9748493610c",
+      "disposition": "propose-correction",
+      "locale": "fr",
+      "sourceId": "components.ReaderDeliverySettings.comicCatalogAddressDescription",
+      "sourcePosition": 2515
+    },
+    {
+      "candidateTarget": "पेज-दर-पेज स्ट्रीमिंग के लिए इस पते का उपयोग Komga-संगत कॉमिक ऐप में करें। Grimmory का Komga API सक्षम करें और वही OPDS रीडर क्रेडेंशियल इस्तेमाल करें।",
+      "candidateTargetHash": "75d610c86fb71c2af35059bea58d3259d351fe5d873e4677c0b75eb3a3e8f87d",
+      "disposition": "propose-correction",
+      "locale": "hi",
+      "sourceId": "components.ReaderDeliverySettings.comicCatalogAddressDescription",
+      "sourcePosition": 2515
+    },
+    {
+      "candidateTarget": "Gunakan alamat ini di aplikasi komik yang kompatibel dengan Komga untuk streaming halaman demi halaman. Aktifkan API Komga Grimmory dan gunakan kredensial pembaca OPDS yang sama.",
+      "candidateTargetHash": "fce71f09c1f517ddac0caee00ec9b86e7775f3b464e26e17aa7dcd7165840664",
+      "disposition": "propose-correction",
+      "locale": "id",
+      "sourceId": "components.ReaderDeliverySettings.comicCatalogAddressDescription",
+      "sourcePosition": 2515
+    },
+    {
+      "candidateTarget": "Supprimer ce regroupement géré par SeerrNG du service de lecture ? Les livres et les fichiers de la bibliothèque ne seront pas supprimés.",
+      "candidateTargetHash": "adc791ede02a4e56b39e75ee0d37fc90b11818398427998b96298304d96b3434",
+      "disposition": "propose-correction",
+      "locale": "fr",
+      "sourceId": "components.ReaderDeliverySettings.confirmDeleteGrouping",
+      "sourcePosition": 2517
+    },
+    {
+      "candidateTarget": "क्या इस SeerrNG-प्रबंधित समूह को रीडर सेवा से हटाएँ? पुस्तकें और लाइब्रेरी फ़ाइलें हटाई नहीं जाएँगी।",
+      "candidateTargetHash": "acc17630cb1b7fd699b9f2c155211d5c6eca8713f554a03cd38ea11888fe12d0",
+      "disposition": "propose-correction",
+      "locale": "hi",
+      "sourceId": "components.ReaderDeliverySettings.confirmDeleteGrouping",
+      "sourcePosition": 2517
+    },
+    {
+      "candidateTarget": "Connecté. SeerrNG peut gérer les regroupements ; {count} regroupements existants ont été trouvés.",
+      "candidateTargetHash": "e1c9c6c4b3110b8f7785148e77ec6e79245344206fe1ddedfc6096633efeb421",
+      "disposition": "propose-correction",
+      "locale": "fr",
+      "sourceId": "components.ReaderDeliverySettings.connectionSuccess",
+      "sourcePosition": 2519
+    },
+    {
+      "candidateTarget": "Tester l’accès au regroupement",
+      "candidateTargetHash": "9f752c078956f83ede80eedbff0f05a0b895f24b7af0d68daed976e35ccd6fb8",
+      "disposition": "propose-correction",
+      "locale": "fr",
+      "sourceId": "components.ReaderDeliverySettings.connectionTest",
+      "sourcePosition": 2520
+    },
+    {
+      "candidateTarget": "समूह तक पहुँच जाँचें",
+      "candidateTargetHash": "d13cd8c1d7235eda4506ed0c49388de38200f38f6f642009da28a92507dd8542",
+      "disposition": "propose-correction",
+      "locale": "hi",
+      "sourceId": "components.ReaderDeliverySettings.connectionTest",
+      "sourcePosition": 2520
+    },
+    {
+      "candidateTarget": "Uji akses ke pengelompokan",
+      "candidateTargetHash": "b1607c22d4011dd988d8552f4e9a827bf5ece9ec6383398e8da2462d0b347594",
+      "disposition": "propose-correction",
+      "locale": "id",
+      "sourceId": "components.ReaderDeliverySettings.connectionTest",
+      "sourcePosition": 2520
+    },
+    {
+      "candidateTarget": "कॉमिक रीडर का पता कॉपी करें",
+      "candidateTargetHash": "61fc678aad7b7074d2debf9bb51c22aea214f1d91a4136159ff11018f7d2222c",
+      "disposition": "propose-correction",
+      "locale": "hi",
+      "sourceId": "components.ReaderDeliverySettings.copyComicCatalogAddress",
+      "sourcePosition": 2524
+    },
+    {
+      "candidateTarget": "Salin Alamat Pembaca Komik",
+      "candidateTargetHash": "9b0f16578da6086fd4d4c0856bb76239f68fb61a27dd5d096a11a620432413bb",
+      "disposition": "propose-correction",
+      "locale": "id",
+      "sourceId": "components.ReaderDeliverySettings.copyComicCatalogAddress",
+      "sourcePosition": 2524
+    },
+    {
+      "candidateTarget": "यहाँ क्लिपबोर्ड का उपयोग उपलब्ध नहीं है। ऊपर दिया गया रीडर पता चुनकर कॉपी करें।",
+      "candidateTargetHash": "b39970dcc5b884a3329e39b7a5b0cd5a9e1708f9c0f7528711be1323a3f43ae6",
+      "disposition": "propose-correction",
+      "locale": "hi",
+      "sourceId": "components.ReaderDeliverySettings.copyUnavailable",
+      "sourcePosition": 2526
+    },
+    {
+      "candidateTarget": "Grimmory या BookOrbit को जोड़ें ताकि संगत रीडर ऐप में ई-बुक, ऑडियोबुक, कॉमिक और पत्रिका के अंक ब्राउज़ करके उपलब्ध करा सकें।",
+      "candidateTargetHash": "db12f766f8cc0b6c6b168d5f5669851aee37a6e979d46e6d388fed7f63109c12",
+      "disposition": "propose-correction",
+      "locale": "hi",
+      "sourceId": "components.ReaderDeliverySettings.description",
+      "sourcePosition": 2529
+    },
+    {
+      "candidateTarget": "अनुशंसित। Grimmory ई-बुक और PDF के लिए OPDS कैटलॉग, स्ट्रीम किए गए कॉमिक पृष्ठों के लिए Komga API, और M4B, M4A तथा MP3 ऑडियोबुक के लिए अंतर्निर्मित प्लेयर देता है।",
+      "candidateTargetHash": "3e5c60a8554236f0cee2c1e9ecc46614f8faf3d20423cf28d1ad732da4a6a45a",
+      "disposition": "propose-correction",
+      "locale": "hi",
+      "sourceId": "components.ReaderDeliverySettings.grimmoryDescription",
+      "sourcePosition": 2530
+    },
+    {
+      "candidateTarget": "Disarankan. Grimmory menyediakan katalog OPDS untuk e-book dan PDF, API Komga untuk streaming halaman komik, serta pemutar bawaan untuk buku audio M4B, M4A, dan MP3.",
+      "candidateTargetHash": "14a4fbf31329a74b84ed75ec18d689016e080c00274190d802b4c74dd4c8c0e5",
+      "disposition": "propose-correction",
+      "locale": "id",
+      "sourceId": "components.ReaderDeliverySettings.grimmoryDescription",
+      "sourcePosition": 2530
+    },
+    {
+      "candidateTarget": "Configuration de l’API Komga de Grimmory",
+      "candidateTargetHash": "adbb1a205038a3db04445e5c09248671fbb73bf74d90ec33bec9e92d11adf64d",
+      "disposition": "propose-correction",
+      "locale": "fr",
+      "sourceId": "components.ReaderDeliverySettings.grimmoryKomgaSetup",
+      "sourcePosition": 2531
+    },
+    {
+      "candidateTarget": "Grimmory Komga API सेटअप",
+      "candidateTargetHash": "7dacc37d6f1f8567f4dfe79f54c10abefa612f0dd414c877df6bda1ce3ce51a0",
+      "disposition": "propose-correction",
+      "locale": "hi",
+      "sourceId": "components.ReaderDeliverySettings.grimmoryKomgaSetup",
+      "sourcePosition": 2531
+    },
+    {
+      "candidateTarget": "Configuration OPDS de Grimmory",
+      "candidateTargetHash": "8f10912f667fa276610b7aa13dcc0eea7f069633d394ba70ae0f33a29f0b0002",
+      "disposition": "propose-correction",
+      "locale": "fr",
+      "sourceId": "components.ReaderDeliverySettings.grimmorySetup",
+      "sourcePosition": 2533
+    },
+    {
+      "candidateTarget": "Penyiapan OPDS Grimmory",
+      "candidateTargetHash": "810110e021b2e76579b6682c76a0f07c5f1916a9c205c2bb49399ec9cc0e2260",
+      "disposition": "propose-correction",
+      "locale": "id",
+      "sourceId": "components.ReaderDeliverySettings.grimmorySetup",
+      "sourcePosition": 2533
+    },
+    {
+      "candidateTarget": "पूर्वावलोकन में {count} आइटम मिले; अंतिम संख्या की पुष्टि नहीं हुई है।",
+      "candidateTargetHash": "985147ac8703bb914d7c3ba50fe842161a5445bc63bfd4c16fcc44e18ff21607",
+      "disposition": "propose-correction",
+      "locale": "hi",
+      "sourceId": "components.ReaderDeliverySettings.groupingCountUnverified",
+      "sourcePosition": 2535
+    },
+    {
+      "candidateTarget": "L’étagère de lecture gérée n’a pas pu être supprimée.",
+      "candidateTargetHash": "b99155c7004af7df86bb8aac1c5eabbaae73b9c24cda8451a91411bbc550bb24",
+      "disposition": "propose-correction",
+      "locale": "fr",
+      "sourceId": "components.ReaderDeliverySettings.groupingDeleteError",
+      "sourcePosition": 2536
+    },
+    {
+      "candidateTarget": "प्रबंधित रीडर शेल्फ़ हटाई नहीं जा सकी।",
+      "candidateTargetHash": "b281f7d3ccc50b87ad2c0d7abc91f0f36310fb0daddfd275a5fdc86d3d3f3d22",
+      "disposition": "propose-correction",
+      "locale": "hi",
+      "sourceId": "components.ReaderDeliverySettings.groupingDeleteError",
+      "sourcePosition": 2536
+    },
+    {
+      "candidateTarget": "ध्यान देने की आवश्यकता",
+      "candidateTargetHash": "4d1702c409770479504df7b73ffb00bd09f1b69b00e44d8d46a38e3eb48075d6",
+      "disposition": "propose-correction",
+      "locale": "hi",
+      "sourceId": "components.ReaderDeliverySettings.groupingError",
+      "sourcePosition": 2538
+    },
+    {
+      "candidateTarget": "अपडेट हो रहा है",
+      "candidateTargetHash": "8d28ec25f09f2bb4f80f2915bfd66a1be0dc32a864cb9a373d6f20a6ed69ee3e",
+      "disposition": "propose-correction",
+      "locale": "hi",
+      "sourceId": "components.ReaderDeliverySettings.groupingPending",
+      "sourcePosition": 2544
+    },
+    {
+      "candidateTarget": "तैयार",
+      "candidateTargetHash": "b3d3e940b5caefc7a45eaf6371f9cd953fdcd6453e958b97d3f3ead5d155ded9",
+      "disposition": "propose-correction",
+      "locale": "hi",
+      "sourceId": "components.ReaderDeliverySettings.groupingReady",
+      "sourcePosition": 2545
+    },
+    {
+      "candidateTarget": "Les étagères de lecture gérées n’ont pas pu être chargées.",
+      "candidateTargetHash": "f7604c1f80d97c5d499c2bb44dacf00c92167a398cd71af61233e6be126251f0",
+      "disposition": "propose-correction",
+      "locale": "fr",
+      "sourceId": "components.ReaderDeliverySettings.groupingsLoadError",
+      "sourcePosition": 2546
+    },
+    {
+      "candidateTarget": "प्रबंधित रीडर शेल्फ़ लोड नहीं हो सकीं।",
+      "candidateTargetHash": "438fb13ecf5bbd06b9fb39c1bc9f58e976a88b1d073f1b237828ad7f16e533fc",
+      "disposition": "propose-correction",
+      "locale": "hi",
+      "sourceId": "components.ReaderDeliverySettings.groupingsLoadError",
+      "sourcePosition": 2546
+    },
+    {
+      "candidateTarget": "Rak pembaca yang dikelola tidak dapat dimuat.",
+      "candidateTargetHash": "a1ab66a27000b0cc717f1c65e60676e319a8ee4453120e9982b37001d1204746",
+      "disposition": "propose-correction",
+      "locale": "id",
+      "sourceId": "components.ReaderDeliverySettings.groupingsLoadError",
+      "sourcePosition": 2546
+    },
+    {
+      "candidateTarget": "Étagères de lecture gérées par SeerrNG",
+      "candidateTargetHash": "781d1b3a820fdfd2ba08c302d7df9de45002345812ee2117868084f99819d8fa",
+      "disposition": "propose-correction",
+      "locale": "fr",
+      "sourceId": "components.ReaderDeliverySettings.groupingsTitle",
+      "sourcePosition": 2547
+    },
+    {
+      "candidateTarget": "SeerrNG द्वारा प्रबंधित रीडर शेल्फ़",
+      "candidateTargetHash": "d57e91c774394eafdd162e018ce92a266f5b706060c4a1a8a437926eae339b60",
+      "disposition": "propose-correction",
+      "locale": "hi",
+      "sourceId": "components.ReaderDeliverySettings.groupingsTitle",
+      "sourcePosition": 2547
+    },
+    {
+      "candidateTarget": "उन्हीं मीडिया फ़ोल्डरों को Grimmory या BookOrbit में आयात या माउंट करें और उस सेवा को उन्हें स्कैन करने दें। रीडर सेवा के कंटेनर के भीतर दिखने वाला पाथ इस्तेमाल करें। कुछ नेटवर्क शेयरों पर शेड्यूल किए गए स्कैन, फ़ाइल सिस्टम वॉचर से अधिक भरोसेमंद होते हैं।",
+      "candidateTargetHash": "fb2809937e2afa69ce64d2bd1f627f339572a153ca3c31f3ac23513458554d4a",
+      "disposition": "propose-correction",
+      "locale": "hi",
+      "sourceId": "components.ReaderDeliverySettings.librarySetupDescription",
+      "sourcePosition": 2550
+    },
+    {
+      "candidateTarget": "Impor atau pasang folder media yang sama ke Grimmory atau BookOrbit, lalu biarkan layanan itu memindainya. Gunakan path sebagaimana terlihat di dalam container layanan pembaca. Pemindaian terjadwal lebih andal daripada pemantau sistem berkas pada beberapa folder berbagi jaringan.",
+      "candidateTargetHash": "c498101ad66ee36dc4bec1f93f6eac0f08a4e07e8667268a44f3f5025dce7019",
+      "disposition": "propose-correction",
+      "locale": "id",
+      "sourceId": "components.ReaderDeliverySettings.librarySetupDescription",
+      "sourcePosition": 2550
+    },
+    {
+      "candidateTarget": "रीडर सेटिंग्स लोड नहीं की जा सकीं।",
+      "candidateTargetHash": "d3ddec0487377f11dbf19bf1ad4d728ec144e495be86a19e27289e26d912ada5",
+      "disposition": "propose-correction",
+      "locale": "hi",
+      "sourceId": "components.ReaderDeliverySettings.loadError",
+      "sourcePosition": 2551
+    },
+    {
+      "candidateTarget": "SeerrNG ने अभी तक कोई रीडर शेल्फ़ नहीं बनाई है।",
+      "candidateTargetHash": "8f495ca0fb7ec299ad820653a22c3a551a1547799fe391836c79f0f9adeea596",
+      "disposition": "propose-correction",
+      "locale": "hi",
+      "sourceId": "components.ReaderDeliverySettings.noGroupings",
+      "sourcePosition": 2552
+    },
+    {
+      "candidateTarget": "Connectez un compte administrateur pour que SeerrNG puisse prévisualiser, créer et mettre à jour les étagères de lecture. Les mots de passe sont enregistrés dans les paramètres protégés de l’application et ne sont jamais renvoyés par l’API. Les identifiants de l’application de lecture et d’OPDS restent distincts.",
+      "candidateTargetHash": "d1ded6495e87dd23f4bdfcb73564424cd10b210ecfb2cf2d274a16f9dda2809e",
+      "disposition": "propose-correction",
+      "locale": "fr",
+      "sourceId": "components.ReaderDeliverySettings.opdsCredentials",
+      "sourcePosition": 2553
+    },
+    {
+      "candidateTarget": "व्यवस्थापक खाता जोड़ें ताकि SeerrNG रीडर शेल्फ़ का पूर्वावलोकन, निर्माण और अद्यतन कर सके। पासवर्ड सुरक्षित ऐप सेटिंग्स में रखे जाते हैं और API कभी उन्हें वापस नहीं करता। रीडर ऐप और OPDS के क्रेडेंशियल अलग-अलग रहते हैं।",
+      "candidateTargetHash": "22faf1ea1a3c0a1d654a2a1c8c4b96cfe1298f0d98c5a970e138fdae9e0603af",
+      "disposition": "propose-correction",
+      "locale": "hi",
+      "sourceId": "components.ReaderDeliverySettings.opdsCredentials",
+      "sourcePosition": 2553
+    },
+    {
+      "candidateTarget": "Hubungkan akun administrator agar SeerrNG dapat melihat pratinjau, membuat, dan memperbarui rak pembaca. Kata sandi disimpan dalam pengaturan aplikasi yang terlindungi dan tidak pernah dikembalikan oleh API. Kredensial aplikasi pembaca dan OPDS tetap terpisah.",
+      "candidateTargetHash": "cb488ed6f188da4d9cab0dddb90b1ff420365a025f327ecfe032dc7c864237ef",
+      "disposition": "propose-correction",
+      "locale": "id",
+      "sourceId": "components.ReaderDeliverySettings.opdsCredentials",
+      "sourcePosition": 2553
+    },
+    {
+      "candidateTarget": "{serviceName} खोलें",
+      "candidateTargetHash": "1c7daec93808be4987d4ea8de60cfdfc56c9877d81554792f33ec0c8d66e65fd",
+      "disposition": "propose-correction",
+      "locale": "hi",
+      "sourceId": "components.ReaderDeliverySettings.open",
+      "sourcePosition": 2554
+    },
+    {
+      "candidateTarget": "कॉन्फ़िगर होने पर SeerrNG पसंदीदा ऐप खोलता है। अगर उसका पता नहीं है, तो SeerrNG दूसरा कॉन्फ़िगर किया गया ऐप इस्तेमाल करता है। डिफ़ॉल्ट रूप से Grimmory ही पसंदीदा रहता है।",
+      "candidateTargetHash": "acea20e906694c04dab9042247d6f207b101386affb7e345bd2125e1e92b954b",
+      "disposition": "propose-correction",
+      "locale": "hi",
+      "sourceId": "components.ReaderDeliverySettings.preferredReaderDescription",
+      "sourcePosition": 2557
+    },
+    {
+      "candidateTarget": "SeerrNG membuka aplikasi pilihan jika sudah dikonfigurasi. Jika aplikasi itu tidak memiliki alamat, SeerrNG menggunakan aplikasi lain yang dikonfigurasi. Grimmory tetap menjadi pilihan bawaan.",
+      "candidateTargetHash": "c6cfe183036bbcf423d2c7490219744fcaac977e6458ae54e84179a2a62cff53",
+      "disposition": "propose-correction",
+      "locale": "id",
+      "sourceId": "components.ReaderDeliverySettings.preferredReaderDescription",
+      "sourcePosition": 2557
+    },
+    {
+      "candidateTarget": "Visible uniquement pour le compte connecté",
+      "candidateTargetHash": "4eb6685fcaf1587675ee076a9f969088c6a9c525517af97cdd718cc99ef638d0",
+      "disposition": "propose-correction",
+      "locale": "fr",
+      "sourceId": "components.ReaderDeliverySettings.privateVisibility",
+      "sourcePosition": 2558
+    },
+    {
+      "candidateTarget": "कनेक्ट किए गए खाते के लिए निजी",
+      "candidateTargetHash": "2d48a18f641845be259e134c5dc848f469dc0137ea24acb7bcfd938edd719241",
+      "disposition": "propose-correction",
+      "locale": "hi",
+      "sourceId": "components.ReaderDeliverySettings.privateVisibility",
+      "sourcePosition": 2558
+    },
+    {
+      "candidateTarget": "Pribadi untuk akun yang terhubung",
+      "candidateTargetHash": "d3f5ab2a769cb52c596f877e3ef094e61320a09d40b01ba4438fb5563041f8e2",
+      "disposition": "propose-correction",
+      "locale": "id",
+      "sourceId": "components.ReaderDeliverySettings.privateVisibility",
+      "sourcePosition": 2558
+    },
+    {
+      "candidateTarget": "रीडर सेटिंग्स सहेजें",
+      "candidateTargetHash": "87332e95434dc76ca3ac283cab8f5752866646b697e278a77b22a0ee6b724ac1",
+      "disposition": "propose-correction",
+      "locale": "hi",
+      "sourceId": "components.ReaderDeliverySettings.save",
+      "sourcePosition": 2560
+    },
+    {
+      "candidateTarget": "रीडर सेटिंग्स सहेजी नहीं जा सकीं।",
+      "candidateTargetHash": "60b91f6ac30c4c5217836466ffe61ce4472c02291e7c0fad8ca4ed56cd08dc20",
+      "disposition": "propose-correction",
+      "locale": "hi",
+      "sourceId": "components.ReaderDeliverySettings.saveError",
+      "sourcePosition": 2561
+    },
+    {
+      "candidateTarget": "Paramètres du lecteur enregistrés.",
+      "candidateTargetHash": "6835bc47285bd4ebc2959599979e52c2ee12b97ebec62e1ddaae2b5f431b0796",
+      "disposition": "propose-correction",
+      "locale": "fr",
+      "sourceId": "components.ReaderDeliverySettings.saved",
+      "sourcePosition": 2562
+    },
+    {
+      "candidateTarget": "रीडर सेटिंग्स सहेजी गईं।",
+      "candidateTargetHash": "5c68f3f2b92a21c5d55a471e6647edaac18dcdad4026dee5651a4f82fa58b6ec",
+      "disposition": "propose-correction",
+      "locale": "hi",
+      "sourceId": "components.ReaderDeliverySettings.saved",
+      "sourcePosition": 2562
+    },
+    {
+      "candidateTarget": "Enregistré ; laissez le champ vide pour conserver le mot de passe.",
+      "candidateTargetHash": "15cdebebcc7828bbf742ab2c8a1400f6c196286fef924f08aa2b525860838097",
+      "disposition": "propose-correction",
+      "locale": "fr",
+      "sourceId": "components.ReaderDeliverySettings.savedPassword",
+      "sourcePosition": 2563
+    },
+    {
+      "candidateTarget": "Tersimpan; biarkan kosong agar tetap tersimpan",
+      "candidateTargetHash": "0540eb0b67f3a642c7ab109758eefb8fd3353ab0edbfb02aa7590fae0e44bd5d",
+      "disposition": "propose-correction",
+      "locale": "id",
+      "sourceId": "components.ReaderDeliverySettings.savedPassword",
+      "sourcePosition": 2563
+    },
+    {
+      "candidateTarget": "Enregistrement en cours…",
+      "candidateTargetHash": "79c14df04079738f997f27d8c86f53d20cf1b2c03cece480c41541aef12fe0b1",
+      "disposition": "propose-correction",
+      "locale": "fr",
+      "sourceId": "components.ReaderDeliverySettings.saving",
+      "sourcePosition": 2564
+    },
+    {
+      "candidateTarget": "BookOrbit verrouille la visibilité de SmartScope lors de sa création. Si la synchronisation Kobo est activée, SeerrNG maintient également une Collection classique et réconcilie ses membres toutes les 15 minutes.",
+      "candidateTargetHash": "9e13fdea3f32f03db1d7c1fb8f4b7cc95e5e695bc801add20606426779b4517c",
+      "disposition": "propose-correction",
+      "locale": "fr",
+      "sourceId": "components.ReaderDeliverySettings.scopeVisibilityNote",
+      "sourcePosition": 2565
+    },
+    {
+      "candidateTarget": "BookOrbit, SmartScope बनाते समय उसकी दृश्यता लॉक कर देता है। Kobo सिंक चालू होने पर SeerrNG एक सामान्य Collection भी बनाए रखता है और हर 15 मिनट में उसके सदस्यों का मिलान करता है।",
+      "candidateTargetHash": "6d161c64074aef3aa21747ddd7b015f71e43ba3d3ed1f7ae20c076f942ee448a",
+      "disposition": "propose-correction",
+      "locale": "hi",
+      "sourceId": "components.ReaderDeliverySettings.scopeVisibilityNote",
+      "sourcePosition": 2565
+    },
+    {
+      "candidateTarget": "BookOrbit mengunci visibilitas SmartScope saat scope dibuat. Jika sinkronisasi Kobo aktif, SeerrNG juga mempertahankan Collection biasa dan menyelaraskan anggotanya setiap 15 menit.",
+      "candidateTargetHash": "5d4f129cc54118ecb1b9e7ab77dd8fbc37609ad5911a5fb7dec6831e2f8e2e35",
+      "disposition": "propose-correction",
+      "locale": "id",
+      "sourceId": "components.ReaderDeliverySettings.scopeVisibilityNote",
+      "sourcePosition": 2565
+    },
+    {
+      "candidateTarget": "मीडिया विवरण पृष्ठों पर रीडर लिंक इस्तेमाल करने से पहले ये सेटिंग्स सहेजें।",
+      "candidateTargetHash": "4e72333cd30646b2f57a8fcfe04dee60bffa394fb520733a9167e79f593802e8",
+      "disposition": "propose-correction",
+      "locale": "hi",
+      "sourceId": "components.ReaderDeliverySettings.unsavedChanges",
+      "sourcePosition": 2569
+    },
+    {
+      "candidateTarget": "Simpan pengaturan ini sebelum menggunakan tautan pembaca pada halaman detail media.",
+      "candidateTargetHash": "401b93fbb42ff2bfb42ed1cb255cd68ee1f6856ead43fcb31a451599d06e326e",
+      "disposition": "propose-correction",
+      "locale": "id",
+      "sourceId": "components.ReaderDeliverySettings.unsavedChanges",
+      "sourcePosition": 2569
+    },
+    {
+      "candidateTarget": "रीडर शेल्फ़ बनाएँ",
+      "candidateTargetHash": "3c764070b3f125e4587d48029153f0fc71f4bc125e86d6f1eb5f2e832caaf466",
+      "disposition": "propose-correction",
+      "locale": "hi",
+      "sourceId": "components.ReaderGroupingAction.action",
+      "sourcePosition": 2571
+    },
+    {
+      "candidateTarget": "BookOrbit",
+      "candidateTargetHash": "6a466c4f7e5203c03076aa1515a501c5d04361324e2c686972d80db42255cafa",
+      "disposition": "propose-correction",
+      "locale": "fr",
+      "sourceId": "components.ReaderGroupingAction.bookorbit",
+      "sourcePosition": 2572
+    },
+    {
+      "candidateTarget": "BookOrbit",
+      "candidateTargetHash": "6a466c4f7e5203c03076aa1515a501c5d04361324e2c686972d80db42255cafa",
+      "disposition": "propose-correction",
+      "locale": "hi",
+      "sourceId": "components.ReaderGroupingAction.bookorbit",
+      "sourcePosition": 2572
+    },
+    {
+      "candidateTarget": "पूर्वावलोकन में {count} आइटम मिले। रीडर सेवा ने अभी तक सहेजी गई संख्या की पुष्टि नहीं की है।",
+      "candidateTargetHash": "8d33332459933ded639a7bfdbfbd661e11d9a451f75d0315693065e93bd25c82",
+      "disposition": "propose-correction",
+      "locale": "hi",
+      "sourceId": "components.ReaderGroupingAction.countPending",
+      "sourcePosition": 2574
+    },
+    {
+      "candidateTarget": "Jumlah pratinjau: {count}. Layanan pembaca belum mengonfirmasi jumlah yang tersimpan.",
+      "candidateTargetHash": "73264fee99d72953ae522527f22fcb5709059787f49de1c25b304409ca15d464",
+      "disposition": "propose-correction",
+      "locale": "id",
+      "sourceId": "components.ReaderGroupingAction.countPending",
+      "sourcePosition": 2574
+    },
+    {
+      "candidateTarget": "फिर भी यह गतिशील नियम बनाएँ ताकि भविष्य में इससे मेल खाने वाली किताबें अपने-आप दिखाई दें।",
+      "candidateTargetHash": "5bd0105c2ea342b361609ef38a83a6c8a0cb4d2586284d7c2291061c15a6ee34",
+      "disposition": "propose-correction",
+      "locale": "hi",
+      "sourceId": "components.ReaderGroupingAction.emptyOptIn",
+      "sourcePosition": 2575
+    },
+    {
+      "candidateTarget": "Tetap buat aturan dinamis ini agar buku yang cocok di masa mendatang muncul secara otomatis.",
+      "candidateTargetHash": "1f0bcdc6a5d689c58c7f0b0fc1b4be82330b64aba42e0170cd2cfd1981f1f134",
+      "disposition": "propose-correction",
+      "locale": "id",
+      "sourceId": "components.ReaderGroupingAction.emptyOptIn",
+      "sourcePosition": 2575
+    },
+    {
+      "candidateTarget": "La livraison Kobo de Grimmory utilise son étagère d’inclusion dédiée. SeerrNG ne modifie pas le paramètre du fournisseur.",
+      "candidateTargetHash": "1626e72c8043ef0c49b0675d78ab33fd644f69706aad1c2990353330db7695bf",
+      "disposition": "propose-correction",
+      "locale": "fr",
+      "sourceId": "components.ReaderGroupingAction.grimmoryKobo",
+      "sourcePosition": 2577
+    },
+    {
+      "candidateTarget": "Grimmory की Kobo डिलीवरी में अलग समावेशन शेल्फ़ का उपयोग होता है। SeerrNG सेवा प्रदाता की सेटिंग में बदलाव नहीं करता।",
+      "candidateTargetHash": "b5108f646296411aacdb7fe8294e4a2add8be0f26fbdbf49064f1161317a6eb9",
+      "disposition": "propose-correction",
+      "locale": "hi",
+      "sourceId": "components.ReaderGroupingAction.grimmoryKobo",
+      "sourcePosition": 2577
+    },
+    {
+      "candidateTarget": "Fitur pengiriman Kobo Grimmory menggunakan rak penyertaan terpisah. SeerrNG tidak mengubah pengaturan penyedia tersebut.",
+      "candidateTargetHash": "4c1174881b3eb9b5b1db840b5b8276686b2b17991542c1dffac2d9d284d02eef",
+      "disposition": "propose-correction",
+      "locale": "id",
+      "sourceId": "components.ReaderGroupingAction.grimmoryKobo",
+      "sourcePosition": 2577
+    },
+    {
+      "candidateTarget": "Faire de ceci une étagère de lecture",
+      "candidateTargetHash": "56c50dc27889ca342cfcab01f9547a0f224052e690cad9ea2aa69854fc45fa86",
+      "disposition": "propose-correction",
+      "locale": "fr",
+      "sourceId": "components.ReaderGroupingAction.heading",
+      "sourcePosition": 2578
+    },
+    {
+      "candidateTarget": "SeerrNG créera dans votre service de lecture un regroupement dynamique basé sur des règles. Il restera à jour à mesure que la bibliothèque évolue ; il ne copiera pas les fichiers.",
+      "candidateTargetHash": "9353815615a34be32ac6c78bc365823539a1aa7e85081ee02154bc4b145e0913",
+      "disposition": "propose-correction",
+      "locale": "fr",
+      "sourceId": "components.ReaderGroupingAction.intro",
+      "sourcePosition": 2579
+    },
+    {
+      "candidateTarget": "SeerrNG आपकी रीडर सेवा में नियम-आधारित गतिशील समूह बनाएगा। लाइब्रेरी बदलने पर यह समूह अपडेट होता रहेगा; फ़ाइलों की प्रतिलिपि नहीं बनेगी।",
+      "candidateTargetHash": "f285a4ba923d9492716c2157c830e0e6e62345717ac5d6b689686c7fbb32dbf7",
+      "disposition": "propose-correction",
+      "locale": "hi",
+      "sourceId": "components.ReaderGroupingAction.intro",
+      "sourcePosition": 2579
+    },
+    {
+      "candidateTarget": "{count, plural, one {# अभी मेल खाने वाला आइटम} other {# अभी मेल खाने वाले आइटम}}",
+      "candidateTargetHash": "fb42da9c581e1c5a8fa63249966bc1929ca6571522d68bc2202b5fd6bfb09c89",
+      "disposition": "propose-correction",
+      "locale": "hi",
+      "sourceId": "components.ReaderGroupingAction.matches",
+      "sourcePosition": 2581
+    },
+    {
+      "candidateTarget": "{count, plural, one {# item yang cocok saat ini} other {# item yang cocok saat ini}}",
+      "candidateTargetHash": "de1f8ee3538c02e1b3282173eadd0500774f2b611b046cd6d4960a8977dc038e",
+      "disposition": "propose-correction",
+      "locale": "id",
+      "sourceId": "components.ReaderGroupingAction.matches",
+      "sourcePosition": 2581
+    },
+    {
+      "candidateTarget": "इस नियम से कोई मौजूदा किताब मेल नहीं खाती।",
+      "candidateTargetHash": "e70544055d5985f3dda267ccfccd419264845f4b40e92cfa4365e7495d4734e0",
+      "disposition": "propose-correction",
+      "locale": "hi",
+      "sourceId": "components.ReaderGroupingAction.noMatches",
+      "sourcePosition": 2582
+    },
+    {
+      "candidateTarget": "{serviceName} खोलें",
+      "candidateTargetHash": "1c7daec93808be4987d4ea8de60cfdfc56c9877d81554792f33ec0c8d66e65fd",
+      "disposition": "propose-correction",
+      "locale": "hi",
+      "sourceId": "components.ReaderGroupingAction.open",
+      "sourcePosition": 2583
+    },
+    {
+      "candidateTarget": "शेल्फ़ सेटअप बंद करें",
+      "candidateTargetHash": "68012b33d99772299f36dc76c26d0194f5c1133362fee9793277208bf88f3735",
+      "disposition": "propose-correction",
+      "locale": "hi",
+      "sourceId": "components.ReaderGroupingAction.openClose",
+      "sourcePosition": 2584
+    },
+    {
+      "candidateTarget": "Tutup penyiapan rak",
+      "candidateTargetHash": "d6ae0c0c2d4ed68c98db2b0bf884c530137ee99e55d7ce00f760e11121f4e959",
+      "disposition": "propose-correction",
+      "locale": "id",
+      "sourceId": "components.ReaderGroupingAction.openClose",
+      "sourcePosition": 2584
+    },
+    {
+      "candidateTarget": "मेल खाने वाली किताबों का पूर्वावलोकन करें",
+      "candidateTargetHash": "4378255f527336bce3e5b2c62d527c75d3778ffa3f0f849546ebe632a0d6b861",
+      "disposition": "propose-correction",
+      "locale": "hi",
+      "sourceId": "components.ReaderGroupingAction.preview",
+      "sourcePosition": 2585
+    },
+    {
+      "candidateTarget": "Pratinjau hasil yang cocok",
+      "candidateTargetHash": "b7f5f968d8f2b6f556c012b28c1ac28ea577e24bfbb07ae74aaa31ab68bcf7b3",
+      "disposition": "propose-correction",
+      "locale": "id",
+      "sourceId": "components.ReaderGroupingAction.preview",
+      "sourcePosition": 2585
+    },
+    {
+      "candidateTarget": "रीडर लाइब्रेरी की जाँच नहीं हो सकी।",
+      "candidateTargetHash": "0eb6ff4bfe059bd0422f236360a0c2ee9fadd238990ccaaa5c0911ba98cd71ee",
+      "disposition": "propose-correction",
+      "locale": "hi",
+      "sourceId": "components.ReaderGroupingAction.previewError",
+      "sourcePosition": 2586
+    },
+    {
+      "candidateTarget": "लाइब्रेरी की जाँच हो रही है…",
+      "candidateTargetHash": "364a3979185ab597f1d1b29d7cc990ecb5f4e41727bc2e2dddfbdf24692ea933",
+      "disposition": "propose-correction",
+      "locale": "hi",
+      "sourceId": "components.ReaderGroupingAction.previewing",
+      "sourcePosition": 2587
+    },
+    {
+      "candidateTarget": "Memeriksa pustaka…",
+      "candidateTargetHash": "f2ee3299e3a0d4454d4a8b8897f4e01952fdc2afda58e9bf45b4e92a288d33ac",
+      "disposition": "propose-correction",
+      "locale": "id",
+      "sourceId": "components.ReaderGroupingAction.previewing",
+      "sourcePosition": 2587
+    },
+    {
+      "candidateTarget": "रीडर शेल्फ़ सहेजी गई।",
+      "candidateTargetHash": "5792c15f2d8d4b73458f5c8c07ac757c3ab0080726cf3561d1e96f95ffe5315f",
+      "disposition": "propose-correction",
+      "locale": "hi",
+      "sourceId": "components.ReaderGroupingAction.result",
+      "sourcePosition": 2589
+    },
+    {
+      "candidateTarget": "Quelques éléments correspondants",
+      "candidateTargetHash": "46e68a554f632a35dedf31ad554d0bae30929103d5fb5ff346bba91a9ca9622f",
+      "disposition": "propose-correction",
+      "locale": "fr",
+      "sourceId": "components.ReaderGroupingAction.sampleTitles",
+      "sourcePosition": 2590
+    },
+    {
+      "candidateTarget": "मेल खाने वाले कुछ आइटम",
+      "candidateTargetHash": "d192a4c68e9775c1df86b25cfb035b425301c0674909c3d0fcffac854b99d98a",
+      "disposition": "propose-correction",
+      "locale": "hi",
+      "sourceId": "components.ReaderGroupingAction.sampleTitles",
+      "sourcePosition": 2590
+    },
+    {
+      "candidateTarget": "Beberapa hasil yang cocok",
+      "candidateTargetHash": "accb994d3e2a05857391837a10a070dcc67c86bdd9ad6382921dddbea345490f",
+      "disposition": "propose-correction",
+      "locale": "id",
+      "sourceId": "components.ReaderGroupingAction.sampleTitles",
+      "sourcePosition": 2590
+    },
+    {
+      "candidateTarget": "रीडर शेल्फ़ सहेजी नहीं जा सकी।",
+      "candidateTargetHash": "cf39bc04adafcadb1269172d72a0f7608f87fb28cd42ac0cdd56346d2a4f8ce6",
+      "disposition": "propose-correction",
+      "locale": "hi",
+      "sourceId": "components.ReaderGroupingAction.saveError",
+      "sourcePosition": 2592
+    },
+    {
+      "candidateTarget": "Enregistrement de l’étagère…",
+      "candidateTargetHash": "eb448920292807e60159d9b92b2567e2f64aab4cf0c92c3ee7f0a9d311698d35",
+      "disposition": "propose-correction",
+      "locale": "fr",
+      "sourceId": "components.ReaderGroupingAction.saving",
+      "sourcePosition": 2593
+    },
+    {
+      "candidateTarget": "शेल्फ़ सहेजी जा रही है…",
+      "candidateTargetHash": "7cf957ac49d2eda42931f2f5eeb38914a2f6b254a6d9ecbd707ed3292f2cc0f5",
+      "disposition": "propose-correction",
+      "locale": "hi",
+      "sourceId": "components.ReaderGroupingAction.saving",
+      "sourcePosition": 2593
+    },
+    {
+      "candidateTarget": "Menyimpan rak…",
+      "candidateTargetHash": "93978dbd06770b0442fb9d84785fa12371056ae1e58769688af3099a5f0a5bb1",
+      "disposition": "propose-correction",
+      "locale": "id",
+      "sourceId": "components.ReaderGroupingAction.saving",
+      "sourcePosition": 2593
+    },
+    {
+      "candidateTarget": "Configurez un service de lecture dans Paramètres > Services > Applications pour lecteurs, puis revenez ici.",
+      "candidateTargetHash": "d2a2de4fc06dec444d6812369dc972f25791ff63abaff53b80825c3453440e58",
+      "disposition": "propose-correction",
+      "locale": "fr",
+      "sourceId": "components.ReaderGroupingAction.setup",
+      "sourcePosition": 2594
+    },
+    {
+      "candidateTarget": "सेटिंग > सेवाएँ > रीडर ऐप्स में रीडर सेवा सेट करें, फिर यहाँ लौटें।",
+      "candidateTargetHash": "5c582da9b6e525885552466f637dbe1945353ee98f10b2b9696cc447cd806e9b",
+      "disposition": "propose-correction",
+      "locale": "hi",
+      "sourceId": "components.ReaderGroupingAction.setup",
+      "sourcePosition": 2594
+    },
+    {
+      "candidateTarget": "Siapkan layanan pembaca di Pengaturan > Layanan > App Pembaca, lalu kembali ke sini.",
+      "candidateTargetHash": "d2740ba7b8600bf434617a4f57ea1594aa6424481c620f42547e313773736207",
+      "disposition": "propose-correction",
+      "locale": "id",
+      "sourceId": "components.ReaderGroupingAction.setup",
+      "sourcePosition": 2594
+    },
+    {
+      "candidateTarget": "Afficher ce regroupement aux autres utilisateurs du service de lecture",
+      "candidateTargetHash": "247d09f7c4280bddfbfbe05e864147e9dcb37b09a1f63b9f928893fdc2662c3f",
+      "disposition": "propose-correction",
+      "locale": "fr",
+      "sourceId": "components.ReaderGroupingAction.share",
+      "sourcePosition": 2595
+    },
+    {
+      "candidateTarget": "यदि आपका रीडर या OPDS खाता किसी अन्य रीडर-सेवा उपयोगकर्ता का है, तो यह समूह साझा करें ताकि वह खाता इसे देख सके। रीडर खाते को अभी भी मेल खाने वाली लाइब्रेरी तक पहुँच चाहिए।",
+      "candidateTargetHash": "bb05990f6b7b48e282bdf19b81b6d5644d9a49d4f0b76a20448f46417977b808",
+      "disposition": "propose-correction",
+      "locale": "hi",
+      "sourceId": "components.ReaderGroupingAction.shareHelp",
+      "sourcePosition": 2596
+    },
+    {
+      "candidateTarget": "इस गतिशील नियम को Kobo से सिंक करें",
+      "candidateTargetHash": "3324fa424c13dc23a177f9487a8098d6bc52898c3efb7c8ea9c38ea9db906843",
+      "disposition": "propose-correction",
+      "locale": "hi",
+      "sourceId": "components.ReaderGroupingAction.syncToKobo",
+      "sourcePosition": 2597
+    },
+    {
+      "candidateTarget": "Sinkronkan aturan dinamis ini ke Kobo",
+      "candidateTargetHash": "3b885a9512ca5807e825fa20cfd11041200e1beddcdcd570a86fb855ad63904d",
+      "disposition": "propose-correction",
+      "locale": "id",
+      "sourceId": "components.ReaderGroupingAction.syncToKobo",
+      "sourcePosition": 2597
+    },
+    {
+      "candidateTarget": "Enregistrer les modifications de l’étagère",
+      "candidateTargetHash": "4358c601306942083a99253828dc7c6a67e712ddf5f598703a78e13396ef86b7",
+      "disposition": "propose-correction",
+      "locale": "fr",
+      "sourceId": "components.ReaderGroupingAction.update",
+      "sourcePosition": 2599
+    },
+    {
+      "candidateTarget": "शेल्फ़ के बदलाव सहेजें",
+      "candidateTargetHash": "34cfdf7e77e4393b7eab8ca541023ff0cd150a983a38a4d8e796d21e119db2af",
+      "disposition": "propose-correction",
+      "locale": "hi",
+      "sourceId": "components.ReaderGroupingAction.update",
+      "sourcePosition": 2599
+    },
+    {
+      "candidateTarget": "{serviceName}で電子書籍を閲覧する",
+      "candidateTargetHash": "bd19dd46247edc92cac7fc897a8c01d8a1445ba42a7c807b514873225708ae42",
+      "disposition": "propose-correction",
+      "locale": "ja",
+      "sourceId": "components.ReaderDeliveryLink.ebooks",
+      "sourcePosition": 2500
+    },
+    {
+      "candidateTarget": "{serviceName}에서 전자책 둘러보기",
+      "candidateTargetHash": "88a447eb1a62a1ed71a3b59e6279dc32aee48da6ed45f662808596586192c99a",
+      "disposition": "propose-correction",
+      "locale": "ko",
+      "sourceId": "components.ReaderDeliveryLink.ebooks",
+      "sourcePosition": 2500
+    },
+    {
+      "candidateTarget": "Navegue pelos e-books em {serviceName}.",
+      "candidateTargetHash": "c78fe6d6425a963461e21464efbf89167f1fe9640a62b879528eefb7e9a50955",
+      "disposition": "propose-correction",
+      "locale": "pt_BR",
+      "sourceId": "components.ReaderDeliveryLink.ebooks",
+      "sourcePosition": 2500
+    },
+    {
+      "candidateTarget": "ブラウザーで{serviceName}のライブラリを開きます。読書アプリで閲覧するには、設定 > 連携サービス > 読書アプリでOPDSアドレスをコピーし、そのアプリに追加してください。",
+      "candidateTargetHash": "64ade3785b2bc64ec911f6e64a4002d4680e7588d47c8a38002dd4639f2506e7",
+      "disposition": "propose-correction",
+      "locale": "ja",
+      "sourceId": "components.ReaderDeliveryLink.ebooksHelp",
+      "sourcePosition": 2501
+    },
+    {
+      "candidateTarget": "브라우저에서 {serviceName} 라이브러리를 여세요. 리더 앱에서 둘러보려면 계정 설정 > 서비스 > 리더 앱에서 OPDS 주소를 복사한 뒤 앱에 추가하세요.",
+      "candidateTargetHash": "8f23541a2d717682ba50c4c628ce4fa6626e7752189d19a6d7d7adfdd212e503",
+      "disposition": "propose-correction",
+      "locale": "ko",
+      "sourceId": "components.ReaderDeliveryLink.ebooksHelp",
+      "sourcePosition": 2501
+    },
+    {
+      "candidateTarget": "Abra a biblioteca do {serviceName} em um navegador. Para navegar em um aplicativo de leitura, copie o endereço OPDS em Configurações > Serviços > Aplicações do Leitor e adicione-o ao aplicativo.",
+      "candidateTargetHash": "b61f42dec0022a77c80d09c6673f65fddc3987c7ddaf01ffbb69043993a4d624",
+      "disposition": "propose-correction",
+      "locale": "pt_BR",
+      "sourceId": "components.ReaderDeliveryLink.ebooksHelp",
+      "sourcePosition": 2501
+    },
+    {
+      "candidateTarget": "{serviceName}で雑誌のPDFを閲覧する",
+      "candidateTargetHash": "528239dbe67464103c095732fff9d18a4224ec3d6563e5de048709b60907cb16",
+      "disposition": "propose-correction",
+      "locale": "ja",
+      "sourceId": "components.ReaderDeliveryLink.magazines",
+      "sourcePosition": 2502
+    },
+    {
+      "candidateTarget": "{serviceName}에서 잡지 PDF 둘러보기",
+      "candidateTargetHash": "1db0efb0053b9f041d1250e9767323b77986c5860889551b42ee59ca1438f83d",
+      "disposition": "propose-correction",
+      "locale": "ko",
+      "sourceId": "components.ReaderDeliveryLink.magazines",
+      "sourcePosition": 2502
+    },
+    {
+      "candidateTarget": "Navegue pelos PDFs de revistas em {serviceName}.",
+      "candidateTargetHash": "096a8cdcaf898118b2da935af549feb383ca6522f13043798b633562797f9fad",
+      "disposition": "propose-correction",
+      "locale": "pt_BR",
+      "sourceId": "components.ReaderDeliveryLink.magazines",
+      "sourcePosition": 2502
+    },
+    {
+      "candidateTarget": "読書アプリのアドレス",
+      "candidateTargetHash": "f9119d35172e7f3617127dc68017146d94d581a8f914a57e7e6b668af51a40d8",
+      "disposition": "propose-correction",
+      "locale": "ja",
+      "sourceId": "components.ReaderDeliverySettings.address",
+      "sourcePosition": 2504
+    },
+    {
+      "candidateTarget": "ブラウザーで開けるリーダーのアドレスを入力してください。リバースプロキシを使用している場合は、そのベースパスも含めてください。OPDSの完全なアドレスまたはGrimmory Komgaのアドレスを貼り付けられます。",
+      "candidateTargetHash": "9687d6d2df2f44a3d5380427f55665c461f6d9f6f7b6bea380d82840f3956c37",
+      "disposition": "propose-correction",
+      "locale": "ja",
+      "sourceId": "components.ReaderDeliverySettings.addressDescription",
+      "sourcePosition": 2505
+    },
+    {
+      "candidateTarget": "브라우저에서 열 수 있는 주소를 입력하세요. 리버스 프록시를 사용한다면 기본 경로도 포함하세요. 전체 OPDS 주소나 Grimmory Komga 주소를 붙여넣을 수 있습니다.",
+      "candidateTargetHash": "9d3ab2e5bac8faa23220b9b90eeb88c79c294cdd6664de0faf21b1ba192529c0",
+      "disposition": "propose-correction",
+      "locale": "ko",
+      "sourceId": "components.ReaderDeliverySettings.addressDescription",
+      "sourcePosition": 2505
+    },
+    {
+      "candidateTarget": "Digite o endereço que os leitores podem abrir no navegador. Se usar um proxy reverso, inclua o caminho base dele. Você pode colar um endereço OPDS completo ou o endereço Komga do Grimmory.",
+      "candidateTargetHash": "c46f0948705a6db9fd26797b911fc9ccfa2e3186eb5fc74299223357790104f4",
+      "disposition": "propose-correction",
+      "locale": "pt_BR",
+      "sourceId": "components.ReaderDeliverySettings.addressDescription",
+      "sourcePosition": 2505
+    },
+    {
+      "candidateTarget": "BookOrbit",
+      "candidateTargetHash": "6a466c4f7e5203c03076aa1515a501c5d04361324e2c686972d80db42255cafa",
+      "disposition": "propose-correction",
+      "locale": "ja",
+      "sourceId": "components.ReaderDeliverySettings.bookorbit",
+      "sourcePosition": 2507
+    },
+    {
+      "candidateTarget": "BookOrbit",
+      "candidateTargetHash": "6a466c4f7e5203c03076aa1515a501c5d04361324e2c686972d80db42255cafa",
+      "disposition": "propose-correction",
+      "locale": "ko",
+      "sourceId": "components.ReaderDeliverySettings.bookorbit",
+      "sourcePosition": 2507
+    },
+    {
+      "candidateTarget": "BookOrbit OPDS 설정",
+      "candidateTargetHash": "1a374f7b1cac80c2f82cb238c541e2eb4ec77b523e5d29f4afe437b7d30c1808",
+      "disposition": "propose-correction",
+      "locale": "ko",
+      "sourceId": "components.ReaderDeliverySettings.bookorbitSetup",
+      "sourcePosition": 2509
+    },
+    {
+      "candidateTarget": "変更を破棄",
+      "candidateTargetHash": "4f848ec4c6b8a81a70d04c2d49150daea7b383b16fe0b086d8b306ab6a22324c",
+      "disposition": "propose-correction",
+      "locale": "ja",
+      "sourceId": "components.ReaderDeliverySettings.cancel",
+      "sourcePosition": 2510
+    },
+    {
+      "candidateTarget": "변경 사항 취소",
+      "candidateTargetHash": "2c1b980599fa5a1c97278eef1b580aadad453cd78ccc2516fde0e66387f37181",
+      "disposition": "propose-correction",
+      "locale": "ko",
+      "sourceId": "components.ReaderDeliverySettings.cancel",
+      "sourcePosition": 2510
+    },
+    {
+      "candidateTarget": "저장된 계정 인증 정보 삭제",
+      "candidateTargetHash": "c8c41f93ce1bb9fb5d1b74378c13be30a2a4e5da6278185ea6057ad96a2b3ad1",
+      "disposition": "propose-correction",
+      "locale": "ko",
+      "sourceId": "components.ReaderDeliverySettings.clearCredentials",
+      "sourcePosition": 2513
+    },
+    {
+      "candidateTarget": "Komga 만화 리더 주소",
+      "candidateTargetHash": "28b0618fc584134c903ec98868b57295af2abbb6493b81dbae56f8bc6010d231",
+      "disposition": "propose-correction",
+      "locale": "ko",
+      "sourceId": "components.ReaderDeliverySettings.comicCatalogAddress",
+      "sourcePosition": 2514
+    },
+    {
+      "candidateTarget": "페이지별 스트리밍을 위해 Komga 호환 만화 앱에서 이 주소를 사용하세요. Grimmory의 Komga API를 활성화하고 동일한 OPDS 리더 인증 정보를 사용하세요.",
+      "candidateTargetHash": "b4d23fbf91450e6bd07f97910dbdf0e7e1473be8dff8e0a6bd209dece276ed2a",
+      "disposition": "propose-correction",
+      "locale": "ko",
+      "sourceId": "components.ReaderDeliverySettings.comicCatalogAddressDescription",
+      "sourcePosition": 2515
+    },
+    {
+      "candidateTarget": "Remover este agrupamento gerenciado pelo SeerrNG e sua Coleção Kobo associada do serviço de leitura? Os livros e arquivos da biblioteca não serão excluídos.",
+      "candidateTargetHash": "7176241e52edf924416b762367b75f1b906ed7caf4588311efc0fad25309ae1d",
+      "disposition": "propose-correction",
+      "locale": "pt_BR",
+      "sourceId": "components.ReaderDeliverySettings.confirmDeleteBookOrbitGrouping",
+      "sourcePosition": 2516
+    },
+    {
+      "candidateTarget": "リーダーサービスから、SeerrNGが管理するこのグループを削除しますか？書籍とライブラリファイルは削除されません。",
+      "candidateTargetHash": "e1ce6983bdb0b97d9bf837da038133e901e40a046f5daaea186b749302e26544",
+      "disposition": "propose-correction",
+      "locale": "ja",
+      "sourceId": "components.ReaderDeliverySettings.confirmDeleteGrouping",
+      "sourcePosition": 2517
+    },
+    {
+      "candidateTarget": "이 SeerrNG 관리 그룹을 리더 서비스에서 삭제할까요? 책과 라이브러리 파일은 삭제되지 않습니다.",
+      "candidateTargetHash": "bb6d882db9c95a94dc92f7c34a5406523c01b445176487437ea96f6bc1192418",
+      "disposition": "propose-correction",
+      "locale": "ko",
+      "sourceId": "components.ReaderDeliverySettings.confirmDeleteGrouping",
+      "sourcePosition": 2517
+    },
+    {
+      "candidateTarget": "リーダーサービスへの接続に失敗しました。",
+      "candidateTargetHash": "84f1f1361466c0f5caf5af36a013af6d622d9d3d19f21384535cd310a8d48f59",
+      "disposition": "propose-correction",
+      "locale": "ja",
+      "sourceId": "components.ReaderDeliverySettings.connectionError",
+      "sourcePosition": 2518
+    },
+    {
+      "candidateTarget": "리더 서비스 연결에 실패했습니다.",
+      "candidateTargetHash": "cf3cbb8f0ed5d77c4d87c04877168123afdc882d1e8d99fbd581872c3a6e1f51",
+      "disposition": "propose-correction",
+      "locale": "ko",
+      "sourceId": "components.ReaderDeliverySettings.connectionError",
+      "sourcePosition": 2518
+    },
+    {
+      "candidateTarget": "연결되었습니다. SeerrNG에서 그룹을 관리할 수 있습니다. 기존 그룹 {count}개를 찾았습니다.",
+      "candidateTargetHash": "b576c93e04e9252d037ffe21ced8bed48b51e91d505a641f059fd21300742dfd",
+      "disposition": "propose-correction",
+      "locale": "ko",
+      "sourceId": "components.ReaderDeliverySettings.connectionSuccess",
+      "sourcePosition": 2519
+    },
+    {
+      "candidateTarget": "グループへのアクセスをテスト",
+      "candidateTargetHash": "5d24471c5ca6c0ac521a935d3f8070fbb4d448008c0727308911ec2041eba367",
+      "disposition": "propose-correction",
+      "locale": "ja",
+      "sourceId": "components.ReaderDeliverySettings.connectionTest",
+      "sourcePosition": 2520
+    },
+    {
+      "candidateTarget": "그룹 액세스 테스트",
+      "candidateTargetHash": "2681c2bf314162c8dfc103e7a18731ee306986b1255d8ed5bf6a90ae87525996",
+      "disposition": "propose-correction",
+      "locale": "ko",
+      "sourceId": "components.ReaderDeliverySettings.connectionTest",
+      "sourcePosition": 2520
+    },
+    {
+      "candidateTarget": "Testar o acesso ao agrupamento",
+      "candidateTargetHash": "8d9d04261b0f2b174ab8dfb736c10f4caaf6f151362b5a2cc52020cfd54ca29d",
+      "disposition": "propose-correction",
+      "locale": "pt_BR",
+      "sourceId": "components.ReaderDeliverySettings.connectionTest",
+      "sourcePosition": 2520
+    },
+    {
+      "candidateTarget": "リーダーサービスを確認中…",
+      "candidateTargetHash": "f63a8b8cd5974986a7668db67ded6dee274e472e47f422ac574e59b57c7a8544",
+      "disposition": "propose-correction",
+      "locale": "ja",
+      "sourceId": "components.ReaderDeliverySettings.connectionTesting",
+      "sourcePosition": 2521
+    },
+    {
+      "candidateTarget": "리더 서비스 확인 중…",
+      "candidateTargetHash": "e2512e86748a085dfb45cd3b11e24b46c95bae49b04395ed2029b1bed8572089",
+      "disposition": "propose-correction",
+      "locale": "ko",
+      "sourceId": "components.ReaderDeliverySettings.connectionTesting",
+      "sourcePosition": 2521
+    },
+    {
+      "candidateTarget": "リーダーのアドレスをコピーしました。",
+      "candidateTargetHash": "8338a6d44b6d4135f0cb926a5409e9da0a7cf10ef65ffbb7421c57ccaec21050",
+      "disposition": "propose-correction",
+      "locale": "ja",
+      "sourceId": "components.ReaderDeliverySettings.copied",
+      "sourcePosition": 2522
+    },
+    {
+      "candidateTarget": "리더 주소를 복사했습니다.",
+      "candidateTargetHash": "aecbeb26131b346c3acedc2f0e4eaa05d9ea098675ca6edd954b5e55e84b8fec",
+      "disposition": "propose-correction",
+      "locale": "ko",
+      "sourceId": "components.ReaderDeliverySettings.copied",
+      "sourcePosition": 2522
+    },
+    {
+      "candidateTarget": "カタログアドレスをコピー",
+      "candidateTargetHash": "83b5efa909f65d95a6829cf001b4f8b9707cce7937c93f83cab7a735f142768d",
+      "disposition": "propose-correction",
+      "locale": "ja",
+      "sourceId": "components.ReaderDeliverySettings.copyCatalogAddress",
+      "sourcePosition": 2523
+    },
+    {
+      "candidateTarget": "コミックリーダーのアドレスをコピー",
+      "candidateTargetHash": "02f22c590d331d546a9044732fab44d9b0494765a13620f0b8a993acfdd4e920",
+      "disposition": "propose-correction",
+      "locale": "ja",
+      "sourceId": "components.ReaderDeliverySettings.copyComicCatalogAddress",
+      "sourcePosition": 2524
+    },
+    {
+      "candidateTarget": "만화 리더 주소 복사",
+      "candidateTargetHash": "a76110cac10ecb4033094679bc4b5122682780b2c8e5343fac41f358b4c5e0c1",
+      "disposition": "propose-correction",
+      "locale": "ko",
+      "sourceId": "components.ReaderDeliverySettings.copyComicCatalogAddress",
+      "sourcePosition": 2524
+    },
+    {
+      "candidateTarget": "ここではクリップボードにアクセスできません。上のリーダーアドレスを選択してコピーしてください。",
+      "candidateTargetHash": "11de3e076795b110a9e254766115a996a02f43fbbcb9125184ae0fbc7ca321ac",
+      "disposition": "propose-correction",
+      "locale": "ja",
+      "sourceId": "components.ReaderDeliverySettings.copyUnavailable",
+      "sourcePosition": 2526
+    },
+    {
+      "candidateTarget": "여기서는 클립보드에 접근할 수 없습니다. 위의 리더 주소를 선택하여 복사하세요.",
+      "candidateTargetHash": "04b6dcf07600224d28f63b0cfe4e18d6b1bf1f7896f8c4c776b02214a975ffe5",
+      "disposition": "propose-correction",
+      "locale": "ko",
+      "sourceId": "components.ReaderDeliverySettings.copyUnavailable",
+      "sourcePosition": 2526
+    },
+    {
+      "candidateTarget": "管理対象のリーダーシェルフを削除",
+      "candidateTargetHash": "025ae8f3853cf61b9b8b5ec7b6f4c7e4ba74b74ecb37a9b1a919a38eb51d0466",
+      "disposition": "propose-correction",
+      "locale": "ja",
+      "sourceId": "components.ReaderDeliverySettings.deleteGrouping",
+      "sourcePosition": 2527
+    },
+    {
+      "candidateTarget": "관리 선반 삭제",
+      "candidateTargetHash": "2885d1c50774942d1366780abb477564d108bffc46bea90276d3cad3c529bfee",
+      "disposition": "propose-correction",
+      "locale": "ko",
+      "sourceId": "components.ReaderDeliverySettings.deleteGrouping",
+      "sourcePosition": 2527
+    },
+    {
+      "candidateTarget": "Quando um item solicitado estiver disponível, SeerrNG também pode baixar os arquivos diretamente para o dispositivo que executa este navegador. Audiolivros, quadrinhos e edições de revistas usam formatos próprios e exigem um aplicativo de leitura compatível.",
+      "candidateTargetHash": "93b85a0b21f49d001afe3a3950e6fa800526fbfca17ae8b8b1e24aa971ae4ecf",
+      "disposition": "propose-correction",
+      "locale": "pt_BR",
+      "sourceId": "components.ReaderDeliverySettings.deliveryHelp",
+      "sourcePosition": 2528
+    },
+    {
+      "candidateTarget": "Configuração da API Komga do Grimmory",
+      "candidateTargetHash": "67849259d2cb5c59a56543b6af27ffa8e6c6323f754e00abeab55e9d3415de16",
+      "disposition": "propose-correction",
+      "locale": "pt_BR",
+      "sourceId": "components.ReaderDeliverySettings.grimmoryKomgaSetup",
+      "sourcePosition": 2531
+    },
+    {
+      "candidateTarget": "Grimmory（推奨）",
+      "candidateTargetHash": "d1916d79a0356c6a956362dea2ff0725743441fd962665eeaeaf37ed6d17e617",
+      "disposition": "propose-correction",
+      "locale": "ja",
+      "sourceId": "components.ReaderDeliverySettings.grimmoryRecommended",
+      "sourcePosition": 2532
+    },
+    {
+      "candidateTarget": "Grimmory OPDS の設定",
+      "candidateTargetHash": "a2516e05cc845a7dad4a9bd1b1dd721e390183004a8520beeb01ef33e4bd73cd",
+      "disposition": "propose-correction",
+      "locale": "ja",
+      "sourceId": "components.ReaderDeliverySettings.grimmorySetup",
+      "sourcePosition": 2533
+    },
+    {
+      "candidateTarget": "Grimmory OPDS 설정",
+      "candidateTargetHash": "bc61e7b21caa587755937ca116197854d0f177ab80983ff30846788a42f5f004",
+      "disposition": "propose-correction",
+      "locale": "ko",
+      "sourceId": "components.ReaderDeliverySettings.grimmorySetup",
+      "sourcePosition": 2533
+    },
+    {
+      "candidateTarget": "プレビューで {count} 件の項目が見つかりました。最終件数はまだ確認されていません。",
+      "candidateTargetHash": "73c1f55da882a096b52dd9e960c9f4311ccd46a3a5e8baaf3ac57647a06ef08a",
+      "disposition": "propose-correction",
+      "locale": "ja",
+      "sourceId": "components.ReaderDeliverySettings.groupingCountUnverified",
+      "sourcePosition": 2535
+    },
+    {
+      "candidateTarget": "미리보기에서 {count}개 항목을 찾았습니다. 최종 개수는 아직 확인되지 않았습니다.",
+      "candidateTargetHash": "df3b9e90a9d600402ab1d236f85b8173385689b62fafe2b6a582ec2fcbd99b8f",
+      "disposition": "propose-correction",
+      "locale": "ko",
+      "sourceId": "components.ReaderDeliverySettings.groupingCountUnverified",
+      "sourcePosition": 2535
+    },
+    {
+      "candidateTarget": "A prévia encontrou {count} itens; a contagem final ainda não foi confirmada.",
+      "candidateTargetHash": "913a500faee7dac747c213a9f6e9f566b0aa9a51cc77eb9bd42b715c0e6a0d8a",
+      "disposition": "propose-correction",
+      "locale": "pt_BR",
+      "sourceId": "components.ReaderDeliverySettings.groupingCountUnverified",
+      "sourcePosition": 2535
+    },
+    {
+      "candidateTarget": "管理対象のリーダーシェルフを削除できませんでした。",
+      "candidateTargetHash": "9dae20ccf990fe22200eb526574b24eb87265717b9a8b15a7a2487e2e9fd71d5",
+      "disposition": "propose-correction",
+      "locale": "ja",
+      "sourceId": "components.ReaderDeliverySettings.groupingDeleteError",
+      "sourcePosition": 2536
+    },
+    {
+      "candidateTarget": "관리 선반을 삭제하지 못했습니다.",
+      "candidateTargetHash": "d23d39fb731a4b61f181aca70a96eccfc0411b6389e4e698beac0f7dfc79f07e",
+      "disposition": "propose-correction",
+      "locale": "ko",
+      "sourceId": "components.ReaderDeliverySettings.groupingDeleteError",
+      "sourcePosition": 2536
+    },
+    {
+      "candidateTarget": "管理対象のリーダーシェルフが削除されました。",
+      "candidateTargetHash": "a90abda2be15329b0ca95279e60819744e1d97c3bd93f89e107e3f60c5783c4a",
+      "disposition": "propose-correction",
+      "locale": "ja",
+      "sourceId": "components.ReaderDeliverySettings.groupingDeleted",
+      "sourcePosition": 2537
+    },
+    {
+      "candidateTarget": "관리된 리더 선반이 삭제되었습니다.",
+      "candidateTargetHash": "b2a61cf1305685b485b00e44433b035f16cab42dabb2b656a1df9077e12ade9f",
+      "disposition": "propose-correction",
+      "locale": "ko",
+      "sourceId": "components.ReaderDeliverySettings.groupingDeleted",
+      "sourcePosition": 2537
+    },
+    {
+      "candidateTarget": "更新中",
+      "candidateTargetHash": "aa06c367f0d85408e85702f722c39e719bf872bdc83dada6444eb5efb19514e9",
+      "disposition": "propose-correction",
+      "locale": "ja",
+      "sourceId": "components.ReaderDeliverySettings.groupingPending",
+      "sourcePosition": 2544
+    },
+    {
+      "candidateTarget": "準備完了",
+      "candidateTargetHash": "d888e7c7a8303af0f59b50de130b2e2b2913233456b35e146d05949af7d68885",
+      "disposition": "propose-correction",
+      "locale": "ja",
+      "sourceId": "components.ReaderDeliverySettings.groupingReady",
+      "sourcePosition": 2545
+    },
+    {
+      "candidateTarget": "管理対象のリーダーシェルフを読み込めませんでした。",
+      "candidateTargetHash": "4811791aa17e4437b1d44ef0773392048b9078aa1ba685aa8da521cb1e50bc52",
+      "disposition": "propose-correction",
+      "locale": "ja",
+      "sourceId": "components.ReaderDeliverySettings.groupingsLoadError",
+      "sourcePosition": 2546
+    },
+    {
+      "candidateTarget": "관리 선반을 불러오지 못했습니다.",
+      "candidateTargetHash": "12a1a47a4c2b28dd8f5c8688c6b7dc76c352e59129de47c80a28144f95d24245",
+      "disposition": "propose-correction",
+      "locale": "ko",
+      "sourceId": "components.ReaderDeliverySettings.groupingsLoadError",
+      "sourcePosition": 2546
+    },
+    {
+      "candidateTarget": "Não foi possível carregar as estantes de leitura gerenciadas.",
+      "candidateTargetHash": "b5b039fe786697abf1604563432e28760b5a0da220a5ba9dfd7d22215f381d99",
+      "disposition": "propose-correction",
+      "locale": "pt_BR",
+      "sourceId": "components.ReaderDeliverySettings.groupingsLoadError",
+      "sourcePosition": 2546
+    },
+    {
+      "candidateTarget": "SeerrNGが管理するリーダーシェルフ",
+      "candidateTargetHash": "947a8c5a2f1a0a5b09fdd36e8b220bb6a97ab07c359a60ef48a62117e262d251",
+      "disposition": "propose-correction",
+      "locale": "ja",
+      "sourceId": "components.ReaderDeliverySettings.groupingsTitle",
+      "sourcePosition": 2547
+    },
+    {
+      "candidateTarget": "SeerrNG에서 관리하는 리더 선반",
+      "candidateTargetHash": "97b69bf249a9ea24b58c0fd2e01cce655687318443501bb6c23c9caee391abeb",
+      "disposition": "propose-correction",
+      "locale": "ko",
+      "sourceId": "components.ReaderDeliverySettings.groupingsTitle",
+      "sourcePosition": 2547
+    },
+    {
+      "candidateTarget": "Endereço do leitor de quadrinhos Komga do Grimmory",
+      "candidateTargetHash": "d50b2769f99c3ce445ef1f78c26dc78f4acd8ef697ad323a65181cdb850cd8f9",
+      "disposition": "propose-correction",
+      "locale": "pt_BR",
+      "sourceId": "components.ReaderDeliverySettings.komgaAddressLabel",
+      "sourcePosition": 2548
+    },
+    {
+      "candidateTarget": "同じメディアフォルダーをGrimmoryまたはBookOrbitにインポートするかマウントし、サービスにスキャンさせてください。パスはリーダーサービスのコンテナ内で見えるものを使います。一部のネットワーク共有では、ファイルシステム監視機能より定期スキャンのほうが信頼できます。",
+      "candidateTargetHash": "f24ba24ee49c52a3b7951abf1f20e938ff3de0fe786a9129e07efd8023d84f50",
+      "disposition": "propose-correction",
+      "locale": "ja",
+      "sourceId": "components.ReaderDeliverySettings.librarySetupDescription",
+      "sourcePosition": 2550
+    },
+    {
+      "candidateTarget": "Grimmory나 BookOrbit에 같은 미디어 폴더를 가져오거나 마운트하고, 해당 서비스에서 폴더를 스캔하도록 하세요. 리더 서비스 컨테이너 내부에서 보이는 경로를 사용하세요. 일부 네트워크 공유에서는 파일 시스템 감시자보다 예약 스캔이 더 안정적입니다.",
+      "candidateTargetHash": "8c24e5e75d0d1c13a64e8b89aedc81abcbfa340feadfe4d8bd9748723ef0fbd5",
+      "disposition": "propose-correction",
+      "locale": "ko",
+      "sourceId": "components.ReaderDeliverySettings.librarySetupDescription",
+      "sourcePosition": 2550
+    },
+    {
+      "candidateTarget": "Importe ou monte as mesmas pastas de mídia no Grimmory ou no BookOrbit e deixe o serviço examiná-las. Use o caminho como ele aparece dentro do contêiner do serviço de leitura. Em alguns compartilhamentos de rede, varreduras agendadas são mais confiáveis do que monitores do sistema de arquivos.",
+      "candidateTargetHash": "6bc23d00431e79ce04d419406fbc2fe4652034a30568cb96cb9758115a9732b3",
+      "disposition": "propose-correction",
+      "locale": "pt_BR",
+      "sourceId": "components.ReaderDeliverySettings.librarySetupDescription",
+      "sourcePosition": 2550
+    },
+    {
+      "candidateTarget": "리더 설정을 불러오지 못했습니다.",
+      "candidateTargetHash": "dd9ebb443ff6a0642e00cad526b7d55d7ca117127e2af114fe8e2d4dfdda1c33",
+      "disposition": "propose-correction",
+      "locale": "ko",
+      "sourceId": "components.ReaderDeliverySettings.loadError",
+      "sourcePosition": 2551
+    },
+    {
+      "candidateTarget": "SeerrNGではまだリーダーシェルフが作成されていません。",
+      "candidateTargetHash": "985cd44bdacafa42c4693a9b0611a5c372628110bad9be4d87d729fe1c8651ac",
+      "disposition": "propose-correction",
+      "locale": "ja",
+      "sourceId": "components.ReaderDeliverySettings.noGroupings",
+      "sourcePosition": 2552
+    },
+    {
+      "candidateTarget": "SeerrNG에서 아직 만든 리더 선반이 없습니다.",
+      "candidateTargetHash": "c92c518381b8c871db4b25a84eecc5b41910d4068253727c7fe038d911b9e9d5",
+      "disposition": "propose-correction",
+      "locale": "ko",
+      "sourceId": "components.ReaderDeliverySettings.noGroupings",
+      "sourcePosition": 2552
+    },
+    {
+      "candidateTarget": "O SeerrNG ainda não criou nenhuma estante de leitura.",
+      "candidateTargetHash": "4ac93c776576ddfd67f2decb72fc1dcb6547dc6dc9847ec5a8caeff2d21c5c1d",
+      "disposition": "propose-correction",
+      "locale": "pt_BR",
+      "sourceId": "components.ReaderDeliverySettings.noGroupings",
+      "sourcePosition": 2552
+    },
+    {
+      "candidateTarget": "管理者アカウントを接続すると、SeerrNGでリーダーシェルフをプレビュー、作成、更新できます。パスワードは保護されたアプリ設定に保存され、APIから返されることはありません。リーダーアプリとOPDSの認証情報は別々に管理されます。",
+      "candidateTargetHash": "e864acdd950b3199e17de662b5837e2042e6dfcb7c2004e218b7a433ec3d0626",
+      "disposition": "propose-correction",
+      "locale": "ja",
+      "sourceId": "components.ReaderDeliverySettings.opdsCredentials",
+      "sourcePosition": 2553
+    },
+    {
+      "candidateTarget": "관리자 계정을 연결하면 SeerrNG에서 리더 선반을 미리 보고 만들고 업데이트할 수 있습니다. 비밀번호는 보호된 앱 설정에 저장되며 API에서 반환되지 않습니다. 리더 앱과 OPDS 인증 정보는 서로 분리되어 있습니다.",
+      "candidateTargetHash": "5333c31c1b790fb6f4e5e138803ef91e4b423891b10fe0cc38db2c0d64829a2c",
+      "disposition": "propose-correction",
+      "locale": "ko",
+      "sourceId": "components.ReaderDeliverySettings.opdsCredentials",
+      "sourcePosition": 2553
+    },
+    {
+      "candidateTarget": "Conecte uma conta de administrador para que o SeerrNG possa pré-visualizar, criar e atualizar as estantes de leitura. As senhas são armazenadas nas configurações protegidas do aplicativo e nunca são retornadas pela API. As credenciais do aplicativo de leitura e do OPDS permanecem separadas.",
+      "candidateTargetHash": "e0cf81ace40d5e90eaaefc182cf997759d91eedd9c4c932bef166585bf23bd1e",
+      "disposition": "propose-correction",
+      "locale": "pt_BR",
+      "sourceId": "components.ReaderDeliverySettings.opdsCredentials",
+      "sourcePosition": 2553
+    },
+    {
+      "candidateTarget": "{serviceName}を開く",
+      "candidateTargetHash": "11187a3e7b7e0a587673071874424994bafe083f0d8ceaa253d99b3d923c5659",
+      "disposition": "propose-correction",
+      "locale": "ja",
+      "sourceId": "components.ReaderDeliverySettings.open",
+      "sourcePosition": 2554
+    },
+    {
+      "candidateTarget": "{serviceName} 열기",
+      "candidateTargetHash": "e9ffe62e2c77a85c9794ade4d1ab62f5753452c957f4f605cfc821a4d5b5174b",
+      "disposition": "propose-correction",
+      "locale": "ko",
+      "sourceId": "components.ReaderDeliverySettings.open",
+      "sourcePosition": 2554
+    },
+    {
+      "candidateTarget": "Abrir {serviceName}",
+      "candidateTargetHash": "f57b39ad3f3695253635c339304672eef3c8ba1c78ccee2b687a4acc7d2190aa",
+      "disposition": "propose-correction",
+      "locale": "pt_BR",
+      "sourceId": "components.ReaderDeliverySettings.open",
+      "sourcePosition": 2554
+    },
+    {
+      "candidateTarget": "선호 리더 앱",
+      "candidateTargetHash": "e45c4962b5dce042383678c925f75a9d8f7868d48daa5c1011ad7b5066ac3c53",
+      "disposition": "propose-correction",
+      "locale": "ko",
+      "sourceId": "components.ReaderDeliverySettings.preferredReader",
+      "sourcePosition": 2556
+    },
+    {
+      "candidateTarget": "Aplicativo de leitura preferido",
+      "candidateTargetHash": "48e1c57119a6c029472c3c51ceaad8cebe99c401d1d829a3e2c42c3c9fcf2d4c",
+      "disposition": "propose-correction",
+      "locale": "pt_BR",
+      "sourceId": "components.ReaderDeliverySettings.preferredReader",
+      "sourcePosition": 2556
+    },
+    {
+      "candidateTarget": "SeerrNGは、優先アプリが設定されている場合にそれを開きます。アドレスがない場合は、もう一方の設定済みアプリを使用します。デフォルトではGrimmoryが優先されます。",
+      "candidateTargetHash": "f87893780e897caf115111a176c93397f4d51ab931ed95d9ab9c45aeaa1d8c30",
+      "disposition": "propose-correction",
+      "locale": "ja",
+      "sourceId": "components.ReaderDeliverySettings.preferredReaderDescription",
+      "sourcePosition": 2557
+    },
+    {
+      "candidateTarget": "SeerrNG는 선호 앱이 설정되어 있으면 그 앱을 엽니다. 주소가 없으면 다른 설정된 앱을 사용합니다. 기본적으로 Grimmory가 선호 앱입니다.",
+      "candidateTargetHash": "b9607f9a360d379235ff5f0a00c932761634c949aabd8c07e38322d78fec90a8",
+      "disposition": "propose-correction",
+      "locale": "ko",
+      "sourceId": "components.ReaderDeliverySettings.preferredReaderDescription",
+      "sourcePosition": 2557
+    },
+    {
+      "candidateTarget": "O SeerrNG abre o aplicativo preferido quando ele está configurado. Se esse aplicativo não tiver um endereço, o SeerrNG usa o outro aplicativo configurado. Por padrão, Grimmory continua sendo o aplicativo preferido.",
+      "candidateTargetHash": "1235af6fa50acb7210311aa920fa09c8114c0d7d3a2577115bd48db331ffc9d3",
+      "disposition": "propose-correction",
+      "locale": "pt_BR",
+      "sourceId": "components.ReaderDeliverySettings.preferredReaderDescription",
+      "sourcePosition": 2557
+    },
+    {
+      "candidateTarget": "接続中のアカウントにのみ公開",
+      "candidateTargetHash": "04b72978860884a80ab71fed3794c162785a061447e4c20556126b63bdaec4e4",
+      "disposition": "propose-correction",
+      "locale": "ja",
+      "sourceId": "components.ReaderDeliverySettings.privateVisibility",
+      "sourcePosition": 2558
+    },
+    {
+      "candidateTarget": "연결된 계정에만 공개",
+      "candidateTargetHash": "79cf7329efc990f496e6d14afbc1817a424100a1e460af7815ced09cd8423310",
+      "disposition": "propose-correction",
+      "locale": "ko",
+      "sourceId": "components.ReaderDeliverySettings.privateVisibility",
+      "sourcePosition": 2558
+    },
+    {
+      "candidateTarget": "Visível apenas para a conta conectada",
+      "candidateTargetHash": "120a392cd7f69c55eb97e667bbfbd91d2ae2cf6061139dd94e6a14936e6570d2",
+      "disposition": "propose-correction",
+      "locale": "pt_BR",
+      "sourceId": "components.ReaderDeliverySettings.privateVisibility",
+      "sourcePosition": 2558
+    },
+    {
+      "candidateTarget": "리더 설정 저장",
+      "candidateTargetHash": "d88c21354a52e4343b9661fdf9b8bfe8f0ea426f731d23584a5d5e40908485d3",
+      "disposition": "propose-correction",
+      "locale": "ko",
+      "sourceId": "components.ReaderDeliverySettings.save",
+      "sourcePosition": 2560
+    },
+    {
+      "candidateTarget": "Salvar configurações do leitor",
+      "candidateTargetHash": "f7ec0f382533c937bdbbc84e137db60af535fefefc8b07f418fb8df84025740c",
+      "disposition": "propose-correction",
+      "locale": "pt_BR",
+      "sourceId": "components.ReaderDeliverySettings.save",
+      "sourcePosition": 2560
+    },
+    {
+      "candidateTarget": "리더 설정을 저장하지 못했습니다.",
+      "candidateTargetHash": "5ee1f6b1d69d86701b5feb8d92823ac10f2df777bb1a537b6ed7485ca6e9c1d7",
+      "disposition": "propose-correction",
+      "locale": "ko",
+      "sourceId": "components.ReaderDeliverySettings.saveError",
+      "sourcePosition": 2561
+    },
+    {
+      "candidateTarget": "리더 설정이 저장되었습니다.",
+      "candidateTargetHash": "c171bebefbb120d5515adea6551cf24d08d846a7124dbd381d4509b67d840715",
+      "disposition": "propose-correction",
+      "locale": "ko",
+      "sourceId": "components.ReaderDeliverySettings.saved",
+      "sourcePosition": 2562
+    },
+    {
+      "candidateTarget": "保存済みです。現在のパスワードを維持するには、空欄のままにしてください。",
+      "candidateTargetHash": "031c8820b84b7093c51e76a7c91d59c6aa6748433d92fdf3e4d53e09f7a3c71b",
+      "disposition": "propose-correction",
+      "locale": "ja",
+      "sourceId": "components.ReaderDeliverySettings.savedPassword",
+      "sourcePosition": 2563
+    },
+    {
+      "candidateTarget": "저장됨. 기존 비밀번호를 유지하려면 비워 두세요.",
+      "candidateTargetHash": "bb9b5ab730fbf9bea4deb1840bcd4e95ba654f555a8ab1831d2193547eec99a7",
+      "disposition": "propose-correction",
+      "locale": "ko",
+      "sourceId": "components.ReaderDeliverySettings.savedPassword",
+      "sourcePosition": 2563
+    },
+    {
+      "candidateTarget": "BookOrbitでは、SmartScopeの公開範囲は作成時に固定されます。Koboの同期が有効な場合、SeerrNGは通常のコレクションも維持し、そのメンバーを15分ごとに照合します。",
+      "candidateTargetHash": "db6153b2c65b680548174fbcfaab99bd331eccc2dfbbd57659b6b2e3ca0986c8",
+      "disposition": "propose-correction",
+      "locale": "ja",
+      "sourceId": "components.ReaderDeliverySettings.scopeVisibilityNote",
+      "sourcePosition": 2565
+    },
+    {
+      "candidateTarget": "BookOrbit는 SmartScope를 만들 때 공개 범위를 잠급니다. Kobo 동기화가 켜져 있으면 SeerrNG에서 일반 Collection도 유지하고 15분마다 구성원을 대조합니다.",
+      "candidateTargetHash": "58241ee6caf06a24d57641e699fbed0d68aa39773e308c29f99c61360614beb9",
+      "disposition": "propose-correction",
+      "locale": "ko",
+      "sourceId": "components.ReaderDeliverySettings.scopeVisibilityNote",
+      "sourcePosition": 2565
+    },
+    {
+      "candidateTarget": "O BookOrbit bloqueia a visibilidade do SmartScope quando o escopo é criado. Se a sincronização do Kobo estiver ativada, o SeerrNG também mantém uma Collection normal e reconcilia seus membros a cada 15 minutos.",
+      "candidateTargetHash": "e08ed7c16ef213767055c03f469a427bb2df9ac6f6389ba636f9d14f4b76826c",
+      "disposition": "propose-correction",
+      "locale": "pt_BR",
+      "sourceId": "components.ReaderDeliverySettings.scopeVisibilityNote",
+      "sourcePosition": 2565
+    },
+    {
+      "candidateTarget": "리더 서비스 사용자와 공유됨",
+      "candidateTargetHash": "1e16f2ebd41c30c64ae48c2e23ae56ab8dcdf4a3885afb7ac6352e09e50002b8",
+      "disposition": "propose-correction",
+      "locale": "ko",
+      "sourceId": "components.ReaderDeliverySettings.sharedVisibility",
+      "sourcePosition": 2566
+    },
+    {
+      "candidateTarget": "読書アプリ",
+      "candidateTargetHash": "c3e69f51566efad9e2fcff5775e644a61af61e702db7feaf27fe9f9579a6d01e",
+      "disposition": "propose-correction",
+      "locale": "ja",
+      "sourceId": "components.ReaderDeliverySettings.title",
+      "sourcePosition": 2568
+    },
+    {
+      "candidateTarget": "メディア詳細ページでリーダーアプリへのリンクを使う前に、これらの設定を保存してください。",
+      "candidateTargetHash": "46e8ac48f27de95a5b6ff7a09566c69cce72d785a5c79174395af9e531c1043a",
+      "disposition": "propose-correction",
+      "locale": "ja",
+      "sourceId": "components.ReaderDeliverySettings.unsavedChanges",
+      "sourcePosition": 2569
+    },
+    {
+      "candidateTarget": "미디어 상세 페이지에서 리더 링크를 사용하기 전에 이 설정을 저장하세요.",
+      "candidateTargetHash": "2ad0c936a3936d37c3765d7e99961b5bae12b10a04d8d895f27f3c9ee6acc54c",
+      "disposition": "propose-correction",
+      "locale": "ko",
+      "sourceId": "components.ReaderDeliverySettings.unsavedChanges",
+      "sourcePosition": 2569
+    },
+    {
+      "candidateTarget": "リーダーシェルフを作成",
+      "candidateTargetHash": "bb48f749de75e9c6cbe55cd6b50b90b0c5fd914bcf2a755c0ffbaeacef2f2ff2",
+      "disposition": "propose-correction",
+      "locale": "ja",
+      "sourceId": "components.ReaderGroupingAction.action",
+      "sourcePosition": 2571
+    },
+    {
+      "candidateTarget": "리더 선반 만들기",
+      "candidateTargetHash": "cb1e92e83209612e806375cad3a0a4682fe7a150866cb454e012907f76432957",
+      "disposition": "propose-correction",
+      "locale": "ko",
+      "sourceId": "components.ReaderGroupingAction.action",
+      "sourcePosition": 2571
+    },
+    {
+      "candidateTarget": "BookOrbit",
+      "candidateTargetHash": "6a466c4f7e5203c03076aa1515a501c5d04361324e2c686972d80db42255cafa",
+      "disposition": "propose-correction",
+      "locale": "ja",
+      "sourceId": "components.ReaderGroupingAction.bookorbit",
+      "sourcePosition": 2572
+    },
+    {
+      "candidateTarget": "BookOrbit",
+      "candidateTargetHash": "6a466c4f7e5203c03076aa1515a501c5d04361324e2c686972d80db42255cafa",
+      "disposition": "propose-correction",
+      "locale": "ko",
+      "sourceId": "components.ReaderGroupingAction.bookorbit",
+      "sourcePosition": 2572
+    },
+    {
+      "candidateTarget": "미리보기 개수: {count}. 리더 서비스에서 저장된 개수를 아직 확인하지 않았습니다.",
+      "candidateTargetHash": "3de4d9b9f90f44f9ed6a888c0873e219d3c458bbcf7c061d9f149f69daaaa041",
+      "disposition": "propose-correction",
+      "locale": "ko",
+      "sourceId": "components.ReaderGroupingAction.countPending",
+      "sourcePosition": 2574
+    },
+    {
+      "candidateTarget": "Contagem da prévia: {count}. O serviço de leitura ainda não confirmou a quantidade salva.",
+      "candidateTargetHash": "6c36c004b3ece51d98f31bd57919fc4a53a9b1a3da0c3ce46bd8a6391cae42dc",
+      "disposition": "propose-correction",
+      "locale": "pt_BR",
+      "sourceId": "components.ReaderGroupingAction.countPending",
+      "sourcePosition": 2574
+    },
+    {
+      "candidateTarget": "それでもこの動的ルールを作成すると、今後条件に一致する本が自動的に表示されます。",
+      "candidateTargetHash": "c727b51f1eed964ead78b72ff892797f4c4138334018352ebee258d82bf83b96",
+      "disposition": "propose-correction",
+      "locale": "ja",
+      "sourceId": "components.ReaderGroupingAction.emptyOptIn",
+      "sourcePosition": 2575
+    },
+    {
+      "candidateTarget": "앞으로 조건에 맞는 책이 자동으로 표시되도록 이 동적 규칙을 그래도 만드세요.",
+      "candidateTargetHash": "df0e391092eeb6eba6cb88ac2b92b11341b5718ed8dceae1de0f79e630fc116f",
+      "disposition": "propose-correction",
+      "locale": "ko",
+      "sourceId": "components.ReaderGroupingAction.emptyOptIn",
+      "sourcePosition": 2575
+    },
+    {
+      "candidateTarget": "Crie esta regra dinâmica mesmo assim para que livros que correspondam a ela apareçam automaticamente no futuro.",
+      "candidateTargetHash": "bcb4ee14b8d5e5a742cb3732d5839346fb6163037a6f96e0e9f9307c38c10749",
+      "disposition": "propose-correction",
+      "locale": "pt_BR",
+      "sourceId": "components.ReaderGroupingAction.emptyOptIn",
+      "sourcePosition": 2575
+    },
+    {
+      "candidateTarget": "Grimmory（推奨）",
+      "candidateTargetHash": "d1916d79a0356c6a956362dea2ff0725743441fd962665eeaeaf37ed6d17e617",
+      "disposition": "propose-correction",
+      "locale": "ja",
+      "sourceId": "components.ReaderGroupingAction.grimmory",
+      "sourcePosition": 2576
+    },
+    {
+      "candidateTarget": "GrimmoryのKobo配信では、専用の包含用シェルフを使用します。SeerrNGはプロバイダー側の設定を変更しません。",
+      "candidateTargetHash": "68c12ebc9873e07d7c55fadd33187207d6b4c794414f05f99032aa3d9fff3ab6",
+      "disposition": "propose-correction",
+      "locale": "ja",
+      "sourceId": "components.ReaderGroupingAction.grimmoryKobo",
+      "sourcePosition": 2577
+    },
+    {
+      "candidateTarget": "Grimmory의 Kobo 전송에는 별도의 포함용 선반이 사용됩니다. SeerrNG는 해당 제공자 설정을 변경하지 않습니다.",
+      "candidateTargetHash": "15958646a643bd33772eedce55942baea8fa4f9d7fef2f99de29507047ff7444",
+      "disposition": "propose-correction",
+      "locale": "ko",
+      "sourceId": "components.ReaderGroupingAction.grimmoryKobo",
+      "sourcePosition": 2577
+    },
+    {
+      "candidateTarget": "A entrega Kobo do Grimmory usa uma prateleira de inclusão separada. SeerrNG não altera essa configuração do provedor.",
+      "candidateTargetHash": "f92de6706093d39ea1d0c836b4c8da429e3850cffc0d8c7ea5b62ccc01f7764a",
+      "disposition": "propose-correction",
+      "locale": "pt_BR",
+      "sourceId": "components.ReaderGroupingAction.grimmoryKobo",
+      "sourcePosition": 2577
+    },
+    {
+      "candidateTarget": "このルールをリーダーシェルフにする",
+      "candidateTargetHash": "129a30710db65574b07be0800af8473e0d0c766bba074aa94e695476dda8bd7b",
+      "disposition": "propose-correction",
+      "locale": "ja",
+      "sourceId": "components.ReaderGroupingAction.heading",
+      "sourcePosition": 2578
+    },
+    {
+      "candidateTarget": "이 규칙을 리더 선반으로 만들기",
+      "candidateTargetHash": "81bd502bf513fc9c3d432204ec9717a963e04836e763d66ddb203dde67b433db",
+      "disposition": "propose-correction",
+      "locale": "ko",
+      "sourceId": "components.ReaderGroupingAction.heading",
+      "sourcePosition": 2578
+    },
+    {
+      "candidateTarget": "SeerrNGは、リーダーサービスにルールベースの動的なグループを作成します。ライブラリの変更に合わせて最新の状態を保ち、ファイル自体はコピーしません。",
+      "candidateTargetHash": "d3f301026ad86f0390d814980ab929e5259a53c7768e0e839a95815144b239c7",
+      "disposition": "propose-correction",
+      "locale": "ja",
+      "sourceId": "components.ReaderGroupingAction.intro",
+      "sourcePosition": 2579
+    },
+    {
+      "candidateTarget": "SeerrNG는 리더 서비스에 규칙 기반의 동적 그룹을 만듭니다. 그룹은 라이브러리 변경에 맞춰 최신 상태로 유지되며 파일을 복사하지 않습니다.",
+      "candidateTargetHash": "cd490f1399b8db8b6d372565deba33866bacd7a36bb08e485414771ebdcd0f8d",
+      "disposition": "propose-correction",
+      "locale": "ko",
+      "sourceId": "components.ReaderGroupingAction.intro",
+      "sourcePosition": 2579
+    },
+    {
+      "candidateTarget": "{count, plural, one {# 件の現在の一致項目} other {# 件の現在の一致項目}}",
+      "candidateTargetHash": "c0a3fb860ad090cd332435f935535ae381681736349be57331f9e8aada6af707",
+      "disposition": "propose-correction",
+      "locale": "ja",
+      "sourceId": "components.ReaderGroupingAction.matches",
+      "sourcePosition": 2581
+    },
+    {
+      "candidateTarget": "{count, plural, one {현재 일치 항목 #개} other {현재 일치 항목 #개}}",
+      "candidateTargetHash": "ea58641b2d7f2f94b6b0d137c63044ec5badd83c4154563bf69cb8bbbb70b2f3",
+      "disposition": "propose-correction",
+      "locale": "ko",
+      "sourceId": "components.ReaderGroupingAction.matches",
+      "sourcePosition": 2581
+    },
+    {
+      "candidateTarget": "{count, plural, one {# item correspondente} other {# itens correspondentes}}",
+      "candidateTargetHash": "2f0dfbbe6261b0f7d8d2b11a5d157f75a33d8e437e65bf76758be99cb8a884ac",
+      "disposition": "propose-correction",
+      "locale": "pt_BR",
+      "sourceId": "components.ReaderGroupingAction.matches",
+      "sourcePosition": 2581
+    },
+    {
+      "candidateTarget": "현재 규칙에 맞는 책이 없습니다.",
+      "candidateTargetHash": "bd002ece899c7adfc26b5214412688f900def39918d0930deb73ca0e18a1e319",
+      "disposition": "propose-correction",
+      "locale": "ko",
+      "sourceId": "components.ReaderGroupingAction.noMatches",
+      "sourcePosition": 2582
+    },
+    {
+      "candidateTarget": "{serviceName}を開く",
+      "candidateTargetHash": "11187a3e7b7e0a587673071874424994bafe083f0d8ceaa253d99b3d923c5659",
+      "disposition": "propose-correction",
+      "locale": "ja",
+      "sourceId": "components.ReaderGroupingAction.open",
+      "sourcePosition": 2583
+    },
+    {
+      "candidateTarget": "{serviceName} 열기",
+      "candidateTargetHash": "e9ffe62e2c77a85c9794ade4d1ab62f5753452c957f4f605cfc821a4d5b5174b",
+      "disposition": "propose-correction",
+      "locale": "ko",
+      "sourceId": "components.ReaderGroupingAction.open",
+      "sourcePosition": 2583
+    },
+    {
+      "candidateTarget": "Abrir {serviceName}",
+      "candidateTargetHash": "f57b39ad3f3695253635c339304672eef3c8ba1c78ccee2b687a4acc7d2190aa",
+      "disposition": "propose-correction",
+      "locale": "pt_BR",
+      "sourceId": "components.ReaderGroupingAction.open",
+      "sourcePosition": 2583
+    },
+    {
+      "candidateTarget": "선반 설정 닫기",
+      "candidateTargetHash": "534367fa36479fd1ba2eb4332e6785c1da3dd2f0721cd90734f63207835abc38",
+      "disposition": "propose-correction",
+      "locale": "ko",
+      "sourceId": "components.ReaderGroupingAction.openClose",
+      "sourcePosition": 2584
+    },
+    {
+      "candidateTarget": "Fechar a configuração da prateleira",
+      "candidateTargetHash": "dd190540db2a68bc77ea9561b761b97565d808a6533037ce190fbf481dfe5b9a",
+      "disposition": "propose-correction",
+      "locale": "pt_BR",
+      "sourceId": "components.ReaderGroupingAction.openClose",
+      "sourcePosition": 2584
+    },
+    {
+      "candidateTarget": "一致する項目をプレビュー",
+      "candidateTargetHash": "7e82997d354cd6cf442f9d06469600de31b49aa2cae10fcd997aacbe1aa22c3c",
+      "disposition": "propose-correction",
+      "locale": "ja",
+      "sourceId": "components.ReaderGroupingAction.preview",
+      "sourcePosition": 2585
+    },
+    {
+      "candidateTarget": "조건에 맞는 항목 미리보기",
+      "candidateTargetHash": "4f0d9a7aeed1bc4ca4ad74086fe3b16303648533a29ff38f5f5f1f180c0ba86e",
+      "disposition": "propose-correction",
+      "locale": "ko",
+      "sourceId": "components.ReaderGroupingAction.preview",
+      "sourcePosition": 2585
+    },
+    {
+      "candidateTarget": "Visualizar correspondências",
+      "candidateTargetHash": "362a2fc9a5d1808bed8656269eae3902d74ed7cf49809bb4a887bd18232aa51f",
+      "disposition": "propose-correction",
+      "locale": "pt_BR",
+      "sourceId": "components.ReaderGroupingAction.preview",
+      "sourcePosition": 2585
+    },
+    {
+      "candidateTarget": "리더 라이브러리를 확인하지 못했습니다.",
+      "candidateTargetHash": "82e4b4ea4dd1b62c48b165ebadfe3f1b7ce088b54b4b567e139e7856c9afa5d0",
+      "disposition": "propose-correction",
+      "locale": "ko",
+      "sourceId": "components.ReaderGroupingAction.previewError",
+      "sourcePosition": 2586
+    },
+    {
+      "candidateTarget": "Não foi possível verificar a biblioteca do serviço de leitura.",
+      "candidateTargetHash": "8036557a107b01a0b9c21388067e7fe85f144d3e59b0884266d819ee20dc3845",
+      "disposition": "propose-correction",
+      "locale": "pt_BR",
+      "sourceId": "components.ReaderGroupingAction.previewError",
+      "sourcePosition": 2586
+    },
+    {
+      "candidateTarget": "ライブラリを確認中…",
+      "candidateTargetHash": "2a960f696f53ce77ace8af195463b1c1f68ab962a45ec3f390dbf789c8602250",
+      "disposition": "propose-correction",
+      "locale": "ja",
+      "sourceId": "components.ReaderGroupingAction.previewing",
+      "sourcePosition": 2587
+    },
+    {
+      "candidateTarget": "라이브러리 확인 중…",
+      "candidateTargetHash": "5683ebadbc1eade9022d7fb8214da4af9abcd77c8e516ae95d90167df9ca607e",
+      "disposition": "propose-correction",
+      "locale": "ko",
+      "sourceId": "components.ReaderGroupingAction.previewing",
+      "sourcePosition": 2587
+    },
+    {
+      "candidateTarget": "リーダーシェルフを保存しました。",
+      "candidateTargetHash": "c846185ae621c933db852a891460569cbee1bc0a9ea5cbbd82ebfd3613e4aa2a",
+      "disposition": "propose-correction",
+      "locale": "ja",
+      "sourceId": "components.ReaderGroupingAction.result",
+      "sourcePosition": 2589
+    },
+    {
+      "candidateTarget": "一致した項目の一部",
+      "candidateTargetHash": "3cc50c055e179a5be760e23b7780189ffb1585474670747a4168bdcebdb800da",
+      "disposition": "propose-correction",
+      "locale": "ja",
+      "sourceId": "components.ReaderGroupingAction.sampleTitles",
+      "sourcePosition": 2590
+    },
+    {
+      "candidateTarget": "조건에 맞는 항목 몇 개",
+      "candidateTargetHash": "99368bcad2b69a1602b58540df9a5f08e7aadd0d599d56a23e172973de5295bd",
+      "disposition": "propose-correction",
+      "locale": "ko",
+      "sourceId": "components.ReaderGroupingAction.sampleTitles",
+      "sourcePosition": 2590
+    },
+    {
+      "candidateTarget": "Alguns resultados correspondentes",
+      "candidateTargetHash": "59983b1995d0a63ec487a61c407ce85cbaa36df640e3defbce04f2eb737c6e7c",
+      "disposition": "propose-correction",
+      "locale": "pt_BR",
+      "sourceId": "components.ReaderGroupingAction.sampleTitles",
+      "sourcePosition": 2590
+    },
+    {
+      "candidateTarget": "リーダーシェルフを保存できませんでした。",
+      "candidateTargetHash": "b29246a67aa13223a32927ce605b352aaad72982fa5a30d73bc84bb3850d600c",
+      "disposition": "propose-correction",
+      "locale": "ja",
+      "sourceId": "components.ReaderGroupingAction.saveError",
+      "sourcePosition": 2592
+    },
+    {
+      "candidateTarget": "리더 선반을 저장하지 못했습니다.",
+      "candidateTargetHash": "df280a37a5dba921750ff430d061cb3f0030bdd4e96c664e8f4ea12227292279",
+      "disposition": "propose-correction",
+      "locale": "ko",
+      "sourceId": "components.ReaderGroupingAction.saveError",
+      "sourcePosition": 2592
+    },
+    {
+      "candidateTarget": "Não foi possível salvar a estante de leitura.",
+      "candidateTargetHash": "c42f0ef351e7028002d803952c9dd683f3ed60d3830b05cbe8970f562954080c",
+      "disposition": "propose-correction",
+      "locale": "pt_BR",
+      "sourceId": "components.ReaderGroupingAction.saveError",
+      "sourcePosition": 2592
+    },
+    {
+      "candidateTarget": "シェルフを保存中…",
+      "candidateTargetHash": "2983b34203d8433f2aaf2063bff3fbc5f459e05d077084f05be285b504d6b365",
+      "disposition": "propose-correction",
+      "locale": "ja",
+      "sourceId": "components.ReaderGroupingAction.saving",
+      "sourcePosition": 2593
+    },
+    {
+      "candidateTarget": "선반 저장 중…",
+      "candidateTargetHash": "ed86a0465cbed451af09419a938d2611bb74d00ca62e3cdf2182314184eaa5d1",
+      "disposition": "propose-correction",
+      "locale": "ko",
+      "sourceId": "components.ReaderGroupingAction.saving",
+      "sourcePosition": 2593
+    },
+    {
+      "candidateTarget": "設定 > 連携サービス > 読書アプリでリーダーサービスを設定してから、ここに戻ってください。",
+      "candidateTargetHash": "c7ab2892a1937bf00ef0ddebb221d742e761625a072c0330fff0eb94369fccf0",
+      "disposition": "propose-correction",
+      "locale": "ja",
+      "sourceId": "components.ReaderGroupingAction.setup",
+      "sourcePosition": 2594
+    },
+    {
+      "candidateTarget": "계정 설정 > 서비스 > 리더 앱에서 리더 서비스를 설정한 다음 여기로 돌아오세요.",
+      "candidateTargetHash": "4e9174dc6d9754474fb2df955a7948a812a2e2d8243404322b8fad6ba4f3ce5c",
+      "disposition": "propose-correction",
+      "locale": "ko",
+      "sourceId": "components.ReaderGroupingAction.setup",
+      "sourcePosition": 2594
+    },
+    {
+      "candidateTarget": "Configure um serviço de leitura em Configurações > Serviços > Aplicações do Leitor e volte aqui.",
+      "candidateTargetHash": "69c27058280d5db1f2769f2c5959f0ccad94c89f2b7fd14439afb236a2fa33bd",
+      "disposition": "propose-correction",
+      "locale": "pt_BR",
+      "sourceId": "components.ReaderGroupingAction.setup",
+      "sourcePosition": 2594
+    },
+    {
+      "candidateTarget": "リーダーサービスの他の利用者にもこのグループを表示",
+      "candidateTargetHash": "6c53af17260bb2b510c0894e70c21d265b09d415a2d62367e04e6309e2ad32d4",
+      "disposition": "propose-correction",
+      "locale": "ja",
+      "sourceId": "components.ReaderGroupingAction.share",
+      "sourcePosition": 2595
+    },
+    {
+      "candidateTarget": "이 그룹을 다른 리더 서비스 사용자에게도 표시",
+      "candidateTargetHash": "689ffc741377bb680693491a4bd5c3268eb724581683230ecaaac1ede9520230",
+      "disposition": "propose-correction",
+      "locale": "ko",
+      "sourceId": "components.ReaderGroupingAction.share",
+      "sourcePosition": 2595
+    },
+    {
+      "candidateTarget": "リーダーまたはOPDSアカウントが別のリーダーサービス利用者のものである場合、そのアカウントからこのグループを見られるよう共有してください。リーダーアカウントにも、条件に合うライブラリへのアクセス権が必要です。",
+      "candidateTargetHash": "3ed5cc57c557e2d8c34c82cb903ce088ecb0c7fcd91d7711da9f56ec5fbe7801",
+      "disposition": "propose-correction",
+      "locale": "ja",
+      "sourceId": "components.ReaderGroupingAction.shareHelp",
+      "sourcePosition": 2596
+    },
+    {
+      "candidateTarget": "리더 또는 OPDS 계정이 다른 리더 서비스 사용자의 계정이라면, 해당 계정에서도 이 그룹을 볼 수 있도록 공유하세요. 리더 계정은 조건에 맞는 라이브러리에 계속 접근할 수 있어야 합니다.",
+      "candidateTargetHash": "2c3618659905d0ae08d04f7ca3be9a94fc2c6aa61c1f78c167266798417af625",
+      "disposition": "propose-correction",
+      "locale": "ko",
+      "sourceId": "components.ReaderGroupingAction.shareHelp",
+      "sourcePosition": 2596
+    },
+    {
+      "candidateTarget": "この動的ルールをKoboに同期",
+      "candidateTargetHash": "a52a4ebf6b0b81df0bd747785b959d6f0f502b89b7e4b96e1c8205f2ff964645",
+      "disposition": "propose-correction",
+      "locale": "ja",
+      "sourceId": "components.ReaderGroupingAction.syncToKobo",
+      "sourcePosition": 2597
+    },
+    {
+      "candidateTarget": "이 동적 규칙을 Kobo에 동기화",
+      "candidateTargetHash": "7ae3ccbefc5c778bd303f083378bb148d003942419d9054796095850342cb767",
+      "disposition": "propose-correction",
+      "locale": "ko",
+      "sourceId": "components.ReaderGroupingAction.syncToKobo",
+      "sourcePosition": 2597
+    },
+    {
+      "candidateTarget": "Sincronizar esta regra dinâmica com o Kobo",
+      "candidateTargetHash": "2df49c3d2b2ae6712246382ca1ab4c43a5fb92e08eddb34a391865ce7881301d",
+      "disposition": "propose-correction",
+      "locale": "pt_BR",
+      "sourceId": "components.ReaderGroupingAction.syncToKobo",
+      "sourcePosition": 2597
+    },
+    {
+      "candidateTarget": "有効にすると、SeerrNGは管理対象のBookOrbitコレクションを作成し、そのメンバーをこの動的ルールと照合して15分ごとに同期します。BookOrbitでKoboアカウントをペアリングしてください。",
+      "candidateTargetHash": "83d929c5989752f8fa3e264fab46f8e96e8f1ef4591fc15359c9adedb396553f",
+      "disposition": "propose-correction",
+      "locale": "ja",
+      "sourceId": "components.ReaderGroupingAction.syncToKoboHelp",
+      "sourcePosition": 2598
+    },
+    {
+      "candidateTarget": "활성화하면 SeerrNG가 관리되는 BookOrbit Collection을 만들고, 해당 구성원을 이 동적 규칙과 대조해 15분마다 동기화합니다. BookOrbit에서 Kobo 계정을 연결하세요.",
+      "candidateTargetHash": "1fd967c0133a56b227c726784a6cba33d92f73a2316e355892892f65f96a5d7b",
+      "disposition": "propose-correction",
+      "locale": "ko",
+      "sourceId": "components.ReaderGroupingAction.syncToKoboHelp",
+      "sourcePosition": 2598
+    },
+    {
+      "candidateTarget": "Quando ativado, o SeerrNG cria uma Coleção BookOrbit gerenciada e reconcilia seus membros com esta regra dinâmica a cada 15 minutos. Associe a conta do Kobo no BookOrbit.",
+      "candidateTargetHash": "1ca42da5cb0f1ed72c37e97958f6776dae0b2b1a226c43e839e2299b52bb771a",
+      "disposition": "propose-correction",
+      "locale": "pt_BR",
+      "sourceId": "components.ReaderGroupingAction.syncToKoboHelp",
+      "sourcePosition": 2598
+    },
+    {
+      "candidateTarget": "선반 변경 사항 저장",
+      "candidateTargetHash": "e65b13dbebd55e77999634117eb8395e45a6a5bccbb24f5bbc564172ddc71328",
+      "disposition": "propose-correction",
+      "locale": "ko",
+      "sourceId": "components.ReaderGroupingAction.update",
+      "sourcePosition": 2599
+    },
+    {
+      "candidateTarget": "Duyệt sách điện tử trong {serviceName}",
+      "candidateTargetHash": "33d77ef8bcf23bfef95c4c72c1cd701fc5350f4880ebd45105ba222568c0a286",
+      "disposition": "propose-correction",
+      "locale": "vi",
+      "sourceId": "components.ReaderDeliveryLink.ebooks",
+      "sourcePosition": 2500
+    },
+    {
+      "candidateTarget": "在 {serviceName} 中浏览电子书",
+      "candidateTargetHash": "c99cdd75f84e0501d0c7a2cd404d4d70bb45ef100804084dacc19f9385df4dd9",
+      "disposition": "propose-correction",
+      "locale": "zh_Hans",
+      "sourceId": "components.ReaderDeliveryLink.ebooks",
+      "sourcePosition": 2500
+    },
+    {
+      "candidateTarget": "在 {serviceName} 瀏覽電子書",
+      "candidateTargetHash": "c328459db4b71f6d8f6a2f5f126a49589cbbe28827d9020ad906191f77aa4778",
+      "disposition": "propose-correction",
+      "locale": "zh_Hant",
+      "sourceId": "components.ReaderDeliveryLink.ebooks",
+      "sourcePosition": 2500
+    },
+    {
+      "candidateTarget": "Mở thư viện {serviceName} trong trình duyệt. Để duyệt bằng ứng dụng đọc, hãy sao chép địa chỉ OPDS tại Thiết lập > Dịch vụ > Ứng dụng đọc rồi thêm địa chỉ đó vào ứng dụng.",
+      "candidateTargetHash": "400c07d3c508190829144830b049497546da410d5affa50d4e507afa283f09d7",
+      "disposition": "propose-correction",
+      "locale": "vi",
+      "sourceId": "components.ReaderDeliveryLink.ebooksHelp",
+      "sourcePosition": 2501
+    },
+    {
+      "candidateTarget": "在浏览器中打开 {serviceName} 媒体库。若要在阅读器应用程序中浏览，请前往“设置 > 服务器 > 阅读器应用程序”复制 OPDS 地址，再将其添加到阅读器应用程序中。",
+      "candidateTargetHash": "7d769fc518641c7008a54445367adeedc72a69e6e72a880617fddd1747e019ad",
+      "disposition": "propose-correction",
+      "locale": "zh_Hans",
+      "sourceId": "components.ReaderDeliveryLink.ebooksHelp",
+      "sourcePosition": 2501
+    },
+    {
+      "candidateTarget": "在瀏覽器中開啟 {serviceName} 媒體庫。若要在閱讀器應用程式中瀏覽，請前往「設定值 > 伺服器 > 閱讀器應用程式」複製 OPDS 位址，再將位址新增至該應用程式。",
+      "candidateTargetHash": "b8cdcd169ffd87662f31e571362368df9cc16b3dedda7090294561a1af8cd85d",
+      "disposition": "propose-correction",
+      "locale": "zh_Hant",
+      "sourceId": "components.ReaderDeliveryLink.ebooksHelp",
+      "sourcePosition": 2501
+    },
+    {
+      "candidateTarget": "Duyệt PDF của tạp chí trong {serviceName}",
+      "candidateTargetHash": "fa3e4b18fc5dfcd7cb7cf786780452332d784ab293e76a4b98c81649e6579834",
+      "disposition": "propose-correction",
+      "locale": "vi",
+      "sourceId": "components.ReaderDeliveryLink.magazines",
+      "sourcePosition": 2502
+    },
+    {
+      "candidateTarget": "在 {serviceName} 中浏览杂志 PDF",
+      "candidateTargetHash": "f948a8bb055402db351bdcade0c7b5ca3587c0ab42cab96d36d695eb954ab51d",
+      "disposition": "propose-correction",
+      "locale": "zh_Hans",
+      "sourceId": "components.ReaderDeliveryLink.magazines",
+      "sourcePosition": 2502
+    },
+    {
+      "candidateTarget": "在 {serviceName} 瀏覽雜誌 PDF",
+      "candidateTargetHash": "087df616fe02a4c8ccfce25844f4666db808127b4c716e5e83b844f4845bad34",
+      "disposition": "propose-correction",
+      "locale": "zh_Hant",
+      "sourceId": "components.ReaderDeliveryLink.magazines",
+      "sourcePosition": 2502
+    },
+    {
+      "candidateTarget": "Địa chỉ ứng dụng đọc",
+      "candidateTargetHash": "6b6e1a9cbd8f61fe1bd9a45de97286ff3f61b5ee3ada242fd8327f25eec6db47",
+      "disposition": "propose-correction",
+      "locale": "vi",
+      "sourceId": "components.ReaderDeliverySettings.address",
+      "sourcePosition": 2504
+    },
+    {
+      "candidateTarget": "閱讀器應用程式位址",
+      "candidateTargetHash": "730bec6c688fca247eb81ee0fa7bd5d4df7d513b886c0823bfb54cf13d429860",
+      "disposition": "propose-correction",
+      "locale": "zh_Hant",
+      "sourceId": "components.ReaderDeliverySettings.address",
+      "sourcePosition": 2504
+    },
+    {
+      "candidateTarget": "Nhập địa chỉ mà người đọc có thể mở trong trình duyệt. Nếu sử dụng reverse proxy, hãy thêm đường dẫn cơ sở của proxy. Bạn có thể dán địa chỉ OPDS đầy đủ hoặc địa chỉ Komga của Grimmory.",
+      "candidateTargetHash": "97fe164715467ef9d6bdc32dfb138e2c07f8ad0813063b2e41bd1e91f0b0385f",
+      "disposition": "propose-correction",
+      "locale": "vi",
+      "sourceId": "components.ReaderDeliverySettings.addressDescription",
+      "sourcePosition": 2505
+    },
+    {
+      "candidateTarget": "输入读者可在浏览器中打开的地址。如果使用反向代理，请包含其基础路径。你可以粘贴完整的 OPDS 地址或 Grimmory Komga 地址。",
+      "candidateTargetHash": "e88bcda12c9d610e1b2dbc74f23eefe91ac33805672ef063637753fcffff5c22",
+      "disposition": "propose-correction",
+      "locale": "zh_Hans",
+      "sourceId": "components.ReaderDeliverySettings.addressDescription",
+      "sourcePosition": 2505
+    },
+    {
+      "candidateTarget": "請輸入讀者可在瀏覽器中開啟的位址。若使用反向代理，請一併輸入其基底路徑。您可以貼上完整的 OPDS 位址或 Grimmory Komga 位址。",
+      "candidateTargetHash": "9287575789a8b0a2edacbfcafbd59ddf92972464cfe6db5f4575aac1211423f7",
+      "disposition": "propose-correction",
+      "locale": "zh_Hant",
+      "sourceId": "components.ReaderDeliverySettings.addressDescription",
+      "sourcePosition": 2505
+    },
+    {
+      "candidateTarget": "BookOrbit",
+      "candidateTargetHash": "6a466c4f7e5203c03076aa1515a501c5d04361324e2c686972d80db42255cafa",
+      "disposition": "propose-correction",
+      "locale": "vi",
+      "sourceId": "components.ReaderDeliverySettings.bookorbit",
+      "sourcePosition": 2507
+    },
+    {
+      "candidateTarget": "BookOrbit",
+      "candidateTargetHash": "6a466c4f7e5203c03076aa1515a501c5d04361324e2c686972d80db42255cafa",
+      "disposition": "propose-correction",
+      "locale": "zh_Hans",
+      "sourceId": "components.ReaderDeliverySettings.bookorbit",
+      "sourcePosition": 2507
+    },
+    {
+      "candidateTarget": "BookOrbit",
+      "candidateTargetHash": "6a466c4f7e5203c03076aa1515a501c5d04361324e2c686972d80db42255cafa",
+      "disposition": "propose-correction",
+      "locale": "zh_Hant",
+      "sourceId": "components.ReaderDeliverySettings.bookorbit",
+      "sourcePosition": 2507
+    },
+    {
+      "candidateTarget": "BookOrbit OPDS 设置",
+      "candidateTargetHash": "c58e435d33b771a63a86b2014c63853f9230f16efa6a9b6205361fc84aedfb94",
+      "disposition": "propose-correction",
+      "locale": "zh_Hans",
+      "sourceId": "components.ReaderDeliverySettings.bookorbitSetup",
+      "sourcePosition": 2509
+    },
+    {
+      "candidateTarget": "Hủy thay đổi",
+      "candidateTargetHash": "0748244c527f7feaf602ade21c95c2b114218acf67c3aad52f825ca92b6cdc5c",
+      "disposition": "propose-correction",
+      "locale": "vi",
+      "sourceId": "components.ReaderDeliverySettings.cancel",
+      "sourcePosition": 2510
+    },
+    {
+      "candidateTarget": "Xóa thông tin đăng nhập tài khoản đã lưu",
+      "candidateTargetHash": "accdfec96d8b87f692b3ccc897eb5d1bbee5decc7ed3e347d8d9fb75fa27f4e9",
+      "disposition": "propose-correction",
+      "locale": "vi",
+      "sourceId": "components.ReaderDeliverySettings.clearCredentials",
+      "sourcePosition": 2513
+    },
+    {
+      "candidateTarget": "移除已保存的账户凭据",
+      "candidateTargetHash": "d320600434c1f616d30dad53b4a5365a43dc37e4c496ec5c5a26713ca7a9e8a2",
+      "disposition": "propose-correction",
+      "locale": "zh_Hans",
+      "sourceId": "components.ReaderDeliverySettings.clearCredentials",
+      "sourcePosition": 2513
+    },
+    {
+      "candidateTarget": "Địa chỉ trình đọc truyện tranh Komga",
+      "candidateTargetHash": "605ef763636402c37e852cc6b7dabadec2c8f016d32d3e8a9e1982f237bcb4da",
+      "disposition": "propose-correction",
+      "locale": "vi",
+      "sourceId": "components.ReaderDeliverySettings.comicCatalogAddress",
+      "sourcePosition": 2514
+    },
+    {
+      "candidateTarget": "Komga 漫畫閱讀器位址",
+      "candidateTargetHash": "e7ca78a6c1d9a9f2e4671178cbdb6e6d125f34c607f83fc613b07d87d83323bf",
+      "disposition": "propose-correction",
+      "locale": "zh_Hant",
+      "sourceId": "components.ReaderDeliverySettings.comicCatalogAddress",
+      "sourcePosition": 2514
+    },
+    {
+      "candidateTarget": "请在 Komga 兼容的漫画应用中使用此地址逐页串流。启用 Grimmory 的 Komga API，并使用相同的 OPDS 阅读器凭据。",
+      "candidateTargetHash": "d04040ac51329faff5ac6a417bdd325efb255fd3d0312c8b42ebeb61262c4c5c",
+      "disposition": "propose-correction",
+      "locale": "zh_Hans",
+      "sourceId": "components.ReaderDeliverySettings.comicCatalogAddressDescription",
+      "sourcePosition": 2515
+    },
+    {
+      "candidateTarget": "請在 Komga 相容的漫畫應用程式中使用此位址逐頁串流。啟用 Grimmory 的 Komga API，並使用相同的 OPDS 閱讀器憑證。",
+      "candidateTargetHash": "5b369653c07c7a9fe8148b5bf122e7d540d4e2812e3728bd274c6b3bb9c9f3e5",
+      "disposition": "propose-correction",
+      "locale": "zh_Hant",
+      "sourceId": "components.ReaderDeliverySettings.comicCatalogAddressDescription",
+      "sourcePosition": 2515
+    },
+    {
+      "candidateTarget": "要从阅读器服务中移除此 SeerrNG 管理的分组吗？书籍和媒体库文件不会被删除。",
+      "candidateTargetHash": "e7c2912cd299a24dee2e917634ab5e4a60f0ccbeb2bcce9b84123d71a679d159",
+      "disposition": "propose-correction",
+      "locale": "zh_Hans",
+      "sourceId": "components.ReaderDeliverySettings.confirmDeleteGrouping",
+      "sourcePosition": 2517
+    },
+    {
+      "candidateTarget": "要從閱讀器服務移除這個由 SeerrNG 管理的分組嗎？書籍和媒體庫檔案不會被刪除。",
+      "candidateTargetHash": "3f930f5f1c42a10b3beb85ffb9d98901ec61663ff994a807f1f8403f4d0174dc",
+      "disposition": "propose-correction",
+      "locale": "zh_Hant",
+      "sourceId": "components.ReaderDeliverySettings.confirmDeleteGrouping",
+      "sourcePosition": 2517
+    },
+    {
+      "candidateTarget": "Kết nối với dịch vụ đọc thất bại.",
+      "candidateTargetHash": "e5cba6f502f03d4110e9639f8d2f4947e26afd3ba81148fc0aa621b69a969403",
+      "disposition": "propose-correction",
+      "locale": "vi",
+      "sourceId": "components.ReaderDeliverySettings.connectionError",
+      "sourcePosition": 2518
+    },
+    {
+      "candidateTarget": "閱讀器服務連線失敗。",
+      "candidateTargetHash": "fb806ed6f726d3b829c5437032d34d5f1d2bb3f423d26f91ab3c12f071aaa66b",
+      "disposition": "propose-correction",
+      "locale": "zh_Hant",
+      "sourceId": "components.ReaderDeliverySettings.connectionError",
+      "sourcePosition": 2518
+    },
+    {
+      "candidateTarget": "Đã kết nối. SeerrNG có thể quản lý các nhóm; đã tìm thấy {count} nhóm hiện có.",
+      "candidateTargetHash": "7481dc7ff9dc23b013c32212caa3076f8d06496426c10e2704f884c8b8a7035d",
+      "disposition": "propose-correction",
+      "locale": "vi",
+      "sourceId": "components.ReaderDeliverySettings.connectionSuccess",
+      "sourcePosition": 2519
+    },
+    {
+      "candidateTarget": "已连接。SeerrNG 可以管理分组；找到 {count} 个现有分组。",
+      "candidateTargetHash": "5498dbdb6d490685e0d5cfd0d023f13d2a566d2bbaf275db24fee6b5ca0bb4f5",
+      "disposition": "propose-correction",
+      "locale": "zh_Hans",
+      "sourceId": "components.ReaderDeliverySettings.connectionSuccess",
+      "sourcePosition": 2519
+    },
+    {
+      "candidateTarget": "已連線。SeerrNG 可以管理分組；找到 {count} 個現有分組。",
+      "candidateTargetHash": "d7a9588667dc1f4b0e5f51859fd95595c509588db58a315c164f83dbbec4bdcd",
+      "disposition": "propose-correction",
+      "locale": "zh_Hant",
+      "sourceId": "components.ReaderDeliverySettings.connectionSuccess",
+      "sourcePosition": 2519
+    },
+    {
+      "candidateTarget": "Kiểm tra quyền truy cập nhóm",
+      "candidateTargetHash": "bae73752a66646f796930a08e37af05f752cc2e98c3afab278ebe967ab550a59",
+      "disposition": "propose-correction",
+      "locale": "vi",
+      "sourceId": "components.ReaderDeliverySettings.connectionTest",
+      "sourcePosition": 2520
+    },
+    {
+      "candidateTarget": "Đã sao chép địa chỉ ứng dụng đọc.",
+      "candidateTargetHash": "d42132409b7b9ac451235ef474ddd2c5190c492fcb3ce764d457f01d11afe1e2",
+      "disposition": "propose-correction",
+      "locale": "vi",
+      "sourceId": "components.ReaderDeliverySettings.copied",
+      "sourcePosition": 2522
+    },
+    {
+      "candidateTarget": "已複製閱讀器位址。",
+      "candidateTargetHash": "0c2a37054206bcec74fa726d9501f64d0579c7a65e8706d619cbcb884118f44c",
+      "disposition": "propose-correction",
+      "locale": "zh_Hant",
+      "sourceId": "components.ReaderDeliverySettings.copied",
+      "sourcePosition": 2522
+    },
+    {
+      "candidateTarget": "Sao chép địa chỉ danh mục",
+      "candidateTargetHash": "c1674781cac535725cf4409932966dd7a1266821fc0adc8311231a0f3cb3b529",
+      "disposition": "propose-correction",
+      "locale": "vi",
+      "sourceId": "components.ReaderDeliverySettings.copyCatalogAddress",
+      "sourcePosition": 2523
+    },
+    {
+      "candidateTarget": "複製目錄位址",
+      "candidateTargetHash": "86b6ef040b53da6fb95944958b1b9fb638452a67d320ebd4e5332dab17e53f68",
+      "disposition": "propose-correction",
+      "locale": "zh_Hant",
+      "sourceId": "components.ReaderDeliverySettings.copyCatalogAddress",
+      "sourcePosition": 2523
+    },
+    {
+      "candidateTarget": "Sao chép địa chỉ trình đọc truyện tranh",
+      "candidateTargetHash": "0c0902d95a72b4837c9e40741ab11c93a79cb1c5164f372a36bb0f375335b1f7",
+      "disposition": "propose-correction",
+      "locale": "vi",
+      "sourceId": "components.ReaderDeliverySettings.copyComicCatalogAddress",
+      "sourcePosition": 2524
+    },
+    {
+      "candidateTarget": "複製漫畫閱讀器位址",
+      "candidateTargetHash": "dd11c5206d1c81550fe4dbeaa6aaa742b98414cc67529e9980242a58d2602932",
+      "disposition": "propose-correction",
+      "locale": "zh_Hant",
+      "sourceId": "components.ReaderDeliverySettings.copyComicCatalogAddress",
+      "sourcePosition": 2524
+    },
+    {
+      "candidateTarget": "Không thể truy cập bảng tạm tại đây. Hãy chọn và sao chép địa chỉ ứng dụng đọc ở trên.",
+      "candidateTargetHash": "6a61b24f8c93a17455fd82ea47ebc3801c4d4ab1b1a18d67f023814fe8d0d0d4",
+      "disposition": "propose-correction",
+      "locale": "vi",
+      "sourceId": "components.ReaderDeliverySettings.copyUnavailable",
+      "sourcePosition": 2526
+    },
+    {
+      "candidateTarget": "此处无法使用剪贴板。请选中并复制上方的阅读器地址。",
+      "candidateTargetHash": "39686cd9fc9a3c90c80114a93c2186ebf86c75f4bc5bfcdadfb348258c186c23",
+      "disposition": "propose-correction",
+      "locale": "zh_Hans",
+      "sourceId": "components.ReaderDeliverySettings.copyUnavailable",
+      "sourcePosition": 2526
+    },
+    {
+      "candidateTarget": "此處無法使用剪貼簿。請選取並複製上方的閱讀器位址。",
+      "candidateTargetHash": "40eb67163365a8e613c16fca5841ecf3cadca18bb56918ecc60aa429e54bd34c",
+      "disposition": "propose-correction",
+      "locale": "zh_Hant",
+      "sourceId": "components.ReaderDeliverySettings.copyUnavailable",
+      "sourcePosition": 2526
+    },
+    {
+      "candidateTarget": "Xóa kệ được quản lý",
+      "candidateTargetHash": "e7176310e1565cc3b2ae7be07bf89f40db0975f88fe26158f82388634c5d037f",
+      "disposition": "propose-correction",
+      "locale": "vi",
+      "sourceId": "components.ReaderDeliverySettings.deleteGrouping",
+      "sourcePosition": 2527
+    },
+    {
+      "candidateTarget": "移除托管书架",
+      "candidateTargetHash": "3103df7295069f9d75e28247d3527f9a87ea600dd0f4c8a8e12ec0ecfcd2ccf0",
+      "disposition": "propose-correction",
+      "locale": "zh_Hans",
+      "sourceId": "components.ReaderDeliverySettings.deleteGrouping",
+      "sourcePosition": 2527
+    },
+    {
+      "candidateTarget": "移除受管理的書架",
+      "candidateTargetHash": "cc4cc098cf91401c46fbd585220a8227d11f0a6b66b42d81200fad62aac0098f",
+      "disposition": "propose-correction",
+      "locale": "zh_Hant",
+      "sourceId": "components.ReaderDeliverySettings.deleteGrouping",
+      "sourcePosition": 2527
+    },
+    {
+      "candidateTarget": "Được đề xuất. Grimmory cung cấp danh mục OPDS cho sách điện tử và PDF, API Komga để phát trực tuyến từng trang truyện tranh, cùng trình phát tích hợp cho sách nói M4B, M4A và MP3.",
+      "candidateTargetHash": "17f9688cd02b983fd8900989718e1c7076202e525b6442a4ed26e22d82b00208",
+      "disposition": "propose-correction",
+      "locale": "vi",
+      "sourceId": "components.ReaderDeliverySettings.grimmoryDescription",
+      "sourcePosition": 2530
+    },
+    {
+      "candidateTarget": "推荐。Grimmory 提供用于电子书和 PDF 的 OPDS 目录、用于串流漫画页面的 Komga API，以及可播放 M4B、M4A 和 MP3 有声书的内置播放器。",
+      "candidateTargetHash": "6f762b1eb97a7a0d790cd2bf4ca3f79f646082c9f5a2ceff1170f82d1fae66cd",
+      "disposition": "propose-correction",
+      "locale": "zh_Hans",
+      "sourceId": "components.ReaderDeliverySettings.grimmoryDescription",
+      "sourcePosition": 2530
+    },
+    {
+      "candidateTarget": "Grimmory Komga API 設定",
+      "candidateTargetHash": "07692cb86e37dcfa9ceb954efad87ef21b619b8c0dc03fca4225a077f88cfb4e",
+      "disposition": "propose-correction",
+      "locale": "zh_Hant",
+      "sourceId": "components.ReaderDeliverySettings.grimmoryKomgaSetup",
+      "sourcePosition": 2531
+    },
+    {
+      "candidateTarget": "Grimmory（建議）",
+      "candidateTargetHash": "ee62178cb24c0fcfff61a41afdaf9944b565ff16350c8abed39965ee40f0e0cf",
+      "disposition": "propose-correction",
+      "locale": "zh_Hant",
+      "sourceId": "components.ReaderDeliverySettings.grimmoryRecommended",
+      "sourcePosition": 2532
+    },
+    {
+      "candidateTarget": "Grimmory OPDS 設定",
+      "candidateTargetHash": "f29105f9c555323353c8ff47bb2e397dc4c351cbca89147db188728a09edb13f",
+      "disposition": "propose-correction",
+      "locale": "zh_Hant",
+      "sourceId": "components.ReaderDeliverySettings.grimmorySetup",
+      "sourcePosition": 2533
+    },
+    {
+      "candidateTarget": "Bản xem trước tìm thấy {count} mục; số lượng cuối cùng chưa được xác nhận.",
+      "candidateTargetHash": "921c666ef975d61bbc4ee2af2b114049d6d34136c55e62cb51094b8990a3fe34",
+      "disposition": "propose-correction",
+      "locale": "vi",
+      "sourceId": "components.ReaderDeliverySettings.groupingCountUnverified",
+      "sourcePosition": 2535
+    },
+    {
+      "candidateTarget": "预览发现 {count} 个项目；最终数量尚未确认。",
+      "candidateTargetHash": "d23f22c9432473ab2faf64993ab57fd056aa3f0d60ddac9dd664ae061deb8a40",
+      "disposition": "propose-correction",
+      "locale": "zh_Hans",
+      "sourceId": "components.ReaderDeliverySettings.groupingCountUnverified",
+      "sourcePosition": 2535
+    },
+    {
+      "candidateTarget": "預覽找到 {count} 個項目；最終數量尚未確認。",
+      "candidateTargetHash": "2d90ab76e626f6403ca92b5f4f78710b6e904adc904bf5d73c1b4f9c4ed63267",
+      "disposition": "propose-correction",
+      "locale": "zh_Hant",
+      "sourceId": "components.ReaderDeliverySettings.groupingCountUnverified",
+      "sourcePosition": 2535
+    },
+    {
+      "candidateTarget": "已移除托管的阅读器书架。",
+      "candidateTargetHash": "f9c9ef9f9a126318ecc654d516ec9adc8a757e1becd78ecb2bafc0090ed4b2d2",
+      "disposition": "propose-correction",
+      "locale": "zh_Hans",
+      "sourceId": "components.ReaderDeliverySettings.groupingDeleted",
+      "sourcePosition": 2537
+    },
+    {
+      "candidateTarget": "已移除受管理的閱讀器書架。",
+      "candidateTargetHash": "a18bf3acee196382b54c55d13548c4620103c0e3d23fd2652f8a4d41ef7024f6",
+      "disposition": "propose-correction",
+      "locale": "zh_Hant",
+      "sourceId": "components.ReaderDeliverySettings.groupingDeleted",
+      "sourcePosition": 2537
+    },
+    {
+      "candidateTarget": "更新中",
+      "candidateTargetHash": "aa06c367f0d85408e85702f722c39e719bf872bdc83dada6444eb5efb19514e9",
+      "disposition": "propose-correction",
+      "locale": "zh_Hans",
+      "sourceId": "components.ReaderDeliverySettings.groupingPending",
+      "sourcePosition": 2544
+    },
+    {
+      "candidateTarget": "更新中",
+      "candidateTargetHash": "aa06c367f0d85408e85702f722c39e719bf872bdc83dada6444eb5efb19514e9",
+      "disposition": "propose-correction",
+      "locale": "zh_Hant",
+      "sourceId": "components.ReaderDeliverySettings.groupingPending",
+      "sourcePosition": 2544
+    },
+    {
+      "candidateTarget": "準備就緒",
+      "candidateTargetHash": "f4f3a144232ba6b9a4fb04002b8a7a09031dc2458cdcc6df0dd8ebcc2c5d4f4c",
+      "disposition": "propose-correction",
+      "locale": "zh_Hant",
+      "sourceId": "components.ReaderDeliverySettings.groupingReady",
+      "sourcePosition": 2545
+    },
+    {
+      "candidateTarget": "Không thể tải các kệ đọc được quản lý.",
+      "candidateTargetHash": "72622e81d4ca84634ff0a09e0fe6c514bf6bd87226c1dc92f893ece3ca242813",
+      "disposition": "propose-correction",
+      "locale": "vi",
+      "sourceId": "components.ReaderDeliverySettings.groupingsLoadError",
+      "sourcePosition": 2546
+    },
+    {
+      "candidateTarget": "无法加载托管的阅读器书架。",
+      "candidateTargetHash": "e8807911ee1725491ec1a45b5ad8379bedad28c27bac140745b2292420d47d1d",
+      "disposition": "propose-correction",
+      "locale": "zh_Hans",
+      "sourceId": "components.ReaderDeliverySettings.groupingsLoadError",
+      "sourcePosition": 2546
+    },
+    {
+      "candidateTarget": "無法載入受管理的閱讀器書架。",
+      "candidateTargetHash": "463ade189b945d9abcb6e4f483fa57d5cd6c3eb0bb6341521feadfc786665eea",
+      "disposition": "propose-correction",
+      "locale": "zh_Hant",
+      "sourceId": "components.ReaderDeliverySettings.groupingsLoadError",
+      "sourcePosition": 2546
+    },
+    {
+      "candidateTarget": "Các kệ đọc do SeerrNG quản lý",
+      "candidateTargetHash": "dec9ad7e6d96f53d4e78954d5850297f852c62be2651511a344bf0737cc747ef",
+      "disposition": "propose-correction",
+      "locale": "vi",
+      "sourceId": "components.ReaderDeliverySettings.groupingsTitle",
+      "sourcePosition": 2547
+    },
+    {
+      "candidateTarget": "SeerrNG 管理的阅读器书架",
+      "candidateTargetHash": "e25ef9fb3f8e33b4bd365eedf9ac7d3aabee86903104caf898911313768bfa2a",
+      "disposition": "propose-correction",
+      "locale": "zh_Hans",
+      "sourceId": "components.ReaderDeliverySettings.groupingsTitle",
+      "sourcePosition": 2547
+    },
+    {
+      "candidateTarget": "由 SeerrNG 管理的閱讀器書架",
+      "candidateTargetHash": "f06140eac1fe524d060f65f93503bc117c2ccc0e99448bb5984ae412b3154709",
+      "disposition": "propose-correction",
+      "locale": "zh_Hant",
+      "sourceId": "components.ReaderDeliverySettings.groupingsTitle",
+      "sourcePosition": 2547
+    },
+    {
+      "candidateTarget": "Grimmory Komga 漫畫閱讀器位址",
+      "candidateTargetHash": "8df7490e430db7660ed211cf23936d5989b91866baf8ccebce6d365229d8c470",
+      "disposition": "propose-correction",
+      "locale": "zh_Hant",
+      "sourceId": "components.ReaderDeliverySettings.komgaAddressLabel",
+      "sourcePosition": 2548
+    },
+    {
+      "candidateTarget": "Nhập hoặc gắn kết cùng các thư mục phương tiện vào Grimmory hoặc BookOrbit và để dịch vụ đó quét chúng. Dùng đường dẫn như hiển thị bên trong container của dịch vụ đọc. Trên một số thư mục chia sẻ mạng, quét theo lịch đáng tin cậy hơn trình theo dõi hệ thống tệp.",
+      "candidateTargetHash": "c89f4296178ba058d6db945819c2eb673b97d0aa6d4a4e1d6b63eb22f9cb35bf",
+      "disposition": "propose-correction",
+      "locale": "vi",
+      "sourceId": "components.ReaderDeliverySettings.librarySetupDescription",
+      "sourcePosition": 2550
+    },
+    {
+      "candidateTarget": "将同一批媒体文件夹导入或挂载到 Grimmory 或 BookOrbit，并让该服务扫描这些文件夹。请使用阅读器服务容器内显示的路径。在某些网络共享中，定时扫描比文件系统监视器更可靠。",
+      "candidateTargetHash": "8983a1761f8211bac8107b62fc605f71e794160a55345863cc6970bdee8b3564",
+      "disposition": "propose-correction",
+      "locale": "zh_Hans",
+      "sourceId": "components.ReaderDeliverySettings.librarySetupDescription",
+      "sourcePosition": 2550
+    },
+    {
+      "candidateTarget": "將相同的媒體資料夾匯入或掛載至 Grimmory 或 BookOrbit，並讓該服務掃描這些資料夾。請使用閱讀器服務容器內顯示的路徑。在某些網路共用資料夾中，排程掃描比檔案系統監視程式更可靠。",
+      "candidateTargetHash": "d655f1121cd4d89f659f0f199e5ade2cb0733e5110deaf5ef14282e9c18dee84",
+      "disposition": "propose-correction",
+      "locale": "zh_Hant",
+      "sourceId": "components.ReaderDeliverySettings.librarySetupDescription",
+      "sourcePosition": 2550
+    },
+    {
+      "candidateTarget": "Không thể tải cài đặt ứng dụng đọc.",
+      "candidateTargetHash": "30d7724afeea28e6552aa93e526fa5840485392a8a11c04319fec410ff12dcbc",
+      "disposition": "propose-correction",
+      "locale": "vi",
+      "sourceId": "components.ReaderDeliverySettings.loadError",
+      "sourcePosition": 2551
+    },
+    {
+      "candidateTarget": "无法加载阅读器设置。",
+      "candidateTargetHash": "9d2ef628953c5eefd1f71398ab77020272ff6f0f5d0f037c97eade138d9eb970",
+      "disposition": "propose-correction",
+      "locale": "zh_Hans",
+      "sourceId": "components.ReaderDeliverySettings.loadError",
+      "sourcePosition": 2551
+    },
+    {
+      "candidateTarget": "無法載入閱讀器設定。",
+      "candidateTargetHash": "85eaa1b777e2e9d3f9d805753df9cb7714eb2fef711330c0f657fcd556773c92",
+      "disposition": "propose-correction",
+      "locale": "zh_Hant",
+      "sourceId": "components.ReaderDeliverySettings.loadError",
+      "sourcePosition": 2551
+    },
+    {
+      "candidateTarget": "SeerrNG 尚未创建任何阅读器书架。",
+      "candidateTargetHash": "e480a62470c91372d407a41005290cd3d40228ad28d4d0035aa190a93b06d454",
+      "disposition": "propose-correction",
+      "locale": "zh_Hans",
+      "sourceId": "components.ReaderDeliverySettings.noGroupings",
+      "sourcePosition": 2552
+    },
+    {
+      "candidateTarget": "SeerrNG 尚未建立任何閱讀器書架。",
+      "candidateTargetHash": "47aacf0ee8b5b517669e3c6cc884a0bc7f8f40b24ff33b61881db6f9bee215e1",
+      "disposition": "propose-correction",
+      "locale": "zh_Hant",
+      "sourceId": "components.ReaderDeliverySettings.noGroupings",
+      "sourcePosition": 2552
+    },
+    {
+      "candidateTarget": "Kết nối tài khoản quản trị để SeerrNG có thể xem trước, tạo và cập nhật các kệ đọc. Mật khẩu được lưu trong cài đặt ứng dụng được bảo vệ và API không bao giờ trả lại mật khẩu. Thông tin đăng nhập của ứng dụng đọc và OPDS vẫn tách biệt.",
+      "candidateTargetHash": "8869a5ad40926adfc45bccc8d016cb58c78637f906ff5951e652fd740c5847bb",
+      "disposition": "propose-correction",
+      "locale": "vi",
+      "sourceId": "components.ReaderDeliverySettings.opdsCredentials",
+      "sourcePosition": 2553
+    },
+    {
+      "candidateTarget": "请连接管理员账户，以便 SeerrNG 预览、创建和更新阅读器书架。密码存储在受保护的应用设置中，API 永远不会返回这些密码。阅读器应用与 OPDS 的凭据彼此独立。",
+      "candidateTargetHash": "4d0195f054e22bd448a58f73841414ec693e543020ec7b9d807d8041c04c2eea",
+      "disposition": "propose-correction",
+      "locale": "zh_Hans",
+      "sourceId": "components.ReaderDeliverySettings.opdsCredentials",
+      "sourcePosition": 2553
+    },
+    {
+      "candidateTarget": "請連結管理員帳號，讓 SeerrNG 可以預覽、建立及更新閱讀器書架。密碼會儲存在受保護的應用程式設定中，API 絕不會傳回密碼。閱讀器應用程式與 OPDS 憑證彼此獨立。",
+      "candidateTargetHash": "9c3adee736e691b3d0b798636a600fb132bb2246ee7fb6ce971d613dbde7d43b",
+      "disposition": "propose-correction",
+      "locale": "zh_Hant",
+      "sourceId": "components.ReaderDeliverySettings.opdsCredentials",
+      "sourcePosition": 2553
+    },
+    {
+      "candidateTarget": "Chỉ tài khoản đã kết nối mới xem được",
+      "candidateTargetHash": "d98df4d60e94588a7ec6e96d3ba7d7cbb2fc74006712aab7544d2b97aaa31493",
+      "disposition": "propose-correction",
+      "locale": "vi",
+      "sourceId": "components.ReaderDeliverySettings.privateVisibility",
+      "sourcePosition": 2558
+    },
+    {
+      "candidateTarget": "仅对已连接的账户可见",
+      "candidateTargetHash": "8daf9c7e7e0bb10001587be3c1ae23aa3cad5b38ccad8a0d8449419ebb57af01",
+      "disposition": "propose-correction",
+      "locale": "zh_Hans",
+      "sourceId": "components.ReaderDeliverySettings.privateVisibility",
+      "sourcePosition": 2558
+    },
+    {
+      "candidateTarget": "僅供已連線的帳號使用",
+      "candidateTargetHash": "c095cc74680148732c64b177f955eb9856fe8bef383ad97e75953c3de0960009",
+      "disposition": "propose-correction",
+      "locale": "zh_Hant",
+      "sourceId": "components.ReaderDeliverySettings.privateVisibility",
+      "sourcePosition": 2558
+    },
+    {
+      "candidateTarget": "Lưu cài đặt ứng dụng đọc",
+      "candidateTargetHash": "c27c6d3ba458d1299f44dcbfe59e7ee0aa28474a9c3734d92dabbf7dc73771c6",
+      "disposition": "propose-correction",
+      "locale": "vi",
+      "sourceId": "components.ReaderDeliverySettings.save",
+      "sourcePosition": 2560
+    },
+    {
+      "candidateTarget": "Không thể lưu cài đặt ứng dụng đọc.",
+      "candidateTargetHash": "d8e4bdb52e57dc8a9f48ac2e9ef2c633d0c86c59fe1782f2b6e645f2e1fd8d16",
+      "disposition": "propose-correction",
+      "locale": "vi",
+      "sourceId": "components.ReaderDeliverySettings.saveError",
+      "sourcePosition": 2561
+    },
+    {
+      "candidateTarget": "Đã lưu cài đặt ứng dụng đọc.",
+      "candidateTargetHash": "d77902db752fd82cfc2e23375221708d34c5d093b2233144436783d92b0ba9e7",
+      "disposition": "propose-correction",
+      "locale": "vi",
+      "sourceId": "components.ReaderDeliverySettings.saved",
+      "sourcePosition": 2562
+    },
+    {
+      "candidateTarget": "Đã lưu; để trống để giữ nguyên mật khẩu đã lưu",
+      "candidateTargetHash": "c2b723e2a6dcc81f7b6bf2c8a881a7486b0214c3d48199e1eda8762d0acea4ad",
+      "disposition": "propose-correction",
+      "locale": "vi",
+      "sourceId": "components.ReaderDeliverySettings.savedPassword",
+      "sourcePosition": 2563
+    },
+    {
+      "candidateTarget": "已保存；留空即可保留已保存的密码",
+      "candidateTargetHash": "c902dd84fdb39735624c09afb5d256a7d28238b15ebe51d98c96659027f88cfa",
+      "disposition": "propose-correction",
+      "locale": "zh_Hans",
+      "sourceId": "components.ReaderDeliverySettings.savedPassword",
+      "sourcePosition": 2563
+    },
+    {
+      "candidateTarget": "BookOrbit khóa chế độ hiển thị của SmartScope khi tạo scope. Nếu bật đồng bộ Kobo, SeerrNG cũng duy trì một Collection thông thường và đối chiếu các thành viên của Collection mỗi 15 phút.",
+      "candidateTargetHash": "62769ae8957dd071e3363a3a70978260939e79fe32650d4d4ba7363e482e08bf",
+      "disposition": "propose-correction",
+      "locale": "vi",
+      "sourceId": "components.ReaderDeliverySettings.scopeVisibilityNote",
+      "sourcePosition": 2565
+    },
+    {
+      "candidateTarget": "BookOrbit 会在创建 SmartScope 时锁定其可见性。如果启用了 Kobo 同步，SeerrNG 还会维护一个常规 Collection，并每 15 分钟核对其成员。",
+      "candidateTargetHash": "bd32e3809d1a0dafbed11da423438c5f51b94dd9ad91407a23934be6827f6f29",
+      "disposition": "propose-correction",
+      "locale": "zh_Hans",
+      "sourceId": "components.ReaderDeliverySettings.scopeVisibilityNote",
+      "sourcePosition": 2565
+    },
+    {
+      "candidateTarget": "BookOrbit 會在建立 SmartScope 時鎖定其可見性。若啟用 Kobo 同步，SeerrNG 也會維護一般的 Collection，並每 15 分鐘核對其成員。",
+      "candidateTargetHash": "86874a2ce4ada7113ae842f6d6f4b30ead6b5b1e819bc5aa6b28b091e0008936",
+      "disposition": "propose-correction",
+      "locale": "zh_Hant",
+      "sourceId": "components.ReaderDeliverySettings.scopeVisibilityNote",
+      "sourcePosition": 2565
+    },
+    {
+      "candidateTarget": "閱讀器應用程式",
+      "candidateTargetHash": "e20992fb51558a5968100022b75603b745e94a7bcd28d0093f9e0f15b8311f77",
+      "disposition": "propose-correction",
+      "locale": "zh_Hant",
+      "sourceId": "components.ReaderDeliverySettings.title",
+      "sourcePosition": 2568
+    },
+    {
+      "candidateTarget": "Lưu các cài đặt này trước khi dùng liên kết ứng dụng đọc trên các trang chi tiết phương tiện.",
+      "candidateTargetHash": "edc1c10632503f99e549224e87483b0233bff697cfec72557ea9bca504970e07",
+      "disposition": "propose-correction",
+      "locale": "vi",
+      "sourceId": "components.ReaderDeliverySettings.unsavedChanges",
+      "sourcePosition": 2569
+    },
+    {
+      "candidateTarget": "创建书架",
+      "candidateTargetHash": "9fa7cdb5ecca112e0daa14e034d3fbe5f30cf0d1cbdefbf35df7731c25179941",
+      "disposition": "propose-correction",
+      "locale": "zh_Hans",
+      "sourceId": "components.ReaderGroupingAction.action",
+      "sourcePosition": 2571
+    },
+    {
+      "candidateTarget": "BookOrbit",
+      "candidateTargetHash": "6a466c4f7e5203c03076aa1515a501c5d04361324e2c686972d80db42255cafa",
+      "disposition": "propose-correction",
+      "locale": "vi",
+      "sourceId": "components.ReaderGroupingAction.bookorbit",
+      "sourcePosition": 2572
+    },
+    {
+      "candidateTarget": "BookOrbit",
+      "candidateTargetHash": "6a466c4f7e5203c03076aa1515a501c5d04361324e2c686972d80db42255cafa",
+      "disposition": "propose-correction",
+      "locale": "zh_Hans",
+      "sourceId": "components.ReaderGroupingAction.bookorbit",
+      "sourcePosition": 2572
+    },
+    {
+      "candidateTarget": "BookOrbit",
+      "candidateTargetHash": "6a466c4f7e5203c03076aa1515a501c5d04361324e2c686972d80db42255cafa",
+      "disposition": "propose-correction",
+      "locale": "zh_Hant",
+      "sourceId": "components.ReaderGroupingAction.bookorbit",
+      "sourcePosition": 2572
+    },
+    {
+      "candidateTarget": "Số lượng xem trước: {count}. Dịch vụ đọc chưa xác nhận số lượng đã lưu.",
+      "candidateTargetHash": "5475e22b3032a06ba34ed9bd480cbf5f307a1c0f28e4d76436fde014fc51e50f",
+      "disposition": "propose-correction",
+      "locale": "vi",
+      "sourceId": "components.ReaderGroupingAction.countPending",
+      "sourcePosition": 2574
+    },
+    {
+      "candidateTarget": "预览数量：{count}。阅读器服务尚未确认已保存的数量。",
+      "candidateTargetHash": "dc8a14af1226b004e4996dd855675c82add5fe720477279b833558b98e5c4d57",
+      "disposition": "propose-correction",
+      "locale": "zh_Hans",
+      "sourceId": "components.ReaderGroupingAction.countPending",
+      "sourcePosition": 2574
+    },
+    {
+      "candidateTarget": "Dù vậy, hãy tạo quy tắc động này để sách khớp trong tương lai tự động xuất hiện.",
+      "candidateTargetHash": "7e73920623a2dce053a946c442c3a28ebc7a9cd6958cd390dc6692d2a12502e9",
+      "disposition": "propose-correction",
+      "locale": "vi",
+      "sourceId": "components.ReaderGroupingAction.emptyOptIn",
+      "sourcePosition": 2575
+    },
+    {
+      "candidateTarget": "仍要创建此动态规则，这样今后匹配到的书籍会自动显示。",
+      "candidateTargetHash": "48ef043849ee6cf13ed3e5500a6843280032571af5e574850e7e8461a3e34fbb",
+      "disposition": "propose-correction",
+      "locale": "zh_Hans",
+      "sourceId": "components.ReaderGroupingAction.emptyOptIn",
+      "sourcePosition": 2575
+    },
+    {
+      "candidateTarget": "仍要建立此動態規則，讓日後符合條件的書籍自動顯示。",
+      "candidateTargetHash": "8cdc3659b37f993c4226b7c78c1aed5b648cd35105d6a398462a09900db536bd",
+      "disposition": "propose-correction",
+      "locale": "zh_Hant",
+      "sourceId": "components.ReaderGroupingAction.emptyOptIn",
+      "sourcePosition": 2575
+    },
+    {
+      "candidateTarget": "Grimmory（建議）",
+      "candidateTargetHash": "ee62178cb24c0fcfff61a41afdaf9944b565ff16350c8abed39965ee40f0e0cf",
+      "disposition": "propose-correction",
+      "locale": "zh_Hant",
+      "sourceId": "components.ReaderGroupingAction.grimmory",
+      "sourcePosition": 2576
+    },
+    {
+      "candidateTarget": "Tính năng giao sách Kobo của Grimmory sử dụng một kệ riêng để đưa sách vào. SeerrNG giữ nguyên cài đặt của nhà cung cấp đó.",
+      "candidateTargetHash": "55ab032246ccf13970b3fc417367cf11cdf1a4bdc06e5de4cf379d8e51bf5f6e",
+      "disposition": "propose-correction",
+      "locale": "vi",
+      "sourceId": "components.ReaderGroupingAction.grimmoryKobo",
+      "sourcePosition": 2577
+    },
+    {
+      "candidateTarget": "Grimmory 的 Kobo 交付功能使用单独的收录书架。SeerrNG 不会更改该服务提供方的设置。",
+      "candidateTargetHash": "4f84b36ff0b4e043aa776d93fffd8b9ba7479516b2693ddd0dc7bb219b8d9b01",
+      "disposition": "propose-correction",
+      "locale": "zh_Hans",
+      "sourceId": "components.ReaderGroupingAction.grimmoryKobo",
+      "sourcePosition": 2577
+    },
+    {
+      "candidateTarget": "Grimmory 的 Kobo 傳送功能會使用獨立的收錄書架。SeerrNG 不會變更該服務提供者的設定。",
+      "candidateTargetHash": "6a9337788f8ac8cd5e88fcbdf62657a72dbe158893dd445ba4561d7f82327df3",
+      "disposition": "propose-correction",
+      "locale": "zh_Hant",
+      "sourceId": "components.ReaderGroupingAction.grimmoryKobo",
+      "sourcePosition": 2577
+    },
+    {
+      "candidateTarget": "將此規則設為閱讀器書架",
+      "candidateTargetHash": "1362891d28768842c15cdacdb5aca16487a62e2e59423ba8abee627631a3e1f6",
+      "disposition": "propose-correction",
+      "locale": "zh_Hant",
+      "sourceId": "components.ReaderGroupingAction.heading",
+      "sourcePosition": 2578
+    },
+    {
+      "candidateTarget": "SeerrNG sẽ tạo một nhóm dựa trên quy tắc động trong dịch vụ đọc của bạn. Nhóm này tự cập nhật khi thư viện thay đổi; nhóm không sao chép tệp.",
+      "candidateTargetHash": "a11bb5fed5532d45ee7e560e18e2e7ad965c60b7675f7ded60d050a0484db309",
+      "disposition": "propose-correction",
+      "locale": "vi",
+      "sourceId": "components.ReaderGroupingAction.intro",
+      "sourcePosition": 2579
+    },
+    {
+      "candidateTarget": "SeerrNG 会在阅读器服务中创建一个动态的规则分组。媒体库发生变化时，该分组会保持更新；它不会复制文件。",
+      "candidateTargetHash": "48d19623e63042fad8af828dec9e9f17ebb27cbd69821d8913072ad85bba5010",
+      "disposition": "propose-correction",
+      "locale": "zh_Hans",
+      "sourceId": "components.ReaderGroupingAction.intro",
+      "sourcePosition": 2579
+    },
+    {
+      "candidateTarget": "SeerrNG 會在閱讀器服務中建立動態、以規則為基礎的分組。媒體庫變更時，這個分組也會保持更新；它不會複製檔案。",
+      "candidateTargetHash": "4adfd1f439c1d894826695b79e52ace56fa79804b20f8abdca2d877bdd92b9d1",
+      "disposition": "propose-correction",
+      "locale": "zh_Hant",
+      "sourceId": "components.ReaderGroupingAction.intro",
+      "sourcePosition": 2579
+    },
+    {
+      "candidateTarget": "{count, plural, one {# mục khớp hiện tại} other {# mục khớp hiện tại}}",
+      "candidateTargetHash": "7103a54e2306181d2eb7dae56a941c5bbd0c02457065795a080fef347b733e55",
+      "disposition": "propose-correction",
+      "locale": "vi",
+      "sourceId": "components.ReaderGroupingAction.matches",
+      "sourcePosition": 2581
+    },
+    {
+      "candidateTarget": "{count, plural, one {# 个当前匹配项} other {# 个当前匹配项}}",
+      "candidateTargetHash": "c4e2515b1c6b9b89ddb028cea5cf136bcaa4d1604a986ad2b6fd689ed89d61e5",
+      "disposition": "propose-correction",
+      "locale": "zh_Hans",
+      "sourceId": "components.ReaderGroupingAction.matches",
+      "sourcePosition": 2581
+    },
+    {
+      "candidateTarget": "{count, plural, one {# 個目前符合的項目} other {# 個目前符合的項目}}",
+      "candidateTargetHash": "9b16a20dca515eddc08d71bee567870e005959dce1b9f1f93fb31cf8337283b1",
+      "disposition": "propose-correction",
+      "locale": "zh_Hant",
+      "sourceId": "components.ReaderGroupingAction.matches",
+      "sourcePosition": 2581
+    },
+    {
+      "candidateTarget": "Đóng phần thiết lập kệ",
+      "candidateTargetHash": "2c414236382f3fe8866d9163cb46a1944337b15535941f0fd4c0918f12db50ef",
+      "disposition": "propose-correction",
+      "locale": "vi",
+      "sourceId": "components.ReaderGroupingAction.openClose",
+      "sourcePosition": 2584
+    },
+    {
+      "candidateTarget": "关闭书架设置",
+      "candidateTargetHash": "9eb1cbc6ec9dc6ed27042975073c057636d16350337e3e00913fdb0428fa813c",
+      "disposition": "propose-correction",
+      "locale": "zh_Hans",
+      "sourceId": "components.ReaderGroupingAction.openClose",
+      "sourcePosition": 2584
+    },
+    {
+      "candidateTarget": "Xem trước các mục khớp",
+      "candidateTargetHash": "42ba47737fcb13a36a938fc8a7036ae3f6df4a729c657015fa9b15c7424d284a",
+      "disposition": "propose-correction",
+      "locale": "vi",
+      "sourceId": "components.ReaderGroupingAction.preview",
+      "sourcePosition": 2585
+    },
+    {
+      "candidateTarget": "预览匹配项",
+      "candidateTargetHash": "a34b883b73dee3680ad8413e0a4df281651680790746978bfdd09315bfdf8ce3",
+      "disposition": "propose-correction",
+      "locale": "zh_Hans",
+      "sourceId": "components.ReaderGroupingAction.preview",
+      "sourcePosition": 2585
+    },
+    {
+      "candidateTarget": "預覽符合條件的項目",
+      "candidateTargetHash": "0e5b383e479fe5ec0d7067b7046d3b6dbd1d2691adb0d197cd167c16d3929e2b",
+      "disposition": "propose-correction",
+      "locale": "zh_Hant",
+      "sourceId": "components.ReaderGroupingAction.preview",
+      "sourcePosition": 2585
+    },
+    {
+      "candidateTarget": "正在检查媒体库…",
+      "candidateTargetHash": "0361448f728235ff96ea678afc9658bc3d55c27678c294ad817b430433cbc0fb",
+      "disposition": "propose-correction",
+      "locale": "zh_Hans",
+      "sourceId": "components.ReaderGroupingAction.previewing",
+      "sourcePosition": 2587
+    },
+    {
+      "candidateTarget": "正在檢查媒體庫…",
+      "candidateTargetHash": "7fa190751549241ba108d73cf543d97d0534bd46e0f3fe48e5921b34b26d3d9f",
+      "disposition": "propose-correction",
+      "locale": "zh_Hant",
+      "sourceId": "components.ReaderGroupingAction.previewing",
+      "sourcePosition": 2587
+    },
+    {
+      "candidateTarget": "阅读器服务",
+      "candidateTargetHash": "c9de1224c39d07e2de99c74791f50f9ac67ecf4c9654828ae1a411a6c8272978",
+      "disposition": "propose-correction",
+      "locale": "zh_Hans",
+      "sourceId": "components.ReaderGroupingAction.provider",
+      "sourcePosition": 2588
+    },
+    {
+      "candidateTarget": "Đã lưu kệ đọc.",
+      "candidateTargetHash": "67f79c8757cd5e9992e9a37a82144155da57598b91a31c12d725be5482aa9c8f",
+      "disposition": "propose-correction",
+      "locale": "vi",
+      "sourceId": "components.ReaderGroupingAction.result",
+      "sourcePosition": 2589
+    },
+    {
+      "candidateTarget": "阅读器书架已保存。",
+      "candidateTargetHash": "6d0edbfe380c7dcc84d7424f1653a199e8f20621f495e9651886c848cd944af3",
+      "disposition": "propose-correction",
+      "locale": "zh_Hans",
+      "sourceId": "components.ReaderGroupingAction.result",
+      "sourcePosition": 2589
+    },
+    {
+      "candidateTarget": "Một vài mục khớp",
+      "candidateTargetHash": "6d771bc787c8475a6a295ffdee95ed47745ae3aa807fb0a033d43fbf4a6369e1",
+      "disposition": "propose-correction",
+      "locale": "vi",
+      "sourceId": "components.ReaderGroupingAction.sampleTitles",
+      "sourcePosition": 2590
+    },
+    {
+      "candidateTarget": "几个匹配项",
+      "candidateTargetHash": "e83f1cb3b6d9ec75c2ae5a2de51e553774af5b8758482e14aa352a5a23ccd754",
+      "disposition": "propose-correction",
+      "locale": "zh_Hans",
+      "sourceId": "components.ReaderGroupingAction.sampleTitles",
+      "sourcePosition": 2590
+    },
+    {
+      "candidateTarget": "幾項符合條件的結果",
+      "candidateTargetHash": "a7b3f5d7d932348935da0df1d35847c78abc26665776fd1330ae5276785d7047",
+      "disposition": "propose-correction",
+      "locale": "zh_Hant",
+      "sourceId": "components.ReaderGroupingAction.sampleTitles",
+      "sourcePosition": 2590
+    },
+    {
+      "candidateTarget": "创建书架",
+      "candidateTargetHash": "9fa7cdb5ecca112e0daa14e034d3fbe5f30cf0d1cbdefbf35df7731c25179941",
+      "disposition": "propose-correction",
+      "locale": "zh_Hans",
+      "sourceId": "components.ReaderGroupingAction.save",
+      "sourcePosition": 2591
+    },
+    {
+      "candidateTarget": "建立書架",
+      "candidateTargetHash": "aef096bb9d444a557a1b889135536e024e064347b2c4ba8028247f8ad8186d66",
+      "disposition": "propose-correction",
+      "locale": "zh_Hant",
+      "sourceId": "components.ReaderGroupingAction.save",
+      "sourcePosition": 2591
+    },
+    {
+      "candidateTarget": "Không thể lưu kệ đọc.",
+      "candidateTargetHash": "566ea136649403c502d72f927c94eb1df189556293832f934596b394c0aca4cf",
+      "disposition": "propose-correction",
+      "locale": "vi",
+      "sourceId": "components.ReaderGroupingAction.saveError",
+      "sourcePosition": 2592
+    },
+    {
+      "candidateTarget": "无法保存阅读器书架。",
+      "candidateTargetHash": "e448623db90f6179d64dc795b80837bd5818f722b215b1c152df18fe9ae5b8b5",
+      "disposition": "propose-correction",
+      "locale": "zh_Hans",
+      "sourceId": "components.ReaderGroupingAction.saveError",
+      "sourcePosition": 2592
+    },
+    {
+      "candidateTarget": "無法儲存閱讀器書架。",
+      "candidateTargetHash": "60d310737f08ed0aba72f66ea79bf7411dc95d5eaefa8c74ed907e935cd20fed",
+      "disposition": "propose-correction",
+      "locale": "zh_Hant",
+      "sourceId": "components.ReaderGroupingAction.saveError",
+      "sourcePosition": 2592
+    },
+    {
+      "candidateTarget": "Đang lưu kệ…",
+      "candidateTargetHash": "926b672b7355e7070ffcc9402fc899ce0e7fe420aaa101bd64b01980a308bc1f",
+      "disposition": "propose-correction",
+      "locale": "vi",
+      "sourceId": "components.ReaderGroupingAction.saving",
+      "sourcePosition": 2593
+    },
+    {
+      "candidateTarget": "正在保存书架…",
+      "candidateTargetHash": "26945f34ec25c667ef34e9fa54530285249c7908c4caececc891dc1598b11568",
+      "disposition": "propose-correction",
+      "locale": "zh_Hans",
+      "sourceId": "components.ReaderGroupingAction.saving",
+      "sourcePosition": 2593
+    },
+    {
+      "candidateTarget": "正在儲存書架…",
+      "candidateTargetHash": "7203d513c76a6d7c9ba7c1ed224089a69d362a27fbda1b6bbd6deecc63c5bf49",
+      "disposition": "propose-correction",
+      "locale": "zh_Hant",
+      "sourceId": "components.ReaderGroupingAction.saving",
+      "sourcePosition": 2593
+    },
+    {
+      "candidateTarget": "Thiết lập dịch vụ đọc tại Thiết lập > Dịch vụ > Ứng dụng đọc, rồi quay lại đây.",
+      "candidateTargetHash": "e734cdac9a33027382921626c880dab725db80ada1c47906556adb816a42b35e",
+      "disposition": "propose-correction",
+      "locale": "vi",
+      "sourceId": "components.ReaderGroupingAction.setup",
+      "sourcePosition": 2594
+    },
+    {
+      "candidateTarget": "前往“设置 > 服务器 > 阅读器应用程序”配置阅读器服务，然后返回此处。",
+      "candidateTargetHash": "b4986e78f1edcd00fc0965e8d9144da9a988b827b8f9715796b69e083d17452b",
+      "disposition": "propose-correction",
+      "locale": "zh_Hans",
+      "sourceId": "components.ReaderGroupingAction.setup",
+      "sourcePosition": 2594
+    },
+    {
+      "candidateTarget": "前往「設定值 > 伺服器 > 閱讀器應用程式」設定閱讀器服務，然後返回此處。",
+      "candidateTargetHash": "d4ed2a7b44a202760afbb7d38fcc25fd862dc1c8a1649074cffb1ba4dd987e83",
+      "disposition": "propose-correction",
+      "locale": "zh_Hant",
+      "sourceId": "components.ReaderGroupingAction.setup",
+      "sourcePosition": 2594
+    },
+    {
+      "candidateTarget": "向其他阅读器服务用户显示此分组",
+      "candidateTargetHash": "6cfc91ad09b451840b851fe4f5749eab2f413642df4568843aeb6b20e8c783f4",
+      "disposition": "propose-correction",
+      "locale": "zh_Hans",
+      "sourceId": "components.ReaderGroupingAction.share",
+      "sourcePosition": 2595
+    },
+    {
+      "candidateTarget": "向其他閱讀器服務使用者顯示此分組",
+      "candidateTargetHash": "f14ca37b352685720dd79ea6b5a465a72c884730d9a139631a0538cc4f06e4ae",
+      "disposition": "propose-correction",
+      "locale": "zh_Hant",
+      "sourceId": "components.ReaderGroupingAction.share",
+      "sourcePosition": 2595
+    },
+    {
+      "candidateTarget": "如果你的阅读器账户或 OPDS 账户属于另一位阅读器服务用户，请共享此分组，以便对方账户可以查看。该阅读器账户仍需有权访问匹配的媒体库。",
+      "candidateTargetHash": "5bf607397dc9bc1fd46c9c7d74837e1f70a5d09532059d7df1b4ba09fc413afd",
+      "disposition": "propose-correction",
+      "locale": "zh_Hans",
+      "sourceId": "components.ReaderGroupingAction.shareHelp",
+      "sourcePosition": 2596
+    },
+    {
+      "candidateTarget": "如果您的閱讀器或 OPDS 帳號屬於另一位閱讀器服務使用者，請分享此分組，讓該帳號可以查看。該閱讀器帳號仍需能存取相符的媒體庫。",
+      "candidateTargetHash": "6808e19cd482a62ba3cd8baa005e3a8980d6f3eaff9cf8915e5a1f94f6592098",
+      "disposition": "propose-correction",
+      "locale": "zh_Hant",
+      "sourceId": "components.ReaderGroupingAction.shareHelp",
+      "sourcePosition": 2596
+    },
+    {
+      "candidateTarget": "Đồng bộ quy tắc động này với Kobo",
+      "candidateTargetHash": "1a84266280c7c44dd38fe9bf239d6af2f27850df505b7f291cc9aacacbf20310",
+      "disposition": "propose-correction",
+      "locale": "vi",
+      "sourceId": "components.ReaderGroupingAction.syncToKobo",
+      "sourcePosition": 2597
+    },
+    {
+      "candidateTarget": "将此动态规则同步至 Kobo",
+      "candidateTargetHash": "4b12ac5ad010136e78f6084132c2efb11cc0637bb696e8b846bca8d0518bc310",
+      "disposition": "propose-correction",
+      "locale": "zh_Hans",
+      "sourceId": "components.ReaderGroupingAction.syncToKobo",
+      "sourcePosition": 2597
+    },
+    {
+      "candidateTarget": "將此動態規則同步至 Kobo",
+      "candidateTargetHash": "c61d3a494b699fd8c03ffe5bb6ae443162d939f657e6881ba31ee7e61653691a",
+      "disposition": "propose-correction",
+      "locale": "zh_Hant",
+      "sourceId": "components.ReaderGroupingAction.syncToKobo",
+      "sourcePosition": 2597
+    },
+    {
+      "candidateTarget": "啟用後，SeerrNG 會建立受管理的 BookOrbit Collection，並每 15 分鐘依照此動態規則核對其成員。請在 BookOrbit 中配對 Kobo 帳戶。",
+      "candidateTargetHash": "04b80aca95ca224497c0b6ab0155cacf540159aec4bb23bb0f9f4cb18d851442",
+      "disposition": "propose-correction",
+      "locale": "zh_Hant",
+      "sourceId": "components.ReaderGroupingAction.syncToKoboHelp",
+      "sourcePosition": 2598
+    },
+    {
+      "candidateTarget": "保存书架更新",
+      "candidateTargetHash": "315897f0cf84a484083b7d17c17d9e659fbd183613d736491b0ef4e3ec70f34d",
+      "disposition": "propose-correction",
+      "locale": "zh_Hans",
+      "sourceId": "components.ReaderGroupingAction.update",
+      "sourcePosition": 2599
+    }
+  ],
+  "head": "0905d4be32d8b7ec3b1af701473a3fdf6e0f30a2",
+  "pullRequest": 418,
+  "repository": "snapetech-org/SeerrNG",
+  "tree": "a09117211080bbd89d32959f17d93b02a82b966f"
+}

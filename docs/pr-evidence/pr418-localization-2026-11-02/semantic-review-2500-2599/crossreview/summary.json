@@ -1,0 +1,127 @@
+{
+  "allSevenPRHeadsAndStatesUnchanged": true,
+  "callerFiles": 3,
+  "callerReferences": 358,
+  "capturedAtUtc": "2026-11-02T20:56:34.344377+00:00",
+  "catalogKeyCountPerLocale": 9494,
+  "catalogKeySetParity": true,
+  "catalogOrderDifferences": [
+    "ja",
+    "ko",
+    "vi",
+    "zh_Hans",
+    "zh_Hant"
+  ],
+  "cells": 1200,
+  "childBatchManifestSha256": "593623ec4b81d4fd6a4debcf8615c6caef79507446294f8d5a6079c176b2311d",
+  "crossReviewCounts": {
+    "accept-current": 640,
+    "accept-primary-correction": 473,
+    "revise-primary": 87
+  },
+  "currentArabicICUCountMarkerMissingRows": [
+    [
+      2534,
+      "ar"
+    ],
+    [
+      2581,
+      "ar"
+    ]
+  ],
+  "currentProtectedLiteralMismatchCells": 34,
+  "head": "0905d4be32d8b7ec3b1af701473a3fdf6e0f30a2",
+  "holds": 0,
+  "locales": 12,
+  "nativeSpeakerApproval": "not provided; this is an independent machine-assisted cross-review",
+  "perLocale": {
+    "ar": {
+      "accept-current": 45,
+      "accept-primary-correction": 46,
+      "revise-primary": 9
+    },
+    "de": {
+      "accept-current": 83,
+      "accept-primary-correction": 12,
+      "revise-primary": 5
+    },
+    "es": {
+      "accept-current": 71,
+      "accept-primary-correction": 13,
+      "revise-primary": 16
+    },
+    "fr": {
+      "accept-current": 52,
+      "accept-primary-correction": 27,
+      "revise-primary": 21
+    },
+    "hi": {
+      "accept-current": 41,
+      "accept-primary-correction": 56,
+      "revise-primary": 3
+    },
+    "id": {
+      "accept-current": 69,
+      "accept-primary-correction": 28,
+      "revise-primary": 3
+    },
+    "ja": {
+      "accept-current": 44,
+      "accept-primary-correction": 55,
+      "revise-primary": 1
+    },
+    "ko": {
+      "accept-current": 37,
+      "accept-primary-correction": 63
+    },
+    "pt_BR": {
+      "accept-current": 67,
+      "accept-primary-correction": 33
+    },
+    "vi": {
+      "accept-current": 51,
+      "accept-primary-correction": 45,
+      "revise-primary": 4
+    },
+    "zh_Hans": {
+      "accept-current": 47,
+      "accept-primary-correction": 46,
+      "revise-primary": 7
+    },
+    "zh_Hant": {
+      "accept-current": 33,
+      "accept-primary-correction": 49,
+      "revise-primary": 18
+    }
+  },
+  "primaryArabicICUCountMarkerMissingRows": [
+    [
+      2534,
+      "ar"
+    ],
+    [
+      2581,
+      "ar"
+    ]
+  ],
+  "pullRequest": 418,
+  "rejections": 0,
+  "repoEdited": false,
+  "repository": "snapetech-org/SeerrNG",
+  "reviewedTargetArabicICUCountMarkerMissingRows": [],
+  "reviewedTargetIntegrityIssues": 0,
+  "reviewedTargetPlaceholderMarkupProtectedLiteralIcuAndHashMismatches": 0,
+  "revisions": 87,
+  "routeGlossaryException": "ar: Reader Apps label changes from أجهزة قراءة to تطبيقات القراءة; exact caller and two in-scope breadcrumb references support the reviewed label, but the glossary must be reconciled before applying it.",
+  "seerrPR418Draft": true,
+  "seerrPR418Head": "0905d4be32d8b7ec3b1af701473a3fdf6e0f30a2",
+  "seerrPR418State": "OPEN",
+  "seerrPR418Tree": "a09117211080bbd89d32959f17d93b02a82b966f",
+  "sourceKeys": 100,
+  "sourceWindow": [
+    2500,
+    2599
+  ],
+  "testsBuildsScansCIOrBrowserRun": false,
+  "tree": "a09117211080bbd89d32959f17d93b02a82b966f"
+}

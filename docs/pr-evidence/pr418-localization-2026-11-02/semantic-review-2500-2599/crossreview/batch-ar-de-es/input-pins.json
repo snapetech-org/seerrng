@@ -1,0 +1,16 @@
+{
+  "primaryPacketDirectory": "/mnt/disks/scratch/task-scratch/seerrng-pr418-window-2500-2599-primary-20261102",
+  "primarySHA256SUMS_sha256": "66cf3a6b31e60bebdc455366e9c33bbdec3735ac6d42f8bfc4d7f4147f8e4e6f",
+  "primaryINPUT_SHA256SUMS_sha256": "f64dff617f49fb71eacb70d3cf54204299a6a263b42caa70388e803ad78dc748",
+  "primaryLedgerSha256": "e3ba652ffb6270e9768b807e79d996ec0bc0df9d1eb85c0b74bc36009612ebd4",
+  "routeGlossarySha256": "14ae3b10b8632b4abaed66211b35e4f6aad9b444f4fbc73f6f92570189bd389b",
+  "routeTerminologyReviewSha256": "f38a6fb667ac2e5b1a921d05c85dec6637d4891100b1294ac6b01cbd18b06ee7",
+  "reviewInstructionsSha256": "7f3b9d92f3c18f8f773fcb185ad19d9975bf6189f897d2f0cf69f9ebcc941b90",
+  "pinnedHead": "0905d4be32d8b7ec3b1af701473a3fdf6e0f30a2",
+  "pinnedTree": "a09117211080bbd89d32959f17d93b02a82b966f",
+  "crossReviewLocales": [
+    "ar",
+    "de",
+    "es"
+  ]
+}

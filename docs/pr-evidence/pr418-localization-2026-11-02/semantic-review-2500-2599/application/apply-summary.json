@@ -1,0 +1,52 @@
+{
+  "arabicIcuCountMarkerRepairs": [
+    [
+      2534,
+      "ar"
+    ],
+    [
+      2581,
+      "ar"
+    ]
+  ],
+  "cells": 1200,
+  "changedCells": 560,
+  "currentProtectedLiteralMismatchCells": 34,
+  "dispositions": {
+    "accept-current": 640,
+    "accept-primary-correction": 473,
+    "revise-primary": 87
+  },
+  "exactSourceHead": "0905d4be32d8b7ec3b1af701473a3fdf6e0f30a2",
+  "exactSourceTree": "a09117211080bbd89d32959f17d93b02a82b966f",
+  "finalProtectedLiteralMismatchCells": 0,
+  "headedBrowserReview": false,
+  "locales": 12,
+  "mergeReleaseOrTag": false,
+  "nativeSpeakerApproval": false,
+  "perLocaleChangedCells": {
+    "ar": 55,
+    "de": 17,
+    "es": 29,
+    "fr": 48,
+    "hi": 59,
+    "id": 31,
+    "ja": 56,
+    "ko": 63,
+    "pt_BR": 33,
+    "vi": 49,
+    "zh_Hans": 53,
+    "zh_Hant": 67
+  },
+  "pullRequest": 418,
+  "repository": "snapetech-org/SeerrNG",
+  "retainedCells": 640,
+  "routeGlossaryReconciliation": "Arabic Reader Apps is rendered as تطبيقات القراءة, matching the exact title caller and two in-window breadcrumbs; the frozen review glossary value أجهزة قراءة meant reading devices.",
+  "sourceIds": 100,
+  "testsBuildsScansOrCI": false,
+  "window": [
+    2500,
+    2599
+  ],
+  "workflowFilesTouched": false
+}

@@ -1,0 +1,72 @@
+{
+  "head": "0905d4be32d8b7ec3b1af701473a3fdf6e0f30a2",
+  "keys": [
+    "components.Settings.settings",
+    "components.Settings.menuServices",
+    "components.ReaderDeliverySettings.title"
+  ],
+  "locales": {
+    "ar": {
+      "components.ReaderDeliverySettings.title": "أجهزة قراءة",
+      "components.Settings.menuServices": "الخدمات",
+      "components.Settings.settings": "الإعدادات"
+    },
+    "de": {
+      "components.ReaderDeliverySettings.title": "Reader-Apps",
+      "components.Settings.menuServices": "Dienste",
+      "components.Settings.settings": "Einstellungen"
+    },
+    "es": {
+      "components.ReaderDeliverySettings.title": "Aplicaciones de lectura",
+      "components.Settings.menuServices": "Servicios",
+      "components.Settings.settings": "Ajustes"
+    },
+    "fr": {
+      "components.ReaderDeliverySettings.title": "Applications pour lecteurs",
+      "components.Settings.menuServices": "Services",
+      "components.Settings.settings": "Paramètres"
+    },
+    "hi": {
+      "components.ReaderDeliverySettings.title": "रीडर ऐप्स",
+      "components.Settings.menuServices": "सेवाएं",
+      "components.Settings.settings": "सेटिंग"
+    },
+    "id": {
+      "components.ReaderDeliverySettings.title": "App Pembaca",
+      "components.Settings.menuServices": "Layanan",
+      "components.Settings.settings": "Pengaturan"
+    },
+    "ja": {
+      "components.ReaderDeliverySettings.title": "読者アプリ",
+      "components.Settings.menuServices": "連携サービス",
+      "components.Settings.settings": "設定"
+    },
+    "ko": {
+      "components.ReaderDeliverySettings.title": "리더 앱",
+      "components.Settings.menuServices": "서비스",
+      "components.Settings.settings": "계정 설정"
+    },
+    "pt_BR": {
+      "components.ReaderDeliverySettings.title": "Aplicações do Leitor",
+      "components.Settings.menuServices": "Serviços",
+      "components.Settings.settings": "Configurações"
+    },
+    "vi": {
+      "components.ReaderDeliverySettings.title": "Ứng dụng đọc",
+      "components.Settings.menuServices": "Dịch vụ",
+      "components.Settings.settings": "Thiết lập"
+    },
+    "zh_Hans": {
+      "components.ReaderDeliverySettings.title": "阅读器应用程序",
+      "components.Settings.menuServices": "服务器",
+      "components.Settings.settings": "设置"
+    },
+    "zh_Hant": {
+      "components.ReaderDeliverySettings.title": "讀取器 Apps",
+      "components.Settings.menuServices": "伺服器",
+      "components.Settings.settings": "設定值"
+    }
+  },
+  "purpose": "Current localized labels for the Settings > Services > Reader Apps route, for consistency when source strings refer to that route.",
+  "tree": "a09117211080bbd89d32959f17d93b02a82b966f"
+}

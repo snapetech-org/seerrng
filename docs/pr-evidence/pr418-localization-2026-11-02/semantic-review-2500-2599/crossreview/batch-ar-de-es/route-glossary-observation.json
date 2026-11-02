@@ -1,0 +1,12 @@
+{
+  "head": "0905d4be32d8b7ec3b1af701473a3fdf6e0f30a2",
+  "locale": "ar",
+  "sourcePosition": 2568,
+  "sourceId": "components.ReaderDeliverySettings.title",
+  "currentTarget": "أجهزة قراءة",
+  "primaryTarget": "تطبيقات القراءة",
+  "crossReviewDisposition": "accept-primary-correction",
+  "glossaryTarget": "أجهزة قراءة",
+  "inWindowSetupBreadcrumb": "الإعدادات > الخدمات > تطبيقات القراءة",
+  "finding": "The proposed title is semantically clearer for reader software, and the nearby Arabic setup breadcrumb already uses it; the frozen locale route glossary still contains the old value. Reconcile the glossary and breadcrumb terminology in the primary packet before applying any route-wide update."
+}
