@@ -1,0 +1,2570 @@
+{
+  "currentSourceIdsUnique": true,
+  "exactLivePriorDispositions": 0,
+  "matches": [
+    {
+      "disposition": null,
+      "locale": null,
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/exact-hash-apply-plan.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.Login.validationEmailRequired"
+    },
+    {
+      "disposition": null,
+      "locale": null,
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/exact-hash-apply-plan.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.MagazineDetails.noIssues"
+    },
+    {
+      "disposition": null,
+      "locale": null,
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/exact-hash-apply-plan.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.MagazineDetails.openIssues"
+    },
+    {
+      "disposition": null,
+      "locale": null,
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/exact-hash-apply-plan.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.MagazineDetails.status"
+    },
+    {
+      "disposition": null,
+      "locale": null,
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/exact-hash-apply-plan.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.MagazineDetails.watchlistDeleted"
+    },
+    {
+      "disposition": null,
+      "locale": null,
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/exact-hash-apply-plan.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.MagazineDetails.watchlistSuccess"
+    },
+    {
+      "disposition": null,
+      "locale": null,
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/exact-hash-apply-plan.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.ManageMediaActions.block"
+    },
+    {
+      "disposition": null,
+      "locale": null,
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/exact-hash-apply-plan.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.ManageMediaActions.blocklist"
+    },
+    {
+      "disposition": null,
+      "locale": null,
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/exact-hash-apply-plan.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.ManageMediaActions.both"
+    },
+    {
+      "disposition": null,
+      "locale": null,
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/exact-hash-apply-plan.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.ManageMediaActions.clearStaleAvailability"
+    },
+    {
+      "disposition": null,
+      "locale": null,
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/exact-hash-apply-plan.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.ManageMediaActions.clearStaleAvailabilityFailed"
+    },
+    {
+      "disposition": null,
+      "locale": null,
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/exact-hash-apply-plan.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.ManageMediaActions.clearStaleAvailabilitySuccess"
+    },
+    {
+      "disposition": null,
+      "locale": null,
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/exact-hash-apply-plan.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.ManageMediaActions.clearStaleAvailabilityTitle"
+    },
+    {
+      "disposition": null,
+      "locale": null,
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/exact-hash-apply-plan.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.ManageMediaActions.closeConfirm"
+    },
+    {
+      "disposition": null,
+      "locale": null,
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/exact-hash-apply-plan.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.ManageMediaActions.closeDescription"
+    },
+    {
+      "disposition": null,
+      "locale": null,
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/exact-hash-apply-plan.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.ManageMediaActions.closeIssues"
+    },
+    {
+      "disposition": null,
+      "locale": null,
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/exact-hash-apply-plan.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.ManageMediaActions.deleteConfirm"
+    },
+    {
+      "disposition": null,
+      "locale": null,
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/exact-hash-apply-plan.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.ManageMediaActions.deleteDescription"
+    },
+    {
+      "disposition": null,
+      "locale": null,
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/exact-hash-apply-plan.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.ManageMediaActions.deleteIssues"
+    },
+    {
+      "disposition": null,
+      "locale": null,
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/exact-hash-apply-plan.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.ManageMediaActions.deleteRequests"
+    },
+    {
+      "disposition": null,
+      "locale": null,
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/exact-hash-apply-plan.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.ManageMediaActions.explanation"
+    },
+    {
+      "disposition": null,
+      "locale": null,
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/exact-hash-apply-plan.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.ManageMediaActions.failed"
+    },
+    {
+      "disposition": null,
+      "locale": null,
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/exact-hash-apply-plan.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.ManageMediaActions.issuesDescription"
+    },
+    {
+      "disposition": null,
+      "locale": null,
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/exact-hash-apply-plan.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.ManageMediaActions.libraryLookupFailed"
+    },
+    {
+      "disposition": null,
+      "locale": null,
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/exact-hash-apply-plan.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.ManageMediaActions.noIssues"
+    },
+    {
+      "disposition": null,
+      "locale": null,
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/exact-hash-apply-plan.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.ManageMediaActions.noOpenIssues"
+    },
+    {
+      "disposition": null,
+      "locale": null,
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/exact-hash-apply-plan.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.ManageMediaActions.openService"
+    },
+    {
+      "disposition": null,
+      "locale": null,
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/exact-hash-apply-plan.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.ManageMediaActions.removeAllTitle"
+    },
+    {
+      "disposition": null,
+      "locale": null,
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/exact-hash-apply-plan.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.ManageMediaActions.requests"
+    },
+    {
+      "disposition": null,
+      "locale": null,
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/exact-hash-apply-plan.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.ManageMediaActions.retryLibraries"
+    },
+    {
+      "disposition": null,
+      "locale": null,
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/exact-hash-apply-plan.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.ManageMediaActions.selectRequest"
+    },
+    {
+      "disposition": null,
+      "locale": null,
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/exact-hash-apply-plan.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.ManageMediaActions.servicesDescription"
+    },
+    {
+      "disposition": null,
+      "locale": null,
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/exact-hash-apply-plan.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.ManageMediaActions.viewIssues"
+    },
+    {
+      "disposition": "keep",
+      "locale": "es",
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/frozen-packet/accepted-current-machine-decisions.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.Login.signinFailed"
+    },
+    {
+      "disposition": "keep",
+      "locale": "es",
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/frozen-packet/accepted-current-machine-decisions.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.Login.signingin"
+    },
+    {
+      "disposition": "keep",
+      "locale": "es",
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/frozen-packet/accepted-current-machine-decisions.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.Login.signinheader"
+    },
+    {
+      "disposition": "keep",
+      "locale": "es",
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/frozen-packet/accepted-current-machine-decisions.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.Login.signinwithjellyfin"
+    },
+    {
+      "disposition": "keep",
+      "locale": "es",
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/frozen-packet/accepted-current-machine-decisions.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.Login.signinwithoverseerr"
+    },
+    {
+      "disposition": "keep",
+      "locale": "es",
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/frozen-packet/accepted-current-machine-decisions.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.Login.signinwithplex"
+    },
+    {
+      "disposition": "keep",
+      "locale": "es",
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/frozen-packet/accepted-current-machine-decisions.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.Login.tipEmailHasTrailingWhitespace"
+    },
+    {
+      "disposition": "keep",
+      "locale": "es",
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/frozen-packet/accepted-current-machine-decisions.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.Login.tipUsernameHasTrailingWhitespace"
+    },
+    {
+      "disposition": "keep",
+      "locale": "es",
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/frozen-packet/accepted-current-machine-decisions.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.Login.title"
+    },
+    {
+      "disposition": "keep",
+      "locale": "es",
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/frozen-packet/accepted-current-machine-decisions.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.Login.urlBase"
+    },
+    {
+      "disposition": "keep",
+      "locale": "es",
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/frozen-packet/accepted-current-machine-decisions.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.Login.urlBaseHelp"
+    },
+    {
+      "disposition": "keep",
+      "locale": "es",
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/frozen-packet/accepted-current-machine-decisions.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.Login.username"
+    },
+    {
+      "disposition": "keep",
+      "locale": "es",
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/frozen-packet/accepted-current-machine-decisions.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.Login.validationEmailFormat"
+    },
+    {
+      "disposition": "keep",
+      "locale": "es",
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/frozen-packet/accepted-current-machine-decisions.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.Login.validationPortRequired"
+    },
+    {
+      "disposition": "keep",
+      "locale": "es",
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/frozen-packet/accepted-current-machine-decisions.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.Login.validationUrlBaseLeadingSlash"
+    },
+    {
+      "disposition": "keep",
+      "locale": "es",
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/frozen-packet/accepted-current-machine-decisions.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.Login.validationUrlBaseTrailingSlash"
+    },
+    {
+      "disposition": "keep",
+      "locale": "es",
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/frozen-packet/accepted-current-machine-decisions.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.Login.validationUrlTrailingSlash"
+    },
+    {
+      "disposition": "keep",
+      "locale": "es",
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/frozen-packet/accepted-current-machine-decisions.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.Login.validationemailformat"
+    },
+    {
+      "disposition": "keep",
+      "locale": "es",
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/frozen-packet/accepted-current-machine-decisions.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.Login.validationemailrequired"
+    },
+    {
+      "disposition": "keep",
+      "locale": "es",
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/frozen-packet/accepted-current-machine-decisions.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.Login.validationhostformat"
+    },
+    {
+      "disposition": "keep",
+      "locale": "es",
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/frozen-packet/accepted-current-machine-decisions.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.Login.validationhostrequired"
+    },
+    {
+      "disposition": "keep",
+      "locale": "es",
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/frozen-packet/accepted-current-machine-decisions.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.Login.validationpasswordrequired"
+    },
+    {
+      "disposition": "keep",
+      "locale": "es",
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/frozen-packet/accepted-current-machine-decisions.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.Login.validationservertyperequired"
+    },
+    {
+      "disposition": "keep",
+      "locale": "es",
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/frozen-packet/accepted-current-machine-decisions.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.Login.validationusernamerequired"
+    },
+    {
+      "disposition": "keep",
+      "locale": "es",
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/frozen-packet/accepted-current-machine-decisions.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.MagazineDetails.addToWatchlist"
+    },
+    {
+      "disposition": "keep",
+      "locale": "es",
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/frozen-packet/accepted-current-machine-decisions.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.MagazineDetails.issueAvailable"
+    },
+    {
+      "disposition": "keep",
+      "locale": "es",
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/frozen-packet/accepted-current-machine-decisions.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.MagazineDetails.issueCount"
+    },
+    {
+      "disposition": "keep",
+      "locale": "es",
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/frozen-packet/accepted-current-machine-decisions.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.MagazineDetails.issueDate"
+    },
+    {
+      "disposition": "keep",
+      "locale": "es",
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/frozen-packet/accepted-current-machine-decisions.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.MagazineDetails.issueList"
+    },
+    {
+      "disposition": "keep",
+      "locale": "es",
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/frozen-packet/accepted-current-machine-decisions.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.MagazineDetails.issueMissing"
+    },
+    {
+      "disposition": "keep",
+      "locale": "es",
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/frozen-packet/accepted-current-machine-decisions.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.MagazineDetails.manageMagazine"
+    },
+    {
+      "disposition": "keep",
+      "locale": "es",
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/frozen-packet/accepted-current-machine-decisions.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.MagazineDetails.notAvailable"
+    },
+    {
+      "disposition": "keep",
+      "locale": "es",
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/frozen-packet/accepted-current-machine-decisions.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.MagazineDetails.removeFromWatchlist"
+    },
+    {
+      "disposition": "keep",
+      "locale": "es",
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/frozen-packet/accepted-current-machine-decisions.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.MagazineDetails.reportIssue"
+    },
+    {
+      "disposition": "keep",
+      "locale": "es",
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/frozen-packet/accepted-current-machine-decisions.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.MagazineDetails.requestMagazine"
+    },
+    {
+      "disposition": "keep",
+      "locale": "es",
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/frozen-packet/accepted-current-machine-decisions.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.MagazineDetails.viewRequest"
+    },
+    {
+      "disposition": "keep",
+      "locale": "es",
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/frozen-packet/accepted-current-machine-decisions.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.MagazineDetails.watchlistError"
+    },
+    {
+      "disposition": "keep",
+      "locale": "es",
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/frozen-packet/accepted-current-machine-decisions.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.ManageMediaActions.alreadyBlocklisted"
+    },
+    {
+      "disposition": "keep",
+      "locale": "es",
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/frozen-packet/accepted-current-machine-decisions.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.ManageMediaActions.audiobook"
+    },
+    {
+      "disposition": "keep",
+      "locale": "es",
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/frozen-packet/accepted-current-machine-decisions.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.ManageMediaActions.blockConfirm"
+    },
+    {
+      "disposition": "keep",
+      "locale": "es",
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/frozen-packet/accepted-current-machine-decisions.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.ManageMediaActions.blockDescription"
+    },
+    {
+      "disposition": "keep",
+      "locale": "es",
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/frozen-packet/accepted-current-machine-decisions.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.ManageMediaActions.blocklistCheckFailed"
+    },
+    {
+      "disposition": "keep",
+      "locale": "es",
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/frozen-packet/accepted-current-machine-decisions.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.ManageMediaActions.blocklistPermission"
+    },
+    {
+      "disposition": "keep",
+      "locale": "es",
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/frozen-packet/accepted-current-machine-decisions.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.ManageMediaActions.cancel"
+    },
+    {
+      "disposition": "keep",
+      "locale": "es",
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/frozen-packet/accepted-current-machine-decisions.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.ManageMediaActions.checkingBlocklist"
+    },
+    {
+      "disposition": "keep",
+      "locale": "es",
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/frozen-packet/accepted-current-machine-decisions.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.ManageMediaActions.checkingLibraries"
+    },
+    {
+      "disposition": "keep",
+      "locale": "es",
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/frozen-packet/accepted-current-machine-decisions.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.ManageMediaActions.clearStaleAvailabilityExplanation"
+    },
+    {
+      "disposition": "keep",
+      "locale": "es",
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/frozen-packet/accepted-current-machine-decisions.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.ManageMediaActions.done"
+    },
+    {
+      "disposition": "keep",
+      "locale": "es",
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/frozen-packet/accepted-current-machine-decisions.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.ManageMediaActions.ebook"
+    },
+    {
+      "disposition": "keep",
+      "locale": "es",
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/frozen-packet/accepted-current-machine-decisions.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.ManageMediaActions.issueLink"
+    },
+    {
+      "disposition": "keep",
+      "locale": "es",
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/frozen-packet/accepted-current-machine-decisions.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.ManageMediaActions.issues"
+    },
+    {
+      "disposition": "keep",
+      "locale": "es",
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/frozen-packet/accepted-current-machine-decisions.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.ManageMediaActions.missingBlocklistId"
+    },
+    {
+      "disposition": "keep",
+      "locale": "es",
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/frozen-packet/accepted-current-machine-decisions.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.ManageMediaActions.noRequests"
+    },
+    {
+      "disposition": "keep",
+      "locale": "es",
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/frozen-packet/accepted-current-machine-decisions.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.ManageMediaActions.notBlocklisted"
+    },
+    {
+      "disposition": "keep",
+      "locale": "es",
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/frozen-packet/accepted-current-machine-decisions.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.ManageMediaActions.open"
+    },
+    {
+      "disposition": "keep",
+      "locale": "es",
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/frozen-packet/accepted-current-machine-decisions.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.ManageMediaActions.openServiceTooltip"
+    },
+    {
+      "disposition": "keep",
+      "locale": "es",
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/frozen-packet/accepted-current-machine-decisions.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.ManageMediaActions.removeAllDescription"
+    },
+    {
+      "disposition": "keep",
+      "locale": "es",
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/frozen-packet/accepted-current-machine-decisions.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.ManageMediaActions.requestOption"
+    },
+    {
+      "disposition": "keep",
+      "locale": "es",
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/frozen-packet/accepted-current-machine-decisions.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.ManageMediaActions.resolved"
+    },
+    {
+      "disposition": "keep",
+      "locale": "es",
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/frozen-packet/accepted-current-machine-decisions.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.ManageMediaActions.selectLibrary"
+    },
+    {
+      "disposition": "keep",
+      "locale": "es",
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/frozen-packet/accepted-current-machine-decisions.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.ManageMediaActions.services"
+    },
+    {
+      "disposition": "keep",
+      "locale": "es",
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/frozen-packet/accepted-current-machine-decisions.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.ManageMediaActions.titleWithYear"
+    },
+    {
+      "disposition": "keep",
+      "locale": "es",
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/frozen-packet/accepted-current-machine-decisions.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.ManageMediaActions.unblock"
+    },
+    {
+      "disposition": "keep",
+      "locale": "es",
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/frozen-packet/accepted-current-machine-decisions.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.ManageMediaActions.unblockConfirm"
+    },
+    {
+      "disposition": "keep",
+      "locale": "es",
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/frozen-packet/accepted-current-machine-decisions.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.ManageMediaActions.unblockDescription"
+    },
+    {
+      "disposition": "keep",
+      "locale": "es",
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/frozen-packet/accepted-current-machine-decisions.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.ManageMediaActions.unknownUser"
+    },
+    {
+      "disposition": "keep",
+      "locale": "es",
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/frozen-packet/accepted-current-machine-decisions.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.ManageMediaActions.updated"
+    },
+    {
+      "disposition": null,
+      "locale": "es",
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/frozen-packet/candidate-ledger.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.Login.validationEmailRequired"
+    },
+    {
+      "disposition": null,
+      "locale": "es",
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/frozen-packet/candidate-ledger.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.MagazineDetails.noIssues"
+    },
+    {
+      "disposition": null,
+      "locale": "es",
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/frozen-packet/candidate-ledger.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.MagazineDetails.openIssues"
+    },
+    {
+      "disposition": null,
+      "locale": "es",
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/frozen-packet/candidate-ledger.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.MagazineDetails.status"
+    },
+    {
+      "disposition": null,
+      "locale": "es",
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/frozen-packet/candidate-ledger.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.MagazineDetails.watchlistDeleted"
+    },
+    {
+      "disposition": null,
+      "locale": "es",
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/frozen-packet/candidate-ledger.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.MagazineDetails.watchlistSuccess"
+    },
+    {
+      "disposition": null,
+      "locale": "es",
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/frozen-packet/candidate-ledger.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.ManageMediaActions.block"
+    },
+    {
+      "disposition": null,
+      "locale": "es",
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/frozen-packet/candidate-ledger.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.ManageMediaActions.blocklist"
+    },
+    {
+      "disposition": null,
+      "locale": "es",
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/frozen-packet/candidate-ledger.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.ManageMediaActions.both"
+    },
+    {
+      "disposition": null,
+      "locale": "es",
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/frozen-packet/candidate-ledger.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.ManageMediaActions.clearStaleAvailability"
+    },
+    {
+      "disposition": null,
+      "locale": "es",
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/frozen-packet/candidate-ledger.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.ManageMediaActions.clearStaleAvailabilityFailed"
+    },
+    {
+      "disposition": null,
+      "locale": "es",
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/frozen-packet/candidate-ledger.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.ManageMediaActions.clearStaleAvailabilitySuccess"
+    },
+    {
+      "disposition": null,
+      "locale": "es",
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/frozen-packet/candidate-ledger.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.ManageMediaActions.clearStaleAvailabilityTitle"
+    },
+    {
+      "disposition": null,
+      "locale": "es",
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/frozen-packet/candidate-ledger.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.ManageMediaActions.closeConfirm"
+    },
+    {
+      "disposition": null,
+      "locale": "es",
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/frozen-packet/candidate-ledger.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.ManageMediaActions.closeDescription"
+    },
+    {
+      "disposition": null,
+      "locale": "es",
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/frozen-packet/candidate-ledger.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.ManageMediaActions.closeIssues"
+    },
+    {
+      "disposition": null,
+      "locale": "es",
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/frozen-packet/candidate-ledger.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.ManageMediaActions.deleteConfirm"
+    },
+    {
+      "disposition": null,
+      "locale": "es",
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/frozen-packet/candidate-ledger.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.ManageMediaActions.deleteDescription"
+    },
+    {
+      "disposition": null,
+      "locale": "es",
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/frozen-packet/candidate-ledger.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.ManageMediaActions.deleteIssues"
+    },
+    {
+      "disposition": null,
+      "locale": "es",
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/frozen-packet/candidate-ledger.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.ManageMediaActions.deleteRequests"
+    },
+    {
+      "disposition": null,
+      "locale": "es",
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/frozen-packet/candidate-ledger.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.ManageMediaActions.explanation"
+    },
+    {
+      "disposition": null,
+      "locale": "es",
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/frozen-packet/candidate-ledger.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.ManageMediaActions.failed"
+    },
+    {
+      "disposition": null,
+      "locale": "es",
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/frozen-packet/candidate-ledger.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.ManageMediaActions.issuesDescription"
+    },
+    {
+      "disposition": null,
+      "locale": "es",
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/frozen-packet/candidate-ledger.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.ManageMediaActions.libraryLookupFailed"
+    },
+    {
+      "disposition": null,
+      "locale": "es",
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/frozen-packet/candidate-ledger.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.ManageMediaActions.noIssues"
+    },
+    {
+      "disposition": null,
+      "locale": "es",
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/frozen-packet/candidate-ledger.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.ManageMediaActions.noOpenIssues"
+    },
+    {
+      "disposition": null,
+      "locale": "es",
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/frozen-packet/candidate-ledger.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.ManageMediaActions.openService"
+    },
+    {
+      "disposition": null,
+      "locale": "es",
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/frozen-packet/candidate-ledger.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.ManageMediaActions.removeAllTitle"
+    },
+    {
+      "disposition": null,
+      "locale": "es",
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/frozen-packet/candidate-ledger.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.ManageMediaActions.requests"
+    },
+    {
+      "disposition": null,
+      "locale": "es",
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/frozen-packet/candidate-ledger.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.ManageMediaActions.retryLibraries"
+    },
+    {
+      "disposition": null,
+      "locale": "es",
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/frozen-packet/candidate-ledger.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.ManageMediaActions.selectRequest"
+    },
+    {
+      "disposition": null,
+      "locale": "es",
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/frozen-packet/candidate-ledger.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.ManageMediaActions.servicesDescription"
+    },
+    {
+      "disposition": null,
+      "locale": "es",
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/frozen-packet/candidate-ledger.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.ManageMediaActions.viewIssues"
+    },
+    {
+      "disposition": null,
+      "locale": "es",
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/frozen-packet/selected-cell-attestation.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.Login.signinFailed"
+    },
+    {
+      "disposition": null,
+      "locale": "es",
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/frozen-packet/selected-cell-attestation.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.Login.signingin"
+    },
+    {
+      "disposition": null,
+      "locale": "es",
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/frozen-packet/selected-cell-attestation.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.Login.signinheader"
+    },
+    {
+      "disposition": null,
+      "locale": "es",
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/frozen-packet/selected-cell-attestation.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.Login.signinwithjellyfin"
+    },
+    {
+      "disposition": null,
+      "locale": "es",
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/frozen-packet/selected-cell-attestation.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.Login.signinwithoverseerr"
+    },
+    {
+      "disposition": null,
+      "locale": "es",
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/frozen-packet/selected-cell-attestation.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.Login.signinwithplex"
+    },
+    {
+      "disposition": null,
+      "locale": "es",
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/frozen-packet/selected-cell-attestation.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.Login.tipEmailHasTrailingWhitespace"
+    },
+    {
+      "disposition": null,
+      "locale": "es",
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/frozen-packet/selected-cell-attestation.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.Login.tipUsernameHasTrailingWhitespace"
+    },
+    {
+      "disposition": null,
+      "locale": "es",
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/frozen-packet/selected-cell-attestation.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.Login.title"
+    },
+    {
+      "disposition": null,
+      "locale": "es",
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/frozen-packet/selected-cell-attestation.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.Login.urlBase"
+    },
+    {
+      "disposition": null,
+      "locale": "es",
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/frozen-packet/selected-cell-attestation.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.Login.urlBaseHelp"
+    },
+    {
+      "disposition": null,
+      "locale": "es",
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/frozen-packet/selected-cell-attestation.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.Login.username"
+    },
+    {
+      "disposition": null,
+      "locale": "es",
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/frozen-packet/selected-cell-attestation.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.Login.validationEmailFormat"
+    },
+    {
+      "disposition": null,
+      "locale": "es",
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/frozen-packet/selected-cell-attestation.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.Login.validationEmailRequired"
+    },
+    {
+      "disposition": null,
+      "locale": "es",
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/frozen-packet/selected-cell-attestation.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.Login.validationPortRequired"
+    },
+    {
+      "disposition": null,
+      "locale": "es",
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/frozen-packet/selected-cell-attestation.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.Login.validationUrlBaseLeadingSlash"
+    },
+    {
+      "disposition": null,
+      "locale": "es",
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/frozen-packet/selected-cell-attestation.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.Login.validationUrlBaseTrailingSlash"
+    },
+    {
+      "disposition": null,
+      "locale": "es",
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/frozen-packet/selected-cell-attestation.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.Login.validationUrlTrailingSlash"
+    },
+    {
+      "disposition": null,
+      "locale": "es",
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/frozen-packet/selected-cell-attestation.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.Login.validationemailformat"
+    },
+    {
+      "disposition": null,
+      "locale": "es",
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/frozen-packet/selected-cell-attestation.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.Login.validationemailrequired"
+    },
+    {
+      "disposition": null,
+      "locale": "es",
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/frozen-packet/selected-cell-attestation.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.Login.validationhostformat"
+    },
+    {
+      "disposition": null,
+      "locale": "es",
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/frozen-packet/selected-cell-attestation.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.Login.validationhostrequired"
+    },
+    {
+      "disposition": null,
+      "locale": "es",
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/frozen-packet/selected-cell-attestation.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.Login.validationpasswordrequired"
+    },
+    {
+      "disposition": null,
+      "locale": "es",
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/frozen-packet/selected-cell-attestation.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.Login.validationservertyperequired"
+    },
+    {
+      "disposition": null,
+      "locale": "es",
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/frozen-packet/selected-cell-attestation.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.Login.validationusernamerequired"
+    },
+    {
+      "disposition": null,
+      "locale": "es",
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/frozen-packet/selected-cell-attestation.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.MagazineDetails.addToWatchlist"
+    },
+    {
+      "disposition": null,
+      "locale": "es",
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/frozen-packet/selected-cell-attestation.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.MagazineDetails.issueAvailable"
+    },
+    {
+      "disposition": null,
+      "locale": "es",
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/frozen-packet/selected-cell-attestation.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.MagazineDetails.issueCount"
+    },
+    {
+      "disposition": null,
+      "locale": "es",
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/frozen-packet/selected-cell-attestation.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.MagazineDetails.issueDate"
+    },
+    {
+      "disposition": null,
+      "locale": "es",
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/frozen-packet/selected-cell-attestation.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.MagazineDetails.issueList"
+    },
+    {
+      "disposition": null,
+      "locale": "es",
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/frozen-packet/selected-cell-attestation.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.MagazineDetails.issueMissing"
+    },
+    {
+      "disposition": null,
+      "locale": "es",
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/frozen-packet/selected-cell-attestation.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.MagazineDetails.manageMagazine"
+    },
+    {
+      "disposition": null,
+      "locale": "es",
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/frozen-packet/selected-cell-attestation.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.MagazineDetails.noIssues"
+    },
+    {
+      "disposition": null,
+      "locale": "es",
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/frozen-packet/selected-cell-attestation.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.MagazineDetails.notAvailable"
+    },
+    {
+      "disposition": null,
+      "locale": "es",
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/frozen-packet/selected-cell-attestation.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.MagazineDetails.openIssues"
+    },
+    {
+      "disposition": null,
+      "locale": "es",
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/frozen-packet/selected-cell-attestation.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.MagazineDetails.removeFromWatchlist"
+    },
+    {
+      "disposition": null,
+      "locale": "es",
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/frozen-packet/selected-cell-attestation.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.MagazineDetails.reportIssue"
+    },
+    {
+      "disposition": null,
+      "locale": "es",
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/frozen-packet/selected-cell-attestation.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.MagazineDetails.requestMagazine"
+    },
+    {
+      "disposition": null,
+      "locale": "es",
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/frozen-packet/selected-cell-attestation.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.MagazineDetails.status"
+    },
+    {
+      "disposition": null,
+      "locale": "es",
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/frozen-packet/selected-cell-attestation.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.MagazineDetails.viewRequest"
+    },
+    {
+      "disposition": null,
+      "locale": "es",
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/frozen-packet/selected-cell-attestation.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.MagazineDetails.watchlistDeleted"
+    },
+    {
+      "disposition": null,
+      "locale": "es",
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/frozen-packet/selected-cell-attestation.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.MagazineDetails.watchlistError"
+    },
+    {
+      "disposition": null,
+      "locale": "es",
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/frozen-packet/selected-cell-attestation.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.MagazineDetails.watchlistSuccess"
+    },
+    {
+      "disposition": null,
+      "locale": "es",
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/frozen-packet/selected-cell-attestation.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.ManageMediaActions.alreadyBlocklisted"
+    },
+    {
+      "disposition": null,
+      "locale": "es",
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/frozen-packet/selected-cell-attestation.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.ManageMediaActions.audiobook"
+    },
+    {
+      "disposition": null,
+      "locale": "es",
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/frozen-packet/selected-cell-attestation.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.ManageMediaActions.block"
+    },
+    {
+      "disposition": null,
+      "locale": "es",
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/frozen-packet/selected-cell-attestation.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.ManageMediaActions.blockConfirm"
+    },
+    {
+      "disposition": null,
+      "locale": "es",
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/frozen-packet/selected-cell-attestation.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.ManageMediaActions.blockDescription"
+    },
+    {
+      "disposition": null,
+      "locale": "es",
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/frozen-packet/selected-cell-attestation.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.ManageMediaActions.blocklist"
+    },
+    {
+      "disposition": null,
+      "locale": "es",
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/frozen-packet/selected-cell-attestation.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.ManageMediaActions.blocklistCheckFailed"
+    },
+    {
+      "disposition": null,
+      "locale": "es",
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/frozen-packet/selected-cell-attestation.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.ManageMediaActions.blocklistPermission"
+    },
+    {
+      "disposition": null,
+      "locale": "es",
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/frozen-packet/selected-cell-attestation.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.ManageMediaActions.both"
+    },
+    {
+      "disposition": null,
+      "locale": "es",
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/frozen-packet/selected-cell-attestation.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.ManageMediaActions.cancel"
+    },
+    {
+      "disposition": null,
+      "locale": "es",
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/frozen-packet/selected-cell-attestation.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.ManageMediaActions.checkingBlocklist"
+    },
+    {
+      "disposition": null,
+      "locale": "es",
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/frozen-packet/selected-cell-attestation.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.ManageMediaActions.checkingLibraries"
+    },
+    {
+      "disposition": null,
+      "locale": "es",
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/frozen-packet/selected-cell-attestation.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.ManageMediaActions.clearStaleAvailability"
+    },
+    {
+      "disposition": null,
+      "locale": "es",
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/frozen-packet/selected-cell-attestation.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.ManageMediaActions.clearStaleAvailabilityExplanation"
+    },
+    {
+      "disposition": null,
+      "locale": "es",
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/frozen-packet/selected-cell-attestation.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.ManageMediaActions.clearStaleAvailabilityFailed"
+    },
+    {
+      "disposition": null,
+      "locale": "es",
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/frozen-packet/selected-cell-attestation.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.ManageMediaActions.clearStaleAvailabilitySuccess"
+    },
+    {
+      "disposition": null,
+      "locale": "es",
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/frozen-packet/selected-cell-attestation.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.ManageMediaActions.clearStaleAvailabilityTitle"
+    },
+    {
+      "disposition": null,
+      "locale": "es",
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/frozen-packet/selected-cell-attestation.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.ManageMediaActions.closeConfirm"
+    },
+    {
+      "disposition": null,
+      "locale": "es",
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/frozen-packet/selected-cell-attestation.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.ManageMediaActions.closeDescription"
+    },
+    {
+      "disposition": null,
+      "locale": "es",
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/frozen-packet/selected-cell-attestation.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.ManageMediaActions.closeIssues"
+    },
+    {
+      "disposition": null,
+      "locale": "es",
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/frozen-packet/selected-cell-attestation.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.ManageMediaActions.deleteConfirm"
+    },
+    {
+      "disposition": null,
+      "locale": "es",
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/frozen-packet/selected-cell-attestation.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.ManageMediaActions.deleteDescription"
+    },
+    {
+      "disposition": null,
+      "locale": "es",
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/frozen-packet/selected-cell-attestation.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.ManageMediaActions.deleteIssues"
+    },
+    {
+      "disposition": null,
+      "locale": "es",
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/frozen-packet/selected-cell-attestation.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.ManageMediaActions.deleteRequests"
+    },
+    {
+      "disposition": null,
+      "locale": "es",
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/frozen-packet/selected-cell-attestation.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.ManageMediaActions.done"
+    },
+    {
+      "disposition": null,
+      "locale": "es",
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/frozen-packet/selected-cell-attestation.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.ManageMediaActions.ebook"
+    },
+    {
+      "disposition": null,
+      "locale": "es",
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/frozen-packet/selected-cell-attestation.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.ManageMediaActions.explanation"
+    },
+    {
+      "disposition": null,
+      "locale": "es",
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/frozen-packet/selected-cell-attestation.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.ManageMediaActions.failed"
+    },
+    {
+      "disposition": null,
+      "locale": "es",
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/frozen-packet/selected-cell-attestation.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.ManageMediaActions.issueLink"
+    },
+    {
+      "disposition": null,
+      "locale": "es",
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/frozen-packet/selected-cell-attestation.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.ManageMediaActions.issues"
+    },
+    {
+      "disposition": null,
+      "locale": "es",
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/frozen-packet/selected-cell-attestation.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.ManageMediaActions.issuesDescription"
+    },
+    {
+      "disposition": null,
+      "locale": "es",
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/frozen-packet/selected-cell-attestation.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.ManageMediaActions.libraryLookupFailed"
+    },
+    {
+      "disposition": null,
+      "locale": "es",
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/frozen-packet/selected-cell-attestation.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.ManageMediaActions.missingBlocklistId"
+    },
+    {
+      "disposition": null,
+      "locale": "es",
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/frozen-packet/selected-cell-attestation.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.ManageMediaActions.noIssues"
+    },
+    {
+      "disposition": null,
+      "locale": "es",
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/frozen-packet/selected-cell-attestation.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.ManageMediaActions.noOpenIssues"
+    },
+    {
+      "disposition": null,
+      "locale": "es",
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/frozen-packet/selected-cell-attestation.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.ManageMediaActions.noRequests"
+    },
+    {
+      "disposition": null,
+      "locale": "es",
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/frozen-packet/selected-cell-attestation.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.ManageMediaActions.notBlocklisted"
+    },
+    {
+      "disposition": null,
+      "locale": "es",
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/frozen-packet/selected-cell-attestation.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.ManageMediaActions.open"
+    },
+    {
+      "disposition": null,
+      "locale": "es",
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/frozen-packet/selected-cell-attestation.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.ManageMediaActions.openService"
+    },
+    {
+      "disposition": null,
+      "locale": "es",
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/frozen-packet/selected-cell-attestation.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.ManageMediaActions.openServiceTooltip"
+    },
+    {
+      "disposition": null,
+      "locale": "es",
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/frozen-packet/selected-cell-attestation.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.ManageMediaActions.removeAllDescription"
+    },
+    {
+      "disposition": null,
+      "locale": "es",
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/frozen-packet/selected-cell-attestation.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.ManageMediaActions.removeAllTitle"
+    },
+    {
+      "disposition": null,
+      "locale": "es",
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/frozen-packet/selected-cell-attestation.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.ManageMediaActions.requestOption"
+    },
+    {
+      "disposition": null,
+      "locale": "es",
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/frozen-packet/selected-cell-attestation.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.ManageMediaActions.requests"
+    },
+    {
+      "disposition": null,
+      "locale": "es",
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/frozen-packet/selected-cell-attestation.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.ManageMediaActions.resolved"
+    },
+    {
+      "disposition": null,
+      "locale": "es",
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/frozen-packet/selected-cell-attestation.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.ManageMediaActions.retryLibraries"
+    },
+    {
+      "disposition": null,
+      "locale": "es",
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/frozen-packet/selected-cell-attestation.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.ManageMediaActions.selectLibrary"
+    },
+    {
+      "disposition": null,
+      "locale": "es",
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/frozen-packet/selected-cell-attestation.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.ManageMediaActions.selectRequest"
+    },
+    {
+      "disposition": null,
+      "locale": "es",
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/frozen-packet/selected-cell-attestation.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.ManageMediaActions.services"
+    },
+    {
+      "disposition": null,
+      "locale": "es",
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/frozen-packet/selected-cell-attestation.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.ManageMediaActions.servicesDescription"
+    },
+    {
+      "disposition": null,
+      "locale": "es",
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/frozen-packet/selected-cell-attestation.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.ManageMediaActions.titleWithYear"
+    },
+    {
+      "disposition": null,
+      "locale": "es",
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/frozen-packet/selected-cell-attestation.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.ManageMediaActions.unblock"
+    },
+    {
+      "disposition": null,
+      "locale": "es",
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/frozen-packet/selected-cell-attestation.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.ManageMediaActions.unblockConfirm"
+    },
+    {
+      "disposition": null,
+      "locale": "es",
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/frozen-packet/selected-cell-attestation.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.ManageMediaActions.unblockDescription"
+    },
+    {
+      "disposition": null,
+      "locale": "es",
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/frozen-packet/selected-cell-attestation.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.ManageMediaActions.unknownUser"
+    },
+    {
+      "disposition": null,
+      "locale": "es",
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/frozen-packet/selected-cell-attestation.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.ManageMediaActions.updated"
+    },
+    {
+      "disposition": null,
+      "locale": "es",
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/frozen-packet/selected-cell-attestation.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.ManageMediaActions.viewIssues"
+    },
+    {
+      "disposition": null,
+      "locale": "es",
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/frozen-packet/source-contexts.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.Login.validationEmailRequired"
+    },
+    {
+      "disposition": null,
+      "locale": "es",
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/frozen-packet/source-contexts.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.MagazineDetails.noIssues"
+    },
+    {
+      "disposition": null,
+      "locale": "es",
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/frozen-packet/source-contexts.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.MagazineDetails.openIssues"
+    },
+    {
+      "disposition": null,
+      "locale": "es",
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/frozen-packet/source-contexts.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.MagazineDetails.status"
+    },
+    {
+      "disposition": null,
+      "locale": "es",
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/frozen-packet/source-contexts.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.MagazineDetails.watchlistDeleted"
+    },
+    {
+      "disposition": null,
+      "locale": "es",
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/frozen-packet/source-contexts.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.MagazineDetails.watchlistSuccess"
+    },
+    {
+      "disposition": null,
+      "locale": "es",
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/frozen-packet/source-contexts.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.ManageMediaActions.block"
+    },
+    {
+      "disposition": null,
+      "locale": "es",
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/frozen-packet/source-contexts.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.ManageMediaActions.blocklist"
+    },
+    {
+      "disposition": null,
+      "locale": "es",
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/frozen-packet/source-contexts.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.ManageMediaActions.both"
+    },
+    {
+      "disposition": null,
+      "locale": "es",
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/frozen-packet/source-contexts.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.ManageMediaActions.clearStaleAvailability"
+    },
+    {
+      "disposition": null,
+      "locale": "es",
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/frozen-packet/source-contexts.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.ManageMediaActions.clearStaleAvailabilityFailed"
+    },
+    {
+      "disposition": null,
+      "locale": "es",
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/frozen-packet/source-contexts.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.ManageMediaActions.clearStaleAvailabilitySuccess"
+    },
+    {
+      "disposition": null,
+      "locale": "es",
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/frozen-packet/source-contexts.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.ManageMediaActions.clearStaleAvailabilityTitle"
+    },
+    {
+      "disposition": null,
+      "locale": "es",
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/frozen-packet/source-contexts.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.ManageMediaActions.closeConfirm"
+    },
+    {
+      "disposition": null,
+      "locale": "es",
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/frozen-packet/source-contexts.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.ManageMediaActions.closeDescription"
+    },
+    {
+      "disposition": null,
+      "locale": "es",
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/frozen-packet/source-contexts.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.ManageMediaActions.closeIssues"
+    },
+    {
+      "disposition": null,
+      "locale": "es",
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/frozen-packet/source-contexts.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.ManageMediaActions.deleteConfirm"
+    },
+    {
+      "disposition": null,
+      "locale": "es",
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/frozen-packet/source-contexts.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.ManageMediaActions.deleteDescription"
+    },
+    {
+      "disposition": null,
+      "locale": "es",
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/frozen-packet/source-contexts.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.ManageMediaActions.deleteIssues"
+    },
+    {
+      "disposition": null,
+      "locale": "es",
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/frozen-packet/source-contexts.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.ManageMediaActions.deleteRequests"
+    },
+    {
+      "disposition": null,
+      "locale": "es",
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/frozen-packet/source-contexts.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.ManageMediaActions.explanation"
+    },
+    {
+      "disposition": null,
+      "locale": "es",
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/frozen-packet/source-contexts.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.ManageMediaActions.failed"
+    },
+    {
+      "disposition": null,
+      "locale": "es",
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/frozen-packet/source-contexts.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.ManageMediaActions.issuesDescription"
+    },
+    {
+      "disposition": null,
+      "locale": "es",
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/frozen-packet/source-contexts.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.ManageMediaActions.libraryLookupFailed"
+    },
+    {
+      "disposition": null,
+      "locale": "es",
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/frozen-packet/source-contexts.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.ManageMediaActions.noIssues"
+    },
+    {
+      "disposition": null,
+      "locale": "es",
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/frozen-packet/source-contexts.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.ManageMediaActions.noOpenIssues"
+    },
+    {
+      "disposition": null,
+      "locale": "es",
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/frozen-packet/source-contexts.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.ManageMediaActions.openService"
+    },
+    {
+      "disposition": null,
+      "locale": "es",
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/frozen-packet/source-contexts.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.ManageMediaActions.removeAllTitle"
+    },
+    {
+      "disposition": null,
+      "locale": "es",
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/frozen-packet/source-contexts.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.ManageMediaActions.requests"
+    },
+    {
+      "disposition": null,
+      "locale": "es",
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/frozen-packet/source-contexts.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.ManageMediaActions.retryLibraries"
+    },
+    {
+      "disposition": null,
+      "locale": "es",
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/frozen-packet/source-contexts.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.ManageMediaActions.selectRequest"
+    },
+    {
+      "disposition": null,
+      "locale": "es",
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/frozen-packet/source-contexts.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.ManageMediaActions.servicesDescription"
+    },
+    {
+      "disposition": null,
+      "locale": "es",
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/frozen-packet/source-contexts.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.ManageMediaActions.viewIssues"
+    },
+    {
+      "disposition": null,
+      "locale": "es",
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/independent-crossreview/independent-crossreview.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.Login.validationEmailRequired"
+    },
+    {
+      "disposition": null,
+      "locale": "es",
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/independent-crossreview/independent-crossreview.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.MagazineDetails.noIssues"
+    },
+    {
+      "disposition": null,
+      "locale": "es",
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/independent-crossreview/independent-crossreview.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.MagazineDetails.openIssues"
+    },
+    {
+      "disposition": null,
+      "locale": "es",
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/independent-crossreview/independent-crossreview.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.MagazineDetails.status"
+    },
+    {
+      "disposition": null,
+      "locale": "es",
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/independent-crossreview/independent-crossreview.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.MagazineDetails.watchlistDeleted"
+    },
+    {
+      "disposition": null,
+      "locale": "es",
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/independent-crossreview/independent-crossreview.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.MagazineDetails.watchlistSuccess"
+    },
+    {
+      "disposition": null,
+      "locale": "es",
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/independent-crossreview/independent-crossreview.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.ManageMediaActions.block"
+    },
+    {
+      "disposition": null,
+      "locale": "es",
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/independent-crossreview/independent-crossreview.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.ManageMediaActions.blocklist"
+    },
+    {
+      "disposition": null,
+      "locale": "es",
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/independent-crossreview/independent-crossreview.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.ManageMediaActions.both"
+    },
+    {
+      "disposition": null,
+      "locale": "es",
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/independent-crossreview/independent-crossreview.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.ManageMediaActions.clearStaleAvailability"
+    },
+    {
+      "disposition": null,
+      "locale": "es",
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/independent-crossreview/independent-crossreview.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.ManageMediaActions.clearStaleAvailabilityFailed"
+    },
+    {
+      "disposition": null,
+      "locale": "es",
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/independent-crossreview/independent-crossreview.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.ManageMediaActions.clearStaleAvailabilitySuccess"
+    },
+    {
+      "disposition": null,
+      "locale": "es",
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/independent-crossreview/independent-crossreview.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.ManageMediaActions.clearStaleAvailabilityTitle"
+    },
+    {
+      "disposition": null,
+      "locale": "es",
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/independent-crossreview/independent-crossreview.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.ManageMediaActions.closeConfirm"
+    },
+    {
+      "disposition": null,
+      "locale": "es",
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/independent-crossreview/independent-crossreview.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.ManageMediaActions.closeDescription"
+    },
+    {
+      "disposition": null,
+      "locale": "es",
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/independent-crossreview/independent-crossreview.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.ManageMediaActions.closeIssues"
+    },
+    {
+      "disposition": null,
+      "locale": "es",
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/independent-crossreview/independent-crossreview.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.ManageMediaActions.deleteConfirm"
+    },
+    {
+      "disposition": null,
+      "locale": "es",
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/independent-crossreview/independent-crossreview.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.ManageMediaActions.deleteDescription"
+    },
+    {
+      "disposition": null,
+      "locale": "es",
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/independent-crossreview/independent-crossreview.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.ManageMediaActions.deleteIssues"
+    },
+    {
+      "disposition": null,
+      "locale": "es",
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/independent-crossreview/independent-crossreview.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.ManageMediaActions.deleteRequests"
+    },
+    {
+      "disposition": null,
+      "locale": "es",
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/independent-crossreview/independent-crossreview.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.ManageMediaActions.explanation"
+    },
+    {
+      "disposition": null,
+      "locale": "es",
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/independent-crossreview/independent-crossreview.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.ManageMediaActions.failed"
+    },
+    {
+      "disposition": null,
+      "locale": "es",
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/independent-crossreview/independent-crossreview.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.ManageMediaActions.issuesDescription"
+    },
+    {
+      "disposition": null,
+      "locale": "es",
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/independent-crossreview/independent-crossreview.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.ManageMediaActions.libraryLookupFailed"
+    },
+    {
+      "disposition": null,
+      "locale": "es",
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/independent-crossreview/independent-crossreview.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.ManageMediaActions.noIssues"
+    },
+    {
+      "disposition": null,
+      "locale": "es",
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/independent-crossreview/independent-crossreview.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.ManageMediaActions.noOpenIssues"
+    },
+    {
+      "disposition": null,
+      "locale": "es",
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/independent-crossreview/independent-crossreview.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.ManageMediaActions.openService"
+    },
+    {
+      "disposition": null,
+      "locale": "es",
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/independent-crossreview/independent-crossreview.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.ManageMediaActions.removeAllTitle"
+    },
+    {
+      "disposition": null,
+      "locale": "es",
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/independent-crossreview/independent-crossreview.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.ManageMediaActions.requests"
+    },
+    {
+      "disposition": null,
+      "locale": "es",
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/independent-crossreview/independent-crossreview.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.ManageMediaActions.retryLibraries"
+    },
+    {
+      "disposition": null,
+      "locale": "es",
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/independent-crossreview/independent-crossreview.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.ManageMediaActions.selectRequest"
+    },
+    {
+      "disposition": null,
+      "locale": "es",
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/independent-crossreview/independent-crossreview.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.ManageMediaActions.servicesDescription"
+    },
+    {
+      "disposition": null,
+      "locale": "es",
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/independent-crossreview/independent-crossreview.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.ManageMediaActions.viewIssues"
+    },
+    {
+      "disposition": null,
+      "locale": null,
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/root-crossreview/root-crossreview-final.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.Login.validationEmailRequired"
+    },
+    {
+      "disposition": null,
+      "locale": null,
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/root-crossreview/root-crossreview-final.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.MagazineDetails.noIssues"
+    },
+    {
+      "disposition": null,
+      "locale": null,
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/root-crossreview/root-crossreview-final.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.MagazineDetails.openIssues"
+    },
+    {
+      "disposition": null,
+      "locale": null,
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/root-crossreview/root-crossreview-final.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.MagazineDetails.status"
+    },
+    {
+      "disposition": null,
+      "locale": null,
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/root-crossreview/root-crossreview-final.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.MagazineDetails.watchlistDeleted"
+    },
+    {
+      "disposition": null,
+      "locale": null,
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/root-crossreview/root-crossreview-final.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.MagazineDetails.watchlistSuccess"
+    },
+    {
+      "disposition": null,
+      "locale": null,
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/root-crossreview/root-crossreview-final.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.ManageMediaActions.block"
+    },
+    {
+      "disposition": null,
+      "locale": null,
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/root-crossreview/root-crossreview-final.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.ManageMediaActions.blocklist"
+    },
+    {
+      "disposition": null,
+      "locale": null,
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/root-crossreview/root-crossreview-final.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.ManageMediaActions.both"
+    },
+    {
+      "disposition": null,
+      "locale": null,
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/root-crossreview/root-crossreview-final.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.ManageMediaActions.clearStaleAvailability"
+    },
+    {
+      "disposition": null,
+      "locale": null,
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/root-crossreview/root-crossreview-final.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.ManageMediaActions.clearStaleAvailabilityFailed"
+    },
+    {
+      "disposition": null,
+      "locale": null,
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/root-crossreview/root-crossreview-final.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.ManageMediaActions.clearStaleAvailabilitySuccess"
+    },
+    {
+      "disposition": null,
+      "locale": null,
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/root-crossreview/root-crossreview-final.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.ManageMediaActions.clearStaleAvailabilityTitle"
+    },
+    {
+      "disposition": null,
+      "locale": null,
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/root-crossreview/root-crossreview-final.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.ManageMediaActions.closeConfirm"
+    },
+    {
+      "disposition": null,
+      "locale": null,
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/root-crossreview/root-crossreview-final.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.ManageMediaActions.closeDescription"
+    },
+    {
+      "disposition": null,
+      "locale": null,
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/root-crossreview/root-crossreview-final.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.ManageMediaActions.closeIssues"
+    },
+    {
+      "disposition": null,
+      "locale": null,
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/root-crossreview/root-crossreview-final.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.ManageMediaActions.deleteConfirm"
+    },
+    {
+      "disposition": null,
+      "locale": null,
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/root-crossreview/root-crossreview-final.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.ManageMediaActions.deleteDescription"
+    },
+    {
+      "disposition": null,
+      "locale": null,
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/root-crossreview/root-crossreview-final.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.ManageMediaActions.deleteIssues"
+    },
+    {
+      "disposition": null,
+      "locale": null,
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/root-crossreview/root-crossreview-final.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.ManageMediaActions.deleteRequests"
+    },
+    {
+      "disposition": null,
+      "locale": null,
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/root-crossreview/root-crossreview-final.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.ManageMediaActions.explanation"
+    },
+    {
+      "disposition": null,
+      "locale": null,
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/root-crossreview/root-crossreview-final.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.ManageMediaActions.failed"
+    },
+    {
+      "disposition": null,
+      "locale": null,
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/root-crossreview/root-crossreview-final.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.ManageMediaActions.issuesDescription"
+    },
+    {
+      "disposition": null,
+      "locale": null,
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/root-crossreview/root-crossreview-final.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.ManageMediaActions.libraryLookupFailed"
+    },
+    {
+      "disposition": null,
+      "locale": null,
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/root-crossreview/root-crossreview-final.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.ManageMediaActions.noIssues"
+    },
+    {
+      "disposition": null,
+      "locale": null,
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/root-crossreview/root-crossreview-final.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.ManageMediaActions.noOpenIssues"
+    },
+    {
+      "disposition": null,
+      "locale": null,
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/root-crossreview/root-crossreview-final.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.ManageMediaActions.openService"
+    },
+    {
+      "disposition": null,
+      "locale": null,
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/root-crossreview/root-crossreview-final.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.ManageMediaActions.removeAllTitle"
+    },
+    {
+      "disposition": null,
+      "locale": null,
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/root-crossreview/root-crossreview-final.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.ManageMediaActions.requests"
+    },
+    {
+      "disposition": null,
+      "locale": null,
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/root-crossreview/root-crossreview-final.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.ManageMediaActions.retryLibraries"
+    },
+    {
+      "disposition": null,
+      "locale": null,
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/root-crossreview/root-crossreview-final.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.ManageMediaActions.selectRequest"
+    },
+    {
+      "disposition": null,
+      "locale": null,
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/root-crossreview/root-crossreview-final.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.ManageMediaActions.servicesDescription"
+    },
+    {
+      "disposition": null,
+      "locale": null,
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/root-crossreview/root-crossreview-final.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.ManageMediaActions.viewIssues"
+    },
+    {
+      "disposition": null,
+      "locale": null,
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/root-crossreview/root-crossreview-working.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.Login.validationEmailRequired"
+    },
+    {
+      "disposition": null,
+      "locale": null,
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/root-crossreview/root-crossreview-working.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.MagazineDetails.noIssues"
+    },
+    {
+      "disposition": null,
+      "locale": null,
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/root-crossreview/root-crossreview-working.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.MagazineDetails.openIssues"
+    },
+    {
+      "disposition": null,
+      "locale": null,
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/root-crossreview/root-crossreview-working.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.MagazineDetails.status"
+    },
+    {
+      "disposition": null,
+      "locale": null,
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/root-crossreview/root-crossreview-working.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.MagazineDetails.watchlistDeleted"
+    },
+    {
+      "disposition": null,
+      "locale": null,
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/root-crossreview/root-crossreview-working.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.MagazineDetails.watchlistSuccess"
+    },
+    {
+      "disposition": null,
+      "locale": null,
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/root-crossreview/root-crossreview-working.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.ManageMediaActions.block"
+    },
+    {
+      "disposition": null,
+      "locale": null,
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/root-crossreview/root-crossreview-working.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.ManageMediaActions.blocklist"
+    },
+    {
+      "disposition": null,
+      "locale": null,
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/root-crossreview/root-crossreview-working.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.ManageMediaActions.both"
+    },
+    {
+      "disposition": null,
+      "locale": null,
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/root-crossreview/root-crossreview-working.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.ManageMediaActions.clearStaleAvailability"
+    },
+    {
+      "disposition": null,
+      "locale": null,
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/root-crossreview/root-crossreview-working.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.ManageMediaActions.clearStaleAvailabilityFailed"
+    },
+    {
+      "disposition": null,
+      "locale": null,
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/root-crossreview/root-crossreview-working.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.ManageMediaActions.clearStaleAvailabilitySuccess"
+    },
+    {
+      "disposition": null,
+      "locale": null,
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/root-crossreview/root-crossreview-working.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.ManageMediaActions.clearStaleAvailabilityTitle"
+    },
+    {
+      "disposition": null,
+      "locale": null,
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/root-crossreview/root-crossreview-working.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.ManageMediaActions.closeConfirm"
+    },
+    {
+      "disposition": null,
+      "locale": null,
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/root-crossreview/root-crossreview-working.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.ManageMediaActions.closeDescription"
+    },
+    {
+      "disposition": null,
+      "locale": null,
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/root-crossreview/root-crossreview-working.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.ManageMediaActions.closeIssues"
+    },
+    {
+      "disposition": null,
+      "locale": null,
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/root-crossreview/root-crossreview-working.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.ManageMediaActions.deleteConfirm"
+    },
+    {
+      "disposition": null,
+      "locale": null,
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/root-crossreview/root-crossreview-working.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.ManageMediaActions.deleteDescription"
+    },
+    {
+      "disposition": null,
+      "locale": null,
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/root-crossreview/root-crossreview-working.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.ManageMediaActions.deleteIssues"
+    },
+    {
+      "disposition": null,
+      "locale": null,
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/root-crossreview/root-crossreview-working.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.ManageMediaActions.deleteRequests"
+    },
+    {
+      "disposition": null,
+      "locale": null,
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/root-crossreview/root-crossreview-working.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.ManageMediaActions.explanation"
+    },
+    {
+      "disposition": null,
+      "locale": null,
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/root-crossreview/root-crossreview-working.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.ManageMediaActions.failed"
+    },
+    {
+      "disposition": null,
+      "locale": null,
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/root-crossreview/root-crossreview-working.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.ManageMediaActions.issuesDescription"
+    },
+    {
+      "disposition": null,
+      "locale": null,
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/root-crossreview/root-crossreview-working.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.ManageMediaActions.libraryLookupFailed"
+    },
+    {
+      "disposition": null,
+      "locale": null,
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/root-crossreview/root-crossreview-working.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.ManageMediaActions.noIssues"
+    },
+    {
+      "disposition": null,
+      "locale": null,
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/root-crossreview/root-crossreview-working.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.ManageMediaActions.noOpenIssues"
+    },
+    {
+      "disposition": null,
+      "locale": null,
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/root-crossreview/root-crossreview-working.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.ManageMediaActions.openService"
+    },
+    {
+      "disposition": null,
+      "locale": null,
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/root-crossreview/root-crossreview-working.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.ManageMediaActions.removeAllTitle"
+    },
+    {
+      "disposition": null,
+      "locale": null,
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/root-crossreview/root-crossreview-working.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.ManageMediaActions.requests"
+    },
+    {
+      "disposition": null,
+      "locale": null,
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/root-crossreview/root-crossreview-working.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.ManageMediaActions.retryLibraries"
+    },
+    {
+      "disposition": null,
+      "locale": null,
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/root-crossreview/root-crossreview-working.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.ManageMediaActions.selectRequest"
+    },
+    {
+      "disposition": null,
+      "locale": null,
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/root-crossreview/root-crossreview-working.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.ManageMediaActions.servicesDescription"
+    },
+    {
+      "disposition": null,
+      "locale": null,
+      "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng/docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/root-crossreview/root-crossreview-working.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.ManageMediaActions.viewIssues"
+    }
+  ],
+  "matchingPriorRows": 365,
+  "note": "Exact matching prior dispositions are preserved; historical rows with drift or mismatched source were not used as current decisions.",
+  "priorLedgerFilesWithMatches": 8,
+  "scopePositions": [
+    1900,
+    1999
+  ],
+  "searchedPriorPacketDirs": 22,
+  "selectedSourceIds": 100
+}

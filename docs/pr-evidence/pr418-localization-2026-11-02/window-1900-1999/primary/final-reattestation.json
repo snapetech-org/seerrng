@@ -1,0 +1,46 @@
+{
+  "afterReview": {
+    "checkedAtUtc": "2026-11-02T16:35:40.261816+00:00",
+    "livePullRequest": {
+      "baseRefOid": "221d8e0d542802da7529cd272c928cc747677e5c",
+      "headRefName": "codex/seerrng-localization-overhaul-20261028",
+      "headRefOid": "aab1928ff83728d30a864b1ff24c5c812c7ca040",
+      "isDraft": true,
+      "state": "OPEN"
+    },
+    "worktree": {
+      "head": "aab1928ff83728d30a864b1ff24c5c812c7ca040",
+      "status": "",
+      "tree": "00901677a18e5ebf8d92a1f195668289f8a6f928"
+    }
+  },
+  "beforeReview": {
+    "checkedAtUtc": "2026-11-02T16:35:39.482309+00:00",
+    "livePullRequest": {
+      "baseRefOid": "221d8e0d542802da7529cd272c928cc747677e5c",
+      "headRefName": "codex/seerrng-localization-overhaul-20261028",
+      "headRefOid": "aab1928ff83728d30a864b1ff24c5c812c7ca040",
+      "isDraft": true,
+      "state": "OPEN"
+    },
+    "worktree": {
+      "head": "aab1928ff83728d30a864b1ff24c5c812c7ca040",
+      "status": "",
+      "tree": "00901677a18e5ebf8d92a1f195668289f8a6f928"
+    }
+  },
+  "callerFilesReattested": 8,
+  "callerMismatches": 0,
+  "callerRefsReattested": 382,
+  "cellsReattested": 1200,
+  "expectedHead": "aab1928ff83728d30a864b1ff24c5c812c7ca040",
+  "expectedTree": "00901677a18e5ebf8d92a1f195668289f8a6f928",
+  "historicalOverlappingRows": 365,
+  "priorExactDispositions": 0,
+  "pullRequest": 418,
+  "repository": "snapetech-org/seerrng",
+  "repositoryModified": false,
+  "sourceAndCellMismatches": 0,
+  "sourceIdsReattested": 100,
+  "worktreeUnmodified": true
+}
