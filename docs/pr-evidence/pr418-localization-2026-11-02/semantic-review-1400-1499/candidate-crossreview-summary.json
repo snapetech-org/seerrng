@@ -1,0 +1,63 @@
+{
+  "schemaVersion": 1,
+  "task": "Independent candidate cross-review for SeerrNG PR #418 W1400–1499",
+  "repository": "snapetech-org/seerrng",
+  "pullRequest": 418,
+  "state": "OPEN",
+  "isDraft": true,
+  "exactHead": "0773321829173ea9fe6c765d16335c27c06c57a2",
+  "exactTree": "176872baf853ae7278c0c575111bb430026aa454",
+  "worktree": "/mnt/disks/scratch/task-worktrees/localization-20261102/seerrng-pr418-w1400-1499",
+  "worktreeClean": true,
+  "primaryPacket": "/mnt/disks/scratch/task-scratch/seerrng-pr418-window-1400-1499-primary-20261102/",
+  "inputFilesVerified": {
+    "SHA256SUMS": "5b25ad7e2500acd67e289296922490611e62f30a757a116fa41d737aa36436cb",
+    "INPUT_SHA256SUMS": "e7cf88f65131de807224560ea3abb5719723e14cc3c3f4f002f5af5cf909ca59",
+    "candidate-proposals.jsonl": "43e3138cf9ebe6316202971df5f862356811bfc0672f6b2fa4e91f55a6922ea9",
+    "holds.jsonl": "3f15fa84f1188d230c592e0f74565926e2dcec71c9bfc6604572442b7f60da81",
+    "review-input-all-cells.jsonl": "f1fa600601d265dac07db3b4718c16ae393e03b47f1b95be26d9ddaf610bd391",
+    "source-contexts.jsonl": "63505384d268ad4a8b377a6d838072e1b94c73d88b721e4f5060f5082f9e9c47",
+    "source-current-attestation.jsonl": "4f1814438cb010c0f90d91efe33daa6342aae0f76574065ad5e3f134bc1bf2c7",
+    "caller-context-attestation.jsonl": "6f3e740881f8a70c3924397d98755bb266c049e2d338abbddb08a21fc1f679ee",
+    "candidate-hashes.jsonl": "6d2291ed16190c7ddd008f213521fbe9d2207346816a2e90c4daff258e18fb3e",
+    "manifest.json": "e75602b90610f25ab73003ae19ca4c891001e31fc0d1831e1d9f8a4eb597677f",
+    "task.json": "079d0bbc199a00ef71250b1f8fe1394c821d4e16cf8ab172270fdd0713f9fc19"
+  },
+  "primaryChecksumsVerified": true,
+  "candidateProposalRows": 447,
+  "preservedPrimaryHoldRows": 24,
+  "crossReviewLedgerRows": 471,
+  "crossReviewDispositionCounts": {
+    "accept": 446,
+    "refine": 1,
+    "hold": 24
+  },
+  "primaryCandidateKindCounts": {
+    "correction": 365,
+    "refinement": 82
+  },
+  "refinedCells": [
+    {
+      "sourceIdPosition": 1499,
+      "id": "components.IdentityMappingControls.searchFailed",
+      "locale": "vi",
+      "target": "Tìm kiếm trong danh mục không thành công. Vui lòng thử lại.",
+      "targetSha256": "d23a00c193166b66ffa9f226805e8241d7373f17b7075d0f567dfb9e3e0e413e",
+      "reason": "The primary candidate changes a failed search into an inability to search. This wording reports that the catalog search was unsuccessful and keeps the retry instruction."
+    }
+  ],
+  "rejectedProposals": 0,
+  "blockers": [],
+  "sourceCurrentCatalogHashesReattested": true,
+  "callerContextAttestationsReattested": 223,
+  "uniqueCallerLinesReattested": 221,
+  "placeholderMarkupProtectedLiteralChecksPassed": true,
+  "holdPreservationNote": "All 24 primary Request/Store or copy holds are included unchanged as holds.",
+  "notes": [
+    "All 447 candidate source/current/proposal hashes, locale catalog blobs and caller context pins were reattested at the exact current PR head/tree.",
+    "One Vietnamese proposal for source 1499 was refined because it changed “the catalog search failed” into “cannot search the catalog.”",
+    "All other proposed target texts were accepted.",
+    "All 24 primary holds were preserved without reopening.",
+    "Native-speaker approval and browser review are not claimed. No repository, PR, or catalog changes and no tests/builds/scans/CI actions were made."
+  ]
+}
