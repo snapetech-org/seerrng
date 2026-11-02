@@ -1,0 +1,38 @@
+{
+  "schemaVersion": 1,
+  "task": "Primary semantic review; read-only exact-head localization evidence",
+  "repository": "snapetech-org/seerrng",
+  "pullRequest": 418,
+  "exactHead": "94bdd3f690fc54d37d17e04d29a443533af3fb0d",
+  "exactTree": "17df3c6f626ac544990d2f8f2049daf95b4738ac",
+  "worktree": "/mnt/disks/scratch/task-worktrees/localization-20261102/seerrng-pr418-w1400-1499",
+  "scope": {
+    "sourcePositions": [
+      1500,
+      1599
+    ],
+    "locales": [
+      "ja",
+      "ko",
+      "pt-BR",
+      "vi",
+      "zh-CN",
+      "zh-TW"
+    ],
+    "assignedSemanticCells": 600,
+    "sourceIds": 100
+  },
+  "input": {
+    "path": "/mnt/disks/scratch/task-scratch/seerrng-pr418-window-1500-1599-primary-20261102/locale-b/review-input.jsonl",
+    "sha256": "470292d41fdd1e9cc4037eddcb7eea8a8e25de252190d55a0f946d15bd279244",
+    "rows": 600
+  },
+  "instructions": [
+    "Review every input row in the requested locale for meaning, grammar, naturalness, UI fit, and caller context; do not mark a cell corrected only to prefer another style.",
+    "Return one JSON object per row with keys id,sourceIdPosition,locale,source,sourceHash,currentTarget,currentTargetHash,targetFile,targetCatalogBlob,sourceContexts,exactHead,exactTree,disposition,recommendedTarget,recommendedTargetHash,rationale,confidence,inputAttestationMismatches.",
+    "Use accept-current, propose-correction, propose-refinement, or hold. For accept-current/hold set recommendedTarget and recommendedTargetHash to null. Every proposal must include exact replacement text and SHA-256 over exact UTF-8 text.",
+    "Keep placeholders, ICU syntax, markup, product names, and protected literals valid. Use caller-specific meaning when it resolves ambiguity; use hold when meaning cannot be confidently resolved.",
+    "Do not claim native-speaker approval or browser review. Do not edit repository/PR files, run tests/builds/scans/CI, or modify workflows.",
+    "Do not re-review or alter the 38 frozen prior Spanish dispositions; they are excluded from these inputs."
+  ]
+}

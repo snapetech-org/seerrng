@@ -1,0 +1,119 @@
+{
+  "schemaVersion": 1,
+  "task": "Read-only proposed root reconciliation for SeerrNG PR #418 W1500–1599",
+  "repository": "snapetech-org/seerrng",
+  "pullRequest": 418,
+  "state": "OPEN",
+  "isDraft": true,
+  "exactHead": "94bdd3f690fc54d37d17e04d29a443533af3fb0d",
+  "exactTree": "17df3c6f626ac544990d2f8f2049daf95b4738ac",
+  "sourcePositions": {
+    "startInclusive": 1500,
+    "endInclusive": 1599,
+    "sourceIdCount": 100,
+    "positionConvention": "zero-based English catalog insertion order"
+  },
+  "locales": [
+    "ar",
+    "de",
+    "es",
+    "fr",
+    "hi",
+    "id",
+    "ja",
+    "ko",
+    "pt-BR",
+    "vi",
+    "zh-CN",
+    "zh-TW"
+  ],
+  "cells": 1200,
+  "suggestedParentDecisionCounts": {
+    "accept-candidate": 326,
+    "accept-current": 509,
+    "preserve-frozen-prior": 36,
+    "hold": 329
+  },
+  "reviewerDispositionCounts": {
+    "primary": {
+      "propose-correction": 303,
+      "accept-current": 537,
+      "preserved-prior-disposition": 38,
+      "propose-refinement": 36,
+      "hold": 286
+    },
+    "localeA": {
+      "accept-proposal": 120,
+      "accept-current": 276,
+      "refine-proposal": 11,
+      "agree-hold": 142,
+      "missed-issue": 13
+    },
+    "localeBByA": {
+      "accepted": 439,
+      "hold": 144,
+      "refine": 12,
+      "missed": 5
+    }
+  },
+  "frozenPriorDispositionCount": 38,
+  "frozenPriorRootDecisionTypes": {
+    "accept": 21,
+    "refine": 17
+  },
+  "frozenPriorWithIncompleteCurrentCallerEvidence": 2,
+  "localeAIndependentDisagreements": {
+    "refineProposal": 11,
+    "missedIssue": 13
+  },
+  "localeBIndependentDisagreements": {
+    "refinements": 12,
+    "missed": 5
+  },
+  "parentHoldsDueReviewerDisagreement": 41,
+  "parentHoldsDueUnsupportedCaller": 288,
+  "parentAcceptedCandidateCount": 326,
+  "parentAcceptedCurrentCount": 509,
+  "parentPreservedPriorCount": 36,
+  "rechecks": {
+    "allInputManifestsVerified": true,
+    "sourceCurrentCellsReattested": 1200,
+    "sourceCurrentHashMismatches": 0,
+    "catalogBlobOrFileHashMismatches": 0,
+    "primaryCandidateHashMismatches": 0,
+    "localeACrossReviewTargetHashMismatches": 0,
+    "localeBCrossReviewTargetHashMismatches": 0,
+    "callerLineAndFilePinsReattested": 3909,
+    "uniqueCallerEvidencePins": 166,
+    "uniqueCallerFiles": 7,
+    "callerPinMismatches": 0,
+    "sourcePositionMismatches": 0,
+    "structuralFailuresAmongAllReviewerTargets": 0,
+    "currentProtectedLiteralMismatchCells": 13,
+    "currentPlaceholderFailures": 0,
+    "currentMarkupFailures": 0
+  },
+  "inputPackets": {
+    "primary": {
+      "path": "/mnt/disks/scratch/task-scratch/seerrng-pr418-window-1500-1599-primary-20261102",
+      "SHA256SUMS": "9a90f7e896d3487edf1c7598c3339fcfa6180fb78c13ce18c6c1c2f3eb98f9b9",
+      "INPUT_SHA256SUMS": "369041b07b1f649178e12eb94e3cbf6e5290f80dbb184a56d0191619e9a6e51d",
+      "primaryLedgerSha256": "9bfd10630c56bc2ed264467e9fe4c246ecfa9aac1308c865d16a1543df3154ef",
+      "priorDispositionFileSha256": "56e63e6f074970ec6ae06432dd37d559c184bb953a7638dab5772181b3151de9"
+    },
+    "localeACrossReview": {
+      "path": "/mnt/disks/scratch/task-scratch/seerrng-pr418-window-1500-1599-crossreview-locale-a-20261102",
+      "SHA256SUMS": "944d48edc5273b150a9b6a83f6d0f33dbc1488f1707097e0ae9badae4695a4d6",
+      "ledgerSha256": "5becbf458e6253f2b117e87eb91c5839218acb4c656ea84147fe5ce972b0c709"
+    },
+    "localeBCrossReviewByA": {
+      "path": "/mnt/disks/scratch/task-scratch/seerrng-pr418-window-1500-1599-crossreview-locale-b-by-a-20261102",
+      "SHA256SUMS": "c74a406a1056665c8d6bf9d8bf208610c0567f1c9562107989cb47745a919d76",
+      "ledgerSha256": "0875de8e763e60a7c603f25ec677c360892f3e5df719cd655952028c07fe2b5a"
+    }
+  },
+  "readOnly": true,
+  "nativeSpeakerApproval": false,
+  "browserReview": false,
+  "blockers": []
+}

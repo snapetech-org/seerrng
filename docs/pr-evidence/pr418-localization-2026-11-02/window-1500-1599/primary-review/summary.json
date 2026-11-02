@@ -1,0 +1,219 @@
+{
+  "schemaVersion": 1,
+  "repository": "snapetech-org/seerrng",
+  "pullRequest": 418,
+  "state": "OPEN",
+  "isDraft": true,
+  "task": "Primary semantic review for SeerrNG PR #418 source positions 1500–1599 across all 12 direct locales",
+  "pin": {
+    "head": "94bdd3f690fc54d37d17e04d29a443533af3fb0d",
+    "tree": "17df3c6f626ac544990d2f8f2049daf95b4738ac",
+    "branch": "codex/seerrng-localization-overhaul-20261028",
+    "baseRefOid": "221d8e0d542802da7529cd272c928cc747677e5c"
+  },
+  "sourceIdPositions": {
+    "count": 100,
+    "startInclusive": 1500,
+    "stopExclusive": 1600
+  },
+  "sourceIds": 100,
+  "locales": [
+    "ar",
+    "de",
+    "es",
+    "fr",
+    "hi",
+    "id",
+    "ja",
+    "ko",
+    "pt-BR",
+    "vi",
+    "zh-CN",
+    "zh-TW"
+  ],
+  "targetCells": 1200,
+  "rowsReviewed": 1200,
+  "priorDispositionsPreserved": 0,
+  "newSemanticRows": 1162,
+  "callerContextReferencesReattested": 166,
+  "uniqueCallerFiles": 7,
+  "uniqueCallerLines": 164,
+  "placeholderFailures": 0,
+  "markupFailures": 0,
+  "protectedLiteralFailures": 0,
+  "nativeSpeakerReviewPerformed": false,
+  "browserReviewPerformed": false,
+  "notes": [
+    "Source positions 1500–1599 use the exact insertion order of src/i18n/locale/en.json at the pinned head.",
+    "The previous W1400–1499 source inventory and all 1,200 prior cells were rechecked after its 450-row apply at this head with zero mismatches.",
+    "The full tracked PR evidence inventory was searched by source ID. Thirty-eight prior Spanish root-reviewed/applied decisions were exact-hash matched and frozen.",
+    "All 1,200 current/source values and caller pins were attested at exact head/tree; definition-only cases remain individually marked.",
+    "Machine-assisted semantic review only; native-speaker signoff and browser review are not claimed.",
+    "All 1,200 source/current cells, 12 locale catalogs, and caller pins were re-attested against the live exact head/tree before finalizing.",
+    "The 38 prior Spanish cell dispositions and applied targets are preserved unchanged.",
+    "Definition-only and unlocated caller cases are held: 286 new cells remain held because exact caller meaning is not established.",
+    "All proposed targets were UTF-8 SHA-256 checked and preserve source placeholders/ICU fields, markup, and protected product/technical literals.",
+    "Thirteen current cells had provider/product/unit literal mismatches; each has a correcting proposal.",
+    "Machine-assisted semantic review only; no native-speaker signoff or browser review is claimed."
+  ],
+  "priorDispositionCellsPreserved": 38,
+  "semanticReviewInputRows": 1162,
+  "priorSourceIdIntersectionsPreserved": 38,
+  "priorOverlaps": [
+    "components.IdentityMappingControls.searchLabel",
+    "components.IdentityMappingControls.series",
+    "components.IdentityMappingControls.useMatch",
+    "components.IdentityMappingPackControls.description",
+    "components.IdentityMappingPackControls.export",
+    "components.IdentityMappingPackControls.exportFailed",
+    "components.IdentityMappingPackControls.fileSummary",
+    "components.IdentityMappingPackControls.fileTooLarge",
+    "components.IdentityMappingPackControls.import",
+    "components.IdentityMappingPackControls.importDescription",
+    "components.IdentityMappingPackControls.importFailed",
+    "components.IdentityMappingPackControls.importLabel",
+    "components.IdentityMappingPackControls.imported",
+    "components.IdentityMappingPackControls.invalidFile",
+    "components.IdentityMappingPackControls.privacy",
+    "components.IdentityMappingPackControls.title",
+    "components.IndexerSearch.accessDenied",
+    "components.IndexerSearch.categories",
+    "components.IndexerSearch.categoryGame",
+    "components.IndexerSearch.categoryModern",
+    "components.IndexerSearch.configure",
+    "components.IndexerSearch.grabs",
+    "components.IndexerSearch.intro",
+    "components.IndexerSearch.leechers",
+    "components.IndexerSearch.loadFailed",
+    "components.IndexerSearch.manualMode",
+    "components.IndexerSearch.noConnectionHelp",
+    "components.IndexerSearch.openResult",
+    "components.IndexerSearch.requestStillUsesManager",
+    "components.IndexerSearch.resultCount",
+    "components.IndexerSearch.search",
+    "components.IndexerSearch.searchFailed",
+    "components.IndexerSearch.seeders",
+    "components.IndexerSearch.tooManySearches",
+    "components.IndexerSearchLink.help",
+    "components.IndexerSearchLink.label",
+    "components.IssueDetails.IssueComment.cancelHelp",
+    "components.IssueDetails.IssueComment.delete"
+  ],
+  "priorDispositionTypes": {
+    "accept": 21,
+    "refine": 17
+  },
+  "definitionOnlySourceIds": [
+    "components.IdentityMappingPackControls.importing",
+    "components.IndexerSearch.categoryAdult",
+    "components.IndexerSearch.categoryAudiobook",
+    "components.IndexerSearch.categoryComic",
+    "components.IndexerSearch.categoryEbook",
+    "components.IndexerSearch.categoryGame",
+    "components.IndexerSearch.categoryMagazine",
+    "components.IndexerSearch.categoryModern",
+    "components.IndexerSearch.categoryMovie",
+    "components.IndexerSearch.categoryMusic",
+    "components.IndexerSearch.categoryRetro",
+    "components.IndexerSearch.categoryTv",
+    "components.IssueDetails.IssueAffectedEpisodes.all",
+    "components.IssueDetails.IssueAffectedEpisodes.allSeasons",
+    "components.IssueDetails.IssueAffectedEpisodes.entireSeries",
+    "components.IssueDetails.IssueAffectedEpisodes.episode",
+    "components.IssueDetails.IssueAffectedEpisodes.episodeNumber",
+    "components.IssueDetails.IssueAffectedEpisodes.heading",
+    "components.IssueDetails.IssueAffectedEpisodes.loadError",
+    "components.IssueDetails.IssueAffectedEpisodes.noneSelected",
+    "components.IssueDetails.IssueAffectedEpisodes.season",
+    "components.IssueDetails.IssueAffectedEpisodes.seasonNumber",
+    "components.IssueDetails.IssueAffectedEpisodes.specials",
+    "components.IssueDetails.IssueAffectedEpisodes.title"
+  ],
+  "definitionOnlyTargetCellCount": 288,
+  "primaryDispositions": {
+    "propose-correction": 303,
+    "accept-current": 537,
+    "preserved-prior-disposition": 38,
+    "propose-refinement": 36,
+    "hold": 286
+  },
+  "candidateCount": 339,
+  "countsByLocale": {
+    "ar": {
+      "propose-correction": 37,
+      "accept-current": 39,
+      "hold": 24
+    },
+    "de": {
+      "accept-current": 67,
+      "propose-refinement": 5,
+      "propose-correction": 4,
+      "hold": 24
+    },
+    "es": {
+      "accept-current": 37,
+      "preserved-prior-disposition": 38,
+      "hold": 22,
+      "propose-correction": 3
+    },
+    "fr": {
+      "accept-current": 50,
+      "propose-refinement": 4,
+      "propose-correction": 22,
+      "hold": 24
+    },
+    "hi": {
+      "accept-current": 42,
+      "propose-correction": 31,
+      "propose-refinement": 3,
+      "hold": 24
+    },
+    "id": {
+      "accept-current": 54,
+      "propose-correction": 22,
+      "hold": 24
+    },
+    "ja": {
+      "accept-current": 45,
+      "propose-correction": 25,
+      "propose-refinement": 6,
+      "hold": 24
+    },
+    "ko": {
+      "accept-current": 36,
+      "propose-correction": 40,
+      "hold": 24
+    },
+    "pt-BR": {
+      "accept-current": 51,
+      "propose-correction": 25,
+      "hold": 24
+    },
+    "vi": {
+      "accept-current": 38,
+      "propose-correction": 37,
+      "hold": 24,
+      "propose-refinement": 1
+    },
+    "zh-CN": {
+      "accept-current": 45,
+      "propose-refinement": 7,
+      "propose-correction": 24,
+      "hold": 24
+    },
+    "zh-TW": {
+      "accept-current": 33,
+      "propose-correction": 33,
+      "propose-refinement": 10,
+      "hold": 24
+    }
+  },
+  "candidateCorrections": 303,
+  "candidateRefinements": 36,
+  "holds": 286,
+  "protectedLiteralCurrentMismatchCells": 13,
+  "candidateProposalHashesValidated": 339,
+  "allCatalogCellMismatches": 0,
+  "callerContextMismatches": 0,
+  "reviewInputChecksumsVerified": true
+}

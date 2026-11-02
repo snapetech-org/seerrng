@@ -1,0 +1,291 @@
+{
+  "schemaVersion": 1,
+  "repository": "snapetech-org/seerrng",
+  "pullRequest": 418,
+  "head": "94bdd3f690fc54d37d17e04d29a443533af3fb0d",
+  "tree": "17df3c6f626ac544990d2f8f2049daf95b4738ac",
+  "branch": "codex/seerrng-localization-overhaul-20261028",
+  "baseHead": "221d8e0d542802da7529cd272c928cc747677e5c",
+  "livePullRequest": {
+    "state": "OPEN",
+    "isDraft": true,
+    "mergeStateStatus": "CLEAN",
+    "headRefOid": "94bdd3f690fc54d37d17e04d29a443533af3fb0d",
+    "headRefName": "codex/seerrng-localization-overhaul-20261028",
+    "baseRefOid": "221d8e0d542802da7529cd272c928cc747677e5c"
+  },
+  "sourceCatalog": {
+    "path": "src/i18n/locale/en.json",
+    "blob": "12e04a118c30b71b3714291adeaf9fdb2735cee4",
+    "bytes": 835513,
+    "sha256": "75ff3c90b52aedd636a506281ffbd6fb2d3739c61294b6008a517f17647e2316",
+    "keyCount": 9494
+  },
+  "sourceIdPositionRange": [
+    1500,
+    1599
+  ],
+  "sourceIdCount": 100,
+  "sourceIdWindowBoundaryIds": {
+    "1500": "components.IdentityMappingControls.searchHint",
+    "1599": "components.IssueDetails.IssueMediaSummary.firstPublished"
+  },
+  "previousWindow": {
+    "manifest": "/mnt/disks/scratch/task-scratch/seerrng-pr418-window-1400-1499-primary-20261102/manifest.json",
+    "sourceIdPositionRange": [
+      1400,
+      1499
+    ],
+    "nonOverlapping": true,
+    "sourceRowsCompared": 100,
+    "localeCellsCompared": 1200,
+    "mismatches": 0,
+    "reattestedAfterApplicationAtHead": "94bdd3f690fc54d37d17e04d29a443533af3fb0d",
+    "appliedRows": 450,
+    "changedCurrentCells": 450,
+    "unchangedCurrentCells": 750,
+    "postApplyReadbackPath": "docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-1400-1499/root-apply-readback.json"
+  },
+  "targetLocales": [
+    "ar",
+    "de",
+    "es",
+    "fr",
+    "hi",
+    "id",
+    "ja",
+    "ko",
+    "pt-BR",
+    "vi",
+    "zh-CN",
+    "zh-TW"
+  ],
+  "targetCellCount": 1200,
+  "targetCatalogs": {
+    "ar": {
+      "path": "src/i18n/locale/ar.json",
+      "blob": "11490ad1fb0f2f720201ff60b8760d03760fada7",
+      "bytes": 1042278,
+      "sha256": "4b74008c2cc05a8da092cadc37c673bd8ae5310177ee430f1336df32a67155e9",
+      "keyCount": 9494
+    },
+    "de": {
+      "path": "src/i18n/locale/de.json",
+      "blob": "9c3707df98c3ca8b1680bdfdc7d793a1c47a1af0",
+      "bytes": 926533,
+      "sha256": "5a9ceaab0c5c4d816073b1e0082549eb2e540867381194a05765a67c3fcfe8a3",
+      "keyCount": 9494
+    },
+    "es": {
+      "path": "src/i18n/locale/es.json",
+      "blob": "f62dc4b46878a9b826904f4d04dc903733783072",
+      "bytes": 921922,
+      "sha256": "e6ff1f2e8732e34bd4f8b46c96e70200c5ec2a9a328784da7490c171635bba85",
+      "keyCount": 9494
+    },
+    "fr": {
+      "path": "src/i18n/locale/fr.json",
+      "blob": "bd178854527e4b39faaf6ccf41b9509beabf6510",
+      "bytes": 938846,
+      "sha256": "870aed3c40fbfcf72471c4eda312292e2c752085e5bb03b215162f93dd8113c0",
+      "keyCount": 9494
+    },
+    "hi": {
+      "path": "src/i18n/locale/hi.json",
+      "blob": "660223abdffd19a86bf2492a9ee724a2d542dd46",
+      "bytes": 1368164,
+      "sha256": "4c75114f5a1fc27f0807bbb4dc12ed65740eec494ef22f27a43936f8c0f21341",
+      "keyCount": 9494
+    },
+    "id": {
+      "path": "src/i18n/locale/id.json",
+      "blob": "c24ff8fdecb33f5ee3b6fbb6fa1749021a145622",
+      "bytes": 866374,
+      "sha256": "5986abc530277ae1b98695c8d09a60bf0690cb761bf9e2fbdc44514c0c9e24f4",
+      "keyCount": 9494
+    },
+    "ja": {
+      "path": "src/i18n/locale/ja.json",
+      "blob": "c5d0ce50305d1e0a31452c68688681f9e6116e00",
+      "bytes": 1014607,
+      "sha256": "17de5b3c554bb7862ae36987feff287a833ebc28e217c498e3307adc083c407a",
+      "keyCount": 9494
+    },
+    "ko": {
+      "path": "src/i18n/locale/ko.json",
+      "blob": "afeaaed4e13c3802fb0eaaef74018bae00859a56",
+      "bytes": 931559,
+      "sha256": "9e07da90e99ad9a3bdf40af719c8bd5f9bfe1f802dbdaf1852539199fefba2e7",
+      "keyCount": 9494
+    },
+    "pt-BR": {
+      "path": "src/i18n/locale/pt_BR.json",
+      "blob": "119f34ba4efe97207f8cc0c7d89fa76ae42e43df",
+      "bytes": 909957,
+      "sha256": "e5c4fec3313ec55a513a04562e525c7d5cc60ebcdee360e4d3e22a1fc6335898",
+      "keyCount": 9494
+    },
+    "vi": {
+      "path": "src/i18n/locale/vi.json",
+      "blob": "f214afe08f97221f5915d59144028863d6f2678d",
+      "bytes": 966313,
+      "sha256": "ecc55481acea8b1fa416c5e0f6a53f15af565909e564dc04863b3cbd50bc7027",
+      "keyCount": 9494
+    },
+    "zh-CN": {
+      "path": "src/i18n/locale/zh_Hans.json",
+      "blob": "cc97a96d41c658b0c4f4c66798da62c834103baa",
+      "bytes": 810615,
+      "sha256": "797ca134d282fa97299357e10bc8e2d2a1fe8d427eade42b0d000a2394ac41df",
+      "keyCount": 9494
+    },
+    "zh-TW": {
+      "path": "src/i18n/locale/zh_Hant.json",
+      "blob": "0bc947ac5e63ba4433a6f05825490ebf1a0c9aae",
+      "bytes": 811163,
+      "sha256": "2565fe12dbe56cadc2ccd8964a1597c072eda8a2a0054d364a5c5f50b19373d9",
+      "keyCount": 9494
+    }
+  },
+  "priorDispositionCellCount": 38,
+  "priorDispositionSourceIds": [
+    "components.IdentityMappingControls.searchLabel",
+    "components.IdentityMappingControls.series",
+    "components.IdentityMappingControls.useMatch",
+    "components.IdentityMappingPackControls.description",
+    "components.IdentityMappingPackControls.export",
+    "components.IdentityMappingPackControls.exportFailed",
+    "components.IdentityMappingPackControls.fileSummary",
+    "components.IdentityMappingPackControls.fileTooLarge",
+    "components.IdentityMappingPackControls.import",
+    "components.IdentityMappingPackControls.importDescription",
+    "components.IdentityMappingPackControls.importFailed",
+    "components.IdentityMappingPackControls.importLabel",
+    "components.IdentityMappingPackControls.imported",
+    "components.IdentityMappingPackControls.invalidFile",
+    "components.IdentityMappingPackControls.privacy",
+    "components.IdentityMappingPackControls.title",
+    "components.IndexerSearch.accessDenied",
+    "components.IndexerSearch.categories",
+    "components.IndexerSearch.categoryGame",
+    "components.IndexerSearch.categoryModern",
+    "components.IndexerSearch.configure",
+    "components.IndexerSearch.grabs",
+    "components.IndexerSearch.intro",
+    "components.IndexerSearch.leechers",
+    "components.IndexerSearch.loadFailed",
+    "components.IndexerSearch.manualMode",
+    "components.IndexerSearch.noConnectionHelp",
+    "components.IndexerSearch.openResult",
+    "components.IndexerSearch.requestStillUsesManager",
+    "components.IndexerSearch.resultCount",
+    "components.IndexerSearch.search",
+    "components.IndexerSearch.searchFailed",
+    "components.IndexerSearch.seeders",
+    "components.IndexerSearch.tooManySearches",
+    "components.IndexerSearchLink.help",
+    "components.IndexerSearchLink.label",
+    "components.IssueDetails.IssueComment.cancelHelp",
+    "components.IssueDetails.IssueComment.delete"
+  ],
+  "priorDispositionEvidence": "prior-disposition-boundary.json",
+  "sourceContextRows": 100,
+  "callerReferences": 166,
+  "uniqueCallerFiles": 7,
+  "uniqueCallerLines": 164,
+  "priorDispositionTypes": {
+    "accept": 21,
+    "refine": 17
+  },
+  "frozenPriorCells": 38,
+  "semanticReviewInputRows": 1162,
+  "rowsReviewed": 1200,
+  "semanticDispositions": {
+    "accept-current": 537,
+    "propose-correction": 303,
+    "propose-refinement": 36,
+    "hold": 286,
+    "preserved-prior-disposition": 38,
+    "candidateCount": 339,
+    "byLocale": {
+      "ar": {
+        "propose-correction": 37,
+        "accept-current": 39,
+        "hold": 24
+      },
+      "de": {
+        "accept-current": 67,
+        "propose-refinement": 5,
+        "propose-correction": 4,
+        "hold": 24
+      },
+      "es": {
+        "accept-current": 37,
+        "preserved-prior-disposition": 38,
+        "hold": 22,
+        "propose-correction": 3
+      },
+      "fr": {
+        "accept-current": 50,
+        "propose-refinement": 4,
+        "propose-correction": 22,
+        "hold": 24
+      },
+      "hi": {
+        "accept-current": 42,
+        "propose-correction": 31,
+        "propose-refinement": 3,
+        "hold": 24
+      },
+      "id": {
+        "accept-current": 54,
+        "propose-correction": 22,
+        "hold": 24
+      },
+      "ja": {
+        "accept-current": 45,
+        "propose-correction": 25,
+        "propose-refinement": 6,
+        "hold": 24
+      },
+      "ko": {
+        "accept-current": 36,
+        "propose-correction": 40,
+        "hold": 24
+      },
+      "pt-BR": {
+        "accept-current": 51,
+        "propose-correction": 25,
+        "hold": 24
+      },
+      "vi": {
+        "accept-current": 38,
+        "propose-correction": 37,
+        "hold": 24,
+        "propose-refinement": 1
+      },
+      "zh-CN": {
+        "accept-current": 45,
+        "propose-refinement": 7,
+        "propose-correction": 24,
+        "hold": 24
+      },
+      "zh-TW": {
+        "accept-current": 33,
+        "propose-correction": 33,
+        "propose-refinement": 10,
+        "hold": 24
+      }
+    }
+  },
+  "candidateCount": 339,
+  "heldCells": 286,
+  "definitionOnlyTargetCellCount": 288,
+  "currentProtectedLiteralMismatchCells": 13,
+  "finalPlaceholderFailures": 0,
+  "finalMarkupFailures": 0,
+  "finalProtectedLiteralFailures": 0,
+  "catalogCellMismatches": 0,
+  "callerPinMismatches": 0,
+  "livePinReattestation": "pass"
+}
