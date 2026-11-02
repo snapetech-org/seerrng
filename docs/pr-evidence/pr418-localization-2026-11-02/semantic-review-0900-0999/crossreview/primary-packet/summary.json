@@ -1,0 +1,73 @@
+{
+  "schemaVersion": 1,
+  "repository": "snapetech-org/seerrng",
+  "pullRequest": 418,
+  "state": "OPEN",
+  "isDraft": true,
+  "task": "Primary semantic review for SeerrNG PR #418 sourceIdPosition 900–999 across all 12 direct locales",
+  "pin": {
+    "head": "18001c2d09d5d271bd4fe2ad22189c29d069a457",
+    "tree": "7a9f3218d79501fb620329f0e53c1a0b3dd44508",
+    "prHeadRefName": "codex/seerrng-localization-overhaul-20261028",
+    "baseRefOid": "221d8e0d542802da7529cd272c928cc747677e5c"
+  },
+  "sourceIdPositions": {
+    "count": 100,
+    "startInclusive": 900,
+    "stopExclusive": 1000
+  },
+  "sourceIds": 100,
+  "locales": [
+    "ar",
+    "de",
+    "es",
+    "fr",
+    "hi",
+    "id",
+    "ja",
+    "ko",
+    "pt-BR",
+    "vi",
+    "zh-CN",
+    "zh-TW"
+  ],
+  "targetCells": 1200,
+  "rowsReviewed": 1200,
+  "newSemanticRows": 1200,
+  "priorDispositionRows": 0,
+  "decisionCounts": {
+    "correction-needed": 227,
+    "accept-current": 973
+  },
+  "correctionProposals": 227,
+  "countsByLocale": {
+    "ar": 22,
+    "vi": 27,
+    "ko": 28,
+    "zh-TW": 28,
+    "hi": 23,
+    "ja": 18,
+    "es": 6,
+    "pt-BR": 16,
+    "zh-CN": 27,
+    "fr": 17,
+    "de": 7,
+    "id": 8
+  },
+  "sourceRowsReattested": 100,
+  "sourceCurrentCellsReattested": 1200,
+  "sourceCurrentMismatches": 0,
+  "callerContextReferencesReattested": 218,
+  "callerContextMismatches": 0,
+  "uniqueCallerFiles": 13,
+  "uniqueCallerReferences": 218,
+  "placeholderParityFailures": 0,
+  "markupParityFailures": 0,
+  "nativeSpeakerReviewPerformed": false,
+  "nativeSpeakerReviewRequired": true,
+  "notes": [
+    "No prior routed semantic dispositions for these source positions were found in tracked PR evidence.",
+    "Primary semantic decisions are bounded machine review; qualified native-speaker approval remains outstanding.",
+    "No catalog files or repository files were modified; no tests, builds, scans, CI, or PR mutations were performed."
+  ]
+}

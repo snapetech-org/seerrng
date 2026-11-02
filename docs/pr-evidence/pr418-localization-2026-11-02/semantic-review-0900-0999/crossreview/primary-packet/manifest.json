@@ -1,0 +1,121 @@
+{
+  "schemaVersion": 1,
+  "repository": "snapetech-org/seerrng",
+  "pullRequest": 418,
+  "head": "18001c2d09d5d271bd4fe2ad22189c29d069a457",
+  "tree": "7a9f3218d79501fb620329f0e53c1a0b3dd44508",
+  "sourceCatalog": {
+    "path": "src/i18n/locale/en.json",
+    "blob": "12e04a118c30b71b3714291adeaf9fdb2735cee4",
+    "sha256": "75ff3c90b52aedd636a506281ffbd6fb2d3739c61294b6008a517f17647e2316"
+  },
+  "sourceIdPositionRange": [
+    900,
+    999
+  ],
+  "sourceIdCount": 100,
+  "targetLocales": [
+    "ar",
+    "de",
+    "es",
+    "fr",
+    "hi",
+    "id",
+    "ja",
+    "ko",
+    "pt-BR",
+    "vi",
+    "zh-CN",
+    "zh-TW"
+  ],
+  "targetCellCount": 1200,
+  "targetCatalogs": {
+    "ar": {
+      "path": "src/i18n/locale/ar.json",
+      "fileBlob": "fd8063668e695eef759a807a0ec0e108add6b17a",
+      "fileSha256": "a7fa374a00081799fdcc724af5df49d79814f79867815dd5c55bfa7eea79e78b",
+      "bytes": 1040904,
+      "keyCount": 9494
+    },
+    "de": {
+      "path": "src/i18n/locale/de.json",
+      "fileBlob": "571ce948af0902c71eba3e2c148b1631d0dea2be",
+      "fileSha256": "2e3eb0d46ced7563ed5975f9df47eec18ac6bd2cc83db2396a5c9b4ac89f5e81",
+      "bytes": 926340,
+      "keyCount": 9494
+    },
+    "es": {
+      "path": "src/i18n/locale/es.json",
+      "fileBlob": "241862c71f1453c366a832456e417c1760a0e153",
+      "fileSha256": "ee8a69a0b81c6b331313c20a1a6ef55167a5becb80812e44c65c5a63a2861318",
+      "bytes": 921734,
+      "keyCount": 9494
+    },
+    "fr": {
+      "path": "src/i18n/locale/fr.json",
+      "fileBlob": "80e0a0aab5e640c0258dcb1d8d9e8ef32a217195",
+      "fileSha256": "bf07ff293bafec4947109cb24d9d547edd468f65b771b155f2f63c90c4624bc8",
+      "bytes": 938294,
+      "keyCount": 9494
+    },
+    "hi": {
+      "path": "src/i18n/locale/hi.json",
+      "fileBlob": "2b574811a73093867cf9543f3e2367fcb8ca60be",
+      "fileSha256": "12654eb65d95d6c8415af85ea53072a8da12fa233b440411efa90d9001a9cd70",
+      "bytes": 1366204,
+      "keyCount": 9494
+    },
+    "id": {
+      "path": "src/i18n/locale/id.json",
+      "fileBlob": "339e283e6ff5b2015e7e4f6e7120094cdff48285",
+      "fileSha256": "1c33c299a0e397c20327ea2bc1236a1688a58ef716e4cc7588847e90c8ac92b8",
+      "bytes": 866011,
+      "keyCount": 9494
+    },
+    "ja": {
+      "path": "src/i18n/locale/ja.json",
+      "fileBlob": "973bf4b1313a85e0b24f93390634fe409bf589a6",
+      "fileSha256": "2c71dfe570dccd9bf4f0e0818ef7a25baa7e0bc31148db9088d22141c8b47bfb",
+      "bytes": 1014218,
+      "keyCount": 9494
+    },
+    "ko": {
+      "path": "src/i18n/locale/ko.json",
+      "fileBlob": "7ec41579d1f27e0a403e991f2ffdf3a92b190b90",
+      "fileSha256": "0babb93c02df47c84e745c86854eff6e4b1ffdb4a5d77c6b6096a80b87e12afd",
+      "bytes": 930666,
+      "keyCount": 9494
+    },
+    "pt-BR": {
+      "path": "src/i18n/locale/pt_BR.json",
+      "fileBlob": "b804467925cf03dd15258b55af950462996ab201",
+      "fileSha256": "08e8c67a4de8f98d5c4cd123626f3a021a97a46c62a3ee75aba4ac847d3fb7c4",
+      "bytes": 909396,
+      "keyCount": 9494
+    },
+    "vi": {
+      "path": "src/i18n/locale/vi.json",
+      "fileBlob": "a44788372f8efe6572ccc97b35ace042ff9890e7",
+      "fileSha256": "0746897a92ae762babc38a482c2aa07e104974123ba72c9229842cf4e8d81e3a",
+      "bytes": 965088,
+      "keyCount": 9494
+    },
+    "zh-CN": {
+      "path": "src/i18n/locale/zh_Hans.json",
+      "fileBlob": "4c25bf765da9b76cb90489955a2f57d57db3cade",
+      "fileSha256": "ff4b35c759072307b02140e024d477c335511b8591aa94d53a7eae167eb3ecaa",
+      "bytes": 810208,
+      "keyCount": 9494
+    },
+    "zh-TW": {
+      "path": "src/i18n/locale/zh_Hant.json",
+      "fileBlob": "fe8d1789e0141c9adcb854391e45439805f1a47c",
+      "fileSha256": "9805474a3c5632301693c8842cf6bfa2c15d1f8f67d02f7e0e81f30faa2d5fa5",
+      "bytes": 810618,
+      "keyCount": 9494
+    }
+  },
+  "primaryReviewLedger": "primary-review-ledger.jsonl",
+  "callerContextAttestation": "caller-context-attestation.jsonl",
+  "sourceCurrentAttestation": "source-current-attestation.jsonl"
+}

@@ -1,0 +1,74 @@
+{
+  "note": "Peer findings are incorporated into the cross-review ledger; additional independent findings are documented per row there.",
+  "positionRange900To949": {
+    "cells": 600,
+    "peerReconciled": {
+      "acceptCurrent": 440,
+      "acceptProposals": 159,
+      "hold": 0,
+      "missed": 1,
+      "noOpReportedFindings": 1,
+      "refine": 0
+    },
+    "peerReportedBeforeReconciliation": {
+      "acceptCurrent": 439,
+      "acceptProposals": 159,
+      "hold": 0,
+      "missed": 2,
+      "refine": 0
+    },
+    "primaryCorrections": 159,
+    "reconciledActualMisses": 1,
+    "reconciledNoOpReports": 1,
+    "reportedFindings": [
+      {
+        "locale": "fr",
+        "reconciliation": "no-op/accept-current; exact live catalog and primary ledger already contain this same text and hash 45729a6c43ef0d13b7481003f0488b888bb459a97d2aaf210b2cf521557e67d7.",
+        "reportedTarget": "Impossible de supprimer la rangée.",
+        "sourceId": "components.Discover.DiscoverSliderEdit.deletefail"
+      },
+      {
+        "locale": "hi",
+        "reason": "Current wording denotes a studio cinema rather than films from the studio.",
+        "sourceId": "components.Discover.DiscoverMovies.studioMovies",
+        "suggestedTarget": "{studio} की फ़िल्में"
+      }
+    ]
+  },
+  "positionRange950To999": {
+    "cells": 600,
+    "findings": [
+      {
+        "locale": "ar",
+        "sourceId": "components.Discover.DiscoverTv.networkSeries",
+        "suggestedTarget": "مسلسلات {network}"
+      },
+      {
+        "locale": "ar",
+        "sourceId": "components.Discover.DiscoverTvGenre.genreSeries",
+        "suggestedTarget": "مسلسلات من نوع {genre}"
+      },
+      {
+        "locale": "ar",
+        "sourceId": "components.Discover.DiscoverTvKeyword.keywordSeries",
+        "suggestedTarget": "مسلسلات مرتبطة بـ{keywordTitle}"
+      },
+      {
+        "locale": "ar",
+        "sourceId": "components.Discover.DiscoverTvLanguage.languageSeries",
+        "suggestedTarget": "مسلسلات باللغة {language}"
+      },
+      {
+        "locale": "fr",
+        "refinedTarget": "Séries correspondant à {keywordTitle}",
+        "sourceId": "components.Discover.DiscoverTvKeyword.keywordSeries"
+      }
+    ],
+    "peerAcceptCurrent": 528,
+    "peerAcceptProposals": 67,
+    "peerHold": 0,
+    "peerMissed": 4,
+    "peerRefine": 1,
+    "primaryCorrections": 68
+  }
+}
