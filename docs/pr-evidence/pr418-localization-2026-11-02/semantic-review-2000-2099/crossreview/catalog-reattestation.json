@@ -1,0 +1,103 @@
+{
+  "headCommit": "d897f04661802d7f47446e46602f1b521d33c52f",
+  "localeCatalogs": [
+    {
+      "blob": "0bb66708e469391a19cd52cbfd9448ac5c24ad99",
+      "bytes": 1043408,
+      "locale": "ar",
+      "path": "src/i18n/locale/ar.json",
+      "sha256": "a2856bf6b43b4d20d008f87332596e308a52cd9a1e8a48a15a415e529ffa71b0"
+    },
+    {
+      "blob": "2dba8f871b5f1827229b30966ed20d664fb37615",
+      "bytes": 926657,
+      "locale": "de",
+      "path": "src/i18n/locale/de.json",
+      "sha256": "548710e2b8c3c4d6aab5afc051f05708c7673da5a9466a0f6ecbee969ed87d15"
+    },
+    {
+      "blob": "5f97bd2dab51cf9d4f2fd3d992018b08550f3827",
+      "bytes": 922073,
+      "locale": "es",
+      "path": "src/i18n/locale/es.json",
+      "sha256": "c92fd3c6efead02c4e1fd337b3d24303572ed88477af1deeb2eb1509cfa9c7fc"
+    },
+    {
+      "blob": "1d0a4ee694fc6438b64bf0a50d602418380d53ef",
+      "bytes": 939384,
+      "locale": "fr",
+      "path": "src/i18n/locale/fr.json",
+      "sha256": "34a62f99b390bd7b7b147fb557051ecf39d2872985a2328d121e9836da5641d5"
+    },
+    {
+      "blob": "b84a32264a99d50b03c8c465c36063cb9bc30152",
+      "bytes": 1369311,
+      "locale": "hi",
+      "path": "src/i18n/locale/hi.json",
+      "sha256": "788680db3a9ef489244ce5691334f77032f689ec0b2d88df50ab6344b85d82b3"
+    },
+    {
+      "blob": "f3716914be07a477f824736db72e0b479afdfa39",
+      "bytes": 866711,
+      "locale": "id",
+      "path": "src/i18n/locale/id.json",
+      "sha256": "ead604a85371617abebf46e6b265f5f9db39729f82e939bc54cdbfb6b28f04a8"
+    },
+    {
+      "blob": "28216d6a75952320f1c6be1030ce6befba3f4679",
+      "bytes": 1015058,
+      "locale": "ja",
+      "path": "src/i18n/locale/ja.json",
+      "sha256": "6642f86223cbf708bb37a5c3ece4afa52289f9fdf87184ce61b4784f271eba5f"
+    },
+    {
+      "blob": "c2d80dc419978c688c24e8b93b15493dcc82595e",
+      "bytes": 932500,
+      "locale": "ko",
+      "path": "src/i18n/locale/ko.json",
+      "sha256": "1b12edf245fae3969bacb823c01f77eec5bdb3a39015e87f68cddc649e6f7356"
+    },
+    {
+      "blob": "2ee2231f8b6899bd02cca3081770fe4f690cabe5",
+      "bytes": 910441,
+      "locale": "pt_BR",
+      "path": "src/i18n/locale/pt_BR.json",
+      "sha256": "52680fc67143fe1f492f5e1dea72f774ae29a6494e5b916aef7625e67a218e97"
+    },
+    {
+      "blob": "97a567ee8fea4b3079bf1df03cf29d0250c44782",
+      "bytes": 967578,
+      "locale": "vi",
+      "path": "src/i18n/locale/vi.json",
+      "sha256": "c6cf8f2997737e900a8a875a710a9226a0575d389918091a6f0b7d302ba3e924"
+    },
+    {
+      "blob": "a776b5fd9b20e4d62d686581743aa344e160174c",
+      "bytes": 811189,
+      "locale": "zh_Hans",
+      "path": "src/i18n/locale/zh_Hans.json",
+      "sha256": "ad429b6eedf4e08410597fe8c44e065c41aa2c6ac38bad5b5f888f86c2d8e4d4"
+    },
+    {
+      "blob": "3e60116dac9a446fb9f9bfe1256e0ee659fb94b5",
+      "bytes": 812320,
+      "locale": "zh_Hant",
+      "path": "src/i18n/locale/zh_Hant.json",
+      "sha256": "2ab013c0d21698f83836a665bca3d2ffaf627e5192d87498aa03d0c2e3d0e2cd"
+    }
+  ],
+  "orderedLeafCount": 9494,
+  "pullRequest": 418,
+  "repository": "snapetech-org/SeerrNG",
+  "sourceCatalog": {
+    "blob": "12e04a118c30b71b3714291adeaf9fdb2735cee4",
+    "bytes": 835513,
+    "path": "src/i18n/locale/en.json",
+    "sha256": "75ff3c90b52aedd636a506281ffbd6fb2d3739c61294b6008a517f17647e2316"
+  },
+  "sourceWindowPositions": [
+    2000,
+    2099
+  ],
+  "tree": "309b846c546923856ffde114fd3cf75a7c8de7a7"
+}

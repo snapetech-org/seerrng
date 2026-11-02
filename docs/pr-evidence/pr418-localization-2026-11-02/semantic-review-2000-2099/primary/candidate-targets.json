@@ -1,0 +1,2690 @@
+{
+  "candidateCount": 383,
+  "candidateTargets": [
+    {
+      "candidateTarget": "اعرض جميع المشكلات المفتوحة والتي تم حلها والمُبلَّغ عنها بشأن هذه الوسائط.",
+      "candidateTargetHash": "33b5b700c9ab22d72c360d82127c7f03e6e2f474e4aba0afcd3297bd9fa88686",
+      "locale": "ar",
+      "sourceId": "components.ManageMediaActions.viewIssuesDescription",
+      "sourcePosition": 2000
+    },
+    {
+      "candidateTarget": "Alle für dieses Medium gemeldeten offenen und gelösten Probleme anzeigen.",
+      "candidateTargetHash": "b831b6180289ccca13940f6ff4d282cf0a985b825327973966b5030af34277c3",
+      "locale": "de",
+      "sourceId": "components.ManageMediaActions.viewIssuesDescription",
+      "sourcePosition": 2000
+    },
+    {
+      "candidateTarget": "इस मीडिया के लिए रिपोर्ट की गई सभी खुली और हल की गई समस्याएँ देखें।",
+      "candidateTargetHash": "1750faa8c90564eda785406fe60f013182ae71517be07b0a5b70c21fb8764f07",
+      "locale": "hi",
+      "sourceId": "components.ManageMediaActions.viewIssuesDescription",
+      "sourcePosition": 2000
+    },
+    {
+      "candidateTarget": "이 미디어에서 보고된 모든 미해결 및 해결된 문제를 확인합니다.",
+      "candidateTargetHash": "05cd148a98fde3bdad0e8c6a79956cac86087555caed1adcfe07ba4179af2d57",
+      "locale": "ko",
+      "sourceId": "components.ManageMediaActions.viewIssuesDescription",
+      "sourcePosition": 2000
+    },
+    {
+      "candidateTarget": "Xem tất cả vấn đề đang mở và đã giải quyết được báo cáo cho nội dung này.",
+      "candidateTargetHash": "1e045b0d46dbc5dd9d31e614e730ae717345d8b5e0e8eed9f8a698e3dcc3828e",
+      "locale": "vi",
+      "sourceId": "components.ManageMediaActions.viewIssuesDescription",
+      "sourcePosition": 2000
+    },
+    {
+      "candidateTarget": "查看此媒体上报告的所有未解决和已解决的问题。",
+      "candidateTargetHash": "21fef4ee869a1e260c8e0cffa40b38e31e7853029a16b389db8b007978823e20",
+      "locale": "zh_Hans",
+      "sourceId": "components.ManageMediaActions.viewIssuesDescription",
+      "sourcePosition": 2000
+    },
+    {
+      "candidateTarget": "查看此媒體上回報的所有未解決及已解決問題。",
+      "candidateTargetHash": "6189faff452fca5b4eccfbc42aef1fc77e3a8ec04b143ce87f1b2a83fe50dbe8",
+      "locale": "zh_Hant",
+      "sourceId": "components.ManageMediaActions.viewIssuesDescription",
+      "sourcePosition": 2000
+    },
+    {
+      "candidateTarget": "सभी समय",
+      "candidateTargetHash": "3981c7d3ed37fdbd7be411eaa2be3c8523fd622d4cbdd3a3dca090a3b7f72835",
+      "locale": "hi",
+      "sourceId": "components.ManageSlideOver.alltime",
+      "sourcePosition": 2001
+    },
+    {
+      "candidateTarget": "全期間",
+      "candidateTargetHash": "0fac4b1a23b97d1357814738986812eb71cac91afacbf02a242162121f6cfa9b",
+      "locale": "ja",
+      "sourceId": "components.ManageSlideOver.alltime",
+      "sourcePosition": 2001
+    },
+    {
+      "candidateTarget": "Todo o período",
+      "candidateTargetHash": "f70ad056ef463de2208bb0d05cdddd165dbe5a349d8a4aecdd839167f241ee0a",
+      "locale": "pt_BR",
+      "sourceId": "components.ManageSlideOver.alltime",
+      "sourcePosition": 2001
+    },
+    {
+      "candidateTarget": "全部时间",
+      "candidateTargetHash": "b28e2113fe3a14e690a4ef362bc88968571378bcb03d172bdd0a740b71b704fc",
+      "locale": "zh_Hans",
+      "sourceId": "components.ManageSlideOver.alltime",
+      "sourcePosition": 2001
+    },
+    {
+      "candidateTarget": "全部時間",
+      "candidateTargetHash": "963fa26aa3aa846450034d4ccbe8c4b6f5351d002d672f975dfa4ef864aeb1b2",
+      "locale": "zh_Hant",
+      "sourceId": "components.ManageSlideOver.alltime",
+      "sourcePosition": 2001
+    },
+    {
+      "candidateTarget": "下载",
+      "candidateTargetHash": "4673a2306165612576462979eee34149329ab42aad9b580e726a1fae1ce7ab64",
+      "locale": "zh_Hans",
+      "sourceId": "components.ManageSlideOver.downloadstatus",
+      "sourcePosition": 2002
+    },
+    {
+      "candidateTarget": "下載",
+      "candidateTargetHash": "d477c75aa6561c9fb7b7fea6add7ff9bbea04ab9dcc27220dc3da37aa98f6afe",
+      "locale": "zh_Hant",
+      "sourceId": "components.ManageSlideOver.downloadstatus",
+      "sourcePosition": 2002
+    },
+    {
+      "candidateTarget": "खुले मुद्दे",
+      "candidateTargetHash": "73e46c06ed88458ac593d0c642e8f20e45b105596d08c5b149d2e2f64005d95c",
+      "locale": "hi",
+      "sourceId": "components.ManageSlideOver.manageModalIssues",
+      "sourcePosition": 2003
+    },
+    {
+      "candidateTarget": "미해결 문제",
+      "candidateTargetHash": "5b6a211b355ac49ccd8d385b42a5b0a70f9a092752f76d11c329f4a31d4415a5",
+      "locale": "ko",
+      "sourceId": "components.ManageSlideOver.manageModalIssues",
+      "sourcePosition": 2003
+    },
+    {
+      "candidateTarget": "Vấn đề đang mở",
+      "candidateTargetHash": "d1b64d12c3aed18a6807c873f9da0110adce5a9dc142b164fdf5b7ff12cc7e37",
+      "locale": "vi",
+      "sourceId": "components.ManageSlideOver.manageModalIssues",
+      "sourcePosition": 2003
+    },
+    {
+      "candidateTarget": "لا توجد طلبات.",
+      "candidateTargetHash": "a680f675db2df604410b16222b30b8d5ac515586e654f8a85d2e6110bb9b1be3",
+      "locale": "ar",
+      "sourceId": "components.ManageSlideOver.manageModalNoRequests",
+      "sourcePosition": 2004
+    },
+    {
+      "candidateTarget": "कोई अनुरोध नहीं",
+      "candidateTargetHash": "56cf3698c7dc9fb2bd94a94bf9ac7d0427d0a5665564e0cb9c9a619da47232ae",
+      "locale": "hi",
+      "sourceId": "components.ManageSlideOver.manageModalNoRequests",
+      "sourcePosition": 2004
+    },
+    {
+      "candidateTarget": "{mediaType} प्रबंधित करें",
+      "candidateTargetHash": "2df7048ed235d5f004999481dd60513f165651d26b5311612fb7c9a770480a07",
+      "locale": "hi",
+      "sourceId": "components.ManageSlideOver.manageModalTitle",
+      "sourcePosition": 2006
+    },
+    {
+      "candidateTarget": "电影",
+      "candidateTargetHash": "03a3a327af684099e7e863d8080bba7c2539050a5fc066a1932d90e3bdf61b15",
+      "locale": "zh_Hans",
+      "sourceId": "components.ManageSlideOver.movie",
+      "sourcePosition": 2007
+    },
+    {
+      "candidateTarget": "{arr} में खोलें",
+      "candidateTargetHash": "289016fc4c7a52860706e1423ba6f6bec66388d14a09a489accde5323991aab6",
+      "locale": "hi",
+      "sourceId": "components.ManageSlideOver.openarr",
+      "sourcePosition": 2008
+    },
+    {
+      "candidateTarget": "Buka di {arr}",
+      "candidateTargetHash": "933783e6547aee40ef8b9f1eaf7341e12fe4f9ffa8f6ca86f50635333568920c",
+      "locale": "id",
+      "sourceId": "components.ManageSlideOver.openarr",
+      "sourcePosition": 2008
+    },
+    {
+      "candidateTarget": "在 {arr} 中打开",
+      "candidateTargetHash": "7d493e950620138f5082e517c5880a511e23416f9ba2ddd9553bb9ee111abf24",
+      "locale": "zh_Hans",
+      "sourceId": "components.ManageSlideOver.openarr",
+      "sourcePosition": 2008
+    },
+    {
+      "candidateTarget": "在 {arr} 中開啟",
+      "candidateTargetHash": "e14e1fa82a3bdd0a161d765200cac8c79191d2b0f6f934db10588efad0320a0e",
+      "locale": "zh_Hant",
+      "sourceId": "components.ManageSlideOver.openarr",
+      "sourcePosition": 2008
+    },
+    {
+      "candidateTarget": "{arr} में 4K पर खोलें",
+      "candidateTargetHash": "9e9a4a29581bf0f4c311176ef82448454bad359b509ae95794436b8da3717a9b",
+      "locale": "hi",
+      "sourceId": "components.ManageSlideOver.openarr4k",
+      "sourcePosition": 2009
+    },
+    {
+      "candidateTarget": "Abrir em 4K no {arr}",
+      "candidateTargetHash": "97579bcfb8282bce2a307258f5965808f9a73309877141a7e3898f00289adf3c",
+      "locale": "pt_BR",
+      "sourceId": "components.ManageSlideOver.openarr4k",
+      "sourcePosition": 2009
+    },
+    {
+      "candidateTarget": "在 {arr} 中以 4K 打开",
+      "candidateTargetHash": "54b83ee92915b3f85cf34fd03633ddfc90acac92f05a27f2cf664957e16d1904",
+      "locale": "zh_Hans",
+      "sourceId": "components.ManageSlideOver.openarr4k",
+      "sourcePosition": 2009
+    },
+    {
+      "candidateTarget": "在 {arr} 中以 4K 開啟",
+      "candidateTargetHash": "d835bc492c0b8ba33a30c0c903309b8a3b539b5e96e0cc840aff21df010aff98",
+      "locale": "zh_Hant",
+      "sourceId": "components.ManageSlideOver.openarr4k",
+      "sourcePosition": 2009
+    },
+    {
+      "candidateTarget": "Tautulli में खोलें",
+      "candidateTargetHash": "859cc8ec0cdc34b6494f50ba5dcc92fe5d7aeba6e4018091e2ee1c1395cb88e5",
+      "locale": "hi",
+      "sourceId": "components.ManageSlideOver.opentautulli",
+      "sourcePosition": 2010
+    },
+    {
+      "candidateTarget": "Buka di Tautulli",
+      "candidateTargetHash": "ec069845b19e8e46757d27dc38cf7cd5d43391e14962a8cc38d08fe7924b1325",
+      "locale": "id",
+      "sourceId": "components.ManageSlideOver.opentautulli",
+      "sourcePosition": 2010
+    },
+    {
+      "candidateTarget": "在 Tautulli 中打开",
+      "candidateTargetHash": "c966ee0132e07fef97459d6ac138eda4b632129b2012351d4bb2c7e488243609",
+      "locale": "zh_Hans",
+      "sourceId": "components.ManageSlideOver.opentautulli",
+      "sourcePosition": 2010
+    },
+    {
+      "candidateTarget": "在 Tautulli 中開啟",
+      "candidateTargetHash": "737536444c338da1e872387fc4c657402e4a1dd4dab4e8bfb0d1e95f79305e1c",
+      "locale": "zh_Hant",
+      "sourceId": "components.ManageSlideOver.opentautulli",
+      "sourcePosition": 2010
+    },
+    {
+      "candidateTarget": "पिछले {days, number} दिन",
+      "candidateTargetHash": "4697092010e25ddc3c8cf9087b7f1b6f853a4deffa5424910861f0d776f119da",
+      "locale": "hi",
+      "sourceId": "components.ManageSlideOver.pastdays",
+      "sourcePosition": 2011
+    },
+    {
+      "candidateTarget": "{days, number} hari terakhir",
+      "candidateTargetHash": "580890d0d2bccedd5b03b462a6e7b05e33acb2ee4d8b84ef7710b75d579eda50",
+      "locale": "id",
+      "sourceId": "components.ManageSlideOver.pastdays",
+      "sourcePosition": 2011
+    },
+    {
+      "candidateTarget": "{days, number} ngày qua",
+      "candidateTargetHash": "12e69466f6b758d8d2ef2f3c068c0d46c91b8c0a11f1d3b6958fd66a3276244d",
+      "locale": "vi",
+      "sourceId": "components.ManageSlideOver.pastdays",
+      "sourcePosition": 2011
+    },
+    {
+      "candidateTarget": "चलाने वाला",
+      "candidateTargetHash": "61de096fc428e20ca39b7abb05fd59198b06b595edbdb79ad8a7897bdca8a2a2",
+      "locale": "hi",
+      "sourceId": "components.ManageSlideOver.playedby",
+      "sourcePosition": 2012
+    },
+    {
+      "candidateTarget": "Được phát bởi",
+      "candidateTargetHash": "dce3b8c6bb2e9980b81c07bc09524d9376c6bba7bf6f68be67b55e5073ee35a7",
+      "locale": "vi",
+      "sourceId": "components.ManageSlideOver.playedby",
+      "sourcePosition": 2012
+    },
+    {
+      "candidateTarget": "<strong>{playCount, number}</strong> {playCount, plural, zero {مرات تشغيل} one {مرة تشغيل} two {مرتا تشغيل} few {مرات تشغيل} many {مرة تشغيل} other {مرة تشغيل}}",
+      "candidateTargetHash": "40680d493e2d44f82f45f9a5fc9afefb8bcc72feae873c626b02341391921316",
+      "locale": "ar",
+      "sourceId": "components.ManageSlideOver.plays",
+      "sourcePosition": 2013
+    },
+    {
+      "candidateTarget": "<strong>{playCount, number}</strong> {playCount, plural, one {Wiedergabe} other {Wiedergaben}}",
+      "candidateTargetHash": "bfb6be9a865a09db5385160f569ccaeba6eedd7c3bd2849d2d3c0335c3fb77cb",
+      "locale": "de",
+      "sourceId": "components.ManageSlideOver.plays",
+      "sourcePosition": 2013
+    },
+    {
+      "candidateTarget": "<strong>{playCount, number}</strong> {playCount, plural, one {बार चलाया गया} other {बार चलाया गया}}",
+      "candidateTargetHash": "16953659cf354a6fd2c1dd9e2a76e6d101187431e59bc58976ce81963ef5ee7b",
+      "locale": "hi",
+      "sourceId": "components.ManageSlideOver.plays",
+      "sourcePosition": 2013
+    },
+    {
+      "candidateTarget": "<strong>{playCount, number}</strong> {playCount, plural, one {kali diputar} other {kali diputar}}",
+      "candidateTargetHash": "1490b2c98ecbadf9af90304d9b24fd8159a67eaab50aedb737d9564f54f0f01e",
+      "locale": "id",
+      "sourceId": "components.ManageSlideOver.plays",
+      "sourcePosition": 2013
+    },
+    {
+      "candidateTarget": "<strong>{playCount, number}</strong>{playCount, plural, one {回再生} other {回再生}}",
+      "candidateTargetHash": "410012de7447cd56e9358e3a4b5e1de09bb44631a20f478e3c6cc2597feda04b",
+      "locale": "ja",
+      "sourceId": "components.ManageSlideOver.plays",
+      "sourcePosition": 2013
+    },
+    {
+      "candidateTarget": "<strong>{playCount, number}</strong> {playCount, plural, one {reprodução} other {reproduções}}",
+      "candidateTargetHash": "f40e510111997e502e843a85bba7d657575d202ff427888392d19fc3b4e71632",
+      "locale": "pt_BR",
+      "sourceId": "components.ManageSlideOver.plays",
+      "sourcePosition": 2013
+    },
+    {
+      "candidateTarget": "<strong>{playCount, number}</strong> {playCount, plural, one {lượt phát} other {lượt phát}}",
+      "candidateTargetHash": "bf61456e20d3be7ed7acddf90a419f0c82ea5eaab0b1693eb11e156044f7bb4f",
+      "locale": "vi",
+      "sourceId": "components.ManageSlideOver.plays",
+      "sourcePosition": 2013
+    },
+    {
+      "candidateTarget": "<strong>{playCount, number}</strong> {playCount, plural, one {次播放} other {次播放}}",
+      "candidateTargetHash": "f50e2492963735165e9dc3aac98c7994313ec253e3742c79915fcd0f3efb35fc",
+      "locale": "zh_Hans",
+      "sourceId": "components.ManageSlideOver.plays",
+      "sourcePosition": 2013
+    },
+    {
+      "candidateTarget": "剧集",
+      "candidateTargetHash": "cb9a20776230420ec27c8d82fbdfa14ac7a1142b3000d55a2203b4285a0bf4d8",
+      "locale": "zh_Hans",
+      "sourceId": "components.ManageSlideOver.tvshow",
+      "sourcePosition": 2014
+    },
+    {
+      "candidateTarget": "Metacritic: التقييم",
+      "candidateTargetHash": "49e099a28b2ad074f1af91e9b7eddac9cd30644c92d56f8f47fbfc400c638764",
+      "locale": "ar",
+      "sourceId": "components.MdblistRatingBadges.metacritic",
+      "sourcePosition": 2015
+    },
+    {
+      "candidateTarget": "Note Metacritic",
+      "candidateTargetHash": "032938da5b65266e00a026961c0637cd94c49dcc84efa41af6fed813260288e7",
+      "locale": "fr",
+      "sourceId": "components.MdblistRatingBadges.metacritic",
+      "sourcePosition": 2015
+    },
+    {
+      "candidateTarget": "تقييم Metacritic",
+      "candidateTargetHash": "3bd86b8cbf54495fa3246bb65cf4f7665e7bfcdf35e12771ea6db222bd4eaf92",
+      "locale": "hi",
+      "sourceId": "components.MdblistRatingBadges.metacritic",
+      "sourcePosition": 2015
+    },
+    {
+      "candidateTarget": "Skor Metacritic",
+      "candidateTargetHash": "4bc5d0d7caa89a86f9baf048d296c1a3cab407473dfe1c049012db4da27417ec",
+      "locale": "id",
+      "sourceId": "components.MdblistRatingBadges.metacritic",
+      "sourcePosition": 2015
+    },
+    {
+      "candidateTarget": "Metacritic のスコア",
+      "candidateTargetHash": "8231ebb004013d73e270b28a1e3448fce2e5d1056333b4b54db199e95df99935",
+      "locale": "ja",
+      "sourceId": "components.MdblistRatingBadges.metacritic",
+      "sourcePosition": 2015
+    },
+    {
+      "candidateTarget": "Pontuação do Metacritic",
+      "candidateTargetHash": "af4a66ac64dbe42fc8d698f2ce9398b8922f7b921531e66b0d353eed8fdd0850",
+      "locale": "pt_BR",
+      "sourceId": "components.MdblistRatingBadges.metacritic",
+      "sourcePosition": 2015
+    },
+    {
+      "candidateTarget": "Điểm số Metacritic",
+      "candidateTargetHash": "fa0818298e7c9a31359b2465b6bf7deb2115e73b16a07b4a6343ab43e36f50ff",
+      "locale": "vi",
+      "sourceId": "components.MdblistRatingBadges.metacritic",
+      "sourcePosition": 2015
+    },
+    {
+      "candidateTarget": "Metacritic 评分",
+      "candidateTargetHash": "0f9d5b6bc66b8620a0f50662032b464a4030f7f9165fa98f575be4c861993b81",
+      "locale": "zh_Hans",
+      "sourceId": "components.MdblistRatingBadges.metacritic",
+      "sourcePosition": 2015
+    },
+    {
+      "candidateTarget": "Metacritic 評分",
+      "candidateTargetHash": "4a63b231a156c213f9b3435afb9bf86ef1f29d77cc4406e1c95905f3d20571f9",
+      "locale": "zh_Hant",
+      "sourceId": "components.MdblistRatingBadges.metacritic",
+      "sourcePosition": 2015
+    },
+    {
+      "candidateTarget": "{hours} ساعات من التشغيل",
+      "candidateTargetHash": "f0a5efc36d291395c51f53d766813fd82d5d7f0283e58dc6e84af145ea31940f",
+      "locale": "ar",
+      "sourceId": "components.Media.JellystatWatchSummary.playbackTime",
+      "sourcePosition": 2017
+    },
+    {
+      "candidateTarget": "{count, plural, zero {# مرة تشغيل} one {# مرة تشغيل} two {# مرتا تشغيل} few {# مرات تشغيل} many {# مرة تشغيل} other {# مرة تشغيل}}",
+      "candidateTargetHash": "dad5f839debadb476b6d4a7219d5883da0e01e9807b66fcf0fdcc06e6b786ab9",
+      "locale": "ar",
+      "sourceId": "components.Media.JellystatWatchSummary.plays",
+      "sourcePosition": 2018
+    },
+    {
+      "candidateTarget": "{count, plural, one {# lecture} other {# lectures}}",
+      "candidateTargetHash": "be01c67d6316b90694bc24e50b78a8a53575a0ea29844ab5802181378c878d70",
+      "locale": "fr",
+      "sourceId": "components.Media.JellystatWatchSummary.plays",
+      "sourcePosition": 2018
+    },
+    {
+      "candidateTarget": "{count, plural, one {# बार चलाया गया} other {# बार चलाया गया}}",
+      "candidateTargetHash": "9ece8205cda09d1bab2ed8de0fe29e92b070111630462fddda13cf71ab87c869",
+      "locale": "hi",
+      "sourceId": "components.Media.JellystatWatchSummary.plays",
+      "sourcePosition": 2018
+    },
+    {
+      "candidateTarget": "{count, plural, one {# kali diputar} other {# kali diputar}}",
+      "candidateTargetHash": "11c1d5fdad399753c3c5f8e5ec764c56a9e2ac163a5a527f7ddb3040afdda195",
+      "locale": "id",
+      "sourceId": "components.Media.JellystatWatchSummary.plays",
+      "sourcePosition": 2018
+    },
+    {
+      "candidateTarget": "{count, plural, one {# 回再生} other {# 回再生}}",
+      "candidateTargetHash": "86d88c38496922a0d979e70402ce15205a2e3e9ec93080f83a580a339f4c4eb2",
+      "locale": "ja",
+      "sourceId": "components.Media.JellystatWatchSummary.plays",
+      "sourcePosition": 2018
+    },
+    {
+      "candidateTarget": "{count, plural, one {# reprodução} other {# reproduções}}",
+      "candidateTargetHash": "bc49ac3e65de012aa2887efe7bc55e6a3279a9c54fea7e03a43118b588317220",
+      "locale": "pt_BR",
+      "sourceId": "components.Media.JellystatWatchSummary.plays",
+      "sourcePosition": 2018
+    },
+    {
+      "candidateTarget": "{count, plural, one {# lượt phát} other {# lượt phát}}",
+      "candidateTargetHash": "0625e1ee5ff9bffe9db5add76e0afcf81278d057aa25e44a99ce46e2fc4a8ec1",
+      "locale": "vi",
+      "sourceId": "components.Media.JellystatWatchSummary.plays",
+      "sourcePosition": 2018
+    },
+    {
+      "candidateTarget": "{count, plural, one {# 次播放} other {# 次播放}}",
+      "candidateTargetHash": "1df8aaf414097d803f0091fb626b51fd7341024288b95b437156dded2f931caa",
+      "locale": "zh_Hans",
+      "sourceId": "components.Media.JellystatWatchSummary.plays",
+      "sourcePosition": 2018
+    },
+    {
+      "candidateTarget": "Activité de visionnage Jellystat",
+      "candidateTargetHash": "78ca8bf23a36ed67137fc253e254bfc9410505eb4a30ca3753816b9cd792a702",
+      "locale": "fr",
+      "sourceId": "components.Media.JellystatWatchSummary.title",
+      "sourcePosition": 2019
+    },
+    {
+      "candidateTarget": "Jellystat पर देखने की गतिविधि",
+      "candidateTargetHash": "aa6a18255b20d333d479d133e183bb40db882d2f57aef59eb18a01af9e62c833",
+      "locale": "hi",
+      "sourceId": "components.Media.JellystatWatchSummary.title",
+      "sourcePosition": 2019
+    },
+    {
+      "candidateTarget": "Aktivitas tontonan Jellystat",
+      "candidateTargetHash": "dcd3db84bc32818020c3292b83c2ac5c50873d87a910c107f20c34e49c78734c",
+      "locale": "id",
+      "sourceId": "components.Media.JellystatWatchSummary.title",
+      "sourcePosition": 2019
+    },
+    {
+      "candidateTarget": "Jellystat の視聴アクティビティ",
+      "candidateTargetHash": "0789b3e25a03bccc32b47b67c75aa6239c6d7738059d96404b6c9e29d13c5463",
+      "locale": "ja",
+      "sourceId": "components.Media.JellystatWatchSummary.title",
+      "sourcePosition": 2019
+    },
+    {
+      "candidateTarget": "Jellystat 시청 활동",
+      "candidateTargetHash": "5df5d02e128de7d5ac12c77ad5f9dcfc4dd7af3262fd2da7e588c627556a5f72",
+      "locale": "ko",
+      "sourceId": "components.Media.JellystatWatchSummary.title",
+      "sourcePosition": 2019
+    },
+    {
+      "candidateTarget": "Atividade de visualização do Jellystat",
+      "candidateTargetHash": "f704481ba0e774a09a0830573abe07461b977ff3c9f1b7850f59f6a48e09894d",
+      "locale": "pt_BR",
+      "sourceId": "components.Media.JellystatWatchSummary.title",
+      "sourcePosition": 2019
+    },
+    {
+      "candidateTarget": "Jellystat 观看活动",
+      "candidateTargetHash": "8aa74917d51ddaae890b5b81e5c450ae1ee27c85a09a3f7ef64a22d34abc968c",
+      "locale": "zh_Hans",
+      "sourceId": "components.Media.JellystatWatchSummary.title",
+      "sourcePosition": 2019
+    },
+    {
+      "candidateTarget": "Jellystat 觀看活動",
+      "candidateTargetHash": "17d1956a03c838cd01f00989e62fcd3ccd0ebdb8395f9f31985c6d6814103ad3",
+      "locale": "zh_Hant",
+      "sourceId": "components.Media.JellystatWatchSummary.title",
+      "sourcePosition": 2019
+    },
+    {
+      "candidateTarget": "علامة الصح الخضراء: متاح. علامة X الحمراء: غير متاح.",
+      "candidateTargetHash": "0239604744c995ccb7dff8291ba5d52ee0d3ed1c67bcf7f7960ee8cefa54863e",
+      "locale": "ar",
+      "sourceId": "components.MediaDetails.AlbumTrackList.availabilityLegend",
+      "sourcePosition": 2020
+    },
+    {
+      "candidateTarget": "Coche verte : disponible. X rouge : indisponible.",
+      "candidateTargetHash": "3676068409fc51d0625beeab42f5ecbed973d16229ec9ab5f1aefd389c5d4402",
+      "locale": "fr",
+      "sourceId": "components.MediaDetails.AlbumTrackList.availabilityLegend",
+      "sourcePosition": 2020
+    },
+    {
+      "candidateTarget": "हरे चेक का निशान: उपलब्ध। लाल X: उपलब्ध नहीं।",
+      "candidateTargetHash": "6116a3738b2a42ccc4fc31d473b87f980e2fa36d43d0c7202edf2065c6f53895",
+      "locale": "hi",
+      "sourceId": "components.MediaDetails.AlbumTrackList.availabilityLegend",
+      "sourcePosition": 2020
+    },
+    {
+      "candidateTarget": "Tanda centang hijau: tersedia. Tanda X merah: tidak tersedia.",
+      "candidateTargetHash": "db8d525f827a71314eaa24921b7606bcee907ca365e65773f5daa6062cf001da",
+      "locale": "id",
+      "sourceId": "components.MediaDetails.AlbumTrackList.availabilityLegend",
+      "sourcePosition": 2020
+    },
+    {
+      "candidateTarget": "緑のチェックマーク: 利用可能。赤いX: 利用不可。",
+      "candidateTargetHash": "7e2726893b0679111c99a23a56b0f2aa8be28873f89c1033e16248fd372720aa",
+      "locale": "ja",
+      "sourceId": "components.MediaDetails.AlbumTrackList.availabilityLegend",
+      "sourcePosition": 2020
+    },
+    {
+      "candidateTarget": "초록색 체크 표시: 사용 가능. 빨간색 X: 사용 불가.",
+      "candidateTargetHash": "7d6c0982dfe02fcfad27bdeaca3efd1ab7e3a02b63e17a298ca835d8adfea54f",
+      "locale": "ko",
+      "sourceId": "components.MediaDetails.AlbumTrackList.availabilityLegend",
+      "sourcePosition": 2020
+    },
+    {
+      "candidateTarget": "Marca de verificação verde: disponível. X vermelho: indisponível.",
+      "candidateTargetHash": "448f00a80449a4f0ab957b2bd8f6ec4159c2a8d9dccf17233531ff24932f37c3",
+      "locale": "pt_BR",
+      "sourceId": "components.MediaDetails.AlbumTrackList.availabilityLegend",
+      "sourcePosition": 2020
+    },
+    {
+      "candidateTarget": "Dấu tích màu xanh: có sẵn. Dấu X màu đỏ: không có sẵn.",
+      "candidateTargetHash": "d918a1be69fc8894fcc133778920b2654bd8ca5a95f5cc0fd2e7f0ea71c4e03b",
+      "locale": "vi",
+      "sourceId": "components.MediaDetails.AlbumTrackList.availabilityLegend",
+      "sourcePosition": 2020
+    },
+    {
+      "candidateTarget": "绿色勾号：可用。红色 X：不可用。",
+      "candidateTargetHash": "3706690db0b71da3cbafe8328ccdb522aec9fa5ce872eabd4abb229a4e0d6500",
+      "locale": "zh_Hans",
+      "sourceId": "components.MediaDetails.AlbumTrackList.availabilityLegend",
+      "sourcePosition": 2020
+    },
+    {
+      "candidateTarget": "綠色勾號：可用。紅色 X：不可用。",
+      "candidateTargetHash": "cbaa608f0a92df4b52e63125bb924cbef51bf635f052e3ac5bd334f4b1d41b0d",
+      "locale": "zh_Hant",
+      "sourceId": "components.MediaDetails.AlbumTrackList.availabilityLegend",
+      "sourcePosition": 2020
+    },
+    {
+      "candidateTarget": "Có trong yêu cầu album",
+      "candidateTargetHash": "1c30efbd959dea90aaa84723cbd86173a3425414d7042cd03f085e31a409c559",
+      "locale": "vi",
+      "sourceId": "components.MediaDetails.AlbumTrackList.includedInAlbumRequest",
+      "sourcePosition": 2021
+    },
+    {
+      "candidateTarget": "包含在专辑请求中",
+      "candidateTargetHash": "683227fd18466055f142453666690911aa828e664cadf6cde6445704939ef793",
+      "locale": "zh_Hans",
+      "sourceId": "components.MediaDetails.AlbumTrackList.includedInAlbumRequest",
+      "sourcePosition": 2021
+    },
+    {
+      "candidateTarget": "包含在專輯要求中",
+      "candidateTargetHash": "ba186a1c67f1f8f022764eda726fa6c91e554f44e7a52f740a5427f672482035",
+      "locale": "zh_Hant",
+      "sourceId": "components.MediaDetails.AlbumTrackList.includedInAlbumRequest",
+      "sourcePosition": 2021
+    },
+    {
+      "candidateTarget": "Tidak ada trek audio yang tersedia.",
+      "candidateTargetHash": "5375a6727aedd8dd1a5d454b0a0fcc7432346d01f2ae4a55c9ea575c73013759",
+      "locale": "id",
+      "sourceId": "components.MediaDetails.AlbumTrackList.noTracks",
+      "sourcePosition": 2022
+    },
+    {
+      "candidateTarget": "अवधि",
+      "candidateTargetHash": "16a3378e5a9d3f64d161120324b431d4dc2839dbce72ef083e312622dc9d641c",
+      "locale": "hi",
+      "sourceId": "components.MediaDetails.AlbumTrackList.runtime",
+      "sourcePosition": 2024
+    },
+    {
+      "candidateTarget": "Durasi",
+      "candidateTargetHash": "dd22ab55ef76e02df5d4af06bdcd447b6d8b6581fa2df9d1b54afab09f03f8d0",
+      "locale": "id",
+      "sourceId": "components.MediaDetails.AlbumTrackList.runtime",
+      "sourcePosition": 2024
+    },
+    {
+      "candidateTarget": "再生時間",
+      "candidateTargetHash": "16f8131b361ae6635d68439b9eb591d9716d6fa800df181270a67ddb35763a9f",
+      "locale": "ja",
+      "sourceId": "components.MediaDetails.AlbumTrackList.runtime",
+      "sourcePosition": 2024
+    },
+    {
+      "candidateTarget": "时长",
+      "candidateTargetHash": "04a95e0654d3cec7038912d0d48e53ee4615dc6aa77a9bc5d2da9cd6f8532d8d",
+      "locale": "zh_Hans",
+      "sourceId": "components.MediaDetails.AlbumTrackList.runtime",
+      "sourcePosition": 2024
+    },
+    {
+      "candidateTarget": "時長",
+      "candidateTargetHash": "f94549e470bd84128718d5aac65e9cb9cca2aed82a5e9428cadc05dbcc667271",
+      "locale": "zh_Hant",
+      "sourceId": "components.MediaDetails.AlbumTrackList.runtime",
+      "sourcePosition": 2024
+    },
+    {
+      "candidateTarget": "اختر العناصر لتشغيلها",
+      "candidateTargetHash": "afaae92ef25e8126a18cd11c10143f97639379887db61564b924970e72ee2230",
+      "locale": "ar",
+      "sourceId": "components.MediaDetails.AlbumTrackList.selection",
+      "sourcePosition": 2025
+    },
+    {
+      "candidateTarget": "चलाने के लिए आइटम चुनें",
+      "candidateTargetHash": "982523841367a855f037228c697b69619e4a4e77a0704fcb65a91bfd1d6778bf",
+      "locale": "hi",
+      "sourceId": "components.MediaDetails.AlbumTrackList.selection",
+      "sourcePosition": 2025
+    },
+    {
+      "candidateTarget": "Pilih item untuk diputar",
+      "candidateTargetHash": "304734a07607e4f2bfcfd23a147aecd1e33e515d81274efe3372726114a4bec6",
+      "locale": "id",
+      "sourceId": "components.MediaDetails.AlbumTrackList.selection",
+      "sourcePosition": 2025
+    },
+    {
+      "candidateTarget": "재생할 항목 선택",
+      "candidateTargetHash": "fd5924b4c52ccea9e05866cbf0aa4b27a4fa33d3ace2f809a9a74a6b8d5a2dfa",
+      "locale": "ko",
+      "sourceId": "components.MediaDetails.AlbumTrackList.selection",
+      "sourcePosition": 2025
+    },
+    {
+      "candidateTarget": "Selecione itens para reprodução",
+      "candidateTargetHash": "904f0b028662e32163f7c21818ab232b6c1ba4957eb5ad9a4ed7aa0938902df9",
+      "locale": "pt_BR",
+      "sourceId": "components.MediaDetails.AlbumTrackList.selection",
+      "sourcePosition": 2025
+    },
+    {
+      "candidateTarget": "Chọn các mục để phát",
+      "candidateTargetHash": "806ab4f8b31d62f84d8c259db91a8db89d9033ce3499c98c69e02dc29cd9a1ed",
+      "locale": "vi",
+      "sourceId": "components.MediaDetails.AlbumTrackList.selection",
+      "sourcePosition": 2025
+    },
+    {
+      "candidateTarget": "標題",
+      "candidateTargetHash": "6fe38ed1ee10422a8666ff36bbffd5fe69c56e0d23f30dfb1f5062ccb9c59d25",
+      "locale": "zh_Hant",
+      "sourceId": "components.MediaDetails.AlbumTrackList.title",
+      "sourcePosition": 2026
+    },
+    {
+      "candidateTarget": "Track",
+      "candidateTargetHash": "051f01f095a28b04433fb7b6cc6785ef57533bfb7d5c784d33a472c56ea125dd",
+      "locale": "de",
+      "sourceId": "components.MediaDetails.AlbumTrackList.track",
+      "sourcePosition": 2027
+    },
+    {
+      "candidateTarget": "Piste audio",
+      "candidateTargetHash": "da01ccc01c8c50c5f81cb1dbb50d3d03822e96564287e25721649f406d75b71d",
+      "locale": "fr",
+      "sourceId": "components.MediaDetails.AlbumTrackList.track",
+      "sourcePosition": 2027
+    },
+    {
+      "candidateTarget": "Nomor trek audio",
+      "candidateTargetHash": "4990c61be4a98c11c4d3fc2fb9b7e13b1985ac59b5502a4932238e275730515e",
+      "locale": "id",
+      "sourceId": "components.MediaDetails.AlbumTrackList.track",
+      "sourcePosition": 2027
+    },
+    {
+      "candidateTarget": "Faixa",
+      "candidateTargetHash": "2140e2b71fbd1de44215c809c244ca1e233747c37325e0e5cf133511bcd73c7a",
+      "locale": "pt_BR",
+      "sourceId": "components.MediaDetails.AlbumTrackList.track",
+      "sourcePosition": 2027
+    },
+    {
+      "candidateTarget": "Bản nhạc",
+      "candidateTargetHash": "c2600a92b9cec18c2f7b51703a040e98c17ebd543e68f748a7da40e6c105a908",
+      "locale": "vi",
+      "sourceId": "components.MediaDetails.AlbumTrackList.track",
+      "sourcePosition": 2027
+    },
+    {
+      "candidateTarget": "أبقِ القسم {label} مفتوحًا في جميع صفحات التفاصيل.",
+      "candidateTargetHash": "5aa01250167c36b484e5df54b6b3169ea1037298dfbe4c2c8036b42e70ccd307",
+      "locale": "ar",
+      "sourceId": "components.MediaDetails.DetailDisclosure.pin",
+      "sourcePosition": 2028
+    },
+    {
+      "candidateTarget": "Garder la section {label} ouverte sur toutes les pages de détail.",
+      "candidateTargetHash": "fc50db5485188839a18f8ce3421ed4c924533846c7a5c76125a19bc73ecec943",
+      "locale": "fr",
+      "sourceId": "components.MediaDetails.DetailDisclosure.pin",
+      "sourcePosition": 2028
+    },
+    {
+      "candidateTarget": "{label} को सभी विवरण पृष्ठों पर खुला रखें।",
+      "candidateTargetHash": "a94fcb81574b5c9d54cb8e4b80a0c2de3caf536a33a5f719880f16d5f68c37fb",
+      "locale": "hi",
+      "sourceId": "components.MediaDetails.DetailDisclosure.pin",
+      "sourcePosition": 2028
+    },
+    {
+      "candidateTarget": "Biarkan {label} tetap terbuka di semua halaman detail.",
+      "candidateTargetHash": "9331a6c1a3794dd073018206f0970663517b9ad87901380670a4ef560ff74d22",
+      "locale": "id",
+      "sourceId": "components.MediaDetails.DetailDisclosure.pin",
+      "sourcePosition": 2028
+    },
+    {
+      "candidateTarget": "すべての詳細ページで{label}を開いたままにする。",
+      "candidateTargetHash": "560f7b5f1e4eac114b20d760d18f103e1d155b4389967a10874b8c161871f361",
+      "locale": "ja",
+      "sourceId": "components.MediaDetails.DetailDisclosure.pin",
+      "sourcePosition": 2028
+    },
+    {
+      "candidateTarget": "모든 상세 페이지에서 {label}를 열어 둡니다.",
+      "candidateTargetHash": "580a77d105b92aca794a87ad1d5c345254622db54c8f03e3aa18dea4949fd565",
+      "locale": "ko",
+      "sourceId": "components.MediaDetails.DetailDisclosure.pin",
+      "sourcePosition": 2028
+    },
+    {
+      "candidateTarget": "Manter a seção {label} aberta em todas as páginas de detalhes.",
+      "candidateTargetHash": "f4d94fa0202cc4f2d76b499d394418eab6228a23cc702a136c6c72304bae07ea",
+      "locale": "pt_BR",
+      "sourceId": "components.MediaDetails.DetailDisclosure.pin",
+      "sourcePosition": 2028
+    },
+    {
+      "candidateTarget": "Giữ {label} luôn mở trên tất cả các trang chi tiết.",
+      "candidateTargetHash": "5498bb884b712f854fd8bdf90dac1f4069d2f70e4ba02c4fe7d82f9f49a1083a",
+      "locale": "vi",
+      "sourceId": "components.MediaDetails.DetailDisclosure.pin",
+      "sourcePosition": 2028
+    },
+    {
+      "candidateTarget": "在所有详情页中保持 {label} 展开。",
+      "candidateTargetHash": "f5e8bbcdea992f25b551ff80df6d983310166b9ef723698d136990a42bddfc8f",
+      "locale": "zh_Hans",
+      "sourceId": "components.MediaDetails.DetailDisclosure.pin",
+      "sourcePosition": 2028
+    },
+    {
+      "candidateTarget": "在所有詳細頁面中保持 {label} 展開。",
+      "candidateTargetHash": "9349e8a1dc78951ade4370646f7390b59f73abab9627998fa475207eeaa32b15",
+      "locale": "zh_Hant",
+      "sourceId": "components.MediaDetails.DetailDisclosure.pin",
+      "sourcePosition": 2028
+    },
+    {
+      "candidateTarget": "Détacher {label}",
+      "candidateTargetHash": "1d318a6c481056128e849cc1e2d7533d8d722493748ab93bbf3a0e3d9817d60f",
+      "locale": "fr",
+      "sourceId": "components.MediaDetails.DetailDisclosure.unpin",
+      "sourcePosition": 2029
+    },
+    {
+      "candidateTarget": "{label} का पिन हटाएँ",
+      "candidateTargetHash": "ab146d41fe83fe6dbff214ef7f2c656262d92c5df63078c17d456a4bc3ba2782",
+      "locale": "hi",
+      "sourceId": "components.MediaDetails.DetailDisclosure.unpin",
+      "sourcePosition": 2029
+    },
+    {
+      "candidateTarget": "{label} のピン留めを解除",
+      "candidateTargetHash": "c745706bfd15921be823a14dea6d9f80c55d4dcc5709c28a90cd9c9ea0314aff",
+      "locale": "ja",
+      "sourceId": "components.MediaDetails.DetailDisclosure.unpin",
+      "sourcePosition": 2029
+    },
+    {
+      "candidateTarget": "Bỏ ghim {label}",
+      "candidateTargetHash": "6b62082d93dc6e89e4708d369035715e7ff495e7228e7979f40bab193d5ae9c0",
+      "locale": "vi",
+      "sourceId": "components.MediaDetails.DetailDisclosure.unpin",
+      "sourcePosition": 2029
+    },
+    {
+      "candidateTarget": "تعذّر حفظ ترتيب الأزرار. تمت استعادة الترتيب السابق. يُرجى المحاولة مرة أخرى.",
+      "candidateTargetHash": "16eb77114a5152a1b16ef3af13eee110086a1cd46d6c4f5d1fd80e33e8141170",
+      "locale": "ar",
+      "sourceId": "components.MediaDetails.DisclosureOrder.failed",
+      "sourcePosition": 2030
+    },
+    {
+      "candidateTarget": "No se pudo guardar el orden de los botones. Se restauró el orden anterior. Inténtalo de nuevo.",
+      "candidateTargetHash": "ff5415bc81319d801b7b963b83341ca87cd92a2fc6b02947c21507ad88cfe021",
+      "locale": "es",
+      "sourceId": "components.MediaDetails.DisclosureOrder.failed",
+      "sourcePosition": 2030
+    },
+    {
+      "candidateTarget": "Impossible d’enregistrer l’ordre des boutons. L’ordre précédent a été rétabli. Veuillez réessayer.",
+      "candidateTargetHash": "b856d997b072fdc72088485718be2c38c6d659312ccea46d2b31639a92359714",
+      "locale": "fr",
+      "sourceId": "components.MediaDetails.DisclosureOrder.failed",
+      "sourcePosition": 2030
+    },
+    {
+      "candidateTarget": "बटनों का क्रम सहेजा नहीं जा सका। पिछला क्रम बहाल कर दिया गया है। कृपया फिर प्रयास करें।",
+      "candidateTargetHash": "a0659fabae605840522245798628b7c35be94c679726f6a1297673f4a40801a4",
+      "locale": "hi",
+      "sourceId": "components.MediaDetails.DisclosureOrder.failed",
+      "sourcePosition": 2030
+    },
+    {
+      "candidateTarget": "Urutan tombol tidak dapat disimpan. Urutan sebelumnya telah dipulihkan. Silakan coba lagi.",
+      "candidateTargetHash": "37b0e6994b65ff73992d3c327cc82e6053e2dd6411ff3b108eeb3e14b04da55c",
+      "locale": "id",
+      "sourceId": "components.MediaDetails.DisclosureOrder.failed",
+      "sourcePosition": 2030
+    },
+    {
+      "candidateTarget": "버튼 순서를 저장하지 못했습니다. 이전 순서로 복원했습니다. 다시 시도하세요.",
+      "candidateTargetHash": "1dcb2c3352318e650474c858b5340383db06c071ea5613aa777e1de6ea9584e0",
+      "locale": "ko",
+      "sourceId": "components.MediaDetails.DisclosureOrder.failed",
+      "sourcePosition": 2030
+    },
+    {
+      "candidateTarget": "Não foi possível salvar a ordem dos botões. A ordem anterior foi restaurada. Tente novamente.",
+      "candidateTargetHash": "70e0ebde917b15dfd3a9de9ab1256f5b443a1bb38698af3871a730e2e4adc99f",
+      "locale": "pt_BR",
+      "sourceId": "components.MediaDetails.DisclosureOrder.failed",
+      "sourcePosition": 2030
+    },
+    {
+      "candidateTarget": "Không thể lưu thứ tự các nút. Thứ tự trước đó đã được khôi phục. Vui lòng thử lại.",
+      "candidateTargetHash": "eb4987db09cfb1e412379ff3ebda20020672b3c379300f20342fd3714f589698",
+      "locale": "vi",
+      "sourceId": "components.MediaDetails.DisclosureOrder.failed",
+      "sourcePosition": 2030
+    },
+    {
+      "candidateTarget": "无法保存按钮顺序。已恢复之前的顺序。请重试。",
+      "candidateTargetHash": "0a6cc5c4060fa0add4b37bbec2e8b91fd6efc6b477ddb88113be2a8483f1385a",
+      "locale": "zh_Hans",
+      "sourceId": "components.MediaDetails.DisclosureOrder.failed",
+      "sourcePosition": 2030
+    },
+    {
+      "candidateTarget": "無法儲存按鈕順序。已還原先前的順序。請重試。",
+      "candidateTargetHash": "75edda544fcccd481d2cf6ff987e958b31c68df0c3a18ec8b288f26bad9b79fc",
+      "locale": "zh_Hant",
+      "sourceId": "components.MediaDetails.DisclosureOrder.failed",
+      "sourcePosition": 2030
+    },
+    {
+      "candidateTarget": "اضغط مطولًا على زر لمدة ثانية لنقله. أو استخدم Shift + Alt + Left أو Right Arrow لتغيير الترتيب. اضغط Escape للإلغاء.",
+      "candidateTargetHash": "6e30ca24316be89b8d70969975b1d82157d43e1e092e7850f3259184178ef062",
+      "locale": "ar",
+      "sourceId": "components.MediaDetails.DisclosureOrder.instructions",
+      "sourcePosition": 2031
+    },
+    {
+      "candidateTarget": "Mantén pulsado un botón durante un segundo para moverlo. También puedes usar Shift + Alt + Left o Right Arrow para cambiar el orden. Pulsa Escape para cancelar.",
+      "candidateTargetHash": "ceefec99472266b103cd389d4aaa6d4d7f06510b0c770b36e1c92a1e9104a490",
+      "locale": "es",
+      "sourceId": "components.MediaDetails.DisclosureOrder.instructions",
+      "sourcePosition": 2031
+    },
+    {
+      "candidateTarget": "किसी बटन को स्थानांतरित करने के लिए उसे एक सेकंड तक दबाए रखें। क्रम बदलने के लिए Shift + Alt + Left या Right Arrow का उपयोग करें। रद्द करने के लिए Escape दबाएँ।",
+      "candidateTargetHash": "9dbaa6d3e175878cc9a937be231e1e8333b489ddfc6b1256c0fcd1099acf0715",
+      "locale": "hi",
+      "sourceId": "components.MediaDetails.DisclosureOrder.instructions",
+      "sourcePosition": 2031
+    },
+    {
+      "candidateTarget": "Tekan dan tahan tombol selama satu detik untuk memindahkannya. Atau gunakan Shift + Alt + Left atau Right Arrow untuk mengubah urutan. Tekan Escape untuk membatalkan.",
+      "candidateTargetHash": "1c15d6cbb5430bbe38c0abb30e63b973760ba679c55426692eac7c02ed14ff7c",
+      "locale": "id",
+      "sourceId": "components.MediaDetails.DisclosureOrder.instructions",
+      "sourcePosition": 2031
+    },
+    {
+      "candidateTarget": "ボタンを1秒間長押しして移動します。Shift + Alt + Left または Right Arrow で順序を変更できます。キャンセルするには Escape を押します。",
+      "candidateTargetHash": "1580bd5cd2ac2695cae086822f883250f451a51e762756884a1dfa46e79716cd",
+      "locale": "ja",
+      "sourceId": "components.MediaDetails.DisclosureOrder.instructions",
+      "sourcePosition": 2031
+    },
+    {
+      "candidateTarget": "버튼을 1초 동안 누르면 이동할 수 있습니다. 순서를 바꾸려면 Shift + Alt + Left 또는 Right Arrow를 사용하세요. 취소하려면 Escape를 누르세요.",
+      "candidateTargetHash": "498ba30df37e99b465879545b75d07b53cb736d81acc0474fb4aab8392667eeb",
+      "locale": "ko",
+      "sourceId": "components.MediaDetails.DisclosureOrder.instructions",
+      "sourcePosition": 2031
+    },
+    {
+      "candidateTarget": "Nhấn giữ một nút trong một giây để di chuyển nút đó. Hoặc dùng Shift + Alt + Left hoặc Right Arrow để đổi thứ tự. Nhấn Escape để hủy.",
+      "candidateTargetHash": "7dcb2f00e485dc6640e655454e5a3b0162a683e7ea7f853ee602dd7719c1d220",
+      "locale": "vi",
+      "sourceId": "components.MediaDetails.DisclosureOrder.instructions",
+      "sourcePosition": 2031
+    },
+    {
+      "candidateTarget": "按住按钮一秒钟即可移动它。也可以使用 Shift + Alt + Left 或 Right Arrow 调整顺序。按 Escape 取消。",
+      "candidateTargetHash": "8831ccda9528948178f1046fb307eaafbec055c9e4c69fd674899b3cc5812a8f",
+      "locale": "zh_Hans",
+      "sourceId": "components.MediaDetails.DisclosureOrder.instructions",
+      "sourcePosition": 2031
+    },
+    {
+      "candidateTarget": "按住按鈕一秒即可移動。也可使用 Shift + Alt + Left 或 Right Arrow 重新排序。按 Escape 取消。",
+      "candidateTargetHash": "b4e6dabcfbc8df590321d1983a70e46938f5ae82bc483bbb80e5fb8266cb4fd5",
+      "locale": "zh_Hant",
+      "sourceId": "components.MediaDetails.DisclosureOrder.instructions",
+      "sourcePosition": 2031
+    },
+    {
+      "candidateTarget": "{label} a été déplacé à la position {position}.",
+      "candidateTargetHash": "be6472c13e813492cd278db820a44909e02e3ceff6741c48e43c86686a82e819",
+      "locale": "fr",
+      "sourceId": "components.MediaDetails.DisclosureOrder.moved",
+      "sourcePosition": 2032
+    },
+    {
+      "candidateTarget": "आइटम {label} को स्थान {position} पर ले जाया गया।",
+      "candidateTargetHash": "a5b58244e864c707e103d576b997f1580a39a0e0c016a93bbe602068b4eb3d55",
+      "locale": "hi",
+      "sourceId": "components.MediaDetails.DisclosureOrder.moved",
+      "sourcePosition": 2032
+    },
+    {
+      "candidateTarget": "{label}を位置{position}に移動しました。",
+      "candidateTargetHash": "07b2e4066636d797b7e302c63bccdfcae96faa1c5e4feda69cee7eab61158f9e",
+      "locale": "ja",
+      "sourceId": "components.MediaDetails.DisclosureOrder.moved",
+      "sourcePosition": 2032
+    },
+    {
+      "candidateTarget": "{label}을(를) {position} 위치로 이동했습니다.",
+      "candidateTargetHash": "66bf8363b1bd7a4ee17e5bef9f5aacc7e125193baedd2c91f63500831a954e1a",
+      "locale": "ko",
+      "sourceId": "components.MediaDetails.DisclosureOrder.moved",
+      "sourcePosition": 2032
+    },
+    {
+      "candidateTarget": "O botão {label} foi movido para a posição {position}.",
+      "candidateTargetHash": "5d70fe3cb2b2ca7fc9ec67d20a18883f83e2711864c5b77a50863a0cd8166e63",
+      "locale": "pt_BR",
+      "sourceId": "components.MediaDetails.DisclosureOrder.moved",
+      "sourcePosition": 2032
+    },
+    {
+      "candidateTarget": "{label} 已准备好移动。将其拖到其他按钮之间。",
+      "candidateTargetHash": "1d6181034615b2c19edf39fa934b2b80cdfcf30a439ebc9a56063b64d99b0344",
+      "locale": "zh_Hans",
+      "sourceId": "components.MediaDetails.DisclosureOrder.ready",
+      "sourcePosition": 2033
+    },
+    {
+      "candidateTarget": "{label} 已準備好移動。將它拖曳到其他按鈕之間。",
+      "candidateTargetHash": "0b55ab01ddcccebfa56d7909101a92abaf9c3be50a149a6c1adcfc17353e6600",
+      "locale": "zh_Hant",
+      "sourceId": "components.MediaDetails.DisclosureOrder.ready",
+      "sourcePosition": 2033
+    },
+    {
+      "candidateTarget": "أبلِغ عن مشكلة في إصدار {quality}.",
+      "candidateTargetHash": "b8eb1cbbab798b19645aea64e082ed6c13c6a62d145d8e702c44493a3b4e0c6b",
+      "locale": "ar",
+      "sourceId": "components.MediaDetails.MediaQualitySelect.report",
+      "sourcePosition": 2034
+    },
+    {
+      "candidateTarget": "Signaler un problème avec la version {quality}.",
+      "candidateTargetHash": "0792deab0a436860f563972a752461da6b27d508251559757bc0b39dace2ad40",
+      "locale": "fr",
+      "sourceId": "components.MediaDetails.MediaQualitySelect.report",
+      "sourcePosition": 2034
+    },
+    {
+      "candidateTarget": "इस {quality} संस्करण में समस्या की रिपोर्ट करें।",
+      "candidateTargetHash": "6a20c047c980e9b8a7ce97c9a4dfd424b07b47ff3aa82c1d30239dcee9a3c443",
+      "locale": "hi",
+      "sourceId": "components.MediaDetails.MediaQualitySelect.report",
+      "sourcePosition": 2034
+    },
+    {
+      "candidateTarget": "Laporkan masalah pada versi {quality}.",
+      "candidateTargetHash": "5d54ef414059f78e20e800d9225f2e43c2eacf769bf268a947b9d1486f9b1394",
+      "locale": "id",
+      "sourceId": "components.MediaDetails.MediaQualitySelect.report",
+      "sourcePosition": 2034
+    },
+    {
+      "candidateTarget": "{quality}版の問題を報告する。",
+      "candidateTargetHash": "f50bbd07f98a8ff264fdf911dfa8acfcfe596606640ab21029e0b6f9f8c1e664",
+      "locale": "ja",
+      "sourceId": "components.MediaDetails.MediaQualitySelect.report",
+      "sourcePosition": 2034
+    },
+    {
+      "candidateTarget": "{quality} 버전의 문제를 신고합니다.",
+      "candidateTargetHash": "f01d739bce4c7c8eb978dbc40f857c83c89586f5ea6b7425bbfcc56c3ff67d5a",
+      "locale": "ko",
+      "sourceId": "components.MediaDetails.MediaQualitySelect.report",
+      "sourcePosition": 2034
+    },
+    {
+      "candidateTarget": "Relatar um problema com a versão {quality}.",
+      "candidateTargetHash": "0d6d632e7b8d1aa30d866932df06263f7df51871261c94ad4d5c39a3298c7186",
+      "locale": "pt_BR",
+      "sourceId": "components.MediaDetails.MediaQualitySelect.report",
+      "sourcePosition": 2034
+    },
+    {
+      "candidateTarget": "Báo cáo sự cố với phiên bản {quality}.",
+      "candidateTargetHash": "86eeca1b34cae3b384ed0922bfbb8dcef925db8d2a273325481f20e36205c5d5",
+      "locale": "vi",
+      "sourceId": "components.MediaDetails.MediaQualitySelect.report",
+      "sourcePosition": 2034
+    },
+    {
+      "candidateTarget": "报告 {quality} 版本的问题。",
+      "candidateTargetHash": "aa0cce2d6f6d5353ca2546c60068779f9c42662d2d086ef23157c6cb3949ef69",
+      "locale": "zh_Hans",
+      "sourceId": "components.MediaDetails.MediaQualitySelect.report",
+      "sourcePosition": 2034
+    },
+    {
+      "candidateTarget": "回報 {quality} 版本的問題。",
+      "candidateTargetHash": "1e651e30f8f5ac737d93f4650ca6d936b492f72541dd181451475a0602dd14e7",
+      "locale": "zh_Hant",
+      "sourceId": "components.MediaDetails.MediaQualitySelect.report",
+      "sourcePosition": 2034
+    },
+    {
+      "candidateTarget": "اطلب إصدار {quality}.",
+      "candidateTargetHash": "8845f8e0e9a7601e27a8807d37a3709a257f58220af48b03dd759c2ef706e3fc",
+      "locale": "ar",
+      "sourceId": "components.MediaDetails.MediaQualitySelect.request",
+      "sourcePosition": 2035
+    },
+    {
+      "candidateTarget": "Demander la version {quality}.",
+      "candidateTargetHash": "e98fe03d14cf36a6e8fa7eef7843c36f57c1d41614f1fea9a638553b421059c6",
+      "locale": "fr",
+      "sourceId": "components.MediaDetails.MediaQualitySelect.request",
+      "sourcePosition": 2035
+    },
+    {
+      "candidateTarget": "{quality} संस्करण का अनुरोध करें।",
+      "candidateTargetHash": "374872ecbca56451b734ae8fa58c0c2a96f4c7e0209cea7dc1c750b55613b7d5",
+      "locale": "hi",
+      "sourceId": "components.MediaDetails.MediaQualitySelect.request",
+      "sourcePosition": 2035
+    },
+    {
+      "candidateTarget": "Minta versi {quality}.",
+      "candidateTargetHash": "b541d7ad19f14c262fbe09330b8572bea5fc9b49c31e37995957b20bafd87c8a",
+      "locale": "id",
+      "sourceId": "components.MediaDetails.MediaQualitySelect.request",
+      "sourcePosition": 2035
+    },
+    {
+      "candidateTarget": "{quality}版をリクエストする。",
+      "candidateTargetHash": "e725ff07ad3de07d3fedc5124e1197db60a7fac5ed9d1a0afe94216dbd18d2f9",
+      "locale": "ja",
+      "sourceId": "components.MediaDetails.MediaQualitySelect.request",
+      "sourcePosition": 2035
+    },
+    {
+      "candidateTarget": "{quality} 버전을 요청합니다.",
+      "candidateTargetHash": "876ce9074c999ad394bd78f69ad024f7113080ba2e5ac35955b47b7a71cd3a30",
+      "locale": "ko",
+      "sourceId": "components.MediaDetails.MediaQualitySelect.request",
+      "sourcePosition": 2035
+    },
+    {
+      "candidateTarget": "Solicitar a versão {quality}.",
+      "candidateTargetHash": "cd71f6dd16d2fb44f3781fce31ab4653615ecfd5ca25ed3b2eb3ea861b34e38b",
+      "locale": "pt_BR",
+      "sourceId": "components.MediaDetails.MediaQualitySelect.request",
+      "sourcePosition": 2035
+    },
+    {
+      "candidateTarget": "Yêu cầu phiên bản {quality}.",
+      "candidateTargetHash": "54e326af9b9af4ad3bdb645c08e38712b91e8a20bc45503172bcf6381f154de5",
+      "locale": "vi",
+      "sourceId": "components.MediaDetails.MediaQualitySelect.request",
+      "sourcePosition": 2035
+    },
+    {
+      "candidateTarget": "请求 {quality} 版本。",
+      "candidateTargetHash": "c146e5723e5da2958b20101ea566f924d2e011cac4b94f57ed229cf895a0a533",
+      "locale": "zh_Hans",
+      "sourceId": "components.MediaDetails.MediaQualitySelect.request",
+      "sourcePosition": 2035
+    },
+    {
+      "candidateTarget": "استخدم {quality} للتشغيل.",
+      "candidateTargetHash": "caf335229ff3374d3701e29dbd0941c00998e04e65bf69e982e499fa1da2cc3f",
+      "locale": "ar",
+      "sourceId": "components.MediaDetails.MediaQualitySelect.select",
+      "sourcePosition": 2036
+    },
+    {
+      "candidateTarget": "Utiliser {quality} pour la lecture.",
+      "candidateTargetHash": "d6f40dafdd5d994ade15a2175cd1a2b5a955d46791780437938b5d751c218e27",
+      "locale": "fr",
+      "sourceId": "components.MediaDetails.MediaQualitySelect.select",
+      "sourcePosition": 2036
+    },
+    {
+      "candidateTarget": "प्लेबैक के लिए {quality} का उपयोग करें।",
+      "candidateTargetHash": "d5c16fd2944122927650c9331f811955a9d0fda0adc00e2e512f3374aed09599",
+      "locale": "hi",
+      "sourceId": "components.MediaDetails.MediaQualitySelect.select",
+      "sourcePosition": 2036
+    },
+    {
+      "candidateTarget": "Gunakan {quality} untuk pemutaran.",
+      "candidateTargetHash": "cf3e16f55ef1917234d749a311c6bb7f2776dc534c7a8ab133b255b2938d9573",
+      "locale": "id",
+      "sourceId": "components.MediaDetails.MediaQualitySelect.select",
+      "sourcePosition": 2036
+    },
+    {
+      "candidateTarget": "재생에 {quality}을(를) 사용합니다.",
+      "candidateTargetHash": "f1b7858bb2ec8b25d434c01ade4fd0a3b167a0d5a26e49388839269b2e5ac3c3",
+      "locale": "ko",
+      "sourceId": "components.MediaDetails.MediaQualitySelect.select",
+      "sourcePosition": 2036
+    },
+    {
+      "candidateTarget": "Use {quality} para reprodução.",
+      "candidateTargetHash": "1d9e31193710d95155f5e9dd99b98df5e59d20cf11f50e184e3d74af89d98874",
+      "locale": "pt_BR",
+      "sourceId": "components.MediaDetails.MediaQualitySelect.select",
+      "sourcePosition": 2036
+    },
+    {
+      "candidateTarget": "Dùng {quality} để phát lại.",
+      "candidateTargetHash": "20c01ecc2fd3b57740d0782d793fc994f1542ed8b5d3bb6e18c2777723c8c27c",
+      "locale": "vi",
+      "sourceId": "components.MediaDetails.MediaQualitySelect.select",
+      "sourcePosition": 2036
+    },
+    {
+      "candidateTarget": "使用 {quality} 进行播放。",
+      "candidateTargetHash": "f0aac7f4f1e8f5e0fb82ef3d86051b0548d6a587091ea596a62afc52228ef737",
+      "locale": "zh_Hans",
+      "sourceId": "components.MediaDetails.MediaQualitySelect.select",
+      "sourcePosition": 2036
+    },
+    {
+      "candidateTarget": "使用 {quality} 進行播放。",
+      "candidateTargetHash": "2556fe5651e949682bc8095d96374a224834d12f7c3511004f01dc54eca4bc5b",
+      "locale": "zh_Hant",
+      "sourceId": "components.MediaDetails.MediaQualitySelect.select",
+      "sourcePosition": 2036
+    },
+    {
+      "candidateTarget": "화질 선택",
+      "candidateTargetHash": "3b59622a5f5cdae189b691b8874303dddd1e6df343b19e78f606dec2d8b0e0cd",
+      "locale": "ko",
+      "sourceId": "components.MediaDetails.MediaQualitySelect.selectQuality",
+      "sourcePosition": 2037
+    },
+    {
+      "candidateTarget": "यह गुणवत्ता आपकी मीडिया लाइब्रेरी में उपलब्ध नहीं है।",
+      "candidateTargetHash": "1e59a50ce6f11b59588be930d82672b8376639b2f5c28b26d7127f8f7ecb0af8",
+      "locale": "hi",
+      "sourceId": "components.MediaDetails.MediaQualitySelect.unavailable",
+      "sourcePosition": 2038
+    },
+    {
+      "candidateTarget": "이 화질은 미디어 라이브러리에서 사용할 수 없습니다.",
+      "candidateTargetHash": "d3a45c72576526a103cc6af081e64b6c0afbb0069d4acc67009799fb5396fb51",
+      "locale": "ko",
+      "sourceId": "components.MediaDetails.MediaQualitySelect.unavailable",
+      "sourcePosition": 2038
+    },
+    {
+      "candidateTarget": "Chất lượng này không có trong thư viện phương tiện của bạn.",
+      "candidateTargetHash": "704267f61dcf5284d1900faba23c337b849ae9ca7e146e8b5f2ec36e9e9c47b4",
+      "locale": "vi",
+      "sourceId": "components.MediaDetails.MediaQualitySelect.unavailable",
+      "sourcePosition": 2038
+    },
+    {
+      "candidateTarget": "此画质在您的媒体库中不可用。",
+      "candidateTargetHash": "2eb9180ccd4867fbd8f07a53f220329b0e8653bc9732ad2e6984daf710754277",
+      "locale": "zh_Hans",
+      "sourceId": "components.MediaDetails.MediaQualitySelect.unavailable",
+      "sourcePosition": 2038
+    },
+    {
+      "candidateTarget": "此畫質在您的媒體庫中無法使用。",
+      "candidateTargetHash": "5d049479673350b34498f8649f4d21fff3dc40004c105d30b06a7f427ccbbfb8",
+      "locale": "zh_Hant",
+      "sourceId": "components.MediaDetails.MediaQualitySelect.unavailable",
+      "sourcePosition": 2038
+    },
+    {
+      "candidateTarget": "أضف إلى المجموعة",
+      "candidateTargetHash": "e55edfc8b920f573165a07709a287de1117e48f8f80e70b1aa55bac36dd645e6",
+      "locale": "ar",
+      "sourceId": "components.MediaDetails.MediaServerCollectionButton.addCollection",
+      "sourcePosition": 2039
+    },
+    {
+      "candidateTarget": "컬렉션에 추가",
+      "candidateTargetHash": "d550bdf428659ff455a1fd6ee7015f13a61dacd1841163f6c9d37108d255c5dc",
+      "locale": "ko",
+      "sourceId": "components.MediaDetails.MediaServerCollectionButton.addCollection",
+      "sourcePosition": 2039
+    },
+    {
+      "candidateTarget": "Thêm vào bộ sưu tập",
+      "candidateTargetHash": "3732d57352429a9f907e2529bd58e2a6a810bab0537b70c50342c9221681288d",
+      "locale": "vi",
+      "sourceId": "components.MediaDetails.MediaServerCollectionButton.addCollection",
+      "sourcePosition": 2039
+    },
+    {
+      "candidateTarget": "添加到媒体合集",
+      "candidateTargetHash": "d224ddee04c032389f69179a0143a2d7e5abc5eb11993c0809fe6f690fc05a81",
+      "locale": "zh_Hans",
+      "sourceId": "components.MediaDetails.MediaServerCollectionButton.addCollection",
+      "sourcePosition": 2039
+    },
+    {
+      "candidateTarget": "新增至媒體合集",
+      "candidateTargetHash": "e379dbd2baed05271c5487c3ded103879b7aba41694b47377045066d0adf7154",
+      "locale": "zh_Hant",
+      "sourceId": "components.MediaDetails.MediaServerCollectionButton.addCollection",
+      "sourcePosition": 2039
+    },
+    {
+      "candidateTarget": "{name} में जोड़ें",
+      "candidateTargetHash": "823c595d3e06c0ae0b991b4d4ace250dd4934b628719ed5fb228f0e7a63d652b",
+      "locale": "hi",
+      "sourceId": "components.MediaDetails.MediaServerCollectionButton.addNamed",
+      "sourcePosition": 2040
+    },
+    {
+      "candidateTarget": "{name}に追加",
+      "candidateTargetHash": "38c8e0b39aacf776779464b839ef5bf10a42242f5c84f945eae8fd28b2ee946d",
+      "locale": "ja",
+      "sourceId": "components.MediaDetails.MediaServerCollectionButton.addNamed",
+      "sourcePosition": 2040
+    },
+    {
+      "candidateTarget": "{name}에 추가",
+      "candidateTargetHash": "e2999af4ed2df4d7f306d197d4b1a2ea845f3c7ab1017298127fcd26c1ddc37f",
+      "locale": "ko",
+      "sourceId": "components.MediaDetails.MediaServerCollectionButton.addNamed",
+      "sourcePosition": 2040
+    },
+    {
+      "candidateTarget": "添加到 {name}",
+      "candidateTargetHash": "20fa748546fc2669c3f52be6d3b75b25a3bd4a091f798cc1265a44447d8d4618",
+      "locale": "zh_Hans",
+      "sourceId": "components.MediaDetails.MediaServerCollectionButton.addNamed",
+      "sourcePosition": 2040
+    },
+    {
+      "candidateTarget": "جارٍ تحميل حالة مجموعة {server} أو تحديثها.",
+      "candidateTargetHash": "8350837852ef37e67a3416be27f101000ea168396af9a2370bfd7706242d7533",
+      "locale": "ar",
+      "sourceId": "components.MediaDetails.MediaServerCollectionButton.busy",
+      "sourcePosition": 2041
+    },
+    {
+      "candidateTarget": "L’état de la collection {server} est en cours de chargement ou de mise à jour.",
+      "candidateTargetHash": "6b1633609aa05b5aa4ad933c5c009e0eea0692f071c70d12d700d8cfa4472cc2",
+      "locale": "fr",
+      "sourceId": "components.MediaDetails.MediaServerCollectionButton.busy",
+      "sourcePosition": 2041
+    },
+    {
+      "candidateTarget": "{server} संग्रह की स्थिति लोड हो रही है या अपडेट की जा रही है।",
+      "candidateTargetHash": "7ab263e06600dcd2123f7dc83b7f073a454c77eb34c721e8a368e00fc4abf6f9",
+      "locale": "hi",
+      "sourceId": "components.MediaDetails.MediaServerCollectionButton.busy",
+      "sourcePosition": 2041
+    },
+    {
+      "candidateTarget": "Status koleksi {server} sedang dimuat atau diperbarui.",
+      "candidateTargetHash": "3dd20db319bf3f6e083c6e81b47c070e52c75561c9f1b9469ca3bbf620daa7f0",
+      "locale": "id",
+      "sourceId": "components.MediaDetails.MediaServerCollectionButton.busy",
+      "sourcePosition": 2041
+    },
+    {
+      "candidateTarget": "{server}のコレクション状態を読み込み中、または更新中です。",
+      "candidateTargetHash": "9811220dbc107ad5d7d4a7001868d27c678582f616b1820efe4f1d0904e885d2",
+      "locale": "ja",
+      "sourceId": "components.MediaDetails.MediaServerCollectionButton.busy",
+      "sourcePosition": 2041
+    },
+    {
+      "candidateTarget": "{server} 컬렉션 상태를 불러오거나 업데이트하는 중입니다.",
+      "candidateTargetHash": "15f96af94e9a569f2a7b6cfc08bea0bc87b8ff5f97d2ead3ae51ed671b381ae1",
+      "locale": "ko",
+      "sourceId": "components.MediaDetails.MediaServerCollectionButton.busy",
+      "sourcePosition": 2041
+    },
+    {
+      "candidateTarget": "O estado da coleção {server} está sendo carregado ou atualizado.",
+      "candidateTargetHash": "6efbbc92c0924d83bc7b8d85ae8a3009326573711d300f2f51e4251ff2ec486f",
+      "locale": "pt_BR",
+      "sourceId": "components.MediaDetails.MediaServerCollectionButton.busy",
+      "sourcePosition": 2041
+    },
+    {
+      "candidateTarget": "Trạng thái bộ sưu tập {server} đang được tải hoặc cập nhật.",
+      "candidateTargetHash": "ec9848e7a98cd03e9d07fc8c999e36b978e6809e670c04b33ad90965ed0d7f1b",
+      "locale": "vi",
+      "sourceId": "components.MediaDetails.MediaServerCollectionButton.busy",
+      "sourcePosition": 2041
+    },
+    {
+      "candidateTarget": "Créez d’abord une collection dans {server}. SeerrNG ajoute uniquement des titres aux collections existantes.",
+      "candidateTargetHash": "4a05b9c58e351d591023dfbc2e4792b591d92e5d70e53cf0af73cd60a649a156",
+      "locale": "fr",
+      "sourceId": "components.MediaDetails.MediaServerCollectionButton.empty",
+      "sourcePosition": 2042
+    },
+    {
+      "candidateTarget": "पहले {server} में एक कलेक्शन बनाएँ। SeerrNG केवल मौजूदा कलेक्शन में शीर्षक जोड़ता है।",
+      "candidateTargetHash": "5df8308fa266e2a4041f9a05263d46412814151ea6fda71d532215be9dfce02d",
+      "locale": "hi",
+      "sourceId": "components.MediaDetails.MediaServerCollectionButton.empty",
+      "sourcePosition": 2042
+    },
+    {
+      "candidateTarget": "まず{server}でコレクションを作成してください。SeerrNGは既存のコレクションにのみ作品を追加します。",
+      "candidateTargetHash": "3d29ad68ad2407e5ef4ffb627c4c53289832231951e5296fb20273a38482b182",
+      "locale": "ja",
+      "sourceId": "components.MediaDetails.MediaServerCollectionButton.empty",
+      "sourcePosition": 2042
+    },
+    {
+      "candidateTarget": "Trước tiên, hãy tạo bộ sưu tập trên {server}. SeerrNG chỉ thêm phim vào các bộ sưu tập đã tồn tại.",
+      "candidateTargetHash": "d2260be0d8e0dfd1312d2acf11d85135078263b188ff682f7606ff906ec5f996",
+      "locale": "vi",
+      "sourceId": "components.MediaDetails.MediaServerCollectionButton.empty",
+      "sourcePosition": 2042
+    },
+    {
+      "candidateTarget": "先在 {server} 中创建一个合集。SeerrNG 只会将作品添加到已有合集中。",
+      "candidateTargetHash": "6bac4f881235b9ac9ad0638fa9dce3b3981bed1eb90262a16e480479ddf9da29",
+      "locale": "zh_Hans",
+      "sourceId": "components.MediaDetails.MediaServerCollectionButton.empty",
+      "sourcePosition": 2042
+    },
+    {
+      "candidateTarget": "請先在 {server} 建立一個合集。SeerrNG 只會將作品加入既有合集。",
+      "candidateTargetHash": "74a6ffbeb2c6efe337d688a318caab491f230bc52b32afee8b00c25d7e6ca715",
+      "locale": "zh_Hant",
+      "sourceId": "components.MediaDetails.MediaServerCollectionButton.empty",
+      "sourcePosition": 2042
+    },
+    {
+      "candidateTarget": "Impossible de charger les collections ou de confirmer la modification. Rechargez leur état actuel avant d’en modifier le contenu.",
+      "candidateTargetHash": "c97007959d0b041a78f0d2b709f6cfc510a66aec1d78a877f32f230b0cd7eaae",
+      "locale": "fr",
+      "sourceId": "components.MediaDetails.MediaServerCollectionButton.error",
+      "sourcePosition": 2043
+    },
+    {
+      "candidateTarget": "संग्रह लोड नहीं हो सके या बदलाव की पुष्टि नहीं हो सकी। उनमें बदलाव करने से पहले उनकी मौजूदा स्थिति फिर से लोड करें।",
+      "candidateTargetHash": "1cdad6de5ea6bcdccfd8f1395bc2ff90352193a033da40251f29bdad091d5a3e",
+      "locale": "hi",
+      "sourceId": "components.MediaDetails.MediaServerCollectionButton.error",
+      "sourcePosition": 2043
+    },
+    {
+      "candidateTarget": "컬렉션을 불러오지 못했거나 변경을 확인하지 못했습니다. 항목을 변경하기 전에 현재 상태를 다시 불러오세요.",
+      "candidateTargetHash": "55f772c5f57d8ad505d93431cefb7effc01f247aa5aa8793d35679c035c40564",
+      "locale": "ko",
+      "sourceId": "components.MediaDetails.MediaServerCollectionButton.error",
+      "sourcePosition": 2043
+    },
+    {
+      "candidateTarget": "Não foi possível carregar as coleções ou confirmar a alteração. Recarregue o estado atual antes de modificar o conteúdo.",
+      "candidateTargetHash": "ce7af74021d7237360c6497a368ad79da37b57ecb8b4f0e3a8610fc5c3965a61",
+      "locale": "pt_BR",
+      "sourceId": "components.MediaDetails.MediaServerCollectionButton.error",
+      "sourcePosition": 2043
+    },
+    {
+      "candidateTarget": "Không thể tải các bộ sưu tập hoặc xác nhận thay đổi. Hãy tải lại trạng thái hiện tại trước khi thay đổi nội dung.",
+      "candidateTargetHash": "30067b6f2cb6f7341ef5520b1af1ec6d16bf2b0a61d721eb958dcac238520c8a",
+      "locale": "vi",
+      "sourceId": "components.MediaDetails.MediaServerCollectionButton.error",
+      "sourcePosition": 2043
+    },
+    {
+      "candidateTarget": "无法加载合集或确认更改。请在修改合集内容前重新加载其当前状态。",
+      "candidateTargetHash": "32e4ee1bce5bfe8db0982c4fc1dfd5e9caf3214e047c434ba0611143aa0d3830",
+      "locale": "zh_Hans",
+      "sourceId": "components.MediaDetails.MediaServerCollectionButton.error",
+      "sourcePosition": 2043
+    },
+    {
+      "candidateTarget": "無法載入合集或確認變更。修改合集內容前，請重新載入目前狀態。",
+      "candidateTargetHash": "5dcaef3a1e3a46255fdac86160d730dcf98dc05b3e2eadc62123869f179af1d2",
+      "locale": "zh_Hant",
+      "sourceId": "components.MediaDetails.MediaServerCollectionButton.error",
+      "sourcePosition": 2043
+    },
+    {
+      "candidateTarget": "مجموعات خادم الوسائط غير متاحة",
+      "candidateTargetHash": "efb3b425656576da4f3a9618764e026c886abff09302d143583109e343b0f9f8",
+      "locale": "ar",
+      "sourceId": "components.MediaDetails.MediaServerCollectionButton.errorTitle",
+      "sourcePosition": 2044
+    },
+    {
+      "candidateTarget": "Coleções do servidor de mídia indisponíveis",
+      "candidateTargetHash": "20859c350a212081cf4b48816ac1a89c60abe9725cee88b8d7f7a0b252e380c1",
+      "locale": "pt_BR",
+      "sourceId": "components.MediaDetails.MediaServerCollectionButton.errorTitle",
+      "sourcePosition": 2044
+    },
+    {
+      "candidateTarget": "Bộ sưu tập trên máy chủ phương tiện không khả dụng",
+      "candidateTargetHash": "cf2cf74e7af83f790e5da71987c0feba0c30ac2e1a49e55e2ab6a88041c9ac8e",
+      "locale": "vi",
+      "sourceId": "components.MediaDetails.MediaServerCollectionButton.errorTitle",
+      "sourcePosition": 2044
+    },
+    {
+      "candidateTarget": "媒体服务器合集不可用",
+      "candidateTargetHash": "1b8b8ddcc023b5110937c0f8bb8ff1698165c105082b531e3a3c2d4a31244fd3",
+      "locale": "zh_Hans",
+      "sourceId": "components.MediaDetails.MediaServerCollectionButton.errorTitle",
+      "sourcePosition": 2044
+    },
+    {
+      "candidateTarget": "媒體伺服器合集無法使用",
+      "candidateTargetHash": "dfe95a0e2e6b992e4e4dcea690a11610d18b8465c74a47a4cd17f19b90beadad",
+      "locale": "zh_Hant",
+      "sourceId": "components.MediaDetails.MediaServerCollectionButton.errorTitle",
+      "sourcePosition": 2044
+    },
+    {
+      "candidateTarget": "اختر مجموعة مشتركة موجودة في {server} لإضافة هذا المسلسل بأكمله إليها أو إزالته منها. لا تُضاف الحلقات المحددة بشكل منفصل.",
+      "candidateTargetHash": "4890996bac072adac272b82bfbf430539c9f5518fa57e2b6d43e47bf1cb39bc2",
+      "locale": "ar",
+      "sourceId": "components.MediaDetails.MediaServerCollectionButton.help",
+      "sourcePosition": 2045
+    },
+    {
+      "candidateTarget": "Choisissez une collection partagée existante de {server} pour y ajouter ou en retirer la série entière. Les épisodes sélectionnés ne sont pas ajoutés séparément.",
+      "candidateTargetHash": "c1d3346276e87f9acd44e994dfd074abba5d9e2f34699cd1cc9b75b05e641ab0",
+      "locale": "fr",
+      "sourceId": "components.MediaDetails.MediaServerCollectionButton.help",
+      "sourcePosition": 2045
+    },
+    {
+      "candidateTarget": "पूरी सीरीज़ को जोड़ने या हटाने के लिए {server} की कोई मौजूदा साझा कलेक्शन चुनें। चुने हुए एपिसोड अलग से नहीं जोड़े जाते।",
+      "candidateTargetHash": "4ac16cf3f8fe99507d3c39a65bb5a64dfc45ca05ff9d40c89a50d27568aeb7a3",
+      "locale": "hi",
+      "sourceId": "components.MediaDetails.MediaServerCollectionButton.help",
+      "sourcePosition": 2045
+    },
+    {
+      "candidateTarget": "Pilih koleksi bersama {server} yang sudah ada untuk menambahkan atau menghapus seluruh serial ini. Episode yang dipilih tidak ditambahkan secara terpisah.",
+      "candidateTargetHash": "a169fd4f8d51b2cc5fd06f6b4ee15903bc65a43cceeec0610c4f2d3d4571d52e",
+      "locale": "id",
+      "sourceId": "components.MediaDetails.MediaServerCollectionButton.help",
+      "sourcePosition": 2045
+    },
+    {
+      "candidateTarget": "このシリーズ全体を追加または削除するため、{server} にある既存の共有コレクションを選択してください。選択したエピソードは個別には追加されません。",
+      "candidateTargetHash": "da3aa3bf4ba5430ce2b029c04271fb1c011265b624c234131fcc75f000557e7d",
+      "locale": "ja",
+      "sourceId": "components.MediaDetails.MediaServerCollectionButton.help",
+      "sourcePosition": 2045
+    },
+    {
+      "candidateTarget": "Escolha uma coleção compartilhada já existente em {server} para adicionar ou remover a série inteira. Os episódios selecionados não são adicionados separadamente.",
+      "candidateTargetHash": "0f51677ff56c89a19d598b213eab23f60d35d7f576a34f69a2f107af69cef7ce",
+      "locale": "pt_BR",
+      "sourceId": "components.MediaDetails.MediaServerCollectionButton.help",
+      "sourcePosition": 2045
+    },
+    {
+      "candidateTarget": "Chọn bộ sưu tập dùng chung hiện có trên {server} để thêm hoặc xóa toàn bộ bộ phim dài tập này. Các tập đã chọn không được thêm riêng.",
+      "candidateTargetHash": "b63d4fbd8455059b0ed9fa673fd2007a222692552ac2b84b6636f49f4d5f8c67",
+      "locale": "vi",
+      "sourceId": "components.MediaDetails.MediaServerCollectionButton.help",
+      "sourcePosition": 2045
+    },
+    {
+      "candidateTarget": "选择 {server} 中已有的共享合集，以添加或移除此整个剧集。所选剧集不会单独添加。",
+      "candidateTargetHash": "12b5b08198c478a4d137db4a590bae506948f38b45aae1f2ca66f8ae3e909be7",
+      "locale": "zh_Hans",
+      "sourceId": "components.MediaDetails.MediaServerCollectionButton.help",
+      "sourcePosition": 2045
+    },
+    {
+      "candidateTarget": "選擇 {server} 中既有的共享合集，以新增或移除此整部影集。所選集數不會另外新增。",
+      "candidateTargetHash": "12e7fe139e42d1cbe3c417e4ad446d4d2367b1622f777feb4bb86e6de61f7c74",
+      "locale": "zh_Hant",
+      "sourceId": "components.MediaDetails.MediaServerCollectionButton.help",
+      "sourcePosition": 2045
+    },
+    {
+      "candidateTarget": "تتجاوز قائمة مجموعات {server} الحد المدعوم. لا تتوفر قائمة جزئية.",
+      "candidateTargetHash": "9f784b7e873c816eef98ea4d329d4343e81dc8c5f8130ae915d87b7914541750",
+      "locale": "ar",
+      "sourceId": "components.MediaDetails.MediaServerCollectionButton.limit",
+      "sourcePosition": 2046
+    },
+    {
+      "candidateTarget": "La liste des collections de {server} dépasse la limite prise en charge. Aucune liste partielle n’est proposée.",
+      "candidateTargetHash": "f9948920433b3f0f30788b25b07e3f4bd7bdd65d31b5e6688fe563fac27afbd1",
+      "locale": "fr",
+      "sourceId": "components.MediaDetails.MediaServerCollectionButton.limit",
+      "sourcePosition": 2046
+    },
+    {
+      "candidateTarget": "{server} की कलेक्शन सूची समर्थित सीमा से अधिक है। आंशिक सूची उपलब्ध नहीं है।",
+      "candidateTargetHash": "6932c38183da092e2ec726e85fa000a396e36992f03b3b1ee2c530885b062daa",
+      "locale": "hi",
+      "sourceId": "components.MediaDetails.MediaServerCollectionButton.limit",
+      "sourcePosition": 2046
+    },
+    {
+      "candidateTarget": "Daftar koleksi {server} melebihi batas yang didukung. Daftar sebagian tidak tersedia.",
+      "candidateTargetHash": "ad6f2c810e06f1918bdab4f4bd48f6c518273b0366b63515b23cb6ee446a2d5a",
+      "locale": "id",
+      "sourceId": "components.MediaDetails.MediaServerCollectionButton.limit",
+      "sourcePosition": 2046
+    },
+    {
+      "candidateTarget": "{server}のコレクション数が対応上限を超えています。一部だけの一覧は表示しません。",
+      "candidateTargetHash": "617c9fc88922cd4edfe3295a48462eb30274c0cca008857880b05d81e528fa5d",
+      "locale": "ja",
+      "sourceId": "components.MediaDetails.MediaServerCollectionButton.limit",
+      "sourcePosition": 2046
+    },
+    {
+      "candidateTarget": "{server} 컬렉션 목록이 지원 한도를 초과했습니다. 일부 목록은 제공되지 않습니다.",
+      "candidateTargetHash": "4798253d63d4b2a92f8507409dbb3d4a3ca0f2174e90ede8a4e138cc9d832728",
+      "locale": "ko",
+      "sourceId": "components.MediaDetails.MediaServerCollectionButton.limit",
+      "sourcePosition": 2046
+    },
+    {
+      "candidateTarget": "A lista de coleções de {server} excede o limite suportado. Não há lista parcial.",
+      "candidateTargetHash": "9303a53fafa9d4bb8d94118dd0e51e17c80931b5d5eb88a7987a49176a46df81",
+      "locale": "pt_BR",
+      "sourceId": "components.MediaDetails.MediaServerCollectionButton.limit",
+      "sourcePosition": 2046
+    },
+    {
+      "candidateTarget": "Danh sách bộ sưu tập của {server} vượt quá giới hạn hỗ trợ. Không cung cấp danh sách một phần.",
+      "candidateTargetHash": "2114de7e519388379fef3c2854a5c5a87d3e53ef9afeeab8ae8d3069eae52e43",
+      "locale": "vi",
+      "sourceId": "components.MediaDetails.MediaServerCollectionButton.limit",
+      "sourcePosition": 2046
+    },
+    {
+      "candidateTarget": "Associez votre propre compte {server} avant de modifier ses collections.",
+      "candidateTargetHash": "10848ff6cc3cc60cda328e1a65c58e5a03efc085cb86a67cb6c519a7c8e0dba1",
+      "locale": "fr",
+      "sourceId": "components.MediaDetails.MediaServerCollectionButton.link",
+      "sourcePosition": 2047
+    },
+    {
+      "candidateTarget": "कलेक्शन बदलने से पहले अपना {server} खाता लिंक करें।",
+      "candidateTargetHash": "7ca19f01aa8ad0ea567a7e097705d7bc58c7fd7f65bd688839dc891c47c86fbd",
+      "locale": "hi",
+      "sourceId": "components.MediaDetails.MediaServerCollectionButton.link",
+      "sourcePosition": 2047
+    },
+    {
+      "candidateTarget": "Hubungkan akun {server} milik Anda sebelum mengubah koleksinya.",
+      "candidateTargetHash": "55d21ad66bbb6be6918594d1deb828c34fb1d69d6438d6fae366a8a8a63b2a9d",
+      "locale": "id",
+      "sourceId": "components.MediaDetails.MediaServerCollectionButton.link",
+      "sourcePosition": 2047
+    },
+    {
+      "candidateTarget": "コレクションを変更する前に、ご自身の{server}アカウントを連携してください。",
+      "candidateTargetHash": "39a2ca66ca4007baa10d4f6fda006e963f80216aed7e2ead8c4a7ff323616dea",
+      "locale": "ja",
+      "sourceId": "components.MediaDetails.MediaServerCollectionButton.link",
+      "sourcePosition": 2047
+    },
+    {
+      "candidateTarget": "Vincule sua própria conta {server} antes de alterar as coleções dela.",
+      "candidateTargetHash": "5caefca9c2614e0713400a255303ba0df3b0987e91ecfdc3cec0a8b87ae81652",
+      "locale": "pt_BR",
+      "sourceId": "components.MediaDetails.MediaServerCollectionButton.link",
+      "sourcePosition": 2047
+    },
+    {
+      "candidateTarget": "Liên kết tài khoản {server} của bạn trước khi thay đổi bộ sưu tập.",
+      "candidateTargetHash": "65ede950745d650b04582a30df67117d27235a319eeb419f69c0b64c33d0ca78",
+      "locale": "vi",
+      "sourceId": "components.MediaDetails.MediaServerCollectionButton.link",
+      "sourcePosition": 2047
+    },
+    {
+      "candidateTarget": "请先关联您自己的 {server} 账户，再修改其合集。",
+      "candidateTargetHash": "b7252fe3d9a746b3202d465ef509d1b528b70a2ac5479ae76b35c99a2b1fbe11",
+      "locale": "zh_Hans",
+      "sourceId": "components.MediaDetails.MediaServerCollectionButton.link",
+      "sourcePosition": 2047
+    },
+    {
+      "candidateTarget": "請先連結您自己的 {server} 帳號，再修改其合集。",
+      "candidateTargetHash": "8efaf525627c7b844ff39cddf4d4a556051f6f0bfd4c5cfbafc8a8578fcca44c",
+      "locale": "zh_Hant",
+      "sourceId": "components.MediaDetails.MediaServerCollectionButton.link",
+      "sourcePosition": 2047
+    },
+    {
+      "candidateTarget": "حساب {server} المرتبط بك لا يملك صلاحية إدارة هذه المجموعات المشتركة.",
+      "candidateTargetHash": "b21a66bd420c5c43d975807dc70e9ef470f5fecbfbb6374a2f0aaa78860a34ee",
+      "locale": "ar",
+      "sourceId": "components.MediaDetails.MediaServerCollectionButton.permission",
+      "sourcePosition": 2049
+    },
+    {
+      "candidateTarget": "Votre compte {server} lié ne dispose pas de l’autorisation nécessaire pour gérer ces collections partagées.",
+      "candidateTargetHash": "d15365a26696d42ff8cf6b3d24afbc213c43e9541f34692d92198c292e655e81",
+      "locale": "fr",
+      "sourceId": "components.MediaDetails.MediaServerCollectionButton.permission",
+      "sourcePosition": 2049
+    },
+    {
+      "candidateTarget": "आपके लिंक किए गए {server} खाते को इन साझा कलेक्शन को प्रबंधित करने की अनुमति नहीं है।",
+      "candidateTargetHash": "85a591d56ae50c0b9a8d360dce7374869c84d19c5c83c5f3a818cbf9667eb2e6",
+      "locale": "hi",
+      "sourceId": "components.MediaDetails.MediaServerCollectionButton.permission",
+      "sourcePosition": 2049
+    },
+    {
+      "candidateTarget": "Akun {server} yang terhubung tidak memiliki izin untuk mengelola koleksi bersama ini.",
+      "candidateTargetHash": "c847045efdadd4041db66fb05b150867b22e3e1f78c76fd32b9a7cb87fca6a9d",
+      "locale": "id",
+      "sourceId": "components.MediaDetails.MediaServerCollectionButton.permission",
+      "sourcePosition": 2049
+    },
+    {
+      "candidateTarget": "連携した{server}アカウントには、これらの共有コレクションを管理する権限がありません。",
+      "candidateTargetHash": "a0e5df3977105d38702b398d1ac8a1110f07e21b96d5a7b60bf8468d74ba7529",
+      "locale": "ja",
+      "sourceId": "components.MediaDetails.MediaServerCollectionButton.permission",
+      "sourcePosition": 2049
+    },
+    {
+      "candidateTarget": "Sua conta {server} vinculada não tem permissão para gerenciar essas coleções compartilhadas.",
+      "candidateTargetHash": "e924f457af1623bfa921843a43428c401a6415d56a768dda4f3b4805ac1ecdf0",
+      "locale": "pt_BR",
+      "sourceId": "components.MediaDetails.MediaServerCollectionButton.permission",
+      "sourcePosition": 2049
+    },
+    {
+      "candidateTarget": "Tài khoản {server} đã liên kết của bạn không có quyền quản lý các bộ sưu tập dùng chung này.",
+      "candidateTargetHash": "15960e3f1e8b75170cb1bb5733cbb0fff3938a2eec57d8b9a3b8b3b18b813bb7",
+      "locale": "vi",
+      "sourceId": "components.MediaDetails.MediaServerCollectionButton.permission",
+      "sourcePosition": 2049
+    },
+    {
+      "candidateTarget": "您关联的 {server} 账户无权管理这些共享合集。",
+      "candidateTargetHash": "beab79edd384bcb98d6a9ecab2fda889e9fcfb6e6a0caa1fbce041ea50845fbc",
+      "locale": "zh_Hans",
+      "sourceId": "components.MediaDetails.MediaServerCollectionButton.permission",
+      "sourcePosition": 2049
+    },
+    {
+      "candidateTarget": "您連結的 {server} 帳號沒有權限管理這些共享合集。",
+      "candidateTargetHash": "65e86fcc3a82b5d26d47e43e72a654192ec4b500651560363ebf4f00f190b548",
+      "locale": "zh_Hant",
+      "sourceId": "components.MediaDetails.MediaServerCollectionButton.permission",
+      "sourcePosition": 2049
+    },
+    {
+      "candidateTarget": "إزالة من {name}",
+      "candidateTargetHash": "634ba9d208821543315e5b04af439bc95e61f403412ef4b9b9c321b7b6d6b3ed",
+      "locale": "ar",
+      "sourceId": "components.MediaDetails.MediaServerCollectionButton.removeNamed",
+      "sourcePosition": 2050
+    },
+    {
+      "candidateTarget": "{name}에서 제거",
+      "candidateTargetHash": "110a4b4eb11cb80c69eb8ddefbf2a86f2c8f1a6a0f657acf2a5a94b53315afb1",
+      "locale": "ko",
+      "sourceId": "components.MediaDetails.MediaServerCollectionButton.removeNamed",
+      "sourcePosition": 2050
+    },
+    {
+      "candidateTarget": "Remover de {name}",
+      "candidateTargetHash": "32821a30444a12ce5b20e849c4553e057bd410f316c923f01a363f980cb5b32a",
+      "locale": "pt_BR",
+      "sourceId": "components.MediaDetails.MediaServerCollectionButton.removeNamed",
+      "sourcePosition": 2050
+    },
+    {
+      "candidateTarget": "从 {name} 中移除",
+      "candidateTargetHash": "143e0a88d60b574a124b211f8f22fea6d56b61a62721cad9633f4ef8ab651d96",
+      "locale": "zh_Hans",
+      "sourceId": "components.MediaDetails.MediaServerCollectionButton.removeNamed",
+      "sourcePosition": 2050
+    },
+    {
+      "candidateTarget": "Rechargez l’appartenance à la collection depuis votre compte de serveur multimédia lié. Cela ne répète aucune action d’ajout ou de suppression.",
+      "candidateTargetHash": "1b2137acc57e3801b09d9605ce8508a09e47dd93f4479ccebe34ab5bd8dccd53",
+      "locale": "fr",
+      "sourceId": "components.MediaDetails.MediaServerCollectionButton.retry",
+      "sourcePosition": 2051
+    },
+    {
+      "candidateTarget": "अपने लिंक किए गए मीडिया सर्वर खाते से कलेक्शन की स्थिति फिर से लोड करें। इससे जोड़ने या हटाने की कार्रवाई दोबारा नहीं होगी।",
+      "candidateTargetHash": "a6a9e2208dbec8bf13f4bec01904c54886ba6103e134fd2262c6b474c24b8861",
+      "locale": "hi",
+      "sourceId": "components.MediaDetails.MediaServerCollectionButton.retry",
+      "sourcePosition": 2051
+    },
+    {
+      "candidateTarget": "Muat ulang status keanggotaan koleksi dari akun server media yang terhubung. Tindakan ini tidak mengulangi proses penambahan atau penghapusan.",
+      "candidateTargetHash": "07c6af80fd931521b7f065388eeb88451c876c56e2d01bd6835c82c1738a423e",
+      "locale": "id",
+      "sourceId": "components.MediaDetails.MediaServerCollectionButton.retry",
+      "sourcePosition": 2051
+    },
+    {
+      "candidateTarget": "連携したメディアサーバーアカウントからコレクションの登録状態を再読み込みします。追加や削除の操作は繰り返されません。",
+      "candidateTargetHash": "33c1ffe2c411513a27b59740547372b0b084a46d4ca72cd583686c272a4b47e0",
+      "locale": "ja",
+      "sourceId": "components.MediaDetails.MediaServerCollectionButton.retry",
+      "sourcePosition": 2051
+    },
+    {
+      "candidateTarget": "연결된 미디어 서버 계정에서 컬렉션 상태를 다시 불러옵니다. 항목 추가 또는 제거 동작을 반복하지 않습니다.",
+      "candidateTargetHash": "05d9ad30b6c489e7141d09ba3f4ce30b9e89163e1539743139318555c9ed07a6",
+      "locale": "ko",
+      "sourceId": "components.MediaDetails.MediaServerCollectionButton.retry",
+      "sourcePosition": 2051
+    },
+    {
+      "candidateTarget": "Recarregue o estado da coleção pela sua conta de servidor de mídia vinculada. Isso não repete uma ação de adição ou remoção.",
+      "candidateTargetHash": "031bfb492ff13fa38b013752a6372dccebe1a17e6f12e433dd4700e47fec56f9",
+      "locale": "pt_BR",
+      "sourceId": "components.MediaDetails.MediaServerCollectionButton.retry",
+      "sourcePosition": 2051
+    },
+    {
+      "candidateTarget": "Tải lại trạng thái bộ sưu tập từ tài khoản máy chủ phương tiện đã liên kết. Thao tác này không lặp lại việc thêm hoặc xóa.",
+      "candidateTargetHash": "9511309e712d96c2c989413bd313eed643af55752afa510cc2eb12298b62a878",
+      "locale": "vi",
+      "sourceId": "components.MediaDetails.MediaServerCollectionButton.retry",
+      "sourcePosition": 2051
+    },
+    {
+      "candidateTarget": "从您已关联的媒体服务器账户重新加载合集状态。这不会重复添加或移除操作。",
+      "candidateTargetHash": "3e5427095997cf755245dbf59c5d1c9da48ee87a20d50351d22d404a241554a5",
+      "locale": "zh_Hans",
+      "sourceId": "components.MediaDetails.MediaServerCollectionButton.retry",
+      "sourcePosition": 2051
+    },
+    {
+      "candidateTarget": "從您已連結的媒體伺服器帳號重新載入合集狀態。這不會重複新增或移除操作。",
+      "candidateTargetHash": "391d3a30aead56e129d6bba2c80ae44607b441d805732035865fbf7800bfffd6",
+      "locale": "zh_Hant",
+      "sourceId": "components.MediaDetails.MediaServerCollectionButton.retry",
+      "sourcePosition": 2051
+    },
+    {
+      "candidateTarget": "Bộ sưu tập không khả dụng trên máy chủ phương tiện đã cấu hình.",
+      "candidateTargetHash": "b42b0da6f3848a4b7787ec6ada91f7e3b11d620a5efe0f47af1854a54a7cd70d",
+      "locale": "vi",
+      "sourceId": "components.MediaDetails.MediaServerCollectionButton.unavailable",
+      "sourcePosition": 2052
+    },
+    {
+      "candidateTarget": "当前配置的媒体服务器不支持合集。",
+      "candidateTargetHash": "46cbdc54bff3437a3ad3a126952c6bd319a69b0368a289ed358a768888e2407f",
+      "locale": "zh_Hans",
+      "sourceId": "components.MediaDetails.MediaServerCollectionButton.unavailable",
+      "sourcePosition": 2052
+    },
+    {
+      "candidateTarget": "目前設定的媒體伺服器不支援合集。",
+      "candidateTargetHash": "d7b5b7cc9204eb95688a9f302d770b96ba2df5e8e4267a53f8da2e6a73cc010c",
+      "locale": "zh_Hant",
+      "sourceId": "components.MediaDetails.MediaServerCollectionButton.unavailable",
+      "sourcePosition": 2052
+    },
+    {
+      "candidateTarget": "添加到收藏",
+      "candidateTargetHash": "0cfc396e4aa347ad4846e39c483770da00725f6787935e48d7d493d377f20e19",
+      "locale": "zh_Hans",
+      "sourceId": "components.MediaDetails.MediaServerWatchlistButton.addFavorites",
+      "sourcePosition": 2053
+    },
+    {
+      "candidateTarget": "加入最愛",
+      "candidateTargetHash": "b33e3eb12e8e41e970c0dc9c4e9f4d5ea4680718f1987798a29ecc0779c94e5c",
+      "locale": "zh_Hant",
+      "sourceId": "components.MediaDetails.MediaServerWatchlistButton.addFavorites",
+      "sourcePosition": 2053
+    },
+    {
+      "candidateTarget": "أضف هذا المسلسل بالكامل إلى {server} {list}. لن تُضاف المواسم أو الحلقات المحددة كلٌّ على حدة.",
+      "candidateTargetHash": "af7df9733ea8250002ca19568ef71a96386131b8c9b267eb57386d372e7389e0",
+      "locale": "ar",
+      "sourceId": "components.MediaDetails.MediaServerWatchlistButton.addHelp",
+      "sourcePosition": 2054
+    },
+    {
+      "candidateTarget": "इस पूरी सीरीज़ को अपने {server} {list} में जोड़ें। चुने हुए सीज़न और एपिसोड अलग से नहीं जोड़े जाते।",
+      "candidateTargetHash": "c23d8fe8b54a1c298c014535fd81ea8d1acbb43287d98934626350bc8ff3541b",
+      "locale": "hi",
+      "sourceId": "components.MediaDetails.MediaServerWatchlistButton.addHelp",
+      "sourcePosition": 2054
+    },
+    {
+      "candidateTarget": "このシリーズ全体を {server} の {list} に追加します。選択したシーズンやエピソードは個別には追加されません。",
+      "candidateTargetHash": "073f21af5f37b290e3900a97985f4d489258d91706bd8a9e45bfbb83dc884f9c",
+      "locale": "ja",
+      "sourceId": "components.MediaDetails.MediaServerWatchlistButton.addHelp",
+      "sourcePosition": 2054
+    },
+    {
+      "candidateTarget": "이 시리즈 전체를 {server} {list}에 추가합니다. 선택한 시즌과 에피소드는 별도로 추가되지 않습니다.",
+      "candidateTargetHash": "8b1ef282f954e979ca2bac92014076892966515e095f1fb90ac21eae398c8f6f",
+      "locale": "ko",
+      "sourceId": "components.MediaDetails.MediaServerWatchlistButton.addHelp",
+      "sourcePosition": 2054
+    },
+    {
+      "candidateTarget": "Adicione toda a série à lista {list} de {server}. As temporadas e os episódios selecionados não são adicionados separadamente.",
+      "candidateTargetHash": "74b13a0c52219c863c8d26f964d4dde1a868de72dad0511d25eba6eb0146c24f",
+      "locale": "pt_BR",
+      "sourceId": "components.MediaDetails.MediaServerWatchlistButton.addHelp",
+      "sourcePosition": 2054
+    },
+    {
+      "candidateTarget": "Thêm toàn bộ phim bộ này vào {server} {list} của bạn. Các mùa và tập đã chọn không được thêm riêng.",
+      "candidateTargetHash": "c11f0314e422d9fecf6c42e8bab599f4db8da95b27a6b287585be78242fb69d1",
+      "locale": "vi",
+      "sourceId": "components.MediaDetails.MediaServerWatchlistButton.addHelp",
+      "sourcePosition": 2054
+    },
+    {
+      "candidateTarget": "将整部剧集添加到您的 {server} {list}。所选季和剧集不会单独添加。",
+      "candidateTargetHash": "99db39b43bbf29d13e53f58c59034ffae2a7af9d27e76ae7811a62a79f119ba3",
+      "locale": "zh_Hans",
+      "sourceId": "components.MediaDetails.MediaServerWatchlistButton.addHelp",
+      "sourcePosition": 2054
+    },
+    {
+      "candidateTarget": "將整部影集加入您的 {server} {list}。所選季與集數不會另外加入。",
+      "candidateTargetHash": "e56c8c859bf0124ad081e58a48732e7986ca88b04cfd275140370d24f4faea3e",
+      "locale": "zh_Hant",
+      "sourceId": "components.MediaDetails.MediaServerWatchlistButton.addHelp",
+      "sourcePosition": 2054
+    },
+    {
+      "candidateTarget": "أضف إلى قائمة المشاهدة",
+      "candidateTargetHash": "671588853f419d6ec7f8675df6aed5c6c97aeb6a328c72094df927aea6663ebe",
+      "locale": "ar",
+      "sourceId": "components.MediaDetails.MediaServerWatchlistButton.addWatchlist",
+      "sourcePosition": 2055
+    },
+    {
+      "candidateTarget": "저장된 상태를 불러오거나 업데이트하지 못했습니다. 변경하기 전에 다시 시도하세요.",
+      "candidateTargetHash": "922325fa3a6e2db81093603b8c8fd2538fc84a4635d3c6aa14c2bdca98e3e458",
+      "locale": "ko",
+      "sourceId": "components.MediaDetails.MediaServerWatchlistButton.failed",
+      "sourcePosition": 2056
+    },
+    {
+      "candidateTarget": "حالة الحفظ على خادم الوسائط غير متاحة",
+      "candidateTargetHash": "84d312b1c4bcb1d671da3188fb4daeb60d874072c63a46a75e40983ff743f110",
+      "locale": "ar",
+      "sourceId": "components.MediaDetails.MediaServerWatchlistButton.failedTitle",
+      "sourcePosition": 2057
+    },
+    {
+      "candidateTarget": "État enregistré du serveur multimédia indisponible",
+      "candidateTargetHash": "ae03e0179b9232626a3eb18f978d5fd88d609aaa540a3bcd915621d7fb389004",
+      "locale": "fr",
+      "sourceId": "components.MediaDetails.MediaServerWatchlistButton.failedTitle",
+      "sourcePosition": 2057
+    },
+    {
+      "candidateTarget": "मीडिया सर्वर पर सहेजी गई स्थिति उपलब्ध नहीं है",
+      "candidateTargetHash": "549b954ddcb3694a21add53fe1b3a1bf26b9350f8cfec528573d7e0d2e9619aa",
+      "locale": "hi",
+      "sourceId": "components.MediaDetails.MediaServerWatchlistButton.failedTitle",
+      "sourcePosition": 2057
+    },
+    {
+      "candidateTarget": "Status tersimpan di server media tidak tersedia",
+      "candidateTargetHash": "7a28018f4eecfd845c87b136c060ec042bc8820aa321e807eab69ae88bbcc4b2",
+      "locale": "id",
+      "sourceId": "components.MediaDetails.MediaServerWatchlistButton.failedTitle",
+      "sourcePosition": 2057
+    },
+    {
+      "candidateTarget": "メディアサーバーの保存状態を利用できません",
+      "candidateTargetHash": "26ee487994ccffdc66b706ac051287611f19eb0b4762cd927b74cd7be402e159",
+      "locale": "ja",
+      "sourceId": "components.MediaDetails.MediaServerWatchlistButton.failedTitle",
+      "sourcePosition": 2057
+    },
+    {
+      "candidateTarget": "미디어 서버에 저장된 상태를 사용할 수 없습니다",
+      "candidateTargetHash": "0787a38e77bbb0c1402541f06d590399ecb7ed8750dcfb13a9e421306ca305fd",
+      "locale": "ko",
+      "sourceId": "components.MediaDetails.MediaServerWatchlistButton.failedTitle",
+      "sourcePosition": 2057
+    },
+    {
+      "candidateTarget": "Estado salvo do servidor de mídia indisponível",
+      "candidateTargetHash": "143ee9e2803e96fa0348e2ff9ac79a390709ad3b2974a4cd9af989c080af86f7",
+      "locale": "pt_BR",
+      "sourceId": "components.MediaDetails.MediaServerWatchlistButton.failedTitle",
+      "sourcePosition": 2057
+    },
+    {
+      "candidateTarget": "Trạng thái đã lưu trên máy chủ phương tiện không khả dụng",
+      "candidateTargetHash": "2a2df63bc1e2ae3dc1cb7afe95316efcf92fe4b555f61d0ab0617afdff1fd2f7",
+      "locale": "vi",
+      "sourceId": "components.MediaDetails.MediaServerWatchlistButton.failedTitle",
+      "sourcePosition": 2057
+    },
+    {
+      "candidateTarget": "媒体服务器保存的状态不可用",
+      "candidateTargetHash": "c8e02212eede90736a004ae41314e6f172564e011a17c99781766392cd1df751",
+      "locale": "zh_Hans",
+      "sourceId": "components.MediaDetails.MediaServerWatchlistButton.failedTitle",
+      "sourcePosition": 2057
+    },
+    {
+      "candidateTarget": "媒體伺服器儲存的狀態無法使用",
+      "candidateTargetHash": "854899f1df1e57c5d3865a7d52c7fd217b1dfcdf1952b7657c190dc47cb411ec",
+      "locale": "zh_Hant",
+      "sourceId": "components.MediaDetails.MediaServerWatchlistButton.failedTitle",
+      "sourcePosition": 2057
+    },
+    {
+      "candidateTarget": "Associez votre propre compte {server} avant d’enregistrer cette série.",
+      "candidateTargetHash": "7ec9f002b103c576d3adb4c83bb04d4b648497eab2046d2295f9e41bdd467a93",
+      "locale": "fr",
+      "sourceId": "components.MediaDetails.MediaServerWatchlistButton.linkHelp",
+      "sourcePosition": 2058
+    },
+    {
+      "candidateTarget": "इस सीरीज़ को सहेजने से पहले अपना {server} खाता लिंक करें।",
+      "candidateTargetHash": "04ad886cdea986b59812e5b34b1b493fdc4229eedecf66a4c6958195580b9b38",
+      "locale": "hi",
+      "sourceId": "components.MediaDetails.MediaServerWatchlistButton.linkHelp",
+      "sourcePosition": 2058
+    },
+    {
+      "candidateTarget": "Hubungkan akun {server} milik Anda sebelum menyimpan serial ini.",
+      "candidateTargetHash": "b9e13e99a62cad6baf6d6db646351d39f581399707318da8c4f2d12fc78ed5e6",
+      "locale": "id",
+      "sourceId": "components.MediaDetails.MediaServerWatchlistButton.linkHelp",
+      "sourcePosition": 2058
+    },
+    {
+      "candidateTarget": "このシリーズを保存する前に、ご自身の{server}アカウントを連携してください。",
+      "candidateTargetHash": "0f47c5ae034dd306ba7bec856c415d08f28c02e91e588951b2d823605fdde17c",
+      "locale": "ja",
+      "sourceId": "components.MediaDetails.MediaServerWatchlistButton.linkHelp",
+      "sourcePosition": 2058
+    },
+    {
+      "candidateTarget": "Vincule sua própria conta {server} antes de salvar esta série.",
+      "candidateTargetHash": "5f860ac80d759876c384ca079f3d423268a9361c5ae674ca2346fe9c83b63cd7",
+      "locale": "pt_BR",
+      "sourceId": "components.MediaDetails.MediaServerWatchlistButton.linkHelp",
+      "sourcePosition": 2058
+    },
+    {
+      "candidateTarget": "Liên kết tài khoản {server} của bạn trước khi lưu bộ phim dài tập này.",
+      "candidateTargetHash": "c86adda7a52876ea734ff4ad3b1b9ed78f988fc85ace343a1117e4fc96473862",
+      "locale": "vi",
+      "sourceId": "components.MediaDetails.MediaServerWatchlistButton.linkHelp",
+      "sourcePosition": 2058
+    },
+    {
+      "candidateTarget": "请先关联您自己的 {server} 账户，再保存此剧集。",
+      "candidateTargetHash": "466de3d10db757328da19ceb6a2aaf9808fc03d8bf3d9073c6ff2936409d0824",
+      "locale": "zh_Hans",
+      "sourceId": "components.MediaDetails.MediaServerWatchlistButton.linkHelp",
+      "sourcePosition": 2058
+    },
+    {
+      "candidateTarget": "請先連結您自己的 {server} 帳號，再儲存此影集。",
+      "candidateTargetHash": "d26742d4577cae4d32f77dd1fa4c0b1cf10f5a72b02b3517ea621dd233246006",
+      "locale": "zh_Hant",
+      "sourceId": "components.MediaDetails.MediaServerWatchlistButton.linkHelp",
+      "sourcePosition": 2058
+    },
+    {
+      "candidateTarget": "تعذر العثور على هذه السلسلة في كتالوج {server} الذي يمكنك الوصول إليه.",
+      "candidateTargetHash": "9f87187246433026cf3988b973ae877aaf69874ee0fc86287c6d9ec6ab7331bc",
+      "locale": "ar",
+      "sourceId": "components.MediaDetails.MediaServerWatchlistButton.missingHelp",
+      "sourcePosition": 2059
+    },
+    {
+      "candidateTarget": "Cette série est introuvable dans le catalogue {server} auquel vous avez accès.",
+      "candidateTargetHash": "5140afa77844f014437b833cd7dc9eaf6887acae0c1660f57f9f57f7d79e872a",
+      "locale": "fr",
+      "sourceId": "components.MediaDetails.MediaServerWatchlistButton.missingHelp",
+      "sourcePosition": 2059
+    },
+    {
+      "candidateTarget": "यह सीरीज़ आपके उपलब्ध {server} कैटलॉग में नहीं मिली।",
+      "candidateTargetHash": "d93a86122a145023359ebf51b024befadb156ce30b10e5a6d69636be8214162a",
+      "locale": "hi",
+      "sourceId": "components.MediaDetails.MediaServerWatchlistButton.missingHelp",
+      "sourcePosition": 2059
+    },
+    {
+      "candidateTarget": "Serial ini tidak ditemukan dalam katalog {server} yang dapat Anda akses.",
+      "candidateTargetHash": "14fa548799adf6df58a8fd6d4aabe3dc86310fd8c87064b59be68065942d8bc1",
+      "locale": "id",
+      "sourceId": "components.MediaDetails.MediaServerWatchlistButton.missingHelp",
+      "sourcePosition": 2059
+    },
+    {
+      "candidateTarget": "アクセス可能な{server}カタログ内に、このシリーズは見つかりませんでした。",
+      "candidateTargetHash": "8dbd1cfa30d70ad71a6fd2ed3b949bdf519c5ddd244bf3f01af57efc7a9361a9",
+      "locale": "ja",
+      "sourceId": "components.MediaDetails.MediaServerWatchlistButton.missingHelp",
+      "sourcePosition": 2059
+    },
+    {
+      "candidateTarget": "접근 가능한 {server} 카탈로그에서 이 시리즈를 찾을 수 없습니다.",
+      "candidateTargetHash": "6ee21d0e6a7c61ec0ec927bb567997c04d91a5def5601cbbf321d8aa9ee324f9",
+      "locale": "ko",
+      "sourceId": "components.MediaDetails.MediaServerWatchlistButton.missingHelp",
+      "sourcePosition": 2059
+    },
+    {
+      "candidateTarget": "Esta série não foi encontrada no catálogo {server} ao qual você tem acesso.",
+      "candidateTargetHash": "e0dd45ea9957d6de2836613821c6c4eb30dfb252a16055835b39b0576bf88fa0",
+      "locale": "pt_BR",
+      "sourceId": "components.MediaDetails.MediaServerWatchlistButton.missingHelp",
+      "sourcePosition": 2059
+    },
+    {
+      "candidateTarget": "Không tìm thấy bộ phim dài tập này trong danh mục {server} mà bạn có thể truy cập.",
+      "candidateTargetHash": "61d13501dbe983fb44ce19a8cf30c69b8ffaf3619ed70dae435a69a02daac20d",
+      "locale": "vi",
+      "sourceId": "components.MediaDetails.MediaServerWatchlistButton.missingHelp",
+      "sourcePosition": 2059
+    },
+    {
+      "candidateTarget": "在您可访问的 {server} 目录中找不到此剧集。",
+      "candidateTargetHash": "4485f0bc809fc4f3480d231957114fa6f03eff2053a4596a0ff22eaa261940b2",
+      "locale": "zh_Hans",
+      "sourceId": "components.MediaDetails.MediaServerWatchlistButton.missingHelp",
+      "sourcePosition": 2059
+    },
+    {
+      "candidateTarget": "在您可存取的 {server} 目錄中找不到此影集。",
+      "candidateTargetHash": "fe95e9957f566ad461ce963154c8e57111a40462488cdd5488cc7e1d153a1801",
+      "locale": "zh_Hant",
+      "sourceId": "components.MediaDetails.MediaServerWatchlistButton.missingHelp",
+      "sourcePosition": 2059
+    },
+    {
+      "candidateTarget": "L’état enregistré de {server} est en cours de chargement ou de mise à jour.",
+      "candidateTargetHash": "552c247c67ef4052a418e2c736e437bb422da16a50e5f63cbd36627476beb68f",
+      "locale": "fr",
+      "sourceId": "components.MediaDetails.MediaServerWatchlistButton.pendingHelp",
+      "sourcePosition": 2060
+    },
+    {
+      "candidateTarget": "{server} की सहेजी गई स्थिति लोड हो रही है या अपडेट की जा रही है।",
+      "candidateTargetHash": "fecf65f9f75984c4da350ac1a6a982048fe7ef3238742db0993c8bc940c737ba",
+      "locale": "hi",
+      "sourceId": "components.MediaDetails.MediaServerWatchlistButton.pendingHelp",
+      "sourcePosition": 2060
+    },
+    {
+      "candidateTarget": "Status tersimpan {server} sedang dimuat atau diperbarui.",
+      "candidateTargetHash": "da19d89ae69984edfbaed8e14a1340ba53cf675ed62f72c762cefadaf4c7cfb9",
+      "locale": "id",
+      "sourceId": "components.MediaDetails.MediaServerWatchlistButton.pendingHelp",
+      "sourcePosition": 2060
+    },
+    {
+      "candidateTarget": "{server}の保存状態を読み込み中、または更新中です。",
+      "candidateTargetHash": "482a39689f534b5d9c91c814f5d422098f32cfdc7fb93343b035da0c0b56b9a3",
+      "locale": "ja",
+      "sourceId": "components.MediaDetails.MediaServerWatchlistButton.pendingHelp",
+      "sourcePosition": 2060
+    },
+    {
+      "candidateTarget": "{server}에 저장된 상태를 불러오거나 업데이트하는 중입니다.",
+      "candidateTargetHash": "67fc8d37b6820841788718d148afa008deb6c10e12bda3f0bd50ab8faf04ba22",
+      "locale": "ko",
+      "sourceId": "components.MediaDetails.MediaServerWatchlistButton.pendingHelp",
+      "sourcePosition": 2060
+    },
+    {
+      "candidateTarget": "O estado salvo de {server} está sendo carregado ou atualizado.",
+      "candidateTargetHash": "c43e2fa2e1c2b3632ca631cda4ed7a484cf1305844dffe73626bbb33fc06611e",
+      "locale": "pt_BR",
+      "sourceId": "components.MediaDetails.MediaServerWatchlistButton.pendingHelp",
+      "sourcePosition": 2060
+    },
+    {
+      "candidateTarget": "Trạng thái đã lưu của {server} đang được tải hoặc cập nhật.",
+      "candidateTargetHash": "3051ce8a3d1b038bd052bf2dc025020ead26eb8c904962e92b9e614aee5f8e64",
+      "locale": "vi",
+      "sourceId": "components.MediaDetails.MediaServerWatchlistButton.pendingHelp",
+      "sourcePosition": 2060
+    },
+    {
+      "candidateTarget": "{server} 的已保存状态正在加载或更新。",
+      "candidateTargetHash": "6e88c4503c939c00e4414db1da817348d9db36e852cd44728ec46645c05ea6a9",
+      "locale": "zh_Hans",
+      "sourceId": "components.MediaDetails.MediaServerWatchlistButton.pendingHelp",
+      "sourcePosition": 2060
+    },
+    {
+      "candidateTarget": "{server} 的已儲存狀態正在載入或更新。",
+      "candidateTargetHash": "851a3c0a5141cddaa0a1d95345ba59ba10a3d94481b4243ac4b1f2aec8eeaf7b",
+      "locale": "zh_Hant",
+      "sourceId": "components.MediaDetails.MediaServerWatchlistButton.pendingHelp",
+      "sourcePosition": 2060
+    },
+    {
+      "candidateTarget": "إزالة من المفضلة",
+      "candidateTargetHash": "f254c43261a83548d28054267ff10bb53739b5347cf1403fa89f293211ff2450",
+      "locale": "ar",
+      "sourceId": "components.MediaDetails.MediaServerWatchlistButton.removeFavorites",
+      "sourcePosition": 2061
+    },
+    {
+      "candidateTarget": "从收藏中移除",
+      "candidateTargetHash": "d9eba5226c5df4c46db5eb0d2a8fa6bb25137203a7d757bba8f3469745a1e304",
+      "locale": "zh_Hans",
+      "sourceId": "components.MediaDetails.MediaServerWatchlistButton.removeFavorites",
+      "sourcePosition": 2061
+    },
+    {
+      "candidateTarget": "從最愛中移除",
+      "candidateTargetHash": "bebb6a2fc2652424a11e2d300b5e296925af9497a2ebbb849966833037ff850b",
+      "locale": "zh_Hant",
+      "sourceId": "components.MediaDetails.MediaServerWatchlistButton.removeFavorites",
+      "sourcePosition": 2061
+    },
+    {
+      "candidateTarget": "Hapus seluruh serial ini dari {server} {list}. Tindakan ini tidak menghapus media atau mengubah daftar tontonan Seerr Anda.",
+      "candidateTargetHash": "e1beeb547b326223a192f7b2f8e9f4ffbd85f14e7505c1b65fe128b976eefd13",
+      "locale": "id",
+      "sourceId": "components.MediaDetails.MediaServerWatchlistButton.removeHelp",
+      "sourcePosition": 2062
+    },
+    {
+      "candidateTarget": "このシリーズ全体を {server} の {list} から削除します。メディアは削除されず、Seerr のウォッチリストも変更されません。",
+      "candidateTargetHash": "17f1c9f2a1e25c37e4c5113872232ef83e9e328cd361717cd29f3695d17b81d6",
+      "locale": "ja",
+      "sourceId": "components.MediaDetails.MediaServerWatchlistButton.removeHelp",
+      "sourcePosition": 2062
+    },
+    {
+      "candidateTarget": "이 시리즈 전체를 {server} {list}에서 제거합니다. 미디어는 삭제되지 않으며 Seerr 시청 목록도 변경되지 않습니다.",
+      "candidateTargetHash": "5cad952123620f6fdc4787a4968b09c31c77f885e2499b75a0927f08fda86489",
+      "locale": "ko",
+      "sourceId": "components.MediaDetails.MediaServerWatchlistButton.removeHelp",
+      "sourcePosition": 2062
+    },
+    {
+      "candidateTarget": "从您的 {server} {list} 中移除整部剧集。这不会删除媒体，也不会更改您的 Seerr 观看列表。",
+      "candidateTargetHash": "48fdc5aa13bda0633ad3baee32b30f93dddd66c2cc5c71c196e4f304f1df8806",
+      "locale": "zh_Hans",
+      "sourceId": "components.MediaDetails.MediaServerWatchlistButton.removeHelp",
+      "sourcePosition": 2062
+    },
+    {
+      "candidateTarget": "從您的 {server} {list} 中移除整部影集。這不會刪除媒體，也不會變更您的 Seerr 觀看清單。",
+      "candidateTargetHash": "b058136617b2fc6dc989d2da5def137cb27eb32dc96253695ffccd88139e0a32",
+      "locale": "zh_Hant",
+      "sourceId": "components.MediaDetails.MediaServerWatchlistButton.removeHelp",
+      "sourcePosition": 2062
+    },
+    {
+      "candidateTarget": "إزالة من قائمة المشاهدة",
+      "candidateTargetHash": "adebba386c7f547901c97e0a6dbf9f8ee1ec0e55f6891139821cf82a1ce21371",
+      "locale": "ar",
+      "sourceId": "components.MediaDetails.MediaServerWatchlistButton.removeWatchlist",
+      "sourcePosition": 2063
+    },
+    {
+      "candidateTarget": "Laden Sie den gespeicherten Zustand erneut aus Ihrem eigenen Medienserver-Konto. Dadurch wird keine Aktion zum Hinzufügen oder Entfernen wiederholt.",
+      "candidateTargetHash": "4ce66a7d3824b5c967238005d7a1c2f47f85b41f3241753e6668946bdead2e74",
+      "locale": "de",
+      "sourceId": "components.MediaDetails.MediaServerWatchlistButton.retry",
+      "sourcePosition": 2064
+    },
+    {
+      "candidateTarget": "Rechargez l’état enregistré depuis votre propre compte de serveur multimédia. Cela ne répète aucune action d’ajout ou de suppression.",
+      "candidateTargetHash": "a891f170e3137028cfdc3d382f3f10efa929bf705d6f8ac31e2951dcbd26a433",
+      "locale": "fr",
+      "sourceId": "components.MediaDetails.MediaServerWatchlistButton.retry",
+      "sourcePosition": 2064
+    },
+    {
+      "candidateTarget": "अपने मीडिया सर्वर खाते से सहेजी गई स्थिति फिर से लोड करें। इससे जोड़ने या हटाने की कार्रवाई दोबारा नहीं होगी।",
+      "candidateTargetHash": "bebcc9578141111905d40b2d5d57839b32a5f499e30eef2781fa66d573532eee",
+      "locale": "hi",
+      "sourceId": "components.MediaDetails.MediaServerWatchlistButton.retry",
+      "sourcePosition": 2064
+    },
+    {
+      "candidateTarget": "Muat ulang status tersimpan dari akun server media Anda sendiri. Tindakan ini tidak mengulangi proses penambahan atau penghapusan.",
+      "candidateTargetHash": "b8969c48cf229c9cf17059d434c4eac4bf4dfa5cd49f8eb55750e6176dc93cb4",
+      "locale": "id",
+      "sourceId": "components.MediaDetails.MediaServerWatchlistButton.retry",
+      "sourcePosition": 2064
+    },
+    {
+      "candidateTarget": "ご自身のメディアサーバーアカウントから保存状態を再読み込みします。追加や削除の操作は繰り返されません。",
+      "candidateTargetHash": "7d8cc24274b23633e4786e77d43c655a07be04759ce1dad1e9d54c95d0345505",
+      "locale": "ja",
+      "sourceId": "components.MediaDetails.MediaServerWatchlistButton.retry",
+      "sourcePosition": 2064
+    },
+    {
+      "candidateTarget": "자신의 미디어 서버 계정에서 저장된 상태를 다시 불러옵니다. 항목 추가 또는 제거 동작을 반복하지 않습니다.",
+      "candidateTargetHash": "556f60ffe43d8603ceb2af5ce58890cdf75172bc973b09f04bd94a222cc20e9b",
+      "locale": "ko",
+      "sourceId": "components.MediaDetails.MediaServerWatchlistButton.retry",
+      "sourcePosition": 2064
+    },
+    {
+      "candidateTarget": "TheTVDB द्वारा दिया गया मेटाडेटा। स्रोत का श्रेय देना आवश्यक है।",
+      "candidateTargetHash": "1ad3fcd395d0fab1ef57ead546bc27dfbf3f9b49e2c75b79a8f30276d20e7a69",
+      "locale": "hi",
+      "sourceId": "components.MediaDetails.MetadataAttribution.tvdbTitle",
+      "sourcePosition": 2070
+    },
+    {
+      "candidateTarget": "Metadata disediakan oleh TheTVDB. Atribusi sumber wajib dicantumkan.",
+      "candidateTargetHash": "fe76f1f2f775e8d6e19e4e82ad115b0c0fd2bd75d36004badee59d8e8f1c79d2",
+      "locale": "id",
+      "sourceId": "components.MediaDetails.MetadataAttribution.tvdbTitle",
+      "sourcePosition": 2070
+    },
+    {
+      "candidateTarget": "メタデータの提供元はTheTVDBです。出典の明記が必要です。",
+      "candidateTargetHash": "1919f996e29a62f348c81f783945c4914d7737ca8ffc91f0d6d366b6f048234c",
+      "locale": "ja",
+      "sourceId": "components.MediaDetails.MetadataAttribution.tvdbTitle",
+      "sourcePosition": 2070
+    },
+    {
+      "candidateTarget": "Siêu dữ liệu do TheTVDB cung cấp. Bắt buộc ghi công nguồn.",
+      "candidateTargetHash": "e46289da00a14f5a94211e67133434eaed1fada760983806752f216f222eb07a",
+      "locale": "vi",
+      "sourceId": "components.MediaDetails.MetadataAttribution.tvdbTitle",
+      "sourcePosition": 2070
+    },
+    {
+      "candidateTarget": "元数据由 TheTVDB 提供。必须注明来源。",
+      "candidateTargetHash": "259ae04255a3d01f417d853e292619ed33e53d61d675496585e5bc046db3c261",
+      "locale": "zh_Hans",
+      "sourceId": "components.MediaDetails.MetadataAttribution.tvdbTitle",
+      "sourcePosition": 2070
+    },
+    {
+      "candidateTarget": "中繼資料由 TheTVDB 提供。必須標示來源。",
+      "candidateTargetHash": "45a54d96e33be7881bc1fc35ed5231c3fc5ac9abd1ed32b01712b1aba2626787",
+      "locale": "zh_Hant",
+      "sourceId": "components.MediaDetails.MetadataAttribution.tvdbTitle",
+      "sourcePosition": 2070
+    },
+    {
+      "candidateTarget": "TVmaze (مُعدّل)",
+      "candidateTargetHash": "a58bf20b40c76d57a090f26784f38d77dbfe9c3afdb8afa0985d8ce03c6592ba",
+      "locale": "ar",
+      "sourceId": "components.MediaDetails.MetadataAttribution.tvmaze",
+      "sourcePosition": 2071
+    },
+    {
+      "candidateTarget": "TVmaze (adapté)",
+      "candidateTargetHash": "69e8dd16fc1c9e52909bbd0392fb931a6481931361862d044724c18bd654da3b",
+      "locale": "fr",
+      "sourceId": "components.MediaDetails.MetadataAttribution.tvmaze",
+      "sourcePosition": 2071
+    },
+    {
+      "candidateTarget": "TVmaze (अनुकूलित)",
+      "candidateTargetHash": "1812ce2626eeb42e19cb763201d6354614f14c5d7d1854c6f2757a926aa80f10",
+      "locale": "hi",
+      "sourceId": "components.MediaDetails.MetadataAttribution.tvmaze",
+      "sourcePosition": 2071
+    },
+    {
+      "candidateTarget": "TVmaze（改変）",
+      "candidateTargetHash": "f6ccc09be2b40c7788eae387dc8daa6a27917972b2a27bb3ab6a72347862000b",
+      "locale": "ja",
+      "sourceId": "components.MediaDetails.MetadataAttribution.tvmaze",
+      "sourcePosition": 2071
+    },
+    {
+      "candidateTarget": "TVmaze (각색됨)",
+      "candidateTargetHash": "f9c89273124d51c96c3764e77a4ccb7e3963f51f3a811471e5f69880b15feffd",
+      "locale": "ko",
+      "sourceId": "components.MediaDetails.MetadataAttribution.tvmaze",
+      "sourcePosition": 2071
+    },
+    {
+      "candidateTarget": "TVmaze (đã biên tập)",
+      "candidateTargetHash": "a7ba5fd5323fffdf5a959f707ef4c7375e8fccca66e9d1d147cd62fcde25fc48",
+      "locale": "vi",
+      "sourceId": "components.MediaDetails.MetadataAttribution.tvmaze",
+      "sourcePosition": 2071
+    },
+    {
+      "candidateTarget": "TVmaze（改编）",
+      "candidateTargetHash": "64109ce6e8f729534ad0d5e08234c12b6ede56fb04f324df710a1619bbd8c1f7",
+      "locale": "zh_Hans",
+      "sourceId": "components.MediaDetails.MetadataAttribution.tvmaze",
+      "sourcePosition": 2071
+    },
+    {
+      "candidateTarget": "TVmaze（改編）",
+      "candidateTargetHash": "6dfaf58013bd5dec2255f311cd929502a9b035c481da5ba18ce775377595695f",
+      "locale": "zh_Hant",
+      "sourceId": "components.MediaDetails.MetadataAttribution.tvmaze",
+      "sourcePosition": 2071
+    },
+    {
+      "candidateTarget": "بيانات TVmaze الوصفية معدّلة ومُشاركة بموجب ترخيص CC BY-SA 4.0.",
+      "candidateTargetHash": "9138ebd49bbea7d44530d363f5121d8cf6807d5eda34706a1b4cf9f099d47579",
+      "locale": "ar",
+      "sourceId": "components.MediaDetails.MetadataAttribution.tvmazeTitle",
+      "sourcePosition": 2072
+    },
+    {
+      "candidateTarget": "Metadata TVmaze diadaptasi dan dibagikan berdasarkan lisensi CC BY-SA 4.0.",
+      "candidateTargetHash": "8ac6c704d76987cda6ec600587b76dcbf841275a0790dfff06c11b4650a77222",
+      "locale": "id",
+      "sourceId": "components.MediaDetails.MetadataAttribution.tvmazeTitle",
+      "sourcePosition": 2072
+    },
+    {
+      "candidateTarget": "Siêu dữ liệu TVmaze được điều chỉnh và chia sẻ theo giấy phép CC BY-SA 4.0.",
+      "candidateTargetHash": "f53a861c591cbdac2fb1271c501a6ed0a1ce19f4d4b7d693af0f3b794daf73ec",
+      "locale": "vi",
+      "sourceId": "components.MediaDetails.MetadataAttribution.tvmazeTitle",
+      "sourcePosition": 2072
+    },
+    {
+      "candidateTarget": "中繼資料 TVmaze 經改編，並依 CC BY-SA 4.0 授權分享。",
+      "candidateTargetHash": "4a7c34b668d20c4cdd31a15dce65f9634a82054db1e4439cf115a6af282246b2",
+      "locale": "zh_Hant",
+      "sourceId": "components.MediaDetails.MetadataAttribution.tvmazeTitle",
+      "sourcePosition": 2072
+    },
+    {
+      "candidateTarget": "Wikidata",
+      "candidateTargetHash": "a8269b6531320c99bdf27f9db6300be29453b1c8fe7a079963a55b0427a3bcf7",
+      "locale": "ar",
+      "sourceId": "components.MediaDetails.MetadataAttribution.wikidata",
+      "sourcePosition": 2073
+    },
+    {
+      "candidateTarget": "Wikidata",
+      "candidateTargetHash": "a8269b6531320c99bdf27f9db6300be29453b1c8fe7a079963a55b0427a3bcf7",
+      "locale": "fr",
+      "sourceId": "components.MediaDetails.MetadataAttribution.wikidata",
+      "sourcePosition": 2073
+    },
+    {
+      "candidateTarget": "Wikidata",
+      "candidateTargetHash": "a8269b6531320c99bdf27f9db6300be29453b1c8fe7a079963a55b0427a3bcf7",
+      "locale": "hi",
+      "sourceId": "components.MediaDetails.MetadataAttribution.wikidata",
+      "sourcePosition": 2073
+    },
+    {
+      "candidateTarget": "Wikidata",
+      "candidateTargetHash": "a8269b6531320c99bdf27f9db6300be29453b1c8fe7a079963a55b0427a3bcf7",
+      "locale": "ja",
+      "sourceId": "components.MediaDetails.MetadataAttribution.wikidata",
+      "sourcePosition": 2073
+    },
+    {
+      "candidateTarget": "Wikidata",
+      "candidateTargetHash": "a8269b6531320c99bdf27f9db6300be29453b1c8fe7a079963a55b0427a3bcf7",
+      "locale": "ko",
+      "sourceId": "components.MediaDetails.MetadataAttribution.wikidata",
+      "sourcePosition": 2073
+    },
+    {
+      "candidateTarget": "Wikidata",
+      "candidateTargetHash": "a8269b6531320c99bdf27f9db6300be29453b1c8fe7a079963a55b0427a3bcf7",
+      "locale": "pt_BR",
+      "sourceId": "components.MediaDetails.MetadataAttribution.wikidata",
+      "sourcePosition": 2073
+    },
+    {
+      "candidateTarget": "Wikidata",
+      "candidateTargetHash": "a8269b6531320c99bdf27f9db6300be29453b1c8fe7a079963a55b0427a3bcf7",
+      "locale": "zh_Hans",
+      "sourceId": "components.MediaDetails.MetadataAttribution.wikidata",
+      "sourcePosition": 2073
+    },
+    {
+      "candidateTarget": "Wikidata",
+      "candidateTargetHash": "a8269b6531320c99bdf27f9db6300be29453b1c8fe7a079963a55b0427a3bcf7",
+      "locale": "zh_Hant",
+      "sourceId": "components.MediaDetails.MetadataAttribution.wikidata",
+      "sourcePosition": 2073
+    },
+    {
+      "candidateTarget": "تُشارك البيانات المنظّمة من Wikidata بموجب ترخيص CC0.",
+      "candidateTargetHash": "38f6ee7612d9c719cfd57bd3642f80747b591a64692132077cb36d343e9b78ce",
+      "locale": "ar",
+      "sourceId": "components.MediaDetails.MetadataAttribution.wikidataTitle",
+      "sourcePosition": 2074
+    },
+    {
+      "candidateTarget": "Wikidata の構造化データは CC0 の下で共有されています。",
+      "candidateTargetHash": "ce4b748c6eb1cc325e77a52e8f579138ec1355864868e2c7e63d3cdc6599a8a2",
+      "locale": "ja",
+      "sourceId": "components.MediaDetails.MetadataAttribution.wikidataTitle",
+      "sourcePosition": 2074
+    },
+    {
+      "candidateTarget": "Wikidata 结构化数据依据 CC0 共享。",
+      "candidateTargetHash": "cce3437ddb6da40be0f5cec32a70a84b5edb7dd2b75a90f01c1fa22b6d697621",
+      "locale": "zh_Hans",
+      "sourceId": "components.MediaDetails.MetadataAttribution.wikidataTitle",
+      "sourcePosition": 2074
+    },
+    {
+      "candidateTarget": "علامة الصح الخضراء: متاح. علامة X الحمراء: غير متاح.",
+      "candidateTargetHash": "0239604744c995ccb7dff8291ba5d52ee0d3ed1c67bcf7f7960ee8cefa54863e",
+      "locale": "ar",
+      "sourceId": "components.MediaDetails.PlaybackTrackList.availabilityLegend",
+      "sourcePosition": 2076
+    },
+    {
+      "candidateTarget": "Coche verte : disponible. X rouge : indisponible.",
+      "candidateTargetHash": "3676068409fc51d0625beeab42f5ecbed973d16229ec9ab5f1aefd389c5d4402",
+      "locale": "fr",
+      "sourceId": "components.MediaDetails.PlaybackTrackList.availabilityLegend",
+      "sourcePosition": 2076
+    },
+    {
+      "candidateTarget": "हरे चेक का निशान: उपलब्ध। लाल X: उपलब्ध नहीं।",
+      "candidateTargetHash": "6116a3738b2a42ccc4fc31d473b87f980e2fa36d43d0c7202edf2065c6f53895",
+      "locale": "hi",
+      "sourceId": "components.MediaDetails.PlaybackTrackList.availabilityLegend",
+      "sourcePosition": 2076
+    },
+    {
+      "candidateTarget": "Tanda centang hijau: tersedia. Tanda X merah: tidak tersedia.",
+      "candidateTargetHash": "db8d525f827a71314eaa24921b7606bcee907ca365e65773f5daa6062cf001da",
+      "locale": "id",
+      "sourceId": "components.MediaDetails.PlaybackTrackList.availabilityLegend",
+      "sourcePosition": 2076
+    },
+    {
+      "candidateTarget": "緑のチェックマーク: 利用可能。赤いX: 利用不可。",
+      "candidateTargetHash": "7e2726893b0679111c99a23a56b0f2aa8be28873f89c1033e16248fd372720aa",
+      "locale": "ja",
+      "sourceId": "components.MediaDetails.PlaybackTrackList.availabilityLegend",
+      "sourcePosition": 2076
+    },
+    {
+      "candidateTarget": "초록색 체크 표시: 사용 가능. 빨간색 X: 사용 불가.",
+      "candidateTargetHash": "7d6c0982dfe02fcfad27bdeaca3efd1ab7e3a02b63e17a298ca835d8adfea54f",
+      "locale": "ko",
+      "sourceId": "components.MediaDetails.PlaybackTrackList.availabilityLegend",
+      "sourcePosition": 2076
+    },
+    {
+      "candidateTarget": "Marca de verificação verde: disponível. X vermelho: indisponível.",
+      "candidateTargetHash": "448f00a80449a4f0ab957b2bd8f6ec4159c2a8d9dccf17233531ff24932f37c3",
+      "locale": "pt_BR",
+      "sourceId": "components.MediaDetails.PlaybackTrackList.availabilityLegend",
+      "sourcePosition": 2076
+    },
+    {
+      "candidateTarget": "Dấu tích màu xanh: có sẵn. Dấu X màu đỏ: không có sẵn.",
+      "candidateTargetHash": "d918a1be69fc8894fcc133778920b2654bd8ca5a95f5cc0fd2e7f0ea71c4e03b",
+      "locale": "vi",
+      "sourceId": "components.MediaDetails.PlaybackTrackList.availabilityLegend",
+      "sourcePosition": 2076
+    },
+    {
+      "candidateTarget": "绿色勾号：可用。红色 X：不可用。",
+      "candidateTargetHash": "3706690db0b71da3cbafe8328ccdb522aec9fa5ce872eabd4abb229a4e0d6500",
+      "locale": "zh_Hans",
+      "sourceId": "components.MediaDetails.PlaybackTrackList.availabilityLegend",
+      "sourcePosition": 2076
+    },
+    {
+      "candidateTarget": "綠色勾號：可用。紅色 X：不可用。",
+      "candidateTargetHash": "cbaa608f0a92df4b52e63125bb924cbef51bf635f052e3ac5bd334f4b1d41b0d",
+      "locale": "zh_Hant",
+      "sourceId": "components.MediaDetails.PlaybackTrackList.availabilityLegend",
+      "sourcePosition": 2076
+    },
+    {
+      "candidateTarget": "لا توجد مسارات صوتية قابلة للتشغيل.",
+      "candidateTargetHash": "dff066052daf07abad9dce768a6deb3fccc1520e5bdfd8642b8abf7cb6e2e729",
+      "locale": "ar",
+      "sourceId": "components.MediaDetails.PlaybackTrackList.noTracks",
+      "sourcePosition": 2077
+    },
+    {
+      "candidateTarget": "再生できるトラックはありません。",
+      "candidateTargetHash": "0cb6e2dcb1f35adff23c769693518cfcd098f1f84bb4da798d9c35fdd0dd9e0f",
+      "locale": "ja",
+      "sourceId": "components.MediaDetails.PlaybackTrackList.noTracks",
+      "sourcePosition": 2077
+    },
+    {
+      "candidateTarget": "Không có bản nhạc nào có thể phát.",
+      "candidateTargetHash": "1f6abd7096182dbc6b171c86ec05aa8a010340fc8e432b44673c25a41724dae1",
+      "locale": "vi",
+      "sourceId": "components.MediaDetails.PlaybackTrackList.noTracks",
+      "sourcePosition": 2077
+    },
+    {
+      "candidateTarget": "اختر العناصر لتشغيلها",
+      "candidateTargetHash": "afaae92ef25e8126a18cd11c10143f97639379887db61564b924970e72ee2230",
+      "locale": "ar",
+      "sourceId": "components.MediaDetails.PlaybackTrackList.selection",
+      "sourcePosition": 2078
+    },
+    {
+      "candidateTarget": "Pilih item untuk diputar",
+      "candidateTargetHash": "304734a07607e4f2bfcfd23a147aecd1e33e515d81274efe3372726114a4bec6",
+      "locale": "id",
+      "sourceId": "components.MediaDetails.PlaybackTrackList.selection",
+      "sourcePosition": 2078
+    },
+    {
+      "candidateTarget": "재생할 항목 선택",
+      "candidateTargetHash": "fd5924b4c52ccea9e05866cbf0aa4b27a4fa33d3ace2f809a9a74a6b8d5a2dfa",
+      "locale": "ko",
+      "sourceId": "components.MediaDetails.PlaybackTrackList.selection",
+      "sourcePosition": 2078
+    },
+    {
+      "candidateTarget": "Selecione itens para reprodução",
+      "candidateTargetHash": "904f0b028662e32163f7c21818ab232b6c1ba4957eb5ad9a4ed7aa0938902df9",
+      "locale": "pt_BR",
+      "sourceId": "components.MediaDetails.PlaybackTrackList.selection",
+      "sourcePosition": 2078
+    },
+    {
+      "candidateTarget": "Chọn các mục để phát",
+      "candidateTargetHash": "806ab4f8b31d62f84d8c259db91a8db89d9033ce3499c98c69e02dc29cd9a1ed",
+      "locale": "vi",
+      "sourceId": "components.MediaDetails.PlaybackTrackList.selection",
+      "sourcePosition": 2078
+    },
+    {
+      "candidateTarget": "標題",
+      "candidateTargetHash": "6fe38ed1ee10422a8666ff36bbffd5fe69c56e0d23f30dfb1f5062ccb9c59d25",
+      "locale": "zh_Hant",
+      "sourceId": "components.MediaDetails.PlaybackTrackList.title",
+      "sourcePosition": 2079
+    },
+    {
+      "candidateTarget": "Track",
+      "candidateTargetHash": "051f01f095a28b04433fb7b6cc6785ef57533bfb7d5c784d33a472c56ea125dd",
+      "locale": "de",
+      "sourceId": "components.MediaDetails.PlaybackTrackList.track",
+      "sourcePosition": 2080
+    },
+    {
+      "candidateTarget": "Piste audio",
+      "candidateTargetHash": "da01ccc01c8c50c5f81cb1dbb50d3d03822e96564287e25721649f406d75b71d",
+      "locale": "fr",
+      "sourceId": "components.MediaDetails.PlaybackTrackList.track",
+      "sourcePosition": 2080
+    },
+    {
+      "candidateTarget": "Nomor trek audio",
+      "candidateTargetHash": "4990c61be4a98c11c4d3fc2fb9b7e13b1985ac59b5502a4932238e275730515e",
+      "locale": "id",
+      "sourceId": "components.MediaDetails.PlaybackTrackList.track",
+      "sourcePosition": 2080
+    },
+    {
+      "candidateTarget": "Faixa",
+      "candidateTargetHash": "2140e2b71fbd1de44215c809c244ca1e233747c37325e0e5cf133511bcd73c7a",
+      "locale": "pt_BR",
+      "sourceId": "components.MediaDetails.PlaybackTrackList.track",
+      "sourcePosition": 2080
+    },
+    {
+      "candidateTarget": "Bản nhạc",
+      "candidateTargetHash": "c2600a92b9cec18c2f7b51703a040e98c17ebd543e68f748a7da40e6c105a908",
+      "locale": "vi",
+      "sourceId": "components.MediaDetails.PlaybackTrackList.track",
+      "sourcePosition": 2080
+    },
+    {
+      "candidateTarget": "مسح التحديد",
+      "candidateTargetHash": "9e44ee345912f86ec3f5f270ad4859daec8dd85ed9935b0d48e78d2c563b485c",
+      "locale": "ar",
+      "sourceId": "components.MediaDetails.SeasonEpisodeTree.clearSelectionAction",
+      "sourcePosition": 2087
+    },
+    {
+      "candidateTarget": "चयन साफ़ करें",
+      "candidateTargetHash": "536eecb55109db12099505b5a4f8762053e74633fd8fed3c9c65f7c17521b1a3",
+      "locale": "hi",
+      "sourceId": "components.MediaDetails.SeasonEpisodeTree.clearSelectionAction",
+      "sourcePosition": 2087
+    },
+    {
+      "candidateTarget": "Batalkan pilihan",
+      "candidateTargetHash": "056d754c2d040d34f060f6425877e19d5c94649622fb070bae02b0aad2c6f539",
+      "locale": "id",
+      "sourceId": "components.MediaDetails.SeasonEpisodeTree.clearSelectionAction",
+      "sourcePosition": 2087
+    }
+  ],
+  "head": "d897f04661802d7f47446e46602f1b521d33c52f",
+  "pullRequest": 418,
+  "repository": "snapetech-org/SeerrNG",
+  "tree": "309b846c546923856ffde114fd3cf75a7c8de7a7"
+}

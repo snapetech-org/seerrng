@@ -1,0 +1,21 @@
+{
+  "callerFiles": 13,
+  "callerGaps": [],
+  "callerRefs": 348,
+  "candidateCount": 383,
+  "exactHead": "d897f04661802d7f47446e46602f1b521d33c52f",
+  "exactTree": "309b846c546923856ffde114fd3cf75a7c8de7a7",
+  "headRefName": "codex/seerrng-localization-overhaul-20261028",
+  "isDraft": true,
+  "localeCells": 1200,
+  "passed": true,
+  "pullRequestState": "OPEN",
+  "remoteHead": "d897f04661802d7f47446e46602f1b521d33c52f",
+  "repositoryState": {
+    "head": "d897f04661802d7f47446e46602f1b521d33c52f",
+    "status": "",
+    "tree": "309b846c546923856ffde114fd3cf75a7c8de7a7"
+  },
+  "sourceIds": 100,
+  "sourceTextHashes": 100
+}

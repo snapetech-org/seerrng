@@ -1,0 +1,24 @@
+{
+  "branchStart": {
+    "headCommit": "d897f04661802d7f47446e46602f1b521d33c52f",
+    "ref": "refs/heads/codex/seerrng-localization-overhaul-20261028"
+  },
+  "finish": {
+    "branchHead": "d897f04661802d7f47446e46602f1b521d33c52f",
+    "draft": true,
+    "headCommit": "d897f04661802d7f47446e46602f1b521d33c52f",
+    "headTree": "309b846c546923856ffde114fd3cf75a7c8de7a7",
+    "prState": "open"
+  },
+  "start": {
+    "baseCommit": "221d8e0d542802da7529cd272c928cc747677e5c",
+    "baseRefName": "main",
+    "draft": true,
+    "headCommit": "d897f04661802d7f47446e46602f1b521d33c52f",
+    "headRefName": "codex/seerrng-localization-overhaul-20261028",
+    "headTree": "309b846c546923856ffde114fd3cf75a7c8de7a7",
+    "state": "open",
+    "url": "https://github.com/snapetech-org/seerrng/pull/418"
+  },
+  "unchangedAtPinnedHead": true
+}
