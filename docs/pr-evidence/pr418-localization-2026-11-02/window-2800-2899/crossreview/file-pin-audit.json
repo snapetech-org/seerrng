@@ -1,0 +1,190 @@
+{
+  "exactHead": "7329f0ffb34d46042dbf1b165046e21c4f4d45e3",
+  "exactTree": "531e045f511ee9c46f4c7ed80d50f529c9c12000",
+  "worktreeClean": true,
+  "primarySha256SumsEntries": 26,
+  "primarySha256SumsFailures": [],
+  "inputSha256SumsEntries": 6,
+  "inputSha256SumsFailures": [],
+  "pinnedFiles": [
+    {
+      "kind": "locale-catalog",
+      "locale": "ar",
+      "path": "src/i18n/locale/ar.json",
+      "bytes": 1044527,
+      "sha256": "a3d073fba6d5706cff4b7da002fc3897f68b7c785efc2cda922203ca33067abd",
+      "blob": "0893eb9e65ecd869a00637f4e88b0e04893fc5cd",
+      "pinExact": true
+    },
+    {
+      "kind": "locale-catalog",
+      "locale": "de",
+      "path": "src/i18n/locale/de.json",
+      "bytes": 926879,
+      "sha256": "2bca0060ef3d833628079e2152cfc958db7c5064a33215afd64ff7d1692f8825",
+      "blob": "fe735f1abdfaa9cb0c13dc03e95a5b1907e53a4b",
+      "pinExact": true
+    },
+    {
+      "kind": "locale-catalog",
+      "locale": "es",
+      "path": "src/i18n/locale/es.json",
+      "bytes": 922512,
+      "sha256": "b1dbb01793d11790fa7ac75e15db0ca18648e679afd3808c3f680c902a9914df",
+      "blob": "9cc40702e4ee3c5741ca41314decfd33ecfbb103",
+      "pinExact": true
+    },
+    {
+      "kind": "locale-catalog",
+      "locale": "fr",
+      "path": "src/i18n/locale/fr.json",
+      "bytes": 940243,
+      "sha256": "3d87791e690367034cf16e0bbaf2b1b79cb6f36a73d3283297ae15211cf31027",
+      "blob": "2b5944581f9dca3b59b01f3dd7144a78b20f4eba",
+      "pinExact": true
+    },
+    {
+      "kind": "locale-catalog",
+      "locale": "hi",
+      "path": "src/i18n/locale/hi.json",
+      "bytes": 1371310,
+      "sha256": "a8cb28ae9bad5f064f95ad39cc0e846c9578a036659116abe09d4146cd983580",
+      "blob": "b49db1cb93b4f11f7999df3ec6507b6ec9a93f2b",
+      "pinExact": true
+    },
+    {
+      "kind": "locale-catalog",
+      "locale": "id",
+      "path": "src/i18n/locale/id.json",
+      "bytes": 867705,
+      "sha256": "964e5cc4635ac44d2d9d7ecc9f3f4fd28736c695681223e9db1eaf4e9fd924e5",
+      "blob": "4bfb1aea2bc1a5c5ad291392cd95f7ae3cb093ff",
+      "pinExact": true
+    },
+    {
+      "kind": "locale-catalog",
+      "locale": "ja",
+      "path": "src/i18n/locale/ja.json",
+      "bytes": 1015867,
+      "sha256": "a80d6907a66cc2c72f4806e3f93970d61d0a81a6e32640367b7c317379e98847",
+      "blob": "c16df6fe6d47d58a24a13efd5c687f092dab06e9",
+      "pinExact": true
+    },
+    {
+      "kind": "locale-catalog",
+      "locale": "ko",
+      "path": "src/i18n/locale/ko.json",
+      "bytes": 934207,
+      "sha256": "ed6c93a3efbc0d2d8bed6158cea31e4aef5c1ace0816316b30752ff9991a0205",
+      "blob": "8f36c79dc8afd86e13aa15771075b18b60a7a77b",
+      "pinExact": true
+    },
+    {
+      "kind": "locale-catalog",
+      "locale": "pt_BR",
+      "path": "src/i18n/locale/pt_BR.json",
+      "bytes": 911480,
+      "sha256": "4fbc92c2359bba4eda00d4889132074ebfd2289242020d87093b9284c214b661",
+      "blob": "f738268e55fa54869219b7be002c9b889fadf392",
+      "pinExact": true
+    },
+    {
+      "kind": "locale-catalog",
+      "locale": "vi",
+      "path": "src/i18n/locale/vi.json",
+      "bytes": 969116,
+      "sha256": "29a2bdff375ba825891d98262d153f1d99965f2250fc856f17a56c47642c3a45",
+      "blob": "4247c3794d6bf0529e2d22f166c16ce4b340f732",
+      "pinExact": true
+    },
+    {
+      "kind": "locale-catalog",
+      "locale": "zh_Hans",
+      "path": "src/i18n/locale/zh_Hans.json",
+      "bytes": 812362,
+      "sha256": "610cedd36e3a4361634aacb8b74c12daa117ec364628e7766bce5c31d3d79e05",
+      "blob": "53cc4bbda936c28798570b3d8b39217bf7583262",
+      "pinExact": true
+    },
+    {
+      "kind": "locale-catalog",
+      "locale": "zh_Hant",
+      "path": "src/i18n/locale/zh_Hant.json",
+      "bytes": 813871,
+      "sha256": "873b68a4db574b13a81ea872b9b11c0eff54ae72d8b6d911121c2479dce3a079",
+      "blob": "a8c2efad70ed7f79f51eb36fa591d04627ed7326",
+      "pinExact": true
+    },
+    {
+      "kind": "english-source-catalog",
+      "path": "src/i18n/locale/en.json",
+      "bytes": 835513,
+      "sha256": "75ff3c90b52aedd636a506281ffbd6fb2d3739c61294b6008a517f17647e2316",
+      "blob": "12e04a118c30b71b3714291adeaf9fdb2735cee4",
+      "pinExact": true
+    },
+    {
+      "kind": "caller-source",
+      "path": "src/components/RequestModal/BookRequestModal.tsx",
+      "bytes": 39701,
+      "sha256": "12101127783cdeb1201908578b097ebbf073f2e780f89ba23502ead0e3c614da",
+      "blob": "784466021b34f4f04709af7495c358ae6140d131",
+      "pinExact": true
+    },
+    {
+      "kind": "caller-source",
+      "path": "src/components/RequestModal/BulkRequestItemCard.tsx",
+      "bytes": 8445,
+      "sha256": "d1015a429d0cca1692e80a931f5cecb78580cd929de0dd1871facf1656f9c1c1",
+      "blob": "f467b5f0dca163e1f40932ad86e21c02eb9ea165",
+      "pinExact": true
+    },
+    {
+      "kind": "caller-source",
+      "path": "src/components/RequestModal/BulkRequestModal.tsx",
+      "bytes": 52919,
+      "sha256": "e102557248e8613be4c35374f717cbe07d993798f2c3b22a8f21caccfa513efb",
+      "blob": "28c486ce3516e97805112781e17a1961307d0b6a",
+      "pinExact": true
+    },
+    {
+      "kind": "caller-source",
+      "path": "src/components/RequestModal/VideoCollectionRequestFilters.tsx",
+      "bytes": 5802,
+      "sha256": "6ebb5029adb343521d7b1d78a7664e7e65254a4fd081edbf192544ee7f60b5b5",
+      "blob": "d5c3e4b2e8e04f6175cf92bd53d2395dbc99d3e4",
+      "pinExact": true
+    },
+    {
+      "kind": "caller-source",
+      "path": "src/components/RequestModal/ComicRequestModal.tsx",
+      "bytes": 18192,
+      "sha256": "e2beaf7e25f0a0aa86b36909d469a2dc06915cc42a0f68f811ede3f12e46799d",
+      "blob": "b8108535f02a8d5a42df3fb25d6a3e48d0833746",
+      "pinExact": true
+    }
+  ],
+  "callerLineReferences": 335,
+  "callerLineFailures": 0,
+  "sourceCatalogKeys": 9494,
+  "localeCatalogKeyCounts": {
+    "ar": 9494,
+    "de": 9494,
+    "es": 9494,
+    "fr": 9494,
+    "hi": 9494,
+    "id": 9494,
+    "ja": 9494,
+    "ko": 9494,
+    "pt_BR": 9494,
+    "vi": 9494,
+    "zh_Hans": 9494,
+    "zh_Hant": 9494
+  },
+  "localeCatalogKeySetsIdentical": true,
+  "sourceRows": 100,
+  "cellRows": 1200,
+  "currentHashFailures": 0,
+  "sourceHashFailures": 0,
+  "finalProposalHashFailures": 0
+}

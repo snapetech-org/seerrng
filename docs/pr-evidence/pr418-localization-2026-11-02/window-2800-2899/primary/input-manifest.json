@@ -1,0 +1,162 @@
+{
+  "callerContextRows": 100,
+  "callerFiles": 5,
+  "callerReferences": 335,
+  "head": "7329f0ffb34d46042dbf1b165046e21c4f4d45e3",
+  "livePullRequest": {
+    "baseRefOid": "221d8e0d542802da7529cd272c928cc747677e5c",
+    "headRefName": "codex/seerrng-localization-overhaul-20261028",
+    "headRefOid": "7329f0ffb34d46042dbf1b165046e21c4f4d45e3",
+    "isDraft": true,
+    "state": "OPEN",
+    "url": "https://github.com/snapetech-org/seerrng/pull/418"
+  },
+  "localeCatalogs": {
+    "ar": {
+      "blob": "0893eb9e65ecd869a00637f4e88b0e04893fc5cd",
+      "bytes": 1044527,
+      "path": "src/i18n/locale/ar.json",
+      "sha256": "a3d073fba6d5706cff4b7da002fc3897f68b7c785efc2cda922203ca33067abd"
+    },
+    "de": {
+      "blob": "fe735f1abdfaa9cb0c13dc03e95a5b1907e53a4b",
+      "bytes": 926879,
+      "path": "src/i18n/locale/de.json",
+      "sha256": "2bca0060ef3d833628079e2152cfc958db7c5064a33215afd64ff7d1692f8825"
+    },
+    "es": {
+      "blob": "9cc40702e4ee3c5741ca41314decfd33ecfbb103",
+      "bytes": 922512,
+      "path": "src/i18n/locale/es.json",
+      "sha256": "b1dbb01793d11790fa7ac75e15db0ca18648e679afd3808c3f680c902a9914df"
+    },
+    "fr": {
+      "blob": "2b5944581f9dca3b59b01f3dd7144a78b20f4eba",
+      "bytes": 940243,
+      "path": "src/i18n/locale/fr.json",
+      "sha256": "3d87791e690367034cf16e0bbaf2b1b79cb6f36a73d3283297ae15211cf31027"
+    },
+    "hi": {
+      "blob": "b49db1cb93b4f11f7999df3ec6507b6ec9a93f2b",
+      "bytes": 1371310,
+      "path": "src/i18n/locale/hi.json",
+      "sha256": "a8cb28ae9bad5f064f95ad39cc0e846c9578a036659116abe09d4146cd983580"
+    },
+    "id": {
+      "blob": "4bfb1aea2bc1a5c5ad291392cd95f7ae3cb093ff",
+      "bytes": 867705,
+      "path": "src/i18n/locale/id.json",
+      "sha256": "964e5cc4635ac44d2d9d7ecc9f3f4fd28736c695681223e9db1eaf4e9fd924e5"
+    },
+    "ja": {
+      "blob": "c16df6fe6d47d58a24a13efd5c687f092dab06e9",
+      "bytes": 1015867,
+      "path": "src/i18n/locale/ja.json",
+      "sha256": "a80d6907a66cc2c72f4806e3f93970d61d0a81a6e32640367b7c317379e98847"
+    },
+    "ko": {
+      "blob": "8f36c79dc8afd86e13aa15771075b18b60a7a77b",
+      "bytes": 934207,
+      "path": "src/i18n/locale/ko.json",
+      "sha256": "ed6c93a3efbc0d2d8bed6158cea31e4aef5c1ace0816316b30752ff9991a0205"
+    },
+    "pt_BR": {
+      "blob": "f738268e55fa54869219b7be002c9b889fadf392",
+      "bytes": 911480,
+      "path": "src/i18n/locale/pt_BR.json",
+      "sha256": "4fbc92c2359bba4eda00d4889132074ebfd2289242020d87093b9284c214b661"
+    },
+    "vi": {
+      "blob": "4247c3794d6bf0529e2d22f166c16ce4b340f732",
+      "bytes": 969116,
+      "path": "src/i18n/locale/vi.json",
+      "sha256": "29a2bdff375ba825891d98262d153f1d99965f2250fc856f17a56c47642c3a45"
+    },
+    "zh_Hans": {
+      "blob": "53cc4bbda936c28798570b3d8b39217bf7583262",
+      "bytes": 812362,
+      "path": "src/i18n/locale/zh_Hans.json",
+      "sha256": "610cedd36e3a4361634aacb8b74c12daa117ec364628e7766bce5c31d3d79e05"
+    },
+    "zh_Hant": {
+      "blob": "a8c2efad70ed7f79f51eb36fa591d04627ed7326",
+      "bytes": 813871,
+      "path": "src/i18n/locale/zh_Hant.json",
+      "sha256": "873b68a4db574b13a81ea872b9b11c0eff54ae72d8b6d911121c2479dce3a079"
+    }
+  },
+  "matchingPriorRows": 1200,
+  "primaryPacketDirectoriesScanned": 61,
+  "priorFrozenRows": 0,
+  "protectedTerms": [
+    "SeerrNG",
+    "Seerr",
+    "Jellyfin",
+    "Plex",
+    "Tautulli",
+    "Jellystat",
+    "TMDB",
+    "TheTVDB.com",
+    "TheTVDB",
+    "Whisparr",
+    "ISBN",
+    "TVmaze",
+    "Wikidata",
+    "CC0",
+    "CC BY-SA 4.0",
+    "HTTP",
+    "HTTPS",
+    "URL",
+    "HD",
+    "4K",
+    "FLAC",
+    "MP3",
+    "Lidarr",
+    "MusicBrainz",
+    "Discogs",
+    "Metacritic",
+    "Trakt",
+    "ROM",
+    "PC",
+    "ROMarrNG",
+    "Radarr",
+    "Sonarr",
+    "Bookshelf",
+    "Open Library",
+    "Bindery"
+  ],
+  "pullRequest": 418,
+  "remoteBranchHead": "7329f0ffb34d46042dbf1b165046e21c4f4d45e3",
+  "repository": "snapetech-org/SeerrNG",
+  "scope": {
+    "cells": 1200,
+    "locales": [
+      "ar",
+      "de",
+      "es",
+      "fr",
+      "hi",
+      "id",
+      "ja",
+      "ko",
+      "pt_BR",
+      "vi",
+      "zh_Hans",
+      "zh_Hant"
+    ],
+    "positions": [
+      2800,
+      2899
+    ],
+    "sourceIds": 100
+  },
+  "sourceCatalog": {
+    "blob": "12e04a118c30b71b3714291adeaf9fdb2735cee4",
+    "bytes": 835513,
+    "path": "src/i18n/locale/en.json",
+    "sha256": "75ff3c90b52aedd636a506281ffbd6fb2d3739c61294b6008a517f17647e2316"
+  },
+  "tree": "531e045f511ee9c46f4c7ed80d50f529c9c12000",
+  "worktree": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng",
+  "worktreeClean": true
+}

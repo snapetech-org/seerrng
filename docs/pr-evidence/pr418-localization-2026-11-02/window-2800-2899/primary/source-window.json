@@ -1,0 +1,617 @@
+{
+  "head": "7329f0ffb34d46042dbf1b165046e21c4f4d45e3",
+  "sourceCatalog": {
+    "blob": "12e04a118c30b71b3714291adeaf9fdb2735cee4",
+    "bytes": 835513,
+    "path": "src/i18n/locale/en.json",
+    "sha256": "75ff3c90b52aedd636a506281ffbd6fb2d3739c61294b6008a517f17647e2316"
+  },
+  "sourceCount": 100,
+  "sourceList": [
+    {
+      "position": 2800,
+      "source": "Pending {format} Request",
+      "sourceHash": "e7d08c2c8a1be4598b54374973829a44c5c59cebfb035c43e6b4c01e40965a7d",
+      "sourceId": "components.RequestModal.Book.pendingRequestFormat"
+    },
+    {
+      "position": 2801,
+      "source": "Your request is pending approval.",
+      "sourceHash": "9900c32c9409584716bee3093bcb45ebc3c812674f6e583f6ad65de648764e6e",
+      "sourceId": "components.RequestModal.Book.pendingapproval"
+    },
+    {
+      "position": 2802,
+      "source": "Pending Book Request",
+      "sourceHash": "2d0573745af4255cae78ec6c9c196aa3969605b653261d53b1e06a9ee1e3590b",
+      "sourceId": "components.RequestModal.Book.pendingrequest"
+    },
+    {
+      "position": 2803,
+      "source": "Publisher",
+      "sourceHash": "70dec58cbeff4977255bde7e433cc95aadf8475c02f0ad7f17fa4fdd84b0c609",
+      "sourceId": "components.RequestModal.Book.publisher"
+    },
+    {
+      "position": 2804,
+      "source": "Ready to Request",
+      "sourceHash": "b796b0c7cf272c5cfe6200d83470a8b7fa863a8adcf0a228104b805bcae1cc63",
+      "sourceId": "components.RequestModal.Book.readyToRequest"
+    },
+    {
+      "position": 2805,
+      "source": "Request for <strong>{title}</strong> approved!",
+      "sourceHash": "b79e2d8ccfa14437caafc4db29815a7106ae354038d1e83a2e37cfa11374b4d0",
+      "sourceId": "components.RequestModal.Book.requestApproved"
+    },
+    {
+      "position": 2806,
+      "source": "Request for <strong>{title}</strong> canceled.",
+      "sourceHash": "4ed1c0eca750c1791083ff157c206bece920812baaf89bbb7a35b1e2b0a82a31",
+      "sourceId": "components.RequestModal.Book.requestCancel"
+    },
+    {
+      "position": 2807,
+      "source": "Request for <strong>{title}</strong> edited successfully!",
+      "sourceHash": "fd278c66dfd0861260eb6ad2aa0db06d62e3a6ec461f8f98b99903cabb236a87",
+      "sourceId": "components.RequestModal.Book.requestEdited"
+    },
+    {
+      "position": 2808,
+      "source": "<strong>{title}</strong> requested successfully as {format}.",
+      "sourceHash": "051a2586f5ad474664dfe306dfa61275fbbf9d948e3e381f93a81d6d453258b0",
+      "sourceId": "components.RequestModal.Book.requestSuccessWithFormat"
+    },
+    {
+      "position": 2809,
+      "source": "Request Book",
+      "sourceHash": "993044a4ad18060868f2e9279c7f2fe30b2af2cc06658a236400fa10678f4765",
+      "sourceId": "components.RequestModal.Book.requestbook"
+    },
+    {
+      "position": 2810,
+      "source": "Requested",
+      "sourceHash": "411938d08b2c41d9d133e6bf980709b9ea9c91d85adaede773c1bd5d81196632",
+      "sourceId": "components.RequestModal.Book.requested"
+    },
+    {
+      "position": 2811,
+      "source": "Something went wrong while submitting the request.",
+      "sourceHash": "a660c18dcf3da4e289891fdf2e31ff8a45d6eb1b19d0c8f76ad1a1cb93fcf34b",
+      "sourceId": "components.RequestModal.Book.requesterror"
+    },
+    {
+      "position": 2812,
+      "source": "{username}'s request is pending approval.",
+      "sourceHash": "eac58983714e93f163fbd2c08c8866250bfa5976c0dfccd6d6a98f4696bcd5aa",
+      "sourceId": "components.RequestModal.Book.requestfrom"
+    },
+    {
+      "position": 2813,
+      "source": "Service",
+      "sourceHash": "90fb2f1669ef0a590baad413d204f21841f7975a560b2b81a65f4fbce2c3dcb6",
+      "sourceId": "components.RequestModal.Book.service"
+    },
+    {
+      "position": 2814,
+      "source": "Status",
+      "sourceHash": "d9e2f704aaa6bcaa61560f3608c205c5b771afd2af0e9525aea7b2b74e0c0023",
+      "sourceId": "components.RequestModal.Book.status"
+    },
+    {
+      "position": 2815,
+      "source": "Album Type",
+      "sourceHash": "28c8379ca45a075d09d079b0a4351bee14ea6d377d94e6914be7363fce0e16e4",
+      "sourceId": "components.RequestModal.BulkRequestItemCard.albumType"
+    },
+    {
+      "position": 2816,
+      "source": "Artist",
+      "sourceHash": "31f5e80722c56e9de765e6f30914b59c1bbfe46079f43015a503021f2c5f3b0b",
+      "sourceId": "components.RequestModal.BulkRequestItemCard.artist"
+    },
+    {
+      "position": 2817,
+      "source": "Author",
+      "sourceHash": "fe98a47fbf552faa2c2e2fbcca5fb0989db956dda56c5c1aa161d5361fab269e",
+      "sourceId": "components.RequestModal.BulkRequestItemCard.author"
+    },
+    {
+      "position": 2818,
+      "source": "Genres",
+      "sourceHash": "09d3cf6b80b3d9fc7d8893d24a5f7ce303583fdebe2c05a7acd8785c47118974",
+      "sourceId": "components.RequestModal.BulkRequestItemCard.genres"
+    },
+    {
+      "position": 2819,
+      "source": "ISBN",
+      "sourceHash": "9a092569d12482114753a44462377ab39dc4a80045efab0c3730b7ea0e40e012",
+      "sourceId": "components.RequestModal.BulkRequestItemCard.isbn"
+    },
+    {
+      "position": 2820,
+      "source": "Media & Format",
+      "sourceHash": "ccc531c6400235948f33b5d42591e7d3f6c925445ef2a18f6bcb059b1afe8b54",
+      "sourceId": "components.RequestModal.BulkRequestItemCard.mediaAndFormat"
+    },
+    {
+      "position": 2821,
+      "source": "{minutes} minutes",
+      "sourceHash": "958a9576a42a929b4526859a22e6ee9a09517cef0254eb5b59d19521d5325809",
+      "sourceId": "components.RequestModal.BulkRequestItemCard.minutes"
+    },
+    {
+      "position": 2822,
+      "source": "Music · Album",
+      "sourceHash": "521df0181657d578d8cf38c9902a66b3c4a1ee295638646b2e8edd5d5017da0a",
+      "sourceId": "components.RequestModal.BulkRequestItemCard.musicAlbum"
+    },
+    {
+      "position": 2823,
+      "source": "Not Requested",
+      "sourceHash": "c44b7cd9271e233c59ebf39ed6d998c64a4393c407aea3173c51c38d00ae1d2a",
+      "sourceId": "components.RequestModal.BulkRequestItemCard.notRequested"
+    },
+    {
+      "position": 2824,
+      "source": "Pages",
+      "sourceHash": "c785f8e96664bfcfbfc8ce7ac7a3a912d7f7189df53a293b7c37642fa8cd61fc",
+      "sourceId": "components.RequestModal.BulkRequestItemCard.pages"
+    },
+    {
+      "position": 2825,
+      "source": "Publisher",
+      "sourceHash": "fee313d57b5cb3babcfcf38d657869de6070784eca7264f9aa5a03f45dfd60b4",
+      "sourceId": "components.RequestModal.BulkRequestItemCard.publisher"
+    },
+    {
+      "position": 2826,
+      "source": "Release Date",
+      "sourceHash": "f136da86174ee49678fdc210804028da4397451d0089a8ccc3a5716b39a37bbc",
+      "sourceId": "components.RequestModal.BulkRequestItemCard.releaseDate"
+    },
+    {
+      "position": 2827,
+      "source": "Runtime",
+      "sourceHash": "364f81405c6e2d9b60f8cc9376ebcfba590846f7d6525ae5a55a81b3cafc28f5",
+      "sourceId": "components.RequestModal.BulkRequestItemCard.runtime"
+    },
+    {
+      "position": 2828,
+      "source": "Select {title}",
+      "sourceHash": "d7a1b3e7172f9047225d7dfd13eb478240f8ea2b2dd8eb3dc08a62191f7de38b",
+      "sourceId": "components.RequestModal.BulkRequestItemCard.select"
+    },
+    {
+      "position": 2829,
+      "source": "Source",
+      "sourceHash": "f58b4e4df47adb46efb25c510f37086bc132ff2a54da45ebd09078c850783508",
+      "sourceId": "components.RequestModal.BulkRequestItemCard.source"
+    },
+    {
+      "position": 2830,
+      "source": "Status",
+      "sourceHash": "e9d409416c058c25041275c69ef6c9665a7f17120e160a3b2686654a81bf16d8",
+      "sourceId": "components.RequestModal.BulkRequestItemCard.status"
+    },
+    {
+      "position": 2831,
+      "source": "Track Count",
+      "sourceHash": "72e73a7d9f1796c0fa12b22aaf9ee3d0504b7e56d686fb838bd011fe2c3fb69d",
+      "sourceId": "components.RequestModal.BulkRequestItemCard.trackCount"
+    },
+    {
+      "position": 2832,
+      "source": "Not Available",
+      "sourceHash": "60fcac0a2992fcd152be03e386204f4b5eedc743617e42674db6fbd15741578b",
+      "sourceId": "components.RequestModal.BulkRequestItemCard.unavailable"
+    },
+    {
+      "position": 2833,
+      "source": "Ambiguous match",
+      "sourceHash": "0f83efeb6e34fec8113af5da122fa8b9b7a1b1ebd2eaa422b432ea9e82296925",
+      "sourceId": "components.RequestModal.BulkRequestModal.ambiguous"
+    },
+    {
+      "position": 2834,
+      "source": "Any",
+      "sourceHash": "1a207f4552744b04b0303011ae1a2088bc2f087af8725fdfcf017208310f7fc6",
+      "sourceId": "components.RequestModal.BulkRequestModal.any"
+    },
+    {
+      "position": 2835,
+      "source": "Available",
+      "sourceHash": "5758335f3e9fc3cb536d0c6168fa1a4870b4299ca719cfa8e6a47ab1e4c96359",
+      "sourceId": "components.RequestModal.BulkRequestModal.available"
+    },
+    {
+      "position": 2836,
+      "source": "Blocklisted",
+      "sourceHash": "ba560624892eb4db942e0a839103f45ada0ca27930db89b63130e43173bf9941",
+      "sourceId": "components.RequestModal.BulkRequestModal.blocklisted"
+    },
+    {
+      "position": 2837,
+      "source": "Clear Filters",
+      "sourceHash": "a60fc472b9a4b2576ae7b602643c1f854ad823c648501c14179b5dd1cc8f617f",
+      "sourceId": "components.RequestModal.BulkRequestModal.clearFilters"
+    },
+    {
+      "position": 2838,
+      "source": "Close",
+      "sourceHash": "fb0c2b2585a9655a292c731b28f45cdf0f10dd6c4142708a2fd29c2db8884278",
+      "sourceId": "components.RequestModal.BulkRequestModal.close"
+    },
+    {
+      "position": 2839,
+      "source": "Failed Items",
+      "sourceHash": "14ab4574ff24fbc8ff6d7ba0ea41855044923a8d00427d20e251545fc5773984",
+      "sourceId": "components.RequestModal.BulkRequestModal.faileditems"
+    },
+    {
+      "position": 2840,
+      "source": "First Published",
+      "sourceHash": "cc686a0669d498eba90668f460cc27576a189a8df60421a4580ea85067f0d8a6",
+      "sourceId": "components.RequestModal.BulkRequestModal.firstPublished"
+    },
+    {
+      "position": 2841,
+      "source": "Format",
+      "sourceHash": "bf2c0666b65a71c5bf331a7e2a7096cef099d151a9749d979be11601df6eee08",
+      "sourceId": "components.RequestModal.BulkRequestModal.format"
+    },
+    {
+      "position": 2842,
+      "source": "Genres",
+      "sourceHash": "bde40dcfa9f1bda1d3c9c185317d1928cc041d63213c134ebb421d056673db85",
+      "sourceId": "components.RequestModal.BulkRequestModal.genres"
+    },
+    {
+      "position": 2843,
+      "source": "Language",
+      "sourceHash": "9470ce808890869967456381c618132c83893cb858823ee79554d0cb2ee2217f",
+      "sourceId": "components.RequestModal.BulkRequestModal.language"
+    },
+    {
+      "position": 2844,
+      "source": "You selected {count} items. Confirm once more before submitting this batch.",
+      "sourceHash": "b07d5ccc82f5e13be15dc4c278b7def71e7ddfb532e7912320b5f87876769e15",
+      "sourceId": "components.RequestModal.BulkRequestModal.largeBatch"
+    },
+    {
+      "position": 2845,
+      "source": "Loading book ratings…",
+      "sourceHash": "46fe23270a6c17d87f00d1c0b7ed93698c35a355759dacba3324627c7aa97514",
+      "sourceId": "components.RequestModal.BulkRequestModal.loadingRatings"
+    },
+    {
+      "position": 2846,
+      "source": "Load More",
+      "sourceHash": "095cd5a85a89fc98c5e489c8b8fe76e725178acafd81d35eb61941858b9454fa",
+      "sourceId": "components.RequestModal.BulkRequestModal.loadmore"
+    },
+    {
+      "position": 2847,
+      "source": "No audiobook Bookshelf service is configured. Audiobook requests are unavailable.",
+      "sourceHash": "44a86631ca75c90ccb6887d86268a8552fc1c83d90d4486a9d5b882a9a15d2ec",
+      "sourceId": "components.RequestModal.BulkRequestModal.noAudiobookServer"
+    },
+    {
+      "position": 2848,
+      "source": "No Book Bookshelf service is configured. Book requests are unavailable.",
+      "sourceHash": "26fa2f2c37399ca2251a8b9364bddfe94150c34c3cdfa511e65c10f765fae570",
+      "sourceId": "components.RequestModal.BulkRequestModal.noEbookServer"
+    },
+    {
+      "position": 2849,
+      "source": "No matching MP3 or FLAC music destination is configured.",
+      "sourceHash": "d4081ca09a591f957509ba2053afe94f11304b53b4b0eb6c1f371412c69ddbc7",
+      "sourceId": "components.RequestModal.BulkRequestModal.noMusicQualityServer"
+    },
+    {
+      "position": 2850,
+      "source": "Not Requested",
+      "sourceHash": "18ba30d93d2b724e30de50adf2364657625929921f8936bbff1c9fb10a945eb4",
+      "sourceId": "components.RequestModal.BulkRequestModal.notrequested"
+    },
+    {
+      "position": 2851,
+      "source": "Open original playlist",
+      "sourceHash": "dda6f3452052bb057821fc6408d46c49b9de03e2f6842f5d96211f584bee82de",
+      "sourceId": "components.RequestModal.BulkRequestModal.openSource"
+    },
+    {
+      "position": 2852,
+      "source": "Quality",
+      "sourceHash": "aba2215db560eb1004c153d88dd2820d374955b2883c46ad5076a9033c35ceda",
+      "sourceId": "components.RequestModal.BulkRequestModal.quality"
+    },
+    {
+      "position": 2853,
+      "source": "Not enough request quota remaining.",
+      "sourceHash": "c8ddb6b5cab821554856c095288026dfdfe233be5772a15f7194283f192c527f",
+      "sourceId": "components.RequestModal.BulkRequestModal.quotaexceeded"
+    },
+    {
+      "position": 2854,
+      "source": "Rating",
+      "sourceHash": "4768fef632440b0b86d165df6df2f2f82f47dd607bf5e0c8d68e6abe224037b3",
+      "sourceId": "components.RequestModal.BulkRequestModal.rating"
+    },
+    {
+      "position": 2855,
+      "source": "Book ratings could not be loaded. Clear the Rating filter to continue.",
+      "sourceHash": "596d73f0ea01d2031dc14ee2844e8c4fe97904529c4551657462b28f5aa4a653",
+      "sourceId": "components.RequestModal.BulkRequestModal.ratingsUnavailable"
+    },
+    {
+      "position": 2856,
+      "source": "Release Type",
+      "sourceHash": "9a474e19a71d675c4d4c6a89dd958130d7674bad0ef9a565afc0d20337976747",
+      "sourceId": "components.RequestModal.BulkRequestModal.releasetype"
+    },
+    {
+      "position": 2857,
+      "source": "Request Selected {format} Books",
+      "sourceHash": "83f48f31de6c2b5e25aa231d2801a756f7dd44a9dcfd5f26face816751cfda75",
+      "sourceId": "components.RequestModal.BulkRequestModal.requestLibraryFormat"
+    },
+    {
+      "position": 2858,
+      "source": "Request {format} Bibliography",
+      "sourceHash": "0275a5fdc99bfe58a7f1f07f11e08d1644d983c0756b17149e0ad51d11307878",
+      "sourceId": "components.RequestModal.BulkRequestModal.requestbibliographyFormat"
+    },
+    {
+      "position": 2859,
+      "source": "Request Discography",
+      "sourceHash": "58a9133fd36b6f86ebcddeabc5a86a6219bba228ceb57f6b9f15d41e6880e6c0",
+      "sourceId": "components.RequestModal.BulkRequestModal.requestdiscography"
+    },
+    {
+      "position": 2860,
+      "source": "Requested",
+      "sourceHash": "b811bbf40b278ba404ae7805bcc5066cd5734aeb2ad693f1dbd39f7a847874ad",
+      "sourceId": "components.RequestModal.BulkRequestModal.requested"
+    },
+    {
+      "position": 2861,
+      "source": "Request {count} {count, plural, one {Item} other {Items}}",
+      "sourceHash": "5f32cd83c83ba107444c7031b302da4aca92ba440e04e8dd454eba218bf3f0d2",
+      "sourceId": "components.RequestModal.BulkRequestModal.requestitems"
+    },
+    {
+      "position": 2862,
+      "source": "Request {count} {count, plural, one {Item} other {Items}} as {format}",
+      "sourceHash": "ccf9e14826b6d288a4f97654569fc34226452ce86914244d7217c455ddd52edc",
+      "sourceId": "components.RequestModal.BulkRequestModal.requestitemsFormat"
+    },
+    {
+      "position": 2863,
+      "source": "Request {format} Series",
+      "sourceHash": "33e1001d2eba25a07ddcbf5a6b1aab1201ad89c0d3f5afb0845baa2ba3c31041",
+      "sourceId": "components.RequestModal.BulkRequestModal.requestseriesFormat"
+    },
+    {
+      "position": 2864,
+      "source": "Retry Failed",
+      "sourceHash": "21526548f7494d2ce3b31d41dcbf89b9c9499007183a70242d2b27cf099e6533",
+      "sourceId": "components.RequestModal.BulkRequestModal.retryfailed"
+    },
+    {
+      "position": 2865,
+      "source": "Select Items",
+      "sourceHash": "d2cfff256a3a432c6724ca1bef96a471f8e85fcfbd47642c68ee8b8e5fbd4fdb",
+      "sourceId": "components.RequestModal.BulkRequestModal.selectitems"
+    },
+    {
+      "position": 2866,
+      "source": "Source: {title}",
+      "sourceHash": "f5a89881284aaff1dd7907817382f6020245e4b858e8aa2bb0e18032c82c4a2c",
+      "sourceId": "components.RequestModal.BulkRequestModal.sourceTrack"
+    },
+    {
+      "position": 2867,
+      "source": "Submitting {processed} of {total} {total, plural, one {item} other {items}}.",
+      "sourceHash": "bbff27da013e526a1c06d91e238ac7f1347c5608b649057f6c27e9525f0be9a4",
+      "sourceId": "components.RequestModal.BulkRequestModal.submittingprogress"
+    },
+    {
+      "position": 2868,
+      "source": "{created} created, {skipped} skipped, {failed} failed.",
+      "sourceHash": "5525fbadb8f325fcbbcadf158dc0051e2a7ba8432a3817c4c095dac2d7849d8d",
+      "sourceId": "components.RequestModal.BulkRequestModal.summary"
+    },
+    {
+      "position": 2869,
+      "source": "No confident match",
+      "sourceHash": "4b3000f449387091bfffd14d9c859db84e0ac765eb17bf8ba0340cbea7b080db",
+      "sourceId": "components.RequestModal.BulkRequestModal.unmatched"
+    },
+    {
+      "position": 2870,
+      "source": "Any",
+      "sourceHash": "b1f1acb80c2ee86131d1de859a1ef7cc3dae6430d70f7115ba834a6016876a69",
+      "sourceId": "components.RequestModal.CollectionFilters.any"
+    },
+    {
+      "position": 2871,
+      "source": "Canceled",
+      "sourceHash": "8b3e08d1f0eb9a455efe788abc4a5c04ce6d2e60ea712f0f5a67b68c8c5d8f2e",
+      "sourceId": "components.RequestModal.CollectionFilters.canceled"
+    },
+    {
+      "position": 2872,
+      "source": "Clear Filters",
+      "sourceHash": "a630fab70a2e1cda63f0108df7ebb42c72d81c3a048e936b8d6d0b490ee3cb19",
+      "sourceId": "components.RequestModal.CollectionFilters.clear"
+    },
+    {
+      "position": 2873,
+      "source": "Ended",
+      "sourceHash": "9808ee4b3d52bc3f213061bda84fbe480b1a3def04af8b47b3be46f221b9e254",
+      "sourceId": "components.RequestModal.CollectionFilters.ended"
+    },
+    {
+      "position": 2874,
+      "source": "Genres",
+      "sourceHash": "38cec8e282c9d78762138e33e8bef2dbead32752b33a30b74977399bff7d0610",
+      "sourceId": "components.RequestModal.CollectionFilters.genres"
+    },
+    {
+      "position": 2875,
+      "source": "In Production",
+      "sourceHash": "1156a64e918aa5ee5ed319f0e7fd9d45dfc57a005c6a78501e0017cb70d0eecd",
+      "sourceId": "components.RequestModal.CollectionFilters.inProduction"
+    },
+    {
+      "position": 2876,
+      "source": "Language",
+      "sourceHash": "123a2aa1584a78ba9d9c86c4af71d7dba36753c0d6c0bce792559e125729fc40",
+      "sourceId": "components.RequestModal.CollectionFilters.language"
+    },
+    {
+      "position": 2877,
+      "source": "Pilot",
+      "sourceHash": "2c4937af0fc6c4b09bf42e7a4a8aa57b117b825281fab120839fc63f28efbebe",
+      "sourceId": "components.RequestModal.CollectionFilters.pilot"
+    },
+    {
+      "position": 2878,
+      "source": "Planned",
+      "sourceHash": "b0e37d944d4e8078088b0cd3c527c09bc0a159139d1c3b29da47a5920b2d3b6d",
+      "sourceId": "components.RequestModal.CollectionFilters.planned"
+    },
+    {
+      "position": 2879,
+      "source": "Rating",
+      "sourceHash": "84f7f816912885640288802140ee422183b29407e4886336acfebc864b127c42",
+      "sourceId": "components.RequestModal.CollectionFilters.rating"
+    },
+    {
+      "position": 2880,
+      "source": "Release Date",
+      "sourceHash": "bb0a9cc3ad0c3ae3eb80337b0feec4ce7338a314536358316bb8d9173a6366e5",
+      "sourceId": "components.RequestModal.CollectionFilters.releaseDate"
+    },
+    {
+      "position": 2881,
+      "source": "Returning Series",
+      "sourceHash": "df44ba79a6464767f2bcb0ddd86691042d0c0a7029a44e9deb198a688dfa62dc",
+      "sourceId": "components.RequestModal.CollectionFilters.returningSeries"
+    },
+    {
+      "position": 2882,
+      "source": "Status",
+      "sourceHash": "0cda2c18a9bc82c6b64986eb7e1d6ef5f878cb0a210bf69f1056355f031e9ada",
+      "sourceId": "components.RequestModal.CollectionFilters.status"
+    },
+    {
+      "position": 2883,
+      "source": "Approval",
+      "sourceHash": "7150800423bc634a7994ea4f3065d308229c5795a7ba58cd01fc3d34042d5f7a",
+      "sourceId": "components.RequestModal.Comic.approval"
+    },
+    {
+      "position": 2884,
+      "source": "The request was submitted, but the comics service rejected it while processing.",
+      "sourceHash": "18d8cf480f4455d8bf52c90508261b7397453cd3b796cbedb39483d7db0a33f2",
+      "sourceId": "components.RequestModal.Comic.backendRequestFailed"
+    },
+    {
+      "position": 2885,
+      "source": "Cancel Request",
+      "sourceHash": "3c8b6b440168e1fbe131d4330021e62f44132ca110cacb47f73096780f5429fb",
+      "sourceId": "components.RequestModal.Comic.cancel"
+    },
+    {
+      "position": 2886,
+      "source": "Close",
+      "sourceHash": "1a33ee35b9a90e2cb7c1c83aacccf5eb1f207d6b39273b516fea9b93f9b76f4b",
+      "sourceId": "components.RequestModal.Comic.close"
+    },
+    {
+      "position": 2887,
+      "source": "Configured default ({path})",
+      "sourceHash": "0f7a5b714f4da126c0cde8d31ef4c415a1a52ea4dcaa949f24afbde647f73a7d",
+      "sourceId": "components.RequestModal.Comic.configuredRootFolder"
+    },
+    {
+      "position": 2888,
+      "source": "Default ({name})",
+      "sourceHash": "42da3f3700d96558dce04933292fbe4f61e10821006a68ddc3e3be8a9ba77afe",
+      "sourceId": "components.RequestModal.Comic.defaultService"
+    },
+    {
+      "position": 2889,
+      "source": "Something went wrong while canceling the request.",
+      "sourceHash": "20cb3c7b40e3c03dcec20ec0d4b26a2b48d899b04392ff46e6469d573a0045c2",
+      "sourceId": "components.RequestModal.Comic.editerror"
+    },
+    {
+      "position": 2890,
+      "source": "Issues",
+      "sourceHash": "742910cc872e643b86ee2b4b0225fd278acf4e3dee67198ce9bd08eced0ae091",
+      "sourceId": "components.RequestModal.Comic.issueCount"
+    },
+    {
+      "position": 2891,
+      "source": "No Mylar, Kapowarr, or BackIssue service is configured. Comic requests are unavailable.",
+      "sourceHash": "8e53c8788e2bcfb404a6eb53b9c7b3a98486aed3cfb5449716bd8ea11073a051",
+      "sourceId": "components.RequestModal.Comic.noComicsServer"
+    },
+    {
+      "position": 2892,
+      "source": "Not Available",
+      "sourceHash": "50a44a93a841da5f15fb25281fd7c0981c5fe0cd155efda9c5fab7ac8e8b0b7c",
+      "sourceId": "components.RequestModal.Comic.notAvailable"
+    },
+    {
+      "position": 2893,
+      "source": "Your request is pending approval.",
+      "sourceHash": "600fbd4573628ee34b0920875ec6fdf7995f573d340b4e73535203b2feec4dd2",
+      "sourceId": "components.RequestModal.Comic.pendingapproval"
+    },
+    {
+      "position": 2894,
+      "source": "Pending Comic Request",
+      "sourceHash": "c588d29af9a05f4282b3a2e5ee4fe92b2a2677084c7dc6760dbd9ea290291023",
+      "sourceId": "components.RequestModal.Comic.pendingrequest"
+    },
+    {
+      "position": 2895,
+      "source": "Publisher",
+      "sourceHash": "058741f228bf7a304fbfbe9a8136cfc86fc9e68e85fc80e85711d35682c747fc",
+      "sourceId": "components.RequestModal.Comic.publisher"
+    },
+    {
+      "position": 2896,
+      "source": "Ready to Request",
+      "sourceHash": "da31eea5b7a521b63a07b66e2a8d4d9e59345b6f3190eb173950426de6d22e5e",
+      "sourceId": "components.RequestModal.Comic.readyToRequest"
+    },
+    {
+      "position": 2897,
+      "source": "Request for <strong>{title}</strong> canceled.",
+      "sourceHash": "d5d2f0da97652e7434e8978cd27300430f7587396a7a736872b372e0e3496dde",
+      "sourceId": "components.RequestModal.Comic.requestCancel"
+    },
+    {
+      "position": 2898,
+      "source": "<strong>{title}</strong> requested successfully!",
+      "sourceHash": "742d5ad4550801bf20a9692cb0267a1d444d731820f1debda9f7fc55580128d4",
+      "sourceId": "components.RequestModal.Comic.requestSuccess"
+    },
+    {
+      "position": 2899,
+      "source": "Request Comic",
+      "sourceHash": "3918565c8fbd6d23ae431d767712b6d5c5042943c0869f59b1e7a43a5c7df516",
+      "sourceId": "components.RequestModal.Comic.requestcomic"
+    }
+  ],
+  "sourcePositionRange": [
+    2800,
+    2899
+  ],
+  "tree": "531e045f511ee9c46f4c7ed80d50f529c9c12000"
+}

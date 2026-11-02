@@ -1,0 +1,137 @@
+{
+  "repository": "snapetech-org/SeerrNG",
+  "pullRequest": 418,
+  "inputHead": "7329f0ffb34d46042dbf1b165046e21c4f4d45e3",
+  "inputTree": "531e045f511ee9c46f4c7ed80d50f529c9c12000",
+  "reviewedCells": 1200,
+  "changedCells": 365,
+  "changedLocaleCatalogs": 12,
+  "keyCounts": {
+    "ar": 9494,
+    "de": 9494,
+    "es": 9494,
+    "fr": 9494,
+    "hi": 9494,
+    "id": 9494,
+    "ja": 9494,
+    "ko": 9494,
+    "pt_BR": 9494,
+    "vi": 9494,
+    "zh_Hans": 9494,
+    "zh_Hant": 9494
+  },
+  "keyOrderPreserved": true,
+  "fullWindowReadbackExact": true,
+  "localeFileAttestations": [
+    {
+      "locale": "ar",
+      "path": "src/i18n/locale/ar.json",
+      "bytes": 1044734,
+      "sha256": "e2878288b24c257618426ecb9211a317e6dd98bd0a92681f3ea8b12fa1e893f7",
+      "keyCount": 9494,
+      "keyOrderPreserved": true,
+      "changedCells": 36
+    },
+    {
+      "locale": "de",
+      "path": "src/i18n/locale/de.json",
+      "bytes": 926897,
+      "sha256": "761c4bbeb65406b70453189414297d09549063197f0f09340488fbfae39f1769",
+      "keyCount": 9494,
+      "keyOrderPreserved": true,
+      "changedCells": 6
+    },
+    {
+      "locale": "es",
+      "path": "src/i18n/locale/es.json",
+      "bytes": 922586,
+      "sha256": "9f5a72a3f2ccda1cbea61dc173035ff97f65aa50294f86532b1a87b4f7e2e953",
+      "keyCount": 9494,
+      "keyOrderPreserved": true,
+      "changedCells": 20
+    },
+    {
+      "locale": "fr",
+      "path": "src/i18n/locale/fr.json",
+      "bytes": 940396,
+      "sha256": "136222e39d59412feb9e21680868dc348c3ae69e7f34c32933b2632848b9993f",
+      "keyCount": 9494,
+      "keyOrderPreserved": true,
+      "changedCells": 30
+    },
+    {
+      "locale": "hi",
+      "path": "src/i18n/locale/hi.json",
+      "bytes": 1371851,
+      "sha256": "363d7cd84e10c901d159349db2bb3fba767b727062c37b54904db3431c2841ac",
+      "keyCount": 9494,
+      "keyOrderPreserved": true,
+      "changedCells": 32
+    },
+    {
+      "locale": "id",
+      "path": "src/i18n/locale/id.json",
+      "bytes": 867838,
+      "sha256": "1c7a87cb85218464c71ceedc936810b1cd352cfcd7d35da18c0e2cb000edb84b",
+      "keyCount": 9494,
+      "keyOrderPreserved": true,
+      "changedCells": 25
+    },
+    {
+      "locale": "ja",
+      "path": "src/i18n/locale/ja.json",
+      "bytes": 1015876,
+      "sha256": "988c8296d007e79c2478b18dda9de113c42e21ffe5ffedf6d838612e6ae1e581",
+      "keyCount": 9494,
+      "keyOrderPreserved": true,
+      "changedCells": 36
+    },
+    {
+      "locale": "ko",
+      "path": "src/i18n/locale/ko.json",
+      "bytes": 934300,
+      "sha256": "3ff69507ad19e38385dca7083bfe98cc059159416c322ba98d42451fd1e8887d",
+      "keyCount": 9494,
+      "keyOrderPreserved": true,
+      "changedCells": 29
+    },
+    {
+      "locale": "pt_BR",
+      "path": "src/i18n/locale/pt_BR.json",
+      "bytes": 911591,
+      "sha256": "50f51950f11fe6f8535783979303ea409a0d825c0db057863537f3622afddda4",
+      "keyCount": 9494,
+      "keyOrderPreserved": true,
+      "changedCells": 34
+    },
+    {
+      "locale": "vi",
+      "path": "src/i18n/locale/vi.json",
+      "bytes": 969416,
+      "sha256": "5464f6e055a27c77c6a60eab8b831e4e7d91dfbb364f7e0bbc7af787752cffd6",
+      "keyCount": 9494,
+      "keyOrderPreserved": true,
+      "changedCells": 39
+    },
+    {
+      "locale": "zh_Hans",
+      "path": "src/i18n/locale/zh_Hans.json",
+      "bytes": 812430,
+      "sha256": "8135e3260bac509915edf540488108b7c557a309d59e46930f2150f0cfd6ecb2",
+      "keyCount": 9494,
+      "keyOrderPreserved": true,
+      "changedCells": 35
+    },
+    {
+      "locale": "zh_Hant",
+      "path": "src/i18n/locale/zh_Hant.json",
+      "bytes": 814010,
+      "sha256": "05fa4c84087252f27cb439ee33a972c397b801527cf87ef8b1d1d71c6c6b88b4",
+      "keyCount": 9494,
+      "keyOrderPreserved": true,
+      "changedCells": 43
+    }
+  ],
+  "nativeSpeakerApproval": false,
+  "testsBuildScansCiOrBrowserRun": false
+}

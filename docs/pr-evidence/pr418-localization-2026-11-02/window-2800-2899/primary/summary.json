@@ -1,0 +1,217 @@
+{
+  "allSevenPrStartSnapshot": [
+    {
+      "baseRefOid": "221d8e0d542802da7529cd272c928cc747677e5c",
+      "headRefName": "codex/seerrng-localization-overhaul-20261028",
+      "headRefOid": "7329f0ffb34d46042dbf1b165046e21c4f4d45e3",
+      "isDraft": true,
+      "pullRequest": 418,
+      "repository": "SeerrNG",
+      "state": "OPEN",
+      "url": "https://github.com/snapetech-org/seerrng/pull/418"
+    },
+    {
+      "baseRefOid": "03274100af783fdffaca4dd8436e163dc6b18795",
+      "headRefName": "codex/chaptarrng-localization-complete-20261031",
+      "headRefOid": "c0a098e4e2b23117860c6e6827c1e84485273a7a",
+      "isDraft": true,
+      "pullRequest": 190,
+      "repository": "chaptarrng",
+      "state": "OPEN",
+      "url": "https://github.com/snapetech-org/chaptarrng/pull/190"
+    },
+    {
+      "baseRefOid": "e188cd0c74c73071c94b04915e1babac2d2bf386",
+      "headRefName": "codex/localization-foundations-20261028",
+      "headRefOid": "0ea966692f4dec72e8830ebc1f085549968c587e",
+      "isDraft": false,
+      "pullRequest": 155,
+      "repository": "QuestarrNG",
+      "state": "OPEN",
+      "url": "https://github.com/snapetech-org/QuestarrNG/pull/155"
+    },
+    {
+      "baseRefOid": "bcd1eb41b5cdf8202acb5cf8e365e14761b743b5",
+      "headRefName": "task/localization-translation-review-20261030",
+      "headRefOid": "8e3820252b0c362e18e421b3a73e7ff1478d32a0",
+      "isDraft": true,
+      "pullRequest": 70,
+      "repository": "ROMarrNG",
+      "state": "OPEN",
+      "url": "https://github.com/snapetech-org/ROMarrNG/pull/70"
+    },
+    {
+      "baseRefOid": "2a2b188f10b9460a15bc6d5c34e406b0193d51ba",
+      "headRefName": "codex/slskr-l10n-audit-20261030",
+      "headRefOid": "b1e814ef11d55fd1710d0e2522df14fee9ff0a70",
+      "isDraft": true,
+      "pullRequest": 204,
+      "repository": "slskR",
+      "state": "OPEN",
+      "url": "https://github.com/snapetech-org/slskr/pull/204"
+    },
+    {
+      "baseRefOid": "f25d263a2a7cdb2c8f76c40c346cb10f749a9356",
+      "headRefName": "codex/slskdn-oidc-tooltip-localization-20261030",
+      "headRefOid": "0a6cbdcb606de1888045df358427eb2b81c85546",
+      "isDraft": true,
+      "pullRequest": 409,
+      "repository": "slskdN",
+      "state": "OPEN",
+      "url": "https://github.com/snapetech-org/slskdN/pull/409"
+    },
+    {
+      "baseRefOid": "0de7ddcf2f16a4399da8fd7904dc35f458b4837c",
+      "headRefName": "codex/torrentng-localization-audit-20261030",
+      "headRefOid": "11ff6fa2618e842e92716b7e92867769200e32e5",
+      "isDraft": true,
+      "pullRequest": 243,
+      "repository": "TorrentNG",
+      "state": "OPEN",
+      "url": "https://github.com/snapetech-org/TorrentNG/pull/243"
+    }
+  ],
+  "callerContextRows": 100,
+  "callerFiles": 5,
+  "callerGapExtractorAliasesResolved": 11,
+  "callerReferences": 335,
+  "callerRowsNotFound": 0,
+  "catalogKeyCounts": {
+    "ar": 9494,
+    "de": 9494,
+    "es": 9494,
+    "fr": 9494,
+    "hi": 9494,
+    "id": 9494,
+    "ja": 9494,
+    "ko": 9494,
+    "pt_BR": 9494,
+    "vi": 9494,
+    "zh_Hans": 9494,
+    "zh_Hant": 9494
+  },
+  "catalogKeySetsIdentical": true,
+  "cellCount": 1200,
+  "confidenceCounts": {
+    "high": 184,
+    "moderate": 1016
+  },
+  "dispositions": {
+    "accept-current": 835,
+    "propose-correction": 250,
+    "refinement": 115
+  },
+  "exactHead": "7329f0ffb34d46042dbf1b165046e21c4f4d45e3",
+  "exactTree": "531e045f511ee9c46f4c7ed80d50f529c9c12000",
+  "icuCheckedCells": 36,
+  "icuInvalidCells": 0,
+  "localeCount": 12,
+  "machineReviewHolds": [],
+  "markupMismatchesCurrent": 0,
+  "markupMismatchesFinal": 0,
+  "nativeSpeakerReviewOutstanding": true,
+  "nativeSpeakerSignoffClaimed": false,
+  "overallConfidence": "moderate",
+  "placeholderEquivalenceExceptionCells": 13,
+  "placeholderMismatchesCurrent": 13,
+  "placeholderMismatchesFinal": 13,
+  "placeholderReviewHolds": [],
+  "placeholderUnresolvedSemanticGapCount": 0,
+  "priorExactDispositionsReused": 0,
+  "proposalConfidenceCounts": {
+    "high": 184,
+    "moderate": 181
+  },
+  "proposalCount": 365,
+  "proposalsByLocale": {
+    "ar": 36,
+    "de": 6,
+    "es": 20,
+    "fr": 30,
+    "hi": 32,
+    "id": 25,
+    "ja": 36,
+    "ko": 29,
+    "pt_BR": 34,
+    "vi": 39,
+    "zh_Hans": 35,
+    "zh_Hant": 43
+  },
+  "protectedLiteralMismatchCellsCurrent": 7,
+  "protectedLiteralMismatchCellsFinal": 0,
+  "protectedLiteralMismatchDetailsCurrent": [
+    {
+      "locale": "hi",
+      "missing": [
+        "Bookshelf"
+      ],
+      "sourceId": "components.RequestModal.BulkRequestModal.noEbookServer",
+      "sourcePosition": 2848
+    },
+    {
+      "locale": "vi",
+      "missing": [
+        "Bookshelf"
+      ],
+      "sourceId": "components.RequestModal.BulkRequestModal.noEbookServer",
+      "sourcePosition": 2848
+    },
+    {
+      "locale": "ar",
+      "missing": [
+        "FLAC",
+        "MP3"
+      ],
+      "sourceId": "components.RequestModal.BulkRequestModal.noMusicQualityServer",
+      "sourcePosition": 2849
+    },
+    {
+      "locale": "hi",
+      "missing": [
+        "MP3"
+      ],
+      "sourceId": "components.RequestModal.BulkRequestModal.noMusicQualityServer",
+      "sourcePosition": 2849
+    },
+    {
+      "locale": "hi",
+      "missing": [
+        "BackIssue"
+      ],
+      "sourceId": "components.RequestModal.Comic.noComicsServer",
+      "sourcePosition": 2891
+    },
+    {
+      "locale": "zh_Hans",
+      "missing": [
+        "BackIssue"
+      ],
+      "sourceId": "components.RequestModal.Comic.noComicsServer",
+      "sourcePosition": 2891
+    },
+    {
+      "locale": "zh_Hant",
+      "missing": [
+        "BackIssue"
+      ],
+      "sourceId": "components.RequestModal.Comic.noComicsServer",
+      "sourcePosition": 2891
+    }
+  ],
+  "protectedLiteralMismatchDetailsFinal": [],
+  "pullRequest": 418,
+  "remoteHead": "7329f0ffb34d46042dbf1b165046e21c4f4d45e3",
+  "repository": "snapetech-org/SeerrNG",
+  "repositoryOrPrEdited": false,
+  "requestfrom2812LocaleReviewCount": 12,
+  "sourceCount": 100,
+  "sourcePositionRange": [
+    2800,
+    2899
+  ],
+  "spanishDirectAddressRows": 5,
+  "spanishInformalFinalRows": 0,
+  "spanishRows": 100,
+  "testsBuildsScansCiBrowser": false,
+  "trueUnmappedSourceCount": 0
+}

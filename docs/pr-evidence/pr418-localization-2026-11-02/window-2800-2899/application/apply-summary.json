@@ -1,0 +1,14 @@
+{
+  "repository": "snapetech-org/SeerrNG",
+  "pullRequest": 418,
+  "window": "W2800-W2899",
+  "inputHead": "7329f0ffb34d46042dbf1b165046e21c4f4d45e3",
+  "inputTree": "531e045f511ee9c46f4c7ed80d50f529c9c12000",
+  "reviewedCells": 1200,
+  "unchangedAcceptedCells": 835,
+  "changedCells": 365,
+  "changedLocaleCatalogs": 12,
+  "proposalsConfirmedAsWritten": 364,
+  "independentRevisions": 1,
+  "nativeSpeakerApproval": false
+}
