@@ -1,0 +1,51 @@
+{
+  "schemaVersion": 1,
+  "repository": "snapetech-org/seerrng",
+  "pullRequest": 418,
+  "reviewedHead": "2c5b7a5dcbe01707ac361e2d4ae06bf3681f99e2",
+  "reviewedTree": "9fc918e9247d7ceaec5f0744c13ada81f7e4ba21",
+  "liveState": "OPEN/DRAFT",
+  "remoteBranch": "codex/seerrng-localization-overhaul-20261028",
+  "sourceCommit": "affd7a87860e3613d5c6842c20eb0b45f3bd062f",
+  "sourceTree": "2471ca52d8b94504879e5842e8ffae920a22e180",
+  "rootDecisionSha256": "8568d119f2b56b98ac7f93d3ab1db17c8e242aa85071902c8e4b5baf64e908ce",
+  "candidatePacketSha256": "bde38aaddf962cacce826f2b343047fb6adb016e9e5e59aead6150634653710a",
+  "heldPacketSha256": "8d5f4438a5aa3c64d63006025cc417ea33d6e0114b8173bddd2e8eec9642eaa9",
+  "sourceCatalogBlob": "12e04a118c30b71b3714291adeaf9fdb2735cee4",
+  "sourceCatalogSha256": "75ff3c90b52aedd636a506281ffbd6fb2d3739c61294b6008a517f17647e2316",
+  "targetCatalogBlob": "13be1899d2e913130ced5b8a6797642b55029cfe",
+  "targetCatalogSha256": "d7d75487002d2b97bb6397cda02f9de2a532ac673821cafd2aca8933cf78abae",
+  "decisionCounts": {
+    "accept": 152,
+    "refine": 70,
+    "keep": 2
+  },
+  "actualChangeRows": 222,
+  "keepCurrentRows": 2,
+  "heldRows": 5,
+  "heldIds": [
+    "components.Association.AssociationGraph.similar",
+    "components.Association.Filters.similar",
+    "components.Association.Reason.nearbyListenerOverlap",
+    "components.Discover.DiscoverAdult.resultCount",
+    "components.GameLibrary.playing"
+  ],
+  "checks": {
+    "rootDecisionCandidateHeadAndTreeMatch": true,
+    "all224SourceAndCurrentHashesMatchLiveCatalogs": true,
+    "all5HeldSourceAndCurrentHashesMatchLiveCatalogs": true,
+    "rootAcceptTargetsEqualProposal": true,
+    "allFinalTargetsPreserveFormatArgumentNamesAndTypes": true,
+    "allFinalTargetsPreserveIcuSelectorTypesAndBranches": true,
+    "allFinalTargetsPreserveHtmlTags": true,
+    "allFinalTargetsPreserveNumericLiterals": true,
+    "allFinalTargetsPreserveSourceAcronymsAndBrands": true,
+    "catalogKeyParityEnEs": true,
+    "duplicateKeysAbsentInEnAndEs": true,
+    "jsonRoundtripPreservesOriginalFileBytes": true,
+    "worktreeCleanBeforeWrite": true,
+    "workflowChanges": false,
+    "testsBuildsCi": false,
+    "nativeSpeakerApproval": false
+  }
+}
