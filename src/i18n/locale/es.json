@@ -4080,7 +4080,7 @@
   "components.Settings.Notifications.webhookThreadIdTip": "El ID del canal de hilo donde publicar las notificaciones. Déjalo vacío para publicar en el canal del webhook",
   "components.Settings.Notifications.webhookUrl": "URL de Webhook",
   "components.Settings.Notifications.webhookUrlTip": "Crea una <DiscordWebhookLink>integración webhook</DiscordWebhookLink> en tu servidor",
-  "components.Settings.OverrideRuleModal.catalogConditionsDescription": "Introduzca el género separado de coma o nombres de palabras clave como se muestra en el álbum o libro. Si ese metadato falta, la regla no coincidirá y los defectos de solicitud normales permanecen en su lugar.",
+  "components.Settings.OverrideRuleModal.catalogConditionsDescription": "Introduce nombres de géneros o palabras clave separados por comas, tal como aparecen en el álbum o el libro. Si faltan esos metadatos, la regla no coincidirá y se conservarán los valores predeterminados habituales de las solicitudes.",
   "components.Settings.OverrideRuleModal.catalogGenrePlaceholder": "Géneros de álbumes o temas de libros separados por comas",
   "components.Settings.OverrideRuleModal.catalogKeywordPlaceholder": "Etiquetas de álbumes o temas de libros separados por comas",
   "components.Settings.OverrideRuleModal.conditions": "Condiciones",

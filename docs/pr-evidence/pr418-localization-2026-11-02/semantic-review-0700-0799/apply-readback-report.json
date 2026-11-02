@@ -1,0 +1,52 @@
+{
+  "acceptedUnchangedNoops": 2,
+  "browserAcceptance": "not performed for this milestone",
+  "callerReferenceMismatches": 0,
+  "callerReferencesReattested": 344,
+  "catalogEditsApplied": 173,
+  "catalogKeyParity": {
+    "eachTarget": 9494,
+    "source": 9494
+  },
+  "crossReviewDispositionCounts": {
+    "accept-proposal": 166,
+    "hold": 0,
+    "refine-proposal": 9
+  },
+  "crossReviewedCandidates": 175,
+  "directLocaleCount": 12,
+  "editsByLocale": {
+    "ar": 13,
+    "de": 0,
+    "es": 1,
+    "fr": 7,
+    "hi": 19,
+    "id": 15,
+    "ja": 3,
+    "ko": 20,
+    "pt-BR": 12,
+    "vi": 33,
+    "zh-CN": 20,
+    "zh-TW": 30
+  },
+  "exactDeltaMatchesPlan": true,
+  "inputHead": "d633a7ed184bc9571a1a805da1bd25cef28d1599",
+  "inputTree": "abb501be60a5208a720c053976e94df72af8117e",
+  "markupParityFailures": 0,
+  "nativeSpeakerApproval": false,
+  "placeholderParityFailures": 0,
+  "primaryCells": 1200,
+  "primaryCorrectionCandidates": 175,
+  "priorRootLedgerChecksResolved": 1,
+  "priorRoutedRowsPreservedByteForByte": 12,
+  "pullRequest": 418,
+  "releaseOrTagCreated": false,
+  "repository": "snapetech-org/seerrng",
+  "sourceAndCurrentMismatches": 0,
+  "sourceIdPositions": [
+    700,
+    799
+  ],
+  "testsBuildScansCI": "not run",
+  "workflowsChanged": false
+}

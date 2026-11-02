@@ -1,0 +1,38 @@
+{
+  "callerMismatches": 0,
+  "callerReferencesReattested": 344,
+  "currentCatalogBlobs": {
+    "src/i18n/locale/ar.json": "5da470294b5ebcb8603cc99e332bbb784c2c66be",
+    "src/i18n/locale/de.json": "f196a52f33f0f497d20d0aec2c9df1d8e0346cac",
+    "src/i18n/locale/en.json": "12e04a118c30b71b3714291adeaf9fdb2735cee4",
+    "src/i18n/locale/es.json": "91541b52daa2ac367fa8d3bc93c4ba7c54ec9d90",
+    "src/i18n/locale/fr.json": "13bb69a1a9457f078b07bb16c4cb5b407e09bdc5",
+    "src/i18n/locale/hi.json": "232e1b2cada0ce49cd390f22d720e9fd67f3d0ca",
+    "src/i18n/locale/id.json": "e24c1da9d55f47a5fe47cc2b518457c909ee76fb",
+    "src/i18n/locale/ja.json": "6ee7102899d9ecf192dffe30506208ca63a8e77f",
+    "src/i18n/locale/ko.json": "81f10c584e08971ed5d245c8d07e36d06aa28516",
+    "src/i18n/locale/pt_BR.json": "e0965303eb708edd2f713408656fcedb39e2c6c0",
+    "src/i18n/locale/vi.json": "0a4d2724196e7caf6738e1f354e69e185c414286",
+    "src/i18n/locale/zh_Hans.json": "61d0939173c0984e4eabd0bcf6c85cd412f8a031",
+    "src/i18n/locale/zh_Hant.json": "e279d8b21bef6f9f640ded7bfc53a6b5eafd0155"
+  },
+  "directLocaleCellsReattested": 1200,
+  "liveHead": "d633a7ed184bc9571a1a805da1bd25cef28d1599",
+  "liveTree": "abb501be60a5208a720c053976e94df72af8117e",
+  "method": "Read-only git-object lookup at the exact live PR head; compared English and target JSON values and SHA256 to the frozen direct-cell packet, then compared source caller blob IDs, exact line hashes and adjacent context.",
+  "packetHead": "d1137d06ffb5af57ef599ac9bf495aff2a990a7b",
+  "packetTree": "0aa22f0bb43e3e30d216e2ae19939220e05f04f7",
+  "pullRequest": 418,
+  "pullRequestDraft": true,
+  "pullRequestState": "OPEN",
+  "pullRequestUrl": "https://github.com/snapetech-org/seerrng/pull/418",
+  "repository": "snapetech-org/seerrng",
+  "schemaVersion": 1,
+  "sourceAndCurrentTargetMismatches": 0,
+  "sourceIdPositionRange": {
+    "count": 100,
+    "startInclusive": 700,
+    "stopExclusive": 800
+  },
+  "uniqueSourceIds": 100
+}

@@ -1,0 +1,56 @@
+[
+  {
+    "sourceId": "components.Settings.Notifications.useUserLocale",
+    "locale": "ar",
+    "finalTarget": "استخدم إعدادات اللغة والمنطقة لمستلم الإشعار.",
+    "rationale": "Naming language and region makes the recipient locale clear and avoids the ambiguity that الإعدادات المحلية can have as “local settings”."
+  },
+  {
+    "sourceId": "components.Settings.Notifications.webhookThreadIdTip",
+    "locale": "hi",
+    "finalTarget": "जिस थ्रेड चैनल में सूचनाएँ पोस्ट करनी हैं, उसकी ID दें। वेबहुक चैनल में पोस्ट करने के लिए इसे खाली छोड़ें।",
+    "rationale": "This states directly that the field takes the ID of the thread channel used for notifications, then describes the empty-field fallback."
+  },
+  {
+    "sourceId": "components.Settings.Notifications.messageThreadIdTip",
+    "locale": "id",
+    "finalTarget": "Jika fitur topik diaktifkan di obrolan grup, Anda dapat memasukkan ID thread/topik di sini.",
+    "rationale": "The passive condition makes clear that topics must be enabled in the group chat before a thread/topic ID is entered."
+  },
+  {
+    "sourceId": "components.Settings.Notifications.messageThreadId",
+    "locale": "pt-BR",
+    "finalTarget": "ID da thread ou do tópico",
+    "rationale": "Replacing the slash construction with “ou” makes the label read naturally while retaining both supported Telegram identifiers."
+  },
+  {
+    "sourceId": "components.Settings.Notifications.validationMessageThreadId",
+    "locale": "pt-BR",
+    "finalTarget": "O ID da thread ou do tópico deve ser um número inteiro positivo.",
+    "rationale": "Replacing the slash construction with “ou” makes the validation sentence natural and retains the positive-integer requirement."
+  },
+  {
+    "sourceId": "components.Settings.Notifications.useUserLocale",
+    "locale": "pt-BR",
+    "finalTarget": "Use as configurações de idioma e região do destinatário da notificação.",
+    "rationale": "Naming language and region is clearer to users than the technical term “localidade” while preserving the locale-selection behavior."
+  },
+  {
+    "sourceId": "components.Settings.Notifications.messageThreadIdTip",
+    "locale": "vi",
+    "finalTarget": "Nếu cuộc trò chuyện nhóm đã bật tính năng chủ đề, bạn có thể nhập ID thread/chủ đề tại đây.",
+    "rationale": "Adding “tính năng” makes the enabled-topics condition explicit and keeps the thread/topic alternatives."
+  },
+  {
+    "sourceId": "components.Settings.Notifications.validationBotAPIRequired",
+    "locale": "vi",
+    "finalTarget": "Bạn phải cung cấp token ủy quyền của bot.",
+    "rationale": "Dropping the redundant “mã token” yields a cleaner technical validation message without changing the required bot authorization token."
+  },
+  {
+    "sourceId": "components.Settings.Notifications.webhookRoleIdTip",
+    "locale": "vi",
+    "finalTarget": "ID vai trò cần nhắc đến trong tin nhắn webhook. Để trống để tắt tính năng nhắc tên.",
+    "rationale": "Using the same Vietnamese term as the “Enable Mentions” setting keeps the empty-field behavior consistent across the notification controls."
+  }
+]
