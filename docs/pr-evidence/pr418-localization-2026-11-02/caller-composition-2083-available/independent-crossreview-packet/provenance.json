@@ -1,0 +1,7 @@
+{
+  "primaryPacketPath": "/mnt/disks/scratch/task-scratch/seerrng-pr418-w2083-arabic-available-primary-20261102",
+  "primarySumsSha256": "83489683b4085184bdea3b68178f651701ef86e378e8bd5bb73555e9a0da4897",
+  "historicalW2000CrossreviewSumsSha256": "b06610cc68b72f72d87d7451587d1a251ebd705cc9528644d384cfa9776b199d",
+  "historicalW2100CrossreviewSumsSha256": "2906e1d4055b337769dc587f492dea2a0223c3c6ed8a7feb2aa520706ad4952b",
+  "allInputManifestsVerified": true
+}

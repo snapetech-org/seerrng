@@ -1,0 +1,14 @@
+{
+  "repository": "snapetech-org/seerrng",
+  "pullRequest": 418,
+  "url": "https://github.com/snapetech-org/seerrng/pull/418",
+  "state": "OPEN",
+  "draft": true,
+  "baseRefName": "main",
+  "headRefName": "codex/seerrng-localization-overhaul-20261028",
+  "head": "3af7b753f5a7a8ce304e0c116dbce9a76328b3ad",
+  "tree": "56a5c443734cee77822fa2a23a2385b2e6dfcf3e",
+  "reviews": [],
+  "statusCheckRollup": [],
+  "worktreeClean": true
+}

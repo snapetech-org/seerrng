@@ -1,0 +1,10 @@
+{"check":"primary-packet-checksums","detail":{"files":7,"manifestSha256":"83489683b4085184bdea3b68178f651701ef86e378e8bd5bb73555e9a0da4897"},"status":"pass"}
+{"check":"live-PR-and-tree","detail":{"base":"main","draft":true,"head":"3af7b753f5a7a8ce304e0c116dbce9a76328b3ad","state":"OPEN","tree":"56a5c443734cee77822fa2a23a2385b2e6dfcf3e"},"status":"pass"}
+{"check":"English-source-position-and-hash","detail":{"position":2083,"sha256":"ddd9818abacfde7afed60c93129175401439367a77e69ea93e0ddb3bb38e0bd9","source":"available"},"status":"pass"}
+{"check":"caller-file-and-pinned-lines","detail":{"blobOid":"eb13fc4a4ecc3a82543304675ad0879ac85740eb","callerLines":65,"fileSha256":"a2bf7c15654bfe4669dbea033151b13270591cf4246664026d58a0c5283eb577"},"status":"pass"}
+{"check":"all-12-catalog-pins","detail":{"catalogs":12,"keyCount":9494,"keySetsEqual":true,"ordersMatchedIndividually":true},"status":"pass"}
+{"check":"Arabic-cell-structure","detail":{"currentSha256":"bc4f4501a2b64496280c4e65f9a681b58ef3c5e51ce71e29d83417743063d88f","markup":0,"placeholders":0,"proposalSha256":"a86435761b0d2bfa146f11438cf9e3e6baaf9bd4cec4fd417aa0ffd3866c066d","protectedLiterals":0},"status":"pass"}
+{"check":"Arabic-caller-composition-and-prior-conflict","detail":{"current":"متاحة","independentTarget":"المتاحة","laterQueueResolved":true,"priorAcceptCurrentSuperseded":true},"status":"pass"}
+{"check":"historical-crossreview-manifests","detail":{"W2000Files":14,"W2100Files":15},"status":"pass"}
+{"check":"native-speaker-review","detail":"Moderate-confidence machine-assisted Arabic review; native-speaker approval remains outstanding.","status":"outstanding"}
+{"check":"repository-PR-write-tests-build-ci-browser","detail":"No repository/PR edits, tests, builds, CI, browser actions, releases, tags, or merges.","status":"not-performed"}

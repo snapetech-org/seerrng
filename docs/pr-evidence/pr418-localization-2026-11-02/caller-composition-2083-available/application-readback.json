@@ -1,0 +1,130 @@
+{
+  "input_head": "3af7b753f5a7a8ce304e0c116dbce9a76328b3ad",
+  "source_id": "components.MediaDetails.SeasonEpisodeTree.available",
+  "locale": "ar",
+  "old_value": "متاحة",
+  "old_value_sha256": "bc4f4501a2b64496280c4e65f9a681b58ef3c5e51ce71e29d83417743063d88f",
+  "readback_value": "المتاحة",
+  "readback_sha256": "a86435761b0d2bfa146f11438cf9e3e6baaf9bd4cec4fd417aa0ffd3866c066d",
+  "expected_readback_sha256": "a86435761b0d2bfa146f11438cf9e3e6baaf9bd4cec4fd417aa0ffd3866c066d",
+  "changed_cell_count": 1,
+  "changed_ids": [
+    "components.MediaDetails.SeasonEpisodeTree.available"
+  ],
+  "arabic_key_order_preserved": true,
+  "all_locale_key_sets_match": true,
+  "all_locale_key_counts": {
+    "ar": 9494,
+    "de": 9494,
+    "es": 9494,
+    "fr": 9494,
+    "hi": 9494,
+    "id": 9494,
+    "ja": 9494,
+    "ko": 9494,
+    "pt_BR": 9494,
+    "vi": 9494,
+    "zh_Hans": 9494,
+    "zh_Hant": 9494
+  },
+  "locale_catalogs": [
+    {
+      "locale": "ar",
+      "path": "src/i18n/locale/ar.json",
+      "key_count": 9494,
+      "file_sha256": "9e17f12b9d675f6a78c0f0b1927fca1f796b2bbaa89dcf05201fcf8701167c11",
+      "git_blob_oid": "51e04e6fda947426d2e527885967f2546ae9a163",
+      "target_sha256": "a86435761b0d2bfa146f11438cf9e3e6baaf9bd4cec4fd417aa0ffd3866c066d"
+    },
+    {
+      "locale": "de",
+      "path": "src/i18n/locale/de.json",
+      "key_count": 9494,
+      "file_sha256": "5c02cd5c935dcd9d4826411a305052abfd7d4aff83c039d695ee0dcbfbad1266",
+      "git_blob_oid": "3813d0d0d8792bf95569d3d7fffef15c6796bdce",
+      "target_sha256": "e9322db2647d7261fc91b43c2df81a3e73b9254a9afb81523eccd8ab6e764403"
+    },
+    {
+      "locale": "es",
+      "path": "src/i18n/locale/es.json",
+      "key_count": 9494,
+      "file_sha256": "a89c5285f2f65d93824f5f40360c1691fe18fafd4d232598de34fe38e4d8c67b",
+      "git_blob_oid": "ba5a258868a5390a51c0dcd65ac88fc960d3352a",
+      "target_sha256": "07c899d551b1a239b282cf3496c576848e3f4c404e0e4150edaebacae06174fc"
+    },
+    {
+      "locale": "fr",
+      "path": "src/i18n/locale/fr.json",
+      "key_count": 9494,
+      "file_sha256": "50d7d158bb021b7683d1c8864ea26c4e1c89349c8262acee3294113471b99443",
+      "git_blob_oid": "838d8399384e02f021f339054496c9cc312fe1c1",
+      "target_sha256": "789529048d8753960b06758761a862288fda4da6380736eba950d5915522215f"
+    },
+    {
+      "locale": "hi",
+      "path": "src/i18n/locale/hi.json",
+      "key_count": 9494,
+      "file_sha256": "e01d7076f4ca15d8d32ebab54f2ad4be28d28775c71d13fb20a8ea17bec1b4e1",
+      "git_blob_oid": "9efa0b12e596a97201df0061e2d1596fe97470b3",
+      "target_sha256": "da584d9dda46d2858293cc756de784097bbf6b3cd876516ea0dab344dc190656"
+    },
+    {
+      "locale": "id",
+      "path": "src/i18n/locale/id.json",
+      "key_count": 9494,
+      "file_sha256": "b011acd0d3d324565314db8c4ec305930ca6115d262426666ca3b891b75866fe",
+      "git_blob_oid": "7299b0e053c40a2d2c910d08e3ac0513226931a6",
+      "target_sha256": "161020da3fe0550197f71d125cd450c8f6761441c849414c1e3b04c7bd176de9"
+    },
+    {
+      "locale": "ja",
+      "path": "src/i18n/locale/ja.json",
+      "key_count": 9494,
+      "file_sha256": "a1dd0b067eec2b6a7d38dda8231222db243282a4f39db1f22453d3d869c57cd1",
+      "git_blob_oid": "5162fbb6280530e5718daa5b76244887b88295f2",
+      "target_sha256": "0994e10a864f9911f0c2a3180cd75ad7afd989ea5dbd90eaedca17b4308a86b1"
+    },
+    {
+      "locale": "ko",
+      "path": "src/i18n/locale/ko.json",
+      "key_count": 9494,
+      "file_sha256": "cc1ce35471c66aa056297f91d17b2c5ab159c81ee5b121a2615096d975ea3bb9",
+      "git_blob_oid": "f28d9dab952ca42da74c9bc54ee944538a24cb9a",
+      "target_sha256": "f633b1267b6569e3f82d8ba129bf48a9ff34edb4dd269c73998f73b25b2404c1"
+    },
+    {
+      "locale": "pt_BR",
+      "path": "src/i18n/locale/pt_BR.json",
+      "key_count": 9494,
+      "file_sha256": "82adff28f33a52fd2ac935800784d4b019b9a68092c33176496ad93987ac0a9a",
+      "git_blob_oid": "182dce8d52c36f4fcc0e0fda1b3c10515de6a23b",
+      "target_sha256": "15d6714fd521a268b1fd45a5934dbdee4b5244294b98c4b7c64f1bc6a310962a"
+    },
+    {
+      "locale": "vi",
+      "path": "src/i18n/locale/vi.json",
+      "key_count": 9494,
+      "file_sha256": "d123bedb22bfa24c7db0458cfd79fdd0b6d01776abcfcde4758dc70735d9f990",
+      "git_blob_oid": "7de28cc757e95120b38db73b225b14ac34270da2",
+      "target_sha256": "86450e4c466ba13cdb6e433c416cb91c0a7d40e429d1d535c68f59de1747860e"
+    },
+    {
+      "locale": "zh_Hans",
+      "path": "src/i18n/locale/zh_Hans.json",
+      "key_count": 9494,
+      "file_sha256": "9b9d7337b2ccac3b34083157e4804aa8c53aa752579916bf6f012e9b1a338f39",
+      "git_blob_oid": "596f877fd39058581912f54f2714ddb36cce2dad",
+      "target_sha256": "4d99c976beb8827ecac5f4238a3c31790ec19a3249692f93517085c501d427dc"
+    },
+    {
+      "locale": "zh_Hant",
+      "path": "src/i18n/locale/zh_Hant.json",
+      "key_count": 9494,
+      "file_sha256": "4d4ca4f2d85d8a44828eaad4992f27ba72ebcb23f014e0eaa336aafcf9551851",
+      "git_blob_oid": "6d25a06e5727a888a622370dfa699dfa1d99b466",
+      "target_sha256": "4d99c976beb8827ecac5f4238a3c31790ec19a3249692f93517085c501d427dc"
+    }
+  ],
+  "other_arabic_values_changed": false,
+  "non_arabic_catalogs_changed": 0
+}

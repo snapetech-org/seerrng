@@ -2082,7 +2082,7 @@
   "components.MediaDetails.PlaybackTrackList.track": "المسار",
   "components.MediaDetails.SeasonEpisodeTree.availability": "التوافر",
   "components.MediaDetails.SeasonEpisodeTree.availabilityTooltip": "توفر الحلقة في مكتبة الوسائط: علامة الصح الخضراء تعني أنها متاحة؛ وعلامة الصليب الحمراء تعني أنها غير متاحة.",
-  "components.MediaDetails.SeasonEpisodeTree.available": "متاحة",
+  "components.MediaDetails.SeasonEpisodeTree.available": "المتاحة",
   "components.MediaDetails.SeasonEpisodeTree.availableInLibrary": "متاح في المكتبة.",
   "components.MediaDetails.SeasonEpisodeTree.chooseStartingEpisode": "اختر حلقة بداية واحدة",
   "components.MediaDetails.SeasonEpisodeTree.clearSelection": "ألغِ تحديد كل الحلقات دون تغيير حالة توسيع المواسم.",

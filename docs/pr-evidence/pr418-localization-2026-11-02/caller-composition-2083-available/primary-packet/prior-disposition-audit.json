@@ -1,0 +1,14 @@
+{
+  "current_input_head": "3af7b753f5a7a8ce304e0c116dbce9a76328b3ad",
+  "prior_review_head": "404648643578992e8e12ce9dff47dd92d5ee7c1c",
+  "prior_root_disposition": "accept-current",
+  "prior_current_target": "متاحة",
+  "later_crossreview_head": "404648643578992e8e12ce9dff47dd92d5ee7c1c",
+  "later_crossreview_disposition": "queued-follow-up-outside-W2100-W2199",
+  "later_independent_target": "المتاحة",
+  "adjudication": "Re-evaluated caller composition at current head; primary proposes the definite form. Independent cross-review required before application.",
+  "source_and_caller_unchanged_from_prior_head": true,
+  "current_locale_catalogs_reattested_at_input_head": 12,
+  "locale_key_sets_equal": true,
+  "locale_key_orders_are_recorded_per_file": true
+}
