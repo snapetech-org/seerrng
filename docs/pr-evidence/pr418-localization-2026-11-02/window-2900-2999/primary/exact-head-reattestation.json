@@ -1,0 +1,168 @@
+{
+  "allLocaleKeySetsMatchEnglish": true,
+  "attestedAtUtc": "2026-11-02T23:21:40.765613+00:00",
+  "callerContextRehashes": 100,
+  "callerContexts": 100,
+  "callerFileCount": 6,
+  "callerFiles": {
+    "src/components/RequestModal/ComicRequestModal.tsx": {
+      "blob": "b8108535f02a8d5a42df3fb25d6a3e48d0833746",
+      "bytes": 18192,
+      "sha256": "e2beaf7e25f0a0aa86b36909d469a2dc06915cc42a0f68f811ede3f12e46799d"
+    },
+    "src/components/RequestModal/MagazineRequestModal.tsx": {
+      "blob": "ee4654b84a200888a2e82da45f7ed5752f3cadc5",
+      "bytes": 12614,
+      "sha256": "3302816c4320f46b44958fdc9386074876288341fb092a3acde594db41b5d2f3"
+    },
+    "src/components/RequestModal/MusicCollectionRequestModal.tsx": {
+      "blob": "5802b65ea44971477ff78037efe6d07ab68f6495",
+      "bytes": 23028,
+      "sha256": "5aa28c753c3bde5f53f22a7d4df406b025dc53b6dfa8bbc7f5a0e6ab71c0785c"
+    },
+    "src/components/RequestModal/MusicRequestModal.tsx": {
+      "blob": "ce0402f5cef02cddac927d29d4bff4f12635f0e8",
+      "bytes": 25119,
+      "sha256": "9e517a3ed16c468c0877aeff9b3618818a4b5acd52aa37d3a44a7b6fdc05cd90"
+    },
+    "src/components/RequestModal/PlaylistImportModal.tsx": {
+      "blob": "0e421e7e07adc0f558d9634d2822f3045576611f",
+      "bytes": 6491,
+      "sha256": "7c5985ee084f300da3defebaa712fbcadd87bd852b2602425b4f6a6f44c929ce"
+    },
+    "src/components/RequestModal/QuotaDisplay/index.tsx": {
+      "blob": "04a3da7d068564eec5f3e2e1846b3f57044dbf86",
+      "bytes": 7480,
+      "sha256": "cc3b2d690a4325662124e06122e6198975e2e3bec490b3e6ca936d827937fbf3"
+    }
+  },
+  "callerGaps": 0,
+  "callerLinePinsRehashed": 351,
+  "cellReattestation": "Every source text and current target matched exact-head catalog values and recorded SHA256.",
+  "cells": 1200,
+  "head": "58697945e3d3fb44c37d49db0cc0f88e3af110cc",
+  "headRefName": "codex/seerrng-localization-overhaul-20261028",
+  "isDraft": true,
+  "localeCatalogs": {
+    "ar": {
+      "blob": "abe9e8068ab6975b29320f515238b0697fbd429a",
+      "bytes": 1044734,
+      "keyCount": 9494,
+      "keySetMatchesEnglish": true,
+      "path": "src/i18n/locale/ar.json",
+      "sha256": "e2878288b24c257618426ecb9211a317e6dd98bd0a92681f3ea8b12fa1e893f7"
+    },
+    "de": {
+      "blob": "d4ccf71055e972b81be8d2d4cb199318bbadf0a3",
+      "bytes": 926897,
+      "keyCount": 9494,
+      "keySetMatchesEnglish": true,
+      "path": "src/i18n/locale/de.json",
+      "sha256": "761c4bbeb65406b70453189414297d09549063197f0f09340488fbfae39f1769"
+    },
+    "es": {
+      "blob": "0a6d66ba4f2319909f13d19a94293679f24ed71f",
+      "bytes": 922586,
+      "keyCount": 9494,
+      "keySetMatchesEnglish": true,
+      "path": "src/i18n/locale/es.json",
+      "sha256": "9f5a72a3f2ccda1cbea61dc173035ff97f65aa50294f86532b1a87b4f7e2e953"
+    },
+    "fr": {
+      "blob": "2795b590faa690c3bc9b9f4e8eb4892eccd2dd80",
+      "bytes": 940396,
+      "keyCount": 9494,
+      "keySetMatchesEnglish": true,
+      "path": "src/i18n/locale/fr.json",
+      "sha256": "136222e39d59412feb9e21680868dc348c3ae69e7f34c32933b2632848b9993f"
+    },
+    "hi": {
+      "blob": "2761a0533a50d71af60afdee802e360bca30dce0",
+      "bytes": 1371851,
+      "keyCount": 9494,
+      "keySetMatchesEnglish": true,
+      "path": "src/i18n/locale/hi.json",
+      "sha256": "363d7cd84e10c901d159349db2bb3fba767b727062c37b54904db3431c2841ac"
+    },
+    "id": {
+      "blob": "74320769d2d4c2f0b18d9519e2135480b14e3d57",
+      "bytes": 867838,
+      "keyCount": 9494,
+      "keySetMatchesEnglish": true,
+      "path": "src/i18n/locale/id.json",
+      "sha256": "1c7a87cb85218464c71ceedc936810b1cd352cfcd7d35da18c0e2cb000edb84b"
+    },
+    "ja": {
+      "blob": "49b8df39eccd20be1ff85c7be1e143bd90df8a2d",
+      "bytes": 1015876,
+      "keyCount": 9494,
+      "keySetMatchesEnglish": true,
+      "path": "src/i18n/locale/ja.json",
+      "sha256": "988c8296d007e79c2478b18dda9de113c42e21ffe5ffedf6d838612e6ae1e581"
+    },
+    "ko": {
+      "blob": "57787032828e746e6fb3d970304315abd55cb5f0",
+      "bytes": 934300,
+      "keyCount": 9494,
+      "keySetMatchesEnglish": true,
+      "path": "src/i18n/locale/ko.json",
+      "sha256": "3ff69507ad19e38385dca7083bfe98cc059159416c322ba98d42451fd1e8887d"
+    },
+    "pt_BR": {
+      "blob": "4b1908352d29bd9a3a69e13656973ce2311d6398",
+      "bytes": 911591,
+      "keyCount": 9494,
+      "keySetMatchesEnglish": true,
+      "path": "src/i18n/locale/pt_BR.json",
+      "sha256": "50f51950f11fe6f8535783979303ea409a0d825c0db057863537f3622afddda4"
+    },
+    "vi": {
+      "blob": "0d6990f5d662d56b970cb710b58fc129bebfff77",
+      "bytes": 969416,
+      "keyCount": 9494,
+      "keySetMatchesEnglish": true,
+      "path": "src/i18n/locale/vi.json",
+      "sha256": "5464f6e055a27c77c6a60eab8b831e4e7d91dfbb364f7e0bbc7af787752cffd6"
+    },
+    "zh_Hans": {
+      "blob": "7215c90c034b705fa71b513b0c5f0611bf457711",
+      "bytes": 812430,
+      "keyCount": 9494,
+      "keySetMatchesEnglish": true,
+      "path": "src/i18n/locale/zh_Hans.json",
+      "sha256": "8135e3260bac509915edf540488108b7c557a309d59e46930f2150f0cfd6ecb2"
+    },
+    "zh_Hant": {
+      "blob": "45b188e3e02db1ab27522ff0af5fabf8080825fb",
+      "bytes": 814010,
+      "keyCount": 9494,
+      "keySetMatchesEnglish": true,
+      "path": "src/i18n/locale/zh_Hant.json",
+      "sha256": "05fa4c84087252f27cb439ee33a972c397b801527cf87ef8b1d1d71c6c6b88b4"
+    }
+  },
+  "officialRemoteBranchHead": "58697945e3d3fb44c37d49db0cc0f88e3af110cc",
+  "prState": "OPEN",
+  "preservedSharedUntrackedSymlink": "/mnt/disks/scratch/task-scratch/seerrng-pr418-window-2800-2899-browser-20261102/.next-webpack-dev",
+  "pullRequest": 418,
+  "repository": "snapetech-org/SeerrNG",
+  "repositoryOrPrEditedByThisTask": false,
+  "sourceCatalog": {
+    "blob": "12e04a118c30b71b3714291adeaf9fdb2735cee4",
+    "bytes": 835513,
+    "keyCount": 9494,
+    "path": "src/i18n/locale/en.json",
+    "sha256": "75ff3c90b52aedd636a506281ffbd6fb2d3739c61294b6008a517f17647e2316"
+  },
+  "sourceIds": 100,
+  "sourcePositions": [
+    2900,
+    2999
+  ],
+  "testsBuildsScansCiBrowserRun": false,
+  "trackedWorktreeDiffClean": true,
+  "tree": "e3076937fe10b4dd3821ea573e8e5e21601fce7d",
+  "worktreeStatus": [
+    "?? .next-webpack-dev"
+  ]
+}

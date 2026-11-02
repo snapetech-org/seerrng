@@ -1,0 +1,3 @@
+# Packet provenance note
+
+This directory preserves the second independent review of Setup step 5. The scratch directory was shared with an earlier review packet: `review-ledger.jsonl`, `exact-head-reattestation.json`, and `build_crossreview.py` were present before the second review, while `cross-review-ledger.jsonl`, `caller-and-width-reattestation.json`, `input-attestation.json`, `structural-audit.json`, and its README/summary/manifest/checksum file were written by the second reviewer. The second reviewer’s `SHA256SUMS` verifies every listed file. Both review ledgers are retained; the first reviewer’s packet is also preserved separately under `../crossreview/`. No files were deleted or silently combined.

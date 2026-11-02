@@ -1,0 +1,58 @@
+{
+  "additionalRecommendation": {
+    "confidence": "moderate",
+    "current": "Conectar",
+    "locale": "es",
+    "target": "Conectar servicios"
+  },
+  "browserReview": "Not repeated in a browser. The Vietnamese leak is confirmed from the exact locale value and pinned Setup navigation rendering that value; caller lines and service-stage code are independently reattested.",
+  "callerPinCount": 4,
+  "callerPinsReattested": true,
+  "cellsReviewed": 12,
+  "confidence": "moderate",
+  "exactHead": "58697945e3d3fb44c37d49db0cc0f88e3af110cc",
+  "exactTree": "e3076937fe10b4dd3821ea573e8e5e21601fce7d",
+  "independentDecisionCounts": {
+    "accept-current": 8,
+    "accept-primary-proposal": 3,
+    "recommend-additional-refinement": 1
+  },
+  "isDraft": true,
+  "locales": [
+    "ar",
+    "de",
+    "es",
+    "fr",
+    "hi",
+    "id",
+    "ja",
+    "ko",
+    "pt_BR",
+    "vi",
+    "zh_Hans",
+    "zh_Hant"
+  ],
+  "nativeSpeakerReviewOutstanding": true,
+  "prState": "OPEN",
+  "preservedExistingUntrackedStatus": [
+    "?? .next-webpack-dev"
+  ],
+  "primaryProposalDisposition": {
+    "accepted": 3,
+    "rejected": 0,
+    "revised": 0
+  },
+  "pullRequest": 418,
+  "remoteBranchHead": "58697945e3d3fb44c37d49db0cc0f88e3af110cc",
+  "remotePullHead": "58697945e3d3fb44c37d49db0cc0f88e3af110cc",
+  "repository": "snapetech-org/SeerrNG",
+  "repositoryOrPrEdited": false,
+  "schemaVersion": 1,
+  "source": "Connect Services",
+  "sourceAndCatalogReattestation": "English source plus all 12 locale catalog blobs and file hashes verified at exact head; 12 current targets and the 3 primary proposal hashes rechecked.",
+  "sourceId": "components.Setup.configureservices",
+  "sourcePosition": 5417,
+  "testsBuildsScansCi": false,
+  "trackedRepositoryClean": true,
+  "unresolvedHolds": 0
+}

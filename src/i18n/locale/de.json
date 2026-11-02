@@ -2979,7 +2979,7 @@
   "components.RequestModal.MusicCollection.summary": "{created} beantragt; {failed} gescheitert.",
   "components.RequestModal.MusicCollection.ultraHd": "FLAC",
   "components.RequestModal.MusicCollection.unknown": "Unbekannt",
-  "components.RequestModal.PlaylistImportModal.description": "Fügen Sie einen Spotify- oder YouTube-Playlist-Link ein. SeerrNG wird seine Tracks mit MusicBrainz-Alben zur Überprüfung abgleichen, bevor etwas angefordert wird.",
+  "components.RequestModal.PlaylistImportModal.description": "Fügen Sie einen Link zu einer Spotify- oder YouTube-Playlist ein. SeerrNG vergleicht die Titel dieser Playlist mit MusicBrainz-Alben, damit Sie die Treffer prüfen können, bevor Sie etwas anfordern.",
   "components.RequestModal.PlaylistImportModal.error": "Die Playlist konnte nicht aufgelöst werden.",
   "components.RequestModal.PlaylistImportModal.preview": "Übereinstimmungen in der Vorschau anzeigen",
   "components.RequestModal.PlaylistImportModal.resolving": "Playlist wird abgeglichen…",

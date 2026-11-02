@@ -1,0 +1,138 @@
+{
+  "cellsReviewed": 600,
+  "confidence": "moderate",
+  "exactHead": "58697945e3d3fb44c37d49db0cc0f88e3af110cc",
+  "exactTree": "e3076937fe10b4dd3821ea573e8e5e21601fce7d",
+  "holds": [],
+  "independentRecommendations": {
+    "2950:zh_Hans": {
+      "kind": "correction",
+      "rationale": "Treat Requested as a completed request status, not the bare noun request.",
+      "target": "已请求"
+    },
+    "2950:zh_Hant": {
+      "kind": "correction",
+      "rationale": "Treat Requested as a completed request status, not the bare noun request.",
+      "target": "已請求"
+    },
+    "2971:ja": {
+      "kind": "refinement",
+      "rationale": "Use the same completed/requested status wording as the matching Music status field.",
+      "target": "リクエスト済み"
+    },
+    "2971:zh_Hans": {
+      "kind": "correction",
+      "rationale": "Treat Requested as a completed request status, not the bare noun request.",
+      "target": "已请求"
+    },
+    "2971:zh_Hant": {
+      "kind": "correction",
+      "rationale": "Treat Requested as a completed request status, not the bare noun request.",
+      "target": "已請求"
+    },
+    "2972:ar": {
+      "kind": "correction",
+      "rationale": "The current Arabic says confirming the request; the source says submitting it.",
+      "target": "حدث خطأ ما أثناء إرسال الطلب."
+    },
+    "2972:pt_BR": {
+      "kind": "correction",
+      "rationale": "The current adds media-request wording and does not say submission failed.",
+      "target": "Algo deu errado ao enviar a solicitação."
+    },
+    "2977:es": {
+      "kind": "refinement",
+      "rationale": "Make the counted successes and failures explicit; the current uses singular wording with numeric counts.",
+      "target": "Solicitudes creadas: {created}; solicitudes fallidas: {failed}."
+    },
+    "2977:fr": {
+      "kind": "refinement",
+      "rationale": "Make the counted successes and failures explicit; the current uses singular participles with numeric counts.",
+      "target": "Demandes créées : {created} ; demandes échouées : {failed}."
+    },
+    "2977:hi": {
+      "kind": "refinement",
+      "rationale": "Clarify both counted outcomes; the current ends with singular failed wording after a numeric count.",
+      "target": "सफल अनुरोध: {created}; विफल अनुरोध: {failed}।"
+    },
+    "2977:pt_BR": {
+      "kind": "refinement",
+      "rationale": "Make the counted successes and failures explicit; the current uses singular wording with numeric counts.",
+      "target": "Solicitações criadas: {created}; solicitações com falha: {failed}."
+    },
+    "2980:de": {
+      "kind": "refinement",
+      "rationale": "Name the playlist as the source of its tracks and make review-before-requesting explicit.",
+      "target": "Fügen Sie einen Link zu einer Spotify- oder YouTube-Playlist ein. SeerrNG vergleicht die Titel dieser Playlist mit MusicBrainz-Alben, damit Sie die Treffer prüfen können, bevor Sie etwas anfordern."
+    },
+    "2980:hi": {
+      "kind": "refinement",
+      "rationale": "Replace the ambiguous reflexive track reference with an explicit playlist reference and review sequence.",
+      "target": "किसी Spotify या YouTube प्लेलिस्ट का लिंक पेस्ट करें। SeerrNG अनुरोध भेजने से पहले प्लेलिस्ट के ट्रैक्स का MusicBrainz एल्बमों से मिलान करेगा, ताकि आप नतीजों की समीक्षा कर सकें।"
+    },
+    "2983:ja": {
+      "kind": "refinement",
+      "rationale": "State that playlist matching is in progress; the current is a noun phrase.",
+      "target": "プレイリストを照合中…"
+    },
+    "2983:ko": {
+      "kind": "refinement",
+      "rationale": "State that playlist matching is in progress; the current is a noun phrase.",
+      "target": "재생 목록을 대조하는 중…"
+    },
+    "2991:fr": {
+      "kind": "refinement",
+      "rationale": "Use natural French plural agreement and clarify that the playlists are public.",
+      "target": "Les imports depuis YouTube utilisent des playlists publiques configurées par l’administrateur."
+    },
+    "2994:zh_Hans": {
+      "kind": "refinement",
+      "rationale": "Remove Latin-style spaces around the inline day count in Chinese; retain the strong wrapper.",
+      "target": "spacing-only edit applied to primary candidate"
+    },
+    "2994:zh_Hant": {
+      "kind": "refinement",
+      "rationale": "Remove Latin-style spaces around the inline day count in Traditional Chinese; retain the strong wrapper.",
+      "target": "spacing-only edit applied to primary candidate"
+    },
+    "2995:zh_Hans": {
+      "kind": "refinement",
+      "rationale": "Remove Latin-style spaces around the inline day count in Chinese; retain the strong wrapper.",
+      "target": "spacing-only edit applied to primary candidate"
+    },
+    "2995:zh_Hant": {
+      "kind": "refinement",
+      "rationale": "Remove Latin-style spaces around the inline day count in Traditional Chinese; retain the strong wrapper.",
+      "target": "spacing-only edit applied to primary candidate"
+    }
+  },
+  "locales": [
+    "ar",
+    "de",
+    "es",
+    "fr",
+    "hi",
+    "id",
+    "ja",
+    "ko",
+    "pt_BR",
+    "vi",
+    "zh_Hans",
+    "zh_Hant"
+  ],
+  "nativeSpeakerApproval": "not-performed",
+  "positions": [
+    2950,
+    2999
+  ],
+  "pullRequest": 418,
+  "repository": "snapetech-org/SeerrNG",
+  "structuralFailureCount": 0,
+  "structuralFailures": [],
+  "verdictCounts": {
+    "accept-current": 473,
+    "concur-primary-candidate": 107,
+    "recommend-new-proposal": 16,
+    "recommend-primary-candidate-adjustment": 4
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "exactHead": "58697945e3d3fb44c37d49db0cc0f88e3af110cc",
+  "exactTree": "e3076937fe10b4dd3821ea573e8e5e21601fce7d",
+  "pullRequest": 418,
+  "repository": "snapetech-org/SeerrNG",
+  "sourceLocaleCellsChecked": 1200,
+  "topLevelPlaceholderMismatchesCurrent": 0,
+  "topLevelPlaceholderMismatchesFinal": 0,
+  "unresolvedPlaceholderHolds": 0,
+  "validation": "All 1,200 top-level placeholder profiles match. Nested ICU branch placeholder differences are separately checked and explained in placeholder-equivalence-review.json."
+}

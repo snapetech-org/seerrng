@@ -1,0 +1,32 @@
+{
+  "applyRows": 273,
+  "byLocale": {
+    "ar": 32,
+    "de": 1,
+    "es": 12,
+    "fr": 10,
+    "hi": 25,
+    "id": 16,
+    "ja": 34,
+    "ko": 15,
+    "pt_BR": 22,
+    "vi": 38,
+    "zh_Hans": 29,
+    "zh_Hant": 39
+  },
+  "candidateTargetHashesPinned": true,
+  "corrections": 191,
+  "exactHead": "58697945e3d3fb44c37d49db0cc0f88e3af110cc",
+  "exactTree": "e3076937fe10b4dd3821ea573e8e5e21601fce7d",
+  "independentReviewReconciled": true,
+  "nativeSpeakerApprovalClaimed": false,
+  "pullRequest": 418,
+  "refinements": 80,
+  "repository": "snapetech-org/SeerrNG",
+  "scope": [
+    2900,
+    2999
+  ],
+  "sourceAndCurrentTargetHashesPinned": true,
+  "unresolvedHolds": 0
+}

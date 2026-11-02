@@ -1,0 +1,34 @@
+{
+  "exactHead": "58697945e3d3fb44c37d49db0cc0f88e3af110cc",
+  "exactTree": "e3076937fe10b4dd3821ea573e8e5e21601fce7d",
+  "externalSourcesForTranslations": "No external dictionary, terminology base, or native-speaker source was used for the remaining locales; all text remains pending qualified native-speaker approval.",
+  "languages": {
+    "ar": "Modern Standard Arabic; reviewed against exact English source and pinned caller context.",
+    "de": "Standard German; reviewed against exact English source and pinned caller context.",
+    "es": "Spanish; direct address follows the established formal/neutral usted register from the previous exact-head primary review.",
+    "fr": "Standard French; reviewed against exact English source and pinned caller context.",
+    "hi": "Standard Hindi; reviewed against exact English source and pinned caller context.",
+    "id": "Standard Indonesian; reviewed against exact English source and pinned caller context.",
+    "ja": "Standard Japanese; reviewed against exact English source and pinned caller context.",
+    "ko": "Standard Korean; reviewed against exact English source and pinned caller context.",
+    "pt_BR": "Brazilian Portuguese; reviewed against exact English source and pinned caller context.",
+    "vi": "Standard Vietnamese; reviewed against exact English source and pinned caller context.",
+    "zh_Hans": "Simplified Chinese; reviewed against exact English source and pinned caller context.",
+    "zh_Hant": "Traditional Chinese; reviewed against exact English source and pinned caller context."
+  },
+  "pullRequest": 418,
+  "registerSources": [
+    {
+      "supports": "Spanish treatment pronouns and agreement; used for the established formal-address convention only.",
+      "title": "Real Academia Española, Gramática: treatment pronouns and agreement",
+      "url": "https://www.rae.es/gtg/docs/GTG_tablas_web.pdf"
+    },
+    {
+      "path": "docs/pr-evidence/pr418-localization-2026-11-02/window-2800-2899/primary/spanish-formality-review.jsonl",
+      "supports": "The prior exact-head SeerrNG primary review records formal or neutral Spanish direct address in adjacent reviewed localization scope.",
+      "title": "SeerrNG PR #418 primary W2800–W2899 review"
+    }
+  ],
+  "repository": "snapetech-org/SeerrNG",
+  "reviewMethod": "No locale was approved by a native speaker. Candidates are machine-assisted semantic proposals against exact English source text and pinned caller context; Spanish register was also cross-checked against the prior packet convention."
+}

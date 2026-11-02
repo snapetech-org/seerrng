@@ -1,0 +1,63 @@
+{
+  "artifactCountExcludingManifestAndSums": 9,
+  "artifacts": [
+    {
+      "bytes": 1377,
+      "path": "README.md",
+      "sha256": "15eb65ae38bbc0174da18828412cbe01af589c1067e335ce97262a237cf3047f"
+    },
+    {
+      "bytes": 14468,
+      "path": "build_crossreview.py",
+      "sha256": "861f537acd29b818d59b20b5e84cf180d40bf9422bc17071d00f115b1e68791d"
+    },
+    {
+      "bytes": 2246,
+      "path": "caller-and-width-reattestation.json",
+      "sha256": "cd88eba74ec89381e6b25af4e51248d7ae995a6d04b457277c087e93b71927a3"
+    },
+    {
+      "bytes": 16338,
+      "path": "cross-review-ledger.jsonl",
+      "sha256": "6063cfec9b14aebc064bc12338431da69888123f3079952bd597126ca15c3cf2"
+    },
+    {
+      "bytes": 7873,
+      "path": "exact-head-reattestation.json",
+      "sha256": "e17f1a1d4eb4ae7d43004c5cca73486ba4ea70e622a60feaf0215a81689226d8"
+    },
+    {
+      "bytes": 6342,
+      "path": "input-attestation.json",
+      "sha256": "c66f8ba67c89bc1a67dc664f45630719e4d18fb4761bc87e873def84fd704a32"
+    },
+    {
+      "bytes": 34641,
+      "path": "review-ledger.jsonl",
+      "sha256": "cdc162a59e839c91bdea508a86e795d68e710ac5c841a06ec12e5307b18bf953"
+    },
+    {
+      "bytes": 399,
+      "path": "structural-audit.json",
+      "sha256": "b5eee1d04323e401295869989c607f3c8f4f64dede48f7a3b2bdfca29f5a31a1"
+    },
+    {
+      "bytes": 2349,
+      "path": "summary.json",
+      "sha256": "4db34e530c438afe1fe0fa90ea46810152994777d75431129c3d7a1ab81d95b3"
+    }
+  ],
+  "inputHead": "58697945e3d3fb44c37d49db0cc0f88e3af110cc",
+  "inputTree": "e3076937fe10b4dd3821ea573e8e5e21601fce7d",
+  "pullRequest": 418,
+  "repository": "snapetech-org/seerrng",
+  "sourcePositionZeroBased": 5417,
+  "summary": {
+    "cellCount": 12,
+    "dispositionCounts": {
+      "accept-primary-proposal": 3,
+      "retain-current": 8,
+      "retain-current-width-constrained": 1
+    }
+  }
+}
