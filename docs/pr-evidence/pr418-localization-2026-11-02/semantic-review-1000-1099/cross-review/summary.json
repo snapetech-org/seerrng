@@ -1,0 +1,26 @@
+{
+  "repository": "snapetech-org/seerrng",
+  "pullRequest": 418,
+  "head": "447b806871926a7c8dea06958d19cbd7e5230006",
+  "tree": "92450b5d67ea7551ef1eb262c05f77053ea016a0",
+  "crossReviewScope": "all 228 primary correction candidates in source positions 1000–1099; all 1,200 source/current values and all 230 caller references independently hash/readback re-attested",
+  "primaryCandidates": 228,
+  "dispositions": {
+    "accept": 220,
+    "hold": 2,
+    "no-op": 2,
+    "refine": 4
+  },
+  "sourceCurrentMismatches": 0,
+  "callerContextMismatches": 0,
+  "placeholderOrMarkupParityFailures": 0,
+  "nativeSpeakerReviewPerformed": false,
+  "browserReviewPerformed": false,
+  "notes": [
+    "Independent review confirms the live PR head and tree match the primary packet.",
+    "Two correction candidates are no-ops because the primary proposal exactly matches the current value.",
+    "Two proposals should be held pending native review because the current terminology is valid and the proposed replacement may narrow meaning.",
+    "Four proposals were refined for Arabic count grammar, Chinese television status terminology, Hindi sort-field labeling, and Japanese button action grammar.",
+    "This machine cross-review does not establish qualified native-speaker approval."
+  ]
+}

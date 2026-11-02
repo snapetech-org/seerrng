@@ -1,0 +1,153 @@
+{
+  "schemaVersion": 1,
+  "repository": "snapetech-org/seerrng",
+  "pullRequest": 418,
+  "state": "OPEN",
+  "isDraft": true,
+  "task": "Primary semantic review for SeerrNG PR #418 source positions 1000–1099 across all 12 direct locales",
+  "pin": {
+    "head": "447b806871926a7c8dea06958d19cbd7e5230006",
+    "tree": "92450b5d67ea7551ef1eb262c05f77053ea016a0",
+    "prHeadRefName": "codex/seerrng-localization-overhaul-20261028",
+    "baseRefOid": "221d8e0d542802da7529cd272c928cc747677e5c"
+  },
+  "sourceIdPositions": {
+    "count": 100,
+    "startInclusive": 1000,
+    "stopExclusive": 1100
+  },
+  "sourceIds": 100,
+  "locales": [
+    "ar",
+    "de",
+    "es",
+    "fr",
+    "hi",
+    "id",
+    "ja",
+    "ko",
+    "pt-BR",
+    "vi",
+    "zh-CN",
+    "zh-TW"
+  ],
+  "targetCells": 1200,
+  "rowsReviewed": 1200,
+  "newSemanticRows": 1188,
+  "priorDispositionRows": 12,
+  "decisionCounts": {
+    "accept-current": 960,
+    "new-accept-current": 960,
+    "correction-needed": 228,
+    "correction-proposal": 228,
+    "preserved-prior-disposition": 12
+  },
+  "correctionProposals": 228,
+  "newAcceptCurrent": 960,
+  "priorDispositionPreserved": 12,
+  "countsByLocale": {
+    "ar": {
+      "accept-current": 75,
+      "new-accept-current": 75,
+      "correction-needed": 25,
+      "correction-proposal": 25
+    },
+    "de": {
+      "accept-current": 95,
+      "new-accept-current": 95,
+      "correction-needed": 5,
+      "correction-proposal": 5
+    },
+    "es": {
+      "accept-current": 75,
+      "new-accept-current": 75,
+      "preserved-prior-disposition": 12,
+      "correction-needed": 13,
+      "correction-proposal": 13
+    },
+    "fr": {
+      "accept-current": 83,
+      "new-accept-current": 83,
+      "correction-needed": 17,
+      "correction-proposal": 17
+    },
+    "hi": {
+      "accept-current": 83,
+      "new-accept-current": 83,
+      "correction-needed": 17,
+      "correction-proposal": 17
+    },
+    "id": {
+      "accept-current": 81,
+      "new-accept-current": 81,
+      "correction-needed": 19,
+      "correction-proposal": 19
+    },
+    "ja": {
+      "accept-current": 85,
+      "new-accept-current": 85,
+      "correction-needed": 15,
+      "correction-proposal": 15
+    },
+    "ko": {
+      "accept-current": 74,
+      "new-accept-current": 74,
+      "correction-needed": 26,
+      "correction-proposal": 26
+    },
+    "pt-BR": {
+      "accept-current": 84,
+      "new-accept-current": 84,
+      "correction-needed": 16,
+      "correction-proposal": 16
+    },
+    "vi": {
+      "accept-current": 75,
+      "new-accept-current": 75,
+      "correction-needed": 25,
+      "correction-proposal": 25
+    },
+    "zh-CN": {
+      "accept-current": 79,
+      "new-accept-current": 79,
+      "correction-needed": 21,
+      "correction-proposal": 21
+    },
+    "zh-TW": {
+      "accept-current": 71,
+      "new-accept-current": 71,
+      "correction-needed": 29,
+      "correction-proposal": 29
+    }
+  },
+  "sourceRowsReattested": 100,
+  "sourceCurrentCellsReattested": 1200,
+  "sourceCurrentMismatches": 0,
+  "callerContextReferencesReattested": 230,
+  "callerContextMismatches": 0,
+  "uniqueCallerFiles": 16,
+  "uniqueCallerReferences": 230,
+  "sourceIdsWithDefinitionOnlyNoUseFound": 1,
+  "callerUseGap": {
+    "sourceId": "components.Discover.ReadMeABookSearch.disabled",
+    "sourceIdPosition": 1080,
+    "definitionPinned": true,
+    "usageReferenceFound": false
+  },
+  "placeholderParityFailures": 0,
+  "markupParityFailures": 0,
+  "protectedLiteralParityFailures": 0,
+  "nativeSpeakerReviewPerformed": false,
+  "nativeSpeakerReviewRequired": true,
+  "browserReviewPerformed": false,
+  "notes": [
+    "The live PR and detached worktree both matched the requested head; tree 92450b5d67ea7551ef1eb262c05f77053ea016a0.",
+    "The previous W900–999 packet covers positions 900–999 and does not overlap this 1000–1099 window.",
+    "Tracked PR evidence contains 12 applied Spanish root dispositions in this window. Each exact current value equals the prior final target and is preserved.",
+    "New Spanish correction candidates use formal usted or impersonal phrasing; the 12 routed values retain their prior wording and register.",
+    "All source/current values, catalog hashes, source callers, placeholders, markup, and protected literals were re-attested at this head.",
+    "One source key, components.Discover.ReadMeABookSearch.disabled (position 1080), has a pinned definition but no use reference in the component.",
+    "Machine review only; native-speaker review remains required. Browser review was not performed.",
+    "No repository/PR mutations, tests, builds, scans, CI, workflow changes, or release actions were performed."
+  ]
+}
