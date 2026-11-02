@@ -1,0 +1,121 @@
+{
+  "schemaVersion": 1,
+  "repository": "snapetech-org/seerrng",
+  "pullRequest": 418,
+  "scope": "W700-749 source positions 800-899; all correction-needed locale cells",
+  "pinnedHead": "85188b1964b6bf473219c566b196d5eda94396e3",
+  "pinnedTree": "50bb1f456e29259dfe6dd022cea11da625a6cca6",
+  "primaryLedgerPath": "/mnt/disks/scratch/task-scratch/seerrng-pr418-w700-749-review-20261102/reviews/agent-0800-0899/semantic-review-ledger.jsonl",
+  "primaryLedgerSha256": "e5aa2084709df04af2d22b057f74a218db4dee8759e3ce95bedc004b1673a4a1",
+  "sourceCurrentRowsReattested": 1200,
+  "sourceCurrentMismatches": 0,
+  "uniqueCallerReferencesReattested": 547,
+  "callerMismatches": 0,
+  "correctionProposalsIndependentlyCrossReviewed": 281,
+  "decisionCounts": {
+    "accept-proposal": 244,
+    "refine-proposal": 37,
+    "hold": 0
+  },
+  "refined": 37,
+  "noOpFinals": 0,
+  "placeholderParityFailures": 0,
+  "markupParityFailures": 0,
+  "priorRoutedRowsPreservedByteForByte": 14,
+  "priorRoutedRowsReAdjudicated": 0,
+  "nativeSpeakerReviewPerformed": false,
+  "nativeSpeakerReviewStillRequired": 281,
+  "byLocale": {
+    "hi": {
+      "reviewed": 22,
+      "accept": 17,
+      "refine": 5,
+      "hold": 0
+    },
+    "ar": {
+      "reviewed": 43,
+      "accept": 42,
+      "refine": 1,
+      "hold": 0
+    },
+    "vi": {
+      "reviewed": 28,
+      "accept": 24,
+      "refine": 4,
+      "hold": 0
+    },
+    "pt-BR": {
+      "reviewed": 19,
+      "accept": 16,
+      "refine": 3,
+      "hold": 0
+    },
+    "zh-CN": {
+      "reviewed": 36,
+      "accept": 32,
+      "refine": 4,
+      "hold": 0
+    },
+    "ko": {
+      "reviewed": 30,
+      "accept": 25,
+      "refine": 5,
+      "hold": 0
+    },
+    "id": {
+      "reviewed": 16,
+      "accept": 12,
+      "refine": 4,
+      "hold": 0
+    },
+    "zh-TW": {
+      "reviewed": 39,
+      "accept": 35,
+      "refine": 4,
+      "hold": 0
+    },
+    "es": {
+      "reviewed": 20,
+      "accept": 18,
+      "refine": 2,
+      "hold": 0
+    },
+    "fr": {
+      "reviewed": 13,
+      "accept": 11,
+      "refine": 2,
+      "hold": 0
+    },
+    "ja": {
+      "reviewed": 11,
+      "accept": 8,
+      "refine": 3,
+      "hold": 0
+    },
+    "de": {
+      "reviewed": 4,
+      "accept": 4,
+      "refine": 0,
+      "hold": 0
+    }
+  },
+  "partitions": {
+    "ar-de-es-fr-hi-id": {
+      "ledgerRows": 118,
+      "ledgerSha256": "c616e4e02b8a2d887878dfeef553c839404b6381038ab54d472cce10387f5792",
+      "summarySha256": "1dd8827cac12df26e23b21a1c5d4b8032344ecaaaec8a389f8b251225e0d9a38",
+      "sha256sFileSha256": "832986b633494de35e24a9f00d62d1a634102d42318e93d3bcb4425920c107a2"
+    },
+    "ja-ko-pt-vi-zh": {
+      "ledgerRows": 163,
+      "ledgerSha256": "fdf804d8c28f0e800df588a42c4a140e0b87cb78251adf5eb66dbdc7a9499f45",
+      "summarySha256": "86a1c6e526472762bdde120f2ba0a583d29bd324d9ef75458040d4f52f139822",
+      "sha256sFileSha256": "c0fc4472e34e9c31e742e7a059c29f740c3b9a0dc125a7679387503be69fcb95"
+    }
+  },
+  "limitations": [
+    "This bounded semantic cross-review is not a substitute for native-speaker review.",
+    "No catalog/repository changes, tests, builds, scans, CI, pushes, or releases were made."
+  ],
+  "blockers": []
+}

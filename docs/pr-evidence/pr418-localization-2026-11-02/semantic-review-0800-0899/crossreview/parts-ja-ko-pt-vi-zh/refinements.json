@@ -1,0 +1,163 @@
+[
+  {
+    "locale": "ja",
+    "sourceId": "components.Settings.RadarrModal.server4kHelp",
+    "proposedTarget": "この別インスタンスを4K用のサーバーとして指定します。この設定だけでは4K機能は有効になりません。1台のサーバーで両方の解像度を扱う場合はチェックを外してください。4Kの有効化は［設定］→［メイン］→［4Kを有効にする］で行ってください。",
+    "finalTarget": "この別インスタンスを4K用のサーバーとして指定します。この設定だけでは4K機能は有効になりません。1台のサーバーで両方の解像度を扱う場合はチェックを外してください。4Kの有効化は［設定］→［一般］→［4Kを有効にする］で行ってください。",
+    "rationale": "The SettingsLayout route /settings/main is visibly labeled General; the pinned locale catalog supplies the exact labels 設定, 一般, and 4Kを有効にする."
+  },
+  {
+    "locale": "ja",
+    "sourceId": "components.Settings.ReadarrModal.apiKeyHelp",
+    "proposedTarget": "ChaptarrNG の［設定］→［一般］→［セキュリティ］→［API キー］でキーを確認してください。ChaptarrNG 0.9.941 以降では、ChaptarrNG コンテナーに CHAPTARR__AUTH__SEERRAPIKEY を設定し、ここでは SeerrNG 専用のキーを使うと、書籍サービスの操作だけにアクセスを制限できます。移行中も既存の BookshelfNG 接続では現在のキーが保持されます。",
+    "finalTarget": "ChaptarrNG の［設定］→［一般］→［セキュリティ］→［APIキー］でキーを確認してください。ChaptarrNG 0.9.941 以降では、ChaptarrNG コンテナーに CHAPTARR__AUTH__SEERRAPIKEY を設定し、ここでは SeerrNG 専用のキーを使うと、書籍サービスの操作だけにアクセスを制限できます。移行中も既存の BookshelfNG 接続では現在のキーが保持されます。",
+    "rationale": "The ChaptarrNG v0.9.977 catalog uses APIキー without a space; the remainder preserves the version gate, environment variable, limited scope, and migration behavior."
+  },
+  {
+    "locale": "ja",
+    "sourceId": "components.Settings.ReadarrModal.compatibilityNote",
+    "proposedTarget": "新規インストールでは、保守が続けられている書籍バックエンドとして ChaptarrNG を使用します。移行中も既存の BookshelfNG やその他の Readarr 互換サーバーは引き続きサポートされます。設定済みのルートフォルダーに合うように Book Format を設定してください。Seerr は各リクエストでその形式を明示的に送信します。",
+    "finalTarget": "新規インストールでは、保守が続けられている書籍バックエンドとして ChaptarrNG を使用します。移行中も既存の BookshelfNG やその他の Readarr 互換サーバーは引き続きサポートされます。設定済みのルートフォルダーに合うようにブック形式を設定してください。Seerr は各リクエストでその形式を明示的に送信します。",
+    "rationale": "The proposal left Book Format in English; ブック形式 is the exact visible Seerr field label at the pinned head."
+  },
+  {
+    "locale": "ko",
+    "sourceId": "components.Settings.RadarrModal.externalUrlHelp",
+    "proposedTarget": "호스트 이름에 네트워크 외부에서 접근할 수 없는 경우, 미디어 페이지에 표시할 클릭 가능한 링크용입니다.",
+    "finalTarget": "호스트 이름에 네트워크 외부에서 접근할 수 없는 경우, 미디어 페이지의 클릭 가능한 링크에 사용할 외부 URL입니다.",
+    "rationale": "The proposal’s Korean ending was awkward and did not clearly identify the value as a URL; this version states the same condition and intended use directly."
+  },
+  {
+    "locale": "ko",
+    "sourceId": "components.Settings.RadarrModal.server4kHelp",
+    "proposedTarget": "이 별도 인스턴스를 4K 대상 서버로 지정합니다. 이 옵션만으로 4K가 활성화되지는 않습니다. 한 서버가 두 해상도를 모두 처리하면 체크하지 마세요. 4K는 Settings → Main → Enable 4K에서 설정하세요.",
+    "finalTarget": "이 별도 인스턴스를 4K 대상 서버로 지정합니다. 이 옵션만으로 4K가 활성화되지는 않습니다. 한 서버가 두 해상도를 모두 처리하면 체크하지 마세요. 4K 설정은 설정 → 일반 → 4K 활성화에서 조정하세요.",
+    "rationale": "The pinned SettingsLayout and locale catalog show this route as 설정 → 일반 and label the control 4K 활성화; this replaces the incorrect English Main breadcrumb."
+  },
+  {
+    "locale": "ko",
+    "sourceId": "components.Settings.ReadarrModal.apiKeyHelp",
+    "proposedTarget": "ChaptarrNG에서 Settings > General > Security > API Key로 이동해 키를 확인하세요. ChaptarrNG 0.9.941 이상에서는 ChaptarrNG 컨테이너에 CHAPTARR__AUTH__SEERRAPIKEY를 설정하고, 여기에는 SeerrNG 전용 키를 사용해 도서 서비스 작업에 대한 접근을 제한하세요. 마이그레이션 중에도 기존 BookshelfNG 연결은 현재 키를 유지합니다.",
+    "finalTarget": "ChaptarrNG의 설정 > 일반 > 보안 > API 키에서 키를 확인하세요. ChaptarrNG 0.9.941 이상에서는 ChaptarrNG 컨테이너에 CHAPTARR__AUTH__SEERRAPIKEY를 설정하고, 여기에는 SeerrNG 전용 키를 사용해 도서 서비스 작업에 대한 접근을 제한하세요. 마이그레이션 중에도 기존 BookshelfNG 연결은 현재 키를 유지합니다.",
+    "rationale": "The explicit ChaptarrNG path is localized using its v0.9.977 labels 설정, 일반, 보안, and API 키; technical tokens and migration behavior remain intact."
+  },
+  {
+    "locale": "ko",
+    "sourceId": "components.Settings.ReadarrModal.compatibilityNote",
+    "proposedTarget": "신규 설치에서는 유지 관리 중인 도서 백엔드인 ChaptarrNG를 사용합니다. 마이그레이션 중에도 기존 BookshelfNG 및 기타 Readarr 호환 서버를 계속 지원합니다. 구성된 루트 폴더에 맞게 Book Format을 설정하세요. Seerr는 모든 요청에 해당 형식을 명시적으로 전송합니다.",
+    "finalTarget": "신규 설치에서는 유지 관리 중인 도서 백엔드인 ChaptarrNG를 사용합니다. 마이그레이션 중에도 기존 BookshelfNG 및 기타 Readarr 호환 서버를 계속 지원합니다. 구성된 루트 폴더에 맞게 책 체재를 설정하세요. Seerr는 모든 요청에 해당 형식을 명시적으로 전송합니다.",
+    "rationale": "The proposal left Book Format in English; 책 체재 and 루트 폴더 are the exact visible Seerr field labels at the pinned head."
+  },
+  {
+    "locale": "ko",
+    "sourceId": "components.Settings.ReadarrModal.externalUrlHelp",
+    "proposedTarget": "호스트 이름에 네트워크 외부에서 접근할 수 없는 경우, 미디어 페이지에 표시할 클릭 가능한 링크용입니다.",
+    "finalTarget": "호스트 이름에 네트워크 외부에서 접근할 수 없는 경우, 미디어 페이지의 클릭 가능한 링크에 사용할 외부 URL입니다.",
+    "rationale": "The proposal’s Korean ending was awkward and did not clearly identify the value as a URL; this version states the same condition and intended use directly."
+  },
+  {
+    "locale": "pt-BR",
+    "sourceId": "components.Settings.RadarrModal.server4kHelp",
+    "proposedTarget": "Marca esta instância separada como destino 4K; isso não ativa o 4K por si só. Deixe desmarcado quando um único servidor atender às duas resoluções. Controle o 4K em Configurações → Principal → Ativar 4K.",
+    "finalTarget": "Marca esta instância separada como destino 4K; isso não ativa o 4K por si só. Deixe desmarcado quando um único servidor atender às duas resoluções. Controle o 4K em Configurações → Geral → Ativar 4K.",
+    "rationale": "The live settings route is labeled Geral rather than Principal, and the pinned locale catalog supplies Configurações and Ativar 4K."
+  },
+  {
+    "locale": "pt-BR",
+    "sourceId": "components.Settings.ReadarrModal.compatibilityNote",
+    "proposedTarget": "O ChaptarrNG é o backend de livros mantido para novas instalações. Durante a migração, as conexões existentes do BookshelfNG e outros servidores compatíveis com Readarr continuam sendo compatíveis. Configure Book Format de acordo com a pasta raiz; o Seerr envia esse formato explicitamente em cada solicitação.",
+    "finalTarget": "O ChaptarrNG é o backend de livros mantido para novas instalações. Durante a migração, os servidores BookshelfNG existentes e outros servidores compatíveis com Readarr continuam sendo aceitos. Configure Formato do livro de acordo com a pasta raiz configurada; o Seerr envia esse formato explicitamente em cada solicitação.",
+    "rationale": "The proposal left Book Format in English; Formato do livro and Pasta raiz are the exact visible Seerr field labels at the pinned head."
+  },
+  {
+    "locale": "pt-BR",
+    "sourceId": "components.Settings.ReadarrModal.migrationGuide",
+    "proposedTarget": "Guia de migração do Bookshelf Hardcover",
+    "finalTarget": "Guia de migração do Bookshelf para o Hardcover",
+    "rationale": "The caller renders this label as a link to docs/using-seerr/bookshelf-hardcover-migration.md, so the proposal’s juxtaposition of Bookshelf and Hardcover was ambiguous; the final makes the migration direction explicit."
+  },
+  {
+    "locale": "vi",
+    "sourceId": "components.Settings.RadarrModal.server4kHelp",
+    "proposedTarget": "Đánh dấu máy chủ Radarr riêng này làm đích 4K; tùy chọn này không tự bật 4K. Nếu một máy chủ xử lý cả hai độ phân giải, hãy để trống ô này. Điều khiển 4K trong Settings → Main → Enable 4K.",
+    "finalTarget": "Đánh dấu máy chủ riêng này là đích 4K; tùy chọn này không tự bật 4K. Nếu một máy chủ xử lý cả hai độ phân giải, hãy để trống ô này. Quản lý tùy chọn 4K tại Thiết lập → Chung → Bật 4K.",
+    "rationale": "The message is shared by Radarr and Sonarr callers, so the proposal’s Radarr-specific wording was too narrow. The live Seerr route and locale catalog provide the exact Thiết lập → Chung → Bật 4K labels."
+  },
+  {
+    "locale": "vi",
+    "sourceId": "components.Settings.ReadarrModal.apiKeyHelp",
+    "proposedTarget": "Tìm khóa trong ChaptarrNG tại Settings > General > Security > API Key. Với ChaptarrNG 0.9.941 trở lên, hãy đặt CHAPTARR__AUTH__SEERRAPIKEY trong container ChaptarrNG và dùng khóa riêng cho SeerrNG ở đây để giới hạn quyền truy cập vào các thao tác của dịch vụ sách. Các kết nối BookshelfNG hiện có vẫn giữ khóa hiện tại trong quá trình di chuyển.",
+    "finalTarget": "Tìm khóa trong ChaptarrNG tại Cài đặt > Chung > Bảo vệ > Mã API. Với ChaptarrNG 0.9.941 trở lên, hãy đặt CHAPTARR__AUTH__SEERRAPIKEY trong container ChaptarrNG và dùng khóa riêng cho SeerrNG ở đây để giới hạn quyền truy cập vào các thao tác của dịch vụ sách. Các kết nối BookshelfNG hiện có vẫn giữ khóa hiện tại trong quá trình di chuyển.",
+    "rationale": "The explicit ChaptarrNG path is localized using its v0.9.977 labels Cài đặt, Chung, Bảo vệ, and Mã API; technical tokens and migration behavior remain intact."
+  },
+  {
+    "locale": "vi",
+    "sourceId": "components.Settings.ReadarrModal.compatibilityNote",
+    "proposedTarget": "ChaptarrNG là backend sách được duy trì cho cài đặt mới. Trong quá trình chuyển đổi, BookshelfNG hiện có và các máy chủ tương thích Readarr khác vẫn được hỗ trợ. Đặt Book Format khớp với thư mục gốc đã cấu hình; Seerr gửi định dạng đó rõ ràng trong mỗi yêu cầu.",
+    "finalTarget": "ChaptarrNG là backend sách được duy trì cho các cài đặt mới. Trong quá trình chuyển đổi, BookshelfNG hiện có và các máy chủ tương thích Readarr khác vẫn được hỗ trợ. Đặt Định dạng sách khớp với Thư mục gốc đã cấu hình; Seerr gửi định dạng đó rõ ràng trong mỗi yêu cầu.",
+    "rationale": "The proposal left Book Format in English; Định dạng sách and Thư mục gốc are the exact visible Seerr field labels at the pinned head."
+  },
+  {
+    "locale": "vi",
+    "sourceId": "components.Settings.ReadarrModal.migrationGuide",
+    "proposedTarget": "Hướng dẫn di chuyển Bookshelf Hardcover",
+    "finalTarget": "Hướng dẫn di chuyển từ Bookshelf sang Hardcover",
+    "rationale": "The caller renders this label as a link to docs/using-seerr/bookshelf-hardcover-migration.md, so the proposal’s juxtaposition of Bookshelf and Hardcover was ambiguous; the final makes the migration direction explicit."
+  },
+  {
+    "locale": "zh-CN",
+    "sourceId": "components.Settings.RadarrModal.server4kHelp",
+    "proposedTarget": "将此独立实例标记为 4K 目标；这本身不会启用 4K。如果一台服务器同时处理两种分辨率，请不要勾选。4K 设置请前往“设置 → 主要 → 启用 4K”。",
+    "finalTarget": "将此独立实例标记为 4K 目标；此选项本身不会启用 4K。如果一台服务器同时处理两种分辨率，请不要勾选。请前往“设定 → 常规 → 启用 4K”控制 4K。",
+    "rationale": "The pinned SettingsLayout shows General at /settings/main; the catalog labels the sidebar 设定 and the control 启用 4K."
+  },
+  {
+    "locale": "zh-CN",
+    "sourceId": "components.Settings.ReadarrModal.apiKeyHelp",
+    "proposedTarget": "请在 ChaptarrNG 的“设置 > 常规 > 安全 > API 密钥”中查找密钥。对于 ChaptarrNG 0.9.941 及以上版本，请在 ChaptarrNG 容器中设置 CHAPTARR__AUTH__SEERRAPIKEY，并在此处使用 SeerrNG 专用密钥，以限制对图书服务操作的访问。迁移期间，现有 BookshelfNG 连接会保留当前密钥。",
+    "finalTarget": "请在 ChaptarrNG 的“设置 > 通用 > 安全 > API 密钥”中查找密钥。对于 ChaptarrNG 0.9.941 及以上版本，请在 ChaptarrNG 容器中设置 CHAPTARR__AUTH__SEERRAPIKEY，并在此处使用 SeerrNG 专用密钥，以限制对图书服务操作的访问。迁移期间，现有 BookshelfNG 连接会保留当前密钥。",
+    "rationale": "The ChaptarrNG v0.9.977 locale labels General as 通用, so the proposal’s 常规 breadcrumb was corrected to match the actual product UI."
+  },
+  {
+    "locale": "zh-CN",
+    "sourceId": "components.Settings.ReadarrModal.compatibilityNote",
+    "proposedTarget": "新安装请使用持续维护的图书后端 ChaptarrNG。迁移期间，现有 BookshelfNG 和其他兼容 Readarr 的服务器仍受支持。请将 Book Format 设为与已配置的根文件夹一致；Seerr 会在每个请求中明确发送该格式。",
+    "finalTarget": "新安装请使用持续维护的图书后端 ChaptarrNG。迁移期间，现有 BookshelfNG 和其他兼容 Readarr 的服务器仍受支持。请将“书本格式”设为与“根文件夹”一致；Seerr 会在每个请求中明确发送该格式。",
+    "rationale": "The proposal left Book Format in English; 书本格式 and 根文件夹 are the exact visible Seerr field labels at the pinned head."
+  },
+  {
+    "locale": "zh-CN",
+    "sourceId": "components.Settings.ReadarrModal.migrationGuide",
+    "proposedTarget": "Bookshelf Hardcover 迁移指南",
+    "finalTarget": "Bookshelf 到 Hardcover 迁移指南",
+    "rationale": "The caller renders this label as a link to docs/using-seerr/bookshelf-hardcover-migration.md, so the proposal’s juxtaposition of Bookshelf and Hardcover was ambiguous; the final makes the migration direction explicit."
+  },
+  {
+    "locale": "zh-TW",
+    "sourceId": "components.Settings.RadarrModal.server4kHelp",
+    "proposedTarget": "將此獨立執行個體標記為 4K 目的地；此選項本身不會啟用 4K。若單一伺服器同時處理兩種解析度，請勿勾選。請到「設定 → 主要 → 啟用 4K」控制 4K。",
+    "finalTarget": "將此獨立執行個體標記為 4K 目的地；此選項本身不會啟用 4K。若單一伺服器同時處理兩種解析度，請勿勾選。請前往「設定 → 一般 → 啟用 4K」控制 4K。",
+    "rationale": "The pinned SettingsLayout shows General at /settings/main; the catalog labels the sidebar 設定 and the control 啟用 4K."
+  },
+  {
+    "locale": "zh-TW",
+    "sourceId": "components.Settings.ReadarrModal.apiKeyHelp",
+    "proposedTarget": "請在 ChaptarrNG 的「設定 > 一般 > 安全性 > API 金鑰」中尋找金鑰。ChaptarrNG 0.9.941 及以上版本，請在 ChaptarrNG 容器中設定 CHAPTARR__AUTH__SEERRAPIKEY，並在此使用 SeerrNG 專用金鑰，以限制對圖書服務操作的存取。移轉期間，既有 BookshelfNG 連線會保留目前的金鑰。",
+    "finalTarget": "請在 ChaptarrNG 的「設定 > 一般 > 安全 > API密鑰」中尋找金鑰。若使用 ChaptarrNG 0.9.941 或更新版本，請在 ChaptarrNG 容器中設定 CHAPTARR__AUTH__SEERRAPIKEY，並在此處使用 SeerrNG 專用金鑰，以限制對圖書服務操作的存取。移轉期間，既有 BookshelfNG 連線會保留目前使用的金鑰。",
+    "rationale": "The ChaptarrNG v0.9.977 locale labels Security and API Key as 安全 and API密鑰; the proposal used non-current variants."
+  },
+  {
+    "locale": "zh-TW",
+    "sourceId": "components.Settings.ReadarrModal.compatibilityNote",
+    "proposedTarget": "新安裝請使用持續維護的圖書後端 ChaptarrNG。移轉期間，既有 BookshelfNG 和其他相容 Readarr 的伺服器仍受支援。請將 Book Format 設為與已設定的根資料夾一致；Seerr 會在每個要求中明確傳送該格式。",
+    "finalTarget": "新安裝請使用持續維護的圖書後端 ChaptarrNG。移轉期間，既有 BookshelfNG 和其他 Readarr 相容伺服器仍受支援。請將「書本格式」設為與「根資料夾」相符；Seerr 會在每個請求中明確傳送該格式。",
+    "rationale": "The proposal left Book Format in English; 書本格式 and 根資料夾 are the exact visible Seerr field labels at the pinned head."
+  },
+  {
+    "locale": "zh-TW",
+    "sourceId": "components.Settings.ReadarrModal.migrationGuide",
+    "proposedTarget": "Bookshelf Hardcover 移轉指南",
+    "finalTarget": "Bookshelf 移轉至 Hardcover 指南",
+    "rationale": "The caller renders this label as a link to docs/using-seerr/bookshelf-hardcover-migration.md, so the proposal’s juxtaposition of Bookshelf and Hardcover was ambiguous; the final makes the migration direction explicit."
+  }
+]

@@ -1,0 +1,99 @@
+{
+  "acceptCurrent": 437,
+  "attestationPath": "../live-re-attestation.json",
+  "attestationSha256": "9cd9fddfd0e66296c9959837e04df29d78a9922954a432898ea5c3cfb2f13418",
+  "blockers": [],
+  "callerContextMismatches": 0,
+  "callerContextsReattested": 547,
+  "callerRowsReattestedAcrossAllLocales": 547,
+  "confidence": "moderate",
+  "correctionNeeded": 163,
+  "correctionProposals": 163,
+  "countsByLocale": {
+    "ja": {
+      "accept-current": 89,
+      "correction-needed": 11
+    },
+    "ko": {
+      "accept-current": 70,
+      "correction-needed": 30
+    },
+    "pt-BR": {
+      "accept-current": 81,
+      "correction-needed": 19
+    },
+    "vi": {
+      "accept-current": 72,
+      "correction-needed": 28
+    },
+    "zh-CN": {
+      "accept-current": 64,
+      "correction-needed": 36
+    },
+    "zh-TW": {
+      "accept-current": 61,
+      "correction-needed": 39
+    }
+  },
+  "decisionCounts": {
+    "accept-current": 437,
+    "correction-needed": 163
+  },
+  "holds": 0,
+  "isDraft": true,
+  "ledger": "semantic-review-part.jsonl",
+  "ledgerSha256": "0e58946c6feca7fa54a09aee566157e9a60f11e7a725352f08ace3204a702d7d",
+  "locales": [
+    "ja",
+    "ko",
+    "pt-BR",
+    "vi",
+    "zh-CN",
+    "zh-TW"
+  ],
+  "nativeSpeakerReviewRequired": true,
+  "notes": [
+    "Only assigned East Asian locale cells routed new-semantic-review-required were adjudicated; there are no prior-routed cells in this partition.",
+    "sourceIdPosition is the first-seen unique source ID index in selected-batches.json; windowIndex is retained separately.",
+    "The exact source and current target text/hashes were rechecked from raw catalog files at the current OPEN PR head/tree. The d633 re-attestation reports all 547 caller contexts match live file blobs and lines.",
+    "Every final target has identical placeholder and markup tokens to its source. Proposed text is a review recommendation and is not applied to catalogs.",
+    "No repository/catalog/PR changes, tests, builds, CI, or browser work were performed."
+  ],
+  "packetPrimaryPin": {
+    "head": "d1137d06ffb5af57ef599ac9bf495aff2a990a7b",
+    "tree": "0aa22f0bb43e3e30d216e2ae19939220e05f04f7"
+  },
+  "pin": {
+    "head": "d633a7ed184bc9571a1a805da1bd25cef28d1599",
+    "tree": "abb501be60a5208a720c053976e94df72af8117e"
+  },
+  "pullRequest": 418,
+  "rawCatalogFileSha256": {
+    "src/i18n/locale/en.json": "75ff3c90b52aedd636a506281ffbd6fb2d3739c61294b6008a517f17647e2316",
+    "src/i18n/locale/ja.json": "0164445d5a6f2ece3bb891a2114f66d4b12138b70f056543e1552e57df618af9",
+    "src/i18n/locale/ko.json": "089bcef39ea31f2739df0fa9636a33cd8985cb45f6a69d43bd2b379c75d28f48",
+    "src/i18n/locale/pt_BR.json": "fa4073c0fdcdb03c6fafbd594a8a2d8e75c8820875a25b9be30540bd0af97bc2",
+    "src/i18n/locale/vi.json": "578e2919ac2fdf9ac18e791cc416ce73c6f5f2993d7c943cae3f9716427368fb",
+    "src/i18n/locale/zh_Hans.json": "4a52651ef4a2897574ef9bbebc49f75a4b2a3a8f4b199cba6201f55156f84ee2",
+    "src/i18n/locale/zh_Hant.json": "a36d83403339a14fe113e54155d437cb4ffdec8341a24aa4450943b9454c2dfd"
+  },
+  "repository": "snapetech-org/seerrng",
+  "reviewedRows": 600,
+  "routedNewSemanticRows": 600,
+  "rowsIncludingPreservedPrior": 600,
+  "schemaVersion": 1,
+  "sourceCurrentMismatches": 0,
+  "sourceIdPositions": {
+    "count": 100,
+    "startInclusive": 800,
+    "stopExclusive": 900
+  },
+  "sourceRowsReattestedAcrossAllLocales": 100,
+  "sourceRowsReattestedAcrossAssignedLocales": 100,
+  "state": "OPEN",
+  "targetCurrentMismatches": 0,
+  "targetRowsReattestedAcrossAllLocales": 1200,
+  "targetRowsReattestedAcrossAssignedLocales": 600,
+  "task": "Primary semantic review for SeerrNG PR #418 W700–749 source positions 800–899, locales ja/ko/pt_BR/vi/zh_Hans/zh_Hant",
+  "uniqueCallerFiles": 65
+}

@@ -1,0 +1,83 @@
+{
+  "schemaVersion": 1,
+  "task": "Independent cross-review of SeerrNG PR #418 W700-749 source positions 800-899, locales ja, ko, pt-BR, vi, zh-CN, zh-TW",
+  "repository": "snapetech-org/seerrng",
+  "pullRequest": 418,
+  "livePrState": "OPEN",
+  "isDraft": true,
+  "mergeable": "MERGEABLE",
+  "mergeStateStatus": "CLEAN",
+  "head": "85188b1964b6bf473219c566b196d5eda94396e3",
+  "tree": "50bb1f456e29259dfe6dd022cea11da625a6cca6",
+  "primaryLedgerPath": "/mnt/disks/scratch/task-scratch/seerrng-pr418-w700-749-review-20261102/reviews/agent-0800-0899/semantic-review-ledger.jsonl",
+  "primaryLedgerSha256": "e5aa2084709df04af2d22b057f74a218db4dee8759e3ce95bedc004b1673a4a1",
+  "sourceCurrentRowsReattested": 600,
+  "callerContextReferencesReattested": 547,
+  "sourceCurrentMismatches": 0,
+  "callerContextMismatches": 0,
+  "candidateRowsCrossReviewed": 163,
+  "countsByLocale": {
+    "ja": {
+      "correctionCandidates": 11,
+      "acceptProposal": 8,
+      "refineProposal": 3,
+      "hold": 0
+    },
+    "ko": {
+      "correctionCandidates": 30,
+      "acceptProposal": 25,
+      "refineProposal": 5,
+      "hold": 0
+    },
+    "pt-BR": {
+      "correctionCandidates": 19,
+      "acceptProposal": 16,
+      "refineProposal": 3,
+      "hold": 0
+    },
+    "vi": {
+      "correctionCandidates": 28,
+      "acceptProposal": 24,
+      "refineProposal": 4,
+      "hold": 0
+    },
+    "zh-CN": {
+      "correctionCandidates": 36,
+      "acceptProposal": 32,
+      "refineProposal": 4,
+      "hold": 0
+    },
+    "zh-TW": {
+      "correctionCandidates": 39,
+      "acceptProposal": 35,
+      "refineProposal": 4,
+      "hold": 0
+    }
+  },
+  "decisionCounts": {
+    "accept-proposal": 140,
+    "refine-proposal": 23,
+    "hold": 0
+  },
+  "refinements": 23,
+  "noOpFinals": 0,
+  "placeholderRowsAudited": 163,
+  "placeholderParityFailures": 0,
+  "tagParityFailures": 0,
+  "priorRoutedRowsPreservedWithoutReAdjudication": 14,
+  "priorRoutedRowsReAdjudicated": 0,
+  "nativeSpeakerReviewRequired": true,
+  "sourceReattestationScope": "600 locale source/current cells across 100 source IDs, read via git show at the exact PR head.",
+  "callerReattestationScope": "547 unique (sourceId,path,line) references; file blob, line hash, line text, and adjacent context matched.",
+  "breadcrumbReview": "Seerr /settings/main is labeled General in the pinned SettingsLayout and locale catalogs. Explicit ChaptarrNG API-key breadcrumbs were reconciled against release v0.9.977; mixed-provider Base URL breadcrumbs retain source English labels because provider and UI locale vary.",
+  "chaptarrngReleasePin": {
+    "ref": "v0.9.977",
+    "commit": "03fe58069880160276c90a8f8ded3b6ae8d205e0"
+  },
+  "blockers": [],
+  "scopeLimits": [
+    "No repository/catalog edits.",
+    "No tests, builds, scans, CI, pushes, PR mutations, or releases.",
+    "Semantic review is bounded LLM review; native-speaker review remains required."
+  ]
+}
