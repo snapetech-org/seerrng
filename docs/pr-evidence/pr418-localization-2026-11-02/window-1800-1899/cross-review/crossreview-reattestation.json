@@ -1,0 +1,177 @@
+{
+  "repository": "snapetech-org/seerrng",
+  "pullRequest": 418,
+  "livePullRequestBefore": {
+    "baseRefName": "main",
+    "baseRefOid": "221d8e0d542802da7529cd272c928cc747677e5c",
+    "headRefName": "codex/seerrng-localization-overhaul-20261028",
+    "headRefOid": "78a36214596544e1b3033c6a612ae5559db713e3",
+    "isDraft": true,
+    "state": "OPEN",
+    "url": "https://github.com/snapetech-org/seerrng/pull/418"
+  },
+  "livePullRequestAfter": {
+    "baseRefName": "main",
+    "baseRefOid": "221d8e0d542802da7529cd272c928cc747677e5c",
+    "headRefName": "codex/seerrng-localization-overhaul-20261028",
+    "headRefOid": "78a36214596544e1b3033c6a612ae5559db713e3",
+    "isDraft": true,
+    "state": "OPEN",
+    "url": "https://github.com/snapetech-org/seerrng/pull/418"
+  },
+  "expectedHead": "78a36214596544e1b3033c6a612ae5559db713e3",
+  "expectedTree": "ef83a00d078f0a4aed6269b4c23282dbf91fd6f7",
+  "headAfterReview": "78a36214596544e1b3033c6a612ae5559db713e3",
+  "treeAfterReview": "ef83a00d078f0a4aed6269b4c23282dbf91fd6f7",
+  "worktreeClean": true,
+  "worktreeStatus": "",
+  "sourceCatalog": {
+    "path": "src/i18n/locale/en.json",
+    "blob": "12e04a118c30b71b3714291adeaf9fdb2735cee4",
+    "sha256": "75ff3c90b52aedd636a506281ffbd6fb2d3739c61294b6008a517f17647e2316",
+    "bytes": 835513
+  },
+  "localeCatalogs": {
+    "ar": {
+      "path": "src/i18n/locale/ar.json",
+      "blob": "3fa98865c243ca9fd2eff90d4260ae90fd28b134",
+      "sha256": "7ab35ea260302a4d386d0aae5e1248e380bb55d918ae38a528cdd334f2d869cb",
+      "bytes": 1042788
+    },
+    "de": {
+      "path": "src/i18n/locale/de.json",
+      "blob": "704e79e9014bff184bd4a75118ac486ee93adb5f",
+      "sha256": "affd9d03a7d0fb46af543275b3fd0005761b53a8cbd3fe56cb4db92ad2ac6a60",
+      "bytes": 926577
+    },
+    "es": {
+      "path": "src/i18n/locale/es.json",
+      "blob": "d98cb94826b99244970879af8b18e6e45c457202",
+      "sha256": "77d3898486e36e3b73699e15df4835d76c3415768f7686acb569b7d66097462c",
+      "bytes": 921982
+    },
+    "fr": {
+      "path": "src/i18n/locale/fr.json",
+      "blob": "e293b3fda9c311f3d8c8ed00809e0180d630f43f",
+      "sha256": "3df5da5b5ddcd5c7cfb518032a7db85dff60798f03b97ea436f98ef9c292ea04",
+      "bytes": 939130
+    },
+    "hi": {
+      "path": "src/i18n/locale/hi.json",
+      "blob": "ae9e609691260fce7da23698b5e8031b53413f86",
+      "sha256": "94445b52d3b5e983b0a2ec43fe785f65e191dd1ab70a4fcfbee0759d95fbbd0c",
+      "bytes": 1368755
+    },
+    "id": {
+      "path": "src/i18n/locale/id.json",
+      "blob": "fe5360babf7fc0105c0f229b7ddeba1d6defdb28",
+      "sha256": "d408c632185062f54a1b67922b1c0c5eb671d084d4c6b0101f4234dea62b6238",
+      "bytes": 866440
+    },
+    "ja": {
+      "path": "src/i18n/locale/ja.json",
+      "blob": "5adc7cb5d5e91e26803f4b7197f094875bd8bb3a",
+      "sha256": "4f155ddf396dd04175626781319f60f09dd0518c9ae20a2e9af1a99928a77a2a",
+      "bytes": 1014690
+    },
+    "ko": {
+      "path": "src/i18n/locale/ko.json",
+      "blob": "2b61273264fb8247dbf70dcbc3a52d8882c79205",
+      "sha256": "e69b67711f21c97da1ff04b2f1d81fae428c3f1cfae33fe1f1af049f9363f853",
+      "bytes": 931923
+    },
+    "pt_BR": {
+      "path": "src/i18n/locale/pt_BR.json",
+      "blob": "37c201e9340535456f2f3c93ffb106b48b1f8a69",
+      "sha256": "8b14f2b839a3cecef60938c72c40fd3ee1846138dfd7071eeb5be09eadbf768d",
+      "bytes": 910228
+    },
+    "vi": {
+      "path": "src/i18n/locale/vi.json",
+      "blob": "7bdf92c7cce3857c0ac48e29f2514cc70c8c36ca",
+      "sha256": "14edda6d1b1bcdba4e9678418b12bb0b33b767e1b5e9eb25b48a2bad357d7762",
+      "bytes": 966942
+    },
+    "zh_Hans": {
+      "path": "src/i18n/locale/zh_Hans.json",
+      "blob": "99baac4ce9b2923f7d265c6c120b4adb8251ceaa",
+      "sha256": "242916a6c130c3b8183364ebcc869ac91cc69c778e6445da8e2d3719b3df7dfb",
+      "bytes": 810835
+    },
+    "zh_Hant": {
+      "path": "src/i18n/locale/zh_Hant.json",
+      "blob": "8d49072969dd18dcd77e413c9b5d7bd5600b8cf8",
+      "sha256": "e6234daf1d63259a2326142333fab2a4d0546002c97212449d847f4c559c49fc",
+      "bytes": 811584
+    }
+  },
+  "sourceIdsAttested": 100,
+  "cellsAttested": 1200,
+  "callerSourceIdsAttested": 100,
+  "callerFilesAttested": 11,
+  "callerFilePins": {
+    "src/components/LiveTv/FollowedTeams.tsx": {
+      "blob": "ea2fa91c606e193070cc943de9ffe7a2fe1be5b6",
+      "fileSha256": "c82d484a1a835633b7bc506d436eea9f65b4ab628a0f03039d97482c53bd170c"
+    },
+    "src/components/LiveTv/LiveTvButton.tsx": {
+      "blob": "af47bdb5b559541cb1259b84df7649cbc7b891b7",
+      "fileSha256": "d204efaa295e9d8596ae7bbe0665b012bef2221b3787d0064533002558f024fa"
+    },
+    "src/components/LiveTv/RecordingList.tsx": {
+      "blob": "aa241db9b85efbdc7a8809de22093428288bc100",
+      "fileSha256": "344f84055a0fa7a528840afa4354814ae5ba18c338b6815e6a9fe8121a6b4ba1"
+    },
+    "src/components/Login/JellyfinQuickConnectModal.tsx": {
+      "blob": "54298d2cf63c37a2ff572e335110df818e5f5f26",
+      "fileSha256": "f3245c3dc5ed63615ca4655b6dcce670aa3e9de5eb1d3238463d2d7ea0f59156"
+    },
+    "src/components/Login/OidcLoginButton.tsx": {
+      "blob": "3b8f0051c238299c7ddd51350fc62ec4f11d3f03",
+      "fileSha256": "cb2ae62f3812d6f6d7dea08976e11d0c652ace833a7fe39d025c4fdaa503d001"
+    },
+    "src/components/Setup/JellyfinSetup.tsx": {
+      "blob": "2fbf8e1945f9f8a2489a92a00c98bd1061e58de9",
+      "fileSha256": "1332e6369053129c4fb948ae917d4804df5852f0d38930fdbe03504a9745854c"
+    },
+    "src/components/Login/AddEmailModal.tsx": {
+      "blob": "381c904e8f060a76f840e709f55d6e261956a2e9",
+      "fileSha256": "18bb9954821b5585a4f46676163b6f8a74b2adf9f7dac21de4b06241aa711c6a"
+    },
+    "src/components/Login/JellyfinLogin.tsx": {
+      "blob": "5abd61a7009066f744d5405029f60630cd852bfb",
+      "fileSha256": "ca268e4382e84045156f6c28083c9d1c0ad6e2c71ef4379b47db2187249bee30"
+    },
+    "src/components/Login/LocalLogin.tsx": {
+      "blob": "aa4f2586e1900043d2f741e2be556380067b0ee4",
+      "fileSha256": "928226c78bc25f0ef7bc6ae8cc4d1ac16419e3f2034cc93fc61a48b24b47443b"
+    },
+    "src/components/Login/PlexLoginButton.tsx": {
+      "blob": "01144f2bda673215d495c6c690be127cb0f1dbc7",
+      "fileSha256": "08b36a0be12914ea201fbf1fac0c01236666b9d148261951c7b89ab1c095a216"
+    },
+    "src/components/Login/index.tsx": {
+      "blob": "e1a1a8f3d3226acf959701ca63a1d648740e7e9f",
+      "fileSha256": "84a4b0ddee5f8bce65d17c5a5614436a2278a05c985cfb955eaafcef5546cc36"
+    }
+  },
+  "callerLineRefsAttested": 371,
+  "callerLineErrors": [],
+  "cellMismatches": [],
+  "candidateMapRowsAttested": 422,
+  "candidateHashErrors": [],
+  "unclaimedCallerKeys": [
+    "components.LiveTv.RecordingList.oneAiring",
+    "components.Login.demoModeInfo",
+    "components.Login.initialsignin",
+    "components.Login.initialsigningin",
+    "components.Login.quickconnecterror",
+    "components.Login.servertype"
+  ],
+  "placeholders": "pass",
+  "markup": "pass",
+  "protectedLiteralFinalTargets": "pass",
+  "priorFrozenDispositionRows": 0,
+  "checks": "pass",
+  "checkedAtUtc": "2026-11-02T15:55:04Z"
+}

@@ -1,0 +1,617 @@
+{
+  "head": "78a36214596544e1b3033c6a612ae5559db713e3",
+  "sourceCatalog": {
+    "blob": "12e04a118c30b71b3714291adeaf9fdb2735cee4",
+    "bytes": 835513,
+    "path": "src/i18n/locale/en.json",
+    "sha256": "75ff3c90b52aedd636a506281ffbd6fb2d3739c61294b6008a517f17647e2316"
+  },
+  "sourceCount": 100,
+  "sourceList": [
+    {
+      "position": 1800,
+      "source": "Follow",
+      "sourceHash": "641d1ef657bdfd9fa2064ab5ae3f0e44186e5161dcd36b63839f3a76a79883bc",
+      "sourceId": "components.LiveTv.FollowedTeams.follow"
+    },
+    {
+      "position": 1801,
+      "source": "You are not following any teams.",
+      "sourceHash": "d983bd0b5268ca8266f7f0a6362931fb660cd957a8f295d49403875d7d037f80",
+      "sourceId": "components.LiveTv.FollowedTeams.none"
+    },
+    {
+      "position": 1802,
+      "source": "Team",
+      "sourceHash": "5985039f106df054b43c3529139613bf7c2372937539f344c7c5ee47d00a0d63",
+      "sourceId": "components.LiveTv.FollowedTeams.team"
+    },
+    {
+      "position": 1803,
+      "source": "Followed Teams",
+      "sourceHash": "fbfedcb51d5b718cd5d55703752c57071ec724b70b064c1d99be86a10d47e4ea",
+      "sourceId": "components.LiveTv.FollowedTeams.title"
+    },
+    {
+      "position": 1804,
+      "source": "Team schedules are not available. An administrator can turn on sports automation in IPTV Tunerr.",
+      "sourceHash": "d39bf82c5f115eefc0aa6d1b9a01a2acfed2a29eab28a576548beced361c32ec",
+      "sourceId": "components.LiveTv.FollowedTeams.unavailable"
+    },
+    {
+      "position": 1805,
+      "source": "Unfollow {team}",
+      "sourceHash": "a0d1a1344dfa35e04151aa7baa4aab13b3b85a12de97d72cb2a6347919250a79",
+      "sourceId": "components.LiveTv.FollowedTeams.unfollow"
+    },
+    {
+      "position": 1806,
+      "source": "On Live TV",
+      "sourceHash": "27d35764dbbfee2a4c9449193d514b92b8a1fc548cc22208841311186bace532",
+      "sourceId": "components.LiveTv.LiveTvButton.airingsTitle"
+    },
+    {
+      "position": 1807,
+      "source": "Airs",
+      "sourceHash": "b6e22c42f148c44a726e803ec95c4670f5a608fb81006a4a38670c9a941b18af",
+      "sourceId": "components.LiveTv.LiveTvButton.airs"
+    },
+    {
+      "position": 1808,
+      "source": "You do not have permission to request recordings.",
+      "sourceHash": "d72de82c2c883689f333400b02668cb4a064afa98c946525df8da1128151fd49",
+      "sourceId": "components.LiveTv.LiveTvButton.cannotRequest"
+    },
+    {
+      "position": 1809,
+      "source": "Channel",
+      "sourceHash": "ce4683e7013a18cdf3d224bfcb4e9594ea8f559e946a837c633defe7d3c32172",
+      "sourceId": "components.LiveTv.LiveTvButton.channel"
+    },
+    {
+      "position": 1810,
+      "source": "Close",
+      "sourceHash": "7d9eb7acb13e24625c404401d8e88b2350e32162455885f18276cf802f7701ed",
+      "sourceId": "components.LiveTv.LiveTvButton.close"
+    },
+    {
+      "position": 1811,
+      "source": "Episode",
+      "sourceHash": "b19c450b47d69b869823afa53978c557a3868b9b8e77c1715ca0f526133c73f0",
+      "sourceId": "components.LiveTv.LiveTvButton.episode"
+    },
+    {
+      "position": 1812,
+      "source": "Season {season} Episode {episode}",
+      "sourceHash": "e3b383d1a1108f8206155e3c41ee7500658e3f48af75fd96dcad0d237bed41d9",
+      "sourceId": "components.LiveTv.LiveTvButton.episodeValue"
+    },
+    {
+      "position": 1813,
+      "source": "On Live TV",
+      "sourceHash": "27d35764dbbfee2a4c9449193d514b92b8a1fc548cc22208841311186bace532",
+      "sourceId": "components.LiveTv.LiveTvButton.onLiveTv"
+    },
+    {
+      "position": 1814,
+      "source": "Airing soon on Live TV — watch or record it",
+      "sourceHash": "6a2b95d93f22ebc78476d06bcb6fd9c4b175e10f7d4ad10f1c3b78d95dcb1faa",
+      "sourceId": "components.LiveTv.LiveTvButton.onLiveTvTooltip"
+    },
+    {
+      "position": 1815,
+      "source": "Record",
+      "sourceHash": "bfdd510698ef3ccbf17f2c67fc47790e1ba72894fb74fe284bbc136b47ef73e6",
+      "sourceId": "components.LiveTv.LiveTvButton.record"
+    },
+    {
+      "position": 1816,
+      "source": "Record Every Airing",
+      "sourceHash": "1a3e902c73bb13de39a784cebdd0c327cea149cd450af49b93aa40ac10ca6658",
+      "sourceId": "components.LiveTv.LiveTvButton.recordSeries"
+    },
+    {
+      "position": 1817,
+      "source": "Records this title whenever it airs while the request is active.",
+      "sourceHash": "3c0a0ce6652c4be241204578a7a8d87ede8112a16d357faba2d5c650aa059419",
+      "sourceId": "components.LiveTv.LiveTvButton.recordSeriesDescription"
+    },
+    {
+      "position": 1818,
+      "source": "Requesting…",
+      "sourceHash": "1db9285ae3d0c338610fca0fee19b05d37c9cfd54b6cf4233aea03e92f7c7990",
+      "sourceId": "components.LiveTv.LiveTvButton.recording"
+    },
+    {
+      "position": 1819,
+      "source": "The recording could not be requested.",
+      "sourceHash": "05342ed1cd1cf091213151ed68bac3fa4b4f7c5a7bd53b793f77c9f30549c771",
+      "sourceId": "components.LiveTv.LiveTvButton.requestFailed"
+    },
+    {
+      "position": 1820,
+      "source": "Recording requested. It will be scheduled after approval.",
+      "sourceHash": "3dbef531a14d8c08a02517e671db4c560191fc324e6eee4ea65dc8cb175e6c61",
+      "sourceId": "components.LiveTv.LiveTvButton.requested"
+    },
+    {
+      "position": 1821,
+      "source": "Recording scheduled.",
+      "sourceHash": "1c62a04b9a0238b0173569980744a938af77ef25d613c000791be1ab74f98cec",
+      "sourceId": "components.LiveTv.LiveTvButton.scheduled"
+    },
+    {
+      "position": 1822,
+      "source": "View My Recordings",
+      "sourceHash": "348bd63f8b4c83317cf5ec3cdb84bb968d84d19f8ccf6c514433724a6da381ae",
+      "sourceId": "components.LiveTv.LiveTvButton.viewRecordings"
+    },
+    {
+      "position": 1823,
+      "source": "The recording could not be updated.",
+      "sourceHash": "b602ceb4bd5eb4c2a071a0f5c4849b2390dfadaeaa87d529c47caf499d3e2e7b",
+      "sourceId": "components.LiveTv.RecordingList.actionFailed"
+    },
+    {
+      "position": 1824,
+      "source": "Active Only",
+      "sourceHash": "61216f15bfd056e9d7b84088bac3329d43976ec3c6987bdabe30c340b30857ac",
+      "sourceId": "components.LiveTv.RecordingList.activeOnly"
+    },
+    {
+      "position": 1825,
+      "source": "Airs",
+      "sourceHash": "b6e22c42f148c44a726e803ec95c4670f5a608fb81006a4a38670c9a941b18af",
+      "sourceId": "components.LiveTv.RecordingList.airs"
+    },
+    {
+      "position": 1826,
+      "source": "Any channel",
+      "sourceHash": "a5b793d8a8c047d2a0070557b9d0ef8c12c57d96a1cc39519e3f98afa3111d11",
+      "sourceId": "components.LiveTv.RecordingList.anyChannel"
+    },
+    {
+      "position": 1827,
+      "source": "Approve",
+      "sourceHash": "6007acbe30b2cd98703e83350ea665c06009fcd51f26dd73b309294235f45f21",
+      "sourceId": "components.LiveTv.RecordingList.approve"
+    },
+    {
+      "position": 1828,
+      "source": "Cancel Recording",
+      "sourceHash": "36bf97f4599b4432b9de4538c4def374a8dd1fb2e14f30574a20eecd0787a025",
+      "sourceId": "components.LiveTv.RecordingList.cancel"
+    },
+    {
+      "position": 1829,
+      "source": "Channel",
+      "sourceHash": "ce4683e7013a18cdf3d224bfcb4e9594ea8f559e946a837c633defe7d3c32172",
+      "sourceId": "components.LiveTv.RecordingList.channel"
+    },
+    {
+      "position": 1830,
+      "source": "Decline",
+      "sourceHash": "a2d285b352873457207a34a015267524bb4613c3e8c961c8998da4e08e0d5745",
+      "sourceId": "components.LiveTv.RecordingList.decline"
+    },
+    {
+      "position": 1831,
+      "source": "No Recordings Yet",
+      "sourceHash": "26bd9b69ac4d621f604c680695cd7bf02d2ee9b7ef61e4f94a7bb2a4582784ca",
+      "sourceId": "components.LiveTv.RecordingList.empty"
+    },
+    {
+      "position": 1832,
+      "source": "Open a movie or series that is airing on Live TV and select On Live TV to request a recording.",
+      "sourceHash": "aaffb32bd1c25e53bb747a3f9acbeb1eeb338422a73d491cb38ff572ad56fbbb",
+      "sourceId": "components.LiveTv.RecordingList.emptyHelp"
+    },
+    {
+      "position": 1833,
+      "source": "All Recordings",
+      "sourceHash": "b68c03df90c154403a9cb3c3872f343b795b268227d929d2212dabff17ea6f4a",
+      "sourceId": "components.LiveTv.RecordingList.everyone"
+    },
+    {
+      "position": 1834,
+      "source": "Recordings could not be loaded.",
+      "sourceHash": "fdc52f05fcd50f66d14725f46be98deec879baf36362307bb95eb6a7008e8616",
+      "sourceId": "components.LiveTv.RecordingList.loadError"
+    },
+    {
+      "position": 1835,
+      "source": "My Recordings",
+      "sourceHash": "156fea0439750db64d4d2b8e83eaf62b7dc0f344763e8417ea47de8c091cdbd9",
+      "sourceId": "components.LiveTv.RecordingList.mine"
+    },
+    {
+      "position": 1836,
+      "source": "Live TV recording is not set up. An administrator can connect IPTV Tunerr in Settings → Services.",
+      "sourceHash": "4a0d98e0ba7183d91a04b1dc6a8d293cde700e6598e6bc83d78f4ace92a34fdb",
+      "sourceId": "components.LiveTv.RecordingList.notConfigured"
+    },
+    {
+      "position": 1837,
+      "source": "One Airing",
+      "sourceHash": "b765987bb61386f2ae37a003bedcb7e28fd55b6353cc40d7e0e9af543071e27e",
+      "sourceId": "components.LiveTv.RecordingList.oneAiring"
+    },
+    {
+      "position": 1838,
+      "source": "Recorded",
+      "sourceHash": "c7175fa7a0db0d3ca4b26d27675d2e4e0776634ce5ffa35c88daa749b57d6846",
+      "sourceId": "components.LiveTv.RecordingList.recorded"
+    },
+    {
+      "position": 1839,
+      "source": "Requested By",
+      "sourceHash": "80e37c7ff11cde00392c2efe89423254878e5a8002ab93691643a702fcd113ce",
+      "sourceId": "components.LiveTv.RecordingList.requestedBy"
+    },
+    {
+      "position": 1840,
+      "source": "Retry",
+      "sourceHash": "942087cc2d41e01304b7195558d093d10c72af8e838c7556d6a02d471ee71852",
+      "sourceId": "components.LiveTv.RecordingList.retry"
+    },
+    {
+      "position": 1841,
+      "source": "Every Airing",
+      "sourceHash": "627dc06689cb492ac01671d2834fd5b96a2c48877224cf1364599eb9eb17a6de",
+      "sourceId": "components.LiveTv.RecordingList.series"
+    },
+    {
+      "position": 1842,
+      "source": "Show All",
+      "sourceHash": "e1c32645f2f85a25ae64e38f306ded9b82771ab8ac4595e769f9410e632584f4",
+      "sourceId": "components.LiveTv.RecordingList.showAll"
+    },
+    {
+      "position": 1843,
+      "source": "Cancelled",
+      "sourceHash": "d353a99eb4556847ceeb3c306ac886cf6b4fa13043eb1864b9aeb0607fd5f2cc",
+      "sourceId": "components.LiveTv.RecordingList.statusCancelled"
+    },
+    {
+      "position": 1844,
+      "source": "Recorded",
+      "sourceHash": "c7175fa7a0db0d3ca4b26d27675d2e4e0776634ce5ffa35c88daa749b57d6846",
+      "sourceId": "components.LiveTv.RecordingList.statusCompleted"
+    },
+    {
+      "position": 1845,
+      "source": "Declined",
+      "sourceHash": "dce083a2c47ffdc44982315487afb6e121e96cef2df6dc1ec11bac7ab5052142",
+      "sourceId": "components.LiveTv.RecordingList.statusDeclined"
+    },
+    {
+      "position": 1846,
+      "source": "Failed",
+      "sourceHash": "031a8f0f659df890dfd53c92e45295b0f14c997185bae46e168831e403b273f7",
+      "sourceId": "components.LiveTv.RecordingList.statusFailed"
+    },
+    {
+      "position": 1847,
+      "source": "Pending Approval",
+      "sourceHash": "6da02e71e215fc0154208f2a8e1638143e56a833c246d756cc28226023e00c9a",
+      "sourceId": "components.LiveTv.RecordingList.statusPending"
+    },
+    {
+      "position": 1848,
+      "source": "Recording",
+      "sourceHash": "80e8dd1a5a05f7071a7ff71bccab5ed94aef4ad940c86bee6d2034d458f3946c",
+      "sourceId": "components.LiveTv.RecordingList.statusRecording"
+    },
+    {
+      "position": 1849,
+      "source": "Scheduled",
+      "sourceHash": "4724f344c1c0e4a1c5e4085610cc31bf67d0959dfda9793d4605b7b329399775",
+      "sourceId": "components.LiveTv.RecordingList.statusScheduled"
+    },
+    {
+      "position": 1850,
+      "source": "Recordings",
+      "sourceHash": "60c56d66a128dae2cffd912b4fda130aef60d9be97d5b8dbaad8e78d5dd900fa",
+      "sourceId": "components.LiveTv.RecordingList.title"
+    },
+    {
+      "position": 1851,
+      "source": "Working…",
+      "sourceHash": "5474eef8d0f179c707cf418e2bbb468c77cc24edc5e9f5f4e137e85e06a8eea0",
+      "sourceId": "components.LiveTv.RecordingList.working"
+    },
+    {
+      "position": 1852,
+      "source": "Cancel",
+      "sourceHash": "19766ed6ccb2f4a32778eed80d1928d2c87a18d7c275ccb163ec6709d3eb2e27",
+      "sourceId": "components.Login.JellyfinQuickConnectModal.cancel"
+    },
+    {
+      "position": 1853,
+      "source": "Enter this code in your {mediaServerName} app",
+      "sourceHash": "912fb55b6e03bd0fd8ed5ed4e645ee46c3796573ea2fa92a7f78c8d0855b70cb",
+      "sourceId": "components.Login.JellyfinQuickConnectModal.instructions"
+    },
+    {
+      "position": 1854,
+      "source": "Sign in with Quick Connect",
+      "sourceHash": "3b3de6094a6d96a96978c442b37fce0bb5aceaad87238329a688e584baba187d",
+      "sourceId": "components.Login.JellyfinQuickConnectModal.subtitle"
+    },
+    {
+      "position": 1855,
+      "source": "Quick Connect",
+      "sourceHash": "d15125b20094fb706cde57206480a64247e3514f3f69d357a00ef457148c1060",
+      "sourceId": "components.Login.JellyfinQuickConnectModal.title"
+    },
+    {
+      "position": 1856,
+      "source": "Provider setup guide",
+      "sourceHash": "e386e98cd5100ca03105a1cabc43cd0d582f8d8923b868d55c89040a6ad984fd",
+      "sourceId": "components.Login.OidcLoginButton.setupGuide"
+    },
+    {
+      "position": 1857,
+      "source": "{provider} identity provider setup guide (opens in a new tab)",
+      "sourceHash": "e0aaaa0ccda7e176d49533341e45888d6283e0b74a87e9f9b87e591695d3e67b",
+      "sourceId": "components.Login.OidcLoginButton.setupGuideLabel"
+    },
+    {
+      "position": 1858,
+      "source": "You must use an admin account to sign in.",
+      "sourceHash": "22d954a45ed870cf68aff4f4b2387eb9f6dad1727bb21b31342d61c85d48faaa",
+      "sourceId": "components.Login.adminerror"
+    },
+    {
+      "position": 1859,
+      "source": "Go back",
+      "sourceHash": "6aadac2f2b7a6b8e3e01909529190a0c2910592cfb85f5d65901b37c820236fa",
+      "sourceId": "components.Login.back"
+    },
+    {
+      "position": 1860,
+      "source": "The username or password is incorrect.",
+      "sourceHash": "5e1638accbbeee579b268bd4d4954a7e60356f2ed581056662a42c12357f68ad",
+      "sourceId": "components.Login.credentialerror"
+    },
+    {
+      "position": 1861,
+      "source": "Demo mode is enabled. Use the demo credentials to sign in.",
+      "sourceHash": "de6bdb8cd1abcf5e0f14123aff23de89f42aab22392f106e521cb12343cb3dd6",
+      "sourceId": "components.Login.demoModeInfo"
+    },
+    {
+      "position": 1862,
+      "source": "Add a valid email address to complete your profile. This will be used for notifications and local sign-in.",
+      "sourceHash": "af8d6c643d317cc15c87f1f6d8ae6563ad56012333bfd2953bd4ea34c67a100d",
+      "sourceId": "components.Login.description"
+    },
+    {
+      "position": 1863,
+      "source": "Email Address",
+      "sourceHash": "09bf25ef308336338ea33f83d6e4f4a0e5345e5d43d397864a8f5d0e6b9b923c",
+      "sourceId": "components.Login.email"
+    },
+    {
+      "position": 1864,
+      "source": "This email is already in use.",
+      "sourceHash": "9038e89291614f1fa8c0e0cd3d5fc6f5c73a47ec75a29948bf8b07cced55168f",
+      "sourceId": "components.Login.emailAlreadyTaken"
+    },
+    {
+      "position": 1865,
+      "source": "The email address or password is incorrect.",
+      "sourceHash": "35b2964b6aefbc5770e10832bed5449fcec1d35e3a45bf7702d252ad38eaff52",
+      "sourceId": "components.Login.emailCredentialError"
+    },
+    {
+      "position": 1866,
+      "source": "Address does not need to be associated with your {mediaServerName} instance.",
+      "sourceHash": "2286aa78bd85b940a3893351af1b63d7e6b9145462532d1e2073b2d72adb230f",
+      "sourceId": "components.Login.emailtooltip"
+    },
+    {
+      "position": 1867,
+      "source": "Use SSL",
+      "sourceHash": "e51a45d18afd3fec3d46e18c72bfd754bd6855881a7a7217a41aa2a68c7c20c9",
+      "sourceId": "components.Login.enablessl"
+    },
+    {
+      "position": 1868,
+      "source": "Forgot Password?",
+      "sourceHash": "eeca4f80a184d5aa8492b2607535df2aed94744e3916807bfa7d99dd10265af1",
+      "sourceId": "components.Login.forgotpassword"
+    },
+    {
+      "position": 1869,
+      "source": "{mediaServerName} URL",
+      "sourceHash": "a225449bbb70726ed183b9ad491eb3cfeff392158ddb57cce2e63c9816aeadae",
+      "sourceId": "components.Login.hostname"
+    },
+    {
+      "position": 1870,
+      "source": "Connect",
+      "sourceHash": "1a2303ede07493acc7caaa7c737f3c52bcc9cf04372be19ed1b0af6b9f2c791e",
+      "sourceId": "components.Login.initialsignin"
+    },
+    {
+      "position": 1871,
+      "source": "Connecting…",
+      "sourceHash": "72021eb70e91b4d58254586a8519393a281eb830c165bf1ec42a5057d425bcaf",
+      "sourceId": "components.Login.initialsigningin"
+    },
+    {
+      "position": 1872,
+      "source": "Unable to connect to {mediaServerName} server.",
+      "sourceHash": "14e706fc23533637f1bfc329010daa9804fa07e83840e98e605cd433a3a288b8",
+      "sourceId": "components.Login.invalidurlerror"
+    },
+    {
+      "position": 1873,
+      "source": "If you haven't set an email address in your profile, use your {mediaServerName} username instead.",
+      "sourceHash": "1a7f883e18af7b416629aed76f6c423a4f6d47009acb42d1e5cf46a9ca9c5482",
+      "sourceId": "components.Login.jellyfinLocalLoginHint"
+    },
+    {
+      "position": 1874,
+      "source": "Continue with sign-in link",
+      "sourceHash": "2ab489359c06fcb99c3d47c558ad541d553111e438effa41de2efdeb416a96f6",
+      "sourceId": "components.Login.loginLinkContinue"
+    },
+    {
+      "position": 1875,
+      "source": "Unable to use this sign-in link.",
+      "sourceHash": "40099228a97df9b475a922adde70a45201d60cf06326bf0e1cf5663de8ad7073",
+      "sourceId": "components.Login.loginLinkFailed"
+    },
+    {
+      "position": 1876,
+      "source": "Use this only if you expected a link from your administrator.",
+      "sourceHash": "c27e8e4a982add3767e134d13a1bc7417e38e045639e68ffb8618dce94f1a3a8",
+      "sourceId": "components.Login.loginLinkHelp"
+    },
+    {
+      "position": 1877,
+      "source": "Sign in with a one-time link",
+      "sourceHash": "8cf7baa3220eb1fa4fdef2fe3ece4437071dc6c6afe091020e3bc965d339087e",
+      "sourceId": "components.Login.loginLinkTitle"
+    },
+    {
+      "position": 1878,
+      "source": "Signing in…",
+      "sourceHash": "8b9d3de8ae00c89c3bdf6548b6acd402d64313654b93a3c8f4a4717324e13a00",
+      "sourceId": "components.Login.loginLinkUsing"
+    },
+    {
+      "position": 1879,
+      "source": "Something went wrong while trying to sign in.",
+      "sourceHash": "a51f0a07eb79cbef9174aff031cd76c720f5589791438a7d4dce267823ff80a2",
+      "sourceId": "components.Login.loginerror"
+    },
+    {
+      "position": 1880,
+      "source": "Login with {appName}",
+      "sourceHash": "5b2148e9ac41a8bedad0206a46f83b76c63c476266fd94572b3ed1eb6c090913",
+      "sourceId": "components.Login.loginwithapp"
+    },
+    {
+      "position": 1881,
+      "source": "Movie",
+      "sourceHash": "941de4447b2ec0d282b3bc0070cb8fb3b08085ebe8745c59d78bf4e7db453e35",
+      "sourceId": "components.Login.movie"
+    },
+    {
+      "position": 1882,
+      "source": "No admin user found on the server.",
+      "sourceHash": "e7d9a15083364522f39d1308d4e6e8412bd773804ffc976b1f32fa9022cdba37",
+      "sourceId": "components.Login.noadminerror"
+    },
+    {
+      "position": 1883,
+      "source": "Or sign in with",
+      "sourceHash": "10bea2e6101838bb59f3883ba917b2bc2c0bd684fdebc125bae8ef9f38b8d176",
+      "sourceId": "components.Login.orsigninwith"
+    },
+    {
+      "position": 1884,
+      "source": "Password",
+      "sourceHash": "e7cf3ef4f17c3999a94f2c6f612e8a888e5b1026878e4e19398b23bd38ec221a",
+      "sourceId": "components.Login.password"
+    },
+    {
+      "position": 1885,
+      "source": "Plex sign-in succeeded, but Seerr could not establish a browser session. Check that you are using the HTTPS URL or that direct HTTP session cookies are enabled.",
+      "sourceHash": "ea2c3a38697354690a195744af8cf251276b10dbbafe67adb50ae5ab7ac3e464",
+      "sourceId": "components.Login.plexSessionMissing"
+    },
+    {
+      "position": 1886,
+      "source": "Unable to complete Plex sign-in.",
+      "sourceHash": "c0ae5c54b288a7cd0ce07acf1082b78fb27db5281813e9fa2de1b4e6b1cbe9e4",
+      "sourceId": "components.Login.plexSigninFailed"
+    },
+    {
+      "position": 1887,
+      "source": "Port",
+      "sourceHash": "72e9a59f5a1d6289dbacb35df897d6c007c55a27e77018455c37e7b372668475",
+      "sourceId": "components.Login.port"
+    },
+    {
+      "position": 1888,
+      "source": "Quick Connect",
+      "sourceHash": "d15125b20094fb706cde57206480a64247e3514f3f69d357a00ef457148c1060",
+      "sourceId": "components.Login.quickconnect"
+    },
+    {
+      "position": 1889,
+      "source": "Quick Connect failed. Please try again.",
+      "sourceHash": "b0a276de214e8e07d279d9c5767c0d3bae4b76820182f25d2548d329286d3d4d",
+      "sourceId": "components.Login.quickconnecterror"
+    },
+    {
+      "position": 1890,
+      "source": "Add",
+      "sourceHash": "9fd728c66c9a256b121472dabf32a34317aed01d8427d70ec830289cf23a7cc8",
+      "sourceId": "components.Login.save"
+    },
+    {
+      "position": 1891,
+      "source": "Something went wrong while saving.",
+      "sourceHash": "6fd997c5ce89fb13435df1a77da959c4066be95506d64423f7b48183d5ee349e",
+      "sourceId": "components.Login.saveFailed"
+    },
+    {
+      "position": 1892,
+      "source": "Adding…",
+      "sourceHash": "c6de6f45c827f464b161b668ae93192ce4e6585c4029d8dd71795cbd7f922719",
+      "sourceId": "components.Login.saving"
+    },
+    {
+      "position": 1893,
+      "source": "Series",
+      "sourceHash": "a8295e08ff7a961c8983c52226d29cb036dbdb21e110a5988f6a461db5bdf366",
+      "sourceId": "components.Login.series"
+    },
+    {
+      "position": 1894,
+      "source": "Server Type",
+      "sourceHash": "3424992ef33c572efa635fbc6284f7501f8454595e0a664edaa6bd65fc5a55ed",
+      "sourceId": "components.Login.servertype"
+    },
+    {
+      "position": 1895,
+      "source": "Sign-in succeeded, but the browser session could not be established.",
+      "sourceHash": "25a2fb370c52d1ce69a44c07eab1da198412011ae6ffbd265c087207a5e5a7b7",
+      "sourceId": "components.Login.sessionMissing"
+    },
+    {
+      "position": 1896,
+      "source": "Sign-in succeeded, but SeerrNG could not establish a browser session. Use HTTPS or enable authenticated HTTP sessions, then try again.",
+      "sourceHash": "29b044155bda97983f7253a83ee96bf92564c33663fecfb6ae0df455d646ffb4",
+      "sourceId": "components.Login.sessionerror"
+    },
+    {
+      "position": 1897,
+      "source": "Jellyfin is already configured. Restart SeerrNG if you changed transport settings, then sign in again from the login page.",
+      "sourceHash": "857af5defa2e02f2c29079ff45caee71446a737559d96e8a2120e3c85269b521",
+      "sourceId": "components.Login.setupAlreadyConfigured"
+    },
+    {
+      "position": 1898,
+      "source": "Jellyfin setup was saved, but SeerrNG could not establish a browser session. Restart SeerrNG after changing transport settings, then use HTTPS or enable authenticated HTTP sessions.",
+      "sourceHash": "cb1ccb24aaf180e6030d8d9e11178ec3a2e489bf63e9c2a22fd41f59c9acfdc3",
+      "sourceId": "components.Login.setupSessionError"
+    },
+    {
+      "position": 1899,
+      "source": "Sign In",
+      "sourceHash": "bcc0bcc9140b0c97a6440ce56966a07a05e85bddd509ddc5e2ab98755f319af1",
+      "sourceId": "components.Login.signin"
+    }
+  ],
+  "sourcePositionRange": [
+    1800,
+    1899
+  ],
+  "tree": "ef83a00d078f0a4aed6269b4c23282dbf91fd6f7"
+}

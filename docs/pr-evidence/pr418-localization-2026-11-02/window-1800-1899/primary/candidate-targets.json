@@ -1,0 +1,674 @@
+{
+  "refinements": [
+    "1800|pt_BR",
+    "1801|ko",
+    "1801|vi",
+    "1803|id",
+    "1803|ja",
+    "1805|ar",
+    "1805|fr",
+    "1805|ja",
+    "1805|pt_BR",
+    "1806|id",
+    "1812|es",
+    "1814|es",
+    "1814|fr",
+    "1814|pt_BR",
+    "1819|es",
+    "1823|es",
+    "1824|fr",
+    "1826|pt_BR",
+    "1827|ar",
+    "1832|de",
+    "1832|es",
+    "1832|fr",
+    "1832|pt_BR",
+    "1832|vi",
+    "1836|de",
+    "1838|ar",
+    "1838|de",
+    "1838|es",
+    "1838|fr",
+    "1838|id",
+    "1838|pt_BR",
+    "1838|zh_Hans",
+    "1838|zh_Hant",
+    "1841|fr",
+    "1842|ar",
+    "1848|de",
+    "1848|es",
+    "1848|fr",
+    "1848|pt_BR",
+    "1849|pt_BR",
+    "1856|ar",
+    "1856|de",
+    "1856|es",
+    "1856|fr",
+    "1856|hi",
+    "1856|ja",
+    "1856|pt_BR",
+    "1856|vi",
+    "1857|de",
+    "1857|hi",
+    "1857|ja",
+    "1857|ko",
+    "1857|pt_BR",
+    "1857|vi",
+    "1857|zh_Hans",
+    "1857|zh_Hant",
+    "1858|ar",
+    "1859|ko",
+    "1859|vi",
+    "1863|pt_BR",
+    "1872|hi",
+    "1873|ar",
+    "1873|hi",
+    "1873|id",
+    "1873|ko",
+    "1873|pt_BR",
+    "1873|zh_Hans",
+    "1874|pt_BR",
+    "1875|id",
+    "1875|pt_BR",
+    "1877|es",
+    "1877|fr",
+    "1877|hi",
+    "1877|id",
+    "1877|vi",
+    "1880|zh_Hant",
+    "1882|ar",
+    "1885|de",
+    "1885|ko",
+    "1885|zh_Hans",
+    "1885|zh_Hant",
+    "1899|es"
+  ],
+  "targets": {
+    "1800": {
+      "hi": "फ़ॉलो करें",
+      "ko": "팔로우하기",
+      "pt_BR": "Seguir",
+      "vi": "Theo dõi",
+      "zh_Hans": "关注",
+      "zh_Hant": "追蹤"
+    },
+    "1801": {
+      "ko": "아직 팔로우 중인 팀이 없습니다.",
+      "vi": "Bạn chưa theo dõi đội nào.",
+      "zh_Hans": "您尚未关注任何球队。",
+      "zh_Hant": "您尚未追蹤任何球隊。"
+    },
+    "1802": {
+      "ja": "チーム"
+    },
+    "1803": {
+      "ar": "الفرق التي تتابعها",
+      "hi": "फ़ॉलो की गई टीमें",
+      "id": "Tim yang Diikuti",
+      "ja": "フォロー中のチーム",
+      "vi": "Các đội bạn đang theo dõi",
+      "zh_Hans": "已关注的球队",
+      "zh_Hant": "已追蹤的球隊"
+    },
+    "1805": {
+      "ar": "ألغِ متابعة {team}",
+      "fr": "Ne plus suivre {team}",
+      "hi": "फ़ॉलो करना बंद करें: {team}",
+      "id": "Berhenti mengikuti {team}",
+      "ja": "{team} のフォローを解除",
+      "pt_BR": "Deixar de seguir {team}",
+      "vi": "Bỏ theo dõi {team}",
+      "zh_Hans": "取消关注 {team}",
+      "zh_Hant": "取消追蹤 {team}"
+    },
+    "1806": {
+      "id": "Sedang tayang di TV",
+      "zh_Hans": "正在电视直播",
+      "zh_Hant": "正在電視直播"
+    },
+    "1807": {
+      "ar": "موعد العرض",
+      "hi": "प्रसारण समय",
+      "id": "Jadwal tayang",
+      "ja": "放送日時",
+      "ko": "방송 시간",
+      "pt_BR": "Horário de exibição",
+      "vi": "Lịch phát sóng",
+      "zh_Hans": "播出时间",
+      "zh_Hant": "播出時間"
+    },
+    "1808": {
+      "vi": "Bạn không có quyền yêu cầu ghi hình.",
+      "zh_Hans": "您无权请求录制。",
+      "zh_Hant": "您沒有權限要求錄製。"
+    },
+    "1809": {
+      "ko": "채널"
+    },
+    "1812": {
+      "ar": "الموسم {season}، الحلقة {episode}",
+      "es": "Temporada {season}, episodio {episode}",
+      "hi": "सीज़न {season}, एपिसोड {episode}",
+      "ja": "シーズン {season}、エピソード {episode}",
+      "ko": "시즌 {season}, 에피소드 {episode}",
+      "vi": "Mùa {season}, tập {episode}",
+      "zh_Hans": "第{season}季，第{episode}集",
+      "zh_Hant": "第{season}季，第{episode}集"
+    },
+    "1813": {
+      "id": "Sedang tayang di TV",
+      "zh_Hans": "正在电视直播",
+      "zh_Hant": "正在電視直播"
+    },
+    "1814": {
+      "ar": "سيُعرض قريبًا على التلفزيون المباشر — شاهده أو سجّله.",
+      "es": "Se emitirá pronto en televisión en directo. Míralo o grábalo.",
+      "fr": "Bientôt diffusé à la télévision en direct — regardez-le ou enregistrez-le.",
+      "hi": "यह जल्द ही लाइव टीवी पर प्रसारित होगा — इसे देखें या रिकॉर्ड करें।",
+      "id": "Segera tayang di TV — tonton atau rekam.",
+      "ja": "まもなくテレビで放送されます。視聴または録画できます。",
+      "ko": "곧 실시간 TV에서 방송됩니다. 시청하거나 녹화하세요.",
+      "vi": "Sắp phát sóng trên TV trực tiếp — hãy xem hoặc ghi hình.",
+      "zh_Hans": "即将在电视直播中播出——观看或录制。",
+      "zh_Hant": "即將在電視直播中播出——觀看或錄製。"
+    },
+    "1815": {
+      "ar": "سجّل",
+      "fr": "Enregistrer",
+      "hi": "रिकॉर्ड करें",
+      "ja": "録画する",
+      "vi": "Ghi hình",
+      "zh_Hans": "录制",
+      "zh_Hant": "錄製"
+    },
+    "1816": {
+      "ar": "سجّل كل مرة يُعرض فيها",
+      "fr": "Enregistrer à chaque diffusion",
+      "hi": "हर प्रसारण रिकॉर्ड करें",
+      "id": "Rekam setiap kali ditayangkan",
+      "ja": "放送のたびに録画",
+      "ko": "방송할 때마다 녹화",
+      "vi": "Ghi hình mỗi lần phát sóng",
+      "zh_Hans": "每次播出时都录制",
+      "zh_Hant": "每次播出時都錄製"
+    },
+    "1817": {
+      "ar": "يُسجَّل هذا العنوان كلما عُرض ما دام الطلب نشطًا.",
+      "hi": "अनुरोध सक्रिय रहने तक यह शीर्षक हर बार प्रसारित होने पर रिकॉर्ड किया जाता है।",
+      "id": "Judul ini direkam setiap kali ditayangkan selama permintaan masih aktif.",
+      "ja": "リクエストが有効な間、このタイトルが放送されるたびに録画します。",
+      "ko": "요청이 활성화되어 있는 동안 이 제목이 방송될 때마다 녹화합니다.",
+      "vi": "Ghi hình chương trình này mỗi khi được phát sóng trong thời gian yêu cầu còn hiệu lực.",
+      "zh_Hans": "只要请求仍处于有效状态，每当该节目播出时就会录制。",
+      "zh_Hant": "只要請求仍有效，每當該節目播出時就會錄製。"
+    },
+    "1819": {
+      "ar": "تعذّر طلب التسجيل.",
+      "es": "No se pudo solicitar la grabación.",
+      "ja": "録画をリクエストできませんでした。",
+      "ko": "녹화를 요청할 수 없습니다.",
+      "vi": "Không thể yêu cầu ghi hình.",
+      "zh_Hans": "无法请求录制。",
+      "zh_Hant": "無法要求錄製。"
+    },
+    "1820": {
+      "ar": "تم طلب التسجيل. ستتم جدولته بعد الموافقة.",
+      "hi": "रिकॉर्डिंग का अनुरोध किया गया है। इसे मंज़ूरी मिलने के बाद शेड्यूल किया जाएगा।",
+      "id": "Perekaman diminta. Penjadwalannya akan dilakukan setelah disetujui.",
+      "ja": "録画をリクエストしました。承認後にスケジュールされます。",
+      "ko": "녹화가 요청되었습니다. 승인 후 예약됩니다.",
+      "pt_BR": "Gravação solicitada. Será agendada após a aprovação.",
+      "vi": "Đã yêu cầu ghi hình. Lịch ghi hình sẽ được xếp sau khi được phê duyệt.",
+      "zh_Hans": "已提交录制请求。获批后将安排录制。",
+      "zh_Hant": "已提出錄影請求。核准後將安排錄影。"
+    },
+    "1821": {
+      "ar": "تمت جدولة التسجيل.",
+      "hi": "रिकॉर्डिंग शेड्यूल की गई है।",
+      "id": "Perekaman dijadwalkan.",
+      "ja": "録画がスケジュールされました。",
+      "vi": "Đã lên lịch ghi hình.",
+      "zh_Hans": "已安排录制。",
+      "zh_Hant": "已安排錄影。"
+    },
+    "1822": {
+      "hi": "मेरी रिकॉर्डिंग देखें",
+      "id": "Lihat rekaman saya",
+      "ja": "録画一覧を見る",
+      "ko": "내 녹화 목록 보기",
+      "vi": "Xem các bản ghi hình của tôi",
+      "zh_Hans": "查看我的录像",
+      "zh_Hant": "查看我的錄影"
+    },
+    "1823": {
+      "ar": "تعذّر تحديث التسجيل.",
+      "es": "No se pudo actualizar la grabación.",
+      "hi": "रिकॉर्डिंग अपडेट नहीं की जा सकी।",
+      "ja": "録画を更新できませんでした。",
+      "ko": "녹화를 업데이트할 수 없습니다.",
+      "vi": "Không thể cập nhật bản ghi hình.",
+      "zh_Hans": "无法更新录制内容。",
+      "zh_Hant": "無法更新錄影內容。"
+    },
+    "1824": {
+      "ar": "التسجيلات النشطة فقط",
+      "fr": "Actives uniquement",
+      "ko": "활성 녹화만",
+      "pt_BR": "Apenas gravações ativas",
+      "vi": "Chỉ hiển thị các bản ghi đang hoạt động",
+      "zh_Hans": "仅显示进行中的录制",
+      "zh_Hant": "僅顯示進行中的錄影"
+    },
+    "1825": {
+      "ar": "موعد العرض",
+      "hi": "प्रसारण समय",
+      "id": "Jadwal tayang",
+      "ja": "放送日時",
+      "ko": "방송 시간",
+      "pt_BR": "Horário de exibição",
+      "vi": "Lịch phát sóng",
+      "zh_Hans": "播出时间",
+      "zh_Hant": "播出時間"
+    },
+    "1826": {
+      "id": "Saluran apa pun",
+      "pt_BR": "Qualquer canal",
+      "vi": "Kênh bất kỳ"
+    },
+    "1827": {
+      "ar": "وافِق"
+    },
+    "1828": {
+      "vi": "Hủy yêu cầu ghi hình"
+    },
+    "1829": {
+      "ko": "채널"
+    },
+    "1831": {
+      "ja": "録画はまだありません",
+      "ko": "아직 녹화가 없습니다",
+      "vi": "Chưa có bản ghi hình nào",
+      "zh_Hans": "暂无录像",
+      "zh_Hant": "尚無錄影"
+    },
+    "1832": {
+      "ar": "افتح فيلمًا أو مسلسلًا يُعرض على التلفزيون المباشر، ثم اختر «على التلفزيون المباشر» لطلب تسجيله.",
+      "de": "Öffnen Sie einen Film oder eine Serie, die im Live-TV läuft, und wählen Sie „Im Live-TV“, um eine Aufnahme anzufordern.",
+      "es": "Abre una película o serie que se emita en televisión en directo y selecciona «En televisión en directo» para solicitar una grabación.",
+      "fr": "Ouvrez un film ou une série diffusé à la télévision en direct, puis sélectionnez « En direct à la télévision » pour demander un enregistrement.",
+      "hi": "लाइव टीवी पर प्रसारित हो रही कोई फ़िल्म या सीरीज़ खोलें और रिकॉर्डिंग का अनुरोध करने के लिए «लाइव टीवी पर» चुनें।",
+      "id": "Buka film atau serial yang sedang tayang di TV, lalu pilih «Sedang tayang di TV» untuk meminta perekaman.",
+      "ja": "テレビで放送中の映画またはシリーズを開き、「テレビで放送中」を選んで録画をリクエストしてください。",
+      "ko": "실시간 TV에서 방송 중인 영화나 시리즈를 열고 녹화를 요청하려면 ‘실시간 TV에서’를 선택하세요.",
+      "pt_BR": "Abra um filme ou série que esteja passando na TV ao vivo e selecione “Na TV ao vivo” para solicitar uma gravação.",
+      "vi": "Mở một bộ phim hoặc loạt phim đang phát trên TV trực tiếp, rồi chọn “Đang phát trên TV trực tiếp” để yêu cầu ghi hình.",
+      "zh_Hans": "打开一部正在电视直播中播出的电影或剧集，然后选择“正在电视直播”以请求录制。",
+      "zh_Hant": "開啟正在電視直播的電影或影集，然後選擇「正在電視直播」以要求錄製。"
+    },
+    "1833": {
+      "ar": "كل التسجيلات",
+      "ja": "すべての録画",
+      "ko": "모든 녹화",
+      "vi": "Tất cả bản ghi hình",
+      "zh_Hans": "所有录像",
+      "zh_Hant": "所有錄影"
+    },
+    "1834": {
+      "ar": "تعذّر تحميل التسجيلات.",
+      "hi": "रिकॉर्डिंग लोड नहीं की जा सकीं।",
+      "ja": "録画を読み込めませんでした。",
+      "ko": "녹화를 불러올 수 없습니다.",
+      "vi": "Không thể tải các bản ghi hình.",
+      "zh_Hans": "无法加载录像。",
+      "zh_Hant": "無法載入錄影。"
+    },
+    "1835": {
+      "ja": "自分の録画",
+      "ko": "내 녹화",
+      "vi": "Bản ghi hình của tôi",
+      "zh_Hans": "我的录像",
+      "zh_Hant": "我的錄影"
+    },
+    "1836": {
+      "de": "Live-TV-Aufnahmen sind nicht eingerichtet. Ein Administrator kann IPTV Tunerr unter Einstellungen → Dienste verbinden.",
+      "fr": "L’enregistrement de la télévision en direct n’est pas configuré. Un administrateur peut connecter IPTV Tunerr dans Paramètres → Services."
+    },
+    "1837": {
+      "ar": "بث واحد",
+      "hi": "بثّ واحد",
+      "id": "Satu tayangan",
+      "ja": "1回の放送",
+      "ko": "방송 1회",
+      "pt_BR": "Uma transmissão",
+      "vi": "Một lần phát sóng",
+      "zh_Hans": "一次播出",
+      "zh_Hant": "一次播出"
+    },
+    "1838": {
+      "ar": "تاريخ التسجيل",
+      "de": "Aufnahmedatum",
+      "es": "Fecha de grabación",
+      "fr": "Date d’enregistrement",
+      "hi": "रिकॉर्डिंग की तारीख",
+      "id": "Tanggal perekaman",
+      "ja": "録画日時",
+      "ko": "녹화 시간",
+      "pt_BR": "Data da gravação",
+      "vi": "Ngày ghi hình",
+      "zh_Hans": "录制时间",
+      "zh_Hant": "錄影時間"
+    },
+    "1839": {
+      "hi": "अनुरोधकर्ता"
+    },
+    "1841": {
+      "ar": "كل بث",
+      "fr": "Chaque diffusion",
+      "hi": "हर प्रसारण",
+      "id": "Setiap siaran",
+      "ja": "放送のたび",
+      "ko": "매 방송",
+      "vi": "Mỗi lần phát sóng",
+      "zh_Hans": "每次播出",
+      "zh_Hant": "每次播出"
+    },
+    "1842": {
+      "ar": "عرض الكل"
+    },
+    "1843": {
+      "hi": "रद्द किया गया",
+      "ja": "キャンセル済み"
+    },
+    "1844": {
+      "fr": "Enregistré",
+      "hi": "रिकॉर्ड किया गया",
+      "ja": "録画済み",
+      "vi": "Đã ghi hình",
+      "zh_Hans": "已录制"
+    },
+    "1847": {
+      "fr": "En attente d’approbation",
+      "ja": "承認待ち",
+      "ko": "승인 대기",
+      "vi": "Đang chờ phê duyệt"
+    },
+    "1848": {
+      "ar": "جارٍ التسجيل",
+      "de": "Aufnahme läuft",
+      "es": "Grabando",
+      "fr": "En cours d’enregistrement",
+      "hi": "रिकॉर्डिंग जारी",
+      "id": "Sedang merekam",
+      "ja": "録画中",
+      "ko": "녹화 중",
+      "pt_BR": "Gravando",
+      "vi": "Đang ghi hình",
+      "zh_Hans": "录制中",
+      "zh_Hant": "錄影中"
+    },
+    "1849": {
+      "ar": "مجدول",
+      "ja": "予約済み",
+      "ko": "예약됨",
+      "pt_BR": "Agendado",
+      "zh_Hans": "已安排",
+      "zh_Hant": "已排程"
+    },
+    "1850": {
+      "ar": "التسجيلات",
+      "hi": "रिकॉर्डिंग",
+      "ja": "録画一覧",
+      "ko": "녹화",
+      "vi": "Bản ghi hình",
+      "zh_Hans": "录像",
+      "zh_Hant": "錄影"
+    },
+    "1851": {
+      "ar": "جارٍ المعالجة…",
+      "de": "Wird verarbeitet…",
+      "es": "Procesando…",
+      "fr": "Traitement en cours…",
+      "hi": "प्रक्रिया जारी है…",
+      "id": "Sedang diproses…",
+      "ja": "処理中…",
+      "ko": "처리 중…",
+      "pt_BR": "Processando…",
+      "vi": "Đang xử lý…",
+      "zh_Hans": "处理中……",
+      "zh_Hant": "處理中……"
+    },
+    "1853": {
+      "ar": "أدخل هذا الرمز في تطبيق {mediaServerName} الخاص بك.",
+      "hi": "इस कोड को अपने {mediaServerName} ऐप में दर्ज करें।",
+      "id": "Masukkan kode ini di aplikasi {mediaServerName} Anda.",
+      "ja": "このコードを{mediaServerName}アプリに入力してください。",
+      "ko": "이 코드를 {mediaServerName} 앱에 입력하세요.",
+      "pt_BR": "Digite este código no aplicativo {mediaServerName}.",
+      "vi": "Nhập mã này vào ứng dụng {mediaServerName} của bạn.",
+      "zh_Hans": "请在您的 {mediaServerName} 应用中输入此代码。",
+      "zh_Hant": "請在您的 {mediaServerName} 應用程式中輸入此代碼。"
+    },
+    "1854": {
+      "ar": "سجّل الدخول باستخدام الاتصال السريع.",
+      "pt_BR": "Entre com a Conexão Rápida.",
+      "vi": "Đăng nhập bằng Kết nối nhanh.",
+      "zh_Hans": "使用快速连接登录",
+      "zh_Hant": "使用快速連線登入"
+    },
+    "1855": {
+      "ar": "الاتصال السريع"
+    },
+    "1856": {
+      "ar": "دليل إعداد مزوّد الهوية",
+      "de": "Anleitung zur Einrichtung des Identitätsanbieters",
+      "es": "Guía de configuración del proveedor de identidad",
+      "fr": "Guide de configuration du fournisseur d’identité",
+      "hi": "पहचान प्रदाता सेटअप गाइड",
+      "id": "Panduan penyiapan penyedia identitas",
+      "ja": "IDプロバイダー設定ガイド",
+      "ko": "ID 공급자 설정 가이드",
+      "pt_BR": "Guia de configuração do provedor de identidade",
+      "vi": "Hướng dẫn thiết lập nhà cung cấp danh tính",
+      "zh_Hans": "身份提供者设置指南",
+      "zh_Hant": "身分提供者設定指南"
+    },
+    "1857": {
+      "de": "Einrichtungsanleitung für den Identitätsanbieter {provider} (öffnet in einem neuen Tab)",
+      "hi": "पहचान प्रदाता {provider} की सेटअप गाइड (नए टैब में खुलती है)",
+      "id": "Panduan penyiapan penyedia identitas {provider} (terbuka di tab baru)",
+      "ja": "IDプロバイダー {provider} の設定ガイド（新しいタブで開きます）",
+      "ko": "ID 공급자 {provider} 설정 가이드 (새 탭에서 열립니다)",
+      "pt_BR": "Guia de configuração do provedor de identidade {provider} (abre em uma nova aba)",
+      "vi": "Hướng dẫn thiết lập nhà cung cấp danh tính {provider} (mở trong tab mới)",
+      "zh_Hans": "{provider} 身份提供者设置指南（在新标签页中打开）",
+      "zh_Hant": "{provider} 身分提供者設定指南（在新分頁中開啟）"
+    },
+    "1858": {
+      "ar": "يجب عليك استخدام حساب إداري لتسجيل الدخول.",
+      "ko": "로그인하려면 관리자 계정을 사용해야 합니다.",
+      "vi": "Bạn phải dùng tài khoản quản trị viên để đăng nhập.",
+      "zh_Hant": "您必須使用管理員帳號登入。"
+    },
+    "1859": {
+      "ko": "뒤로 가기",
+      "vi": "Quay lại"
+    },
+    "1860": {
+      "es": "El nombre de usuario o la contraseña son incorrectos.",
+      "ko": "사용자 이름 또는 비밀번호가 올바르지 않습니다."
+    },
+    "1861": {
+      "ar": "وضع العرض التوضيحي مفعّل. استخدم بيانات اعتماد العرض التوضيحي لتسجيل الدخول.",
+      "ja": "デモモードが有効です。デモ用の認証情報でサインインしてください。",
+      "ko": "데모 모드가 활성화되어 있습니다. 데모 로그인 정보를 사용해 로그인하세요.",
+      "pt_BR": "O modo de demonstração está ativado. Use as credenciais de demonstração para entrar.",
+      "vi": "Chế độ dùng thử đã bật. Hãy dùng thông tin đăng nhập dùng thử để đăng nhập.",
+      "zh_Hans": "演示模式已启用。请使用演示登录凭据登录。",
+      "zh_Hant": "示範模式已啟用。請使用示範登入憑證登入。"
+    },
+    "1862": {
+      "ar": "أضف عنوان بريد إلكتروني صالحًا لإكمال ملفك الشخصي. سيُستخدم لتلقي الإشعارات وتسجيل الدخول المحلي.",
+      "id": "Tambahkan alamat email yang valid untuk melengkapi profil Anda. Alamat ini akan digunakan untuk notifikasi dan login lokal.",
+      "pt_BR": "Adicione um endereço de e-mail válido para concluir seu perfil. Ele será usado para notificações e login local.",
+      "zh_Hans": "添加有效的电子邮件地址以完善您的个人资料。该地址将用于接收通知和本地登录。",
+      "zh_Hant": "新增有效的電子郵件地址以完成您的個人檔案。此地址將用於接收通知和本機登入。"
+    },
+    "1863": {
+      "pt_BR": "Endereço de e-mail",
+      "vi": "Địa chỉ email"
+    },
+    "1865": {
+      "es": "El correo electrónico o la contraseña son incorrectos.",
+      "pt_BR": "O endereço de e-mail ou a senha estão incorretos."
+    },
+    "1866": {
+      "fr": "Cette adresse e-mail n’a pas besoin d’être liée à votre instance {mediaServerName}.",
+      "hi": "इस ईमेल पते का {mediaServerName} इंस्टेंस से जुड़ा होना ज़रूरी नहीं है।",
+      "id": "Alamat email ini tidak harus terkait dengan instans {mediaServerName} Anda.",
+      "ko": "이 이메일 주소는 {mediaServerName} 인스턴스와 연결되어 있지 않아도 됩니다.",
+      "vi": "Địa chỉ email này không cần liên kết với máy chủ {mediaServerName} của bạn.",
+      "zh_Hant": "此電子郵件地址不必與您的 {mediaServerName} 執行個體相關聯。"
+    },
+    "1868": {
+      "id": "Lupa kata sandi?"
+    },
+    "1872": {
+      "hi": "{mediaServerName} सर्वर से कनेक्ट नहीं हो पा रहा है।",
+      "id": "Tidak dapat terhubung ke server {mediaServerName}.",
+      "ko": "{mediaServerName} 서버에 연결할 수 없습니다.",
+      "vi": "Không thể kết nối với máy chủ {mediaServerName}."
+    },
+    "1873": {
+      "ar": "إذا لم تضف عنوان بريد إلكتروني إلى ملفك الشخصي، فاستخدم اسم المستخدم الخاص بك على {mediaServerName} بدلًا منه.",
+      "hi": "यदि आपने अपनी प्रोफ़ाइल में ईमेल पता सेट नहीं किया है, तो इसके बजाय अपना {mediaServerName} उपयोगकर्ता नाम इस्तेमाल करें।",
+      "id": "Jika Anda belum menambahkan alamat email ke profil, gunakan nama pengguna {mediaServerName} Anda.",
+      "ko": "프로필에 이메일 주소를 설정하지 않았다면, 대신 {mediaServerName} 사용자 이름을 사용하세요.",
+      "pt_BR": "Se você não definiu um endereço de e-mail no perfil, use seu nome de usuário do {mediaServerName}.",
+      "vi": "Nếu bạn chưa đặt địa chỉ email trong hồ sơ, hãy dùng tên người dùng {mediaServerName} của bạn.",
+      "zh_Hans": "如果您尚未在个人资料中设置电子邮件地址，请改用您的 {mediaServerName} 用户名。",
+      "zh_Hant": "如果您尚未在個人檔案中設定電子郵件地址，請改用您的 {mediaServerName} 使用者名稱。"
+    },
+    "1874": {
+      "ar": "تابع باستخدام رابط تسجيل الدخول",
+      "id": "Lanjutkan dengan tautan masuk",
+      "pt_BR": "Continuar com o link de login.",
+      "zh_Hant": "繼續使用登入連結"
+    },
+    "1875": {
+      "id": "Tautan masuk ini tidak dapat digunakan.",
+      "ko": "이 로그인 링크를 사용할 수 없습니다.",
+      "pt_BR": "Não é possível usar este link de login.",
+      "vi": "Không thể sử dụng liên kết đăng nhập này.",
+      "zh_Hant": "無法使用此登入連結。"
+    },
+    "1877": {
+      "ar": "سجّل الدخول باستخدام رابط لمرة واحدة.",
+      "es": "Inicia sesión con un enlace de un solo uso.",
+      "fr": "Se connecter avec un lien à usage unique",
+      "hi": "एक बार इस्तेमाल होने वाले लिंक से साइन इन करें",
+      "id": "Masuk dengan tautan sekali pakai",
+      "ko": "일회용 링크로 로그인",
+      "pt_BR": "Entre com um link de uso único.",
+      "vi": "Đăng nhập bằng liên kết dùng một lần",
+      "zh_Hans": "使用一次性链接登录",
+      "zh_Hant": "使用一次性連結登入"
+    },
+    "1878": {
+      "ar": "جارٍ تسجيل الدخول…",
+      "fr": "Connexion en cours…",
+      "hi": "साइन इन हो रहा है…",
+      "id": "Sedang masuk…",
+      "ja": "サインイン中…",
+      "pt_BR": "Entrando…",
+      "vi": "Đang đăng nhập…",
+      "zh_Hans": "正在登录……",
+      "zh_Hant": "正在登入……"
+    },
+    "1879": {
+      "vi": "Đã xảy ra lỗi khi đăng nhập."
+    },
+    "1880": {
+      "zh_Hant": "透過 {appName} 登入"
+    },
+    "1882": {
+      "ar": "لم يتم العثور على مستخدم مسؤول في الخادم.",
+      "vi": "Không tìm thấy người dùng quản trị trên máy chủ."
+    },
+    "1883": {
+      "id": "Atau masuk dengan",
+      "vi": "Hoặc đăng nhập bằng",
+      "zh_Hant": "或使用以下方式登入"
+    },
+    "1885": {
+      "de": "Die Plex-Anmeldung war erfolgreich, aber Seerr konnte keine Browsersitzung einrichten. Prüfen Sie, ob Sie die HTTPS-URL verwenden oder direkte HTTP-Sitzungscookies aktiviert sind.",
+      "fr": "La connexion à Plex a réussi, mais Seerr n’a pas pu établir une session de navigateur. Vérifiez que vous utilisez une URL HTTPS ou que les cookies de session HTTP direct sont activés.",
+      "id": "Login Plex berhasil, tetapi Seerr tidak dapat membuat sesi browser. Pastikan Anda menggunakan URL HTTPS atau mengaktifkan cookie sesi HTTP langsung.",
+      "ko": "Plex 로그인은 성공했지만 Seerr에서 브라우저 세션을 설정하지 못했습니다. HTTPS URL을 사용하는지 또는 직접 HTTP 세션 쿠키가 활성화되어 있는지 확인하세요.",
+      "pt_BR": "O login no Plex foi bem-sucedido, mas o Seerr não conseguiu estabelecer uma sessão no navegador. Verifique se está usando uma URL HTTPS ou se os cookies de sessão HTTP direto estão habilitados.",
+      "vi": "Đăng nhập Plex thành công, nhưng Seerr không thể thiết lập phiên trình duyệt. Hãy kiểm tra xem bạn có đang dùng URL HTTPS hoặc đã bật cookie phiên HTTP trực tiếp hay không.",
+      "zh_Hans": "Plex 登录成功，但 Seerr 无法建立浏览器会话。请检查您是否使用 HTTPS URL，或是否已启用直接 HTTP 会话 Cookie。",
+      "zh_Hant": "Plex 登入成功，但 Seerr 無法建立瀏覽器工作階段。請確認您使用的是 HTTPS URL，或已啟用直接 HTTP 工作階段 Cookie。"
+    },
+    "1886": {
+      "id": "Tidak dapat menyelesaikan login Plex.",
+      "ko": "Plex 로그인을 완료할 수 없습니다.",
+      "pt_BR": "Não foi possível concluir o login no Plex.",
+      "vi": "Không thể hoàn tất đăng nhập Plex."
+    },
+    "1887": {
+      "ko": "포트"
+    },
+    "1888": {
+      "ar": "الاتصال السريع"
+    },
+    "1889": {
+      "ar": "فشل الاتصال السريع. يُرجى المحاولة مرة أخرى.",
+      "zh_Hant": "快速連線失敗，請再試一次。"
+    },
+    "1890": {
+      "ko": "추가"
+    },
+    "1891": {
+      "ar": "حدث خطأ أثناء الحفظ.",
+      "id": "Terjadi kesalahan saat menyimpan.",
+      "vi": "Đã xảy ra lỗi khi lưu.",
+      "zh_Hans": "保存时出了问题。",
+      "zh_Hant": "儲存時發生錯誤。"
+    },
+    "1892": {
+      "ko": "추가 중…"
+    },
+    "1895": {
+      "id": "Login berhasil, tetapi sesi browser tidak dapat dibuat.",
+      "pt_BR": "O login foi bem-sucedido, mas não foi possível estabelecer a sessão do navegador.",
+      "zh_Hans": "登录成功，但无法建立浏览器会话。",
+      "zh_Hant": "登入成功，但無法建立瀏覽器工作階段。"
+    },
+    "1896": {
+      "ar": "نجح تسجيل الدخول، لكن SeerrNG لم يتمكّن من إنشاء جلسة متصفح. استخدم HTTPS أو فعّل جلسات HTTP الموثّقة، ثم حاول مجددًا.",
+      "fr": "La connexion a réussi, mais SeerrNG n’a pas pu établir une session de navigateur. Utilisez HTTPS ou activez les sessions HTTP authentifiées, puis réessayez.",
+      "hi": "साइन-इन सफल हुआ, लेकिन SeerrNG ब्राउज़र सत्र स्थापित नहीं कर सका। HTTPS का उपयोग करें या प्रमाणित HTTP सत्र सक्षम करें, फिर दोबारा प्रयास करें।",
+      "pt_BR": "O login foi bem-sucedido, mas o SeerrNG não conseguiu estabelecer uma sessão no navegador. Use HTTPS ou ative sessões HTTP autenticadas e tente novamente.",
+      "vi": "Đăng nhập thành công nhưng SeerrNG không thể thiết lập phiên trình duyệt. Hãy dùng HTTPS hoặc bật các phiên HTTP đã xác thực, rồi thử lại.",
+      "zh_Hans": "登录成功，但 SeerrNG 无法建立浏览器会话。请使用 HTTPS 或启用经过身份验证的 HTTP 会话，然后重试。",
+      "zh_Hant": "登入成功，但 SeerrNG 無法建立瀏覽器工作階段。請使用 HTTPS 或啟用經過驗證的 HTTP 工作階段，然後重試。"
+    },
+    "1897": {
+      "fr": "Jellyfin est déjà configuré. Si vous avez modifié les paramètres de transport, redémarrez SeerrNG, puis reconnectez-vous depuis la page de connexion.",
+      "ja": "Jellyfin はすでに設定されています。接続方式の設定を変更した場合は、SeerrNG を再起動してから、ログインページでもう一度サインインしてください。",
+      "zh_Hans": "Jellyfin 已配置完成。如果您更改了传输设置，请重启 SeerrNG，然后从登录页面重新登录。",
+      "zh_Hant": "Jellyfin 已設定完成。如果您變更了傳輸設定，請重新啟動 SeerrNG，然後從登入頁面再次登入。"
+    },
+    "1898": {
+      "fr": "La configuration de Jellyfin a été enregistrée, mais SeerrNG n’a pas pu établir une session de navigateur. Après avoir modifié les paramètres de transport, redémarrez SeerrNG, puis utilisez HTTPS ou activez les sessions HTTP authentifiées.",
+      "ja": "Jellyfin の設定は保存されましたが、SeerrNG はブラウザーセッションを確立できませんでした。接続方式の設定を変更した後、SeerrNG を再起動し、HTTPS を使用するか、認証済み HTTP セッションを有効にしてください。",
+      "ko": "Jellyfin 설정이 저장되었지만 SeerrNG에서 브라우저 세션을 설정하지 못했습니다. 전송 설정을 변경한 후 SeerrNG를 다시 시작하고, HTTPS를 사용하거나 인증된 HTTP 세션을 활성화하세요.",
+      "zh_Hans": "Jellyfin 设置已保存，但 SeerrNG 无法建立浏览器会话。更改传输设置后，请重启 SeerrNG，然后使用 HTTPS 或启用经过身份验证的 HTTP 会话。",
+      "zh_Hant": "Jellyfin 設定已儲存，但 SeerrNG 無法建立瀏覽器工作階段。變更傳輸設定後，請重新啟動 SeerrNG，然後使用 HTTPS 或啟用經過驗證的 HTTP 工作階段。"
+    },
+    "1899": {
+      "es": "Iniciar sesión",
+      "vi": "Đăng nhập"
+    }
+  }
+}
