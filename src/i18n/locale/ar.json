@@ -5380,7 +5380,7 @@
   "components.SettingsSoftwareAcquisition.unmatchedSystems": "نظم بدون تطابق {count}",
   "components.SettingsSoftwareAcquisition.unusedCatalogPlatforms": "منابر IGDB غير المستخدمة: {count}",
   "components.SettingsSoftwareAcquisition.useSsl": "الاستخدام SSL",
-  "components.Setup.advancedSetupDescription": "تخطَّ الإعدادات الافتراضية الموجهة واختيارات الخدمات. ستقوم لا يزال بتوصيل خادم الوسائط الخاص بك قبل اكتمال الإعداد.",
+  "components.Setup.advancedSetupDescription": "تخطَّ الإعدادات الافتراضية الموجهة وخيارات الخدمات. ستظل بحاجة إلى توصيل خادم الوسائط الخاص بك قبل اكتمال الإعداد.",
   "components.Setup.advancedSetupSelected": "تم اختيار الإعداد اليدوي. بعد توصيل خادم الوسائط، ستحصل على إعدادات الخدمات الكاملة.",
   "components.Setup.back": "العودة",
   "components.Setup.backToChoices": "العودة إلى الاختيارات",

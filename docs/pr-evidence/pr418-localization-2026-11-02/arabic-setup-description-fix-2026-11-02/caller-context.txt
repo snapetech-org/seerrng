@@ -1,0 +1,18 @@
+67:   configureservices: 'Connect Services',
+68:   backToMediaServerStep: 'Back to media server',
+69:   backToDefaults: 'Back to defaults',
+70:   skipGuidedSetup: 'Skip the guide (advanced)',
+71:   useGuidedSetup: 'Use guided setup',
+72:   advancedSetupDescription:
+73:     'Skip the guided defaults and service choices. You’ll still connect your media server before setup can finish.',
+74:   advancedSetupSelected:
+75:     'Manual setup selected. After connecting your media server, you’ll get the full service settings.',
+76:   backToChoices: 'Back to choices',
+569:                 </div>
+570:               </div>
+571:               <div className="mt-6 w-full max-w-xl rounded-md border border-gray-600 bg-gray-900/40 p-4 text-center">
+572:                 <p className="text-sm leading-5 text-gray-300">
+573:                   {intl.formatMessage(messages.advancedSetupDescription)}
+574:                 </p>
+575:                 {isAdvancedSetup && (
+576:                   <p className="mt-2 text-sm text-indigo-200" role="status">
