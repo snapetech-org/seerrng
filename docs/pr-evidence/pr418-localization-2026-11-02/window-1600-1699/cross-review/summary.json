@@ -1,0 +1,186 @@
+{
+  "additionalFindings": [
+    {
+      "finalTargetSha256": "07a7ce27c8e6d0d6b9cfd1f5aead54caeb0363205b04224dcbf8a969e6b94c74",
+      "locale": "ko",
+      "sourceId": "components.IssueDiscussion.saved",
+      "sourcePosition": 1626,
+      "type": "additional-correction"
+    },
+    {
+      "finalTargetSha256": "f2056f68e3d1b068a3e34023072f891fa57c0377659c928e8e2a700700283ffc",
+      "locale": "ja",
+      "sourceId": "components.IssueList.FocusedIssue.unavailable",
+      "sourcePosition": 1629,
+      "type": "additional-correction"
+    },
+    {
+      "finalTargetSha256": "8d9c3b2cad553b2fc21ce3b7fdc275936878fe12cda557323a665114204e1158",
+      "locale": "fr",
+      "sourceId": "components.IssueList.IssueItem.openarrFormat",
+      "sourcePosition": 1655,
+      "type": "additional-refinement"
+    },
+    {
+      "finalTargetSha256": "dd22ab55ef76e02df5d4af06bdcd447b6d8b6581fa2df9d1b54afab09f03f8d0",
+      "locale": "id",
+      "sourceId": "components.IssueList.IssueItem.runtime",
+      "sourcePosition": 1659,
+      "type": "additional-correction"
+    },
+    {
+      "finalTargetSha256": "42ffd3c981503ff614fc079baa515c37e5ee533e2f09878300e3e29d69474b66",
+      "locale": "id",
+      "sourceId": "components.IssueList.IssueItem.viewDetails",
+      "sourcePosition": 1662,
+      "type": "additional-refinement"
+    },
+    {
+      "finalTargetSha256": "d05687129b0e817527131fcfd9bd1ae58bdd9edd361ae65b4b58f3d546c343cb",
+      "locale": "ar",
+      "sourceId": "components.IssueList.sortModified",
+      "sourcePosition": 1697,
+      "type": "additional-refinement"
+    }
+  ],
+  "blockers": [],
+  "browserReview": false,
+  "callerContextRowsReattested": 100,
+  "callerFilesReattested": 6,
+  "candidateOutcomes": {
+    "acceptedAsProposed": 186,
+    "additionalCurrentIssues": 6,
+    "preservedPriorSpanish": 10,
+    "refined": 0,
+    "rejected": 0
+  },
+  "crossReviewCountsByLocale": {
+    "ar": {
+      "accepted-current": 80,
+      "accepted-primary-candidate": 19,
+      "additional-refinement": 1
+    },
+    "de": {
+      "accepted-current": 94,
+      "accepted-primary-candidate": 6
+    },
+    "es": {
+      "accepted-current": 83,
+      "accepted-primary-candidate": 7,
+      "preserved-prior-disposition": 10
+    },
+    "fr": {
+      "accepted-current": 84,
+      "accepted-primary-candidate": 15,
+      "additional-refinement": 1
+    },
+    "hi": {
+      "accepted-current": 84,
+      "accepted-primary-candidate": 16
+    },
+    "id": {
+      "accepted-current": 92,
+      "accepted-primary-candidate": 6,
+      "additional-correction": 1,
+      "additional-refinement": 1
+    },
+    "ja": {
+      "accepted-current": 78,
+      "accepted-primary-candidate": 21,
+      "additional-correction": 1
+    },
+    "ko": {
+      "accepted-current": 83,
+      "accepted-primary-candidate": 16,
+      "additional-correction": 1
+    },
+    "pt_BR": {
+      "accepted-current": 86,
+      "accepted-primary-candidate": 14
+    },
+    "vi": {
+      "accepted-current": 76,
+      "accepted-primary-candidate": 24
+    },
+    "zh_Hans": {
+      "accepted-current": 85,
+      "accepted-primary-candidate": 15
+    },
+    "zh_Hant": {
+      "accepted-current": 73,
+      "accepted-primary-candidate": 27
+    }
+  },
+  "crossReviewDispositionCounts": {
+    "accepted-current": 998,
+    "accepted-primary-candidate": 186,
+    "additional-correction": 3,
+    "additional-refinement": 3,
+    "preserved-prior-disposition": 10
+  },
+  "currentCellsReattested": 1200,
+  "definitionOnlyCallerGaps": [
+    "components.IssueDetails.IssueMediaSummary.minutes",
+    "components.IssueList.IssueItem.openarr"
+  ],
+  "exactHead": "5aceef6ed6e865ee89383738212d1ce1a5c1f552",
+  "exactTree": "dd6e3495c44c2c14acf8a7a4b09a21e935ceb16d",
+  "frozenSpanishDispositionsReattested": 10,
+  "manageLabelsReattested": 12,
+  "markupMismatches": 0,
+  "nativeSpeakerApproval": false,
+  "parentPacket": "/mnt/disks/scratch/task-scratch/seerrng-pr418-window-1600-1699-primary-20261102",
+  "parentPrimaryLedgerSha256": "8dc30b4f2e7a863b47bad120a4c3fc9dea6b663954a43881eb35e7ddd996360d",
+  "parentSourceCurrentSha256": "213dd5dd359b45eb3c51612fd3c4c3e3255b9313b6e65e4745bc7887189dbc93",
+  "placeholderMismatches": 0,
+  "primaryCandidateRows": 186,
+  "primaryDispositionCounts": {
+    "accept-current": 1004,
+    "preserved-prior-disposition": 10,
+    "propose-correction": 141,
+    "propose-refinement": 45
+  },
+  "priorSpanishPlan": {
+    "blob": "e3fbf4e169f1d47edb51aa9650c7b1018ae235c4",
+    "frozenRows": 10,
+    "path": "docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-600-649/exact-hash-apply-plan.jsonl",
+    "sha256": "7d7f705289cf74d3e84b4bed7c1aedbf4cadf679c35939e3759c780e65877ad3"
+  },
+  "protectedLiteralChecks": 96,
+  "protectedLiteralMismatches": 0,
+  "pullRequest": 418,
+  "repository": "snapetech-org/seerrng",
+  "repositoryModified": false,
+  "schemaVersion": 1,
+  "scope": {
+    "cells": 1200,
+    "locales": [
+      "ar",
+      "de",
+      "es",
+      "fr",
+      "hi",
+      "id",
+      "ja",
+      "ko",
+      "pt_BR",
+      "vi",
+      "zh_Hans",
+      "zh_Hant"
+    ],
+    "positions": [
+      1600,
+      1699
+    ],
+    "sourceIds": 100
+  },
+  "secondReviewerAudit": {
+    "additionalFindingAgreement": 2,
+    "cells": 500,
+    "checksumsVerified": true,
+    "path": "/mnt/disks/scratch/task-scratch/seerrng-pr418-window-1600-1699-independent-audit-by-root-child-20261102",
+    "sha256": "57c724509ace916551b1fa2cbe973d99ae21b476c3be78354fac870fdbc5c066"
+  },
+  "sourceValuesReattested": 100,
+  "testsBuildsScansCiWorkflowsReleasesTagsMerges": false
+}

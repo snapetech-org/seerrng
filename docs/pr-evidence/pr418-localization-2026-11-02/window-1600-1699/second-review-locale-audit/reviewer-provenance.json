@@ -1,0 +1,20 @@
+{
+  "head": "5aceef6ed6e865ee89383738212d1ce1a5c1f552",
+  "locales": [
+    "hi",
+    "ja",
+    "ko",
+    "zh_Hans",
+    "zh_Hant"
+  ],
+  "nativeSpeakerApproval": false,
+  "repositoryOrPrEdits": false,
+  "reviewType": "source-context-aware audit of all 500 cells and all primary proposals in assigned locales",
+  "reviewerRole": "independent locale-subset reviewer",
+  "sourcePositions": [
+    1600,
+    1699
+  ],
+  "testsBuildsScansCiBrowserWorkflows": false,
+  "tree": "dd6e3495c44c2c14acf8a7a4b09a21e935ceb16d"
+}
