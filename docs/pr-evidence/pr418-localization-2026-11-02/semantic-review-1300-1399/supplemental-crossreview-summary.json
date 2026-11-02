@@ -1,0 +1,44 @@
+{
+  "schemaVersion": 1,
+  "task": "Independent cross-review of the eight SeerrNG W1300–1399 supplemental decisions",
+  "repository": "snapetech-org/SeerrNG",
+  "pullRequest": 418,
+  "head": "52221fafe6b1934bd3b5b98369a8b1d04aadb9b4",
+  "tree": "1e0d32abef8f5f38c14562e59f584d8f58cab0bd",
+  "worktree": "/mnt/disks/scratch/task-worktrees/localization-20261102/seerrng-pr418-w1300-1399",
+  "worktreeHead": "52221fafe6b1934bd3b5b98369a8b1d04aadb9b4",
+  "worktreeTree": "1e0d32abef8f5f38c14562e59f584d8f58cab0bd",
+  "worktreeClean": true,
+  "livePullRequestHeadVerified": true,
+  "input": "primary-supplemental-decisions.jsonl plus review-input-all-cells.jsonl",
+  "rows": 8,
+  "counts": {
+    "accept": 8,
+    "refine": 0,
+    "hold": 0
+  },
+  "validation": {
+    "supplementalChecksumManifestPassed": true,
+    "reviewInputAllCellsChecksumPassed": true,
+    "sourceCurrentAttestationChecksumPassed": true,
+    "sourceContextAndCallerAttestationChecksumsPassed": true,
+    "allSourceCurrentRecommendationHashesMatch": true,
+    "allSourceCurrentCatalogValuesReattested": true,
+    "allCallerLinesAndLineHashesReattested": true,
+    "allTargetCatalogBlobsMatchPinnedManifest": true,
+    "allPlaceholderAndMarkupChecksPassed": true,
+    "protectedLiteralIssues": 0,
+    "auxiliaryInputChecksumFailuresAtPacketTime": [
+      "README.md",
+      "manifest.json",
+      "summary.json",
+      "preserved-prior-routing-rows.jsonl",
+      "prior-disposition-boundary.json",
+      "prepare_priors_and_subpackets.py"
+    ],
+    "auxiliaryChecksumNote": "The broad INPUT_SHA256SUMS had the listed stale entries at packet creation. The exact review-input-all-cells.jsonl and the source/current/caller attestation files used here passed their listed hashes; the pinned manifest values and worktree HEAD/tree were also rechecked. The task owner said they would regenerate the broad manifest after metadata updates."
+  },
+  "readOnly": true,
+  "testsBuildsScansCIOrBrowserWorkPerformed": false,
+  "nativeSpeakerClaim": false
+}
