@@ -1,0 +1,63 @@
+{
+  "schemaVersion": 1,
+  "repository": "snapetech-org/seerrng",
+  "pullRequest": 418,
+  "scope": "Independent second review of the 20 first-cross-review refinements and 7 missed corrections from W1100–1199",
+  "reviewHead": "c8f4b2f5f1f42730dcfa8d36214ee827a5d9395a",
+  "reviewTree": "0fe67d04abfd49681556b44e900aceec1b5a9a75",
+  "livePrHeadAtStart": "c8f4b2f5f1f42730dcfa8d36214ee827a5d9395a",
+  "livePrStateAtStart": "OPEN",
+  "livePrDraftAtStart": true,
+  "worktreePath": "/mnt/disks/scratch/task-worktrees/localization-20261102/seerrng-pr418-w1000-1099",
+  "worktreeStatusAtStart": "clean",
+  "selectedRows": 27,
+  "sourceIds": 19,
+  "primaryCandidateRows": 20,
+  "firstReviewDispositionCounts": {
+    "refined": 20,
+    "missed": 7
+  },
+  "ourDispositionCounts": {
+    "accept": 25,
+    "refine": 2
+  },
+  "ourAcceptFirstTargetRows": 25,
+  "ourRefinedRows": 2,
+  "ourHeldRows": 0,
+  "recommendationTargetHashesChecked": 27,
+  "sourceCurrentCurrentCatalogAndCallerHashMismatches": 0,
+  "callerReferenceOccurrencesReattested": 67,
+  "uniqueCallerLinesReattested": 48,
+  "uniqueCallerFiles": 7,
+  "selectedRowsWithExactPriorDisposition": 0,
+  "priorReviewerExposureAmongFirstReviewRows": [
+    [
+      1169,
+      "components.EditionCompare.haveOwned",
+      "pt-BR"
+    ]
+  ],
+  "priorReviewerExposureForThisReview": false,
+  "primaryPacket": {
+    "path": "/mnt/disks/scratch/task-scratch/seerrng-pr418-1100-1199-20261102",
+    "sha256SumsFileSha256": "a97b6ddbaea13152108f0fff83cb07d2473a5ab4cb72222b20be9e6d5f32bff9",
+    "verified": true,
+    "primaryCandidateProposalsSha256": "3491ed70e8fc77ba67582ddeed1837dcf523ca20f4d7dd21776c7b8770035307"
+  },
+  "firstCrossReviewPacket": {
+    "path": "/mnt/disks/scratch/task-scratch/seerrng-pr418-1100-1199-crossreview-20261102",
+    "sha256SumsFileSha256": "a06518239b2ca46c4dc2660f5d84a99cc4ebdc77aebdd382ae46402fa30dafcf",
+    "verified": true,
+    "crossReviewLedgerSha256": "584e1ffc9794a52334f9c382f3772f7b139bd7ac8d06bb6b40e10a74c5a559c3",
+    "missedCorrectionsSha256": "c006cacf5513a0c6e942c5c0a96f035ea1a6a64d95ac7deb137b6e84783fa4ad"
+  },
+  "nativeSpeakerReviewPerformed": false,
+  "browserReviewPerformed": false,
+  "repositoryOrPullRequestEdited": false,
+  "testsBuildsScansCiReleasesRun": false,
+  "blockers": [],
+  "livePrHeadAtFinalCheck": "c8f4b2f5f1f42730dcfa8d36214ee827a5d9395a",
+  "livePrStateAtFinalCheck": "OPEN",
+  "livePrDraftAtFinalCheck": true,
+  "worktreeStatusAtFinalCheck": "clean"
+}

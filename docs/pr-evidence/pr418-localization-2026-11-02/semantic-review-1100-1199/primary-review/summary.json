@@ -1,0 +1,122 @@
+{
+  "schemaVersion": 1,
+  "repository": "snapetech-org/seerrng",
+  "pullRequest": 418,
+  "state": "OPEN",
+  "isDraft": true,
+  "task": "Primary semantic review for SeerrNG PR #418 source positions 1100–1199 across all 12 direct locales",
+  "pin": {
+    "head": "c8f4b2f5f1f42730dcfa8d36214ee827a5d9395a",
+    "tree": "0fe67d04abfd49681556b44e900aceec1b5a9a75",
+    "branch": "codex/seerrng-localization-overhaul-20261028",
+    "baseRefOid": "221d8e0d542802da7529cd272c928cc747677e5c"
+  },
+  "sourceIdPositions": {
+    "count": 100,
+    "startInclusive": 1100,
+    "stopExclusive": 1200
+  },
+  "sourceIds": 100,
+  "locales": [
+    "ar",
+    "de",
+    "es",
+    "fr",
+    "hi",
+    "id",
+    "ja",
+    "ko",
+    "pt-BR",
+    "vi",
+    "zh-CN",
+    "zh-TW"
+  ],
+  "targetCells": 1200,
+  "rowsReviewed": 1200,
+  "priorSpanishDispositionsPreserved": 6,
+  "newSemanticRows": 1194,
+  "callerContextReferencesReattested": 231,
+  "uniqueCallerFiles": 10,
+  "uniqueCallerLines": 229,
+  "placeholderFailures": 0,
+  "markupFailures": 0,
+  "protectedLiteralFailures": 0,
+  "nativeSpeakerReviewPerformed": false,
+  "browserReviewPerformed": false,
+  "notes": [
+    "Window positions 1100–1199 are disjoint from the prior W1000–1099 range.",
+    "Six exact Spanish root dispositions from the prior semantic-review-600-649 evidence intersect this source window; each current value matches the prior applied target and remains frozen.",
+    "All source/current values and caller files/lines were read from exact PR HEAD; semantic candidate mapping is recorded separately in primary-review-ledger.jsonl.",
+    "Machine review only; qualified native-speaker and browser review remain separate.",
+    "Primary candidates preserve all ICU variable names and markup tags. Candidate targets preserve protected product names; every current product-name mismatch is routed to a candidate.",
+    "Semantic accept-current rows were reviewed against source and caller context.",
+    "The six prior root dispositions are the only intersecting dispositions found across current PR evidence."
+  ],
+  "primaryCandidateCount": 218,
+  "primaryCorrectionCandidateCount": 206,
+  "primaryRefinementCandidateCount": 12,
+  "primaryDispositionCounts": {
+    "accept-current": 976,
+    "propose-correction": 206,
+    "preserved-prior-disposition": 6,
+    "propose-refinement": 12
+  },
+  "primaryDispositionCountsByLocale": {
+    "ar": {
+      "accept-current": 77,
+      "propose-correction": 23
+    },
+    "de": {
+      "accept-current": 87,
+      "propose-correction": 11,
+      "propose-refinement": 2
+    },
+    "es": {
+      "propose-correction": 11,
+      "accept-current": 81,
+      "preserved-prior-disposition": 6,
+      "propose-refinement": 2
+    },
+    "fr": {
+      "accept-current": 82,
+      "propose-correction": 14,
+      "propose-refinement": 4
+    },
+    "hi": {
+      "accept-current": 80,
+      "propose-correction": 20
+    },
+    "id": {
+      "accept-current": 77,
+      "propose-correction": 23
+    },
+    "ja": {
+      "propose-correction": 8,
+      "accept-current": 92
+    },
+    "ko": {
+      "accept-current": 88,
+      "propose-correction": 12
+    },
+    "pt-BR": {
+      "accept-current": 77,
+      "propose-correction": 19,
+      "propose-refinement": 4
+    },
+    "vi": {
+      "propose-correction": 32,
+      "accept-current": 68
+    },
+    "zh-CN": {
+      "propose-correction": 17,
+      "accept-current": 83
+    },
+    "zh-TW": {
+      "propose-correction": 16,
+      "accept-current": 84
+    }
+  },
+  "protectedLiteralCurrentIssuesCovered": 7,
+  "candidateProposalFile": "candidate-proposals.jsonl",
+  "candidateHashField": "candidateHash"
+}
