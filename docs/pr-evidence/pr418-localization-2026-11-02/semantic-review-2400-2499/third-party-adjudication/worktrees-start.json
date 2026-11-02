@@ -1,0 +1,14 @@
+{
+  "ChaptarrNG": {
+    "branch": "codex/chaptarrng-localization-complete-20261031",
+    "head": "175cff3a50569b67def345bb82332b30e9bb378c",
+    "statusPorcelain": "",
+    "tree": "e682581e3c577b62215658c374b15a9d3f8f8bd0"
+  },
+  "SeerrNG": {
+    "branch": "codex/seerrng-localization-overhaul-20261028",
+    "head": "f20893e57a89827095fa049d8e0475df7ec7170f",
+    "statusPorcelain": "",
+    "tree": "b5a5952fb4f8a37ea5a39286295f153ce9504f52"
+  }
+}

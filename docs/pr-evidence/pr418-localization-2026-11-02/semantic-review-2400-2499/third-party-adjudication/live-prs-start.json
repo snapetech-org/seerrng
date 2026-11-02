@@ -1,0 +1,22 @@
+[
+  {
+    "baseRefOid": "221d8e0d542802da7529cd272c928cc747677e5c",
+    "headRefName": "codex/seerrng-localization-overhaul-20261028",
+    "headRefOid": "f20893e57a89827095fa049d8e0475df7ec7170f",
+    "isDraft": true,
+    "pullRequest": 418,
+    "repository": "snapetech-org/SeerrNG",
+    "state": "OPEN",
+    "url": "https://github.com/snapetech-org/seerrng/pull/418"
+  },
+  {
+    "baseRefOid": "03274100af783fdffaca4dd8436e163dc6b18795",
+    "headRefName": "codex/chaptarrng-localization-complete-20261031",
+    "headRefOid": "175cff3a50569b67def345bb82332b30e9bb378c",
+    "isDraft": true,
+    "pullRequest": 190,
+    "repository": "snapetech-org/ChaptarrNG",
+    "state": "OPEN",
+    "url": "https://github.com/snapetech-org/chaptarrng/pull/190"
+  }
+]

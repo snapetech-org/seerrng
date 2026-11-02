@@ -1,0 +1,68 @@
+{
+  "repository": "snapetech-org/SeerrNG",
+  "pullRequest": 418,
+  "livePullRequest": {
+    "baseRefOid": "221d8e0d542802da7529cd272c928cc747677e5c",
+    "headRefOid": "f20893e57a89827095fa049d8e0475df7ec7170f",
+    "isDraft": true,
+    "number": 418,
+    "state": "OPEN",
+    "url": "https://github.com/snapetech-org/seerrng/pull/418"
+  },
+  "head": "f20893e57a89827095fa049d8e0475df7ec7170f",
+  "tree": "b5a5952fb4f8a37ea5a39286295f153ce9504f52",
+  "worktree": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng",
+  "worktreeCleanBefore": true,
+  "worktreeCleanAfter": true,
+  "scope": {
+    "positions": [
+      2400,
+      2499
+    ],
+    "locales": [
+      "hi",
+      "id",
+      "vi"
+    ],
+    "cells": 300,
+    "sourceIds": 100
+  },
+  "inputDirectory": "/mnt/disks/scratch/task-scratch/seerrng-pr418-window-2400-2499-primary-20261102",
+  "inputManifestSha256": "b59ca200cdb2832205bc4084d1de5308e3379ed833c8c2b9a7aca3bd27443cb0",
+  "inputSumsFileSha256": "43f1a98ea29f2918278042f800227fd5c0fb80931aaf5f92d3f9b73b0134cca4",
+  "inputChecksumVerification": [
+    "source-window.json: OK",
+    "source-current-cells.jsonl: OK",
+    "caller-contexts.jsonl: OK",
+    "prior-disposition-boundary.json: OK",
+    "input-manifest.json: OK"
+  ],
+  "callerContextCount": 100,
+  "reviewedCellCounts": {
+    "hi": {
+      "cells": 100,
+      "acceptCurrent": 47,
+      "proposeReplacement": 53,
+      "holds": 0
+    },
+    "id": {
+      "cells": 100,
+      "acceptCurrent": 58,
+      "proposeReplacement": 42,
+      "holds": 0
+    },
+    "vi": {
+      "cells": 100,
+      "acceptCurrent": 44,
+      "proposeReplacement": 56,
+      "holds": 0
+    }
+  },
+  "limits": [
+    "Static text and pinned caller review only.",
+    "No browser review or native-speaker approval is claimed.",
+    "No repository or PR files were changed.",
+    "No tests, builds, CI, or browser work were run."
+  ],
+  "confidence": "moderate"
+}

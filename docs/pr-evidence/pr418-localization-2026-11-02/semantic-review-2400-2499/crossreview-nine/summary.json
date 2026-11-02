@@ -1,0 +1,192 @@
+{
+  "additionalCorrections": [
+    {
+      "locale": "ja",
+      "rationale": "The current literal-style wording is awkward; make “Request Sports” a natural action label while retaining the sports-content scope.",
+      "sourcePosition": 2446,
+      "target": "スポーツコンテンツをリクエスト"
+    },
+    {
+      "locale": "ar",
+      "rationale": "The current text says all issues reported by users, omitting “other” and adding “all”; restore the source scope and media context.",
+      "sourcePosition": 2455,
+      "target": "منح الإذن بعرض مشكلات الوسائط التي أبلغ عنها مستخدمون آخرون."
+    },
+    {
+      "locale": "zh_Hant",
+      "rationale": "The current description omits “the list”; restore that explicit object from the English source.",
+      "sourcePosition": 2457,
+      "target": "授予檢視最近新增媒體清單的權限。"
+    },
+    {
+      "locale": "es",
+      "rationale": "“Equipo” alone is a generic team; the caller is the production-credit Crew section, so specify the technical/production crew.",
+      "sourcePosition": 2466,
+      "target": "Equipo técnico"
+    },
+    {
+      "locale": "fr",
+      "rationale": "“Équipe” alone is a generic team; the caller is the production-credit Crew section, so specify the production crew.",
+      "sourcePosition": 2466,
+      "target": "Équipe technique"
+    },
+    {
+      "locale": "ar",
+      "rationale": "The current first-person wording means asking this person for movies; the operation failed to request films associated with this person.",
+      "sourcePosition": 2471,
+      "target": "تعذّر طلب أفلام هذا الشخص."
+    },
+    {
+      "locale": "ko",
+      "rationale": "The current description switches to English for “Audiobook”; localize the term and retain the managed progress/playback meaning.",
+      "sourcePosition": 2496,
+      "target": "오디오북의 진행 상황과 재생은 Grimmory에서 관리합니다."
+    },
+    {
+      "locale": "ja",
+      "rationale": "The current word order leaves the service placeholder detached; place the service before the natural “browse comics” action.",
+      "sourcePosition": 2497,
+      "target": "{serviceName}でコミックを閲覧"
+    }
+  ],
+  "browserReview": false,
+  "crossReviewCounts": {
+    "accepted": 884,
+    "additional": 8,
+    "revised": 8
+  },
+  "head": "f20893e57a89827095fa049d8e0475df7ec7170f",
+  "holds": [],
+  "isDraft": true,
+  "nativeSpeakerApproval": false,
+  "perLocaleCounts": {
+    "ar": {
+      "accepted": 97,
+      "additional": 2,
+      "revised": 1
+    },
+    "de": {
+      "accepted": 100
+    },
+    "es": {
+      "accepted": 99,
+      "additional": 1
+    },
+    "fr": {
+      "accepted": 98,
+      "additional": 1,
+      "revised": 1
+    },
+    "ja": {
+      "accepted": 97,
+      "additional": 2,
+      "revised": 1
+    },
+    "ko": {
+      "accepted": 98,
+      "additional": 1,
+      "revised": 1
+    },
+    "pt_BR": {
+      "accepted": 98,
+      "revised": 2
+    },
+    "zh_Hans": {
+      "accepted": 99,
+      "revised": 1
+    },
+    "zh_Hant": {
+      "accepted": 98,
+      "additional": 1,
+      "revised": 1
+    }
+  },
+  "primaryCallerContextsSha256": "e4bc07b521fb2676c7101404b54d4293d69a73834408e80f6182bb27bc7d235d",
+  "primaryCandidateCountInScope": 199,
+  "primaryCandidatesSha256": "f74fecbbadde9bb6d220f11726d3a7eac63ceae719207aa702810b55214d21c0",
+  "primaryInputManifestSha256": "b59ca200cdb2832205bc4084d1de5308e3379ed833c8c2b9a7aca3bd27443cb0",
+  "primaryLedgerSha256": "7d23eba4418885651a1d0eff715a2ccebfb78ce9bfa9599c07edf20a5b59c120",
+  "primaryPacket": "/mnt/disks/scratch/task-scratch/seerrng-pr418-window-2400-2499-primary-20261102",
+  "primaryPacketSha256Manifest": "2b2eeba80788e160c3e69a34cae9235402a756022728f4cf01646514708bdc1f",
+  "primarySourceCurrentSha256": "a14572ccac64613cb73974e7613538d86eaf289f480cb61712136034093ffecd",
+  "pullRequest": 418,
+  "repository": "snapetech-org/SeerrNG",
+  "reviewNature": "Static text/context review against exact source strings and pinned caller excerpts; no browser or native-speaker review.",
+  "revisions": [
+    {
+      "locale": "pt_BR",
+      "rationale": "The primary candidate broadens the object from non-4K movies to all non-4K media. This keeps the source movie scope.",
+      "sourcePosition": 2443,
+      "target": "Concede permissão para solicitar filmes que não sejam 4K."
+    },
+    {
+      "locale": "ar",
+      "rationale": "The proposal fixes Grimmory but adds sentence punctuation to a short link label; remove the period to match the source label style.",
+      "sourcePosition": 2493,
+      "target": "افتح مكتبة Grimmory للكتب الصوتية"
+    },
+    {
+      "locale": "fr",
+      "rationale": "Use the exact localized Reader Apps label already used in the settings route: “Applications de lecture”.",
+      "sourcePosition": 2499,
+      "target": "Ouvrez la bibliothèque Grimmory dans un navigateur. Pour lire des BD page par page, copiez l’adresse Komga de Grimmory dans Paramètres > Services > Applications de lecture, puis collez-la dans une application compatible."
+    },
+    {
+      "locale": "ja",
+      "rationale": "Use the same localized settings path as the in-app route label (“設定 > サービス > リーダーアプリ”); “読者アプリ” is not the route wording.",
+      "sourcePosition": 2499,
+      "target": "ブラウザでGrimmoryライブラリを開きます。コミックを1ページずつ読むには、設定 > サービス > リーダーアプリでGrimmoryのKomgaアドレスをコピーし、対応アプリに貼り付けます。"
+    },
+    {
+      "locale": "ko",
+      "rationale": "Remove “account” because the source path is Settings > Services > Reader Apps; use the catalog’s localized Settings/Services route.",
+      "sourcePosition": 2499,
+      "target": "브라우저에서 Grimmory 라이브러리를 엽니다. 만화를 페이지별로 읽으려면 설정 > 서비스 > 리더 앱에서 Grimmory의 Komga 주소를 복사해 호환되는 앱에 붙여넣으세요."
+    },
+    {
+      "locale": "pt_BR",
+      "rationale": "Use the exact localized UI path “Configurações > Serviços > Aplicativos de leitura”.",
+      "sourcePosition": 2499,
+      "target": "Abra a biblioteca Grimmory em um navegador. Para ler quadrinhos página por página, copie o endereço Komga do Grimmory em Configurações > Serviços > Aplicativos de leitura e cole-o em um aplicativo compatível."
+    },
+    {
+      "locale": "zh_Hans",
+      "rationale": "“Services” is localized as 服务, not 服务器; use the exact localized route label 阅读器应用.",
+      "sourcePosition": 2499,
+      "target": "在浏览器中打开 Grimmory 图书馆。若要逐页阅读漫画，请前往“设置 > 服务 > 阅读器应用”复制 Grimmory 的 Komga 地址，再粘贴到兼容的应用中。"
+    },
+    {
+      "locale": "zh_Hant",
+      "rationale": "“Services” is localized as 服務, not 伺服器; match the UI route label 閱讀器 App.",
+      "sourcePosition": 2499,
+      "target": "在瀏覽器中開啟 Grimmory 圖書館。若要逐頁閱讀漫畫，請前往「設定 > 服務 > 閱讀器 App」複製 Grimmory 的 Komga 位址，再貼到相容的應用程式中。"
+    }
+  ],
+  "state": "OPEN",
+  "structuralChecks": {
+    "currentTargetsWithProtectedLiteralDrift": 9,
+    "reviewedTargetsMissingProtectedLiteral": 0,
+    "reviewedTargetsWithMarkupParityExact": 900,
+    "reviewedTargetsWithPlaceholderParityExact": 900
+  },
+  "tree": "b5a5952fb4f8a37ea5a39286295f153ce9504f52",
+  "window": {
+    "cells": 900,
+    "locales": [
+      "ar",
+      "de",
+      "es",
+      "fr",
+      "ja",
+      "ko",
+      "pt_BR",
+      "zh_Hans",
+      "zh_Hant"
+    ],
+    "sourceCells": 100,
+    "sourcePositions": [
+      2400,
+      2499
+    ]
+  }
+}
