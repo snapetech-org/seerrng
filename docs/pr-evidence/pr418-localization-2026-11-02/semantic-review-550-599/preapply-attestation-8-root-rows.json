@@ -1,0 +1,77 @@
+{
+  "schemaVersion": 1,
+  "repository": "snapetech-org/seerrng",
+  "pullRequest": 418,
+  "head": "b6935b9f828078a4991b4cbb777b38ef0c0edce5",
+  "tree": "5006af403fd43976b2957e81bce47d4a3401a230",
+  "branch": "codex/seerrng-localization-overhaul-20261028",
+  "targetFile": "src/i18n/locale/de.json",
+  "sourceFile": "src/i18n/locale/en.json",
+  "targetCatalogBlob": "335a2713397feccc02a401eedbe3972fa7338a6b",
+  "targetCatalogSha256": "d13adcf79c59e809afc8f3bba8e67988ec1c3c34fd2b73cb74e8e35e526f4fbb",
+  "sourceCatalogBlob": "12e04a118c30b71b3714291adeaf9fdb2735cee4",
+  "sourceCatalogSha256": "75ff3c90b52aedd636a506281ffbd6fb2d3739c61294b6008a517f17647e2316",
+  "rows": [
+    {
+      "id": "utils.ApiMessage.m8648ea0141ed4a71e641",
+      "sourceHash": "8648ea0141ed4a71e641ac96cc84e9f4e06dadb74467fcaaa71d3731a4d90915",
+      "currentTargetHash": "26a7ad05242ce3a83b6765712dd689809a89c4a41835108a700ef2abab3e8350",
+      "reviewedTargetHash": "3bfeb282db459d850fc7835a698b648f2e33ff678a48547654abc8f9d178e93a",
+      "rootDisposition": "accepted-as-reviewed"
+    },
+    {
+      "id": "utils.ApiMessage.m97ce79cf1b448bb59c9a",
+      "sourceHash": "97ce79cf1b448bb59c9ad49f3b02dcefdab88dff2c7228cc7fbb49164a4a30db",
+      "currentTargetHash": "9630dcf02e981a49c9789998262df47c571806a72b020c89ea8bbeb562771454",
+      "reviewedTargetHash": "879ce70420414dbb7e8f2b405b3ff69652ed2470edb8901535b769768b1c00cb",
+      "rootDisposition": "accepted-as-reviewed"
+    },
+    {
+      "id": "utils.ApiMessage.m9bde48e18fdf8f603a9d",
+      "sourceHash": "9bde48e18fdf8f603a9d70479e26ab56a8bf600bbf8cb40526f5c4257e59ed66",
+      "currentTargetHash": "d31d9f1c13d0eda46a51c8f0ef3c53b7115799b22dbb6839d33e1a35db173fe0",
+      "reviewedTargetHash": "ee8d4d95ff4f8babee70446eae303a4a6df27957edbe2b13f1a3045578b39431",
+      "rootDisposition": "accepted-as-reviewed"
+    },
+    {
+      "id": "utils.ApiMessage.maa82785965f41146fadf",
+      "sourceHash": "aa82785965f41146fadfdd9f6c91e8d23ef3645f0282c3d9da6a4bf781bfb160",
+      "currentTargetHash": "d9d652437f54331e2b0dc5cf742f805d8567751c6e1d5220f0442cc2252bd2ce",
+      "reviewedTargetHash": "bb3e83a6fcb4fb2daa78a03666ee8afd7b9e0e9bc3c24b90c39c1d97e5d62d43",
+      "rootDisposition": "accepted-as-reviewed"
+    },
+    {
+      "id": "utils.ApiMessage.mac9b6118fd805005c14b",
+      "sourceHash": "ac9b6118fd805005c14bb71f43a68dbedd55506ed5b74766807d1500e3f1058a",
+      "currentTargetHash": "1cdd51854860320c1df98b0932306344b2aa5489649590b946703238e406fb79",
+      "reviewedTargetHash": "79ccbab4c63bd1364104f8f801d5706f84accf6f88e38d4449a5e986e896ebb8",
+      "rootDisposition": "accepted-as-reviewed"
+    },
+    {
+      "id": "utils.ApiMessage.mcece9ac3fd00b832e02e",
+      "sourceHash": "cece9ac3fd00b832e02e9fbd9ec3892225349ecbc12ed6e7edabaaaddaf533a8",
+      "currentTargetHash": "4ad3eea33b85c993945a6a639af38e64e997f7b8facfca54e380343af5d80ef8",
+      "reviewedTargetHash": "a67d3abdfd81f0bd3d5cfa43a91e88de3c531bf9fcdacffa1968d03f76eada29",
+      "rootDisposition": "refined-by-root"
+    },
+    {
+      "id": "utils.ApiMessage.md495abc4b8696989481c",
+      "sourceHash": "d495abc4b8696989481c08d309fe0932c744e71332a16b3ced8660690fbc1e00",
+      "currentTargetHash": "df97639ae4dd899383292a8bc6edc37952345a06b752a6afa3b993990c0b9487",
+      "reviewedTargetHash": "5314e563da04d3611095e41e7cfe13fc1093f3e7fb89897545afb4fd9a0a6a5b",
+      "rootDisposition": "confirmed-correction"
+    },
+    {
+      "id": "utils.ApiMessage.mf9195cbbdabacb3f761d",
+      "sourceHash": "f9195cbbdabacb3f761dd1c5bc92c6e53e3e9cfa1e40923038867d467ea8578b",
+      "currentTargetHash": "ab20e4f0b8c037cd5f9ee132f12fbd2c6b5e7c4a58141cbadf4c790531d1d6db",
+      "reviewedTargetHash": "c623a62f79bfe431af6d6ea1d6d464601b44d72e80f93914e87735c84b295e3e",
+      "rootDisposition": "accepted-as-reviewed"
+    }
+  ],
+  "selectedChangeCount": 8,
+  "allSourceAndCurrentTargetHashesMatch": true,
+  "allRootReviewedTargetHashesMatch": true,
+  "nativeSpeakerApproval": false,
+  "targetsApplied": false
+}
