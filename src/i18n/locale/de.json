@@ -3315,7 +3315,7 @@
   "components.Requests.declined": "Abgelehnt",
   "components.Requests.delete": "Löschen",
   "components.Requests.deleteDescription": "Seerr storniert alle aktiven Arbeiten, die es identifizieren kann, bereinigt temporäre Anfragedatensätze und entfernt diesen Eintrag und seine Historie dauerhaft.",
-  "components.Requests.deleteFailed": "Diesen Anforderungseintrag kann nicht gelöscht werden.",
+  "components.Requests.deleteFailed": "Dieser Anfrageeintrag kann nicht gelöscht werden.",
   "components.Requests.deleteSuccess": "Anfrageeintrag gelöscht.",
   "components.Requests.deleteTitle": "Anfrageeintrag löschen?",
   "components.Requests.deleteTooltip": "Löschen Sie diese Anfrage und ihren Statusverlauf.",

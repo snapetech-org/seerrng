@@ -1,0 +1,390 @@
+{
+  "repository": "snapetech-org/seerrng",
+  "pullRequest": 418,
+  "head": "7f652dc9b529506fded0064f73cf4a4d32dba1a9",
+  "tree": "9a42f2efdc0f64e99928a4994304413036b8a315",
+  "window": [
+    3300,
+    3319
+  ],
+  "reviewedCells": 240,
+  "ratifiedCounts": {
+    "accept-current": 131,
+    "hold-context": 60,
+    "correction": 24,
+    "refinement": 25
+  },
+  "plannedChanges": 49,
+  "exactReadbackRows": 240,
+  "exactReadbackMismatches": 0,
+  "pinMismatches": 0,
+  "holdPositions": [
+    3301,
+    3314,
+    3315,
+    3318,
+    3319
+  ],
+  "heldCellsUnchanged": 60,
+  "changesByLocale": {
+    "ar": {
+      "changeCount": 7,
+      "changes": [
+        {
+          "id": "components.Requests.cancelled",
+          "from": "ألغيت",
+          "to": "ملغى",
+          "sha256": "ab7b6061c68c96c4111e9122c021f57d3ae31d651cfb35842d90f9777bc46b1c"
+        },
+        {
+          "id": "components.Requests.changeServer",
+          "from": "تغيير سيرفر",
+          "to": "تغيير الخادم",
+          "sha256": "41d824cb84694c52f62931c4b225b5be711e4dd615526a231e99a2483561055b"
+        },
+        {
+          "id": "components.Requests.changeServerTooltip",
+          "from": "اختر خادماً آخر وأعيد تقديم هذا الطلب الفاشل",
+          "to": "اختر خادمًا آخر وأعد تقديم هذا الطلب الذي فشل.",
+          "sha256": "e2d54ffb37174504495e82c9fbec8e13f704857273add7a5d596bc72a76abfb5"
+        },
+        {
+          "id": "components.Requests.creator",
+          "from": "الخالق",
+          "to": "المُبدع",
+          "sha256": "67f4d7b5353ba73eb79b5162075d7d116e4a57bbcb5a8c3c385772b20d02a9db"
+        },
+        {
+          "id": "components.Requests.declineTooltip",
+          "from": "البت في هذا الطلب.",
+          "to": "ارفض هذا الطلب المعلّق.",
+          "sha256": "84adb4c056a388a6c9a421a50cf820015671f8392e8a15a108c7a84743ac3633"
+        },
+        {
+          "id": "components.Requests.deleteFailed",
+          "from": "غير قادر على حذف هذا الطلب",
+          "to": "تعذّر حذف سجل هذا الطلب.",
+          "sha256": "d037fc63ad7949961dde05aad93f3776c060dc70e82783373da22979435b27ca"
+        },
+        {
+          "id": "components.Requests.deleteSuccess",
+          "from": "تم حذف طلب الدخول",
+          "to": "تم حذف سجل الطلب.",
+          "sha256": "6dbe6a1153e8fcf891f2d0bec4cb05835b0870168034743339b2608078019fb7"
+        }
+      ]
+    },
+    "de": {
+      "changeCount": 1,
+      "changes": [
+        {
+          "id": "components.Requests.deleteFailed",
+          "from": "Diesen Anforderungseintrag kann nicht gelöscht werden.",
+          "to": "Dieser Anfrageeintrag kann nicht gelöscht werden.",
+          "sha256": "16f4af0126be758f31d161d468cf5193b443bc42d96a61b74412c3d2bff8cae8"
+        }
+      ]
+    },
+    "es": {
+      "changeCount": 2,
+      "changes": [
+        {
+          "id": "components.Requests.declined",
+          "from": "Rechazado",
+          "to": "Rechazada",
+          "sha256": "ed91db3266d088f05469bb414f4549ca6c91c5addaa024d171dca97f2e856d34"
+        },
+        {
+          "id": "components.Requests.deleteFailed",
+          "from": "Incapaz de borrar esta entrada de solicitud.",
+          "to": "No se pudo eliminar esta entrada de solicitud.",
+          "sha256": "6e20e8555e87feeb972c8d9eedc645f5af5c5561a60bcf375a6c77b5edd808e9"
+        }
+      ]
+    },
+    "fr": {
+      "changeCount": 5,
+      "changes": [
+        {
+          "id": "components.Requests.cancelled",
+          "from": "Annulé",
+          "to": "Annulée",
+          "sha256": "2f7ea8495f4785522cd40fb488c04ba59ff4ae26fcb72792eb2ddc872f3df3e4"
+        },
+        {
+          "id": "components.Requests.changeServerTooltip",
+          "from": "Choisissez un autre serveur et envoyez à nouveau cette requête ratée.",
+          "to": "Choisissez un autre serveur et soumettez à nouveau cette demande qui a échoué.",
+          "sha256": "84826c2c31c6299a91b841684202d19c1bcb2dcbcf786034fd73f54db4a9fa48"
+        },
+        {
+          "id": "components.Requests.declined",
+          "from": "Refusé",
+          "to": "Refusée",
+          "sha256": "b3573f3374d6fb825642e30cb5ce0c6da48f69e59b783336c412fd0b9d338342"
+        },
+        {
+          "id": "components.Requests.deleteFailed",
+          "from": "Impossible de supprimer cette entrée de requête.",
+          "to": "Impossible de supprimer l’enregistrement de cette demande.",
+          "sha256": "4433c1d3cc034a949a9df5aa1de9801bd680e3671f4a12596fd6a7da9dc78511"
+        },
+        {
+          "id": "components.Requests.deleteSuccess",
+          "from": "Demande d'entrée supprimée.",
+          "to": "L'entrée de la demande a été supprimée.",
+          "sha256": "8003ff6fa7a334f420027b53aea8695c3151e87fa66b949998aa13221741378c"
+        }
+      ]
+    },
+    "hi": {
+      "changeCount": 5,
+      "changes": [
+        {
+          "id": "components.Requests.cancelled",
+          "from": "रद्द करना",
+          "to": "रद्द किया गया",
+          "sha256": "d48e6d80e4900f053afb3db3d09da0d8a627c6932a1bfc48ffa7a40de114dc60"
+        },
+        {
+          "id": "components.Requests.changeServerTooltip",
+          "from": "अन्य सर्वर चुनें और इस असफल अनुरोध को दोहराएं।",
+          "to": "अन्य सर्वर चुनें और इस विफल अनुरोध को फिर से सबमिट करें।",
+          "sha256": "1f7b783c3d332938f9a9a55641f576136ae9237b59cbe864701eedfb2ca9cc8d"
+        },
+        {
+          "id": "components.Requests.creator",
+          "from": "निर्माता",
+          "to": "रचनाकार",
+          "sha256": "87a2d3fd82130e7212e26febed8e29ede57f9df435dd00212025e97b9e9f0bca"
+        },
+        {
+          "id": "components.Requests.deleteFailed",
+          "from": "इस अनुरोध प्रविष्टि को हटाने में असमर्थ।",
+          "to": "इस अनुरोध प्रविष्टि को हटाया नहीं जा सका।",
+          "sha256": "33b5cad4e28a246532f3ddb47f3efd8ba057994a2edb2387ff78c9538900ec6d"
+        },
+        {
+          "id": "components.Requests.deleteSuccess",
+          "from": "अनुरोध प्रविष्टि हटा दिया गया।",
+          "to": "अनुरोध प्रविष्टि हटा दी गई।",
+          "sha256": "fdcc01e181e6735d88455e439ba0d9239d34c3a72abcbc42fbb1b5fd0e03256e"
+        }
+      ]
+    },
+    "id": {
+      "changeCount": 3,
+      "changes": [
+        {
+          "id": "components.Requests.declineTooltip",
+          "from": "Batalkan permintaan tertunda ini.",
+          "to": "Tolak permintaan tertunda ini.",
+          "sha256": "00a43c67f0b64200be8316cebf5c0dd72f795beea79ee5fee086890abe627ae9"
+        },
+        {
+          "id": "components.Requests.deleteFailed",
+          "from": "Tak bisa menghapus entri permintaan ini.",
+          "to": "Tidak dapat menghapus entri permintaan ini.",
+          "sha256": "f8f3107c5a5cbe46e507d20adf079ac08a43bb67d90877fa4b2c38e60f713f79"
+        },
+        {
+          "id": "components.Requests.deleteSuccess",
+          "from": "Permintaan entri dihapus.",
+          "to": "Entri permintaan telah dihapus.",
+          "sha256": "1feee721c3d4d30a219b29562e5c31c7000c13554618686a5176bb491ab5b1bc"
+        }
+      ]
+    },
+    "ja": {
+      "changeCount": 6,
+      "changes": [
+        {
+          "id": "components.Requests.cancelled",
+          "from": "キャンセル",
+          "to": "キャンセル済み",
+          "sha256": "454e29ea8507c8447550b6aa482f5fac6513be33776abc13497719a5e104e57a"
+        },
+        {
+          "id": "components.Requests.completed",
+          "from": "完了しました",
+          "to": "完了",
+          "sha256": "1031639454032f27aee34d14d86df41c568e65621bb6b7bd802bde092551b870"
+        },
+        {
+          "id": "components.Requests.country",
+          "from": "カントリー",
+          "to": "国",
+          "sha256": "d1566afa505af0f03b9156d0a9a518a25c2d4568b095ef4ee2dca7fcbb6c29c9"
+        },
+        {
+          "id": "components.Requests.decline",
+          "from": "拒否する",
+          "to": "拒否",
+          "sha256": "11095d97586fe8337dbb33875f7f68a4014a7d3ada9674b9226de4b0985a222d"
+        },
+        {
+          "id": "components.Requests.declineTooltip",
+          "from": "この申請書を締め切ります。",
+          "to": "この保留中のリクエストを拒否します。",
+          "sha256": "b3e0c818482f0d85f4b43722e306d9caa1d5368862cda0394caea9ad1bafa401"
+        },
+        {
+          "id": "components.Requests.deleteSuccess",
+          "from": "エントリー削除のリクエスト",
+          "to": "リクエスト項目を削除しました。",
+          "sha256": "653ada2f633f535b17d2d5e0e716886115afa97e3a7938754982c32933f45347"
+        }
+      ]
+    },
+    "ko": {
+      "changeCount": 2,
+      "changes": [
+        {
+          "id": "components.Requests.changeServerTooltip",
+          "from": "다른 서버를 선택하고 이 실패한 요청을 resubmit.",
+          "to": "다른 서버를 선택하고 실패한 이 요청을 다시 제출하세요.",
+          "sha256": "81a4176f15158473e033cba21af93a0bb8ad5f32da58b883c0976d3e630212a6"
+        },
+        {
+          "id": "components.Requests.declineTooltip",
+          "from": "이 보류 요청을 결정합니다.",
+          "to": "대기 중인 요청을 거절하세요.",
+          "sha256": "bde25750bd42f86007580e152c6d61bdef915f330582660818cd9994d43b6bf1"
+        }
+      ]
+    },
+    "pt_BR": {
+      "changeCount": 3,
+      "changes": [
+        {
+          "id": "components.Requests.changeServerTooltip",
+          "from": "Escolha outro servidor e reenvie este pedido falhado.",
+          "to": "Escolha outro servidor e envie novamente este pedido com falha.",
+          "sha256": "d6f2d46f0e1b209d1131c2008dec1c9c42f5e157fd5a1e7a7e83c5a2a2796151"
+        },
+        {
+          "id": "components.Requests.deleteFailed",
+          "from": "Incapaz de apagar esta entrada de solicitação.",
+          "to": "Não foi possível excluir esta entrada de solicitação.",
+          "sha256": "6876657b6768221912842be4c6b70bdbb493ba2bb6d1ff6fa44a9defac543ce9"
+        },
+        {
+          "id": "components.Requests.deleteSuccess",
+          "from": "Pedido de entrada deletada.",
+          "to": "O registro da solicitação foi excluído.",
+          "sha256": "9085923b5ab2707505c083ec3d227ecc9632b9c925e7be5d99b4907f0574e39c"
+        }
+      ]
+    },
+    "vi": {
+      "changeCount": 6,
+      "changes": [
+        {
+          "id": "components.Requests.changeServer",
+          "from": "Đổi máy phục vụ",
+          "to": "Đổi máy chủ",
+          "sha256": "2cbc5b30c7198fe5c4d97fa0c987b81efa762b32f397ed936c8623d1dec6e199"
+        },
+        {
+          "id": "components.Requests.changeServerTooltip",
+          "from": "Chọn một máy phục vụ khác và phục hồi yêu cầu sai này.",
+          "to": "Chọn một máy chủ khác và gửi lại yêu cầu không thành công này.",
+          "sha256": "3a50e14790a236126d9e6646cf849f983c2c44d7c80aa6b1fcbda9ed42709ef4"
+        },
+        {
+          "id": "components.Requests.creator",
+          "from": "Tạo",
+          "to": "Người sáng tạo",
+          "sha256": "398b70e4e870d807f5c4223e391feae0b798610437f003a53e069805279a963a"
+        },
+        {
+          "id": "components.Requests.declineTooltip",
+          "from": "Hủy bỏ yêu cầu chờ này.",
+          "to": "Từ chối yêu cầu đang chờ này.",
+          "sha256": "457592289feca1e2c03022502be947e84984fbc66e73c1c9a94202cd87282da1"
+        },
+        {
+          "id": "components.Requests.deleteFailed",
+          "from": "Không thể xoá mục nhập yêu cầu này.",
+          "to": "Không thể xoá mục yêu cầu này.",
+          "sha256": "0da73efcb0c8be69ce40fa1332b782aeeb958471c9cf6f8fc7316fa45bbfdba1"
+        },
+        {
+          "id": "components.Requests.deleteSuccess",
+          "from": "Yêu cầu được xoá mục.",
+          "to": "Mục yêu cầu đã được xoá.",
+          "sha256": "e745032ab68b63c7c069cffa449ee077f335432f19183811f0169829c8c001d4"
+        }
+      ]
+    },
+    "zh_Hans": {
+      "changeCount": 4,
+      "changes": [
+        {
+          "id": "components.Requests.changeServerTooltip",
+          "from": "选择另一个服务器并重新提交此失败的请求 。",
+          "to": "选择另一台服务器并重新提交此失败的请求。",
+          "sha256": "cab4c65d3629302431c6c249e3ce22f2d1b06035cb8cd7755b1e1ca5cad3f2eb"
+        },
+        {
+          "id": "components.Requests.creator",
+          "from": "创建者",
+          "to": "创作者",
+          "sha256": "86098c2380722da83f9d2f6b8ba2a6478e28610a606f36f21d5f9e13328b6afe"
+        },
+        {
+          "id": "components.Requests.deleteFailed",
+          "from": "无法删除此请求条目 。",
+          "to": "无法删除此请求条目。",
+          "sha256": "0bd4df43378d920120599372ef8acf77ce9bb605bf9c8f51cc5f6afd928dfb4c"
+        },
+        {
+          "id": "components.Requests.deleteSuccess",
+          "from": "请求删除条目 。",
+          "to": "请求条目已删除。",
+          "sha256": "367a169412499671e34cfa6318ce6df8147bfa20bc512cf6acfb8517e50b68c6"
+        }
+      ]
+    },
+    "zh_Hant": {
+      "changeCount": 5,
+      "changes": [
+        {
+          "id": "components.Requests.changeServerTooltip",
+          "from": "選擇另一伺服器並重新提交此失敗的要求 。",
+          "to": "選擇另一台伺服器並重新提交此失敗的請求。",
+          "sha256": "a8420b0af1721930fcbf3816a968f438b9eecfb4130a0ed62ed2de6d0c6244c4"
+        },
+        {
+          "id": "components.Requests.creator",
+          "from": "建立者",
+          "to": "創作者",
+          "sha256": "d6f8bfb35547b1842a4fc6bce5f83a6deabf38e4a2e161bfdfb9db8c3743fc47"
+        },
+        {
+          "id": "components.Requests.declineTooltip",
+          "from": "拒絕等待的請求 。",
+          "to": "拒絕此待處理的請求。",
+          "sha256": "b7fe79d58fe77c3a539af2c14ba550f0ae9ca055c48f2329fbe9f10bf516c8f9"
+        },
+        {
+          "id": "components.Requests.deleteFailed",
+          "from": "無法刪除此要求項目 。",
+          "to": "無法刪除此要求項目。",
+          "sha256": "f25e249e1547b823b83b93620bc2c29c516cb371f1d0d31948bd97598bcb4d2e"
+        },
+        {
+          "id": "components.Requests.deleteSuccess",
+          "from": "要求刪除項目 。",
+          "to": "要求項目已刪除。",
+          "sha256": "ed7745261af871968e1305bc328330623e2e5eafe0e2debe6675e962be055275"
+        }
+      ]
+    }
+  },
+  "unresolvedReviewDisagreements": [],
+  "acceptanceLimit": "Machine adjudication only; no native-speaker approval. Readback is an exact check of the proposed final-value ledger; catalog files were not modified, so repository application readback is pending.",
+  "primaryLedgerSha256": "8c746e6c082a273e65e0aa4a250634d480313d60771c105690b618022ba49016",
+  "independentLedgerSha256": "e9aed7211d5dcd265b7330d0f34769decbb31432b7eb2084d642e8fc30c86a58",
+  "cleanInputSha256": "0d9870af463749b8b7252c0567442289034ad3d8c38cf97afed1043dfeeb4319"
+}

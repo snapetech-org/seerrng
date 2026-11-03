@@ -1,0 +1,28 @@
+{
+  "head": "7f652dc9b529506fded0064f73cf4a4d32dba1a9",
+  "tree": "9a42f2efdc0f64e99928a4994304413036b8a315",
+  "repoWorktreeClean": true,
+  "catalogsReadback": 13,
+  "catalogKeysPerLocale": 9494,
+  "selectedSources": 20,
+  "targetCellsReadback": 240,
+  "currentAndCanonicalHashMismatches": 0,
+  "sourceMismatchCount": 0,
+  "callerContextRows": 56,
+  "callerSnippetPinMismatches": 0,
+  "callerGatedSourceIds": 5,
+  "placeholderParityErrors": 0,
+  "primaryLedgerRows": 240,
+  "primaryDispositionCounts": {
+    "accept-current": 137,
+    "hold-context": 60,
+    "correction": 20,
+    "refinement": 23
+  },
+  "heldCellsWithProposals": 0,
+  "livePrFinalReattestedAt": "2026-11-03T04:52:31Z",
+  "livePrState": "open",
+  "livePrDraft": true,
+  "livePrHead": "7f652dc9b529506fded0064f73cf4a4d32dba1a9",
+  "livePrBranch": "codex/seerrng-localization-overhaul-20261028"
+}
