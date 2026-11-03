@@ -1,0 +1,25 @@
+{
+  "schemaVersion": 1,
+  "reviewer": "independent blind machine review",
+  "repository": "snapetech-org/seerrng",
+  "pullRequest": 418,
+  "window": "W3500-W3519",
+  "head": "9bb8fd4695b207165e4bb8e56c5239eb50cee37c",
+  "tree": "74a4b0208108be4bc593c63c8ac55b4a2df74862",
+  "candidateFreeInputSha256": "822f5f75528a016494cade5f20d09b87eca6c484f51eea5b67ec61257c71fc5b",
+  "sourceCount": 20,
+  "localeCount": 12,
+  "cellCount": 240,
+  "callerlessRows": 0,
+  "placeholderMismatches": 0,
+  "dispositions": {
+    "accept-current": 224,
+    "correction": 9,
+    "refinement": 7
+  },
+  "recommendedChangedCells": 16,
+  "recommendationsSelectedForApplication": 0,
+  "qualifiedNativeSpeakerApproval": false,
+  "exactHeadBrowserReview": false,
+  "releaseApproved": false
+}

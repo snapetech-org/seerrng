@@ -1,0 +1,337 @@
+{
+  "schemaVersion": 1,
+  "repository": "snapetech-org/SeerrNG",
+  "pullRequest": 418,
+  "window": "W3500-W3519",
+  "head": "9bb8fd4695b207165e4bb8e56c5239eb50cee37c",
+  "tree": "74a4b0208108be4bc593c63c8ac55b4a2df74862",
+  "dispositionDisagreementCount": 18,
+  "dispositionDisagreements": [
+    {
+      "position": 3505,
+      "sourceId": "components.Search.retrySearch",
+      "locale": "es",
+      "primaryDisposition": "refinement",
+      "blindDisposition": "accept-current",
+      "finalDisposition": "refinement",
+      "finalTarget": "Inténtalo de nuevo"
+    },
+    {
+      "position": 3505,
+      "sourceId": "components.Search.retrySearch",
+      "locale": "hi",
+      "primaryDisposition": "accept-current",
+      "blindDisposition": "refinement",
+      "finalDisposition": "refinement",
+      "finalTarget": "फिर से कोशिश करें"
+    },
+    {
+      "position": 3505,
+      "sourceId": "components.Search.retrySearch",
+      "locale": "fr",
+      "primaryDisposition": "accept-current",
+      "blindDisposition": "refinement",
+      "finalDisposition": "refinement",
+      "finalTarget": "Réessayer"
+    },
+    {
+      "position": 3505,
+      "sourceId": "components.Search.retrySearch",
+      "locale": "pt_BR",
+      "primaryDisposition": "refinement",
+      "blindDisposition": "accept-current",
+      "finalDisposition": "refinement",
+      "finalTarget": "Tente novamente"
+    },
+    {
+      "position": 3505,
+      "sourceId": "components.Search.retrySearch",
+      "locale": "vi",
+      "primaryDisposition": "accept-current",
+      "blindDisposition": "refinement",
+      "finalDisposition": "refinement",
+      "finalTarget": "Thử lại"
+    },
+    {
+      "position": 3508,
+      "sourceId": "components.Search.searchUnavailable",
+      "locale": "zh_Hant",
+      "primaryDisposition": "correction",
+      "blindDisposition": "refinement",
+      "finalDisposition": "correction",
+      "finalTarget": "目前無法搜尋。"
+    },
+    {
+      "position": 3508,
+      "sourceId": "components.Search.searchUnavailable",
+      "locale": "vi",
+      "primaryDisposition": "correction",
+      "blindDisposition": "refinement",
+      "finalDisposition": "correction",
+      "finalTarget": "Tìm kiếm hiện không khả dụng."
+    },
+    {
+      "position": 3509,
+      "sourceId": "components.Search.searchUnavailableHint",
+      "locale": "fr",
+      "primaryDisposition": "refinement",
+      "blindDisposition": "correction",
+      "finalDisposition": "refinement",
+      "finalTarget": "Impossible d’accéder au catalogue. Réessaie."
+    },
+    {
+      "position": 3509,
+      "sourceId": "components.Search.searchUnavailableHint",
+      "locale": "pt_BR",
+      "primaryDisposition": "refinement",
+      "blindDisposition": "correction",
+      "finalDisposition": "refinement",
+      "finalTarget": "Não foi possível acessar o catálogo. Tente novamente."
+    },
+    {
+      "position": 3509,
+      "sourceId": "components.Search.searchUnavailableHint",
+      "locale": "id",
+      "primaryDisposition": "refinement",
+      "blindDisposition": "correction",
+      "finalDisposition": "refinement",
+      "finalTarget": "Katalog tidak dapat diakses. Coba lagi."
+    },
+    {
+      "position": 3510,
+      "sourceId": "components.Search.searchresults",
+      "locale": "zh_Hans",
+      "primaryDisposition": "correction",
+      "blindDisposition": "accept-current",
+      "finalDisposition": "correction",
+      "finalTarget": "搜索结果"
+    },
+    {
+      "position": 3513,
+      "sourceId": "components.Search.software",
+      "locale": "pt_BR",
+      "primaryDisposition": "accept-current",
+      "blindDisposition": "refinement",
+      "finalDisposition": "refinement",
+      "finalTarget": "Software"
+    },
+    {
+      "position": 3514,
+      "sourceId": "components.Search.sortBy",
+      "locale": "id",
+      "primaryDisposition": "accept-current",
+      "blindDisposition": "refinement",
+      "finalDisposition": "refinement",
+      "finalTarget": "Urutkan berdasarkan"
+    },
+    {
+      "position": 3518,
+      "sourceId": "components.Selector.CertificationSelector.errorLoading",
+      "locale": "es",
+      "primaryDisposition": "refinement",
+      "blindDisposition": "correction",
+      "finalDisposition": "refinement",
+      "finalTarget": "No se pudieron cargar las clasificaciones"
+    },
+    {
+      "position": 3518,
+      "sourceId": "components.Selector.CertificationSelector.errorLoading",
+      "locale": "vi",
+      "primaryDisposition": "refinement",
+      "blindDisposition": "correction",
+      "finalDisposition": "refinement",
+      "finalTarget": "Không thể tải phân loại độ tuổi"
+    },
+    {
+      "position": 3518,
+      "sourceId": "components.Selector.CertificationSelector.errorLoading",
+      "locale": "id",
+      "primaryDisposition": "refinement",
+      "blindDisposition": "correction",
+      "finalDisposition": "refinement",
+      "finalTarget": "Gagal memuat klasifikasi usia"
+    },
+    {
+      "position": 3519,
+      "sourceId": "components.Selector.CertificationSelector.maxRating",
+      "locale": "es",
+      "primaryDisposition": "refinement",
+      "blindDisposition": "accept-current",
+      "finalDisposition": "refinement",
+      "finalTarget": "Clasificación máxima"
+    },
+    {
+      "position": 3519,
+      "sourceId": "components.Selector.CertificationSelector.maxRating",
+      "locale": "id",
+      "primaryDisposition": "refinement",
+      "blindDisposition": "accept-current",
+      "finalDisposition": "refinement",
+      "finalTarget": "Klasifikasi usia maksimum"
+    }
+  ],
+  "targetDisagreementCount": 17,
+  "targetDisagreements": [
+    {
+      "position": 3505,
+      "sourceId": "components.Search.retrySearch",
+      "locale": "es",
+      "currentTarget": "Inténtalo de nuevo.",
+      "primaryTarget": "Inténtalo de nuevo",
+      "blindTarget": "Inténtalo de nuevo.",
+      "finalTarget": "Inténtalo de nuevo"
+    },
+    {
+      "position": 3505,
+      "sourceId": "components.Search.retrySearch",
+      "locale": "hi",
+      "currentTarget": "फिर से कोशिश करो",
+      "primaryTarget": "फिर से कोशिश करो",
+      "blindTarget": "फिर से कोशिश करें",
+      "finalTarget": "फिर से कोशिश करें"
+    },
+    {
+      "position": 3505,
+      "sourceId": "components.Search.retrySearch",
+      "locale": "fr",
+      "currentTarget": "Essaie encore",
+      "primaryTarget": "Essaie encore",
+      "blindTarget": "Réessayer",
+      "finalTarget": "Réessayer"
+    },
+    {
+      "position": 3505,
+      "sourceId": "components.Search.retrySearch",
+      "locale": "pt_BR",
+      "currentTarget": "Tente novamente.",
+      "primaryTarget": "Tente novamente",
+      "blindTarget": "Tente novamente.",
+      "finalTarget": "Tente novamente"
+    },
+    {
+      "position": 3505,
+      "sourceId": "components.Search.retrySearch",
+      "locale": "vi",
+      "currentTarget": "Thử lại đi.",
+      "primaryTarget": "Thử lại đi.",
+      "blindTarget": "Thử lại",
+      "finalTarget": "Thử lại"
+    },
+    {
+      "position": 3508,
+      "sourceId": "components.Search.searchUnavailable",
+      "locale": "zh_Hant",
+      "currentTarget": "搜索目前不可用 。",
+      "primaryTarget": "搜尋目前無法使用。",
+      "blindTarget": "目前無法搜尋。",
+      "finalTarget": "目前無法搜尋。"
+    },
+    {
+      "position": 3508,
+      "sourceId": "components.Search.searchUnavailable",
+      "locale": "vi",
+      "currentTarget": "Tìm kiếm không sẵn sàng.",
+      "primaryTarget": "Tìm kiếm hiện không khả dụng.",
+      "blindTarget": "Hiện không thể tìm kiếm.",
+      "finalTarget": "Tìm kiếm hiện không khả dụng."
+    },
+    {
+      "position": 3509,
+      "sourceId": "components.Search.searchUnavailableHint",
+      "locale": "hi",
+      "currentTarget": "कैटलॉग नहीं पहुंच सकता। फिर से कोशिश करो।",
+      "primaryTarget": "कैटलॉग तक पहुँचा नहीं जा सका। फिर से कोशिश करें।",
+      "blindTarget": "कैटलॉग तक पहुँच नहीं हो सकी। फिर से कोशिश करें।",
+      "finalTarget": "कैटलॉग तक पहुँचा नहीं जा सका। फिर से कोशिश करें।"
+    },
+    {
+      "position": 3509,
+      "sourceId": "components.Search.searchUnavailableHint",
+      "locale": "fr",
+      "currentTarget": "Le catalogue n'a pas pu être atteint. Essaie encore.",
+      "primaryTarget": "Impossible d’accéder au catalogue. Réessaie.",
+      "blindTarget": "Impossible d'accéder au catalogue. Réessaie.",
+      "finalTarget": "Impossible d’accéder au catalogue. Réessaie."
+    },
+    {
+      "position": 3510,
+      "sourceId": "components.Search.searchresults",
+      "locale": "zh_Hans",
+      "currentTarget": "搜索結果",
+      "primaryTarget": "搜索结果",
+      "blindTarget": "搜索結果",
+      "finalTarget": "搜索结果"
+    },
+    {
+      "position": 3513,
+      "sourceId": "components.Search.software",
+      "locale": "pt_BR",
+      "currentTarget": "Programas",
+      "primaryTarget": "Programas",
+      "blindTarget": "Software",
+      "finalTarget": "Software"
+    },
+    {
+      "position": 3514,
+      "sourceId": "components.Search.sortBy",
+      "locale": "id",
+      "currentTarget": "Urut menurut",
+      "primaryTarget": "Urut menurut",
+      "blindTarget": "Urutkan berdasarkan",
+      "finalTarget": "Urutkan berdasarkan"
+    },
+    {
+      "position": 3518,
+      "sourceId": "components.Selector.CertificationSelector.errorLoading",
+      "locale": "es",
+      "currentTarget": "No se pudieron cargar las certificaciones",
+      "primaryTarget": "No se pudieron cargar las clasificaciones",
+      "blindTarget": "No se pudieron cargar las clasificaciones.",
+      "finalTarget": "No se pudieron cargar las clasificaciones"
+    },
+    {
+      "position": 3518,
+      "sourceId": "components.Selector.CertificationSelector.errorLoading",
+      "locale": "vi",
+      "currentTarget": "Lỗi tải chứng nhận",
+      "primaryTarget": "Không thể tải phân loại độ tuổi",
+      "blindTarget": "Không thể tải thông tin phân loại độ tuổi.",
+      "finalTarget": "Không thể tải phân loại độ tuổi"
+    },
+    {
+      "position": 3518,
+      "sourceId": "components.Selector.CertificationSelector.errorLoading",
+      "locale": "id",
+      "currentTarget": "Gagal memuat sertifikasi",
+      "primaryTarget": "Gagal memuat klasifikasi usia",
+      "blindTarget": "Gagal memuat klasifikasi usia.",
+      "finalTarget": "Gagal memuat klasifikasi usia"
+    },
+    {
+      "position": 3519,
+      "sourceId": "components.Selector.CertificationSelector.maxRating",
+      "locale": "es",
+      "currentTarget": "Calificación máxima",
+      "primaryTarget": "Clasificación máxima",
+      "blindTarget": "Calificación máxima",
+      "finalTarget": "Clasificación máxima"
+    },
+    {
+      "position": 3519,
+      "sourceId": "components.Selector.CertificationSelector.maxRating",
+      "locale": "id",
+      "currentTarget": "Rating maksimum",
+      "primaryTarget": "Klasifikasi usia maksimum",
+      "blindTarget": "Rating maksimum",
+      "finalTarget": "Klasifikasi usia maksimum"
+    }
+  ],
+  "holdCount": 0,
+  "holds": [],
+  "selectedChanges": 21,
+  "finalDispositions": {
+    "accept-current": 219,
+    "correction": 6,
+    "refinement": 15
+  }
+}
