@@ -1,10 +1,10 @@
+import * as yaml from 'js-yaml';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import { createRequire } from 'node:module';
 import path from 'node:path';
 import test from 'node:test';
 import { fileURLToPath } from 'node:url';
-import * as yaml from 'js-yaml';
 import { splitDiscordReleaseBody } from './discord-release-notes.mjs';
 
 const rootDirectory = path.resolve(
@@ -25,12 +25,21 @@ test('release workflows use GitHub-hosted runners, including Windows packaging',
       'utf8'
     );
     assert.match(source, /^# ng-runner-policy: github-hosted-primary-v1$/mu);
-    assert.doesNotMatch(source, /self-hosted|packer-windows|private-apple-builds/u);
+    assert.doesNotMatch(
+      source,
+      /self-hosted|packer-windows|private-apple-builds/u
+    );
   }
   const chocolatey = readWorkflow('release-chocolatey.yml');
-  assert.equal(chocolatey.jobs['publish-chocolatey']['runs-on'], 'windows-2025');
+  assert.equal(
+    chocolatey.jobs['publish-chocolatey']['runs-on'],
+    'windows-2025'
+  );
   assert.match(
-    fs.readFileSync(path.join(workflowDirectory, 'release-chocolatey.yml'), 'utf8'),
+    fs.readFileSync(
+      path.join(workflowDirectory, 'release-chocolatey.yml'),
+      'utf8'
+    ),
     /^# ng-runner-policy: github-hosted-primary-v1$/mu
   );
 });
@@ -909,9 +918,10 @@ test('release publishing is dispatched from main and uses public hosted runners'
     release['run-name'],
     "${{ format('action:{0}:pool:{1}:tag:{2}', inputs.action_tag, inputs.runner_pool_tag, inputs.tag) }}"
   );
-  assert.deepEqual(release.on.workflow_dispatch.inputs.runner_pool_tag.options, [
-    'public',
-  ]);
+  assert.deepEqual(
+    release.on.workflow_dispatch.inputs.runner_pool_tag.options,
+    ['public']
+  );
   assert.equal(validation['runs-on'], 'ubuntu-24.04');
   assert.equal(
     release.concurrency.group,

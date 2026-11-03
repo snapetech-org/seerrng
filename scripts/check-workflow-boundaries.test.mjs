@@ -293,18 +293,33 @@ test('hosted runners are the default and gVisor smoke is the only JIT exception'
   assert.equal(forkJob['runs-on'], 'ubuntu-24.04');
   assert.equal(forkSafe.permissions.contents, 'read');
   assert.equal(forkJob.permissions.contents, 'read');
-  assert.match(forkJob.if, /github\.event\.pull_request\.head\.repo\.fork == true/u);
+  assert.match(
+    forkJob.if,
+    /github\.event\.pull_request\.head\.repo\.fork == true/u
+  );
   assert.match(forkJob.if, /github\.event\.pull_request\.base\.ref == 'main'/u);
   assert.doesNotMatch(forkJob.if, /github\.actor|labels|pool:/u);
-  assert.equal(forkCheckout.with.ref, '${{ github.event.pull_request.head.sha }}');
+  assert.equal(
+    forkCheckout.with.ref,
+    '${{ github.event.pull_request.head.sha }}'
+  );
   assert.equal(forkCheckout.with['persist-credentials'], false);
   assert.doesNotMatch(JSON.stringify(forkSafe), /secrets\./u);
 
   for (const fileName of fs
     .readdirSync(workflowsDirectory)
-    .filter((name) => /\.ya?ml$/u.test(name) && name !== 'gvisor-runner-smoke.yml')) {
-    const source = fs.readFileSync(path.join(workflowsDirectory, fileName), 'utf8');
-    assert.match(source, /^# ng-runner-policy: github-hosted-primary-v1/mu, fileName);
+    .filter(
+      (name) => /\.ya?ml$/u.test(name) && name !== 'gvisor-runner-smoke.yml'
+    )) {
+    const source = fs.readFileSync(
+      path.join(workflowsDirectory, fileName),
+      'utf8'
+    );
+    assert.match(
+      source,
+      /^# ng-runner-policy: github-hosted-primary-v1/mu,
+      fileName
+    );
     const workflow = yaml.load(source);
     for (const [jobName, job] of Object.entries(workflow.jobs ?? {})) {
       const runner = job?.['runs-on'];
@@ -491,11 +506,7 @@ test('owner PR validation is metadata-only, main-pinned, and exact-SHA', () => {
     ['test-docs', 'test-docs.yml', 'test-build'],
     ['docs-links', 'docs-link-check.yml', 'link-check'],
   ];
-  for (const [
-    jobId,
-    workflowFile,
-    reusableJobId,
-  ] of reusableOwnerPrChecks) {
+  for (const [jobId, workflowFile, reusableJobId] of reusableOwnerPrChecks) {
     const callerJob = ciWorkflow.jobs[jobId];
     const reusableWorkflow = yaml.load(
       fs.readFileSync(
