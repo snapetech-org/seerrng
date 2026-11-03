@@ -148,6 +148,8 @@ test('release assets build while image verification runs, then package channels 
     dispatchScript,
     /optional_workflows=\([\s\S]*release-snap\.yml/u
   );
+  assert.match(dispatchScript, /-f action_tag=release/u);
+  assert.match(dispatchScript, /-f runner_pool_tag=public/u);
   assert.match(chocolateyDispatchScript, /release-chocolatey\.yml/u);
   assert.match(chocolateyDispatchScript, /--ref main/u);
   assert.match(chocolateyDispatchScript, /-f action_tag=release/u);
@@ -230,6 +232,8 @@ test('release assets build while image verification runs, then package channels 
     (step) => step.name === 'Dispatch Launchpad PPA'
   );
   assert.match(launchpadStep.run, /release-ppa\.yml/u);
+  assert.match(launchpadStep.run, /-f action_tag=release/u);
+  assert.match(launchpadStep.run, /-f runner_pool_tag=public/u);
   assert.match(launchpadStep.run, /SKIP_LAUNCHPAD_DISPATCH/u);
   assert.match(
     launchpadStep.run,

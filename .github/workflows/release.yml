@@ -1267,7 +1267,10 @@ jobs:
             fi
 
             dispatch_started["$workflow"]="$(date -u +%Y-%m-%dT%H:%M:%SZ)"
-            if ! gh workflow run "$workflow" --repo "$REPO" --ref main -f "tag=$TAG"; then
+            if ! gh workflow run "$workflow" --repo "$REPO" --ref main \
+              -f action_tag=release \
+              -f runner_pool_tag=public \
+              -f "tag=$TAG"; then
               exit 1
             fi
             echo "Dispatched $workflow for $TAG."
@@ -1280,7 +1283,10 @@ jobs:
               continue
             fi
             dispatch_started["$workflow"]="$(date -u +%Y-%m-%dT%H:%M:%SZ)"
-            if ! gh workflow run "$workflow" --repo "$REPO" --ref main -f "tag=$TAG"; then
+            if ! gh workflow run "$workflow" --repo "$REPO" --ref main \
+              -f action_tag=release \
+              -f runner_pool_tag=public \
+              -f "tag=$TAG"; then
               echo "::warning::Optional package workflow $workflow could not be dispatched; continuing."
               continue
             fi
@@ -1530,7 +1536,10 @@ jobs:
             echo "Skipping Launchpad PPA dispatch for $TAG; an existing run is already handling it."
             exit 0
           fi
-          if ! gh workflow run release-ppa.yml --repo "$REPO" --ref main -f "tag=$TAG"; then
+          if ! gh workflow run release-ppa.yml --repo "$REPO" --ref main \
+            -f action_tag=release \
+            -f runner_pool_tag=public \
+            -f "tag=$TAG"; then
             echo "::warning::Launchpad PPA could not be dispatched for the already-published release $TAG."
             exit 0
           fi
