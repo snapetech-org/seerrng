@@ -1,0 +1,45 @@
+{
+  "schema": "seerrng-cross-audit-manifest/v1",
+  "repository": "snapetech-org/seerrng",
+  "pullRequest": 418,
+  "head": "eb279fc80be656f379cd893642bf741ba0a24d85",
+  "tree": "85a73172719b38e99a4e74c0ef9a303164cb4fcb",
+  "window": "W3660-W3679",
+  "candidateFreeInput": {
+    "path": "/home/keith/Documents/code/task-scratch/seerrng-pr418-w3660-3679-primary-20261103/candidate-free-input/manifest.json",
+    "sha256": "09c8ae082e01f16b8e512684f8ff9022afbf3331ea594edc063341644faea0e4"
+  },
+  "primaryReview": {
+    "path": "/home/keith/Documents/code/task-scratch/seerrng-pr418-w3660-3679-primary-20261103/primary-review/manifest.json",
+    "sha256": "110dfcadbe10ed8c4c906d230ce9f5e682c39e45ce47b1b61dd8ebdf1bba95fd"
+  },
+  "blindReview": {
+    "path": "/home/keith/Documents/code/task-scratch/seerrng-pr418-w3660-3679-blind-20261103/manifest.json",
+    "sha256": "d0c2ca4e189295a7e0fc37448ac93212a90950cdd8dbcfe728af7e1b1a55efdc"
+  },
+  "livePRState": {
+    "state": "OPEN",
+    "isDraft": true,
+    "headRefName": "codex/seerrng-localization-overhaul-20261028",
+    "headRefOid": "eb279fc80be656f379cd893642bf741ba0a24d85",
+    "url": "https://github.com/snapetech-org/seerrng/pull/418"
+  },
+  "liveRefs": {
+    "refs/heads/codex/seerrng-localization-overhaul-20261028": "eb279fc80be656f379cd893642bf741ba0a24d85",
+    "refs/pull/418/head": "eb279fc80be656f379cd893642bf741ba0a24d85"
+  },
+  "liveTree": "85a73172719b38e99a4e74c0ef9a303164cb4fcb",
+  "cellCount": 240,
+  "updates": 47,
+  "noOps": 193,
+  "newHolds": 0,
+  "priorHoldsReattested": 12,
+  "strictlyBlindCells": 239,
+  "targetExposureLimitedCells": 1,
+  "targetExposureCell": "3660/es",
+  "selectedFromCounts": {
+    "blind": 18,
+    "convergent": 12,
+    "primary": 17
+  }
+}

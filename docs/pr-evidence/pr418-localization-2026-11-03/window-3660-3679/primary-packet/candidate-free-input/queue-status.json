@@ -1,0 +1,30 @@
+{
+  "schemaVersion": 1,
+  "repository": "snapetech-org/seerrng",
+  "pullRequest": 418,
+  "head": "eb279fc80be656f379cd893642bf741ba0a24d85",
+  "tree": "85a73172719b38e99a4e74c0ef9a303164cb4fcb",
+  "sourceCatalogPath": "src/i18n/locale/en.json",
+  "sourceOrderCount": 9494,
+  "sourceOrderSha256": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072",
+  "priorSelectedSourceIdCount": 3660,
+  "priorSelectedSourceIdPrefixSha256": "5f6478a951c78fcc2cda6d3ea031b4668b8988516078f5897216cdb1ea087a90",
+  "selectedSourceIdOrderSha256": "3dfda187cce78a6cd533ae8fe19a62ba3d14ba1711844156e9453804445f9ec5",
+  "previousCompletedWindow": "W3640-W3659",
+  "previousCompletedEndPosition": 3659,
+  "previousCompletedHoldCount": 12,
+  "nextWindow": "W3660-W3679",
+  "nextWindowRangeInclusive": [
+    3660,
+    3679
+  ],
+  "remainingAtWindowStart": 5834,
+  "selectedSourceCount": 20,
+  "remainingAfterWindow": 5814,
+  "callerlessSourcePositions": [],
+  "priorHoldCount": 12,
+  "priorHoldSourcePositions": [
+    3632
+  ],
+  "priorHoldPreservation": "Retain the twelve position-3632 callerless holds by hash; target text is omitted from lineage."
+}

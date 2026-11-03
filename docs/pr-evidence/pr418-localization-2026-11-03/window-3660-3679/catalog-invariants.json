@@ -1,0 +1,198 @@
+{
+  "schemaVersion": 1,
+  "baseHead": "eb279fc80be656f379cd893642bf741ba0a24d85",
+  "baseTree": "85a73172719b38e99a4e74c0ef9a303164cb4fcb",
+  "catalogCount": 12,
+  "catalogs": [
+    {
+      "catalogPath": "src/i18n/locale/ar.json",
+      "baseSha256": "ea613abdfef8c2d65aaa6601571d03de47f789ae09bb8c6df23a7562dc3e6822",
+      "resultSha256": "11ed682150402bc9b9c8f8e834af58599b946df2da8e4a82a3beee631a16511e",
+      "baseGitBlob": "9c1dbdd85aea6bf99c69cd0a9e5dd151bf9da664",
+      "keyCount": 9494,
+      "keySetPreserved": true,
+      "keyOrderPreserved": true,
+      "changedSourceIds": [
+        "components.Settings.BookshelfPathMigration.mediaFiles",
+        "components.Settings.BookshelfPathMigration.preview"
+      ],
+      "changedCellCount": 2
+    },
+    {
+      "catalogPath": "src/i18n/locale/de.json",
+      "baseSha256": "65157924dcd6eaf4aa45d65d368fd14a21ab4f522890294d490c416e1446b59a",
+      "resultSha256": "bda1f533bb8b02b178535b8627c98693d9526d5e079ceb3b4fae2e6deab0aeca",
+      "baseGitBlob": "b1659bb2e60e8cc9764af36fa8053f581506e341",
+      "keyCount": 9494,
+      "keySetPreserved": true,
+      "keyOrderPreserved": true,
+      "changedSourceIds": [
+        "components.Settings.BookshelfPathMigration.missingFiles",
+        "components.Settings.BookshelfPathMigration.noSpaceEstimate",
+        "components.Settings.BookshelfPathMigration.requiredCopy",
+        "components.Settings.BookshelfPathMigration.safety"
+      ],
+      "changedCellCount": 4
+    },
+    {
+      "catalogPath": "src/i18n/locale/es.json",
+      "baseSha256": "0a61ac750997d92c8a71a7e56458488aeb08f65c0c5428cc9f942df2a2402267",
+      "resultSha256": "8161e1a6e1c568157c2948837cf6579ebaf905fbff98532d540205dd557c84f5",
+      "baseGitBlob": "67d9518c45a4fb932c4bf2e85a7f519693369b82",
+      "keyCount": 9494,
+      "keySetPreserved": true,
+      "keyOrderPreserved": true,
+      "changedSourceIds": [
+        "components.Settings.BookshelfPathMigration.missingFiles",
+        "components.Settings.BookshelfPathMigration.noSpaceEstimate",
+        "components.Settings.BookshelfPathMigration.previewReady",
+        "components.Settings.BookshelfPathMigration.safety"
+      ],
+      "changedCellCount": 4
+    },
+    {
+      "catalogPath": "src/i18n/locale/fr.json",
+      "baseSha256": "fe83cfe23b6a764af4ddcabe89456273f96effe5c66422a03f3c93b14cafeed7",
+      "resultSha256": "31201b452bec6af121afa0fd332d5eb2cbf98a1b5d6ee336838c229c5efd55df",
+      "baseGitBlob": "9e3c3475900358c5108aec9bc78f9f60752529d0",
+      "keyCount": 9494,
+      "keySetPreserved": true,
+      "keyOrderPreserved": true,
+      "changedSourceIds": [
+        "components.Settings.BookshelfPathMigration.missingFiles",
+        "components.Settings.BookshelfPathMigration.noSpaceEstimate",
+        "components.Settings.BookshelfPathMigration.preview",
+        "components.Settings.BookshelfPathMigration.queued",
+        "components.Settings.BookshelfPathMigration.safety"
+      ],
+      "changedCellCount": 5
+    },
+    {
+      "catalogPath": "src/i18n/locale/hi.json",
+      "baseSha256": "5c813b7f36c071f25c6052afa8a0f4853cefbc1e4b3fa5fcd63764b4a990ddc1",
+      "resultSha256": "c9c37440038bc8a7985af8ec4ca85b962b7c77dc41de4cd73be3e9f8178e72c0",
+      "baseGitBlob": "c02031e52741134c6726ba23c4d32f8c47ba7bea",
+      "keyCount": 9494,
+      "keySetPreserved": true,
+      "keyOrderPreserved": true,
+      "changedSourceIds": [
+        "components.Settings.BookshelfPathMigration.mediaFiles",
+        "components.Settings.BookshelfPathMigration.noAuthors",
+        "components.Settings.BookshelfPathMigration.previewReady",
+        "components.Settings.BookshelfPathMigration.registeredFiles"
+      ],
+      "changedCellCount": 4
+    },
+    {
+      "catalogPath": "src/i18n/locale/id.json",
+      "baseSha256": "3dede2d3a566d83c9fb034a31b022d84781543f6399e47e6097284effa66a733",
+      "resultSha256": "3dede2d3a566d83c9fb034a31b022d84781543f6399e47e6097284effa66a733",
+      "baseGitBlob": "ec9066f9350664f3ec9f5e286ae14f17e72d6914",
+      "keyCount": 9494,
+      "keySetPreserved": true,
+      "keyOrderPreserved": true,
+      "changedSourceIds": [],
+      "changedCellCount": 0
+    },
+    {
+      "catalogPath": "src/i18n/locale/ja.json",
+      "baseSha256": "70011415b0c20664ecee089f48f372e88d38745851e311a646551e0042ba4899",
+      "resultSha256": "fcee34bc6ee1b095c2b998ca43a39f4ca075f42ae781dcb39dd91645cf9d4e71",
+      "baseGitBlob": "8624a9b372829225e2bf409c01642f248ae026d4",
+      "keyCount": 9494,
+      "keySetPreserved": true,
+      "keyOrderPreserved": true,
+      "changedSourceIds": [
+        "components.Settings.BookshelfPathMigration.mediaFiles",
+        "components.Settings.BookshelfPathMigration.missingFiles",
+        "components.Settings.BookshelfPathMigration.preview",
+        "components.Settings.BookshelfPathMigration.registeredFiles",
+        "components.Settings.BookshelfPathMigration.selectAll",
+        "components.Settings.BookshelfPathMigration.selectAuthor"
+      ],
+      "changedCellCount": 6
+    },
+    {
+      "catalogPath": "src/i18n/locale/ko.json",
+      "baseSha256": "87cce02361d30510e4815f04d498a5a5c03223fe89108e8d3890987c19ac77e8",
+      "resultSha256": "664f4139bd699394d0bd78f641da4be169573c2e1a045c7ce0d31b639087a4fc",
+      "baseGitBlob": "e098bc3a1609c0ad7db1785768ca885516a9cf54",
+      "keyCount": 9494,
+      "keySetPreserved": true,
+      "keyOrderPreserved": true,
+      "changedSourceIds": [
+        "components.Settings.BookshelfPathMigration.mediaFiles",
+        "components.Settings.BookshelfPathMigration.noSpaceEstimate",
+        "components.Settings.BookshelfPathMigration.pageOf",
+        "components.Settings.BookshelfPathMigration.preview",
+        "components.Settings.BookshelfPathMigration.previewError",
+        "components.Settings.BookshelfPathMigration.requiredCopy",
+        "components.Settings.BookshelfPathMigration.safety"
+      ],
+      "changedCellCount": 7
+    },
+    {
+      "catalogPath": "src/i18n/locale/pt_BR.json",
+      "baseSha256": "db21552b46d37d6a054e20e35fca1194e032518246ab5d2ab595ce48a78953d1",
+      "resultSha256": "03f243835453523623d05692d42a6c2921b9cb80eedbd158adb3bf5555e7bbfb",
+      "baseGitBlob": "eea17dbda1d0dc63832baadd669bf36206c45a28",
+      "keyCount": 9494,
+      "keySetPreserved": true,
+      "keyOrderPreserved": true,
+      "changedSourceIds": [
+        "components.Settings.BookshelfPathMigration.noSpaceEstimate",
+        "components.Settings.BookshelfPathMigration.preview",
+        "components.Settings.BookshelfPathMigration.selectAll"
+      ],
+      "changedCellCount": 3
+    },
+    {
+      "catalogPath": "src/i18n/locale/vi.json",
+      "baseSha256": "8c7f04ec532457c2a6e6e0b13dcedb1e9d8a2ff7f7bad8f3e5950455c9472152",
+      "resultSha256": "b2129f82afccccd5fbe2156b3159cae282c2f8c828618f97bbc8cfd334320d72",
+      "baseGitBlob": "e0a4488a6457399730f1fd144d0741e19a8a90f0",
+      "keyCount": 9494,
+      "keySetPreserved": true,
+      "keyOrderPreserved": true,
+      "changedSourceIds": [
+        "components.Settings.BookshelfPathMigration.missingFiles"
+      ],
+      "changedCellCount": 1
+    },
+    {
+      "catalogPath": "src/i18n/locale/zh_Hans.json",
+      "baseSha256": "edbf5b9e801ef619c29fc44143f164064ed9d21fc7dbafabe2ff927cd1dc3200",
+      "resultSha256": "2c551ec2396a5de08edd05f27218dd0d44e500be65452f7dc6b060aabadf7855",
+      "baseGitBlob": "fad1995490772b96a44205c6c014d2d6026f11dc",
+      "keyCount": 9494,
+      "keySetPreserved": true,
+      "keyOrderPreserved": true,
+      "changedSourceIds": [
+        "components.Settings.BookshelfPathMigration.mediaFiles",
+        "components.Settings.BookshelfPathMigration.missingFiles",
+        "components.Settings.BookshelfPathMigration.noAuthors",
+        "components.Settings.BookshelfPathMigration.previewing",
+        "components.Settings.BookshelfPathMigration.registeredFiles"
+      ],
+      "changedCellCount": 5
+    },
+    {
+      "catalogPath": "src/i18n/locale/zh_Hant.json",
+      "baseSha256": "20c1e335b019b2d6ad76d5d1c70b507a2a745d4ee40ee1c9b51b1ba9b3bf5871",
+      "resultSha256": "e12d784b2e862f9621f265ec5d0e6684be091268e7826eb269efbb356dc00174",
+      "baseGitBlob": "fe43ecec7284659bab02543dcbb482c21293934e",
+      "keyCount": 9494,
+      "keySetPreserved": true,
+      "keyOrderPreserved": true,
+      "changedSourceIds": [
+        "components.Settings.BookshelfPathMigration.mediaFiles",
+        "components.Settings.BookshelfPathMigration.missingFiles",
+        "components.Settings.BookshelfPathMigration.noAuthors",
+        "components.Settings.BookshelfPathMigration.previewing",
+        "components.Settings.BookshelfPathMigration.registeredFiles",
+        "components.Settings.BookshelfPathMigration.selectAll"
+      ],
+      "changedCellCount": 6
+    }
+  ]
+}

@@ -3641,7 +3641,7 @@
   "components.Settings.BookshelfPathMigration.fileStatusReady": "Sẵn sàng để di chuyển",
   "components.Settings.BookshelfPathMigration.format": "Định dạng phương tiện",
   "components.Settings.BookshelfPathMigration.mediaFiles": "{count} tập tin phương tiện",
-  "components.Settings.BookshelfPathMigration.missingFiles": "{count} Tập tin bị mất sẽ bị bỏ qua",
+  "components.Settings.BookshelfPathMigration.missingFiles": "{count} tệp bị thiếu sẽ được bỏ qua",
   "components.Settings.BookshelfPathMigration.nextPage": "Trang kế",
   "components.Settings.BookshelfPathMigration.noAuthors": "Không có tác giả trùng định dạng và thư mục đã chọn.",
   "components.Settings.BookshelfPathMigration.noPreviewFiles": "BookshelfNG không đưa vào danh sách từng tệp riêng lẻ.",

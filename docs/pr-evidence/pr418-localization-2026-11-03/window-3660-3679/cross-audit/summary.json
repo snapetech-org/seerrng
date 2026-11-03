@@ -1,0 +1,29 @@
+{
+  "result": "PASS",
+  "head": "eb279fc80be656f379cd893642bf741ba0a24d85",
+  "tree": "85a73172719b38e99a4e74c0ef9a303164cb4fcb",
+  "sourceCount": 20,
+  "localeCount": 12,
+  "cellCount": 240,
+  "selectedUpdates": 47,
+  "noOps": 193,
+  "newHolds": 0,
+  "priorHoldsReattested": 12,
+  "selectedFromCounts": {
+    "blind": 18,
+    "convergent": 12,
+    "primary": 17
+  },
+  "blindProposalOutcomes": {
+    "blindSelected": 18,
+    "primaryBlindConvergent": 12,
+    "primarySelectedOverDifferentBlind": 17,
+    "blindAlternativesNotSelected": 193,
+    "targetExposureLimitedNotUsed": 1
+  },
+  "technicalDiagnostics": "Inherited primary and blind verifiers report zero placeholder multiset, ICU plural-category, markup, numeric-token, and protected-literal mismatches; two page/pages placeholder reorderings remain valid.",
+  "nativeSpeakerReview": "not performed",
+  "browserReview": "not performed",
+  "repositoryOrPRFilesEdited": false,
+  "testsBuildsScansCiReleaseTagsOrMergesRun": false
+}

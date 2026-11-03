@@ -1,0 +1,63 @@
+{
+  "schemaVersion": 1,
+  "packetType": "sealed-primary-semantic-review",
+  "repository": "snapetech-org/seerrng",
+  "pullRequest": 418,
+  "window": "W3660-W3679",
+  "range": [
+    3660,
+    3679
+  ],
+  "head": "eb279fc80be656f379cd893642bf741ba0a24d85",
+  "tree": "85a73172719b38e99a4e74c0ef9a303164cb4fcb",
+  "sourceCount": 20,
+  "localeCount": 12,
+  "cellCount": 240,
+  "decisionCounts": {
+    "accept-current": 205,
+    "correction": 22,
+    "refinement": 13
+  },
+  "holdCount": 0,
+  "carryForwardHoldCount": 12,
+  "candidateFreeInputPath": "/home/keith/Documents/code/task-scratch/seerrng-pr418-w3660-3679-primary-20261103/candidate-free-input",
+  "candidateFreeInputManifestSha256": "09c8ae082e01f16b8e512684f8ff9022afbf3331ea594edc063341644faea0e4",
+  "candidateFreeInputChecksumListSha256": "b4d179e39a77ce84f37143df020795dbbc72a225469ea323abb099470c63075a",
+  "candidateFreeVerifier": "PASS",
+  "nativeSpeakerReview": "not performed",
+  "browserReview": "not performed",
+  "crossAudit": "not performed",
+  "sealedAtUTC": "2026-11-03T17:41:20.096269+00:00",
+  "files": [
+    {
+      "path": "primary-ledger.jsonl",
+      "sha256": "75752d963f31c741d31194d5f1abefb18963daaae6b3427811bddfd720acdfdf",
+      "byteCount": 597545
+    },
+    {
+      "path": "summary.json",
+      "sha256": "4dc095548dd2eee1e2613cacaa8ddf057a4d82f825976498cd9a206756c4d338",
+      "byteCount": 2163
+    },
+    {
+      "path": "input-verification.txt",
+      "sha256": "27a21d4d3d550257d6ff90f628200177b66575d9179a8671792653f3b14b0dd9",
+      "byteCount": 967
+    },
+    {
+      "path": "review-method.json",
+      "sha256": "03d27781ddf40af0e55e10d0bed9ea33b9cb43e8805fe1ec78ad57274cdb20c1",
+      "byteCount": 1149
+    },
+    {
+      "path": "README.md",
+      "sha256": "926418fd905cdce08b2b60cc758d883b316ff1b3a5824d2393a005e7291de8cb",
+      "byteCount": 1143
+    },
+    {
+      "path": "verify_primary.py",
+      "sha256": "70ebef585bd885694062e1aa34025c91e5dee2caf8a3a7a719514c12283826bb",
+      "byteCount": 8525
+    }
+  ]
+}

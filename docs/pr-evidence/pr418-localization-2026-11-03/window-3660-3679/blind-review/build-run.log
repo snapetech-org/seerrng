@@ -1,0 +1,11 @@
+{
+  "checksumSha256": "b0f89c27bffc34de287498cb68f99a553376f58c1b135267a2dd4c59493f88a1",
+  "localeCount": 12,
+  "manifestSha256": "8693dc0b96b7638780030a07bfac6415cdd4a1be19d82481c0a0b2145085c46e",
+  "output": "/home/keith/Documents/code/task-scratch/seerrng-pr418-w3660-3679-blind-20261103",
+  "placeholderChecks": 96,
+  "priorHolds": 12,
+  "proposalCells": 240,
+  "protectedLiteralChecks": 84,
+  "sourceCount": 20
+}

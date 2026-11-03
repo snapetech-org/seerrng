@@ -1,0 +1,13 @@
+{
+  "window": "W3640-W3659",
+  "range": [
+    3640,
+    3659
+  ],
+  "head": "78efa0ef0410ebd8911026ecbbfe1f621d26770b",
+  "tree": "749819bc888fc400bbb185fc9310043ab45c0d5c",
+  "sourceOrderSha256": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072",
+  "selectedSourceIdOrderSha256": "aa0d924b830f268e883c24b992f378f0205e22a9d05fc2cb6f3e8a1bef8b9a14",
+  "candidateFreeManifestSha256": "7f7ddb90b3a0fd25f8c99fbcfe4fe2a8815ce43f145d35b678b49edcfcf4d691",
+  "holdLineageSha256": "77238692cdde495fbb11a941c3d421e3db954c8070793bc97b4701b96f89be4c"
+}
