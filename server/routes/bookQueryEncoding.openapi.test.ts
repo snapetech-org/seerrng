@@ -7,9 +7,8 @@ import express from 'express';
 import * as OpenApiValidator from 'express-openapi-validator';
 import request from 'supertest';
 
-// Browsers build these query strings with URLSearchParams, which encodes
-// spaces as `+` and leaves `:` unescaped. Free-text book parameters must
-// accept those reserved characters instead of failing validation.
+// Axios 1.x encodes spaces as + but leaves : unescaped. Free-text book
+// parameters must accept that serialization instead of failing validation.
 const freeTextBookParams: { route: string; url: string; param: string }[] = [
   {
     route: '/editions/book',
@@ -90,8 +89,8 @@ describe('free-text book query parameters behind the OpenAPI validator', () => {
   const app = createValidatedApp();
 
   for (const { url, param } of freeTextBookParams) {
-    it(`accepts browser-encoded spaces and colons in ${url} ?${param}`, async () => {
-      // Raw query string, exactly as URLSearchParams would serialize it.
+    it(`accepts Axios-serialized spaces and colons in ${url} ?${param}`, async () => {
+      // Raw query string as Axios 1.x serializes its default params object.
       const separator = url.includes('?') ? '&' : '?';
       const response = await request(app).get(
         `/api/v1${url}${separator}${param}=The+Hobbit:+There+and+Back+Again`
