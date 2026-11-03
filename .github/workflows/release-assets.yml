@@ -128,7 +128,7 @@ jobs:
             os: windows
             arch: x64
             pnpm_version: 10.24.0
-            msvs_version: auto
+            msvs_version: '2026'
           - runner_key: windows-arm64
             runner_label: windows-11-vs2026-arm
             os: windows
@@ -231,7 +231,7 @@ jobs:
           }
 
       - name: Install node-gyp for Visual Studio 2026
-        if: matrix.os == 'windows' && matrix.arch == 'arm64' && (inputs.reuse_from_run_id == '' || inputs.reuse_windows_arm64_artifact != true)
+        if: matrix.os == 'windows' && (inputs.reuse_from_run_id == '' || (matrix.arch == 'x64' && inputs.reuse_windows_x64_artifact != true) || (matrix.arch == 'arm64' && inputs.reuse_windows_arm64_artifact != true))
         shell: bash
         run: |
           set -euo pipefail
