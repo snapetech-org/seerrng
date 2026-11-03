@@ -1,0 +1,31 @@
+{
+  "schemaVersion": 1,
+  "repository": "snapetech-org/SeerrNG",
+  "pullRequest": 418,
+  "appliedToParentHead": "e2de7357bad7c385bf710da0edee93927f494767",
+  "parentTree": "ca93443397e10cea0ed70cec67fcb2905955cbf2",
+  "window": "W3480-W3499",
+  "sourceCount": 20,
+  "localeCount": 12,
+  "cellCount": 240,
+  "dispositions": {
+    "accept-current": 234,
+    "correction": 3,
+    "hold": 1,
+    "refinement": 2
+  },
+  "selectedChanges": 5,
+  "readbackMatches": 240,
+  "unplannedNonTargetChanges": 0,
+  "catalogCount": 12,
+  "orderedCatalogKeysPreserved": true,
+  "directCallerSources": 20,
+  "callerlessHolds": 0,
+  "localePreferenceHoldPositions": [
+    3484
+  ],
+  "qualifiedNativeSpeakerApproval": false,
+  "exactHeadBrowserReview": false,
+  "releaseApproved": false,
+  "crossAuditLedgerSha256": "5a3c4dffd1b003ff64ac7ab20739dd820faefb77162d8539d35fce30628a7ad1"
+}
