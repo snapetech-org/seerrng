@@ -3467,7 +3467,7 @@
   "components.ResetPassword.password": "Senha",
   "components.ResetPassword.passwordreset": "Redefinir Senha",
   "components.ResetPassword.requestresetlinksuccessmessage": "Um link para alteração de senha será enviado ao endereço de e-mail informado caso o mesmo esteja associado a um usuário válido.",
-  "components.ResetPassword.resetpassword": "Alterar sua Senha",
+  "components.ResetPassword.resetpassword": "Redefina sua senha",
   "components.ResetPassword.resetpasswordsuccessmessage": "Senha redefinida com sucesso!",
   "components.ResetPassword.validationemailrequired": "Você deve prover um e-mail válido",
   "components.ResetPassword.validationpasswordmatch": "As senhas devem coincidir",

@@ -1,0 +1,23 @@
+{
+  "artifact": "SeerrNG PR #418 W3460-W3479 independent blind semantic review",
+  "repository": "snapetech-org/seerrng",
+  "pullRequest": 418,
+  "head": "76fd466ba7e44ed9853115f8fb1f8ab8bec93c8e",
+  "tree": "00a72de46a40df893a24e0a93e85ec505e035a2d",
+  "sourceCount": 20,
+  "localeCount": 12,
+  "cellCount": 240,
+  "dispositionCounts": {
+    "accept-current": 227,
+    "correction": 10,
+    "refinement": 3
+  },
+  "selectedTargetChanges": 13,
+  "placeholderFailures": 0,
+  "markupFailures": 0,
+  "numericFailures": 0,
+  "protectedLiteralFailures": 0,
+  "callerlessSources": 0,
+  "nativeSpeakerApproval": false,
+  "allIntegrityChecksPassed": true
+}

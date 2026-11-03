@@ -3459,7 +3459,7 @@
   "components.Search.ContextualFilters.searchAuthors": "搜尋作者",
   "components.Search.ContextualFilters.searchComics": "篩選漫畫搜尋結果",
   "components.Search.ContextualFilters.searchMagazines": "篩選雜誌結果",
-  "components.Search.SoftwarePreview.available": "在圖書館",
+  "components.Search.SoftwarePreview.available": "已在庫中",
   "components.Search.SoftwarePreview.seeAll": "查看所有軟體結果",
   "components.Search.SoftwarePreview.title": "軟體",
   "components.Search.all": "全部",

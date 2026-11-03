@@ -3452,7 +3452,7 @@
   "components.ResetPassword.resetpasswordsuccessmessage": "비밀번호가 성공적으로 재설정되었습니다!",
   "components.ResetPassword.validationemailrequired": "유효한 이메일 주소를 입력해야 합니다",
   "components.ResetPassword.validationpasswordmatch": "비밀번호가 일치해야 합니다",
-  "components.ResetPassword.validationpasswordminchars": "비밀번호가 너무 짧습니다; 최소 8자리 이상이어야 합니다",
+  "components.ResetPassword.validationpasswordminchars": "비밀번호가 너무 짧습니다. 8자 이상이어야 합니다.",
   "components.ResetPassword.validationpasswordrequired": "암호를 입력해야 합니다",
   "components.Search.ContextualFilters.keywordSearch": "키워드 검색",
   "components.Search.ContextualFilters.searchAll": "모든 미디어 검색",

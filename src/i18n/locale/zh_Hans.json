@@ -3459,7 +3459,7 @@
   "components.Search.ContextualFilters.searchAuthors": "搜索作者",
   "components.Search.ContextualFilters.searchComics": "筛选漫画搜索结果",
   "components.Search.ContextualFilters.searchMagazines": "过滤杂志结果",
-  "components.Search.SoftwarePreview.available": "图书馆",
+  "components.Search.SoftwarePreview.available": "已在库中",
   "components.Search.SoftwarePreview.seeAll": "查看所有软件结果",
   "components.Search.SoftwarePreview.title": "软件",
   "components.Search.all": "全部",

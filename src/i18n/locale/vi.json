@@ -3451,7 +3451,7 @@
   "components.ResetPassword.resetpassword": "Đặt lại mật khẩu của bạn",
   "components.ResetPassword.resetpasswordsuccessmessage": "Đã đặt lại mật khẩu thành công!",
   "components.ResetPassword.validationemailrequired": "Bạn phải cung cấp một địa chỉ thư điện tử hợp lệ",
-  "components.ResetPassword.validationpasswordmatch": "Mật khẩu phải trùng",
+  "components.ResetPassword.validationpasswordmatch": "Hai mật khẩu phải khớp nhau",
   "components.ResetPassword.validationpasswordminchars": "Mật khẩu quá ngắn; nên là tối thiểu 8 ký tự",
   "components.ResetPassword.validationpasswordrequired": "Bạn phải cung cấp một mật khẩu",
   "components.Search.ContextualFilters.keywordSearch": "Tìm kiếm từ khoá",
