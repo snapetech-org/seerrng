@@ -1,4 +1,5 @@
 import ButtonHelp from '@app/components/Common/ButtonHelp';
+import LoadingSpinner from '@app/components/Common/LoadingSpinner';
 import Layout from '@app/components/Layout';
 import LoadingBar from '@app/components/LoadingBar';
 import PWAHeader from '@app/components/PWAHeader';
@@ -16,18 +17,19 @@ import '@app/styles/globals.css';
 import '@app/styles/crossMedia.css';
 import '@app/styles/interfaceThemes/shared.css';
 import { getLocaleDirection } from '@app/utils/localeDirection';
+import { getRegionalFormatLocale } from '@app/utils/formatLocale';
+import { getBrowserLocalePreference } from '@app/utils/browserLocale';
 import {
-  getFormatRegionFromLocale,
-  getRegionalFormatLocale,
-} from '@app/utils/formatLocale';
-import { setLocaleHintCookie } from '@app/utils/localeHint';
+  getLocaleHintCookie,
+  setLocaleHintCookie,
+} from '@app/utils/localeHint';
 import {
   BLOCKLIST_NAVIGATION_COUNT_KEY,
   isBlocklistMutationRequest,
 } from '@app/utils/blocklistNavigation';
 import { polyfillIntl } from '@app/utils/polyfillIntl';
 import '@fontsource-variable/inter';
-import { resolveAcceptLanguage, type AvailableLocale } from '@server/types/languages';
+import type { AvailableLocale } from '@server/types/languages';
 import axios from 'axios';
 import type { AppProps } from 'next/app';
 import dynamic from 'next/dynamic';
@@ -73,6 +75,8 @@ const CoreApp = ({ Component, pageProps, router }: AppProps) => {
   const [loadedMessages, setMessages] = useState<MessagesType>(emptyMessages);
   const [currentLocale, setLocale] = useState<AvailableLocale>('en');
   const [activeLocale, setActiveLocale] = useState<AvailableLocale>('en');
+  const [localeInitialized, setLocaleInitialized] = useState(false);
+  const [localeReady, setLocaleReady] = useState(false);
   const [formatRegion, setFormatRegion] = useState<string | null>(null);
   const loadedLocale = useRef<AvailableLocale>('en');
 
@@ -81,19 +85,19 @@ const CoreApp = ({ Component, pageProps, router }: AppProps) => {
   }, []);
 
   useEffect(() => {
-    if (
+    const browserPreference = getBrowserLocalePreference();
+    const isAuthenticationRoute =
       isPathPrefix(router.pathname, '/login') ||
       isPathPrefix(router.pathname, '/setup') ||
-      isPathPrefix(router.pathname, '/resetpassword')
-    ) {
-      const browserLanguages = navigator.languages.length
-        ? navigator.languages
-        : [navigator.language];
-      const browserLocale = resolveAcceptLanguage(browserLanguages.join(','));
-      setLocale(browserLocale);
-      setLocaleHintCookie(browserLocale);
-      setFormatRegion(getFormatRegionFromLocale(browserLanguages[0] ?? ''));
-    }
+      isPathPrefix(router.pathname, '/resetpassword');
+    const initialLocale = isAuthenticationRoute
+      ? browserPreference.locale
+      : (getLocaleHintCookie() ?? browserPreference.locale);
+
+    setLocale(initialLocale);
+    setLocaleHintCookie(initialLocale);
+    setFormatRegion(browserPreference.formatRegion);
+    setLocaleInitialized(true);
   }, [router.pathname]);
 
   useEffect(() => {
@@ -111,7 +115,16 @@ const CoreApp = ({ Component, pageProps, router }: AppProps) => {
   }, []);
 
   useEffect(() => {
+    if (!localeInitialized) {
+      return;
+    }
+
     if (currentLocale === loadedLocale.current) {
+      if (!localeReady) {
+        document.documentElement.lang = currentLocale;
+        document.documentElement.dir = getLocaleDirection(currentLocale);
+        setLocaleReady(true);
+      }
       return;
     }
 
@@ -121,6 +134,7 @@ const CoreApp = ({ Component, pageProps, router }: AppProps) => {
       setActiveLocale('en');
       document.documentElement.lang = 'en';
       document.documentElement.dir = getLocaleDirection('en');
+      setLocaleReady(true);
       return;
     }
 
@@ -135,6 +149,7 @@ const CoreApp = ({ Component, pageProps, router }: AppProps) => {
         setActiveLocale(currentLocale);
         document.documentElement.lang = currentLocale;
         document.documentElement.dir = getLocaleDirection(currentLocale);
+        setLocaleReady(true);
       })
       .catch(() => {
         // Keep the current catalog and document metadata together when a chunk fails.
@@ -146,7 +161,24 @@ const CoreApp = ({ Component, pageProps, router }: AppProps) => {
     return () => {
       active = false;
     };
-  }, [currentLocale]);
+  }, [currentLocale, localeInitialized, localeReady]);
+
+  if (!localeReady) {
+    return (
+      <div
+        className="flex min-h-screen items-center justify-center"
+        role="status"
+        aria-live="polite"
+        aria-atomic="true"
+        aria-busy="true"
+      >
+        <progress className="sr-only" aria-label="⏳" />
+        <div aria-hidden="true">
+          <LoadingSpinner />
+        </div>
+      </div>
+    );
+  }
 
   if (
     isPathPrefix(router.pathname, '/login') ||
