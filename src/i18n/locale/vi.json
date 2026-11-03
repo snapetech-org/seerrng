@@ -3391,7 +3391,7 @@
   "components.Requests.retryLoad": "Thử lại",
   "components.Requests.retryLoadTooltip": "Tải lại thông tin yêu cầu từ Seerr. Thao tác này không khởi động lại hay tải xuống bất kỳ nội dung nào.",
   "components.Requests.retrySuccess": "Yêu cầu đã được đưa vào hàng đợi để thử lại.",
-  "components.Requests.retryTooltip": "Khởi động lại yêu cầu không thành công này.",
+  "components.Requests.retryTooltip": "Khởi động lại yêu cầu không thành công này từ bước phê duyệt.",
   "components.Requests.retrying": "Đang thử lại…",
   "components.Requests.romsModern": "ROM - Hiện đại",
   "components.Requests.romsRetro": "ROM - Cổ điển",

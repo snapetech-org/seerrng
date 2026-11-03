@@ -1,0 +1,46 @@
+{
+  "schemaVersion": 1,
+  "status": "corrected-from-exact-pinned-catalog-order",
+  "sourceOrderCount": 9494,
+  "sourceOrderSha256": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072",
+  "expectedBefore": {
+    "position": 3399,
+    "sourceId": "components.Requests.requestLifecycle",
+    "source": "Request Lifecycle"
+  },
+  "expectedAfter": {
+    "position": 3420,
+    "sourceId": "components.Requests.searching",
+    "source": "Searching"
+  },
+  "selectedTwentySourceIdsMatchCatalogPositions": true,
+  "originalPacketBoundaryMismatches": [
+    {
+      "side": "boundaryBefore",
+      "expected": {
+        "position": 3399,
+        "sourceId": "components.Requests.requestLifecycle",
+        "source": "Request Lifecycle"
+      },
+      "provided": {
+        "position": 3399,
+        "source": "Import attempt {attempt} of {maxAttempts}.",
+        "sourceId": "components.Requests.pendingImportAttempt"
+      }
+    },
+    {
+      "side": "boundaryAfter",
+      "expected": {
+        "position": 3420,
+        "sourceId": "components.Requests.searching",
+        "source": "Searching"
+      },
+      "provided": {
+        "position": 3420,
+        "source": "Time",
+        "sourceId": "components.Requests.requestTime"
+      }
+    }
+  ],
+  "verifiedAtUTC": "2026-11-03T08:32:17+00:00"
+}

@@ -3395,7 +3395,7 @@
   "components.Requests.retrying": "重试中…",
   "components.Requests.romsModern": "ROMs - 现代",
   "components.Requests.romsRetro": "ROMs - 复古",
-  "components.Requests.runtime": "运行时间",
+  "components.Requests.runtime": "时长",
   "components.Requests.scrollProgressLeft": "向左滚动时间线",
   "components.Requests.scrollProgressRight": "向右滚动时间线",
   "components.Requests.search": "关键字搜索",

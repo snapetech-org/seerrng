@@ -1,0 +1,155 @@
+{
+  "sourceFile": {
+    "path": "src/components/Requests/index.tsx",
+    "sha256": "25b612dcda274fe2ea64b76f169587e153b04a675c9b8cd817814d9fbfde5360",
+    "gitBlob": "84f6a19674b329df0ef6be6483d74bbaeb110ccb"
+  },
+  "packetCallerRows": 20,
+  "supplementalDynamicLines": [
+    {
+      "path": "src/components/Requests/index.tsx",
+      "line": 1195,
+      "lineText": "const getStageLabel = (intl: ReturnType<typeof useIntl>, stage: StatusStage) =>",
+      "lineSha256": "bb008415ee770f81b8b6e02bab466651d97b26e348490413db3dc4906ada1602",
+      "fileSha256": "25b612dcda274fe2ea64b76f169587e153b04a675c9b8cd817814d9fbfde5360",
+      "fileGitBlob": "84f6a19674b329df0ef6be6483d74bbaeb110ccb",
+      "role": "dynamic status-label helper declaration",
+      "positions": [
+        3401
+      ],
+      "capturedInCandidateFreeRows": false
+    },
+    {
+      "path": "src/components/Requests/index.tsx",
+      "line": 1196,
+      "lineText": "  intl.formatMessage(messages[stageMessageKeys[stage]]);",
+      "lineSha256": "d3ce5a61ceb2c8d0f595a94d870b7968b7dd6d6c92c4bf936c253070e84ce884",
+      "fileSha256": "25b612dcda274fe2ea64b76f169587e153b04a675c9b8cd817814d9fbfde5360",
+      "fileGitBlob": "84f6a19674b329df0ef6be6483d74bbaeb110ccb",
+      "role": "dynamic stage-message lookup",
+      "positions": [
+        3401
+      ],
+      "capturedInCandidateFreeRows": false
+    },
+    {
+      "path": "src/components/Requests/index.tsx",
+      "line": 1914,
+      "lineText": "                      {getStageLabel(intl, stage)}",
+      "lineSha256": "47770e62e773b8f85bda2ff5cf0ebea383c7486c025e509f6dd331a9cbb8acc2",
+      "fileSha256": "25b612dcda274fe2ea64b76f169587e153b04a675c9b8cd817814d9fbfde5360",
+      "fileGitBlob": "84f6a19674b329df0ef6be6483d74bbaeb110ccb",
+      "role": "visible request-stage label call",
+      "positions": [
+        3401
+      ],
+      "capturedInCandidateFreeRows": false
+    },
+    {
+      "path": "src/components/Requests/index.tsx",
+      "line": 2061,
+      "lineText": "              aria-label={getStageLabel(intl, currentStage)}",
+      "lineSha256": "876f82f37c892a3a08ffbe29ff116f2a27328ca99d5f58099f7a2948ec147444",
+      "fileSha256": "25b612dcda274fe2ea64b76f169587e153b04a675c9b8cd817814d9fbfde5360",
+      "fileGitBlob": "84f6a19674b329df0ef6be6483d74bbaeb110ccb",
+      "role": "accessible current-stage label call",
+      "positions": [
+        3401
+      ],
+      "capturedInCandidateFreeRows": false
+    },
+    {
+      "path": "src/components/Requests/index.tsx",
+      "line": 2127,
+      "lineText": "                        {getStageLabel(intl, event.stage as StatusStage)}",
+      "lineSha256": "8137bd85069cb6c84577ed02e5c81ece3e587de6db6ddeb286bdd6077ac9e7df",
+      "fileSha256": "25b612dcda274fe2ea64b76f169587e153b04a675c9b8cd817814d9fbfde5360",
+      "fileGitBlob": "84f6a19674b329df0ef6be6483d74bbaeb110ccb",
+      "role": "status-history stage label call",
+      "positions": [
+        3401
+      ],
+      "capturedInCandidateFreeRows": false
+    },
+    {
+      "path": "src/components/Requests/index.tsx",
+      "line": 2137,
+      "lineText": "                          : getStageLabel(intl, event.stage as StatusStage)}",
+      "lineSha256": "b7a5ade8a6a7e3687a3210394fee4607c947bba83b2e49853f8246dc48f96f72",
+      "fileSha256": "25b612dcda274fe2ea64b76f169587e153b04a675c9b8cd817814d9fbfde5360",
+      "fileGitBlob": "84f6a19674b329df0ef6be6483d74bbaeb110ccb",
+      "role": "status-history fallback label call",
+      "positions": [
+        3401
+      ],
+      "capturedInCandidateFreeRows": false
+    },
+    {
+      "path": "src/components/Requests/index.tsx",
+      "line": 2715,
+      "lineText": "    { value: 'retro', label: 'romsRetro' },",
+      "lineSha256": "686b284c747ea200e4795c8a909f6e3c0fd38800920aa4a6ef757e8b18774f87",
+      "fileSha256": "25b612dcda274fe2ea64b76f169587e153b04a675c9b8cd817814d9fbfde5360",
+      "fileGitBlob": "84f6a19674b329df0ef6be6483d74bbaeb110ccb",
+      "role": "retro filter option label mapping",
+      "positions": [
+        3414
+      ],
+      "capturedInCandidateFreeRows": false
+    },
+    {
+      "path": "src/components/Requests/index.tsx",
+      "line": 2716,
+      "lineText": "    { value: 'modern', label: 'romsModern' },",
+      "lineSha256": "b988299839f830b985f78f63ce064b0344ef8f02cec6af919345af26e52c1dcf",
+      "fileSha256": "25b612dcda274fe2ea64b76f169587e153b04a675c9b8cd817814d9fbfde5360",
+      "fileGitBlob": "84f6a19674b329df0ef6be6483d74bbaeb110ccb",
+      "role": "modern filter option label mapping",
+      "positions": [
+        3413
+      ],
+      "capturedInCandidateFreeRows": false
+    },
+    {
+      "path": "src/components/Requests/index.tsx",
+      "line": 2894,
+      "lineText": "                    <span>{intl.formatMessage(messages[option.label])}</span>",
+      "lineSha256": "dce027b1efa00a3604beccbf7218e254d345ec3144eec093ecab7ae775e70f22",
+      "fileSha256": "25b612dcda274fe2ea64b76f169587e153b04a675c9b8cd817814d9fbfde5360",
+      "fileGitBlob": "84f6a19674b329df0ef6be6483d74bbaeb110ccb",
+      "role": "dynamic filter label render through option.label",
+      "positions": [
+        3413,
+        3414
+      ],
+      "capturedInCandidateFreeRows": false
+    }
+  ],
+  "findings": [
+    {
+      "positions": [
+        3401
+      ],
+      "sourceId": "components.Requests.requested",
+      "issue": "Packet includes the stageMessageKeys definition but omits the dynamic message lookup and render call sites; supplemental exact-head lines verify the Requested stage caller."
+    },
+    {
+      "positions": [
+        3413,
+        3414
+      ],
+      "sourceIds": [
+        "components.Requests.romsModern",
+        "components.Requests.romsRetro"
+      ],
+      "issue": "Packet includes definitions but omits dynamic filter option mappings and the messages[option.label] renderer; supplemental exact-head lines verify the filter context."
+    }
+  ],
+  "otherDefinitionOnlyPositions": [
+    3400,
+    3402,
+    3403,
+    3412
+  ],
+  "scopeNote": "Packet caller search is scoped to two pinned production component files."
+}

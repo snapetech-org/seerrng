@@ -3408,7 +3408,7 @@
   "components.Requests.retry": "Coba lagi",
   "components.Requests.retryFailed": "Tak bisa mengulang permintaan ini.",
   "components.Requests.retryLoad": "Coba lagi",
-  "components.Requests.retryLoadTooltip": "Muat ulang informasi permintaan dari Seerr. Ini tidak me-restart atau mengunduh media manapun.",
+  "components.Requests.retryLoadTooltip": "Muat ulang informasi permintaan dari Seerr. Tindakan ini tidak memulai ulang atau mengunduh media apa pun.",
   "components.Requests.retrySuccess": "Permintaan dimasukkan ke antrean untuk dicoba lagi.",
   "components.Requests.retryTooltip": "Ulangi permintaan gagal ini dari persetujuan.",
   "components.Requests.retrying": "Mencoba lagi…",

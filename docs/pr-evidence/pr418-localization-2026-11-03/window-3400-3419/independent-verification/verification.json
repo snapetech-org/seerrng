@@ -1,0 +1,572 @@
+{
+  "schemaVersion": 1,
+  "artifact": "Independent verification — SeerrNG PR #418 W3400–W3419",
+  "verifiedAtUTC": "2026-11-03T08:38:37+00:00",
+  "livePin": {
+    "state": "open",
+    "draft": true,
+    "baseRef": "main",
+    "baseSha": "221d8e0d542802da7529cd272c928cc747677e5c",
+    "headRef": "codex/seerrng-localization-overhaul-20261028",
+    "head": "fcbc579f724e50a07dc0e12b00127c4f6084c453",
+    "remoteBranchHead": "fcbc579f724e50a07dc0e12b00127c4f6084c453",
+    "remotePullRefHead": "fcbc579f724e50a07dc0e12b00127c4f6084c453",
+    "tree": "30e1e5e610e88ba935e482fc7088311d00e214ae",
+    "localWorktreeCleanAtFinalCheck": false,
+    "workingTreeStatusAtFinalCheck": [
+      " M src/i18n/locale/ar.json",
+      " M src/i18n/locale/id.json",
+      " M src/i18n/locale/vi.json",
+      " M src/i18n/locale/zh_Hans.json",
+      "?? docs/pr-evidence/pr418-localization-2026-11-03/window-3400-3419/"
+    ],
+    "exactFileContentsReadFrom": "git show HEAD:<path>"
+  },
+  "inputChecksums": {
+    "candidateFree": {
+      "sha256SumsFileSha256": "62a85bccfa56495f87289b830eefb1ab996d33906a0eccb890c43437013179da",
+      "passed": true,
+      "files": {
+        "PR-attestation.json": "48924383472415ef620e3dd35060a9eba1e8e7667ea16cc8e3594188ef2e4c12",
+        "README.txt": "6d468b147d360aadf34755864b0bd6b173ee8e3872d8b57103eb0e109e8345ff",
+        "caller-contexts.jsonl": "1105a11cfb4fe3e3f71031ab3a259b0f59104b9786ef6840fe8928c518294d98",
+        "review-input.jsonl": "d76daf1e9af95c353bfced1a6d6d31778617b80032ac813ec9d99aed131c7603",
+        "source-boundaries.json": "5138d5ad491c6f9d80e2e277a3766d7f35165900cd4153952a02c5ae55059314",
+        "window.json": "57efa10834de392a85aef3f109ee2a56d77fa328ef931c77e089938188128726"
+      }
+    },
+    "primary": {
+      "sha256SumsFileSha256": "ed893181d64696d37a5f3da98a2a609a8bd531a8097161ee8e3357e8af7e57ab",
+      "passed": true,
+      "files": {
+        "README.md": "7d0ec8a619d62f27a0007829a78b5788a658d8bd85f84248875ce7473de142bc",
+        "build_primary_review.py": "fe317518dd51d6477b47040270a95cea03bc261d837a37a13266fe6a6838afef",
+        "input-verification.json": "6e7162fc727c66fcdac15621902a91541ce62bb337f99c4612996f1b5ffedd64",
+        "live-pr-verification.json": "cef84cd7d18623305a75aacc6a5e9274b92408cfea852aa551c408b2ba344484",
+        "manifest.json": "06e058be3cc9c2ff591c24f060d4246929fa3bdb9f4a69ddd8431772f0041f21",
+        "primary-decisions.jsonl": "d29b5d88764769a5c5f6b2b76543355259b58d5c618273dc128c9b27026b6613",
+        "summary.json": "b89962c1a7f0dfee0576f4c78d989590600314cdb16667346d450e6418662788"
+      }
+    },
+    "blind": {
+      "sha256SumsFileSha256": "a86ac4993a8cd10da5e0f449dc55cc177560d0b65ec6e9b31cf68e1b0e2e592f",
+      "passed": true,
+      "files": {
+        "README.md": "bfdedf6270e4224adb215f0de466c84d99b1367977f6a73de1aab35f771dfe69",
+        "blind-decisions.jsonl": "73fa2e07240e92164bc7fc1a01ce92259d32a8eb2bfc4f5a47ca1b3d7141d522",
+        "build_blind_review.py": "83ef3307d74349b1a23922cb2a22a9d30e20369c29914778b43dfbf7dbe6abf8",
+        "input-verification.json": "67c5b85f4966f9b5592a6f3294fe96026a1e1a4200b0ec41aaa8a7178d12e3f5",
+        "live-pr-verification.json": "cef84cd7d18623305a75aacc6a5e9274b92408cfea852aa551c408b2ba344484",
+        "manifest.json": "94994d0fe415936ecdea177c99b282fbc1752e71a27937280512219c11166f3d",
+        "summary.json": "688a5ae4722f6958875cabe8f25729136a7d2826d4f3af24f8f45c4529735ae1"
+      }
+    },
+    "thirdAudit": {
+      "sha256SumsFileSha256": "e28313d6918d1ec274a154c11ec210d2ef30798663c2027747e163f8b9a3fde1",
+      "passed": true,
+      "files": {
+        "README.md": "2178085108be4a0011339d02e657796703d5b6fa4c07aeea7eeb12a4f58e3d0b",
+        "boundary-audit.json": "9f72a7555d7c227a222354ef5307d7ab2cd37286235aa9f1afca21fb052e696e",
+        "caller-context-coverage-gaps.json": "2e528b8abce5f8925c6c702e415da02e90272ffd9a27c04e0f6b62d3ad580a40",
+        "cross-audit-ledger.jsonl": "7c41de7bcfb9456aa326cf67397dae8616a05d510e1a9842daf5410da869bd34",
+        "disagreements.jsonl": "0405448997d279396ff562d7901c944612ccaba8a8911c8d8768cf2479463361",
+        "summary.json": "e3ad036bb1a5670b99e4e601484458d0866e6be3ba1956501c1b77b7412bd3ee"
+      }
+    }
+  },
+  "sourceOrder": {
+    "catalog": "src/i18n/locale/en.json",
+    "catalogSha256": "75ff3c90b52aedd636a506281ffbd6fb2d3739c61294b6008a517f17647e2316",
+    "catalogGitBlob": "12e04a118c30b71b3714291adeaf9fdb2735cee4",
+    "entryCount": 9494,
+    "orderHash": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072",
+    "packetOrderHashMatches": true,
+    "correct3399": {
+      "sourceId": "components.Requests.requestLifecycle",
+      "source": "Request Lifecycle"
+    },
+    "position3400": {
+      "sourceId": "components.Requests.requestTime",
+      "source": "Time"
+    },
+    "correct3420": {
+      "sourceId": "components.Requests.searching",
+      "source": "Searching"
+    },
+    "selectedIdsMatch": true,
+    "packetBeforeBoundary": {
+      "position": 3399,
+      "source": "Import attempt {attempt} of {maxAttempts}.",
+      "sourceId": "components.Requests.pendingImportAttempt"
+    },
+    "packetAfterBoundary": {
+      "position": 3420,
+      "source": "Time",
+      "sourceId": "components.Requests.requestTime"
+    },
+    "packetBoundaryEntriesAreIncorrect": true,
+    "verifiedRows": [
+      {
+        "position": 3399,
+        "sourceId": "components.Requests.requestLifecycle",
+        "source": "Request Lifecycle"
+      },
+      {
+        "position": 3400,
+        "sourceId": "components.Requests.requestTime",
+        "source": "Time"
+      },
+      {
+        "position": 3401,
+        "sourceId": "components.Requests.requested",
+        "source": "Requested"
+      },
+      {
+        "position": 3402,
+        "sourceId": "components.Requests.requestedAt",
+        "source": "Requested {date}"
+      },
+      {
+        "position": 3403,
+        "sourceId": "components.Requests.requestedBy",
+        "source": "Requested by {user}"
+      },
+      {
+        "position": 3404,
+        "sourceId": "components.Requests.requestedByLabel",
+        "source": "Requested By"
+      },
+      {
+        "position": 3405,
+        "sourceId": "components.Requests.requestedDateTime",
+        "source": "Requested On"
+      },
+      {
+        "position": 3406,
+        "sourceId": "components.Requests.retry",
+        "source": "Retry"
+      },
+      {
+        "position": 3407,
+        "sourceId": "components.Requests.retryFailed",
+        "source": "Unable to retry this request."
+      },
+      {
+        "position": 3408,
+        "sourceId": "components.Requests.retryLoad",
+        "source": "Retry"
+      },
+      {
+        "position": 3409,
+        "sourceId": "components.Requests.retryLoadTooltip",
+        "source": "Reload request information from Seerr. This does not restart or download any media."
+      },
+      {
+        "position": 3410,
+        "sourceId": "components.Requests.retrySuccess",
+        "source": "Request queued for another attempt."
+      },
+      {
+        "position": 3411,
+        "sourceId": "components.Requests.retryTooltip",
+        "source": "Restart this failed request from approval."
+      },
+      {
+        "position": 3412,
+        "sourceId": "components.Requests.retrying",
+        "source": "Retrying…"
+      },
+      {
+        "position": 3413,
+        "sourceId": "components.Requests.romsModern",
+        "source": "ROMs - Modern"
+      },
+      {
+        "position": 3414,
+        "sourceId": "components.Requests.romsRetro",
+        "source": "ROMs - Retro"
+      },
+      {
+        "position": 3415,
+        "sourceId": "components.Requests.runtime",
+        "source": "Runtime"
+      },
+      {
+        "position": 3416,
+        "sourceId": "components.Requests.scrollProgressLeft",
+        "source": "Scroll progress left"
+      },
+      {
+        "position": 3417,
+        "sourceId": "components.Requests.scrollProgressRight",
+        "source": "Scroll progress right"
+      },
+      {
+        "position": 3418,
+        "sourceId": "components.Requests.search",
+        "source": "Keyword Search"
+      },
+      {
+        "position": 3419,
+        "sourceId": "components.Requests.searchRequests",
+        "source": "Search Requests"
+      },
+      {
+        "position": 3420,
+        "sourceId": "components.Requests.searching",
+        "source": "Searching"
+      }
+    ]
+  },
+  "dynamicCallerContexts": {
+    "productionFile": {
+      "path": "src/components/Requests/index.tsx",
+      "sha256": "25b612dcda274fe2ea64b76f169587e153b04a675c9b8cd817814d9fbfde5360",
+      "gitBlob": "84f6a19674b329df0ef6be6483d74bbaeb110ccb"
+    },
+    "3401": {
+      "dynamicSelection": [
+        484,
+        485,
+        1195,
+        1196
+      ],
+      "renders": [
+        1914,
+        2061,
+        2127,
+        2137
+      ],
+      "summary": "Requested stage is selected dynamically from stageMessageKeys and rendered in timeline, accessible current-stage label, and status history."
+    },
+    "3413": {
+      "sourceId": "components.Requests.romsModern",
+      "mapping": [
+        197,
+        2716
+      ],
+      "render": [
+        2920,
+        2929
+      ],
+      "summary": "modern media-filter option selects romsModern; its label appears in accessible MediaFilterOption label and visible button."
+    },
+    "3414": {
+      "sourceId": "components.Requests.romsRetro",
+      "mapping": [
+        196,
+        2715
+      ],
+      "render": [
+        2920,
+        2929
+      ],
+      "summary": "retro media-filter option selects romsRetro; its label appears in accessible MediaFilterOption label and visible button."
+    },
+    "thirdAuditLine2894Correction": {
+      "thirdAuditClaim": "dynamic filter label render for ROMs",
+      "actual": "taskFilterOptions renderer, unrelated to ROM media-filter options",
+      "correctMediaFilterRenderLines": [
+        2920,
+        2929
+      ],
+      "impact": "Corrects a caller-evidence pointer; selected proposal values remain supported."
+    },
+    "exactLineEvidence": [
+      {
+        "path": "src/components/Requests/index.tsx",
+        "line": 155,
+        "text": "  runtime: 'Runtime',",
+        "lineSha256": "36588a999a880e349ff4b29cd6b1dad8307ae520afa7ec3f0faa9ac828b3d9c5",
+        "fileSha256": "25b612dcda274fe2ea64b76f169587e153b04a675c9b8cd817814d9fbfde5360",
+        "fileGitBlob": "84f6a19674b329df0ef6be6483d74bbaeb110ccb",
+        "role": "Runtime message definition"
+      },
+      {
+        "path": "src/components/Requests/index.tsx",
+        "line": 196,
+        "text": "  romsRetro: 'ROMs - Retro',",
+        "lineSha256": "88e97bf17df1a523c2b3e4c8e32903f5227e16ae4f731ee9017a984a266fb4a5",
+        "fileSha256": "25b612dcda274fe2ea64b76f169587e153b04a675c9b8cd817814d9fbfde5360",
+        "fileGitBlob": "84f6a19674b329df0ef6be6483d74bbaeb110ccb",
+        "role": "ROMs Retro message definition"
+      },
+      {
+        "path": "src/components/Requests/index.tsx",
+        "line": 197,
+        "text": "  romsModern: 'ROMs - Modern',",
+        "lineSha256": "e1057cfc5704972095be1b3d9c464d193733fccbc5295307b0e4c077a41fe6d7",
+        "fileSha256": "25b612dcda274fe2ea64b76f169587e153b04a675c9b8cd817814d9fbfde5360",
+        "fileGitBlob": "84f6a19674b329df0ef6be6483d74bbaeb110ccb",
+        "role": "ROMs Modern message definition"
+      },
+      {
+        "path": "src/components/Requests/index.tsx",
+        "line": 236,
+        "text": "  retryTooltip: 'Restart this failed request from approval.',",
+        "lineSha256": "27d75ea05ea2481ccd2a9a08ceff0e131accf6c1d46e7a8d5a27a03de3af7ed9",
+        "fileSha256": "25b612dcda274fe2ea64b76f169587e153b04a675c9b8cd817814d9fbfde5360",
+        "fileGitBlob": "84f6a19674b329df0ef6be6483d74bbaeb110ccb",
+        "role": "retry tooltip source"
+      },
+      {
+        "path": "src/components/Requests/index.tsx",
+        "line": 261,
+        "text": "  retryLoadTooltip:",
+        "lineSha256": "81cd254f039d6e0c83897cf6d4c18df22f270cb832c3340c9af5e65b0258c360",
+        "fileSha256": "25b612dcda274fe2ea64b76f169587e153b04a675c9b8cd817814d9fbfde5360",
+        "fileGitBlob": "84f6a19674b329df0ef6be6483d74bbaeb110ccb",
+        "role": "refresh retry tooltip source"
+      },
+      {
+        "path": "src/components/Requests/index.tsx",
+        "line": 484,
+        "text": "const stageMessageKeys: Record<StatusStage, keyof typeof messages> = {",
+        "lineSha256": "e30521da34f69602cd8c641458eceee8b4788bc8dab35f2baed1df9fabe7ccfb",
+        "fileSha256": "25b612dcda274fe2ea64b76f169587e153b04a675c9b8cd817814d9fbfde5360",
+        "fileGitBlob": "84f6a19674b329df0ef6be6483d74bbaeb110ccb",
+        "role": "stage message map declaration"
+      },
+      {
+        "path": "src/components/Requests/index.tsx",
+        "line": 485,
+        "text": "  requested: 'requested',",
+        "lineSha256": "116e0d067e3a5783c417decb990168dab96bbe38762b1f07d109ed322c1362d6",
+        "fileSha256": "25b612dcda274fe2ea64b76f169587e153b04a675c9b8cd817814d9fbfde5360",
+        "fileGitBlob": "84f6a19674b329df0ef6be6483d74bbaeb110ccb",
+        "role": "requested stage selects requested key"
+      },
+      {
+        "path": "src/components/Requests/index.tsx",
+        "line": 907,
+        "text": "          : messages.runtime",
+        "lineSha256": "149f9ab89a5127b353df9410bc3ae04221d4198060714ab62681bca6a400da0c",
+        "fileSha256": "25b612dcda274fe2ea64b76f169587e153b04a675c9b8cd817814d9fbfde5360",
+        "fileGitBlob": "84f6a19674b329df0ef6be6483d74bbaeb110ccb",
+        "role": "runtime message selected by media type"
+      },
+      {
+        "path": "src/components/Requests/index.tsx",
+        "line": 1195,
+        "text": "const getStageLabel = (intl: ReturnType<typeof useIntl>, stage: StatusStage) =>",
+        "lineSha256": "bb008415ee770f81b8b6e02bab466651d97b26e348490413db3dc4906ada1602",
+        "fileSha256": "25b612dcda274fe2ea64b76f169587e153b04a675c9b8cd817814d9fbfde5360",
+        "fileGitBlob": "84f6a19674b329df0ef6be6483d74bbaeb110ccb",
+        "role": "dynamic stage-label helper"
+      },
+      {
+        "path": "src/components/Requests/index.tsx",
+        "line": 1196,
+        "text": "  intl.formatMessage(messages[stageMessageKeys[stage]]);",
+        "lineSha256": "d3ce5a61ceb2c8d0f595a94d870b7968b7dd6d6c92c4bf936c253070e84ce884",
+        "fileSha256": "25b612dcda274fe2ea64b76f169587e153b04a675c9b8cd817814d9fbfde5360",
+        "fileGitBlob": "84f6a19674b329df0ef6be6483d74bbaeb110ccb",
+        "role": "dynamic stage-message lookup"
+      },
+      {
+        "path": "src/components/Requests/index.tsx",
+        "line": 1583,
+        "text": "      <Tooltip content={intl.formatMessage(messages.retryTooltip)}>",
+        "lineSha256": "00c85c2fb1836e7f94cd2d4726960bd59c90c8bdee99272059c2e6bfb5c40952",
+        "fileSha256": "25b612dcda274fe2ea64b76f169587e153b04a675c9b8cd817814d9fbfde5360",
+        "fileGitBlob": "84f6a19674b329df0ef6be6483d74bbaeb110ccb",
+        "role": "retry tooltip render"
+      },
+      {
+        "path": "src/components/Requests/index.tsx",
+        "line": 1591,
+        "text": "          onClick={() => void onRetry(item.request.id)}",
+        "lineSha256": "5b33111a8c4e00efb64a7b6c222452fca5888ef1f5e44fded17904a58ea1c122",
+        "fileSha256": "25b612dcda274fe2ea64b76f169587e153b04a675c9b8cd817814d9fbfde5360",
+        "fileGitBlob": "84f6a19674b329df0ef6be6483d74bbaeb110ccb",
+        "role": "retry callback"
+      },
+      {
+        "path": "src/components/Requests/index.tsx",
+        "line": 1748,
+        "text": "                    {getRuntimeLabel(intl, item)}:",
+        "lineSha256": "edb51039e786386aac63112d3c950d5f148f379664c618b07f4dc1373764d7dc",
+        "fileSha256": "25b612dcda274fe2ea64b76f169587e153b04a675c9b8cd817814d9fbfde5360",
+        "fileGitBlob": "84f6a19674b329df0ef6be6483d74bbaeb110ccb",
+        "role": "runtime/pages metadata label output"
+      },
+      {
+        "path": "src/components/Requests/index.tsx",
+        "line": 1751,
+        "text": "                    {getRuntimeOrPages(intl, details, item)}",
+        "lineSha256": "11e02ac69ac96f9bbcb13973d6a95b00772075890fe548cbd59558581ab763f5",
+        "fileSha256": "25b612dcda274fe2ea64b76f169587e153b04a675c9b8cd817814d9fbfde5360",
+        "fileGitBlob": "84f6a19674b329df0ef6be6483d74bbaeb110ccb",
+        "role": "runtime/pages value output"
+      },
+      {
+        "path": "src/components/Requests/index.tsx",
+        "line": 1914,
+        "text": "                      {getStageLabel(intl, stage)}",
+        "lineSha256": "47770e62e773b8f85bda2ff5cf0ebea383c7486c025e509f6dd331a9cbb8acc2",
+        "fileSha256": "25b612dcda274fe2ea64b76f169587e153b04a675c9b8cd817814d9fbfde5360",
+        "fileGitBlob": "84f6a19674b329df0ef6be6483d74bbaeb110ccb",
+        "role": "timeline stage label render"
+      },
+      {
+        "path": "src/components/Requests/index.tsx",
+        "line": 2061,
+        "text": "              aria-label={getStageLabel(intl, currentStage)}",
+        "lineSha256": "876f82f37c892a3a08ffbe29ff116f2a27328ca99d5f58099f7a2948ec147444",
+        "fileSha256": "25b612dcda274fe2ea64b76f169587e153b04a675c9b8cd817814d9fbfde5360",
+        "fileGitBlob": "84f6a19674b329df0ef6be6483d74bbaeb110ccb",
+        "role": "current stage accessible label"
+      },
+      {
+        "path": "src/components/Requests/index.tsx",
+        "line": 2127,
+        "text": "                        {getStageLabel(intl, event.stage as StatusStage)}",
+        "lineSha256": "8137bd85069cb6c84577ed02e5c81ece3e587de6db6ddeb286bdd6077ac9e7df",
+        "fileSha256": "25b612dcda274fe2ea64b76f169587e153b04a675c9b8cd817814d9fbfde5360",
+        "fileGitBlob": "84f6a19674b329df0ef6be6483d74bbaeb110ccb",
+        "role": "status history stage label"
+      },
+      {
+        "path": "src/components/Requests/index.tsx",
+        "line": 2137,
+        "text": "                          : getStageLabel(intl, event.stage as StatusStage)}",
+        "lineSha256": "b7a5ade8a6a7e3687a3210394fee4607c947bba83b2e49853f8246dc48f96f72",
+        "fileSha256": "25b612dcda274fe2ea64b76f169587e153b04a675c9b8cd817814d9fbfde5360",
+        "fileGitBlob": "84f6a19674b329df0ef6be6483d74bbaeb110ccb",
+        "role": "status history fallback stage label"
+      },
+      {
+        "path": "src/components/Requests/index.tsx",
+        "line": 2668,
+        "text": "          <Tooltip content={intl.formatMessage(messages.retryLoadTooltip)}>",
+        "lineSha256": "77c0331253b6969e3e3cdf6335caca086dfbdefee4ce8d863172f233a4d670b2",
+        "fileSha256": "25b612dcda274fe2ea64b76f169587e153b04a675c9b8cd817814d9fbfde5360",
+        "fileGitBlob": "84f6a19674b329df0ef6be6483d74bbaeb110ccb",
+        "role": "load error retry tooltip render"
+      },
+      {
+        "path": "src/components/Requests/index.tsx",
+        "line": 2715,
+        "text": "    { value: 'retro', label: 'romsRetro' },",
+        "lineSha256": "686b284c747ea200e4795c8a909f6e3c0fd38800920aa4a6ef757e8b18774f87",
+        "fileSha256": "25b612dcda274fe2ea64b76f169587e153b04a675c9b8cd817814d9fbfde5360",
+        "fileGitBlob": "84f6a19674b329df0ef6be6483d74bbaeb110ccb",
+        "role": "retro filter maps to romsRetro"
+      },
+      {
+        "path": "src/components/Requests/index.tsx",
+        "line": 2716,
+        "text": "    { value: 'modern', label: 'romsModern' },",
+        "lineSha256": "b988299839f830b985f78f63ce064b0344ef8f02cec6af919345af26e52c1dcf",
+        "fileSha256": "25b612dcda274fe2ea64b76f169587e153b04a675c9b8cd817814d9fbfde5360",
+        "fileGitBlob": "84f6a19674b329df0ef6be6483d74bbaeb110ccb",
+        "role": "modern filter maps to romsModern"
+      },
+      {
+        "path": "src/components/Requests/index.tsx",
+        "line": 2847,
+        "text": "          <Tooltip content={intl.formatMessage(messages.retryLoadTooltip)}>",
+        "lineSha256": "77c0331253b6969e3e3cdf6335caca086dfbdefee4ce8d863172f233a4d670b2",
+        "fileSha256": "25b612dcda274fe2ea64b76f169587e153b04a675c9b8cd817814d9fbfde5360",
+        "fileGitBlob": "84f6a19674b329df0ef6be6483d74bbaeb110ccb",
+        "role": "second load error retry tooltip render"
+      },
+      {
+        "path": "src/components/Requests/index.tsx",
+        "line": 2894,
+        "text": "                    <span>{intl.formatMessage(messages[option.label])}</span>",
+        "lineSha256": "dce027b1efa00a3604beccbf7218e254d345ec3144eec093ecab7ae775e70f22",
+        "fileSha256": "25b612dcda274fe2ea64b76f169587e153b04a675c9b8cd817814d9fbfde5360",
+        "fileGitBlob": "84f6a19674b329df0ef6be6483d74bbaeb110ccb",
+        "role": "task-filter option render, not ROM media filter"
+      },
+      {
+        "path": "src/components/Requests/index.tsx",
+        "line": 2920,
+        "text": "                    label={intl.formatMessage(messages[option.label])}",
+        "lineSha256": "7dba87be2adb62135e0ac132d2d9ffbaf944e40fca4dc97a44d04ac3c9e92810",
+        "fileSha256": "25b612dcda274fe2ea64b76f169587e153b04a675c9b8cd817814d9fbfde5360",
+        "fileGitBlob": "84f6a19674b329df0ef6be6483d74bbaeb110ccb",
+        "role": "media filter accessible-label render"
+      },
+      {
+        "path": "src/components/Requests/index.tsx",
+        "line": 2929,
+        "text": "                      {intl.formatMessage(messages[option.label])}",
+        "lineSha256": "1418844e5faa88d0e4eccae480af01c7d9547ab89bff23faec9e5cea3614149d",
+        "fileSha256": "25b612dcda274fe2ea64b76f169587e153b04a675c9b8cd817814d9fbfde5360",
+        "fileGitBlob": "84f6a19674b329df0ef6be6483d74bbaeb110ccb",
+        "role": "media filter visible-button render"
+      }
+    ]
+  },
+  "proposalFit": [
+    {
+      "position": 3409,
+      "locale": "id",
+      "sourceId": "components.Requests.retryLoadTooltip",
+      "currentTarget": "Muat ulang informasi permintaan dari Seerr. Ini tidak me-restart atau mengunduh media manapun.",
+      "currentTargetSha256": "246cf8f2bd71efe9456551d53d9b510d0b2a3a06e792f667e1e43207c4ae1765",
+      "recommendedTarget": "Muat ulang informasi permintaan dari Seerr. Tindakan ini tidak memulai ulang atau mengunduh media apa pun.",
+      "recommendedTargetSha256": "46c6151ccf69a07bf51481b02225ce43b2ee49a73ca6d7814f1afc831a9d4662",
+      "primaryDecision": "accept-current",
+      "primaryCandidateTarget": null,
+      "blindDisposition": "refinement",
+      "blindCandidateTarget": "Muat ulang informasi permintaan dari Seerr. Tindakan ini tidak memulai ulang atau mengunduh media apa pun.",
+      "crossAuditDisposition": "refinement",
+      "fit": "Standard Indonesian spelling and explicit “this action” preserve the tooltip’s refresh-versus-restart/download distinction and Seerr name.",
+      "nativeSpeakerApproval": false
+    },
+    {
+      "position": 3411,
+      "locale": "vi",
+      "sourceId": "components.Requests.retryTooltip",
+      "currentTarget": "Khởi động lại yêu cầu không thành công này.",
+      "currentTargetSha256": "8e9146cb76e98e42af92afbf100515c63e13b732d17e97f8d3188304ed296304",
+      "recommendedTarget": "Khởi động lại yêu cầu không thành công này từ bước phê duyệt.",
+      "recommendedTargetSha256": "5ef2718902d06120c302b79d144a75619a2d658fcbfe319ea3bedb572794d0cb",
+      "primaryDecision": "correction",
+      "primaryCandidateTarget": "Khởi động lại yêu cầu không thành công này từ bước phê duyệt.",
+      "blindDisposition": "correction",
+      "blindCandidateTarget": "Khởi động lại yêu cầu không thành công này từ bước phê duyệt.",
+      "crossAuditDisposition": "correction",
+      "fit": "Restores the “from the approval step” detail on the retry action tooltip.",
+      "nativeSpeakerApproval": false
+    },
+    {
+      "position": 3413,
+      "locale": "ar",
+      "sourceId": "components.Requests.romsModern",
+      "currentTarget": "ROMS - حديث",
+      "currentTargetSha256": "69977ef653540aab9d66ece73e6da3af4f9bce75b76f81abb5864ad55d93c417",
+      "recommendedTarget": "ROMs - حديثة",
+      "recommendedTargetSha256": "f76d57d0c8c18a03a526c323a953f8488878f76af32efc2b6f8811483463362a",
+      "primaryDecision": "correction",
+      "primaryCandidateTarget": "ROMs - حديثة",
+      "blindDisposition": "correction",
+      "blindCandidateTarget": "ROMs - حديثة",
+      "crossAuditDisposition": "correction",
+      "fit": "Matches the Modern ROM filter and Arabic non-human plural adjective agreement; cross-audit confidence was low, so native confirmation is still appropriate.",
+      "nativeSpeakerApproval": false
+    },
+    {
+      "position": 3415,
+      "locale": "zh_Hans",
+      "sourceId": "components.Requests.runtime",
+      "currentTarget": "运行时间",
+      "currentTargetSha256": "5986e9d976e01bdee0cac98b6ab31d958bd33692e3fe2ac76461703dc51dc83a",
+      "recommendedTarget": "时长",
+      "recommendedTargetSha256": "04a95e0654d3cec7038912d0d48e53ee4615dc6aa77a9bc5d2da9cd6f8532d8d",
+      "primaryDecision": "refinement",
+      "primaryCandidateTarget": "时长",
+      "blindDisposition": "refinement",
+      "blindCandidateTarget": "时长",
+      "crossAuditDisposition": "refinement",
+      "fit": "“Duration” fits the media metadata values: movie runtime, TV episode duration, and summed music duration.",
+      "nativeSpeakerApproval": false
+    }
+  ],
+  "repoOrPrChanged": false,
+  "testsBuildsCiRun": false,
+  "nativeSpeakerApproval": false
+}

@@ -1,0 +1,94 @@
+{
+  "packetDirectory": "/mnt/disks/scratch/task-scratch/seerrng-pr418-w3400-3419-candidate-free-20261103/candidate-free-input",
+  "checksumFile": "SHA256SUMS.txt",
+  "checksumFileSha256": "62a85bccfa56495f87289b830eefb1ab996d33906a0eccb890c43437013179da",
+  "packetFiles": {
+    "PR-attestation.json": {
+      "expected": "48924383472415ef620e3dd35060a9eba1e8e7667ea16cc8e3594188ef2e4c12",
+      "actual": "48924383472415ef620e3dd35060a9eba1e8e7667ea16cc8e3594188ef2e4c12",
+      "matches": true
+    },
+    "README.txt": {
+      "expected": "6d468b147d360aadf34755864b0bd6b173ee8e3872d8b57103eb0e109e8345ff",
+      "actual": "6d468b147d360aadf34755864b0bd6b173ee8e3872d8b57103eb0e109e8345ff",
+      "matches": true
+    },
+    "caller-contexts.jsonl": {
+      "expected": "1105a11cfb4fe3e3f71031ab3a259b0f59104b9786ef6840fe8928c518294d98",
+      "actual": "1105a11cfb4fe3e3f71031ab3a259b0f59104b9786ef6840fe8928c518294d98",
+      "matches": true
+    },
+    "review-input.jsonl": {
+      "expected": "d76daf1e9af95c353bfced1a6d6d31778617b80032ac813ec9d99aed131c7603",
+      "actual": "d76daf1e9af95c353bfced1a6d6d31778617b80032ac813ec9d99aed131c7603",
+      "matches": true
+    },
+    "source-boundaries.json": {
+      "expected": "5138d5ad491c6f9d80e2e277a3766d7f35165900cd4153952a02c5ae55059314",
+      "actual": "5138d5ad491c6f9d80e2e277a3766d7f35165900cd4153952a02c5ae55059314",
+      "matches": true
+    },
+    "window.json": {
+      "expected": "57efa10834de392a85aef3f109ee2a56d77fa328ef931c77e089938188128726",
+      "actual": "57efa10834de392a85aef3f109ee2a56d77fa328ef931c77e089938188128726",
+      "matches": true
+    }
+  },
+  "allPacketChecksumsPass": true,
+  "packetManifestSha256": "57efa10834de392a85aef3f109ee2a56d77fa328ef931c77e089938188128726",
+  "sourceAndCellChecks": {
+    "sourcePositions": 20,
+    "targetCells": 240,
+    "locales": [
+      "es",
+      "zh_Hans",
+      "hi",
+      "de",
+      "ja",
+      "fr",
+      "pt_BR",
+      "ar",
+      "ko",
+      "zh_Hant",
+      "vi",
+      "id"
+    ],
+    "allSourceAndCurrentHashesRecomputed": true,
+    "allRowsMatchExpectedHeadTree": true,
+    "candidateFreeInputConfirmed": true
+  },
+  "callerCoverage": {
+    "callerContextRows": 20,
+    "directReferenceCellCount": 156,
+    "definitionOrSharedNamespaceCellCount": 84,
+    "callerFilePins": {
+      "src/components/Requests/destructiveActions.tsx": {
+        "byteCount": 5369,
+        "gitBlob": "09884f99a738ce4402b5fb121d15022f0efc3a67",
+        "lineCount": 173,
+        "path": "src/components/Requests/destructiveActions.tsx",
+        "sha256": "16d562185c1e1f3a94398369b4ab3eec28085033dcc3465c32557752687d1d57"
+      },
+      "src/components/Requests/index.tsx": {
+        "byteCount": 100417,
+        "gitBlob": "84f6a19674b329df0ef6be6483d74bbaeb110ccb",
+        "lineCount": 3115,
+        "path": "src/components/Requests/index.tsx",
+        "sha256": "25b612dcda274fe2ea64b76f169587e153b04a675c9b8cd817814d9fbfde5360"
+      }
+    },
+    "exactCallerTextAndLineHashesRetained": true
+  },
+  "livePin": {
+    "repository": "snapetech-org/seerrng",
+    "pullRequest": 418,
+    "branch": "codex/seerrng-localization-overhaul-20261028",
+    "state": "OPEN",
+    "isDraft": true,
+    "head": "fcbc579f724e50a07dc0e12b00127c4f6084c453",
+    "tree": "30e1e5e610e88ba935e482fc7088311d00e214ae",
+    "remoteBranchHead": "fcbc579f724e50a07dc0e12b00127c4f6084c453",
+    "remotePullRefHead": "fcbc579f724e50a07dc0e12b00127c4f6084c453",
+    "matchesExpected": true
+  }
+}

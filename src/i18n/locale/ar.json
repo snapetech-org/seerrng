@@ -3412,7 +3412,7 @@
   "components.Requests.retrySuccess": "تم وضع الطلب في قائمة الانتظار لمحاولة أخرى.",
   "components.Requests.retryTooltip": "أعِد هذا الطلب الفاشل بدءًا من خطوة الموافقة.",
   "components.Requests.retrying": "جاري إعادة المحاولة…",
-  "components.Requests.romsModern": "ROMS - حديث",
+  "components.Requests.romsModern": "ROMs - حديثة",
   "components.Requests.romsRetro": "ألعاب ROM الكلاسيكية",
   "components.Requests.runtime": "المدة",
   "components.Requests.scrollProgressLeft": "مرّر المخطط الزمني إلى اليسار",
