@@ -55,15 +55,17 @@ describe('OIDC login route behind the OpenAPI validator', () => {
   });
 
   it('accepts a returnTo path with its own query string and hash', async () => {
-    // URLSearchParams leaves "/", "?", "=" and ":" unescaped in values.
+    // Axios 1.x leaves the colon unescaped. The nested path, query, and
+    // fragment are encoded so the full destination reaches the server as
+    // one query value.
     const response = await request(app).get(
-      '/api/v1/auth/oidc/login/authentik?returnUrl=/login&returnTo=/discover/books?query=The+Hobbit:+Revisited#top'
+      '/api/v1/auth/oidc/login/authentik?returnUrl=%2Flogin&returnTo=%2Fdiscover%2Fbooks%3Fquery%3DThe+Hobbit:+Revisited%23top'
     );
 
     assert.strictEqual(response.status, 200, JSON.stringify(response.body));
     assert.strictEqual(
       response.body.returnTo,
-      '/discover/books?query=The Hobbit: Revisited'
+      '/discover/books?query=The Hobbit: Revisited#top'
     );
   });
 
