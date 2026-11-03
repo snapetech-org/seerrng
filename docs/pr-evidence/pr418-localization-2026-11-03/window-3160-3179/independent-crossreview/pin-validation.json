@@ -1,0 +1,34 @@
+{
+  "repository": "snapetech-org/seerrng",
+  "pullRequest": 418,
+  "prState": "OPEN",
+  "url": "https://github.com/snapetech-org/seerrng/pull/418",
+  "head": "0cc977d2dc5eff86eac49cdad3b9361bff5acd65",
+  "tree": "ce65000b9bebef1838f3dd0e1a3764f75e102876",
+  "base": "main",
+  "baseOid": "221d8e0d542802da7529cd272c928cc747677e5c",
+  "sourceOrderCount": 9494,
+  "selectionRange": [
+    3160,
+    3179
+  ],
+  "sourceOrderRecomputedFromExactHeadEnJson": true,
+  "sourceBoundaryMatchesExactHead": true,
+  "cellCount": 240,
+  "distinctSourceIds": 20,
+  "distinctLocales": 12,
+  "sourceAndCurrentCellPinsVerified": 240,
+  "callerContextRecordsVerified": 20,
+  "callerLinesVerified": 40,
+  "callerContextDigestsRecomputed": true,
+  "allCallerPinsVerified": true,
+  "decisionCount": 240,
+  "retainCount": 174,
+  "reviseCount": 66,
+  "holdCount": 0,
+  "method": "Independent semantic and structural review of every scoped cell against exact-head English source, exact-head locale catalogs, and verified caller context. No primary decisions, summary, README, or candidate proposals were opened before this file was sealed. Confidence reflects text/caller evidence and translation certainty; no native-speaker claim is made.",
+  "dynamicCallerNotes": [
+    "TvRequestModal messages are displayed in the Episode Queue card; the exact-head code shows the feature label, status copy, unavailable messages, retry action, and account-link button in that context.",
+    "SoftwareRequests.approved and available are consumed through statusLabel(status), which formats messages[status]; approve and cancel are explicit button labels; architecture formats a PcArchitecture value, and arm64 is selected by the architectureLabel helper."
+  ]
+}

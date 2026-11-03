@@ -1,0 +1,94 @@
+{
+  "allLocaleKeysetsMatchEnglish": true,
+  "applyPlanCellCount": 76,
+  "callerPinReattestation": {
+    "callerIdsChecked": 20,
+    "callerLinesChecked": 40,
+    "mismatches": 0
+  },
+  "catalogKeyCounts": {
+    "ar": 9494,
+    "de": 9494,
+    "es": 9494,
+    "fr": 9494,
+    "hi": 9494,
+    "id": 9494,
+    "ja": 9494,
+    "ko": 9494,
+    "pt_BR": 9494,
+    "vi": 9494,
+    "zh_Hans": 9494,
+    "zh_Hant": 9494
+  },
+  "cellCount": 240,
+  "crossReview": {
+    "allPinDifferences": 0,
+    "allStructuralComparisonsAgree": true,
+    "cellsCompared": 240,
+    "independentOnlyRevisions": 14,
+    "primaryOnlyRevisions": 21,
+    "semanticDispositionDifferences": 35,
+    "targetTextAgreements": 183,
+    "targetTextDifferences": 57
+  },
+  "exactHead": "0cc977d2dc5eff86eac49cdad3b9361bff5acd65",
+  "exactTree": "ce65000b9bebef1838f3dd0e1a3764f75e102876",
+  "finalDispositionCounts": {
+    "accept-current": 164,
+    "correction": 38,
+    "refinement": 38
+  },
+  "finalStructuralParity": {
+    "markupMismatches": 0,
+    "placeholderMismatches": 0
+  },
+  "inputPacketPins": {
+    "comparisonLedgerSha256": "8a46c8c7a5e9d4d5c4f4ac2610ecca4014e2bb510be1e147ab202337eaf5dd55",
+    "independentDecisionLedgerSha256": "a05734c63dbe74345d4dd97718e71081876238cce130b28b56ee1e03503898d1",
+    "independentPacketSha256SumsFileSha256": "6a46e5c1efc249cdbb0cbed75d333f1072c93518b29472b9a0d59ee9dc75fa04",
+    "independentPrecomparisonSealSha256": "5e92e8647b7793887e251ebefb834ed7476cb165922c935d00350fa00a0389a6",
+    "primaryDecisionLedgerSha256": "3a73aa19f12ab16f996d855ca114848fc7f6db02934b8140a1b04c4d183378d1",
+    "primaryPacketSha256SumsFileSha256": "f7b7a82b0f20d6375312abc784f540fd8178934e28881fb5e2d559365edb200b"
+  },
+  "livePullRequest": {
+    "apiTree": "ce65000b9bebef1838f3dd0e1a3764f75e102876",
+    "base": "221d8e0d542802da7529cd272c928cc747677e5c",
+    "baseRef": "main",
+    "draft": true,
+    "head": "0cc977d2dc5eff86eac49cdad3b9361bff5acd65",
+    "headRef": "codex/seerrng-localization-overhaul-20261028",
+    "state": "open",
+    "url": "https://github.com/snapetech-org/seerrng/pull/418"
+  },
+  "localeCatalogBlobs": {
+    "ar": "5dee95c501d253bd5806137031e426f7b5cb6b8c",
+    "de": "90fc3124fdd7abce61ae962379f861930d76513e",
+    "es": "243ee14ff610a5b8881fb3ada22a0fadc49f9cd5",
+    "fr": "ef0a3d31028e82445c8929f768d6661029e1398a",
+    "hi": "7d3d9d8d98bb7ba9e66e69aab75f85de0c1dc3af",
+    "id": "3306a7929d4bb9560dcce9cee1469d8974ef793d",
+    "ja": "f937b234fc611441b353c2eca1da5288bad08012",
+    "ko": "c0cb6b642afafd2839ce8a39bed52eb745751a6d",
+    "pt_BR": "22d49988aa35c45bfd765c29dd9abb4c04e389d1",
+    "vi": "3ab9400e5f866290f98d23daceaa2605699ec966",
+    "zh_Hans": "919766623cec1ba411036783193fe13b214de12f",
+    "zh_Hant": "d5379127e548dbd2b917bf60904bd38614df1e62"
+  },
+  "localeCatalogCount": 12,
+  "nativeSpeakerApproval": false,
+  "pullRequest": 418,
+  "repository": "snapetech-org/SeerrNG",
+  "repositoryOrPullRequestModified": false,
+  "sourceCatalogBlob": "12e04a118c30b71b3714291adeaf9fdb2735cee4",
+  "sourceCurrentPinReattestation": {
+    "cellsChecked": 240,
+    "mismatches": 0
+  },
+  "sourceOrderCount": 9494,
+  "sourceOrderRule": "Zero-based lexicographic order of exact-head en.json flat keys.",
+  "testsBuildsScansCIOrBrowserActionsRun": false,
+  "window": [
+    3160,
+    3179
+  ]
+}

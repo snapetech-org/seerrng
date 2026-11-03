@@ -1,0 +1,24 @@
+{
+  "repository": "snapetech-org/SeerrNG",
+  "pullRequest": 418,
+  "head": "0cc977d2dc5eff86eac49cdad3b9361bff5acd65",
+  "tree": "ce65000b9bebef1838f3dd0e1a3764f75e102876",
+  "sourceOrderCount": 9494,
+  "range": [
+    3160,
+    3179
+  ],
+  "previousRange": [
+    3140,
+    3159
+  ],
+  "nextRange": [
+    3180,
+    3199
+  ],
+  "startId": "components.RequestModal.watchAheadLabel",
+  "endId": "components.RequestStatus.SoftwareRequests.cancel",
+  "allIdsSequential": true,
+  "selectionRule": "Zero-based lexicographic order of exact-head en.json message IDs.",
+  "callerSearchScope": "Exact message definitions and identifier-based use lines in TvRequestModal.tsx and SoftwareRequests.tsx; not a full dynamic call graph."
+}
