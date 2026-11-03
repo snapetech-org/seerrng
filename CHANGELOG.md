@@ -10,6 +10,71 @@ and the following `v3.2.7` release includes the intervening changes. Commit-leve
 links in the generated history remain the technical source of truth for changes
 that are not called out here.
 
+## [3.72.7](https://github.com/snapetech-org/seerrng/compare/v3.72.6..v3.72.7) - 2026-11-03
+
+### User-facing changes
+
+#### Added
+
+- **Migration:** Seerr and SeerrNG users can now preview and apply migrations in either direction, carrying compatible settings, accounts, requests, and database records while reporting data the destination cannot support.
+- **Interface:** Choose between the original Seerr layout and John’s SeerrNG interface. The selected design is saved to your account, and current media catalogs and request features remain available in both.
+
+#### Fixed
+
+- **Navigation:** Blocklist stays out of desktop and mobile menus until it contains an entry. Users with Blocklist permissions retain the same access after the first entry is added, and the current route stays navigable if the count is temporarily unavailable.
+- **Settings:** Prowlarr category filters and indexer assignments now show multiple options at once and keep native multi-selection usable across desktop and mobile settings layouts.
+- **Software:** ROMarrNG-only installations now show Retro and Modern software categories and patch discovery without QuestarrNG. PC Game Finder still requires QuestarrNG.
+  - **Action required:** Browse Retro and Modern catalogs when only ROMarrNG is configured
+- **Bookshelf:** Chaptarr book searches preserve Goodreads and Hardcover identities when switching metadata providers. Book details and ebook or audiobook requests use the original provider even when a new connection defaults to another catalog.
+- **Scheduled Jobs:** Scheduled job settings now describe cron expressions more accurately, including nearest-weekday offsets and alternate day and month numbering.
+- **Requests:** A movie or series can now have only one unresolved HD or 4K request, preventing both quality tiers from being queued for the same title.
+- **Sonarr:** New TV requests to Sonarr v5 include the required metadata language and season order, preventing empty-field failures. Sonarr server settings now offer defaults for new-series metadata language and season order; request overrides take priority and existing series keep their metadata.
+- **Database:** SQLite permissions are secured before opening the database. Startup no longer reopens and closes active database files, preserving the locks that let backup tools and other database connections safely read current committed data. New database and journal files retain private permissions.
+
+#### Security
+
+- **Security:** Updated affected runtime, documentation, and development dependencies and patched every shipped entrypoint of the unmaintained `deepmerge` package. These changes address known request and resource exhaustion, command injection, and prototype-pollution advisories without changing application behavior or requiring operator configuration.
+
+### 🐛 Bug Fixes
+- *(ci)* Align build contract with asset helper (#490) - ([a1264da](https://github.com/snapetech-org/seerrng/commit/a1264da4a5f6a35f5afbe3411210d1203d601713))
+- *(ci)* Replace glob-based server asset copy - ([b729607](https://github.com/snapetech-org/seerrng/commit/b729607b7067c5702f1fab4a2682e7d90ba2535b))
+- *(ci)* Restore SeerrNG lint under secured dependencies - ([5be7ea4](https://github.com/snapetech-org/seerrng/commit/5be7ea4be42b36e402658e5f9719ee0e591398c2))
+- *(ci)* Pull Jellyfin smoke image before startup - ([3643951](https://github.com/snapetech-org/seerrng/commit/3643951814862ba6366f063f1e8489181b3b3f5d))
+- *(ci)* Require run-scoped Apple JIT labels - ([88bec3e](https://github.com/snapetech-org/seerrng/commit/88bec3e2e937a4059a8c70e1697335eee3b794e4))
+- *(ci)* Validate owner PR docs and Cypress at exact SHA - ([887e8b3](https://github.com/snapetech-org/seerrng/commit/887e8b3399c3c2ebed806fee8d7c2fb78c390c4e))
+- *(ci)* Use shared dispatcher runner label - ([3181b8b](https://github.com/snapetech-org/seerrng/commit/3181b8be2324753cac93eb018d92a7d554bffdb7))
+- *(ci)* Dispatch owner validation only on labels - ([0182908](https://github.com/snapetech-org/seerrng/commit/0182908e34fd4c7d0a11c9aee2b403a66e8c1577))
+- *(ci)* Clear formatting and test drift - ([dfcc8b5](https://github.com/snapetech-org/seerrng/commit/dfcc8b5398ba5a485bd059e4eab5ec4cae24f46b))
+- *(ci)* Repair Seerr validation and release gates - ([34bb0c2](https://github.com/snapetech-org/seerrng/commit/34bb0c2df8842f30f932534d318eaabc4e47bd77))
+- *(ci)* Align current batch checks with theme owners - ([5c46ac3](https://github.com/snapetech-org/seerrng/commit/5c46ac3c59bdfdc4064c47e3e17cb0189f4d154a))
+- *(deps)* Remediate reported security advisories - ([221d8e0](https://github.com/snapetech-org/seerrng/commit/221d8e0d542802da7529cd272c928cc747677e5c))
+- Prevent mixed HD and 4K requests - ([38d87ac](https://github.com/snapetech-org/seerrng/commit/38d87ac1142e1c81ad4e4b6715d0376a4526c799))
+- Validate built-in interface theme manifests - ([d68a74a](https://github.com/snapetech-org/seerrng/commit/d68a74a54088292e9ea0e1f14390696d7f950ced))
+
+### 📖 Documentation
+- Fix interface theme template link - ([e907821](https://github.com/snapetech-org/seerrng/commit/e907821320a91ebeedf1077d32afe289a7a810f0))
+
+### 🎨 Styling
+- Format runner routing tests - ([9c7aa41](https://github.com/snapetech-org/seerrng/commit/9c7aa417c63ca35de8e7cd38134fe6974ce2df01))
+
+### 🧪 Testing
+- *(ci)* Keep runner label assertion static - ([65e0f0f](https://github.com/snapetech-org/seerrng/commit/65e0f0f9c974aa02461686c0d7aa038d5dc39143))
+- *(styles)* Avoid dynamic regex in fixture checks - ([ce05c0f](https://github.com/snapetech-org/seerrng/commit/ce05c0f723051ced728c06d9bc14f19741dfcf21))
+- Fix CommonJS SQLite test paths - ([41a8732](https://github.com/snapetech-org/seerrng/commit/41a87325eec82a4e0305c485da216641d8f6e7ec))
+
+### ⚙️ Miscellaneous Tasks
+- *(release)* Match private JIT tag title format - ([4ab0b5d](https://github.com/snapetech-org/seerrng/commit/4ab0b5daeee7340666ca9cabe626eff2606024ee))
+- *(release)* Expose release tag to JIT policy - ([6db7efe](https://github.com/snapetech-org/seerrng/commit/6db7efe5abbd9542254ebdeeaa52ecdbbf91cca0))
+- *(release)* Route macOS assets to private Apple runners - ([39b191f](https://github.com/snapetech-org/seerrng/commit/39b191fc607a69d1f56318a130d7edc7c7e60640))
+- *(runners)* Add trusted owner-PR JIT validation - ([c39cf08](https://github.com/snapetech-org/seerrng/commit/c39cf0863f257307192f46fea815655ec2ed2cfa))
+- *(windows)* Include release tag in Chocolatey run name - ([a5db8d7](https://github.com/snapetech-org/seerrng/commit/a5db8d7df37f8e6d5e316d4f37a54237c9f613a1))
+- *(windows)* Mark SeerrNG private JIT routes - ([abcebc7](https://github.com/snapetech-org/seerrng/commit/abcebc796c969fa177f1ab1455fd0ce94b16b0ec))
+- *(windows)* Route Seerr release jobs to private JIT - ([565ff2d](https://github.com/snapetech-org/seerrng/commit/565ff2d6af3a4fcb5ce3f1688e59500688f010cd))
+- Restore GitHub-hosted runner routing - ([c64b5b2](https://github.com/snapetech-org/seerrng/commit/c64b5b2a62ad63aa3afb915cabb52b27305b603f))
+- Require explicit fork validation labels - ([d6ca1e8](https://github.com/snapetech-org/seerrng/commit/d6ca1e85b69bc3b0593143c3dc1745ae2c22a745))
+- Align fork labels with broker contract - ([597505c](https://github.com/snapetech-org/seerrng/commit/597505c7eb084d9ededb4e9aedd203220cc4d882))
+- Gate fork validation on owner approval - ([9f96fff](https://github.com/snapetech-org/seerrng/commit/9f96fff9126aef83a89c3d0e179838ffb3f868e6))
+
 ## [3.72.6](https://github.com/snapetech-org/seerrng/compare/v3.72.5..v3.72.6) - 2026-10-31
 
 ### User-facing changes
