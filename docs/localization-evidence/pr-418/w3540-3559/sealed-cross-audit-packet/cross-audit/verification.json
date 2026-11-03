@@ -1,0 +1,17 @@
+{
+  "status": "PASS",
+  "reviewedCells": 240,
+  "selectedChanges": 24,
+  "crossDispositions": {
+    "accept-current": 216,
+    "correction": 11,
+    "refinement": 13
+  },
+  "holds": 0,
+  "unresolvedTargetDisagreements": 0,
+  "candidateFreeVerifier": "PASS",
+  "primaryVerifier": "PASS",
+  "blindReviewVerifier": "PASS",
+  "pinnedStateVerification": "PASS",
+  "applicationApproved": false
+}

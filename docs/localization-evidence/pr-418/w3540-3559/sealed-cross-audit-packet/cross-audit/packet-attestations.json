@@ -1,0 +1,35 @@
+{
+  "candidateFreeInput": {
+    "allChecksumsMatch": true,
+    "checksumEntries": 12,
+    "checksumListSha256": "6b8b67e58028a0af79afad9a115a42b49233df18d2469227fe4153bece68ddb8",
+    "manifestJsonSha256": "14d7c9313f4b1eb7a0160712c87bd07089a719bcb05c64fbd8493a31f143a102",
+    "verifierStatus": "PASS"
+  },
+  "independentBlindReview": {
+    "allChecksumsMatch": true,
+    "cells": 240,
+    "checksumEntries": 5,
+    "checksumListSha256": "2030ac91f4922865d02d61cb38e42b90cf70aecceb2cf9b998fd2b6a605d65b7",
+    "holds": 0,
+    "proposals": 8,
+    "retains": 232,
+    "verifierStatus": "PASS on original kspld0 path and rebased copied-packet verifier"
+  },
+  "lineageAndCallerVerification": {
+    "allCellCatalogPinsMatch": true,
+    "allCellsHaveProductionCallers": true,
+    "allCurrentTargetHashesMatch": true,
+    "allDirectCallerRefsAndContextBlocksMatch": true,
+    "allHeadTreePinsAgree": true,
+    "allSelectedTargetsPassPlaceholderMarkupNumericAndProtectedLiteralChecks": true,
+    "reviewedCells": 240
+  },
+  "primaryReview": {
+    "allChecksumsMatch": true,
+    "cells": 240,
+    "checksumEntries": 8,
+    "checksumListSha256": "2875b7e3151a2009b8c24a79434cf70ce79483af9faba23ddb4827ee7c222337",
+    "verifierStatus": "PASS"
+  }
+}

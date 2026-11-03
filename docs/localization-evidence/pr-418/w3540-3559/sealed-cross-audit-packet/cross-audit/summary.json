@@ -1,0 +1,98 @@
+{
+  "applicationApproved": false,
+  "applicationPlanSha256": "02f3327a7b69c634a7c30ee36f4bc8041aca1e2ca7cebd1b95fe8100cf1de102",
+  "blindOnlyProposals": 1,
+  "blindProposals": 8,
+  "blindReviewDispositions": {
+    "propose": 8,
+    "retain": 232
+  },
+  "bothReviewersProposed": 7,
+  "callerlessSources": 0,
+  "cellCount": 240,
+  "conflictingDoubleProposalCells": 4,
+  "convergentProposalCells": 3,
+  "crossDispositions": {
+    "accept-current": 216,
+    "correction": 11,
+    "refinement": 13
+  },
+  "crossResolutions": {
+    "adjudicated-blind-target": 1,
+    "adjudicated-primary-target": 3,
+    "blind-only-selected": 1,
+    "both-accept-current": 216,
+    "primary-only-selected": 16,
+    "proposal-agreement": 3
+  },
+  "decisionClassDifferences": 17,
+  "exactHeadBrowserReview": false,
+  "head": "f15ebead8af7bd09d81c4ea61e8cd3351a2ea66d",
+  "holds": 0,
+  "localeCount": 12,
+  "markupMismatches": 0,
+  "nativeSpeakerApproval": false,
+  "numericTokenMismatches": 0,
+  "packetHashes": {
+    "blindChecksumListSha256": "2030ac91f4922865d02d61cb38e42b90cf70aecceb2cf9b998fd2b6a605d65b7",
+    "candidateFreeChecksumListSha256": "6b8b67e58028a0af79afad9a115a42b49233df18d2469227fe4153bece68ddb8",
+    "candidateFreeManifestJsonSha256": "14d7c9313f4b1eb7a0160712c87bd07089a719bcb05c64fbd8493a31f143a102",
+    "primaryChecksumListSha256": "2875b7e3151a2009b8c24a79434cf70ce79483af9faba23ddb4827ee7c222337"
+  },
+  "placeholderMismatches": 0,
+  "primaryOnlyProposals": 16,
+  "primaryProposals": 23,
+  "primaryReviewDispositions": {
+    "accept-current": 217,
+    "correction": 9,
+    "refinement": 14
+  },
+  "protectedLiteralMismatches": 0,
+  "pullRequest": 418,
+  "releaseApproved": false,
+  "repository": "snapetech-org/seerrng",
+  "schemaVersion": 1,
+  "selectedBySide": {
+    "agreement": 3,
+    "blind": 2,
+    "primary": 19
+  },
+  "selectedChanges": 24,
+  "selectedChangesByLocale": {
+    "ar": 1,
+    "de": 3,
+    "es": 2,
+    "fr": 1,
+    "hi": 1,
+    "id": 3,
+    "ja": 4,
+    "ko": 2,
+    "pt_BR": 1,
+    "vi": 1,
+    "zh_Hans": 2,
+    "zh_Hant": 3
+  },
+  "selectedChangesByPosition": {
+    "3541": 1,
+    "3543": 2,
+    "3545": 1,
+    "3546": 2,
+    "3549": 1,
+    "3550": 1,
+    "3551": 2,
+    "3554": 9,
+    "3555": 1,
+    "3557": 2,
+    "3559": 2
+  },
+  "selectedCorrections": 11,
+  "selectedRefinements": 13,
+  "sourceChangesMade": false,
+  "sourceCount": 20,
+  "targetAgreementCells": 219,
+  "targetDisagreements": 21,
+  "tree": "3ba2579c326f8dbac943ba43df77ddd5747a85a1",
+  "unresolvedDisagreements": 0,
+  "verifiedAtUTC": "2026-11-03T12:33:29.453941+00:00",
+  "window": "W3540-W3559"
+}

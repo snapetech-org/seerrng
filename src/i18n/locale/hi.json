@@ -3553,7 +3553,7 @@
   "components.Settings.AudiobookshelfModal.chooseLibrary": "उपलब्ध पुस्तकालयों को लोड करने के लिए कनेक्शन जाँचें।",
   "components.Settings.AudiobookshelfModal.editTitle": "Audiobookshelf लाइब्रेरी संपादित करें",
   "components.Settings.AudiobookshelfModal.externalUrl": "बाहरी URL",
-  "components.Settings.AudiobookshelfModal.externalUrlHelp": "संबंधित ऑडियोबुक खोलने के लिए वैकल्पिक ब्राउज़र पता। यदि आप URL Base सेट करते हैं, तो SeerrNG इसे इस पते में अपने-आप जोड़ देगा।",
+  "components.Settings.AudiobookshelfModal.externalUrlHelp": "संबंधित ऑडियोबुक खोलने के लिए वैकल्पिक ब्राउज़र पता। यदि आप URL बेस सेट करते हैं, तो SeerrNG इसे इस पते में अपने-आप जोड़ देगा।",
   "components.Settings.AudiobookshelfModal.hostRequired": "होस्टनाम या IP पता दर्ज करें।",
   "components.Settings.AudiobookshelfModal.hostname": "होस्टनाम या IP पता",
   "components.Settings.AudiobookshelfModal.intro": "Bookshelf स्कैन के दौरान SeerrNG इस केवल-पठन ऑडियोबुक लाइब्रेरी की जाँच करता है। पुस्तकों का मिलान ISBN से किया जाता है; ISBN के बिना आइटम अपने-आप लिंक नहीं किए जा सकते। SeerrNG Audiobookshelf में आइटम न जोड़ता है, न हटाता है और न ही बदलता है।",

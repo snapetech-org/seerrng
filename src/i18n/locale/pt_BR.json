@@ -3553,7 +3553,7 @@
   "components.Settings.AudiobookshelfModal.chooseLibrary": "Teste a conexão para carregar bibliotecas de livros disponíveis",
   "components.Settings.AudiobookshelfModal.editTitle": "Editar biblioteca do Audiobookshelf",
   "components.Settings.AudiobookshelfModal.externalUrl": "URL Externa",
-  "components.Settings.AudiobookshelfModal.externalUrlHelp": "Endereço opcional do navegador para abrir o audiolivro correspondente. Se você definir uma base de URL, SeerrNG adiciona a este endereço automaticamente.",
+  "components.Settings.AudiobookshelfModal.externalUrlHelp": "Endereço opcional do navegador para abrir o audiolivro correspondente. Se você definir uma base de URL, SeerrNG adiciona essa base automaticamente a este endereço.",
   "components.Settings.AudiobookshelfModal.hostRequired": "Digite um nome de host ou endereço IP.",
   "components.Settings.AudiobookshelfModal.hostname": "Nome do host ou endereço IP",
   "components.Settings.AudiobookshelfModal.intro": "SeerrNG verifica esta biblioteca de audiolivros somente leitura durante a varredura Bookshelf. Os livros são correspondidos por ISBN; itens sem ISBN não podem ser vinculados automaticamente. SeerrNG não adiciona, remove ou altera itens em Audiobookshelf.",

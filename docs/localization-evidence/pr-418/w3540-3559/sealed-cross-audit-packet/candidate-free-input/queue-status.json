@@ -1,0 +1,28 @@
+{
+  "schemaVersion": 1,
+  "repository": "snapetech-org/seerrng",
+  "pullRequest": 418,
+  "head": "f15ebead8af7bd09d81c4ea61e8cd3351a2ea66d",
+  "tree": "3ba2579c326f8dbac943ba43df77ddd5747a85a1",
+  "sourceCatalogPath": "src/i18n/locale/en.json",
+  "sourceOrderCount": 9494,
+  "sourceOrderSha256": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072",
+  "previousCompletedWindow": "W3520-W3539",
+  "previousCompletedEndPosition": 3539,
+  "previousCompletedNextBoundarySourceId": "components.Selector.searchStudios",
+  "nextWindow": "W3540-W3559",
+  "nextWindowRangeInclusive": [
+    3540,
+    3559
+  ],
+  "remainingAtWindowStart": 5954,
+  "selectedSourceCount": 20,
+  "remainingAfterWindow": 5934,
+  "tail": {
+    "position": 9493,
+    "sourceId": "utils.oidc.oidcUnauthorized",
+    "source": "You do not have permission to sign in with {provider}.",
+    "sourceSha256": "7bd4a7ff8e1e269809b859adb6b9794334613437e4ab733e58496926542cabc9",
+    "sourceIdSha256": "5422247f67a57f1dab8789d0487585b8210c3321c5eef012a53b77753d865b0a"
+  }
+}

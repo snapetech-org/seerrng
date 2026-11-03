@@ -1,0 +1,49 @@
+{
+  "artifact": "Independent blind translation review ledger",
+  "callerResolutionFindingCount": 0,
+  "callerlessSourcePositions": [],
+  "candidateFreeChecksumListSha256": "6b8b67e58028a0af79afad9a115a42b49233df18d2469227fe4153bece68ddb8",
+  "candidateFreeInputPath": "/mnt/disks/scratch/task-scratch/seerrng-pr418-w3540-3559-blind-20261103/candidate-free-input",
+  "candidateFreeManifestSha256": "14d7c9313f4b1eb7a0160712c87bd07089a719bcb05c64fbd8493a31f143a102",
+  "expectedCells": 240,
+  "holds": 0,
+  "localeOrder": [
+    "es",
+    "zh_Hans",
+    "hi",
+    "de",
+    "ja",
+    "fr",
+    "pt_BR",
+    "ar",
+    "ko",
+    "zh_Hant",
+    "vi",
+    "id"
+  ],
+  "markupMismatches": 0,
+  "nativeSpeakerApproval": false,
+  "notes": [
+    "All decisions are blind and derive only from the candidate-free input packet.",
+    "Direct caller lines and their pinned context-block IDs/hashes are carried in each ledger row.",
+    "No candidate translations, primary review, PR body, previous-window evidence, or repository data outside the packet were consulted.",
+    "No native-speaker approval is represented as completed."
+  ],
+  "numericTokenMismatches": 0,
+  "pinnedHead": "f15ebead8af7bd09d81c4ea61e8cd3351a2ea66d",
+  "pinnedTree": "3ba2579c326f8dbac943ba43df77ddd5747a85a1",
+  "placeholderMismatches": 0,
+  "proposals": 8,
+  "protectedLiteralMismatches": 0,
+  "pullRequest": 418,
+  "repository": "snapetech-org/seerrng",
+  "retains": 232,
+  "reviewedCells": 240,
+  "selectedPositions": [
+    3540,
+    3559
+  ],
+  "sourceCount": 20,
+  "sourceOrderSha256": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072",
+  "window": "W3540-W3559"
+}

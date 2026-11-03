@@ -1,0 +1,260 @@
+{
+  "blindOnlyProposals": 1,
+  "byPosition": {
+    "3541": {
+      "cells": [
+        {
+          "blindTarget": "사용자 선택 ...",
+          "crossTarget": "사용자 선택…",
+          "locale": "ko",
+          "primaryTarget": "사용자 선택…",
+          "rationale": "The direct caller is the user-selector search placeholder. The current Korean text has a space before three periods; the primary target uses the compact ellipsis without changing the selection prompt.",
+          "resolution": "primary-only-selected",
+          "source": "Select users…",
+          "sourceId": "components.Selector.searchUsers"
+        }
+      ]
+    },
+    "3546": {
+      "cells": [
+        {
+          "blindTarget": "添加库",
+          "crossTarget": "添加媒体库",
+          "locale": "zh_Hans",
+          "primaryTarget": "添加媒体库",
+          "rationale": "This is the modal submit button, while the modal title identifies an Audiobookshelf media library. 添加媒体库 gives the short button the same media-library context.",
+          "resolution": "primary-only-selected",
+          "source": "Add library",
+          "sourceId": "components.Settings.AudiobookshelfModal.add"
+        },
+        {
+          "blindTarget": "新增文库",
+          "crossTarget": "新增媒體庫",
+          "locale": "zh_Hant",
+          "primaryTarget": "新增媒體庫",
+          "rationale": "The add button belongs to the Audiobookshelf media-library modal. 新增媒體庫 fixes the Simplified 库 in the Traditional catalog and matches the modal title.",
+          "resolution": "primary-only-selected",
+          "source": "Add library",
+          "sourceId": "components.Settings.AudiobookshelfModal.add"
+        }
+      ]
+    },
+    "3549": {
+      "cells": [
+        {
+          "blindTarget": "選択したブックライブラリを表示できるユーザートークンを使用します。 トークンは SeerrNG サーバーにとどまります。",
+          "crossTarget": "選択したブックライブラリを表示できるユーザートークンを使用します。トークンは SeerrNG サーバーにとどまります。",
+          "locale": "ja",
+          "primaryTarget": "選択したブックライブラリを表示できるユーザートークンを使用します。トークンは SeerrNG サーバーにとどまります。",
+          "rationale": "The help text is two Japanese sentences. Removing the ASCII space after the Japanese full stop follows Japanese sentence spacing and leaves the token-storage meaning unchanged.",
+          "resolution": "primary-only-selected",
+          "source": "Use a user token that can view the book library you select. The token stays on the SeerrNG server.",
+          "sourceId": "components.Settings.AudiobookshelfModal.apiKeyHelp"
+        }
+      ]
+    },
+    "3550": {
+      "cells": [
+        {
+          "blindTarget": "Basis URL",
+          "crossTarget": "URL dasar",
+          "locale": "id",
+          "primaryTarget": "URL dasar",
+          "rationale": "This is the base-address field label. URL dasar is the natural Indonesian term order; Basis URL is an awkward calque. The URL literal remains intact.",
+          "resolution": "primary-only-selected",
+          "source": "URL Base",
+          "sourceId": "components.Settings.AudiobookshelfModal.baseUrl"
+        }
+      ]
+    },
+    "3551": {
+      "cells": [
+        {
+          "blindTarget": "Pruebe la conexión para cargar bibliotecas de libros disponibles.",
+          "crossTarget": "Pruebe la conexión para cargar las bibliotecas de libros disponibles",
+          "locale": "es",
+          "primaryTarget": "Pruebe la conexión para cargar las bibliotecas de libros disponibles",
+          "rationale": "The direct caller renders this string as the empty option in a library select, not as sentence prose. Pruebe matches the modal's formal usted register, las reads naturally, and no final period fits the option label.",
+          "resolution": "adjudicated-primary-target",
+          "source": "Test the connection to load available book libraries",
+          "sourceId": "components.Settings.AudiobookshelfModal.chooseLibrary"
+        },
+        {
+          "blindTarget": "利用可能な図書ライブラリをロードする接続をテストする",
+          "crossTarget": "利用可能な図書ライブラリを読み込むには、接続をテストしてください。",
+          "locale": "ja",
+          "primaryTarget": "利用可能な図書ライブラリを読み込むには、接続をテストしてください。",
+          "rationale": "The direct caller renders this as an empty option in the library select. The current Japanese noun chain is awkward; the selected polite instruction clearly says to test the connection in order to load available libraries.",
+          "resolution": "primary-only-selected",
+          "source": "Test the connection to load available book libraries",
+          "sourceId": "components.Settings.AudiobookshelfModal.chooseLibrary"
+        }
+      ]
+    },
+    "3554": {
+      "cells": [
+        {
+          "blindTarget": "用于在浏览器中打开匹配的有声书的可选地址。如果设置了 URL Base，SeerrNG 会自动将 URL Base 附加到此地址。",
+          "crossTarget": "用于在浏览器中打开匹配的有声书的可选地址。如果设置了 URL 基址，SeerrNG 会自动将 URL 基址附加到此地址。",
+          "locale": "zh_Hans",
+          "primaryTarget": "用于在浏览器中打开匹配的有声书的可选地址。如果设置了 URL 基址，SeerrNG 会自动将 URL 基址附加到此地址。",
+          "rationale": "The field label is URL 基址. Reusing that localized term in the helper makes the reference consistent while preserving URL.",
+          "resolution": "primary-only-selected",
+          "source": "Optional browser address for opening the matching audiobook. If you set a URL Base, SeerrNG adds it to this address automatically.",
+          "sourceId": "components.Settings.AudiobookshelfModal.externalUrlHelp"
+        },
+        {
+          "blindTarget": "संबंधित ऑडियोबुक खोलने के लिए वैकल्पिक ब्राउज़र पता। यदि आप URL Base सेट करते हैं, तो SeerrNG इसे इस पते में अपने-आप जोड़ देगा।",
+          "crossTarget": "संबंधित ऑडियोबुक खोलने के लिए वैकल्पिक ब्राउज़र पता। यदि आप URL बेस सेट करते हैं, तो SeerrNG इसे इस पते में अपने-आप जोड़ देगा।",
+          "locale": "hi",
+          "primaryTarget": "संबंधित ऑडियोबुक खोलने के लिए वैकल्पिक ब्राउज़र पता। यदि आप URL बेस सेट करते हैं, तो SeerrNG इसे इस पते में अपने-आप जोड़ देगा।",
+          "rationale": "The field label is URL बेस. Reusing it here connects the helper to the visible setting while preserving the URL literal.",
+          "resolution": "primary-only-selected",
+          "source": "Optional browser address for opening the matching audiobook. If you set a URL Base, SeerrNG adds it to this address automatically.",
+          "sourceId": "components.Settings.AudiobookshelfModal.externalUrlHelp"
+        },
+        {
+          "blindTarget": "対応するオーディオブックを開くための任意のブラウザーアドレスです。URL Baseを設定すると、SeerrNGはその値をこのアドレスに自動で追加します。",
+          "crossTarget": "対応するオーディオブックを開くための任意のブラウザーアドレスです。URLベースを設定すると、SeerrNGはその値をこのアドレスに自動で追加します。",
+          "locale": "ja",
+          "primaryTarget": "対応するオーディオブックを開くための任意のブラウザーアドレスです。URLベースを設定すると、SeerrNGはその値をこのアドレスに自動で追加します。",
+          "rationale": "The field label is URLベース. Matching it here makes the help text refer to the same localized setting.",
+          "resolution": "primary-only-selected",
+          "source": "Optional browser address for opening the matching audiobook. If you set a URL Base, SeerrNG adds it to this address automatically.",
+          "sourceId": "components.Settings.AudiobookshelfModal.externalUrlHelp"
+        },
+        {
+          "blindTarget": "Adresse facultative pour ouvrir le livre audio correspondant dans le navigateur. Si vous définissez une URL Base, SeerrNG l’ajoute automatiquement à cette adresse.",
+          "crossTarget": "Adresse facultative pour ouvrir le livre audio correspondant dans le navigateur. Si vous définissez une URL de base, SeerrNG l’ajoute automatiquement à cette adresse.",
+          "locale": "fr",
+          "primaryTarget": "Adresse facultative pour ouvrir le livre audio correspondant dans le navigateur. Si vous définissez une URL de base, SeerrNG l’ajoute automatiquement à cette adresse.",
+          "rationale": "The field label in this modal is URL de base. Reusing that exact French term in its help text makes the setting reference clear.",
+          "resolution": "primary-only-selected",
+          "source": "Optional browser address for opening the matching audiobook. If you set a URL Base, SeerrNG adds it to this address automatically.",
+          "sourceId": "components.Settings.AudiobookshelfModal.externalUrlHelp"
+        },
+        {
+          "blindTarget": "Endereço opcional do navegador para abrir o audiolivro correspondente. Se você definir uma base de URL, SeerrNG adiciona a este endereço automaticamente.",
+          "crossTarget": "Endereço opcional do navegador para abrir o audiolivro correspondente. Se você definir uma base de URL, SeerrNG adiciona essa base automaticamente a este endereço.",
+          "locale": "pt_BR",
+          "primaryTarget": "Endereço opcional do navegador para abrir o audiolivro correspondente. Se você definir uma base de URL, SeerrNG adiciona essa base automaticamente a este endereço.",
+          "rationale": "The current sentence says the service adds to the address but leaves the object implicit. The selected text explicitly names the base URL as what is appended.",
+          "resolution": "primary-only-selected",
+          "source": "Optional browser address for opening the matching audiobook. If you set a URL Base, SeerrNG adds it to this address automatically.",
+          "sourceId": "components.Settings.AudiobookshelfModal.externalUrlHelp"
+        },
+        {
+          "blindTarget": "해당 오디오북을 열기 위한 선택적 브라우저 주소입니다. URL Base를 설정하면 SeerrNG가 해당 URL Base를 이 주소에 자동으로 추가합니다.",
+          "crossTarget": "해당 오디오북을 열기 위한 선택적 브라우저 주소입니다. 기본 URL을 설정하면 SeerrNG가 해당 기본 URL을 이 주소에 자동으로 추가합니다.",
+          "locale": "ko",
+          "primaryTarget": "해당 오디오북을 열기 위한 선택적 브라우저 주소입니다. 기본 URL을 설정하면 SeerrNG가 해당 기본 URL을 이 주소에 자동으로 추가합니다.",
+          "rationale": "The field label is 기본 URL. Reusing that Korean term in the helper makes the setting reference explicit.",
+          "resolution": "primary-only-selected",
+          "source": "Optional browser address for opening the matching audiobook. If you set a URL Base, SeerrNG adds it to this address automatically.",
+          "sourceId": "components.Settings.AudiobookshelfModal.externalUrlHelp"
+        },
+        {
+          "blindTarget": "用於在瀏覽器中開啟對應有聲書的選用地址。若設定了 URL Base，SeerrNG 會自動將 URL Base 加到此地址。",
+          "crossTarget": "用於在瀏覽器中開啟對應有聲書的選用地址。若設定了 URL 基址，SeerrNG 會自動將 URL 基址加到此地址。",
+          "locale": "zh_Hant",
+          "primaryTarget": "用於在瀏覽器中開啟對應有聲書的選用地址。若設定了 URL 基址，SeerrNG 會自動將 URL 基址加到此地址。",
+          "rationale": "The field label is URL 基址. Reusing it in the Traditional Chinese helper avoids switching to English URL Base.",
+          "resolution": "primary-only-selected",
+          "source": "Optional browser address for opening the matching audiobook. If you set a URL Base, SeerrNG adds it to this address automatically.",
+          "sourceId": "components.Settings.AudiobookshelfModal.externalUrlHelp"
+        },
+        {
+          "blindTarget": "Địa chỉ trình duyệt tùy chọn để mở sách nói tương ứng. Nếu bạn đặt URL Base, SeerrNG sẽ tự động thêm URL Base vào địa chỉ này.",
+          "crossTarget": "Địa chỉ trình duyệt tùy chọn để mở sách nói tương ứng. Nếu bạn đặt URL cơ sở, SeerrNG sẽ tự động thêm URL cơ sở vào địa chỉ này.",
+          "locale": "vi",
+          "primaryTarget": "Địa chỉ trình duyệt tùy chọn để mở sách nói tương ứng. Nếu bạn đặt URL cơ sở, SeerrNG sẽ tự động thêm URL cơ sở vào địa chỉ này.",
+          "rationale": "The current sổ ghi âm means a recording log rather than an audiobook. The selected text uses sách nói, names URL cơ sở as the appended value, and aligns with the field label.",
+          "resolution": "adjudicated-primary-target",
+          "source": "Optional browser address for opening the matching audiobook. If you set a URL Base, SeerrNG adds it to this address automatically.",
+          "sourceId": "components.Settings.AudiobookshelfModal.externalUrlHelp"
+        },
+        {
+          "blindTarget": "Alamat peramban opsional untuk membuka audiobook yang sesuai. Jika Anda menetapkan URL Base, SeerrNG akan menambahkannya ke alamat ini secara otomatis.",
+          "crossTarget": "Alamat peramban opsional untuk membuka audiobook yang sesuai. Jika Anda menetapkan URL dasar, SeerrNG akan menambahkannya ke alamat ini secara otomatis.",
+          "locale": "id",
+          "primaryTarget": "Alamat peramban opsional untuk membuka audiobook yang sesuai. Jika Anda menetapkan URL dasar, SeerrNG akan menambahkannya ke alamat ini secara otomatis.",
+          "rationale": "The field label is URL dasar. Reusing that Indonesian term in the helper avoids switching back to the English label.",
+          "resolution": "primary-only-selected",
+          "source": "Optional browser address for opening the matching audiobook. If you set a URL Base, SeerrNG adds it to this address automatically.",
+          "sourceId": "components.Settings.AudiobookshelfModal.externalUrlHelp"
+        }
+      ]
+    },
+    "3555": {
+      "cells": [
+        {
+          "blindTarget": "ホスト名またはIPアドレスを入力します。",
+          "crossTarget": "ホスト名または IP アドレスを入力してください。",
+          "locale": "ja",
+          "primaryTarget": "ホスト名または IP アドレスを入力してください。",
+          "rationale": "This is required-field validation. The current Japanese is declarative; 入力してください directly instructs the user what to enter.",
+          "resolution": "primary-only-selected",
+          "source": "Enter a hostname or IP address.",
+          "sourceId": "components.Settings.AudiobookshelfModal.hostRequired"
+        }
+      ]
+    },
+    "3557": {
+      "cells": [
+        {
+          "blindTarget": "SeerrNG überprüft diese schreibgeschützte Hörbuchbibliothek während des Bookshelf-Scans. Bücher werden anhand ihrer ISBN abgeglichen; Einträge ohne ISBN können nicht automatisch verknüpft werden. SeerrNG fügt in Audiobookshelf keine Einträge hinzu, entfernt oder ändert sie.",
+          "crossTarget": "SeerrNG überprüft diese schreibgeschützte Hörbuchbibliothek während des Bookshelf-Scans. Bücher werden anhand ihrer ISBN abgeglichen; Einträge ohne ISBN können nicht automatisch verknüpft werden. SeerrNG fügt in Audiobookshelf keine Einträge hinzu und ändert oder entfernt dort keine.",
+          "locale": "de",
+          "primaryTarget": "SeerrNG überprüft diese schreibgeschützte Hörbuchbibliothek während des Bookshelf-Scans. Bücher werden anhand ihrer ISBN abgeglichen; Einträge ohne ISBN können nicht automatisch verknüpft werden. SeerrNG fügt in Audiobookshelf keine Einträge hinzu und ändert oder entfernt dort keine.",
+          "rationale": "In the current German sentence, the negation scopes over adding but the later verbs read as positive removal or change. The selected wording keeps adding, changing, and removing under the negative, preserving the read-only guarantee.",
+          "resolution": "primary-only-selected",
+          "source": "SeerrNG checks this read-only audiobook library during the Bookshelf scan. Books are matched by ISBN; items without an ISBN cannot be linked automatically. SeerrNG does not add, remove, or change items in Audiobookshelf.",
+          "sourceId": "components.Settings.AudiobookshelfModal.intro"
+        },
+        {
+          "blindTarget": "SeerrNG memeriksa perpustakaan buku audio yang bersifat hanya-baca ini selama pemindaian Bookshelf. Buku dicocokkan berdasarkan ISBN; item tanpa ISBN tidak dapat ditautkan secara otomatis. SeerrNG tidak menambah, menghapus, atau mengubah item di Audiobookshelf.",
+          "crossTarget": "SeerrNG memeriksa perpustakaan buku audio hanya-baca ini selama pemindaian Bookshelf. Buku dicocokkan berdasarkan ISBN; item tanpa ISBN tidak dapat ditautkan secara otomatis. SeerrNG tidak menambah, menghapus, atau mengubah item di Audiobookshelf.",
+          "locale": "id",
+          "primaryTarget": "SeerrNG memeriksa perpustakaan buku audio hanya-baca ini selama pemindaian Bookshelf. Buku dicocokkan berdasarkan ISBN; item tanpa ISBN tidak dapat ditautkan secara otomatis. SeerrNG tidak menambah, menghapus, atau mengubah item di Audiobookshelf.",
+          "rationale": "The direct caller is the read-only library explanation. Berdasarkan ISBN correctly makes ISBN the matching criterion; the current oleh ISBN makes it sound like the agent. The concise primary target preserves the read-only and no-modification statements.",
+          "resolution": "adjudicated-primary-target",
+          "source": "SeerrNG checks this read-only audiobook library during the Bookshelf scan. Books are matched by ISBN; items without an ISBN cannot be linked automatically. SeerrNG does not add, remove, or change items in Audiobookshelf.",
+          "sourceId": "components.Settings.AudiobookshelfModal.intro"
+        }
+      ]
+    },
+    "3559": {
+      "cells": [
+        {
+          "blindTarget": "Seleccione una biblioteca de audiolibros.",
+          "crossTarget": "Seleccione una biblioteca de audiolibros.",
+          "locale": "es",
+          "primaryTarget": "Elija una biblioteca de libros.",
+          "rationale": "This is required validation for the field labeled Biblioteca de audiolibros. The blind target matches that product context and uses the same formal usted register as nearby modal instructions.",
+          "resolution": "adjudicated-blind-target",
+          "source": "Choose a book library.",
+          "sourceId": "components.Settings.AudiobookshelfModal.libraryRequired"
+        },
+        {
+          "blindTarget": "Wählen Sie eine Hörbuchbibliothek aus.",
+          "crossTarget": "Wählen Sie eine Hörbuchbibliothek aus.",
+          "locale": "de",
+          "primaryTarget": "Wählen Sie eine Buchbibliothek.",
+          "rationale": "This required validation refers to the Audiobook library field, whose exact German label is Hörbuchbibliothek. The blind target matches that field and is more idiomatic than Buchbibliothek.",
+          "resolution": "blind-only-selected",
+          "source": "Choose a book library.",
+          "sourceId": "components.Settings.AudiobookshelfModal.libraryRequired"
+        }
+      ]
+    }
+  },
+  "callerlessHolds": 0,
+  "conflictingDoubleProposals": 4,
+  "convergentProposals": 3,
+  "decisionClassDifferences": 17,
+  "holds": 0,
+  "primaryOnlyProposals": 16,
+  "targetAgreementCells": 219,
+  "targetDisagreements": 21,
+  "unresolvedDisagreements": 0
+}

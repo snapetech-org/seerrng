@@ -3534,7 +3534,7 @@
   "components.Settings.AudiobookshelfModal.chooseLibrary": "Kiểm tra kết nối để tải các thư viện sách hiện có.",
   "components.Settings.AudiobookshelfModal.editTitle": "Chỉnh sửa thư viện Audiobookshelf",
   "components.Settings.AudiobookshelfModal.externalUrl": "URL bên ngoài",
-  "components.Settings.AudiobookshelfModal.externalUrlHelp": "Địa chỉ trình duyệt tùy chọn để mở sổ ghi âm tương ứng. Nếu bạn đặt một cơ sở URL, SeerrNG thêm nó vào địa chỉ này tự động.",
+  "components.Settings.AudiobookshelfModal.externalUrlHelp": "Địa chỉ trình duyệt tùy chọn để mở sách nói tương ứng. Nếu bạn đặt URL cơ sở, SeerrNG sẽ tự động thêm URL cơ sở vào địa chỉ này.",
   "components.Settings.AudiobookshelfModal.hostRequired": "Nhập tên máy chủ hoặc địa chỉ IP.",
   "components.Settings.AudiobookshelfModal.hostname": "Tên máy chủ hoặc địa chỉ IP",
   "components.Settings.AudiobookshelfModal.intro": "SeerrNG kiểm tra thư viện sách nói chỉ đọc này trong quá trình quét Bookshelf. Sách được đối chiếu theo ISBN; các mục không có ISBN không thể được liên kết tự động. SeerrNG không thêm, xóa hoặc thay đổi mục nào trong Audiobookshelf.",
