@@ -3409,7 +3409,7 @@
   "components.Requests.sizeProgress": "已完成 {complete}，共 {total}",
   "components.Requests.sortAdded": "日期",
   "components.Requests.sortArtist": "藝人",
-  "components.Requests.sortAscending": "升冪",
+  "components.Requests.sortAscending": "升序",
   "components.Requests.sortAuthor": "作者",
   "components.Requests.sortBy": "排序方式",
   "components.Requests.sortDescending": "降序",

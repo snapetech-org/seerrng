@@ -1,0 +1,19 @@
+{
+  "repository": "snapetech-org/seerrng",
+  "pullRequest": 418,
+  "state": "OPEN",
+  "draft": true,
+  "baseRef": "main",
+  "baseSha": "221d8e0d542802da7529cd272c928cc747677e5c",
+  "headRef": "codex/seerrng-localization-overhaul-20261028",
+  "head": "3f5ddfdddbeb77cf02cc9d14e00001c8d1aa61c6",
+  "remoteBranchRef": "refs/heads/codex/seerrng-localization-overhaul-20261028",
+  "remoteBranchHead": "3f5ddfdddbeb77cf02cc9d14e00001c8d1aa61c6",
+  "remotePullRef": "refs/pull/418/head",
+  "remotePullRefHead": "3f5ddfdddbeb77cf02cc9d14e00001c8d1aa61c6",
+  "commitTree": "1c48dc5ea6e8db6c2da546ec58e88d38eb8f9cc7",
+  "worktree": "/mnt/disks/scratch/task-worktrees/localization-20261103/seerrng-pr418-w3400-review-20261103",
+  "worktreeBranch": "detached",
+  "worktreeClean": true,
+  "verifiedAtUTC": "2026-11-03T08:45:28+00:00"
+}

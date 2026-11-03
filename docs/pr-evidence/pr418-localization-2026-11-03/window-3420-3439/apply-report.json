@@ -1,0 +1,234 @@
+{
+  "schemaVersion": 1,
+  "repository": "snapetech-org/seerrng",
+  "pullRequest": 418,
+  "window": "W3420-W3439",
+  "headBeforeApply": "3f5ddfdddbeb77cf02cc9d14e00001c8d1aa61c6",
+  "treeBeforeApply": "1c48dc5ea6e8db6c2da546ec58e88d38eb8f9cc7",
+  "branch": "codex/seerrng-localization-overhaul-20261028",
+  "preApplyRemoteRefs": {
+    "refs/heads/codex/seerrng-localization-overhaul-20261028": "3f5ddfdddbeb77cf02cc9d14e00001c8d1aa61c6",
+    "refs/pull/418/head": "3f5ddfdddbeb77cf02cc9d14e00001c8d1aa61c6"
+  },
+  "ledgerPath": "cross-audit/cross-audit-decisions.jsonl",
+  "ledgerSha256": "73ad4a4cb9d00831b62eceff9335444a5c52cb30af2f8fc580787e85c90a39c8",
+  "reviewedCells": 240,
+  "counts": {
+    "accept-current": 210,
+    "hold": 24,
+    "refinement": 3,
+    "correction": 3
+  },
+  "appliedChangeCount": 6,
+  "unchangedCellCount": 234,
+  "callerHoldCount": 24,
+  "heldSourceIds": [
+    "components.Requests.selectUser",
+    "components.Requests.service"
+  ],
+  "readbackMismatchCount": 0,
+  "catalogKeySetsMatchEnglish": true,
+  "catalogOrderedKeysPreservedFromBaseline": true,
+  "catalogs": [
+    {
+      "path": "src/i18n/locale/ar.json",
+      "preApplySha256": "f1f53268fc5a8851860c73941bb144c0b9d2b3f6f544c0f7ed3f6e2aa9edced5",
+      "postApplySha256": "f1f53268fc5a8851860c73941bb144c0b9d2b3f6f544c0f7ed3f6e2aa9edced5",
+      "keyCountBefore": 9494,
+      "keyCountAfter": 9494,
+      "preApplyOrderedKeySha256": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072",
+      "postApplyOrderedKeySha256": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072",
+      "orderedKeysPreservedFromPreApply": true,
+      "keySetMatchesEnglish": true,
+      "orderedKeysMatchEnglish": true,
+      "englishOrderedKeySha256": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072",
+      "changedSourceIds": [],
+      "changedCellCount": 0
+    },
+    {
+      "path": "src/i18n/locale/de.json",
+      "preApplySha256": "a98548f3dde2a00cb1e53aa7e391b9f2f8c2bf263786bc497d95ee46ed35e96a",
+      "postApplySha256": "a98548f3dde2a00cb1e53aa7e391b9f2f8c2bf263786bc497d95ee46ed35e96a",
+      "keyCountBefore": 9494,
+      "keyCountAfter": 9494,
+      "preApplyOrderedKeySha256": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072",
+      "postApplyOrderedKeySha256": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072",
+      "orderedKeysPreservedFromPreApply": true,
+      "keySetMatchesEnglish": true,
+      "orderedKeysMatchEnglish": true,
+      "englishOrderedKeySha256": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072",
+      "changedSourceIds": [],
+      "changedCellCount": 0
+    },
+    {
+      "path": "src/i18n/locale/es.json",
+      "preApplySha256": "456eaf0736f3cfc792d394f26bed3ea40cb44f15ae7a46d7b45f3f56102a8756",
+      "postApplySha256": "456eaf0736f3cfc792d394f26bed3ea40cb44f15ae7a46d7b45f3f56102a8756",
+      "keyCountBefore": 9494,
+      "keyCountAfter": 9494,
+      "preApplyOrderedKeySha256": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072",
+      "postApplyOrderedKeySha256": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072",
+      "orderedKeysPreservedFromPreApply": true,
+      "keySetMatchesEnglish": true,
+      "orderedKeysMatchEnglish": true,
+      "englishOrderedKeySha256": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072",
+      "changedSourceIds": [],
+      "changedCellCount": 0
+    },
+    {
+      "path": "src/i18n/locale/fr.json",
+      "preApplySha256": "4889cfc0fb774391bc8d14a3c10ef904a0497da8b7022ba131f1c21a7198772f",
+      "postApplySha256": "4889cfc0fb774391bc8d14a3c10ef904a0497da8b7022ba131f1c21a7198772f",
+      "keyCountBefore": 9494,
+      "keyCountAfter": 9494,
+      "preApplyOrderedKeySha256": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072",
+      "postApplyOrderedKeySha256": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072",
+      "orderedKeysPreservedFromPreApply": true,
+      "keySetMatchesEnglish": true,
+      "orderedKeysMatchEnglish": true,
+      "englishOrderedKeySha256": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072",
+      "changedSourceIds": [],
+      "changedCellCount": 0
+    },
+    {
+      "path": "src/i18n/locale/hi.json",
+      "preApplySha256": "7e26f179697ad38ac49d9951c987cc99543a8d16b27bc6f66db4e8dffa607f02",
+      "postApplySha256": "7e26f179697ad38ac49d9951c987cc99543a8d16b27bc6f66db4e8dffa607f02",
+      "keyCountBefore": 9494,
+      "keyCountAfter": 9494,
+      "preApplyOrderedKeySha256": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072",
+      "postApplyOrderedKeySha256": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072",
+      "orderedKeysPreservedFromPreApply": true,
+      "keySetMatchesEnglish": true,
+      "orderedKeysMatchEnglish": true,
+      "englishOrderedKeySha256": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072",
+      "changedSourceIds": [],
+      "changedCellCount": 0
+    },
+    {
+      "path": "src/i18n/locale/id.json",
+      "preApplySha256": "bf85b4716400fa83e8e5f5de5f4a2d2dbe217786eeffa191b993010f687c6a53",
+      "postApplySha256": "2272f67ec266af7877e38110f3e4f4adc49f1c7cbab01bf492021c2fa52138c3",
+      "keyCountBefore": 9494,
+      "keyCountAfter": 9494,
+      "preApplyOrderedKeySha256": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072",
+      "postApplyOrderedKeySha256": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072",
+      "orderedKeysPreservedFromPreApply": true,
+      "keySetMatchesEnglish": true,
+      "orderedKeysMatchEnglish": true,
+      "englishOrderedKeySha256": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072",
+      "changedSourceIds": [
+        "components.Requests.sortBy"
+      ],
+      "changedCellCount": 1
+    },
+    {
+      "path": "src/i18n/locale/ja.json",
+      "preApplySha256": "3779b08469021d3fe50b04f64c2f1ec97452a08ae053c41d12a3185a3ad654a8",
+      "postApplySha256": "da0b5d9e87861300fba45825a7defe51549d83fff2698c7a16af792e86f3fe68",
+      "keyCountBefore": 9494,
+      "keyCountAfter": 9494,
+      "preApplyOrderedKeySha256": "8d5fd7bd4351bc64c5ee813f2e50196608869e165866f3202a312078732c2baf",
+      "postApplyOrderedKeySha256": "8d5fd7bd4351bc64c5ee813f2e50196608869e165866f3202a312078732c2baf",
+      "orderedKeysPreservedFromPreApply": true,
+      "keySetMatchesEnglish": true,
+      "orderedKeysMatchEnglish": false,
+      "englishOrderedKeySha256": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072",
+      "changedSourceIds": [
+        "components.Requests.sortFirstPublished"
+      ],
+      "changedCellCount": 1
+    },
+    {
+      "path": "src/i18n/locale/ko.json",
+      "preApplySha256": "0391217e08f36c4151976492eee35e8a984f9879705aa4356bbe41d126d721a8",
+      "postApplySha256": "d9177e4edcd9727af614f28f6e70030994f3c36e51f5be578a09010b193be733",
+      "keyCountBefore": 9494,
+      "keyCountAfter": 9494,
+      "preApplyOrderedKeySha256": "8d5fd7bd4351bc64c5ee813f2e50196608869e165866f3202a312078732c2baf",
+      "postApplyOrderedKeySha256": "8d5fd7bd4351bc64c5ee813f2e50196608869e165866f3202a312078732c2baf",
+      "orderedKeysPreservedFromPreApply": true,
+      "keySetMatchesEnglish": true,
+      "orderedKeysMatchEnglish": false,
+      "englishOrderedKeySha256": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072",
+      "changedSourceIds": [
+        "components.Requests.sortFirstPublished"
+      ],
+      "changedCellCount": 1
+    },
+    {
+      "path": "src/i18n/locale/pt_BR.json",
+      "preApplySha256": "c092313df03696cdb45d146b1318050d0d7ace1f80d5e740143e8a0125aad85f",
+      "postApplySha256": "9dc9123cc78bee459a3014e5d6ba01df017eb23e7934c64f51edeb6686705beb",
+      "keyCountBefore": 9494,
+      "keyCountAfter": 9494,
+      "preApplyOrderedKeySha256": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072",
+      "postApplyOrderedKeySha256": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072",
+      "orderedKeysPreservedFromPreApply": true,
+      "keySetMatchesEnglish": true,
+      "orderedKeysMatchEnglish": true,
+      "englishOrderedKeySha256": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072",
+      "changedSourceIds": [
+        "components.Requests.sortFirstPublished"
+      ],
+      "changedCellCount": 1
+    },
+    {
+      "path": "src/i18n/locale/vi.json",
+      "preApplySha256": "4ea5b3795db56e368a344366a30e4bcb61424aab797ccac42d0253731c4c56eb",
+      "postApplySha256": "4ea5b3795db56e368a344366a30e4bcb61424aab797ccac42d0253731c4c56eb",
+      "keyCountBefore": 9494,
+      "keyCountAfter": 9494,
+      "preApplyOrderedKeySha256": "8d5fd7bd4351bc64c5ee813f2e50196608869e165866f3202a312078732c2baf",
+      "postApplyOrderedKeySha256": "8d5fd7bd4351bc64c5ee813f2e50196608869e165866f3202a312078732c2baf",
+      "orderedKeysPreservedFromPreApply": true,
+      "keySetMatchesEnglish": true,
+      "orderedKeysMatchEnglish": false,
+      "englishOrderedKeySha256": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072",
+      "changedSourceIds": [],
+      "changedCellCount": 0
+    },
+    {
+      "path": "src/i18n/locale/zh_Hans.json",
+      "preApplySha256": "a212d40717433a19b5addb68a535c75a4a2b74773e6710e5cbc40e596995b2d6",
+      "postApplySha256": "52b3ae8bbc9c0c8affd172c856790e57eef929f09aa2a7aaa691cbee119963e7",
+      "keyCountBefore": 9494,
+      "keyCountAfter": 9494,
+      "preApplyOrderedKeySha256": "8d5fd7bd4351bc64c5ee813f2e50196608869e165866f3202a312078732c2baf",
+      "postApplyOrderedKeySha256": "8d5fd7bd4351bc64c5ee813f2e50196608869e165866f3202a312078732c2baf",
+      "orderedKeysPreservedFromPreApply": true,
+      "keySetMatchesEnglish": true,
+      "orderedKeysMatchEnglish": false,
+      "englishOrderedKeySha256": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072",
+      "changedSourceIds": [
+        "components.Requests.sortFirstPublished"
+      ],
+      "changedCellCount": 1
+    },
+    {
+      "path": "src/i18n/locale/zh_Hant.json",
+      "preApplySha256": "005fe69b448fbc51f727929812861f3ac613268e0f01a794cfa4f3437513546e",
+      "postApplySha256": "e0211d86bac616485bda489bdaa92cc8552f7591ba50628da2e6a281d58740ea",
+      "keyCountBefore": 9494,
+      "keyCountAfter": 9494,
+      "preApplyOrderedKeySha256": "8d5fd7bd4351bc64c5ee813f2e50196608869e165866f3202a312078732c2baf",
+      "postApplyOrderedKeySha256": "8d5fd7bd4351bc64c5ee813f2e50196608869e165866f3202a312078732c2baf",
+      "orderedKeysPreservedFromPreApply": true,
+      "keySetMatchesEnglish": true,
+      "orderedKeysMatchEnglish": false,
+      "englishOrderedKeySha256": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072",
+      "changedSourceIds": [
+        "components.Requests.sortAscending"
+      ],
+      "changedCellCount": 1
+    }
+  ],
+  "testsBuildsScansCiRun": false,
+  "nativeSpeakerApproval": false,
+  "mergeOrRelease": false,
+  "onlyCodeCheckRequested": "git diff --check",
+  "gitDiffCheck": {
+    "command": "git diff --check HEAD",
+    "status": "passed"
+  }
+}

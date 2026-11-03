@@ -3414,7 +3414,7 @@
   "components.Requests.sortBy": "排序方式",
   "components.Requests.sortDescending": "降序",
   "components.Requests.sortDirector": "导演",
-  "components.Requests.sortFirstPublished": "首次发表",
+  "components.Requests.sortFirstPublished": "首次出版",
   "components.Requests.sortModified": "最后修改",
   "components.Requests.sortPublisher": "出版社",
   "components.Requests.sortRating": "评分",

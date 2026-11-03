@@ -3414,7 +3414,7 @@
   "components.Requests.sortBy": "並び替え",
   "components.Requests.sortDescending": "降順",
   "components.Requests.sortDirector": "監督",
-  "components.Requests.sortFirstPublished": "初公開",
+  "components.Requests.sortFirstPublished": "初版発行日",
   "components.Requests.sortModified": "最終変更",
   "components.Requests.sortPublisher": "出版社",
   "components.Requests.sortRating": "評価",

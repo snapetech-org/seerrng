@@ -1,0 +1,11 @@
+{
+  "schemaVersion": 1,
+  "artifact": "SeerrNG PR #418 W3420-W3439 primary review",
+  "files": {
+    "primary-decisions.jsonl": "2d0717792f91ed988f620196d621169827eaf252f182a25d5b89c008851b3d91",
+    "summary.json": "c74df541aabac2f3af2d343c32c5bc2180778ea68b24221a2ac8b82dfb7b79ac",
+    "README.md": "284f969a313c9f867e5a3a3332139208e343bb60ac561207834b6e920bd834e8",
+    "build_review.py": "a0bebe04449702aadb9160b5c38a0e0c9f355c39f2eb46017a381c556b3aec6a"
+  },
+  "inputSha256SumsFileSha256": "a4d0d9a498e8b199becc68bfb4882a755c0060279298a4fc13cb182e06c25e15"
+}

@@ -3414,7 +3414,7 @@
   "components.Requests.sortBy": "정렬 기준",
   "components.Requests.sortDescending": "내림차순",
   "components.Requests.sortDirector": "감독",
-  "components.Requests.sortFirstPublished": "첫 게시",
+  "components.Requests.sortFirstPublished": "최초 발행",
   "components.Requests.sortModified": "마지막 수정",
   "components.Requests.sortPublisher": "출판사",
   "components.Requests.sortRating": "평점",
