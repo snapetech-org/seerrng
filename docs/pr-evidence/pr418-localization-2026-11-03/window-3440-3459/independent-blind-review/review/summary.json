@@ -1,0 +1,140 @@
+{
+  "candidateFreeManifestSha256": "c51bba771da7be6d11f7372190be491ac09531dc98fcde2381e6ae66a7315db4",
+  "dispositionCounts": {
+    "accept-current": 215,
+    "correction": 6,
+    "hold": 12,
+    "refinement": 7
+  },
+  "head": "049b23526911e6cf6b1a0b2c397d155eb51d5ddf",
+  "holdsBySourceId": {
+    "components.Requests.statusUpdated": 12
+  },
+  "localeCount": 12,
+  "proposalsByPosition": {
+    "3443": [
+      {
+        "currentTarget": "体育",
+        "disposition": "correction",
+        "locale": "zh_Hant",
+        "proposedTarget": "體育",
+        "sourceId": "components.Requests.sports"
+      }
+    ],
+    "3444": [
+      {
+        "currentTarget": "体育",
+        "disposition": "correction",
+        "locale": "zh_Hant",
+        "proposedTarget": "體育",
+        "sourceId": "components.Requests.sportsLeagues"
+      }
+    ],
+    "3450": [
+      {
+        "currentTarget": "ट्रैक गणना",
+        "disposition": "refinement",
+        "locale": "hi",
+        "proposedTarget": "ट्रैक की संख्या",
+        "sourceId": "components.Requests.trackCount"
+      }
+    ],
+    "3451": [
+      {
+        "currentTarget": "No Disponible",
+        "disposition": "refinement",
+        "locale": "es",
+        "proposedTarget": "No disponible",
+        "sourceId": "components.Requests.unavailable"
+      }
+    ],
+    "3453": [
+      {
+        "currentTarget": "Seleccione usuario",
+        "disposition": "correction",
+        "locale": "es",
+        "proposedTarget": "Seleccionar usuario",
+        "sourceId": "components.Requests.userFilter"
+      }
+    ],
+    "3454": [
+      {
+        "currentTarget": "Ver toda a história",
+        "disposition": "correction",
+        "locale": "pt_BR",
+        "proposedTarget": "Ver todo o histórico",
+        "sourceId": "components.Requests.viewAllHistory"
+      }
+    ],
+    "3455": [
+      {
+        "currentTarget": "Entfernen Sie den Zeitperiodenfilter, um ältere Anforderungen einzuschließen. Andere Filter bleiben unverändert.",
+        "disposition": "correction",
+        "locale": "de",
+        "proposedTarget": "Entfernen Sie den Zeitraumfilter, um ältere Anfragen einzuschließen. Alle anderen Filter bleiben unverändert.",
+        "sourceId": "components.Requests.viewAllHistoryTooltip"
+      },
+      {
+        "currentTarget": "Remova o filtro de tempo para incluir pedidos antigos. Outros filtros permanecem inalterados.",
+        "disposition": "refinement",
+        "locale": "pt_BR",
+        "proposedTarget": "Remova o filtro de período para incluir solicitações mais antigas. Os demais filtros permanecem inalterados.",
+        "sourceId": "components.Requests.viewAllHistoryTooltip"
+      },
+      {
+        "currentTarget": "إزالة مرشح الفترة الزمنية لتشمل الطلبات القديمة. ولا تزال مرشحات أخرى دون تغيير.",
+        "disposition": "refinement",
+        "locale": "ar",
+        "proposedTarget": "أزل عامل تصفية الفترة الزمنية لتضمين الطلبات الأقدم. وتبقى بقية عوامل التصفية كما هي.",
+        "sourceId": "components.Requests.viewAllHistoryTooltip"
+      },
+      {
+        "currentTarget": "시간 기간 필터를 제거하여 이전 요청을 포함합니다. 다른 필터는 변경되지 않습니다.",
+        "disposition": "correction",
+        "locale": "ko",
+        "proposedTarget": "기간 필터를 제거하면 더 오래된 요청도 포함됩니다. 다른 필터는 그대로 유지됩니다.",
+        "sourceId": "components.Requests.viewAllHistoryTooltip"
+      }
+    ],
+    "3456": [
+      {
+        "currentTarget": "剧集排队 · {count, plural, other {# 集}} 由管理员设置",
+        "disposition": "refinement",
+        "locale": "zh_Hans",
+        "proposedTarget": "管理员设置的剧集队列 · {count, plural, other {# 集}}",
+        "sourceId": "components.Requests.watchAheadAssigned"
+      }
+    ],
+    "3457": [
+      {
+        "currentTarget": "オートキューイング",
+        "disposition": "refinement",
+        "locale": "ja",
+        "proposedTarget": "自動でキューに追加済み",
+        "sourceId": "components.Requests.watchAheadEpisodeBadge"
+      }
+    ],
+    "3459": [
+      {
+        "currentTarget": "Schriftsteller",
+        "disposition": "refinement",
+        "locale": "de",
+        "proposedTarget": "Autor",
+        "sourceId": "components.Requests.writer"
+      }
+    ]
+  },
+  "protectedLiteralAssessment": "The candidate-free packet declares no protected-brand inventory for this window; manual review identified no protected brand token requiring preservation.",
+  "pullRequest": 418,
+  "repository": "snapetech-org/seerrng",
+  "reviewLimit": "Independent machine-assisted semantic review; not native-speaker approval.",
+  "reviewedCells": 240,
+  "sourceCount": 20,
+  "structuralChecks": {
+    "cells": 240,
+    "icuArgumentSequenceMismatches": 0,
+    "icuArgumentSetMismatches": 0
+  },
+  "tree": "0a83d4f6bcea1367f218efb3898b15d2b0f4f140",
+  "window": "W3440-W3459"
+}

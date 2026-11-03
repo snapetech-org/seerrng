@@ -1,0 +1,344 @@
+{
+  "schemaVersion": 1,
+  "repository": "snapetech-org/seerrng",
+  "pullRequest": 418,
+  "window": "W3440-W3459",
+  "range": [
+    3440,
+    3459
+  ],
+  "previousBoundary": {
+    "schemaVersion": 1,
+    "position": 3439,
+    "boundaryKind": "previous",
+    "sourceId": "components.Requests.sortStatus",
+    "source": "Status",
+    "sourceSha256": "920e413c7d411b61ef3e8c63b1cb6ad058d5f95f8b481dbafe60248387d8c355",
+    "sourceIdSha256": "3d70e027ef10efde4a0d59fa8de3b2efa035829c0ce82dba0a1ff6417820a282",
+    "head": "049b23526911e6cf6b1a0b2c397d155eb51d5ddf",
+    "tree": "0a83d4f6bcea1367f218efb3898b15d2b0f4f140"
+  },
+  "nextBoundary": {
+    "schemaVersion": 1,
+    "position": 3460,
+    "boundaryKind": "next",
+    "sourceId": "components.Requests.year",
+    "source": "Year",
+    "sourceSha256": "89f6832560dec0b7f8721d1fe3ba0b5036a5d1464ce4339bb16c3e1485bfec34",
+    "sourceIdSha256": "2462d88606d95235b77f7d01a2c805e7bfaf99da0654fa506c33c5d5d3d6ca86",
+    "head": "049b23526911e6cf6b1a0b2c397d155eb51d5ddf",
+    "tree": "0a83d4f6bcea1367f218efb3898b15d2b0f4f140"
+  },
+  "head": "049b23526911e6cf6b1a0b2c397d155eb51d5ddf",
+  "tree": "0a83d4f6bcea1367f218efb3898b15d2b0f4f140",
+  "baseRef": "main",
+  "baseSha": "221d8e0d542802da7529cd272c928cc747677e5c",
+  "sourceOrderCount": 9494,
+  "sourceOrderSha256": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072",
+  "remainingAtWindowStart": 6054,
+  "remainingAfterWindow": 6034,
+  "tail": {
+    "position": 9493,
+    "sourceId": "utils.oidc.oidcUnauthorized",
+    "source": "You do not have permission to sign in with {provider}.",
+    "sourceSha256": "7bd4a7ff8e1e269809b859adb6b9794334613437e4ab733e58496926542cabc9",
+    "sourceIdSha256": "5422247f67a57f1dab8789d0487585b8210c3321c5eef012a53b77753d865b0a"
+  },
+  "sourceRecordCount": 20,
+  "sourceOrderBoundaryRecordCount": 22,
+  "cellCount": 240,
+  "localeOrder": [
+    "es",
+    "zh_Hans",
+    "hi",
+    "de",
+    "ja",
+    "fr",
+    "pt_BR",
+    "ar",
+    "ko",
+    "zh_Hant",
+    "vi",
+    "id"
+  ],
+  "localeInfo": [
+    {
+      "catalogKey": "es",
+      "tag": "es",
+      "nativeName": "Español",
+      "direction": "ltr",
+      "clientFile": "es.json",
+      "reviewStatus": "unreviewed",
+      "fallback": null
+    },
+    {
+      "catalogKey": "zh_Hans",
+      "tag": "zh-CN",
+      "nativeName": "简体中文",
+      "direction": "ltr",
+      "clientFile": "zh_Hans.json",
+      "reviewStatus": "unreviewed",
+      "fallback": null
+    },
+    {
+      "catalogKey": "hi",
+      "tag": "hi",
+      "nativeName": "हिन्दी",
+      "direction": "ltr",
+      "clientFile": "hi.json",
+      "reviewStatus": "unreviewed",
+      "fallback": null
+    },
+    {
+      "catalogKey": "de",
+      "tag": "de",
+      "nativeName": "Deutsch",
+      "direction": "ltr",
+      "clientFile": "de.json",
+      "reviewStatus": "unreviewed",
+      "fallback": null
+    },
+    {
+      "catalogKey": "ja",
+      "tag": "ja",
+      "nativeName": "日本語",
+      "direction": "ltr",
+      "clientFile": "ja.json",
+      "reviewStatus": "unreviewed",
+      "fallback": null
+    },
+    {
+      "catalogKey": "fr",
+      "tag": "fr",
+      "nativeName": "Français",
+      "direction": "ltr",
+      "clientFile": "fr.json",
+      "reviewStatus": "unreviewed",
+      "fallback": null
+    },
+    {
+      "catalogKey": "pt_BR",
+      "tag": "pt-BR",
+      "nativeName": "Português (Brasil)",
+      "direction": "ltr",
+      "clientFile": "pt_BR.json",
+      "reviewStatus": "unreviewed",
+      "fallback": null
+    },
+    {
+      "catalogKey": "ar",
+      "tag": "ar",
+      "nativeName": "العربية",
+      "direction": "rtl",
+      "clientFile": "ar.json",
+      "reviewStatus": "unreviewed",
+      "fallback": null
+    },
+    {
+      "catalogKey": "ko",
+      "tag": "ko",
+      "nativeName": "한국어",
+      "direction": "ltr",
+      "clientFile": "ko.json",
+      "reviewStatus": "unreviewed",
+      "fallback": null
+    },
+    {
+      "catalogKey": "zh_Hant",
+      "tag": "zh-TW",
+      "nativeName": "繁體中文",
+      "direction": "ltr",
+      "clientFile": "zh_Hant.json",
+      "reviewStatus": "unreviewed",
+      "fallback": null
+    },
+    {
+      "catalogKey": "vi",
+      "tag": "vi",
+      "nativeName": "Tiếng Việt",
+      "direction": "ltr",
+      "clientFile": "vi.json",
+      "reviewStatus": "unreviewed",
+      "fallback": null
+    },
+    {
+      "catalogKey": "id",
+      "tag": "id",
+      "nativeName": "Bahasa Indonesia",
+      "direction": "ltr",
+      "clientFile": "id.json",
+      "reviewStatus": "unreviewed",
+      "fallback": null
+    }
+  ],
+  "nativeSpeakerApproval": false,
+  "proposedTranslationsIncluded": false,
+  "semanticReviewIncluded": false,
+  "callerUnresolvedSourceIds": [
+    "components.Requests.statusUpdated"
+  ],
+  "icuArgumentSequenceMismatchCount": 0,
+  "icuArgumentSetMismatchCount": 0,
+  "selectedSourceIds": [
+    {
+      "position": 3440,
+      "sourceId": "components.Requests.sortTitle",
+      "sourceKey": "sortTitle",
+      "source": "Title",
+      "sourceSha256": "7e8cd2056da73a7fefb6cd91f4e5d199d08d9058c517b9a2476b1b520324d674",
+      "sourceIdSha256": "03d1c5253981f228837921dcf442693c454f86ddd5ca753eea4cdd1d1a8c2b86"
+    },
+    {
+      "position": 3441,
+      "sourceId": "components.Requests.sortWriter",
+      "sourceKey": "sortWriter",
+      "source": "Writer",
+      "sourceSha256": "0e3c5fe00f66cc415be9a7b7c02cfb5939929ad13182177bfdf8d37bfa6b048e",
+      "sourceIdSha256": "00e21ce12c28f3b9b566f4913433326d9b6a83a199df121d7ba4828a3c0477a2"
+    },
+    {
+      "position": 3442,
+      "sourceId": "components.Requests.sport",
+      "sourceKey": "sport",
+      "source": "Sport",
+      "sourceSha256": "9a085dd854f03306988189d9b57c89b54a9303bdbba275ea9fc5739d64e3b50c",
+      "sourceIdSha256": "410d7b7d9d9f3d857695e31c7967112a224c71ad12a60eeadd86298958c1a798"
+    },
+    {
+      "position": 3443,
+      "sourceId": "components.Requests.sports",
+      "sourceKey": "sports",
+      "source": "Sports",
+      "sourceSha256": "9b1f5daf0a3d610e5a819b6c7664ffde2ea2f299fb1cacedfc6d1b68bed5e351",
+      "sourceIdSha256": "21dee60027a23089b0a3fc404a512dcf9a32ceedc50f5749645b0e378ee5394b"
+    },
+    {
+      "position": 3444,
+      "sourceId": "components.Requests.sportsLeagues",
+      "sourceKey": "sportsLeagues",
+      "source": "Sports",
+      "sourceSha256": "9b1f5daf0a3d610e5a819b6c7664ffde2ea2f299fb1cacedfc6d1b68bed5e351",
+      "sourceIdSha256": "78a94f5dc65e42f43cdb032d938d7f8f62f26b91a2fd251d7ac9011b5a39a51d"
+    },
+    {
+      "position": 3445,
+      "sourceId": "components.Requests.statusUpdated",
+      "sourceKey": "statusUpdated",
+      "source": "Status Updated",
+      "sourceSha256": "8b2d0675b4b0bd9f32c52d5f52713eea500ff38d243a4083afe3e320306c65ec",
+      "sourceIdSha256": "00f5ddd19dfca94d87ef52e1fce168d7ec388e1d1c92b52d2222ad94f86bcac2"
+    },
+    {
+      "position": 3446,
+      "sourceId": "components.Requests.studio",
+      "sourceKey": "studio",
+      "source": "Studio",
+      "sourceSha256": "0aa91af2ec4c1fd761cc39b838088c06ef2190a5f72ab1e4f6fe7e7487bce5b7",
+      "sourceIdSha256": "7b0c06f194092cf456a613fe75c7f1df6d4ac680b3e8d09c8dd8426f64424b3f"
+    },
+    {
+      "position": 3447,
+      "sourceId": "components.Requests.taskFilters",
+      "sourceKey": "taskFilters",
+      "source": "Task Filters",
+      "sourceSha256": "b8e73d0597149a9d48d037dee69da139c306e9508b6400cb47a96271fcd1daaf",
+      "sourceIdSha256": "c23dc6131f02007f8577e088cecd839316b8187da6d417911290c37ab45c3579"
+    },
+    {
+      "position": 3448,
+      "sourceId": "components.Requests.timeFrame",
+      "sourceKey": "timeFrame",
+      "source": "Time Period",
+      "sourceSha256": "0e3bdc3ea0f98fa263fc02a378744848d4b570fb4012182fe43933b739cbbfa6",
+      "sourceIdSha256": "2b847d23377cea4f98642a6951adee8b609317523e0dc07537761cc1a73a5eac"
+    },
+    {
+      "position": 3449,
+      "sourceId": "components.Requests.title",
+      "sourceKey": "title",
+      "source": "Requests",
+      "sourceSha256": "ada27592c9578e9072b465934a474d7e2c7a3d057db04101550a3cd4ac93fb0d",
+      "sourceIdSha256": "d3fb79ea2924a5c56f301be0f01809c40e23d5a61c1969c0d395070fe4d15ebc"
+    },
+    {
+      "position": 3450,
+      "sourceId": "components.Requests.trackCount",
+      "sourceKey": "trackCount",
+      "source": "Track Count",
+      "sourceSha256": "2616c4cd00c817d28c84ed677fa7fae2a6fc809c175e6455156b93e8e586933a",
+      "sourceIdSha256": "32c8aee32c40a28c587f534523ed1f884df5435ead9b2da0efdac2eff729042e"
+    },
+    {
+      "position": 3451,
+      "sourceId": "components.Requests.unavailable",
+      "sourceKey": "unavailable",
+      "source": "Unavailable",
+      "sourceSha256": "ca184496974204a0bd3fd4925e0540bc4b0df6fcc232994d29754272b7183812",
+      "sourceIdSha256": "0bccccbbcff7d4d494a4e124e1b5ed37aa58e9f1d9deacc7ef09ce9a67124567"
+    },
+    {
+      "position": 3452,
+      "sourceId": "components.Requests.unknownTitle",
+      "sourceKey": "unknownTitle",
+      "source": "Unknown Title",
+      "sourceSha256": "9a4f24006813cd6fecfc6c398b89a9e6b0ef0710a2f82b3302b87f660f66cd8e",
+      "sourceIdSha256": "d45facc4f60fef7811fe7e4cd5690d0ba341c32e2cd85a10b978f84d29d647b3"
+    },
+    {
+      "position": 3453,
+      "sourceId": "components.Requests.userFilter",
+      "sourceKey": "userFilter",
+      "source": "Select User",
+      "sourceSha256": "d7bb9fac5e57aabcdeed28fd3ac72040ce3aa6487fffa2144fe90af277ca5d59",
+      "sourceIdSha256": "2d90c19fbdad08b1af2d1bacee2ee8e42c48559c94032a750b4394a7617a340a"
+    },
+    {
+      "position": 3454,
+      "sourceId": "components.Requests.viewAllHistory",
+      "sourceKey": "viewAllHistory",
+      "source": "View All History",
+      "sourceSha256": "99fbf422a0240e1ac441269131a852c3771ac3e14598fa9fbc4e5265002b71fe",
+      "sourceIdSha256": "48b2e9c5a75342f1cb30599c3219617f0f1f1194a8e711482e32a01275d092c4"
+    },
+    {
+      "position": 3455,
+      "sourceId": "components.Requests.viewAllHistoryTooltip",
+      "sourceKey": "viewAllHistoryTooltip",
+      "source": "Remove the time-period filter to include older requests. Other filters remain unchanged.",
+      "sourceSha256": "c53a7db3c799353f7754996e8f5e5c15e54fc8850c4cac4d06c5b9f6875f7d4d",
+      "sourceIdSha256": "c06d73b99d4b1a33cfd33f0fcf94fd2bf8af98439f473032ff5175484621abf8"
+    },
+    {
+      "position": 3456,
+      "sourceId": "components.Requests.watchAheadAssigned",
+      "sourceKey": "watchAheadAssigned",
+      "source": "Episode Queue · {count, plural, one {# episode} other {# episodes}} by administrator",
+      "sourceSha256": "7bb93a860b37c334b7373123a04dfbc16f661cf630b1d36a31589b6631ba674b",
+      "sourceIdSha256": "9e7bae5d2258946ad96cfecb0e4611f3ccf00571d6eaea641126871e32ab593e"
+    },
+    {
+      "position": 3457,
+      "sourceId": "components.Requests.watchAheadEpisodeBadge",
+      "sourceKey": "watchAheadEpisodeBadge",
+      "source": "Auto-Queued",
+      "sourceSha256": "6a3e25f07eddb9483c258937f0a5e752097bccb99581ef6cf0cc3a7baaa0104b",
+      "sourceIdSha256": "f808c6f6083c393d804060c24aa938abffdce796daee7941b59de3496cf2515a"
+    },
+    {
+      "position": 3458,
+      "sourceId": "components.Requests.watchAheadEpisodeBadgeTooltip",
+      "sourceKey": "watchAheadEpisodeBadgeTooltip",
+      "source": "Automatically requested by the Episode Queue as playback progressed.",
+      "sourceSha256": "15a27ddf21f7b7dd99c5df39f1215c158a87eed5e5e63cfbd108c761595b2ba0",
+      "sourceIdSha256": "fc8f38ff60c216526a03fff94d76c2fa3f493c875749e81ce47fa48b96effc86"
+    },
+    {
+      "position": 3459,
+      "sourceId": "components.Requests.writer",
+      "sourceKey": "writer",
+      "source": "Writer",
+      "sourceSha256": "0e3c5fe00f66cc415be9a7b7c02cfb5939929ad13182177bfdf8d37bfa6b048e",
+      "sourceIdSha256": "b1ffa531eb97c67c4be3cf2a328ee3690dce830902df66e160f418e2cb146779"
+    }
+  ]
+}

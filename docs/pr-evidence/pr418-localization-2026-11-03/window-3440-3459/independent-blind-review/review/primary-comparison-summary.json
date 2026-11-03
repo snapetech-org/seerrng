@@ -1,0 +1,28 @@
+{
+  "blindCounts": {
+    "accept-current": 215,
+    "correction": 6,
+    "hold": 12,
+    "refinement": 7
+  },
+  "cellsCompared": 240,
+  "disagreementFile": "primary-comparison.jsonl",
+  "disagreementSha256": "764ea13d40b9ab0a3b22fa7b66f6b41e5bf751472782080c5124db6ce0e69c38",
+  "disagreements": 15,
+  "dispositionCrossTable": {
+    "accept-current / accept-current": 210,
+    "accept-current / correction": 1,
+    "accept-current / refinement": 4,
+    "correction / accept-current": 2,
+    "correction / correction": 4,
+    "hold / hold": 12,
+    "refinement / accept-current": 5,
+    "refinement / refinement": 2
+  },
+  "primaryCounts": {
+    "accept-current": 217,
+    "correction": 5,
+    "hold": 12,
+    "refinement": 6
+  }
+}

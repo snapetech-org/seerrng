@@ -3436,7 +3436,7 @@
   "components.Requests.userFilter": "选择用户",
   "components.Requests.viewAllHistory": "查看全部历史",
   "components.Requests.viewAllHistoryTooltip": "移除时间段筛选条件，即可包含更早的请求。其他筛选条件保持不变。",
-  "components.Requests.watchAheadAssigned": "剧集排队 · {count, plural, other {# 集}} 由管理员设置",
+  "components.Requests.watchAheadAssigned": "管理员设置的剧集队列 · {count, plural, other {# 集}}",
   "components.Requests.watchAheadEpisodeBadge": "自动排队",
   "components.Requests.watchAheadEpisodeBadgeTooltip": "剧集队列会随着播放进度自动发送请求。",
   "components.Requests.writer": "作家",

@@ -3437,7 +3437,7 @@
   "components.Requests.viewAllHistory": "すべての履歴を表示",
   "components.Requests.viewAllHistoryTooltip": "古いリクエストを含めるには、期間フィルターを削除してください。他のフィルターは変更されません。",
   "components.Requests.watchAheadAssigned": "管理者によるエピソードキュー · {count, plural, other {# エピソード}}",
-  "components.Requests.watchAheadEpisodeBadge": "オートキューイング",
+  "components.Requests.watchAheadEpisodeBadge": "自動でキューに追加済み",
   "components.Requests.watchAheadEpisodeBadgeTooltip": "再生が進むにつれて、エピソードキューから自動的にリクエストされます。",
   "components.Requests.writer": "ライター",
   "components.Requests.year": "年",

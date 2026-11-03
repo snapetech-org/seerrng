@@ -1,0 +1,13 @@
+{
+  "candidateFreeManifestSha256": "c51bba771da7be6d11f7372190be491ac09531dc98fcde2381e6ae66a7315db4",
+  "head": "049b23526911e6cf6b1a0b2c397d155eb51d5ddf",
+  "ledgerRows": 240,
+  "ledgerSha256": "29ef8365dc49849712d413121e12105934c11e20b64c8457c0a15bedfde1a0c2",
+  "nativeSpeakerApproval": false,
+  "primaryLedgerConsultedBeforeSeal": false,
+  "pullRequest": 418,
+  "recordType": "blind-review-seal",
+  "repository": "snapetech-org/seerrng",
+  "tree": "0a83d4f6bcea1367f218efb3898b15d2b0f4f140",
+  "window": "W3440-W3459"
+}

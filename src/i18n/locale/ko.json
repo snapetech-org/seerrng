@@ -3435,7 +3435,7 @@
   "components.Requests.unknownTitle": "알 수 없는 제목",
   "components.Requests.userFilter": "사용자 선택",
   "components.Requests.viewAllHistory": "전체 기록 보기",
-  "components.Requests.viewAllHistoryTooltip": "시간 기간 필터를 제거하여 이전 요청을 포함합니다. 다른 필터는 변경되지 않습니다.",
+  "components.Requests.viewAllHistoryTooltip": "기간 필터를 제거하면 더 오래된 요청도 포함됩니다. 다른 필터는 그대로 유지됩니다.",
   "components.Requests.watchAheadAssigned": "관리자 설정 에피소드 큐 · {count, plural, other {#개 에피소드}}",
   "components.Requests.watchAheadEpisodeBadge": "자동으로 대기열에 추가됨",
   "components.Requests.watchAheadEpisodeBadgeTooltip": "재생이 진행됨에 따라 에피소드 대기열에서 자동으로 요청됩니다.",

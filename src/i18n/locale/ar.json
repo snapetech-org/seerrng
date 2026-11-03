@@ -3454,7 +3454,7 @@
   "components.Requests.unknownTitle": "عنوان غير معروف",
   "components.Requests.userFilter": "اختر مستخدمًا",
   "components.Requests.viewAllHistory": "عرض كل السجل",
-  "components.Requests.viewAllHistoryTooltip": "إزالة مرشح الفترة الزمنية لتشمل الطلبات القديمة. ولا تزال مرشحات أخرى دون تغيير.",
+  "components.Requests.viewAllHistoryTooltip": "أزل عامل تصفية الفترة الزمنية لتضمين الطلبات الأقدم. وتبقى بقية عوامل التصفية كما هي.",
   "components.Requests.watchAheadAssigned": "قائمة انتظار الحلقات · {count, plural, zero {# حلقة} one {حلقة واحدة} two {حلقتان} few {# حلقات} many {# حلقة} other {# حلقة}} بواسطة المسؤول",
   "components.Requests.watchAheadEpisodeBadge": "أُضيف إلى قائمة الانتظار تلقائيًا",
   "components.Requests.watchAheadEpisodeBadgeTooltip": "يتم طلب الحلقات تلقائيًا من قائمة انتظار الحلقات مع تقدم التشغيل.",
