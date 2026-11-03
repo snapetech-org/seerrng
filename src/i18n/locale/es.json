@@ -3000,7 +3000,7 @@
   "components.RequestModal.QuotaDisplay.comic": "cómic",
   "components.RequestModal.QuotaDisplay.comiclimit": "{limit, plural, one {cómic} many {cómics} other {cómics}}",
   "components.RequestModal.QuotaDisplay.magazine": "Revista",
-  "components.RequestModal.QuotaDisplay.magazinelimit": "{limit, plural, one {Revista} many {revistas} other {revistas}}",
+  "components.RequestModal.QuotaDisplay.magazinelimit": "{limit, plural, one {revista} many {revistas} other {revistas}}",
   "components.RequestModal.QuotaDisplay.movie": "película",
   "components.RequestModal.QuotaDisplay.movielimit": "{limit, plural, one {película} many {películas} other {películas}}",
   "components.RequestModal.QuotaDisplay.music": "álbum",

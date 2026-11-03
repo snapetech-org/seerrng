@@ -1,0 +1,5 @@
+{
+  "method": "Intl.PluralRules(locale).resolvedOptions().pluralCategories",
+  "runtime": "v24.22.1",
+  "type": "cardinal"
+}

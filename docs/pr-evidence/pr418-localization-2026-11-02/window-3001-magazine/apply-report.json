@@ -1,0 +1,13 @@
+{
+  "exact_review_head": "a1d39112a4e378a38640dc183e820c646b49665a",
+  "applied_to_working_tree": true,
+  "cells_read_back": 12,
+  "accepted_unchanged": 8,
+  "corrections_applied": 4,
+  "unexpected_catalog_differences": 0,
+  "ordered_key_sets_preserved": 12,
+  "keys_per_catalog": 9494,
+  "structural_mismatches": 0,
+  "native_speaker_approval": false,
+  "current_head_browser_acceptance": "unverified"
+}

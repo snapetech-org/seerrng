@@ -3000,7 +3000,7 @@
   "components.RequestModal.QuotaDisplay.comic": "कॉमिक",
   "components.RequestModal.QuotaDisplay.comiclimit": "{limit, plural, one {कॉमिक} other {कॉमिक्स}}",
   "components.RequestModal.QuotaDisplay.magazine": "पत्रिका",
-  "components.RequestModal.QuotaDisplay.magazinelimit": "{limit, plural, one {पत्रिका} other {पत्रिका}}",
+  "components.RequestModal.QuotaDisplay.magazinelimit": "{limit, plural, one {पत्रिका} other {पत्रिकाएँ}}",
   "components.RequestModal.QuotaDisplay.movie": "फिल्म",
   "components.RequestModal.QuotaDisplay.movielimit": "{limit, plural, one {फिल्म} other {फिल्में}}",
   "components.RequestModal.QuotaDisplay.music": "एल्बम",
