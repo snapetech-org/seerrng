@@ -1,0 +1,7 @@
+Candidate-free input for SeerrNG PR #418 W3560-W3579, pinned to exact open/draft PR head 351f2c09a4aaf6f223975fc1827cb9f77de7702d / tree 3d88008f6ea7dc6cbef21333d29a032469cd60cf.
+
+The packet contains 20 contiguous English source IDs and 240 current locale targets across 12 direct locales. Source positions are zero-based in the 9,494-key English catalog. The previous window W3540-W3559 ends at position 3559; its verified next source is components.Settings.AudiobookshelfModal.libraryRequired (Choose a book library.). The selected window starts with components.Settings.AudiobookshelfModal.name (Connection name) and ends at components.Settings.BackIssueModal.baseUrlInvalid (URL Base must be a relative path.). Position 3580 is the next boundary.
+
+No proposed translations or semantic dispositions are included. English source text, all twelve locale catalog files, locale registry, namespace source files, SettingsServices component mounts, current values, direct caller snippets, placeholders, markup, numeric tokens, and protected technical literals are pinned by Git blob and SHA-256. All locale catalogs have the same 9,494-key set; each catalog's current key order is separately pinned.
+
+The W3540-W3559 application evidence at this exact head records 0 holds. This task makes no catalog changes and does not supersede or re-adjudicate any earlier hold. Machine review is not qualified native-speaker approval.

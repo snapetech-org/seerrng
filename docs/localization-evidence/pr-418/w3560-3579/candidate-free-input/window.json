@@ -1,0 +1,205 @@
+{
+  "schemaVersion": 1,
+  "repository": "snapetech-org/seerrng",
+  "pullRequest": 418,
+  "window": "W3560-W3579",
+  "range": [
+    3560,
+    3579
+  ],
+  "head": "351f2c09a4aaf6f223975fc1827cb9f77de7702d",
+  "tree": "3d88008f6ea7dc6cbef21333d29a032469cd60cf",
+  "baseRef": "main",
+  "baseSha": "221d8e0d542802da7529cd272c928cc747677e5",
+  "sourceCatalogPath": "src/i18n/locale/en.json",
+  "englishCatalogGitBlob": "12e04a118c30b71b3714291adeaf9fdb2735cee4",
+  "sourceOrderCount": 9494,
+  "sourceOrderSha256": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072",
+  "sourceOrderHashDerivation": "Computed from the ordered English catalog keys pinned by Git blob at this head.",
+  "previousBoundary": {
+    "position": 3559,
+    "sourceId": "components.Settings.AudiobookshelfModal.libraryRequired",
+    "source": "Choose a book library.",
+    "sourceSha256": "4a9bf87401b9007ea793122d8abb98e7a9c0371d1f74828ea1279187a8e079e8",
+    "sourceIdSha256": "eddffc8120c203a9ede695064a5b47df0c2057847b4a00955a6130b8edd61bbf",
+    "sourceKey": "libraryRequired",
+    "namespace": "components.Settings.AudiobookshelfModal",
+    "boundaryKind": "previous",
+    "head": "351f2c09a4aaf6f223975fc1827cb9f77de7702d",
+    "tree": "3d88008f6ea7dc6cbef21333d29a032469cd60cf"
+  },
+  "nextBoundary": {
+    "position": 3580,
+    "sourceId": "components.Settings.BackIssueModal.create",
+    "source": "Add BackIssue Server",
+    "sourceSha256": "a97b0d17852b6ed275a6ea894a0606bc393bcd586a2d9b8d65c5f4af0c2331b3",
+    "sourceIdSha256": "5ddf1f807f88758e29b23f44145883c0834fa808e78b5a69a0928418db574867",
+    "sourceKey": "create",
+    "namespace": "components.Settings.BackIssueModal",
+    "boundaryKind": "next",
+    "head": "351f2c09a4aaf6f223975fc1827cb9f77de7702d",
+    "tree": "3d88008f6ea7dc6cbef21333d29a032469cd60cf"
+  },
+  "remainingAtWindowStart": 5934,
+  "selectedSourceCount": 20,
+  "remainingAfterWindow": 5914,
+  "tail": {
+    "position": 9493,
+    "sourceId": "utils.oidc.oidcUnauthorized",
+    "source": "You do not have permission to sign in with {provider}.",
+    "sourceSha256": "7bd4a7ff8e1e269809b859adb6b9794334613437e4ab733e58496926542cabc9",
+    "sourceIdSha256": "5422247f67a57f1dab8789d0487585b8210c3321c5eef012a53b77753d865b0a"
+  },
+  "sourceRecordCount": 20,
+  "sourceOrderBoundaryRecordCount": 22,
+  "cellCount": 240,
+  "localeOrder": [
+    "es",
+    "zh_Hans",
+    "hi",
+    "de",
+    "ja",
+    "fr",
+    "pt_BR",
+    "ar",
+    "ko",
+    "zh_Hant",
+    "vi",
+    "id"
+  ],
+  "localeInfo": [
+    {
+      "catalogKey": "es",
+      "tag": "es",
+      "nativeName": "Español",
+      "direction": "ltr",
+      "clientFile": "es.json",
+      "reviewStatus": "unreviewed"
+    },
+    {
+      "catalogKey": "zh_Hans",
+      "tag": "zh-CN",
+      "nativeName": "简体中文",
+      "direction": "ltr",
+      "clientFile": "zh_Hans.json",
+      "reviewStatus": "unreviewed"
+    },
+    {
+      "catalogKey": "hi",
+      "tag": "hi",
+      "nativeName": "हिन्दी",
+      "direction": "ltr",
+      "clientFile": "hi.json",
+      "reviewStatus": "unreviewed"
+    },
+    {
+      "catalogKey": "de",
+      "tag": "de",
+      "nativeName": "Deutsch",
+      "direction": "ltr",
+      "clientFile": "de.json",
+      "reviewStatus": "unreviewed"
+    },
+    {
+      "catalogKey": "ja",
+      "tag": "ja",
+      "nativeName": "日本語",
+      "direction": "ltr",
+      "clientFile": "ja.json",
+      "reviewStatus": "unreviewed"
+    },
+    {
+      "catalogKey": "fr",
+      "tag": "fr",
+      "nativeName": "Français",
+      "direction": "ltr",
+      "clientFile": "fr.json",
+      "reviewStatus": "unreviewed"
+    },
+    {
+      "catalogKey": "pt_BR",
+      "tag": "pt-BR",
+      "nativeName": "Português (Brasil)",
+      "direction": "ltr",
+      "clientFile": "pt_BR.json",
+      "reviewStatus": "unreviewed"
+    },
+    {
+      "catalogKey": "ar",
+      "tag": "ar",
+      "nativeName": "العربية",
+      "direction": "rtl",
+      "clientFile": "ar.json",
+      "reviewStatus": "unreviewed"
+    },
+    {
+      "catalogKey": "ko",
+      "tag": "ko",
+      "nativeName": "한국어",
+      "direction": "ltr",
+      "clientFile": "ko.json",
+      "reviewStatus": "unreviewed"
+    },
+    {
+      "catalogKey": "zh_Hant",
+      "tag": "zh-TW",
+      "nativeName": "繁體中文",
+      "direction": "ltr",
+      "clientFile": "zh_Hant.json",
+      "reviewStatus": "unreviewed"
+    },
+    {
+      "catalogKey": "vi",
+      "tag": "vi",
+      "nativeName": "Tiếng Việt",
+      "direction": "ltr",
+      "clientFile": "vi.json",
+      "reviewStatus": "unreviewed"
+    },
+    {
+      "catalogKey": "id",
+      "tag": "id",
+      "nativeName": "Bahasa Indonesia",
+      "direction": "ltr",
+      "clientFile": "id.json",
+      "reviewStatus": "unreviewed"
+    }
+  ],
+  "catalogKeySetEqualsEnglish": true,
+  "catalogOrderedKeyHashes": {
+    "en": "47d40a21145f2f198fadaa29baeef5461718c4b6365d564af60ee015f18f1974",
+    "es": "47d40a21145f2f198fadaa29baeef5461718c4b6365d564af60ee015f18f1974",
+    "zh_Hans": "35faf7107f1be3900172b7c08ac7558b51f31d63b3b6c57eebe7710e8a81ca33",
+    "hi": "47d40a21145f2f198fadaa29baeef5461718c4b6365d564af60ee015f18f1974",
+    "de": "47d40a21145f2f198fadaa29baeef5461718c4b6365d564af60ee015f18f1974",
+    "ja": "35faf7107f1be3900172b7c08ac7558b51f31d63b3b6c57eebe7710e8a81ca33",
+    "fr": "47d40a21145f2f198fadaa29baeef5461718c4b6365d564af60ee015f18f1974",
+    "pt_BR": "47d40a21145f2f198fadaa29baeef5461718c4b6365d564af60ee015f18f1974",
+    "ar": "47d40a21145f2f198fadaa29baeef5461718c4b6365d564af60ee015f18f1974",
+    "ko": "35faf7107f1be3900172b7c08ac7558b51f31d63b3b6c57eebe7710e8a81ca33",
+    "zh_Hant": "35faf7107f1be3900172b7c08ac7558b51f31d63b3b6c57eebe7710e8a81ca33",
+    "vi": "35faf7107f1be3900172b7c08ac7558b51f31d63b3b6c57eebe7710e8a81ca33",
+    "id": "47d40a21145f2f198fadaa29baeef5461718c4b6365d564af60ee015f18f1974"
+  },
+  "placeholderMismatchCount": 0,
+  "markupMismatchCount": 0,
+  "numericTokenMismatchCount": 0,
+  "protectedLiteralMismatchCount": 0,
+  "callerlessSourcePositions": [],
+  "previousCompletedWindow": "W3540-W3559",
+  "previousWindowHoldCount": 0,
+  "priorHoldPreservation": "This input and primary review make no catalog changes and do not supersede or re-adjudicate any prior hold. Previous holds outside this window remain untouched.",
+  "previousWindowLineage": {
+    "window": "W3540-W3559",
+    "head": "f15ebead8af7bd09d81c4ea61e8cd3351a2ea66d",
+    "tree": "3ba2579c326f8dbac943ba43df77ddd5747a85a1",
+    "applicationVerificationPath": "docs/localization-evidence/pr-418/w3540-3559/application-verification.json",
+    "applicationEvidenceHead": "351f2c09a4aaf6f223975fc1827cb9f77de7702d",
+    "applicationEvidenceTree": "3d88008f6ea7dc6cbef21333d29a032469cd60cf",
+    "applicationVerificationGitBlob": "38b4cd5bceddad3b949b34f0afd65508f89d1d6f",
+    "applicationVerificationSha256": "2f9408f574c2fdf814930d9c7d44e1cbaff10d7c795b09ed84399ffe5d007ffd",
+    "applicationVerificationStatus": "PASS",
+    "holds": 0,
+    "priorHoldsOutsideThisWindowUntouched": true
+  }
+}

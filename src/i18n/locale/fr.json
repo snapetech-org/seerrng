@@ -3577,7 +3577,7 @@
   "components.Settings.BackIssueModal.apiKeyHelp": "Utilisez une clé avec les autorisations library.view, library.manage et downloads.grab afin que SeerrNG puisse synchroniser la collection et gérer les demandes.",
   "components.Settings.BackIssueModal.apiKeyRequired": "Saisissez une clé API BackIssue.",
   "components.Settings.BackIssueModal.baseUrl": "URL de base",
-  "components.Settings.BackIssueModal.baseUrlHelp": "Laisser en blanc à moins que BackIssue ne soit servi sous un chemin URL.",
+  "components.Settings.BackIssueModal.baseUrlHelp": "Laissez le champ vide, sauf si BackIssue est servi sous un chemin d’URL.",
   "components.Settings.BackIssueModal.baseUrlInvalid": "L’URL de base doit être un chemin relatif.",
   "components.Settings.BackIssueModal.create": "Ajouter un serveur BackIssue",
   "components.Settings.BackIssueModal.defaultServer": "Utiliser par défaut pour les demandes",

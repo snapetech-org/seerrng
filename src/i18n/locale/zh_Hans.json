@@ -3543,7 +3543,7 @@
   "components.Settings.AudiobookshelfModal.name": "连接名称",
   "components.Settings.AudiobookshelfModal.nameRequired": "输入此连接的名称。",
   "components.Settings.AudiobookshelfModal.port": "端口",
-  "components.Settings.AudiobookshelfModal.portRequired": "输入有效的端口号码。",
+  "components.Settings.AudiobookshelfModal.portRequired": "输入有效的端口号。",
   "components.Settings.AudiobookshelfModal.saveFailure": "无法保存 Audiobookshelf 连接。",
   "components.Settings.AudiobookshelfModal.scanEnabled": "在 Bookshelf 扫描时同步可用性",
   "components.Settings.AudiobookshelfModal.ssl": "使用 HTTPS",

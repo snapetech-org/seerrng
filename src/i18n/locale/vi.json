@@ -3553,7 +3553,7 @@
   "components.Settings.AudiobookshelfModal.testing": "Đang kết nối...",
   "components.Settings.AudiobookshelfModal.tokenRequired": "Nhập mã thông báo người dùng Audiobookshelf.",
   "components.Settings.AudiobookshelfModal.urlInvalid": "Hãy nhập một địa chỉ URL HTTP hoặc HTTPS hợp lệ.",
-  "components.Settings.BackIssueModal.add": "Thêm máy phục vụ",
+  "components.Settings.BackIssueModal.add": "Thêm máy chủ",
   "components.Settings.BackIssueModal.apiKey": "Khóa API BackIssue",
   "components.Settings.BackIssueModal.apiKeyHelp": "Dùng một khóa có các quyền library.view, library.manage và downloads.grab để SeerrNG có thể đồng bộ bộ sưu tập và quản lý các yêu cầu.",
   "components.Settings.BackIssueModal.apiKeyRequired": "Nhập khóa API BackIssue.",

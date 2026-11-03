@@ -1,0 +1,49 @@
+{
+  "applicationApproved": true,
+  "applicationPlan": {
+    "acceptCurrentCount": 208,
+    "corrections": 13,
+    "holdCount": 0,
+    "path": "application-plan.jsonl",
+    "refinements": 19,
+    "selectedCellCount": 32,
+    "sha256": "ddb697b97084a692107a2f3af5b098f50ed891ff87025ee597deccfd4a910f01"
+  },
+  "artifact": "Root application authorization for SeerrNG PR #418 W3560-W3579",
+  "authorizationBasis": "User instructed completion of all translations/reviews across the seven active localization PRs, with commit/push/PR delivery and no releases. This authorization is limited to the exact independently cross-audited cells below.",
+  "authorizedAtUTC": "2026-11-03T13:16:35.119419+00:00",
+  "baseBranch": "main",
+  "branch": "codex/seerrng-localization-overhaul-20261028",
+  "head": "351f2c09a4aaf6f223975fc1827cb9f77de7702d",
+  "prohibitions": [
+    "No tests, builds, scans, or CI dispatches.",
+    "No .github/workflows changes.",
+    "No merge, release, or tag."
+  ],
+  "pullRequest": 418,
+  "repository": "snapetech-org/seerrng",
+  "reviewFindings": {
+    "allCallerContextsPinned": true,
+    "exactHeadBrowserReview": false,
+    "nativeSpeakerApproval": false,
+    "placeholderMarkupNumericProtectedLiteralMismatches": 0,
+    "primaryBlindAgreementOnProposals": 5,
+    "primaryChangesRetainedByBlind": 27,
+    "reviewedCells": 240,
+    "unresolvedDisagreements": 0
+  },
+  "reviewPackets": {
+    "blindChecksumListSha256": "87a0251ac5f6fa084109a04090b64b0a5fe09760ae50f63e8970c6917faa8473",
+    "candidateFreeChecksumListSha256": "5a73d23784f17cd51e186ad626cd6a952b12e2b801b36bf71dfde44b13fdd3e7",
+    "candidateFreeManifestSha256": "57c8bb96f21976482af691fa8549d63116fbc66bd30177c3eaa2cb7835996eed",
+    "crossAuditChecksumListAttestationSha256": "81b2bd647ae720270c1101da467f1375f0eaf850e53379f9399bf4e44e7d9dfb",
+    "crossAuditChecksumListSha256": "5abf84d67c8dbd962fff942789b73f4d6f69be20a23ede69e39cce6bf0f0a9ef",
+    "crossAuditLedgerSha256": "2c25dac31fe02b18172fbec23c840246410f45d535494572467506652457df42",
+    "crossAuditManifestSha256": "8625db1248402c75266ffcd0a5c9c13d1fcd7c6567c672e201259067a8efabb3",
+    "primaryChecksumListSha256": "05d65beada5c48cf69df083947a86731cbcb58948b7bd6278c979c128df54e6a",
+    "proposalSha256": "6354f0d091620bf76aa3b41c32fc5efa5314c0966e0b06511c7f4aadecd9c771"
+  },
+  "schemaVersion": 1,
+  "scope": "Apply exactly the 32 selectedTarget values in application-plan.jsonl to their 12 locale catalog paths. Preserve the other 208 reviewed cells, all other catalog values, key sets and order. No source-code or workflow changes.",
+  "tree": "3d88008f6ea7dc6cbef21333d29a032469cd60cf"
+}

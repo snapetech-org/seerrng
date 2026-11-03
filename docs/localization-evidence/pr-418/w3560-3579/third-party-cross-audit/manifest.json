@@ -1,0 +1,75 @@
+{
+  "schemaVersion": 1,
+  "artifact": "SeerrNG PR #418 W3560-W3579 independent third-party cross-audit",
+  "repository": "snapetech-org/seerrng",
+  "pullRequest": 418,
+  "window": "W3560-W3579",
+  "head": "351f2c09a4aaf6f223975fc1827cb9f77de7702d",
+  "tree": "3d88008f6ea7dc6cbef21333d29a032469cd60cf",
+  "sourceCount": 20,
+  "cellCount": 240,
+  "crossAuditChanges": 32,
+  "disagreements": 27,
+  "holds": 0,
+  "candidateFreeManifestJsonSha256": "57c8bb96f21976482af691fa8549d63116fbc66bd30177c3eaa2cb7835996eed",
+  "candidateFreeChecksumListSha256": "5a73d23784f17cd51e186ad626cd6a952b12e2b801b36bf71dfde44b13fdd3e7",
+  "primaryChecksumListSha256": "05d65beada5c48cf69df083947a86731cbcb58948b7bd6278c979c128df54e6a",
+  "blindChecksumListSha256": "87a0251ac5f6fa084109a04090b64b0a5fe09760ae50f63e8970c6917faa8473",
+  "files": [
+    {
+      "path": "README.md",
+      "bytes": 1852,
+      "sha256": "aa0dda75bee276426ba7f49031d7a4a38bc3051a45929dd71aafffeb52d7d278"
+    },
+    {
+      "path": "application-plan-proposal.jsonl",
+      "bytes": 36560,
+      "sha256": "6354f0d091620bf76aa3b41c32fc5efa5314c0966e0b06511c7f4aadecd9c771"
+    },
+    {
+      "path": "cross-audit-ledger.jsonl",
+      "bytes": 752038,
+      "sha256": "2c25dac31fe02b18172fbec23c840246410f45d535494572467506652457df42"
+    },
+    {
+      "path": "disagreements.jsonl",
+      "bytes": 39632,
+      "sha256": "791ca6d89e8dd6316a45f7e16ff468c4f2a6a7a90b7f77550ae77c23bb455f25"
+    },
+    {
+      "path": "independent-review-attestation.json",
+      "bytes": 465,
+      "sha256": "c562e38c5495eae554793efa98d1d1716710491b57296cb51e2069628d1a4f2e"
+    },
+    {
+      "path": "independent-review-ledger.jsonl",
+      "bytes": 361091,
+      "sha256": "6b5b24464899531697d384d395d0fe4a53993922cb0c900ae3e7afddcfcd2883"
+    },
+    {
+      "path": "independent-review-summary.json",
+      "bytes": 562,
+      "sha256": "d45c41c1b446c55d087211e8b28a23244fde7aad52088f9bd52879381f7f4205"
+    },
+    {
+      "path": "live-pr-attestation.json",
+      "bytes": 625,
+      "sha256": "10a2da843ad2dec4835a03b2ffc287b4207e6e7a26bcf445d55e1466a1fa76cf"
+    },
+    {
+      "path": "provenance.json",
+      "bytes": 1954,
+      "sha256": "9590f5c6c326e40565e8f2c77b659459ca414a542dcc2d1b64f0b419ca5c3306"
+    },
+    {
+      "path": "summary.json",
+      "bytes": 1433,
+      "sha256": "947c75b8022cf5935fa557477e17d38095da0d84e4bde82bb7b035f3dda70f5e"
+    },
+    {
+      "path": "verify_cross_audit.py",
+      "bytes": 7533,
+      "sha256": "64230191c49d60bba1c257a6071faff44623d50d5e91b460046bc2570781f0ed"
+    }
+  ]
+}

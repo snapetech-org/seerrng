@@ -1,0 +1,19 @@
+{
+  "schemaVersion": 1,
+  "repository": "snapetech-org/seerrng",
+  "pullRequest": 418,
+  "window": "W3560-W3579",
+  "head": "351f2c09a4aaf6f223975fc1827cb9f77de7702d",
+  "tree": "3d88008f6ea7dc6cbef21333d29a032469cd60cf",
+  "candidateFreeManifestJsonSha256": "57c8bb96f21976482af691fa8549d63116fbc66bd30177c3eaa2cb7835996eed",
+  "candidateFreeChecksumListSha256": "5a73d23784f17cd51e186ad626cd6a952b12e2b801b36bf71dfde44b13fdd3e7",
+  "candidateFreeInputManifestLineage": "manifest JSON and SHA256SUMS list are distinct files and separately hashed",
+  "reviewType": "primary semantic review only",
+  "all240CellsReviewed": true,
+  "callerContextsPinned": true,
+  "callerlessHolds": 0,
+  "nativeSpeakerApproval": false,
+  "exactHeadBrowserReview": false,
+  "blindReviewIncluded": false,
+  "reviewedAtUTC": "2026-11-03T12:56:08.978268+00:00"
+}

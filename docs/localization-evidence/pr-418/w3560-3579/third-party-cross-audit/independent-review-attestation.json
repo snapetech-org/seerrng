@@ -1,0 +1,7 @@
+{
+  "reviewedBeforeOpeningOtherLedgers": true,
+  "independentReviewLedgerSha256": "6b5b24464899531697d384d395d0fe4a53993922cb0c900ae3e7afddcfcd2883",
+  "independentReviewSummarySha256": "d45c41c1b446c55d087211e8b28a23244fde7aad52088f9bd52879381f7f4205",
+  "candidateFreeManifestJsonSha256": "57c8bb96f21976482af691fa8549d63116fbc66bd30177c3eaa2cb7835996eed",
+  "candidateFreeChecksumListSha256": "5a73d23784f17cd51e186ad626cd6a952b12e2b801b36bf71dfde44b13fdd3e7"
+}
