@@ -1,0 +1,24 @@
+{
+  "repository": "snapetech-org/seerrng",
+  "pullRequest": 418,
+  "window": "W3240-W3259",
+  "exactBaseHead": "d514838bbcca18d7255ba04a0266c4a78b41a499",
+  "exactBaseTree": "3c90e26e7e04e4e008ed43f4004dbb0048357f92",
+  "cleanInputManifestSha256": "cdb641f171f9118dc8080d0aab2d8df1b4a2acdceadbf3fbcafe39f6ecc7f84d",
+  "sourceIds": 20,
+  "locales": 12,
+  "cells": 240,
+  "decisions": {
+    "accept-current": 161,
+    "correction": 48,
+    "refinement": 31
+  },
+  "changedCells": 79,
+  "holds": 0,
+  "sourceCurrentAndFinalHashesVerified": true,
+  "placeholderMismatches": 0,
+  "protectedLiteralMismatches": 0,
+  "orderedCatalogs": "key sets and per-locale ordered-key pins retained; no key/order edits proposed",
+  "independentBlindReview": "pending; primary proposals withheld until independent ledger is sealed",
+  "nativeSpeakerApproval": false
+}

@@ -1,0 +1,43 @@
+{
+  "allSourceCurrentAndCatalogPinsMatched": true,
+  "applyAuthorized": false,
+  "baseHead": "c335cbd29244207e534f8a4f0d1e139d12c104c0",
+  "baseTree": "baa8c358f7e0e286ebd4209f4fca9b62f78be5f6",
+  "blindChecksumListSha256": "f007bd48230c916222e7187a127011ce178603639ecfd4ee4c581228fc3f9ce8",
+  "blindDecisionLedgerSha256": "05e4c964f2db9ffcdf5686c60eff54f25e8e17d25beda010d09a7ab3561a6468",
+  "catalogKeySetOrOrderChangesProposed": false,
+  "cells": 240,
+  "changedCells": 94,
+  "cleanInputChecksumListSha256": "cdb641f171f9118dc8080d0aab2d8df1b4a2acdceadbf3fbcafe39f6ecc7f84d",
+  "cleanInputWindowManifestSha256": "7811e601bd41292c99066948f6807d390b90b12cc3e487b4074e0f8df5917b9b",
+  "finalDispositions": {
+    "accept-current": 146,
+    "correction": 68,
+    "refinement": 26
+  },
+  "holds": 0,
+  "liveHeadReattestationSha256": "8997c8d37037277470e7a79d10afa2ae4418a461241ee83496e56e027aeaab53",
+  "locales": 12,
+  "nativeSpeakerApproval": false,
+  "placeholderMismatches": 0,
+  "primaryChecksumListSha256": "3cfa04a6d6b6debeb945e5531070a83edfabb78a01b6e8e8efe05f717a16fb70",
+  "primaryDecisionLedgerSha256": "d593a6f43a90e921c0e5e5ab43588aedf6a7785e5628ae3f17497dc2c088a0ff",
+  "protectedLiteralMismatches": 0,
+  "pullRequest": 418,
+  "repository": "snapetech-org/seerrng",
+  "reviewInputHead": "d514838bbcca18d7255ba04a0266c4a78b41a499",
+  "reviewInputTree": "3c90e26e7e04e4e008ed43f4004dbb0048357f92",
+  "rootRatification": "pending",
+  "selectionCounts": {
+    "blind": 27,
+    "independent-agreement": 163,
+    "primary": 44,
+    "root": 6
+  },
+  "sourceIds": 20,
+  "sourceOrderCount": 9494,
+  "sourceOrderSha256": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072",
+  "testsBuildsScansOrCiRun": false,
+  "window": "W3240-W3259",
+  "workflowChangesProposed": false
+}
