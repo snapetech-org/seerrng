@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "livePrHead": "78efa0ef0410ebd8911026ecbbfe1f621d26770b",
+  "livePrTree": "749819bc888fc400bbb185fc9310043ab45c0d5c",
+  "w3620ApplicationVerificationPath": "docs/pr-evidence/pr418-localization-2026-11-03/window-3620-3639/application-verification.json",
+  "w3620ApplicationVerificationGitBlob": "df69a3913d5d4f2b687d03def25991b012f1b9ee",
+  "w3620ApplicationVerificationSha256": "108e6611e21817f73c1df3d55952f2db178a75484f232cad0821047c9e559315",
+  "w3620ApplicationVerificationStatus": "PASS",
+  "w3620ApplicationCommit": "a4818db009265c631387cf2825672424347c13bd",
+  "w3620ApplicationTree": "c93bf0900354a2f84aed11583457b590ab88c0c6",
+  "w3620EvidenceAvailableAtCurrentHead": true,
+  "currentHeadCatalogPostApplyMatches": 12,
+  "currentHeadCatalogCount": 12,
+  "currentWindowHoldCount": 12,
+  "exactHeadReattested": true
+}

@@ -1,0 +1,102 @@
+{
+  "schemaVersion": 1,
+  "repository": "snapetech-org/seerrng",
+  "pullRequest": 418,
+  "window": "W3640-W3659",
+  "head": "78efa0ef0410ebd8911026ecbbfe1f621d26770b",
+  "tree": "749819bc888fc400bbb185fc9310043ab45c0d5c",
+  "sourceCount": 20,
+  "localeCount": 12,
+  "cellCount": 240,
+  "decisionCounts": {
+    "correction": 41,
+    "accept-current": 181,
+    "refinement": 18
+  },
+  "confidenceCounts": {
+    "high": 218,
+    "moderate": 21,
+    "low": 1
+  },
+  "holdCount": 0,
+  "holdCells": [],
+  "callerlessCellCount": 0,
+  "baselineDiagnostics": {
+    "placeholderMismatchCount": 0,
+    "placeholderSequenceMismatchCount": 0,
+    "icuPluralCategorySetDifferenceCount": 0,
+    "markupMismatchCount": 0,
+    "numericTokenMismatchCount": 0,
+    "protectedLiteralMismatchCount": 0
+  },
+  "reviewedDiagnostics": {
+    "placeholderMismatchCount": 0,
+    "placeholderSequenceMismatchCount": 0,
+    "icuPluralCategorySetDifferenceCount": 0,
+    "icuRuntimeCoverageFailureCount": 0,
+    "markupMismatchCount": 0,
+    "numericTokenSurfaceMismatchCount": 1,
+    "numericValueMismatchCount": 0,
+    "protectedLiteralMismatchCount": 0
+  },
+  "runtimePluralCategoryEvidence": {
+    "node": "v20.20.2",
+    "icu": "78.3",
+    "categories": {
+      "es": [
+        "many",
+        "one",
+        "other"
+      ],
+      "zh-CN": [
+        "other"
+      ],
+      "hi": [
+        "one",
+        "other"
+      ],
+      "de": [
+        "one",
+        "other"
+      ],
+      "ja": [
+        "other"
+      ],
+      "fr": [
+        "many",
+        "one",
+        "other"
+      ],
+      "pt-BR": [
+        "many",
+        "one",
+        "other"
+      ],
+      "ar": [
+        "few",
+        "many",
+        "one",
+        "other",
+        "two",
+        "zero"
+      ],
+      "ko": [
+        "other"
+      ],
+      "zh-TW": [
+        "other"
+      ],
+      "vi": [
+        "other"
+      ],
+      "id": [
+        "other"
+      ]
+    }
+  },
+  "priorImmediateWindowHoldCount": 0,
+  "candidateFreeInputVerified": "PASS",
+  "nativeSpeakerReview": "not performed",
+  "browserReview": "not performed",
+  "repositoryOrPRFilesEdited": false
+}

@@ -1,0 +1,132 @@
+{
+  "applicationStatus": "cross-audit evidence only; no catalog/repository/PR mutation",
+  "artifact": "SeerrNG PR #418 W3640-W3659 independent primary/blind cross-audit",
+  "blindPacket": {
+    "checksumVerification": "PASS",
+    "decisionCounts": {
+      "accept-current": 202,
+      "correction-needed": 19,
+      "refinement-needed": 19
+    },
+    "ledgerSha256": "a3e918b113c46b8cd9b05949b0bf2c58c73e79a8bcf567b708cd08b26cbd4981",
+    "packetChecksums": {
+      "README.txt": "70e5d6b6b93019f1bfbc2d9ea89b6f8532095c5ed59efd250100f537fa1f22b6",
+      "blind-ledger.jsonl": "a3e918b113c46b8cd9b05949b0bf2c58c73e79a8bcf567b708cd08b26cbd4981",
+      "build_and_verify.py": "cea2de8754d556f4e5cf55870d08c73164d3cf2a77fb47d11794fce5a33e7c59",
+      "manifest.json": "ed4d672a5777f1cacebbf6669b8f052a852c9f523ffeac645322cca2a5af4e07"
+    },
+    "path": "/home/keith/Documents/code/task-scratch/seerrng-pr418-w3640-3659-blind-primary-20261103",
+    "verifier": "PASS"
+  },
+  "cellReconciliation": {
+    "cells": 240,
+    "crossResolutionCounts": {
+      "confirmed": 181,
+      "decision-adjudicated": 49,
+      "proposal-adjudicated": 10
+    },
+    "decisionDisagreementsAdjudicated": 49,
+    "decisionMatrix": {
+      "accept-current | accept-current": 173,
+      "accept-current | correction-needed": 5,
+      "accept-current | refinement-needed": 3,
+      "correction-needed | accept-current": 17,
+      "correction-needed | correction-needed": 13,
+      "correction-needed | refinement-needed": 11,
+      "refinement-needed | accept-current": 12,
+      "refinement-needed | correction-needed": 1,
+      "refinement-needed | refinement-needed": 5
+    },
+    "exactPrimaryBlindDispositionAndProposalAgreement": 181,
+    "reconciledDispositionCounts": {
+      "accept-current": 175,
+      "correction-needed": 19,
+      "refinement-needed": 46
+    },
+    "sameDispositionProposalDifferencesAdjudicated": 10,
+    "sharedSourceTargetCallerCatalogPins": "240/240 exact"
+  },
+  "head": "78efa0ef0410ebd8911026ecbbfe1f621d26770b",
+  "nativeSpeakerReview": "not performed; no native-speaker approval claimed",
+  "primaryPacket": {
+    "checksumVerification": "PASS",
+    "decisionCounts": {
+      "accept-current": 181,
+      "correction": 41,
+      "refinement": 18
+    },
+    "ledgerSha256": "5c69a1c0c1681ad33fcfa63196fad8ed142c7d0d12fbcfc61553701072b7f722",
+    "packetChecksums": {
+      "README.md": "3ead2b6e8ccd06340aa2375a578a3644283ba90670d2f7d273cc6531780bf9ce",
+      "build_primary.py": "4e92179817b96647097d5b876e2f6ce2c338ddeea4977255a0c17bd9f627370f",
+      "input-verification.txt": "d84995e2bf537c495798def9871641646383f42217dc0f9547f97c16f7375fe0",
+      "manifest.json": "9634eae56b1c7d91cd02dfdf0802e9618eb633e62861b2178620030ef53028a3",
+      "primary-ledger.jsonl": "5c69a1c0c1681ad33fcfa63196fad8ed142c7d0d12fbcfc61553701072b7f722",
+      "runtime-icu-categories.json": "fb4547b582ffaadbe0bfe7b854d04853ce23d2162de7c8ed9644c57fd534f0a8",
+      "summary.json": "afbbaada6c4f575a611849b2f29b07d3fa6fdf8d93d6c035dad15a1365762dab",
+      "verify_primary.py": "c49ec6ab724c7e37f77e8014707dbbc57608a3695d4cb4e28e8baa508cb0339b"
+    },
+    "path": "/home/keith/Documents/code/task-scratch/seerrng-pr418-w3640-3659-primary-20261103/primary-review",
+    "verifier": "PASS"
+  },
+  "priorHoldPreservation": {
+    "currentWindowHolds": 0,
+    "outsideCurrentWindow": true,
+    "priorHoldSourcePositions": [
+      3632
+    ],
+    "priorHoldsReattestedByPrimaryInputVerifier": 12,
+    "priorHoldsRecordedByBlindPacket": 12
+  },
+  "pullRequest": 418,
+  "range": [
+    3640,
+    3659
+  ],
+  "repository": "snapetech-org/seerrng",
+  "schemaVersion": 1,
+  "sealedLedger": {
+    "byteCount": 396393,
+    "orderedCellIdsSha256": "5d77c3bcfbc7dcbd008e40f913233c0cdaa7af32c31421830d4575b0e9196242",
+    "path": "cross-audit-ledger.jsonl",
+    "sha256": "c6b04a52b0260e9db603d28f0e04359c626aebf3eed29385b3a9279601d3e927"
+  },
+  "sharedInputPins": {
+    "candidateFreeChecksumListSha256": "ef042985f75338bc95ab48178cba8437a041836b7a08a0dcdd8ffbf2af88fb2e",
+    "candidateFreeManifestSha256": "7f7ddb90b3a0fd25f8c99fbcfe4fe2a8815ce43f145d35b678b49edcfcf4d691",
+    "samePinnedHeadTree": true
+  },
+  "technicalChecks": {
+    "icuPluralCategoryMismatches": 0,
+    "icuRuntimeCoverage": "PASS",
+    "markupMismatches": 0,
+    "numericSurfaceObservations": [
+      {
+        "numericValuePreserved": true,
+        "reason": "Japanese commonly writes this quantity as 1つ; the English source spells out one and contains no protected digit literal.",
+        "requiresTranslationCorrection": false,
+        "sourceDigitLiterals": [],
+        "sourceNumberWord": "one",
+        "targetDigitLiterals": [
+          "1"
+        ],
+        "targetForm": "1つ"
+      }
+    ],
+    "numericValueMismatches": 0,
+    "placeholderMismatches": 0,
+    "placeholderSequenceMismatches": 0,
+    "protectedLiteralCells": 72,
+    "protectedLiteralMismatches": 0,
+    "protectedLiteralSourcePositions": [
+      3641,
+      3644,
+      3646,
+      3648,
+      3650,
+      3654
+    ]
+  },
+  "tree": "749819bc888fc400bbb185fc9310043ab45c0d5c",
+  "window": "W3640-W3659"
+}

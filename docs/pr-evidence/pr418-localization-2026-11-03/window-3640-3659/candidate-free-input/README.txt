@@ -1,0 +1,7 @@
+Candidate-free input for SeerrNG PR #418 W3640-W3659, pinned to exact open/draft PR head 78efa0ef0410ebd8911026ecbbfe1f621d26770b / tree 749819bc888fc400bbb185fc9310043ab45c0d5c.
+
+This is the next uncovered source window after W3620-W3639. It contains 20 contiguous English source IDs and 240 current target cells across 12 direct locales. Source positions are zero-based in the 9,494-key English catalog. The previous boundary is components.Settings.BookshelfPathMigration.commandStatus and this window ends at components.Settings.BookshelfPathMigration.format; position 3660 (components.Settings.BookshelfPathMigration.mediaFiles) is the next boundary. The first 3,640 source IDs are explicitly excluded and hashed to prevent overlap.
+
+The source catalog order, locale registries, 12 target catalogs, component source and route files are pinned by Git blob and SHA-256. Context captures message definitions, exact direct callers, component route references, placeholders, ICU plural categories, markup, numeric tokens and protected literals. The selected current target values contain no proposals or semantic dispositions.
+
+The W3620-W3639 application verifier passed at live PR head 78efa0ef0410ebd8911026ecbbfe1f621d26770b. The 12 callerless Author cells at position 3632 remain held; all twelve exact target hashes were reattested unchanged at this head and retained in lineage/hold-lineage.json. No catalog values were changed. Native-speaker and exact-head browser approval are not represented.

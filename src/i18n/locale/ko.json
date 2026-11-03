@@ -3628,7 +3628,7 @@
   "components.Settings.BookshelfPathMigration.conflicts": "충돌",
   "components.Settings.BookshelfPathMigration.consolidation": "이동은 BookshelfNG 데이터베이스 하나 안에서 처리됩니다. 분리된 기존 배포를 통합하려면 먼저 유지할 BookshelfNG 인스턴스로 라이브러리를 병합하거나 가져온 다음, 이 페이지에서 선택한 형식을 이동하세요. 이 페이지는 서로 다른 BookshelfNG 인스턴스 간에 파일이나 데이터베이스 레코드를 복사하지 않습니다.",
   "components.Settings.BookshelfPathMigration.currentPath": "현재 형식 경로",
-  "components.Settings.BookshelfPathMigration.description": "선택한 BookshelfNG 인스턴스에 의해 관리되는 다른 루트 폴더에 책이나 오디오북 파일을 이동합니다.",
+  "components.Settings.BookshelfPathMigration.description": "선택한 BookshelfNG 인스턴스에서 관리하는 다른 루트 폴더로 책이나 오디오북 파일을 이동합니다.",
   "components.Settings.BookshelfPathMigration.destination": "대상 루트 폴더",
   "components.Settings.BookshelfPathMigration.destinationHelp": "이 BookshelfNG 인스턴스에서 접근 가능한 루트 폴더만 사용할 수 있습니다. BookshelfNG는 이동이 시작될 때 충돌과 디스크 공간을 다시 확인합니다.",
   "components.Settings.BookshelfPathMigration.destinationPlaceholder": "접근 가능한 루트 폴더를 선택하십시오.",
