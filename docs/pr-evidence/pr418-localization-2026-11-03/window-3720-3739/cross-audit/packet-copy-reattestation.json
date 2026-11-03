@@ -1,0 +1,23 @@
+{
+  "verified": true,
+  "originalPrimary": "/home/keith/Documents/code/task-scratch/seerrng-pr418-w3720-3739-primary-20261103",
+  "originalBlind": "/home/keith/Documents/code/task-scratch/seerrng-pr418-w3720-3739-blind-20261103",
+  "copyComparisons": {
+    "primaryPacket": {
+      "fileCount": 35,
+      "aggregateSha256": "f33b3510b37703d6b6c52c5794035466e2977a692a81791ab1e9afa6f3f175f7"
+    },
+    "blindPacket": {
+      "fileCount": 35,
+      "aggregateSha256": "71763d6b240464c05ae6a566468f6bcff5089523f50535f089a8c9a18ed6a166"
+    },
+    "candidateFreePrimaryCopy": {
+      "fileCount": 20,
+      "aggregateSha256": "8edfde3ce9d9dca78d9c899498e4f595c31edfc0424b0895c0d38817e40f6b16"
+    },
+    "candidateFreeBlindCopy": {
+      "fileCount": 20,
+      "aggregateSha256": "8edfde3ce9d9dca78d9c899498e4f595c31edfc0424b0895c0d38817e40f6b16"
+    }
+  }
+}

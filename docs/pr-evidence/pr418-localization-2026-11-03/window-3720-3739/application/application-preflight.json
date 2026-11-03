@@ -1,0 +1,66 @@
+{
+  "result": "PASS",
+  "capturedAtUTC": "2026-11-03T23:14:04.133762+00:00",
+  "repository": "snapetech-org/seerrng",
+  "pullRequest": 418,
+  "branch": "codex/seerrng-localization-overhaul-20261028",
+  "parentHead": "1ca6ec2d5a0e9ef8000c69997e75648a8ccaf06e",
+  "parentTree": "6a51f3fb1d1f65c12bfe82bf47834626aa364488",
+  "prBaseRef": "main",
+  "prBaseSha": "fa40534ccced75bde1125c14760514fcd5d7de4d",
+  "currentMainTip": "016bcf8db7475b2105b9b488ff67ed7d1c096508",
+  "branchRef": "1ca6ec2d5a0e9ef8000c69997e75648a8ccaf06e",
+  "pullRef": "1ca6ec2d5a0e9ef8000c69997e75648a8ccaf06e",
+  "state": "OPEN",
+  "draft": true,
+  "prBodySha256": "e21a171c7405b555705d15333b6dc8c99b98d2769d61f5459d287b616f37e3ee",
+  "prBodyBytes": 100803,
+  "crossAuditVerifier": {
+    "result": "PASS",
+    "head": "1ca6ec2d5a0e9ef8000c69997e75648a8ccaf06e",
+    "tree": "6a51f3fb1d1f65c12bfe82bf47834626aa364488",
+    "cells": 240,
+    "targetDisagreements": 46,
+    "dispositionDisagreements": 28,
+    "crossCounts": {
+      "correction": 34,
+      "refinement": 16,
+      "accept-current": 190
+    },
+    "selectedChanges": 50,
+    "sharedChanged": 7,
+    "carriedHolds": 12,
+    "baselineTokenMismatches": {
+      "placeholder": 0,
+      "markup": 0,
+      "numeric": 0,
+      "protectedLiteral": 1
+    },
+    "selectedTokenFailures": {
+      "placeholder": 0,
+      "icuPluralCategories": 0,
+      "markup": 0,
+      "numeric": 0,
+      "protectedLiteral": 0
+    },
+    "packetFilesByteCompared": {
+      "primary": 35,
+      "blind": 35,
+      "candidateFree": 20
+    },
+    "nestedVerifiersRerun": true
+  },
+  "targetPreimagesReattested": 240,
+  "selectedChanges": 50,
+  "carriedHoldsReattested": 12,
+  "catalogFilesReattested": 12,
+  "sourceEnglishCatalogReattested": true,
+  "sourceEnglishCatalogPin": {
+    "path": "src/i18n/locale/en.json",
+    "sha256": "75ff3c90b52aedd636a506281ffbd6fb2d3739c61294b6008a517f17647e2316",
+    "gitBlob": "12e04a118c30b71b3714291adeaf9fdb2735cee4",
+    "keyCount": 9494,
+    "orderedKeysSha256": "47d40a21145f2f198fadaa29baeef5461718c4b6365d564af60ee015f18f1974",
+    "sourceOnly": true
+  }
+}

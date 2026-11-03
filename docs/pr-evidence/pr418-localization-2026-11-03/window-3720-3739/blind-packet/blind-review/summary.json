@@ -1,0 +1,56 @@
+{
+  "schemaVersion": 1,
+  "repository": "snapetech-org/seerrng",
+  "pullRequest": 418,
+  "window": "W3720-W3739",
+  "head": "1ca6ec2d5a0e9ef8000c69997e75648a8ccaf06e",
+  "tree": "6a51f3fb1d1f65c12bfe82bf47834626aa364488",
+  "sourceCount": 20,
+  "localeCount": 12,
+  "cellCount": 240,
+  "dispositionCounts": {
+    "correction": 19,
+    "refinement": 9,
+    "accept-current": 212
+  },
+  "correctionCount": 19,
+  "refinementCount": 9,
+  "acceptCurrentCount": 212,
+  "holdCount": 0,
+  "selectedTargetChanges": 28,
+  "baselineTokenMismatches": {
+    "placeholder": 0,
+    "markup": 0,
+    "numeric": 0,
+    "protectedLiteral": 1
+  },
+  "selectedTokenMismatches": {
+    "placeholder": 0,
+    "markup": 0,
+    "numeric": 0,
+    "protectedLiteral": 0
+  },
+  "baselineProtectedLiteralGap": {
+    "position": 3724,
+    "locale": "hi",
+    "literal": "IP",
+    "repaired": true
+  },
+  "namedLiteralFailures": 0,
+  "callerlessCurrentSourcePositions": [],
+  "priorWindowCellsReattested": 240,
+  "priorWindowCellsUnchanged": true,
+  "carriedCallerlessHoldsReattested": 12,
+  "carriedHoldsUnchanged": true,
+  "priorSelectedSourceIdsReattested": 3720,
+  "nextBoundary": {
+    "position": 3740,
+    "sourceId": "components.Settings.KapowarrModal.validationHostnameRequired"
+  },
+  "candidateFreeInputVerified": true,
+  "primaryOrSummaryOutputAccessed": false,
+  "crossAuditOutputAccessed": false,
+  "repositoryOrPRFilesEdited": false,
+  "nativeSpeakerReview": "not performed",
+  "browserReview": "not performed"
+}
