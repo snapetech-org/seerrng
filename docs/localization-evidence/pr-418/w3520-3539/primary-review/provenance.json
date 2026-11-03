@@ -1,0 +1,22 @@
+{
+  "schemaVersion": 1,
+  "reviewType": "primary-semantic-review",
+  "reviewer": "root",
+  "repository": "snapetech-org/seerrng",
+  "pullRequest": 418,
+  "window": "W3520-W3539",
+  "head": "265171657d48ef56ee81cc1c6a5c3d07abe5d07e",
+  "tree": "402984893883cf7afd106cd208f6027d7410f2fb",
+  "candidateFreeInputDirectory": "/mnt/disks/scratch/task-scratch/seerrng-pr418-w3520-3539-candidate-free-20261103/candidate-free-input",
+  "candidateFreeManifestJsonSha256": "9e032c395028881ffe5273ae0d7d13668dd26e9cc7cd4b321a68d2cfee95dd63",
+  "candidateFreeChecksumListSha256": "2c13436eb5d119231ce92a5ca8add130df8714a82a9b5243f22e24262957bb6d",
+  "candidateFreeManifestJsonBytes": 2189,
+  "candidateFreeChecksumListBytes": 1029,
+  "candidateFreeInputManifestLineage": "manifest JSON and SHA256SUMS list are distinct files and separately hashed",
+  "reviewedAtUTC": "2026-11-03T11:02:44.123514+00:00",
+  "cellCount": 240,
+  "selectedChangeCount": 24,
+  "callerlessHolds": 0,
+  "qualifiedNativeSpeakerApproval": false,
+  "exactHeadBrowserReview": false
+}

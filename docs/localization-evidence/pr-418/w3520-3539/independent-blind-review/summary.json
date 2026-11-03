@@ -1,0 +1,50 @@
+{
+  "callerReferenceCount": 26,
+  "callerResolutionHolds": 0,
+  "candidateFreeInputManifestJSONSha256": "9e032c395028881ffe5273ae0d7d13668dd26e9cc7cd4b321a68d2cfee95dd63",
+  "candidateFreeInputSHA256SUMSListSha256": "2c13436eb5d119231ce92a5ca8add130df8714a82a9b5243f22e24262957bb6d",
+  "cellCount": 240,
+  "dispositionCounts": {
+    "accept-current": 221,
+    "correction": 14,
+    "refinement": 5
+  },
+  "head": "265171657d48ef56ee81cc1c6a5c3d07abe5d07e",
+  "inputWindowLabelAudit": {
+    "consistent": true,
+    "details": "All packet window labels match W3520-W3539.",
+    "inconsistentFields": [],
+    "selectionBasis": "validated one-based source-order positions 3520-3539, source IDs, and exact head/tree pins",
+    "windowLabels": {
+      "caller-contexts.jsonl": [
+        "W3520-W3539"
+      ],
+      "current-target-cells.jsonl": [
+        "W3520-W3539"
+      ],
+      "manifest.json": "W3520-W3539",
+      "queue-status.json": "W3520-W3539",
+      "source-cells.jsonl": [
+        "W3520-W3539"
+      ],
+      "window.json": "W3520-W3539"
+    }
+  },
+  "localeCount": 12,
+  "nativeSpeakerApproval": false,
+  "placeholderMismatches": 0,
+  "proposedCatalogChanges": 19,
+  "pullRequest": 418,
+  "qualifiedNativeSpeakerReviewRequired": true,
+  "releaseApprovedByThisReview": false,
+  "repository": "snapetech-org/seerrng",
+  "reviewType": "independent blind semantic review",
+  "schemaVersion": 1,
+  "sourceCount": 20,
+  "sourcePositions": [
+    3520,
+    3539
+  ],
+  "tree": "402984893883cf7afd106cd208f6027d7410f2fb",
+  "window": "W3520-W3539"
+}

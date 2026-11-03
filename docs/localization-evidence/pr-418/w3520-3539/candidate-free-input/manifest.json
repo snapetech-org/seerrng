@@ -1,0 +1,70 @@
+{
+  "schemaVersion": 1,
+  "packetType": "candidate-free-input",
+  "repository": "snapetech-org/seerrng",
+  "pullRequest": 418,
+  "window": "W3520-W3539",
+  "head": "265171657d48ef56ee81cc1c6a5c3d07abe5d07e",
+  "tree": "402984893883cf7afd106cd208f6027d7410f2fb",
+  "sourceOrderCount": 9494,
+  "sourceOrderSha256": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072",
+  "sourceRecordCount": 20,
+  "cellCount": 240,
+  "files": [
+    {
+      "path": "PR-attestation.json",
+      "sha256": "a1f8f84b8c3aad75721db3999ab866690298eb0129382eb5a2e06c5939a3ed0a",
+      "byteCount": 1130
+    },
+    {
+      "path": "README.txt",
+      "sha256": "18d7edd6013bc1478ed74fbf4aa4aea9f0bdc37db89f1dd536a2266c6c102c8f",
+      "byteCount": 1154
+    },
+    {
+      "path": "caller-context-blocks.jsonl",
+      "sha256": "86c252d521bc9cf86d93eafd7414f6b37e78bfd04c8d049b2710eb251544af97",
+      "byteCount": 81956
+    },
+    {
+      "path": "caller-contexts.jsonl",
+      "sha256": "747a8499fa6e7e935ea698eea8d2e0f43ecda2c0eb705fc8a948e27790b907c7",
+      "byteCount": 20891
+    },
+    {
+      "path": "caller-resolution-findings.json",
+      "sha256": "9cf0b0abb9fa694d2a578ed3689051987a418e972cc5f60c84e0b398dac157af",
+      "byteCount": 187
+    },
+    {
+      "path": "current-target-cells.jsonl",
+      "sha256": "111c6bc2d316657fe412090f806ebdfcf73d8fda337f50985cddf6cc5eb4833a",
+      "byteCount": 233011
+    },
+    {
+      "path": "file-pins.json",
+      "sha256": "745e9b4578c5863a9f9ee5ad8fe15394204019a80dcf0c829966136369a627c6",
+      "byteCount": 7158
+    },
+    {
+      "path": "queue-status.json",
+      "sha256": "880da144b171edae134e9469f9daf5b9b73c8718edc72a56558e298a7b9dc19a",
+      "byteCount": 966
+    },
+    {
+      "path": "source-cells.jsonl",
+      "sha256": "c3ae44e0ac2d5e8ed7b3136cd2baf2e549ffe1bb19a5d34c28a97ba4a0ade654",
+      "byteCount": 8637
+    },
+    {
+      "path": "source-order.jsonl",
+      "sha256": "c60ae053f1eac6a98a7ed5f5d7590eec12781872140c27b7cd39a29075b10e69",
+      "byteCount": 8986
+    },
+    {
+      "path": "window.json",
+      "sha256": "74701641c0de7ec9d7b945a92cc8f35631ea0d65a5884681ba86b3b0c5751dbb",
+      "byteCount": 7388
+    }
+  ]
+}

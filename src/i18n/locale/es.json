@@ -3521,7 +3521,7 @@
   "components.Selector.CertificationSelector.maxRating": "Clasificación máxima",
   "components.Selector.CertificationSelector.minRating": "Calificación mínima",
   "components.Selector.CertificationSelector.noOptions": "No hay opciones disponibles",
-  "components.Selector.CertificationSelector.selectCertification": "Seleccione una certificación",
+  "components.Selector.CertificationSelector.selectCertification": "Seleccione una clasificación",
   "components.Selector.CertificationSelector.selectCountry": "Seleccione un país",
   "components.Selector.CertificationSelector.starttyping": "Empiece a escribir para buscar.",
   "components.Selector.allProvidersSelected": "Todos los proveedores disponibles ya están seleccionados.",

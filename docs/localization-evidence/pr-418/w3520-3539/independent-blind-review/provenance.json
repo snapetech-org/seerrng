@@ -1,0 +1,44 @@
+{
+  "blindLedgerCreatedBeforeAnyComparison": true,
+  "candidateFreeInputManifestJSONSha256": "9e032c395028881ffe5273ae0d7d13668dd26e9cc7cd4b321a68d2cfee95dd63",
+  "candidateFreeInputPath": "/mnt/disks/scratch/task-scratch/seerrng-pr418-w3520-3539-candidate-free-20261103/candidate-free-input",
+  "candidateFreeInputSHA256SUMSListSha256": "2c13436eb5d119231ce92a5ca8add130df8714a82a9b5243f22e24262957bb6d",
+  "candidateFreePacketChecksumVerified": true,
+  "candidateFreePacketOnlySemanticEvidence": true,
+  "generatedAtUTC": "2026-11-03T11:08:30.662433+00:00",
+  "head": "265171657d48ef56ee81cc1c6a5c3d07abe5d07e",
+  "liveAttestationFile": "live-attestation.json",
+  "otherReviewDecisionsConsulted": false,
+  "pullRequest": 418,
+  "repository": "snapetech-org/seerrng",
+  "reviewBasis": "Pinned English source, all 12 current targets, namespace locale metadata, exact message definitions, direct caller line spans and hashes, and source/target placeholder metadata in the candidate-free packet.",
+  "reviewLimitations": [
+    "Machine-assisted review; no qualified native-speaker approval is asserted.",
+    "Caller evidence is limited to the namespace-specific source context captured in the candidate-free packet."
+  ],
+  "reviewType": "independent blind semantic review",
+  "schemaVersion": 1,
+  "selectionBasis": "Source-order positions 3520-3539; source IDs and exact head/tree pins agree across the candidate-free manifest, source cells, source-order boundary records, and current target cells.",
+  "tree": "402984893883cf7afd106cd208f6027d7410f2fb",
+  "window": "W3520-W3539",
+  "windowMetadataAudit": {
+    "consistent": true,
+    "details": "All packet window labels match W3520-W3539.",
+    "inconsistentFields": [],
+    "selectionBasis": "validated one-based source-order positions 3520-3539, source IDs, and exact head/tree pins",
+    "windowLabels": {
+      "caller-contexts.jsonl": [
+        "W3520-W3539"
+      ],
+      "current-target-cells.jsonl": [
+        "W3520-W3539"
+      ],
+      "manifest.json": "W3520-W3539",
+      "queue-status.json": "W3520-W3539",
+      "source-cells.jsonl": [
+        "W3520-W3539"
+      ],
+      "window.json": "W3520-W3539"
+    }
+  }
+}
