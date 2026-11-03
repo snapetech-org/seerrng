@@ -1,0 +1,7 @@
+Candidate-free input for SeerrNG PR #418 W3600–W3619, pinned to exact open/draft PR head 1fdec93d1b021e4ec7a7c2265230f59d81d2675e / tree 6234854dc0b1e7aee17ef2e819ffc2b5b2e386ce.
+
+The packet contains 20 contiguous English source IDs and 240 current locale targets across 12 direct locales. Source positions are zero-based in the 9,494-key English catalog. The previous W3580–W3599 window ends at position 3599; its next source is components.Settings.BinderyModal.add (Add Bindery). This window starts with components.Settings.BinderyModal.addTitle (Add Bindery server) and ends at components.Settings.BinderyModal.ownerNote (This Bindery version does not advertise per-user requests. SeerrNG will add approved books through the API key, so Bindery records the service account as owner.). Position 3620 is the next boundary.
+
+The first 3,580 unique ordered source IDs are recorded as the prior-selected prefix; this window selects the following 20, with no overlap. The source catalog order hash and per-source ID/text hashes pin the queue. All twelve locale catalogs and caller source files are pinned by Git blob and SHA-256. Current targets contain no proposed translations or semantic dispositions.
+
+Caller paths and exact line spans, message definitions, direct property references, SettingsServices mounts, locale metadata, placeholders, markup, numeric tokens and protected literals are included. Prior W3580–W3599 application evidence reports 0 holds. No catalog values were changed; native-speaker approval is not represented.

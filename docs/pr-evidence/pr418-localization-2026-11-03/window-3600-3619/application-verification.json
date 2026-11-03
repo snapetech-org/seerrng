@@ -1,0 +1,70 @@
+{
+  "schemaVersion": 1,
+  "status": "PASS",
+  "repository": "snapetech-org/seerrng",
+  "pullRequest": 418,
+  "window": "W3600-W3619",
+  "parentHead": "1fdec93d1b021e4ec7a7c2265230f59d81d2675e",
+  "parentTree": "6234854dc0b1e7aee17ef2e819ffc2b5b2e386ce",
+  "reviewedCells": 240,
+  "sourceIds": 20,
+  "locales": 12,
+  "dispositions": {
+    "accept-current": 215,
+    "correction": 20,
+    "refinement": 5
+  },
+  "appliedUpdates": 25,
+  "changedCatalogCount": 12,
+  "catalogInvariantCount": 13,
+  "crossAuditDispositionOverrides": 9,
+  "orderedKeyAndCountChecks": "PASS",
+  "keySetParityToEnglish": "PASS",
+  "nonTargetValueChanges": 0,
+  "placeholderMismatches": 0,
+  "markupMismatches": 0,
+  "numericMismatches": 0,
+  "protectedLiteralMismatches": 0,
+  "baselineProtectedLiteralMismatches": [
+    {
+      "position": 3604,
+      "locale": "pt_BR"
+    },
+    {
+      "position": 3618,
+      "locale": "ar"
+    },
+    {
+      "position": 3618,
+      "locale": "de"
+    },
+    {
+      "position": 3618,
+      "locale": "ja"
+    },
+    {
+      "position": 3618,
+      "locale": "ko"
+    },
+    {
+      "position": 3618,
+      "locale": "vi"
+    },
+    {
+      "position": 3618,
+      "locale": "zh_Hans"
+    },
+    {
+      "position": 3618,
+      "locale": "zh_Hant"
+    }
+  ],
+  "all240CellsReadBackExactly": true,
+  "priorValuesOutsideSelectedTargetsPreserved": true,
+  "sourceAndCallerLineage": "PASS",
+  "packetVerifiers": "PASS",
+  "testsBuildsScansCiDispatchesRun": false,
+  "workflowFilesEdited": false,
+  "nativeSpeakerApproval": false,
+  "exactHeadBrowserReview": false
+}

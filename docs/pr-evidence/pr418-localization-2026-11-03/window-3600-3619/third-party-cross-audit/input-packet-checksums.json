@@ -1,0 +1,143 @@
+{
+  "candidateFreeInput": {
+    "directory": "/home/keith/Documents/code/task-scratch/seerrng-pr418-w3600-3619-primary-20261103/candidate-free-input",
+    "checksumListSha256": "fdffd9f94443ad5ac1604f4a1ba4790717ae54e900ce41b1c3a454aca19ab156",
+    "checksumListByteCount": 1029,
+    "files": [
+      {
+        "path": "PR-attestation.json",
+        "sha256": "5600d2c6daec41c7a9008214f30c81740184ec3e73114a4eb9deb6003c95c8ad",
+        "byteCount": 617
+      },
+      {
+        "path": "README.txt",
+        "sha256": "b3579c58dd26db7ef04884c0c8cc98b07a1b265647469775979702bb40837bc6",
+        "byteCount": 1541
+      },
+      {
+        "path": "caller-context-blocks.jsonl",
+        "sha256": "9b54fbebe401fcbbba5e423774c9ed688fb1290c0a126f8e513d935bc61969dc",
+        "byteCount": 40851
+      },
+      {
+        "path": "caller-contexts.jsonl",
+        "sha256": "074aa7ff5c5c5f434862cd7ae2772b781e8325336cbd9efebdab34574503a5b6",
+        "byteCount": 28674
+      },
+      {
+        "path": "caller-resolution-findings.json",
+        "sha256": "a0e617bcc797428f97c8c74382d45475ebcc9d3bee161b17ca5335e359333143",
+        "byteCount": 207
+      },
+      {
+        "path": "current-target-cells.jsonl",
+        "sha256": "2db2b69d8d00f77a58de59c9224d7a14a8e34bac406abf1538838b97fc94c744",
+        "byteCount": 349126
+      },
+      {
+        "path": "file-pins.json",
+        "sha256": "e4434837943d686593737a1b414cce9bf05afce75cd71b66a41faffb44087c0f",
+        "byteCount": 6314
+      },
+      {
+        "path": "manifest.json",
+        "sha256": "1089646f93bfd96df0e5f0b820da76e9132cc859b6ed9db595c9a891dbcfcd9c",
+        "byteCount": 3190
+      },
+      {
+        "path": "queue-status.json",
+        "sha256": "24f2e2be3bfa1015f3f5d9dd510a3a0302b186418ab2f380e57702614424f733",
+        "byteCount": 1800
+      },
+      {
+        "path": "source-cells.jsonl",
+        "sha256": "f8f1d60d381e549c55d7e1bc75a2ed688d7583c8f671c55d2edcfca12d298988",
+        "byteCount": 13050
+      },
+      {
+        "path": "source-order.jsonl",
+        "sha256": "cc61feccf2c6dd43215d641f7dba0fdcdc75933aad2fe1f931d9281b5358d93a",
+        "byteCount": 10575
+      },
+      {
+        "path": "window.json",
+        "sha256": "d5a8c2e0644e639644ffbff2b1839ffeac199fb07be98fa0ec3ffc5c515c67e4",
+        "byteCount": 6737
+      }
+    ]
+  },
+  "primaryReview": {
+    "directory": "/home/keith/Documents/code/task-scratch/seerrng-pr418-w3600-3619-primary-20261103/primary-review",
+    "checksumListSha256": "b77402b8c4d9d032a859817f3030faff0623262644379cfc6d06fec6d06537ae",
+    "checksumListByteCount": 605,
+    "files": [
+      {
+        "path": "README.md",
+        "sha256": "9ea5827c1d5bc5379a6a8e33362ff2985b7583000a6d827c5b36f0e547cf5bfd",
+        "byteCount": 1287
+      },
+      {
+        "path": "input-verification.txt",
+        "sha256": "45e4c1cc9342cc56b947b171ad9dd2b77d06c9c7bfcf81ea57a1cf5f851cf8bc",
+        "byteCount": 394
+      },
+      {
+        "path": "primary-ledger.jsonl",
+        "sha256": "a6e40f45a46dde5f790afdf8ac28d6d951359682ee0cec4f794f0e717a407027",
+        "byteCount": 669268
+      },
+      {
+        "path": "provenance.json",
+        "sha256": "99d68a56c21a79d163628794ccab50dfba7f2b5fa36473eb38a91d356796d06e",
+        "byteCount": 7778
+      },
+      {
+        "path": "selected-direct-locale-cells.jsonl",
+        "sha256": "0eeba63aa1d85dbf178c9d82a96fc0c6fb11248180ec0e8bdc6fbbe2eb6cba52",
+        "byteCount": 55288
+      },
+      {
+        "path": "summary.json",
+        "sha256": "78d9789bc6c9b8a3f5353cdbc6d807198cb11d15eca7905a0769ae74e32d2d84",
+        "byteCount": 1456
+      },
+      {
+        "path": "verify_primary_review.py",
+        "sha256": "5e9deb087e9dcc3eb4b7a2d9e2235ae345a0613f68476b02a165d45949f9bb3a",
+        "byteCount": 7043
+      }
+    ]
+  },
+  "blindReview": {
+    "directory": "/home/keith/Documents/code/task-scratch/seerrng-pr418-w3600-3619-blind-20261103",
+    "checksumListSha256": "477713b85565825a8498b209e99e3d9ee2bea62a98993a52404c00a76dafab11",
+    "checksumListByteCount": 414,
+    "files": [
+      {
+        "path": "README.md",
+        "sha256": "f32246118b89556611485299ddc0a32c27c193c3731249eadac22f6a2dd6ffe6",
+        "byteCount": 1693
+      },
+      {
+        "path": "input-digests.json",
+        "sha256": "e5ac3fa589190853359303ffc38c7f3fb14d1144938f5cf80ff1cefce63f1f37",
+        "byteCount": 1021
+      },
+      {
+        "path": "blind-ledger.jsonl",
+        "sha256": "f2c11d4441101098b26541d14753f1921dc5a02ea007b9483b5019ed93612cc3",
+        "byteCount": 537010
+      },
+      {
+        "path": "summary.json",
+        "sha256": "66ad85d8cd8b54f7bb540948065ee3772b6ca07444312f9c9204bd870ada08ff",
+        "byteCount": 1821
+      },
+      {
+        "path": "verify_blind_review.py",
+        "sha256": "ece2525376abebd79b0f205635a6c0adf76c513addd6aa3656313e9899aba972",
+        "byteCount": 2230
+      }
+    ]
+  }
+}

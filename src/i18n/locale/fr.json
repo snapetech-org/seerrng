@@ -3618,7 +3618,7 @@
   "components.Settings.BinderyModal.name": "Nom du service",
   "components.Settings.BinderyModal.nameRequired": "Saisissez un nom de service.",
   "components.Settings.BinderyModal.ownerFeature": "Les demandes par utilisateur sont prises en charge. SeerrNG a trouvé {accountCount} comptes Bindery. SeerrNG fait correspondre les noms d’utilisateur, les noms d’utilisateur Plex ou Jellyfin et les adresses e-mail sans distinction de casse. Activez l’option « Auto-approve requests » pour chaque compte dans Bindery si l’acquisition doit démarrer sans seconde approbation. Pour les bibliothèques privées des utilisateurs, activez également BINDERY_ENFORCE_TENANCY dans Bindery.",
-  "components.Settings.BinderyModal.ownerNote": "Cette version de Bindery ne publie pas les demandes par utilisateur. SeerrNG ajoutera les livres approuvés via la clé API, de sorte que Bindery enregistre le compte de service comme propriétaire.",
+  "components.Settings.BinderyModal.ownerNote": "Cette version de Bindery n’indique pas la prise en charge des demandes par utilisateur. SeerrNG ajoutera les livres approuvés via la clé API ; Bindery enregistrera donc le compte de service comme propriétaire.",
   "components.Settings.BinderyModal.port": "Port",
   "components.Settings.BinderyModal.portRequired": "Saisissez un port valide.",
   "components.Settings.BinderyModal.saveFailure": "Impossible d'enregistrer la connexion Bindery.",

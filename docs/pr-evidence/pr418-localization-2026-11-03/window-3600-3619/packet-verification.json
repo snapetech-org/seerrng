@@ -1,0 +1,20 @@
+{
+  "result": "PASS",
+  "upstreamVerifierRerun": "PASS",
+  "head": "1fdec93d1b021e4ec7a7c2265230f59d81d2675e",
+  "tree": "6234854dc0b1e7aee17ef2e819ffc2b5b2e386ce",
+  "cells": 240,
+  "targetAgreements": 220,
+  "targetDisagreements": 20,
+  "dispositionAgreements": 228,
+  "dispositionDisagreements": 12,
+  "crossAuditDispositions": {
+    "accept-current": 215,
+    "correction": 20,
+    "refinement": 5
+  },
+  "protectedBaselineMismatches": 8,
+  "finalProtectedMismatches": 0,
+  "placeholderMarkupNumericMismatches": 0,
+  "outputChecksumEntries": 5
+}
