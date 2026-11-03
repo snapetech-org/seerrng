@@ -1,0 +1,84 @@
+{
+  "baselineProtectedLiteralMismatches": 2,
+  "beforeLiveAttestationSha256": "9412e86f6dace1493a06cfa164c9db89ba2bcbadf158db39bd7fd17e5436a0f5",
+  "callerlessSelectedPositions": [],
+  "candidateFreeChecksumListSha256": "9f279b3525466058d23564a53f7b2c848052859d8dbfb82a8f7793061d8778d4",
+  "candidateFreeInputRoot": "/home/keith/Documents/code/task-scratch/seerrng-pr418-w3680-3699-cross-audit-20261103/evidence/candidate-free-input",
+  "candidateFreeManifestSha256": "577ba2a857f59504ec2c2623b10ff0c7c7e8d1ef397dd8aac572441d2aadeee1",
+  "cellCount": 240,
+  "dispositions": {
+    "accept-current": 218,
+    "correction": 10,
+    "hold": 0,
+    "refinement": 12
+  },
+  "head": "a2f015c040f933eff38e6ef3d9b1ac6050c4957d",
+  "independentProtectedLiteralMismatchesAfterReview": 0,
+  "localeCount": 12,
+  "localeOrder": [
+    "es",
+    "zh_Hans",
+    "hi",
+    "de",
+    "ja",
+    "fr",
+    "pt_BR",
+    "ar",
+    "ko",
+    "zh_Hant",
+    "vi",
+    "id"
+  ],
+  "nativeSpeakerApproval": false,
+  "numericNormalization": {
+    "baselineNumericMeaningMismatches": 0,
+    "localeGroupingExamples": [
+      "1.000",
+      "1 000"
+    ],
+    "sourceGroupingExamples": [
+      "1,000",
+      "10,000"
+    ],
+    "wordNumberExample": {
+      "locale": "pt_BR",
+      "normalizedValue": 10000,
+      "position": 3693,
+      "surface": "10 mil"
+    }
+  },
+  "primaryMaterialsOpened": false,
+  "priorHoldPositions": [
+    3632
+  ],
+  "priorHoldsReattested": 12,
+  "proposedUpdates": 22,
+  "protectedLiteralResolutions": [
+    {
+      "literal": "API",
+      "locale": "hi",
+      "position": 3697
+    },
+    {
+      "literal": "API",
+      "locale": "hi",
+      "position": 3698
+    }
+  ],
+  "pullRequest": 418,
+  "repository": "snapetech-org/seerrng",
+  "result": "SEALED_INDEPENDENT_BLIND_REVIEW",
+  "selectedSourceIdOrderSha256": "f1dbea615bbdbd371aaf01b68b8bece63b51465aad13d3c7de50cfaffba168af",
+  "sourceCount": 20,
+  "sourceOrderSha256": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072",
+  "tokenFailureCounts": {
+    "icuCategoriesPreserved": 0,
+    "markupPreserved": 0,
+    "numericValuesMatch": 0,
+    "placeholderSequenceMatches": 0,
+    "protectedLiteralsPreserved": 0
+  },
+  "tree": "9cea70e57de0d65e78dd0cc6fab8f54dbb4e5cfe",
+  "unchangedPriorHolds": 12,
+  "window": "W3680-W3699"
+}
