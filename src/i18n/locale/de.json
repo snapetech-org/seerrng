@@ -3332,7 +3332,7 @@
   "components.Requests.edit": "Bearbeiten",
   "components.Requests.editTooltip": "Bearbeiten Sie diese ausstehende Anfrage.",
   "components.Requests.emptyTitle": "Keine Anfragen gefunden",
-  "components.Requests.eta": "Voraussichtliche Ankunftszeit: {date}",
+  "components.Requests.eta": "Voraussichtliche Fertigstellungszeit: {date}",
   "components.Requests.failed": "Fehlgeschlagen",
   "components.Requests.filter": "Filter",
   "components.Requests.filteredEmptyTitle": "Filter zu streng",

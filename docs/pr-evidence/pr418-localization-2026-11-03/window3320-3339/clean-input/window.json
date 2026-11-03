@@ -1,0 +1,444 @@
+{
+  "repository": "snapetech-org/seerrng",
+  "pullRequest": 418,
+  "head": "70caabc2f95df1a7de3f869111aea1df58522d96",
+  "tree": "daac9e9284adac648fd3f6147265c21c90cdddba",
+  "range": [
+    3320,
+    3339
+  ],
+  "previousRange": [
+    3300,
+    3319
+  ],
+  "sourceOrderCount": 9494,
+  "sourceOrderSha256": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072",
+  "cellCount": 240,
+  "contextRows": 51,
+  "localeOrder": [
+    "es",
+    "zh_Hans",
+    "hi",
+    "de",
+    "ja",
+    "fr",
+    "pt_BR",
+    "ar",
+    "ko",
+    "zh_Hant",
+    "vi",
+    "id"
+  ],
+  "localeCatalogPins": {
+    "src/i18n/locale/en.json": {
+      "sha256": "75ff3c90b52aedd636a506281ffbd6fb2d3739c61294b6008a517f17647e2316",
+      "gitBlob": "12e04a118c30b71b3714291adeaf9fdb2735cee4",
+      "keyCount": 9494,
+      "orderedKeySha256": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072"
+    },
+    "src/i18n/locale/es.json": {
+      "sha256": "2e7f07bdd9fd065b4d0b7bce2daa29737ca53204b30661c8220c0e5eb1b85e31",
+      "gitBlob": "f4a6163f3734bad6de43e9a2e311c5c9678d04f1",
+      "keyCount": 9494,
+      "orderedKeySha256": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072"
+    },
+    "src/i18n/locale/zh_Hans.json": {
+      "sha256": "3ad05768c92a05d611f3f352f29ee5690e03db8ae32792e46b4c9fc0c1b67d2d",
+      "gitBlob": "f61ab8d03cda1368c4b71a06a7b340b16fa05f16",
+      "keyCount": 9494,
+      "orderedKeySha256": "8d5fd7bd4351bc64c5ee813f2e50196608869e165866f3202a312078732c2baf"
+    },
+    "src/i18n/locale/hi.json": {
+      "sha256": "e7da5f164b7dccfe2e215b577602784de32ee816080351bd3bc5790d339c594a",
+      "gitBlob": "566dd504424f0c8645d1a534bb1299e7530cf3b4",
+      "keyCount": 9494,
+      "orderedKeySha256": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072"
+    },
+    "src/i18n/locale/de.json": {
+      "sha256": "c56178d5f9cb3e0aba319b5bca8834fe0ff9ed5d7e23ec14b2d5618c01868b59",
+      "gitBlob": "7948bd26fb3d32f55f78d116821f5ac000bbcfcb",
+      "keyCount": 9494,
+      "orderedKeySha256": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072"
+    },
+    "src/i18n/locale/ja.json": {
+      "sha256": "3bd9c061b359dd0dbc2c84ab6dfc5647f60a2e4c0824f50206dd1768f950955c",
+      "gitBlob": "f51905099b46a9bd739afa6cc8c78a5be4bde8f0",
+      "keyCount": 9494,
+      "orderedKeySha256": "8d5fd7bd4351bc64c5ee813f2e50196608869e165866f3202a312078732c2baf"
+    },
+    "src/i18n/locale/fr.json": {
+      "sha256": "6e68785eceb0460aac64ce4cfa5631f4ec248854cdf445e18fbb598162091606",
+      "gitBlob": "ec0766a52873c18b33722337091ca19adcd4c5d6",
+      "keyCount": 9494,
+      "orderedKeySha256": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072"
+    },
+    "src/i18n/locale/pt_BR.json": {
+      "sha256": "5562ff6176559cc31318486990af7534c66c7cd154542530fac643b366ee1cc2",
+      "gitBlob": "ee235f368361dd25d1ab74aa45dbba1838737c1e",
+      "keyCount": 9494,
+      "orderedKeySha256": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072"
+    },
+    "src/i18n/locale/ar.json": {
+      "sha256": "6b7bb09290bfe8ada47c6a3ddad10cc60e6c5475920bca73b59fdefa50aed5e9",
+      "gitBlob": "8aa38024c2f6ec3e4c47da640009e3097ac7f196",
+      "keyCount": 9494,
+      "orderedKeySha256": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072"
+    },
+    "src/i18n/locale/ko.json": {
+      "sha256": "b84ac1107622f5c377911b88a006e3212a0af500bcf770132bb50e5a7a6942ae",
+      "gitBlob": "de337a47e3f7c3281b5dcfda9f9a653c7c921491",
+      "keyCount": 9494,
+      "orderedKeySha256": "8d5fd7bd4351bc64c5ee813f2e50196608869e165866f3202a312078732c2baf"
+    },
+    "src/i18n/locale/zh_Hant.json": {
+      "sha256": "4f56a79a155cbb1ff3bd415dc38311e4983aee032fe72fa6f221050186b4e666",
+      "gitBlob": "b28d26d450f404d5c1369b5b7bc2af058d07f784",
+      "keyCount": 9494,
+      "orderedKeySha256": "8d5fd7bd4351bc64c5ee813f2e50196608869e165866f3202a312078732c2baf"
+    },
+    "src/i18n/locale/vi.json": {
+      "sha256": "b0b979fddf1992e8d8827facdb2a6c75855b7a07eb85c00de258860bff4ccea3",
+      "gitBlob": "3b4473059d7890862069493a680c522108184563",
+      "keyCount": 9494,
+      "orderedKeySha256": "8d5fd7bd4351bc64c5ee813f2e50196608869e165866f3202a312078732c2baf"
+    },
+    "src/i18n/locale/id.json": {
+      "sha256": "db89c48664d4e2eb4790cfd9e1e42d30605bf6ca595fa49e831ca7a6a618337b",
+      "gitBlob": "32a20ad956d77cb50d06f9dd6ba90290bd4baad4",
+      "keyCount": 9494,
+      "orderedKeySha256": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072"
+    }
+  },
+  "sourceCatalogSha256": "75ff3c90b52aedd636a506281ffbd6fb2d3739c61294b6008a517f17647e2316",
+  "sourceCatalogKeyCount": 9494,
+  "callerFiles": {
+    "src/components/RequestStatus/messages.tsx": {
+      "sha256": "5c7691636c95eed239cf012fa2e8bdc066ef773a8b4288bbd93fafddb15324eb",
+      "gitBlob": "73f660f8595c193f4996c2720d0566212545f76c",
+      "lineCount": 121
+    },
+    "server/lib/requestStatus.ts": {
+      "sha256": "63dd1b43e684a40eb82253a2942d7652cad63d87234b5c279d73af0b945b2d31",
+      "gitBlob": "e75608e1c2921b5f7b3e822c25a690f8b1cc5e82",
+      "lineCount": 2328
+    },
+    "src/components/Requests/index.tsx": {
+      "sha256": "25b612dcda274fe2ea64b76f169587e153b04a675c9b8cd817814d9fbfde5360",
+      "gitBlob": "84f6a19674b329df0ef6be6483d74bbaeb110ccb",
+      "lineCount": 3115
+    },
+    "src/components/Requests/destructiveActions.tsx": {
+      "sha256": "16d562185c1e1f3a94398369b4ab3eec28085033dcc3465c32557752687d1d57",
+      "gitBlob": "09884f99a738ce4402b5fb121d15022f0efc3a67",
+      "lineCount": 173
+    },
+    "src/pages/requests/index.tsx": {
+      "sha256": "64273c876d30c6ee3ee1f7419f3376cd1849fcc6fbbc37cec781c340e3c6cb76",
+      "gitBlob": "17a3c44c6c3073fcaecd94cc77993a8bae3bdc4d",
+      "lineCount": 6
+    },
+    "src/utils/defineMessages.ts": {
+      "sha256": "761cb0362244e473b6993c78f4b852a6673c95e35da13990856e6a44c6d9169f",
+      "gitBlob": "bb8fadb4baf7764b0af8b1a2294bf43d4196aaaa",
+      "lineCount": 26
+    }
+  },
+  "orderedLocaleKeySequencesMatch": false,
+  "perLocaleOrderedKeyHashesPinned": true,
+  "strictBlindInputOnly": true,
+  "nativeSpeakerApproval": false,
+  "sourceIds": [
+    {
+      "position": 3320,
+      "id": "components.Requests.deleted",
+      "source": "Deleted",
+      "sourceSha256": "b48ff39c2e0f5451b9b29b09c2a74d2760db230749ffd48a6e901cc91fef9a8d"
+    },
+    {
+      "position": 3321,
+      "id": "components.Requests.deleting",
+      "source": "Deleting…",
+      "sourceSha256": "43b5894c3e4e2b24f13c935f4fae0a0a8fbe7d7792750a09b88c2097fd9a32b8"
+    },
+    {
+      "position": 3322,
+      "id": "components.Requests.director",
+      "source": "Director",
+      "sourceSha256": "c149bc14e45c0d92e0adae72d5dfa10ad2fde44aebb562d6c1fedebf30ceaca1"
+    },
+    {
+      "position": 3323,
+      "id": "components.Requests.downloadCopies",
+      "source": "Download copies",
+      "sourceSha256": "900ba9bd447fcc05ff86bd23a4a5b64f5c3590c676ad1ece17b65fc4e9a675a4"
+    },
+    {
+      "position": 3324,
+      "id": "components.Requests.downloadCopy",
+      "source": "Download copy",
+      "sourceSha256": "e35dde6db75b453468347bdf512602a543e1a90c8e11301166c62da4359447ec"
+    },
+    {
+      "position": 3325,
+      "id": "components.Requests.downloadCopyFor",
+      "source": "Download {name}",
+      "sourceSha256": "c807156b8e24f0a378cd22e57f3bddcd25555680645c9f0636d3b59d5e4563c3"
+    },
+    {
+      "position": 3326,
+      "id": "components.Requests.downloading",
+      "source": "Downloading",
+      "sourceSha256": "37b345555d7ea6c1724d28076ce47b956d202574c211fefa36afba778f335373"
+    },
+    {
+      "position": 3327,
+      "id": "components.Requests.ebook",
+      "source": "Book",
+      "sourceSha256": "909cb81127c5e1944b16dc5944ade59facb822c7a3f250d1f0256293bfd3c055"
+    },
+    {
+      "position": 3328,
+      "id": "components.Requests.ebookAndAudiobook",
+      "source": "Book + Audiobook",
+      "sourceSha256": "a8e63d1a3c2b09287aa608539091869ccf4d8d7281772de6c9682d762d5ea707"
+    },
+    {
+      "position": 3329,
+      "id": "components.Requests.ebooks",
+      "source": "Books",
+      "sourceSha256": "9da7f76bc81d2f4e5ee6a83817f7a1db2aadbc9ca13726b0c40b6ace756dce0c"
+    },
+    {
+      "position": 3330,
+      "id": "components.Requests.edit",
+      "source": "Edit",
+      "sourceSha256": "464c4ffd019e1e9691dcf0537c797353ef2b1c1d4833d3d463e5b74ae4547344"
+    },
+    {
+      "position": 3331,
+      "id": "components.Requests.editTooltip",
+      "source": "Edit this pending request.",
+      "sourceSha256": "e497a6fe656509a3cde96cf2409dc787d1fd8440fa43ee21f5d7a2d2b74ba1a8"
+    },
+    {
+      "position": 3332,
+      "id": "components.Requests.emptyTitle",
+      "source": "No Requests Found",
+      "sourceSha256": "6dca8540b2d1453729ec07f512da30600f3bb8b4c69111d8096413e077378168"
+    },
+    {
+      "position": 3333,
+      "id": "components.Requests.eta",
+      "source": "ETA: {date}",
+      "sourceSha256": "bf5c5a4a00cce832242f5d7e4312e17dc3a8f60fa20b4149d895eaae597a3982"
+    },
+    {
+      "position": 3334,
+      "id": "components.Requests.failed",
+      "source": "Failed",
+      "sourceSha256": "031a8f0f659df890dfd53c92e45295b0f14c997185bae46e168831e403b273f7"
+    },
+    {
+      "position": 3335,
+      "id": "components.Requests.filter",
+      "source": "Filters",
+      "sourceSha256": "546ebb8eb993ea561029d9febd84c363bdb09010bb2cb915a8287762b76b9a64"
+    },
+    {
+      "position": 3336,
+      "id": "components.Requests.filteredEmptyTitle",
+      "source": "Filters Too Restrictive",
+      "sourceSha256": "67d33085b68c650389f80734ccda74c7cbeac9b6e6988007ecfda8bf694ab8f1"
+    },
+    {
+      "position": 3337,
+      "id": "components.Requests.firstPublished",
+      "source": "First Published",
+      "sourceSha256": "cf960540de47e88b9d49c13761166fe349c4ac4e9520594afb1b8e9b921a245d"
+    },
+    {
+      "position": 3338,
+      "id": "components.Requests.format",
+      "source": "Format",
+      "sourceSha256": "2f343666aaa88c44430b12e6ab8a29591a069de76541125e83ff1b5acc367bf2"
+    },
+    {
+      "position": 3339,
+      "id": "components.Requests.fourK",
+      "source": "4K",
+      "sourceSha256": "cc1e5d5a9c88e51f820aa0ea398b7195da9ae54fcd2a34a1fc9124fde6d4a9a8"
+    }
+  ],
+  "callerContextHashesById": {
+    "components.Requests.deleted": [
+      "041ff06b4e89e29e58b7435417e469c68a0e08e319c994c5baa7c1b053742ba5",
+      "42e2fab8166e7bcef98a717747efc7792cc57db55fb1eaa2ce578452f7a59c0e",
+      "bb061d005c289c28dce79d8826c028b3b6fa2d4593d58ae1c72b117eeec0c74b",
+      "75240bc2d7fe18337a5811c2bd01931395d53cd41d969cd2b1f3bc7a6d5848e2",
+      "aba4b3a00289e497b5c35acec0489816c1501e75943ef7ab543a2065f31afe2f",
+      "f3c64905d5cc88984ad4d383aafc299f4f8e6c839ea4c184edf0668046930210"
+    ],
+    "components.Requests.deleting": [
+      "598af9de19d2f05c6e8655173189eb93bb525fbc3e44e3082a524b8e7bdbb6f5",
+      "f467b6553501c78094243ef9f44bc3c065b7c7dc7ae3a9bdd02feb900a31e20b",
+      "f3ba2fcd8ec4f1b6557f36f7ce22d7fc9aad932b9db171ebabbc6cf2e0f39c85",
+      "3da2b19ee05223c29f47f021c8d4eb91bb3ee3473031835043faf43f70acc648",
+      "aac466ed08baf9bcebe73e04756a0e3cc3a7530cf836ba433eac04e92de78f16"
+    ],
+    "components.Requests.director": [
+      "6886ef6b6ac2bb2b12b38d6fbf516201f46c8a40e73cb59eb5119de65d8b2e7a",
+      "6e4c02a6d7e5e41a033f22deb215cc0e4c49af2a531effbb752a53c7e0c35a36"
+    ],
+    "components.Requests.downloadCopies": [
+      "f344e423590860da6a1a3f1dfdb2e29f7977f096c058e979ad8f4050751ff5d5",
+      "4901df9c3a459f734e8d59d753413aeb8c34021ca2eadef3b53f88efffa0c668"
+    ],
+    "components.Requests.downloadCopy": [
+      "365db5258e820e00c580b58b6b89bf81e01c618b6741994fbae70ccf285bcf05",
+      "3fcf5f43e0a8c58af49a3fda7cb86e097924cd8c5aa00036d0c339097db98114"
+    ],
+    "components.Requests.downloadCopyFor": [
+      "a5f27beebf5a0a89fc131c7cffab73712c68612c99904cded588dec713d45764",
+      "63157d5565fd5ffd2981048a82a78e5209a26109ca0ed8871395a38c117c4f4a",
+      "a4e2763930550735e0084aee4f8c0353faf2b0952e8b6949642701e96bbff36c"
+    ],
+    "components.Requests.downloading": [
+      "49aa10852b12b66bc67e0fdbf210090437207c48e7a902d4898f3d099299e6b3",
+      "2a6ba99c1071b77d9941e84496d31489cdcf89aa5c903bccd503294f23fac1e5",
+      "05bbaace55a212a357346ef3cac3aea2ba8557a6f7e17f8d28de21deb62a5e64",
+      "72285069badc02ca9eb09b7ca795ac399619b52c9118ed05a67efaf98ecaa376",
+      "d4814b129a07e938dfa01c47e9a6330b2596b2b3f797e7e993c5933559d03cf9",
+      "64dfe32c46e126eedd51525031983c0418b05c906a3f3f2e6d64b5eba918810c",
+      "8cf89181233ff99f17b1f816be924d20f2b94383fae51fd90abd50a6b6e1028e"
+    ],
+    "components.Requests.ebook": [
+      "fc4568ac2bda0b0e8a1ebfcd79786d990036c37c279e672fc9eadd95d91a53aa"
+    ],
+    "components.Requests.ebookAndAudiobook": [
+      "e07eb9173fbd36a2590fc76f5ee5d6e19f8d8cc40d04207aa25ff3b6cf536f1d"
+    ],
+    "components.Requests.ebooks": [
+      "6f78478d03f018c2412a646e63c89c65cd219d8db59d297b085c257d34a174fb",
+      "5344e36ae25b20545fd95f831030013d836906a08af9f308526ab1a29d02fb93"
+    ],
+    "components.Requests.edit": [
+      "4266a83a96430245adfb61f98be3c05c595aed3bb0667281fe48a7f8dfdd4cea",
+      "b3ea20e4b1e36616cec7ca422e9b07c4049014d564f94d94bc694e0113937471"
+    ],
+    "components.Requests.editTooltip": [
+      "d92f41d4a516fb415c8c0a9f0664de36c3cacfddb680f32d66a2b54f733bc895",
+      "bb338a647f6f1ec34dcfc08777e6ef7553143fa9b10891bfcd1bbe82462d679d"
+    ],
+    "components.Requests.emptyTitle": [
+      "53968da25108b8a71a979600931e0a01c4c57cdf64b78cfcbd59be9763d29e76",
+      "f86933dcb579cd279fc55639294e9f4196ca2eaaadd7142d500ecbc88a5cdc8e"
+    ],
+    "components.Requests.eta": [
+      "876794322e632088882b4dbade4d2c8fd755e3075ccd85addb7deb867cf6ce02",
+      "4ad8ee8d4a837c9364a8cff8124d181fbc0e2ffeed4686a530460ec030dd4cfd"
+    ],
+    "components.Requests.failed": [
+      "47a0834ee6c1821cb3327093e6bc78c71204b8ccff51c0c2583748719153e945",
+      "d13528a094be01106bbc5c0c64d9deabd016f3e10861b1dc2a61e398babff922",
+      "788cc95bdceabd220f8752a3e3e03ebe030dac3943c0d10f8105ac488b36f585",
+      "ddeaedb5664b61a6e207d68a3d9700fb0e026cb99c36c601f081591bc688bcd6"
+    ],
+    "components.Requests.filter": [
+      "dc85dff96edf3227515e025fa46756c11013fb233ea59f7f807a9195e303f190",
+      "92d7e0df6aeafe339840d3d9d03174727bdeeea72d3b278a7157dc44cb691abb"
+    ],
+    "components.Requests.filteredEmptyTitle": [
+      "b576069b106235cf30f859a4f6664208992d76cc636bb6d9d9fc08c71b0a1dd7"
+    ],
+    "components.Requests.firstPublished": [
+      "d45cfcddc644155faf5419a3820e11ac5d95966852c9661f13417f87efbf0489",
+      "3e64a87e6c7479c1de051414f7c88c80aa302b3670c3b2c9c53bf7d07097690e"
+    ],
+    "components.Requests.format": [
+      "b019deb90498e7078d4cb1e757eb5362c1769a9f3e2fdf3326e0799d1ad60380"
+    ],
+    "components.Requests.fourK": [
+      "06929bf2186f92be8481221ea45fb456574ceccf44528d9c53a0b875d6000b27",
+      "97ccebacea4ba3c00eee26b6913ddd9992605b2cbd0c2619602351b0a71f1a41"
+    ]
+  },
+  "callerHolds": [
+    {
+      "position": 3320,
+      "id": "components.Requests.deleted",
+      "reason": "no direct production reference to this components.Requests message ID was found; generic/dynamic RequestStatus action rendering is context only",
+      "definitionsFound": 1,
+      "directMessageReferences": 0,
+      "source": "Deleted"
+    },
+    {
+      "position": 3321,
+      "id": "components.Requests.deleting",
+      "reason": "no direct production reference to this components.Requests message ID was found; generic/dynamic RequestStatus action rendering is context only",
+      "definitionsFound": 1,
+      "directMessageReferences": 0,
+      "source": "Deleting…"
+    },
+    {
+      "position": 3327,
+      "id": "components.Requests.ebook",
+      "reason": "no direct production reference to this components.Requests message ID was found; generic/dynamic RequestStatus action rendering is context only",
+      "definitionsFound": 1,
+      "directMessageReferences": 0,
+      "source": "Book"
+    },
+    {
+      "position": 3328,
+      "id": "components.Requests.ebookAndAudiobook",
+      "reason": "no direct production reference to this components.Requests message ID was found; generic/dynamic RequestStatus action rendering is context only",
+      "definitionsFound": 1,
+      "directMessageReferences": 0,
+      "source": "Book + Audiobook"
+    },
+    {
+      "position": 3338,
+      "id": "components.Requests.format",
+      "reason": "no direct production reference to this components.Requests message ID was found; generic/dynamic RequestStatus action rendering is context only",
+      "definitionsFound": 1,
+      "directMessageReferences": 0,
+      "source": "Format"
+    }
+  ],
+  "placeholderParityErrors": [],
+  "protectedTermsPolicy": [
+    "Seerr",
+    "ChaptarrNG",
+    "Bindery",
+    "Bookshelf",
+    "Radarr",
+    "Sonarr",
+    "Plex",
+    "Emby",
+    "Jellyfin",
+    "TMDb",
+    "IMDb",
+    "Open Library",
+    "ComicVine",
+    "MusicBrainz",
+    "TheTVDB",
+    "Trakt",
+    "Letterboxd",
+    "Prowlarr",
+    "Bazarr",
+    "Lidarr",
+    "Readarr",
+    "Whisparr",
+    "Sportarr",
+    "Audiobookshelf"
+  ],
+  "previousWindowInputManifestSha256": "8ecf0b1602efb5212d280ca82e551b533fc062c7fa45fecc3ebeb0b917598569",
+  "livePr": {
+    "url": "https://github.com/snapetech-org/seerrng/pull/418",
+    "state": "open",
+    "draft": true,
+    "head": "70caabc2f95df1a7de3f869111aea1df58522d96",
+    "headRef": "codex/seerrng-localization-overhaul-20261028",
+    "baseRef": "main",
+    "tree": "daac9e9284adac648fd3f6147265c21c90cdddba"
+  }
+}

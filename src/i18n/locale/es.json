@@ -3332,7 +3332,7 @@
   "components.Requests.edit": "Editar",
   "components.Requests.editTooltip": "Edite esta solicitud pendiente.",
   "components.Requests.emptyTitle": "No se encontraron solicitudes",
-  "components.Requests.eta": "Hora estimada de llegada: {date}",
+  "components.Requests.eta": "Hora estimada de finalización: {date}",
   "components.Requests.failed": "Fallido",
   "components.Requests.filter": "Filtros",
   "components.Requests.filteredEmptyTitle": "Filtros demasiado restrictivos",

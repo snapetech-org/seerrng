@@ -3330,7 +3330,7 @@
   "components.Requests.ebookAndAudiobook": "पुस्तक + ऑडियोबुक",
   "components.Requests.ebooks": "पुस्तकें",
   "components.Requests.edit": "संपादित करें",
-  "components.Requests.editTooltip": "इस अनुरोध को संपादित करें।",
+  "components.Requests.editTooltip": "इस लंबित अनुरोध को संपादित करें।",
   "components.Requests.emptyTitle": "कोई अनुरोध नहीं मिला",
   "components.Requests.eta": "अनुमानित पूरा होने का समय: {date}",
   "components.Requests.failed": "विफल",

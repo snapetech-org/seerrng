@@ -3311,7 +3311,7 @@
   "components.Requests.ebookAndAudiobook": "도서 + 오디오북",
   "components.Requests.ebooks": "책",
   "components.Requests.edit": "편집",
-  "components.Requests.editTooltip": "이 보류 요청을 편집합니다.",
+  "components.Requests.editTooltip": "이 보류 중인 요청을 편집합니다.",
   "components.Requests.emptyTitle": "요청을 찾을 수 없습니다",
   "components.Requests.eta": "예상 완료 시간: {date}",
   "components.Requests.failed": "실패",
