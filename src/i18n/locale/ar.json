@@ -3583,7 +3583,7 @@
   "components.Settings.BackIssueModal.defaultServer": "استخدمه للطلبات افتراضيًا.",
   "components.Settings.BackIssueModal.edit": "تعديل خادم BackIssue",
   "components.Settings.BackIssueModal.externalUrl": "عنوان URL خارجي",
-  "components.Settings.BackIssueModal.externalUrlHelp": "العنوان الاختيائي الذي يمكن لمستعمليكم أن يفتحوه من مصففهم",
+  "components.Settings.BackIssueModal.externalUrlHelp": "عنوان اختياري يمكن لمستخدميك فتحه في متصفحهم.",
   "components.Settings.BackIssueModal.externalUrlInvalid": "أدخل عنوان URL صالحًا من نوع HTTP أو HTTPS.",
   "components.Settings.BackIssueModal.hostname": "اسم المضيف أو عنوان IP",
   "components.Settings.BackIssueModal.hostnameRequired": "أدخل اسم مضيف صالح أو عنوان IP.",

@@ -3568,7 +3568,7 @@
   "components.Settings.BackIssueModal.externalUrlInvalid": "Hãy nhập một địa chỉ URL HTTP hoặc HTTPS hợp lệ.",
   "components.Settings.BackIssueModal.hostname": "Tên máy chủ hoặc địa chỉ IP",
   "components.Settings.BackIssueModal.hostnameRequired": "Nhập tên máy chủ hợp lệ hoặc địa chỉ IP.",
-  "components.Settings.BackIssueModal.intro": "SeerrNG gửi toàn bộ volume ComicVine cho BackIssue. BackIssue dùng nguồn và cài đặt tải xuống riêng để tìm và theo dõi từng số truyện.",
+  "components.Settings.BackIssueModal.intro": "SeerrNG gửi toàn bộ tập truyện ComicVine cho BackIssue. BackIssue dùng các nguồn và cài đặt tải xuống riêng để tìm và theo dõi từng số truyện.",
   "components.Settings.BackIssueModal.name": "Tên máy chủ",
   "components.Settings.BackIssueModal.nameRequired": "Nhập tên cho máy chủ này.",
   "components.Settings.BackIssueModal.port": "Cổng",

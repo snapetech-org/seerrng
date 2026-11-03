@@ -3585,7 +3585,7 @@
   "components.Settings.BackIssueModal.externalUrl": "बाहरी URL",
   "components.Settings.BackIssueModal.externalUrlHelp": "वैकल्पिक पता जिसे आपके उपयोगकर्ता अपने ब्राउज़र में खोल सकते हैं।",
   "components.Settings.BackIssueModal.externalUrlInvalid": "एक मान्य HTTP या HTTPS URL दर्ज करें।",
-  "components.Settings.BackIssueModal.hostname": "होस्टनाम या आईपी पता",
+  "components.Settings.BackIssueModal.hostname": "होस्टनाम या IP पता",
   "components.Settings.BackIssueModal.hostnameRequired": "एक मान्य होस्टनाम या IP पता दर्ज करें।",
   "components.Settings.BackIssueModal.intro": "SeerrNG पूरा ComicVine वॉल्यूम BackIssue को भेजता है। BackIssue अपने स्रोतों और डाउनलोड सेटिंग का उपयोग करके कॉमिक के अंकों को ढूँढ़ता और ट्रैक करता है।",
   "components.Settings.BackIssueModal.name": "सर्वर का नाम",
