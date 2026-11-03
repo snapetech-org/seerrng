@@ -104,7 +104,7 @@ const AudiobookshelfModal = ({
     try {
       const response = await axios.post<{ libraries: LibraryOption[] }>(
         '/api/v1/settings/audiobookshelf/test',
-        { ...values, id: settings?.id }
+        { ...values, port: Number(values.port), id: settings?.id }
       );
       setLibraries(response.data.libraries);
       setIsValidated(response.data.libraries.length > 0);
