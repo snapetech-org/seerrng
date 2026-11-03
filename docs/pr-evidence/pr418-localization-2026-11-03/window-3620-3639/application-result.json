@@ -5,7 +5,7 @@
   "branch": "codex/seerrng-localization-overhaul-20261028",
   "reviewedBaseHead": "ebf1cb6082ef173688227c507acfdc04c3cf7ca7",
   "reviewedBaseTree": "e3c4d1d10f40ea078b66dfdf942e99c8189fee0c",
-  "status": "catalogs applied locally; commit pin recorded in application-verification.json",
+  "status": "catalogs applied and pushed; commit pin recorded in application-verification.json",
   "cells": 240,
   "resolutions": {
     "adopt-blind-proposal": 12,

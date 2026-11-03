@@ -7,7 +7,7 @@ REPO=E.parents[3]
 plan=json.loads((E/'apply-plan.json').read_text())
 rows=plan['allCellReadbackPlan']
 paths=sorted({x['catalogPath'] for x in rows})
-result={'schemaVersion':1,'repository':plan['repository'],'pullRequest':plan['pullRequest'],'branch':plan['branch'],'reviewedBaseHead':plan['baseHead'],'reviewedBaseTree':plan['baseTree'],'status':'catalogs applied locally; commit pin recorded in application-verification.json','cells':240,'resolutions':plan['resolutions'],'changedCells':33,'updatedCatalogs':len({x['catalogPath'] for x in plan['updates']}),'catalogs':{p:hashlib.sha256((REPO/p).read_bytes()).hexdigest() for p in paths},'nonTargetChanges':0,'keyOrderPreserved':True,'callerlessHolds':12,'workflowFilesTouched':False,'testsBuildsScansCi':'not run','nativeSpeakerAndBrowserReview':'pending','mergeReleaseTag':'not performed'}
+result={'schemaVersion':1,'repository':plan['repository'],'pullRequest':plan['pullRequest'],'branch':plan['branch'],'reviewedBaseHead':plan['baseHead'],'reviewedBaseTree':plan['baseTree'],'status':'catalogs applied and pushed; commit pin recorded in application-verification.json','cells':240,'resolutions':plan['resolutions'],'changedCells':33,'updatedCatalogs':len({x['catalogPath'] for x in plan['updates']}),'catalogs':{p:hashlib.sha256((REPO/p).read_bytes()).hexdigest() for p in paths},'nonTargetChanges':0,'keyOrderPreserved':True,'callerlessHolds':12,'workflowFilesTouched':False,'testsBuildsScansCi':'not run','nativeSpeakerAndBrowserReview':'pending','mergeReleaseTag':'not performed'}
 (E/'application-result.json').write_text(json.dumps(result,ensure_ascii=False,indent=2)+'\n')
 entries=[]
 for p in sorted(E.rglob('*')):
