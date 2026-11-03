@@ -150,12 +150,17 @@
       "components.RequestStatus.SoftwareRequests.failureCode"
     ]
   },
+  "independentBlindPacket": "independent-review/",
+  "independentPacketChecksumSha256": "a0b55a51a0733f624e1b20250711fdb05fad28149ae6f8c6b247de20666de7cf",
   "inputHead": "c03816972aab761a69b343abcdfe8a10f85aeabb",
   "inputTree": "1ffc02d5d7dbbb14ab4706ce61bfcfda64592a01",
   "markupMismatches": 0,
   "placeholderMismatches": 0,
   "plannedRows": 95,
+  "primaryPacket": "primary/",
+  "primaryPacketChecksumSha256": "74fa23d4123038bad04be9fd3f1ff9df120060704d5c7bfd007be367322c5993",
   "pullRequest": 418,
+  "reviewPacketFilesRetained": true,
   "sourceCurrentFinalHashMismatches": 0,
   "testsBuildsScansCIOrBrowserActionsRun": false,
   "unplannedValueChanges": 0,

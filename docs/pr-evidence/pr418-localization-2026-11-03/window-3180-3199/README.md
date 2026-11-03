@@ -7,3 +7,8 @@ Final dispositions: 145 accept-current, 69 corrections, 26 refinements, 0 holds.
 All 240 source/current/target pins and caller source-file hashes were reattested. Each locale has the same 9,494-key set as English. Placeholder, markup, and protected-literal checks have zero mismatches. The Hindi `clearFailed` blind hold was adjudicated to the primary direct translation based on the unambiguous source and exact caller meaning. This remains machine review; no native-speaker approval is claimed.
 
 No tests, builds, scans, CI, or browser actions were run.
+
+
+## Retained review inputs
+
+The full primary packet is in `primary/`; the independently sealed blind packet is in `independent-review/`. Each packet has its own checksum manifest. `EVIDENCE-SHA256SUMS.txt` covers every retained file in this directory.
