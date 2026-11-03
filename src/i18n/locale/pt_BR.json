@@ -3354,7 +3354,7 @@
   "components.Requests.loadError": "O status da solicitação não pode ser carregado.",
   "components.Requests.loadErrorHint": "O serviço de solicitação não respondeu. Por favor, tente novamente.",
   "components.Requests.loading": "Carregando o status da solicitação",
-  "components.Requests.loadingTitle": "Carregando Título...",
+  "components.Requests.loadingTitle": "Carregando título…",
   "components.Requests.magazine": "Revista",
   "components.Requests.magazines": "Revistas",
   "components.Requests.manageRequests": "Gerenciar Solicitações",

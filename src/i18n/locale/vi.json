@@ -3331,7 +3331,7 @@
   "components.Requests.last6Months": "6 tháng qua",
   "components.Requests.last7Days": "7 ngày qua",
   "components.Requests.latestIssue": "Số phát hành mới nhất",
-  "components.Requests.library": "Thêm vào thư viện",
+  "components.Requests.library": "Đang thêm vào thư viện",
   "components.Requests.loadError": "Không thể tải trạng thái yêu cầu",
   "components.Requests.loadErrorHint": "Dịch vụ xử lý yêu cầu không phản hồi. Vui lòng thử lại.",
   "components.Requests.loading": "Đang tải trạng thái yêu cầu",

@@ -1,0 +1,33 @@
+{
+  "repository": "snapetech-org/seerrng",
+  "pullRequest": 418,
+  "head": "266d8fff4beb56eab17c9de0f6560c619577e3de",
+  "tree": "5da8f5e38b95b4287821b603c4686fe866b83760",
+  "window": "W3340-W3359",
+  "cellCount": 240,
+  "sourceCount": 20,
+  "localeCount": 12,
+  "rootDispositionCounts": {
+    "ACCEPT_CURRENT": 208,
+    "APPLY_BLIND_REFINEMENT": 19,
+    "APPLY_PRIMARY_CORRECTION": 1,
+    "HOLD_NO_DIRECT_CALLER": 12
+  },
+  "approvedChangeCount": 20,
+  "changedCatalogCount": 9,
+  "noDirectCallerHoldCells": 12,
+  "placeholderMarkupNumericProtectedMismatches": 0,
+  "orderedCatalogKeySequencesMatch": false,
+  "catalogKeyCount": 9494,
+  "catalogCountIncludingEnglish": 13,
+  "nativeSpeakerApproval": false,
+  "headedBrowserAcceptance": false,
+  "primaryOnlyApprovedCorrection": {
+    "id": "components.Requests.last6Months",
+    "locale": "ar",
+    "target": "آخر 6 أشهر"
+  },
+  "unresolvedDisagreements": [],
+  "repositoryOrPullRequestMutated": false,
+  "testsBuildsScansCI": false
+}

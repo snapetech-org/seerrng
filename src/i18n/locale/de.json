@@ -3350,7 +3350,7 @@
   "components.Requests.last6Months": "Letzte 6 Monate",
   "components.Requests.last7Days": "Letzte 7 Tage",
   "components.Requests.latestIssue": "Letzte Ausgabe",
-  "components.Requests.library": "Hinzufügen zur Bibliothek",
+  "components.Requests.library": "Wird zur Bibliothek hinzugefügt",
   "components.Requests.loadError": "Der Anfragestatus konnte nicht geladen werden.",
   "components.Requests.loadErrorHint": "Der Anfragedienst hat nicht geantwortet. Bitte versuchen Sie es erneut.",
   "components.Requests.loading": "Anfragestatus wird geladen…",

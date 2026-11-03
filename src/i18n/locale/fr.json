@@ -3350,7 +3350,7 @@
   "components.Requests.last6Months": "6 derniers mois",
   "components.Requests.last7Days": "7 derniers jours",
   "components.Requests.latestIssue": "Dernier numéro",
-  "components.Requests.library": "Ajout à la bibliothèque",
+  "components.Requests.library": "Ajout à la bibliothèque en cours",
   "components.Requests.loadError": "Impossible de charger le statut des demandes",
   "components.Requests.loadErrorHint": "Le service de demande n'a pas répondu, veuillez réessayer.",
   "components.Requests.loading": "Chargement du statut des demandes",
