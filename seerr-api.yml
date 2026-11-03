@@ -21933,6 +21933,12 @@ paths:
             type: integer
             minimum: 1
         - in: query
+          name: category
+          description: Restrict results to a software acquisition category.
+          schema:
+            type: string
+            enum: [retro, modern, game]
+        - in: query
           name: filter
           description: Filter software requests using the Requests page status groups. Groups without a software equivalent, such as incomplete and unavailable, return no software requests.
           schema:

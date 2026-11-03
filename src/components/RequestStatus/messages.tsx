@@ -1,9 +1,9 @@
 import OpaqueApiMessageText from '@app/components/Common/OpaqueApiMessageText';
 import defineMessages from '@app/utils/defineMessages';
 import type { RequestStatusMessageKey } from '@server/lib/requestStatus';
+import type { ReactNode } from 'react';
 import type { MessageDescriptor } from 'react-intl';
 import { useIntl } from 'react-intl';
-import type { ReactNode } from 'react';
 
 export const requestStatusMessages = defineMessages(
   'components.RequestStatus',

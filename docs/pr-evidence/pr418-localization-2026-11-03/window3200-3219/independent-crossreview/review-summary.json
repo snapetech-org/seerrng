@@ -1,0 +1,34 @@
+{
+  "exactHead": "2be00354833160f0681d5cd779a1b1be37a63a4b",
+  "exactTree": "af588a1ee34f768ae37a29dccd5a508595b7199d",
+  "positions": [
+    3200,
+    3219
+  ],
+  "sourceCount": 20,
+  "localeCount": 12,
+  "cellCount": 240,
+  "dispositionCounts": {
+    "correction": 46,
+    "refinement": 21,
+    "accept-current": 173,
+    "hold": 0
+  },
+  "changedCells": 67,
+  "placeholderMismatches": 0,
+  "markupMismatches": 0,
+  "protectedBrandMismatches": 0,
+  "callerContextRecordCount": 46,
+  "callerContextSourceCount": 20,
+  "callerlessSourceIds": [],
+  "nativeSpeakerApproval": false,
+  "semanticConfidence": "moderate machine-assisted independent review; native-speaker review remains outstanding",
+  "browserReview": false,
+  "testsBuildScansCiRun": false,
+  "repositoryModified": false,
+  "remoteMutation": false,
+  "finalPrHeadStillPinned": true,
+  "sourceIdSetSha256": "c0d57c286507c1c05f49e52dd2d3bd662be9ce2f955bbaa8466fd83e11aaa772",
+  "idLocaleKeySha256": "c1345b2a020b3d84a84cd7a9b45e66ea3f4d3c9259ff16928f2af0e21b40c3ad",
+  "scratchPath": "/mnt/disks/scratch/task-scratch/seerrng-pr418-w3200-3219-independent-blind-20261103"
+}
