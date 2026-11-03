@@ -5,12 +5,11 @@ The release workflow adds curated notes from `release-notes/` before the
 conventional-commit history.
 
 The audit below covers every SeerrNG tag currently in this repository. The
-`v3.2.6` tag records release preparation only; no GitHub release was published,
-and the following `v3.2.7` release includes the intervening changes. Commit-level
-links in the generated history remain the technical source of truth for changes
-that are not called out here.
+v3.72.7 section consolidates changes from the requested v3.71.4 baseline
+through v3.72.7, including changes also represented by unpublished interim
+tags. The comparison link is the complete commit range.
 
-## [3.72.7](https://github.com/snapetech-org/seerrng/compare/v3.72.6..v3.72.7) - 2026-11-03
+## [3.72.7](https://github.com/snapetech-org/seerrng/compare/v3.71.4..v3.72.7) - 2026-11-03
 
 ### User-facing changes
 
@@ -35,46 +34,55 @@ that are not called out here.
 
 - **Security:** Updated affected runtime, documentation, and development dependencies and patched every shipped entrypoint of the unmaintained `deepmerge` package. These changes address known request and resource exhaustion, command injection, and prototype-pollution advisories without changing application behavior or requiring operator configuration.
 
-### 🐛 Bug Fixes
-- *(ci)* Align build contract with asset helper (#490) - ([a1264da](https://github.com/snapetech-org/seerrng/commit/a1264da4a5f6a35f5afbe3411210d1203d601713))
-- *(ci)* Replace glob-based server asset copy - ([b729607](https://github.com/snapetech-org/seerrng/commit/b729607b7067c5702f1fab4a2682e7d90ba2535b))
-- *(ci)* Restore SeerrNG lint under secured dependencies - ([5be7ea4](https://github.com/snapetech-org/seerrng/commit/5be7ea4be42b36e402658e5f9719ee0e591398c2))
-- *(ci)* Pull Jellyfin smoke image before startup - ([3643951](https://github.com/snapetech-org/seerrng/commit/3643951814862ba6366f063f1e8489181b3b3f5d))
-- *(ci)* Require run-scoped Apple JIT labels - ([88bec3e](https://github.com/snapetech-org/seerrng/commit/88bec3e2e937a4059a8c70e1697335eee3b794e4))
-- *(ci)* Validate owner PR docs and Cypress at exact SHA - ([887e8b3](https://github.com/snapetech-org/seerrng/commit/887e8b3399c3c2ebed806fee8d7c2fb78c390c4e))
-- *(ci)* Use shared dispatcher runner label - ([3181b8b](https://github.com/snapetech-org/seerrng/commit/3181b8be2324753cac93eb018d92a7d554bffdb7))
-- *(ci)* Dispatch owner validation only on labels - ([0182908](https://github.com/snapetech-org/seerrng/commit/0182908e34fd4c7d0a11c9aee2b403a66e8c1577))
-- *(ci)* Clear formatting and test drift - ([dfcc8b5](https://github.com/snapetech-org/seerrng/commit/dfcc8b5398ba5a485bd059e4eab5ec4cae24f46b))
-- *(ci)* Repair Seerr validation and release gates - ([34bb0c2](https://github.com/snapetech-org/seerrng/commit/34bb0c2df8842f30f932534d318eaabc4e47bd77))
-- *(ci)* Align current batch checks with theme owners - ([5c46ac3](https://github.com/snapetech-org/seerrng/commit/5c46ac3c59bdfdc4064c47e3e17cb0189f4d154a))
-- *(deps)* Remediate reported security advisories - ([221d8e0](https://github.com/snapetech-org/seerrng/commit/221d8e0d542802da7529cd272c928cc747677e5c))
-- Prevent mixed HD and 4K requests - ([38d87ac](https://github.com/snapetech-org/seerrng/commit/38d87ac1142e1c81ad4e4b6715d0376a4526c799))
-- Validate built-in interface theme manifests - ([d68a74a](https://github.com/snapetech-org/seerrng/commit/d68a74a54088292e9ea0e1f14390696d7f950ced))
+This cumulative release note covers v3.71.4 through v3.72.7, including changes represented by interim tags and drafts. The merged pull requests below summarize the range; the full changelog link includes the complete commit comparison.
 
-### 📖 Documentation
-- Fix interface theme template link - ([e907821](https://github.com/snapetech-org/seerrng/commit/e907821320a91ebeedf1077d32afe289a7a810f0))
+### Merged pull requests since v3.71.4
+* fix(books): avoid series route hydration mismatch by @snapetech in https://github.com/snapetech-org/seerrng/pull/360
+* fix(release): add Book Series note frontmatter by @snapetech in https://github.com/snapetech-org/seerrng/pull/361
+* chore(ci): restrict iOS push builds to main by @snapetech in https://github.com/snapetech-org/seerrng/pull/364
+* Harden OIDC sign-in and add shared provider catalog by @snapetech in https://github.com/snapetech-org/seerrng/pull/367
+* Document OIDC setup and provider operations by @snapetech in https://github.com/snapetech-org/seerrng/pull/368
+* fix(auth): bind OIDC identities to issuers by @snapetech in https://github.com/snapetech-org/seerrng/pull/370
+* ci: run SeerrNG CI on pull requests by @snapetech in https://github.com/snapetech-org/seerrng/pull/369
+* feat(discovery): migrate Trakt to PKCE and add service icons by @Xyron77-afk in https://github.com/snapetech-org/seerrng/pull/371
+* fix(settings): diagnose Servarr connection failures by @snapetech in https://github.com/snapetech-org/seerrng/pull/377
+* feat: remediate OIDC, integrations, Prowlarr, and UI reports by @snapetech in https://github.com/snapetech-org/seerrng/pull/380
+* fix(ci): provision Node for JIT CodeQL analysis by @snapetech in https://github.com/snapetech-org/seerrng/pull/384
+* fix(watchlist): preserve local filter drafts by @snapetech in https://github.com/snapetech-org/seerrng/pull/383
+* ci: route trusted Linux jobs through JIT runners by @snapetech in https://github.com/snapetech-org/seerrng/pull/395
+* docs(ui): require visual contract and rendered acceptance by @snapetech in https://github.com/snapetech-org/seerrng/pull/403
+* fix(catalog): separate game provider visibility by @snapetech in https://github.com/snapetech-org/seerrng/pull/402
+* fix: restore Prowlarr listboxes and hide empty Blocklist by @snapetech in https://github.com/snapetech-org/seerrng/pull/404
+* Run validation only on tags by @snapetech in https://github.com/snapetech-org/seerrng/pull/405
+* fix(deps): bump jsdom from 30.0.1 to 30.1.3 by @dependabot[bot] in https://github.com/snapetech-org/seerrng/pull/385
+* fix(deps): bump lru-cache from 11.2.1 to 11.5.3 by @dependabot[bot] in https://github.com/snapetech-org/seerrng/pull/386
+* fix(deps): bump @swc/core from 1.16.2 to 1.16.18 by @dependabot[bot] in https://github.com/snapetech-org/seerrng/pull/387
+* fix(deps): bump eslint from 10.10.0 to 10.13.0 by @dependabot[bot] in https://github.com/snapetech-org/seerrng/pull/388
+* fix(deps): patch release image vulnerabilities by @snapetech in https://github.com/snapetech-org/seerrng/pull/390
+* fix(deps): bump the release-note-none-codeql-action group with 5 updates by @dependabot[bot] in https://github.com/snapetech-org/seerrng/pull/391
+* fix(deps): bump actions/setup-java from 6.0.1 to 6.1.0 by @dependabot[bot] in https://github.com/snapetech-org/seerrng/pull/393
+* ci: fix release formatting and settings accessibility checks by @snapetech in https://github.com/snapetech-org/seerrng/pull/394
+* fix(deps): bump cronstrue from 3.26.0 to 3.32.0 by @dependabot[bot] in https://github.com/snapetech-org/seerrng/pull/389
+* fix(sonarr): supply v5 metadata defaults and server settings by @EasyAsABC123 in https://github.com/snapetech-org/seerrng/pull/406
+* fix(bookshelf): preserve Chaptarr lookup provider identities by @EasyAsABC123 in https://github.com/snapetech-org/seerrng/pull/410
+* fix(database): preserve SQLite locks during startup hardening by @EasyAsABC123 in https://github.com/snapetech-org/seerrng/pull/411
+* Route SeerrNG fork docs checks through sandboxed JIT by @snapetech in https://github.com/snapetech-org/seerrng/pull/408
+* Add SeerrOrig and SeerrNGJ interface profiles by @snapetech in https://github.com/snapetech-org/seerrng/pull/414
+* ci: isolate SeerrNG JIT jobs and retire CodeQL by @snapetech in https://github.com/snapetech-org/seerrng/pull/431
+* ci: validate SeerrNG main pushes on private JIT by @snapetech in https://github.com/snapetech-org/seerrng/pull/432
+* docs: refresh BookshelfNG backend retirement status by @snapetech in https://github.com/snapetech-org/seerrng/pull/430
+* ci: make SeerrNG validation an explicit private dispatch by @snapetech in https://github.com/snapetech-org/seerrng/pull/439
+* chore(release): prepare v3.72.6 by @snapetech in https://github.com/snapetech-org/seerrng/pull/437
+* fix(ci): repair Seerr validation and release gates by @snapetech in https://github.com/snapetech-org/seerrng/pull/443
+* fix(ci): require run-scoped Apple JIT labels by @snapetech in https://github.com/snapetech-org/seerrng/pull/452
+* fix(ci): unblock SeerrNG lint and Jellyfin smoke checks by @snapetech in https://github.com/snapetech-org/seerrng/pull/476
+* fix(ci): align build contract with asset helper by @snapetech in https://github.com/snapetech-org/seerrng/pull/490
+* fix: prevent mixed HD and 4K requests by @snapetech in https://github.com/snapetech-org/seerrng/pull/505
 
-### 🎨 Styling
-- Format runner routing tests - ([9c7aa41](https://github.com/snapetech-org/seerrng/commit/9c7aa417c63ca35de8e7cd38134fe6974ce2df01))
+#### New contributors
+* @Xyron77-afk made their first contribution in https://github.com/snapetech-org/seerrng/pull/371
 
-### 🧪 Testing
-- *(ci)* Keep runner label assertion static - ([65e0f0f](https://github.com/snapetech-org/seerrng/commit/65e0f0f9c974aa02461686c0d7aa038d5dc39143))
-- *(styles)* Avoid dynamic regex in fixture checks - ([ce05c0f](https://github.com/snapetech-org/seerrng/commit/ce05c0f723051ced728c06d9bc14f19741dfcf21))
-- Fix CommonJS SQLite test paths - ([41a8732](https://github.com/snapetech-org/seerrng/commit/41a87325eec82a4e0305c485da216641d8f6e7ec))
-
-### ⚙️ Miscellaneous Tasks
-- *(release)* Match private JIT tag title format - ([4ab0b5d](https://github.com/snapetech-org/seerrng/commit/4ab0b5daeee7340666ca9cabe626eff2606024ee))
-- *(release)* Expose release tag to JIT policy - ([6db7efe](https://github.com/snapetech-org/seerrng/commit/6db7efe5abbd9542254ebdeeaa52ecdbbf91cca0))
-- *(release)* Route macOS assets to private Apple runners - ([39b191f](https://github.com/snapetech-org/seerrng/commit/39b191fc607a69d1f56318a130d7edc7c7e60640))
-- *(runners)* Add trusted owner-PR JIT validation - ([c39cf08](https://github.com/snapetech-org/seerrng/commit/c39cf0863f257307192f46fea815655ec2ed2cfa))
-- *(windows)* Include release tag in Chocolatey run name - ([a5db8d7](https://github.com/snapetech-org/seerrng/commit/a5db8d7df37f8e6d5e316d4f37a54237c9f613a1))
-- *(windows)* Mark SeerrNG private JIT routes - ([abcebc7](https://github.com/snapetech-org/seerrng/commit/abcebc796c969fa177f1ab1455fd0ce94b16b0ec))
-- *(windows)* Route Seerr release jobs to private JIT - ([565ff2d](https://github.com/snapetech-org/seerrng/commit/565ff2d6af3a4fcb5ce3f1688e59500688f010cd))
-- Restore GitHub-hosted runner routing - ([c64b5b2](https://github.com/snapetech-org/seerrng/commit/c64b5b2a62ad63aa3afb915cabb52b27305b603f))
-- Require explicit fork validation labels - ([d6ca1e8](https://github.com/snapetech-org/seerrng/commit/d6ca1e85b69bc3b0593143c3dc1745ae2c22a745))
-- Align fork labels with broker contract - ([597505c](https://github.com/snapetech-org/seerrng/commit/597505c7eb084d9ededb4e9aedd203220cc4d882))
-- Gate fork validation on owner approval - ([9f96fff](https://github.com/snapetech-org/seerrng/commit/9f96fff9126aef83a89c3d0e179838ffb3f868e6))
-
+**Full Changelog**: https://github.com/snapetech-org/seerrng/compare/v3.71.4...v3.72.7
 ## [3.72.6](https://github.com/snapetech-org/seerrng/compare/v3.72.5..v3.72.6) - 2026-10-31
 
 ### User-facing changes
