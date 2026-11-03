@@ -1,0 +1,54 @@
+{
+  "repository": "snapetech-org/seerrng",
+  "pullRequest": 418,
+  "pullRequestStateAtRatification": "open",
+  "pullRequestDraftAtRatification": true,
+  "pullRequestHeadRef": "codex/seerrng-localization-overhaul-20261028",
+  "exactBaseHead": "8dd70020ece19b467b31e8562274f3c5aafce895",
+  "exactBaseTree": "1e7667a9a07c96c32c4cad5cdb19d2b0502ecbeb",
+  "rootFinalRatification": true,
+  "finalTargetSource": "adjudication/adjudication.jsonl",
+  "primaryReviewManifestSha256": "fd622c2038a6911bad08beed52179efb547999c9fcd5f2c11290ef1f39a56afa",
+  "independentBlindManifestSha256": "cd5a34269e4d1c8fe0d46ee0e7d3f3a3f324a050994181e33f65d62c26d40e50",
+  "adjudication": {
+    "cells": 240,
+    "adjudicatedCounts": {
+      "accept-current": 123,
+      "correction": 98,
+      "refinement": 19
+    },
+    "changedCells": 117,
+    "holds": 0,
+    "changedTargetShaAndCatalogHashVerified": true,
+    "placeholderMismatches": 0,
+    "protectedLiteralMismatches": 0,
+    "nativeSpeakerApproval": false
+  },
+  "application": {
+    "changedLocaleCells": 117,
+    "localesChanged": 12,
+    "catalogKeysPerLocale": 9494,
+    "sourceCurrentAndFinalHashesMatched": true,
+    "placeholderParityMatched": true,
+    "catalogKeySetsPreserved": true,
+    "readbackMatched": true,
+    "localeCatalogSha256AfterApply": {
+      "ar": "b9496a62e2e7e8cfbafd50c99cc02291517b44253b91f1943c63730e28739817",
+      "de": "2830c95cff17a18099f48cce27f100191ecd23f9cc433e4e3f17b00ab59d0760",
+      "es": "767bbacbf76aa0b424de72b8c0d788b441e0e07dd9071c6c535c1af957c63f20",
+      "fr": "b01e0d8f7ea44800f584fd0f10acf7fbd64b2e29c074aca5f229fa936f87968b",
+      "hi": "3d3d9d9c8e9036b353b1d45faed34f1df3c56f8ecd137f5edbb8117d3fa67c13",
+      "id": "df2ebd1bdadd3dab03dc0ac60f5e712074a5059955c35516cd39087425a1e131",
+      "ja": "369ec865b5ae1e5d0146b4430e380ac3bae9e466b89c51a9cb26336d5dd329e7",
+      "ko": "a486197f19eab6eed71a31d98f061f8fbb1876f1bfe80bd0e479b3a63272c987",
+      "pt_BR": "f6a4f7356961c066dde3827f0a246ee5c4763ec1b3fcf3e6ccc89ef0b44c7ad1",
+      "vi": "2011fcd8fbbe05f29519cd6fe491ca5752eb686e4ccf1ae8b3e82f8eee82cf9d",
+      "zh_Hans": "506fb1cc45f6a716eec0b4dc9a2f945632d9406d6469ccfe5184c5692fadbbe9",
+      "zh_Hant": "c0dff37ed26b1d5a8e924fb84aca89d2bb24aeac490f18e7129dbdc10e588149"
+    }
+  },
+  "testsBuildsScansCi": "not run",
+  "releasesMergesTags": "not performed",
+  "inputPacketManifestSha256": "ef386b0a61988ed52af4043ff92438cac5a1335de73aff4405e8b57cb61b255e",
+  "adjudicationManifestSha256": "33a7d70361b787f5abc783d162d3c77042501d8b2d6069a95c6adb959b4c1266"
+}

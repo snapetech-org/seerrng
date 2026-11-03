@@ -1,0 +1,116 @@
+{
+  "repository": "snapetech-org/seerrng",
+  "pullRequest": 418,
+  "head": "8dd70020ece19b467b31e8562274f3c5aafce895",
+  "tree": "1e7667a9a07c96c32c4cad5cdb19d2b0502ecbeb",
+  "before": {
+    "position": 3219,
+    "id": "components.RequestStatus.SoftwareRequests.removeFromRequestsTitle",
+    "source": "Remove This Request from SeerrNG?"
+  },
+  "first": {
+    "position": 3220,
+    "id": "components.RequestStatus.SoftwareRequests.removeFromRequestsTooltip",
+    "source": "Remove this request from SeerrNG without stopping a download already handed to ROMarrNG or a download client."
+  },
+  "last": {
+    "position": 3239,
+    "id": "components.RequestStatus.approvedForProcessing",
+    "source": "Approved for processing."
+  },
+  "after": {
+    "position": 3240,
+    "id": "components.RequestStatus.approvedWaitingDispatch",
+    "source": "Your request was approved and is waiting to be dispatched."
+  },
+  "localeCatalogPins": {
+    "src/i18n/locale/en.json": {
+      "sha256": "75ff3c90b52aedd636a506281ffbd6fb2d3739c61294b6008a517f17647e2316",
+      "keyCount": 9494,
+      "orderedKeySha256": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072"
+    },
+    "src/i18n/locale/es.json": {
+      "sha256": "8e3bb416f67b8a3f55b54bb264bb9e38ad1daf89a753e64ac5e080d01d89580f",
+      "keyCount": 9494,
+      "orderedKeySha256": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072"
+    },
+    "src/i18n/locale/zh_Hans.json": {
+      "sha256": "34167bc48bc30e08fd0e3702877b039c31a9b5691e7db28c2d2de22cafb15104",
+      "keyCount": 9494,
+      "orderedKeySha256": "8d5fd7bd4351bc64c5ee813f2e50196608869e165866f3202a312078732c2baf"
+    },
+    "src/i18n/locale/hi.json": {
+      "sha256": "52c82fc57564fb0fa53ad528aa8c9afbcf0e5dc5ca425e4f3571828f849d0bc0",
+      "keyCount": 9494,
+      "orderedKeySha256": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072"
+    },
+    "src/i18n/locale/de.json": {
+      "sha256": "0eabe0b53bf08586906c72c18a050570efa94de68a9a66dc2b2e25898a6fbaef",
+      "keyCount": 9494,
+      "orderedKeySha256": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072"
+    },
+    "src/i18n/locale/ja.json": {
+      "sha256": "37afca8eb2516524f16966726f423d013a4168e8451408b5f3720410f2f7b12f",
+      "keyCount": 9494,
+      "orderedKeySha256": "8d5fd7bd4351bc64c5ee813f2e50196608869e165866f3202a312078732c2baf"
+    },
+    "src/i18n/locale/fr.json": {
+      "sha256": "5e8f7e8fce8fc0fb539659d36304d8da36eecbff8f768a53a51324665a5d22a2",
+      "keyCount": 9494,
+      "orderedKeySha256": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072"
+    },
+    "src/i18n/locale/pt_BR.json": {
+      "sha256": "c2f35267a61ac60de05bee1bc046194875cec718fff1a72624ed7330e3f206cb",
+      "keyCount": 9494,
+      "orderedKeySha256": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072"
+    },
+    "src/i18n/locale/ar.json": {
+      "sha256": "e465452c0a9e545950a3a6c4bc3e1d2355e66363acf290cfe13d54d1607a2625",
+      "keyCount": 9494,
+      "orderedKeySha256": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072"
+    },
+    "src/i18n/locale/ko.json": {
+      "sha256": "c6299ac220f2a8d4f3a40d1d20a5c229cdc74e3920174fa572b3cd9c2588d573",
+      "keyCount": 9494,
+      "orderedKeySha256": "8d5fd7bd4351bc64c5ee813f2e50196608869e165866f3202a312078732c2baf"
+    },
+    "src/i18n/locale/zh_Hant.json": {
+      "sha256": "e89f1c357c6ab3e845f7ba515b2e90fd8ddedac685d96c7737e8ce3f2fb06231",
+      "keyCount": 9494,
+      "orderedKeySha256": "8d5fd7bd4351bc64c5ee813f2e50196608869e165866f3202a312078732c2baf"
+    },
+    "src/i18n/locale/vi.json": {
+      "sha256": "55691b588e15d91dab92737bcdb8512d46e99d06192720e99d99b8fee59e649e",
+      "keyCount": 9494,
+      "orderedKeySha256": "8d5fd7bd4351bc64c5ee813f2e50196608869e165866f3202a312078732c2baf"
+    },
+    "src/i18n/locale/id.json": {
+      "sha256": "9b4142698d4bd8bb67841de27550ac8c40422f5e4b8ea833fe2956935fbc933d",
+      "keyCount": 9494,
+      "orderedKeySha256": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072"
+    }
+  },
+  "sourceCatalogSha256": "75ff3c90b52aedd636a506281ffbd6fb2d3739c61294b6008a517f17647e2316",
+  "callerFiles": {
+    "src/components/RequestStatus/SoftwareRequests.tsx": {
+      "sha256": "50752a4099e6067a95a9278612bcb92e487de9fe6a6acbb8d05d64c7ba223a54",
+      "lineCount": 956
+    },
+    "src/components/RequestStatus/messages.tsx": {
+      "sha256": "5c7691636c95eed239cf012fa2e8bdc066ef773a8b4288bbd93fafddb15324eb",
+      "lineCount": 121
+    },
+    "server/lib/requestStatus.ts": {
+      "sha256": "63dd1b43e684a40eb82253a2942d7652cad63d87234b5c279d73af0b945b2d31",
+      "lineCount": 2328
+    },
+    "src/components/Requests/index.tsx": {
+      "sha256": "25b612dcda274fe2ea64b76f169587e153b04a675c9b8cd817814d9fbfde5360",
+      "lineCount": 3115
+    },
+    "server/subscriber/MediaRequestSubscriber.ts": {
+      "sha256": "0ffdfb179133d699b5237b9e1970db4898bfba5a189e7ad4fc9042fc20726d91",
+      "lineCount": 4189
+    }
+  }
+}

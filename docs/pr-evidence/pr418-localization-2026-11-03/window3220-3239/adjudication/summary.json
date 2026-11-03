@@ -1,0 +1,34 @@
+{
+  "repository": "snapetech-org/seerrng",
+  "pullRequest": 418,
+  "window": "W3220-W3239",
+  "exactBaseHead": "8dd70020ece19b467b31e8562274f3c5aafce895",
+  "exactBaseTree": "1e7667a9a07c96c32c4cad5cdb19d2b0502ecbeb",
+  "sourceIds": 20,
+  "locales": 12,
+  "cells": 240,
+  "primaryCounts": {
+    "accept-current": 126,
+    "correction": 85,
+    "refinement": 29
+  },
+  "blindCounts": {
+    "accept-current": 145,
+    "refinement": 8,
+    "correction": 87
+  },
+  "adjudicatedCounts": {
+    "accept-current": 123,
+    "correction": 98,
+    "refinement": 19
+  },
+  "changedCells": 117,
+  "holds": 0,
+  "changedTargetShaAndCatalogHashVerified": true,
+  "placeholderMismatches": 0,
+  "protectedLiteralMismatches": 0,
+  "independentBlindPacketManifestSha256": "cd5a34269e4d1c8fe0d46ee0e7d3f3a3f324a050994181e33f65d62c26d40e50",
+  "nativeSpeakerApproval": false,
+  "catalogInvariant": "all 9,494 English-ordered keys retained; key/value changes limited to W3220-W3239 cells",
+  "rootFinalRatification": "pending parent review"
+}

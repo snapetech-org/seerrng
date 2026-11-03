@@ -1,0 +1,16 @@
+{
+  "reviewer": "root independent blind review",
+  "inputDirectory": "/mnt/disks/scratch/task-scratch/seerrng-pr418-w3220-3239-20261103/clean-input",
+  "inputManifestSha256": "ef386b0a61988ed52af4043ff92438cac5a1335de73aff4405e8b57cb61b255e",
+  "inputManifestExpectedSha256": "ef386b0a61988ed52af4043ff92438cac5a1335de73aff4405e8b57cb61b255e",
+  "head": "8dd70020ece19b467b31e8562274f3c5aafce895",
+  "tree": "1e7667a9a07c96c32c4cad5cdb19d2b0502ecbeb",
+  "window": "W3220-W3239",
+  "blindMethod": "Read only the checksum-verified clean input and caller excerpts; do not inspect primary proposals before sealing this ledger.",
+  "cellsReviewed": 240,
+  "allSourceAndTargetHashesVerified": true,
+  "allPlaceholderSetsPreserved": true,
+  "allProtectedTokensPreserved": true,
+  "primaryProposalsRead": false,
+  "nativeSpeakerApproval": false
+}
