@@ -72,13 +72,24 @@ const normalize = (value: unknown): string =>
   typeof value === 'string' ? value.toLowerCase() : '';
 
 const getQueueMessageText = (item: RecoveryQueueItem): string =>
-  (item.statusMessages ?? [])
-    .flatMap((statusMessage) => [
+  [
+    item.errorMessage,
+    ...(item.statusMessages ?? []).flatMap((statusMessage) => [
       statusMessage.title,
       ...(statusMessage.messages ?? []),
-    ])
+    ]),
+  ]
     .filter((message): message is string => !!message)
     .join(' ');
+
+// Download clients report a torrent with no seeds as stalled, e.g. qBittorrent's
+// "The download is stalled with no connections". Slow downloads are left alone.
+const seedlessStallPattern = /\b(stalled|no connections|no seeds?)\b/i;
+
+export const isSeedlessStall = (item: RecoveryQueueItem): boolean =>
+  seedlessStallPattern.test(
+    [item.status, getQueueMessageText(item)].filter(Boolean).join(' ')
+  );
 
 const getQueueFingerprint = (item: RecoveryQueueItem): string =>
   [
@@ -503,10 +514,14 @@ class DownloadRecovery {
     const lastProgressAt = new Date(state.lastProgressAt).getTime();
     const stalledForMs = now.getTime() - lastProgressAt;
 
-    if (isProgressState(item) && stalledForMs >= STALLED_AFTER_MS) {
+    if (
+      isProgressState(item) &&
+      isSeedlessStall(item) &&
+      stalledForMs >= STALLED_AFTER_MS
+    ) {
       return {
         action: 'retry',
-        reason: 'download made no progress for 2 hours',
+        reason: 'download had no seeds for 2 hours',
       };
     }
 

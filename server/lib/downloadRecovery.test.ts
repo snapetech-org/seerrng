@@ -2,6 +2,7 @@ import assert from 'node:assert/strict';
 import { describe, it } from 'node:test';
 import {
   deduplicateRecoveryQueue,
+  isSeedlessStall,
   processRecoveryQueueByMedia,
 } from './downloadRecovery';
 
@@ -94,5 +95,49 @@ describe('processRecoveryQueueByMedia', () => {
     );
 
     assert.deepEqual(processed, []);
+  });
+});
+
+describe('isSeedlessStall', () => {
+  const base = {
+    id: 1,
+    size: 10,
+    title: 'Movie 2160p',
+    sizeleft: 10,
+    timeleft: '',
+    estimatedCompletionTime: '',
+    status: 'downloading',
+    trackedDownloadStatus: 'ok',
+    trackedDownloadState: 'downloading',
+    downloadId: 'download-1',
+    protocol: 'torrent',
+    downloadClient: 'qBittorrent',
+    indexer: 'Indexer',
+  };
+
+  it('flags a torrent the client reports as stalled with no connections', () => {
+    assert.equal(
+      isSeedlessStall({
+        ...base,
+        status: 'warning',
+        trackedDownloadStatus: 'warning',
+        errorMessage: 'The download is stalled with no connections',
+      }),
+      true
+    );
+  });
+
+  it('flags a stalled status message', () => {
+    assert.equal(
+      isSeedlessStall({
+        ...base,
+        statusMessages: [{ title: 'Stalled', messages: ['No seeds'] }],
+      }),
+      true
+    );
+  });
+
+  it('leaves a slow download that still has seeds alone', () => {
+    assert.equal(isSeedlessStall(base), false);
   });
 });
