@@ -24097,6 +24097,10 @@ paths:
           description: Missing or outdated confirmation token
         '404':
           description: Media not found
+        '409':
+          description: Library availability changed after the removal plan was created
+        '502':
+          description: Could not verify library services
   /media/{mediaId}/jellystat:
     get:
       summary: Get Jellystat watch statistics for a media item
@@ -25633,10 +25637,12 @@ paths:
               properties:
                 mediaType:
                   type: string
+                  enum: [movie, tv, music, book]
                 is4k:
                   type: boolean
                 tmdbId:
                   type: integer
+                  minimum: 1
                 bookFormat:
                   type: string
                   enum: [ebook, audiobook]
@@ -25646,16 +25652,22 @@ paths:
                   type: string
                 requestUser:
                   type: integer
+                  minimum: 1
                 requestId:
                   type: integer
+                  minimum: 1
                   nullable: true
                 tags:
                   type: array
+                  maxItems: 100
                   nullable: true
                   items:
                     type: integer
+                    minimum: 0
+                    maximum: 1000000000
                 serviceId:
                   type: integer
+                  minimum: 1
       responses:
         '200':
           description: Applicable overrides

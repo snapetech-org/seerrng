@@ -24,7 +24,10 @@ function createValidatedApp(): Express {
     res.status(200).json({ params: req.params, body: req.body ?? null });
   app.get('/api/v1/artist/:artistId/similar', ok);
   app.get('/api/v1/media/:mediaId/jellystat', ok);
-  app.post('/api/v1/media/:mediaId/library/clear-stale-availability', ok);
+  app.post(
+    '/api/v1/media/:mediaId/library/clear-stale-availability',
+    (_req, res) => res.sendStatus(204)
+  );
   app.post('/api/v1/overrideRule/advancedRequest', ok);
   app.post('/api/v1/settings/jobs/:jobId/enabled', ok);
   app.post('/api/v1/user/:userId/settings/interface-theme', ok);
@@ -63,7 +66,7 @@ describe('UI routes documented in the OpenAPI contract', () => {
     const response = await request(app)
       .post('/api/v1/media/42/library/clear-stale-availability')
       .send({ token: 'a'.repeat(64), quality: '4K' });
-    assert.strictEqual(response.status, 200, JSON.stringify(response.body));
+    assert.strictEqual(response.status, 204, JSON.stringify(response.body));
   });
 
   it('rejects clear-stale-availability without a quality', async () => {
