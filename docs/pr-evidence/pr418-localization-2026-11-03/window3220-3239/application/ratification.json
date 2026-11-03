@@ -8,8 +8,6 @@
   "exactBaseTree": "1e7667a9a07c96c32c4cad5cdb19d2b0502ecbeb",
   "rootFinalRatification": true,
   "finalTargetSource": "adjudication/adjudication.jsonl",
-  "primaryReviewManifestSha256": "fd622c2038a6911bad08beed52179efb547999c9fcd5f2c11290ef1f39a56afa",
-  "independentBlindManifestSha256": "cd5a34269e4d1c8fe0d46ee0e7d3f3a3f324a050994181e33f65d62c26d40e50",
   "adjudication": {
     "cells": 240,
     "adjudicatedCounts": {
@@ -49,6 +47,13 @@
   },
   "testsBuildsScansCi": "not run",
   "releasesMergesTags": "not performed",
-  "inputPacketManifestSha256": "ef386b0a61988ed52af4043ff92438cac5a1335de73aff4405e8b57cb61b255e",
-  "adjudicationManifestSha256": "33a7d70361b787f5abc783d162d3c77042501d8b2d6069a95c6adb959b4c1266"
+  "primaryReviewChecksumListSha256": "fd622c2038a6911bad08beed52179efb547999c9fcd5f2c11290ef1f39a56afa",
+  "primaryReviewLedgerSha256": "cb6325b9417fcb0ad4df9b66ba69b82688d979223793a1d16db29768f73c64fa",
+  "independentBlindChecksumListSha256": "cd5a34269e4d1c8fe0d46ee0e7d3f3a3f324a050994181e33f65d62c26d40e50",
+  "independentBlindReviewManifestFileSha256": "95808242fce021b63a2e87febdc053cc4260a06945181adf8b819b45af7f4881",
+  "independentBlindLedgerSha256": "a5628e55229f4ff44fc782e1d80c6fe98d44c6be2143c1758ac410efbc11d320",
+  "inputWindowManifestSha256": "452aba5fb363d4b7bd7a2877786d44412d92dfe70219b30d8288200e546bf7d5",
+  "inputChecksumListSha256": "ef386b0a61988ed52af4043ff92438cac5a1335de73aff4405e8b57cb61b255e",
+  "adjudicationChecksumListSha256": "33a7d70361b787f5abc783d162d3c77042501d8b2d6069a95c6adb959b4c1266",
+  "adjudicationLedgerSha256": "16f3f41918cff8a85cfceecac830f7483f90ecdaf37b0e72b685d36f5ff51e1b"
 }
