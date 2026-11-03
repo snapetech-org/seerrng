@@ -1,0 +1,16 @@
+{
+  "totalCells": 240,
+  "primaryProposalCells": 75,
+  "independentProposalCells": 81,
+  "bothAcceptCurrent": 158,
+  "exactDispositionAndTarget": 222,
+  "sameTargetDifferentDisposition": 6,
+  "differentTarget": 12,
+  "targetAgreementCells": 228,
+  "differenceCount": 18,
+  "notes": [
+    "All independent judgments were saved and checksummed before reading the primary decisions or candidate proposals.",
+    "The independent ledger covers every source/locale cell and pinned caller line.",
+    "Independent review is machine-assisted and does not establish native-speaker approval."
+  ]
+}

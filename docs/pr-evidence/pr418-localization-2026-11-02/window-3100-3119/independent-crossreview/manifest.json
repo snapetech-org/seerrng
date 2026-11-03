@@ -1,0 +1,27 @@
+{
+  "repository": "snapetech-org/SeerrNG",
+  "pullRequest": 418,
+  "exactHead": "ebebae19e24b9236192eda287938b65eabf29667",
+  "exactTree": "8e5ef5985dee40f5c1191dff794e323a851d3ef8",
+  "sourceRange": [
+    3100,
+    3119
+  ],
+  "sourceIds": 20,
+  "locales": 12,
+  "cells": 240,
+  "inputs": {
+    "window.json": {
+      "sha256": "462b8d239bb58e240bc28175f9738a4fb4ead8d40281a8f28bb20f320c0f702a"
+    },
+    "source-current-cells.jsonl": {
+      "sha256": "b261ce39d34d990f7c36ebf67c030438cd22e0db3e8445d7a4e803dd11ec8778"
+    },
+    "caller-contexts.jsonl": {
+      "sha256": "e996274e1c773970bdef4fcb2fbbb3af21cd98a42cc51d6b461b478cfeeef890"
+    }
+  },
+  "blindReviewFile": "blind-review-decisions.jsonl",
+  "blindReviewSha256": "da0aeb3785674b7adde792450327d1212033b885f02148214d3aceb6c7d81665",
+  "blindReviewCompletedBeforeReadingPrimary": true
+}

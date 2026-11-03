@@ -1,0 +1,39 @@
+{
+  "head": "ebebae19e24b9236192eda287938b65eabf29667",
+  "tree": "8e5ef5985dee40f5c1191dff794e323a851d3ef8",
+  "range": [
+    3100,
+    3119
+  ],
+  "sourceIds": 20,
+  "locales": 12,
+  "cells": 240,
+  "counts": {
+    "accept-current": 165,
+    "correction": 51,
+    "refinement": 24
+  },
+  "proposals": 75,
+  "catalogKeysPerLocale": {
+    "en": 9494,
+    "ar": 9494,
+    "de": 9494,
+    "es": 9494,
+    "fr": 9494,
+    "hi": 9494,
+    "id": 9494,
+    "ja": 9494,
+    "ko": 9494,
+    "pt_BR": 9494,
+    "vi": 9494,
+    "zh_Hans": 9494,
+    "zh_Hant": 9494
+  },
+  "catalogKeySetsMatch": true,
+  "placeholderMismatchCount": 0,
+  "markupMismatchCount": 0,
+  "callerRows": 20,
+  "callerIdsWithAtLeastOneTargetedReference": 20,
+  "status": "primary review only; independent cross-review and native-speaker review remain outstanding",
+  "testsBuildsScansBrowserCI": false
+}
