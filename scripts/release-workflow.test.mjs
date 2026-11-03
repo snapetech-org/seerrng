@@ -1184,7 +1184,7 @@ test('release assets build supported native archive platforms', () => {
     },
     {
       runner_key: 'macos-arm64',
-      runner_label: 'macos-26',
+      runner_label: 'macos-15',
       os: 'macos',
       arch: 'arm64',
       pnpm_version: '10.24.0',
@@ -1202,7 +1202,7 @@ test('release assets build supported native archive platforms', () => {
       os: 'windows',
       arch: 'x64',
       pnpm_version: '10.24.0',
-      msvs_version: 'auto',
+      msvs_version: '2026',
     },
     {
       runner_key: 'windows-arm64',
@@ -1259,7 +1259,7 @@ test('release assets build supported native archive platforms', () => {
   );
   const iosBuild = assets.jobs['build-ios'];
   assert.equal(iosBuild.needs, 'resolve');
-  assert.equal(iosBuild['runs-on'], 'macos-26');
+  assert.equal(iosBuild['runs-on'], 'xcode-27');
   const iosToolchainCheck = iosBuild.steps.find(
     (step) => step.name === 'Verify Xcode release toolchain'
   ).run;
@@ -1277,7 +1277,7 @@ test('release assets build supported native archive platforms', () => {
     iosClientWorkflow.on.workflow_dispatch.inputs.runner_pool_tag.options,
     ['public']
   );
-  assert.equal(iosClientWorkflow.jobs.ios['runs-on'], 'macos-26');
+  assert.equal(iosClientWorkflow.jobs.ios['runs-on'], 'xcode-27');
   const iosSetupNode = iosClientWorkflow.jobs.ios.steps.findIndex((step) =>
     step.uses?.startsWith('actions/setup-node@')
   );
@@ -1420,7 +1420,7 @@ test('trusted main release retries use public hosted runners across platforms', 
   ]) {
     assert.equal(assets.jobs[jobName]['runs-on'], 'ubuntu-24.04', jobName);
   }
-  assert.equal(assets.jobs['build-ios']['runs-on'], 'macos-26');
+  assert.equal(assets.jobs['build-ios']['runs-on'], 'xcode-27');
   assert.equal(
     assets.jobs.build.steps.find((step) =>
       step.uses?.startsWith('actions/setup-node@')
@@ -1477,7 +1477,7 @@ test('release archive platforms use native public hosted runner labels', () => {
   assert.deepEqual(runnerLabels, {
     'linux-x64': 'ubuntu-24.04',
     'linux-arm64': 'ubuntu-24.04-arm',
-    'macos-arm64': 'macos-26',
+    'macos-arm64': 'macos-15',
     'macos-x64': 'macos-26-intel',
     'windows-x64': 'windows-2025',
     'windows-arm64': 'windows-11-vs2026-arm',
@@ -1490,12 +1490,12 @@ test('trusted main iOS validation uses a GitHub-hosted macOS runner', () => {
   assert.deepEqual(ios.on.workflow_dispatch.inputs.runner_pool_tag.options, [
     'public',
   ]);
-  assert.equal(ios.jobs.ios['runs-on'], 'macos-26');
+  assert.equal(ios.jobs.ios['runs-on'], 'xcode-27');
 });
 
 test('release iOS package uses a GitHub-hosted macOS runner', () => {
   const releaseAssets = readWorkflow('release-assets.yml');
-  assert.equal(releaseAssets.jobs['build-ios']['runs-on'], 'macos-26');
+  assert.equal(releaseAssets.jobs['build-ios']['runs-on'], 'xcode-27');
 });
 
 test('release notes flow into the draft release and Discord announcement', () => {

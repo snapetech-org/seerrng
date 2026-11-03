@@ -114,7 +114,7 @@ jobs:
             arch: arm64
             pnpm_version: 10.24.0
           - runner_key: macos-arm64
-            runner_label: macos-26
+            runner_label: macos-15
             os: macos
             arch: arm64
             pnpm_version: 10.24.0
@@ -317,7 +317,7 @@ jobs:
   build-ios:
     name: Build iOS Simulator release package
     needs: resolve
-    runs-on: macos-26
+    runs-on: xcode-27
     timeout-minutes: 60
     permissions:
       actions: read
