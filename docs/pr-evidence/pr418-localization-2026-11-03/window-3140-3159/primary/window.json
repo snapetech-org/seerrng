@@ -1,0 +1,142 @@
+{
+  "head": "536dfdb7630d5f61fc8a90b82bc33234eb432c9f",
+  "tree": "a011ac81dabbcbc46a4a522f1355efc9025fadc1",
+  "sourceOrderCount": 9494,
+  "range": [
+    3140,
+    3159
+  ],
+  "sourceIds": [
+    {
+      "position": 3140,
+      "id": "components.RequestModal.seasonWatchGateLinkAccount",
+      "source": "Link Playback Account"
+    },
+    {
+      "position": 3141,
+      "id": "components.RequestModal.seasonWatchGateLoading",
+      "source": "Checking linked playback history before requesting later seasons."
+    },
+    {
+      "position": 3142,
+      "id": "components.RequestModal.seasonWatchGateManageAccess",
+      "source": "TV Season Rule"
+    },
+    {
+      "position": 3143,
+      "id": "components.RequestModal.seasonWatchGateStaged",
+      "source": "Only seasons that pass this playback check will be included in the request. {reason}"
+    },
+    {
+      "position": 3144,
+      "id": "components.RequestModal.seasonWatchGateUnavailable",
+      "source": "Unable to verify playback history right now. Try again."
+    },
+    {
+      "position": 3145,
+      "id": "components.RequestModal.seasonWatchGateUnknownSeason",
+      "source": "Unable to verify this season against TV metadata. Try again later."
+    },
+    {
+      "position": 3146,
+      "id": "components.RequestModal.seasonnumber",
+      "source": "Season {number}"
+    },
+    {
+      "position": 3147,
+      "id": "components.RequestModal.selectAll",
+      "source": "Select every movie that is ready to request"
+    },
+    {
+      "position": 3148,
+      "id": "components.RequestModal.selectItemsToRequest",
+      "source": "Select at least one movie to request."
+    },
+    {
+      "position": 3149,
+      "id": "components.RequestModal.selectUnavailableItemsToRequest",
+      "source": "Select unavailable seasons or episodes to request."
+    },
+    {
+      "position": 3150,
+      "id": "components.RequestModal.selection",
+      "source": "Select this movie to request"
+    },
+    {
+      "position": 3151,
+      "id": "components.RequestModal.service",
+      "source": "Service"
+    },
+    {
+      "position": 3152,
+      "id": "components.RequestModal.status",
+      "source": "Status"
+    },
+    {
+      "position": 3153,
+      "id": "components.RequestModal.studio",
+      "source": "Studio"
+    },
+    {
+      "position": 3154,
+      "id": "components.RequestModal.ultraHd",
+      "source": "4K"
+    },
+    {
+      "position": 3155,
+      "id": "components.RequestModal.watchAheadActiveForRequest",
+      "source": "This request uses the administrator’s Episode Queue default of {count}."
+    },
+    {
+      "position": 3156,
+      "id": "components.RequestModal.watchAheadAdminManaged",
+      "source": "Set by your administrator"
+    },
+    {
+      "position": 3157,
+      "id": "components.RequestModal.watchAheadAssignedButUnavailable",
+      "source": "Your administrator set Episode Queue to {count} for {owner} TV requests, but it cannot run for this request yet."
+    },
+    {
+      "position": 3158,
+      "id": "components.RequestModal.watchAheadEnabledForAccount",
+      "source": "Episode Queue is enabled by your administrator for {owner} TV requests, with {count} queued ahead."
+    },
+    {
+      "position": 3159,
+      "id": "components.RequestModal.watchAheadEpisodeOption",
+      "source": "{count, plural, one {# episode} other {# episodes}}"
+    }
+  ],
+  "locales": [
+    "ar",
+    "de",
+    "es",
+    "fr",
+    "hi",
+    "id",
+    "ja",
+    "ko",
+    "pt_BR",
+    "vi",
+    "zh_Hans",
+    "zh_Hant"
+  ],
+  "cellCount": 240,
+  "catalogSha256": {
+    "en": "75ff3c90b52aedd636a506281ffbd6fb2d3739c61294b6008a517f17647e2316",
+    "ar": "a416e6c3df3c979f4538d4b9e505e64ac3ef3e48b332e8da0b00db14b81d0cc6",
+    "de": "e83fdee00726fb2c8f6eba8d827679f30c62df4abc1cd908317594190591d954",
+    "es": "f9d1cc4e3fed7db65ecd399aefcf73066dcc9c591ff6bb37a6ae9bd0b7213810",
+    "fr": "907ccc61f571529ca2374a5324bbee741cf65d43c7bf8f3aa3688a12d61899bf",
+    "hi": "819729e51abf620aed7faf305fd7a1023c55d105bec9d9f92dc8515b5436e564",
+    "id": "f83af862a4737c9f49e13f8eb5c6bb8b84bd980370fd8fd8112c2ca7b5e5109d",
+    "ja": "f547f699096ebd6a9a2139d295dfe1bd7da6158c0e8efaf01adebc304fb3d9c6",
+    "ko": "95c9d86fc06560ea40ad531d14d9180a7bb13efb18d8249375a80432359118b4",
+    "pt_BR": "b34343b469877c2b3973470e5d99ba21eda3a8264ca6fd6744f1da33192e1299",
+    "vi": "d3e777d611530d18541aed1ea7f300a0fb701ccd67fcc0ea1853f640ebe46715",
+    "zh_Hans": "a161e78836b1e3768232d6193c7b80f732ba88258d8205b1c0c37b4158c35c2c",
+    "zh_Hant": "fab2d574d6635db307f8eacd8f2cabc288aec0354ab3b188904aed8ef9271632"
+  },
+  "previousReviewedHead": "ebebae19e24b9236192eda287938b65eabf29667"
+}
