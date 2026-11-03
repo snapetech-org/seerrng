@@ -1039,10 +1039,30 @@ class BaseScanner<T> {
                     (identifier) =>
                       identifier.media.mediaType === MediaType.BOOK
                   );
+                // Requests made from the Bookshelf catalog can carry a different
+                // metadata id than the one Bookshelf adds the book under. The
+                // request flow records the service and Bookshelf book id on the
+                // media, so fall back to that link before creating a new row.
                 const existing =
                   existingIdentifier?.media.mediaType === MediaType.BOOK
                     ? existingIdentifier.media
-                    : undefined;
+                    : serviceId !== undefined && externalServiceId !== undefined
+                      ? ((await mediaRepository.findOne({
+                          where:
+                            bookServiceType === 'audiobook'
+                              ? {
+                                  mediaType: MediaType.BOOK,
+                                  audiobookServiceId: serviceId,
+                                  audiobookExternalServiceId: externalServiceId,
+                                }
+                              : {
+                                  mediaType: MediaType.BOOK,
+                                  serviceId,
+                                  externalServiceId,
+                                },
+                          order: { id: 'ASC' },
+                        })) ?? undefined)
+                      : undefined;
 
                 if (existing) {
                   let changedExisting = false;

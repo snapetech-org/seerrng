@@ -1,7 +1,9 @@
-import { MediaType } from '@server/constants/media';
+import { MediaStatus, MediaType } from '@server/constants/media';
 import dataSource, { getRepository } from '@server/datasource';
 import Media from '@server/entity/Media';
-import { MediaIdentifierProvider } from '@server/entity/MediaIdentifier';
+import MediaIdentifier, {
+  MediaIdentifierProvider,
+} from '@server/entity/MediaIdentifier';
 import { runWithRequestAdmission } from '@server/entity/MediaRequest';
 import BaseScanner from '@server/lib/scanners/baseScanner';
 import { setupTestDb } from '@server/test/db';
@@ -33,6 +35,14 @@ class TestScanner extends BaseScanner<never> {
     return this.processBook(MediaIdentifierProvider.ISBN, value, {
       processing: true,
     });
+  }
+
+  public scanLibraryBook(
+    provider: MediaIdentifierProvider,
+    value: string,
+    options: Parameters<BaseScanner<never>['processBook']>[2]
+  ): Promise<void> {
+    return this.processBook(provider, value, options);
   }
 }
 
@@ -113,5 +123,98 @@ describe('BaseScanner run admission', () => {
       await getRepository(Media).countBy({ mediaType: MediaType.BOOK }),
       0
     );
+  });
+
+  // A request made from the Bookshelf catalog stores only the catalog id
+  // (e.g. a Goodreads-based "bookshelf:1:..." value), while Bookshelf may add
+  // the book under a different metadata id (e.g. Hardcover). The request flow
+  // records the service and the Bookshelf book id on the media, so the scan
+  // must match on that link instead of creating a second media row.
+  for (const format of ['audiobook', 'ebook'] as const) {
+    it(`matches a requested ${format} by its Bookshelf service and book id`, async () => {
+      const scanner = new TestScanner();
+      const requested = await getRepository(Media).save(
+        new Media({
+          tmdbId: 0,
+          mediaType: MediaType.BOOK,
+          status: MediaStatus.PROCESSING,
+          ...(format === 'audiobook'
+            ? { audiobookServiceId: 2, audiobookExternalServiceId: 101362 }
+            : { serviceId: 2, externalServiceId: 101362 }),
+        })
+      );
+      await getRepository(MediaIdentifier).save(
+        new MediaIdentifier({
+          media: requested,
+          provider: MediaIdentifierProvider.BOOKSHELF,
+          value: 'bookshelf:1:Z3I6Njg4Mjk5',
+        })
+      );
+
+      await scanner.scanLibraryBook(
+        MediaIdentifierProvider.ISBN,
+        '9780375402975',
+        {
+          serviceId: 2,
+          externalServiceId: 101362,
+          title: 'Congo',
+          hasFile: true,
+          bookServiceType: format,
+          secondaryIdentifiers: [
+            { provider: MediaIdentifierProvider.READARR, value: '380571' },
+          ],
+        }
+      );
+
+      const books = await getRepository(Media).find({
+        where: { mediaType: MediaType.BOOK },
+        relations: { identifiers: true },
+      });
+      assert.strictEqual(books.length, 1, 'scan created a duplicate book');
+      assert.strictEqual(books[0].id, requested.id);
+      assert.strictEqual(books[0].status, MediaStatus.AVAILABLE);
+      assert.deepStrictEqual(
+        books[0].identifiers.map((i) => `${i.provider}:${i.value}`).sort(),
+        [
+          'bookshelf:bookshelf:1:Z3I6Njg4Mjk5',
+          'isbn:9780375402975',
+          'readarr:380571',
+        ]
+      );
+    });
+  }
+
+  it('does not match a book linked to the same id on another service', async () => {
+    const scanner = new TestScanner();
+    const other = await getRepository(Media).save(
+      new Media({
+        tmdbId: 0,
+        mediaType: MediaType.BOOK,
+        status: MediaStatus.PROCESSING,
+        audiobookServiceId: 3,
+        audiobookExternalServiceId: 101362,
+      })
+    );
+
+    await scanner.scanLibraryBook(
+      MediaIdentifierProvider.ISBN,
+      '9780375402975',
+      {
+        serviceId: 2,
+        externalServiceId: 101362,
+        title: 'Congo',
+        hasFile: true,
+        bookServiceType: 'audiobook',
+      }
+    );
+
+    assert.strictEqual(
+      await getRepository(Media).countBy({ mediaType: MediaType.BOOK }),
+      2
+    );
+    const untouched = await getRepository(Media).findOneByOrFail({
+      id: other.id,
+    });
+    assert.strictEqual(untouched.status, MediaStatus.PROCESSING);
   });
 });
