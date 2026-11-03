@@ -3355,7 +3355,7 @@
   "components.Requests.noReleaseFoundFilter": "Không tìm thấy bản phát hành",
   "components.Requests.noResults": "Không có yêu cầu khớp với bộ lọc",
   "components.Requests.notAvailable": "Không khả dụng",
-  "components.Requests.olderRequests": "{count, plural, =1 {# Yêu cầu cũ ở ngoài cửa sổ này.} other {# Yêu cầu cũ ở ngoài cửa sổ này.}}",
+  "components.Requests.olderRequests": "{count, plural, =1 {# yêu cầu cũ ở ngoài cửa sổ này.} other {# yêu cầu cũ ở ngoài cửa sổ này.}}",
   "components.Requests.pages": "Trang",
   "components.Requests.pcGames": "Trò chơi PC",
   "components.Requests.pending": "Đang chờ",

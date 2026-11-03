@@ -3358,7 +3358,7 @@
   "components.Requests.olderRequests": "{count, plural, =1 {이전 요청 #건은 이 기간에 포함되지 않습니다.} other {이전 요청 #건은 이 기간에 포함되지 않습니다.}}",
   "components.Requests.pages": "페이지",
   "components.Requests.pcGames": "PC 게임",
-  "components.Requests.pending": "보류 중",
+  "components.Requests.pending": "대기 중",
   "components.Requests.pendingImportAttempt": "가져오기 시도 {attempt}/{maxAttempts}회.",
   "components.Requests.pendingImportNextRetry": "다음 재시도: {time}.",
   "components.Requests.pendingImportRetrying": "가져오기 시도 {attempt}; 재시도가 자동으로 계속됩니다.",

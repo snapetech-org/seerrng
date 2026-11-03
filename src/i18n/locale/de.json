@@ -3363,7 +3363,7 @@
   "components.Requests.mediaType": "Medientyp",
   "components.Requests.mediaTypeValue": "Medientyp",
   "components.Requests.minutes": "{count} Minuten",
-  "components.Requests.modifyFailed": "Diese Anforderung kann nicht aktualisiert werden.",
+  "components.Requests.modifyFailed": "Diese Anfrage kann nicht aktualisiert werden.",
   "components.Requests.movie": "Film",
   "components.Requests.movies": "Filme",
   "components.Requests.music": "Musik",

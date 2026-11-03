@@ -3372,7 +3372,7 @@
   "components.Requests.noHistory": "Belum ada riwayat status yang direkam",
   "components.Requests.noMediaResults": "Tidak ada permintaan untuk film, serial, musik, buku, komik, majalah, atau konten dewasa yang cocok dengan filter ini.",
   "components.Requests.noReleaseFoundFilter": "Tak Ditemukan Rilis",
-  "components.Requests.noResults": "Tak ada permintaan yang cocok dengan penyaring ini",
+  "components.Requests.noResults": "Tidak ada permintaan yang cocok dengan filter yang dipilih.",
   "components.Requests.notAvailable": "Tidak tersedia",
   "components.Requests.olderRequests": "{count, plural, =1 {# permintaan lama di luar jendela ini.} other {# permintaan lama berada di luar jendela ini.}}",
   "components.Requests.pages": "Halaman",
