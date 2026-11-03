@@ -1,0 +1,227 @@
+{
+  "schemaVersion": 1,
+  "packetType": "candidate-free-input",
+  "repository": "snapetech-org/seerrng",
+  "pullRequest": 418,
+  "window": "W3620-W3639",
+  "range": [
+    3620,
+    3639
+  ],
+  "head": "ebf1cb6082ef173688227c507acfdc04c3cf7ca7",
+  "tree": "e3c4d1d10f40ea078b66dfdf942e99c8189fee0c",
+  "headRefName": "codex/seerrng-localization-overhaul-20261028",
+  "baseRefName": "main",
+  "baseRefOid": "221d8e0d542802da7529cd272c928cc747677e5c",
+  "sourceOrderCount": 9494,
+  "sourceOrderSha256": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072",
+  "priorSelectedSourceIdCount": 3620,
+  "priorSelectedSourceIdPrefixSha256": "1f0c5c4d79db31c74d943786ddd98a581ddf20e1ecc11a085a67d956e1ef3579",
+  "selectedSourceIdOrderSha256": "33473382102a703f34090d7e6eafdc17040b3267bfa0416e4f09f7094fe34cdc",
+  "previousBoundaryPosition": 3619,
+  "nextBoundaryPosition": 3640,
+  "sourceRecordCount": 20,
+  "localeCount": 12,
+  "cellCount": 240,
+  "localeOrder": [
+    "es",
+    "zh_Hans",
+    "hi",
+    "de",
+    "ja",
+    "fr",
+    "pt_BR",
+    "ar",
+    "ko",
+    "zh_Hant",
+    "vi",
+    "id"
+  ],
+  "priorWindowLineage": {
+    "window": "W3600-W3619",
+    "candidateFreeInputHead": "1fdec93d1b021e4ec7a7c2265230f59d81d2675e",
+    "candidateFreeInputTree": "6234854dc0b1e7aee17ef2e819ffc2b5b2e386ce",
+    "candidateFreeManifestSha256": "1089646f93bfd96df0e5f0b820da76e9132cc859b6ed9db595c9a891dbcfcd9c",
+    "candidateFreeChecksumListSha256": "fdffd9f94443ad5ac1604f4a1ba4790717ae54e900ce41b1c3a454aca19ab156",
+    "primaryReviewSummarySha256": "78d9789bc6c9b8a3f5353cdbc6d807198cb11d15eca7905a0769ae74e32d2d84",
+    "primaryReviewChecksumListSha256": "b77402b8c4d9d032a859817f3030faff0623262644379cfc6d06fec6d06537ae",
+    "previousSourceOrderSha256": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072",
+    "sameSourceOrderAtCurrentHead": true,
+    "previousSelectedIdCount": 20,
+    "previousSelectedIdOrderSha256": "dc00bdaa06ec62fac025f92269119d254c92b1f27de53ba36c0cc2b2dca80042",
+    "currentHeadApplicationEvidencePath": "docs/pr-evidence/pr418-localization-2026-11-03/window-3600-3619/application-verification.json",
+    "currentHeadApplicationEvidenceGitBlob": "6994c66df913d03ad90b53eaebe66c6297e3bc2b",
+    "currentHeadApplicationEvidenceSha256": "ce385c138683aedfd3a86f3e2943b4edeff34fbfe15955d710c902207e32113d",
+    "currentHeadApplicationEvidenceStatus": "PASS",
+    "currentCatalogPostApplyMatches": 13,
+    "currentHead": "ebf1cb6082ef173688227c507acfdc04c3cf7ca7",
+    "currentTree": "e3c4d1d10f40ea078b66dfdf942e99c8189fee0c",
+    "priorHoldCount": 0
+  },
+  "priorHoldInventoryPath": "lineage/hold-lineage.json",
+  "priorHoldCountInImmediateWindow": 0,
+  "priorSelectionExclusionsPath": "prior-selection-exclusions.jsonl",
+  "priorSelectionExclusionCount": 3620,
+  "lineageFiles": {
+    "lineage/prior-candidate-free-manifest.json": {
+      "path": "lineage/prior-candidate-free-manifest.json",
+      "sha256": "1089646f93bfd96df0e5f0b820da76e9132cc859b6ed9db595c9a891dbcfcd9c",
+      "byteCount": 3190
+    },
+    "lineage/prior-window.json": {
+      "path": "lineage/prior-window.json",
+      "sha256": "d5a8c2e0644e639644ffbff2b1839ffeac199fb07be98fa0ec3ffc5c515c67e4",
+      "byteCount": 6737
+    },
+    "lineage/prior-source-order.jsonl": {
+      "path": "lineage/prior-source-order.jsonl",
+      "sha256": "cc61feccf2c6dd43215d641f7dba0fdcdc75933aad2fe1f931d9281b5358d93a",
+      "byteCount": 10575
+    },
+    "lineage/prior-primary-summary.json": {
+      "path": "lineage/prior-primary-summary.json",
+      "sha256": "78d9789bc6c9b8a3f5353cdbc6d807198cb11d15eca7905a0769ae74e32d2d84",
+      "byteCount": 1456
+    },
+    "lineage/current-w3600-application-verification.json": {
+      "path": "lineage/current-w3600-application-verification.json",
+      "sha256": "ce385c138683aedfd3a86f3e2943b4edeff34fbfe15955d710c902207e32113d",
+      "byteCount": 1576
+    },
+    "lineage/current-w3600-catalog-invariants.json": {
+      "path": "lineage/current-w3600-catalog-invariants.json",
+      "sha256": "5b130709da1aa90170e9f070230a7cf4dfe1d05b18e0f78a12265b7fe0ccf15e",
+      "byteCount": 15589
+    },
+    "lineage/hold-lineage.json": {
+      "path": "lineage/hold-lineage.json",
+      "sha256": "28fc171303123a021d2be07cac25823f9db8ab881abb8b100adad678deb09ba4",
+      "byteCount": 919
+    },
+    "lineage/current-head-application-attestation.json": {
+      "path": "lineage/current-head-application-attestation.json",
+      "sha256": "af6972f1351d046e6cbafcec7709575b95a1695898d9ec0eab7ac4ba4be70e82",
+      "byteCount": 4294
+    }
+  },
+  "priorCandidateFreeManifestSha256": "1089646f93bfd96df0e5f0b820da76e9132cc859b6ed9db595c9a891dbcfcd9c",
+  "priorCandidateFreeChecksumListSha256": "fdffd9f94443ad5ac1604f4a1ba4790717ae54e900ce41b1c3a454aca19ab156",
+  "priorPrimaryReviewSummarySha256": "78d9789bc6c9b8a3f5353cdbc6d807198cb11d15eca7905a0769ae74e32d2d84",
+  "priorPrimaryReviewChecksumListSha256": "b77402b8c4d9d032a859817f3030faff0623262644379cfc6d06fec6d06537ae",
+  "priorPacketStandaloneVerifierStatus": "FAILED_EXPECTED_LIVE_REF_MOVED",
+  "files": [
+    {
+      "path": "PR-attestation.json",
+      "sha256": "e51071f20c3147a528d9541c35b35f6b6ff25e5eea3c02468bb5fcd798c692b1",
+      "byteCount": 838
+    },
+    {
+      "path": "README.txt",
+      "sha256": "bdc77551ae8123dbdc1f249a6b70b6c54e7e677c329ac5995a1088d2b5bfab44",
+      "byteCount": 1891
+    },
+    {
+      "path": "caller-context-blocks.jsonl",
+      "sha256": "27dfd7a705b30f155993dac25c3702d7489b1e6cc306a89067a5b1bab3f12d32",
+      "byteCount": 46745
+    },
+    {
+      "path": "caller-contexts.jsonl",
+      "sha256": "6e3ca2256f20c0458f66b42a606929a1588b0bbc033ac093bc386e75f7b92a43",
+      "byteCount": 55820
+    },
+    {
+      "path": "caller-resolution-findings.json",
+      "sha256": "42121093b829bebecf6c2e0b2520512655cc6abf88e53d94dd801b75287e592c",
+      "byteCount": 471
+    },
+    {
+      "path": "current-target-cells.jsonl",
+      "sha256": "99adc0d437a21ba80482c0705eb235062697cf81cf015f3a36185b8749620d8f",
+      "byteCount": 371370
+    },
+    {
+      "path": "file-pins.json",
+      "sha256": "b6863e6cecc7c96b2a2a22e3121caa42802e3dd04be3e16c7ed87e5d09b473f2",
+      "byteCount": 11193
+    },
+    {
+      "path": "lineage/current-head-application-attestation.json",
+      "sha256": "af6972f1351d046e6cbafcec7709575b95a1695898d9ec0eab7ac4ba4be70e82",
+      "byteCount": 4294
+    },
+    {
+      "path": "lineage/current-w3600-application-verification.json",
+      "sha256": "ce385c138683aedfd3a86f3e2943b4edeff34fbfe15955d710c902207e32113d",
+      "byteCount": 1576
+    },
+    {
+      "path": "lineage/current-w3600-catalog-invariants.json",
+      "sha256": "5b130709da1aa90170e9f070230a7cf4dfe1d05b18e0f78a12265b7fe0ccf15e",
+      "byteCount": 15589
+    },
+    {
+      "path": "lineage/hold-lineage.json",
+      "sha256": "28fc171303123a021d2be07cac25823f9db8ab881abb8b100adad678deb09ba4",
+      "byteCount": 919
+    },
+    {
+      "path": "lineage/prior-candidate-free-manifest.json",
+      "sha256": "1089646f93bfd96df0e5f0b820da76e9132cc859b6ed9db595c9a891dbcfcd9c",
+      "byteCount": 3190
+    },
+    {
+      "path": "lineage/prior-primary-summary.json",
+      "sha256": "78d9789bc6c9b8a3f5353cdbc6d807198cb11d15eca7905a0769ae74e32d2d84",
+      "byteCount": 1456
+    },
+    {
+      "path": "lineage/prior-source-order.jsonl",
+      "sha256": "cc61feccf2c6dd43215d641f7dba0fdcdc75933aad2fe1f931d9281b5358d93a",
+      "byteCount": 10575
+    },
+    {
+      "path": "lineage/prior-window.json",
+      "sha256": "d5a8c2e0644e639644ffbff2b1839ffeac199fb07be98fa0ec3ffc5c515c67e4",
+      "byteCount": 6737
+    },
+    {
+      "path": "prior-selection-exclusions.jsonl",
+      "sha256": "378647ecb78f055a8bddbd9b55b9e29260a22060f86304836aa88e751577244b",
+      "byteCount": 822387
+    },
+    {
+      "path": "queue-status.json",
+      "sha256": "1a27d1ad1b43377a51abf288adabc4b798e7d7059db3077b103887f3907938cf",
+      "byteCount": 2862
+    },
+    {
+      "path": "source-cells.jsonl",
+      "sha256": "1cd2a9e6f85cd53eb145bd69b6012dc4c71d021a0baf8629e1c125bac1d801bf",
+      "byteCount": 14063
+    },
+    {
+      "path": "source-order.jsonl",
+      "sha256": "1b90d778660d200371a2f9185554a9f66aafc24302c4767a900fcc412edfcfb5",
+      "byteCount": 10679
+    },
+    {
+      "path": "verify_candidate_free.py",
+      "sha256": "128593e14d289fdf203f3d8b7ceaeb6dd3a45a6764a7e117ce0dc05e7e0caa29",
+      "byteCount": 8607
+    },
+    {
+      "path": "window.json",
+      "sha256": "62fafecea05824012137df5be10d3e94bcf491a6cfe9bd35ee9758e1564c9363",
+      "byteCount": 8811
+    }
+  ],
+  "baselineTokenDiagnostics": {
+    "placeholderMismatchCount": 0,
+    "placeholderSequenceMismatchCount": 0,
+    "icuPluralCategorySetDifferenceCount": 9,
+    "markupMismatchCount": 0,
+    "numericTokenMismatchCount": 8,
+    "protectedLiteralMismatchCount": 0
+  }
+}

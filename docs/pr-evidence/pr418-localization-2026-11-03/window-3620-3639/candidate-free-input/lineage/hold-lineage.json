@@ -1,0 +1,24 @@
+{
+  "schemaVersion": 1,
+  "head": "ebf1cb6082ef173688227c507acfdc04c3cf7ca7",
+  "tree": "e3c4d1d10f40ea078b66dfdf942e99c8189fee0c",
+  "currentWindow": "W3620-W3639",
+  "currentWindowHoldCount": 0,
+  "immediatePreviousReviewedWindow": {
+    "window": "W3600-W3619",
+    "head": "1fdec93d1b021e4ec7a7c2265230f59d81d2675e",
+    "tree": "6234854dc0b1e7aee17ef2e819ffc2b5b2e386ce",
+    "primaryReviewCells": 240,
+    "primaryCallerlessHolds": 0,
+    "applicationVerificationStatus": "PASS",
+    "applicationHoldCount": 0
+  },
+  "priorWindowLineage": {
+    "window": "W3580-W3599",
+    "holdCount": 0,
+    "applicationVerificationStatus": "PASS"
+  },
+  "carryForwardHoldRows": [],
+  "allPreviousSourceIdsRemainExcluded": true,
+  "note": "The supplied immediate-window review and application records report zero holds. Any older source decisions are left untouched and all source IDs through position 3619 remain excluded."
+}

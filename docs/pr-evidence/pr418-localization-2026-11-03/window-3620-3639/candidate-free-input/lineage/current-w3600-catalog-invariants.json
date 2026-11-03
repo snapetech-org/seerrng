@@ -1,0 +1,342 @@
+{
+  "schemaVersion": 1,
+  "parentHead": "1fdec93d1b021e4ec7a7c2265230f59d81d2675e",
+  "parentTree": "6234854dc0b1e7aee17ef2e819ffc2b5b2e386ce",
+  "catalogCount": 13,
+  "localeCatalogCount": 12,
+  "englishCatalogPath": "src/i18n/locale/en.json",
+  "englishKeyCount": 9494,
+  "englishOrderedKeysSha256": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072",
+  "catalogs": [
+    {
+      "catalogPath": "src/i18n/locale/ar.json",
+      "preApplySha256": "790ba241a17e0ac40f6564ae495b0c2d167f080547e25ba049a93761866b02f4",
+      "postApplySha256": "3ee0f670843993fc99cac32869f363dfed60eafa5a5489507e3368473fe1c299",
+      "preApplyGitBlob": "123e5bbfca2810e9651f56c13d11ecb52208c4fe",
+      "postApplyGitBlob": "40900f4a09a133e05329a68307b710860bbe03ba",
+      "keyCount": 9494,
+      "keySetEqualsEnglish": true,
+      "keyOrderPreserved": true,
+      "preApplyOrderedKeysSha256": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072",
+      "postApplyOrderedKeysSha256": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072",
+      "orderedKeysEqualToEnglish": true,
+      "changedKeys": [
+        "components.Settings.BinderyModal.intro",
+        "components.Settings.BinderyModal.ownerFeature"
+      ],
+      "expectedChangedKeys": [
+        "components.Settings.BinderyModal.intro",
+        "components.Settings.BinderyModal.ownerFeature"
+      ],
+      "changedValueCount": 2,
+      "expectedChangedValueCount": 2,
+      "nonTargetValueChanges": 0,
+      "nonTargetValuesPreserved": true
+    },
+    {
+      "catalogPath": "src/i18n/locale/de.json",
+      "preApplySha256": "00d46880ccdb1c3a60a5468a7d7e4b96ba864f690e247617fbfcc63294403d80",
+      "postApplySha256": "3ee0a06c6c9cd8a12ac5c3fe0a1844eb35d620f0182bbcfbb630bda12415bee8",
+      "preApplyGitBlob": "1a4c8a9b383c493f8b24c1bf889ad361ba5e6897",
+      "postApplyGitBlob": "ac404e62b60f45d94e576d625927f8adb51fc4da",
+      "keyCount": 9494,
+      "keySetEqualsEnglish": true,
+      "keyOrderPreserved": true,
+      "preApplyOrderedKeysSha256": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072",
+      "postApplyOrderedKeysSha256": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072",
+      "orderedKeysEqualToEnglish": true,
+      "changedKeys": [
+        "components.Settings.BinderyModal.hostnameRequired",
+        "components.Settings.BinderyModal.nameRequired",
+        "components.Settings.BinderyModal.ownerFeature",
+        "components.Settings.BinderyModal.ownerNote"
+      ],
+      "expectedChangedKeys": [
+        "components.Settings.BinderyModal.hostnameRequired",
+        "components.Settings.BinderyModal.nameRequired",
+        "components.Settings.BinderyModal.ownerFeature",
+        "components.Settings.BinderyModal.ownerNote"
+      ],
+      "changedValueCount": 4,
+      "expectedChangedValueCount": 4,
+      "nonTargetValueChanges": 0,
+      "nonTargetValuesPreserved": true
+    },
+    {
+      "catalogPath": "src/i18n/locale/en.json",
+      "preApplySha256": "75ff3c90b52aedd636a506281ffbd6fb2d3739c61294b6008a517f17647e2316",
+      "postApplySha256": "75ff3c90b52aedd636a506281ffbd6fb2d3739c61294b6008a517f17647e2316",
+      "preApplyGitBlob": "12e04a118c30b71b3714291adeaf9fdb2735cee4",
+      "postApplyGitBlob": "12e04a118c30b71b3714291adeaf9fdb2735cee4",
+      "keyCount": 9494,
+      "keySetEqualsEnglish": true,
+      "keyOrderPreserved": true,
+      "preApplyOrderedKeysSha256": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072",
+      "postApplyOrderedKeysSha256": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072",
+      "orderedKeysEqualToEnglish": true,
+      "changedKeys": [],
+      "expectedChangedKeys": [],
+      "changedValueCount": 0,
+      "expectedChangedValueCount": 0,
+      "nonTargetValueChanges": 0,
+      "nonTargetValuesPreserved": true
+    },
+    {
+      "catalogPath": "src/i18n/locale/es.json",
+      "preApplySha256": "09eb25a0dfb22baa0924ec9581452b5fb965a4e19957b7c94ad2853edf22d29b",
+      "postApplySha256": "cb0018aad91766df027f92e32959ee229050c58ee133a87951581744af81c9aa",
+      "preApplyGitBlob": "05c82504029a57aaeef92e2ae7328385797e8136",
+      "postApplyGitBlob": "8b0ffe444a03babd02e03350f01b96c481c6e59a",
+      "keyCount": 9494,
+      "keySetEqualsEnglish": true,
+      "keyOrderPreserved": true,
+      "preApplyOrderedKeysSha256": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072",
+      "postApplyOrderedKeysSha256": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072",
+      "orderedKeysEqualToEnglish": true,
+      "changedKeys": [
+        "components.Settings.BinderyModal.ownerNote"
+      ],
+      "expectedChangedKeys": [
+        "components.Settings.BinderyModal.ownerNote"
+      ],
+      "changedValueCount": 1,
+      "expectedChangedValueCount": 1,
+      "nonTargetValueChanges": 0,
+      "nonTargetValuesPreserved": true
+    },
+    {
+      "catalogPath": "src/i18n/locale/fr.json",
+      "preApplySha256": "d76edf0d823c9c9c16e4cce4ee7c84c0bf58f988c3a2a27283bf6484344aa06d",
+      "postApplySha256": "e420a6d40fddd81d5e24db9bb0fad02f87d7adf7fec066a1b6fd820dedfef9c8",
+      "preApplyGitBlob": "973f17022fa0bab74a455a87fd8abb594d0f1fd5",
+      "postApplyGitBlob": "c9a6bfb15a35f6acc79905fa0e9d29d000dac174",
+      "keyCount": 9494,
+      "keySetEqualsEnglish": true,
+      "keyOrderPreserved": true,
+      "preApplyOrderedKeysSha256": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072",
+      "postApplyOrderedKeysSha256": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072",
+      "orderedKeysEqualToEnglish": true,
+      "changedKeys": [
+        "components.Settings.BinderyModal.ownerNote"
+      ],
+      "expectedChangedKeys": [
+        "components.Settings.BinderyModal.ownerNote"
+      ],
+      "changedValueCount": 1,
+      "expectedChangedValueCount": 1,
+      "nonTargetValueChanges": 0,
+      "nonTargetValuesPreserved": true
+    },
+    {
+      "catalogPath": "src/i18n/locale/hi.json",
+      "preApplySha256": "6e1daf4c9500a1c97df8fd4e415350c529245982884122c007d70ad099dca8c7",
+      "postApplySha256": "75247eb2f1595630f525b0030268af0b5af7486cdb467d18a7e71032851483b0",
+      "preApplyGitBlob": "891a635a2f5cba1c1ea7f593f348c23424a357c9",
+      "postApplyGitBlob": "3d26e5994c750a9348e855ee4aeed3be2714b55e",
+      "keyCount": 9494,
+      "keySetEqualsEnglish": true,
+      "keyOrderPreserved": true,
+      "preApplyOrderedKeysSha256": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072",
+      "postApplyOrderedKeysSha256": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072",
+      "orderedKeysEqualToEnglish": true,
+      "changedKeys": [
+        "components.Settings.BinderyModal.ownerNote"
+      ],
+      "expectedChangedKeys": [
+        "components.Settings.BinderyModal.ownerNote"
+      ],
+      "changedValueCount": 1,
+      "expectedChangedValueCount": 1,
+      "nonTargetValueChanges": 0,
+      "nonTargetValuesPreserved": true
+    },
+    {
+      "catalogPath": "src/i18n/locale/id.json",
+      "preApplySha256": "078df4efc30ea47e2053d11e12fe9aea9b7fef32df8a2fc299b0fcf24c7660c9",
+      "postApplySha256": "377b71fcf4d9c006ac251cf5433ffd11634cfb5790d2fa1a66bcf60c5af761a8",
+      "preApplyGitBlob": "1229fffd85ea80596c29d7cb39b936df20f88422",
+      "postApplyGitBlob": "6dd7650aa70e33f93eb9c64b5aa648d11e5dde8b",
+      "keyCount": 9494,
+      "keySetEqualsEnglish": true,
+      "keyOrderPreserved": true,
+      "preApplyOrderedKeysSha256": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072",
+      "postApplyOrderedKeysSha256": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072",
+      "orderedKeysEqualToEnglish": true,
+      "changedKeys": [
+        "components.Settings.BinderyModal.hostname",
+        "components.Settings.BinderyModal.hostnameRequired",
+        "components.Settings.BinderyModal.ownerNote"
+      ],
+      "expectedChangedKeys": [
+        "components.Settings.BinderyModal.hostname",
+        "components.Settings.BinderyModal.hostnameRequired",
+        "components.Settings.BinderyModal.ownerNote"
+      ],
+      "changedValueCount": 3,
+      "expectedChangedValueCount": 3,
+      "nonTargetValueChanges": 0,
+      "nonTargetValuesPreserved": true
+    },
+    {
+      "catalogPath": "src/i18n/locale/ja.json",
+      "preApplySha256": "a6107e42f2e1e5ff081e7aff8deceee3d83edf61ac40e846a24e9df344341ed5",
+      "postApplySha256": "ac184f61b77b6b3d2094a3ede08d02e86bbbb32b42905ea577de7fb7ac862803",
+      "preApplyGitBlob": "f719eb5cc3c9057e0a949c2667f6bc29af307b28",
+      "postApplyGitBlob": "0e16584bd912be3386e6ca3374e9833bd7605892",
+      "keyCount": 9494,
+      "keySetEqualsEnglish": true,
+      "keyOrderPreserved": true,
+      "preApplyOrderedKeysSha256": "8d5fd7bd4351bc64c5ee813f2e50196608869e165866f3202a312078732c2baf",
+      "postApplyOrderedKeysSha256": "8d5fd7bd4351bc64c5ee813f2e50196608869e165866f3202a312078732c2baf",
+      "orderedKeysEqualToEnglish": false,
+      "changedKeys": [
+        "components.Settings.BinderyModal.ownerFeature",
+        "components.Settings.BinderyModal.ownerNote"
+      ],
+      "expectedChangedKeys": [
+        "components.Settings.BinderyModal.ownerFeature",
+        "components.Settings.BinderyModal.ownerNote"
+      ],
+      "changedValueCount": 2,
+      "expectedChangedValueCount": 2,
+      "nonTargetValueChanges": 0,
+      "nonTargetValuesPreserved": true
+    },
+    {
+      "catalogPath": "src/i18n/locale/ko.json",
+      "preApplySha256": "9f1bb9d7d5785e8c6889b4789f7b1835ae1f9348effe6f81cc10d875fcaeb8a9",
+      "postApplySha256": "4642a520a7d37b8a976e3d7311254dcbdfa7ee340e0a1d62b6dc10a7002e0b66",
+      "preApplyGitBlob": "a325823b63417e043e1ea737c9f50947de5f3778",
+      "postApplyGitBlob": "8d3c1099bdea6ac9a2d3125d0d0dfe8d68b0767d",
+      "keyCount": 9494,
+      "keySetEqualsEnglish": true,
+      "keyOrderPreserved": true,
+      "preApplyOrderedKeysSha256": "8d5fd7bd4351bc64c5ee813f2e50196608869e165866f3202a312078732c2baf",
+      "postApplyOrderedKeysSha256": "8d5fd7bd4351bc64c5ee813f2e50196608869e165866f3202a312078732c2baf",
+      "orderedKeysEqualToEnglish": false,
+      "changedKeys": [
+        "components.Settings.BinderyModal.intro",
+        "components.Settings.BinderyModal.ownerFeature",
+        "components.Settings.BinderyModal.ownerNote"
+      ],
+      "expectedChangedKeys": [
+        "components.Settings.BinderyModal.intro",
+        "components.Settings.BinderyModal.ownerFeature",
+        "components.Settings.BinderyModal.ownerNote"
+      ],
+      "changedValueCount": 3,
+      "expectedChangedValueCount": 3,
+      "nonTargetValueChanges": 0,
+      "nonTargetValuesPreserved": true
+    },
+    {
+      "catalogPath": "src/i18n/locale/pt_BR.json",
+      "preApplySha256": "3d72c8d051a261e842c576ece7cfc085ff999be51006c3eaf615bcc5b6f8f406",
+      "postApplySha256": "ee0b360184d962da65bfae1589f9f91c521e2940617ae3976bdab4138b4ebf33",
+      "preApplyGitBlob": "6dac2dc419c763e629ae825e9a5bab535a944f15",
+      "postApplyGitBlob": "53d625ebfea8041580095edb198175fc1ef42ebf",
+      "keyCount": 9494,
+      "keySetEqualsEnglish": true,
+      "keyOrderPreserved": true,
+      "preApplyOrderedKeysSha256": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072",
+      "postApplyOrderedKeysSha256": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072",
+      "orderedKeysEqualToEnglish": true,
+      "changedKeys": [
+        "components.Settings.BinderyModal.baseUrl",
+        "components.Settings.BinderyModal.ownerNote"
+      ],
+      "expectedChangedKeys": [
+        "components.Settings.BinderyModal.baseUrl",
+        "components.Settings.BinderyModal.ownerNote"
+      ],
+      "changedValueCount": 2,
+      "expectedChangedValueCount": 2,
+      "nonTargetValueChanges": 0,
+      "nonTargetValuesPreserved": true
+    },
+    {
+      "catalogPath": "src/i18n/locale/vi.json",
+      "preApplySha256": "47e8e76881ce603f3a0ab2939e2910b98b8a9a511313ea44adbd5223c4e86a35",
+      "postApplySha256": "869141f2b073b04bfd0356ecaee627170f1357a9bc45def2f3c367aec356abca",
+      "preApplyGitBlob": "bdfe4fc09f675524ba4e8cc871352b20155a16ae",
+      "postApplyGitBlob": "022c77383ea0fd5ee0cfa8c88b34c92b673f5947",
+      "keyCount": 9494,
+      "keySetEqualsEnglish": true,
+      "keyOrderPreserved": true,
+      "preApplyOrderedKeysSha256": "8d5fd7bd4351bc64c5ee813f2e50196608869e165866f3202a312078732c2baf",
+      "postApplyOrderedKeysSha256": "8d5fd7bd4351bc64c5ee813f2e50196608869e165866f3202a312078732c2baf",
+      "orderedKeysEqualToEnglish": false,
+      "changedKeys": [
+        "components.Settings.BinderyModal.intro",
+        "components.Settings.BinderyModal.ownerFeature",
+        "components.Settings.BinderyModal.ownerNote"
+      ],
+      "expectedChangedKeys": [
+        "components.Settings.BinderyModal.intro",
+        "components.Settings.BinderyModal.ownerFeature",
+        "components.Settings.BinderyModal.ownerNote"
+      ],
+      "changedValueCount": 3,
+      "expectedChangedValueCount": 3,
+      "nonTargetValueChanges": 0,
+      "nonTargetValuesPreserved": true
+    },
+    {
+      "catalogPath": "src/i18n/locale/zh_Hans.json",
+      "preApplySha256": "5f6b09117a3841c7f6d209140d5e1c8000ff6c7c43f2be93e58d7f3275171388",
+      "postApplySha256": "5bef5f9244ed420b8449d8e15fdf3c5abeb3565132f7401608d4e92584777563",
+      "preApplyGitBlob": "23961e4ed7172ca1944d6e0f727457ae1f3ee5d3",
+      "postApplyGitBlob": "6b01221dc0a5983f602751c4476aa1d6426cea7e",
+      "keyCount": 9494,
+      "keySetEqualsEnglish": true,
+      "keyOrderPreserved": true,
+      "preApplyOrderedKeysSha256": "8d5fd7bd4351bc64c5ee813f2e50196608869e165866f3202a312078732c2baf",
+      "postApplyOrderedKeysSha256": "8d5fd7bd4351bc64c5ee813f2e50196608869e165866f3202a312078732c2baf",
+      "orderedKeysEqualToEnglish": false,
+      "changedKeys": [
+        "components.Settings.BinderyModal.ownerFeature"
+      ],
+      "expectedChangedKeys": [
+        "components.Settings.BinderyModal.ownerFeature"
+      ],
+      "changedValueCount": 1,
+      "expectedChangedValueCount": 1,
+      "nonTargetValueChanges": 0,
+      "nonTargetValuesPreserved": true
+    },
+    {
+      "catalogPath": "src/i18n/locale/zh_Hant.json",
+      "preApplySha256": "bef01fb550f590068bd58e01a4261a5d7ef4af96e24011eb5d8673b79ba47e9b",
+      "postApplySha256": "c73f04f36dec24fa382468bfcc7fbaf72614c8fb6f3c5035191ba120bcc137ac",
+      "preApplyGitBlob": "d548f2d917956964c011f58ed7f02240d1107ee2",
+      "postApplyGitBlob": "adb13f76d07977d82362a9ecf9a6c69350265d24",
+      "keyCount": 9494,
+      "keySetEqualsEnglish": true,
+      "keyOrderPreserved": true,
+      "preApplyOrderedKeysSha256": "8d5fd7bd4351bc64c5ee813f2e50196608869e165866f3202a312078732c2baf",
+      "postApplyOrderedKeysSha256": "8d5fd7bd4351bc64c5ee813f2e50196608869e165866f3202a312078732c2baf",
+      "orderedKeysEqualToEnglish": false,
+      "changedKeys": [
+        "components.Settings.BinderyModal.intro",
+        "components.Settings.BinderyModal.ownerFeature"
+      ],
+      "expectedChangedKeys": [
+        "components.Settings.BinderyModal.intro",
+        "components.Settings.BinderyModal.ownerFeature"
+      ],
+      "changedValueCount": 2,
+      "expectedChangedValueCount": 2,
+      "nonTargetValueChanges": 0,
+      "nonTargetValuesPreserved": true
+    }
+  ],
+  "keySetParityToEnglish": "PASS",
+  "perCatalogKeyOrderPreserved": "PASS",
+  "preexistingOrderDivergentCatalogs": [
+    "src/i18n/locale/ja.json",
+    "src/i18n/locale/ko.json",
+    "src/i18n/locale/vi.json",
+    "src/i18n/locale/zh_Hans.json",
+    "src/i18n/locale/zh_Hant.json"
+  ]
+}

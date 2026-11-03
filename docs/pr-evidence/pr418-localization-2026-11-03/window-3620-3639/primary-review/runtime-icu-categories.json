@@ -1,0 +1,55 @@
+{
+  "node": "v20.20.2",
+  "icu": "78.3",
+  "categories": {
+    "es": [
+      "many",
+      "one",
+      "other"
+    ],
+    "zh-CN": [
+      "other"
+    ],
+    "hi": [
+      "one",
+      "other"
+    ],
+    "de": [
+      "one",
+      "other"
+    ],
+    "ja": [
+      "other"
+    ],
+    "fr": [
+      "many",
+      "one",
+      "other"
+    ],
+    "pt-BR": [
+      "many",
+      "one",
+      "other"
+    ],
+    "ar": [
+      "few",
+      "many",
+      "one",
+      "other",
+      "two",
+      "zero"
+    ],
+    "ko": [
+      "other"
+    ],
+    "zh-TW": [
+      "other"
+    ],
+    "vi": [
+      "other"
+    ],
+    "id": [
+      "other"
+    ]
+  }
+}
