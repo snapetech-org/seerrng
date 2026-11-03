@@ -1,4 +1,4 @@
-# ng-runner-policy: private-jit-only-v1
+# ng-runner-policy: github-hosted-primary-v1
 ---
 # yaml-language-server: $schema=https://json.schemastore.org/github-workflow.json
 name: Promote stable container aliases
@@ -14,11 +14,11 @@ on:
         options:
           - promote
       runner_pool_tag:
-        description: Private ephemeral JIT runner pool
+        description: GitHub-hosted runner pool
         required: true
         type: choice
         options:
-          - private
+          - public
 permissions:
   contents: read
 
@@ -34,7 +34,7 @@ jobs:
   promote:
     name: Promote latest published stable image
     if: github.ref == 'refs/heads/main'
-    runs-on: ${{ fromJSON(format('{{"group":"ng-shared-main-jit","labels":["self-hosted","linux","x64","ng-shared-main-seerrng","ng-main-run-{0}","gha-{0}-promote"]}}', github.run_id)) }}
+    runs-on: ubuntu-24.04
     timeout-minutes: 15
     permissions:
       contents: read

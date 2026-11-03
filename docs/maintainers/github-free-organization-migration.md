@@ -1,4 +1,9 @@
 > The migration notes below are historical. Current organization runner policy and repository inventory are maintained in `AGENTS.md` and `snapetech-org/packer/scripts/shared-jit-runner-pool/`.
+>
+> SeerrNG has a repository-specific owner directive dated 2026-11-03: standard
+> GitHub-hosted runners are primary for its CI and release workflows, with the
+> gVisor runner smoke test as its only current private JIT job. This change does
+> not alter runner policy for the other repositories in the inventory.
 
 <!-- Copyright (c) 2026 snapetech and SeerrNG contributors. -->
 

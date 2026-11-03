@@ -1,4 +1,4 @@
-# ng-runner-policy: private-jit-only-v1
+# ng-runner-policy: github-hosted-primary-v1
 name: SeerrNG fork-safe docs validation
 on:
   workflow_call:
@@ -13,14 +13,7 @@ jobs:
       github.event.pull_request.head.repo.full_name != github.event.pull_request.base.repo.full_name &&
       github.event.pull_request.base.repo.full_name == 'snapetech-org/seerrng' &&
       github.event.pull_request.base.ref == 'main'
-    runs-on:
-      group: public-fork-jit
-      labels:
-        - self-hosted
-        - linux
-        - x64
-        - public-pr-seerrng
-        - "ng-public-run-${{ github.run_id }}"
+    runs-on: ubuntu-24.04
     timeout-minutes: 30
     permissions:
       contents: read
@@ -28,6 +21,8 @@ jobs:
       - name: Checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
+          repository: ${{ github.event.pull_request.head.repo.full_name }}
+          ref: ${{ github.event.pull_request.head.sha }}
           persist-credentials: false
       - name: Set up Node.js
         uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0

@@ -1,6 +1,6 @@
 {
   "name": "seerrng",
-  "version": "3.72.6",
+  "version": "3.72.7",
   "private": true,
   "packageManager": "pnpm@10.24.0",
   "scripts": {
@@ -9,8 +9,8 @@
     "dev": "node scripts/dev-server.mjs",
     "dev:server": "node scripts/dev-server.mjs",
     "dev:checked": "pnpm dev",
-    "build:server": "tsc --project server/tsconfig.json && copyfiles -u 2 server/templates/**/*.{html,pug} dist/templates && copyfiles -u 2 \"server/i18n/locale/*.json\" dist/i18n && copyfiles -u 1 \"themes/**/*\" dist/interface-themes && node scripts/replace-server-import-aliases.mjs dist",
-    "build:server:compile": "tsc --project server/tsconfig.json && copyfiles -u 2 server/templates/**/*.{html,pug} dist/templates && copyfiles -u 2 \"server/i18n/locale/*.json\" dist/i18n && copyfiles -u 1 \"themes/**/*\" dist/interface-themes && node scripts/replace-server-import-aliases.mjs dist",
+    "build:server": "tsc --project server/tsconfig.json && node scripts/copy-server-assets.mjs && node scripts/replace-server-import-aliases.mjs dist",
+    "build:server:compile": "tsc --project server/tsconfig.json && node scripts/copy-server-assets.mjs && node scripts/replace-server-import-aliases.mjs dist",
     "build:next": "next build --webpack",
     "build:next:compile": "next build --webpack",
     "prebuild": "pnpm i18n:check && pnpm current-batch:check",
@@ -202,7 +202,6 @@
     "baseline-browser-mapping": "^2.11.28",
     "commander": "^15.0.0",
     "chokidar": "5.0.0",
-    "copyfiles": "2.4.1",
     "cy-mobile-commands": "0.3.0",
     "cypress": "16.1.1",
     "eslint": "10.13.0",

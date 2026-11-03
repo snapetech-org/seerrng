@@ -26,10 +26,37 @@ IMAGE_DEFAULT = (
     "aefb67e6a7ff1debdd154a78a7bbb780fd0c873d8639210a7f6a2016ad2b35db"
 )
 SERVER_VERSION = "10.11.11"
+IMAGE_PULL_TIMEOUT_SECONDS = 600
+CONTAINER_START_TIMEOUT_SECONDS = 60
 
 
 class SmokeTestError(RuntimeError):
     """A safe-to-print failure from the disposable integration environment."""
+
+
+def pull_image(image: str) -> None:
+    """Pull the image separately so downloads have a clear, bounded deadline."""
+    print(
+        "Pulling Jellyfin smoke-test image "
+        f"(timeout {IMAGE_PULL_TIMEOUT_SECONDS}s).",
+        flush=True,
+    )
+    try:
+        result = subprocess.run(
+            ["docker", "pull", "--quiet", image],
+            check=False,
+            timeout=IMAGE_PULL_TIMEOUT_SECONDS,
+        )
+    except subprocess.TimeoutExpired as error:
+        raise SmokeTestError(
+            "Timed out pulling the Jellyfin smoke-test image after "
+            f"{IMAGE_PULL_TIMEOUT_SECONDS} seconds."
+        ) from error
+    if result.returncode != 0:
+        raise SmokeTestError(
+            "Docker could not pull the Jellyfin smoke-test image "
+            f"(exit {result.returncode})."
+        )
 
 
 def run(command: list[str], *, timeout: int = 120) -> str:
@@ -285,6 +312,8 @@ def main() -> None:
     if not assembly.is_file():
         raise SmokeTestError(f"Plugin assembly not found: {assembly}")
 
+    pull_image(args.image)
+
     container_name = f"seerrng-jellyfin-smoke-{uuid.uuid4().hex[:12]}"
     with tempfile.TemporaryDirectory(
         prefix="seerrng-jellyfin-smoke-", ignore_cleanup_errors=True
@@ -308,6 +337,7 @@ def main() -> None:
                 [
                     "docker",
                     "run",
+                    "--pull=never",
                     "--detach",
                     "--name",
                     container_name,
@@ -320,7 +350,7 @@ def main() -> None:
                     f"{plugin_dir},target=/config/plugins/{PLUGIN_NAME}_0.1.0.0",
                     args.image,
                 ],
-                timeout=180,
+                timeout=CONTAINER_START_TIMEOUT_SECONDS,
             )
             container_started = True
             port_mapping = run(
@@ -333,59 +363,73 @@ def main() -> None:
             wait_for_health(base_url, container_name)
             verify_server(base_url)
         except Exception:
-            logs = subprocess.run(
-                ["docker", "logs", "--tail", "100", container_name],
-                check=False,
-                capture_output=True,
-                text=True,
-                timeout=10,
-            )
-            diagnostic_lines = [
-                line
-                for line in (logs.stdout + logs.stderr).splitlines()
-                if "[ERR]" in line
-                or "[FTL]" in line
-                or "SeerrNG Bridge" in line
-            ]
-            if diagnostic_lines:
-                print("\n".join(diagnostic_lines[-40:]), file=sys.stderr)
+            try:
+                logs = subprocess.run(
+                    ["docker", "logs", "--tail", "100", container_name],
+                    check=False,
+                    capture_output=True,
+                    text=True,
+                    timeout=10,
+                )
+            except (OSError, subprocess.TimeoutExpired):
+                logs = None
+            if logs is not None:
+                diagnostic_lines = [
+                    line
+                    for line in (logs.stdout + logs.stderr).splitlines()
+                    if "[ERR]" in line
+                    or "[FTL]" in line
+                    or "SeerrNG Bridge" in line
+                ]
+                if diagnostic_lines:
+                    print("\n".join(diagnostic_lines[-40:]), file=sys.stderr)
             raise
         finally:
+            # Docker can create a container before its client times out. Always
+            # remove our unique container name, even when `docker run` failed.
+            try:
+                subprocess.run(
+                    ["docker", "rm", "--force", container_name],
+                    check=False,
+                    stdout=subprocess.DEVNULL,
+                    stderr=subprocess.DEVNULL,
+                    timeout=20,
+                )
+            except (OSError, subprocess.TimeoutExpired) as error:
+                print(
+                    "WARNING: unable to remove Jellyfin smoke-test container "
+                    f"({type(error).__name__}).",
+                    file=sys.stderr,
+                )
             if container_started:
-                subprocess.run(
-                    ["docker", "stop", "--time", "10", container_name],
-                    check=False,
-                    stdout=subprocess.DEVNULL,
-                    stderr=subprocess.DEVNULL,
-                    timeout=20,
-                )
-                subprocess.run(
-                    ["docker", "rm", container_name],
-                    check=False,
-                    stdout=subprocess.DEVNULL,
-                    stderr=subprocess.DEVNULL,
-                    timeout=20,
-                )
-                subprocess.run(
-                    [
-                        "docker",
-                        "run",
-                        "--rm",
-                        "--user",
-                        "0:0",
-                        "--volume",
-                        f"{temp_dir}:/smoke-test",
-                        "--entrypoint",
-                        "/bin/sh",
-                        args.image,
-                        "-c",
-                        f"chown -R {os.getuid()}:{os.getgid()} /smoke-test",
-                    ],
-                    check=False,
-                    stdout=subprocess.DEVNULL,
-                    stderr=subprocess.DEVNULL,
-                    timeout=30,
-                )
+                try:
+                    subprocess.run(
+                        [
+                            "docker",
+                            "run",
+                            "--pull=never",
+                            "--rm",
+                            "--user",
+                            "0:0",
+                            "--volume",
+                            f"{temp_dir}:/smoke-test",
+                            "--entrypoint",
+                            "/bin/sh",
+                            args.image,
+                            "-c",
+                            f"chown -R {os.getuid()}:{os.getgid()} /smoke-test",
+                        ],
+                        check=False,
+                        stdout=subprocess.DEVNULL,
+                        stderr=subprocess.DEVNULL,
+                        timeout=30,
+                    )
+                except (OSError, subprocess.TimeoutExpired) as error:
+                    print(
+                        "WARNING: unable to restore Jellyfin smoke-test "
+                        f"workspace ownership ({type(error).__name__}).",
+                        file=sys.stderr,
+                    )
 
     print(
         f"PASS: {PLUGIN_NAME} loaded in Jellyfin {SERVER_VERSION}; authenticated "

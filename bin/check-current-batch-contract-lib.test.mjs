@@ -225,10 +225,14 @@ test('upstream public commands preserve build-time translation and visual guards
   }
   const serverBuild = JSON.parse(packageSource).scripts['build:server'];
   const withoutThemeAssets = serverBuild.replace(
-    ' && copyfiles -u 1 "themes/**/*" dist/interface-themes',
-    ''
+    'node scripts/copy-server-assets.mjs',
+    'node scripts/copy-no-assets.mjs'
   );
-  assert.notEqual(withoutThemeAssets, serverBuild, 'theme copy is present');
+  assert.notEqual(
+    withoutThemeAssets,
+    serverBuild,
+    'theme copy helper is present'
+  );
   assert.ok(
     validateCurrentBatchContract(
       repositoryFilesWith({

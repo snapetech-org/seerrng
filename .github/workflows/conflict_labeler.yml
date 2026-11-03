@@ -1,8 +1,8 @@
-# ng-runner-policy: private-jit-only-v1
+# ng-runner-policy: github-hosted-primary-v1
 ---
 # yaml-language-server: $schema=https://json.schemastore.org/github-workflow.json
 name: Merge Conflict Labeler
-run-name: ${{ format('action:{0}:pool:{1}', inputs.action_tag, inputs.runner_pool_tag) }}
+run-name: ${{ format('action:{0}:pool:{1}', inputs.action, inputs.runner_pool) }}
 
 on:
   workflow_dispatch:
@@ -14,24 +14,11 @@ on:
         options:
           - merge-conflict-labeler
       runner_pool:
-        description: Private ephemeral JIT runner pool
+        description: GitHub-hosted runner pool
         type: choice
         required: true
         options:
-          - private
-
-      action_tag:
-        description: Action tag for this workflow
-        required: true
-        type: choice
-        options:
-          - run
-      runner_pool_tag:
-        description: Ephemeral JIT runner-pool tag
-        required: true
-        type: choice
-        options:
-          - private
+          - public
 permissions:
   contents: read
 
@@ -42,8 +29,8 @@ concurrency:
 jobs:
   label:
     name: Labeling
-    if: inputs.action == 'merge-conflict-labeler' && inputs.runner_pool == 'private'
-    runs-on: ${{ fromJSON(format('{{"group":"ng-shared-main-jit","labels":["self-hosted","linux","x64","ng-shared-main-seerrng","ng-main-run-{0}","gha-{0}-label"]}}', github.run_id)) }}
+    if: inputs.action == 'merge-conflict-labeler' && inputs.runner_pool == 'public'
+    runs-on: ubuntu-24.04
     timeout-minutes: 10
     permissions:
       contents: read

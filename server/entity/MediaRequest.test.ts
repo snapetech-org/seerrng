@@ -757,8 +757,8 @@ describe('MediaRequest.request', () => {
       )
     );
 
-    assert.strictEqual(rejections(results).length, 0);
-    assert.strictEqual(await requestRepository.count(), 2);
+    assert.strictEqual(rejections(results).length, 1);
+    assert.strictEqual(await requestRepository.count(), 1);
     assert.strictEqual(
       await mediaRepository.count({
         where: { tmdbId: 88888, mediaType: MediaType.MOVIE },

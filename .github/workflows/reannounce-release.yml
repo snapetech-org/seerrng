@@ -1,0 +1,138 @@
+# ng-runner-policy: github-hosted-primary-v1
+---
+# yaml-language-server: $schema=https://json.schemastore.org/github-workflow.json
+name: Reannounce SeerrNG Release
+run-name: Reannounce SeerrNG ${{ inputs.tag }} on Discord
+
+on:
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: Published release tag whose current notes should be announced
+        required: true
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  reannounce:
+    if: github.ref == 'refs/heads/main'
+    name: Reannounce published release notes
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    permissions:
+      contents: read
+    env:
+      DISCORD_WEBHOOK: ${{ secrets.DISCORD_RELEASE_WEBHOOK }}
+      GH_TOKEN: ${{ github.token }}
+      REPO: ${{ github.repository }}
+      TAG: ${{ inputs.tag }}
+    steps:
+      - name: Checkout release tooling
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+
+      - name: Checkout pinned GitHub CLI setup
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          repository: snapetech-org/seerrng
+          ref: ${{ github.sha }}
+          path: .github-actions
+          sparse-checkout: .github/actions/setup-gh-cli
+          sparse-checkout-cone-mode: false
+          persist-credentials: false
+
+      - name: Set up GitHub CLI
+        uses: ./.github-actions/.github/actions/setup-gh-cli
+
+      - name: Set up Node.js
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version-file: package.json
+          package-manager-cache: false
+
+      - name: Post the current release notes to Discord
+        shell: bash
+        run: |
+          set -euo pipefail
+          [[ "$GITHUB_REF" == 'refs/heads/main' ]] || {
+            echo 'Release announcements must run from main.' >&2
+            exit 1
+          }
+          [[ "$TAG" =~ ^v[0-9][0-9A-Za-z._+-]{0,126}$ ]] || {
+            echo 'Invalid release tag.' >&2
+            exit 1
+          }
+          test -n "$DISCORD_WEBHOOK" || {
+            echo 'DISCORD_RELEASE_WEBHOOK is required to reannounce a release.' >&2
+            exit 1
+          }
+
+          gh api "repos/${REPO}/releases/tags/${TAG}" > release.json
+          jq -e --arg tag "$TAG" '
+            .tag_name == $tag and
+            .draft == false and
+            .prerelease == false and
+            (.body | type == "string" and length > 0)
+          ' release.json >/dev/null || {
+            echo "${TAG} is not a published stable release with release notes." >&2
+            exit 1
+          }
+          jq -r '.body' release.json > release-body.md
+          node scripts/discord-release-notes.mjs --split < release-body.md > chunks.json
+          chunk_count="$(jq 'length' chunks.json)"
+          (( chunk_count > 0 )) || {
+            echo 'The published release notes are empty.' >&2
+            exit 1
+          }
+
+          release_url="${GITHUB_SERVER_URL}/${REPO}/releases/tag/${TAG}"
+          image_ref="ghcr.io/snapetech-org/seerrng:${TAG}"
+          webhook_url="$DISCORD_WEBHOOK"
+          if [[ "$webhook_url" == *'?'* ]]; then
+            webhook_url+='&wait=true'
+          else
+            webhook_url+='?wait=true'
+          fi
+
+          for ((index = 0; index < chunk_count; index += 1)); do
+            description="$(jq -r --argjson index "$index" '.[$index]' chunks.json)"
+            number=$((index + 1))
+            title="SeerrNG ${TAG} release notes (reissue ${number}/${chunk_count})"
+            jq -n \
+              --arg username "SeerrNG Releases" \
+              --arg title "$title" \
+              --arg url "$release_url" \
+              --arg description "$description" \
+              --arg image "$image_ref" \
+              --arg run_url "${GITHUB_SERVER_URL}/${REPO}/actions/runs/${GITHUB_RUN_ID}" \
+              --argjson first "$index" \
+              '{
+                username: $username,
+                embeds: [{
+                  title: $title,
+                  url: $url,
+                  description: $description,
+                  color: 5814783,
+                  fields: (if $first == 0 then [
+                    { name: "Image", value: $image, inline: false },
+                    { name: "Workflow", value: $run_url, inline: false }
+                  ] else [] end)
+                }]
+              }' > payload.json
+
+            response="$(curl --fail --silent --show-error \
+              -H 'Content-Type: application/json' \
+              -X POST \
+              --data @payload.json \
+              "$webhook_url")"
+            jq -e --arg description "$description" \
+              '.id != null and .embeds[0].description == $description' \
+              <<< "$response" >/dev/null
+            if (( number < chunk_count )); then
+              sleep 1
+            fi
+          done

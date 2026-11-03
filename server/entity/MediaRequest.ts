@@ -2918,6 +2918,27 @@ export class MediaRequest {
     const destinationRequests = await loadDestinationRequests(media);
 
     if (
+      requestBody.mediaType === MediaType.MOVIE ||
+      requestBody.mediaType === MediaType.TV
+    ) {
+      const unresolvedOtherQualityRequest = destinationRequests.find(
+        (request) =>
+          request.type === requestBody.mediaType &&
+          request.is4k !== requestBody.is4k &&
+          request.status !== MediaRequestStatus.DECLINED &&
+          request.status !== MediaRequestStatus.COMPLETED
+      );
+
+      if (unresolvedOtherQualityRequest) {
+        throw new DuplicateMediaRequestError(
+          `An unresolved ${
+            unresolvedOtherQualityRequest.is4k ? '4K' : 'HD'
+          } request already exists for this media.`
+        );
+      }
+    }
+
+    if (
       !selectedDestination &&
       requestBody.mediaType === MediaType.MOVIE &&
       destinationRequests.some(

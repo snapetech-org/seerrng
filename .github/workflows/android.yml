@@ -1,4 +1,4 @@
-# ng-runner-policy: private-jit-only-v1
+# ng-runner-policy: github-hosted-primary-v1
 name: Android APK
 run-name: ${{ format('action:{0}:pool:{1}', inputs.action_tag, inputs.runner_pool_tag) }}
 
@@ -13,18 +13,18 @@ on:
         options:
           - build
       runner_pool_tag:
-        description: Ephemeral JIT runner-pool tag
+        description: GitHub-hosted runner pool tag
         required: true
         type: choice
         options:
-          - private
+          - public
 permissions:
   contents: read
 
 jobs:
   android:
     name: Build and test Android app
-    runs-on: ${{ fromJSON(format('{{"group":"ng-shared-main-jit","labels":["self-hosted","linux","x64","ng-shared-main-seerrng","ng-main-run-{0}","gha-{0}-android"]}}', github.run_id)) }}
+    runs-on: ubuntu-24.04
     timeout-minutes: 45
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -138,7 +138,7 @@ jobs:
       github.event_name != 'pull_request' &&
       (github.event_name != 'workflow_dispatch' ||
       github.ref == 'refs/heads/main')
-    runs-on: ${{ fromJSON(format('{{"group":"ng-shared-main-jit","labels":["self-hosted","linux","x64","ng-shared-main-seerrng","ng-main-run-{0}","gha-{0}-android-release"]}}', github.run_id)) }}
+    runs-on: ubuntu-24.04
     timeout-minutes: 45
     permissions:
       contents: read

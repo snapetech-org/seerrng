@@ -5,11 +5,84 @@ The release workflow adds curated notes from `release-notes/` before the
 conventional-commit history.
 
 The audit below covers every SeerrNG tag currently in this repository. The
-`v3.2.6` tag records release preparation only; no GitHub release was published,
-and the following `v3.2.7` release includes the intervening changes. Commit-level
-links in the generated history remain the technical source of truth for changes
-that are not called out here.
+v3.72.7 section consolidates changes from the requested v3.71.4 baseline
+through v3.72.7, including changes also represented by unpublished interim
+tags. The comparison link is the complete commit range.
 
+## [3.72.7](https://github.com/snapetech-org/seerrng/compare/v3.71.4..v3.72.7) - 2026-11-03
+
+### User-facing changes
+
+#### Added
+
+- **Migration:** Seerr and SeerrNG users can now preview and apply migrations in either direction, carrying compatible settings, accounts, requests, and database records while reporting data the destination cannot support.
+- **Interface:** Choose between the original Seerr layout and John’s SeerrNG interface. The selected design is saved to your account, and current media catalogs and request features remain available in both.
+
+#### Fixed
+
+- **Navigation:** Blocklist stays out of desktop and mobile menus until it contains an entry. Users with Blocklist permissions retain the same access after the first entry is added, and the current route stays navigable if the count is temporarily unavailable.
+- **Settings:** Prowlarr category filters and indexer assignments now show multiple options at once and keep native multi-selection usable across desktop and mobile settings layouts.
+- **Software:** ROMarrNG-only installations now show Retro and Modern software categories and patch discovery without QuestarrNG. PC Game Finder still requires QuestarrNG.
+  - **Action required:** Browse Retro and Modern catalogs when only ROMarrNG is configured
+- **Bookshelf:** Chaptarr book searches preserve Goodreads and Hardcover identities when switching metadata providers. Book details and ebook or audiobook requests use the original provider even when a new connection defaults to another catalog.
+- **Scheduled Jobs:** Scheduled job settings now describe cron expressions more accurately, including nearest-weekday offsets and alternate day and month numbering.
+- **Requests:** A movie or series can now have only one unresolved HD or 4K request, preventing both quality tiers from being queued for the same title.
+- **Sonarr:** New TV requests to Sonarr v5 include the required metadata language and season order, preventing empty-field failures. Sonarr server settings now offer defaults for new-series metadata language and season order; request overrides take priority and existing series keep their metadata.
+- **Database:** SQLite permissions are secured before opening the database. Startup no longer reopens and closes active database files, preserving the locks that let backup tools and other database connections safely read current committed data. New database and journal files retain private permissions.
+
+#### Security
+
+- **Security:** Updated affected runtime, documentation, and development dependencies and patched every shipped entrypoint of the unmaintained `deepmerge` package. These changes address known request and resource exhaustion, command injection, and prototype-pollution advisories without changing application behavior or requiring operator configuration.
+
+This cumulative release note covers v3.71.4 through v3.72.7, including changes represented by interim tags and drafts. The merged pull requests below summarize the range; the full changelog link includes the complete commit comparison.
+
+### Merged pull requests since v3.71.4
+* fix(books): avoid series route hydration mismatch by @snapetech in https://github.com/snapetech-org/seerrng/pull/360
+* fix(release): add Book Series note frontmatter by @snapetech in https://github.com/snapetech-org/seerrng/pull/361
+* chore(ci): restrict iOS push builds to main by @snapetech in https://github.com/snapetech-org/seerrng/pull/364
+* Harden OIDC sign-in and add shared provider catalog by @snapetech in https://github.com/snapetech-org/seerrng/pull/367
+* Document OIDC setup and provider operations by @snapetech in https://github.com/snapetech-org/seerrng/pull/368
+* fix(auth): bind OIDC identities to issuers by @snapetech in https://github.com/snapetech-org/seerrng/pull/370
+* ci: run SeerrNG CI on pull requests by @snapetech in https://github.com/snapetech-org/seerrng/pull/369
+* feat(discovery): migrate Trakt to PKCE and add service icons by @Xyron77-afk in https://github.com/snapetech-org/seerrng/pull/371
+* fix(settings): diagnose Servarr connection failures by @snapetech in https://github.com/snapetech-org/seerrng/pull/377
+* feat: remediate OIDC, integrations, Prowlarr, and UI reports by @snapetech in https://github.com/snapetech-org/seerrng/pull/380
+* fix(ci): provision Node for JIT CodeQL analysis by @snapetech in https://github.com/snapetech-org/seerrng/pull/384
+* fix(watchlist): preserve local filter drafts by @snapetech in https://github.com/snapetech-org/seerrng/pull/383
+* ci: route trusted Linux jobs through JIT runners by @snapetech in https://github.com/snapetech-org/seerrng/pull/395
+* docs(ui): require visual contract and rendered acceptance by @snapetech in https://github.com/snapetech-org/seerrng/pull/403
+* fix(catalog): separate game provider visibility by @snapetech in https://github.com/snapetech-org/seerrng/pull/402
+* fix: restore Prowlarr listboxes and hide empty Blocklist by @snapetech in https://github.com/snapetech-org/seerrng/pull/404
+* Run validation only on tags by @snapetech in https://github.com/snapetech-org/seerrng/pull/405
+* fix(deps): bump jsdom from 30.0.1 to 30.1.3 by @dependabot[bot] in https://github.com/snapetech-org/seerrng/pull/385
+* fix(deps): bump lru-cache from 11.2.1 to 11.5.3 by @dependabot[bot] in https://github.com/snapetech-org/seerrng/pull/386
+* fix(deps): bump @swc/core from 1.16.2 to 1.16.18 by @dependabot[bot] in https://github.com/snapetech-org/seerrng/pull/387
+* fix(deps): bump eslint from 10.10.0 to 10.13.0 by @dependabot[bot] in https://github.com/snapetech-org/seerrng/pull/388
+* fix(deps): patch release image vulnerabilities by @snapetech in https://github.com/snapetech-org/seerrng/pull/390
+* fix(deps): bump the release-note-none-codeql-action group with 5 updates by @dependabot[bot] in https://github.com/snapetech-org/seerrng/pull/391
+* fix(deps): bump actions/setup-java from 6.0.1 to 6.1.0 by @dependabot[bot] in https://github.com/snapetech-org/seerrng/pull/393
+* ci: fix release formatting and settings accessibility checks by @snapetech in https://github.com/snapetech-org/seerrng/pull/394
+* fix(deps): bump cronstrue from 3.26.0 to 3.32.0 by @dependabot[bot] in https://github.com/snapetech-org/seerrng/pull/389
+* fix(sonarr): supply v5 metadata defaults and server settings by @EasyAsABC123 in https://github.com/snapetech-org/seerrng/pull/406
+* fix(bookshelf): preserve Chaptarr lookup provider identities by @EasyAsABC123 in https://github.com/snapetech-org/seerrng/pull/410
+* fix(database): preserve SQLite locks during startup hardening by @EasyAsABC123 in https://github.com/snapetech-org/seerrng/pull/411
+* Route SeerrNG fork docs checks through sandboxed JIT by @snapetech in https://github.com/snapetech-org/seerrng/pull/408
+* Add SeerrOrig and SeerrNGJ interface profiles by @snapetech in https://github.com/snapetech-org/seerrng/pull/414
+* ci: isolate SeerrNG JIT jobs and retire CodeQL by @snapetech in https://github.com/snapetech-org/seerrng/pull/431
+* ci: validate SeerrNG main pushes on private JIT by @snapetech in https://github.com/snapetech-org/seerrng/pull/432
+* docs: refresh BookshelfNG backend retirement status by @snapetech in https://github.com/snapetech-org/seerrng/pull/430
+* ci: make SeerrNG validation an explicit private dispatch by @snapetech in https://github.com/snapetech-org/seerrng/pull/439
+* chore(release): prepare v3.72.6 by @snapetech in https://github.com/snapetech-org/seerrng/pull/437
+* fix(ci): repair Seerr validation and release gates by @snapetech in https://github.com/snapetech-org/seerrng/pull/443
+* fix(ci): require run-scoped Apple JIT labels by @snapetech in https://github.com/snapetech-org/seerrng/pull/452
+* fix(ci): unblock SeerrNG lint and Jellyfin smoke checks by @snapetech in https://github.com/snapetech-org/seerrng/pull/476
+* fix(ci): align build contract with asset helper by @snapetech in https://github.com/snapetech-org/seerrng/pull/490
+* fix: prevent mixed HD and 4K requests by @snapetech in https://github.com/snapetech-org/seerrng/pull/505
+
+#### New contributors
+* @Xyron77-afk made their first contribution in https://github.com/snapetech-org/seerrng/pull/371
+
+**Full Changelog**: https://github.com/snapetech-org/seerrng/compare/v3.71.4...v3.72.7
 ## [3.72.6](https://github.com/snapetech-org/seerrng/compare/v3.72.5..v3.72.6) - 2026-10-31
 
 ### User-facing changes

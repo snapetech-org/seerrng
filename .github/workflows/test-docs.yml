@@ -1,4 +1,4 @@
-# ng-runner-policy: private-jit-only-v1
+# ng-runner-policy: github-hosted-primary-v1
 ---
 # yaml-language-server: $schema=https://json.schemastore.org/github-workflow.json
 name: Test Docs
@@ -17,7 +17,7 @@ concurrency:
 jobs:
   test-build:
     name: Build and test docs website
-    runs-on: ${{ fromJSON(format('{{"group":"ng-shared-main-jit","labels":["self-hosted","linux","x64","ng-shared-main-seerrng","ng-main-run-{0}","gha-{0}-test-build"]}}', github.run_id)) }}
+    runs-on: ubuntu-24.04
     timeout-minutes: 30
     permissions:
       contents: read

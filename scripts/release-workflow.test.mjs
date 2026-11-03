@@ -1,12 +1,10 @@
+import * as yaml from 'js-yaml';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import { createRequire } from 'node:module';
 import path from 'node:path';
 import test from 'node:test';
 import { fileURLToPath } from 'node:url';
-import { runInNewContext } from 'node:vm';
-
-import * as yaml from 'js-yaml';
 import { splitDiscordReleaseBody } from './discord-release-notes.mjs';
 
 const rootDirectory = path.resolve(
@@ -20,22 +18,30 @@ const readWorkflow = (name) =>
 const ghCliSetupRef = '${{ github.sha }}';
 const ghCliSetupPath = './.github-actions/.github/actions/setup-gh-cli';
 
-test('Windows release routes declare the Packer JIT source marker', () => {
-  for (const workflowName of [
-    'release.yml',
-    'release-assets.yml',
-    'release-chocolatey.yml',
-  ]) {
+test('release workflows use GitHub-hosted runners, including Windows packaging', () => {
+  for (const workflowName of ['release.yml', 'release-assets.yml']) {
     const source = fs.readFileSync(
       path.join(workflowDirectory, workflowName),
       'utf8'
     );
-    assert.match(
+    assert.match(source, /^# ng-runner-policy: github-hosted-primary-v1$/mu);
+    assert.doesNotMatch(
       source,
-      /^# packer-windows-jit-v1$/mu,
-      `${workflowName} must be included in the Packer Windows JIT source inventory`
+      /self-hosted|packer-windows|private-apple-builds/u
     );
   }
+  const chocolatey = readWorkflow('release-chocolatey.yml');
+  assert.equal(
+    chocolatey.jobs['publish-chocolatey']['runs-on'],
+    'windows-2025'
+  );
+  assert.match(
+    fs.readFileSync(
+      path.join(workflowDirectory, 'release-chocolatey.yml'),
+      'utf8'
+    ),
+    /^# ng-runner-policy: github-hosted-primary-v1$/mu
+  );
 });
 
 test('every release job that calls GitHub CLI installs the pinned CLI first', () => {
@@ -142,10 +148,12 @@ test('release assets build while image verification runs, then package channels 
     dispatchScript,
     /optional_workflows=\([\s\S]*release-snap\.yml/u
   );
+  assert.match(dispatchScript, /-f action_tag=release/u);
+  assert.match(dispatchScript, /-f runner_pool_tag=public/u);
   assert.match(chocolateyDispatchScript, /release-chocolatey\.yml/u);
   assert.match(chocolateyDispatchScript, /--ref main/u);
   assert.match(chocolateyDispatchScript, /-f action_tag=release/u);
-  assert.match(chocolateyDispatchScript, /-f runner_pool_tag=private/u);
+  assert.match(chocolateyDispatchScript, /-f runner_pool_tag=public/u);
   assert.doesNotMatch(
     dispatchScript.match(/required_workflows=\(([\s\S]*?)\)/u)?.[1] ?? '',
     /release-ppa\.yml/u,
@@ -224,6 +232,8 @@ test('release assets build while image verification runs, then package channels 
     (step) => step.name === 'Dispatch Launchpad PPA'
   );
   assert.match(launchpadStep.run, /release-ppa\.yml/u);
+  assert.match(launchpadStep.run, /-f action_tag=release/u);
+  assert.match(launchpadStep.run, /-f runner_pool_tag=public/u);
   assert.match(launchpadStep.run, /SKIP_LAUNCHPAD_DISPATCH/u);
   assert.match(
     launchpadStep.run,
@@ -468,40 +478,13 @@ test('Chocolatey packages only verified Windows release archives', () => {
   ]);
   assert.deepEqual(
     workflow.on.workflow_dispatch.inputs.runner_pool_tag.options,
-    ['private']
+    ['public']
   );
   assert.equal(
     job.if,
-    "github.ref == 'refs/heads/main' && inputs.action_tag == 'release' && inputs.runner_pool_tag == 'private'"
+    "github.ref == 'refs/heads/main' && inputs.action_tag == 'release' && inputs.runner_pool_tag == 'public'"
   );
-  const runner = runInNewContext(
-    job['runs-on'].slice(3, -2),
-    {
-      github: { run_id: 123 },
-      fromJSON: JSON.parse,
-      format: (template, runId) =>
-        template
-          .replaceAll('{{', '{')
-          .replaceAll('}}', '}')
-          .replaceAll('{0}', String(runId)),
-    },
-    { timeout: 100 }
-  );
-  assert.deepEqual(runner, {
-    group: 'packer-windows',
-    labels: [
-      'self-hosted',
-      'Windows',
-      'X64',
-      'on-demand',
-      'packer-windows',
-      'seerrng',
-      'gha-123-publish-chocolatey',
-    ],
-  });
-  assert.doesNotMatch(job['runs-on'], /ng-shared-main|ng-main-run/u);
-  assert.match(job['runs-on'], /github\.run_id/u);
-  assert.doesNotMatch(job['runs-on'], /windows-latest/u);
+  assert.equal(job['runs-on'], 'windows-2025');
   assert.ok(credentialStep);
   assert.match(credentialStep.run, /\[guid\]::TryParse/iu);
   assert.ok(submitStep);
@@ -614,10 +597,8 @@ test('multi-architecture publishers perform the real build once and verify the i
   assert.equal(ci.jobs.build, undefined);
   assert.match(ci.jobs.publish.if, /github\.ref == 'refs\/heads\/main'/u);
   assert.match(ci.jobs.publish.if, /inputs\.action == 'publish-image'/u);
-  assert.match(ci.jobs.publish.if, /inputs\.runner_pool == 'private'/u);
-  assert.match(ci.jobs.publish['runs-on'], /"group":"ng-shared-main-jit"/u);
-  assert.match(ci.jobs.publish['runs-on'], /github\.run_id/u);
-  assert.doesNotMatch(ci.jobs.publish['runs-on'], /ubuntu-latest/u);
+  assert.match(ci.jobs.publish.if, /inputs\.runner_pool == 'public'/u);
+  assert.equal(ci.jobs.publish['runs-on'], 'ubuntu-24.04');
   assert.deepEqual(ci.jobs.publish.needs, [
     'release-notes',
     'i18n-and-tooling',
@@ -644,7 +625,7 @@ test('multi-architecture publishers perform the real build once and verify the i
   );
   assert.match(
     ci['run-name'],
-    /format\('action:\{0\}:pool:\{1\}', inputs\.action \|\| 'ci', inputs\.runner_pool \|\| 'private'\)/u
+    /format\('action:\{0\}:pool:\{1\}', inputs\.action \|\| 'ci', inputs\.runner_pool \|\| 'public'\)/u
   );
   for (const jobName of [
     'release-notes',
@@ -928,7 +909,7 @@ test('manual container recovery promotes only the latest published release from 
   );
 });
 
-test('release publishing runs only from main dispatches so private runners serve it', () => {
+test('release publishing is dispatched from main and uses public hosted runners', () => {
   const release = readWorkflow('release.yml');
   const validation = release.jobs['validate-main-tag'];
   const validationScript = validation.steps.find(
@@ -941,6 +922,11 @@ test('release publishing runs only from main dispatches so private runners serve
     release['run-name'],
     "${{ format('action:{0}:pool:{1}:tag:{2}', inputs.action_tag, inputs.runner_pool_tag, inputs.tag) }}"
   );
+  assert.deepEqual(
+    release.on.workflow_dispatch.inputs.runner_pool_tag.options,
+    ['public']
+  );
+  assert.equal(validation['runs-on'], 'ubuntu-24.04');
   assert.equal(
     release.concurrency.group,
     '${{ github.workflow }}-${{ github.event_name }}-${{ inputs.tag || github.ref_name }}-${{ github.run_id }}'
@@ -969,11 +955,11 @@ test('release assets support trusted reuse and main-only manual dispatch', () =>
   assert.equal(assets.jobs.build['timeout-minutes'], 45);
   assert.equal(
     resolve.if,
-    "github.ref == 'refs/heads/main' && inputs.action_tag == 'release' && inputs.runner_pool_tag == 'private'"
+    "github.ref == 'refs/heads/main' && inputs.action_tag == 'release' && inputs.runner_pool_tag == 'public'"
   );
   assert.equal(
     assets.jobs.build.if,
-    "github.ref == 'refs/heads/main' && inputs.action_tag == 'release' && inputs.runner_pool_tag == 'private'"
+    "github.ref == 'refs/heads/main' && inputs.action_tag == 'release' && inputs.runner_pool_tag == 'public'"
   );
   assert.equal(workflowCall.inputs.reuse_windows_x64_artifact.type, 'boolean');
   assert.equal(
@@ -1188,37 +1174,43 @@ test('release assets build supported native archive platforms', () => {
   assert.deepEqual(build.strategy.matrix.include, [
     {
       runner_key: 'linux-x64',
+      runner_label: 'ubuntu-24.04',
       os: 'linux',
       arch: 'x64',
       pnpm_version: '10.24.0',
     },
     {
       runner_key: 'linux-arm64',
+      runner_label: 'ubuntu-24.04-arm',
       os: 'linux',
       arch: 'arm64',
       pnpm_version: '10.24.0',
     },
     {
       runner_key: 'macos-arm64',
+      runner_label: 'macos-15',
       os: 'macos',
       arch: 'arm64',
       pnpm_version: '10.24.0',
     },
     {
       runner_key: 'macos-x64',
+      runner_label: 'macos-26-intel',
       os: 'macos',
       arch: 'x64',
       pnpm_version: '10.24.0',
     },
     {
       runner_key: 'windows-x64',
+      runner_label: 'windows-2025',
       os: 'windows',
       arch: 'x64',
       pnpm_version: '10.24.0',
-      msvs_version: 'auto',
+      msvs_version: '2026',
     },
     {
       runner_key: 'windows-arm64',
+      runner_label: 'windows-11-vs2026-arm',
       os: 'windows',
       arch: 'arm64',
       pnpm_version: '10.24.0',
@@ -1271,8 +1263,7 @@ test('release assets build supported native archive platforms', () => {
   );
   const iosBuild = assets.jobs['build-ios'];
   assert.equal(iosBuild.needs, 'resolve');
-  assert.match(iosBuild['runs-on'], /"group":"private-apple-builds"/u);
-  assert.match(iosBuild['runs-on'], /"private-apple"/u);
+  assert.equal(iosBuild['runs-on'], 'xcode-27');
   const iosToolchainCheck = iosBuild.steps.find(
     (step) => step.name === 'Verify Xcode release toolchain'
   ).run;
@@ -1288,12 +1279,9 @@ test('release assets build supported native archive platforms', () => {
   assert.deepEqual(Object.keys(iosClientWorkflow.on), ['workflow_dispatch']);
   assert.deepEqual(
     iosClientWorkflow.on.workflow_dispatch.inputs.runner_pool_tag.options,
-    ['private']
+    ['public']
   );
-  assert.match(
-    iosClientWorkflow.jobs.ios['runs-on'],
-    /"group":"private-apple-builds"[\s\S]*"private-apple"/u
-  );
+  assert.equal(iosClientWorkflow.jobs.ios['runs-on'], 'xcode-27');
   const iosSetupNode = iosClientWorkflow.jobs.ios.steps.findIndex((step) =>
     step.uses?.startsWith('actions/setup-node@')
   );
@@ -1417,26 +1405,15 @@ test('release assets build supported native archive platforms', () => {
   assert.match(requiredAssets, /seerrng-\$\{TAG\}-android-aab\.sha256/u);
 });
 
-test('trusted main release retries use the private runner pools', () => {
+test('trusted main release retries use public hosted runners across platforms', () => {
   const release = readWorkflow('release.yml');
   const assets = readWorkflow('release-assets.yml');
-  const assertPrivateLinuxRunner = (runsOn, label) => {
-    assert.match(runsOn, /"group":"ng-shared-main-jit"/u, label);
-    assert.match(runsOn, /"ng-shared-main-seerrng"/u, label);
-    assert.match(runsOn, /github\.run_id/u, label);
-    assert.match(runsOn, /gha-\{0\}-(?:\{1\}-)?[a-z0-9-]+/u, label);
-    assert.doesNotMatch(
-      runsOn,
-      /(?:ubuntu|windows|macos)-\d|\|\|\s*matrix\.runner(?:\W|$)/u,
-      `${label} must not fall back to a hosted runner`
-    );
-  };
   const releaseJobs = Object.values(release.jobs).filter(
     (job) => typeof job['runs-on'] === 'string'
   );
   assert.equal(releaseJobs.length, 14);
   for (const job of releaseJobs) {
-    assertPrivateLinuxRunner(job['runs-on'], 'release.yml job');
+    assert.equal(job['runs-on'], 'ubuntu-24.04');
   }
 
   for (const jobName of [
@@ -1445,13 +1422,9 @@ test('trusted main release retries use the private runner pools', () => {
     'build-jellyfin-plugin',
     'publish',
   ]) {
-    assertPrivateLinuxRunner(assets.jobs[jobName]['runs-on'], jobName);
+    assert.equal(assets.jobs[jobName]['runs-on'], 'ubuntu-24.04', jobName);
   }
-  assert.match(
-    assets.jobs['build-ios']['runs-on'],
-    /"group":"private-apple-builds"[\s\S]*"private-apple"/u
-  );
-  assert.doesNotMatch(assets.jobs['build-ios']['runs-on'], /macos-\d/u);
+  assert.equal(assets.jobs['build-ios']['runs-on'], 'xcode-27');
   assert.equal(
     assets.jobs.build.steps.find((step) =>
       step.uses?.startsWith('actions/setup-node@')
@@ -1466,11 +1439,11 @@ test('trusted main release retries use the private runner pools', () => {
   );
 });
 
-test('main CI image publishing uses private runners without cancelling queued scans', () => {
+test('main CI image publishing uses hosted runners without cancelling queued scans', () => {
   const ci = readWorkflow('ci.yml');
   const imagePublish = ci.jobs.publish;
 
-  assert.match(imagePublish['runs-on'], /ng-shared-main-seerrng/u);
+  assert.equal(imagePublish['runs-on'], 'ubuntu-24.04');
   assert.equal(imagePublish.concurrency['cancel-in-progress'], false);
 
   for (const name of ['semgrep-community.yml', 'trivy-filesystem.yml']) {
@@ -1490,156 +1463,43 @@ test('main CI image publishing uses private runners without cancelling queued sc
       Object.values(workflow.jobs)
         .map((job) => job['runs-on'])
         .join('\n'),
-      /ng-shared-main-seerrng/u,
-      `${name} main scan must use the private runner pool`
+      /ubuntu-24\.04/u,
+      `${name} scan must use a GitHub-hosted runner`
     );
   }
 });
 
-test('release archive platforms route only to private native runners', () => {
-  const expression = readWorkflow('release-assets.yml').jobs.build['runs-on'];
-  const route = (runnerKey) =>
-    runInNewContext(
-      expression.slice(3, -2),
-      {
-        github: { run_id: 123 },
-        matrix: { runner_key: runnerKey },
-        strategy: { job: 2 },
-        index: 0,
-        fromJSON: JSON.parse,
-        format: (template, runId, jobIndex) =>
-          template
-            .replaceAll('{{', '{')
-            .replaceAll('}}', '}')
-            .replaceAll('{0}', String(runId))
-            .replaceAll('{1}', String(jobIndex)),
-      },
-      { timeout: 100 }
-    );
-
-  const assertRoute = (key, group, labels) => {
-    const target = route(key);
-    assert.equal(target.group, group, key);
-    assert.deepEqual(target.labels, labels, key);
-  };
-
-  assertRoute('linux-x64', 'ng-shared-main-jit', [
-    'self-hosted',
-    'linux',
-    'x64',
-    'ng-shared-main-seerrng',
-    'ng-main-run-123',
-    'gha-123-2-build',
-  ]);
-  assertRoute('linux-arm64', 'ng-shared-main-jit', [
-    'self-hosted',
-    'linux',
-    'arm64',
-    'ng-shared-main-seerrng',
-    'ng-main-run-123',
-    'gha-123-2-build',
-  ]);
-  assertRoute('macos-arm64', 'private-apple-builds', [
-    'self-hosted',
-    'macOS',
-    'ARM64',
-    'private-apple',
-    'ng-main-run-123',
-    'gha-123-2-build',
-  ]);
-  assertRoute('macos-x64', 'private-apple-builds', [
-    'self-hosted',
-    'macOS',
-    'X64',
-    'private-apple',
-    'ng-main-run-123',
-    'gha-123-2-build',
-  ]);
-  assertRoute('windows-x64', 'packer-windows', [
-    'self-hosted',
-    'Windows',
-    'X64',
-    'on-demand',
-    'packer-windows',
-    'seerrng',
-    'gha-123-2-build',
-  ]);
-  assertRoute('windows-arm64', 'packer-windows', [
-    'self-hosted',
-    'Windows',
-    'ARM64',
-    'on-demand',
-    'packer-windows',
-    'seerrng',
-    'gha-123-2-build',
-  ]);
-  assert.equal(route('unknown'), false);
-  assert.doesNotMatch(expression, /matrix\.runner(?:\W|$)/u);
-  assert.doesNotMatch(expression, /ubuntu-latest|windows-latest|macos-\d/u);
+test('release archive platforms use native public hosted runner labels', () => {
+  const build = readWorkflow('release-assets.yml').jobs.build;
+  assert.equal(build['runs-on'], '${{ matrix.runner_label }}');
+  const runnerLabels = Object.fromEntries(
+    build.strategy.matrix.include.map(({ runner_key, runner_label }) => [
+      runner_key,
+      runner_label,
+    ])
+  );
+  assert.deepEqual(runnerLabels, {
+    'linux-x64': 'ubuntu-24.04',
+    'linux-arm64': 'ubuntu-24.04-arm',
+    'macos-arm64': 'macos-15',
+    'macos-x64': 'macos-26-intel',
+    'windows-x64': 'windows-2025',
+    'windows-arm64': 'windows-11-vs2026-arm',
+  });
 });
 
-test('trusted main iOS validation requires a run-scoped private Apple JIT runner', () => {
+test('trusted main iOS validation uses a GitHub-hosted macOS runner', () => {
   const ios = readWorkflow('ios.yml');
   assert.deepEqual(Object.keys(ios.on), ['workflow_dispatch']);
   assert.deepEqual(ios.on.workflow_dispatch.inputs.runner_pool_tag.options, [
-    'private',
+    'public',
   ]);
-  const expression = ios.jobs.ios['runs-on'];
-  const route = runInNewContext(
-    expression.slice(3, -2),
-    {
-      github: { run_id: 123 },
-      fromJSON: JSON.parse,
-      format: (template, runId) =>
-        template
-          .replaceAll('{{', '{')
-          .replaceAll('}}', '}')
-          .replaceAll('{0}', String(runId)),
-    },
-    { timeout: 100 }
-  );
-  assert.deepEqual(route, {
-    group: 'private-apple-builds',
-    labels: [
-      'self-hosted',
-      'macOS',
-      'ARM64',
-      'private-apple',
-      'ng-main-run-123',
-      'gha-123-build-ios',
-    ],
-  });
-  assert.doesNotMatch(expression, /macos-\d|\|\|/u);
+  assert.equal(ios.jobs.ios['runs-on'], 'xcode-27');
 });
 
-test('release iOS package requires a run-scoped private Apple JIT runner', () => {
+test('release iOS package uses a GitHub-hosted macOS runner', () => {
   const releaseAssets = readWorkflow('release-assets.yml');
-  const expression = releaseAssets.jobs['build-ios']['runs-on'];
-  const route = runInNewContext(
-    expression.slice(3, -2),
-    {
-      github: { run_id: 123 },
-      fromJSON: JSON.parse,
-      format: (template, runId) =>
-        template
-          .replaceAll('{{', '{')
-          .replaceAll('}}', '}')
-          .replaceAll('{0}', String(runId)),
-    },
-    { timeout: 100 }
-  );
-  assert.deepEqual(route, {
-    group: 'private-apple-builds',
-    labels: [
-      'self-hosted',
-      'macOS',
-      'ARM64',
-      'private-apple',
-      'ng-main-run-123',
-      'gha-123-build-ios',
-    ],
-  });
-  assert.doesNotMatch(expression, /macos-\d|\|\|/u);
+  assert.equal(releaseAssets.jobs['build-ios']['runs-on'], 'xcode-27');
 });
 
 test('release notes flow into the draft release and Discord announcement', () => {

@@ -1,4 +1,4 @@
-# ng-runner-policy: private-jit-only-v1
+# ng-runner-policy: github-hosted-primary-v1
 name: Semgrep Community Edition
 run-name: ${{ format('action:{0}:pool:{1}', inputs.action_tag, inputs.runner_pool_tag) }}
 
@@ -12,12 +12,11 @@ on:
         options:
           - semgrep
       runner_pool_tag:
-        description: Private ephemeral JIT runner pool
+        description: GitHub-hosted runner pool
         required: true
         type: choice
         options:
-          - private
-
+          - public
 permissions:
   contents: read
 
@@ -28,7 +27,7 @@ concurrency:
 jobs:
   semgrep:
     name: Semgrep CE (community rules)
-    runs-on: ${{ fromJSON(format('{{"group":"ng-shared-main-jit","labels":["self-hosted","linux","x64","ng-shared-main-seerrng","ng-main-run-{0}","gha-{0}-semgrep"]}}', github.run_id)) }}
+    runs-on: ubuntu-24.04
     timeout-minutes: 30
     steps:
       - name: Checkout

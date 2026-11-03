@@ -43,15 +43,17 @@ Commit that preparation to `main`, push the matching `v*` tag from that commit,
 then start the release from `main`:
 
 ```sh
-gh workflow run release.yml -R snapetech-org/seerrng --ref main -f tag=vX.Y.Z
+gh workflow run release.yml -R snapetech-org/seerrng --ref main \
+  -f action_tag=release -f runner_pool_tag=public -f tag=vX.Y.Z
 ```
 
-The tag push alone starts nothing. Release runs are dispatched from `main`
-because the private JIT broker only serves runs on `main`; a tag-push run would
-queue on the private group forever, and the release must not fall back to paid
-or hosted runners. The workflow checks that the tag points into `main` and has
-not been published, generates the release notes, builds the release assets, and
-publishes the release. There is no separate tag-creation workflow.
+The tag push alone starts nothing. Release runs are dispatched from `main` to
+validate tag ancestry against the current main branch. Standard GitHub-hosted
+runners are the default for release validation, image publication, signing,
+assets, and package-channel dispatch. The workflow checks that the tag points
+into `main` and has not been published, generates the release notes, builds the
+release assets, and publishes the release. There is no separate tag-creation
+workflow.
 
 `npm version X.Y.Z --ignore-scripts --no-git-tag-version` updates the
 application version. `node scripts/update-helm-release-metadata.mjs vX.Y.Z`
@@ -78,7 +80,8 @@ this when a post-tag publishing step fails; it checks out the requested tag,
 reuses its changelog and image version, and does not move the tag:
 
 ```bash
-gh workflow run release.yml --repo snapetech-org/seerrng --ref main -f tag=v3.12.8
+gh workflow run release.yml --repo snapetech-org/seerrng --ref main \
+  -f action_tag=release -f runner_pool_tag=public -f tag=v3.12.8
 ```
 
 The tag must already point to a commit contained in `main`. After dispatching,

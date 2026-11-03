@@ -1,11 +1,11 @@
-# ng-runner-policy: private-jit-only-v1
+# ng-runner-policy: github-hosted-primary-v1
 ---
 # yaml-language-server: $schema=https://json.schemastore.org/github-workflow.json
 name: SeerrNG CI
 run-name: >-
   ${{ github.event_name == 'workflow_dispatch' && inputs.pr_number != '' &&
       format('owner-pr:{0}:{1}:{2}:action:{3}:pool:{4}', inputs.pr_number, inputs.pr_sha, inputs.target_run_id, inputs.action, inputs.runner_pool) ||
-      format('action:{0}:pool:{1}', inputs.action || 'ci', inputs.runner_pool || 'private') }}
+      format('action:{0}:pool:{1}', inputs.action || 'ci', inputs.runner_pool || 'public') }}
 
 on:
   pull_request_target:
@@ -19,10 +19,10 @@ on:
         required: true
         options: [ci, publish-image]
       runner_pool:
-        description: Private ephemeral JIT runner pool
+        description: GitHub-hosted runner pool
         type: choice
         required: true
-        options: [private]
+        options: [public]
       pr_number:
         description: Trusted owner PR number (set only by the metadata dispatcher)
         type: string
@@ -56,13 +56,13 @@ jobs:
       (startsWith(github.event.label.name, 'action:') ||
        startsWith(github.event.label.name, 'pool:')) &&
       contains(github.event.pull_request.labels.*.name, 'action:ci') &&
-      contains(github.event.pull_request.labels.*.name, 'pool:private') &&
+      contains(github.event.pull_request.labels.*.name, 'pool:public') &&
       github.actor == 'snapetech' &&
       github.event.pull_request.user.login == 'snapetech' &&
       github.event.pull_request.head.repo.full_name == github.repository &&
       github.event.pull_request.head.repo.id == github.repository_id &&
       github.event.pull_request.base.ref == 'main'
-    runs-on: ${{ fromJSON(format('{{"group":"ng-shared-main-jit","labels":["self-hosted","linux","x64","ng-shared-main-packer","ng-main-run-{0}","gha-{0}-owner-pr-dispatcher"]}}', github.run_id)) }}
+    runs-on: ubuntu-24.04
     permissions:
       actions: write
       contents: none
@@ -96,8 +96,8 @@ jobs:
               label for label in labels
               if isinstance(label, str) and label.startswith("pool:")
           ]
-          if action_labels != ["action:ci"] or pool_labels != ["pool:private"]:
-              raise SystemExit("add exactly action:ci and pool:private labels")
+          if action_labels != ["action:ci"] or pool_labels != ["pool:public"]:
+              raise SystemExit("add exactly action:ci and pool:public labels")
           if repository != "snapetech-org/seerrng":
               raise SystemExit("unexpected repository")
           if not re.fullmatch(r"[1-9][0-9]*", number):
@@ -111,7 +111,7 @@ jobs:
               "ref": "main",
               "inputs": {
                   "action": "ci",
-                  "runner_pool": "private",
+                  "runner_pool": "public",
                   "pr_number": number,
                   "pr_sha": sha,
                   "target_run_id": target_run_id,
@@ -137,7 +137,7 @@ jobs:
     if: github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main' && inputs.pr_number == '' && (inputs.action == 'ci' || inputs.action == 'publish-image')
     name: Release-note contract
     timeout-minutes: 10
-    runs-on: ${{ fromJSON(format('{{"group":"ng-shared-main-jit","labels":["self-hosted","linux","x64","ng-shared-main-seerrng","ng-main-run-{0}","gha-{0}-release-notes"]}}', github.run_id)) }}
+    runs-on: ubuntu-24.04
     steps:
       - name: Checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -184,7 +184,7 @@ jobs:
        (inputs.pr_number == '' && (inputs.action == 'ci' || inputs.action == 'publish-image')))
     name: i18n and tooling tests
     timeout-minutes: 45
-    runs-on: ${{ fromJSON(format('{{"group":"ng-shared-main-jit","labels":["self-hosted","linux","x64","ng-shared-main-seerrng","ng-main-run-{0}","gha-{0}-i18n-and-tooling"]}}', github.run_id)) }}
+    runs-on: ubuntu-24.04
     services:
       postgres:
         image: postgres:16-alpine@sha256:57c72fd2a128e416c7fcc499958864df5301e940bca0a56f58fddf30ffc07777
@@ -244,7 +244,7 @@ jobs:
        (inputs.pr_number == '' && (inputs.action == 'ci' || inputs.action == 'publish-image')))
     name: Lint, typecheck, and production build
     timeout-minutes: 60
-    runs-on: ${{ fromJSON(format('{{"group":"ng-shared-main-jit","labels":["self-hosted","linux","x64","ng-shared-main-seerrng","ng-main-run-{0}","gha-{0}-test"]}}', github.run_id)) }}
+    runs-on: ubuntu-24.04
     steps:
       - name: Checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -291,22 +291,16 @@ jobs:
        (inputs.pr_number == '' && (inputs.action == 'ci' || inputs.action == 'publish-image')))
     name: Vitest shard ${{ matrix.shard }} of 4
     timeout-minutes: 75
-    # Owner-PR labels: gha-{0}-unit-test-shard-1, gha-{0}-unit-test-shard-2,
-    # gha-{0}-unit-test-shard-3, gha-{0}-unit-test-shard-4.
-    runs-on: ${{ fromJSON(format('{{"group":"ng-shared-main-jit","labels":["self-hosted","linux","x64","ng-shared-main-seerrng","ng-main-run-{0}","gha-{0}-{1}"]}}', github.run_id, inputs.pr_number != '' && matrix.owner_pr_suffix || format('{0}-unit-test', strategy.job-index))) }}
+    runs-on: ubuntu-24.04
     strategy:
       fail-fast: false
       max-parallel: 4
       matrix:
         include:
           - shard: 1
-            owner_pr_suffix: unit-test-shard-1
           - shard: 2
-            owner_pr_suffix: unit-test-shard-2
           - shard: 3
-            owner_pr_suffix: unit-test-shard-3
           - shard: 4
-            owner_pr_suffix: unit-test-shard-4
     container:
       image: node:24.22.1-bookworm@sha256:6449e19d8184d84062525b6a7524def03146c2cb04a7f08b076680d0e8e4240a
     steps:
@@ -342,7 +336,7 @@ jobs:
        (inputs.pr_number == '' && (inputs.action == 'ci' || inputs.action == 'publish-image')))
     name: Native TypeScript tests
     timeout-minutes: 75
-    runs-on: ${{ fromJSON(format('{{"group":"ng-shared-main-jit","labels":["self-hosted","linux","x64","ng-shared-main-seerrng","ng-main-run-{0}","gha-{0}-node-test"]}}', github.run_id)) }}
+    runs-on: ubuntu-24.04
     container:
       image: node:24.22.1-bookworm@sha256:6449e19d8184d84062525b6a7524def03146c2cb04a7f08b076680d0e8e4240a
     steps:
@@ -378,7 +372,7 @@ jobs:
        (inputs.pr_number == '' && (inputs.action == 'ci' || inputs.action == 'publish-image')))
     name: Build and smoke test Jellyfin bridge plugin
     timeout-minutes: 30
-    runs-on: ${{ fromJSON(format('{{"group":"ng-shared-main-jit","labels":["self-hosted","linux","x64","ng-shared-main-seerrng","ng-main-run-{0}","gha-{0}-jellyfin-plugin"]}}', github.run_id)) }}
+    runs-on: ubuntu-24.04
     steps:
       - name: Checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -417,7 +411,7 @@ jobs:
        (inputs.pr_number == '' && (inputs.action == 'ci' || inputs.action == 'publish-image')))
     name: Playwright browser tests
     timeout-minutes: 60
-    runs-on: ${{ fromJSON(format('{{"group":"ng-shared-main-jit","labels":["self-hosted","linux","x64","ng-shared-main-seerrng","ng-main-run-{0}","gha-{0}-playwright"]}}', github.run_id)) }}
+    runs-on: ubuntu-24.04
     permissions:
       contents: read
     env:
@@ -528,10 +522,10 @@ jobs:
     if: >-
       always() && github.event_name == 'workflow_dispatch' &&
       github.ref == 'refs/heads/main' && inputs.action == 'ci' &&
-      inputs.runner_pool == 'private' && inputs.pr_number != '' &&
+      inputs.runner_pool == 'public' && inputs.pr_number != '' &&
       inputs.pr_sha != '' && inputs.target_run_id != '' &&
       github.actor == 'github-actions[bot]'
-    runs-on: ${{ fromJSON(format('{{"group":"ng-shared-main-jit","labels":["self-hosted","linux","x64","ng-shared-main-seerrng","ng-main-run-{0}","gha-{0}-owner-pr-reporter"]}}', github.run_id)) }}
+    runs-on: ubuntu-24.04
     permissions:
       checks: write
       contents: none
@@ -613,11 +607,11 @@ jobs:
       - helm
     if: >-
       github.ref == 'refs/heads/main' && inputs.pr_number == '' &&
-      inputs.action == 'publish-image' && inputs.runner_pool == 'private'
+      inputs.action == 'publish-image' && inputs.runner_pool == 'public'
     concurrency:
       group: seerrng-main-image-publish
       cancel-in-progress: false
-    runs-on: ${{ fromJSON(format('{{"group":"ng-shared-main-jit","labels":["self-hosted","linux","x64","ng-shared-main-seerrng","ng-main-run-{0}","gha-{0}-publish"]}}', github.run_id)) }}
+    runs-on: ubuntu-24.04
     permissions:
       contents: read
       packages: write
@@ -789,9 +783,9 @@ jobs:
     name: Scan main image (${{ matrix.platform }})
     if: >-
       github.ref == 'refs/heads/main' && inputs.pr_number == '' &&
-      inputs.action == 'publish-image' && inputs.runner_pool == 'private' && needs.publish.result == 'success'
+      inputs.action == 'publish-image' && inputs.runner_pool == 'public' && needs.publish.result == 'success'
     needs: [publish]
-    runs-on: ${{ fromJSON(format('{{"group":"ng-shared-main-jit","labels":["self-hosted","linux","x64","ng-shared-main-seerrng","ng-main-run-{0}","gha-{0}-{1}-scan-main-image"]}}', github.run_id, strategy.job-index)) }}
+    runs-on: ubuntu-24.04
     strategy:
       fail-fast: false
       matrix:

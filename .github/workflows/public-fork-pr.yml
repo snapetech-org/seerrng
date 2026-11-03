@@ -1,21 +1,36 @@
+# ng-runner-policy: github-hosted-primary-v1
 name: SeerrNG public-fork validation
+run-name: action:ci:pool:public:fork
+
 on:
   pull_request:
     branches: [main]
-    types: [opened, synchronize, reopened, ready_for_review]
+    types: [labeled]
+
 permissions:
   contents: read
+  pull-requests: read
+
 concurrency:
   group: public-fork-pr-${{ github.event.pull_request.number }}
   cancel-in-progress: false
+
 jobs:
   validate:
     name: Run disposable fork validation
     if: >-
+      github.event.action == 'labeled' &&
+      github.actor == 'snapetech' &&
+      (startsWith(github.event.label.name, 'action:') ||
+       startsWith(github.event.label.name, 'pool:')) &&
+      contains(github.event.pull_request.labels.*.name, 'action:ci') &&
+      (contains(github.event.pull_request.labels.*.name, 'pool:public') ||
+       contains(github.event.pull_request.labels.*.name, 'pool:hybrid')) &&
       github.event.pull_request.head.repo.fork == true &&
       github.event.pull_request.head.repo.full_name != github.event.pull_request.base.repo.full_name &&
       github.event.pull_request.base.repo.full_name == 'snapetech-org/seerrng' &&
       github.event.pull_request.base.ref == 'main'
     permissions:
       contents: read
-    uses: snapetech-org/seerrng/.github/workflows/fork-safe-validation.yml@d16fbeb3111e5550b3d38821d15e903df6c1f915
+      pull-requests: read
+    uses: snapetech-org/seerrng/.github/workflows/fork-safe-validation.yml@597505c7eb084d9ededb4e9aedd203220cc4d882
