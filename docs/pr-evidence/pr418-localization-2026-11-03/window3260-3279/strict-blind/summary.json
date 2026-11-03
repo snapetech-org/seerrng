@@ -1,0 +1,19 @@
+{
+  "repository": "snapetech-org/seerrng",
+  "pullRequest": 418,
+  "window": "W3260-W3279",
+  "status": "sealed strict-blind root review; no primary packet opened and no repo or PR changes made",
+  "inputHead": "4cfcda2cb279ab056b46df4779aaadf8313c4594",
+  "inputTree": "4f6b1921a48aefe444c81d317a0f3ae265707bcc",
+  "cellCount": 240,
+  "sourceCount": 20,
+  "localeCount": 12,
+  "dispositions": {
+    "accept-current": 187,
+    "refinement": 33,
+    "correction": 20
+  },
+  "targetChanges": 53,
+  "placeholderParity": true,
+  "nativeSpeakerReview": false
+}

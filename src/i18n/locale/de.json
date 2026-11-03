@@ -3267,7 +3267,7 @@
   "components.RequestStatus.preparingBookServiceAcquisition": "Der verbundene Buchdienst kümmert sich um die Beschaffung dieses Titels. SeerrNG aktualisiert die Verfügbarkeit, sobald das Buch in seiner Bibliothek erscheint.",
   "components.RequestStatus.preparingBookshelfSearch": "SeerrNG bereitet eine Bookshelf-Suche für diesen Titel vor. Die Verfügbarkeit wird aktualisiert, sobald ein Bibliotheksscan das Buch findet.",
   "components.RequestStatus.preparingEbook": "ChaptarrNG bereitet das angeforderte E-Book vor, während es den Autor importiert.",
-  "components.RequestStatus.remove": "Löschen aus Bibliothek",
+  "components.RequestStatus.remove": "Aus der Bibliothek löschen",
   "components.RequestStatus.removeDescription": "Dadurch werden die Mediendateien dauerhaft gelöscht und der Bibliothekseintrag aus {service} entfernt. Diese Aktion kann in Seerr nicht rückgängig gemacht werden. Andere Qualitätsversionen bleiben erhalten. Sobald bestätigt ist, dass die letzte Film- oder Serienkopie entfernt wurde, löscht der Bibliotheksabgleich auch die zugehörigen Anfragen und Meldungen; Sperr- und Merkliste bleiben jedoch erhalten.",
   "components.RequestStatus.removeFailed": "Dieses Element kann nicht aus dem Bibliotheksdienst gelöscht werden.",
   "components.RequestStatus.removeSuccess": "Element aus dem zugehörigen Mediendienst gelöscht.",

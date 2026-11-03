@@ -1,0 +1,20 @@
+{
+  "repository": "snapetech-org/seerrng",
+  "pullRequest": 418,
+  "window": "W3260-W3279",
+  "status": "sealed independent third review; derived only from frozen clean input; root/primary packets remained closed",
+  "inputHead": "4cfcda2cb279ab056b46df4779aaadf8313c4594",
+  "inputTree": "4f6b1921a48aefe444c81d317a0f3ae265707bcc",
+  "inputWindowSha256": "9dc3816bc7bbe26272c1b5c95e88429633fda7dbb2651c96aabdea7ec2d4e961",
+  "cellCount": 240,
+  "sourceCount": 20,
+  "localeCount": 12,
+  "dispositions": {
+    "accept-current": 177,
+    "refinement": 29,
+    "correction": 34
+  },
+  "targetChanges": 63,
+  "placeholderParity": true,
+  "nativeSpeakerReview": false
+}
