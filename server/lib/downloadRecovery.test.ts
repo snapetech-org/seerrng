@@ -138,6 +138,24 @@ describe('isSeedlessStall', () => {
   });
 
   it('leaves a slow download that still has seeds alone', () => {
-    assert.equal(isSeedlessStall(base), false);
+    assert.equal(
+      isSeedlessStall({
+        ...base,
+        status: 'stalled',
+        errorMessage: 'The download is stalled',
+      }),
+      false
+    );
+  });
+
+  it('does not treat a Usenet connection warning as a seedless torrent', () => {
+    assert.equal(
+      isSeedlessStall({
+        ...base,
+        protocol: 'usenet',
+        errorMessage: 'No connections available',
+      }),
+      false
+    );
   });
 });

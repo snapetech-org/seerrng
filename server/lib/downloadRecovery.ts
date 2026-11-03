@@ -84,12 +84,11 @@ const getQueueMessageText = (item: RecoveryQueueItem): string =>
 
 // Download clients report a torrent with no seeds as stalled, e.g. qBittorrent's
 // "The download is stalled with no connections". Slow downloads are left alone.
-const seedlessStallPattern = /\b(stalled|no connections|no seeds?)\b/i;
+const seedlessStallPattern = /\bno (?:connections?|seeds?)\b/i;
 
 export const isSeedlessStall = (item: RecoveryQueueItem): boolean =>
-  seedlessStallPattern.test(
-    [item.status, getQueueMessageText(item)].filter(Boolean).join(' ')
-  );
+  normalize(item.protocol) === 'torrent' &&
+  seedlessStallPattern.test(getQueueMessageText(item));
 
 const getQueueFingerprint = (item: RecoveryQueueItem): string =>
   [
