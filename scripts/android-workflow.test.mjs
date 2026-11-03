@@ -39,19 +39,14 @@ test('Android workflow builds, tests on an emulator, and creates a debug APK', (
   );
 
   assert.deepEqual(workflow.permissions, { contents: 'read' });
-  for (const runner of [job['runs-on'], releaseJob['runs-on']]) {
-    assert.match(runner, /"group":"ng-shared-main-jit"/u);
-    assert.match(runner, /"ng-shared-main-seerrng"/u);
-    assert.match(runner, /"ng-main-run-\{0\}"/u);
-    assert.match(runner, /github\.run_id/u);
-    assert.doesNotMatch(runner, /(?:ubuntu|macos|windows)-latest/u);
-  }
+  assert.equal(job['runs-on'], 'ubuntu-24.04');
+  assert.equal(releaseJob['runs-on'], 'ubuntu-24.04');
   assert.equal(workflow.on.push, undefined);
   assert.equal(Object.hasOwn(workflow.on, 'pull_request'), false);
   assert.ok(Object.hasOwn(workflow.on, 'workflow_dispatch'));
   assert.deepEqual(
     workflow.on.workflow_dispatch.inputs.runner_pool_tag.options,
-    ['private']
+    ['public']
   );
   assert.doesNotMatch(JSON.stringify(job), /secrets\.ANDROID_KEYSTORE_/u);
   assert.equal(releaseJob.needs, 'android');

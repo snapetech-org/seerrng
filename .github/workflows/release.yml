@@ -1,5 +1,4 @@
-# ng-runner-policy: private-jit-only-v1
-# packer-windows-jit-v1
+# ng-runner-policy: github-hosted-primary-v1
 ---
 # yaml-language-server: $schema=https://json.schemastore.org/github-workflow.json
 name: SeerrNG Release
@@ -15,11 +14,11 @@ on:
         options:
           - release
       runner_pool_tag:
-        description: Private ephemeral JIT runner pool
+        description: GitHub-hosted runner pool
         required: true
         type: choice
         options:
-          - private
+          - public
       tag:
         description: Release tag to publish or retry
         required: true
@@ -67,7 +66,7 @@ jobs:
   validate-main-tag:
     name: Validate main release tag
     if: github.event_name != 'workflow_dispatch' || (github.ref == 'refs/heads/main' && inputs.announce_security_correction != true)
-    runs-on: ${{ fromJSON(format('{{"group":"ng-shared-main-jit","labels":["self-hosted","linux","x64","ng-shared-main-seerrng","ng-main-run-{0}","gha-{0}-validate-main-tag"]}}', github.run_id)) }}
+    runs-on: ubuntu-24.04
     timeout-minutes: 10
     permissions:
       actions: read
@@ -129,7 +128,7 @@ jobs:
                 exit 1
               }
             else
-              # Fresh release started from main so it runs on the private runners.
+              # Start the release from main so tag ancestry is checked against the current base.
               published="$(gh release view "$RELEASE_TAG" --repo "$GITHUB_REPOSITORY" --json isDraft --jq '.isDraft' 2>/dev/null || echo missing)"
               [[ "$published" != false ]] || {
                 echo "::error::$RELEASE_TAG is already published; use recovery inputs or announce_security_correction instead."
@@ -350,7 +349,7 @@ jobs:
     if: (github.event_name == 'push' || (github.event_name == 'workflow_dispatch' && inputs.reuse_from_run_id == '' && inputs.announce_security_correction != true))
     needs: validate-main-tag
     timeout-minutes: 10
-    runs-on: ${{ fromJSON(format('{{"group":"ng-shared-main-jit","labels":["self-hosted","linux","x64","ng-shared-main-seerrng","ng-main-run-{0}","gha-{0}-changelog"]}}', github.run_id)) }}
+    runs-on: ubuntu-24.04
     permissions:
       contents: read
     outputs:
@@ -427,7 +426,7 @@ jobs:
     name: Create draft release
     if: (github.event_name == 'push' || (github.event_name == 'workflow_dispatch' && inputs.reuse_from_run_id == '' && inputs.announce_security_correction != true))
     timeout-minutes: 10
-    runs-on: ${{ fromJSON(format('{{"group":"ng-shared-main-jit","labels":["self-hosted","linux","x64","ng-shared-main-seerrng","ng-main-run-{0}","gha-{0}-create-draft-release"]}}', github.run_id)) }}
+    runs-on: ubuntu-24.04
     permissions:
       contents: write
     needs: changelog
@@ -477,7 +476,7 @@ jobs:
     if: (github.event_name == 'push' || (github.event_name == 'workflow_dispatch' && inputs.reuse_from_run_id == '' && inputs.announce_security_correction != true))
     needs: [validate-main-tag, create-draft-release]
     timeout-minutes: 90
-    runs-on: ${{ fromJSON(format('{{"group":"ng-shared-main-jit","labels":["self-hosted","linux","x64","ng-shared-main-seerrng","ng-main-run-{0}","gha-{0}-publish"]}}', github.run_id)) }}
+    runs-on: ubuntu-24.04
     permissions:
       contents: read
       packages: write
@@ -648,7 +647,7 @@ jobs:
     name: Scan release image (${{ matrix.platform }})
     if: (github.event_name == 'push' || (github.event_name == 'workflow_dispatch' && inputs.reuse_from_run_id == '' && inputs.announce_security_correction != true))
     needs: publish
-    runs-on: ${{ fromJSON(format('{{"group":"ng-shared-main-jit","labels":["self-hosted","linux","x64","ng-shared-main-seerrng","ng-main-run-{0}","gha-{0}-{1}-scan-release-image"]}}', github.run_id, strategy.job-index)) }}
+    runs-on: ubuntu-24.04
     timeout-minutes: 30
     strategy:
       fail-fast: false
@@ -717,7 +716,7 @@ jobs:
     if: (github.event_name == 'push' || (github.event_name == 'workflow_dispatch' && inputs.reuse_from_run_id == '' && inputs.announce_security_correction != true))
     needs: [publish, scan-release-image]
     timeout-minutes: 20
-    runs-on: ${{ fromJSON(format('{{"group":"ng-shared-main-jit","labels":["self-hosted","linux","x64","ng-shared-main-seerrng","ng-main-run-{0}","gha-{0}-sign"]}}', github.run_id)) }}
+    runs-on: ubuntu-24.04
     permissions:
       contents: read
       id-token: write
@@ -874,7 +873,7 @@ jobs:
     if: (github.event_name == 'push' || (github.event_name == 'workflow_dispatch' && inputs.reuse_from_run_id == '' && inputs.announce_security_correction != true))
     needs: [publish, sign]
     timeout-minutes: 15
-    runs-on: ${{ fromJSON(format('{{"group":"ng-shared-main-jit","labels":["self-hosted","linux","x64","ng-shared-main-seerrng","ng-main-run-{0}","gha-{0}-verify"]}}', github.run_id)) }}
+    runs-on: ubuntu-24.04
     permissions:
       contents: read
       packages: read
@@ -993,7 +992,7 @@ jobs:
         dispatch-package-channels
       ]
     timeout-minutes: 10
-    runs-on: ${{ fromJSON(format('{{"group":"ng-shared-main-jit","labels":["self-hosted","linux","x64","ng-shared-main-seerrng","ng-main-run-{0}","gha-{0}-publish-release"]}}', github.run_id)) }}
+    runs-on: ubuntu-24.04
     permissions:
       contents: write
     env:
@@ -1026,7 +1025,7 @@ jobs:
       queue: max
       cancel-in-progress: false
     timeout-minutes: 10
-    runs-on: ${{ fromJSON(format('{{"group":"ng-shared-main-jit","labels":["self-hosted","linux","x64","ng-shared-main-seerrng","ng-main-run-{0}","gha-{0}-promote-stable-container-aliases"]}}', github.run_id)) }}
+    runs-on: ubuntu-24.04
     permissions:
       contents: read
       packages: write
@@ -1108,7 +1107,7 @@ jobs:
     if: (github.event_name == 'push' || (github.event_name == 'workflow_dispatch' && inputs.reuse_from_run_id == '' && inputs.announce_security_correction != true))
     needs: [publish-release]
     timeout-minutes: 5
-    runs-on: ${{ fromJSON(format('{{"group":"ng-shared-main-jit","labels":["self-hosted","linux","x64","ng-shared-main-seerrng","ng-main-run-{0}","gha-{0}-dispatch-chocolatey"]}}', github.run_id)) }}
+    runs-on: ubuntu-24.04
     permissions:
       actions: write
       contents: read
@@ -1139,7 +1138,7 @@ jobs:
           fi
           gh workflow run release-chocolatey.yml --repo "$REPO" --ref main \
             -f action_tag=release \
-            -f runner_pool_tag=private \
+            -f runner_pool_tag=public \
             -f "tag=$TAG"
 
   build-release-assets:
@@ -1183,7 +1182,7 @@ jobs:
       )
     needs: [validate-main-tag, verify, build-release-assets]
     timeout-minutes: 360
-    runs-on: ${{ fromJSON(format('{{"group":"ng-shared-main-jit","labels":["self-hosted","linux","x64","ng-shared-main-seerrng","ng-main-run-{0}","gha-{0}-dispatch-package-channels"]}}', github.run_id)) }}
+    runs-on: ubuntu-24.04
     permissions:
       actions: write
       contents: write
@@ -1407,7 +1406,7 @@ jobs:
     needs:
       [changelog, publish, publish-release]
     timeout-minutes: 10
-    runs-on: ${{ fromJSON(format('{{"group":"ng-shared-main-jit","labels":["self-hosted","linux","x64","ng-shared-main-seerrng","ng-main-run-{0}","gha-{0}-announce-discord"]}}', github.run_id)) }}
+    runs-on: ubuntu-24.04
     permissions:
       contents: read
     env:
@@ -1501,7 +1500,7 @@ jobs:
       )
     needs: [publish-release, announce-discord]
     timeout-minutes: 5
-    runs-on: ${{ fromJSON(format('{{"group":"ng-shared-main-jit","labels":["self-hosted","linux","x64","ng-shared-main-seerrng","ng-main-run-{0}","gha-{0}-dispatch-launchpad-ppa"]}}', github.run_id)) }}
+    runs-on: ubuntu-24.04
     permissions:
       actions: write
       contents: read
@@ -1542,7 +1541,7 @@ jobs:
     name: Correct published Discord security notes
     if: github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main' && inputs.announce_security_correction == true
     timeout-minutes: 10
-    runs-on: ${{ fromJSON(format('{{"group":"ng-shared-main-jit","labels":["self-hosted","linux","x64","ng-shared-main-seerrng","ng-main-run-{0}","gha-{0}-announce-security-correction"]}}', github.run_id)) }}
+    runs-on: ubuntu-24.04
     permissions:
       contents: read
     env:

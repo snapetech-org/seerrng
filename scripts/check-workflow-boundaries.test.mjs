@@ -30,21 +30,9 @@ const validationScript = workflow.jobs.publish.steps.find(
   (step) => step.name === 'Validate generated change manifest'
 ).run;
 
-const assertSharedMainJitRunner = (
-  runner,
-  context,
-  repositoryRunnerLabel = 'ng-shared-main-seerrng'
-) => {
-  assert.match(runner, /"group":"ng-shared-main-jit"/u, context);
-  assert.ok(runner.includes(`"${repositoryRunnerLabel}"`), context);
-  assert.match(runner, /"ng-main-run-\{0\}"/u, context);
-  assert.match(runner, /gha-\{0\}-(?:\{1\}-)?(?:[a-z0-9-]+|\{1\})/u, context);
-  assert.match(runner, /github\.run_id/u, context);
-  assert.doesNotMatch(
-    runner,
-    /\|\|\s*(?:matrix\.runner(?:\W|$)|['"](?:ubuntu|macos|windows)-)/u,
-    context
-  );
+const assertHostedRunner = (runner, expectedLabel, context) => {
+  assert.equal(runner, expectedLabel, context);
+  assert.doesNotMatch(runner, /self-hosted|ng-shared-main-jit|private-apple/u);
 };
 
 const expectedHeadOid = 'a'.repeat(40);
@@ -281,26 +269,54 @@ test('renderer bumps and packages multiple changed charts', () => {
   }
 });
 
-test('all shared-main JIT workflow jobs have unique job-scoped labels', () => {
+test('hosted runners are the default and gVisor smoke is the only JIT exception', () => {
   const workflowsDirectory = path.join(rootDirectory, '.github', 'workflows');
-  const unscopedJobs = [];
-  for (const fileName of fs.readdirSync(workflowsDirectory)) {
-    if (!/\.ya?ml$/u.test(fileName)) continue;
-    const source = fs.readFileSync(
-      path.join(workflowsDirectory, fileName),
+  const gvisor = yaml.load(
+    fs.readFileSync(
+      path.join(workflowsDirectory, 'gvisor-runner-smoke.yml'),
       'utf8'
-    );
-    source.split('\n').forEach((line, index) => {
-      if (
-        line.includes('runs-on:') &&
-        line.includes('ng-main-run-{0}') &&
-        !line.includes('gha-{0}-')
-      ) {
-        unscopedJobs.push(`${fileName}:${index + 1}`);
-      }
-    });
+    )
+  );
+  assert.deepEqual(gvisor.jobs.smoke['runs-on'], {
+    group: 'gvisor-sandbox',
+    labels: 'gvisor-sandbox',
+  });
+
+  const forkSafe = yaml.load(
+    fs.readFileSync(
+      path.join(workflowsDirectory, 'fork-safe-validation.yml'),
+      'utf8'
+    )
+  );
+  const forkJob = forkSafe.jobs['test-build'];
+  const forkCheckout = forkJob.steps.find((step) => step.name === 'Checkout');
+  assert.equal(forkJob['runs-on'], 'ubuntu-24.04');
+  assert.equal(forkSafe.permissions.contents, 'read');
+  assert.equal(forkJob.permissions.contents, 'read');
+  assert.match(forkJob.if, /github\.event\.pull_request\.head\.repo\.fork == true/u);
+  assert.match(forkJob.if, /github\.event\.pull_request\.base\.ref == 'main'/u);
+  assert.doesNotMatch(forkJob.if, /github\.actor|labels|pool:/u);
+  assert.equal(forkCheckout.with.ref, '${{ github.event.pull_request.head.sha }}');
+  assert.equal(forkCheckout.with['persist-credentials'], false);
+  assert.doesNotMatch(JSON.stringify(forkSafe), /secrets\./u);
+
+  for (const fileName of fs
+    .readdirSync(workflowsDirectory)
+    .filter((name) => /\.ya?ml$/u.test(name) && name !== 'gvisor-runner-smoke.yml')) {
+    const source = fs.readFileSync(path.join(workflowsDirectory, fileName), 'utf8');
+    assert.match(source, /^# ng-runner-policy: github-hosted-primary-v1/mu, fileName);
+    const workflow = yaml.load(source);
+    for (const [jobName, job] of Object.entries(workflow.jobs ?? {})) {
+      const runner = job?.['runs-on'];
+      if (runner === undefined) continue;
+      assert.equal(typeof runner, 'string', `${fileName}/${jobName}`);
+      assert.doesNotMatch(
+        runner,
+        /self-hosted|ng-shared-main-jit|private-apple-builds|packer-windows/u,
+        `${fileName}/${jobName}`
+      );
+    }
   }
-  assert.deepEqual(unscopedJobs, []);
 });
 
 test('CodeQL workflow invocations are disabled', () => {
@@ -346,7 +362,7 @@ test('CodeQL workflow invocations are disabled', () => {
   );
 });
 
-test('unit-test shards use private JIT runners with exact-run labels', () => {
+test('unit-test shards use GitHub-hosted runners', () => {
   const ciWorkflow = yaml.load(
     fs.readFileSync(
       path.join(rootDirectory, '.github', 'workflows', 'ci.yml'),
@@ -354,13 +370,13 @@ test('unit-test shards use private JIT runners with exact-run labels', () => {
     )
   );
   const runner = ciWorkflow.jobs['unit-test']?.['runs-on'];
-  assertSharedMainJitRunner(runner, 'unit-test');
+  assertHostedRunner(runner, 'ubuntu-24.04', 'unit-test');
   assert.equal(ciWorkflow.on.push, undefined);
   assert.equal(Object.hasOwn(ciWorkflow.on, 'pull_request'), false);
   assert.deepEqual(ciWorkflow.on.pull_request_target.branches, ['main']);
   assert.deepEqual(ciWorkflow.on.pull_request_target.types, ['labeled']);
   assert.deepEqual(ciWorkflow.on.workflow_dispatch.inputs.runner_pool.options, [
-    'private',
+    'public',
   ]);
   assert.deepEqual(ciWorkflow.on.workflow_dispatch.inputs.action.options, [
     'ci',
@@ -416,21 +432,13 @@ test('owner PR validation is metadata-only, main-pinned, and exact-SHA', () => {
   );
   assert.match(
     dispatcher.if,
-    /contains\(github\.event\.pull_request\.labels\.\*\.name, 'pool:private'\)/u
+    /contains\(github\.event\.pull_request\.labels\.\*\.name, 'pool:public'\)/u
   );
   assert.deepEqual(dispatcher.permissions, {
     actions: 'write',
     contents: 'none',
   });
-  assert.match(dispatcher['runs-on'], /"group":"ng-shared-main-jit"/u);
-  assert.match(dispatcher['runs-on'], /"ng-shared-main-packer"/u);
-  assert.doesNotMatch(dispatcher['runs-on'], /"ng-shared-main-seerrng"/u);
-  assert.match(dispatcher['runs-on'], /"ng-main-run-\{0\}"/u);
-  assert.match(dispatcher['runs-on'], /gha-\{0\}-owner-pr-dispatcher/u);
-  assert.doesNotMatch(
-    dispatcher['runs-on'],
-    /(?:ubuntu|macos|windows)-latest/u
-  );
+  assertHostedRunner(dispatcher['runs-on'], 'ubuntu-24.04', 'dispatcher');
   assert.doesNotMatch(
     JSON.stringify(dispatcher),
     /actions\/checkout|secrets\./u
@@ -441,63 +449,52 @@ test('owner PR validation is metadata-only, main-pinned, and exact-SHA', () => {
     /actions\/workflows\/ci\.yml\/dispatches/u
   );
   assert.match(dispatcher.steps[0].run, /"action": "ci"/u);
-  assert.match(dispatcher.steps[0].run, /"runner_pool": "private"/u);
+  assert.match(dispatcher.steps[0].run, /"runner_pool": "public"/u);
   assert.equal(
     dispatcher.steps[0].env.PR_LABELS_JSON,
     '${{ toJSON(github.event.pull_request.labels.*.name) }}'
   );
   assert.match(
     dispatcher.steps[0].run,
-    /action_labels != \["action:ci"\] or pool_labels != \["pool:private"\]/u
+    /action_labels != \["action:ci"\] or pool_labels != \["pool:public"\]/u
   );
 
   const exactShaJobs = [
-    ['i18n-and-tooling', 'i18n-and-tooling'],
-    ['test', 'test'],
-    ['node-test', 'node-test'],
-    ['jellyfin-plugin', 'jellyfin-plugin'],
-    ['playwright', 'playwright'],
+    'i18n-and-tooling',
+    'test',
+    'node-test',
+    'jellyfin-plugin',
+    'playwright',
   ];
-  for (const [jobId, labelSuffix] of exactShaJobs) {
+  for (const jobId of exactShaJobs) {
     const job = ciWorkflow.jobs[jobId];
     const checkout = job.steps.find((step) => step.name === 'Checkout');
     assert.match(job.if, /github\.actor == 'github-actions\[bot\]'/u, jobId);
     assert.match(checkout.with.ref, /inputs\.pr_sha/u, jobId);
     assert.equal(checkout.with['persist-credentials'], false, jobId);
-    assert.match(job['runs-on'], /"group":"ng-shared-main-jit"/u, jobId);
-    assert.match(job['runs-on'], /"ng-main-run-\{0\}"/u, jobId);
-    assert.match(job['runs-on'], new RegExp(`gha-\\{0\\}-${labelSuffix}`, 'u'));
+    assertHostedRunner(job['runs-on'], 'ubuntu-24.04', jobId);
   }
 
   const unitTest = ciWorkflow.jobs['unit-test'];
-  assert.match(unitTest['runs-on'], /matrix\.owner_pr_suffix/u);
+  assertHostedRunner(unitTest['runs-on'], 'ubuntu-24.04', 'unit-test');
   assert.deepEqual(
-    unitTest.strategy.matrix.include.map((shard) => shard.owner_pr_suffix),
-    [
-      'unit-test-shard-1',
-      'unit-test-shard-2',
-      'unit-test-shard-3',
-      'unit-test-shard-4',
-    ]
+    unitTest.strategy.matrix.include.map((shard) => shard.shard),
+    [1, 2, 3, 4]
   );
-  for (let shard = 1; shard <= 4; shard += 1) {
-    assert.ok(workflowSource.includes(`gha-{0}-unit-test-shard-${shard}`));
-  }
   const skippedForOwnerPr = ['release-notes', 'helm'];
   for (const jobId of skippedForOwnerPr) {
     assert.match(ciWorkflow.jobs[jobId].if, /inputs\.pr_number == ''/u, jobId);
   }
 
   const reusableOwnerPrChecks = [
-    ['cypress', 'cypress.yml', 'cypress-run', 'cypress-run'],
-    ['test-docs', 'test-docs.yml', 'test-build', 'test-build'],
-    ['docs-links', 'docs-link-check.yml', 'link-check', 'link-check'],
+    ['cypress', 'cypress.yml', 'cypress-run'],
+    ['test-docs', 'test-docs.yml', 'test-build'],
+    ['docs-links', 'docs-link-check.yml', 'link-check'],
   ];
   for (const [
     jobId,
     workflowFile,
     reusableJobId,
-    labelSuffix,
   ] of reusableOwnerPrChecks) {
     const callerJob = ciWorkflow.jobs[jobId];
     const reusableWorkflow = yaml.load(
@@ -517,10 +514,6 @@ test('owner PR validation is metadata-only, main-pinned, and exact-SHA', () => {
       jobId
     );
     assert.equal(callerJob.with.pr_sha, '${{ inputs.pr_sha }}', jobId);
-    assert.ok(
-      workflowSource.includes(`gha-{0}-${labelSuffix}`),
-      `${jobId} must document its exact owner-PR label for broker routing`
-    );
     assert.equal(
       reusableWorkflow.on.workflow_call.inputs.pr_sha.required,
       false,
@@ -537,15 +530,7 @@ test('owner PR validation is metadata-only, main-pinned, and exact-SHA', () => {
       workflowFile
     );
     assert.equal(checkout.with['persist-credentials'], false, workflowFile);
-    assert.match(
-      reusableJob['runs-on'],
-      /"group":"ng-shared-main-jit"/u,
-      workflowFile
-    );
-    assert.match(
-      reusableJob['runs-on'],
-      new RegExp(`gha-\\{0\\}-${labelSuffix}`, 'u')
-    );
+    assertHostedRunner(reusableJob['runs-on'], 'ubuntu-24.04', workflowFile);
     if (jobId === 'cypress') {
       const cloudRun = reusableJob.steps.find(
         (step) => step.name === 'Run Cypress suite with Cypress Cloud'
@@ -575,7 +560,7 @@ test('owner PR validation is metadata-only, main-pinned, and exact-SHA', () => {
     checks: 'write',
     contents: 'none',
   });
-  assert.match(reporter['runs-on'], /gha-\{0\}-owner-pr-reporter/u);
+  assertHostedRunner(reporter['runs-on'], 'ubuntu-24.04', 'owner PR reporter');
   assert.doesNotMatch(JSON.stringify(reporter), /actions\/checkout|secrets\./u);
   assert.match(reporter.steps[0].env.PR_SHA, /inputs\.pr_sha/u);
   assert.match(
@@ -595,14 +580,14 @@ test('owner PR validation is metadata-only, main-pinned, and exact-SHA', () => {
   assert.match(reporter.steps[0].run, /actions\/runs\//u);
 });
 
-test('main validation and image scanning use private JIT runners', () => {
+test('main validation and image scanning use GitHub-hosted runners', () => {
   const workflowsDirectory = path.join(rootDirectory, '.github', 'workflows');
   const ciWorkflow = yaml.load(
     fs.readFileSync(path.join(workflowsDirectory, 'ci.yml'), 'utf8')
   );
   for (const jobName of ['release-notes', 'scan-main-image']) {
     const runner = ciWorkflow.jobs[jobName]?.['runs-on'];
-    assertSharedMainJitRunner(runner, jobName);
+    assertHostedRunner(runner, 'ubuntu-24.04', jobName);
   }
   for (const [workflowName, jobName] of [
     ['semgrep-community.yml', 'semgrep'],
@@ -611,10 +596,10 @@ test('main validation and image scanning use private JIT runners', () => {
       fs.readFileSync(path.join(workflowsDirectory, workflowName), 'utf8')
     );
     const runner = scanWorkflow.jobs[jobName]?.['runs-on'];
-    assertSharedMainJitRunner(runner, workflowName);
+    assertHostedRunner(runner, 'ubuntu-24.04', workflowName);
     assert.deepEqual(
       scanWorkflow.on.workflow_dispatch.inputs.runner_pool_tag.options,
-      ['private']
+      ['public']
     );
   }
   const semgrep = fs.readFileSync(
@@ -625,9 +610,19 @@ test('main validation and image scanning use private JIT runners', () => {
   assert.match(semgrep, /docker run/u);
 });
 
-test('shared runner jobs use SeerrNG and exact-run labels', () => {
+test('only the explicit gVisor smoke workflow uses a private runner', () => {
   const workflowsDirectory = path.join(rootDirectory, '.github', 'workflows');
-  let sharedRunnerCount = 0;
+  const gvisor = yaml.load(
+    fs.readFileSync(
+      path.join(workflowsDirectory, 'gvisor-runner-smoke.yml'),
+      'utf8'
+    )
+  );
+  assert.deepEqual(gvisor.jobs.smoke['runs-on'], {
+    group: 'gvisor-sandbox',
+    labels: 'gvisor-sandbox',
+  });
+  let privateRunnerCount = 0;
   for (const filename of fs
     .readdirSync(workflowsDirectory)
     .filter((name) => /\.ya?ml$/u.test(name))) {
@@ -636,28 +631,27 @@ test('shared runner jobs use SeerrNG and exact-run labels', () => {
     );
     for (const [jobName, job] of Object.entries(workflow.jobs ?? {})) {
       const runner = job?.['runs-on'];
-      if (
-        typeof runner !== 'string' ||
-        !runner.includes('ng-shared-main-jit')
-      ) {
+      if (runner === undefined) continue;
+      if (filename === 'gvisor-runner-smoke.yml') {
+        assert.deepEqual(runner, {
+          group: 'gvisor-sandbox',
+          labels: 'gvisor-sandbox',
+        });
+        privateRunnerCount += 1;
         continue;
       }
-      sharedRunnerCount += 1;
-      const repositoryRunnerLabel =
-        filename === 'ci.yml' && jobName === 'dispatch-owner-pr'
-          ? 'ng-shared-main-packer'
-          : undefined;
-      assertSharedMainJitRunner(
+      assert.equal(typeof runner, 'string', `${filename}/${jobName}`);
+      assert.doesNotMatch(
         runner,
-        `${filename}/${jobName}`,
-        repositoryRunnerLabel
+        /self-hosted|ng-shared-main-jit|private-apple-builds|packer-windows/u,
+        `${filename}/${jobName}`
       );
     }
   }
-  assert.ok(sharedRunnerCount > 0);
+  assert.equal(privateRunnerCount, 1);
 });
 
-test('credentialed chart publication uses the private JIT pool', () => {
+test('credentialed chart publication uses a GitHub-hosted runner', () => {
   const helmWorkflow = yaml.load(
     fs.readFileSync(
       path.join(rootDirectory, '.github', 'workflows', 'helm.yml'),
@@ -665,6 +659,6 @@ test('credentialed chart publication uses the private JIT pool', () => {
     )
   );
   const publisher = helmWorkflow.jobs.publish;
-  assertSharedMainJitRunner(publisher?.['runs-on'], 'Helm publisher');
+  assertHostedRunner(publisher?.['runs-on'], 'ubuntu-24.04', 'Helm publisher');
   assert.equal(publisher.permissions.packages, 'write');
 });

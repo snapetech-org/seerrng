@@ -1,4 +1,4 @@
-# ng-runner-policy: private-jit-only-v1
+# ng-runner-policy: github-hosted-primary-v1
 name: SeerrNG public-fork validation
 run-name: action:ci:pool:public:fork
 

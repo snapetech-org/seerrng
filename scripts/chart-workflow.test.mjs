@@ -34,10 +34,7 @@ test('chart and tooling validation use the current CI triggers and tools', () =>
   assert.match(docs.run, /find charts .*Chart\.yaml/u);
   assert.match(lint.run, /ct lint --all --validate-maintainers=false/iu);
   const chartRunner = workflow.jobs['lint-test']['runs-on'];
-  assert.match(chartRunner, /"group":"ng-shared-main-jit"/u);
-  assert.match(chartRunner, /"ng-shared-main-seerrng"/u);
-  assert.match(chartRunner, /github\.run_id/u);
-  assert.doesNotMatch(chartRunner, /(?:ubuntu|macos|windows)-latest/u);
+  assert.equal(chartRunner, 'ubuntu-24.04');
   assert.ok(Object.hasOwn(workflow.on, 'workflow_call'));
   assert.equal(ciWorkflow.on.push, undefined);
   assert.equal(Object.hasOwn(ciWorkflow.on, 'pull_request'), false);
@@ -45,7 +42,7 @@ test('chart and tooling validation use the current CI triggers and tools', () =>
   assert.deepEqual(ciWorkflow.on.pull_request_target.branches, ['main']);
   assert.deepEqual(ciWorkflow.on.pull_request_target.types, ['labeled']);
   assert.deepEqual(ciWorkflow.on.workflow_dispatch.inputs.runner_pool.options, [
-    'private',
+    'public',
   ]);
   assert.deepEqual(ciWorkflow.on.workflow_dispatch.inputs.action.options, [
     'ci',

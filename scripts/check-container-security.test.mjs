@@ -139,7 +139,7 @@ test('the production build does not require development-only contracts', () => {
   assert.doesNotMatch(dockerfile, /RUN pnpm build(?:\s|$)/u);
 });
 
-test('the CI image publisher uses the private pool only for trusted main jobs', () => {
+test('the CI image publisher uses hosted runners only for trusted main jobs', () => {
   const workflow = yaml.load(
     fs.readFileSync(
       path.join(rootDirectory, '.github', 'workflows', 'ci.yml'),
@@ -152,11 +152,7 @@ test('the CI image publisher uses the private pool only for trusted main jobs', 
   assert.equal(workflow.jobs['deploy-main'], undefined);
   assert.match(publisher.if, /github\.ref == 'refs\/heads\/main'/u);
   assert.match(publisher.if, /inputs\.action == 'publish-image'/u);
-  assert.match(publisher.if, /inputs\.runner_pool == 'private'/u);
-  assert.match(publisher['runs-on'], /"group":"ng-shared-main-jit"/u);
-  assert.match(publisher['runs-on'], /"ng-shared-main-seerrng"/u);
-  assert.match(publisher['runs-on'], /"ng-main-run-\{0\}"/u);
-  assert.match(publisher['runs-on'], /github\.run_id/u);
-  assert.doesNotMatch(publisher['runs-on'], /(?:ubuntu|macos|windows)-latest/u);
+  assert.match(publisher.if, /inputs\.runner_pool == 'public'/u);
+  assert.equal(publisher['runs-on'], 'ubuntu-24.04');
   assert.equal(publisher.permissions.packages, 'write');
 });
