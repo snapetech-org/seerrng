@@ -3398,7 +3398,7 @@
   "components.Requests.removeUnavailableTooltip": "Es ist kein verknüpftes Bibliothekselement zum Löschen verfügbar.",
   "components.Requests.removing": "Wird gelöscht…",
   "components.Requests.requestDate": "Datum",
-  "components.Requests.requestLifecycle": "Anfrageverlauf",
+  "components.Requests.requestLifecycle": "Lebenszyklus der Anfrage",
   "components.Requests.requestTime": "Uhrzeit",
   "components.Requests.requested": "Angefragt",
   "components.Requests.requestedAt": "Angefragt am {date}",

@@ -1,0 +1,96 @@
+{
+  "artifact": "SeerrNG PR #418 W3380-W3399 third-party cross-audit",
+  "repository": "snapetech-org/seerrng",
+  "pullRequest": 418,
+  "head": "4d7de2c41b0e6df6cd0b7f7075c9cddd1c6ce160",
+  "tree": "6fba2d5985869b4563955b2c338a93e82efb4b22",
+  "branch": "codex/seerrng-localization-overhaul-20261028",
+  "window": [
+    3380,
+    3399
+  ],
+  "sourceIds": 20,
+  "locales": 12,
+  "cells": 240,
+  "primaryCounts": {
+    "accept-current": 181,
+    "correction": 7,
+    "hold": 48,
+    "refinement": 4
+  },
+  "blindCounts": {
+    "accept-current": 110,
+    "correction": 8,
+    "refinement": 2,
+    "hold": 120
+  },
+  "thirdPartyCounts": {
+    "accept-current": 108,
+    "refinement": 6,
+    "correction": 6,
+    "hold": 120
+  },
+  "proposalComparison": {
+    "both-accept-current": 108,
+    "blind-proposal-primary-accept": 3,
+    "both-propose-same": 4,
+    "both-propose-different": 3,
+    "both-hold": 48,
+    "primary-accept-blind-hold": 70,
+    "primary-proposal-blind-hold": 2,
+    "primary-proposal-blind-accept": 2
+  },
+  "proposalTotals": {
+    "primary": 11,
+    "blind": 10,
+    "bothPropose": 7,
+    "sameExactCandidate": 4,
+    "differentCandidate": 3,
+    "primaryOnly": 4,
+    "blindOnly": 3
+  },
+  "thirdPartyChanges": 12,
+  "contextHolds": {
+    "cells": 120,
+    "positions": [
+      3385,
+      3387,
+      3388,
+      3390,
+      3391,
+      3394,
+      3395,
+      3396,
+      3397,
+      3398
+    ]
+  },
+  "arabicChaptarrNG3382": {
+    "decision": "correction",
+    "currentProtectedLiteralPreserved": false,
+    "selectedProtectedLiteralPreserved": true,
+    "selectedTarget": "ChaptarrNG يُحضّر {format} حاليًا."
+  },
+  "notableRulings": [
+    {
+      "cell": "3380/id",
+      "decision": "refinement",
+      "detail": "Make the retry meaning explicit."
+    },
+    {
+      "cell": "3390-3391,3394-3397 / 12 locales",
+      "decision": "hold",
+      "detail": "Use of the parallel components.RequestStatus namespace does not prove that these components.Requests target cells are selected."
+    },
+    {
+      "cell": "3399/ja,3399/id",
+      "decision": "refinement",
+      "detail": "Retain primary language refinements to make request lifecycle explicit and idiomatic."
+    }
+  ],
+  "placeholderMarkupProtectedFailures": 0,
+  "nativeSpeakerApproval": false,
+  "repositoryOrPREdited": false,
+  "testsBuildsCiWorkflowChanges": false,
+  "mergeReleaseTag": false
+}

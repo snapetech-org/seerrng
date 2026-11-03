@@ -3381,7 +3381,7 @@
   "components.Requests.pendingImportAttempt": "Intento de importación {attempt} de {maxAttempts}.",
   "components.Requests.pendingImportNextRetry": "Próximo intento: {time}.",
   "components.Requests.pendingImportRetrying": "Intento de importación {attempt}; los reintentos continuarán automáticamente.",
-  "components.Requests.pendingImportTitle": "ChaptarrNG está preparando esto {format}.",
+  "components.Requests.pendingImportTitle": "ChaptarrNG está preparando {format}.",
   "components.Requests.processing": "Procesando",
   "components.Requests.progressFrom": "{percent}% completo",
   "components.Requests.progressUnavailable": "El servicio de descarga no proporcionó datos de progreso.",

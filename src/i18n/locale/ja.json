@@ -3379,7 +3379,7 @@
   "components.Requests.removeUnavailableTooltip": "削除可能なリンク済みライブラリ項目がありません。",
   "components.Requests.removing": "削除中…",
   "components.Requests.requestDate": "日付",
-  "components.Requests.requestLifecycle": "要求のライフサイクル",
+  "components.Requests.requestLifecycle": "リクエストのライフサイクル",
   "components.Requests.requestTime": "時刻",
   "components.Requests.requested": "リクエスト済み",
   "components.Requests.requestedAt": "{date}にリクエストされました",
