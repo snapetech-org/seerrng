@@ -265,6 +265,16 @@
   color-scheme: dark;
 }
 
+@media (max-width: 400px) {
+  :is(
+    :root[data-interface-theme='seerrOrig'],
+    [data-interface-theme='seerrOrig']
+  ) {
+    --interface-page-gutter: 1rem;
+    --interface-inset-card-padding: 0.5rem;
+  }
+}
+
 @media (max-width: 389px) {
   :is(
     :root[data-interface-theme='seerrOrig'],
@@ -440,11 +450,6 @@
   ul.cards-vertical {
   grid-template-columns: repeat(auto-fill, minmax(var(--poster-width), 1fr));
   gap: var(--interface-grid-gap);
-}
-
-:is(:root[data-interface-theme='seerrOrig'], [data-interface-theme='seerrOrig'])
-  .poster-layout {
-  width: 100%;
 }
 
 :is(:root[data-interface-theme='seerrOrig'], [data-interface-theme='seerrOrig'])
@@ -1370,11 +1375,6 @@
   ul.cards-vertical {
   grid-template-columns: repeat(auto-fill, minmax(var(--poster-width), 1fr));
   gap: var(--interface-grid-gap);
-}
-
-:is(:root[data-interface-theme='seerrNGJ'], [data-interface-theme='seerrNGJ'])
-  .poster-layout {
-  width: 100%;
 }
 
 :is(:root[data-interface-theme='seerrNGJ'], [data-interface-theme='seerrNGJ'])

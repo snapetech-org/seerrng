@@ -263,11 +263,6 @@
 }
 
 :is(:root[data-interface-theme='seerrOrig'], [data-interface-theme='seerrOrig'])
-  .poster-layout {
-  width: 100%;
-}
-
-:is(:root[data-interface-theme='seerrOrig'], [data-interface-theme='seerrOrig'])
   .preview-filters {
   display: flex;
   flex-direction: column;

@@ -190,6 +190,11 @@ describe('primary navigation', () => {
     cy.get('[data-testid="discovery-mode-tab-swipe"]').click();
     cy.location('pathname').should('eq', '/swipe');
     cy.location('search').should('include', 'returnTo');
+    cy.location('search').should((search) => {
+      expect(new URLSearchParams(search).get('returnTo')).to.eq(
+        '/discover/tv/genre/18?sortBy=popularity.desc&page=2'
+      );
+    });
 
     cy.get('[data-testid="discovery-mode-tab-discover"]').click();
     cy.location('pathname').should('eq', '/discover/tv/genre/18');

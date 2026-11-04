@@ -351,11 +351,6 @@
 }
 
 :is(:root[data-interface-theme='seerrNGJ'], [data-interface-theme='seerrNGJ'])
-  .poster-layout {
-  width: 100%;
-}
-
-:is(:root[data-interface-theme='seerrNGJ'], [data-interface-theme='seerrNGJ'])
   .preview-filters {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));

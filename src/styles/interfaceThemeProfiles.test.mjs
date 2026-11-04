@@ -100,6 +100,24 @@ const embeddedStylesheet = (name) => {
 test('interface profiles own visibly different layout and geometry tokens', () => {
   assert.notEqual(profiles.seerrOrig, profiles.seerrNGJ);
 
+  for (const [name, css] of Object.entries(profiles)) {
+    const unscopedPosterWidthOverrides = [];
+    postcss.parse(css).walkRules((rule) => {
+      if (!rule.selector.includes('.poster-layout')) return;
+      if (rule.selector.includes('ul.cards-vertical')) return;
+      rule.walkDecls('width', (declaration) => {
+        if (declaration.value === '100%') {
+          unscopedPosterWidthOverrides.push(rule.selector);
+        }
+      });
+    });
+    assert.deepEqual(
+      unscopedPosterWidthOverrides,
+      [],
+      `${name} must use the shared poster-width owner in sliders and watchlists`
+    );
+  }
+
   for (const token of [
     'interface-sidebar-width',
     'interface-page-gutter',
