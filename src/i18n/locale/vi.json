@@ -3746,7 +3746,7 @@
   "components.Settings.LazyLibrarianModal.testFailure": "Không kết nối được với LazyLibrarian.",
   "components.Settings.LazyLibrarianModal.testSuccess": "Kết nối LazyLibrarian thành công!",
   "components.Settings.LazyLibrarianModal.validationApiKeyRequired": "Bạn phải cung cấp khóa API",
-  "components.Settings.LazyLibrarianModal.validationApplicationUrl": "Bạn phải cung cấp một giá trị URL",
+  "components.Settings.LazyLibrarianModal.validationApplicationUrl": "Bạn phải cung cấp một URL hợp lệ.",
   "components.Settings.LazyLibrarianModal.validationApplicationUrlTrailingSlash": "URL không được kết thúc bằng dấu gạch chéo.",
   "components.Settings.LazyLibrarianModal.validationBaseUrlLeadingSlash": "URL cơ sở phải bắt đầu bằng dấu gạch chéo.",
   "components.Settings.LazyLibrarianModal.validationBaseUrlTrailingSlash": "URL cơ sở không được kết thúc bằng dấu gạch chéo.",

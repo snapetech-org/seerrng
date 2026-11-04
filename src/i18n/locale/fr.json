@@ -3774,7 +3774,7 @@
   "components.Settings.LazyLibrarianModal.validationPortRequired": "Vous devez fournir un numéro de port valide",
   "components.Settings.LidarrModal.add": "Ajouter un serveur",
   "components.Settings.LidarrModal.apiKey": "Clé API",
-  "components.Settings.LidarrModal.apiKeyHelp": "Trouvez-le dans Lidarr: Paramètres > Général > Sécurité > Clé API",
+  "components.Settings.LidarrModal.apiKeyHelp": "Trouvez-le dans Lidarr : Paramètres > Général > Sécurité > Clé API",
   "components.Settings.LidarrModal.baseUrl": "URL de base",
   "components.Settings.LidarrModal.baseUrlHelp": "Si vous avez configuré une URL de base dans Lidarr (Paramètres > Général > Hôte), saisissez-la ici (p. ex. /lidarr). Sinon, laissez le champ vide.",
   "components.Settings.LidarrModal.createlidarr": "Ajouter un nouveau serveur Lidarr",

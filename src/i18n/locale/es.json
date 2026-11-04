@@ -3769,7 +3769,7 @@
   "components.Settings.LazyLibrarianModal.validationApplicationUrlTrailingSlash": "La URL no debe terminar en una barra final.",
   "components.Settings.LazyLibrarianModal.validationBaseUrlLeadingSlash": "La URL base debe comenzar con una barra.",
   "components.Settings.LazyLibrarianModal.validationBaseUrlTrailingSlash": "La URL base no debe terminar en una barra final.",
-  "components.Settings.LazyLibrarianModal.validationHostnameRequired": "Usted debe proporcionar un nombre de host válido o dirección IP",
+  "components.Settings.LazyLibrarianModal.validationHostnameRequired": "Debe proporcionar un nombre de host válido o una dirección IP válida.",
   "components.Settings.LazyLibrarianModal.validationNameRequired": "Debes proporcionar un nombre de servidor",
   "components.Settings.LazyLibrarianModal.validationPortRequired": "Usted debe proporcionar un número de puerto válido",
   "components.Settings.LidarrModal.add": "Agregar Servidor",

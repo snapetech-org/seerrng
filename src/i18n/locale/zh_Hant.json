@@ -3745,7 +3745,7 @@
   "components.Settings.LazyLibrarianModal.syncEnabledHelp": "掃描 LazyLibrarian 的雜誌與期刊檔案，以顯示目前的可用狀態。",
   "components.Settings.LazyLibrarianModal.testFailure": "無法連線到 LazyLibrarian。",
   "components.Settings.LazyLibrarianModal.testSuccess": "已成功連線到 LazyLibrarian！",
-  "components.Settings.LazyLibrarianModal.validationApiKeyRequired": "您必须提供 API 键",
+  "components.Settings.LazyLibrarianModal.validationApiKeyRequired": "您必須提供 API 金鑰",
   "components.Settings.LazyLibrarianModal.validationApplicationUrl": "您必須提供有效的 URL",
   "components.Settings.LazyLibrarianModal.validationApplicationUrlTrailingSlash": "URL 結尾不得有斜線。",
   "components.Settings.LazyLibrarianModal.validationBaseUrlLeadingSlash": "URL 基址必須以斜線開頭。",
