@@ -89,6 +89,7 @@ This cumulative release note covers v3.71.4 through v3.72.7, including changes r
 
 #### Fixed
 
+- **Localization:** Updated 29 reviewed Apprise and Gotify settings translations across the 12 target locales.
 - **Localization:** Updated 36 reviewed Navidrome and Apprise settings translations across the 12 target locales.
 - **Localization:** Corrected 46 reviewed Mylar and Navidrome settings and validation messages across the 12 target locales.
 

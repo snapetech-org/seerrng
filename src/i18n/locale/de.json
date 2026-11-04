@@ -3891,7 +3891,7 @@
   "components.Settings.Notifications.NotificationsGotify.agentenabled": "Agent aktivieren",
   "components.Settings.Notifications.NotificationsGotify.embedPoster": "Poster einbetten",
   "components.Settings.Notifications.NotificationsGotify.gotifysettingsfailed": "Die Gotify-Benachrichtigungseinstellungen konnten nicht gespeichert werden.",
-  "components.Settings.Notifications.NotificationsGotify.gotifysettingssaved": "Gotify Benachrichtigungseinstellungen erfolgreich gespeichert!",
+  "components.Settings.Notifications.NotificationsGotify.gotifysettingssaved": "Gotify-Benachrichtigungseinstellungen wurden erfolgreich gespeichert!",
   "components.Settings.Notifications.NotificationsGotify.priority": "Priorität",
   "components.Settings.Notifications.NotificationsGotify.toastGotifyTestFailed": "Gotify-Testbenachrichtigung konnte nicht gesendet werden.",
   "components.Settings.Notifications.NotificationsGotify.toastGotifyTestSending": "Gotify-Testbenachrichtigung wird gesendet…",

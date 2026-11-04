@@ -3897,7 +3897,7 @@
   "components.Settings.Notifications.NotificationsGotify.toastGotifyTestSending": "جارٍ إرسال إشعار اختبار Gotify...",
   "components.Settings.Notifications.NotificationsGotify.toastGotifyTestSuccess": "تم إرسال إشعار اختبار Gotify!",
   "components.Settings.Notifications.NotificationsGotify.token": "رمز التطبيق",
-  "components.Settings.Notifications.NotificationsGotify.url": "سيرفر URL",
+  "components.Settings.Notifications.NotificationsGotify.url": "عنوان URL للخادم",
   "components.Settings.Notifications.NotificationsGotify.validationPriorityRequired": "يجب تحديد رقم أولوية",
   "components.Settings.Notifications.NotificationsGotify.validationTokenRequired": "يجب توفير رمز التطبيق.",
   "components.Settings.Notifications.NotificationsGotify.validationTypes": "يجب عليك إختيار نوع تنبيه واحد على الأقل",

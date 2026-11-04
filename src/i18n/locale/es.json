@@ -3889,7 +3889,7 @@
   "components.Settings.Notifications.NotificationsApprise.validationConfigKey": "Usa de 1 a 64 letras, números, guiones (-) o guiones bajos (_).",
   "components.Settings.Notifications.NotificationsApprise.validationTypes": "Debe seleccionar al menos un tipo de notificación.",
   "components.Settings.Notifications.NotificationsGotify.agentenabled": "Habilitar agente",
-  "components.Settings.Notifications.NotificationsGotify.embedPoster": "Incrustar poster",
+  "components.Settings.Notifications.NotificationsGotify.embedPoster": "Incrustar póster",
   "components.Settings.Notifications.NotificationsGotify.gotifysettingsfailed": "No se han podido guardar los ajustes de notificación de Gotify.",
   "components.Settings.Notifications.NotificationsGotify.gotifysettingssaved": "¡La configuración de notificaciones de Gotify se ha guardado correctamente!",
   "components.Settings.Notifications.NotificationsGotify.priority": "Prioridad",
