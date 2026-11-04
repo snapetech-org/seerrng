@@ -1,0 +1,67 @@
+{
+  "baseRef": "main",
+  "baseSha": "fa40534ccced75bde1125c14760514fcd5d7de4d",
+  "baselineTokenDiagnostics": {
+    "markupTags": 0,
+    "numericTokens": 0,
+    "placeholders": 0,
+    "protectedLiterals": 3
+  },
+  "callerReferenceCount": 20,
+  "callerlessSourcePositions": [],
+  "catalogKeyCount": 9494,
+  "catalogKeySetEqualsEnglish": true,
+  "head": "d317a07ea0e5456b6d4660470c57d1f205cd0587",
+  "localeOrder": [
+    "es",
+    "zh-Hans",
+    "hi",
+    "de",
+    "ja",
+    "fr",
+    "pt-BR",
+    "ar",
+    "ko",
+    "zh-Hant",
+    "vi",
+    "id"
+  ],
+  "nextBoundary": {
+    "hashOnly": true,
+    "position": 3780,
+    "sourceIdSha256": "c25781ce0a42c8c0513d20373c4f43964e26ca6e256f76af8a655835e7facd13",
+    "sourceTextSha256": "02676bf93c97edc34d2b4e4bd4c3f50ab7158cac872cf017814c6d28101ef315"
+  },
+  "nextBoundaryPosition": 3780,
+  "previousBoundary": {
+    "hashOnly": true,
+    "position": 3759,
+    "sourceIdSha256": "24ec1c2678976b3dd86dacd790f9706f237bbf31fac1de779515f24b07d8ff40",
+    "sourceTextSha256": "bc4816425ebe8079c4f9aef802a1507b5c519d415762a5cb6549fc4c1cc6dee7"
+  },
+  "previousCompletedEndPosition": 3759,
+  "previousCompletedWindow": "W3740-W3759",
+  "priorHoldCount": 12,
+  "priorHoldPreservation": "hash-only current source and target hash comparison; held target strings excluded",
+  "priorHoldSourcePositions": [
+    3632
+  ],
+  "priorSelectedSourceIdCount": 3760,
+  "priorSelectedSourceIdHashSequenceSha256": "1358dcb2ac1d5cb9804b5dcdf49a57bd46a329f48b0d47deb6e7f279083d0243",
+  "priorSelectedSourceIdOrSourceTextHashMismatches": 0,
+  "priorSelectedSourceIdsReattested": 3760,
+  "pullRequest": 418,
+  "range": [
+    3760,
+    3779
+  ],
+  "repository": "snapetech-org/SeerrNG",
+  "selectedSourceCount": 20,
+  "selectedSourceIdOrderSha256": "f6e64370e96d55ade6d55e23a3cb9a0efab0be9bae32b43b080104d67af86484",
+  "sourceIdOrderSha256": "2ece175c95fe56b427b65a1a46169f895a342887ed772e4e5729c32dd443ad7e",
+  "sourceOrderCount": 9494,
+  "sourceRecordOrderSha256": "3efb0ce7432eda01ceee9722cce22d1f8b3251d95bb70968afbbc8751b3fa356",
+  "sourceTextOrderSha256": "3a663a44b3f21ddf29b3b20ec85d166a4776e0b7ede1a8abf9d3c97c7110cf2b",
+  "tree": "c1383dfb6e6fd4e926f9c89d4ec6b7e8ea7d6008",
+  "window": "W3760-W3779"
+}

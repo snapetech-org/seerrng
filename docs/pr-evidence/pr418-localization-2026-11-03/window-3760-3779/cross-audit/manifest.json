@@ -1,0 +1,90 @@
+{
+  "artifact": "SeerrNG PR #418 W3760-W3779 independent cross-audit",
+  "packetType": "cross-audit",
+  "schemaVersion": 1,
+  "repository": "snapetech-org/SeerrNG",
+  "pullRequest": 418,
+  "window": "W3760-W3779",
+  "range": [
+    3760,
+    3779
+  ],
+  "head": "d317a07ea0e5456b6d4660470c57d1f205cd0587",
+  "headRef": "codex/seerrng-localization-overhaul-20261028",
+  "tree": "c1383dfb6e6fd4e926f9c89d4ec6b7e8ea7d6008",
+  "baseRef": "main",
+  "baseSha": "fa40534ccced75bde1125c14760514fcd5d7de4d",
+  "cellCount": 240,
+  "sourceCount": 20,
+  "localeCount": 12,
+  "localeOrder": [
+    "es",
+    "zh-Hans",
+    "hi",
+    "de",
+    "ja",
+    "fr",
+    "pt-BR",
+    "ar",
+    "ko",
+    "zh-Hant",
+    "vi",
+    "id"
+  ],
+  "dispositionCounts": {
+    "accept-current": 228,
+    "correct": 9,
+    "refine": 3
+  },
+  "disagreementCount": 0,
+  "changedCellCount": 12,
+  "proposalTokenMismatchCount": 0,
+  "currentMismatchCounts": {
+    "protectedLiterals": 3
+  },
+  "currentMismatchCells": [
+    {
+      "position": 3770,
+      "locale": "hi",
+      "tokenType": "protectedLiterals"
+    },
+    {
+      "position": 3774,
+      "locale": "hi",
+      "tokenType": "protectedLiterals"
+    },
+    {
+      "position": 3777,
+      "locale": "hi",
+      "tokenType": "protectedLiterals"
+    }
+  ],
+  "priorSelectionHashReattestations": 3760,
+  "priorSelectionHashMismatches": 0,
+  "priorHoldHashReattestations": 12,
+  "priorHoldsUnchanged": 12,
+  "priorHoldTextIncluded": false,
+  "nativeSpeakerSignoff": false,
+  "liveAttestations": {
+    "before": "live-attestation-before.json",
+    "after": "live-attestation-after.json"
+  },
+  "inputPins": "input-pins.json",
+  "evidencePaths": {
+    "candidateFree": "evidence/candidate-free/",
+    "primary": "evidence/primary/",
+    "blind": "evidence/blind/"
+  },
+  "reviewMethod": "Cellwise review of source/current-target strings and pinned caller contexts, followed by comparison of the sealed primary and blind ledgers; proposals retained only when independently judged sound.",
+  "crossLedgerSha256": "84456ee11060799eb67d0e0d101af4e330dca2e0066c740da6048529b3962c1b",
+  "inputManifestSha256": {
+    "candidateFree": "956267d819adaabe54f75e7143b915b28afbe76d04a6d3ffa26288421dc8700c",
+    "primary": "c0098e47e24f86ed982fe30f402461cfd8e2fe6c0e928c8a637f5d1ac699b985",
+    "blind": "406ea368ec26ee66f1b3522bfd4bc44163abda0c9ebe198031ab58d421ce1ae6"
+  },
+  "inputChecksumListSha256": {
+    "candidateFree": "25114409119b732f30be4c73e7c1cff0dd788edcbc8151e2d3fe2cd48d582b83",
+    "primary": "7007f9548d814c1b6c8752acbd3100b8db35b6df584120d3805e58f5a758c987",
+    "blind": "4abd4b67f88d4c2c12a127f4c7f230016bccddfa8ea6240e770d8320c22c098a"
+  }
+}

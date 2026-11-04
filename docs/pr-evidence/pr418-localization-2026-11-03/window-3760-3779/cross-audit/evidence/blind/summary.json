@@ -1,0 +1,24 @@
+{
+  "callerlessSourceCount": 0,
+  "cellCount": 240,
+  "decisionCounts": {
+    "accept-current": 228,
+    "correct": 9,
+    "refine": 3
+  },
+  "head": "d317a07ea0e5456b6d4660470c57d1f205cd0587",
+  "nativeSpeakerReviewPerformed": false,
+  "priorHoldHashReattestations": 12,
+  "priorHoldsUnchanged": 12,
+  "priorSelectionHashMismatches": 0,
+  "priorSelectionHashReattestations": 3760,
+  "proposalCount": 12,
+  "proposedTokenMismatchCounts": {
+    "markupTags": 0,
+    "numericTokens": 0,
+    "placeholders": 0,
+    "protectedLiterals": 0
+  },
+  "tree": "c1383dfb6e6fd4e926f9c89d4ec6b7e8ea7d6008",
+  "window": "W3760-W3779"
+}
