@@ -1,17 +1,19 @@
 const clickFirstTitleCardInSlider = (sliderTitle: string): void => {
-  cy.contains('.slider-header', sliderTitle)
-    .closest('[data-testid=media-slider]')
-    .find('[data-testid=title-card]', { timeout: 15000 })
-    .first()
-    .trigger('mouseover')
+  const firstCard = () =>
+    cy
+      .contains('.slider-header', sliderTitle)
+      .closest('[data-testid=media-slider]')
+      .find('[data-testid=title-card]', { timeout: 15000 })
+      .first();
+
+  firstCard()
     .find('[data-testid=title-card-title]')
     .invoke('text')
     .then((text) => {
-      cy.contains('.slider-header', sliderTitle)
-        .closest('[data-testid=media-slider]')
-        .find('[data-testid=title-card]')
-        .first()
-        .click();
+      firstCard().find('[data-poster-region="frame"]').click({ force: true });
+      firstCard()
+        .find('[data-poster-region="detail-link"]')
+        .click({ force: true });
       cy.get('[data-testid=media-title]').should('contain', text);
     });
 };

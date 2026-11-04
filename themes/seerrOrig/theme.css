@@ -5,15 +5,6 @@
  */
 /* This package owns the narrow-phone poster density as well as the desktop
    size. Shared poster components consume these values without choosing them. */
-@media (max-width: 389px) {
-  :is(
-    :root[data-interface-theme='seerrOrig'],
-    [data-interface-theme='seerrOrig']
-  ) {
-    --poster-width: calc((100vw - 2rem - 2 * var(--card-spacing)) / 2);
-  }
-}
-
 :is(
   :root[data-interface-theme='seerrOrig'],
   [data-interface-theme='seerrOrig']
@@ -82,6 +73,15 @@
   --app-card-frame-width: 1px;
   --app-card-frame-background: #374151;
   color-scheme: dark;
+}
+
+@media (max-width: 389px) {
+  :is(
+    :root[data-interface-theme='seerrOrig'],
+    [data-interface-theme='seerrOrig']
+  ) {
+    --poster-width: calc((100vw - 2rem - 2 * var(--card-spacing)) / 2);
+  }
 }
 
 :is(:root[data-interface-theme='seerrOrig'], [data-interface-theme='seerrOrig'])
@@ -506,13 +506,19 @@
   .settings-page-content {
   display: flex;
   flex-direction: column;
-  gap: var(--interface-section-gap);
+  gap: 0;
 }
 
 :is(:root[data-interface-theme='seerrOrig'], [data-interface-theme='seerrOrig'])
   .settings-page-content
   > :is(.section, .settings-group-card, .settings-library-card) {
-  margin-block: 0;
+  margin-block: 0 var(--interface-section-gap);
+}
+
+:is(:root[data-interface-theme='seerrOrig'], [data-interface-theme='seerrOrig'])
+  .settings-page-content
+  > :is(.section, .settings-group-card, .settings-library-card):last-child {
+  margin-block-end: 0;
 }
 
 @media (min-width: 1024px) {
@@ -818,7 +824,7 @@
       [data-interface-theme='seerrOrig']
     )
     [data-detail-layout='movie'] {
-    grid-template-columns: minmax(0, 1fr);
-    grid-template-areas: 'actions' 'information';
+    grid-template-columns: minmax(0, 1fr) minmax(18rem, 23rem);
+    grid-template-areas: 'information actions';
   }
 }
