@@ -1,0 +1,18 @@
+{
+  "baseRef": "main",
+  "baseSha": "fa40534ccced75bde1125c14760514fcd5d7de4d",
+  "branchSha": "39d8ae36ba757532f947a9a15be22f0676e79075",
+  "checkRunCount": 0,
+  "deploymentCount": 0,
+  "draft": true,
+  "headRef": "codex/seerrng-localization-overhaul-20261028",
+  "headRepo": "snapetech-org/seerrng",
+  "headSha": "39d8ae36ba757532f947a9a15be22f0676e79075",
+  "headTree": "45e3ada0f565a07c675d1d75096f4266c4ef691e",
+  "mergeable": true,
+  "observedAtUtc": "2026-11-04T11:27:00+00:00",
+  "pullRefSha": "39d8ae36ba757532f947a9a15be22f0676e79075",
+  "state": "open",
+  "statusCount": 0,
+  "statusState": "pending"
+}

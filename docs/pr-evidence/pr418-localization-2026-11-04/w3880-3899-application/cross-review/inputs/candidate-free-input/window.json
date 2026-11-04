@@ -1,0 +1,67 @@
+{
+  "baseRef": "main",
+  "baseSha": "fa40534ccced75bde1125c14760514fcd5d7de4d",
+  "baselineTokenDiagnostics": {
+    "markupTags": 0,
+    "numericTokens": 1,
+    "placeholders": 0,
+    "protectedLiterals": 0
+  },
+  "callerReferenceCount": 23,
+  "callerlessSourcePositions": [],
+  "catalogKeyCount": 9494,
+  "head": "39d8ae36ba757532f947a9a15be22f0676e79075",
+  "localeInsertionOrderDifferencesFromEnglish": [
+    "zh-Hans",
+    "ja",
+    "ko",
+    "zh-Hant",
+    "vi"
+  ],
+  "localeOrder": [
+    "es",
+    "zh-Hans",
+    "hi",
+    "de",
+    "ja",
+    "fr",
+    "pt-BR",
+    "ar",
+    "ko",
+    "zh-Hant",
+    "vi",
+    "id"
+  ],
+  "nextBoundary": {
+    "hashOnly": true,
+    "kind": "next-window-boundary",
+    "position": 3900,
+    "sourceIdSha256": "1ac0d624a30caf5f4b590d31949a245a6c232a216d09ebf83f837fb6dc28e866",
+    "sourceTextSha256": "d365c65f9c71d1591f378974bba4365ee4d0e6e0fdb3d864eb38c56f213450f7"
+  },
+  "nextBoundaryPosition": 3900,
+  "previousCompletedEndPosition": 3879,
+  "previousCompletedWindow": "W3860-W3879",
+  "priorAppliedTargetHashCount": 136,
+  "priorAppliedTargetHashMismatches": 0,
+  "priorCatalogApplicationCellsReattested": 101,
+  "priorHoldCount": 14,
+  "priorHoldHashMismatches": 0,
+  "priorSelectedSourceIdOrSourceTextHashMismatches": 0,
+  "priorSelectedSourceIdsReattested": 3880,
+  "pullRequest": 418,
+  "range": [
+    3880,
+    3899
+  ],
+  "repository": "snapetech-org/SeerrNG",
+  "selectedSourceCount": 20,
+  "selectedSourceIdOrderSha256": "82b37b36d4021d36e0d4112b52ab0b1000cc4ac1388b0f6ea79fad226b92df1d",
+  "sourceIdOrderSha256": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072",
+  "sourceOrderCount": 9494,
+  "sourceOrderHashesFull": true,
+  "sourceRecordOrderSha256": "591c6d9227ed09b95780dfdcc69267c1fa4536bf7bc33ecd5259230bba68ce02",
+  "sourceTextOrderSha256": "87bfb226c00566e4872459f1e1f44522158c34a946087b42d1e57fdf18904228",
+  "tree": "45e3ada0f565a07c675d1d75096f4266c4ef691e",
+  "window": "W3880-W3899"
+}
