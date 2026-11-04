@@ -1,0 +1,50 @@
+{
+  "artifact": "SeerrNG PR #418 W3920-W3939 non-blind cross-audit summary",
+  "reviewedAtUtc": "2026-11-04T18:22:41Z",
+  "head": "c989e745a64743a45282a7a2704713945d8406d8",
+  "tree": "b25ffd26701a43957924a992f4368f5b7a6a8f29",
+  "sourceCount": 20,
+  "localeCount": 12,
+  "cellCount": 240,
+  "crossDispositionCounts": {
+    "KEEP": 219,
+    "SELECT_PROPOSAL": 17,
+    "HOLD": 4
+  },
+  "primaryDispositionCounts": {
+    "accept-current": 219,
+    "refinement": 11,
+    "correction": 6,
+    "hold": 4
+  },
+  "blindDecisionCounts": {
+    "PASS": 238,
+    "HOLD": 2
+  },
+  "selectedProposalCount": 17,
+  "selectedCorrections": 6,
+  "selectedRefinements": 11,
+  "unresolvedCurrentHashOnlyHoldCount": 4,
+  "resolvedBlindHoldCount": 2,
+  "priorHashOnlyHoldCount": 22,
+  "priorAppliedTargetHashCount": 197,
+  "callerCoverage": {
+    "sourceContexts": 20,
+    "directCallerReferences": 22,
+    "callerlessSourceCount": 0,
+    "selectedProposalsWithCallerContext": 17,
+    "unresolvedHoldsWithCallerContext": 4
+  },
+  "blindPrimaryReconciliation": {
+    "blindHoldsAtPosition3937ResolvedBySelectedPrimaryProposals": 2,
+    "primaryUnresolvedHoldsAtPosition3932Retained": 4
+  },
+  "applyPlanStatus": "PREPARED_NOT_APPLIED",
+  "nativeSpeakerApproval": false,
+  "browserReview": false,
+  "reviewMode": "non-blind cross-audit; reviewer created the blind ledger used in reconciliation",
+  "limitations": [
+    "AI semantic cross-audit; no native-speaker approval.",
+    "No repository or PR modifications were made."
+  ]
+}

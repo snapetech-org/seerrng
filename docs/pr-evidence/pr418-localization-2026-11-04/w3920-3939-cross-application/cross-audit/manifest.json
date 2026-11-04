@@ -1,0 +1,100 @@
+{
+  "artifact": "SeerrNG PR #418 W3920-W3939 sealed non-blind cross-audit",
+  "schemaVersion": 1,
+  "reviewMode": "non-blind cross-audit",
+  "reviewerCreatedBlindLedger": true,
+  "repository": "snapetech-org/seerrng",
+  "pullRequest": 418,
+  "window": "W3920-W3939",
+  "branch": "codex/seerrng-localization-overhaul-20261028",
+  "head": "c989e745a64743a45282a7a2704713945d8406d8",
+  "tree": "b25ffd26701a43957924a992f4368f5b7a6a8f29",
+  "sourceCount": 20,
+  "localeCount": 12,
+  "cellCount": 240,
+  "candidateFreeInputManifestSha256": "101cec2c680f439a022c24651f3c6909f96ee96efe4db0b2b7effa0ef5835b7c",
+  "primaryManifestSha256": "00512159a5ee86101b6c3c2d86cc3e6b7a7a6a85e276fd284a79f554a1d6642c",
+  "blindManifestSha256": "8851f5312bddf4843e30b7b8b138f63daf59fb5510e101afb43ef273670d0832",
+  "crossAuditPreCellManifestSha256": "bf77adcbc279877b61c8d19165f3c44330ddfeaceb270b7f687337c5c18e5f67",
+  "candidateFreeChecksums": "PASS",
+  "candidateFreeVerifier": "PASS",
+  "primaryChecksums": "PASS",
+  "primaryVerifier": "PASS",
+  "blindChecksums": "PASS",
+  "blindVerifier": "PASS",
+  "crossAuditVerifier": "PASS",
+  "selectedProposalCount": 17,
+  "crossDispositionCounts": {
+    "KEEP": 219,
+    "SELECT_PROPOSAL": 17,
+    "HOLD": 4
+  },
+  "unresolvedHashOnlyHoldCount": 4,
+  "historicalHashOnlyHoldCount": 22,
+  "historicalAppliedTargetHashCount": 197,
+  "nativeSpeakerApproval": false,
+  "browserReview": false,
+  "applyStatus": "PREPARED_NOT_APPLIED",
+  "files": [
+    {
+      "path": "README.md",
+      "bytes": 922,
+      "sha256": "2695a080b21174fd55da48b945e130f717dc49c126cd4fba98f527d2de252ca7"
+    },
+    {
+      "path": "apply-plan.json",
+      "bytes": 11637,
+      "sha256": "3ca950a0af6e85a8f4e9a4742429909ea5ace372d1d83b8e0f42091bb7670f73"
+    },
+    {
+      "path": "caller-context-audit.jsonl",
+      "bytes": 18608,
+      "sha256": "d6597c96063f2c866906e8bc905bb1e91f9ca23c1348f9e61f089515a7787f8f"
+    },
+    {
+      "path": "cross-ledger.jsonl",
+      "bytes": 119843,
+      "sha256": "0b0db59c0b9a9cf226f955bae94aaa8eded9218284bdf9c600ce89e4ad63c515"
+    },
+    {
+      "path": "historical-applied-target-hashes.jsonl",
+      "bytes": 107862,
+      "sha256": "be57fa6c55fbd5d3bc2914b8ec338e8c4e77b81087f594539a71247bfa837644"
+    },
+    {
+      "path": "historical-hold-hashes.jsonl",
+      "bytes": 16193,
+      "sha256": "05198d2b5c8a6e282aff3f50ffb96261a54b3c59a7c5e70e1c3b33a606fa8c03"
+    },
+    {
+      "path": "resolved-blind-holds.jsonl",
+      "bytes": 1340,
+      "sha256": "f17edc54d04ff7eb00ec6674e34a686dfd8962bb39d2e2d656da2974933d2bed"
+    },
+    {
+      "path": "selected-proposal-hashes.txt",
+      "bytes": 1244,
+      "sha256": "1442c86fde0c70793578888d13ce77ccbc5e16cdf47c2f97fde91227ff04260f"
+    },
+    {
+      "path": "selected-proposals.jsonl",
+      "bytes": 13773,
+      "sha256": "6e3d446405c47bd74ffaa30da9205d7666960714ec455ad88647c9f0193cffa8"
+    },
+    {
+      "path": "summary.json",
+      "bytes": 1508,
+      "sha256": "105db64bb85756cf8b92cf6c83a42bf7de747e79dfd66afd687d230a0d7b87d1"
+    },
+    {
+      "path": "unresolved-holds.jsonl",
+      "bytes": 2734,
+      "sha256": "6e26270132d050cf35d264c63a84870b19d28eb6c7c17bb4f92bd5e77fbbf51c"
+    },
+    {
+      "path": "verify-cross-audit.py",
+      "bytes": 12825,
+      "sha256": "0aa3b6331734a3ebea9ed186cc49b87d2cbd7591a43ef24221ccd901a11fb980"
+    }
+  ]
+}

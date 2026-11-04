@@ -1,0 +1,60 @@
+{
+  "appliedUpdates": 17,
+  "baseHead": "c989e745a64743a45282a7a2704713945d8406d8",
+  "baseTree": "b25ffd26701a43957924a992f4368f5b7a6a8f29",
+  "branch": "codex/seerrng-localization-overhaul-20261028",
+  "browserAcceptance": false,
+  "catalogFilesPinned": 13,
+  "catalogKeyOrderPreserved": true,
+  "cells": 240,
+  "changedCatalogCount": 9,
+  "changedCatalogPaths": [
+    "src/i18n/locale/ar.json",
+    "src/i18n/locale/de.json",
+    "src/i18n/locale/es.json",
+    "src/i18n/locale/fr.json",
+    "src/i18n/locale/hi.json",
+    "src/i18n/locale/id.json",
+    "src/i18n/locale/ko.json",
+    "src/i18n/locale/pt_BR.json",
+    "src/i18n/locale/vi.json"
+  ],
+  "crossDispositionCounts": {
+    "HOLD": 4,
+    "KEEP": 219,
+    "SELECT_PROPOSAL": 17
+  },
+  "currentHashOnlyHolds": 4,
+  "historicalAppliedTargetHashes": 197,
+  "historicalHashOnlyHolds": 22,
+  "localeUpdateCounts": {
+    "ar": 1,
+    "de": 1,
+    "es": 1,
+    "fr": 2,
+    "hi": 2,
+    "id": 4,
+    "ko": 2,
+    "pt-BR": 1,
+    "vi": 3
+  },
+  "locales": 12,
+  "mergeReleaseTag": false,
+  "nativeSpeakerApproval": false,
+  "productCommit": "df93035a71c4b08470b34ed00abadd443bbdd876",
+  "productTree": "a5455231951450556d5d94cfd8d9f66bfe1c6301",
+  "pullRequest": 418,
+  "readbackCells": 240,
+  "repository": "snapetech-org/seerrng",
+  "resolvedBlindHolds": 2,
+  "result": "PASS",
+  "reviewMode": "non-blind cross-audit application",
+  "selectedProposalKinds": {
+    "correction": 6,
+    "refinement": 11
+  },
+  "sourceIds": 20,
+  "testsBuildsScansCI": false,
+  "window": "W3920-W3939",
+  "workflowChanges": false
+}
