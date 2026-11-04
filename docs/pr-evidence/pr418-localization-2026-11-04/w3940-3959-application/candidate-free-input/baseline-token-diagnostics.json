@@ -1,0 +1,21 @@
+{
+  "cellCount": 240,
+  "markupTags": 0,
+  "numericTokens": 2,
+  "placeholders": 0,
+  "protectedLiterals": 0,
+  "mismatchExamples": [
+    {
+      "position": 3940,
+      "sourceIdSha256": "a28cf4229f67859aba909679120b3f2b326cc7739da5bfc7653c4f83f0940e97",
+      "locale": "ja",
+      "kind": "numericTokens"
+    },
+    {
+      "position": 3955,
+      "sourceIdSha256": "a43904f852ca427980d413d2cb18e46d38f3f8e078b5e60b63af142479b8eae9",
+      "locale": "ja",
+      "kind": "numericTokens"
+    }
+  ]
+}

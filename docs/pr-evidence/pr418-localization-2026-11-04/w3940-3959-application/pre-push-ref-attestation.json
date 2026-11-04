@@ -1,0 +1,23 @@
+{
+  "artifact": "SeerrNG PR #418 W3940-W3959 pre-push remote state",
+  "capturedAtUtc": "2026-11-04T19:47:23Z",
+  "repository": "snapetech-org/seerrng",
+  "pullRequest": 418,
+  "window": "W3940-W3959",
+  "expectedBaseHead": "a0104b4c84a9c4561020ca72062171b22ffc49f2",
+  "expectedBaseTree": "aaa44c8019c58fde7ae796065e8aae7ac11d7a80",
+  "productCommit": "f1252f3058c3ce558fd99eb23dc0faa842826e58",
+  "branchRefSha": "a0104b4c84a9c4561020ca72062171b22ffc49f2",
+  "pullRefSha": "a0104b4c84a9c4561020ca72062171b22ffc49f2",
+  "liveMainSha": "016bcf8db7475b2105b9b488ff67ed7d1c096508",
+  "liveMainTree": "be45de2c5ffc98098adcdc362b491717c05a48c2",
+  "prApiHeadSha": "a0104b4c84a9c4561020ca72062171b22ffc49f2",
+  "prApiHeadRef": "codex/seerrng-localization-overhaul-20261028",
+  "prApiBaseSha": "fa40534ccced75bde1125c14760514fcd5d7de4d",
+  "prApiBaseRef": "main",
+  "prState": "open",
+  "prDraft": true,
+  "prUpdatedAt": "2026-11-04T18:43:36Z",
+  "preAppendBodySha256": "e7a86b34cc07105f88749f12dcb234c0af1ae18344d5cb8fe50b322556f592d6",
+  "preAppendBodyByteLength": 116210
+}

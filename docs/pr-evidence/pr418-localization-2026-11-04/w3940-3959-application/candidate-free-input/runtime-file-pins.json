@@ -1,0 +1,55 @@
+{
+  "head": "a0104b4c84a9c4561020ca72062171b22ffc49f2",
+  "tree": "aaa44c8019c58fde7ae796065e8aae7ac11d7a80",
+  "files": [
+    {
+      "path": "config/i18n/locales.json",
+      "byteCount": 5394,
+      "lineCount": 45,
+      "sha256": "6e8ea070b441db9700325cf838d440dbbef1d1e5331e28332ed6c15cb789376a",
+      "gitBlob": "d699bd347f4fbad07bce14a743c884800d9d4a84"
+    },
+    {
+      "path": "src/components/Settings/Notifications/NotificationsPushbullet/index.tsx",
+      "byteCount": 9305,
+      "lineCount": 266,
+      "sha256": "1ccea62bc76e634fa6f6a0c23991bb358de0eae9932b7a8fcdefe110c6c6a7f2",
+      "gitBlob": "4f05e3de13ba2a8c0acd2afe2c201dc2da351698"
+    },
+    {
+      "path": "src/components/Settings/Notifications/NotificationsPushover/index.tsx",
+      "byteCount": 12765,
+      "lineCount": 354,
+      "sha256": "6700f6ffc516cafa7fb6b5d52b94dc451732fea404ece2f5264f81cb083fe8c5",
+      "gitBlob": "49132f7e894b403bfe3526460eebc8e132e15aa7"
+    },
+    {
+      "path": "src/components/Settings/Notifications/NotificationsSlack/index.tsx",
+      "byteCount": 17400,
+      "lineCount": 454,
+      "sha256": "ce67eaf2f9c20ed758ba89d3b65cf088480c0ca2f0055108c9b0988884852718",
+      "gitBlob": "a34deac9186a8879927cec623deee126382db48c"
+    },
+    {
+      "path": "src/pages/settings/notifications/pushbullet.tsx",
+      "byteCount": 671,
+      "lineCount": 19,
+      "sha256": "795d07ebb590c8fa4d4ea4288ba887664086478d588f193404c2b0081c7149fb",
+      "gitBlob": "50c1d98bf56103f4247314cfecfee09ba7d771f9"
+    },
+    {
+      "path": "src/pages/settings/notifications/pushover.tsx",
+      "byteCount": 665,
+      "lineCount": 19,
+      "sha256": "f7cb7232726f38e782c32abef0bd196545ea1bd2487d9d77709f8184594c5266",
+      "gitBlob": "4211e668caff65405e47c8ef2fa13835796376b1"
+    },
+    {
+      "path": "src/pages/settings/notifications/slack.tsx",
+      "byteCount": 666,
+      "lineCount": 19,
+      "sha256": "768c4a6e21e5eb09b5c27afba43044ea0295f5d4eaf64e34d14e4d249bfdc75c",
+      "gitBlob": "1ee8a963ea7ff0b3cb468490b9e0e5990eff0bcc"
+    }
+  ]
+}
