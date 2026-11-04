@@ -3975,7 +3975,7 @@
   "components.Settings.Notifications.NotificationsSlack.validationWebhookUrl": "Anda mesti memberikan suatu URL yang valid",
   "components.Settings.Notifications.NotificationsSlack.validationWorkspaceId": "Masukkan ID ruang kerja Slack yang valid",
   "components.Settings.Notifications.NotificationsSlack.webhookUrl": "URL Webhook",
-  "components.Settings.Notifications.NotificationsSlack.webhookUrlTip": "Buat <WebhookLink>Webhook Masuk</WebhookLink> integrasi",
+  "components.Settings.Notifications.NotificationsSlack.webhookUrlTip": "Buat integrasi <WebhookLink>Webhook Masuk</WebhookLink>",
   "components.Settings.Notifications.NotificationsSlack.workspaceId": "ID ruang kerja Slack",
   "components.Settings.Notifications.NotificationsSlack.workspaceIdTip": "ID ruang kerja yang memiliki aplikasi Slack ini.",
   "components.Settings.Notifications.NotificationsWebPush.agentenabled": "Aktifkan Agen",

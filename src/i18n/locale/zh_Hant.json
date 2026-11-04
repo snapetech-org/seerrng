@@ -3955,7 +3955,7 @@
   "components.Settings.Notifications.NotificationsSlack.validationTypes": "您必須至少選擇一種通知類型。",
   "components.Settings.Notifications.NotificationsSlack.validationWebhookUrl": "您必須提供有效的 URL",
   "components.Settings.Notifications.NotificationsSlack.validationWorkspaceId": "輸入有效的 Slack 工作區 ID",
-  "components.Settings.Notifications.NotificationsSlack.webhookUrl": "網頁 URL",
+  "components.Settings.Notifications.NotificationsSlack.webhookUrl": "Webhook URL",
   "components.Settings.Notifications.NotificationsSlack.webhookUrlTip": "建立一個 <WebhookLink>傳入 Webhook</WebhookLink> 整合。",
   "components.Settings.Notifications.NotificationsSlack.workspaceId": "Slack 工作區 ID",
   "components.Settings.Notifications.NotificationsSlack.workspaceIdTip": "擁有此 Slack 應用程式的工作區 ID。",

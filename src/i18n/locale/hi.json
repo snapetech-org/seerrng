@@ -3975,7 +3975,7 @@
   "components.Settings.Notifications.NotificationsSlack.validationWebhookUrl": "आपको एक वैध URL प्रदान करना होगा",
   "components.Settings.Notifications.NotificationsSlack.validationWorkspaceId": "एक मान्य Slack वर्कस्पेस ID दर्ज करें",
   "components.Settings.Notifications.NotificationsSlack.webhookUrl": "वेबहुक URL",
-  "components.Settings.Notifications.NotificationsSlack.webhookUrlTip": "बनाना <WebhookLink>आने वाले वेबहुक</WebhookLink> एकीकरण",
+  "components.Settings.Notifications.NotificationsSlack.webhookUrlTip": "एक <WebhookLink>इनकमिंग वेबहुक</WebhookLink> के लिए इंटीग्रेशन बनाएँ।",
   "components.Settings.Notifications.NotificationsSlack.workspaceId": "Slack वर्कस्पेस ID",
   "components.Settings.Notifications.NotificationsSlack.workspaceIdTip": "इस Slack ऐप के स्वामी वर्कस्पेस की ID।",
   "components.Settings.Notifications.NotificationsWebPush.agentenabled": "एजेंट सक्षम करें",

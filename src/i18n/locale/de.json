@@ -3975,7 +3975,7 @@
   "components.Settings.Notifications.NotificationsSlack.validationWebhookUrl": "Du musst eine gültige URL angeben",
   "components.Settings.Notifications.NotificationsSlack.validationWorkspaceId": "Gib eine gültige Slack-Workspace-ID ein",
   "components.Settings.Notifications.NotificationsSlack.webhookUrl": "Webhook-URL",
-  "components.Settings.Notifications.NotificationsSlack.webhookUrlTip": "Erstelle eine <WebhookLink>eingehende Webhook</WebhookLink> Integration",
+  "components.Settings.Notifications.NotificationsSlack.webhookUrlTip": "Erstelle eine Integration mit einem <WebhookLink>eingehenden Webhook</WebhookLink>.",
   "components.Settings.Notifications.NotificationsSlack.workspaceId": "Slack-Workspace-ID",
   "components.Settings.Notifications.NotificationsSlack.workspaceIdTip": "Die ID des Workspace, dem diese Slack-App gehört.",
   "components.Settings.Notifications.NotificationsWebPush.agentenabled": "Agent aktivieren",
