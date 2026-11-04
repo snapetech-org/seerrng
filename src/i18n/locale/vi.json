@@ -3782,7 +3782,7 @@
   "components.Settings.LidarrModal.servername": "Tên máy chủ",
   "components.Settings.LidarrModal.ssl": "Dùng SSL",
   "components.Settings.LidarrModal.syncEnabled": "Bật quét",
-  "components.Settings.LidarrModal.syncEnabledHelp": "Quét Lidarr để tìm phương tiện hiện có và trạng thái yêu cầu, giúp người dùng không yêu cầu nội dung đã có sẵn.",
+  "components.Settings.LidarrModal.syncEnabledHelp": "Quét Lidarr để tìm nội dung đa phương tiện hiện có và trạng thái yêu cầu, giúp người dùng không yêu cầu nội dung đã có sẵn.",
   "components.Settings.LidarrModal.tagRequests": "Gắn nhãn yêu cầu",
   "components.Settings.LidarrModal.tagRequestsInfo": "Tự động thêm nhãn bổ sung gồm ID người dùng và tên hiển thị của người gửi yêu cầu.",
   "components.Settings.LidarrModal.tags": "Nhãn",

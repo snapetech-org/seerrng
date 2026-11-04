@@ -3803,7 +3803,7 @@
   "components.Settings.LidarrModal.syncEnabled": "Scannen aktivieren",
   "components.Settings.LidarrModal.syncEnabledHelp": "Scannen Sie Lidarr nach vorhandenen Medien und deren Anfragestatus, damit Benutzer keine bereits verfügbaren Inhalte anfragen können.",
   "components.Settings.LidarrModal.tagRequests": "Anfragen taggen",
-  "components.Settings.LidarrModal.tagRequestsInfo": "Füge automatisch einen zusätzlichen Tag mit der ID und dem Namen des anfragenden Nutzers hinzu",
+  "components.Settings.LidarrModal.tagRequestsInfo": "Füge automatisch einen zusätzlichen Tag mit der Nutzer-ID und dem Anzeigenamen des Anfragenden hinzu.",
   "components.Settings.LidarrModal.tags": "Tags",
   "components.Settings.LidarrModal.testFirstMetadataProfiles": "Verbindung testen, um Metadatenprofile zu laden",
   "components.Settings.LidarrModal.testFirstQualityProfiles": "Teste die Verbindung, um Qualitätsprofile zu laden",

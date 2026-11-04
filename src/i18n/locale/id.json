@@ -3816,7 +3816,7 @@
   "components.Settings.LidarrModal.validationApplicationUrlTrailingSlash": "URL tidak boleh diakhiri dengan garis miring.",
   "components.Settings.LidarrModal.validationBaseUrlLeadingSlash": "URL dasar harus diawali dengan garis miring.",
   "components.Settings.LidarrModal.validationBaseUrlTrailingSlash": "URL dasar tidak boleh diakhiri dengan garis miring.",
-  "components.Settings.LidarrModal.validationHostnameRequired": "Anda mesti memberikan alamat host atau IP yang valid",
+  "components.Settings.LidarrModal.validationHostnameRequired": "Anda mesti memberikan nama host atau alamat IP yang valid.",
   "components.Settings.LidarrModal.validationMetadataProfileRequired": "Anda harus memilih profil metadata",
   "components.Settings.LidarrModal.validationNameRequired": "Anda harus memberikan nama server.",
   "components.Settings.LidarrModal.validationPortRequired": "Anda mesti memberikan suatu nomor port yang valid",
