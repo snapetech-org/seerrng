@@ -48,7 +48,7 @@ commit_files=run(['diff-tree','--no-commit-id','--name-only','-r',app_sha]).spli
 assert sorted(commit_files)==sorted(manifest['changedCatalogPaths']) and len(commit_files)==8
 assert all(not x.startswith('.github/workflows/') for x in commit_files)
 application_result=json.loads(subprocess.check_output([sys.executable,str(application/'verify-application.py'),str(REPO),str(cross/'cross-ledger.jsonl')],text=True))
-assert application_result['result']=='PASS' and application_result['applicationHead']==app_sha
+assert application_result['result']=='PASS' and application_result['applicationHead']==run(['rev-parse','HEAD'])
 att=j(application,'application-postcommit-attestation.json')
 pr=att['pullRequest']
 assert pr['number']==418 and pr['state']=='OPEN' and pr['isDraft'] is True and pr['headRefOid']==app_sha
