@@ -1,0 +1,154 @@
+{
+  "artifact": "SeerrNG PR #418 W3800-W3819 candidate-free input",
+  "baseRef": "main",
+  "baseSha": "fa40534ccced75bde1125c14760514fcd5d7de4d",
+  "baselineTokenMismatchCounts": {
+    "markupTags": 0,
+    "numericTokens": 0,
+    "placeholders": 0,
+    "protectedLiterals": 4
+  },
+  "callerReferenceCount": 20,
+  "callerlessSourcePositions": [],
+  "candidateFreeInputOnly": true,
+  "catalogCount": 13,
+  "cellCount": 240,
+  "dispositionFieldsIncluded": false,
+  "fileNames": [
+    "PR-attestation-after.json",
+    "PR-attestation.json",
+    "README.md",
+    "baseline-token-diagnostics.json",
+    "caller-context-blocks.jsonl",
+    "caller-contexts.jsonl",
+    "caller-resolution-findings.json",
+    "catalog-file-pins.json",
+    "current-target-cells.jsonl",
+    "deployments-after.json",
+    "deployments-before.json",
+    "prior-evidence-hash-index.json",
+    "prior-hold-hash-reattestation.jsonl",
+    "prior-selection-hash-reattestation.jsonl",
+    "remote-refs-after.tsv",
+    "remote-refs-before.tsv",
+    "runtime-file-pins.json",
+    "selected-source-cells.jsonl",
+    "source-order-hashes.jsonl",
+    "source-window-boundaries-hash-only.jsonl",
+    "verify-candidate-free.py",
+    "window.json"
+  ],
+  "head": "154dbf7fd6b346d9c5bddf23c7c6283db9826313",
+  "headRef": "codex/seerrng-localization-overhaul-20261028",
+  "liveDeploymentsAtExpectedShaAfter": 0,
+  "liveDeploymentsAtExpectedShaBefore": 0,
+  "localeCount": 12,
+  "localeFileMapping": {
+    "ar": {
+      "catalogFileStem": "ar",
+      "catalogPath": "src/i18n/locale/ar.json",
+      "configTag": "ar"
+    },
+    "de": {
+      "catalogFileStem": "de",
+      "catalogPath": "src/i18n/locale/de.json",
+      "configTag": "de"
+    },
+    "es": {
+      "catalogFileStem": "es",
+      "catalogPath": "src/i18n/locale/es.json",
+      "configTag": "es"
+    },
+    "fr": {
+      "catalogFileStem": "fr",
+      "catalogPath": "src/i18n/locale/fr.json",
+      "configTag": "fr"
+    },
+    "hi": {
+      "catalogFileStem": "hi",
+      "catalogPath": "src/i18n/locale/hi.json",
+      "configTag": "hi"
+    },
+    "id": {
+      "catalogFileStem": "id",
+      "catalogPath": "src/i18n/locale/id.json",
+      "configTag": "id"
+    },
+    "ja": {
+      "catalogFileStem": "ja",
+      "catalogPath": "src/i18n/locale/ja.json",
+      "configTag": "ja"
+    },
+    "ko": {
+      "catalogFileStem": "ko",
+      "catalogPath": "src/i18n/locale/ko.json",
+      "configTag": "ko"
+    },
+    "pt-BR": {
+      "catalogFileStem": "pt_BR",
+      "catalogPath": "src/i18n/locale/pt_BR.json",
+      "configTag": "pt-BR"
+    },
+    "vi": {
+      "catalogFileStem": "vi",
+      "catalogPath": "src/i18n/locale/vi.json",
+      "configTag": "vi"
+    },
+    "zh-Hans": {
+      "catalogFileStem": "zh_Hans",
+      "catalogPath": "src/i18n/locale/zh_Hans.json",
+      "configTag": "zh-CN"
+    },
+    "zh-Hant": {
+      "catalogFileStem": "zh_Hant",
+      "catalogPath": "src/i18n/locale/zh_Hant.json",
+      "configTag": "zh-TW"
+    }
+  },
+  "localeInsertionOrderDifferencesFromEnglish": [
+    "zh-Hans",
+    "ja",
+    "ko",
+    "zh-Hant",
+    "vi"
+  ],
+  "localeOrder": [
+    "es",
+    "zh-Hans",
+    "hi",
+    "de",
+    "ja",
+    "fr",
+    "pt-BR",
+    "ar",
+    "ko",
+    "zh-Hant",
+    "vi",
+    "id"
+  ],
+  "packetType": "candidate-free-input",
+  "priorEvidenceHashIndex": "prior-evidence-hash-index.json",
+  "priorHoldCount": 12,
+  "priorHoldHashMatches": 12,
+  "priorHoldTextIncluded": false,
+  "priorSelectedIdOrSourceTextHashMismatchCount": 0,
+  "priorSelectedSourceIdCount": 3800,
+  "priorSelectedSourceIdHashSequenceSha256": "ad49759f3e49df405342c4508e422eb5a30d31cad820526683208dd2f83620f8",
+  "proposalCount": 0,
+  "pullRequest": 418,
+  "range": [
+    3800,
+    3819
+  ],
+  "repository": "snapetech-org/SeerrNG",
+  "schemaVersion": 1,
+  "selectedSourceCount": 20,
+  "sortedKeySetParityWithEnglish": true,
+  "sourceCatalogPath": "src/i18n/locale/en.json",
+  "sourceCount": 9494,
+  "sourceIdOrderSha256": "2ece175c95fe56b427b65a1a46169f895a342887ed772e4e5729c32dd443ad7e",
+  "sourceRecordOrderSha256": "3efb0ce7432eda01ceee9722cce22d1f8b3251d95bb70968afbbc8751b3fa356",
+  "sourceTextOrderSha256": "3a663a44b3f21ddf29b3b20ec85d166a4776e0b7ede1a8abf9d3c97c7110cf2b",
+  "tree": "a2f00bcc40b51a5643bbeb3e52ecdfc58a5718b9",
+  "window": "W3800-W3819"
+}

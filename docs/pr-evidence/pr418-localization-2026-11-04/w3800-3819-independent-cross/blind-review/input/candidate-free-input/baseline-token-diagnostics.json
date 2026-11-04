@@ -1,0 +1,10 @@
+{
+  "cellCount": 240,
+  "mismatchCounts": {
+    "markupTags": 0,
+    "numericTokens": 0,
+    "placeholders": 0,
+    "protectedLiterals": 4
+  },
+  "protectedLiteralMismatchCellCount": 4
+}
