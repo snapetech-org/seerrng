@@ -1,0 +1,30 @@
+{
+  "attestedAt": "2026-11-04T14:43:35Z",
+  "repository": "snapetech-org/seerrng",
+  "pullRequest": 418,
+  "prState": "open",
+  "draft": true,
+  "headRef": "codex/seerrng-localization-overhaul-20261028",
+  "headSha": "b3378f2294a976732d7256f92b4a122625adae22",
+  "headTree": "a6cea9e93a41f4ee9ef4d3e13e4b381a50ec208b",
+  "branchRefSha": "b3378f2294a976732d7256f92b4a122625adae22",
+  "pullRefSha": "b3378f2294a976732d7256f92b4a122625adae22",
+  "baseRef": "main",
+  "prApiBaseSha": "fa40534ccced75bde1125c14760514fcd5d7de4d",
+  "prApiBaseTree": "729219c17bf8ca431d9682025256c584d67f081f",
+  "liveBaseBranchSha": "016bcf8db7475b2105b9b488ff67ed7d1c096508",
+  "liveBaseBranchTree": "be45de2c5ffc98098adcdc362b491717c05a48c2",
+  "baseBranchMovedSinceInputAttestation": true,
+  "remoteRefs": {
+    "refs/heads/codex/seerrng-localization-overhaul-20261028": "b3378f2294a976732d7256f92b4a122625adae22",
+    "refs/pull/418/head": "b3378f2294a976732d7256f92b4a122625adae22",
+    "refs/heads/main": "016bcf8db7475b2105b9b488ff67ed7d1c096508"
+  },
+  "sourceWorktree": {
+    "path": "/mnt/disks/scratch/task-worktrees/localization-20261104/seerrng-pr418-w3880-3899-input",
+    "clean": true,
+    "head": "b3378f2294a976732d7256f92b4a122625adae22",
+    "tree": "a6cea9e93a41f4ee9ef4d3e13e4b381a50ec208b",
+    "size": "737M"
+  }
+}

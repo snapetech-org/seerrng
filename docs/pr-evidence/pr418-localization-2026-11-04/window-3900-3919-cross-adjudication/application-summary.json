@@ -1,0 +1,40 @@
+{
+  "result": "PASS",
+  "window": [
+    3900,
+    3919
+  ],
+  "appliedTargets": 32,
+  "localeCounts": {
+    "ar": 1,
+    "es": 3,
+    "fr": 3,
+    "hi": 2,
+    "id": 2,
+    "ko": 4,
+    "pt-BR": 2,
+    "vi": 2,
+    "zh-Hans": 7,
+    "zh-Hant": 6
+  },
+  "catalogFiles": [
+    "src/i18n/locale/ar.json",
+    "src/i18n/locale/es.json",
+    "src/i18n/locale/fr.json",
+    "src/i18n/locale/hi.json",
+    "src/i18n/locale/id.json",
+    "src/i18n/locale/ko.json",
+    "src/i18n/locale/pt_BR.json",
+    "src/i18n/locale/vi.json",
+    "src/i18n/locale/zh_Hans.json",
+    "src/i18n/locale/zh_Hant.json"
+  ],
+  "headBefore": "b3378f2294a976732d7256f92b4a122625adae22",
+  "treeBefore": "a6cea9e93a41f4ee9ef4d3e13e4b381a50ec208b",
+  "headAtReadback": "b3378f2294a976732d7256f92b4a122625adae22",
+  "treeAtReadback": "a6cea9e93a41f4ee9ef4d3e13e4b381a50ec208b",
+  "postApplyStatus": "M src/i18n/locale/ar.json\n M src/i18n/locale/es.json\n M src/i18n/locale/fr.json\n M src/i18n/locale/hi.json\n M src/i18n/locale/id.json\n M src/i18n/locale/ko.json\n M src/i18n/locale/pt_BR.json\n M src/i18n/locale/vi.json\n M src/i18n/locale/zh_Hans.json\n M src/i18n/locale/zh_Hant.json",
+  "holdsRetained": 4,
+  "worktree": "/mnt/disks/scratch/task-worktrees/localization-20261104/seerrng-pr418-w3880-3899-input",
+  "method": "hash-guarded JSON token replacement; duplicate-key parse and exact parsed readback; no tests/builds run"
+}
