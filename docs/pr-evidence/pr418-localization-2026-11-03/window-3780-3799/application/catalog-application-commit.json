@@ -1,0 +1,24 @@
+{
+  "branchRef": "39b0010ce37725c7a35af9a5cbc9f0898edd1563",
+  "commit": "39b0010ce37725c7a35af9a5cbc9f0898edd1563",
+  "deploymentsAtCommit": 0,
+  "files": [
+    "src/i18n/locale/ar.json",
+    "src/i18n/locale/es.json",
+    "src/i18n/locale/hi.json",
+    "src/i18n/locale/ko.json",
+    "src/i18n/locale/pt_BR.json",
+    "src/i18n/locale/vi.json",
+    "src/i18n/locale/zh_Hans.json",
+    "src/i18n/locale/zh_Hant.json"
+  ],
+  "message": "Apply reviewed SeerrNG translations W3780-W3799",
+  "parent": "3f57a9a14857b56ec65fe5710050a881aab2730e",
+  "prDraft": true,
+  "prState": "OPEN",
+  "pullRef": "39b0010ce37725c7a35af9a5cbc9f0898edd1563",
+  "pushed": true,
+  "pushedVia": "explicit HTTPS URL",
+  "result": "PASS",
+  "tree": "d43e1eb52460e1911f856e024092c1dede0a665d"
+}

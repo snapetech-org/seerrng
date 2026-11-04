@@ -1,0 +1,7 @@
+{
+  "baselineDeployments": 0,
+  "headedBrowserAcceptance": "unverified",
+  "headedBrowserReview": "pending",
+  "nativeSpeakerReview": "pending",
+  "reason": "The pinned head has zero deployments and the persistent VM reaches only the Seerr setup screen; no setup state was mutated."
+}

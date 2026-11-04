@@ -1,0 +1,67 @@
+{
+  "candidateFreeChecksumListSha256": "25114409119b732f30be4c73e7c1cff0dd788edcbc8151e2d3fe2cd48d582b83",
+  "candidateFreeManifestSha256": "956267d819adaabe54f75e7143b915b28afbe76d04a6d3ffa26288421dc8700c",
+  "candidateFreeRelevantChecks": {
+    "manifest.json": {
+      "actualSha256": "956267d819adaabe54f75e7143b915b28afbe76d04a6d3ffa26288421dc8700c",
+      "expectedSha256": "956267d819adaabe54f75e7143b915b28afbe76d04a6d3ffa26288421dc8700c",
+      "matches": true
+    },
+    "prior-hold-hash-reattestation.jsonl": {
+      "actualSha256": "2712cb59464440516a561a1f8eafca5c1de2f4a941ebc9689ad3c03f3a39eb90",
+      "expectedSha256": "2712cb59464440516a561a1f8eafca5c1de2f4a941ebc9689ad3c03f3a39eb90",
+      "matches": true
+    },
+    "prior-selection-hash-reattestation.jsonl": {
+      "actualSha256": "af053619a394f9496d518f16620ca2cfc1b3ff5fae9bc5436a36d782e06c8173",
+      "expectedSha256": "af053619a394f9496d518f16620ca2cfc1b3ff5fae9bc5436a36d782e06c8173",
+      "matches": true
+    },
+    "selected-source-cells.jsonl": {
+      "actualSha256": "21303bb4a72ddb06e98966f93deab290624fb09ff65905cf463ee31b0e64ab9f",
+      "expectedSha256": "21303bb4a72ddb06e98966f93deab290624fb09ff65905cf463ee31b0e64ab9f",
+      "matches": true
+    },
+    "window.json": {
+      "actualSha256": "918623781788e961a4fbda8768898a8682bf289579332abf5e89b24ce46cfe75",
+      "expectedSha256": "918623781788e961a4fbda8768898a8682bf289579332abf5e89b24ce46cfe75",
+      "matches": true
+    }
+  },
+  "previousCandidateFreePath": "/home/keith/Documents/code/task-scratch/seerrng-pr418-w3760-3779-primary-20261103/candidate-free-input",
+  "previousHead": "d317a07ea0e5456b6d4660470c57d1f205cd0587",
+  "previousHoldCount": 12,
+  "previousHoldHashReattestationCount": 12,
+  "previousHoldTargetsUnchangedByHash": 12,
+  "previousPrimaryCarriedHoldCount": 12,
+  "previousPrimaryCarriedHoldHashesMatched": 12,
+  "previousPrimaryDecisionCounts": {
+    "accept-current": 228,
+    "correct": 9,
+    "refine": 3
+  },
+  "previousPrimaryManifestSha256": "c0098e47e24f86ed982fe30f402461cfd8e2fe6c0e928c8a637f5d1ac699b985",
+  "previousPrimaryNewHoldCount": 0,
+  "previousPrimaryRelevantChecks": {
+    "manifest.json": {
+      "actualSha256": "c0098e47e24f86ed982fe30f402461cfd8e2fe6c0e928c8a637f5d1ac699b985",
+      "expectedSha256": "c0098e47e24f86ed982fe30f402461cfd8e2fe6c0e928c8a637f5d1ac699b985",
+      "matches": true
+    },
+    "summary.json": {
+      "actualSha256": "45737db0e4feaee447986cb125f5fafdc074a073eb947c8d2b445530c0291129",
+      "expectedSha256": "45737db0e4feaee447986cb125f5fafdc074a073eb947c8d2b445530c0291129",
+      "matches": true
+    }
+  },
+  "previousPrimarySummaryPath": "/home/keith/Documents/code/task-scratch/seerrng-pr418-w3760-3779-primary-20261103/primary-review/summary.json",
+  "previousPrimarySummarySha256": "45737db0e4feaee447986cb125f5fafdc074a073eb947c8d2b445530c0291129",
+  "previousSelectedIdsAndSourceTextReattestedByHash": 3780,
+  "previousSelectedSourceIdCount": 3780,
+  "previousSelectedSourceIdHashSequenceSha256": "8071aa590fe728e27d041d23416c97e519ecd179c26b4600bee8ec1cc5f71ed7",
+  "previousSelectionHashRows": 3760,
+  "previousTree": "c1383dfb6e6fd4e926f9c89d4ec6b7e8ea7d6008",
+  "previousWindow": "W3760-W3779",
+  "previousWindowSelectionRows": 20,
+  "sourceOrderChangedFromPriorFullContentHash": false
+}
