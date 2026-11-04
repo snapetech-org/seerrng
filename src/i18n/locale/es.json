@@ -3795,7 +3795,7 @@
   "components.Settings.LidarrModal.qualityprofile": "Perfil de calidad",
   "components.Settings.LidarrModal.rootfolder": "Carpeta raíz",
   "components.Settings.LidarrModal.selectMetadataProfile": "Seleccione el perfil de metadatos",
-  "components.Settings.LidarrModal.selectQualityProfile": "Seleccione perfil de calidad",
+  "components.Settings.LidarrModal.selectQualityProfile": "Seleccione un perfil de calidad",
   "components.Settings.LidarrModal.selectRootFolder": "Seleccione la carpeta raíz",
   "components.Settings.LidarrModal.selecttags": "Seleccione etiquetas",
   "components.Settings.LidarrModal.servername": "Nombre del Servidor",
