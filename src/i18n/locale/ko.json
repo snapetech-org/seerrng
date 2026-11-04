@@ -3809,7 +3809,7 @@
   "components.Settings.MylarModal.baseUrl": "URL Base",
   "components.Settings.MylarModal.baseUrlHelp": "Mylar의 Settings > Web Interface에서 URL Base를 설정했다면 여기에 입력하고, 그렇지 않으면 비워 두세요.",
   "components.Settings.MylarModal.compatibilityNote": "Mylar3는 Usenet 및 토렌트 인덱서를 검색할 수 있습니다. Mylar3에서 제공자를 구성하세요. Kapowarr와 BackIssue는 각자의 콘텐츠 확보 소스를 사용합니다.",
-  "components.Settings.MylarModal.createmylar": "새 Mylar Server 추가",
+  "components.Settings.MylarModal.createmylar": "새 Mylar 서버 추가",
   "components.Settings.MylarModal.defaultserver": "기본 서버",
   "components.Settings.MylarModal.editmylar": "Mylar 서버 편집",
   "components.Settings.MylarModal.enableSearch": "자동 검색 활성화",

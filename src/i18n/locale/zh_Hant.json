@@ -3815,7 +3815,7 @@
   "components.Settings.MylarModal.enableSearch": "啟用自動搜尋",
   "components.Settings.MylarModal.enableSearchHelp": "核准請求時，Mylar 會自動啟動搜尋。Prowlarr 可以將索引器同步至 Mylar；同步後請檢查 Mylar 的供應商設定，確認索引器已啟用。SeerrNG 也為具有「管理請求」權限的使用者提供另一個手動 Prowlarr 搜尋功能。",
   "components.Settings.MylarModal.externalUrl": "外部 URL",
-  "components.Settings.MylarModal.externalUrlHelp": "當主機名稱無法從您的網路外取得時, 可點擊媒體頁面的連結 。",
+  "components.Settings.MylarModal.externalUrlHelp": "當主機名稱無法從網路外部存取時，用於讓媒體頁面上的連結可點擊。",
   "components.Settings.MylarModal.hostname": "主機名稱或 IP 位址",
   "components.Settings.MylarModal.port": "通訊埠",
   "components.Settings.MylarModal.servername": "伺服器名稱",

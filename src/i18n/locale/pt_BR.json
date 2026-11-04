@@ -3832,7 +3832,7 @@
   "components.Settings.MylarModal.defaultserver": "Servidor Padrão",
   "components.Settings.MylarModal.editmylar": "Editar servidor Mylar",
   "components.Settings.MylarModal.enableSearch": "Habilitar Busca Automática",
-  "components.Settings.MylarModal.enableSearchHelp": "Acione automaticamente uma pesquisa no Mylar quando uma solicitação for aprovada. Prowlarr pode sincronizar indexadores com Mylar; verifique as configurações do provedor Mylar após a sincronização para confirmar se estão ativadas. SeerrNG também oferece uma pesquisa manual Prowlarr separada para usuários com Gerenciar solicitações.",
+  "components.Settings.MylarModal.enableSearchHelp": "Acione automaticamente uma pesquisa no Mylar quando uma solicitação for aprovada. O Prowlarr pode sincronizar indexadores com o Mylar; após a sincronização, verifique as configurações de provedores do Mylar para confirmar que os indexadores estão habilitados. O SeerrNG também oferece uma pesquisa manual separada no Prowlarr para usuários com a permissão “Gerenciar solicitações”.",
   "components.Settings.MylarModal.externalUrl": "URL Externa",
   "components.Settings.MylarModal.externalUrlHelp": "Para links clicáveis em páginas de mídia quando o nome do host não é acessível de fora da sua rede.",
   "components.Settings.MylarModal.hostname": "Nome do host ou endereço IP",

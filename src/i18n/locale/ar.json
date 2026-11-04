@@ -3832,7 +3832,7 @@
   "components.Settings.MylarModal.defaultserver": "السيرفر الافتراضي",
   "components.Settings.MylarModal.editmylar": "تعديل خادم Mylar",
   "components.Settings.MylarModal.enableSearch": "تفعيل البحث التلقائي",
-  "components.Settings.MylarModal.enableSearchHelp": "تشغيل البحث تلقائيًا في مايلر عند الموافقة على الطلب. يمكن لـ Prowlarr مزامنة الفهارس مع Mylar؛ تحقق من إعدادات موفر Mylar بعد المزامنة للتأكد من تمكينها. يقدم SeerrNG أيضًا بحثًا يدويًا منفصلاً عن Prowlarr للمستخدمين الذين لديهم إدارة الطلبات.",
+  "components.Settings.MylarModal.enableSearchHelp": "يبدأ البحث تلقائيًا في Mylar عند الموافقة على الطلب. يمكن لـ Prowlarr مزامنة الفهارس مع Mylar؛ بعد المزامنة، تحقّق من إعدادات موفري Mylar للتأكد من تفعيلها. كما يوفّر SeerrNG بحثًا يدويًا منفصلًا في Prowlarr للمستخدمين الذين لديهم صلاحية إدارة الطلبات.",
   "components.Settings.MylarModal.externalUrl": "عنوان URL خارجي",
   "components.Settings.MylarModal.externalUrlHelp": "لوصلات قابلة للنقر على صفحات وسائط الإعلام عندما لا يمكن الوصول إلى اسم المضيف من خارج شبكتك.",
   "components.Settings.MylarModal.hostname": "الاسم المضيف أو عنوان IP",
