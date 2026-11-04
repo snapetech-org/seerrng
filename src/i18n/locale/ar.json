@@ -3803,7 +3803,7 @@
   "components.Settings.LidarrModal.syncEnabled": "تمكين المسح الضوئي",
   "components.Settings.LidarrModal.syncEnabledHelp": "قم بمسح Lidarr بحثًا عن الوسائط الموجودة وحالة الطلب حتى لا يتمكن المستخدمون من طلب المحتوى المتاح بالفعل.",
   "components.Settings.LidarrModal.tagRequests": "وسم الطلبات",
-  "components.Settings.LidarrModal.tagRequestsInfo": "تتم إضافة وسم إضافي تلقائيًا يتضمن معرّف المستخدم واسم العرض لصاحب الطلب.",
+  "components.Settings.LidarrModal.tagRequestsInfo": "أضف وسمًا إضافيًا تلقائيًا يتضمن معرّف المستخدم (ID) واسم العرض لصاحب الطلب.",
   "components.Settings.LidarrModal.tags": "العلامات",
   "components.Settings.LidarrModal.testFirstMetadataProfiles": "اختبر الاتصال لتحميل ملفات تعريف البيانات الوصفية",
   "components.Settings.LidarrModal.testFirstQualityProfiles": "اختبر الاتصال لتحميل ملفات تعريف الجودة",

@@ -3792,7 +3792,7 @@
   "components.Settings.LidarrModal.testFirstTags": "請先測試連線以載入標籤。",
   "components.Settings.LidarrModal.toastLidarrTestFailure": "連線到 Lidarr 失敗。",
   "components.Settings.LidarrModal.toastLidarrTestSuccess": "已成功建立與 Lidarr 的連線！",
-  "components.Settings.LidarrModal.validationApiKeyRequired": "您必须提供 API 键",
+  "components.Settings.LidarrModal.validationApiKeyRequired": "您必須提供 API 金鑰",
   "components.Settings.LidarrModal.validationApplicationUrl": "您必須提供有效的 URL",
   "components.Settings.LidarrModal.validationApplicationUrlTrailingSlash": "URL 結尾不得有斜線。",
   "components.Settings.LidarrModal.validationBaseUrlLeadingSlash": "URL 基址必須以斜線開頭。",

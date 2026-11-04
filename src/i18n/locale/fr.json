@@ -3803,7 +3803,7 @@
   "components.Settings.LidarrModal.syncEnabled": "Activer les analyses",
   "components.Settings.LidarrModal.syncEnabledHelp": "Analysez Lidarr pour détecter les médias existants et l’état des demandes, afin d’empêcher les utilisateurs de demander du contenu déjà disponible.",
   "components.Settings.LidarrModal.tagRequests": "Ajouter des étiquettes aux demandes",
-  "components.Settings.LidarrModal.tagRequestsInfo": "Ajoute automatiquement une étiquette supplémentaire contenant l’identifiant utilisateur et le nom d’affichage du demandeur.",
+  "components.Settings.LidarrModal.tagRequestsInfo": "Ajoute automatiquement une étiquette supplémentaire avec l’ID utilisateur et le nom d’affichage du demandeur.",
   "components.Settings.LidarrModal.tags": "Étiquettes",
   "components.Settings.LidarrModal.testFirstMetadataProfiles": "Tester la connexion pour charger les profils de métadonnées",
   "components.Settings.LidarrModal.testFirstQualityProfiles": "Tester la connexion pour charger les profils de qualité",

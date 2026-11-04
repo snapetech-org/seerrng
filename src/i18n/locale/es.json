@@ -3808,7 +3808,7 @@
   "components.Settings.LidarrModal.testFirstMetadataProfiles": "Prueba la conexión para cargar perfiles de metadatos.",
   "components.Settings.LidarrModal.testFirstQualityProfiles": "Prueba la conexión para cargar perfiles de calidad.",
   "components.Settings.LidarrModal.testFirstRootFolders": "Prueba la conexión para cargar las carpetas raíz.",
-  "components.Settings.LidarrModal.testFirstTags": "Probar conexión para cargar etiquetas",
+  "components.Settings.LidarrModal.testFirstTags": "Prueba la conexión para cargar etiquetas",
   "components.Settings.LidarrModal.toastLidarrTestFailure": "No se pudo conectar a Lidarr.",
   "components.Settings.LidarrModal.toastLidarrTestSuccess": "La conexión de Lidarr se estableció con éxito!",
   "components.Settings.LidarrModal.validationApiKeyRequired": "Usted debe proporcionar una clave API",
