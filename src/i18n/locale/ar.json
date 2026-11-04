@@ -3900,7 +3900,7 @@
   "components.Settings.Notifications.NotificationsGotify.url": "عنوان URL للخادم",
   "components.Settings.Notifications.NotificationsGotify.validationPriorityRequired": "يجب تحديد رقم أولوية",
   "components.Settings.Notifications.NotificationsGotify.validationTokenRequired": "يجب توفير رمز التطبيق.",
-  "components.Settings.Notifications.NotificationsGotify.validationTypes": "يجب عليك إختيار نوع تنبيه واحد على الأقل",
+  "components.Settings.Notifications.NotificationsGotify.validationTypes": "يجب عليك اختيار نوع إشعار واحد على الأقل.",
   "components.Settings.Notifications.NotificationsGotify.validationUrlRequired": "يجب إدخال عنوان URL صالح.",
   "components.Settings.Notifications.NotificationsGotify.validationUrlTrailingSlash": "يجب ألا ينتهي URL بشرطة مائلة.",
   "components.Settings.Notifications.NotificationsNtfy.agentenabled": "تفعيل الخدمة",
