@@ -75,6 +75,16 @@
   color-scheme: dark;
 }
 
+@media (max-width: 400px) {
+  :is(
+    :root[data-interface-theme='seerrOrig'],
+    [data-interface-theme='seerrOrig']
+  ) {
+    --interface-page-gutter: 1rem;
+    --interface-inset-card-padding: 0.5rem;
+  }
+}
+
 @media (max-width: 389px) {
   :is(
     :root[data-interface-theme='seerrOrig'],

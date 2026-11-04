@@ -1675,7 +1675,7 @@ describe('Books and Music discover parity', () => {
         name: 'Failed Artist',
       },
       tracks: [],
-    });
+    }).as('getFailedAlbum');
 
     cy.visit('/users/1/requests?filter=failed&mediaType=all');
     cy.wait('@getFailedRequests');
@@ -1684,6 +1684,8 @@ describe('Books and Music discover parity', () => {
       .contains('.card-field', 'Status')
       .find('a')
       .should('have.attr', 'href', '/book/OLFAILEDW?manage=1&format=ebook');
+    cy.get('[data-testid="request-card"]').eq(1).scrollIntoView();
+    cy.wait('@getFailedAlbum');
     cy.contains('Failed Album')
       .parents('.relative.flex.w-full')
       .contains('.card-field', 'Status')

@@ -224,7 +224,19 @@ describe('README screenshots', () => {
   });
 
   it('captures the discover panel', () => {
+    cy.intercept('GET', '/api/v1/interface-themes/*/theme.css').as(
+      'interfaceThemeStylesheet'
+    );
     cy.visit('/');
+    cy.wait('@interfaceThemeStylesheet').then(({ response }) => {
+      expect(response?.statusCode).to.eq(200);
+      expect(response?.headers['content-type']).to.include('text/css');
+    });
+    cy.get('html').should(($html) => {
+      expect(
+        getComputedStyle($html[0]).getPropertyValue('--poster-width').trim()
+      ).not.to.eq('');
+    });
     cy.contains('Recommended Music').should('be.visible');
     cy.contains('Recommended Books').should('be.visible');
     cy.get('[data-testid=title-card]').should('have.length.greaterThan', 15);

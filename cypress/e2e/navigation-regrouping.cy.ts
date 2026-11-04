@@ -3,8 +3,21 @@ describe('primary navigation', () => {
     cy.loginAsAdmin();
   });
 
+  afterEach(() => {
+    cy.request('/api/v1/auth/me').then(({ body }) =>
+      cy.request('POST', `/api/v1/user/${body.id}/settings/interface-theme`, {
+        theme: 'seerrOrig',
+      })
+    );
+  });
+
   it('orders the requested groups and nests User List under Settings', () => {
     cy.viewport(1400, 900);
+    cy.request('/api/v1/auth/me').then(({ body }) =>
+      cy.request('POST', `/api/v1/user/${body.id}/settings/interface-theme`, {
+        theme: 'seerrNGJ',
+      })
+    );
     cy.intercept('GET', '/api/v1/blocklist/count', { body: { count: 1 } });
     cy.mockConfiguredMediaAvailability({ booksEnabled: true });
     cy.visit('/');
