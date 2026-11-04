@@ -1,0 +1,46 @@
+{
+  "artifact": "SeerrNG PR #418 W3820-W3839 cross-selected catalog application",
+  "baseHead": "6c489a64782d31fee70a6aeef386c88527b33083",
+  "baseRef": "main",
+  "baseTree": "9bbf55986a34e9a2bc0c4027205927df65f8754b",
+  "catalogCommit": "3786de8f8334c6f69924e2f88e363f129d3b3943",
+  "catalogTree": "b4fbc12bace0fc1ac6a650badc444fe3fa0e8724",
+  "changedCatalogFiles": [
+    "src/i18n/locale/ar.json",
+    "src/i18n/locale/hi.json",
+    "src/i18n/locale/id.json",
+    "src/i18n/locale/ja.json",
+    "src/i18n/locale/ko.json",
+    "src/i18n/locale/pt_BR.json",
+    "src/i18n/locale/vi.json",
+    "src/i18n/locale/zh_Hans.json",
+    "src/i18n/locale/zh_Hant.json"
+  ],
+  "pullRequest": 418,
+  "readbackCellCount": 240,
+  "repository": "snapetech-org/SeerrNG",
+  "retainedHolds": [
+    {
+      "locale": "ar",
+      "position": 3828,
+      "sourceId": "components.Settings.MylarModal.compatibilityNote"
+    },
+    {
+      "locale": "id",
+      "position": 3833,
+      "sourceId": "components.Settings.MylarModal.enableSearchHelp"
+    }
+  ],
+  "schemaVersion": 1,
+  "selectedProposalCount": 19,
+  "validation": {
+    "all240CellReadbackMatches": true,
+    "allCatalogKeySetsAndOrdersPreserved": true,
+    "allUnselectedValuesPreserved": true,
+    "exactOldValueAndSha256GuardsPassed": true,
+    "testsBuildsChecksAndCiRun": false,
+    "visualAcceptance": "unverified: no exact-head deployment; task excluded builds/tests",
+    "workflowDiffEmpty": true
+  },
+  "window": "W3820-W3839"
+}

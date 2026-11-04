@@ -1,0 +1,23 @@
+{
+  "artifact": "Read-only source provenance for SeerrNG PR #418 W3820-W3839 cross-audit",
+  "baseRef": "main",
+  "baseSha": "fa40534ccced75bde1125c14760514fcd5d7de4d",
+  "fetchedCommitParent": "df0de5f43bda3793eca746a4a3069f499e1fcf59",
+  "fetchedCommitSubject": "Record W3800-W3819 cross review application evidence",
+  "head": "6c489a64782d31fee70a6aeef386c88527b33083",
+  "headRef": "codex/seerrng-localization-overhaul-20261028",
+  "inputHost": "kspls0",
+  "noRepositoryOrPullRequestChanges": true,
+  "observedAtUtc": "2026-11-04T05:46:26Z",
+  "observedRemoteRefs": {
+    "refs/heads/codex/seerrng-localization-overhaul-20261028": "6c489a64782d31fee70a6aeef386c88527b33083",
+    "refs/pull/418/head": "6c489a64782d31fee70a6aeef386c88527b33083"
+  },
+  "outputHost": "kspld0",
+  "pinnedCatalogFileCount": 13,
+  "pinnedRuntimeFileCount": 4,
+  "pullRequest": 418,
+  "repository": "snapetech-org/SeerrNG",
+  "tree": "9bbf55986a34e9a2bc0c4027205927df65f8754b",
+  "verification": "git ls-remote and shallow fetch of the exact SHA, then git rev-parse HEAD and HEAD^{tree}; exported the 17 pinned runtime/catalog files and included commit/tree object proof for offline verification."
+}
