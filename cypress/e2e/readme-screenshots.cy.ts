@@ -224,14 +224,14 @@ describe('README screenshots', () => {
   });
 
   it('captures the discover panel', () => {
-    cy.intercept('GET', '/api/v1/interface-themes/*/theme.css').as(
-      'interfaceThemeStylesheet'
-    );
     cy.visit('/');
-    cy.wait('@interfaceThemeStylesheet').then(({ response }) => {
-      expect(response?.statusCode).to.eq(200);
-      expect(response?.headers['content-type']).to.include('text/css');
-    });
+    cy.request('/api/v1/interface-themes/seerrOrig/theme.css').then(
+      ({ status, headers, body }) => {
+        expect(status).to.eq(200);
+        expect(headers['content-type']).to.include('text/css');
+        expect(body).to.include('--poster-width');
+      }
+    );
     cy.get('html').should(($html) => {
       expect(
         getComputedStyle($html[0]).getPropertyValue('--poster-width').trim()

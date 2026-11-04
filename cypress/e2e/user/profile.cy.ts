@@ -87,22 +87,14 @@ describe('User Profile', () => {
       .its('response.statusCode')
       .should('eq', 200);
 
-    cy.contains('.slider-header', 'Watchlist')
-      .closest('[data-testid=media-slider]')
-      .find('[data-testid=title-card]')
-      .first()
-      .trigger('mouseover')
-      .find('[data-testid=title-card-title]')
-      .invoke('text')
-      .then((text) => {
-        cy.contains('.slider-header', 'Watchlist')
-          .closest('[data-testid=media-slider]')
-          .find('[data-testid=title-card]')
-          .first()
-          .find('[data-poster-region="detail-link"]')
-          .click();
-        cy.location('pathname').should('eq', '/movie/361743');
-        cy.get('[data-testid=media-title]').should('contain', text);
-      });
+    getWatchlistCard()
+      .find('[data-poster-region="frame"]')
+      .trigger('mouseover');
+    getWatchlistCard()
+      .find('[data-poster-region="detail-link"]')
+      .should('be.visible')
+      .click();
+    cy.location('pathname').should('eq', '/movie/361743');
+    cy.get('[data-testid=media-title]').should('contain', 'Top Gun: Maverick');
   });
 });

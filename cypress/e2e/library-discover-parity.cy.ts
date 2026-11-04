@@ -1684,7 +1684,7 @@ describe('Books and Music discover parity', () => {
       .contains('.card-field', 'Status')
       .find('a')
       .should('have.attr', 'href', '/book/OLFAILEDW?manage=1&format=ebook');
-    cy.get('[data-testid="request-card"]').eq(1).scrollIntoView();
+    cy.get('[data-interface-role="request-card"]').eq(1).scrollIntoView();
     cy.wait('@getFailedAlbum');
     cy.contains('Failed Album')
       .parents('.relative.flex.w-full')

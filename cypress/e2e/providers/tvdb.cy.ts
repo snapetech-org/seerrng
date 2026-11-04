@@ -249,8 +249,7 @@ describe('TVDB Integration', () => {
     cy.get(SELECTORS.season2)
       .should('be.visible')
       .and('have.attr', 'aria-expanded', 'false')
-      .scrollIntoView({ offset: { top: 80, left: 0 } })
-      .click();
+      .click({ scrollBehavior: 'center' });
     cy.get('button[aria-label="Collapse Season 02"]').should(
       'have.attr',
       'aria-expanded',
@@ -309,8 +308,7 @@ describe('TVDB Integration', () => {
     cy.get(SELECTORS.season1)
       .should('be.visible')
       .and('have.attr', 'aria-expanded', 'false')
-      .scrollIntoView({ offset: { top: 80, left: 0 } })
-      .click();
+      .click({ scrollBehavior: 'center' });
 
     // Verify specific episode exists
     cy.get(`${SELECTORS.episodeList}[aria-label="Season 01 episodes"]`)
@@ -351,8 +349,7 @@ describe('TVDB Integration', () => {
     cy.get(SELECTORS.season2)
       .should('be.visible')
       .and('have.attr', 'aria-expanded', 'false')
-      .scrollIntoView({ offset: { top: 80, left: 0 } })
-      .click();
+      .click({ scrollBehavior: 'center' });
     cy.get('button[aria-label="Collapse Season 02"]').should(
       'have.attr',
       'aria-expanded',

@@ -43,14 +43,14 @@ describe('Reader app delivery settings', () => {
   });
 
   it('saves reader addresses, exposes working catalog links, and fits mobile', () => {
-    cy.intercept('GET', '/api/v1/interface-themes/*/theme.css').as(
-      'interfaceThemeStylesheet'
-    );
     cy.visit('/settings/services?serviceCategory=audiobooks-books');
-    cy.wait('@interfaceThemeStylesheet').then(({ response }) => {
-      expect(response?.statusCode).to.eq(200);
-      expect(response?.headers['content-type']).to.include('text/css');
-    });
+    cy.request('/api/v1/interface-themes/seerrOrig/theme.css').then(
+      ({ status, headers, body }) => {
+        expect(status).to.eq(200);
+        expect(headers['content-type']).to.include('text/css');
+        expect(body).to.include('--poster-width');
+      }
+    );
     cy.viewport(1280, 900);
     cy.window().its('innerWidth').should('eq', 1280);
     cy.window().its('innerHeight').should('eq', 900);
@@ -122,10 +122,13 @@ describe('Reader app delivery settings', () => {
     });
 
     cy.reload();
-    cy.wait('@interfaceThemeStylesheet').then(({ response }) => {
-      expect(response?.statusCode).to.eq(200);
-      expect(response?.headers['content-type']).to.include('text/css');
-    });
+    cy.request('/api/v1/interface-themes/seerrOrig/theme.css').then(
+      ({ status, headers, body }) => {
+        expect(status).to.eq(200);
+        expect(headers['content-type']).to.include('text/css');
+        expect(body).to.include('--poster-width');
+      }
+    );
     cy.viewport(1280, 900);
     cy.contains('h3.settings-group-heading', 'Reader Apps').should(
       'be.visible'
