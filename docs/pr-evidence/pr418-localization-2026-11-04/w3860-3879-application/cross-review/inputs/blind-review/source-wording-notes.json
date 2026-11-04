@@ -1,0 +1,11 @@
+[
+  {
+    "affectedLocaleCells": 12,
+    "callerContextSha256": "d1c630821540c6e0d387a59c07651cd354d01c99b059b7a44bb9a3a3ee71c86a",
+    "nativeReviewRequired": true,
+    "position": 3874,
+    "sourceId": "components.Settings.Notifications.NotificationsApprise.configKey",
+    "sourceIssue": "The field label “Configuration Key” conflicts with its adjacent help text, which says the value is the name of a saved configuration on the Apprise API server. The caller is a text input with id configKey; it is not described as a secret. This review recommends changing the English label to “Configuration Name” and translating that meaning.",
+    "suggestedEnglishSource": "Configuration Name"
+  }
+]

@@ -1,0 +1,22 @@
+{
+  "acceptCurrent": 224,
+  "artifact": "SeerrNG PR #418 W3860-W3879 primary review",
+  "candidateFreeInputSha256": "cfe7049a34c019bfa86d88a4bcb28171996aae78b4e170b783ecaaf5ed38d84b",
+  "cells": 240,
+  "corrections": 5,
+  "files": [
+    "README.md",
+    "holds.jsonl",
+    "primary-ledger.jsonl",
+    "proposals.jsonl",
+    "summary.json",
+    "verify-primary-review.py"
+  ],
+  "head": "12bb562dc0eb27165cc2c6fbd1ff2628d5f8574e",
+  "holds": 0,
+  "proposalCount": 16,
+  "refinements": 11,
+  "schemaVersion": 1,
+  "tree": "b288494aa5a0842affc4e900d6ccb6b57d99c493",
+  "window": "W3860-W3879"
+}

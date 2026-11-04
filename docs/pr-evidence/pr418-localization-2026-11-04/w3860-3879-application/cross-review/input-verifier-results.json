@@ -1,0 +1,51 @@
+{
+  "blind": {
+    "acceptCurrent": 205,
+    "baselineProtectedLiteralMismatches": 2,
+    "cells": 240,
+    "head": "12bb562dc0eb27165cc2c6fbd1ff2628d5f8574e",
+    "holds": 0,
+    "proposals": 35,
+    "recommendedProtectedLiteralMismatches": 0,
+    "result": "PASS",
+    "tree": "b288494aa5a0842affc4e900d6ccb6b57d99c493"
+  },
+  "candidateFree": {
+    "baselineProtectedLiteralMismatches": 2,
+    "catalogPinsVerifiedAgainstExactHeadWorktree": true,
+    "cells": 240,
+    "head": "12bb562dc0eb27165cc2c6fbd1ff2628d5f8574e",
+    "priorAppliedTargets": 100,
+    "priorHashOnlyHolds": 14,
+    "priorSelectedSourceHashes": 3860,
+    "result": "PASS",
+    "sourceCount": 20,
+    "tree": "b288494aa5a0842affc4e900d6ccb6b57d99c493",
+    "window": [
+      3860,
+      3879
+    ]
+  },
+  "checksums": {
+    "blind": "PASS",
+    "candidateFree": "PASS",
+    "primary": "PASS"
+  },
+  "livePRBeforeReview": "PASS",
+  "primary": {
+    "acceptCurrent": 224,
+    "cells": 240,
+    "corrections": 5,
+    "head": "12bb562dc0eb27165cc2c6fbd1ff2628d5f8574e",
+    "holds": 0,
+    "refinements": 11,
+    "result": "PASS",
+    "selected": 16,
+    "tree": "b288494aa5a0842affc4e900d6ccb6b57d99c493"
+  },
+  "temporaryVerifierWorktree": {
+    "head": "12bb562dc0eb27165cc2c6fbd1ff2628d5f8574e",
+    "removedAfterCatalogByteVerification": true,
+    "tree": "b288494aa5a0842affc4e900d6ccb6b57d99c493"
+  }
+}
