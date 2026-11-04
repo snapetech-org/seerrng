@@ -3937,7 +3937,7 @@
   "components.Settings.Notifications.NotificationsPushbullet.pushbulletSettingsSaved": "تم حفظ إعدادات إشعارات Pushbullet بنجاح!",
   "components.Settings.Notifications.NotificationsPushbullet.toastPushbulletTestFailed": "فشل إرسال تنبيه تجريبي Pushbullet.",
   "components.Settings.Notifications.NotificationsPushbullet.toastPushbulletTestSending": "جارٍ إرسال إشعار اختبار Pushbullet…",
-  "components.Settings.Notifications.NotificationsPushbullet.toastPushbulletTestSuccess": "تم إرسال تنبيه إختبار Pushbullet!",
+  "components.Settings.Notifications.NotificationsPushbullet.toastPushbulletTestSuccess": "تم إرسال إشعار تجريبي من Pushbullet!",
   "components.Settings.Notifications.NotificationsPushbullet.validationAccessTokenRequired": "يجب توفير رمز وصول.",
   "components.Settings.Notifications.NotificationsPushbullet.validationTypes": "يجب اختيار نوع واحد من الإشعارات على الأقل.",
   "components.Settings.Notifications.NotificationsPushover.accessToken": "مفتاح التطبيق API",

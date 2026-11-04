@@ -3924,7 +3924,7 @@
   "components.Settings.Notifications.NotificationsNtfy.topic": "Tópico",
   "components.Settings.Notifications.NotificationsNtfy.url": "URL raiz do servidor",
   "components.Settings.Notifications.NotificationsNtfy.username": "Nome do usuário",
-  "components.Settings.Notifications.NotificationsNtfy.usernamePasswordAuth": "Nome do usuário + Senha de autenticação",
+  "components.Settings.Notifications.NotificationsNtfy.usernamePasswordAuth": "Autenticação por nome de usuário e senha",
   "components.Settings.Notifications.NotificationsNtfy.validationNtfyTopic": "Você deve definir um tópico",
   "components.Settings.Notifications.NotificationsNtfy.validationNtfyUrl": "Você deve definir uma URL válida",
   "components.Settings.Notifications.NotificationsNtfy.validationPriorityRequired": "Você deve fornecer uma prioridade entre 1 e 5",

@@ -3922,7 +3922,7 @@
   "components.Settings.Notifications.NotificationsNtfy.token": "Token",
   "components.Settings.Notifications.NotificationsNtfy.tokenAuth": "Token-Authentifizierung",
   "components.Settings.Notifications.NotificationsNtfy.topic": "Thema",
-  "components.Settings.Notifications.NotificationsNtfy.url": "Server Root-URL",
+  "components.Settings.Notifications.NotificationsNtfy.url": "Basis-URL des Servers",
   "components.Settings.Notifications.NotificationsNtfy.username": "Benutzername",
   "components.Settings.Notifications.NotificationsNtfy.usernamePasswordAuth": "Benutzername + Passwort-Authentifizierung",
   "components.Settings.Notifications.NotificationsNtfy.validationNtfyTopic": "Es muss ein Thema angegeben sein",

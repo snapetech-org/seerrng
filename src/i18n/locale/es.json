@@ -3930,7 +3930,7 @@
   "components.Settings.Notifications.NotificationsNtfy.validationPriorityRequired": "Debe proporcionar una prioridad entre 1 y 5",
   "components.Settings.Notifications.NotificationsNtfy.validationTypes": "Debe seleccionar al menos un tipo de notificación",
   "components.Settings.Notifications.NotificationsPushbullet.accessToken": "Token de Acceso",
-  "components.Settings.Notifications.NotificationsPushbullet.accessTokenTip": "Crea un token desde tu <PushbulletSettingsLink>Opciones de Cuenta</PushbulletSettingsLink>",
+  "components.Settings.Notifications.NotificationsPushbullet.accessTokenTip": "Crea un token desde la <PushbulletSettingsLink>configuración de tu cuenta</PushbulletSettingsLink>.",
   "components.Settings.Notifications.NotificationsPushbullet.agentEnabled": "Habilitar Agente",
   "components.Settings.Notifications.NotificationsPushbullet.channelTag": "Etiqueta de canal",
   "components.Settings.Notifications.NotificationsPushbullet.pushbulletSettingsFailed": "Fallo al guardar los ajustes de la notificación Pushbullet.",
