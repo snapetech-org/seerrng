@@ -3921,7 +3921,7 @@
   "components.Settings.Notifications.NotificationsPushbullet.toastPushbulletTestSuccess": "Đã gửi thông báo kiểm tra Pushbullet!",
   "components.Settings.Notifications.NotificationsPushbullet.validationAccessTokenRequired": "Bạn phải cung cấp một mã thông báo truy cập.",
   "components.Settings.Notifications.NotificationsPushbullet.validationTypes": "Bạn phải chọn ít nhất một kiểu thông báo",
-  "components.Settings.Notifications.NotificationsPushover.accessToken": "Mã thông báo API ứng dụng",
+  "components.Settings.Notifications.NotificationsPushover.accessToken": "Mã thông báo API của ứng dụng",
   "components.Settings.Notifications.NotificationsPushover.accessTokenTip": "<ApplicationRegistrationLink>Đăng ký một ứng dụng</ApplicationRegistrationLink> dùng với Seerr",
   "components.Settings.Notifications.NotificationsPushover.agentenabled": "Bật tác nhân",
   "components.Settings.Notifications.NotificationsPushover.deviceDefault": "Âm thanh mặc định của thiết bị",
