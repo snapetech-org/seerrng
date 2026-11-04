@@ -3855,7 +3855,7 @@
   "components.Settings.NavidromeModal.add": "Connecter",
   "components.Settings.NavidromeModal.addTitle": "Connecter le serveur Navidrome",
   "components.Settings.NavidromeModal.editTitle": "Modifier le serveur Navidrome",
-  "components.Settings.NavidromeModal.intro": "SeerrNG lit votre bibliothèque musicale Navidrome lors de l’analyse planifiée et marque comme disponibles les albums qu’il trouve. Les albums sont associés à leur identifiant MusicBrainz ; ceux qui n’en ont pas ne peuvent donc pas être associés. SeerrNG ne modifie rien dans Navidrome.",
+  "components.Settings.NavidromeModal.intro": "SeerrNG lit votre bibliothèque musicale Navidrome lors de l’analyse planifiée et marque comme disponibles les albums qu’il trouve. Les albums sont associés par leur ID MusicBrainz ; ceux qui n’en ont pas ne peuvent donc pas être associés. SeerrNG ne modifie rien dans Navidrome.",
   "components.Settings.NavidromeModal.password": "Mot de passe",
   "components.Settings.NavidromeModal.passwordHelp": "Utilisez un compte qui peut parcourir la bibliothèque de musique. Le mot de passe reste sur le serveur SeerrNG.",
   "components.Settings.NavidromeModal.passwordRequired": "Saisissez un mot de passe.",

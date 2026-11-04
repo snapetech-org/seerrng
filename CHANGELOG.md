@@ -83,6 +83,14 @@ This cumulative release note covers v3.71.4 through v3.72.7, including changes r
 * @Xyron77-afk made their first contribution in https://github.com/snapetech-org/seerrng/pull/371
 
 **Full Changelog**: https://github.com/snapetech-org/seerrng/compare/v3.71.4...v3.72.7
+## [Unreleased]
+
+### User-facing changes
+
+#### Fixed
+
+- **Localization:** Corrected 46 reviewed Mylar and Navidrome settings and validation messages across the 12 target locales.
+
 ## [3.72.6](https://github.com/snapetech-org/seerrng/compare/v3.72.5..v3.72.6) - 2026-10-31
 
 ### User-facing changes
