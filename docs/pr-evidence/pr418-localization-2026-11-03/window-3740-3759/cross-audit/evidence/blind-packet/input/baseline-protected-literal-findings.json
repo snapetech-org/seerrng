@@ -1,0 +1,43 @@
+{
+  "schemaVersion": 1,
+  "head": "8d0273ebc5eb51e9d5fee0ac9a0eb022eeed06c4",
+  "tree": "163056b8255034e3ee3a99f25b63e190c88278ee",
+  "window": "W3740-W3759",
+  "count": 3,
+  "rows": [
+    {
+      "position": 3740,
+      "locale": "hi",
+      "sourceId": "components.Settings.KapowarrModal.validationHostnameRequired",
+      "requiredLiterals": [
+        "IP"
+      ],
+      "missingLiterals": [
+        "IP"
+      ]
+    },
+    {
+      "position": 3745,
+      "locale": "hi",
+      "sourceId": "components.Settings.LazyLibrarianModal.apiKey",
+      "requiredLiterals": [
+        "API"
+      ],
+      "missingLiterals": [
+        "API"
+      ]
+    },
+    {
+      "position": 3756,
+      "locale": "hi",
+      "sourceId": "components.Settings.LazyLibrarianModal.hostname",
+      "requiredLiterals": [
+        "IP"
+      ],
+      "missingLiterals": [
+        "IP"
+      ]
+    }
+  ],
+  "note": "Baseline flags only; no replacement target or disposition is included."
+}

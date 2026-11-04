@@ -1,0 +1,173 @@
+{
+  "schemaVersion": 1,
+  "scope": {
+    "head": "8d0273ebc5eb51e9d5fee0ac9a0eb022eeed06c4",
+    "tree": "163056b8255034e3ee3a99f25b63e190c88278ee",
+    "pullRequest": 418,
+    "window": "W3740-W3759",
+    "cellCount": 240
+  },
+  "conflictRules": {
+    "3740:es": {
+      "target": "Usted debe proporcionar un nombre de host válido o una dirección IP válida",
+      "resolution": "blind",
+      "disposition": "correction",
+      "confidence": "moderate",
+      "rationale": "The exact caller is a required hostname field. Keep the formal Usted register used by adjacent Spanish validation strings, state both alternatives, apply válido to each, and omit terminal punctuation to match the neighboring field errors."
+    },
+    "3740:hi": {
+      "target": "आपको मान्य होस्टनाम या IP पता देना होगा।",
+      "resolution": "primary",
+      "disposition": "correction",
+      "confidence": "moderate",
+      "rationale": "The required-field caller needs either a hostname or IP address. This proposal preserves the protected spelling IP and makes the validity requirement explicit while using the direct Hindi verb देना."
+    },
+    "3740:id": {
+      "target": "Anda harus memberikan nama host yang valid atau alamat IP yang valid.",
+      "resolution": "primary",
+      "disposition": "correction",
+      "confidence": "moderate",
+      "rationale": "The hostname field caller requires a valid hostname or a valid IP address. The chosen wording names both alternatives and repeats valid for each, avoiding ambiguity about which address type is valid."
+    },
+    "3740:ko": {
+      "target": "유효한 호스트 이름 또는 IP 주소를 입력해야 합니다",
+      "resolution": "blind",
+      "disposition": "refinement",
+      "confidence": "moderate",
+      "rationale": "The caller is a required hostname/IP validation field. Use the native 호스트 이름 spelling, consistent with the hostname field label, and omit a final period to match the concise validation-message style."
+    },
+    "3741:id": {
+      "target": "Anda harus memasukkan nama server",
+      "resolution": "blind",
+      "disposition": "correction",
+      "confidence": "moderate",
+      "rationale": "The caller validates a required name form field. Memasukkan is a natural instruction to fill that field and removes the stilted suatu construction."
+    },
+    "3742:id": {
+      "target": "Anda harus memasukkan nomor port yang valid",
+      "resolution": "blind",
+      "disposition": "correction",
+      "confidence": "moderate",
+      "rationale": "The caller validates a required numeric port field. This uses the natural form-entry verb and keeps valid attached to the port number."
+    },
+    "3742:ja": {
+      "target": "有効なポート番号を入力してください",
+      "resolution": "blind",
+      "disposition": "correction",
+      "confidence": "moderate",
+      "rationale": "The caller is a required port field. Japanese inline validation naturally asks the user to enter a valid port number; the concise form matches neighboring field errors."
+    },
+    "3742:zh_Hans": {
+      "target": "您必须提供有效的端口号",
+      "resolution": "blind",
+      "disposition": "correction",
+      "confidence": "moderate",
+      "rationale": "The caller is a required port field. 端口号 is the conventional concise Chinese term, replacing the redundant 端口号码."
+    },
+    "3743:id": {
+      "target": "Anda harus memasukkan jalur ke folder root",
+      "resolution": "blind",
+      "disposition": "correction",
+      "confidence": "moderate",
+      "rationale": "The caller requires a root-folder path. Jalur ke folder root states that relationship clearly and uses a natural required-field instruction."
+    },
+    "3743:ja": {
+      "target": "ルートフォルダのパスを入力してください",
+      "resolution": "blind",
+      "disposition": "correction",
+      "confidence": "moderate",
+      "rationale": "The caller is a required path field. The genitive construction and input verb read naturally, while the existing locale consistently uses フォルダ without a long vowel mark."
+    },
+    "3746:id": {
+      "target": "Gunakan kunci API dengan izin tulis dari LazyLibrarian di Config > Interface. Kunci dengan akses baca saja tidak dapat menambahkan majalah atau memulai pencarian.",
+      "resolution": "blind",
+      "disposition": "correction",
+      "confidence": "moderate",
+      "rationale": "The help caller describes API-key permissions under an external menu path. Keep Config > Interface exact, state izin tulis directly, and express the read-only limitation in Indonesian."
+    },
+    "3746:zh_Hans": {
+      "target": "请在 LazyLibrarian 的 Config > Interface 中使用具有写入权限的 API 密钥。只读密钥无法添加杂志或启动搜索。",
+      "resolution": "blind",
+      "disposition": "correction",
+      "confidence": "moderate",
+      "rationale": "The help text names an external menu path and two actions a read-only key cannot perform. Preserve Config > Interface exactly, keep API uppercase, and use clean Chinese punctuation and direct permission wording."
+    },
+    "3748:hi": {
+      "target": "यदि आपने LazyLibrarian में URL बेस कॉन्फ़िगर किया है, तो उसे यहाँ दर्ज करें। अन्यथा खाली छोड़ दें",
+      "resolution": "blind",
+      "disposition": "correction",
+      "confidence": "moderate",
+      "rationale": "The caller is the optional URL Base field. The selected text clarifies that the configured URL Base is the object to enter, preserves protected URL, and contrasts it with leaving the field blank."
+    },
+    "3753:ar": {
+      "target": "ابدأ البحث عن هذه المجلة في LazyLibrarian بعد الموافقة على طلبها. يمكن لـ Prowlarr مزامنة مصادر الفهرسة مع LazyLibrarian؛ تحقّق من ظهور مصادر الفهرسة المتزامنة وعملها في إصدار LazyLibrarian لديك. يوفّر SeerrNG أيضًا بحثًا يدويًا منفصلًا عبر Prowlarr للمستخدمين الذين لديهم إذن «إدارة الطلبات».",
+      "resolution": "blind",
+      "disposition": "correction",
+      "confidence": "moderate",
+      "rationale": "The caller is help text distinguishing LazyLibrarian synchronization from SeerrNG manual search. This names the indexing sources, preserves product names, mentions the installed version, and makes Manage Requests an explicit permission."
+    },
+    "3753:fr": {
+      "target": "Lancez une recherche pour ce magazine dans LazyLibrarian une fois sa demande approuvée. Prowlarr peut synchroniser les indexeurs avec LazyLibrarian ; vérifiez que les indexeurs synchronisés apparaissent et fonctionnent dans votre version de LazyLibrarian. SeerrNG propose également une recherche manuelle distincte dans Prowlarr aux utilisateurs disposant de l’autorisation « Gérer les demandes ».",
+      "resolution": "blind",
+      "disposition": "correction",
+      "confidence": "moderate",
+      "rationale": "The caller is a help paragraph about automatic synchronization and separate manual search. The chosen wording gives the permission a governing noun, preserves the version qualification, and keeps the manual Prowlarr search distinct."
+    },
+    "3753:hi": {
+      "target": "अनुरोध स्वीकृत होने के बाद LazyLibrarian में इस पत्रिका की खोज शुरू करें। Prowlarr इंडेक्सर्स को LazyLibrarian के साथ सिंक कर सकता है; जाँचें कि सिंक किए गए इंडेक्सर्स आपके LazyLibrarian संस्करण में दिखाई देते हैं और काम करते हैं। SeerrNG अनुरोध प्रबंधित करने की अनुमति वाले उपयोगकर्ताओं के लिए अलग मैन्युअल Prowlarr खोज की सुविधा भी देता है।",
+      "resolution": "reconciled",
+      "disposition": "correction",
+      "confidence": "moderate",
+      "rationale": "The help caller requires the approval condition, synchronized indexer visibility and operation in the installed version, and a separate manual search restricted by permission. This combines the clearer source-faithful search wording with an explicit permission relation and version wording; SeerrNG and Prowlarr remain intact."
+    },
+    "3753:id": {
+      "target": "Mulai pencarian majalah ini di LazyLibrarian setelah permintaannya disetujui. Prowlarr dapat menyinkronkan indexer ke LazyLibrarian; pastikan indexer yang disinkronkan muncul dan berfungsi di versi LazyLibrarian yang Anda gunakan. SeerrNG juga menawarkan pencarian manual Prowlarr terpisah bagi pengguna dengan izin “Kelola Permintaan”.",
+      "resolution": "reconciled",
+      "disposition": "correction",
+      "confidence": "moderate",
+      "rationale": "The help caller distinguishes synchronized indexers from a separate manual Prowlarr search and gates the latter on Manage Requests. This keeps the technical indexer term, replaces the English build loan with versi, and states the permission explicitly."
+    },
+    "3753:pt_BR": {
+      "target": "Inicie uma busca por esta revista no LazyLibrarian após a aprovação da solicitação. O Prowlarr pode sincronizar indexadores com o LazyLibrarian; verifique se eles aparecem e funcionam na versão instalada do LazyLibrarian. O SeerrNG também oferece uma busca manual separada no Prowlarr para usuários com a permissão “Gerenciar solicitações”.",
+      "resolution": "primary",
+      "disposition": "correction",
+      "confidence": "moderate",
+      "rationale": "The help caller requires the approval step, installed-version check, and a distinct manual search gated by Manage Requests. This uses versão instalada and explicitly identifies the permission while preserving the product names."
+    },
+    "3753:vi": {
+      "target": "Bắt đầu tìm kiếm tạp chí này trong LazyLibrarian sau khi yêu cầu được phê duyệt. Prowlarr có thể đồng bộ các indexer với LazyLibrarian; hãy kiểm tra xem các indexer đã đồng bộ có hiển thị và hoạt động trong phiên bản LazyLibrarian bạn đang dùng hay không. SeerrNG cũng cung cấp tìm kiếm Prowlarr thủ công riêng cho người dùng có quyền “Quản lý yêu cầu”.",
+      "resolution": "primary",
+      "disposition": "correction",
+      "confidence": "moderate",
+      "rationale": "The help caller requires the approval condition, indexer synchronization and operation in the installed version, plus a separate manual search for users with permission. This uses the familiar technical term indexer and makes the permission explicit."
+    },
+    "3755:ko": {
+      "target": "네트워크 외부에서 LazyLibrarian을 열 때 사용할 수 있는 선택적 주소입니다.",
+      "resolution": "primary",
+      "disposition": "correction",
+      "confidence": "moderate",
+      "rationale": "The caller is explanatory help for an optional external URL. This corrects the consonant-final brand particle and expresses the optional address as a complete Korean sentence."
+    }
+  },
+  "cellOverrides": {
+    "3744:es": {
+      "target": "Agregar servidor",
+      "resolution": "reconciled",
+      "disposition": "refinement",
+      "confidence": "moderate",
+      "rationale": "The caller is a short Add Server action label. Retain the current regionally common verb Agregar and correct only the unnecessary title case on servidor."
+    },
+    "3746:vi": {
+      "target": "Sử dụng khóa API có quyền ghi từ LazyLibrarian trong Cấu hình > Giao diện. Khóa chỉ có quyền đọc không thể thêm tạp chí hoặc bắt đầu tìm kiếm.",
+      "resolution": "reconciled",
+      "disposition": "refinement",
+      "confidence": "moderate",
+      "rationale": "The caller is API-key help. Keep the Vietnamese menu labels already used in this locale, state the key’s write permission directly, and retain the read-only restriction."
+    }
+  },
+  "dispositionOverrides": {
+    "3750:es": "refinement"
+  },
+  "notApplied": true,
+  "nativeSpeakerSignoff": false
+}

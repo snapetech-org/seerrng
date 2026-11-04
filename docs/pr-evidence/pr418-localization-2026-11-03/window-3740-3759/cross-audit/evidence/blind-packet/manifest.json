@@ -1,0 +1,47 @@
+{
+  "artifact": "SeerrNG PR #418 W3740-W3759 blind localization review",
+  "repository": "snapetech-org/seerrng",
+  "pullRequest": 418,
+  "head": "8d0273ebc5eb51e9d5fee0ac9a0eb022eeed06c4",
+  "tree": "163056b8255034e3ee3a99f25b63e190c88278ee",
+  "branch": "codex/seerrng-localization-overhaul-20261028",
+  "window": "W3740-W3759",
+  "sourceCount": 20,
+  "localeCount": 12,
+  "cellCount": 240,
+  "dispositionCounts": {
+    "accept-current": 206,
+    "correction": 15,
+    "refinement": 19,
+    "hold": 0
+  },
+  "currentHoldCount": 0,
+  "carriedHoldCount": 12,
+  "priorSelectionCount": 240,
+  "inputSha256": "3ceedb4c8e3bc88c8ebf4855150b0d4d74ea7d97518c4d897725100ef6b16b0d",
+  "primaryReviewRead": false,
+  "crossReviewPerformed": false,
+  "catalogValuesApplied": false,
+  "nativeSpeakerSignoff": false,
+  "createdUtc": "2026-11-04T00:00:43+00:00",
+  "secondaryBlindSubsetReview": {
+    "cellCount": 120,
+    "locales": [
+      "es",
+      "zh_Hans",
+      "hi",
+      "de",
+      "ja",
+      "fr"
+    ],
+    "counts": {
+      "accept-current": 110,
+      "correction": 8,
+      "refinement": 2,
+      "hold": 0
+    },
+    "primaryMaterialRead": false
+  },
+  "finalLiveRefCheckSha256": "0340facdd96372db5fd6ba11296fcba15954effff4979bc214dba7c4150f7c8e",
+  "finalLiveRefCheckAtUtc": "2026-11-04T00:07:35+00:00"
+}

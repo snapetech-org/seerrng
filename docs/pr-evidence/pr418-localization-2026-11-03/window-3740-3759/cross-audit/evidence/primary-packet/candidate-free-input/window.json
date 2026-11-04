@@ -1,0 +1,194 @@
+{
+  "schemaVersion": 1,
+  "repository": "snapetech-org/seerrng",
+  "pullRequest": 418,
+  "window": "W3740-W3759",
+  "range": [
+    3740,
+    3759
+  ],
+  "head": "8d0273ebc5eb51e9d5fee0ac9a0eb022eeed06c4",
+  "tree": "163056b8255034e3ee3a99f25b63e190c88278ee",
+  "baseRef": "main",
+  "baseSha": "fa40534ccced75bde1125c14760514fcd5d7de4d",
+  "sourceCatalogPath": "src/i18n/locale/en.json",
+  "englishCatalogGitBlob": "12e04a118c30b71b3714291adeaf9fdb2735cee4",
+  "sourceOrderCount": 9494,
+  "sourceOrderSha256": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072",
+  "priorSelectedSourceIdCount": 3740,
+  "priorSelectedSourceIdPrefixSha256": "c1f9281ea83af8e21551083fd0d3fb64ae9a5f4ac2308e6b5c82b70e83914554",
+  "selectedSourceIdOrderSha256": "74d34dad54d84f638bb58de103e9d987a35db492b20a399042f78ebc8a4fb15d",
+  "previousBoundary": {
+    "position": 3739,
+    "sourceId": "components.Settings.KapowarrModal.validationBaseUrlTrailingSlash",
+    "source": "URL base must not end in a trailing slash",
+    "sourceSha256": "0e05bf139e8a736d21f73d3fb6e77109c4aef32f3a752a0d26ba13f0f6201b1d",
+    "sourceIdSha256": "03c8e83947a5ddc714d23e7dd54fec2c1179fbe2418f05ab9b09eec344388cc0",
+    "boundaryKind": "previous"
+  },
+  "nextBoundary": {
+    "position": 3760,
+    "sourceId": "components.Settings.LazyLibrarianModal.ssl",
+    "source": "Use SSL",
+    "sourceSha256": "e51a45d18afd3fec3d46e18c72bfd754bd6855881a7a7217a41aa2a68c7c20c9",
+    "sourceIdSha256": "59baefab881e277c91134ced6150bb435ceb1b2fc470a05abb7e11fdc56e0816",
+    "boundaryKind": "next"
+  },
+  "remainingAtWindowStart": 5754,
+  "selectedSourceCount": 20,
+  "remainingAfterWindow": 5734,
+  "sourceRecordCount": 20,
+  "sourceOrderBoundaryRecordCount": 22,
+  "cellCount": 240,
+  "localeOrder": [
+    "es",
+    "zh_Hans",
+    "hi",
+    "de",
+    "ja",
+    "fr",
+    "pt_BR",
+    "ar",
+    "ko",
+    "zh_Hant",
+    "vi",
+    "id"
+  ],
+  "localeInfo": [
+    {
+      "catalogKey": "es",
+      "tag": "es",
+      "nativeName": "Español",
+      "direction": "ltr",
+      "clientFile": "es.json",
+      "reviewStatus": "unreviewed"
+    },
+    {
+      "catalogKey": "zh_Hans",
+      "tag": "zh-CN",
+      "nativeName": "简体中文",
+      "direction": "ltr",
+      "clientFile": "zh_Hans.json",
+      "reviewStatus": "unreviewed"
+    },
+    {
+      "catalogKey": "hi",
+      "tag": "hi",
+      "nativeName": "हिन्दी",
+      "direction": "ltr",
+      "clientFile": "hi.json",
+      "reviewStatus": "unreviewed"
+    },
+    {
+      "catalogKey": "de",
+      "tag": "de",
+      "nativeName": "Deutsch",
+      "direction": "ltr",
+      "clientFile": "de.json",
+      "reviewStatus": "unreviewed"
+    },
+    {
+      "catalogKey": "ja",
+      "tag": "ja",
+      "nativeName": "日本語",
+      "direction": "ltr",
+      "clientFile": "ja.json",
+      "reviewStatus": "unreviewed"
+    },
+    {
+      "catalogKey": "fr",
+      "tag": "fr",
+      "nativeName": "Français",
+      "direction": "ltr",
+      "clientFile": "fr.json",
+      "reviewStatus": "unreviewed"
+    },
+    {
+      "catalogKey": "pt_BR",
+      "tag": "pt-BR",
+      "nativeName": "Português (Brasil)",
+      "direction": "ltr",
+      "clientFile": "pt_BR.json",
+      "reviewStatus": "unreviewed"
+    },
+    {
+      "catalogKey": "ar",
+      "tag": "ar",
+      "nativeName": "العربية",
+      "direction": "rtl",
+      "clientFile": "ar.json",
+      "reviewStatus": "unreviewed"
+    },
+    {
+      "catalogKey": "ko",
+      "tag": "ko",
+      "nativeName": "한국어",
+      "direction": "ltr",
+      "clientFile": "ko.json",
+      "reviewStatus": "unreviewed"
+    },
+    {
+      "catalogKey": "zh_Hant",
+      "tag": "zh-TW",
+      "nativeName": "繁體中文",
+      "direction": "ltr",
+      "clientFile": "zh_Hant.json",
+      "reviewStatus": "unreviewed"
+    },
+    {
+      "catalogKey": "vi",
+      "tag": "vi",
+      "nativeName": "Tiếng Việt",
+      "direction": "ltr",
+      "clientFile": "vi.json",
+      "reviewStatus": "unreviewed"
+    },
+    {
+      "catalogKey": "id",
+      "tag": "id",
+      "nativeName": "Bahasa Indonesia",
+      "direction": "ltr",
+      "clientFile": "id.json",
+      "reviewStatus": "unreviewed"
+    }
+  ],
+  "catalogKeySetEqualsEnglish": true,
+  "catalogOrderedKeyHashes": {
+    "en": "47d40a21145f2f198fadaa29baeef5461718c4b6365d564af60ee015f18f1974",
+    "es": "47d40a21145f2f198fadaa29baeef5461718c4b6365d564af60ee015f18f1974",
+    "zh_Hans": "35faf7107f1be3900172b7c08ac7558b51f31d63b3b6c57eebe7710e8a81ca33",
+    "hi": "47d40a21145f2f198fadaa29baeef5461718c4b6365d564af60ee015f18f1974",
+    "de": "47d40a21145f2f198fadaa29baeef5461718c4b6365d564af60ee015f18f1974",
+    "ja": "35faf7107f1be3900172b7c08ac7558b51f31d63b3b6c57eebe7710e8a81ca33",
+    "fr": "47d40a21145f2f198fadaa29baeef5461718c4b6365d564af60ee015f18f1974",
+    "pt_BR": "47d40a21145f2f198fadaa29baeef5461718c4b6365d564af60ee015f18f1974",
+    "ar": "47d40a21145f2f198fadaa29baeef5461718c4b6365d564af60ee015f18f1974",
+    "ko": "35faf7107f1be3900172b7c08ac7558b51f31d63b3b6c57eebe7710e8a81ca33",
+    "zh_Hant": "35faf7107f1be3900172b7c08ac7558b51f31d63b3b6c57eebe7710e8a81ca33",
+    "vi": "35faf7107f1be3900172b7c08ac7558b51f31d63b3b6c57eebe7710e8a81ca33",
+    "id": "47d40a21145f2f198fadaa29baeef5461718c4b6365d564af60ee015f18f1974"
+  },
+  "baselineTokenDiagnostics": {
+    "placeholderMismatchCount": 0,
+    "placeholderSequenceMismatchCount": 0,
+    "icuPluralCategorySetDifferenceCount": 0,
+    "markupMismatchCount": 0,
+    "numericTokenMismatchCount": 0,
+    "protectedLiteralMismatchCount": 3
+  },
+  "callerlessSourcePositions": [],
+  "previousCompletedWindow": "W3720-W3739",
+  "previousCompletedEndPosition": 3739,
+  "previousAppliedSelectionReattestedCells": 240,
+  "previousAppliedSelectionDispositionCounts": {
+    "correction": 34,
+    "refinement": 16,
+    "accept-current": 190
+  },
+  "previousAppliedSelectionChanges": 50,
+  "priorHoldCount": 12,
+  "priorHoldSourcePositions": [
+    3632
+  ],
+  "priorHoldPreservation": "Retain all twelve position-3632 callerless holds by matching prior and current target hashes."
+}

@@ -1,0 +1,103 @@
+{
+  "schemaVersion": 1,
+  "repository": "snapetech-org/seerrng",
+  "pullRequest": 418,
+  "window": "W3740-W3759",
+  "head": "8d0273ebc5eb51e9d5fee0ac9a0eb022eeed06c4",
+  "tree": "163056b8255034e3ee3a99f25b63e190c88278ee",
+  "cellCount": 240,
+  "decisionCounts": {
+    "accept-current": 191,
+    "correction": 26,
+    "refinement": 23,
+    "hold": 0
+  },
+  "decisionCountsByLocale": {
+    "es": {
+      "accept-current": 14,
+      "correction": 3,
+      "refinement": 3,
+      "hold": 0
+    },
+    "zh_Hans": {
+      "accept-current": 17,
+      "correction": 1,
+      "refinement": 2,
+      "hold": 0
+    },
+    "hi": {
+      "accept-current": 14,
+      "correction": 5,
+      "refinement": 1,
+      "hold": 0
+    },
+    "de": {
+      "accept-current": 18,
+      "correction": 1,
+      "refinement": 1,
+      "hold": 0
+    },
+    "ja": {
+      "accept-current": 14,
+      "correction": 1,
+      "refinement": 5,
+      "hold": 0
+    },
+    "fr": {
+      "accept-current": 18,
+      "correction": 2,
+      "refinement": 0,
+      "hold": 0
+    },
+    "pt_BR": {
+      "accept-current": 15,
+      "correction": 2,
+      "refinement": 3,
+      "hold": 0
+    },
+    "ar": {
+      "accept-current": 15,
+      "correction": 4,
+      "refinement": 1,
+      "hold": 0
+    },
+    "ko": {
+      "accept-current": 17,
+      "correction": 2,
+      "refinement": 1,
+      "hold": 0
+    },
+    "zh_Hant": {
+      "accept-current": 20,
+      "correction": 0,
+      "refinement": 0,
+      "hold": 0
+    },
+    "vi": {
+      "accept-current": 18,
+      "correction": 1,
+      "refinement": 1,
+      "hold": 0
+    },
+    "id": {
+      "accept-current": 11,
+      "correction": 4,
+      "refinement": 5,
+      "hold": 0
+    }
+  },
+  "selectedChanges": 49,
+  "carriedHoldCount": 12,
+  "carriedHoldHashMatches": 12,
+  "baselineProtectedLiteralFlags": 3,
+  "selectedProtectedLiteralFailures": 0,
+  "selectedTokenCheckFailures": 0,
+  "callerlessSelectedSourceCount": 0,
+  "nativeSpeakerReviewPerformed": false,
+  "browserReviewPerformed": false,
+  "notes": [
+    "Primary semantic review used only the pinned candidate-free packet and source/caller context.",
+    "The three Hindi protected-literal findings at positions 3740 (IP), 3745 (API), and 3756 (IP) are repaired.",
+    "Carried holds are hash-reattested; their text was not reviewed or included."
+  ]
+}

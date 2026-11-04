@@ -1,0 +1,32 @@
+{
+  "repository": "snapetech-org/seerrng",
+  "pullRequest": 418,
+  "head": "8d0273ebc5eb51e9d5fee0ac9a0eb022eeed06c4",
+  "tree": "163056b8255034e3ee3a99f25b63e190c88278ee",
+  "sourceOrderCount": 9494,
+  "sourceOrderSha256": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072",
+  "priorSelectedSourceIdCount": 3740,
+  "priorSelectedSourceIdPrefixSha256": "c1f9281ea83af8e21551083fd0d3fb64ae9a5f4ac2308e6b5c82b70e83914554",
+  "selectedSourceIdOrderSha256": "74d34dad54d84f638bb58de103e9d987a35db492b20a399042f78ebc8a4fb15d",
+  "previousCompletedWindow": "W3720-W3739",
+  "previousCompletedEndPosition": 3739,
+  "previousAppliedSelectionReattestedCells": 240,
+  "previousAppliedSelectionDispositionCounts": {
+    "correction": 34,
+    "refinement": 16,
+    "accept-current": 190
+  },
+  "nextWindow": "W3740-W3759",
+  "nextWindowRangeInclusive": [
+    3740,
+    3759
+  ],
+  "remainingAtWindowStart": 5754,
+  "selectedSourceCount": 20,
+  "remainingAfterWindow": 5734,
+  "callerlessSourcePositions": [],
+  "priorHoldCount": 12,
+  "priorHoldSourcePositions": [
+    3632
+  ]
+}
