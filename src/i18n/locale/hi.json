@@ -3873,7 +3873,7 @@
   "components.Settings.Notifications.NotificationsApprise.agentenabled": "एजेंट सक्षम करें",
   "components.Settings.Notifications.NotificationsApprise.apprisesettingsfailed": "Apprise सूचना सेटिंग सहेजी नहीं जा सकीं।",
   "components.Settings.Notifications.NotificationsApprise.apprisesettingssaved": "Apprise सूचना सेटिंग सफलतापूर्वक सहेजी गईं।",
-  "components.Settings.Notifications.NotificationsApprise.configKey": "कॉन्फ़िगरेशन कुंजी",
+  "components.Settings.Notifications.NotificationsApprise.configKey": "कॉन्फ़िगरेशन का नाम",
   "components.Settings.Notifications.NotificationsApprise.configKeyTip": "Apprise API सर्वर पर सहेजे गए कॉन्फ़िगरेशन का नाम। गंतव्य URL उसी सर्वर पर रहते हैं।",
   "components.Settings.Notifications.NotificationsApprise.language": "भाषा",
   "components.Settings.Notifications.NotificationsApprise.password": "पासवर्ड",

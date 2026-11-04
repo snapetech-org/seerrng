@@ -3873,7 +3873,7 @@
   "components.Settings.Notifications.NotificationsApprise.agentenabled": "Habilitar agente",
   "components.Settings.Notifications.NotificationsApprise.apprisesettingsfailed": "No se pudieron guardar los ajustes de notificación de Apprise.",
   "components.Settings.Notifications.NotificationsApprise.apprisesettingssaved": "Los ajustes de notificación de Apprise se guardaron correctamente.",
-  "components.Settings.Notifications.NotificationsApprise.configKey": "Clave de configuración",
+  "components.Settings.Notifications.NotificationsApprise.configKey": "Nombre de configuración",
   "components.Settings.Notifications.NotificationsApprise.configKeyTip": "Nombre de una configuración guardada en el servidor de la API de Apprise. Las URL de destino permanecen en ese servidor.",
   "components.Settings.Notifications.NotificationsApprise.language": "Idioma",
   "components.Settings.Notifications.NotificationsApprise.password": "Contraseña",

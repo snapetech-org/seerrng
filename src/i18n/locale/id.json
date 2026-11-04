@@ -3873,7 +3873,7 @@
   "components.Settings.Notifications.NotificationsApprise.agentenabled": "Aktifkan Agen",
   "components.Settings.Notifications.NotificationsApprise.apprisesettingsfailed": "Pengaturan notifikasi Apprise tidak dapat disimpan.",
   "components.Settings.Notifications.NotificationsApprise.apprisesettingssaved": "Pengaturan notifikasi Apprise berhasil disimpan.",
-  "components.Settings.Notifications.NotificationsApprise.configKey": "Kunci Konfigurasi",
+  "components.Settings.Notifications.NotificationsApprise.configKey": "Nama konfigurasi",
   "components.Settings.Notifications.NotificationsApprise.configKeyTip": "Nama konfigurasi tersimpan di server Apprise API. URL tujuan tetap berada di server tersebut.",
   "components.Settings.Notifications.NotificationsApprise.language": "Bahasa",
   "components.Settings.Notifications.NotificationsApprise.password": "Sandi",
