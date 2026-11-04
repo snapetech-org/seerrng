@@ -1,0 +1,298 @@
+{
+  "schemaVersion": 1,
+  "artifact": "SeerrNG PR #418 W3840-W3859 post-application evidence",
+  "repository": "snapetech-org/seerrng",
+  "pullRequest": 418,
+  "baseRef": "main",
+  "baseSha": "fa40534ccced75bde1125c14760514fcd5d7de4d",
+  "branch": "codex/seerrng-localization-overhaul-20261028",
+  "pinnedPrHead": "ba5bb93cdb4f107a8337aae228b7cd397e1140a6",
+  "pinnedPrTree": "5420ae8fa33bda3619650757a2930a0114dbe4d1",
+  "applicationCommit": "a18ba1d0d24dcc07d7b944669e57ff211dcb85a5",
+  "applicationCommitTree": "c1f19c1e7189a08da422c70339243870ff9be82e",
+  "applicationCommitParents": [
+    "ba5bb93cdb4f107a8337aae228b7cd397e1140a6"
+  ],
+  "selectedRows": 240,
+  "sourceIds": 20,
+  "locales": 12,
+  "corrections": 24,
+  "refinements": 22,
+  "selectedUpdatesVsPinnedPrHead": 46,
+  "acceptedCurrentWithoutProposal": 194,
+  "holds": 0,
+  "readbackRows": 240,
+  "readbackMismatches": 0,
+  "selectedTokenMismatchCounts": {
+    "placeholders": 0,
+    "markupTags": 0,
+    "numericTokens": 0,
+    "protectedLiterals": 0
+  },
+  "baselineProtectedLiteralMismatchesResolved": 3,
+  "catalogKeySetChanges": 0,
+  "catalogKeyOrderChanges": 0,
+  "nonTargetCatalogValueChanges": 0,
+  "catalogsChecked": 13,
+  "changedCatalogPaths": [
+    "src/i18n/locale/ar.json",
+    "src/i18n/locale/de.json",
+    "src/i18n/locale/es.json",
+    "src/i18n/locale/fr.json",
+    "src/i18n/locale/hi.json",
+    "src/i18n/locale/id.json",
+    "src/i18n/locale/ja.json",
+    "src/i18n/locale/ko.json",
+    "src/i18n/locale/pt_BR.json",
+    "src/i18n/locale/vi.json",
+    "src/i18n/locale/zh_Hans.json",
+    "src/i18n/locale/zh_Hant.json"
+  ],
+  "changedSourcePaths": [
+    "CHANGELOG.md",
+    "src/i18n/locale/ar.json",
+    "src/i18n/locale/de.json",
+    "src/i18n/locale/es.json",
+    "src/i18n/locale/fr.json",
+    "src/i18n/locale/hi.json",
+    "src/i18n/locale/id.json",
+    "src/i18n/locale/ja.json",
+    "src/i18n/locale/ko.json",
+    "src/i18n/locale/pt_BR.json",
+    "src/i18n/locale/vi.json",
+    "src/i18n/locale/zh_Hans.json",
+    "src/i18n/locale/zh_Hant.json"
+  ],
+  "selectedUpdateNumstat": [
+    "8\t0\tCHANGELOG.md",
+    "4\t4\tsrc/i18n/locale/ar.json",
+    "2\t2\tsrc/i18n/locale/de.json",
+    "3\t3\tsrc/i18n/locale/es.json",
+    "1\t1\tsrc/i18n/locale/fr.json",
+    "5\t5\tsrc/i18n/locale/hi.json",
+    "7\t7\tsrc/i18n/locale/id.json",
+    "4\t4\tsrc/i18n/locale/ja.json",
+    "3\t3\tsrc/i18n/locale/ko.json",
+    "3\t3\tsrc/i18n/locale/pt_BR.json",
+    "7\t7\tsrc/i18n/locale/vi.json",
+    "4\t4\tsrc/i18n/locale/zh_Hans.json",
+    "3\t3\tsrc/i18n/locale/zh_Hant.json"
+  ],
+  "workflowFilesChanged": [],
+  "changelogEntry": "- **Localization:** Corrected 46 reviewed Mylar and Navidrome settings and validation messages across the 12 target locales.",
+  "changelogSha256Before": "26f2df899a115423f7e739c3b1267c3631ce38660d4683d81e9035f74680c521",
+  "changelogSha256After": "e1a79a83f120fc080587a27ebfe5a0001fea6142191bc9c69a08fa77e6ae0cfd",
+  "catalogPreimages": [
+    {
+      "path": "src/i18n/locale/ar.json",
+      "sha256": "bb508c7909231cfc94c0c175be5342ecdaf117a7d130b4fe269f10810209b5db",
+      "gitBlob": "ff8510c7f6494f5837605c1db779b3c0594eb786",
+      "keyCount": 9494,
+      "keyOrderSha256": "47d40a21145f2f198fadaa29baeef5461718c4b6365d564af60ee015f18f1974"
+    },
+    {
+      "path": "src/i18n/locale/de.json",
+      "sha256": "4ca2fb1f3d8d357499b3765ba46398e51035d8c996da7a4289b174cb529e1fb1",
+      "gitBlob": "c852f839658207af314189bc90a6ba6cbcfa8912",
+      "keyCount": 9494,
+      "keyOrderSha256": "47d40a21145f2f198fadaa29baeef5461718c4b6365d564af60ee015f18f1974"
+    },
+    {
+      "path": "src/i18n/locale/es.json",
+      "sha256": "16ad66fd867fcd3f7ba0fc663290d9449571a23f2814bac9ee65f676fc09159f",
+      "gitBlob": "ca4d39aa3f19422c86178d30502985ff980c407e",
+      "keyCount": 9494,
+      "keyOrderSha256": "47d40a21145f2f198fadaa29baeef5461718c4b6365d564af60ee015f18f1974"
+    },
+    {
+      "path": "src/i18n/locale/fr.json",
+      "sha256": "a216801adb07cd4b9a27c63b078c97a8af5d9b4d665b9ae24b215f405287bff6",
+      "gitBlob": "57d41ef69974297c11be1ac63bbf38f8b9e93081",
+      "keyCount": 9494,
+      "keyOrderSha256": "47d40a21145f2f198fadaa29baeef5461718c4b6365d564af60ee015f18f1974"
+    },
+    {
+      "path": "src/i18n/locale/hi.json",
+      "sha256": "f8d7186e9b97e70e85bf48cc4d11d9f14a4541875a7002310e5cc3a00dded8ee",
+      "gitBlob": "630f738d56e08012ab3c522acd22ec3016b09ec6",
+      "keyCount": 9494,
+      "keyOrderSha256": "47d40a21145f2f198fadaa29baeef5461718c4b6365d564af60ee015f18f1974"
+    },
+    {
+      "path": "src/i18n/locale/id.json",
+      "sha256": "892e41be191e5317676f1b394fdd31cf7f33533b514ecd73e3ef4355af206392",
+      "gitBlob": "8bb3f8c85ebcac04694b6ad6908c5d14aa4514b8",
+      "keyCount": 9494,
+      "keyOrderSha256": "47d40a21145f2f198fadaa29baeef5461718c4b6365d564af60ee015f18f1974"
+    },
+    {
+      "path": "src/i18n/locale/ja.json",
+      "sha256": "6a2936d44fca3f17df3769c620ac11158af22c3ea8d18ef18bfcdb22cb6f8246",
+      "gitBlob": "6b1f51e7209ed180d0e865c82359dcf823da3866",
+      "keyCount": 9494,
+      "keyOrderSha256": "35faf7107f1be3900172b7c08ac7558b51f31d63b3b6c57eebe7710e8a81ca33"
+    },
+    {
+      "path": "src/i18n/locale/ko.json",
+      "sha256": "784e463a71734c55a079027b040d780c65ff7ae5bf8ee944f0e10cc6ffda3547",
+      "gitBlob": "240d638673094cc65e84ac1fd29cf995eec54817",
+      "keyCount": 9494,
+      "keyOrderSha256": "35faf7107f1be3900172b7c08ac7558b51f31d63b3b6c57eebe7710e8a81ca33"
+    },
+    {
+      "path": "src/i18n/locale/pt_BR.json",
+      "sha256": "f5fd4e1d2e44d24714cd31c9abe90c214e91d6f4a0d993cb79b1465ed74248c1",
+      "gitBlob": "3b359c3c8e991634e065003bf3c78c9b93b7a4a0",
+      "keyCount": 9494,
+      "keyOrderSha256": "47d40a21145f2f198fadaa29baeef5461718c4b6365d564af60ee015f18f1974"
+    },
+    {
+      "path": "src/i18n/locale/vi.json",
+      "sha256": "5f552ee05a72271fbb0a0b3efc9ded9dfd5012b26c9be8b06e048874b1ff96a6",
+      "gitBlob": "a026f75525cbd81da81c89a3fa364b1437a224bc",
+      "keyCount": 9494,
+      "keyOrderSha256": "35faf7107f1be3900172b7c08ac7558b51f31d63b3b6c57eebe7710e8a81ca33"
+    },
+    {
+      "path": "src/i18n/locale/zh_Hans.json",
+      "sha256": "ebb14a5a24f351c25c64d1b65be2d3bd4d48e24d4f7383aab556132385938a1c",
+      "gitBlob": "b5810acec4986d2f72209d3eae1d250a5314a8e7",
+      "keyCount": 9494,
+      "keyOrderSha256": "35faf7107f1be3900172b7c08ac7558b51f31d63b3b6c57eebe7710e8a81ca33"
+    },
+    {
+      "path": "src/i18n/locale/zh_Hant.json",
+      "sha256": "0a70b66c121b885fa15855971bffa24f1b8a0dc9fbe1d81e34f72095a09802b0",
+      "gitBlob": "6374524a91e6ca3e1841a7ec6bf857bbef14ba4e",
+      "keyCount": 9494,
+      "keyOrderSha256": "35faf7107f1be3900172b7c08ac7558b51f31d63b3b6c57eebe7710e8a81ca33"
+    }
+  ],
+  "catalogPostimages": [
+    {
+      "path": "src/i18n/locale/ar.json",
+      "preSha256": "bb508c7909231cfc94c0c175be5342ecdaf117a7d130b4fe269f10810209b5db",
+      "preGitBlob": "ff8510c7f6494f5837605c1db779b3c0594eb786",
+      "postSha256": "34302bff2b1cbac0fe3ec5d8b28cbdb4389595aff6257e45fa689264da02b650",
+      "postGitBlob": "ef3746d5ab2c349000db1d38ec8f58b419f1970b",
+      "keyCount": 9494
+    },
+    {
+      "path": "src/i18n/locale/de.json",
+      "preSha256": "4ca2fb1f3d8d357499b3765ba46398e51035d8c996da7a4289b174cb529e1fb1",
+      "preGitBlob": "c852f839658207af314189bc90a6ba6cbcfa8912",
+      "postSha256": "f3da055f00fce728125a4e4917c896edde53cd942c120654bf353cb5fbddfa02",
+      "postGitBlob": "80e4d2f9a25951d41d86a05a51cc5c5ebc033c3d",
+      "keyCount": 9494
+    },
+    {
+      "path": "src/i18n/locale/es.json",
+      "preSha256": "16ad66fd867fcd3f7ba0fc663290d9449571a23f2814bac9ee65f676fc09159f",
+      "preGitBlob": "ca4d39aa3f19422c86178d30502985ff980c407e",
+      "postSha256": "0be2f5b7272a7a31d65a2b7d3f4525f6cd1f8283e2c77a20906d259bfef72dd6",
+      "postGitBlob": "7d6bb44e0869e4ae866bf1ca0df8b259cbb4c945",
+      "keyCount": 9494
+    },
+    {
+      "path": "src/i18n/locale/fr.json",
+      "preSha256": "a216801adb07cd4b9a27c63b078c97a8af5d9b4d665b9ae24b215f405287bff6",
+      "preGitBlob": "57d41ef69974297c11be1ac63bbf38f8b9e93081",
+      "postSha256": "1f358946fc44b75e471d3c0aa6cd6bd889f296bd54b7fc52f5e3fc5f0b6ce906",
+      "postGitBlob": "a0b3ed58d2d4ae104a4aaf326727fd70901daa6b",
+      "keyCount": 9494
+    },
+    {
+      "path": "src/i18n/locale/hi.json",
+      "preSha256": "f8d7186e9b97e70e85bf48cc4d11d9f14a4541875a7002310e5cc3a00dded8ee",
+      "preGitBlob": "630f738d56e08012ab3c522acd22ec3016b09ec6",
+      "postSha256": "b31b724adfa14d982d8bf4eee0dc4aa0d01ca5ffdd88eab2fe07844c6f66d5a6",
+      "postGitBlob": "ad27ec1a2419276f33f1d2d6d1c9d6285721ff20",
+      "keyCount": 9494
+    },
+    {
+      "path": "src/i18n/locale/id.json",
+      "preSha256": "892e41be191e5317676f1b394fdd31cf7f33533b514ecd73e3ef4355af206392",
+      "preGitBlob": "8bb3f8c85ebcac04694b6ad6908c5d14aa4514b8",
+      "postSha256": "8844dc7de009c17f81e467bb583b57c4bea472bc7a887d8cf8363ffedde09378",
+      "postGitBlob": "c41885562e37522875900c978ce7f4193bc9798e",
+      "keyCount": 9494
+    },
+    {
+      "path": "src/i18n/locale/ja.json",
+      "preSha256": "6a2936d44fca3f17df3769c620ac11158af22c3ea8d18ef18bfcdb22cb6f8246",
+      "preGitBlob": "6b1f51e7209ed180d0e865c82359dcf823da3866",
+      "postSha256": "2944142afced156f004e973550036521869af223f6cde8e076aac05c745239f9",
+      "postGitBlob": "6ea240445555116535a883c42b1e50449a68328f",
+      "keyCount": 9494
+    },
+    {
+      "path": "src/i18n/locale/ko.json",
+      "preSha256": "784e463a71734c55a079027b040d780c65ff7ae5bf8ee944f0e10cc6ffda3547",
+      "preGitBlob": "240d638673094cc65e84ac1fd29cf995eec54817",
+      "postSha256": "16550bacb80ea8de387575aee1c460979f3fd52b51224ca1bf1d8f0bd9fe4934",
+      "postGitBlob": "429121859f05b18d8175621350dd3da6fefd1675",
+      "keyCount": 9494
+    },
+    {
+      "path": "src/i18n/locale/pt_BR.json",
+      "preSha256": "f5fd4e1d2e44d24714cd31c9abe90c214e91d6f4a0d993cb79b1465ed74248c1",
+      "preGitBlob": "3b359c3c8e991634e065003bf3c78c9b93b7a4a0",
+      "postSha256": "0f3c710be15e4c9faa8ba606fb39427bb647a7d2392a7992efe89e60b9c65fa9",
+      "postGitBlob": "439ffedd2c219af408eeefbbb1a0c3559ae8f93f",
+      "keyCount": 9494
+    },
+    {
+      "path": "src/i18n/locale/vi.json",
+      "preSha256": "5f552ee05a72271fbb0a0b3efc9ded9dfd5012b26c9be8b06e048874b1ff96a6",
+      "preGitBlob": "a026f75525cbd81da81c89a3fa364b1437a224bc",
+      "postSha256": "442a12cc93c55b2c27e3cceb8a23065a90edcc62cc097879c84c25a642dcc2bf",
+      "postGitBlob": "99c8c9af00ad2e0a05ae6287a741212d8a201db3",
+      "keyCount": 9494
+    },
+    {
+      "path": "src/i18n/locale/zh_Hans.json",
+      "preSha256": "ebb14a5a24f351c25c64d1b65be2d3bd4d48e24d4f7383aab556132385938a1c",
+      "preGitBlob": "b5810acec4986d2f72209d3eae1d250a5314a8e7",
+      "postSha256": "9fb9071858df99645f453b426dbab72afeb00a9ee0c24c3dd594d73793ecfdf3",
+      "postGitBlob": "729141fca4a0b94caab51087b9b0e135071d958e",
+      "keyCount": 9494
+    },
+    {
+      "path": "src/i18n/locale/zh_Hant.json",
+      "preSha256": "0a70b66c121b885fa15855971bffa24f1b8a0dc9fbe1d81e34f72095a09802b0",
+      "preGitBlob": "6374524a91e6ca3e1841a7ec6bf857bbef14ba4e",
+      "postSha256": "802994f5d4f17b77d8f5d858b024c4177c085ae73ed39b1492b3c70ebc35b6c8",
+      "postGitBlob": "a81fb7f9e3871fc9dd3d888b3e21b0741b678b71",
+      "keyCount": 9494
+    }
+  ],
+  "changedCellsByLocale": {
+    "ar": 4,
+    "de": 2,
+    "es": 3,
+    "fr": 1,
+    "hi": 5,
+    "id": 7,
+    "ja": 4,
+    "ko": 3,
+    "pt-BR": 3,
+    "vi": 7,
+    "zh-Hans": 4,
+    "zh-Hant": 3
+  },
+  "crossPacketPath": "cross-audit/",
+  "crossPacketManifestSha256": "06d1c39d2e1e678a8e7057f1f8f14b42a69b98540218c44c1b4515585629af09",
+  "crossPacketChecksumListSha256": "49598feb305bf351bea9309b02877712e16e18f9ef2a7a0e10722aeb567de430",
+  "crossLedgerSha256": "4dc8b9e902df409bee716d8fd30c9295dbf5f6ee3843af099d7bbecaba706d42",
+  "applicationReadbackSha256": "99a620e7329a9478a5ba70f49ae15c9c85f3f70ab80ca6c997c93be3090fa61a",
+  "inputVerifiers": {
+    "candidateFree": "PASS",
+    "primary": "PASS",
+    "blind": "PASS",
+    "cross": "PASS"
+  },
+  "testsBuildsScansCI": "not run",
+  "nativeSpeakerSignoff": "not claimed",
+  "browserAcceptance": "not performed; no claim",
+  "mergeReleaseTag": "not performed"
+}

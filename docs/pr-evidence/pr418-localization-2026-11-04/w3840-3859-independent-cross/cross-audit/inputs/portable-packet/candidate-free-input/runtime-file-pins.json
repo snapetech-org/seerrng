@@ -1,0 +1,34 @@
+{
+  "files": [
+    {
+      "byteCount": 5394,
+      "gitBlob": "d699bd347f4fbad07bce14a743c884800d9d4a84",
+      "lineCount": 45,
+      "path": "config/i18n/locales.json",
+      "sha256": "6e8ea070b441db9700325cf838d440dbbef1d1e5331e28332ed6c15cb789376a"
+    },
+    {
+      "byteCount": 18100,
+      "gitBlob": "7c14be9debc22705e5248e4932561556b18bb8c1",
+      "lineCount": 481,
+      "path": "src/components/Settings/MylarModal/index.tsx",
+      "sha256": "fde4411d95e1aea2c37e1f5023fb11bbe6c8b1a6f45758df8d1a7f202fac23e8"
+    },
+    {
+      "byteCount": 8094,
+      "gitBlob": "7af46af3f1ca4536cb76a785ca51058b145a30d1",
+      "lineCount": 216,
+      "path": "src/components/Settings/NavidromeModal/index.tsx",
+      "sha256": "cd51caa1528b1b8b07b5c3ece6121728f5cefba32f66924aba507d1a5ac07b95"
+    },
+    {
+      "byteCount": 109940,
+      "gitBlob": "7bf5662ffc7338c47de12413a8b55ffc1137c93f",
+      "lineCount": 2805,
+      "path": "src/components/Settings/SettingsServices.tsx",
+      "sha256": "43e88ea339ecdf33b596c04e4a20097e67a84dffd54607a8068fbb7dd551d5f9"
+    }
+  ],
+  "head": "ba5bb93cdb4f107a8337aae228b7cd397e1140a6",
+  "tree": "5420ae8fa33bda3619650757a2930a0114dbe4d1"
+}
