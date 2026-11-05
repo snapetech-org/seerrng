@@ -81,7 +81,7 @@ patchedDependencies:
     hash: b2e7469afa19ede226404ee6a5faf46ee9a99593196db69df9a638de15375d4c
     path: patches/@docusaurus__utils@3.10.2.patch
   deepmerge@4.3.1:
-    hash: 3dfae8a71ba803765abe4c61c02845340e2d2feafaaf99fee1875ccaaad649ad
+    hash: 4566d6b8148011436d013f8fd90942e185baada1d1ee120c79327771ee01f7ba
     path: patches/deepmerge@4.3.1.patch
   gray-matter@4.0.3:
     hash: e3caad2c9a25b13a7877b00b141338e30fbddaa60ad8b8b7f1ebf58346db55d7
@@ -9649,7 +9649,7 @@ snapshots:
     dependencies:
       '@svgr/core': 8.1.0(typescript@7.0.2)
       cosmiconfig: 8.3.6(typescript@7.0.2)
-      deepmerge: 4.3.1(patch_hash=3dfae8a71ba803765abe4c61c02845340e2d2feafaaf99fee1875ccaaad649ad)
+      deepmerge: 4.3.1(patch_hash=4566d6b8148011436d013f8fd90942e185baada1d1ee120c79327771ee01f7ba)
       svgo: 3.3.5
     transitivePeerDependencies:
       - typescript
@@ -10788,7 +10788,7 @@ snapshots:
     dependencies:
       character-entities: 2.0.2
 
-  deepmerge@4.3.1(patch_hash=3dfae8a71ba803765abe4c61c02845340e2d2feafaaf99fee1875ccaaad649ad): {}
+  deepmerge@4.3.1(patch_hash=4566d6b8148011436d013f8fd90942e185baada1d1ee120c79327771ee01f7ba): {}
 
   default-browser-id@5.0.0: {}
 
