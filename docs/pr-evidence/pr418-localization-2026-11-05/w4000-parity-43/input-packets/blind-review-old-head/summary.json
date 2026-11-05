@@ -1,0 +1,67 @@
+{
+  "baseRef": "main",
+  "baseSha": "2647e15762de0c2285cd9d8ebc6d27ffafce6358",
+  "bidiReview": {
+    "arabicRowsReviewed": 44,
+    "directionalIsolatesAdded": 0,
+    "note": "Arabic RTL wording and exact Latin literals/route were reviewed in text; browser rendering and clipboard directionality were not visually checked.",
+    "visualBrowserOrderVerified": false
+  },
+  "blindPacketVerifierResult": "PASS on final checksum-sealed packet with --repo /home/keith/Documents/code/seerrng",
+  "branch": "codex/seerrng-localization-overhaul-20261028",
+  "callerlessHashOnlyHolds": 0,
+  "candidateFreeChecksumFileCount": 22,
+  "candidateFreeChecksumListSha256": "93629c99d76d0a6786f60a2d5600f01671e96ea51c1cbb9b9a76faf91890787c",
+  "candidateFreeVerifier": "PASS on isolated candidate-only copy with --repo /home/keith/Documents/code/seerrng; all 22 candidate-free files checksum-verified.",
+  "changedSourceRefreshCells": 12,
+  "confidenceCounts": {
+    "high": 210,
+    "moderate": 318
+  },
+  "confidenceLimitations": "AI semantic review only. No native-speaker or in-product visual review was performed; long help copy and region-specific phrasing remain moderate confidence.",
+  "decisionCounts": {
+    "translation-refresh-required": 12,
+    "translation-required": 516
+  },
+  "exactHead": "77d30ae742aad7245e6e419237fca6a544531e1f",
+  "exactTree": "2c6fe4a0c1c33aa56b01f06a70702f68598509a7",
+  "holds": 0,
+  "independentBlindReview": true,
+  "liveAfterAttestation": "PASS: PR API, branch ref, pull ref, base ref, exact head/tree all matched.",
+  "locales": [
+    "ar",
+    "de",
+    "es",
+    "fr",
+    "hi",
+    "id",
+    "ja",
+    "ko",
+    "pt-BR",
+    "vi",
+    "zh-Hans",
+    "zh-Hant"
+  ],
+  "missingTargetCells": 516,
+  "nativeSpeakerReviewPerformed": false,
+  "primaryReviewOrOtherProposalOutputsRead": false,
+  "proposals": 528,
+  "pullRequest": 418,
+  "repository": "snapetech-org/seerrng",
+  "repositoryOrPrEdited": false,
+  "result": "PASS",
+  "schemaVersion": 1,
+  "sourceIds": 43,
+  "stateAtBeforeAttestation": "open/draft",
+  "testsBuildsScansCiOrWorkflowsRun": false,
+  "tokenChecks": {
+    "allPassed": true,
+    "callbackRoute": true,
+    "icuPluralStructureAndPoundSigns": true,
+    "numericTokens": true,
+    "placeholderCounts": true,
+    "protectedLiterals": true,
+    "settingsArrow": true
+  },
+  "totalCellsReviewed": 528
+}

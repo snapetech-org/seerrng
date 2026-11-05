@@ -1,0 +1,199 @@
+{
+  "adjustmentCount": 15,
+  "adjustments": [
+    {
+      "cellId": "components.CollectionQueue.description::ja",
+      "lane": "locale-c",
+      "targetSha256": "4114381ebd8760c1f3579dcee69b3048b1ff5296cebc12b82f6d249df058a43b"
+    },
+    {
+      "cellId": "components.CollectionQueue.description::zh-Hant",
+      "lane": "locale-b",
+      "targetSha256": "5cb261bf4d82b69ab33676c353c044e581bb5c0773a79703b5ee65b0bf948c22"
+    },
+    {
+      "cellId": "components.CollectionQueue.progress::vi",
+      "lane": "locale-b",
+      "targetSha256": "6e811450134b4c32cdad9fcfdbc403bb935ab5a79e75f74085116c9b10092fe0"
+    },
+    {
+      "cellId": "components.CollectionQueue.title::ko",
+      "lane": "locale-c",
+      "targetSha256": "aa32c8d52bfaf953fd6de97eb69da10e744d8cd29de003b675a30ec9d0a27743"
+    },
+    {
+      "cellId": "components.RequestEpisodeQueueControl.watchAheadOff::ar",
+      "lane": "locale-a",
+      "targetSha256": "532e66a3a8626e2af60ba3a1d4f90eb7ec75523d312f5de88d6bfda3848989d2"
+    },
+    {
+      "cellId": "components.RequestEpisodeQueueControl.watchAheadOverrideHelp::id",
+      "lane": "locale-a",
+      "targetSha256": "897686cb34cec119a48c85fa9afbbcd6b0a3321e46818c5fdaeb0e796f31b75e"
+    },
+    {
+      "cellId": "components.RequestModal.watchAheadActiveForRequest::ko",
+      "lane": "locale-c",
+      "targetSha256": "1625d2befe80563cf9e3b32a04c8a959533b02708a0de0444bcdcbef36db3ecc"
+    },
+    {
+      "cellId": "components.RequestModal.watchAheadActiveForRequest::pt-BR",
+      "lane": "locale-c",
+      "targetSha256": "e81894948161e7dd5213b2996383f85eeec3fb5277dfc9d7b56c48eb262375fc"
+    },
+    {
+      "cellId": "components.RequestModal.watchAheadOff::ar",
+      "lane": "locale-a",
+      "targetSha256": "532e66a3a8626e2af60ba3a1d4f90eb7ec75523d312f5de88d6bfda3848989d2"
+    },
+    {
+      "cellId": "components.Settings.analyzeOnPlaybackTip::ja",
+      "lane": "locale-c",
+      "targetSha256": "d4057db2c515b826e5a17bc0b9446897a3d7010a486c62dc22066b3b12f36ccc"
+    },
+    {
+      "cellId": "components.Settings.analyzeOnPlaybackTip::vi",
+      "lane": "locale-b",
+      "targetSha256": "cc30f653901819b6331c4bc0145602409726b7581a9e2935821eee3e8e6ef0ec"
+    },
+    {
+      "cellId": "components.Settings.analyzeOnPlaybackTip::zh-Hans",
+      "lane": "locale-b",
+      "targetSha256": "f68c86c0d6b58980cb543e7b4c987ba7f2303b62a5ca4e73e41b136bc852880c"
+    },
+    {
+      "cellId": "components.Settings.analyzeOnPlaybackTip::zh-Hant",
+      "lane": "locale-b",
+      "targetSha256": "f43d5bf85092a4403270ea4095909870e71d6df3b4adb718cc5115ca6b2bb861"
+    },
+    {
+      "cellId": "discovery.accounts.traktSetup::hi",
+      "lane": "locale-a",
+      "targetSha256": "1943f2b819285510fbee29d2857622cce30b06b7c125a7c93e45b0385ab817b8"
+    },
+    {
+      "cellId": "discovery.accounts.traktSetup::zh-Hant",
+      "lane": "locale-b",
+      "targetSha256": "d4106783535789304efe9026a9c56976a3d2dae4f09eb6b78b97befc0402d05e"
+    }
+  ],
+  "artifact": "SeerrNG PR #418 W4000 lineage parity cross-review, all locales",
+  "baseRef": "main",
+  "baseSha": "2647e15762de0c2285cd9d8ebc6d27ffafce6358",
+  "baseTree": "b6f4acb9debdc1b0a838b50d5ad88aaa467e429b",
+  "blindNumericScannerExceptionDisposition": "Both Japanese blind candidates express the same number words with Arabic digits. The locale-c reviewer adjusted them to Japanese number words; the recommended target numeric-token sets now match their English sources.",
+  "blindNumericScannerExceptionsReviewed": [
+    "components.CollectionQueue.description::ja",
+    "components.Settings.analyzeOnPlaybackTip::ja"
+  ],
+  "branch": "codex/seerrng-localization-overhaul-20261028",
+  "candidateFreeExactVerifierResult": "PASS: packet checksums, 528 cells, 13 catalog pins, 43 gaps, changed-source refresh, source/caller contexts, prior W4000 lineage, and local Git objects.",
+  "candidateSources": {
+    "blind": 175,
+    "new": 15,
+    "primary": 82,
+    "primary+blind": 256
+  },
+  "changedSourceRefreshCells": 12,
+  "dispositions": {
+    "accept": 513,
+    "adjust": 15
+  },
+  "entryRefs": {
+    "refs/heads/codex/seerrng-localization-overhaul-20261028": "f48afa55ce2abeb00ee8b2dc66fa6d2df8f62ba4",
+    "refs/heads/main": "2647e15762de0c2285cd9d8ebc6d27ffafce6358",
+    "refs/pull/418/head": "f48afa55ce2abeb00ee8b2dc66fa6d2df8f62ba4"
+  },
+  "exactHead": "f48afa55ce2abeb00ee8b2dc66fa6d2df8f62ba4",
+  "exactTree": "f7ea727b0383397ec8d6220667b4abe151d43b46",
+  "exitRefs": {
+    "refs/heads/codex/seerrng-localization-overhaul-20261028": "f48afa55ce2abeb00ee8b2dc66fa6d2df8f62ba4",
+    "refs/heads/main": "2647e15762de0c2285cd9d8ebc6d27ffafce6358",
+    "refs/pull/418/head": "f48afa55ce2abeb00ee8b2dc66fa6d2df8f62ba4"
+  },
+  "headedBrowserReviewPerformed": false,
+  "holds": 0,
+  "insertionGapCells": 516,
+  "isDraft": true,
+  "laneCellCounts": {
+    "locale-a": 264,
+    "locale-b": 132,
+    "locale-c": 132
+  },
+  "laneResults": {
+    "locale-a": {
+      "cells": 264,
+      "locales": [
+        "ar",
+        "de",
+        "es",
+        "fr",
+        "hi",
+        "id"
+      ],
+      "result": "PASS"
+    },
+    "locale-b": {
+      "cells": 132,
+      "locales": [
+        "vi",
+        "zh-Hans",
+        "zh-Hant"
+      ],
+      "result": "PASS"
+    },
+    "locale-c": {
+      "cells": 132,
+      "locales": [
+        "ja",
+        "ko",
+        "pt-BR"
+      ],
+      "result": "PASS"
+    }
+  },
+  "localeCellCounts": {
+    "ar": 44,
+    "de": 44,
+    "es": 44,
+    "fr": 44,
+    "hi": 44,
+    "id": 44,
+    "ja": 44,
+    "ko": 44,
+    "pt-BR": 44,
+    "vi": 44,
+    "zh-Hans": 44,
+    "zh-Hant": 44
+  },
+  "locales": [
+    "ar",
+    "de",
+    "es",
+    "fr",
+    "hi",
+    "id",
+    "ja",
+    "ko",
+    "pt-BR",
+    "vi",
+    "zh-Hans",
+    "zh-Hant"
+  ],
+  "nativeSpeakerReviewPerformed": false,
+  "oldReviewHead": "77d30ae742aad7245e6e419237fca6a544531e1f",
+  "oldReviewTree": "2c6fe4a0c1c33aa56b01f06a70702f68598509a7",
+  "packetType": "independent-cross-review",
+  "primaryAndBlindRowsReattested": 1056,
+  "pullRequest": 418,
+  "recommendedTokenFailures": 0,
+  "repository": "snapetech-org/seerrng",
+  "repositoryOrPrEdited": false,
+  "result": "PASS",
+  "scopeCells": 528,
+  "sourceCurrentTargetCallerCellsReattested": 528,
+  "sourceIds": 44,
+  "sourceOrTargetCellDrift": 0,
+  "state": "OPEN",
+  "testsBuildsScansCiOrWorkflowsRun": false
+}

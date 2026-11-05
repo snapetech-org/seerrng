@@ -1,0 +1,31 @@
+{
+  "base": "2647e15762de0c2285cd9d8ebc6d27ffafce6358",
+  "blindRowsReattested": 528,
+  "candidateTextIncludedForOtherLocales": false,
+  "checksumsAndPacketVerifier": {
+    "blind": "PASS",
+    "candidateFree": "PASS",
+    "candidateFreePacketOnly": "PASS",
+    "primary": "PASS",
+    "reattestation": "PASS"
+  },
+  "documentedTokenExceptionCellsOutsideLocaleB": [
+    "components.CollectionQueue.description::ja",
+    "components.Settings.analyzeOnPlaybackTip::ja"
+  ],
+  "fullScopeCells": 528,
+  "head": "f48afa55ce2abeb00ee8b2dc66fa6d2df8f62ba4",
+  "localeBCells": 132,
+  "locales": [
+    "vi",
+    "zh-Hans",
+    "zh-Hant"
+  ],
+  "originalStoredTokenClaimsPassing": 1056,
+  "primaryRowsReattested": 528,
+  "primaryVerifierNote": "NOT USED: old verifier expects original candidate-free root inventory; hash-only current-head reattestation was checked directly.",
+  "result": "PASS",
+  "sourceCurrentTargetCallerAndCandidateHashesMatched": 528,
+  "sourceOrTargetCellDrift": 0,
+  "tree": "f7ea727b0383397ec8d6220667b4abe151d43b46"
+}
