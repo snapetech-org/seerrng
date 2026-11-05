@@ -4825,6 +4825,8 @@
   "components.Settings.SettingsUsers.defaultPermissions": "Default Permissions",
   "components.Settings.SettingsUsers.defaultPermissionsTip": "Initial permissions assigned to new users",
   "components.Settings.SettingsUsers.disabledMediaServerLoginWarning": "Some users may not have a {applicationTitle} password set. Disabling {mediaServerName} sign-in could lock them out. Affected users will need to set a password from their profile or via a password reset link.",
+  "components.Settings.SettingsUsers.jellyfinQuickConnectOnly": "Require Jellyfin Quick Connect Sign-In",
+  "components.Settings.SettingsUsers.jellyfinQuickConnectOnlyTip": "Allow Jellyfin Quick Connect sign-in and block Jellyfin password and plugin sign-in.",
   "components.Settings.SettingsUsers.localLogin": "Enable Local Sign-In",
   "components.Settings.SettingsUsers.localLoginTip": "Allow users to sign in using their email address and password",
   "components.Settings.SettingsUsers.loginMethods": "Login Methods",

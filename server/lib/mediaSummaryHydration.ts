@@ -7,12 +7,21 @@ import MediaServiceStatus from '@server/entity/MediaServiceStatus';
 import type { User } from '@server/entity/User';
 import { Watchlist } from '@server/entity/Watchlist';
 import { restrictMediaRelationsForUser } from '@server/lib/mediaResponse';
+import {
+  applyUserMediaServerAvailability,
+  getMediaServerAccessContext,
+  type VideoAvailabilityFormat,
+} from '@server/lib/mediaServerAvailability';
 import { attachViewerRequestCoverage } from '@server/lib/viewerRequestCoverage';
 
 export const hydrateMediaSummaryRelations = async (
   mediaItems: Media[],
   user?: User,
-  options: { includeRequestSeasons?: boolean; includeIssues?: boolean } = {}
+  options: {
+    includeRequestSeasons?: boolean;
+    includeIssues?: boolean;
+    preferredAvailabilityFormat?: VideoAvailabilityFormat;
+  } = {}
 ): Promise<Media[]> => {
   const mediaIds = [
     ...new Set(
@@ -46,38 +55,45 @@ export const hydrateMediaSummaryRelations = async (
     );
   }
 
-  const [activeRequests, userWatchlists, issues, serviceStatuses] =
-    await Promise.all([
-      activeRequestQuery.getMany(),
-      user
-        ? getRepository(Watchlist)
-            .createQueryBuilder('watchlist')
-            .innerJoinAndSelect('watchlist.media', 'watchlistMedia')
-            .where('watchlistMedia.id IN (:...mediaIds)', { mediaIds })
-            .andWhere('watchlist.requestedBy = :userId', { userId: user.id })
-            .getMany()
-        : [],
-      options.includeIssues
-        ? getRepository(Issue)
-            .createQueryBuilder('issue')
-            .leftJoinAndSelect('issue.media', 'issueMedia')
-            .leftJoinAndSelect('issue.createdBy', 'issueCreatedBy')
-            .leftJoinAndSelect('issue.modifiedBy', 'issueModifiedBy')
-            .leftJoinAndSelect('issue.comments', 'issueComments')
-            .where('issueMedia.id IN (:...mediaIds)', { mediaIds })
-            .orderBy('issue.createdAt', 'DESC')
-            .addOrderBy('issue.id', 'DESC')
-            .getMany()
-        : [],
-      getRepository(MediaServiceStatus)
-        .createQueryBuilder('serviceStatus')
-        .where('serviceStatus.mediaId IN (:...mediaIds)', { mediaIds })
-        .orderBy('serviceStatus.serviceType', 'ASC')
-        .addOrderBy('serviceStatus.serverId', 'ASC')
-        .addOrderBy('serviceStatus.format', 'ASC')
-        .getMany(),
-      attachViewerRequestCoverage(mediaItems, user),
-    ]);
+  const [
+    activeRequests,
+    userWatchlists,
+    issues,
+    serviceStatuses,
+    ,
+    mediaServerAccessContext,
+  ] = await Promise.all([
+    activeRequestQuery.getMany(),
+    user
+      ? getRepository(Watchlist)
+          .createQueryBuilder('watchlist')
+          .innerJoinAndSelect('watchlist.media', 'watchlistMedia')
+          .where('watchlistMedia.id IN (:...mediaIds)', { mediaIds })
+          .andWhere('watchlist.requestedBy = :userId', { userId: user.id })
+          .getMany()
+      : [],
+    options.includeIssues
+      ? getRepository(Issue)
+          .createQueryBuilder('issue')
+          .leftJoinAndSelect('issue.media', 'issueMedia')
+          .leftJoinAndSelect('issue.createdBy', 'issueCreatedBy')
+          .leftJoinAndSelect('issue.modifiedBy', 'issueModifiedBy')
+          .leftJoinAndSelect('issue.comments', 'issueComments')
+          .where('issueMedia.id IN (:...mediaIds)', { mediaIds })
+          .orderBy('issue.createdAt', 'DESC')
+          .addOrderBy('issue.id', 'DESC')
+          .getMany()
+      : [],
+    getRepository(MediaServiceStatus)
+      .createQueryBuilder('serviceStatus')
+      .where('serviceStatus.mediaId IN (:...mediaIds)', { mediaIds })
+      .orderBy('serviceStatus.serviceType', 'ASC')
+      .addOrderBy('serviceStatus.serverId', 'ASC')
+      .addOrderBy('serviceStatus.format', 'ASC')
+      .getMany(),
+    attachViewerRequestCoverage(mediaItems, user),
+    getMediaServerAccessContext(user),
+  ]);
   const requestsByMediaId = new Map<number, MediaRequest[]>();
   for (const request of activeRequests) {
     const mediaId = request.media.id;
@@ -117,6 +133,15 @@ export const hydrateMediaSummaryRelations = async (
       media.issues = issuesByMediaId.get(media.id) ?? [];
     }
     media.serviceStatuses = statusesByMediaId.get(media.id) ?? [];
+  }
+
+  await applyUserMediaServerAvailability(
+    mediaItems,
+    mediaServerAccessContext,
+    options.preferredAvailabilityFormat
+  );
+
+  for (const media of mediaItems) {
     restrictMediaRelationsForUser(media, user);
   }
 

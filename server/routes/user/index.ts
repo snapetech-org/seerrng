@@ -1816,7 +1816,9 @@ router.get<{ id: string }, UserRequestsResponse>(
             .take(pageSize)
             .skip(skip)
             .getManyAndCount();
-          const requests = await hydrateMediaRequestRelations(requestRows);
+          const requests = await hydrateMediaRequestRelations(requestRows, {
+            viewer: req.user,
+          });
 
           return res.status(200).json({
             pageInfo: {

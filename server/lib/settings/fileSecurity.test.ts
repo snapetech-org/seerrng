@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict';
-import { afterEach, describe, it } from 'node:test';
+import { afterEach, describe, it, mock } from 'node:test';
 
 const posixIt = process.platform === 'win32' ? it.skip : it;
 
@@ -53,6 +53,60 @@ describe('settings file permissions', () => {
     assert.strictEqual(maximumActive, 1);
     assert.deepStrictEqual(await fs.readdir(directory), []);
   });
+
+  it('retries when an existing lock is unlinked during inspection', async () => {
+    const directory = await fs.mkdtemp(
+      path.join(os.tmpdir(), 'seerr-settings-unlink-')
+    );
+    temporaryDirectories.push(directory);
+    const filePath = path.join(directory, 'settings.json');
+    const lockPath = path.join(directory, '.settings.json.lock');
+    await fs.writeFile(lockPath, 'fixture lock');
+    const originalLstat = fs.lstat.bind(fs);
+    let released = false;
+    const lstat = mock.method(
+      fs,
+      'lstat',
+      async (...args: Parameters<typeof fs.lstat>) => {
+        const stat = await originalLstat(...args);
+        if (String(args[0]) === lockPath && !released) {
+          released = true;
+          await fs.unlink(lockPath);
+          Object.defineProperty(stat, 'nlink', { value: 0 });
+        }
+        return stat;
+      }
+    );
+    let calls = 0;
+    try {
+      await withSettingsFileLock(filePath, async () => {
+        calls++;
+      });
+    } finally {
+      lstat.mock.restore();
+    }
+    assert.equal(calls, 1);
+    assert.deepEqual(await fs.readdir(directory), []);
+  });
+
+  posixIt(
+    'rejects a hard-linked lock path without touching its target',
+    async () => {
+      const directory = await fs.mkdtemp(
+        path.join(os.tmpdir(), 'seerr-settings-hardlink-')
+      );
+      temporaryDirectories.push(directory);
+      const filePath = path.join(directory, 'settings.json');
+      const target = path.join(directory, 'private-target');
+      await fs.writeFile(target, 'unchanged');
+      await fs.link(target, path.join(directory, '.settings.json.lock'));
+      await assert.rejects(
+        withSettingsFileLock(filePath, async () => undefined),
+        /regular file/
+      );
+      assert.equal(await fs.readFile(target, 'utf8'), 'unchanged');
+    }
+  );
 
   it('recovers a lock abandoned by a dead local process', async () => {
     const directory = await fs.mkdtemp(

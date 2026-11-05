@@ -12,6 +12,7 @@ import {
 import MediaRequestStatusEvent from '@server/entity/MediaRequestStatusEvent';
 import { RequestDispatchOutbox } from '@server/entity/RequestDispatchOutbox';
 import { isActiveSeasonRequest } from '@server/entity/SeasonRequest';
+import type { User } from '@server/entity/User';
 import type {
   DownloadingItem,
   ServarrHistoryEvidence,
@@ -2126,6 +2127,7 @@ export const getRequestStatusPage = async (options: {
   filter?: string;
   sort?: RequestStatusSortField;
   sortDirection?: RequestStatusSortDirection;
+  viewer?: User;
 }): Promise<RequestStatusPage> => {
   const requestRepository = getRepository(MediaRequest);
   const query = requestRepository
@@ -2209,6 +2211,7 @@ export const getRequestStatusPage = async (options: {
 
   requests = await hydrateMediaRequestRelations(requests, {
     includeMediaIdentifiers: true,
+    viewer: options.viewer,
   });
 
   const requestIds = requests.map((request) => request.id);

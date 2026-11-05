@@ -22,6 +22,10 @@ import type { DownloadingItem } from '@server/lib/downloadtracker';
 import downloadTracker from '@server/lib/downloadtracker';
 import { normalizeMusicBrainzId } from '@server/lib/externalIds';
 import { restrictMediaRelationsForUser } from '@server/lib/mediaResponse';
+import {
+  applyUserMediaServerAvailability,
+  getMediaServerAccessContext,
+} from '@server/lib/mediaServerAvailability';
 import { hydrateMediaSummaryRelations } from '@server/lib/mediaSummaryHydration';
 import { getSettings } from '@server/lib/settings';
 import {
@@ -35,6 +39,7 @@ import {
   AfterLoad,
   Column,
   Entity,
+  In,
   Index,
   OneToMany,
   OneToOne,
@@ -118,7 +123,32 @@ class Media {
             )
           );
 
+      const tvMediaIds = relatedMedia
+        .filter((item) => item.mediaType === MediaType.TV)
+        .map((item) => item.id);
+      if (tvMediaIds.length > 0) {
+        const mediaWithSeasons = await mediaRepository.find({
+          where: { id: In(tvMediaIds) },
+          relations: { seasons: true },
+          relationLoadStrategy: 'query',
+          loadEagerRelations: false,
+        });
+        const seasonsByMediaId = new Map(
+          mediaWithSeasons.map((item) => [item.id, item.seasons])
+        );
+        for (const item of relatedMedia) {
+          if (item.mediaType === MediaType.TV) {
+            item.seasons = seasonsByMediaId.get(item.id) ?? [];
+          }
+        }
+      }
+
       await attachViewerRequestCoverage(relatedMedia, user);
+      const mediaServerAccessContext = await getMediaServerAccessContext(user);
+      await applyUserMediaServerAvailability(
+        relatedMedia,
+        mediaServerAccessContext
+      );
 
       if (
         includeActiveRequest &&

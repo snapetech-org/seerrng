@@ -61,3 +61,9 @@ Local HD and 4K results use SeerrNG's stored availability records. Genre
 filters can use their stored genre metadata. Studio, streaming-service, and
 series-status selections are cleared when you switch to local availability;
 the notice above the filters explains which selections were removed.
+
+When your Plex, Jellyfin, or Emby account is linked to SeerrNG, local results
+are checked against the media items and seasons visible to that account. Titles
+whose access cannot be verified are omitted. See
+[per-user movie and TV availability](./media-server-access.md) for the account
+requirements and troubleshooting steps.

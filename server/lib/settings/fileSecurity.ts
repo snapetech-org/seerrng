@@ -106,6 +106,11 @@ const removeAbandonedSettingsLock = async (
     return (error as NodeJS.ErrnoException).code === 'ENOENT';
   }
 
+  // A cooperating owner may unlink the regular file during lstat. Retry the
+  // exclusive create; a replacement still has to pass the normal path checks.
+  if (stat.isFile() && !stat.isSymbolicLink() && stat.nlink === 0) {
+    return true;
+  }
   if (!stat.isFile() || stat.isSymbolicLink() || stat.nlink !== 1) {
     throw new Error('Settings lock path must be a regular file.');
   }
@@ -142,6 +147,9 @@ export const withSettingsFileLock = async <Result>(
   const deadline = Date.now() + SETTINGS_LOCK_TIMEOUT_MS;
 
   while (true) {
+    if (Date.now() >= deadline) {
+      throw new Error('Timed out waiting for the settings file lock.');
+    }
     let handle: Awaited<ReturnType<typeof fs.open>>;
     try {
       handle = await fs.open(
