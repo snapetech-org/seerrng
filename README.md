@@ -771,6 +771,7 @@ SeerrNG has several cache layers. They are designed to make repeat browsing, pag
 - **Visible-first warmup** warms images for visible titles before below-the-fold content.
 - **Hidden-tab restraint** skips image warmup while the tab is hidden so returning to the tab does not flood the app with stale work.
 - **Host caches** cover TMDB, MusicBrainz, ListenBrainz, Open Library, Cover Art Archive, TheAudioDB, Radarr, Sonarr, Lidarr, Readarr/Bookshelf, DNS, and image metadata where supported.
+- **Version checks** cache successful GitHub release/commit lookups for six hours and hold failed lookups for five minutes, preventing repeated `/api/v1/status` polls from retrying GitHub on every request.
 - **Jobs & Cache settings** expose cache stats and flush controls.
 
 If SeerrNG runs behind a reverse proxy, do not blanket-strip cache headers or force `Cache-Control: no-store` on `/imageproxy/*`, `/avatarproxy/*`, `/sw.js`, static assets, or cacheable API responses. App pages and sensitive routes can remain non-cacheable.

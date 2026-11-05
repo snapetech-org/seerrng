@@ -23,6 +23,15 @@ a user-facing retirement blocker unless it is adopted before the move. Close a
 gate only after its replacement is available in a supported release and the
 required migration and operator path have been checked.
 
+**Status API and version checks.** A replacement should cache successful GitHub
+release and commit lookups for six hours and hold failed lookups for five
+minutes, so repeated `/api/v1/status` polling does not retry an unavailable or
+rate-limited GitHub request on every poll. Source context includes Seerr
+[issue #3665](https://github.com/seerr-team/seerr/issues/3665). Close this gate
+after repeated status polls under successful, rate-limited, and timed-out GitHub
+responses remain truthful about update-check success, bound external requests,
+and retry only after the relevant cache interval.
+
 ## Retirement matrix
 
 | Gate | Replacement must provide | Evidence before closing the gate |

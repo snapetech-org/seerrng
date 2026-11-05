@@ -38,7 +38,7 @@ Set the default display language for Seerr. Users can override this setting in t
 
 ## Version Check
 
-When enabled, SeerrNG checks the public release tags in the SeerrNG GitHub repository. It only reports an update when a published stable tag is newer than the installed version, so a build created ahead of the next public release is not incorrectly marked as out of date.
+When enabled, SeerrNG checks the public release tags in the SeerrNG GitHub repository. It only reports an update when a published stable tag is newer than the installed version, so a build created ahead of the next public release is not incorrectly marked as out of date. Successful release or commit lookups are cached for six hours; a failed lookup is held for five minutes before retry so frequent status polling does not repeat the same GitHub request.
 
 ## Theme and color palette
 
