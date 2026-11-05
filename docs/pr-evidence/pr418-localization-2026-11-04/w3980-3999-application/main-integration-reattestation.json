@@ -1,0 +1,61 @@
+{
+  "schema": "seerrng.localization.main-integration-reattestation.v1",
+  "window": "W3980-W3999",
+  "pullRequest": 418,
+  "sourcePinnedHead": "d9c5224dbce97e8ae6e72b0ad0bf401e65e215eb",
+  "sourcePinnedTree": "6578ebc4c8bd6c569fcea47978a2c47bd6e4bc8f",
+  "candidateFreeCapturedMainRef": "016bcf8db7475b2105b9b488ff67ed7d1c096508",
+  "liveMainHead": "2bb382cfeedc0af1aacda1851a2a469452eb7173",
+  "mainTree": "da2e933d68516f4ee9fc90665e5acc761e3ba592",
+  "mergeTreeReadOnlyResult": "clean",
+  "mergeTreeReadOnlyTree": "5e1dbdc959e3720e63183ef09d5592bca210a736",
+  "mergeCommit": "3e63e2b315859d8ca570530180dce1184083083a",
+  "mergeTree": "5e1dbdc959e3720e63183ef09d5592bca210a736",
+  "mergeParents": [
+    "d9c5224dbce97e8ae6e72b0ad0bf401e65e215eb",
+    "2bb382cfeedc0af1aacda1851a2a469452eb7173"
+  ],
+  "mergeBaseAtMergedHead": "2bb382cfeedc0af1aacda1851a2a469452eb7173",
+  "mainChangedPathCount": 61,
+  "prChangedPathCountAtPinnedHead": 4093,
+  "sharedChangedPaths": [
+    "CHANGELOG.md",
+    "package.json",
+    "seerr-api.yml",
+    "src/components/DiscoveryIntegrations/Accounts.tsx",
+    "src/components/RequestList/RequestItem/index.tsx",
+    "src/i18n/locale/en.json",
+    "src/styles/globals.css"
+  ],
+  "mainWorkflowPaths": [
+    ".github/workflows/ci.yml"
+  ],
+  "prWorkflowPathsAtPinnedHead": [],
+  "englishCatalogAtSourceCount": 9494,
+  "englishCatalogAtMergeCount": 9496,
+  "englishKeysAddedByMain": [
+    {
+      "sourceId": "discovery.accounts.traktCallbackFailed",
+      "position": 6578
+    },
+    {
+      "sourceId": "discovery.accounts.traktSetup",
+      "position": 6579
+    }
+  ],
+  "englishKeysRemovedByMain": [],
+  "selectedSourceRowsReattested": 20,
+  "selectedSourcePositionsPreserved": true,
+  "currentTargetCellsReattestedBeforeApplication": 240,
+  "currentTargetsMatchedCandidateFreePins": true,
+  "callerContextsReattested": 20,
+  "callerContextBlocksReattested": 40,
+  "runtimeCallerAndLocaleInventoryFilesReattested": 5,
+  "catalogsPinned": 13,
+  "rootAdjudicationCounts": {
+    "apply": 43,
+    "acceptCurrent": 185,
+    "holds": 12
+  },
+  "candidateFreeInputHistoricalMainRefNote": "The sealed candidate-free packet records the main ref as captured before the later 2bb382c update; all packet bytes are preserved. This reattestation explicitly checks the 2bb382c merge head and confirms no selected source, caller, or target drift."
+}

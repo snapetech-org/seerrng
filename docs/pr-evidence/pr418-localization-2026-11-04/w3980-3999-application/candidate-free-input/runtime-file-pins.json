@@ -1,0 +1,41 @@
+{
+  "head": "d9c5224dbce97e8ae6e72b0ad0bf401e65e215eb",
+  "tree": "6578ebc4c8bd6c569fcea47978a2c47bd6e4bc8f",
+  "files": [
+    {
+      "path": "config/i18n/locales.json",
+      "byteCount": 5394,
+      "lineCount": 45,
+      "sha256": "6e8ea070b441db9700325cf838d440dbbef1d1e5331e28332ed6c15cb789376a",
+      "gitBlob": "d699bd347f4fbad07bce14a743c884800d9d4a84"
+    },
+    {
+      "path": "src/components/Settings/Notifications/NotificationsWebPush/index.tsx",
+      "byteCount": 6576,
+      "lineCount": 188,
+      "sha256": "68a5abca591d75f7d46511ae94cc6a9be4f3798cd5ae189025557f2f1883d65b",
+      "gitBlob": "95622263cb0771b0dc2b7920bfa9a2eae73e8b1a"
+    },
+    {
+      "path": "src/components/Settings/Notifications/NotificationsWebhook/index.tsx",
+      "byteCount": 22779,
+      "lineCount": 627,
+      "sha256": "cba9fff86bf560a8ca2e069d751dc4c1162731facf2a44f90130caabdc3d6cd5",
+      "gitBlob": "92fcdd07ebd0d605e540155d95601656a198b025"
+    },
+    {
+      "path": "src/pages/settings/notifications/webhook.tsx",
+      "byteCount": 662,
+      "lineCount": 19,
+      "sha256": "cb689594c992ee3cc3e65892a6987aec0c245563f764e3cb11494e7af6822876",
+      "gitBlob": "52ce2e0116d0f8dd1bb96d02f3b4328ff8dc4968"
+    },
+    {
+      "path": "src/pages/settings/notifications/webpush.tsx",
+      "byteCount": 676,
+      "lineCount": 19,
+      "sha256": "b784536f1aaf12e7ab40cf5b2438119c01d2f0645c46ce9f0870ea10f4b44ef0",
+      "gitBlob": "cf2e2956821c3dd92cc68fa20074274bf2eeebc0"
+    }
+  ]
+}

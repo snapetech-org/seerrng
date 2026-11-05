@@ -1,0 +1,98 @@
+{
+  "candidateFreeInput": {
+    "directoryName": "candidate-free-input",
+    "checksumManifestSha256": "c31c51a18acf1e62cd5ec37c7c38824c756251f04a6686638c16bf097482f2d7",
+    "fileSha256": {
+      "PR-attestation-after.json": "fdca5ce526b98d83cff9d1b0f505c4eef511a72d36da1fe1051c39afbb477ed4",
+      "PR-attestation.json": "5b5e138aaaaee05838453c0dca13eb3622f2ebc40f4b1bbe408231d5790e95a1",
+      "README.md": "c379923c400c807d8cb8b22fbca264e4a3080396ea17be3647ff47580e124f72",
+      "baseline-token-diagnostics.json": "9619cec5938802cf793aec43f82b960e49fdf12ad4acd66fbd237b71068d03d8",
+      "build_candidate_free.py": "d3cbd7ee79977a4e436cc8a98dfee459d5befc56048a7ffe3c82005708f91200",
+      "caller-context-blocks.jsonl": "b5e2cf26441dc9370577619e64071fa3f54548cca4c7b94dd528e69f58182f7d",
+      "caller-contexts.jsonl": "10feba2d2ed8ffdd98ce4d4cfee1ae701de7136ce330924d83e1d809eb87d0b0",
+      "caller-resolution-findings.json": "1daaae362301e8be13a814cc70a3d0619498d327eeb172444f037f6ccf65cd66",
+      "catalog-file-pins.json": "6673ab21ee7141fff37ff335b913f03f24ed4039c20b92139e3a4b9b6a607496",
+      "current-target-cells.jsonl": "5b71e57241c57cfb83b927d1f49e5ef271421838e0c86c6347027c142159bc21",
+      "deployments-after.json": "9bd5631cc0a7a63b56d2f56ac8f9d8971617d8aca6a404e91b46d66da7209712",
+      "deployments-before.json": "9bd5631cc0a7a63b56d2f56ac8f9d8971617d8aca6a404e91b46d66da7209712",
+      "main-drift.json": "f712d9be6a089484c6a08a4b8e798a188a54e9baed41da995dcecf861955d47d",
+      "manifest.json": "56d443524ad16c5e3c2e4a47f9521c8e5db733f2b4744f61401964460247d0e7",
+      "prior-applied-target-hash-reattestation.jsonl": "7982c3f979ba9a5adc39419b845bef636243eede42e1d2c6154ce695fddff96c",
+      "prior-catalog-application-summary.json": "a0046f764e0a4e8c9b44c6780715f8b0ead7f23d8605509cb2aaee71f0a7f363",
+      "prior-evidence-hash-index.json": "a6c7d01e8cedfc2f2a24636c954b8357f417c4adaff19a3bd6479ef2aa2150ed",
+      "prior-hold-hash-reattestation.jsonl": "e442469f0c5441b342f3474f0df4e39461f4770ea58cdb16ba8edfcf2c95408c",
+      "prior-selection-hash-reattestation.jsonl": "7b7c996edfb3f6fbab2d03b882e7ab32d8fab038448fc482a06e8f65d520e3f1",
+      "remote-refs-after.tsv": "56fbb2e817eeef89c05008d5f3e78a208e798414e7f3b5c2a7ce1aafa996a61c",
+      "remote-refs-before.tsv": "56fbb2e817eeef89c05008d5f3e78a208e798414e7f3b5c2a7ce1aafa996a61c",
+      "runtime-file-pins.json": "30db0f1d8e60b608d71732222c1690b02bcce76ccd32bb21ef60f55882b35ac3",
+      "selected-source-cells.jsonl": "0416ea52fcfeb726b7e927b87118f04498be772c9a7f07d0140e4f9b3d594713",
+      "source-order-hashes.jsonl": "7813cfcff0c2ffa7f24cbad904fc8c315c916eab07ce5716b46fef2294e1806f",
+      "source-window-boundaries-hash-only.jsonl": "96dadfe867ffef371f28b1fea49680aeacb4149fd050e610919e48f3233bb351",
+      "verify-candidate-free.py": "f4954d9fa6ea963939bef4a1b83d5a8c934ce337c4db1b5eb3e66808c4e37630",
+      "window.json": "3d8ed121ea458ad39bbded8bf6de231f6f5a8ca46008866b7bfbe0d344949100"
+    },
+    "manifestSha256": "56d443524ad16c5e3c2e4a47f9521c8e5db733f2b4744f61401964460247d0e7",
+    "fileNames": [
+      "PR-attestation-after.json",
+      "PR-attestation.json",
+      "README.md",
+      "baseline-token-diagnostics.json",
+      "build_candidate_free.py",
+      "caller-context-blocks.jsonl",
+      "caller-contexts.jsonl",
+      "caller-resolution-findings.json",
+      "catalog-file-pins.json",
+      "current-target-cells.jsonl",
+      "deployments-after.json",
+      "deployments-before.json",
+      "main-drift.json",
+      "prior-applied-target-hash-reattestation.jsonl",
+      "prior-catalog-application-summary.json",
+      "prior-evidence-hash-index.json",
+      "prior-hold-hash-reattestation.jsonl",
+      "prior-selection-hash-reattestation.jsonl",
+      "remote-refs-after.tsv",
+      "remote-refs-before.tsv",
+      "runtime-file-pins.json",
+      "selected-source-cells.jsonl",
+      "source-order-hashes.jsonl",
+      "source-window-boundaries-hash-only.jsonl",
+      "verify-candidate-free.py",
+      "window.json"
+    ]
+  },
+  "primaryReview": {
+    "directoryName": "primary-review",
+    "checksumManifestSha256": "70ae30405921ef46390d653b2b906f1d4caefc71490c05452dfdaebe21753523",
+    "fileSha256": {
+      "README.md": "6e2b04825aac181aa3e7663b849ed0d8390386b7677448a5cf202cc2ec262999",
+      "build_primary_review.py": "8f10ddb3b08d502532faf7aa4911c6001c53f966e07269ee5b48cb3431b07104",
+      "hash-only-holds.jsonl": "7a86bdb3737ba6f4fc1ee9bdcb7e77d6fdd6a2ed873a67fd8fc6d01fd0cc8c26",
+      "manifest.json": "ffda2feef931f72319903054d822760bcc1a80f47805608e90cf370de5096cb2",
+      "primary-ledger.jsonl": "719bc4d153fad5d756c3127eac362fb169cf05965a07fc83e890c5cec2fcd7cc",
+      "primary-summary.json": "5ab5e8a236e1e2d8e9f9fc869d9a8f3d6535a3d56140552b062a0b2c1eb8f4c8",
+      "selected-proposals.jsonl": "5b50946f9610f65002142d972d6d0bd24cac377d33f9fec6069110abd8481dd5",
+      "verify-primary.py": "50cc259b14ce71dc2b182af3b3fde24a9ca8eb4b7c33aaa25c033cdf4e0a3ba9"
+    },
+    "manifestSha256": "ffda2feef931f72319903054d822760bcc1a80f47805608e90cf370de5096cb2",
+    "primaryLedgerSha256": "719bc4d153fad5d756c3127eac362fb169cf05965a07fc83e890c5cec2fcd7cc",
+    "selectedProposalsSha256": "5b50946f9610f65002142d972d6d0bd24cac377d33f9fec6069110abd8481dd5",
+    "hashOnlyHoldsSha256": "7a86bdb3737ba6f4fc1ee9bdcb7e77d6fdd6a2ed873a67fd8fc6d01fd0cc8c26",
+    "summarySha256": "5ab5e8a236e1e2d8e9f9fc869d9a8f3d6535a3d56140552b062a0b2c1eb8f4c8"
+  },
+  "blindReview": {
+    "directoryName": "seerrng-pr418-w3980-3999-blind-review-20261104",
+    "checksumManifestSha256": "a29c039c0b085f3086b7d6266848e206994bc177c8b09e0ac813aa26a3e0e02d",
+    "fileSha256": {
+      "README.md": "93a4ec7c6db575e7c15344fa89474f62fcd172690ed54fb27cd49adf50139eef",
+      "review.json": "1d2285f058cdec7315fb7d5941374a55b76b35268fd6823024e2e43a06d0064a",
+      "verify-blind-review.py": "b1d1d28462fa7b626341b3a9907d60a44c3dd9eec6173ef2346832f8a1082786"
+    },
+    "reviewSha256": "1d2285f058cdec7315fb7d5941374a55b76b35268fd6823024e2e43a06d0064a",
+    "fileNames": [
+      "README.md",
+      "review.json",
+      "verify-blind-review.py"
+    ]
+  }
+}
