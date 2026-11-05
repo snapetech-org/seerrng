@@ -1,3 +1,4 @@
+import { hasPermission, Permission } from '@server/lib/permissions';
 import type { NextRequest } from 'next/server';
 import { NextResponse } from 'next/server';
 import { isAuthenticationError } from './utils/auth';
@@ -63,6 +64,9 @@ export async function proxy(req: NextRequest) {
     return NextResponse.next();
   }
 
+  const guideRequested =
+    pathname === '/setup' && req.nextUrl.searchParams.get('guide') === '1';
+  let canReviewSetup = false;
   let authed = false;
   try {
     const cookie = req.headers.get('cookie');
@@ -72,6 +76,10 @@ export async function proxy(req: NextRequest) {
     });
     if (res.ok) {
       authed = true;
+      if (guideRequested) {
+        const user: { permissions?: number } = await res.json();
+        canReviewSetup = hasPermission(Permission.ADMIN, user.permissions ?? 0);
+      }
     } else if (!isAuthenticationError({ status: res.status })) {
       // A backend failure is not proof that the user's session is invalid.
       // Keep the page request alive so the client can retry instead of
@@ -86,7 +94,8 @@ export async function proxy(req: NextRequest) {
   if (authed) {
     if (
       (isSetupPath(pathname) || isLoginPath(pathname)) &&
-      !isPlexLoginCompletion
+      !isPlexLoginCompletion &&
+      !canReviewSetup
     ) {
       // An already signed-in visitor goes straight to the saved destination.
       const destination = isLoginPath(pathname)
