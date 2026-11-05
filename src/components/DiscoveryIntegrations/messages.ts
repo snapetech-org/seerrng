@@ -3,6 +3,10 @@ export default defineMessages('discovery', {
   'accounts.title': 'Discovery Accounts',
   'accounts.description':
     'Connect personal accounts for recommendations and lists. These connections do not grant access to sign in to SeerrNG.',
+  'accounts.traktSetup':
+    'To connect Trakt, an administrator must set a public HTTPS Application URL in Settings → General and register that URL followed by /api/v1/integrations/discovery/trakt/callback in the Trakt application.',
+  'accounts.traktCallbackFailed':
+    'Trakt did not return authorization to SeerrNG. Check the public HTTPS Application URL and registered callback URL in the Trakt application, then try again.',
   'accounts.failed':
     'The account operation failed. Check the provider connection and try again.',
   'accounts.expired':

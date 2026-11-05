@@ -428,16 +428,16 @@ const Swipe = () => {
     !!status?.mediaTypes && !status.mediaTypes.includes(mediaType);
 
   useEffect(() => {
-    if (!status?.mediaTypes.length || status.mediaTypes.includes(mediaType)) {
+    const requestedMediaType = router.query.mediaType;
+    if (
+      !status?.mediaTypes.length ||
+      (isSwipeMediaType(requestedMediaType) &&
+        status.mediaTypes.includes(requestedMediaType)) ||
+      status.mediaTypes.includes(mediaType)
+    ) {
       return;
     }
-    const requestedMediaType = router.query.mediaType;
-    const nextMediaType =
-      isSwipeMediaType(requestedMediaType) &&
-      status.mediaTypes.includes(requestedMediaType)
-        ? requestedMediaType
-        : status.mediaTypes[0];
-    selectMediaType(nextMediaType);
+    selectMediaType(status.mediaTypes[0]);
   }, [mediaType, router.query.mediaType, selectMediaType, status?.mediaTypes]);
 
   const isDatSoftwareCategory =

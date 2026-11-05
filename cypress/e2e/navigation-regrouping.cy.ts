@@ -3,11 +3,35 @@ describe('primary navigation', () => {
     cy.loginAsAdmin();
   });
 
+  afterEach(() => {
+    cy.request('/api/v1/auth/me').then(({ body }) =>
+      cy
+        .request('POST', `/api/v1/user/${body.id}/settings/interface-theme`, {
+          theme: 'seerrOrig',
+        })
+        .its('body.interfaceTheme')
+        .should('eq', 'seerrOrig')
+    );
+    cy.request('/api/v1/auth/me').then(({ body }) =>
+      expect(body.settings.interfaceTheme).to.eq('seerrOrig')
+    );
+  });
+
   it('orders the requested groups and nests User List under Settings', () => {
     cy.viewport(1400, 900);
+    cy.request('/api/v1/auth/me').then(({ body }) =>
+      cy
+        .request('POST', `/api/v1/user/${body.id}/settings/interface-theme`, {
+          theme: 'seerrNGJ',
+        })
+        .its('body.interfaceTheme')
+        .should('eq', 'seerrNGJ')
+    );
     cy.intercept('GET', '/api/v1/blocklist/count', { body: { count: 1 } });
     cy.mockConfiguredMediaAvailability({ booksEnabled: true });
     cy.visit('/');
+    cy.get('html').should('have.attr', 'data-interface-theme', 'seerrNGJ');
+    cy.get('[role="group"][aria-label="My Library"]').should('be.visible');
 
     cy.get('nav[data-navigation-device="desktop"]')
       .find('a')
@@ -166,6 +190,11 @@ describe('primary navigation', () => {
     cy.get('[data-testid="discovery-mode-tab-swipe"]').click();
     cy.location('pathname').should('eq', '/swipe');
     cy.location('search').should('include', 'returnTo');
+    cy.location('search').should((search) => {
+      expect(new URLSearchParams(search).get('returnTo')).to.eq(
+        '/discover/tv/genre/18?sortBy=popularity.desc&page=2'
+      );
+    });
 
     cy.get('[data-testid="discovery-mode-tab-discover"]').click();
     cy.location('pathname').should('eq', '/discover/tv/genre/18');

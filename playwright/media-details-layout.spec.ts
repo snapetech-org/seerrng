@@ -185,10 +185,24 @@ const mockMediaNavigation = async (
   await page.goto(media.discoveryPath);
   await expect(page.getByTestId('title-card')).toHaveCount(1);
   expect(discoveryFixtureApplied).toBe(true);
-  await page.getByTestId('title-card').first().click();
+  const card = page.getByTestId('title-card').first();
+  await card.hover();
+  const detailsLink = card.locator('[data-poster-region="detail-link"]');
+  await expect(detailsLink).toBeVisible();
+  await detailsLink.click();
   await page.waitForURL((url) => url.pathname === media.route);
   await page.waitForLoadState('networkidle');
   expect(detailsFixtureApplied).toBe(true);
+  for (const width of [320, 360, 375, 390, 412, 768, 1024, 1440, 1920]) {
+    await page.setViewportSize({ width, height: 900 });
+    const horizontalOverflow = await page.evaluate(
+      () => document.documentElement.scrollWidth - window.innerWidth
+    );
+    expect(
+      horizontalOverflow,
+      `${media.route} at ${width}px`
+    ).toBeLessThanOrEqual(1);
+  }
 };
 
 for (const media of mediaDetailsPages) {

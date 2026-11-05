@@ -29,6 +29,7 @@ export default function DiscoveryAccounts() {
   const [code, setCode] = useState('');
   const [busy, setBusy] = useState(false);
   const [failed, setFailed] = useState(false);
+  const [failureMessage, setFailureMessage] = useState<string | null>(null);
   const [expired, setExpired] = useState(false);
   const traktCallbackHandled = useRef(false);
   const finish = useCallback(
@@ -87,11 +88,18 @@ export default function DiscoveryAccounts() {
   const act = useCallback(async (callback: () => Promise<unknown>) => {
     setBusy(true);
     setFailed(false);
+    setFailureMessage(null);
     setExpired(false);
     try {
       await callback();
-    } catch {
+    } catch (caught) {
       setFailed(true);
+      if (axios.isAxiosError<{ message?: unknown }>(caught)) {
+        const message = caught.response?.data?.message;
+        if (typeof message === 'string' && message.trim()) {
+          setFailureMessage(message.trim().slice(0, 300));
+        }
+      }
     } finally {
       setBusy(false);
     }
@@ -110,7 +118,14 @@ export default function DiscoveryAccounts() {
       shallow: true,
     });
     if (callbackFailed) {
-      setFailed(true);
+      if (router.query.traktError === 'denied') {
+        setFailed(true);
+        setFailureMessage(
+          discoveryMessages['accounts.traktCallbackFailed'].defaultMessage
+        );
+      } else {
+        setExpired(true);
+      }
       return;
     }
     void act(() => finish('trakt'));
@@ -123,9 +138,14 @@ export default function DiscoveryAccounts() {
       <p className="description mb-4">
         <FormattedMessage {...discoveryMessages['accounts.description']} />
       </p>
+      <p className="description mb-4">
+        <FormattedMessage {...discoveryMessages['accounts.traktSetup']} />
+      </p>
       {(failed || error) && (
         <p role="alert" className="mb-4 text-red-400">
-          <FormattedMessage {...discoveryMessages['accounts.failed']} />
+          {failureMessage ?? (
+            <FormattedMessage {...discoveryMessages['accounts.failed']} />
+          )}
         </p>
       )}
       {expired && (

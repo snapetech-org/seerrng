@@ -1,10 +1,20 @@
 import express from 'express';
+import * as OpenApiValidator from 'express-openapi-validator';
 import assert from 'node:assert/strict';
+import path from 'node:path';
 import { describe, it } from 'node:test';
 import request from 'supertest';
 import themeRoutes from './interfaceThemes';
 
-const app = express().use('/api/v1/interface-themes', themeRoutes);
+const app = express();
+app.use(
+  OpenApiValidator.middleware({
+    apiSpec: path.resolve(process.cwd(), 'seerr-api.yml'),
+    validateRequests: true,
+    validateSecurity: false,
+  })
+);
+app.use('/api/v1/interface-themes', themeRoutes);
 
 describe('public interface theme package routes', () => {
   it('lists installed package metadata without authentication', async () => {

@@ -8,6 +8,40 @@ const makeResults = (firstId: number, prefix: string) =>
     posterPath: null,
   }));
 
+const waitForStableScrollPosition = (track: HTMLDivElement) =>
+  cy.window().then(
+    (win) =>
+      new Cypress.Promise<number>((resolve) => {
+        let previousPosition = track.scrollLeft;
+        let previousWidth = track.scrollWidth;
+        let stableFrames = 0;
+
+        const sample = () => {
+          const currentPosition = track.scrollLeft;
+          const currentWidth = track.scrollWidth;
+          if (
+            currentPosition === previousPosition &&
+            currentWidth === previousWidth
+          ) {
+            stableFrames += 1;
+          } else {
+            previousPosition = currentPosition;
+            previousWidth = currentWidth;
+            stableFrames = 0;
+          }
+
+          if (stableFrames >= 10) {
+            resolve(currentPosition);
+            return;
+          }
+
+          win.requestAnimationFrame(sample);
+        };
+
+        win.requestAnimationFrame(sample);
+      })
+  );
+
 const moveSliderToCard = (title: string, index: number) =>
   cy
     .contains('.slider-header', title)
@@ -16,10 +50,20 @@ const moveSliderToCard = (title: string, index: number) =>
     .then(($track) => {
       const track = $track[0] as HTMLDivElement;
       const card = track.querySelectorAll('.slider-item')[index] as HTMLElement;
-      track.scrollLeft = card.offsetLeft;
-      track.dispatchEvent(new Event('scroll', { bubbles: true }));
+      const cardOffset =
+        card.getBoundingClientRect().left -
+        track.getBoundingClientRect().left +
+        track.scrollLeft;
+      track.scrollLeft = cardOffset;
 
-      return track.scrollLeft;
+      return waitForStableScrollPosition(track).then((position) => {
+        track.dispatchEvent(
+          new track.ownerDocument.defaultView!.Event('scroll', {
+            bubbles: true,
+          })
+        );
+        return position;
+      });
     });
 
 const assertStoredPosition = (sliderKey: string, position: number) => {
@@ -30,7 +74,11 @@ const assertStoredPosition = (sliderKey: string, position: number) => {
       `__seerrDiscoverScroll:sliders:${historyKey}`
     );
     expect(stored !== null).to.equal(true);
-    expect(JSON.parse(stored ?? '{}')[sliderKey]).to.eq(position);
+    const storedPositions = JSON.parse(stored ?? '{}');
+    expect(
+      storedPositions[sliderKey],
+      `${sliderKey}: expected ${position}, stored ${JSON.stringify(storedPositions)}`
+    ).to.eq(position);
   });
 };
 
@@ -91,7 +139,7 @@ describe('Discover slider Back navigation', () => {
 
     let trendingPosition = 0;
     let popularPosition = 0;
-    moveSliderToCard('Trending', 3)
+    moveSliderToCard('Trending', 1)
       .then((position) => {
         trendingPosition = position;
         expect(trendingPosition).to.be.greaterThan(0);
@@ -109,17 +157,20 @@ describe('Discover slider Back navigation', () => {
       .closest('[data-testid=media-slider]')
       .find('[data-testid=title-card]')
       .eq(3)
-      .scrollIntoView({ offset: { top: 120, left: 0 } })
+      .scrollIntoView({ offset: { top: 220, left: 0 } })
       .then(($card) => {
         const track = $card
           .closest('[data-testid=media-slider]')
           .find('.slider-track')[0] as HTMLDivElement;
-        trendingPosition = track.scrollLeft;
-
-        return $card;
+        return waitForStableScrollPosition(track).then((position) => {
+          trendingPosition = position;
+          return $card;
+        });
       })
-      .trigger('mouseover')
-      .click({ scrollBehavior: false });
+      .find('[data-poster-region="frame"]')
+      .click({ force: true })
+      .find('[data-poster-region="detail-link"]')
+      .click({ force: true });
     cy.wait('@details');
     cy.location('pathname').should('eq', detailPath);
 

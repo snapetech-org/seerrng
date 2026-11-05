@@ -1,4 +1,19 @@
 describe('Current batch layout standards', () => {
+  const resolveColor = (
+    element: HTMLElement,
+    property: 'color' | 'background-color',
+    value: string
+  ) => {
+    const doc = element.ownerDocument;
+    const swatch = doc.createElement('span');
+    const themeRoot = element.closest<HTMLElement>('[data-interface-theme]');
+    swatch.style.setProperty(property, value);
+    (themeRoot ?? doc.body).appendChild(swatch);
+    const resolved = getComputedStyle(swatch).getPropertyValue(property);
+    swatch.remove();
+    return resolved;
+  };
+
   const expectHeight = ($element: JQuery<HTMLElement>, height: number) => {
     expect($element[0].getBoundingClientRect().height).to.eq(height);
   };
@@ -12,11 +27,30 @@ describe('Current batch layout standards', () => {
     cy.visit('/settings/main');
 
     cy.get('.settings-main-card').should('be.visible');
+    cy.get('html').should('have.attr', 'data-interface-theme');
     cy.get('.settings-page-content .heading, .settings-group-heading').each(
       ($heading) => {
+        const theme =
+          $heading[0].ownerDocument.documentElement.dataset.interfaceTheme;
+        expect(theme).to.be.oneOf(['seerrOrig', 'seerrNGJ']);
         const styles = getComputedStyle($heading[0]);
-        expect(styles.fontSize, $heading.text().trim()).to.eq('14px');
-        expect(styles.color).to.eq('rgb(255, 255, 255)');
+        if ($heading.hasClass('settings-group-heading')) {
+          const expected =
+            theme === 'seerrNGJ'
+              ? { fontSize: '12px', color: 'var(--interface-link)' }
+              : { fontSize: '16px', color: 'var(--interface-muted)' };
+          expect(styles.fontSize, $heading.text().trim()).to.eq(
+            expected.fontSize
+          );
+          expect(styles.color).to.eq(
+            resolveColor($heading[0], 'color', expected.color)
+          );
+        } else {
+          expect(styles.fontSize, $heading.text().trim()).to.eq('14px');
+          expect(styles.color).to.eq(
+            resolveColor($heading[0], 'color', 'rgb(var(--theme-heading-text))')
+          );
+        }
       }
     );
 
@@ -112,7 +146,11 @@ describe('Current batch layout standards', () => {
 
     cy.get('.app-data-table-head').then(($head) => {
       expect(getComputedStyle($head[0]).backgroundColor).to.eq(
-        'rgba(0, 0, 0, 0)'
+        resolveColor(
+          $head[0],
+          'background-color',
+          'var(--interface-table-header)'
+        )
       );
     });
 

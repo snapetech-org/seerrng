@@ -30,7 +30,7 @@ describe('User Profile', () => {
   });
 
   it('loads plex watchlist', () => {
-    cy.intercept('/api/v1/user/[0-9]*/watchlist', {
+    cy.intercept('/api/v1/user/[0-9]*/watchlist*', {
       fixture: 'watchlist.json',
     }).as('getWatchlist');
     // Wait for one of the watchlist movies to resolve
@@ -56,50 +56,45 @@ describe('User Profile', () => {
         .parent();
 
     getWatchlistCard().scrollIntoView();
-    getWatchlistCard().should(($observedCard) => {
-      expect($observedCard).to.be.visible;
-      const target = $observedCard[0];
-      const bounds = target.getBoundingClientRect();
-      const window = target.ownerDocument.defaultView;
-      if (!window) throw new Error('Watchlist card has no browsing context');
-      expect(bounds.width, 'observed card width').to.be.greaterThan(0);
-      expect(bounds.height, 'observed card height').to.be.greaterThan(0);
-      expect(
-        bounds.right,
-        'observed card crosses viewport left edge'
-      ).to.be.greaterThan(0);
-      expect(
-        bounds.bottom,
-        'observed card crosses viewport top edge'
-      ).to.be.greaterThan(0);
-      expect(
-        bounds.left,
-        'observed card crosses viewport right edge'
-      ).to.be.lessThan(window.innerWidth);
-      expect(
-        bounds.top,
-        'observed card crosses viewport bottom edge'
-      ).to.be.lessThan(window.innerHeight);
-    });
+    getWatchlistCard()
+      .should('be.visible')
+      .should(($observedCard) => {
+        const target = $observedCard[0];
+        const bounds = target.getBoundingClientRect();
+        const window = target.ownerDocument.defaultView;
+        if (!window) throw new Error('Watchlist card has no browsing context');
+        expect(bounds.width, 'observed card width').to.be.greaterThan(0);
+        expect(bounds.height, 'observed card height').to.be.greaterThan(0);
+        expect(
+          bounds.right,
+          'observed card crosses viewport left edge'
+        ).to.be.greaterThan(0);
+        expect(
+          bounds.bottom,
+          'observed card crosses viewport top edge'
+        ).to.be.greaterThan(0);
+        expect(
+          bounds.left,
+          'observed card crosses viewport right edge'
+        ).to.be.lessThan(window.innerWidth);
+        expect(
+          bounds.top,
+          'observed card crosses viewport bottom edge'
+        ).to.be.lessThan(window.innerHeight);
+      });
 
     cy.wait('@fixtureTitleDetails')
       .its('response.statusCode')
       .should('eq', 200);
 
-    cy.contains('.slider-header', 'Watchlist')
-      .closest('[data-testid=media-slider]')
-      .find('[data-testid=title-card]')
-      .first()
-      .trigger('mouseover')
-      .find('[data-testid=title-card-title]')
-      .invoke('text')
-      .then((text) => {
-        cy.contains('.slider-header', 'Watchlist')
-          .closest('[data-testid=media-slider]')
-          .find('[data-testid=title-card]')
-          .first()
-          .click();
-        cy.get('[data-testid=media-title]').should('contain', text);
-      });
+    getWatchlistCard()
+      .find('[data-poster-region="frame"]')
+      .trigger('mouseover');
+    getWatchlistCard()
+      .find('[data-poster-region="detail-link"]')
+      .should('be.visible')
+      .click();
+    cy.location('pathname').should('eq', '/movie/361743');
+    cy.get('[data-testid=media-title]').should('contain', 'Top Gun: Maverick');
   });
 });
