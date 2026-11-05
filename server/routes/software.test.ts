@@ -1572,6 +1572,73 @@ describe('software request routes', () => {
     assert.strictEqual(unpagedSearch.mock.callCount(), 0);
   });
 
+  it('supports ROMarr-only retro catalogs and requests with the legacy Questarr catalog default', async () => {
+    const settings = getSettings().softwareAcquisition;
+    settings.questarr.hostname = '';
+    settings.questarr.apiKey = '';
+    assert.equal(settings.emulationCatalogProvider, 'questarr');
+    const emulationGame = {
+      ...pcGame,
+      platforms: ['Nintendo Entertainment System'],
+      platformOptions: [{ id: 130, name: 'Nintendo Entertainment System' }],
+    };
+    mock.method(ROMarrNGAPI.prototype, 'getPlatforms', async () => [
+      {
+        slug: 'nes',
+        name: 'Nintendo Entertainment System',
+        media: 'rom',
+        extensions: ['.nes'],
+        max_size_mb: 16,
+      },
+    ]);
+    mock.method(ROMarrNGAPI.prototype, 'getCatalogPlatforms', async () => [
+      { id: 130, name: 'Nintendo Entertainment System' },
+    ]);
+    mock.method(ROMarrNGAPI.prototype, 'searchCatalogPage', async () => ({
+      results: [emulationGame],
+      nextCursor: null,
+    }));
+    mock.method(
+      ROMarrNGAPI.prototype,
+      'getCatalogGame',
+      async () => emulationGame
+    );
+    const questarr = mock.method(
+      QuestarrNGAPI.prototype,
+      'getCatalogGame',
+      async () => {
+        throw new Error(
+          'Questarr must not be used for ROMarr-only retro requests'
+        );
+      }
+    );
+    const app = createApp();
+    const search = await request(app)
+      .get('/request/software/catalog/search')
+      .query({ category: 'retro', q: 'Test Game' });
+    assert.equal(search.status, 200, JSON.stringify(search.body));
+    const systems = await request(app).get('/request/software/catalog/systems');
+    assert.equal(systems.body.catalogProvider, 'igdb');
+    const detail = await request(app)
+      .get('/request/software/catalog/games/42')
+      .query({ category: 'retro', catalogProvider: 'igdb' });
+    assert.equal(detail.status, 200, JSON.stringify(detail.body));
+    const created = await request(app).post('/request/software').send({
+      category: 'retro',
+      catalogId: 42,
+      catalogProvider: 'igdb',
+      platformSlug: 'nes',
+    });
+    assert.equal(created.status, 201, JSON.stringify(created.body));
+    assert.equal(created.body.request.provider, 'romarr');
+    assert.equal(questarr.mock.callCount(), 0);
+    const pc = await request(app)
+      .get('/request/software/catalog/search')
+      .query({ category: 'game', q: 'Test Game' });
+    assert.equal(pc.status, 503);
+    assert.match(pc.body.error, /QuestarrNG is not configured/);
+  });
+
   it('uses the selected ROMarr catalog for emulation and keeps Questarr for PC games', async () => {
     getSettings().softwareAcquisition.emulationCatalogProvider = 'romarr';
     const emulationGame = {
