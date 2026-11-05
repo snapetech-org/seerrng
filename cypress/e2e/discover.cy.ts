@@ -275,13 +275,13 @@ describe('Discover', () => {
       }
     ).as('getUpcomingMovies');
     stubTitleDetails('movie', movie);
-    // Use an inert same-origin page: offline.html automatically reloads while
-    // online and can race this cleanup or the subsequent Discover navigation.
-    cy.intercept('GET', '/__cypress/discover-cache-reset', {
-      headers: { 'content-type': 'text/html', 'cache-control': 'no-store' },
-      body: '<!doctype html><title>Discover cache reset fixture</title>',
+    // Stop this utility page's automatic online reload from racing cleanup or
+    // the subsequent Discover navigation. The next visit gets a fresh window.
+    cy.visit('/offline.html', {
+      onBeforeLoad(win) {
+        cy.stub(win, 'fetch').rejects(new Error('Cache reset fixture'));
+      },
     });
-    cy.visit('/__cypress/discover-cache-reset');
     cy.window().then(async (win) => {
       if ('serviceWorker' in win.navigator) {
         const registrations =
