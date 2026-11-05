@@ -12,6 +12,7 @@ import { getSettings } from '@server/lib/settings';
 import { mapWithConcurrency } from '@server/utils/concurrency';
 import { getHostname } from '@server/utils/getHostname';
 import { normalizeJellyfinGuid } from '@server/utils/jellyfin';
+import { parsePositiveRouteId } from '@server/utils/routeId';
 import { createHash } from 'node:crypto';
 
 const MEDIA_AVAILABILITY_CACHE_TTL_SECONDS = 30;
@@ -154,7 +155,7 @@ export const getMediaServerAccessContext = async (
       linkedIdentity,
       credential: linkedUser.plexToken ?? undefined,
       host,
-      plexSettings: settings.plex,
+      plexSettings: { ...settings.plex },
       scopeDigest: accessScopeDigest({
         source,
         userId: linkedUser.id,
@@ -236,6 +237,56 @@ const safeSeasonNumbers = (values: unknown[]): number[] =>
     ),
   ].slice(0, 1_000);
 
+type ProviderIdentity = Partial<Record<'tmdb' | 'tvdb' | 'imdb', string[]>>;
+
+const matchesProviderIdentity = (
+  media: Media,
+  ids: ProviderIdentity
+): boolean => {
+  let corroborated = false;
+  for (const provider of ['tmdb', 'tvdb', 'imdb'] as const) {
+    const expected =
+      provider === 'tmdb'
+        ? media.tmdbId
+        : provider === 'tvdb'
+          ? media.tvdbId
+          : media.imdbId;
+    const normalizedExpected =
+      provider === 'imdb'
+        ? typeof expected === 'string' && /^tt\d{1,20}$/i.test(expected)
+          ? expected.toLowerCase()
+          : undefined
+        : parsePositiveRouteId(expected);
+    if (normalizedExpected === undefined || !ids[provider]?.length) continue;
+    for (const id of ids[provider] ?? []) {
+      const actual =
+        provider === 'imdb' ? id.toLowerCase() : parsePositiveRouteId(id);
+      if (actual !== normalizedExpected) return false;
+    }
+    corroborated = true;
+  }
+  return corroborated;
+};
+
+const plexProviderIdentity = (guids: string[]): ProviderIdentity => {
+  const ids: ProviderIdentity = {};
+  for (const guid of guids) {
+    if (typeof guid !== 'string') continue;
+    const match =
+      /^(?:com\.plexapp\.agents\.)?(tmdb|themoviedb|tvdb|thetvdb|imdb):\/\/([^/?#]+)/i.exec(
+        guid
+      );
+    if (!match) continue;
+    const provider = match[1].toLowerCase().includes('tvdb')
+      ? 'tvdb'
+      : match[1].toLowerCase() === 'imdb'
+        ? 'imdb'
+        : 'tmdb';
+    (ids[provider] ??= []).push(match[2]);
+  }
+  return ids;
+};
+
 const verifyNativeItemAccess = async (
   context: MediaServerAccessContext,
   media: Media,
@@ -257,7 +308,17 @@ const verifyNativeItemAccess = async (
       includeChildren: media.mediaType === MediaType.TV,
     });
     const expectedType = media.mediaType === MediaType.MOVIE ? 'movie' : 'show';
-    if (item.ratingKey !== nativeId || item.type !== expectedType) {
+    if (
+      item.ratingKey !== nativeId ||
+      item.type !== expectedType ||
+      !matchesProviderIdentity(
+        media,
+        plexProviderIdentity([
+          item.guid,
+          ...(item.Guid ?? []).map((guid) => guid.id),
+        ])
+      )
+    ) {
       return unavailable;
     }
     if (media.mediaType === MediaType.MOVIE) {
@@ -300,7 +361,14 @@ const verifyNativeItemAccess = async (
   if (
     !item ||
     normalizeJellyfinGuid(item.Id) !== normalizedNativeId ||
-    item.Type !== expectedType
+    item.Type !== expectedType ||
+    !matchesProviderIdentity(media, {
+      tmdb: [item.ProviderIds.Tmdb, item.ProviderIds.TheMovieDb].filter(
+        (id): id is string => Boolean(id)
+      ),
+      tvdb: item.ProviderIds.Tvdb ? [item.ProviderIds.Tvdb] : [],
+      imdb: item.ProviderIds.Imdb ? [item.ProviderIds.Imdb] : [],
+    })
   ) {
     return unavailable;
   }
@@ -330,6 +398,9 @@ const resolveNativeItemAccess = async (
       JSON.stringify({
         scope: context.scopeDigest,
         mediaType: media.mediaType,
+        tmdbId: media.tmdbId,
+        tvdbId: media.tvdbId,
+        imdbId: media.imdbId,
         nativeId: nativeId ?? '',
       })
     )
@@ -383,7 +454,7 @@ const maskStatusForSeasons = (
   const visibleSeasons = new Set(seasonNumbers);
   let hiddenAvailableSeason = false;
   let visibleAvailableSeason = false;
-  for (const season of media.seasons) {
+  for (const season of media.seasons ?? []) {
     if (!isAvailable(season[statusKey])) continue;
     if (!visibleSeasons.has(season.seasonNumber)) {
       season[statusKey] = MediaStatus.UNKNOWN;
@@ -611,7 +682,7 @@ export const applyUserMediaServerAvailability = async (
         if (!access.visible) {
           media[statusKey] = MediaStatus.UNKNOWN;
           if (media.mediaType === MediaType.TV) {
-            for (const season of media.seasons) {
+            for (const season of media.seasons ?? []) {
               if (isAvailable(season[statusKey])) {
                 season[statusKey] = MediaStatus.UNKNOWN;
               }

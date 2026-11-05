@@ -32,7 +32,7 @@ describe('PLEXTV_HTTP_OPTIONS', () => {
     assert.equal(PLEXTV_HTTP_OPTIONS.maxBodyLength, 1024);
     assert.equal(MAX_PLEX_SHARED_USERS, 250);
     assert.equal(MAX_PLEX_WATCHLIST_PAGE_SIZE, 100);
-    assert.equal(PLEX_WATCHLIST_HYDRATION_CONCURRENCY, 10);
+    assert.equal(PLEX_WATCHLIST_HYDRATION_CONCURRENCY, 5);
   });
 });
 
@@ -374,5 +374,92 @@ describe('Plex Discover hexadecimal watchlist keys', () => {
       1792103400000
     );
     assert.equal(requestMock.mock.callCount(), 2);
+  });
+});
+
+describe('Plex watchlist hydration isolation', () => {
+  const fixture = () => {
+    const api = new PlexTvAPI('bounded-fixture-token');
+    const client = api as unknown as {
+      request: (...args: unknown[]) => Promise<unknown>;
+      getRolling: (...args: unknown[]) => Promise<unknown>;
+    };
+    mock.method(client, 'request', async () => ({
+      status: 200,
+      headers: {},
+      data: {
+        MediaContainer: {
+          totalSize: 20,
+          Metadata: Array.from({ length: 20 }, (_, i) => ({
+            ratingKey: String(i + 1),
+          })),
+        },
+      },
+    }));
+    return { api, client };
+  };
+  const item = (path: unknown) => ({
+    MediaContainer: {
+      Metadata: [
+        {
+          ratingKey: String(path).split('/').pop(),
+          type: 'movie',
+          title: 'Hydration fixture',
+          Guid: [{ id: 'tmdb://101' }],
+        },
+      ],
+    },
+  });
+
+  it('hydrates a page with at most five concurrent provider calls', async () => {
+    const { api, client } = fixture();
+    let active = 0;
+    let peak = 0;
+    mock.method(client, 'getRolling', async (path: unknown) => {
+      peak = Math.max(peak, ++active);
+      await new Promise<void>((resolve) => setImmediate(resolve));
+      active--;
+      return item(path);
+    });
+    const result = await api.getWatchlist();
+    assert.equal(result.items.length, 20);
+    assert.equal(peak, 5);
+    assert.deepEqual(
+      result.items.map((entry) => entry.ratingKey),
+      Array.from({ length: 20 }, (_, i) => String(i + 1))
+    );
+  });
+
+  it('preserves the rest of the page after an individual transport timeout', async () => {
+    const { api, client } = fixture();
+    mock.method(client, 'getRolling', async (path: unknown) => {
+      if (String(path).endsWith('/2'))
+        throw Object.assign(new Error('fixture timeout'), {
+          code: 'ETIMEDOUT',
+          isAxiosError: true,
+        });
+      return item(path);
+    });
+    const result = await api.getWatchlist();
+    assert.equal(result.items.length, 19);
+    assert.equal(result.totalSize, 20);
+    assert.ok(!result.items.some((entry) => entry.ratingKey === '2'));
+  });
+
+  it('does not return a partially authorized page after a provider authentication failure', async () => {
+    const { api, client } = fixture();
+    const calls = mock.method(client, 'getRolling', async () => {
+      throw Object.assign(new Error('fixture denied'), {
+        response: { status: 401 },
+        isAxiosError: true,
+      });
+    });
+    assert.deepEqual(await api.getWatchlist(), {
+      offset: 0,
+      size: 20,
+      totalSize: 0,
+      items: [],
+    });
+    assert.ok(calls.mock.callCount() <= 5);
   });
 });

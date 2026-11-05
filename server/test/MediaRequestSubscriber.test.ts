@@ -1656,6 +1656,7 @@ describe('MediaRequestSubscriber service dispatch', () => {
       new Media({
         mediaType: MediaType.MOVIE,
         tmdbId: 1703,
+        serviceId: 404,
         status: MediaStatus.AVAILABLE,
         status4k: MediaStatus.UNKNOWN,
       })
@@ -1680,6 +1681,39 @@ describe('MediaRequestSubscriber service dispatch', () => {
     assert.equal(saved.status, MediaRequestStatus.COMPLETED);
   });
 
+  it('does not complete a movie from another destination’s available copy', async () => {
+    getSettings().radarr = [];
+    const requestedBy = await getRequester();
+    const media = await getRepository(Media).save(
+      new Media({
+        mediaType: MediaType.MOVIE,
+        tmdbId: 1708,
+        status: MediaStatus.AVAILABLE,
+        status4k: MediaStatus.UNKNOWN,
+        serviceId: 405,
+      })
+    );
+    const request = await getRepository(MediaRequest).save(
+      new MediaRequest({
+        type: MediaType.MOVIE,
+        status: MediaRequestStatus.APPROVED,
+        media,
+        requestedBy,
+        is4k: false,
+        serverId: 404,
+      })
+    );
+    await new MediaRequestSubscriber().sendToRadarr(request);
+    const saved = await getRepository(MediaRequest).findOneByOrFail({
+      id: request.id,
+    });
+    assert.equal(saved.status, MediaRequestStatus.FAILED);
+    assert.equal(
+      saved.failureReason,
+      MediaRequestFailureReason.SERVICE_UNAVAILABLE
+    );
+  });
+
   it('completes a TV request when every requested season is available', async () => {
     const settings = getSettings();
     settings.sonarr = [];
@@ -1688,6 +1722,7 @@ describe('MediaRequestSubscriber service dispatch', () => {
       new Media({
         mediaType: MediaType.TV,
         tmdbId: 1704,
+        serviceId: 404,
         status: MediaStatus.PARTIALLY_AVAILABLE,
         status4k: MediaStatus.UNKNOWN,
         seasons: [
