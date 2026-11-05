@@ -147,7 +147,7 @@ export default function TvDetail() {
       {label}
     </button>
   ) : (
-    <a className="btn btn-primary" {...plexLink(t.mediaInfo)}>
+    <a className="btn btn-primary" {...plexLink(t.mediaInfo, false, 'tv')}>
       <Icon name="play" />
       Watch on Plex
     </a>
@@ -197,7 +197,10 @@ export default function TvDetail() {
         <div className="dacts pc">
           {main}
           {have > 0 && missing.length > 0 && (
-            <a className="btn btn-quiet" {...plexLink(t.mediaInfo)}>
+            <a
+              className="btn btn-quiet"
+              {...plexLink(t.mediaInfo, false, 'tv')}
+            >
               <Icon name="play" />
               Watch on Plex
             </a>

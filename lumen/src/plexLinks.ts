@@ -41,12 +41,12 @@ const safeUrl = (
     return undefined;
   }
 };
-// Props for a "Watch on Plex" link. Phones and tablets open the Plex app at the title (SeerrNG's
-// plex://preplay link); Android goes through an intent so Chrome falls back to Plex's web app
-// when the app isn't installed. Everywhere else: Plex's web app in a new tab.
+// iOS uses Plex preplay links. Android needs movie playback or series-library routes;
+// preplay opens its home screen. Package-bound intents retain a web fallback.
 export const plexLink = (
   m?: PlexLinks,
   is4k = false,
+  kind: string = 'movie',
   platform = plexPlatform()
 ) => {
   const web = plexUrl(m, is4k);
@@ -54,13 +54,25 @@ export const plexLink = (
     (is4k && m?.iOSPlexUrl4k) || (!is4k && m?.iOSPlexUrl) || undefined,
     true
   );
-  if (app?.startsWith('plex://') && platform === 'android') {
-    const fallback = web
-      ? `S.browser_fallback_url=${encodeURIComponent(web)};`
-      : '';
-    return {
-      href: `intent://${app.slice('plex://'.length)}#Intent;scheme=plex;package=com.plexapp.android;${fallback}end`,
-    };
+  if (app && platform === 'android' && (kind === 'movie' || kind === 'tv')) {
+    const query = new URL(app).searchParams;
+    const server = query.get('server');
+    const key = query
+      .get('metadataKey')
+      ?.match(/^\/library\/metadata\/(\d{1,20})$/)?.[1];
+    // Query decoding must not introduce path/intent delimiters into native routes.
+    if (server && /^[a-z\d_-]{1,128}$/i.test(server) && key) {
+      const path =
+        kind === 'movie'
+          ? `watch/video?uri=${encodeURIComponent(`server://${server}/com.plexapp.plugins.library/library/metadata/${key}`)}`
+          : `libraries/${server}/show/x/${key}`;
+      const fallback = web
+        ? `S.browser_fallback_url=${encodeURIComponent(web)};`
+        : '';
+      return {
+        href: `intent://${path}#Intent;scheme=plex;package=com.plexapp.android;${fallback}end`,
+      };
+    }
   }
   if (app && platform === 'ios') return { href: app };
   return { href: web, target: '_blank', rel: 'noreferrer' };
