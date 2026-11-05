@@ -123,7 +123,7 @@
     "react-dom": "19.3.1",
     "react-hot-toast": "^2.6.1",
     "react-intersection-observer": "11.0.1",
-    "react-intl": "10.2.2",
+    "react-intl": "12.1.6",
     "react-markdown": "10.1.0",
     "react-select": "5.10.2",
     "react-transition-group": "^4.4.5",
