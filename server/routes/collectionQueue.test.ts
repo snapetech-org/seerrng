@@ -45,6 +45,7 @@ const app = (actorId = 1, version?: number) => {
     OpenApiValidator.middleware({
       apiSpec: path.join(process.cwd(), 'seerr-api.yml'),
       validateRequests: true,
+      validateResponses: true,
       validateSecurity: false,
     })
   );

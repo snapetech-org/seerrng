@@ -53,7 +53,7 @@ export const queueView = (queue: MovieCollectionQueue) => ({
   total: queue.movieIds.length,
   watched: queue.watchedIds.length,
   requested: queue.requestedIds.length,
-  updatedAt: queue.updatedAt,
+  updatedAt: queue.updatedAt.toISOString(),
 });
 const hasPlayback = (user: User) => {
   const type = getSettings().main.mediaServerType;

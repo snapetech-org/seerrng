@@ -2894,22 +2894,33 @@ components:
         - id
         - name
         - enabled
+    MovieCollectionQueueError:
+      type: object
+      properties:
+        message: { type: string }
     MovieCollectionQueue:
       type: object
       properties:
-        id: {type: integer}
-        collectionId: {type: integer}
-        is4k: {type: boolean}
-        bufferSize: {type: integer, enum: [1, 2]}
-        status: {type: string, enum: [active, waiting, completed, stopped]}
+        id: { type: integer }
+        collectionId: { type: integer }
+        is4k: { type: boolean }
+        bufferSize: { type: integer, enum: [1, 2] }
+        status: { type: string, enum: [active, waiting, completed, stopped] }
         reason:
           type: string
           nullable: true
-          enum: [playback-unlinked, request-policy, provider-unavailable, request-cancelled]
-        total: {type: integer}
-        watched: {type: integer}
-        requested: {type: integer}
-        updatedAt: {type: string, format: date-time}
+          enum:
+            [
+              playback-unlinked,
+              request-policy,
+              provider-unavailable,
+              request-cancelled,
+              null,
+            ]
+        total: { type: integer }
+        watched: { type: integer }
+        requested: { type: integer }
+        updatedAt: { type: string, format: date-time }
     PlexSettings:
       type: object
       properties:
@@ -24318,10 +24329,10 @@ paths:
       - in: path
         name: id
         required: true
-        schema: {type: integer, minimum: 1, maximum: 1000000000}
+        schema: { type: integer, minimum: 1, maximum: 1000000000 }
       - in: query
         name: is4k
-        schema: {type: boolean, default: false}
+        schema: { type: boolean, default: false }
     get:
       summary: Read the signed-in user's progressive movie collection queue
       tags: [collection]
@@ -24334,8 +24345,21 @@ paths:
                 type: object
                 properties:
                   queue:
-                    allOf: [{$ref: '#/components/schemas/MovieCollectionQueue'}]
-                    nullable: true
+                    oneOf:
+                      - { $ref: '#/components/schemas/MovieCollectionQueue' }
+                      - { type: object, nullable: true, enum: [null] }
+        '400':
+          description: Invalid collection or quality
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MovieCollectionQueueError'
+        '403':
+          description: Authentication required
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MovieCollectionQueueError'
     post:
       summary: Enroll the signed-in user's collection in progressive requests
       tags: [collection]
@@ -24348,8 +24372,8 @@ paths:
               additionalProperties: false
               required: [bufferSize, is4k]
               properties:
-                bufferSize: {type: integer, enum: [1, 2]}
-                is4k: {type: boolean}
+                bufferSize: { type: integer, enum: [1, 2] }
+                is4k: { type: boolean }
       responses:
         '202':
           description: Collection queue saved; initial requests are checked asynchronously
@@ -24358,17 +24382,48 @@ paths:
               schema:
                 type: object
                 properties:
-                  queue: {$ref: '#/components/schemas/MovieCollectionQueue'}
-        '400': {description: Invalid collection or buffer}
-        '403': {description: Movie request access required}
-        '409': {description: Link playback or stop an active queue first}
-        '503': {description: Collection provider unavailable}
+                  queue: { $ref: '#/components/schemas/MovieCollectionQueue' }
+        '400':
+          description: Invalid collection or buffer
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MovieCollectionQueueError'
+        '403':
+          description: Movie request access required
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MovieCollectionQueueError'
+        '409':
+          description: Link playback or stop an active queue first
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MovieCollectionQueueError'
+        '503':
+          description: Collection provider unavailable
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MovieCollectionQueueError'
     delete:
       summary: Stop the signed-in user's collection queue without removing requests or files
       tags: [collection]
       responses:
-        '204': {description: Future queue requests stopped}
-        '403': {description: Account authority changed}
+        '204': { description: Future queue requests stopped }
+        '403':
+          description: Account authority changed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MovieCollectionQueueError'
+        '400':
+          description: Invalid collection or quality
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MovieCollectionQueueError'
   /collection/{collectionId}:
     get:
       summary: Get collection details
