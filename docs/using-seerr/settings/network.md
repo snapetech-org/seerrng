@@ -134,7 +134,7 @@ Enforcing a timeout ensures the Seerr interface remains responsive and prevents 
 
 ## Outbound request identity
 
-SeerrNG adds a versioned Seerr/<version> User-Agent to its server-side Axios
+SeerrNG adds a versioned `Seerr/<version>` User-Agent to its server-side Axios
 requests when an integration has not supplied a protocol-specific value. This
 includes remote image requests handled by the image proxy. Provider-specific
 User-Agent values are preserved. Remote services can use this header to identify
