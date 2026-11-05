@@ -1,7 +1,9 @@
 ---
-title: Preserve Jellyfin library settings across renames
-description: Jellyfin library synchronization keeps enabled state and stored scan timestamps when a library retains its server ID after a rename.
-date: 2026-10-31
+category: fixed
+audience: users, operators
+area: jellyfin
+action: none
+breaking: false
 ---
 
 Jellyfin library synchronization now retains the matched library's stored scan
