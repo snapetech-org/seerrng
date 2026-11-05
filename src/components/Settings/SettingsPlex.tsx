@@ -9,6 +9,7 @@ import SettingsBadge from '@app/components/Settings/SettingsBadge';
 import Field, {
   default as SettingsField,
 } from '@app/components/Settings/SettingsField';
+import SettingsFormRow from '@app/components/Settings/SettingsFormRow';
 import useToasts from '@app/hooks/useToasts';
 import globalMessages from '@app/i18n/globalMessages';
 import defineMessages from '@app/utils/defineMessages';
@@ -41,6 +42,10 @@ import * as Yup from 'yup';
 const messages = defineMessages('components.Settings', {
   plex: 'Plex',
   plexsettings: 'Plex Settings',
+  analyzeOnPlayback: 'Analyze Seasons During Playback',
+  analyzeOnPlaybackTip:
+    'Opt in to queue Plex analysis when an episode is playing in an enabled TV library. At most two seasons are queued per minute and each season at most once every 30 days. Plex controls intro and credits generation; its library settings and Plex Pass requirements still apply.',
+
   plexsettingsDescription:
     'Configure the settings for your Plex server. Seerr scans your Plex libraries to determine content availability.',
   serverpreset: 'Server',
@@ -469,6 +474,7 @@ const SettingsPlex = ({ isSetupSettings, onComplete }: SettingsPlexProps) => {
           useSsl: data?.useSsl,
           selectedPreset: undefined,
           webAppUrl: data?.webAppUrl,
+          analyzeOnPlayback: data?.analyzeOnPlayback ?? false,
         }}
         validationSchema={PlexSettingsSchema}
         validateOnMount={true}
@@ -490,6 +496,7 @@ const SettingsPlex = ({ isSetupSettings, onComplete }: SettingsPlexProps) => {
               port: Number(values.port),
               useSsl: values.useSsl,
               webAppUrl: values.webAppUrl,
+              analyzeOnPlayback: values.analyzeOnPlayback,
             } as PlexSettings);
 
             syncLibraries();
@@ -696,6 +703,17 @@ const SettingsPlex = ({ isSetupSettings, onComplete }: SettingsPlexProps) => {
                   {intl.formatMessage(messages.webAppUrlTip)}
                 </span>
               </div>
+              <SettingsFormRow
+                htmlFor="analyzeOnPlayback"
+                label={intl.formatMessage(messages.analyzeOnPlayback)}
+                description={intl.formatMessage(messages.analyzeOnPlaybackTip)}
+              >
+                <Field
+                  type="checkbox"
+                  id="analyzeOnPlayback"
+                  name="analyzeOnPlayback"
+                />
+              </SettingsFormRow>
               <div className="actions">
                 <div className="flex justify-end">
                   <span className="ms-3 inline-flex rounded-md shadow-sm">

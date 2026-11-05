@@ -15,6 +15,7 @@ import {
   syncRecordings,
 } from '@server/lib/liveTv/recordings';
 import { syncSportsFollows } from '@server/lib/liveTv/sports';
+import plexPlaybackAnalysis from '@server/lib/plexPlaybackAnalysis';
 import { syncBookOrbitKoboCollections } from '@server/lib/readerDeliveryKobo';
 import refreshToken from '@server/lib/refreshToken';
 import { captureReleaseCalendarHistory } from '@server/lib/releaseCalendar/history';
@@ -374,6 +375,21 @@ export const startJobs = (): void => {
       }),
       running: () => jellyfinFullScanner.status().running,
       cancelFn: () => jellyfinFullScanner.cancel(),
+    });
+  }
+
+  if (mediaServerType === MediaServerType.PLEX) {
+    scheduledJobs.push({
+      id: 'plex-playback-analysis',
+      name: 'Plex Playback Analysis',
+      type: 'process',
+      interval: 'minutes',
+      cronSchedule: jobs['plex-playback-analysis'].schedule,
+      job: schedule.scheduleJob(jobs['plex-playback-analysis'].schedule, () =>
+        runTrackedJob('Plex Playback Analysis', () =>
+          plexPlaybackAnalysis.run()
+        )
+      ),
     });
   }
 

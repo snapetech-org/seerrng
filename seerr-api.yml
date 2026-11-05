@@ -2919,6 +2919,10 @@ components:
           readOnly: true
           items:
             $ref: '#/components/schemas/PlexLibrary'
+        analyzeOnPlayback:
+          type: boolean
+          default: false
+          description: Queue bounded Plex season analysis when episodes are playing.
         webAppUrl:
           type: string
           nullable: true
