@@ -1,0 +1,1 @@
+Preserve the current Discover subpage and filters when opening Swipe and returning to Discover. Discovery mode links now read the current router URL instead of a saved route that could lag behind navigation. Swipe also waits for route query hydration before choosing a fallback category, preventing an early status response from overwriting the saved destination.
