@@ -171,6 +171,9 @@ class SlackAgent
         case Notification.MEDIA_PENDING:
           status = intl.formatMessage(globalMessages.pendingApproval);
           break;
+        case Notification.MEDIA_PENDING_UPDATED:
+          status = intl.formatMessage(globalMessages.requestUpdated);
+          break;
         case Notification.MEDIA_APPROVED:
         case Notification.MEDIA_AUTO_APPROVED:
           status = intl.formatMessage(globalMessages.processing);
@@ -283,7 +286,8 @@ class SlackAgent
 
     const elements: Element[] = [];
     if (
-      type === Notification.MEDIA_PENDING &&
+      (type === Notification.MEDIA_PENDING ||
+        type === Notification.MEDIA_PENDING_UPDATED) &&
       payload.request &&
       settings.options.requestActionsEnabled === true &&
       isValidSlackRequestActionSettings(settings.options)

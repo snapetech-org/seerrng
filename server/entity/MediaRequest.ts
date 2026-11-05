@@ -3,7 +3,7 @@ import ListenBrainzAPI from '@server/api/listenbrainz';
 import MusicBrainz from '@server/api/musicbrainz';
 import OpenLibraryAPI from '@server/api/openlibrary';
 import RadarrAPI from '@server/api/servarr/radarr';
-import SonarrAPI from '@server/api/servarr/sonarr';
+import SonarrAPI, { type LanguageProfile } from '@server/api/servarr/sonarr';
 import SportarrAPI from '@server/api/servarr/sportarr';
 import WhisparrAPI from '@server/api/servarr/whisparr';
 import TheMovieDb from '@server/api/themoviedb';
@@ -113,6 +113,7 @@ import {
   UpdateDateColumn,
   VirtualColumn,
   type EntityManager,
+  type QueryRunner,
 } from 'typeorm';
 import Media from './Media';
 import SeasonRequest, { isActiveSeasonRequest } from './SeasonRequest';
@@ -2759,6 +2760,7 @@ export class MediaRequest {
             selectedSonarr?.activeLanguageProfileId)
           : selectedSonarr?.activeLanguageProfileId
         : undefined;
+    let sonarrLanguageProfiles: LanguageProfile[] | undefined;
     const metadataLanguageId =
       requestBody.mediaType === MediaType.TV && useAdvancedOptions
         ? requestBody.metadataLanguageId
@@ -2809,6 +2811,7 @@ export class MediaRequest {
             const languageProfiles = await sonarr
               .getLanguageProfiles()
               .catch(() => []);
+            sonarrLanguageProfiles = languageProfiles;
             const preferredProfile = languageProfiles.find(
               (profile) =>
                 (profile.languages ?? []).some((language) =>
@@ -2857,16 +2860,42 @@ export class MediaRequest {
         useAdvancedOptions && requestBody.rootFolder !== undefined;
       const requesterSelectedProfile =
         useAdvancedOptions && requestBody.profileId !== undefined;
+      const requesterSelectedLanguageProfile =
+        useAdvancedOptions && requestBody.languageProfileId !== undefined;
       const requesterSelectedTags =
         useAdvancedOptions && requestBody.tags !== undefined;
       const addedRuleTags =
         overrideResult.tags?.filter((tag) => !tags?.includes(tag)) ?? [];
+      let appliedRuleLanguageProfile = false;
 
       if (overrideResult.rootFolder && !requesterSelectedRootFolder) {
         rootFolder = overrideResult.rootFolder;
       }
       if (overrideResult.profileId !== null && !requesterSelectedProfile) {
         profileId = overrideResult.profileId;
+      }
+      if (
+        overrideResult.languageProfileId !== null &&
+        !requesterSelectedLanguageProfile &&
+        selectedSonarr
+      ) {
+        const languageProfiles =
+          sonarrLanguageProfiles ??
+          (await new SonarrAPI({
+            apiKey: selectedSonarr.apiKey,
+            url: SonarrAPI.buildUrl(selectedSonarr, '/api/v3'),
+          })
+            .getLanguageProfiles()
+            .catch(() => []));
+        if (
+          languageProfiles.some(
+            (languageProfile) =>
+              languageProfile.id === overrideResult.languageProfileId
+          )
+        ) {
+          languageProfileId = overrideResult.languageProfileId;
+          appliedRuleLanguageProfile = true;
+        }
       }
       if (!requesterSelectedTags && overrideResult.tags !== null) {
         tags = overrideResult.tags;
@@ -2875,6 +2904,7 @@ export class MediaRequest {
       if (
         (overrideResult.rootFolder && !requesterSelectedRootFolder) ||
         (overrideResult.profileId !== null && !requesterSelectedProfile) ||
+        appliedRuleLanguageProfile ||
         (addedRuleTags.length > 0 && !requesterSelectedTags)
       ) {
         logger.debug('Override rule applied.', {
@@ -2886,6 +2916,9 @@ export class MediaRequest {
             profileId: requesterSelectedProfile
               ? null
               : overrideResult.profileId,
+            languageProfileId: appliedRuleLanguageProfile
+              ? overrideResult.languageProfileId
+              : null,
             tags: requesterSelectedTags ? null : addedRuleTags,
           },
         });
@@ -3669,14 +3702,19 @@ export class MediaRequest {
   static async sendNotification(
     entity: MediaRequest,
     media: Media,
-    type: Notification
+    type: Notification,
+    queryRunner?: QueryRunner
   ) {
     try {
       if (Number.isSafeInteger(entity.id) && entity.id > 0) {
-        await notificationManager.sendNotificationIntent(type, {
-          kind: 'media-request',
-          requestId: entity.id,
-        });
+        await notificationManager.sendNotificationIntent(
+          type,
+          {
+            kind: 'media-request',
+            requestId: entity.id,
+          },
+          queryRunner
+        );
         return;
       }
       const { buildMediaRequestNotificationPayload } =
@@ -3686,7 +3724,7 @@ export class MediaRequest {
         media,
         type
       );
-      await notificationManager.sendNotification(type, payload);
+      await notificationManager.sendNotification(type, payload, queryRunner);
     } catch (e) {
       logger.error('Something went wrong sending media notification(s)', {
         label: 'Notifications',
@@ -3694,6 +3732,9 @@ export class MediaRequest {
         requestId: entity.id,
         mediaId: entity.media.id,
       });
+      if (queryRunner) {
+        throw e;
+      }
     }
   }
 }

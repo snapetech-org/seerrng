@@ -216,6 +216,9 @@ class PushoverAgent
         case Notification.MEDIA_PENDING:
           status = intl.formatMessage(globalMessages.pendingApproval);
           break;
+        case Notification.MEDIA_PENDING_UPDATED:
+          status = intl.formatMessage(globalMessages.requestUpdated);
+          break;
         case Notification.MEDIA_APPROVED:
         case Notification.MEDIA_AUTO_APPROVED:
           status = intl.formatMessage(globalMessages.processing);

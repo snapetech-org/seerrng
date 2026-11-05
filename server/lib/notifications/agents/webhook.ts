@@ -189,6 +189,115 @@ const KeyMap: Record<string, string | KeyMapFunction> = {
   commentedBy_settings_telegramChatId: 'comment.user.settings.telegramChatId',
 };
 
+type WebhookTemplateFilter = (value: string) => string;
+
+const WEBHOOK_TEMPLATE_FILTERS: Record<string, WebhookTemplateFilter> = {
+  lowercase: (value) => value.toLowerCase(),
+  urlencode: (value) => encodeURIComponent(value),
+  slugify: (value) =>
+    value
+      .normalize('NFKD')
+      .replace(/\p{M}/gu, '')
+      .toLowerCase()
+      .replace(/[^\p{L}\p{N}]+/gu, '-')
+      .replace(/^-+|-+$/g, ''),
+};
+
+type WebhookRenderBudget = { bytes: number; workBytes: number };
+
+const renderWebhookTemplateString = (
+  template: string,
+  payload: NotificationPayload,
+  type: Notification,
+  budget: WebhookRenderBudget
+): string => {
+  const parts: string[] = [];
+  const consumeWork = (value: string) => {
+    budget.workBytes += Buffer.byteLength(value, 'utf8');
+    if (budget.workBytes > MAX_WEBHOOK_PAYLOAD_BYTES * 16) {
+      throw new Error('Webhook template exceeds maximum rendering work.');
+    }
+  };
+  const assertWithinBudget = (value: string) => {
+    if (
+      Buffer.byteLength(value, 'utf8') >
+      MAX_WEBHOOK_PAYLOAD_BYTES - budget.bytes
+    ) {
+      throw new Error('Rendered webhook payload exceeds maximum size.');
+    }
+  };
+  const append = (value: string) => {
+    assertWithinBudget(value);
+    budget.bytes += Buffer.byteLength(value, 'utf8');
+    parts.push(value);
+  };
+  const literal = (value: string) => {
+    if (/{{[^{}]*\|/.test(value)) {
+      throw new Error('Webhook template expression is invalid.');
+    }
+    append(value);
+  };
+  const resolve = (placeholder: string, expression: string): string => {
+    const [variableName, ...filterNames] = expression
+      .split('|')
+      .map((part) => part.trim());
+
+    if (!variableName || !/^[A-Za-z][A-Za-z0-9_]*$/.test(variableName)) {
+      if (expression.includes('|')) {
+        throw new Error('Webhook template expression is invalid.');
+      }
+      return placeholder;
+    }
+
+    if (filterNames.length > 8) {
+      throw new Error('Webhook template exceeds maximum filter count.');
+    }
+
+    const variable = Object.prototype.hasOwnProperty.call(KeyMap, variableName)
+      ? KeyMap[variableName]
+      : undefined;
+    if (!variable) {
+      if (filterNames.length > 0) {
+        throw new Error('Webhook template variable is unknown.');
+      }
+      return placeholder;
+    }
+
+    const variableValue =
+      typeof variable === 'function'
+        ? variable(payload, type)
+        : get(payload, variable);
+    let rendered = String(variableValue ?? '');
+    assertWithinBudget(rendered);
+    consumeWork(rendered);
+
+    for (const filterName of filterNames) {
+      const filter = Object.prototype.hasOwnProperty.call(
+        WEBHOOK_TEMPLATE_FILTERS,
+        filterName
+      )
+        ? WEBHOOK_TEMPLATE_FILTERS[filterName]
+        : undefined;
+      if (!filter) {
+        throw new Error('Webhook template filter is unknown.');
+      }
+      consumeWork(rendered);
+      rendered = filter(rendered);
+      assertWithinBudget(rendered);
+    }
+
+    return rendered;
+  };
+  let offset = 0;
+  for (const match of template.matchAll(/{{([^{}]*)}}/g)) {
+    literal(template.slice(offset, match.index));
+    append(resolve(match[0], match[1]));
+    offset = match.index + match[0].length;
+  }
+  literal(template.slice(offset));
+  return parts.join('');
+};
+
 class WebhookAgent
   extends BaseAgent<NotificationAgentWebhook>
   implements NotificationAgent
@@ -205,9 +314,14 @@ class WebhookAgent
     finalPayload: Record<string, unknown>,
     payload: NotificationPayload,
     type: Notification,
-    options: { depth: number; nodes: { count: number } } = {
+    options: {
+      depth: number;
+      nodes: { count: number };
+      budget: WebhookRenderBudget;
+    } = {
       depth: 0,
       nodes: { count: 0 },
+      budget: { bytes: 0, workBytes: 0 },
     }
   ): Record<string, unknown> {
     if (options.depth > MAX_WEBHOOK_PAYLOAD_DEPTH) {
@@ -220,6 +334,10 @@ class WebhookAgent
     }
 
     Object.keys(finalPayload).forEach((key) => {
+      options.budget.bytes += Buffer.byteLength(key, 'utf8');
+      if (options.budget.bytes > MAX_WEBHOOK_PAYLOAD_BYTES) {
+        throw new Error('Rendered webhook payload exceeds maximum size.');
+      }
       if (key === '{{extra}}') {
         finalPayload.extra = payload.extra ?? [];
         delete finalPayload[key];
@@ -259,15 +377,12 @@ class WebhookAgent
       }
 
       if (typeof finalPayload[key] === 'string') {
-        Object.keys(KeyMap).forEach((keymapKey) => {
-          const keymapValue = KeyMap[keymapKey as keyof typeof KeyMap];
-          finalPayload[key] = (finalPayload[key] as string).replaceAll(
-            `{{${keymapKey}}}`,
-            typeof keymapValue === 'function'
-              ? keymapValue(payload, type)
-              : (get(payload, keymapValue) ?? '')
-          );
-        });
+        finalPayload[key] = renderWebhookTemplateString(
+          finalPayload[key] as string,
+          payload,
+          type,
+          options.budget
+        );
       } else if (finalPayload[key] && typeof finalPayload[key] === 'object') {
         finalPayload[key] = this.parseKeys(
           finalPayload[key] as Record<string, unknown>,
@@ -276,6 +391,7 @@ class WebhookAgent
           {
             depth: options.depth + 1,
             nodes: options.nodes,
+            budget: options.budget,
           }
         );
       }
@@ -289,7 +405,18 @@ class WebhookAgent
       this.getSettings().options.jsonPayload
     ).template;
 
-    return this.parseKeys(parsedJSON as Record<string, unknown>, payload, type);
+    const rendered = this.parseKeys(
+      parsedJSON as Record<string, unknown>,
+      payload,
+      type
+    );
+    if (
+      Buffer.byteLength(JSON.stringify(rendered), 'utf8') >
+      MAX_WEBHOOK_PAYLOAD_BYTES
+    ) {
+      throw new Error('Rendered webhook payload exceeds maximum size.');
+    }
+    return rendered;
   }
 
   public shouldSend(): boolean {

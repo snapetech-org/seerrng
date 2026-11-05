@@ -174,7 +174,9 @@ For local MCP access, see the [SnapeTech MCP integration guide](./docs/integrati
 - Movie and Series Subject Tags can be hidden with a browser-saved preference shared across both detail pages.
 - Authenticated **Download copy** links in Request Status for verified movie, TV, book, comic, magazine, ROM, and PC game files.
 - Request lifecycle tracking and availability notifications link users back to the matching Request Status item, where available files can be selected and saved.
+- Generic webhook notifications support bounded JSON templates, custom headers, and allowlisted lowercase, URL-encoding, and slugification filters. See the [webhook guide](./docs/using-seerr/notifications/webhook.md#json-payload).
 - Signed-in household members can follow another user's active movie or series request for a one-time availability notice through their own configured notification channels.
+- Administrators can opt into a separate **Pending Request Updated** notification when an edit changes a pending request's owner, selected seasons or episodes, or acquisition options. The webhook event is `MEDIA_PENDING_UPDATED`; see the [notification guide](./docs/using-seerr/notifications/index.mdx#pending-request-edits).
 - Browser, service-worker, API, DNS, avatar, and image-proxy caching tuned for faster refreshes and tab restores.
 - Removing an item from an acquisition service such as Radarr or Sonarr preserves its SeerrNG media record and request history; Clear Data is a separate, explicitly destructive action.
 - Server-side Axios requests use a versioned User-Agent; provider-specific values are preserved. See [Network settings](docs/using-seerr/settings/network.md#outbound-request-identity).
@@ -202,6 +204,10 @@ Recent repository updates include:
   confirms the requested media ([Seerr issue #3657](https://github.com/seerr-team/seerr/issues/3657),
   [PR #3659](https://github.com/seerr-team/seerr/pull/3659)).
 - **Search matching:** unmatched TMDB queries retry with normalized punctuation, spacing, apostrophes, and diacritics; successful literal-query results retain their order.
+  rules can also match a movie or series by its TMDB production countries,
+  with Sonarr language-profile selection on service versions that expose those
+  profiles. This adapts the use case in Seerr
+  [issue #3439](https://github.com/seerr-team/seerr/issues/3439).
 - **User workflows:** local watchlist filters, a browser-saved Subject Tags
   visibility preference, private one-time availability notices for followed
   requests, per-user shared-availability display choices, and opt-in

@@ -33,12 +33,14 @@ import {
   MediaRequest,
 } from '@server/entity/MediaRequest';
 import MediaRequestStatusEvent from '@server/entity/MediaRequestStatusEvent';
+import { NotificationOutbox } from '@server/entity/NotificationOutbox';
 import OverrideRule from '@server/entity/OverrideRule';
 import Season from '@server/entity/Season';
 import SeasonRequest from '@server/entity/SeasonRequest';
 import { User } from '@server/entity/User';
 import { UserSettings } from '@server/entity/UserSettings';
 import { aliasDownloadId } from '@server/lib/mediaResponse';
+import notificationManager, { Notification } from '@server/lib/notifications';
 import { Permission } from '@server/lib/permissions';
 import requestAdmissionCoordinator from '@server/lib/requestAdmission';
 import requestDispatchManager from '@server/lib/requestDispatch';
@@ -1622,7 +1624,48 @@ describe('POST /request/:requestId/fail-download', () => {
   });
 });
 
+const realSendRequestNotification = MediaRequest.sendNotification;
+
 describe('PUT /request/:requestId (movie)', () => {
+  it('durably queues one pending-edit event and leaves a no-op edit quiet', async (t) => {
+    getSettings().radarr = [createRadarrSettings(3)];
+    const pending = await seedRequest();
+    mock.method(MediaRequest, 'sendNotification', realSendRequestNotification);
+    notificationManager.registerAgents([
+      { shouldSend: () => true, send: async () => false },
+    ]);
+    t.after(() => notificationManager.registerAgents([]));
+    const agent = await loginAs('admin@seerr.dev', 'test1234');
+    const changes = {
+      mediaType: MediaType.MOVIE,
+      serverId: 3,
+      rootFolder: '/pending-edit',
+    };
+    const response = await agent.put(`/request/${pending.id}`).send(changes);
+    assert.equal(response.status, 200, response.body.message);
+    const repository = getRepository(NotificationOutbox);
+    const records = await repository.find({
+      where: { type: Notification.MEDIA_PENDING_UPDATED },
+    });
+    assert.equal(records.length, 1);
+    assert.ok(records[0].payload.includes('media-request'));
+    assert.equal(
+      (await getRepository(MediaRequest).findOneByOrFail({ id: pending.id }))
+        .rootFolder,
+      '/pending-edit'
+    );
+    assert.equal(
+      (await agent.put(`/request/${pending.id}`).send(changes)).status,
+      200
+    );
+    assert.equal(
+      await repository.count({
+        where: { type: Notification.MEDIA_PENDING_UPDATED },
+      }),
+      1
+    );
+  });
+
   it('validates and preserves partial movie routing changes', async (t) => {
     const settings = getSettings();
     settings.radarr = [createRadarrSettings(3)];

@@ -134,6 +134,120 @@ describe('getMediaTypeLabel', () => {
 });
 
 describe('WebhookAgent', () => {
+  const webhook = (template: unknown) =>
+    new WebhookAgent({
+      enabled: true,
+      embedPoster: false,
+      types: Notification.MEDIA_AVAILABLE,
+      options: {
+        webhookUrl: 'http://127.0.0.1/webhook',
+        jsonPayload: Buffer.from(
+          JSON.stringify(JSON.stringify(template))
+        ).toString('base64'),
+        customHeaders: [],
+        supportVariables: false,
+      },
+    });
+  const notification = (subject = 'Crème Déjà Vu & More') => ({
+    notifySystem: true,
+    notifyAdmin: false,
+    subject,
+    message: 'message',
+  });
+
+  it('renders allowlisted Unicode filters and keeps substituted placeholders literal', async () => {
+    process.env.SEERR_ALLOW_PRIVATE_NOTIFICATION_URLS = 'true';
+    const post = mock.method(axios, 'post', async () => ({ data: {} }));
+    const sent = await webhook({
+      plain: '{{subject}}',
+      nested: [
+        {
+          slug: '{{subject | slugify}}',
+          encoded: '{{subject | lowercase | urlencode}}',
+        },
+      ],
+      unknown: '{{legacy_unknown}}',
+    }).send(Notification.MEDIA_AVAILABLE, notification());
+    assert.equal(sent, true);
+    assert.deepEqual(post.mock.calls[0].arguments[1], {
+      plain: 'Crème Déjà Vu & More',
+      nested: [
+        {
+          slug: 'creme-deja-vu-more',
+          encoded: encodeURIComponent('crème déjà vu & more'),
+        },
+      ],
+      unknown: '{{legacy_unknown}}',
+    });
+    await webhook({ text: '{{subject}}' }).send(
+      Notification.MEDIA_AVAILABLE,
+      notification('{{message}}')
+    );
+    assert.deepEqual(post.mock.calls[1].arguments[1], { text: '{{message}}' });
+  });
+
+  it('bounds rendered webhook expansion across repeated placeholders before sending', async () => {
+    process.env.SEERR_ALLOW_PRIVATE_NOTIFICATION_URLS = 'true';
+    const post = mock.method(axios, 'post', async () => ({ data: {} }));
+    const sent = await webhook({ text: '{{subject}}'.repeat(200) }).send(
+      Notification.MEDIA_AVAILABLE,
+      notification('x'.repeat(1024))
+    );
+    assert.equal(sent, false);
+    assert.equal(post.mock.callCount(), 0);
+  });
+
+  it('bounds rendering work even when filters shrink repeated large values to empty strings', async () => {
+    process.env.SEERR_ALLOW_PRIVATE_NOTIFICATION_URLS = 'true';
+    const post = mock.method(axios, 'post', async () => ({ data: {} }));
+    assert.equal(
+      await webhook({ text: '{{subject | slugify}}'.repeat(80) }).send(
+        Notification.MEDIA_AVAILABLE,
+        notification(' '.repeat(20000))
+      ),
+      false
+    );
+    assert.equal(post.mock.callCount(), 0);
+  });
+
+  it('rejects invalid filters, excessive chains and escaped JSON expansion before sending', async () => {
+    process.env.SEERR_ALLOW_PRIVATE_NOTIFICATION_URLS = 'true';
+    const post = mock.method(axios, 'post', async () => ({ data: {} }));
+    for (const template of [
+      '{{subject | __proto__}}',
+      '{{subject | toString}}',
+      '{{subject | unknown}}',
+      '{{subject | }}',
+      '{{ | lowercase}}',
+      '{{subject | lowercase',
+      '{{subject' + ' | lowercase'.repeat(9) + '}}',
+    ]) {
+      assert.equal(
+        await webhook({ text: template }).send(
+          Notification.MEDIA_AVAILABLE,
+          notification()
+        ),
+        false,
+        template
+      );
+    }
+    assert.equal(
+      await webhook({ text: '{{subject | urlencode | urlencode}}' }).send(
+        Notification.MEDIA_AVAILABLE,
+        notification('&'.repeat(20000))
+      ),
+      false
+    );
+    assert.equal(
+      await webhook({ text: '{{subject}}' }).send(
+        Notification.MEDIA_AVAILABLE,
+        notification('\u0000'.repeat(20000))
+      ),
+      false
+    );
+    assert.equal(post.mock.callCount(), 0);
+  });
+
   it('accepts only bounded object or array payload templates', () => {
     assert.deepStrictEqual(parseWebhookPayloadTemplate('{"ok":true}'), {
       ok: true,
