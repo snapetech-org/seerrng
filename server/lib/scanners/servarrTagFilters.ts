@@ -2,6 +2,7 @@ type ServarrInstance = {
   id: number;
   hostname: string;
   port: number;
+  useSsl?: boolean;
   baseUrl?: string;
   syncEnabled: boolean;
   syncExcludedTags?: number[];
@@ -10,6 +11,15 @@ type ServarrInstance = {
 type TaggedItem = {
   tags?: readonly number[] | null;
 };
+
+export const isSameServarrSyncEndpoint = (
+  left: ServarrInstance,
+  right: ServarrInstance
+): boolean =>
+  left.hostname === right.hostname &&
+  left.port === right.port &&
+  Boolean(left.useSsl) === Boolean(right.useSsl) &&
+  left.baseUrl === right.baseUrl;
 
 export const getServarrSyncExcludedTagsForEndpoint = <
   T extends ServarrInstance,
@@ -22,9 +32,7 @@ export const getServarrSyncExcludedTagsForEndpoint = <
   for (const candidate of instances) {
     if (
       !candidate.syncEnabled ||
-      candidate.hostname !== instance.hostname ||
-      candidate.port !== instance.port ||
-      candidate.baseUrl !== instance.baseUrl
+      !isSameServarrSyncEndpoint(candidate, instance)
     ) {
       continue;
     }
@@ -44,10 +52,7 @@ export const getServarrSyncServerIdsForEndpoint = <T extends ServarrInstance>(
   instances
     .filter(
       (candidate) =>
-        candidate.syncEnabled &&
-        candidate.hostname === instance.hostname &&
-        candidate.port === instance.port &&
-        candidate.baseUrl === instance.baseUrl
+        candidate.syncEnabled && isSameServarrSyncEndpoint(candidate, instance)
     )
     .map(({ id }) => id);
 

@@ -43,6 +43,7 @@ import { forEachMediaCleanupBatch } from '@server/lib/scanners/mediaCleanupBatch
 import {
   getServarrSyncExcludedTagsForEndpoint,
   getServarrSyncServerIdsForEndpoint,
+  isSameServarrSyncEndpoint,
   partitionServarrItemsBySyncExcludedTags,
 } from '@server/lib/scanners/servarrTagFilters';
 import {
@@ -129,14 +130,12 @@ class SonarrScanner
     try {
       const fourKEnabled = getSettings().main.enable4k !== false;
       const configuredServers = structuredClone(
-        settings.sonarr.filter((server) => fourKEnabled || !server.is4k)
+        settings.sonarr.filter(
+          (server) => server.syncEnabled && (fourKEnabled || !server.is4k)
+        )
       );
-      this.servers = uniqWith(
-        configuredServers,
-        (sonarrA, sonarrB) =>
-          sonarrA.hostname === sonarrB.hostname &&
-          sonarrA.port === sonarrB.port &&
-          sonarrA.baseUrl === sonarrB.baseUrl
+      this.servers = uniqWith(configuredServers, (sonarrA, sonarrB) =>
+        isSameServarrSyncEndpoint(sonarrA, sonarrB)
       ).map((server) => ({
         ...server,
         syncExcludedTags: getServarrSyncExcludedTagsForEndpoint(
@@ -151,9 +150,7 @@ class SonarrScanner
           (server) =>
             server.syncEnabled &&
             !server.is4k &&
-            server.hostname === this.servers[0].hostname &&
-            server.port === this.servers[0].port &&
-            server.baseUrl === this.servers[0].baseUrl
+            isSameServarrSyncEndpoint(server, this.servers[0])
         );
       if (fourKEnabled && this.resolutionAwareSingleServer) {
         this.enable4kShow = true;

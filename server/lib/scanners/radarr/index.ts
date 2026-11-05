@@ -20,6 +20,7 @@ import { forEachMediaCleanupBatch } from '@server/lib/scanners/mediaCleanupBatch
 import {
   getServarrSyncExcludedTagsForEndpoint,
   getServarrSyncServerIdsForEndpoint,
+  isSameServarrSyncEndpoint,
   partitionServarrItemsBySyncExcludedTags,
 } from '@server/lib/scanners/servarrTagFilters';
 import {
@@ -89,14 +90,12 @@ class RadarrScanner
     try {
       const fourKEnabled = getSettings().main.enable4k !== false;
       const configuredServers = structuredClone(
-        settings.radarr.filter((server) => fourKEnabled || !server.is4k)
+        settings.radarr.filter(
+          (server) => server.syncEnabled && (fourKEnabled || !server.is4k)
+        )
       );
       this.servers = uniqWith(configuredServers, (radarrA, radarrB) => {
-        return (
-          radarrA.hostname === radarrB.hostname &&
-          radarrA.port === radarrB.port &&
-          radarrA.baseUrl === radarrB.baseUrl
-        );
+        return isSameServarrSyncEndpoint(radarrA, radarrB);
       }).map((server) => ({
         ...server,
         syncExcludedTags: getServarrSyncExcludedTagsForEndpoint(
@@ -111,9 +110,7 @@ class RadarrScanner
           (server) =>
             server.syncEnabled &&
             !server.is4k &&
-            server.hostname === this.servers[0].hostname &&
-            server.port === this.servers[0].port &&
-            server.baseUrl === this.servers[0].baseUrl
+            isSameServarrSyncEndpoint(server, this.servers[0])
         );
 
       for (const server of this.servers) {

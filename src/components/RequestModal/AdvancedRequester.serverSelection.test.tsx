@@ -7,6 +7,7 @@ import AdvancedRequester from './AdvancedRequester';
 
 const state = vi.hoisted(() => ({
   servers: [] as unknown[],
+  details: undefined as unknown,
 }));
 
 vi.mock('swr', () => ({
@@ -14,9 +15,11 @@ vi.mock('swr', () => ({
     data:
       key === '/api/v1/service/sonarr'
         ? state.servers
-        : key === '/api/v1/user?take=1000&sort=displayname'
-          ? { results: [] }
-          : undefined,
+        : /^\/api\/v1\/service\/sonarr\/\d+$/.test(key ?? '')
+          ? state.details
+          : key === '/api/v1/user?take=1000&sort=displayname'
+            ? { results: [] }
+            : undefined,
     error: undefined,
     isValidating: false,
   }),
@@ -173,6 +176,7 @@ let root: Root;
 let host: HTMLDivElement;
 
 beforeEach(() => {
+  state.details = undefined;
   state.servers = [
     { id: 1, name: 'Sonarr 1', isDefault: true, is4k: false },
     { id: 2, name: 'Sonarr 2', isDefault: false, is4k: false },
@@ -199,6 +203,68 @@ beforeEach(() => {
   document.body.append(host);
   root = createRoot(host);
 });
+
+for (const editing of [false, true]) {
+  it(`${editing ? 'preserves a saved' : 'loads the selected server'} zero-valued profile without clearing it implicitly`, async () => {
+    state.details = {
+      server: {
+        id: 2,
+        name: 'Sonarr 2',
+        activeProfileId: 0,
+        activeDirectory: '/tv',
+        activeLanguageProfileId: 1,
+        activeTags: [],
+        isDefault: false,
+        is4k: false,
+      },
+      profiles: [
+        { id: 0, name: 'Zero Profile' },
+        { id: 2, name: 'Other Profile' },
+      ],
+      rootFolders: [{ id: 1, path: '/tv' }],
+      languageProfiles: [{ id: 1, name: 'English' }],
+      tags: [],
+    };
+    const onChange = vi.fn();
+    await act(async () =>
+      root.render(
+        <IntlProvider locale="en">
+          <AdvancedRequester
+            type="tv"
+            tmdbId={123}
+            tvdbId={456}
+            is4k={false}
+            requestId={editing ? 42 : undefined}
+            defaultOverrides={{ server: 2, ...(editing ? { profile: 0 } : {}) }}
+            onChange={onChange}
+          />
+        </IntlProvider>
+      )
+    );
+    expect(host.querySelector('#profile')?.textContent).toContain(
+      'Zero Profile'
+    );
+    if (editing) {
+      expect(onChange).toHaveBeenLastCalledWith(
+        expect.objectContaining({ profile: 0 })
+      );
+    }
+    await act(async () =>
+      host.querySelector<HTMLButtonElement>('#profile')?.click()
+    );
+    const zero = Array.from(
+      document.querySelectorAll<HTMLElement>('[role="option"]')
+    ).find((option) => option.textContent?.includes('Zero Profile'));
+    expect(zero).toBeDefined();
+    await act(async () => zero?.click());
+    expect(onChange).toHaveBeenLastCalledWith(
+      expect.objectContaining({
+        profile: editing ? null : 0,
+        ...(editing ? {} : { requesterSelectedOptions: { profile: true } }),
+      })
+    );
+  });
+}
 
 afterEach(async () => {
   await act(async () => root.unmount());

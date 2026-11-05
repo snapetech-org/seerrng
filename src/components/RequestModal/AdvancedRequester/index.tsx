@@ -94,6 +94,9 @@ const getRequestOptionOverride = <T,>(
   selectedByRule: boolean,
   isEditingRequest: boolean
 ): T | null | undefined => {
+  if (isEditingRequest && hasStoredValue && !manuallySelected) {
+    return selected;
+  }
   if (
     serviceDefaultValue !== undefined &&
     areRequestOptionsEqual(selected, serviceDefaultValue)
@@ -368,6 +371,8 @@ const AdvancedRequester = ({
     useState<number>(defaultOverrides?.metadataLanguage ?? -1);
   const [selectedSonarrSeasonType, setSelectedSonarrSeasonType] =
     useState<string>(defaultOverrides?.sonarrSeasonType ?? '');
+  const [requestOptionSelectionRevision, setRequestOptionSelectionRevision] =
+    useState(0);
   const profileManuallySelected = useRef(false);
   const languageManuallySelected = useRef(false);
   const profileSelectedByRule = useRef(false);
@@ -427,6 +432,7 @@ const AdvancedRequester = ({
   });
   const selectRequestFolder = (path: string) => {
     folderManuallySelected.current = true;
+    setRequestOptionSelectionRevision((revision) => revision + 1);
     folderSelectedByRule.current = false;
     setSelectedFolder(path);
   };
@@ -507,53 +513,22 @@ const AdvancedRequester = ({
     serviceType,
     type,
   ]);
-  const storedRequestOptionsMatchServiceDefaults = useMemo(() => {
-    if (!serverData) {
-      return { profile: false, folder: false, language: false, tags: false };
-    }
-
-    const { server } = serverData;
-    const requestRootFolder =
-      requestUserRootFolders?.[`${serviceType}:${server.id}`];
-    const animeDefaults = type === 'tv' && isAnime;
-
-    return {
-      profile:
-        defaultOverrides?.profile == null ||
-        defaultOverrides.profile === server.activeProfileId ||
-        (animeDefaults &&
-          defaultOverrides.profile === server.activeAnimeProfileId),
-      folder:
-        defaultOverrides?.folder == null ||
-        defaultOverrides.folder === requestRootFolder ||
-        defaultOverrides.folder === server.activeDirectory ||
-        (animeDefaults &&
-          defaultOverrides.folder === server.activeAnimeDirectory),
-      language:
-        defaultOverrides?.language == null ||
-        defaultOverrides.language === server.activeLanguageProfileId ||
-        (animeDefaults &&
-          defaultOverrides.language === server.activeAnimeLanguageProfileId),
-      tags:
-        defaultOverrides?.tags == null ||
-        areNumberSetsEqual(defaultOverrides.tags, server.activeTags ?? []) ||
-        (animeDefaults &&
-          areNumberSetsEqual(
-            defaultOverrides.tags,
-            server.activeAnimeTags ?? []
-          )),
-    };
-  }, [
-    defaultOverrides?.folder,
-    defaultOverrides?.language,
-    defaultOverrides?.profile,
-    defaultOverrides?.tags,
-    isAnime,
-    requestUserRootFolders,
-    serverData,
-    serviceType,
-    type,
-  ]);
+  // A saved value is an explicit choice even if it equals today's service
+  // default. Only an absent override should be re-resolved automatically.
+  const storedRequestOptionsMatchServiceDefaults = useMemo(
+    () => ({
+      profile: defaultOverrides?.profile == null,
+      folder: defaultOverrides?.folder == null,
+      language: defaultOverrides?.language == null,
+      tags: defaultOverrides?.tags == null,
+    }),
+    [
+      defaultOverrides?.profile,
+      defaultOverrides?.folder,
+      defaultOverrides?.language,
+      defaultOverrides?.tags,
+    ]
+  );
   const bookServiceType = bookFormat === 'audiobook' ? 'audiobook' : 'ebook';
   const serviceOverridesEnabled = type !== 'book' || bookFormat !== 'both';
   const serviceServers = useMemo(
@@ -729,7 +704,7 @@ const AdvancedRequester = ({
         defaultProfile &&
         defaultProfile.id !== selectedProfile &&
         !profileManuallySelected.current &&
-        (!applyOverrides || storedRequestOptionsMatchServiceDefaults.profile)
+        (!applyOverrides || defaultOverrides.profile == null)
       ) {
         setSelectedProfile(defaultProfile.id);
       }
@@ -1054,6 +1029,7 @@ const AdvancedRequester = ({
       });
     }
   }, [
+    requestOptionSelectionRevision,
     selectedFolder,
     selectedServer,
     selectedIs4k,
@@ -1471,6 +1447,9 @@ const AdvancedRequester = ({
                       }))}
                     onChange={(profileId) => {
                       profileManuallySelected.current = true;
+                      setRequestOptionSelectionRevision(
+                        (revision) => revision + 1
+                      );
                       profileSelectedByRule.current = false;
                       setSelectedProfile(profileId);
                     }}
@@ -1517,6 +1496,9 @@ const AdvancedRequester = ({
                     value={selectedLanguage ?? 0}
                     onChange={(languageId) => {
                       languageManuallySelected.current = true;
+                      setRequestOptionSelectionRevision(
+                        (revision) => revision + 1
+                      );
                       setSelectedLanguage(languageId);
                     }}
                     options={(serverData?.languageProfiles ?? []).map(
@@ -1691,6 +1673,9 @@ const AdvancedRequester = ({
                   }
                   onChange={(value) => {
                     tagsManuallySelected.current = true;
+                    setRequestOptionSelectionRevision(
+                      (revision) => revision + 1
+                    );
                     tagsSelectedByRule.current = false;
                     setSelectedTags(value.map((option) => option.value));
                   }}

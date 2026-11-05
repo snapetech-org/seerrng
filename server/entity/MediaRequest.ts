@@ -2860,27 +2860,35 @@ export class MediaRequest {
     const requestDefaultProfileId = profileId;
     const requestDefaultTags = tags;
     const requestDefaultLanguageProfileId = languageProfileId;
+    // Older API clients supplied explicit values without provenance flags.
+    const legacyExplicitOptions =
+      requestBody.requesterSelectedOptions === undefined;
     const requesterSelectedRootFolder =
       useAdvancedOptions &&
       (requestBody.requesterSelectedOptions?.rootFolder === true ||
         (requestBody.rootFolder != null &&
-          requestBody.rootFolder !== requestDefaultRootFolder));
+          (legacyExplicitOptions ||
+            requestBody.rootFolder !== requestDefaultRootFolder)));
     const requesterSelectedProfile =
       useAdvancedOptions &&
       (requestBody.requesterSelectedOptions?.profile === true ||
         (requestBody.profileId != null &&
-          requestBody.profileId !== requestDefaultProfileId));
+          (legacyExplicitOptions ||
+            requestBody.profileId !== requestDefaultProfileId)));
     const requesterSelectedTags =
       useAdvancedOptions &&
       (requestBody.requesterSelectedOptions?.tags === true ||
         (requestBody.tags != null &&
-          !equalRequestTags(requestBody.tags, requestDefaultTags)));
+          (legacyExplicitOptions ||
+            !equalRequestTags(requestBody.tags, requestDefaultTags))));
     const requesterSelectedLanguageProfile =
       requestBody.mediaType === MediaType.TV &&
       useAdvancedOptions &&
       (requestBody.requesterSelectedOptions?.languageProfile === true ||
         (requestBody.languageProfileId != null &&
-          requestBody.languageProfileId !== requestDefaultLanguageProfileId));
+          (legacyExplicitOptions ||
+            requestBody.languageProfileId !==
+              requestDefaultLanguageProfileId)));
 
     if (requesterSelectedRootFolder) {
       rootFolder = requestBody.rootFolder ?? undefined;
@@ -2941,16 +2949,22 @@ export class MediaRequest {
     }
 
     const storedProfileId =
-      profileId === serviceDefaultProfileId ? null : (profileId ?? null);
+      !requesterSelectedProfile && profileId === serviceDefaultProfileId
+        ? null
+        : (profileId ?? null);
     const storedRootFolder =
-      rootFolder === serviceDefaultRootFolder ? null : (rootFolder ?? null);
+      !requesterSelectedRootFolder && rootFolder === serviceDefaultRootFolder
+        ? null
+        : (rootFolder ?? null);
     const storedLanguageProfileId =
+      !requesterSelectedLanguageProfile &&
       languageProfileId === serviceDefaultLanguageProfileId
         ? null
         : (languageProfileId ?? null);
-    const storedTags = equalRequestTags(tags, serviceDefaultTags)
-      ? null
-      : (tags ?? null);
+    const storedTags =
+      !requesterSelectedTags && equalRequestTags(tags, serviceDefaultTags)
+        ? null
+        : (tags ?? null);
 
     const selectedDestination: RequestDestination | undefined =
       serverId === undefined
@@ -3615,13 +3629,13 @@ export class MediaRequest {
   @Column({ nullable: true })
   public serverId: number;
 
-  @Column({ nullable: true })
+  @Column({ type: 'integer', nullable: true })
   public profileId: number | null;
 
-  @Column({ nullable: true })
+  @Column({ type: 'varchar', nullable: true })
   public rootFolder: string | null;
 
-  @Column({ nullable: true })
+  @Column({ type: 'integer', nullable: true })
   public languageProfileId: number | null;
 
   @Column({ type: 'integer', nullable: true })

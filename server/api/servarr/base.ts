@@ -784,7 +784,12 @@ class ServarrBase<QueueItemAppendT> extends ExternalAPI {
 
       const targetRecords = Math.min(total, maximum);
       const remaining = targetRecords - records.length;
-      const expectedPageRecords = Math.min(pageSize, remaining);
+      // Keep the provider's page size fixed: reducing it on the last request
+      // would change its offset. Validate the full page, then apply our cap.
+      const expectedPageRecords = Math.min(
+        pageSize,
+        total - (page - 1) * pageSize
+      );
       if (remaining < 0 || data.records.length !== expectedPageRecords) {
         throw new Error('Queue snapshot is incomplete.');
       }
@@ -792,19 +797,22 @@ class ServarrBase<QueueItemAppendT> extends ExternalAPI {
       const items = sanitizeServarrQueue<QueueItem & QueueItemAppendT>(
         data.records
       );
-      if (
-        items.length !== data.records.length ||
-        items.some(
-          (item) =>
-            !Number.isSafeInteger(item.id) || item.id <= 0 || seen.has(item.id)
-        )
-      ) {
+      if (items.length !== data.records.length) {
         throw new Error('Queue snapshot contains invalid or repeated records.');
       }
-      items.forEach((item) => {
+      for (const item of items) {
+        if (
+          !Number.isSafeInteger(item.id) ||
+          item.id <= 0 ||
+          seen.has(item.id)
+        ) {
+          throw new Error(
+            'Queue snapshot contains invalid or repeated records.'
+          );
+        }
         seen.add(item.id);
-      });
-      records.push(...items);
+      }
+      records.push(...items.slice(0, remaining));
       if (records.length === targetRecords) {
         return records;
       }
