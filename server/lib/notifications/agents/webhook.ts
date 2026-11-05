@@ -203,12 +203,41 @@ const WEBHOOK_TEMPLATE_FILTERS: Record<string, WebhookTemplateFilter> = {
       .replace(/^-+|-+$/g, ''),
 };
 
+type WebhookRenderBudget = { bytes: number; workBytes: number };
+
 const renderWebhookTemplateString = (
   template: string,
   payload: NotificationPayload,
-  type: Notification
-): string =>
-  template.replace(/{{([^{}]+)}}/g, (placeholder, expression: string) => {
+  type: Notification,
+  budget: WebhookRenderBudget
+): string => {
+  const parts: string[] = [];
+  const consumeWork = (value: string) => {
+    budget.workBytes += Buffer.byteLength(value, 'utf8');
+    if (budget.workBytes > MAX_WEBHOOK_PAYLOAD_BYTES * 16) {
+      throw new Error('Webhook template exceeds maximum rendering work.');
+    }
+  };
+  const assertWithinBudget = (value: string) => {
+    if (
+      Buffer.byteLength(value, 'utf8') >
+      MAX_WEBHOOK_PAYLOAD_BYTES - budget.bytes
+    ) {
+      throw new Error('Rendered webhook payload exceeds maximum size.');
+    }
+  };
+  const append = (value: string) => {
+    assertWithinBudget(value);
+    budget.bytes += Buffer.byteLength(value, 'utf8');
+    parts.push(value);
+  };
+  const literal = (value: string) => {
+    if (/{{[^{}]*\|/.test(value)) {
+      throw new Error('Webhook template expression is invalid.');
+    }
+    append(value);
+  };
+  const resolve = (placeholder: string, expression: string): string => {
     const [variableName, ...filterNames] = expression
       .split('|')
       .map((part) => part.trim());
@@ -218,6 +247,10 @@ const renderWebhookTemplateString = (
         throw new Error('Webhook template expression is invalid.');
       }
       return placeholder;
+    }
+
+    if (filterNames.length > 8) {
+      throw new Error('Webhook template exceeds maximum filter count.');
     }
 
     const variable = Object.prototype.hasOwnProperty.call(KeyMap, variableName)
@@ -235,6 +268,8 @@ const renderWebhookTemplateString = (
         ? variable(payload, type)
         : get(payload, variable);
     let rendered = String(variableValue ?? '');
+    assertWithinBudget(rendered);
+    consumeWork(rendered);
 
     for (const filterName of filterNames) {
       const filter = Object.prototype.hasOwnProperty.call(
@@ -246,11 +281,22 @@ const renderWebhookTemplateString = (
       if (!filter) {
         throw new Error('Webhook template filter is unknown.');
       }
+      consumeWork(rendered);
       rendered = filter(rendered);
+      assertWithinBudget(rendered);
     }
 
     return rendered;
-  });
+  };
+  let offset = 0;
+  for (const match of template.matchAll(/{{([^{}]*)}}/g)) {
+    literal(template.slice(offset, match.index));
+    append(resolve(match[0], match[1]));
+    offset = match.index + match[0].length;
+  }
+  literal(template.slice(offset));
+  return parts.join('');
+};
 
 class WebhookAgent
   extends BaseAgent<NotificationAgentWebhook>
@@ -268,9 +314,14 @@ class WebhookAgent
     finalPayload: Record<string, unknown>,
     payload: NotificationPayload,
     type: Notification,
-    options: { depth: number; nodes: { count: number } } = {
+    options: {
+      depth: number;
+      nodes: { count: number };
+      budget: WebhookRenderBudget;
+    } = {
       depth: 0,
       nodes: { count: 0 },
+      budget: { bytes: 0, workBytes: 0 },
     }
   ): Record<string, unknown> {
     if (options.depth > MAX_WEBHOOK_PAYLOAD_DEPTH) {
@@ -283,6 +334,10 @@ class WebhookAgent
     }
 
     Object.keys(finalPayload).forEach((key) => {
+      options.budget.bytes += Buffer.byteLength(key, 'utf8');
+      if (options.budget.bytes > MAX_WEBHOOK_PAYLOAD_BYTES) {
+        throw new Error('Rendered webhook payload exceeds maximum size.');
+      }
       if (key === '{{extra}}') {
         finalPayload.extra = payload.extra ?? [];
         delete finalPayload[key];
@@ -325,7 +380,8 @@ class WebhookAgent
         finalPayload[key] = renderWebhookTemplateString(
           finalPayload[key] as string,
           payload,
-          type
+          type,
+          options.budget
         );
       } else if (finalPayload[key] && typeof finalPayload[key] === 'object') {
         finalPayload[key] = this.parseKeys(
@@ -335,6 +391,7 @@ class WebhookAgent
           {
             depth: options.depth + 1,
             nodes: options.nodes,
+            budget: options.budget,
           }
         );
       }
@@ -348,7 +405,18 @@ class WebhookAgent
       this.getSettings().options.jsonPayload
     ).template;
 
-    return this.parseKeys(parsedJSON as Record<string, unknown>, payload, type);
+    const rendered = this.parseKeys(
+      parsedJSON as Record<string, unknown>,
+      payload,
+      type
+    );
+    if (
+      Buffer.byteLength(JSON.stringify(rendered), 'utf8') >
+      MAX_WEBHOOK_PAYLOAD_BYTES
+    ) {
+      throw new Error('Rendered webhook payload exceeds maximum size.');
+    }
+    return rendered;
   }
 
   public shouldSend(): boolean {

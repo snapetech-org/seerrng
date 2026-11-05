@@ -59,6 +59,8 @@ Use a filter after a variable name. Filters can be chained from left to right:
 
 Filters apply to string values in the JSON payload, not to the webhook URL. Existing unfiltered variables keep their current behavior. Unknown variables without filters remain literal; an unknown variable with filters, an unknown filter, or a malformed filter expression fails that webhook delivery before a request is sent. This is formatting, not HTML or script escaping; encode or validate values for any additional context required by the receiving API.
 
+Each expression supports at most eight filters. Rendered JSON is limited to 64 KiB (including UTF-8 bytes and JSON escaping), with a shared limit across fields and keys. Repeated substitutions and filter operations also share a rendering-work budget of 1 MiB. A delivery that exceeds these limits fails before any network request is sent.
+
 ## Template Variables
 
 ### General

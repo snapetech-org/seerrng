@@ -8214,6 +8214,18 @@ components:
           maxLength: 500
           pattern: '^\d+(,\d+)*$'
           nullable: true
+        productionCountries:
+          type: string
+          nullable: true
+          maxLength: 500
+          pattern: '^\s*[A-Za-z]{2}\s*(\|\s*[A-Za-z]{2}\s*)*$'
+          description: Up to 100 pipe-separated ISO alpha-2 production countries; normalized to uppercase. Only Radarr and Sonarr rules support this condition.
+        languageProfileId:
+          type: integer
+          nullable: true
+          minimum: 0
+          maximum: 1000000000
+          description: Legacy Sonarr language profile, on service versions that expose it.
         profileId:
           type: integer
           minimum: 0
@@ -8279,6 +8291,18 @@ components:
           maxLength: 500
           pattern: '^\d+(,\d+)*$'
           nullable: true
+        productionCountries:
+          type: string
+          nullable: true
+          maxLength: 500
+          pattern: '^\s*[A-Za-z]{2}\s*(\|\s*[A-Za-z]{2}\s*)*$'
+          description: Up to 100 pipe-separated ISO alpha-2 production countries; normalized to uppercase. Only Radarr and Sonarr rules support this condition.
+        languageProfileId:
+          type: integer
+          nullable: true
+          minimum: 0
+          maximum: 1000000000
+          description: Legacy Sonarr language profile, on service versions that expose it.
         profileId:
           type: integer
           minimum: 0

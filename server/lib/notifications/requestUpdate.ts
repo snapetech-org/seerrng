@@ -12,6 +12,26 @@ const getPendingRequestEditSnapshot = (request: MediaRequest): string =>
     metadataLanguageId: request.metadataLanguageId ?? null,
     sonarrSeasonType: request.sonarrSeasonType ?? null,
     bookFormat: request.bookFormat ?? null,
+    monitorFutureSeasons:
+      'monitorFutureSeasons' in request
+        ? (request.monitorFutureSeasons ?? null)
+        : null,
+    serviceTargets: (request.serviceTargets ?? [])
+      .map((target) => ({
+        serviceType: target.serviceType,
+        format: target.format,
+        serverId: target.serverId,
+        profileId: target.profileId ?? null,
+        metadataProfileId: target.metadataProfileId ?? null,
+        languageProfileId: target.languageProfileId ?? null,
+        rootFolder: target.rootFolder ?? null,
+        tags: [...(target.tags ?? [])].sort((left, right) => left - right),
+      }))
+      .sort((left, right) =>
+        `${left.serviceType}:${left.format}:${left.serverId}`.localeCompare(
+          `${right.serviceType}:${right.format}:${right.serverId}`
+        )
+      ),
     tags: [...(request.tags ?? [])].sort((left, right) => left - right),
     seasons: (request.seasons ?? [])
       .map((season) => ({

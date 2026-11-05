@@ -146,7 +146,7 @@ const validateIntentType = (
 ): void => {
   const compatible =
     intent.kind === 'media-request'
-      ? [2, 4, 8, 16, 64, 128, 4096].includes(type)
+      ? [2, 4, 8, 16, 64, 128, 4096, 32768].includes(type)
       : intent.kind === 'media-availability-subscription'
         ? type === 8
         : intent.kind === 'issue'

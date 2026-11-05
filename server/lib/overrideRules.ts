@@ -233,8 +233,14 @@ export const evaluateOverrideRules = async ({
       ? tmdbMedia.keywords.keywords
       : tmdbMedia.keywords.results;
   const productionCountryCodes = new Set(
-    tmdbMedia.production_countries.map((country) =>
-      country.iso_3166_1.toUpperCase()
+    (Array.isArray(tmdbMedia.production_countries)
+      ? tmdbMedia.production_countries
+      : []
+    ).flatMap((country) =>
+      typeof country?.iso_3166_1 === 'string' &&
+      /^[A-Za-z]{2}$/.test(country.iso_3166_1)
+        ? [country.iso_3166_1.toUpperCase()]
+        : []
     )
   );
   const isAnimeTv = mediaType === MediaType.TV && hasTmdbKeyword(tmdbMedia);
