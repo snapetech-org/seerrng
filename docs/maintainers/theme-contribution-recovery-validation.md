@@ -58,6 +58,19 @@ checks, and 12 affected native checks passed. Production and documentation build
 passed; the remaining Quick Connect documentation anchor was matched to its
 rendered target and corrected. Release fragments respect the current size limit.
 
+## Combined request-controls validation
+
+The branch also retains integration #556 and original histories #447, #446 and
+#491. Both the video destination synchronization and exact-book edit planner
+remain in the request route. The discovery hydration guard repairs the Cypress
+failure seen on main and the first theme CI run.
+
+The combined production build passed, followed by 296 native checks, 74 component
+checks and 28 headless browser cases. These groups overlap earlier validation;
+their counts are not added to the earlier totals. All eight user-facing release
+fragments pass the current contract. Main's validation container was advanced
+to the verified Node 24.22.2 index through #558 before requesting combined CI.
+
 Evidence is retained in the 2026-11-05 contribution-recovery task artifacts,
 including failing cases, screenshot comparisons, checksums and logs. Fixtures
 control provider responses; no live provider acquisition or physical-device
