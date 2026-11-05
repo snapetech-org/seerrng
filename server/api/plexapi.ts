@@ -1,8 +1,10 @@
 import ExternalAPI from '@server/api/externalapi';
 import MusicBrainz from '@server/api/musicbrainz';
+import { ApiErrorCode } from '@server/constants/error';
 import type { Library, PlexSettings } from '@server/lib/settings';
 import { getSettings } from '@server/lib/settings';
 import logger from '@server/logger';
+import { ApiError } from '@server/types/error';
 import AsyncLock from '@server/utils/asyncLock';
 import {
   buildServiceUrl,
@@ -480,26 +482,38 @@ class PlexAPI extends ExternalAPI {
 
   public async getLibraries(): Promise<PlexLibrary[]> {
     const response = await this.get<unknown>('/library/sections');
-    const mediaContainer =
-      isRecord(response) && isRecord(response.MediaContainer)
-        ? response.MediaContainer
-        : {};
+    if (!isRecord(response) || !isRecord(response.MediaContainer)) {
+      throw new Error('Plex returned an invalid library container.');
+    }
+    const mediaContainer = response.MediaContainer;
+    if (
+      !Array.isArray(mediaContainer.Directory) &&
+      !(mediaContainer.Directory === undefined && mediaContainer.size === 0)
+    ) {
+      throw new Error('Plex returned an invalid library list.');
+    }
+
+    if (
+      Array.isArray(mediaContainer.Directory) &&
+      mediaContainer.Directory.length === 0 &&
+      typeof mediaContainer.size === 'number' &&
+      mediaContainer.size > 0
+    )
+      throw new Error('Plex returned an invalid library count.');
 
     return (
       Array.isArray(mediaContainer.Directory) ? mediaContainer.Directory : []
     )
       .slice(0, MAX_PLEX_LIBRARIES)
       .flatMap((library) => {
-        if (!isRecord(library)) return [];
+        if (!isRecord(library))
+          throw new Error('Plex returned an invalid library entry.');
         const type = library.type;
         const key = boundedPlexText(library.key, 128);
         const title = boundedPlexText(library.title, 512);
-        if (
-          (type !== 'movie' && type !== 'show' && type !== 'artist') ||
-          !key ||
-          !title
-        )
-          return [];
+        if (typeof type !== 'string' || !key || !title)
+          throw new Error('Plex returned an invalid library entry.');
+        if (type !== 'movie' && type !== 'show' && type !== 'artist') return [];
         return [
           {
             type,
@@ -907,6 +921,14 @@ class PlexAPI extends ExternalAPI {
         label: 'Plex API',
         message: e.message,
       });
+      if (axios.isAxiosError(e)) {
+        if (!e.response) {
+          throw new ApiError(502, ApiErrorCode.ConnectionError);
+        }
+
+        throw new ApiError(e.response.status, ApiErrorCode.Unknown);
+      }
+
       throw e;
     }
   }

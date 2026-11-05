@@ -27,9 +27,14 @@ You can force resolution to prefer IPv4 by going to `Settings > Network`, enabli
 
 ## HTTP(S) Proxy
 
-If you can't change your DNS servers or force IPV4 resolution, you can use Seerr through a proxy.
-
-In some places (like China), the ISP blocks not only the DNS resolution but also the connection to the TMDB API.
+If the host cannot reach external services directly, configure the outbound
+HTTP(S) proxy in **Settings > Network**. SeerrNG selects the proxy per request,
+so long-lived clients created during startup use it after settings load. This
+includes metadata scans, Cover Art Archive lookups, and Steam library
+synchronization. Configured bypass filters and safe direct-connection rules
+still apply. If proxy initialization or the startup connectivity check fails,
+SeerrNG logs the failure and restores direct routing; resolve that connection
+before relying on the proxy in a network that blocks direct egress.
 
 ## Enable Proxy Support
 
@@ -38,6 +43,46 @@ If you have Seerr behind a reverse proxy, enable this setting to allow Seerr to 
 This setting also controls whether Seerr trusts your proxy's `X-Forwarded-Proto` header when deciding whether the CSRF cookies (below) should be marked `Secure`. If you run CSRF protection behind an HTTPS-terminating reverse proxy, enable this setting too — otherwise Seerr cannot tell the proxied connection is HTTPS.
 
 This setting is **disabled** by default.
+
+## Restrict administrator sign-in by client network
+
+The **Restrict Administrator Sign-In to Trusted Networks** option limits users
+with administrator permission to the configured client addresses. It also
+blocks an existing administrator browser session from using SeerrNG outside
+those networks. Regular users can still sign in remotely. The option is off by
+default.
+
+1. Open **Settings > Network**.
+2. Enable **Restrict Administrator Sign-In to Trusted Networks**.
+3. Enter up to 100 IPv4 or IPv6 addresses or CIDR subnets (4096 characters
+   total), one per line under **Allowed Administrator Networks**. For example,
+   `192.168.0.0/16` permits that IPv4 subnet and `100.64.0.0/10` permits the
+   Tailscale CGNAT range.
+4. Save the settings. To avoid locking yourself out, the client address making
+   this change must be included in the allowed networks.
+
+The allowlist is used for SeerrNG's interactive sign-in methods, including
+local password, Plex, Jellyfin or Emby, Jellyfin Bridge, Jellyfin Quick
+Connect, sign-in links, and OIDC. If SeerrNG cannot determine a valid client IP,
+it denies administrator sign-in. This setting does not change API-key
+authentication used by integrations.
+
+When SeerrNG is behind a reverse proxy, enable **Trust Reverse Proxy** and
+restart SeerrNG before relying on this restriction. SeerrNG trusts one proxy
+hop. Configure that proxy to overwrite `X-Forwarded-For`, and prevent clients
+from reaching SeerrNG directly; otherwise a client could forge the address
+used for the network check. Existing browser sessions are not destroyed when
+the restriction changes, but administrator API requests from an unlisted
+network are denied until the session is used from an allowed network.
+
+If your allowed networks change and no administrator can reach SeerrNG, stop
+the service, back up `CONFIG_DIRECTORY/settings.json`, and set
+`network.restrictAdministratorSignInToNetworks` to `false` or correct
+`network.administratorSignInAllowedNetworks`. Restart SeerrNG, then configure
+and verify the intended networks again.
+
+This setting was added with reference to Seerr [issue
+#3338](https://github.com/seerr-team/seerr/issues/3338).
 
 ## Enable CSRF Protection
 
@@ -126,3 +171,13 @@ recovery steps.
 The API Request Timeout setting defines the maximum time (in seconds) Seerr will wait for a response from external services, such as Radarr or Sonarr. The default value is 10 seconds, though it can be entirely disabled by setting it to 0. Please note that any changes to this value require restarting Seerr to take effect.
 
 Enforcing a timeout ensures the Seerr interface remains responsive and prevents infinite loading states when a connected service unexpectedly goes offline. Conversely, you may want to increase this value if you frequently experience failed requests due to your external services being slow to respond, which often happens when they are under heavy load or querying network-mounted storage.
+
+## Outbound request identity
+
+SeerrNG adds a versioned `Seerr/<version>` User-Agent to its server-side Axios
+requests when an integration has not supplied a protocol-specific value. This
+includes remote image requests handled by the image proxy. Provider-specific
+User-Agent values are preserved. Remote services can use this header to identify
+the software version; it does not contain a SeerrNG account or request identity.
+
+This extends the outbound request identification work in [Seerr PR #3395](https://github.com/seerr-team/seerr/pull/3395).

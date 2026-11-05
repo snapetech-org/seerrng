@@ -1580,7 +1580,10 @@ const getLocalAvailableVideoDiscoverResponse = async ({
       ) {
         return left.releaseDate.localeCompare(right.releaseDate) * direction;
       }
-      if (sortOption.startsWith('original_title')) {
+      if (
+        sortOption.startsWith('original_title') ||
+        sortOption.startsWith('original_name')
+      ) {
         return (
           (left.metadata?.alternateTitle ?? left.title).localeCompare(
             right.metadata?.alternateTitle ?? right.title

@@ -1427,6 +1427,46 @@ describe('MediaRequestSubscriber service dispatch', () => {
     assert.strictEqual(receivedOptions?.profileId, 8);
   });
 
+  for (const [requestedFolder, expectedFolder] of [
+    [undefined, '/anime'],
+    ['/tv', '/anime'],
+    ['/custom', '/custom'],
+  ] as const) {
+    it(`routes anime with requested folder ${requestedFolder} to ${expectedFolder}`, async () => {
+      const settings = getSettings();
+      settings.sonarr = [
+        {
+          ...makeSonarrSettings(34, 'sonarr.local', 7, 8, true),
+          activeAnimeDirectory: '/anime',
+        },
+      ];
+      mockAnimeTvShow(7004, 17004);
+      mock.method(SonarrAPI.prototype, 'getProfiles', async () => [
+        { id: 8, name: 'Anime' },
+      ]);
+      let receivedOptions: AddSeriesOptions | undefined;
+      mock.method(
+        SonarrAPI.prototype,
+        'addSeries',
+        async (options: AddSeriesOptions) => {
+          receivedOptions = options;
+          return {
+            id: 91,
+            title: 'Anime 7004',
+            titleSlug: 'anime-7004',
+          } as Awaited<ReturnType<SonarrAPI['addSeries']>>;
+        }
+      );
+      mock.method(MediaRequest, 'sendNotification', async () => undefined);
+      const { request } = await createApprovedTvRequest(7004, [1], 17004, {
+        profileId: 8,
+      });
+      if (requestedFolder !== undefined) request.rootFolder = requestedFolder;
+      await new MediaRequestSubscriber().sendToSonarr(request);
+      assert.equal(receivedOptions?.rootFolderPath, expectedFolder);
+    });
+  }
+
   it('passes exact multi-season episode selections to Sonarr', async () => {
     const settings = getSettings();
     settings.sonarr = [

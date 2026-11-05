@@ -76,6 +76,50 @@ describe('TMDB discover filter mapping', () => {
   });
 });
 
+describe('TMDB normalized search fallback', () => {
+  for (const [query, hasResults, expectedQueries] of [
+    ["Amélie's: World!", false, ["Amélie's: World!", 'amelies world']],
+    ["Amélie's: World!", true, ["Amélie's: World!"]],
+    ['simple query', false, ['simple query']],
+    ['!!!', false, ['!!!']],
+  ] as const) {
+    it(`preserves the original query and search scope for ${query} (${hasResults})`, async () => {
+      const tmdb = new TheMovieDb();
+      const calls: Record<string, unknown>[] = [];
+      Object.defineProperty(tmdb, 'get', {
+        value: async (
+          path: string,
+          options: { params: Record<string, unknown> }
+        ) => {
+          assert.equal(path, '/search/multi');
+          calls.push(options.params);
+          return {
+            page: 2,
+            total_pages: hasResults ? 3 : 0,
+            total_results: hasResults ? 40 : 0,
+            results: [],
+          };
+        },
+      });
+      await tmdb.searchMulti({
+        query,
+        page: 2,
+        language: 'fr',
+        includeAdult: false,
+      });
+      assert.deepEqual(
+        calls.map((params) => params.query),
+        expectedQueries
+      );
+      for (const params of calls) {
+        assert.equal(params.page, 2);
+        assert.equal(params.language, 'fr');
+        assert.equal(params.include_adult, false);
+      }
+    });
+  }
+});
+
 describe('TMDB response boundaries', () => {
   it('sanitizes mixed TMDB list pages without using total_results', () => {
     const response = sanitizeTmdbListResponse({

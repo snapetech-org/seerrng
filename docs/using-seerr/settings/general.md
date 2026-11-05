@@ -38,7 +38,7 @@ Set the default display language for Seerr. Users can override this setting in t
 
 ## Version Check
 
-When enabled, SeerrNG checks the public release tags in the SeerrNG GitHub repository. It only reports an update when a published stable tag is newer than the installed version, so a build created ahead of the next public release is not incorrectly marked as out of date.
+When enabled, SeerrNG checks the public release tags in the SeerrNG GitHub repository. It only reports an update when a published stable tag is newer than the installed version, so a build created ahead of the next public release is not incorrectly marked as out of date. Successful release or commit lookups are cached for six hours; a failed lookup is held for five minutes before retry so frequent status polling does not repeat the same GitHub request.
 
 ## Theme and color palette
 
@@ -64,6 +64,8 @@ These settings are separate from the general "Discover Region" and "Discover Lan
 These settings blocklist any TV shows or movies that have one of the entered tags. The "Process Blocklisted Tags" job adds entries to the blocklist based on the configured blocklisted tags. If a blocklisted tag is removed, any media blocklisted under that tag will be removed from the blocklist when the "Process Blocklisted Tags" job runs.
 
 The limit setting determines how many pages per tag the job will process, with each page containing 20 entries. The job cycles through all 16 available discovery sort options, querying the defined number of pages to blocklist media that is most likely to appear at the top of each sort. Higher limits will create a more accurate blocklist, but will require more storage.
+
+This is a bounded scan, not an exhaustive lookup of every TMDB title with a tag. The page limit applies to each tag, media type, and sort option, so matching titles outside the scanned pages may remain outside the automatic blocklist. The default limit is 50 pages. The job runs weekly by default; use **Settings → Jobs & Cache** to review or change its schedule, or choose **Run Now** to start a scan immediately. Running it manually does not change the schedule.
 
 Blocklisted tags are disabled until at least one tag is entered. These settings cannot be overridden in user settings.
 

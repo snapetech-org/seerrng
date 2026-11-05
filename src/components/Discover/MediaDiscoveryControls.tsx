@@ -37,7 +37,7 @@ const seriesSorts = [
     desc: 'first_air_date.desc',
   },
   { label: 'rating', asc: 'vote_average.asc', desc: 'vote_average.desc' },
-  { label: 'title', asc: 'original_title.asc', desc: 'original_title.desc' },
+  { label: 'title', asc: 'original_name.asc', desc: 'original_name.desc' },
 ] as const satisfies readonly {
   label: keyof typeof messages;
   asc: TMDBSortOptions;

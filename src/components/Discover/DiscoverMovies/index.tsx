@@ -54,6 +54,7 @@ const DiscoverMovies = ({
       randomizeOrder: randomizeOrder ?? !preparedFilters.sortBy,
       availableQuality: preparedFilters.availability,
       hideAvailable: !preparedFilters.availability,
+      recoverSinglePageFailure: true,
     }
   );
   useSearchActivityReporter(

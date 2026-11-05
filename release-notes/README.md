@@ -48,6 +48,4 @@ direct push or merge check reads commit messages, put the same marker on its own
 commit message.
 
 Dependabot prefixes ordinary dependency-update titles with the same marker so
-push validation retains it after a merge. Grouped CodeQL-action updates use the
-`release-note-none-codeql-action` group identifier because Dependabot builds
-grouped pull-request titles from the group name.
+push validation retains it after a merge.

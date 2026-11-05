@@ -581,3 +581,56 @@ describe('Plex season analysis', () => {
     assert.equal(calls.length, 1);
   });
 });
+
+describe('Plex library response integrity', () => {
+  it('preserves saved libraries when an HTTP success contains malformed data', async () => {
+    const settings = getSettings();
+    const saved = {
+      ...settings.plex,
+      libraries: [
+        { id: 'stored', name: 'Stored', enabled: true, type: 'movie' as const },
+      ],
+    };
+    settings.replaceSection('plex', saved);
+    const save = mock.method(settings, 'save', async () => undefined);
+    for (const data of [
+      null,
+      {},
+      { MediaContainer: {} },
+      { MediaContainer: { Directory: 'bad' } },
+      { MediaContainer: { Directory: [null] } },
+      { MediaContainer: { Directory: [{ type: 'movie', key: '1' }] } },
+      { MediaContainer: { Directory: [], size: 2 } },
+    ]) {
+      const plex = new PlexAPI({
+        plexToken: 'fixture-only',
+        plexSettings: { ...getSettings().plex, ip: '127.0.0.1', port: 32400 },
+      });
+      const client = (
+        plex as unknown as {
+          axios: { get: (...args: unknown[]) => Promise<unknown> };
+        }
+      ).axios;
+      mock.method(client, 'get', async () => ({ data }));
+      await assert.rejects(plex.syncLibraries(), /invalid library/);
+      assert.equal(settings.plex, saved);
+    }
+    assert.equal(save.mock.callCount(), 0);
+  });
+
+  it('accepts explicitly empty Plex libraries without inventing a provider failure', async () => {
+    const plex = new PlexAPI({
+      plexToken: 'fixture-only',
+      plexSettings: { ...getSettings().plex, ip: '127.0.0.1', port: 32400 },
+    });
+    const client = (
+      plex as unknown as {
+        axios: { get: (...args: unknown[]) => Promise<unknown> };
+      }
+    ).axios;
+    mock.method(client, 'get', async () => ({
+      data: { MediaContainer: { size: 0 } },
+    }));
+    assert.deepEqual(await plex.getLibraries(), []);
+  });
+});

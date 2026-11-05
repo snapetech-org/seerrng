@@ -86,6 +86,7 @@ export interface QueueItem {
   downloadClient: string;
   indexer: string;
   id: number;
+  errorMessage?: string;
   statusMessages?: QueueStatusMessage[];
 }
 
