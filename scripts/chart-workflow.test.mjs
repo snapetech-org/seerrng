@@ -46,6 +46,7 @@ test('chart and tooling validation use the current CI triggers and tools', () =>
   ]);
   assert.deepEqual(ciWorkflow.on.workflow_dispatch.inputs.action.options, [
     'ci',
+    'contracts',
     'publish-image',
   ]);
   assert.equal(ciWorkflow.on.workflow_dispatch.inputs.action.required, true);

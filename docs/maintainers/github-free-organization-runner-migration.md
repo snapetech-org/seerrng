@@ -26,6 +26,15 @@ The main CI workflow remains manually dispatchable from `main`; choose
 `action=ci` and `runner_pool=public` for validation. Image publication remains
 a separate explicit `action=publish-image` dispatch from `main`.
 
+For a release-note or Helm tooling repair, `action=contracts` runs just those
+two checks from the current `main` revision without repeating application
+builds or publishing images:
+
+```sh
+gh workflow run ci.yml --repo snapetech-org/seerrng --ref main \
+  -f action=contracts -f runner_pool=public
+```
+
 CodeQL is disabled across `snapetech-org` by the owner directive of
 2026-10-30. Do not restore CodeQL workflows or invocations unless that
 directive is explicitly reversed.
