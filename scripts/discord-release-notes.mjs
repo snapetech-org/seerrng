@@ -1,3 +1,4 @@
+import { readFile } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -44,6 +45,22 @@ export function splitDiscordReleaseBody(body, maxLength = 3600) {
   return chunks;
 }
 
+// Discord trims embed text at its boundaries. Preserve all interior content
+// while accepting that documented normalization in the returned message.
+export function verifyDiscordReleaseResponse(response, payload) {
+  const expected = payload?.embeds?.[0];
+  const actual = response?.embeds?.[0];
+  return (
+    typeof response?.id === 'string' &&
+    /^\d+$/.test(response.id) &&
+    typeof expected?.description === 'string' &&
+    expected.description.trim().length > 0 &&
+    typeof actual?.description === 'string' &&
+    actual.description.trim() === expected.description.trim() &&
+    actual.title === expected.title
+  );
+}
+
 async function readStdin() {
   const chunks = [];
   for await (const chunk of process.stdin) {
@@ -55,9 +72,25 @@ async function readStdin() {
 const invokedPath = process.argv[1] ? path.resolve(process.argv[1]) : '';
 if (invokedPath === fileURLToPath(import.meta.url)) {
   const args = process.argv.slice(2);
-  if (args.length !== 1 || args[0] !== '--split') {
+  if (args.length === 2 && args[0] === '--verify') {
+    try {
+      const payload = JSON.parse(await readFile(args[1], 'utf8'));
+      const response = JSON.parse(await readStdin());
+      if (!verifyDiscordReleaseResponse(response, payload)) {
+        throw new Error('Response did not confirm the complete embed.');
+      }
+      process.stdout.write(
+        `Confirmed Discord release-note message ${response.id}\n`
+      );
+    } catch {
+      process.stderr.write(
+        'Discord response did not confirm the complete release-note message.\n'
+      );
+      process.exitCode = 1;
+    }
+  } else if (args.length !== 1 || args[0] !== '--split') {
     process.stderr.write(
-      'Usage: node scripts/discord-release-notes.mjs --split\n'
+      'Usage: node scripts/discord-release-notes.mjs --split | --verify payload.json\n'
     );
     process.exitCode = 2;
   } else {
