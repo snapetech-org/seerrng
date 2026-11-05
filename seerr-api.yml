@@ -12083,14 +12083,17 @@ paths:
             type: integer
         - in: query
           name: term
+          allowReserved: true
           schema:
             type: string
         - in: query
           name: title
+          allowReserved: true
           schema:
             type: string
         - in: query
           name: foreignBookId
+          allowReserved: true
           schema:
             type: string
       responses:
@@ -12109,6 +12112,7 @@ paths:
       parameters:
         - in: query
           name: title
+          allowReserved: true
           required: true
           schema:
             type: string
@@ -18181,23 +18185,27 @@ paths:
             default: 1
         - in: query
           name: query
+          allowReserved: true
           schema:
             type: string
             example: subject:fiction
         - in: query
           name: author
+          allowReserved: true
           schema:
             type: string
             maxLength: 256
           description: Author terms sent to the book provider alongside the other search constraints.
         - in: query
           name: narrator
+          allowReserved: true
           schema:
             type: string
             maxLength: 256
           description: Audiobook-only narrator terms matched against populated Bookshelf narrator metadata. Only books in configured audiobook libraries can match.
         - in: query
           name: subject
+          allowReserved: true
           schema:
             type: string
             example: fiction
@@ -18949,6 +18957,7 @@ paths:
       parameters:
         - in: query
           name: query
+          allowReserved: true
           required: true
           schema:
             type: string
@@ -19106,6 +19115,7 @@ paths:
             example: OL27448W
         - in: query
           name: lookupTitle
+          allowReserved: true
           description: Fallback title used to resolve provider-qualified Bookshelf records.
           schema:
             type: string
@@ -19133,6 +19143,7 @@ paths:
             example: OL27448W
         - in: query
           name: lookupTitle
+          allowReserved: true
           description: Fallback title used to resolve provider-qualified Bookshelf records.
           schema:
             type: string
@@ -19220,6 +19231,7 @@ paths:
       parameters:
         - in: query
           name: query
+          allowReserved: true
           required: true
           schema:
             type: string
@@ -20861,6 +20873,7 @@ paths:
       parameters:
         - in: query
           name: query
+          allowReserved: true
           required: true
           schema:
             type: string
@@ -20886,6 +20899,7 @@ paths:
             enum: [popular, new, subject]
         - in: query
           name: subject
+          allowReserved: true
           schema:
             type: string
             maxLength: 64
