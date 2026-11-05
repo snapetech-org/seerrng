@@ -5,7 +5,10 @@ import { createRequire } from 'node:module';
 import path from 'node:path';
 import test from 'node:test';
 import { fileURLToPath } from 'node:url';
-import { splitDiscordReleaseBody } from './discord-release-notes.mjs';
+import {
+  splitDiscordReleaseBody,
+  verifyDiscordReleaseResponse,
+} from './discord-release-notes.mjs';
 
 const rootDirectory = path.resolve(
   path.dirname(fileURLToPath(import.meta.url)),
@@ -1608,6 +1611,94 @@ test('Discord release-note chunks preserve all text and stay within the limit', 
     () => splitDiscordReleaseBody('🛡️', 1),
     /cannot fit this Unicode character/u
   );
+});
+
+test('Discord confirmation accepts boundary whitespace normalization but rejects lost notes', () => {
+  const payload = {
+    embeds: [
+      {
+        title: 'Release notes',
+        description:
+          '  - **Action required:** Review settings.\n\nKeep this paragraph.\n',
+      },
+    ],
+  };
+  const response = {
+    id: '123456789',
+    embeds: [
+      {
+        ...payload.embeds[0],
+        description: payload.embeds[0].description.trim(),
+      },
+    ],
+  };
+  assert.equal(verifyDiscordReleaseResponse(response, payload), true);
+  assert.equal(
+    verifyDiscordReleaseResponse({ ...response, id: undefined }, payload),
+    false
+  );
+  assert.equal(
+    verifyDiscordReleaseResponse(
+      {
+        ...response,
+        embeds: [
+          {
+            ...response.embeds[0],
+            description: '- **Action required:** Review settings.',
+          },
+        ],
+      },
+      payload
+    ),
+    false
+  );
+  assert.equal(
+    verifyDiscordReleaseResponse(
+      {
+        ...response,
+        embeds: [
+          {
+            ...response.embeds[0],
+            description: response.embeds[0].description.replace(
+              'settings.',
+              'settings!'
+            ),
+          },
+        ],
+      },
+      payload
+    ),
+    false
+  );
+  assert.equal(
+    verifyDiscordReleaseResponse(
+      {
+        ...response,
+        embeds: [{ ...response.embeds[0], title: 'Other release' }],
+      },
+      payload
+    ),
+    false
+  );
+  assert.equal(
+    verifyDiscordReleaseResponse(
+      { id: '123', embeds: [{ title: 'Release notes', description: '' }] },
+      { embeds: [{ title: 'Release notes', description: '  ' }] }
+    ),
+    false
+  );
+  for (const name of ['release.yml', 'reannounce-release.yml']) {
+    const workflow = readWorkflow(name);
+    const posts = Object.values(workflow.jobs)
+      .flatMap((job) => job.steps ?? [])
+      .filter((step) => step.run?.includes('"$webhook_url"'));
+    assert.ok(posts.length > 0);
+    for (const step of posts)
+      assert.match(
+        step.run,
+        /discord-release-notes\.mjs --verify payload\.json/u
+      );
+  }
 });
 
 test('a workflow dispatch can correct omitted notes for a published release', () => {

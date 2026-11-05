@@ -29,6 +29,20 @@ audited historical sections. The release workflow assembles the current
 fragments into the GitHub release body; the Discord announcement uses the same
 content.
 
+If an announcement stops after publication, inspect its failed step before
+retrying. Discord trims boundary whitespace in embed descriptions; confirmation
+accepts that normalization but requires the complete interior text and title.
+Use the reannouncement workflow to post the current published notes without
+rebuilding artifacts or repeating package publication:
+
+```sh
+gh workflow run reannounce-release.yml -R snapetech-org/seerrng --ref main \
+  -f tag=vX.Y.Z
+```
+
+Reissued messages are labeled as such. Each confirmed message ID is recorded in
+the job log; preserve those receipts when diagnosing a partial announcement.
+
 The checked-in changelog is audited against every `v3.*` tag. The coverage check
 runs in pull-request CI and release tag validation, so deleting or forgetting a
 historical release section fails before publication. A missing version is not
