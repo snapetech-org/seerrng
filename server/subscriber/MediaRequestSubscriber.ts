@@ -759,34 +759,136 @@ export class MediaRequestSubscriber implements EntitySubscriberInterface<MediaRe
     }
   }
 
+  private getVideoRequestDestination(
+    entity: MediaRequest
+  ): { serviceType: 'radarr' | 'sonarr'; serverId?: number } | undefined {
+    if (entity.type !== MediaType.MOVIE && entity.type !== MediaType.TV) {
+      return undefined;
+    }
+    const serviceType = entity.type === MediaType.MOVIE ? 'radarr' : 'sonarr';
+    const format = entity.is4k ? '4k' : 'standard';
+    const savedTarget = entity.serviceTargets?.find(
+      (target) => target.serviceType === serviceType && target.format === format
+    );
+    if (savedTarget) {
+      return { serviceType, serverId: savedTarget.serverId };
+    }
+    if (
+      entity.serverId !== null &&
+      entity.serverId !== undefined &&
+      entity.serverId >= 0
+    ) {
+      return { serviceType, serverId: entity.serverId };
+    }
+
+    const settings = getExternalRuntimeConfig();
+    const configuredService =
+      entity.type === MediaType.MOVIE ? settings.radarr : settings.sonarr;
+    const defaultService = configuredService.find(
+      (service) => service.isDefault && service.is4k === entity.is4k
+    );
+    return { serviceType, serverId: defaultService?.id };
+  }
+
   private isRequestMediaAvailable(entity: MediaRequest): boolean {
+    if (entity.type !== MediaType.MOVIE && entity.type !== MediaType.TV) {
+      return false;
+    }
+    const destination = this.getVideoRequestDestination(entity);
+    if (destination?.serverId === undefined) return false;
+    const format = entity.is4k ? '4k' : 'standard';
+    const savedTarget = entity.serviceTargets?.find(
+      (target) =>
+        target.serviceType === destination.serviceType &&
+        target.format === format &&
+        target.serverId === destination.serverId
+    );
+    if (savedTarget?.status === MediaStatus.AVAILABLE) return true;
+
+    const media = entity.media;
+    const legacyServerId = entity.is4k ? media.serviceId4k : media.serviceId;
+    if (legacyServerId !== destination.serverId) return false;
+    const statusKey = entity.is4k ? 'status4k' : 'status';
+    if (entity.type === MediaType.MOVIE) {
+      return media[statusKey] === MediaStatus.AVAILABLE;
+    }
+    if (media[statusKey] === MediaStatus.AVAILABLE) return true;
+    const requestedSeasonNumbers = (entity.seasons ?? [])
+      .filter(isActiveSeasonRequest)
+      .map((season) => season.seasonNumber);
     return (
-      entity.media[entity.is4k ? 'status4k' : 'status'] ===
-      MediaStatus.AVAILABLE
+      requestedSeasonNumbers.length > 0 &&
+      requestedSeasonNumbers.every(
+        (seasonNumber) =>
+          media.seasons.find(
+            (season) => season.seasonNumber === seasonNumber
+          )?.[statusKey] === MediaStatus.AVAILABLE
+      )
     );
   }
 
-  private isRequestedMediaAvailable(
+  private async isRequestedMediaAvailable(
     entity: MediaRequest,
     media: Media
-  ): boolean {
-    const statusKey = entity.is4k ? 'status4k' : 'status';
-    if (media[statusKey] === MediaStatus.AVAILABLE) {
-      return true;
-    }
-
-    if (entity.type !== MediaType.TV || entity.seasons.length === 0) {
+  ): Promise<boolean> {
+    if (entity.type !== MediaType.MOVIE && entity.type !== MediaType.TV) {
       return false;
     }
-
-    const availableSeasonNumbers = new Set(
-      media.seasons
-        .filter((season) => season[statusKey] === MediaStatus.AVAILABLE)
-        .map((season) => season.seasonNumber)
+    const destination = this.getVideoRequestDestination(entity);
+    if (destination?.serverId === undefined) return false;
+    const format = entity.is4k ? '4k' : 'standard';
+    const savedTarget = entity.serviceTargets?.find(
+      (target) =>
+        target.serviceType === destination.serviceType &&
+        target.format === format &&
+        target.serverId === destination.serverId
     );
+    if (savedTarget?.status === MediaStatus.AVAILABLE) return true;
 
-    return entity.seasons.every((season) =>
-      availableSeasonNumbers.has(season.seasonNumber)
+    const serviceStatus = await getRepository(MediaServiceStatus).findOne({
+      where: {
+        mediaId: media.id,
+        serviceType: destination.serviceType,
+        serverId: destination.serverId,
+        format,
+      },
+    });
+    if (serviceStatus) {
+      if (entity.type === MediaType.MOVIE) {
+        return serviceStatus.status === MediaStatus.AVAILABLE;
+      }
+      if (serviceStatus.status === MediaStatus.AVAILABLE) return true;
+      const requestedSeasonNumbers = (entity.seasons ?? [])
+        .filter(isActiveSeasonRequest)
+        .map((season) => season.seasonNumber);
+      return (
+        requestedSeasonNumbers.length > 0 &&
+        requestedSeasonNumbers.every(
+          (seasonNumber) =>
+            serviceStatus.seasonStatuses?.[seasonNumber] ===
+            MediaStatus.AVAILABLE
+        )
+      );
+    }
+
+    const legacyServerId = entity.is4k ? media.serviceId4k : media.serviceId;
+    if (legacyServerId !== destination.serverId) return false;
+    const statusKey = entity.is4k ? 'status4k' : 'status';
+    if (entity.type === MediaType.MOVIE) {
+      return media[statusKey] === MediaStatus.AVAILABLE;
+    }
+    if (media[statusKey] === MediaStatus.AVAILABLE) return true;
+    const requestedSeasonNumbers = (entity.seasons ?? [])
+      .filter(isActiveSeasonRequest)
+      .map((season) => season.seasonNumber);
+    return (
+      requestedSeasonNumbers.length > 0 &&
+      requestedSeasonNumbers.every(
+        (seasonNumber) =>
+          media.seasons.find(
+            (season) => season.seasonNumber === seasonNumber
+          )?.[statusKey] === MediaStatus.AVAILABLE
+      )
     );
   }
 
@@ -794,7 +896,7 @@ export class MediaRequestSubscriber implements EntitySubscriberInterface<MediaRe
     entity: MediaRequest,
     media: Media
   ): Promise<boolean> {
-    if (!this.isRequestedMediaAvailable(entity, media)) {
+    if (!(await this.isRequestedMediaAvailable(entity, media))) {
       return false;
     }
 

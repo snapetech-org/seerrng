@@ -25,7 +25,7 @@ const defaultSettings: PublicSettingsResponse = {
   enable4k: true,
   localLogin: true,
   mediaServerLogin: true,
-  quickConnectOnly: false,
+  jellyfinQuickConnectOnly: false,
   movie4kEnabled: false,
   series4kEnabled: false,
   musicEnabled: false,

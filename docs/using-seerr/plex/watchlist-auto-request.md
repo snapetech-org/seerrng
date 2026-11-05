@@ -37,6 +37,12 @@ Movies** and/or **Auto-Request Series** permission. In their profile under
 **Auto-Request Series** toggle. SeerrNG periodically checks the Plex Watchlist
 and submits requests for eligible items that are not already available.
 
+Plex Watchlist pages hydrate item details with at most five concurrent
+requests. If an individual item times out or Plex cannot be reached, SeerrNG
+skips that item for the current sync and continues with the rest; a later
+scheduled or manual sync can try it again. Authentication and other provider
+errors still fail the retrieval so the problem remains visible.
+
 After SeerrNG handles a Plex Watchlist entry, deleting its request or removing
 the downloaded media does not trigger another automatic request while the item
 stays on the list. Remove the item from Plex and add it again to start a new

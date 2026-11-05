@@ -19,6 +19,7 @@ import {
   normalizeMusicBrainzId,
   normalizeOpenLibraryWorkId,
 } from '@server/lib/externalIds';
+import { hydrateMediaSummaryRelations } from '@server/lib/mediaSummaryHydration';
 import { createHash } from 'crypto';
 import type { Response } from 'express';
 import { Router } from 'express';
@@ -276,6 +277,7 @@ discoverHomeRoutes.post('/state', async (req, res) => {
     ...musicMedia,
     ...bookIdentifiers.map((identifier) => identifier.media),
   ];
+  await hydrateMediaSummaryRelations(allMedia, req.user);
   const mediaByKey = new Map<string, Media>();
   for (const media of allMedia) {
     if (

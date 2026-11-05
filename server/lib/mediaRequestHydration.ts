@@ -1,13 +1,15 @@
 import { getRepository } from '@server/datasource';
 import Media from '@server/entity/Media';
 import { MediaRequest } from '@server/entity/MediaRequest';
+import type { User } from '@server/entity/User';
+import { hydrateMediaSummaryRelations } from '@server/lib/mediaSummaryHydration';
 import { In } from 'typeorm';
 
 const RELATION_HYDRATION_BATCH_SIZE = 500;
 
 export const hydrateMediaRequestRelations = async (
   requests: MediaRequest[],
-  options: { includeMediaIdentifiers?: boolean } = {}
+  options: { includeMediaIdentifiers?: boolean; viewer?: User } = {}
 ): Promise<MediaRequest[]> => {
   const ids = [...new Set(requests.map((request) => request.id))].filter(
     (id) => Number.isSafeInteger(id) && id > 0
@@ -67,15 +69,15 @@ export const hydrateMediaRequestRelations = async (
   }
 
   const mediaById = new Map(mediaRows.map((media) => [media.id, media]));
+  if (options.viewer) {
+    await hydrateMediaSummaryRelations(mediaRows, options.viewer);
+  }
   for (const request of hydrated) {
     const media = mediaById.get(request.media.id);
     if (!media) {
       continue;
     }
-    request.media.seasons = media.seasons;
-    if (options.includeMediaIdentifiers) {
-      request.media.identifiers = media.identifiers;
-    }
+    request.media = media;
   }
 
   const hydratedById = new Map(

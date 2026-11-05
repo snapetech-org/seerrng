@@ -77,11 +77,11 @@ const JellyfinLogin = ({ revalidate, serverType }: JellyfinLoginProps) => {
   const baseUrl = settings.currentSettings.jellyfinExternalHost
     ? settings.currentSettings.jellyfinExternalHost
     : settings.currentSettings.jellyfinHost;
-  const jellyfinForgotPasswordUrl =
-    settings.currentSettings.jellyfinForgotPasswordUrl;
   const quickConnectOnly =
     serverType === MediaServerType.JELLYFIN &&
-    settings.currentSettings.quickConnectOnly;
+    settings.currentSettings.jellyfinQuickConnectOnly;
+  const jellyfinForgotPasswordUrl =
+    settings.currentSettings.jellyfinForgotPasswordUrl;
 
   return (
     <div>
@@ -136,9 +136,13 @@ const JellyfinLogin = ({ revalidate, serverType }: JellyfinLoginProps) => {
         }}
       >
         {({ errors, touched, values, isSubmitting, isValid }) => {
+          if (quickConnectOnly) {
+            return null;
+          }
+
           return (
             <>
-              <Form data-form-type="login" hidden={quickConnectOnly}>
+              <Form data-form-type="login">
                 <div>
                   <h2 className="-mt-1 mb-6 text-center text-lg font-bold text-gray-200">
                     {intl.formatMessage(messages.loginwithapp, {

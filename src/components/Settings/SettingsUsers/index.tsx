@@ -36,8 +36,8 @@ const messages = defineMessages('components.Settings.SettingsUsers', {
   mediaServerLogin: 'Enable {mediaServerName} Sign-In',
   mediaServerLoginTip:
     'Allow users to sign in using their {mediaServerName} account',
-  quickConnectOnly: 'Require Jellyfin Quick Connect Sign-In',
-  quickConnectOnlyTip:
+  jellyfinQuickConnectOnly: 'Require Jellyfin Quick Connect Sign-In',
+  jellyfinQuickConnectOnlyTip:
     'Allow Jellyfin Quick Connect sign-in and block Jellyfin password and plugin sign-in.',
   atLeastOneAuth: 'At least one authentication method must be selected.',
   newPlexLogin: 'Enable New {mediaServerName} Sign-In',
@@ -75,7 +75,7 @@ const SettingsUsers = () => {
     .shape({
       localLogin: yup.boolean(),
       mediaServerLogin: yup.boolean(),
-      quickConnectOnly: yup.boolean(),
+      jellyfinQuickConnectOnly: yup.boolean(),
     })
     .test({
       name: 'atLeastOneAuth',
@@ -128,7 +128,7 @@ const SettingsUsers = () => {
           initialValues={{
             localLogin: data?.localLogin,
             mediaServerLogin: data?.mediaServerLogin,
-            quickConnectOnly: data?.quickConnectOnly ?? false,
+            jellyfinQuickConnectOnly: data?.jellyfinQuickConnectOnly ?? false,
             newPlexLogin: data?.newPlexLogin,
             movieQuotaLimit: data?.defaultQuotas.movie.quotaLimit ?? 0,
             movieQuotaDays: data?.defaultQuotas.movie.quotaDays ?? 7,
@@ -159,7 +159,7 @@ const SettingsUsers = () => {
               await axios.post('/api/v1/settings/main', {
                 localLogin: values.localLogin,
                 mediaServerLogin: values.mediaServerLogin,
-                quickConnectOnly: values.quickConnectOnly,
+                jellyfinQuickConnectOnly: values.jellyfinQuickConnectOnly,
                 newPlexLogin: values.newPlexLogin,
                 defaultQuotas: {
                   movie: {
@@ -341,17 +341,17 @@ const SettingsUsers = () => {
                       >
                         {isJellyfin && values.mediaServerLogin && (
                           <LabeledCheckbox
-                            id="quickConnectOnly"
+                            id="jellyfinQuickConnectOnly"
                             label={intl.formatMessage(
-                              messages.quickConnectOnly
+                              messages.jellyfinQuickConnectOnly
                             )}
                             description={intl.formatMessage(
-                              messages.quickConnectOnlyTip
+                              messages.jellyfinQuickConnectOnlyTip
                             )}
                             onChange={() =>
                               setFieldValue(
-                                'quickConnectOnly',
-                                !values.quickConnectOnly
+                                'jellyfinQuickConnectOnly',
+                                !values.jellyfinQuickConnectOnly
                               )
                             }
                           />

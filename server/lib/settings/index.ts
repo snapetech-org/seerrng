@@ -575,7 +575,7 @@ export interface MainSettings {
   enable4k: boolean;
   localLogin: boolean;
   mediaServerLogin: boolean;
-  quickConnectOnly: boolean;
+  jellyfinQuickConnectOnly: boolean;
   oidcLogin: boolean;
   newPlexLogin: boolean;
   discoverRegion: string;
@@ -650,7 +650,7 @@ interface FullPublicSettings extends PublicSettings {
   enable4k: boolean;
   localLogin: boolean;
   mediaServerLogin: boolean;
-  quickConnectOnly: boolean;
+  jellyfinQuickConnectOnly: boolean;
   movie4kEnabled: boolean;
   series4kEnabled: boolean;
   musicEnabled: boolean;
@@ -1000,7 +1000,7 @@ class Settings {
         enable4k: true,
         localLogin: true,
         mediaServerLogin: true,
-        quickConnectOnly: false,
+        jellyfinQuickConnectOnly: false,
         oidcLogin: false,
         newPlexLogin: true,
         discoverRegion: '',
@@ -1784,7 +1784,7 @@ class Settings {
       enable4k: this.data.main.enable4k !== false,
       localLogin: this.data.main.localLogin,
       mediaServerLogin: this.data.main.mediaServerLogin,
-      quickConnectOnly: this.data.main.quickConnectOnly,
+      jellyfinQuickConnectOnly: this.data.main.jellyfinQuickConnectOnly,
       jellyfinExternalHost: this.data.jellyfin.externalHostname,
       jellyfinForgotPasswordUrl: this.data.jellyfin.jellyfinForgotPasswordUrl,
       movie4kEnabled: this.data.radarr.some(
@@ -2076,7 +2076,7 @@ class Settings {
         enable4k: true,
         localLogin: true,
         mediaServerLogin: true,
-        quickConnectOnly: false,
+        jellyfinQuickConnectOnly: false,
         oidcLogin: false,
         newPlexLogin: true,
         discoverRegion: '',

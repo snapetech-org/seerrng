@@ -2192,23 +2192,66 @@ components:
           type: number
           example: 1
     WatchlistRequest:
+      description: |
+        Add a movie, TV series, music release, book, comic, or magazine to the
+        signed-in user's watchlist. `mediaType` is required. Use `tmdbId` for
+        movies and TV, `mbId` for music, and `externalId` for books, comics,
+        and magazines.
       type: object
       required:
-        - tmdbId
         - mediaType
       properties:
         tmdbId:
-          type: number
+          type: integer
+          format: int32
+          minimum: 1
+          maximum: 1000000000
           example: 1
         mediaType:
           type: string
           enum:
             - movie
             - tv
+            - music
+            - book
+            - comic
+            - magazine
+        mbId:
+          type: string
+          minLength: 1
+          maxLength: 512
+          description: MusicBrainz release-group ID for music entries.
+        externalId:
+          type: string
+          minLength: 1
+          maxLength: 512
+          description: Open Library work ID, ComicVine volume ID, or magazine title.
         ratingKey:
           type: string
+          minLength: 1
+          maxLength: 512
         title:
           type: string
+          maxLength: 512
+      oneOf:
+        - required: [tmdbId]
+          properties:
+            mediaType:
+              enum: [movie, tv]
+        - required: [mbId]
+          properties:
+            mediaType:
+              enum: [music]
+        - required: [externalId]
+          properties:
+            mediaType:
+              enum: [book, comic]
+        - required: [externalId]
+          properties:
+            mediaType:
+              enum: [magazine]
+            externalId:
+              maxLength: 256
     Watchlist:
       type: object
       properties:
@@ -2732,14 +2775,14 @@ components:
         localLogin:
           type: boolean
           example: true
-        quickConnectOnly:
-          type: boolean
-          default: false
-          description: When Jellyfin is the active media server, restricts Jellyfin sign-in to Quick Connect and rejects password and plugin bridge sign-in.
-          example: false
         mediaServerType:
           type: number
           example: 1
+        jellyfinQuickConnectOnly:
+          type: boolean
+          default: false
+          description: Hides Jellyfin username and password sign-in and rejects password and plugin bridge authentication when Jellyfin is configured. Quick Connect remains available; local and OpenID Connect sign-in are controlled separately.
+          example: false
         newPlexLogin:
           type: boolean
           example: true
@@ -4442,7 +4485,7 @@ components:
       required:
         - initialized
         - plexClientIdentifier
-        - quickConnectOnly
+        - jellyfinQuickConnectOnly
       properties:
         initialized:
           type: boolean
@@ -4505,14 +4548,15 @@ components:
           default: show
           description: Controls how availability tied to another user's approved or completed movie or TV request is presented to the current viewer.
           example: show
+        jellyfinQuickConnectOnly:
+          type: boolean
+          default: false
+          description: Whether Jellyfin username and password sign-in is disabled in favor of Quick Connect.
+          example: false
         enable4k:
           type: boolean
           description: Whether movie and TV 4K request, issue-reporting, and separate availability features are enabled.
           example: true
-        quickConnectOnly:
-          type: boolean
-          description: Whether Jellyfin sign-in requires Quick Connect. When enabled, Jellyfin password and plugin bridge sign-in are rejected.
-          example: false
     MovieResult:
       type: object
       required:
@@ -6262,7 +6306,7 @@ components:
         serviceStatuses:
           type: array
           readOnly: true
-          description: Availability tracked independently for each Radarr or Sonarr instance and quality.
+          description: Availability tracked independently for each Radarr or Sonarr instance and quality. For linked media-server users, a destination that cannot be matched to verified primary media-server access may be returned as Unknown.
           items:
             type: object
             properties:
@@ -6306,11 +6350,11 @@ components:
         status:
           type: number
           example: 0
-          description: Availability of the media. 1 = `UNKNOWN`, 2 = `PENDING`, 3 = `PROCESSING`, 4 = `PARTIALLY_AVAILABLE`, 5 = `AVAILABLE`, 6 = `DELETED`
+          description: Availability of the media. For movie and TV responses to a user with a linked Plex, Jellyfin, or Emby account, this is projected against that viewer's verified item and season access; Unknown may mean restricted or unverified, not absent from the server. 1 = `UNKNOWN`, 2 = `PENDING`, 3 = `PROCESSING`, 4 = `PARTIALLY_AVAILABLE`, 5 = `AVAILABLE`, 6 = `DELETED`.
         status4k:
           type: number
           example: 0
-          description: Availability of the 4K media copy. Uses the same values as `status`.
+          description: Availability of the 4K media copy. Uses the same values and viewer-scoped projection as `status`.
         viewerRequestCoverage:
           type: object
           readOnly: true
@@ -14369,7 +14413,7 @@ paths:
   /auth/jellyfin:
     post:
       summary: Sign in using a Jellyfin username and password
-      description: Takes the user's username and password to log the user in. Generates a session cookie for use in further requests. If the user does not exist, and there are no other users, then a user will be created with full admin privileges. If a user logs in with access to the Jellyfin server, they will also have an account created, but without any permissions.
+      description: Takes the user's username and password to log the user in. Generates a session cookie for use in further requests. If the user does not exist, and there are no other users, then a user will be created with full admin privileges. If a user logs in with access to the Jellyfin server, they will also have an account created, but without any permissions. When Jellyfin Quick Connect-only sign-in is enabled, password authentication is rejected with 403.
       security: []
       tags:
         - auth
@@ -14380,6 +14424,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/User'
+        '403':
+          description: Jellyfin password sign-in is disabled by the Quick Connect-only setting.
       requestBody:
         required: true
         content:
@@ -14433,7 +14479,7 @@ paths:
   /auth/jellyfin/quickconnect/initiate:
     post:
       summary: Initiate Jellyfin Quick Connect
-      description: Initiates a Quick Connect session and returns a code for the user to authorize on their Jellyfin server.
+      description: Initiates a Quick Connect session and returns a code for the user to authorize on their Jellyfin server. Returns 403 when media-server sign-in is disabled.
       security: []
       tags:
         - auth
@@ -14451,12 +14497,14 @@ paths:
                   secret:
                     type: string
                     example: 'abc123def456'
+        '403':
+          description: Jellyfin is not configured or media-server sign-in is disabled.
         '500':
           description: Failed to initiate Quick Connect
   /auth/jellyfin/quickconnect/check:
     get:
       summary: Check Quick Connect authorization status
-      description: Checks if the Quick Connect code has been authorized by the user.
+      description: Checks if the Quick Connect code has been authorized by the user. Returns 403 when media-server sign-in is disabled.
       security: []
       tags:
         - auth
@@ -14480,10 +14528,12 @@ paths:
                     example: false
         '404':
           description: Quick Connect session not found or expired
+        '403':
+          description: Jellyfin is not configured or media-server sign-in is disabled.
   /auth/jellyfin/quickconnect/authenticate:
     post:
       summary: Authenticate with Quick Connect
-      description: Completes the Quick Connect authentication flow and creates a user session.
+      description: Completes the Quick Connect authentication flow and creates a user session. Returns 403 when media-server sign-in is disabled.
       security: []
       tags:
         - auth
@@ -14506,7 +14556,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/User'
         '403':
-          description: Quick Connect not authorized or access denied
+          description: Quick Connect is not authorized, Jellyfin sign-in is disabled, or access is denied.
         '500':
           description: Authentication failed
   /auth/local:
@@ -15744,6 +15794,16 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Watchlist'
+        '400':
+          $ref: '#/components/responses/ErrorResponse'
+        '401':
+          $ref: '#/components/responses/ErrorResponse'
+        '403':
+          $ref: '#/components/responses/ErrorResponse'
+        '409':
+          $ref: '#/components/responses/ErrorResponse'
+        '500':
+          $ref: '#/components/responses/ErrorResponse'
   /watchlist/{mediaId}:
     delete:
       summary: Delete watchlist item
@@ -24022,7 +24082,7 @@ paths:
   /media:
     get:
       summary: Get media
-      description: Returns all media (can be filtered and limited) in a JSON object.
+      description: Returns media (filterable and paginated). For users with a linked Plex, Jellyfin, or Emby account, movie and TV availability reflects that viewer's verified item and season access; unverified availability is returned as Unknown without changing the stored library scan status.
       tags:
         - media
       parameters:
