@@ -430,6 +430,7 @@ const Swipe = () => {
   useEffect(() => {
     const requestedMediaType = router.query.mediaType;
     if (
+      !router.isReady ||
       !status?.mediaTypes.length ||
       (isSwipeMediaType(requestedMediaType) &&
         status.mediaTypes.includes(requestedMediaType)) ||
@@ -438,7 +439,13 @@ const Swipe = () => {
       return;
     }
     selectMediaType(status.mediaTypes[0]);
-  }, [mediaType, router.query.mediaType, selectMediaType, status?.mediaTypes]);
+  }, [
+    mediaType,
+    router.isReady,
+    router.query.mediaType,
+    selectMediaType,
+    status?.mediaTypes,
+  ]);
 
   const isDatSoftwareCategory =
     status?.softwareCatalogProvider === 'romarr-dat' &&
