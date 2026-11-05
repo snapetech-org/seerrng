@@ -5,6 +5,9 @@ import path from 'node:path';
 import { it } from 'node:test';
 import { readInterfaceThemeFile } from './interfaceThemeFile';
 
+// Retain the native call-through before any runner can reuse a spy object.
+const openFile = fs.openSync.bind(fs);
+
 it('reads bounded UTF-8 theme data and rejects hard links and oversized files', (t) => {
   const directory = fs.mkdtempSync(path.join(tmpdir(), 'seerr-theme-file-'));
   t.after(() => fs.rmSync(directory, { recursive: true, force: true }));
@@ -32,13 +35,13 @@ it(
     const privateFile = path.join(directory, 'private.css');
     fs.writeFileSync(filename, 'safe');
     fs.writeFileSync(privateFile, 'private');
-    const open = fs.openSync;
+    t.after(() => t.mock.restoreAll());
     t.mock.method(fs, 'openSync', (...args: Parameters<typeof fs.openSync>) => {
       if (args[0] === filename) {
         fs.unlinkSync(filename);
         fs.symlinkSync(privateFile, filename);
       }
-      return open(...args);
+      return openFile(...args);
     });
     assert.throws(() => readInterfaceThemeFile(filename, 32));
     assert.equal(fs.readFileSync(privateFile, 'utf8'), 'private');
@@ -52,11 +55,11 @@ it('rejects a replacement regular file and closes the opened descriptor', (t) =>
   const replacement = path.join(directory, 'replacement.css');
   fs.writeFileSync(filename, 'safe');
   fs.writeFileSync(replacement, 'other');
-  const open = fs.openSync;
+  t.after(() => t.mock.restoreAll());
   let descriptor: number | undefined;
   t.mock.method(fs, 'openSync', (...args: Parameters<typeof fs.openSync>) => {
     if (args[0] === filename) fs.renameSync(replacement, filename);
-    descriptor = open(...args);
+    descriptor = openFile(...args);
     return descriptor;
   });
   assert.throws(
