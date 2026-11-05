@@ -40,6 +40,7 @@ For local MCP access, see the [SnapeTech MCP integration guide](./docs/integrati
   - [Configure magazines](./docs/using-seerr/magazines-backend.md)
   - [Movie and series Discover filters](./docs/using-seerr/movie-series-discovery-filters.md)
   - [Per-user movie and TV availability](./docs/using-seerr/media-server-access.md)
+  - [Global Search](./docs/using-seerr/search.md)
   - [Choose request destinations](./docs/using-seerr/settings/services.md#request-destination-label-optional)
   - [Require previous-season watch progress](./docs/using-seerr/settings/general.md#require-the-previous-season-to-be-watched)
   - [Hide subject tags](./docs/using-seerr/media-details-and-playback.md#hide-subject-tags)
@@ -94,6 +95,7 @@ For local MCP access, see the [SnapeTech MCP integration guide](./docs/integrati
 - Administrators can require Jellyfin Quick Connect for Jellyfin sign-in; this disables Jellyfin password and plugin bridge sign-in while leaving Emby, Plex, local, and OpenID Connect sign-in independent. Adapted from Seerr [PR #3315](https://github.com/seerr-team/seerr/pull/3315).
 - **Plex playback links:** use the hosted Plex Web App by default, or configure the full self-hosted web app URL (including a path such as `/web/index.html`) for **Play on Plex** links. See the [Plex settings guide](./docs/using-seerr/settings/mediaserver.mdx#web-app-url-optional). This documentation clarifies Seerr [issue #3220](https://github.com/seerr-team/seerr/issues/3220).
 - Viewer-scoped movie and TV availability checks for linked Plex, Jellyfin, and Emby accounts, including visible seasons and exact request destinations. This SeerrNG adaptation is informed by Seerr [issue #180](https://github.com/seerr-team/seerr/issues/180) and [PR #3296](https://github.com/seerr-team/seerr/pull/3296); it does not change media-server permissions.
+- Unified global Search across enabled media catalogs, including TMDB movie collections that open in SeerrNG's collection detail and request flows.
 - Optional Jellyfin and Emby profile sync during user imports, refreshing linked provider names and avatars while preserving SeerrNG email addresses, local passwords, and permissions.
 - Labeled movie and TV request destinations across multiple Radarr and Sonarr instances, with per-user access and availability tracked for each destination.
 - Temporary Radarr and Sonarr connection or server failures retry automatically with durable, bounded backoff; non-transient failures remain visible for review and manual retry.
