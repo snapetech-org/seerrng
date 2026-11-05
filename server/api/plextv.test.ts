@@ -302,3 +302,77 @@ describe('Plex watchlist page caching guard', () => {
     }
   });
 });
+
+describe('Plex Discover hexadecimal watchlist keys', () => {
+  const key = '5d7768244de0ee001fcc7fed';
+  it('keeps numeric library keys and bounded hexadecimal Discover keys', () => {
+    assert.deepEqual(
+      preparePlexWatchlistRatingKeys([
+        { ratingKey: key },
+        { ratingKey: '123' },
+        { ratingKey: key },
+        { ratingKey: key.toUpperCase() },
+        { ratingKey: '../users' },
+        { ratingKey: `${key}/userState` },
+        { ratingKey: `${key}?x=1` },
+        { ratingKey: 'g'.repeat(24) },
+        { ratingKey: 'a'.repeat(1000) },
+      ]),
+      [key, '123', key.toUpperCase()]
+    );
+  });
+
+  it('hydrates and parses a Discover key and reads its watchlisted timestamp', async () => {
+    const plexTv = new PlexTvAPI('fixture-only-token');
+    type RequestShape = {
+      request: (...args: unknown[]) => Promise<unknown>;
+      getRolling: (...args: unknown[]) => Promise<unknown>;
+    };
+    const client = plexTv as unknown as RequestShape;
+    const requestMock = mock.method(
+      client,
+      'request',
+      async (_method: unknown, path: unknown) => {
+        if (path === '/library/sections/watchlist/all')
+          return {
+            status: 200,
+            headers: { etag: 'hex-key' },
+            data: {
+              MediaContainer: { totalSize: 1, Metadata: [{ ratingKey: key }] },
+            },
+          };
+        assert.equal(path, `/library/metadata/${key}/userState`);
+        return {
+          data: {
+            MediaContainer: { UserState: { watchlistedAt: 1792103400 } },
+          },
+        };
+      }
+    );
+    const details = mock.method(client, 'getRolling', async (path: unknown) => {
+      assert.equal(path, `/library/metadata/${key}`);
+      return {
+        MediaContainer: {
+          Metadata: [
+            {
+              ratingKey: key,
+              type: 'movie',
+              title: 'Watchlist fixture',
+              Guid: [{ id: 'tmdb://101' }],
+            },
+          ],
+        },
+      };
+    });
+    const result = await plexTv.getWatchlist();
+    assert.equal(result.items.length, 1);
+    assert.equal(result.items[0].ratingKey, key);
+    assert.equal(result.items[0].tmdbId, 101);
+    assert.equal(details.mock.callCount(), 1);
+    assert.equal(
+      (await plexTv.getWatchlistedAt(key))?.getTime(),
+      1792103400000
+    );
+    assert.equal(requestMock.mock.callCount(), 2);
+  });
+});
