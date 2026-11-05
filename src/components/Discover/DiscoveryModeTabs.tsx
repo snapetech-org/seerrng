@@ -4,7 +4,6 @@ import defineMessages from '@app/utils/defineMessages';
 import { HeartIcon, SparklesIcon } from '@heroicons/react/24/outline';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
 import { useIntl } from 'react-intl';
 
 export type SwipeContextMediaType =
@@ -143,17 +142,6 @@ const DiscoveryModeTabs = ({
   const intl = useIntl();
   const router = useRouter();
   const { hasPermission } = useUser();
-  const [currentPath, setCurrentPath] = useState<string>();
-
-  useEffect(() => {
-    if (!router.isReady) return;
-
-    const updatePath = () => setCurrentPath(router.asPath);
-    updatePath();
-    router.events.on('routeChangeComplete', updatePath);
-
-    return () => router.events.off('routeChangeComplete', updatePath);
-  }, [router]);
 
   if (
     !hasPermission([Permission.REQUEST, Permission.REQUEST_ADULT], {
@@ -164,9 +152,9 @@ const DiscoveryModeTabs = ({
   }
 
   const apiMediaType = mediaType === 'audiobook' ? 'book' : mediaType;
-  const browsePath =
-    currentPath ??
-    (router.isReady ? router.asPath : canonicalDiscoverPaths[mediaType]);
+  const browsePath = router.isReady
+    ? router.asPath
+    : canonicalDiscoverPaths[mediaType];
   const fallbackSwipePath = {
     pathname: '/swipe',
     query: { mediaType: apiMediaType },
@@ -177,7 +165,9 @@ const DiscoveryModeTabs = ({
       : browsePath;
   const swipeHref =
     selected === 'swipe'
-      ? (currentPath ?? fallbackSwipePath)
+      ? router.isReady
+        ? router.asPath
+        : fallbackSwipePath
       : {
           pathname: '/swipe',
           query: {
