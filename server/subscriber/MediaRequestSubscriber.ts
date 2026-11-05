@@ -331,10 +331,22 @@ const getSeasonYear = (date?: string): number | undefined => {
   return year ? Number(year) : undefined;
 };
 
-const isTransientExternalError = (error: unknown): boolean => {
-  let current: unknown = error;
+function* dispatchErrorCauses(error: unknown): Generator<unknown> {
+  let current = error;
+  const seen = new Set<unknown>();
+  for (
+    let depth = 0;
+    current != null && depth < 8 && !seen.has(current);
+    depth++
+  ) {
+    seen.add(current);
+    yield current;
+    current = current instanceof Error ? current.cause : undefined;
+  }
+}
 
-  while (current) {
+const isTransientExternalError = (error: unknown): boolean => {
+  for (const current of dispatchErrorCauses(error)) {
     const message =
       current instanceof Error ? current.message : String(current);
 
@@ -346,8 +358,6 @@ const isTransientExternalError = (error: unknown): boolean => {
     ) {
       return true;
     }
-
-    current = current instanceof Error ? current.cause : undefined;
   }
 
   return false;
@@ -367,9 +377,7 @@ const isRetryableRequestDispatchError = (error: unknown): boolean => {
     return true;
   }
 
-  let current: unknown = error;
-
-  while (current) {
+  for (const current of dispatchErrorCauses(error)) {
     const message =
       current instanceof Error ? current.message : String(current);
     if (
@@ -379,17 +387,14 @@ const isRetryableRequestDispatchError = (error: unknown): boolean => {
     ) {
       return true;
     }
-
-    current = current instanceof Error ? current.cause : undefined;
   }
 
   return false;
 };
 
 const getRetryAfterMs = (error: unknown): number | undefined => {
-  let current: unknown = error;
-
-  while (current instanceof Error) {
+  for (const current of dispatchErrorCauses(error)) {
+    if (!(current instanceof Error)) continue;
     const response = (
       current as Error & {
         response?: { headers?: Record<string, string | string[] | undefined> };
@@ -411,8 +416,6 @@ const getRetryAfterMs = (error: unknown): number | undefined => {
         return Math.max(retryAfterDate - Date.now(), 0);
       }
     }
-
-    current = current.cause;
   }
 
   return undefined;
