@@ -1,5 +1,6 @@
 import { MediaServerType } from '@server/constants/server';
 import episodeWatchAhead from '@server/lib/episodeWatchAhead';
+import movieCollectionQueues from '@server/lib/movieCollectionQueue';
 import plexPlaybackAnalysis from '@server/lib/plexPlaybackAnalysis';
 import { getSettings } from '@server/lib/settings';
 import logger from '@server/logger';
@@ -42,6 +43,7 @@ describe('scheduled job lifecycle', () => {
   it('schedules the requested episode queue for every supported media server', async () => {
     const settings = getSettings();
     mock.method(episodeWatchAhead, 'run', async () => undefined);
+    mock.method(movieCollectionQueues, 'run', async () => undefined);
     mock.method(plexPlaybackAnalysis, 'run', async () => undefined);
     const previousMediaServerType = settings.main.mediaServerType;
     const previousWatchAheadSchedule =
@@ -67,6 +69,10 @@ describe('scheduled job lifecycle', () => {
         assert.equal(
           scheduledJobs.some((job) => job.id === 'plex-playback-analysis'),
           mediaServerType === MediaServerType.PLEX
+        );
+        assert.equal(
+          scheduledJobs.some((job) => job.id === 'movie-collection-queue'),
+          true
         );
         const watchAheadJob = scheduledJobs.find(
           (job) => job.id === 'jellyfin-watch-ahead'

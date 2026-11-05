@@ -28,6 +28,7 @@ const jobMessages = defineMessages('components.Settings.SettingsJobsCache', {
   'jellyfin-recently-added-scan': 'Jellyfin Recently Added Scan',
   'jellyfin-full-scan': 'Jellyfin Full Library Scan',
   'plex-playback-analysis': 'Plex Playback Analysis',
+  'movie-collection-queue': 'Movie Collection Queue',
   'jellyfin-watch-ahead': 'Requested Episode Queue',
   'image-cache-cleanup': 'Image Cache Cleanup',
   'release-calendar-history': 'Release Calendar History',

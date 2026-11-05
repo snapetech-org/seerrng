@@ -874,6 +874,7 @@ export type JobId =
   | 'download-sync-reset'
   | 'jellyfin-recently-added-scan'
   | 'jellyfin-full-scan'
+  | 'movie-collection-queue'
   | 'jellyfin-watch-ahead'
   | 'plex-playback-analysis'
   | 'image-cache-cleanup'
@@ -1312,6 +1313,7 @@ class Settings {
           schedule: '0 0 3 * * *',
         },
         'plex-playback-analysis': { schedule: '0 * * * * *' },
+        'movie-collection-queue': { schedule: '0 * * * * *' },
         'jellyfin-watch-ahead': {
           schedule: '*/30 * * * * *',
         },
@@ -2376,6 +2378,7 @@ class Settings {
           schedule: '0 0 3 * * *',
         },
         'plex-playback-analysis': { schedule: '0 * * * * *' },
+        'movie-collection-queue': { schedule: '0 * * * * *' },
         'jellyfin-watch-ahead': {
           schedule: '*/30 * * * * *',
         },

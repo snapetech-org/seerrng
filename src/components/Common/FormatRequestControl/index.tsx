@@ -49,8 +49,8 @@ const FormatRequestControl = ({
         className={`format-request-control format-request-control-single ${className ?? ''}`}
       >
         <span className="format-request-single-label">
-          <ArrowDownTrayIcon aria-hidden="true" />
-          {intl.formatMessage(messages.request)}
+          {icon ?? <ArrowDownTrayIcon aria-hidden="true" />}
+          {label ?? intl.formatMessage(messages.request)}
           <span
             data-format-request-part="option-label"
             data-testid={`format-request-option-${option.id}`}
