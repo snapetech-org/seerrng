@@ -167,6 +167,9 @@ const saveEpisodeQueueDefault = async (
       .andWhere('"type" = :type', { type: MediaType.TV })
       .andWhere('"watchAheadParentRequestId" IS NULL')
       .andWhere('"isAutoRequest" = :isAutoRequest', { isAutoRequest: false })
+      .andWhere('"watchAheadUsesUserDefault" = :usesDefault', {
+        usesDefault: true,
+      })
       .execute();
 
     await requests

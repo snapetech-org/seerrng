@@ -273,7 +273,7 @@ describe('administrator-managed Episode Queue defaults', () => {
     assert.equal(manager.episodeQueueAccessRequestedAt, null);
   });
 
-  it('lets only user managers set one default across all of a user’s root TV requests', async () => {
+  it('lets only user managers set one default for default-following requests while preserving per-request overrides', async () => {
     const friendSession = await loginAs('friend@seerr.dev', 'test1234');
     const friend = await getRepository(User).findOneByOrFail({
       email: 'friend@seerr.dev',
@@ -289,7 +289,7 @@ describe('administrator-managed Episode Queue defaults', () => {
         media,
         requestedBy: friend,
         watchAheadEpisodeCount: 1,
-        watchAheadUsesUserDefault: false,
+        watchAheadUsesUserDefault: true,
       })
     );
     const secondRoot = await requestRepository.save(
@@ -354,11 +354,16 @@ describe('administrator-managed Episode Queue defaults', () => {
       status: 'approved',
       defaultEpisodeCount: 3,
     });
-    for (const rootId of [firstRoot.id, secondRoot.id]) {
+    for (const rootId of [firstRoot.id]) {
       const root = await requestRepository.findOneByOrFail({ id: rootId });
       assert.equal(root.watchAheadEpisodeCount, 3);
       assert.equal(root.watchAheadUsesUserDefault, true);
     }
+    const overridden = await requestRepository.findOneByOrFail({
+      id: secondRoot.id,
+    });
+    assert.equal(overridden.watchAheadEpisodeCount, 4);
+    assert.equal(overridden.watchAheadUsesUserDefault, false);
     const autoRequest = await requestRepository.findOneByOrFail({
       id: autoRoot.id,
     });
@@ -389,11 +394,16 @@ describe('administrator-managed Episode Queue defaults', () => {
       status: 'off',
       defaultEpisodeCount: 0,
     });
-    for (const rootId of [firstRoot.id, secondRoot.id]) {
+    for (const rootId of [firstRoot.id]) {
       const root = await requestRepository.findOneByOrFail({ id: rootId });
       assert.equal(root.watchAheadEpisodeCount, 0);
       assert.equal(root.watchAheadUsesUserDefault, true);
     }
+    assert.equal(
+      (await requestRepository.findOneByOrFail({ id: secondRoot.id }))
+        .watchAheadEpisodeCount,
+      4
+    );
     const autoRequestAfterDisable = await requestRepository.findOneByOrFail({
       id: autoRoot.id,
     });

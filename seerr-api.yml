@@ -22825,6 +22825,49 @@ paths:
       responses:
         '204':
           description: Succesfully removed request
+  /request/{requestId}/episode-queue:
+    post:
+      summary: Set an administrator's per-request Episode Queue override
+      description: Changes future queueing only. Existing episode selections and downloaded files are preserved. Send null to follow the owner's account default again.
+      tags: [request]
+      parameters:
+        - in: path
+          name: requestId
+          required: true
+          schema: { type: integer, minimum: 1 }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties: false
+              required: [episodeCount]
+              properties:
+                episodeCount:
+                  type: integer
+                  nullable: true
+                  minimum: 0
+                  maximum: 5
+      responses:
+        '200':
+          description: Saved queue policy
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [episodeCount, usesUserDefault]
+                properties:
+                  episodeCount: { type: integer, minimum: 0, maximum: 5 }
+                  usesUserDefault: { type: boolean }
+        '400':
+          description: Invalid queue policy
+        '403':
+          description: Administrator access required
+        '404':
+          description: Request not found
+        '409':
+          description: Request is ineligible for Episode Queue
   /request/{requestId}/fail-download:
     post:
       summary: Fail an active request download and search again

@@ -8,7 +8,7 @@ description: An administrator can set a per-user buffer of upcoming TV episodes 
 Episode Queue can keep up to five upcoming episodes requested in Sonarr as a
 user watches through Plex, Jellyfin, or Emby. A user manager sets one default
 for each account from **Users → [user] → Profile → Episode Queue**. That default
-applies to all of the user's current and future interactive TV requests. Only users with
+applies to the user's current and future interactive TV requests that follow the account default. Only users with
 user-management permission can see or change the setting. End users cannot
 request access, change the default, or override it for one show.
 
@@ -39,7 +39,7 @@ settings.
 
 A user manager can set **Off** or a buffer of one to five episodes from the
 user's profile. Saving a new value applies it to that user's existing
-interactive root TV requests and future interactive requests. Automatic
+interactive root TV requests that still follow the account default and future interactive requests. Automatic
 full-season requests, such as Plex Watchlist sync, keep their normal behavior
 because they do not have a starting-episode selection. The confirmation
 explains that episodes already requested remain in SeerrNG and Sonarr when the
@@ -54,6 +54,20 @@ controls the queue length.
 Changing the default changes future queueing only. It does not delete episodes
 already created in Sonarr or the media library. Episode Queue never deletes
 downloaded episodes or files.
+
+## Override one request
+
+Administrators can open **Requests → Episode Queue** for a pending, approved,
+or completed interactive TV request. Choose **Off**, one to five episodes, or
+**Account default**, then save. The pending request editor offers the same control.
+An explicit override survives later account-default changes. Returning to
+**Account default** uses the current default and follows future default changes.
+
+A per-request override can enable a buffer while the account default is off.
+The request owner still needs permission for the selected TV quality, and the
+series needs a TVDB identity. Playback linking, destination checks, and request
+approval still apply. Changing this setting preserves the original request owner,
+approval, seasons, watched progress, and existing episode requests.
 
 ## What SeerrNG does
 
