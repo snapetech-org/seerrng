@@ -9,20 +9,22 @@ export class AddEpisodeAvailability1793440362000 implements MigrationInterface {
         CREATE TABLE "episode_availability" (
           "id" SERIAL NOT NULL,
           "episodeNumber" integer NOT NULL,
-          "serviceId" integer NOT NULL,
+          "sourceType" varchar(16) NOT NULL,
+          "sourceId" varchar(80) NOT NULL,
+          "metadataProvider" varchar(16) NOT NULL,
           "externalSeriesId" integer NOT NULL,
           "is4k" boolean NOT NULL DEFAULT false,
           "seasonId" integer NOT NULL,
           CONSTRAINT "PK_EPISODE_AVAILABILITY" PRIMARY KEY ("id"),
           CONSTRAINT "FK_EPISODE_AVAILABILITY_SEASON" FOREIGN KEY ("seasonId") REFERENCES "season" ("id") ON DELETE CASCADE,
-          CONSTRAINT "UNIQUE_EPISODE_AVAILABILITY" UNIQUE ("seasonId", "episodeNumber", "serviceId", "externalSeriesId", "is4k")
+          CONSTRAINT "UNIQUE_EPISODE_AVAILABILITY" UNIQUE ("seasonId", "episodeNumber", "sourceType", "sourceId", "metadataProvider", "externalSeriesId", "is4k")
         )
       `);
       await queryRunner.query(
-        'CREATE INDEX "IDX_EPISODE_AVAILABILITY_SEASON_SERVICE" ON "episode_availability" ("seasonId", "serviceId")'
+        'CREATE INDEX "IDX_EPISODE_AVAILABILITY_SEASON_SOURCE" ON "episode_availability" ("seasonId", "sourceType", "sourceId")'
       );
       await queryRunner.query(
-        'CREATE INDEX "IDX_EPISODE_AVAILABILITY_SERVICE_SERIES" ON "episode_availability" ("serviceId", "externalSeriesId")'
+        'CREATE INDEX "IDX_EPISODE_AVAILABILITY_SOURCE_SERIES" ON "episode_availability" ("sourceType", "sourceId", "metadataProvider", "externalSeriesId")'
       );
     }
   }

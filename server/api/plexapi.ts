@@ -910,6 +910,7 @@ class PlexAPI extends ExternalAPI {
                 existing?.enabled ??
                 false,
               type,
+              episodeOrderProvider: existing?.episodeOrderProvider,
               lastScan: existing?.lastScan,
             };
           }),

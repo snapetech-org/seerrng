@@ -2,6 +2,7 @@ import Badge from '@app/components/Common/Badge';
 import Button from '@app/components/Common/Button';
 import LoadingSpinner from '@app/components/Common/LoadingSpinner';
 import SensitiveInput from '@app/components/Common/SensitiveInput';
+import LibraryEpisodeOrderSettings from '@app/components/Settings/LibraryEpisodeOrderSettings';
 import LibraryItem from '@app/components/Settings/LibraryItem';
 import Field, {
   default as SettingsField,
@@ -18,7 +19,10 @@ import {
   createSettingsLibraryUpdateBody,
   getSettingsLibraryApiPath,
 } from '@server/constants/settingsLibraryApi';
-import type { JellyfinSettings } from '@server/lib/settings';
+import type {
+  JellyfinSettings,
+  MetadataProviderType,
+} from '@server/lib/settings';
 import axios from 'axios';
 import { Formik } from 'formik';
 import { useState } from 'react';
@@ -89,6 +93,7 @@ interface Library {
   name: string;
   enabled: boolean;
   type: 'show' | 'movie' | 'music' | 'book';
+  episodeOrderProvider?: MetadataProviderType;
 }
 
 interface SyncStatus {
@@ -298,6 +303,41 @@ const SettingsJellyfin: React.FC<SettingsJellyfinProps> = ({
     }
   };
 
+  const updateEpisodeOrder = async (
+    libraryId: string,
+    provider: MetadataProviderType | undefined
+  ) => {
+    setIsSyncing(true);
+    try {
+      await axios.post(
+        getSettingsLibraryApiPath('jellyfin'),
+        createSettingsLibraryUpdateBody({
+          enabledLibraryIds: activeLibraries,
+          episodeOrder: {
+            libraryId,
+            provider: provider ?? 'none',
+          },
+        })
+      );
+      await revalidate();
+    } catch {
+      addToast(
+        intl.formatMessage(messages.jellyfinLibraryUpdateFailure, {
+          mediaServerName:
+            settings.currentSettings.mediaServerType === MediaServerType.EMBY
+              ? ServerType.EMBY
+              : ServerType.JELLYFIN,
+        }),
+        {
+          autoDismiss: true,
+          appearance: 'error',
+        }
+      );
+    } finally {
+      setIsSyncing(false);
+    }
+  };
+
   if (!data && !error) {
     return <LoadingSpinner />;
   }
@@ -357,6 +397,11 @@ const SettingsJellyfin: React.FC<SettingsJellyfinProps> = ({
           ))}
         </ul>
       </div>
+      <LibraryEpisodeOrderSettings
+        libraries={data?.libraries ?? []}
+        disabled={isSyncing}
+        onChange={updateEpisodeOrder}
+      />
       <div className="mt-10 mb-6">
         <h3 className="heading">
           <FormattedMessage {...messages.manualscanJellyfin} />

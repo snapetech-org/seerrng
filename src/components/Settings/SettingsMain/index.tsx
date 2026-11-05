@@ -110,7 +110,7 @@ const messages = defineMessages('components.Settings.SettingsMain', {
   enableSpecialEpisodes: 'Allow Special Episodes Requests',
   trackEpisodeAvailability: 'Track Individual Episode Availability',
   trackEpisodeAvailabilityTip:
-    'Record which TV episodes have files in Sonarr during library scans. This makes partially available seasons easier to review. The selected TV or anime metadata provider must be TheTVDB. If the scan has not already fetched episode details, tracking makes one additional episode-list request per series.',
+    'Record which TV episodes have files in Sonarr, Plex, Jellyfin, or Emby during library scans. Sonarr tracking requires TheTVDB. For each media-server TV library, configure its episode numbering order to match the selected TV or anime metadata provider. Incomplete scans keep the last complete results; 4K indicators require Enable 4K.',
   locale: 'Display Language',
   youtubeUrl: 'YouTube URL',
   youtubeUrlTip:

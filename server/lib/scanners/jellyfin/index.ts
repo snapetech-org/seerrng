@@ -3,7 +3,11 @@ import type {
   JellyfinLibraryItem,
   JellyfinLibraryItemExtended,
 } from '@server/api/jellyfin';
-import JellyfinAPI from '@server/api/jellyfin';
+import JellyfinAPI, {
+  MAX_JELLYFIN_EPISODES,
+  MAX_JELLYFIN_LIBRARY_ITEMS,
+  MAX_JELLYFIN_SEASONS,
+} from '@server/api/jellyfin';
 import {
   getMetadataProvider,
   isTheMovieDbProvider,
@@ -25,6 +29,13 @@ import {
   type ConfigurationAuthoritySnapshot,
 } from '@server/lib/configurationAdmission';
 import {
+  getJellyfinEpisodeAvailabilitySourceId,
+  removeMissingEpisodeAvailabilitySeries,
+  syncEpisodeAvailabilityForSeries,
+  type EpisodeAvailabilitySeasonSync,
+  type EpisodeAvailabilitySource,
+} from '@server/lib/episodeAvailability';
+import {
   isValidMusicBrainzResourceId,
   normalizeMusicBrainzId,
 } from '@server/lib/externalIds';
@@ -41,7 +52,7 @@ import type {
 } from '@server/lib/scanners/baseScanner';
 import BaseScanner from '@server/lib/scanners/baseScanner';
 import type { JellyfinSettings, Library } from '@server/lib/settings';
-import { getSettings } from '@server/lib/settings';
+import { MetadataProviderType, getSettings } from '@server/lib/settings';
 import { getHostname } from '@server/utils/getHostname';
 import { uniqWith } from 'lodash';
 
@@ -49,6 +60,27 @@ interface JellyfinSyncStatus extends StatusBase {
   currentLibrary: Library;
   libraries: Library[];
 }
+
+const episodeAvailabilityProviders = Object.values(MetadataProviderType);
+
+interface EpisodeAvailabilityCensus {
+  source: EpisodeAvailabilitySource;
+  presentSeriesIds: Map<MetadataProviderType, Set<number>>;
+  complete: Map<MetadataProviderType, boolean>;
+}
+
+const getJellyfinMetadataProviderId = (
+  metadata: JellyfinLibraryItemExtended,
+  provider: MetadataProviderType
+): number | undefined => {
+  const value =
+    provider === MetadataProviderType.TVDB
+      ? metadata.ProviderIds.Tvdb
+      : metadata.ProviderIds.Tmdb || metadata.ProviderIds.TheMovieDb;
+  if (typeof value !== 'string' || !/^\d+$/.test(value)) return undefined;
+  const id = Number(value);
+  return Number.isSafeInteger(id) && id > 0 ? id : undefined;
+};
 
 export class JellyfinScanner
   extends BaseScanner<JellyfinLibraryItem>
@@ -63,6 +95,7 @@ export class JellyfinScanner
   private configurationSnapshot: ConfigurationAuthoritySnapshot;
   private jellyfinSettingsSnapshot: JellyfinSettings;
   private ownerAuthoritySnapshot: MediaServerUserAuthoritySnapshot;
+  private episodeAvailabilityCensus?: EpisodeAvailabilityCensus;
 
   constructor({ isRecentOnly }: { isRecentOnly?: boolean } = {}) {
     super('Jellyfin Sync');
@@ -295,6 +328,7 @@ export class JellyfinScanner
       const metadata = await this.jfClient.getItemData(Id);
 
       if (!metadata?.Id) {
+        this.markEpisodeAvailabilityCensusIncomplete();
         this.log('No Id metadata for this title. Skipping', 'debug', {
           jellyfinItemId: jellyfinitem.Id,
         });
@@ -353,15 +387,71 @@ export class JellyfinScanner
       if (tvShow) {
         const seasons = tvShow.seasons;
         const jellyfinSeasons = await this.jfClient.getSeasons(Id);
-
+        const jellyfinSeasonsComplete =
+          jellyfinSeasons.length < MAX_JELLYFIN_SEASONS;
         const processableSeasons: ProcessableSeason[] = [];
-
         const settings = getSettings();
+        const isAnime = tvShow.keywords.results.some(
+          (keyword) => keyword.id === ANIME_KEYWORD_ID
+        );
+        const episodeMetadataProvider = isAnime
+          ? settings.metadataSettings.anime
+          : settings.metadataSettings.tv;
+        const tracksEpisodeAvailability = Boolean(
+          settings.main.trackEpisodeAvailability &&
+          this.currentLibrary?.type === 'show' &&
+          this.currentLibrary.episodeOrderProvider === episodeMetadataProvider
+        );
+        if (
+          settings.main.trackEpisodeAvailability &&
+          this.currentLibrary?.type === 'show' &&
+          this.currentLibrary.episodeOrderProvider &&
+          this.currentLibrary.episodeOrderProvider !== episodeMetadataProvider
+        ) {
+          this.markEpisodeAvailabilityCensusIncomplete(
+            this.currentLibrary.episodeOrderProvider
+          );
+        }
+        const sourceType =
+          settings.main.mediaServerType === MediaServerType.EMBY
+            ? 'emby'
+            : 'jellyfin';
+        const episodeAvailabilitySourceId = tracksEpisodeAvailability
+          ? getJellyfinEpisodeAvailabilitySourceId(
+              this.jellyfinSettingsSnapshot,
+              this.currentLibrary!.id,
+              sourceType
+            )
+          : '';
+        const episodeAvailabilitySeriesId = tracksEpisodeAvailability
+          ? getJellyfinMetadataProviderId(metadata, episodeMetadataProvider)
+          : undefined;
+        let episodeAvailabilityComplete = Boolean(
+          episodeAvailabilitySourceId &&
+          episodeAvailabilitySeriesId &&
+          jellyfinSeasonsComplete
+        );
+        const episodeAvailabilitySeasons: EpisodeAvailabilitySeasonSync[] = [];
+
+        if (tracksEpisodeAvailability && !episodeAvailabilityComplete) {
+          this.markEpisodeAvailabilityCensusIncomplete(episodeMetadataProvider);
+        }
+        if (tracksEpisodeAvailability && !jellyfinSeasonsComplete) {
+          this.markEpisodeAvailabilityCensusIncomplete(episodeMetadataProvider);
+        }
+        if (tracksEpisodeAvailability && tvdbSeasonFromAnidb) {
+          episodeAvailabilityComplete = false;
+        }
+
         const filteredSeasons = settings.main.enableSpecialEpisodes
           ? seasons
           : seasons.filter((sn) => sn.season_number !== 0);
 
         for (const season of filteredSeasons) {
+          if (tracksEpisodeAvailability && season.episode_count <= 0) {
+            episodeAvailabilityComplete = false;
+          }
+
           const matchedJellyfinSeason = jellyfinSeasons.find((md) => {
             if (tvdbSeasonFromAnidb) {
               // In AniDB we don't have the concept of seasons,
@@ -381,12 +471,22 @@ export class JellyfinScanner
           if (matchedJellyfinSeason) {
             let totalStandard = 0;
             let total4k = 0;
+            const trackedEpisodes = new Map<
+              string,
+              { episodeNumber: number; is4k: boolean }
+            >();
 
             if (!this.enable4kShow) {
               const episodes = await this.jfClient.getEpisodes(
                 Id,
                 matchedJellyfinSeason.Id
               );
+              if (
+                tracksEpisodeAvailability &&
+                episodes.length >= MAX_JELLYFIN_EPISODES
+              ) {
+                episodeAvailabilityComplete = false;
+              }
 
               for (const episode of episodes) {
                 let episodeCount = 1;
@@ -401,6 +501,33 @@ export class JellyfinScanner
                 }
 
                 totalStandard += episodeCount;
+                if (tracksEpisodeAvailability) {
+                  if (
+                    !Number.isSafeInteger(episode.IndexNumber) ||
+                    episode.IndexNumber! < 1 ||
+                    episodeCount < 1 ||
+                    !Number.isSafeInteger(
+                      episode.IndexNumberEnd ?? episode.IndexNumber
+                    ) ||
+                    (episode.IndexNumberEnd ?? episode.IndexNumber)! <
+                      episode.IndexNumber! ||
+                    episode.IndexNumber! + episodeCount - 1 >
+                      season.episode_count
+                  ) {
+                    episodeAvailabilityComplete = false;
+                    continue;
+                  }
+                  for (
+                    let episodeNumber = episode.IndexNumber!;
+                    episodeNumber < episode.IndexNumber! + episodeCount;
+                    episodeNumber += 1
+                  ) {
+                    trackedEpisodes.set(`${episodeNumber}:false`, {
+                      episodeNumber,
+                      is4k: false,
+                    });
+                  }
+                }
               }
             } else {
               // 4K detection enabled - request media info to check resolution
@@ -409,6 +536,12 @@ export class JellyfinScanner
                 matchedJellyfinSeason.Id,
                 { includeMediaInfo: true }
               );
+              if (
+                tracksEpisodeAvailability &&
+                episodes.length >= MAX_JELLYFIN_EPISODES
+              ) {
+                episodeAvailabilityComplete = false;
+              }
 
               for (const episode of episodes) {
                 let episodeCount = 1;
@@ -448,7 +581,63 @@ export class JellyfinScanner
                 // See issue https://github.com/seerr-team/seerr/issues/1744 for details.
                 if (hasStandard) totalStandard += episodeCount;
                 if (has4k) total4k += episodeCount;
+
+                if (tracksEpisodeAvailability) {
+                  if (
+                    !Number.isSafeInteger(episode.IndexNumber) ||
+                    episode.IndexNumber! < 1 ||
+                    episodeCount < 1 ||
+                    !Number.isSafeInteger(
+                      episode.IndexNumberEnd ?? episode.IndexNumber
+                    ) ||
+                    (episode.IndexNumberEnd ?? episode.IndexNumber)! <
+                      episode.IndexNumber! ||
+                    episode.IndexNumber! + episodeCount - 1 >
+                      season.episode_count ||
+                    !Array.isArray(episode.MediaSources) ||
+                    episode.MediaSources.length === 0
+                  ) {
+                    episodeAvailabilityComplete = false;
+                    continue;
+                  }
+
+                  const videoStreams = episode.MediaSources.flatMap((source) =>
+                    source.MediaStreams.filter(
+                      (stream) => stream.Type === 'Video'
+                    )
+                  );
+                  if (videoStreams.length === 0) {
+                    episodeAvailabilityComplete = false;
+                    continue;
+                  }
+
+                  for (
+                    let episodeNumber = episode.IndexNumber!;
+                    episodeNumber < episode.IndexNumber! + episodeCount;
+                    episodeNumber += 1
+                  ) {
+                    if (hasStandard) {
+                      trackedEpisodes.set(`${episodeNumber}:false`, {
+                        episodeNumber,
+                        is4k: false,
+                      });
+                    }
+                    if (has4k) {
+                      trackedEpisodes.set(`${episodeNumber}:true`, {
+                        episodeNumber,
+                        is4k: true,
+                      });
+                    }
+                  }
+                }
               }
+            }
+
+            if (tracksEpisodeAvailability) {
+              episodeAvailabilitySeasons.push({
+                seasonNumber: season.season_number,
+                episodes: [...trackedEpisodes.values()],
+              });
             }
 
             // With AniDB we can have multiple shows for one season, so we need to save
@@ -480,6 +669,12 @@ export class JellyfinScanner
               episodes: 0,
               episodes4k: 0,
             });
+            if (tracksEpisodeAvailability) {
+              episodeAvailabilitySeasons.push({
+                seasonNumber: season.season_number,
+                episodes: [],
+              });
+            }
           }
         }
 
@@ -498,7 +693,43 @@ export class JellyfinScanner
             outerMutationGuard: (callback) => this.withOwnerAuthority(callback),
           }
         );
+
+        if (tracksEpisodeAvailability) {
+          const resolvedSeriesId = tvShow.id;
+          if (
+            episodeAvailabilityComplete &&
+            episodeAvailabilitySeriesId &&
+            episodeAvailabilitySourceId
+          ) {
+            const source: EpisodeAvailabilitySource = {
+              type: sourceType,
+              id: episodeAvailabilitySourceId,
+            };
+            await this.asyncLock.dispatch(resolvedSeriesId, () =>
+              this.withOwnerAuthority(() =>
+                this.withConfigurationSnapshot(() =>
+                  syncEpisodeAvailabilityForSeries({
+                    source,
+                    metadataProvider: episodeMetadataProvider,
+                    externalSeriesId: episodeAvailabilitySeriesId,
+                    tmdbId: resolvedSeriesId,
+                    seasons: episodeAvailabilitySeasons,
+                  })
+                )
+              )
+            );
+            this.recordEpisodeAvailabilityCensusSeries(
+              episodeMetadataProvider,
+              episodeAvailabilitySeriesId
+            );
+          } else {
+            this.markEpisodeAvailabilityCensusIncomplete(
+              episodeMetadataProvider
+            );
+          }
+        }
       } else {
+        this.markEpisodeAvailabilityCensusIncomplete();
         this.log(
           `No information found for the show: ${metadata.Name}`,
           'debug',
@@ -514,6 +745,7 @@ export class JellyfinScanner
       ) {
         throw e;
       }
+      this.markEpisodeAvailabilityCensusIncomplete();
       this.log(
         `Failed to process Jellyfin item. Id: ${
           jellyfinitem.SeriesId ?? jellyfinitem.SeasonId ?? jellyfinitem.Id
@@ -747,13 +979,25 @@ export class JellyfinScanner
           }
           const libraryType = library.type;
           this.currentLibrary = library;
+          this.beginEpisodeAvailabilityCensus(library);
           // Reset AniDB season tracking per library
           this.processedAnidbSeason = new Map();
           this.log(`Beginning to process library: ${library.name}`, 'info');
-          this.items = await this.withConfigurationSnapshot(() =>
-            this.jfClient.getLibraryContents(library.id, libraryType)
+          const inventory = await this.withConfigurationSnapshot(() =>
+            this.jfClient.getLibraryContentsWithInventory(
+              library.id,
+              libraryType
+            )
           );
+          this.items = inventory.items;
+          if (
+            !inventory.complete ||
+            this.items.length >= MAX_JELLYFIN_LIBRARY_ITEMS
+          ) {
+            this.markEpisodeAvailabilityCensusIncomplete();
+          }
           await this.loop(this.processItem.bind(this), { sessionId });
+          await this.finishEpisodeAvailabilityCensus(true);
         }
       }
 
@@ -766,6 +1010,7 @@ export class JellyfinScanner
     } catch (e) {
       this.log('Sync interrupted', 'error', { errorMessage: e.message });
     } finally {
+      this.episodeAvailabilityCensus = undefined;
       this.endRun(sessionId);
     }
   }
@@ -778,6 +1023,93 @@ export class JellyfinScanner
       currentLibrary: this.currentLibrary,
       libraries: this.libraries,
     };
+  }
+
+  private beginEpisodeAvailabilityCensus(library: Library): void {
+    this.episodeAvailabilityCensus = undefined;
+    const settings = getSettings();
+    if (
+      !settings.main.trackEpisodeAvailability ||
+      library.type !== 'show' ||
+      !library.episodeOrderProvider
+    ) {
+      return;
+    }
+
+    const sourceType =
+      settings.main.mediaServerType === MediaServerType.EMBY
+        ? 'emby'
+        : 'jellyfin';
+    const sourceId = getJellyfinEpisodeAvailabilitySourceId(
+      this.jellyfinSettingsSnapshot,
+      library.id,
+      sourceType
+    );
+    if (!sourceId) return;
+
+    this.episodeAvailabilityCensus = {
+      source: { type: sourceType, id: sourceId },
+      presentSeriesIds: new Map(
+        episodeAvailabilityProviders.map((provider) => [provider, new Set()])
+      ),
+      complete: new Map(
+        episodeAvailabilityProviders.map((provider) => [
+          provider,
+          provider === library.episodeOrderProvider,
+        ])
+      ),
+    };
+  }
+
+  private markEpisodeAvailabilityCensusIncomplete(
+    provider?: MetadataProviderType
+  ): void {
+    if (!this.episodeAvailabilityCensus) return;
+
+    if (provider) {
+      this.episodeAvailabilityCensus.complete.set(provider, false);
+      return;
+    }
+
+    for (const metadataProvider of episodeAvailabilityProviders) {
+      this.episodeAvailabilityCensus.complete.set(metadataProvider, false);
+    }
+  }
+
+  private recordEpisodeAvailabilityCensusSeries(
+    provider: MetadataProviderType,
+    externalSeriesId: number
+  ): void {
+    const series =
+      this.episodeAvailabilityCensus?.presentSeriesIds.get(provider);
+    if (
+      series &&
+      Number.isSafeInteger(externalSeriesId) &&
+      externalSeriesId > 0
+    ) {
+      series.add(externalSeriesId);
+    }
+  }
+
+  private async finishEpisodeAvailabilityCensus(
+    confirmedInventoryComplete: boolean
+  ): Promise<void> {
+    const census = this.episodeAvailabilityCensus;
+    this.episodeAvailabilityCensus = undefined;
+    if (!census || !confirmedInventoryComplete) return;
+
+    await this.withOwnerAuthority(() =>
+      this.withConfigurationSnapshot(async () => {
+        for (const provider of episodeAvailabilityProviders) {
+          await removeMissingEpisodeAvailabilitySeries(
+            census.source,
+            provider,
+            [...(census.presentSeriesIds.get(provider) ?? [])],
+            census.complete.get(provider) === true
+          );
+        }
+      })
+    );
   }
 
   private withConfigurationSnapshot<Result>(

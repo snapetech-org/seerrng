@@ -1,3 +1,4 @@
+import type { MetadataProviderType } from '@server/lib/settings';
 import {
   Column,
   Entity,
@@ -9,17 +10,28 @@ import {
 } from 'typeorm';
 import Season from './Season';
 
-/** A row represents one episode with a file on a specific Sonarr instance. */
+export type EpisodeAvailabilitySourceType =
+  'sonarr' | 'plex' | 'jellyfin' | 'emby';
+
+/** A row represents one episode with a file reported by one configured source. */
 @Entity('episode_availability')
-@Index('IDX_EPISODE_AVAILABILITY_SEASON_SERVICE', ['season', 'serviceId'])
-@Index('IDX_EPISODE_AVAILABILITY_SERVICE_SERIES', [
-  'serviceId',
+@Index('IDX_EPISODE_AVAILABILITY_SEASON_SOURCE', [
+  'season',
+  'sourceType',
+  'sourceId',
+])
+@Index('IDX_EPISODE_AVAILABILITY_SOURCE_SERIES', [
+  'sourceType',
+  'sourceId',
+  'metadataProvider',
   'externalSeriesId',
 ])
 @Unique('UNIQUE_EPISODE_AVAILABILITY', [
   'season',
   'episodeNumber',
-  'serviceId',
+  'sourceType',
+  'sourceId',
+  'metadataProvider',
   'externalSeriesId',
   'is4k',
 ])
@@ -30,8 +42,14 @@ class EpisodeAvailability {
   @Column({ type: 'int' })
   public episodeNumber: number;
 
-  @Column({ type: 'int' })
-  public serviceId: number;
+  @Column({ type: 'varchar', length: 16 })
+  public sourceType: EpisodeAvailabilitySourceType;
+
+  @Column({ type: 'varchar', length: 80 })
+  public sourceId: string;
+
+  @Column({ type: 'varchar', length: 16 })
+  public metadataProvider: MetadataProviderType;
 
   @Column({ type: 'int' })
   public externalSeriesId: number;

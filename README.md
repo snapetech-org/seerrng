@@ -106,7 +106,7 @@ For local MCP access, see the [SnapeTech MCP integration guide](./docs/integrati
 - SeerrNG [PR #446](https://github.com/snapetech-org/seerrng/pull/446) proposes bounded, paginated Servarr queue tracking with refresh-completion checks and a per-service Download Queue Size control. It covers 10–10,000 items per service, defaults to 1,000, and keeps recovery on strict complete snapshots. Source context: closed, unmerged Seerr [PR #3473](https://github.com/seerr-team/seerr/pull/3473) and open Seerr [PR #3535](https://github.com/seerr-team/seerr/pull/3535).
 - Notifications for email, Discord, Slack, Telegram, Gotify, ntfy, Pushover, Pushbullet, Apprise, Web Push, and custom webhooks, with provider-specific poster, priority, sound, and email transport options documented in the [notification guides](./docs/using-seerr/notifications/index.mdx).
 - Sonarr v5 support alongside v3/v4, including metadata-language and season-order options with explicit season mapping for recovery. Scans account for both TVDB and resolved TMDB identity, distinguish confirmed absence from incomplete or failed checks, and reconcile abandoned processing seasons and request selections only after relevant configured servers finish.
-- Optional per-episode Sonarr file availability on TV season pages, kept separate from media-server playback access.
+- Optional per-episode file availability from Sonarr, Plex, Jellyfin, and Emby on TV season pages. Badges preserve source and standard/4K distinctions; media-server library episode order must match the selected TV or anime metadata provider. File presence remains separate from per-user playback access. See [individual episode availability](./docs/using-seerr/individual-episode-availability.md).
 - An optional TV request gate that checks whether the previous regular season was watched through a linked Plex, Jellyfin, or Emby account.
 - Administrator-managed family controls: separate movie and TV rating limits for each account, plus an optional family age gate with a configurable default that filters Adult, explicit, and mature-tagged titles across supported media categories.
 - Admin-configured Prowlarr connection, per-indexer diagnostics, category coverage, and format-aware manual search across movies, TV, music, books, comics, magazines, ROMs, and PC games, with title-prefilled search links from media details; approved requests still go through their configured acquisition providers.
@@ -225,6 +225,13 @@ Recent repository updates include:
 - **TMDB details:** Movie and series detail pages remain usable when optional
   appended sections such as credits, keywords, content ratings, or provider
   results are missing from a response.
+- **Episode availability:** optional per-episode file indicators from Sonarr
+  and media-server libraries, with independent source reconciliation and
+  standard/4K state. Sonarr uses TVDB order; Plex, Jellyfin, and Emby libraries
+  require an explicit numbering-order choice that matches the active TV or
+  anime metadata provider. These indicators describe scanned file presence,
+  not a user's access or ability to play the file. See the
+  [setup and behavior guide](./docs/using-seerr/individual-episode-availability.md).
 - **Integrations:** MusicBrainz and Cover Art Archive connectivity checks with
   bounded artwork traffic controls; outbound proxy routing for Cover Art
   Archive and Steam library clients; and a preview-first BookshelfNG to

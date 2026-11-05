@@ -54,6 +54,11 @@ import {
   runWithConfigurationAdmissions,
 } from '@server/lib/configurationAdmission';
 import { parseDownloadPathMappings } from '@server/lib/downloadPathMappings';
+import {
+  clearEpisodeAvailabilityForSource,
+  getJellyfinEpisodeAvailabilitySourceId,
+  getPlexEpisodeAvailabilitySourceId,
+} from '@server/lib/episodeAvailability';
 import ImageProxy from '@server/lib/imageproxy';
 import { assertNoSymlinkDirectoryComponents } from '@server/lib/pathSecurity';
 import {
@@ -72,7 +77,7 @@ import type {
   PlexSettings,
   TautulliSettings,
 } from '@server/lib/settings';
-import { getSettings } from '@server/lib/settings';
+import { MetadataProviderType, getSettings } from '@server/lib/settings';
 import logger from '@server/logger';
 import { isAuthenticated } from '@server/middleware/auth';
 import {
@@ -264,6 +269,39 @@ const parseEnableList = (value: unknown) => {
           .map((id) => id.trim())
           .filter(Boolean)
       : [],
+  };
+};
+
+const parseLibraryEpisodeOrderUpdate = (body: Record<string, unknown>) => {
+  const libraryId = body.episodeOrderLibraryId;
+  const provider = body.episodeOrderProvider;
+  if (libraryId === undefined && provider === undefined) {
+    return { value: undefined };
+  }
+  if (libraryId === undefined || provider === undefined) {
+    return { error: 'Library ID and episode order must be provided together.' };
+  }
+
+  const parsedLibraryId = parseBoundedString(libraryId, {
+    fieldName: 'Episode order library ID',
+    maxLength: MAX_SETTINGS_PATH_ID_LENGTH,
+  });
+  if ('error' in parsedLibraryId) return parsedLibraryId;
+
+  const parsedProvider = parseOptionalAllowedString(provider, {
+    fieldName: 'Episode order provider',
+    allowedValues: ['none', 'tmdb', 'tvdb'] as const,
+    maxLength: 16,
+  });
+  if ('error' in parsedProvider || !parsedProvider.value) {
+    return { error: 'Episode order must be none, tmdb, or tvdb.' };
+  }
+
+  return {
+    value: {
+      libraryId: parsedLibraryId.value,
+      provider: parsedProvider.value,
+    },
   };
 };
 
@@ -1756,6 +1794,7 @@ settingsRoutes.post(
     return runWithConfigurationAdmission('plex', async () => {
       const userRepository = getRepository(User);
       const settings = getSettings();
+      const previousPlexSettings = structuredClone(settings.plex);
       const parsedPlex = parsePlexSettingsBody(parsedBody.value, settings.plex);
       if ('error' in parsedPlex) {
         return res.status(400).json({ message: parsedPlex.error });
@@ -1778,24 +1817,55 @@ settingsRoutes.post(
           throw new Error('Server not found');
         }
 
-        await settings.persistSection('plex', (current) => ({
-          ...parsedPlex.value,
-          // A different machineId means this connection now points at a
-          // different physical Plex server. Stored library ids are only
-          // meaningful within one server (Plex reuses small sequential
-          // keys across installs), so carrying them over risks silently
-          // applying a stale enabled/type classification to an unrelated
-          // library on the new server. Only preserve libraries when we're
-          // re-confirming the same server (or connecting for the first
-          // time, when current.machineId is unset).
-          libraries:
-            current.machineId &&
-            current.machineId !== result.MediaContainer.machineIdentifier
-              ? []
-              : current.libraries,
-          machineId: result.MediaContainer.machineIdentifier,
-          name: result.MediaContainer.friendlyName,
-        }));
+        const updatedPlexSettings = await settings.persistSection(
+          'plex',
+          (current) => ({
+            ...parsedPlex.value,
+            // A different machineId means this connection now points at a
+            // different physical Plex server. Stored library ids are only
+            // meaningful within one server (Plex reuses small sequential
+            // keys across installs), so carrying them over risks silently
+            // applying a stale enabled/type classification to an unrelated
+            // library on the new server. Only preserve libraries when we're
+            // re-confirming the same server (or connecting for the first
+            // time, when current.machineId is unset).
+            libraries:
+              current.machineId &&
+              current.machineId !== result.MediaContainer.machineIdentifier
+                ? []
+                : current.libraries,
+            machineId: result.MediaContainer.machineIdentifier,
+            name: result.MediaContainer.friendlyName,
+          })
+        );
+
+        for (const library of previousPlexSettings.libraries) {
+          if (library.type !== 'show') continue;
+          const previousSourceId = getPlexEpisodeAvailabilitySourceId(
+            previousPlexSettings,
+            library.id
+          );
+          const nextSourceId = getPlexEpisodeAvailabilitySourceId(
+            updatedPlexSettings,
+            library.id
+          );
+          if (previousSourceId === nextSourceId) continue;
+          try {
+            await clearEpisodeAvailabilityForSource({
+              type: 'plex',
+              id: previousSourceId,
+            });
+          } catch (error) {
+            logger.warn(
+              'Unable to clear episode availability for the previous Plex server.',
+              {
+                libraryId: library.id,
+                errorMessage:
+                  error instanceof Error ? error.message : String(error),
+              }
+            );
+          }
+        }
       } catch (e) {
         logger.error('Something went wrong testing Plex connection', {
           label: 'API',
@@ -1892,10 +1962,20 @@ settingsRoutes.post(
     if ('error' in enabledLibraries) {
       return res.status(400).json({ message: enabledLibraries.error });
     }
+    const episodeOrder = parseLibraryEpisodeOrderUpdate(parsedBody.value);
+    if ('error' in episodeOrder) {
+      return res.status(400).json({ message: episodeOrder.error });
+    }
+    if (sync.value && episodeOrder.value) {
+      return res.status(400).json({
+        message: 'Library sync and episode order updates must be separate.',
+      });
+    }
 
     return runWithConfigurationAdmission('plex', async () => {
       const settings = getSettings();
       if (sync.value) {
+        const previousSettings = structuredClone(settings.plex);
         const userRepository = getRepository(User);
         const admin = await userRepository.findOneOrFail({
           select: { id: true, plexToken: true },
@@ -1904,18 +1984,110 @@ settingsRoutes.post(
         const plexapi = new PlexAPI({ plexToken: admin.plexToken });
 
         const libraries = await plexapi.syncLibraries({
-          enabledLibraryIds: enabledLibraries.value,
+          enabledLibraryIds:
+            parsedBody.value.enable === undefined
+              ? undefined
+              : enabledLibraries.value,
         });
+        for (const previousLibrary of previousSettings.libraries) {
+          if (previousLibrary.type !== 'show') continue;
+          const nextLibrary = libraries.find(
+            (library) => library.id === previousLibrary.id
+          );
+          if (
+            nextLibrary?.enabled &&
+            nextLibrary.type === 'show' &&
+            nextLibrary.episodeOrderProvider ===
+              previousLibrary.episodeOrderProvider
+          ) {
+            continue;
+          }
+
+          try {
+            await clearEpisodeAvailabilityForSource({
+              type: 'plex',
+              id: getPlexEpisodeAvailabilitySourceId(
+                previousSettings,
+                previousLibrary.id
+              ),
+            });
+          } catch (error) {
+            logger.warn('Unable to clear retired Plex episode availability.', {
+              libraryId: previousLibrary.id,
+              errorMessage:
+                error instanceof Error ? error.message : String(error),
+            });
+          }
+        }
         return res.status(200).json(libraries);
       }
 
+      const previousLibraries = structuredClone(settings.plex.libraries);
+      if (
+        episodeOrder.value &&
+        !previousLibraries.some(
+          (library) =>
+            library.id === episodeOrder.value!.libraryId &&
+            library.type === 'show'
+        )
+      ) {
+        return res.status(400).json({
+          message: 'Episode order can only be set for an existing TV library.',
+        });
+      }
       const plex = await settings.persistSection('plex', (current) => ({
         ...current,
-        libraries: current.libraries.map((library) => ({
-          ...library,
-          enabled: enabledLibraries.value.includes(library.id),
-        })),
+        libraries: current.libraries.map((library) => {
+          const nextLibrary = {
+            ...library,
+            enabled:
+              parsedBody.value.enable === undefined
+                ? library.enabled
+                : enabledLibraries.value.includes(library.id),
+          };
+          if (episodeOrder.value?.libraryId === library.id) {
+            nextLibrary.episodeOrderProvider =
+              episodeOrder.value.provider === 'tmdb'
+                ? MetadataProviderType.TMDB
+                : episodeOrder.value.provider === 'tvdb'
+                  ? MetadataProviderType.TVDB
+                  : undefined;
+          }
+          return nextLibrary;
+        }),
       }));
+
+      for (const previousLibrary of previousLibraries) {
+        if (previousLibrary.type !== 'show') continue;
+        const nextLibrary = plex.libraries.find(
+          (library) => library.id === previousLibrary.id
+        );
+        if (
+          nextLibrary?.enabled &&
+          nextLibrary.type === 'show' &&
+          nextLibrary.episodeOrderProvider ===
+            previousLibrary.episodeOrderProvider
+        ) {
+          continue;
+        }
+
+        const sourceId = getPlexEpisodeAvailabilitySourceId(
+          settings.plex,
+          previousLibrary.id
+        );
+        try {
+          await clearEpisodeAvailabilityForSource({
+            type: 'plex',
+            id: sourceId,
+          });
+        } catch (error) {
+          logger.warn('Unable to clear retired Plex episode availability.', {
+            libraryId: previousLibrary.id,
+            errorMessage:
+              error instanceof Error ? error.message : String(error),
+          });
+        }
+      }
       return res.status(200).json(plex.libraries);
     });
   })
@@ -2096,6 +2268,7 @@ settingsRoutes.post(
     return runWithConfigurationAdmission('jellyfin', async () => {
       const userRepository = getRepository(User);
       const settings = getSettings();
+      const previousJellyfinSettings = structuredClone(settings.jellyfin);
       const preservedBody = preserveConnectionApiKey(
         parsedBody.value,
         settings.jellyfin.apiKey
@@ -2123,26 +2296,64 @@ settingsRoutes.post(
 
         const result = await jellyfinClient.getSystemInfo();
 
-        await settings.persistSection('jellyfin', (current) => ({
-          ...parsedJellyfin.value,
-          // A redacted API key means "keep the persisted value", not "keep
-          // the value that happened to be loaded before the connection test".
-          // Rebase it after the settings file is refreshed under its lock so
-          // a concurrent rotation cannot be undone.
-          apiKey:
-            parsedBody.value.apiKey === REDACTED_SECRET
-              ? current.apiKey
-              : parsedJellyfin.value.apiKey,
-          // See the analogous Plex machineId check above: a different
-          // serverId means a different physical server, so stale library
-          // ids must not carry over their enabled state to it.
-          libraries:
-            current.serverId && current.serverId !== result.Id
-              ? []
-              : current.libraries,
-          serverId: result.Id,
-          name: result.ServerName,
-        }));
+        const updatedJellyfinSettings = await settings.persistSection(
+          'jellyfin',
+          (current) => ({
+            ...parsedJellyfin.value,
+            // A redacted API key means "keep the persisted value", not "keep
+            // the value that happened to be loaded before the connection test".
+            // Rebase it after the settings file is refreshed under its lock so
+            // a concurrent rotation cannot be undone.
+            apiKey:
+              parsedBody.value.apiKey === REDACTED_SECRET
+                ? current.apiKey
+                : parsedJellyfin.value.apiKey,
+            // See the analogous Plex machineId check above: a different
+            // serverId means a different physical server, so stale library
+            // ids must not carry over their enabled state to it.
+            libraries:
+              current.serverId && current.serverId !== result.Id
+                ? []
+                : current.libraries,
+            serverId: result.Id,
+            name: result.ServerName,
+          })
+        );
+
+        const sourceType =
+          settings.main.mediaServerType === MediaServerType.EMBY
+            ? 'emby'
+            : 'jellyfin';
+        for (const library of previousJellyfinSettings.libraries) {
+          if (library.type !== 'show') continue;
+          const previousSourceId = getJellyfinEpisodeAvailabilitySourceId(
+            previousJellyfinSettings,
+            library.id,
+            sourceType
+          );
+          const nextSourceId = getJellyfinEpisodeAvailabilitySourceId(
+            updatedJellyfinSettings,
+            library.id,
+            sourceType
+          );
+          if (previousSourceId === nextSourceId) continue;
+          try {
+            await clearEpisodeAvailabilityForSource({
+              type: sourceType,
+              id: previousSourceId,
+            });
+          } catch (error) {
+            logger.warn(
+              'Unable to clear episode availability for the previous media server.',
+              {
+                libraryId: library.id,
+                sourceType,
+                errorMessage:
+                  error instanceof Error ? error.message : String(error),
+              }
+            );
+          }
+        }
       } catch (e) {
         if (e instanceof ApiError) {
           logger.error('Something went wrong testing Jellyfin connection', {
@@ -2199,9 +2410,32 @@ settingsRoutes.post(
     if ('error' in enabledLibraries) {
       return res.status(400).json({ message: enabledLibraries.error });
     }
+    const episodeOrder = parseLibraryEpisodeOrderUpdate(parsedBody.value);
+    if ('error' in episodeOrder) {
+      return res.status(400).json({ message: episodeOrder.error });
+    }
+    if (sync.value && episodeOrder.value) {
+      return res.status(400).json({
+        message: 'Library sync and episode order updates must be separate.',
+      });
+    }
 
     return runWithConfigurationAdmission('jellyfin', async () => {
       const settings = getSettings();
+      const previousSettings = structuredClone(settings.jellyfin);
+      const previousLibraries = previousSettings.libraries;
+      if (
+        episodeOrder.value &&
+        !previousLibraries.some(
+          (library) =>
+            library.id === episodeOrder.value!.libraryId &&
+            library.type === 'show'
+        )
+      ) {
+        return res.status(400).json({
+          message: 'Episode order can only be set for an existing TV library.',
+        });
+      }
       let synchronizedLibraries: Library[] | undefined;
 
       if (sync.value) {
@@ -2251,6 +2485,7 @@ settingsRoutes.post(
             enabled: existing?.enabled ?? false,
             type: library.type,
             lastScan: existing?.lastScan,
+            episodeOrderProvider: existing?.episodeOrderProvider,
           };
         });
 
@@ -2262,10 +2497,64 @@ settingsRoutes.post(
         libraries: (synchronizedLibraries ?? current.libraries).map(
           (library) => ({
             ...library,
-            enabled: enabledLibraries.value.includes(library.id),
+            enabled:
+              parsedBody.value.enable === undefined
+                ? library.enabled
+                : enabledLibraries.value.includes(library.id),
+            ...(episodeOrder.value?.libraryId === library.id
+              ? {
+                  episodeOrderProvider:
+                    episodeOrder.value.provider === 'tmdb'
+                      ? MetadataProviderType.TMDB
+                      : episodeOrder.value.provider === 'tvdb'
+                        ? MetadataProviderType.TVDB
+                        : undefined,
+                }
+              : {}),
           })
         ),
       }));
+
+      const sourceType =
+        settings.main.mediaServerType === MediaServerType.EMBY
+          ? 'emby'
+          : 'jellyfin';
+      for (const previousLibrary of previousLibraries) {
+        if (previousLibrary.type !== 'show') continue;
+        const nextLibrary = jellyfin.libraries.find(
+          (library) => library.id === previousLibrary.id
+        );
+        if (
+          nextLibrary?.enabled &&
+          nextLibrary.type === 'show' &&
+          nextLibrary.episodeOrderProvider ===
+            previousLibrary.episodeOrderProvider
+        ) {
+          continue;
+        }
+
+        const sourceId = getJellyfinEpisodeAvailabilitySourceId(
+          previousSettings,
+          previousLibrary.id,
+          sourceType
+        );
+        try {
+          await clearEpisodeAvailabilityForSource({
+            type: sourceType,
+            id: sourceId,
+          });
+        } catch (error) {
+          logger.warn(
+            'Unable to clear retired media-server episode availability.',
+            {
+              libraryId: previousLibrary.id,
+              sourceType,
+              errorMessage:
+                error instanceof Error ? error.message : String(error),
+            }
+          );
+        }
+      }
       return res.status(200).json(jellyfin.libraries);
     });
   })
