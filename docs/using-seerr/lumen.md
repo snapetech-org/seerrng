@@ -8,7 +8,9 @@ sidebar_position: 12
 
 Lumen is a separate, simpler front end for SeerrNG. It has the screens your users
 actually use: Discover, Movies, Series, Books, Audiobooks, Search, Requests and
-their profile. It works well on phones, and **Watch on Plex** opens the Plex app.
+their profile. It works well on phones, and **Watch on Plex** offers a link to the
+Plex app on supported phones and tablets. App handoff depends on the installed
+Plex app and device settings; a browser link is also available.
 
 Lumen doesn't replace SeerrNG. It runs **in front of** SeerrNG and only talks to
 SeerrNG's API.
@@ -263,6 +265,10 @@ Find your proxy's address:
   `<folder name>_default`, for example `seerrng_default`. You'll get something like
   `172.18.0.0/16`.
 
+Prefer the proxy container's fixed address on a dedicated network when possible.
+Trusting a whole Docker subnet also trusts every other container on that network
+to report visitor identities. Keep untrusted containers off that network.
+
 Then set it on the Lumen service and run `docker compose up -d` again:
 
 ```yaml
@@ -300,10 +306,12 @@ SeerrNG treats all your users as one visitor, and a few wrong passwords can lock
 out everyone for a while.
 
 With Trust Reverse Proxy on, SeerrNG believes whatever sits directly in front of
-it. So keep SeerrNG's own port (5055) off the internet: don't port-forward it, and
-don't point a public tunnel at it. Using it from your home network is fine. For a
-fully locked-down setup, publish it as `127.0.0.1:5055:5055` (this machine only),
-and use it from that machine or over SSH.
+it. Direct clients reaching SeerrNG can therefore supply forwarding headers too,
+including clients on your home network. Keep SeerrNG's own port (5055) off the
+internet and restrict direct access to trusted administrators: don't port-forward
+it or point a public tunnel at it. To allow access only from the Docker host,
+publish it as `127.0.0.1:5055:5055` and use it from that machine or over SSH.
+Lumen still reaches SeerrNG over their shared Docker network.
 
 ## Admin defaults for everyone (optional)
 
@@ -406,6 +414,7 @@ SeerrNG is seeing every user as one address. Turn on **Trust Reverse Proxy**
 Docker needs Git to build from a GitHub address, and some NAS systems don't have it.
 Download the repository instead (`git clone https://github.com/snapetech-org/seerrng.git`,
 or **Code → Download ZIP** on GitHub and unzip it) into the folder with `compose.yaml`.
+If using the ZIP download, rename the extracted folder to `seerrng`.
 Then change the `build:` line to `build: ./seerrng/lumen`.
 
 **Watch on Plex opens the Plex home screen instead of the title.**
