@@ -1384,7 +1384,7 @@ authRoutes.post('/jellyfin', authRateLimit, async (req, res, next) => {
                   : undefined);
 
               // Check if user is admin on jellyfin
-              if (account.User.Policy.IsAdministrator === false) {
+              if (account.User.Policy?.IsAdministrator !== true) {
                 throw new ApiError(403, ApiErrorCode.NotAdmin);
               }
 
