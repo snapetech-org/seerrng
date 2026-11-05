@@ -1,0 +1,53 @@
+# SeerrNG with Lumen in front of it.
+#
+#   Lumen     http://<this-machine>:5080   what everyone uses: discover, request, track requests
+#   SeerrNG   http://<this-machine>:5055   full SeerrNG, for setup and admin settings
+#
+# Start:   docker compose up -d
+# Update:  docker compose pull --ignore-buildable && docker compose build --pull && docker compose up -d
+#
+# Step-by-step guide: docs/using-seerr/lumen.md in the SeerrNG repository.
+# Already running SeerrNG? Delete the seerrng service below (and the depends_on lines under lumen),
+# then point SEERR_URL at your existing SeerrNG.
+
+services:
+  seerrng:
+    image: ghcr.io/snapetech-org/seerrng:latest
+    container_name: seerrng
+    environment:
+      LOG_LEVEL: info
+      PORT: 5055
+      TZ: Etc/UTC # your time zone, e.g. America/New_York or Europe/London
+    ports:
+      # Full SeerrNG for admins. Keep it on your home network; don't forward it to the internet.
+      - 5055:5055
+    volumes:
+      # SeerrNG's settings and database. The folder must be writable by user 1000:1000.
+      - ./seerrng-config:/app/config
+    restart: unless-stopped
+
+  lumen:
+    # Built from the SeerrNG repository the first time you start it (takes a few minutes).
+    build: https://github.com/snapetech-org/seerrng.git#main:lumen
+    image: seerrng-lumen:local
+    container_name: lumen
+    depends_on:
+      - seerrng
+    environment:
+      # How Lumen reaches SeerrNG. The service name works because both are in this file.
+      SEERR_URL: http://seerrng:5055
+      # The address people use to open full SeerrNG in their browser. Lumen sends them here for
+      # pages it doesn't have (settings, users, issues). Change localhost to this machine's
+      # address or hostname, e.g. http://192.168.1.50:5055 or https://seerr.example.com
+      SEERR_FULL_URL: http://localhost:5055
+      # Only if a reverse proxy or tunnel sits in front of Lumen: its address or subnet.
+      # See "Put Lumen behind your reverse proxy or tunnel" in the guide. Leave empty otherwise.
+      LUMEN_TRUSTED_PROXIES: ''
+      LUMEN_REAL_IP_HEADER: X-Forwarded-For
+    ports:
+      - 5080:80
+    # Optional admin defaults for every user (see lumen/public/lumen-config.example.json).
+    # Create the file first, then remove the # from the two lines below.
+    # volumes:
+    #   - ./lumen-config.json:/usr/share/nginx/html/lumen-config.json:ro
+    restart: unless-stopped
