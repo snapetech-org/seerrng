@@ -99,6 +99,7 @@ COPY --chown=node:node public ./public
 COPY --chown=node:node scripts/export-external-config.mjs ./scripts/export-external-config.mjs
 COPY --chown=node:node scripts/healthcheck.mjs ./scripts/healthcheck.mjs
 COPY --chown=node:node deploy/seerrng-migrate.mjs ./deploy/seerrng-migrate.mjs
+COPY --chown=node:node scripts/interface-theme.mjs ./scripts/interface-theme.mjs
 COPY --chown=node:node --from=prod-deps /app/node_modules ./node_modules
 COPY --chown=node:node --from=build /app/.next ./.next
 COPY --chown=node:node --from=build /app/dist ./dist

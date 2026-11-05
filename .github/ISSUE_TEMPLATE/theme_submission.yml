@@ -1,0 +1,77 @@
+name: Community theme submission
+description: Share an independently styled SeerrNG theme for review.
+title: '[Theme]: '
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Share source and a reproducible `.seerrtheme` package. This form requests
+        review; it does not install or approve a theme automatically.
+        Read [the guide](https://github.com/snapetech-org/seerrng/blob/main/docs/interface-themes/submitting.md).
+  - type: input
+    id: identity
+    attributes:
+      label: Theme name, package ID and version
+      placeholder: My Cinema / my-cinema / 0.1.0
+    validations:
+      required: true
+  - type: input
+    id: source
+    attributes:
+      label: Source repository and immutable tag or commit
+    validations:
+      required: true
+  - type: textarea
+    id: package
+    attributes:
+      label: Package and SHA-256 checksum URLs
+      description: Link the generated .seerrtheme and .sha256 files, plus the checksum text.
+    validations:
+      required: true
+  - type: input
+    id: license
+    attributes:
+      label: License and base-theme attribution
+    validations:
+      required: true
+  - type: dropdown
+    id: layout
+    attributes:
+      label: Native composition
+      options:
+        - Persius
+        - Classic
+    validations:
+      required: true
+  - type: textarea
+    id: compatibility
+    attributes:
+      label: Tested SeerrNG releases, browsers and enabled services
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Screenshots, viewports and interaction results
+      description: Include desktop/phone and light/dark examples. Identify any mocked previews.
+    validations:
+      required: true
+  - type: textarea
+    id: limits
+    attributes:
+      label: Known limitations and untested states
+    validations:
+      required: true
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Submission checks
+      options:
+        - label: The source and packaged file both pass interface-theme:validate.
+          required: true
+        - label: The checksum matches the attached package and source release.
+          required: true
+        - label: I tested installation and account selection in SeerrNG without a UI-rewriting proxy.
+          required: true
+        - label: I retained applicable license notices and listed any untested or unsupported flows.
+          required: true

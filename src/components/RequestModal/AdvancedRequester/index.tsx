@@ -187,6 +187,7 @@ type RequestUser = Pick<
   | 'jellyfinUsername'
   | 'permissions'
   | 'plexId'
+  | 'tvSeasonWatchGateStatus'
 >;
 
 type ClientUserResultsResponse = PaginatedResponse & {
