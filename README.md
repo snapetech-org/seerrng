@@ -30,6 +30,7 @@ For local MCP access, see the [SnapeTech MCP integration guide](./docs/integrati
   - [Move between Seerr and SeerrNG](./docs/using-seerr/migrating-between-seerr-and-seerrng.md)
   - [Choose available media categories](./docs/using-seerr/settings/media-categories.md)
   - [Manage the family age gate and per-user maturity limits](./docs/using-seerr/age-gate.md)
+  - [Track individual TV episode availability](./docs/using-seerr/individual-episode-availability.md)
   - [Software requests: ROMs and PC games](./docs/using-seerr/software-acquisition.md)
   - [Request Status and Download copy](./docs/using-seerr/request-status.md)
   - [Books, authors, and series](./docs/using-seerr/books-and-series.md)
@@ -105,6 +106,7 @@ For local MCP access, see the [SnapeTech MCP integration guide](./docs/integrati
 - SeerrNG [PR #446](https://github.com/snapetech-org/seerrng/pull/446) proposes bounded, paginated Servarr queue tracking with refresh-completion checks and a per-service Download Queue Size control. It covers 10–10,000 items per service, defaults to 1,000, and keeps recovery on strict complete snapshots. Source context: closed, unmerged Seerr [PR #3473](https://github.com/seerr-team/seerr/pull/3473) and open Seerr [PR #3535](https://github.com/seerr-team/seerr/pull/3535).
 - Notifications for email, Discord, Slack, Telegram, Gotify, ntfy, Pushover, Pushbullet, Apprise, Web Push, and custom webhooks, with provider-specific poster, priority, sound, and email transport options documented in the [notification guides](./docs/using-seerr/notifications/index.mdx).
 - Sonarr v5 support alongside v3/v4, including metadata-language and season-order options with explicit season mapping for recovery. Scans account for both TVDB and resolved TMDB identity, distinguish confirmed absence from incomplete or failed checks, and reconcile abandoned processing seasons and request selections only after relevant configured servers finish.
+- Optional per-episode Sonarr file availability on TV season pages, kept separate from media-server playback access.
 - An optional TV request gate that checks whether the previous regular season was watched through a linked Plex, Jellyfin, or Emby account.
 - Administrator-managed family controls: separate movie and TV rating limits for each account, plus an optional family age gate with a configurable default that filters Adult, explicit, and mature-tagged titles across supported media categories.
 - Admin-configured Prowlarr connection, per-indexer diagnostics, category coverage, and format-aware manual search across movies, TV, music, books, comics, magazines, ROMs, and PC games, with title-prefilled search links from media details; approved requests still go through their configured acquisition providers.
@@ -278,6 +280,7 @@ SeerrNG documentation is maintained in the [docs folder](https://github.com/snap
 - [Filter movie and series Discover results](./docs/using-seerr/movie-series-discovery-filters.md)
 - [Configure Sonarr v5 and season orders](./docs/using-seerr/settings/services.md)
 - [Restrict administrator sign-in by client network](./docs/using-seerr/settings/network.md#restrict-administrator-sign-in-by-client-network)
+- [Track individual TV episode availability](./docs/using-seerr/individual-episode-availability.md)
 - [Require previous-season watch progress](./docs/using-seerr/settings/general.md#require-the-previous-season-to-be-watched)
 - [Choose movie and TV request destinations](./docs/using-seerr/settings/services.md#request-destination-label-optional)
 - [Filter and sort local watchlists](./docs/using-seerr/plex/watchlist-auto-request.md#find-items-in-your-watchlist)

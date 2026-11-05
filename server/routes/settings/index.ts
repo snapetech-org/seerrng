@@ -1267,6 +1267,7 @@ const parseMainSettingsBody = (
     ['tvSeasonWatchGateEnabled', 'tvSeasonWatchGateEnabled'],
     ['personMovieBulkRequestsEnabled', 'personMovieBulkRequestsEnabled'],
     ['enableSpecialEpisodes', 'enableSpecialEpisodes'],
+    ['trackEpisodeAvailability', 'trackEpisodeAvailability'],
     ['cacheImages', 'cacheImages'],
     ['includeAdult', 'includeAdult'],
   ] as const) {

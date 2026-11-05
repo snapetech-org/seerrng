@@ -590,6 +590,7 @@ export interface MainSettings {
   tvSeasonWatchGateEnabled: boolean;
   personMovieBulkRequestsEnabled: boolean;
   enableSpecialEpisodes: boolean;
+  trackEpisodeAvailability: boolean;
   locale: string;
   youtubeUrl: string;
   versionCheck: boolean;
@@ -1015,6 +1016,7 @@ class Settings {
         tvSeasonWatchGateEnabled: false,
         personMovieBulkRequestsEnabled: false,
         enableSpecialEpisodes: false,
+        trackEpisodeAvailability: false,
         locale: 'en',
         youtubeUrl: '',
         versionCheck: true,
@@ -2091,6 +2093,7 @@ class Settings {
         tvSeasonWatchGateEnabled: false,
         personMovieBulkRequestsEnabled: false,
         enableSpecialEpisodes: false,
+        trackEpisodeAvailability: false,
         locale: 'en',
         youtubeUrl: '',
         versionCheck: true,
