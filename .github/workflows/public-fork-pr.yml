@@ -33,4 +33,4 @@ jobs:
     permissions:
       contents: read
       pull-requests: read
-    uses: snapetech-org/seerrng/.github/workflows/fork-safe-validation.yml@597505c7eb084d9ededb4e9aedd203220cc4d882
+    uses: snapetech-org/seerrng/.github/workflows/fork-safe-validation.yml@bf22a557af8ebc84fb21d6200b85b33065a0b209
