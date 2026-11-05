@@ -558,7 +558,13 @@ const validateTreeEligibility = (source, aspect) => {
       const row = elements.find(
         (node) =>
           tag(node) === 'button' &&
-          text(node, 'data-tree-part') === 'episode-selection'
+          text(node, 'data-tree-part') === 'episode-control' &&
+          elements.some(
+            (owner) =>
+              tag(owner) === 'span' &&
+              text(owner, 'data-tree-part') === 'episode-selection' &&
+              jsx.within(node, owner)
+          )
       );
       return (
         row &&

@@ -746,6 +746,24 @@ test('semantic request JSX rejects lost owners, eligibility overrides, and count
     ],
     [
       'src/components/MediaDetails/SeasonEpisodeTree.tsx',
+      'data-tree-part="episode-control"',
+      'data-tree-part="unused-control"',
+      'ineligible episodes must remain visible but cannot be selected',
+    ],
+    [
+      'src/components/MediaDetails/SeasonEpisodeTree.tsx',
+      'data-tree-part="episode-selection"',
+      'data-tree-part="unused-selection"',
+      'ineligible episodes must remain visible but cannot be selected',
+    ],
+    [
+      'src/components/MediaDetails/SeasonEpisodeTree.tsx',
+      'disabled={disabled || !isTreeEpisodeSelectable(episode)}',
+      'disabled={disabled}',
+      'ineligible episodes must remain visible but cannot be selected',
+    ],
+    [
+      'src/components/MediaDetails/SeasonEpisodeTree.tsx',
       'episode.selectable ?? episode.available',
       'episode.selectable || episode.available',
       'ineligible episodes must remain visible but cannot be selected',
