@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 set -euo pipefail
+trap 'echo "iOS workspace fixture failed at line $LINENO: $BASH_COMMAND" >&2' ERR
 
 script_dir="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd -P)"
 # shellcheck source=ios-release-workspace.sh
