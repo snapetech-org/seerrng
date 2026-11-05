@@ -56,3 +56,15 @@ reviewed before submitting. For Sonarr, a matching language profile is also
 selected when the connected version exposes language profiles. An explicit
 language profile chosen by the requester is preserved. Sonarr v5 metadata
 language remains a separate lookup setting and is not changed by this rule.
+
+An explicitly selected value takes precedence; an
+untouched default can still be supplied by the matching rule when the request
+is created. Displayed service and account defaults are not automatically
+treated as choices that block a rule. If you deliberately select a value
+already shown as the default, SeerrNG keeps that selection and the rule does
+not replace it.
+
+When editing a pending request, choose the connected service's configured
+default to clear a saved override. See [Request Defaults and Overrides](./request-defaults.md)
+for how anime settings and account preferences affect the values shown in the
+form.

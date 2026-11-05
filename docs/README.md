@@ -37,6 +37,8 @@ connects to.
 - [Find books, authors, and series](/using-seerr/books-and-series/)
 - [Browse, request, and track sports leagues with Sportarr](/using-seerr/sportarr/)
 - [Follow requests and status history](/using-seerr/request-status/)
+- [Understand request defaults and overrides](/using-seerr/request-defaults/)
+- [Configure bounded Servarr queue tracking and live download progress](/using-seerr/live-download-progress/)
 - [Opt in to the TV episode queue with Plex, Jellyfin, or Emby playback](/using-seerr/jellyfin-watch-ahead/)
 - [Browse and request ROMs and PC games](/using-seerr/software-acquisition/)
 - [Discover and request adult scenes with Whisparr](/using-seerr/adult-media/)
@@ -65,7 +67,7 @@ connects to.
 ## Configure and operate
 
 - [Configure OIDC sign-in, provider callbacks, account admission, linking, and recovery](/using-seerr/settings/users/oidc)
-- [Require Jellyfin Quick Connect for media-server sign-in](/using-seerr/settings/users/#require-jellyfin-quick-connect)
+- [Require Jellyfin Quick Connect for media-server sign-in](/using-seerr/settings/users/#require-jellyfin-quick-connect-sign-in)
 - [Cross-project OIDC contract and rollout map](/maintainers/oidc-cross-project-template) · [provider IDs, official setup links, scopes, and caveats](/maintainers/oidc-provider-catalog)
 - [Choose metadata providers and configure music request limits](/using-seerr/settings/metadata/)
 - [Check MusicBrainz and Cover Art Archive connectivity](/using-seerr/settings/metadata/#music-metadata-providers)

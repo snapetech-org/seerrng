@@ -10,6 +10,8 @@ import SubjectTagVisibilityPanel from '@app/components/MediaDetails/SubjectTagVi
 import VideoRatings from '@app/components/MediaDetails/VideoRatings';
 import { subjectTagClassName } from '@app/components/MediaDetails/subjectTagStyle';
 import MediaSlider from '@app/components/MediaSlider';
+import PersiusMovieDetail from '@app/components/Persius/MovieDetail';
+import usePersius from '@app/components/Persius/usePersius';
 import useDetailDisclosurePins from '@app/hooks/useDetailDisclosurePins';
 import useSettings from '@app/hooks/useSettings';
 import useWatchStatus from '@app/hooks/useWatchStatus';
@@ -72,6 +74,7 @@ interface MovieDetailsLayoutProps {
   }[];
   show4kAvailability: boolean;
   primaryActions: ReactNode;
+  trailerAction?: ReactNode;
   secondaryActions: ReactNode;
   indexerSearchAction: ReactNode;
   indexerCompanionActions: ReactNode;
@@ -92,6 +95,7 @@ const MovieDetailsLayout = ({
   filteredReleases,
   show4kAvailability,
   primaryActions,
+  trailerAction,
   secondaryActions,
   indexerSearchAction,
   indexerCompanionActions,
@@ -100,6 +104,7 @@ const MovieDetailsLayout = ({
   playbackActions,
 }: MovieDetailsLayoutProps) => {
   const intl = useIntl();
+  const persius = usePersius();
   const settings = useSettings();
   const { data: watchedStatus } = useWatchStatus(
     'movie',
@@ -208,6 +213,285 @@ const MovieDetailsLayout = ({
       : undefined,
   ].filter(Boolean);
 
+  const movieDetailExtras = (
+    <>
+      {' '}
+      <div className="media-detail-disclosure-row">
+        {data.collection && (
+          <DetailDisclosureButton
+            label={intl.formatMessage(messages.viewCollection)}
+            open={showCollection}
+            onClick={() => setShowCollection((open) => !open)}
+            pinned={pins.collection}
+            onPinClick={() => void togglePinned('collection')}
+          />
+        )}
+        <DetailDisclosureButton
+          label={intl.formatMessage(messages.viewCast)}
+          open={showCast}
+          onClick={() => setShowCast((open) => !open)}
+          pinned={pins.cast}
+          onPinClick={() => void togglePinned('cast')}
+        />
+        <DetailDisclosureButton
+          label={intl.formatMessage(messages.viewCrew)}
+          open={showCrew}
+          onClick={() => setShowCrew((open) => !open)}
+          pinned={pins.crew}
+          onPinClick={() => void togglePinned('crew')}
+        />
+        <DetailDisclosureButton
+          label={intl.formatMessage(messages.subjectTags)}
+          open={showTags}
+          onClick={() => setShowTags((open) => !open)}
+          pinned={pins.subjectTags}
+          onPinClick={() => void togglePinned('subjectTags')}
+        />
+        <DetailDisclosureButton
+          label={intl.formatMessage(messages.movieDetails)}
+          open={showDetails}
+          onClick={() => setShowDetails((open) => !open)}
+          pinned={pins.details}
+          onPinClick={() => void togglePinned('details')}
+          controls="movie-additional-details"
+        />
+      </div>
+      {data.collection && showCollection && (
+        <CollectionSummaryCard
+          key={data.collection.id}
+          collection={data.collection}
+        />
+      )}
+      {showCast && (
+        <ExpandableCreditList
+          title={intl.formatMessage(messages.fullCastList)}
+          credits={castCredits}
+          emptyLabel={intl.formatMessage(messages.noCast)}
+        />
+      )}
+      {showCrew && (
+        <ExpandableCreditList
+          title={intl.formatMessage(messages.fullCrewList)}
+          credits={crewCredits}
+          emptyLabel={intl.formatMessage(messages.noCrew)}
+        />
+      )}
+      {showTags && (
+        <section className="app-card-inset refreshed-inset-surface card-spacing-before rounded-lg border border-gray-700 p-3">
+          <SubjectTagVisibilityPanel
+            contentId="movie-subject-tags-content"
+            hasTags={data.keywords.length > 0}
+            title={intl.formatMessage(messages.subjectTags)}
+          >
+            {data.keywords.length === 0 ? (
+              <p className="refreshed-detail-text-muted text-xs">
+                {intl.formatMessage(messages.noTags)}
+              </p>
+            ) : (
+              <div className="flex flex-wrap gap-1.5">
+                {data.keywords.map((keyword, index) => (
+                  <Link
+                    key={keyword.id}
+                    href={`/discover/movies/keyword?keywords=${keyword.id}`}
+                    className={subjectTagClassName(index)}
+                  >
+                    {keyword.name}
+                  </Link>
+                ))}
+              </div>
+            )}
+          </SubjectTagVisibilityPanel>
+        </section>
+      )}
+      {showDetails && (
+        <section
+          id="movie-additional-details"
+          className="app-card-inset refreshed-inset-surface card-spacing-before rounded-lg border border-gray-700 p-3"
+        >
+          <h2 className="media-inset-heading detail-card-heading-after">
+            {intl.formatMessage(messages.movieDetails)}
+          </h2>
+          <div
+            className="detail-three-column-grid grid"
+            data-table-layout="movie-details-table"
+          >
+            <dl className="media-detail-rows grid min-w-0 grid-cols-[max-content_minmax(0,1fr)] content-start gap-x-3 text-xs">
+              <dt className="font-medium text-gray-100">
+                {intl.formatMessage(messages.status)}:
+              </dt>
+              <dd className="m-0">{data.status || unavailable}</dd>
+              <dt className="font-medium text-gray-100">
+                {intl.formatMessage(messages.releaseDates)}:
+              </dt>
+              <dd className="m-0 min-w-0">
+                {displayedReleases.length > 0
+                  ? displayedReleases.map((release, index) => (
+                      <span className="block" key={`${release.type}-${index}`}>
+                        {releaseTypeLabel(release.type)} ·{' '}
+                        {intl.formatDate(release.release_date, {
+                          year: 'numeric',
+                          month: 'short',
+                          day: 'numeric',
+                          timeZone: 'UTC',
+                        })}
+                      </span>
+                    ))
+                  : unavailable}
+              </dd>
+            </dl>
+
+            <dl className="media-detail-rows media-detail-column-divider card:pr-3 grid min-w-0 grid-cols-[max-content_minmax(0,1fr)] content-start gap-x-3 text-xs">
+              <dt className="font-medium text-gray-100">
+                {intl.formatMessage(messages.revenue)}:
+              </dt>
+              <dd className="m-0 truncate">{formatCurrency(data.revenue)}</dd>
+              <dt className="font-medium text-gray-100">
+                {intl.formatMessage(messages.budget)}:
+              </dt>
+              <dd className="m-0 truncate">{formatCurrency(data.budget)}</dd>
+              <dt className="font-medium text-gray-100">
+                {intl.formatMessage(messages.language)}:
+              </dt>
+              <dd className="m-0 truncate">
+                <Link
+                  href={`/discover/movies/language/${data.originalLanguage}`}
+                  className="text-indigo-300 hover:text-indigo-200 hover:underline focus:ring-2 focus:ring-indigo-400 focus:outline-none"
+                >
+                  {originalLanguage}
+                </Link>
+              </dd>
+              <dt className="font-medium text-gray-100">
+                {intl.formatMessage(messages.country)}:
+              </dt>
+              <dd className="m-0 min-w-0">
+                {data.productionCountries.length > 0
+                  ? data.productionCountries.map((country, index) => (
+                      <span key={country.iso_3166_1}>
+                        {index > 0 && ', '}
+                        <Link
+                          href={`/discover/movies?country=${country.iso_3166_1}`}
+                          className="text-indigo-300 hover:text-indigo-200 hover:underline focus:ring-2 focus:ring-indigo-400 focus:outline-none"
+                        >
+                          {intl.formatDisplayName(country.iso_3166_1, {
+                            type: 'region',
+                            fallback: 'none',
+                          }) ?? country.name}
+                        </Link>
+                      </span>
+                    ))
+                  : unavailable}
+              </dd>
+            </dl>
+
+            <dl className="media-detail-rows media-detail-column-divider grid min-w-0 grid-cols-[max-content_minmax(0,1fr)] content-start gap-x-3 text-xs">
+              <dt className="font-medium text-gray-100">
+                {intl.formatMessage(messages.studios)}:
+              </dt>
+              <dd className="m-0 min-w-0">
+                {data.productionCompanies.length > 0
+                  ? data.productionCompanies.slice(0, 4).map((studio) =>
+                      studio.id > 0 ? (
+                        <Link
+                          key={studio.id}
+                          href={`/discover/movies/studio/${studio.id}`}
+                          className="block truncate text-indigo-300 hover:text-indigo-200 hover:underline focus:ring-2 focus:ring-indigo-400 focus:outline-none"
+                        >
+                          {studio.name}
+                        </Link>
+                      ) : (
+                        <span className="block truncate" key={studio.name}>
+                          {studio.name}
+                        </span>
+                      )
+                    )
+                  : unavailable}
+              </dd>
+            </dl>
+          </div>
+        </section>
+      )}
+    </>
+  );
+
+  const relatedTitles = (
+    <>
+      {' '}
+      <MediaSlider
+        sliderKey="recommendations"
+        title={intl.formatMessage(messages.recommendations)}
+        url={`/api/v1/movie/${data.id}/recommendations`}
+        linkUrl={`/movie/${data.id}/recommendations`}
+        hideWhenEmpty
+      />
+      <MediaSlider
+        sliderKey="similar"
+        title={intl.formatMessage(messages.similar)}
+        url={`/api/v1/movie/${data.id}/similar`}
+        linkUrl={`/movie/${data.id}/similar`}
+        hideWhenEmpty
+      />
+    </>
+  );
+
+  if (persius)
+    return (
+      <>
+        <PersiusMovieDetail
+          data={data}
+          requestAction={requestAction}
+          trailerAction={trailerAction}
+          ratings={
+            <VideoRatings
+              mediaType="movie"
+              id={data.id}
+              voteAverage={data.voteAverage}
+              voteCount={data.voteCount}
+              ratings={ratingData}
+            />
+          }
+          playbackActions={
+            availableFormats.length
+              ? playbackActions?.(selectedQuality === '4k')
+              : undefined
+          }
+          tools={
+            <>
+              {movieDetailExtras}
+              {primaryActions}
+              {secondaryActions}
+              {reportIssueAction}
+              {indexerSearchAction}
+              {indexerCompanionActions}
+              <MediaQualitySelect
+                value={selectedQuality}
+                options={[
+                  {
+                    label: 'HD',
+                    value: 'hd',
+                    disabled: !availableFormats.includes('HD'),
+                  },
+                  ...(show4kAvailability
+                    ? [
+                        {
+                          label: '4K',
+                          value: '4k',
+                          disabled: !availableFormats.includes('4K'),
+                        },
+                      ]
+                    : []),
+                ]}
+                onChange={(quality) =>
+                  setSelectedQuality(quality === '4k' ? '4k' : 'hd')
+                }
+                label={intl.formatMessage(messages.quality)}
+              />
+            </>
+          }
+        />
+        {relatedTitles}
+      </>
+    );
+
   return (
     <div className="media-page">
       <article className="media-detail-card app-card-main refreshed-card-surface refreshed-detail-text relative overflow-hidden rounded-xl border border-gray-700 p-3 shadow-lg shadow-gray-950/20">
@@ -278,212 +562,7 @@ const MovieDetailsLayout = ({
                   </div>
                 )}
               </section>
-              <div className="media-detail-disclosure-row">
-                {data.collection && (
-                  <DetailDisclosureButton
-                    label={intl.formatMessage(messages.viewCollection)}
-                    open={showCollection}
-                    onClick={() => setShowCollection((open) => !open)}
-                    pinned={pins.collection}
-                    onPinClick={() => void togglePinned('collection')}
-                  />
-                )}
-                <DetailDisclosureButton
-                  label={intl.formatMessage(messages.viewCast)}
-                  open={showCast}
-                  onClick={() => setShowCast((open) => !open)}
-                  pinned={pins.cast}
-                  onPinClick={() => void togglePinned('cast')}
-                />
-                <DetailDisclosureButton
-                  label={intl.formatMessage(messages.viewCrew)}
-                  open={showCrew}
-                  onClick={() => setShowCrew((open) => !open)}
-                  pinned={pins.crew}
-                  onPinClick={() => void togglePinned('crew')}
-                />
-                <DetailDisclosureButton
-                  label={intl.formatMessage(messages.subjectTags)}
-                  open={showTags}
-                  onClick={() => setShowTags((open) => !open)}
-                  pinned={pins.subjectTags}
-                  onPinClick={() => void togglePinned('subjectTags')}
-                />
-                <DetailDisclosureButton
-                  label={intl.formatMessage(messages.movieDetails)}
-                  open={showDetails}
-                  onClick={() => setShowDetails((open) => !open)}
-                  pinned={pins.details}
-                  onPinClick={() => void togglePinned('details')}
-                  controls="movie-additional-details"
-                />
-              </div>
-              {data.collection && showCollection && (
-                <CollectionSummaryCard
-                  key={data.collection.id}
-                  collection={data.collection}
-                />
-              )}
-              {showCast && (
-                <ExpandableCreditList
-                  title={intl.formatMessage(messages.fullCastList)}
-                  credits={castCredits}
-                  emptyLabel={intl.formatMessage(messages.noCast)}
-                />
-              )}
-              {showCrew && (
-                <ExpandableCreditList
-                  title={intl.formatMessage(messages.fullCrewList)}
-                  credits={crewCredits}
-                  emptyLabel={intl.formatMessage(messages.noCrew)}
-                />
-              )}
-              {showTags && (
-                <section className="app-card-inset refreshed-inset-surface card-spacing-before rounded-lg border border-gray-700 p-3">
-                  <SubjectTagVisibilityPanel
-                    contentId="movie-subject-tags-content"
-                    hasTags={data.keywords.length > 0}
-                    title={intl.formatMessage(messages.subjectTags)}
-                  >
-                    {data.keywords.length === 0 ? (
-                      <p className="refreshed-detail-text-muted text-xs">
-                        {intl.formatMessage(messages.noTags)}
-                      </p>
-                    ) : (
-                      <div className="flex flex-wrap gap-1.5">
-                        {data.keywords.map((keyword, index) => (
-                          <Link
-                            key={keyword.id}
-                            href={`/discover/movies/keyword?keywords=${keyword.id}`}
-                            className={subjectTagClassName(index)}
-                          >
-                            {keyword.name}
-                          </Link>
-                        ))}
-                      </div>
-                    )}
-                  </SubjectTagVisibilityPanel>
-                </section>
-              )}
-              {showDetails && (
-                <section
-                  id="movie-additional-details"
-                  className="app-card-inset refreshed-inset-surface card-spacing-before rounded-lg border border-gray-700 p-3"
-                >
-                  <h2 className="media-inset-heading detail-card-heading-after">
-                    {intl.formatMessage(messages.movieDetails)}
-                  </h2>
-                  <div
-                    className="detail-three-column-grid grid"
-                    data-table-layout="movie-details-table"
-                  >
-                    <dl className="media-detail-rows grid min-w-0 grid-cols-[max-content_minmax(0,1fr)] content-start gap-x-3 text-xs">
-                      <dt className="font-medium text-gray-100">
-                        {intl.formatMessage(messages.status)}:
-                      </dt>
-                      <dd className="m-0">{data.status || unavailable}</dd>
-                      <dt className="font-medium text-gray-100">
-                        {intl.formatMessage(messages.releaseDates)}:
-                      </dt>
-                      <dd className="m-0 min-w-0">
-                        {displayedReleases.length > 0
-                          ? displayedReleases.map((release, index) => (
-                              <span
-                                className="block"
-                                key={`${release.type}-${index}`}
-                              >
-                                {releaseTypeLabel(release.type)} ·{' '}
-                                {intl.formatDate(release.release_date, {
-                                  year: 'numeric',
-                                  month: 'short',
-                                  day: 'numeric',
-                                  timeZone: 'UTC',
-                                })}
-                              </span>
-                            ))
-                          : unavailable}
-                      </dd>
-                    </dl>
-
-                    <dl className="media-detail-rows media-detail-column-divider card:pr-3 grid min-w-0 grid-cols-[max-content_minmax(0,1fr)] content-start gap-x-3 text-xs">
-                      <dt className="font-medium text-gray-100">
-                        {intl.formatMessage(messages.revenue)}:
-                      </dt>
-                      <dd className="m-0 truncate">
-                        {formatCurrency(data.revenue)}
-                      </dd>
-                      <dt className="font-medium text-gray-100">
-                        {intl.formatMessage(messages.budget)}:
-                      </dt>
-                      <dd className="m-0 truncate">
-                        {formatCurrency(data.budget)}
-                      </dd>
-                      <dt className="font-medium text-gray-100">
-                        {intl.formatMessage(messages.language)}:
-                      </dt>
-                      <dd className="m-0 truncate">
-                        <Link
-                          href={`/discover/movies/language/${data.originalLanguage}`}
-                          className="text-indigo-300 hover:text-indigo-200 hover:underline focus:ring-2 focus:ring-indigo-400 focus:outline-none"
-                        >
-                          {originalLanguage}
-                        </Link>
-                      </dd>
-                      <dt className="font-medium text-gray-100">
-                        {intl.formatMessage(messages.country)}:
-                      </dt>
-                      <dd className="m-0 min-w-0">
-                        {data.productionCountries.length > 0
-                          ? data.productionCountries.map((country, index) => (
-                              <span key={country.iso_3166_1}>
-                                {index > 0 && ', '}
-                                <Link
-                                  href={`/discover/movies?country=${country.iso_3166_1}`}
-                                  className="text-indigo-300 hover:text-indigo-200 hover:underline focus:ring-2 focus:ring-indigo-400 focus:outline-none"
-                                >
-                                  {intl.formatDisplayName(country.iso_3166_1, {
-                                    type: 'region',
-                                    fallback: 'none',
-                                  }) ?? country.name}
-                                </Link>
-                              </span>
-                            ))
-                          : unavailable}
-                      </dd>
-                    </dl>
-
-                    <dl className="media-detail-rows media-detail-column-divider grid min-w-0 grid-cols-[max-content_minmax(0,1fr)] content-start gap-x-3 text-xs">
-                      <dt className="font-medium text-gray-100">
-                        {intl.formatMessage(messages.studios)}:
-                      </dt>
-                      <dd className="m-0 min-w-0">
-                        {data.productionCompanies.length > 0
-                          ? data.productionCompanies
-                              .slice(0, 4)
-                              .map((studio) =>
-                                studio.id > 0 ? (
-                                  <Link
-                                    key={studio.id}
-                                    href={`/discover/movies/studio/${studio.id}`}
-                                    className="block truncate text-indigo-300 hover:text-indigo-200 hover:underline focus:ring-2 focus:ring-indigo-400 focus:outline-none"
-                                  >
-                                    {studio.name}
-                                  </Link>
-                                ) : (
-                                  <span
-                                    className="block truncate"
-                                    key={studio.name}
-                                  >
-                                    {studio.name}
-                                  </span>
-                                )
-                              )
-                          : unavailable}
-                      </dd>
-                    </dl>
-                  </div>
-                </section>
-              )}
+              {movieDetailExtras}
             </div>
             <aside
               className={detailLayoutStyles.actionsColumn}
@@ -545,20 +624,7 @@ const MovieDetailsLayout = ({
         </div>
       </article>
 
-      <MediaSlider
-        sliderKey="recommendations"
-        title={intl.formatMessage(messages.recommendations)}
-        url={`/api/v1/movie/${data.id}/recommendations`}
-        linkUrl={`/movie/${data.id}/recommendations`}
-        hideWhenEmpty
-      />
-      <MediaSlider
-        sliderKey="similar"
-        title={intl.formatMessage(messages.similar)}
-        url={`/api/v1/movie/${data.id}/similar`}
-        linkUrl={`/movie/${data.id}/similar`}
-        hideWhenEmpty
-      />
+      {relatedTitles}
       <div className="extra-bottom-space relative" />
     </div>
   );

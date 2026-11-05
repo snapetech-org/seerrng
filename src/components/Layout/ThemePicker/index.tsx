@@ -9,7 +9,7 @@ import {
   PaintBrushIcon,
   SunIcon,
 } from '@heroicons/react/24/outline';
-import { useRef, useState } from 'react';
+import { useRef, useState, type ReactNode } from 'react';
 import { useIntl } from 'react-intl';
 
 const messages = defineMessages('components.Layout.ThemePicker', {
@@ -22,7 +22,7 @@ const messages = defineMessages('components.Layout.ThemePicker', {
   saveError: 'Could not save your theme. Please try again.',
 });
 
-const ThemePicker = () => {
+const ThemePicker = ({ triggerIcon }: { triggerIcon?: ReactNode } = {}) => {
   const intl = useIntl();
   const {
     mode,
@@ -77,7 +77,7 @@ const ThemePicker = () => {
         className="flex h-10 w-10 items-center justify-center rounded-full text-gray-200 ring-1 ring-gray-700 transition hover:bg-gray-800/80 hover:text-white hover:ring-gray-500 focus:ring-gray-500 focus:outline-none"
         aria-label={intl.formatMessage(messages.themePicker)}
       >
-        <PaintBrushIcon className="h-5 w-5" />
+        {triggerIcon ?? <PaintBrushIcon className="h-5 w-5" />}
       </Menu.Button>
       <Menu.Items
         transition

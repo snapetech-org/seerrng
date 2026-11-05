@@ -1,17 +1,23 @@
 import { MediaType } from '@server/constants/media';
+import { MediaServerType } from '@server/constants/server';
 import { getRepository } from '@server/datasource';
 import EpisodeAvailability from '@server/entity/EpisodeAvailability';
 import Media from '@server/entity/Media';
 import Season from '@server/entity/Season';
 import {
   clearSonarrEpisodeAvailabilityForService,
+  getActiveEpisodeAvailabilitySources,
   getEpisodeAvailability,
   getSonarrEpisodeAvailabilitySourceId,
   removeMissingEpisodeAvailabilitySeries,
   syncEpisodeAvailabilityForSeries,
   syncSonarrEpisodeAvailability,
 } from '@server/lib/episodeAvailability';
-import { MetadataProviderType } from '@server/lib/settings';
+import {
+  getSettings,
+  MetadataProviderType,
+  type SonarrSettings,
+} from '@server/lib/settings';
 import { setupTestDb } from '@server/test/db';
 import assert from 'node:assert/strict';
 import { it } from 'node:test';
@@ -133,4 +139,32 @@ it('does not erase a prior snapshot when an unknown season prevents reconciliati
     seasons: [{ seasonNumber: 2, episodes: [] }],
   });
   assert.equal(await getRepository(EpisodeAvailability).count(), 1);
+});
+
+it('matches scanner endpoint deduplication after enabled and quality gates', () => {
+  const server = (id: number, is4k: boolean, syncEnabled = true) =>
+    ({
+      id,
+      is4k,
+      syncEnabled,
+      hostname: 'fixture',
+      port: 8989,
+      useSsl: false,
+      baseUrl: '',
+    }) as SonarrSettings;
+  const settings = getSettings();
+  const sourceSettings = {
+    sonarr: [server(9, false, false), server(0, true), server(1, false)],
+    plex: settings.plex,
+    jellyfin: settings.jellyfin,
+    mediaServerType: MediaServerType.NOT_CONFIGURED,
+  };
+  assert.deepEqual(
+    getActiveEpisodeAvailabilitySources(provider, sourceSettings, true),
+    [{ type: 'sonarr', id: 'sonarr:0' }]
+  );
+  assert.deepEqual(
+    getActiveEpisodeAvailabilitySources(provider, sourceSettings, false),
+    [{ type: 'sonarr', id: 'sonarr:1' }]
+  );
 });

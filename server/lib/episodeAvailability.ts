@@ -6,6 +6,7 @@ import EpisodeAvailability, {
 } from '@server/entity/EpisodeAvailability';
 import Media from '@server/entity/Media';
 import Season from '@server/entity/Season';
+import { isSameServarrSyncEndpoint } from '@server/lib/scanners/servarrTagFilters';
 import type { SonarrSettings } from '@server/lib/settings';
 import {
   MetadataProviderType,
@@ -113,13 +114,22 @@ export const getJellyfinEpisodeAvailabilitySourceId = (
 
 export const getActiveEpisodeAvailabilitySources = (
   metadataProvider: MetadataProviderType,
-  settings: EpisodeAvailabilitySourceSettings
+  settings: EpisodeAvailabilitySourceSettings,
+  include4k = true
 ): EpisodeAvailabilitySource[] => {
   const sources: EpisodeAvailabilitySource[] = [];
 
   if (metadataProvider === MetadataProviderType.TVDB) {
+    const selectedServers: SonarrSettings[] = [];
     for (const server of settings.sonarr) {
-      if (!server.syncEnabled) continue;
+      if (!server.syncEnabled || (!include4k && server.is4k)) continue;
+      if (
+        selectedServers.some((candidate) =>
+          isSameServarrSyncEndpoint(candidate, server)
+        )
+      )
+        continue;
+      selectedServers.push(server);
       const id = getSonarrEpisodeAvailabilitySourceId(server.id);
       if (id) sources.push({ type: 'sonarr', id });
     }

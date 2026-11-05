@@ -447,7 +447,8 @@ tvRoutes.get('/:id/season/:seasonNumber', async (req, res, next) => {
           plex: settings.plex,
           jellyfin: settings.jellyfin,
           mediaServerType: settings.main.mediaServerType,
-        }
+        },
+        settings.main.enable4k
       );
       const availability = await getEpisodeAvailability(
         tvId,

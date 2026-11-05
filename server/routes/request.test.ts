@@ -57,6 +57,7 @@ import { runUserSecurityMutation } from '@server/lib/userSecurityMutation';
 import { checkUser } from '@server/middleware/auth';
 import { MediaRequestSubscriber } from '@server/subscriber/MediaRequestSubscriber';
 import { setupTestDb } from '@server/test/db';
+import { makeBookshelfBookId } from '@server/utils/bookshelfCatalog';
 import type { Express } from 'express';
 import express from 'express';
 import rateLimit from 'express-rate-limit';
@@ -2781,9 +2782,14 @@ describe('POST /request', () => {
 
     assert.strictEqual(selectedResponse.status, 201);
     assert.strictEqual(selectedResponse.body.serverId, 0);
-    assert.strictEqual(selectedResponse.body.profileId, 0);
-    assert.strictEqual(selectedResponse.body.rootFolder, '/selected-movies');
-    assert.deepStrictEqual(selectedResponse.body.tags, [7]);
+    assert.strictEqual(selectedResponse.body.profileId, null);
+    assert.strictEqual(selectedResponse.body.rootFolder, null);
+    assert.strictEqual(selectedResponse.body.tags, null);
+    assert.strictEqual(selectedResponse.body.serviceTargets[0].profileId, 0);
+    assert.strictEqual(
+      selectedResponse.body.serviceTargets[0].rootFolder,
+      '/selected-movies'
+    );
     assert.strictEqual(unknownResponse.status, 400);
     assert.match(unknownResponse.body.message, /does not exist/i);
     assert.strictEqual(wrongTierResponse.status, 400);
@@ -6753,6 +6759,276 @@ describe('PUT /request/:requestId', () => {
   });
 });
 
+describe('pending book destination edits', () => {
+  async function seedBook(overrides: Partial<MediaRequest> = {}) {
+    const requestedBy = await getRepository(User).findOneOrFail({
+      where: { email: 'friend@seerr.dev' },
+    });
+    const media = await getRepository(Media).save(
+      new Media({
+        mediaType: MediaType.BOOK,
+        tmdbId: 0,
+        status: MediaStatus.PENDING,
+        status4k: MediaStatus.UNKNOWN,
+      })
+    );
+    await getRepository(MediaIdentifier).save(
+      new MediaIdentifier({
+        media,
+        provider: MediaIdentifierProvider.BOOKSHELF,
+        value: makeBookshelfBookId(11, 'edit-work'),
+        canonical: true,
+      })
+    );
+    return getRepository(MediaRequest).save(
+      new MediaRequest({
+        type: MediaType.BOOK,
+        media,
+        requestedBy,
+        status: MediaRequestStatus.PENDING,
+        is4k: false,
+        bookFormat: 'ebook',
+        serverId: 11,
+        profileId: 90,
+        metadataProfileId: 91,
+        rootFolder: '/old',
+        tags: [9],
+        serviceTargets: [
+          {
+            serviceType: 'readarr',
+            format: 'ebook',
+            serverId: 11,
+            profileId: 90,
+            metadataProfileId: 91,
+            rootFolder: '/old',
+            tags: [9],
+            status: MediaStatus.PENDING,
+          },
+        ],
+        ...overrides,
+      })
+    );
+  }
+  beforeEach(() => {
+    getSettings().readarr = [
+      createReadarrSettings(11, 'ebook'),
+      {
+        ...createReadarrSettings(0, 'ebook', false),
+        activeProfileId: 7,
+        activeMetadataProfileId: undefined,
+        activeDirectory: '/new',
+        tags: [3],
+      },
+      createReadarrSettings(12, 'audiobook'),
+    ];
+  });
+  afterEach(() => {
+    getSettings().readarr = [];
+  });
+
+  it('retargets dispatch and visible settings together, resetting destination defaults including nullable metadata', async () => {
+    const original = await seedBook();
+    const agent = await loginAs('admin@seerr.dev', 'test1234');
+    const result = await agent
+      .put(`/request/${original.id}`)
+      .send({ serverId: 0 });
+    assert.equal(result.status, 200);
+    const saved = await getRepository(MediaRequest).findOneOrFail({
+      where: { id: original.id },
+    });
+    assert.equal(saved.serverId, 0);
+    assert.equal(saved.profileId, 7);
+    assert.equal(saved.metadataProfileId, null);
+    assert.equal(saved.rootFolder, '/new');
+    assert.deepEqual(saved.tags, [3]);
+    assert.deepEqual(saved.serviceTargets, [
+      {
+        serviceType: 'readarr',
+        format: 'ebook',
+        serverId: 0,
+        profileId: 7,
+        metadataProfileId: null,
+        rootFolder: '/new',
+        tags: [3],
+        status: MediaStatus.PENDING,
+      },
+    ]);
+  });
+
+  it('applies explicit zero profiles and empty tags to the saved worker target on a partial edit', async () => {
+    const original = await seedBook();
+    const agent = await loginAs('admin@seerr.dev', 'test1234');
+    const result = await agent
+      .put(`/request/${original.id}`)
+      .send({ profileId: 0, metadataProfileId: 0, tags: [] });
+    assert.equal(result.status, 200);
+    const saved = await getRepository(MediaRequest).findOneOrFail({
+      where: { id: original.id },
+    });
+    assert.equal(saved.serviceTargets?.[0].serverId, 11);
+    assert.equal(saved.serviceTargets?.[0].rootFolder, '/old');
+    assert.equal(saved.serviceTargets?.[0].profileId, 0);
+    assert.equal(saved.serviceTargets?.[0].metadataProfileId, 0);
+    assert.deepEqual(saved.serviceTargets?.[0].tags, []);
+  });
+
+  it('preserves a covered format omission when editing a both-format request', async () => {
+    const original = await seedBook({ bookFormat: 'both' });
+    const agent = await loginAs('admin@seerr.dev', 'test1234');
+    const result = await agent
+      .put(`/request/${original.id}`)
+      .send({ tags: [1] });
+    assert.equal(result.status, 200);
+    const saved = await getRepository(MediaRequest).findOneOrFail({
+      where: { id: original.id },
+    });
+    assert.deepEqual(
+      saved.serviceTargets?.map((target) => target.format),
+      ['ebook']
+    );
+  });
+
+  it('keeps the audiobook destination independent when retargeting both formats', async () => {
+    const audio = {
+      serviceType: 'readarr' as const,
+      format: 'audiobook' as const,
+      serverId: 12,
+      profileId: 5,
+      rootFolder: '/audio',
+      metadataProfileId: 8,
+      tags: [4],
+      status: MediaStatus.PENDING,
+    };
+    const original = await seedBook({
+      bookFormat: 'both',
+      serviceTargets: [
+        {
+          serviceType: 'readarr',
+          format: 'ebook',
+          serverId: 11,
+          profileId: 90,
+          rootFolder: '/old',
+        },
+        audio,
+      ],
+    });
+    const agent = await loginAs('admin@seerr.dev', 'test1234');
+    const result = await agent
+      .put(`/request/${original.id}`)
+      .send({ serverId: 0, tags: [] });
+    assert.equal(result.status, 200);
+    const saved = await getRepository(MediaRequest).findOneOrFail({
+      where: { id: original.id },
+    });
+    assert.deepEqual(saved.serviceTargets?.[1], audio);
+  });
+
+  it('retains legacy Open Library ISBN metadata when changing format', async () => {
+    const original = await seedBook({
+      preferredEditionId: 'OL123M',
+      preferredIsbn13: '9780000000002',
+    });
+    const agent = await loginAs('admin@seerr.dev', 'test1234');
+    const result = await agent
+      .put(`/request/${original.id}`)
+      .send({ serverId: 12, format: 'audiobook' });
+    assert.equal(result.status, 200);
+    const saved = await getRepository(MediaRequest).findOneOrFail({
+      where: { id: original.id },
+    });
+    assert.equal(saved.preferredEditionId, 'OL123M');
+    assert.equal(saved.preferredIsbn13, '9780000000002');
+    assert.equal(saved.serviceTargets?.[0].format, 'audiobook');
+    assert.equal(saved.serviceTargets?.[0].serverId, 12);
+  });
+
+  it('rejects edition/format changes atomically and preserves edit authorization', async () => {
+    const original = await seedBook({
+      preferredEditionId: 'edition-1',
+      editionPolicy: 'only',
+    });
+    const agent = await loginAs('admin@seerr.dev', 'test1234');
+    for (const body of [
+      { format: 'audiobook', serverId: 12 },
+      { preferredEditionId: 'edition-2' },
+      { editionPolicy: 'alongside' },
+    ]) {
+      assert.equal(
+        (
+          await agent
+            .put(`/request/${original.id}`)
+            .send({ mediaType: MediaType.BOOK, ...body })
+        ).status,
+        409
+      );
+    }
+    const friend = await loginAs('friend@seerr.dev', 'test1234');
+    assert.equal(
+      (await friend.put(`/request/${original.id}`).send({ serverId: 0 }))
+        .status,
+      403
+    );
+    const saved = await getRepository(MediaRequest).findOneOrFail({
+      where: { id: original.id },
+    });
+    assert.equal(saved.serverId, 11);
+    assert.equal(saved.serviceTargets?.[0].serverId, 11);
+    assert.equal(saved.preferredEditionId, 'edition-1');
+    assert.equal(saved.editionPolicy, 'only');
+  });
+
+  it('verifies the exact edition against the new destination before saving', async (t) => {
+    const original = await seedBook({
+      preferredEditionId: 'edition-1',
+      editionPolicy: 'alongside',
+    });
+    let editions: { foreignEditionId: string; isEbook: boolean }[] = [];
+    const lookup = mock.method(ReadarrAPI.prototype, 'lookupBook', async () => [
+      { foreignBookId: 'edit-work', title: 'Book', editions },
+    ]);
+    const supports = mock.method(
+      ReadarrAPI.prototype,
+      'supportsWantedEditionVariants',
+      () => false
+    );
+    t.after(() => {
+      lookup.mock.restore();
+      supports.mock.restore();
+    });
+    const agent = await loginAs('admin@seerr.dev', 'test1234');
+    const missing = await agent
+      .put(`/request/${original.id}`)
+      .send({ serverId: 0 });
+    assert.equal(missing.status, 400);
+    assert.match(missing.body.message, /could not be verified/i);
+    editions = [{ foreignEditionId: 'edition-1', isEbook: true }];
+    const unsupported = await agent
+      .put(`/request/${original.id}`)
+      .send({ serverId: 0 });
+    assert.equal(unsupported.status, 400);
+    assert.match(unsupported.body.message, /alongside/i);
+    assert.equal(
+      (
+        await getRepository(MediaRequest).findOneOrFail({
+          where: { id: original.id },
+        })
+      ).serverId,
+      11
+    );
+    supports.mock.mockImplementation(() => true);
+    const valid = await agent
+      .put(`/request/${original.id}`)
+      .send({ serverId: 0 });
+    assert.equal(valid.status, 200);
+    const saved = await getRepository(MediaRequest).findOneOrFail({
+      where: { id: original.id },
+    });
+    assert.equal(saved.serviceTargets?.[0].serverId, 0);
+    assert.equal(saved.preferredEditionId, 'edition-1');
+    assert.equal(saved.editionPolicy, 'alongside');
+  });
+});
+
 async function seedUser(
   email: string,
   quotas: {
@@ -8444,12 +8720,12 @@ describe('POST /request/bulk', () => {
     const getWorkEditionsMock = mock.method(
       OpenLibraryAPI.prototype,
       'getWorkEditions',
-      async (workId: string) =>
+      async () =>
         ({
           size: 1,
           entries: [
             {
-              key: `/books/${workId.replace(/^\/?works\//, '')}-edition`,
+              key: '/books/OL123M',
               isbn_13: ['9780441478125'],
             },
           ],
@@ -8471,7 +8747,7 @@ describe('POST /request/bulk', () => {
           title: 'New Work',
           authorId: 'OL1A',
           isbn13: '9780441478125',
-          editionId: 'new-work-edition',
+          editionId: 'OL123M',
         },
         { mediaId: 'available-work', title: 'Available Work' },
       ],
@@ -8623,12 +8899,12 @@ describe('POST /request/bulk', () => {
     const getWorkEditionsMock = mock.method(
       OpenLibraryAPI.prototype,
       'getWorkEditions',
-      async (workId: string) =>
+      async () =>
         ({
           size: 1,
           entries: [
             {
-              key: `/books/${workId.replace(/^\/?works\//, '')}-edition`,
+              key: '/books/OL123M',
               isbn_13: ['9780441478125'],
             },
           ],
@@ -8653,7 +8929,7 @@ describe('POST /request/bulk', () => {
           title: 'Zero Book Work',
           authorId: 'OL1A',
           isbn13: '9780441478125',
-          editionId: 'zero-book-work-edition',
+          editionId: 'OL123M',
         },
       ],
     });
@@ -8811,12 +9087,12 @@ describe('POST /request/bulk', () => {
     const getWorkEditionsMock = mock.method(
       OpenLibraryAPI.prototype,
       'getWorkEditions',
-      async (workId: string) =>
+      async () =>
         ({
           size: 1,
           entries: [
             {
-              key: `/books/${workId.replace(/^\/?works\//, '')}-edition`,
+              key: '/books/OL123M',
               isbn_13: ['9780441478125'],
             },
           ],
@@ -8841,7 +9117,7 @@ describe('POST /request/bulk', () => {
           title: 'New Work',
           authorId: 'OL1A',
           isbn13: '9780441478125',
-          editionId: 'new-work-edition',
+          editionId: 'OL123M',
         },
       ],
     });
@@ -9578,6 +9854,60 @@ describe('POST /request, destination-scoped override rules', () => {
     );
     assert.strictEqual(explicitResponse.body.profileId, 0);
     assert.deepStrictEqual(explicitResponse.body.tags, []);
+  });
+  it('preserves explicitly selected service defaults against override rules', async () => {
+    configureRadarr([
+      {
+        id: 5,
+        isDefault: true,
+        is4k: false,
+        activeProfileId: 1,
+        activeDirectory: '/default/movies',
+        tags: [],
+      },
+    ]);
+    getSettings().sonarr = [];
+    const requester = await setDemoPermissions(
+      Permission.REQUEST | Permission.REQUEST_ADVANCED
+    );
+    await getRepository(OverrideRule).save(
+      new OverrideRule({
+        radarrServiceId: 5,
+        users: String(requester.id),
+        rootFolder: '/rule/movies',
+        profileId: 7,
+        tags: '2',
+      })
+    );
+    mock.method(
+      MediaRequestSubscriber.prototype,
+      'sendToRadarr',
+      async () => true
+    );
+    const agent = await loginAs('demo@seerr.dev', 'test1234');
+    const response = await agent.post('/request').send({
+      mediaType: MediaType.MOVIE,
+      mediaId: 88026,
+      serverId: 5,
+      profileId: 1,
+      rootFolder: '/default/movies',
+      tags: [],
+      requesterSelectedOptions: {
+        profile: true,
+        rootFolder: true,
+        tags: true,
+      },
+    });
+    assert.equal(response.status, 201);
+    assert.equal(response.body.profileId, 1);
+    assert.equal(response.body.rootFolder, '/default/movies');
+    assert.deepEqual(response.body.tags, []);
+    const saved = await getRepository(MediaRequest).findOneByOrFail({
+      id: response.body.id,
+    });
+    assert.equal(saved.profileId, 1);
+    assert.equal(saved.rootFolder, '/default/movies');
+    assert.deepEqual(saved.tags, []);
   });
 });
 

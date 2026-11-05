@@ -1,5 +1,8 @@
 import assert from 'node:assert/strict';
+import { readFileSync } from 'node:fs';
+import { resolve } from 'node:path';
 import { describe, it } from 'node:test';
+import { INTERFACE_THEME_IDS } from './interfaceTheme';
 import {
   validateInterfaceThemeCss,
   validateInterfaceThemeManifest,
@@ -20,6 +23,18 @@ const manifest = {
 } as const;
 
 describe('interface theme package contract', () => {
+  it('loads every registered built-in package with its exact ID and scoped CSS', () => {
+    for (const id of INTERFACE_THEME_IDS) {
+      const directory = resolve(process.cwd(), 'themes', id);
+      const result = validateInterfaceThemePackage(
+        JSON.parse(readFileSync(resolve(directory, 'manifest.json'), 'utf8')),
+        readFileSync(resolve(directory, 'theme.css'), 'utf8'),
+        id
+      );
+      assert.equal(result.manifest.id, id);
+    }
+  });
+
   it('validates metadata and selectors scoped to the package theme root', () => {
     const css = `
       :root[data-interface-theme='studio-dark'] {
@@ -37,6 +52,22 @@ describe('interface theme package contract', () => {
     const theme = validateInterfaceThemePackage(manifest, css);
     assert.equal(theme.manifest.id, 'studio-dark');
     assert.equal(theme.css, css);
+  });
+
+  it('supports native composition without changing legacy manifests', () => {
+    assert.equal(validateInterfaceThemeManifest(manifest).layout, undefined);
+    assert.equal(
+      validateInterfaceThemeManifest({ ...manifest, layout: 'persius' }).layout,
+      'persius'
+    );
+    assert.equal(
+      validateInterfaceThemeManifest({ ...manifest, layout: 'classic' }).layout,
+      'classic'
+    );
+    assert.throws(
+      () => validateInterfaceThemeManifest({ ...manifest, layout: 'script' }),
+      /layout must be/
+    );
   });
 
   it('rejects an unscoped rule and selector groups with any global selector', () => {
@@ -64,6 +95,21 @@ describe('interface theme package contract', () => {
       `@property --global-color { syntax: "<color>"; inherits: true; initial-value: red; }`,
     ]) {
       assert.throws(() => validateInterfaceThemeCss(css, manifest.id));
+    }
+  });
+
+  it('rejects resource functions split by CSS comments', () => {
+    for (const value of [
+      'u/**/rl(https://example.invalid/pixel.png)',
+      'url/**/(https://example.invalid/pixel.png)',
+      'image/**/-set("https://example.invalid/pixel.png" 1x)',
+    ]) {
+      assert.throws(() =>
+        validateInterfaceThemeCss(
+          `[data-interface-theme='${manifest.id}'] .page { background-image: ${value}; }`,
+          manifest.id
+        )
+      );
     }
   });
 

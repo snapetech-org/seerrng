@@ -29,6 +29,7 @@ import {
   getRequestMutationAdmissionKey,
   hasMediaRequestPermission,
   runWithRequestAdmission,
+  type MediaRequestServiceTarget,
 } from '@server/entity/MediaRequest';
 import MediaRequestStatusEvent from '@server/entity/MediaRequestStatusEvent';
 import SeasonRequest, {
@@ -45,9 +46,15 @@ import type {
   RequestStatusDetailResponse,
   RequestStatusResultsResponse,
   RequestStatusUsersResponse,
+  RequestTargetOptions,
+  RequesterSelectedOptions,
 } from '@server/interfaces/api/requestInterfaces';
 import type { SeasonEpisodeSelection } from '@server/interfaces/api/seasonInterfaces';
 import { hasAvailableBookFormat } from '@server/lib/bookAvailability';
+import {
+  BookRequestEditConflictError,
+  planBookRequestEdit,
+} from '@server/lib/bookRequestEdit';
 import {
   isValidMusicBrainzResourceId,
   isValidOpenLibraryResourceId,
@@ -57,6 +64,7 @@ import {
   normalizeOpenLibraryWorkId,
 } from '@server/lib/externalIds';
 import { getExternalRuntimeConfig } from '@server/lib/externalRuntimeConfig';
+import { validateFutureSeasonPreference } from '@server/lib/futureSeasonMonitoring';
 import { normalizeValidIsbn } from '@server/lib/isbn';
 import { cleanMagazineTitle } from '@server/lib/magazineIdentity';
 import { isMediaCategoryEnabled } from '@server/lib/mediaCategories';
@@ -315,6 +323,7 @@ const hasAdultRequestAccess = (user?: User | null): boolean =>
   ) ?? false;
 const requestStatusFilters = [
   'all',
+  'active',
   'recent',
   'approved',
   'processing',
@@ -813,6 +822,195 @@ const parseOptionalRequestTags = (
   return { value: tags };
 };
 
+const parseRequestTargetOptions = (
+  value: unknown,
+  mediaType: MediaType | undefined,
+  isEdit: boolean
+): RequestOptionValidationResult<RequestTargetOptions | undefined> => {
+  if (value === undefined) {
+    return { value: undefined };
+  }
+
+  if (
+    !isEdit ||
+    (mediaType !== MediaType.MOVIE && mediaType !== MediaType.TV)
+  ) {
+    return {
+      error: {
+        status: 400,
+        message:
+          'requestTargetOptions are only valid when editing movie or TV requests.',
+      },
+    };
+  }
+
+  if (!value || typeof value !== 'object' || Array.isArray(value)) {
+    return {
+      error: {
+        status: 400,
+        message: 'requestTargetOptions must be an object.',
+      },
+    };
+  }
+
+  const options = value as Record<string, unknown>;
+  const requiredFields = [
+    'profileId',
+    'rootFolder',
+    'tags',
+    ...(mediaType === MediaType.TV ? ['languageProfileId'] : []),
+  ];
+  if (
+    requiredFields.some(
+      (field) => !Object.prototype.hasOwnProperty.call(options, field)
+    ) ||
+    Object.keys(options).some((field) => !requiredFields.includes(field))
+  ) {
+    return {
+      error: {
+        status: 400,
+        message: 'requestTargetOptions contains missing or unsupported fields.',
+      },
+    };
+  }
+
+  const profileId = parseOptionalRequestOptionId(
+    options.profileId,
+    'requestTargetOptions.profileId',
+    true
+  );
+  if (
+    'error' in profileId ||
+    (options.profileId !== null && profileId.value === undefined)
+  ) {
+    return 'error' in profileId
+      ? profileId
+      : {
+          error: {
+            status: 400,
+            message:
+              'requestTargetOptions.profileId must be a non-negative integer or null.',
+          },
+        };
+  }
+
+  const rootFolder = parseOptionalRequestString(
+    options.rootFolder,
+    'requestTargetOptions.rootFolder',
+    maxRequestRootFolderLength
+  );
+  if (
+    'error' in rootFolder ||
+    (options.rootFolder !== null && rootFolder.value === undefined)
+  ) {
+    return 'error' in rootFolder
+      ? rootFolder
+      : {
+          error: {
+            status: 400,
+            message:
+              'requestTargetOptions.rootFolder must be a string or null.',
+          },
+        };
+  }
+
+  const tags = parseOptionalRequestTags(options.tags);
+  if ('error' in tags || (options.tags !== null && tags.value === undefined)) {
+    return 'error' in tags
+      ? tags
+      : {
+          error: {
+            status: 400,
+            message: 'requestTargetOptions.tags must be an array or null.',
+          },
+        };
+  }
+
+  let languageProfileId: number | null | undefined;
+  if (mediaType === MediaType.TV) {
+    const language = parseOptionalRequestOptionId(
+      options.languageProfileId,
+      'requestTargetOptions.languageProfileId',
+      true
+    );
+    if (
+      'error' in language ||
+      (options.languageProfileId !== null && language.value === undefined)
+    ) {
+      return 'error' in language
+        ? language
+        : {
+            error: {
+              status: 400,
+              message:
+                'requestTargetOptions.languageProfileId must be a non-negative integer or null.',
+            },
+          };
+    }
+    languageProfileId =
+      options.languageProfileId === null ? null : language.value;
+  }
+
+  return {
+    value: {
+      profileId: options.profileId === null ? null : profileId.value!,
+      rootFolder: options.rootFolder === null ? null : rootFolder.value!,
+      tags: options.tags === null ? null : tags.value!,
+      ...(mediaType === MediaType.TV ? { languageProfileId } : {}),
+    },
+  };
+};
+
+const parseRequesterSelectedOptions = (
+  value: unknown,
+  mediaType: MediaType | undefined,
+  isCreate: boolean
+): RequestOptionValidationResult<RequesterSelectedOptions | undefined> => {
+  if (value === undefined) {
+    return { value: undefined };
+  }
+
+  if (
+    !isCreate ||
+    (mediaType !== MediaType.MOVIE && mediaType !== MediaType.TV)
+  ) {
+    return {
+      error: {
+        status: 400,
+        message:
+          'requesterSelectedOptions are only valid for new movie or TV requests.',
+      },
+    };
+  }
+
+  if (!value || typeof value !== 'object' || Array.isArray(value)) {
+    return {
+      error: {
+        status: 400,
+        message: 'requesterSelectedOptions must be an object.',
+      },
+    };
+  }
+
+  const options = value as Record<string, unknown>;
+  const allowedFields = ['profile', 'rootFolder', 'languageProfile', 'tags'];
+  if (
+    Object.keys(options).some((field) => !allowedFields.includes(field)) ||
+    Object.values(options).some((field) => typeof field !== 'boolean') ||
+    (mediaType === MediaType.MOVIE && 'languageProfile' in options)
+  ) {
+    return {
+      error: {
+        status: 400,
+        message:
+          'requesterSelectedOptions contains unsupported fields or values.',
+      },
+    };
+  }
+
+  return { value: options as RequesterSelectedOptions };
+};
+
 const parseOptionalRequestSeasons = (
   value: unknown
 ): RequestOptionValidationResult<number[] | 'all' | undefined> => {
@@ -981,7 +1179,10 @@ const parseOptionalSeasonRequests = (
 
 const sanitizeMediaRequestBody = (
   body: unknown,
-  options: { requireCreateIdentity?: boolean } = {}
+  options: {
+    requireCreateIdentity?: boolean;
+    preserveNullOverrides?: boolean;
+  } = {}
 ): RequestOptionValidationResult<MediaRequestBody> => {
   if (!body || typeof body !== 'object' || Array.isArray(body)) {
     return {
@@ -1021,6 +1222,13 @@ const sanitizeMediaRequestBody = (
       error: { status: 400, message: 'mediaType is required.' },
     };
   }
+
+  const futureSeasonError = validateFutureSeasonPreference(
+    bodyObject.monitorFutureSeasons,
+    mediaType
+  );
+  if (futureSeasonError)
+    return { error: { status: 400, message: futureSeasonError } };
 
   if (bodyObject.is4k !== undefined && typeof bodyObject.is4k !== 'boolean') {
     return {
@@ -1509,6 +1717,41 @@ const sanitizeMediaRequestBody = (
     return tags;
   }
 
+  const requesterSelectedOptions = parseRequesterSelectedOptions(
+    bodyObject.requesterSelectedOptions,
+    mediaType as MediaType | undefined,
+    options.requireCreateIdentity ?? false
+  );
+  if ('error' in requesterSelectedOptions) {
+    return requesterSelectedOptions;
+  }
+  if (
+    (requesterSelectedOptions.value?.profile &&
+      profileId.value === undefined) ||
+    (requesterSelectedOptions.value?.rootFolder &&
+      rootFolder.value === undefined) ||
+    (requesterSelectedOptions.value?.tags && tags.value === undefined) ||
+    (requesterSelectedOptions.value?.languageProfile &&
+      languageProfileId.value === undefined)
+  ) {
+    return {
+      error: {
+        status: 400,
+        message:
+          'Each selected requester option must include its corresponding value.',
+      },
+    };
+  }
+
+  const requestTargetOptions = parseRequestTargetOptions(
+    bodyObject.requestTargetOptions,
+    mediaType as MediaType | undefined,
+    options.preserveNullOverrides ?? false
+  );
+  if ('error' in requestTargetOptions) {
+    return requestTargetOptions;
+  }
+
   const seasons = parseOptionalRequestSeasons(bodyObject.seasons);
   if ('error' in seasons) {
     return seasons;
@@ -1536,10 +1779,19 @@ const sanitizeMediaRequestBody = (
     is4k: bodyObject.is4k ?? false,
     serverId: serverId.value,
     requestServiceServerId: requestServiceServerId.value,
-    profileId: profileId.value,
+    profileId:
+      options.preserveNullOverrides && bodyObject.profileId === null
+        ? null
+        : profileId.value,
     profileName: profileName.value,
-    rootFolder: rootFolder.value,
-    languageProfileId: languageProfileId.value,
+    rootFolder:
+      options.preserveNullOverrides && bodyObject.rootFolder === null
+        ? null
+        : rootFolder.value,
+    languageProfileId:
+      options.preserveNullOverrides && bodyObject.languageProfileId === null
+        ? null
+        : languageProfileId.value,
     metadataLanguageId: sanitizedMetadataLanguageId,
     sonarrSeasonType: sanitizedSonarrSeasonType,
     metadataProfileId: metadataProfileId.value,
@@ -1550,7 +1802,12 @@ const sanitizeMediaRequestBody = (
       'only' | 'either' | 'alongside' | undefined,
     variantKey: variantKey.value,
     userId: userId.value,
-    tags: tags.value,
+    tags:
+      options.preserveNullOverrides && bodyObject.tags === null
+        ? null
+        : tags.value,
+    requestTargetOptions: requestTargetOptions.value,
+    requesterSelectedOptions: requesterSelectedOptions.value,
     seasons:
       seasonRequests.value?.map((selection) => selection.seasonNumber) ??
       seasons.value,
@@ -1712,14 +1969,70 @@ const sanitizeBulkMediaRequestBody = (
       items: sanitizedItems,
       format: sanitized.value.format,
       serverId: sanitized.value.serverId,
-      profileId: sanitized.value.profileId,
+      profileId: sanitized.value.profileId ?? undefined,
       profileName: sanitized.value.profileName,
-      rootFolder: sanitized.value.rootFolder,
+      rootFolder: sanitized.value.rootFolder ?? undefined,
       metadataProfileId: sanitized.value.metadataProfileId,
       userId: sanitized.value.userId,
-      tags: sanitized.value.tags,
+      tags: sanitized.value.tags ?? undefined,
     },
   };
+};
+
+const synchronizeVideoRequestTargetOptions = (
+  request: MediaRequest,
+  options: RequestTargetOptions,
+  preservePreviousTargets: boolean
+): void => {
+  if (
+    (request.type !== MediaType.MOVIE && request.type !== MediaType.TV) ||
+    request.serverId == null
+  ) {
+    return;
+  }
+
+  const serviceType = request.type === MediaType.MOVIE ? 'radarr' : 'sonarr';
+  const format = request.is4k ? '4k' : 'standard';
+  const targets = request.serviceTargets ?? [];
+  const targetIndex = targets.findIndex(
+    (target) =>
+      target.serviceType === serviceType &&
+      target.format === format &&
+      target.serverId === request.serverId
+  );
+  const previousTarget = targetIndex === -1 ? undefined : targets[targetIndex];
+  const nextTarget: MediaRequestServiceTarget = {
+    ...previousTarget,
+    serviceType,
+    format,
+    serverId: request.serverId,
+    profileId: options.profileId,
+    rootFolder: options.rootFolder,
+    tags: options.tags,
+    ...(request.type === MediaType.TV
+      ? { languageProfileId: options.languageProfileId ?? null }
+      : {}),
+    status: previousTarget?.status ?? MediaStatus.PENDING,
+  };
+
+  if (preservePreviousTargets) {
+    request.serviceTargets =
+      targetIndex === -1
+        ? [...targets, nextTarget]
+        : targets.map((target, index) =>
+            index === targetIndex ? nextTarget : target
+          );
+    return;
+  }
+
+  // A pending request has no dispatched service identity to preserve. Replace
+  // its quality target so edits cannot leave stale exact-match data behind.
+  request.serviceTargets = [
+    ...targets.filter(
+      (target) => target.serviceType !== serviceType || target.format !== format
+    ),
+    nextTarget,
+  ];
 };
 
 const inactiveMediaRequestStatuses = [
@@ -1883,6 +2196,13 @@ requestRoutes.get<
     let statusFilter: MediaRequestStatus[];
 
     switch (filter) {
+      case 'active':
+        statusFilter = [
+          MediaRequestStatus.PENDING,
+          MediaRequestStatus.APPROVED,
+          MediaRequestStatus.FAILED,
+        ];
+        break;
       case 'approved':
       case 'processing':
         statusFilter = [MediaRequestStatus.APPROVED];
@@ -3931,7 +4251,9 @@ requestRoutes.put<{ requestId: string }>(
         return next({ status: 404, message: 'Request not found.' });
       }
 
-      const sanitizedBody = sanitizeMediaRequestBody(req.body);
+      const sanitizedBody = sanitizeMediaRequestBody(req.body, {
+        preserveNullOverrides: true,
+      });
       if ('error' in sanitizedBody) {
         logRequestValidationFailure(
           'edit',
@@ -4058,6 +4380,20 @@ requestRoutes.put<{ requestId: string }>(
                 });
               }
 
+              if (
+                body.requestTargetOptions &&
+                !actor.hasPermission(
+                  [Permission.REQUEST_ADVANCED, Permission.MANAGE_REQUESTS],
+                  { type: 'or' }
+                )
+              ) {
+                return next({
+                  status: 403,
+                  message:
+                    'You do not have permission to change service request options.',
+                });
+              }
+
               let requestUser = request.requestedBy;
               const changesRequestUser =
                 body.userId !== undefined &&
@@ -4144,31 +4480,36 @@ requestRoutes.put<{ requestId: string }>(
                       request.serverId = body.serverId as number;
                     }
                     if (body.profileId !== undefined) {
-                      request.profileId = body.profileId as number;
+                      request.profileId = body.profileId;
                     }
                     if (body.rootFolder !== undefined) {
-                      request.rootFolder = body.rootFolder as string;
+                      request.rootFolder = body.rootFolder;
                     }
                     if (body.tags !== undefined) {
                       request.tags = body.tags;
                     }
-                  } else if (
-                    request.type === MediaType.MUSIC ||
-                    request.type === MediaType.BOOK
-                  ) {
+                    if (body.requestTargetOptions) {
+                      synchronizeVideoRequestTargetOptions(
+                        request,
+                        body.requestTargetOptions,
+                        isFailedRequestRepair
+                      );
+                    }
+                  } else if (request.type === MediaType.BOOK) {
+                    Object.assign(
+                      request,
+                      await planBookRequestEdit(request, body)
+                    );
+                  } else if (request.type === MediaType.MUSIC) {
                     const nextServerId =
                       body.serverId === undefined
                         ? request.serverId
                         : body.serverId;
-                    const nextBookFormat =
-                      request.type === MediaType.BOOK
-                        ? (body.format ?? request.bookFormat ?? 'ebook')
-                        : null;
 
                     validateExternalServiceConfiguration(
                       request.type,
                       nextServerId,
-                      nextBookFormat
+                      null
                     );
 
                     if (body.serverId !== undefined) {
@@ -4185,10 +4526,6 @@ requestRoutes.put<{ requestId: string }>(
                     }
                     if (body.tags !== undefined) {
                       request.tags = body.tags;
-                    }
-                    if (request.type === MediaType.BOOK) {
-                      request.bookFormat =
-                        body.format ?? request.bookFormat ?? 'ebook';
                     }
                   } else if (request.type === MediaType.TV) {
                     const requestedSeasons =
@@ -4494,14 +4831,13 @@ requestRoutes.put<{ requestId: string }>(
                         request.serverId = body.serverId as number;
                       }
                       if (body.profileId !== undefined) {
-                        request.profileId = body.profileId as number;
+                        request.profileId = body.profileId;
                       }
                       if (body.rootFolder !== undefined) {
-                        request.rootFolder = body.rootFolder as string;
+                        request.rootFolder = body.rootFolder;
                       }
                       if (body.languageProfileId !== undefined) {
-                        request.languageProfileId =
-                          body.languageProfileId as number;
+                        request.languageProfileId = body.languageProfileId;
                       }
                       if (
                         (body.metadataLanguageId !== undefined ||
@@ -4530,6 +4866,13 @@ requestRoutes.put<{ requestId: string }>(
                       }
                       if (body.tags !== undefined) {
                         request.tags = body.tags;
+                      }
+                      if (body.requestTargetOptions) {
+                        synchronizeVideoRequestTargetOptions(
+                          request,
+                          body.requestTargetOptions,
+                          isFailedRequestRepair
+                        );
                       }
                     }
 
@@ -4594,6 +4937,22 @@ requestRoutes.put<{ requestId: string }>(
                         message: `${request.type} quota exceeded.`,
                       });
                     }
+                  }
+
+                  if (request.type === MediaType.TV) {
+                    const restricted =
+                      (request.watchAheadEpisodeCount ?? 0) > 0 ||
+                      isTvSeasonWatchGateEnabledForUser(requestUser);
+                    if (body.monitorFutureSeasons === true && restricted) {
+                      return next({
+                        status: 403,
+                        message:
+                          'Future seasons are managed by Episode Queue or the season watch gate.',
+                      });
+                    }
+                    if (restricted) request.monitorFutureSeasons = false;
+                    else if (body.monitorFutureSeasons !== undefined)
+                      request.monitorFutureSeasons = body.monitorFutureSeasons;
                   }
 
                   if (changesRequestUser && request.type === MediaType.TV) {
@@ -4664,7 +5023,10 @@ requestRoutes.put<{ requestId: string }>(
           message: 'You do not have permission to modify this request.',
         });
       }
-      if (e instanceof TvSeasonWatchGateError) {
+      if (
+        e instanceof TvSeasonWatchGateError ||
+        e instanceof BookRequestEditConflictError
+      ) {
         return next({ status: e.status, message: e.message });
       }
       if (e instanceof ServiceConfigurationError) {
