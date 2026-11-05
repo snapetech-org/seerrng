@@ -8,8 +8,8 @@ import {
 } from 'react-router-dom';
 import { useAuth } from '../auth';
 import { useExtras } from '../extras';
-import { Icon, type IconName } from '../icons';
 import { useBack } from '../hooks';
+import { Icon, type IconName } from '../icons';
 import { usePrefs } from '../settings';
 
 // scroll position of each history entry, for Back
