@@ -111,6 +111,11 @@ selected anime profile again and falls back to that same Sonarr service's
 default profile if the anime profile is missing or cannot be verified. The
 Services list shows the configured anime profile beneath the standard profile.
 
+When an anime request is sent, SeerrNG uses the configured anime root folder
+unless the request specifies a different root folder override. A request that
+only carries the Sonarr server's standard root folder does not replace the
+anime-specific folder.
+
 #### Default Metadata Language and Season Order (Sonarr v5)
 
 After testing a Sonarr v5 connection, choose **Default Metadata Language** and
