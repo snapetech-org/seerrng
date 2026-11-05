@@ -822,7 +822,7 @@ export class MediaRequestSubscriber implements EntitySubscriberInterface<MediaRe
     await getRepository(MediaRequest).save(entity);
 
     logger.warn(
-      `Request points to a missing or incompatible ${serviceName} server; marking request as FAILED`,
+      `No usable ${entity.is4k ? '4K ' : ''}${serviceName} server is configured for this request; marking request as FAILED`,
       {
         label: 'Media Request',
         requestId: entity.id,
@@ -1146,24 +1146,8 @@ export class MediaRequestSubscriber implements EntitySubscriberInterface<MediaRe
         }
 
         if (!radarrSettings) {
-          if (hasExplicitServer) {
-            await this.failRequestForMissingServer(entity, media, 'Radarr');
-            return true;
-          }
-
-          logger.warn(
-            `There is no default ${
-              entity.is4k ? '4K ' : ''
-            }Radarr server configured. Did you set any of your ${
-              entity.is4k ? '4K ' : ''
-            }Radarr servers as default?`,
-            {
-              label: 'Media Request',
-              requestId: entity.id,
-              mediaId: entity.media.id,
-            }
-          );
-          return false;
+          await this.failRequestForMissingServer(entity, media, 'Radarr');
+          return true;
         }
 
         let rootFolder = radarrSettings.activeDirectory;
@@ -1450,24 +1434,8 @@ export class MediaRequestSubscriber implements EntitySubscriberInterface<MediaRe
         }
 
         if (!sonarrSettings) {
-          if (hasExplicitServer) {
-            await this.failRequestForMissingServer(entity, media, 'Sonarr');
-            return true;
-          }
-
-          logger.warn(
-            `There is no default ${
-              entity.is4k ? '4K ' : ''
-            }Sonarr server configured. Did you set any of your ${
-              entity.is4k ? '4K ' : ''
-            }Sonarr servers as default?`,
-            {
-              label: 'Media Request',
-              requestId: entity.id,
-              mediaId: entity.media.id,
-            }
-          );
-          return false;
+          await this.failRequestForMissingServer(entity, media, 'Sonarr');
+          return true;
         }
 
         const tmdb = new TheMovieDb();
