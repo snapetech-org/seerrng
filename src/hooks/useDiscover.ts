@@ -262,9 +262,10 @@ const useDiscover = <
   const { fetcher: defaultFetcher } = useSWRConfig();
   const discoverOptions = (options ?? {}) as Record<string, unknown>;
   // A title search remains a direct way to find requested media.
-  const hasExplicitSearch =
-    typeof discoverOptions.search === 'string' &&
-    discoverOptions.search.trim().length > 0;
+  const hasExplicitSearch = ['search', 'query'].some((key) => {
+    const value = discoverOptions[key];
+    return typeof value === 'string' && value.trim().length > 0;
+  });
   const shouldApplyHideRequested =
     settings.currentSettings.hideRequested && !hasExplicitSearch;
   const { user, hasPermission } = useUser();

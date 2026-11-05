@@ -1,3 +1,4 @@
+import { MediaStatus } from '@server/constants/media';
 import { AxiosError } from 'axios';
 import { JSDOM } from 'jsdom';
 import React, { act } from 'react';
@@ -9,7 +10,11 @@ import useDiscover from './useDiscover';
 
 const state = vi.hoisted(() => ({
   settings: {
-    currentSettings: { hideAvailable: false, hideBlocklisted: false },
+    currentSettings: {
+      hideAvailable: false,
+      hideBlocklisted: false,
+      hideRequested: false,
+    },
   },
 }));
 
@@ -96,6 +101,7 @@ const renderProbe = (
   );
 
 beforeEach(() => {
+  state.settings.currentSettings.hideRequested = false;
   dom = new JSDOM('<!doctype html><html><body></body></html>');
   vi.stubGlobal('window', dom.window);
   vi.stubGlobal('document', dom.window.document);
@@ -267,4 +273,103 @@ describe('bounded Discover page recovery', () => {
     );
     expect(calls).toBe(1);
   });
+});
+
+const RequestedVisibilityProbe = ({
+  options,
+}: {
+  options: Record<string, string>;
+}) => {
+  const discover = useDiscover<{ id: number; mediaType: string }>(
+    '/api/v1/search',
+    options,
+    { randomizeOrder: false, dedupingInterval: 0 }
+  );
+  return (
+    <>
+      <output data-testid="visible-ids">
+        {discover.titles.map((item) => item.id).join(',')}
+      </output>
+      <output data-testid="searching-filtered">
+        {String(discover.isSearchingFilteredResults)}
+      </output>
+    </>
+  );
+};
+for (const option of ['search', 'query']) {
+  it(`preserves requested titles in explicit ${option} searches`, async () => {
+    state.settings.currentSettings.hideRequested = true;
+    await act(async () =>
+      renderProbe(
+        <RequestedVisibilityProbe options={{ [option]: 'Requested title' }} />,
+        async () => ({
+          page: 1,
+          totalPages: 1,
+          totalResults: 1,
+          results: [
+            {
+              id: 1,
+              mediaType: 'movie',
+              mediaInfo: {
+                status: MediaStatus.PENDING,
+                hasActiveRequest: true,
+              },
+            },
+          ],
+        })
+      )
+    );
+    expect(host.querySelector('[data-testid="visible-ids"]')?.textContent).toBe(
+      '1'
+    );
+  });
+}
+it('filters requested video grid results while preserving other media', async () => {
+  state.settings.currentSettings.hideRequested = true;
+  await act(async () =>
+    renderProbe(<RequestedVisibilityProbe options={{}} />, async () => ({
+      page: 1,
+      totalPages: 1,
+      totalResults: 3,
+      results: ['movie', 'tv', 'book'].map((mediaType, index) => ({
+        id: index + 1,
+        mediaType,
+        mediaInfo: { status: MediaStatus.PENDING, hasActiveRequest: true },
+      })),
+    }))
+  );
+  expect(host.querySelector('[data-testid="visible-ids"]')?.textContent).toBe(
+    '3'
+  );
+});
+it('bounds automatic scans through entirely requested pages and clears searching state', async () => {
+  state.settings.currentSettings.hideRequested = true;
+  const calls: number[] = [];
+  await act(async () =>
+    renderProbe(<RequestedVisibilityProbe options={{}} />, async (url) => {
+      const page = Number(
+        new URL(url, 'http://fixture.test').searchParams.get('page')
+      );
+      calls.push(page);
+      return {
+        page,
+        totalPages: 500,
+        totalResults: 10000,
+        results: [
+          {
+            id: page,
+            mediaType: 'movie',
+            mediaInfo: { status: MediaStatus.PENDING, hasActiveRequest: true },
+          },
+        ],
+      };
+    })
+  );
+  expect(calls).toEqual([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
+  expect(host.querySelector('[data-testid="visible-ids"]')?.textContent).toBe(
+    ''
+  );
+  expect(
+    host.querySelector('[data-testid="searching-filtered"]')?.textContent
+  ).toBe('false');
 });

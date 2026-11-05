@@ -97,14 +97,8 @@ const cacheSortMetadata = (
   });
 };
 
-let tmdb: TheMovieDb | undefined;
 let listenbrainz: ListenBrainzAPI | undefined;
 let openLibrary: OpenLibraryAPI | undefined;
-
-const getTmdb = (): TheMovieDb => {
-  tmdb ??= new TheMovieDb();
-  return tmdb;
-};
 
 const getListenBrainz = (): ListenBrainzAPI => {
   listenbrainz ??= new ListenBrainzAPI();
@@ -274,7 +268,8 @@ export const loadMovieTvSortMetadata = async (
     return {};
   }
 
-  const key = `${mediaType}:${tmdbId}`;
+  const language = getSettings().main.locale || 'en';
+  const key = `${mediaType}:${tmdbId}:${JSON.stringify(language)}`;
   const cached = metadataCache.get(key);
   if (cached && cached.expiresAt > Date.now()) {
     return cached.value;
@@ -287,9 +282,12 @@ export const loadMovieTvSortMetadata = async (
 
   const request = (async (): Promise<RequestStatusSortMetadata> => {
     try {
+      // Provider clients capture request context and settings at construction.
+      // Keep them scoped to this lookup instead of freezing the first locale.
+      const tmdb = new TheMovieDb();
       return mediaType === MediaType.MOVIE
-        ? movieMetadata(await getTmdb().getMovie({ movieId: tmdbId }))
-        : tvMetadata(await getTmdb().getTvShow({ tvId: tmdbId }));
+        ? movieMetadata(await tmdb.getMovie({ movieId: tmdbId, language }))
+        : tvMetadata(await tmdb.getTvShow({ tvId: tmdbId, language }));
     } catch {
       // Sorting must remain available while TMDB is unavailable.
       return {};

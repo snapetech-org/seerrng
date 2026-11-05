@@ -17,12 +17,14 @@ import { Permission, useUser } from '@app/hooks/useUser';
 import globalMessages from '@app/i18n/globalMessages';
 import ErrorPage from '@app/pages/_error';
 import defineMessages from '@app/utils/defineMessages';
+import {
+  groupPersonCredits,
+  sortPersonCredits,
+  type CreditSortOption,
+} from '@app/utils/personCredits';
 import type { PersonCombinedCreditsResponse } from '@server/interfaces/api/personInterfaces';
 import type { PersonMovieBulkRequestResponse } from '@server/interfaces/api/requestInterfaces';
-import type {
-  PersonCredit,
-  PersonDetails as PersonDetailsType,
-} from '@server/models/Person';
+import type { PersonDetails as PersonDetailsType } from '@server/models/Person';
 import axios from 'axios';
 import { useRouter } from 'next/router';
 import { useContext, useMemo, useState } from 'react';
@@ -60,86 +62,6 @@ const messages = defineMessages('components.PersonDetails', {
 });
 
 type MediaType = 'all' | 'movie' | 'tv';
-type CreditSortOption =
-  | 'popularity.asc'
-  | 'popularity.desc'
-  | 'release_date.asc'
-  | 'release_date.desc'
-  | 'vote_average.asc'
-  | 'vote_average.desc'
-  | 'title.asc'
-  | 'title.desc'
-  | 'vote_count.asc'
-  | 'vote_count.desc';
-
-const sortPersonCredits = <T extends PersonCredit>(
-  credits: T[],
-  sortOption: CreditSortOption,
-  locale: string
-): T[] => {
-  const ascending = sortOption.endsWith('.asc');
-  const direction = ascending ? 1 : -1;
-  const field = sortOption.slice(0, sortOption.lastIndexOf('.'));
-  const collator = new Intl.Collator(locale, {
-    sensitivity: 'base',
-    numeric: true,
-  });
-
-  return [...credits].sort((left, right) => {
-    if (field === 'title') {
-      const leftTitle = left.mediaType === 'movie' ? left.title : left.name;
-      const rightTitle = right.mediaType === 'movie' ? right.title : right.name;
-      const leftHasTitle = Boolean(leftTitle?.trim());
-      const rightHasTitle = Boolean(rightTitle?.trim());
-      // Keep incomplete metadata after known values in either sort direction.
-      if (leftHasTitle !== rightHasTitle) return leftHasTitle ? -1 : 1;
-      if (!leftHasTitle) return 0;
-      return direction * collator.compare(leftTitle, rightTitle);
-    }
-
-    if (field === 'release_date') {
-      const leftDate = Date.parse(
-        left.mediaType === 'movie' ? left.releaseDate : left.firstAirDate
-      );
-      const rightDate = Date.parse(
-        right.mediaType === 'movie' ? right.releaseDate : right.firstAirDate
-      );
-      const leftHasDate = Number.isFinite(leftDate);
-      const rightHasDate = Number.isFinite(rightDate);
-      // An unknown release date is not an old or future release.
-      if (leftHasDate !== rightHasDate) return leftHasDate ? -1 : 1;
-      if (!leftHasDate) return 0;
-      return direction * (leftDate - rightDate);
-    }
-
-    const leftValue =
-      field === 'popularity'
-        ? left.popularity
-        : field === 'vote_average'
-          ? left.voteAverage
-          : left.voteCount;
-    const rightValue =
-      field === 'popularity'
-        ? right.popularity
-        : field === 'vote_average'
-          ? right.voteAverage
-          : right.voteCount;
-    const leftHasValue = Number.isFinite(leftValue);
-    const rightHasValue = Number.isFinite(rightValue);
-    // Keep missing provider values last instead of treating them as zero.
-    if (leftHasValue !== rightHasValue) return leftHasValue ? -1 : 1;
-    if (!leftHasValue) return 0;
-    return direction * (leftValue - rightValue);
-  });
-};
-
-const groupById = <T extends { id: number | string }>(items: T[]) =>
-  items.reduce<Record<string, T[]>>((groups, item) => {
-    const key = item.id.toString();
-    groups[key] = [...(groups[key] ?? []), item];
-    return groups;
-  }, {});
-
 const PersonDetails = () => {
   const intl = useIntl();
   const router = useRouter();
@@ -168,7 +90,7 @@ const PersonDetails = () => {
       (media) =>
         currentMediaType === 'all' || media.mediaType === currentMediaType
     );
-    const grouped = groupById(filtered);
+    const grouped = groupPersonCredits(filtered);
 
     const reduced = Object.values(grouped).map((objs) => ({
       ...objs[0],
@@ -183,7 +105,7 @@ const PersonDetails = () => {
       (media) =>
         currentMediaType === 'all' || media.mediaType === currentMediaType
     );
-    const grouped = groupById(filtered);
+    const grouped = groupPersonCredits(filtered);
 
     const reduced = Object.values(grouped).map((objs) => ({
       ...objs[0],
@@ -199,7 +121,7 @@ const PersonDetails = () => {
       ...(combinedCredits?.crew ?? []),
     ].filter((credit) => credit.mediaType === 'movie');
 
-    return Object.values(groupById(movies))
+    return Object.values(groupPersonCredits(movies))
       .map((credits) => Number(credits[0].id))
       .filter((id) => Number.isSafeInteger(id) && id > 0);
   }, [combinedCredits]);
@@ -407,9 +329,9 @@ const PersonDetails = () => {
         </div>
       </div>
       <ul className="cards-vertical">
-        {sortedCast?.map((media, index) => {
+        {sortedCast?.map((media) => {
           return (
-            <li key={`list-cast-item-${media.id}-${index}`}>
+            <li key={`list-cast-item-${media.mediaType}-${media.id}`}>
               <TitleCard
                 key={media.id}
                 id={media.id}
@@ -455,9 +377,9 @@ const PersonDetails = () => {
         </div>
       </div>
       <ul className="cards-vertical">
-        {sortedCrew?.map((media, index) => {
+        {sortedCrew?.map((media) => {
           return (
-            <li key={`list-crew-item-${media.id}-${index}`}>
+            <li key={`list-crew-item-${media.mediaType}-${media.id}`}>
               <TitleCard
                 key={media.id}
                 id={media.id}
