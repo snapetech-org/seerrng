@@ -3951,3 +3951,50 @@ describe('OpenID Connect', () => {
     });
   });
 });
+
+describe('administrator sign-in network policy', () => {
+  beforeEach(() => {
+    const settings = getSettings();
+    settings.main.localLogin = true;
+    settings.network.restrictAdministratorSignInToNetworks = true;
+    settings.network.administratorSignInAllowedNetworks = '192.0.2.0/24';
+  });
+
+  it('rejects administrator login outside the network even with forged forwarding headers', async () => {
+    const result = await request(app)
+      .post('/auth/local')
+      .set('X-Forwarded-For', '192.0.2.10')
+      .send({ email: 'admin@seerr.dev', password: 'test1234' });
+    assert.equal(result.status, 403);
+    assert.equal(result.body.message, 'Access denied.');
+  });
+
+  it('admits allowed administrators then blocks their existing sessions when the policy changes', async () => {
+    getSettings().network.administratorSignInAllowedNetworks =
+      '127.0.0.0/8,::1';
+    const agent = request.agent(app);
+    const login = await agent
+      .post('/auth/local')
+      .send({ email: 'admin@seerr.dev', password: 'test1234' });
+    assert.equal(login.status, 200);
+    assert.equal((await agent.get('/auth/me')).status, 200);
+    getSettings().network.administratorSignInAllowedNetworks = '192.0.2.0/24';
+    assert.equal((await agent.get('/auth/me')).status, 403);
+  });
+
+  it('keeps ordinary users and valid API-key integrations available outside administrator networks', async () => {
+    const user = await request(app)
+      .post('/auth/local')
+      .send({ email: 'friend@seerr.dev', password: 'test1234' });
+    assert.equal(user.status, 200);
+    getSettings().main.apiKey = 'fixture-network-policy-key';
+    const api = await request(app)
+      .get('/auth/me')
+      .set('X-API-Key', 'fixture-network-policy-key');
+    assert.equal(api.status, 200);
+    const invalid = await request(app)
+      .get('/auth/me')
+      .set('X-API-Key', 'invalid-fixture-key');
+    assert.equal(invalid.status, 403);
+  });
+});

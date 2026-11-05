@@ -3199,3 +3199,40 @@ describe('Settings route input validation', () => {
     assert.match(res.body.message, /Cache not found/);
   });
 });
+
+describe('administrator network policy settings', () => {
+  it('rejects an enabled policy that excludes the saving client and keeps the old policy', async () => {
+    const result = await request(app).post('/settings/network').send({
+      restrictAdministratorSignInToNetworks: true,
+      administratorSignInAllowedNetworks: '192.0.2.0/24',
+    });
+    assert.equal(result.status, 400);
+    assert.match(result.body.message, /current client IP/);
+    assert.equal(
+      getSettings().network.restrictAdministratorSignInToNetworks,
+      false
+    );
+  });
+
+  it('saves a valid local policy and rejects empty or malformed replacements', async () => {
+    const result = await request(app).post('/settings/network').send({
+      restrictAdministratorSignInToNetworks: true,
+      administratorSignInAllowedNetworks: '127.0.0.0/8,::1',
+    });
+    assert.equal(result.status, 200);
+    assert.equal(
+      getSettings().network.restrictAdministratorSignInToNetworks,
+      true
+    );
+    for (const network of ['', '192.0.2.1/33', 'example.com']) {
+      const invalid = await request(app)
+        .post('/settings/network')
+        .send({ administratorSignInAllowedNetworks: network });
+      assert.equal(invalid.status, 400);
+    }
+    assert.equal(
+      getSettings().network.administratorSignInAllowedNetworks,
+      '127.0.0.0/8\n::1'
+    );
+  });
+});
