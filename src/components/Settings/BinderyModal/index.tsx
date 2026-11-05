@@ -195,8 +195,7 @@ const BinderyModal = ({ settings, onClose, onSave }: BinderyModalProps) => {
         }}
         validationSchema={schema}
         onSubmit={async (values) => {
-          const submission: ReadarrSettings = {
-            id: settings?.id ?? 0,
+          const submission: Omit<ReadarrSettings, 'id'> = {
             backend: 'bindery',
             name: values.name.trim(),
             hostname: values.hostname.trim(),
