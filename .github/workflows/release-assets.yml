@@ -328,6 +328,14 @@ jobs:
           ref: ${{ needs.resolve.outputs.tag }}
           persist-credentials: false
 
+      - name: Checkout current release tooling
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.sha }}
+          path: .release-tooling
+          sparse-checkout: scripts
+          persist-credentials: false
+
       - name: Verify Xcode release toolchain
         run: |
           set -euo pipefail
@@ -337,12 +345,15 @@ jobs:
           available_simulators="$(xcrun simctl list devices available)"
           grep -Fq 'iPhone 17' <<<"$available_simulators"
 
+      - name: Test local Xcode workspace guard
+        run: bash .release-tooling/scripts/ios-release-workspace.test.sh
+
       - name: Test and package iOS Simulator app
         env:
           TAG: ${{ needs.resolve.outputs.tag }}
           IOS_BUILD_NUMBER: ${{ github.run_number }}
           IOS_SIMULATOR_NAME: iPhone 17
-        run: bash scripts/build-ios-release.sh "$TAG" dist-release
+        run: bash .release-tooling/scripts/build-ios-release.sh "$TAG" dist-release
 
       - name: Build signed Ad Hoc IPA
         if: vars.IOS_ADHOC_SIGNING_ENABLED == 'true'
@@ -355,7 +366,7 @@ jobs:
           IOS_DISTRIBUTION_CERTIFICATE_PASSWORD: ${{ secrets.IOS_DISTRIBUTION_CERTIFICATE_PASSWORD }}
           IOS_ADHOC_PROVISIONING_PROFILE_BASE64: ${{ secrets.IOS_ADHOC_PROVISIONING_PROFILE_BASE64 }}
           RUNNER_TEMP: ${{ runner.temp }}
-        run: bash scripts/build-ios-signed-ipa.sh "$TAG" dist-release
+        run: bash .release-tooling/scripts/build-ios-signed-ipa.sh "$TAG" dist-release
 
       - name: Build signed App Store Connect IPA
         if: vars.IOS_APPSTORE_SIGNING_ENABLED == 'true'
@@ -368,7 +379,15 @@ jobs:
           IOS_DISTRIBUTION_CERTIFICATE_PASSWORD: ${{ secrets.IOS_DISTRIBUTION_CERTIFICATE_PASSWORD }}
           IOS_APPSTORE_PROVISIONING_PROFILE_BASE64: ${{ secrets.IOS_APPSTORE_PROVISIONING_PROFILE_BASE64 }}
           RUNNER_TEMP: ${{ runner.temp }}
-        run: bash scripts/build-ios-signed-ipa.sh "$TAG" dist-release
+        run: bash .release-tooling/scripts/build-ios-signed-ipa.sh "$TAG" dist-release
+
+      - name: Upload iOS simulator failure diagnostics
+        if: failure()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: ios-simulator-diagnostics-${{ github.run_id }}
+          path: dist-release/seerrng-*-ios-tests.xcresult.zip
+          if-no-files-found: ignore
 
       - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:

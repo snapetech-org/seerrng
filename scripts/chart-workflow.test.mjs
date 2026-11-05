@@ -67,5 +67,13 @@ test('chart and tooling validation use the current CI triggers and tools', () =>
     ciWorkflow.jobs.helm.uses,
     './.github/workflows/lint-helm-charts.yml'
   );
-  assert.equal(ciWorkflow.jobs.helm.with, undefined);
+  assert.deepEqual(ciWorkflow.jobs.helm.with, {
+    pr_sha: '${{ inputs.pr_sha }}',
+  });
+  assert.equal(workflow.on.workflow_call.inputs.pr_sha.type, 'string');
+  assert.equal(workflow.on.workflow_call.inputs.pr_sha.required, false);
+  assert.equal(
+    steps.find((step) => step.name === 'Checkout').with.ref,
+    '${{ inputs.pr_sha || github.sha }}'
+  );
 });
