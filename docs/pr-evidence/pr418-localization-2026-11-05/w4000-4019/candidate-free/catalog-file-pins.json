@@ -1,0 +1,84 @@
+{
+  "catalogs": {
+    "ar": {
+      "byteCount": 1045270,
+      "gitBlob": "af9b20fead233653cda6f67de8d47d7000846bbd",
+      "path": "src/i18n/locale/ar.json",
+      "sha256": "4d0cbfb1a3a80f25675d187af2462c76ee186bca2a0e00c6abc3ad4a007c707e"
+    },
+    "de": {
+      "byteCount": 927528,
+      "gitBlob": "dfd9979caa2d58d29591886957265e21e55a1e26",
+      "path": "src/i18n/locale/de.json",
+      "sha256": "f482d61b33b494268228c57fea8aefd7c4094aa56935720873150dd0badffdd0"
+    },
+    "en": {
+      "byteCount": 839919,
+      "gitBlob": "6874e897d0c02d9e8155f555a07f0ee73b662909",
+      "path": "src/i18n/locale/en.json",
+      "sha256": "66c6196ec67cedb0f35c50ce38fb5a7ddda08b8eb2dd5ca9cd24c1617ecd3223"
+    },
+    "es": {
+      "byteCount": 923232,
+      "gitBlob": "e62f5bafe9410e2637c8acdb5b54dbc975e8beca",
+      "path": "src/i18n/locale/es.json",
+      "sha256": "c0c8d09b843a93a9c8ed5a7d07057af7141f5fa0e6778924f73a818712c70b8e"
+    },
+    "fr": {
+      "byteCount": 941522,
+      "gitBlob": "d9de5a573b61b44efaeb3db9a5cdb5a1cde7d473",
+      "path": "src/i18n/locale/fr.json",
+      "sha256": "9f2dd575612f212e249f8c76d0baf200f65e811d4bb1b6f5790b9994bc4a4506"
+    },
+    "hi": {
+      "byteCount": 1373572,
+      "gitBlob": "8b3c63746af868c6e0a259857e73fc85b04d57dc",
+      "path": "src/i18n/locale/hi.json",
+      "sha256": "1bd2f3a1b5672eba4f2714b239e7f671afb4da5aa59b7fb778e7932ce78d0ee7"
+    },
+    "id": {
+      "byteCount": 868591,
+      "gitBlob": "677db3fe5a5fa80e3cc3b256d016eaa0d020b98a",
+      "path": "src/i18n/locale/id.json",
+      "sha256": "c23d07e45d8043b0e71eb3c05057a1ec693d154930450c30c3fdc7eb0709ecf3"
+    },
+    "ja": {
+      "byteCount": 1016644,
+      "gitBlob": "a163057212a43b789069d20bc8c3c33671c584c8",
+      "path": "src/i18n/locale/ja.json",
+      "sha256": "eb4e4b1b61f31cf1b0859c099046729be8c05da95efbd5cd68ee9d43baefa9cc"
+    },
+    "ko": {
+      "byteCount": 935224,
+      "gitBlob": "fc19b6287e9241071ac17a01c937b394cff2ad8e",
+      "path": "src/i18n/locale/ko.json",
+      "sha256": "71b793002ec319e34af0ab9b47c6761b8722d39183d93ae956f828a95d9af6c1"
+    },
+    "pt-BR": {
+      "byteCount": 912715,
+      "gitBlob": "9bf851ba1cb54646a2f552ecc66cfd062f7f040a",
+      "path": "src/i18n/locale/pt_BR.json",
+      "sha256": "f2efa3e279879b96f7d103513e9942ad94363ff28c8a8bdf11cebc01eb822d9c"
+    },
+    "vi": {
+      "byteCount": 970772,
+      "gitBlob": "346758ef5c202660263a74c41ddeb1fa3974da82",
+      "path": "src/i18n/locale/vi.json",
+      "sha256": "a54c08c339564e899113aa50090a6becd49c98646e3498df2504044b0f9153b1"
+    },
+    "zh-Hans": {
+      "byteCount": 813065,
+      "gitBlob": "8d385c1e1aa4ed714a1116551e5922a8927cc83c",
+      "path": "src/i18n/locale/zh_Hans.json",
+      "sha256": "ab5108223472b5a4a4791cf550bd80399f7e6e62261307a3d52d4e7fa198583d"
+    },
+    "zh-Hant": {
+      "byteCount": 814886,
+      "gitBlob": "fe4ef8f5199ac6f3f9b0af4454a15de98dcbbbfd",
+      "path": "src/i18n/locale/zh_Hant.json",
+      "sha256": "d3bcf0172f06b9d3ca499c50455629a45f08a2d29740999e3d2d495b6bd3cdce"
+    }
+  },
+  "exactHead": "77d30ae742aad7245e6e419237fca6a544531e1f",
+  "exactTree": "2c6fe4a0c1c33aa56b01f06a70702f68598509a7"
+}

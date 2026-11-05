@@ -1,0 +1,217 @@
+{
+  "allSourceAndCurrentTargetPinsReattested": true,
+  "baseSha": "2647e15762de0c2285cd9d8ebc6d27ffafce6358",
+  "baseTree": "b6f4acb9debdc1b0a838b50d5ad88aaa467e429b",
+  "blindSummary": {
+    "artifact": "Independent blind semantic review ledger for SeerrNG PR #418 W4000-W4019",
+    "cellCount": 240,
+    "dispositionCounts": {
+      "accept": 197,
+      "correction": 21,
+      "hold": 12,
+      "refinement": 10
+    },
+    "head": "ac193096ebfc0007183348b24e35bf6fee33f67a",
+    "holdPositions": [
+      4013
+    ],
+    "localeOrder": [
+      "es",
+      "zh-Hans",
+      "hi",
+      "de",
+      "ja",
+      "fr",
+      "pt-BR",
+      "ar",
+      "ko",
+      "zh-Hant",
+      "vi",
+      "id"
+    ],
+    "nativeSpeakerReviewClaimed": false,
+    "numericTokenExceptionCount": 1,
+    "proposalFilesOpenedBeforeBlindCompletion": false,
+    "pullRequest": 418,
+    "repository": "snapetech-org/seerrng",
+    "schemaVersion": 1,
+    "sourceCount": 20,
+    "tree": "93e71e7c52602ec3f8b76548fd12b2f5b4368b4c",
+    "window": "W4000-W4019"
+  },
+  "browserVisualReviewPerformed": false,
+  "cells": 240,
+  "currentHead": "77d30ae742aad7245e6e419237fca6a544531e1f",
+  "currentTree": "2c6fe4a0c1c33aa56b01f06a70702f68598509a7",
+  "entryExitRefsUnchanged": true,
+  "exactGitVerifierResult": "PASS: head/tree/base tree and 13 catalogs plus caller code objects verified",
+  "exitAttestationUtc": "2026-11-05T09:45:41+00:00",
+  "finalChecksumsSealed": true,
+  "hashOnlyHolds": 12,
+  "localeReviewPasses": {
+    "ar-zh-Hant-vi-id": 80,
+    "es-de-fr-pt-BR": 80,
+    "zh-Hans-hi-ja-ko": 80
+  },
+  "nativeSpeakerReviewPerformed": false,
+  "numericSemanticExceptions": [
+    {
+      "cellId": "components.Settings.Notifications.NotificationsWebhook.validationTypes::ja",
+      "field": "numericTokens",
+      "semanticRationale": "Japanese 1つ以上 means one or more, a direct natural equivalent of the English minimum-one instruction."
+    }
+  ],
+  "oldBlindRowsReattested": 240,
+  "oldPrimaryRowsReattested": 240,
+  "otherTokenFailures": 0,
+  "perLocaleCellCounts": {
+    "ar": 20,
+    "de": 20,
+    "es": 20,
+    "fr": 20,
+    "hi": 20,
+    "id": 20,
+    "ja": 20,
+    "ko": 20,
+    "pt-BR": 20,
+    "vi": 20,
+    "zh-Hans": 20,
+    "zh-Hant": 20
+  },
+  "portableCrossVerifierResult": "PASS: 240 cells, source/current-target/caller hashes, candidate lanes, tokens, and checksum inventory",
+  "primarySummary": {
+    "PRorCatalogEdits": false,
+    "acceptedJapaneseNumericEquivalent": {
+      "locale": "ja",
+      "meaningPreserved": true,
+      "position": 4007
+    },
+    "baselineTokenMismatchCounts": {
+      "markupTags": 0,
+      "numericTokens": 1,
+      "placeholders": 0,
+      "protectedLiterals": 0
+    },
+    "blindPacketInspected": false,
+    "browserAcceptance": false,
+    "callerReferences": 25,
+    "cells": 240,
+    "crossReviewPerformed": false,
+    "currentHashOnlyHolds": 12,
+    "dispositionCounts": {
+      "ACCEPT_CURRENT": 194,
+      "CORRECTION": 27,
+      "HOLD": 12,
+      "REFINEMENT": 7
+    },
+    "head": "ac193096ebfc0007183348b24e35bf6fee33f67a",
+    "localeCount": 12,
+    "localeDispositionCounts": {
+      "ar": {
+        "ACCEPT_CURRENT": 14,
+        "CORRECTION": 5,
+        "HOLD": 1
+      },
+      "de": {
+        "ACCEPT_CURRENT": 18,
+        "CORRECTION": 1,
+        "HOLD": 1
+      },
+      "es": {
+        "ACCEPT_CURRENT": 16,
+        "CORRECTION": 1,
+        "HOLD": 1,
+        "REFINEMENT": 2
+      },
+      "fr": {
+        "ACCEPT_CURRENT": 18,
+        "CORRECTION": 1,
+        "HOLD": 1
+      },
+      "hi": {
+        "ACCEPT_CURRENT": 13,
+        "CORRECTION": 5,
+        "HOLD": 1,
+        "REFINEMENT": 1
+      },
+      "id": {
+        "ACCEPT_CURRENT": 14,
+        "CORRECTION": 4,
+        "HOLD": 1,
+        "REFINEMENT": 1
+      },
+      "ja": {
+        "ACCEPT_CURRENT": 17,
+        "CORRECTION": 2,
+        "HOLD": 1
+      },
+      "ko": {
+        "ACCEPT_CURRENT": 16,
+        "CORRECTION": 2,
+        "HOLD": 1,
+        "REFINEMENT": 1
+      },
+      "pt-BR": {
+        "ACCEPT_CURRENT": 16,
+        "CORRECTION": 2,
+        "HOLD": 1,
+        "REFINEMENT": 1
+      },
+      "vi": {
+        "ACCEPT_CURRENT": 16,
+        "CORRECTION": 3,
+        "HOLD": 1
+      },
+      "zh-Hans": {
+        "ACCEPT_CURRENT": 19,
+        "HOLD": 1
+      },
+      "zh-Hant": {
+        "ACCEPT_CURRENT": 17,
+        "CORRECTION": 1,
+        "HOLD": 1,
+        "REFINEMENT": 1
+      }
+    },
+    "nativeSpeakerApproval": false,
+    "priorAppliedTargetHashes": 315,
+    "priorHashOnlyHolds": 74,
+    "priorSelectedSourceIds": 4000,
+    "proposalCount": 34,
+    "reviewMode": "primary semantic review only",
+    "rootAdjudicationPerformed": false,
+    "sourceIds": 20,
+    "testsBuildsScansCI": false,
+    "tree": "93e71e7c52602ec3f8b76548fd12b2f5b4368b4c",
+    "unresolvedTerminologyHold": {
+      "cells": 12,
+      "position": 4013,
+      "term": "Agent"
+    },
+    "window": "W4000-W4019"
+  },
+  "pullRequest": 418,
+  "recommendationCounts": {
+    "accept": 215,
+    "adjust": 13,
+    "hold": 12
+  },
+  "recommendationsDifferentFromCurrent": 50,
+  "repository": "snapetech-org/seerrng",
+  "repositoryOrPrEdited": false,
+  "result": "PASS",
+  "selectedSourceCounts": {
+    "blind": 17,
+    "cross-adjustment": 13,
+    "current": 178,
+    "hash-only-hold": 12,
+    "primary": 15,
+    "primary+blind": 5
+  },
+  "sourceIds": 20,
+  "sourceTextChangesSinceOldCandidateFree": 0,
+  "staleOldCrossReused": false,
+  "targetChangesSinceOldCandidateFree": 0,
+  "testsBuildsScansCiOrWorkflowsRun": false,
+  "window": "W4000-W4019"
+}

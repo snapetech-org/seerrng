@@ -1,0 +1,17 @@
+{
+  "allTokenChecksPass": false,
+  "cellCount": 240,
+  "exactHead": "77d30ae742aad7245e6e419237fca6a544531e1f",
+  "exactTree": "2c6fe4a0c1c33aa56b01f06a70702f68598509a7",
+  "mismatchCells": [
+    {
+      "cellId": "components.Settings.Notifications.NotificationsWebhook.validationTypes::ja",
+      "failedChecks": [
+        "numericTokens"
+      ]
+    }
+  ],
+  "mismatchCounts": {
+    "numericTokens": 1
+  }
+}
