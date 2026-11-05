@@ -1,33 +1,54 @@
 # UI localization roadmap
 
-## Catalog completion
+## Current catalog state
 
-SeerrNG keeps its FormatJS client catalog, server notification catalog, language picker, and English fallback. This follow-up populates the application-owned UI catalogs for Spanish (`es` and the existing `es-MX` variant), Simplified Chinese, Hindi, German, Japanese, French, Brazilian Portuguese, Arabic, Korean, Traditional Chinese, Vietnamese, and Indonesian.
+SeerrNG uses FormatJS client catalogs, server notification catalogs, a language
+picker, and English fallback for missing messages. Catalog files exist for 42
+client locales and 42 server locales, but file presence does not mean the locale
+is complete.
 
-The checked catalogs contain 5,506 client messages and 71 server messages per locale. Every English source key has a non-empty target value in all 13 locale files, including the existing `es-MX` catalogs. Indonesian server email and web-push messages are included.
+The following snapshot was measured from SeerrNG `main` at
+`221d8e0d542802da7529cd272c928cc747677e5c` on 2026-11-01:
 
-The locale order remains:
+| Catalog | English keys | Indonesian keys | Missing English keys | Indonesian-only keys |
+| --- | ---: | ---: | ---: | ---: |
+| Client UI | 6,837 | 5,660 | 1,203 | 26 |
+| Server notifications | 79 | 76 | 3 | 0 |
 
-1. Spanish (`es`; `es-MX` where already supported)
-2. Simplified Chinese (`zh-CN`)
-3. Hindi (`hi`)
-4. German (`de`)
-5. Japanese (`ja`)
-6. French (`fr`)
-7. Brazilian Portuguese (`pt-BR`)
-8. Arabic (`ar`)
-9. Korean (`ko`)
-10. Traditional Chinese (`zh-TW`)
-11. Vietnamese (`vi`)
-12. Indonesian (`id`)
+The previous 5,506-client-key and 71-server-key completion claim is stale. The
+current `pnpm i18n:check` verifies that the extracted English catalogs match
+their sources; it does not require translated catalogs to cover every English
+key. Missing Indonesian messages continue to use English fallback.
+
+## Upstream comparison
+
+Seerr [PR #3667](https://github.com/seerr-team/seerr/pull/3667) is an open
+attempt to complete the upstream Indonesian catalog. Its 1,714 message IDs do
+not overlap SeerrNG's current English catalog, and SeerrNG already has an
+Indonesian locale and language-picker entry. The upstream file is therefore not
+a drop-in translation update. Identical English labels can also have different
+Indonesian translations in SeerrNG depending on context, so text-only matching
+is not enough to select a translation safely.
 
 ## Translation scope and review
 
-The catalogs include application labels, help, accessibility text, dialogs, empty/error/success states, workflow labels, and server notification copy. User-supplied titles, names and paths, sample data, product names, commands, and protocol/API identifiers remain unchanged. English remains the fallback for future missing messages.
+Translations cover application labels, help, accessibility text, dialogs,
+empty/error/success states, workflow labels, and server notification copy.
+User-supplied titles, names and paths, sample data, product names, commands, and
+protocol/API identifiers remain unchanged. Keep fork-specific keys and their
+existing values when catalogs are updated.
 
-Matching upstream values were reused where available. Machine translation and curated common terms filled the remaining entries; some source-language values remain where a model result was unsafe or the text is a product or technical term. Static checks found full source-key coverage and no placeholder, ICU argument/type, rich-text tag, URL, inline-code, HTTP/HTTPS/URL-token, or plural-marker mismatches. These checks verify catalog structure, not translation quality.
+Before a locale is described as complete, verify every source key has a
+non-empty target, preserve placeholders, ICU argument names and types,
+rich-text tags, URLs, inline code, protocol literals, and plural behavior, and
+obtain fluent-speaker review. Static checks establish catalog structure, not
+translation quality. Visual review must also check longer translated copy at
+desktop and narrow viewports; the existing Arabic `/setup` and `/calendar`
+inspection does not certify other routes or locales.
 
-A targeted script scan of the Indonesian client catalog found no remaining Arabic, Devanagari, Japanese, or CJK text. This check does not replace a fluent-speaker review.
+A targeted scan of the Indonesian client catalog found no remaining Arabic,
+Devanagari, Japanese, or CJK text in its existing values. That check does not
+replace a fluent-speaker review or establish coverage of missing keys.
 
 ## Language metadata and RTL
 
@@ -39,6 +60,7 @@ Arabic remains selectable, but this review does not certify every feature page f
 
 ## Follow-up
 
-1. Request fluent-speaker review for each target catalog, especially Arabic and Hindi.
-2. Convert remaining feature layouts to logical positioning and verify representative Arabic workflows at narrow and desktop widths before claiming app-wide RTL acceptance.
-3. Keep new UI strings in the existing FormatJS source catalog and check source-key and placeholder parity in CI.
+1. Close the 1,203 client and three server Indonesian gaps only with context-checked translations and fluent-speaker review; retain the 26 Indonesian-only client keys until their use is understood.
+2. Inventory coverage for every locale file and distinguish complete, partial, and fallback-only catalogs rather than treating file presence as support.
+3. Convert remaining feature layouts to logical positioning and verify representative Arabic workflows at narrow and desktop widths before claiming app-wide RTL acceptance.
+4. Keep new UI strings in the existing FormatJS source catalog and check source-key and placeholder parity in CI.

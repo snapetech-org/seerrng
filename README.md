@@ -188,6 +188,11 @@ Recent repository updates include:
 - **Integrations:** MusicBrainz and Cover Art Archive connectivity checks with
   bounded artwork traffic controls, plus a preview-first BookshelfNG to
   ChaptarrNG database migration helper for single-database setups.
+- **Localization:** the [catalog roadmap](./docs/localization-roadmap.md)
+  records current coverage and review requirements. Indonesian messages use
+  English fallback where translations are missing; upstream Seerr
+  [PR #3667](https://github.com/seerr-team/seerr/pull/3667) is not a direct
+  catalog import because its message IDs do not match SeerrNG's expanded UI.
 
 These changes are in the repository; use the [release notes](./CHANGELOG.md)
 to confirm which ones are included in a published build. SeerrNG continues to
