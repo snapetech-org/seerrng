@@ -39,7 +39,27 @@ You cannot configure both the **Authorization Header** field and a custom `Autho
 
 ### JSON Payload
 
-Customize the JSON payload to suit your needs. Seerr provides several [template variables](#template-variables) for use in the payload, which will be replaced with the relevant data when the notifications are triggered.
+Customize the JSON payload to suit your needs. Seerr provides several [template variables](#template-variables) for use in the payload, which will be replaced with the relevant data when the notifications are triggered. String values also support a small set of filters for formatting data expected by the receiving service:
+
+| Filter | Result |
+| --- | --- |
+| `lowercase` | Converts text to lowercase. |
+| `urlencode` | Encodes text with `encodeURIComponent` for a URL component. |
+| `slugify` | Lowercases text, removes combining marks, and replaces runs of non-letter or non-number characters with a hyphen. |
+
+Use a filter after a variable name. Filters can be chained from left to right:
+
+```json
+{
+  "title": "{{subject}}",
+  "series_slug": "{{subject | slugify}}",
+  "search": "{{subject | lowercase | urlencode}}"
+}
+```
+
+Filters apply to string values in the JSON payload, not to the webhook URL. Existing unfiltered variables keep their current behavior. Unknown variables without filters remain literal; an unknown variable with filters, an unknown filter, or a malformed filter expression fails that webhook delivery before a request is sent. This is formatting, not HTML or script escaping; encode or validate values for any additional context required by the receiving API.
+
+Each expression supports at most eight filters. Rendered JSON is limited to 64 KiB (including UTF-8 bytes and JSON escaping), with a shared limit across fields and keys. Repeated substitutions and filter operations also share a rendering-work budget of 1 MiB. A delivery that exceeds these limits fails before any network request is sent.
 
 ## Template Variables
 

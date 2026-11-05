@@ -96,6 +96,7 @@ describe('SQLite file permissions', () => {
             NODE_ENV: 'production',
             CONFIG_DIRECTORY: parent,
             TS_NODE_PROJECT: path.resolve(__dirname, '../tsconfig.json'),
+            TS_NODE_FILES: 'true',
           },
           encoding: 'utf8',
           timeout: 30000,

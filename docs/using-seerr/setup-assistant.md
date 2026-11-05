@@ -6,7 +6,7 @@ sidebar_position: 5
 
 # Cross-platform setup assistant
 
-The setup assistant runs on Windows, macOS, and Linux with Node.js 24.22.1 or
+The setup assistant runs on Windows, macOS, and Linux with Node.js 24.22.2 or
 newer in the 24.x line. Docker is only required for Compose stack generation
 and Docker network discovery. The assistant does not install or configure
 Docker, native applications, or operating-system services.

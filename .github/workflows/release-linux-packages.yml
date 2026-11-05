@@ -227,7 +227,7 @@ jobs:
           appimagetool_url='https://github.com/AppImage/appimagetool/releases/download/1.9.1/appimagetool-x86_64.AppImage'
           curl -fsSL --retry 5 "$appimagetool_url" -o appimagetool
           echo 'ed4ce84f0d9caff66f50bcca6ff6f35aae54ce8135408b3fa33abfc3cb384eb0  appimagetool' | sha256sum -c -
-          node_version='24.22.1'
+          node_version='24.22.2'
           node_archive="node-v${node_version}-linux-x64.tar.xz"
           node_base_url="https://nodejs.org/dist/v${node_version}"
           curl -fsSL --retry 5 "${node_base_url}/${node_archive}" -o "$node_archive"

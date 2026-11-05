@@ -15,7 +15,7 @@
     <description>SeerrNG helps users discover and request media from connected services. This package installs the Windows x64 release as the SeerrNG service and retains its configuration when the package is removed.</description>
     <tags>seerrng seerr media requests discovery sonarr radarr</tags>
     <dependencies>
-      <dependency id="nodejs-lts" version="[24.22.1,25.0.0)" />
+      <dependency id="nodejs-lts" version="[24.22.2,25.0.0)" />
       <dependency id="nssm" />
     </dependencies>
   </metadata>

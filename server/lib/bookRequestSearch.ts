@@ -17,8 +17,11 @@ import MediaIdentifier, {
 } from '@server/entity/MediaIdentifier';
 import {
   MediaRequest,
+  getRequestMutationAdmissionKey,
+  runWithRequestAdmission,
   type MediaRequestServiceTarget,
 } from '@server/entity/MediaRequest';
+import { hasRequestedEditionFiles } from '@server/lib/editionCompare/availability';
 import { getExternalRuntimeConfig } from '@server/lib/externalRuntimeConfig';
 import { normalizeValidIsbn } from '@server/lib/isbn';
 import {
@@ -27,6 +30,7 @@ import {
 } from '@server/lib/requestStatus';
 import type { ReadarrSettings } from '@server/lib/settings';
 import logger from '@server/logger';
+import { isProviderBookEdition } from '@server/utils/bookEdition';
 
 const terminalCommandStates = new Set([
   'completed',
@@ -345,7 +349,13 @@ class BookRequestSearchManager {
         Number.isFinite(eventTime) && eventTime >= operation.createdAt.getTime()
       );
     });
-    if ((book.statistics?.bookFileCount ?? 0) > 0) {
+    if (
+      await hasRequestedEditionFiles(
+        readarr,
+        book,
+        operation.request.preferredEditionId
+      )
+    ) {
       await this.setState(operation, 'available');
       await this.finalizeRequest(operation.requestId);
       return;
@@ -424,7 +434,13 @@ class BookRequestSearchManager {
       providerEditionId
     );
 
-    if ((book?.statistics?.bookFileCount ?? 0) > 0) {
+    if (
+      await hasRequestedEditionFiles(
+        readarr,
+        book,
+        operation.request.preferredEditionId
+      )
+    ) {
       await this.setState(operation, 'available');
       await this.finalizeRequest(operation.requestId);
       return;
@@ -475,7 +491,13 @@ class BookRequestSearchManager {
       providerEditionId
     );
 
-    if ((book?.statistics?.bookFileCount ?? 0) > 0) {
+    if (
+      await hasRequestedEditionFiles(
+        readarr,
+        book,
+        operation.request.preferredEditionId
+      )
+    ) {
       await this.setState(operation, 'available');
       await this.finalizeRequest(operation.requestId);
       return;
@@ -1040,6 +1062,19 @@ class BookRequestSearchManager {
       message: string;
     }
   ): Promise<void> {
+    return runWithRequestAdmission(
+      [getRequestMutationAdmissionKey(requestId)],
+      () => this.finalizeLockedRequest(requestId, detail)
+    );
+  }
+
+  private async finalizeLockedRequest(
+    requestId: number,
+    detail?: {
+      stage: RequestStatusStage.UNAVAILABLE | RequestStatusStage.FAILED;
+      message: string;
+    }
+  ): Promise<void> {
     const operations = await getRepository(BookRequestSearch).find({
       where: { requestId },
     });
@@ -1054,7 +1089,12 @@ class BookRequestSearchManager {
       where: { id: requestId },
       relations: { media: true },
     });
-    if (!request) {
+    if (
+      !request ||
+      ![MediaRequestStatus.APPROVED, MediaRequestStatus.COMPLETED].includes(
+        request.status
+      )
+    ) {
       await getRepository(BookRequestSearch).delete({ requestId });
       return;
     }
@@ -1063,6 +1103,27 @@ class BookRequestSearchManager {
     const unavailable = operations.find((item) => item.state === 'unavailable');
     const terminalFailure = failed ?? unavailable;
     if (!terminalFailure) {
+      if (
+        isProviderBookEdition(request.preferredEditionId) &&
+        request.status === MediaRequestStatus.APPROVED
+      ) {
+        request.status = MediaRequestStatus.COMPLETED;
+        request.failureReason = null;
+        request.serviceTargets = request.serviceTargets?.map((target) =>
+          operations.some(
+            (operation) =>
+              target.serviceType === 'readarr' &&
+              target.serverId === operation.serviceId &&
+              target.format === operation.format
+          )
+            ? { ...target, status: MediaStatus.AVAILABLE }
+            : target
+        );
+        // The request admission lock is shared with cancellation. Save the full
+        // entity so the existing transactional notification outbox and status
+        // history subscribers observe this exact recording's completion.
+        await getRepository(MediaRequest).save(request);
+      }
       // Publish availability before removing the operation. Otherwise the
       // status projection loses its authoritative tracking state and falls
       // back to "Adding to library" until the next availability scan.

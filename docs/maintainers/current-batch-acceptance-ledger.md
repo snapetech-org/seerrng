@@ -865,3 +865,23 @@ asks for the work to start.
   for user-facing work.
 - A visual task is complete only after source checks, a fresh build, and rendered
   desktop and narrow-layout verification of the changed states.
+
+## PersiusNG production integration — 2026-10-30
+
+- **Status: incomplete, draft PR #424.** The native interface and package-authoring
+  implementation remains under review. The execution environment became
+  unavailable during full-source integration, preventing final verification.
+- Finish exact-recording pending-request edits: destination revalidation and
+  synchronized service targets, with permission/legacy ISBN/both-format tests.
+- Rerun the native regression suites on the unchanged final source; investigate
+  the HTTP/TLS loopback failures without assuming a production transport defect.
+- Complete format/lint/typecheck/build, built-container CLI validation,
+  PostgreSQL migration execution and signed-in browser acceptance.
+- Compare all nine requested PersiusNG flows and representative existing-theme
+  consumers at matching reference desktop and responsive sizes. UI acceptance
+  is unverified; do not retire deployment proxy configuration from fixture
+  evidence alone.
+- Exact source identity, preserved fixes, observed test counts and exclusions:
+  [integration checkpoint](../interface-themes/integration-checkpoint-20261030.md).
+  Preserve private ephemeral JIT policy; no CI dispatch, merge or production
+  deployment was authorized by this checkpoint.

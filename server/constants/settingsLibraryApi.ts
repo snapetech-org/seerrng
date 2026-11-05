@@ -16,6 +16,8 @@ export const SETTINGS_PLEX_LIBRARY_TYPE_ROUTE_PATH = `${SETTINGS_LIBRARY_ROUTE_P
 export interface SettingsLibraryUpdateBody {
   sync?: boolean;
   enable?: string;
+  episodeOrderLibraryId?: string;
+  episodeOrderProvider?: 'none' | 'tmdb' | 'tvdb';
 }
 
 export const getSettingsLibraryApiPath = (
@@ -28,6 +30,10 @@ export const getSettingsPlexLibraryTypeApiPath = (libraryId: string): string =>
 export const createSettingsLibraryUpdateBody = (options: {
   sync?: boolean;
   enabledLibraryIds?: readonly string[];
+  episodeOrder?: {
+    libraryId: string;
+    provider: 'none' | 'tmdb' | 'tvdb';
+  };
 }): SettingsLibraryUpdateBody => {
   const body: SettingsLibraryUpdateBody = {};
 
@@ -35,8 +41,13 @@ export const createSettingsLibraryUpdateBody = (options: {
     body.sync = options.sync;
   }
 
-  if (options.enabledLibraryIds && options.enabledLibraryIds.length > 0) {
+  if (options.enabledLibraryIds !== undefined) {
     body.enable = options.enabledLibraryIds.join(',');
+  }
+
+  if (options.episodeOrder) {
+    body.episodeOrderLibraryId = options.episodeOrder.libraryId;
+    body.episodeOrderProvider = options.episodeOrder.provider;
   }
 
   return body;

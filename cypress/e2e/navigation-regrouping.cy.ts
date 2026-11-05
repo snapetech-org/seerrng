@@ -187,7 +187,9 @@ describe('primary navigation', () => {
     });
 
     cy.visit('/discover/tv/genre/18?sortBy=popularity.desc&page=2');
-    cy.get('[data-testid="discovery-mode-tab-swipe"]').click();
+    cy.get('[data-testid="discovery-mode-tab-swipe"]')
+      .should('have.attr', 'aria-disabled', 'false')
+      .click();
     cy.location('pathname').should('eq', '/swipe');
     cy.location('search').should('include', 'returnTo');
     cy.location('search').should((search) => {

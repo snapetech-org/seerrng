@@ -1,4 +1,7 @@
 import Button from '@app/components/Common/Button';
+import EpisodeFileAvailability, {
+  type EpisodeFileSource,
+} from '@app/components/Common/EpisodeFileAvailability';
 import MediaServerIcon, {
   getMediaServerName,
 } from '@app/components/Common/MediaServerIcon';
@@ -100,6 +103,7 @@ export interface TreeEpisode {
   episodeNumber: number;
   name: string;
   available: boolean;
+  availabilitySources?: EpisodeFileSource[];
   // Request selection is independent of library availability.
   selectable?: boolean;
   watched?: boolean;
@@ -347,40 +351,43 @@ const SeasonEpisodeTree = ({
               )
         }
       >
-        <button
-          type="button"
-          data-tree-part="episode-selection"
-          disabled={disabled || !isTreeEpisodeSelectable(episode)}
-          aria-label={intl.formatMessage(messages.episodeSelectionLabel, {
-            action: intl.formatMessage(
-              selectedIds.includes(episode.id)
-                ? messages.deselect
-                : messages.select
-            ),
-            episodeNumber: episode.episodeNumber,
-            episodeName: episode.name,
-          })}
-          aria-pressed={
-            selectedIds.includes(episode.id) && isTreeEpisodeSelectable(episode)
-          }
-          onClick={() => toggleEpisode(episode)}
-        >
-          <span data-tree-part="selection">
-            <SelectionCircleIndicator
-              selected={
-                selectedIds.includes(episode.id) &&
-                isTreeEpisodeSelectable(episode)
-              }
-              disabled={disabled || !isTreeEpisodeSelectable(episode)}
-            />
-          </span>
-          <span data-tree-part="number">
-            {formatTreeNumber(episode.episodeNumber)}
-          </span>
-          <span data-tree-part="name" title={episode.name}>
-            {episode.name}
-          </span>
-        </button>
+        <span data-tree-part="episode-selection">
+          <button
+            type="button"
+            data-tree-part="episode-control"
+            disabled={disabled || !isTreeEpisodeSelectable(episode)}
+            aria-label={intl.formatMessage(messages.episodeSelectionLabel, {
+              action: intl.formatMessage(
+                selectedIds.includes(episode.id)
+                  ? messages.deselect
+                  : messages.select
+              ),
+              episodeNumber: episode.episodeNumber,
+              episodeName: episode.name,
+            })}
+            aria-pressed={
+              selectedIds.includes(episode.id) &&
+              isTreeEpisodeSelectable(episode)
+            }
+            onClick={() => toggleEpisode(episode)}
+          >
+            <span data-tree-part="selection">
+              <SelectionCircleIndicator
+                selected={
+                  selectedIds.includes(episode.id) &&
+                  isTreeEpisodeSelectable(episode)
+                }
+                disabled={disabled || !isTreeEpisodeSelectable(episode)}
+              />
+            </span>
+            <span data-tree-part="number">
+              {formatTreeNumber(episode.episodeNumber)}
+            </span>
+            <span data-tree-part="name" title={episode.name}>
+              {episode.name}
+            </span>
+          </button>
+        </span>
       </Tooltip>
       <Tooltip
         content={
@@ -406,14 +413,27 @@ const SeasonEpisodeTree = ({
         </time>
       </Tooltip>
       <Tooltip
-        content={intl.formatMessage(
-          episode.available
-            ? messages.availableInLibrary
-            : messages.unavailableInLibrary
-        )}
+        tooltipConfig={
+          episode.availabilitySources?.length
+            ? { trigger: ['hover', 'focus', 'click'] }
+            : undefined
+        }
+        content={
+          <>
+            {intl.formatMessage(
+              episode.available
+                ? messages.availableInLibrary
+                : messages.unavailableInLibrary
+            )}
+            {Boolean(episode.availabilitySources?.length) && (
+              <EpisodeFileAvailability sources={episode.availabilitySources!} />
+            )}
+          </>
+        }
       >
         <span
           className="media-availability-cell"
+          tabIndex={episode.availabilitySources?.length ? 0 : undefined}
           data-tree-part="availability"
           data-availability={episode.available ? 'full' : 'missing'}
           aria-label={intl.formatMessage(
@@ -509,7 +529,10 @@ const SeasonEpisodeTree = ({
         </span>
       </Tooltip>
       <Tooltip content={intl.formatMessage(messages.releaseDateColumnTooltip)}>
-        <span className="card-table-heading">
+        <span
+          className="card-table-heading"
+          data-tree-part="release-date-heading"
+        >
           {intl.formatMessage(messages.releaseDate)}
         </span>
       </Tooltip>

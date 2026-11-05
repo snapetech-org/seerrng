@@ -19,11 +19,20 @@ import Media from '@server/entity/Media';
 import MediaIdentifier, {
   MediaIdentifierProvider,
 } from '@server/entity/MediaIdentifier';
-import MediaRequest from '@server/entity/MediaRequest';
+import MediaRequest, {
+  runWithRequestAdmission,
+} from '@server/entity/MediaRequest';
 import Season from '@server/entity/Season';
 import SeasonRequest, {
   isActiveSeasonRequest,
 } from '@server/entity/SeasonRequest';
+import {
+  clearSonarrEpisodeAvailabilityForSeries,
+  clearSonarrEpisodeAvailabilityForService,
+  removeMissingSonarrEpisodeSeries,
+  syncSonarrEpisodeAvailability,
+  type SonarrSeasonAvailabilitySync,
+} from '@server/lib/episodeAvailability';
 import { getExternalRuntimeConfig } from '@server/lib/externalRuntimeConfig';
 import { runMediaEntityMutation } from '@server/lib/mediaMutation';
 import { upsertMediaSearchMetadata } from '@server/lib/mediaSearchMetadata';
@@ -33,22 +42,36 @@ import type {
   StatusBase,
 } from '@server/lib/scanners/baseScanner';
 import BaseScanner from '@server/lib/scanners/baseScanner';
+import {
+  reconcileExcludedServarrAvailability,
+  type ExcludedServarrAvailabilitySource,
+} from '@server/lib/scanners/excludedServarrAvailability';
 import { forEachMediaCleanupBatch } from '@server/lib/scanners/mediaCleanupBatches';
+import {
+  getServarrSyncExcludedTagsForEndpoint,
+  getServarrSyncServerIdsForEndpoint,
+  isSameServarrSyncEndpoint,
+  partitionServarrItemsBySyncExcludedTags,
+} from '@server/lib/scanners/servarrTagFilters';
 import {
   externalSeasonNumberFor,
   findMediaForTvdbId,
   getSeasonMappingsForTvdbIdentifier,
 } from '@server/lib/seasonNumberMapping';
 import {
-  ServarrServiceAuthorityChangedError,
   runWithServarrServiceSnapshot,
   runWithServarrServiceSnapshots,
+  ServarrServiceAuthorityChangedError,
 } from '@server/lib/serviceAdmission';
-import { getSettings, type SonarrSettings } from '@server/lib/settings';
+import {
+  getSettings,
+  MetadataProviderType,
+  type SonarrSettings,
+} from '@server/lib/settings';
 import { is4kResolution } from '@server/lib/videoResolution';
 import { getHttpErrorDetails } from '@server/utils/httpError';
 import { uniqWith } from 'lodash';
-import type { FindOptionsWhere } from 'typeorm';
+import { In, type FindOptionsWhere } from 'typeorm';
 
 type SyncStatus = StatusBase & {
   currentServer: SonarrSettings;
@@ -66,6 +89,13 @@ class SonarrScanner
   private scanned4kTvdbIds: Set<number> = new Set();
   private scannedTmdbIds: Set<number> = new Set();
   private scanned4kTmdbIds: Set<number> = new Set();
+  private excludedTvdbIds: Set<number> = new Set();
+  private excluded4kTvdbIds: Set<number> = new Set();
+  private excludedSeries: {
+    tvdbId: number;
+    serverId: number;
+    format: 'standard' | '4k';
+  }[] = [];
   private currentServiceTvdbIds: Set<number> = new Set();
   private currentServiceTmdbIds: Set<number> = new Set();
   private currentService4kTvdbIds: Set<number> = new Set();
@@ -100,6 +130,9 @@ class SonarrScanner
     this.scanned4kTvdbIds.clear();
     this.scannedTmdbIds.clear();
     this.scanned4kTmdbIds.clear();
+    this.excludedTvdbIds.clear();
+    this.excluded4kTvdbIds.clear();
+    this.excludedSeries = [];
     this.didScanStandard = false;
     this.didScan4k = false;
     this.serverReturnedEmpty = false;
@@ -107,15 +140,20 @@ class SonarrScanner
 
     try {
       const fourKEnabled = getSettings().main.enable4k !== false;
-      this.servers = uniqWith(
-        structuredClone(
-          settings.sonarr.filter((server) => fourKEnabled || !server.is4k)
-        ),
-        (sonarrA, sonarrB) =>
-          sonarrA.hostname === sonarrB.hostname &&
-          sonarrA.port === sonarrB.port &&
-          sonarrA.baseUrl === sonarrB.baseUrl
+      const configuredServers = structuredClone(
+        settings.sonarr.filter(
+          (server) => server.syncEnabled && (fourKEnabled || !server.is4k)
+        )
       );
+      this.servers = uniqWith(configuredServers, (sonarrA, sonarrB) =>
+        isSameServarrSyncEndpoint(sonarrA, sonarrB)
+      ).map((server) => ({
+        ...server,
+        syncExcludedTags: getServarrSyncExcludedTagsForEndpoint(
+          server,
+          configuredServers
+        ),
+      }));
       this.resolutionAwareSingleServer =
         fourKEnabled &&
         this.servers.filter((server) => server.syncEnabled).length === 1 &&
@@ -123,9 +161,7 @@ class SonarrScanner
           (server) =>
             server.syncEnabled &&
             !server.is4k &&
-            server.hostname === this.servers[0].hostname &&
-            server.port === this.servers[0].port &&
-            server.baseUrl === this.servers[0].baseUrl
+            isSameServarrSyncEndpoint(server, this.servers[0])
         );
       if (fourKEnabled && this.resolutionAwareSingleServer) {
         this.enable4kShow = true;
@@ -147,7 +183,8 @@ class SonarrScanner
             'info'
           );
 
-          this.items = await runWithServarrServiceSnapshot(
+          let episodeInventoryComplete = false;
+          const serverItems = await runWithServarrServiceSnapshot(
             'sonarr',
             server,
             async (current) => {
@@ -155,13 +192,87 @@ class SonarrScanner
                 apiKey: current.apiKey,
                 url: SonarrAPI.buildUrl(current, '/api/v3'),
               });
-              return this.sonarrApi.getSeries();
+              if (!getSettings().main.trackEpisodeAvailability) {
+                return this.sonarrApi.getSeries();
+              }
+
+              try {
+                const inventory = await this.sonarrApi.getSeries({
+                  strict: true,
+                  requireTvdbId: false,
+                });
+                episodeInventoryComplete = true;
+                return inventory;
+              } catch (error) {
+                this.log(
+                  'Could not confirm a complete Sonarr inventory; skipping episode availability cleanup for this scan.',
+                  'warn',
+                  {
+                    errorMessage:
+                      error instanceof Error ? error.message : String(error),
+                    server: current.name,
+                  }
+                );
+                return this.sonarrApi.getSeries();
+              }
             }
           );
+
+          // Keep the provider response separate: excluded results still prove
+          // that a scan completed and should not trigger the empty-library
+          // safety path below.
+          const { included, excluded } =
+            partitionServarrItemsBySyncExcludedTags(
+              serverItems,
+              server.syncExcludedTags
+            );
+          this.items = included;
 
           const server4k = this.enable4kShow && server.is4k;
           const scansBothResolutions =
             this.resolutionAwareSingleServer && this.enable4kShow;
+          for (const series of excluded) {
+            if (getSettings().main.trackEpisodeAvailability) {
+              await runWithServarrServiceSnapshot('sonarr', server, () =>
+                clearSonarrEpisodeAvailabilityForSeries(server.id, series.id!)
+              );
+            }
+            if (!Number.isSafeInteger(series.tvdbId) || series.tvdbId <= 0) {
+              continue;
+            }
+
+            // One resolution-aware endpoint owns both availability tracks;
+            // retain the series identity so neither request track is orphaned.
+            if (this.resolutionAwareSingleServer) {
+              this.scannedTvdbIds.add(series.tvdbId);
+              this.scanned4kTvdbIds.add(series.tvdbId);
+              this.excludedTvdbIds.add(series.tvdbId);
+              this.excluded4kTvdbIds.add(series.tvdbId);
+            } else if (server4k) {
+              this.scanned4kTvdbIds.add(series.tvdbId);
+              this.excluded4kTvdbIds.add(series.tvdbId);
+            } else {
+              this.scannedTvdbIds.add(series.tvdbId);
+              this.excludedTvdbIds.add(series.tvdbId);
+            }
+
+            const formats = scansBothResolutions
+              ? (['standard', '4k'] as const)
+              : ([server4k ? '4k' : 'standard'] as const);
+            for (const serverId of getServarrSyncServerIdsForEndpoint(
+              server,
+              configuredServers
+            )) {
+              for (const format of formats) {
+                this.excludedSeries.push({
+                  tvdbId: series.tvdbId,
+                  serverId,
+                  format,
+                });
+              }
+            }
+          }
+
           if (scansBothResolutions) {
             this.didScanStandard = true;
             this.didScan4k = true;
@@ -171,7 +282,7 @@ class SonarrScanner
             this.didScanStandard = true;
           }
 
-          if (this.items.length === 0) {
+          if (serverItems.length === 0) {
             if (server4k) {
               this.server4kReturnedEmpty = true;
             } else {
@@ -189,10 +300,23 @@ class SonarrScanner
 
           await this.loop(this.processSonarrSeries.bind(this), { sessionId });
 
-          const hasCompleteMediaIdentity = this.items.every(
+          const hasCompleteMediaIdentity = serverItems.every(
             (series) => Number.isSafeInteger(series.tvdbId) && series.tvdbId > 0
           );
-          if (this.items.length > 0 && hasCompleteMediaIdentity) {
+          if (
+            getSettings().main.trackEpisodeAvailability &&
+            episodeInventoryComplete
+          ) {
+            await runWithServarrServiceSnapshot('sonarr', server, () =>
+              serverItems.length === 0
+                ? clearSonarrEpisodeAvailabilityForService(server.id)
+                : removeMissingSonarrEpisodeSeries(
+                    server.id,
+                    serverItems.map((series) => series.id!)
+                  )
+            );
+          }
+          if (serverItems.length > 0 && hasCompleteMediaIdentity) {
             const formats = scansBothResolutions
               ? ([
                   {
@@ -230,6 +354,11 @@ class SonarrScanner
           this.log(`Sync not enabled. Skipping Sonarr server: ${server.name}`);
         }
       }
+
+      await this.clearExcludedSeriesAvailability(
+        configuredServers,
+        fourKEnabled
+      );
 
       // Only run cleanup if all servers of this profile type have sync enabled.
       // If any server is skipped, we can't distinguish truly orphaned media from
@@ -322,20 +451,65 @@ class SonarrScanner
         (season) => (season.statistics?.episodeFileCount ?? 0) > 0
       );
       const sonarrSeriesId = sonarrSeries.id;
-      const episodeFiles =
+      const settings = getSettings();
+      const mayTrackEpisodeAvailability =
+        settings.main.trackEpisodeAvailability &&
+        (settings.metadataSettings.tv === MetadataProviderType.TVDB ||
+          settings.metadataSettings.anime === MetadataProviderType.TVDB);
+      let episodeFiles:
+        Awaited<ReturnType<SonarrAPI['getEpisodes']>> | undefined;
+      let episodeListingFetched = false;
+      const hasValidSeriesId =
+        Number.isSafeInteger(sonarrSeriesId) && (sonarrSeriesId ?? 0) > 0;
+      if (
         this.resolutionAwareSingleServer &&
         hasEpisodeFiles &&
-        typeof sonarrSeriesId === 'number' &&
-        Number.isSafeInteger(sonarrSeriesId) &&
-        sonarrSeriesId > 0
-          ? await runWithServarrServiceSnapshot(
-              'sonarr',
-              this.currentServer,
-              () => this.sonarrApi.getEpisodes(sonarrSeriesId, true)
-            )
-          : this.resolutionAwareSingleServer
-            ? []
-            : undefined;
+        hasValidSeriesId
+      ) {
+        episodeFiles = await runWithServarrServiceSnapshot(
+          'sonarr',
+          this.currentServer,
+          () => this.sonarrApi.getEpisodes(sonarrSeriesId!, true)
+        );
+        episodeListingFetched = true;
+      } else if (this.resolutionAwareSingleServer) {
+        episodeFiles = [];
+      }
+      if (
+        mayTrackEpisodeAvailability &&
+        hasValidSeriesId &&
+        !episodeListingFetched
+      ) {
+        try {
+          episodeFiles = await runWithServarrServiceSnapshot(
+            'sonarr',
+            this.currentServer,
+            () =>
+              this.sonarrApi.getEpisodes(
+                sonarrSeriesId!,
+                this.resolutionAwareSingleServer
+              )
+          );
+          episodeListingFetched = true;
+        } catch (e) {
+          this.log(
+            'Unable to refresh per-episode Sonarr availability; keeping the last successful scan.',
+            'warn',
+            {
+              errorMessage: e instanceof Error ? e.message : String(e),
+              title: sonarrSeries.title,
+            }
+          );
+        }
+      }
+      const expectedEpisodeCount = sonarrSeries.seasons.reduce(
+        (total, season) => total + (season.statistics?.totalEpisodeCount ?? 0),
+        0
+      );
+      const episodeListingComplete =
+        episodeListingFetched &&
+        expectedEpisodeCount > 0 &&
+        (episodeFiles?.length ?? 0) >= expectedEpisodeCount;
       const mediaMatches = await findMediaForTvdbId(
         dataSource.manager,
         sonarrSeries.tvdbId
@@ -350,7 +524,8 @@ class SonarrScanner
             sonarrSeries,
             media,
             server4k,
-            episodeFiles
+            episodeFiles,
+            episodeListingComplete
           );
         } catch (e) {
           if (e instanceof ServarrServiceAuthorityChangedError) throw e;
@@ -382,11 +557,101 @@ class SonarrScanner
     }
   }
 
+  private async clearExcludedSeriesAvailability(
+    configuredServers: SonarrSettings[],
+    fourKEnabled: boolean
+  ): Promise<void> {
+    if (this.excludedSeries.length === 0) return;
+
+    const excludedTvdbIds = [
+      ...new Set(this.excludedSeries.map(({ tvdbId }) => tvdbId)),
+    ];
+    const canonicalMedia: Media[] = [];
+    const matchingIdentifiers: MediaIdentifier[] = [];
+    for (let offset = 0; offset < excludedTvdbIds.length; offset += 500) {
+      const tvdbIdBatch = excludedTvdbIds.slice(offset, offset + 500);
+      const [canonicalBatch, identifierBatch] = await Promise.all([
+        getRepository(Media).find({
+          where: { mediaType: MediaType.TV, tvdbId: In(tvdbIdBatch) },
+        }),
+        getRepository(MediaIdentifier).find({
+          where: {
+            provider: MediaIdentifierProvider.TVDB,
+            value: In(tvdbIdBatch.map(String)),
+            media: { mediaType: MediaType.TV },
+          },
+          relations: { media: true },
+        }),
+      ]);
+      canonicalMedia.push(...canonicalBatch);
+      matchingIdentifiers.push(...identifierBatch);
+    }
+    const mediaIdsByTvdbId = new Map<number, Set<number>>();
+    const mediaItemsById = new Map<number, Media>();
+    const addMediaId = (tvdbId: number, mediaId: number): void => {
+      const mediaIds = mediaIdsByTvdbId.get(tvdbId) ?? new Set<number>();
+      mediaIds.add(mediaId);
+      mediaIdsByTvdbId.set(tvdbId, mediaIds);
+    };
+
+    for (const media of canonicalMedia) {
+      mediaItemsById.set(media.id, media);
+      if (media.tvdbId != null) addMediaId(media.tvdbId, media.id);
+    }
+    for (const identifier of matchingIdentifiers) {
+      const tvdbId = Number(identifier.value);
+      if (identifier.media && Number.isSafeInteger(tvdbId) && tvdbId > 0) {
+        mediaItemsById.set(identifier.media.id, identifier.media);
+        addMediaId(tvdbId, identifier.media.id);
+      }
+    }
+
+    const sources: ExcludedServarrAvailabilitySource[] = [];
+    for (const excluded of this.excludedSeries) {
+      for (const mediaId of mediaIdsByTvdbId.get(excluded.tvdbId) ?? []) {
+        sources.push({
+          mediaId,
+          serverId: excluded.serverId,
+          format: excluded.format,
+        });
+      }
+    }
+
+    const mediaItems = [...new Set(sources.map(({ mediaId }) => mediaId))]
+      .map((mediaId) => mediaItemsById.get(mediaId))
+      .filter((media): media is Media => media !== undefined);
+
+    for (let offset = 0; offset < mediaItems.length; offset += 50) {
+      const batch = mediaItems.slice(offset, offset + 50);
+      const batchIds = new Set(batch.map(({ id }) => id));
+      const batchSources = sources.filter((source) =>
+        batchIds.has(source.mediaId)
+      );
+      if (batchSources.length === 0) continue;
+
+      await runWithRequestAdmission(
+        batch.map((media) => `request-media:${MediaType.TV}:${media.tmdbId}`),
+        () =>
+          runWithServarrServiceSnapshots(
+            'sonarr',
+            configuredServers.filter((server) => server.syncEnabled),
+            () => reconcileExcludedServarrAvailability('sonarr', batchSources),
+            {
+              requireExactAuthoritySet: true,
+              includeCurrent: (server) =>
+                server.syncEnabled && (fourKEnabled || !server.is4k),
+            }
+          )
+      );
+    }
+  }
+
   private async processSonarrSeriesForMedia(
     sonarrSeries: SonarrSeries,
     media: Media | undefined,
     server4k: boolean,
-    episodeFiles?: Awaited<ReturnType<SonarrAPI['getEpisodes']>>
+    episodeFiles?: Awaited<ReturnType<SonarrAPI['getEpisodes']>>,
+    episodeListingComplete = false
   ): Promise<number> {
     let tvShow: TmdbTvScanDetails | TmdbTvDetails;
     if (!media || !media.tmdbId) {
@@ -409,6 +674,11 @@ class SonarrScanner
     if (!this.resolutionAwareSingleServer) {
       (server4k ? this.scanned4kTmdbIds : this.scannedTmdbIds).add(tmdbId);
     }
+    const tmdbIdentifiesAnime = tvShow.keywords.results.some(
+      (keyword) => keyword.id === ANIME_KEYWORD_ID
+    );
+    const seriesUsesAnimeMetadata =
+      this.isAnimeSeries(sonarrSeries) || tmdbIdentifiesAnime;
     tvShow = await this.applyMetadataProvider(
       tvShow,
       this.isAnimeSeries(sonarrSeries)
@@ -549,6 +819,45 @@ class SonarrScanner
       tmdbId,
       mediaType: MediaType.TV,
     });
+    const settingsForEpisodeAvailability = getSettings();
+    const episodeMetadataProvider = seriesUsesAnimeMetadata
+      ? settingsForEpisodeAvailability.metadataSettings.anime
+      : settingsForEpisodeAvailability.metadataSettings.tv;
+    const displayedEpisodeMetadataProvider = tmdbIdentifiesAnime
+      ? settingsForEpisodeAvailability.metadataSettings.anime
+      : settingsForEpisodeAvailability.metadataSettings.tv;
+    if (
+      updatedMedia &&
+      Number.isSafeInteger(sonarrSeries.id) &&
+      (sonarrSeries.id ?? 0) > 0 &&
+      settingsForEpisodeAvailability.main.trackEpisodeAvailability &&
+      episodeListingComplete &&
+      episodeFiles
+    ) {
+      const episodeOrder = sonarrSeries.seasonType?.toLowerCase();
+      const hasCompatibleEpisodeOrder =
+        !sonarrSeries.useSceneNumbering &&
+        (!episodeOrder ||
+          episodeOrder === 'standard' ||
+          episodeOrder === 'official');
+      await runWithServarrServiceSnapshot('sonarr', this.currentServer, () =>
+        episodeMetadataProvider === MetadataProviderType.TVDB &&
+        displayedEpisodeMetadataProvider === MetadataProviderType.TVDB &&
+        hasCompatibleEpisodeOrder
+          ? this.syncEpisodeAvailabilityForSeries(
+              updatedMedia,
+              sonarrSeries,
+              processableSeasons,
+              seasonMappings,
+              episodeFiles,
+              server4k
+            )
+          : clearSonarrEpisodeAvailabilityForSeries(
+              this.currentServer.id,
+              sonarrSeries.id!
+            )
+      );
+    }
     if (updatedMedia && this.isAnimeSeries(sonarrSeries)) {
       await this.persistAnimeIdentifiers(updatedMedia, sonarrSeries);
     }
@@ -579,6 +888,87 @@ class SonarrScanner
     });
 
     return tmdbId;
+  }
+
+  private async syncEpisodeAvailabilityForSeries(
+    media: Media,
+    sonarrSeries: SonarrSeries,
+    processableSeasons: ProcessableSeason[],
+    seasonMappings: ReturnType<typeof getSeasonMappingsForTvdbIdentifier>,
+    episodes: Awaited<ReturnType<SonarrAPI['getEpisodes']>>,
+    server4k: boolean
+  ): Promise<void> {
+    const databaseSeasons = await getRepository(Season).find({
+      where: { media: { id: media.id } },
+    });
+    const databaseSeasonByNumber = new Map(
+      databaseSeasons.map((season) => [season.seasonNumber, season])
+    );
+    const metadataSeasonByExternalNumber = new Map<number, number>();
+    const ambiguousExternalSeasonNumbers = new Set<number>();
+
+    for (const season of processableSeasons) {
+      const externalSeasonNumber = externalSeasonNumberFor(
+        season.seasonNumber,
+        seasonMappings
+      );
+      const existingSeasonNumber =
+        metadataSeasonByExternalNumber.get(externalSeasonNumber);
+      if (
+        existingSeasonNumber !== undefined &&
+        existingSeasonNumber !== season.seasonNumber
+      ) {
+        metadataSeasonByExternalNumber.delete(externalSeasonNumber);
+        ambiguousExternalSeasonNumbers.add(externalSeasonNumber);
+      } else if (!ambiguousExternalSeasonNumbers.has(externalSeasonNumber)) {
+        metadataSeasonByExternalNumber.set(
+          externalSeasonNumber,
+          season.seasonNumber
+        );
+      }
+    }
+
+    const episodesBySeason = new Map<
+      number,
+      SonarrSeasonAvailabilitySync['episodes']
+    >();
+    for (const episode of episodes) {
+      if (!episode.hasFile || !Number.isSafeInteger(episode.episodeNumber)) {
+        continue;
+      }
+      const metadataSeasonNumber = metadataSeasonByExternalNumber.get(
+        episode.seasonNumber
+      );
+      if (metadataSeasonNumber === undefined) continue;
+      const databaseSeason = databaseSeasonByNumber.get(metadataSeasonNumber);
+      if (!databaseSeason) continue;
+
+      const is4k = this.resolutionAwareSingleServer
+        ? is4kResolution(episode.fileResolution)
+        : server4k;
+      // Unknown resolution cannot confirm removal from either quality.
+      if (is4k === undefined) return;
+
+      const seasonEpisodes = episodesBySeason.get(databaseSeason.id) ?? [];
+      seasonEpisodes.push({ episodeNumber: episode.episodeNumber, is4k });
+      episodesBySeason.set(databaseSeason.id, seasonEpisodes);
+    }
+
+    await syncSonarrEpisodeAvailability(
+      this.currentServer.id,
+      sonarrSeries.id!,
+      processableSeasons.flatMap((season) => {
+        const databaseSeason = databaseSeasonByNumber.get(season.seasonNumber);
+        return databaseSeason
+          ? [
+              {
+                seasonId: databaseSeason.id,
+                episodes: episodesBySeason.get(databaseSeason.id) ?? [],
+              },
+            ]
+          : [];
+      })
+    );
   }
 
   private async applyMetadataProvider(
@@ -972,16 +1362,30 @@ class SonarrScanner
     const visitedMedia = new Set<number>();
     const scannedTvdbIds = is4k ? this.scanned4kTvdbIds : this.scannedTvdbIds;
     const scannedTmdbIds = is4k ? this.scanned4kTmdbIds : this.scannedTmdbIds;
+    const excludedTvdbIds = is4k
+      ? this.excluded4kTvdbIds
+      : this.excludedTvdbIds;
+    const hasExcludedTvdbIds = excludedTvdbIds.size > 0;
 
     await forEachMediaCleanupBatch(
       where,
       async (media) => {
         if (visitedMedia.has(media.id)) return;
         visitedMedia.add(media.id);
+        const hasExcludedTvdbIdentifier =
+          hasExcludedTvdbIds &&
+          Boolean(
+            media.identifiers?.some(
+              (identifier) =>
+                identifier.provider === MediaIdentifierProvider.TVDB &&
+                excludedTvdbIds.has(Number(identifier.value))
+            )
+          );
         if (
           !media.tvdbId ||
           scannedTvdbIds.has(media.tvdbId) ||
-          scannedTmdbIds.has(media.tmdbId)
+          scannedTmdbIds.has(media.tmdbId) ||
+          hasExcludedTvdbIdentifier
         ) {
           return;
         }
@@ -994,7 +1398,13 @@ class SonarrScanner
           );
         }
       },
-      { relations: { seasons: true, requests: { seasons: true } } }
+      {
+        relations: {
+          seasons: true,
+          requests: { seasons: true },
+          ...(hasExcludedTvdbIds ? { identifiers: true } : {}),
+        },
+      }
     );
   }
 

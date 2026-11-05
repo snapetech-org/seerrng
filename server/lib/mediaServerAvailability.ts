@@ -7,8 +7,10 @@ import type Media from '@server/entity/Media';
 import MediaServiceStatus from '@server/entity/MediaServiceStatus';
 import { User } from '@server/entity/User';
 import cacheManager from '@server/lib/cache';
+import type { EpisodeAvailabilityForEpisode } from '@server/lib/episodeAvailability';
 import type { PlexSettings } from '@server/lib/settings';
 import { getSettings } from '@server/lib/settings';
+import { is4kResolution } from '@server/lib/videoResolution';
 import { mapWithConcurrency } from '@server/utils/concurrency';
 import { getHostname } from '@server/utils/getHostname';
 import { normalizeJellyfinGuid } from '@server/utils/jellyfin';
@@ -717,4 +719,119 @@ export const applyUserMediaServerAvailability = async (
   }
 
   return true;
+};
+
+/** Intersect scanned media-server badges with episodes visible to this viewer.
+ * Acquisition-only Sonarr indicators retain their separate meaning. */
+export const restrictEpisodeAvailabilityForUser = async (
+  availability: Map<number, EpisodeAvailabilityForEpisode>,
+  media: Media | null,
+  context: MediaServerAccessContext | undefined,
+  seasonNumber: number
+): Promise<void> => {
+  if (
+    !context ||
+    ![...availability.values()].some((episode) =>
+      episode.sources.some((source) => source.sourceType !== 'sonarr')
+    )
+  )
+    return;
+  const visible = new Map<number, { hd: boolean; fourK: boolean }>();
+  const add = (episode: number, is4k: boolean | undefined) => {
+    if (!Number.isSafeInteger(episode) || episode < 1 || is4k === undefined)
+      return;
+    const entry = visible.get(episode) ?? { hd: false, fourK: false };
+    if (is4k) entry.fourK = true;
+    else entry.hd = true;
+    visible.set(episode, entry);
+  };
+  const visited = new Set<string>();
+  if (media && context.credential) {
+    for (const format of ['standard', '4k'] as const) {
+      const id = variantNativeId(media, format, context.source);
+      if (!id || visited.has(id)) continue;
+      visited.add(id);
+      const access = await resolveNativeItemAccess(context, media, format);
+      if (!access.visible || !access.seasonNumbers?.includes(seasonNumber))
+        continue;
+      try {
+        if (context.source === 'plex' && context.plexSettings) {
+          const api = new PlexAPI({
+            plexToken: context.credential,
+            plexSettings: context.plexSettings,
+            timeout: MEDIA_SERVER_CHECK_TIMEOUT_MS,
+          });
+          const episodes = await api.getAllLeavesMetadata(id);
+          for (const episode of episodes) {
+            if (episode.parentIndex !== seasonNumber) continue;
+            for (const version of episode.Media ?? []) {
+              add(
+                episode.index,
+                is4kResolution(`${version.width}x${version.height}`)
+              );
+            }
+          }
+        } else {
+          const api = new JellyfinAPI(
+            context.host,
+            context.credential,
+            context.deviceId,
+            undefined,
+            MEDIA_SERVER_CHECK_TIMEOUT_MS
+          );
+          api.setUserId(context.linkedIdentity);
+          const episodes = await api.getUserEpisodesForAvailability(id);
+          for (const episode of episodes) {
+            if (
+              episode.Type !== 'Episode' ||
+              episode.ParentIndexNumber !== seasonNumber
+            )
+              continue;
+            const first = episode.IndexNumber;
+            const last = episode.IndexNumberEnd ?? first;
+            if (
+              !Number.isSafeInteger(first) ||
+              !Number.isSafeInteger(last) ||
+              first! < 1 ||
+              last! < first! ||
+              last! - first! > 1000
+            )
+              continue;
+            let hd = false;
+            let fourK = false;
+            for (const version of episode.MediaSources ?? []) {
+              for (const stream of version.MediaStreams ?? []) {
+                if (stream.Type !== 'Video') continue;
+                const is4k = is4kResolution(`${stream.Width}x${stream.Height}`);
+                if (is4k === true) fourK = true;
+                if (is4k === false) hd = true;
+                if (hd && fourK) break;
+              }
+              if (hd && fourK) break;
+            }
+            for (let number = first!; number <= last!; number += 1) {
+              if (!availability.has(number)) continue;
+              if (hd) add(number, false);
+              if (fourK) add(number, true);
+            }
+          }
+        }
+      } catch {
+        // Provider failures cannot reveal a global scan's episode inventory.
+      }
+    }
+  }
+  for (const [number, episode] of availability) {
+    const allowed = visible.get(number);
+    episode.sources = episode.sources.flatMap((source) => {
+      if (source.sourceType === 'sonarr') return [source];
+      if (source.sourceType !== context.source || !allowed) return [];
+      const projected = {
+        ...source,
+        hd: source.hd && allowed.hd,
+        fourK: source.fourK && allowed.fourK,
+      };
+      return projected.hd || projected.fourK ? [projected] : [];
+    });
+  }
 };

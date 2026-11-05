@@ -2,13 +2,31 @@
 
 All help is welcome and greatly appreciated! If you would like to contribute to the project, the following instructions should get you started...
 
+## Contribute a theme
+
+Themes have their own scoped stylesheet and do not require a UI proxy or changes
+in the application’s source. Start with a native layout and make it your own:
+
+```sh
+pnpm install
+pnpm interface-theme:create my-cinema --from persiusNG --name "My Cinema" --author "Your name"
+pnpm interface-theme:validate ./my-cinema
+pnpm interface-theme:pack ./my-cinema
+```
+
+The [authoring guide](docs/interface-themes/authoring.md) covers independent CSS,
+layout choices, local testing, packaging, installation and upgrades. Follow the
+[submission guide](docs/interface-themes/submitting.md) to share your source,
+package, checksum and screenshots for review. Submitting a community theme does
+not require making it a built-in theme or adding executable code.
+
 ## Development
 
 ### Tools Required
 
 - HTML/Typescript/Javascript editor
 - [VSCode](https://code.visualstudio.com/) is recommended. Upon opening the project, a few extensions will be automatically recommended for install.
-- [Node.js](https://nodejs.org/en/download/) (Node 24.22.1 or newer in the 24.x line)
+- [Node.js](https://nodejs.org/en/download/) (Node 24.22.2 or newer in the 24.x line)
 - [Pnpm](https://pnpm.io/cli/install)
 - [Git](https://git-scm.com/downloads)
 

@@ -8,7 +8,7 @@ Rules-Requires-Root: no
 
 Package: seerrng
 Architecture: amd64
-Depends: nodejs (>= 24.22.1), adduser, ${misc:Depends}
+Depends: nodejs (>= 24.22.2), adduser, ${misc:Depends}
 Description: Standalone media request and discovery service
  SeerrNG can be configured to integrate with external Plex, Jellyfin, Emby,
  Sonarr, Radarr, Lidarr, and Readarr-compatible services. Those services are

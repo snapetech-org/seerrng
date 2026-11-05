@@ -1,5 +1,9 @@
 import Modal from '@app/components/Common/Modal';
 import SensitiveInput from '@app/components/Common/SensitiveInput';
+import ServarrDownloadQueueSizeField, {
+  createServarrDownloadQueueSizeSchema,
+  DEFAULT_SERVARR_DOWNLOAD_QUEUE_SIZE,
+} from '@app/components/Settings/ServarrDownloadQueueSizeField';
 import Field, {
   default as SettingsField,
 } from '@app/components/Settings/SettingsField';
@@ -121,6 +125,7 @@ const LidarrModal = ({ onClose, lidarr, onSave }: LidarrModalProps) => {
     tags: [],
   });
   const LidarrSettingsSchema = Yup.object().shape({
+    downloadQueueSize: createServarrDownloadQueueSizeSchema(intl),
     name: Yup.string().required(
       intl.formatMessage(messages.validationNameRequired)
     ),
@@ -248,6 +253,8 @@ const LidarrModal = ({ onClose, lidarr, onSave }: LidarrModalProps) => {
           isDefault: lidarr?.isDefault ?? false,
           tags: lidarr?.tags ?? [],
           externalUrl: lidarr?.externalUrl,
+          downloadQueueSize:
+            lidarr?.downloadQueueSize ?? DEFAULT_SERVARR_DOWNLOAD_QUEUE_SIZE,
           syncEnabled: lidarr?.syncEnabled ?? false,
           enableSearch: !lidarr?.preventSearch,
           tagRequests: lidarr?.tagRequests ?? false,
@@ -274,6 +281,7 @@ const LidarrModal = ({ onClose, lidarr, onSave }: LidarrModalProps) => {
               is4k: false,
               isDefault: values.isDefault,
               externalUrl: values.externalUrl,
+              downloadQueueSize: Number(values.downloadQueueSize),
               syncEnabled: values.syncEnabled,
               preventSearch: !values.enableSearch,
               tagRequests: values.tagRequests,
@@ -745,6 +753,7 @@ const LidarrModal = ({ onClose, lidarr, onSave }: LidarrModalProps) => {
                     {intl.formatMessage(messages.syncEnabledHelp)}
                   </span>
                 </div>
+                <ServarrDownloadQueueSizeField />
                 <div className="form-row">
                   <label htmlFor="enableSearch" className="checkbox-label">
                     {intl.formatMessage(messages.enableSearch)}

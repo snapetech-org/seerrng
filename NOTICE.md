@@ -27,6 +27,18 @@ The `RemapOverseerrDeletedStatus` migration files are imported from upstream
 Seerr to preserve compatibility with databases created there. Their migration
 names and source issue links are retained intentionally.
 
+## Individual episode availability
+
+SeerrNG's per-episode availability feature is an independent implementation
+adapting proposals from Seerr [PR #1671](https://github.com/seerr-team/seerr/pull/1671),
+[PR #3355](https://github.com/seerr-team/seerr/pull/3355),
+[PR #3361](https://github.com/seerr-team/seerr/pull/3361),
+[PR #3527](https://github.com/seerr-team/seerr/pull/3527), and
+[PR #3402](https://github.com/seerr-team/seerr/pull/3402). The SeerrNG-specific
+implementation and maintenance are attributed to snapetech and SeerrNG
+contributors. It adds source-scoped reconciliation and per-library episode
+order configuration while preserving separate standard and 4K states.
+
 ## Seerr and SeerrNG migration utility
 
 The bidirectional migration utility, its tests, and its operating guide are

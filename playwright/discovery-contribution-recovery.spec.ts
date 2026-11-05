@@ -165,3 +165,77 @@ for (const width of [1440, 390]) {
     ).toBe(true);
   });
 }
+
+for (const width of [1440, 390]) {
+  test(`request history metadata sort remains scoped to video at ${width}px`, async ({
+    page,
+    baseURL,
+  }, info) => {
+    await page.setViewportSize({ width, height: 900 });
+    await login(page, baseURL!);
+    const requests: URL[] = [];
+    await page.route('**/api/v1/request?**', async (route) => {
+      requests.push(new URL(route.request().url()));
+      await route.fulfill({
+        json: {
+          pageInfo: { pages: 1, page: 1, results: 0, pageSize: 10 },
+          results: [],
+          serviceErrors: { radarr: [], sonarr: [], lidarr: [], readarr: [] },
+        },
+      });
+    });
+    await page.goto('/users/1/requests?mediaType=movie');
+    const select = page.locator(
+      '.app-filter-select-trigger[aria-label="Sort By"]'
+    );
+    if (!(await select.isVisible()))
+      await page.getByRole('button', { name: 'Sort By', exact: true }).click();
+    await select.click();
+    if (baseline) {
+      await expect(
+        page.getByRole('option', { name: 'TMDB Rating', exact: true })
+      ).toHaveCount(0);
+      await page.keyboard.press('Escape');
+    } else {
+      await page
+        .getByRole('option', { name: 'TMDB Rating', exact: true })
+        .click();
+      await expect
+        .poll(() => requests.at(-1)?.searchParams.get('sort'))
+        .toBe('rating');
+      expect(requests.at(-1)?.searchParams.get('requestedBy')).toBe('1');
+      const media = page.locator(
+        '.app-filter-select-trigger[aria-label="Media Type"]'
+      );
+      if (!(await media.isVisible()))
+        await page
+          .getByRole('button', { name: 'Media Filters', exact: true })
+          .click();
+      await media.click();
+      await page.getByRole('option', { name: 'All', exact: true }).click();
+      await expect
+        .poll(() => requests.at(-1)?.searchParams.get('mediaType'))
+        .toBe('all');
+      expect(requests.at(-1)?.searchParams.get('sort')).toBe('added');
+      expect(requests.at(-1)?.searchParams.get('requestedBy')).toBe('1');
+      expect(
+        requests.every(
+          (url) =>
+            ['movie', 'tv'].includes(url.searchParams.get('mediaType') ?? '') ||
+            ['added', 'modified'].includes(url.searchParams.get('sort') ?? '')
+        )
+      ).toBe(true);
+    }
+    await page.evaluate(() => scrollTo(0, 0));
+    await page.screenshot({
+      path: info.outputPath(`history-${theme}-${width}.png`),
+      animations: 'disabled',
+      fullPage: true,
+    });
+    expect(
+      await page.evaluate(
+        () => document.documentElement.scrollWidth <= innerWidth
+      )
+    ).toBe(true);
+  });
+}

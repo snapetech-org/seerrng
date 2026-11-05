@@ -9,6 +9,7 @@ import Media from '@server/entity/Media';
 import Season from '@server/entity/Season';
 import { User } from '@server/entity/User';
 import cacheManager from '@server/lib/cache';
+import type { EpisodeAvailabilityForEpisode } from '@server/lib/episodeAvailability';
 import { getSettings } from '@server/lib/settings';
 import { resetTestDb, seedTestDb } from '@server/utils/seedTestDb';
 import assert from 'node:assert/strict';
@@ -16,6 +17,7 @@ import { afterEach, before, beforeEach, describe, it, mock } from 'node:test';
 import {
   applyUserMediaServerAvailability,
   getMediaServerAccessContext,
+  restrictEpisodeAvailabilityForUser,
 } from './mediaServerAvailability';
 
 const media = (id = 1, tmdbId = 550) =>
@@ -275,4 +277,68 @@ describe('Jellyfin viewer library projection', () => {
     assert.equal(entry.seasons[0].status, MediaStatus.AVAILABLE);
     assert.equal(entry.seasons[1].status, MediaStatus.UNKNOWN);
   });
+});
+
+const episodeBadges = (): Map<number, EpisodeAvailabilityForEpisode> =>
+  new Map(
+    [1, 2].map((number) => [
+      number,
+      {
+        sources: [
+          { sourceType: 'plex', hd: true, fourK: true },
+          { sourceType: 'sonarr', hd: true, fourK: false },
+        ],
+      },
+    ])
+  );
+it('projects episode badges through viewer-visible episode files and quality', async () => {
+  const show = new Media({ ...media(), mediaType: MediaType.TV });
+  mock.method(
+    PlexAPI.prototype,
+    'getMetadata',
+    async () =>
+      ({
+        ...metadata(),
+        type: 'show',
+        Children: { Metadata: [{ type: 'season', index: 1 }] },
+      }) as PlexMetadata
+  );
+  mock.method(
+    PlexAPI.prototype,
+    'getAllLeavesMetadata',
+    async () =>
+      [
+        {
+          type: 'episode',
+          parentIndex: 1,
+          index: 1,
+          Media: [{ width: 1920, height: 1080 }],
+        },
+      ] as PlexMetadata[]
+  );
+  const badges = episodeBadges();
+  await restrictEpisodeAvailabilityForUser(badges, show, await context(), 1);
+  assert.deepEqual(badges.get(1)?.sources, [
+    { sourceType: 'plex', hd: true, fourK: false },
+    { sourceType: 'sonarr', hd: true, fourK: false },
+  ]);
+  assert.deepEqual(badges.get(2)?.sources, [
+    { sourceType: 'sonarr', hd: true, fourK: false },
+  ]);
+});
+it('does not reveal global episode files after viewer access fails', async () => {
+  mock.method(PlexAPI.prototype, 'getMetadata', async () => {
+    throw new Error('Fixture denied');
+  });
+  const badges = episodeBadges();
+  await restrictEpisodeAvailabilityForUser(
+    badges,
+    new Media({ ...media(), mediaType: MediaType.TV }),
+    await context(),
+    1
+  );
+  for (const episode of badges.values())
+    assert.deepEqual(episode.sources, [
+      { sourceType: 'sonarr', hd: true, fourK: false },
+    ]);
 });

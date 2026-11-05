@@ -956,6 +956,13 @@
     --action-row-justify: flex-start;
   }
 
+  @media (max-width: 40rem) {
+    .card-layout[data-card-layout='media-server-panel']:not([hidden]) {
+      flex-direction: column;
+      align-items: stretch;
+    }
+  }
+
   /* One empty standard button row separates playback from saved-item actions.
      The parent already supplies one gap; this adds the row and its second gap. */
   .card-layout[data-card-layout='media-server-panel']
@@ -9770,6 +9777,14 @@
     grid-template-columns: subgrid;
     align-items: center;
     min-width: 0;
+  }
+
+  .selection-tree [data-tree-part='episode-control'] {
+    grid-column: 1 / -1;
+    display: grid;
+    grid-template-columns: subgrid;
+    align-items: center;
+    min-width: 0;
     border: 0;
     padding: 0;
     background: transparent;
@@ -9780,7 +9795,7 @@
     cursor: pointer;
   }
 
-  .selection-tree [data-tree-part='episode-selection']:disabled {
+  .selection-tree [data-tree-part='episode-control']:disabled {
     cursor: not-allowed;
   }
 
@@ -10008,6 +10023,40 @@
     position: relative;
     line-height: calc(var(--card-table-font-size) + 2px);
     padding-block: calc(var(--button-content-gap) / 2);
+  }
+
+  @media (max-width: 40rem) {
+    .selection-tree [data-table-layout='selection-table'] {
+      --selection-tree-episode-columns: var(
+          --selection-tree-leading-column,
+          var(--selection-tree-selection-column)
+        )
+        var(--selection-tree-episode-number-column) minmax(0, 1fr)
+        var(--detail-row-height) max-content;
+    }
+
+    .selection-tree [data-tree-part='release-date-heading'] {
+      display: none;
+    }
+
+    .selection-tree [data-tree-part='episode-selection'] {
+      grid-row: 1;
+    }
+
+    .selection-tree [data-tree-part='release-date'] {
+      grid-column: 3 / -1;
+      grid-row: 2;
+    }
+
+    .selection-tree [data-tree-part='availability'] {
+      grid-column: 4;
+      grid-row: 1;
+    }
+
+    .selection-tree [data-tree-part='watched'] {
+      grid-column: 5;
+      grid-row: 1;
+    }
   }
 
   .extra-bottom-space {

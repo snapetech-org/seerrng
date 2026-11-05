@@ -1,3 +1,5 @@
+import { Permission } from '@server/lib/permissions';
+import axios from 'axios';
 import { JSDOM } from 'jsdom';
 import React, { act } from 'react';
 import { createRoot, type Root } from 'react-dom/client';
@@ -7,6 +9,8 @@ import AdvancedRequester from './AdvancedRequester';
 
 const state = vi.hoisted(() => ({
   servers: [] as unknown[],
+  permissions: undefined as number | undefined,
+  details: undefined as unknown,
 }));
 
 vi.mock('swr', () => ({
@@ -14,9 +18,11 @@ vi.mock('swr', () => ({
     data:
       key === '/api/v1/service/sonarr'
         ? state.servers
-        : key === '/api/v1/user?take=1000&sort=displayname'
-          ? { results: [] }
-          : undefined,
+        : /^\/api\/v1\/service\/sonarr\/\d+$/.test(key ?? '')
+          ? state.details
+          : key === '/api/v1/user?take=1000&sort=displayname'
+            ? { results: [] }
+            : undefined,
     error: undefined,
     isValidating: false,
   }),
@@ -143,11 +149,19 @@ vi.mock('@app/hooks/useUser', async () => {
   return {
     Permission: permissions,
     useUser: () => ({
-      user: { id: 7, permissions: permissions.MANAGE_REQUESTS },
+      user: {
+        id: 7,
+        permissions: state.permissions ?? permissions.MANAGE_REQUESTS,
+      },
       hasPermission: (
         requested: Parameters<typeof checkPermission>[0],
         options?: Parameters<typeof checkPermission>[2]
-      ) => checkPermission(requested, permissions.MANAGE_REQUESTS, options),
+      ) =>
+        checkPermission(
+          requested,
+          state.permissions ?? permissions.MANAGE_REQUESTS,
+          options
+        ),
     }),
   };
 });
@@ -173,6 +187,8 @@ let root: Root;
 let host: HTMLDivElement;
 
 beforeEach(() => {
+  state.details = undefined;
+  state.permissions = undefined;
   state.servers = [
     { id: 1, name: 'Sonarr 1', isDefault: true, is4k: false },
     { id: 2, name: 'Sonarr 2', isDefault: false, is4k: false },
@@ -199,6 +215,68 @@ beforeEach(() => {
   document.body.append(host);
   root = createRoot(host);
 });
+
+for (const editing of [false, true]) {
+  it(`${editing ? 'preserves a saved' : 'loads the selected server'} zero-valued profile without clearing it implicitly`, async () => {
+    state.details = {
+      server: {
+        id: 2,
+        name: 'Sonarr 2',
+        activeProfileId: 0,
+        activeDirectory: '/tv',
+        activeLanguageProfileId: 1,
+        activeTags: [],
+        isDefault: false,
+        is4k: false,
+      },
+      profiles: [
+        { id: 0, name: 'Zero Profile' },
+        { id: 2, name: 'Other Profile' },
+      ],
+      rootFolders: [{ id: 1, path: '/tv' }],
+      languageProfiles: [{ id: 1, name: 'English' }],
+      tags: [],
+    };
+    const onChange = vi.fn();
+    await act(async () =>
+      root.render(
+        <IntlProvider locale="en">
+          <AdvancedRequester
+            type="tv"
+            tmdbId={123}
+            tvdbId={456}
+            is4k={false}
+            requestId={editing ? 42 : undefined}
+            defaultOverrides={{ server: 2, ...(editing ? { profile: 0 } : {}) }}
+            onChange={onChange}
+          />
+        </IntlProvider>
+      )
+    );
+    expect(host.querySelector('#profile')?.textContent).toContain(
+      'Zero Profile'
+    );
+    if (editing) {
+      expect(onChange).toHaveBeenLastCalledWith(
+        expect.objectContaining({ profile: 0 })
+      );
+    }
+    await act(async () =>
+      host.querySelector<HTMLButtonElement>('#profile')?.click()
+    );
+    const zero = Array.from(
+      document.querySelectorAll<HTMLElement>('[role="option"]')
+    ).find((option) => option.textContent?.includes('Zero Profile'));
+    expect(zero).toBeDefined();
+    await act(async () => zero?.click());
+    expect(onChange).toHaveBeenLastCalledWith(
+      expect.objectContaining({
+        profile: editing ? null : 0,
+        ...(editing ? {} : { requesterSelectedOptions: { profile: true } }),
+      })
+    );
+  });
+}
 
 afterEach(async () => {
   await act(async () => root.unmount());
@@ -241,4 +319,79 @@ it('keeps a selected non-default Sonarr instance in advanced options', async () 
   expect(onChange).toHaveBeenLastCalledWith(
     expect.objectContaining({ server: 2 })
   );
+});
+
+it('keeps a rule-selected language profile zero distinct from a deliberate selection', async () => {
+  state.permissions =
+    Permission.REQUEST | Permission.REQUEST_TV | Permission.REQUEST_ADVANCED;
+  state.details = {
+    server: {
+      id: 2,
+      name: 'Sonarr 2',
+      activeProfileId: 1,
+      activeDirectory: '/tv',
+      activeLanguageProfileId: 1,
+      activeTags: [],
+      isDefault: false,
+      is4k: false,
+    },
+    profiles: [{ id: 1, name: 'Any' }],
+    rootFolders: [{ id: 1, path: '/tv' }],
+    languageProfiles: [
+      { id: 0, name: 'Zero language' },
+      { id: 1, name: 'English' },
+    ],
+    tags: [],
+  };
+  const post = vi.spyOn(axios, 'post').mockResolvedValue({
+    data: {
+      rootFolder: null,
+      profileId: null,
+      tags: [],
+      languageProfileId: 0,
+    },
+  });
+  try {
+    const onChange = vi.fn();
+    await act(async () =>
+      root.render(
+        <IntlProvider locale="en">
+          <AdvancedRequester
+            type="tv"
+            tmdbId={123}
+            tvdbId={456}
+            is4k={false}
+            defaultOverrides={{ server: 2 }}
+            onChange={onChange}
+          />
+        </IntlProvider>
+      )
+    );
+    expect(post).toHaveBeenCalled();
+    expect(host.querySelector('#language')?.textContent).toContain(
+      'Zero language'
+    );
+    expect(onChange).toHaveBeenLastCalledWith(
+      expect.objectContaining({
+        language: undefined,
+        requesterSelectedOptions: undefined,
+      })
+    );
+    await act(async () =>
+      host.querySelector<HTMLButtonElement>('#language')?.click()
+    );
+    const zero = Array.from(
+      document.querySelectorAll<HTMLElement>('[role="option"]')
+    ).find((option) => option.textContent?.includes('Zero language'));
+    expect(zero).toBeDefined();
+    await act(async () => zero?.click());
+    expect(onChange).toHaveBeenLastCalledWith(
+      expect.objectContaining({
+        language: 0,
+        requesterSelectedOptions: { languageProfile: true },
+      })
+    );
+  } finally {
+    post.mockRestore();
+  }
 });

@@ -1,12 +1,12 @@
 // Runs unit tests using the `node:test` runner.
 
 import { Command, Option } from 'commander';
-import { createWriteStream, mkdirSync, mkdtempSync, rmSync } from 'node:fs';
+import { spawn } from 'node:child_process';
+import { once } from 'node:events';
+import { mkdirSync, mkdtempSync, rmSync } from 'node:fs';
 import { glob, readFile } from 'node:fs/promises';
 import { availableParallelism, tmpdir } from 'node:os';
-import { join, resolve } from 'node:path';
-import { run } from 'node:test';
-import * as reporters from 'node:test/reporters';
+import { join, relative, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { setIsolatedTestEnvironment } from './test-environment.mjs';
 
@@ -110,30 +110,38 @@ process.on('exit', () => {
 process.env.TS_NODE_PROJECT = resolveImport('../tsconfig.json');
 process.env.TS_NODE_FILES = 'true';
 
-const stream = run({
-  files,
-  // Process isolation gives each file its own application DataSource and
-  // in-memory SQLite database while keeping concurrent work bounded.
-  concurrency: testConcurrency,
-  isolation: 'process',
-  execArgv: [
-    '--experimental-test-module-mocks',
-    '-r',
-    'ts-node/register',
-    '-r',
-    'tsconfig-paths/register',
-    '-r',
-    resolveImport('./setup.ts'),
-  ],
-  coverage: opts.experimentalTestCoverage,
-  coverageExcludeGlobs: [
-    join(BASE_DIR, 'server/test/**'),
-    join(BASE_DIR, 'server/migration/**'),
-  ],
-  testNamePatterns: opts.testNamePattern,
-  // ensure test process doesn't hang when tests fail
-  forceExit: true,
-});
+// Delegate reporting and shutdown to Node's CLI. Manually composing reporters
+// around run() can return zero with a truncated report after a large run. The
+// CLI owns reporter completion, worker shutdown and the aggregate exit status.
+const args = [
+  '--test',
+  '--test-isolation=process',
+  '--test-force-exit',
+  '--experimental-test-module-mocks',
+  `--test-concurrency=${testConcurrency}`,
+  '--require',
+  resolveImport('./worker-bootstrap.cjs'),
+];
+if (opts.experimentalTestCoverage) {
+  args.push(
+    '--experimental-test-coverage',
+    `--test-coverage-exclude=${join(BASE_DIR, 'server/test/**')}`,
+    `--test-coverage-exclude=${join(BASE_DIR, 'server/migration/**')}`
+  );
+}
+for (const pattern of opts.testNamePattern) {
+  args.push('--test-name-pattern', pattern);
+}
+const addReporter = (reporter: string, destination: string) => {
+  args.push(
+    '--test-reporter',
+    reporter,
+    '--test-reporter-destination',
+    destination === 'stdout' || destination === 'stderr'
+      ? destination
+      : resolve(destination)
+  );
+};
 
 // A failed assertion or test file sets the final exit status but does not stop
 // the remaining files. Preserve a complete, human-readable local report for a
@@ -143,47 +151,46 @@ if (isFullSuite && !runningInCi) {
   const reportTimestamp = new Date().toISOString().replace(/[:.]/g, '-');
   const reportPath = join(reportDirectory, `unit-tests-${reportTimestamp}.log`);
   mkdirSync(reportDirectory, { recursive: true });
-  stream.compose(reporters.spec).pipe(createWriteStream(reportPath));
+  addReporter('spec', reportPath);
   console.log(`Full test report: ${reportPath}`);
 }
 
-// Unlike `node --test`, the programmatic runner does not set a failing process
-// status for us. Propagate any failed test file, assertion, or compilation to
-// callers and CI.
-stream.on('test:fail', () => {
-  process.exitCode = 1;
-});
-
 // In CI, write a JUnit report to a file for use by GitHub
 if (runningInCi) {
-  const reportStream = createWriteStream(join(BASE_DIR, 'report.xml'));
-  stream.compose(reporters.junit).pipe(reportStream);
+  addReporter('junit', join(BASE_DIR, 'report.xml'));
 }
 
 if (opts.testReporter.length > 0) {
   for (let i = 0; i < opts.testReporter.length; i++) {
-    const reporterName = opts.testReporter[i];
-    // check built-in reporters, otherwise import
-    const reporter =
-      reporterName in reporters
-        ? reporters[reporterName as keyof typeof reporters]
-        : await import(reporterName).then((m) => m.default);
-
-    if (reporter == null) {
-      console.error('Invalid test reporter: ', reporterName);
-      process.exit(1);
-    }
-
-    const destArg = opts.testReporterDestination[i];
-    const dest =
-      destArg === 'stdout' || destArg == null
-        ? process.stdout
-        : destArg === 'stderr'
-          ? process.stderr
-          : createWriteStream(destArg);
-
-    stream.compose(reporter).pipe(dest);
+    addReporter(
+      opts.testReporter[i],
+      opts.testReporterDestination[i] ?? 'stdout'
+    );
   }
 } else {
-  stream.compose(reporters.spec).pipe(process.stdout);
+  addReporter('spec', 'stdout');
+}
+
+// Relative file arguments keep a full checkout below Windows' command-line
+// length limit while preserving each test file's own isolated process.
+const child = spawn(
+  process.execPath,
+  [...args, '--', ...files.map((file) => relative(BASE_DIR, file))],
+  {
+    cwd: BASE_DIR,
+    env: process.env,
+    stdio: 'inherit',
+  }
+);
+const interrupt = () => child.kill('SIGINT');
+const terminate = () => child.kill('SIGTERM');
+process.on('SIGINT', interrupt);
+process.on('SIGTERM', terminate);
+try {
+  const [code, signal] = await once(child, 'close');
+  process.exitCode =
+    code ?? (signal === 'SIGINT' ? 130 : signal === 'SIGTERM' ? 143 : 1);
+} finally {
+  process.off('SIGINT', interrupt);
+  process.off('SIGTERM', terminate);
 }

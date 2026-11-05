@@ -91,6 +91,8 @@ class AppriseAgent
         switch (type) {
           case Notification.MEDIA_PENDING:
             return intl.formatMessage(globalMessages.pendingApproval);
+          case Notification.MEDIA_PENDING_UPDATED:
+            return intl.formatMessage(globalMessages.requestUpdated);
           case Notification.MEDIA_APPROVED:
           case Notification.MEDIA_AUTO_APPROVED:
             return intl.formatMessage(globalMessages.processing);
