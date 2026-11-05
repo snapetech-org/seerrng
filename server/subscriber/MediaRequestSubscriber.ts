@@ -96,6 +96,7 @@ import {
   isAddableBookshelfLookupResult,
 } from '@server/utils/bookshelfLookup';
 import { mapWithConcurrency } from '@server/utils/concurrency';
+import { getHttpErrorDetails } from '@server/utils/httpError';
 import { withNestedTransaction } from '@server/utils/nestedTransaction';
 import { readarrServiceSupportsFormat } from '@server/utils/readarrService';
 import { resolveSonarrMonitorNewItems } from '@server/utils/servarrSettings';
@@ -342,6 +343,39 @@ const isTransientExternalError = (error: unknown): boolean => {
         message
       ) ||
       /500\.InternalServerError|InternalServerError/i.test(message)
+    ) {
+      return true;
+    }
+
+    current = current instanceof Error ? current.cause : undefined;
+  }
+
+  return false;
+};
+
+const isRetryableRequestDispatchError = (error: unknown): boolean => {
+  const { status } = getHttpErrorDetails(error);
+  if (
+    status === 408 ||
+    status === 429 ||
+    (status !== undefined && status >= 500)
+  ) {
+    return true;
+  }
+
+  if (isTransientExternalError(error)) {
+    return true;
+  }
+
+  let current: unknown = error;
+
+  while (current) {
+    const message =
+      current instanceof Error ? current.message : String(current);
+    if (
+      /(?:status code|status|HTTP)\D{0,12}(?:408|5\d{2})|ECONNABORTED|ECONNREFUSED|EHOSTUNREACH|ENETUNREACH|EPIPE|ERR_NETWORK/i.test(
+        message
+      )
     ) {
       return true;
     }
@@ -959,7 +993,11 @@ export class MediaRequestSubscriber implements EntitySubscriberInterface<MediaRe
     request: MediaRequest
   ): Promise<RequestDispatchOutcome> {
     if (request.type === MediaType.MOVIE) {
-      const delivered = await this.sendToRadarr(request);
+      const dispatch = await this.sendToRadarr(request);
+      if (typeof dispatch !== 'boolean') {
+        return dispatch;
+      }
+      const delivered = dispatch;
       if (!delivered) {
         await recordRequestStatusOverride(
           request.id,
@@ -970,7 +1008,11 @@ export class MediaRequestSubscriber implements EntitySubscriberInterface<MediaRe
       return { delivered };
     }
     if (request.type === MediaType.TV) {
-      const delivered = await this.sendToSonarr(request);
+      const dispatch = await this.sendToSonarr(request);
+      if (typeof dispatch !== 'boolean') {
+        return dispatch;
+      }
+      const delivered = dispatch;
       if (!delivered) {
         await recordRequestStatusOverride(
           request.id,
@@ -1054,7 +1096,9 @@ export class MediaRequestSubscriber implements EntitySubscriberInterface<MediaRe
     }
   }
 
-  public async sendToRadarr(entity: MediaRequest): Promise<boolean> {
+  public async sendToRadarr(
+    entity: MediaRequest
+  ): Promise<boolean | RequestDispatchOutcome> {
     if (
       entity.status === MediaRequestStatus.APPROVED &&
       entity.type === MediaType.MOVIE
@@ -1266,6 +1310,28 @@ export class MediaRequestSubscriber implements EntitySubscriberInterface<MediaRe
         });
         return true;
       } catch (e) {
+        if (isRetryableRequestDispatchError(e)) {
+          const details = getHttpErrorDetails(e);
+          logger.warn(
+            'Temporary Radarr dispatch failure; keeping the approved request in the automatic retry queue.',
+            {
+              label: 'Media Request',
+              requestId: entity.id,
+              mediaId: entity.media.id,
+              serviceType: 'radarr',
+              ...(details.errorCode ? { errorCode: details.errorCode } : {}),
+              ...(details.status ? { httpStatus: details.status } : {}),
+            }
+          );
+          // Radarr reconciles an existing movie by TMDB ID before creating one,
+          // so a retry can recover a request accepted before its response was lost.
+          const retryAfterMs = getRetryAfterMs(e);
+          return {
+            delivered: false,
+            ...(retryAfterMs !== undefined ? { retryAfterMs } : {}),
+          };
+        }
+
         const requestRepository = getRepository(MediaRequest);
         const mediaRepository = getRepository(Media);
         const media = await mediaRepository.findOne({
@@ -1339,7 +1405,9 @@ export class MediaRequestSubscriber implements EntitySubscriberInterface<MediaRe
     return sonarrSettings.activeProfileId;
   }
 
-  public async sendToSonarr(entity: MediaRequest): Promise<boolean> {
+  public async sendToSonarr(
+    entity: MediaRequest
+  ): Promise<boolean | RequestDispatchOutcome> {
     if (
       entity.status === MediaRequestStatus.APPROVED &&
       entity.type === MediaType.TV
@@ -1777,6 +1845,28 @@ export class MediaRequestSubscriber implements EntitySubscriberInterface<MediaRe
         });
         return true;
       } catch (e) {
+        if (isRetryableRequestDispatchError(e)) {
+          const details = getHttpErrorDetails(e);
+          logger.warn(
+            'Temporary Sonarr dispatch failure; keeping the approved request in the automatic retry queue.',
+            {
+              label: 'Media Request',
+              requestId: entity.id,
+              mediaId: entity.media.id,
+              serviceType: 'sonarr',
+              ...(details.errorCode ? { errorCode: details.errorCode } : {}),
+              ...(details.status ? { httpStatus: details.status } : {}),
+            }
+          );
+          // Sonarr reconciles an existing series by TVDB ID before creating one,
+          // so a retry can recover a request accepted before its response was lost.
+          const retryAfterMs = getRetryAfterMs(e);
+          return {
+            delivered: false,
+            ...(retryAfterMs !== undefined ? { retryAfterMs } : {}),
+          };
+        }
+
         const requestRepository = getRepository(MediaRequest);
         const mediaRepository = getRepository(Media);
         const media = await mediaRepository.findOne({
