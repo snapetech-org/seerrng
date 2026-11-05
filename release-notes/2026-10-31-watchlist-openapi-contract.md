@@ -6,4 +6,4 @@ action: none
 breaking: false
 ---
 
-The OpenAPI watchlist request now documents the type-specific identifier required for each supported media type and keeps `mediaType` required, matching server-side validation. Seerr [issue #3298](https://github.com/seerr-team/seerr/issues/3298) reported the mismatch; [PR #3425](https://github.com/seerr-team/seerr/pull/3425) corrected the movie and TV request schema upstream.
+Clients can validate watchlist requests and responses for all six SeerrNG media types. The contract documents guaranteed response fields, the public requester, and optional media IDs. Adapted from Seerr [#3298](https://github.com/seerr-team/seerr/issues/3298), [#3425](https://github.com/seerr-team/seerr/pull/3425), and [#3635](https://github.com/seerr-team/seerr/pull/3635).

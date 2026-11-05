@@ -235,10 +235,12 @@ Recent repository updates include:
   `replicaCount: 0` for maintenance and resume it with `replicaCount: 1`;
   values that would start multiple SeerrNG instances are rejected.
 - **API integrations:** the OpenAPI watchlist contract describes the
-  type-specific IDs required for each supported media type and matches the
-  server's validation. Seerr [issue #3298](https://github.com/seerr-team/seerr/issues/3298)
-  reported the mismatch, and [PR #3425](https://github.com/seerr-team/seerr/pull/3425)
-  corrected the movie and TV request schema upstream.
+  type-specific IDs required for each supported media type, the fields returned
+  by the create endpoint, and the public requester shape. Seerr
+  [issue #3298](https://github.com/seerr-team/seerr/issues/3298) reported the
+  request mismatch, [PR #3425](https://github.com/seerr-team/seerr/pull/3425)
+  corrected the movie and TV request schema, and [PR #3635](https://github.com/seerr-team/seerr/pull/3635)
+  aligned the response schema upstream.
 
 These changes are in the repository; use the [release notes](./CHANGELOG.md)
 to confirm which ones are included in a published build. SeerrNG continues to

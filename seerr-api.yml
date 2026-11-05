@@ -2254,6 +2254,15 @@ components:
               maxLength: 256
     Watchlist:
       type: object
+      required:
+        - id
+        - ratingKey
+        - mediaType
+        - title
+        - media
+        - createdAt
+        - updatedAt
+        - requestedBy
       properties:
         id:
           type: integer
@@ -2262,33 +2271,41 @@ components:
         tmdbId:
           type: number
           example: 1
+          readOnly: true
         mbId:
           type: string
           description: MusicBrainz release group ID.
+          readOnly: true
         externalId:
           type: string
           description: Open Library work ID, ComicVine volume ID, or magazine title.
+          readOnly: true
         mediaType:
           type: string
           enum: [movie, tv, music, book, comic, magazine]
+          readOnly: true
         ratingKey:
           type: string
-        type:
-          type: string
+          readOnly: true
         title:
           type: string
+          readOnly: true
         media:
           $ref: '#/components/schemas/MediaInfo'
+          readOnly: true
         createdAt:
           type: string
+          format: date-time
           example: '2020-09-12T10:00:27.000Z'
           readOnly: true
         updatedAt:
           type: string
+          format: date-time
           example: '2020-09-12T10:00:27.000Z'
           readOnly: true
         requestedBy:
-          $ref: '#/components/schemas/User'
+          $ref: '#/components/schemas/PublicUser'
+          readOnly: true
     WatchlistListItem:
       type: object
       required:
