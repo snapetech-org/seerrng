@@ -15,9 +15,11 @@ import {
 } from '@app/utils/swrCache';
 import { MediaRequestStatus, MediaStatus } from '@server/constants/media';
 import { buildDiscoverQueryString } from '@server/utils/discoverQuery';
+import axios from 'axios';
 import { useRouter } from 'next/router';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useIntl } from 'react-intl';
+import { useSWRConfig } from 'swr';
 import useSWRInfinite from 'swr/infinite';
 import useSettings from './useSettings';
 import { Permission, useUser } from './useUser';
@@ -30,6 +32,58 @@ export interface BaseSearchResult<T> {
   totalPages: number;
   results: T[];
 }
+
+type DiscoverPage<T, S> = BaseSearchResult<T> & S & { skipped?: boolean };
+const DISCOVER_RECOVERY_KEY_PREFIX = 'discover-recovery:';
+type DiscoverPageKey = readonly [
+  url: string,
+  page: number,
+  totalPages: number | null,
+  totalResults: number | null,
+  previousSkipped: boolean,
+];
+
+const encodeDiscoverPageKey = (key: DiscoverPageKey): string =>
+  `${DISCOVER_RECOVERY_KEY_PREFIX}${JSON.stringify(key)}`;
+
+const fetchDiscoverPage = async <T, S>(
+  key: string,
+  defaultFetcher: ((key: string) => unknown) | undefined
+): Promise<DiscoverPage<T, S>> => {
+  if (!key.startsWith(DISCOVER_RECOVERY_KEY_PREFIX)) {
+    if (!defaultFetcher) {
+      throw new Error('No default SWR fetcher is configured for Discover.');
+    }
+
+    return (await defaultFetcher(key)) as DiscoverPage<T, S>;
+  }
+
+  const [url, page, totalPages, totalResults, previousSkipped] = JSON.parse(
+    key.slice(DISCOVER_RECOVERY_KEY_PREFIX.length)
+  ) as DiscoverPageKey;
+  const loadPage = async () =>
+    axios.get<DiscoverPage<T, S>>(url).then((response) => response.data);
+
+  try {
+    return await loadPage();
+  } catch (error) {
+    if (totalPages === null || totalResults === null || previousSkipped) {
+      throw error;
+    }
+
+    try {
+      return await loadPage();
+    } catch {
+      return {
+        page,
+        totalPages,
+        totalResults,
+        results: [],
+        skipped: true,
+      } as DiscoverPage<T, S>;
+    }
+  }
+};
 
 interface BaseMedia {
   id: number | string;
@@ -165,6 +219,7 @@ const useDiscover = <
     showErrorToast = true,
     shouldRetryOnError = true,
     hideErrorWithResults = true,
+    recoverSinglePageFailure = false,
     revalidateOnMount,
     dedupingInterval = 30000,
   }: {
@@ -176,11 +231,13 @@ const useDiscover = <
     showErrorToast?: boolean;
     shouldRetryOnError?: boolean;
     hideErrorWithResults?: boolean;
+    recoverSinglePageFailure?: boolean;
     revalidateOnMount?: boolean;
     dedupingInterval?: number;
   } = {}
 ): DiscoverResult<T, S> => {
   const settings = useSettings();
+  const { fetcher: defaultFetcher } = useSWRConfig();
   const { user, hasPermission } = useUser();
   const canManageBlocklist = hasPermission(Permission.MANAGE_BLOCKLIST);
   const { addToast } = useToasts();
@@ -203,6 +260,10 @@ const useDiscover = <
   // with the previous seed would paint one lineup and then replace it as soon as
   // the current request completes.
   const fallbackData = randomizeOrder ? undefined : persistentFallbackData;
+  const fetchPage = useCallback(
+    (key: string) => fetchDiscoverPage<T, S>(key, defaultFetcher),
+    [defaultFetcher]
+  );
   const {
     data,
     error,
@@ -210,7 +271,7 @@ const useDiscover = <
     setSize,
     isValidating,
     mutate: revalidate,
-  } = useSWRInfinite<BaseSearchResult<T> & S>(
+  } = useSWRInfinite<DiscoverPage<T, S>>(
     (pageIndex: number, previousPageData) => {
       if (!enabled || pageIndex >= MAX_SEARCH_PAGES) {
         return null;
@@ -229,8 +290,21 @@ const useDiscover = <
         params.shuffleSeed = shuffleSeed;
       }
 
-      return `${endpoint}?${buildDiscoverQueryString(params)}`;
+      const url = `${endpoint}?${buildDiscoverQueryString(params)}`;
+
+      if (recoverSinglePageFailure) {
+        return encodeDiscoverPageKey([
+          url,
+          pageIndex + 1,
+          previousPageData?.totalPages ?? null,
+          previousPageData?.totalResults ?? null,
+          previousPageData?.skipped === true,
+        ]);
+      }
+
+      return url;
     },
+    fetchPage,
     {
       initialSize: 1,
       // Loading the next page should only append that page. Availability and
@@ -240,7 +314,7 @@ const useDiscover = <
       dedupingInterval,
       revalidateOnFocus: false,
       fallbackData,
-      shouldRetryOnError,
+      shouldRetryOnError: recoverSinglePageFailure ? false : shouldRetryOnError,
     }
   );
 
@@ -370,7 +444,12 @@ const useDiscover = <
   }, [setSize, shouldScanNextFilteredPage]);
 
   useEffect(() => {
-    if (!randomizeOrder && data?.length && titles.length) {
+    if (
+      !randomizeOrder &&
+      data?.length &&
+      titles.length &&
+      !data.some((page) => page?.skipped)
+    ) {
       setPersistentResponse(fallbackCacheKey, data);
     }
   }, [data, fallbackCacheKey, randomizeOrder, titles.length]);
@@ -392,6 +471,10 @@ const useDiscover = <
     titles.length,
   ]);
 
+  const preserveCatalogError = Boolean(
+    recoverSinglePageFailure && (size === 1 || data?.[data.length - 1]?.skipped)
+  );
+
   return {
     isLoadingInitialData,
     isLoadingMore,
@@ -400,7 +483,10 @@ const useDiscover = <
     fetchMore,
     isEmpty,
     isReachingEnd,
-    error: error && titles.length && hideErrorWithResults ? null : error,
+    error:
+      error && titles.length && hideErrorWithResults && !preserveCatalogError
+        ? null
+        : error,
     titles,
     shuffleSeed,
     firstResultData: data?.[0],
