@@ -8,7 +8,9 @@ export const normalizeSampleUrl = (value: unknown): string | undefined => {
   if (
     typeof value !== 'string' ||
     value.length > 2048 ||
-    /[\\\x00-\x20]/.test(value)
+    Array.from(value).some(
+      (character) => character === '\\' || character.codePointAt(0)! <= 0x20
+    )
   )
     return undefined;
   try {

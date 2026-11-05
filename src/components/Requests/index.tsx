@@ -2321,6 +2321,7 @@ const Requests = () => {
   const { cache: requestCache, mutate: prefetchRequestCache } = useSWRConfig();
   const prefetchedDetails = useRef(new Set<string>());
   const { user: currentUser, hasPermission } = useUser();
+  const currentUserId = currentUser?.id;
   const { addToast } = useToasts();
   const isAdminView = hasPermission(Permission.MANAGE_REQUESTS);
   const canViewOtherUsers =
@@ -2397,13 +2398,15 @@ const Requests = () => {
         canViewOtherUsers,
         queryUserId:
           rawUserId ??
-          (persius && currentUser ? String(currentUser.id) : undefined),
+          (persius && currentUserId != null
+            ? String(currentUserId)
+            : undefined),
       })
     );
   }, [
     persius,
     canViewOtherUsers,
-    currentUser?.id,
+    currentUserId,
     router.isReady,
     router.query.filter,
     router.query.mediaType,

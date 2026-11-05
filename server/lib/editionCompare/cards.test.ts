@@ -1,9 +1,9 @@
-import assert from 'node:assert/strict';
-import { test } from 'node:test';
 import {
   initialNarration,
   recommendedNarration,
-} from '../../../src/utils/narrationSelection';
+} from '@app/utils/narrationSelection';
+import assert from 'node:assert/strict';
+import { test } from 'node:test';
 import { hasExactEditionFiles, hasRequestedEditionFiles } from './availability';
 import { cardFromCatalog, cardFromLookup, normalizeSampleUrl } from './cards';
 

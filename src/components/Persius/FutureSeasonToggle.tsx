@@ -13,8 +13,13 @@ export default function FutureSeasonToggle({
 }) {
   const intl = useIntl();
   const descriptionId = useId();
+  const inputId = useId();
   return (
-    <label className="persius-future-seasons">
+    <label
+      className="persius-future-seasons"
+      htmlFor={inputId}
+      aria-label={intl.formatMessage(messages.futureSeasons)}
+    >
       <span>
         <strong>{intl.formatMessage(messages.futureSeasons)}</strong>
         <small id={descriptionId}>
@@ -26,6 +31,7 @@ export default function FutureSeasonToggle({
         </small>
       </span>
       <input
+        id={inputId}
         type="checkbox"
         role="switch"
         checked={checked}

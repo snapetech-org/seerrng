@@ -1,14 +1,16 @@
 import type { TreeSeason } from '@app/components/MediaDetails/SeasonEpisodeTree';
-import { useEffect, useRef } from 'react';
+import { useEffect, useId, useRef } from 'react';
 import { useIntl } from 'react-intl';
 import messages from './messages';
 
 function SeasonCheck({
+  id,
   checked,
   mixed,
   disabled,
   onChange,
 }: {
+  id: string;
   checked: boolean;
   mixed: boolean;
   disabled: boolean;
@@ -20,6 +22,7 @@ function SeasonCheck({
   }, [mixed]);
   return (
     <input
+      id={id}
       ref={ref}
       type="checkbox"
       checked={checked}
@@ -42,6 +45,7 @@ export default function SeasonPicker({
   onChange: (ids: number[]) => void;
 }) {
   const intl = useIntl();
+  const checkboxPrefix = useId();
   const selected = new Set(selectedIds);
   const selectable = seasons.filter(
     (season) =>
@@ -91,11 +95,13 @@ export default function SeasonPicker({
             ?.releaseDate?.slice(0, 4);
           return (
             <label
+              htmlFor={`${checkboxPrefix}-${season.seasonNumber}`}
               className="persius-season"
               key={season.seasonNumber}
               data-disabled={disabled || !eligible.length}
             >
               <SeasonCheck
+                id={`${checkboxPrefix}-${season.seasonNumber}`}
                 checked={checked}
                 mixed={chosen > 0 && !checked}
                 disabled={disabled || !eligible.length}

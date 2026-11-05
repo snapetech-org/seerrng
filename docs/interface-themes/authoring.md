@@ -31,7 +31,7 @@ installed custom theme ID. An optional second argument chooses the output folder
 The new package has its own ID and full stylesheet; it does not load or inherit
 the original package at runtime.
 
-For a small hand-written example, copy [`template/`](template/) instead. Use a lowercase kebab-case ID such as
+For a small hand-written example, copy [`template/`](https://github.com/snapetech-org/seerrng/tree/main/docs/interface-themes/template) instead. Use a lowercase kebab-case ID such as
 `my-theme`; IDs are permanent package identifiers and cannot be changed after
 users save them in their account settings.
 

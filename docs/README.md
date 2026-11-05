@@ -65,7 +65,7 @@ connects to.
 ## Configure and operate
 
 - [Configure OIDC sign-in, provider callbacks, account admission, linking, and recovery](/using-seerr/settings/users/oidc)
-- [Require Jellyfin Quick Connect for media-server sign-in](/using-seerr/settings/users/#require-jellyfin-quick-connect)
+- [Require Jellyfin Quick Connect for media-server sign-in](/using-seerr/settings/users/#require-jellyfin-quick-connect-sign-in)
 - [Cross-project OIDC contract and rollout map](/maintainers/oidc-cross-project-template) · [provider IDs, official setup links, scopes, and caveats](/maintainers/oidc-provider-catalog)
 - [Choose metadata providers and configure music request limits](/using-seerr/settings/metadata/)
 - [Check MusicBrainz and Cover Art Archive connectivity](/using-seerr/settings/metadata/#music-metadata-providers)

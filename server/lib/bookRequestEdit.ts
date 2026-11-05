@@ -5,8 +5,8 @@ import MediaIdentifier, {
   MediaIdentifierProvider,
 } from '@server/entity/MediaIdentifier';
 import {
-  MediaRequest,
   ServiceConfigurationError,
+  type MediaRequest,
   type MediaRequestServiceTarget,
 } from '@server/entity/MediaRequest';
 import type { MediaRequestBody } from '@server/interfaces/api/requestInterfaces';

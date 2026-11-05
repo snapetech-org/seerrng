@@ -60,6 +60,8 @@ export default function NarrationSample({
         {intl.formatMessage(active ? messages.stopSample : messages.sample)}
       </Button>
       {safeUrl && (
+        // Providers supply audio-only previews without timed text; do not invent captions.
+        // eslint-disable-next-line jsx-a11y/media-has-caption
         <audio
           ref={player}
           src={active ? safeUrl : undefined}

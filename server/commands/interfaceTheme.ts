@@ -1,3 +1,20 @@
+import { appDataPath } from '@server/utils/appDataVolume';
+import {
+  INTERFACE_THEME_IDS,
+  parseInterfaceTheme,
+} from '@server/utils/interfaceTheme';
+import { readInterfaceThemeFile } from '@server/utils/interfaceThemeFile';
+import {
+  MAX_INSTALLED_INTERFACE_THEME_CSS_BYTES,
+  MAX_INSTALLED_INTERFACE_THEMES,
+  MAX_INTERFACE_THEME_CSS_BYTES,
+  MAX_INTERFACE_THEME_MANIFEST_BYTES,
+  validateInterfaceThemePackage,
+} from '@server/utils/interfaceThemePackage';
+import {
+  getInstalledInterfaceTheme,
+  listInstalledInterfaceThemes,
+} from '@server/utils/interfaceThemeRegistry';
 import { createHash, randomUUID } from 'node:crypto';
 import {
   chmodSync,
@@ -11,23 +28,6 @@ import {
 } from 'node:fs';
 import path from 'node:path';
 import { parseArgs } from 'node:util';
-import { appDataPath } from '../utils/appDataVolume';
-import {
-  INTERFACE_THEME_IDS,
-  parseInterfaceTheme,
-} from '../utils/interfaceTheme';
-import { readInterfaceThemeFile } from '../utils/interfaceThemeFile';
-import {
-  MAX_INSTALLED_INTERFACE_THEME_CSS_BYTES,
-  MAX_INSTALLED_INTERFACE_THEMES,
-  MAX_INTERFACE_THEME_CSS_BYTES,
-  MAX_INTERFACE_THEME_MANIFEST_BYTES,
-  validateInterfaceThemePackage,
-} from '../utils/interfaceThemePackage';
-import {
-  getInstalledInterfaceTheme,
-  listInstalledInterfaceThemes,
-} from '../utils/interfaceThemeRegistry';
 
 const MAX_BUNDLE_BYTES = 2 * 1024 * 1024;
 const themeInstallRoot = path.join(appDataPath(), 'interface-themes');

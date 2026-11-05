@@ -1,9 +1,9 @@
+import { RequestFutureSeasons1793400000000 as PostgresMigration } from '@server/migration/postgres/1793400000000-RequestFutureSeasons';
+import { RequestFutureSeasons1793400000000 as SqliteMigration } from '@server/migration/sqlite/1793400000000-RequestFutureSeasons';
 import assert from 'node:assert/strict';
 import { DatabaseSync } from 'node:sqlite';
 import { test } from 'node:test';
 import type { QueryRunner } from 'typeorm';
-import { RequestFutureSeasons1793400000000 as PostgresMigration } from '../migration/postgres/1793400000000-RequestFutureSeasons';
-import { RequestFutureSeasons1793400000000 as SqliteMigration } from '../migration/sqlite/1793400000000-RequestFutureSeasons';
 import {
   resolveFutureSeasonMonitoring,
   validateFutureSeasonPreference,

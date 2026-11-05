@@ -21,7 +21,11 @@ try {
   }
   if (existsSync(source) && jitiPath) {
     const { createJiti } = require(jitiPath);
-    await createJiti(import.meta.url).import(source);
+    await createJiti(import.meta.url, {
+      alias: {
+        '@server': fileURLToPath(new URL('../server', import.meta.url)),
+      },
+    }).import(source);
   } else if (existsSync(compiled)) {
     require(compiled);
   } else {

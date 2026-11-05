@@ -48,6 +48,16 @@ they are not proof of this integration's acceptance.
   390x844 season dialog were visually checked against the contribution's
   references. Overflow, keyboard and interaction assertions passed.
 
+CI follow-up repairs keep absolute server imports with an explicit checkout CLI
+alias, associate native season/switch labels with stable input IDs, and retain
+literal URL control-character rejection without an ESLint control-regex escape.
+Provider audio-only samples have no supplied timed text; the preview's caption
+lint exception is scoped and documented rather than adding fictitious tracks.
+The repaired CLI passed seven round trips, the component group passed all 68
+checks, and 12 affected native checks passed. Production and documentation builds
+passed; the remaining Quick Connect documentation anchor was matched to its
+rendered target and corrected. Release fragments respect the current size limit.
+
 Evidence is retained in the 2026-11-05 contribution-recovery task artifacts,
 including failing cases, screenshot comparisons, checksums and logs. Fixtures
 control provider responses; no live provider acquisition or physical-device

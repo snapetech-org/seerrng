@@ -15,9 +15,11 @@ const fixture = vi.hoisted(() => ({
 }));
 vi.mock('@app/hooks/useBookEditions', () => ({ default: () => fixture }));
 vi.mock('@app/components/Common/Button', () => ({
-  default: ({ buttonType: _, ...props }: Record<string, unknown>) => (
-    <button {...props} />
-  ),
+  default: (props: Record<string, unknown>) => {
+    const attributes = { ...props };
+    delete attributes.buttonType;
+    return <button {...attributes} />;
+  },
 }));
 vi.mock('@app/components/Common/CachedImage', () => ({
   default: ({ src }: { src: string }) => <img alt="" src={src} />,
