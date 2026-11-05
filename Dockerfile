@@ -1,7 +1,7 @@
 ARG BUILDPLATFORM
 ARG TARGETPLATFORM
 
-FROM mirror.gcr.io/library/node:24.22.1-alpine3.23@sha256:4b00b6d1aa138805aace94cc2482808f2b4f01e5e9c9f8cdc0e217fd70600ef9 AS target-base
+FROM mirror.gcr.io/library/node:24.22.2-alpine3.23@sha256:9b69af715c7f9d038150b54ccccbaeffa9064bbc93e2904c29591ca097316af1 AS target-base
 ARG SOURCE_DATE_EPOCH
 ARG TARGETPLATFORM
 ENV TARGETPLATFORM=${TARGETPLATFORM:-linux/amd64}
@@ -43,7 +43,7 @@ RUN if [ -d node_modules/.pnpm ]; then \
 # Remove dependency source maps before copying production modules into the final image.
 RUN find node_modules/.pnpm -type f -name '*.map' -delete
 
-FROM --platform=$BUILDPLATFORM mirror.gcr.io/library/node:24.22.1-alpine3.23@sha256:4b00b6d1aa138805aace94cc2482808f2b4f01e5e9c9f8cdc0e217fd70600ef9 AS build-base
+FROM --platform=$BUILDPLATFORM mirror.gcr.io/library/node:24.22.2-alpine3.23@sha256:9b69af715c7f9d038150b54ccccbaeffa9064bbc93e2904c29591ca097316af1 AS build-base
 ARG SOURCE_DATE_EPOCH
 ARG BUILDPLATFORM
 ARG TARGETPLATFORM
@@ -79,7 +79,7 @@ RUN pnpm i18n:check && pnpm build:next && pnpm build:server
 
 RUN rm -rf .next/cache
 
-FROM mirror.gcr.io/library/node:24.22.1-alpine3.23@sha256:4b00b6d1aa138805aace94cc2482808f2b4f01e5e9c9f8cdc0e217fd70600ef9
+FROM mirror.gcr.io/library/node:24.22.2-alpine3.23@sha256:9b69af715c7f9d038150b54ccccbaeffa9064bbc93e2904c29591ca097316af1
 ARG SOURCE_DATE_EPOCH
 ARG COMMIT_TAG
 ARG BUILD_VERSION=main

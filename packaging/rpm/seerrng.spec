@@ -10,7 +10,7 @@ Source2:        seerrng.env
 Source3:        seerrng.sysusers
 Source4:        seerrng.tmpfiles
 BuildArch:      x86_64
-Requires:       nodejs >= 24.22.1
+Requires:       nodejs >= 24.22.2
 %{?systemd_requires}
 
 # The release archive bundles native Node modules for multiple platforms.
