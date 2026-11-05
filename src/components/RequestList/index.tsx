@@ -9,6 +9,10 @@ import {
   getFilterToggleButtonClass,
 } from '@app/components/Discover/FilterPanel/CompactFilterSelect';
 import { PinnedFilterSectionGroup } from '@app/components/Discover/PinnedFilterSection';
+import { OptionalDisclosure } from '@app/components/Persius/Primitives';
+import { RequestTabs } from '@app/components/Persius/Requests';
+import persiusMessages from '@app/components/Persius/messages';
+import { usePersius } from '@app/components/Persius/usePersius';
 import RequestItem from '@app/components/RequestList/RequestItem';
 import {
   getPositiveQueryParamNumber,
@@ -31,7 +35,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { useIntl } from 'react-intl';
-import useSWR from 'swr';
+import useSWR, { mutate } from 'swr';
 
 const messages = defineMessages('components.RequestList', {
   requests: 'Requests',
@@ -39,6 +43,10 @@ const messages = defineMessages('components.RequestList', {
   showallrequests: 'Show All Requests',
   sortAdded: 'Most Recent',
   sortModified: 'Last Modified',
+  sortPopularity: 'Popularity',
+  sortReleaseDate: 'Release Date',
+  sortRating: 'TMDB Rating',
+  sortTitle: 'Title',
   sortDirection: 'Toggle Sort Direction',
   taskFilters: 'Task Filters',
   mediaFilters: 'Media Filters',
@@ -50,6 +58,7 @@ const messages = defineMessages('components.RequestList', {
 
 enum Filter {
   ALL = 'all',
+  ACTIVE = 'active',
   PENDING = 'pending',
   APPROVED = 'approved',
   PROCESSING = 'processing',
@@ -60,7 +69,8 @@ enum Filter {
   COMPLETED = 'completed',
 }
 
-type Sort = 'added' | 'modified';
+type Sort =
+  'added' | 'modified' | 'popularity' | 'releaseDate' | 'rating' | 'title';
 
 type SortDirection = 'asc' | 'desc';
 
@@ -70,10 +80,18 @@ const isMediaType = (value: unknown): value is MediaType =>
   typeof value === 'string' &&
   ['all', 'movie', 'tv', 'music', 'book', 'sports'].includes(value);
 const REQUEST_FILTER_OPTIONS = Object.values(Filter);
-const REQUEST_SORT_OPTIONS: readonly Sort[] = ['added', 'modified'];
+const REQUEST_SORT_OPTIONS: readonly Sort[] = [
+  'added',
+  'modified',
+  'popularity',
+  'releaseDate',
+  'rating',
+  'title',
+];
 const SORT_DIRECTION_OPTIONS: readonly SortDirection[] = ['asc', 'desc'];
 
 const RequestList = () => {
+  const persius = usePersius();
   const router = useRouter();
   const intl = useIntl();
   const userId = getPositiveQueryParamNumber(router.query.userId);
@@ -95,25 +113,52 @@ const RequestList = () => {
     router.query.filter as Filter
   )
     ? (router.query.filter as Filter)
-    : currentFilter;
+    : persius
+      ? Filter.ACTIVE
+      : currentFilter;
   const effectiveMediaType = isMediaType(router.query.mediaType)
     ? router.query.mediaType
     : (currentMediaType as MediaType);
 
+  const supportsMetadataSort =
+    effectiveMediaType === 'movie' || effectiveMediaType === 'tv';
+  const sortOptions: { value: Sort; label: keyof typeof messages }[] = [
+    { value: 'added', label: 'sortAdded' },
+    { value: 'modified', label: 'sortModified' },
+    ...(supportsMetadataSort
+      ? ([
+          { value: 'popularity', label: 'sortPopularity' },
+          { value: 'releaseDate', label: 'sortReleaseDate' },
+          { value: 'rating', label: 'sortRating' },
+          { value: 'title', label: 'sortTitle' },
+        ] satisfies { value: Sort; label: keyof typeof messages }[])
+      : []),
+  ];
+  const effectiveSort = sortOptions.some(
+    (option) => option.value === currentSort
+  )
+    ? currentSort
+    : 'added';
+  const effectiveSortDirection =
+    effectiveSort === currentSort ? currentSortDirection : 'desc';
+
+  const requestedBy = router.pathname.startsWith('/profile')
+    ? currentUser?.id
+    : (userId ??
+      (persius && router.query.allUsers !== 'true'
+        ? currentUser?.id
+        : undefined));
+  const requestScope = `&mediaType=${effectiveMediaType}${requestedBy ? `&requestedBy=${requestedBy}` : ''}`;
   const {
     data,
     error,
     mutate: revalidate,
   } = useSWR<RequestResultsResponse>(
-    router.isReady
+    router.isReady && (!persius || currentUser)
       ? `/api/v1/request?take=${currentPageSize}&skip=${
           pageIndex * currentPageSize
-        }&filter=${effectiveFilter}&mediaType=${effectiveMediaType}&sort=${currentSort}&sortDirection=${currentSortDirection}${
-          router.pathname.startsWith('/profile')
-            ? `&requestedBy=${currentUser?.id}`
-            : userId
-              ? `&requestedBy=${userId}`
-              : ''
+        }&filter=${effectiveFilter}&mediaType=${effectiveMediaType}&sort=${effectiveSort}&sortDirection=${effectiveSortDirection}${
+          requestedBy ? `&requestedBy=${requestedBy}` : ''
         }`
       : null
   );
@@ -198,7 +243,10 @@ const RequestList = () => {
     return (
       <>
         {pendingHeading}
-        <LoadingSpinner />
+        <p role="alert">{intl.formatMessage(persiusMessages.failed)}</p>
+        <Button onClick={() => void revalidate()}>
+          {intl.formatMessage(persiusMessages.retry)}
+        </Button>
       </>
     );
   }
@@ -208,32 +256,32 @@ const RequestList = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  return (
-    <>
-      <PageTitle
-        title={
-          router.query.userId && user?.displayName
-            ? `${intl.formatMessage(messages.requests)} - ${user.displayName}`
-            : intl.formatMessage(messages.requests)
-        }
-      />
-      <Header
-        subtext={
-          router.pathname.startsWith('/profile') ? (
-            <Link href={`/profile`} className="hover:underline">
-              {currentUser?.displayName}
-            </Link>
-          ) : router.query.userId ? (
-            <Link href={`/users/${user?.id}`} className="hover:underline">
-              {user?.displayName}
-            </Link>
-          ) : (
-            ''
-          )
-        }
-      >
-        {intl.formatMessage(messages.requests)}
-      </Header>
+  const requestFilters = (
+    <OptionalDisclosure enabled={persius}>
+      {persius &&
+        hasPermission([Permission.MANAGE_REQUESTS, Permission.REQUEST_VIEW], {
+          type: 'or',
+        }) &&
+        !userId &&
+        !router.pathname.startsWith('/profile') && (
+          <label className="persius-scope">
+            <input
+              type="checkbox"
+              checked={router.query.allUsers === 'true'}
+              onChange={(event) =>
+                void router.push({
+                  pathname: router.pathname,
+                  query: {
+                    ...router.query,
+                    allUsers: String(event.target.checked),
+                    page: '1',
+                  },
+                })
+              }
+            />
+            {intl.formatMessage(persiusMessages.allUsers)}
+          </label>
+        )}
       <PinnedFilterSectionGroup
         mediaType={
           effectiveMediaType === 'tv'
@@ -258,6 +306,7 @@ const RequestList = () => {
                   defaultValue="pending"
                   options={(
                     [
+                      ['active', persiusMessages.active],
                       ['all', globalMessages.all],
                       ['pending', globalMessages.pending],
                       ['approved', globalMessages.approved],
@@ -276,13 +325,23 @@ const RequestList = () => {
                     setCurrentFilter(value as Filter);
                     router.push({
                       pathname: router.pathname,
-                      query: router.query.userId
+                      query: persius
                         ? {
-                            userId: router.query.userId,
+                            ...router.query,
                             filter: value,
                             mediaType: effectiveMediaType,
+                            page: '1',
                           }
-                        : { filter: value, mediaType: effectiveMediaType },
+                        : router.query.userId
+                          ? {
+                              userId: router.query.userId,
+                              filter: value,
+                              mediaType: effectiveMediaType,
+                            }
+                          : {
+                              filter: value,
+                              mediaType: effectiveMediaType,
+                            },
                     });
                   }}
                 />
@@ -312,11 +371,28 @@ const RequestList = () => {
                   }))}
                   onChange={(value) => {
                     setCurrentMediaType(value as MediaType);
+                    if (
+                      value !== 'movie' &&
+                      value !== 'tv' &&
+                      !['added', 'modified'].includes(currentSort)
+                    ) {
+                      setCurrentSort('added');
+                      setCurrentSortDirection('desc');
+                    }
                     router.push({
                       pathname: router.pathname,
-                      query: router.query.userId
-                        ? { userId: router.query.userId, mediaType: value }
-                        : { mediaType: value },
+                      query: persius
+                        ? {
+                            ...router.query,
+                            mediaType: value,
+                            page: '1',
+                          }
+                        : router.query.userId
+                          ? {
+                              userId: router.query.userId,
+                              mediaType: value,
+                            }
+                          : { mediaType: value },
                     });
                   }}
                 />
@@ -330,31 +406,33 @@ const RequestList = () => {
               <div className="app-filter-row">
                 <CompactSelect
                   label={intl.formatMessage(messages.sortBy)}
-                  value={currentSort}
-                  options={[
-                    {
-                      value: 'added',
-                      label: intl.formatMessage(messages.sortAdded),
-                    },
-                    {
-                      value: 'modified',
-                      label: intl.formatMessage(messages.sortModified),
-                    },
-                  ]}
+                  value={effectiveSort}
+                  options={sortOptions.map((option) => ({
+                    value: option.value,
+                    label: intl.formatMessage(messages[option.label]),
+                  }))}
                   onChange={(value) => {
                     setCurrentSort(value as Sort);
+                    setCurrentSortDirection(value === 'title' ? 'asc' : 'desc');
                     router.push({
                       pathname: router.pathname,
-                      query: router.query.userId
+                      query: persius
                         ? {
-                            userId: router.query.userId,
+                            ...router.query,
                             filter: effectiveFilter,
                             mediaType: effectiveMediaType,
+                            page: '1',
                           }
-                        : {
-                            filter: effectiveFilter,
-                            mediaType: effectiveMediaType,
-                          },
+                        : router.query.userId
+                          ? {
+                              userId: router.query.userId,
+                              filter: effectiveFilter,
+                              mediaType: effectiveMediaType,
+                            }
+                          : {
+                              filter: effectiveFilter,
+                              mediaType: effectiveMediaType,
+                            },
                     });
                   }}
                 />
@@ -365,11 +443,11 @@ const RequestList = () => {
                     aria-label={intl.formatMessage(messages.sortDirection)}
                     onClick={() =>
                       setCurrentSortDirection(
-                        currentSortDirection === 'asc' ? 'desc' : 'asc'
+                        effectiveSortDirection === 'asc' ? 'desc' : 'asc'
                       )
                     }
                   >
-                    {currentSortDirection === 'asc' ? (
+                    {effectiveSortDirection === 'asc' ? (
                       <ArrowUpIcon />
                     ) : (
                       <ArrowDownIcon />
@@ -381,6 +459,53 @@ const RequestList = () => {
           },
         ]}
       />
+    </OptionalDisclosure>
+  );
+
+  return (
+    <>
+      <PageTitle
+        title={
+          router.query.userId && user?.displayName
+            ? `${intl.formatMessage(messages.requests)} - ${user.displayName}`
+            : intl.formatMessage(messages.requests)
+        }
+      />
+      <Header
+        subtext={
+          router.pathname.startsWith('/profile') ? (
+            <Link href={`/profile`} className="hover:underline">
+              {currentUser?.displayName}
+            </Link>
+          ) : router.query.userId ? (
+            <Link href={`/users/${user?.id}`} className="hover:underline">
+              {user?.displayName}
+            </Link>
+          ) : (
+            ''
+          )
+        }
+      >
+        {intl.formatMessage(messages.requests)}
+      </Header>
+      {!persius && requestFilters}
+      {persius && (
+        <>
+          <p className="persius-page-description">
+            {intl.formatMessage(persiusMessages.requestsDescription)}
+          </p>
+          <RequestTabs
+            filter={effectiveFilter}
+            scope={requestScope}
+            onChange={(filter) =>
+              void router.push({
+                pathname: router.pathname,
+                query: { ...router.query, filter, page: '1' },
+              })
+            }
+          />
+        </>
+      )}
 
       {data.serviceErrors &&
         (data.serviceErrors.radarr.length > 0 ||
@@ -404,17 +529,26 @@ const RequestList = () => {
           </div>
         )}
 
-      {data.results.map((request) => {
-        return (
-          <div className="py-2" key={`request-list-${request.id}`}>
-            <RequestItem
-              request={request}
-              revalidateList={() => revalidate()}
-            />
-          </div>
-        );
-      })}
-
+      <div className={persius ? 'persius-request-grid' : undefined}>
+        {data.results.map((request) => {
+          return (
+            <div className="py-2" key={`request-list-${request.id}`}>
+              <RequestItem
+                request={request}
+                revalidateList={() => {
+                  void revalidate();
+                  if (persius)
+                    void mutate(
+                      (key) =>
+                        typeof key === 'string' &&
+                        key.startsWith('/api/v1/request?take=1&skip=0&filter=')
+                    );
+                }}
+              />
+            </div>
+          );
+        })}
+      </div>
       {data.results.length === 0 && (
         <div className="flex w-full flex-col items-center justify-center py-24 text-white">
           <span className="text-2xl text-gray-400">
@@ -427,6 +561,15 @@ const RequestList = () => {
                 onClick={() => {
                   setCurrentFilter(Filter.ALL);
                   setCurrentMediaType(Filter.ALL);
+                  void router.push({
+                    pathname: router.pathname,
+                    query: {
+                      ...router.query,
+                      filter: 'all',
+                      mediaType: 'all',
+                      page: '1',
+                    },
+                  });
                 }}
               >
                 {intl.formatMessage(messages.showallrequests)}
@@ -435,6 +578,7 @@ const RequestList = () => {
           )}
         </div>
       )}
+      {persius && requestFilters}
       <PaginationFooter
         page={page}
         pageSize={currentPageSize}

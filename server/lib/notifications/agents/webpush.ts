@@ -39,6 +39,7 @@ const messages = defineMessages('notifications.agents.webpush', {
   failed: 'Failed to process {quality}{mediaType} request.',
   pending:
     'Approval required for a new {quality}{mediaType} request from {userName}.',
+  pendingUpdated: 'A pending {quality}{mediaType} request was updated.',
   issueCreated: 'A new {issueType} was reported by {userName}.',
   issueComment: '{userName} commented on the {issueType}.',
   issueResolved: 'The {issueType} was marked as resolved by {userName}!',
@@ -188,6 +189,12 @@ class WebPushAgent
           quality,
           mediaType,
           userName: payload.request?.requestedBy.displayName,
+        });
+        break;
+      case Notification.MEDIA_PENDING_UPDATED:
+        message = intl.formatMessage(messages.pendingUpdated, {
+          quality,
+          mediaType,
         });
         break;
       case Notification.ISSUE_CREATED:
@@ -421,7 +428,8 @@ class WebPushAgent
                       )
                     : this.buildPayload(
                         type,
-                        type === Notification.MEDIA_PENDING
+                        type === Notification.MEDIA_PENDING ||
+                          type === Notification.MEDIA_PENDING_UPDATED
                           ? {
                               ...payload,
                               pendingRequestsCount: pendingRequestCount,
@@ -447,7 +455,10 @@ class WebPushAgent
         settings.vapidPrivate
       );
 
-      if (type === Notification.MEDIA_PENDING) {
+      if (
+        type === Notification.MEDIA_PENDING ||
+        type === Notification.MEDIA_PENDING_UPDATED
+      ) {
         payload = { ...payload, pendingRequestsCount: pendingRequestCount };
       }
 

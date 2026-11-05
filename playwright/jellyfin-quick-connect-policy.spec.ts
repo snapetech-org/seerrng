@@ -1,9 +1,11 @@
 import { expect, test } from '@playwright/test';
 
-test.use({ serviceWorkers: 'block' });
+test.use({ serviceWorkers: 'block', screenshot: 'only-on-failure' });
 const baseline = process.env.SEERR_QUICK_CONNECT_BASELINE === 'true';
 
-for (const width of [1440, 390]) {
+for (const width of process.env.SEERR_QUICK_CONNECT_WIDTHS?.split(',').map(
+  Number
+) ?? [1440, 390]) {
   for (const [name, serverType, only] of [
     ['jellyfin-password', 2, false],
     ['jellyfin-quick-only', 2, true],
@@ -69,7 +71,9 @@ for (const width of [1440, 390]) {
   }
 }
 
-for (const width of [1440, 390]) {
+for (const width of process.env.SEERR_QUICK_CONNECT_WIDTHS?.split(',').map(
+  Number
+) ?? [1440, 390]) {
   test(`Quick Connect policy settings preserve the selected policy at ${width}px`, async ({
     page,
     baseURL,
@@ -81,6 +85,18 @@ for (const width of [1440, 390]) {
         data: { email: 'admin@seerr.dev', password: 'test1234' },
       });
     expect(login.status()).toBe(200);
+    expect(
+      (
+        await page.request.post(
+          `${baseURL}/api/v1/user/1/settings/interface-theme`,
+          {
+            data: {
+              theme: process.env.SEERR_QUICK_CONNECT_THEME ?? 'seerrNGJ',
+            },
+          }
+        )
+      ).status()
+    ).toBe(200);
     let main: Record<string, unknown> | undefined;
     let saved: Record<string, unknown> | undefined;
     await page.route('**/api/v1/settings/public', async (route) => {
@@ -124,13 +140,66 @@ for (const width of [1440, 390]) {
       expect(saved?.mediaServerLogin).toBe(true);
     }
     await parent.scrollIntoViewIfNeeded();
-    await expect
-      .poll(() =>
-        page.evaluate(
-          () => document.documentElement.scrollWidth <= window.innerWidth
+    try {
+      await expect
+        .poll(() =>
+          page.evaluate(
+            () => document.documentElement.scrollWidth <= window.innerWidth
+          )
         )
-      )
-      .toBe(true);
+        .toBe(true);
+    } catch (error) {
+      const overflow = await page.evaluate(() => ({
+        viewport: innerWidth,
+        document: document.documentElement.scrollWidth,
+        theme: document.documentElement.dataset.interfaceTheme,
+        mediaQuery: matchMedia('(min-width: 768px)').matches,
+        ancestors: (() => {
+          const nodes = [];
+          let node = document.querySelector('#login-link-user-search');
+          while (node) {
+            const style = getComputedStyle(node);
+            const box = node.getBoundingClientRect();
+            nodes.push({
+              tag: node.tagName,
+              id: node.id,
+              className: node.getAttribute('class'),
+              left: box.left,
+              right: box.right,
+              width: box.width,
+              display: style.display,
+              columns: style.gridTemplateColumns,
+              fontSize: style.fontSize,
+              maxWidth: style.maxWidth,
+              gap: style.gap,
+            });
+            node = node.parentElement;
+          }
+          return nodes;
+        })(),
+        elements: Array.from(document.querySelectorAll('*'))
+          .map((element) => ({
+            tag: element.tagName,
+            id: element.id,
+            className: element.getAttribute('class'),
+            left: element.getBoundingClientRect().left,
+            right: element.getBoundingClientRect().right,
+            width: element.getBoundingClientRect().width,
+            display: getComputedStyle(element).display,
+            minWidth: getComputedStyle(element).minWidth,
+            columns: getComputedStyle(element).gridTemplateColumns,
+          }))
+          .filter(
+            (element) => element.right > innerWidth + 1 || element.left < -1
+          )
+          .slice(0, 25),
+      }));
+      console.error(
+        'Quick Connect settings overflow:',
+        JSON.stringify(overflow)
+      );
+      throw error;
+    }
     await page.screenshot({
       path: info.outputPath(`settings-${width}.png`),
       fullPage: true,

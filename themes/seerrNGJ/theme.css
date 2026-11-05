@@ -462,7 +462,13 @@
   }
 
   :is(:root[data-interface-theme='seerrNGJ'], [data-interface-theme='seerrNGJ'])
-    .preview-route-grid {
+    .preview-route-grid,
+  :is(:root[data-interface-theme='seerrNGJ'], [data-interface-theme='seerrNGJ'])
+    .settings-page-content:has(
+      > .section,
+      > .settings-group-card,
+      > .settings-library-card
+    ) {
     grid-template-columns: minmax(0, 1fr);
   }
 }
@@ -473,7 +479,11 @@
   :is(:root[data-interface-theme='seerrNGJ'], [data-interface-theme='seerrNGJ'])
     .preview-route-grid,
   :is(:root[data-interface-theme='seerrNGJ'], [data-interface-theme='seerrNGJ'])
-    .settings-page-content {
+    .settings-page-content:has(
+      > .section,
+      > .settings-group-card,
+      > .settings-library-card
+    ) {
     grid-template-columns: minmax(0, 1fr);
   }
 }

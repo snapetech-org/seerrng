@@ -139,3 +139,37 @@ test('release dates and watched/unknown status retain source truth', () => {
   assert.equal(data.seasons[1].episodes[0].watched, false);
   assert.equal(data.seasons[1].episodes[0].name, 'Untitled');
 });
+
+test('source-file indicators survive projection without granting playback selection', () => {
+  const source = { sourceType: 'sonarr', hd: true, fourK: false };
+  const data = build(undefined, [
+    {
+      seasonNumber: 1,
+      episodes: [
+        {
+          id: 101,
+          episodeNumber: 1,
+          name: 'File present',
+          availabilitySources: [source],
+        },
+      ],
+    },
+  ]);
+  assert.deepEqual(data.seasons[0].episodes[0].availabilitySources, [source]);
+  // Explicitly pass an empty playback catalog: files do not grant playback.
+  const unavailable = build({ groups: [] }, [
+    {
+      seasonNumber: 1,
+      episodes: [
+        {
+          id: 101,
+          episodeNumber: 1,
+          name: 'File present',
+          availabilitySources: [source],
+        },
+      ],
+    },
+  ]);
+  assert.equal(unavailable.seasons[0].episodes[0].available, false);
+  assert.equal(unavailable.playbackIdsByEpisode.size, 0);
+});

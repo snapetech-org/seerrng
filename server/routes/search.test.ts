@@ -21,6 +21,8 @@ import MediaIdentifier, {
 } from '@server/entity/MediaIdentifier';
 import MetadataAlbum from '@server/entity/MetadataAlbum';
 import MetadataArtist from '@server/entity/MetadataArtist';
+import { User } from '@server/entity/User';
+import { UserSettings } from '@server/entity/UserSettings';
 import {
   getSettings,
   type LazyLibrarianSettings,
@@ -184,6 +186,53 @@ async function loginAs(email: string, password: string) {
 }
 
 describe('GET /search', () => {
+  for (const restricted of [false, true]) {
+    it(`includes collection results only without a movie maturity limit (${restricted})`, async () => {
+      const settings = getSettings();
+      settings.lidarr = [];
+      settings.readarr = [];
+      const user = await getRepository(User).findOneByOrFail({
+        email: 'friend@seerr.dev',
+      });
+      if (restricted) {
+        await getRepository(UserSettings).save({
+          user,
+          movieMaturityRatingLimit: 'PG',
+        });
+      }
+      let collectionCalls = 0;
+      mockPrivate(ExternalAPI.prototype, 'get', async (endpoint) => {
+        if (endpoint === '/search/collection') {
+          collectionCalls++;
+          return {
+            page: 1,
+            total_pages: 1,
+            total_results: 2,
+            results: [
+              { id: 9001, name: 'Recovery Collection', adult: false },
+              { id: 9001, name: 'Duplicate Collection', adult: false },
+            ],
+          };
+        }
+        if (endpoint === '/search/multi') {
+          return { page: 1, total_pages: 1, total_results: 0, results: [] };
+        }
+        throw new Error(`Unexpected endpoint: ${String(endpoint)}`);
+      });
+      const agent = await loginAs('friend@seerr.dev', 'test1234');
+      const res = await agent.get('/search').query({ query: 'recovery' });
+      assert.equal(res.status, 200);
+      assert.equal(collectionCalls, restricted ? 0 : 1);
+      assert.deepEqual(
+        res.body.results.map((result: { id: number; mediaType: string }) => ({
+          id: result.id,
+          mediaType: result.mediaType,
+        })),
+        restricted ? [] : [{ id: 9001, mediaType: 'collection' }]
+      );
+    });
+  }
+
   const magazineService = (id: number): LazyLibrarianSettings => ({
     id,
     name: `LazyLibrarian ${id}`,

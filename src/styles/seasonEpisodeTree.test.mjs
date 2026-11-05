@@ -215,7 +215,7 @@ test('disclosure and selection are independent keyboard-accessible buttons', () 
           ts.isJsxAttribute(attribute) &&
           attribute.name.getText(ast) === 'data-tree-part'
       );
-      if (role?.initializer?.getText(ast) === '"episode-selection"')
+      if (role?.initializer?.getText(ast) === '"episode-control"')
         episodeDisabled = attributes.find(
           (attribute) =>
             ts.isJsxAttribute(attribute) &&
@@ -547,7 +547,13 @@ test('outline branch guides terminate at the final episode elbow', () => {
     /grid-column:\s*1\s*\/\s*(?:4|span 3)/
   );
   assert.match(episodeSelectionRule.body, /grid-template-columns:\s*subgrid/);
-  assert.match(episodeSelectionRule.body, /text-decoration:\s*none/);
+  const episodeControlRule = rules.find(
+    (rule) =>
+      rule.selector.replace(/\/\*[\s\S]*?\*\//g, '').trim() ===
+      ".selection-tree [data-tree-part='episode-control']"
+  );
+  assert.match(episodeControlRule.body, /grid-template-columns:\s*subgrid/);
+  assert.match(episodeControlRule.body, /text-decoration:\s*none/);
   for (const rule of rules.filter(
     (entry) =>
       entry.selector.includes("[data-tree-part='episode']") &&
@@ -851,6 +857,7 @@ test('both retained methods expand, collapse and select without external writes'
         },
       };
     if (id.endsWith('/Button')) return standardButton;
+    if (id.endsWith('/EpisodeFileAvailability')) return () => null;
     if (id.endsWith('/SelectionCircle'))
       return {
         __esModule: true,
@@ -1008,7 +1015,7 @@ test('both retained methods expand, collapse and select without external writes'
         ['episode-selection', 'release-date', 'availability', 'watched']
       );
       const firstTarget = container.querySelector(
-        '[data-tree-part="episode-selection"]'
+        '[data-tree-part="episode-control"]'
       );
       assert.equal(firstTarget.tagName, 'BUTTON');
       assert.equal(firstTarget.getAttribute('type'), 'button');

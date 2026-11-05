@@ -1,5 +1,7 @@
 import { expect, test } from '@playwright/test';
 
+test.use({ serviceWorkers: 'block' });
+
 test('users can switch and persist an installed interface theme', async ({
   page,
   baseURL,
@@ -43,6 +45,22 @@ test('users can switch and persist an installed interface theme', async ({
   const originalTheme = currentUser.settings?.interfaceTheme ?? 'seerrOrig';
 
   try {
+    await page.route('**/api/v1/discover/**', (route) =>
+      route.fulfill({
+        json: new URL(route.request().url()).pathname.includes('/genreslider/')
+          ? []
+          : { page: 1, totalPages: 1, totalResults: 0, results: [] },
+      })
+    );
+    await page.route('**/avatarproxy/**', (route) =>
+      route.fulfill({
+        contentType: 'image/png',
+        body: Buffer.from(
+          'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNk+A8AAQUBAScY42YAAAAASUVORK5CYII=',
+          'base64'
+        ),
+      })
+    );
     const errors: string[] = [];
     page.on('pageerror', (error) => errors.push(error.message));
     page.on('console', (message) => {

@@ -252,6 +252,7 @@ const MovieRequestModal = ({
           rootFolder: requestOverrides.folder,
           userId: requestOverrides.user?.id,
           tags: requestOverrides.tags,
+          requesterSelectedOptions: requestOverrides.requesterSelectedOptions,
         };
       }
       const response = await axios.post<MediaRequest>('/api/v1/request', {
@@ -361,6 +362,7 @@ const MovieRequestModal = ({
         rootFolder: requestOverrides?.folder,
         userId: requestOverrides?.user?.id,
         tags: requestOverrides?.tags,
+        requestTargetOptions: requestOverrides?.requestTargetOptions,
       });
 
       if (alsoApproveRequest) {

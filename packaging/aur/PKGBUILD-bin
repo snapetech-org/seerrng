@@ -6,7 +6,7 @@ arch=('x86_64')
 options=('!strip')
 url='https://github.com/snapetech-org/seerrng'
 license=('MIT')
-depends=('nodejs>=24.22.1')
+depends=('nodejs>=24.22.2')
 provides=('seerrng')
 conflicts=('seerrng')
 install=seerrng.install

@@ -8,6 +8,9 @@ import { sliderTitles } from '@app/components/Discover/constants';
 import ReadMeABookHomeSection from '@app/components/Discover/ReadMeABookHomeSection';
 import discoveryMessages from '@app/components/DiscoveryIntegrations/messages';
 import MediaSlider from '@app/components/MediaSlider';
+import { DiscoveryHeader, HeroShelf } from '@app/components/Persius/Discovery';
+import { OptionalDisclosure } from '@app/components/Persius/Primitives';
+import usePersius from '@app/components/Persius/usePersius';
 import { DiscoverSliderScrollRestorationContext } from '@app/components/Slider';
 import { encodeURIExtraParams } from '@app/hooks/useDiscover';
 import useSettings from '@app/hooks/useSettings';
@@ -140,6 +143,7 @@ type DiscoverProps = {
 
 const Discover = ({ initialSliders }: DiscoverProps) => {
   const intl = useIntl();
+  const persius = usePersius();
   const { hasPermission, user } = useUser();
   const { currentSettings } = useSettings();
   const serviceAvailability = useMemo(
@@ -252,14 +256,26 @@ const Discover = ({ initialSliders }: DiscoverProps) => {
       data-discover-editor-open={isEditing ? 'true' : 'false'}
     >
       <PageTitle title={intl.formatMessage(messages.discover)} />
-      <Header>{intl.formatMessage(messages.discover)}</Header>
-      <Link
-        href="/discover/providers"
-        className="mb-4 inline-flex text-sm text-blue-400 hover:text-blue-300"
+      {persius && !isEditing ? (
+        <>
+          <DiscoveryHeader />
+          <HeroShelf />
+        </>
+      ) : (
+        <Header>{intl.formatMessage(messages.discover)}</Header>
+      )}
+      <OptionalDisclosure
+        enabled={persius}
+        label={intl.formatMessage(messages.customizediscover)}
       >
-        <FormattedMessage {...discoveryMessages['providers.explore']} />
-      </Link>
-      {!isEditing && <PersonalizedRows />}
+        <Link
+          href="/discover/providers"
+          className="mb-4 inline-flex text-sm text-blue-400 hover:text-blue-300"
+        >
+          <FormattedMessage {...discoveryMessages['providers.explore']} />
+        </Link>
+        {!isEditing && <PersonalizedRows />}
+      </OptionalDisclosure>
       {hasPermission(Permission.ADMIN) && (
         <>
           {isEditing && (
@@ -347,6 +363,12 @@ const Discover = ({ initialSliders }: DiscoverProps) => {
         </>
       )}
       {visibleSliders?.map((slider, index) => {
+        if (
+          persius &&
+          !isEditing &&
+          slider.type === DiscoverSliderType.TRENDING
+        )
+          return null;
         let sliderComponent: React.ReactNode;
 
         switch (slider.type) {

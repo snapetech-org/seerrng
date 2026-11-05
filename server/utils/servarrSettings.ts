@@ -29,6 +29,24 @@ const MAX_SERVICE_TAGS = 100;
 const MAX_SERVICE_PORT = 65535;
 const MAX_SERVICE_ID = 1_000_000;
 export const MAX_SERVARR_INSTANCES_PER_TYPE = 50;
+export const DEFAULT_SERVARR_DOWNLOAD_QUEUE_SIZE = 1_000;
+export const MIN_SERVARR_DOWNLOAD_QUEUE_SIZE = 10;
+export const MAX_SERVARR_DOWNLOAD_QUEUE_SIZE = 10_000;
+
+export const validateServarrDownloadQueueSize = (value: unknown): number => {
+  if (
+    typeof value !== 'number' ||
+    !Number.isSafeInteger(value) ||
+    value < MIN_SERVARR_DOWNLOAD_QUEUE_SIZE ||
+    value > MAX_SERVARR_DOWNLOAD_QUEUE_SIZE
+  ) {
+    throw new Error(
+      `downloadQueueSize must be an integer between ${MIN_SERVARR_DOWNLOAD_QUEUE_SIZE} and ${MAX_SERVARR_DOWNLOAD_QUEUE_SIZE}.`
+    );
+  }
+
+  return value;
+};
 
 export const assertServarrInstanceCapacity = (
   current: readonly unknown[]
@@ -320,6 +338,18 @@ const parseDvrSettings = (
   if ('error' in preventSearch) return preventSearch;
   const tagRequests = parseServiceBoolean(settings.tagRequests, 'tagRequests');
   if ('error' in tagRequests) return tagRequests;
+  let downloadQueueSize: number;
+  try {
+    downloadQueueSize = validateServarrDownloadQueueSize(
+      settings.downloadQueueSize ??
+        current?.downloadQueueSize ??
+        DEFAULT_SERVARR_DOWNLOAD_QUEUE_SIZE
+    );
+  } catch (e) {
+    return {
+      error: e instanceof Error ? e.message : 'downloadQueueSize is invalid.',
+    };
+  }
 
   const port = parseOptionalNonNegativeInteger(settings.port, MAX_SERVICE_PORT);
   const activeProfileId = parseOptionalNonNegativeInteger(
@@ -355,6 +385,7 @@ const parseDvrSettings = (
       preventSearch: preventSearch.value,
       tagRequests: tagRequests.value,
       overrideRule: overrideRule.value,
+      downloadQueueSize,
     },
   };
 };
@@ -429,11 +460,20 @@ export const parseRadarrSettings = (
   );
   if ('error' in minimumAvailability) return minimumAvailability;
 
+  const syncExcludedTags = parseNumberArray(
+    settings.syncExcludedTags === undefined
+      ? (current?.syncExcludedTags ?? [])
+      : settings.syncExcludedTags,
+    'syncExcludedTags'
+  );
+  if ('error' in syncExcludedTags) return syncExcludedTags;
+
   return {
     value: {
       ...parsed.value,
       ...requestButton.value,
       minimumAvailability: minimumAvailability.value,
+      syncExcludedTags: syncExcludedTags.value,
     },
   };
 };
@@ -479,6 +519,13 @@ export const parseSonarrSettings = (
 
   const animeTags = parseNumberArray(settings.animeTags, 'animeTags');
   if ('error' in animeTags) return animeTags;
+  const syncExcludedTags = parseNumberArray(
+    settings.syncExcludedTags === undefined
+      ? (current?.syncExcludedTags ?? [])
+      : settings.syncExcludedTags,
+    'syncExcludedTags'
+  );
+  if ('error' in syncExcludedTags) return syncExcludedTags;
   const activeAnimeProfileId = parseOptionalServiceId(
     settings.activeAnimeProfileId,
     'activeAnimeProfileId'
@@ -539,6 +586,7 @@ export const parseSonarrSettings = (
       defaultMetadataLanguageId: defaultMetadataLanguageId.value,
       defaultSeasonType,
       animeTags: animeTags.value,
+      syncExcludedTags: syncExcludedTags.value,
       enableSeasonFolders: enableSeasonFolders.value,
       monitorNewItems,
     },

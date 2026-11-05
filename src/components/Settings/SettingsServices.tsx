@@ -824,14 +824,23 @@ const SettingsServices = ({
       label: intl.formatMessage(messages.addrule),
       icon: <PlusIcon />,
       disabled:
-        !radarrData?.length && !sonarrData?.length && !lidarrData?.length,
+        !radarrData?.length &&
+        !sonarrData?.length &&
+        !lidarrData?.length &&
+        !readarrData?.length,
       onClick: () =>
         setOverrideRuleModal({
           open: true,
           rule: null,
         }),
     }),
-    [intl, lidarrData?.length, radarrData?.length, sonarrData?.length]
+    [
+      intl,
+      lidarrData?.length,
+      radarrData?.length,
+      sonarrData?.length,
+      readarrData?.length,
+    ]
   );
   useSettingsPageAction(newOverrideRuleAction);
   const hasReadarrEbook = readarrData?.some((readarr) =>

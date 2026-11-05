@@ -4,6 +4,7 @@ import Button from '@app/components/Common/Button';
 import LoadingSpinner from '@app/components/Common/LoadingSpinner';
 import PageTitle from '@app/components/Common/PageTitle';
 import SensitiveInput from '@app/components/Common/SensitiveInput';
+import LibraryEpisodeOrderSettings from '@app/components/Settings/LibraryEpisodeOrderSettings';
 import LibraryItem from '@app/components/Settings/LibraryItem';
 import SettingsBadge from '@app/components/Settings/SettingsBadge';
 import Field, {
@@ -31,7 +32,11 @@ import {
   getSettingsPlexLibraryTypeApiPath,
 } from '@server/constants/settingsLibraryApi';
 import type { PlexDevice } from '@server/interfaces/api/plexInterfaces';
-import type { PlexSettings, TautulliSettings } from '@server/lib/settings';
+import type {
+  MetadataProviderType,
+  PlexSettings,
+  TautulliSettings,
+} from '@server/lib/settings';
 import axios from 'axios';
 import { Formik } from 'formik';
 import { useMemo, useState } from 'react';
@@ -116,6 +121,7 @@ interface Library {
   name: string;
   enabled: boolean;
   type: 'show' | 'movie' | 'music' | 'book';
+  episodeOrderProvider?: MetadataProviderType;
 }
 
 interface SyncStatus {
@@ -373,6 +379,33 @@ const SettingsPlex = ({ isSetupSettings, onComplete }: SettingsPlexProps) => {
         onComplete();
       }
       revalidate();
+    } catch {
+      addToast(intl.formatMessage(messages.toastPlexLibraryUpdateFailure), {
+        autoDismiss: true,
+        appearance: 'error',
+      });
+    } finally {
+      setIsSyncing(false);
+    }
+  };
+
+  const updateEpisodeOrder = async (
+    libraryId: string,
+    provider: MetadataProviderType | undefined
+  ) => {
+    setIsSyncing(true);
+    try {
+      await axios.post(
+        getSettingsLibraryApiPath('plex'),
+        createSettingsLibraryUpdateBody({
+          enabledLibraryIds: activeLibraries,
+          episodeOrder: {
+            libraryId,
+            provider: provider ?? 'none',
+          },
+        })
+      );
+      await revalidate();
     } catch {
       addToast(intl.formatMessage(messages.toastPlexLibraryUpdateFailure), {
         autoDismiss: true,
@@ -813,6 +846,11 @@ const SettingsPlex = ({ isSetupSettings, onComplete }: SettingsPlexProps) => {
           ))}
         </ul>
       </section>
+      <LibraryEpisodeOrderSettings
+        libraries={data?.libraries ?? []}
+        disabled={isSyncing}
+        onChange={updateEpisodeOrder}
+      />
       <div className="mt-10 mb-6">
         <h3 className="heading">{intl.formatMessage(messages.manualscan)}</h3>
         <p className="description">

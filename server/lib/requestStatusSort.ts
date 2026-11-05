@@ -29,6 +29,7 @@ export const REQUEST_STATUS_SORT_FIELDS = [
   'status',
   'incomplete',
   'title',
+  'popularity',
   'director',
   'writer',
   'rating',
@@ -45,6 +46,7 @@ export type RequestStatusSortDirection = 'asc' | 'desc';
 
 export interface RequestStatusSortMetadata {
   title?: string;
+  popularity?: number;
   director?: string;
   writer?: string;
   rating?: number;
@@ -95,14 +97,8 @@ const cacheSortMetadata = (
   });
 };
 
-let tmdb: TheMovieDb | undefined;
 let listenbrainz: ListenBrainzAPI | undefined;
 let openLibrary: OpenLibraryAPI | undefined;
-
-const getTmdb = (): TheMovieDb => {
-  tmdb ??= new TheMovieDb();
-  return tmdb;
-};
 
 const getListenBrainz = (): ListenBrainzAPI => {
   listenbrainz ??= new ListenBrainzAPI();
@@ -139,6 +135,10 @@ const firstCredit = (
 
 const movieMetadata = (movie: TmdbMovieDetails): RequestStatusSortMetadata => ({
   title: nonEmpty(movie.title ?? movie.original_title),
+  popularity:
+    typeof movie.popularity === 'number' && Number.isFinite(movie.popularity)
+      ? movie.popularity
+      : undefined,
   director: firstCredit(movie.credits?.crew, ['Director']),
   rating:
     typeof movie.vote_average === 'number' &&
@@ -150,6 +150,10 @@ const movieMetadata = (movie: TmdbMovieDetails): RequestStatusSortMetadata => ({
 
 const tvMetadata = (show: TmdbTvDetails): RequestStatusSortMetadata => ({
   title: nonEmpty(show.name ?? show.original_name),
+  popularity:
+    typeof show.popularity === 'number' && Number.isFinite(show.popularity)
+      ? show.popularity
+      : undefined,
   director: firstCredit(show.credits?.crew, ['Director']),
   writer: firstCredit(show.credits?.crew, [
     'Writer',
@@ -246,11 +250,77 @@ const getMetadataCacheKey = (
   return workId ? `book:${workId}:${editionId ?? ''}` : undefined;
 };
 
+export const REQUEST_HISTORY_METADATA_SORT_FIELDS = [
+  'popularity',
+  'releaseDate',
+  'rating',
+  'title',
+] as const;
+
+export type RequestHistoryMetadataSortField =
+  (typeof REQUEST_HISTORY_METADATA_SORT_FIELDS)[number];
+
+export const loadMovieTvSortMetadata = async (
+  mediaType: MediaType.MOVIE | MediaType.TV,
+  tmdbId: number
+): Promise<RequestStatusSortMetadata> => {
+  if (!Number.isSafeInteger(tmdbId) || tmdbId <= 0) {
+    return {};
+  }
+
+  const language = getSettings().main.locale || 'en';
+  const key = `${mediaType}:${tmdbId}:${JSON.stringify(language)}`;
+  const cached = metadataCache.get(key);
+  if (cached && cached.expiresAt > Date.now()) {
+    return cached.value;
+  }
+
+  const existing = metadataInFlight.get(key);
+  if (existing) {
+    return existing;
+  }
+
+  const request = (async (): Promise<RequestStatusSortMetadata> => {
+    try {
+      // Provider clients capture request context and settings at construction.
+      // Keep them scoped to this lookup instead of freezing the first locale.
+      const tmdb = new TheMovieDb();
+      return mediaType === MediaType.MOVIE
+        ? movieMetadata(await tmdb.getMovie({ movieId: tmdbId, language }))
+        : tvMetadata(await tmdb.getTvShow({ tvId: tmdbId, language }));
+    } catch {
+      // Sorting must remain available while TMDB is unavailable.
+      return {};
+    }
+  })();
+
+  metadataInFlight.set(key, request);
+  try {
+    const value = await request;
+    if (Object.keys(value).length > 0) {
+      cacheSortMetadata(key, value);
+    }
+    return value;
+  } finally {
+    metadataInFlight.delete(key);
+  }
+};
+
 const loadSortMetadata = async (
   item: RequestStatusPageItem
 ): Promise<RequestStatusSortMetadata> => {
   if (item.request.type === MediaType.ADULT) {
     return { title: nonEmpty(item.request.media.externalServiceSlug) };
+  }
+
+  if (
+    item.request.type === MediaType.MOVIE ||
+    item.request.type === MediaType.TV
+  ) {
+    return loadMovieTvSortMetadata(
+      item.request.type,
+      item.request.media.tmdbId
+    );
   }
 
   const key = getMetadataCacheKey(item);
@@ -270,16 +340,6 @@ const loadSortMetadata = async (
 
   const request = (async (): Promise<RequestStatusSortMetadata> => {
     try {
-      if (item.request.type === MediaType.MOVIE) {
-        return movieMetadata(
-          await getTmdb().getMovie({ movieId: item.request.media.tmdbId })
-        );
-      }
-      if (item.request.type === MediaType.TV) {
-        return tvMetadata(
-          await getTmdb().getTvShow({ tvId: item.request.media.tmdbId })
-        );
-      }
       if (item.request.type === MediaType.MUSIC && item.request.media.mbId) {
         return musicMetadata(
           await getListenBrainz().getAlbum(item.request.media.mbId)
@@ -429,6 +489,8 @@ const getSortValue = (
         : 0;
     case 'title':
       return metadata.title;
+    case 'popularity':
+      return metadata.popularity;
     case 'director':
       return metadata.director;
     case 'writer':
@@ -506,5 +568,42 @@ export const sortRequestStatusItems = async (
     return direction === 'asc'
       ? left.request.id - right.request.id
       : right.request.id - left.request.id;
+  });
+};
+
+export type MovieTvRequestSortRow = {
+  id: number;
+  type: MediaType;
+  media: { tmdbId: number };
+};
+
+export const sortMovieTvRequestRowsByMetadata = async <
+  T extends MovieTvRequestSortRow,
+>(
+  rows: T[],
+  field: RequestHistoryMetadataSortField,
+  direction: RequestStatusSortDirection
+): Promise<T[]> => {
+  const loaded = await mapWithConcurrency(
+    rows,
+    METADATA_CONCURRENCY,
+    async (row) =>
+      [
+        row.id,
+        row.type === MediaType.MOVIE || row.type === MediaType.TV
+          ? await loadMovieTvSortMetadata(row.type, row.media.tmdbId)
+          : {},
+      ] as const
+  );
+  const metadata = new Map(loaded);
+
+  return [...rows].sort((left, right) => {
+    const leftValue = metadata.get(left.id)?.[field];
+    const rightValue = metadata.get(right.id)?.[field];
+    const comparison = compareValues(leftValue, rightValue, direction);
+    if (comparison !== 0) {
+      return comparison;
+    }
+    return direction === 'asc' ? left.id - right.id : right.id - left.id;
   });
 };

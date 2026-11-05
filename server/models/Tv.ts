@@ -6,6 +6,7 @@ import type {
   TmdbTvRatingResult,
   TmdbTvSeasonResult,
 } from '@server/api/themoviedb/interfaces';
+import type { EpisodeAvailabilitySourceType } from '@server/entity/EpisodeAvailability';
 import type Media from '@server/entity/Media';
 import type { Video } from './Movie';
 import type {
@@ -41,6 +42,15 @@ interface Episode {
   seasonNumber: number;
   showId: number;
   stillPath?: string;
+  sonarrAvailability?: {
+    hd: boolean;
+    fourK: boolean;
+  };
+  availabilitySources?: {
+    sourceType: EpisodeAvailabilitySourceType;
+    hd: boolean;
+    fourK: boolean;
+  }[];
   voteAverage: number;
   voteCount: number;
 }

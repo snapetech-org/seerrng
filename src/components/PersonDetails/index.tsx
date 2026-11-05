@@ -5,6 +5,10 @@ import ImageFader from '@app/components/Common/ImageFader';
 import LoadingSpinner from '@app/components/Common/LoadingSpinner';
 import Modal from '@app/components/Common/Modal';
 import PageTitle from '@app/components/Common/PageTitle';
+import {
+  CompactSelect,
+  type CompactSelectOption,
+} from '@app/components/Discover/FilterPanel/CompactFilterSelect';
 import ExternalLinkBlock from '@app/components/ExternalLinkBlock';
 import TitleCard from '@app/components/TitleCard';
 import { SettingsContext } from '@app/context/SettingsContext';
@@ -13,7 +17,11 @@ import { Permission, useUser } from '@app/hooks/useUser';
 import globalMessages from '@app/i18n/globalMessages';
 import ErrorPage from '@app/pages/_error';
 import defineMessages from '@app/utils/defineMessages';
-import { CircleStackIcon } from '@heroicons/react/24/solid';
+import {
+  groupPersonCredits,
+  sortPersonCredits,
+  type CreditSortOption,
+} from '@app/utils/personCredits';
 import type { PersonCombinedCreditsResponse } from '@server/interfaces/api/personInterfaces';
 import type { PersonMovieBulkRequestResponse } from '@server/interfaces/api/requestInterfaces';
 import type { PersonDetails as PersonDetailsType } from '@server/models/Person';
@@ -31,6 +39,18 @@ const messages = defineMessages('components.PersonDetails', {
   appearsin: 'Appearances',
   crewmember: 'Crew',
   ascharacter: 'as {character}',
+  mediaTypeFilter: 'Media type',
+  creditSort: 'Sort credits',
+  sortPopularityDesc: 'Popularity (high)',
+  sortPopularityAsc: 'Popularity (low)',
+  sortReleaseDateDesc: 'Release date (newest)',
+  sortReleaseDateAsc: 'Release date (oldest)',
+  sortRatingDesc: 'Rating (highest)',
+  sortRatingAsc: 'Rating (lowest)',
+  sortTitleAsc: 'Title (A–Z)',
+  sortTitleDesc: 'Title (Z–A)',
+  sortVoteCountDesc: 'Votes (most)',
+  sortVoteCountAsc: 'Votes (fewest)',
   requestAllMovies: 'Request All Movies',
   requestAllMoviesTitle: 'Request All Movies by {person}',
   requestAllMoviesDescription:
@@ -42,21 +62,15 @@ const messages = defineMessages('components.PersonDetails', {
 });
 
 type MediaType = 'all' | 'movie' | 'tv';
-
-const groupById = <T extends { id: number | string }>(items: T[]) =>
-  items.reduce<Record<string, T[]>>((groups, item) => {
-    const key = item.id.toString();
-    groups[key] = [...(groups[key] ?? []), item];
-    return groups;
-  }, {});
-
 const PersonDetails = () => {
   const intl = useIntl();
   const router = useRouter();
   const { currentSettings } = useContext(SettingsContext);
   const { hasPermission } = useUser();
   const { addToast } = useToasts();
-  const [currentMediaType, setCurrentMediaType] = useState<string>('all');
+  const [currentMediaType, setCurrentMediaType] = useState<MediaType>('all');
+  const [creditSort, setCreditSort] =
+    useState<CreditSortOption>('vote_count.desc');
   const [showRequestAllMovies, setShowRequestAllMovies] = useState(false);
   const [requestingAllMovies, setRequestingAllMovies] = useState(false);
   const personId =
@@ -76,30 +90,30 @@ const PersonDetails = () => {
       (media) =>
         currentMediaType === 'all' || media.mediaType === currentMediaType
     );
-    const grouped = groupById(filtered);
+    const grouped = groupPersonCredits(filtered);
 
     const reduced = Object.values(grouped).map((objs) => ({
       ...objs[0],
       character: objs.map((pos) => pos.character).join(', '),
     }));
 
-    return reduced;
-  }, [combinedCredits, currentMediaType]);
+    return sortPersonCredits(reduced, creditSort, intl.locale);
+  }, [combinedCredits, currentMediaType, creditSort, intl.locale]);
 
   const sortedCrew = useMemo(() => {
     const filtered = (combinedCredits?.crew ?? []).filter(
       (media) =>
         currentMediaType === 'all' || media.mediaType === currentMediaType
     );
-    const grouped = groupById(filtered);
+    const grouped = groupPersonCredits(filtered);
 
     const reduced = Object.values(grouped).map((objs) => ({
       ...objs[0],
       job: objs.map((pos) => pos.job).join(', '),
     }));
 
-    return reduced;
-  }, [combinedCredits, currentMediaType]);
+    return sortPersonCredits(reduced, creditSort, intl.locale);
+  }, [combinedCredits, currentMediaType, creditSort, intl.locale]);
 
   const movieIds = useMemo(() => {
     const movies = [
@@ -107,7 +121,7 @@ const PersonDetails = () => {
       ...(combinedCredits?.crew ?? []),
     ].filter((credit) => credit.mediaType === 'movie');
 
-    return Object.values(groupById(movies))
+    return Object.values(groupPersonCredits(movies))
       .map((credits) => Number(credits[0].id))
       .filter((id) => Number.isSafeInteger(id) && id > 0);
   }, [combinedCredits]);
@@ -232,26 +246,78 @@ const PersonDetails = () => {
 
   const isLoading = !combinedCredits && !errorCombinedCredits;
 
-  const mediaTypePicker = (
-    <div className="mb-2 flex flex-grow sm:mr-2 sm:mb-0 lg:flex-grow-0">
-      <span className="inline-flex cursor-default items-center rounded-l-md border border-r-0 border-gray-500 bg-gray-800 px-3 text-sm text-gray-100">
-        <CircleStackIcon className="h-6 w-6" />
-      </span>
-      <select
-        id="mediaType"
-        name="mediaType"
-        onChange={(e) => {
-          setCurrentMediaType(e.target.value as MediaType);
-        }}
+  const mediaTypeOptions: CompactSelectOption[] = [
+    {
+      label: intl.formatMessage(globalMessages.all),
+      value: 'all',
+    },
+    {
+      label: intl.formatMessage(globalMessages.movies),
+      value: 'movie',
+    },
+    {
+      label: intl.formatMessage(globalMessages.tvshows),
+      value: 'tv',
+    },
+  ];
+  const creditSortOptions: CompactSelectOption[] = [
+    {
+      label: intl.formatMessage(messages.sortVoteCountDesc),
+      value: 'vote_count.desc',
+    },
+    {
+      label: intl.formatMessage(messages.sortVoteCountAsc),
+      value: 'vote_count.asc',
+    },
+    {
+      label: intl.formatMessage(messages.sortPopularityDesc),
+      value: 'popularity.desc',
+    },
+    {
+      label: intl.formatMessage(messages.sortPopularityAsc),
+      value: 'popularity.asc',
+    },
+    {
+      label: intl.formatMessage(messages.sortReleaseDateDesc),
+      value: 'release_date.desc',
+    },
+    {
+      label: intl.formatMessage(messages.sortReleaseDateAsc),
+      value: 'release_date.asc',
+    },
+    {
+      label: intl.formatMessage(messages.sortRatingDesc),
+      value: 'vote_average.desc',
+    },
+    {
+      label: intl.formatMessage(messages.sortRatingAsc),
+      value: 'vote_average.asc',
+    },
+    {
+      label: intl.formatMessage(messages.sortTitleAsc),
+      value: 'title.asc',
+    },
+    {
+      label: intl.formatMessage(messages.sortTitleDesc),
+      value: 'title.desc',
+    },
+  ];
+  const creditFilters = (
+    <div className="app-filter-row">
+      <CompactSelect
+        label={intl.formatMessage(messages.mediaTypeFilter)}
         value={currentMediaType}
-        className="rounded-e-only"
-      >
-        <option value="all">{intl.formatMessage(globalMessages.all)}</option>
-        <option value="movie">
-          {intl.formatMessage(globalMessages.movies)}
-        </option>
-        <option value="tv">{intl.formatMessage(globalMessages.tvshows)}</option>
-      </select>
+        options={mediaTypeOptions}
+        onChange={(value) => setCurrentMediaType(value as MediaType)}
+        defaultValue="all"
+      />
+      <CompactSelect
+        label={intl.formatMessage(messages.creditSort)}
+        value={creditSort}
+        options={creditSortOptions}
+        onChange={(value) => setCreditSort(value as CreditSortOption)}
+        defaultValue="vote_count.desc"
+      />
     </div>
   );
 
@@ -263,9 +329,9 @@ const PersonDetails = () => {
         </div>
       </div>
       <ul className="cards-vertical">
-        {sortedCast?.map((media, index) => {
+        {sortedCast?.map((media) => {
           return (
-            <li key={`list-cast-item-${media.id}-${index}`}>
+            <li key={`list-cast-item-${media.mediaType}-${media.id}`}>
               <TitleCard
                 key={media.id}
                 id={media.id}
@@ -311,9 +377,9 @@ const PersonDetails = () => {
         </div>
       </div>
       <ul className="cards-vertical">
-        {sortedCrew?.map((media, index) => {
+        {sortedCrew?.map((media) => {
           return (
-            <li key={`list-crew-item-${media.id}-${index}`}>
+            <li key={`list-crew-item-${media.mediaType}-${media.id}`}>
               <TitleCard
                 key={media.id}
                 id={media.id}
@@ -385,9 +451,7 @@ const PersonDetails = () => {
         <div className="w-full text-center text-gray-300 lg:text-left">
           <div className="flex w-full items-center justify-center lg:justify-between">
             <h1 className="text-3xl text-white lg:text-4xl">{data.name}</h1>
-            <div className="hidden flex-shrink-0 lg:block">
-              {mediaTypePicker}
-            </div>
+            <div className="hidden flex-shrink-0 lg:block">{creditFilters}</div>
           </div>
           <div className="flex w-full items-center justify-center lg:justify-between">
             <div className="mt-3 mb-3">
@@ -413,7 +477,7 @@ const PersonDetails = () => {
               </div>
             )}
           </div>
-          <div className="lg:hidden">{mediaTypePicker}</div>
+          <div className="lg:hidden">{creditFilters}</div>
           {data.biography && (
             <div className="relative text-left">
               {/* eslint-disable-next-line jsx-a11y/click-events-have-key-events */}

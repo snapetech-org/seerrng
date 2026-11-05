@@ -1,4 +1,5 @@
 import type { InterfaceThemeManifest } from '@server/utils/interfaceTheme';
+import persiusNG from '@themes/persiusNG/manifest.json';
 import seerrNGJ from '@themes/seerrNGJ/manifest.json';
 import seerrOrig from '@themes/seerrOrig/manifest.json';
 
@@ -35,4 +36,8 @@ const toBuiltInInterfaceThemeManifest = (
 export const BUILT_IN_INTERFACE_THEME_MANIFESTS: InterfaceThemeManifest[] = [
   toBuiltInInterfaceThemeManifest(seerrOrig, 'seerrOrig'),
   toBuiltInInterfaceThemeManifest(seerrNGJ, 'seerrNGJ'),
+  {
+    ...toBuiltInInterfaceThemeManifest(persiusNG, 'persiusNG'),
+    layout: 'persius',
+  },
 ];

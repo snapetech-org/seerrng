@@ -56,7 +56,22 @@ export type ServarrServiceAuthority = Pick<
   'id' | 'hostname' | 'port' | 'useSsl' | 'baseUrl' | 'apiKey'
 > &
   Partial<Pick<DVRSettings, 'syncEnabled' | 'is4k'>> &
+  Partial<{ syncExcludedTags: number[] }> &
   Partial<Pick<ReadarrSettings, 'backend' | 'serviceType'>>;
+
+const hasSameSyncExcludedTags = (
+  current: readonly number[] | undefined,
+  snapshot: readonly number[] | undefined
+): boolean => {
+  const currentTags = [...(current ?? [])].sort((left, right) => left - right);
+  const snapshotTags = [...(snapshot ?? [])].sort(
+    (left, right) => left - right
+  );
+  return (
+    currentTags.length === snapshotTags.length &&
+    currentTags.every((tagId, index) => tagId === snapshotTags[index])
+  );
+};
 
 export const hasSameServarrServiceAuthority = (
   current: ServarrServiceAuthority,
@@ -70,6 +85,10 @@ export const hasSameServarrServiceAuthority = (
   current.apiKey === snapshot.apiKey &&
   current.syncEnabled === snapshot.syncEnabled &&
   Boolean(current.is4k) === Boolean(snapshot.is4k) &&
+  hasSameSyncExcludedTags(
+    current.syncExcludedTags,
+    snapshot.syncExcludedTags
+  ) &&
   (current.backend ?? 'readarr') === (snapshot.backend ?? 'readarr') &&
   (current.serviceType ?? 'ebook') === (snapshot.serviceType ?? 'ebook');
 

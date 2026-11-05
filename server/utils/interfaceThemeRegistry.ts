@@ -1,11 +1,12 @@
-import { appDataPath } from '@server/utils/appDataVolume';
-import { existsSync, lstatSync, readdirSync, readFileSync } from 'node:fs';
+import { existsSync, lstatSync, readdirSync } from 'node:fs';
 import path from 'node:path';
+import { appDataPath } from './appDataVolume';
 import {
   INTERFACE_THEME_IDS,
   parseInterfaceTheme,
   type InterfaceThemeManifest,
 } from './interfaceTheme';
+import { readInterfaceThemeFile } from './interfaceThemeFile';
 import {
   MAX_INSTALLED_INTERFACE_THEME_CSS_BYTES,
   MAX_INSTALLED_INTERFACE_THEMES,
@@ -27,16 +28,10 @@ const builtInThemeRoot = (): string => {
   ) {
     return compiledRoot;
   }
-  return path.resolve(process.cwd(), 'themes');
+  return path.resolve(__dirname, '../../themes');
 };
 
-const regularFile = (filename: string, maxBytes: number): string => {
-  const stat = lstatSync(filename);
-  if (stat.isSymbolicLink() || !stat.isFile() || stat.size > maxBytes) {
-    throw new Error('Theme package file is not a supported regular file.');
-  }
-  return readFileSync(filename, 'utf8');
-};
+const regularFile = readInterfaceThemeFile;
 
 const readPackageDirectory = (
   directory: string,
