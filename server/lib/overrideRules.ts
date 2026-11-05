@@ -16,13 +16,14 @@ export const overrideRuleConditionFields = [
   'genre',
   'language',
   'keywords',
+  'productionCountries',
 ] as const satisfies readonly (keyof OverrideRule)[];
 export type OverrideRuleConditionField =
   (typeof overrideRuleConditionFields)[number];
 const MAX_OVERRIDE_RULE_ROUTING_ID = 1_000_000_000;
 const MAX_OVERRIDE_RULE_ROUTING_TAGS = 100;
 
-const hasConditionValue = (value: unknown): boolean =>
+const hasConditionValue = (value: unknown): value is string =>
   typeof value === 'string' && value.trim().length > 0;
 
 export const getOverrideRuleSpecificity = (
@@ -71,6 +72,15 @@ export const getOverrideRuleProfileId = (
     ? rule.profileId
     : undefined;
 
+export const getOverrideRuleLanguageProfileId = (
+  rule: OverrideRule
+): number | undefined =>
+  Number.isSafeInteger(rule.languageProfileId) &&
+  rule.languageProfileId! >= 0 &&
+  rule.languageProfileId! <= MAX_OVERRIDE_RULE_ROUTING_ID
+    ? rule.languageProfileId
+    : undefined;
+
 export const getOverrideRuleTagIds = (rule: OverrideRule): number[] => {
   if (!hasConditionValue(rule.tags)) {
     return [];
@@ -95,6 +105,7 @@ export const getOverrideRuleTagIds = (rule: OverrideRule): number[] => {
 export type OverrideRulesResult = {
   rootFolder: string | null;
   profileId: number | null;
+  languageProfileId: number | null;
   tags: number[] | null;
 };
 
@@ -126,6 +137,7 @@ export const catalogOverrideRuleMatches = (
   userId: number,
   metadata: CatalogRuleMetadata = {}
 ): boolean =>
+  !hasConditionValue(rule.productionCountries) &&
   overrideRuleMatchesUser(rule, userId) &&
   matchesCatalogTerms(rule.genre, metadata.genres) &&
   matchesCatalogTerms(rule.keywords, metadata.keywords) &&
@@ -167,6 +179,7 @@ export const evaluateRequesterOverrideRules = async ({
   return {
     rootFolder: rule?.rootFolder || null,
     profileId: rule ? (getOverrideRuleProfileId(rule) ?? null) : null,
+    languageProfileId: null,
     tags:
       overrideTags.length > 0
         ? [...new Set([...(tags ?? []), ...overrideTags])]
@@ -219,6 +232,11 @@ export const evaluateOverrideRules = async ({
     'keywords' in tmdbMedia.keywords
       ? tmdbMedia.keywords.keywords
       : tmdbMedia.keywords.results;
+  const productionCountryCodes = new Set(
+    tmdbMedia.production_countries.map((country) =>
+      country.iso_3166_1.toUpperCase()
+    )
+  );
   const isAnimeTv = mediaType === MediaType.TV && hasTmdbKeyword(tmdbMedia);
   const matchingRules = rules.filter((rule) => {
     if (
@@ -254,6 +272,17 @@ export const evaluateOverrideRules = async ({
     ) {
       return false;
     }
+    if (hasConditionValue(rule.productionCountries)) {
+      if (
+        !rule.productionCountries
+          .split('|')
+          .some((country) =>
+            productionCountryCodes.has(country.trim().toUpperCase())
+          )
+      ) {
+        return false;
+      }
+    }
     return true;
   });
   const rule = selectMostSpecificOverrideRule(matchingRules);
@@ -263,6 +292,10 @@ export const evaluateOverrideRules = async ({
   return {
     rootFolder: rule?.rootFolder || null,
     profileId: profileId ?? null,
+    languageProfileId:
+      mediaType === MediaType.TV && rule
+        ? (getOverrideRuleLanguageProfileId(rule) ?? null)
+        : null,
     tags:
       overrideTags.length > 0
         ? [...new Set([...(tags ?? []), ...overrideTags])]

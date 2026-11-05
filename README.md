@@ -201,6 +201,10 @@ Recent repository updates include:
   confirms the requested media ([Seerr issue #3657](https://github.com/seerr-team/seerr/issues/3657),
   [PR #3659](https://github.com/seerr-team/seerr/pull/3659)).
 - **Search matching:** unmatched TMDB queries retry with normalized punctuation, spacing, apostrophes, and diacritics; successful literal-query results retain their order.
+  rules can also match a movie or series by its TMDB production countries,
+  with Sonarr language-profile selection on service versions that expose those
+  profiles. This adapts the use case in Seerr
+  [issue #3439](https://github.com/seerr-team/seerr/issues/3439).
 - **User workflows:** local watchlist filters, a browser-saved Subject Tags
   visibility preference, private one-time availability notices for followed
   requests, per-user shared-availability display choices, and opt-in
