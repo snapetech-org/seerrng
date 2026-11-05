@@ -176,6 +176,9 @@ Recent repository updates include:
   explanations and request history are localized. Request rows use their
   paginated list data on mount, focus, and reconnect rather than making duplicate
   detail reads; active-download details continue to refresh.
+  Pending requests complete without a duplicate dispatch when library activity
+  confirms the requested media ([Seerr issue #3657](https://github.com/seerr-team/seerr/issues/3657),
+  [PR #3659](https://github.com/seerr-team/seerr/pull/3659)).
 - **User workflows:** local watchlist filters, a browser-saved Subject Tags
   visibility preference, private one-time availability notices for followed
   requests, per-user shared-availability display choices, and opt-in

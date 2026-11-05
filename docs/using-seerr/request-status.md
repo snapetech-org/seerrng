@@ -11,6 +11,11 @@ approval and searching through downloading, importing, and library
 availability. Expand **History** on a card to review its recorded status
 changes.
 
+If a pending request's matching movie, series, or requested book format becomes
+available through a library update, SeerrNG completes the request instead of
+sending it to the acquisition service again. Active TV season selections are
+completed with the request; previously declined seasons remain in the history.
+
 Request explanations use the selected interface language. Custom details
 reported by connected services remain as supplied so their diagnostic wording
 is preserved.
