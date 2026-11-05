@@ -23,6 +23,13 @@ checks remain in place. No shared styles or control dimensions changed.
 - Three AdvancedRequester component checks passed, covering profile zero,
   unchanged saved values and intentional reselection of a service default.
 - Production client and server builds passed after their respective changes.
+- Main CI exposed an early-click discovery navigation race: before router
+  hydration the Swipe link used a canonical fallback and lost the nested genre
+  route and query. Both mode links now block navigation until readiness. Two
+  component regressions and all five Cypress navigation cases passed against
+  the rebuilt production app. Four existing modal/default component checks
+  also passed using Vitest (a mistaken native-runner invocation is retained
+  as a harness failure, not counted as application verification).
 - Eight headless Chromium checks passed: Radarr, Sonarr and Lidarr settings at
   1440x900 and 390x900, plus nested request editing at 1440x900 and 390x844.
   Queue bounds reject 9 and accept 1500; settings persist scan exclusions;
