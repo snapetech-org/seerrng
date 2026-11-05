@@ -5,6 +5,7 @@ import {
   type AvailableQualityFilter,
 } from '@app/utils/availabilityQuality';
 import { readDiscoverScrollEntry } from '@app/utils/discoverScrollRestoration';
+import { shouldHideRequestedMedia } from '@app/utils/requestVisibility';
 import {
   hasMoreSearchPages,
   MAX_SEARCH_PAGES,
@@ -110,6 +111,7 @@ interface BaseMedia {
   mediaInfo?: {
     status: MediaStatus;
     status4k?: MediaStatus;
+    hasActiveRequest?: boolean;
     serviceId?: number | null;
     externalServiceId?: number | null;
     audiobookServiceId?: number | null;
@@ -129,6 +131,7 @@ interface DiscoverResult<T, S> {
   isLoadingMore: boolean;
   isValidating: boolean;
   isSearchingAvailableQuality: boolean;
+  isSearchingFilteredResults: boolean;
   fetchMore: () => void;
   isEmpty: boolean;
   isReachingEnd: boolean;
@@ -257,6 +260,13 @@ const useDiscover = <
 ): DiscoverResult<T, S> => {
   const settings = useSettings();
   const { fetcher: defaultFetcher } = useSWRConfig();
+  const discoverOptions = (options ?? {}) as Record<string, unknown>;
+  // A title search remains a direct way to find requested media.
+  const hasExplicitSearch =
+    typeof discoverOptions.search === 'string' &&
+    discoverOptions.search.trim().length > 0;
+  const shouldApplyHideRequested =
+    settings.currentSettings.hideRequested && !hasExplicitSearch;
   const { user, hasPermission } = useUser();
   const canManageBlocklist = hasPermission(Permission.MANAGE_BLOCKLIST);
   const { addToast } = useToasts();
@@ -416,6 +426,15 @@ const useDiscover = <
       );
     }
 
+    filteredTitles = filteredTitles.filter(
+      (item) =>
+        !shouldHideRequestedMedia(
+          shouldApplyHideRequested,
+          item.mediaType,
+          item.mediaInfo?.hasActiveRequest
+        )
+    );
+
     return filteredTitles;
   }, [
     data,
@@ -425,7 +444,19 @@ const useDiscover = <
     canManageBlocklist,
     settings.currentSettings.hideAvailable,
     settings.currentSettings.hideBlocklisted,
+    shouldApplyHideRequested,
   ]);
+
+  const hasMovieOrTvResults = (data ?? []).some((page) =>
+    page?.results?.some(
+      (item) =>
+        isDiscoverMediaResult(item) &&
+        (item.mediaType === 'movie' || item.mediaType === 'tv')
+    )
+  );
+  // Only backfill feeds that actually contain requestable media.
+  const shouldBackfillRequestedResults =
+    shouldApplyHideRequested && hasMovieOrTvResults;
 
   const lastResultPage = data?.[data.length - 1];
   const hasMoreUnfilteredResults = hasMoreSearchPages(
@@ -434,7 +465,10 @@ const useDiscover = <
   );
   const needsMoreFilteredResults =
     titles.length === 0 ||
-    Boolean(availableQuality && titles.length < FILTERED_PAGE_RESULT_TARGET);
+    Boolean(
+      (availableQuality || shouldBackfillRequestedResults) &&
+      titles.length < FILTERED_PAGE_RESULT_TARGET
+    );
   const shouldScanNextFilteredPage =
     !isLoadingInitialData &&
     !isLoadingMore &&
@@ -449,6 +483,13 @@ const useDiscover = <
     !hasMoreUnfilteredResults;
   const isSearchingAvailableQuality = Boolean(
     availableQuality &&
+    (isLoadingInitialData ||
+      isLoadingMore ||
+      isValidating ||
+      shouldScanNextFilteredPage)
+  );
+  const isSearchingFilteredResults = Boolean(
+    (availableQuality || shouldBackfillRequestedResults) &&
     (isLoadingInitialData ||
       isLoadingMore ||
       isValidating ||
@@ -502,6 +543,7 @@ const useDiscover = <
     isLoadingMore,
     isValidating,
     isSearchingAvailableQuality,
+    isSearchingFilteredResults,
     fetchMore,
     isEmpty,
     isReachingEnd,

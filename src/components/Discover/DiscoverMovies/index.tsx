@@ -61,7 +61,7 @@ const DiscoverMovies = ({
     Boolean(preparedFilters.search || preparedFilters.availability) &&
       (discover.isLoadingInitialData ||
         discover.isValidating ||
-        discover.isSearchingAvailableQuality),
+        discover.isSearchingFilteredResults),
     'movies-discovery'
   );
   useDiscoverScrollRestoration({
@@ -119,7 +119,7 @@ const DiscoverMovies = ({
         isEmpty={discover.isEmpty}
         isLoading={
           discover.isLoadingInitialData ||
-          discover.isSearchingAvailableQuality ||
+          discover.isSearchingFilteredResults ||
           (discover.isLoadingMore && discover.titles.length > 0)
         }
         isReachingEnd={discover.isReachingEnd}
