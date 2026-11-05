@@ -38,17 +38,17 @@ Helm manages these objects with the SeerrNG release during upgrades and removal.
 
 ## Temporarily stop SeerrNG for maintenance
 
-Chart version `1.0.135` and newer supports `replicaCount: 0` for storage
+Chart version `1.0.138` and newer supports `replicaCount: 0` for storage
 migrations, backups, or other maintenance that requires the application to be
 stopped. The chart retains the configuration claim while no pod is running.
 Set the count back to `1` when maintenance is complete. SeerrNG is a single
 instance application, so the chart rejects values outside `0` and `1`.
 
 ```console
-helm upgrade seerr oci://ghcr.io/snapetech-org/seerrng/seerr-chart --version 1.0.135 --reuse-values --set replicaCount=0
+helm upgrade seerr oci://ghcr.io/snapetech-org/seerrng/seerr-chart --version 1.0.138 --reuse-values --set replicaCount=0
 # Perform the maintenance after the StatefulSet reaches zero pods.
 # When maintenance is complete, restore one pod:
-helm upgrade seerr oci://ghcr.io/snapetech-org/seerrng/seerr-chart --version 1.0.135 --reuse-values --set replicaCount=1
+helm upgrade seerr oci://ghcr.io/snapetech-org/seerrng/seerr-chart --version 1.0.138 --reuse-values --set replicaCount=1
 ```
 
 Verify the signature with [cosign](https://docs.sigstore.dev/cosign/system_config/installation/) (replace [tag], with the TAG you want to verify) :

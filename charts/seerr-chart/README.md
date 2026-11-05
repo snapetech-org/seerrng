@@ -1,6 +1,6 @@
 # seerr-chart
 
-![Version: 1.0.137](https://img.shields.io/badge/Version-1.0.137-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: v3.72.8](https://img.shields.io/badge/AppVersion-v3.72.8-informational?style=flat-square)
+![Version: 1.0.138](https://img.shields.io/badge/Version-1.0.138-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: v3.72.8](https://img.shields.io/badge/AppVersion-v3.72.8-informational?style=flat-square)
 
 SeerrNG Helm chart for Kubernetes
 
@@ -26,11 +26,11 @@ Refer to the SeerrNG Kubernetes documentation in this repository.
 
 ## Update Notes
 
-### Scaling down for maintenance (chart 1.0.135)
+### Scaling down for maintenance (chart 1.0.138)
 
 Set `replicaCount: 0` before storage migration, backup, or other maintenance that requires SeerrNG to stop. The configuration claim is retained while the StatefulSet has no pods. Restore `replicaCount: 1` to resume service. SeerrNG supports one application instance; values below 0 or above 1 are rejected.
 
-### Updating to 1.0.136
+### Extra resources (chart 1.0.138)
 
 The chart can now render additional Kubernetes resource objects as part of the same Helm release. The `extraResources` value is empty by default; see the [Kubernetes guide](../../docs/getting-started/kubernetes.mdx) for an example.
 
@@ -45,7 +45,7 @@ Seerr is a stateful application and it is not designed to have multiple replicas
 - replacing `Deployment` with `StatefulSet`
 - removing `replicaCount` value
 
-If `replicaCount` was set for a chart version before 2.7.0, remove it when upgrading to 2.7.0. Chart 1.0.135 later reintroduced the value with a strict 0-or-1 range for maintenance scaling.
+If `replicaCount` was set for a chart version before 2.7.0, remove it when upgrading to 2.7.0. SeerrNG chart 1.0.138 reintroduces the value with a strict 0-or-1 range for maintenance scaling.
 
 ## Values
 
