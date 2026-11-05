@@ -797,6 +797,7 @@ const Search = () => {
                   className="app-control-shadow-exempt app-filter-segment-focus"
                   aria-pressed={isSelected}
                   onClick={() => {
+                    mediaPin.select(searchCategory.key);
                     const nextQuery = getSearchCategoryQuery(router.query, {
                       type: searchCategory.type,
                       format:

@@ -827,7 +827,15 @@ const SettingsMain = () => {
                 <div className="settings-group-content">
                   <SettingsFormRow
                     htmlFor="spotifyClientId"
-                    label={intl.formatMessage(messages.spotifyClientId)}
+                    label={
+                      <a
+                        href="https://developer.spotify.com/dashboard"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        {intl.formatMessage(messages.spotifyClientId)}
+                      </a>
+                    }
                     description={intl.formatMessage(
                       messages.spotifyClientIdTip
                     )}
@@ -842,7 +850,15 @@ const SettingsMain = () => {
                   </SettingsFormRow>
                   <SettingsFormRow
                     htmlFor="spotifyClientSecret"
-                    label={intl.formatMessage(messages.spotifyClientSecret)}
+                    label={
+                      <a
+                        href="https://developer.spotify.com/dashboard"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        {intl.formatMessage(messages.spotifyClientSecret)}
+                      </a>
+                    }
                     description={intl.formatMessage(
                       messages.spotifyClientSecretTip
                     )}
@@ -867,7 +883,15 @@ const SettingsMain = () => {
                   </SettingsFormRow>
                   <SettingsFormRow
                     htmlFor="youtubeApiKey"
-                    label={intl.formatMessage(messages.youtubeApiKey)}
+                    label={
+                      <a
+                        href="https://developers.google.com/youtube/data/guides/authentication"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        {intl.formatMessage(messages.youtubeApiKey)}
+                      </a>
+                    }
                     description={intl.formatMessage(messages.youtubeApiKeyTip)}
                   >
                     <div className="form-input-field">
@@ -961,7 +985,15 @@ const SettingsMain = () => {
                 <div className="settings-group-content">
                   <SettingsFormRow
                     htmlFor="googleBooksApiKey"
-                    label={intl.formatMessage(messages.googleBooksApiKey)}
+                    label={
+                      <a
+                        href="https://developers.google.com/books/docs/v1/using#APIKey"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        {intl.formatMessage(messages.googleBooksApiKey)}
+                      </a>
+                    }
                     description={intl.formatMessage(
                       messages.googleBooksApiKeyTip
                     )}

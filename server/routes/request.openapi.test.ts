@@ -25,6 +25,9 @@ describe('request status routes behind the OpenAPI validator', () => {
     app.put('/api/v1/request/:requestId', (req, res) =>
       res.status(200).json(req.body)
     );
+    app.post('/api/v1/request/:requestId/episode-queue', (req, res) =>
+      res.json(req.body)
+    );
     app.post('/api/v1/request/:requestId/retry', (_req, res) =>
       res.status(200).json({})
     );
@@ -74,6 +77,34 @@ describe('request status routes behind the OpenAPI validator', () => {
     );
 
     assert.strictEqual(response.status, 204);
+  });
+
+  it('accepts bounded overrides only through the dedicated admin queue contract', async () => {
+    for (const episodeCount of [null, 0, 5]) {
+      assert.equal(
+        (
+          await request(createValidatedApp())
+            .post('/api/v1/request/31/episode-queue')
+            .send({ episodeCount })
+        ).status,
+        200
+      );
+    }
+    for (const body of [
+      { episodeCount: 6 },
+      { episodeCount: '3' },
+      {},
+      { episodeCount: 2, ownerId: 1 },
+    ]) {
+      assert.equal(
+        (
+          await request(createValidatedApp())
+            .post('/api/v1/request/31/episode-queue')
+            .send(body)
+        ).status,
+        400
+      );
+    }
   });
 
   it('rejects per-request Episode Queue settings on creation', async () => {

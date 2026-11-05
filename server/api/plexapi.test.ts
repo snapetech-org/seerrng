@@ -560,3 +560,24 @@ describe('Plex current-selection playlist replacement', () => {
     assert.strictEqual(secondLookupCount, 1);
   });
 });
+
+describe('Plex season analysis', () => {
+  it('uses PUT for a numeric item identity and rejects path injection before I/O', async () => {
+    const plex = new PlexAPI({ plexToken: 'fixture-token' });
+    const calls: unknown[][] = [];
+    Object.defineProperty(plex, 'request', {
+      value: async (...args: unknown[]) => {
+        calls.push(args);
+      },
+    });
+    await plex.analyzeSeason('123');
+    assert.deepEqual(calls, [['PUT', '/library/metadata/123/analyze']]);
+    for (const key of ['../123', '123/analyze', '0', '-1', '', '1?token=x']) {
+      await assert.rejects(
+        plex.analyzeSeason(key),
+        /Invalid Plex season identity/
+      );
+    }
+    assert.equal(calls.length, 1);
+  });
+});

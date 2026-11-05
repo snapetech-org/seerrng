@@ -157,7 +157,7 @@ export class DownloadClientError extends Error {
 
 export const readSetCookie = (
   headers: Record<string, unknown>,
-  name: string
+  name: string | RegExp
 ): string | undefined => {
   const raw = headers['set-cookie'];
   const values = Array.isArray(raw)
@@ -169,8 +169,12 @@ export const readSetCookie = (
     if (typeof value !== 'string') continue;
     const [pair] = value.split(';');
     const separator = pair.indexOf('=');
-    if (separator > 0 && pair.slice(0, separator).trim() === name) {
-      return `${name}=${pair.slice(separator + 1).trim()}`;
+    const cookieName = pair.slice(0, separator).trim();
+    if (
+      separator > 0 &&
+      (typeof name === 'string' ? cookieName === name : name.test(cookieName))
+    ) {
+      return `${cookieName}=${pair.slice(separator + 1).trim()}`;
     }
   }
   return undefined;

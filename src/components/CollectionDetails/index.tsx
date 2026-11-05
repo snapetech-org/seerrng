@@ -2,6 +2,7 @@ import BlocklistModal from '@app/components/BlocklistModal';
 import CollectionAssociationsButton from '@app/components/CollectionDetails/CollectionAssociationsButton';
 import CollectionMetadataDisclosures from '@app/components/CollectionDetails/CollectionMetadataDisclosures';
 import CollectionPlayOnDeviceButton from '@app/components/CollectionDetails/CollectionPlayOnDeviceButton';
+import CollectionQueueModal from '@app/components/CollectionDetails/CollectionQueueModal';
 import Button from '@app/components/Common/Button';
 import CachedImage from '@app/components/Common/CachedImage';
 import FormatRequestControl from '@app/components/Common/FormatRequestControl';
@@ -68,6 +69,7 @@ const messages = defineMessages('components.CollectionDetails', {
   collectionSize: 'Collection Size',
   genres: 'Genres',
   collection: 'Collection',
+  queueCollection: 'Queue Collection',
   availability: 'Availability',
   available: 'Available',
   notAvailable: 'Not Available',
@@ -112,6 +114,7 @@ const CollectionDetails = ({ collection }: CollectionDetailsProps) => {
   const { hasPermission } = useUser();
   const { addToast } = useToasts();
   const [requestModal, setRequestModal] = useState(false);
+  const [queueModal, setQueueModal] = useState(false);
   const [is4k, setIs4k] = useState(false);
   const [playbackQuality, setPlaybackQuality] = useState<'hd' | '4k'>('hd');
   const [showBlocklistModal, setShowBlocklistModal] = useState(false);
@@ -318,6 +321,12 @@ const CollectionDetails = ({ collection }: CollectionDetailsProps) => {
   return (
     <>
       <PageTitle title={data.name} />
+      {queueModal && (
+        <CollectionQueueModal
+          collection={data}
+          onCancel={() => setQueueModal(false)}
+        />
+      )}
       {requestModal && (
         <RequestModal
           tmdbId={data.id}
@@ -516,6 +525,13 @@ const CollectionDetails = ({ collection }: CollectionDetailsProps) => {
             )}
             <CollectionAssociationsButton parts={data.parts} />
             <FormatRequestControl options={requestOptions} />
+            <Button
+              buttonType="bulkRequest"
+              buttonSize="sm"
+              onClick={() => setQueueModal(true)}
+            >
+              {intl.formatMessage(messages.queueCollection)}
+            </Button>
           </div>
 
           <CollectionMetadataDisclosures parts={data.parts} />

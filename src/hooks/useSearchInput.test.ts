@@ -75,7 +75,11 @@ describe('getDefaultSearchType', () => {
   it('starts searches from book discovery with the book filter', () => {
     strictEqual(getDefaultSearchType('/discover/books'), 'book');
     strictEqual(getDefaultSearchType('/discover/audiobooks'), 'book');
+  });
+
+  it('keeps top-bar searches from video discovery global', () => {
     strictEqual(getDefaultSearchType('/discover/movies'), undefined);
+    strictEqual(getDefaultSearchType('/discover/tv'), undefined);
   });
 });
 

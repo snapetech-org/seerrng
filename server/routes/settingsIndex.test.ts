@@ -1052,6 +1052,7 @@ describe('Settings route input validation', () => {
     };
     const parsedPlex = parsePlexSettingsBody(
       {
+        analyzeOnPlayback: true,
         ip: 'new-plex.local',
         port: 32401,
         useSsl: true,
@@ -1063,6 +1064,10 @@ describe('Settings route input validation', () => {
       plex
     );
     assert.ok('value' in parsedPlex);
+    assert.strictEqual(parsedPlex.value.analyzeOnPlayback, true);
+    assert.ok(
+      'error' in parsePlexSettingsBody({ analyzeOnPlayback: 'true' }, plex)
+    );
     assert.strictEqual(parsedPlex.value.name, 'Stored Plex');
     assert.strictEqual(parsedPlex.value.machineId, 'stored-machine');
     assert.deepStrictEqual(parsedPlex.value.libraries, plex.libraries);

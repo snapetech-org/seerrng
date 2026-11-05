@@ -63,6 +63,7 @@ vi.mock('swr', () => ({
     };
   },
   mutate: fixtureState.mutate,
+  useSWRConfig: () => ({ mutate: fixtureState.mutate }),
 }));
 vi.mock('@app/hooks/useSettings', () => ({
   default: () => ({
@@ -1036,12 +1037,35 @@ it('uses one starting episode when the administrator default is enabled and part
   );
 });
 
-it('does not expose a per-request Episode Queue control while editing a show', async () => {
+it('saves the administrator Episode Queue override separately from season edits', async () => {
   await fixture(
     async (doc) => {
       expect(
         doc.querySelector('[data-testid="tv-watch-ahead-count"]')
       ).toBeNull();
+      const queueSelect = doc.querySelector<HTMLSelectElement>(
+        '[data-testid="request-episode-queue-override"]'
+      );
+      expect(queueSelect?.value).toBe('-1');
+      vi.mocked(axios.post).mockResolvedValueOnce({
+        status: 200,
+        data: { episodeCount: 2, usesUserDefault: false },
+      });
+      await act(async () => {
+        queueSelect!.value = '2';
+        queueSelect!.dispatchEvent(
+          new doc.defaultView!.Event('change', { bubbles: true })
+        );
+      });
+      const queueSave = [...doc.querySelectorAll('button')].find(
+        (button) => button.textContent === 'Save Changes'
+      );
+      expect(queueSave?.disabled).toBe(false);
+      await act(async () => queueSave!.click());
+      expect(axios.post).toHaveBeenCalledExactlyOnceWith(
+        '/api/v1/request/88/episode-queue',
+        { episodeCount: 2 }
+      );
       expect(selections(doc)).toEqual([
         { seasonNumber: 1 },
         { seasonNumber: 2 },

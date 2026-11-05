@@ -1,11 +1,19 @@
 import TheMovieDb from '@server/api/themoviedb';
 import { MediaType } from '@server/constants/media';
+import { getRepository } from '@server/datasource';
 import Media from '@server/entity/Media';
+import { MovieCollectionQueue } from '@server/entity/MovieCollectionQueue';
 import { checkCollection } from '@server/lib/collectionSync';
+import movieCollectionQueues, {
+  MovieCollectionQueueError,
+  queueView,
+} from '@server/lib/movieCollectionQueue';
 import { Permission } from '@server/lib/permissions';
+import { UserMutationActorUnauthorizedError } from '@server/lib/userSecurityMutation';
 import logger from '@server/logger';
 import { isAuthenticated } from '@server/middleware/auth';
 import { mapCollection } from '@server/models/Collection';
+import { trackBackgroundTask } from '@server/utils/backgroundTasks';
 import { parsePositiveRouteId } from '@server/utils/routeId';
 import { parseOptionalLanguage } from '@server/utils/validation';
 import { Router } from 'express';
@@ -187,5 +195,107 @@ collectionRoutes.get<{ id: string }>('/:id', async (req, res, next) => {
     });
   }
 });
+
+const queueQuality = (value: unknown): boolean | undefined =>
+  value === undefined || value === false || value === 'false'
+    ? false
+    : value === true || value === 'true'
+      ? true
+      : undefined;
+collectionRoutes.get(
+  '/:id/queue',
+  isAuthenticated(),
+  async (req, res, next) => {
+    const collectionId = parseCollectionRouteId(req.params.id);
+    const is4k = queueQuality(req.query.is4k);
+    if (!collectionId || is4k === undefined)
+      return next({ status: 400, message: 'Invalid collection or quality.' });
+    try {
+      const queue = await getRepository(MovieCollectionQueue).findOne({
+        where: { user: { id: req.user!.id }, collectionId, is4k },
+      });
+      return res.json({ queue: queue ? queueView(queue) : null });
+    } catch (error) {
+      return next(error);
+    }
+  }
+);
+collectionRoutes.post(
+  '/:id/queue',
+  isAuthenticated(),
+  async (req, res, next) => {
+    const collectionId = parseCollectionRouteId(req.params.id);
+    const body = req.body;
+    if (
+      !collectionId ||
+      !body ||
+      typeof body !== 'object' ||
+      Array.isArray(body) ||
+      Object.keys(body).some((key) => !['bufferSize', 'is4k'].includes(key)) ||
+      typeof body.is4k !== 'boolean' ||
+      ![1, 2].includes(body.bufferSize)
+    )
+      return next({
+        status: 400,
+        message:
+          'Choose a collection, quality and buffer of one or two movies.',
+      });
+    try {
+      const queue = await movieCollectionQueues.start(
+        req.user!,
+        collectionId,
+        body.is4k,
+        body.bufferSize,
+        req.session?.userId === req.user!.id
+          ? (req.session.credentialVersion ?? 0)
+          : undefined
+      );
+      trackBackgroundTask('start movie collection queue', () =>
+        movieCollectionQueues.reconcile(queue.id)
+      );
+      return res.status(202).json({ queue: queueView(queue) });
+    } catch (error) {
+      if (error instanceof MovieCollectionQueueError)
+        return next({ status: error.status, message: error.message });
+      if (error instanceof UserMutationActorUnauthorizedError)
+        return next({
+          status: 403,
+          message: 'Your account authority changed. Sign in again.',
+        });
+      return next({
+        status: 503,
+        message: 'Could not start the collection queue. Try again later.',
+      });
+    }
+  }
+);
+collectionRoutes.delete(
+  '/:id/queue',
+  isAuthenticated(),
+  async (req, res, next) => {
+    const collectionId = parseCollectionRouteId(req.params.id);
+    const is4k = queueQuality(req.query.is4k);
+    if (!collectionId || is4k === undefined)
+      return next({ status: 400, message: 'Invalid collection or quality.' });
+    try {
+      await movieCollectionQueues.stop(
+        req.user!.id,
+        collectionId,
+        is4k,
+        req.session?.userId === req.user!.id
+          ? (req.session.credentialVersion ?? 0)
+          : undefined
+      );
+      return res.status(204).send();
+    } catch (error) {
+      if (error instanceof UserMutationActorUnauthorizedError)
+        return next({
+          status: 403,
+          message: 'Your account authority changed. Sign in again.',
+        });
+      return next(error);
+    }
+  }
+);
 
 export default collectionRoutes;

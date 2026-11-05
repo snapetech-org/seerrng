@@ -21,6 +21,7 @@ import {
 } from '@app/components/Discover/FilterPanel/CompactFilterSelect';
 import MediaFilterOption from '@app/components/Discover/MediaFilterOption';
 import { PinnedFilterSectionGroup } from '@app/components/Discover/PinnedFilterSection';
+import RequestEpisodeQueueModal from '@app/components/RequestModal/RequestEpisodeQueueModal';
 import SoftwareRequests from '@app/components/RequestStatus/SoftwareRequests';
 import {
   RequestStatusMessageText,
@@ -240,6 +241,7 @@ const messages = defineMessages('components.Requests', {
   declineTooltip: 'Decline this pending request.',
   edit: 'Edit',
   editTooltip: 'Edit this pending request.',
+  episodeQueue: 'Episode Queue',
   changeServer: 'Change Server',
   changeServerTooltip:
     'Choose another server and resubmit this failed request.',
@@ -1323,6 +1325,7 @@ const RequestStatusCard = ({
   const { hasPermission, user } = useUser();
   const { mutate: mutateCache } = useSWRConfig();
   const [showEditModal, setShowEditModal] = useState(false);
+  const [showQueueModal, setShowQueueModal] = useState(false);
   const [isModifying, setIsModifying] = useState(false);
   const timelineRef = useRef<HTMLDivElement>(null);
   const [timelineHasOverflow, setTimelineHasOverflow] = useState(false);
@@ -1566,6 +1569,23 @@ const RequestStatusCard = ({
           </Tooltip>
         </>
       )}
+      {hasPermission(Permission.ADMIN) &&
+        item.request.type === 'tv' &&
+        !item.request.watchAheadParentRequestId &&
+        !item.request.isAutoRequest &&
+        [
+          MediaRequestStatus.PENDING,
+          MediaRequestStatus.APPROVED,
+          MediaRequestStatus.COMPLETED,
+        ].includes(item.request.status) && (
+          <Button
+            type="button"
+            buttonSize="sm"
+            onClick={() => setShowQueueModal(true)}
+          >
+            {intl.formatMessage(messages.episodeQueue)}
+          </Button>
+        )}
       {canRepairFailed && (
         <Tooltip content={intl.formatMessage(messages.changeServerTooltip)}>
           <Button
@@ -1621,6 +1641,12 @@ const RequestStatusCard = ({
 
   return (
     <>
+      {showQueueModal && (
+        <RequestEpisodeQueueModal
+          request={item.request}
+          onCancel={() => setShowQueueModal(false)}
+        />
+      )}
       {showEditModal && (
         <RequestModal
           show
