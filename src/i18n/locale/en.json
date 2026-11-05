@@ -4836,6 +4836,8 @@
   "components.Settings.SettingsUsers.musicRequestLimitLabel": "Global Music Request Limit",
   "components.Settings.SettingsUsers.newPlexLogin": "Enable New {mediaServerName} Sign-In",
   "components.Settings.SettingsUsers.newPlexLoginTip": "Allow {mediaServerName} users to sign in without first being imported",
+  "components.Settings.SettingsUsers.quickConnectOnly": "Require Jellyfin Quick Connect Sign-In",
+  "components.Settings.SettingsUsers.quickConnectOnlyTip": "Allow Jellyfin Quick Connect sign-in and block Jellyfin password and plugin sign-in.",
   "components.Settings.SettingsUsers.softwareRequestLimitLabel": "Global Software Request Limit",
   "components.Settings.SettingsUsers.toastSettingsFailure": "Something went wrong while saving settings.",
   "components.Settings.SettingsUsers.toastSettingsSuccess": "User settings saved successfully!",

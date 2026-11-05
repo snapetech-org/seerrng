@@ -27,6 +27,22 @@ When disabled, users will only be able to sign in using their email address. Use
 
 This setting is **enabled** by default.
 
+### Require Jellyfin Quick Connect Sign-In
+
+When Jellyfin is the active media server, administrators can require users to
+sign in with Jellyfin Quick Connect. SeerrNG hides the Jellyfin username and
+password form and rejects password sign-in requests at the server. It also
+rejects sign-in through the SeerrNG Jellyfin plugin bridge, so Quick Connect is
+the only Jellyfin media-server sign-in path.
+
+This option is available only when Jellyfin sign-in is enabled for a Jellyfin
+server. It does not affect Emby or Plex, local-password sign-in, or OpenID
+Connect. It also does not change password-based account linking performed from
+an already signed-in user's profile. The option is **disabled** by default.
+
+This setting adapts Seerr [PR #3315](https://github.com/seerr-team/seerr/pull/3315)
+to SeerrNG's Jellyfin sign-in paths.
+
 ## Enable New Jellyfin/Emby/Plex Sign-In
 
 When enabled, users with access to your media server will be able to sign in to Seerr even if they have not yet been imported. Users will be automatically assigned the permissions configured in the [Default Permissions](#default-permissions) setting upon first sign-in.

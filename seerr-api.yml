@@ -2732,6 +2732,11 @@ components:
         localLogin:
           type: boolean
           example: true
+        quickConnectOnly:
+          type: boolean
+          default: false
+          description: When Jellyfin is the active media server, restricts Jellyfin sign-in to Quick Connect and rejects password and plugin bridge sign-in.
+          example: false
         mediaServerType:
           type: number
           example: 1
@@ -4437,6 +4442,7 @@ components:
       required:
         - initialized
         - plexClientIdentifier
+        - quickConnectOnly
       properties:
         initialized:
           type: boolean
@@ -4503,6 +4509,10 @@ components:
           type: boolean
           description: Whether movie and TV 4K request, issue-reporting, and separate availability features are enabled.
           example: true
+        quickConnectOnly:
+          type: boolean
+          description: Whether Jellyfin sign-in requires Quick Connect. When enabled, Jellyfin password and plugin bridge sign-in are rejected.
+          example: false
     MovieResult:
       type: object
       required:
