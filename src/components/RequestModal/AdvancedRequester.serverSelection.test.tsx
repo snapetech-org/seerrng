@@ -343,16 +343,14 @@ it('keeps a rule-selected language profile zero distinct from a deliberate selec
     ],
     tags: [],
   };
-  const post = vi
-    .spyOn(axios, 'post')
-    .mockResolvedValue({
-      data: {
-        rootFolder: null,
-        profileId: null,
-        tags: [],
-        languageProfileId: 0,
-      },
-    });
+  const post = vi.spyOn(axios, 'post').mockResolvedValue({
+    data: {
+      rootFolder: null,
+      profileId: null,
+      tags: [],
+      languageProfileId: 0,
+    },
+  });
   try {
     const onChange = vi.fn();
     await act(async () =>

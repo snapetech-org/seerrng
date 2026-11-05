@@ -24,3 +24,11 @@ Evidence is retained at `/mnt/disks/scratch/task-deliverables/seerrng-contributi
 - Desktop and phone source captures were visually reviewed in `episode-final-theme-review.jpg`; numbering settings use the shared form owners. The table retains desktop geometry, and mobile names, dates and status controls use the shared responsive owner. No new page CSS or copied style values.
 
 External providers are fixtures. Existing unavailable saved-state feedback remains visible in the screenshots; this does not certify live media-server access or playback on physical devices. Final owner CI must pass before integration.
+
+## Combined theme and policy integration
+
+The final integration also preserves PRs #424/#416/#457, #447/#446/#491 and #461/#449/#489/#429 through integration heads #557/#556/#559. All 15 original/integration heads are verified ancestors of the combined head and every original targets main.
+
+Combining the source required two additional repairs: tag-excluded Sonarr series clear their episode records, and episode-source selection uses the scanner's enabled/quality gates before endpoint deduplication. Rule-selected language profiles retain their provenance instead of becoming explicit user overrides. New regressions cover each behavior, including service/profile zero and deliberate reselection.
+
+Combined production build passes on Node 24.22.2. The integration checks pass 279 native tests, 36 component tests, and 36 headless browser cases, including the installed Recovery Cinema derivative. A source scan of all 2,587 tracked TypeScript files finds no duplicate object keys after fixing the SQLite fixture. Of 53 matching prior theme captures, 44 are pixel-identical; changed captures were visually inspected. Remaining differences include fixture settings/selection values, added settings rows, and isolated raster/spinner frames. Shared geometry and native presentation are preserved; phone tree changes are documented above. Evidence: `all-recoveries-*` logs, screenshots, comparison JSON and changed-theme review montage. Provider access remains simulated. Full owner CI must pass before integration.
