@@ -1,10 +1,13 @@
 export const getSearchQuery = (query: string | string[] | undefined): string =>
   typeof query === 'string' ? query : '';
 
-export const getDefaultSearchType = (pathname: string): string | undefined =>
-  pathname === '/discover/books' || pathname === '/discover/audiobooks'
+export const getDefaultSearchType = (pathname: string): string | undefined => {
+  if (pathname === '/discover/movies') return 'movie';
+  if (pathname === '/discover/tv') return 'tv';
+  return pathname === '/discover/books' || pathname === '/discover/audiobooks'
     ? 'book'
     : undefined;
+};
 
 export const getDefaultSearchFormat = (
   pathname: string

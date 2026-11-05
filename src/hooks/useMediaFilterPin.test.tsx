@@ -25,9 +25,15 @@ it('restores once, honors explicit navigation, pins changes, and unpins', async 
   const root = createRoot(document.getElementById('root')!);
   const restore = vi.fn();
   let pin!: ReturnType<typeof useMediaFilterPin<'all' | 'ebook' | 'audiobook'>>;
-  function Probe({ explicit = false }: { explicit?: boolean }) {
+  function Probe({
+    explicit = false,
+    scope = 'books',
+  }: {
+    explicit?: boolean;
+    scope?: 'books' | 'search';
+  }) {
     pin = useMediaFilterPin({
-      scope: 'books',
+      scope,
       selected: 'all',
       values: ['all', 'ebook', 'audiobook'],
       restore,
@@ -40,6 +46,11 @@ it('restores once, honors explicit navigation, pins changes, and unpins', async 
     expect(restore).toHaveBeenCalledExactlyOnceWith('ebook');
     await act(async () => root.render(<Probe />));
     expect(restore).toHaveBeenCalledTimes(1);
+    await act(async () => pin.select('audiobook'));
+    expect(state.post).toHaveBeenLastCalledWith(
+      '/api/v1/user/7/settings/media-filter-pins/books',
+      { value: 'audiobook' }
+    );
     await act(async () => pin.toggle('audiobook'));
     expect(state.post).toHaveBeenLastCalledWith(
       '/api/v1/user/7/settings/media-filter-pins/books',
@@ -56,6 +67,12 @@ it('restores once, honors explicit navigation, pins changes, and unpins', async 
     state.post.mockRejectedValueOnce(new Error('offline'));
     await act(async () => pin.toggle('audiobook'));
     expect(pin.error).toBe(true);
+    await act(async () =>
+      root.render(<Probe key="unpinned" scope="search" explicit />)
+    );
+    state.post.mockClear();
+    await act(async () => pin.select('audiobook'));
+    expect(state.post).not.toHaveBeenCalled();
   } finally {
     await act(async () => root.unmount());
     dom.window.close();
