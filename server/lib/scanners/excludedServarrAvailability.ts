@@ -131,6 +131,13 @@ export const reconcileExcludedServarrAvailability = async (
 
           if (media.mediaType === MediaType.TV) {
             for (const season of media.seasons ?? []) {
+              if (
+                season[statusField] === MediaStatus.PENDING ||
+                season[statusField] === MediaStatus.BLOCKLISTED ||
+                season[statusField] === MediaStatus.DELETED
+              ) {
+                continue;
+              }
               const nextStatus = alternativeAvailability
                 ? (alternativeAvailability.seasonStatuses?.[
                     season.seasonNumber

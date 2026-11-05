@@ -68,9 +68,9 @@ for (const viewport of [
       createdAt: '2026-10-04T12:00:00.000Z',
       seasons: [],
       is4k: false,
-      serverId: null,
-      profileId: null,
-      rootFolder: null,
+      serverId: 42,
+      profileId: 0,
+      rootFolder: '/media',
       languageProfileId: null,
       tags: [],
     };
@@ -160,14 +160,55 @@ for (const viewport of [
         json: { page: 1, totalPages: 0, totalResults: 0, results: [] },
       })
     );
-    await page.route('**/api/v1/service/radarr*', (route) =>
-      route.fulfill({ json: [] })
-    );
+    const service = {
+      id: 42,
+      name: 'Request fixture',
+      isDefault: true,
+      is4k: false,
+      activeProfileId: 0,
+      activeDirectory: '/media',
+      activeTags: [],
+    };
+    await page.route('**/api/v1/service/radarr**', (route) => {
+      const pathname = new URL(route.request().url()).pathname;
+      return route.fulfill({
+        json:
+          pathname === '/api/v1/service/radarr/42'
+            ? {
+                server: service,
+                profiles: [
+                  { id: 0, name: 'Zero Profile' },
+                  { id: 2, name: 'Other Profile' },
+                ],
+                rootFolders: [{ id: 1, path: '/media' }],
+                tags: [],
+              }
+            : pathname === '/api/v1/service/radarr'
+              ? [service]
+              : [],
+      });
+    });
+    let saved: Record<string, unknown> | undefined;
+    await page.route('**/api/v1/request/987654**', async (route) => {
+      if (new URL(route.request().url()).pathname.endsWith('/approve')) {
+        await route.fulfill({ json: { ...request, status: 2 } });
+      } else if (route.request().method() === 'PUT') {
+        saved = route.request().postDataJSON();
+        await route.fulfill({ json: { ...request, ...saved } });
+      } else await route.fulfill({ json: request });
+    });
     await page.route('**/api/v1/media/987654/library*', (route) =>
       route.fulfill({ json: { targets: [] } })
     );
     await page.route('**/api/v1/blocklist/438148*', (route) =>
       route.fulfill({ status: 404, json: { message: 'Not found' } })
+    );
+
+    await page.route('**/api/v1/playback/**', (route) =>
+      route.fulfill({
+        status: 503,
+        json: { message: 'Playback unavailable in this fixture' },
+      })
     );
 
     const movieResponse = page.waitForResponse((response) => {
@@ -234,9 +275,36 @@ for (const viewport of [
       });
     }
     await expect(editDialog).toBeVisible();
+    const profile = editDialog.locator('#profile');
+    await expect(profile).toContainText('Zero Profile');
+    if (process.env.SEERR_REQUEST_CONTROLS_BASELINE !== 'true') {
+      await expect(page.getByRole('dialog')).toHaveCount(2);
+      await page.mouse.click(2, 2);
+      await expect(editDialog).toHaveCount(0);
+      await expect(page.getByRole('dialog')).toHaveCount(1);
+      await editButton.click();
+      await expect(editDialog).toBeVisible();
+      await profile.click();
+      await expect(editDialog).toBeVisible();
+      await page
+        .getByRole('option', { name: 'Zero Profile', exact: true })
+        .click();
+      await expect(profile).toContainText('Zero Profile');
+    }
     await page.screenshot({
       path: testInfo.outputPath(`edit-request-modal-${viewport.name}.png`),
       animations: 'disabled',
     });
+    if (process.env.SEERR_REQUEST_CONTROLS_BASELINE !== 'true') {
+      await editDialog
+        .getByRole('button', { name: 'Approve Request', exact: true })
+        .click();
+      await expect.poll(() => saved?.profileId).toBe(null);
+      expect(saved?.requestTargetOptions).toMatchObject({
+        profileId: 0,
+        rootFolder: '/media',
+      });
+      await expect(editDialog).toHaveCount(0);
+    }
   });
 }

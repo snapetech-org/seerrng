@@ -100,6 +100,11 @@ const Modal = React.forwardRef<HTMLDivElement, ModalProps>(
       backgroundClickableRef.current = backgroundClickable;
     }, [backgroundClickable]);
     useClickOutside(modalRef, (event) => {
+      // A child dialog is portaled outside its parent's DOM. Only the front
+      // modal may interpret a click as dismissal, including clicks in menus.
+      const owner = modalRef.current?.closest('[data-modal-root]');
+      const roots = owner?.ownerDocument.querySelectorAll('[data-modal-root]');
+      if (owner && roots && roots[roots.length - 1] !== owner) return;
       if (isOwnedListboxClick(modalRef.current, event.target)) return;
       if (onCancel && backgroundClickableRef.current) {
         onCancel();
@@ -112,6 +117,7 @@ const Modal = React.forwardRef<HTMLDivElement, ModalProps>(
         <TransitionChild
           as="div"
           data-testid="modal-root"
+          data-modal-root="true"
           className="page-overlay"
           data-alignment={alignTop ? 'top' : 'center'}
           ref={parentRef}
