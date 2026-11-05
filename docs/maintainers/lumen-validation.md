@@ -36,3 +36,13 @@ nginx test logs. These are synthetic catalogue/API-boundary tests; they do not
 prove live Plex authentication, physical app handoff, or every optional provider
 integration. Book, games and other optional pages require their own provider QA.
 Headed desktop-pool capacity was unavailable; headless QA was explicitly authorized.
+
+## Android routing follow-up
+
+Contributor commit `8e95d4835` arrived after the initial integration. Android uses
+its playback route for movies and library route for series; it does not use the
+iOS preplay route. The recovered helper retains URL validation, bounds server and
+metadata identifiers, rejects decoded routing delimiters, and keeps the web
+fallback. Ten security checks and sixteen Chromium browser checks cover the
+follow-up, including actual movie and series link props at all four viewports.
+Physical Plex application handoff remains outside the emulated-browser evidence.

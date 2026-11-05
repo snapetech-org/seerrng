@@ -85,6 +85,20 @@ async function fixtures(page: Page) {
     else if (path === '/request/count')
       body = { total: 0, pending: 0, approved: 0, processing: 0, available: 0 };
     else if (path === '/movie/101/recommendations') body = paged([]);
+    else if (path === '/tv/202/recommendations') body = paged([]);
+    else if (path === '/tv/202')
+      body = {
+        ...movie,
+        id: 202,
+        name: 'The Test Series',
+        title: undefined,
+        firstAirDate: '2020-01-01',
+        status: 'Ended',
+        seasons: [
+          { id: 1, seasonNumber: 1, episodeCount: 2, name: 'Season 1' },
+        ],
+        mediaInfo: { ...available, seasons: [{ seasonNumber: 1, status: 5 }] },
+      };
     else if (path === '/movie/101') {
       const current = user;
       if (current === 'friend' && holdFriend) await pending;
@@ -164,7 +178,7 @@ test('catalogue, Plex device links, requests and responsive layout', async ({
   await expect(link).toHaveAttribute(
     'href',
     info.project.name === 'android'
-      ? /^intent:\/\//
+      ? /^intent:\/\/watch\/video\?uri=/
       : ['iphone', 'tablet'].includes(info.project.name)
         ? /^plex:\/\//
         : /^https:\/\/app\.plex\.tv\//
@@ -285,4 +299,33 @@ test('empty and failed trending feeds finish loading', async ({ page }) => {
     page.getByText('Couldn’t load popular titles', { exact: true })
   ).toBeVisible();
   expect(fixture.errors).toEqual([]);
+});
+
+test('series details use the Android series route and retain iOS and desktop links', async ({
+  page,
+}, info) => {
+  const fixture = await fixtures(page);
+  await page.goto('/tv/202');
+  await expect(
+    page.getByRole('heading', { name: 'The Test Series', exact: true })
+  ).toBeVisible();
+  const link = page
+    .getByRole('link', { name: 'Watch on Plex', exact: true })
+    .filter({ visible: true })
+    .first();
+  await expect(link).toHaveAttribute(
+    'href',
+    info.project.name === 'android'
+      ? /^intent:\/\/libraries\/test\/show\/x\/101#Intent;/
+      : ['iphone', 'tablet'].includes(info.project.name)
+        ? /^plex:\/\/preplay\//
+        : /^https:\/\/app\.plex\.tv\//
+  );
+  await page.screenshot({
+    path: info.outputPath('series.png'),
+    fullPage: true,
+    animations: 'disabled',
+  });
+  expect(fixture.errors).toEqual([]);
+  expect(fixture.unknown).toEqual([]);
 });

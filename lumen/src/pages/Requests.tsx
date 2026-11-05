@@ -632,7 +632,7 @@ export default function Requests() {
                   plexUrl(x.r.media, x.r.is4k) ? (
                     <a
                       className="btn btn-sm btn-ok"
-                      {...plexLink(x.r.media, x.r.is4k)}
+                      {...plexLink(x.r.media, x.r.is4k, x.r.type)}
                     >
                       <Icon name="play" size="sm" />
                       {x.r.type === 'music'

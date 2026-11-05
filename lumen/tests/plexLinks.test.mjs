@@ -4,8 +4,10 @@ import { plexLink, plexPlatform } from '../src/plexLinks.ts';
 const links = {
   mediaUrl: 'https://app.plex.tv/desktop/#!/server/server/details?key=1',
   mediaUrl4k: 'https://app.plex.tv/desktop/#!/server/server/details?key=2',
-  iOSPlexUrl: 'plex://preplay/?metadataKey=1&server=server',
-  iOSPlexUrl4k: 'plex://preplay/?metadataKey=2&server=server',
+  iOSPlexUrl:
+    'plex://preplay/?metadataKey=%2Flibrary%2Fmetadata%2F1&server=server',
+  iOSPlexUrl4k:
+    'plex://preplay/?metadataKey=%2Flibrary%2Fmetadata%2F2&server=server',
 };
 test('phones and tablets use native Plex; desktop keeps web', () => {
   assert.equal(plexPlatform({ userAgent: 'iPhone' }), 'ios');
@@ -18,11 +20,24 @@ test('phones and tablets use native Plex; desktop keeps web', () => {
     plexPlatform({ userAgent: 'Macintosh', maxTouchPoints: 0 }),
     'desktop'
   );
-  assert.equal(plexLink(links, false, 'ios').href, links.iOSPlexUrl);
-  assert.equal(plexLink(links, true, 'ios').href, links.iOSPlexUrl4k);
-  assert.equal(plexLink(links, false, 'desktop').href, links.mediaUrl);
-  const android = plexLink(links, true, 'android').href;
-  assert.ok(android.startsWith('intent://preplay/?metadataKey=2'));
+  assert.equal(plexLink(links, false, 'movie', 'ios').href, links.iOSPlexUrl);
+  assert.equal(plexLink(links, true, 'movie', 'ios').href, links.iOSPlexUrl4k);
+  assert.equal(plexLink(links, false, 'movie', 'desktop').href, links.mediaUrl);
+  const android = plexLink(links, true, 'movie', 'android').href;
+  assert.ok(android.startsWith('intent://watch/video?uri='));
+  assert.ok(
+    android.includes(
+      encodeURIComponent(
+        'server://server/com.plexapp.plugins.library/library/metadata/2'
+      )
+    )
+  );
+  assert.ok(
+    plexLink(links, false, 'tv', 'android').href.startsWith(
+      'intent://libraries/server/show/x/1#Intent;'
+    )
+  );
+  assert.equal(plexLink(links, false, 'music', 'android').href, links.mediaUrl);
   assert.ok(android.includes('package=com.plexapp.android;'));
   assert.ok(
     android.includes(
@@ -35,6 +50,7 @@ test('an unavailable 4K app target falls back to web', () => {
     plexLink(
       { mediaUrl: links.mediaUrl, iOSPlexUrl: links.iOSPlexUrl },
       true,
+      'movie',
       'ios'
     ).href,
     links.mediaUrl
@@ -48,8 +64,12 @@ test('unsafe schemes, credentials and intent fragments cannot become playback ta
     'plex://other/?key=1',
   ])
     assert.equal(
-      plexLink({ mediaUrl: links.mediaUrl, iOSPlexUrl: value }, false, 'ios')
-        .href,
+      plexLink(
+        { mediaUrl: links.mediaUrl, iOSPlexUrl: value },
+        false,
+        'movie',
+        'ios'
+      ).href,
       links.mediaUrl
     );
   for (const value of [
@@ -58,7 +78,34 @@ test('unsafe schemes, credentials and intent fragments cannot become playback ta
     'https://user:password@example.com/',
   ])
     assert.equal(
-      plexLink({ mediaUrl: value }, false, 'desktop').href,
+      plexLink({ mediaUrl: value }, false, 'movie', 'desktop').href,
       undefined
     );
+});
+
+test('Android rejects decoded routing delimiters and malformed metadata keys', () => {
+  for (const server of [
+    'bad/route',
+    'bad#Intent;package=evil',
+    'user@other',
+    'x'.repeat(129),
+  ]) {
+    const app = `plex://preplay/?server=${encodeURIComponent(server)}&metadataKey=%2Flibrary%2Fmetadata%2F1`;
+    assert.equal(
+      plexLink({ ...links, iOSPlexUrl: app }, false, 'tv', 'android').href,
+      links.mediaUrl
+    );
+  }
+  for (const key of [
+    '/library/metadata/../users',
+    '/library/metadata/1?x=1',
+    '1',
+    '/library/metadata/' + '1'.repeat(21),
+  ]) {
+    const app = `plex://preplay/?server=server&metadataKey=${encodeURIComponent(key)}`;
+    assert.equal(
+      plexLink({ ...links, iOSPlexUrl: app }, false, 'movie', 'android').href,
+      links.mediaUrl
+    );
+  }
 });
