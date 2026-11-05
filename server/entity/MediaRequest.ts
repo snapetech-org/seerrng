@@ -113,6 +113,7 @@ import {
   UpdateDateColumn,
   VirtualColumn,
   type EntityManager,
+  type QueryRunner,
 } from 'typeorm';
 import Media from './Media';
 import SeasonRequest, { isActiveSeasonRequest } from './SeasonRequest';
@@ -3701,14 +3702,19 @@ export class MediaRequest {
   static async sendNotification(
     entity: MediaRequest,
     media: Media,
-    type: Notification
+    type: Notification,
+    queryRunner?: QueryRunner
   ) {
     try {
       if (Number.isSafeInteger(entity.id) && entity.id > 0) {
-        await notificationManager.sendNotificationIntent(type, {
-          kind: 'media-request',
-          requestId: entity.id,
-        });
+        await notificationManager.sendNotificationIntent(
+          type,
+          {
+            kind: 'media-request',
+            requestId: entity.id,
+          },
+          queryRunner
+        );
         return;
       }
       const { buildMediaRequestNotificationPayload } =
@@ -3718,7 +3724,7 @@ export class MediaRequest {
         media,
         type
       );
-      await notificationManager.sendNotification(type, payload);
+      await notificationManager.sendNotification(type, payload, queryRunner);
     } catch (e) {
       logger.error('Something went wrong sending media notification(s)', {
         label: 'Notifications',
@@ -3726,6 +3732,9 @@ export class MediaRequest {
         requestId: entity.id,
         mediaId: entity.media.id,
       });
+      if (queryRunner) {
+        throw e;
+      }
     }
   }
 }

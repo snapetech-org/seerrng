@@ -174,6 +174,7 @@ For local MCP access, see the [SnapeTech MCP integration guide](./docs/integrati
 - Request lifecycle tracking and availability notifications link users back to the matching Request Status item, where available files can be selected and saved.
 - Generic webhook notifications support bounded JSON templates, custom headers, and allowlisted lowercase, URL-encoding, and slugification filters. See the [webhook guide](./docs/using-seerr/notifications/webhook.md#json-payload).
 - Signed-in household members can follow another user's active movie or series request for a one-time availability notice through their own configured notification channels.
+- Administrators can opt into a separate **Pending Request Updated** notification when an edit changes a pending request's owner, selected seasons or episodes, or acquisition options. The webhook event is `MEDIA_PENDING_UPDATED`; see the [notification guide](./docs/using-seerr/notifications/index.mdx#pending-request-edits).
 - Browser, service-worker, API, DNS, avatar, and image-proxy caching tuned for faster refreshes and tab restores.
 - Removing an item from an acquisition service such as Radarr or Sonarr preserves its SeerrNG media record and request history; Clear Data is a separate, explicitly destructive action.
 - Server-side Axios requests use a versioned User-Agent; provider-specific values are preserved. See [Network settings](docs/using-seerr/settings/network.md#outbound-request-identity).

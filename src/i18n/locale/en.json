@@ -2303,6 +2303,8 @@
   "components.NotificationTypeSelector.issueresolvedDescription": "Send notifications when issues are resolved.",
   "components.NotificationTypeSelector.mediaAutoApproved": "Request Automatically Approved",
   "components.NotificationTypeSelector.mediaAutoApprovedDescription": "Send notifications when users submit new media requests which are automatically approved.",
+  "components.NotificationTypeSelector.mediaPendingUpdated": "Pending Request Updated",
+  "components.NotificationTypeSelector.mediaPendingUpdatedDescription": "Send notifications when a pending request’s owner, selections, or acquisition options change.",
   "components.NotificationTypeSelector.mediaapproved": "Request Approved",
   "components.NotificationTypeSelector.mediaapprovedDescription": "Send notifications when media requests are manually approved.",
   "components.NotificationTypeSelector.mediaautorequested": "Request Automatically Submitted",

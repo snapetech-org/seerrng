@@ -63,6 +63,11 @@ import { isMediaCategoryEnabled } from '@server/lib/mediaCategories';
 import { hydrateMediaRequestRelations } from '@server/lib/mediaRequestHydration';
 import { aliasDownloadId } from '@server/lib/mediaResponse';
 import { hydrateMediaSummaryRelations } from '@server/lib/mediaSummaryHydration';
+import { Notification } from '@server/lib/notifications';
+import {
+  capturePendingRequestEditSnapshot,
+  hasMaterialPendingRequestEdit,
+} from '@server/lib/notifications/requestUpdate';
 import { Permission } from '@server/lib/permissions';
 import requestDispatchManager from '@server/lib/requestDispatch';
 import {
@@ -4009,6 +4014,10 @@ requestRoutes.put<{ requestId: string }>(
               }
 
               const originalServerId = request.serverId;
+              const originalPendingRequestEditSnapshot =
+                request.status === MediaRequestStatus.PENDING
+                  ? capturePendingRequestEditSnapshot(request)
+                  : undefined;
 
               if (
                 (body.mediaType ?? request.type) === MediaType.TV &&
@@ -4614,7 +4623,25 @@ requestRoutes.put<{ requestId: string }>(
                     request.quotaException = false;
                   }
                   request.requestedBy = requestUser;
-                  await requestRepository.save(request);
+                  const shouldNotifyPendingRequestUpdate =
+                    originalPendingRequestEditSnapshot !== undefined &&
+                    hasMaterialPendingRequestEdit(
+                      originalPendingRequestEditSnapshot,
+                      request
+                    );
+                  if (shouldNotifyPendingRequestUpdate) {
+                    await dataSource.transaction(async (manager) => {
+                      await manager.getRepository(MediaRequest).save(request);
+                      await MediaRequest.sendNotification(
+                        request,
+                        request.media,
+                        Notification.MEDIA_PENDING_UPDATED,
+                        manager.queryRunner
+                      );
+                    });
+                  } else {
+                    await requestRepository.save(request);
+                  }
                   const [viewerRequest] = await hydrateMediaRequestRelations(
                     [request],
                     { viewer: req.user }
