@@ -3408,6 +3408,14 @@ components:
         syncEnabled:
           type: boolean
           example: false
+        syncExcludedTags:
+          type: array
+          maxItems: 100
+          items:
+            type: integer
+            minimum: 0
+            maximum: 1000000
+          description: Servarr tag IDs excluded from this Radarr library scan.
         preventSearch:
           type: boolean
           example: false
@@ -3929,6 +3937,14 @@ components:
         syncEnabled:
           type: boolean
           example: false
+        syncExcludedTags:
+          type: array
+          maxItems: 100
+          items:
+            type: integer
+            minimum: 0
+            maximum: 1000000
+          description: Servarr tag IDs excluded from this Sonarr library scan.
         preventSearch:
           type: boolean
           example: false

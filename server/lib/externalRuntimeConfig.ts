@@ -83,11 +83,39 @@ const normalizeServarrServices = (
       );
     }
 
+    const supportsSyncExcludedTags =
+      service === 'radarr' || service === 'sonarr';
+    const syncExcludedTags = settings.syncExcludedTags;
+    if (
+      supportsSyncExcludedTags &&
+      syncExcludedTags !== undefined &&
+      (!Array.isArray(syncExcludedTags) ||
+        syncExcludedTags.length > 100 ||
+        syncExcludedTags.some(
+          (tagId) =>
+            typeof tagId !== 'number' ||
+            !Number.isSafeInteger(tagId) ||
+            tagId < 0 ||
+            tagId > 1_000_000
+        ))
+    ) {
+      throw new Error(
+        `SEERR_EXTERNAL_CONFIG.${service}[${index}].syncExcludedTags is invalid`
+      );
+    }
+
     return {
       ...settings,
       // Older settings files omitted this field or stored it as null. Both
       // representations mean the standard (non-4K) service.
       is4k: settings.is4k === true,
+      ...(supportsSyncExcludedTags
+        ? {
+            syncExcludedTags: Array.isArray(syncExcludedTags)
+              ? [...new Set(syncExcludedTags)]
+              : [],
+          }
+        : {}),
     };
   });
 };

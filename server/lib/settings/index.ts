@@ -388,6 +388,8 @@ export interface ServiceRequestButtonSettings {
 export interface RadarrSettings
   extends DVRSettings, ServiceRequestButtonSettings {
   minimumAvailability: string;
+  /** Tags that exclude matching library entries from synchronization. */
+  syncExcludedTags?: number[];
 }
 
 /** Whisparr's scene-focused v3 API uses Radarr-shaped service settings. */
@@ -407,6 +409,8 @@ export interface SonarrSettings
   animeTags?: number[];
   enableSeasonFolders: boolean;
   monitorNewItems: 'all' | 'none' | 'latest';
+  /** Tags that exclude matching library entries from synchronization. */
+  syncExcludedTags?: number[];
 }
 
 export interface SportarrSettings {

@@ -3,6 +3,7 @@ import RadarrAPI from '@server/api/servarr/radarr';
 import { MediaStatus, MediaType } from '@server/constants/media';
 import { getRepository } from '@server/datasource';
 import Media from '@server/entity/Media';
+import { runWithRequestAdmission } from '@server/entity/MediaRequest';
 import { getExternalRuntimeConfig } from '@server/lib/externalRuntimeConfig';
 import { runMediaEntityMutation } from '@server/lib/mediaMutation';
 import { upsertMediaSearchMetadata } from '@server/lib/mediaSearchMetadata';
@@ -11,7 +12,16 @@ import type {
   StatusBase,
 } from '@server/lib/scanners/baseScanner';
 import BaseScanner from '@server/lib/scanners/baseScanner';
+import {
+  reconcileExcludedServarrAvailability,
+  type ExcludedServarrAvailabilitySource,
+} from '@server/lib/scanners/excludedServarrAvailability';
 import { forEachMediaCleanupBatch } from '@server/lib/scanners/mediaCleanupBatches';
+import {
+  getServarrSyncExcludedTagsForEndpoint,
+  getServarrSyncServerIdsForEndpoint,
+  partitionServarrItemsBySyncExcludedTags,
+} from '@server/lib/scanners/servarrTagFilters';
 import {
   ServarrServiceAuthorityChangedError,
   runWithServarrServiceSnapshot,
@@ -21,6 +31,7 @@ import { getSettings, type RadarrSettings } from '@server/lib/settings';
 import { is4kResolution } from '@server/lib/videoResolution';
 import { getHttpErrorDetails } from '@server/utils/httpError';
 import { uniqWith } from 'lodash';
+import { In } from 'typeorm';
 
 type SyncStatus = StatusBase & {
   currentServer: RadarrSettings;
@@ -36,6 +47,11 @@ class RadarrScanner
   private radarrApi: RadarrAPI;
   private scannedTmdbIds: Set<number> = new Set();
   private scanned4kTmdbIds: Set<number> = new Set();
+  private excludedMovies: {
+    tmdbId: number;
+    serverId: number;
+    format: 'standard' | '4k';
+  }[] = [];
   private didScanStandard = false;
   private didScan4k = false;
   private serverReturnedEmpty = false;
@@ -64,6 +80,7 @@ class RadarrScanner
     }
     this.scannedTmdbIds.clear();
     this.scanned4kTmdbIds.clear();
+    this.excludedMovies = [];
     this.didScanStandard = false;
     this.didScan4k = false;
     this.serverReturnedEmpty = false;
@@ -71,18 +88,22 @@ class RadarrScanner
 
     try {
       const fourKEnabled = getSettings().main.enable4k !== false;
-      this.servers = uniqWith(
-        structuredClone(
-          settings.radarr.filter((server) => fourKEnabled || !server.is4k)
-        ),
-        (radarrA, radarrB) => {
-          return (
-            radarrA.hostname === radarrB.hostname &&
-            radarrA.port === radarrB.port &&
-            radarrA.baseUrl === radarrB.baseUrl
-          );
-        }
+      const configuredServers = structuredClone(
+        settings.radarr.filter((server) => fourKEnabled || !server.is4k)
       );
+      this.servers = uniqWith(configuredServers, (radarrA, radarrB) => {
+        return (
+          radarrA.hostname === radarrB.hostname &&
+          radarrA.port === radarrB.port &&
+          radarrA.baseUrl === radarrB.baseUrl
+        );
+      }).map((server) => ({
+        ...server,
+        syncExcludedTags: getServarrSyncExcludedTagsForEndpoint(
+          server,
+          configuredServers
+        ),
+      }));
       this.resolutionAwareSingleServer =
         fourKEnabled &&
         this.servers.filter((server) => server.syncEnabled).length === 1 &&
@@ -103,7 +124,7 @@ class RadarrScanner
             'info'
           );
 
-          this.items = await runWithServarrServiceSnapshot(
+          const serverItems = await runWithServarrServiceSnapshot(
             'radarr',
             server,
             async (current) => {
@@ -118,7 +139,7 @@ class RadarrScanner
           if (
             fourKEnabled &&
             this.resolutionAwareSingleServer &&
-            this.items.some(
+            serverItems.some(
               (movie) =>
                 movie.hasFile &&
                 is4kResolution(movie.movieFile?.mediaInfo.resolution) === true
@@ -130,6 +151,52 @@ class RadarrScanner
           const server4k = this.enable4kMovie && server.is4k;
           const scansBothResolutions =
             this.resolutionAwareSingleServer && this.enable4kMovie;
+
+          // Keep the provider response separate: excluded results still prove
+          // that a scan completed and should not trigger the empty-library
+          // safety path below.
+          const { included, excluded } =
+            partitionServarrItemsBySyncExcludedTags(
+              serverItems,
+              server.syncExcludedTags
+            );
+          this.items = included;
+          for (const movie of excluded) {
+            if (!Number.isSafeInteger(movie.tmdbId) || movie.tmdbId <= 0) {
+              continue;
+            }
+
+            // One resolution-aware endpoint owns both availability tracks;
+            // retain the media identity so neither request track is orphaned.
+            if (this.resolutionAwareSingleServer) {
+              this.scannedTmdbIds.add(movie.tmdbId);
+              this.scanned4kTmdbIds.add(movie.tmdbId);
+            } else {
+              const is4k = this.getMovieIs4k(movie, server);
+              (is4k ? this.scanned4kTmdbIds : this.scannedTmdbIds).add(
+                movie.tmdbId
+              );
+            }
+
+            const format = scansBothResolutions
+              ? this.getMovieIs4k(movie, server)
+                ? '4k'
+                : 'standard'
+              : server4k
+                ? '4k'
+                : 'standard';
+            for (const serverId of getServarrSyncServerIdsForEndpoint(
+              server,
+              configuredServers
+            )) {
+              this.excludedMovies.push({
+                tmdbId: movie.tmdbId,
+                serverId,
+                format,
+              });
+            }
+          }
+
           if (scansBothResolutions) {
             this.didScanStandard = true;
             this.didScan4k = true;
@@ -139,7 +206,7 @@ class RadarrScanner
             this.didScanStandard = true;
           }
 
-          if (this.items.length === 0) {
+          if (serverItems.length === 0) {
             if (server4k) {
               this.server4kReturnedEmpty = true;
             } else {
@@ -157,10 +224,10 @@ class RadarrScanner
 
           await this.loop(this.processRadarrMovie.bind(this), { sessionId });
 
-          const hasCompleteMediaIdentity = this.items.every(
+          const hasCompleteMediaIdentity = serverItems.every(
             (movie) => Number.isSafeInteger(movie.tmdbId) && movie.tmdbId > 0
           );
-          if (this.items.length > 0 && hasCompleteMediaIdentity) {
+          if (serverItems.length > 0 && hasCompleteMediaIdentity) {
             const qualityTmdbIds = {
               standard: new Set<number>(),
               '4k': new Set<number>(),
@@ -190,6 +257,11 @@ class RadarrScanner
           this.log(`Sync not enabled. Skipping Radarr server: ${server.name}`);
         }
       }
+
+      await this.clearExcludedMovieAvailability(
+        configuredServers,
+        fourKEnabled
+      );
 
       // Only run cleanup if all servers of this profile type have sync enabled.
       // If any server is skipped, we can't distinguish truly orphaned media from
@@ -332,6 +404,69 @@ class RadarrScanner
     }
 
     return this.enable4kMovie && server.is4k;
+  }
+
+  private async clearExcludedMovieAvailability(
+    configuredServers: RadarrSettings[],
+    fourKEnabled: boolean
+  ): Promise<void> {
+    if (this.excludedMovies.length === 0) return;
+
+    const excludedTmdbIds = [
+      ...new Set(this.excludedMovies.map(({ tmdbId }) => tmdbId)),
+    ];
+    const mediaItems: Media[] = [];
+    for (let offset = 0; offset < excludedTmdbIds.length; offset += 500) {
+      mediaItems.push(
+        ...(await getRepository(Media).find({
+          where: {
+            mediaType: MediaType.MOVIE,
+            tmdbId: In(excludedTmdbIds.slice(offset, offset + 500)),
+          },
+        }))
+      );
+    }
+    const mediaIdsByTmdbId = new Map(
+      mediaItems.map((media) => [media.tmdbId, media.id])
+    );
+    const sources: ExcludedServarrAvailabilitySource[] = [];
+
+    for (const excluded of this.excludedMovies) {
+      const mediaId = mediaIdsByTmdbId.get(excluded.tmdbId);
+      if (mediaId !== undefined) {
+        sources.push({
+          mediaId,
+          serverId: excluded.serverId,
+          format: excluded.format,
+        });
+      }
+    }
+
+    for (let offset = 0; offset < mediaItems.length; offset += 50) {
+      const batch = mediaItems.slice(offset, offset + 50);
+      const batchIds = new Set(batch.map(({ id }) => id));
+      const batchSources = sources.filter((source) =>
+        batchIds.has(source.mediaId)
+      );
+      if (batchSources.length === 0) continue;
+
+      await runWithRequestAdmission(
+        batch.map(
+          (media) => `request-media:${MediaType.MOVIE}:${media.tmdbId}`
+        ),
+        () =>
+          runWithServarrServiceSnapshots(
+            'radarr',
+            configuredServers.filter((server) => server.syncEnabled),
+            () => reconcileExcludedServarrAvailability('radarr', batchSources),
+            {
+              requireExactAuthoritySet: true,
+              includeCurrent: (server) =>
+                server.syncEnabled && (fourKEnabled || !server.is4k),
+            }
+          )
+      );
+    }
   }
 
   private async existsInAnyServer(
