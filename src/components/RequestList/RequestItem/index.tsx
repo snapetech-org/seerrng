@@ -727,12 +727,10 @@ const RequestItem = ({ request, revalidateList }: RequestItemProps) => {
           : '';
 
       try {
+        // Removing a provider copy must preserve SeerrNG's request history.
         await axios.delete(
           `/api/v1/media/${requestData.media.id}/file?is4k=${requestData.is4k}${formatQuery}`
         );
-        if (requestData.type !== 'book' || removableBookFormat === 'both') {
-          await axios.delete(`/api/v1/media/${requestData.media.id}`);
-        }
       } catch (e) {
         if (!axios.isAxiosError(e) || e.response?.status !== 404) {
           addToast(intl.formatMessage(messages.removemediaerror), {

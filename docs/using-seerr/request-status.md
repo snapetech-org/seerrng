@@ -99,6 +99,21 @@ available and the other is still requested or missing. See
 [Books, Authors, and Series](./books-and-series.md) for book discovery and
 series requests.
 
+## Remove a copy from an acquisition service
+
+Managers with request-management permission can use **Remove from Radarr**,
+**Remove from Sonarr**, or the corresponding service action on a request when
+SeerrNG has a linked provider copy. After confirmation, SeerrNG removes that
+copy from the selected service and updates its matching availability state.
+The SeerrNG media record, request, and status history remain, so removing a
+copy does not erase who requested the title or its earlier progress. Other
+qualities, book formats, and destinations keep their own availability state.
+
+**Clear Data** is a separate, destructive SeerrNG action. Use it only when you
+also intend to remove SeerrNG's media record and its associated requests and
+history. It does not mean the same thing as removing a copy from an acquisition
+service.
+
 ## Download an available copy
 
 When an imported file is available to SeerrNG, its request card shows a
