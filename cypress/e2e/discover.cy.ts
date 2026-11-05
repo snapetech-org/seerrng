@@ -275,7 +275,13 @@ describe('Discover', () => {
       }
     ).as('getUpcomingMovies');
     stubTitleDetails('movie', movie);
-    cy.visit('/offline.html');
+    // Use an inert same-origin page: offline.html automatically reloads while
+    // online and can race this cleanup or the subsequent Discover navigation.
+    cy.intercept('GET', '/__cypress/discover-cache-reset', {
+      headers: { 'content-type': 'text/html', 'cache-control': 'no-store' },
+      body: '<!doctype html><title>Discover cache reset fixture</title>',
+    });
+    cy.visit('/__cypress/discover-cache-reset');
     cy.window().then(async (win) => {
       if ('serviceWorker' in win.navigator) {
         const registrations =
@@ -289,6 +295,15 @@ describe('Discover', () => {
         name.startsWith('seerrng-data-')
       );
       await Promise.all(dataCaches.map((name) => win.caches.delete(name)));
+      // This test asserts a fresh HTTP request, while normal Discover visits
+      // intentionally reuse a fresh local snapshot without requesting it.
+      Object.keys(win.localStorage)
+        .filter(
+          (key) =>
+            key.startsWith('seerr-discover-snapshot-') ||
+            key.startsWith('seerr-discover-manifest-')
+        )
+        .forEach((key) => win.localStorage.removeItem(key));
     });
     cy.visit('/');
     cy.contains('.slider-header', 'Upcoming Movies').scrollIntoView();
