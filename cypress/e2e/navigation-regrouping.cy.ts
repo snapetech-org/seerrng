@@ -196,7 +196,15 @@ describe('primary navigation', () => {
       );
     });
 
-    cy.get('[data-testid="discovery-mode-tab-discover"]').click();
+    // The URL can update before the Swipe page's router query has hydrated.
+    // Wait for the intended destination rather than clicking its fallback href.
+    cy.get('[data-testid="discovery-mode-tab-discover"]')
+      .should(
+        'have.attr',
+        'href',
+        '/discover/tv/genre/18?sortBy=popularity.desc&page=2'
+      )
+      .click();
     cy.location('pathname').should('eq', '/discover/tv/genre/18');
     cy.location('search').should('include', 'sortBy=popularity.desc');
     cy.location('search').should('include', 'page=2');
