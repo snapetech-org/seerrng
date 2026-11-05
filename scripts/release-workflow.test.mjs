@@ -664,14 +664,8 @@ test('multi-architecture publishers perform the real build once and verify the i
   const releaseNoteValidation = ci.jobs['release-notes'].steps.find(
     (step) => step.name === 'Validate release-note fragment or explicit opt-out'
   );
-  assert.match(
-    releaseNoteValidation.run,
-    /git rev-parse --verify "\$\{HEAD_SHA\}\^1"/u
-  );
-  assert.match(
-    releaseNoteValidation.run,
-    /git diff --quiet "\$base_sha" "\$HEAD_SHA" -- release-notes/u
-  );
+  assert.match(releaseNoteValidation.run, /--base "\$BASE_SHA"/u);
+  assert.match(releaseNoteValidation.run, /--head "\$HEAD_SHA"/u);
   assert.doesNotMatch(releaseNoteValidation.run, /GITHUB_EVENT_NAME|push/u);
   assert.equal(ci.jobs['preflight-deploy'], undefined);
   assert.equal(ci.jobs['deploy-main'], undefined);
@@ -1555,7 +1549,7 @@ test('iOS release Xcode work stays on local storage and uses current tooling', (
   assert.equal(diagnosticUpload.if, 'failure()');
   assert.match(diagnosticUpload.with.name, /^ios-simulator-diagnostics-/u);
   assert.doesNotMatch(diagnosticUpload.with.name, /^seerrng-/u);
-  assert.match(workspaceGuard, /stat -f '%T'/u);
+  assert.match(workspaceGuard, /df -PkY/u);
   assert.match(workspaceGuard, /filesystem_type.*apfs/su);
   assert.match(simulatorScript, /-resultBundlePath "\$result_bundle"/u);
   assert.match(simulatorScript, /ios_release_create_local_workspace build/u);
@@ -1667,26 +1661,36 @@ test('release asset checksums match the builder sidecar names', () => {
   assert.match(assetsText, /checksum_base="\$\{checksum_base%\.aab\}-aab"/u);
 });
 
-test('manual main CI validates release notes against the selected commit parent', () => {
+test('owner and main CI use resolved release-note ranges without evaluating PR bodies', () => {
   const ci = readWorkflow('ci.yml');
-  const validation = ci.jobs['release-notes'].steps.find(
+  const contract = ci.jobs['release-notes'];
+  const resolver = contract.steps.find(
+    (step) => step.name === 'Resolve validation range and PR body'
+  );
+  const validation = contract.steps.find(
     (step) => step.name === 'Validate release-note fragment or explicit opt-out'
   );
-
-  assert.ok(validation);
-  assert.deepEqual(validation.env, { HEAD_SHA: '${{ github.sha }}' });
-  assert.match(validation.run, /git rev-parse --verify "\$\{HEAD_SHA\}\^1"/u);
-  assert.match(
-    validation.run,
-    /git diff --quiet "\$base_sha" "\$HEAD_SHA" -- release-notes/u
+  assert.equal(
+    resolver.run,
+    'node scripts/prepare-release-note-validation.mjs'
   );
-  assert.match(validation.run, /printf '%s' 'release-note: none'/u);
-  assert.doesNotMatch(validation.run, /GITHUB_EVENT_NAME|pull_request|push/u);
+  assert.match(resolver.env.HEAD_SHA, /inputs\.pr_sha/u);
+  assert.equal(resolver.env.PR_NUMBER, '${{ inputs.pr_number }}');
+  assert.equal(
+    validation.env.BASE_SHA,
+    '${{ steps.release-range.outputs.base_sha }}'
+  );
+  assert.equal(
+    validation.env.BODY_FILE,
+    '${{ steps.release-range.outputs.body_file }}'
+  );
+  assert.match(validation.run, /--base "\$BASE_SHA"/u);
+  assert.match(validation.run, /--pr-body "\$BODY_FILE"/u);
   assert.doesNotMatch(validation.run, /\$\{\{/u);
   assert.match(validation.run, /--summary-file "\$GITHUB_STEP_SUMMARY"/u);
 });
 
-test('main CI release-note checks fetch tags with shallow history', () => {
+test('main and owner release-note checks fetch complete comparison history and tags', () => {
   const ci = readWorkflow('ci.yml');
   const checkout = ci.jobs['release-notes'].steps.find(
     (step) => step.name === 'Checkout'
@@ -1695,7 +1699,7 @@ test('main CI release-note checks fetch tags with shallow history', () => {
     step.run?.includes('scripts/check-changelog-tags.mjs')
   );
 
-  assert.equal(checkout?.with?.['fetch-depth'], 2);
+  assert.equal(checkout?.with?.['fetch-depth'], 0);
   assert.equal(checkout?.with?.['fetch-tags'], true);
   assert.ok(changelogCheck);
 });

@@ -53,8 +53,7 @@ jobs:
     if: >-
       github.event_name == 'pull_request_target' &&
       github.event.action == 'labeled' &&
-      (startsWith(github.event.label.name, 'action:') ||
-       startsWith(github.event.label.name, 'pool:')) &&
+      github.event.label.name == 'action:ci' &&
       contains(github.event.pull_request.labels.*.name, 'action:ci') &&
       contains(github.event.pull_request.labels.*.name, 'pool:public') &&
       github.actor == 'snapetech' &&
@@ -134,16 +133,23 @@ jobs:
           PY
 
   release-notes:
-    if: github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main' && inputs.pr_number == '' && (inputs.action == 'ci' || inputs.action == 'publish-image')
+    if: >-
+      github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main' &&
+      ((inputs.pr_number != '' && inputs.pr_sha != '' && inputs.target_run_id != '' &&
+        github.actor == 'github-actions[bot]' && inputs.action == 'ci') ||
+       (inputs.pr_number == '' && (inputs.action == 'ci' || inputs.action == 'publish-image')))
     name: Release-note contract
+    permissions:
+      contents: read
+      pull-requests: read
     timeout-minutes: 10
     runs-on: ubuntu-24.04
     steps:
       - name: Checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
-          # Manual validation compares the selected main commit to its parent.
-          fetch-depth: 2
+          ref: ${{ inputs.pr_number != '' && inputs.pr_sha || github.sha }}
+          fetch-depth: 0
           fetch-tags: true
           persist-credentials: false
 
@@ -156,22 +162,25 @@ jobs:
       - name: Verify stable container alias policy
         run: node scripts/check-container-alias-policy.mjs
 
+      - name: Resolve validation range and PR body
+        id: release-range
+        env:
+          GH_TOKEN: ${{ github.token }}
+          HEAD_SHA: ${{ inputs.pr_number != '' && inputs.pr_sha || github.sha }}
+          PR_NUMBER: ${{ inputs.pr_number }}
+        run: node scripts/prepare-release-note-validation.mjs
+
       - name: Validate release-note fragment or explicit opt-out
         env:
-          HEAD_SHA: ${{ github.sha }}
+          HEAD_SHA: ${{ inputs.pr_number != '' && inputs.pr_sha || github.sha }}
+          BASE_SHA: ${{ steps.release-range.outputs.base_sha }}
+          BODY_FILE: ${{ steps.release-range.outputs.body_file }}
         run: |
           set -euo pipefail
-          base_sha="$(git rev-parse --verify "${HEAD_SHA}^1")"
-          body_file="$RUNNER_TEMP/pr-body.md"
-          if git diff --quiet "$base_sha" "$HEAD_SHA" -- release-notes; then
-            printf '%s' 'release-note: none' > "$body_file"
-          else
-            : > "$body_file"
-          fi
           node scripts/check-release-notes.mjs \
-            --base "$base_sha" \
+            --base "$BASE_SHA" \
             --head "$HEAD_SHA" \
-            --pr-body "$body_file" \
+            --pr-body "$BODY_FILE" \
             --summary-file "$GITHUB_STEP_SUMMARY"
           node scripts/check-changelog-tags.mjs
 
@@ -510,15 +519,23 @@ jobs:
       pr_sha: ${{ inputs.pr_sha }}
 
   helm:
-    if: github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main' && inputs.pr_number == '' && (inputs.action == 'ci' || inputs.action == 'publish-image')
+    if: >-
+      github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main' &&
+      ((inputs.pr_number != '' && inputs.pr_sha != '' && inputs.target_run_id != '' &&
+        github.actor == 'github-actions[bot]' && inputs.action == 'ci') ||
+       (inputs.pr_number == '' && (inputs.action == 'ci' || inputs.action == 'publish-image')))
     name: Lint and test Helm charts
     permissions:
       contents: read
     uses: ./.github/workflows/lint-helm-charts.yml
+    with:
+      pr_sha: ${{ inputs.pr_sha }}
 
   report-owner-pr-check:
     name: Report trusted owner PR validation
     needs:
+      - release-notes
+      - helm
       - i18n-and-tooling
       - test
       - unit-test
@@ -544,7 +561,9 @@ jobs:
           GH_TOKEN: ${{ github.token }}
           PR_SHA: ${{ inputs.pr_sha }}
           VALIDATION_RESULT: >-
-            ${{ (needs['i18n-and-tooling'].result == 'success' &&
+            ${{ (needs['release-notes'].result == 'success' &&
+                 needs.helm.result == 'success' &&
+                 needs['i18n-and-tooling'].result == 'success' &&
                  needs.test.result == 'success' &&
                  needs['unit-test'].result == 'success' &&
                  needs['node-test'].result == 'success' &&

@@ -21,8 +21,7 @@ jobs:
     if: >-
       github.event.action == 'labeled' &&
       github.actor == 'snapetech' &&
-      (startsWith(github.event.label.name, 'action:') ||
-       startsWith(github.event.label.name, 'pool:')) &&
+      github.event.label.name == 'action:ci' &&
       contains(github.event.pull_request.labels.*.name, 'action:ci') &&
       (contains(github.event.pull_request.labels.*.name, 'pool:public') ||
        contains(github.event.pull_request.labels.*.name, 'pool:hybrid')) &&

@@ -5,27 +5,28 @@ script_dir="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd -P)"
 # shellcheck source=ios-release-workspace.sh
 source "$script_dir/ios-release-workspace.sh"
 
+# Exercise the real Darwin tools before installing fixtures. A mocked GNU-style
+# stat result previously hid a macOS filesystem detection bug.
+if [[ "$(uname -s)" == Darwin ]]; then
+  native_workspace="$(ios_release_create_local_workspace native-check)"
+  [[ -d "$native_workspace" ]]
+  rmdir -- "$native_workspace"
+fi
+
 test_root="$(mktemp -d)"
 trap 'rm -rf -- "$test_root"' EXIT
 fake_bin="$test_root/bin"
 local_root="$test_root/local-apfs"
 mkdir -p "$fake_bin" "$local_root"
 
-cat > "$fake_bin/stat" <<'STAT'
-#!/usr/bin/env bash
-set -euo pipefail
-[[ "$1" == '-f' && "$2" == '%T' ]]
-printf '%s\n' "${IOS_TEST_FILESYSTEM:-apfs}"
-STAT
-
 cat > "$fake_bin/df" <<'DF'
 #!/usr/bin/env bash
 set -euo pipefail
-[[ "$1" == '-Pk' ]]
-printf 'Filesystem 1024-blocks Used Available Capacity Mounted on\n'
-printf '/dev/test 100000000 1 %s 1%% %s\n' "${IOS_TEST_AVAILABLE_KIB:-20000000}" "$2"
+[[ "$1" == '-PkY' ]]
+printf 'Filesystem Type 1024-blocks Used Available Capacity Mounted on\n'
+printf '/dev/test %s 100000000 1 %s 1%% %s\n' "${IOS_TEST_FILESYSTEM:-apfs}" "${IOS_TEST_AVAILABLE_KIB:-20000000}" "$2"
 DF
-chmod +x "$fake_bin/stat" "$fake_bin/df"
+chmod +x "$fake_bin/df"
 cat > "$fake_bin/xcodebuild" <<'XCODEBUILD'
 #!/usr/bin/env bash
 set -euo pipefail
@@ -74,6 +75,7 @@ PLUTIL
 cat > "$fake_bin/ditto" <<'DITTO'
 #!/usr/bin/env bash
 set -euo pipefail
+[[ "${IOS_TEST_ARCHIVE_FAIL:-false}" != true ]]
 destination="${@: -1}"
 [[ "$destination" == "$SEERRNG_IOS_LOCAL_TEMP_ROOT"/* ]]
 printf 'fake local archive\n' > "$destination"
@@ -126,5 +128,16 @@ if IOS_TEST_XCODE_TEST_FAIL=true IOS_BUILD_NUMBER=1 \
 fi
 [[ -s "$failure_output/seerrng-v3.72.6-ios-tests.xcresult.zip" ]]
 [[ ! -e "$failure_output/seerrng-v3.72.6-ios-simulator.zip" ]]
+
+retained_output="$test_root/retained-failure-output"
+if IOS_TEST_XCODE_TEST_FAIL=true IOS_TEST_ARCHIVE_FAIL=true IOS_BUILD_NUMBER=1 \
+  bash "$script_dir/build-ios-release.sh" v3.72.6 "$retained_output" \
+  > "$test_root/retained-failure.log" 2>&1; then
+  echo 'A failing diagnostic copy was reported as a successful release build.' >&2
+  exit 1
+fi
+grep -Fq 'retained local workspace at' "$test_root/retained-failure.log"
+retained_results=("$local_root"/seerrng-ios-build.*/seerrng-v3.72.6-ios-tests.xcresult/result.txt)
+[[ ${#retained_results[@]} == 1 && -f "${retained_results[0]}" ]]
 
 echo 'iOS release workspace guard checks passed.'

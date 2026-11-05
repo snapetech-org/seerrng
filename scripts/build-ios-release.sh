@@ -38,6 +38,7 @@ result_bundle="$build_dir/seerrng-${tag}-ios-tests.xcresult"
 
 cleanup() {
   local exit_status=$?
+  local preserve_workspace=false
   trap - EXIT
 
   if (( exit_status != 0 )) && [[ -d "$result_bundle" ]]; then
@@ -46,11 +47,14 @@ cleanup() {
       && cp -- "$diagnostic_archive" "$output_dir/"; then
       echo "Preserved Xcode test diagnostics at $output_dir/${diagnostic_archive##*/}" >&2
     else
-      echo 'Could not preserve the local Xcode result bundle after the failed build.' >&2
+      echo "Could not copy Xcode diagnostics; retained local workspace at $build_dir" >&2
+      preserve_workspace=true
     fi
   fi
 
-  rm -rf -- "$build_dir"
+  if [[ "$preserve_workspace" != true ]]; then
+    rm -rf -- "$build_dir"
+  fi
   exit "$exit_status"
 }
 trap cleanup EXIT
