@@ -153,6 +153,14 @@ jobs:
           fetch-tags: true
           persist-credentials: false
 
+      - name: Checkout release validation tooling
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.sha }}
+          path: .ci-release-tooling
+          sparse-checkout: scripts
+          persist-credentials: false
+
       - name: Set up Node.js
         uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
@@ -160,7 +168,7 @@ jobs:
           package-manager-cache: false
 
       - name: Verify stable container alias policy
-        run: node scripts/check-container-alias-policy.mjs
+        run: node .ci-release-tooling/scripts/check-container-alias-policy.mjs
 
       - name: Resolve validation range and PR body
         id: release-range
@@ -168,7 +176,7 @@ jobs:
           GH_TOKEN: ${{ github.token }}
           HEAD_SHA: ${{ inputs.pr_number != '' && inputs.pr_sha || github.sha }}
           PR_NUMBER: ${{ inputs.pr_number }}
-        run: node scripts/prepare-release-note-validation.mjs
+        run: node .ci-release-tooling/scripts/prepare-release-note-validation.mjs
 
       - name: Validate release-note fragment or explicit opt-out
         env:
@@ -177,12 +185,12 @@ jobs:
           BODY_FILE: ${{ steps.release-range.outputs.body_file }}
         run: |
           set -euo pipefail
-          node scripts/check-release-notes.mjs \
+          node .ci-release-tooling/scripts/check-release-notes.mjs \
             --base "$BASE_SHA" \
             --head "$HEAD_SHA" \
             --pr-body "$BODY_FILE" \
             --summary-file "$GITHUB_STEP_SUMMARY"
-          node scripts/check-changelog-tags.mjs
+          node .ci-release-tooling/scripts/check-changelog-tags.mjs
 
   i18n-and-tooling:
     if: >-

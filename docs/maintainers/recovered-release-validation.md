@@ -14,7 +14,9 @@ Those jobs now validate the selected PR commit and participate in the aggregate
 result. The release-note range is the merge base of the live PR target and
 selected head. Metadata must match the owner repository, author, main target and
 exact head; an advanced head fails validation. PR body text is saved literally
-and never evaluated by the shell. Internal-only owner changes still need an
+and never evaluated by the shell. Validation tooling is checked out from the
+workflow’s main revision separately, so an older PR branch need not contain a
+new helper and cannot replace that metadata controller. Internal-only owner changes still need an
 explicit `release-note: none` in their PR body. Manual main checks retain their
 parent-commit comparison.
 

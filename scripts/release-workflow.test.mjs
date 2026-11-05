@@ -1672,7 +1672,7 @@ test('owner and main CI use resolved release-note ranges without evaluating PR b
   );
   assert.equal(
     resolver.run,
-    'node scripts/prepare-release-note-validation.mjs'
+    'node .ci-release-tooling/scripts/prepare-release-note-validation.mjs'
   );
   assert.match(resolver.env.HEAD_SHA, /inputs\.pr_sha/u);
   assert.equal(resolver.env.PR_NUMBER, '${{ inputs.pr_number }}');

@@ -522,6 +522,12 @@ test('owner PR validation is metadata-only, main-pinned, and exact-SHA', () => {
   );
   const contract = ciWorkflow.jobs['release-notes'];
   assert.match(contract.if, /inputs\.pr_sha != ''/u);
+  const contractTooling = contract.steps.find(
+    (step) => step.name === 'Checkout release validation tooling'
+  );
+  assert.equal(contractTooling.with.ref, '${{ github.sha }}');
+  assert.equal(contractTooling.with.path, '.ci-release-tooling');
+  assert.equal(contractTooling.with['persist-credentials'], false);
   assert.match(
     contract.steps.find((step) => step.name === 'Checkout').with.ref,
     /inputs\.pr_sha/u
@@ -530,7 +536,7 @@ test('owner PR validation is metadata-only, main-pinned, and exact-SHA', () => {
     contract.steps.find(
       (step) => step.name === 'Resolve validation range and PR body'
     ).run,
-    'node scripts/prepare-release-note-validation.mjs'
+    'node .ci-release-tooling/scripts/prepare-release-note-validation.mjs'
   );
 
   const reusableOwnerPrChecks = [
