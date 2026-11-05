@@ -22,5 +22,8 @@ export default function defineMessages<T extends Record<string, string>>(
   const modifiedMessages: Messages<T> = Object.fromEntries(
     modifiedMessagesEntries
   );
-  return intlDefineMessages(modifiedMessages);
+  // FormatJS returns the same descriptor map. Preserve our exact generic
+  // defaults rather than widening them to its optional typed-message metadata.
+  intlDefineMessages(modifiedMessages);
+  return modifiedMessages;
 }
