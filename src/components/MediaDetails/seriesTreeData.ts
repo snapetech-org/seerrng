@@ -45,6 +45,16 @@ export const buildSeriesTreeData = (
           name: episode.name || untitled,
           releaseDate: episode.airDate || undefined,
           available: Boolean(playableItem),
+          availabilitySources:
+            episode.availabilitySources ??
+            (episode.sonarrAvailability
+              ? [
+                  {
+                    sourceType: 'sonarr' as const,
+                    ...episode.sonarrAvailability,
+                  },
+                ]
+              : []),
           watched: watchedSeason?.episodes.find(
             (candidate) => candidate.episodeNumber === episode.episodeNumber
           )?.watched,

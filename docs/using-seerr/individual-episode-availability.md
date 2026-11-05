@@ -11,8 +11,7 @@ Emby source reports the episode in its library, including standard and 4K
 availability when **Enable 4K** is on.
 
 This is a file-inventory signal. A Sonarr badge does not confirm that a media
-server has indexed the file, and a Plex, Jellyfin, or Emby badge does not
-confirm that a particular user can access or play it.
+server has indexed the file. For a linked Plex, Jellyfin, or Emby account, media-server badges are intersected with episodes and file qualities visible to that account. Provider errors or unverifiable identity hide those badges. The badges do not guarantee that a particular client can play the encoding; accounts without a linked media-server identity retain the instance inventory view.
 
 ## Enable tracking
 

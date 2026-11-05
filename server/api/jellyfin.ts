@@ -1544,16 +1544,38 @@ class JellyfinAPI extends ExternalAPI {
     return { Id: playlistId, Name: safeName, MediaType: mediaType };
   }
 
-  public async getSeasons(seriesID: string): Promise<JellyfinLibraryItem[]> {
+  public async getSeasons(
+    seriesID: string,
+    options?: { requireComplete?: boolean }
+  ): Promise<JellyfinLibraryItem[]> {
     try {
       const seasonResponse = await this.get<any>(
         `/Shows/${encodeURIComponent(boundedJellyfinText(seriesID, 128))}/Seasons`
       );
 
-      return sanitizeJellyfinLibraryItems(
+      const rawItems = seasonResponse?.Items;
+      const items = sanitizeJellyfinLibraryItems(
         seasonResponse?.Items,
         MAX_JELLYFIN_SEASONS
       ) as JellyfinLibraryItem[];
+      if (
+        options?.requireComplete &&
+        (!Array.isArray(rawItems) ||
+          rawItems.length >= MAX_JELLYFIN_SEASONS ||
+          seasonResponse.TotalRecordCount !== rawItems.length ||
+          items.length !== rawItems.length ||
+          new Set(items.map((item) => item.Id)).size !== items.length ||
+          new Set(items.map((item) => item.IndexNumber)).size !==
+            items.length ||
+          items.some(
+            (item) =>
+              item.Type !== 'Season' ||
+              !Number.isSafeInteger(item.IndexNumber) ||
+              item.IndexNumber! < 0
+          ))
+      )
+        throw new Error('Jellyfin season inventory is incomplete');
+      return items;
     } catch (e) {
       logger.error(
         `Something went wrong while getting the list of seasons from the Jellyfin server: ${e.message}`,

@@ -1,6 +1,6 @@
 import defineMessages from '@app/utils/defineMessages';
+import { MetadataProviderType } from '@server/constants/metadata';
 import type { Library } from '@server/lib/settings';
-import { MetadataProviderType } from '@server/lib/settings';
 import { useIntl } from 'react-intl';
 
 const messages = defineMessages('components.Settings.LibraryEpisodeOrder', {

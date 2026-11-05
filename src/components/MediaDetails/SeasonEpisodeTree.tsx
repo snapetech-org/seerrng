@@ -1,4 +1,7 @@
 import Button from '@app/components/Common/Button';
+import EpisodeFileAvailability, {
+  type EpisodeFileSource,
+} from '@app/components/Common/EpisodeFileAvailability';
 import MediaServerIcon, {
   getMediaServerName,
 } from '@app/components/Common/MediaServerIcon';
@@ -100,6 +103,7 @@ export interface TreeEpisode {
   episodeNumber: number;
   name: string;
   available: boolean;
+  availabilitySources?: EpisodeFileSource[];
   // Request selection is independent of library availability.
   selectable?: boolean;
   watched?: boolean;
@@ -406,14 +410,27 @@ const SeasonEpisodeTree = ({
         </time>
       </Tooltip>
       <Tooltip
-        content={intl.formatMessage(
-          episode.available
-            ? messages.availableInLibrary
-            : messages.unavailableInLibrary
-        )}
+        tooltipConfig={
+          episode.availabilitySources?.length
+            ? { trigger: ['hover', 'focus', 'click'] }
+            : undefined
+        }
+        content={
+          <>
+            {intl.formatMessage(
+              episode.available
+                ? messages.availableInLibrary
+                : messages.unavailableInLibrary
+            )}
+            {Boolean(episode.availabilitySources?.length) && (
+              <EpisodeFileAvailability sources={episode.availabilitySources!} />
+            )}
+          </>
+        }
       >
         <span
           className="media-availability-cell"
+          tabIndex={episode.availabilitySources?.length ? 0 : undefined}
           data-tree-part="availability"
           data-availability={episode.available ? 'full' : 'missing'}
           aria-label={intl.formatMessage(

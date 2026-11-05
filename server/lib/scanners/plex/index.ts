@@ -725,7 +725,14 @@ export class PlexScanner
       Array.isArray(plexSeasonList) &&
       plexSeasonList.length < MAX_PLEX_METADATA_ITEMS &&
       metadata.Children?.size === plexSeasonList.length &&
-      plexSeasonList.every((item) => item.type === 'season')
+      plexSeasonList.every(
+        (item) =>
+          item.type === 'season' &&
+          Number.isSafeInteger(item.index) &&
+          item.index >= 0
+      ) &&
+      new Set(plexSeasonList.map((item) => item.index)).size ===
+        plexSeasonList.length
     );
     const episodeAvailabilitySeasons: EpisodeAvailabilitySeasonSync[] = [];
 

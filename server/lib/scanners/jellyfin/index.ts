@@ -386,9 +386,6 @@ export class JellyfinScanner
 
       if (tvShow) {
         const seasons = tvShow.seasons;
-        const jellyfinSeasons = await this.jfClient.getSeasons(Id);
-        const jellyfinSeasonsComplete =
-          jellyfinSeasons.length < MAX_JELLYFIN_SEASONS;
         const processableSeasons: ProcessableSeason[] = [];
         const settings = getSettings();
         const isAnime = tvShow.keywords.results.some(
@@ -402,6 +399,11 @@ export class JellyfinScanner
           this.currentLibrary?.type === 'show' &&
           this.currentLibrary.episodeOrderProvider === episodeMetadataProvider
         );
+        const jellyfinSeasons = await this.jfClient.getSeasons(Id, {
+          requireComplete: tracksEpisodeAvailability,
+        });
+        const jellyfinSeasonsComplete =
+          jellyfinSeasons.length < MAX_JELLYFIN_SEASONS;
         if (
           settings.main.trackEpisodeAvailability &&
           this.currentLibrary?.type === 'show' &&
@@ -987,11 +989,19 @@ export class JellyfinScanner
           // Reset AniDB season tracking per library
           this.processedAnidbSeason = new Map();
           this.log(`Beginning to process library: ${library.name}`, 'info');
-          const inventory = await this.withConfigurationSnapshot(() =>
-            this.jfClient.getLibraryContentsWithInventory(
-              library.id,
-              libraryType
-            )
+          const inventory = await this.withConfigurationSnapshot(async () =>
+            this.episodeAvailabilityCensus
+              ? this.jfClient.getLibraryContentsWithInventory(
+                  library.id,
+                  libraryType
+                )
+              : {
+                  items: await this.jfClient.getLibraryContents(
+                    library.id,
+                    libraryType
+                  ),
+                  complete: false,
+                }
           );
           this.items = inventory.items;
           if (

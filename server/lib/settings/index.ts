@@ -7,6 +7,7 @@ import {
   type EnabledMediaCategories,
   type MediaCategoryKey,
 } from '@server/constants/mediaCategories';
+import { MetadataProviderType } from '@server/constants/metadata';
 import {
   defaultProwlarrCategoryMappings,
   type ProwlarrCategoryMappings,
@@ -31,6 +32,7 @@ import {
   withSettingsFileLock,
   writePrivateSettingsFile,
 } from './fileSecurity';
+export { MetadataProviderType } from '@server/constants/metadata';
 
 export { MAX_SETTINGS_FILE_BYTES, assertSettingsFileSize };
 
@@ -494,11 +496,6 @@ export type LazyLibrarianSettings = CollectorServiceSettings;
 interface Quota {
   quotaLimit?: number;
   quotaDays?: number;
-}
-
-export enum MetadataProviderType {
-  TMDB = 'tmdb',
-  TVDB = 'tvdb',
 }
 
 export interface MetadataSettings {

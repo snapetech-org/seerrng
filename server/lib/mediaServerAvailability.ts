@@ -729,7 +729,13 @@ export const restrictEpisodeAvailabilityForUser = async (
   context: MediaServerAccessContext | undefined,
   seasonNumber: number
 ): Promise<void> => {
-  if (!context) return;
+  if (
+    !context ||
+    ![...availability.values()].some((episode) =>
+      episode.sources.some((source) => source.sourceType !== 'sonarr')
+    )
+  )
+    return;
   const visible = new Map<number, { hd: boolean; fourK: boolean }>();
   const add = (episode: number, is4k: boolean | undefined) => {
     if (!Number.isSafeInteger(episode) || episode < 1 || is4k === undefined)
