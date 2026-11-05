@@ -22,11 +22,11 @@ import {
 } from '@app/components/Discover/FilterPanel/CompactFilterSelect';
 import MediaFilterOption from '@app/components/Discover/MediaFilterOption';
 import { PinnedFilterSectionGroup } from '@app/components/Discover/PinnedFilterSection';
-import RequestEpisodeQueueModal from '@app/components/RequestModal/RequestEpisodeQueueModal';
 import { RequestRow, RequestTabs } from '@app/components/Persius/Requests';
 import { duration } from '@app/components/Persius/format';
 import persiusMessages from '@app/components/Persius/messages';
 import usePersius from '@app/components/Persius/usePersius';
+import RequestEpisodeQueueModal from '@app/components/RequestModal/RequestEpisodeQueueModal';
 import SoftwareRequests from '@app/components/RequestStatus/SoftwareRequests';
 import {
   formatRequestStatusMessage,
