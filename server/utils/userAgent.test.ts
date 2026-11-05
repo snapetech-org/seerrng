@@ -1,4 +1,9 @@
+import { coverArtArchiveHttpClient } from '@server/api/coverartarchive/requestLimiter';
 import ExternalAPI from '@server/api/externalapi';
+import SteamAPI from '@server/api/software/steam';
+import createCustomProxyAgent, {
+  resetCustomProxyAgent,
+} from '@server/utils/customProxyAgent';
 import { getUserAgent } from '@server/utils/userAgent';
 import axios, {
   type AxiosInstance,
@@ -7,7 +12,7 @@ import axios, {
   type InternalAxiosRequestConfig,
 } from 'axios';
 import assert from 'node:assert/strict';
-import { describe, it } from 'node:test';
+import { describe, it, mock } from 'node:test';
 
 const captureRequest = (instance: AxiosInstance) => {
   const captured: { config?: InternalAxiosRequestConfig } = {};
@@ -69,5 +74,43 @@ describe('outbound user agent', () => {
     });
 
     assert.equal(sent, 'Custom/1.0');
+  });
+});
+
+describe('dedicated provider HTTP clients', () => {
+  it('applies both the configured proxy and versioned user agent to CAA and Steam', async () => {
+    const head = mock.method(axios, 'head', async () => ({ status: 200 }));
+    const previousAdapter = coverArtArchiveHttpClient.defaults.adapter;
+    try {
+      await createCustomProxyAgent({
+        enabled: true,
+        hostname: 'proxy.example.com',
+        port: 8080,
+        useSsl: false,
+        user: '',
+        password: '',
+        bypassFilter: '',
+        bypassLocalAddresses: true,
+      });
+      const steam = new SteamAPI('fixture-key');
+      const client = (steam as unknown as { client: AxiosInstance }).client;
+      for (const instance of [coverArtArchiveHttpClient, client]) {
+        const captured = captureRequest(instance);
+        await instance.get('https://provider.example.com/fixture');
+        assert.equal(
+          captured.config?.headers.get('User-Agent'),
+          getUserAgent()
+        );
+        assert.equal(captured.config?.proxy, false);
+        assert.equal(
+          captured.config?.httpsAgent?.constructor.name,
+          'HttpsProxyAgent'
+        );
+      }
+    } finally {
+      head.mock.restore();
+      coverArtArchiveHttpClient.defaults.adapter = previousAdapter;
+      resetCustomProxyAgent();
+    }
   });
 });

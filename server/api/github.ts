@@ -147,7 +147,7 @@ class GithubAPI extends ExternalAPI {
     const boundedBranch =
       typeof branch === 'string' && branch.length <= 128 ? branch : 'main';
     const config = {
-      params: { per_page: boundedTake, branch: boundedBranch },
+      params: { per_page: boundedTake, sha: boundedBranch },
     };
 
     try {

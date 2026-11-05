@@ -46,6 +46,17 @@ type DiscoverPageKey = readonly [
 const encodeDiscoverPageKey = (key: DiscoverPageKey): string =>
   `${DISCOVER_RECOVERY_KEY_PREFIX}${JSON.stringify(key)}`;
 
+const isRecoverableDiscoverPageError = (error: unknown): boolean => {
+  if (!axios.isAxiosError(error) || axios.isCancel(error)) return false;
+  const status = error.response?.status;
+  return (
+    status === 408 ||
+    (status !== undefined && status >= 500) ||
+    (!error.response &&
+      ['ERR_NETWORK', 'ECONNABORTED', 'ETIMEDOUT'].includes(error.code ?? ''))
+  );
+};
+
 const fetchDiscoverPage = async <T, S>(
   key: string,
   defaultFetcher: ((key: string) => unknown) | undefined
@@ -61,19 +72,27 @@ const fetchDiscoverPage = async <T, S>(
   const [url, page, totalPages, totalResults, previousSkipped] = JSON.parse(
     key.slice(DISCOVER_RECOVERY_KEY_PREFIX.length)
   ) as DiscoverPageKey;
-  const loadPage = async () =>
-    axios.get<DiscoverPage<T, S>>(url).then((response) => response.data);
+  const loadPage = async (): Promise<DiscoverPage<T, S>> =>
+    defaultFetcher
+      ? ((await defaultFetcher(url)) as DiscoverPage<T, S>)
+      : axios.get<DiscoverPage<T, S>>(url).then((response) => response.data);
 
   try {
     return await loadPage();
   } catch (error) {
-    if (totalPages === null || totalResults === null || previousSkipped) {
+    if (
+      totalPages === null ||
+      totalResults === null ||
+      previousSkipped ||
+      !isRecoverableDiscoverPageError(error)
+    ) {
       throw error;
     }
 
     try {
       return await loadPage();
-    } catch {
+    } catch (retryError) {
+      if (!isRecoverableDiscoverPageError(retryError)) throw retryError;
       return {
         page,
         totalPages,
@@ -472,7 +491,10 @@ const useDiscover = <
   ]);
 
   const preserveCatalogError = Boolean(
-    recoverSinglePageFailure && (size === 1 || data?.[data.length - 1]?.skipped)
+    recoverSinglePageFailure &&
+    (size === 1 ||
+      data?.[data.length - 1]?.skipped ||
+      (error && !isRecoverableDiscoverPageError(error)))
   );
 
   return {
