@@ -351,40 +351,43 @@ const SeasonEpisodeTree = ({
               )
         }
       >
-        <button
-          type="button"
-          data-tree-part="episode-selection"
-          disabled={disabled || !isTreeEpisodeSelectable(episode)}
-          aria-label={intl.formatMessage(messages.episodeSelectionLabel, {
-            action: intl.formatMessage(
-              selectedIds.includes(episode.id)
-                ? messages.deselect
-                : messages.select
-            ),
-            episodeNumber: episode.episodeNumber,
-            episodeName: episode.name,
-          })}
-          aria-pressed={
-            selectedIds.includes(episode.id) && isTreeEpisodeSelectable(episode)
-          }
-          onClick={() => toggleEpisode(episode)}
-        >
-          <span data-tree-part="selection">
-            <SelectionCircleIndicator
-              selected={
-                selectedIds.includes(episode.id) &&
-                isTreeEpisodeSelectable(episode)
-              }
-              disabled={disabled || !isTreeEpisodeSelectable(episode)}
-            />
-          </span>
-          <span data-tree-part="number">
-            {formatTreeNumber(episode.episodeNumber)}
-          </span>
-          <span data-tree-part="name" title={episode.name}>
-            {episode.name}
-          </span>
-        </button>
+        <span data-tree-part="episode-selection">
+          <button
+            type="button"
+            data-tree-part="episode-control"
+            disabled={disabled || !isTreeEpisodeSelectable(episode)}
+            aria-label={intl.formatMessage(messages.episodeSelectionLabel, {
+              action: intl.formatMessage(
+                selectedIds.includes(episode.id)
+                  ? messages.deselect
+                  : messages.select
+              ),
+              episodeNumber: episode.episodeNumber,
+              episodeName: episode.name,
+            })}
+            aria-pressed={
+              selectedIds.includes(episode.id) &&
+              isTreeEpisodeSelectable(episode)
+            }
+            onClick={() => toggleEpisode(episode)}
+          >
+            <span data-tree-part="selection">
+              <SelectionCircleIndicator
+                selected={
+                  selectedIds.includes(episode.id) &&
+                  isTreeEpisodeSelectable(episode)
+                }
+                disabled={disabled || !isTreeEpisodeSelectable(episode)}
+              />
+            </span>
+            <span data-tree-part="number">
+              {formatTreeNumber(episode.episodeNumber)}
+            </span>
+            <span data-tree-part="name" title={episode.name}>
+              {episode.name}
+            </span>
+          </button>
+        </span>
       </Tooltip>
       <Tooltip
         content={
@@ -526,7 +529,10 @@ const SeasonEpisodeTree = ({
         </span>
       </Tooltip>
       <Tooltip content={intl.formatMessage(messages.releaseDateColumnTooltip)}>
-        <span className="card-table-heading">
+        <span
+          className="card-table-heading"
+          data-tree-part="release-date-heading"
+        >
           {intl.formatMessage(messages.releaseDate)}
         </span>
       </Tooltip>

@@ -1,6 +1,7 @@
 import Badge from '@app/components/Common/Badge';
 import defineMessages from '@app/utils/defineMessages';
 import type { EpisodeAvailabilitySourceType } from '@server/entity/EpisodeAvailability';
+import type { SeasonWithEpisodes } from '@server/models/Tv';
 import { useIntl } from 'react-intl';
 
 const messages = defineMessages('components.TvDetails.Season', {
@@ -47,7 +48,7 @@ const getAvailabilityMessages = (
 };
 
 export type EpisodeFileSource = NonNullable<
-  Episode['availabilitySources']
+  SeasonWithEpisodes['episodes'][number]['availabilitySources']
 >[number];
 const EpisodeFileAvailability = ({
   sources,
