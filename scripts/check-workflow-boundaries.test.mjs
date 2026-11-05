@@ -426,11 +426,30 @@ test('unit-test shards use GitHub-hosted runners', () => {
   ]);
   assert.deepEqual(ciWorkflow.on.workflow_dispatch.inputs.action.options, [
     'ci',
+    'contracts',
     'publish-image',
   ]);
   assert.equal(ciWorkflow.jobs['unit-test']?.strategy?.['max-parallel'], 4);
   assert.equal(ciWorkflow.jobs['preflight-deploy'], undefined);
   assert.equal(ciWorkflow.jobs['deploy-main'], undefined);
+});
+
+test('contracts dispatch selects only release-note and Helm validation', () => {
+  const workflow = yaml.load(
+    fs.readFileSync(
+      path.join(rootDirectory, '.github', 'workflows', 'ci.yml'),
+      'utf8'
+    )
+  );
+  const selected = Object.entries(workflow.jobs)
+    .filter(([, job]) => job.if?.includes("inputs.action == 'contracts'"))
+    .map(([name]) => name)
+    .sort();
+  assert.deepEqual(selected, ['helm', 'release-notes']);
+  for (const name of selected) {
+    assert.match(workflow.jobs[name].if, /inputs\.pr_number == ''/u);
+    assert.match(workflow.jobs[name].if, /github\.ref == 'refs\/heads\/main'/u);
+  }
 });
 
 test('owner PR validation is metadata-only, main-pinned, and exact-SHA', () => {

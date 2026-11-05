@@ -17,7 +17,7 @@ on:
         description: Action to run
         type: choice
         required: true
-        options: [ci, publish-image]
+        options: [ci, contracts, publish-image]
       runner_pool:
         description: GitHub-hosted runner pool
         type: choice
@@ -137,7 +137,7 @@ jobs:
       github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main' &&
       ((inputs.pr_number != '' && inputs.pr_sha != '' && inputs.target_run_id != '' &&
         github.actor == 'github-actions[bot]' && inputs.action == 'ci') ||
-       (inputs.pr_number == '' && (inputs.action == 'ci' || inputs.action == 'publish-image')))
+       (inputs.pr_number == '' && (inputs.action == 'ci' || inputs.action == 'contracts' || inputs.action == 'publish-image')))
     name: Release-note contract
     permissions:
       contents: read
@@ -531,7 +531,7 @@ jobs:
       github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main' &&
       ((inputs.pr_number != '' && inputs.pr_sha != '' && inputs.target_run_id != '' &&
         github.actor == 'github-actions[bot]' && inputs.action == 'ci') ||
-       (inputs.pr_number == '' && (inputs.action == 'ci' || inputs.action == 'publish-image')))
+       (inputs.pr_number == '' && (inputs.action == 'ci' || inputs.action == 'contracts' || inputs.action == 'publish-image')))
     name: Lint and test Helm charts
     permissions:
       contents: read
