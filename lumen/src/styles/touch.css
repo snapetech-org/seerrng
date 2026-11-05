@@ -1,0 +1,232 @@
+/* Mobile / touch pass (2026-10-31). Loaded last so it can adjust app.css and lumen.css.
+   Everything here is scoped to touch screens or phone widths unless noted, so the desktop
+   layout is unchanged. */
+
+/* poster request button for screens that can't hover (the hover overlay stays for mice) */
+.tq {
+  display: none;
+  position: absolute;
+  z-index: 3;
+  right: 4px;
+  bottom: 4px;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border: 0;
+  background: none;
+  place-items: center;
+  cursor: pointer;
+  color: #fff;
+}
+.tq::before {
+  content: '';
+  position: absolute;
+  inset: 5px;
+  border-radius: 50%;
+  background: rgba(12, 14, 18, 0.62);
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.22);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  transition: transform 0.15s var(--ease);
+}
+.tq .ico {
+  position: relative;
+  width: 18px;
+  height: 18px;
+  stroke-width: 2.4;
+}
+.tq:active::before {
+  transform: scale(0.88);
+  background: var(--accent);
+}
+.tq:disabled {
+  opacity: 0.5;
+}
+@media (hover: none), (pointer: coarse) {
+  .tq {
+    display: grid;
+  }
+}
+
+/* long-pressing artwork shouldn't pop the browser's save-image menu or start a drag */
+.poster .art img,
+.feat img,
+.rq .art img,
+.si .art img,
+.dposter img {
+  -webkit-touch-callout: none;
+  -webkit-user-drag: none;
+  user-select: none;
+}
+
+/* tap feedback on touch screens (only .btn had a pressed state) */
+@media (hover: none), (pointer: coarse) {
+  .poster .art,
+  .feat,
+  .rq,
+  .chip,
+  .tab,
+  .seg button,
+  .seg a {
+    transition:
+      transform 0.15s var(--ease),
+      background 0.2s var(--ease);
+  }
+  .poster .art:has(.hit:active),
+  .feat:has(.hit:active) {
+    transform: scale(0.97);
+  }
+  .rq:has(.tt a:active) {
+    transform: scale(0.985);
+    background: var(--surface-2);
+  }
+  .chip:active,
+  .seg button:active,
+  .seg a:active {
+    transform: scale(0.95);
+  }
+  .tab:active {
+    background: var(--surface-2);
+  }
+  .sec-head a:active,
+  .sec-head button.link:active {
+    opacity: 0.6;
+  }
+}
+
+/* bigger tap areas without changing how things look */
+.sec-head a,
+.sec-head button.link {
+  position: relative;
+}
+.sec-head a::after,
+.sec-head button.link::after {
+  content: '';
+  position: absolute;
+  inset: -6px -10px;
+}
+.ph-only-avatar {
+  position: relative;
+}
+.ph-only-avatar::after {
+  content: '';
+  position: absolute;
+  inset: -4px;
+  border-radius: 50%;
+}
+.adv summary {
+  min-height: 44px;
+  margin: -10px -14px;
+  padding: 0 14px;
+}
+.adv[open] summary {
+  margin-bottom: 0;
+}
+
+/* iOS zooms the page when a field under 16px gets focus; make the native pickers comfy too */
+@media (hover: none), (pointer: coarse) {
+  .sel {
+    min-height: 44px;
+  }
+  .sel select {
+    font-size: 16px;
+    min-height: 42px;
+  }
+}
+
+/* Discover's shortcut chips run off the side: fade the edge so it's clear there's more */
+@media (max-width: 1039px) {
+  .chips:not(.wrap) {
+    -webkit-mask-image: linear-gradient(
+      to right,
+      #000 calc(100% - 36px),
+      transparent
+    );
+    mask-image: linear-gradient(to right, #000 calc(100% - 36px), transparent);
+  }
+}
+
+/* toast: full width on phones so it doesn't sit over half a card, with room for Undo */
+.toast span {
+  flex: 1;
+}
+@media (max-width: 699px) {
+  .toast {
+    left: 12px;
+    right: 12px;
+    max-width: none;
+    transform: translateY(20px);
+  }
+  .toast.show {
+    transform: translateY(0);
+  }
+}
+
+/* Requests: pull-to-refresh pill (fixed, so it never moves the page) */
+.ptr {
+  position: fixed;
+  z-index: 90;
+  top: env(safe-area-inset-top);
+  left: 50%;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 14px;
+  border-radius: var(--r-full);
+  background: var(--surface);
+  box-shadow:
+    0 0 0 1px var(--line),
+    var(--shadow-float);
+  font-size: 13px;
+  font-weight: 650;
+  color: var(--ink-2);
+  pointer-events: none;
+  opacity: 0;
+}
+.ptr.idle,
+.ptr.busy {
+  transition:
+    transform 0.25s var(--ease),
+    opacity 0.25s;
+}
+.ptr.armed {
+  color: var(--accent);
+}
+.ptr.busy .ico {
+  animation: ptr-spin 0.8s linear infinite;
+}
+@keyframes ptr-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+html.no-overscroll,
+html.no-overscroll body {
+  overscroll-behavior-y: contain;
+}
+
+/* Search: results wrapper is only there to notice taps on results */
+.results {
+  display: contents;
+}
+/* old results fade while the new search runs */
+.results.stale > * {
+  opacity: 0.45;
+  transition: opacity 0.2s;
+}
+.note.searching {
+  animation: pulse-note 1.2s ease-in-out infinite alternate;
+}
+@keyframes pulse-note {
+  from {
+    opacity: 0.45;
+  }
+}
+
+/* the floating back button on detail pages: 40px circle, 48px to tap */
+.dback::after {
+  content: '';
+  position: absolute;
+  inset: -4px;
+  border-radius: 50%;
+}

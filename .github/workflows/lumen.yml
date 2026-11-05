@@ -1,0 +1,54 @@
+# ng-runner-policy: github-hosted-primary-v1
+name: Lumen validation
+on:
+  pull_request:
+    branches: [main]
+    paths: ['lumen/**', '.github/workflows/lumen.yml']
+  push:
+    branches: [main]
+    paths: ['lumen/**', '.github/workflows/lumen.yml']
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: lumen-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: false
+jobs:
+  lumen:
+    name: Build, proxy security and browser tests
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version-file: package.json
+          package-manager-cache: false
+      - name: Install Lumen dependencies
+        working-directory: lumen
+        run: npm ci --ignore-scripts
+      - name: Audit production dependencies
+        working-directory: lumen
+        run: npm audit --omit=dev --audit-level=low
+      - name: Build Lumen
+        working-directory: lumen
+        run: npm run build
+      - name: Test real nginx forwarding and Plex links
+        working-directory: lumen
+        run: npm test
+      - name: Install Chromium
+        working-directory: lumen
+        run: npx --no-install playwright install --with-deps chromium
+      - name: Test Lumen in desktop, phone and tablet viewports
+        working-directory: lumen
+        run: npm run test:browser -- --workers=2
+      - name: Retain browser evidence
+        if: always()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: lumen-browser-evidence
+          path: lumen/test-results/
+          if-no-files-found: ignore
+          retention-days: 7

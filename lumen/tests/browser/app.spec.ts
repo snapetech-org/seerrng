@@ -1,0 +1,288 @@
+import { expect, test, type Page } from '@playwright/test';
+
+// These fixtures exercise the built frontend's API boundary, not provider credentials.
+const movie = {
+  posterPath: '/qa-poster.png',
+  backdropPath: '/qa-backdrop.png',
+  id: 101,
+  title: 'The Test Film',
+  mediaType: 'movie',
+  releaseDate: '2020-01-01',
+  overview:
+    'A deterministic catalogue title for request and account isolation checks.',
+  genres: [{ id: 18, name: 'Drama' }],
+  releases: { results: [] },
+  credits: { cast: [], crew: [] },
+  runtime: 100,
+  voteAverage: 7.5,
+};
+const available = {
+  id: 10,
+  status: 5,
+  mediaUrl:
+    'https://app.plex.tv/desktop/#!/server/test/details?key=%2Flibrary%2Fmetadata%2F101',
+  iOSPlexUrl:
+    'plex://preplay/?metadataKey=%2Flibrary%2Fmetadata%2F101&server=test',
+};
+const paged = (results: unknown[]) => ({
+  page: 1,
+  totalPages: 1,
+  totalResults: results.length,
+  results,
+});
+
+async function fixtures(page: Page) {
+  let user = 'owner';
+  let holdFriend = false;
+  let release: (() => void) | undefined;
+  let pending: Promise<void> | undefined;
+  const unknown: string[] = [];
+  const errors: string[] = [];
+  page.on('pageerror', (e) => errors.push(e.message));
+  await page.route('https://**/*', (route) => route.abort());
+  await page.route(/(?:image\.tmdb\.org|\/imageproxy\/tmdb)\//, (route) =>
+    route.fulfill({
+      contentType: 'image/svg+xml',
+      body: '<svg xmlns="http://www.w3.org/2000/svg" width="780" height="440"><rect width="780" height="440" fill="#30405c"/><circle cx="390" cy="220" r="100" fill="#526996"/></svg>',
+    })
+  );
+  await page.route('**/lumen-config.json', (route) =>
+    route.fulfill({ json: {} })
+  );
+  await page.route('**/api/v1/**', async (route) => {
+    const request = route.request();
+    const path = new URL(request.url()).pathname.slice('/api/v1'.length);
+    let body: unknown;
+    let status = 200;
+    if (path === '/auth/me') {
+      status = user ? 200 : 401;
+      body = user
+        ? { id: user === 'owner' ? 1 : 2, displayName: user, permissions: 2 }
+        : { message: 'Sign in' };
+    } else if (path === '/auth/logout') {
+      user = '';
+      status = 204;
+    } else if (path === '/auth/local') {
+      user = request.postDataJSON().email.startsWith('owner')
+        ? 'owner'
+        : 'friend';
+      body = {};
+    } else if (path === '/settings/public')
+      body = {
+        applicationTitle: 'SeerrNG',
+        enabledMediaCategories: {},
+        movie4kEnabled: false,
+      };
+    else if (/^\/user\/\d+\/quota$/.test(path)) body = {};
+    else if (path === '/discover/genreslider/movie')
+      body = [{ id: 18, name: 'Drama', backdrops: [] }];
+    else if (/^\/discover\/(trending|movies|tv)(\/upcoming)?$/.test(path))
+      body = paged(path === '/discover/tv' ? [] : [movie]);
+    else if (path === '/discover/books') body = paged([]);
+    else if (path === '/media') body = paged([]);
+    else if (path === '/request')
+      body = { pageInfo: { pages: 1, results: 0 }, results: [] };
+    else if (path === '/request/count')
+      body = { total: 0, pending: 0, approved: 0, processing: 0, available: 0 };
+    else if (path === '/movie/101/recommendations') body = paged([]);
+    else if (path === '/movie/101') {
+      const current = user;
+      if (current === 'friend' && holdFriend) await pending;
+      body = {
+        ...movie,
+        mediaInfo: current === 'owner' ? available : { status: 1 },
+      };
+    } else if (path === '/service/radarr') body = [];
+    else {
+      unknown.push(`${request.method()} ${path}`);
+      status = 404;
+      body = { message: 'Unspecified QA endpoint' };
+    }
+    await route.fulfill({ status, ...(status === 204 ? {} : { json: body }) });
+  });
+  return {
+    unknown,
+    errors,
+    hold() {
+      holdFriend = true;
+      pending = new Promise<void>((r) => {
+        release = r;
+      });
+    },
+    release() {
+      holdFriend = false;
+      release?.();
+    },
+  };
+}
+
+async function openMovie(page: Page) {
+  await page
+    .getByRole('link', { name: /The Test Film/ })
+    .first()
+    .click();
+  await expect(
+    page.getByRole('heading', { name: 'The Test Film' })
+  ).toBeVisible();
+}
+async function profile(page: Page) {
+  // Detail pages replace the phone tab bar with a playback action bar.
+  if (await page.locator('.dback').isVisible()) {
+    await page
+      .getByRole('button', { name: 'Back', exact: true })
+      .filter({ visible: true })
+      .first()
+      .click();
+    await expect(
+      page.getByRole('heading', { name: 'Discover', exact: true })
+    ).toBeVisible();
+  }
+  await page.locator('a[href="/me"]').filter({ visible: true }).first().click();
+  await expect(
+    page.getByRole('heading', { name: 'You', exact: true })
+  ).toBeVisible();
+}
+
+test('catalogue, Plex device links, requests and responsive layout', async ({
+  page,
+}, info) => {
+  const fixture = await fixtures(page);
+  await page.goto('/');
+  await expect(
+    page.getByRole('heading', { name: 'Discover', exact: true })
+  ).toBeVisible();
+  await page.screenshot({
+    path: info.outputPath('discover.png'),
+    fullPage: true,
+    animations: 'disabled',
+  });
+  await openMovie(page);
+  const link = page
+    .getByRole('link', { name: 'Watch on Plex', exact: true })
+    .filter({ visible: true })
+    .first();
+  await expect(link).toHaveAttribute(
+    'href',
+    info.project.name === 'android'
+      ? /^intent:\/\//
+      : ['iphone', 'tablet'].includes(info.project.name)
+        ? /^plex:\/\//
+        : /^https:\/\/app\.plex\.tv\//
+  );
+  if (info.project.name === 'desktop')
+    await expect(link).toHaveAttribute('rel', 'noreferrer');
+  await page.screenshot({
+    path: info.outputPath('movie.png'),
+    fullPage: true,
+    animations: 'disabled',
+  });
+  expect(
+    await page.evaluate(
+      () => document.documentElement.scrollWidth <= innerWidth
+    )
+  ).toBeTruthy();
+  await profile(page);
+  await page.screenshot({
+    path: info.outputPath('profile.png'),
+    fullPage: true,
+    animations: 'disabled',
+  });
+  await page
+    .locator('a[href="/requests"]')
+    .filter({ visible: true })
+    .first()
+    .click();
+  await expect(
+    page.getByRole('heading', { name: 'Requests', exact: true })
+  ).toBeVisible();
+  await page.screenshot({
+    path: info.outputPath('requests.png'),
+    fullPage: true,
+    animations: 'disabled',
+  });
+  expect(fixture.errors).toEqual([]);
+  expect(fixture.unknown).toEqual([]);
+});
+
+test('account changes clear private API responses and preferences without reloading', async ({
+  page,
+}) => {
+  const fixture = await fixtures(page);
+  await page.goto('/');
+  await openMovie(page);
+  await expect(
+    page
+      .getByRole('link', { name: 'Watch on Plex', exact: true })
+      .filter({ visible: true })
+      .first()
+  ).toBeVisible();
+  await profile(page);
+  await page
+    .getByRole('group', { name: 'Theme', exact: true })
+    .getByRole('button', { name: 'Light', exact: true })
+    .click();
+  await expect
+    .poll(() =>
+      page.evaluate(
+        () => JSON.parse(localStorage.getItem('lumen-prefs:1') || '{}').theme
+      )
+    )
+    .toBe('light');
+  await page.getByRole('button', { name: 'Sign out', exact: true }).click();
+  await page
+    .getByRole('button', { name: 'Use an email and password instead' })
+    .click();
+  await page.getByLabel('Email', { exact: true }).fill('friend@example.test');
+  await page.getByLabel('Password', { exact: true }).fill('fixture-only');
+  fixture.hold();
+  await page.getByRole('button', { name: 'Sign in', exact: true }).click();
+  // Login keeps the current route (/me); the new account must start with its own preferences.
+  await expect(
+    page
+      .getByRole('group', { name: 'Theme', exact: true })
+      .getByRole('button', { name: 'Dark', exact: true })
+  ).toHaveAttribute('aria-pressed', 'true');
+  await page.locator('a[href="/"]').filter({ visible: true }).first().click();
+  await page
+    .getByRole('link', { name: /The Test Film/ })
+    .first()
+    .click();
+  await expect(page.locator('.detail-loading')).toBeVisible();
+  await expect(
+    page.getByRole('link', { name: 'Watch on Plex', exact: true })
+  ).toHaveCount(0);
+  fixture.release();
+  await expect(
+    page.getByRole('heading', { name: 'The Test Film' })
+  ).toBeVisible();
+  await expect(
+    page
+      .getByRole('button', { name: 'Request', exact: true })
+      .filter({ visible: true })
+      .first()
+  ).toBeVisible();
+  await expect(
+    page.getByRole('link', { name: 'Watch on Plex', exact: true })
+  ).toHaveCount(0);
+  expect(fixture.errors).toEqual([]);
+  expect(fixture.unknown).toEqual([]);
+});
+
+test('empty and failed trending feeds finish loading', async ({ page }) => {
+  const fixture = await fixtures(page);
+  await page.route('**/api/v1/discover/trending', (route) =>
+    route.fulfill({ json: paged([]) })
+  );
+  await page.goto('/');
+  await expect(
+    page.getByText('No popular titles available', { exact: true })
+  ).toBeVisible();
+  await page.route('**/api/v1/discover/trending', (route) =>
+    route.fulfill({ status: 503, json: { message: 'Provider unavailable' } })
+  );
+  await page.reload();
+  await expect(
+    page.getByText('Couldn’t load popular titles', { exact: true })
+  ).toBeVisible();
+  expect(fixture.errors).toEqual([]);
+});

@@ -1,0 +1,12 @@
+{
+  "seerrPublicUrl": "https://seerr.example.com",
+  "defaults": {
+    "narratorChoice": true,
+    "hoverRequest": true,
+    "wholeSeriesDefault": true,
+    "showBooks": true,
+    "theme": "dark",
+    "rows": { "genres": true, "comingSoon": true }
+  },
+  "locked": []
+}
