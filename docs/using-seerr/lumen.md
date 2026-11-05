@@ -56,6 +56,7 @@ Now pick the section that fits you:
 
 - [**A. New install**](#a-new-install-seerrng-and-lumen-together): you don't run SeerrNG yet.
 - [**B. You already run SeerrNG**](#b-add-lumen-to-an-existing-seerrng): add Lumen next to it.
+  Nothing in your SeerrNG changes except one setting, Trust Reverse Proxy.
 
 ## A. New install: SeerrNG and Lumen together
 
@@ -176,26 +177,32 @@ services:
 
 Then run `docker compose up -d` in that folder.
 
-### 2b. Anything else
+### 2b. Anything else: use the Lumen-only file
 
-Create a new folder containing a file called `compose.yaml` with this:
+This file installs Lumen alone. It works wherever SeerrNG runs: Docker, a Linux
+package, Windows, or another machine.
 
-```yaml
-services:
-  lumen:
-    build: https://github.com/snapetech-org/seerrng.git#main:lumen
-    image: seerrng-lumen:local
-    container_name: lumen
-    environment:
-      SEERR_URL: http://192.168.1.50:5055 # from the table in step 1
-      SEERR_FULL_URL: http://192.168.1.50:5055 # where people open full SeerrNG
-      LUMEN_TRUSTED_PROXIES: ''
-    ports:
-      - 5080:80
-    restart: unless-stopped
+```sh
+mkdir lumen
+cd lumen
+curl -o compose.yaml https://raw.githubusercontent.com/snapetech-org/seerrng/main/lumen/compose.lumen-only.yaml
 ```
 
-Then run `docker compose up -d` in that folder.
+No `curl`? Open
+[lumen/compose.lumen-only.yaml](https://github.com/snapetech-org/seerrng/blob/main/lumen/compose.lumen-only.yaml),
+click **Download raw file**, and save it in the folder as `compose.yaml`.
+
+Open `compose.yaml` in a text editor and change both addresses:
+
+- `SEERR_URL`: from the table in step 1, for example `http://192.168.1.50:5055`.
+- `SEERR_FULL_URL`: where people open full SeerrNG in their browser. This is often
+  the same address, or your SeerrNG domain.
+
+Then start it:
+
+```sh
+docker compose up -d
+```
 
 ### 3. Turn on Trust Reverse Proxy
 
@@ -343,7 +350,8 @@ docker compose up -d
 ```
 
 `pull` updates SeerrNG (`--ignore-buildable` skips Lumen, which is built rather than downloaded). `build --pull` rebuilds Lumen from the latest code. Users
-get the new version the next time they open or refresh Lumen.
+get the new version the next time they open or refresh Lumen. With the Lumen-only
+file, `pull` has nothing to update. Update your SeerrNG the way you always have.
 
 ## Switching back
 

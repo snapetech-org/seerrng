@@ -7,8 +7,7 @@
 # Update:  docker compose pull --ignore-buildable && docker compose build --pull && docker compose up -d
 #
 # Step-by-step guide: docs/using-seerr/lumen.md in the SeerrNG repository.
-# Already running SeerrNG? Delete the seerrng service below (and the depends_on lines under lumen),
-# then point SEERR_URL at your existing SeerrNG.
+# Already running SeerrNG? Use compose.lumen-only.yaml instead; it installs Lumen alone.
 
 services:
   seerrng:

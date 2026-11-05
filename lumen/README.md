@@ -13,7 +13,9 @@ curl -o compose.yaml https://raw.githubusercontent.com/snapetech-org/seerrng/mai
 docker compose up -d
 ```
 
-Or build and run Lumen alone:
+Already running SeerrNG? [`compose.lumen-only.yaml`](./compose.lumen-only.yaml) installs Lumen alone; set `SEERR_URL` in it to your SeerrNG.
+
+Or build and run Lumen without Compose:
 
 ```sh
 docker build -t lumen .
