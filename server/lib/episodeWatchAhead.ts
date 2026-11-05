@@ -486,7 +486,7 @@ class EpisodeWatchAhead {
         }
         const tvdbId = getPlexTvdbId(series);
         if (!tvdbId) continue;
-        // Playback is a household signal. Request ownership, access, quota and
+        // Playback is a household signal. Request ownership, access, approval and
         // destination are still checked by reconcileEnrollment for each parent.
         for (const enrollment of enrollments.filter(
           (candidate) => candidate.media.tvdbId === tvdbId

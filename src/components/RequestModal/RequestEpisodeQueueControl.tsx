@@ -10,7 +10,7 @@ import { useSWRConfig } from 'swr';
 
 const messages = defineMessages('components.RequestEpisodeQueueControl', {
   watchAheadLoading: 'Loading your Episode Queue setting…',
-  watchAheadOverride: 'Queue length',
+  watchAheadOverride: 'Queue Length',
   watchAheadUseDefault: 'Account default ({count})',
   watchAheadOff: 'Off',
   watchAheadOverrideHelp:

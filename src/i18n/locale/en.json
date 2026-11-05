@@ -2701,7 +2701,7 @@
   "components.RequestEpisodeQueueControl.watchAheadEpisodeOption": "{count, plural, one {# episode} other {# episodes}}",
   "components.RequestEpisodeQueueControl.watchAheadLoading": "Loading your Episode Queue setting…",
   "components.RequestEpisodeQueueControl.watchAheadOff": "Off",
-  "components.RequestEpisodeQueueControl.watchAheadOverride": "Queue length",
+  "components.RequestEpisodeQueueControl.watchAheadOverride": "Queue Length",
   "components.RequestEpisodeQueueControl.watchAheadOverrideHelp": "Changes future queueing only. Existing episode requests and downloaded files stay in place.",
   "components.RequestEpisodeQueueControl.watchAheadSaveFailed": "Could not save Episode Queue. Reload the request and try again.",
   "components.RequestEpisodeQueueControl.watchAheadSaved": "Episode Queue saved.",
