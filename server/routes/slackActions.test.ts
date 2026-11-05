@@ -1,3 +1,4 @@
+import requestDispatchManager from '@server/lib/requestDispatch';
 import assert from 'node:assert/strict';
 import { createHmac } from 'node:crypto';
 import { afterEach, before, beforeEach, describe, it, mock } from 'node:test';
@@ -128,6 +129,8 @@ before(() => {
 });
 
 beforeEach(() => {
+  // Exercise approval and enqueueing without dispatching to an unconfigured service.
+  mock.method(requestDispatchManager, 'enqueue', async () => undefined);
   const slack = getSettings().notifications.agents.slack;
   originalSlackAgent = structuredClone(slack);
   slack.options = {
@@ -142,6 +145,7 @@ beforeEach(() => {
 afterEach(async () => {
   getSettings().notifications.agents.slack = originalSlackAgent;
   await waitForBackgroundTasks();
+  mock.restoreAll();
 });
 
 describe('Slack request action callback', () => {

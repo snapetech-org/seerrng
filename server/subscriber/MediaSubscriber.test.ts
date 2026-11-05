@@ -200,7 +200,7 @@ describe('MediaSubscriber', () => {
         MediaRequest,
         { id: request.id }
       );
-      assert.notStrictEqual(transitioned.status, MediaRequestStatus.PENDING);
+      assert.strictEqual(transitioned.status, MediaRequestStatus.COMPLETED);
       await queryRunner.rollbackTransaction();
     } finally {
       if (queryRunner.isTransactionActive) {

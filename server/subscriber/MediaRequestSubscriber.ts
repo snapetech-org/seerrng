@@ -96,6 +96,7 @@ import {
   isAddableBookshelfLookupResult,
 } from '@server/utils/bookshelfLookup';
 import { mapWithConcurrency } from '@server/utils/concurrency';
+import { getHttpErrorDetails } from '@server/utils/httpError';
 import { withNestedTransaction } from '@server/utils/nestedTransaction';
 import { readarrServiceSupportsFormat } from '@server/utils/readarrService';
 import { resolveSonarrMonitorNewItems } from '@server/utils/servarrSettings';
@@ -330,10 +331,22 @@ const getSeasonYear = (date?: string): number | undefined => {
   return year ? Number(year) : undefined;
 };
 
-const isTransientExternalError = (error: unknown): boolean => {
-  let current: unknown = error;
+function* dispatchErrorCauses(error: unknown): Generator<unknown> {
+  let current = error;
+  const seen = new Set<unknown>();
+  for (
+    let depth = 0;
+    current != null && depth < 8 && !seen.has(current);
+    depth++
+  ) {
+    seen.add(current);
+    yield current;
+    current = current instanceof Error ? current.cause : undefined;
+  }
+}
 
-  while (current) {
+const isTransientExternalError = (error: unknown): boolean => {
+  for (const current of dispatchErrorCauses(error)) {
     const message =
       current instanceof Error ? current.message : String(current);
 
@@ -345,17 +358,43 @@ const isTransientExternalError = (error: unknown): boolean => {
     ) {
       return true;
     }
+  }
 
-    current = current instanceof Error ? current.cause : undefined;
+  return false;
+};
+
+const isRetryableRequestDispatchError = (error: unknown): boolean => {
+  const { status } = getHttpErrorDetails(error);
+  if (
+    status === 408 ||
+    status === 429 ||
+    (status !== undefined && status >= 500)
+  ) {
+    return true;
+  }
+
+  if (isTransientExternalError(error)) {
+    return true;
+  }
+
+  for (const current of dispatchErrorCauses(error)) {
+    const message =
+      current instanceof Error ? current.message : String(current);
+    if (
+      /(?:status code|status|HTTP)\D{0,12}(?:408|5\d{2})|ECONNABORTED|ECONNREFUSED|EHOSTUNREACH|ENETUNREACH|EPIPE|ERR_NETWORK/i.test(
+        message
+      )
+    ) {
+      return true;
+    }
   }
 
   return false;
 };
 
 const getRetryAfterMs = (error: unknown): number | undefined => {
-  let current: unknown = error;
-
-  while (current instanceof Error) {
+  for (const current of dispatchErrorCauses(error)) {
+    if (!(current instanceof Error)) continue;
     const response = (
       current as Error & {
         response?: { headers?: Record<string, string | string[] | undefined> };
@@ -377,8 +416,6 @@ const getRetryAfterMs = (error: unknown): number | undefined => {
         return Math.max(retryAfterDate - Date.now(), 0);
       }
     }
-
-    current = current.cause;
   }
 
   return undefined;
@@ -788,7 +825,7 @@ export class MediaRequestSubscriber implements EntitySubscriberInterface<MediaRe
     await getRepository(MediaRequest).save(entity);
 
     logger.warn(
-      `Request points to a missing or incompatible ${serviceName} server; marking request as FAILED`,
+      `No usable ${entity.is4k ? '4K ' : ''}${serviceName} server is configured for this request; marking request as FAILED`,
       {
         label: 'Media Request',
         requestId: entity.id,
@@ -959,7 +996,11 @@ export class MediaRequestSubscriber implements EntitySubscriberInterface<MediaRe
     request: MediaRequest
   ): Promise<RequestDispatchOutcome> {
     if (request.type === MediaType.MOVIE) {
-      const delivered = await this.sendToRadarr(request);
+      const dispatch = await this.sendToRadarr(request);
+      if (typeof dispatch !== 'boolean') {
+        return dispatch;
+      }
+      const delivered = dispatch;
       if (!delivered) {
         await recordRequestStatusOverride(
           request.id,
@@ -970,7 +1011,11 @@ export class MediaRequestSubscriber implements EntitySubscriberInterface<MediaRe
       return { delivered };
     }
     if (request.type === MediaType.TV) {
-      const delivered = await this.sendToSonarr(request);
+      const dispatch = await this.sendToSonarr(request);
+      if (typeof dispatch !== 'boolean') {
+        return dispatch;
+      }
+      const delivered = dispatch;
       if (!delivered) {
         await recordRequestStatusOverride(
           request.id,
@@ -1054,7 +1099,9 @@ export class MediaRequestSubscriber implements EntitySubscriberInterface<MediaRe
     }
   }
 
-  public async sendToRadarr(entity: MediaRequest): Promise<boolean> {
+  public async sendToRadarr(
+    entity: MediaRequest
+  ): Promise<boolean | RequestDispatchOutcome> {
     if (
       entity.status === MediaRequestStatus.APPROVED &&
       entity.type === MediaType.MOVIE
@@ -1102,24 +1149,8 @@ export class MediaRequestSubscriber implements EntitySubscriberInterface<MediaRe
         }
 
         if (!radarrSettings) {
-          if (hasExplicitServer) {
-            await this.failRequestForMissingServer(entity, media, 'Radarr');
-            return true;
-          }
-
-          logger.warn(
-            `There is no default ${
-              entity.is4k ? '4K ' : ''
-            }Radarr server configured. Did you set any of your ${
-              entity.is4k ? '4K ' : ''
-            }Radarr servers as default?`,
-            {
-              label: 'Media Request',
-              requestId: entity.id,
-              mediaId: entity.media.id,
-            }
-          );
-          return false;
+          await this.failRequestForMissingServer(entity, media, 'Radarr');
+          return true;
         }
 
         let rootFolder = radarrSettings.activeDirectory;
@@ -1266,6 +1297,28 @@ export class MediaRequestSubscriber implements EntitySubscriberInterface<MediaRe
         });
         return true;
       } catch (e) {
+        if (isRetryableRequestDispatchError(e)) {
+          const details = getHttpErrorDetails(e);
+          logger.warn(
+            'Temporary Radarr dispatch failure; keeping the approved request in the automatic retry queue.',
+            {
+              label: 'Media Request',
+              requestId: entity.id,
+              mediaId: entity.media.id,
+              serviceType: 'radarr',
+              ...(details.errorCode ? { errorCode: details.errorCode } : {}),
+              ...(details.status ? { httpStatus: details.status } : {}),
+            }
+          );
+          // Radarr reconciles an existing movie by TMDB ID before creating one,
+          // so a retry can recover a request accepted before its response was lost.
+          const retryAfterMs = getRetryAfterMs(e);
+          return {
+            delivered: false,
+            ...(retryAfterMs !== undefined ? { retryAfterMs } : {}),
+          };
+        }
+
         const requestRepository = getRepository(MediaRequest);
         const mediaRepository = getRepository(Media);
         const media = await mediaRepository.findOne({
@@ -1339,7 +1392,9 @@ export class MediaRequestSubscriber implements EntitySubscriberInterface<MediaRe
     return sonarrSettings.activeProfileId;
   }
 
-  public async sendToSonarr(entity: MediaRequest): Promise<boolean> {
+  public async sendToSonarr(
+    entity: MediaRequest
+  ): Promise<boolean | RequestDispatchOutcome> {
     if (
       entity.status === MediaRequestStatus.APPROVED &&
       entity.type === MediaType.TV
@@ -1382,24 +1437,8 @@ export class MediaRequestSubscriber implements EntitySubscriberInterface<MediaRe
         }
 
         if (!sonarrSettings) {
-          if (hasExplicitServer) {
-            await this.failRequestForMissingServer(entity, media, 'Sonarr');
-            return true;
-          }
-
-          logger.warn(
-            `There is no default ${
-              entity.is4k ? '4K ' : ''
-            }Sonarr server configured. Did you set any of your ${
-              entity.is4k ? '4K ' : ''
-            }Sonarr servers as default?`,
-            {
-              label: 'Media Request',
-              requestId: entity.id,
-              mediaId: entity.media.id,
-            }
-          );
-          return false;
+          await this.failRequestForMissingServer(entity, media, 'Sonarr');
+          return true;
         }
 
         const tmdb = new TheMovieDb();
@@ -1777,6 +1816,28 @@ export class MediaRequestSubscriber implements EntitySubscriberInterface<MediaRe
         });
         return true;
       } catch (e) {
+        if (isRetryableRequestDispatchError(e)) {
+          const details = getHttpErrorDetails(e);
+          logger.warn(
+            'Temporary Sonarr dispatch failure; keeping the approved request in the automatic retry queue.',
+            {
+              label: 'Media Request',
+              requestId: entity.id,
+              mediaId: entity.media.id,
+              serviceType: 'sonarr',
+              ...(details.errorCode ? { errorCode: details.errorCode } : {}),
+              ...(details.status ? { httpStatus: details.status } : {}),
+            }
+          );
+          // Sonarr reconciles an existing series by TVDB ID before creating one,
+          // so a retry can recover a request accepted before its response was lost.
+          const retryAfterMs = getRetryAfterMs(e);
+          return {
+            delivered: false,
+            ...(retryAfterMs !== undefined ? { retryAfterMs } : {}),
+          };
+        }
+
         const requestRepository = getRepository(MediaRequest);
         const mediaRepository = getRepository(Media);
         const media = await mediaRepository.findOne({
