@@ -426,11 +426,30 @@ test('unit-test shards use GitHub-hosted runners', () => {
   ]);
   assert.deepEqual(ciWorkflow.on.workflow_dispatch.inputs.action.options, [
     'ci',
+    'contracts',
     'publish-image',
   ]);
   assert.equal(ciWorkflow.jobs['unit-test']?.strategy?.['max-parallel'], 4);
   assert.equal(ciWorkflow.jobs['preflight-deploy'], undefined);
   assert.equal(ciWorkflow.jobs['deploy-main'], undefined);
+});
+
+test('contracts dispatch selects only release-note and Helm validation', () => {
+  const workflow = yaml.load(
+    fs.readFileSync(
+      path.join(rootDirectory, '.github', 'workflows', 'ci.yml'),
+      'utf8'
+    )
+  );
+  const selected = Object.entries(workflow.jobs)
+    .filter(([, job]) => job.if?.includes("inputs.action == 'contracts'"))
+    .map(([name]) => name)
+    .sort();
+  assert.deepEqual(selected, ['helm', 'release-notes']);
+  for (const name of selected) {
+    assert.match(workflow.jobs[name].if, /inputs\.pr_number == ''/u);
+    assert.match(workflow.jobs[name].if, /github\.ref == 'refs\/heads\/main'/u);
+  }
 });
 
 test('owner PR validation is metadata-only, main-pinned, and exact-SHA', () => {
@@ -452,14 +471,7 @@ test('owner PR validation is metadata-only, main-pinned, and exact-SHA', () => {
   assert.equal(workflowInputs.target_run_id.required, false);
   assert.match(dispatcher.if, /github\.actor == 'snapetech'/u);
   assert.match(dispatcher.if, /github\.event\.action == 'labeled'/u);
-  assert.match(
-    dispatcher.if,
-    /startsWith\(github\.event\.label\.name, 'action:'\)/u
-  );
-  assert.match(
-    dispatcher.if,
-    /startsWith\(github\.event\.label\.name, 'pool:'\)/u
-  );
+  assert.match(dispatcher.if, /github\.event\.label\.name == 'action:ci'/u);
   assert.match(
     dispatcher.if,
     /github\.event\.pull_request\.user\.login == 'snapetech'/u
@@ -527,15 +539,30 @@ test('owner PR validation is metadata-only, main-pinned, and exact-SHA', () => {
     unitTest.strategy.matrix.include.map((shard) => shard.shard),
     [1, 2, 3, 4]
   );
-  const skippedForOwnerPr = ['release-notes', 'helm'];
-  for (const jobId of skippedForOwnerPr) {
-    assert.match(ciWorkflow.jobs[jobId].if, /inputs\.pr_number == ''/u, jobId);
-  }
+  const contract = ciWorkflow.jobs['release-notes'];
+  assert.match(contract.if, /inputs\.pr_sha != ''/u);
+  const contractTooling = contract.steps.find(
+    (step) => step.name === 'Checkout release validation tooling'
+  );
+  assert.equal(contractTooling.with.ref, '${{ github.sha }}');
+  assert.equal(contractTooling.with.path, '.ci-release-tooling');
+  assert.equal(contractTooling.with['persist-credentials'], false);
+  assert.match(
+    contract.steps.find((step) => step.name === 'Checkout').with.ref,
+    /inputs\.pr_sha/u
+  );
+  assert.equal(
+    contract.steps.find(
+      (step) => step.name === 'Resolve validation range and PR body'
+    ).run,
+    'node .ci-release-tooling/scripts/prepare-release-note-validation.mjs'
+  );
 
   const reusableOwnerPrChecks = [
     ['cypress', 'cypress.yml', 'cypress-run'],
     ['test-docs', 'test-docs.yml', 'test-build'],
     ['docs-links', 'docs-link-check.yml', 'link-check'],
+    ['helm', 'lint-helm-charts.yml', 'lint-test'],
   ];
   for (const [jobId, workflowFile, reusableJobId] of reusableOwnerPrChecks) {
     const callerJob = ciWorkflow.jobs[jobId];
@@ -586,6 +613,8 @@ test('owner PR validation is metadata-only, main-pinned, and exact-SHA', () => {
 
   assert.equal(reporter.name, 'Report trusted owner PR validation');
   assert.deepEqual(reporter.needs, [
+    'release-notes',
+    'helm',
     'i18n-and-tooling',
     'test',
     'unit-test',
@@ -609,7 +638,13 @@ test('owner PR validation is metadata-only, main-pinned, and exact-SHA', () => {
     reporter.steps[0].env.VALIDATION_RESULT,
     /needs\.test\.result == 'success'/u
   );
-  for (const jobId of ['cypress', 'test-docs', 'docs-links']) {
+  for (const jobId of [
+    'release-notes',
+    'helm',
+    'cypress',
+    'test-docs',
+    'docs-links',
+  ]) {
     const needsReference = jobId.includes('-')
       ? `needs\\['${jobId}'\\]`
       : `needs\\.${jobId}`;

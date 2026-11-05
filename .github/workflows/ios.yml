@@ -45,6 +45,9 @@ jobs:
           available_simulators="$(xcrun simctl list devices available)"
           grep -Fq 'iPhone 17' <<<"$available_simulators"
 
+      - name: Test local Xcode workspace guard
+        run: bash scripts/ios-release-workspace.test.sh
+
       - name: Validate iOS project files
         run: plutil -lint ios/SeerrNG.xcodeproj/project.pbxproj ios/SeerrNG/Info.plist
 

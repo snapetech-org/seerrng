@@ -1,1 +1,9 @@
+---
+category: added
+audience: users, operators
+area: integrations
+action: none
+breaking: false
+---
+
 Queue a movie collection with one or two unwatched movies ahead. SeerrNG follows your linked Plex, Jellyfin or Emby watch history, preserves progress across restarts, and applies normal request permission, quota, approval and destination rules to every next movie. The collection dialog shows waiting reasons and lets you stop future requests without removing existing requests or files.

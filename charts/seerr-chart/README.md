@@ -1,6 +1,6 @@
 # seerr-chart
 
-![Version: 1.0.138](https://img.shields.io/badge/Version-1.0.138-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: v3.72.8](https://img.shields.io/badge/AppVersion-v3.72.8-informational?style=flat-square)
+![Version: 1.0.139](https://img.shields.io/badge/Version-1.0.139-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: v3.72.9](https://img.shields.io/badge/AppVersion-v3.72.9-informational?style=flat-square)
 
 SeerrNG Helm chart for Kubernetes
 
@@ -28,7 +28,10 @@ Refer to the SeerrNG Kubernetes documentation in this repository.
 
 ### Scaling down for maintenance (chart 1.0.138)
 
-Set `replicaCount: 0` before storage migration, backup, or other maintenance that requires SeerrNG to stop. The configuration claim is retained while the StatefulSet has no pods. Restore `replicaCount: 1` to resume service. SeerrNG supports one application instance; values below 0 or above 1 are rejected.
+Set `replicaCount: 0` before storage migration, backup, or other maintenance
+that requires SeerrNG to stop. The configuration claim is retained while the
+StatefulSet has no pods. Restore `replicaCount: 1` to resume service. SeerrNG
+supports one application instance; values below 0 or above 1 are rejected.
 
 ### Extra resources (chart 1.0.138)
 
@@ -45,7 +48,9 @@ Seerr is a stateful application and it is not designed to have multiple replicas
 - replacing `Deployment` with `StatefulSet`
 - removing `replicaCount` value
 
-If `replicaCount` was set for a chart version before 2.7.0, remove it when upgrading to 2.7.0. SeerrNG chart 1.0.138 reintroduces the value with a strict 0-or-1 range for maintenance scaling.
+If `replicaCount` was set for a chart version before 2.7.0, remove it when
+upgrading to 2.7.0. SeerrNG chart 1.0.138 reintroduces the value with a strict
+0-or-1 range for maintenance scaling.
 
 ## Values
 
@@ -66,7 +71,7 @@ If `replicaCount` was set for a chart version before 2.7.0, remove it when upgra
 | enableServiceLinks | bool | `false` | Inject environment variables for active Kubernetes Services into the pod |
 | extraEnv | list | `[]` | Environment variables to add to the seerr pods |
 | extraEnvFrom | list | `[]` | Environment variables from secrets or configmaps to add to the seerr pods |
-| extraResources | list | `[]` | Additional Kubernetes resource objects rendered and managed with this chart release. Each object is templated with this chart's values and named templates before rendering. |
+| extraResources | list | `[]` | Each object is templated with this chart's values and named templates before rendering. |
 | fullnameOverride | string | `""` |  |
 | hostUsers | bool | `true` | docs: https://kubernetes.io/docs/concepts/workloads/pods/user-namespaces/ |
 | image.pullPolicy | string | `"IfNotPresent"` |  |
@@ -92,7 +97,7 @@ If `replicaCount` was set for a chart version before 2.7.0, remove it when upgra
 | probes.livenessProbe | object | `{"initialDelaySeconds":20,"periodSeconds":15,"timeoutSeconds":3}` | Configure liveness probe |
 | probes.readinessProbe | object | `{"initialDelaySeconds":60,"periodSeconds":15,"timeoutSeconds":3}` | Configure readiness probe |
 | probes.startupProbe | object | `{"failureThreshold":120,"httpGet":{"path":"/api/v1/settings/public","port":"http"},"periodSeconds":5,"timeoutSeconds":3}` | Configure startup probe |
-| replicaCount | integer | `1` | Number of SeerrNG pods to run. Use 0 to stop the application during maintenance; only 0 or 1 is supported. |
+| replicaCount | int | `1` | Number of SeerrNG pods to run. Set 0 during maintenance; only 0 or 1 is supported. |
 | resources | object | `{}` |  |
 | route.main.additionalRules | list | `[]` |  |
 | route.main.annotations | object | `{}` |  |

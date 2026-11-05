@@ -167,7 +167,12 @@ if (
   process.exitCode = 1;
 }
 
-if (!ciWorkflow.includes('node scripts/check-container-alias-policy.mjs')) {
+if (
+  ![
+    'node scripts/check-container-alias-policy.mjs',
+    'node .ci-release-tooling/scripts/check-container-alias-policy.mjs',
+  ].some((command) => ciWorkflow.includes(command))
+) {
   console.error('Main CI must run the stable container alias policy check.');
   process.exitCode = 1;
 }

@@ -44,6 +44,7 @@ const portableTests = [
   'scripts/copy-server-assets.test.mjs',
   'scripts/update-helm-release-metadata.test.mjs',
   'scripts/release-notes.test.mjs',
+  'scripts/prepare-release-note-validation.test.mjs',
   'scripts/latest-published-release-tag.test.mjs',
   'scripts/setup-gh-cli-action.test.mjs',
   'scripts/release-workflow.test.mjs',

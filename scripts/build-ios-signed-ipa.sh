@@ -57,8 +57,12 @@ if [[ ! "$xcode_major" =~ ^[0-9]+$ ]] || (( xcode_major < 26 )); then
   exit 2
 fi
 
-temporary_root="${RUNNER_TEMP:-${TMPDIR:-/tmp}}"
-build_dir="$(mktemp -d "$temporary_root/seerrng-ios-signing.XXXXXX")"
+script_dir="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd -P)"
+# shellcheck source=ios-release-workspace.sh
+source "$script_dir/ios-release-workspace.sh"
+build_dir="$(ios_release_create_local_workspace signing)"
+mkdir -m 700 "$build_dir/tmp"
+export TMPDIR="$build_dir/tmp"
 keychain="$build_dir/seerrng-signing.keychain-db"
 certificate="$build_dir/distribution.p12"
 profile="$build_dir/profile.mobileprovision"
@@ -145,6 +149,7 @@ xcodebuild \
   -scheme SeerrNG \
   -configuration Release \
   -destination 'generic/platform=iOS' \
+  -derivedDataPath "$build_dir/DerivedData" \
   -archivePath "$build_dir/SeerrNG.xcarchive" \
   MARKETING_VERSION="$short_version" \
   CURRENT_PROJECT_VERSION="$build_number" \
