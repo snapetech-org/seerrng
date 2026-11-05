@@ -1,5 +1,4 @@
 import type { User } from '@app/hooks/useUser';
-import { BUILT_IN_INTERFACE_THEME_MANIFESTS } from '@app/utils/interfaceThemeCatalog';
 import { THEME_PALETTE_IDS } from '@server/utils/themePreference';
 import { JSDOM } from 'jsdom';
 import { act } from 'react';
@@ -152,6 +151,7 @@ test('a superseded restoration cannot detach the current account stylesheet', as
   // Keep the next stylesheet pending while two restoration effects subscribe
   // to the same load. The superseded effect must not leave the winner detached.
   vi.mocked(document.head.append).mockRestore();
+  stylesheetObserver.disconnect();
   fixture.user = account(1, 'seerr', 'persiusNG');
   await act(async () => render());
   const pending = document.querySelector<HTMLLinkElement>(

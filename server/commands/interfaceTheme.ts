@@ -5,7 +5,6 @@ import {
   lstatSync,
   mkdirSync,
   readdirSync,
-  readFileSync,
   renameSync,
   rmSync,
   writeFileSync,
@@ -17,6 +16,7 @@ import {
   INTERFACE_THEME_IDS,
   parseInterfaceTheme,
 } from '../utils/interfaceTheme';
+import { readInterfaceThemeFile } from '../utils/interfaceThemeFile';
 import {
   MAX_INSTALLED_INTERFACE_THEME_CSS_BYTES,
   MAX_INSTALLED_INTERFACE_THEMES,
@@ -48,13 +48,7 @@ const usage = (): never => {
   );
 };
 
-const readRegularFile = (filename: string, maxBytes: number): string => {
-  const stat = lstatSync(filename);
-  if (stat.isSymbolicLink() || !stat.isFile() || stat.size > maxBytes) {
-    throw new Error(`Unsupported or oversized package file: ${filename}`);
-  }
-  return readFileSync(filename, 'utf8');
-};
+const readRegularFile = readInterfaceThemeFile;
 
 const readThemeDirectory = (directory: string) => {
   const stat = lstatSync(directory);

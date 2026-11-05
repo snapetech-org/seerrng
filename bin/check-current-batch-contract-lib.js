@@ -2787,11 +2787,13 @@ const validateCurrentBatchContract = (files) => {
     'next build --webpack',
     'the public client build must retain the upstream Next compiler'
   );
-  requirePublicCommand(
-    'build:server',
-    'tsc --project server/tsconfig.json && node scripts/copy-server-assets.mjs && node scripts/replace-server-import-aliases.mjs dist',
-    'the public server build must retain upstream compilation, resources and alias resolution'
-  );
+  for (const name of ['build:server', 'build:server:compile']) {
+    requirePublicCommand(
+      name,
+      'tsc --project server/tsconfig.json && node scripts/copy-server-assets.mjs && node scripts/replace-server-import-aliases.mjs dist',
+      'the public server build must retain upstream compilation, resources and alias resolution, including packaged interface themes'
+    );
+  }
   requirePublicCommand(
     'prebuild',
     'pnpm i18n:check && pnpm current-batch:check',

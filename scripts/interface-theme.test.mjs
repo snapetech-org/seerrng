@@ -3,6 +3,7 @@ import { execFileSync, spawnSync } from 'node:child_process';
 import { createHash } from 'node:crypto';
 import {
   existsSync,
+  linkSync,
   mkdtempSync,
   readFileSync,
   rmSync,
@@ -102,6 +103,22 @@ test('packs reproducibly with a matching checksum and validates the distributabl
   );
   reject('pack', 'ocean-room');
   assert.deepEqual(readFileSync(path.join(directory, filename)), bytes);
+});
+
+test('refuses multiply linked theme bundles before validation or installation', (t) => {
+  const { directory, run, reject } = sandbox(t);
+  run('create', 'linked-theme');
+  run('pack', 'linked-theme');
+  linkSync(
+    path.join(directory, 'linked-theme-0.1.0.seerrtheme'),
+    path.join(directory, 'linked.seerrtheme')
+  );
+  assert.match(reject('validate', 'linked.seerrtheme'), /bounded regular file/);
+  assert.match(reject('install', 'linked.seerrtheme'), /bounded regular file/);
+  assert.equal(
+    existsSync(path.join(directory, 'config/interface-themes/linked-theme')),
+    false
+  );
 });
 
 test('installs, lists, explicitly replaces and removes a custom package', (t) => {

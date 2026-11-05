@@ -47,6 +47,13 @@ describe('interface theme contract', () => {
           navigation: 'grouped',
           activeNavigationIcon: 'filled',
         },
+        {
+          id: 'persiusNG',
+          formatVersion: 1,
+          themeApiVersion: 1,
+          navigation: 'grouped',
+          activeNavigationIcon: 'outline',
+        },
       ]
     );
   });

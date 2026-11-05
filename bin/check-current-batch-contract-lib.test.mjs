@@ -1681,13 +1681,13 @@ test('compact-control heights are owned by the selected interface theme', () => 
       file: 'themes/seerrOrig/theme.css',
       value: '--interface-compact-control-height: 1.25rem;',
       replacement: '--interface-compact-control-height: 1rem;',
-      reason: 'SeerrOrig must own its 20-pixel compact-control height',
+      reason: 'SeerrOrig must retain its 20-pixel compact-control height',
     },
     {
       file: 'themes/seerrNGJ/theme.css',
       value: '--interface-compact-control-height: 1.5rem;',
       replacement: '--interface-compact-control-height: 1.25rem;',
-      reason: 'SeerrNGJ must own its 24-pixel compact-control height',
+      reason: 'SeerrNGJ must retain its 24-pixel compact-control height',
     },
   ];
 
@@ -2095,7 +2095,7 @@ test('conditional request layouts retain the shared canvas in every branch', () 
 
 test('server builds retain packaged themes and fail closed when resources are omitted', () => {
   const source = JSON.parse(repositoryFilesWith()['package.json']);
-  const themeCopy = 'copyfiles -u 1 "themes/**/*" dist/interface-themes';
+  const themeCopy = 'node scripts/copy-server-assets.mjs';
   for (const name of ['build:server', 'build:server:compile']) {
     assert.ok(source.scripts[name].includes(themeCopy));
     const changed = structuredClone(source);
@@ -2141,7 +2141,7 @@ test('compact inputs consume theme tokens and retain both built-in sizes', () =>
           '--compact-control-height: 2rem;'
         ),
       })
-    ).some((error) => error.includes('selected theme token'))
+    ).some((error) => error.includes('selected theme height'))
   );
   for (const theme of ['seerrOrig', 'seerrNGJ']) {
     const file = `themes/${theme}/theme.css`;
