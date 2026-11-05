@@ -2053,6 +2053,15 @@ describe('MediaRequestSubscriber service dispatch', () => {
     assert.equal(savedMedia.externalServiceId, 55);
     assert.equal(savedMedia.externalServiceSlug, 'left-hand-darkness');
     assert.equal(savedMedia.serviceId, 20);
+    const storedIdentifiers = await getRepository(MediaIdentifier).find({
+      where: {
+        provider: MediaIdentifierProvider.READARR,
+        value: 'readarr-work-id',
+      },
+      relations: { media: true },
+    });
+    assert.equal(storedIdentifiers.length, 1);
+    assert.equal(storedIdentifiers[0].media?.id, media.id);
 
     const savedSearch = await getRepository(BookRequestSearch).findOneByOrFail({
       requestId: request.id,
