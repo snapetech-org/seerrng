@@ -6,10 +6,4 @@ action: none
 breaking: false
 ---
 
-Radarr and Sonarr override rules can match movies and series by TMDB production
-country. Selected countries are alternatives within that condition; other
-configured rule conditions must also match. Titles without production-country
-metadata do not match a country condition. Sonarr services that expose
-language profiles can select one in the rule, while explicit requester choices
-remain in effect. This adapts the use case discussed in Seerr
-[issue #3439](https://github.com/seerr-team/seerr/issues/3439).
+Radarr and Sonarr rules can match TMDB production countries, with alternatives within the country condition and other conditions still required. Missing country metadata does not match. Sonarr rules can select language profiles when supported, while explicit requester choices remain in effect.
