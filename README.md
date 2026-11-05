@@ -60,12 +60,14 @@ For local MCP access, see the [SnapeTech MCP integration guide](./docs/integrati
   - [Slack notifications](./docs/using-seerr/notifications/slack.md)
   - [Telegram notifications](./docs/using-seerr/notifications/telegram.md)
   - [Configure notifications and follow request availability](./docs/using-seerr/notifications/index.mdx)
+  - [Kubernetes installation and Helm chart](./docs/getting-started/kubernetes.mdx)
 - [Screenshots](#screenshots)
 - [Install](#install)
   - [Docker](#docker)
   - [Docker Compose](#docker-compose)
   - [Unraid](#unraid)
   - [Linux packages](#linux-packages)
+  - [Kubernetes](#kubernetes)
 - [Android APK](#android-apk)
 - [Required Setup](#required-setup)
 - [Bookshelf and Hardcover](#bookshelf-and-hardcover)
@@ -218,6 +220,9 @@ Recent repository updates include:
   English fallback where translations are missing; upstream Seerr
   [PR #3667](https://github.com/seerr-team/seerr/pull/3667) is not a direct
   catalog import because its message IDs do not match SeerrNG's expanded UI.
+- **Kubernetes:** the Helm chart can stop its single application pod with
+  `replicaCount: 0` for maintenance and resume it with `replicaCount: 1`;
+  values that would start multiple SeerrNG instances are rejected.
 
 These changes are in the repository; use the [release notes](./CHANGELOG.md)
 to confirm which ones are included in a published build. SeerrNG continues to
@@ -380,6 +385,10 @@ The current tested mobile packages are attached to the
 The GitHub Android packages have Play Billing disabled, so they remain unlimited evaluation builds; the 20-session cap and lifetime purchase UI are only enabled in a configured Play build. These are prerelease test builds, not store-approved releases. See the
 [mobile release readiness guide](./docs/mobile-release-readiness.md) for
 signing details, test results, store status, and remaining release work.
+
+### Kubernetes
+
+The signed SeerrNG Helm chart can render administrator-supplied Kubernetes resource objects with the same release. The `extraResources` value is empty by default; see the [Kubernetes guide](./docs/getting-started/kubernetes.mdx) and [chart values](./charts/seerr-chart/README.md).
 
 ## Required Setup
 

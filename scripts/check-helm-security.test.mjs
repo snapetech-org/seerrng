@@ -192,3 +192,75 @@ test('Helm connection test is immutable and runs without ambient privileges', ()
   assert.deepEqual(container.command, ['wget']);
   assert.equal(container.args[0], '--spider');
 });
+
+test('maintenance scaling retains the configuration claim and resumes one instance', () => {
+  const stopped = renderChart('--set', 'replicaCount=0');
+  const running = renderChart('--set', 'replicaCount=1');
+  assert.equal(findDocument(stopped, 'StatefulSet').spec.replicas, 0);
+  assert.equal(findDocument(running, 'StatefulSet').spec.replicas, 1);
+  assert.deepEqual(
+    findDocument(stopped, 'PersistentVolumeClaim'),
+    findDocument(running, 'PersistentVolumeClaim')
+  );
+  assert.equal(findDocument(renderChart(), 'StatefulSet').spec.replicas, 1);
+  for (const value of ['-1', '2', '0.5']) {
+    assert.match(
+      renderChartFailure('--set-json', `replicaCount=${value}`),
+      /replicaCount/u
+    );
+  }
+  assert.match(
+    renderChartFailure('--set-string', 'replicaCount=1'),
+    /replicaCount/u
+  );
+});
+
+test('extra resources render in release context and preserve workload security defaults', () => {
+  const resources = [
+    {
+      apiVersion: 'v1',
+      kind: 'ConfigMap',
+      metadata: {
+        name: '{{ .Release.Name }}-extra',
+        namespace: '{{ .Release.Namespace }}',
+      },
+      data: { selectedImage: '{{ .Values.image.repository }}' },
+    },
+  ];
+  const documents = renderChart(
+    '--namespace',
+    'media',
+    '--set-json',
+    `extraResources=${JSON.stringify(resources)}`
+  );
+  const resource = findDocument(documents, 'ConfigMap');
+  assert.equal(resource.metadata.name, 'security-test-extra');
+  assert.equal(resource.metadata.namespace, 'media');
+  assert.equal(resource.data.selectedImage, 'snapetech-org/seerrng');
+  const container = findDocument(documents, 'StatefulSet').spec.template.spec
+    .containers[0];
+  assertNoAmbientContainerPrivileges(container.securityContext);
+  assert.equal(
+    renderChart().some((document) => document.kind === 'ConfigMap'),
+    false
+  );
+});
+
+test('extra resource schema rejects malformed Kubernetes objects', () => {
+  for (const resource of [
+    null,
+    'not-an-object',
+    {},
+    { apiVersion: 'v1', kind: '', metadata: { name: 'test' } },
+    { apiVersion: 'v1', kind: 'ConfigMap', metadata: {} },
+    { apiVersion: 'v1', kind: 'ConfigMap', metadata: { name: '' } },
+  ]) {
+    assert.match(
+      renderChartFailure(
+        '--set-json',
+        `extraResources=${JSON.stringify([resource])}`
+      ),
+      /extraResources/u
+    );
+  }
+});
