@@ -1,0 +1,29 @@
+{
+  "packet": "SeerrNG PR #418 main-sync eight strings candidate-free input",
+  "review_head": "ca2309e960733a7486c55b9a761d82771be97cde",
+  "review_tree": "8c5df06aaf1d703ff923bf1fdf8a21c901b9d26d",
+  "base_main": "2dea00ff2c533831bcab973c017b72052eb30d9b",
+  "locale_order": [
+    "es",
+    "zh_Hans",
+    "hi",
+    "de",
+    "ja",
+    "fr",
+    "pt_BR",
+    "ar",
+    "ko",
+    "zh_Hant",
+    "vi",
+    "id"
+  ],
+  "source_catalog": {
+    "path": "src/i18n/locale/en.json",
+    "git_blob": "0c8cf4ffc92440bf7b6e4d3f3fd4f26fcb0a234e",
+    "source_count": 9545
+  },
+  "source_ids": 8,
+  "target_cells": 96,
+  "target_missing_cells": 96,
+  "translation_content_included": false
+}

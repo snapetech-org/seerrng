@@ -1,0 +1,9 @@
+# SeerrNG PR #418 main-sync independent cross-review
+
+Pinned to head `ca2309e960733a7486c55b9a761d82771be97cde` / tree `8c5df06aaf1d703ff923bf1fdf8a21c901b9d26d`. This cross-review checks all 96 missing cells across eight source strings and 12 locales against the exact English source, Settings > Network / Settings > Users callers, primary drafts, and independent blind drafts. The candidate-free, primary, and blind checksum inventories passed. The blind packet verifier passed; candidate-free and primary packets do not include standalone verifier scripts, so this packet's verifier rechecks their source, caller, cell, and hash bindings.
+
+Dispositions: 65 accept, 28 refinement, 3 correction, 0 hold. No exact translation was selected for insertion and no catalog value was applied. The 28 refinement notes address clearer network-to-administrator phrasing, the address that must remain allowed when saving the network list, and a small set of locale-specific wording issues. The three correction notes identify primary Jellyfin Quick Connect tip variants with three exact `Jellyfin` occurrences where the source-bound token audit expects two; blind variants pass that count. All 96 blind variants pass the independent technical-literal and number audit; primary has only those three occurrence-count mismatches. No placeholders, markup, or number failures remain.
+
+Review findings preserve the distinction between administrator sign-in and existing sessions, regular users' remote sign-in, unchanged API-key integrations, proxy trust and `X-Forwarded-For`, and Jellyfin Quick Connect versus password/plugin sign-in. `Trust Reverse Proxy` is treated as a localized setting concept, not an immutable English literal.
+
+Confidence is moderate. Native-speaker review was not performed. Verify with `python3 -B verify_cross_review.py`. No repository/catalog edits, tests, builds, scans, CI, or browser activity occurred.

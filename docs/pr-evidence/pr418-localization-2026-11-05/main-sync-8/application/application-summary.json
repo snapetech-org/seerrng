@@ -1,0 +1,131 @@
+{
+  "result": "PASS",
+  "inputHead": "ca2309e960733a7486c55b9a761d82771be97cde",
+  "inputTree": "8c5df06aaf1d703ff923bf1fdf8a21c901b9d26d",
+  "sourceIds": 8,
+  "localeCount": 12,
+  "targetCells": 96,
+  "changedCatalogFiles": 12,
+  "keysBeforePerCatalog": 9537,
+  "keysAfterPerCatalog": 9545,
+  "englishKeyCount": 9545,
+  "keySetsMatchEnglish": true,
+  "existingKeyOrderPreserved": true,
+  "onlyMissingTargetsInserted": true,
+  "targetReadbackCells": 96,
+  "catalogFiles": [
+    {
+      "path": "src/i18n/locale/es.json",
+      "keysBefore": 9537,
+      "keysAfter": 9545,
+      "sha256Before": "b06a5d4019fdb46175a9f6e527f3c49e393d916a041b881e8a4385bd8b4e52c6",
+      "sha256After": "6cba45fdac92ce4687dc0e645172ee372ed04829a65320435e72438776657b97",
+      "keySetMatchesEnglish": true,
+      "existingOrderPreserved": true
+    },
+    {
+      "path": "src/i18n/locale/zh_Hans.json",
+      "keysBefore": 9537,
+      "keysAfter": 9545,
+      "sha256Before": "1b2874acce8f384a9490cce30a304800df7aca3e6b8474e67bd1e1332ccb6556",
+      "sha256After": "273b69bd8364ba2f486b2e91f131106532818868b940d4eee489b7f365961dbf",
+      "keySetMatchesEnglish": true,
+      "existingOrderPreserved": true
+    },
+    {
+      "path": "src/i18n/locale/hi.json",
+      "keysBefore": 9537,
+      "keysAfter": 9545,
+      "sha256Before": "58c3d0e57477d12a6416bb1285a59ab6f14086c88445be3b6cb2cd8abfc35a7d",
+      "sha256After": "bc68bd341450365ff010d5d620cf8ff764272fb16fd59263867fa1a7e44d96ab",
+      "keySetMatchesEnglish": true,
+      "existingOrderPreserved": true
+    },
+    {
+      "path": "src/i18n/locale/de.json",
+      "keysBefore": 9537,
+      "keysAfter": 9545,
+      "sha256Before": "559c2e09410f002f2e2d4e3fa271c6a486373e0001d2071971a22d3d5fbd9765",
+      "sha256After": "7b627cac2c10404c6041c3aa1a4c4c3bb3e2eb348231b25f2c188bb8eb7d5e28",
+      "keySetMatchesEnglish": true,
+      "existingOrderPreserved": true
+    },
+    {
+      "path": "src/i18n/locale/ja.json",
+      "keysBefore": 9537,
+      "keysAfter": 9545,
+      "sha256Before": "36717ee11939e4efa957d29a7f11a1ab8f865cdf228e5d0d7d1b9dd6ea2e6073",
+      "sha256After": "b68c4d83abe5f96a464c4ceb2968e7bf5b0e6b7e661b28aa1808cb62fe7ef999",
+      "keySetMatchesEnglish": true,
+      "existingOrderPreserved": true
+    },
+    {
+      "path": "src/i18n/locale/fr.json",
+      "keysBefore": 9537,
+      "keysAfter": 9545,
+      "sha256Before": "54f9e1f8b96cac614dc49559d627bf114fd309458e79e096a42be6cf13b18789",
+      "sha256After": "19448186e058a0f3dd503ff394b5ab25be55e94d66430bf6a52dd10f65235ad0",
+      "keySetMatchesEnglish": true,
+      "existingOrderPreserved": true
+    },
+    {
+      "path": "src/i18n/locale/pt_BR.json",
+      "keysBefore": 9537,
+      "keysAfter": 9545,
+      "sha256Before": "c700bfc84097d20d41615605d9c71240f0e615ea3c52e04835719d9e356defbb",
+      "sha256After": "1e8dfe2803be68886e429c1e848d54a59c5b47dff284f1899d0019caa909e0c7",
+      "keySetMatchesEnglish": true,
+      "existingOrderPreserved": true
+    },
+    {
+      "path": "src/i18n/locale/ar.json",
+      "keysBefore": 9537,
+      "keysAfter": 9545,
+      "sha256Before": "cc5681a4926e5a2ec1055c4c3618e26e03864a7fe00b735d0356f6082263e293",
+      "sha256After": "41c940e40208c61e70a89e9870a3c1fed826fb5f252f25f231c1736271a55689",
+      "keySetMatchesEnglish": true,
+      "existingOrderPreserved": true
+    },
+    {
+      "path": "src/i18n/locale/ko.json",
+      "keysBefore": 9537,
+      "keysAfter": 9545,
+      "sha256Before": "0c4c4a90eab37b6e666200ce611cc5bad59d1c6dfe776bf04b65a4d2a0125e06",
+      "sha256After": "658cdd8693cc1c336a0dcb340faca5d849abb16cf6b230af2352001ab30cbb9f",
+      "keySetMatchesEnglish": true,
+      "existingOrderPreserved": true
+    },
+    {
+      "path": "src/i18n/locale/zh_Hant.json",
+      "keysBefore": 9537,
+      "keysAfter": 9545,
+      "sha256Before": "ab793048838d228bf73f0e7669fb1764d09d57d4f21b2a7c0e2e83aee0fa8b3f",
+      "sha256After": "ec03703ba2511915970579834d66df190a7cd5ad73ab4aeb070e9b4b49109f1f",
+      "keySetMatchesEnglish": true,
+      "existingOrderPreserved": true
+    },
+    {
+      "path": "src/i18n/locale/vi.json",
+      "keysBefore": 9537,
+      "keysAfter": 9545,
+      "sha256Before": "956ffa64ee5c82157b83b3b83db09a74476d2405dd412eddf093b424660aa83f",
+      "sha256After": "b5147995d9c85f0569d0b32d8f6730b2f16089a28b6c2b22834334251947d6cd",
+      "keySetMatchesEnglish": true,
+      "existingOrderPreserved": true
+    },
+    {
+      "path": "src/i18n/locale/id.json",
+      "keysBefore": 9537,
+      "keysAfter": 9545,
+      "sha256Before": "0787b47e2ee9f0cb6f2688b4c4695d170bf633a7eb2c42766245eb2c243200a7",
+      "sha256After": "e1ff34de0a245ba41c1f3a4293ba5b790e4044b5fbe66a183681c6fe70bddca6",
+      "keySetMatchesEnglish": true,
+      "existingOrderPreserved": true
+    }
+  ],
+  "nativeSpeakerApproval": false,
+  "mode": "verify",
+  "productCommit": "b13b5e31700af46773c55cdb36da1b9e02bd7e7c",
+  "productTree": "caef55a4808e175da23771da2d2128436fa40f46",
+  "verificationHead": "b13b5e31700af46773c55cdb36da1b9e02bd7e7c"
+}
