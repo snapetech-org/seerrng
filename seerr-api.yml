@@ -9076,6 +9076,12 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/PlexLibrary'
+        '502':
+          description: Plex could not be reached. The error message is CONNECTION_ERROR.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
   /settings/plex/library/{libraryId}/type:
     put:
       summary: Reclassify a Plex artist library

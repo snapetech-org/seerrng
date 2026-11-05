@@ -91,6 +91,7 @@ import {
   createHttpsUpgradeHandler,
   initializeTls,
 } from '@server/utils/tls';
+import '@server/utils/userAgent';
 import compression from 'compression';
 import cookieParser from 'cookie-parser';
 import type { NextFunction, Request, Response } from 'express';
@@ -296,7 +297,16 @@ Promise.resolve()
               plexToken: admin.plexToken,
               plexSettings: structuredClone(currentPlex),
             });
-            await plexapi.syncLibraries();
+            try {
+              await plexapi.syncLibraries();
+            } catch {
+              // Preserve configured libraries and let the next startup retry
+              // once Plex is reachable again.
+              logger.warn(
+                'Failed to migrate Plex libraries; will retry on next startup',
+                { label: 'Settings' }
+              );
+            }
           }
         });
       }

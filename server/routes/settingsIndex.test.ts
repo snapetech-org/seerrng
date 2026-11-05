@@ -1912,7 +1912,13 @@ describe('Settings route input validation', () => {
   it('preserves enabled Jellyfin libraries when the provider renames them', async () => {
     const settings = getSettings();
     settings.jellyfin.libraries = [
-      { id: '2', name: 'Previous Shows', enabled: true, type: 'show' },
+      {
+        id: '2',
+        name: 'Previous Shows',
+        enabled: true,
+        type: 'show',
+        lastScan: 1790000000000,
+      },
     ];
     mock.method(JellyfinAPI.prototype, 'getLibraries', async () => [
       {
@@ -1929,7 +1935,13 @@ describe('Settings route input validation', () => {
 
     assert.strictEqual(res.status, 200);
     assert.deepStrictEqual(res.body, [
-      { id: '2', name: 'Renamed Shows', enabled: true, type: 'show' },
+      {
+        id: '2',
+        name: 'Renamed Shows',
+        enabled: true,
+        type: 'show',
+        lastScan: 1790000000000,
+      },
     ]);
   });
 

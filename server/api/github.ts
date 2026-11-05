@@ -1,4 +1,4 @@
-import cacheManager from '@server/lib/cache';
+import cacheManager, { GITHUB_CACHE_TTL_SECONDS } from '@server/lib/cache';
 import logger from '@server/logger';
 import { getHttpErrorDetails } from '@server/utils/httpError';
 import ExternalAPI from './externalapi';
@@ -20,6 +20,7 @@ interface GithubCommit {
 }
 
 const MAX_GITHUB_RESULTS = 100;
+const GITHUB_FAILURE_CACHE_TTL_SECONDS = 5 * 60;
 const MAX_GITHUB_TEXT_LENGTH = 10_000;
 
 const clampTake = (value: number): number =>
@@ -107,16 +108,25 @@ class GithubAPI extends ExternalAPI {
   }: {
     take?: number;
   } = {}): Promise<GitHubRelease[]> {
+    const boundedTake = clampTake(take);
+    const endpoint = `${SEERRNG_REPO}/releases`;
+    const config = { params: { per_page: boundedTake } };
+
     try {
-      const boundedTake = clampTake(take);
-      const data = await this.get<unknown>(`${SEERRNG_REPO}/releases`, {
-        params: {
-          per_page: boundedTake,
-        },
-      });
+      const data = await this.get<unknown>(
+        endpoint,
+        config,
+        GITHUB_CACHE_TTL_SECONDS
+      );
 
       return sanitizeGithubReleases(data, boundedTake);
     } catch (e) {
+      this.setCached<unknown[]>(
+        endpoint,
+        [],
+        GITHUB_FAILURE_CACHE_TTL_SECONDS,
+        config
+      );
       logger.warn(
         "Failed to retrieve GitHub releases. This may be an issue on GitHub's end. SeerrNG can't check if it's on the latest version.",
         { label: 'GitHub API', ...getHttpErrorDetails(e) }
@@ -132,20 +142,29 @@ class GithubAPI extends ExternalAPI {
     take?: number;
     branch?: string;
   } = {}): Promise<GithubCommit[]> {
+    const boundedTake = clampTake(take);
+    const endpoint = `${SEERRNG_REPO}/commits`;
+    const boundedBranch =
+      typeof branch === 'string' && branch.length <= 128 ? branch : 'main';
+    const config = {
+      params: { per_page: boundedTake, sha: boundedBranch },
+    };
+
     try {
-      const boundedTake = clampTake(take);
-      const data = await this.get<unknown>(`${SEERRNG_REPO}/commits`, {
-        params: {
-          per_page: boundedTake,
-          branch:
-            typeof branch === 'string' && branch.length <= 128
-              ? branch
-              : 'main',
-        },
-      });
+      const data = await this.get<unknown>(
+        endpoint,
+        config,
+        GITHUB_CACHE_TTL_SECONDS
+      );
 
       return sanitizeGithubCommits(data, boundedTake);
     } catch (e) {
+      this.setCached<unknown[]>(
+        endpoint,
+        [],
+        GITHUB_FAILURE_CACHE_TTL_SECONDS,
+        config
+      );
       logger.warn(
         "Failed to retrieve GitHub commits. This may be an issue on GitHub's end. SeerrNG can't check if it's on the latest version.",
         { label: 'GitHub API', ...getHttpErrorDetails(e) }

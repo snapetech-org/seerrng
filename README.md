@@ -81,9 +81,10 @@ For local MCP access, see the [SnapeTech MCP integration guide](./docs/integrati
 
 - Requests and approvals for movies, shows, music, ebooks, audiobooks, comics, magazines, emulation ROMs, and PC games.
 - A companion Android APK client for connecting to one or more self-hosted SeerrNG servers.
-- Movie and series Discover filters with 0.1-point TMDB rating thresholds and streaming-service availability filters by region.
+- Movie and series Discover filters with 0.1-point TMDB rating thresholds, region-aware streaming-service filters, and media-specific title sorting.
+- Media-server integration with Plex, Jellyfin, and Emby, including watch-state-aware My Library views scoped to each linked account. Failed Plex library syncs preserve the saved library list, report connection failures clearly, and retry startup migration on the next restart.
+- Jellyfin library synchronization preserves each library's enabled selection and stored scan timestamp across display-name changes when the server keeps its stable library ID. Adapted from Seerr [PR #3323](https://github.com/seerr-team/seerr/pull/3323).
 - Optional administrator network restrictions for SeerrNG browser sign-ins, using IPv4 or IPv6 address and CIDR allowlists without blocking remote access for regular users.
-- Media-server integration with Plex, Jellyfin, and Emby, including watch-state-aware My Library views scoped to each linked account.
 - Optional Jellyfin and Emby profile sync during user imports, refreshing linked provider names and avatars while preserving SeerrNG email addresses, local passwords, and permissions.
 - Labeled movie and TV request destinations across multiple Radarr and Sonarr instances, with per-user access and availability tracked for each destination.
 - Temporary Radarr and Sonarr connection or server failures retry automatically with durable, bounded backoff; non-transient failures remain visible for review and manual retry.
@@ -152,13 +153,14 @@ For local MCP access, see the [SnapeTech MCP integration guide](./docs/integrati
 - Resumable, layered Readarr/softcover-to-Hardcover migration with strict matching, softcover metadata recovery, validation, cutover checks, and an opt-in deterministic local-record fallback for books Hardcover cannot import.
 - Per-user cross-media watchlists; local-only lists support title search, media-type filters, and stable sorting, while combined Plex lists preserve Plex ordering. The request workflow also includes blocklists, quotas, override rules, permissions, notifications, issue reporting, and request management.
 - Users can choose whether movie and TV copies requested by someone else appear as shared or stay hidden; this changes the availability display, not media-server access.
-- Discover shelves can be reordered and customized; movie and series filters include fractional ratings, streaming-service inclusion or exclusion, and category exclusions. Discover detail navigation keeps the selected result context, and rating details work on touch screens.
+- Discover shelves can be reordered and customized; movie and series filters include fractional ratings, streaming-service inclusion or exclusion, category exclusions, and title sorting using the correct TMDB field for each media type. Discover detail navigation keeps the selected result context, and rating details work on touch screens.
 - Movie and Series Subject Tags can be hidden with a browser-saved preference shared across both detail pages.
 - Authenticated **Download copy** links in Request Status for verified movie, TV, book, comic, magazine, ROM, and PC game files.
 - Request lifecycle tracking and availability notifications link users back to the matching Request Status item, where available files can be selected and saved.
 - Signed-in household members can follow another user's active movie or series request for a one-time availability notice through their own configured notification channels.
 - Browser, service-worker, API, DNS, avatar, and image-proxy caching tuned for faster refreshes and tab restores.
 - Removing an item from an acquisition service such as Radarr or Sonarr preserves its SeerrNG media record and request history; Clear Data is a separate, explicitly destructive action.
+- Server-side Axios requests use a versioned User-Agent; provider-specific values are preserved. See [Network settings](docs/using-seerr/settings/network.md#outbound-request-identity).
 
 ## Project Status
 
@@ -167,8 +169,9 @@ SeerrNG is active fork work. Movie and TV behavior is inherited and generally st
 Recent repository updates include:
 
 - **Discover:** editable shared shelves; more precise rating and streaming
-  filters; category exclusions; detail navigation through the current result
-  list; and restored carousel position when returning from a title.
+  filters; media-specific title sorting; category exclusions; detail navigation
+  through the current result list; and restored carousel position when returning
+  from a title.
 - **Requests:** per-user access to labeled Radarr/Sonarr destinations, quota
   exception approvals, optional Slack approval actions, an optional
   previous-season watch gate, and Sonarr monitoring for future seasons when
@@ -187,9 +190,11 @@ Recent repository updates include:
   Jellyfin/Emby profile refresh during imports.
 - **Sonarr:** v5 API support alongside v3/v4, metadata-language and season-order
   choices, and request recovery scoped to the selected service, quality, and
-  season order.
+  season order. Anime routing honors the configured anime root folder while
+  preserving folder overrides ([Seerr issue #3410](https://github.com/seerr-team/seerr/issues/3410)).
 - **Integrations:** MusicBrainz and Cover Art Archive connectivity checks with
-  bounded artwork traffic controls, plus a preview-first BookshelfNG to
+  bounded artwork traffic controls; outbound proxy routing for Cover Art
+  Archive and Steam library clients; and a preview-first BookshelfNG to
   ChaptarrNG database migration helper for single-database setups.
 
 These changes are in the repository; use the [release notes](./CHANGELOG.md)
@@ -781,6 +786,7 @@ SeerrNG has several cache layers. They are designed to make repeat browsing, pag
 - **Visible-first warmup** warms images for visible titles before below-the-fold content.
 - **Hidden-tab restraint** skips image warmup while the tab is hidden so returning to the tab does not flood the app with stale work.
 - **Host caches** cover TMDB, MusicBrainz, ListenBrainz, Open Library, Cover Art Archive, TheAudioDB, Radarr, Sonarr, Lidarr, Readarr/Bookshelf, DNS, and image metadata where supported.
+- **Version checks** cache successful GitHub release/commit lookups for six hours and hold failed lookups for five minutes, preventing repeated `/api/v1/status` polls from retrying GitHub on every request.
 - **Jobs & Cache settings** expose cache stats and flush controls.
 
 If SeerrNG runs behind a reverse proxy, do not blanket-strip cache headers or force `Cache-Control: no-store` on `/imageproxy/*`, `/avatarproxy/*`, `/sw.js`, static assets, or cacheable API responses. App pages and sensitive routes can remain non-cacheable.
