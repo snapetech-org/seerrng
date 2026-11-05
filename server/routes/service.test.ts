@@ -1764,7 +1764,7 @@ describe('Bookshelf settings routes', () => {
       activeDirectory: '/',
       preventSearch: true,
     });
-    const { id: _id, ...submission } = payload;
+    const submission = { ...payload, id: undefined };
     const created = await request(createOpenApiApp())
       .post('/api/v1/settings/readarr')
       .send(submission);
