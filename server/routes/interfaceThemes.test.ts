@@ -39,6 +39,7 @@ describe('public interface theme package routes', () => {
     assert.equal(response.status, 200);
     assert.match(response.headers['content-type'], /^text\/css; charset=utf-8/);
     assert.equal(response.headers['x-content-type-options'], 'nosniff');
+    assert.equal(response.headers['cross-origin-resource-policy'], 'same-origin');
     assert.match(response.text, /data-interface-theme='persiusNG'/);
     assert.equal(
       (await request(app).get('/api/v1/interface-themes/%2e%2e/theme.css'))

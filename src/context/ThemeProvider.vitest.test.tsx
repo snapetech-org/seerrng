@@ -1,4 +1,5 @@
 import type { User } from '@app/hooks/useUser';
+import { BUILT_IN_INTERFACE_THEME_MANIFESTS } from '@app/utils/interfaceThemeCatalog';
 import { THEME_PALETTE_IDS } from '@server/utils/themePreference';
 import { JSDOM } from 'jsdom';
 import { act } from 'react';
@@ -20,6 +21,7 @@ vi.mock('axios', () => ({ default: { get: fixture.get, post: fixture.post } }));
 let root: Root;
 let dom: JSDOM;
 let container: HTMLDivElement;
+let stylesheetObserver: MutationObserver;
 let theme: ReturnType<typeof useTheme>;
 const Probe = () => {
   theme = useTheme();
@@ -70,11 +72,25 @@ beforeEach(() => {
   localStorage.clear();
   container = document.createElement('div');
   document.body.append(container);
+  stylesheetObserver = new dom.window.MutationObserver((records) => {
+    for (const node of records.flatMap((record) =>
+      Array.from(record.addedNodes)
+    )) {
+      if (
+        node instanceof dom.window.HTMLLinkElement &&
+        node.hasAttribute('data-interface-theme-stylesheet')
+      ) {
+        node.dispatchEvent(new dom.window.Event('load'));
+      }
+    }
+  });
+  stylesheetObserver.observe(document.head, { childList: true });
   root = createRoot(container);
 });
 afterEach(async () => {
   await act(async () => root.unmount());
   vi.restoreAllMocks();
+  stylesheetObserver.disconnect();
   container.remove();
   vi.restoreAllMocks();
   dom.window.close();

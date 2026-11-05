@@ -98,6 +98,21 @@ describe('interface theme package contract', () => {
     }
   });
 
+  it('rejects resource functions split by CSS comments', () => {
+    for (const value of [
+      'u/**/rl(https://example.invalid/pixel.png)',
+      'url/**/(https://example.invalid/pixel.png)',
+      'image/**/-set("https://example.invalid/pixel.png" 1x)',
+    ]) {
+      assert.throws(() =>
+        validateInterfaceThemeCss(
+          `[data-interface-theme='${manifest.id}'] .page { background-image: ${value}; }`,
+          manifest.id
+        )
+      );
+    }
+  });
+
   it('allows namespaced package keyframes and rejects unknown package fields', () => {
     assert.doesNotThrow(() =>
       validateInterfaceThemeCss(
