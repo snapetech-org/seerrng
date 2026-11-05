@@ -96,6 +96,7 @@ For local MCP access, see the [SnapeTech MCP integration guide](./docs/integrati
 - **Plex playback links:** use the hosted Plex Web App by default, or configure the full self-hosted web app URL (including a path such as `/web/index.html`) for **Play on Plex** links. See the [Plex settings guide](./docs/using-seerr/settings/mediaserver.mdx#web-app-url-optional). This documentation clarifies Seerr [issue #3220](https://github.com/seerr-team/seerr/issues/3220).
 - Viewer-scoped movie and TV availability checks for linked Plex, Jellyfin, and Emby accounts, including visible seasons and exact request destinations. This SeerrNG adaptation is informed by Seerr [issue #180](https://github.com/seerr-team/seerr/issues/180) and [PR #3296](https://github.com/seerr-team/seerr/pull/3296); it does not change media-server permissions.
 - Unified global Search across enabled media catalogs, including TMDB movie collections that open in SeerrNG's collection detail and request flows.
+- Person pages with movie or TV credit filters and sorting by popularity, release date, rating, vote count, or title.
 - Optional Jellyfin and Emby profile sync during user imports, refreshing linked provider names and avatars while preserving SeerrNG email addresses, local passwords, and permissions.
 - Labeled movie and TV request destinations across multiple Radarr and Sonarr instances, with per-user access and availability tracked for each destination.
 - Temporary Radarr and Sonarr connection or server failures retry automatically with durable, bounded backoff; non-transient failures remain visible for review and manual retry.
@@ -279,6 +280,7 @@ SeerrNG documentation is maintained in the [docs folder](https://github.com/snap
 - [Cross-project OIDC implementation contract](./docs/maintainers/oidc-cross-project-template.md) · [provider catalog and official setup links](./docs/maintainers/oidc-provider-catalog.md)
 - [Create custom Discover sliders](./docs/using-seerr/custom-discover-sliders.md)
 - [Filter movie and series Discover results](./docs/using-seerr/movie-series-discovery-filters.md)
+- [Browse and sort movie and TV credits on person pages](./docs/using-seerr/people-and-credits.md)
 - [Configure Sonarr v5 and season orders](./docs/using-seerr/settings/services.md)
 - [Restrict administrator sign-in by client network](./docs/using-seerr/settings/network.md#restrict-administrator-sign-in-by-client-network)
 - [Require previous-season watch progress](./docs/using-seerr/settings/general.md#require-the-previous-season-to-be-watched)
