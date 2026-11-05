@@ -181,7 +181,8 @@ Recent repository updates include:
   choices, and request recovery scoped to the selected service, quality, and
   season order.
 - **Integrations:** MusicBrainz and Cover Art Archive connectivity checks with
-  bounded artwork traffic controls, plus a preview-first BookshelfNG to
+  bounded artwork traffic controls; outbound proxy routing for Cover Art
+  Archive and Steam library clients; and a preview-first BookshelfNG to
   ChaptarrNG database migration helper for single-database setups.
 
 These changes are in the repository; use the [release notes](./CHANGELOG.md)

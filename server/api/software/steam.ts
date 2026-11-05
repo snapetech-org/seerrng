@@ -1,3 +1,4 @@
+import { proxyRequestInterceptor } from '@server/utils/customProxyAgent';
 import type { AxiosInstance } from 'axios';
 import axios from 'axios';
 
@@ -23,14 +24,20 @@ export class SteamLibraryUnavailableError extends Error {
 const isRecord = (value: unknown): value is Record<string, unknown> =>
   !!value && typeof value === 'object' && !Array.isArray(value);
 
+const createSteamHttpClient = (): AxiosInstance => {
+  const client = axios.create({
+    timeout: 15_000,
+    maxRedirects: 0,
+    maxContentLength: 16 * 1024 * 1024,
+  });
+  client.interceptors.request.use(proxyRequestInterceptor);
+  return client;
+};
+
 export class SteamAPI {
   constructor(
     private readonly apiKey: string,
-    private readonly client: AxiosInstance = axios.create({
-      timeout: 15_000,
-      maxRedirects: 0,
-      maxContentLength: 16 * 1024 * 1024,
-    })
+    private readonly client: AxiosInstance = createSteamHttpClient()
   ) {}
 
   public async verifyOpenIdAssertion(

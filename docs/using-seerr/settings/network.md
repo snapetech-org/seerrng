@@ -27,9 +27,14 @@ You can force resolution to prefer IPv4 by going to `Settings > Network`, enabli
 
 ## HTTP(S) Proxy
 
-If you can't change your DNS servers or force IPV4 resolution, you can use Seerr through a proxy.
-
-In some places (like China), the ISP blocks not only the DNS resolution but also the connection to the TMDB API.
+If the host cannot reach external services directly, configure the outbound
+HTTP(S) proxy in **Settings > Network**. SeerrNG selects the proxy per request,
+so long-lived clients created during startup use it after settings load. This
+includes metadata scans, Cover Art Archive lookups, and Steam library
+synchronization. Configured bypass filters and safe direct-connection rules
+still apply. If proxy initialization or the startup connectivity check fails,
+SeerrNG logs the failure and restores direct routing; resolve that connection
+before relying on the proxy in a network that blocks direct egress.
 
 ## Enable Proxy Support
 
