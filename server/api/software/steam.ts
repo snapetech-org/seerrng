@@ -1,4 +1,5 @@
 import { proxyRequestInterceptor } from '@server/utils/customProxyAgent';
+import { userAgentRequestInterceptor } from '@server/utils/userAgent';
 import type { AxiosInstance } from 'axios';
 import axios from 'axios';
 
@@ -31,6 +32,7 @@ const createSteamHttpClient = (): AxiosInstance => {
     maxContentLength: 16 * 1024 * 1024,
   });
   client.interceptors.request.use(proxyRequestInterceptor);
+  client.interceptors.request.use(userAgentRequestInterceptor);
   return client;
 };
 

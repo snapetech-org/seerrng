@@ -23,6 +23,7 @@ import ExternalAPI from '@server/api/externalapi';
 import cacheManager from '@server/lib/cache';
 import logger from '@server/logger';
 import { proxyRequestInterceptor } from '@server/utils/customProxyAgent';
+import { userAgentRequestInterceptor } from '@server/utils/userAgent';
 import axios from 'axios';
 import {
   AnilistAuthError,
@@ -227,6 +228,7 @@ class AnilistAPI extends ExternalAPI {
       },
     });
     tokenClient.interceptors.request.use(proxyRequestInterceptor);
+    tokenClient.interceptors.request.use(userAgentRequestInterceptor);
 
     try {
       // The authorization code and client secret are intentionally sent to

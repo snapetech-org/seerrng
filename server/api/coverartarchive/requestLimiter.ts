@@ -1,3 +1,4 @@
+import { userAgentRequestInterceptor } from '@server/utils/userAgent';
 import axios from 'axios';
 import rateLimit from 'axios-rate-limit';
 
@@ -70,6 +71,7 @@ let configuredMaxConcurrentRequests =
 /** The CAA RPS limit is shared across requests and provider instances. */
 const coverArtArchiveAxios = axios.create();
 coverArtArchiveAxios.interceptors.request.use(proxyRequestInterceptor);
+coverArtArchiveAxios.interceptors.request.use(userAgentRequestInterceptor);
 
 export const coverArtArchiveHttpClient = rateLimit(coverArtArchiveAxios, {
   maxRequests:
