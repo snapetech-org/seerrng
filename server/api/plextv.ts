@@ -358,6 +358,12 @@ export const isCacheablePlexWatchlistPage = (value: unknown): boolean => {
   );
 };
 
+// Universal Watchlist uses Discover metadata IDs (24 hexadecimal characters),
+// distinct from a Plex server's numeric library keys. Keep both bounded and
+// path-safe without broadening the validation of local-server identifiers.
+const isPlexWatchlistRatingKey = (value: unknown): value is string =>
+  typeof value === 'string' && /^(?:\d{1,20}|[a-f\d]{24})$/i.test(value);
+
 export const preparePlexWatchlistRatingKeys = (
   value: unknown,
   limit = MAX_PLEX_WATCHLIST_PAGE_SIZE
@@ -376,7 +382,7 @@ export const preparePlexWatchlistRatingKeys = (
       item && typeof item === 'object' && 'ratingKey' in item
         ? (item as { ratingKey?: unknown }).ratingKey
         : undefined;
-    if (typeof ratingKey === 'string' && /^\d{1,20}$/.test(ratingKey)) {
+    if (isPlexWatchlistRatingKey(ratingKey)) {
       ratingKeys.add(ratingKey);
     }
     if (ratingKeys.size >= maxItems) {
@@ -421,8 +427,7 @@ const parsePlexWatchlistMetadata = (
 ): PlexWatchlistItem | undefined => {
   if (
     !metadata ||
-    typeof metadata.ratingKey !== 'string' ||
-    !/^\d{1,20}$/.test(metadata.ratingKey) ||
+    !isPlexWatchlistRatingKey(metadata.ratingKey) ||
     (metadata.type !== 'movie' && metadata.type !== 'show') ||
     typeof metadata.title !== 'string'
   ) {
@@ -714,7 +719,7 @@ class PlexTvAPI extends ExternalAPI {
   }
 
   public async getWatchlistedAt(ratingKey: string): Promise<Date | null> {
-    if (!/^\d{1,20}$/.test(ratingKey)) {
+    if (!isPlexWatchlistRatingKey(ratingKey)) {
       return null;
     }
 
