@@ -2985,15 +2985,12 @@ export class MediaRequestSubscriber implements EntitySubscriberInterface<MediaRe
 
         if (identifiersToSave.length) {
           await identifierRepository.insert(
-            identifiersToSave.map(
-              (identifier) =>
-                ({
-                  mediaId: media.id,
-                  provider: identifier.provider,
-                  value: identifier.value,
-                  canonical: false,
-                }) as unknown as MediaIdentifier
-            )
+            identifiersToSave.map((identifier) => ({
+              media: { id: media.id },
+              provider: identifier.provider,
+              value: identifier.value,
+              canonical: false,
+            }))
           );
           identifiersToSave.forEach((identifier) =>
             existingIdentifierKeys.add(
