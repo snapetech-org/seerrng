@@ -69,6 +69,7 @@ connects to.
 - [Cross-project OIDC contract and rollout map](/maintainers/oidc-cross-project-template) · [provider IDs, official setup links, scopes, and caveats](/maintainers/oidc-provider-catalog)
 - [Choose metadata providers and configure music request limits](/using-seerr/settings/metadata/)
 - [Check MusicBrainz and Cover Art Archive connectivity](/using-seerr/settings/metadata/#music-metadata-providers)
+- [Configure Plex playback links, including a self-hosted Web App URL](/using-seerr/settings/mediaserver/#web-app-url-optional)
 - [Configure media and automation services](/using-seerr/settings/services/)
 - [Set up labeled movie and TV request destinations](/using-seerr/settings/services/#request-destination-label-optional)
 - [Configure Sonarr v5 and alternate season orders](/using-seerr/settings/services/)
