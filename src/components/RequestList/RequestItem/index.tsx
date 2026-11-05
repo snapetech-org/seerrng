@@ -56,7 +56,7 @@ import type { TvDetails } from '@server/models/Tv';
 import axios from 'axios';
 import dynamic from 'next/dynamic';
 import Link from 'next/link';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useInView } from 'react-intersection-observer';
 import { FormattedRelativeTime, useIntl } from 'react-intl';
 import useSWR, { mutate } from 'swr';
@@ -622,6 +622,9 @@ const RequestItem = ({ request, revalidateList }: RequestItemProps) => {
     NonFunctionProperties<MediaRequest>
   >(`/api/v1/request/${request.id}`, {
     fallbackData: request,
+    revalidateOnMount: false,
+    revalidateOnFocus: false,
+    revalidateOnReconnect: false,
     refreshInterval: refreshIntervalHelper(
       {
         downloadStatus: request.media.downloadStatus,
@@ -631,6 +634,9 @@ const RequestItem = ({ request, revalidateList }: RequestItemProps) => {
       15000
     ),
   });
+  useEffect(() => {
+    void revalidate(request, { revalidate: false });
+  }, [request, revalidate]);
   const activeSeasonRequests = (requestData?.seasons ?? request.seasons).filter(
     isActiveSeasonRequest
   );
