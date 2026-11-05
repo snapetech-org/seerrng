@@ -1273,7 +1273,7 @@ test('release assets build supported native archive platforms', () => {
     iosBuild.steps.find(
       (step) => step.name === 'Test and package iOS Simulator app'
     ).run,
-    'bash scripts/build-ios-release.sh "$TAG" dist-release'
+    'bash .release-tooling/scripts/build-ios-release.sh "$TAG" dist-release'
   );
   const iosClientWorkflow = readWorkflow('ios.yml');
   assert.deepEqual(Object.keys(iosClientWorkflow.on), ['workflow_dispatch']);
@@ -1500,6 +1500,66 @@ test('trusted main iOS validation uses a GitHub-hosted macOS runner', () => {
 test('release iOS package uses a GitHub-hosted macOS runner', () => {
   const releaseAssets = readWorkflow('release-assets.yml');
   assert.equal(releaseAssets.jobs['build-ios']['runs-on'], 'xcode-27');
+});
+
+test('iOS release Xcode work stays on local storage and uses current tooling', () => {
+  const releaseAssets = readWorkflow('release-assets.yml');
+  const ios = releaseAssets.jobs['build-ios'];
+  const toolingCheckout = ios.steps.find(
+    (step) => step.name === 'Checkout current release tooling'
+  );
+  const workspaceTest = ios.steps.find(
+    (step) => step.name === 'Test local Xcode workspace guard'
+  );
+  const simulatorBuild = ios.steps.find(
+    (step) => step.name === 'Test and package iOS Simulator app'
+  );
+  const diagnosticUpload = ios.steps.find(
+    (step) => step.name === 'Upload iOS simulator failure diagnostics'
+  );
+  const workspaceGuard = fs.readFileSync(
+    path.join(rootDirectory, 'scripts', 'ios-release-workspace.sh'),
+    'utf8'
+  );
+  const simulatorScript = fs.readFileSync(
+    path.join(rootDirectory, 'scripts', 'build-ios-release.sh'),
+    'utf8'
+  );
+  const signedScript = fs.readFileSync(
+    path.join(rootDirectory, 'scripts', 'build-ios-signed-ipa.sh'),
+    'utf8'
+  );
+
+  assert.deepEqual(
+    {
+      ref: toolingCheckout.with.ref,
+      path: toolingCheckout.with.path,
+      sparseCheckout: toolingCheckout.with['sparse-checkout'],
+      persistCredentials: toolingCheckout.with['persist-credentials'],
+    },
+    {
+      ref: '${{ github.sha }}',
+      path: '.release-tooling',
+      sparseCheckout: 'scripts',
+      persistCredentials: false,
+    }
+  );
+  assert.equal(
+    workspaceTest.run,
+    'bash .release-tooling/scripts/ios-release-workspace.test.sh'
+  );
+  assert.match(
+    simulatorBuild.run,
+    /\.release-tooling\/scripts\/build-ios-release\.sh/u
+  );
+  assert.equal(diagnosticUpload.if, 'failure()');
+  assert.match(diagnosticUpload.with.name, /^ios-simulator-diagnostics-/u);
+  assert.doesNotMatch(diagnosticUpload.with.name, /^seerrng-/u);
+  assert.match(workspaceGuard, /stat -f '%T'/u);
+  assert.match(workspaceGuard, /filesystem_type.*apfs/su);
+  assert.match(simulatorScript, /-resultBundlePath "\$result_bundle"/u);
+  assert.match(simulatorScript, /ios_release_create_local_workspace build/u);
+  assert.match(signedScript, /ios_release_create_local_workspace signing/u);
 });
 
 test('release notes flow into the draft release and Discord announcement', () => {
