@@ -1,5 +1,9 @@
 import Modal from '@app/components/Common/Modal';
 import SensitiveInput from '@app/components/Common/SensitiveInput';
+import ServarrDownloadQueueSizeField, {
+  createServarrDownloadQueueSizeSchema,
+  DEFAULT_SERVARR_DOWNLOAD_QUEUE_SIZE,
+} from '@app/components/Settings/ServarrDownloadQueueSizeField';
 import Field, {
   default as SettingsField,
 } from '@app/components/Settings/SettingsField';
@@ -117,6 +121,7 @@ const RadarrModal = ({ onClose, radarr, onSave }: RadarrModalProps) => {
   });
 
   const RadarrSettingsSchema = Yup.object().shape({
+    downloadQueueSize: createServarrDownloadQueueSizeSchema(intl),
     name: Yup.string().required(
       intl.formatMessage(messages.validationNameRequired)
     ),
@@ -251,6 +256,8 @@ const RadarrModal = ({ onClose, radarr, onSave }: RadarrModalProps) => {
           isDefault: radarr?.isDefault ?? false,
           is4k: radarr?.is4k ?? false,
           externalUrl: radarr?.externalUrl,
+          downloadQueueSize:
+            radarr?.downloadQueueSize ?? DEFAULT_SERVARR_DOWNLOAD_QUEUE_SIZE,
           syncEnabled: radarr?.syncEnabled ?? false,
           enableSearch: !radarr?.preventSearch,
           tagRequests: radarr?.tagRequests ?? false,
@@ -279,6 +286,7 @@ const RadarrModal = ({ onClose, radarr, onSave }: RadarrModalProps) => {
               tags: values.tags,
               isDefault: values.isDefault,
               externalUrl: values.externalUrl,
+              downloadQueueSize: Number(values.downloadQueueSize),
               syncEnabled: values.syncEnabled,
               preventSearch: !values.enableSearch,
               tagRequests: values.tagRequests,
@@ -757,6 +765,7 @@ const RadarrModal = ({ onClose, radarr, onSave }: RadarrModalProps) => {
                     {intl.formatMessage(messages.syncEnabledHelp)}
                   </span>
                 </div>
+                <ServarrDownloadQueueSizeField />
                 <div className="form-row">
                   <label htmlFor="enableSearch" className="checkbox-label">
                     {intl.formatMessage(messages.enableSearch)}

@@ -377,6 +377,7 @@ export interface DVRSettings {
   preventSearch: boolean;
   tagRequests: boolean;
   overrideRule: number[];
+  downloadQueueSize?: number;
 }
 
 export interface ServiceRequestButtonSettings {
