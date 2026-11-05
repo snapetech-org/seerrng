@@ -42,6 +42,7 @@ import logger from '@server/logger';
 import { isAuthenticated } from '@server/middleware/auth';
 import { checkAvatarChanged } from '@server/routes/avatarproxy';
 import { ApiError } from '@server/types/error';
+import { isClientIpAllowedForAdministratorLogin } from '@server/utils/adminLoginNetworks';
 import AsyncLock from '@server/utils/asyncLock';
 import { trackBackgroundTask } from '@server/utils/backgroundTasks';
 import {
@@ -368,27 +369,56 @@ const parseRequestBodyObject = (
 };
 
 export const establishAuthenticatedSession = (
-  req: Pick<Request, 'session'>,
+  req: Pick<Request, 'ip' | 'session'>,
   userId: number,
   credentialVersion = 0
-): Promise<void> =>
-  new Promise((resolve, reject) => {
-    if (!req.session) {
-      reject(new Error('Session is unavailable.'));
-      return;
+): Promise<boolean> =>
+  (async () => {
+    const networkSettings = getSettings().network;
+    if (networkSettings.restrictAdministratorSignInToNetworks) {
+      const user = await getRepository(User).findOne({
+        select: { id: true, permissions: true },
+        where: { id: userId },
+      });
+
+      if (!user) {
+        return false;
+      }
+
+      if (
+        user.hasPermission(Permission.ADMIN) &&
+        !isClientIpAllowedForAdministratorLogin(
+          req.ip,
+          networkSettings.administratorSignInAllowedNetworks
+        )
+      ) {
+        logger.warn('Administrator sign-in rejected by network restriction', {
+          label: 'Auth',
+          ip: req.ip,
+          userId,
+        });
+        return false;
+      }
     }
 
-    req.session.regenerate((error) => {
-      if (error) {
-        reject(error);
+    return new Promise<boolean>((resolve, reject) => {
+      if (!req.session) {
+        reject(new Error('Session is unavailable.'));
         return;
       }
 
-      req.session.userId = userId;
-      req.session.credentialVersion = credentialVersion;
-      resolve();
+      req.session.regenerate((error) => {
+        if (error) {
+          reject(error);
+          return;
+        }
+
+        req.session.userId = userId;
+        req.session.credentialVersion = credentialVersion;
+        resolve(true);
+      });
     });
-  });
+  })();
 
 const parseOptionalPort = (
   value: unknown,
@@ -874,11 +904,14 @@ authRoutes.post('/plex', authRateLimit, async (req, res, next) => {
       return next({ status: 403, message: 'Access denied.' });
     }
 
-    await establishAuthenticatedSession(
+    const sessionEstablished = await establishAuthenticatedSession(
       req,
       user.id,
       user.passwordChangedAt?.getTime() ?? 0
     );
+    if (!sessionEstablished) {
+      return next({ status: 403, message: 'Access denied.' });
+    }
 
     await User.populateRequestCounts([user]);
     return res.status(200).json(user.filter(true));
@@ -1028,11 +1061,14 @@ authRoutes.post('/jellyfin/bridge', authRateLimit, async (req, res, next) => {
           }
         }
 
-        await establishAuthenticatedSession(
+        const sessionEstablished = await establishAuthenticatedSession(
           req,
           user.id,
           user.passwordChangedAt?.getTime() ?? 0
         );
+        if (!sessionEstablished) {
+          return res.status(403).type('text/plain').send('Access denied.');
+        }
         req.session.jellyfinBridge = {
           jellyfinUserId,
           authorityKey: initialAuthorityKey,
@@ -1567,11 +1603,14 @@ authRoutes.post('/jellyfin', authRateLimit, async (req, res, next) => {
           });
         }
 
-        await establishAuthenticatedSession(
+        const sessionEstablished = await establishAuthenticatedSession(
           req,
           user.id,
           user.passwordChangedAt?.getTime() ?? 0
         );
+        if (!sessionEstablished) {
+          return next({ status: 403, message: 'Access denied.' });
+        }
 
         return res.status(200).json(user?.filter() ?? {});
       }
@@ -1885,11 +1924,14 @@ authRoutes.post(
         }
       }
 
-      await establishAuthenticatedSession(
+      const sessionEstablished = await establishAuthenticatedSession(
         req,
         user.id,
         user.passwordChangedAt?.getTime() ?? 0
       );
+      if (!sessionEstablished) {
+        return next({ status: 403, message: 'Access denied.' });
+      }
 
       return res.status(200).json(user?.filter() ?? {});
     } catch (e) {
@@ -1949,11 +1991,14 @@ authRoutes.post('/login-link', authRateLimit, async (req, res, next) => {
       .getOne();
     if (!link?.user) return invalid();
 
-    await establishAuthenticatedSession(
+    const sessionEstablished = await establishAuthenticatedSession(
       req,
       link.user.id,
       link.user.passwordChangedAt?.getTime() ?? 0
     );
+    if (!sessionEstablished) {
+      return next({ status: 403, message: 'Access denied.' });
+    }
     res.setHeader('Cache-Control', 'no-store');
     return res.status(200).json(link.user.filter());
   } catch (error) {
@@ -2094,11 +2139,14 @@ authRoutes.post('/local', authRateLimit, async (req, res, next) => {
       });
     }
 
-    await establishAuthenticatedSession(
+    const sessionEstablished = await establishAuthenticatedSession(
       req,
       result.user.id,
       result.user.passwordChangedAt?.getTime() ?? 0
     );
+    if (!sessionEstablished) {
+      return next({ status: 403, message: 'Access denied.' });
+    }
 
     return res.status(200).json(result.user.filter());
   } catch (e) {
@@ -3138,11 +3186,14 @@ authRoutes.post(
       // Set logged in session and return. Regenerate the session id first so a
       // fixated pre-login session cannot be promoted to an authenticated one,
       // matching the local/plex/jellyfin login handlers.
-      await establishAuthenticatedSession(
+      const sessionEstablished = await establishAuthenticatedSession(
         req,
         user.id,
         user.passwordChangedAt?.getTime() ?? 0
       );
+      if (!sessionEstablished) {
+        return next({ status: 403, message: 'Access denied.' });
+      }
 
       // Success!
       return appleFormPost

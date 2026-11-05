@@ -34,6 +34,17 @@ const messages = defineMessages('components.Settings.SettingsNetwork', {
   trustProxy: 'Trust Reverse Proxy',
   trustProxyTip:
     'Enable when one trusted reverse proxy in front of SeerrNG sets X-Forwarded-For. SeerrNG will trust one proxy hop to identify client IP addresses. Keep this off if clients can connect directly, because they could forge forwarded headers.',
+  restrictAdministratorSignInToNetworks:
+    'Restrict Administrator Sign-In to Trusted Networks',
+  administratorSignInAllowedNetworks: 'Allowed Administrator Networks',
+  administratorSignInRestrictionTip:
+    'Users with administrator permission must sign in from one of these networks and use existing browser sessions from an allowed network. Regular users can continue to sign in remotely. API-key integrations are unchanged.',
+  administratorSignInAllowedNetworksTip:
+    'Enter up to 100 IPv4 or IPv6 addresses or CIDR subnets, one per line (4096 characters total), such as 192.168.0.0/16 or 100.64.0.0/10. The client saving a changed list must remain allowed.',
+  administratorSignInProxyWarning:
+    'When SeerrNG is behind a reverse proxy, enable Trust Reverse Proxy and ensure the proxy overwrites X-Forwarded-For. Restrict direct access to SeerrNG so clients cannot forge the address used for this check.',
+  validationAdministratorSignInNetworksRequired:
+    'Enter at least one allowed administrator network.',
   proxyEnabled: 'HTTP(S) Proxy',
   proxyEnabledTip:
     'Send ALL outgoing HTTP/HTTPS requests through a proxy server (host/port). Does NOT enable HTTPS, SSL, or certificate configuration.',
@@ -151,6 +162,20 @@ const SettingsNetwork = () => {
       .typeError(intl.formatMessage(messages.validationApiRequestTimeout))
       .required(intl.formatMessage(messages.validationApiRequestTimeout))
       .min(0, intl.formatMessage(messages.validationApiRequestTimeout)),
+    administratorSignInAllowedNetworks: Yup.string().when(
+      'restrictAdministratorSignInToNetworks',
+      {
+        is: true,
+        then: (schema) =>
+          schema.test(
+            'administrator-sign-in-networks-required',
+            intl.formatMessage(
+              messages.validationAdministratorSignInNetworksRequired
+            ),
+            (value) => Boolean(value?.trim())
+          ),
+      }
+    ),
   });
 
   if (!data && !error) {
@@ -182,6 +207,10 @@ const SettingsNetwork = () => {
             dnsCacheForceMinTtl: data?.dnsCache.forceMinTtl,
             dnsCacheForceMaxTtl: data?.dnsCache.forceMaxTtl,
             trustProxy: data?.trustProxy,
+            restrictAdministratorSignInToNetworks:
+              data?.restrictAdministratorSignInToNetworks,
+            administratorSignInAllowedNetworks:
+              data?.administratorSignInAllowedNetworks,
             proxyEnabled: data?.proxy?.enabled,
             proxyHostname: data?.proxy?.hostname,
             proxyPort: data?.proxy?.port,
@@ -214,6 +243,10 @@ const SettingsNetwork = () => {
                 csrfProtection: values.csrfProtection,
                 forceIpv4First: values.forceIpv4First,
                 trustProxy: values.trustProxy,
+                restrictAdministratorSignInToNetworks:
+                  values.restrictAdministratorSignInToNetworks,
+                administratorSignInAllowedNetworks:
+                  values.administratorSignInAllowedNetworks,
                 dnsCache: {
                   enabled: values.dnsCacheEnabled,
                   forceMinTtl: toOptionalNumber(values.dnsCacheForceMinTtl),
@@ -252,11 +285,21 @@ const SettingsNetwork = () => {
                 autoDismiss: true,
                 appearance: 'success',
               });
-            } catch {
-              addToast(intl.formatMessage(messages.toastSettingsFailure), {
-                autoDismiss: true,
-                appearance: 'error',
-              });
+            } catch (error) {
+              const responseMessage = axios.isAxiosError<{
+                message?: unknown;
+              }>(error)
+                ? error.response?.data?.message
+                : undefined;
+              addToast(
+                typeof responseMessage === 'string'
+                  ? responseMessage
+                  : intl.formatMessage(messages.toastSettingsFailure),
+                {
+                  autoDismiss: true,
+                  appearance: 'error',
+                }
+              );
             } finally {
               revalidate();
             }
@@ -508,6 +551,75 @@ const SettingsNetwork = () => {
                     {intl.formatMessage(messages.trustProxyTip)}
                   </span>
                 </div>
+                <div className="form-row">
+                  <label
+                    htmlFor="restrictAdministratorSignInToNetworks"
+                    className="checkbox-label"
+                  >
+                    {intl.formatMessage(
+                      messages.restrictAdministratorSignInToNetworks
+                    )}
+                  </label>
+                  <div className="form-input-area">
+                    <SettingsField
+                      type="checkbox"
+                      id="restrictAdministratorSignInToNetworks"
+                      name="restrictAdministratorSignInToNetworks"
+                      onChange={() => {
+                        setFieldValue(
+                          'restrictAdministratorSignInToNetworks',
+                          !values.restrictAdministratorSignInToNetworks
+                        );
+                      }}
+                    />
+                  </div>
+                  <span className="settings-form-row-description">
+                    {intl.formatMessage(
+                      messages.administratorSignInRestrictionTip
+                    )}
+                  </span>
+                </div>
+                {values.restrictAdministratorSignInToNetworks && (
+                  <>
+                    <div className="form-row">
+                      <label
+                        htmlFor="administratorSignInAllowedNetworks"
+                        className="text-label"
+                      >
+                        {intl.formatMessage(
+                          messages.administratorSignInAllowedNetworks
+                        )}
+                      </label>
+                      <div className="form-input-area">
+                        <Field
+                          as="textarea"
+                          id="administratorSignInAllowedNetworks"
+                          name="administratorSignInAllowedNetworks"
+                          rows={4}
+                          spellCheck={false}
+                        />
+                        {errors.administratorSignInAllowedNetworks &&
+                          touched.administratorSignInAllowedNetworks &&
+                          typeof errors.administratorSignInAllowedNetworks ===
+                            'string' && (
+                            <div className="error">
+                              {errors.administratorSignInAllowedNetworks}
+                            </div>
+                          )}
+                      </div>
+                      <span className="settings-form-row-description">
+                        {intl.formatMessage(
+                          messages.administratorSignInAllowedNetworksTip
+                        )}
+                      </span>
+                    </div>
+                    <Alert type="warning">
+                      {intl.formatMessage(
+                        messages.administratorSignInProxyWarning
+                      )}
+                    </Alert>
+                  </>
+                )}
                 <div className="form-row">
                   <label htmlFor="csrfProtection" className="checkbox-label">
                     <span className="mr-2">

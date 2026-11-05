@@ -84,6 +84,11 @@ import discoverSettingRoutes from '@server/routes/settings/discover';
 import loginLinkRoutes from '@server/routes/settings/loginLinks';
 import { ApiError } from '@server/types/error';
 import { isAvailableLocale } from '@server/types/languages';
+import {
+  MAX_ADMIN_LOGIN_NETWORKS_LENGTH,
+  isClientIpAllowedForAdministratorLogin,
+  parseAdministratorLoginNetworks,
+} from '@server/utils/adminLoginNetworks';
 import { appDataPath } from '@server/utils/appDataVolume';
 import { getAppVersion } from '@server/utils/appVersion';
 import { mapWithConcurrency } from '@server/utils/concurrency';
@@ -889,6 +894,58 @@ const parseNetworkSettingsBody = (
     value[key] = parsed.value;
   }
 
+  const restrictAdministratorSignInToNetworks = parseOptionalBooleanSetting(
+    body.restrictAdministratorSignInToNetworks,
+    'restrictAdministratorSignInToNetworks'
+  );
+  if ('error' in restrictAdministratorSignInToNetworks) {
+    return restrictAdministratorSignInToNetworks;
+  }
+  value.restrictAdministratorSignInToNetworks =
+    restrictAdministratorSignInToNetworks.value;
+
+  const administratorSignInAllowedNetworks = parsePatchBoundedString(
+    body,
+    'administratorSignInAllowedNetworks',
+    {
+      fieldName: 'administratorSignInAllowedNetworks',
+      maxLength: MAX_ADMIN_LOGIN_NETWORKS_LENGTH,
+      allowEmpty: true,
+    }
+  );
+  if ('error' in administratorSignInAllowedNetworks) {
+    return administratorSignInAllowedNetworks;
+  }
+  if (administratorSignInAllowedNetworks.value !== undefined) {
+    const parsedNetworks = parseAdministratorLoginNetworks(
+      administratorSignInAllowedNetworks.value
+    );
+    if ('error' in parsedNetworks) {
+      return parsedNetworks;
+    }
+    value.administratorSignInAllowedNetworks =
+      parsedNetworks.value.entries.join('\n');
+  }
+
+  const restrictionEnabled =
+    restrictAdministratorSignInToNetworks.value ??
+    current.restrictAdministratorSignInToNetworks;
+  const allowedNetworks =
+    administratorSignInAllowedNetworks.value ??
+    current.administratorSignInAllowedNetworks;
+  if (restrictionEnabled) {
+    const parsedNetworks = parseAdministratorLoginNetworks(allowedNetworks);
+    if ('error' in parsedNetworks) {
+      return parsedNetworks;
+    }
+    if (parsedNetworks.value.entries.length === 0) {
+      return {
+        error:
+          'Add at least one administrator network before enabling the restriction.',
+      };
+    }
+  }
+
   const parsedTls = parseTlsSettingsBody(body, current.tls);
   if ('error' in parsedTls) {
     return parsedTls;
@@ -1632,6 +1689,29 @@ settingsRoutes.post(
     );
     if ('error' in parsedNetwork) {
       return res.status(400).json({ message: parsedNetwork.error });
+    }
+
+    const restrictionEnabled =
+      (parsedNetwork.value.restrictAdministratorSignInToNetworks as
+        boolean | undefined) ??
+      settings.network.restrictAdministratorSignInToNetworks;
+    const allowedNetworks =
+      (parsedNetwork.value.administratorSignInAllowedNetworks as
+        string | undefined) ??
+      settings.network.administratorSignInAllowedNetworks;
+    const restrictionChanged =
+      restrictionEnabled !==
+        settings.network.restrictAdministratorSignInToNetworks ||
+      allowedNetworks !== settings.network.administratorSignInAllowedNetworks;
+    if (
+      restrictionEnabled &&
+      restrictionChanged &&
+      !isClientIpAllowedForAdministratorLogin(req.ip, allowedNetworks)
+    ) {
+      return res.status(400).json({
+        message:
+          'The current client IP must be included in the allowed networks before enabling or changing this restriction.',
+      });
     }
 
     const network = await settings.persistSection('network', (current) =>

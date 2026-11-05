@@ -39,6 +39,46 @@ This setting also controls whether Seerr trusts your proxy's `X-Forwarded-Proto`
 
 This setting is **disabled** by default.
 
+## Restrict administrator sign-in by client network
+
+The **Restrict Administrator Sign-In to Trusted Networks** option limits users
+with administrator permission to the configured client addresses. It also
+blocks an existing administrator browser session from using SeerrNG outside
+those networks. Regular users can still sign in remotely. The option is off by
+default.
+
+1. Open **Settings > Network**.
+2. Enable **Restrict Administrator Sign-In to Trusted Networks**.
+3. Enter up to 100 IPv4 or IPv6 addresses or CIDR subnets (4096 characters
+   total), one per line under **Allowed Administrator Networks**. For example,
+   `192.168.0.0/16` permits that IPv4 subnet and `100.64.0.0/10` permits the
+   Tailscale CGNAT range.
+4. Save the settings. To avoid locking yourself out, the client address making
+   this change must be included in the allowed networks.
+
+The allowlist is used for SeerrNG's interactive sign-in methods, including
+local password, Plex, Jellyfin or Emby, Jellyfin Bridge, Jellyfin Quick
+Connect, sign-in links, and OIDC. If SeerrNG cannot determine a valid client IP,
+it denies administrator sign-in. This setting does not change API-key
+authentication used by integrations.
+
+When SeerrNG is behind a reverse proxy, enable **Trust Reverse Proxy** and
+restart SeerrNG before relying on this restriction. SeerrNG trusts one proxy
+hop. Configure that proxy to overwrite `X-Forwarded-For`, and prevent clients
+from reaching SeerrNG directly; otherwise a client could forge the address
+used for the network check. Existing browser sessions are not destroyed when
+the restriction changes, but administrator API requests from an unlisted
+network are denied until the session is used from an allowed network.
+
+If your allowed networks change and no administrator can reach SeerrNG, stop
+the service, back up `CONFIG_DIRECTORY/settings.json`, and set
+`network.restrictAdministratorSignInToNetworks` to `false` or correct
+`network.administratorSignInAllowedNetworks`. Restart SeerrNG, then configure
+and verify the intended networks again.
+
+This setting was added with reference to Seerr [issue
+#3338](https://github.com/seerr-team/seerr/issues/3338).
+
 ## Enable CSRF Protection
 
 :::warning
