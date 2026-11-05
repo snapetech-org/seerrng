@@ -1,7 +1,7 @@
 ---
 category: fixed
 audience: users, operators
-area: authentication, settings
+area: authentication
 action: none
 breaking: false
 ---
