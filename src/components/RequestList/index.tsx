@@ -39,6 +39,10 @@ const messages = defineMessages('components.RequestList', {
   showallrequests: 'Show All Requests',
   sortAdded: 'Most Recent',
   sortModified: 'Last Modified',
+  sortPopularity: 'Popularity',
+  sortReleaseDate: 'Release Date',
+  sortRating: 'TMDB Rating',
+  sortTitle: 'Title',
   sortDirection: 'Toggle Sort Direction',
   taskFilters: 'Task Filters',
   mediaFilters: 'Media Filters',
@@ -60,7 +64,8 @@ enum Filter {
   COMPLETED = 'completed',
 }
 
-type Sort = 'added' | 'modified';
+type Sort =
+  'added' | 'modified' | 'popularity' | 'releaseDate' | 'rating' | 'title';
 
 type SortDirection = 'asc' | 'desc';
 
@@ -70,7 +75,14 @@ const isMediaType = (value: unknown): value is MediaType =>
   typeof value === 'string' &&
   ['all', 'movie', 'tv', 'music', 'book', 'sports'].includes(value);
 const REQUEST_FILTER_OPTIONS = Object.values(Filter);
-const REQUEST_SORT_OPTIONS: readonly Sort[] = ['added', 'modified'];
+const REQUEST_SORT_OPTIONS: readonly Sort[] = [
+  'added',
+  'modified',
+  'popularity',
+  'releaseDate',
+  'rating',
+  'title',
+];
 const SORT_DIRECTION_OPTIONS: readonly SortDirection[] = ['asc', 'desc'];
 
 const RequestList = () => {
@@ -99,6 +111,27 @@ const RequestList = () => {
   const effectiveMediaType = isMediaType(router.query.mediaType)
     ? router.query.mediaType
     : (currentMediaType as MediaType);
+  const supportsMetadataSort =
+    effectiveMediaType === 'movie' || effectiveMediaType === 'tv';
+  const sortOptions: { value: Sort; label: keyof typeof messages }[] = [
+    { value: 'added', label: 'sortAdded' },
+    { value: 'modified', label: 'sortModified' },
+    ...(supportsMetadataSort
+      ? ([
+          { value: 'popularity', label: 'sortPopularity' },
+          { value: 'releaseDate', label: 'sortReleaseDate' },
+          { value: 'rating', label: 'sortRating' },
+          { value: 'title', label: 'sortTitle' },
+        ] satisfies { value: Sort; label: keyof typeof messages }[])
+      : []),
+  ];
+  const effectiveSort = sortOptions.some(
+    (option) => option.value === currentSort
+  )
+    ? currentSort
+    : 'added';
+  const effectiveSortDirection =
+    effectiveSort === currentSort ? currentSortDirection : 'desc';
 
   const {
     data,
@@ -108,7 +141,7 @@ const RequestList = () => {
     router.isReady
       ? `/api/v1/request?take=${currentPageSize}&skip=${
           pageIndex * currentPageSize
-        }&filter=${effectiveFilter}&mediaType=${effectiveMediaType}&sort=${currentSort}&sortDirection=${currentSortDirection}${
+        }&filter=${effectiveFilter}&mediaType=${effectiveMediaType}&sort=${effectiveSort}&sortDirection=${effectiveSortDirection}${
           router.pathname.startsWith('/profile')
             ? `&requestedBy=${currentUser?.id}`
             : userId
@@ -312,6 +345,14 @@ const RequestList = () => {
                   }))}
                   onChange={(value) => {
                     setCurrentMediaType(value as MediaType);
+                    if (
+                      value !== 'movie' &&
+                      value !== 'tv' &&
+                      !['added', 'modified'].includes(currentSort)
+                    ) {
+                      setCurrentSort('added');
+                      setCurrentSortDirection('desc');
+                    }
                     router.push({
                       pathname: router.pathname,
                       query: router.query.userId
@@ -330,19 +371,14 @@ const RequestList = () => {
               <div className="app-filter-row">
                 <CompactSelect
                   label={intl.formatMessage(messages.sortBy)}
-                  value={currentSort}
-                  options={[
-                    {
-                      value: 'added',
-                      label: intl.formatMessage(messages.sortAdded),
-                    },
-                    {
-                      value: 'modified',
-                      label: intl.formatMessage(messages.sortModified),
-                    },
-                  ]}
+                  value={effectiveSort}
+                  options={sortOptions.map((option) => ({
+                    value: option.value,
+                    label: intl.formatMessage(messages[option.label]),
+                  }))}
                   onChange={(value) => {
                     setCurrentSort(value as Sort);
+                    setCurrentSortDirection(value === 'title' ? 'asc' : 'desc');
                     router.push({
                       pathname: router.pathname,
                       query: router.query.userId
@@ -365,11 +401,11 @@ const RequestList = () => {
                     aria-label={intl.formatMessage(messages.sortDirection)}
                     onClick={() =>
                       setCurrentSortDirection(
-                        currentSortDirection === 'asc' ? 'desc' : 'asc'
+                        effectiveSortDirection === 'asc' ? 'desc' : 'asc'
                       )
                     }
                   >
-                    {currentSortDirection === 'asc' ? (
+                    {effectiveSortDirection === 'asc' ? (
                       <ArrowUpIcon />
                     ) : (
                       <ArrowDownIcon />

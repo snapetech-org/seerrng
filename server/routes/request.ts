@@ -78,8 +78,10 @@ import {
   recordRequestStatus,
 } from '@server/lib/requestStatus';
 import {
+  REQUEST_HISTORY_METADATA_SORT_FIELDS,
   REQUEST_STATUS_SORT_FIELDS,
   parseRequestStatusSort,
+  sortMovieTvRequestRowsByMetadata,
 } from '@server/lib/requestStatusSort';
 import {
   PendingRequestTransitionConflictError,
@@ -425,7 +427,11 @@ const getExpectedCredentialVersion = (
   req.session?.userId === req.user?.id
     ? (req.session.credentialVersion ?? 0)
     : undefined;
-const requestSortFields = ['added', 'modified'] as const;
+const requestSortFields = [
+  'added',
+  'modified',
+  ...REQUEST_HISTORY_METADATA_SORT_FIELDS,
+] as const;
 const requestSortDirections = ['asc', 'desc'] as const;
 const getErrorLogFields = (error: unknown) => ({
   errorMessage: error instanceof Error ? error.message : 'Unknown error',
@@ -1861,6 +1867,15 @@ requestRoutes.get<
       return next({ status: 400, message: parsedSort.error });
     }
     const sort = parsedSort.value;
+    const metadataSort = REQUEST_HISTORY_METADATA_SORT_FIELDS.includes(
+      sort as (typeof REQUEST_HISTORY_METADATA_SORT_FIELDS)[number]
+    );
+    if (metadataSort && mediaType !== 'movie' && mediaType !== 'tv') {
+      return next({
+        status: 400,
+        message: 'Metadata sorting requires mediaType=movie or mediaType=tv.',
+      });
+    }
 
     const parsedSortDirection = parseOptionalAllowedString(
       req.query.sortDirection,
@@ -2096,12 +2111,45 @@ requestRoutes.get<
         break;
     }
 
-    const [requestRows, requestCount] = await query
-      .orderBy(sortFilter, sortDirection)
-      .addOrderBy('request.id', sortDirection)
-      .take(pageSize)
-      .skip(skip)
-      .getManyAndCount();
+    let requestRows: MediaRequest[];
+    let requestCount: number;
+    if (metadataSort && sort) {
+      const matchingRequests = await query
+        .clone()
+        .select(['request.id', 'request.type', 'media.id', 'media.tmdbId'])
+        .getMany();
+      const sortedRequests = await sortMovieTvRequestRowsByMetadata(
+        matchingRequests,
+        sort as (typeof REQUEST_HISTORY_METADATA_SORT_FIELDS)[number],
+        sortDirection === 'ASC' ? 'asc' : 'desc'
+      );
+      requestCount = sortedRequests.length;
+      const pageRequestIds = sortedRequests
+        .slice(skip, skip + pageSize)
+        .map((request) => request.id);
+      if (pageRequestIds.length === 0) {
+        requestRows = [];
+      } else {
+        const pageRequests = await query
+          .clone()
+          .andWhere('request.id IN (:...pageRequestIds)', { pageRequestIds })
+          .getMany();
+        const requestsById = new Map(
+          pageRequests.map((request) => [request.id, request])
+        );
+        requestRows = pageRequestIds.flatMap((requestId) => {
+          const request = requestsById.get(requestId);
+          return request ? [request] : [];
+        });
+      }
+    } else {
+      [requestRows, requestCount] = await query
+        .orderBy(sortFilter, sortDirection)
+        .addOrderBy('request.id', sortDirection)
+        .take(pageSize)
+        .skip(skip)
+        .getManyAndCount();
+    }
     const requests = await hydrateMediaRequestRelations(requestRows, {
       includeMediaIdentifiers: true,
       viewer: requestReadLease?.actor ?? req.user,

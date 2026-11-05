@@ -199,6 +199,7 @@ const messages = defineMessages('components.Requests', {
   sortAdded: 'Date',
   sortModified: 'Last Modified',
   sortTitle: 'Title',
+  sortPopularity: 'Popularity',
   sortStatus: 'Status',
   sortDirector: 'Director',
   sortWriter: 'Writer',
@@ -382,6 +383,7 @@ const getSortOptions = (
     case 'movie':
       return [
         ...common,
+        { value: 'popularity', label: 'sortPopularity' },
         { value: 'director', label: 'sortDirector' },
         { value: 'rating', label: 'sortRating' },
         { value: 'releaseDate', label: 'sortReleaseDate' },
@@ -389,6 +391,7 @@ const getSortOptions = (
     case 'tv':
       return [
         ...common,
+        { value: 'popularity', label: 'sortPopularity' },
         { value: 'writer', label: 'sortWriter' },
         { value: 'director', label: 'sortDirector' },
         { value: 'rating', label: 'sortRating' },
