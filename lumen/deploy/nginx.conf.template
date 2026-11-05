@@ -3,15 +3,15 @@
 #   SEERR_EXTRAS_URL  optional companion proxy (ChaptarrNG lookups, "request another narrator")
 #   SEERR_FULL_URL    where people reach full SeerrNG for pages Lumen doesn't have
 
-# The visitor's address: Cloudflare's header when present, else whoever connected. SeerrNG
-# trusts one proxy hop, so it must see the visitor here, not the tunnel.
-map $http_cf_connecting_ip $lumen_client_ip {
-  "" $remote_addr;
-  default $http_cf_connecting_ip;
-}
-map $http_x_forwarded_for $lumen_forwarded_for {
-  "" $remote_addr;
-  default $http_x_forwarded_for;
+# The visitor's address. SeerrNG trusts one proxy hop (Lumen), so whatever Lumen forwards is the
+# IP SeerrNG rate-limits sign-ins by. $remote_addr is the address that connected, or, when that is
+# a proxy listed in LUMEN_TRUSTED_PROXIES, the visitor that proxy reported (realip module, set up by
+# 15-lumen-trusted-proxies.sh). Headers sent by anyone else are never passed on.
+# The scheme is likewise taken from X-Forwarded-Proto only when a trusted proxy sent it.
+map "$lumen_via_proxy:$http_x_forwarded_proto" $lumen_forwarded_proto {
+  default $scheme;
+  "1:https" https;
+  "1:http" http;
 }
 
 # The same protections full SeerrNG sends with its pages: no framing (clickjacking), scripts only
@@ -34,18 +34,30 @@ server {
   location /api/ {
     proxy_pass ${SEERR_URL};
     proxy_set_header Host $host;
-    proxy_set_header X-Forwarded-For $lumen_forwarded_for;
-    proxy_set_header X-Real-IP $lumen_client_ip;
-    proxy_set_header X-Forwarded-Proto $http_x_forwarded_proto;
+    proxy_set_header X-Forwarded-For $remote_addr;
+    proxy_set_header X-Real-IP $remote_addr;
+    # never pass on a client's own copies of other forwarding headers
+    proxy_set_header CF-Connecting-IP "";
+    proxy_set_header Forwarded "";
+    proxy_set_header X-Forwarded-Proto $lumen_forwarded_proto;
   }
   location ~ ^/(imageproxy|avatarproxy)/ {
     proxy_pass ${SEERR_URL};
     proxy_set_header Host $host;
+    proxy_set_header X-Forwarded-For $remote_addr;
+    proxy_set_header X-Real-IP $remote_addr;
+    proxy_set_header CF-Connecting-IP "";
+    proxy_set_header Forwarded "";
+    proxy_set_header X-Forwarded-Proto $lumen_forwarded_proto;
   }
   location /seerr-classic/ {
     proxy_pass ${SEERR_EXTRAS_URL};
     proxy_set_header Host $host;
-    proxy_set_header X-Forwarded-For $lumen_forwarded_for;
+    proxy_set_header X-Forwarded-For $remote_addr;
+    proxy_set_header X-Real-IP $remote_addr;
+    # never pass on a client's own copies of other forwarding headers
+    proxy_set_header CF-Connecting-IP "";
+    proxy_set_header Forwarded "";
   }
 
   # SeerrNG pages Lumen doesn't have (links in emails, old bookmarks): open them in full SeerrNG

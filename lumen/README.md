@@ -19,6 +19,12 @@ Open `http://<host>:5080` and sign in with Plex or a SeerrNG local account. Poin
 | `SEERR_URL` | SeerrNG's address as the container sees it. `/api`, `/imageproxy` and `/avatarproxy` are proxied here. |
 | `SEERR_FULL_URL` | Where people reach full SeerrNG. Links to pages Lumen doesn't have (issues, settings, users…) redirect here. |
 | `SEERR_EXTRAS_URL` | Optional companion service for the narrator extras (see below). Without it Lumen uses SeerrNG alone. |
+| `LUMEN_TRUSTED_PROXIES` | Addresses or CIDRs of the reverse proxy or tunnel in front of Lumen, comma separated (e.g. `172.17.0.0/16`). Only these may tell Lumen who the visitor is. Empty (the default) = the address that connected. |
+| `LUMEN_REAL_IP_HEADER` | The header that proxy puts the visitor's address in: `X-Forwarded-For` (default) or `CF-Connecting-IP`. |
+
+### Behind a reverse proxy or tunnel
+
+SeerrNG trusts one proxy hop, so the address Lumen passes on is the one SeerrNG sees, and SeerrNG limits sign-in attempts per address. Lumen never forwards a client's own `X-Forwarded-For`, `CF-Connecting-IP` or `X-Forwarded-Proto`; it believes them only from `LUMEN_TRUSTED_PROXIES`. If Lumen sits behind Cloudflare Tunnel, nginx, Traefik or similar, set `LUMEN_TRUSTED_PROXIES` to that proxy's address (for a tunnel container on the same Docker network, that network's subnet), or SeerrNG will see every visitor as the proxy and they will share one rate limit. Keep the trusted range tight, and don't publish Lumen's port anywhere the proxy's range can be reached from.
 
 ## Develop
 
