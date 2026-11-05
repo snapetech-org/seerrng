@@ -235,6 +235,11 @@ In this section, simply select the libraries you would like Seerr to scan. Seerr
 
 If you do not see your Plex libraries listed, verify your Plex settings are correct and click the **Sync Libraries** button.
 
+If SeerrNG cannot reach Plex during a sync, it reports a connection error and
+keeps the last saved library list. If a startup migration cannot contact Plex,
+SeerrNG continues to start with the existing settings and retries that
+migration the next time it starts.
+
 Plex reports both music and audiobook libraries as artist libraries. SeerrNG
 classifies them as **Music** after syncing. For an audiobook library, open its
 library actions and select **Reclassify as an Audiobooks library**. You can
