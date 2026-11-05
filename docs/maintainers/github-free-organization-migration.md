@@ -172,21 +172,22 @@ Before moving any repository:
 - Set the organization Actions `GITHUB_TOKEN` default to read-only and leave
   workflow permission to create or approve pull requests disabled unless a
   specific audited workflow requires it.
-- Run public-fork code only in the dedicated disposable VM-backed JIT sandbox,
-  with no secrets, minimal read permissions, and restricted egress.
-- Restrict self-hosted runner access to the explicitly selected repositories.
-  Verify public-repository and workflow restrictions in the Free-plan UI/API
-  before registering `kspld0` or `kspls0` runners at organization scope.
+- Run public-fork code on compatible GitHub-hosted runners by default, with no
+  secrets and minimal read permissions. Use the dedicated disposable JIT
+  sandbox only when a task requires restricted egress or tighter environment
+  controls.
+- When a task needs private JIT, restrict self-hosted runner access to the
+  explicitly selected repositories. Verify public-repository and workflow
+  restrictions in the Free-plan UI/API before registering `kspld0` or
+  `kspls0` runners at organization scope.
 - Audit repository workflow triggers, runner labels, token permissions, checkout
   refs, environments, and release/deploy paths. Keep outside-contributor code
   out of trusted runners and persistent host credentials/data.
-- Preserve the distinct runner policy already in use: ChaptarrNG on `kspld0`,
-  BookshelfNG on `kspls0`, TorrentNG on both where supported, SLSKDN on its
-  private server label, ROMarrNG and SLSKR hosted-only, and SeerrNG on hosted
-  main-branch CI. Confirm current settings before relying on this memory-derived
-  inventory.
-- Run build, test, scan, packaging, and release jobs on approved private JIT
-  infrastructure. Do not use GitHub-hosted runners or hosted fallback.
+- Use compatible GitHub-hosted runners for build, test, scan, packaging, and
+  release jobs by default, preserving required operating systems and
+  architectures. Use private JIT only for tasks that require private hardware,
+  network, files, or other task-specific private resources. Confirm current
+  repository settings before relying on older runner inventories.
 
 If a listed baseline cannot be enforced on GitHub Free, stop before adding
 local runners. Keep repository validation on hosted runners until the owner

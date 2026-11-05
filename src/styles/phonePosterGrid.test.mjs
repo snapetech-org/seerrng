@@ -44,7 +44,37 @@ test('each theme owns its two-up narrow-phone poster width', () => {
     assert.match(width.value, /100vw/, `${id} fits two posters per row`);
     assert.match(
       width.parent.selector,
-      new RegExp(`data-interface-theme=['\"]${id}['\"]`)
+      new RegExp(`data-interface-theme=['"]${id}['"]`)
+    );
+  }
+});
+
+test('narrow-phone poster widths override each theme default in the cascade', () => {
+  for (const [id, stylesheet] of Object.entries(interfaceThemes)) {
+    const defaultRule = stylesheet.nodes.find(
+      (node) =>
+        node.type === 'rule' &&
+        node.selector.includes(`data-interface-theme='${id}'`) &&
+        node.nodes.some(
+          (child) =>
+            child.type === 'decl' &&
+            child.prop === '--poster-width' &&
+            child.value.endsWith('px')
+        )
+    );
+    const narrowRule = stylesheet.nodes.find(
+      (node) =>
+        node.type === 'atrule' &&
+        node.name === 'media' &&
+        /max-width:\s*389px/.test(node.params)
+    );
+
+    assert.ok(defaultRule, `${id} declares its default poster width`);
+    assert.ok(narrowRule, `${id} declares a narrow-phone override`);
+    assert.ok(
+      stylesheet.nodes.indexOf(narrowRule) >
+        stylesheet.nodes.indexOf(defaultRule),
+      `${id} applies its narrow-phone width after the default`
     );
   }
 });

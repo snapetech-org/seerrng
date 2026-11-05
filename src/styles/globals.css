@@ -9725,9 +9725,8 @@
   }
 
   .selection-tree [data-tree-part='toolbar'] {
-    display: flex;
-    flex-shrink: 0;
-    flex-wrap: wrap;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) max-content;
     align-items: center;
     gap: var(--card-spacing);
   }
@@ -9739,7 +9738,8 @@
   .selection-tree
     [data-tree-part='toolbar']
     [data-tree-part='selection-summary'] {
-    margin-inline-start: auto;
+    grid-column: 2;
+    grid-row: 1;
   }
 
   .selection-tree [data-tree-part='season'] {

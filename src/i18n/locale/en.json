@@ -6577,6 +6577,8 @@
   "discovery.accounts.failed": "The account operation failed. Check the provider connection and try again.",
   "discovery.accounts.open": "Open authorization page",
   "discovery.accounts.title": "Discovery Accounts",
+  "discovery.accounts.traktCallbackFailed": "Trakt did not return authorization to SeerrNG. Check the public HTTPS Application URL and registered callback URL in the Trakt application, then try again.",
+  "discovery.accounts.traktSetup": "To connect Trakt, an administrator must set a public HTTPS Application URL in Settings → General and register that URL followed by /api/v1/integrations/discovery/trakt/callback in the Trakt application.",
   "discovery.accounts.unconfigured": "Administrator setup required",
   "discovery.accounts.writesdescription": "Only changes you choose in My Library are sent. Turn this off to keep this connection read-only.",
   "discovery.configuration.apikey": "API key",

@@ -164,7 +164,9 @@ const DiscoveryModeTabs = ({
   }
 
   const apiMediaType = mediaType === 'audiobook' ? 'book' : mediaType;
-  const browsePath = currentPath ?? canonicalDiscoverPaths[mediaType];
+  const browsePath =
+    currentPath ??
+    (router.isReady ? router.asPath : canonicalDiscoverPaths[mediaType]);
   const fallbackSwipePath = {
     pathname: '/swipe',
     query: { mediaType: apiMediaType },

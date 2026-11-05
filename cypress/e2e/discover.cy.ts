@@ -1,17 +1,19 @@
 const clickFirstTitleCardInSlider = (sliderTitle: string): void => {
-  cy.contains('.slider-header', sliderTitle)
-    .closest('[data-testid=media-slider]')
-    .find('[data-testid=title-card]', { timeout: 15000 })
-    .first()
-    .trigger('mouseover')
+  const firstCard = () =>
+    cy
+      .contains('.slider-header', sliderTitle)
+      .closest('[data-testid=media-slider]')
+      .find('[data-testid=title-card]', { timeout: 15000 })
+      .first();
+
+  firstCard()
     .find('[data-testid=title-card-title]')
     .invoke('text')
     .then((text) => {
-      cy.contains('.slider-header', sliderTitle)
-        .closest('[data-testid=media-slider]')
-        .find('[data-testid=title-card]')
-        .first()
-        .click();
+      firstCard().find('[data-poster-region="frame"]').click({ force: true });
+      firstCard()
+        .find('[data-poster-region="detail-link"]')
+        .click({ force: true });
       cy.get('[data-testid=media-title]').should('contain', text);
     });
 };
@@ -259,15 +261,43 @@ describe('Discover', () => {
       releaseDate: '2099-01-01',
       posterPath: null,
     };
-    cy.intercept('GET', '/api/v1/discover/movies*', {
-      page: 1,
-      totalPages: 1,
-      totalResults: 1,
-      results: [movie],
-    });
+    cy.intercept(
+      {
+        method: 'GET',
+        pathname: '/api/v1/discover/movies',
+        query: { primaryReleaseDateGte: '*' },
+      },
+      {
+        page: 1,
+        totalPages: 1,
+        totalResults: 1,
+        results: [movie],
+      }
+    ).as('getUpcomingMovies');
     stubTitleDetails('movie', movie);
+    cy.visit('/offline.html');
+    cy.window().then(async (win) => {
+      if ('serviceWorker' in win.navigator) {
+        const registrations =
+          await win.navigator.serviceWorker.getRegistrations();
+        await Promise.all(
+          registrations.map((registration) => registration.unregister())
+        );
+      }
+
+      const dataCaches = (await win.caches.keys()).filter((name) =>
+        name.startsWith('seerrng-data-')
+      );
+      await Promise.all(dataCaches.map((name) => win.caches.delete(name)));
+    });
     cy.visit('/');
     cy.contains('.slider-header', 'Upcoming Movies').scrollIntoView();
+    cy.wait('@getUpcomingMovies').then(({ request, response }) => {
+      expect(request.query.primaryReleaseDateGte).to.match(
+        /^\d{4}-\d{2}-\d{2}$/
+      );
+      expect(response?.statusCode).to.eq(200);
+    });
     clickFirstTitleCardInSlider('Upcoming Movies');
   });
 

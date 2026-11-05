@@ -772,6 +772,7 @@ const RequestItem = ({ request, revalidateList }: RequestItemProps) => {
     return (
       <div
         className="h-64 w-full animate-pulse rounded-xl bg-gray-800 xl:h-28"
+        data-interface-role="request-card"
         ref={ref}
       />
     );

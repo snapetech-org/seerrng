@@ -5,17 +5,19 @@ describe('Reader app delivery settings', () => {
       '#grimmory-komga',
       '#bookorbit-opds',
     ]) {
-      cy.get(selector).then(($input) => {
+      cy.get(selector).should(($input) => {
         const input = $input[0];
         const field = input.closest('.reader-generated-address-field');
-        const button = field?.querySelector('button');
         expect(field, `${selector} has a dedicated address layout`).not.to.eq(
           null
         );
+        if (!field) return;
+        const button = field.querySelector('button');
         expect(button, `${selector} has a copy action`).not.to.eq(null);
+        if (!button) return;
         const inputBounds = input.getBoundingClientRect();
-        const buttonBounds = button!.getBoundingClientRect();
-        const fieldBounds = field!.getBoundingClientRect();
+        const buttonBounds = button.getBoundingClientRect();
+        const fieldBounds = field.getBoundingClientRect();
         expect(
           inputBounds.width,
           `${selector} remains readable`
@@ -42,6 +44,13 @@ describe('Reader app delivery settings', () => {
 
   it('saves reader addresses, exposes working catalog links, and fits mobile', () => {
     cy.visit('/settings/services?serviceCategory=audiobooks-books');
+    cy.request('/api/v1/interface-themes/seerrOrig/theme.css').then(
+      ({ status, headers, body }) => {
+        expect(status).to.eq(200);
+        expect(headers['content-type']).to.include('text/css');
+        expect(body).to.include('--poster-width');
+      }
+    );
     cy.viewport(1280, 900);
     cy.window().its('innerWidth').should('eq', 1280);
     cy.window().its('innerHeight').should('eq', 900);
@@ -113,6 +122,13 @@ describe('Reader app delivery settings', () => {
     });
 
     cy.reload();
+    cy.request('/api/v1/interface-themes/seerrOrig/theme.css').then(
+      ({ status, headers, body }) => {
+        expect(status).to.eq(200);
+        expect(headers['content-type']).to.include('text/css');
+        expect(body).to.include('--poster-width');
+      }
+    );
     cy.viewport(1280, 900);
     cy.contains('h3.settings-group-heading', 'Reader Apps').should(
       'be.visible'

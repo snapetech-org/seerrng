@@ -173,6 +173,55 @@ components:
             additionalProperties: true
         usedExternalProvider:
           type: boolean
+    InterfaceThemeManifest:
+      type: object
+      additionalProperties: false
+      required:
+        - formatVersion
+        - themeApiVersion
+        - id
+        - name
+        - description
+        - version
+        - author
+        - license
+        - navigation
+        - activeNavigationIcon
+      properties:
+        formatVersion:
+          type: integer
+          enum: [1]
+        themeApiVersion:
+          type: integer
+          enum: [1]
+        id:
+          type: string
+          minLength: 1
+          maxLength: 48
+        name:
+          type: string
+          minLength: 1
+          maxLength: 64
+        description:
+          type: string
+          minLength: 1
+          maxLength: 180
+        version:
+          type: string
+        author:
+          type: string
+          minLength: 1
+          maxLength: 80
+        license:
+          type: string
+          minLength: 1
+          maxLength: 48
+        navigation:
+          type: string
+          enum: [flat, grouped]
+        activeNavigationIcon:
+          type: string
+          enum: [outline, filled]
     Follow:
       type: object
       properties:
@@ -8373,6 +8422,52 @@ paths:
           description: Authentication is required.
         '429':
           description: The cache warming request rate limit was exceeded.
+  /interface-themes:
+    get:
+      summary: List installed interface themes
+      description: Returns validated built-in and administrator-installed CSS-only interface themes.
+      security: []
+      tags:
+        - public
+      responses:
+        '200':
+          description: Installed themes available to the current application.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - themes
+                properties:
+                  themes:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/InterfaceThemeManifest'
+  /interface-themes/{id}/theme.css:
+    get:
+      summary: Get an installed interface theme stylesheet
+      description: Serves the stylesheet for an installed, validated interface theme from the same origin.
+      security: []
+      tags:
+        - public
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 48
+          description: Stable theme identifier.
+      responses:
+        '200':
+          description: CSS for the requested installed theme.
+          content:
+            text/css:
+              schema:
+                type: string
+        '404':
+          $ref: '#/components/responses/ErrorResponse'
   /status:
     get:
       summary: Get Seerr status
@@ -13184,6 +13279,40 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Job'
+  /settings/jobs/{jobId}/enabled:
+    post:
+      summary: Enable or disable a job
+      description: Turns a scheduled job on or off and returns the job in JSON format.
+      tags:
+        - settings
+      parameters:
+        - in: path
+          name: jobId
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - enabled
+              properties:
+                enabled:
+                  type: boolean
+      responses:
+        '200':
+          description: Updated job
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Job'
+        '400':
+          description: Invalid enabled setting or job schedule
+        '404':
+          description: Job not found
   /settings/cache:
     get:
       summary: Get a list of active caches
@@ -15677,6 +15806,42 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/UserSettings'
+  /user/{userId}/settings/interface-theme:
+    post:
+      summary: Save a user's interface theme
+      description: Stores the installed interface theme selected for this user.
+      tags:
+        - users
+      parameters:
+        - in: path
+          name: userId
+          required: true
+          schema:
+            type: number
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties: false
+              required:
+                - theme
+              properties:
+                theme:
+                  type: string
+      responses:
+        '200':
+          description: Saved interface theme
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  interfaceTheme:
+                    type: string
+        '400':
+          description: Theme is not installed
   /user/{userId}/settings/request-root-folders:
     get:
       summary: Get a user's default request folders
@@ -18710,6 +18875,54 @@ paths:
                       $ref: '#/components/schemas/MusicResult'
                   pagination:
                     type: object
+  /artist/{artistId}/similar:
+    get:
+      summary: Get similar artists
+      description: Returns artists that are similar to, or share genres with, the given MusicBrainz artist.
+      tags:
+        - search
+      parameters:
+        - in: path
+          name: artistId
+          required: true
+          schema:
+            type: string
+            example: b10bbbfc-cf9e-42e0-be17-e2c3e1d2600d
+        - in: query
+          name: page
+          schema:
+            type: integer
+            minimum: 1
+            default: 1
+        - in: query
+          name: pageSize
+          schema:
+            type: integer
+            minimum: 1
+            default: 20
+      responses:
+        '200':
+          description: Similar artists
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  page:
+                    type: integer
+                  pageSize:
+                    type: integer
+                  totalPages:
+                    type: integer
+                  totalResults:
+                    type: integer
+                  results:
+                    type: array
+                    items:
+                      type: object
+                      additionalProperties: true
+        '404':
+          description: Artist not found
   /book/search:
     get:
       summary: Search books
@@ -23868,6 +24081,69 @@ paths:
           description: Scope changed or deletion failed; review refreshed state
         '502':
           description: Could not verify services before deletion
+  /media/{mediaId}/library/clear-stale-availability:
+    post:
+      summary: Clear stale library availability
+      description: Clears availability for HD or 4K copies that the connected library services no longer have. The token comes from the library removal plan for this media item.
+      tags:
+        - media
+      parameters:
+        - in: path
+          name: mediaId
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - token
+                - quality
+              properties:
+                token:
+                  type: string
+                  pattern: '^[a-f0-9]{64}$'
+                quality:
+                  type: string
+                  enum: [HD, 4K]
+      responses:
+        '204':
+          description: Stale availability cleared
+        '400':
+          description: Missing or outdated confirmation token
+        '404':
+          description: Media not found
+        '409':
+          description: Library availability changed after the removal plan was created
+        '502':
+          description: Could not verify library services
+  /media/{mediaId}/jellystat:
+    get:
+      summary: Get Jellystat watch statistics for a media item
+      description: Returns Jellystat playback statistics for the Jellyfin item linked to this media. Requires the Admin permission.
+      tags:
+        - media
+      parameters:
+        - in: path
+          name: mediaId
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Watch statistics
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+        '404':
+          description: Media not found, Jellystat not configured, or no linked Jellyfin item
+        '502':
+          description: Jellystat could not be reached
   /media/{mediaId}/file:
     delete:
       summary: Delete media file
@@ -25362,6 +25638,65 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/OverrideRule'
+  /overrideRule/advancedRequest:
+    post:
+      summary: Preview override rules for an advanced request
+      description: Returns the root folder, quality profile, tags, and other overrides that apply to the request being built in the advanced request form.
+      tags:
+        - overriderule
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - mediaType
+                - is4k
+              properties:
+                mediaType:
+                  type: string
+                  enum: [movie, tv, music, book]
+                is4k:
+                  type: boolean
+                tmdbId:
+                  type: integer
+                  minimum: 1
+                bookFormat:
+                  type: string
+                  enum: [ebook, audiobook]
+                musicId:
+                  type: string
+                bookId:
+                  type: string
+                requestUser:
+                  type: integer
+                  minimum: 1
+                requestId:
+                  type: integer
+                  minimum: 1
+                  nullable: true
+                tags:
+                  type: array
+                  maxItems: 100
+                  nullable: true
+                  items:
+                    type: integer
+                    minimum: 0
+                    maximum: 1000000000
+                serviceId:
+                  type: integer
+                  minimum: 1
+      responses:
+        '200':
+          description: Applicable overrides
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+        '400':
+          description: Invalid advanced request options
   /playlist/spotify/connect:
     get:
       summary: Start the Spotify connection flow

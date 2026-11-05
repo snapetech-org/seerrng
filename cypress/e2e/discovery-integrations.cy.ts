@@ -267,6 +267,36 @@ describe('Discovery provider integrations', () => {
     cy.wait('@cancelConnection');
     cy.contains('PUBLIC-CODE').should('not.exist');
   });
+  it('explains Trakt setup prerequisites and surfaces the connection error', () => {
+    const message =
+      'Set a public HTTPS application URL in Settings → General before connecting Trakt.';
+    cy.intercept(
+      'POST',
+      '/api/v1/integrations/discovery/accounts/trakt/connect',
+      { statusCode: 409, body: { message } }
+    ).as('startTraktConnection');
+
+    cy.visit('/profile/settings/linked-accounts');
+    cy.contains(
+      'To connect Trakt, an administrator must set a public HTTPS Application URL'
+    ).should('be.visible');
+    cy.get('section[aria-labelledby="discovery-accounts-title"]').within(() => {
+      cy.contains('h4', 'Trakt')
+        .parent()
+        .parent()
+        .contains('button', 'Connect')
+        .click();
+    });
+    cy.wait('@startTraktConnection');
+    cy.get('[role="alert"]').should('contain.text', message);
+  });
+  it('explains Trakt callback configuration errors', () => {
+    cy.visit('/profile/settings/linked-accounts?traktError=denied');
+    cy.get('[role="alert"]').should(
+      'contain.text',
+      'Trakt did not return authorization to SeerrNG. Check the public HTTPS Application URL'
+    );
+  });
   for (const width of [390, 1280])
     it(`browses native catalog results and pages at ${width}px`, () => {
       cy.viewport(width, 900);

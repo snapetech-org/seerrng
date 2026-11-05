@@ -9,6 +9,47 @@ v3.72.7 section consolidates changes from the requested v3.71.4 baseline
 through v3.72.7, including changes also represented by unpublished interim
 tags. The comparison link is the complete commit range.
 
+## [3.72.8](https://github.com/snapetech-org/seerrng/compare/v3.72.7..v3.72.8) - 2026-11-05
+
+### User-facing changes
+
+#### Fixed
+
+- **Api:** Similar artists, Jellystat watch summaries, clearing stale library availability, advanced request overrides, job on/off switches, and saving an interface theme no longer fail with "not found" or "method not allowed" errors.
+- **Interface Themes:** Built-in and installed interface themes now load their validated same-origin stylesheets correctly. Poster cards keep their shared width in shelves and watchlists, narrow-phone grids show two posters in both built-in themes, and SeerrOrig places detail actions beside media information on desktop.
+- **Discovery Integrations:** Trakt connection failures now show the provider's bounded error message, and denied callbacks point administrators to the public HTTPS Application URL and registered Trakt callback URL.
+- **Media Details:** TV season and episode lists remain visible and scrollable when their selection controls are displayed.
+- **Discovery:** Returning from Swipe now restores the requested Discover page and its filters.
+
+### 🐛 Bug Fixes
+- *(api)* Align route schemas and response tests - ([ac65762](https://github.com/snapetech-org/seerrng/commit/ac6576274ed86b4dd158bc3c1e03354fde804934))
+- *(api)* Document UI routes missing from the OpenAPI contract - ([84dec52](https://github.com/snapetech-org/seerrng/commit/84dec5245c20b81016dcb5a15399e1d906bd7d25))
+- *(release)* Rebuild v3.72.7 notes from v3.71.4 - ([fa40534](https://github.com/snapetech-org/seerrng/commit/fa40534ccced75bde1125c14760514fcd5d7de4d))
+- *(release)* Pass hosted dispatch inputs - ([2da9ec0](https://github.com/snapetech-org/seerrng/commit/2da9ec040c9ea43ac45e5b8d7f09d1bb9298c0f5))
+- Restore discover shelf posters and swipe context - ([39ba6ee](https://github.com/snapetech-org/seerrng/commit/39ba6ee8584b673df70a552ea5db4c21acb62065))
+- Harden regression QA for release blockers - ([8522bb9](https://github.com/snapetech-org/seerrng/commit/8522bb9aaa1ffe5617ec990b009ee5be3bd0aa68))
+- Cover release regressions in headless QA - ([22d59b0](https://github.com/snapetech-org/seerrng/commit/22d59b04ac0a127c5446cf9130c74c0092266f4b))
+- Restore theme layouts and clarify Trakt failures - ([171f8de](https://github.com/snapetech-org/seerrng/commit/171f8dec10b0c3cc05c8bec408dc23cd5d8944a4))
+- Document public interface theme routes - ([f30cfc0](https://github.com/snapetech-org/seerrng/commit/f30cfc050ebf87c26901ab5d1a7328af98509126))
+
+### 📖 Documentation
+- Restore hosted-first runner guidance - ([016bcf8](https://github.com/snapetech-org/seerrng/commit/016bcf8db7475b2105b9b488ff67ed7d1c096508))
+
+### 🧪 Testing
+- Prevent cached discover fixture bypass - ([5d3dfe5](https://github.com/snapetech-org/seerrng/commit/5d3dfe51e20041f7bdec78447a8d785536356908))
+- Capture theme stylesheet visual comparison - ([7c953ad](https://github.com/snapetech-org/seerrng/commit/7c953adaf795733bd8114ce8f79efca5a26864cc))
+- Verify request edit movie fixtures - ([7f4318e](https://github.com/snapetech-org/seerrng/commit/7f4318e44e22da3ee8c4f90652fd26522e2eecc1))
+- Assert the Audiobookshelf setup dialog - ([68709d9](https://github.com/snapetech-org/seerrng/commit/68709d9057204fa22ceefea1872cd05b0355e38e))
+- Stabilize browser media navigation fixtures - ([10ca01c](https://github.com/snapetech-org/seerrng/commit/10ca01cbfba9b82e356446a9272a8c05a2431c3f))
+
+### ⚙️ Miscellaneous Tasks
+- *(macos)* Route Apple release jobs to hosted images - ([b2f8691](https://github.com/snapetech-org/seerrng/commit/b2f8691441a3ee9e054d19a3b5c6d597a56d5525))
+- *(windows)* Use VS 2026 for hosted x64 release - ([28af992](https://github.com/snapetech-org/seerrng/commit/28af992f10bcfa642e9b19352fed085e82cb34d7))
+
+
+## New Contributors ❤️
+* @katamarimonkey made their first contribution
+
 ## [3.72.7](https://github.com/snapetech-org/seerrng/compare/v3.71.4..v3.72.7) - 2026-11-03
 
 ### User-facing changes

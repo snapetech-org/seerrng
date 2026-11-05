@@ -56,6 +56,36 @@ const cssToken = (css, name) => {
   return token.trim();
 };
 
+const desktopDetailsGrid = (css) => {
+  let result;
+
+  postcss.parse(css).walkAtRules('media', (media) => {
+    if (media.params.trim() !== '(min-width: 1024px)') return;
+
+    media.walkRules((rule) => {
+      const selectors = rule.selectors.join(',');
+      if (
+        !selectors.includes("[data-detail-layout='tv']") ||
+        !selectors.includes("[data-detail-layout='movie']")
+      ) {
+        return;
+      }
+
+      const declarations = Object.fromEntries(
+        rule.nodes
+          .filter((node) => node.type === 'decl')
+          .map((node) => [node.prop, node.value])
+      );
+      result = {
+        columns: declarations['grid-template-columns'],
+        areas: declarations['grid-template-areas'],
+      };
+    });
+  });
+
+  return result;
+};
+
 const embeddedStylesheet = (name) => {
   const document = new JSDOM(comparison).window.document;
   const stylesheet = [
@@ -69,6 +99,24 @@ const embeddedStylesheet = (name) => {
 
 test('interface profiles own visibly different layout and geometry tokens', () => {
   assert.notEqual(profiles.seerrOrig, profiles.seerrNGJ);
+
+  for (const [name, css] of Object.entries(profiles)) {
+    const unscopedPosterWidthOverrides = [];
+    postcss.parse(css).walkRules((rule) => {
+      if (!rule.selector.includes('.poster-layout')) return;
+      if (rule.selector.includes('ul.cards-vertical')) return;
+      rule.walkDecls('width', (declaration) => {
+        if (declaration.value === '100%') {
+          unscopedPosterWidthOverrides.push(rule.selector);
+        }
+      });
+    });
+    assert.deepEqual(
+      unscopedPosterWidthOverrides,
+      [],
+      `${name} must use the shared poster-width owner in sliders and watchlists`
+    );
+  }
 
   for (const token of [
     'interface-sidebar-width',
@@ -87,19 +135,19 @@ test('interface profiles own visibly different layout and geometry tokens', () =
   assert.match(profiles.seerrOrig, /--poster-width: 150px;/);
   assert.match(profiles.seerrNGJ, /--poster-width: 169\.2px;/);
 
-  assert.match(profiles.seerrOrig, /grid-template-columns: minmax\(0, 1fr\);/);
+  const desktopDetailsLayout = {
+    columns: 'minmax(0, 1fr) minmax(18rem, 23rem)',
+    areas: "'information actions'",
+  };
   assert.match(
     profiles.seerrNGJ,
     /grid-template-columns: 5rem minmax\(0, 1fr\);/
   );
-  assert.match(
-    profiles.seerrOrig,
-    /grid-template-areas: 'actions' 'information';/
+  assert.deepEqual(
+    desktopDetailsGrid(profiles.seerrOrig),
+    desktopDetailsLayout
   );
-  assert.match(
-    profiles.seerrNGJ,
-    /grid-template-areas: 'information actions';/
-  );
+  assert.deepEqual(desktopDetailsGrid(profiles.seerrNGJ), desktopDetailsLayout);
   assert.match(
     profiles.seerrOrig,
     /\.app-pinned-filter-group\s*\{\s*display: flex;\s*flex-direction: column;/
@@ -232,7 +280,7 @@ test('theme design tokens live in packages while global CSS keeps shared roles',
   for (const [themeId, themeCss] of Object.entries(profiles)) {
     assert.match(
       themeCss,
-      new RegExp(`:root\\[data-interface-theme=['\"]${themeId}['\"]\\]`),
+      new RegExp(`:root\\[data-interface-theme=['"]${themeId}['"]\\]`),
       `${themeId} declares its design tokens on its own theme root`
     );
     assert.match(themeCss, /--poster-width:/);
