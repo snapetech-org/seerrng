@@ -24,6 +24,7 @@ import SeasonRequest, {
   isActiveSeasonRequest,
 } from '@server/entity/SeasonRequest';
 import type { SeasonEpisodeSelection } from '@server/interfaces/api/seasonInterfaces';
+import { hasEpisodeQueueGrant } from '@server/lib/episodeQueueGrant';
 import { getExternalRuntimeConfig } from '@server/lib/externalRuntimeConfig';
 import {
   captureMediaServerUserAuthority,
@@ -351,6 +352,7 @@ class EpisodeWatchAhead {
           'request.is4k',
           'request.serverId',
           'request.watchAheadEpisodeCount',
+          'request.watchAheadUsesUserDefault',
           'request.watchAheadLastSeason',
           'request.watchAheadLastEpisode',
           'request.watchAheadLastReconciledAt',
@@ -365,9 +367,13 @@ class EpisodeWatchAhead {
         ])
         .where('request.type = :type', { type: MediaType.TV })
         .andWhere('request.watchAheadEpisodeCount > 0')
-        .andWhere('requestedBy.episodeQueueAccessStatus = :accessStatus', {
-          accessStatus: EPISODE_QUEUE_ACCESS_STATUS.APPROVED,
-        })
+        .andWhere(
+          '(requestedBy.episodeQueueAccessStatus = :accessStatus OR request.watchAheadUsesUserDefault = :overrideDefault)',
+          {
+            overrideDefault: false,
+            accessStatus: EPISODE_QUEUE_ACCESS_STATUS.APPROVED,
+          }
+        )
         .andWhere('request.status IN (:...statuses)', {
           statuses: enrollmentStatuses,
         })
@@ -522,8 +528,7 @@ class EpisodeWatchAhead {
             !snapshot ||
             snapshot.type !== MediaType.TV ||
             snapshot.watchAheadEpisodeCount <= 0 ||
-            snapshot.requestedBy.episodeQueueAccessStatus !==
-              EPISODE_QUEUE_ACCESS_STATUS.APPROVED ||
+            !hasEpisodeQueueGrant(snapshot) ||
             !enrollmentStatuses.includes(snapshot.status) ||
             !hasMediaRequestPermission(
               snapshot.requestedBy,
@@ -660,8 +665,7 @@ class EpisodeWatchAhead {
         !current ||
         current.type !== MediaType.TV ||
         current.watchAheadEpisodeCount <= 0 ||
-        current.requestedBy.episodeQueueAccessStatus !==
-          EPISODE_QUEUE_ACCESS_STATUS.APPROVED ||
+        !hasEpisodeQueueGrant(current) ||
         (current.status !== MediaRequestStatus.APPROVED &&
           current.status !== MediaRequestStatus.COMPLETED) ||
         !hasMediaRequestPermission(
@@ -804,8 +808,7 @@ class EpisodeWatchAhead {
     if (
       !current ||
       current.watchAheadEpisodeCount <= 0 ||
-      current.requestedBy?.episodeQueueAccessStatus !==
-        EPISODE_QUEUE_ACCESS_STATUS.APPROVED ||
+      !hasEpisodeQueueGrant(current) ||
       (current.status !== MediaRequestStatus.APPROVED &&
         current.status !== MediaRequestStatus.COMPLETED)
     ) {

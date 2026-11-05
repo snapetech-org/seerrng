@@ -10,6 +10,7 @@ import AdvancedRequester, {
   RequestListboxControl,
 } from '@app/components/RequestModal/AdvancedRequester';
 import QuotaDisplay from '@app/components/RequestModal/QuotaDisplay';
+import RequestEpisodeQueueControl from '@app/components/RequestModal/RequestEpisodeQueueControl';
 import RequestFooterStatus from '@app/components/RequestModal/RequestFooterStatus';
 import RequestMediaCard from '@app/components/RequestModal/RequestMediaCard';
 import RequestSeasonEpisodeTree from '@app/components/RequestModal/RequestSeasonEpisodeTree';
@@ -129,14 +130,16 @@ const messages = defineMessages('components.RequestModal', {
     'Episode Queue is enabled by your administrator for {owner} TV requests, with {count} queued ahead.',
   watchAheadAssignedButUnavailable:
     'Your administrator set Episode Queue to {count} for {owner} TV requests, but it cannot run for this request yet.',
-  watchAheadActiveForRequest:
-    'This request uses the administrator’s Episode Queue default of {count}.',
+  watchAheadActiveForRequest: 'This request keeps {count} queued ahead.',
   watchAheadOffForAccount:
     'Episode Queue is off for {owner} TV requests. A user manager controls this setting.',
   watchAheadLoading: 'Loading your Episode Queue setting…',
   watchAheadLoadError:
     'Could not load your Episode Queue setting. Retry before submitting this request.',
   watchAheadRetry: 'Retry',
+  watchAheadOff: 'Off',
+  watchAheadOverrideDescription:
+    'This request uses its own Episode Queue setting: {count}.',
   watchAheadUnavailableServer:
     'Episode Queue needs Plex, Jellyfin, or Emby playback tracking.',
   watchAheadUnavailableLink:
@@ -223,6 +226,8 @@ const TvRequestModal = ({
   const requestOwner =
     editRequest?.requestedBy ?? requestOverrides?.user ?? user;
   const requestOwnerId = requestOwner?.id;
+  const requestOwnerPermissions =
+    requestOwnerId === user?.id ? user?.permissions : requestOwner?.permissions;
   const requestOwnerPlaybackProfile =
     requestOwnerId === user?.id ? user : requestOwner;
   const requestOwnerLinkIsKnown =
@@ -250,6 +255,12 @@ const TvRequestModal = ({
   const [watchAheadEpisodeCount, setWatchAheadEpisodeCount] = useState(
     editRequest?.watchAheadEpisodeCount ?? 0
   );
+  const initialQueueOverride =
+    editRequest?.watchAheadUsesUserDefault === false
+      ? editRequest.watchAheadEpisodeCount
+      : -1;
+  const [savedQueueOverride, setSavedQueueOverride] =
+    useState(initialQueueOverride);
   const selectionBeforeWatchAhead = useRef<SeasonEpisodeSelection[] | null>(
     null
   );
@@ -394,11 +405,12 @@ const TvRequestModal = ({
       return intl.formatMessage(messages.watchAheadUnavailableIdentity);
     }
     if (
+      requestOwnerPermissions !== undefined &&
       !hasUserPermission(
         effectiveIs4k
           ? [Permission.REQUEST_4K, Permission.REQUEST_4K_TV]
           : [Permission.REQUEST, Permission.REQUEST_TV],
-        requestOwner?.permissions ?? 0,
+        requestOwnerPermissions,
         { type: 'or' }
       )
     ) {
@@ -848,6 +860,12 @@ const TvRequestModal = ({
   ]);
   const usesEpisodeSelection =
     settings.currentSettings.partialRequestsEnabled ||
+    Boolean(
+      editRequest &&
+      editingSeasonSelections.some(
+        (selection) => selection.episodeNumbers !== undefined
+      )
+    ) ||
     watchAheadEpisodeCount > 0;
   const blockedEpisodesBySeason = mergeEpisodeNumbersBySeason(
     availableEpisodesBySeason,
@@ -1580,45 +1598,58 @@ const TvRequestModal = ({
                   )}
                 </div>
                 <p className="request-episode-queue-description refreshed-detail-text-muted">
-                  {episodeQueueAccess
-                    ? defaultWatchAheadEpisodeCount > 0
-                      ? editRequest && watchAheadEpisodeCount > 0
-                        ? intl.formatMessage(
-                            messages.watchAheadActiveForRequest,
-                            {
-                              count: intl.formatMessage(
-                                messages.watchAheadEpisodeOption,
-                                { count: watchAheadEpisodeCount }
-                              ),
-                            }
-                          )
-                        : !editRequest && watchAheadAppliesToRequest
+                  {editRequest && savedQueueOverride >= 0
+                    ? intl.formatMessage(
+                        messages.watchAheadOverrideDescription,
+                        {
+                          count:
+                            savedQueueOverride === 0
+                              ? intl.formatMessage(messages.watchAheadOff)
+                              : intl.formatMessage(
+                                  messages.watchAheadEpisodeOption,
+                                  { count: savedQueueOverride }
+                                ),
+                        }
+                      )
+                    : episodeQueueAccess
+                      ? defaultWatchAheadEpisodeCount > 0
+                        ? editRequest && watchAheadEpisodeCount > 0
                           ? intl.formatMessage(
-                              messages.watchAheadEnabledForAccount,
+                              messages.watchAheadActiveForRequest,
                               {
-                                owner: watchAheadOwnerLabel,
                                 count: intl.formatMessage(
                                   messages.watchAheadEpisodeOption,
-                                  { count: defaultWatchAheadEpisodeCount }
+                                  { count: watchAheadEpisodeCount }
                                 ),
                               }
                             )
-                          : intl.formatMessage(
-                              messages.watchAheadAssignedButUnavailable,
-                              {
-                                owner: watchAheadOwnerLabel,
-                                count: intl.formatMessage(
-                                  messages.watchAheadEpisodeOption,
-                                  { count: defaultWatchAheadEpisodeCount }
-                                ),
-                              }
-                            )
-                      : intl.formatMessage(messages.watchAheadOffForAccount, {
-                          owner: watchAheadOwnerLabel,
-                        })
-                    : episodeQueueAccessError
-                      ? intl.formatMessage(messages.watchAheadLoadError)
-                      : intl.formatMessage(messages.watchAheadLoading)}
+                          : !editRequest && watchAheadAppliesToRequest
+                            ? intl.formatMessage(
+                                messages.watchAheadEnabledForAccount,
+                                {
+                                  owner: watchAheadOwnerLabel,
+                                  count: intl.formatMessage(
+                                    messages.watchAheadEpisodeOption,
+                                    { count: defaultWatchAheadEpisodeCount }
+                                  ),
+                                }
+                              )
+                            : intl.formatMessage(
+                                messages.watchAheadAssignedButUnavailable,
+                                {
+                                  owner: watchAheadOwnerLabel,
+                                  count: intl.formatMessage(
+                                    messages.watchAheadEpisodeOption,
+                                    { count: defaultWatchAheadEpisodeCount }
+                                  ),
+                                }
+                              )
+                        : intl.formatMessage(messages.watchAheadOffForAccount, {
+                            owner: watchAheadOwnerLabel,
+                          })
+                      : episodeQueueAccessError
+                        ? intl.formatMessage(messages.watchAheadLoadError)
+                        : intl.formatMessage(messages.watchAheadLoading)}
                 </p>
                 {episodeQueueAccess &&
                   watchAheadEpisodeCount > 0 &&
@@ -1637,6 +1668,23 @@ const TvRequestModal = ({
                     {watchAheadUnavailableMessage}
                   </p>
                 )}
+                {editRequest &&
+                  !editRequest.watchAheadParentRequestId &&
+                  hasPermission(Permission.ADMIN) && (
+                    <RequestEpisodeQueueControl
+                      requestId={editRequest.id}
+                      episodeCount={editRequest.watchAheadEpisodeCount}
+                      usesUserDefault={editRequest.watchAheadUsesUserDefault}
+                      defaultEpisodeCount={defaultWatchAheadEpisodeCount}
+                      onSaved={(setting) => {
+                        setSavedQueueOverride(
+                          setting.usesUserDefault ? -1 : setting.episodeCount
+                        );
+                        setWatchAheadEpisodeCount(setting.episodeCount);
+                        void mutate(`/api/v1/tv/${tmdbId}`);
+                      }}
+                    />
+                  )}
                 {needsWatchAheadAccountLink && (
                   <Button
                     as="a"
