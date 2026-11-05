@@ -75,3 +75,7 @@ Evidence is retained in the 2026-11-05 contribution-recovery task artifacts,
 including failing cases, screenshot comparisons, checksums and logs. Fixtures
 control provider responses; no live provider acquisition or physical-device
 handoff is certified. Combined integration CI remains required before delivery.
+
+## SVG loading-state capture
+
+The final full browser run passed 105 cases but timed out comparing identical loading-state frames because the visible SVG spinner uses SMIL, which Playwright CSS animation suppression does not freeze. The capture helper now pauses SVG animations at frame zero while taking the image and resumes them afterward. The loading, empty, error, and retry regression passes with the indicator preserved. No production UI code changes.

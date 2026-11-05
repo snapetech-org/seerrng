@@ -555,6 +555,16 @@ async function capture(page: Page, options: Parameters<Page['screenshot']>[0]) {
         .map((image) => image.decode().catch(() => undefined))
     );
   });
+  // Playwright's CSS animation control does not freeze SVG SMIL spinners.
+  // Capture their first frame without hiding the visible loading indicator.
+  await page.evaluate(() => {
+    for (const svg of document.querySelectorAll('svg')) {
+      if (svg.querySelector('animate, animateTransform, animateMotion')) {
+        svg.pauseAnimations();
+        svg.setCurrentTime(0);
+      }
+    }
+  });
   // Browser font/compositor paint can lag a resize even after fonts.ready.
   // Require two identical frames, as snapshot assertions do; do not mask UI.
   let previous: Buffer | undefined;
@@ -574,6 +584,9 @@ async function capture(page: Page, options: Parameters<Page['screenshot']>[0]) {
     )
     .toBe(true);
   if (options?.path) writeFileSync(options.path, previous!);
+  await page.evaluate(() => {
+    for (const svg of document.querySelectorAll('svg')) svg.unpauseAnimations();
+  });
 }
 
 async function navigate(page: Page, route: string) {
