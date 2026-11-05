@@ -2739,9 +2739,14 @@ describe('POST /request', () => {
 
     assert.strictEqual(selectedResponse.status, 201);
     assert.strictEqual(selectedResponse.body.serverId, 0);
-    assert.strictEqual(selectedResponse.body.profileId, 0);
-    assert.strictEqual(selectedResponse.body.rootFolder, '/selected-movies');
-    assert.deepStrictEqual(selectedResponse.body.tags, [7]);
+    assert.strictEqual(selectedResponse.body.profileId, null);
+    assert.strictEqual(selectedResponse.body.rootFolder, null);
+    assert.strictEqual(selectedResponse.body.tags, null);
+    assert.strictEqual(selectedResponse.body.serviceTargets[0].profileId, 0);
+    assert.strictEqual(
+      selectedResponse.body.serviceTargets[0].rootFolder,
+      '/selected-movies'
+    );
     assert.strictEqual(unknownResponse.status, 400);
     assert.match(unknownResponse.body.message, /does not exist/i);
     assert.strictEqual(wrongTierResponse.status, 400);
@@ -9806,6 +9811,60 @@ describe('POST /request, destination-scoped override rules', () => {
     );
     assert.strictEqual(explicitResponse.body.profileId, 0);
     assert.deepStrictEqual(explicitResponse.body.tags, []);
+  });
+  it('preserves explicitly selected service defaults against override rules', async () => {
+    configureRadarr([
+      {
+        id: 5,
+        isDefault: true,
+        is4k: false,
+        activeProfileId: 1,
+        activeDirectory: '/default/movies',
+        tags: [],
+      },
+    ]);
+    getSettings().sonarr = [];
+    const requester = await setDemoPermissions(
+      Permission.REQUEST | Permission.REQUEST_ADVANCED
+    );
+    await getRepository(OverrideRule).save(
+      new OverrideRule({
+        radarrServiceId: 5,
+        users: String(requester.id),
+        rootFolder: '/rule/movies',
+        profileId: 7,
+        tags: '2',
+      })
+    );
+    mock.method(
+      MediaRequestSubscriber.prototype,
+      'sendToRadarr',
+      async () => true
+    );
+    const agent = await loginAs('demo@seerr.dev', 'test1234');
+    const response = await agent.post('/request').send({
+      mediaType: MediaType.MOVIE,
+      mediaId: 88026,
+      serverId: 5,
+      profileId: 1,
+      rootFolder: '/default/movies',
+      tags: [],
+      requesterSelectedOptions: {
+        profile: true,
+        rootFolder: true,
+        tags: true,
+      },
+    });
+    assert.equal(response.status, 201);
+    assert.equal(response.body.profileId, 1);
+    assert.equal(response.body.rootFolder, '/default/movies');
+    assert.deepEqual(response.body.tags, []);
+    const saved = await getRepository(MediaRequest).findOneByOrFail({
+      id: response.body.id,
+    });
+    assert.equal(saved.profileId, 1);
+    assert.equal(saved.rootFolder, '/default/movies');
+    assert.deepEqual(saved.tags, []);
   });
 });
 

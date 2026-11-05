@@ -218,6 +218,19 @@ const getRequestMediaLockKey = (requestBody: MediaRequestBody): string =>
       : String(requestBody.mediaId).trim().toLowerCase(),
   ].join(':');
 
+const equalRequestTags = (
+  left: number[] | null | undefined,
+  right: number[] | null | undefined
+): boolean => {
+  const leftTags = [...new Set(left ?? [])].sort((a, b) => a - b);
+  const rightTags = [...new Set(right ?? [])].sort((a, b) => a - b);
+
+  return (
+    leftTags.length === rightTags.length &&
+    leftTags.every((tag, index) => tag === rightTags[index])
+  );
+};
+
 const canUseAdvancedRequestOptions = (user: User): boolean =>
   user.hasPermission(
     [Permission.REQUEST_ADVANCED, Permission.MANAGE_REQUESTS],
@@ -2803,23 +2816,24 @@ export class MediaRequest {
       );
     }
     const selectedServer = requestedServer ?? defaultServer;
+    const tmdbKeywords = tmdbMedia.keywords;
+    const isAnimeRequest =
+      requestBody.mediaType === MediaType.TV &&
+      ('results' in tmdbKeywords
+        ? tmdbKeywords.results.some(
+            (keyword: TmdbKeyword) => keyword.id === ANIME_KEYWORD_ID
+          )
+        : 'keywords' in tmdbKeywords
+          ? tmdbKeywords.keywords.some(
+              (keyword: TmdbKeyword) => keyword.id === ANIME_KEYWORD_ID
+            )
+          : false);
     if (
       (requestBody.mediaType === MediaType.MOVIE ||
         requestBody.mediaType === MediaType.TV) &&
       selectedServer?.requestButtonAnimeOnly
     ) {
-      const keywords = tmdbMedia.keywords;
-      const isAnime =
-        'results' in keywords
-          ? keywords.results.some(
-              (keyword: TmdbKeyword) => keyword.id === ANIME_KEYWORD_ID
-            )
-          : 'keywords' in keywords
-            ? keywords.keywords.some(
-                (keyword: TmdbKeyword) => keyword.id === ANIME_KEYWORD_ID
-              )
-            : false;
-      if (!isAnime) {
+      if (!isAnimeRequest) {
         throw new RequestPermissionError(
           'The selected request destination is limited to anime titles.'
         );
@@ -2837,24 +2851,30 @@ export class MediaRequest {
       requestBody.mediaType === MediaType.TV
         ? (selectedServer as SonarrSettings)
         : undefined;
-
-    let rootFolder = useAdvancedOptions
-      ? (requestBody.rootFolder ??
-        requestRootFolder ??
-        selectedServer?.activeDirectory)
-      : (requestRootFolder ?? selectedServer?.activeDirectory);
-    let profileId = useAdvancedOptions
-      ? (requestBody.profileId ?? selectedServer?.activeProfileId)
+    const serviceDefaultRootFolder =
+      isAnimeRequest && selectedSonarr?.activeAnimeDirectory
+        ? selectedSonarr.activeAnimeDirectory
+        : selectedServer?.activeDirectory;
+    const serviceDefaultProfileId = isAnimeRequest
+      ? (selectedSonarr?.activeAnimeProfileId ??
+        selectedServer?.activeProfileId)
       : selectedServer?.activeProfileId;
-    let tags = useAdvancedOptions
-      ? (requestBody.tags ?? selectedServer?.tags)
-      : selectedServer?.tags;
+    const serviceDefaultTags = selectedSonarr
+      ? isAnimeRequest
+        ? (selectedSonarr.animeTags ?? [])
+        : (selectedSonarr.tags ?? [])
+      : (selectedServer?.tags ?? []);
+    const serviceDefaultLanguageProfileId = isAnimeRequest
+      ? (selectedSonarr?.activeAnimeLanguageProfileId ??
+        selectedSonarr?.activeLanguageProfileId)
+      : selectedSonarr?.activeLanguageProfileId;
+
+    let rootFolder = requestRootFolder ?? serviceDefaultRootFolder;
+    let profileId = serviceDefaultProfileId;
+    let tags = [...serviceDefaultTags];
     let languageProfileId =
       requestBody.mediaType === MediaType.TV
-        ? useAdvancedOptions
-          ? (requestBody.languageProfileId ??
-            selectedSonarr?.activeLanguageProfileId)
-          : selectedSonarr?.activeLanguageProfileId
+        ? serviceDefaultLanguageProfileId
         : undefined;
     const metadataLanguageId =
       requestBody.mediaType === MediaType.TV && useAdvancedOptions
@@ -2870,10 +2890,7 @@ export class MediaRequest {
       requestBody.mediaType === MediaType.MOVIE ? 'movie' : 'tv'
     );
     if (mediaLanguagePreference) {
-      if (
-        requestBody.mediaType === MediaType.MOVIE &&
-        !(useAdvancedOptions && requestBody.profileId != null)
-      ) {
+      if (requestBody.mediaType === MediaType.MOVIE && selectedServer) {
         const radarrServer = selectedServer as RadarrSettings | undefined;
         if (radarrServer) {
           try {
@@ -2902,28 +2919,26 @@ export class MediaRequest {
             apiKey: selectedSonarr.apiKey,
             url: SonarrAPI.buildUrl(selectedSonarr, '/api/v3'),
           });
-          if (!(useAdvancedOptions && requestBody.languageProfileId != null)) {
-            const languageProfiles = await sonarr
-              .getLanguageProfiles()
-              .catch(() => []);
-            const preferredProfile = languageProfiles.find(
-              (profile) =>
-                (profile.languages ?? []).some((language) =>
-                  languageNameMatchesCode(language, mediaLanguagePreference)
-                ) ||
-                languageNameMatchesCode(profile.name, mediaLanguagePreference)
-            );
-            if (preferredProfile) languageProfileId = preferredProfile.id;
+          const languageProfiles = await sonarr
+            .getLanguageProfiles()
+            .catch(() => []);
+          const preferredLanguageProfile = languageProfiles.find(
+            (profile) =>
+              (profile.languages ?? []).some((language) =>
+                languageNameMatchesCode(language, mediaLanguagePreference)
+              ) ||
+              languageNameMatchesCode(profile.name, mediaLanguagePreference)
+          );
+          if (preferredLanguageProfile) {
+            languageProfileId = preferredLanguageProfile.id;
           }
 
-          if (!(useAdvancedOptions && requestBody.profileId != null)) {
-            const qualityProfiles = await sonarr.getProfiles();
-            const preferredQualityProfile = qualityProfiles.find((profile) =>
-              languageNameMatchesCode(profile.language, mediaLanguagePreference)
-            );
-            if (preferredQualityProfile) {
-              profileId = preferredQualityProfile.id;
-            }
+          const qualityProfiles = await sonarr.getProfiles();
+          const preferredQualityProfile = qualityProfiles.find((profile) =>
+            languageNameMatchesCode(profile.language, mediaLanguagePreference)
+          );
+          if (preferredQualityProfile) {
+            profileId = preferredQualityProfile.id;
           }
         } catch (error) {
           logger.debug(
@@ -2938,6 +2953,53 @@ export class MediaRequest {
       }
     }
 
+    const requestDefaultRootFolder = rootFolder;
+    const requestDefaultProfileId = profileId;
+    const requestDefaultTags = tags;
+    const requestDefaultLanguageProfileId = languageProfileId;
+    // Older API clients supplied explicit values without provenance flags.
+    const legacyExplicitOptions =
+      requestBody.requesterSelectedOptions === undefined;
+    const requesterSelectedRootFolder =
+      useAdvancedOptions &&
+      (requestBody.requesterSelectedOptions?.rootFolder === true ||
+        (requestBody.rootFolder != null &&
+          (legacyExplicitOptions ||
+            requestBody.rootFolder !== requestDefaultRootFolder)));
+    const requesterSelectedProfile =
+      useAdvancedOptions &&
+      (requestBody.requesterSelectedOptions?.profile === true ||
+        (requestBody.profileId != null &&
+          (legacyExplicitOptions ||
+            requestBody.profileId !== requestDefaultProfileId)));
+    const requesterSelectedTags =
+      useAdvancedOptions &&
+      (requestBody.requesterSelectedOptions?.tags === true ||
+        (requestBody.tags != null &&
+          (legacyExplicitOptions ||
+            !equalRequestTags(requestBody.tags, requestDefaultTags))));
+    const requesterSelectedLanguageProfile =
+      requestBody.mediaType === MediaType.TV &&
+      useAdvancedOptions &&
+      (requestBody.requesterSelectedOptions?.languageProfile === true ||
+        (requestBody.languageProfileId != null &&
+          (legacyExplicitOptions ||
+            requestBody.languageProfileId !==
+              requestDefaultLanguageProfileId)));
+
+    if (requesterSelectedRootFolder) {
+      rootFolder = requestBody.rootFolder ?? undefined;
+    }
+    if (requesterSelectedProfile) {
+      profileId = requestBody.profileId ?? undefined;
+    }
+    if (requesterSelectedTags) {
+      tags = requestBody.tags ?? [];
+    }
+    if (requesterSelectedLanguageProfile) {
+      languageProfileId = requestBody.languageProfileId ?? undefined;
+    }
+
     const overrideResult = selectedServer
       ? await evaluateOverrideRules({
           mediaType: requestBody.mediaType,
@@ -2950,12 +3012,6 @@ export class MediaRequest {
       : undefined;
 
     if (overrideResult) {
-      const requesterSelectedRootFolder =
-        useAdvancedOptions && requestBody.rootFolder !== undefined;
-      const requesterSelectedProfile =
-        useAdvancedOptions && requestBody.profileId !== undefined;
-      const requesterSelectedTags =
-        useAdvancedOptions && requestBody.tags !== undefined;
       const addedRuleTags =
         overrideResult.tags?.filter((tag) => !tags?.includes(tag)) ?? [];
 
@@ -2988,6 +3044,24 @@ export class MediaRequest {
         });
       }
     }
+
+    const storedProfileId =
+      !requesterSelectedProfile && profileId === serviceDefaultProfileId
+        ? null
+        : (profileId ?? null);
+    const storedRootFolder =
+      !requesterSelectedRootFolder && rootFolder === serviceDefaultRootFolder
+        ? null
+        : (rootFolder ?? null);
+    const storedLanguageProfileId =
+      !requesterSelectedLanguageProfile &&
+      languageProfileId === serviceDefaultLanguageProfileId
+        ? null
+        : (languageProfileId ?? null);
+    const storedTags =
+      !requesterSelectedTags && equalRequestTags(tags, serviceDefaultTags)
+        ? null
+        : (tags ?? null);
 
     const selectedDestination: RequestDestination | undefined =
       serverId === undefined
@@ -3165,9 +3239,9 @@ export class MediaRequest {
         modifiedBy: autoApproved ? user : undefined,
         is4k: requestBody.is4k,
         serverId,
-        profileId: profileId,
-        rootFolder: rootFolder,
-        tags: tags,
+        profileId: storedProfileId,
+        rootFolder: storedRootFolder,
+        tags: storedTags,
         serviceTargets:
           serverId === undefined
             ? []
@@ -3461,12 +3535,12 @@ export class MediaRequest {
             : requestBody.monitorFutureSeasons,
           watchAheadUsesUserDefault,
           serverId,
-          profileId: profileId,
-          rootFolder: rootFolder,
-          languageProfileId,
+          profileId: storedProfileId,
+          rootFolder: storedRootFolder,
+          languageProfileId: storedLanguageProfileId,
           metadataLanguageId,
           sonarrSeasonType,
-          tags: tags,
+          tags: storedTags,
           serviceTargets:
             serverId === undefined
               ? []
@@ -3659,14 +3733,14 @@ export class MediaRequest {
   @Column({ nullable: true })
   public serverId: number;
 
-  @Column({ nullable: true })
-  public profileId: number;
+  @Column({ type: 'integer', nullable: true })
+  public profileId: number | null;
 
-  @Column({ nullable: true })
-  public rootFolder: string;
+  @Column({ type: 'varchar', nullable: true })
+  public rootFolder: string | null;
 
-  @Column({ nullable: true })
-  public languageProfileId: number;
+  @Column({ type: 'integer', nullable: true })
+  public languageProfileId: number | null;
 
   @Column({ type: 'integer', nullable: true })
   public metadataLanguageId?: number | null;
@@ -3748,7 +3822,7 @@ export class MediaRequest {
       },
     },
   })
-  public tags?: number[];
+  public tags?: number[] | null;
 
   @Column({ default: false })
   public isAutoRequest: boolean;

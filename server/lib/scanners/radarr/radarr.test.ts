@@ -97,6 +97,17 @@ describe('Radarr Scanner', () => {
     getLibraryMoviesByTmdbIdImpl = async () => [];
   });
 
+  it('scans an enabled endpoint even when its first alias has sync disabled', async () => {
+    configureRadarr([{ syncEnabled: false }, { syncEnabled: true }]);
+    let reads = 0;
+    getMoviesImpl = async () => {
+      reads++;
+      return [];
+    };
+    await runWithMockTimers(() => radarrScanner.run());
+    assert.equal(reads, 1);
+  });
+
   it('detects 4K files in a single mixed-resolution Radarr library', async () => {
     const mediaRepository = getRepository(Media);
     configureRadarr([{ syncEnabled: true }]);

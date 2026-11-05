@@ -41,7 +41,49 @@ vi.mock('@app/hooks/useUser', () => ({
 vi.mock('@app/components/Discover/FilterPanel/CompactFilterSelect', () => ({
   getFilterToggleButtonClass: () => 'app-filter-toggle',
 }));
-afterEach(() => vi.unstubAllGlobals());
+afterEach(() => {
+  router.isReady = true;
+  vi.unstubAllGlobals();
+});
+
+it('blocks fallback navigation until the nested discovery route is hydrated', async () => {
+  const dom = new JSDOM('<div id="root"></div>');
+  vi.stubGlobal('window', dom.window);
+  vi.stubGlobal('document', dom.window.document);
+  vi.stubGlobal('IS_REACT_ACT_ENVIRONMENT', true);
+  const container = document.getElementById('root')!;
+  const root = createRoot(container);
+  const render = () =>
+    root.render(
+      <IntlProvider locale="en">
+        <DiscoveryModeTabs selected="discover" mediaType="tv" />
+      </IntlProvider>
+    );
+  router.isReady = false;
+  router.asPath = '/discover/tv/genre/18?sortBy=popularity.desc&page=2';
+  try {
+    await act(async () => render());
+    const tab = container.querySelector<HTMLAnchorElement>(
+      '[data-testid="discovery-mode-tab-swipe"]'
+    )!;
+    const click = new dom.window.MouseEvent('click', {
+      bubbles: true,
+      cancelable: true,
+    });
+    tab.dispatchEvent(click);
+    expect(click.defaultPrevented).toBe(true);
+    expect(tab.getAttribute('aria-disabled')).toBe('true');
+    router.isReady = true;
+    await act(async () => render());
+    expect(tab.getAttribute('aria-disabled')).toBe('false');
+    expect(
+      new URL(tab.href, 'http://localhost').searchParams.get('returnTo')
+    ).toBe(router.asPath);
+  } finally {
+    await act(async () => root.unmount());
+    dom.window.close();
+  }
+});
 
 it('uses the current nested route and filters after a discovery route update', async () => {
   const dom = new JSDOM('<div id="root"></div>');

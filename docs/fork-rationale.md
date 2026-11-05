@@ -100,3 +100,11 @@ service can replace a gate once the behavior is supported and the evidence is
 available. The [documentation index](./README.md) links to current operator
 guides; [NOTICE.md](https://github.com/snapetech-org/seerrng/blob/main/NOTICE.md)
 records project attribution.
+
+## Advanced request defaults
+
+Movie and TV requests resolve service, anime, account and rule defaults separately from explicit requester selections. Pending request edits can clear a saved override back to the configured service default while keeping the selected destination. The [request defaults guide](./using-seerr/request-defaults.md) documents this SeerrNG adaptation of Seerr PR #3477 and the related #3410/#3539 discussions.
+
+## Radarr and Sonarr scan tag exclusions
+
+Administrators can exclude tagged library entries per instance without deleting media records or requests. Title-wide availability is cleared only when that instance was its recorded source and no alternate copy is known. Retirement requires matching settings validation, legacy defaults, fully excluded scan safety, source-specific status reconciliation, safe orphan cleanup and preservation of copies on other instances. This adapts the scope discussed in Seerr PR #1884, which closed without merging.

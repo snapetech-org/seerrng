@@ -268,6 +268,17 @@ describe('Sonarr Scanner', () => {
     getTvShowImpl = async () => fakeTmdbShow(1);
   });
 
+  it('scans an enabled endpoint even when its first alias has sync disabled', async () => {
+    configureSonarr([{ syncEnabled: false }, { syncEnabled: true }]);
+    let reads = 0;
+    getSeriesImpl = async () => {
+      reads++;
+      return [];
+    };
+    await runWithMockTimers(() => sonarrScanner.run());
+    assert.equal(reads, 1);
+  });
+
   it('detects mixed HD and 4K episode files in a single Sonarr library', async () => {
     const tmdbId = 890201;
     const seriesId = 890202;
