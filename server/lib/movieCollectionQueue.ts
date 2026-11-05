@@ -385,7 +385,16 @@ class MovieCollectionQueues {
           queue.status = 'completed';
           queue.reason = null;
         }
-        await repo.save(queue);
+        // Rotate checked queues even when their buffered requests are unchanged.
+        // save() can skip the UPDATE, starving queues outside the polling batch.
+        await repo.update(id, {
+          watchedIds: queue.watchedIds,
+          requestedIds: queue.requestedIds,
+          admittingMovieId: queue.admittingMovieId,
+          status: queue.status,
+          reason: queue.reason,
+          updatedAt: new Date(),
+        });
       }
     );
   }

@@ -360,3 +360,50 @@ it('waits for a failed queued request to be repaired without treating it as canc
   assert.equal(stored.reason, 'request-policy');
   assert.equal(request.mock.callCount(), 0);
 });
+it('rotates unchanged buffered queues so later household queues are not starved', async () => {
+  await movie(101);
+  await getRepository(User).update(2, {
+    permissions: Permission.REQUEST,
+    plexId: 2,
+    plexToken: 'fixture',
+  });
+  const owners = await getRepository(User).findBy({ id: 1 });
+  const second = await getRepository(User).findOneByOrFail({ id: 2 });
+  await getRepository(MovieCollectionQueue).save(
+    Array.from(
+      { length: 21 },
+      (_, index) =>
+        new MovieCollectionQueue({
+          user: index < 20 ? owners[0] : second,
+          collectionId: index + 1,
+          is4k: false,
+          bufferSize: 1,
+          movieIds: [101, 102],
+          watchedIds: [],
+          requestedIds: [],
+          admittingMovieId: null,
+          status: 'active',
+          reason: null,
+          updatedAt: new Date(index < 20 ? '2020-01-01' : '2020-01-02'),
+        })
+    )
+  );
+  const seen: number[] = [];
+  mock.method(
+    watch,
+    'getMediaServerWatchStatus',
+    async (_media: Media, user: User) => {
+      seen.push(user.id);
+      return {
+        serverType: MediaServerType.PLEX,
+        availableCount: 1,
+        watchedCount: 0,
+        unwatchedCount: 1,
+      };
+    }
+  );
+  await queues.run();
+  assert.equal(seen.includes(2), false);
+  await queues.run();
+  assert.equal(seen.includes(2), true);
+});
