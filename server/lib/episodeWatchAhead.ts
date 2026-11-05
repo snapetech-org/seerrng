@@ -25,13 +25,14 @@ import SeasonRequest, {
 } from '@server/entity/SeasonRequest';
 import type { SeasonEpisodeSelection } from '@server/interfaces/api/seasonInterfaces';
 import { getExternalRuntimeConfig } from '@server/lib/externalRuntimeConfig';
+import {
+  captureMediaServerUserAuthority,
+  runWithMediaServerUserAuthority,
+} from '@server/lib/mediaServerUserAuthority';
 import { runWithCurrentServarrService } from '@server/lib/serviceAdmission';
 import type { SonarrSettings } from '@server/lib/settings';
 import { runUserSecurityMutation } from '@server/lib/userSecurityMutation';
-import {
-  isPlexPlaybackSessionForUser,
-  isWatchAheadMediaServer,
-} from '@server/lib/watchAheadEligibility';
+import { isWatchAheadMediaServer } from '@server/lib/watchAheadEligibility';
 import logger from '@server/logger';
 import { getHostname } from '@server/utils/getHostname';
 import { normalizeJellyfinGuid } from '@server/utils/jellyfin';
@@ -394,17 +395,6 @@ class EpisodeWatchAhead {
       settings.jellyfin.apiKey
     );
     const sessions = await jellyfin.getPlaybackSessions();
-    const byUser = new Map<string, MediaRequest[]>();
-    for (const enrollment of enrollments) {
-      const jellyfinUserId = normalizeJellyfinGuid(
-        enrollment.requestedBy.jellyfinUserId
-      );
-      if (!jellyfinUserId || enrollment.media.tvdbId == null) continue;
-      const userEnrollments = byUser.get(jellyfinUserId) ?? [];
-      userEnrollments.push(enrollment);
-      byUser.set(jellyfinUserId, userEnrollments);
-    }
-
     const seriesCache = new Map<
       string,
       JellyfinLibraryItemExtended | undefined
@@ -413,13 +403,9 @@ class EpisodeWatchAhead {
     for (const session of sessions.slice(0, 100)) {
       try {
         const jellyfinUserId = normalizeJellyfinGuid(session.UserId);
-        const userEnrollments = jellyfinUserId
-          ? byUser.get(jellyfinUserId)
-          : undefined;
         const playingEpisode = session.NowPlayingItem;
         if (
           !jellyfinUserId ||
-          !userEnrollments?.length ||
           !playingEpisode ||
           playingEpisode.Type !== 'Episode' ||
           !playingEpisode.SeriesId
@@ -450,7 +436,7 @@ class EpisodeWatchAhead {
           continue;
         }
 
-        for (const enrollment of userEnrollments.filter(
+        for (const enrollment of enrollments.filter(
           (candidate) => candidate.media.tvdbId === jellyfinTvdbId
         )) {
           await this.reconcileEnrollment(enrollment.id, progress, settings);
@@ -470,62 +456,41 @@ class EpisodeWatchAhead {
     enrollments: MediaRequest[],
     settings: ReturnType<typeof getExternalRuntimeConfig>
   ): Promise<Set<number>> {
-    const byUser = new Map<number, MediaRequest[]>();
-    for (const enrollment of enrollments) {
-      if (
-        !enrollment.requestedBy.plexToken ||
-        enrollment.media.tvdbId == null
-      ) {
-        continue;
-      }
-      const userEnrollments = byUser.get(enrollment.requestedBy.id) ?? [];
-      userEnrollments.push(enrollment);
-      byUser.set(enrollment.requestedBy.id, userEnrollments);
-    }
-
     const advancedParents = new Set<number>();
-    for (const userEnrollments of byUser.values()) {
-      const linkedUser = userEnrollments[0].requestedBy;
+    const owner = await captureMediaServerUserAuthority(1, 'plex');
+    if (!owner.plexToken) return advancedParents;
+    const plex = new PlexAPI({
+      plexToken: owner.plexToken,
+      plexSettings: settings.plex,
+    });
+    const sessions = await runWithMediaServerUserAuthority(owner, () =>
+      plex.getPlaybackSessions()
+    );
+    const seriesCache = new Map<string, PlexMetadata>();
+    for (const session of sessions.slice(0, 100)) {
       try {
-        const plex = new PlexAPI({
-          plexToken: linkedUser.plexToken,
-          plexSettings: settings.plex,
-        });
-        const sessions = await plex.getPlaybackSessions();
-        const seriesCache = new Map<string, PlexMetadata>();
-        for (const session of sessions) {
-          const belongsToLinkedUser = isPlexPlaybackSessionForUser(
-            session,
-            linkedUser
+        const progress = getCompletedPlexWatchAheadProgress(session);
+        if (!progress || !session.grandparentRatingKey) continue;
+        let series = seriesCache.get(session.grandparentRatingKey);
+        if (!series) {
+          series = await runWithMediaServerUserAuthority(owner, () =>
+            plex.getMetadata(session.grandparentRatingKey!)
           );
-          const progress = getCompletedPlexWatchAheadProgress(session);
-          if (
-            !belongsToLinkedUser ||
-            !progress ||
-            !session.grandparentRatingKey
-          ) {
-            continue;
-          }
-
-          let series = seriesCache.get(session.grandparentRatingKey);
-          if (!series) {
-            series = await plex.getMetadata(session.grandparentRatingKey);
-            seriesCache.set(session.grandparentRatingKey, series);
-          }
-          const plexTvdbId = getPlexTvdbId(series);
-          if (!plexTvdbId) continue;
-
-          for (const enrollment of userEnrollments.filter(
-            (candidate) => candidate.media.tvdbId === plexTvdbId
-          )) {
-            await this.reconcileEnrollment(enrollment.id, progress, settings);
-            advancedParents.add(enrollment.id);
-          }
+          seriesCache.set(session.grandparentRatingKey, series);
+        }
+        const tvdbId = getPlexTvdbId(series);
+        if (!tvdbId) continue;
+        // Playback is a household signal. Request ownership, access, quota and
+        // destination are still checked by reconcileEnrollment for each parent.
+        for (const enrollment of enrollments.filter(
+          (candidate) => candidate.media.tvdbId === tvdbId
+        )) {
+          await this.reconcileEnrollment(enrollment.id, progress, settings);
+          advancedParents.add(enrollment.id);
         }
       } catch (error) {
         logger.warn('Unable to reconcile a Plex playback session', {
           label: 'Episode Queue',
-          userId: linkedUser.id,
           errorMessage: error instanceof Error ? error.message : String(error),
         });
       }
