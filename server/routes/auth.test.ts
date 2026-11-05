@@ -1437,6 +1437,50 @@ describe('POST /auth/jellyfin', () => {
     }
   });
 
+  it('requires affirmative Jellyfin administrator proof during bootstrap', async (t) => {
+    const repository = getRepository(User);
+    await repository.clear();
+    const settings = getSettings();
+    settings.main.mediaServerType = MediaServerType.NOT_CONFIGURED;
+    settings.jellyfin.ip = '';
+    const login = mock.method(JellyfinAPI.prototype, 'login', async () => ({
+      User: {
+        Id: '00112233445566778899aabbccddeeff',
+        Name: 'uncertain-owner',
+        ServerId: 'fixture-server',
+        Configuration: { GroupedFolders: [] },
+        Policy: {},
+      },
+      AccessToken: 'fixture-auth-token',
+    }));
+    const token = mock.method(
+      JellyfinAPI.prototype,
+      'createApiToken',
+      async () => 'fixture-api-token'
+    );
+    const name = mock.method(
+      JellyfinAPI.prototype,
+      'getServerName',
+      async () => 'Fixture server'
+    );
+    t.after(() => {
+      login.mock.restore();
+      token.mock.restore();
+      name.mock.restore();
+    });
+    const response = await request(app).post('/auth/jellyfin').send({
+      username: 'uncertain-owner',
+      password: 'fixture-password',
+      hostname: '127.0.0.1',
+      port: 8096,
+      serverType: MediaServerType.JELLYFIN,
+    });
+    assert.equal(response.status, 403);
+    assert.equal(await repository.count(), 0);
+    assert.equal(settings.main.mediaServerType, MediaServerType.NOT_CONFIGURED);
+    assert.equal(token.mock.callCount(), 0);
+  });
+
   it('creates the canonical owner during initial Jellyfin setup', async (t) => {
     const userRepository = getRepository(User);
     await userRepository.clear();
