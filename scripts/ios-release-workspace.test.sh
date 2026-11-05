@@ -137,7 +137,11 @@ if IOS_TEST_XCODE_TEST_FAIL=true IOS_TEST_ARCHIVE_FAIL=true IOS_BUILD_NUMBER=1 \
   echo 'A failing diagnostic copy was reported as a successful release build.' >&2
   exit 1
 fi
-grep -Fq 'retained local workspace at' "$test_root/retained-failure.log"
+if ! grep -Fq 'retained local workspace at' "$test_root/retained-failure.log"; then
+  cat "$test_root/retained-failure.log" >&2
+  echo 'The diagnostic-copy failure did not retain its workspace.' >&2
+  exit 1
+fi
 retained_results=("$local_root"/seerrng-ios-build.*/seerrng-v3.72.6-ios-tests.xcresult/result.txt)
 [[ ${#retained_results[@]} == 1 && -f "${retained_results[0]}" ]]
 
