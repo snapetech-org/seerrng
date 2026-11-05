@@ -39,4 +39,14 @@ tags.
 In **Advanced Options**, choose the requester, service, and media options as
 usual. When a saved rule matches a movie or series request, its configured
 root folder, quality profile, and tags are applied to the form so they can be
-reviewed before submitting.
+reviewed before submitting. An explicitly selected value takes precedence; an
+untouched default can still be supplied by the matching rule when the request
+is created. Displayed service and account defaults are not automatically
+treated as choices that block a rule. If you deliberately select a value
+already shown as the default, SeerrNG keeps that selection and the rule does
+not replace it.
+
+When editing a pending request, choose the connected service's configured
+default to clear a saved override. See [Request Defaults and Overrides](./request-defaults.md)
+for how anime settings and account preferences affect the values shown in the
+form.

@@ -497,6 +497,7 @@ const TvRequestModal = ({
           sonarrSeasonType: requestOverrides?.sonarrSeasonType,
           userId: requestOverrides?.user?.id,
           tags: requestOverrides?.tags,
+          requestTargetOptions: requestOverrides?.requestTargetOptions,
           seasons: [...selectedSeasons].sort((a, b) => a - b),
           seasonRequests: seasonSelections,
         });
@@ -591,6 +592,7 @@ const TvRequestModal = ({
           sonarrSeasonType: requestOverrides.sonarrSeasonType,
           userId: requestOverrides?.user?.id,
           tags: requestOverrides.tags,
+          requesterSelectedOptions: requestOverrides.requesterSelectedOptions,
         };
       }
       const response = await axios.post<MediaRequest | { message: string }>(
