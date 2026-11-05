@@ -6,11 +6,13 @@ const clickFirstTitleCardInSlider = (sliderTitle: string): void => {
       .find('[data-testid=title-card]', { timeout: 15000 })
       .first();
 
+  // Poster cards may hide their title until opened. Activate the card before
+  // reading it, just as a person does, rather than relying on missing artwork.
+  firstCard().find('[data-poster-region="frame"]').click({ force: true });
   firstCard()
     .find('[data-testid=title-card-title]')
     .invoke('text')
     .then((text) => {
-      firstCard().find('[data-poster-region="frame"]').click({ force: true });
       firstCard()
         .find('[data-poster-region="detail-link"]')
         .click({ force: true });
@@ -259,7 +261,8 @@ describe('Discover', () => {
       mediaType: 'movie',
       title: 'Upcoming Movie Fixture',
       releaseDate: '2099-01-01',
-      posterPath: null,
+      // Exercise the real poster-card interaction without external artwork.
+      posterPath: '/images/seerr_poster_not_found_logo_top.png',
     };
     cy.intercept(
       {
