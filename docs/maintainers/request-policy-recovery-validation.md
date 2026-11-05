@@ -21,3 +21,7 @@ Evidence is retained outside Git at `/mnt/disks/scratch/task-deliverables/seerrn
 - Baseline regression logs retain the actual country TypeError, OpenAPI rejection, pending-edit HTTP 500, and oversized webhook delivery. Candidate regression tests pass.
 
 Browser provider responses are deterministic fixtures; this does not certify a live third-party notification service. Screenshots use reduced motion and disabled animations so modal transitions do not corrupt the comparison. Desktop and phone comparisons were visually reviewed: the existing modal spacing, typography, form owners, and notification layout are preserved. Added rows extend the existing scrolling forms. Evidence: `policy-stable-rules-review.jpg`, `policy-notifications-top-review.jpg`, and their full-resolution source captures. The final CI status must be recorded before integration.
+
+## Nullable enum response validation
+
+Full CI exposed three real Bookshelf series failures after API alignment: `comicServiceType: null` was rejected despite `nullable: true`. Explicit null members now match the declared null support in all 17 affected enum schemas, including optional request edition fields and resettable preferences. The three original cases fail on the unrepaired schema and all 30 Bookshelf series tests pass after repair. The entire affected Vitest shard passes: 162 files, 1,379 tests, with five existing skips. Evidence: `policy-book-series-baseline-vitest.log`, `policy-book-series-fixed-vitest.log`, and `policy-vitest-4-fixed-local.log`.

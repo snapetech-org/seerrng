@@ -2732,41 +2732,33 @@ components:
         movieMaturityRatingLimit:
           type: string
           nullable: true
-          enum: [G, PG, PG-13, R, NC-17]
+          enum: ['G', 'PG', 'PG-13', 'R', 'NC-17', null]
         tvMaturityRatingLimit:
           type: string
           nullable: true
-          enum: [TV-Y, TV-Y7, TV-G, TV-PG, TV-14, TV-MA]
+          enum: ['TV-Y', 'TV-Y7', 'TV-G', 'TV-PG', 'TV-14', 'TV-MA', null]
     CardTextVisibilitySettings:
       type: object
       properties:
         movie:
           type: string
           nullable: true
-          enum:
-            - always
-            - hover
+          enum: ['always', 'hover', null]
           example: hover
         tv:
           type: string
           nullable: true
-          enum:
-            - always
-            - hover
+          enum: ['always', 'hover', null]
           example: hover
         album:
           type: string
           nullable: true
-          enum:
-            - always
-            - hover
+          enum: ['always', 'hover', null]
           example: always
         book:
           type: string
           nullable: true
-          enum:
-            - always
-            - hover
+          enum: ['always', 'hover', null]
           example: always
     DetailDisclosurePinSettings:
       type: object
@@ -6425,7 +6417,7 @@ components:
             type: number
         bookFormat:
           type: string
-          enum: [ebook, audiobook, both]
+          enum: ['ebook', 'audiobook', 'both', null]
           nullable: true
         preferredEditionId:
           type: string
@@ -6435,7 +6427,7 @@ components:
           nullable: true
         editionPolicy:
           type: string
-          enum: [only, either, alongside]
+          enum: ['only', 'either', 'alongside', null]
           nullable: true
         variantKey:
           type: string
@@ -6603,7 +6595,7 @@ components:
           nullable: true
         comicServiceType:
           type: string
-          enum: [mylar, kapowarr, backissue]
+          enum: ['mylar', 'kapowarr', 'backissue', null]
           nullable: true
         ratingKey:
           type: string
@@ -6801,7 +6793,7 @@ components:
           properties:
             musicQuality:
               type: string
-              enum: [mp3, flac]
+              enum: ['mp3', 'flac', null]
               nullable: true
             activeMetadataProfileId:
               type: number
@@ -13936,7 +13928,7 @@ paths:
           schema:
             type: string
             nullable: true
-            enum: [debug, info, warn, error]
+            enum: ['debug', 'info', 'warn', 'error', null]
             default: debug
         - in: query
           name: search
@@ -16420,11 +16412,12 @@ paths:
                 movieMaturityRatingLimit:
                   type: string
                   nullable: true
-                  enum: [G, PG, PG-13, R, NC-17]
+                  enum: ['G', 'PG', 'PG-13', 'R', 'NC-17', null]
                 tvMaturityRatingLimit:
                   type: string
                   nullable: true
-                  enum: [TV-Y, TV-Y7, TV-G, TV-PG, TV-14, TV-MA]
+                  enum:
+                    ['TV-Y', 'TV-Y7', 'TV-G', 'TV-PG', 'TV-14', 'TV-MA', null]
       responses:
         '200':
           description: Updated user maturity limits returned
@@ -21524,16 +21517,17 @@ paths:
             nullable: true
             enum:
               [
-                all,
-                recent,
-                approved,
-                available,
-                pending,
-                processing,
-                unavailable,
-                failed,
-                deleted,
-                completed,
+                'all',
+                'recent',
+                'approved',
+                'available',
+                'pending',
+                'processing',
+                'unavailable',
+                'failed',
+                'deleted',
+                'completed',
+                null,
               ]
         - in: query
           name: sort
@@ -21545,7 +21539,7 @@ paths:
           name: sortDirection
           schema:
             type: string
-            enum: [asc, desc]
+            enum: ['asc', 'desc', null]
             nullable: true
             default: desc
         - in: query
@@ -21558,7 +21552,18 @@ paths:
           name: mediaType
           schema:
             type: string
-            enum: [movie, tv, music, book, comic, magazine, sports, all]
+            enum:
+              [
+                'movie',
+                'tv',
+                'music',
+                'book',
+                'comic',
+                'magazine',
+                'sports',
+                'all',
+                null,
+              ]
             nullable: true
             default: all
         - in: query
@@ -24462,13 +24467,14 @@ paths:
             nullable: true
             enum:
               [
-                all,
-                available,
-                partial,
-                allavailable,
-                processing,
-                pending,
-                deleted,
+                'all',
+                'available',
+                'partial',
+                'allavailable',
+                'processing',
+                'pending',
+                'deleted',
+                null,
               ]
         - in: query
           name: sort
