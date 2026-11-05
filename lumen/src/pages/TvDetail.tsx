@@ -2,7 +2,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useLocation, useParams } from 'react-router-dom';
 import {
   MediaStatus,
-  plexUrl,
+  plexLink,
   requestSeries,
   tmdbImg,
   type Paged,
@@ -147,12 +147,7 @@ export default function TvDetail() {
       {label}
     </button>
   ) : (
-    <a
-      className="btn btn-primary"
-      href={plexUrl(t.mediaInfo)}
-      target="_blank"
-      rel="noreferrer"
-    >
+    <a className="btn btn-primary" {...plexLink(t.mediaInfo)}>
       <Icon name="play" />
       Watch on Plex
     </a>
@@ -202,12 +197,7 @@ export default function TvDetail() {
         <div className="dacts pc">
           {main}
           {have > 0 && missing.length > 0 && (
-            <a
-              className="btn btn-quiet"
-              href={plexUrl(t.mediaInfo)}
-              target="_blank"
-              rel="noreferrer"
-            >
+            <a className="btn btn-quiet" {...plexLink(t.mediaInfo)}>
               <Icon name="play" />
               Watch on Plex
             </a>

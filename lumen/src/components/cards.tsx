@@ -4,6 +4,7 @@ import {
   englishAudioEdition,
   hardcoverWorkId,
   MediaStatus,
+  plexLink,
   plexUrl,
   requestBook,
   requestMovie,
@@ -146,7 +147,7 @@ export function TitleCard({ it, meta }: { it: TitleResult; meta?: string }) {
   const plex = plexUrl(it.mediaInfo);
   if (s?.k === 'ok')
     qb = plex ? (
-      <a className="qbtn okb" href={plex} target="_blank" rel="noreferrer">
+      <a className="qbtn okb" {...plexLink(it.mediaInfo)}>
         <Icon name="play" size="sm" />
         Watch on Plex
       </a>
@@ -372,12 +373,7 @@ export function FeatCard({
           {s?.k === 'ok' ? (
             // this button used to do nothing: open Plex when we have a link, else the title page
             plexUrl(it.mediaInfo) ? (
-              <a
-                className="btn go"
-                href={plexUrl(it.mediaInfo)}
-                target="_blank"
-                rel="noreferrer"
-              >
+              <a className="btn go" {...plexLink(it.mediaInfo)}>
                 <Icon name="play" size="sm" />
                 Watch
               </a>

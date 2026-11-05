@@ -48,12 +48,45 @@ export interface MediaInfo {
   mediaAddedAt?: string;
   mediaUrl?: string;
   mediaUrl4k?: string;
+  iOSPlexUrl?: string;
+  iOSPlexUrl4k?: string;
 }
-// the title in Plex (Plex's web app, which hands off to the Plex app on phones)
-export const plexUrl = (
-  m?: { mediaUrl?: string; mediaUrl4k?: string },
-  is4k = false
-) => (is4k && m?.mediaUrl4k) || m?.mediaUrl;
+type PlexLinks = {
+  mediaUrl?: string;
+  mediaUrl4k?: string;
+  iOSPlexUrl?: string;
+  iOSPlexUrl4k?: string;
+};
+// the title in Plex's web app
+export const plexUrl = (m?: PlexLinks, is4k = false) =>
+  (is4k && m?.mediaUrl4k) || m?.mediaUrl;
+
+const ua = typeof navigator === 'undefined' ? '' : navigator.userAgent;
+const isIOS =
+  /iPad|iPhone|iPod/.test(ua) ||
+  (ua.includes('Mac') &&
+    typeof navigator !== 'undefined' &&
+    navigator.maxTouchPoints > 1);
+const isAndroid = /Android/i.test(ua);
+
+// Props for a "Watch on Plex" link. Phones and tablets open the Plex app at the title (SeerrNG's
+// plex://preplay link); Android goes through an intent so Chrome falls back to Plex's web app
+// when the app isn't installed. Everywhere else: Plex's web app in a new tab.
+export const plexLink = (m?: PlexLinks, is4k = false) => {
+  const web = plexUrl(m, is4k);
+  const app =
+    (is4k && m?.iOSPlexUrl4k) || (!is4k && m?.iOSPlexUrl) || undefined;
+  if (app?.startsWith('plex://') && isAndroid) {
+    const fallback = web
+      ? `S.browser_fallback_url=${encodeURIComponent(web)};`
+      : '';
+    return {
+      href: `intent://${app.slice('plex://'.length)}#Intent;scheme=plex;package=com.plexapp.android;${fallback}end`,
+    };
+  }
+  if (app && isIOS) return { href: app };
+  return { href: web, target: '_blank', rel: 'noreferrer' };
+};
 export interface TitleResult {
   id: number;
   mediaType: 'movie' | 'tv' | 'person';
@@ -386,6 +419,8 @@ export interface RequestItem {
     status4k?: number;
     mediaUrl?: string;
     mediaUrl4k?: string;
+    iOSPlexUrl?: string;
+    iOSPlexUrl4k?: string;
     downloadStatus?: DownloadItem[];
     downloadStatus4k?: DownloadItem[];
     audiobookDownloadStatus?: DownloadItem[];

@@ -6,6 +6,7 @@ import {
   cancelRequest,
   hardcoverEbookId,
   MediaStatus,
+  plexLink,
   plexUrl,
   tmdbImg,
   type BookResult,
@@ -618,9 +619,7 @@ export default function Requests() {
                   plexUrl(x.r.media, x.r.is4k) ? (
                     <a
                       className="btn btn-sm btn-ok"
-                      href={plexUrl(x.r.media, x.r.is4k)}
-                      target="_blank"
-                      rel="noreferrer"
+                      {...plexLink(x.r.media, x.r.is4k)}
                     >
                       <Icon name="play" size="sm" />
                       {x.r.type === 'music'

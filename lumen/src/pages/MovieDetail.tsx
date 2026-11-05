@@ -2,7 +2,7 @@ import { useCallback, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import {
   MediaStatus,
-  plexUrl,
+  plexLink,
   requestMovie,
   tmdbImg,
   type MovieDetails,
@@ -85,12 +85,7 @@ export default function MovieDetail() {
 
   const main =
     s?.k === 'ok' ? (
-      <a
-        className="btn btn-primary"
-        href={plexUrl(m.mediaInfo)}
-        target="_blank"
-        rel="noreferrer"
-      >
+      <a className="btn btn-primary" {...plexLink(m.mediaInfo)}>
         <Icon name="play" />
         Watch on Plex
       </a>
