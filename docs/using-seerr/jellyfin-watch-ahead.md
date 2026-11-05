@@ -59,9 +59,12 @@ downloaded episodes or files.
 
 While at least one request has a buffer enabled, the worker checks active
 playback every 30 seconds. A matching episode must reach at least 90% of its
-runtime before the queue advances. SeerrNG matches the playing series and
-linked account to the TV request owner; another user's playback does not
-advance the request. New episodes are reconciled at most once every 15 minutes.
+runtime before the queue advances. SeerrNG matches the playing series by its TVDB identity on the configured
+media server. Playback by any household viewer can advance an enrolled request;
+it does not depend on the original requester watching. Plex sessions are read
+through the configured server owner. Jellyfin and Emby sessions are verified
+against the playing user's episode and series records. The resulting requests
+retain the original request owner, approval, destination, and buffer. New episodes are reconciled at most once every 15 minutes.
 
 While the TV request is pending approval, SeerrNG remembers watched progress
 but waits to add episodes. Once the request is approved, SeerrNG checks the
