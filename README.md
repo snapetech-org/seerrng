@@ -81,7 +81,7 @@ For local MCP access, see the [SnapeTech MCP integration guide](./docs/integrati
 
 - Requests and approvals for movies, shows, music, ebooks, audiobooks, comics, magazines, emulation ROMs, and PC games.
 - A companion Android APK client for connecting to one or more self-hosted SeerrNG servers.
-- Movie and series Discover filters with 0.1-point TMDB rating thresholds and streaming-service availability filters by region.
+- Movie and series Discover filters with 0.1-point TMDB rating thresholds, region-aware streaming-service filters, and media-specific title sorting.
 - Media-server integration with Plex, Jellyfin, and Emby, including watch-state-aware My Library views scoped to each linked account. Failed Plex library syncs preserve the saved library list, report connection failures clearly, and retry startup migration on the next restart.
 - Jellyfin library synchronization preserves each library's enabled selection and stored scan timestamp across display-name changes when the server keeps its stable library ID. Adapted from Seerr [PR #3323](https://github.com/seerr-team/seerr/pull/3323).
 - Optional Jellyfin and Emby profile sync during user imports, refreshing linked provider names and avatars while preserving SeerrNG email addresses, local passwords, and permissions.
@@ -151,7 +151,7 @@ For local MCP access, see the [SnapeTech MCP integration guide](./docs/integrati
 - Resumable, layered Readarr/softcover-to-Hardcover migration with strict matching, softcover metadata recovery, validation, cutover checks, and an opt-in deterministic local-record fallback for books Hardcover cannot import.
 - Per-user cross-media watchlists; local-only lists support title search, media-type filters, and stable sorting, while combined Plex lists preserve Plex ordering. The request workflow also includes blocklists, quotas, override rules, permissions, notifications, issue reporting, and request management.
 - Users can choose whether movie and TV copies requested by someone else appear as shared or stay hidden; this changes the availability display, not media-server access.
-- Discover shelves can be reordered and customized; movie and series filters include fractional ratings, streaming-service inclusion or exclusion, and category exclusions. Discover detail navigation keeps the selected result context, and rating details work on touch screens.
+- Discover shelves can be reordered and customized; movie and series filters include fractional ratings, streaming-service inclusion or exclusion, category exclusions, and title sorting using the correct TMDB field for each media type. Discover detail navigation keeps the selected result context, and rating details work on touch screens.
 - Movie and Series Subject Tags can be hidden with a browser-saved preference shared across both detail pages.
 - Authenticated **Download copy** links in Request Status for verified movie, TV, book, comic, magazine, ROM, and PC game files.
 - Request lifecycle tracking and availability notifications link users back to the matching Request Status item, where available files can be selected and saved.
@@ -166,8 +166,9 @@ SeerrNG is active fork work. Movie and TV behavior is inherited and generally st
 Recent repository updates include:
 
 - **Discover:** editable shared shelves; more precise rating and streaming
-  filters; category exclusions; detail navigation through the current result
-  list; and restored carousel position when returning from a title.
+  filters; media-specific title sorting; category exclusions; detail navigation
+  through the current result list; and restored carousel position when returning
+  from a title.
 - **Requests:** per-user access to labeled Radarr/Sonarr destinations, quota
   exception approvals, optional Slack approval actions, an optional
   previous-season watch gate, and Sonarr monitoring for future seasons when
