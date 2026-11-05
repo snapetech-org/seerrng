@@ -9571,21 +9571,19 @@ describe('POST /request, destination-scoped override rules', () => {
       async () => true
     );
     const agent = await loginAs('demo@seerr.dev', 'test1234');
-    const response = await agent
-      .post('/request')
-      .send({
-        mediaType: MediaType.MOVIE,
-        mediaId: 88026,
-        serverId: 5,
-        profileId: 1,
-        rootFolder: '/default/movies',
-        tags: [],
-        requesterSelectedOptions: {
-          profile: true,
-          rootFolder: true,
-          tags: true,
-        },
-      });
+    const response = await agent.post('/request').send({
+      mediaType: MediaType.MOVIE,
+      mediaId: 88026,
+      serverId: 5,
+      profileId: 1,
+      rootFolder: '/default/movies',
+      tags: [],
+      requesterSelectedOptions: {
+        profile: true,
+        rootFolder: true,
+        tags: true,
+      },
+    });
     assert.equal(response.status, 201);
     assert.equal(response.body.profileId, 1);
     assert.equal(response.body.rootFolder, '/default/movies');
