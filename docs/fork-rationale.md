@@ -16,6 +16,16 @@ that the referenced work has shipped. Upstream does not need to accept the same
 patches: a maintained extension, adapter, or compatible service can satisfy a
 gate if it provides the behavior users rely on.
 
+**First-admin media-server provisioning.** A replacement must create the first
+administrator without overwriting a preconfigured Jellyfin or Emby connection
+or API key. It may create a provider-side key when none exists and should use
+setup values for the endpoint only when no endpoint is already configured.
+Source context includes Seerr [issue #3618](https://github.com/seerr-team/seerr/issues/3618),
+which upstream closed as not planned after classifying the request as new setup
+behavior. Close this gate after a first-admin sign-in against a preconfigured
+server preserves its endpoint and key without creating a duplicate, while an
+unset key is created and an unset endpoint uses validated setup values.
+
 The rows describe retirement requirements, not current upstream coverage.
 Source links provide public context only; they do not mean upstream has shipped
 the behavior. Work that has not shipped in a supported SeerrNG release is not

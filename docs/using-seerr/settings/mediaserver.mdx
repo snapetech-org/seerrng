@@ -9,6 +9,15 @@ sidebar_position: 3
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
+:::note
+If you provision SeerrNG with a Jellyfin or Emby connection in `settings.json`
+before the first administrator signs in, SeerrNG keeps the stored connection
+and existing media-server API key while it creates the owner account. It creates
+a provider-side API key only when no key is configured. When the internal server
+address is not set, enter it in the setup flow. Treat `settings.json` as a
+credential file and do not commit it.
+:::
+
 <Tabs groupId="media-server-type" queryString>
     <TabItem value="jellyfin" label="Jellyfin">
 :::info
