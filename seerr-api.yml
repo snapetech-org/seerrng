@@ -2894,6 +2894,22 @@ components:
         - id
         - name
         - enabled
+    MovieCollectionQueue:
+      type: object
+      properties:
+        id: {type: integer}
+        collectionId: {type: integer}
+        is4k: {type: boolean}
+        bufferSize: {type: integer, enum: [1, 2]}
+        status: {type: string, enum: [active, waiting, completed, stopped]}
+        reason:
+          type: string
+          nullable: true
+          enum: [playback-unlinked, request-policy, provider-unavailable, request-cancelled]
+        total: {type: integer}
+        watched: {type: integer}
+        requested: {type: integer}
+        updatedAt: {type: string, format: date-time}
     PlexSettings:
       type: object
       properties:
@@ -24250,6 +24266,62 @@ paths:
                         type: array
                         items:
                           $ref: '#/components/schemas/User'
+  /collection/{id}/queue:
+    parameters:
+      - in: path
+        name: id
+        required: true
+        schema: {type: integer, minimum: 1, maximum: 1000000000}
+      - in: query
+        name: is4k
+        schema: {type: boolean, default: false}
+    get:
+      summary: Read the signed-in user's progressive movie collection queue
+      tags: [collection]
+      responses:
+        '200':
+          description: Current queue, or null when not enrolled
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  queue:
+                    allOf: [{$ref: '#/components/schemas/MovieCollectionQueue'}]
+                    nullable: true
+    post:
+      summary: Enroll the signed-in user's collection in progressive requests
+      tags: [collection]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties: false
+              required: [bufferSize, is4k]
+              properties:
+                bufferSize: {type: integer, enum: [1, 2]}
+                is4k: {type: boolean}
+      responses:
+        '202':
+          description: Collection queue saved; initial requests are checked asynchronously
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  queue: {$ref: '#/components/schemas/MovieCollectionQueue'}
+        '400': {description: Invalid collection or buffer}
+        '403': {description: Movie request access required}
+        '409': {description: Link playback or stop an active queue first}
+        '503': {description: Collection provider unavailable}
+    delete:
+      summary: Stop the signed-in user's collection queue without removing requests or files
+      tags: [collection]
+      responses:
+        '204': {description: Future queue requests stopped}
+        '403': {description: Account authority changed}
   /collection/{collectionId}:
     get:
       summary: Get collection details

@@ -15,6 +15,7 @@ import {
   syncRecordings,
 } from '@server/lib/liveTv/recordings';
 import { syncSportsFollows } from '@server/lib/liveTv/sports';
+import movieCollectionQueues from '@server/lib/movieCollectionQueue';
 import { syncBookOrbitKoboCollections } from '@server/lib/readerDeliveryKobo';
 import refreshToken from '@server/lib/refreshToken';
 import { captureReleaseCalendarHistory } from '@server/lib/releaseCalendar/history';
@@ -377,6 +378,20 @@ export const startJobs = (): void => {
     });
   }
 
+  if (isWatchAheadMediaServer(mediaServerType)) {
+    scheduledJobs.push({
+      id: 'movie-collection-queue',
+      name: 'Movie Collection Queue',
+      type: 'process',
+      interval: 'minutes',
+      cronSchedule: jobs['movie-collection-queue'].schedule,
+      job: schedule.scheduleJob(jobs['movie-collection-queue'].schedule, () =>
+        runTrackedJob('Movie Collection Queue', () =>
+          movieCollectionQueues.run()
+        )
+      ),
+    });
+  }
   // The persisted job key retains its original name for configuration
   // compatibility, but the queue now follows Plex, Jellyfin, or Emby playback.
   if (isWatchAheadMediaServer(mediaServerType)) {

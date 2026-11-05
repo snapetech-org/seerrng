@@ -11,6 +11,7 @@ describe('Jobs & Cache job labels', () => {
   it.each([
     ['external-request-list-sync', 'External Request List Sync'],
     ['navidrome-scan', 'Navidrome Scan'],
+    ['movie-collection-queue', 'Movie Collection Queue'],
     ['jellyfin-watch-ahead', 'Requested Episode Queue'],
   ] as const)('labels %s with its user-facing name', (jobId, label) => {
     expect(
