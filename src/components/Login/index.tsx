@@ -198,7 +198,8 @@ const Login = ({
         requested && !requested.includes('#')
           ? getSafeReturnPath(`${requested}${window.location.hash}`)
           : undefined;
-      router.push(withFragment ?? requested ?? '/');
+      // A new document cannot reuse another account's SWR responses.
+      window.location.assign(withFragment ?? requested ?? '/');
     }
   }, [user, router]);
 

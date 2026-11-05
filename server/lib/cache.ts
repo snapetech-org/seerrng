@@ -36,6 +36,7 @@ export type AvailableCacheIds =
   | 'ranobedb'
   | 'simkl'
   | 'personallibrary'
+  | 'mediaavailability'
   | 'mdblist';
 
 const DEFAULT_TTL = 300;
@@ -50,6 +51,7 @@ const SONARR_MAX_KEYS = 64;
 const RT_MAX_KEYS = 500;
 const IMDB_MAX_KEYS = 500;
 const GITHUB_MAX_KEYS = 16;
+export const GITHUB_CACHE_TTL_SECONDS = 6 * 60 * 60;
 const PLEX_TV_MAX_KEYS = 5000;
 const PLEX_WATCHLIST_MAX_KEYS = 500;
 const TVDB_MAX_KEYS = 500;
@@ -183,6 +185,15 @@ class CacheManager {
       maxKeys: 1000,
       maxBytes: 16 * 1024 * 1024,
     }),
+    mediaavailability: new Cache(
+      'mediaavailability',
+      'Per-user media availability',
+      {
+        stdTtl: 30,
+        maxKeys: 5000,
+        maxBytes: 2 * 1024 * 1024,
+      }
+    ),
     mdblist: new Cache('mdblist', 'MDBList API', {
       stdTtl: 172800,
       maxKeys: 500,
@@ -211,7 +222,7 @@ class CacheManager {
       maxKeys: IMDB_MAX_KEYS,
     }),
     github: new Cache('github', 'GitHub API', {
-      stdTtl: 21600,
+      stdTtl: GITHUB_CACHE_TTL_SECONDS,
       maxKeys: GITHUB_MAX_KEYS,
     }),
     plextv: new Cache('plextv', 'Plex TV', {

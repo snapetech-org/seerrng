@@ -15,6 +15,7 @@ import {
   createSafeHttpUrl,
   stringifySafeHttpUrl,
 } from '@server/utils/security';
+import { userAgentRequestInterceptor } from '@server/utils/userAgent';
 import axios, { type AxiosInstance } from 'axios';
 import rateLimit, { type rateLimitOptions } from 'axios-rate-limit';
 import { createHash } from 'crypto';
@@ -883,7 +884,7 @@ class ImageProxy {
     });
     this.axios.interceptors.request.use((config) => {
       options.requestValidator?.();
-      return proxyRequestInterceptor(config);
+      return userAgentRequestInterceptor(proxyRequestInterceptor(config));
     });
 
     if (options.rateLimitOptions) {

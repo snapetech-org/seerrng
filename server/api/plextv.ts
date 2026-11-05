@@ -18,7 +18,7 @@ export const PLEXTV_HTTP_OPTIONS = {
 } as const;
 export const MAX_PLEX_SHARED_USERS = 250;
 export const MAX_PLEX_WATCHLIST_PAGE_SIZE = 100;
-export const PLEX_WATCHLIST_HYDRATION_CONCURRENCY = 10;
+export const PLEX_WATCHLIST_HYDRATION_CONCURRENCY = 5;
 const PLEX_WATCHLIST_USER_STATE_CACHE_TTL_SECONDS = 15;
 const PLEX_DISCOVER_API_URL = 'https://discover.provider.plex.tv';
 const PLEX_METADATA_API_URL = 'https://metadata.provider.plex.tv';
@@ -358,6 +358,12 @@ export const isCacheablePlexWatchlistPage = (value: unknown): boolean => {
   );
 };
 
+// Universal Watchlist uses Discover metadata IDs (24 hexadecimal characters),
+// distinct from a Plex server's numeric library keys. Keep both bounded and
+// path-safe without broadening the validation of local-server identifiers.
+const isPlexWatchlistRatingKey = (value: unknown): value is string =>
+  typeof value === 'string' && /^(?:\d{1,20}|[a-f\d]{24})$/i.test(value);
+
 export const preparePlexWatchlistRatingKeys = (
   value: unknown,
   limit = MAX_PLEX_WATCHLIST_PAGE_SIZE
@@ -376,7 +382,7 @@ export const preparePlexWatchlistRatingKeys = (
       item && typeof item === 'object' && 'ratingKey' in item
         ? (item as { ratingKey?: unknown }).ratingKey
         : undefined;
-    if (typeof ratingKey === 'string' && /^\d{1,20}$/.test(ratingKey)) {
+    if (isPlexWatchlistRatingKey(ratingKey)) {
       ratingKeys.add(ratingKey);
     }
     if (ratingKeys.size >= maxItems) {
@@ -421,8 +427,7 @@ const parsePlexWatchlistMetadata = (
 ): PlexWatchlistItem | undefined => {
   if (
     !metadata ||
-    typeof metadata.ratingKey !== 'string' ||
-    !/^\d{1,20}$/.test(metadata.ratingKey) ||
+    !isPlexWatchlistRatingKey(metadata.ratingKey) ||
     (metadata.type !== 'movie' && metadata.type !== 'show') ||
     typeof metadata.title !== 'string'
   ) {
@@ -638,10 +643,16 @@ class PlexTvAPI extends ExternalAPI {
         cachedWatchlist?.response?.MediaContainer?.Metadata,
         size
       );
+      let hasFatalMetadataError = false;
+      let fatalMetadataError: unknown;
       const watchlistDetails = await mapWithConcurrency(
         ratingKeys,
         PLEX_WATCHLIST_HYDRATION_CONCURRENCY,
         async (ratingKey) => {
+          if (hasFatalMetadataError) {
+            return undefined;
+          }
+
           let detailedResponse: MetadataResponse;
           try {
             detailedResponse = await this.getRolling<MetadataResponse>(
@@ -651,15 +662,35 @@ class PlexTvAPI extends ExternalAPI {
               }
             );
           } catch (e) {
-            if (e.response?.status === 404) {
+            const details = getHttpErrorDetails(e);
+            if (details.status === 404) {
               logger.warn(
                 `Item with ratingKey ${ratingKey} not found, it may have been removed from the server.`,
                 { label: 'Plex.TV Metadata API' }
               );
               return undefined;
-            } else {
-              throw e;
             }
+
+            if (
+              !details.status &&
+              !details.upstreamStatusCode &&
+              ['ETIMEDOUT', 'ECONNABORTED', 'ENETUNREACH'].includes(
+                details.errorCode ?? ''
+              )
+            ) {
+              logger.warn('Skipping unreachable Plex watchlist item', {
+                label: 'Plex.TV Metadata API',
+                ratingKey,
+                errorCode: details.errorCode,
+              });
+              return undefined;
+            }
+
+            if (!hasFatalMetadataError) {
+              hasFatalMetadataError = true;
+              fatalMetadataError = e;
+            }
+            return undefined;
           }
 
           const metadata =
@@ -677,6 +708,10 @@ class PlexTvAPI extends ExternalAPI {
           return parsePlexWatchlistMetadata(metadata);
         }
       );
+
+      if (hasFatalMetadataError) {
+        throw fatalMetadataError;
+      }
 
       const filteredList = watchlistDetails.filter(
         (detail): detail is PlexWatchlistItem => detail !== undefined
@@ -714,7 +749,7 @@ class PlexTvAPI extends ExternalAPI {
   }
 
   public async getWatchlistedAt(ratingKey: string): Promise<Date | null> {
-    if (!/^\d{1,20}$/.test(ratingKey)) {
+    if (!isPlexWatchlistRatingKey(ratingKey)) {
       return null;
     }
 

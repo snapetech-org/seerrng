@@ -10,6 +10,9 @@ imagePullSecrets: []
 nameOverride: ''
 fullnameOverride: ''
 
+# -- Number of SeerrNG pods to run. Set 0 during maintenance; only 0 or 1 is supported.
+replicaCount: 1
+
 # Liveness / Readiness / Startup Probes
 probes:
   # -- Configure liveness probe
@@ -39,6 +42,9 @@ probes:
 extraEnv: []
 # -- Environment variables from secrets or configmaps to add to the seerr pods
 extraEnvFrom: []
+# -- Additional Kubernetes resource objects rendered and managed with this chart release.
+# -- Each object is templated with this chart's values and named templates before rendering.
+extraResources: []
 
 serviceAccount:
   # -- Specifies whether a service account should be created

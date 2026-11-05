@@ -575,6 +575,7 @@ export interface MainSettings {
   enable4k: boolean;
   localLogin: boolean;
   mediaServerLogin: boolean;
+  jellyfinQuickConnectOnly: boolean;
   oidcLogin: boolean;
   newPlexLogin: boolean;
   discoverRegion: string;
@@ -627,6 +628,8 @@ export interface NetworkSettings {
   csrfProtection: boolean;
   forceIpv4First: boolean;
   trustProxy: boolean;
+  restrictAdministratorSignInToNetworks: boolean;
+  administratorSignInAllowedNetworks: string;
   tls: TlsSettings;
   proxy: ProxySettings;
   dnsCache: DnsCacheSettings;
@@ -647,6 +650,7 @@ interface FullPublicSettings extends PublicSettings {
   enable4k: boolean;
   localLogin: boolean;
   mediaServerLogin: boolean;
+  jellyfinQuickConnectOnly: boolean;
   movie4kEnabled: boolean;
   series4kEnabled: boolean;
   musicEnabled: boolean;
@@ -996,6 +1000,7 @@ class Settings {
         enable4k: true,
         localLogin: true,
         mediaServerLogin: true,
+        jellyfinQuickConnectOnly: false,
         oidcLogin: false,
         newPlexLogin: true,
         discoverRegion: '',
@@ -1331,6 +1336,8 @@ class Settings {
         csrfProtection: false,
         forceIpv4First: false,
         trustProxy: false,
+        restrictAdministratorSignInToNetworks: false,
+        administratorSignInAllowedNetworks: '',
         tls: {
           mode: 'disabled',
           httpsPort: 5056,
@@ -1777,6 +1784,7 @@ class Settings {
       enable4k: this.data.main.enable4k !== false,
       localLogin: this.data.main.localLogin,
       mediaServerLogin: this.data.main.mediaServerLogin,
+      jellyfinQuickConnectOnly: this.data.main.jellyfinQuickConnectOnly,
       jellyfinExternalHost: this.data.jellyfin.externalHostname,
       jellyfinForgotPasswordUrl: this.data.jellyfin.jellyfinForgotPasswordUrl,
       movie4kEnabled: this.data.radarr.some(
@@ -2068,6 +2076,7 @@ class Settings {
         enable4k: true,
         localLogin: true,
         mediaServerLogin: true,
+        jellyfinQuickConnectOnly: false,
         oidcLogin: false,
         newPlexLogin: true,
         discoverRegion: '',
@@ -2396,6 +2405,8 @@ class Settings {
         csrfProtection: false,
         forceIpv4First: false,
         trustProxy: false,
+        restrictAdministratorSignInToNetworks: false,
+        administratorSignInAllowedNetworks: '',
         tls: {
           mode: 'disabled',
           httpsPort: 5056,

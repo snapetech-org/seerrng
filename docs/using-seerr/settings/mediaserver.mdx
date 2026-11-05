@@ -9,6 +9,15 @@ sidebar_position: 3
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
+:::note
+If you provision SeerrNG with a Jellyfin or Emby connection in `settings.json`
+before the first administrator signs in, SeerrNG keeps the stored connection
+and existing media-server API key while it creates the owner account. It creates
+a provider-side API key only when no key is configured. When the internal server
+address is not set, enter it in the setup flow. Treat `settings.json` as a
+credential file and do not commit it.
+:::
+
 <Tabs groupId="media-server-type" queryString>
     <TabItem value="jellyfin" label="Jellyfin">
 :::info
@@ -23,6 +32,9 @@ It is **not** tied to your Jellyfin account.
 In this section, simply select the libraries you would like Seerr to scan. Seerr will periodically check the selected libraries for available content to update the media status that is displayed to users.
 
 If you do not see your Jellyfin library listed, verify your Jellyfin settings are correct and click the Sync Libraries button.
+
+When a Jellyfin library is renamed but keeps the same server ID, SeerrNG keeps
+its enabled selection and stored scan timestamp during synchronization.
 
 ### Manual Library Scan
 
@@ -225,15 +237,18 @@ Enable this setting to connect to Plex via HTTPS rather than HTTP. Self-signed c
 
 #### Web App URL (optional)
 
-The **Play on Plex** buttons on media pages link to items on your Plex server. By default, these links use the [Plex Web App](https://support.plex.tv/articles/200288666-opening-plex-web-app/) hosted from plex.tv, but you can provide the URL to the web app on your Plex server and we'll use that instead!
-
-Note that you will need to enter the full path to the web app (e.g., `https://plex.myawesomeserver.com/web`).
+The **Play on Plex** buttons on media pages link to items on your Plex server. By default, these links use the [Plex Web App](https://support.plex.tv/articles/200288666-opening-plex-web-app/) hosted from plex.tv. To open those links in a self-hosted Plex Web App, enter the full URL that users open in their browser, including the web app path—for example, `https://plex.myawesomeserver.com/web/index.html`. Some Plex and reverse-proxy setups also resolve the shorter `https://plex.myawesomeserver.com/web` path. Include any required port or proxy base path. Leave this field blank to use the hosted Plex Web App.
 
 ### Plex Libraries
 
 In this section, simply select the libraries you would like Seerr to scan. Seerr will periodically check the selected libraries for available content to update the media status that is displayed to users.
 
 If you do not see your Plex libraries listed, verify your Plex settings are correct and click the **Sync Libraries** button.
+
+If SeerrNG cannot reach Plex during a sync, it reports a connection error and
+keeps the last saved library list. If a startup migration cannot contact Plex,
+SeerrNG continues to start with the existing settings and retries that
+migration the next time it starts.
 
 Plex reports both music and audiobook libraries as artist libraries. SeerrNG
 classifies them as **Music** after syncing. For an audiobook library, open its

@@ -74,6 +74,13 @@ Note that users with the **Manage Users** permission are exempt from request lim
 
 Users are also unable to modify their own request limits.
 
+## Maturity Controls
+
+Users with the **Manage Users** permission can set separate movie and TV rating
+limits for an account. These caps apply to the account even when the instance
+age-gate default is disabled. See [Age gate](../age-gate.md) for rating rules
+and how account limits work with the instance-wide family controls.
+
 ## Password
 
 All "local users" are assigned passwords upon creation, but users imported from Plex can also optionally configure passwords to enable sign-in using their email address.

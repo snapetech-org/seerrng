@@ -1,6 +1,17 @@
 import './commands';
 
 beforeEach(() => {
+  if (Cypress.isBrowser({ family: 'chromium' })) {
+    // These suites intercept HTTP at Cypress's proxy. A controlling worker can
+    // bypass that proxy and its instrumented iframe navigation. Worker-enabled
+    // navigation is exercised separately in Playwright with the real worker.
+    cy.then(() =>
+      Cypress.automation('remote:debugger:protocol', {
+        command: 'Network.setBypassServiceWorker',
+        params: { bypass: true },
+      })
+    );
+  }
   // These tests explicitly assert metadata HTTP responses. A browser-cached
   // response bypasses cy.intercept even when the real UI loads successfully.
   // Keep real payloads, requests and assertions; disable only test-side caching

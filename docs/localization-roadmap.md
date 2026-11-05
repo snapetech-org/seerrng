@@ -1,117 +1,108 @@
 # UI localization roadmap
 
-## Locale inventory
+## Locale inventory and fallback
 
-The locale registry at `config/i18n/locales.json` is the source of truth for
-canonical tags, native language names, direction, catalog filenames, selection,
-and deliberate fallback relationships. It currently exposes 38 locales
-including English. Four client catalog files (`eu`, `kab`, `sk`, and `sl`)
-are inactive and do not count as supported choices.
+`config/i18n/locales.json` is the source of truth for canonical tags, native
+language names, direction, catalog filenames, locale selection, and deliberate
+fallback relationships. It currently registers 38 locales, including English.
+The four client catalog files `eu`, `kab`, `sk`, and `sl` are inactive and are
+not supported language-picker choices. Catalog file presence does not mean a
+locale is complete.
 
-Run `pnpm i18n:check` to verify the extracted English source, generated locale
-artifacts, and all selectable client and server catalogs. The catalog report
-shows direct translations, inherited values, reviewed/draft/unreviewed counts,
-approved English fallback, unaccounted gaps, plural warnings, and locale review
-status. It does not equate structural coverage with translation quality.
+English is the fallback for missing translations. Regional relationships are
+explicit: `es-MX` inherits from `es`; `zh-CN` and `zh-TW` map to their
+Simplified and Traditional Chinese catalogs; Norwegian Bokmål and Portuguese
+regional tags retain their canonical API and stored codes. Do not copy English
+strings into translation files to make coverage appear complete.
 
-## Coverage and review status
+Run `pnpm i18n:check` to check extracted English sources, generated registry
+artifacts, server message surfaces, and catalog structure. Its report describes
+direct translations, inherited values, review states, approved English
+fallback, unaccounted gaps, and plural warnings. The ordinary check does not
+make a locale complete or certify translation quality. Previous dated coverage
+counts are historical; use the exact current tree when reporting new totals.
 
-At the assessment snapshot (2026-10-28), 12 non-English client catalogs had
-5,634 of 6,837 messages (82.4%) and `es-MX` had 5,519 (80.7%). The other 24
-selectable non-English catalogs ranged from 0 to 21.8%. Server coverage was
-also partial, with 12 empty non-English catalogs. These counts describe
-catalog contents only.
+## Translation scope and source integrity
 
-After this implementation pass, the extracted source has 6,847 client and 89
-server messages. The current checker reports 13,681 catalog issues and 519
-plural-category warnings across the selectable locales. The normal check keeps
-these visible without blocking the existing partial-catalog build; strict
-coverage, plural, structure, and review modes are separate gates.
+Translate application labels, help, accessibility text, dialogs, empty, error,
+and success states, workflow labels, and server notification copy. Keep
+user-supplied titles, names and paths, sample data, product names, commands,
+protocol/API identifiers, and provider values unchanged. Preserve fork-specific
+keys and their existing values when updating catalogs.
 
-All non-English registry entries remain marked `unreviewed` until human
-linguistic review is recorded. `config/i18n/catalog-provenance.json` supplies
-an explicit legacy-unreviewed default and sparse per-message, per-locale
-overrides. Overrides bind both source and translated text hashes, so either
-edit invalidates the record. No existing entry is marked reviewed or machine
-draft. The Settings language picker warns that a selected catalog may still
-show English text. The English fallback manifest contains only explicit
-temporary exceptions, with an owner, reason, expiry, source hash, and catalog
-domain. Do not copy English strings into translation files to make coverage
-appear complete.
+English client and server messages have per-message SHA-256 source
+fingerprints. After an intentional English source change, update the source
+snapshot and matching runtime/source registries; refreshing fingerprints does
+not review or approve translations. Keep API-only dynamic values and unknown
+provider text opaque.
 
-Use the strict audit when a reviewed translation batch is ready:
+`config/i18n/catalog-provenance.json` records translation review state by
+source and translated-text hashes. A text edit invalidates the existing record.
+Entries remain `unreviewed` until qualified linguistic review is recorded; a
+machine draft or structural check is not a human review. The English fallback
+manifest contains only explicit temporary exceptions with an owner, reason,
+expiry, source hash, and catalog domain.
+
+## Coverage and review gates
+
+For each direct locale, check source coverage, key parity, non-empty targets,
+placeholders, ICU arguments and types, rich-text tags, URLs, inline code,
+protocol literals, and plural behavior. Text-only similarity is not enough to
+select a translation when the same English label appears in different contexts.
 
 - `pnpm i18n:catalogs:strict` rejects unaccounted missing or English-identical
   values, malformed ICU, argument/tag/token mismatches, unregistered catalogs,
   and incomplete plural categories.
-- `pnpm i18n:catalogs:review` is the human-review gate. It stays red until
-  every translated value has a current message-level review record.
-- `pnpm i18n:registry` regenerates the server locale types and lazy client
-  loader from the registry. `pnpm i18n:registry:check` checks that generated
-  files are current.
-- English client and server messages have per-message SHA-256 source
-  fingerprints. `pnpm i18n:check` fails when the snapshot is stale; after an
-  intentional English source update, run `pnpm i18n:snapshot`. This refreshes
-  fingerprints only and does not mark translations as reviewed.
+- `pnpm i18n:catalogs:review` is the message-level human-review gate. It remains
+  incomplete until every translation has a current review record.
+- `pnpm i18n:registry` regenerates server locale types and the lazy client
+  loader; `pnpm i18n:registry:check` verifies generated files are current.
+- `pnpm i18n:snapshot` refreshes source fingerprints after an intentional
+  English source update; it does not mark translations reviewed.
 
-Regional catalog aliases are explicit: `es-MX` falls back to `es`;
-`zh-CN` and `zh-TW` map to Simplified and Traditional Chinese filenames;
-`nb-NO` and Portuguese regional tags keep their canonical API and stored
-codes. Missing entries then fall back to English.
+Structural checks establish catalog consistency, not meaning, tone,
+accessibility, or fit. Review translated copy with its production caller,
+including placeholders, markup, capitalization, punctuation, and fragment
+composition. Keep previously correct locale-specific wording when it fits the
+caller.
 
 ## Direction, bidi, and formatting
 
-The client derives document direction from the registry after a locale is
-loaded. Arabic and Hebrew are RTL. The shared `BidiText` component isolates
-external mixed-direction text such as media titles without altering stored
-values. A per-user regional format preference overrides the territory while
-preserving the interface language; it drives React Intl date/number formatting
-and byte units without changing the translation catalog. The settings form
-uses the supported ISO region list and can return to the display-language default.
-Users can also choose an independent metadata language for titles and search;
-the default follows the display language.
+The client derives document direction from the locale registry after a locale
+loads. Arabic and Hebrew are RTL. `BidiText` isolates external mixed-direction
+text without altering stored values. A per-user regional format preference
+controls React Intl dates, numbers, and byte units while preserving the
+interface language; metadata language remains a separate preference.
 
-The server-rendered document now chooses `lang`/`dir` from a validated
-locale-hint cookie, falling back to `Accept-Language`. The cookie is a
-presentation hint, not authentication state. A blank per-user display-language
-setting follows `navigator.languages`; its region is used for formatting until
-the user chooses an explicit regional override. The inferred values are not
-written back as explicit preferences. The Next page renderer does not
-load the authenticated user session, and app translations are still loaded
-client-side, so this does not guarantee the user's saved locale on a first
-request or render translated text on the server. Full authenticated SSR locale
-hydration remains open. App-wide RTL layout and notification rendering also
-need rendered review; the direction attribute alone is not RTL acceptance.
+The server-rendered document uses a validated locale-hint cookie, then
+`Accept-Language`, to choose `lang` and `dir`. The cookie is a presentation hint,
+not authentication state. A blank per-user display-language preference follows
+`navigator.languages`; inferred values are not written back as explicit user
+settings. The Next page renderer does not load the authenticated user session,
+and app translations still load client-side, so this does not guarantee the
+saved locale on the first request or translated server rendering. Full
+authenticated SSR locale hydration remains open.
 
 Runtime durations, playtime, byte quantities, numeric metrics, and selected
-natural-language lists now use shared Intl/CLDR formatting. Canonical API,
-storage, and provider values remain unchanged.
+natural-language lists use shared Intl/CLDR formatting. Canonical API, storage,
+and provider values remain unchanged.
 
-Shared CSS and production component utilities now use logical inline alignment,
-spacing, borders, and menu anchoring across the touched flows. Physical
-coordinates remain for the timeline axis, centered elements, and swipe stamps.
-Email templates declare recipient language and direction and isolate mixed
-script content, but they have not had rendered RTL review. Review navigation,
-setup, discovery, media detail, requests, user settings, services, calendars,
-tables, dialogs, portals, notifications, and both built-in themes at narrow and
-desktop widths before claiming full RTL acceptance. Mirror directional
-affordances only; preserve media timelines and numeric control semantics.
+Shared layouts should use logical inline alignment, spacing, borders, and menu
+anchoring. Mirror directional affordances only; preserve media timelines and
+numeric control semantics. Email templates declare recipient language and
+direction and isolate mixed-script content, but still need rendered RTL review.
 
-The browser review recorded on 2026-10-13 verified Arabic setup and calendar
-pages at 1280×900 and 390×844. That is historical, limited route coverage; it
-does not establish current app-wide RTL acceptance.
+## Browser and release acceptance
 
-## Translation and release gates
+Before describing a locale as complete, review translated copy in the running
+application at desktop and narrow widths. Check accessible names, announcements,
+keyboard and focus order, screen-reader reading order, text expansion, CJK,
+200% text, and both interface themes. A browser check of setup or calendar does
+not certify other routes. The document direction attribute alone does not
+establish correct RTL layout.
 
-Machine-generated or AI-assisted text remains draft. Preserve upstream source
-and licenses, keep a terminology glossary for media and requests, and request
-fluent-speaker review for each locale. Check plural categories with the locale's
-CLDR rules; Arabic cardinal plurals need zero, one, two, few, many, and other
-where those categories apply.
-
-Structural checks do not certify meaning, tone, accessibility, or fit. Review
-accessible names, announcements, keyboard/focus order, screen-reader reading
-order, text expansion, CJK, mobile widths, 200% text, and both interface themes
-before describing a locale or RTL support as complete. The assessment and
-baseline are recorded in
-[`docs/localization-assessment-2026-10.md`](localization-assessment-2026-10.md).
+Machine-assisted translation and semantic review do not establish
+qualified-speaker approval. Record language-specific reviewer evidence and
+current source/text hashes. Keep browser acceptance, visual RTL review, and
+native-speaker approval as separate gates. Do not claim release readiness from
+catalog parity or a passing structural check.

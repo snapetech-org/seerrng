@@ -42,6 +42,7 @@ import logger from '@server/logger';
 import { isAuthenticated } from '@server/middleware/auth';
 import { checkAvatarChanged } from '@server/routes/avatarproxy';
 import { ApiError } from '@server/types/error';
+import { isClientIpAllowedForAdministratorLogin } from '@server/utils/adminLoginNetworks';
 import AsyncLock from '@server/utils/asyncLock';
 import { trackBackgroundTask } from '@server/utils/backgroundTasks';
 import {
@@ -368,27 +369,56 @@ const parseRequestBodyObject = (
 };
 
 export const establishAuthenticatedSession = (
-  req: Pick<Request, 'session'>,
+  req: Pick<Request, 'ip' | 'session'>,
   userId: number,
   credentialVersion = 0
-): Promise<void> =>
-  new Promise((resolve, reject) => {
-    if (!req.session) {
-      reject(new Error('Session is unavailable.'));
-      return;
+): Promise<boolean> =>
+  (async () => {
+    const networkSettings = getSettings().network;
+    if (networkSettings.restrictAdministratorSignInToNetworks) {
+      const user = await getRepository(User).findOne({
+        select: { id: true, permissions: true },
+        where: { id: userId },
+      });
+
+      if (!user) {
+        return false;
+      }
+
+      if (
+        user.hasPermission(Permission.ADMIN) &&
+        !isClientIpAllowedForAdministratorLogin(
+          req.ip,
+          networkSettings.administratorSignInAllowedNetworks
+        )
+      ) {
+        logger.warn('Administrator sign-in rejected by network restriction', {
+          label: 'Auth',
+          ip: req.ip,
+          userId,
+        });
+        return false;
+      }
     }
 
-    req.session.regenerate((error) => {
-      if (error) {
-        reject(error);
+    return new Promise<boolean>((resolve, reject) => {
+      if (!req.session) {
+        reject(new Error('Session is unavailable.'));
         return;
       }
 
-      req.session.userId = userId;
-      req.session.credentialVersion = credentialVersion;
-      resolve();
+      req.session.regenerate((error) => {
+        if (error) {
+          reject(error);
+          return;
+        }
+
+        req.session.userId = userId;
+        req.session.credentialVersion = credentialVersion;
+        resolve(true);
+      });
     });
-  });
+  })();
 
 const parseOptionalPort = (
   value: unknown,
@@ -874,11 +904,14 @@ authRoutes.post('/plex', authRateLimit, async (req, res, next) => {
       return next({ status: 403, message: 'Access denied.' });
     }
 
-    await establishAuthenticatedSession(
+    const sessionEstablished = await establishAuthenticatedSession(
       req,
       user.id,
       user.passwordChangedAt?.getTime() ?? 0
     );
+    if (!sessionEstablished) {
+      return next({ status: 403, message: 'Access denied.' });
+    }
 
     await User.populateRequestCounts([user]);
     return res.status(200).json(user.filter(true));
@@ -913,6 +946,7 @@ authRoutes.post('/jellyfin/bridge', authRateLimit, async (req, res, next) => {
   if (
     settings.main.mediaServerType !== MediaServerType.JELLYFIN ||
     settings.main.mediaServerLogin === false ||
+    settings.main.jellyfinQuickConnectOnly === true ||
     !settings.jellyfin.bridgeLoginEnabled ||
     !settings.jellyfin.serverId
   ) {
@@ -990,6 +1024,7 @@ authRoutes.post('/jellyfin/bridge', authRateLimit, async (req, res, next) => {
       async () => {
         const currentSettings = getSettings();
         if (
+          currentSettings.main.jellyfinQuickConnectOnly === true ||
           !currentSettings.jellyfin.bridgeLoginEnabled ||
           getJellyfinAuthAuthorityKey(currentSettings) !== initialAuthorityKey
         ) {
@@ -1028,11 +1063,14 @@ authRoutes.post('/jellyfin/bridge', authRateLimit, async (req, res, next) => {
           }
         }
 
-        await establishAuthenticatedSession(
+        const sessionEstablished = await establishAuthenticatedSession(
           req,
           user.id,
           user.passwordChangedAt?.getTime() ?? 0
         );
+        if (!sessionEstablished) {
+          return res.status(403).type('text/plain').send('Access denied.');
+        }
         req.session.jellyfinBridge = {
           jellyfinUserId,
           authorityKey: initialAuthorityKey,
@@ -1070,6 +1108,14 @@ authRoutes.post('/jellyfin', authRateLimit, async (req, res, next) => {
   const settings = getSettings();
   const initialJellyfinAuthorityKey = getJellyfinAuthAuthorityKey(settings);
   const initialMediaServerType = settings.main.mediaServerType;
+  if (
+    initialMediaServerType === MediaServerType.JELLYFIN &&
+    settings.main.jellyfinQuickConnectOnly
+  ) {
+    return res.status(403).json({
+      error: 'Jellyfin password sign-in is disabled. Use Quick Connect.',
+    });
+  }
   const userRepository = getRepository(User);
   const parsedBody = parseRequestBodyObject(req.body);
   if ('error' in parsedBody) {
@@ -1284,6 +1330,14 @@ authRoutes.post('/jellyfin', authRateLimit, async (req, res, next) => {
       async () => {
         const activeSettings = getSettings();
         if (
+          activeSettings.main.mediaServerType === MediaServerType.JELLYFIN &&
+          activeSettings.main.jellyfinQuickConnectOnly
+        ) {
+          return res.status(403).json({
+            error: 'Jellyfin password sign-in is disabled. Use Quick Connect.',
+          });
+        }
+        if (
           getJellyfinAuthAuthorityKey(activeSettings) !==
             initialJellyfinAuthorityKey ||
           (body.hostname && activeSettings.jellyfin.ip !== '') ||
@@ -1309,149 +1363,196 @@ authRoutes.post('/jellyfin', authRateLimit, async (req, res, next) => {
           missingAdminUser ||
           initialMediaServerType === MediaServerType.NOT_CONFIGURED
         ) {
-          // Check if user is admin on jellyfin
-          if (account.User.Policy.IsAdministrator === false) {
-            throw new ApiError(403, ApiErrorCode.NotAdmin);
-          }
+          const setupResult = await runWithConfigurationAdmission(
+            'jellyfin',
+            async () => {
+              if (
+                getJellyfinAuthAuthorityKey() !== initialJellyfinAuthorityKey
+              ) {
+                return {
+                  response: res.status(409).json({
+                    error: 'Media server configuration changed during setup.',
+                  }),
+                };
+              }
 
-          if (
-            body.serverType !== MediaServerType.JELLYFIN &&
-            body.serverType !== MediaServerType.EMBY
-          ) {
-            throw new ApiError(500, ApiErrorCode.NoAdminUser);
-          }
-          if (!missingAdminUser) {
-            const setupActorId = req.user?.id ?? (user?.id === 1 ? user.id : 0);
-            if (!setupActorId) {
-              return res.status(403).json({
-                error:
-                  'An authenticated administrator is required to configure the media server.',
-              });
-            }
+              const setupServerType =
+                body.serverType ??
+                (initialMediaServerType === MediaServerType.JELLYFIN ||
+                initialMediaServerType === MediaServerType.EMBY
+                  ? initialMediaServerType
+                  : undefined);
 
-            try {
-              administratorSetupLease =
-                await acquireAuthorizedUserSecurityMutation(
-                  setupActorId,
-                  [setupActorId, 1],
-                  Permission.ADMIN
+              // Check if user is admin on jellyfin
+              if (account.User.Policy?.IsAdministrator !== true) {
+                throw new ApiError(403, ApiErrorCode.NotAdmin);
+              }
+
+              if (
+                setupServerType !== MediaServerType.JELLYFIN &&
+                setupServerType !== MediaServerType.EMBY
+              ) {
+                throw new ApiError(500, ApiErrorCode.NoAdminUser);
+              }
+              if (!missingAdminUser) {
+                const setupActorId =
+                  req.user?.id ?? (user?.id === 1 ? user.id : 0);
+                if (!setupActorId) {
+                  return {
+                    response: res.status(403).json({
+                      error:
+                        'An authenticated administrator is required to configure the media server.',
+                    }),
+                  };
+                }
+
+                try {
+                  administratorSetupLease =
+                    await acquireAuthorizedUserSecurityMutation(
+                      setupActorId,
+                      [setupActorId, 1],
+                      Permission.ADMIN
+                    );
+                  req.user = administratorSetupLease.actor;
+                } catch (error) {
+                  if (error instanceof UserMutationActorUnauthorizedError) {
+                    return {
+                      response: res.status(403).json({
+                        error:
+                          'An authenticated administrator is required to configure the media server.',
+                      }),
+                    };
+                  }
+                  throw error;
+                }
+
+                const currentSettings = getSettings();
+                if (
+                  currentSettings.jellyfin.ip !== '' ||
+                  currentSettings.main.mediaServerType !==
+                    MediaServerType.NOT_CONFIGURED
+                ) {
+                  return {
+                    response: res.status(409).json({
+                      error: 'Media server configuration changed during setup.',
+                    }),
+                  };
+                }
+              }
+              if (missingAdminUser) {
+                logger.info(
+                  'Sign-in attempt from Jellyfin user with access to the media server; creating initial admin user for Seerr',
+                  {
+                    label: 'API',
+                    ip: req.ip,
+                    jellyfinUsername: account.User.Name,
+                  }
                 );
-              req.user = administratorSetupLease.actor;
-            } catch (error) {
-              if (error instanceof UserMutationActorUnauthorizedError) {
-                return res.status(403).json({
-                  error:
-                    'An authenticated administrator is required to configure the media server.',
+
+                // User doesn't exist, and there are no users in the database, we'll create the user
+                // with admin permissions
+
+                user = new User({
+                  id: 1,
+                  email: body.email || account.User.Name,
+                  jellyfinUsername: account.User.Name,
+                  jellyfinUserId,
+                  jellyfinDeviceId: deviceId,
+                  jellyfinAuthToken: account.AccessToken,
+                  permissions: Permission.ADMIN,
+                  userType:
+                    setupServerType === MediaServerType.JELLYFIN
+                      ? UserType.JELLYFIN
+                      : UserType.EMBY,
                 });
-              }
-              throw error;
-            }
+                user.avatar = getUserAvatarUrl(user);
 
-            const currentSettings = getSettings();
-            if (
-              currentSettings.jellyfin.ip !== '' ||
-              currentSettings.main.mediaServerType !==
-                MediaServerType.NOT_CONFIGURED
-            ) {
-              return res.status(409).json({
-                error: 'Media server configuration changed during setup.',
+                // update() cannot claim a missing owner row. Persist the canonical ID
+                // so first-time Jellyfin setup actually creates the administrator and
+                // concurrent setup attempts contend on the database primary key.
+                user = await userRepository.save(user);
+              } else {
+                logger.info(
+                  'Sign-in attempt from Jellyfin user with access to the media server; editing admin user for Seerr',
+                  {
+                    label: 'API',
+                    ip: req.ip,
+                    jellyfinUsername: account.User.Name,
+                  }
+                );
+
+                // User alread exist but settings.json is not configured, we'll edit the admin user
+
+                user = await userRepository.findOne({
+                  where: { id: 1 },
+                });
+                if (!user) {
+                  throw new Error('Unable to find admin user to edit');
+                }
+                user.email = body.email || account.User.Name;
+                user.jellyfinUsername = account.User.Name;
+                user.jellyfinUserId = jellyfinUserId;
+                user.jellyfinDeviceId = deviceId;
+                user.jellyfinAuthToken = account.AccessToken;
+                user.permissions = Permission.ADMIN;
+                user.avatar = getUserAvatarUrl(user);
+                user.userType =
+                  setupServerType === MediaServerType.JELLYFIN
+                    ? UserType.JELLYFIN
+                    : UserType.EMBY;
+
+                await userRepository.save(user);
+              }
+
+              // Keep a preconfigured API key, or create one for this admin.
+              const jellyfinClient = new JellyfinAPI(
+                hostname,
+                account.AccessToken,
+                deviceId,
+                allowPrivateAddresses
+              );
+              const serverName = await jellyfinserver.getServerName();
+              const apiKey =
+                getSettings().jellyfin.apiKey ||
+                (await jellyfinClient.createApiToken('Seerr'));
+
+              await settings.persistChanges((current) => {
+                const keepConfiguredConnection = current.jellyfin.ip !== '';
+
+                return {
+                  main: {
+                    ...current.main,
+                    mediaServerType: setupServerType,
+                  },
+                  jellyfin: {
+                    ...current.jellyfin,
+                    name: serverName,
+                    serverId: account.User.ServerId,
+                    ip: keepConfiguredConnection
+                      ? current.jellyfin.ip
+                      : (body.hostname ?? current.jellyfin.ip),
+                    port: keepConfiguredConnection
+                      ? current.jellyfin.port
+                      : (body.port ?? current.jellyfin.port),
+                    urlBase: keepConfiguredConnection
+                      ? current.jellyfin.urlBase
+                      : (body.urlBase ?? current.jellyfin.urlBase),
+                    useSsl: keepConfiguredConnection
+                      ? current.jellyfin.useSsl
+                      : (body.useSsl ?? current.jellyfin.useSsl),
+                    apiKey: current.jellyfin.apiKey || apiKey,
+                  },
+                };
               });
+
+              return { configured: true as const };
             }
-          }
-          if (missingAdminUser) {
-            logger.info(
-              'Sign-in attempt from Jellyfin user with access to the media server; creating initial admin user for Seerr',
-              {
-                label: 'API',
-                ip: req.ip,
-                jellyfinUsername: account.User.Name,
-              }
-            );
+          );
 
-            // User doesn't exist, and there are no users in the database, we'll create the user
-            // with admin permissions
-
-            user = new User({
-              id: 1,
-              email: body.email || account.User.Name,
-              jellyfinUsername: account.User.Name,
-              jellyfinUserId,
-              jellyfinDeviceId: deviceId,
-              jellyfinAuthToken: account.AccessToken,
-              permissions: Permission.ADMIN,
-              userType:
-                body.serverType === MediaServerType.JELLYFIN
-                  ? UserType.JELLYFIN
-                  : UserType.EMBY,
-            });
-            user.avatar = getUserAvatarUrl(user);
-
-            // update() cannot claim a missing owner row. Persist the canonical ID
-            // so first-time Jellyfin setup actually creates the administrator and
-            // concurrent setup attempts contend on the database primary key.
-            user = await userRepository.save(user);
-          } else {
-            logger.info(
-              'Sign-in attempt from Jellyfin user with access to the media server; editing admin user for Seerr',
-              {
-                label: 'API',
-                ip: req.ip,
-                jellyfinUsername: account.User.Name,
-              }
-            );
-
-            // User alread exist but settings.json is not configured, we'll edit the admin user
-
-            user = await userRepository.findOne({
-              where: { id: 1 },
-            });
-            if (!user) {
-              throw new Error('Unable to find admin user to edit');
-            }
-            user.email = body.email || account.User.Name;
-            user.jellyfinUsername = account.User.Name;
-            user.jellyfinUserId = jellyfinUserId;
-            user.jellyfinDeviceId = deviceId;
-            user.jellyfinAuthToken = account.AccessToken;
-            user.permissions = Permission.ADMIN;
-            user.avatar = getUserAvatarUrl(user);
-            user.userType =
-              body.serverType === MediaServerType.JELLYFIN
-                ? UserType.JELLYFIN
-                : UserType.EMBY;
-
-            await userRepository.save(user);
+          if ('response' in setupResult) {
+            return setupResult.response;
           }
 
-          // Create an API key on Jellyfin from this admin user
-          const jellyfinClient = new JellyfinAPI(
-            hostname,
-            account.AccessToken,
-            deviceId,
-            allowPrivateAddresses
-          );
-          const apiKey = await jellyfinClient.createApiToken('Seerr');
-
-          const serverName = await jellyfinserver.getServerName();
-
-          await runWithConfigurationAdmission('jellyfin', () =>
-            settings.persistChanges((current) => ({
-              main: {
-                ...current.main,
-                mediaServerType: body.serverType!,
-              },
-              jellyfin: {
-                ...current.jellyfin,
-                name: serverName,
-                serverId: account.User.ServerId,
-                ip: body.hostname ?? '',
-                port: body.port ?? 8096,
-                urlBase: body.urlBase ?? '',
-                useSsl: body.useSsl ?? false,
-                apiKey,
-              },
-            }))
-          );
           startJobs();
         }
         // User already exists, let's update their information
@@ -1567,11 +1668,18 @@ authRoutes.post('/jellyfin', authRateLimit, async (req, res, next) => {
           });
         }
 
-        await establishAuthenticatedSession(
+        if (!user) {
+          throw new Error('Jellyfin authentication completed without a user.');
+        }
+
+        const sessionEstablished = await establishAuthenticatedSession(
           req,
           user.id,
           user.passwordChangedAt?.getTime() ?? 0
         );
+        if (!sessionEstablished) {
+          return next({ status: 403, message: 'Access denied.' });
+        }
 
         return res.status(200).json(user?.filter() ?? {});
       }
@@ -1691,11 +1799,15 @@ authRoutes.post(
   '/jellyfin/quickconnect/initiate',
   authRateLimit,
   async (req, res, next) => {
-    if (getSettings().main.mediaServerType !== MediaServerType.JELLYFIN) {
+    const settings = getSettings();
+    if (settings.main.mediaServerType !== MediaServerType.JELLYFIN) {
       return next({
         status: 403,
         message: 'Quick Connect is only supported by Jellyfin.',
       });
+    }
+    if (!settings.main.mediaServerLogin) {
+      return next({ status: 403, message: 'Jellyfin sign-in is disabled.' });
     }
 
     try {
@@ -1729,11 +1841,15 @@ authRoutes.get(
   '/jellyfin/quickconnect/check',
   authRateLimit,
   async (req, res, next) => {
-    if (getSettings().main.mediaServerType !== MediaServerType.JELLYFIN) {
+    const settings = getSettings();
+    if (settings.main.mediaServerType !== MediaServerType.JELLYFIN) {
       return next({
         status: 403,
         message: 'Quick Connect is only supported by Jellyfin.',
       });
+    }
+    if (!settings.main.mediaServerLogin) {
+      return next({ status: 403, message: 'Jellyfin sign-in is disabled.' });
     }
 
     const result = quickConnectSecret.safeParse(req.query);
@@ -1797,6 +1913,9 @@ authRoutes.post(
         status: 403,
         message: 'Quick Connect is only supported by Jellyfin.',
       });
+    }
+    if (!settings.main.mediaServerLogin) {
+      return next({ status: 403, message: 'Jellyfin sign-in is disabled.' });
     }
 
     try {
@@ -1885,11 +2004,14 @@ authRoutes.post(
         }
       }
 
-      await establishAuthenticatedSession(
+      const sessionEstablished = await establishAuthenticatedSession(
         req,
         user.id,
         user.passwordChangedAt?.getTime() ?? 0
       );
+      if (!sessionEstablished) {
+        return next({ status: 403, message: 'Access denied.' });
+      }
 
       return res.status(200).json(user?.filter() ?? {});
     } catch (e) {
@@ -1949,11 +2071,14 @@ authRoutes.post('/login-link', authRateLimit, async (req, res, next) => {
       .getOne();
     if (!link?.user) return invalid();
 
-    await establishAuthenticatedSession(
+    const sessionEstablished = await establishAuthenticatedSession(
       req,
       link.user.id,
       link.user.passwordChangedAt?.getTime() ?? 0
     );
+    if (!sessionEstablished) {
+      return next({ status: 403, message: 'Access denied.' });
+    }
     res.setHeader('Cache-Control', 'no-store');
     return res.status(200).json(link.user.filter());
   } catch (error) {
@@ -2094,11 +2219,14 @@ authRoutes.post('/local', authRateLimit, async (req, res, next) => {
       });
     }
 
-    await establishAuthenticatedSession(
+    const sessionEstablished = await establishAuthenticatedSession(
       req,
       result.user.id,
       result.user.passwordChangedAt?.getTime() ?? 0
     );
+    if (!sessionEstablished) {
+      return next({ status: 403, message: 'Access denied.' });
+    }
 
     return res.status(200).json(result.user.filter());
   } catch (e) {
@@ -3138,11 +3266,14 @@ authRoutes.post(
       // Set logged in session and return. Regenerate the session id first so a
       // fixated pre-login session cannot be promoted to an authenticated one,
       // matching the local/plex/jellyfin login handlers.
-      await establishAuthenticatedSession(
+      const sessionEstablished = await establishAuthenticatedSession(
         req,
         user.id,
         user.passwordChangedAt?.getTime() ?? 0
       );
+      if (!sessionEstablished) {
+        return next({ status: 403, message: 'Access denied.' });
+      }
 
       // Success!
       return appleFormPost

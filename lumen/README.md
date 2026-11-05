@@ -4,6 +4,19 @@ A request-first front end for [SeerrNG](https://github.com/snapetech-org/seerrng
 
 ## Run it
 
+**Step-by-step install and migration guide:** [docs/using-seerr/lumen.md](../docs/using-seerr/lumen.md). It covers new installs, adding Lumen to an existing SeerrNG, reverse proxies and tunnels, updating and switching back.
+
+The quickest start is [`compose.yaml`](./compose.yaml), which runs SeerrNG and Lumen together:
+
+```sh
+curl -o compose.yaml https://raw.githubusercontent.com/snapetech-org/seerrng/main/lumen/compose.yaml
+docker compose up -d
+```
+
+Already running SeerrNG? [`compose.lumen-only.yaml`](./compose.lumen-only.yaml) installs Lumen alone; set `SEERR_URL` in it to your SeerrNG.
+
+Or build and run Lumen without Compose:
+
 ```sh
 docker build -t lumen .
 docker run -d -p 5080:80 \

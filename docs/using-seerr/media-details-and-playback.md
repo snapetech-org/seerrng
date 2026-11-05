@@ -9,6 +9,11 @@ Media detail pages show availability and request actions alongside title
 information. Some pages also include controls for playback quality and for
 keeping useful information sections open.
 
+Movie and Series availability can reflect the signed-in user's linked
+media-server account. See [per-user movie and TV availability](./media-server-access.md)
+for how restricted seasons, unverified items, and alternate request
+destinations are represented.
+
 ## Keep detail sections open
 
 Use the pin segment beside a disclosure control such as **View Cast**, **View

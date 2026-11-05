@@ -543,7 +543,8 @@ class JellyfinAPI extends ExternalAPI {
     jellyfinHost: string,
     authToken?: string | null,
     deviceId?: string | null,
-    allowPrivateAddresses = true
+    allowPrivateAddresses = true,
+    timeout?: number
   ) {
     const settings = getSettings();
     const safeDeviceId =
@@ -557,6 +558,7 @@ class JellyfinAPI extends ExternalAPI {
       {
         allowPrivateAddresses,
         allowUnconfiguredBaseUrl: true,
+        timeout,
         headers: {
           ...getMediaBrowserAuthorizationHeaders({
             mediaServerType: settings.main.mediaServerType,
@@ -971,6 +973,94 @@ class JellyfinAPI extends ExternalAPI {
         `Something went wrong while getting user library content from the Jellyfin server: ${e.message}`,
         { label: 'Jellyfin API', error: e.response?.status }
       );
+      if (!e.response) {
+        throw new ApiError(502, ApiErrorCode.ConnectionError);
+      }
+      throw new ApiError(e.response.status, ApiErrorCode.InvalidAuthToken);
+    }
+  }
+
+  /**
+   * Check one native item with the linked viewer's credentials and explicit
+   * user scope. Unlike the server-wide item lookup, an empty result here means
+   * the linked user cannot see this item (or it no longer exists).
+   */
+  public async getUserItemForAvailabilityCheck(
+    id: string,
+    userId: string
+  ): Promise<JellyfinLibraryItemExtended | undefined> {
+    const safeId = normalizeJellyfinGuid(id);
+    const safeUserId = normalizeJellyfinGuid(userId);
+    if (!safeId || !safeUserId) {
+      throw new ApiError(400, ApiErrorCode.InvalidAuthToken);
+    }
+
+    try {
+      const response = await this.get<unknown>('/Items', {
+        params: {
+          ids: safeId,
+          userId: safeUserId,
+          fields: 'ProviderIds',
+        },
+      });
+      if (!isRecord(response) || !Array.isArray(response.Items)) {
+        throw new Error('Media server returned an invalid item response.');
+      }
+      if (response.Items.length === 0) return undefined;
+
+      const item = sanitizeJellyfinLibraryItem(response.Items[0], true) as
+        JellyfinLibraryItemExtended | undefined;
+      if (!item || normalizeJellyfinGuid(item.Id) !== safeId) {
+        throw new Error('Media server returned an unverified item.');
+      }
+      return item;
+    } catch (e) {
+      const status = e.response?.status;
+      if (status === 401 || status === 403 || status === 404) {
+        return undefined;
+      }
+      logger.error(
+        `Something went wrong while checking linked-user item access: ${e.message}`,
+        { label: 'Jellyfin API', error: e.response?.status }
+      );
+      if (!e.response) {
+        throw new ApiError(502, ApiErrorCode.ConnectionError);
+      }
+      throw new ApiError(e.response.status, ApiErrorCode.InvalidAuthToken);
+    }
+  }
+
+  /** Return only seasons visible to the linked viewer. */
+  public async getUserSeasons(
+    seriesId: string,
+    userId: string
+  ): Promise<JellyfinLibraryItem[]> {
+    const safeSeriesId = normalizeJellyfinGuid(seriesId);
+    const safeUserId = normalizeJellyfinGuid(userId);
+    if (!safeSeriesId || !safeUserId) {
+      throw new ApiError(400, ApiErrorCode.InvalidAuthToken);
+    }
+
+    try {
+      const response = await this.get<unknown>(
+        `/Shows/${encodeURIComponent(safeSeriesId)}/Seasons`,
+        { params: { userId: safeUserId } }
+      );
+      if (!isRecord(response) || !Array.isArray(response.Items)) {
+        throw new Error('Media server returned an invalid seasons response.');
+      }
+      return sanitizeJellyfinLibraryItems(
+        response.Items,
+        MAX_JELLYFIN_SEASONS
+      ) as JellyfinLibraryItem[];
+    } catch (e) {
+      const status = e.response?.status;
+      if (status !== 401 && status !== 403 && status !== 404) {
+        logger.error(
+          `Something went wrong while checking linked-user season access: ${e.message}`,
+          { label: 'Jellyfin API', error: e.response?.status }
+        );
+      }
       if (!e.response) {
         throw new ApiError(502, ApiErrorCode.ConnectionError);
       }

@@ -129,9 +129,7 @@ jobs:
               -X POST \
               --data @payload.json \
               "$webhook_url")"
-            jq -e --arg description "$description" \
-              '.id != null and .embeds[0].description == $description' \
-              <<< "$response" >/dev/null
+            printf '%s' "$response" | node scripts/discord-release-notes.mjs --verify payload.json
             if (( number < chunk_count )); then
               sleep 1
             fi

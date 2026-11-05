@@ -9,6 +9,246 @@ v3.72.7 section consolidates changes from the requested v3.71.4 baseline
 through v3.72.7, including changes also represented by unpublished interim
 tags. The comparison link is the complete commit range.
 
+## [3.72.9](https://github.com/snapetech-org/seerrng/compare/v3.72.8..v3.72.9) - 2026-11-05
+
+### User-facing changes
+
+#### Added
+
+- **Lumen:** Restore @ncbudd's Lumen frontend, including explicit trusted proxy configuration and native Plex links for phones and tablets. Account changes now clear private response caches and isolate saved preferences. Unsafe playback URLs are rejected, and builds, real nginx security checks, and desktop, phone and tablet browser tests validate the companion independently.
+  - **Action required:** Run the optional Lumen companion frontend against SeerrNG
+- **Plex:** Administrators can opt in to Plex season analysis when someone starts watching an episode. SeerrNG queues at most two seasons per check, remembers submissions across restarts, and backs off failures. Plex's own settings and subscription requirements control intro and credits generation.
+- **Integrations:** Queue a movie collection with one or two unwatched movies ahead. SeerrNG follows your linked Plex, Jellyfin or Emby watch history, preserves progress across restarts, and applies normal request permission, quota, approval and destination rules to every next movie. The collection dialog shows waiting reasons and lets you stop future requests without removing existing requests or files.
+- **Authentication:** Administrators can optionally restrict SeerrNG browser sign-ins and sessions to trusted IPv4 or IPv6 addresses and CIDR subnets. Regular user sign-ins and service API-key integrations remain available as before.
+  - **Action required:** Optional: configure administrator networks in Settings > Network.
+- **Deployment:** The SeerrNG Helm chart can render trusted supplemental Kubernetes resources with the same release. The new `extraResources` value defaults to an empty list.
+- **Kubernetes:** The Helm chart can now run with zero replicas during storage maintenance or backups and resume with one replica afterward. The configuration claim is retained, and values above one are rejected because SeerrNG is a single-instance application.
+
+#### Changed
+
+- **Requests:** Episode Queue now advances when any household viewer watches the matching series on the configured Plex, Jellyfin, or Emby server. The original requester does not need to watch first. New episodes retain the enrolled request's owner, approval, selected Sonarr destination, and buffer; series are matched by TVDB identity.
+- **Documentation:** The README and user guide now explain per-user movie and TV rating limits and how they work alongside the instance age gate, including behavior for titles without recognized US ratings.
+- **Networking:** Remote services now receive a versioned Seerr User-Agent on SeerrNG server-side Axios requests, including image requests. Provider-specific identifiers remain unchanged. Operators can identify the client and software version; the header contains no user or request identity. See Seerr PR #3395.
+
+#### Fixed
+
+- **Performance:** Successful GitHub version checks are cached for six hours, and failures pause retries for five minutes so frequent status polling does not repeat the same request.
+- **Requests:** When library activity marks requested media as available, SeerrNG now completes the matching pending request and its active season selections. This prevents the request from being dispatched to Radarr or Sonarr a second time.
+- **Requests:** Requests with no usable matching Radarr or Sonarr destination now fail promptly with a retryable reason. Add a default destination or reassign the request, then retry.
+- **Jellyfin:** Jellyfin library synchronization now retains the matched library's stored scan timestamp as well as its enabled selection when its display name changes but the Jellyfin server ID remains the same. The timestamp is preserved as metadata; Jellyfin scan scheduling and completion behavior are unchanged. This adapts Seerr [PR #3323](https://github.com/seerr-team/seerr/pull/3323).
+- **Requests:** Removing an item from its acquisition service now keeps its SeerrNG request and status history. Use Clear Data only when you also intend to remove that information from SeerrNG.
+- **Requests:** Request rows use the paginated list response on mount, focus, and reconnect instead of fetching the same request again. Details for active downloads continue to refresh.
+- **Requests:** TV and request detail pages stay responsive for long-running series with many stored and requested seasons.
+- **Request Status:** Approved movie and TV requests now retry temporary Radarr and Sonarr network or server failures with durable exponential backoff. If a provider accepted a request before its response was lost, SeerrNG reuses the matching TMDB or TVDB item. Invalid settings remain visible; after 50 failed attempts, the request moves to Failed for manual recovery.
+- **Books:** Book searches, edition comparisons, and book discovery filters now accept titles with spaces or colons instead of failing with a "must be url encoded" error.
+- **Authentication:** Signing in with an OpenID Connect provider works again. The login request no longer fails with an "Unknown query parameter 'returnTo'" error, and users return to the page they started from.
+- **Books:** Bindery connections can be saved and edited with books and audiobooks enabled together. The settings modal omits the read-only service ID from save payloads, and the API contract accepts Bindery's combined format.
+- **Bookshelf:** Book requests keep their original media record when Bookshelf library scans discover the requested ebook or audiobook. Request dispatch now attaches lookup identifiers to that record, preventing orphaned identifiers and duplicate library entries after approval, import, and restart.
+- **Integrations:** Connections to qBittorrent 5.2 accept successful empty login responses and use port-specific session cookies while supporting older clients. Audiobookshelf tests send numeric ports. Seerr migrations accept a freshly initialized target with its startup lock, and the migration command is available in the Docker image.
+- **Dependencies:** Recover the OpenPGP, FormatJS Intl, Supertest, browser mapping and commitlint updates. Update React and React DOM together to 19.3.1; upgrading React alone crashes rendering with an incompatible-version error.
+  - **Action required:** Keep supported rendering, localization and cryptography dependencies aligned
+- **Integrations:** Preserve the current Discover subpage and filters when opening Swipe and returning to Discover. Discovery mode links now read the current router URL instead of a saved route that could lag behind navigation. Swipe also waits for route query hydration before choosing a fallback category, preventing an early status response from overwriting the saved destination.
+- **Lumen:** Recover @ncbudd's Android routing correction: movies use Plex's playback route and series use its library route instead of the iOS preplay route. Package-bound intents retain the browser fallback, and decoded server/key delimiters are rejected before native route construction.
+  - **Action required:** Open movies and series in the Android Plex app at the selected title
+- **Plex:** Plex Watchlist sync now accepts Discover's bounded hexadecimal metadata identifiers through collection, hydration and watchlisted-date lookup. Numeric library identifiers continue to work and malformed or path-bearing values remain rejected. Fixes #412.
+  - **Action required:** Sync titles with hexadecimal Plex Discover watchlist identifiers
+- **Integrations:** Settings now link YouTube and Google Books API key labels to their setup instructions and Spotify credentials to the developer dashboard, alongside the existing ComicVine API link.
+- **Integrations:** Administrators can reopen the guided setup from Settings after initial setup. The route guard now permits the authorized setup guide instead of redirecting it to the homepage.
+- **Integrations:** Administrators can change Episode Queue for one pending, approved, or completed interactive TV request from Requests or the pending request editor. Choose Off, one to five episodes, or the account default. Explicit overrides survive account-default changes and preserve the original request and existing episodes.
+- **Requests:** Recover request reconciliation guards for missing media links and bound error-cause traversal during provider retries. Cyclic errors cannot stall dispatch handling. Regression coverage also verifies prompt missing-service failures, transactional completion, reporter notification settings and preservation of history when provider media is removed.
+  - **Action required:** Keep incomplete media links and temporary provider errors from breaking request tracking
+- **Games:** Retro and Modern game discovery and requests work with ROMarrNG alone when an older configuration retains the default QuestarrNG catalog choice. SeerrNG uses ROMarrNG's IGDB catalog when QuestarrNG is unconfigured, while preserving explicit DAT selections and configured QuestarrNG catalogs. PC game requests still use QuestarrNG.
+- **Search:** Changing the media category in Search updates an existing pinned search default, so the next search keeps the selected category instead of reverting to Books. Searches started from Movies or Series explicitly use that category. Unpinned searches remain unpinned.
+- **Downloads:** Recover @ncbudd's seedless download fix: automatic no-progress recovery now requires an explicit torrent warning about missing seeds or connections. Slow seeded torrents and Usenet downloads are left alone.
+  - **Action required:** Leave slow or temporarily idle seeded downloads running
+- **Integrations:** Single-option format controls now honor their supplied label and icon, so a quality selector is identified as Quality rather than Request. Ordinary request controls keep their existing label.
+- **Plex:** When Plex is unreachable during library synchronization, SeerrNG now reports a connection error and retains the saved library list. A failed startup migration leaves existing settings intact and retries on the next restart. This adapts Seerr [PR #3324](https://github.com/seerr-team/seerr/pull/3324).
+- **Authentication:** Initial Jellyfin setup now requires an explicit administrator confirmation from the media server. Concurrent settings saves retry safely when another writer releases its lock during inspection, while symlink and hard-link protections remain enforced.
+- **Authentication:** Signing out and signing back in on a shared browser now starts a fresh page, preventing the next account from seeing the previous account's cached API responses while its own data loads. Validated sign-in return destinations continue to work.
+- **Discovery:** Movie and series Discover catalogs now retry a failed later TMDB page once and continue past an isolated page failure, while first-page and consecutive-page failures still show an error.
+- **Requests:** Anime requests now use the configured Sonarr anime root folder when the request only carries the standard default folder. A distinct folder selected for the request remains in effect.
+- **Notifications:** Issue-comment webhooks now include the reporter's configured Discord and Telegram identifiers, so notification templates can address the right account.
+- **Networking:** After successful proxy initialization, outbound proxy routing now covers Cover Art Archive and Steam library requests, including clients created before startup. Existing bypass filters, safe direct-connection rules, and initialization-failure behavior remain unchanged.
+  - **Action required:** restart
+- **Search:** TMDB-backed search now retries an unmatched query after normalizing apostrophes, diacritics, punctuation, and whitespace. Queries that already return results keep their original terms and ordering.
+
+#### Security
+
+- **Dependencies:** Harden deepmerge's server, documentation and Formik dependency paths against prototype keys copied from either merge operand. The local patches also repair the UMD bundle guard and add coverage for CommonJS, UMD and ESM entrypoints while preserving ordinary nested and array merges.
+
+### 🚀 Features
+- *(lumen)* Recover contributed frontend with security and browser validation - ([aaa1a0f](https://github.com/snapetech-org/seerrng/commit/aaa1a0fe4f8ae93dd6733c3bbbd14d463ac42ee9))
+- *(lumen)* Open the Plex app from Watch on Plex on phones and tablets - ([835c271](https://github.com/snapetech-org/seerrng/commit/835c271e3eb0322e36127c4336f36af694dca5e7))
+- *(lumen)* Add Lumen, a request-first front end on the SeerrNG API - ([4a5138c](https://github.com/snapetech-org/seerrng/commit/4a5138ce8e7ad70a1c804d12e734054a94724833))
+- *(security)* Customize private vulnerability reporting - ([97af10b](https://github.com/snapetech-org/seerrng/commit/97af10bf2203927117186682aee5f481b8d65bbd))
+- *(security)* Recover administrator network restrictions with enforcement QA - ([b6462ea](https://github.com/snapetech-org/seerrng/commit/b6462ea6a40501afbd4bc362eb069ceb72610c8c))
+- Integrate reviewed administrator network restrictions #531 - ([6201bd9](https://github.com/snapetech-org/seerrng/commit/6201bd9632ae907e3165cef1b9ea8fcecca6e530))
+- Restrict administrator sign-ins by network - ([777537c](https://github.com/snapetech-org/seerrng/commit/777537cf2105745288d38676ec4caa6598c7b6eb))
+- Request movie collections progressively as watched - ([ad9325f](https://github.com/snapetech-org/seerrng/commit/ad9325f02ee00fc87554692e88b8dbeb4aa9dcad))
+- Queue bounded Plex season analysis during playback - ([6839641](https://github.com/snapetech-org/seerrng/commit/683964144264ec80586cfac0e09383e2ddb4df7f))
+- Add administrator request episode queue overrides - ([02a19a3](https://github.com/snapetech-org/seerrng/commit/02a19a376a2865f40487a7dc0f381c1b6411b104))
+
+### 🐛 Bug Fixes
+- *(api)* Cache GitHub version check failures - ([1066c16](https://github.com/snapetech-org/seerrng/commit/1066c167da204e85189b83bd55e48fe40cfcc056))
+- *(api)* Recover contributor OIDC return destination contract - ([63df309](https://github.com/snapetech-org/seerrng/commit/63df3099ef066639924aace11ab5a6939edac4b8))
+- *(api)* Document returnTo on the OIDC login route - ([fd0a51d](https://github.com/snapetech-org/seerrng/commit/fd0a51d917fce65133258a97cb40f20a6cfaa861))
+- *(api)* Recover contributor book query encoding schema and tests - ([397b19e](https://github.com/snapetech-org/seerrng/commit/397b19eb456d32ce687949d8dda648dd989d6534))
+- *(api)* Allow reserved characters in free-text book query params - ([7d6918d](https://github.com/snapetech-org/seerrng/commit/7d6918d9d90f021fbbee3839f7315f0d65346ad0))
+- *(auth)* Require affirmative Jellyfin bootstrap administrator proof - ([f666f1e](https://github.com/snapetech-org/seerrng/commit/f666f1e09501b12cc7ca59e29f6fb65ffd15014e))
+- *(auth)* Integrate verified shared-browser cache boundary #537 - ([17002c8](https://github.com/snapetech-org/seerrng/commit/17002c84d8655a4bf93515c18c15e5e5079de9c1))
+- *(auth)* Discard private response caches at account boundaries - ([20e8b57](https://github.com/snapetech-org/seerrng/commit/20e8b57fb3196d074ca1b67dd8a9997c9f3d9181))
+- *(bindery)* Allow combined-format settings to save - ([ea21e82](https://github.com/snapetech-org/seerrng/commit/ea21e829845c0f2aaf1f032b948baead583dadb4))
+- *(deps)* Pair recovered React update with matching React DOM - ([dfeaafb](https://github.com/snapetech-org/seerrng/commit/dfeaafb1172cd59b2c85e6083bb5dbd8e2da1d76))
+- *(deps)* Recover browser mapping contribution update - ([d034f26](https://github.com/snapetech-org/seerrng/commit/d034f26cdd5755f8494337fa14bcd93ab533eb7a))
+- *(deps)* Bump baseline-browser-mapping from 2.11.28 to 2.11.32 - ([302c03e](https://github.com/snapetech-org/seerrng/commit/302c03e30413a3f98bd91e6aa0532daad7d103f3))
+- *(deps)* Recover React update alongside newer Intl snapshot - ([61908bd](https://github.com/snapetech-org/seerrng/commit/61908bd192e75934ce2ad03da7d118c85bf96d54))
+- *(deps)* Bump react from 19.3.0 to 19.3.1 - ([5326ff0](https://github.com/snapetech-org/seerrng/commit/5326ff0f92b89150b45247f8272e119863fc2e29))
+- *(deps)* Recover Supertest contribution update - ([f1d0941](https://github.com/snapetech-org/seerrng/commit/f1d0941892aebc4c3530ab8f9c785415650b705c))
+- *(deps)* Bump supertest from 7.2.2 to 7.3.1 - ([de9e767](https://github.com/snapetech-org/seerrng/commit/de9e767f4f6ea82967984e3cd8abbdc73bb479f7))
+- *(deps)* Recover FormatJS Intl contribution update - ([89db6f2](https://github.com/snapetech-org/seerrng/commit/89db6f2552c8fe4ba17b21afd4b33af18dc705d4))
+- *(deps)* Bump @formatjs/intl from 4.2.1 to 6.1.4 - ([e61b231](https://github.com/snapetech-org/seerrng/commit/e61b23138a914ab0446e3289c2b3b8e2cfabaaf2))
+- *(deps)* Recover OpenPGP contribution update - ([6ef90fa](https://github.com/snapetech-org/seerrng/commit/6ef90fa3b47db6bdecc4a8594470a6977ef62274))
+- *(deps)* Bump openpgp from 6.3.1 to 6.3.2 - ([9c34e0e](https://github.com/snapetech-org/seerrng/commit/9c34e0eff45df1a38de2a74c46d3086b5372f7c4))
+- *(discover)* Recover series original-name title sorting - ([5b8dc4e](https://github.com/snapetech-org/seerrng/commit/5b8dc4e7eb0c6364afa503ff2227dbb0a273275e))
+- *(discover)* Sort series by original name - ([819834e](https://github.com/snapetech-org/seerrng/commit/819834ea66f22f44d628ddbdb8f00e0a5afd272f))
+- *(discover)* Recover isolated catalogue page failures - ([378a359](https://github.com/snapetech-org/seerrng/commit/378a35972e9067e00995992e2d8037fb87448ec2))
+- *(discover)* Recover from isolated TMDB page failures - ([18aa1f0](https://github.com/snapetech-org/seerrng/commit/18aa1f0d6194d56ea39bbf7465f2ea2a283ec6b5))
+- *(downloads)* Recover contributor seedless-only stall recovery - ([6b494d8](https://github.com/snapetech-org/seerrng/commit/6b494d8d22da4d95964689363d22a67759fc92d0))
+- *(episode-queue)* Advance from household playback - ([ce9258b](https://github.com/snapetech-org/seerrng/commit/ce9258b5c3f1be4b04fce00e81eb6d62a9eb5841))
+- *(jellyfin)* Recover scan metadata preservation during library refresh - ([0276ce2](https://github.com/snapetech-org/seerrng/commit/0276ce28159e0502ea7d4b26280ff5fa8bad57d7))
+- *(jellyfin)* Retain scan metadata across library sync - ([8899b1c](https://github.com/snapetech-org/seerrng/commit/8899b1c41a88fc2d50c17fe9f5faa78cd227cef5))
+- *(lumen)* Recover Android Plex routing with bounded native identifiers - ([b96557a](https://github.com/snapetech-org/seerrng/commit/b96557a98ad40b6b0bc3f7432e2eb8c21e9605a8))
+- *(lumen)* Open movies and series correctly in the Android Plex app - ([8e95d48](https://github.com/snapetech-org/seerrng/commit/8e95d483525f80245a2fcd343dcdc87032516cea))
+- *(lumen)* Only trust forwarding headers from configured proxies - ([676768f](https://github.com/snapetech-org/seerrng/commit/676768fc58b44dea689cab71e7d5d44dade1d20e))
+- *(lumen)* Finished series leave Active on Requests - ([6eacd49](https://github.com/snapetech-org/seerrng/commit/6eacd4927c3536a2904d065628c9479b5ea077aa))
+- *(lumen)* Mobile and touch pass - ([2ffa1b4](https://github.com/snapetech-org/seerrng/commit/2ffa1b4814bc169f8c9562b0e0de5a52635076d4))
+- *(lumen)* Send SeerrNG's page security headers from nginx - ([3646df2](https://github.com/snapetech-org/seerrng/commit/3646df24ecbf1cc0b909f0b1635640450a4e468f))
+- *(lumen)* Book page format switch, audiobook card and phone spacing - ([4c6e6d9](https://github.com/snapetech-org/seerrng/commit/4c6e6d9e35c493b8daf2c6e7a6e058432db74a01))
+- *(lumen)* Don't repeat a backdrop across genre tiles - ([265e2ec](https://github.com/snapetech-org/seerrng/commit/265e2ec2c73821f635c586f5f6811fd6c95dcdde))
+- *(network)* Recover versioned identity alongside proxy-aware clients - ([76e5c37](https://github.com/snapetech-org/seerrng/commit/76e5c3706bc5ecdf2672dbd6d79438de35b9aa7b))
+- *(network)* Identify outbound axios clients - ([90c1615](https://github.com/snapetech-org/seerrng/commit/90c1615e2897c3e75a9d367726f27dd9132d2fc1))
+- *(network)* Recover proxy routing for Cover Art Archive and Steam - ([a1f8cf5](https://github.com/snapetech-org/seerrng/commit/a1f8cf56167aa2b441cf4da56aedd80cd0bffdff))
+- *(notifications)* Recover reporter preferences in comment webhooks - ([3b75865](https://github.com/snapetech-org/seerrng/commit/3b758655db66fc3f1a1b328009ed5075942e74cc))
+- *(notifications)* Load issue reporter settings - ([1c68e31](https://github.com/snapetech-org/seerrng/commit/1c68e319c4d939e19d49a5f3f5c43219ee28b116))
+- *(plex)* Recover startup library preservation during outages - ([bf3792b](https://github.com/snapetech-org/seerrng/commit/bf3792bfaa5156d1f77b4492d4442707e7dd4f43))
+- *(plex)* Accept bounded Discover watchlist metadata identifiers - ([700f09c](https://github.com/snapetech-org/seerrng/commit/700f09cf0b697b8893e417d1702eb3a355654cb7))
+- *(providers)* Harden recovered library and discovery resilience - ([f404f62](https://github.com/snapetech-org/seerrng/commit/f404f62d87883125f2f7ea3c0fe025ea66c3e514))
+- *(proxy)* Cover Cover Art Archive and Steam clients - ([d6134e0](https://github.com/snapetech-org/seerrng/commit/d6134e03afffdf05c9da80458aa856abb90cfc83))
+- *(requests)* Harden recovered dispatch and history behavior with regressions - ([60eda25](https://github.com/snapetech-org/seerrng/commit/60eda25685a14faaa4d7cf438d20661b47d866ac))
+- *(requests)* Recover request history preservation when removing provider media - ([173a693](https://github.com/snapetech-org/seerrng/commit/173a693593f332e1d89e639f08572e47a2621be9))
+- *(requests)* Preserve history when removing provider media - ([bd94571](https://github.com/snapetech-org/seerrng/commit/bd94571fcea8ae752ebbf011709761f306aee004))
+- *(requests)* Recover completion when library media is found - ([cb2eecc](https://github.com/snapetech-org/seerrng/commit/cb2eecc3c67362bbd11a56b5ce589eb13374ee40))
+- *(requests)* Complete requests when media is found - ([908130a](https://github.com/snapetech-org/seerrng/commit/908130ac7eac78a3dad2ccb851207343462cfad9))
+- *(requests)* Recover bounded season relation detail reads - ([663ec21](https://github.com/snapetech-org/seerrng/commit/663ec2198703c44141f391fcd92003d4cee4e954))
+- *(requests)* Avoid season relation fanout in detail reads - ([c55fe29](https://github.com/snapetech-org/seerrng/commit/c55fe299099f93672f14ed0968b3b69c440e1dab))
+- *(requests)* Recover explicit missing default service failures - ([4e72ce3](https://github.com/snapetech-org/seerrng/commit/4e72ce35c29e5b1814c1bf477ddf777459bb1f3a))
+- *(requests)* Fail dispatch without matching default service - ([e81edae](https://github.com/snapetech-org/seerrng/commit/e81edaef577f76a69331bc6d483346de96705573))
+- *(requests)* Recover retryable Radarr and Sonarr dispatch failures - ([ff6af6c](https://github.com/snapetech-org/seerrng/commit/ff6af6cc7329803d7ddda1cf6f4a83d2fe590e53))
+- *(requests)* Retry transient Servarr dispatch failures - ([48bbe7a](https://github.com/snapetech-org/seerrng/commit/48bbe7ae04e13f16dd2808df731773d84bf79f40))
+- *(requests)* Recover handling for requests before media linking - ([b3f69e4](https://github.com/snapetech-org/seerrng/commit/b3f69e4da9ba75957826a8ad78880243e7cb22a0))
+- *(search)* Recover normalized fallback TMDB queries - ([2d98290](https://github.com/snapetech-org/seerrng/commit/2d98290789c7a43251f570b9b0a0d5375df89c30))
+- *(search)* Retry unmatched TMDB queries with normalized terms - ([88ab50b](https://github.com/snapetech-org/seerrng/commit/88ab50b9c81dfc730096133b33808630b4b97477))
+- *(search)* Preserve global top-bar search from video discovery - ([2c8279f](https://github.com/snapetech-org/seerrng/commit/2c8279f310438ac2eae36ce32cdcc5aaa1f89d57))
+- *(search)* Retain the selected pinned media category - ([6c04741](https://github.com/snapetech-org/seerrng/commit/6c047417320f716872c81950dabc50f4a7c35353))
+- *(settings)* Retry a lock released during file inspection - ([2f6c3ad](https://github.com/snapetech-org/seerrng/commit/2f6c3ad790ec7dc1b4b653fd03bfef7684bad68c))
+- *(sonarr)* Recover anime-specific default root folder - ([6acac8e](https://github.com/snapetech-org/seerrng/commit/6acac8eb359e4c7b608dfe8277f4a20e1441bb57))
+- *(sonarr)* Respect anime root folder for requests (#3410) - ([ad60d59](https://github.com/snapetech-org/seerrng/commit/ad60d5951ab898b3de7fff236f663ac9a7fb2c93))
+- *(updates)* Recover bounded GitHub version check caching - ([a5ffbea](https://github.com/snapetech-org/seerrng/commit/a5ffbea1ff76ddce31939cf09b6b135e532920e2))
+- Integrate recovered provider and Discover resilience #535 - ([704ce54](https://github.com/snapetech-org/seerrng/commit/704ce548e77c1d2eb8466834ea8d05b6f4ef4e27))
+- Preserve Plex libraries when sync fails - ([1f42c54](https://github.com/snapetech-org/seerrng/commit/1f42c548fae5683ffd4c08864546cd998b8f5089))
+- Integrate recovered dispatch and history repairs #534 - ([304755b](https://github.com/snapetech-org/seerrng/commit/304755bff214bcc0484f32937924f7e0563e2383))
+- Tolerate requests before media linking - ([fda3a0e](https://github.com/snapetech-org/seerrng/commit/fda3a0e51fcaf8e0ff75e91d4040d91eb484f580))
+- Integrate recovered API and watchlist repairs #530 - ([a909b33](https://github.com/snapetech-org/seerrng/commit/a909b331499cef01aeefca04abf0d499f985ac4d))
+- Require explicit seedless torrent warning - ([f589841](https://github.com/snapetech-org/seerrng/commit/f589841746eff376efdee79f6a29eca076467878))
+- Only recover downloads stalled with no seeds - ([c273027](https://github.com/snapetech-org/seerrng/commit/c273027f9b73a8cd106ae04e256e94c04aefb3f5))
+- Route ROMarr-only emulation catalogs without Questarr - ([405083b](https://github.com/snapetech-org/seerrng/commit/405083b44bd852ebb03d9485e0fa8925dcd64802))
+- Retain Bookshelf request identities during library scans - ([389bdaf](https://github.com/snapetech-org/seerrng/commit/389bdafd6ed68f86d5048fc8a9719237ac8c2fba))
+- Rotate unchanged collection queues between polling batches - ([bf2a6b0](https://github.com/snapetech-org/seerrng/commit/bf2a6b01877360858ef074f022cbd2b56e766c04))
+- Validate collection queue nullable and error responses - ([9b45af7](https://github.com/snapetech-org/seerrng/commit/9b45af7d1c33ff4698a23c28ca845aa871e78ee7))
+- Exclude alternative Next development output from formatting - ([6f7307b](https://github.com/snapetech-org/seerrng/commit/6f7307b8d10225fabf7a51be76518b617496a14d))
+- Default development watcher child environment - ([d79742b](https://github.com/snapetech-org/seerrng/commit/d79742bf7aa1af1b65bc987478a1cc4f02b50459))
+- Guard all deepmerge operands and shipped entrypoints - ([72fee54](https://github.com/snapetech-org/seerrng/commit/72fee548ab9b546235fcfa289a578f9537e9a858))
+- Honor single-option format control labels and icons - ([8326701](https://github.com/snapetech-org/seerrng/commit/8326701aca0880446d045934c3df992184008faf))
+- Let administrators reopen guided setup - ([21824ba](https://github.com/snapetech-org/seerrng/commit/21824ba083ba2843f003397f69c50de17707d949))
+- Link provider credentials to official setup sources - ([45f1835](https://github.com/snapetech-org/seerrng/commit/45f1835d64ac8e1aed612cda1958a8c16071a5c6))
+- Wait for Swipe query hydration before category fallback - ([4802a69](https://github.com/snapetech-org/seerrng/commit/4802a6909b0089b01e31d161001559e4818c59fc))
+- Preserve current discovery route when opening Swipe - ([646e131](https://github.com/snapetech-org/seerrng/commit/646e13127670e06a4a390a724c8bac17d7097ce7))
+- Repair client authentication and fresh-target migrations - ([2b95a79](https://github.com/snapetech-org/seerrng/commit/2b95a79c08d4992f900080b03bff65fb090baee6))
+
+### 📖 Documentation
+- *(contributing)* Agree scope before major work - ([67c60a9](https://github.com/snapetech-org/seerrng/commit/67c60a9f1d6483acfa044ae72411e80b25086128))
+- *(docker)* Harden CLI deployment examples - ([0d13449](https://github.com/snapetech-org/seerrng/commit/0d13449001e3b4aaa1114f5c0af79f1197a17285))
+- *(fork-rationale)* Document processing reports and carousel restore - ([0c3378e](https://github.com/snapetech-org/seerrng/commit/0c3378e05d9f7603559b861aa6c7d141259a572c))
+- *(i18n)* Clarify current locale coverage - ([f365210](https://github.com/snapetech-org/seerrng/commit/f3652102f63a2b9a9e539c1f0177a068cfb19350))
+- *(network)* Escape version placeholder for MDX - ([7b34f83](https://github.com/snapetech-org/seerrng/commit/7b34f833da4646d54712edffd9cd7913c281f812))
+- *(network)* Document proxy fallback behavior - ([07dbee0](https://github.com/snapetech-org/seerrng/commit/07dbee0672025dba7e501ee8787354ffc90fe22e))
+- *(openapi)* Describe administrator network settings - ([4c4575e](https://github.com/snapetech-org/seerrng/commit/4c4575ee3ab958d44d100d04eafec9fd7703fc05))
+- *(release)* Note issue comment webhook identities - ([d173554](https://github.com/snapetech-org/seerrng/commit/d173554322f8a5e2dadbaf61d35d5db10c03c3d8))
+- *(requests)* Isolate provider history retirement gate - ([51e8035](https://github.com/snapetech-org/seerrng/commit/51e80356f81918eae7d7714754877d3d08a5555a))
+- *(security)* Recover private vulnerability reporting contribution #440 - ([2568fb2](https://github.com/snapetech-org/seerrng/commit/2568fb2cfab088c648b605a6eec3a1f0ef762877))
+- Record bootstrap verification and settings concurrency fixes - ([2da8977](https://github.com/snapetech-org/seerrng/commit/2da8977e165c620e3e0fc7641c0598e58734aa15))
+- Refresh fork review date - ([ea770df](https://github.com/snapetech-org/seerrng/commit/ea770df940eccd8ffed5cc1b2828b1abf01260d0))
+- Integrate recovered documentation and private reporting #536 - ([bcba3fe](https://github.com/snapetech-org/seerrng/commit/bcba3fe7849fe6f966b3c852ede014a06cf39fc2))
+- Recover deployment and fork retirement criteria #438 - ([5c8b827](https://github.com/snapetech-org/seerrng/commit/5c8b827c9b13d4ea312d455aa3a039613808f47b))
+- Mark Servarr queue adaptation as proposed - ([53ea44c](https://github.com/snapetech-org/seerrng/commit/53ea44c1039b1cdd47d5c9629c2547ae6b105616))
+- Record Discover page recovery retirement gate - ([67a7c42](https://github.com/snapetech-org/seerrng/commit/67a7c428f97df1a26e0f52f981985ec4ed44e848))
+- Track Servarr queue configuration parity - ([e286551](https://github.com/snapetech-org/seerrng/commit/e286551cbbeec566878474855c0894c1c1906f27))
+- Record Servarr queue parity - ([e99ca6a](https://github.com/snapetech-org/seerrng/commit/e99ca6aaa63ee99bd8092fc659f7115c7d15f5df))
+- Track search and Discover playback parity - ([4d4b6ec](https://github.com/snapetech-org/seerrng/commit/4d4b6ec072fbe3660676846f2a725c805017a7f0))
+- Document long-running TV request detail scaling - ([f72eb51](https://github.com/snapetech-org/seerrng/commit/f72eb51d2a5bb4abc41b18aae7172f4d9d6af679))
+- Extend Seerr retirement criteria with batch 19 - ([4c569ab](https://github.com/snapetech-org/seerrng/commit/4c569ab85dd50f6a7bd5622c7696d4d856a86671))
+- Expand fork retirement criteria - ([0c1cd8b](https://github.com/snapetech-org/seerrng/commit/0c1cd8b0cb4bd67dad57d0102542aac89b45175e))
+- Recover locale coverage audit #487 - ([916597c](https://github.com/snapetech-org/seerrng/commit/916597cbe2bfdf51f824a5c6342c28e5e63d1afa))
+- Recover partial TMDB response guidance #471 - ([5d1258d](https://github.com/snapetech-org/seerrng/commit/5d1258db0d45bc61d5476443b809263f00d9a9d3))
+- Describe resilience to partial TMDB details - ([b5c0ad5](https://github.com/snapetech-org/seerrng/commit/b5c0ad5e257b324ff30d40e6f766fd37dc6b955f))
+- Recover maturity and API contract guidance #426 - ([1867f53](https://github.com/snapetech-org/seerrng/commit/1867f5395737a309b75f1602f2fd6cbf5ba7f88a))
+- Document OpenAPI contract parity and retirement gate - ([ca11f6b](https://github.com/snapetech-org/seerrng/commit/ca11f6b805148e09210ec505fab2846925b99d3d))
+- Explain per-user maturity controls - ([ee1eb60](https://github.com/snapetech-org/seerrng/commit/ee1eb60bc88f4707ea8471d32825e930522ca0dd))
+- Recover contributor guidance #433 - ([3712855](https://github.com/snapetech-org/seerrng/commit/37128551f770ae61164e99b3da99f3a317ac0223))
+- Clarify contributor guidance - ([5efa96b](https://github.com/snapetech-org/seerrng/commit/5efa96bee1825203e151a1835b0615d00b1a8cca))
+- Recover automatic blocklist coverage contribution #473 - ([ecace93](https://github.com/snapetech-org/seerrng/commit/ecace93e388a50f62200c542de60adf566e9f3b2))
+- Clarify bounded automatic blocklist scans - ([332a5a1](https://github.com/snapetech-org/seerrng/commit/332a5a1698cc8e65ea1b65467863d8d65bd96251))
+- Position status cache gate outside matrix edits - ([9e453b8](https://github.com/snapetech-org/seerrng/commit/9e453b8d6882969b12afa5b8f382f59b21d73622))
+- Cite request availability source - ([e2df1d7](https://github.com/snapetech-org/seerrng/commit/e2df1d75fb93a8503a0dd36d46e546b79a816af6))
+
+### ⚡ Performance
+- *(requests)* Recover removal of duplicate row fetches - ([804a259](https://github.com/snapetech-org/seerrng/commit/804a25993a2240a7a459b004a4411e0556d166b1))
+- *(requests)* Suppress row refetches on reconnect - ([4ff605b](https://github.com/snapetech-org/seerrng/commit/4ff605b78603226be4e40930e5598cf159dac84b))
+- *(requests)* Avoid duplicate row fetches - ([c9ad4fe](https://github.com/snapetech-org/seerrng/commit/c9ad4fe2574f10c70501ef7964265dbca051d097))
+
+### 🎨 Styling
+- *(lumen)* Align shell with repository formatting - ([eb36928](https://github.com/snapetech-org/seerrng/commit/eb36928652caf606a35b52c9f22ec86eb0b32428))
+
+### 🧪 Testing
+- *(api)* Encode nested OIDC return destination - ([15445a8](https://github.com/snapetech-org/seerrng/commit/15445a8dc4ec9be684c265dae1ad99e63c52395a))
+- *(api)* Align book query coverage with Axios serialization - ([51a5fbe](https://github.com/snapetech-org/seerrng/commit/51a5fbeb5738db4ecee4a2f315ec1bd3f4c9f50b))
+- *(bindery)* Exercise tested connection save payload - ([dc389b5](https://github.com/snapetech-org/seerrng/commit/dc389b544f36d8b89d6645ff8e353fedf4ae6c38))
+- *(bindery)* Omit read-only ID from contract fixture - ([db8a334](https://github.com/snapetech-org/seerrng/commit/db8a33477a3e023eb253ad7dad94e878f8a78511))
+- *(navigation)* Wait for hydrated Swipe return destination - ([7e8d3c7](https://github.com/snapetech-org/seerrng/commit/7e8d3c78abb573ddc857d64d88a8807fe1fd919f))
+- *(navigation)* Wait for hydrated Swipe return destination - ([31935a5](https://github.com/snapetech-org/seerrng/commit/31935a5892dd61b025a6403d0026618b13c13e05))
+- *(navigation)* Wait for hydrated Swipe return destination - ([5e29124](https://github.com/snapetech-org/seerrng/commit/5e29124e64bca9f834447bf7150680ab71ecf897))
+- *(requests)* Isolate API fixtures from provider dispatch side effects - ([25955c1](https://github.com/snapetech-org/seerrng/commit/25955c195e35f9a93b251a6f98ab114bae17852d))
+- *(security)* Recover CodeQL-removal checks without reverting current runner policy - ([23a1cfa](https://github.com/snapetech-org/seerrng/commit/23a1cfa90b7885fb3c17f5fa978f088533dcdb16))
+- *(ui)* Accept zero notifications after dismissing the last toast - ([b1d304e](https://github.com/snapetech-org/seerrng/commit/b1d304e63091a249148888b1de6792e3bb2b5104))
+- *(ui)* Accept zero notifications after dismissing the last toast - ([de85b48](https://github.com/snapetech-org/seerrng/commit/de85b482c421efd16d0e214d998838d751ba1078))
+- *(ui)* Accept zero notifications after dismissing the last toast - ([c655b1b](https://github.com/snapetech-org/seerrng/commit/c655b1b72604a40efcd11c5874e16930c8cf0543))
+- *(ui)* Accept zero notifications after dismissing the last toast - ([8972bb1](https://github.com/snapetech-org/seerrng/commit/8972bb15482bc928d76ae062561643e285c2100c))
+- Validate recovered contributions together with isolated browser transport - ([8ad344f](https://github.com/snapetech-org/seerrng/commit/8ad344f5c4ebdab6b1023d6a39bc0dec7655b91b))
+- Open poster cards before reading hover-only titles - ([6a3523c](https://github.com/snapetech-org/seerrng/commit/6a3523c4af5dad96ce8abc6c1fc6d29207b68b52))
+- Suppress offline utility reload during cache reset - ([ef86f13](https://github.com/snapetech-org/seerrng/commit/ef86f138379356305ce84cf93260bad9f7ca19ea))
+- Isolate upcoming Discover requests from persisted snapshots - ([021cdd1](https://github.com/snapetech-org/seerrng/commit/021cdd128b9ce7d34cad2b44af2e382462237af3))
+- Cover separate episode queue saves in TV edit modal - ([956642f](https://github.com/snapetech-org/seerrng/commit/956642fc4e2a1402159f082a466f57c814f1b2fd))
+
+### ⚙️ Miscellaneous Tasks
+- Pin fork validation to corrected workflow - ([a26fd42](https://github.com/snapetech-org/seerrng/commit/a26fd42f4e51f5f60725e51759312a3f9233be5e))
+- Remove remaining CodeQL integrations - ([bb0c074](https://github.com/snapetech-org/seerrng/commit/bb0c074b4120666e9201be7216134a93540f7640))
+- Disable CodeQL workflows - ([bac28b5](https://github.com/snapetech-org/seerrng/commit/bac28b5d4089035588612de27b916deed3d2405b))
+- Finalize queue labels and approval documentation - ([af562bd](https://github.com/snapetech-org/seerrng/commit/af562bd266563e511d4adda45024e8f814071501))
+
+
+## New Contributors ❤️
+* @ncbudd made their first contribution
+
 ## [3.72.8](https://github.com/snapetech-org/seerrng/compare/v3.72.7..v3.72.8) - 2026-11-05
 
 ### User-facing changes

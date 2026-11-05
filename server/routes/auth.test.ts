@@ -1113,6 +1113,26 @@ describe('POST /auth/jellyfin/bridge', () => {
     };
   };
 
+  it('enforces Quick Connect-only policy on the plugin bridge too', async () => {
+    const { settings, restoreUser } = await configureBridge();
+    settings.main.jellyfinQuickConnectOnly = true;
+    const getUser = mock.method(JellyfinAPI.prototype, 'getUser', async () => {
+      throw new Error('Must not contact the provider');
+    });
+    try {
+      const response = await request(app)
+        .post('/auth/jellyfin/bridge')
+        .set('Origin', 'http://jellyfin.local')
+        .type('form')
+        .send({ token: 'fixture-jellyfin-token' });
+      assert.equal(response.status, 403);
+      assert.equal(getUser.mock.callCount(), 0);
+    } finally {
+      getUser.mock.restore();
+      await restoreUser();
+    }
+  });
+
   it('validates a linked Jellyfin account and creates a revocable SeerrNG session', async () => {
     const { settings, restoreUser } = await configureBridge();
     const getUser = mock.method(
@@ -1435,6 +1455,129 @@ describe('POST /auth/jellyfin', () => {
         process.env.SEERR_REQUIRE_PUBLIC_SETUP_HOSTS = previousRequirePublic;
       }
     }
+  });
+
+  it('requires affirmative Jellyfin administrator proof during bootstrap', async (t) => {
+    const repository = getRepository(User);
+    await repository.clear();
+    const settings = getSettings();
+    settings.main.mediaServerType = MediaServerType.NOT_CONFIGURED;
+    settings.jellyfin.ip = '';
+    const login = mock.method(JellyfinAPI.prototype, 'login', async () => ({
+      User: {
+        Id: '00112233445566778899aabbccddeeff',
+        Name: 'uncertain-owner',
+        ServerId: 'fixture-server',
+        Configuration: { GroupedFolders: [] },
+        Policy: {},
+      },
+      AccessToken: 'fixture-auth-token',
+    }));
+    const token = mock.method(
+      JellyfinAPI.prototype,
+      'createApiToken',
+      async () => 'fixture-api-token'
+    );
+    const name = mock.method(
+      JellyfinAPI.prototype,
+      'getServerName',
+      async () => 'Fixture server'
+    );
+    t.after(() => {
+      login.mock.restore();
+      token.mock.restore();
+      name.mock.restore();
+    });
+    const response = await request(app).post('/auth/jellyfin').send({
+      username: 'uncertain-owner',
+      password: 'fixture-password',
+      hostname: '127.0.0.1',
+      port: 8096,
+      serverType: MediaServerType.JELLYFIN,
+    });
+    assert.equal(response.status, 403);
+    assert.equal(await repository.count(), 0);
+    assert.equal(settings.main.mediaServerType, MediaServerType.NOT_CONFIGURED);
+    assert.equal(token.mock.callCount(), 0);
+  });
+
+  it('enforces Quick Connect-only password policy before contacting Jellyfin', async (t) => {
+    configureJellyfin();
+    getSettings().main.jellyfinQuickConnectOnly = true;
+    const login = mock.method(JellyfinAPI.prototype, 'login', async () => {
+      throw new Error('Must not contact the provider');
+    });
+    t.after(() => login.mock.restore());
+    const response = await request(app)
+      .post('/auth/jellyfin')
+      .send({ username: 'fixture', password: 'fixture' });
+    assert.equal(response.status, 403);
+    assert.match(response.body.error, /Quick Connect/);
+    assert.equal(login.mock.callCount(), 0);
+    await authenticatedAgent('admin@seerr.dev', 'test1234');
+  });
+
+  it('preserves a preconfigured Jellyfin connection on the first administrator sign-in', async (t) => {
+    const repository = getRepository(User);
+    await repository.clear();
+    const settings = getSettings();
+    settings.main.mediaServerType = MediaServerType.JELLYFIN;
+    settings.jellyfin = {
+      ...settings.jellyfin,
+      ip: '127.0.0.1',
+      port: 8443,
+      useSsl: true,
+      urlBase: '/jellyfin',
+      externalHostname: 'https://media.example.test/jellyfin',
+      apiKey: 'configured-api-key',
+      serverId: 'configured-server',
+    };
+    const connection = JSON.parse(JSON.stringify(settings.jellyfin));
+    const login = mock.method(JellyfinAPI.prototype, 'login', async () => ({
+      User: {
+        Id: '00112233445566778899aabbccddeeff',
+        Name: 'configured-owner',
+        ServerId: 'configured-server',
+        Configuration: { GroupedFolders: [] },
+        Policy: { IsAdministrator: true },
+      },
+      AccessToken: 'configured-session-token',
+    }));
+    const token = mock.method(
+      JellyfinAPI.prototype,
+      'createApiToken',
+      async () => 'must-not-replace-the-key'
+    );
+    const name = mock.method(
+      JellyfinAPI.prototype,
+      'getServerName',
+      async () => 'Configured server'
+    );
+    t.after(() => {
+      login.mock.restore();
+      token.mock.restore();
+      name.mock.restore();
+    });
+    const response = await request(app)
+      .post('/auth/jellyfin')
+      .send({ username: 'configured-owner', password: 'fixture-password' });
+    assert.equal(response.status, 200);
+    assert.equal(
+      (await repository.findOneByOrFail({ id: 1 })).permissions,
+      Permission.ADMIN
+    );
+    for (const key of [
+      'ip',
+      'port',
+      'useSsl',
+      'urlBase',
+      'externalHostname',
+      'apiKey',
+      'libraries',
+    ] as const) {
+      assert.deepEqual(settings.jellyfin[key], connection[key]);
+    }
+    assert.equal(token.mock.callCount(), 0);
   });
 
   it('creates the canonical owner during initial Jellyfin setup', async (t) => {
@@ -3949,5 +4092,52 @@ describe('OpenID Connect', () => {
         ApiErrorCode.OidcAuthorizationFailed
       );
     });
+  });
+});
+
+describe('administrator sign-in network policy', () => {
+  beforeEach(() => {
+    const settings = getSettings();
+    settings.main.localLogin = true;
+    settings.network.restrictAdministratorSignInToNetworks = true;
+    settings.network.administratorSignInAllowedNetworks = '192.0.2.0/24';
+  });
+
+  it('rejects administrator login outside the network even with forged forwarding headers', async () => {
+    const result = await request(app)
+      .post('/auth/local')
+      .set('X-Forwarded-For', '192.0.2.10')
+      .send({ email: 'admin@seerr.dev', password: 'test1234' });
+    assert.equal(result.status, 403);
+    assert.equal(result.body.message, 'Access denied.');
+  });
+
+  it('admits allowed administrators then blocks their existing sessions when the policy changes', async () => {
+    getSettings().network.administratorSignInAllowedNetworks =
+      '127.0.0.0/8,::1';
+    const agent = request.agent(app);
+    const login = await agent
+      .post('/auth/local')
+      .send({ email: 'admin@seerr.dev', password: 'test1234' });
+    assert.equal(login.status, 200);
+    assert.equal((await agent.get('/auth/me')).status, 200);
+    getSettings().network.administratorSignInAllowedNetworks = '192.0.2.0/24';
+    assert.equal((await agent.get('/auth/me')).status, 403);
+  });
+
+  it('keeps ordinary users and valid API-key integrations available outside administrator networks', async () => {
+    const user = await request(app)
+      .post('/auth/local')
+      .send({ email: 'friend@seerr.dev', password: 'test1234' });
+    assert.equal(user.status, 200);
+    getSettings().main.apiKey = 'fixture-network-policy-key';
+    const api = await request(app)
+      .get('/auth/me')
+      .set('X-API-Key', 'fixture-network-policy-key');
+    assert.equal(api.status, 200);
+    const invalid = await request(app)
+      .get('/auth/me')
+      .set('X-API-Key', 'invalid-fixture-key');
+    assert.equal(invalid.status, 403);
   });
 });

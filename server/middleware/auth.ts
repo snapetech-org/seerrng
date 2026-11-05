@@ -1,9 +1,9 @@
 import { getRepository } from '@server/datasource';
 import { User } from '@server/entity/User';
 import { getJellyfinAuthAuthorityKey } from '@server/lib/mediaServerAuthority';
-import type {
+import {
   Permission,
-  PermissionCheckOptions,
+  type PermissionCheckOptions,
 } from '@server/lib/permissions';
 import { getSettings } from '@server/lib/settings';
 import {
@@ -13,6 +13,7 @@ import {
 } from '@server/lib/userSecurityMutation';
 import logger from '@server/logger';
 import { isAvailableLocale } from '@server/types/languages';
+import { isClientIpAllowedForAdministratorLogin } from '@server/utils/adminLoginNetworks';
 import { normalizeJellyfinGuid } from '@server/utils/jellyfin';
 import { getRateLimitKey } from '@server/utils/security';
 import rateLimit from 'express-rate-limit';
@@ -90,6 +91,20 @@ const checkUserImplementation: Middleware = async (req, res, next) => {
         }
       });
     }
+  }
+
+  if (
+    user &&
+    !apiKeyProvided &&
+    req.session?.userId === user.id &&
+    settings.network.restrictAdministratorSignInToNetworks &&
+    user.hasPermission(Permission.ADMIN) &&
+    !isClientIpAllowedForAdministratorLogin(
+      req.ip,
+      settings.network.administratorSignInAllowedNetworks
+    )
+  ) {
+    user = null;
   }
 
   if (user) {

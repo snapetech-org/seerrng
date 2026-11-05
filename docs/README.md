@@ -26,6 +26,7 @@ connects to.
 ## Use SeerrNG
 
 - [Filter movie and series discovery by rating or streaming service](/using-seerr/movie-series-discovery-filters/)
+- [Per-user movie and TV availability](/using-seerr/media-server-access/)
 - [Customize Discover shelves and navigation](/using-seerr/discover/)
 - [Filter and sort local watchlists](/using-seerr/plex/watchlist-auto-request/#find-items-in-your-watchlist)
 - [Follow another user's active request](/using-seerr/notifications/#follow-a-movie-or-series-request)
@@ -64,9 +65,11 @@ connects to.
 ## Configure and operate
 
 - [Configure OIDC sign-in, provider callbacks, account admission, linking, and recovery](/using-seerr/settings/users/oidc)
+- [Require Jellyfin Quick Connect for media-server sign-in](/using-seerr/settings/users/#require-jellyfin-quick-connect)
 - [Cross-project OIDC contract and rollout map](/maintainers/oidc-cross-project-template) · [provider IDs, official setup links, scopes, and caveats](/maintainers/oidc-provider-catalog)
 - [Choose metadata providers and configure music request limits](/using-seerr/settings/metadata/)
 - [Check MusicBrainz and Cover Art Archive connectivity](/using-seerr/settings/metadata/#music-metadata-providers)
+- [Configure Plex playback links, including a self-hosted Web App URL](/using-seerr/settings/mediaserver/#web-app-url-optional)
 - [Configure media and automation services](/using-seerr/settings/services/)
 - [Set up labeled movie and TV request destinations](/using-seerr/settings/services/#request-destination-label-optional)
 - [Configure Sonarr v5 and alternate season orders](/using-seerr/settings/services/)
@@ -94,7 +97,7 @@ connects to.
 - [Setup experience contract](/maintainers/setup-experience-contract): evolve the existing first-run, category, and service surfaces.
 
 - [Why SeerrNG maintains a fork and what a replacement must provide](/fork-rationale/)
-- [REST API reference](/api/seerr-api/)
+- [REST API and OpenAPI reference](/api/seerr-api/) — request schemas document the supported media identifiers and match server validation.
 - [Third-party client compatibility](/using-seerr/third-party-client-compatibility/)
 - [Contribution guidelines](https://github.com/snapetech-org/seerrng/blob/main/CONTRIBUTING.md)
 - [Support on Discord](https://discord.gg/5PyXBfvS6T)

@@ -5,7 +5,10 @@ import { createRequire } from 'node:module';
 import path from 'node:path';
 import test from 'node:test';
 import { fileURLToPath } from 'node:url';
-import { splitDiscordReleaseBody } from './discord-release-notes.mjs';
+import {
+  splitDiscordReleaseBody,
+  verifyDiscordReleaseResponse,
+} from './discord-release-notes.mjs';
 
 const rootDirectory = path.resolve(
   path.dirname(fileURLToPath(import.meta.url)),
@@ -664,14 +667,8 @@ test('multi-architecture publishers perform the real build once and verify the i
   const releaseNoteValidation = ci.jobs['release-notes'].steps.find(
     (step) => step.name === 'Validate release-note fragment or explicit opt-out'
   );
-  assert.match(
-    releaseNoteValidation.run,
-    /git rev-parse --verify "\$\{HEAD_SHA\}\^1"/u
-  );
-  assert.match(
-    releaseNoteValidation.run,
-    /git diff --quiet "\$base_sha" "\$HEAD_SHA" -- release-notes/u
-  );
+  assert.match(releaseNoteValidation.run, /--base "\$BASE_SHA"/u);
+  assert.match(releaseNoteValidation.run, /--head "\$HEAD_SHA"/u);
   assert.doesNotMatch(releaseNoteValidation.run, /GITHUB_EVENT_NAME|push/u);
   assert.equal(ci.jobs['preflight-deploy'], undefined);
   assert.equal(ci.jobs['deploy-main'], undefined);
@@ -1273,7 +1270,7 @@ test('release assets build supported native archive platforms', () => {
     iosBuild.steps.find(
       (step) => step.name === 'Test and package iOS Simulator app'
     ).run,
-    'bash scripts/build-ios-release.sh "$TAG" dist-release'
+    'bash .release-tooling/scripts/build-ios-release.sh "$TAG" dist-release'
   );
   const iosClientWorkflow = readWorkflow('ios.yml');
   assert.deepEqual(Object.keys(iosClientWorkflow.on), ['workflow_dispatch']);
@@ -1502,6 +1499,66 @@ test('release iOS package uses a GitHub-hosted macOS runner', () => {
   assert.equal(releaseAssets.jobs['build-ios']['runs-on'], 'xcode-27');
 });
 
+test('iOS release Xcode work stays on local storage and uses current tooling', () => {
+  const releaseAssets = readWorkflow('release-assets.yml');
+  const ios = releaseAssets.jobs['build-ios'];
+  const toolingCheckout = ios.steps.find(
+    (step) => step.name === 'Checkout current release tooling'
+  );
+  const workspaceTest = ios.steps.find(
+    (step) => step.name === 'Test local Xcode workspace guard'
+  );
+  const simulatorBuild = ios.steps.find(
+    (step) => step.name === 'Test and package iOS Simulator app'
+  );
+  const diagnosticUpload = ios.steps.find(
+    (step) => step.name === 'Upload iOS simulator failure diagnostics'
+  );
+  const workspaceGuard = fs.readFileSync(
+    path.join(rootDirectory, 'scripts', 'ios-release-workspace.sh'),
+    'utf8'
+  );
+  const simulatorScript = fs.readFileSync(
+    path.join(rootDirectory, 'scripts', 'build-ios-release.sh'),
+    'utf8'
+  );
+  const signedScript = fs.readFileSync(
+    path.join(rootDirectory, 'scripts', 'build-ios-signed-ipa.sh'),
+    'utf8'
+  );
+
+  assert.deepEqual(
+    {
+      ref: toolingCheckout.with.ref,
+      path: toolingCheckout.with.path,
+      sparseCheckout: toolingCheckout.with['sparse-checkout'],
+      persistCredentials: toolingCheckout.with['persist-credentials'],
+    },
+    {
+      ref: '${{ github.sha }}',
+      path: '.release-tooling',
+      sparseCheckout: 'scripts',
+      persistCredentials: false,
+    }
+  );
+  assert.equal(
+    workspaceTest.run,
+    'bash .release-tooling/scripts/ios-release-workspace.test.sh'
+  );
+  assert.match(
+    simulatorBuild.run,
+    /\.release-tooling\/scripts\/build-ios-release\.sh/u
+  );
+  assert.equal(diagnosticUpload.if, 'failure()');
+  assert.match(diagnosticUpload.with.name, /^ios-simulator-diagnostics-/u);
+  assert.doesNotMatch(diagnosticUpload.with.name, /^seerrng-/u);
+  assert.match(workspaceGuard, /df -PkY/u);
+  assert.match(workspaceGuard, /filesystem_type.*apfs/su);
+  assert.match(simulatorScript, /-resultBundlePath "\$result_bundle"/u);
+  assert.match(simulatorScript, /ios_release_create_local_workspace build/u);
+  assert.match(signedScript, /ios_release_create_local_workspace signing/u);
+});
+
 test('release notes flow into the draft release and Discord announcement', () => {
   const release = readWorkflow('release.yml');
   const changelog = release.jobs.changelog;
@@ -1556,6 +1613,94 @@ test('Discord release-note chunks preserve all text and stay within the limit', 
   );
 });
 
+test('Discord confirmation accepts boundary whitespace normalization but rejects lost notes', () => {
+  const payload = {
+    embeds: [
+      {
+        title: 'Release notes',
+        description:
+          '  - **Action required:** Review settings.\n\nKeep this paragraph.\n',
+      },
+    ],
+  };
+  const response = {
+    id: '123456789',
+    embeds: [
+      {
+        ...payload.embeds[0],
+        description: payload.embeds[0].description.trim(),
+      },
+    ],
+  };
+  assert.equal(verifyDiscordReleaseResponse(response, payload), true);
+  assert.equal(
+    verifyDiscordReleaseResponse({ ...response, id: undefined }, payload),
+    false
+  );
+  assert.equal(
+    verifyDiscordReleaseResponse(
+      {
+        ...response,
+        embeds: [
+          {
+            ...response.embeds[0],
+            description: '- **Action required:** Review settings.',
+          },
+        ],
+      },
+      payload
+    ),
+    false
+  );
+  assert.equal(
+    verifyDiscordReleaseResponse(
+      {
+        ...response,
+        embeds: [
+          {
+            ...response.embeds[0],
+            description: response.embeds[0].description.replace(
+              'settings.',
+              'settings!'
+            ),
+          },
+        ],
+      },
+      payload
+    ),
+    false
+  );
+  assert.equal(
+    verifyDiscordReleaseResponse(
+      {
+        ...response,
+        embeds: [{ ...response.embeds[0], title: 'Other release' }],
+      },
+      payload
+    ),
+    false
+  );
+  assert.equal(
+    verifyDiscordReleaseResponse(
+      { id: '123', embeds: [{ title: 'Release notes', description: '' }] },
+      { embeds: [{ title: 'Release notes', description: '  ' }] }
+    ),
+    false
+  );
+  for (const name of ['release.yml', 'reannounce-release.yml']) {
+    const workflow = readWorkflow(name);
+    const posts = Object.values(workflow.jobs)
+      .flatMap((job) => job.steps ?? [])
+      .filter((step) => step.run?.includes('"$webhook_url"'));
+    assert.ok(posts.length > 0);
+    for (const step of posts)
+      assert.match(
+        step.run,
+        /discord-release-notes\.mjs --verify payload\.json/u
+      );
+  }
+});
+
 test('a workflow dispatch can correct omitted notes for a published release', () => {
   const release = readWorkflow('release.yml');
   const correction = release.jobs['announce-security-correction'];
@@ -1607,26 +1752,36 @@ test('release asset checksums match the builder sidecar names', () => {
   assert.match(assetsText, /checksum_base="\$\{checksum_base%\.aab\}-aab"/u);
 });
 
-test('manual main CI validates release notes against the selected commit parent', () => {
+test('owner and main CI use resolved release-note ranges without evaluating PR bodies', () => {
   const ci = readWorkflow('ci.yml');
-  const validation = ci.jobs['release-notes'].steps.find(
+  const contract = ci.jobs['release-notes'];
+  const resolver = contract.steps.find(
+    (step) => step.name === 'Resolve validation range and PR body'
+  );
+  const validation = contract.steps.find(
     (step) => step.name === 'Validate release-note fragment or explicit opt-out'
   );
-
-  assert.ok(validation);
-  assert.deepEqual(validation.env, { HEAD_SHA: '${{ github.sha }}' });
-  assert.match(validation.run, /git rev-parse --verify "\$\{HEAD_SHA\}\^1"/u);
-  assert.match(
-    validation.run,
-    /git diff --quiet "\$base_sha" "\$HEAD_SHA" -- release-notes/u
+  assert.equal(
+    resolver.run,
+    'node .ci-release-tooling/scripts/prepare-release-note-validation.mjs'
   );
-  assert.match(validation.run, /printf '%s' 'release-note: none'/u);
-  assert.doesNotMatch(validation.run, /GITHUB_EVENT_NAME|pull_request|push/u);
+  assert.match(resolver.env.HEAD_SHA, /inputs\.pr_sha/u);
+  assert.equal(resolver.env.PR_NUMBER, '${{ inputs.pr_number }}');
+  assert.equal(
+    validation.env.BASE_SHA,
+    '${{ steps.release-range.outputs.base_sha }}'
+  );
+  assert.equal(
+    validation.env.BODY_FILE,
+    '${{ steps.release-range.outputs.body_file }}'
+  );
+  assert.match(validation.run, /--base "\$BASE_SHA"/u);
+  assert.match(validation.run, /--pr-body "\$BODY_FILE"/u);
   assert.doesNotMatch(validation.run, /\$\{\{/u);
   assert.match(validation.run, /--summary-file "\$GITHUB_STEP_SUMMARY"/u);
 });
 
-test('main CI release-note checks fetch tags with shallow history', () => {
+test('main and owner release-note checks fetch complete comparison history and tags', () => {
   const ci = readWorkflow('ci.yml');
   const checkout = ci.jobs['release-notes'].steps.find(
     (step) => step.name === 'Checkout'
@@ -1635,14 +1790,14 @@ test('main CI release-note checks fetch tags with shallow history', () => {
     step.run?.includes('scripts/check-changelog-tags.mjs')
   );
 
-  assert.equal(checkout?.with?.['fetch-depth'], 2);
+  assert.equal(checkout?.with?.['fetch-depth'], 0);
   assert.equal(checkout?.with?.['fetch-tags'], true);
   assert.ok(changelogCheck);
 });
 
 test('containerized CI test jobs use pinned Debian images with Git available', () => {
   const ci = readWorkflow('ci.yml');
-  const imagePattern = /^node:24\.22\.1-bookworm@sha256:[0-9a-f]{64}$/u;
+  const imagePattern = /^node:24\.22\.2-bookworm@sha256:[0-9a-f]{64}$/u;
 
   assert.match(ci.jobs['unit-test'].container.image, imagePattern);
   assert.match(ci.jobs['node-test'].container.image, imagePattern);

@@ -1,3 +1,7 @@
+{{- $replicaCount := int .Values.replicaCount -}}
+{{- if or (lt $replicaCount 0) (gt $replicaCount 1) -}}
+{{- fail "replicaCount must be 0 or 1 because SeerrNG supports a single application instance" -}}
+{{- end }}
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
@@ -6,6 +10,7 @@ metadata:
     {{- include "seerr.labels" . | nindent 4 }}
 spec:
   serviceName: {{ include "seerr.fullname" . }}
+  replicas: {{ $replicaCount }}
   selector:
     matchLabels:
       {{- include "seerr.selectorLabels" . | nindent 6 }}

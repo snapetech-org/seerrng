@@ -14,6 +14,13 @@ When sorting by TMDB rating, SeerrNG uses a minimum vote count to keep titles
 with very few votes from dominating the results. Choose **Minimum TMDB Votes**
 to change that limit or include titles with any vote count.
 
+## Sort by title
+
+Movie title sorting uses TMDB's original-title field; Series title sorting uses
+its original-name field. The selected sort stays in the page URL, so copied
+Discover links keep the same ordering. Local HD and 4K availability results
+sort by their indexed title metadata when title sorting is selected.
+
 ## Include or exclude streaming services
 
 1. Open **Streaming Services**.
@@ -54,3 +61,9 @@ Local HD and 4K results use SeerrNG's stored availability records. Genre
 filters can use their stored genre metadata. Studio, streaming-service, and
 series-status selections are cleared when you switch to local availability;
 the notice above the filters explains which selections were removed.
+
+When your Plex, Jellyfin, or Emby account is linked to SeerrNG, local results
+are checked against the media items and seasons visible to that account. Titles
+whose access cannot be verified are omitted. See
+[per-user movie and TV availability](./media-server-access.md) for the account
+requirements and troubleshooting steps.
