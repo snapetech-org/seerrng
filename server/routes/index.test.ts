@@ -1,3 +1,4 @@
+import requestDispatchManager from '@server/lib/requestDispatch';
 import assert from 'node:assert/strict';
 import path from 'node:path';
 import { afterEach, before, describe, it, mock } from 'node:test';
@@ -384,6 +385,7 @@ describe('Discover homepage synchronization API', () => {
   });
 
   it('isolates request and watchlist overlays by authenticated user', async () => {
+    mock.method(requestDispatchManager, 'enqueue', async () => undefined);
     const [admin, friend] = await Promise.all([
       getRepository(User).findOneOrFail({
         where: { email: 'admin@seerr.dev' },

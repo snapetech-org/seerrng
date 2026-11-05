@@ -11,6 +11,11 @@ approval and searching through downloading, importing, and library
 availability. Expand **History** on a card to review its recorded status
 changes.
 
+If a pending request's matching movie, series, or requested book format becomes
+available through a library update, SeerrNG completes the request instead of
+sending it to the acquisition service again. Active TV season selections are
+completed with the request; previously declined seasons remain in the history.
+
 Request explanations use the selected interface language. Custom details
 reported by connected services remain as supplied so their diagnostic wording
 is preserved.
@@ -36,6 +41,21 @@ approve, decline, or edit, depending on your permissions. Actions for deleting
 status entries or removing available media are permission-controlled and
 include a confirmation step.
 
+### Automatic retries for temporary provider failures
+
+When an approved movie or TV request cannot reach Radarr or Sonarr because of a
+temporary network failure, timeout, rate limit, or server error, SeerrNG keeps
+the request approved and retries it in the background. The retry delay starts
+at one minute, doubles between attempts, and is capped at six hours; after 50
+failed attempts the request moves to **Failed** and can be retried manually
+after the provider problem is fixed. Invalid settings and other non-transient
+errors remain visible for review instead of being retried repeatedly.
+
+If Radarr or Sonarr accepted a request before its response was lost, SeerrNG
+uses the existing TMDB or TVDB identity to reconcile that title during retry.
+The original request and its selected destination remain attached to the
+result.
+
 For TV requests, SeerrNG can resolve a missing TVDB identifier through TVDB's
 confirmed TMDB match or the selected Sonarr server's TMDB lookup. It checks
 requested regular seasons against official TVDB season data before dispatch.
@@ -51,6 +71,13 @@ Sonarr server, quality, requested seasons, and permissions when it retries. No
 series or season mapping is selected automatically. Mappings are separate for
 each Sonarr destination, quality, and season order, so repairing one request
 does not change how another instance or order maps the same TVDB series.
+
+An approved movie or TV request fails promptly with a service-unavailable
+reason if its selected Radarr or Sonarr server was removed or is incompatible
+with the request, or no default server is configured for its quality. Check the
+matching service in **Settings > Services**, select or configure a usable
+destination, then use **Retry**. A request whose explicit destination was
+removed can also be reassigned by a request manager.
 
 Request API responses include a stable `failureReason` code when a movie or TV
 dispatch failure can be classified. The code distinguishes an unavailable
@@ -71,6 +98,21 @@ separate. A combined request can therefore be incomplete while one format is
 available and the other is still requested or missing. See
 [Books, Authors, and Series](./books-and-series.md) for book discovery and
 series requests.
+
+## Remove a copy from an acquisition service
+
+Managers with request-management permission can use **Remove from Radarr**,
+**Remove from Sonarr**, or the corresponding service action on a request when
+SeerrNG has a linked provider copy. After confirmation, SeerrNG removes that
+copy from the selected service and updates its matching availability state.
+The SeerrNG media record, request, and status history remain, so removing a
+copy does not erase who requested the title or its earlier progress. Other
+qualities, book formats, and destinations keep their own availability state.
+
+**Clear Data** is a separate, destructive SeerrNG action. Use it only when you
+also intend to remove SeerrNG's media record and its associated requests and
+history. It does not mean the same thing as removing a copy from an acquisition
+service.
 
 ## Download an available copy
 

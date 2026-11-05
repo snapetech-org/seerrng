@@ -2,10 +2,14 @@ import assert from 'node:assert/strict';
 import { afterEach, before, beforeEach, describe, it, mock } from 'node:test';
 
 import ExternalAPI from '@server/api/externalapi';
+import { IssueType } from '@server/constants/issue';
 import { MediaStatus, MediaType } from '@server/constants/media';
 import { getRepository } from '@server/datasource';
+import Issue from '@server/entity/Issue';
+import IssueComment from '@server/entity/IssueComment';
 import Media from '@server/entity/Media';
 import { User } from '@server/entity/User';
+import { UserSettings } from '@server/entity/UserSettings';
 import { Notification } from '@server/lib/notifications';
 import { resetTestDb, seedTestDb } from '@server/utils/seedTestDb';
 import { hydrateNotificationIntent } from './intents';
@@ -110,4 +114,52 @@ describe('availability subscription notification intents', () => {
     assert.strictEqual(payload.mediaUrl, '/tv/63639');
     assert.strictEqual(payload.request, undefined);
   });
+});
+
+it('hydrates issue-comment reporter settings for their enabled notification agents', async () => {
+  mock.method(
+    ExternalAPI.prototype as unknown as {
+      get: (...args: unknown[]) => Promise<unknown>;
+    },
+    'get',
+    async () => ({ title: 'Arrival', release_date: '2016-11-11' })
+  );
+  const reporter = await getRepository(User).findOneByOrFail({ id: 2 });
+  const commenter = await getRepository(User).findOneByOrFail({ id: 1 });
+  await getRepository(UserSettings).save(
+    new UserSettings({
+      user: reporter,
+      telegramChatId: 'fixture-reporter-chat',
+    })
+  );
+  const media = await getRepository(Media).save(
+    new Media({
+      mediaType: MediaType.MOVIE,
+      tmdbId: 329865,
+      status: MediaStatus.AVAILABLE,
+      status4k: MediaStatus.UNKNOWN,
+    })
+  );
+  const issue = await getRepository(Issue).save(
+    new Issue({
+      createdBy: reporter,
+      media,
+      issueType: IssueType.OTHER,
+      comments: [
+        new IssueComment({ user: reporter, message: 'Playback problem' }),
+      ],
+    })
+  );
+  const comment = await getRepository(IssueComment).save(
+    new IssueComment({ user: commenter, issue, message: 'Please check again' })
+  );
+  const payload = await hydrateNotificationIntent(Notification.ISSUE_COMMENT, {
+    kind: 'issue-comment',
+    commentId: comment.id,
+  });
+  assert.equal(payload?.notifyUser?.id, reporter.id);
+  assert.equal(
+    payload?.notifyUser?.settings?.telegramChatId,
+    'fixture-reporter-chat'
+  );
 });

@@ -86,6 +86,24 @@ test('built-in request status explanations expose locale keys and preserve dynam
   );
 });
 
+test('a request stays requested or approved while its media row is linking', () => {
+  const pending = getRequestStatus(
+    request({
+      media: null,
+      status: MediaRequestStatus.PENDING,
+    }) as unknown as Parameters<typeof getRequestStatus>[0]
+  );
+  const awaitingDispatch = getRequestStatus(
+    request({ media: null }) as unknown as Parameters<
+      typeof getRequestStatus
+    >[0],
+    { dispatchPending: true }
+  );
+
+  assert.equal(pending.stage, RequestStatusStage.REQUESTED);
+  assert.equal(awaitingDispatch.stage, RequestStatusStage.APPROVED);
+});
+
 test('pending Bindery approval has a localized, actionable request status', () => {
   const status = getRequestStatus(request({ type: MediaType.BOOK }), {
     bookSearchState: 'pending',
