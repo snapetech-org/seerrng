@@ -110,7 +110,7 @@
     "mime": "^4.1.0",
     "next": "16.4.2",
     "node-cache": "5.1.2",
-    "node-schedule": "2.1.1",
+    "node-schedule": "2.1.2",
     "nodemailer": "10.1.4",
     "openid-client": "^6.8.8",
     "openpgp": "6.3.2",
