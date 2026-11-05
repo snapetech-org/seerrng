@@ -30,6 +30,11 @@ import {
   resolveLibraryRemoval,
 } from '@server/lib/libraryRemoval';
 import { runMediaEntityMutation } from '@server/lib/mediaMutation';
+import {
+  applyUserMediaServerAvailability,
+  getMediaServerAccessContext,
+} from '@server/lib/mediaServerAvailability';
+import { hydrateMediaSummaryRelations } from '@server/lib/mediaSummaryHydration';
 import { Permission } from '@server/lib/permissions';
 import {
   runWithServarrServiceAdmission,
@@ -422,14 +427,40 @@ mediaRoutes.get(
     }
 
     try {
+      const mediaServerAccessContext = await getMediaServerAccessContext(
+        req.user
+      );
+      const viewerAvailabilityFilter =
+        filter === 'available' ||
+        filter === 'partial' ||
+        filter === 'allavailable';
       const [media, mediaCount] = await mediaRepository.findAndCount({
         order: sortFilter,
         where: whereClause,
         relations: { searchMetadata: true },
+        // Keep page windows disjoint. Viewer-inaccessible entries can make a
+        // linked user's page shorter, but overfetching from this offset would
+        // repeat visible entries on neighboring pages.
         take: pageSize,
         skip,
       });
+      await applyUserMediaServerAvailability(media, mediaServerAccessContext);
       await attachViewerRequestCoverage(media, req.user);
+      const visibleMedia =
+        mediaServerAccessContext && viewerAvailabilityFilter
+          ? media.filter((item) => {
+              if (filter === 'available') {
+                return item.status === MediaStatus.AVAILABLE;
+              }
+              if (filter === 'partial') {
+                return item.status === MediaStatus.PARTIALLY_AVAILABLE;
+              }
+              return (
+                item.status === MediaStatus.AVAILABLE ||
+                item.status === MediaStatus.PARTIALLY_AVAILABLE
+              );
+            })
+          : media;
       return res.status(200).json({
         pageInfo: {
           pages: Math.ceil(mediaCount / pageSize),
@@ -437,7 +468,7 @@ mediaRoutes.get(
           results: mediaCount,
           page: Math.ceil(skip / pageSize) + 1,
         },
-        results: media.map(projectMediaListItem),
+        results: visibleMedia.slice(0, pageSize).map(projectMediaListItem),
       } as MediaResultsResponse);
     } catch (e) {
       next({ status: 500, message: e.message });
@@ -564,6 +595,7 @@ mediaRoutes.post<
             }
 
             await mediaRepository.save(media);
+            await hydrateMediaSummaryRelations([media], req.user);
 
             return res.status(200).json(filterEntityResponse(media, req.user));
           })

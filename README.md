@@ -39,6 +39,7 @@ For local MCP access, see the [SnapeTech MCP integration guide](./docs/integrati
   - [Configure comics](./docs/using-seerr/comics-backend.md)
   - [Configure magazines](./docs/using-seerr/magazines-backend.md)
   - [Movie and series Discover filters](./docs/using-seerr/movie-series-discovery-filters.md)
+  - [Per-user movie and TV availability](./docs/using-seerr/media-server-access.md)
   - [Choose request destinations](./docs/using-seerr/settings/services.md#request-destination-label-optional)
   - [Require previous-season watch progress](./docs/using-seerr/settings/general.md#require-the-previous-season-to-be-watched)
   - [Hide subject tags](./docs/using-seerr/media-details-and-playback.md#hide-subject-tags)
@@ -57,6 +58,7 @@ For local MCP access, see the [SnapeTech MCP integration guide](./docs/integrati
   - [Indexer searches by media category](./docs/using-seerr/indexer-searches.md)
   - [Configure services](./docs/using-seerr/settings/services.md)
   - [Manage users and request preferences](./docs/using-seerr/users/editing-users.md)
+  - [Configure sign-in methods, including Jellyfin Quick Connect-only sign-in](./docs/using-seerr/settings/users/index.md)
   - [Slack notifications](./docs/using-seerr/notifications/slack.md)
   - [Telegram notifications](./docs/using-seerr/notifications/telegram.md)
   - [Configure notifications and follow request availability](./docs/using-seerr/notifications/index.mdx)
@@ -89,6 +91,9 @@ For local MCP access, see the [SnapeTech MCP integration guide](./docs/integrati
 - Media-server integration with Plex, Jellyfin, and Emby, including watch-state-aware My Library views scoped to each linked account. Failed Plex library syncs preserve the saved library list, report connection failures clearly, and retry startup migration on the next restart.
 - Jellyfin library synchronization preserves each library's enabled selection and stored scan timestamp across display-name changes when the server keeps its stable library ID. Adapted from Seerr [PR #3323](https://github.com/seerr-team/seerr/pull/3323).
 - Optional administrator network restrictions for SeerrNG browser sign-ins, using IPv4 or IPv6 address and CIDR allowlists without blocking remote access for regular users.
+- Administrators can require Jellyfin Quick Connect for Jellyfin sign-in; this disables Jellyfin password and plugin bridge sign-in while leaving Emby, Plex, local, and OpenID Connect sign-in independent. Adapted from Seerr [PR #3315](https://github.com/seerr-team/seerr/pull/3315).
+- **Plex playback links:** use the hosted Plex Web App by default, or configure the full self-hosted web app URL (including a path such as `/web/index.html`) for **Play on Plex** links. See the [Plex settings guide](./docs/using-seerr/settings/mediaserver.mdx#web-app-url-optional). This documentation clarifies Seerr [issue #3220](https://github.com/seerr-team/seerr/issues/3220).
+- Viewer-scoped movie and TV availability checks for linked Plex, Jellyfin, and Emby accounts, including visible seasons and exact request destinations. This SeerrNG adaptation is informed by Seerr [issue #180](https://github.com/seerr-team/seerr/issues/180) and [PR #3296](https://github.com/seerr-team/seerr/pull/3296); it does not change media-server permissions.
 - Optional Jellyfin and Emby profile sync during user imports, refreshing linked provider names and avatars while preserving SeerrNG email addresses, local passwords, and permissions.
 - Labeled movie and TV request destinations across multiple Radarr and Sonarr instances, with per-user access and availability tracked for each destination.
 - Temporary Radarr and Sonarr connection or server failures retry automatically with durable, bounded backoff; non-transient failures remain visible for review and manual retry.
@@ -200,6 +205,13 @@ Recent repository updates include:
   requests, per-user shared-availability display choices, and opt-in
   Jellyfin/Emby profile refresh during imports. Administrators can also set
   per-user movie and TV rating limits and control the broader family age gate.
+  Jellyfin administrators can require Quick Connect instead of password or plugin bridge sign-in.
+  Linked-account movie and TV availability is verified against visible libraries and seasons.
+- **Plex Watchlists:** metadata lookups are bounded to five at a time. An
+  unreachable or timed-out item no longer prevents the rest of a page from
+  loading; authentication and other provider failures remain visible. This
+  adaptation addresses Seerr [issue #3235](https://github.com/seerr-team/seerr/issues/3235)
+  and [PR #3251](https://github.com/seerr-team/seerr/pull/3251).
 - **Sonarr:** v5 API support alongside v3/v4, metadata-language and season-order
   choices, request recovery scoped to the selected service, quality, and season
   order, plus orphaned-season reconciliation using both TVDB and resolved TMDB
@@ -223,6 +235,13 @@ Recent repository updates include:
 - **Kubernetes:** the Helm chart can stop its single application pod with
   `replicaCount: 0` for maintenance and resume it with `replicaCount: 1`;
   values that would start multiple SeerrNG instances are rejected.
+- **API integrations:** the OpenAPI watchlist contract describes the
+  type-specific IDs required for each supported media type, the fields returned
+  by the create endpoint, and the public requester shape. Seerr
+  [issue #3298](https://github.com/seerr-team/seerr/issues/3298) reported the
+  request mismatch, [PR #3425](https://github.com/seerr-team/seerr/pull/3425)
+  corrected the movie and TV request schema, and [PR #3635](https://github.com/seerr-team/seerr/pull/3635)
+  aligned the response schema upstream.
 
 These changes are in the repository; use the [release notes](./CHANGELOG.md)
 to confirm which ones are included in a published build. SeerrNG continues to
@@ -400,6 +419,12 @@ Core:
 - Radarr for movie automation.
 - Sonarr for TV automation.
 - SQLite or PostgreSQL for the application database.
+
+An empty SeerrNG database can be provisioned with a Jellyfin or Emby connection
+already stored in `settings.json`. The first administrator sign-in preserves
+that connection and any existing media-server API key; SeerrNG creates an API
+key only when none is configured. Keep `settings.json` private and out of source
+control.
 
 Music:
 

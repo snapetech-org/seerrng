@@ -1259,6 +1259,7 @@ const parseMainSettingsBody = (
     ['hideBlocklisted', 'hideBlocklisted'],
     ['localLogin', 'localLogin'],
     ['mediaServerLogin', 'mediaServerLogin'],
+    ['jellyfinQuickConnectOnly', 'jellyfinQuickConnectOnly'],
     ['oidcLogin', 'oidcLogin'],
     ['newPlexLogin', 'newPlexLogin'],
     ['partialRequestsEnabled', 'partialRequestsEnabled'],
