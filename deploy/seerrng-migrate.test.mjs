@@ -835,6 +835,8 @@ describe('Seerr to SeerrNG', () => {
       seerrSchema({ ngExtras: true }),
       (database) => {
         database.exec(`
+          CREATE TABLE seerr_migration_lock (id INTEGER PRIMARY KEY, acquiredAt TEXT);
+          INSERT INTO seerr_migration_lock VALUES (1, '2026-11-04');
           INSERT INTO migrations VALUES (1, 'target-ng-migration');
           INSERT INTO discover_slider VALUES (20, 1, 1, 'Target default');
         `);
@@ -1398,7 +1400,9 @@ describe('PostgreSQL and mixed-database migration integration', () => {
         seerrSchema({ ngExtras: true }),
         async (database) => {
           database.exec(`
-            INSERT INTO migrations VALUES (1, 'target-ng-migration');
+            CREATE TABLE seerr_migration_lock (id INTEGER PRIMARY KEY, acquiredAt TEXT);
+          INSERT INTO seerr_migration_lock VALUES (1, '2026-11-04');
+          INSERT INTO migrations VALUES (1, 'target-ng-migration');
             INSERT INTO discover_slider VALUES (20, 1, TRUE, 'NG default');
           `);
         }
@@ -1566,7 +1570,9 @@ describe('PostgreSQL and mixed-database migration integration', () => {
         seerrSchema({ ngExtras: true, rejectTvId: true }),
         async (database) => {
           await database.exec(`
-            INSERT INTO migrations VALUES (1, 'target-ng-migration');
+            CREATE TABLE seerr_migration_lock (id INTEGER PRIMARY KEY, acquiredAt TEXT);
+          INSERT INTO seerr_migration_lock VALUES (1, '2026-11-04');
+          INSERT INTO migrations VALUES (1, 'target-ng-migration');
             INSERT INTO discover_slider VALUES (20, 1, TRUE, 'NG default');
           `);
         }

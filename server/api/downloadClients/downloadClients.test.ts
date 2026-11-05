@@ -219,6 +219,33 @@ describe('qBittorrent client', () => {
     );
   });
 
+  for (const cookie of ['QBT_SID_8080=session52', undefined]) {
+    it(`accepts a 204 login with ${cookie ? 'a port-specific session' : 'subnet authentication bypass'}`, async () => {
+      await withServer(
+        (request, response) => {
+          if (request.url === '/api/v2/auth/login') {
+            response.statusCode = 204;
+            if (cookie)
+              response.setHeader('Set-Cookie', [
+                'unrelated=ignored; HttpOnly',
+                `${cookie}; HttpOnly; SameSite=Lax; path=/`,
+              ]);
+            response.end();
+            return;
+          }
+          assert.equal(request.headers.cookie, cookie);
+          response.end('v5.2.3');
+        },
+        async (port) => {
+          const client = createDownloadClient(settings('qbittorrent', port));
+          assert.deepEqual(await client.testConnection(), {
+            version: 'v5.2.3',
+          });
+        }
+      );
+    });
+  }
+
   it('reports rejected credentials as an auth error', async () => {
     await withServer(
       (_request, response) => response.end('Fails.'),

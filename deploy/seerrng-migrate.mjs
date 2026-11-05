@@ -7,7 +7,11 @@ import { pathToFileURL } from 'node:url';
 import { Client } from 'pg';
 
 const TOOL_VERSION = 1;
-const MIGRATION_TABLES = new Set(['migrations', 'typeorm_metadata']);
+const MIGRATION_TABLES = new Set([
+  'migrations',
+  'typeorm_metadata',
+  'seerr_migration_lock',
+]);
 const SEERR_PERMISSION_MASK = 0x5ffffffen;
 const SEERR_NOTIFICATION_MASK = 0x1ffen;
 const SEERR_MEDIA_TYPES = new Set(['movie', 'tv']);
