@@ -453,8 +453,8 @@ importers:
         specifier: 0.3.0
         version: 0.3.0
       cypress:
-        specifier: 16.1.1
-        version: 16.1.1
+        specifier: 16.2.1
+        version: 16.2.1
       eslint:
         specifier: 10.13.0
         version: 10.13.0(jiti@2.7.0)
@@ -3642,8 +3642,8 @@ packages:
   cy-mobile-commands@0.3.0:
     resolution: {integrity: sha512-Bj5P2ylw88hPqolLu68xWB6euVH5uNt8zyh+Ju8sBukGv39mWZxpjp6LtnUX/LK/YMthwvILYHhvr9SG1TP+4w==}
 
-  cypress@16.1.1:
-    resolution: {integrity: sha512-T09qNpMKssD6eEMqqfywQ8OUub/VrNCvIUFAyQCfWsJ6o4CZ5Yeapce+WoZY9FXly6+3+pk7sjEB5voxduWQlQ==}
+  cypress@16.2.1:
+    resolution: {integrity: sha512-3Vqf1Krr92hKww/Owob9JrDO7TgBCR2ct+OQrvBOFGSnoGsikL4YF5arqDrJb+SM8Fzi7xXIeVmCeaOqJKPhRA==}
     engines: {node: ^22.0.0 || ^24.0.0 || >=26.0.0}
     hasBin: true
 
@@ -10502,7 +10502,7 @@ snapshots:
 
   cy-mobile-commands@0.3.0: {}
 
-  cypress@16.1.1:
+  cypress@16.2.1:
     dependencies:
       '@cypress/request': 4.0.1
       '@cypress/xvfb': 1.2.4(supports-color@8.1.1)
