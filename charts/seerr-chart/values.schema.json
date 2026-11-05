@@ -35,6 +35,11 @@
         }
       }
     },
+    "replicaCount": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 1
+    },
     "runtimeStorage": {
       "type": "object",
       "required": ["nextCacheSizeLimit", "tmpSizeLimit"],
