@@ -775,7 +775,8 @@ class SonarrScanner
       const is4k = this.resolutionAwareSingleServer
         ? is4kResolution(episode.fileResolution)
         : server4k;
-      if (is4k === undefined) continue;
+      // Unknown resolution cannot confirm removal from either quality.
+      if (is4k === undefined) return;
 
       const seasonEpisodes = episodesBySeason.get(databaseSeason.id) ?? [];
       seasonEpisodes.push({ episodeNumber: episode.episodeNumber, is4k });

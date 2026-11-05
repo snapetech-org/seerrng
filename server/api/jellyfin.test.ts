@@ -516,3 +516,26 @@ describe('Jellyfin and Emby current-selection playlist replacement', () => {
     });
   });
 });
+
+describe('complete Jellyfin episode reads', () => {
+  for (const [name, data, valid] of [
+    ['missing items', { TotalRecordCount: 0 }, false],
+    ['confirmed empty', { TotalRecordCount: 0, Items: [] }, true],
+    ['partial page', { TotalRecordCount: 1, Items: [] }, false],
+    ['malformed entry', { TotalRecordCount: 1, Items: [null] }, false],
+  ] as const) {
+    it(name, async () => {
+      const api = new TestJellyfinAPI('http://localhost:8096', 'fixture-only');
+      mock.method(api.getTransport(), 'get', async () => ({ data }));
+      if (valid)
+        assert.deepEqual(
+          await api.getEpisodes('series', 'season', { requireComplete: true }),
+          []
+        );
+      else
+        await assert.rejects(
+          api.getEpisodes('series', 'season', { requireComplete: true })
+        );
+    });
+  }
+});

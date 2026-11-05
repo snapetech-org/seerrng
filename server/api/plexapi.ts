@@ -1032,7 +1032,10 @@ class PlexAPI extends ExternalAPI {
     return metadata;
   }
 
-  public async getChildrenMetadata(key: string): Promise<PlexMetadata[]> {
+  public async getChildrenMetadata(
+    key: string,
+    options?: { requireComplete?: boolean }
+  ): Promise<PlexMetadata[]> {
     const response = await this.get<unknown>(
       `/library/metadata/${encodeURIComponent(
         boundedPlexText(key, 128)
@@ -1043,14 +1046,25 @@ class PlexAPI extends ExternalAPI {
         ? response.MediaContainer
         : {};
 
-    return (
-      Array.isArray(mediaContainer.Metadata) ? mediaContainer.Metadata : []
-    )
+    const rawItems = mediaContainer.Metadata;
+    const items = (Array.isArray(rawItems) ? rawItems : [])
       .slice(0, MAX_PLEX_METADATA_ITEMS)
       .flatMap((item) => {
         const normalized = sanitizePlexMetadata(item);
         return normalized ? [normalized] : [];
       });
+    if (
+      options?.requireComplete &&
+      (!Array.isArray(rawItems) ||
+        rawItems.length >= MAX_PLEX_METADATA_ITEMS ||
+        mediaContainer.size !== rawItems.length ||
+        (mediaContainer.totalSize !== undefined &&
+          mediaContainer.totalSize !== rawItems.length) ||
+        items.length !== rawItems.length ||
+        new Set(items.map((item) => item.ratingKey)).size !== items.length)
+    )
+      throw new Error('Plex episode inventory is incomplete');
+    return items;
   }
 
   public async getAllLeavesMetadata(key: string): Promise<PlexMetadata[]> {

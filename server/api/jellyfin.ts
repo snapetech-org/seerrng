@@ -767,6 +767,28 @@ class JellyfinAPI extends ExternalAPI {
     });
   }
 
+  public async getUserEpisodesForAvailability(
+    seriesId: string
+  ): Promise<JellyfinLibraryItemExtended[]> {
+    if (!this.userId) return [];
+    const response = await this.get<unknown>('/Items', {
+      params: {
+        userId: this.userId,
+        parentId: boundedJellyfinText(seriesId, 128),
+        recursive: true,
+        includeItemTypes: 'Episode',
+        fields: 'MediaSources',
+        enableImages: false,
+        limit: MAX_JELLYFIN_EPISODES,
+      },
+    });
+    return sanitizeJellyfinLibraryItems(
+      isRecord(response) ? response.Items : undefined,
+      MAX_JELLYFIN_EPISODES,
+      { includeExtended: true, excludeVirtual: true }
+    ) as JellyfinLibraryItemExtended[];
+  }
+
   public async getSystemInfo(): Promise<{ Id: string; ServerName: string }> {
     try {
       const systemInfoResponse = sanitizeJellyfinSystemInfo(
@@ -1547,7 +1569,9 @@ class JellyfinAPI extends ExternalAPI {
   }
 
   public async getEpisodes<
-    T extends { includeMediaInfo?: boolean } | undefined = undefined,
+    T extends
+      { includeMediaInfo?: boolean; requireComplete?: boolean } | undefined =
+      undefined,
   >(
     seriesID: string,
     seasonID: string,
@@ -1564,7 +1588,8 @@ class JellyfinAPI extends ExternalAPI {
         }
       );
 
-      return sanitizeJellyfinLibraryItems(
+      const rawItems = episodeResponse?.Items;
+      const items = sanitizeJellyfinLibraryItems(
         episodeResponse?.Items,
         MAX_JELLYFIN_EPISODES,
         {
@@ -1572,6 +1597,20 @@ class JellyfinAPI extends ExternalAPI {
           excludeVirtual: true,
         }
       ) as EpisodeReturn<T>;
+      if (
+        options?.requireComplete &&
+        (!Array.isArray(rawItems) ||
+          rawItems.length >= MAX_JELLYFIN_EPISODES ||
+          episodeResponse.TotalRecordCount !== rawItems.length ||
+          items.length !==
+            rawItems.filter(
+              (item: unknown) =>
+                !(isRecord(item) && item.LocationType === 'Virtual')
+            ).length ||
+          new Set(items.map((item) => item.Id)).size !== items.length)
+      )
+        throw new Error('Jellyfin episode inventory is incomplete');
+      return items;
     } catch (e) {
       logger.error(
         `Something went wrong while getting the list of episodes from the Jellyfin server: ${e.message}`,

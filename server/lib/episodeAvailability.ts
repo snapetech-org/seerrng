@@ -85,7 +85,10 @@ const sourceIdForMediaServerLibrary = (
 
 export const getSonarrEpisodeAvailabilitySourceId = (
   serviceId: number
-): string => (isPositiveSafeInteger(serviceId) ? `sonarr:${serviceId}` : '');
+): string =>
+  Number.isSafeInteger(serviceId) && serviceId >= 0
+    ? `sonarr:${serviceId}`
+    : '';
 
 export const getPlexEpisodeAvailabilitySourceId = (
   settings: PlexSettings,
@@ -272,7 +275,8 @@ export const syncSonarrEpisodeAvailability = async (
   seasons: SonarrSeasonAvailabilitySync[]
 ): Promise<void> => {
   if (
-    !isPositiveSafeInteger(serviceId) ||
+    !Number.isSafeInteger(serviceId) ||
+    serviceId < 0 ||
     !isPositiveSafeInteger(externalSeriesId) ||
     !Array.isArray(seasons) ||
     seasons.length === 0 ||
@@ -328,10 +332,15 @@ export const removeMissingEpisodeAvailabilitySeries = async (
   presentSeriesIds: number[],
   completeInventory: boolean
 ): Promise<void> => {
-  if (!completeInventory || !source.id) return;
-  const validSeriesIds = [...new Set(presentSeriesIds)].filter(
-    isPositiveSafeInteger
-  );
+  if (
+    !completeInventory ||
+    !source.id ||
+    !Array.isArray(presentSeriesIds) ||
+    presentSeriesIds.some((id) => !isPositiveSafeInteger(id)) ||
+    new Set(presentSeriesIds).size !== presentSeriesIds.length
+  )
+    return;
+  const validSeriesIds = presentSeriesIds;
 
   const query = getRepository(EpisodeAvailability)
     .createQueryBuilder()

@@ -22,6 +22,10 @@ import { getExternalRuntimeConfig } from '@server/lib/externalRuntimeConfig';
 import { enqueueImageCacheWarm } from '@server/lib/imageCacheWarmer';
 import { upsertMediaSearchMetadata } from '@server/lib/mediaSearchMetadata';
 import {
+  getMediaServerAccessContext,
+  restrictEpisodeAvailabilityForUser,
+} from '@server/lib/mediaServerAvailability';
+import {
   getSettings,
   MetadataProviderType,
   type SonarrSettings,
@@ -451,6 +455,15 @@ tvRoutes.get('/:id/season/:seasonNumber', async (req, res, next) => {
         metadataSource,
         availabilitySources,
         settings.main.enable4k
+      );
+      await restrictEpisodeAvailabilityForUser(
+        availability,
+        await getRepository(Media).findOneBy({
+          tmdbId: tvId,
+          mediaType: MediaType.TV,
+        }),
+        await getMediaServerAccessContext(req.user),
+        seasonNumber
       );
       mappedSeason.episodes = mappedSeason.episodes.map((episode) => {
         const episodeAvailability = availability.get(episode.episodeNumber);

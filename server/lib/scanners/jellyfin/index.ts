@@ -479,7 +479,8 @@ export class JellyfinScanner
             if (!this.enable4kShow) {
               const episodes = await this.jfClient.getEpisodes(
                 Id,
-                matchedJellyfinSeason.Id
+                matchedJellyfinSeason.Id,
+                { requireComplete: tracksEpisodeAvailability }
               );
               if (
                 tracksEpisodeAvailability &&
@@ -534,7 +535,10 @@ export class JellyfinScanner
               const episodes = await this.jfClient.getEpisodes(
                 Id,
                 matchedJellyfinSeason.Id,
-                { includeMediaInfo: true }
+                {
+                  includeMediaInfo: true,
+                  requireComplete: tracksEpisodeAvailability,
+                }
               );
               if (
                 tracksEpisodeAvailability &&

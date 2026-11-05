@@ -750,7 +750,8 @@ export class PlexScanner
       if (matchedPlexSeason) {
         // If we have a matched Plex season, get its children metadata so we can check details
         const episodes = await this.plexClient.getChildrenMetadata(
-          matchedPlexSeason.ratingKey
+          matchedPlexSeason.ratingKey,
+          { requireComplete: tracksEpisodeAvailability }
         );
         if (
           tracksEpisodeAvailability &&
