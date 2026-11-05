@@ -27,6 +27,10 @@ that requires SeerrNG to stop. The configuration claim is retained while the
 StatefulSet has no pods. Restore `replicaCount: 1` to resume service. SeerrNG
 supports one application instance; values below 0 or above 1 are rejected.
 
+### Updating to 1.0.136
+
+The chart can now render additional Kubernetes resource objects as part of the same Helm release. The `extraResources` value is empty by default; see the [Kubernetes guide](../../docs/getting-started/kubernetes.mdx) for an example.
+
 ### Updating to 3.0.0
 
 Nothing has changed; the upstream chart was rebranded from `jellyseerr` to `seerr`. SeerrNG keeps that inherited chart structure and changes the default image and metadata for this fork.

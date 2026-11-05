@@ -11,6 +11,36 @@
     "extraEnvFrom": {
       "type": "array"
     },
+    "extraResources": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["apiVersion", "kind", "metadata"],
+        "properties": {
+          "apiVersion": {
+            "type": "string",
+            "minLength": 1
+          },
+          "kind": {
+            "type": "string",
+            "minLength": 1
+          },
+          "metadata": {
+            "type": "object",
+            "anyOf": [
+              { "required": ["name"] },
+              { "required": ["generateName"] }
+            ],
+            "properties": {
+              "name": { "type": "string", "minLength": 1 },
+              "generateName": { "type": "string", "minLength": 1 }
+            },
+            "additionalProperties": true
+          }
+        },
+        "additionalProperties": true
+      }
+    },
     "image": {
       "type": "object",
       "required": ["pullPolicy", "registry", "repository", "sha", "tag"],

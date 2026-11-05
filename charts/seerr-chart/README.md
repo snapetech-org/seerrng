@@ -30,6 +30,10 @@ Refer to the SeerrNG Kubernetes documentation in this repository.
 
 Set `replicaCount: 0` before storage migration, backup, or other maintenance that requires SeerrNG to stop. The configuration claim is retained while the StatefulSet has no pods. Restore `replicaCount: 1` to resume service. SeerrNG supports one application instance; values below 0 or above 1 are rejected.
 
+### Updating to 1.0.136
+
+The chart can now render additional Kubernetes resource objects as part of the same Helm release. The `extraResources` value is empty by default; see the [Kubernetes guide](../../docs/getting-started/kubernetes.mdx) for an example.
+
 ### Updating to 3.0.0
 
 Nothing has changed; the upstream chart was rebranded from `jellyseerr` to `seerr`. SeerrNG keeps that inherited chart structure and changes the default image and metadata for this fork.
@@ -62,6 +66,7 @@ If `replicaCount` was set for a chart version before 2.7.0, remove it when upgra
 | enableServiceLinks | bool | `false` | Inject environment variables for active Kubernetes Services into the pod |
 | extraEnv | list | `[]` | Environment variables to add to the seerr pods |
 | extraEnvFrom | list | `[]` | Environment variables from secrets or configmaps to add to the seerr pods |
+| extraResources | list | `[]` | Additional Kubernetes resource objects rendered and managed with this chart release. Each object is templated with this chart's values and named templates before rendering. |
 | fullnameOverride | string | `""` |  |
 | hostUsers | bool | `true` | docs: https://kubernetes.io/docs/concepts/workloads/pods/user-namespaces/ |
 | image.pullPolicy | string | `"IfNotPresent"` |  |
