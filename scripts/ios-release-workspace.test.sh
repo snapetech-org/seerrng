@@ -76,7 +76,9 @@ PLUTIL
 cat > "$fake_bin/ditto" <<'DITTO'
 #!/usr/bin/env bash
 set -euo pipefail
-[[ "${IOS_TEST_ARCHIVE_FAIL:-false}" != true ]]
+if [[ "${IOS_TEST_ARCHIVE_FAIL:-false}" == true ]]; then
+  exit 1
+fi
 destination="${@: -1}"
 [[ "$destination" == "$SEERRNG_IOS_LOCAL_TEMP_ROOT"/* ]]
 printf 'fake local archive\n' > "$destination"
