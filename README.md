@@ -85,6 +85,7 @@ For local MCP access, see the [SnapeTech MCP integration guide](./docs/integrati
 - Media-server integration with Plex, Jellyfin, and Emby, including watch-state-aware My Library views scoped to each linked account.
 - Optional Jellyfin and Emby profile sync during user imports, refreshing linked provider names and avatars while preserving SeerrNG email addresses, local passwords, and permissions.
 - Labeled movie and TV request destinations across multiple Radarr and Sonarr instances, with per-user access and availability tracked for each destination.
+- Temporary Radarr and Sonarr connection or server failures retry automatically with durable, bounded backoff; non-transient failures remain visible for review and manual retry.
 - Managers can approve a one-time movie or TV request exception when a user's quota is full; optional Slack actions use a mapped account and the same request permissions as the web app.
 - Automation service integration with Radarr, Sonarr, Lidarr, and Bookshelf/Readarr-compatible APIs.
 - Sonarr v5 support alongside v3/v4, including metadata-language and season-order options with explicit season mapping for recovery.
@@ -156,6 +157,7 @@ For local MCP access, see the [SnapeTech MCP integration guide](./docs/integrati
 - Request lifecycle tracking and availability notifications link users back to the matching Request Status item, where available files can be selected and saved. Media-request titles and follower availability notices follow each notification delivery's language; Discord can use the recipient's profile language. See the [notification guide](./docs/using-seerr/notifications/index.mdx).
 - Signed-in household members can follow another user's active movie or series request for a one-time availability notice through their own configured notification channels.
 - Browser, service-worker, API, DNS, avatar, and image-proxy caching tuned for faster refreshes and tab restores.
+- Removing an item from an acquisition service such as Radarr or Sonarr preserves its SeerrNG media record and request history; Clear Data is a separate, explicitly destructive action.
 
 ## Project Status
 
@@ -170,8 +172,14 @@ Recent repository updates include:
   exception approvals, optional Slack approval actions, an optional
   previous-season watch gate, and Sonarr monitoring for future seasons when
   the latest regular season was requested. Failed TV requests retain their
-  context and support verified season mapping; bounded failure explanations
-  and request history are localized.
+  context and support verified season mapping; missing movie or TV service
+  destinations fail promptly with a retry path, and bounded failure
+  explanations and request history are localized. Request rows use their
+  paginated list data on mount, focus, and reconnect rather than making duplicate
+  detail reads; active-download details continue to refresh.
+  Pending requests complete without a duplicate dispatch when library activity
+  confirms the requested media ([Seerr issue #3657](https://github.com/seerr-team/seerr/issues/3657),
+  [PR #3659](https://github.com/seerr-team/seerr/pull/3659)).
 - **User workflows:** local watchlist filters, a browser-saved Subject Tags
   visibility preference, private one-time availability notices for followed
   requests, per-user shared-availability display choices, and opt-in

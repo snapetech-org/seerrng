@@ -14,6 +14,7 @@ import MediaIdentifier, {
 import type { ReadarrSettings } from '@server/lib/settings';
 import { getSettings } from '@server/lib/settings';
 import { setupTestDb } from '@server/test/db';
+import { makeBookshelfBookId } from '@server/utils/bookshelfCatalog';
 
 let getBooksImpl: () => Promise<ReadarrBook[]> = async () => [];
 let getBooksCallCount = 0;
@@ -128,6 +129,89 @@ describe('Readarr Scanner', () => {
     getBooksCallCount = 0;
     getEditionsImpl = async () => [];
     getEditionsCallCount = 0;
+  });
+
+  for (const serviceType of ['ebook', 'audiobook'] as const) {
+    for (const hasIsbn of [false, true]) {
+      it(`retains a catalog request media record when scanning ${serviceType} with ISBN=${hasIsbn}`, async () => {
+        const requested = await getRepository(Media).save(
+          new Media({
+            tmdbId: 0,
+            mediaType: MediaType.BOOK,
+            status: MediaStatus.PROCESSING,
+            status4k: MediaStatus.UNKNOWN,
+            identifiers: [
+              new MediaIdentifier({
+                provider: MediaIdentifierProvider.BOOKSHELF,
+                value: makeBookshelfBookId(1, '30'),
+                canonical: true,
+              }),
+            ],
+          })
+        );
+        configureReadarr([{ id: 1, serviceType }]);
+        getBooksImpl = async () => [
+          fakeReadarrBook({
+            id: 31,
+            foreignBookId: '30',
+            editions: [
+              {
+                foreignEditionId: '41',
+                title: 'Test Book',
+                monitored: true,
+                ...(hasIsbn ? { isbn13: '9780306406157' } : {}),
+              },
+            ],
+          }),
+        ];
+        await readarrScanner.run();
+        const media = await getRepository(Media).find({
+          where: { mediaType: MediaType.BOOK },
+        });
+        assert.strictEqual(media.length, 1);
+        assert.strictEqual(media[0].id, requested.id);
+        assert.strictEqual(media[0].status, MediaStatus.AVAILABLE);
+        assert.strictEqual(
+          serviceType === 'ebook'
+            ? media[0].externalServiceId
+            : media[0].audiobookExternalServiceId,
+          31
+        );
+      });
+    }
+  }
+
+  it('does not claim a catalog identity belonging to a different server', async () => {
+    const other = await getRepository(Media).save(
+      new Media({
+        tmdbId: 0,
+        mediaType: MediaType.BOOK,
+        status: MediaStatus.UNKNOWN,
+        status4k: MediaStatus.UNKNOWN,
+        identifiers: [
+          new MediaIdentifier({
+            provider: MediaIdentifierProvider.BOOKSHELF,
+            value: makeBookshelfBookId(2, '30'),
+            canonical: true,
+          }),
+        ],
+      })
+    );
+    configureReadarr([{ id: 1 }]);
+    getBooksImpl = async () => [
+      fakeReadarrBook({ id: 31, foreignBookId: '30', editions: [] }),
+    ];
+    await readarrScanner.run();
+    const unchanged = await getRepository(Media).findOneByOrFail({
+      id: other.id,
+    });
+    assert.strictEqual(unchanged.externalServiceId, null);
+    assert.strictEqual(
+      await getRepository(Media).count({
+        where: { mediaType: MediaType.BOOK },
+      }),
+      2
+    );
   });
 
   it('resets PROCESSING to UNKNOWN when a book is not in any Readarr server', async () => {

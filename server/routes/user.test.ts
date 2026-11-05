@@ -1,3 +1,4 @@
+import requestDispatchManager from '@server/lib/requestDispatch';
 import assert from 'node:assert/strict';
 import dns from 'node:dns/promises';
 import { join } from 'node:path';
@@ -133,6 +134,11 @@ async function loginAs(email: string, password: string) {
 }
 
 describe('User media availability subscriptions', () => {
+  beforeEach(() => {
+    // The fixture needs active requests, independently of provider acquisition.
+    mock.method(requestDispatchManager, 'enqueue', async () => undefined);
+  });
+  afterEach(() => mock.restoreAll());
   it('lets another user follow an active request and cancel without changing it', async () => {
     const userRepository = getRepository(User);
     const follower = await userRepository.findOneByOrFail({

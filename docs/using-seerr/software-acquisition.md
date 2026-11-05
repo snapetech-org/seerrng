@@ -50,6 +50,14 @@ contract. The emulation catalog source is QuestarrNG by default; SeerrNG only
 saves a ROMarrNG catalog source when that provider advertises the matching
 capability in its SeerrNG handshake.
 
+A ROMarrNG-only installation can browse and request Retro and Modern titles
+without QuestarrNG. If an older configuration still has the default QuestarrNG
+catalog choice but no QuestarrNG credentials, SeerrNG uses the configured
+ROMarrNG IGDB catalog automatically. ROMarrNG still needs its IGDB catalog
+configured; select **ROMarrNG · DAT** explicitly when using loaded DAT files.
+PC game requests continue to require QuestarrNG. A configured QuestarrNG catalog
+choice remains in use.
+
 ## Configure the providers
 
 An administrator opens **Settings > Services > Software Acquisition**. The

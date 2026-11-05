@@ -823,24 +823,36 @@ const getQuestarrApi = (): QuestarrNGAPI => {
   return new QuestarrNGAPI(settings);
 };
 
+// A ROMarr-only installation must not require an unused Questarr service just
+// because an older configuration retained the default catalog selection.
+const getEmulationCatalogProvider = () => {
+  const settings = getSettings().softwareAcquisition;
+  if (
+    settings.emulationCatalogProvider === 'questarr' &&
+    (!settings.questarr.hostname || !settings.questarr.apiKey) &&
+    settings.romarr.hostname &&
+    settings.romarr.apiKey
+  )
+    return 'romarr' as const;
+  return settings.emulationCatalogProvider;
+};
+
 const getCatalogProviderName = (category: SoftwareRequestCategory) =>
   category === 'game'
     ? 'QuestarrNG'
-    : getSettings().softwareAcquisition.emulationCatalogProvider === 'romarr'
+    : getEmulationCatalogProvider() === 'romarr'
       ? 'ROMarrNG IGDB'
-      : getSettings().softwareAcquisition.emulationCatalogProvider ===
-          'romarr-dat'
+      : getEmulationCatalogProvider() === 'romarr-dat'
         ? 'ROMarrNG DAT'
         : 'QuestarrNG';
 
 const getCatalogApi = (
   category: SoftwareRequestCategory
 ): SoftwareCatalogApi => {
-  const settings = getSettings().softwareAcquisition;
   if (
     category !== 'game' &&
-    (settings.emulationCatalogProvider === 'romarr' ||
-      settings.emulationCatalogProvider === 'romarr-dat')
+    (getEmulationCatalogProvider() === 'romarr' ||
+      getEmulationCatalogProvider() === 'romarr-dat')
   ) {
     return getRomarrApi();
   }
@@ -956,18 +968,17 @@ softwareRoutes.use(isAuthenticated());
 
 softwareRoutes.get('/catalog/systems', async (_req, res) => {
   try {
-    const settings = getSettings().softwareAcquisition;
     const results = await getEmulationPlatforms();
     const datCatalog =
-      settings.emulationCatalogProvider === 'romarr-dat'
+      getEmulationCatalogProvider() === 'romarr-dat'
         ? await getRomarrApi().getDatCatalogPlatforms()
         : undefined;
     return res.status(200).json({
       results,
       catalogProvider:
-        settings.emulationCatalogProvider === 'romarr-dat'
+        getEmulationCatalogProvider() === 'romarr-dat'
           ? 'dat'
-          : settings.emulationCatalogProvider === 'romarr'
+          : getEmulationCatalogProvider() === 'romarr'
             ? 'igdb'
             : 'questarr',
       ...(datCatalog
@@ -998,8 +1009,7 @@ softwareRoutes.get('/catalog/search', async (req, res) => {
   try {
     if (
       parsed.category !== 'game' &&
-      getSettings().softwareAcquisition.emulationCatalogProvider ===
-        'romarr-dat'
+      getEmulationCatalogProvider() === 'romarr-dat'
     ) {
       if (parsed.filters.genre || parsed.filters.releaseYear) {
         return res.status(400).json({
@@ -1150,11 +1160,7 @@ softwareRoutes.get('/catalog/popular', async (req, res) => {
   }
 
   try {
-    if (
-      category !== 'game' &&
-      getSettings().softwareAcquisition.emulationCatalogProvider ===
-        'romarr-dat'
-    ) {
+    if (category !== 'game' && getEmulationCatalogProvider() === 'romarr-dat') {
       if (filters.genre || filters.releaseYear) {
         return res.status(400).json({
           error:
@@ -1291,9 +1297,7 @@ softwareRoutes.get('/catalog/games/:id', async (req, res) => {
     const isDat = catalogProvider === 'dat';
     if (
       isDat !==
-      (category !== 'game' &&
-        getSettings().softwareAcquisition.emulationCatalogProvider ===
-          'romarr-dat')
+      (category !== 'game' && getEmulationCatalogProvider() === 'romarr-dat')
     ) {
       return res.status(409).json({
         error:
@@ -1429,7 +1433,7 @@ softwareRoutes.post('/', async (req, res) => {
   const category = body.category;
   const settings = getSettings().softwareAcquisition;
   const expectedCatalogProvider =
-    category !== 'game' && settings.emulationCatalogProvider === 'romarr-dat'
+    category !== 'game' && getEmulationCatalogProvider() === 'romarr-dat'
       ? 'dat'
       : 'igdb';
   const catalogProvider =

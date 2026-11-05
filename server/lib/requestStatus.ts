@@ -319,6 +319,9 @@ const getMusicTarget = (
   if (savedTarget) {
     return savedTarget;
   }
+  if (!request.media) {
+    return undefined;
+  }
 
   return (request.serverId == null ||
     request.media.serviceId === request.serverId) &&
@@ -339,6 +342,7 @@ const getAdultTarget = (
 ): MediaRequestServiceTarget | undefined => {
   const savedTarget = getTarget(request, 'whisparr', 'adult');
   if (savedTarget) return savedTarget;
+  if (!request.media) return undefined;
 
   const serverId = request.serverId ?? request.media.serviceId;
   return serverId != null &&
@@ -355,6 +359,10 @@ const getAdultTarget = (
 };
 
 const hasRequestedServiceLink = (request: RequestLike): boolean => {
+  if (!request.media) {
+    return false;
+  }
+
   if (request.type === MediaType.BOOK) {
     if (request.bookFormat === 'audiobook') {
       return hasRequestedBookFormat(request.media, 'audiobook');
@@ -388,6 +396,10 @@ const hasRequestedServiceLink = (request: RequestLike): boolean => {
 };
 
 const getRequestedMediaStatus = (request: RequestLike): MediaStatus => {
+  if (!request.media) {
+    return MediaStatus.UNKNOWN;
+  }
+
   if (request.type === MediaType.MUSIC) {
     return getMusicTarget(request)?.status ?? request.media.status;
   }
@@ -399,6 +411,10 @@ const getRequestedMediaStatus = (request: RequestLike): MediaStatus => {
 };
 
 const isRequestSatisfied = (request: RequestLike): boolean => {
+  if (!request.media) {
+    return false;
+  }
+
   const mediaStatus = getRequestedMediaStatus(request);
   if (isDeletedStatus(mediaStatus)) {
     return false;
@@ -545,6 +561,10 @@ const calculateDownloadMetrics = (downloads: DownloadingItem[]) => {
 
 const getDownloadItems = (request: RequestLike): DownloadingItem[] => {
   const media = request.media;
+  if (!media) {
+    return [];
+  }
+
   if (request.type === MediaType.MOVIE) {
     return request.is4k &&
       media.serviceId4k !== null &&
@@ -671,6 +691,10 @@ const getServarrHistoryEvidence = (
   request: RequestLike
 ): ServarrHistoryEvidence | undefined => {
   const { media } = request;
+  if (!media) {
+    return undefined;
+  }
+
   if (request.type === MediaType.ADULT) {
     const target = getAdultTarget(request);
     return target?.serverId != null && target.externalServiceId != null
@@ -731,6 +755,10 @@ const getServarrHistoryEvidence = (
 };
 
 const getServiceName = (request: RequestLike): string | null => {
+  if (!request.media) {
+    return null;
+  }
+
   const settings = getExternalRuntimeConfig();
   const names = new Set<string>();
   const add = (name: string | undefined) => {
@@ -1452,6 +1480,17 @@ const persistStatusEvent = async (
   latestEvent: StatusEventLike | undefined,
   manager?: EntityManager
 ): Promise<void> => {
+  if (!request.media) {
+    logger.debug(
+      'Waiting to record request status until the media row is linked',
+      {
+        label: 'Request Status',
+        requestId: request.id,
+      }
+    );
+    return;
+  }
+
   const repository = getStatusEventRepository(manager);
   const attempt = getAttempt(status.stage, latestEvent);
   status.attempt = attempt;
@@ -1580,6 +1619,16 @@ export const recordRequestStatusOverride = async (
 export const recordRequestRetry = async (requestId: number): Promise<void> => {
   const request = await loadRequest(requestId);
   if (!request) {
+    return;
+  }
+  if (!request.media) {
+    logger.debug(
+      'Waiting to record request retry until the media row is linked',
+      {
+        label: 'Request Status',
+        requestId,
+      }
+    );
     return;
   }
 

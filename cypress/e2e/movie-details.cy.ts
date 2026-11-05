@@ -104,10 +104,11 @@ describe('Movie Details', () => {
       ($dismissButtons) => {
         const previousCount = $dismissButtons.length;
         cy.wrap($dismissButtons.last()).click();
-        cy.get('button[aria-label="Dismiss this notification"]').should(
-          'have.length.lessThan',
-          previousCount
-        );
+        cy.get('body').should(($body) => {
+          expect(
+            $body.find('button[aria-label="Dismiss this notification"]')
+          ).to.have.length.lessThan(previousCount);
+        });
       }
     );
   });

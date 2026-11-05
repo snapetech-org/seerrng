@@ -70,30 +70,35 @@ export const reconcileRequestedMusicAvailability = async (
   >();
 
   for (const request of requests) {
+    // A request may be waiting for its media row to be linked. Only music
+    // requests need this lookup, and only after the media relation exists.
+    if (request.type !== MediaType.MUSIC || !request.media) {
+      continue;
+    }
+
+    const media = request.media;
     const savedTarget = request.serviceTargets?.find(
       (target) => target.serviceType === 'lidarr' && target.format === 'music'
     );
     const target =
       savedTarget ??
-      ((request.serverId == null ||
-        request.media.serviceId === request.serverId) &&
-      request.media.serviceId != null &&
-      request.media.externalServiceId != null
+      ((request.serverId == null || media.serviceId === request.serverId) &&
+      media.serviceId != null &&
+      media.externalServiceId != null
         ? {
             serviceType: 'lidarr' as const,
             format: 'music' as const,
-            serverId: request.media.serviceId,
-            externalServiceId: request.media.externalServiceId,
-            externalServiceSlug: request.media.externalServiceSlug,
+            serverId: media.serviceId,
+            externalServiceId: media.externalServiceId,
+            externalServiceSlug: media.externalServiceSlug,
             profileId: request.profileId,
             metadataProfileId: request.metadataProfileId,
             rootFolder: request.rootFolder,
             tags: request.tags,
-            status: request.media.status,
+            status: media.status,
           }
         : undefined);
     if (
-      request.type !== MediaType.MUSIC ||
       ![MediaRequestStatus.APPROVED, MediaRequestStatus.COMPLETED].includes(
         request.status
       ) ||

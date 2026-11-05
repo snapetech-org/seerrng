@@ -23,6 +23,7 @@ import {
   runWithServarrServiceSnapshots,
 } from '@server/lib/serviceAdmission';
 import type { ReadarrSettings } from '@server/lib/settings';
+import { makeBookshelfBookId } from '@server/utils/bookshelfCatalog';
 import { getHttpErrorDetails } from '@server/utils/httpError';
 import {
   getReadarrServiceFormats,
@@ -204,6 +205,17 @@ class ReadarrScanner
         await resolveOpenLibraryIdentifiersForReadarrBook(readarrBook);
 
       const secondaryIdentifiers = [
+        // Catalog requests use an opaque identity scoped to the selected server.
+        // Keep that same record when ISBN/Readarr identifiers become available.
+        readarrBook.foreignBookId
+          ? {
+              provider: MediaIdentifierProvider.BOOKSHELF,
+              value: makeBookshelfBookId(
+                this.currentServer.id,
+                readarrBook.foreignBookId
+              ),
+            }
+          : undefined,
         readarrBook.foreignBookId
           ? {
               provider: MediaIdentifierProvider.READARR,
