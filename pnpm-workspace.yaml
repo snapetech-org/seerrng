@@ -75,6 +75,7 @@ overrides:
   yaml: 1.10.3
 
 patchedDependencies:
+  deepmerge@2.2.1: patches/deepmerge@2.2.1.patch
   deepmerge@4.3.1: patches/deepmerge@4.3.1.patch
   eslint-plugin-jsx-a11y@6.10.2: patches/eslint-plugin-jsx-a11y@6.10.2.patch
   eslint-plugin-no-relative-import-paths@1.6.1: patches/eslint-plugin-no-relative-import-paths@1.6.1.patch
