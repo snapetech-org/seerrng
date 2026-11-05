@@ -69,20 +69,40 @@ const isIOS =
     navigator.maxTouchPoints > 1);
 const isAndroid = /Android/i.test(ua);
 
-// Props for a "Watch on Plex" link. Phones and tablets open the Plex app at the title (SeerrNG's
-// plex://preplay link); Android goes through an intent so Chrome falls back to Plex's web app
-// when the app isn't installed. Everywhere else: Plex's web app in a new tab.
-export const plexLink = (m?: PlexLinks, is4k = false) => {
+// Props for a "Watch on Plex" link. iPhone/iPad: SeerrNG's plex://preplay link opens the title in
+// the Plex app. Android: the Plex app ignores preplay links (it opens on Home), so build its own
+// routes from the same server id and rating key: movies start playing (plex://watch/video), series
+// open their page (plex://libraries/<server>/show/<slug>/<key>; the slug isn't checked). Both go
+// through an intent so Chrome falls back to Plex's web app when the app isn't installed. Everywhere
+// else, and for anything else (music): Plex's web app in a new tab.
+export const plexLink = (
+  m?: PlexLinks,
+  is4k = false,
+  kind: 'movie' | 'tv' | string = 'movie'
+) => {
   const web = plexUrl(m, is4k);
   const app =
     (is4k && m?.iOSPlexUrl4k) || (!is4k && m?.iOSPlexUrl) || undefined;
-  if (app?.startsWith('plex://') && isAndroid) {
-    const fallback = web
-      ? `S.browser_fallback_url=${encodeURIComponent(web)};`
-      : '';
-    return {
-      href: `intent://${app.slice('plex://'.length)}#Intent;scheme=plex;package=com.plexapp.android;${fallback}end`,
-    };
+  if (app && isAndroid && (kind === 'movie' || kind === 'tv')) {
+    const q = new URLSearchParams(app.split('?')[1] ?? '');
+    const server = q.get('server');
+    const key = q
+      .get('metadataKey')
+      ?.match(/^\/library\/metadata\/(\d+)$/)?.[1];
+    if (server && key) {
+      const path =
+        kind === 'movie'
+          ? `watch/video?uri=${encodeURIComponent(
+              `server://${server}/com.plexapp.plugins.library/library/metadata/${key}`
+            )}`
+          : `libraries/${server}/show/x/${key}`;
+      const fallback = web
+        ? `S.browser_fallback_url=${encodeURIComponent(web)};`
+        : '';
+      return {
+        href: `intent://${path}#Intent;scheme=plex;package=com.plexapp.android;${fallback}end`,
+      };
+    }
   }
   if (app && isIOS) return { href: app };
   return { href: web, target: '_blank', rel: 'noreferrer' };

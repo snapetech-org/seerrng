@@ -147,7 +147,10 @@ export function TitleCard({ it, meta }: { it: TitleResult; meta?: string }) {
   const plex = plexUrl(it.mediaInfo);
   if (s?.k === 'ok')
     qb = plex ? (
-      <a className="qbtn okb" {...plexLink(it.mediaInfo)}>
+      <a
+        className="qbtn okb"
+        {...plexLink(it.mediaInfo, false, tv ? 'tv' : 'movie')}
+      >
         <Icon name="play" size="sm" />
         Watch on Plex
       </a>
@@ -373,7 +376,10 @@ export function FeatCard({
           {s?.k === 'ok' ? (
             // this button used to do nothing: open Plex when we have a link, else the title page
             plexUrl(it.mediaInfo) ? (
-              <a className="btn go" {...plexLink(it.mediaInfo)}>
+              <a
+                className="btn go"
+                {...plexLink(it.mediaInfo, false, tv ? 'tv' : 'movie')}
+              >
                 <Icon name="play" size="sm" />
                 Watch
               </a>
