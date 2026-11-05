@@ -1,0 +1,80 @@
+diff --git a/index.js b/index.js
+--- a/index.js
++++ b/index.js
+@@ -20,10 +20,16 @@
+ 	var destination = {}
+ 	if (options.isMergeableObject(target)) {
+ 		Object.keys(target).forEach(function(key) {
++			if (key === '__proto__') {
++				return
++			}
+ 			destination[key] = cloneUnlessOtherwiseSpecified(target[key], options)
+ 		})
+ 	}
+ 	Object.keys(source).forEach(function(key) {
++		if (key === '__proto__') {
++			return
++		}
+ 		if (!options.isMergeableObject(source[key]) || !target[key]) {
+ 			destination[key] = cloneUnlessOtherwiseSpecified(source[key], options)
+ 		} else {
+diff --git a/dist/cjs.js b/dist/cjs.js
+--- a/dist/cjs.js
++++ b/dist/cjs.js
+@@ -56,10 +56,16 @@
+ 	var destination = {};
+ 	if (isMergeableObject(target)) {
+ 		Object.keys(target).forEach(function(key) {
++			if (key === '__proto__') {
++				return
++			}
+ 			destination[key] = cloneUnlessOtherwiseSpecified(target[key], optionsArgument);
+ 		});
+ 	}
+ 	Object.keys(source).forEach(function(key) {
++		if (key === '__proto__') {
++			return
++		}
+ 		if (!isMergeableObject(source[key]) || !target[key]) {
+ 			destination[key] = cloneUnlessOtherwiseSpecified(source[key], optionsArgument);
+ 		} else {
+diff --git a/dist/es.js b/dist/es.js
+--- a/dist/es.js
++++ b/dist/es.js
+@@ -43,10 +43,16 @@
+ 	var destination = {};
+ 	if (options.isMergeableObject(target)) {
+ 		Object.keys(target).forEach(function(key) {
++			if (key === '__proto__') {
++				return
++			}
+ 			destination[key] = cloneUnlessOtherwiseSpecified(target[key], options);
+ 		});
+ 	}
+ 	Object.keys(source).forEach(function(key) {
++		if (key === '__proto__') {
++			return
++		}
+ 		if (!options.isMergeableObject(source[key]) || !target[key]) {
+ 			destination[key] = cloneUnlessOtherwiseSpecified(source[key], options);
+ 		} else {
+diff --git a/dist/umd.js b/dist/umd.js
+--- a/dist/umd.js
++++ b/dist/umd.js
+@@ -49,10 +49,16 @@
+ 	var destination = {};
+ 	if (options.isMergeableObject(target)) {
+ 		Object.keys(target).forEach(function(key) {
++			if (key === '__proto__') {
++				return
++			}
+ 			destination[key] = cloneUnlessOtherwiseSpecified(target[key], options);
+ 		});
+ 	}
+ 	Object.keys(source).forEach(function(key) {
++		if (key === '__proto__') {
++			return
++		}
+ 		if (!options.isMergeableObject(source[key]) || !target[key]) {
+ 			destination[key] = cloneUnlessOtherwiseSpecified(source[key], options);
+ 		} else {

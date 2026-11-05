@@ -554,8 +554,19 @@ export const parsePlexSettingsBody = (
   );
   if ('error' in useSsl) return useSsl;
 
+  const analyzeOnPlayback = parseMediaServerBoolean(
+    getSettingsField(
+      body,
+      'analyzeOnPlayback',
+      current.analyzeOnPlayback ?? false
+    ),
+    'analyzeOnPlayback'
+  );
+  if ('error' in analyzeOnPlayback) return analyzeOnPlayback;
+
   return {
     value: {
+      analyzeOnPlayback: analyzeOnPlayback.value,
       name: current.name,
       machineId: current.machineId,
       libraries: current.libraries,

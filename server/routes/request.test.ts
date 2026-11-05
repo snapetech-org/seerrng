@@ -5908,6 +5908,92 @@ describe('PUT /request/:requestId', () => {
     );
   };
 
+  it('lets an admin override a root request without changing its owner, approval or seasons', async () => {
+    const owner = await getRepository(User).findOneByOrFail({ id: 2 });
+    const request = await createTvRequest({
+      requestedBy: owner,
+      seasons: [1],
+      tmdbId: 81881,
+    });
+    await getRepository(Media).update(request.media.id, { tvdbId: 123456 });
+    const admin = await loginAs('admin@seerr.dev', 'test1234');
+    const response = await admin
+      .post(`/request/${request.id}/episode-queue`)
+      .send({ episodeCount: 3 });
+    assert.equal(response.status, 200, JSON.stringify(response.body));
+    assert.deepEqual(response.body, {
+      episodeCount: 3,
+      usesUserDefault: false,
+    });
+    const stored = await getRepository(MediaRequest).findOneOrFail({
+      where: { id: request.id },
+      relations: { requestedBy: true, seasons: true },
+    });
+    assert.equal(stored.watchAheadEpisodeCount, 3);
+    assert.equal(stored.watchAheadUsesUserDefault, false);
+    assert.equal(stored.requestedBy.id, owner.id);
+    assert.equal(stored.status, MediaRequestStatus.PENDING);
+    assert.deepEqual(
+      stored.seasons.map((s) => s.seasonNumber),
+      [1]
+    );
+    const reset = await admin
+      .post(`/request/${request.id}/episode-queue`)
+      .send({ episodeCount: null });
+    assert.equal(reset.status, 200);
+    assert.equal(reset.body.usesUserDefault, true);
+    assert.equal(
+      (await getRepository(MediaRequest).findOneByOrFail({ id: request.id }))
+        .watchAheadUsesUserDefault,
+      true
+    );
+  });
+
+  it('rejects non-admin queue overrides and invalid or ineligible requests', async () => {
+    const owner = await getRepository(User).findOneByOrFail({ id: 2 });
+    const request = await createTvRequest({
+      requestedBy: owner,
+      seasons: [1],
+      tmdbId: 81882,
+    });
+    const friend = await loginAs('friend@seerr.dev', 'test1234');
+    assert.equal(
+      (
+        await friend
+          .post(`/request/${request.id}/episode-queue`)
+          .send({ episodeCount: 3 })
+      ).status,
+      403
+    );
+    const admin = await loginAs('admin@seerr.dev', 'test1234');
+    for (const body of [
+      { episodeCount: 6 },
+      { episodeCount: -1 },
+      { episodeCount: '2' },
+      {},
+      { episodeCount: 2, ownerId: 1 },
+    ]) {
+      assert.equal(
+        (await admin.post(`/request/${request.id}/episode-queue`).send(body))
+          .status,
+        400
+      );
+    }
+    assert.equal(
+      (
+        await admin
+          .post(`/request/${request.id}/episode-queue`)
+          .send({ episodeCount: 2 })
+      ).status,
+      409
+    );
+    assert.equal(
+      (await getRepository(MediaRequest).findOneByOrFail({ id: request.id }))
+        .watchAheadEpisodeCount,
+      0
+    );
+  });
+
   it('rejects partial-season edits when partial requests are disabled', async (t) => {
     const settings = getSettings();
     const previousPartialSetting = settings.main.partialRequestsEnabled;

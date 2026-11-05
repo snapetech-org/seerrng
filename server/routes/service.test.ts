@@ -1752,6 +1752,38 @@ describe('Bookshelf settings routes', () => {
     assert.strictEqual(getUsers.mock.callCount(), 0);
   });
 
+  it('saves and edits both-format Bindery settings through the OpenAPI validator', async () => {
+    const payload = makeReadarr({
+      backend: 'bindery',
+      serviceType: 'both',
+      name: 'Bindery',
+      activeProfileId: 0,
+      activeProfileName: 'Bindery managed',
+      activeMetadataProfileId: 0,
+      activeMetadataProfileName: 'Bindery managed',
+      activeDirectory: '/',
+      preventSearch: true,
+    });
+    const submission = { ...payload, id: undefined };
+    const created = await request(createOpenApiApp())
+      .post('/api/v1/settings/readarr')
+      .send(submission);
+    assert.strictEqual(created.status, 201, JSON.stringify(created.body));
+    const stored = getSettings().readarr.find(
+      (service) => service.backend === 'bindery'
+    );
+    assert.ok(stored);
+    assert.equal(stored.serviceType, 'both');
+    const edited = await request(createOpenApiApp())
+      .put(`/api/v1/settings/readarr/${stored.id}`)
+      .send({ ...submission, name: 'Edited Bindery' });
+    assert.strictEqual(edited.status, 200, JSON.stringify(edited.body));
+    assert.equal(
+      getSettings().readarr.find((service) => service.id === stored.id)?.name,
+      'Edited Bindery'
+    );
+  });
+
   it('rejects malformed Bookshelf settings bodies', async () => {
     const res = await request(app).post('/settings/readarr').send([]);
 

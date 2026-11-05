@@ -60,6 +60,7 @@ export async function runDevServer() {
     console.log('[dev] Starting the SeerrNG server');
     const nextChild = spawn(process.execPath, command, {
       cwd: repositoryRoot,
+      env: { ...process.env, NODE_ENV: process.env.NODE_ENV || 'development' },
       stdio: 'inherit',
       windowsHide: true,
     });

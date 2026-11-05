@@ -59,12 +59,16 @@ export default function useMediaFilterPin<T extends MediaFilterValue>({
         }
       })
       .finally(() => setBusy(false));
+    return queue.current;
   };
   return {
     pinnedValue: saved,
     busy,
     error,
     available: Boolean(user),
+    select: (value: T) => {
+      if (saved !== undefined && saved !== value) return save(value);
+    },
     toggle: (value: T) => save(saved === value ? null : value),
   };
 }

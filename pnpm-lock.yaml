@@ -56,8 +56,11 @@ overrides:
   yaml: 1.10.3
 
 patchedDependencies:
+  deepmerge@2.2.1:
+    hash: 621c6503ea39fc5cc1dd89c5e970b292b07b03209849e8f87440c916af6a0300
+    path: patches/deepmerge@2.2.1.patch
   deepmerge@4.3.1:
-    hash: 3dfae8a71ba803765abe4c61c02845340e2d2feafaaf99fee1875ccaaad649ad
+    hash: 4566d6b8148011436d013f8fd90942e185baada1d1ee120c79327771ee01f7ba
     path: patches/deepmerge@4.3.1.patch
   eslint-plugin-jsx-a11y@6.10.2:
     hash: b8ef271a4b50b7ee48a5e92a3ee36f8e5ca942682264a445d0b76b82b084e993
@@ -9173,7 +9176,7 @@ snapshots:
     dependencies:
       '@svgr/core': 8.1.0(typescript@6.0.3)
       cosmiconfig: 8.3.6(typescript@6.0.3)
-      deepmerge: 4.3.1(patch_hash=3dfae8a71ba803765abe4c61c02845340e2d2feafaaf99fee1875ccaaad649ad)
+      deepmerge: 4.3.1(patch_hash=4566d6b8148011436d013f8fd90942e185baada1d1ee120c79327771ee01f7ba)
       svgo: 3.3.5
     transitivePeerDependencies:
       - typescript
@@ -10679,9 +10682,9 @@ snapshots:
 
   deep-is@0.1.4: {}
 
-  deepmerge@2.2.1: {}
+  deepmerge@2.2.1(patch_hash=621c6503ea39fc5cc1dd89c5e970b292b07b03209849e8f87440c916af6a0300): {}
 
-  deepmerge@4.3.1(patch_hash=3dfae8a71ba803765abe4c61c02845340e2d2feafaaf99fee1875ccaaad649ad): {}
+  deepmerge@4.3.1(patch_hash=4566d6b8148011436d013f8fd90942e185baada1d1ee120c79327771ee01f7ba): {}
 
   define-data-property@1.1.4:
     dependencies:
@@ -11485,7 +11488,7 @@ snapshots:
   formik@2.4.9(@types/react@19.3.0)(react@19.3.0):
     dependencies:
       '@types/hoist-non-react-statics': 3.3.7(@types/react@19.3.0)
-      deepmerge: 2.2.1
+      deepmerge: 2.2.1(patch_hash=621c6503ea39fc5cc1dd89c5e970b292b07b03209849e8f87440c916af6a0300)
       hoist-non-react-statics: 3.3.2
       lodash: 4.18.1
       lodash-es: 4.18.1
@@ -11717,7 +11720,7 @@ snapshots:
   html-to-text@9.0.5:
     dependencies:
       '@selderee/plugin-htmlparser2': 0.11.0
-      deepmerge: 4.3.1(patch_hash=3dfae8a71ba803765abe4c61c02845340e2d2feafaaf99fee1875ccaaad649ad)
+      deepmerge: 4.3.1(patch_hash=4566d6b8148011436d013f8fd90942e185baada1d1ee120c79327771ee01f7ba)
       dom-serializer: 2.0.0
       htmlparser2: 8.0.2
       selderee: 0.11.0

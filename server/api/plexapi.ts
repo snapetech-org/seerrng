@@ -62,6 +62,7 @@ export interface PlexLibrary {
 }
 
 export interface PlexMetadata {
+  librarySectionID?: string;
   ratingKey: string;
   parentRatingKey?: string;
   guid: string;
@@ -381,6 +382,9 @@ export const sanitizePlexMetadata = (
 
   return {
     ratingKey: item.ratingKey,
+    librarySectionID: /^[1-9][0-9]{0,19}$/.test(String(value.librarySectionID))
+      ? String(value.librarySectionID)
+      : undefined,
     parentRatingKey: item.parentRatingKey,
     guid: item.guid,
     type: item.type,
@@ -971,6 +975,13 @@ class PlexAPI extends ExternalAPI {
           return normalized ? [normalized] : [];
         }),
     };
+  }
+
+  public async analyzeSeason(key: string): Promise<void> {
+    if (!/^[1-9][0-9]{0,19}$/.test(key)) {
+      throw new Error('Invalid Plex season identity');
+    }
+    await this.request<void>('PUT', `/library/metadata/${key}/analyze`);
   }
 
   public async getMetadata(

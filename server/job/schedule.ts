@@ -15,6 +15,8 @@ import {
   syncRecordings,
 } from '@server/lib/liveTv/recordings';
 import { syncSportsFollows } from '@server/lib/liveTv/sports';
+import movieCollectionQueues from '@server/lib/movieCollectionQueue';
+import plexPlaybackAnalysis from '@server/lib/plexPlaybackAnalysis';
 import { syncBookOrbitKoboCollections } from '@server/lib/readerDeliveryKobo';
 import refreshToken from '@server/lib/refreshToken';
 import { captureReleaseCalendarHistory } from '@server/lib/releaseCalendar/history';
@@ -374,6 +376,36 @@ export const startJobs = (): void => {
       }),
       running: () => jellyfinFullScanner.status().running,
       cancelFn: () => jellyfinFullScanner.cancel(),
+    });
+  }
+
+  if (mediaServerType === MediaServerType.PLEX) {
+    scheduledJobs.push({
+      id: 'plex-playback-analysis',
+      name: 'Plex Playback Analysis',
+      type: 'process',
+      interval: 'minutes',
+      cronSchedule: jobs['plex-playback-analysis'].schedule,
+      job: schedule.scheduleJob(jobs['plex-playback-analysis'].schedule, () =>
+        runTrackedJob('Plex Playback Analysis', () =>
+          plexPlaybackAnalysis.run()
+        )
+      ),
+    });
+  }
+
+  if (isWatchAheadMediaServer(mediaServerType)) {
+    scheduledJobs.push({
+      id: 'movie-collection-queue',
+      name: 'Movie Collection Queue',
+      type: 'process',
+      interval: 'minutes',
+      cronSchedule: jobs['movie-collection-queue'].schedule,
+      job: schedule.scheduleJob(jobs['movie-collection-queue'].schedule, () =>
+        runTrackedJob('Movie Collection Queue', () =>
+          movieCollectionQueues.run()
+        )
+      ),
     });
   }
 

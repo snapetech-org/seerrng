@@ -152,7 +152,10 @@ export default class QBittorrentClient implements DownloadClientAdapter {
         'auth'
       );
     }
-    if (response.status !== 200 || String(response.data).trim() !== 'Ok.') {
+    if (
+      response.status !== 204 &&
+      (response.status !== 200 || String(response.data).trim() !== 'Ok.')
+    ) {
       throw new DownloadClientError(
         'qBittorrent rejected the username or password.',
         'auth'
@@ -161,7 +164,7 @@ export default class QBittorrentClient implements DownloadClientAdapter {
 
     const cookie = readSetCookie(
       response.headers as Record<string, unknown>,
-      'SID'
+      /^(?:SID|QBT_SID_[0-9]+)$/
     );
     // Some installs bypass authentication for local networks and return no
     // cookie; later requests then work without one.

@@ -3780,6 +3780,120 @@ requestRoutes.get('/:requestId', async (req, res, next) => {
   }
 });
 
+requestRoutes.post(
+  '/:requestId/episode-queue',
+  isAuthenticated(Permission.ADMIN),
+  async (req, res, next) => {
+    const requestId = parseRequestParamId(req.params.requestId);
+    if (!requestId) return next({ status: 404, message: 'Request not found.' });
+    const body = req.body;
+    if (
+      !body ||
+      typeof body !== 'object' ||
+      Array.isArray(body) ||
+      Object.keys(body).some((key) => key !== 'episodeCount') ||
+      (body.episodeCount !== null &&
+        (!Number.isSafeInteger(body.episodeCount) ||
+          body.episodeCount < 0 ||
+          body.episodeCount > 5))
+    ) {
+      return next({
+        status: 400,
+        message: 'episodeCount must be null or an integer between 0 and 5.',
+      });
+    }
+    try {
+      const repository = getRepository(MediaRequest);
+      const initial = await repository.findOne({
+        where: { id: requestId },
+        relations: { requestedBy: true },
+      });
+      if (!initial) return next({ status: 404, message: 'Request not found.' });
+      return await runUserSecurityMutationWithActor(
+        req.user!.id,
+        initial.requestedBy.id,
+        Permission.ADMIN,
+        (actor) =>
+          runWithRequestAdmission(
+            [getRequestMutationAdmissionKey(requestId)],
+            async () => {
+              if (!actor.hasPermission(Permission.ADMIN))
+                return next({
+                  status: 403,
+                  message: 'Administrator access is required.',
+                });
+              const request = await repository.findOne({
+                where: { id: requestId },
+                relations: { requestedBy: { settings: true }, media: true },
+              });
+              if (!request)
+                return next({ status: 404, message: 'Request not found.' });
+              if (request.requestedBy.id !== initial.requestedBy.id)
+                return next({
+                  status: 409,
+                  message: 'The request owner changed. Reload and try again.',
+                });
+              if (
+                request.type !== MediaType.TV ||
+                request.watchAheadParentRequestId ||
+                request.isAutoRequest ||
+                ![
+                  MediaRequestStatus.PENDING,
+                  MediaRequestStatus.APPROVED,
+                  MediaRequestStatus.COMPLETED,
+                ].includes(request.status)
+              ) {
+                return next({
+                  status: 409,
+                  message:
+                    'Episode Queue can only be configured for an active interactive series request.',
+                });
+              }
+              const usesUserDefault = body.episodeCount === null;
+              const episodeCount = usesUserDefault
+                ? (request.requestedBy.settings
+                    ?.episodeQueueDefaultEpisodeCount ?? 0)
+                : body.episodeCount;
+              if (
+                episodeCount > 0 &&
+                (!Number.isSafeInteger(request.media.tvdbId) ||
+                  !request.media.tvdbId ||
+                  request.media.tvdbId <= 0 ||
+                  !hasMediaRequestPermission(
+                    request.requestedBy,
+                    MediaType.TV,
+                    request.is4k
+                  ))
+              ) {
+                return next({
+                  status: 409,
+                  message:
+                    'The request needs a TVDB identity and an owner with permission for its TV quality.',
+                });
+              }
+              // Updating queue policy must not redispatch or rewrite the original request.
+              await repository.update(request.id, {
+                watchAheadEpisodeCount: episodeCount,
+                watchAheadUsesUserDefault: usesUserDefault,
+                watchAheadLastReconciledAt: null,
+                modifiedBy: actor,
+              });
+              return res.json({ episodeCount, usesUserDefault });
+            }
+          ),
+        { expectedCredentialVersion: getExpectedCredentialVersion(req) }
+      );
+    } catch (error) {
+      if (error instanceof UserMutationActorUnauthorizedError)
+        return next({
+          status: 403,
+          message: 'Administrator access is required.',
+        });
+      return next(error);
+    }
+  }
+);
+
 requestRoutes.put<{ requestId: string }>(
   '/:requestId',
   async (req, res, next) => {

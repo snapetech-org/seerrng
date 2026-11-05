@@ -6,11 +6,13 @@ const clickFirstTitleCardInSlider = (sliderTitle: string): void => {
       .find('[data-testid=title-card]', { timeout: 15000 })
       .first();
 
+  // Poster cards may hide their title until opened. Activate the card before
+  // reading it, just as a person does, rather than relying on missing artwork.
+  firstCard().find('[data-poster-region="frame"]').click({ force: true });
   firstCard()
     .find('[data-testid=title-card-title]')
     .invoke('text')
     .then((text) => {
-      firstCard().find('[data-poster-region="frame"]').click({ force: true });
       firstCard()
         .find('[data-poster-region="detail-link"]')
         .click({ force: true });
@@ -259,7 +261,8 @@ describe('Discover', () => {
       mediaType: 'movie',
       title: 'Upcoming Movie Fixture',
       releaseDate: '2099-01-01',
-      posterPath: null,
+      // Exercise the real poster-card interaction without external artwork.
+      posterPath: '/images/seerr_poster_not_found_logo_top.png',
     };
     cy.intercept(
       {
@@ -275,7 +278,13 @@ describe('Discover', () => {
       }
     ).as('getUpcomingMovies');
     stubTitleDetails('movie', movie);
-    cy.visit('/offline.html');
+    // Stop this utility page's automatic online reload from racing cleanup or
+    // the subsequent Discover navigation. The next visit gets a fresh window.
+    cy.visit('/offline.html', {
+      onBeforeLoad(win) {
+        cy.stub(win, 'fetch').rejects(new Error('Cache reset fixture'));
+      },
+    });
     cy.window().then(async (win) => {
       if ('serviceWorker' in win.navigator) {
         const registrations =
@@ -289,6 +298,15 @@ describe('Discover', () => {
         name.startsWith('seerrng-data-')
       );
       await Promise.all(dataCaches.map((name) => win.caches.delete(name)));
+      // This test asserts a fresh HTTP request, while normal Discover visits
+      // intentionally reuse a fresh local snapshot without requesting it.
+      Object.keys(win.localStorage)
+        .filter(
+          (key) =>
+            key.startsWith('seerr-discover-snapshot-') ||
+            key.startsWith('seerr-discover-manifest-')
+        )
+        .forEach((key) => win.localStorage.removeItem(key));
     });
     cy.visit('/');
     cy.contains('.slider-header', 'Upcoming Movies').scrollIntoView();
