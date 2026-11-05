@@ -2051,15 +2051,17 @@ test('music and legacy request filters retain rendered control order and current
     true,
     'untruthful active direction variant fails'
   );
+  const withoutDirectionCallback = direction.replace(
+    /setCurrentSortDirection\(\s*((?:current|effective)SortDirection ===)/,
+    'retiredSortDirection($1'
+  );
+  assert.notEqual(
+    withoutDirectionCallback,
+    direction,
+    'negative fixture must remove the actual current direction callback'
+  );
   assert.equal(
-    fails(
-      directionFile,
-      direction.replace(
-        /setCurrentSortDirection\(\s*currentSortDirection ===/,
-        'retiredSortDirection(currentSortDirection ==='
-      ),
-      directionReason
-    ),
+    fails(directionFile, withoutDirectionCallback, directionReason),
     true,
     'lost direction callback fails'
   );

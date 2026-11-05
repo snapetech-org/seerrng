@@ -79,3 +79,10 @@ provider/avatar fixtures. Otherwise service-worker requests bypass Playwright
 routes after reload and turn an offline provider failure into a false theme
 failure. The test retains its console/page-error checks and passes offline.
 Failure screenshots and overflow owner dimensions are retained for Quick Connect.
+
+The first final tooling CI exposed a stale negative fixture: it tried to remove a
+callback using `currentSortDirection` after metadata sorting introduced the
+resolved `effectiveSortDirection`. The mutation was a no-op, not a product
+failure. It now removes the actual callback and explicitly asserts that the
+fixture changed before checking that the guard rejects it. The production guard
+and browser sorting assertions remain strict.
