@@ -75,7 +75,8 @@ describe('getDefaultSearchType', () => {
   it('starts searches from book discovery with the book filter', () => {
     strictEqual(getDefaultSearchType('/discover/books'), 'book');
     strictEqual(getDefaultSearchType('/discover/audiobooks'), 'book');
-    strictEqual(getDefaultSearchType('/discover/movies'), undefined);
+    strictEqual(getDefaultSearchType('/discover/movies'), 'movie');
+    strictEqual(getDefaultSearchType('/discover/tv'), 'tv');
   });
 });
 
