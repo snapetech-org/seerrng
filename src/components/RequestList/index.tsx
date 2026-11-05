@@ -256,6 +256,212 @@ const RequestList = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
+  const requestFilters = (
+    <OptionalDisclosure enabled={persius}>
+      {persius &&
+        hasPermission([Permission.MANAGE_REQUESTS, Permission.REQUEST_VIEW], {
+          type: 'or',
+        }) &&
+        !userId &&
+        !router.pathname.startsWith('/profile') && (
+          <label className="persius-scope">
+            <input
+              type="checkbox"
+              checked={router.query.allUsers === 'true'}
+              onChange={(event) =>
+                void router.push({
+                  pathname: router.pathname,
+                  query: {
+                    ...router.query,
+                    allUsers: String(event.target.checked),
+                    page: '1',
+                  },
+                })
+              }
+            />
+            {intl.formatMessage(persiusMessages.allUsers)}
+          </label>
+        )}
+      <PinnedFilterSectionGroup
+        mediaType={
+          effectiveMediaType === 'tv'
+            ? 'tv'
+            : effectiveMediaType === 'sports'
+              ? 'tv'
+              : effectiveMediaType === 'music'
+                ? 'music'
+                : effectiveMediaType === 'book'
+                  ? 'book'
+                  : 'movie'
+        }
+        sections={[
+          {
+            section: 'taskFilters',
+            label: intl.formatMessage(messages.taskFilters),
+            children: (
+              <div className="app-filter-row">
+                <CompactSelect
+                  label={intl.formatMessage(globalMessages.status)}
+                  value={effectiveFilter}
+                  defaultValue="pending"
+                  options={(
+                    [
+                      ['active', persiusMessages.active],
+                      ['all', globalMessages.all],
+                      ['pending', globalMessages.pending],
+                      ['approved', globalMessages.approved],
+                      ['completed', globalMessages.completed],
+                      ['processing', globalMessages.processing],
+                      ['failed', globalMessages.failed],
+                      ['available', globalMessages.available],
+                      ['unavailable', globalMessages.unavailable],
+                      ['deleted', globalMessages.deleted],
+                    ] as const
+                  ).map(([value, label]) => ({
+                    value,
+                    label: intl.formatMessage(label),
+                  }))}
+                  onChange={(value) => {
+                    setCurrentFilter(value as Filter);
+                    router.push({
+                      pathname: router.pathname,
+                      query: persius
+                        ? {
+                            ...router.query,
+                            filter: value,
+                            mediaType: effectiveMediaType,
+                            page: '1',
+                          }
+                        : router.query.userId
+                          ? {
+                              userId: router.query.userId,
+                              filter: value,
+                              mediaType: effectiveMediaType,
+                            }
+                          : {
+                              filter: value,
+                              mediaType: effectiveMediaType,
+                            },
+                    });
+                  }}
+                />
+              </div>
+            ),
+          },
+          {
+            section: 'mediaFilters',
+            label: intl.formatMessage(messages.mediaFilters),
+            children: (
+              <div className="app-filter-row">
+                <CompactSelect
+                  label={intl.formatMessage(messages.mediaType)}
+                  value={effectiveMediaType}
+                  options={(
+                    [
+                      ['all', globalMessages.all],
+                      ['movie', globalMessages.movies],
+                      ['tv', globalMessages.tvshows],
+                      ['music', globalMessages.music],
+                      ['book', globalMessages.books],
+                      ['sports', globalMessages.sports],
+                    ] as const
+                  ).map(([value, label]) => ({
+                    value,
+                    label: intl.formatMessage(label),
+                  }))}
+                  onChange={(value) => {
+                    setCurrentMediaType(value as MediaType);
+                    if (
+                      value !== 'movie' &&
+                      value !== 'tv' &&
+                      !['added', 'modified'].includes(currentSort)
+                    ) {
+                      setCurrentSort('added');
+                      setCurrentSortDirection('desc');
+                    }
+                    router.push({
+                      pathname: router.pathname,
+                      query: persius
+                        ? {
+                            ...router.query,
+                            mediaType: value,
+                            page: '1',
+                          }
+                        : router.query.userId
+                          ? {
+                              userId: router.query.userId,
+                              mediaType: value,
+                            }
+                          : { mediaType: value },
+                    });
+                  }}
+                />
+              </div>
+            ),
+          },
+          {
+            section: 'sortBy',
+            label: intl.formatMessage(messages.sortBy),
+            children: (
+              <div className="app-filter-row">
+                <CompactSelect
+                  label={intl.formatMessage(messages.sortBy)}
+                  value={effectiveSort}
+                  options={sortOptions.map((option) => ({
+                    value: option.value,
+                    label: intl.formatMessage(messages[option.label]),
+                  }))}
+                  onChange={(value) => {
+                    setCurrentSort(value as Sort);
+                    setCurrentSortDirection(value === 'title' ? 'asc' : 'desc');
+                    router.push({
+                      pathname: router.pathname,
+                      query: persius
+                        ? {
+                            ...router.query,
+                            filter: effectiveFilter,
+                            mediaType: effectiveMediaType,
+                            page: '1',
+                          }
+                        : router.query.userId
+                          ? {
+                              userId: router.query.userId,
+                              filter: effectiveFilter,
+                              mediaType: effectiveMediaType,
+                            }
+                          : {
+                              filter: effectiveFilter,
+                              mediaType: effectiveMediaType,
+                            },
+                    });
+                  }}
+                />
+                <Tooltip content={intl.formatMessage(messages.sortDirection)}>
+                  <button
+                    type="button"
+                    className={getFilterToggleButtonClass(false)}
+                    aria-label={intl.formatMessage(messages.sortDirection)}
+                    onClick={() =>
+                      setCurrentSortDirection(
+                        effectiveSortDirection === 'asc' ? 'desc' : 'asc'
+                      )
+                    }
+                  >
+                    {effectiveSortDirection === 'asc' ? (
+                      <ArrowUpIcon />
+                    ) : (
+                      <ArrowDownIcon />
+                    )}
+                  </button>
+                </Tooltip>
+              </div>
+            ),
+          },
+        ]}
+      />
+    </OptionalDisclosure>
+  );
+
   return (
     <>
       <PageTitle
@@ -282,6 +488,7 @@ const RequestList = () => {
       >
         {intl.formatMessage(messages.requests)}
       </Header>
+      {!persius && requestFilters}
       {persius && (
         <>
           <p className="persius-page-description">
@@ -371,201 +578,7 @@ const RequestList = () => {
           )}
         </div>
       )}
-      <OptionalDisclosure enabled={persius}>
-        {persius &&
-          hasPermission([Permission.MANAGE_REQUESTS, Permission.REQUEST_VIEW], {
-            type: 'or',
-          }) &&
-          !userId &&
-          !router.pathname.startsWith('/profile') && (
-            <label className="persius-scope">
-              <input
-                type="checkbox"
-                checked={router.query.allUsers === 'true'}
-                onChange={(event) =>
-                  void router.push({
-                    pathname: router.pathname,
-                    query: {
-                      ...router.query,
-                      allUsers: String(event.target.checked),
-                      page: '1',
-                    },
-                  })
-                }
-              />
-              {intl.formatMessage(persiusMessages.allUsers)}
-            </label>
-          )}
-        <PinnedFilterSectionGroup
-          mediaType={
-            effectiveMediaType === 'tv'
-              ? 'tv'
-              : effectiveMediaType === 'sports'
-                ? 'tv'
-                : effectiveMediaType === 'music'
-                  ? 'music'
-                  : effectiveMediaType === 'book'
-                    ? 'book'
-                    : 'movie'
-          }
-          sections={[
-            {
-              section: 'taskFilters',
-              label: intl.formatMessage(messages.taskFilters),
-              children: (
-                <div className="app-filter-row">
-                  <CompactSelect
-                    label={intl.formatMessage(globalMessages.status)}
-                    value={effectiveFilter}
-                    defaultValue="pending"
-                    options={(
-                      [
-                        ['active', persiusMessages.active],
-                        ['all', globalMessages.all],
-                        ['pending', globalMessages.pending],
-                        ['approved', globalMessages.approved],
-                        ['completed', globalMessages.completed],
-                        ['processing', globalMessages.processing],
-                        ['failed', globalMessages.failed],
-                        ['available', globalMessages.available],
-                        ['unavailable', globalMessages.unavailable],
-                        ['deleted', globalMessages.deleted],
-                      ] as const
-                    ).map(([value, label]) => ({
-                      value,
-                      label: intl.formatMessage(label),
-                    }))}
-                    onChange={(value) => {
-                      setCurrentFilter(value as Filter);
-                      router.push({
-                        pathname: router.pathname,
-                        query: persius
-                          ? {
-                              ...router.query,
-                              filter: value,
-                              mediaType: effectiveMediaType,
-                              page: '1',
-                            }
-                          : router.query.userId
-                            ? {
-                                userId: router.query.userId,
-                                filter: value,
-                                mediaType: effectiveMediaType,
-                              }
-                            : { filter: value, mediaType: effectiveMediaType },
-                      });
-                    }}
-                  />
-                </div>
-              ),
-            },
-            {
-              section: 'mediaFilters',
-              label: intl.formatMessage(messages.mediaFilters),
-              children: (
-                <div className="app-filter-row">
-                  <CompactSelect
-                    label={intl.formatMessage(messages.mediaType)}
-                    value={effectiveMediaType}
-                    options={(
-                      [
-                        ['all', globalMessages.all],
-                        ['movie', globalMessages.movies],
-                        ['tv', globalMessages.tvshows],
-                        ['music', globalMessages.music],
-                        ['book', globalMessages.books],
-                        ['sports', globalMessages.sports],
-                      ] as const
-                    ).map(([value, label]) => ({
-                      value,
-                      label: intl.formatMessage(label),
-                    }))}
-                    onChange={(value) => {
-                      setCurrentMediaType(value as MediaType);
-                      if (
-                        value !== 'movie' &&
-                        value !== 'tv' &&
-                        !['added', 'modified'].includes(currentSort)
-                      ) {
-                        setCurrentSort('added');
-                        setCurrentSortDirection('desc');
-                      }
-                      router.push({
-                        pathname: router.pathname,
-                        query: persius
-                          ? { ...router.query, mediaType: value, page: '1' }
-                          : router.query.userId
-                            ? { userId: router.query.userId, mediaType: value }
-                            : { mediaType: value },
-                      });
-                    }}
-                  />
-                </div>
-              ),
-            },
-            {
-              section: 'sortBy',
-              label: intl.formatMessage(messages.sortBy),
-              children: (
-                <div className="app-filter-row">
-                  <CompactSelect
-                    label={intl.formatMessage(messages.sortBy)}
-                    value={effectiveSort}
-                    options={sortOptions.map((option) => ({
-                      value: option.value,
-                      label: intl.formatMessage(messages[option.label]),
-                    }))}
-                    onChange={(value) => {
-                      setCurrentSort(value as Sort);
-                      setCurrentSortDirection(
-                        value === 'title' ? 'asc' : 'desc'
-                      );
-                      router.push({
-                        pathname: router.pathname,
-                        query: persius
-                          ? {
-                              ...router.query,
-                              filter: effectiveFilter,
-                              mediaType: effectiveMediaType,
-                              page: '1',
-                            }
-                          : router.query.userId
-                            ? {
-                                userId: router.query.userId,
-                                filter: effectiveFilter,
-                                mediaType: effectiveMediaType,
-                              }
-                            : {
-                                filter: effectiveFilter,
-                                mediaType: effectiveMediaType,
-                              },
-                      });
-                    }}
-                  />
-                  <Tooltip content={intl.formatMessage(messages.sortDirection)}>
-                    <button
-                      type="button"
-                      className={getFilterToggleButtonClass(false)}
-                      aria-label={intl.formatMessage(messages.sortDirection)}
-                      onClick={() =>
-                        setCurrentSortDirection(
-                          effectiveSortDirection === 'asc' ? 'desc' : 'asc'
-                        )
-                      }
-                    >
-                      {effectiveSortDirection === 'asc' ? (
-                        <ArrowUpIcon />
-                      ) : (
-                        <ArrowDownIcon />
-                      )}
-                    </button>
-                  </Tooltip>
-                </div>
-              ),
-            },
-          ]}
-        />
-      </OptionalDisclosure>
+      {persius && requestFilters}
       <PaginationFooter
         page={page}
         pageSize={currentPageSize}

@@ -116,6 +116,7 @@ for (const width of [1440, 390]) {
       await page.getByRole('option', { name: 'All', exact: true }).click();
       await expect(cards).toHaveCount(2);
     }
+    await expect(page.getByRole('listbox')).toHaveCount(0);
     await page.screenshot({
       path: info.outputPath(`person-${theme}-${width}.png`),
       animations: 'disabled',
@@ -175,7 +176,8 @@ for (const width of [1440, 390]) {
     await login(page, baseURL!);
     const requests: URL[] = [];
     await page.route('**/api/v1/request?**', async (route) => {
-      requests.push(new URL(route.request().url()));
+      const url = new URL(route.request().url());
+      if (url.searchParams.has('sort')) requests.push(url);
       await route.fulfill({
         json: {
           pageInfo: { pages: 1, page: 1, results: 0, pageSize: 10 },
@@ -185,11 +187,31 @@ for (const width of [1440, 390]) {
       });
     });
     await page.goto('/users/1/requests?mediaType=movie');
+    if (theme === 'persiusNG') {
+      await page
+        .locator('details.persius-secondary')
+        .last()
+        .locator('summary')
+        .click();
+    }
     const select = page.locator(
       '.app-filter-select-trigger[aria-label="Sort By"]'
     );
     if (!(await select.isVisible()))
       await page.getByRole('button', { name: 'Sort By', exact: true }).click();
+    const filtersBox = await select.boundingBox();
+    const emptyBox = await page
+      .getByText('No results', { exact: true })
+      .boundingBox();
+    expect(filtersBox).not.toBeNull();
+    expect(emptyBox).not.toBeNull();
+    if (!baseline && theme !== 'persiusNG')
+      expect(filtersBox!.y + filtersBox!.height).toBeLessThan(emptyBox!.y);
+    await page.screenshot({
+      path: info.outputPath(`history-${theme}-${width}.png`),
+      animations: 'disabled',
+      fullPage: true,
+    });
     await select.click();
     if (baseline) {
       await expect(
@@ -228,7 +250,7 @@ for (const width of [1440, 390]) {
     }
     await page.evaluate(() => scrollTo(0, 0));
     await page.screenshot({
-      path: info.outputPath(`history-${theme}-${width}.png`),
+      path: info.outputPath(`history-fallback-${theme}-${width}.png`),
       animations: 'disabled',
       fullPage: true,
     });

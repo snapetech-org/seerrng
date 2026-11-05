@@ -34,8 +34,48 @@ Focused hook/person tests pass 18 cases; collection-search API tests pass 38
 cases, including duplicate collection IDs and omission for movie maturity limits.
 Client typecheck passes. Four matched desktop/phone baseline browser cases pass
 at 1440×900 and 390×900. Person and request-history controls reuse CompactSelect
-and shared filter owners; no styles or new design values are introduced.
+and shared filter owners; no new design values are introduced.
 
-Candidate production rendering, visual comparison and final owner CI remain
-required before integration. Provider access uses fixtures and does not certify
-live upstream service availability.
+The combined full `pnpm build` path passes on Node 24.22.2, including i18n and
+current-batch/UI prebuild gates. Final owner CI remains required before integration.
+Provider access uses fixtures and does not certify live upstream availability.
+
+## Final integration and responsive repairs
+
+The candidate preserves the complete history of PR #560 and its 12 original
+contributions, alongside the five originals above. Combining the filters retains
+viewer availability and requested-title backfill with the existing scan limit.
+Request-history sorting retains Persius account scope and its secondary controls;
+classic filters are restored above results through one shared JSX owner.
+
+Full owner CI on the earlier combined source passed 4,017 native cases with five
+skips. Its one browser failure was reproduced in a complete local sequence and
+traced to `login-link-user-search`: 404px document width at a 390px viewport.
+SeerrNGJ applied its two-column settings grid on phones; the one-column rule only
+existed in preview containers and had weaker specificity. The existing theme
+owner now applies the matching one-column selector at its established 639px
+breakpoint, in both live and preview contexts. Desktop values are unchanged.
+The generated comparison page is synchronized to that owner.
+
+The policy/save/overflow checks pass at 320, 390, 639, 640 and 1440px. Twelve
+additional matched cases cover Users, Services, Network and General settings at
+390, 640 and 1440px. They await the active stylesheet and use identical service
+fixtures. Nine screenshot pairs are pixel-identical; the three changed pairs
+are the intended phone stacking on Users, Services and Network. They were
+visually reviewed, including text, field/control widths, cards and navigation.
+Main settings and all tablet/desktop pairs retain their prior rendering.
+Evidence: `settings-grid-final-*`, `settings-phone-grid-fixed-*` and the
+`settings-*-review.jpg` captures. Earlier 55125 captures show the legacy theme
+host; final comparisons use the native #560 runtime on 55129.
+
+Eighteen discovery browser cases pass across SeerrOrig, SeerrNGJ and PersiusNG
+on the combined production build and verify
+credit identity/sorting, explicit requested Search and metadata-sort fallback
+without losing requester scope. Additional focused native checks pass 38 Search
+API cases and eight metadata/sort cases; hook/person checks pass 18 cases.
+
+The interface-theme persistence test now blocks service workers while installing
+provider/avatar fixtures. Otherwise service-worker requests bypass Playwright
+routes after reload and turn an offline provider failure into a false theme
+failure. The test retains its console/page-error checks and passes offline.
+Failure screenshots and overflow owner dimensions are retained for Quick Connect.
