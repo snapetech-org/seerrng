@@ -41,9 +41,9 @@ export class TypeormSessionStore extends Store {
     callback: (error: unknown, session?: SessionData | null) => void
   ): void {
     void this.repository
-      .findOne({ where: { id: sid } })
+      .findOne({ where: { id: sid, expiredAt: MoreThan(Date.now()) } })
       .then((session) => {
-        if (!session) {
+        if (!session || Number(session.expiredAt) <= Date.now()) {
           callback(null, null);
           return;
         }
@@ -82,7 +82,7 @@ export class TypeormSessionStore extends Store {
   ): void {
     void this.repository
       .update(
-        { id: sid, destroyedAt: IsNull() },
+        { id: sid, destroyedAt: IsNull(), expiredAt: MoreThan(Date.now()) },
         { expiredAt: this.expiresAt(session) }
       )
       .then(() => callback?.())
