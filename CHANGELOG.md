@@ -9,6 +9,17 @@ v3.72.7 section consolidates changes from the requested v3.71.4 baseline
 through v3.72.7, including changes also represented by unpublished interim
 tags. The comparison link is the complete commit range.
 
+## [3.72.14](https://github.com/snapetech-org/seerrng/compare/v3.72.13..v3.72.14) - 2026-11-06
+
+Includes the earlier contribution recovery and application security fixes. This section records the additional Lumen production-image dependency repair and its ongoing image-scan gate.
+
+### User-facing changes
+
+#### Security
+
+- **Lumen:** Lumen uses an updated digest of its nginx base image to replace vulnerable Brotli, curl and Expat packages. Rebuild Lumen to receive the updated image. CI now scans the same production image used by the proxy tests and rejects fixable HIGH or CRITICAL vulnerabilities.
+  - **Action required:** Rebuild and recreate the Lumen container to receive the updated base packages.
+
 ## [3.72.13](https://github.com/snapetech-org/seerrng/compare/v3.72.10..v3.72.13) - 2026-11-06
 
 This release includes the recovery and security repairs staged for v3.72.11 and v3.72.12, whose publication was blocked by localization packaging checks. Windows and Linux now validate the complete localization and source-contract preflight before release packaging.

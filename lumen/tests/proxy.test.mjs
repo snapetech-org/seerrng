@@ -10,6 +10,7 @@ const docker = async (...args) =>
 const root = resolve(import.meta.dirname, '..');
 const containers = new Set();
 let image, port, gateway;
+let imageBuilt = false;
 let extraCalls = 0;
 const echo = createServer((req, res) => {
   if (req.url === '/api/v1/auth/me') {
@@ -49,16 +50,29 @@ before(async () => {
     image,
     root
   );
+  imageBuilt = true;
   gateway = JSON.parse(await docker('network', 'inspect', 'bridge'))[0].IPAM
     .Config[0].Gateway;
   await new Promise((resolve) => echo.listen(0, '0.0.0.0', resolve));
   port = echo.address().port;
 });
 after(async () => {
-  for (const id of containers) await docker('rm', '-f', id);
-  if (image) await docker('image', 'rm', image);
-  echo.closeAllConnections();
-  await new Promise((resolve) => echo.close(resolve));
+  try {
+    for (const id of containers) await docker('rm', '-f', id);
+    if (imageBuilt && process.env.LUMEN_IMAGE_AUDIT_ARCHIVE) {
+      await docker(
+        'image',
+        'save',
+        '--output',
+        resolve(process.env.LUMEN_IMAGE_AUDIT_ARCHIVE),
+        image
+      );
+    }
+  } finally {
+    if (imageBuilt) await docker('image', 'rm', image);
+    echo.closeAllConnections();
+    await new Promise((resolve) => echo.close(resolve));
+  }
 });
 const args = (settings = {}) => [
   '--add-host',
