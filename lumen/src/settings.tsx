@@ -8,7 +8,7 @@ import {
   type ReactNode,
 } from 'react';
 import { useAuth } from './auth';
-import { serverName, type MediaServerSetting } from './mediaServer';
+import { serverName, services, type MediaServerSetting } from './mediaServer';
 
 // Every switchable part of Lumen. Admins set defaults (and can lock them) in
 // lumen-config.json next to the app; each person can change whatever isn't locked.
@@ -127,6 +127,8 @@ export function PrefsProvider({ children }: { children: ReactNode }) {
           withAdmin as unknown as Record<string, unknown>
         )[k];
     }
+    // no ebook or audiobook service in SeerrNG: nothing to show, whatever the setting says
+    if (!services().books) withMine.showBooks = false;
     return withMine;
   }, [admin, mine, locked]);
 

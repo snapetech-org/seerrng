@@ -104,14 +104,16 @@ export default function LumenSettings() {
       </div>
     );
 
+  // one choice per setting: the starting value, and whether people may change it
+  // ("locked" in lumen-config.json)
   const Lock = ({ path }: { path: string }) => (
-    <label className="cfg-lock" title="Stop people changing this">
+    <label className="cfg-lock">
       <input
         type="checkbox"
-        checked={locked.has(path)}
-        onChange={(e) => setLock(path, e.target.checked)}
+        checked={!locked.has(path)}
+        onChange={(e) => setLock(path, !e.target.checked)}
       />
-      Lock
+      Let people change it
     </label>
   );
   const Row = ({
@@ -122,22 +124,30 @@ export default function LumenSettings() {
     path: string;
     title: string;
     on: boolean;
-  }) => (
-    <div className="set cfg-row">
-      <span>
-        <b>{title}</b>
-      </span>
-      <label className="cfg-on">
-        <input
-          type="checkbox"
-          checked={on}
-          onChange={(e) => setDefault(path, e.target.checked)}
-        />
-        On
+  }) => {
+    const value = `${on ? 'on' : 'off'}${locked.has(path) ? '-locked' : ''}`;
+    return (
+      <label className="set cfg-row">
+        <span>
+          <b>{title}</b>
+        </span>
+        <select
+          className="cfg-select"
+          value={value}
+          onChange={(e) => {
+            const v = e.target.value;
+            setDefault(path, v.startsWith('on'));
+            setLock(path, v.endsWith('-locked'));
+          }}
+        >
+          <option value="on">On (people can turn it off)</option>
+          <option value="off">Off (people can turn it on)</option>
+          <option value="on-locked">Always on</option>
+          <option value="off-locked">Always off</option>
+        </select>
       </label>
-      <Lock path={path} />
-    </div>
-  );
+    );
+  };
 
   return (
     <>
@@ -153,8 +163,9 @@ export default function LumenSettings() {
         <p className="sub">
           Pick what everyone gets, then download <b>lumen-config.json</b> and
           put it next to Lumen (see “Admin defaults” in the Lumen guide). People
-          see the change the next time they open Lumen. Locked settings can’t be
-          changed on anyone’s You page.
+          see the change the next time they open Lumen. “Always on” and “Always
+          off” can’t be changed on anyone’s You page; the others are just where
+          everyone starts.
         </p>
       </header>
 

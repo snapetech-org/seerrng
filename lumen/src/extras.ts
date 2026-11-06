@@ -5,7 +5,8 @@ import { useEffect, useState } from 'react';
 import { api, ApiError, type MediaInfo } from './api';
 import { usePublicSettings } from './hooks';
 import type { IconName } from './icons';
-import { onSessionReset } from './sessionState';
+import { services } from './mediaServer';
+import { onSessionReset, sessionUserId } from './sessionState';
 
 export type Extra =
   'music' | 'comic' | 'magazine' | 'game' | 'sports' | 'adult';
@@ -40,8 +41,32 @@ const PROBE: Partial<Record<Extra, string>> = {
   adult: '/adult/search',
 };
 const probes = new Map<string, Promise<boolean>>();
+// answers are kept for the tab for 10 minutes, so reloading a page doesn't re-ask
+// SeerrNG about every unconfigured category (they count against its rate limit)
+// (kept per account: what answers can depend on permissions)
+const PROBE_TTL = 10 * 60_000;
+const probeKey = () => `lumen-probes:${sessionUserId() ?? 'none'}`;
+const savedProbes = (): Record<string, [boolean, number]> => {
+  try {
+    return JSON.parse(sessionStorage.getItem(probeKey()) || '{}');
+  } catch {
+    return {};
+  }
+};
+const saveProbe = (path: string, ok: boolean) => {
+  try {
+    const all = savedProbes();
+    all[path] = [ok, Date.now()];
+    sessionStorage.setItem(probeKey(), JSON.stringify(all));
+  } catch {
+    // storage full or blocked: just ask again next time
+  }
+};
 onSessionReset(() => probes.clear());
 const probe = (path: string) => {
+  const saved = savedProbes()[path];
+  if (!probes.has(path) && saved && Date.now() - saved[1] < PROBE_TTL)
+    probes.set(path, Promise.resolve(saved[0]));
   if (!probes.has(path)) {
     probes.set(
       path,
@@ -55,6 +80,10 @@ const probe = (path: string) => {
               (e.status === 503 || e.status === 404 || e.status === 403)
             )
         )
+        .then((ok) => {
+          saveProbe(path, ok);
+          return ok;
+        })
     );
   }
   return probes.get(path)!;
@@ -67,12 +96,23 @@ export function useExtras() {
   const games = (['game', 'retro', 'modern'] as GameCategory[]).filter(
     (c) => on[c]
   );
+  // the category must be on in SeerrNG *and* have its service connected
+  const svc = services();
+  const connected: Record<Extra, boolean> = {
+    music: svc.music,
+    comic: svc.comics,
+    magazine: svc.magazines,
+    game: svc.software,
+    sports: svc.sports,
+    adult: true,
+  };
   const enabled = (k: Extra) =>
-    k === 'game'
+    connected[k] &&
+    (k === 'game'
       ? games.length > 0
       : k === 'adult'
         ? !!on.adult && !!pub?.adultEnabled
-        : !!on[k];
+        : !!on[k]);
   const [working, setWorking] = useState<Set<Extra> | null>(null);
   const key =
     EXTRAS.map((e) => (enabled(e.key) ? e.key : '')).join(',') +

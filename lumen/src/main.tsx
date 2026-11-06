@@ -1,7 +1,14 @@
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
-import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
+import {
+  BrowserRouter,
+  Navigate,
+  Route,
+  Routes,
+  useLocation,
+} from 'react-router-dom';
 import { AuthProvider, useAuth } from './auth';
+import { PageBoundary } from './components/PageBoundary';
 import Shell, { Placeholder } from './components/Shell';
 import { ToastProvider } from './components/toast';
 import { MediaServerProvider } from './mediaServer';
@@ -29,43 +36,46 @@ import './styles/touch.css';
 
 function App() {
   const { user } = useAuth();
+  const location = useLocation();
   if (user === undefined) return <div className="boot" aria-busy="true" />;
   if (user === null) return <Login />;
   return (
     <Shell>
-      <Routes>
-        <Route path="/login" element={<Navigate to="/" replace />} />
-        <Route path="/" element={<Discover />} />
-        <Route path="/movies" element={<Browse key="movie" kind="movie" />} />
-        <Route path="/series" element={<Browse key="tv" kind="tv" />} />
-        <Route path="/books" element={<Books key="ebook" format="ebook" />} />
-        <Route
-          path="/audiobooks"
-          element={<Books key="audiobook" format="audiobook" />}
-        />
-        <Route path="/movie/:id" element={<MovieDetail />} />
-        <Route path="/tv/:id" element={<TvDetail />} />
-        <Route path="/book/:id" element={<BookDetail />} />
-        <Route path="/music" element={<Music />} />
-        <Route path="/music/:id" element={<AlbumDetail />} />
-        <Route path="/artist/:id" element={<Artist />} />
-        <Route path="/comics" element={<Comics />} />
-        <Route path="/comic/:id" element={<ComicDetail />} />
-        <Route path="/magazines" element={<Magazines />} />
-        <Route path="/magazine/:title" element={<MagazineDetail />} />
-        <Route path="/games" element={<Games />} />
-        <Route path="/game/:category/:id" element={<GameDetail />} />
-        <Route path="/sports" element={<Sports />} />
-        <Route path="/sportarr/:id" element={<LeagueDetail />} />
-        <Route path="/adult" element={<Adult />} />
-        <Route path="/adult/:id" element={<SceneDetail />} />
-        <Route path="/search" element={<Search />} />
-        <Route path="/requests" element={<Requests />} />
-        <Route path="/soon" element={<Soon />} />
-        <Route path="/me" element={<Me />} />
-        <Route path="/me/lumen" element={<LumenSettings />} />
-        <Route path="*" element={<Placeholder title="Page not found" />} />
-      </Routes>
+      <PageBoundary key={location.pathname}>
+        <Routes>
+          <Route path="/login" element={<Navigate to="/" replace />} />
+          <Route path="/" element={<Discover />} />
+          <Route path="/movies" element={<Browse key="movie" kind="movie" />} />
+          <Route path="/series" element={<Browse key="tv" kind="tv" />} />
+          <Route path="/books" element={<Books key="ebook" format="ebook" />} />
+          <Route
+            path="/audiobooks"
+            element={<Books key="audiobook" format="audiobook" />}
+          />
+          <Route path="/movie/:id" element={<MovieDetail />} />
+          <Route path="/tv/:id" element={<TvDetail />} />
+          <Route path="/book/:id" element={<BookDetail />} />
+          <Route path="/music" element={<Music />} />
+          <Route path="/music/:id" element={<AlbumDetail />} />
+          <Route path="/artist/:id" element={<Artist />} />
+          <Route path="/comics" element={<Comics />} />
+          <Route path="/comic/:id" element={<ComicDetail />} />
+          <Route path="/magazines" element={<Magazines />} />
+          <Route path="/magazine/:title" element={<MagazineDetail />} />
+          <Route path="/games" element={<Games />} />
+          <Route path="/game/:category/:id" element={<GameDetail />} />
+          <Route path="/sports" element={<Sports />} />
+          <Route path="/sportarr/:id" element={<LeagueDetail />} />
+          <Route path="/adult" element={<Adult />} />
+          <Route path="/adult/:id" element={<SceneDetail />} />
+          <Route path="/search" element={<Search />} />
+          <Route path="/requests" element={<Requests />} />
+          <Route path="/soon" element={<Soon />} />
+          <Route path="/me" element={<Me />} />
+          <Route path="/me/lumen" element={<LumenSettings />} />
+          <Route path="*" element={<Placeholder title="Page not found" />} />
+        </Routes>
+      </PageBoundary>
     </Shell>
   );
 }

@@ -128,7 +128,9 @@ export default function Search() {
   };
   const ph =
     f === 'all'
-      ? 'Movies, series, books, narrators…'
+      ? prefs.showBooks
+        ? 'Movies, series, books, narrators…'
+        : 'Movies and series…'
       : `Search ${SCOPES[f].toLowerCase()}…`;
   const movies = (titles || []).filter((t) => t.mediaType === 'movie');
   const shows = (titles || []).filter((t) => t.mediaType === 'tv');

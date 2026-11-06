@@ -149,6 +149,33 @@ export function resolveSite(
 // resolves it once, before anything else renders.
 let current: MediaServer = resolveMediaServer('auto', null);
 let currentSite: Site = resolveSite(null, null);
+// Which request services SeerrNG has behind its categories. A fresh SeerrNG turns every
+// category on with nothing behind most of them; these flags say what actually works.
+// Older SeerrNG builds don't send them, so a missing flag counts as "yes".
+export interface Services {
+  books: boolean;
+  music: boolean;
+  comics: boolean;
+  magazines: boolean;
+  sports: boolean;
+  software: boolean;
+}
+export function resolveServices(pub: Record<string, unknown> | null): Services {
+  const has = (k: string) => pub?.[k] !== false;
+  return {
+    books:
+      has('booksEnabled') ||
+      pub?.ebookServiceEnabled === true ||
+      pub?.audiobookServiceEnabled === true,
+    music: has('musicEnabled'),
+    comics: has('comicsEnabled'),
+    magazines: has('magazinesEnabled'),
+    sports: has('sportsEnabled'),
+    software: has('softwareEnabled'),
+  };
+}
+let currentServices: Services = resolveServices(null);
+export const services = () => currentServices;
 export const mediaServer = () => current;
 export const site = () => currentSite;
 
@@ -168,6 +195,55 @@ function applySite(s: Site) {
 }
 export const serverName = () => current.name;
 
+// SeerrNG rate-limits per account and per address. One 429 on the public settings must
+// not lock everyone out of Lumen: wait as asked and try again, and fall back to the last
+// answer this tab saw.
+const PUBLIC_KEY = 'lumen-public-settings';
+const pause = (ms: number, signal: AbortSignal) =>
+  new Promise<void>((resolve) => {
+    const t = window.setTimeout(resolve, ms);
+    signal.addEventListener(
+      'abort',
+      () => {
+        window.clearTimeout(t);
+        resolve();
+      },
+      { once: true }
+    );
+  });
+async function loadPublicSettings(signal: AbortSignal): Promise<unknown> {
+  for (let attempt = 0; attempt < 3 && !signal.aborted; attempt++) {
+    const r = await fetch('/api/v1/settings/public', {
+      cache: 'no-store',
+      credentials: 'same-origin',
+      signal,
+    }).catch(() => null);
+    if (r?.ok) {
+      const body = await r.json().catch(() => null);
+      if (body && typeof body === 'object' && !Array.isArray(body)) {
+        try {
+          sessionStorage.setItem(PUBLIC_KEY, JSON.stringify(body));
+        } catch {
+          // storage blocked: fine, just no fallback next time
+        }
+        return body;
+      }
+    }
+    // only "slow down" is worth waiting for; anything else shows Retry straight away
+    if (!r || r.status !== 429) break;
+    const after = Number(r?.headers.get('Retry-After'));
+    await pause(
+      Math.min(6, after > 0 ? after : 2 * (attempt + 1)) * 1000,
+      signal
+    );
+  }
+  try {
+    return JSON.parse(sessionStorage.getItem(PUBLIC_KEY) || 'null');
+  } catch {
+    return null;
+  }
+}
+
 export function MediaServerProvider({ children }: { children: ReactNode }) {
   const [server, setServer] = useState<MediaServer | null>(null);
   const [failed, setFailed] = useState(false);
@@ -176,7 +252,7 @@ export function MediaServerProvider({ children }: { children: ReactNode }) {
     let live = true;
     setFailed(false);
     const controller = new AbortController();
-    const timeout = window.setTimeout(() => controller.abort(), 15000);
+    const timeout = window.setTimeout(() => controller.abort(), 20000);
     const json = (url: string) =>
       fetch(url, {
         cache: 'no-store',
@@ -185,7 +261,10 @@ export function MediaServerProvider({ children }: { children: ReactNode }) {
       })
         .then((r) => (r.ok ? r.json() : null))
         .catch(() => null);
-    Promise.all([json('/lumen-config.json'), json('/api/v1/settings/public')])
+    Promise.all([
+      json('/lumen-config.json'),
+      loadPublicSettings(controller.signal),
+    ])
       .then(([config, pub]) => {
         if (!live) return;
         if (!pub || typeof pub !== 'object' || Array.isArray(pub)) {
@@ -197,6 +276,7 @@ export function MediaServerProvider({ children }: { children: ReactNode }) {
           pub as ServerPublicSettings | null
         );
         currentSite = resolveSite(config, pub as ServerPublicSettings);
+        currentServices = resolveServices(pub as Record<string, unknown>);
         applySite(currentSite);
         setServer(current);
       })

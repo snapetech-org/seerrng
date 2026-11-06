@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState, type FormEvent } from 'react';
-import { api } from '../api';
+import { api, ApiError } from '../api';
 import {
   finishQuickConnect,
   QuickConnectCancelled,
@@ -12,6 +12,28 @@ import { BrandMark } from '../components/brand';
 import { mediaServer, site } from '../mediaServer';
 
 type Mode = 'start' | 'server' | 'local' | 'quick';
+
+// SeerrNG answers sign-in failures with codes like INVALID_CREDENTIALS; say it in words
+export function friendly(e: unknown, serverName: string): string {
+  const msg = e instanceof Error ? e.message : '';
+  if (e instanceof ApiError && e.status === 429)
+    return 'Too many sign-in attempts. Wait a few minutes and try again.';
+  switch (msg) {
+    case 'INVALID_CREDENTIALS':
+      return 'That username or password isn’t right.';
+    case 'INVALID_EMAIL':
+      return 'Enter a valid email address.';
+    case 'CONNECTION_ERROR':
+      return `Couldn’t reach ${serverName}. Try again in a moment.`;
+    case 'UNAUTHORIZED':
+    case 'Access denied.':
+      return 'This account doesn’t have access yet. Ask whoever runs this server to add you.';
+    case 'UNKNOWN':
+    case '':
+      return 'Something went wrong signing in. Try again.';
+  }
+  return msg;
+}
 
 export default function Login() {
   const { refresh } = useAuth();
@@ -54,7 +76,7 @@ export default function Login() {
       await refresh();
     } catch (e) {
       if (!(e instanceof QuickConnectCancelled))
-        setErr(e instanceof Error ? e.message : 'Sign-in failed');
+        setErr(friendly(e, server.name));
     } finally {
       active.current = false;
       setBusy(false);

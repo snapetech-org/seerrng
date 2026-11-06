@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
 import { MediaStatus, type TitleResult } from '../api';
 import { MoreOnScroll, TitleCard } from '../components/cards';
@@ -51,7 +51,19 @@ export default function Browse({ kind }: { kind: 'movie' | 'tv' }) {
   const items = list.items.filter((x) =>
     show === 'have' ? onServer(x) : show === 'not' ? !onServer(x) : true
   );
-  // availability is filtered here, not by the API: keep loading pages until the screen fills
+  // Availability is filtered here, not by the API, so a filtered view reads TMDB's list a
+  // page at a time. With a small library almost nothing matches, and an open-ended loop
+  // would walk hundreds of pages and hit SeerrNG's rate limit for the whole account.
+  // Read a few pages at a time and let the person ask for more.
+  const PAGES_PER_LOOK = 5;
+  const [budget, setBudget] = useState(PAGES_PER_LOOK);
+  const filterKey = `${kind}|${show}|${q}`;
+  const [budgetFor, setBudgetFor] = useState(filterKey);
+  if (budgetFor !== filterKey) {
+    setBudgetFor(filterKey);
+    setBudget(PAGES_PER_LOOK);
+  }
+  const capped = show !== 'all' && !list.done && list.page >= budget;
   useEffect(() => {
     if (
       show !== 'all' &&
@@ -60,10 +72,10 @@ export default function Browse({ kind }: { kind: 'movie' | 'tv' }) {
       !list.loading &&
       !list.error &&
       list.page > 0 &&
-      list.page < 6
+      list.page < budget
     )
       void list.more();
-  }, [show, items.length, list]);
+  }, [show, items.length, list, budget]);
   const upd = (k: string, v: string) => {
     const n = new URLSearchParams(p);
     if (!v || v === 'all' || v === 'popularity.desc') n.delete(k);
@@ -174,7 +186,7 @@ export default function Browse({ kind }: { kind: 'movie' | 'tv' }) {
           {list.error}
         </div>
       )}
-      {!list.error && !items.length && !list.loading && (
+      {!list.error && !items.length && !list.loading && !capped && (
         <div className="empty">
           <b>Nothing here</b>Try another genre, or switch to All.
         </div>
@@ -184,7 +196,25 @@ export default function Browse({ kind }: { kind: 'movie' | 'tv' }) {
           <TitleCard key={x.id} it={{ ...x, mediaType: kind }} />
         ))}
       </div>
-      <MoreOnScroll done={list.done} loading={list.loading} more={list.more} />
+      {capped && !list.loading && (
+        <div className="empty">
+          <b>{items.length ? 'That’s all so far' : 'None found yet'}</b>
+          Checked the {(list.page * 20).toLocaleString()} most popular{' '}
+          {word.toLowerCase()}.
+          <button
+            className="btn btn-tonal btn-sm"
+            style={{ marginTop: 10 }}
+            onClick={() => setBudget(list.page + PAGES_PER_LOOK)}
+          >
+            Look further
+          </button>
+        </div>
+      )}
+      <MoreOnScroll
+        done={list.done || capped}
+        loading={list.loading}
+        more={list.more}
+      />
     </>
   );
 }

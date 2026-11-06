@@ -63,8 +63,8 @@ async function fixtures(
         movie(301, 'Only In 4K', { id: 1, status: 1, status4k: 5 }),
         movie(302, 'Fresh Pick'),
       ]);
-    else if (/^\/discover\//.test(path) || path === '/media') json = paged([]);
     else if (path === '/discover/genreslider/movie') json = [];
+    else if (/^\/discover\//.test(path) || path === '/media') json = paged([]);
     else if (path === '/service/radarr')
       json = [
         { id: 0, name: 'Radarr HD', is4k: false, isDefault: true },
@@ -252,8 +252,8 @@ test('admin settings page builds lumen-config.json', async ({ page }) => {
   const row = page.locator('.cfg-row', {
     hasText: 'Show books and audiobooks',
   });
-  await row.getByLabel('On').uncheck();
-  await row.getByLabel('Lock').check();
+  await expect(row.locator('select')).toHaveValue('on');
+  await row.locator('select').selectOption('off-locked');
   const json = JSON.parse(
     await page.getByLabel('lumen-config.json').inputValue()
   );
@@ -334,4 +334,206 @@ test('sign-in card fits narrow phones', async ({ page }) => {
   const box = await page.locator('.login-card').boundingBox();
   const width = page.viewportSize()!.width;
   expect(box!.x + box!.width).toBeLessThanOrEqual(width);
+});
+
+test('a rate-limited settings call is retried instead of blocking Lumen', async ({
+  page,
+}) => {
+  await fixtures(page, { signedIn: false });
+  let calls = 0;
+  await page.route('**/api/v1/settings/public', (route) =>
+    ++calls === 1
+      ? route.fulfill({
+          status: 429,
+          headers: { 'Retry-After': '1' },
+          body: 'Too many requests',
+        })
+      : route.fallback()
+  );
+  await page.goto('/');
+  await expect(
+    page.getByRole('button', { name: 'Continue with Jellyfin' })
+  ).toBeVisible({ timeout: 8000 });
+  await expect(page.getByText('Couldn’t load sign-in options.')).toHaveCount(0);
+  expect(calls).toBe(2);
+});
+
+test('filtered Movies view stops after a few pages and offers to look further', async ({
+  page,
+}) => {
+  await fixtures(page);
+  let pages = 0;
+  await page.route('**/api/v1/discover/movies?*', (route) => {
+    pages++;
+    const n = Number(new URL(route.request().url()).searchParams.get('page'));
+    return route.fulfill({
+      json: {
+        page: n,
+        totalPages: 500,
+        totalResults: 10000,
+        results: Array.from({ length: 20 }, (_, i) => ({
+          id: n * 100 + i,
+          title: `Popular ${n}-${i}`,
+          mediaType: 'movie',
+          releaseDate: '2020-01-01',
+        })),
+      },
+    });
+  });
+  await page.goto('/movies?show=have');
+  await expect(
+    page.getByRole('button', { name: 'Look further' })
+  ).toBeVisible();
+  await page.waitForTimeout(1500);
+  expect(pages).toBe(5);
+  await page.getByRole('button', { name: 'Look further' }).click();
+  await expect.poll(() => pages).toBe(10);
+  await page.waitForTimeout(1000);
+  expect(pages).toBe(10);
+});
+
+test('people without "View Recently Added" get no New on row and no 403s', async ({
+  page,
+}) => {
+  const media: string[] = [];
+  page.on('request', (r) => {
+    if (new URL(r.url()).pathname === '/api/v1/media') media.push(r.url());
+  });
+  await fixtures(page, { permissions: 32 });
+  await page.goto('/');
+  await expect(
+    page.getByRole('heading', { name: 'Discover', exact: true })
+  ).toBeVisible();
+  await page.waitForTimeout(800);
+  await expect(page.getByText('New on Jellyfin')).toHaveCount(0);
+  expect(media).toEqual([]);
+});
+
+test('category checks are not repeated on every page load', async ({
+  page,
+}) => {
+  await fixtures(page);
+  const probes: string[] = [];
+  await page.route(/\/api\/v1\/discover\/sports/, (route) => {
+    probes.push(route.request().url());
+    return route.fulfill({ status: 503, json: {} });
+  });
+  await page.route('**/api/v1/settings/public', (route) =>
+    route.fulfill({
+      json: {
+        applicationTitle: 'Seerr',
+        mediaServerType: 2,
+        mediaServerLogin: true,
+        localLogin: true,
+        enabledMediaCategories: { movie: true, tv: true, sports: true },
+      },
+    })
+  );
+  await page.goto('/');
+  await expect.poll(() => probes.length).toBe(1);
+  await page.goto('/movies');
+  await page.goto('/me');
+  await page.waitForTimeout(800);
+  expect(probes.length).toBe(1);
+});
+
+test('a page that crashes keeps the menus and offers a reload', async ({
+  page,
+}) => {
+  await fixtures(page);
+  // a malformed answer that makes the Discover genre row throw
+  await page.route('**/api/v1/discover/genreslider/movie', (route) =>
+    route.fulfill({ json: { not: 'a list' } })
+  );
+  await page.goto('/');
+  await expect(
+    page.getByText('Something went wrong on this page')
+  ).toBeVisible();
+  await expect(page.getByRole('button', { name: 'Reload' })).toBeVisible();
+  // navigation still works
+  await page.locator('a[href="/me"]').filter({ visible: true }).first().click();
+  await expect(
+    page.getByRole('heading', { name: 'You', exact: true })
+  ).toBeVisible();
+});
+
+test('categories without a connected service stay out of the menus', async ({
+  page,
+}) => {
+  await fixtures(page);
+  // a fresh SeerrNG: every category on, no book/music/magazine service connected
+  await page.route('**/api/v1/settings/public', (route) =>
+    route.fulfill({
+      json: {
+        applicationTitle: 'Seerr',
+        mediaServerType: 2,
+        mediaServerLogin: true,
+        localLogin: true,
+        booksEnabled: false,
+        ebookServiceEnabled: false,
+        audiobookServiceEnabled: false,
+        musicEnabled: false,
+        magazinesEnabled: false,
+        comicsEnabled: false,
+        sportsEnabled: false,
+        softwareEnabled: false,
+        enabledMediaCategories: {
+          movie: true,
+          tv: true,
+          music: true,
+          ebook: true,
+          audiobook: true,
+          comic: true,
+          magazine: true,
+          sports: true,
+          game: true,
+          retro: true,
+          modern: true,
+        },
+      },
+    })
+  );
+  const extraCalls: string[] = [];
+  page.on('request', (r) => {
+    if (
+      /discover\/(sports|comics|magazines|books)|software\/catalog/.test(
+        r.url()
+      )
+    )
+      extraCalls.push(r.url());
+  });
+  await page.goto('/');
+  await expect(
+    page.getByRole('heading', { name: 'Discover', exact: true })
+  ).toBeVisible();
+  await page.waitForTimeout(800);
+  for (const href of [
+    '/books',
+    '/audiobooks',
+    '/music',
+    '/magazines',
+    '/comics',
+    '/sports',
+    '/games',
+  ])
+    await expect(
+      page.locator(`a[href="${href}"]`).filter({ visible: true })
+    ).toHaveCount(0);
+  expect(extraCalls).toEqual([]);
+  await page.goto('/me');
+  await expect(page.getByText('Show books and audiobooks')).toHaveCount(0);
+});
+
+test('sign-in errors are written in words', async ({ page }) => {
+  await fixtures(page, { signedIn: false, config: { loginStyle: 'form' } });
+  await page.route('**/api/v1/auth/jellyfin', (route) =>
+    route.fulfill({ status: 401, json: { message: 'INVALID_CREDENTIALS' } })
+  );
+  await page.goto('/');
+  await page.getByLabel('Username', { exact: true }).fill('grandma');
+  await page.getByLabel('Password').fill('nope');
+  await page.getByRole('button', { name: 'Sign in', exact: true }).click();
+  await expect(page.getByRole('alert')).toHaveText(
+    'That username or password isn’t right.'
+  );
 });

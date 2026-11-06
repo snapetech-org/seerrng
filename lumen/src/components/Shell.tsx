@@ -89,7 +89,9 @@ export default function Shell({ children }: { children: ReactNode }) {
   };
   const placeholder = word[scope]
     ? `Search ${word[scope]}…`
-    : 'Search movies, series, books, narrators…';
+    : prefs.showBooks
+      ? 'Search movies, series, books, narrators…'
+      : 'Search movies and series…';
   const [term, setTerm] = useState('');
   useEffect(() => {
     setTerm(path === '/search' ? params.get('q') || '' : '');

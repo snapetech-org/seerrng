@@ -5,7 +5,7 @@ import { canChooseRequestOptions } from '../components/detail';
 import { initials, SEERR_PUBLIC_URL } from '../components/Shell';
 import { CAN_HOVER, useApi } from '../hooks';
 import { Icon } from '../icons';
-import { mediaServer } from '../mediaServer';
+import { mediaServer, services } from '../mediaServer';
 import {
   DISCOVER_ROWS,
   discoverRowLabel,
@@ -173,12 +173,14 @@ export default function Me() {
               sub="Off: poster Request buttons use the default server, quality and folder"
             />
           )}
-          <Toggle
-            path="showBooks"
-            on={prefs.showBooks}
-            title="Show books and audiobooks"
-            sub="Off: Lumen is movies and series only"
-          />
+          {services().books && (
+            <Toggle
+              path="showBooks"
+              on={prefs.showBooks}
+              title="Show books and audiobooks"
+              sub="Off: Lumen is movies and series only"
+            />
+          )}
         </div>
       </Section>
 
