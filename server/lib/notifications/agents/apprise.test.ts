@@ -171,7 +171,7 @@ describe('Apprise delivery', () => {
       `Basic ${Buffer.from('apprise:secret').toString('base64')}`
     );
     const body = JSON.parse(lastRequest?.body ?? '{}');
-    assert.equal(body.title, 'Seerr test');
+    assert.equal(body.title, '\u2068Seerr test\u2069');
     assert.equal(body.format, 'text');
   });
 

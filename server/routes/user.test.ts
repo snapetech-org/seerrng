@@ -1685,7 +1685,7 @@ describe('User route input validation', () => {
       });
 
       assert.strictEqual(response.status, 201);
-      assert.match(renderedHtml, /Hi, setup-link-user!/);
+      assert.match(renderedHtml, /Hi, \u2068setup-link-user\u2069!/);
     } finally {
       sendMock.mock.restore();
     }
