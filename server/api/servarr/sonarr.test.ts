@@ -1458,3 +1458,45 @@ describe('SonarrAPI.getSeriesCover', () => {
     assert.strictEqual(options.proxy, false);
   });
 });
+
+describe('Sonarr requester-tag editor boundary', () => {
+  afterEach(() => mock.restoreAll());
+  it('adds only exact-item tags without acquisition or monitoring options', async () => {
+    const api = buildSonarr();
+    const request = mock.method(
+      api as unknown as { request: (...args: unknown[]) => Promise<unknown> },
+      'request',
+      async () => ({ data: [] })
+    );
+    await api.addTagsToSeries(91, [7, 7, 8]);
+    assert.deepEqual(
+      request.mock.calls.map((call) => call.arguments),
+      [
+        [
+          'PUT',
+          '/series/editor',
+          { seriesIds: [91], tags: [7, 8], applyTags: 'add' },
+        ],
+      ]
+    );
+  });
+  it('rejects invalid provider identities and tags before any network write', async () => {
+    const api = buildSonarr();
+    const request = mock.method(
+      api as unknown as { request: (...args: unknown[]) => Promise<unknown> },
+      'request',
+      async () => ({ data: [] })
+    );
+    for (const [id, tags] of [
+      [0, [7]],
+      [-1, [7]],
+      [NaN, [7]],
+      [91, []],
+      [91, [0]],
+      [91, [1.5]],
+    ] as [number, number[]][]) {
+      await assert.rejects(api.addTagsToSeries(id, tags));
+    }
+    assert.equal(request.mock.callCount(), 0);
+  });
+});

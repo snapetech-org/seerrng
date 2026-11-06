@@ -17,19 +17,13 @@ const messages = defineMessages('components.BlocklistedTagsBadge', {
 const KEYWORD_LOOKUP_CONCURRENCY = 8;
 
 export const compactBlocklistSourceBadgeClass =
-  'compact-detail-status-badge compact-detail-status-badge-danger max-w-full gap-0.5';
-export const blocklistSourceBadgeClass =
-  'items-center border border-red-500 !text-red-400';
+  'blocklist-source-badge compact-detail-status-badge compact-detail-status-badge-danger';
 
 interface BlocklistedTagsBadgeProps {
   data: BlocklistItem;
-  compact?: boolean;
 }
 
-const BlocklistedTagsBadge = ({
-  data,
-  compact = false,
-}: BlocklistedTagsBadgeProps) => {
+const BlocklistedTagsBadge = ({ data }: BlocklistedTagsBadgeProps) => {
   const [tagNamesBlocklistedFor, setTagNamesBlocklistedFor] =
     useState<string>('Loading...');
   const intl = useIntl();
@@ -83,18 +77,11 @@ const BlocklistedTagsBadge = ({
     >
       <Badge
         badgeType="dark"
-        shape={compact ? 'standard' : 'pill'}
-        className={
-          compact ? compactBlocklistSourceBadgeClass : blocklistSourceBadgeClass
-        }
+        shape="standard"
+        className={compactBlocklistSourceBadgeClass}
       >
-        <TagIcon
-          className={compact ? 'h-2.5 w-2.5 shrink-0' : 'mr-1 h-4'}
-          aria-hidden="true"
-        />
-        <span className="truncate">
-          {intl.formatMessage(messages.blocklistTag)}
-        </span>
+        <TagIcon aria-hidden="true" />
+        <span>{intl.formatMessage(messages.blocklistTag)}</span>
       </Badge>
     </Tooltip>
   );

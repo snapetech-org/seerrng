@@ -1,7 +1,4 @@
-import {
-  blocklistSourceBadgeClass,
-  compactBlocklistSourceBadgeClass,
-} from '@app/components/BlocklistedTagsBadge';
+import { compactBlocklistSourceBadgeClass } from '@app/components/BlocklistedTagsBadge';
 import Badge from '@app/components/Common/Badge';
 import Tooltip from '@app/components/Common/Tooltip';
 import defineMessages from '@app/utils/defineMessages';
@@ -24,13 +21,9 @@ const messages = defineMessages('components.BlocklistedGenresBadge', {
 
 interface BlocklistedGenresBadgeProps {
   data: BlocklistItem;
-  compact?: boolean;
 }
 
-const BlocklistedGenresBadge = ({
-  data,
-  compact = false,
-}: BlocklistedGenresBadgeProps) => {
+const BlocklistedGenresBadge = ({ data }: BlocklistedGenresBadgeProps) => {
   const intl = useIntl();
   const canResolveGenres =
     data.mediaType === 'movie' || data.mediaType === 'tv';
@@ -84,18 +77,11 @@ const BlocklistedGenresBadge = ({
     >
       <Badge
         badgeType="dark"
-        shape={compact ? 'standard' : 'pill'}
-        className={
-          compact ? compactBlocklistSourceBadgeClass : blocklistSourceBadgeClass
-        }
+        shape="standard"
+        className={compactBlocklistSourceBadgeClass}
       >
-        <FilmIcon
-          className={compact ? 'h-2.5 w-2.5 shrink-0' : 'mr-1 h-4'}
-          aria-hidden="true"
-        />
-        <span className="truncate">
-          {intl.formatMessage(messages.blocklistGenre)}
-        </span>
+        <FilmIcon aria-hidden="true" />
+        <span>{intl.formatMessage(messages.blocklistGenre)}</span>
       </Badge>
     </Tooltip>
   );

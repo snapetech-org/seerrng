@@ -711,3 +711,45 @@ describe('RadarrAPI.getMovieCover', () => {
     assert.strictEqual(options.proxy, false);
   });
 });
+
+describe('Radarr requester-tag editor boundary', () => {
+  afterEach(() => mock.restoreAll());
+  it('adds only exact-item tags without acquisition or monitoring options', async () => {
+    const api = buildRadarr();
+    const request = mock.method(
+      api as unknown as { request: (...args: unknown[]) => Promise<unknown> },
+      'request',
+      async () => ({ data: [] })
+    );
+    await api.addTagsToMovie(91, [7, 7, 8]);
+    assert.deepEqual(
+      request.mock.calls.map((call) => call.arguments),
+      [
+        [
+          'PUT',
+          '/movie/editor',
+          { movieIds: [91], tags: [7, 8], applyTags: 'add' },
+        ],
+      ]
+    );
+  });
+  it('rejects invalid provider identities and tags before any network write', async () => {
+    const api = buildRadarr();
+    const request = mock.method(
+      api as unknown as { request: (...args: unknown[]) => Promise<unknown> },
+      'request',
+      async () => ({ data: [] })
+    );
+    for (const [id, tags] of [
+      [0, [7]],
+      [-1, [7]],
+      [NaN, [7]],
+      [91, []],
+      [91, [0]],
+      [91, [1.5]],
+    ] as [number, number[]][]) {
+      await assert.rejects(api.addTagsToMovie(id, tags));
+    }
+    assert.equal(request.mock.callCount(), 0);
+  });
+});

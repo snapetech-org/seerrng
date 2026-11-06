@@ -87,7 +87,7 @@ describe('public interface theme routes behind the OpenAPI validator', () => {
     assert.equal(list.status, 200);
     assert.deepEqual(
       list.body.themes.map(({ id }: { id: string }) => id),
-      ['seerrOrig', 'seerrNGJ']
+      ['seerrOrig', 'seerrNGJ', 'persiusNG']
     );
 
     const stylesheet = await request(app).get(

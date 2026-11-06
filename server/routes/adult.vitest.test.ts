@@ -58,6 +58,11 @@ vi.mock('@server/api/servarr/whisparr', () => {
     public getScenes = async () => [makeScene(this.serverId)];
 
     public searchScenes = async () => [makeScene(this.serverId)];
+
+    public getSceneByStashDbId = async (id: string) => {
+      const scene = makeScene(this.serverId);
+      return scene.foreignId === id ? scene : undefined;
+    };
   }
 
   return { default: MockWhisparrAPI };
@@ -181,6 +186,24 @@ describe('Adult discovery route', () => {
       (scene: { serviceId: number }) => scene.serviceId === 4
     );
     expect(namedServerScene.posterPath).toBeUndefined();
+  });
+
+  it('opens scene details when the selected Whisparr service ID is zero', async () => {
+    const services = [
+      { ...configuredServices[0], id: 0, port: 9000 },
+      configuredServices[1],
+    ];
+    getSettings().whisparr = services;
+    vi.spyOn(runtimeConfig, 'getExternalRuntimeConfig').mockReturnValue({
+      whisparr: services,
+      network: { apiRequestTimeout: 5000 },
+    } as ReturnType<typeof runtimeConfig.getExternalRuntimeConfig>);
+    const id = '8a3c0000-0000-4000-8000-000000000000';
+    const response = await request(app()).get(`/adult/${id}?serverId=0`);
+    expect(response.status).toBe(200);
+    expect(response.body.serviceId).toBe(0);
+    expect(response.body.id).toBe(id);
+    expect(response.body.posterPath).toContain('serverId=0');
   });
 
   it('rejects malformed and unknown Whisparr server scopes before searching', async () => {

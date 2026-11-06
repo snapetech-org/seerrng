@@ -995,19 +995,11 @@ const BlocklistedItem = ({ item, revalidateList }: BlocklistedItemProps) => {
               <dt className="font-medium text-gray-100">
                 {intl.formatMessage(messages.source)}:
               </dt>
-              <dd
-                className={
-                  item.blocklistedTags && item.blocklistedGenres
-                    ? 'm-0'
-                    : 'm-0 truncate'
-                }
-              >
-                {item.blocklistedTags && (
-                  <BlocklistedTagsBadge data={item} compact />
-                )}
+              <dd className="card-table-value" data-wrap="true">
+                {item.blocklistedTags && <BlocklistedTagsBadge data={item} />}
                 {item.blocklistedTags && item.blocklistedGenres && ' '}
                 {item.blocklistedGenres && (
-                  <BlocklistedGenresBadge data={item} compact />
+                  <BlocklistedGenresBadge data={item} />
                 )}
                 {!item.blocklistedTags && !item.blocklistedGenres && (
                   <Tooltip
@@ -1018,13 +1010,8 @@ const BlocklistedItem = ({ item, revalidateList }: BlocklistedItemProps) => {
                         badgeType="dark"
                         className={compactBlocklistSourceBadgeClass}
                       >
-                        <TagIcon
-                          className="h-2.5 w-2.5 shrink-0"
-                          aria-hidden="true"
-                        />
-                        <span className="truncate">
-                          {intl.formatMessage(messages.manualSource)}
-                        </span>
+                        <TagIcon aria-hidden="true" />
+                        <span>{intl.formatMessage(messages.manualSource)}</span>
                       </Badge>
                     </span>
                   </Tooltip>
