@@ -52,22 +52,26 @@ These settings filter content shown on the "Discover" home page based on regiona
 
 ## Blocklist Region and Blocklist Language
 
-These settings control the region and language used specifically for blocklist content scanning. The "Process Blocklisted Tags" job uses these settings to determine which content to scan for blocklisting, independent of the general Discover settings.
+These settings control the region and language used specifically for blocklist content scanning. The **Process Blocklist Rules** job uses these settings to determine which content to scan for blocklisting, independent of the general Discover settings.
 
 - **Blocklist Region**: The region used for blocklist content scanning. Leave empty to scan all regions.
 - **Blocklist Language**: The language used for blocklist content scanning. Leave empty to scan all languages.
 
 These settings are separate from the general "Discover Region" and "Discover Language" settings, allowing you to blocklist content from specific regions/languages regardless of what users see in their Discover pages.
 
-## Blocklist Content with Tags and Limit Content Blocklisted per Tag
+## Automatic Blocklist Rules
 
-These settings blocklist any TV shows or movies that have one of the entered tags. The "Process Blocklisted Tags" job adds entries to the blocklist based on the configured blocklisted tags. If a blocklisted tag is removed, any media blocklisted under that tag will be removed from the blocklist when the "Process Blocklisted Tags" job runs.
+Configure tags and genres that should automatically block movies or series. Movie and series genres are selected separately because TMDB assigns different IDs to each catalog. The **Process Blocklist Rules** job scans configured tags and genres using the blocklist region and language above.
 
-The limit setting determines how many pages per tag the job will process, with each page containing 20 entries. The job cycles through all 16 available discovery sort options, querying the defined number of pages to blocklist media that is most likely to appear at the top of each sort. Higher limits will create a more accurate blocklist, but will require more storage.
+When a tag or genre is removed from its setting, titles no longer matching any configured automatic rule are removed from the automatic blocklist the next time the job runs. Titles blocked manually remain blocked. Removing an automatic blocklist entry restores its saved media status when SeerrNG had a corresponding media record.
 
 This is a bounded scan, not an exhaustive lookup of every TMDB title with a tag. The page limit applies to each tag, media type, and sort option, so matching titles outside the scanned pages may remain outside the automatic blocklist. The default limit is 50 pages. The job runs weekly by default; use **Settings → Jobs & Cache** to review or change its schedule, or choose **Run Now** to start a scan immediately. Running it manually does not change the schedule.
 
-Blocklisted tags are disabled until at least one tag is entered. These settings cannot be overridden in user settings.
+Automatic blocklisting is disabled until at least one tag or genre is entered. These settings cannot be overridden in user settings.
+
+The page limit controls scan depth for each configured tag or genre. Each page contains up to 20 entries, and the job uses the supported discovery sorts while stopping early when TMDB has fewer results. Higher limits cover more titles and take longer to process. A limit of zero runs no discovery queries, so the next job run removes all automatically managed entries. The job aborts without reconciling existing entries if results exceed its 10,000-entry safety cap. Selections are limited to 100 IDs per field. These administrator settings cannot be overridden in user settings.
+
+On the **Blocklist** page, the **Automatic Tags** and **Automatic Genres** filters show entries that match each source. A title matching both appears in both filtered views and only once in the full list. Its source badges identify each matching rule category.
 
 ## Hide Available Media
 

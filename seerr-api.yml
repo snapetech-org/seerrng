@@ -2286,6 +2286,16 @@ components:
     Blocklist:
       type: object
       properties:
+        blocklistedTags:
+          type: string
+          nullable: true
+          readOnly: true
+          description: Comma-padded keyword IDs that currently match automatic blocklist settings.
+        blocklistedGenres:
+          type: string
+          nullable: true
+          readOnly: true
+          description: Comma-padded movie or TV genre IDs that currently match automatic blocklist settings.
         tmdbId:
           type: number
           example: 1
@@ -2976,6 +2986,35 @@ components:
         includeAdult:
           type: boolean
           example: false
+        blocklistRegion:
+          type: string
+          description: Region used when scanning tags and genres for automatic blocklist rules.
+          example: US
+        blocklistLanguage:
+          type: string
+          description: Original language used when scanning tags and genres for automatic blocklist rules.
+          example: en
+        blocklistedTags:
+          type: string
+          maxLength: 4096
+          description: Comma-separated TMDB keyword IDs, up to 100. Empty disables keyword rules.
+          example: 123,456
+        blocklistedGenresMovie:
+          type: string
+          maxLength: 4096
+          description: Comma-separated TMDB movie genre IDs, up to 100. Empty disables movie genre rules.
+          example: 28,878
+        blocklistedGenresTv:
+          type: string
+          maxLength: 4096
+          description: Comma-separated TMDB TV genre IDs, up to 100. Empty disables TV genre rules.
+          example: 10759,16
+        blocklistedTagsLimit:
+          type: integer
+          minimum: 0
+          maximum: 250
+          description: Scan depth used by automatic blocklist rules.
+          example: 50
         openIdProviders:
           type: array
           items:
@@ -16099,7 +16138,7 @@ paths:
           name: filter
           schema:
             type: string
-            enum: [all, manual, blocklistedTags]
+            enum: [all, manual, blocklistedTags, blocklistedGenres]
             default: all
         - in: query
           name: timeFrame
@@ -16137,13 +16176,15 @@ paths:
                     $ref: '#/components/schemas/PageInfo'
                   counts:
                     type: object
-                    required: [all, manual, blocklistedTags]
+                    required: [all, manual, blocklistedTags, blocklistedGenres]
                     properties:
                       all:
                         type: integer
                       manual:
                         type: integer
                       blocklistedTags:
+                        type: integer
+                      blocklistedGenres:
                         type: integer
                   results:
                     type: array
@@ -16167,6 +16208,14 @@ paths:
                         tmdbId:
                           type: number
                           example: 438631
+                        blocklistedTags:
+                          type: string
+                          nullable: true
+                          readOnly: true
+                        blocklistedGenres:
+                          type: string
+                          nullable: true
+                          readOnly: true
     post:
       summary: Add media to blocklist
       tags:
@@ -16281,7 +16330,7 @@ paths:
           name: filter
           schema:
             type: string
-            enum: [all, manual, blocklistedTags]
+            enum: [all, manual, blocklistedTags, blocklistedGenres]
             default: manual
       responses:
         '200':

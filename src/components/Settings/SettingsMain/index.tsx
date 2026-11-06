@@ -5,6 +5,7 @@ import PageTitle from '@app/components/Common/PageTitle';
 import SensitiveInput from '@app/components/Common/SensitiveInput';
 import LanguageSelector from '@app/components/LanguageSelector';
 import RegionSelector from '@app/components/RegionSelector';
+import { GenreSelector } from '@app/components/Selector';
 import CopyButton from '@app/components/Settings/CopyButton';
 import SettingsBadge from '@app/components/Settings/SettingsBadge';
 import Field, {
@@ -62,10 +63,16 @@ const messages = defineMessages('components.Settings.SettingsMain', {
     'Language used for blocklist content scanning (independent of discover settings)',
   blocklistedTags: 'Blocklist Content with Tags',
   blocklistedTagsTip:
-    'Automatically add content with tags to the blocklist using the "Process Blocklisted Tags" job',
-  blocklistedTagsLimit: 'Limit Content Blocklisted per Tag',
+    'Automatically add content with tags to the blocklist using the "Process Blocklist Rules" job',
+  blocklistedGenresMovie: 'Blocklist Movies by Genre',
+  blocklistedGenresMovieTip:
+    'Automatically add movies in these genres to the blocklist using the "Process Blocklist Rules" job',
+  blocklistedGenresTv: 'Blocklist Series by Genre',
+  blocklistedGenresTvTip:
+    'Automatically add series in these genres to the blocklist using the "Process Blocklist Rules" job',
+  blocklistedTagsLimit: 'Limit Pages per Blocklist Tag or Genre',
   blocklistedTagsLimitTip:
-    'The "Process Blocklisted Tags" job will blocklist this many pages into each sort. Larger numbers will create a more accurate blocklist, but use more space.',
+    'The "Process Blocklist Rules" job scans this many pages per tag or genre for each sort. Larger limits cover more titles but take longer to process.',
   streamingRegion: 'Streaming Region',
   streamingRegionTip: 'Show streaming sites by regional availability',
   hideBlocklisted: 'Hide Blocklisted Items',
@@ -259,7 +266,9 @@ const SettingsMain = () => {
           blocklistRegion: data?.blocklistRegion || '',
           blocklistLanguage: data?.blocklistLanguage || '',
           blocklistedTags: data?.blocklistedTags,
-          blocklistedTagsLimit: data?.blocklistedTagsLimit || 50,
+          blocklistedGenresMovie: data?.blocklistedGenresMovie ?? '',
+          blocklistedGenresTv: data?.blocklistedGenresTv ?? '',
+          blocklistedTagsLimit: data?.blocklistedTagsLimit ?? 50,
           partialRequestsEnabled: data?.partialRequestsEnabled,
           enable4k: data?.enable4k ?? true,
           tvSeasonWatchGateEnabled: data?.tvSeasonWatchGateEnabled ?? false,
@@ -300,6 +309,8 @@ const SettingsMain = () => {
               blocklistRegion: values.blocklistRegion,
               blocklistLanguage: values.blocklistLanguage,
               blocklistedTags: values.blocklistedTags,
+              blocklistedGenresMovie: values.blocklistedGenresMovie,
+              blocklistedGenresTv: values.blocklistedGenresTv,
               blocklistedTagsLimit: values.blocklistedTagsLimit,
               partialRequestsEnabled: values.partialRequestsEnabled,
               enable4k: values.enable4k,
@@ -520,7 +531,7 @@ const SettingsMain = () => {
                       messages.originallanguageTip
                     )}
                   >
-                    <div className="form-input-field relative z-30">
+                    <div className="form-input-field">
                       <LanguageSelector
                         setFieldValue={setFieldValue}
                         value={values.originalLanguage}
@@ -535,7 +546,7 @@ const SettingsMain = () => {
                       messages.streamingRegionTip
                     )}
                   >
-                    <div className="form-input-field relative">
+                    <div className="form-input-field">
                       <RegionSelector
                         value={values.streamingRegion}
                         name="streamingRegion"
@@ -568,7 +579,7 @@ const SettingsMain = () => {
                       messages.blocklistLanguageTip
                     )}
                   >
-                    <div className="form-input-field relative z-20">
+                    <div className="form-input-field">
                       <LanguageSelector
                         setFieldValue={setFieldValue}
                         serverValue={data?.blocklistLanguage}
@@ -584,9 +595,53 @@ const SettingsMain = () => {
                       messages.blocklistedTagsTip
                     )}
                   >
-                    <div className="form-input-field relative z-10">
+                    <div className="form-input-field">
                       <BlocklistedTagsSelector
                         defaultValue={values.blocklistedTags}
+                      />
+                    </div>
+                  </SettingsFormRow>
+                  <SettingsFormRow
+                    htmlFor="blocklistedGenresMovie"
+                    label={intl.formatMessage(messages.blocklistedGenresMovie)}
+                    description={intl.formatMessage(
+                      messages.blocklistedGenresMovieTip
+                    )}
+                  >
+                    <div className="form-input-field">
+                      <GenreSelector
+                        type="movie"
+                        inputId="blocklistedGenresMovie"
+                        isMulti
+                        defaultValue={values.blocklistedGenresMovie}
+                        onChange={(genres) =>
+                          setFieldValue(
+                            'blocklistedGenresMovie',
+                            (genres ?? []).map((genre) => genre.value).join(',')
+                          )
+                        }
+                      />
+                    </div>
+                  </SettingsFormRow>
+                  <SettingsFormRow
+                    htmlFor="blocklistedGenresTv"
+                    label={intl.formatMessage(messages.blocklistedGenresTv)}
+                    description={intl.formatMessage(
+                      messages.blocklistedGenresTvTip
+                    )}
+                  >
+                    <div className="form-input-field">
+                      <GenreSelector
+                        type="tv"
+                        inputId="blocklistedGenresTv"
+                        isMulti
+                        defaultValue={values.blocklistedGenresTv}
+                        onChange={(genres) =>
+                          setFieldValue(
+                            'blocklistedGenresTv',
+                            (genres ?? []).map((genre) => genre.value).join(',')
+                          )
+                        }
                       />
                     </div>
                   </SettingsFormRow>

@@ -1,3 +1,4 @@
+import BlocklistedGenresBadge from '@app/components/BlocklistedGenresBadge';
 import BlocklistedTagsBadge, {
   compactBlocklistSourceBadgeClass,
 } from '@app/components/BlocklistedTagsBadge';
@@ -69,7 +70,8 @@ const messages = defineMessages('components.Blocklist', {
   clearFilters: 'Clear Filters',
   all: 'All Blocklisted',
   manual: 'Manual',
-  blocklistedTags: 'Blocklist Tag',
+  blocklistedTags: 'Automatic Tags',
+  blocklistedGenres: 'Automatic Genres',
   search: 'Keyword Search',
   searchPlaceholder: 'Search Blocklist',
   allMedia: 'All Media',
@@ -121,6 +123,7 @@ enum Filter {
   ALL = 'all',
   MANUAL = 'manual',
   BLOCKLISTEDTAGS = 'blocklistedTags',
+  BLOCKLISTEDGENRES = 'blocklistedGenres',
 }
 
 type BlocklistTitle =
@@ -433,6 +436,11 @@ const Blocklist = () => {
       value: Filter.BLOCKLISTEDTAGS,
       label: messages.blocklistedTags,
       count: data?.counts.blocklistedTags ?? 0,
+    },
+    {
+      value: Filter.BLOCKLISTEDGENRES,
+      label: messages.blocklistedGenres,
+      count: data?.counts.blocklistedGenres ?? 0,
     },
   ];
   const timeFrameOptions: CompactSelectOption[] = [
@@ -987,10 +995,21 @@ const BlocklistedItem = ({ item, revalidateList }: BlocklistedItemProps) => {
               <dt className="font-medium text-gray-100">
                 {intl.formatMessage(messages.source)}:
               </dt>
-              <dd className="m-0 truncate">
-                {item.blocklistedTags ? (
+              <dd
+                className={
+                  item.blocklistedTags && item.blocklistedGenres
+                    ? 'm-0'
+                    : 'm-0 truncate'
+                }
+              >
+                {item.blocklistedTags && (
                   <BlocklistedTagsBadge data={item} compact />
-                ) : (
+                )}
+                {item.blocklistedTags && item.blocklistedGenres && ' '}
+                {item.blocklistedGenres && (
+                  <BlocklistedGenresBadge data={item} compact />
+                )}
+                {!item.blocklistedTags && !item.blocklistedGenres && (
                   <Tooltip
                     content={intl.formatMessage(messages.manualSourceTooltip)}
                   >

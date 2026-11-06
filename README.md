@@ -110,6 +110,7 @@ For local MCP access, see the [SnapeTech MCP integration guide](./docs/integrati
 - Sign-in returns users to a validated in-app destination across local, media-server, and OIDC login, and sign-out clears the previous return destination. OIDC account provisioning requires a verified email and applies the configured account-admission and role rules.
 - Long-running TV details and request pages stay responsive when a series has many stored and requested seasons.
 - Users can request their own requester tag on an already available movie or fully available series. The tag action follows normal request permissions, quotas, and approval without starting another acquisition; SeerrNG adapts the idea discussed in [Seerr PR #3423](https://github.com/seerr-team/seerr/pull/3423).
+- Administrators can automatically blocklist movies and series by TMDB keyword or type-specific genre. Source filters distinguish automatic rules from manual entries, and removing a rule preserves manual blocks and restores saved media status. See the [automatic blocklist settings guide](./docs/using-seerr/settings/general.md#automatic-blocklist-rules). This SeerrNG adaptation is attributed to closed Seerr [PR #3318](https://github.com/seerr-team/seerr/pull/3318).
 - Automation service integration with Radarr, Sonarr, Lidarr, and Bookshelf/Readarr-compatible APIs.
 - SeerrNG [PR #446](https://github.com/snapetech-org/seerrng/pull/446) proposes bounded, paginated Servarr queue tracking with refresh-completion checks and a per-service Download Queue Size control. It covers 10–10,000 items per service, defaults to 1,000, and keeps recovery on strict complete snapshots. Source context: closed, unmerged Seerr [PR #3473](https://github.com/seerr-team/seerr/pull/3473) and open Seerr [PR #3535](https://github.com/seerr-team/seerr/pull/3535).
 - Notifications for email, Discord, Slack, Telegram, Gotify, ntfy, Pushover, Pushbullet, Apprise, Web Push, and custom webhooks, with provider-specific poster, priority, sound, and email transport options documented in the [notification guides](./docs/using-seerr/notifications/index.mdx).
@@ -333,7 +334,7 @@ SeerrNG documentation is maintained in the [docs folder](https://github.com/snap
 - [Configure notifications](./docs/using-seerr/notifications/index.mdx)
 - [Slack notification settings](./docs/using-seerr/notifications/slack.md)
 - [Telegram notification settings](./docs/using-seerr/notifications/telegram.md)
-- [Hide requested or available media](./docs/using-seerr/settings/general.md)
+- [Configure automatic blocklist rules and global media visibility](./docs/using-seerr/settings/general.md)
 - [Choose which media categories are available](./docs/using-seerr/settings/media-categories.md)
 - [Configure Bookshelf](./docs/using-seerr/bookshelf-backend.md)
 - [Move ebook or audiobook files between Bookshelf root folders](./docs/using-seerr/bookshelf-media-path-migration.md)

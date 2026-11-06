@@ -7,8 +7,10 @@ import type {
   TmdbSearchTvResponse,
 } from '@server/api/themoviedb/interfaces';
 import {
+  MAX_BLOCKLISTED_GENRE_IDS,
   MAX_BLOCKLISTED_TAG_IDS,
   MAX_BLOCKLISTED_TAG_PAGES,
+  MAX_TMDB_GENRE_ID,
   MAX_TMDB_KEYWORD_ID,
 } from '@server/constants/blocklist';
 import { MediaType } from '@server/constants/media';
@@ -35,7 +37,53 @@ type DesiredBlocklistEntry = {
   title: string;
   tmdbId: number;
   keywordIds: Set<string>;
+  genreIds: Set<string>;
 };
+
+type BlocklistCriterion = 'keyword' | 'genre';
+
+const parseConfiguredIds = (
+  setting: string | undefined,
+  maximumCount: number,
+  maximumId: number
+): { ids: string[]; invalid: Set<string>; raw: string } => {
+  const raw = setting ?? '';
+  const configured = raw
+    ? raw
+        .split(',')
+        .map((id) => id.trim())
+        .filter(Boolean)
+    : [];
+  const unique = [...new Set(configured)];
+  const invalid = new Set(unique.slice(maximumCount));
+  const ids: string[] = [];
+
+  for (const id of unique.slice(0, maximumCount)) {
+    if (!/^\d+$/.test(id)) {
+      invalid.add(id);
+      continue;
+    }
+
+    const numericId = Number(id);
+    if (
+      !Number.isSafeInteger(numericId) ||
+      numericId < 1 ||
+      numericId > maximumId
+    ) {
+      invalid.add(id);
+      continue;
+    }
+
+    ids.push(String(numericId));
+  }
+
+  return { ids: [...new Set(ids)], invalid, raw };
+};
+
+const formatSourceIds = (ids: Set<string>): string | null =>
+  ids.size > 0
+    ? `,${[...ids].sort((left, right) => Number(left) - Number(right)).join(',')},`
+    : null;
 
 const getAdmissionKey = (mediaType: MediaType, tmdbId: number): string =>
   `request-media:${mediaType}:${tmdbId}`;
@@ -54,7 +102,7 @@ export class BlocklistedTagProcessor implements RunnableScanner<StatusBase> {
 
   public async run(): Promise<void> {
     if (this.activeRun) {
-      logger.warn('Blocklisted tags processor is already running.', {
+      logger.warn('Automatic blocklist processor is already running.', {
         label: 'Jobs',
       });
       return;
@@ -68,7 +116,10 @@ export class BlocklistedTagProcessor implements RunnableScanner<StatusBase> {
       this.assertEntryLimit(desiredEntries.size);
       this.assertActive(runId);
       const existingAutomatic = await dataSource.getRepository(Blocklist).find({
-        where: { blocklistedTags: Not(IsNull()) },
+        where: [
+          { blocklistedTags: Not(IsNull()) },
+          { blocklistedGenres: Not(IsNull()) },
+        ],
         select: { id: true, mediaType: true, tmdbId: true },
         order: { id: 'ASC' },
         take: this.maxEntries + 1,
@@ -89,7 +140,7 @@ export class BlocklistedTagProcessor implements RunnableScanner<StatusBase> {
       );
     } catch (err) {
       if (err instanceof AbortTransaction) {
-        logger.info('Aborting job: Process Blocklisted Tags', {
+        logger.info('Aborting job: Process Blocklist Rules', {
           label: 'Jobs',
         });
       } else {
@@ -141,69 +192,86 @@ export class BlocklistedTagProcessor implements RunnableScanner<StatusBase> {
     const desiredEntries = new Map<string, DesiredBlocklistEntry>();
 
     const settings = getSettings();
-    const blocklistedTags = settings.main.blocklistedTags;
-    const configuredTags = blocklistedTags.split(',').map((tag) => tag.trim());
-    const allUniqueTags = [...new Set(configuredTags)];
-    const uniqueTags = allUniqueTags.slice(0, MAX_BLOCKLISTED_TAG_IDS);
+    const configuredTags = parseConfiguredIds(
+      settings.main.blocklistedTags,
+      MAX_BLOCKLISTED_TAG_IDS,
+      MAX_TMDB_KEYWORD_ID
+    );
+    const configuredMovieGenres = parseConfiguredIds(
+      settings.main.blocklistedGenresMovie,
+      MAX_BLOCKLISTED_GENRE_IDS,
+      MAX_TMDB_GENRE_ID
+    );
+    const configuredTvGenres = parseConfiguredIds(
+      settings.main.blocklistedGenresTv,
+      MAX_BLOCKLISTED_GENRE_IDS,
+      MAX_TMDB_GENRE_ID
+    );
 
     const configuredPageLimit = settings.main.blocklistedTagsLimit;
     const pageLimit = Number.isSafeInteger(configuredPageLimit)
       ? Math.min(MAX_BLOCKLISTED_TAG_PAGES, Math.max(0, configuredPageLimit))
       : 0;
-    const invalidKeywords = new Set(
-      allUniqueTags.slice(MAX_BLOCKLISTED_TAG_IDS)
-    );
-    const blocklistedTagsArr: string[] = [];
+    const invalidKeywords = configuredTags.invalid;
+    const invalidMovieGenres = configuredMovieGenres.invalid;
+    const invalidTvGenres = configuredTvGenres.invalid;
+    const validKeywords: string[] = [];
     let failedQueries = 0;
 
-    if (blocklistedTags.length === 0) {
-      return desiredEntries;
-    }
-
-    // The maximum number of queries we're expected to execute
-    this.total =
-      uniqueTags.length *
-      pageLimit *
-      (MovieSortOptionsIterable.length + TvSortOptionsIterable.length);
-
-    for (const tag of uniqueTags) {
+    for (const tag of configuredTags.ids) {
       this.assertActive(runId);
-      if (
-        !/^\d+$/.test(tag) ||
-        Number(tag) < 1 ||
-        Number(tag) > MAX_TMDB_KEYWORD_ID
-      ) {
-        invalidKeywords.add(tag);
-        continue;
-      }
-
       const keywordDetails = await tmdb.getKeywordDetails({
         keywordId: Number(tag),
       });
       if (keywordDetails === null) {
-        logger.warn('Skipping invalid keyword in blocklisted tags', {
-          label: 'Blocklisted Tags Processor',
-          keywordId: tag,
-        });
+        logger.warn(
+          'Skipping invalid keyword in automatic blocklist settings',
+          {
+            label: 'Blocklisted Content Processor',
+            keywordId: tag,
+          }
+        );
         invalidKeywords.add(tag);
         continue;
       }
-      blocklistedTagsArr.push(tag);
+      validKeywords.push(tag);
     }
 
-    for (const tag of blocklistedTagsArr) {
-      failedQueries += await this.processTagForType(
+    const validMovieGenres = await this.getValidGenres(
+      configuredMovieGenres.ids,
+      invalidMovieGenres,
+      () => tmdb.getMovieGenres(),
+      runId
+    );
+    const validTvGenres = await this.getValidGenres(
+      configuredTvGenres.ids,
+      invalidTvGenres,
+      () => tmdb.getTvGenres(),
+      runId
+    );
+
+    this.total =
+      pageLimit *
+      (validKeywords.length *
+        (MovieSortOptionsIterable.length + TvSortOptionsIterable.length) +
+        validMovieGenres.length * MovieSortOptionsIterable.length +
+        validTvGenres.length * TvSortOptionsIterable.length);
+
+    for (const tag of validKeywords) {
+      failedQueries += await this.processCriterionForType(
         MediaType.MOVIE,
         tag,
+        'keyword',
         runId,
         tmdb.getDiscoverMovies,
         MovieSortOptionsIterable,
         pageLimit,
         desiredEntries
       );
-      failedQueries += await this.processTagForType(
+      failedQueries += await this.processCriterionForType(
         MediaType.TV,
         tag,
+        'keyword',
         runId,
         tmdb.getDiscoverTv,
         TvSortOptionsIterable,
@@ -212,45 +280,119 @@ export class BlocklistedTagProcessor implements RunnableScanner<StatusBase> {
       );
     }
 
-    if (invalidKeywords.size > 0) {
-      const cleanedTags = blocklistedTagsArr.join(',');
+    for (const genre of validMovieGenres) {
+      failedQueries += await this.processCriterionForType(
+        MediaType.MOVIE,
+        genre,
+        'genre',
+        runId,
+        tmdb.getDiscoverMovies,
+        MovieSortOptionsIterable,
+        pageLimit,
+        desiredEntries
+      );
+    }
 
-      if (cleanedTags !== blocklistedTags) {
-        await settings.persistSection('main', (current) => ({
-          ...current,
-          blocklistedTags: cleanedTags,
-        }));
+    for (const genre of validTvGenres) {
+      failedQueries += await this.processCriterionForType(
+        MediaType.TV,
+        genre,
+        'genre',
+        runId,
+        tmdb.getDiscoverTv,
+        TvSortOptionsIterable,
+        pageLimit,
+        desiredEntries
+      );
+    }
 
-        logger.info('Cleaned up invalid keywords from settings', {
-          label: 'Blocklisted Tags Processor',
-          removedKeywords: Array.from(invalidKeywords),
-          newBlocklistedTags: cleanedTags,
-        });
-      }
-    } else if (blocklistedTagsArr.join(',') !== blocklistedTags) {
+    this.assertActive(runId);
+
+    const cleanedSettings = {
+      blocklistedTags: validKeywords.join(','),
+      blocklistedGenresMovie: validMovieGenres.join(','),
+      blocklistedGenresTv: validTvGenres.join(','),
+    };
+    const changedSettings =
+      cleanedSettings.blocklistedTags !== configuredTags.raw ||
+      cleanedSettings.blocklistedGenresMovie !== configuredMovieGenres.raw ||
+      cleanedSettings.blocklistedGenresTv !== configuredTvGenres.raw;
+
+    if (changedSettings) {
       await settings.persistSection('main', (current) => ({
         ...current,
-        blocklistedTags: blocklistedTagsArr.join(','),
+        ...((current.blocklistedTags ?? '') === configuredTags.raw
+          ? { blocklistedTags: cleanedSettings.blocklistedTags }
+          : {}),
+        ...((current.blocklistedGenresMovie ?? '') === configuredMovieGenres.raw
+          ? { blocklistedGenresMovie: cleanedSettings.blocklistedGenresMovie }
+          : {}),
+        ...((current.blocklistedGenresTv ?? '') === configuredTvGenres.raw
+          ? { blocklistedGenresTv: cleanedSettings.blocklistedGenresTv }
+          : {}),
       }));
+
+      logger.info('Cleaned up invalid automatic blocklist settings', {
+        label: 'Blocklisted Content Processor',
+        removedIds: {
+          blocklistedTags: [...invalidKeywords],
+          blocklistedGenresMovie: [...invalidMovieGenres],
+          blocklistedGenresTv: [...invalidTvGenres],
+        },
+      });
     }
 
     if (failedQueries > 0) {
       throw new Error(
-        `Blocklisted tag collection failed for ${failedQueries} queries.`
+        `Automatic blocklist collection failed for ${failedQueries} queries.`
       );
     }
 
     return desiredEntries;
   }
 
-  private async processTagForType<S extends string>(
+  private async getValidGenres(
+    configuredIds: string[],
+    invalidIds: Set<string>,
+    getGenres: () => Promise<{ id: number }[]>,
+    runId: symbol
+  ): Promise<string[]> {
+    if (configuredIds.length === 0) {
+      return [];
+    }
+
+    this.assertActive(runId);
+    const availableIds = new Set((await getGenres()).map(({ id }) => id));
+    this.assertActive(runId);
+
+    const validIds = configuredIds.filter((id) => {
+      if (availableIds.has(Number(id))) {
+        return true;
+      }
+      invalidIds.add(id);
+      return false;
+    });
+
+    if (validIds.length !== configuredIds.length) {
+      logger.warn('Skipping invalid genre in automatic blocklist settings', {
+        label: 'Blocklisted Content Processor',
+        removedGenreIds: [...invalidIds],
+      });
+    }
+
+    return validIds;
+  }
+
+  private async processCriterionForType<S extends string>(
     mediaType: MediaType.MOVIE | MediaType.TV,
-    keywordId: string,
+    criterionId: string,
+    criterion: BlocklistCriterion,
     runId: symbol,
     getDiscover: (options: {
       page: number;
       sortBy?: S;
-      keywords: string;
+      keywords?: string;
+      genre?: string;
     }) => Promise<TmdbSearchMovieResponse | TmdbSearchTvResponse>,
     sortOptions: readonly S[],
     pageLimit: number,
@@ -274,9 +416,17 @@ export class BlocklistedTagProcessor implements RunnableScanner<StatusBase> {
         const response = await getDiscover({
           page,
           sortBy,
-          keywords: keywordId,
+          ...(criterion === 'keyword'
+            ? { keywords: criterionId }
+            : { genre: criterionId }),
         });
-        this.collectResults(response, keywordId, mediaType, desiredEntries);
+        this.collectResults(
+          response,
+          criterionId,
+          criterion,
+          mediaType,
+          desiredEntries
+        );
         await this.delay(TMDB_API_DELAY_MS);
         this.progress++;
 
@@ -287,9 +437,10 @@ export class BlocklistedTagProcessor implements RunnableScanner<StatusBase> {
         }
       } catch (error) {
         failedQueries++;
-        logger.error('Error processing keyword in blocklisted tags', {
-          label: 'Blocklisted Tags Processor',
-          keywordId,
+        logger.error('Error processing automatic blocklist criterion', {
+          label: 'Blocklisted Content Processor',
+          criterion,
+          criterionId,
           errorMessage: error instanceof Error ? error.message : String(error),
         });
       }
@@ -300,7 +451,8 @@ export class BlocklistedTagProcessor implements RunnableScanner<StatusBase> {
 
   private collectResults(
     response: TmdbSearchMovieResponse | TmdbSearchTvResponse,
-    keywordId: string,
+    criterionId: string,
+    criterion: BlocklistCriterion,
     mediaType: MediaType,
     desiredEntries: Map<string, DesiredBlocklistEntry>
   ): void {
@@ -308,14 +460,19 @@ export class BlocklistedTagProcessor implements RunnableScanner<StatusBase> {
       const key = `${mediaType}:${entry.id}`;
       const existing = desiredEntries.get(key);
       if (existing) {
-        existing.keywordIds.add(keywordId);
+        if (criterion === 'keyword') {
+          existing.keywordIds.add(criterionId);
+        } else {
+          existing.genreIds.add(criterionId);
+        }
       } else {
         this.assertEntryLimit(desiredEntries.size + 1);
         desiredEntries.set(key, {
           mediaType: mediaType as MediaType.MOVIE | MediaType.TV,
           title: 'title' in entry ? entry.title : entry.name,
           tmdbId: entry.id,
-          keywordIds: new Set([keywordId]),
+          keywordIds: new Set(criterion === 'keyword' ? [criterionId] : []),
+          genreIds: new Set(criterion === 'genre' ? [criterionId] : []),
         });
       }
     }
@@ -328,7 +485,10 @@ export class BlocklistedTagProcessor implements RunnableScanner<StatusBase> {
   ): Promise<void> {
     const blocklistRepository = em.getRepository(Blocklist);
     const automaticEntries = await blocklistRepository.find({
-      where: { blocklistedTags: Not(IsNull()) },
+      where: [
+        { blocklistedTags: Not(IsNull()) },
+        { blocklistedGenres: Not(IsNull()) },
+      ],
       order: { id: 'ASC' },
       take: this.maxEntries + 1,
       loadEagerRelations: false,
@@ -346,13 +506,16 @@ export class BlocklistedTagProcessor implements RunnableScanner<StatusBase> {
         continue;
       }
 
-      const blocklistedTags = `,${[...desiredEntry.keywordIds].join(',')},`;
+      const blocklistedTags = formatSourceIds(desiredEntry.keywordIds);
+      const blocklistedGenres = formatSourceIds(desiredEntry.genreIds);
       if (
         automaticEntry.title !== desiredEntry.title ||
-        automaticEntry.blocklistedTags !== blocklistedTags
+        automaticEntry.blocklistedTags !== blocklistedTags ||
+        automaticEntry.blocklistedGenres !== blocklistedGenres
       ) {
         automaticEntry.title = desiredEntry.title;
         automaticEntry.blocklistedTags = blocklistedTags;
+        automaticEntry.blocklistedGenres = blocklistedGenres;
         await blocklistRepository.save(automaticEntry);
       }
       retainedKeys.add(key);
@@ -369,7 +532,7 @@ export class BlocklistedTagProcessor implements RunnableScanner<StatusBase> {
       });
 
       // Manual blocklists remain manual and must not be converted into
-      // automatically managed tag entries.
+      // automatically managed entries.
       if (!existing) {
         await Blocklist.addToBlocklist(
           {
@@ -377,7 +540,8 @@ export class BlocklistedTagProcessor implements RunnableScanner<StatusBase> {
               mediaType: entry.mediaType,
               title: entry.title,
               tmdbId: entry.tmdbId,
-              blocklistedTags: `,${[...entry.keywordIds].join(',')},`,
+              blocklistedTags: formatSourceIds(entry.keywordIds),
+              blocklistedGenres: formatSourceIds(entry.genreIds),
             },
           },
           em

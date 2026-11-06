@@ -12,8 +12,10 @@ import {
 } from '@server/constants/ageGate';
 import { OtherUserAvailabilityMode } from '@server/constants/availability';
 import {
+  MAX_BLOCKLISTED_GENRE_IDS,
   MAX_BLOCKLISTED_TAG_IDS,
   MAX_BLOCKLISTED_TAG_PAGES,
+  MAX_TMDB_GENRE_ID,
   MAX_TMDB_KEYWORD_ID,
 } from '@server/constants/blocklist';
 import { ApiErrorCode } from '@server/constants/error';
@@ -1182,6 +1184,41 @@ const parseMainSettingsBody = (
       };
     }
     value.blocklistedTags = [...new Set(tags)].join(',');
+  }
+
+  for (const fieldName of [
+    'blocklistedGenresMovie',
+    'blocklistedGenresTv',
+  ] as const) {
+    const parsedGenres = parsePatchBoundedString(body, fieldName, {
+      fieldName,
+      maxLength: MAX_BLOCKLISTED_TAGS_LENGTH,
+      allowEmpty: true,
+    });
+    if ('error' in parsedGenres) {
+      return parsedGenres;
+    }
+    if (parsedGenres.value === undefined) {
+      continue;
+    }
+
+    const genres = parsedGenres.value
+      ? parsedGenres.value.split(',').map((genre) => genre.trim())
+      : [];
+    if (
+      genres.length > MAX_BLOCKLISTED_GENRE_IDS ||
+      genres.some(
+        (genre) =>
+          !/^\d+$/.test(genre) ||
+          Number(genre) < 1 ||
+          Number(genre) > MAX_TMDB_GENRE_ID
+      )
+    ) {
+      return {
+        error: `${fieldName} must contain at most ${MAX_BLOCKLISTED_GENRE_IDS} valid genre IDs.`,
+      };
+    }
+    value[fieldName] = [...new Set(genres)].join(',');
   }
 
   if (body.enabledMediaCategories !== undefined) {

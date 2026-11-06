@@ -10,7 +10,8 @@ export interface BlocklistItem {
   title?: string;
   createdAt?: Date;
   user?: User;
-  blocklistedTags?: string;
+  blocklistedTags?: string | null;
+  blocklistedGenres?: string | null;
 }
 
 export interface BlocklistResultsResponse extends PaginatedResponse {
@@ -19,6 +20,7 @@ export interface BlocklistResultsResponse extends PaginatedResponse {
     all: number;
     manual: number;
     blocklistedTags: number;
+    blocklistedGenres: number;
   };
 }
 

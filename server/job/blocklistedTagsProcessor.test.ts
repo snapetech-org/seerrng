@@ -15,6 +15,7 @@ type DesiredEntry = {
   title: string;
   tmdbId: number;
   keywordIds: Set<string>;
+  genreIds: Set<string>;
 };
 
 type ProcessorInternals = {
@@ -24,6 +25,7 @@ type ProcessorInternals = {
       results: { id: number; title: string }[];
     },
     keywordId: string,
+    criterion: 'keyword' | 'genre',
     mediaType: MediaType,
     desiredEntries: Map<string, DesiredEntry>
   ) => void;
@@ -51,6 +53,7 @@ describe('BlocklistedTagProcessor', () => {
             ],
           },
           '60',
+          'keyword',
           MediaType.MOVIE,
           desiredEntries
         ),
@@ -188,6 +191,7 @@ describe('BlocklistedTagProcessor', () => {
               title: 'Cancelled entry',
               tmdbId: 505,
               keywordIds: new Set(['50']),
+              genreIds: new Set(),
             },
           ],
         ]);
@@ -282,7 +286,7 @@ describe('BlocklistedTagProcessor', () => {
     try {
       await assert.rejects(
         processor.run(),
-        /Blocklisted tag collection failed for 1 queries/
+        /Automatic blocklist collection failed for 1 queries/
       );
     } finally {
       settings.main.blocklistedTags = priorTags;
@@ -352,6 +356,7 @@ describe('BlocklistedTagProcessor', () => {
               title: 'Updated retained title',
               tmdbId: 101,
               keywordIds: new Set(['10', '11']),
+              genreIds: new Set(),
             },
           ],
           [
@@ -361,6 +366,7 @@ describe('BlocklistedTagProcessor', () => {
               title: 'Automatic collision',
               tmdbId: 303,
               keywordIds: new Set(['30']),
+              genreIds: new Set(),
             },
           ],
           [
@@ -370,6 +376,7 @@ describe('BlocklistedTagProcessor', () => {
               title: 'New automatic entry',
               tmdbId: 404,
               keywordIds: new Set(['40']),
+              genreIds: new Set(),
             },
           ],
         ])
@@ -415,5 +422,101 @@ describe('BlocklistedTagProcessor', () => {
     });
     assert.strictEqual(created.title, 'New automatic entry');
     assert.strictEqual(created.blocklistedTags, ',40,');
+  });
+  it('reconciles mixed genre and keyword sources without losing manual ownership or prior status', async (t) => {
+    const settings = getSettings();
+    const previous = { ...settings.main };
+    t.after(() => {
+      settings.main = previous;
+    });
+    settings.main.blocklistedTags = '60';
+    settings.main.blocklistedGenresMovie = '28';
+    settings.main.blocklistedGenresTv = '10759';
+    settings.main.blocklistedTagsLimit = 1;
+    const stored = await getRepository(Media).save(
+      new Media({
+        mediaType: MediaType.MOVIE,
+        tmdbId: 101,
+        status: MediaStatus.AVAILABLE,
+        status4k: MediaStatus.UNKNOWN,
+      })
+    );
+    await Blocklist.addToBlocklist({
+      blocklistRequest: {
+        mediaType: MediaType.MOVIE,
+        tmdbId: 303,
+        title: 'Manual fixture',
+      },
+    });
+    const manual = await getRepository(Blocklist).findOneByOrFail({
+      mediaType: MediaType.MOVIE,
+      tmdbId: 303,
+    });
+    const tmdb = {
+      getKeywordDetails: async () => ({ id: 60, name: 'fixture' }),
+      getMovieGenres: async () => [{ id: 28, name: 'Action' }],
+      getTvGenres: async () => [{ id: 10759, name: 'Action & Adventure' }],
+      getDiscoverMovies: async () => ({
+        page: 1,
+        total_pages: 1,
+        total_results: 2,
+        results: [
+          { id: 101, title: 'Mixed fixture' },
+          { id: 303, title: 'Manual fixture' },
+        ],
+      }),
+      getDiscoverTv: async () => ({
+        page: 1,
+        total_pages: 1,
+        total_results: 1,
+        results: [{ id: 101, name: 'Series fixture' }],
+      }),
+    } as unknown as TheMovieDb;
+    const processor = new BlocklistedTagProcessor(
+      () => tmdb,
+      async () => undefined
+    );
+    await processor.run();
+    const mixed = await getRepository(Blocklist).findOneByOrFail({
+      mediaType: MediaType.MOVIE,
+      tmdbId: 101,
+    });
+    assert.equal(mixed.blocklistedTags, ',60,');
+    assert.equal(mixed.blocklistedGenres, ',28,');
+    assert.equal(mixed.previousStatus, MediaStatus.AVAILABLE);
+    const linked = await getRepository(Blocklist).findOneOrFail({
+      where: { id: mixed.id },
+      relations: { media: true },
+    });
+    assert.equal(linked.media.id, stored.id);
+    const tv = await getRepository(Blocklist).findOneByOrFail({
+      mediaType: MediaType.TV,
+      tmdbId: 101,
+    });
+    assert.equal(tv.blocklistedGenres, ',10759,');
+    settings.main.blocklistedTags = '';
+    await processor.run();
+    const genreOnly = await getRepository(Blocklist).findOneByOrFail({
+      id: mixed.id,
+    });
+    assert.equal(genreOnly.blocklistedTags, null);
+    assert.equal(genreOnly.blocklistedGenres, ',28,');
+    assert.equal(genreOnly.previousStatus, MediaStatus.AVAILABLE);
+    settings.main.blocklistedGenresMovie = '';
+    settings.main.blocklistedGenresTv = '';
+    await processor.run();
+    assert.equal(
+      await getRepository(Blocklist).findOneBy({ id: mixed.id }),
+      null
+    );
+    assert.equal(
+      (await getRepository(Media).findOneByOrFail({ id: stored.id })).status,
+      MediaStatus.AVAILABLE
+    );
+    const preserved = await getRepository(Blocklist).findOneByOrFail({
+      id: manual.id,
+    });
+    assert.equal(preserved.blocklistedTags, null);
+    assert.equal(preserved.blocklistedGenres, null);
   });
 });

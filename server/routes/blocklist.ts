@@ -83,7 +83,9 @@ const blocklistGet = z.object({
     .pipe(z.number().max(MAX_PAGINATION_OFFSET))
     .default(0),
   search: z.string().trim().max(maxBlocklistTextLength).optional(),
-  filter: z.enum(['all', 'manual', 'blocklistedTags']).optional(),
+  filter: z
+    .enum(['all', 'manual', 'blocklistedTags', 'blocklistedGenres'])
+    .optional(),
   timeFrame: z.enum(['all', '7d', '14d', '30d', '6m']).default('all'),
   mediaType: z
     .enum(['all', 'movie', 'tv', 'music', 'book', 'comic', 'magazine'])
@@ -250,6 +252,7 @@ blocklistRoutes.get(
             OR LOWER(COALESCE(blocklist.externalId, '')) LIKE :${searchParameter} ESCAPE '\\'
             OR LOWER(COALESCE(blocklist.externalProvider, '')) LIKE :${searchParameter} ESCAPE '\\'
             OR LOWER(COALESCE(blocklist.blocklistedTags, '')) LIKE :${searchParameter} ESCAPE '\\'
+            OR LOWER(COALESCE(blocklist.blocklistedGenres, '')) LIKE :${searchParameter} ESCAPE '\\'
             OR LOWER(COALESCE(user.username, '')) LIKE :${searchParameter} ESCAPE '\\'
             OR LOWER(COALESCE(user.plexUsername, '')) LIKE :${searchParameter} ESCAPE '\\'
             OR LOWER(COALESCE(user.jellyfinUsername, '')) LIKE :${searchParameter} ESCAPE '\\'
@@ -265,25 +268,35 @@ blocklistRoutes.get(
         .clone()
         .select('COUNT(DISTINCT blocklist.id)', 'all')
         .addSelect(
-          'COUNT(DISTINCT CASE WHEN blocklist.blocklistedTags IS NULL THEN blocklist.id END)',
+          'COUNT(DISTINCT CASE WHEN blocklist.blocklistedTags IS NULL AND blocklist.blocklistedGenres IS NULL THEN blocklist.id END)',
           'manual'
         )
         .addSelect(
           'COUNT(DISTINCT CASE WHEN blocklist.blocklistedTags IS NOT NULL THEN blocklist.id END)',
           'blocklistedTags'
         )
+        .addSelect(
+          'COUNT(DISTINCT CASE WHEN blocklist.blocklistedGenres IS NOT NULL THEN blocklist.id END)',
+          'blocklistedGenres'
+        )
         .getRawOne<{
           all: string;
           manual: string;
           blocklistedTags: string;
+          blocklistedGenres: string;
         }>();
 
       switch (filter) {
         case 'manual':
-          query = query.andWhere('blocklist.blocklistedTags IS NULL');
+          query = query.andWhere(
+            'blocklist.blocklistedTags IS NULL AND blocklist.blocklistedGenres IS NULL'
+          );
           break;
         case 'blocklistedTags':
           query = query.andWhere('blocklist.blocklistedTags IS NOT NULL');
+          break;
+        case 'blocklistedGenres':
+          query = query.andWhere('blocklist.blocklistedGenres IS NOT NULL');
           break;
       }
 
@@ -314,6 +327,7 @@ blocklistRoutes.get(
           all: Number(rawCounts?.all ?? 0),
           manual: Number(rawCounts?.manual ?? 0),
           blocklistedTags: Number(rawCounts?.blocklistedTags ?? 0),
+          blocklistedGenres: Number(rawCounts?.blocklistedGenres ?? 0),
         },
       } as BlocklistResultsResponse);
     } catch (error) {

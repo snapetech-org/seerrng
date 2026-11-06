@@ -1,3 +1,4 @@
+import BlocklistedGenresBadge from '@app/components/BlocklistedGenresBadge';
 import BlocklistedTagsBadge from '@app/components/BlocklistedTagsBadge';
 import Badge from '@app/components/Common/Badge';
 import Button from '@app/components/Common/Button';
@@ -132,12 +133,16 @@ const BlocklistBlock = ({
                   </Link>
                 </span>
               </>
-            ) : data.blocklistedTags ? (
+            ) : data.blocklistedTags || data.blocklistedGenres ? (
               <>
                 <span className="w-40 truncate md:w-auto">
                   {intl.formatMessage(messages.blocklistedby)}:&nbsp;
                 </span>
-                <BlocklistedTagsBadge data={data} />
+                {data.blocklistedTags && <BlocklistedTagsBadge data={data} />}
+                {data.blocklistedTags && data.blocklistedGenres && ' '}
+                {data.blocklistedGenres && (
+                  <BlocklistedGenresBadge data={data} />
+                )}
               </>
             ) : null}
           </div>

@@ -587,6 +587,8 @@ export interface MainSettings {
   blocklistRegion: string;
   blocklistLanguage: string;
   blocklistedTags: string;
+  blocklistedGenresMovie: string;
+  blocklistedGenresTv: string;
   blocklistedTagsLimit: number;
   mediaServerType: number;
   partialRequestsEnabled: boolean;
@@ -1013,6 +1015,8 @@ class Settings {
         blocklistRegion: '',
         blocklistLanguage: '',
         blocklistedTags: '',
+        blocklistedGenresMovie: '',
+        blocklistedGenresTv: '',
         blocklistedTagsLimit: 50,
         mediaServerType: MediaServerType.NOT_CONFIGURED,
         partialRequestsEnabled: true,
@@ -2090,6 +2094,8 @@ class Settings {
         blocklistRegion: '',
         blocklistLanguage: '',
         blocklistedTags: '',
+        blocklistedGenresMovie: '',
+        blocklistedGenresTv: '',
         blocklistedTagsLimit: 50,
         mediaServerType: MediaServerType.NOT_CONFIGURED,
         partialRequestsEnabled: true,
