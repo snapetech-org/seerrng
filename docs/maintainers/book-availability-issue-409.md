@@ -111,3 +111,22 @@ The new migration intentionally requires an enabled service rescan to populate
 legacy file observations. The separate compact-summary readability problem at
 320px remains tracked in `compact-summary-theme-validation.md`; no CSS is
 changed by this availability milestone.
+
+## Independent library and mixed-format cancellation follow-up
+
+Three additional regressions failed on the first file-evidence milestone.
+Deleting the last confirmed manager copy reset the entire book row, losing
+independent ABS/Plex evidence. A completed ebook operation also entered active
+cancellation while its audiobook was still pending and failed with incomplete
+tracking. Manager deletion now removes only that destination's observation and
+matching manager link; independent media-server keys and other observations stay.
+Cancellation skips already-imported operations and withdraws the remaining work.
+Both complete media-route and cleanup suites pass61 tests after the repair.
+Baseline failures and final readback evidence are retained in the409 archive.
+
+Main CI on the first milestone found two available-library fixtures and one
+Cypress discovery fixture still using manager IDs as their entire proof. They
+now explicitly seed imported-file observations. The library regression suite
+passes8 tests, including exclusion of manager-only legacy AVAILABLE records.
+The final integrated main CI remains the closure gate; no old failing run is
+reported as qualification of these later fixes.

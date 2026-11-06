@@ -9,6 +9,25 @@ v3.72.7 section consolidates changes from the requested v3.71.4 baseline
 through v3.72.7, including changes also represented by unpublished interim
 tags. The comparison link is the complete commit range.
 
+## [3.72.17](https://github.com/snapetech-org/seerrng/compare/v3.72.16..v3.72.17) - 2026-11-06
+
+### User-facing changes
+
+#### Fixed
+
+- **Books:** Availability follows confirmed ebook/audiobook files per service. Pending manager records no longer mark the other format available, hide missing-format requests or complete requests prematurely. Scans, acquisition tracking, request counts, history and library/discovery eligibility share the same file evidence.
+- **Books:** Removing a manager copy preserves independent Audiobookshelf/Plex availability. Cancelling a mixed-format request leaves already-imported files intact while withdrawing pending work.
+- **Interface:** Phone request summaries give metadata the card width; search/manage controls wrap instead of covering request buttons. Music details and request dialogs show one readable track-list layout without empty columns.
+
+- **Discovery:** Restore Arabic carousel positions after Back navigation, accept empty public TMDB lists and enforce the provider's supported list-ID range.
+- **Library access:** Search and discovery agree with title details for viewer-accessible Plex, Jellyfin and Emby copies, including4K. Private server identifiers remain hidden and inaccessible copies remain unavailable.
+
+### Operator and maintainer changes
+
+- **Action after upgrading:** Rescan enabled book services to populate imported-file observations for legacy records. Migration does not infer files from manager IDs; independent Audiobookshelf/Plex items are preserved.
+- **Distribution:** Restore reviewed Compose, Cloudron and Co-op submission candidates from PR137 with pinned images, restricted runtime privileges and validated proxy origins. These templates are not a claim of marketplace publication or live platform acceptance.
+- **Maintenance:** Remove blind support-issue closing and disable stale auto-closure. Closed issues have public resolution receipts. Recover the pnpm setup update with the reviewed v6.1.1 bootstrap while retaining pnpm10.24.0.
+
 ## [3.72.16](https://github.com/snapetech-org/seerrng/compare/v3.72.15..v3.72.16) - 2026-11-06
 
 ### User-facing changes

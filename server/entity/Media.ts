@@ -112,13 +112,9 @@ class Media {
         )
         .getMany();
 
-      const restrictedMedia = media.map(
-        (item) => restrictMediaRelationsForUser(item, user) as Media
-      );
-
       const relatedMedia = !isLegacyItem
-        ? restrictedMedia
-        : restrictedMedia.filter((m) =>
+        ? media
+        : media.filter((m) =>
             (items as { tmdbId: number; mediaType: string }[]).some(
               (i) => i.tmdbId === m.tmdbId && i.mediaType === m.mediaType
             )
@@ -150,6 +146,13 @@ class Media {
         relatedMedia,
         mediaServerAccessContext
       );
+
+      // Native item keys are needed to verify the linked viewer's access.
+      // Redact operational fields only after verification, as detail hydration
+      // does, so the public projection stays private without losing availability.
+      for (const item of relatedMedia) {
+        restrictMediaRelationsForUser(item, user);
+      }
 
       if (
         includeActiveRequest &&

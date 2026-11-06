@@ -129,23 +129,23 @@ const AlbumTrackList = ({
 
     return Array.from({ length: columnCount }, (_, index) =>
       tracks.slice(index * columnSize, (index + 1) * columnSize)
-    );
+    ).filter((column) => column.length > 0);
   };
   const layouts = twoColumnsOnly
     ? [
         {
           columns: splitTracks(2),
-          className: 'grid grid-cols-1 card:grid-cols-2',
+          layout: 'paired',
         },
       ]
     : [
         {
           columns: splitTracks(2),
-          className: 'grid grid-cols-2 lg:hidden',
+          layout: 'two',
         },
         {
           columns: splitTracks(3),
-          className: 'hidden grid-cols-3 lg:grid',
+          layout: 'three',
         },
       ];
 
@@ -163,10 +163,12 @@ const AlbumTrackList = ({
 
   return (
     <>
-      {layouts.map(({ columns, className }) => (
+      {layouts.map(({ columns, layout }) => (
         <div
-          key={`${columns.length}-${className}`}
-          className={`scrollable-card mt-2 max-h-[168px] gap-2 overflow-y-auto ${className}`}
+          key={layout}
+          className="album-track-layout scrollable-card"
+          data-track-layout={layout}
+          data-track-column-count={columns.length}
         >
           {columns.map((columnTracks, columnIndex) => {
             return (

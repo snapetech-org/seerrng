@@ -921,6 +921,51 @@ describe('DELETE /media/:id', () => {
 });
 
 describe('library deletion authorization', () => {
+  for (const library of ['abs', 'plex'])
+    it(`preserves independent ${library} audio after deleting the last book manager copy`, async (t) => {
+      const media = await getRepository(Media).save(
+        new Media({
+          tmdbId: 0,
+          mediaType: MediaType.BOOK,
+          status: MediaStatus.AVAILABLE,
+          serviceId: 10,
+          externalServiceId: 100,
+          availableEbookServiceIds: [10],
+          audiobookLibraryServiceId: library === 'abs' ? 9 : null,
+          audiobookLibraryItemId:
+            library === 'abs' ? 'confirmed-abs-item' : null,
+          ratingKey: library === 'plex' ? 'confirmed-plex-audio' : null,
+        })
+      );
+      t.mock.method(ReadarrAPI.prototype, 'getBooks', async () => [
+        {
+          id: 100,
+          title: 'Owned Book',
+          foreignBookId: 'fixture-owned',
+          authorId: 700,
+        },
+      ]);
+      const agent = await loginAs('admin@seerr.dev', 'test1234');
+      const plan = await agent.get(`/media/${media.id}/library`);
+      assert.equal(plan.status, 200, plan.body.message);
+      assert.equal(plan.body.targets.length, 1);
+      const res = await agent
+        .delete(`/media/${media.id}/library`)
+        .send({ token: plan.body.token });
+      assert.equal(res.status, 204, res.body.message);
+      const updated = await getRepository(Media).findOneByOrFail({
+        id: media.id,
+      });
+      assert.equal(updated.status, MediaStatus.AVAILABLE);
+      assert.equal(updated.serviceId, null);
+      assert.equal(updated.externalServiceId, null);
+      assert.deepEqual(updated.availableEbookServiceIds, []);
+      if (library === 'abs') {
+        assert.equal(updated.audiobookLibraryServiceId, 9);
+        assert.equal(updated.audiobookLibraryItemId, 'confirmed-abs-item');
+      } else assert.equal(updated.ratingKey, 'confirmed-plex-audio');
+    });
+
   it('reproduces stale available series blocking requests when no library copy remains', async () => {
     const tmdbId = 909999;
     const media = await getRepository(Media).save(

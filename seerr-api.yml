@@ -19387,7 +19387,8 @@ paths:
           required: true
           schema:
             type: string
-            pattern: '^[1-9][0-9]{0,11}$'
+            pattern: '^[1-9][0-9]{0,9}$'
+            description: A positive decimal TMDB list ID no greater than 2147483647.
             example: '8254132'
         - in: query
           name: page

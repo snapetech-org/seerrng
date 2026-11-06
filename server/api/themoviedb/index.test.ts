@@ -121,6 +121,31 @@ describe('TMDB normalized search fallback', () => {
 });
 
 describe('TMDB response boundaries', () => {
+  it('preserves valid empty TMDB lists with zero pages', () => {
+    const result = sanitizeTmdbListResponse({
+      page: 1,
+      total_pages: 0,
+      item_count: 0,
+      name: 'Empty public list',
+      results: [],
+    });
+    assert.equal(result.total_pages, 0);
+    assert.equal(result.item_count, 0);
+    assert.deepEqual(result.results, []);
+  });
+  it('rejects TMDB list IDs outside the provider int32 range without contacting it', async () => {
+    const api = new TheMovieDb();
+    let calls = 0;
+    Object.defineProperty(api, 'get', {
+      value: async () => {
+        calls++;
+        return { page: 1, total_pages: 0, item_count: 0, results: [] };
+      },
+    });
+    await assert.rejects(api.getTmdbList({ listId: '2147483648' }));
+    assert.equal(calls, 0);
+  });
+
   it('sanitizes mixed TMDB list pages without using total_results', () => {
     const response = sanitizeTmdbListResponse({
       page: 2,
@@ -196,7 +221,7 @@ describe('TMDB response boundaries', () => {
     });
 
     const response = await tmdb.getTmdbList({
-      listId: '123456789012',
+      listId: '2147483647',
       page: 2,
       language: 'fr',
     });
@@ -204,7 +229,7 @@ describe('TMDB response boundaries', () => {
     assert.strictEqual(response.item_count, 51);
     assert.deepStrictEqual(calls, [
       {
-        path: '/list/123456789012',
+        path: '/list/2147483647',
         config: {
           baseURL: 'https://api.themoviedb.org/4',
           params: { page: 2, language: 'fr' },
