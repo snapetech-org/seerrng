@@ -108,6 +108,15 @@ for (const theme of ['seerrOrig', 'seerrNGJ'])
           exact: true,
         })
       ).toBeVisible();
+      const pageTracks = page.locator('.album-track-layout:visible');
+      await expect(pageTracks).toHaveCount(1);
+      await expect(pageTracks.locator('section')).toHaveCount(1);
+      expect(
+        await pageTracks.evaluate((node) => node.scrollWidth - node.clientWidth)
+      ).toBeLessThanOrEqual(1);
+      await pageTracks.screenshot({
+        path: info.outputPath('music-detail-tracks.png'),
+      });
       await page
         .getByRole('group', { name: 'Request', exact: true })
         .getByTestId('format-request-option-flac')
@@ -116,17 +125,25 @@ for (const theme of ['seerrOrig', 'seerrNGJ'])
       await expect(dialog).toBeVisible();
       await expect(dialog.getByTestId('modal-ok-button')).toBeEnabled();
       const summary = dialog.locator('.detail-summary-card');
-      for (const value of await summary
-        .locator('dd')
-        .evaluateAll((els) =>
-          els.map((el) => ({
-            text: el.textContent,
-            w: el.clientWidth,
-            sw: el.scrollWidth,
-            h: el.clientHeight,
-            sh: el.scrollHeight,
-          }))
-        )) {
+      const tracks = dialog.locator('.album-track-layout:visible');
+      await expect(tracks).toHaveCount(1);
+      await expect(tracks.locator('section')).toHaveCount(1);
+      await expect(
+        tracks.getByText('Opening Track', { exact: true })
+      ).toBeVisible();
+      expect(
+        await tracks.evaluate((node) => node.scrollWidth - node.clientWidth)
+      ).toBeLessThanOrEqual(1);
+
+      for (const value of await summary.locator('dd').evaluateAll((els) =>
+        els.map((el) => ({
+          text: el.textContent,
+          w: el.clientWidth,
+          sw: el.scrollWidth,
+          h: el.clientHeight,
+          sh: el.scrollHeight,
+        }))
+      )) {
         expect(value.sw, value.text || '').toBeLessThanOrEqual(value.w + 1);
         expect(value.sh, value.text || '').toBeLessThanOrEqual(value.h + 1);
       }

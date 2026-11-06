@@ -142,3 +142,16 @@ Fixture provider failures and the initial harness errors are retained; they are
 not live-provider acceptance evidence. Evidence: `readability-final-consumers`,
 `candidate-qualified-readability`, `music-readable-accepted` and their logs in
 the theme QA deliverable directory.
+
+The AlbumTrackList follow-up is now repaired. Its shared semantic layout owns
+responsive visibility and columns; phone layouts use one track column, desktop
+layouts preserve the supported two/three-column variants, and empty sections
+are omitted. The existing168px scrolling viewport and selection behavior remain.
+The previous duplicate visibility utilities are removed. Both album details and
+the request dialog pass six final production-browser cases across both themes
+at320/390/1440px. Each visible track layout is unique, has one populated section
+for the one-track fixture and stays within its bounds. Final dialog and primary
+track screenshots were reviewed; the duplicate columns and overlap are gone.
+The existing album-selection unit test and all73 shared contracts pass. The
+obsolete contract requiring a nonwrapping request row now requires safe wrapping;
+the ordinary-click browser regression supplies behavioral verification.
