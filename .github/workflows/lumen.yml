@@ -38,6 +38,27 @@ jobs:
       - name: Test built unprivileged nginx, forwarding and Plex links
         working-directory: lumen
         run: npm test
+        env:
+          LUMEN_IMAGE_AUDIT_ARCHIVE: ${{ runner.temp }}/lumen-production-image.tar
+      - name: Install current Trivy image scanner
+        uses: aquasecurity/setup-trivy@e07451d2e059ed86c2870430ea286b3a9e0bf241 # latest
+        with:
+          version: latest
+          token: ${{ github.token }}
+      - name: Reject fixable HIGH and CRITICAL production-image vulnerabilities
+        run: >-
+          trivy image --input "${{ runner.temp }}/lumen-production-image.tar"
+          --config= --ignorefile= --scanners vuln --severity HIGH,CRITICAL
+          --ignore-unfixed --exit-code 1 --format json
+          --output "${{ runner.temp }}/lumen-image-vulnerabilities.json"
+      - name: Retain production-image vulnerability evidence
+        if: always()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: lumen-image-vulnerability-report
+          path: ${{ runner.temp }}/lumen-image-vulnerabilities.json
+          if-no-files-found: warn
+          retention-days: 14
       - name: Install Chromium
         working-directory: lumen
         run: npx --no-install playwright install --with-deps chromium
