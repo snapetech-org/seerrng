@@ -98,3 +98,8 @@ and cancellation/single-flight boundaries. Its own tests remain alongside the
 added regressions. See the ledger entry and
 [user-report validation record](user-bug-reports-2026-11-06.md) for scope and
 current validation; this addendum does not change the earlier release checkpoint.
+
+
+## Main consolidation follow-up — November 6, 2026
+
+The two version-only deepmerge alerts mentioned above were subsequently reconciled against the actual patched runtime and fresh frozen-lockfile docs graphs. Runtime5/5 and docs3/3 regression checks passed. Alerts370/372 were dismissed as inaccurate for the locally patched packages, with explicit evidence; no upstream fixed version was claimed. A separately confirmed session-expiry issue was repaired in485dc0300 and its private report closed with native replay/restart regression evidence. See [the consolidation record](branch-consolidation-2026-11-06.md) for scope, source and release boundaries.
