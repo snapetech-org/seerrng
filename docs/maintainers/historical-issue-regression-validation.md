@@ -62,3 +62,17 @@ redirect. Two route tests failed against the prior source because the limits
 were absent; both pass with the fix. Existing pending-404 and non-404 error
 handling tests also pass. This is transport hardening, not evidence of a
 compromised Plex endpoint. No live Plex account was used.
+
+## Book list identity and additional historical checks
+
+Issue #53 now has a real SQLite-backed list-route regression: a book request's
+canonical OpenLibrary identifier must be present in the returned media, which
+request cards use to resolve their details. The current separate media-relation
+hydration passes; this case does not call a live book provider or render its card.
+
+Issue #52's mounted pull-to-refresh test confirms that starting at the top does
+not lock page styles and upward motion remains uncancelled; modal style leases
+and pending reload cleanup are retained. This is React/JSDOM evidence, not a
+physical iPhone/Safari test. Issue #192's eight filter tests verify the default
+fifty-vote threshold for rating sorts and preservation of an explicit zero-vote
+choice; no live TMDB ranking comparison is claimed.
