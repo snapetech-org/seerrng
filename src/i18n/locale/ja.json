@@ -4195,7 +4195,6 @@
   "components.Settings.RadarrModal.validationRootFolderRequired": "ルートフォルダーを選択してください",
   "components.Settings.ReadarrModal.add": "サーバーを追加",
   "components.Settings.ReadarrModal.apiKey": "APIキー",
-  "components.Settings.ReadarrModal.apiKeyHelp": "ChaptarrNG の［設定］→［一般］→［セキュリティ］→［APIキー］でキーを確認してください。ChaptarrNG 0.9.941 以降では、ChaptarrNG コンテナーに CHAPTARR__AUTH__SEERRAPIKEY を設定し、ここでは SeerrNG 専用のキーを使うと、書籍サービスの操作だけにアクセスを制限できます。移行中も既存の BookshelfNG 接続では現在のキーが保持されます。",
   "components.Settings.ReadarrModal.audiobook": "オーディオブック",
   "components.Settings.ReadarrModal.baseUrl": "URLベース",
   "components.Settings.ReadarrModal.baseUrlHelp": "Bookshelf、Chaptarr、または Readarr ([設定] > [一般] > [ホスト]) で URL ベースを設定する場合は、ここに入力します (例: /bookshelf)。それ以外の場合は空白のままにしてください。 Chaptarr ユーザーはプロバイダー固有の URL ベースを必要としません。",

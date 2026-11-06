@@ -77,3 +77,15 @@ export const plexLink = (
   if (app && platform === 'ios') return { href: app };
   return { href: web, target: '_blank', rel: 'noreferrer' };
 };
+
+// Only Plex receives native Plex app links. Jellyfin and Emby use the
+// configured server URL supplied by SeerrNG, with the same URL validation.
+export const mediaLink = (
+  m: PlexLinks | undefined,
+  is4k = false,
+  kind = 'movie',
+  serverName = 'Plex'
+) =>
+  serverName === 'Plex'
+    ? plexLink(m, is4k, kind)
+    : { href: plexUrl(m, is4k), target: '_blank', rel: 'noreferrer' };

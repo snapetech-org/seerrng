@@ -56,6 +56,7 @@ function configureAudiobookshelf(): void {
 
 async function seedBook(options: {
   isbn?: string;
+  asin?: string;
   itemId?: string;
   status?: MediaStatus;
   ebookServiceId?: number | null;
@@ -70,6 +71,14 @@ async function seedBook(options: {
       audiobookLibraryServiceId: options.itemId ? 7 : null,
       audiobookLibraryItemId: options.itemId ?? null,
       identifiers: [
+        ...(options.asin
+          ? [
+              new MediaIdentifier({
+                provider: MediaIdentifierProvider.ASIN,
+                value: options.asin,
+              }),
+            ]
+          : []),
         ...(options.isbn
           ? [
               new MediaIdentifier({
@@ -95,6 +104,78 @@ async function seedBook(options: {
 }
 
 describe('Audiobookshelf Scanner', () => {
+  it('matches ASIN-only audio to exactly one known book without creating a duplicate', async () => {
+    const book = await seedBook({ isbn: '9780306406157', asin: 'B012345678' });
+    libraryPage = {
+      results: [
+        {
+          id: 'audio-asin',
+          mediaType: 'book',
+          media: { metadata: { asin: 'b012345678', title: 'Test Book' } },
+        },
+      ],
+      total: 1,
+      limit: 100,
+      page: 0,
+    };
+    await audiobookshelfScanner.run();
+    const updated = await getRepository(Media).findOneByOrFail({ id: book.id });
+    assert.equal(updated.status, MediaStatus.AVAILABLE);
+    assert.equal(updated.audiobookLibraryItemId, 'audio-asin');
+    assert.equal(await getRepository(Media).count(), 1);
+    assert.equal(audiobookshelfScanner.status().unmatchedItems, 0);
+  });
+
+  it('leaves unknown and ambiguous ASIN-only rows unmatched', async () => {
+    await seedBook({ isbn: '9780306406157', asin: 'B012345678' });
+    await seedBook({ isbn: '9780140328721', asin: 'B012345678' });
+    libraryPage = {
+      results: [
+        { id: 'unknown', media: { metadata: { asin: 'B099999999' } } },
+        { id: 'ambiguous', media: { metadata: { asin: 'B012345678' } } },
+        { id: 'malformed', media: { metadata: { asin: '../bad' } } },
+      ],
+      total: 3,
+      limit: 100,
+      page: 0,
+    };
+    await audiobookshelfScanner.run();
+    assert.equal(await getRepository(Media).count(), 2);
+    assert.equal(
+      await getRepository(Media).countBy({ status: MediaStatus.AVAILABLE }),
+      0
+    );
+    assert.equal(audiobookshelfScanner.status().unmatchedItems, 3);
+  });
+
+  for (const flag of ['isMissing', 'isInvalid'] as const) {
+    it(`clears stale audiobook availability when ABS reports ${flag}`, async () => {
+      const book = await seedBook({
+        isbn: '9780306406157',
+        itemId: 'missing',
+        status: MediaStatus.AVAILABLE,
+      });
+      libraryPage = {
+        results: [
+          {
+            id: 'missing',
+            [flag]: true,
+            media: { metadata: { isbn: '9780306406157' } },
+          },
+        ],
+        total: 1,
+        limit: 100,
+        page: 0,
+      };
+      await audiobookshelfScanner.run();
+      const updated = await getRepository(Media).findOneByOrFail({
+        id: book.id,
+      });
+      assert.equal(updated.audiobookLibraryItemId, null);
+      assert.equal(updated.status, MediaStatus.UNKNOWN);
+    });
+  }
+
   beforeEach(() => {
     mock.restoreAll();
     configureAudiobookshelf();

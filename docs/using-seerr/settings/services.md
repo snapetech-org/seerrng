@@ -213,7 +213,21 @@ SeerrNG connects to ChaptarrNG, BookshelfNG, and other Readarr-compatible book
 backends through this shared settings section. No environment variable is
 needed on the SeerrNG container. For ChaptarrNG 0.9.941+, set
 `CHAPTARR__AUTH__SEERRAPIKEY` on the ChaptarrNG container and enter that key in
-the service form.
+the service form. Create a separate random value for this restricted service
+key; it is **not** the administrator key displayed under ChaptarrNG's
+**Settings → General → Security → API Key**. The variable contains **two
+underscores** between `CHAPTARR`, `AUTH`, and `SEERRAPIKEY`. Recreate the
+ChaptarrNG container after changing its environment. Both SeerrNG format
+entries can share this restricted key. Existing administrator keys still work
+with their broader permissions; changing to a restricted key is recommended.
+
+For availability, enable **Enable Scan** on each book-service entry. Connecting
+a service successfully does not enable its library scan automatically. Run the
+Bookshelf scan under **Settings → Jobs & Cache**, followed by the Audiobookshelf
+scan if configured. Downloaded books remain available when monitoring is off.
+Audiobookshelf matches valid ISBNs, or an exact ASIN belonging to one known
+ChaptarrNG/Bookshelf edition. Rows without either match remain unmatched; the
+scan log reports their count instead of guessing by title.
 
 One ChaptarrNG or BookshelfNG instance can manage ebooks and audiobooks in the
 same library. SeerrNG keeps ebook and audiobook routing separate, so add a

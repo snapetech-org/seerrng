@@ -1,4 +1,4 @@
-import { useAuth } from '../auth';
+import { useAuth, useMediaServerName } from '../auth';
 import { Section } from '../components/cards';
 import { initials, SEERR_PUBLIC_URL } from '../components/Shell';
 import { CAN_HOVER, useApi } from '../hooks';
@@ -48,6 +48,7 @@ function Toggle({
 }
 
 export default function Me() {
+  const serverName = useMediaServerName();
   const { user, signOut } = useAuth();
   const { prefs, set, reset, locked, seerrPublicUrl } = usePrefs();
   const quota = useApi<Quota>(user ? `/user/${user.id}/quota` : null).data;
@@ -172,7 +173,9 @@ export default function Me() {
               key={r}
               path={`rows.${r}`}
               on={prefs.rows[r]}
-              title={DISCOVER_ROWS[r]}
+              title={
+                r === 'newOnPlex' ? `New on ${serverName}` : DISCOVER_ROWS[r]
+              }
             />
           ))}
         </div>

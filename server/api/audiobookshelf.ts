@@ -19,6 +19,8 @@ export interface AudiobookshelfLibrary {
 
 export interface AudiobookshelfLibraryItem {
   id: string;
+  isMissing?: boolean;
+  isInvalid?: boolean;
   mediaType?: 'book' | 'podcast' | string;
   media?: {
     metadata?: {

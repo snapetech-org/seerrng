@@ -5,15 +5,7 @@ import {
   useNavigationType,
   useSearchParams,
 } from 'react-router-dom';
-import {
-  api,
-  hcBookSearch,
-  hcBookToResult,
-  isBookshelf,
-  type BookResult,
-  type Paged,
-  type TitleResult,
-} from '../api';
+import { api, type BookResult, type Paged, type TitleResult } from '../api';
 import { BookCard, Section, TitleCard } from '../components/cards';
 import { useExtras } from '../extras';
 import { useApi } from '../hooks';
@@ -95,25 +87,19 @@ export default function Search() {
       const wantTitles = f === 'all' || f === 'movie' || f === 'tv';
       const wantBooks =
         prefs.showBooks && (f === 'all' || f === 'ebook' || f === 'audio');
-      // books: ChaptarrNG's Hardcover search through the companion when it's there
-      const format: 'ebook' | 'audiobook' =
-        f === 'audio' ? 'audiobook' : 'ebook';
-      const [tr, hc] = await Promise.all([
+      const format = f === 'audio' ? 'audiobook' : 'ebook';
+      const [tr, br] = await Promise.all([
         wantTitles
           ? api<Paged<TitleResult>>(
               `/search?query=${encodeURIComponent(term)}&page=1`
             ).catch(() => null)
           : null,
-        wantBooks ? hcBookSearch(term) : null,
-      ]);
-      // no companion: SeerrNG's search, minus its ChaptarrNG entries (keyed by Goodreads numbers,
-      // which this app can't match); Open Library listings only when they have a cover
-      const br =
-        wantBooks && !hc
-          ? await api<Paged<BookResult>>(
-              `/search?query=${encodeURIComponent(term)}&page=1&type=book`
+        wantBooks
+          ? api<Paged<BookResult>>(
+              `/discover/books?format=${format}&query=${encodeURIComponent(term)}&page=1`
             ).catch(() => null)
-          : null;
+          : null,
+      ]);
       if (!live) return;
       setTitles(
         (tr?.results || []).filter((r) =>
@@ -124,14 +110,7 @@ export default function Search() {
               : r.mediaType !== 'person'
         )
       );
-      setBooks(
-        hc
-          ? hc.map((b) => hcBookToResult(b, format))
-          : (br?.results || []).filter(
-              (b) =>
-                b.mediaType === 'book' && b.posterPath && !isBookshelf(b.id)
-            )
-      );
+      setBooks((br?.results || []).filter((b) => b.mediaType === 'book'));
       setSearching(false);
     }, 300);
     return () => {

@@ -61,6 +61,7 @@ export const normalizeExternalBookId = (
   id: string,
   provider?: MediaIdentifierProvider
 ): string => {
+  if (provider === MediaIdentifierProvider.ASIN) return id.trim().toUpperCase();
   if (provider === MediaIdentifierProvider.ISBN) {
     return normalizeValidIsbn(id) ?? id.trim();
   }
@@ -77,6 +78,12 @@ export const normalizeExternalBookId = (
   }
 
   return id.trim();
+};
+
+export const normalizeValidAsin = (value: unknown): string | undefined => {
+  if (typeof value !== 'string') return undefined;
+  const normalized = value.trim().toUpperCase();
+  return /^[A-Z0-9]{10}$/.test(normalized) ? normalized : undefined;
 };
 
 export const normalizeExternalMediaId = (

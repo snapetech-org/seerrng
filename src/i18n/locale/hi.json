@@ -4214,7 +4214,6 @@
   "components.Settings.RadarrModal.validationRootFolderRequired": "आपको एक रूट फ़ोल्डर चुनना होगा",
   "components.Settings.ReadarrModal.add": "सर्वर जोड़ें",
   "components.Settings.ReadarrModal.apiKey": "एपीआई कुंजी",
-  "components.Settings.ReadarrModal.apiKeyHelp": "ChaptarrNG में समायोजन > आम > सुरक्षा > API कुंजी के अंतर्गत कुंजी ढूंढें। ChaptarrNG 0.9.941+ के लिए, ChaptarrNG कंटेनर में CHAPTARR__AUTH__SEERRAPIKEY सेट करें और पुस्तक-सेवा कार्रवाइयों तक पहुंच सीमित करने के लिए यहां उसी SeerrNG-विशिष्ट कुंजी का उपयोग करें। माइग्रेशन के दौरान मौजूदा BookshelfNG कनेक्शन अपनी वर्तमान कुंजी बनाए रखते हैं।",
   "components.Settings.ReadarrModal.audiobook": "ऑडियोबुक",
   "components.Settings.ReadarrModal.baseUrl": "URL बेस",
   "components.Settings.ReadarrModal.baseUrlHelp": "यदि आप Bookshelf, Chaptarr या Readarr में URL बेस सेट करते हैं (समायोजन > आम > मेज़बान), तो उसे यहां दर्ज करें (उदाहरण: /bookshelf)। अन्यथा इसे खाली छोड़ दें। Chaptarr उपयोगकर्ताओं को प्रदाता-विशिष्ट URL बेस की आवश्यकता नहीं है।",

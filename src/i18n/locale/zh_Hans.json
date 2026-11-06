@@ -4195,7 +4195,6 @@
   "components.Settings.RadarrModal.validationRootFolderRequired": "请选择根文件夹。",
   "components.Settings.ReadarrModal.add": "添加服务器",
   "components.Settings.ReadarrModal.apiKey": "API 密钥",
-  "components.Settings.ReadarrModal.apiKeyHelp": "请在 ChaptarrNG 的“设置 > 通用 > 安全 > API 密钥”中查找密钥。对于 ChaptarrNG 0.9.941 及以上版本，请在 ChaptarrNG 容器中设置 CHAPTARR__AUTH__SEERRAPIKEY，并在此处使用 SeerrNG 专用密钥，以限制对图书服务操作的访问。迁移期间，现有 BookshelfNG 连接会保留当前密钥。",
   "components.Settings.ReadarrModal.audiobook": "有声书",
   "components.Settings.ReadarrModal.baseUrl": "URL 基础",
   "components.Settings.ReadarrModal.baseUrlHelp": "如果您在 Bookshelf, Chaptarr, 或 Readarr (Settings > General > host) 中设置了 URL 基础, 请在此输入( 例如 / bookshelf) 。 否则就留下空白。 Chaptarr用户不需要供应商专用的URL基础.",

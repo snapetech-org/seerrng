@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
 import { MediaStatus, type TitleResult } from '../api';
+import { useMediaServerName } from '../auth';
 import { MoreOnScroll, TitleCard } from '../components/cards';
 import { Avatar } from '../components/Shell';
 import { CAN_HOVER, useApi, usePaged } from '../hooks';
@@ -22,6 +23,7 @@ const SORTS = {
 
 // Movies and Series share one page: availability switch, sort, genre chips, grid
 export default function Browse({ kind }: { kind: 'movie' | 'tv' }) {
+  const serverName = useMediaServerName();
   const [p, setP] = useSearchParams();
   const { prefs } = usePrefs();
   const show = p.get('show') || 'all';
@@ -88,7 +90,7 @@ export default function Browse({ kind }: { kind: 'movie' | 'tv' }) {
         </div>
         <p className="sub">
           {kind === 'movie'
-            ? `${!prefs.hoverRequest ? 'Open a poster to request it.' : CAN_HOVER ? 'Hover a poster to request in one click.' : 'Tap + on a poster to request in one tap.'} Everything on Plex has a green check.`
+            ? `${!prefs.hoverRequest ? 'Open a poster to request it.' : CAN_HOVER ? 'Hover a poster to request in one click.' : 'Tap + on a poster to request in one tap.'} Everything on ${serverName} has a green check.`
             : prefs.wholeSeriesDefault
               ? 'Requesting gets the whole show. Only want some? Untick seasons on the show’s page.'
               : 'Pick the seasons you want on each show’s page.'}
@@ -102,8 +104,8 @@ export default function Browse({ kind }: { kind: 'movie' | 'tv' }) {
         <div className="seg" role="group" aria-label="Availability">
           {[
             ['all', 'All'],
-            ['plex', 'On Plex'],
-            ['not', 'Not on Plex'],
+            ['plex', `On ${serverName}`],
+            ['not', `Not on ${serverName}`],
           ].map(([v, t]) => (
             <button
               key={v}

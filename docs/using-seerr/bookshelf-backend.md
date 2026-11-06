@@ -185,6 +185,12 @@ format in each entry.
 For ChaptarrNG `0.9.941` and later, configure a dedicated SeerrNG service key
 with `CHAPTARR__AUTH__SEERRAPIKEY` in the ChaptarrNG container or secret
 manager. Enter that value in the Bookshelf service's **API Key** field. The
+value is a separate random key, not the general administrator key shown in
+ChaptarrNG's Security page. For example, generate 32 random bytes with
+`openssl rand -hex 32`, store that value privately, and use the same value in
+the container variable and SeerrNG connection. The variable has two underscores
+between each of its three names. Recreate ChaptarrNG after changing its
+environment; no variable belongs on the SeerrNG container. The
 scoped key supports SeerrNG's book lookup, library, request, search, and
 pending-author-import operations, and its artwork requests. It does not grant
 global settings, book or author deletion, file deletion, or media-move access.

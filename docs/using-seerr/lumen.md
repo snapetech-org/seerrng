@@ -116,7 +116,8 @@ docker compose ps
 ### 5. Set up SeerrNG
 
 Open `http://<this-machine>:5055` and complete SeerrNG's setup wizard: sign in with
-Plex, connect your Plex server, and add Sonarr and Radarr. The
+your configured Plex, Jellyfin, or Emby account, connect that media server, and
+add Sonarr and Radarr. The
 [getting started guide](../getting-started/index.mdx) walks through it.
 
 ### 6. Turn on Trust Reverse Proxy
@@ -133,6 +134,19 @@ docker compose restart seerrng
 ### 7. Open Lumen
 
 Go to `http://<this-machine>:5080` and sign in. Share this address with your users.
+
+Lumen reads SeerrNG's enabled sign-in methods. Jellyfin users can use their
+Jellyfin username/password or Quick Connect; a Quick Connect-only policy hides
+password sign-in. Emby uses its username/password flow. Local SeerrNG accounts
+remain available when enabled. Playback buttons open the configured media
+server; Plex app links remain specific to Plex.
+
+Books and Audiobooks use the format-specific SeerrNG feeds and preserve each
+returned provider/service ID. **In library** reads scanned book-service inventory,
+including ChaptarrNG titles matched to Audiobookshelf, rather than filtering
+only popular titles. Book search and ordinary requests do not require the
+optional companion. Configure and scan both formats as described in
+[book services](settings/services.md).
 
 If you want people to reach it from outside your home, continue with
 [Put Lumen behind your reverse proxy or tunnel](#put-lumen-behind-your-reverse-proxy-or-tunnel).

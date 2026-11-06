@@ -17,6 +17,9 @@ describe('book detail routes behind the OpenAPI validator', () => {
         validateSecurity: false,
       })
     );
+    app.get('/api/v1/book/library', (req, res) =>
+      res.json({ format: req.query.format, page: req.query.page })
+    );
     app.get('/api/v1/book/:bookId', (req, res) =>
       res.status(200).json({
         id: req.params.bookId,
@@ -47,6 +50,23 @@ describe('book detail routes behind the OpenAPI validator', () => {
     );
     return app;
   }
+
+  it('admits the library format and pagination contract before dynamic book IDs', async () => {
+    const res = await request(createValidatedApp()).get(
+      '/api/v1/book/library?format=audiobook&page=2'
+    );
+    assert.equal(res.status, 200);
+    assert.equal(res.body.format, 'audiobook');
+    assert.equal(res.body.page, 2);
+    assert.equal(
+      (
+        await request(createValidatedApp()).get(
+          '/api/v1/book/library?format=both'
+        )
+      ).status,
+      400
+    );
+  });
 
   it('admits the Bookshelf title fallback on book details', async () => {
     const response = await request(createValidatedApp())

@@ -1,13 +1,8 @@
 import { Link, useSearchParams } from 'react-router-dom';
-import {
-  bookIdFor,
-  hardcoverWorkId,
-  MediaStatus,
-  type BookResult,
-} from '../api';
+import { bookMediaForFormat, MediaStatus, type BookResult } from '../api';
 import { BookCard, MoreOnScroll } from '../components/cards';
 import { Avatar } from '../components/Shell';
-import { useBookStates, useEbookCovers, usePaged } from '../hooks';
+import { useEbookCovers, usePaged } from '../hooks';
 import { Icon } from '../icons';
 import { usePrefs } from '../settings';
 
@@ -17,15 +12,16 @@ export default function Books({ format }: { format: 'ebook' | 'audiobook' }) {
   const [p, setP] = useSearchParams();
   const { prefs } = usePrefs();
   const show = p.get('show') || 'all';
-  const list = usePaged<BookResult>('/discover/books?format=audiobook');
+  const list = usePaged<BookResult>(
+    show === 'have'
+      ? `/book/library?format=${format}`
+      : `/discover/books?format=${format}`
+  );
   const audio = format === 'audiobook';
-  const states = useBookStates();
   const have = (b: BookResult) =>
-    b.mediaInfo?.status === MediaStatus.AVAILABLE ||
-    states?.get(hardcoverWorkId(b.id) || '')?.[format] === 5;
+    bookMediaForFormat(b.mediaInfo, format)?.status === MediaStatus.AVAILABLE;
   const raw = list.items
-    .filter((b) => b.posterPath && b.id.startsWith('bookshelf:'))
-    .map((b) => ({ ...b, id: bookIdFor(b.id, format), bookFormat: format }))
+    .map((b) => ({ ...b, bookFormat: format }))
     .filter((b) =>
       show === 'have' ? have(b) : show === 'not' ? !have(b) : true
     );
@@ -97,6 +93,16 @@ export default function Books({ format }: { format: 'ebook' | 'audiobook' }) {
             {list.error}
           </div>
         )}
+        {!list.loading &&
+          !list.error &&
+          list.page > 0 &&
+          items.length === 0 && (
+            <div className="empty">
+              {show === 'have'
+                ? `No ${audio ? 'audiobooks' : 'ebooks'} are available in this library.`
+                : 'No books match this view.'}
+            </div>
+          )}
         <div className={`grid ${audio ? 'sqg' : ''}`} style={{ marginTop: 16 }}>
           {items.map((b) => (
             <BookCard key={b.id} b={b} />

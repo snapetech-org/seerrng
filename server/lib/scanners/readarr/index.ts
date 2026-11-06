@@ -6,7 +6,10 @@ import { getRepository } from '@server/datasource';
 import Media from '@server/entity/Media';
 import { MediaIdentifierProvider } from '@server/entity/MediaIdentifier';
 import { resolveOpenLibraryIdentifiersForReadarrBook } from '@server/lib/bookIdentifierResolver';
-import { normalizeExternalBookId } from '@server/lib/externalIds';
+import {
+  normalizeExternalBookId,
+  normalizeValidAsin,
+} from '@server/lib/externalIds';
 import { getExternalRuntimeConfig } from '@server/lib/externalRuntimeConfig';
 import { normalizeIsbn, normalizeValidIsbn } from '@server/lib/isbn';
 import { runMediaEntityMutation } from '@server/lib/mediaMutation';
@@ -238,6 +241,12 @@ class ReadarrScanner
           value: string;
         }[]),
         ...resolvedOpenLibraryIdentifiers,
+        ...(readarrBook.editions ?? []).flatMap((edition) => {
+          const asin = normalizeValidAsin(edition.asin);
+          return asin
+            ? [{ provider: MediaIdentifierProvider.ASIN, value: asin }]
+            : [];
+        }),
       ].filter(
         (
           item
@@ -266,7 +275,7 @@ class ReadarrScanner
       const hasFile = bookFileCount > 0;
       const totalBooks = readarrBook.statistics?.totalBookCount ?? 1;
 
-      if (!readarrBook.monitored) {
+      if (!readarrBook.monitored && !hasFile) {
         await this.processBookWithRetry(provider, identifier, {
           serviceId: this.currentServer.id,
           externalServiceId: readarrBook.id,

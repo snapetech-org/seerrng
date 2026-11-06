@@ -1,8 +1,8 @@
 import { useCallback, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import {
+  mediaLink,
   MediaStatus,
-  plexLink,
   requestMovie,
   tmdbImg,
   type MovieDetails,
@@ -10,7 +10,7 @@ import {
   type RequestOptions,
   type TitleResult,
 } from '../api';
-import { useAuth } from '../auth';
+import { useAuth, useMediaServerName } from '../auth';
 import {
   Rail,
   Section,
@@ -37,6 +37,7 @@ const cert = (m: MovieDetails) =>
     ?.release_dates.find((d) => d.certification)?.certification || '';
 
 export default function MovieDetail() {
+  const serverName = useMediaServerName();
   const { id } = useParams();
   const { data: m, error, reload } = useApi<MovieDetails>(`/movie/${id}`);
   const like = useApi<Paged<TitleResult>>(`/movie/${id}/recommendations`).data;
@@ -58,7 +59,7 @@ export default function MovieDetail() {
     );
   if (!m) return <div className="detail-loading" aria-busy="true" />;
 
-  const s = statusOf(m.mediaInfo);
+  const s = statusOf(m.mediaInfo, false, serverName);
   const s4k = m.mediaInfo?.status4k;
   const date = m.releaseDate || '';
   const unreleased = date > new Date().toISOString().slice(0, 10);
@@ -85,9 +86,12 @@ export default function MovieDetail() {
 
   const main =
     s?.k === 'ok' ? (
-      <a className="btn btn-primary" {...plexLink(m.mediaInfo)}>
+      <a
+        className="btn btn-primary"
+        {...mediaLink(m.mediaInfo, false, 'movie', serverName)}
+      >
         <Icon name="play" />
-        Watch on Plex
+        Watch on {serverName}
       </a>
     ) : s ? (
       <button className="btn btn-tonal" disabled>
@@ -156,7 +160,7 @@ export default function MovieDetail() {
           )}
           {s4k === MediaStatus.AVAILABLE && (
             <Pill k="ok" icon="check">
-              4K on Plex
+              4K on {serverName}
             </Pill>
           )}
           {(s4k === MediaStatus.PENDING || s4k === MediaStatus.PROCESSING) && (
@@ -208,7 +212,7 @@ export default function MovieDetail() {
                   '4K',
                   pub?.movie4kEnabled
                     ? s4k === MediaStatus.AVAILABLE
-                      ? 'On Plex'
+                      ? `On ${serverName}`
                       : 'Not yet'
                     : '',
                 ],

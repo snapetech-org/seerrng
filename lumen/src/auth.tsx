@@ -13,18 +13,48 @@ import { resetSessionState } from './sessionState';
 
 interface AuthState {
   user: User | null | undefined; // undefined = still checking
+  settings: LoginSettings | null | undefined;
+  reloadSettings: () => Promise<void>;
   refresh: () => Promise<void>;
   signOut: () => Promise<void>;
 }
+export interface LoginSettings {
+  mediaServerType?: number;
+  mediaServerLogin?: boolean;
+  localLogin?: boolean;
+  jellyfinQuickConnectOnly?: boolean;
+}
 const Ctx = createContext<AuthState>({
   user: undefined,
+  settings: undefined,
+  reloadSettings: async () => {},
   refresh: async () => {},
   signOut: async () => {},
 });
 export const useAuth = () => useContext(Ctx);
+export const useMediaServerName = () => {
+  const { settings } = useAuth();
+  return settings?.mediaServerType === 2
+    ? 'Jellyfin'
+    : settings?.mediaServerType === 3
+      ? 'Emby'
+      : 'Plex';
+};
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null | undefined>(undefined);
+  const [settings, setSettings] = useState<LoginSettings | null>();
+  const reloadSettings = useCallback(async () => {
+    setSettings(undefined);
+    try {
+      setSettings(await api<LoginSettings>('/settings/public'));
+    } catch {
+      setSettings(null);
+    }
+  }, []);
+  useEffect(() => {
+    void reloadSettings();
+  }, [reloadSettings]);
   const principal = useRef<number | null | undefined>(undefined);
   const authRequest = useRef(0);
   const setPrincipal = useCallback((next: User | null) => {
@@ -54,7 +84,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     void refresh();
   }, [refresh]);
   return (
-    <Ctx.Provider value={{ user, refresh, signOut }}>
+    <Ctx.Provider value={{ user, settings, reloadSettings, refresh, signOut }}>
       <Fragment key={user?.id ?? 'signed-out'}>{children}</Fragment>
     </Ctx.Provider>
   );

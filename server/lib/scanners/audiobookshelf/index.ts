@@ -7,6 +7,7 @@ import Media from '@server/entity/Media';
 import MediaIdentifier, {
   MediaIdentifierProvider,
 } from '@server/entity/MediaIdentifier';
+import { normalizeValidAsin } from '@server/lib/externalIds';
 import { getExternalRuntimeConfig } from '@server/lib/externalRuntimeConfig';
 import { normalizeValidIsbn } from '@server/lib/isbn';
 import {
@@ -29,6 +30,7 @@ class AudiobookshelfScanner
 {
   private serviceId?: number;
   private seenItemIds = new Set<string>();
+  private unmatchedItems = 0;
 
   constructor() {
     // processBook writes each ISBN match in its own SQLite transaction. Keep
@@ -36,11 +38,12 @@ class AudiobookshelfScanner
     super('Audiobookshelf Scan', { bundleSize: 1 });
   }
 
-  public status(): StatusBase {
+  public status(): StatusBase & { unmatchedItems: number } {
     return {
       running: this.running,
       progress: this.progress,
       total: this.items.length,
+      unmatchedItems: this.unmatchedItems,
     };
   }
 
@@ -53,6 +56,7 @@ class AudiobookshelfScanner
 
     this.serviceId = settings.id;
     this.seenItemIds.clear();
+    this.unmatchedItems = 0;
 
     try {
       const api = new AudiobookshelfAPI(settings);
@@ -105,13 +109,26 @@ class AudiobookshelfScanner
       }
 
       this.items = items;
-      this.seenItemIds = itemIds;
+      this.seenItemIds = new Set(
+        items
+          .filter(
+            (item) =>
+              !item.isMissing && !item.isInvalid && item.mediaType !== 'podcast'
+          )
+          .map((item) => item.id.trim())
+      );
       await this.loop(this.processItem.bind(this), { sessionId });
       await this.cleanupRemovedItems();
       logger.info('Audiobookshelf library scan complete', {
         label: 'Audiobookshelf',
         itemCount: items.length,
+        unmatchedItems: this.unmatchedItems,
       });
+      if (this.unmatchedItems)
+        logger.warn(
+          'Audiobookshelf items could not be matched. Supply a valid ISBN or an ASIN matching exactly one scanned Chaptarr/Bookshelf book edition, then rescan both services.',
+          { label: 'Audiobookshelf', itemCount: this.unmatchedItems }
+        );
     } catch (error) {
       logger.error('Audiobookshelf library scan failed', {
         label: 'Audiobookshelf',
@@ -126,7 +143,36 @@ class AudiobookshelfScanner
   private async processItem(item: AudiobookshelfLibraryItem): Promise<void> {
     const itemId = typeof item.id === 'string' ? item.id.trim() : '';
     const isbn = normalizeValidIsbn(item.media?.metadata?.isbn ?? undefined);
-    if (!itemId || !isbn || this.serviceId === undefined) {
+    if (
+      !itemId ||
+      this.serviceId === undefined ||
+      item.isMissing ||
+      item.isInvalid ||
+      item.mediaType === 'podcast'
+    ) {
+      return;
+    }
+    const asin = normalizeValidAsin(item.media?.metadata?.asin);
+    let provider = MediaIdentifierProvider.ISBN;
+    let identifier = isbn;
+    if (!identifier && asin) {
+      const matches = await getRepository(MediaIdentifier).find({
+        where: { provider: MediaIdentifierProvider.ASIN, value: asin },
+        relations: { media: true },
+        take: 2,
+      });
+      // ASIN-only rows must identify a known book unambiguously. Never infer
+      // ownership from title/author similarity or invent a catalogue identity.
+      if (
+        matches.length === 1 &&
+        matches[0].media.mediaType === MediaType.BOOK
+      ) {
+        provider = MediaIdentifierProvider.ASIN;
+        identifier = asin;
+      }
+    }
+    if (!identifier) {
+      this.unmatchedItems++;
       return;
     }
 
@@ -141,10 +187,13 @@ class AudiobookshelfScanner
           : undefined,
       secondaryIdentifiers: [
         { provider: MediaIdentifierProvider.AUDIOBOOKSHELF, value: itemId },
+        ...(asin
+          ? [{ provider: MediaIdentifierProvider.ASIN, value: asin }]
+          : []),
       ],
     };
 
-    await this.processBook(MediaIdentifierProvider.ISBN, isbn, options);
+    await this.processBook(provider, identifier, options);
   }
 
   private async cleanupRemovedItems(): Promise<void> {

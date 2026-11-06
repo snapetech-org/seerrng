@@ -2,9 +2,9 @@ import { useEffect, useMemo, useState } from 'react';
 import { Link, useParams, useSearchParams } from 'react-router-dom';
 import {
   bookIdFor,
+  bookMediaForFormat,
   chaptarrWork,
   englishAudioEdition,
-  hardcoverEbookId,
   hardcoverWorkId,
   MediaStatus,
   narratorKey,
@@ -105,15 +105,10 @@ export default function BookDetail() {
   const toast = useToast();
   const plainId = bookIdFor(decodeURIComponent(id), f);
   const first = useApi<BookDetails>(`/book/${encodeURIComponent(plainId)}`);
-  // plain ebook id not found (newer SeerrNG looks it up on Goodreads): retry naming Hardcover
-  const altId = f === 'ebook' && first.error ? hardcoverEbookId(plainId) : null;
-  const second = useApi<BookDetails>(
-    altId ? `/book/${encodeURIComponent(altId)}` : null
-  );
-  const bookId = altId && second.data ? altId : plainId;
-  const b = first.data || second.data;
-  const error = first.error && (!altId || second.error) ? first.error : null;
-  const reload = altId ? second.reload : first.reload;
+  const bookId = plainId;
+  const b = first.data;
+  const error = first.error;
+  const reload = first.reload;
   const work = hardcoverWorkId(bookId);
   const showNarr = f === 'audiobook' && prefs.narratorChoice;
   // narrations load on the ebook page too, so its Audiobook button reads the same as on the audiobook page
@@ -235,7 +230,7 @@ export default function BookDetail() {
     );
   if (!b) return <div className="detail-loading" aria-busy="true" />;
 
-  const s = statusOf(b.mediaInfo, true);
+  const s = statusOf(bookMediaForFormat(b.mediaInfo, f), true);
   const unlisted = local.filter(
     (l) =>
       l.hasFiles &&

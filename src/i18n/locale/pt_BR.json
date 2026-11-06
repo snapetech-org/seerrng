@@ -4214,7 +4214,6 @@
   "components.Settings.RadarrModal.validationRootFolderRequired": "Você deve selecionar uma pasta raiz.",
   "components.Settings.ReadarrModal.add": "Adicionar Servidor",
   "components.Settings.ReadarrModal.apiKey": "Chave de API",
-  "components.Settings.ReadarrModal.apiKeyHelp": "Encontre a chave no ChaptarrNG em Configurações > Geral > Segurança > Chave da API. No ChaptarrNG 0.9.941 ou posterior, defina CHAPTARR__AUTH__SEERRAPIKEY no contêiner do ChaptarrNG e use aqui essa chave exclusiva do SeerrNG para limitar o acesso às operações do serviço de livros. Durante a migração, as conexões existentes do BookshelfNG mantêm a chave atual.",
   "components.Settings.ReadarrModal.audiobook": "Audiolivro",
   "components.Settings.ReadarrModal.baseUrl": "Base de URL",
   "components.Settings.ReadarrModal.baseUrlHelp": "Se você definir uma base de URL em Bookshelf, Chaptarr, ou Readarr (Configurações > Geral > Host), digite-a aqui (por exemplo, /bookshelf). Deixe em branco, caso contrário. Usuários da Chaptarr não precisam de uma base de URL específica do provedor.",

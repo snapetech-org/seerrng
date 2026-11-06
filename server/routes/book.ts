@@ -4,6 +4,7 @@ import { MediaType } from '@server/constants/media';
 import { getRepository } from '@server/datasource';
 import Media from '@server/entity/Media';
 import { Watchlist } from '@server/entity/Watchlist';
+import { hasAvailableBookFormat } from '@server/lib/bookAvailability';
 import {
   findBookMediaForBookResults,
   findBookMediaForSearchDocs,
@@ -16,6 +17,7 @@ import {
 } from '@server/lib/externalIds';
 import { upsertMediaSearchMetadata } from '@server/lib/mediaSearchMetadata';
 import { getSettings, type ReadarrSettings } from '@server/lib/settings';
+import { isUserMediaCategoryEnabled } from '@server/lib/userMediaCategories';
 import logger from '@server/logger';
 import {
   mapOpenLibrarySearchDoc,
@@ -25,6 +27,7 @@ import {
 } from '@server/models/Book';
 import {
   getBookshelfBookDetails,
+  getBookshelfBookLibrary,
   getBookshelfLibraryBookSeries,
   parseBookshelfBookId,
   searchBookshelfCatalogs,
@@ -58,6 +61,49 @@ const bookRateLimit = rateLimit({
 });
 
 bookRoutes.use(bookRateLimit);
+
+bookRoutes.get('/library', async (req, res) => {
+  const format = req.query.format;
+  if (format !== 'ebook' && format !== 'audiobook')
+    return res.status(400).json({ message: 'Invalid book format.' });
+  if (!isUserMediaCategoryEnabled(req.user, format))
+    return res.status(403).json({ message: 'Media category is disabled.' });
+  const page = parsePositiveInt(req.query.page, 1, 500);
+  const pageSize = 50;
+  try {
+    const books = await getBookshelfBookLibrary(
+      getSettings().readarr,
+      format,
+      true
+    );
+    const media = await findBookMediaForBookResults(books, req.user);
+    const available = books.flatMap((book) => {
+      const info = media.get(book.id);
+      return info && hasAvailableBookFormat(info, format)
+        ? [{ ...book, mediaInfo: info }]
+        : [];
+    });
+    return res.json(
+      filterEntityResponse(
+        {
+          page,
+          totalPages: Math.max(1, Math.ceil(available.length / pageSize)),
+          totalResults: available.length,
+          results: available.slice((page - 1) * pageSize, page * pageSize),
+        },
+        req.user
+      )
+    );
+  } catch (error) {
+    logger.error('Failed to retrieve book library', {
+      label: 'Books',
+      errorMessage: error instanceof Error ? error.message : String(error),
+    });
+    return res
+      .status(503)
+      .json({ message: 'Book library is unavailable. Please try again.' });
+  }
+});
 
 bookRoutes.get('/:id/series', async (req, res) => {
   const id = parseOpenLibraryWorkId(req.params.id);

@@ -1,10 +1,12 @@
 import { useState, type FormEvent } from 'react';
 import { api } from '../api';
-import { signInWithPlex, useAuth } from '../auth';
+import { signInWithPlex, useAuth, useMediaServerName } from '../auth';
+import MediaServerLogin from '../components/MediaServerLogin';
 import { Icon } from '../icons';
 
 export default function Login() {
-  const { refresh } = useAuth();
+  const { refresh, settings, reloadSettings } = useAuth();
+  const serverName = useMediaServerName();
   const [busy, setBusy] = useState(false);
   const [err, setErr] = useState('');
   const [showLocal, setShowLocal] = useState(false);
@@ -45,45 +47,79 @@ export default function Login() {
           SeerrNG
         </div>
         <h1>Sign in to request movies, series and books</h1>
-        <p className="sub">Use the same account you use for Plex.</p>
-        <button
-          className="btn btn-primary login-plex"
-          disabled={busy}
-          onClick={() => run(signInWithPlex)}
-        >
-          Continue with Plex
-        </button>
-        {showLocal ? (
-          <form className="login-local" onSubmit={local}>
-            <label>
-              Email
-              <input
-                name="email"
-                type="email"
-                autoComplete="username"
-                required
-              />
-            </label>
-            <label>
-              Password
-              <input
-                name="password"
-                type="password"
-                autoComplete="current-password"
-                required
-              />
-            </label>
-            <button className="btn btn-tonal" disabled={busy}>
-              Sign in
+        <p className="sub">Use your {serverName} or SeerrNG account.</p>
+        {settings === undefined ? (
+          <p role="status">Loading sign-in options…</p>
+        ) : settings === null ? (
+          <>
+            <p className="login-err" role="alert">
+              Couldn’t load sign-in options.
+            </p>
+            <button
+              className="btn btn-tonal"
+              onClick={() => void reloadSettings()}
+            >
+              Retry
             </button>
-          </form>
+          </>
         ) : (
-          <button
-            className="btn btn-quiet btn-sm"
-            onClick={() => setShowLocal(true)}
-          >
-            Use an email and password instead
-          </button>
+          <>
+            {settings.mediaServerLogin !== false &&
+              settings.mediaServerType !== 4 &&
+              (serverName === 'Plex' ? (
+                <button
+                  className="btn btn-primary login-plex"
+                  disabled={busy}
+                  onClick={() => run(signInWithPlex)}
+                >
+                  Continue with Plex
+                </button>
+              ) : (
+                <MediaServerLogin disabled={busy} onBusyChange={setBusy} />
+              ))}
+            {settings.localLogin !== false &&
+              (showLocal ? (
+                <form className="login-local" onSubmit={local}>
+                  <label>
+                    Email
+                    <input
+                      name="email"
+                      type="email"
+                      autoComplete="username"
+                      required
+                      disabled={busy}
+                    />
+                  </label>
+                  <label>
+                    Password
+                    <input
+                      name="password"
+                      type="password"
+                      autoComplete="current-password"
+                      required
+                      disabled={busy}
+                    />
+                  </label>
+                  <button className="btn btn-tonal" disabled={busy}>
+                    Sign in
+                  </button>
+                </form>
+              ) : (
+                <button
+                  className="btn btn-quiet btn-sm"
+                  disabled={busy}
+                  onClick={() => setShowLocal(true)}
+                >
+                  Use an email and password instead
+                </button>
+              ))}
+            {settings.mediaServerLogin === false &&
+              settings.localLogin === false && (
+                <p role="status">
+                  Sign-in is disabled. Contact your administrator.
+                </p>
+              )}
+          </>
         )}
         {err && (
           <p className="login-err" role="alert">

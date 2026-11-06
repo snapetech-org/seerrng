@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import {
   api,
-  bookIdFor,
   tmdbImg,
   type BookResult,
   type Genre,
@@ -10,6 +9,7 @@ import {
   type Paged,
   type TitleResult,
 } from '../api';
+import { useMediaServerName } from '../auth';
 import {
   BookCard,
   FeatCard,
@@ -40,7 +40,7 @@ function useApi<T>(path: string) {
   return { data, error };
 }
 
-// "New on Plex": SeerrNG lists recently added media by id, so look up each title's details
+// Recently added media: SeerrNG lists recently added media by id, so look up each title's details
 function useNewOnPlex() {
   const [items, setItems] = useState<
     (TitleResult & { added?: string })[] | null
@@ -98,6 +98,7 @@ const CHIPS: [IconName, string, string][] = [
 ];
 
 export default function Discover() {
+  const serverName = useMediaServerName();
   const { prefs } = usePrefs();
   const on = prefs.rows;
   const books_ = prefs.showBooks;
@@ -105,20 +106,7 @@ export default function Discover() {
   const movies = useApi<Paged<TitleResult>>('/discover/movies');
   const series = useApi<Paged<TitleResult>>('/discover/tv');
   const audio = useApi<Paged<BookResult>>('/discover/books?format=audiobook');
-  // SeerrNG's ebook feed is Open Library's random sample; the ChaptarrNG (Hardcover) list is
-  // the same popular works, so ebooks reuse it with the ebook server's id (bookshelf:0:<work>)
-  const books = {
-    data: audio.data && {
-      ...audio.data,
-      results: audio.data.results
-        .filter((b) => b.id.startsWith('bookshelf:1:'))
-        .map((b) => ({
-          ...b,
-          id: bookIdFor(b.id, 'ebook'),
-          bookFormat: 'ebook',
-        })),
-    },
-  };
+  const books = useApi<Paged<BookResult>>('/discover/books?format=ebook');
   const soon = useApi<Paged<TitleResult>>('/discover/movies/upcoming');
   const genres = useApi<Genre[]>('/discover/genreslider/movie');
   const fresh = useNewOnPlex();
@@ -198,7 +186,10 @@ export default function Discover() {
       )}
 
       {on.newOnPlex && (
-        <Section title="New on Plex" link={['See all', '/movies?show=plex']}>
+        <Section
+          title={`New on ${serverName}`}
+          link={['See all', '/movies?show=plex']}
+        >
           {fresh ? (
             <Rail>
               {fresh.map((m) => (

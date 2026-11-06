@@ -1,6 +1,6 @@
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 import { AuthProvider, useAuth } from './auth';
 import Shell, { Placeholder } from './components/Shell';
 import { ToastProvider } from './components/toast';
@@ -32,6 +32,7 @@ function App() {
   return (
     <Shell>
       <Routes>
+        <Route path="/login" element={<Navigate to="/" replace />} />
         <Route path="/" element={<Discover />} />
         <Route path="/movies" element={<Browse key="movie" kind="movie" />} />
         <Route path="/series" element={<Browse key="tv" kind="tv" />} />
