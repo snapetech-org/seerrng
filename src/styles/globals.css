@@ -2463,7 +2463,7 @@
   .media-request-action-row {
     display: flex;
     width: 100%;
-    flex-wrap: nowrap;
+    flex-wrap: wrap;
     align-items: center;
     justify-content: var(--action-row-justify, flex-start);
     gap: var(--card-spacing);
@@ -2481,6 +2481,8 @@
   .media-request-search-action {
     display: flex;
     min-width: 0;
+    max-width: 100%;
+    flex-wrap: wrap;
     align-items: center;
     justify-content: flex-start;
     gap: var(--card-spacing);
@@ -3475,6 +3477,33 @@
   }
 
   @media (max-width: 639px) {
+    /* Compact summaries keep the title beside the poster, while facts use the
+       card width rather than a narrow strip beside that fixed artwork track. */
+    .app-detail-summary-grid:not([data-summary-layout='detail'])
+      > :nth-child(2) {
+      display: contents;
+    }
+
+    .app-detail-summary-grid:not([data-summary-layout='detail'])
+      > :first-child {
+      grid-column: 1;
+      grid-row: 1;
+    }
+
+    .app-detail-summary-grid:not([data-summary-layout='detail'])
+      > :nth-child(2)
+      > :first-child {
+      grid-column: 2;
+      grid-row: 1;
+      align-self: start;
+    }
+
+    .app-detail-summary-grid:not([data-summary-layout='detail'])
+      > :nth-child(2)
+      > :not(:first-child) {
+      grid-column: 1 / -1;
+    }
+
     .sportarr-event-card {
       grid-template-columns: minmax(0, 1fr);
     }
