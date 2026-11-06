@@ -86,3 +86,15 @@ ancestry reconciliation, issue dispositions, baseline/candidate logs and browser
 captures are retained in the owner's
 `seerrng-contribution-recovery-20261105` task-deliverables archive. These evidence
 files are not credentials or a production configuration backup.
+
+## Incoming contribution #589 follow-up
+
+The original 54 historical records are retained. A 55th scoped review covers
+ncbudd's incoming Jellyfin/Emby contribution #589 at
+`945de885e17e987a7d7e49ae2c7d8409c01e636e`, received during the later user-report
+repairs. Preserve its ancestry and features while hardening configuration-key
+validation, recovery URL credentials/path handling, public-settings failures,
+and cancellation/single-flight boundaries. Its own tests remain alongside the
+added regressions. See the ledger entry and
+[user-report validation record](user-bug-reports-2026-11-06.md) for scope and
+current validation; this addendum does not change the earlier release checkpoint.

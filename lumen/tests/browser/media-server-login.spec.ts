@@ -98,6 +98,9 @@ for (const [type, name] of [
     await expect(
       page.getByRole('button', { name: 'Continue with Plex' })
     ).toHaveCount(0);
+    await page
+      .getByRole('button', { name: `Continue with ${name}`, exact: true })
+      .click();
     await expect(
       page.getByRole('button', { name: `Sign in with ${name}`, exact: true })
     ).toBeVisible();
@@ -105,7 +108,7 @@ for (const [type, name] of [
       path: info.outputPath(`${name}-login.png`),
       fullPage: true,
     });
-    await page.getByLabel('Username', { exact: true }).fill('viewer');
+    await page.getByLabel(`${name} username`, { exact: true }).fill('viewer');
     await page.getByLabel('Password', { exact: true }).fill('fixture-password');
     await page
       .getByRole('button', { name: `Sign in with ${name}`, exact: true })
@@ -116,7 +119,7 @@ for (const [type, name] of [
     ).toEqual({
       username: 'viewer',
       password: 'fixture-password',
-      serverType: type,
+      email: 'viewer',
     });
     await page.goto('/movie/101');
     const watch = page.getByRole('link', {
@@ -161,9 +164,7 @@ test('Jellyfin Quick Connect-only respects cancellation during an approved in-fl
   await expect(
     page.getByRole('button', { name: 'Use an email and password instead' })
   ).toHaveCount(0);
-  await page
-    .getByRole('button', { name: 'Use Jellyfin Quick Connect' })
-    .click();
+  await page.getByRole('button', { name: 'Continue with Jellyfin' }).click();
   await expect(page.locator('.login').getByRole('status')).toContainText(
     '123456'
   );
@@ -172,10 +173,10 @@ test('Jellyfin Quick Connect-only respects cancellation during an approved in-fl
     path: info.outputPath('quick-connect.png'),
     fullPage: true,
   });
-  await page.getByRole('button', { name: 'Cancel sign-in' }).click();
+  await page.getByRole('button', { name: 'Cancel' }).click();
   release();
   await expect(
-    page.getByRole('button', { name: 'Use Jellyfin Quick Connect' })
+    page.getByRole('button', { name: 'Continue with Jellyfin' })
   ).toBeEnabled();
   await page.waitForTimeout(200);
   expect(fixture.posts.some((p) => p.path.endsWith('/authenticate'))).toBe(
@@ -189,9 +190,7 @@ test('approved Jellyfin Quick Connect signs in through SeerrNG', async ({
 }) => {
   const fixture = await fixtures(page, { jellyfinQuickConnectOnly: true });
   await page.goto('/login');
-  await page
-    .getByRole('button', { name: 'Use Jellyfin Quick Connect' })
-    .click();
+  await page.getByRole('button', { name: 'Continue with Jellyfin' }).click();
   await expect(page).not.toHaveURL(/\/login/);
   expect(fixture.posts.filter((p) => p.path.endsWith('/authenticate'))).toEqual(
     [
@@ -200,6 +199,42 @@ test('approved Jellyfin Quick Connect signs in through SeerrNG', async ({
         body: { secret: 'fixture-quick-connect-secret' },
       },
     ]
+  );
+});
+
+test('Quick Connect cancellation releases a stalled initiation immediately', async ({
+  page,
+}) => {
+  const fixture = await fixtures(page, { jellyfinQuickConnectOnly: true });
+  let release!: () => void;
+  let started!: () => void;
+  const held = new Promise<void>((resolve) => {
+    release = resolve;
+  });
+  const initiating = new Promise<void>((resolve) => {
+    started = resolve;
+  });
+  await page.route('**/auth/jellyfin/quickconnect/initiate', async (route) => {
+    started();
+    await held;
+    await route
+      .fulfill({ json: { code: '123456', secret: 'late-fixture-secret' } })
+      .catch(() => {});
+  });
+  await page.goto('/login');
+  await page.getByRole('button', { name: 'Continue with Jellyfin' }).click();
+  await initiating;
+  try {
+    await page.getByRole('button', { name: 'Cancel', exact: true }).click();
+    await expect(
+      page.getByRole('button', { name: 'Continue with Jellyfin' })
+    ).toBeEnabled();
+  } finally {
+    release();
+  }
+  await page.waitForTimeout(200);
+  expect(fixture.posts.some((p) => p.path.endsWith('/authenticate'))).toBe(
+    false
   );
 });
 

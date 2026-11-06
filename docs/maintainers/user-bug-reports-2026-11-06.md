@@ -92,3 +92,35 @@ items need a valid ISBN or an unambiguous shared ASIN; title similarity does
 not establish ownership. The inventory route represents configured book-service
 catalogues joined to scan evidence, not every unidentifiable file in ABS or a
 tracking-account library.
+
+## Newly arrived contribution #589
+
+While this fix was validating, ncbudd submitted #589 at
+`945de885e17e987a7d7e49ae2c7d8409c01e636e`. Its history is integrated with a normal
+merge. Retain the contributor's server-selection/configuration model, login
+flow, recovery links, compatible `show=have`/`show=plex` filters, You-page source
+information, documentation, and tests alongside the native book repairs. The
+redundant intermediate login component was removed.
+
+Review of all changed source/configuration/deployment files found no dependency
+or workflow changes. Harden `isSetting` against inherited object names, reject
+credentials in HTTP recovery links, build recovery paths with URL components,
+and fail closed with Retry when public settings are unavailable. Explicitly
+unconfigured servers do not enable server sign-in. Preserve one active sign-in
+and abortable Quick Connect during initiation, delay, polling, and unmount; the
+post-poll cancellation check precedes authentication. Add regression coverage
+for those boundaries. The original #589 tests remain in the combined suite.
+
+The original #590 head `09e1e1b5431d5d5bdbadac41fee2d29d98ae9e97` passed both
+Windows/Linux localization preflight and Lumen CI before this incoming merge.
+The combined head requires fresh validation; those earlier checks do not certify
+its new source.
+
+Combined #589 acceptance: TypeScript/Vite production build passes; all 19
+native/proxy cases and 96 browser cases pass across the same four device
+profiles. Captures/logs are in `lumen-pr589-browser/` and
+`lumen-pr589-{build-final,native,browser}.log`. Cancellation is also tested
+while initiation is stalled, before the held response is released. The seven
+inventory boundary tests pass, including pagination and partial-provider outage.
+The combined source retains the previously verified root rating/help repairs;
+final-head hosted CI remains the merge gate.

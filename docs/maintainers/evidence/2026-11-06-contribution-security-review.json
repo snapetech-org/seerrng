@@ -1,6 +1,6 @@
 {
   "checkpoint": "2026-11-06",
-  "scope": "Security-relevant production and operational boundaries for all54 historical human contribution PRs; not exhaustive upstream-package or historical CSS acceptance. Evidence filenames refer to the retained recovery audit archive. Later delivery state is separate from the source-review record.",
+  "scope": "Security-relevant production and operational boundaries for 54 historical human contribution PRs plus incoming PR589 (55 scoped reviews); not exhaustive upstream-package or historical CSS acceptance. Evidence filenames refer to the retained recovery audit archive or the adjacent user-bug-report archive. Later delivery state is separate from source review.",
   "reviews": [
     {
       "number": 32,
@@ -711,6 +711,19 @@
         "third-party-lumen-proxy-and-mobile-link-regressions.log"
       ],
       "pull_request": "https://github.com/snapetech-org/seerrng/pull/545"
+    },
+    {
+      "number": 589,
+      "source_patch": "third-party-pr-source/589.patch",
+      "sha256": "c752e2ddd0465183739acad2a854709486b98780830bc48e00fadc9259ac6b70",
+      "review": "All changed production/configuration/style files and authentication/browser tests inspected at contributor head945de885e17e987a7d7e49ae2c7d8409c01e636e; no dependency/workflow additions.",
+      "disposition": "Preserve contributor history and useful media-server resolution, admin override, recovery links, compatibility and tests. Patch inherited-property configuration acceptance, credential-bearing recovery URLs and malformed fallback path composition. Public-settings failures now fail closed with Retry; an unconfigured server does not enable server login. Keep safe server-specific playback, one active sign-in, abortable Quick Connect and post-poll cancellation guard. Merge with native book identity/availability repairs rather than restoring hardcoded service IDs. No live-provider or physical-device claim.",
+      "evidence": [
+        "../seerrng-user-bug-reports-20261106/pr589-original.patch",
+        "../seerrng-user-bug-reports-20261106/lumen-pr589-native.log",
+        "../seerrng-user-bug-reports-20261106/lumen-pr589-browser.log"
+      ],
+      "pull_request": "https://github.com/snapetech-org/seerrng/pull/589"
     }
   ]
 }

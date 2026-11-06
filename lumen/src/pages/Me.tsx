@@ -1,9 +1,15 @@
-import { useAuth, useMediaServerName } from '../auth';
+import { useAuth } from '../auth';
 import { Section } from '../components/cards';
 import { initials, SEERR_PUBLIC_URL } from '../components/Shell';
 import { CAN_HOVER, useApi } from '../hooks';
 import { Icon } from '../icons';
-import { DISCOVER_ROWS, usePrefs, type DiscoverRow } from '../settings';
+import { mediaServer } from '../mediaServer';
+import {
+  DISCOVER_ROWS,
+  discoverRowLabel,
+  usePrefs,
+  type DiscoverRow,
+} from '../settings';
 
 type Quota = Record<
   string,
@@ -48,7 +54,6 @@ function Toggle({
 }
 
 export default function Me() {
-  const serverName = useMediaServerName();
   const { user, signOut } = useAuth();
   const { prefs, set, reset, locked, seerrPublicUrl } = usePrefs();
   const quota = useApi<Quota>(user ? `/user/${user.id}/quota` : null).data;
@@ -173,9 +178,7 @@ export default function Me() {
               key={r}
               path={`rows.${r}`}
               on={prefs.rows[r]}
-              title={
-                r === 'newOnPlex' ? `New on ${serverName}` : DISCOVER_ROWS[r]
-              }
+              title={discoverRowLabel(r)}
             />
           ))}
         </div>
@@ -190,6 +193,16 @@ export default function Me() {
 
       <Section title="More">
         <div className="setlist">
+          <div className="set">
+            <span>
+              <b>Media server: {mediaServer().name}</b>
+              <small>
+                {mediaServer().source === 'config'
+                  ? 'Set by your admin in lumen-config.json'
+                  : 'Follows SeerrNG’s media server setting'}
+              </small>
+            </span>
+          </div>
           <div className="set">
             <span>
               <b>Full SeerrNG</b>
