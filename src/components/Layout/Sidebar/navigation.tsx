@@ -167,7 +167,8 @@ export const navigationSections: NavigationSection[] = [
         svgIcon: <UsersIcon aria-hidden="true" />,
         svgIconSelected: <FilledUsersIcon aria-hidden="true" />,
         activeRegExp: /^\/watch-sessions(?:\/|$)/,
-        requiredPermission: Permission.REQUEST,
+        requiredPermission: [Permission.REQUEST, Permission.REQUEST_MOVIE],
+        permissionType: 'or',
       },
       {
         id: 'music',

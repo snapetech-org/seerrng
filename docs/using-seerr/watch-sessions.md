@@ -53,11 +53,17 @@ candidate or reveal another member's watchlist. This preference becomes fixed
 when the owner starts the session.
 
 When the session includes a member restricted by the configured age gate, the
-shared deck applies that maturity ceiling to everyone. Adult titles and items
+shared deck applies that maturity ceiling to everyone. Every current member’s
+individual movie maturity cap also applies to the shared deck, private choices,
+and matches. A configured account cap requires a recognized US certification;
+missing or unknown certifications cannot admit a title. Adult titles and items
 above the configured ceiling or flagged with mature terms are filtered from
 the shared deck. As with other age-gate checks, incomplete rating or tag data
 is handled using the existing best-effort policy described in the
 [age-gate guide](./age-gate.md).
+
+Temporarily filtered movies remain in the bounded candidate pool, preserving
+existing private ballots if a member’s restrictions change.
 
 ## Matches and requests
 

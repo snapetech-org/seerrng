@@ -2,7 +2,7 @@ import TheMovieDb from '@server/api/themoviedb';
 import type { TmdbMovieDetails } from '@server/api/themoviedb/interfaces';
 import { MediaType } from '@server/constants/media';
 import dataSource, { getRepository } from '@server/datasource';
-import { User } from '@server/entity/User';
+import type { User } from '@server/entity/User';
 import { Watchlist } from '@server/entity/Watchlist';
 import type { WatchSessionFilters } from '@server/entity/WatchSession';
 import { WatchSession } from '@server/entity/WatchSession';
@@ -17,6 +17,11 @@ import {
 } from '@server/lib/contentRestriction';
 import { Permission } from '@server/lib/permissions';
 import { isUserMediaCategoryEnabled } from '@server/lib/userMediaCategories';
+import {
+  getUserVideoMaturityPolicy,
+  isVideoWithinMaturityLimit,
+  type UserVideoMaturityPolicy,
+} from '@server/lib/videoMaturityPolicy';
 import { parsePositiveInt } from '@server/utils/pagination';
 import { parsePositiveRouteId } from '@server/utils/routeId';
 import type { Request, Response } from 'express';
@@ -142,8 +147,9 @@ router.use((_req, _res, next) => {
 });
 
 const canUseMovieSessions = (user: User): boolean =>
-  user.hasPermission(Permission.REQUEST) &&
-  isUserMediaCategoryEnabled(user, 'movie');
+  user.hasPermission([Permission.REQUEST, Permission.REQUEST_MOVIE], {
+    type: 'or',
+  }) && isUserMediaCategoryEnabled(user, 'movie');
 
 const loadMembers = (sessionId: number): Promise<WatchSessionMember[]> =>
   getRepository(WatchSessionMember).find({
@@ -152,16 +158,25 @@ const loadMembers = (sessionId: number): Promise<WatchSessionMember[]> =>
     order: { joinedAt: 'ASC', id: 'ASC' },
   });
 
-const getGroupRestriction = (
+type SessionContentPolicy = {
+  ageGate: ReturnType<typeof getContentRestriction>;
+  movieLimits: NonNullable<UserVideoMaturityPolicy['movie']>[];
+};
+
+const getGroupRestriction = async (
   members: WatchSessionMember[]
-): ReturnType<typeof getContentRestriction> => {
-  // Age-gate ceilings are instance-wide; one restricted member applies that
-  // same ceiling to the shared deck, regardless of who opens it.
-  for (const member of members) {
-    const restriction = getContentRestriction(member.user);
-    if (restriction) return restriction;
-  }
-  return undefined;
+): Promise<SessionContentPolicy> => {
+  const policies = await Promise.all(
+    members.map((member) => getUserVideoMaturityPolicy(member.userId))
+  );
+  return {
+    ageGate: members
+      .map((member) => getContentRestriction(member.user))
+      .find(Boolean),
+    movieLimits: policies.flatMap((policy) =>
+      policy.movie === null ? [] : [policy.movie]
+    ),
+  };
 };
 
 const sessionView = (
@@ -285,9 +300,7 @@ const runWithSessionRestriction = <T>(
 
 const ensureWatchlistCandidates = async (
   sessionId: number,
-  members: WatchSessionMember[],
-  restriction: ReturnType<typeof getContentRestriction>,
-  language?: string
+  members: WatchSessionMember[]
 ): Promise<void> => {
   const claimed = await getRepository(WatchSession)
     .createQueryBuilder()
@@ -328,43 +341,9 @@ const ensureWatchlistCandidates = async (
       ),
     ].slice(0, MAX_WATCHLIST_CANDIDATES);
 
-    let safeIds = ids;
-    if (restriction && ids.length > 0) {
-      safeIds = await runWithSessionRestriction(restriction, async () => {
-        const tmdb = new TheMovieDb();
-        const allowed: number[] = [];
-        for (let offset = 0; offset < ids.length; offset += 4) {
-          const batch = ids.slice(offset, offset + 4);
-          const details = await Promise.all(
-            batch.map(async (movieId) => {
-              try {
-                return await tmdb.getMovie({ movieId, language });
-              } catch (error) {
-                if (isMissingTmdbMovie(error)) return undefined;
-                throw error;
-              }
-            })
-          );
-          details.forEach((movie, index) => {
-            if (
-              movie &&
-              !movie.adult &&
-              !isRestrictedItem(restriction, {
-                adult: movie.adult,
-                releases: movie.release_dates,
-                genres: movie.genres,
-                keywords: movie.keywords?.keywords,
-              })
-            ) {
-              allowed.push(batch[index]);
-            }
-          });
-        }
-        return allowed;
-      });
-    }
-
-    await insertCandidates(dataSource.manager, sessionId, safeIds);
+    // Store only anonymous, bounded identities. Eligibility is evaluated on
+    // every read so a temporary group policy cannot erase contributions.
+    await insertCandidates(dataSource.manager, sessionId, ids);
   } catch (error) {
     await getRepository(WatchSession).update(
       { id: sessionId, watchlistCandidatesLoaded: true },
@@ -448,14 +427,20 @@ const cardFromDetails = (movie: TmdbMovieDetails): MovieDetailsCard => ({
 
 const getSafeCards = async (
   candidates: WatchSessionCandidate[],
-  restriction: ReturnType<typeof getContentRestriction>,
-  language?: string
+  policy: SessionContentPolicy,
+  language?: string,
+  limit = MAX_SESSION_CANDIDATES
 ): Promise<MovieCard[]> => {
   if (candidates.length === 0) return [];
-  return runWithSessionRestriction(restriction, async () => {
+  return runWithSessionRestriction(policy.ageGate, async () => {
     const tmdb = new TheMovieDb();
     const cards: MovieCard[] = [];
-    for (let offset = 0; offset < candidates.length; offset += 4) {
+    for (
+      let offset = 0;
+      offset < Math.min(candidates.length, MAX_SESSION_CANDIDATES) &&
+      cards.length < limit;
+      offset += 4
+    ) {
       const batch = candidates.slice(offset, offset + 4);
       const details = await Promise.all(
         batch.map(async (candidate) => {
@@ -470,23 +455,28 @@ const getSafeCards = async (
           }
         })
       );
-      const blockedIds: number[] = [];
       details.forEach((movie, index) => {
         if (!movie) {
-          blockedIds.push(batch[index].id);
           return;
+        }
+        if (movie.id !== batch[index].tmdbId) {
+          throw new Error(
+            'Movie metadata identity does not match the session candidate.'
+          );
         }
         if (
           movie.adult ||
-          (restriction &&
-            isRestrictedItem(restriction, {
+          !policy.movieLimits.every((limit) =>
+            isVideoWithinMaturityLimit(movie, MediaType.MOVIE, limit)
+          ) ||
+          (policy.ageGate &&
+            isRestrictedItem(policy.ageGate, {
               adult: movie.adult,
               releases: movie.release_dates,
               genres: movie.genres,
               keywords: movie.keywords?.keywords,
             }))
         ) {
-          blockedIds.push(batch[index].id);
           return;
         }
         cards.push({
@@ -494,11 +484,6 @@ const getSafeCards = async (
           candidateId: batch[index].id,
         });
       });
-      if (blockedIds.length > 0) {
-        await getRepository(WatchSessionCandidate).delete({
-          id: In(blockedIds),
-        });
-      }
     }
     return cards;
   });
@@ -761,9 +746,28 @@ router.put('/:id', async (req, res, next) => {
     if (!parsed.success) {
       return sendFailure(res, 400, 'Enter a title and valid movie filters.');
     }
-    context.session.title = parsed.data.title;
-    context.session.filters = parsed.data.filters as WatchSessionFilters;
-    const saved = await getRepository(WatchSession).save(context.session);
+    const updated = await getRepository(WatchSession).update(
+      {
+        id: context.session.id,
+        status: 'draft',
+        expiresAt: MoreThan(new Date()),
+      },
+      {
+        title: parsed.data.title,
+        filters: parsed.data.filters as WatchSessionFilters,
+      }
+    );
+    if (updated.affected !== 1) {
+      return sendFailure(
+        res,
+        409,
+        'Movie filters are locked after the session starts.'
+      );
+    }
+    const saved = await getRepository(WatchSession).findOneBy({
+      id: context.session.id,
+    });
+    if (!saved) return sendFailure(res, 404, 'Watch session not found.');
     const members = await loadMembers(saved.id);
     return res.status(200).json({
       session: sessionView(saved, members, req.user!.id),
@@ -797,12 +801,40 @@ router.put('/:id/preferences', async (req, res, next) => {
         'Choose whether to include your watchlist titles.'
       );
     }
-    context.member.includeWatchlistContributions =
-      parsed.data.includeWatchlistContributions;
-    await getRepository(WatchSessionMember).save(context.member);
+    const changed = await dataSource.transaction(async (manager) => {
+      if (!(await lockSessionForMembershipChange(manager, sessionId)))
+        return false;
+      const current = await manager
+        .getRepository(WatchSession)
+        .findOneBy({ id: sessionId });
+      if (
+        !current ||
+        current.status !== 'draft' ||
+        current.expiresAt <= new Date()
+      )
+        return false;
+      const result = await manager.getRepository(WatchSessionMember).update(
+        {
+          id: context.member.id,
+          sessionId,
+          userId: req.user!.id,
+          leftAt: IsNull(),
+        },
+        {
+          includeWatchlistContributions:
+            parsed.data.includeWatchlistContributions,
+        }
+      );
+      return result.affected === 1;
+    });
+    if (!changed)
+      return sendFailure(
+        res,
+        409,
+        'Sharing preferences are locked after the session starts.'
+      );
     return res.status(200).json({
-      includeWatchlistContributions:
-        context.member.includeWatchlistContributions,
+      includeWatchlistContributions: parsed.data.includeWatchlistContributions,
     });
   } catch {
     return next({
@@ -1128,13 +1160,8 @@ router.get('/:id/deck', async (req, res, next) => {
       );
     }
 
-    const restriction = getGroupRestriction(context.members);
-    await ensureWatchlistCandidates(
-      sessionId,
-      context.members,
-      restriction,
-      req.locale
-    );
+    const restriction = await getGroupRestriction(context.members);
+    await ensureWatchlistCandidates(sessionId, context.members);
 
     let candidates = await getRepository(WatchSessionCandidate).find({
       where: { sessionId },
@@ -1149,14 +1176,24 @@ router.get('/:id/deck', async (req, res, next) => {
       candidates.filter((candidate) => !voted.has(candidate.id))
     );
 
+    let cards = await getSafeCards(
+      pending,
+      restriction,
+      req.locale,
+      CANDIDATES_PER_RESPONSE + 1
+    );
     let discoverAttempts = 0;
     while (
-      pending.length === 0 &&
+      cards.length < CANDIDATES_PER_RESPONSE &&
       context.session.nextDiscoverPage <= MAX_DISCOVER_PAGES &&
       discoverAttempts < MAX_DISCOVER_PAGES
     ) {
       discoverAttempts += 1;
-      await loadNextDiscoverPage(context.session, restriction, req.locale);
+      await loadNextDiscoverPage(
+        context.session,
+        restriction.ageGate,
+        req.locale
+      );
       const refreshed = await getRepository(WatchSession).findOneBy({
         id: sessionId,
       });
@@ -1174,23 +1211,20 @@ router.get('/:id/deck', async (req, res, next) => {
         sessionId,
         candidates.filter((candidate) => !currentVotes.has(candidate.id))
       );
-      if (
-        pending.length > 0 ||
-        context.session.nextDiscoverPage > MAX_DISCOVER_PAGES
-      ) {
-        break;
-      }
+      cards = await getSafeCards(
+        pending,
+        restriction,
+        req.locale,
+        CANDIDATES_PER_RESPONSE + 1
+      );
     }
 
-    const cards = await getSafeCards(
-      pending.slice(0, CANDIDATES_PER_RESPONSE),
-      restriction,
-      req.locale
-    );
     const hasMore =
-      pending.length > CANDIDATES_PER_RESPONSE ||
+      cards.length > CANDIDATES_PER_RESPONSE ||
       context.session.nextDiscoverPage <= MAX_DISCOVER_PAGES;
-    return res.status(200).json({ candidates: cards, hasMore });
+    return res
+      .status(200)
+      .json({ candidates: cards.slice(0, CANDIDATES_PER_RESPONSE), hasMore });
   } catch {
     return next({ status: 500, message: 'Could not load session movies.' });
   }
@@ -1216,7 +1250,7 @@ router.put('/:id/candidates/:candidateId/ballot', async (req, res, next) => {
     if (!candidate)
       return sendFailure(res, 404, 'Movie is not in this session.');
 
-    const restriction = getGroupRestriction(context.members);
+    const restriction = await getGroupRestriction(context.members);
     const cards = await getSafeCards([candidate], restriction, req.locale);
     if (cards.length === 0) {
       return sendFailure(res, 404, 'Movie is not available for this session.');
@@ -1294,7 +1328,7 @@ router.get('/:id/my-ballots', async (req, res, next) => {
     });
     const cards = await getSafeCards(
       candidates,
-      getGroupRestriction(context.members),
+      await getGroupRestriction(context.members),
       req.locale
     );
     const cardsById = new Map(cards.map((card) => [card.candidateId, card]));
@@ -1361,7 +1395,7 @@ router.get('/:id/matches', async (req, res, next) => {
       .filter((candidate): candidate is WatchSessionCandidate =>
         Boolean(candidate)
       );
-    const restriction = getGroupRestriction(context.members);
+    const restriction = await getGroupRestriction(context.members);
     const matches = await getSafeCards(ordered, restriction, req.locale);
     return res.status(200).json({
       matches,

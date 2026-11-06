@@ -81,36 +81,44 @@ const WatchSessionJoin = () => {
   return (
     <div className="page-layout">
       <PageTitle title={intl.formatMessage(messages.joinTitle)} />
-      <div className="page-title-row">
-        <h1 className="page-title">{intl.formatMessage(messages.joinTitle)}</h1>
-      </div>
-      {user && joining ? (
-        <p className="card-body-text" role="status">
-          {intl.formatMessage(messages.joining)}
-        </p>
-      ) : user && joinError ? (
-        <p className="page-error-message" role="alert">
-          {joinError}
-        </p>
-      ) : user ? (
-        <p className="card-body-text">{intl.formatMessage(messages.loading)}</p>
-      ) : loading ? (
-        <p className="card-body-text">{intl.formatMessage(messages.loading)}</p>
-      ) : (
-        <>
-          <p className="card-body-text">
-            {intl.formatMessage(messages.joinPrompt)}
+      <div data-page-layout-part="content" data-page-flow="stack">
+        <div className="page-title-row">
+          <h1 className="page-title">
+            {intl.formatMessage(messages.joinTitle)}
+          </h1>
+        </div>
+        {user && joining ? (
+          <p className="card-body-text" role="status">
+            {intl.formatMessage(messages.joining)}
           </p>
-          <div className="app-action-row">
-            <Button type="button" buttonType="primary" onClick={signIn}>
-              {intl.formatMessage(messages.signIn)}
-            </Button>
-          </div>
-        </>
-      )}
-      <Link href="/watch-sessions">
-        {intl.formatMessage(messages.backToSessions)}
-      </Link>
+        ) : user && joinError ? (
+          <p className="page-error-message" role="alert">
+            {joinError}
+          </p>
+        ) : user ? (
+          <p className="card-body-text">
+            {intl.formatMessage(messages.loading)}
+          </p>
+        ) : loading ? (
+          <p className="card-body-text">
+            {intl.formatMessage(messages.loading)}
+          </p>
+        ) : (
+          <>
+            <p className="card-body-text">
+              {intl.formatMessage(messages.joinPrompt)}
+            </p>
+            <div className="app-action-row">
+              <Button type="button" buttonType="primary" onClick={signIn}>
+                {intl.formatMessage(messages.signIn)}
+              </Button>
+            </div>
+          </>
+        )}
+        <Link href="/watch-sessions">
+          {intl.formatMessage(messages.backToSessions)}
+        </Link>
+      </div>
     </div>
   );
 };
