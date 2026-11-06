@@ -1042,6 +1042,38 @@ describe('POST /auth/plex', () => {
   });
 });
 
+describe('Plex PIN HTTP boundaries', () => {
+  for (const method of ['post', 'get'] as const) {
+    it(`bounds ${method.toUpperCase()} PIN responses and refuses redirects`, async () => {
+      const settings = getSettings();
+      settings.main.mediaServerType = MediaServerType.PLEX;
+      settings.main.mediaServerLogin = true;
+      const transport = mock.method(axios, method, async () => ({
+        data:
+          method === 'post' ? { id: 42, code: 'abcd' } : { authToken: null },
+      }));
+      try {
+        const response =
+          method === 'post'
+            ? await request(app).post('/auth/plex/pin')
+            : await request(app).get('/auth/plex/pin/42?code=abcd');
+        assert.strictEqual(response.status, 200);
+        const args = transport.mock.calls[0].arguments as unknown[];
+        const options = args[method === 'post' ? 2 : 1] as Record<
+          string,
+          unknown
+        >;
+        assert.strictEqual(options.timeout, 10_000);
+        assert.strictEqual(options.maxRedirects, 0);
+        assert.strictEqual(options.maxContentLength, 64 * 1024);
+        assert.strictEqual(options.maxBodyLength, 1024);
+      } finally {
+        transport.mock.restore();
+      }
+    });
+  }
+});
+
 describe('GET /auth/plex/pin/:id', () => {
   it('keeps a transient Plex PIN 404 in the pending state', async () => {
     const settings = getSettings();

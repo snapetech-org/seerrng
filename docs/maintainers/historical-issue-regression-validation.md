@@ -51,3 +51,14 @@ Compact settings select geometry explicitly excludes `multiple` elements.12
 headless cases across these routes/themes pass. Provider coverage is a deterministic
 fixture; personal preference writes use the isolated QA database and restore prior
 choices. Captures/logs use the `historical-issue-accepted-*` evidence prefix.
+
+## Plex PIN transport limits
+
+Historical auth-network review found that PIN creation and polling used the fixed
+`clients.plex.tv` origin and a ten-second timeout, but inherited Axios redirects
+and an unlimited response size. Both requests now reject redirects and cap
+responses at 64 KiB and request bodies at 1 KiB. The PIN protocol requires no
+redirect. Two route tests failed against the prior source because the limits
+were absent; both pass with the fix. Existing pending-404 and non-404 error
+handling tests also pass. This is transport hardening, not evidence of a
+compromised Plex endpoint. No live Plex account was used.
