@@ -2917,26 +2917,23 @@ export class MediaRequestSubscriber implements EntitySubscriberInterface<MediaRe
         let createdAuthor = false;
 
         if (bindery.supportsForUserRequests(status)) {
-          const candidates = new Set(
-            [
-              entity.requestedBy.username,
-              entity.requestedBy.plexUsername,
-              entity.requestedBy.jellyfinUsername,
-              entity.requestedBy.email,
-            ]
-              .filter((value): value is string => !!value?.trim())
-              .map((value) => value.trim().toLowerCase())
-          );
-          const matchedUsers = (await bindery.getUsers()).filter((user) =>
-            [user.username, user.email]
-              .filter((value): value is string => !!value?.trim())
-              .some((value) => candidates.has(value.trim().toLowerCase()))
+          const mappedUserId =
+            service.binderyUserMappings?.[String(entity.requestedBy.id)];
+          if (
+            !Number.isSafeInteger(mappedUserId) ||
+            !mappedUserId ||
+            mappedUserId < 1
+          ) {
+            throw new Error(
+              'Ask an administrator to map this SeerrNG user to a Bindery account in the Bindery service settings.'
+            );
+          }
+          const matchedUsers = (await bindery.getUsers()).filter(
+            (user) => user.id === mappedUserId
           );
           if (matchedUsers.length !== 1) {
             throw new Error(
-              matchedUsers.length === 0
-                ? 'Bindery supports requester-owned requests, but no Bindery account matches this SeerrNG user.'
-                : 'More than one Bindery account matches this SeerrNG user. Use matching unique usernames.'
+              'The configured Bindery requester account is unavailable. Ask an administrator to update the account mapping.'
             );
           }
           const result = await bindery.createUserRequest(

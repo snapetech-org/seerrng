@@ -2384,12 +2384,13 @@ describe('MediaRequestSubscriber service dispatch', () => {
         tagRequests: false,
         overrideRule: [],
         backend: 'bindery',
+        binderyUserMappings: { '2': 7 },
         serviceType: 'ebook',
       },
     ];
     const requestedBy = await getRequester();
-    requestedBy.username = 'seerr-reader';
-    requestedBy.plexUsername = 'Reader-One';
+    requestedBy.username = 'Victim';
+    requestedBy.plexUsername = 'unrelated-user';
     const media = await getRepository(Media).save(
       new Media({
         mediaType: MediaType.BOOK,
@@ -2419,7 +2420,8 @@ describe('MediaRequestSubscriber service dispatch', () => {
       async () => 'openlibrary'
     );
     mock.method(BinderyAPI.prototype, 'getUsers', async () => [
-      { id: 7, username: 'reader-one' },
+      { id: 7, username: 'explicitly-mapped-reader' },
+      { id: 8, username: 'victim' },
     ]);
     let requestPayload:
       { options: BinderyAddBookOptions; forUser: number } | undefined;
@@ -2459,6 +2461,96 @@ describe('MediaRequestSubscriber service dispatch', () => {
     assert.equal(operation.pendingId, null);
     assert.equal(operation.providerBookId, 'OL45804W');
     assert.equal(operation.binderyRequestId, 91);
+  });
+
+  it('does not infer Bindery ownership from a requester-editable display name', async () => {
+    getSettings().readarr = [
+      {
+        id: 23,
+        name: 'Bindery',
+        hostname: 'bindery.local',
+        port: 8787,
+        apiKey: 'bindery-key',
+        useSsl: false,
+        baseUrl: '',
+        externalUrl: '',
+        activeProfileId: 0,
+        activeProfileName: 'Bindery managed',
+        activeMetadataProfileId: 0,
+        activeMetadataProfileName: 'Bindery managed',
+        activeDirectory: '/',
+        tags: [],
+        is4k: false,
+        isDefault: true,
+        syncEnabled: true,
+        preventSearch: true,
+        tagRequests: false,
+        overrideRule: [],
+        backend: 'bindery',
+        serviceType: 'ebook',
+      },
+    ];
+    const requestedBy = await getRequester();
+    requestedBy.username = 'Victim';
+    requestedBy.plexUsername = 'unrelated-user';
+    const media = await getRepository(Media).save(
+      new Media({
+        mediaType: MediaType.BOOK,
+        tmdbId: 0,
+        status: MediaStatus.PENDING,
+        status4k: MediaStatus.UNKNOWN,
+        identifiers: [
+          new MediaIdentifier({
+            provider: MediaIdentifierProvider.OPENLIBRARY,
+            value: 'OL45804W',
+            canonical: true,
+          }),
+        ],
+      })
+    );
+    const request = await createApprovedRequest(media, requestedBy);
+    mock.method(OpenLibraryAPI.prototype, 'getWork', async () => ({
+      key: '/works/OL45804W',
+      title: 'The Left Hand of Darkness',
+    }));
+    mock.method(BinderyAPI.prototype, 'getSystemStatus', async () => ({
+      features: { requestsForUser: true },
+    }));
+    mock.method(
+      BinderyAPI.prototype,
+      'getPrimaryMetadataProvider',
+      async () => 'openlibrary'
+    );
+    mock.method(BinderyAPI.prototype, 'getUsers', async () => [
+      { id: 7, username: 'victim' },
+    ]);
+    let requestPayload:
+      { options: BinderyAddBookOptions; forUser: number } | undefined;
+    mock.method(
+      BinderyAPI.prototype,
+      'createUserRequest',
+      async (options: BinderyAddBookOptions, forUser: number) => {
+        requestPayload = { options, forUser };
+        return {
+          id: 91,
+          kind: 'book',
+          foreignId: options.foreignBookId,
+          mediaType: options.mediaType,
+          status: 'pending',
+        };
+      }
+    );
+    mock.method(BinderyAPI.prototype, 'addBook', async () => {
+      throw new Error('the direct owner fallback must not be used');
+    });
+
+    await new MediaRequestSubscriber().sendToReadarr(request);
+
+    assert.equal(
+      requestPayload,
+      undefined,
+      'display names must not authorize another Bindery account'
+    );
   });
 
   it('does not create an admin-owned Bindery item when advertised user mapping fails', async () => {

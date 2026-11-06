@@ -440,6 +440,8 @@ export interface LidarrSettings extends DVRSettings {
 }
 
 export interface ReadarrSettings extends DVRSettings {
+  /** Explicit administrator-owned SeerrNG user ID to Bindery user ID links. */
+  binderyUserMappings?: Record<string, number>;
   activeMetadataProfileId?: number;
   activeMetadataProfileName?: string;
   /** Missing backend is the existing Readarr-compatible API. */
