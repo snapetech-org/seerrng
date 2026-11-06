@@ -953,3 +953,84 @@ describe('request root folder settings', () => {
     assert.equal(invalid.status, 400);
   });
 });
+
+describe('per-user media category preferences (issues #363 and #365)', () => {
+  it('saves the own-user choices and returns the persisted values', async () => {
+    const { sessionCookie, userId } = await loginAs(
+      'friend@seerr.dev',
+      'test1234'
+    );
+    const response = await request(app)
+      .post(`/user/${userId}/settings/main`)
+      .set('Cookie', sessionCookie)
+      .send({
+        enabledMediaCategories: { movie: false, music: false, retro: false },
+      });
+    assert.equal(response.status, 200);
+    const user = await getRepository(User).findOneOrFail({
+      where: { id: userId },
+      relations: { settings: true },
+    });
+    assert.deepEqual(user.settings?.enabledMediaCategories, {
+      movie: false,
+      music: false,
+      retro: false,
+    });
+    const read = await request(app)
+      .get(`/user/${userId}/settings/main`)
+      .set('Cookie', sessionCookie);
+    assert.equal(read.status, 200);
+    assert.equal(read.body.enabledMediaCategories.movie, false);
+    assert.equal(read.body.usesDefaultEnabledMediaCategories, false);
+  });
+  it('does not let an ordinary user change another account preferences', async () => {
+    const friend = await getRepository(User).findOneOrFail({
+      where: { email: 'friend@seerr.dev' },
+    });
+    friend.permissions = Permission.REQUEST;
+    await getRepository(User).save(friend);
+    const { sessionCookie } = await loginAs('friend@seerr.dev', 'test1234');
+    const response = await request(app)
+      .post('/user/1/settings/main')
+      .set('Cookie', sessionCookie)
+      .send({ enabledMediaCategories: { movie: false } });
+    assert.equal(response.status, 403);
+  });
+  it('restores administrator defaults when an own-user override is cleared', async () => {
+    const { sessionCookie, userId } = await loginAs(
+      'friend@seerr.dev',
+      'test1234'
+    );
+    await request(app)
+      .post(`/user/${userId}/settings/main`)
+      .set('Cookie', sessionCookie)
+      .send({ enabledMediaCategories: { movie: false } })
+      .expect(200);
+    await request(app)
+      .post(`/user/${userId}/settings/main`)
+      .set('Cookie', sessionCookie)
+      .send({ enabledMediaCategories: null })
+      .expect(200);
+    const read = await request(app)
+      .get(`/user/${userId}/settings/main`)
+      .set('Cookie', sessionCookie);
+    assert.equal(read.status, 200);
+    assert.equal(read.body.usesDefaultEnabledMediaCategories, true);
+  });
+  it('rejects unknown category names and nonboolean preferences', async () => {
+    const { sessionCookie, userId } = await loginAs(
+      'friend@seerr.dev',
+      'test1234'
+    );
+    for (const enabledMediaCategories of [
+      { unknownCategory: true },
+      { movie: 'false' },
+    ]) {
+      await request(app)
+        .post(`/user/${userId}/settings/main`)
+        .set('Cookie', sessionCookie)
+        .send({ enabledMediaCategories })
+        .expect(400);
+    }
+  });
+});
