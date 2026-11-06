@@ -23,6 +23,11 @@ Official upstream release notes and package repository metadata were inspected:
 - [ICU parser 3.5.22](https://github.com/formatjs/formatjs/releases/tag/%40formatjs/icu-messageformat-parser%403.5.22)
   permits shared date/time arguments.
 
+Full CI caught an additional AppImage packaging mismatch: its WASM compiler
+allowlist still stopped at Next 16.4.2. The matching 16.4.3 compiler now has an
+explicit official registry SHA-512 pin; older release versions remain supported.
+The release contract checks the new pin rather than weakening its version check.
+
 ## Validation
 
 A separate persistent dependency cache was installed with a repaired frozen
