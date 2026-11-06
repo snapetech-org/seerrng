@@ -520,6 +520,10 @@ for (const width of [390, 1440]) {
             })
           ).toBeVisible();
           await expect(dialog.getByTestId('modal-ok-button')).toBeEnabled();
+          if (mediaType === 'tv')
+            await expect(
+              dialog.getByText('Get new seasons automatically', { exact: true })
+            ).toHaveCount(0);
         } else if (mediaType === 'tv') {
           // Select the single ordinary season using the actual native selector.
           const season = dialog
@@ -530,12 +534,41 @@ for (const width of [390, 1440]) {
             .first();
           if (await season.count()) await season.click();
         }
-        if (tagOnly)
+        if (tagOnly) {
+          await expect
+            .poll(() =>
+              dialog.evaluate((element) => {
+                for (
+                  let current: Element | null = element;
+                  current;
+                  current = current.parentElement
+                ) {
+                  if (Number(getComputedStyle(current).opacity) < 1)
+                    return false;
+                }
+                return true;
+              })
+            )
+            .toBe(true);
+          await dialog.evaluate(async (element) => {
+            const finiteAnimations = element
+              .getAnimations({ subtree: true })
+              .filter(
+                (animation) =>
+                  animation.effect?.getTiming().iterations !== Infinity
+              );
+            await Promise.all(
+              finiteAnimations.map((animation) =>
+                animation.finished.catch(() => undefined)
+              )
+            );
+          });
           await page.screenshot({
             path: info.outputPath(
               `${theme}-${width}-${mediaType}-tag-only.png`
             ),
           });
+        }
         await dialog.getByTestId('modal-ok-button').click();
         if (!tagOnly) {
           await expect(dialog.getByRole('alert')).toContainText(

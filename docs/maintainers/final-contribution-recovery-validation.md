@@ -86,6 +86,17 @@ and the tag-only season payload was incorrectly expected
 to be an array rather than the documented `all`. Corrected fixture runs retain the
 real UI controls and pass without production-source changes.
 
+Visual review also reproduced a misleading future-season acquisition toggle in the
+Persius tag-only TV dialog. Tag-only mode now omits that control; the ordinary request
+toggle is preserved. The new browser assertion fails against the prior production
+build and passes after rebuilding. `final-features-tag-control-production-build.log`
+records the complete accepted build; `final-features-tag-control-accepted-*-browser.log`
+records ten request/provider cases per theme. A direct startup attempt against the
+seeded fixture database tried production migrations; it was stopped by the existing
+schema and replaced with the documented `pnpm cypress:start` fixture launcher,
+which skips migrations and enables the offline network guard. No live configuration
+or database was used.
+
 Full integration-head CI is required before merge. Browser metadata and provider
 mutations are intercepted fixtures; no live household provider mutations or live
 PostgreSQL validation are claimed. CodeQL remains disabled under the owner directive;

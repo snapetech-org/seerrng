@@ -1406,13 +1406,14 @@ const TvRequestModal = ({
     usesEpisodeSelection &&
     Boolean(data) &&
     (!isFailedManagerRepair || selectedSeasons.length === 0);
-  const futureSeasonControl = persius ? (
-    <FutureSeasonToggle
-      checked={Boolean(futureSeasonPreference)}
-      disabled={futureSeasonsRestricted}
-      onChange={setMonitorFutureSeasons}
-    />
-  ) : null;
+  const futureSeasonControl =
+    persius && !requesterTagOnlyMode ? (
+      <FutureSeasonToggle
+        checked={Boolean(futureSeasonPreference)}
+        disabled={futureSeasonsRestricted}
+        onChange={setMonitorFutureSeasons}
+      />
+    ) : null;
 
   return data && !error && !data.externalIds.tvdbId && searchModal.show ? (
     <SearchByNameModal
