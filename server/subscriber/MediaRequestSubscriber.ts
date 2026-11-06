@@ -657,22 +657,15 @@ export class MediaRequestSubscriber implements EntitySubscriberInterface<MediaRe
     }
   }
 
-  private getBookStatusFromLinks(media: Media): MediaStatus {
-    const hasEbook =
-      media.serviceId !== null &&
-      media.serviceId !== undefined &&
-      media.externalServiceId !== null &&
-      media.externalServiceId !== undefined;
-    const hasAudiobook =
-      (media.audiobookServiceId !== null &&
-        media.audiobookServiceId !== undefined &&
-        media.audiobookExternalServiceId !== null &&
-        media.audiobookExternalServiceId !== undefined) ||
-      (media.audiobookLibraryServiceId !== null &&
-        media.audiobookLibraryServiceId !== undefined &&
-        !!media.audiobookLibraryItemId);
+  private getBookStatusAfterLastRequest(media: Media): MediaStatus {
+    // Manager IDs identify monitored records, including books with no files.
+    // Only a scanned library item independently proves availability here;
+    // callers already retain an existing AVAILABLE or DELETED status.
+    const hasAudiobookLibraryItem =
+      media.audiobookLibraryServiceId != null && !!media.audiobookLibraryItemId;
+    const hasPlexLibraryItem = !!media.ratingKey;
 
-    return hasEbook || hasAudiobook
+    return hasAudiobookLibraryItem || hasPlexLibraryItem
       ? MediaStatus.AVAILABLE
       : MediaStatus.UNKNOWN;
   }
@@ -4288,7 +4281,7 @@ export class MediaRequestSubscriber implements EntitySubscriberInterface<MediaRe
       if (!hasOtherActiveRequest) {
         media[statusKey] =
           media.mediaType === MediaType.BOOK
-            ? this.getBookStatusFromLinks(media)
+            ? this.getBookStatusAfterLastRequest(media)
             : MediaStatus.UNKNOWN;
         await mediaRepository.save(media);
       }
@@ -4425,7 +4418,7 @@ export class MediaRequestSubscriber implements EntitySubscriberInterface<MediaRe
       ) {
         media.status =
           media.mediaType === MediaType.BOOK
-            ? this.getBookStatusFromLinks(media)
+            ? this.getBookStatusAfterLastRequest(media)
             : MediaStatus.UNKNOWN;
 
         await manager.save(media);

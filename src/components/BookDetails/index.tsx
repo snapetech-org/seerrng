@@ -55,6 +55,7 @@ import { UserType } from '@server/constants/user';
 import type { MediaRequest } from '@server/entity/MediaRequest';
 import type { NonFunctionProperties } from '@server/interfaces/api/common';
 import type { ServiceCommonServer } from '@server/interfaces/api/serviceInterfaces';
+import { hasAvailableBookFormat } from '@server/lib/bookAvailability';
 import type {
   BookDetails as BookDetailsType,
   BookRatingResponse,
@@ -271,19 +272,10 @@ const BookDetails = () => {
         />
       )
     : undefined;
-  const hasEbookServiceLink =
-    data.mediaInfo?.serviceId !== null &&
-    data.mediaInfo?.serviceId !== undefined &&
-    data.mediaInfo.externalServiceId !== null &&
-    data.mediaInfo.externalServiceId !== undefined;
-  const hasAudiobookServiceLink =
-    (data.mediaInfo?.audiobookServiceId !== null &&
-      data.mediaInfo?.audiobookServiceId !== undefined &&
-      data.mediaInfo.audiobookExternalServiceId !== null &&
-      data.mediaInfo.audiobookExternalServiceId !== undefined) ||
-    (data.mediaInfo?.audiobookLibraryServiceId !== null &&
-      data.mediaInfo?.audiobookLibraryServiceId !== undefined &&
-      !!data.mediaInfo?.audiobookLibraryItemId);
+  const ebookAvailable =
+    !!data.mediaInfo && hasAvailableBookFormat(data.mediaInfo, 'ebook');
+  const audiobookAvailable =
+    !!data.mediaInfo && hasAvailableBookFormat(data.mediaInfo, 'audiobook');
   const activeBookRequests =
     data.mediaInfo?.requests?.filter(
       (request) =>
@@ -448,12 +440,12 @@ const BookDetails = () => {
   }[] = [
     {
       format: 'ebook',
-      available: hasEbookServiceLink,
+      available: ebookAvailable,
       requested: hasActiveEbookRequest,
     },
     {
       format: 'audiobook',
-      available: hasAudiobookServiceLink,
+      available: audiobookAvailable,
       requested: hasActiveAudiobookRequest,
     },
   ];
@@ -699,7 +691,7 @@ const BookDetails = () => {
                         ? intl.formatMessage(messages.blocklisted)
                         : !hasEbookService
                           ? intl.formatMessage(messages.noBookService)
-                          : hasEbookServiceLink
+                          : ebookAvailable
                             ? intl.formatMessage(messages.bookAvailable)
                             : hasActiveEbookRequest
                               ? intl.formatMessage(messages.bookPending)
@@ -721,7 +713,7 @@ const BookDetails = () => {
                         ? intl.formatMessage(messages.blocklisted)
                         : !hasAudiobookService
                           ? intl.formatMessage(messages.noAudiobookService)
-                          : hasAudiobookServiceLink
+                          : audiobookAvailable
                             ? intl.formatMessage(messages.audiobookAvailable)
                             : hasActiveAudiobookRequest
                               ? intl.formatMessage(messages.audiobookPending)

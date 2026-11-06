@@ -4502,43 +4502,100 @@ describe('MediaRequestSubscriber service dispatch', () => {
     assert.equal(updatedMedia.status, MediaStatus.UNKNOWN);
   });
 
-  it('preserves book availability after declining the last missing-format request', async () => {
-    const requestedBy = await getRequester();
-    const media = await getRepository(Media).save(
-      new Media({
-        mediaType: MediaType.BOOK,
-        tmdbId: 0,
+  for (const action of ['decline', 'remove'] as const) {
+    for (const scenario of [
+      {
+        name: 'queued ebook manager record',
         status: MediaStatus.PROCESSING,
-        status4k: MediaStatus.UNKNOWN,
-        serviceId: 20,
-        externalServiceId: 40,
-        externalServiceSlug: 'ebook-slug',
-      })
-    );
-    const request = await getRepository(MediaRequest).save(
-      new MediaRequest({
-        type: MediaType.BOOK,
-        status: MediaRequestStatus.DECLINED,
-        media,
-        requestedBy,
-        is4k: false,
-        bookFormat: 'audiobook',
-      })
-    );
-
-    await new MediaRequestSubscriber().updateParentStatus(
-      dataSource.manager,
-      request
-    );
-
-    const updatedMedia = await getRepository(Media).findOneByOrFail({
-      id: media.id,
-    });
-    assert.equal(updatedMedia.status, MediaStatus.AVAILABLE);
-    assert.equal(updatedMedia.serviceId, 20);
-    assert.equal(updatedMedia.externalServiceId, 40);
-    assert.equal(updatedMedia.audiobookServiceId, null);
-  });
+        links: { serviceId: 0, externalServiceId: 40 },
+        expected: MediaStatus.UNKNOWN,
+      },
+      {
+        name: 'queued audiobook manager record',
+        status: MediaStatus.PROCESSING,
+        links: { audiobookServiceId: 0, audiobookExternalServiceId: 41 },
+        expected: MediaStatus.UNKNOWN,
+      },
+      {
+        name: 'queued records for both book formats',
+        status: MediaStatus.PROCESSING,
+        links: {
+          serviceId: 0,
+          externalServiceId: 40,
+          audiobookServiceId: 1,
+          audiobookExternalServiceId: 41,
+        },
+        expected: MediaStatus.UNKNOWN,
+      },
+      {
+        name: 'already available book',
+        status: MediaStatus.AVAILABLE,
+        links: { serviceId: 0, externalServiceId: 40 },
+        expected: MediaStatus.AVAILABLE,
+      },
+      {
+        name: 'confirmed Audiobookshelf library item',
+        status: MediaStatus.PROCESSING,
+        links: {
+          audiobookLibraryServiceId: 0,
+          audiobookLibraryItemId: 'library-item-41',
+        },
+        expected: MediaStatus.AVAILABLE,
+      },
+      {
+        name: 'confirmed Plex audiobook library item',
+        status: MediaStatus.PROCESSING,
+        links: { ratingKey: 'plex-audiobook-41' },
+        expected: MediaStatus.AVAILABLE,
+      },
+      {
+        name: 'incomplete Audiobookshelf library link',
+        status: MediaStatus.PROCESSING,
+        links: { audiobookLibraryServiceId: 0 },
+        expected: MediaStatus.UNKNOWN,
+      },
+    ]) {
+      it(`${action} last book request retains only observed availability: ${scenario.name}`, async () => {
+        const requestedBy = await getRequester();
+        const media = await getRepository(Media).save(
+          new Media({
+            mediaType: MediaType.BOOK,
+            tmdbId: 0,
+            status: scenario.status,
+            status4k: MediaStatus.UNKNOWN,
+            ...scenario.links,
+          })
+        );
+        const request = await getRepository(MediaRequest).save(
+          new MediaRequest({
+            type: MediaType.BOOK,
+            status: MediaRequestStatus.DECLINED,
+            media,
+            requestedBy,
+            is4k: false,
+            bookFormat: 'audiobook',
+          })
+        );
+        const subscriber = new MediaRequestSubscriber();
+        if (action === 'remove') {
+          await getRepository(MediaRequest).delete(request.id);
+          await subscriber.handleRemoveParentUpdate(
+            dataSource.manager,
+            request
+          );
+        } else {
+          await subscriber.updateParentStatus(dataSource.manager, request);
+        }
+        const updatedMedia = await getRepository(Media).findOneByOrFail({
+          id: media.id,
+        });
+        assert.equal(updatedMedia.status, scenario.expected);
+        for (const [key, value] of Object.entries(scenario.links)) {
+          assert.equal(updatedMedia[key as keyof Media], value);
+        }
+      });
+    }
+  }
 
   it('rolls back parent media status with a source request insertion', async () => {
     const requestedBy = await getRequester();
