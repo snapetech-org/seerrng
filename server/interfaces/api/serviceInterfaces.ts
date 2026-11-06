@@ -21,6 +21,7 @@ export interface ServiceCommonServer {
   activeAnimeLanguageProfileId?: number;
   activeTags?: number[];
   activeAnimeTags?: number[];
+  tagRequests?: boolean;
   requestButtonLabel?: string;
   requestButtonAnimeOnly?: boolean;
   backend?: 'readarr' | 'bindery';

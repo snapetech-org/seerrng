@@ -72,6 +72,7 @@ export type MediaRequestBody = {
   tags?: number[] | null;
   requestTargetOptions?: RequestTargetOptions;
   requesterSelectedOptions?: RequesterSelectedOptions;
+  requesterTagOnly?: boolean;
   ignoreQuota?: boolean;
   requestQuotaApproval?: boolean;
 };

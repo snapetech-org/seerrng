@@ -44,6 +44,7 @@ For local MCP access, see the [SnapeTech MCP integration guide](./docs/integrati
   - [Global Search](./docs/using-seerr/search.md)
   - [Private movie watch sessions](./docs/using-seerr/watch-sessions.md)
   - [Choose request destinations](./docs/using-seerr/settings/services.md#request-destination-label-optional)
+  - [Add your requester tag to available media](./docs/using-seerr/requester-tags.md)
   - [Require previous-season watch progress](./docs/using-seerr/settings/general.md#require-the-previous-season-to-be-watched)
   - [Hide subject tags](./docs/using-seerr/media-details-and-playback.md#hide-subject-tags)
   - [Filter and sort local watchlists](./docs/using-seerr/plex/watchlist-auto-request.md#find-items-in-your-watchlist)
@@ -108,6 +109,7 @@ For local MCP access, see the [SnapeTech MCP integration guide](./docs/integrati
 - Movie and TV title cards show standard and 4K availability separately across search, Discover, collections, people, and list views, so a 4K-only copy is visible as 4K.
 - Sign-in returns users to a validated in-app destination across local, media-server, and OIDC login, and sign-out clears the previous return destination. OIDC account provisioning requires a verified email and applies the configured account-admission and role rules.
 - Long-running TV details and request pages stay responsive when a series has many stored and requested seasons.
+- Users can request their own requester tag on an already available movie or fully available series. The tag action follows normal request permissions, quotas, and approval without starting another acquisition; SeerrNG adapts the idea discussed in [Seerr PR #3423](https://github.com/seerr-team/seerr/pull/3423).
 - Automation service integration with Radarr, Sonarr, Lidarr, and Bookshelf/Readarr-compatible APIs.
 - SeerrNG [PR #446](https://github.com/snapetech-org/seerrng/pull/446) proposes bounded, paginated Servarr queue tracking with refresh-completion checks and a per-service Download Queue Size control. It covers 10–10,000 items per service, defaults to 1,000, and keeps recovery on strict complete snapshots. Source context: closed, unmerged Seerr [PR #3473](https://github.com/seerr-team/seerr/pull/3473) and open Seerr [PR #3535](https://github.com/seerr-team/seerr/pull/3535).
 - Notifications for email, Discord, Slack, Telegram, Gotify, ntfy, Pushover, Pushbullet, Apprise, Web Push, and custom webhooks, with provider-specific poster, priority, sound, and email transport options documented in the [notification guides](./docs/using-seerr/notifications/index.mdx).
@@ -201,7 +203,8 @@ Recent repository updates include:
   from a title.
 - **Requests:** per-user access to labeled Radarr/Sonarr destinations, quota
   exception approvals, optional Slack approval actions, an optional
-  previous-season watch gate, and Sonarr monitoring for future seasons when
+  previous-season watch gate, requester-tag actions for already available
+  movies and complete series, and Sonarr monitoring for future seasons when
   the latest regular season was requested. Failed TV requests retain their
   context and support verified season mapping; missing movie or TV service
   destinations fail promptly with a retry path, and bounded failure
@@ -305,6 +308,7 @@ SeerrNG documentation is maintained in the [docs folder](https://github.com/snap
 - [Track individual TV episode availability](./docs/using-seerr/individual-episode-availability.md)
 - [Require previous-season watch progress](./docs/using-seerr/settings/general.md#require-the-previous-season-to-be-watched)
 - [Choose movie and TV request destinations](./docs/using-seerr/settings/services.md#request-destination-label-optional)
+- [Add your requester tag to available media](./docs/using-seerr/requester-tags.md)
 - [Filter and sort local watchlists](./docs/using-seerr/plex/watchlist-auto-request.md#find-items-in-your-watchlist)
 - [Follow another user's request](./docs/using-seerr/notifications/index.mdx#follow-a-movie-or-series-request)
 - [Hide Subject Tags](./docs/using-seerr/media-details-and-playback.md#hide-subject-tags)

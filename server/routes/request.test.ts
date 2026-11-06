@@ -33,6 +33,7 @@ import {
   MediaRequest,
 } from '@server/entity/MediaRequest';
 import MediaRequestStatusEvent from '@server/entity/MediaRequestStatusEvent';
+import MediaServiceStatus from '@server/entity/MediaServiceStatus';
 import { NotificationOutbox } from '@server/entity/NotificationOutbox';
 import OverrideRule from '@server/entity/OverrideRule';
 import Season from '@server/entity/Season';
@@ -10036,5 +10037,105 @@ describe('DELETE /request/:requestId, orphaned season status reset', () => {
     const updated = await mediaRepo.findOneOrFail({ where: { id: media.id } });
     assert.strictEqual(updated.seasons[0].status, MediaStatus.UNKNOWN);
     assert.strictEqual(updated.seasons[0].status4k, MediaStatus.PROCESSING);
+  });
+});
+
+describe('requester-tag-only admission', () => {
+  const availableMovie = async (status = MediaStatus.AVAILABLE) => {
+    const media = await getRepository(Media).save(
+      new Media({
+        tmdbId: 977001,
+        mediaType: MediaType.MOVIE,
+        status: MediaStatus.AVAILABLE,
+        status4k: MediaStatus.UNKNOWN,
+      })
+    );
+    await getRepository(MediaServiceStatus).save(
+      new MediaServiceStatus({
+        mediaId: media.id,
+        serviceType: 'radarr',
+        serverId: 0,
+        format: 'standard',
+        status,
+        externalServiceId: 42,
+      })
+    );
+    return media;
+  };
+  it('admits a pending tag-only request on the exact available default service, including service zero', async () => {
+    configureRadarr([{ tagRequests: true }]);
+    const media = await availableMovie();
+    const agent = await loginAs('friend@seerr.dev', 'test1234');
+    const res = await agent
+      .post('/request')
+      .send({
+        mediaType: 'movie',
+        mediaId: media.tmdbId,
+        requesterTagOnly: true,
+      });
+    assert.equal(res.status, 201, res.body.message);
+    const stored = await getRepository(MediaRequest).findOneByOrFail({
+      id: res.body.id,
+    });
+    assert.equal(stored.status, MediaRequestStatus.PENDING);
+    assert.equal(stored.serviceTargets?.[0].requesterTagOnly, true);
+    assert.equal(stored.serviceTargets?.[0].externalServiceId, 42);
+    assert.equal(stored.serviceTargets?.[0].serverId, 0);
+    assert.equal(stored.serviceTargets?.[0].status, MediaStatus.AVAILABLE);
+    assert.equal(
+      (await getRepository(Media).findOneByOrFail({ id: media.id })).status,
+      MediaStatus.AVAILABLE
+    );
+  });
+  it('rejects tag-only intent when the destination disables requester tags', async () => {
+    configureRadarr([{ tagRequests: false }]);
+    const media = await availableMovie();
+    const res = await (
+      await loginAs('friend@seerr.dev', 'test1234')
+    )
+      .post('/request')
+      .send({
+        mediaType: 'movie',
+        mediaId: media.tmdbId,
+        requesterTagOnly: true,
+      });
+    assert.equal(res.status, 400);
+    assert.match(res.body.message, /tags.*not enabled/i);
+  });
+  it('rejects tag-only intent without confirmed destination availability', async () => {
+    configureRadarr([{ tagRequests: true }]);
+    const media = await availableMovie(MediaStatus.UNKNOWN);
+    const res = await (
+      await loginAs('friend@seerr.dev', 'test1234')
+    )
+      .post('/request')
+      .send({
+        mediaType: 'movie',
+        mediaId: media.tmdbId,
+        requesterTagOnly: true,
+      });
+    assert.equal(res.status, 409);
+    assert.equal(
+      await getRepository(MediaRequest).countBy({
+        type: MediaType.MOVIE,
+        media: { id: media.id },
+      }),
+      0
+    );
+  });
+  it('rejects partial-series tag-only selections before admission', async () => {
+    configureSonarr([{ tagRequests: true }]);
+    const res = await (
+      await loginAs('friend@seerr.dev', 'test1234')
+    )
+      .post('/request')
+      .send({
+        mediaType: 'tv',
+        mediaId: 977001,
+        requesterTagOnly: true,
+        seasons: [1],
+      });
+    assert.equal(res.status, 400);
+    assert.match(res.body.message, /full.series/i);
   });
 });

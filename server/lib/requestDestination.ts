@@ -31,6 +31,7 @@ export interface RequestDestination {
   languageProfileId?: number | null;
   rootFolder?: string | null;
   status?: MediaStatus | null;
+  requesterTagOnly?: boolean;
 }
 
 export interface StoredRequestDestination {
@@ -46,6 +47,7 @@ export interface StoredRequestDestination {
   bookFormat?: 'ebook' | 'audiobook' | 'both' | null;
   quotaException?: boolean;
   serviceTargets?: RequestDestination[] | null;
+  requesterTagOnly?: boolean;
   requestedBy?: { id: number } | null;
 }
 

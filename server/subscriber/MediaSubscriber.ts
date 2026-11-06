@@ -102,6 +102,11 @@ export class MediaSubscriber implements EntitySubscriberInterface<Media> {
       async (requests) => {
         for (const request of requests) {
           if (
+            request.serviceTargets?.some((target) => target.requesterTagOnly)
+          ) {
+            continue;
+          }
+          if (
             event.mediaType !== MediaType.BOOK ||
             this.isBookRequestSatisfied(event, request)
           ) {
@@ -142,6 +147,11 @@ export class MediaSubscriber implements EntitySubscriberInterface<Media> {
         const completedRequests: MediaRequest[] = [];
 
         for (const request of relatedRequests) {
+          if (
+            request.serviceTargets?.some((target) => target.requesterTagOnly)
+          ) {
+            continue;
+          }
           let shouldComplete = false;
 
           if (

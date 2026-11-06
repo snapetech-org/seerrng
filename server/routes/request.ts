@@ -466,6 +466,7 @@ const getRequestLogBody = (body: Partial<MediaRequestBody> | undefined) => ({
   hasPreferredIsbn13: !!body?.preferredIsbn13,
   authorId: body?.authorId,
   userId: body?.userId,
+  requesterTagOnly: body?.requesterTagOnly === true,
 });
 
 const getDisabledCategoryForRequest = (
@@ -1188,6 +1189,7 @@ const sanitizeMediaRequestBody = (
   options: {
     requireCreateIdentity?: boolean;
     preserveNullOverrides?: boolean;
+    allowRequesterTagOnly?: boolean;
   } = {}
 ): RequestOptionValidationResult<MediaRequestBody> => {
   if (!body || typeof body !== 'object' || Array.isArray(body)) {
@@ -1241,6 +1243,32 @@ const sanitizeMediaRequestBody = (
       error: {
         status: 400,
         message: 'is4k must be a boolean.',
+      },
+    };
+  }
+
+  if (
+    bodyObject.requesterTagOnly !== undefined &&
+    typeof bodyObject.requesterTagOnly !== 'boolean'
+  ) {
+    return {
+      error: {
+        status: 400,
+        message: 'requesterTagOnly must be a boolean.',
+      },
+    };
+  }
+  if (
+    bodyObject.requesterTagOnly === true &&
+    (!options.requireCreateIdentity ||
+      !options.allowRequesterTagOnly ||
+      (mediaType !== MediaType.MOVIE && mediaType !== MediaType.TV))
+  ) {
+    return {
+      error: {
+        status: 400,
+        message:
+          'Requester tag-only mode is only valid for new movie or TV requests.',
       },
     };
   }
@@ -1780,6 +1808,19 @@ const sanitizeMediaRequestBody = (
       },
     };
   }
+  if (
+    bodyObject.requesterTagOnly === true &&
+    mediaType === MediaType.TV &&
+    (seasons.value !== 'all' || (seasonRequests.value?.length ?? 0) > 0)
+  ) {
+    return {
+      error: {
+        status: 400,
+        message:
+          'Requester tag-only mode requires a full-series selection without episode overrides.',
+      },
+    };
+  }
   const value = {
     ...body,
     is4k: bodyObject.is4k ?? false,
@@ -1820,6 +1861,7 @@ const sanitizeMediaRequestBody = (
     seasonRequests: seasonRequests.value,
     requestQuotaApproval: bodyObject.requestQuotaApproval as
       boolean | undefined,
+    requesterTagOnly: bodyObject.requesterTagOnly as boolean | undefined,
   } as MediaRequestBody;
 
   return {
@@ -2943,6 +2985,7 @@ requestRoutes.post<never, MediaRequest, MediaRequestBody>(
       }
       const body = sanitizeMediaRequestBody(req.body, {
         requireCreateIdentity: true,
+        allowRequesterTagOnly: true,
       });
       if ('error' in body) {
         logRequestValidationFailure(
@@ -4362,6 +4405,60 @@ requestRoutes.put<{ requestId: string }>(
                 request.status === MediaRequestStatus.FAILED &&
                 (request.type === MediaType.MOVIE ||
                   request.type === MediaType.TV);
+              const requesterTagOnlyTarget = request.serviceTargets?.find(
+                (target) => target.requesterTagOnly
+              );
+              if (requesterTagOnlyTarget && !isFailedRequestRepair) {
+                return next({
+                  status: 409,
+                  message:
+                    'Requester-tag requests cannot be edited. Cancel the request and submit it again if needed.',
+                });
+              }
+              if (requesterTagOnlyTarget && isFailedRequestRepair) {
+                const existingSeasonNumbers = request.seasons
+                  .filter(isActiveSeasonRequest)
+                  .map((season) => season.seasonNumber)
+                  .sort((left, right) => left - right);
+                const retrySelections: SeasonEpisodeSelection[] =
+                  body.seasonRequests ??
+                  (Array.isArray(body.seasons)
+                    ? body.seasons.map((seasonNumber) => ({ seasonNumber }))
+                    : []);
+                const retrySeasonNumbers = retrySelections
+                  .map((selection) => selection.seasonNumber)
+                  .sort((left, right) => left - right);
+                const changesAcquisitionOptions =
+                  body.profileId !== undefined ||
+                  body.rootFolder !== undefined ||
+                  body.languageProfileId !== undefined ||
+                  body.metadataLanguageId !== undefined ||
+                  body.sonarrSeasonType !== undefined ||
+                  body.tags !== undefined;
+                if (
+                  (body.userId !== undefined &&
+                    body.userId !== initialRequest.requestedBy.id) ||
+                  (body.serverId !== undefined &&
+                    body.serverId !== requesterTagOnlyTarget.serverId) ||
+                  changesAcquisitionOptions ||
+                  (request.type === MediaType.TV &&
+                    (retrySelections.some(
+                      (selection) => selection.episodeNumbers !== undefined
+                    ) ||
+                      existingSeasonNumbers.length !==
+                        retrySeasonNumbers.length ||
+                      existingSeasonNumbers.some(
+                        (seasonNumber, index) =>
+                          seasonNumber !== retrySeasonNumbers[index]
+                      )))
+                ) {
+                  return next({
+                    status: 400,
+                    message:
+                      'Requester-tag retries must keep the original requester, destination, and full-series selection.',
+                  });
+                }
+              }
               if (
                 isFailedRequestRepair &&
                 !actor.hasPermission(Permission.MANAGE_REQUESTS)
