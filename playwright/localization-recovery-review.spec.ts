@@ -38,7 +38,7 @@ for (const theme of ['seerrNGJ', 'seerrOrig', 'persiusNG']) {
           ['permissions', '/settings/users'],
           ['services', '/settings/services'],
         ]) {
-          await page.goto(route, { waitUntil: 'networkidle' });
+          await page.goto(route, { waitUntil: 'domcontentloaded' });
           await expect(page.locator('html')).toHaveAttribute(
             'data-interface-theme',
             theme
@@ -71,6 +71,7 @@ for (const theme of ['seerrNGJ', 'seerrOrig', 'persiusNG']) {
               )
             )
             .toBe(true);
+          await page.evaluate(() => document.fonts.ready);
           await page.screenshot({
             path: info.outputPath(`${theme}-${locale}-${width}-${name}.png`),
             fullPage: true,

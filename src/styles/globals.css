@@ -1392,6 +1392,7 @@
   }
 
   .movie-summary-card-with-selection {
+    --movie-summary-selection-track: 16px;
     @apply grid-cols-[16px_64px_minmax(0,1fr)] sm:grid-cols-[16px_80px_minmax(0,1fr)];
   }
 
@@ -2588,6 +2589,8 @@
 
   .detail-summary-card {
     padding: var(--inset-card-padding);
+    /* Poster dimensions and their grid tracks must switch together at breakpoints. */
+    transition-property: background-color, border-color, color, box-shadow;
   }
 
   :where(.detail-summary-card:not(.app-card-inset):not(.app-card-sub)) {

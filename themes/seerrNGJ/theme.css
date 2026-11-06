@@ -726,7 +726,10 @@
 :is(:root[data-interface-theme='seerrNGJ'], [data-interface-theme='seerrNGJ'])
   .media-detail-card
   .detail-summary-card:has([data-testid='media-details-poster']) {
-  grid-template-columns: 5rem minmax(0, 1fr);
+  grid-template-columns: var(--movie-summary-selection-track,) 5rem minmax(
+      0,
+      1fr
+    );
   align-items: start;
   gap: 1rem;
   text-align: start;
@@ -863,8 +866,12 @@
   }
 
   :is(:root[data-interface-theme='seerrNGJ'], [data-interface-theme='seerrNGJ'])
+    .media-detail-card
     .detail-summary-card:has([data-testid='media-details-poster']) {
-    grid-template-columns: 8.5rem minmax(0, 1fr);
+    grid-template-columns: var(--movie-summary-selection-track,) 8.5rem minmax(
+        0,
+        1fr
+      );
     gap: 1.25rem;
   }
 

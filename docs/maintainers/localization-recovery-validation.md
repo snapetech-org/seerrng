@@ -1,8 +1,8 @@
 # Localization recovery validation
 
 This is an integration checkpoint for original PR #418, not release acceptance.
-The original Git history is preserved on the recovery branch. The release in
-preparation excludes this work until the remaining checks are complete.
+The original Git history is preserved on the recovery branch. Published v3.72.10 excludes this work. PR #575 remains pending final combined CI
+and the remaining acceptance checks.
 
 ## Source and focused repairs
 
@@ -47,7 +47,8 @@ examples differed only in sentence punctuation; the shared validator now permits
 that punctuation while its regression test still rejects changed hosts, ports,
 protocols and query values. Protected-token diagnostics are zero. The ordinary
 i18n check, focused URL regression and changed-file formatting passed. These
-latest catalog edits have not yet been rebuilt into the browser runtime.
+catalog edits are included in the successful production build and subsequent
+27-case guarded browser run.
 
 A subsequent caller-argument pass repaired 12 values: translated identifiers,
 omitted dates/version numbers, and an Italian plural that omitted its visible
@@ -78,9 +79,9 @@ compatibility, not native-speaker approval.
 - Empty/obsolete keys, untranslated additions since the original branch, and
   plural/review coverage remain visible. Arabic captures contain English fallback
   for newer feature copy, including streaming-policy and some Persius labels.
-- No native-speaker approval is claimed. Only the listed settings routes have
-  matching visual comparison; affected media pages, dialogs, notifications,
-  additional languages and regional formatting still require acceptance.
+- No native-speaker approval is claimed. Matching visual comparisons now also cover movie/TV details and collection
+  summary cards, as recorded below. Dialogs, additional languages and regional
+  formatting still require acceptance; formatter tests do not prove delivery.
 - No live provider account, production database or external message delivery was
   used. Tests run against isolated seeded runtime configs with offline guards.
 
@@ -94,4 +95,57 @@ The complete tooling run after these repairs passed 366 tests with four skips
 and no failures. Client types also passed. The first combined build stopped
 on stale API source line references after merging the Plex PIN hardening;
 regeneration updated only callsite locations in the source-bound inventory.
-The next combined production build remains the acceptance gate.
+The subsequent combined production build passed. Final integration with the
+latest dependency milestone and full CI remains pending.
+
+
+## Browser and shared summary-card repair checkpoint
+
+The guarded runtime passed 27 Playwright cases: browser-default Arabic, twelve
+English/Arabic settings cases, twelve collection-selection cases, and movie/TV
+responsive detail cases. Collection coverage spans three themes, English/Arabic,
+and 390/1440px; detail assertions span 320, 360, 375, 390, 412, 768, 1024, 1440
+and 1920px. Six matching English collection baselines and four movie/TV
+390/1440 contact sheets were visually inspected alongside all six collection
+contact sheets. Existing Orig phone stacking and Persius three-column geometry
+remain intact. No physical phone, Safari or Firefox claim is made.
+
+Three actual cascade defects were reproduced before repair. The NGJ desktop
+poster was 136px while the more-specific base grid retained an 80px track.
+Matching the existing desktop selector specificity fixes the steady state.
+The shared summary-card transition previously animated grid geometry during
+resize, allowing its track to lag behind the poster; its existing owner now
+transitions paint properties only. Collection cards supply selection, poster
+and copy, but NGJ and desktop Orig allocated only two columns. Their existing
+grid owners now consume the optional existing 16px selection track. This does
+not change poster dimensions or the intentional Orig phone stack.
+
+All 73 UI style contracts, client types and the production build passed after
+these source repairs. Baseline failure traces and candidate geometry JSON are
+retained in task evidence. Screenshot differences include localized content,
+selection state and fixture avatars; no pixel-identity claim is made.
+
+The first CI pass also exposed lazy server formatter initialization, PWA head
+metadata during locale bootstrap, stale notification expectations, release-note
+schema issues and raw review Markdown accidentally fed to Docusaurus MDX.
+The fixes preserve Unicode argument isolation, initialize the formatter before
+first use, give PWAHeader its own Head owner, and exclude pr-evidence from public
+doc discovery while retaining Docusaurus default exclusions. Fifteen focused
+formatter/notification tests passed. The auth/user run passed 266 of 267 tests;
+the remaining old greeting expectation was corrected for isolation and passed
+on focused rerun. Generated API docs plus the full documentation build passed
+with persistent webpack caching disabled after shared-cache metadata failures;
+no shared cache was deleted.
+
+QA correction: some earlier fixture-mode restarts omitted E2E_OFFLINE=true.
+Their functional evidence is retained, but only the explicit guarded repeat is
+called offline acceptance. The final guarded node process loads
+bin/e2e-network-guard.cjs. A separate published-v3.72.10 container runs on an
+internal Docker network with outbound access independently confirmed blocked.
+The settings capture harness waits for DOM readiness, visible content, selected
+locale/theme, direction, overflow and fonts rather than waiting for unrelated
+provider health traffic to become idle.
+
+The explicit guarded repeat also passed all ten Cypress layout/theme cases.
+The DOM-ready settings harness then passed twelve English/Arabic local cases
+and six English cases against the actual published v3.72.10 container.

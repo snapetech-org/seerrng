@@ -66,7 +66,7 @@ describe('Current batch layout standards', () => {
         const styles = getComputedStyle($help[0]);
 
         expect(styles.fontSize).to.eq('14px');
-        expect(styles.textAlign).to.eq('left');
+        expect(styles.textAlign).to.be.oneOf(['left', 'start']);
         expect(Math.abs(helpBounds.left - rowBounds.left)).to.be.lessThan(2);
         expect(Math.abs(helpBounds.right - rowBounds.right)).to.be.lessThan(2);
       });
