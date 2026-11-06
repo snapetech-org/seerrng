@@ -6,7 +6,7 @@
     "checksumListSha256": "6153dcd86c8cdf5feec7689c14a0cfeb31ec40688f80f79101f488ea51ebface",
     "fileCount": 3,
     "manifestSha256": "c9b97c2b7122cd2f74a291ed7b0cecd3a272752be96d5e7c7b8f6b4575c081a7",
-    "path": "/mnt/disks/scratch/task-scratch/seerrng-pr418-main-sync-20261105/candidate-free"
+    "path": "../candidate-free/"
   },
   "candidate_free_bundled_verifier": false,
   "candidate_free_rows_sha256": "807a273055c784ba4eb80130247b02e071d61988d0f7e9beeda040269dd7eae4",
@@ -15,18 +15,18 @@
   "exact_target_selected": false,
   "head": "ca2309e960733a7486c55b9a761d82771be97cde",
   "independent_blind": {
-    "checksumListSha256": "a53a95f58066fb6433805f6cbaaca7b6a5089766ab8ff32af0cae4da1b05bbce",
+    "checksumListSha256": "656585c5440005127083c608e7e2abc2299ffc405f19cd79e268bbabce93c002",
     "fileCount": 5,
-    "manifestSha256": "93686512d753052bdddf17b53fac9842dfccbcf5ea5f1769a09e2c2723c78d16",
-    "path": "/mnt/disks/scratch/task-scratch/seerrng-pr418-main-sync-independent-blind-20261105"
+    "manifestSha256": "58aab72d82430139ca56c1f79baa360e0eeb0929b7834652ca2d60523703163c",
+    "path": "../blind-review/"
   },
   "primary_bundled_verifier": false,
   "primary_ledger_sha256": "aef24a0e0030930bf768658aa6b0286069e83240f693b48cfe72942e0be156d2",
   "primary_review": {
-    "checksumListSha256": "e09607a07786ba4d75083267b7c248122c942c7e1ebd8ef963fbc88a7ed22a10",
+    "checksumListSha256": "b1c3becff785d5352611f8558834d96075c32e0884b21df132f30bcb5a946bba",
     "fileCount": 3,
     "manifestSha256": "c271771ab6cce7a79a632723eb792fff90d1dadeafefbeb6fde83d8477627fb1",
-    "path": "/mnt/disks/scratch/task-scratch/seerrng-pr418-main-sync-20261105/primary-review"
+    "path": "../primary-review/"
   },
   "pull_request": 418,
   "repository": "snapetech-org/seerrng",
@@ -34,6 +34,6 @@
   "source_catalog_blob": "0c8cf4ffc92440bf7b6e4d3f3fd4f26fcb0a234e",
   "target_catalogs_read": false,
   "tree": "8c5df06aaf1d703ff923bf1fdf8a21c901b9d26d",
-  "worktree": "/home/keith/Documents/code/.task-worktrees/localization-20261105/seerrng-pr418-w4000-root-apply",
+  "worktree": "repository checkout containing the pinned review Git object",
   "worktree_clean": true
 }

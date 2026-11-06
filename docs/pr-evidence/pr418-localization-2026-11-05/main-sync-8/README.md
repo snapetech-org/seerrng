@@ -13,4 +13,4 @@ The merge added eight English UI strings without target-locale entries. This pac
 - `pnpm i18n:check` remains blocked by missing workspace dependencies (`prettier` is absent from `node_modules`). The read-only Python/JSON source and catalog readback passed. No tests, builds, scans, CI dispatches, workflow edits, deployment, merge, release, or tag were performed for this catalog update.
 - Qualified native-speaker approval and exact-head headed-browser acceptance remain separate and are not claimed.
 
-Evidence directories: `candidate-free/`, `primary-review/`, `blind-review/`, `cross-review/`, `root-review/`, and `application/`. Nested checksum lists and this directory’s `SHA256SUMS.txt` cover retained evidence.
+Evidence directories: `candidate-free/`, `primary-review/`, `blind-review/`, `cross-review/`, `root-review/`, and `application/`. Nested checksum lists and this directory’s `SHA256SUMS.txt` cover retained evidence. The cross and blind verifiers use committed sibling packets and the pinned Git object; they do not depend on original scratch paths or worktree position.

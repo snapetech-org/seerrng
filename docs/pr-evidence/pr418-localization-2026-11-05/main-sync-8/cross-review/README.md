@@ -6,4 +6,4 @@ Dispositions: 65 accept, 28 refinement, 3 correction, 0 hold. No exact translati
 
 Review findings preserve the distinction between administrator sign-in and existing sessions, regular users' remote sign-in, unchanged API-key integrations, proxy trust and `X-Forwarded-For`, and Jellyfin Quick Connect versus password/plugin sign-in. `Trust Reverse Proxy` is treated as a localized setting concept, not an immutable English literal.
 
-Confidence is moderate. Native-speaker review was not performed. Verify with `python3 -B verify_cross_review.py`. No repository/catalog edits, tests, builds, scans, CI, or browser activity occurred.
+Confidence is moderate. Native-speaker review was not performed. The verifier reads the committed sibling packets and pinned Git object; it does not require the original scratch paths or worktree. Verify with `python3 -B verify_cross_review.py`. No repository/catalog edits, tests, builds, scans, CI, or browser activity occurred during cross-review.

@@ -2,7 +2,7 @@
 from pathlib import Path
 import hashlib, json, collections, sys
 ROOT=Path(__file__).resolve().parent
-INPUT=Path("/mnt/disks/scratch/task-scratch/seerrng-pr418-main-sync-20261105/candidate-free")
+INPUT=ROOT.parent/"candidate-free"
 def sha(p): return hashlib.sha256(p.read_bytes()).hexdigest()
 def fail(msg): print("FAIL:",msg); sys.exit(1)
 # Check original candidate-free packet checksums and exact pins.

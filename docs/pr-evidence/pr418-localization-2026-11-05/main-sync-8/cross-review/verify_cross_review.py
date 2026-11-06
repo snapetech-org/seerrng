@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
 from __future__ import annotations
 import collections,hashlib,json,pathlib,re,subprocess
-OUT=pathlib.Path('/mnt/disks/scratch/task-scratch/seerrng-pr418-main-sync-independent-cross-review-20261105')
-BASE=pathlib.Path('/mnt/disks/scratch/task-scratch/seerrng-pr418-main-sync-20261105')
+OUT=pathlib.Path(__file__).resolve().parent
+BASE=OUT.parent
 CF=BASE/'candidate-free'; PRIMARY=BASE/'primary-review'
-BLIND=pathlib.Path('/mnt/disks/scratch/task-scratch/seerrng-pr418-main-sync-independent-blind-20261105')
-REPO=pathlib.Path('/home/keith/Documents/code/.task-worktrees/localization-20261105/seerrng-pr418-w4000-root-apply')
+BLIND=BASE/'blind-review'
+REPO=pathlib.Path(__file__).resolve().parents[5]
 HEAD='ca2309e960733a7486c55b9a761d82771be97cde'; TREE='8c5df06aaf1d703ff923bf1fdf8a21c901b9d26d'
 LOCALES=['es','zh_Hans','hi','de','ja','fr','pt_BR','ar','ko','zh_Hant','vi','id']
 IDS={
@@ -64,7 +64,7 @@ def token_audit(source,target,sid):
  return {'requiredLiteralCounts':expected,'actualLiteralCounts':actual,'literalCountMismatches':mismatch,'numbersPreserved':nr,'sourceNumberRuns':nums(source),'targetNumberRuns':nums(target),'placeholdersPreserved':pp,'markupPreserved':mt,'pass':not mismatch and nr and pp and mt}
 def main():
  cfp=verify_dir(CF); pp=verify_dir(PRIMARY); bp=verify_dir(BLIND); op=verify_dir(OUT)
- if git('rev-parse','HEAD')!=HEAD or git('rev-parse','HEAD^{tree}')!=TREE or git('status','--porcelain=v1','--untracked-files=all'):raise SystemExit('worktree pin/clean mismatch')
+ if git('rev-parse',f'{HEAD}^{{tree}}')!=TREE:raise SystemExit('pinned input commit/tree unavailable')
  pins=rj(OUT/'input-pins.json'); summary=rj(OUT/'summary.json'); manifest=rj(OUT/'manifest.json')
  if (pins.get('head'),pins.get('tree'),pins.get('batch'))!=(HEAD,TREE,'main-sync-eight-strings'):raise SystemExit('output input pin mismatch')
  for name,actual in [('candidate_free',cfp),('primary_review',pp),('independent_blind',bp)]:
@@ -136,5 +136,5 @@ def main():
    counts[disposition]+=1
  if counts!=collections.Counter({'accept':65,'refinement':28,'correction':3}) or identical!=28 or literal_over!=3 or literal_blind_fail!=0:raise SystemExit('cross totals mismatch '+str((counts,identical,literal_over,literal_blind_fail)))
  if summary.get('cross_disposition_counts')!=dict(counts) or summary.get('primary_blind_proposal_texts_equal')!=identical or summary.get('primary_exact_literal_count_mismatch_cells')!=3 or summary.get('blind_exact_literal_count_mismatch_cells')!=0:raise SystemExit('summary totals mismatch')
- print(json.dumps({'result':'PASS','head':HEAD,'tree':TREE,'cells':96,'crossDispositions':dict(counts),'identicalProposalTexts':identical,'primaryLiteralCountMismatches':literal_over,'blindLiteralCountMismatches':literal_blind_fail,'exactTargetSelected':False,'outputFilesVerified':op['fileCount'],'checksumListSha256':op['checksumListSha256']},ensure_ascii=False,indent=2))
+ print(json.dumps({'result':'PASS','head':HEAD,'tree':TREE,'cells':96,'crossDispositions':dict(counts),'identicalProposalTexts':identical,'primaryLiteralCountMismatches':literal_over,'blindLiteralCountMismatches':literal_blind_fail,'exactTargetSelected':False,'portablePinnedGitObject':True,'outputFilesVerified':op['fileCount'],'checksumListSha256':op['checksumListSha256']},ensure_ascii=False,indent=2))
 if __name__=='__main__':main()
