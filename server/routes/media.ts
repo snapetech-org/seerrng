@@ -881,30 +881,28 @@ mediaRoutes.delete(
                             season[is4k ? 'status4k' : 'status'] =
                               MediaStatus.DELETED;
                         }
-                      } else if (!remaining.length) {
-                        media.status = MediaStatus.DELETED;
-                        media.resetServiceData();
                       } else if (media.mediaType === MediaType.BOOK) {
+                        const audiobook = target.quality === 'Audiobook';
                         recordBookFileAvailability(
                           media,
-                          target.quality === 'Audiobook'
-                            ? 'audiobook'
-                            : 'ebook',
+                          audiobook ? 'audiobook' : 'ebook',
                           target.serviceId,
                           false
                         );
+                        // A manager deletion confirms only that manager copy.
+                        // ABS, Plex and other destinations keep their evidence.
                         if (
-                          target.quality === 'Book' &&
-                          !remaining.some((copy) => copy.quality === 'Book')
-                        )
-                          media.resetServiceDataForResolution(false);
-                        if (
-                          target.quality === 'Audiobook' &&
-                          !remaining.some(
-                            (copy) => copy.quality === 'Audiobook'
-                          )
+                          !audiobook &&
+                          media.serviceId === target.serviceId
                         ) {
-                          media.availableAudiobookServiceIds = [];
+                          media.serviceId = null;
+                          media.externalServiceId = null;
+                          media.externalServiceSlug = null;
+                        }
+                        if (
+                          audiobook &&
+                          media.audiobookServiceId === target.serviceId
+                        ) {
                           media.audiobookServiceId = null;
                           media.audiobookExternalServiceId = null;
                           media.audiobookExternalServiceSlug = null;
@@ -912,8 +910,15 @@ mediaRoutes.delete(
                         media.status =
                           hasBookFileEvidence(media, 'ebook') ||
                           hasBookFileEvidence(media, 'audiobook')
-                            ? MediaStatus.PARTIALLY_AVAILABLE
-                            : MediaStatus.UNKNOWN;
+                            ? remaining.length
+                              ? MediaStatus.PARTIALLY_AVAILABLE
+                              : MediaStatus.AVAILABLE
+                            : remaining.length
+                              ? MediaStatus.UNKNOWN
+                              : MediaStatus.DELETED;
+                      } else if (!remaining.length) {
+                        media.status = MediaStatus.DELETED;
+                        media.resetServiceData();
                       }
                       await repository.save(media);
                     }

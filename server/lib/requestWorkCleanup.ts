@@ -64,6 +64,9 @@ class RequestWorkCleanupManager {
     mediaId: number,
     request: MediaRequest
   ): Promise<void> {
+    // Imported files are library inventory, not cancellable acquisition work.
+    // A mixed-format request may still have another operation to withdraw.
+    if (operation.state === 'available') return;
     const runtimeConfig = getExternalRuntimeConfig();
     const readarrServices = runtimeConfig.readarr;
     const server = readarrServices.find(

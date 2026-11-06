@@ -143,6 +143,58 @@ describe('RequestWorkCleanupManager', () => {
     getSettings().kapowarr = [];
   });
 
+  it('preserves an imported ebook while cancelling the still-pending audiobook', async () => {
+    const request = await createActiveBookRequest();
+    request.bookFormat = 'both';
+    await getRepository(MediaRequest).save(request);
+    const operation = await getRepository(BookRequestSearch).findOneByOrFail({
+      requestId: request.id,
+    });
+    await getRepository(BookRequestSearch).update(operation.id, {
+      state: 'available',
+      commandId: null,
+    });
+    await getRepository(Media).update(request.media.id, {
+      status: MediaStatus.AVAILABLE,
+      availableEbookServiceIds: [20],
+    });
+    getSettings().readarr.push({
+      ...getSettings().readarr[0],
+      id: 21,
+      serviceType: 'audiobook',
+    });
+    await getRepository(BookRequestSearch).save(
+      new BookRequestSearch({
+        requestId: request.id,
+        serviceId: 21,
+        format: 'audiobook',
+        bookId: null,
+        pendingId: 904,
+        state: 'pending',
+        createdBook: false,
+        createdAuthor: false,
+      })
+    );
+    const canceled: number[] = [];
+    mock.method(
+      ReadarrAPI.prototype,
+      'cancelPendingAuthorImport',
+      async (id: number) => {
+        canceled.push(id);
+      }
+    );
+    const remove = mock.method(ReadarrAPI.prototype, 'removeBook', async () => {
+      throw new Error('Imported files must remain');
+    });
+    await requestWorkCleanupManager.cleanup(request, true);
+    assert.deepEqual(canceled, [904]);
+    assert.equal(remove.mock.callCount(), 0);
+    const media = await getRepository(Media).findOneByOrFail({
+      id: request.media.id,
+    });
+    assert.equal(media.externalServiceId, 55);
+    assert.deepEqual(media.availableEbookServiceIds, [20]);
+  });
   it('cancels a pending Chaptarr import without requiring a book or command ID', async () => {
     const request = await createActiveBookRequest();
     const operation = await getRepository(BookRequestSearch).findOneByOrFail({
