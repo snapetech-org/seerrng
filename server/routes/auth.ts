@@ -468,6 +468,9 @@ const authRateLimit = rateLimit({
 
 const PLEX_OAUTH_HTTP_OPTIONS = {
   timeout: 10_000,
+  maxRedirects: 0,
+  maxContentLength: 64 * 1024,
+  maxBodyLength: 1024,
 } as const;
 
 const getPlexOAuthHeaders = () => ({
