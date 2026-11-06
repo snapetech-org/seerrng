@@ -25,6 +25,8 @@ docker run -d -p 5080:80 \
   lumen
 ```
 
+The container runs as the unprivileged `nginx` user; its static app remains read-only, and only its generated proxy configuration, cache and temporary PID location are writable.
+
 Open `http://<host>:5080` and sign in with Plex or a SeerrNG local account. Point your public hostname at Lumen instead of SeerrNG if you want it to be the default. Lumen and SeerrNG share one origin through Lumen's nginx, so SeerrNG's sign-in cookie works unchanged.
 
 | Variable | What it is |
@@ -89,6 +91,6 @@ npx --no-install playwright install --with-deps chromium
 npm run test:browser
 ```
 
-The security suite starts disposable nginx containers from the pinned production image and removes only containers it creates. Browser tests run the production frontend against deterministic API fixtures at desktop, phone and tablet sizes. They verify account cache isolation, account-specific preferences, request navigation, layout overflow, and Plex link selection. They do not authenticate with Plex or prove application handoff on physical devices. Browser evidence is saved under `test-results/`.
+The security suite builds the production image, verifies its non-root process identity, and tests disposable nginx containers with all Linux capabilities dropped and no new privileges. It removes only the containers and test image it creates. Browser tests run the production frontend against deterministic API fixtures at desktop, phone and tablet sizes. They verify account cache isolation, account-specific preferences, request navigation, layout overflow, and Plex link selection. They do not authenticate with Plex or prove application handoff on physical devices. Browser evidence is saved under `test-results/`.
 
 Preferences and cached request descriptions are scoped to the signed-in SeerrNG user ID. Existing device-wide Lumen preferences are not imported into another person's account.

@@ -1,6 +1,5 @@
 import assert from 'node:assert/strict';
 import { execFile } from 'node:child_process';
-import { readFile } from 'node:fs/promises';
 import { createServer } from 'node:http';
 import { resolve } from 'node:path';
 import { after, before, test } from 'node:test';
@@ -41,11 +40,15 @@ const echo = createServer((req, res) => {
   res.end(JSON.stringify(req.headers));
 });
 before(async () => {
-  image = [
-    ...(await readFile(resolve(root, 'Dockerfile'), 'utf8')).matchAll(
-      /^FROM (\S+)/gm
-    ),
-  ].at(-1)[1];
+  image = `seerrng-lumen-proxy-qa:${process.pid}-${Date.now()}`;
+  await docker(
+    'build',
+    '--label',
+    'io.snapetech.task=lumen-proxy-tests',
+    '-t',
+    image,
+    root
+  );
   gateway = JSON.parse(await docker('network', 'inspect', 'bridge'))[0].IPAM
     .Config[0].Gateway;
   await new Promise((resolve) => echo.listen(0, '0.0.0.0', resolve));
@@ -53,16 +56,17 @@ before(async () => {
 });
 after(async () => {
   for (const id of containers) await docker('rm', '-f', id);
+  if (image) await docker('image', 'rm', image);
   echo.closeAllConnections();
   await new Promise((resolve) => echo.close(resolve));
 });
 const args = (settings = {}) => [
   '--add-host',
   'host.docker.internal:host-gateway',
-  '-v',
-  `${root}/deploy/15-lumen-trusted-proxies.sh:/qa/trust.sh:ro`,
-  '-v',
-  `${root}/deploy/nginx.conf.template:/etc/nginx/templates/default.conf.template:ro`,
+  '--cap-drop',
+  'ALL',
+  '--security-opt',
+  'no-new-privileges',
   '-e',
   `SEERR_URL=http://host.docker.internal:${port}`,
   '-e',
@@ -70,11 +74,7 @@ const args = (settings = {}) => [
   '-e',
   'SEERR_FULL_URL=https://seerr.example.test',
   ...Object.entries(settings).flatMap(([k, v]) => ['-e', `${k}=${v}`]),
-  '--entrypoint',
-  'sh',
   image,
-  '-c',
-  'cp /qa/trust.sh /docker-entrypoint.d/15-lumen-trusted-proxies.sh && chmod 755 /docker-entrypoint.d/15-lumen-trusted-proxies.sh && exec /docker-entrypoint.sh nginx -g "daemon off;"',
 ];
 const paths = [
   '/api/v1/probe',
@@ -107,6 +107,13 @@ async function check(settings, clientIp, scheme, headers = {}) {
       await new Promise((resolve) => setTimeout(resolve, 100));
     }
     assert.ok(ready, await docker('logs', id));
+    const frontend = await fetch(base + '/');
+    assert.equal(frontend.status, 200);
+    assert.match(await frontend.text(), /<div id="root"><\/div>/);
+    assert.match(
+      frontend.headers.get('content-security-policy'),
+      /script-src 'self'/
+    );
     for (const path of paths) {
       const response = await fetch(base + path, {
         headers: {
@@ -132,6 +139,36 @@ async function check(settings, clientIp, scheme, headers = {}) {
     containers.delete(id);
   }
 }
+test('the built production image starts with an unprivileged user', async () => {
+  const user = await docker(
+    'image',
+    'inspect',
+    '--format',
+    '{{.Config.User}}',
+    image
+  );
+  const uid = await docker(
+    'run',
+    '--rm',
+    '--cap-drop',
+    'ALL',
+    '--security-opt',
+    'no-new-privileges',
+    '--entrypoint',
+    'id',
+    image,
+    '-u'
+  );
+  assert.match(
+    uid,
+    /^[1-9]\d*$/,
+    'The actual production process must have a nonzero UID.'
+  );
+  assert.ok(
+    user && user !== 'root' && user !== '0' && user !== '0:0',
+    `Expected an explicit non-root production USER, got ${JSON.stringify(user)}`
+  );
+});
 test('direct visitors cannot forge identity or transport on any proxy route', () =>
   check({}, gateway, 'http'));
 test('a configured unrelated proxy does not grant trust to this connection', () =>
