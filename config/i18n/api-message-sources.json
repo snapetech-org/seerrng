@@ -2185,7 +2185,7 @@
       "callsites": [
         {
           "path": "server/routes/playback.ts",
-          "line": 638,
+          "line": 680,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Unable to retrieve watched status.'",
@@ -2879,7 +2879,7 @@
       "callsites": [
         {
           "path": "server/routes/playback.ts",
-          "line": 737,
+          "line": 779,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Playback device is unavailable.'",
@@ -2887,7 +2887,7 @@
         },
         {
           "path": "server/routes/playback.ts",
-          "line": 795,
+          "line": 840,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Playback device is unavailable.'",
@@ -2895,7 +2895,7 @@
         },
         {
           "path": "server/routes/playback.ts",
-          "line": 959,
+          "line": 1015,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Playback device is unavailable.'",
@@ -2903,7 +2903,7 @@
         },
         {
           "path": "server/routes/playback.ts",
-          "line": 999,
+          "line": 1058,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Playback device is unavailable.'",
@@ -8993,7 +8993,15 @@
       "callsites": [
         {
           "path": "server/routes/playback.ts",
-          "line": 657,
+          "line": 202,
+          "kind": "app-error-candidate",
+          "field": "message",
+          "expression": "'Playback is not permitted.'",
+          "captured": []
+        },
+        {
+          "path": "server/routes/playback.ts",
+          "line": 699,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Playback is not permitted.'",
@@ -9001,7 +9009,7 @@
         },
         {
           "path": "server/routes/playback.ts",
-          "line": 698,
+          "line": 740,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Playback is not permitted.'",
@@ -9009,7 +9017,7 @@
         },
         {
           "path": "server/routes/playback.ts",
-          "line": 841,
+          "line": 854,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Playback is not permitted.'",
@@ -9017,7 +9025,7 @@
         },
         {
           "path": "server/routes/playback.ts",
-          "line": 927,
+          "line": 891,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Playback is not permitted.'",
@@ -9025,7 +9033,39 @@
         },
         {
           "path": "server/routes/playback.ts",
-          "line": 1060,
+          "line": 925,
+          "kind": "authored-message-field",
+          "field": "message",
+          "expression": "'Playback is not permitted.'",
+          "captured": []
+        },
+        {
+          "path": "server/routes/playback.ts",
+          "line": 983,
+          "kind": "authored-message-field",
+          "field": "message",
+          "expression": "'Playback is not permitted.'",
+          "captured": []
+        },
+        {
+          "path": "server/routes/playback.ts",
+          "line": 1072,
+          "kind": "authored-message-field",
+          "field": "message",
+          "expression": "'Playback is not permitted.'",
+          "captured": []
+        },
+        {
+          "path": "server/routes/playback.ts",
+          "line": 1124,
+          "kind": "authored-message-field",
+          "field": "message",
+          "expression": "'Playback is not permitted.'",
+          "captured": []
+        },
+        {
+          "path": "server/routes/playback.ts",
+          "line": 1156,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Playback is not permitted.'",
@@ -11200,7 +11240,7 @@
       "callsites": [
         {
           "path": "server/routes/playback.ts",
-          "line": 680,
+          "line": 722,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'A playback device is required.'",
@@ -13348,7 +13388,7 @@
       "callsites": [
         {
           "path": "server/routes/playback.ts",
-          "line": 943,
+          "line": 999,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'No selected collection items are available in this quality.'",
@@ -13356,7 +13396,7 @@
         },
         {
           "path": "server/routes/playback.ts",
-          "line": 1076,
+          "line": 1140,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'No selected collection items are available in this quality.'",
@@ -26606,7 +26646,7 @@
       "callsites": [
         {
           "path": "server/routes/playback.ts",
-          "line": 898,
+          "line": 954,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'A device and collection selection are required.'",
@@ -29069,7 +29109,7 @@
       "callsites": [
         {
           "path": "server/routes/playback.ts",
-          "line": 1031,
+          "line": 1095,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'A collection selection is required.'",
@@ -30383,7 +30423,7 @@
       "callsites": [
         {
           "path": "server/routes/playback.ts",
-          "line": 801,
+          "line": 848,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'No media server is configured.'",
@@ -30391,7 +30431,7 @@
         },
         {
           "path": "server/routes/playback.ts",
-          "line": 866,
+          "line": 919,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'No media server is configured.'",
@@ -30399,7 +30439,7 @@
         },
         {
           "path": "server/routes/playback.ts",
-          "line": 1005,
+          "line": 1066,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'No media server is configured.'",
@@ -30407,7 +30447,7 @@
         },
         {
           "path": "server/routes/playback.ts",
-          "line": 1088,
+          "line": 1150,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'No media server is configured.'",
@@ -32104,7 +32144,7 @@
         },
         {
           "path": "server/routes/playback.ts",
-          "line": 616,
+          "line": 658,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Media not found.'",
@@ -32112,7 +32152,7 @@
         },
         {
           "path": "server/routes/playback.ts",
-          "line": 646,
+          "line": 688,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Media not found.'",
@@ -34069,7 +34109,7 @@
       "callsites": [
         {
           "path": "server/routes/playback.ts",
-          "line": 829,
+          "line": 879,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'A valid media item is required.'",
@@ -34489,7 +34529,7 @@
       "callsites": [
         {
           "path": "server/routes/playback.ts",
-          "line": 717,
+          "line": 759,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'The media selection is not playable.'",
@@ -34497,7 +34537,7 @@
         },
         {
           "path": "server/routes/playback.ts",
-          "line": 853,
+          "line": 903,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'The media selection is not playable.'",
@@ -36088,7 +36128,7 @@
       "callsites": [
         {
           "path": "server/routes/playback.ts",
-          "line": 661,
+          "line": 703,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Unable to retrieve playable media.'",
@@ -36325,7 +36365,7 @@
       "callsites": [
         {
           "path": "server/routes/playback.ts",
-          "line": 812,
+          "line": 862,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Unable to start playback.'",
@@ -37345,7 +37385,7 @@
       "callsites": [
         {
           "path": "server/routes/playback.ts",
-          "line": 873,
+          "line": 929,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Unable to replace the media-server playlist.'",
@@ -37353,7 +37393,7 @@
         },
         {
           "path": "server/routes/playback.ts",
-          "line": 1095,
+          "line": 1160,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Unable to replace the media-server playlist.'",
@@ -40728,7 +40768,7 @@
       "callsites": [
         {
           "path": "server/routes/playback.ts",
-          "line": 753,
+          "line": 795,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'The Plex server identifier is unavailable.'",
@@ -41349,7 +41389,7 @@
       "callsites": [
         {
           "path": "server/routes/playback.ts",
-          "line": 921,
+          "line": 977,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'The collection selection is not playable.'",
@@ -41357,7 +41397,7 @@
         },
         {
           "path": "server/routes/playback.ts",
-          "line": 1054,
+          "line": 1118,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'The collection selection is not playable.'",
@@ -50475,7 +50515,7 @@
       "callsites": [
         {
           "path": "server/routes/playback.ts",
-          "line": 1012,
+          "line": 1076,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Unable to start collection playback.'",
@@ -58644,7 +58684,7 @@
       "callsites": [
         {
           "path": "server/routes/playback.ts",
-          "line": 604,
+          "line": 646,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Unable to retrieve playback devices.'",
@@ -63860,7 +63900,7 @@
       "callsites": [
         {
           "path": "server/routes/playback.ts",
-          "line": 694,
+          "line": 736,
           "kind": "authored-message-field",
           "field": "reason",
           "expression": "'permission'",
@@ -78016,7 +78056,7 @@
     },
     {
       "path": "server/routes/playback.ts",
-      "line": 712,
+      "line": 754,
       "kind": "authored-message-field",
       "field": "reason",
       "expression": "'empty-selection'",
@@ -78025,7 +78065,7 @@
     },
     {
       "path": "server/routes/playback.ts",
-      "line": 733,
+      "line": 775,
       "kind": "authored-message-field",
       "field": "reason",
       "expression": "'plex-device-unavailable'",
@@ -78034,7 +78074,7 @@
     },
     {
       "path": "server/routes/playback.ts",
-      "line": 749,
+      "line": 791,
       "kind": "authored-message-field",
       "field": "reason",
       "expression": "'plex-server-identifier-unavailable'",

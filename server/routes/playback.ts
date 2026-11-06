@@ -18,6 +18,11 @@ import {
 } from '@server/lib/playbackSelection';
 import { buildPlexPlaylistWebUrl } from '@server/lib/plexPlaylistUrl';
 import { getSettings } from '@server/lib/settings';
+import {
+  getUserCredentialVersion,
+  runUserSecurityMutationWithActor,
+  UserMutationActorUnauthorizedError,
+} from '@server/lib/userSecurityMutation';
 import logger from '@server/logger';
 import type {
   PlaybackCatalogGroup,
@@ -160,12 +165,49 @@ const loadPlaybackUser = async (userId: number): Promise<User> =>
     select: {
       id: true,
       permissions: true,
+      passwordChangedAt: true,
       plexToken: true,
       jellyfinUserId: true,
       jellyfinDeviceId: true,
       jellyfinAuthToken: true,
     },
   });
+
+// Provider catalog/device reads must not keep authority alive after account
+// changes. Admit each external mutation against the current account while holding
+// the same per-user lock used by credential and permission changes.
+const withPlaybackAuthority = <Result>(
+  snapshot: User,
+  mediaItems: Media[],
+  is4k: boolean,
+  callback: () => Promise<Result>
+): Promise<Result> =>
+  runUserSecurityMutationWithActor(
+    snapshot.id,
+    snapshot.id,
+    Permission.ADMIN,
+    async (actor) => {
+      if (
+        mediaItems.some(
+          (media) => !canUsePlayback(actor, media.mediaType, is4k)
+        ) ||
+        getUserCredentialVersion(actor) !==
+          getUserCredentialVersion(snapshot) ||
+        actor.plexToken !== snapshot.plexToken ||
+        actor.jellyfinUserId !== snapshot.jellyfinUserId ||
+        actor.jellyfinDeviceId !== snapshot.jellyfinDeviceId ||
+        actor.jellyfinAuthToken !== snapshot.jellyfinAuthToken
+      ) {
+        throw new UserMutationActorUnauthorizedError(
+          'Playback is not permitted.'
+        );
+      }
+      return callback();
+    },
+    {
+      includeMediaServerCredentials: true,
+    }
+  );
 
 const loadMedia = async (mediaId: number): Promise<Media> =>
   getRepository(Media).findOneOrFail({ where: { id: mediaId } });
@@ -758,21 +800,24 @@ playbackRoutes.post('/media/:mediaId/play', async (req, res, next) => {
         media.mediaType === MediaType.BOOK
           ? 'audio'
           : 'video';
-      const queue = await plex.createPlayQueue(
-        itemIds,
-        playbackType,
-        machineIdentifier
-      );
-      await new PlexCompanionAPI({
-        clientUrl: device.connectionUri,
-        clientIdentifier: device.id,
-        plexToken: user.plexToken,
-      }).playMedia({
-        server: settings.plex,
-        machineIdentifier,
-        ratingKey: queue.selectedItemId,
-        playQueueId: queue.playQueueId,
-        mediaType: playbackType,
+      const plexToken = user.plexToken;
+      await withPlaybackAuthority(user, [media], is4k, async () => {
+        const queue = await plex.createPlayQueue(
+          itemIds,
+          playbackType,
+          machineIdentifier
+        );
+        await new PlexCompanionAPI({
+          clientUrl: device.connectionUri,
+          clientIdentifier: device.id,
+          plexToken,
+        }).playMedia({
+          server: settings.plex,
+          machineIdentifier,
+          ratingKey: queue.selectedItemId,
+          playQueueId: queue.playQueueId,
+          mediaType: playbackType,
+        });
       });
     } else if (
       (settings.main.mediaServerType === MediaServerType.JELLYFIN ||
@@ -794,7 +839,9 @@ playbackRoutes.post('/media/:mediaId/play', async (req, res, next) => {
           .status(404)
           .json({ status: 404, message: 'Playback device is unavailable.' });
       }
-      await jellyfin.playOnSession(deviceId, itemIds);
+      await withPlaybackAuthority(user, [media], is4k, () =>
+        jellyfin.playOnSession(deviceId, itemIds)
+      );
     } else {
       return res
         .status(409)
@@ -803,6 +850,9 @@ playbackRoutes.post('/media/:mediaId/play', async (req, res, next) => {
 
     return res.status(204).send();
   } catch (error) {
+    if (error instanceof UserMutationActorUnauthorizedError) {
+      return next({ status: 403, message: 'Playback is not permitted.' });
+    }
     logger.warn('Unable to start media-server playback.', {
       label: 'Playback',
       mediaId,
@@ -853,12 +903,15 @@ playbackRoutes.post('/media/:mediaId/playlist', async (req, res, next) => {
         .json({ status: 400, message: 'The media selection is not playable.' });
     }
 
-    const playlist = await replaceCurrentSelectionPlaylist(
-      user,
-      itemIds,
-      media.mediaType === MediaType.MUSIC || media.mediaType === MediaType.BOOK
-        ? 'audio'
-        : 'video'
+    const playlist = await withPlaybackAuthority(user, [media], is4k, () =>
+      replaceCurrentSelectionPlaylist(
+        user,
+        itemIds,
+        media.mediaType === MediaType.MUSIC ||
+          media.mediaType === MediaType.BOOK
+          ? 'audio'
+          : 'video'
+      )
     );
     if (!playlist) {
       return res
@@ -867,7 +920,10 @@ playbackRoutes.post('/media/:mediaId/playlist', async (req, res, next) => {
     }
 
     return res.status(200).json(playlist);
-  } catch {
+  } catch (error) {
+    if (error instanceof UserMutationActorUnauthorizedError) {
+      return next({ status: 403, message: 'Playback is not permitted.' });
+    }
     return next({
       status: 502,
       message: 'Unable to replace the media-server playlist.',
@@ -962,21 +1018,24 @@ playbackRoutes.post('/collection/play', async (req, res, next) => {
         plexToken: user.plexToken,
         plexSettings: settings.plex,
       });
-      const queue = await plex.createPlayQueue(
-        itemIds,
-        playbackType,
-        machineIdentifier
-      );
-      await new PlexCompanionAPI({
-        clientUrl: device.connectionUri,
-        clientIdentifier: device.id,
-        plexToken: user.plexToken,
-      }).playMedia({
-        server: settings.plex,
-        machineIdentifier,
-        ratingKey: queue.selectedItemId,
-        playQueueId: queue.playQueueId,
-        mediaType: playbackType,
+      const plexToken = user.plexToken;
+      await withPlaybackAuthority(user, mediaItems, is4k, async () => {
+        const queue = await plex.createPlayQueue(
+          itemIds,
+          playbackType,
+          machineIdentifier
+        );
+        await new PlexCompanionAPI({
+          clientUrl: device.connectionUri,
+          clientIdentifier: device.id,
+          plexToken,
+        }).playMedia({
+          server: settings.plex,
+          machineIdentifier,
+          ratingKey: queue.selectedItemId,
+          playQueueId: queue.playQueueId,
+          mediaType: playbackType,
+        });
       });
     } else if (
       (settings.main.mediaServerType === MediaServerType.JELLYFIN ||
@@ -998,7 +1057,9 @@ playbackRoutes.post('/collection/play', async (req, res, next) => {
           .status(404)
           .json({ status: 404, message: 'Playback device is unavailable.' });
       }
-      await jellyfin.playOnSession(deviceId, itemIds);
+      await withPlaybackAuthority(user, mediaItems, is4k, () =>
+        jellyfin.playOnSession(deviceId, itemIds)
+      );
     } else {
       return res
         .status(409)
@@ -1006,7 +1067,10 @@ playbackRoutes.post('/collection/play', async (req, res, next) => {
     }
 
     return res.status(204).send();
-  } catch {
+  } catch (error) {
+    if (error instanceof UserMutationActorUnauthorizedError) {
+      return next({ status: 403, message: 'Playback is not permitted.' });
+    }
     return next({
       status: 502,
       message: 'Unable to start collection playback.',
@@ -1077,10 +1141,8 @@ playbackRoutes.post('/collection/playlist', async (req, res, next) => {
       });
     }
 
-    const playlist = await replaceCurrentSelectionPlaylist(
-      user,
-      itemIds,
-      playbackType
+    const playlist = await withPlaybackAuthority(user, mediaItems, is4k, () =>
+      replaceCurrentSelectionPlaylist(user, itemIds, playbackType)
     );
     if (!playlist) {
       return res
@@ -1089,7 +1151,10 @@ playbackRoutes.post('/collection/playlist', async (req, res, next) => {
     }
 
     return res.status(200).json(playlist);
-  } catch {
+  } catch (error) {
+    if (error instanceof UserMutationActorUnauthorizedError) {
+      return next({ status: 403, message: 'Playback is not permitted.' });
+    }
     return next({
       status: 502,
       message: 'Unable to replace the media-server playlist.',
